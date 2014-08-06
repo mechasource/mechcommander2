@@ -1,0 +1,7 @@
+MechCommander 2 is a real-time tactics video game based on the BattleTech/MechWarrior franchise, 
+developed by FASA Interactive and distributed by Microsoft. It is a sequel to MechCommander.
+
+The original source for MechCommander 2 can be obtained at
+http://www.microsoft.com/en-us/download/details.aspx?id=11457
+
+The licence description under which the source was released is AFAIU no longer available.

@@ -1,0 +1,254 @@
+FITini
+
+// layout for a generic two-mission operation
+
+b ChildCoordinatesAreRelative = 1
+
+[AnimObjects]
+l Count = 1
+
+[AnimObject0] // FADE rect OVER MISSION SELECTION
+l XLocation = 0
+l XLocation = 0
+l Width = 256
+l Height = 256
+l Color = 0xff000000 
+st Animation = "anim0"
+
+[anim0]
+b AnimationLoops = FALSE
+l AnimationTimeStamps= 2
+
+f Time0 = 0.0
+l Pos0X = 0
+l Pos0Y = 0
+l Color0 = 0xFF000000 
+  
+f Time1 = .5
+l Pos1X = 0
+l Pos1Y = 0
+l Color1 = 0x00000000 
+
+
+
+
+
+
+
+
+
+
+
+
+	
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+[Buttons]
+l Buttoncount = 2
+
+[Button0] // 
+
+l ID = XXX
+l XLocation = 32
+l YLocation = 127
+l Width = 51
+l Height = 59
+
+
+l HelpCaption = 0
+l HelpDesc = 0
+
+st FileName = "mcl_cm_5.tga"
+
+l UWidth = 51
+l VHeight = 59
+
+l UNormal = 51
+l VNormal = 0
+
+l UPressed = 0
+l VPressed = 0
+
+l UHighlight = 51
+l VHighlight = 0
+
+l UDisabled = 51
+l VDisabled = 0
+
+b AnimateBmp = 1
+b AnimateText = 1
+
+
+l NormalAnimationTimeStamps = 2
+b NormalAnimationLoops = FALSE
+f NormalTime0 = 0.0
+l NormalColor0 = 0xffFF0000
+f NormalTime1 = 7.0
+l NormalColor1 = 0xffFF0000
+
+
+l PressedAnimationTimeStamps = 2
+b PressedAnimationLoops = FALSE
+f PressedTime0 = 0.0
+l PressedColor0 = 0x47ff0000
+f PressedTime1 = 0.5
+l PressedColor1 = 0xffFF0000
+
+l HighlightAnimationTimeStamps = 3
+b HighlightAnimationLoops = TRUE
+f HighlightTime0 = 0.0
+l HighlightColor0 = 0x47ff0000
+f HighlightTime1 = 0.3
+l HighlightColor1 = 0xffFF0000
+f HighlightTime2 = 0.6
+l HighlightColor2 = 0x47ff0000
+
+l DisabledAnimationTimeStamps = 2
+b DisabledAnimationLoops = FALSE
+f DisabledTime0 = 0.0
+l DisabledColor0 = 0xff546380
+f DisabledTime1 = 0.5
+l DisabledColor1 = 0xff546380
+
+
+
+
+
+[Button1] // 
+
+l ID = XXX
+l XLocation = 99
+l YLocation = 145
+l Width = 51
+l Height = 59
+
+
+
+l HelpCaption = 0
+l HelpDesc = 0
+
+st FileName = "mcl_cm_5.tga"
+
+l UWidth = 51
+l VHeight = 59
+
+l UNormal = 51
+l VNormal = 0
+
+l UPressed = 0
+l VPressed = 0
+
+l UHighlight = 51
+l VHighlight = 0
+
+l UDisabled = 51
+l VDisabled = 0
+
+b AnimateBmp = 1
+b AnimateText = 1
+
+
+l NormalAnimationTimeStamps = 2
+b NormalAnimationLoops = FALSE
+f NormalTime0 = 0.0
+l NormalColor0 = 0xffFF0000
+f NormalTime1 = 7.0
+l NormalColor1 = 0xffFF0000
+
+
+l PressedAnimationTimeStamps = 2
+b PressedAnimationLoops = FALSE
+f PressedTime0 = 0.0
+l PressedColor0 = 0x47ff0000
+f PressedTime1 = 0.5
+l PressedColor1 = 0xffFF0000
+
+l HighlightAnimationTimeStamps = 3
+b HighlightAnimationLoops = TRUE
+f HighlightTime0 = 0.0
+l HighlightColor0 = 0x47ff0000
+f HighlightTime1 = 0.3
+l HighlightColor1 = 0xffFF0000
+f HighlightTime2 = 0.6
+l HighlightColor2 = 0x47ff0000
+
+l DisabledAnimationTimeStamps = 2
+b DisabledAnimationLoops = FALSE
+f DisabledTime0 = 0.0
+l DisabledColor0 = 0xff546380
+f DisabledTime1 = 0.5
+l DisabledColor1 = 0xff546380
+
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
+[Statics]
+l Staticcount = 1
+
+[Static0]
+l XLocation = 0
+l YLocation = 0
+l Width = 256
+l Height = 256
+l UNormal = 0
+l VNormal = 0
+l UWidth = 256
+l VHeight = 256
+st FileName = "mcl_CM_OP2_3.tga"
+
+
+
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+[Texts]
+l Textcount = 1
+
+[Text0]
+l XLocation = 4
+l YLocation = 230
+l Width = 248
+l Height = 22
+l Color = 0xffff0000
+b outline = FALSE
+l Font = 27656 // use agencyfb11
+l TextID = 27654
+l Alignment = 3
+
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+FitEnd

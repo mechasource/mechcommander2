@@ -1,0 +1,254 @@
+//****************************************************************************************//
+// 
+//		This Brain will Guard a certain Area
+//			If Contact: If detect enemy contact will leave it patrol path and attack
+//			
+//
+//
+//****************************************************************************************//
+
+//[EDIT] 
+fsm escortBrain_1; //EACH BRAIN MUST HAVE AN UNIQUE FSM ID..
+//[EDIT END]
+
+	var
+
+		static WorldPosition		startPosition;
+		static boolean			willRequestHelp;
+		static real				lastHelpRequestTime;
+		static real				helpRequestFrequency;
+		static real				attackerHelpRadius;
+		static real				defenderHelpRadius;
+		static integer			AttackStateHandle;
+		static boolean			poweredDown;
+		static integer			numFunctionalWeapons;
+		static integer[20]		weaponList;
+		static integer			escortSquadID;
+		static integer[120]		moverList;
+		static real				escortRange;
+		static boolean			IsEscortUnitDead;
+		static worldPosition 		guardSpot;
+		static integer			ScanRange;
+
+
+//****************************************************************************************
+
+function init;
+
+    code
+
+//[EDIT] 
+//********************************************************************
+//					Scan Ranges for Unit
+		ScanRange = 300; //This is the Range in which the AI will Scan for Enemies in meters
+
+
+//********************************************************************
+//				Unit ID to escort
+		escortSquadID = 1; //This is the Squad ID (Found in editor) for the unit you want to escort
+		escortRange = 100.0; //How far the escorting unit will drift
+
+
+//********************************************************************
+//			Guard Location if escortee is dead	
+		guardSpot[0] = 0; //The X Coordinate (Found in the editor) is the area this Unit will Guard if the Unit it is suppose to Escort is destroyed
+		guardSpot[1] = 0; //The Y Coordinate (Found in the editor) is the area this Unit will Guard if the Unit it is suppose to Escort is destroyed
+
+
+
+//[EDIT END]
+
+
+//********************************************************************
+//			DO NOT EDIT BELOW THIS LINE	
+//||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+		//setDebugWindow(-1, -1);
+
+		//---------------------------
+		// Grab his start position...
+		getObjectPosition(-1, startPosition);
+
+		setTargetPriority(0, TARGET_PRIORITY_CURTARGET, -1, 150, CONTACT_CRITERIA_ENEMY + CONTACT_CRITERIA_VISUAL_OR_SENSOR + CONTACT_CRITERIA_NOT_DISABLED);
+		setTargetPriority(1, TARGET_PRIORITY_MOVER, 0, ScanRange, CONTACT_CRITERIA_ENEMY + CONTACT_CRITERIA_VISUAL_OR_SENSOR + CONTACT_CRITERIA_NOT_DISABLED);
+		setTargetPriority(2, TARGET_PRIORITY_NONE, 0, 0, 0);
+		AttackStateHandle = getStateHandle("attack");
+		IsEscortUnitDead = False;
+		getUnitMates(escortSquadID, moverList);
+
+
+		willRequestHelp = true; //?true or false
+		helpRequestFrequency = 20.0; //?in secs
+		attackerHelpRadius = 100; //?in meters
+		defenderHelpRadius = 125; //?in meters
+		lastHelpRequestTime = -100.0;
+		setWillHelp(False);
+						
+endfunction;
+
+
+//----------------------------------------------------------------------------------------
+
+function setWillRequestHelp (boolean setting);
+
+	code
+
+		if (setting and (not willRequestHelp)) then
+			lastHelpRequestTime = 0.0;
+		endif;
+		willRequestHelp = setting;
+
+endfunction;
+
+//----------------------------------------------------------------------------------------
+
+function update : integer;
+
+	var
+
+		boolean		processingPilotEvents;
+		boolean		thinking;
+		integer		pilotEventID;
+		integer		pilotState;
+		integer[20]		pilotEventParams;
+		integer		curTarget;
+		real			curTime;
+		real[3]		myPos;
+		real[3]		attackerPos;
+		real			distanceToAttacker;
+		integer		curStateHandle;
+
+
+	code
+
+		curTime = getTime;
+		curStateHandle = getCurrentStateHandle;
+
+
+		//--------------------------------------------------
+		// Process the pilot events since the last update...
+		numFunctionalWeapons = getWeapons(weaponList, 1);
+		if (numFunctionalWeapons == 0) then
+			trans noWeapons;
+		endif;
+
+
+		//--------------------------------------------------
+		// Check to see escorting Unit is dead
+		if (((objectStatus(moverList[0]) == 1) or (objectStatus(moverList[0]) == 2)) and (Not IsEscortUnitDead)) then
+			IsEscortUnitDead = True;
+			trans guardLocation;
+		endif;
+		
+
+		processingPilotEvents = TRUE;
+		while (processingPilotEvents) do
+			pilotEventID = getNextPilotEvent(pilotEventParams);
+			if (pilotEventID == PILOT_EVENT_NONE) then
+				processingPilotEvents = FALSE;
+			else
+				switch (pilotEventID)
+					case PILOT_EVENT_TARGETED:
+						curTarget = getTarget(-1);
+						if (lastHelpRequestTime < (curTime - helpRequestFrequency)) then
+							lastHelpRequestTime = curTime;
+							if (willRequestHelp) then
+								//distanceToAttacker = distanceToObject(-1, pilotEventParams[0]);
+								getObjectPosition(pilotEventParams[0], attackerPos);
+								getObjectPosition(-1, myPos);
+								requestHelp(pilotEventParams[0], myPos, attackerHelpRadius, attackerPos, defenderHelpRadius, 1);
+							endif;
+						endif;
+						numFunctionalWeapons = getWeapons(weaponList, 0);
+						if (curStateHandle <> AttackStateHandle) then
+							if ((numFunctionalWeapons > 0) and (curTarget == 0)) then
+								coreAttack(pilotEventParams[0], TACORDER_PARAM_PURSUE);
+								setState(AttackStateHandle);
+							endif;
+						endif;
+						endcase;
+					case PILOT_EVENT_ATTACK_ORDER:
+						curTarget = getTarget(-1);
+						if (curStateHandle <> AttackStateHandle) then
+							if ((numFunctionalWeapons > 0) and (curTarget == 0))then
+								coreAttack(pilotEventParams[0], TACORDER_PARAM_PURSUE);
+								setState(AttackStateHandle);
+							endif;
+						endif;
+						endcase;
+					case PILOT_EVENT_FIRED_WEAPON:
+						endcase;
+				endswitch;
+			endif;
+		endwhile;
+
+		return(0);
+
+endfunction;
+
+//----------------------------------------------------------------------------------------
+
+state noWeapons;
+
+	code
+
+		setDebugString(-1, 3, "   NO WEAPONS ");
+		if (objectClass(-1) == 2) then
+			coreEject;
+		else
+			corePower(false);
+		endif;
+		
+endstate;
+
+//----------------------------------------------------------------------------------------
+
+state attack;
+
+	code
+
+		update;
+		setDebugString(-1, 3, " ATTACK    ");
+		coreAttack(0, TACORDER_PARAM_PURSUE);
+		resetOrders(1);
+		transBack;
+
+endstate;
+
+//----------------------------------------------------------------------------------------
+
+state guardLocation;
+
+	code
+
+		update;
+		setDebugString(-1, 3, "Guarding ");
+		coreGuard(startposition, -1, attackStateHandle);
+		resetOrders(1);
+
+endstate;
+
+//----------------------------------------------------------------------------------------
+
+state start;
+
+	var 
+
+		worldposition		escortPos;
+
+	code
+
+		update;
+		setDebugString(-1, 3, "Escort ");
+		getObjectPosition(moverList[0], escortPos);
+		setMoveArea(escortPos, escortRange);
+		coreEscort(moverList[0], 40.0, 135.0, attackstateHandle);
+		resetOrders(1);
+
+endstate;
+
+//----------------------------------------------------------------------------------------
+
+endfsm.
+
+//****************************************************************************************

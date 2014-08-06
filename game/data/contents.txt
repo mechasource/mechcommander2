@@ -1,0 +1,2 @@
+this is the complete original game data
+the "textures" folder was added at the XNA release 2006

@@ -1,0 +1,2 @@
+this folder is planned to be empty
+used to contain binary dependencies

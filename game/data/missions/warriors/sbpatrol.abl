@@ -1,0 +1,244 @@
+//****************************************************************************************//
+// 
+//		This Brain will patrol a defined patrol path
+//			If Contact: If detect enemy contact will leave it patrol path and attack
+//			
+//
+//
+//****************************************************************************************//
+
+//[EDIT] 
+fsm PatrolBrain_1; //EACH BRAIN MUST HAVE AN UNIQUE FSM ID..
+//[EDIT END]
+
+
+	var
+
+		static WorldPosition		startPosition;
+		static PatrolState		PatrolState;
+		static PatrolPath			PatrolPath;
+		static boolean			willRequestHelp;
+		static real				lastHelpRequestTime;
+		static real				helpRequestFrequency;
+		static real				attackerHelpRadius;
+		static real				defenderHelpRadius;
+		static integer			AttackStateHandle;
+		static boolean			poweredDown;
+		static integer			numFunctionalWeapons;
+		static integer[20]		weaponList;
+		static integer			scanRange;
+
+
+//****************************************************************************************
+
+function init;
+
+    code
+
+
+//[EDIT] 
+//********************************************************************
+//					Scan Ranges for Unit
+		scanRange = 300;
+
+
+//********************************************************************
+//					Patrol STATE 
+		PatrolState[0] = 0;    	// This is the Type of Patrol. 0 = Linear. 1 = Looping 
+						//(Linear = Unit will move from 1 to 2 to 3, then 3 to 2 to 1) Assuming there are only 3 points to the Patrol
+						//(Looping = Unit will move from 1 to 2 to 3, then 1 to 2 to 3) Assuming there are only 3 points to the Patrol
+		PatrolState[1] = 6;    	//This is the Amount of Move Points there are listed below. Make sure you Count Patrol Point '0'
+		PatrolState[2] = -1;    //This is How many Times the unit will perform the Patrol.. (-1 = Forever).
+
+
+//********************************************************************
+//					Patrol Points below
+
+		//Enter the Coordinates of where you want the Unit to Patrol. It will do them in Order Start from 0 and ending at the Last Point
+		//Make sure you change the Index number (numbers in Brackets [0, 0] to match the correct Patrol Point.
+		//Also, the number of Mover Points MUST match the number you have entered in the Patrol State.
+
+		PatrolPath[0, 0] = -6762;	//X coordinate found in the editor
+		PatrolPath[0, 1] = -362;	//Y coordinate found in the editor
+		PatrolPath[1, 0] = -6421;
+		PatrolPath[1, 1] = -661;
+		PatrolPath[2, 0] = -5866;
+		PatrolPath[2, 1] = -1216;
+		PatrolPath[3, 0] = -5104;
+		PatrolPath[3, 1] = -1514;
+		PatrolPath[4, 0] = -3605;
+		PatrolPath[4, 1] = -4501;
+		PatrolPath[5, 0] = -1002;
+		PatrolPath[5, 1] = -4160;
+//[EDIT END]
+
+
+
+
+
+//********************************************************************
+//			DO NOT EDIT BELOW THESE LINES
+//||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+		PatrolState[3] = PATROL_DIRECTION_FORWARD;    
+		PatrolState[4] = -1;    //reset cur point
+		PatrolState[5] = -1;    //reset cur cycle
+		PatrolState[6] = CONTACT_CRITERIA_ENEMY + CONTACT_CRITERIA_VISUAL_OR_SENSOR + CONTACT_CRITERIA_NOT_DISABLED;
+		//setDebugWindow(-1, -1);
+		//---------------------------
+		// Grab his start position...
+		getObjectPosition(-1, startPosition);
+		setTargetPriority(0, TARGET_PRIORITY_CURTARGET, -1, 150, CONTACT_CRITERIA_ENEMY + CONTACT_CRITERIA_VISUAL_OR_SENSOR + CONTACT_CRITERIA_NOT_DISABLED);
+		setTargetPriority(1, TARGET_PRIORITY_MOVER, 0, scanRange, CONTACT_CRITERIA_ENEMY + CONTACT_CRITERIA_VISUAL_OR_SENSOR + CONTACT_CRITERIA_NOT_DISABLED);
+		setTargetPriority(2, TARGET_PRIORITY_NONE, 0, 0, 0);
+		AttackStateHandle = getStateHandle("attack");
+		willRequestHelp = true; //?true or false
+		helpRequestFrequency = 20.0; //?in secs
+		attackerHelpRadius = 100; //?in meters
+		defenderHelpRadius = 125; //?in meters
+		lastHelpRequestTime = -100.0;
+
+		setWillHelp(False);
+						
+endfunction;
+
+
+//----------------------------------------------------------------------------------------
+
+function setWillRequestHelp (boolean setting);
+
+	code
+
+		if (setting and (not willRequestHelp)) then
+			lastHelpRequestTime = 0.0;
+		endif;
+		willRequestHelp = setting;
+
+endfunction;
+
+//----------------------------------------------------------------------------------------
+
+function update : integer;
+
+	var
+
+		boolean		processingPilotEvents;
+		boolean		thinking;
+		integer		pilotEventID;
+		integer		pilotState;
+		integer[20]		pilotEventParams;
+		integer		curTarget;
+		real			curTime;
+		real[3]		myPos;
+		real[3]		attackerPos;
+		real			distanceToAttacker;
+		integer		curStateHandle;
+
+
+	code
+
+		curTime = getTime;
+		curStateHandle = getCurrentStateHandle;
+
+
+		//--------------------------------------------------
+		// Process the pilot events since the last update...
+		numFunctionalWeapons = getWeapons(weaponList, 1);
+		if (numFunctionalWeapons == 0) then
+			trans noWeapons;
+		endif;
+
+		
+
+		processingPilotEvents = TRUE;
+		while (processingPilotEvents) do
+			pilotEventID = getNextPilotEvent(pilotEventParams);
+			if (pilotEventID == PILOT_EVENT_NONE) then
+				processingPilotEvents = FALSE;
+			else
+				switch (pilotEventID)
+					case PILOT_EVENT_TARGETED:
+						curTarget = getTarget(-1);
+						if (lastHelpRequestTime < (curTime - helpRequestFrequency)) then
+							lastHelpRequestTime = curTime;
+							if (willRequestHelp) then
+								//distanceToAttacker = distanceToObject(-1, pilotEventParams[0]);
+								getObjectPosition(pilotEventParams[0], attackerPos);
+								getObjectPosition(-1, myPos);
+								requestHelp(pilotEventParams[0], myPos, attackerHelpRadius, attackerPos, defenderHelpRadius, 1);
+							endif;
+						endif;
+						numFunctionalWeapons = getWeapons(weaponList, 0);
+						if (curStateHandle <> AttackStateHandle) then
+							if ((numFunctionalWeapons > 0) and (curTarget == 0)) then
+								coreAttack(pilotEventParams[0], TACORDER_PARAM_PURSUE);
+								setState(AttackStateHandle);
+							endif;
+						endif;
+						endcase;
+					case PILOT_EVENT_ATTACK_ORDER:
+						curTarget = getTarget(-1);
+						if (curStateHandle <> AttackStateHandle) then
+							if ((numFunctionalWeapons > 0) and (curTarget == 0))then
+								coreAttack(pilotEventParams[0], TACORDER_PARAM_PURSUE);
+								setState(AttackStateHandle);
+							endif;
+						endif;
+						endcase;
+					case PILOT_EVENT_FIRED_WEAPON:
+						endcase;
+				endswitch;
+			endif;
+		endwhile;
+
+		return(0);
+
+endfunction;
+
+//----------------------------------------------------------------------------------------
+
+state noWeapons;
+
+	code
+
+		setDebugString(-1, 3, "   NO WEAPONS ");
+		if (objectClass(-1) == 2) then
+			coreEject;
+		else
+			corePower(false);
+		endif;
+		
+endstate;
+
+//----------------------------------------------------------------------------------------
+
+state attack;
+
+	code
+
+		update;
+		setDebugString(-1, 3, " ATTACK    ");
+		coreAttack(0, TACORDER_PARAM_PURSUE);
+		resetOrders(1);
+		transBack;
+
+endstate;
+
+//----------------------------------------------------------------------------------------
+
+state start;
+
+	code
+
+		update;
+		setDebugString(-1, 3, "Patroling ");
+		corePatrol(PatrolState, PatrolPath, attackStateHandle);
+		resetOrders(1);
+
+endstate;
+
+//----------------------------------------------------------------------------------------
+
+endfsm.
+
+//****************************************************************************************

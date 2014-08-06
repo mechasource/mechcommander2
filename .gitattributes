@@ -1,0 +1,43 @@
+
+* text=auto
+
+*.h text eol=lf
+*.hpp text eol=lf
+*.inl text eol=lf
+*.c text eol=lf
+*.cpp text eol=lf
+*.js text eol=lf
+*.ver text eol=lf
+
+*.rc text eol=crlf
+*.sln text eol=crlf
+*.vcproj text eol=crlf
+*.vcxproj text eol=crlf
+*.filters text eol=crlf
+*.rtf text eol=crlf
+
+*.cfg text eol=crlf
+*.csv text eol=crlf
+*.dat text eol=crlf
+*.abl text eol=crlf
+*.fit text eol=crlf
+
+*.dll binary
+*.exe binary
+*.zip binary
+*.ani binary
+*.bmp binary
+*.cur binary
+*.ico binary
+*.jpg binary
+*.png binary
+*.bik binary
+*.d3f binary
+*.tga binary
+*.txm binary
+*.wav binary
+*.fst binary
+*.pak binary
+*.fx binary
+
+

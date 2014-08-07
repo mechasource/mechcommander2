@@ -4,4 +4,8 @@ developed by FASA Interactive and distributed by Microsoft. It is a sequel to Me
 The original source for MechCommander 2 can be obtained at
 http://www.microsoft.com/en-us/download/details.aspx?id=11457
 
-The licence description under which the source was released is AFAIU no longer available.
+The licence description under which the source was released is available in the file 
+EULA.rtf in this directory. All changes and patches the project have done and may do 
+in this source, are covered by this license.
+
+New implementations are licensed according to the individual files, usually a BSD variant.

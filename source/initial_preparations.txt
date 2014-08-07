@@ -9,20 +9,20 @@ Layout changes to original source tree from Microsoft before first commit:
 2) Convert everything to lowercase and single linefeed
 
 3) renamed all files with spaces:
-	\gameos\include\sound channel.hpp		=> sound_channel.hpp
-	\gameos\include\sound ds3dchannel.hpp	=> sound_ds3dchannel.hpp
-	\gameos\include\sound ds3dmixer.hpp		=> sound_ds3dmixer.hpp
-	\gameos\include\sound mixer.hpp			=> sound_mixer.hpp
-	\gameos\include\sound renderer.hpp		=> sound_renderer.hpp
-	\gameos\include\sound resource.hpp		=> sound_resource.hpp
-	\gameos\include\texture manager.hpp		=> texture_manager.hpp
+	\gameos\include\sound channel.hpp       => sound_channel.hpp
+	\gameos\include\sound ds3dchannel.hpp   => sound_ds3dchannel.hpp
+	\gameos\include\sound ds3dmixer.hpp     => sound_ds3dmixer.hpp
+	\gameos\include\sound mixer.hpp         => sound_mixer.hpp
+	\gameos\include\sound renderer.hpp      => sound_renderer.hpp
+	\gameos\include\sound resource.hpp      => sound_resource.hpp
+	\gameos\include\texture manager.hpp     => texture_manager.hpp
 	
 4) moved all mcres project files to folder "mcres" and renamed "code" to "mechcmd2"
 
 5) renamed recource script files to correspond to projectfiles
-	\mcres\script1.rc	=> mcres.rc
-	\viewer\script1.rc	=> viewer.rc
-	\editor\resource.rc	=> editor.rc
+	\mcres\script1.rc   => mcres.rc
+	\viewer\script1.rc  => viewer.rc
+	\editor\resource.rc => editor.rc
 
 6) All projectfiles moved to the "build.vs" folder and paths adjusted
 
@@ -47,46 +47,47 @@ Layout changes to original source tree from Microsoft before first commit:
 
 8) Changed projectfiles target as follows
 
-	\mechcmd2.sln				=> solution  		=> mechcmd2_vc8.sln
-	\build.vs\ablt.vcproj		=> application		=> ablt_vc8.vcproj
-	\build.vs\aseconv.vcproj	=> application		=> aseconv_vc8.vcproj
-	\build.vs\editores.vcproj	=> deleted
-	\build.vs\editormfc.vcproj	=> application		=> editor_vc8.vcproj
-	\build.vs\gosfx.vcproj		=> library (mclib)	=> gosfx_vc8.vcproj
-	\build.vs\gui.vcproj		=> DLL      		=> gui_vc8.vcproj
-	\build.vs\mc2res.vcproj		=> noentry DLL		=> mc2res_vc8.vcproj
-	\build.vs\mclib.vcproj		=> DLL      		=> mclib_vc8.vcproj
-	\build.vs\mechcmd2.vcproj	=> DLL      		=> mechcmd2_vc8.vcproj
-	\build.vs\mlr.vcproj		=> library (mclib) 	=> mlr_vc8.vcproj
-	\build.vs\stuff.vcproj		=> library (mclib)  => stuff_vc8.vcproj
-	\build.vs\viewer.vcproj		=> application		=> viewer_vc8.vcproj
+	\mechcmd2.sln               => solution         => mechcmd2_vc8.sln
+	\build.vs\ablt.vcproj       => application      => ablt_vc8.vcproj
+	\build.vs\aseconv.vcproj    => application      => aseconv_vc8.vcproj
+	\build.vs\editores.vcproj   => deleted
+	\build.vs\editormfc.vcproj  => application      => editor_vc8.vcproj
+	\build.vs\gosfx.vcproj      => library (mclib)  => gosfx_vc8.vcproj
+	\build.vs\gui.vcproj        => DLL              => gui_vc8.vcproj
+	\build.vs\mc2res.vcproj     => noentry DLL      => mc2res_vc8.vcproj
+	\build.vs\mclib.vcproj      => DLL              => mclib_vc8.vcproj
+	\build.vs\mechcmd2.vcproj   => DLL              => mechcmd2_vc8.vcproj
+	\build.vs\mlr.vcproj        => library (mclib)  => mlr_vc8.vcproj
+	\build.vs\stuff.vcproj      => library (mclib)  => stuff_vc8.vcproj
+	\build.vs\viewer.vcproj     => application      => viewer_vc8.vcproj
 
-	ablt_vc8.vcproj			{533EB470-9743-48C3-A77F-1490873B7CBB}
-	aseconv_vc8.vcproj		{8D87B501-FAB3-4468-A67E-72CE3F4D21AE}
-	editores_vc8.vcproj		{8519AE9D-BC04-4FC5-B492-D584416A6CDE}	removed
-	editor_vc8.vcproj   	{61FF0D0E-7063-4843-A009-A764F7AD72D4}
-	gameos_vc8.vcproj   	{B4EA2124-2ABF-442E-9B3E-0E503A4DAF8B}	added
-	gosfx_vc8.vcproj		{FDA65357-68F7-4567-89C0-A4D15FB27CDB}
-	gui_vc8.vcproj			{97985315-F026-4AB8-A765-2DBE7B78CC6C}
-	mc2res_vc8.vcproj		{CFE8A9D5-80DF-4ACC-B91F-64AB2167BC3A}
-	mclib_vc8.vcproj		{09582E8D-FAA3-4A07-AB43-74C33436CDDF}
-	mechcmd2_vc8.vcproj		{8FA46A42-5363-4C71-90D8-1106203F0DC7}
-	mlr_vc8.vcproj			{6CFC313D-C849-4753-8EAA-3244D0515C7A}
-	stuff_vc8.vcproj		{14F6019A-43EA-41FF-BE5D-24D54425B7AA}
-	viewer_vc8.vcproj		{D6A172C0-ACCD-4F05-BADA-D8DEBD36B666}
+	ablt_vc8.vcproj             {533EB470-9743-48C3-A77F-1490873B7CBB}
+	aseconv_vc8.vcproj          {8D87B501-FAB3-4468-A67E-72CE3F4D21AE}
+	editores_vc8.vcproj         {8519AE9D-BC04-4FC5-B492-D584416A6CDE}  removed
+	editor_vc8.vcproj           {61FF0D0E-7063-4843-A009-A764F7AD72D4}
+	gameos_vc8.vcproj           {B4EA2124-2ABF-442E-9B3E-0E503A4DAF8B}  added
+	gosfx_vc8.vcproj            {FDA65357-68F7-4567-89C0-A4D15FB27CDB}
+	gui_vc8.vcproj              {97985315-F026-4AB8-A765-2DBE7B78CC6C}
+	mc2res_vc8.vcproj           {CFE8A9D5-80DF-4ACC-B91F-64AB2167BC3A}
+	mclib_vc8.vcproj            {09582E8D-FAA3-4A07-AB43-74C33436CDDF}
+	mechcmd2_vc8.vcproj         {8FA46A42-5363-4C71-90D8-1106203F0DC7}
+	mlr_vc8.vcproj              {6CFC313D-C849-4753-8EAA-3244D0515C7A}
+	stuff_vc8.vcproj            {14F6019A-43EA-41FF-BE5D-24D54425B7AA}
+	viewer_vc8.vcproj           {D6A172C0-ACCD-4F05-BADA-D8DEBD36B666}
 	
 	The actual game application project will be added later and will only contain
 	startup code from gameos.
 
+
 General comments:
-	
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 	Development is done in a tweaked VS2005 and in VS2013, both using the latest
 	VS2013 compiler and libraries. All new code is licensed under a BSD 2-clause 
 	license and code will be reimplemented under this license rather than added
 	to the old files.
 	
 	My purpose of doing this is to learn DirectX, old and new techniques, debugging
-	and .
+	and not the least having some fun.
 	
 Goals with the project
 1)	The major goal is to patch the code to make the game stable in Windows 7 and 8.

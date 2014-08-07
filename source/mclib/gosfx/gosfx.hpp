@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <Stuff\Stuff.hpp>
+#include <stuff\stuff.hpp>
 
 namespace gosFX
 {
@@ -16,22 +16,22 @@ namespace gosFX
 	// gosFX classes
 	//--------------
 	//
-	enum {
+	typedef enum __gosFX_const {
 		EffectClassID = Stuff::FirstgosFXClassID,
-			ParticleCloudClassID,
-				PointCloudClassID,
-				SpinningCloudClassID,
-					ShardCloudClassID,
-					PertCloudClassID,
-					CardCloudClassID,
-					ShapeCloudClassID,
-					EffectCloudClassID,
-			SingletonClassID,
-				CardClassID,
-				ShapeClassID,
-			TubeClassID,
-			DebrisCloudClassID,
-			PointLightClassID,
+		ParticleCloudClassID,
+		PointCloudClassID,
+		SpinningCloudClassID,
+		ShardCloudClassID,
+		PertCloudClassID,
+		CardCloudClassID,
+		ShapeCloudClassID,
+		EffectCloudClassID,
+		SingletonClassID,
+		CardClassID,
+		ShapeClassID,
+		TubeClassID,
+		DebrisCloudClassID,
+		PointLightClassID,
 		FirstFreegosFXClassID,
 	};
 

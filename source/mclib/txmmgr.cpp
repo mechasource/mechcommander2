@@ -11,6 +11,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #ifndef TXMMGR_H
 #include "txmmgr.h"
@@ -100,7 +101,8 @@ void MC_TextureManager::start (void)
 	masterTextureNodes = (MC_TextureNode *)systemHeap->Malloc(nodeRAM);
 	gosASSERT(masterTextureNodes != NULL);
 
-	for (long i=0;i<MC_MAXTEXTURES;i++)
+	long i;
+	for (i=0;i<MC_MAXTEXTURES;i++)
 		masterTextureNodes[i].init();
 		
 	//-------------------------------------------
@@ -342,8 +344,9 @@ void MC_TextureManager::removeTextureNode (DWORD textureNode)
 //----------------------------------------------------------------------
 void MC_TextureManager::removeTexture (DWORD gosHandle)
 {
+	long i;
 	//-----------------------------------------------------------
-	for (long i=0;i<MC_MAXTEXTURES;i++)
+	for (i=0;i<MC_MAXTEXTURES;i++)
 	{
 		if ((masterTextureNodes[i].gosTextureHandle == gosHandle))
 		{
@@ -376,10 +379,11 @@ bool MC_TextureManager::flushCache (void)
 	bool cacheNotFull = false;
 	totalCacheMisses++;
 	currentUsedTextures = 0;
+	long i;
 	
 	//Count ACTUAL number of textures being used.
 	// ALSO can't count on turn being right.  Logistics does not update unless simple Camera is up!!
-	for (long i=0;i<MC_MAXTEXTURES;i++)
+	for (i=0;i<MC_MAXTEXTURES;i++)
 	{
 		if ((masterTextureNodes[i].gosTextureHandle != CACHED_OUT_HANDLE) &&
 			(masterTextureNodes[i].gosTextureHandle != 0xffffffff))
@@ -513,7 +517,8 @@ void MC_TextureManager::renderLists (void)
 		gos_SetRenderState( gos_State_Fog, 0);
 	}
 	
-	for (long i=0;i<nextAvailableVertexNode;i++)
+	long i;
+	for (i=0;i<nextAvailableVertexNode;i++)
 	{
 		if ((masterVertexNodes[i].flags & MC2_DRAWSOLID) &&
 			(masterVertexNodes[i].vertices))
@@ -1164,7 +1169,7 @@ DWORD MC_TextureManager::textureInstanceExists (const char *textureFullPathName,
 	{
 		if (masterTextureNodes[i].nodeName)
 		{
-			if (stricmp(masterTextureNodes[i].nodeName,textureFullPathName) == 0)
+			if (_stricmp(masterTextureNodes[i].nodeName,textureFullPathName) == 0)
 			{
 				if (uniqueInstance == masterTextureNodes[i].uniqueInstance)
 				{
@@ -1194,7 +1199,7 @@ DWORD MC_TextureManager::loadTexture (const char *textureFullPathName, gos_Textu
 	// Is this texture already Loaded?
 	for (i=0;i<MC_MAXTEXTURES;i++)
 	{
-		if (masterTextureNodes[i].nodeName && (stricmp(masterTextureNodes[i].nodeName,textureFullPathName) == 0))
+		if (masterTextureNodes[i].nodeName && (_stricmp(masterTextureNodes[i].nodeName,textureFullPathName) == 0))
 		{
 			if (uniqueInstance == masterTextureNodes[i].uniqueInstance)
 			{
@@ -1328,7 +1333,7 @@ long MC_TextureManager::saveTexture (DWORD textureIndex, const char *textureFull
 			//------------------------------------------
 			// Badboys are now LZ Compressed in texture cache.
 			long origSize = LZDecomp(MC_TextureManager::lzBuffer2,(MemoryPtr)masterTextureNodes[textureIndex].textureData,masterTextureNodes[textureIndex].lzCompSize);
-			if (origSize != (masterTextureNodes[textureIndex].width & 0x0fffffff))
+			if (origSize != (long)(masterTextureNodes[textureIndex].width & 0x0fffffff))
 				STOP(("Decompressed to different size from original!  Txm:%s  Width:%d  DecompSize:%d",masterTextureNodes[textureIndex].nodeName,(masterTextureNodes[textureIndex].width & 0x0fffffff),origSize));
 
 			if (origSize >= MAX_LZ_BUFFER_SIZE)
@@ -1392,7 +1397,7 @@ DWORD MC_TextureNode::get_gosTextureHandle (void)	//If texture is not in VidRAM,
 			// Badboys are now LZ Compressed in texture cache.
 			// Uncompress, then memcpy.
 			long origSize = LZDecomp(MC_TextureManager::lzBuffer2,(MemoryPtr)textureData,lzCompSize);
-			if (origSize != (width & 0x0fffffff))
+			if (origSize != (long)(width & 0x0fffffff))
 				STOP(("Decompressed to different size from original!  Txm:%s  Width:%d  DecompSize:%d",nodeName,(width & 0x0fffffff),origSize));
 
 			if (origSize >= MAX_LZ_BUFFER_SIZE)

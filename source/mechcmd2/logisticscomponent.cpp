@@ -5,6 +5,7 @@ LogisticsComponent.cpp			: Implementation of the LogisticsComponent component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "LogisticsComponent.h"
 #include <gameos.hpp>
@@ -87,9 +88,10 @@ int LogisticsComponent::init( char* dataLine )
 
 	// the type
 	extractString( pLine, pBuffer, 1024 );
-	for ( int i = 0; i < NUM_COMPONENT_FORMS; ++i )
+	int i;
+	for ( i = 0; i < NUM_COMPONENT_FORMS; ++i )
 	{
-		if ( 0 == stricmp( ComponentFormString[i], pBuffer ) )
+		if ( 0 == _stricmp( ComponentFormString[i], pBuffer ) )
 		{
 			Type = i;
 			break;
@@ -128,17 +130,17 @@ int LogisticsComponent::init( char* dataLine )
 
 	// we need to figure out where things can go
 	extractString( pLine, pBuffer, 1024 );
-	bHead = stricmp( pBuffer, "Yes" ) ? false : true;
+	bHead = _stricmp( pBuffer, "Yes" ) ? false : true;
 	
 	extractString( pLine, pBuffer, 1024 );
-	bTorso = stricmp( pBuffer, "Yes" ) ? false : true;
+	bTorso = _stricmp( pBuffer, "Yes" ) ? false : true;
 	
 	// ignore the next 4 columns
 	for ( i = 0; i < 4; ++i )
 		extractString( pLine, pBuffer, 1024 );
 	
 	extractString( pLine, pBuffer, 1024 );
-	bLegs = stricmp( pBuffer, "Yes" ) ? false : true;
+	bLegs = _stricmp( pBuffer, "Yes" ) ? false : true;
 	
 	// ignore the next 4 columns
 	for ( i = 0; i < 4; ++i )
@@ -181,7 +183,8 @@ int LogisticsComponent::extractString( char*& pFileLine, char* pBuffer, int buff
 {
 	*pBuffer = 0;
 
-	for ( int i = 0; i < 512; ++i )
+	int i;
+	for ( i = 0; i < 512; ++i )
 	{
 		if ( pFileLine[i] == '\n' )
 			break;
@@ -246,7 +249,7 @@ bool LogisticsComponent::compare( LogisticsComponent* second, int type )
 			return second->heat > heat;
 			break;
 		case NAME:
-			return stricmp( name, second->name ) > 0;
+			return _stricmp( name, second->name ) > 0;
 			break;
 		case RANGE:
 			return second->damage > damage;

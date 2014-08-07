@@ -5,6 +5,7 @@ OptionsScreenWrapper.cpp			: Implementation of the OptionsScreenWrapper componen
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "OptionsScreenWrapper.h"
 #include "McLib.h"

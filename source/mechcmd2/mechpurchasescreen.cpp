@@ -5,6 +5,7 @@ MechPurchaseScreen.cpp			: Implementation of the MechPurchaseScreen component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MechPurchaseScreen.h"
 #include "mcLib.h"

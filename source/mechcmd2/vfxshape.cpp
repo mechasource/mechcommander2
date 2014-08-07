@@ -8,6 +8,7 @@
 
 //---------------------------------------------------------------------------
 // Include files
+#include "stdafx.h"
 
 #ifndef MCLIB_H
 #include "mclib.h"
@@ -17,9 +18,9 @@
 #include "vfxshape.h"
 #endif
 
-#ifndef SPRTMGR_H
-#include "sprtmgr.h"
-#endif
+//#ifndef SPRTMGR_H
+//#include "sprtmgr.h"
+//#endif
 
 #ifndef APPRTYPE_H
 #include "apprtype.h"

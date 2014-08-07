@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #include "AttributeMeter.h"
 #include "IniFile.h"
@@ -59,6 +60,8 @@ void AttributeMeter::render()
 
 void AttributeMeter::render( long xOffset, long yOffset )
 {
+	int i;
+
 	if ( !bShow )
 		return; 
 
@@ -85,7 +88,7 @@ void AttributeMeter::render( long xOffset, long yOffset )
 	long color = colorMin;
 
 	tmpRect.bottom += skipWidth;
-	for ( int i = 0; i < nBarCount; i++ )
+	for ( i = 0; i < nBarCount; i++ )
 	{
 		drawRect( tmpRect, color );
 		color = interpolateColor( colorMin, colorMax, ((float)i)/(float)numBars );

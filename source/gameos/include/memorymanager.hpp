@@ -47,7 +47,7 @@ const int MemoryEndMarker=0x7fb1deaf;			// Placed at the end of allocations in _
 //
 typedef struct
 {
-#ifdef LAB_ONLY
+#if defined(LAB_ONLY)
 	BYTE			Size;						// Size of block (note pools are always <64K)
 #endif
 #ifdef _DEBUG
@@ -61,7 +61,7 @@ typedef struct
 //
 typedef struct
 {
-#ifdef LAB_ONLY
+#if defined(LAB_ONLY)
 	WORD			Size;						// Size of block (note pools are always <64K)
 #endif
 #ifdef _DEBUG
@@ -106,7 +106,7 @@ typedef struct _MEMORYPOOL
 	BYTE*				pMemoryPool;			// Pointer to the base of the memory blocks (pointer to header byte before allocation)
 	WORD				wBlockSize;				// what is the size of the individual blocks?
 	WORD				wTotalBlocks;			// Total blocks available
-	#ifdef LAB_ONLY
+	#if defined(LAB_ONLY)
 	WORD				wUserBytes;				// the amount of memory in the pool that is actual user data
 	#endif
 	WORD				AllocCount[16];			// Number of blocks allocated in each 4K page (when 0, block can be decommitted)
@@ -117,16 +117,16 @@ typedef struct _MEMORYPOOL
 //
 // Used to hold GameOS level heap information
 //
-struct gos_Heap
+typedef struct gos_Heap
 {
 	gos_Heap*	pParent;
 	gos_Heap*	pNext;
 	gos_Heap*	pChild;
-	DWORD		Magic;
+	ULONG		Magic;
 	int			Instances;
 	char		Name[128];
-#ifdef LAB_ONLY
-	DWORD		MaximumSize;
+#if defined(LAB_ONLY)
+	ULONG		MaximumSize;
 	int			BytesAllocated;
 	int			TotalAllocatedLastLoop;
 	int			BytesAllocatedThisLoop;
@@ -143,7 +143,7 @@ struct gos_Heap
 	int			DXAllocated;
 #endif
 	BYTE		HeapNumber;							// Heap number in HeapList[]  (<<24)
-};
+} gos_Heap;
 #pragma pack(pop)
 
 

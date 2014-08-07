@@ -7,27 +7,27 @@
 
 #pragma once
 
-#pragma warning(disable: 4018)	// signed/unsigned mismatches
-#pragma warning(disable: 4097)	// typedef synonyms
-#pragma warning(disable: 4100)	// unreferenced parameters
-#pragma warning(disable: 4102)	// unreferenced labels
-#pragma warning(disable: 4127)	// constant comparisons
-#pragma warning(disable: 4130)	// logical operation on string constants
-#pragma warning(disable: 4201)	// nameless structs
-#pragma warning(disable: 4245)	// casting enum to long
-#pragma warning(disable: 4355)	// this used in base initializers
-#pragma warning(disable: 4511)	// no copy constructor
-#pragma warning(disable: 4512)	// no assignment operator
-#pragma warning(disable: 4514)
-#if defined(_ARMOR) && !defined(_DEBUG)
-	#pragma warning(disable: 4700)	// variable used without initialization
-	#pragma warning(disable: 4701)	// variable maybe not initialized
-#endif
-#pragma warning(disable: 4710)	// inline not expanded
-#pragma warning(disable: 4711)	// auto-inline selection
-#pragma warning(disable: 4291)	// exception handlings and new
-
-#pragma warning(push,3)
+//#pragma warning(disable: 4018)	// signed/unsigned mismatches
+//#pragma warning(disable: 4097)	// typedef synonyms
+//#pragma warning(disable: 4100)	// unreferenced parameters
+//#pragma warning(disable: 4102)	// unreferenced labels
+//#pragma warning(disable: 4127)	// constant comparisons
+//#pragma warning(disable: 4130)	// logical operation on string constants
+//#pragma warning(disable: 4201)	// nameless structs
+//#pragma warning(disable: 4245)	// casting enum to long
+//#pragma warning(disable: 4355)	// this used in base initializers
+//#pragma warning(disable: 4511)	// no copy constructor
+//#pragma warning(disable: 4512)	// no assignment operator
+//#pragma warning(disable: 4514)
+//#if defined(_ARMOR) && !defined(_DEBUG)
+//	#pragma warning(disable: 4700)	// variable used without initialization
+//	#pragma warning(disable: 4701)	// variable maybe not initialized
+//#endif
+//#pragma warning(disable: 4710)	// inline not expanded
+//#pragma warning(disable: 4711)	// auto-inline selection
+//#pragma warning(disable: 4291)	// exception handlings and new
+//
+//#pragma warning(push,3)
 
 #include <math.h>
 #include <float.h>
@@ -37,13 +37,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
-#pragma warning(pop)
+//#pragma warning(pop)
 
-#pragma warning(push)
-#include <gameOS.hpp>
-#pragma warning(pop)
+//#pragma warning(push)
+#include <gameos.hpp>
+//#pragma warning(pop)
 
+#if _M_IX86
 #define USE_ASSEMBLER_CODE	1
+#else
+#define USE_ASSEMBLER_CODE	0
+#endif
 
 namespace Stuff {
 
@@ -189,40 +193,40 @@ namespace Stuff {
 #define GROUP_STUFF_MEMORY "Stuff::Memory"
 #define GROUP_STUFF_TRACE "Stuff::Trace"
 
-#include "Style.hpp"
-#include "MString.hpp"
-#include "Slot.hpp"
-#include "Chain.hpp"
-#include "SafeChain.hpp"
-#include "SortedChain.hpp"
-#include "Table.hpp"
-#include "Tree.hpp"
-#include "Hash.hpp"
-#include "Angle.hpp"
-#include "Color.hpp"
-#include "ExtentBox.hpp"
-#include "FileStream.hpp"
-#include "FileStreamManager.hpp"
-#include "Line.hpp"
-#include "MArray.hpp"
-#include "MatrixStack.hpp"
-#include "Auto_Ptr.hpp"
-#include "Auto_Container.hpp"
-#include "Noncopyable.hpp"
-#include "Initialized_Ptr.hpp"
-#include "Motion.hpp"
-#include "NotationFile.hpp"
-#include "Page.hpp"
-#include "Note.hpp"
-#include "OBB.hpp"
-#include "Origin.hpp"
-#include "Plane.hpp"
-#include "Point3D.hpp"
-#include "Polar.hpp"
-#include "Random.hpp"
-#include "Sphere.hpp"
-#include "Vector2D.hpp"
-#include "Vector4D.hpp"
-#include "Trace.hpp"
-#include "Average.hpp"
-#include "Database.hpp"
+#include "style.hpp"
+#include "mstring.hpp"
+#include "slot.hpp"
+#include "chain.hpp"
+#include "safechain.hpp"
+#include "sortedchain.hpp"
+#include "table.hpp"
+#include "tree.hpp"
+#include "hash.hpp"
+#include "angle.hpp"
+#include "color.hpp"
+#include "extentbox.hpp"
+#include "filestream.hpp"
+#include "filestreammanager.hpp"
+#include "line.hpp"
+#include "marray.hpp"
+#include "matrixstack.hpp"
+#include "auto_ptr.hpp"
+#include "auto_container.hpp"
+#include "noncopyable.hpp"
+#include "initialized_ptr.hpp"
+#include "motion.hpp"
+#include "notationfile.hpp"
+#include "page.hpp"
+#include "note.hpp"
+#include "obb.hpp"
+#include "origin.hpp"
+#include "plane.hpp"
+#include "point3d.hpp"
+#include "polar.hpp"
+#include "random.hpp"
+#include "sphere.hpp"
+#include "vector2d.hpp"
+#include "vector4d.hpp"
+#include "trace.hpp"
+#include "average.hpp"
+#include "database.hpp"

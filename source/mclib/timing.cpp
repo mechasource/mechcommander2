@@ -4,6 +4,10 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
+//#include <windows.h>
+//#include <winbase.h>
+//#include <math.h>
 
 //----------------------------------------------------------------------------------
 // Include Files
@@ -11,10 +15,6 @@
 #include "timing.h"
 #endif
 
-#include <windows.h>
-#include <winbase.h>
-
-#include <math.h>
 
 //----------------------------------------------------------------------------------
 long	turn = 0;

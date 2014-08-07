@@ -15,8 +15,8 @@
 //---------------------------------------------------------------------------
 // Type Definitions
 typedef unsigned char* MemoryPtr;
-typedef unsigned char byte;
-typedef unsigned size_t;
+//typedef unsigned char byte;
+//typedef unsigned size_t;
 
 #ifndef NULL
 #define NULL	0
@@ -45,10 +45,10 @@ typedef void *PVOID;
 
 //--------------------------------------------------------------------------
 // Pragmas
-#pragma warning(disable:4244)
-#pragma warning(disable:4514)		// Unused Inline Functions
-#pragma warning(disable:4800)
-#pragma warning(disable:4244)
+//#pragma warning(disable:4244)
+//#pragma warning(disable:4514)		// Unused Inline Functions
+//#pragma warning(disable:4800)
+//#pragma warning(disable:4244)
 
 //---------------------------------------------------------------------------
 #endif

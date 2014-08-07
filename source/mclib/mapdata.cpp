@@ -763,7 +763,8 @@ void MapData::makeLists (VertexPtr vertexList, long &numVerts, TerrainQuadPtr qu
 	VertexPtr currentVertex = vertexList;
 	numVerts = 0;
 
-	for (int y=0;y<Terrain::visibleVerticesPerSide;y++)
+	int y;
+	for (y=0;y<Terrain::visibleVerticesPerSide;y++)
 	{
 		for (int x=0;x<Terrain::visibleVerticesPerSide;x++)
 		{

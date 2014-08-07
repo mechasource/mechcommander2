@@ -38,10 +38,9 @@
 #include <tchar.h>
 #endif
 
-#pragma warning( disable:4505 )
-
-#pragma warning( push )
-#pragma warning( disable:4100 )
+//#pragma warning( disable:4505 )
+//#pragma warning( push )
+//#pragma warning( disable:4100 )
 
 #define INT_SIZE_LENGTH 20
 extern int __ismbcodepage;
@@ -254,7 +253,7 @@ inline	unsigned short*	ECharString::ToUnicode( unsigned short* p_Buffer,
 
 	p_Buffer[0] = 0;
 
-	MultiByteToWideChar( CP_ACP, 0, (const char*)p_Str, -1, p_Buffer, Num_Chars );
+	MultiByteToWideChar(CP_ACP, 0, (const char*)p_Str, -1, (PWSTR)p_Buffer, Num_Chars);
 
 	return p_Buffer;	
 }
@@ -716,7 +715,7 @@ void ECharString::Format( const ECSChar* p_Str, ... )
 			   Item_Len = 6;  // "(null)"
 			else
 			{
-			   Item_Len = wcslen(p_Next_Arg);
+			   Item_Len = wcslen((PWCHAR)p_Next_Arg);
 			   Item_Len = max(1, Item_Len);
 			}
 #else
@@ -901,13 +900,13 @@ ECharString operator+( const ECharString& Begin_String, const ECSChar* p_End_Str
 }
 
 /////////////////////////////////////////////////////////////////
-ECharString operator+( const ECharString& Begin_String,  ECSChar Char )
+ECharString operator+( const ECharString& Begin_String, ECSChar Char )
 {
 	ECSChar Tmp[2];
 	Tmp[0] = Char;
 	Tmp[1] = 0;
 
-	return Begin_String + Char;
+	return (Begin_String + Char);
 }
 
 /////////////////////////////////////////////////////////////////
@@ -1596,5 +1595,5 @@ const ECharString& ECharString::operator=( char Char )
 
 //****************************************************************
 
-#pragma warning( pop )
+//#pragma warning( pop )
 

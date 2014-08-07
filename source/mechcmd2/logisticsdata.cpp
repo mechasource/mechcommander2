@@ -5,6 +5,7 @@ LogisticsData.cpp			: Implementation of the LogisticsData component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "LogisticsData.h"
 #include "file.h"
@@ -260,7 +261,7 @@ void LogisticsData::initVariants()
 		if ( retVal != 0 )
 			break;
 
-		if ( stricmp( tmpStr, "VEHICLE" ) == 0 )
+		if ( _stricmp( tmpStr, "VEHICLE" ) == 0 )
 		{
 			float scale;
 			variantFile.readFloat( i, 11, scale );
@@ -272,7 +273,7 @@ void LogisticsData::initVariants()
 			i++;
 			continue;
 		}
-		if ( stricmp( tmpStr, "MECH" ) != 0 )
+		if ( _stricmp( tmpStr, "MECH" ) != 0 )
 		{
 		
 			float scale;
@@ -514,11 +515,12 @@ int LogisticsData::removeVariant( const char* varName )
 		return -1;
 
 	LogisticsVariant* pVar = 0;
+	VARIANT_LIST::EIterator vIter;
 
 	if ( currentlyModifiedMech->getName() == varName || oldVariant->getName() == varName )
 		return -1;
 
-	for ( VARIANT_LIST::EIterator vIter = variants.Begin(); !vIter.IsDone(); vIter++ )
+	for ( vIter = variants.Begin(); !vIter.IsDone(); vIter++ )
 	{
 		if ( (*vIter)->getName().Compare( varName, 0 ) == 0 )
 		{
@@ -567,7 +569,7 @@ LogisticsVariant* LogisticsData::getVariant( int ID )
 {
 	for ( VARIANT_LIST::EIterator iter = variants.Begin(); !iter.IsDone(); iter++ )
 	{
-		if ( (*iter)->getID() == (ID & 0x00ffffff) )
+		if ( (*iter)->getID() == (unsigned long)(ID & 0x00ffffff) )
 		{
 			return *iter;
 		}
@@ -923,8 +925,9 @@ const char*	LogisticsData::getBestPilot( long mechWeight )
 #endif
 
 	long count = counter;
+	int i;
 
-	for ( int i = 1; i < count; ++i )
+	for ( i = 1; i < count; ++i )
 	{
 		LogisticsPilot* cur = pPilots[i];
 		for ( int j = 0; j < i; ++j )
@@ -1148,7 +1151,8 @@ long	LogisticsData::load( FitIniFile& file )
 	char tmp[64];
 
 	// load variants
-	for ( int i = 0; i < variantCount; i++ )
+	int i;
+	for ( i = 0; i < variantCount; i++ )
 	{
 		sprintf( tmp, "Variant%ld", i );
 		file.seekBlock( tmp );
@@ -1440,7 +1444,8 @@ void LogisticsData::removeMechFromInventory( const char* mechName, const char* p
 LogisticsPilot*	LogisticsData::getPilot( const char* pilotName )
 {
 	// look for available ones first
-	for( PILOT_LIST::EIterator iter = pilots.Begin(); !iter.IsDone(); iter++ )
+	PILOT_LIST::EIterator iter;
+	for( iter = pilots.Begin(); !iter.IsDone(); iter++ )
 	{
 		if ( (*iter).isAvailable() )
 		{
@@ -1489,7 +1494,8 @@ long LogisticsData::updateAvailability()
 	int newMechAvailableCount = 0;
 	int oldPilotAvailableCount = 0;
 	int newPilotAvailableCount= 0;
-	for ( PILOT_LIST::EIterator pIter = pilots.Begin(); !pIter.IsDone(); pIter++ )
+	PILOT_LIST::EIterator pIter;
+	for ( pIter = pilots.Begin(); !pIter.IsDone(); pIter++ )
 	{
 		if ( (*pIter).bAvailable )
 			oldPilotAvailableCount++;
@@ -1522,7 +1528,8 @@ long LogisticsData::updateAvailability()
 
 	bool bAll = 0;
 	file.readIdBoolean( "AllComponents", bAll );
-	for ( int i = 0; i < 255; i++ )
+	int i;
+	for ( i = 0; i < 255; i++ )
 	{
 		if ( bAll )
 			available[i] = 1;
@@ -1539,7 +1546,8 @@ long LogisticsData::updateAvailability()
 	}
 
 	// go through comonent list, and set 'em
-	for ( COMPONENT_LIST::EIterator cIter = components.Begin(); !cIter.IsDone(); cIter++ )
+	COMPONENT_LIST::EIterator cIter;
+	for ( cIter = components.Begin(); !cIter.IsDone(); cIter++ )
 	{
 		if ( available[(*cIter).getID()] || bAll )
 		{
@@ -1555,7 +1563,8 @@ long LogisticsData::updateAvailability()
 
 
 	// reset all variants to unavailable
-	for ( VARIANT_LIST::EIterator vIter = variants.Begin(); !vIter.IsDone(); vIter++ )
+	VARIANT_LIST::EIterator vIter;
+	for ( vIter = variants.Begin(); !vIter.IsDone(); vIter++ )
 	{
 		if ( (*vIter)->isAvailable()  && !((*vIter)->getID() >> 16 ))
 			oldMechAvailableCount++;
@@ -1596,7 +1605,7 @@ long LogisticsData::updateAvailability()
 			EString mechName = (*vIter)->getFileName();
 			char realName[1024];
 			_splitpath( mechName, NULL, NULL, realName, NULL );
-			if ( stricmp( realName, chassisFileName ) == 0 )
+			if ( _stricmp( realName, chassisFileName ) == 0 )
 			{
 				componentCount = 255;
 				bool bRight = true;
@@ -1705,7 +1714,8 @@ void LogisticsData::appendAvailability(const char* pFileName, bool* availableArr
 	char pilotName[255];
 	char tmp[256];
 	file.seekBlock( "Pilots" );
-	for ( int i = 0; i < 255; i++ )
+	int i;
+	for ( i = 0; i < 255; i++ )
 	{
 		sprintf( tmp, "Pilot%ld", i );
 		if ( NO_ERR != file.readIdString( tmp, pilotName, 254 ) )
@@ -1738,7 +1748,7 @@ void LogisticsData::appendAvailability(const char* pFileName, bool* availableArr
 			EString mechName = (*vIter)->getFileName();
 			char realName[255];
 			_splitpath( mechName, NULL, NULL, realName, NULL );
-			if ( stricmp( realName, chassisFileName ) == 0 )
+			if ( _stricmp( realName, chassisFileName ) == 0 )
 			{
 				long componentCount = 255;
 				long componentArray[256];
@@ -2075,11 +2085,11 @@ int LogisticsData::acceptMechModifications( const char* name )
 	// Doing it by count does not crash and has the added advantage of being easy to debug!
 	// I suspect ESI going south again.  Probably a compiler option...
 
-	// 05/04 HKG, actually, if you increment vIter after deleteing it, it still won't work
+	// 05/04 HKG, actually, if you increment vIter after deleting it, it still won't work
 
 	// Good Point.  As you can see, it was pretty late when I "fixed" this!
-	long numVariants = variants.Count();
-	long i=0;
+	//long numVariants = variants.Count();
+	//long i=0;
 	for ( VARIANT_LIST::EIterator vIter = variants.Begin(); !vIter.IsDone();  )
 	{
 		if ( (*vIter)->getName().Compare( name, 0 ) == 0 )
@@ -2476,7 +2486,7 @@ LogisticsVehicle*	LogisticsData::getVehicle( const char* pName )
 	for ( VEHICLE_LIST::EIterator vIter = vehicles.Begin(); !vIter.IsDone(); vIter++ )
 	{
 		cLoadString( (*vIter)->getNameID(), tmpStr, 255 );
-		if ( stricmp( tmpStr, pName ) == 0 )
+		if ( _stricmp( tmpStr, pName ) == 0 )
 		{
 			return *vIter;
 		}

@@ -93,7 +93,7 @@ DWORD elfHash (char *name)
     while ( *name )
     {
         h = ( h << 4 ) + *name++;
-        if ( g = h & 0xF0000000 )
+        if ((g = h & 0xF0000000) != 0)
             h ^= g >> 24;
         h &= ~g;
     }

@@ -2,15 +2,15 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include <stdio.h>
+#include "stdafx.h"
+// #include <stdio.h>
+// #include <string.h>
 
 #ifndef FILE_H
 #include "file.h"
 #endif
 
 #include "vfx.h"
-
-#include <string.h>
 #include <gameos.hpp>
 
 unsigned char FindClosest( VFX_RGB* Palette, int r, int g, int b );
@@ -72,14 +72,14 @@ void InitAlphaLookup( VFX_RGB* Palette)
 	
 		if (Line[0]!='#' && Line[0]!=';' && Line[0]!=0xa && Line[0]!=0)
 		{
-			if( EOF == sscanf( Line, "%d", &i ))
+			if( EOF == sscanf_s( Line, "%d", &i ))
 				break;
 
 			gosASSERT(i>=0 && i<NUM_ALPHACOLORS);
 
 			SpecialColor[i]=1;
 
-			gosASSERT(EOF != sscanf( Line, "%f %f %f %f %f",
+			gosASSERT(EOF != sscanf_s( Line, "%f %f %f %f %f",
 													&AlphaIni[i][R],
 													&AlphaIni[i][G],
 													&AlphaIni[i][B],

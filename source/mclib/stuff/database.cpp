@@ -768,7 +768,8 @@ void
 	//
 	DWORD offset = sizeof(output_db);
 	OutputRecord* new_record = new_records;
-	for (DWORD i=0; i<Database::e_DataBlockSize; ++i)
+	DWORD i;
+	for (i=0; i<Database::e_DataBlockSize; ++i)
 	{
 		Record* old_record = reinterpret_cast<Record*>(m_dataBase->m_idOffsets[i]);
 		if (old_record)

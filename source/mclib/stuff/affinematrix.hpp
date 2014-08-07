@@ -145,102 +145,126 @@ namespace Stuff {
 			GetLocalForwardInWorld(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_FORWARD_SIGN((*this)(FORWARD_AXIS, X_Axis));
-			v->y = APPLY_FORWARD_SIGN((*this)(FORWARD_AXIS, Y_Axis));
-			v->z = APPLY_FORWARD_SIGN((*this)(FORWARD_AXIS, Z_Axis));
+			if(v) {
+				v->x = APPLY_FORWARD_SIGN((*this)(FORWARD_AXIS, X_Axis));
+				v->y = APPLY_FORWARD_SIGN((*this)(FORWARD_AXIS, Y_Axis));
+				v->z = APPLY_FORWARD_SIGN((*this)(FORWARD_AXIS, Z_Axis));
+			}
 		}
 		void
 			GetWorldForwardInLocal(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_FORWARD_SIGN((*this)(X_Axis, FORWARD_AXIS));
-			v->y = APPLY_FORWARD_SIGN((*this)(Y_Axis, FORWARD_AXIS));
-			v->z = APPLY_FORWARD_SIGN((*this)(Z_Axis, FORWARD_AXIS));
+			if(v) {
+				v->x = APPLY_FORWARD_SIGN((*this)(X_Axis, FORWARD_AXIS));
+				v->y = APPLY_FORWARD_SIGN((*this)(Y_Axis, FORWARD_AXIS));
+				v->z = APPLY_FORWARD_SIGN((*this)(Z_Axis, FORWARD_AXIS));
+			}
 		}
 
 		void
 			GetLocalBackwardInWorld(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_BACKWARD_SIGN((*this)(BACKWARD_AXIS, X_Axis));
-			v->y = APPLY_BACKWARD_SIGN((*this)(BACKWARD_AXIS, Y_Axis));
-			v->z = APPLY_BACKWARD_SIGN((*this)(BACKWARD_AXIS, Z_Axis));
+			if(v) {
+				v->x = APPLY_BACKWARD_SIGN((*this)(BACKWARD_AXIS, X_Axis));
+				v->y = APPLY_BACKWARD_SIGN((*this)(BACKWARD_AXIS, Y_Axis));
+				v->z = APPLY_BACKWARD_SIGN((*this)(BACKWARD_AXIS, Z_Axis));
+			}
 		}
 		void
 			GetWorldBackwardInLocal(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_BACKWARD_SIGN((*this)(X_Axis, BACKWARD_AXIS));
-			v->y = APPLY_BACKWARD_SIGN((*this)(Y_Axis, BACKWARD_AXIS));
-			v->z = APPLY_BACKWARD_SIGN((*this)(Z_Axis, BACKWARD_AXIS));
+			if(v) {
+				v->x = APPLY_BACKWARD_SIGN((*this)(X_Axis, BACKWARD_AXIS));
+				v->y = APPLY_BACKWARD_SIGN((*this)(Y_Axis, BACKWARD_AXIS));
+				v->z = APPLY_BACKWARD_SIGN((*this)(Z_Axis, BACKWARD_AXIS));
+			}
 		}
 
 		void
 			GetLocalRightInWorld(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_RIGHT_SIGN((*this)(RIGHT_AXIS, X_Axis));
-			v->y = APPLY_RIGHT_SIGN((*this)(RIGHT_AXIS, Y_Axis));
-			v->z = APPLY_RIGHT_SIGN((*this)(RIGHT_AXIS, Z_Axis));
+			if(v) {
+				v->x = APPLY_RIGHT_SIGN((*this)(RIGHT_AXIS, X_Axis));
+				v->y = APPLY_RIGHT_SIGN((*this)(RIGHT_AXIS, Y_Axis));
+				v->z = APPLY_RIGHT_SIGN((*this)(RIGHT_AXIS, Z_Axis));
+			}
 		}
 		void
 			GetWorldRightInLocal(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_RIGHT_SIGN((*this)(X_Axis, RIGHT_AXIS));
-			v->y = APPLY_RIGHT_SIGN((*this)(Y_Axis, RIGHT_AXIS));
-			v->z = APPLY_RIGHT_SIGN((*this)(Z_Axis, RIGHT_AXIS));
+			if(v) {
+				v->x = APPLY_RIGHT_SIGN((*this)(X_Axis, RIGHT_AXIS));
+				v->y = APPLY_RIGHT_SIGN((*this)(Y_Axis, RIGHT_AXIS));
+				v->z = APPLY_RIGHT_SIGN((*this)(Z_Axis, RIGHT_AXIS));
+			}
 		}
 
 		void
 			GetLocalLeftInWorld(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_LEFT_SIGN((*this)(LEFT_AXIS, X_Axis));
-			v->y = APPLY_LEFT_SIGN((*this)(LEFT_AXIS, Y_Axis));
-			v->z = APPLY_LEFT_SIGN((*this)(LEFT_AXIS, Z_Axis));
+			if(v) {
+				v->x = APPLY_LEFT_SIGN((*this)(LEFT_AXIS, X_Axis));
+				v->y = APPLY_LEFT_SIGN((*this)(LEFT_AXIS, Y_Axis));
+				v->z = APPLY_LEFT_SIGN((*this)(LEFT_AXIS, Z_Axis));
+			}
 		}
 		void
 			GetWorldLeftInLocal(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_LEFT_SIGN((*this)(X_Axis, LEFT_AXIS));
-			v->y = APPLY_LEFT_SIGN((*this)(Y_Axis, LEFT_AXIS));
-			v->z = APPLY_LEFT_SIGN((*this)(Z_Axis, LEFT_AXIS));
+			if(v) {
+				v->x = APPLY_LEFT_SIGN((*this)(X_Axis, LEFT_AXIS));
+				v->y = APPLY_LEFT_SIGN((*this)(Y_Axis, LEFT_AXIS));
+				v->z = APPLY_LEFT_SIGN((*this)(Z_Axis, LEFT_AXIS));
+			}
 		}
 
 		void
 			GetLocalUpInWorld(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_UP_SIGN((*this)(UP_AXIS, X_Axis));
-			v->y = APPLY_UP_SIGN((*this)(UP_AXIS, Y_Axis));
-			v->z = APPLY_UP_SIGN((*this)(UP_AXIS, Z_Axis));
+			if(v) {
+				v->x = APPLY_UP_SIGN((*this)(UP_AXIS, X_Axis));
+				v->y = APPLY_UP_SIGN((*this)(UP_AXIS, Y_Axis));
+				v->z = APPLY_UP_SIGN((*this)(UP_AXIS, Z_Axis));
+			}
 		}
 		void
 			GetWorldUpInLocal(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_UP_SIGN((*this)(X_Axis, UP_AXIS));
-			v->y = APPLY_UP_SIGN((*this)(Y_Axis, UP_AXIS));
-			v->z = APPLY_UP_SIGN((*this)(Z_Axis, UP_AXIS));
+			if(v) {
+				v->x = APPLY_UP_SIGN((*this)(X_Axis, UP_AXIS));
+				v->y = APPLY_UP_SIGN((*this)(Y_Axis, UP_AXIS));
+				v->z = APPLY_UP_SIGN((*this)(Z_Axis, UP_AXIS));
+			}
 		}
 
 		void
 			GetLocalDownInWorld(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_DOWN_SIGN((*this)(DOWN_AXIS, X_Axis));
-			v->y = APPLY_DOWN_SIGN((*this)(DOWN_AXIS, Y_Axis));
-			v->z = APPLY_DOWN_SIGN((*this)(DOWN_AXIS, Z_Axis));
+			if(v) {
+				v->x = APPLY_DOWN_SIGN((*this)(DOWN_AXIS, X_Axis));
+				v->y = APPLY_DOWN_SIGN((*this)(DOWN_AXIS, Y_Axis));
+				v->z = APPLY_DOWN_SIGN((*this)(DOWN_AXIS, Z_Axis));
+			}
 		}
 		void
 			GetWorldDownInLocal(Vector3D *v) const
 		{
 			Check_Object(this); Check_Pointer(v);
-			v->x = APPLY_DOWN_SIGN((*this)(X_Axis, DOWN_AXIS));
-			v->y = APPLY_DOWN_SIGN((*this)(Y_Axis, DOWN_AXIS));
-			v->z = APPLY_DOWN_SIGN((*this)(Z_Axis, DOWN_AXIS));
+			if(v) {
+				v->x = APPLY_DOWN_SIGN((*this)(X_Axis, DOWN_AXIS));
+				v->y = APPLY_DOWN_SIGN((*this)(Y_Axis, DOWN_AXIS));
+				v->z = APPLY_DOWN_SIGN((*this)(Z_Axis, DOWN_AXIS));
+			}
 		}
 
 		//
@@ -257,13 +281,15 @@ namespace Stuff {
 			Check_Object(&Source2);
 			Verify(this != &Source1);
 			Verify(this != &Source2);
+			(void)Source1;	// 4100
+			(void)Source2;	// 4100
 
 #if USE_ASSEMBLER_CODE
 				Scalar *f = entries;
 				_asm {
-					mov         edx, Source1.entries
+					mov         edx, [edx]Source1.entries
 					push        esi
-					mov         esi, Source2.entries
+					mov         esi, [esi]Source2.entries
 					
 					mov         eax, f
 

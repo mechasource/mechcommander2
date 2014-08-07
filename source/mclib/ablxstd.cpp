@@ -7,11 +7,13 @@
 //
 //***************************************************************************
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <time.h>
+#include "stdafx.h"
+
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//#include <math.h>
+//#include <time.h>
 
 #ifndef ABL_H
 #include "abl.h"

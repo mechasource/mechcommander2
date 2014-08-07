@@ -161,7 +161,7 @@ void
 #endif
 	coords.AssignData(data, dataSize);
 
-	if(index.GetLength() > 0 && visibleIndexedVertices.GetLength() != dataSize)
+	if(index.GetLength() > size_t(0) && visibleIndexedVertices.GetLength() != (size_t)dataSize)
 	{
 		visibleIndexedVertices.SetLength(dataSize);
 	}

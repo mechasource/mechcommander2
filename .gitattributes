@@ -15,6 +15,7 @@
 *.vcxproj text eol=crlf
 *.filters text eol=crlf
 *.rtf text eol=crlf
+*.cmd text eol=crlf
 
 *.cfg text eol=crlf
 *.csv text eol=crlf

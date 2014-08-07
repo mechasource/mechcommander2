@@ -1030,11 +1030,12 @@ class MechWarrior {
 			return(rank);
 		}
 
-		long getSkill (long skillId) {
+		ULONG getSkill (ULONG skillId)
+		{
 			return(skills[skillId]);
 		}
 
-		void setSkill (long skillId, long skillValue)
+		void setSkill (ULONG skillId, long skillValue)
 		{
 			if (skillId > 0 && skillId < NUM_SKILLS)
 				skills[skillId] = skillValue;

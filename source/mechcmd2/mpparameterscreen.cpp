@@ -6,6 +6,7 @@ MPParameterScreen.cpp			: Implementation of the MPParameterScreen component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MPParameterScreen.h"
 #include "prefs.h"

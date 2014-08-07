@@ -1,4 +1,3 @@
-#pragma once
 //==========================================================================//
 // File:	 ErrorHandler.hpp												//
 // Contents: error handling routines										//
@@ -6,10 +5,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "String.hpp"
+#pragma once
+
+#include "string.hpp"
 
 //JJ Fix-A-Roo
-typedef IDirect3DVertexBuffer7 * (WINAPI *GETDXFUNC)(IDirect3DVertexBuffer7 *, IDirect3DDevice7*);
+typedef LPDIRECT3DVERTEXBUFFER7 (__stdcall *GETDXFUNC)(LPDIRECT3DVERTEXBUFFER7, LPDIRECT3DDEVICE7);
 extern GETDXFUNC g_pGetDXVB;
 
 //
@@ -19,24 +20,26 @@ const int MAX_LINE_LENGTH=256;		// Maximum characters per line in a file (shown 
 const int MAX_SUBJECT_LENGTH=128;	// Maximum length of email subject
 const int MAX_RAID_DESC=2048;		// Maximum length of the Raid description (may need to be longer to accomodate RTF info)
 
-extern DWORD DisableErrors;
-extern volatile WORD FPUControl;	// Current FPU control word
-extern WORD FPUDefault;				// Default FPU control word
-extern DWORD ShowFrame;
-extern void InitProcessorSpeed();
-extern char* GetProcessor();
+extern ULONG DisableErrors;
+extern volatile USHORT FPUControl;	// Current FPU control word
+extern USHORT FPUDefault;				// Default FPU control word
+extern ULONG ShowFrame;
 extern float L2SpeedR, L2SpeedW, L2SpeedRW, MainSpeedR, MainSpeedW, MainSpeedRW, VidMemR, VidMemW, VidMemRW, AGPMemR, AGPMemW, AGPMemRW;
 extern char SpeedBuffer[16];			// ASCII MHz
 extern float ProcessorSpeed;			// Processor speed
-void CheckLogFile();
 extern char LogBuffer[2048];
 extern HANDLE LoggingThreadID;
 extern bool ThreadDone;
-extern void ShowFTOL();
-extern void EnableSpewToFile();
-extern void DisableSpewToFile();
 extern bool InDebugger;						// During debugger rendering
 extern char CacheInformation[128];
+
+extern void __stdcall InitProcessorSpeed(void);
+extern PSTR __stdcall GetProcessor(void);
+extern void __stdcall EnableSpewToFile(void);
+extern void __stdcall DisableSpewToFile(void);
+extern void __stdcall CheckLogFile(void);
+extern void __stdcall ShowFTOL(void);
+
 //
 // Log file data types
 //
@@ -45,37 +48,36 @@ enum { Log_Invalid, Log_JoystickCount, Log_JoystickAxis, Log_JoystickButton, Log
 
 
 
-extern DWORD SpewWrites;
+extern ULONG SpewWrites;
 extern char DebuggerName[MAX_PATH+1];
 extern bool LaunchDebugger;
 extern int ScreenImageSize;
-char* GetFullErrorMessage( HWND hwnd );
-void WriteBitStream( DWORD Value, DWORD Bits, int Type );
-char* GetBugNotes( HWND hwnd );
-char* SendMail( HWND Window, char* Subject, char* Text, char* Bitmap, char* LogFile );
-DWORD ReadBitStream( DWORD Bits, int Type );
-void InitLogging();
-void DeleteLogging();
-void UpDateLogFile();
-void Spew( char* string );
-char* GetTime();
-char* GetExeTime();
-char* VersionNumber( char* Buffer, DWORD High, DWORD Low );
-BOOL IsDebuggerAvailable();
-void TriggerDebugger();
-char* gosGetUserName();
-void LogRun( char* Message );
-void InitRunLog();
-void GetInstalledAudioVideoCodecs( FixedLengthString& Buffer );
-void ReadLogData( BYTE* pData, DWORD Length );
-void WriteLogData( BYTE* pData, DWORD Length );
 
-
+PSTR __stdcall GetFullErrorMessage( HWND hwnd );
+void __stdcall WriteBitStream( ULONG Value, ULONG Bits, int Type );
+PSTR __stdcall GetBugNotes( HWND hwnd );
+PSTR __stdcall SendMail( HWND Window, PSTR Subject, PSTR Text, PSTR Bitmap, PSTR LogFile );
+ULONG __stdcall ReadBitStream( ULONG Bits, int Type );
+void __stdcall InitLogging(void);
+void __stdcall DeleteLogging(void);
+void __stdcall UpDateLogFile(void);
+void __stdcall Spew( PSTR string );
+PSTR __stdcall GetTime(void);
+PSTR __stdcall GetExeTime(void);
+PSTR __stdcall VersionNumber( PSTR Buffer, ULONG High, ULONG Low );
+BOOL __stdcall IsDebuggerAvailable(void);
+void __stdcall TriggerDebugger(void);
+PSTR __stdcall gosGetUserName(void);
+void __stdcall LogRun( PSTR Message );
+void __stdcall InitRunLog(void);
+void __stdcall GetInstalledAudioVideoCodecs( FixedLengthString& Buffer );
+void __stdcall ReadLogData( PUCHAR pData, ULONG Length );
+void __stdcall WriteLogData( PUCHAR pData, ULONG Length );
 
 typedef struct _pFTOL
 {
 	_pFTOL* pNext;
-	DWORD	Heap[6];
+	ULONG	Heap[6];
 
 } pFTOL;
 
@@ -87,38 +89,42 @@ extern pFTOL* ListOfFTOL;
 //
 // Routines dealing with floating point precision
 //
-void CheckPrecision();
+void CheckPrecision(void);
 
 
 
 //
 // Playback/Record mode?
 //
-extern DWORD LogMode;								// 0=Logging, 1=Playback
-void ShowLogFileControls();
+extern ULONG LogMode;								// 0=Logging, 1=Playback
+void __stdcall ShowLogFileControls(void);
 
 
+typedef struct _IMAGEHLP_LINE *PIMAGEHLP_LINE;
+typedef struct _tagSTACKFRAME *LPSTACKFRAME;
 
 
 //
 // Machine Details
 //
-void ScanCards( FixedLengthString& Buffer );
+void __stdcall ScanCards( FixedLengthString& Buffer );
 
 //
 // Functions in imagehlp.cpp
 //
-void _stdcall InitExceptionHandler( char* CommandLine );
-void DestroyImageHlp();
-char* GetSymbolFromAddress( char* Buffer, int Address );
-char* GetLocationFromAddress( IMAGEHLP_LINE* pline, char* Buffer, int Address );
-void InitStackWalk( STACKFRAME* sf, CONTEXT* Context );
-int WalkStack( STACKFRAME* sf );
-extern DWORD LastOffset;
-extern STACKFRAME ImageHlp_sf;
-extern IMAGEHLP_LINE ImageHlp_pline;
-char* GetExceptionCode( EXCEPTION_RECORD* er );
-void GetEnvironmentSettings( char* CommandLine );
+void __stdcall InitExceptionHandler( PSTR CommandLine );
+void __stdcall DestroyImageHlp(void);
+PSTR __stdcall GetSymbolFromAddress( PSTR Buffer, int Address );
+PSTR __stdcall GetLocationFromAddress(PIMAGEHLP_LINE pline, PSTR Buffer, int Address );
+void __stdcall InitStackWalk(LPSTACKFRAME sf, PCONTEXT Context );
+int __stdcall WalkStack(LPSTACKFRAME sf );
+
+extern ULONG LastOffset;
+//extern STACKFRAME ImageHlp_sf;
+//extern IMAGEHLP_LINE ImageHlp_pline;
+
+PSTR __stdcall GetExceptionCode( PEXCEPTION_RECORD per );
+void __stdcall GetEnvironmentSettings( PSTR CommandLine );
 
 //
 // Context information
@@ -137,27 +143,29 @@ extern float OneOverProcessorSpeed;
 // Used to setup the ErrorDialogProc
 //
 extern int ErrorFlags;
-extern char* ErrorTitle;
-extern char* ErrorMessage;
-extern char* ErrorMessageTitle;
-long _stdcall ProcessException( EXCEPTION_POINTERS* ep );
-char* ErrorNumberToMessage( int hResult );
+extern PSTR ErrorTitle;
+extern PSTR ErrorMessage;
+extern PSTR ErrorMessageTitle;
 extern volatile int ProcessingError;				// Renentrancy test flag for assert error routine
-extern char* ErrorExceptionText;
-extern char* Hex8Number( int Number );
-extern void GetProcessorDetails( STACKFRAME* sf, FixedLengthString& Buffer );
-extern void GetMachineDetails( FixedLengthString& Buffer );
-extern char* GetLineFromFile( char* tempLine, char* FileName, int LineNumber );
-extern BYTE* GotScreenImage;					// Pointer to buffer containing screen image (always 24 bit bmp)
-extern BYTE* GrabScreenImage();
-extern void GetDirectXDetails( FixedLengthString& Buffer );
-extern void GetGameDetails( FixedLengthString& Buffer, DWORD ErrorFlags );
+extern PSTR ErrorExceptionText;
+extern PUCHAR GotScreenImage;					// Pointer to buffer containing screen image (always 24 bit bmp)
 extern int AllowDebugButton;
-extern void DoDetailedDialog();
-extern void DoSimpleDialog();
-extern void DoColorDialog();
 extern int ErrorFlags,ErrorReturn;
-bool WriteLogFile( char* FileName );
+
+extern NTSTATUS __stdcall ProcessException( PEXCEPTION_POINTERS ep );
+extern PSTR __stdcall ErrorNumberToMessage( int hResult );
+extern PSTR __stdcall Hex8Number( int Number );
+extern void __stdcall GetProcessorDetails(LPSTACKFRAME sf, FixedLengthString& Buffer );
+extern void __stdcall GetMachineDetails( FixedLengthString& Buffer );
+extern PSTR __stdcall GetLineFromFile( PSTR tempLine, PSTR FileName, int LineNumber );
+extern PUCHAR __stdcall GrabScreenImage(void);
+extern void __stdcall GetDirectXDetails( FixedLengthString& Buffer );
+extern void __stdcall GetGameDetails( FixedLengthString& Buffer, ULONG ErrorFlags );
+extern void __stdcall DoDetailedDialog(void);
+extern void __stdcall DoSimpleDialog(void);
+extern void __stdcall DoColorDialog(void);
+
+bool __stdcall WriteLogFile( PSTR FileName );
 
 
 
@@ -182,7 +190,7 @@ bool WriteLogFile( char* FileName );
 typedef struct _IgnoreAddress
 {
 	_IgnoreAddress*	pNext;
-	DWORD			Address;
+	ULONG			Address;
 } IgnoreAddress;
 
 
@@ -191,8 +199,7 @@ extern IgnoreAddress*	pIgnore;
 
 
 #pragma pack(push,1)
-typedef struct _LogStruct
-{
+typedef struct _LogStruct {
 //
 // Store time at top of loop
 //
@@ -206,24 +213,23 @@ typedef struct _LogStruct
 	int			pXDelta;
 	int			pYDelta;
 	int			pWheelDelta;
-	BYTE		pButtonsPressed;
-	WORD		Length;							// Length of bitstream (or 0)
+	UCHAR		pButtonsPressed;
+	USHORT		Length;							// Length of bitstream (or 0)
 } LogStructure;
 #pragma pack(pop)
 
 
-typedef struct
-{
-	DWORD			Magic;							// Magic number for valid log file
-	DWORD			Version;						// Version number of log file data
+typedef struct _LogHeader {
+	ULONG			Magic;							// Magic number for valid log file
+	ULONG			Version;						// Version number of log file data
 	char			GameName[32];					// Name of application being logged
 	char			AppPath[256];					// Path of application being logged
 	char			CommandLine[128];				// Command line passed to App
 	char			UserName[32];					// Username who created log
 	char			LogDate[64];					// Date/Time log created
 	char			ExeDate[64];					// Date/Time exe file used to create log
-	DWORD			Frames;							// Number of frames of data
-	DWORD			Length;							// Size of logging information
+	ULONG			Frames;							// Number of frames of data
+	ULONG			Length;							// Size of logging information
 	long			StartSeed;						// Random Number seed
 	LogStructure*	First;							// Pointer to first frame
 	LogStructure*	Current;						// Pointer to current frame
@@ -233,13 +239,13 @@ typedef struct
 
 
 extern LogHeader LogInfo;
-extern DWORD LogLoops;
-extern DWORD FrameNumber;							// When recording=current frame, playback=last frame
-extern DWORD Debounce;
+extern ULONG LogLoops;
+extern ULONG FrameNumber;							// When recording=current frame, playback=last frame
+extern ULONG Debounce;
 
-extern void EndLogging();
-extern void LoadLogFile();
-extern void CheckLogInSync();
+extern void __stdcall EndLogging(void);
+extern void __stdcall LoadLogFile(void);
+extern void __stdcall CheckLogInSync(void);
 
 //
 // Size of blocks of memory allocated for logs
@@ -253,12 +259,13 @@ extern void CheckLogInSync();
 extern bool	AllowFail;
 extern volatile bool	SpewSilence;						// Set to disable all spews
 extern HANDLE hSpewOutput;
-void __stdcall ExitGameOS();
-void InitializeSpew();
-void TerminateSpew();
-void DebugColor( BYTE red, BYTE green, BYTE blue );
-void InitProcessorSpeed();
-void DestroyExceptions();
+
+void __stdcall ExitGameOS(void);
+void __stdcall InitializeSpew(void);
+void __stdcall TerminateSpew(void);
+void __stdcall DebugColor( UCHAR red, UCHAR green, UCHAR blue );
+void __stdcall InitProcessorSpeed(void);
+void __stdcall DestroyExceptions(void);
 
 
 	

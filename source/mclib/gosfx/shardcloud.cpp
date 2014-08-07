@@ -1,12 +1,13 @@
-#include "gosFXHeaders.hpp"
-#include <MLR\MLRTriangleCloud.hpp>
-
 //==========================================================================//
 // File:	 gosFX_ShardCloud.cpp											//
 // Contents: Base gosFX::ShardCloud Component								//
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
+#include "stdafx.h"
+#include "gosFXHeaders.hpp"
+#include <MLR\MLRTriangleCloud.hpp>
 
 //------------------------------------------------------------------------------
 //

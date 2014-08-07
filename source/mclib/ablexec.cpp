@@ -6,10 +6,11 @@
 //								ABLEXEC.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"
@@ -115,7 +116,7 @@ void crunchToken (void) {
 	if (codeBufferPtr >= (codeBuffer + MaxCodeBufferSize - 100))
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else {
-		*codeBufferPtr = curToken;
+		*codeBufferPtr = (char)curToken;
 		codeBufferPtr++;
 	}
 }
@@ -560,7 +561,8 @@ void routineExit (SymTableNodePtr routineIdPtr) {
 	//-----------------------------------------
 	// De-alloc parameters & local variables...
 
-	for (SymTableNodePtr idPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
+	SymTableNodePtr idPtr;
+	for (idPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
 		 idPtr != NULL;
 		 idPtr = idPtr->next)
 		freeLocal(idPtr);

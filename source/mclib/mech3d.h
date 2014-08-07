@@ -10,6 +10,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef MECH3D_H
 #define MECH3D_H
 //-------------------------------------------------------------------------------
@@ -132,11 +134,11 @@ class Mech3DAppearanceType: public AppearanceType
 		static TG_TypeMultiShapePtr	SensorSquareShape;
 
 		static bool animationLoadingEnabled;
-		static disableAnimationLoading(void)
+		static void disableAnimationLoading(void)
 		{
 			animationLoadingEnabled = false;
 		}
-		static enableAnimationLoading(void)
+		static void enableAnimationLoading(void)
 		{
 			animationLoadingEnabled = true;
 		}

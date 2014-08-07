@@ -1,6 +1,7 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #ifndef GOAL_H
 #include "goal.h"

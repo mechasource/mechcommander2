@@ -2,7 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "MLRHeaders.hpp"
+
+#include "mlrheaders.hpp"
 
 DWORD	gShowClippedPolys=0;
 DWORD	gShowBirdView=0;

@@ -6568,7 +6568,7 @@ void ablSymbolFreeCallback (void* memBlock) {
 
 //*****************************************************************************
 
-long ablFileCreateCB (void** file, char* fName) {
+long ablFileCreateCB (void** /* file */, char* /* fName */ ) {
 
 /*	*file = fopen(fNamenew File;
 	if (*file == NULL)
@@ -6586,8 +6586,8 @@ long ablFileCreateCB (void** file, char* fName) {
 long ablFileOpenCB (void** file, char* fName) {
 
 	//Filenames MUST be all lowercase or Hash won't find 'em!
-	for (long i=0;i<strlen(fName);i++)
-		fName[i] = tolower(fName[i]);
+	for (size_t i=0;i<strlen(fName);i++)
+		fName[i] = (char)tolower(fName[i]);
 	*file = fopen(fName, "r");
 	if (*file == NULL) {
 		char errStr[256];
@@ -6655,7 +6655,7 @@ long ablFileReadLineExCB (void* file, unsigned char* buffer, long maxLength) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteCB (void* file, unsigned char* buffer, long length) {
+long ablFileWriteCB (void* /* file */, unsigned char* /* buffer */, long /* length */) {
 
 	//return(((FilePtr)file)->write(buffer, length));
 	return(0);
@@ -6663,7 +6663,7 @@ long ablFileWriteCB (void* file, unsigned char* buffer, long length) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteByteCB (void* file, unsigned char byte) {
+long ablFileWriteByteCB (void* /* file */, unsigned char /* byte */) {
 
 	//return(((FilePtr)file)->writeByte(byte));
 	return(0);
@@ -6671,7 +6671,7 @@ long ablFileWriteByteCB (void* file, unsigned char byte) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteLongCB (void* file, long value) {
+long ablFileWriteLongCB (void* /* file */, long /* value */) {
 
 	//return(((FilePtr)file)->writeLong(value));
 	return(0);
@@ -6679,7 +6679,7 @@ long ablFileWriteLongCB (void* file, long value) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteStringCB (void* file, char* buffer) {
+long ablFileWriteStringCB (void* /* file */, char* /* buffer */) {
 
 	//return(((FilePtr)file)->writeString(buffer));
 	return(0);
@@ -6687,7 +6687,7 @@ long ablFileWriteStringCB (void* file, char* buffer) {
 
 //*****************************************************************************
 
-void ablDebuggerPrintCallback (char* s) {
+void ablDebuggerPrintCallback (char* /* s */) {
 
 	//ABLDebuggerOut->print(s);
 //	char msg[1024];
@@ -6697,14 +6697,14 @@ void ablDebuggerPrintCallback (char* s) {
 
 //*****************************************************************************
 
-void ablDebugPrintCallback (char* s) {
+void ablDebugPrintCallback (char* /* s */) {
 
 //	DEBUGWINS_print(s, 0);
 }
 
 //*****************************************************************************
 
-void ablSeedRandom (unsigned long seed) {
+void ablSeedRandom (unsigned long /* seed */) {
 
 //	gos_srand(seed);
 }

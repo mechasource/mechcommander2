@@ -1,6 +1,3 @@
-#include "gosFXHeaders.hpp"
-#include <MLR\MLRIndexedTriangleCloud.hpp>
-
 //==========================================================================//
 // File:	 gosFX_Tube.cpp										            //
 // Contents: Base gosFX::Tube Component									    //
@@ -11,6 +8,10 @@
 //############################################################################
 //########################  gosFX::Tube__Specification  #############################
 //############################################################################
+
+#include "stdafx.h"
+#include "gosfxheaders.hpp"
+#include <mlr\mlrindexedtrianglecloud.hpp>
 
 //------------------------------------------------------------------------------
 //

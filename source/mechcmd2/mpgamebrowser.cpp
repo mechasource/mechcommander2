@@ -5,6 +5,7 @@ MPGameBrowser.cpp			: Implementation of the MPGameBrowser component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MPGameBrowser.h"
 #include "prefs.h"
@@ -369,7 +370,7 @@ void MPGameBrowser::update()
 			{
 
 				aGameListItem* pItem = (aGameListItem*)gameList.GetItem( j );
-				int res = stricmp( pItem->getText( sortOrder ), items[i].getText( sortOrder ) );
+				int res = _stricmp( pItem->getText( sortOrder ), items[i].getText( sortOrder ) );
 				if ( (bSortUpward && res > 0) || (!bSortUpward && res < 0) )
 				{
 					gameList.InsertItem( &items[i], j );

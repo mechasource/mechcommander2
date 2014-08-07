@@ -151,10 +151,11 @@ void BldgAppearanceType::init (char * fileName)
 	
 	char aseFileName[512];
 	result = iniFile.readIdString("FileName",aseFileName,511);
+	long i;
 	if (result != NO_ERR)
 	{
 		//Check for LOD filenames instead
-		for (long i=0;i<MAX_LODS;i++)
+		for (i=0;i<MAX_LODS;i++)
 		{
 			char baseName[256];
 			char baseLODDist[256];
@@ -388,7 +389,8 @@ void BldgAppearanceType::destroy (void)
 {
 	AppearanceType::destroy();
 
-	for (long i=0;i<MAX_LODS;i++)
+	long i;
+	for (i=0;i<MAX_LODS;i++)
 	{
 		if (bldgShape[i])
 		{
@@ -474,7 +476,7 @@ Stuff::Vector3D BldgAppearance::getWeaponNodePosition (long nodeId)
    	torsoRot = Stuff::EulerAngles(0.0f,(turretYaw * DEGREES_TO_RADS),0.0f);
 	if (rotationalNodeId == -1)
 	{
-		if (stricmp(appearType->rotationalNodeId,"NONE") != 0)
+		if (_stricmp(appearType->rotationalNodeId,"NONE") != 0)
 			rotationalNodeId = bldgShape->GetNodeNameId(appearType->rotationalNodeId);
 		else
 			rotationalNodeId = -2;
@@ -595,10 +597,11 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	if (appearType)
 	{
 		bldgShape = appearType->bldgShape[0]->CreateFrom();
+		long i;
 
 		//-------------------------------------------------
 		// Load the texture and store its handle.
-		for (long i=0;i<bldgShape->GetNumTextures();i++)
+		for (i=0;i<bldgShape->GetNumTextures();i++)
 		{
 			char txmName[1024];
 			bldgShape->GetTextureName(i,txmName,256);
@@ -989,7 +992,7 @@ void BldgAppearance::setGesture (unsigned long gestureId)
 	if ((status == OBJECT_STATUS_DESTROYED) || (status == OBJECT_STATUS_DISABLED))
 		return;
 		
-	if (gestureId == bdAnimationState)
+	if (gestureId == (unsigned long)bdAnimationState)
 		return;
 
 	//----------------------------------------------------------------------
@@ -1324,7 +1327,7 @@ bool BldgAppearance::recalcBounds (void)
 						}
 						
 						// we are at this LOD level.
-						if (selectLOD != currentLOD)
+						if (selectLOD != (DWORD)currentLOD)
 						{
 							currentLOD = selectLOD;
 
@@ -1630,7 +1633,7 @@ long BldgAppearance::render (long depthFixup)
 
 			if (rotationalNodeId == -1)
 			{
-				if (stricmp(appearType->rotationalNodeId,"NONE") != 0)
+				if (_stricmp(appearType->rotationalNodeId,"NONE") != 0)
 	   				rotationalNodeId = bldgShape->GetNodeNameId(appearType->rotationalNodeId);
 				else
 					rotationalNodeId = -2;
@@ -1666,7 +1669,7 @@ long BldgAppearance::render (long depthFixup)
 	
 				if (rotationalNodeId == -1)
 				{
-					if (stricmp(appearType->rotationalNodeId,"NONE") != 0)
+					if (_stricmp(appearType->rotationalNodeId,"NONE") != 0)
 		   				rotationalNodeId = bldgShape->GetNodeNameId(appearType->rotationalNodeId);
 					else
 						rotationalNodeId = -2;
@@ -2164,7 +2167,7 @@ long BldgAppearance::update (bool animate)
 
 			if (rotationalNodeId == -1)
 			{
-				if (stricmp(appearType->rotationalNodeId,"NONE") != 0)
+				if (_stricmp(appearType->rotationalNodeId,"NONE") != 0)
 	   				rotationalNodeId = bldgShape->GetNodeNameId(appearType->rotationalNodeId);
 				else
 					rotationalNodeId = -2;
@@ -2201,7 +2204,7 @@ long BldgAppearance::update (bool animate)
 	
 				if (rotationalNodeId == -1)
 				{
-					if (stricmp(appearType->rotationalNodeId,"NONE") != 0)
+					if (_stricmp(appearType->rotationalNodeId,"NONE") != 0)
 		   				rotationalNodeId = bldgShape->GetNodeNameId(appearType->rotationalNodeId);
 					else
 						rotationalNodeId = -2;
@@ -2285,7 +2288,7 @@ void BldgAppearance::startActivity (long effectId, bool loop)
 
    		if (rotationalNodeId == -1)
    		{
-   			if (stricmp(appearType->rotationalNodeId,"NONE") != 0)
+   			if (_stricmp(appearType->rotationalNodeId,"NONE") != 0)
       				rotationalNodeId = bldgShape->GetNodeNameId(appearType->rotationalNodeId);
    			else
    				rotationalNodeId = -2;
@@ -2321,7 +2324,7 @@ void BldgAppearance::startActivity (long effectId, bool loop)
 
 			if (rotationalNodeId == -1)
 			{
-				if (stricmp(appearType->rotationalNodeId,"NONE") != 0)
+				if (_stricmp(appearType->rotationalNodeId,"NONE") != 0)
 	   				rotationalNodeId = bldgShape->GetNodeNameId(appearType->rotationalNodeId);
 				else
 					rotationalNodeId = -2;
@@ -2582,14 +2585,15 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int cou
 			}
 		}
 
+		long i, j;
 		//-------------------------------------------------------------
 		// New way.  For each vertex in each shape, translate to world
-		for (long i=0;i<bldgShape->GetNumShapes();i++)
+		for (i=0;i<bldgShape->GetNumShapes();i++)
 		{
 			//Check if the artists meant for this piece to NOT block passability!!
 			if (strnicmp(bldgShape->GetNodeId(i),"_PAB",4) != 0)
 			{
-				for (long j=0;j<bldgShape->GetNumVerticesInShape(i);j++)
+				for (j=0;j<bldgShape->GetNumVerticesInShape(i);j++)
 				{
 					Stuff::Vector3D vertexPos, worldPos;
 					vertexPos = bldgShape->GetShapeVertexInEditor(i,j,-rotation);
@@ -3211,10 +3215,11 @@ void TreeAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	if (appearType)
 	{
 		treeShape = appearType->treeShape[0]->CreateFrom();
+		long i;
 
 		//-------------------------------------------------
 		// Load the texture and store its handle.
-		for (long i=0;i<treeShape->GetNumTextures();i++)
+		for (i=0;i<treeShape->GetNumTextures();i++)
 		{
 			char txmName[1024];
 			treeShape->GetTextureName(i,txmName,256);
@@ -3748,7 +3753,7 @@ bool TreeAppearance::recalcBounds (void)
 					}
 					
 					// we are at this LOD level.
-					if (selectLOD != currentLOD)
+					if (selectLOD != (DWORD)currentLOD)
 					{
 						currentLOD = selectLOD;
 

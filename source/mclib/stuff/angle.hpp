@@ -278,6 +278,7 @@ namespace Stuff {
 				{
 					Check_Pointer(this);
 					Check_Object(&radian);
+					(void)radian;	// 4100
 
 				#if USE_ASSEMBLER_CODE
 					Scalar *f = &sine;
@@ -286,7 +287,7 @@ namespace Stuff {
 						push	edx
 
 						mov		ebx, f
-						mov		edx, radian.angle
+						mov		edx, [edx]radian.angle
 
 						fld		dword ptr [edx]
 						fsincos

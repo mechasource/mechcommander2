@@ -1,12 +1,13 @@
-#include "gosFXHeaders.hpp"
-#include <MLR\MLRNGonCloud.hpp>
-
 //==========================================================================//
 // File:	 gosFX_gosFX::PertCloud.cpp										//
 // Contents: Base gosFX::PertCloud Component								//
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
+#include "stdafx.h"
+#include "gosFXHeaders.hpp"
+#include <MLR\MLRNGonCloud.hpp>
 
 //------------------------------------------------------------------------------
 //
@@ -359,7 +360,8 @@ void
 	int even = 1;
 	particle->m_vertices[0] = Stuff::Point3D::Identity;
 	Stuff::Scalar bound = 0.0f;
-	for (int j=1; j<spec->m_vertices-1; j++)
+	int j;
+	for (j=1; j<spec->m_vertices-1; j++)
 	{
 		Stuff::Scalar perturbance =
 			even * spec->m_perturbation.ComputeValue(m_age, particle->m_seed);

@@ -9,18 +9,18 @@
 //========================================================================
 // types
 //========================================================================
-typedef HRESULT (WINAPI * PERFMONCALLBACK)(char *szDescription, DWORD dwFlags, DWORD dwId);
+typedef HRESULT (__stdcall * PERFMONCALLBACK)(char *szDescription, DWORD dwFlags, DWORD dwId);
 
 //========================================================================
 // external functions
 //========================================================================
-extern HRESULT WINAPI InitPerformanceMonitorLibrary(void);
-extern HRESULT WINAPI TermPerformanceMonitorLibrary(void);
+extern HRESULT __stdcall InitPerformanceMonitorLibrary(void);
+extern HRESULT __stdcall TermPerformanceMonitorLibrary(void);
 
-extern HRESULT WINAPI EnumeratePerformanceMonitors(PERFMONCALLBACK lpfCallback);
-extern HRESULT WINAPI SetPerformanceMonitor(DWORD dwId);
-extern double DecodePerformanceMonitors( __int64 *Registers );
-extern BOOL WINAPI ReadPerformanceMonitorRegisters(__int64 *result);
+extern HRESULT __stdcall EnumeratePerformanceMonitors(PERFMONCALLBACK lpfCallback);
+extern HRESULT __stdcall SetPerformanceMonitor(DWORD dwId);
+extern double __stdcall DecodePerformanceMonitors( __int64 *Registers );
+extern BOOL __stdcall ReadPerformanceMonitorRegisters(__int64 *result);
 
 
 //========================================================================

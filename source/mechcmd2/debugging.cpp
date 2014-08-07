@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #ifndef DEBUGGING_H
 #include "debugging.h"

@@ -5,6 +5,7 @@ MPStats.cpp			: Implementation of the MPStats component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MPStats.h"
 #include "..\resource.h"

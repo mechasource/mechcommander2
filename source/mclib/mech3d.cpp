@@ -243,11 +243,12 @@ void Mech3DAppearanceType::init (char * fileName)
 
 	char aseFileName[512];
 	result = mechFile.readIdString("FileName",aseFileName,511);
+	long i;
 	if (result != NO_ERR)
 	{
 		//Check for LOD filenames
 		char aseFileName[512];
-		for (long i=0;i<MAX_LODS;i++)
+		for (i=0;i<MAX_LODS;i++)
 		{
 			char baseName[256];
 			char baseLODDist[256];
@@ -1088,7 +1089,8 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 		
 		//-------------------------------------------------
 		// Load the texture and store its handle.
-		for (long i=0;i<sensorTriangleShape->GetNumTextures();i++)
+		long i;
+		for (i=0;i<sensorTriangleShape->GetNumTextures();i++)
 		{
 			char txmName[1024];
 			sensorTriangleShape->GetTextureName(i,txmName,256);
@@ -2262,7 +2264,7 @@ bool Mech3DAppearance::recalcBounds (void)
 						}
 
 						// we are at this LOD level.
-						if (selectLOD != currentLOD)
+						if (selectLOD != (DWORD)currentLOD)
 						{
 							currentLOD = selectLOD;
 

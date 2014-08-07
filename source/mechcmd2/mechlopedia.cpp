@@ -5,6 +5,7 @@ Mechlopedia.cpp			: Implementation of the Mechlopedia component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "Mechlopedia.h"
 #include "iniFile.h"
@@ -275,6 +276,7 @@ void Mechlopedia::MechScreen::init()
 void Mechlopedia::MechScreen::begin()
 {
 	// need to fill that list box
+	int i, j;
 	if ( bIsVehicle )
 	{
 		textObjects[1].setText( IDS_VEHICLE_STATS );
@@ -286,10 +288,10 @@ void Mechlopedia::MechScreen::begin()
 		int copterCount = 256;
 		LogisticsData::instance->getHelicopters( pCopters, copterCount );
 
-		for ( int i = 1; i < count; ++i )
+		for ( i = 1; i < count; ++i )
 		{
 			const LogisticsVehicle* cur = pVehicles[i];
-			for ( int j = 0; j < i; ++j )
+			for ( j = 0; j < i; ++j )
 			{
 				if ( cur->getNameID() == pVehicles[j]->getNameID() && j != i )
 				{
@@ -299,10 +301,6 @@ void Mechlopedia::MechScreen::begin()
 				}
 			}
 		}
-
-		
-
-		
 
 		groupListBox->removeAllItems( true );
 		for ( i = 0; i < count; i++ )
@@ -316,10 +314,10 @@ void Mechlopedia::MechScreen::begin()
 			pEntry->resize( groupListBox->width() - groupListBox->getScrollBarWidth() - 18, pEntry->height() );
 			bool bFound = 0;
 
-			for ( int j = 0; j < groupListBox->GetItemCount(); j++ )
+			for ( j = 0; j < groupListBox->GetItemCount(); j++ )
 			{
 				aTextListItem* pItem = (aTextListItem*)groupListBox->GetItem( j );
-				if ( stricmp( name, pItem->getText() ) < 0 )
+				if ( _stricmp( name, pItem->getText() ) < 0 )
 				{
 					groupListBox->InsertItem( pEntry, j );
 					bFound = true;
@@ -339,10 +337,10 @@ void Mechlopedia::MechScreen::begin()
 				pEntry->height() );
 
 			bool bFound = 0;
-			for ( int j = 0; j < groupListBox->GetItemCount(); j++ )
+			for ( j = 0; j < groupListBox->GetItemCount(); j++ )
 			{
 				aTextListItem* pItem = (aTextListItem*)groupListBox->GetItem( j );
-				if ( stricmp( pCopters[i]->getName(), pItem->getText() ) < 0 )
+				if ( _stricmp( pCopters[i]->getName(), pItem->getText() ) < 0 )
 				{
 					groupListBox->InsertItem( pEntry, j );
 					bFound = true;
@@ -361,12 +359,12 @@ void Mechlopedia::MechScreen::begin()
 		const LogisticsVariant* pChassis[256];
 		LogisticsData::instance->getEncyclopediaMechs( pChassis, count );
 
-		for ( int i = 1; i < count; ++i )
+		for ( i = 1; i < count; ++i )
 		{
 			const LogisticsVariant* cur = pChassis[i];
-			for ( int j = 0; j <= i; ++j )
+			for ( j = 0; j <= i; ++j )
 			{
-				if ( stricmp( cur->getName(), pChassis[j]->getName() ) < 0  )
+				if ( _stricmp( cur->getName(), pChassis[j]->getName() ) < 0  )
 				{
 					for ( int l = i-1; l >= j; l-- )
 					{
@@ -700,7 +698,7 @@ int __cdecl sortWeapon( const void* pW1, const void* pW2 )
 	LogisticsComponent* p1 = *(LogisticsComponent**)pW1;
 	LogisticsComponent* p2 = *(LogisticsComponent**)pW2;
 
-	return stricmp( p1->getName(), p2->getName() );
+	return _stricmp( p1->getName(), p2->getName() );
 
 }
 
@@ -1111,7 +1109,7 @@ void Mechlopedia::BuildingScreen::begin()
 		bool bFound = 0;
 		for ( int j = 0; j < groupListBox->GetItemCount(); j++ )
 		{
-			if ( stricmp(  str, ((aTextListItem*)groupListBox->GetItem( j ))->getText() ) < 0 )
+			if ( _stricmp(  str, ((aTextListItem*)groupListBox->GetItem( j ))->getText() ) < 0 )
 			{
 				MechlopediaListItem* pItem = new MechlopediaListItem();
 				pItem->setText( str );

@@ -13,9 +13,9 @@
 #endif // _MSC_VER >= 1000
 
 /*
-#pragma warning(push,3)
+//#pragma warning(push,3)
 #include <fstream.h>
-#pragma warning(pop)
+//#pragma warning(pop)
 
 //#ifdef _ARMOR
 //#if 0

@@ -89,7 +89,7 @@ namespace MidLevelRenderer {
 
 	typedef Stuff::Vector2DOf<Stuff::Scalar> Vector2DScalar;
 	
-	#pragma warning (disable : 4725)
+	//#pragma warning (disable : 4725)
 
 //	copies 3 vertex data into rasterizer format
 	inline bool

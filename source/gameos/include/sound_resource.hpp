@@ -6,7 +6,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "Music.hpp"
+#include "music.hpp"
 
 struct SoundResource
 {

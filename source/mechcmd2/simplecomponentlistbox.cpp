@@ -5,6 +5,7 @@ SimpleComponentListBox.cpp			: Implementation of the SimpleComponentListBox comp
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "SimpleComponentListBox.h"
 #include "..\resource.h"
@@ -91,16 +92,17 @@ void ComponentListBox::setComponents( long componentCount, LogisticsComponent** 
 		long colors[4] = { 0xff6E7C00, 0xff005392, 0xffA21600, 0xffc29b00};
 //		long headerColors[4] = { 0xFFC8E100, 0xff0091FF, 0xFFFF0000, 0xffFF8A00 };
 
-		for ( int i = 0; i < 4; i++ ) // do short, medium long
+		int i, j , k;
+		for ( i = 0; i < 4; i++ ) // do short, medium long
 		{
 			memset( finalList, 0, sizeof( long ) * 64 );
 			memset( finalListCount, 0, sizeof( long ) * 64 );
-			for ( int j = 0; j < componentCount; j++ )
+			for ( j = 0; j < componentCount; j++ )
 			{
 				if ( components[j]->getRangeType() == (LogisticsComponent::WEAPON_RANGE)i ) // short, med, long
 				{
 					bool bFound = 0;
-					for ( int k = 0; k < 64; k++ )
+					for ( k = 0; k < 64; k++ )
 					{
 						if ( finalList[k] == components[j])
 						{
@@ -132,7 +134,7 @@ void ComponentListBox::setComponents( long componentCount, LogisticsComponent** 
 //				AddItem( textItem );
 
 				// add each componet
-				for( int j = 0; j < 64; j++ )
+				for( j = 0; j < 64; j++ )
 				{
 					if ( !finalList[j] )
 						break;

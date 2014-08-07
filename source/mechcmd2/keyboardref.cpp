@@ -5,6 +5,7 @@ KeyboardRef.cpp			: Implementation of the KeyboardRef component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "KeyboardRef.h"
 #include "mclib.h"

@@ -325,7 +325,7 @@ typedef struct _CompressedMech {
 
 #pragma pack(1)
 
-#pragma warning (disable : 4200)
+//#pragma warning (disable : 4200)
 
 //------------------------------------------------------------------------------------------
 
@@ -1278,7 +1278,7 @@ class MCMSG_PassValue {
 };
 */
 
-#pragma warning (default : 4200)
+//#pragma warning (default : 4200)
 
 #pragma pack()
 

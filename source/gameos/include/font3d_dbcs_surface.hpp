@@ -1,10 +1,11 @@
-#pragma once
 //===========================================================================//
 // File:	 Surface.hpp													 //
 // Contents: DirectDraw Surface object										 //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
+#pragma once
 
 class DBCSSurface
 {
@@ -13,12 +14,12 @@ class DBCSSurface
 		int m_height;
 		int m_width;
 		int m_offsety;
-		IDirectDrawSurface7 * m_lpdds7;
-		unsigned char * m_lpDynData;
+		LPDIRECTDRAWSURFACE7 m_lpdds7;
+		PUCHAR m_lpDynData;
 
-		DBCSSurface(DWORD width, DWORD height);
+		DBCSSurface(ULONG width, ULONG height);
 		~DBCSSurface();
-		void* GetDataPointer();
-		void Clear(DWORD color);
+		PVOID GetDataPointer(void);
+		void Clear(ULONG color);
 };
 

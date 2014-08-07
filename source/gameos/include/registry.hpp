@@ -1,19 +1,17 @@
-#pragma once
 //==========================================================================//
 // File:	 Registry.cpp													//
 // Contents: Registry routines												//
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#pragma once
 
 #include "String.hpp"
 
-void RegistryManagerInstall();
-void RegistryManagerUninstall();
-char* ReadRegistry( char* KeyName, char* ValueName, bool LocalMachine );
-char* ReadRegistryHKCU( char* KeyName, char* ValueName, bool LocalMachine );
+void __stdcall RegistryManagerInstall(void);
+void __stdcall RegistryManagerUninstall(void);
+PSTR __stdcall ReadRegistry( PSTR KeyName, PSTR ValueName, bool LocalMachine );
+PSTR __stdcall ReadRegistryHKCU( PSTR KeyName, PSTR ValueName, bool LocalMachine );
 
-
-extern DWORD UpdatedExe;					// Has the exe been updated since last run?
-
+extern ULONG UpdatedExe;					// Has the exe been updated since last run?
 

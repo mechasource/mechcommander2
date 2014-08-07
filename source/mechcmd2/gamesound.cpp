@@ -6,6 +6,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 //---------------------------------------------------------------------------
 // Include files
@@ -47,7 +48,8 @@ void GameSoundSystem::purgeSoundSystem (void)
 	// dump the Radio Message Queue.
 	messagesInQueue = 0;
 	wholeMsgDone = true;
-	for (long i=0;i<MAX_QUEUED_MESSAGES;i++)
+	long i;
+	for (i=0;i<MAX_QUEUED_MESSAGES;i++)
 		queue[i] = NULL;
 
 	generalAlarmTimer = 0.0f;

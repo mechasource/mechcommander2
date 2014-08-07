@@ -5,6 +5,8 @@ LogisticsMissionInfo.cpp			: Implementation of the LogisticsMissionInfo componen
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
+
 #include "McLib.h"
 
 #include "LogisticsMissionInfo.h"
@@ -389,7 +391,8 @@ long LogisticsMissionInfo::load( FitIniFile& file )
 
 	long numberCompleted = 0;
 
-	for ( int i = 0; i < count; i++ )
+	int i;
+	for ( i = 0; i < count; i++ )
 	{
 		long cnt = 0;
 		sprintf( header, "Mission%ld", i );
@@ -651,7 +654,7 @@ long LogisticsMissionInfo::setNextMission( const char* missionName )
 		MISSION_LIST::EIterator iter = pGroup->infos.Begin();
 		while( !iter.IsDone() )
 		{
-			if ( stricmp( (*iter)->fileName, missionName ) == 0 )
+			if ( _stricmp( (*iter)->fileName, missionName ) == 0 )
 			{
 				bFound = 1;
 			

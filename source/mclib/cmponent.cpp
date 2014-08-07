@@ -8,6 +8,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#include "stdafx.h"
+
 //******************************************************************************************
 #ifndef CMPONENT_H
 #include "cmponent.h"
@@ -87,7 +89,9 @@ long MasterComponent::initEXCEL (char* dataLine, float baseSensorRange) {
 	//----------------------------------------------------------
 	// Component data was read in, so parse it. First, parse the
 	// fields common to all components...
-	char* field = strtok(dataLine, ",");
+
+	char* next_token = NULL;
+	char* field = strtok_s(dataLine, ",", &next_token);
 
 	int ammoAmount = 1;
 
@@ -98,7 +102,7 @@ long MasterComponent::initEXCEL (char* dataLine, float baseSensorRange) {
 	cLoadString(COMPONENT_NAME_START+masterID,name,MAXLEN_COMPONENT_NAME);
 	cLoadString(COMPONENT_ABBR_START+masterID,abbreviation,MAXLEN_COMPONENT_ABBREV);
 	
-	field = strtok(NULL, ",");
+	field = strtok_s(NULL, ",", &next_token);
 	long formIndex;
 	for (formIndex = 0; ComponentFormString[formIndex] != NULL; formIndex++)
 		if (strcmp(field, ComponentFormString[formIndex]) == 0)
@@ -113,31 +117,34 @@ long MasterComponent::initEXCEL (char* dataLine, float baseSensorRange) {
 
 	form = (ComponentFormType)formIndex;
 	
-	field = strtok(NULL, ","); // name, ignore
+	field = strtok_s(NULL, ",", &next_token); // name, ignore
 
-	field = strtok(NULL, ",");
+	field = strtok_s(NULL, ",", &next_token);
 	size = atof(field);
 
-	field = strtok(NULL, ",");
+	field = strtok_s(NULL, ",", &next_token);
 	float recycleTime = atof(field);
 	
-	field = strtok(NULL, ",");
+	field = strtok_s(NULL, ",", &next_token);
 	float heat = (unsigned long)atof(field);
 
-	field = strtok(NULL, ","); 
+	field = strtok_s(NULL, ",", &next_token); 
 	tonnage = atof( field );
 
-	field = strtok(NULL, ",");
+	field = strtok_s(NULL, ",", &next_token);
 	float damage = atof(field);
 
-	field = strtok(NULL, ",");
+	field = strtok_s(NULL, ",", &next_token);
 	CV = atof(field);
 	
-	field = strtok(NULL, ",");
+	field = strtok_s(NULL, ",", &next_token);
 	resourcePoints = atoi(field);
 	
-	field = strtok(NULL, ",");
+	field = strtok_s(NULL, ",", &next_token);
 	unsigned char rangeType = 255;
+
+_Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) char * _Str, _In_ size_t _Size);
+
 	_strlwr(field);
 	if (strcmp(field, "0") != 0) {
 		if (strcmp(field, WeaponRangeString[WEAPON_RANGE_SHORT]) == 0)
@@ -150,7 +157,7 @@ long MasterComponent::initEXCEL (char* dataLine, float baseSensorRange) {
 			Fatal(0, " MasterComponent.initEXCEL: bad weapon range type in compbase ");
 	}
 
-	field = strtok(NULL, ",");
+	field = strtok_s(NULL, ",", &next_token);
 	for (long location = 0; location < NUM_BODY_LOCATIONS; location++) 
 	{
 		if ( field )
@@ -162,7 +169,7 @@ long MasterComponent::initEXCEL (char* dataLine, float baseSensorRange) {
 			else
 				criticalSpacesReq[location] = atoi(field);
 		}
-			field = strtok(NULL, ",");
+			field = strtok_s(NULL, ",", &next_token);
 
 	}
 
@@ -184,12 +191,12 @@ long MasterComponent::initEXCEL (char* dataLine, float baseSensorRange) {
 	if ( field )
 		flags = atoi(field);
 	
-	field = strtok(NULL, ",");
+	field = strtok_s(NULL, ",", &next_token);
 	int specialEffect = 0;
 	if ( field )
 		specialEffect = (char)atoi(field);
 	
-	field = strtok(NULL, ",");
+	field = strtok_s(NULL, ",", &next_token);
 	int ammoMasterId = 0;
 	if ( field )
 		ammoMasterId = (char)atoi(field);
@@ -206,7 +213,7 @@ long MasterComponent::initEXCEL (char* dataLine, float baseSensorRange) {
 			break;
 		case COMPONENT_FORM_ECM:
 			stats.ecm.effect = damage;
-			field = strtok(NULL, ",");
+			field = strtok_s(NULL, ",", &next_token);
 			stats.ecm.range = recycleTime;
 			break;
 		case COMPONENT_FORM_JAMMER:
@@ -272,14 +279,14 @@ long MasterComponent::saveEXCEL (FilePtr componentFile, unsigned char masterId, 
 	{
 		//---------------------------------------
 		// Blank undefined line in compbas here.
-		sprintf(dataLine,"0,undefined,undefined,0,0,0,0,0,0,0,0,0,0,0,0,No,No,0,No,0,0,0,0,na,na,na,na,na,na,na,na,na,,,,,");
+		sprintf_s(dataLine, _countof(dataline), "0,undefined,undefined,0,0,0,0,0,0,0,0,0,0,0,0,No,No,0,No,0,0,0,0,na,na,na,na,na,na,na,na,na,,,,,");
 		componentFile->writeLine(dataLine);
 		return(0);
 	}
 
 	//----------------------------------------------------------
 	// Build the dataline piece by piece
-	sprintf(piece,"%d",masterId);
+	sprintf_s(piece,_countof(piece),"%d",masterId);
 	strcpy(dataLine,piece);
 	strcat(dataLine,comma);
 
@@ -294,28 +301,28 @@ long MasterComponent::saveEXCEL (FilePtr componentFile, unsigned char masterId, 
 	strcat(dataLine,ComponentFormString[form]);
 	strcat(dataLine,comma);
 
-	sprintf(piece,"%d",size);
+	sprintf_s(piece,_countof(piece),"%d",size);
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
-	sprintf(piece,"1");
+	sprintf_s(piece,_countof(piece),"1");
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
-	sprintf(piece,"%3.1f",tonnage);
+	sprintf_s(piece,_countof(piece),"%3.1f",tonnage);
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
-	sprintf(piece,"%d",resourcePoints);
+	sprintf_s(piece,_countof(piece),"%d",resourcePoints);
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
 	for (long location = 0; location < NUM_BODY_LOCATIONS; location++) 
 	{
 		if (criticalSpacesReq[location] == -1)
-			sprintf(piece,"No");
+			sprintf_s(piece,_countof(piece),"No");
 		else if (criticalSpacesReq[location] == 0)
-			sprintf(piece,"Yes");
+			sprintf_s(piece,_countof(piece),"Yes");
 		else
 			Fatal(criticalSpacesReq[location],"Bad Data");
 
@@ -324,58 +331,58 @@ long MasterComponent::saveEXCEL (FilePtr componentFile, unsigned char masterId, 
 	}
 
 	if (getCanVehicleUse())
-		sprintf(piece,"Yes");
+		sprintf_s(piece,_countof(piece),"Yes");
 	else
-		sprintf(piece,"No");
+		sprintf_s(piece,_countof(piece),"No");
 
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
 	if (getCanMechUse())
-		sprintf(piece,"Yes");
+		sprintf_s(piece,_countof(piece),"Yes");
 	else
-		sprintf(piece,"No");
+		sprintf_s(piece,_countof(piece),"No");
 
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
 	if (getClanTechBase() && getISTechBase())
 	{
-		sprintf(piece,"Both");
+		sprintf_s(piece,_countof(piece),"Both");
 	}
 	else if (getClanTechBase())
 	{
-		sprintf(piece,"Clan");
+		sprintf_s(piece,_countof(piece),"Clan");
 	}
 	else if (getISTechBase())
 	{
-		sprintf(piece,"IS");
+		sprintf_s(piece,_countof(piece),"IS");
 	}
 	else
 	{
-		sprintf(piece,"0");
+		sprintf_s(piece,_countof(piece),"0");
 	}
 
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
 	if (getCanISUse())
-		sprintf(piece,"Yes");
+		sprintf_s(piece,_countof(piece),"Yes");
 	else
-		sprintf(piece,"No");
+		sprintf_s(piece,_countof(piece),"No");
 
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
-	sprintf(piece,"0");
+	sprintf_s(piece,_countof(piece),"0");
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
-	sprintf(piece,"1");
+	sprintf_s(piece,_countof(piece),"1");
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
-	sprintf(piece,"%8.1f",CV);
+	sprintf_s(piece,_countof(piece),"%8.1f",CV);
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
@@ -392,205 +399,205 @@ long MasterComponent::saveEXCEL (FilePtr componentFile, unsigned char masterId, 
 		default:
 			//----------------------
 			// No additional data...
-			sprintf(piece,"na,na,na,na,na,na,na,na,na,,,,,");
+			sprintf_s(piece,_countof(piece),"na,na,na,na,na,na,na,na,na,,,,,");
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;
 
 		case COMPONENT_FORM_SENSOR:
-			sprintf(piece,"%4.1f",float(stats.sensor.range / baseSensorRange));
+			sprintf_s(piece,_countof(piece),"%4.1f",float(stats.sensor.range / baseSensorRange));
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"na,na,na,na,na,na,na,na,,,,,");
+			sprintf_s(piece,_countof(piece),"na,na,na,na,na,na,na,na,,,,,");
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;
 
 		case COMPONENT_FORM_ECM:
-			sprintf(piece,"%4.1f",stats.ecm.effect);
+			sprintf_s(piece,_countof(piece),"%4.1f",stats.ecm.effect);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
-			sprintf(piece,"%4.1f",stats.ecm.range);
+			sprintf_s(piece,_countof(piece),"%4.1f",stats.ecm.range);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
-			sprintf(piece,"na,na,na,na,na,na,na,,,,,");
+			sprintf_s(piece,_countof(piece),"na,na,na,na,na,na,na,,,,,");
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;
 
 		case COMPONENT_FORM_JAMMER:
-			sprintf(piece,"%4.1f",stats.jammer.effect);
+			sprintf_s(piece,_countof(piece),"%4.1f",stats.jammer.effect);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
-			sprintf(piece,"na,na,na,na,na,na,na,na,,,,,");
+			sprintf_s(piece,_countof(piece),"na,na,na,na,na,na,na,na,,,,,");
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;
 
 		case COMPONENT_FORM_PROBE:
-			sprintf(piece,"%4.1f",stats.probe.effect);
+			sprintf_s(piece,_countof(piece),"%4.1f",stats.probe.effect);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
-			sprintf(piece,"na,na,na,na,na,na,na,na,,,,,");
+			sprintf_s(piece,_countof(piece),"na,na,na,na,na,na,na,na,,,,,");
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;
 
 		case COMPONENT_FORM_ENGINE:
-			sprintf(piece,"%d",0);
+			sprintf_s(piece,_countof(piece),"%d",0);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
-			sprintf(piece,"na,na,na,na,na,na,na,na,,,,,");
+			sprintf_s(piece,_countof(piece),"na,na,na,na,na,na,na,na,,,,,");
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;
 
 		case COMPONENT_FORM_HEATSINK:
-			sprintf(piece,"%4.1f",stats.heatsink.dissipation);
+			sprintf_s(piece,_countof(piece),"%4.1f",stats.heatsink.dissipation);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
-			sprintf(piece,"na,na,na,na,na,na,na,na,,,,,");
+			sprintf_s(piece,_countof(piece),"na,na,na,na,na,na,na,na,,,,,");
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;
 
 		case COMPONENT_FORM_WEAPON_ENERGY:
-			sprintf(piece,"%4.1f",stats.weapon.damage);
+			sprintf_s(piece,_countof(piece),"%4.1f",stats.weapon.damage);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%4.2f",stats.weapon.recycleTime);
+			sprintf_s(piece,_countof(piece),"%4.2f",stats.weapon.recycleTime);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%4.1f",stats.weapon.heat);
+			sprintf_s(piece,_countof(piece),"%4.1f",stats.weapon.heat);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",0);
+			sprintf_s(piece,_countof(piece),"%d",0);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",WEAPON_AMMO_NONE);
+			sprintf_s(piece,_countof(piece),"%d",WEAPON_AMMO_NONE);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%s",WeaponRangeString[stats.weapon.range]);
+			sprintf_s(piece,_countof(piece),"%s",WeaponRangeString[stats.weapon.range]);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			
-			//sprintf(piece,"%d",stats.weapon.type);
+			//sprintf_s(piece,_countof(piece),"%d",stats.weapon.type);
 			//strcat(dataLine,piece);
 			//strcat(dataLine,comma);
 
-			sprintf(piece,"%d",stats.weapon.specialEffect);
+			sprintf_s(piece,_countof(piece),"%d",stats.weapon.specialEffect);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",0);
+			sprintf_s(piece,_countof(piece),"%d",0);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",stats.weapon.flags);
+			sprintf_s(piece,_countof(piece),"%d",stats.weapon.flags);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;
 
 		case COMPONENT_FORM_WEAPON_BALLISTIC:
-			sprintf(piece,"%4.1f",stats.weapon.damage);
+			sprintf_s(piece,_countof(piece),"%4.1f",stats.weapon.damage);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%4.2f",stats.weapon.recycleTime);
+			sprintf_s(piece,_countof(piece),"%4.2f",stats.weapon.recycleTime);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%4.1f",stats.weapon.heat);
+			sprintf_s(piece,_countof(piece),"%4.1f",stats.weapon.heat);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",stats.weapon.ammoAmount);
+			sprintf_s(piece,_countof(piece),"%d",stats.weapon.ammoAmount);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",stats.weapon.ammoType);
+			sprintf_s(piece,_countof(piece),"%d",stats.weapon.ammoType);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%s",WeaponRangeString[stats.weapon.range]);
+			sprintf_s(piece,_countof(piece),"%s",WeaponRangeString[stats.weapon.range]);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			
-//			sprintf(piece,"%d",stats.weapon.type);
+//			sprintf_s(piece,_countof(piece),"%d",stats.weapon.type);
 //			strcat(dataLine,piece);
 //			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",stats.weapon.specialEffect);
+			sprintf_s(piece,_countof(piece),"%d",stats.weapon.specialEffect);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",stats.weapon.flags);
+			sprintf_s(piece,_countof(piece),"%d",stats.weapon.flags);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;
 
 		case COMPONENT_FORM_WEAPON_MISSILE:
-			sprintf(piece,"%4.1f",stats.weapon.damage);
+			sprintf_s(piece,_countof(piece),"%4.1f",stats.weapon.damage);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%4.2f",stats.weapon.recycleTime);
+			sprintf_s(piece,_countof(piece),"%4.2f",stats.weapon.recycleTime);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%4.1f",stats.weapon.heat);
+			sprintf_s(piece,_countof(piece),"%4.1f",stats.weapon.heat);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",stats.weapon.ammoAmount);
+			sprintf_s(piece,_countof(piece),"%d",stats.weapon.ammoAmount);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",stats.weapon.ammoType);
+			sprintf_s(piece,_countof(piece),"%d",stats.weapon.ammoType);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%s",WeaponRangeString[stats.weapon.range]);
+			sprintf_s(piece,_countof(piece),"%s",WeaponRangeString[stats.weapon.range]);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			
-//			sprintf(piece,"%d",stats.weapon.type);
+//			sprintf_s(piece,_countof(piece),"%d",stats.weapon.type);
 //			strcat(dataLine,piece);
 //			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",stats.weapon.specialEffect);
+			sprintf_s(piece,_countof(piece),"%d",stats.weapon.specialEffect);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%d",stats.weapon.flags);
+			sprintf_s(piece,_countof(piece),"%d",stats.weapon.flags);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;
 
 		case COMPONENT_FORM_AMMO:
-			sprintf(piece,"%d",stats.ammo.ammoPerTon);
+			sprintf_s(piece,_countof(piece),"%d",stats.ammo.ammoPerTon);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 
-			sprintf(piece,"%6.1f",stats.ammo.explosiveDamage);
+			sprintf_s(piece,_countof(piece),"%6.1f",stats.ammo.explosiveDamage);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
-			sprintf(piece,"na,na,na,na,na,na,na,,,,,");
+			sprintf_s(piece,_countof(piece),"na,na,na,na,na,na,na,,,,,");
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;
 
 		case COMPONENT_FORM_JUMPJET:
-			sprintf(piece,"%6.2f",stats.jumpjet.rangeMod);
+			sprintf_s(piece,_countof(piece),"%6.2f",stats.jumpjet.rangeMod);
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
-			sprintf(piece,"na,na,na,na,na,na,na,na,,,,,");
+			sprintf_s(piece,_countof(piece),"na,na,na,na,na,na,na,na,,,,,");
 			strcat(dataLine,piece);
 			strcat(dataLine,comma);
 			break;

@@ -112,7 +112,7 @@ long SignedRandomNumber (long range);
 
 bool RollDice (long percent);
 
-_inline long float2long (float val)
+inline long float2long (float val)
 {
 	//_ftol TRUNCS not rounds.  Processor wants to round.  Surely there is some flag to not have this happen?
 	// There is but BOY is it slow.  We will try Andy's Magical formula instead.
@@ -156,7 +156,7 @@ _inline long float2long (float val)
 }
 
 //---------------------------------------------------------------------------
-_inline float mc2_atan2 (float f1, float f2)
+inline float mc2_atan2 (float f1, float f2)
 {
 	//Return atan of f1/f2;
 	float result = 1.570796f;
@@ -177,7 +177,8 @@ _inline float mc2_atan2 (float f1, float f2)
 }
 
 //---------------------------------------------------------------------------
-_inline float fmax (float f1, float f2)
+#if _CONSIDERED_OBSOLETE
+inline float fmax (float f1, float f2)
 {
 	if (f1 > f2)
 		return f1;
@@ -186,16 +187,17 @@ _inline float fmax (float f1, float f2)
 }
 
 //---------------------------------------------------------------------------
-_inline float fmin (float f1, float f2)
+inline float fmin (float f1, float f2)
 {
 	if (f1 < f2)
 		return f1;
 	else
 		return f2;
 }
+#endif
 
 //---------------------------------------------------------------------------
-_inline float sign (float f1)
+inline float sign (float f1)
 {
 	if (f1 < 0.0f)
 		return -1.0f;

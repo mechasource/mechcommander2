@@ -5,6 +5,7 @@ MainMenu.cpp			: Implementation of the MainMenu component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include <windows.h>
 #include <ddraw.h>
@@ -506,7 +507,7 @@ void MainMenu::update()
 			strcpy( name, savePath );
 			strcat( name, LogisticsSaveDialog::instance()->getFileName() );
 			int index = strlen( name ) - 4;
-			if ( stricmp( &name[index], ".fit" ) !=0 ) 
+			if ( _stricmp( &name[index], ".fit" ) !=0 ) 
 				strcat( name, ".fit" );
 
 			

@@ -7,6 +7,8 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
+//#include <string.h>
 
 #ifndef TGAINFO_H
 #include "tgainfo.h"
@@ -14,7 +16,6 @@
 
 #include "EString.h"
 
-#include <string.h>
 #include <gameos.hpp>
 //---------------------------------------------------------------------------
 typedef struct _RGB

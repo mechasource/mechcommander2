@@ -7,6 +7,8 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
+//#include <stdlib.h>
 
 //--------------
 // Include Files
@@ -23,7 +25,6 @@
 #include "heap.h"
 #endif
 
-#include <stdlib.h>
 
 #include <gameos.hpp>
 //***************************************************************************
@@ -45,7 +46,8 @@ long SortList::init (long _numItems) {
 
 void SortList::clear (bool setToMin) {
 
-	for (long i = 0; i < numItems; i++)
+	long i;
+	for (i = 0; i < numItems; i++)
 		list[i].id = i;
 	if (setToMin)
 		for (i = 0; i < numItems; i++)

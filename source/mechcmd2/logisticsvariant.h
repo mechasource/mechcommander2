@@ -16,7 +16,7 @@ class FitIniFile;
 
 #include "EString.h"
 
-#pragma warning (disable:4514)
+//#pragma warning (disable:4514)
 
 
 enum LOGISTICS_COMPONENT_LOCATION

@@ -54,7 +54,7 @@ namespace gosFX
 			Instance;
 
 	protected:
-		EffectLibrary(EffectLibrary &source)
+		EffectLibrary(EffectLibrary& /*source*/)
 			{STOP(("Shouldn't be called"));}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -113,7 +113,7 @@ namespace Stuff {
 				}
 				return temp;
 #else
-				return static_cast<Scalar>sqrt(f);
+				return static_cast<Scalar>(sqrt(f));
 #endif
 			}
 

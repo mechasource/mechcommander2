@@ -1,7 +1,7 @@
 #ifndef ELIST_H
 #define ELIST_H
 
-#pragma warning( disable : 4211 )
+//#pragma warning( disable : 4211 )
 
 #include <memory.h>
 #include "heap.h"

@@ -5,6 +5,7 @@ LogisticsPilotListBox.cpp			: Implementation of the LogisticsPilotListBox compon
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "LogisticsPilotListBox.h"
 #include "LogisticsPilot.h"

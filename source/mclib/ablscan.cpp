@@ -6,12 +6,13 @@
 //								ABLSCAN.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
-#include <time.h>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <math.h>
+//#include <string.h>
+//#include <time.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"
@@ -34,7 +35,7 @@
 #endif
 
 //***************************************************************************
-#pragma warning(disable:4244)
+//#pragma warning(disable:4244)
 
 //---------------------
 // RESERVED WORD tables
@@ -501,9 +502,10 @@ void getChar();
 
 void initScanner (char* fileName) {
 
+	long curCh;
 	//----------------------------------
 	// Initialize the character table...
-	for (long curCh = 0; curCh < 256; curCh++)
+	for (curCh = 0; curCh < 256; curCh++)
 		charTable[curCh] = CHR_SPECIAL;
 	for (curCh = '0'; curCh <= '9'; curCh++)
 		charTable[curCh] = CHR_DIGIT;

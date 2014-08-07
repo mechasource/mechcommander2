@@ -1,11 +1,14 @@
-#ifndef OBJECTIVE_H
-#define OBJECTIVE_H
 /*************************************************************************************************\
 Objective.h			: Interface for the Objective component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+
+#pragma once
+
+#ifndef OBJECTIVE_H
+#define OBJECTIVE_H
 
 #include "elist.h"
 #include "EString.h"
@@ -177,8 +180,8 @@ public:
 	void Alignment(int alignment) { m_alignment = alignment; }
 	virtual condition_species_type Species() = 0;
 	virtual bool Init() { return true; }
-	virtual bool Read( FitIniFile* missionFile ) { return true; }
-	virtual bool Save( FitIniFile* file ) { return true; }
+	virtual bool Read( FitIniFile* /*missionFile */) { return true; }
+	virtual bool Save( FitIniFile* /*file*/ ) { return true; }
 	virtual objective_status_type Status() = 0;
 	virtual EString Description() = 0;
 	virtual EString InstanceDescription() { EString retval; return retval; }

@@ -1,6 +1,7 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #include "afont.h"
 #include "mclib.h"

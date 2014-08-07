@@ -5,6 +5,7 @@ MPAddAIPlayer.cpp			: Implementation of the MPAddAIPlayer component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MPAddAIPlayer.h"
 #include "prefs.h"

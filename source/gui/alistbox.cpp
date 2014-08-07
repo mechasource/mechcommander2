@@ -1,20 +1,21 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #ifndef ASYSTEM_H
-#include "aSystem.h"
+#include "asystem.h"
 #endif
 
 #ifndef AFONT_H
-#include "aFont.h"
+#include "afont.h"
 #endif
 
 #ifndef ALISTBOX_H
-#include "aListBox.h"
+#include "alistbox.h"
 #endif
 
-#include "soundSys.h"
+#include "soundsys.h"
 
 extern SoundSystem *sndSystem;
 
@@ -139,7 +140,8 @@ void aListBox::update()
 			::helpTextID = helpID;
 		}
 
-		for ( int i = 0; i < itemCount; i++ )
+		int i;
+		for ( i = 0; i < itemCount; i++ )
 		{
 			if ( bInside &&
 				items[i]->pointInside(mouseX, mouseY) && items[i]->isShowing()
@@ -202,10 +204,6 @@ void aListBox::update()
 			items[prevCheck]->setCheck( 0 );
 		}
 	}
-
-	
-
-
 }
 
 	

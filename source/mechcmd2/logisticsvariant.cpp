@@ -5,6 +5,7 @@ LogisticsVariant.cpp			: Implementation of the LogisticsVariant component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "LogisticsVariant.h"
 #include "mclib.h"
@@ -347,8 +348,8 @@ int LogisticsVariant::init( CSVFile* file, LogisticsChassis* pChassis, int Varia
 	long yLocs[128];
 	memset( pComps, 0, sizeof( LogisticsComponent* ) * 128 );
 	long componentCount = 0;
-	
-	for ( int i =26; i < 97; i++ )
+	int i, j, k;
+	for ( i =26; i < 97; i++ )
 	{
 		long componentID;
 		if ( NO_ERR == file->readLong( offset + i, 5, componentID ) && componentID != 0xff )
@@ -363,9 +364,9 @@ int LogisticsVariant::init( CSVFile* file, LogisticsChassis* pChassis, int Varia
 		}
 	}
 
-	for ( int j = 4; j > 0; j-- )
+	for ( j = 4; j > 0; j-- )
 	{
-		for ( int k = 3; k >0; k-- )
+		for ( k = 3; k >0; k-- )
 		{
 			for ( i = 0; i < componentCount; i++ )
 			{
@@ -386,11 +387,8 @@ int LogisticsVariant::init( CSVFile* file, LogisticsChassis* pChassis, int Varia
 		}
 
 	}
-
 	
 	return 0;
-
-
 }
 
 bool LogisticsVariant::addComponent( int idFromFitFile, long& x, long& y )
@@ -947,7 +945,8 @@ int			LogisticsVariant::getOptimalRangeString( long& color ) const
 
 	float maxDamage = -1.f;
 
-	for ( int i = 0; i < componentCount; i++ )
+	int i;
+	for ( i = 0; i < componentCount; i++ )
 	{
 		if ( components[i].component->isWeapon() )
 		{
@@ -980,7 +979,7 @@ bool		LogisticsVariant::allComponentsAvailable() const
 {
 
 	// 06/05/01 hack, we wan't to hide this atlas for the whole game.
-	if ( stricmp( "Renard's Atlas", variantName ) == 0 )
+	if ( _stricmp( "Renard's Atlas", variantName ) == 0 )
 		return 0;
 
 	for ( int i = 0; i < componentCount; i++ )
@@ -996,7 +995,7 @@ bool		LogisticsVariant::allComponentsAvailable() const
 void		LogisticsVariant::setAvailable( bool available ) 
 { 
 	// 06/05/01 hack, we wan't to hide this atlas for the whole game.
-	if ( stricmp( "Renard's Atlas", variantName ) == 0 )
+	if ( _stricmp( "Renard's Atlas", variantName ) == 0 )
 		availableToUser = 0;
 
 	else
@@ -1039,7 +1038,8 @@ void LogisticsVehicle::init( FitIniFile& file )
 	baseArmor = 0;
 
 	unsigned char pts;
-	for ( int i = 0; i < 5; i++ )
+	int i;
+	for ( i = 0; i < 5; i++ )
 	{
 		file.seekBlock( parts[i] );
 		file.readIdUChar( "MaxArmorPoints", pts );

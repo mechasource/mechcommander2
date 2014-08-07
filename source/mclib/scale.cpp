@@ -4,6 +4,8 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
+// #include <math.h>
 
 //---------------------------------------------------------------------------
 // Include files
@@ -27,7 +29,6 @@
 #include "camera.h"
 #endif
 
-#include <math.h>
 #include <gameos.hpp>
 
 extern void AG_shape_translate_transform(PANE *globalPane, void *shapeTable,LONG frameNum, LONG hotX, LONG hotY,void *tempBuffer,LONG reverse, LONG scaleUp);

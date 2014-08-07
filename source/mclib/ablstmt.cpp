@@ -6,8 +6,9 @@
 //								ABLSTMT.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
-#include <stdio.h>
+//#include <stdio.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"
@@ -515,8 +516,8 @@ void statement (void) {
 				if (IdPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER) {
 					if (NumOrderCalls == MAX_ORDERS)
 						syntaxError(ABL_ERR_SYNTAX_TOO_MANY_ORDERS);
-					crunchByte(NumOrderCalls / 32);
-					crunchByte(NumOrderCalls % 32);
+					crunchByte((unsigned char)(NumOrderCalls / 32));
+					crunchByte((unsigned char)(NumOrderCalls % 32));
 					NumOrderCalls++;
 				}
 				getToken();

@@ -5,14 +5,15 @@ LogisticsScreen.cpp			: Implementation of the LogisticsScreen component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================// 
 \*************************************************************************************************/
+#include "stdafx.h"
 
-#include "LogisticsScreen.h"
-#include "IniFile.h"
-#include "aSystem.h"
-#include "aButton.h"
-#include "aEdit.h"
+#include "logisticsscreen.h"
+#include "inifile.h"
+#include "asystem.h"
+#include "abutton.h"
+#include "aedit.h"
 #include "err.h"
-#include "aAnimObject.h"
+#include "aanimobject.h"
 
 extern long helpTextID;
 extern long helpTextHeaderID;
@@ -258,7 +259,8 @@ aRect* LogisticsScreen::getRect( long who )
 //-------------------------------------------------------------------------------------------------
 void LogisticsScreen::update()
 {
-	for ( int i = 0; i < staticCount; i++ )
+	int i;
+	for ( i = 0; i < staticCount; i++ )
 	{
 		statics[i].update();
 	}
@@ -335,7 +337,8 @@ void LogisticsScreen::render()
 {
 	if ( !isShowing() )
 		return;
-	for (int i = 0; i < rectCount; i++ )
+	int i;
+	for ( i = 0; i < rectCount; i++ )
 	{
 		if ( !rects[i].bOutline && 
 			( (rects[i].getColor() & 0xff000000) == 0xff000000 ) )
@@ -355,7 +358,7 @@ void LogisticsScreen::render()
 	// transparencies after statics
 	for ( i = 0; i < rectCount; i++ )
 	{
-		if ( rects[i].getColor() & 0xff000000 != 0xff000000 )
+		if ( (rects[i].getColor() & 0xff000000) != 0xff000000 )
 			rects[i].render();
 	}
 
@@ -413,8 +416,8 @@ void LogisticsScreen::render( int xOffset, int yOffset )
 {
 	if ( !isShowing() )
 		return;
-	
-	for (int i = 0; i < rectCount; i++ )
+	int i;
+	for ( i = 0; i < rectCount; i++ )
 	{
 		if ( !rects[i].bOutline&& 
 			( (rects[i].getColor() & 0xff000000) == 0xff000000 ) )
@@ -590,7 +593,8 @@ void  LogisticsScreen::moveTo( long xPos, long yPos )
 
 void  LogisticsScreen::move( long xOffset, long yOffset )
 {
-	for (int i = 0; i < rectCount; i++ )
+	int i;
+	for ( i = 0; i < rectCount; i++ )
 	{
 		rects[i].move( xOffset, yOffset );
 	}
@@ -622,7 +626,8 @@ void  LogisticsScreen::move( long xOffset, long yOffset )
 
 bool	LogisticsScreen::inside( long x, long y)
 {
-	for ( int i = 0; i < staticCount; i++ )
+	int i;
+	for ( i = 0; i < staticCount; i++ )
 	{
 		if ( statics[i].pointInside( x, y ) )
 			return true;
@@ -651,8 +656,6 @@ bool	LogisticsScreen::inside( long x, long y)
 		if ( animObjects[i].pointInside( x, y ) )
 			return true;
 	}
-
-		return false;
 
 	return false;
 }

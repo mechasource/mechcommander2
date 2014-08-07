@@ -6,10 +6,11 @@
 //								ABLDECL.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
+//#include <string.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"

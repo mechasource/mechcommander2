@@ -34,14 +34,14 @@ namespace Stuff {
 		TreeNode(
 			Tree *tree,
 			Plug *plug
-		);
+			);
 
 	private:
 		void
 			SetupTreeLinks(
-				TreeNode *less,
-				TreeNode *greater,
-				TreeNode *parent
+			TreeNode *less,
+			TreeNode *greater,
+			TreeNode *parent
 			);
 
 		TreeNode *less;
@@ -54,14 +54,14 @@ namespace Stuff {
 	enum {TreeNode_MemoryBlock_Allocation=100};
 
 	template <class V> class TreeNodeOf:
-		public TreeNode
+	public TreeNode
 	{
 	public:
 		TreeNodeOf(
 			Tree *tree,
 			Plug *plug,
 			const V &value
-		);
+			);
 		~TreeNodeOf();
 
 		void*
@@ -71,10 +71,10 @@ namespace Stuff {
 
 		V
 			GetValue()
-				{return value;}
+		{return value;}
 		V*
 			GetValuePointer()
-				{return &value;}
+		{return &value;}
 
 	private:
 		static MemoryBlock
@@ -93,18 +93,18 @@ namespace Stuff {
 		TreeNodeOf<V>::allocationCount = 0;
 
 	template <class V>
-		TreeNodeOf<V>::TreeNodeOf(
-			Tree *tree,
-			Plug *plug,
-			const V &value
+	TreeNodeOf<V>::TreeNodeOf(
+		Tree *tree,
+		Plug *plug,
+		const V &value
 		):
-			TreeNode(tree, plug)
+	TreeNode(tree, plug)
 	{
 		this->value = value;
 	}
 
 	template <class V>
-		TreeNodeOf<V>::~TreeNodeOf()
+	TreeNodeOf<V>::~TreeNodeOf()
 	{
 	}
 
@@ -116,11 +116,11 @@ namespace Stuff {
 		{
 			allocatedMemory =
 				new MemoryBlock(
-					sizeof(TreeNodeOf<V>),
-					TreeNode_MemoryBlock_Allocation,
-					TreeNode_MemoryBlock_Allocation,
-					"Stuff::TreeNodeOf",
-					Stuff::ConnectionEngineHeap
+				sizeof(TreeNodeOf<V>),
+				TreeNode_MemoryBlock_Allocation,
+				TreeNode_MemoryBlock_Allocation,
+				"Stuff::TreeNodeOf",
+				Stuff::ConnectionEngineHeap
 				);
 			Register_Object(allocatedMemory);
 		}
@@ -168,7 +168,7 @@ namespace Stuff {
 		Tree(
 			Node *node,
 			bool has_unique_entries
-		);
+			);
 		~Tree();
 
 		void
@@ -198,8 +198,8 @@ namespace Stuff {
 			AddImplementation(Plug *);
 		void
 			AddValueImplementation(
-				Plug *plug,
-				const void *value
+			Plug *plug,
+			const void *value
 			);
 		Plug
 			*FindImplementation(const void *value);
@@ -213,19 +213,19 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		virtual TreeNode*
-      	MakeTreeNode(
-				Plug *plug,
-				const void *value
+			MakeTreeNode(
+			Plug *plug,
+			const void *value
 			);
 		virtual int
 			CompareTreeNodes(
-				TreeNode *link1,
-				TreeNode *link2
+			TreeNode *link1,
+			TreeNode *link2
 			);
 		virtual int
 			CompareValueToTreeNode(
-				const void *value,
-				TreeNode *link
+			const void *value,
+			TreeNode *link
 			);
 
 		void
@@ -246,7 +246,7 @@ namespace Stuff {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TreeOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V> class TreeOf:
-		public Tree
+	public Tree
 	{
 	public:
 		//
@@ -259,7 +259,7 @@ namespace Stuff {
 		TreeOf(
 			Node *node,
 			bool has_unique_entries
-		);
+			);
 		~TreeOf();
 
 		//
@@ -269,17 +269,17 @@ namespace Stuff {
 		//
 		void
 			AddValue(
-				T plug,
-				const V &value
+			T plug,
+			const V &value
 			)
-				{AddValueImplementation(Cast_Object(Plug*,plug), &value);}
+		{AddValueImplementation(Cast_Object(Plug*,plug), &value);}
 		void
 			Remove(T plug)
-				{RemovePlug(Cast_Object(Plug*,plug));}
+		{RemovePlug(Cast_Object(Plug*,plug));}
 		T
 			Find(const V &value)
-				{return (T)FindImplementation(&value);}
-			
+		{return (T)FindImplementation(&value);}
+
 	private:
 		//
 		//--------------------------------------------------------------------
@@ -290,81 +290,90 @@ namespace Stuff {
 		//
 		TreeNode
 			*MakeTreeNode(
-				Plug *plug,
-				const void *value
+			Plug *plug,
+			const void *value
 			)
-				{
-					return
-						new TreeNodeOf<V>(
-							this,
-							plug,
-							*Cast_Pointer(const V*, value)
-						);
-				}
+		{
+			return
+				new TreeNodeOf<V>(
+				this,
+				plug,
+				*Cast_Pointer(const V*, value)
+				);
+		}
 		int
 			CompareTreeNodes(
-				TreeNode *link1, 
-				TreeNode *link2
+			TreeNode *link1, 
+			TreeNode *link2
 			);
 		int
 			CompareValueToTreeNode(
-				const void *value,
-				TreeNode *link
+			const void *value,
+			TreeNode *link
 			);
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ TreeOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V>
-		TreeOf<T, V>::TreeOf(
-			Node *node,
-			bool has_unique_entries
+	TreeOf<T, V>::TreeOf(
+		Node *node,
+		bool has_unique_entries
 		):
-			Tree(
-				node,
-				has_unique_entries
-			)
+	Tree(
+		node,
+		has_unique_entries
+		)
 	{
 	}
 
 	template <class T, class V>
-		TreeOf<T, V>::~TreeOf()
+	TreeOf<T, V>::~TreeOf()
 	{
 	}
 
 	template <class T, class V> int
 		TreeOf<T, V>::CompareTreeNodes(
-			TreeNode *node1,
-			TreeNode *node2
+		TreeNode *node1,
+		TreeNode *node2
 		)
 	{
-      V *ptr1 = Cast_Object(TreeNodeOf<V>*, node1)->GetValuePointer();
-      V *ptr2 = Cast_Object(TreeNodeOf<V>*, node2)->GetValuePointer();
+		V *ptr1 = Cast_Object(TreeNodeOf<V>*, node1)->GetValuePointer();
+		V *ptr2 = Cast_Object(TreeNodeOf<V>*, node2)->GetValuePointer();
 
-      Check_Pointer(ptr1);
-      Check_Pointer(ptr2);
+		Check_Pointer(ptr1);
+		Check_Pointer(ptr2);
 
-   	if (*ptr1 == *ptr2)
-      	return 0;
-      else
-      	return ((*ptr1 > *ptr2) ? 1 : -1);
+		if (ptr1 && ptr2)
+		{
+			if (*ptr1 == *ptr2)
+				return 0;
+			else
+				return ((*ptr1 > *ptr2) ? 1 : -1);
+
+		}
+		return 0;
 	}
 
 	template <class T, class V> int
 		TreeOf<T, V>::CompareValueToTreeNode(
-			const void *value,
-			TreeNode *node
+		const void *value,
+		TreeNode *node
 		)
 	{
 		Check_Pointer(value);
 
 		V *ptr = Cast_Object(TreeNodeOf<V>*, node)->GetValuePointer();
-      Check_Pointer(ptr);
+		Check_Pointer(ptr);
 
-      if (*Cast_Pointer(const V*, value) == *ptr)
-      	return 0;
-      else
-      	return (*Cast_Pointer(const V*, value) > *ptr) ? 1 : -1;
+		if (value && ptr)
+		{
+			if (*Cast_Pointer(const V*, value) == *ptr)
+				return 0;
+			else
+				return (*Cast_Pointer(const V*, value) > *ptr) ? 1 : -1;
+		}
+		return 0;
 	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TreeIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -444,15 +453,15 @@ namespace Stuff {
 
 		void
 			ReceiveMemo(
-				IteratorMemo memo,
-				void *content
+			IteratorMemo memo,
+			void *content
 			);
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TreeIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V> class TreeIteratorOf:
-		public TreeIterator
+	public TreeIterator
 	{
 	public:
 		//
@@ -478,28 +487,37 @@ namespace Stuff {
 		// Iterator methods (see Iterator for full listing)
 		//--------------------------------------------------------------------
 		//
-		T
-			ReadAndNext()
-				{return (T)ReadAndNextImplementation();}
-		T
-			GetCurrent()
-				{return (T)GetCurrentImplementation();}
-		T
-			GetNth(CollectionSize index)
-				{return (T)GetNthImplementation(index);}
-		T
-			Find(const V &value)
-				{return (T)FindImplementation(&value);}
-		V
-			GetValue()
-         	{return Cast_Object(TreeNodeOf<V>*, currentNode)->GetValue();}
+		T ReadAndNext()
+		{
+			return (T)ReadAndNextImplementation();
+		}
+		
+		T GetCurrent()
+		{
+			return (T)GetCurrentImplementation();
+		}
+		
+		T GetNth(CollectionSize index)
+		{
+			return (T)GetNthImplementation(index);
+		}
+
+		T Find(const V &value)
+		{
+			return (T)FindImplementation(&value);
+		}
+		
+		V GetValue()
+		{
+			return Cast_Object(TreeNodeOf<V>*, currentNode)->GetValue();
+		}
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~ TreeIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V>
-		TreeIteratorOf<T, V>::TreeIteratorOf(TreeOf<T, V> *tree):
-			TreeIterator(tree)
+	TreeIteratorOf<T, V>::TreeIteratorOf(TreeOf<T, V> *tree):
+	TreeIterator(tree)
 	{
 	}
 
@@ -510,7 +528,7 @@ namespace Stuff {
 	}
 
 	template <class T, class V>
-		TreeIteratorOf<T, V>::~TreeIteratorOf()
+	TreeIteratorOf<T, V>::~TreeIteratorOf()
 	{
 	}
 

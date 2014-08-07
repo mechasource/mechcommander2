@@ -37,7 +37,7 @@ const int CHUNK = 4096;
 const int MAX_MTL_FILES = 512;
 
 // case insensitive string equality test 
-#define        SAME(_a, _b)        (stricmp(_a,_b) == 0)
+#define        SAME(_a, _b)        (_stricmp(_a,_b) == 0)
 
 // list of textures defined by Wavefront material files 
 typedef struct TEX

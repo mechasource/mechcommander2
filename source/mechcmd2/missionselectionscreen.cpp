@@ -5,6 +5,7 @@ MissionSelectionScreen.cpp			: Implementation of the MissionSelectionScreen comp
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MissionSelectionScreen.h"
 #include "MechBayScreen.h"

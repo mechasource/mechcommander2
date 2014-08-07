@@ -53,10 +53,10 @@ template <class T> T
 		Check_Pointer(source);\
 		Verify((length) <= (available));\
 		Verify(\
-			abs(\
+			(size_t)(abs(\
 				reinterpret_cast<char*>(destination)\
 				 - reinterpret_cast<const char*>(source)\
-			) >= length\
+			)) >= length\
 		);\
 		memcpy(destination, source, length);\
 	} while (0)

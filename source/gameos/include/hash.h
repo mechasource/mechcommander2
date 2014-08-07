@@ -13,7 +13,7 @@
 #ifndef __HASH_H__
 #define __HASH_H__
 
-#pragma warning( disable : 4244 )
+//#pragma warning( disable : 4244 )
 
 //
 // Node structures
@@ -495,6 +495,6 @@ void  CHash<T,K>::TrashDay()
 }
 
 
-#pragma warning( default : 4244 )
+//#pragma warning( default : 4244 )
 
 #endif //!__HASH_H__

@@ -20,8 +20,8 @@ class FixedLengthString
 //
 // Data
 //
-	int MaximumLength;
-	int CurrentSize;
+	size_t MaximumLength;
+	size_t CurrentSize;
 	char* Text;
 //
 // Visible stuff
@@ -30,13 +30,13 @@ class FixedLengthString
 //
 // Constructor
 //
-	inline FixedLengthString( int Length )
+	inline FixedLengthString(size_t Length )
 	{
 		gosASSERT( Length!=0 );
 		Text=(char*)malloc(Length);
 		MaximumLength=Length;
 		CurrentSize=0;
-		*Text=0;
+		if (Text) *Text=0;
 	}
 //
 // Destructor
@@ -55,7 +55,7 @@ class FixedLengthString
 //
 // Individual chars can be referenced
 //
-	inline char operator [] ( int Offset) const
+	inline char operator [] ( size_t Offset) const
 	{
 		if( Offset<=CurrentSize )
 			return *(Text+Offset);
@@ -65,7 +65,7 @@ class FixedLengthString
 //
 // Get Length
 //
-	inline int Length()
+	inline size_t Length()
 	{
 		return CurrentSize;
 	}
@@ -91,7 +91,7 @@ class FixedLengthString
 	{
 		if( Source )
 		{
-			int Length=strlen(Source)+1;
+			size_t Length=strlen(Source)+1;
 
 			if( Length>MaximumLength )
 				Length=MaximumLength;
@@ -109,7 +109,7 @@ class FixedLengthString
 //
 	inline FixedLengthString& operator += (char* Source)
 	{
-		int Length=strlen(Source)+1;
+		size_t Length=strlen(Source)+1;
 
 		if( CurrentSize+Length>MaximumLength )
 			Length=MaximumLength-CurrentSize;
@@ -129,7 +129,7 @@ class FixedLengthString
 	{
 		if( Source )
 		{
-			int Length=strlen(Source)+1;
+			size_t Length=strlen(Source)+1;
 
 			if( CurrentSize+Length>MaximumLength )
 				Length=MaximumLength-CurrentSize;
@@ -151,7 +151,7 @@ class FixedLengthString
 		
 		_itoa(Value, Source, 10);
 
-		int Length=strlen(Source)+1;
+		size_t Length=strlen(Source)+1;
 
 		if( CurrentSize+Length>MaximumLength )
 			Length=MaximumLength-CurrentSize;
@@ -173,7 +173,7 @@ class FixedLengthString
 		
 		_itoa(Value, Source, 10);
 
-		int Length=strlen(Source)+1;
+		size_t Length=strlen(Source)+1;
 
 		if( CurrentSize+Length>MaximumLength )
 			Length=MaximumLength-CurrentSize;

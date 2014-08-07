@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #ifndef MCLIB_H
 #include "mclib.h"
@@ -239,11 +240,11 @@ float SensorSystem::getRange (void)
 }
 
 //---------------------------------------------------------------------------
-
-void SensorSystem::setSkill (long newSkill) {
-
-	skill = newSkill;
-}
+// moved to header
+//void SensorSystem::setSkill (long newSkill) {
+//
+//	skill = newSkill;
+//}
 
 //---------------------------------------------------------------------------
 

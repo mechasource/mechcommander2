@@ -124,7 +124,7 @@ namespace Stuff {
 				_asm {
 					mov         edx, matrix
 					push        esi
-					mov         esi, obb.localToParent
+					mov         esi, [esi]obb.localToParent
 					
 					mov         eax, f
 

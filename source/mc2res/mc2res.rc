@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -13,11 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// Neutral resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
 #ifdef _WIN32
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 #pragma code_page(1252)
 #endif //_WIN32
 
@@ -27,18 +27,18 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "\r\n"
     "\0"
@@ -46,16 +46,14 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 00,1,6,2522
- PRODUCTVERSION 00,1,6,2522
+ FILEVERSION 0,1,6,2522
+ PRODUCTVERSION 0,1,6,2522
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -70,18 +68,16 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "Comments", "MechCommander 2 Game Executable\0"
-            VALUE "CompanyName", "Microsoft\0"
-            VALUE "FileDescription", "MechCommander 2 Game Executable\0"
+            VALUE "Comments", "MechCommander 2 Game Executable"
+            VALUE "CompanyName", "Microsoft"
+            VALUE "FileDescription", "MechCommander 2 Game Executable"
             VALUE "FileVersion", "00,1,6,2522"
-            VALUE "InternalName", "MechCommander 2\0"
-            VALUE "LegalCopyright", "Copyright ?2001 Microsoft\0"
-            VALUE "LegalTrademarks", "'Mech\0"
-            VALUE "OriginalFilename", "MC2Rel.exe\0"
-            VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "MechCommander 2\0"
+            VALUE "InternalName", "MechCommander 2"
+            VALUE "LegalCopyright", "Copyright ?2001 Microsoft"
+            VALUE "LegalTrademarks", "'Mech"
+            VALUE "OriginalFilename", "MC2Rel.exe"
+            VALUE "ProductName", "MechCommander 2"
             VALUE "ProductVersion", "00,1,6,2522"
-            VALUE "SpecialBuild", "\0"
         END
     END
     BLOCK "VarFileInfo"
@@ -89,8 +85,6 @@ BEGIN
         VALUE "Translation", 0x409, 1200
     END
 END
-
-#endif    // !_MAC
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -100,14 +94,29 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON2               ICON    DISCARDABLE     "Icon.ico"
+IDI_ICON2               ICON                    "Icon.ico"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
 //
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     ID_OPENSPRITES          "Opens the Sprites.PAK file"
     ID_EXIT                 "Exit the Application"
@@ -124,7 +133,7 @@ BEGIN
     IDS_HELP_FONT_640       "ArialNarrow8.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MISSION_OBJECTIVE   "Objective %i: %s --  "
     IDS_MISSION_RESULT1     "incomplete"
@@ -143,7 +152,7 @@ BEGIN
     IDS_MISSION_ARMOR       "Armor"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MISSION_REPORT      "Report for Mech %i of Lance %i"
     IDS_MISSION_WEAPON      "Weapon"
@@ -163,7 +172,7 @@ BEGIN
     IDS_LONGRANGE           "Long-Range Attack Command (L)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_DEFAULTRANGE_DESC   "Sets the selected 'Mechs to attack at their default range"
     IDS_LARGEAIRSTRIKE      "Airstrike (NUMPAD *)"
@@ -183,7 +192,7 @@ BEGIN
     IDS_STOP_VEHICLE        "Cancel Deployment"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STOP_VEHICLE_DESC   "Cancel the selected deployment."
     IDS_FORCEGROUP_BAR      "Deployment Team"
@@ -203,7 +212,7 @@ BEGIN
     IDS_SDLG0               "Permanently remove pilot"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BUILDFOR            "This version for FIT Use ONLY"
     IDS_DONTUSE             "Pre-Release build\nDo Not Distribute"
@@ -223,7 +232,7 @@ BEGIN
     IDS_SENSOR              "Sensor"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_GREEN               "Green"
     IDS_REGULAR             "Regular"
@@ -243,7 +252,7 @@ BEGIN
     IDS_MFDOBJ_OTHER        "Other"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MFDOBJ_INVALID2     "Invalid"
     IDS_MFDMCH_PRINTSTRING  "%s %.0ft 'Mech"
@@ -263,7 +272,7 @@ BEGIN
     IDS_MFDCMD_JUMP         "Use Jumpjets [J]"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MFDCMD_MOVE         "Move Full Speed [SPACE]"
     IDS_MFDCMD_ZOOM         "Zoom"
@@ -283,7 +292,7 @@ BEGIN
     IDS_IFCBLD_FOREST       "Forest"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_IFCBLD_HWALL        "Heavy Wall"
     IDS_IFCBLD_MWALL        "Medium Wall"
@@ -303,7 +312,7 @@ BEGIN
     IDS_CHECKEXIT           "Exit Multiplayer?"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_ACE                 "Ace"
     IDS_OBJECT_200          "Ammo Dump"
@@ -316,7 +325,7 @@ BEGIN
     IDS_OBJECT_207          "Infantry Barracks"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_208_LIAO     "Lookout Tower"
     IDS_OBJECT_209          "'Mech Hangar"
@@ -336,7 +345,7 @@ BEGIN
     IDS_OBJECT_223          "Liao Vehicle Crew Barracks"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_224          "Bastion"
     IDS_OBJECT_225          "Infantry Barracks"
@@ -356,7 +365,7 @@ BEGIN
     IDS_OBJECT_239          "Activation Marker"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_240          "House"
     IDS_OBJECT_241          "House"
@@ -376,7 +385,7 @@ BEGIN
     IDS_OBJECT_255          "Cattails 2"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_256          "Rock"
     IDS_OBJECT_257          "Rock 2"
@@ -396,7 +405,7 @@ BEGIN
     IDS_OBJECT_271          "Streetlight"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_272          "Streetlight 2"
     IDS_OBJECT_273          "Streetlight 3"
@@ -416,7 +425,7 @@ BEGIN
     IDS_OBJECT_287          "Small Jungle Tree"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_288          "Large Jungle Tree"
     IDS_OBJECT_289          "Rock 1"
@@ -436,7 +445,7 @@ BEGIN
     IDS_OBJECT_303          "Hunter"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_304          "Mobile HQ"
     IDS_OBJECT_305          "Fuel Truck"
@@ -456,7 +465,7 @@ BEGIN
     IDS_OBJECT_319_STEINER  "Perimeter Alarm"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_320          "Infantry Barracks"
     IDS_OBJECT_321          "Vehicle Hangar"
@@ -476,7 +485,7 @@ BEGIN
     IDS_OBJECT_335          "Turret Power Generator"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_336          "Jeep"
     IDS_OBJECT_337          "Repair Truck"
@@ -496,7 +505,7 @@ BEGIN
     IDS_OBJECT_351          "Small Pine"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_352          "Bridge Control"
     IDS_OBJECT_353          "Spotlight Control"
@@ -516,7 +525,7 @@ BEGIN
     IDS_OBJECT_367          "Sensor Probe Launcher"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_368          "H Tent"
     IDS_OBJECT_369          "Tent"
@@ -536,7 +545,7 @@ BEGIN
     IDS_OBJECT_383          "Dumpster"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_384          "Small Barricade"
     IDS_OBJECT_385          "Stop Sign"
@@ -556,7 +565,7 @@ BEGIN
     IDS_OBJECT_399          "Purification Plant"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_400          "Small Birch"
     IDS_OBJECT_401          "Small Dead Birch"
@@ -576,7 +585,7 @@ BEGIN
     IDS_OBJECT_415          "Metal Barricade"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_416          "Crates"
     IDS_OBJECT_417          "Davion Flag"
@@ -596,7 +605,7 @@ BEGIN
     IDS_OBJECT_431          "Wooden Crates"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_432          "Road Sign"
     IDS_OBJECT_433          "Fuel pipe junction"
@@ -616,7 +625,7 @@ BEGIN
     IDS_OBJECT_447          "Small Oak"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_448          "Medium Oak"
     IDS_OBJECT_449          "Large Oak"
@@ -636,7 +645,7 @@ BEGIN
     IDS_OBJECT_463          "Redwood 1 Dead"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_464          "Redwood 2 Dead"
     IDS_OBJECT_465          "Redwood 3 Dead"
@@ -656,7 +665,7 @@ BEGIN
     IDS_OBJECT_479          "New Quonset"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_480          "Small House"
     IDS_OBJECT_481          "Large House"
@@ -676,7 +685,7 @@ BEGIN
     IDS_OBJECT_495          "Bandit Headquarters"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_496          "Crashed Spaceship Engine"
     IDS_OBJECT_497          "Crashed Spaceship Tail"
@@ -696,7 +705,7 @@ BEGIN
     IDS_OBJECT_511          "Raised Cactus"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_512          "Spiked Cactus"
     IDS_OBJECT_513          "Scrub Brush 1"
@@ -716,7 +725,7 @@ BEGIN
     IDS_OBJECT_527          "Desert Rock Clump 2"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_528          "Desert Rock Clump 3"
     IDS_OBJECT_529          "Desert Rock Formation 1"
@@ -736,7 +745,7 @@ BEGIN
     IDS_OBJECT_543          "Water Tower"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_544          "Apartments"
     IDS_OBJECT_545          "Tall Apartments"
@@ -756,7 +765,7 @@ BEGIN
     IDS_OBJECT_559          "Weapons Facility"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_560          "Grain Storage"
     IDS_OBJECT_561          "Greenhouse"
@@ -776,7 +785,7 @@ BEGIN
     IDS_OBJECT_575          "Razorwire Corner"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_576          "Hazmat"
     IDS_OBJECT_577          "Desert Rock Field 1"
@@ -796,7 +805,7 @@ BEGIN
     IDS_OBJECT_591          "Jungle Rock Clump 3"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_592          "Jungle Rock Field 1"
     IDS_OBJECT_593          "Jungle Rock Field 2"
@@ -816,7 +825,7 @@ BEGIN
     IDS_OBJECT_607          "Volcanic Rock Clump 1"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECT_608          "Volcanic Rock Clump 2"
     IDS_OBJECT_609          "Volcanic Rock Clump 3"
@@ -836,7 +845,7 @@ BEGIN
     IDS_OBJ_TRAIN3          "SRM Tundra Camo Turret"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJ_TRAIN4          "SRM Volcanic Camo Turret"
     IDS_OBJ_TRAIN5          "Arbor"
@@ -856,7 +865,7 @@ BEGIN
     IDS_PRINTTONS           "Orbital Turret"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MAJOR_VERSION       "Portable"
     IDS_MINOR_VERSION       "Karnov"
@@ -876,7 +885,7 @@ BEGIN
     IDS_STRING30655         "Fires machine gun rounds.  Best attacked from long range."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MECH0               "Atlas"
     IDS_MECH1               "Atlas Debris"
@@ -884,7 +893,7 @@ BEGIN
     IDS_MECH3               "MenShen"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MECH4               "Center Lobby"
     IDS_MECH5               "Dropship"
@@ -904,7 +913,7 @@ BEGIN
     IDS_MECH19              "Walkway"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MECH20              "Liao Banner"
     IDS_MECH21              "Hunchback"
@@ -924,7 +933,7 @@ BEGIN
     IDS_MECH35              "Shanty"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MECH36              "Anubis"
     IDS_MECH37              "Angled Shanty"
@@ -944,7 +953,7 @@ BEGIN
     IDS_MECH51              "Highlander"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MECH52              "Comstar Office"
     IDS_MECH53              "Comstar Threeway"
@@ -964,7 +973,7 @@ BEGIN
     IDS_MECH67              "High Command"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_VEHICLE0            "APC"
     IDS_VEHICLE1            "Armored Car"
@@ -984,7 +993,7 @@ BEGIN
     IDS_VEHICLE15           "SRM Carrier"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_VEHICLE16           "Striker"
     IDS_VEHICLE17           "Swiftwind"
@@ -1004,7 +1013,7 @@ BEGIN
     IDS_VEHICLE31           "Armed Flatbed"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_VEHICLE32           "Farm Truck"
     IDS_VEHICLE33           "Armed Farm Truck"
@@ -1024,7 +1033,7 @@ BEGIN
     IDS_VEHICLE47           "Salvage Truck"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_VEHICLE48           "Refit Rig"
     IDS_VEHICLE49           "Ambulance"
@@ -1036,7 +1045,7 @@ BEGIN
     IDS_VEHICLE55           "Ammo Truck"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_GOTOMPLAYER         "Exit to mplayer.com to launch an internet game?"
     IDS_NOMPLAYNOW          "The MPlayNow executable was not found. Please reinstall it from the MechCommander 2 CD."
@@ -1054,7 +1063,7 @@ BEGIN
     IDS_MP_RESET            "has left the game. Returning you to the main screen. "
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_ONLY_ONE_LEFT       "All other players have disconnected. Exiting session screen."
     IDS_SERIALJOIN          "Attempting serial connection..."
@@ -1074,7 +1083,7 @@ BEGIN
     IDS_COMPONENT           "Components"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BONUS_OBJ           "Bonus Objectives"
     IDS_NO_SALVAGE          "No Salvage Recovered"
@@ -1094,7 +1103,7 @@ BEGIN
     IDS_NOTCPIPX            "Connecting through IPX. TCP/IP is not installed."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_LOBBYFAILED         "Your connection to the game was unsuccesful. Click OK to return to the game lobby."
     IDS_LOWMEMORY           "You should have at least 32 M of RAM for multiplayer. Expect serious frame hits."
@@ -1114,7 +1123,7 @@ BEGIN
     IDS_NONE                "NONE"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_ROUNDS              "    [%i rounds]"
     IDS_EMPTYFILE           "<empty>"
@@ -1134,7 +1143,7 @@ BEGIN
     IDS_SENSOR_MEDIUM_MECH  "Med 'Mech"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MECH68              "Atrium"
     IDS_MECH69              "Shootist"
@@ -1154,7 +1163,7 @@ BEGIN
     IDS_STRING30783         "Urban Loft"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP0               "undefined"
     IDS_COMP1               "Fusion Engine"
@@ -1174,7 +1183,7 @@ BEGIN
     IDS_COMP15              "Sensor - Advanced"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP16              "C Sensor - Basic"
     IDS_COMP17              "C Sensor - Adv"
@@ -1194,7 +1203,7 @@ BEGIN
     IDS_COMP31              "Case"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP32              "C Case"
     IDS_COMP33              "Shoulder"
@@ -1214,7 +1223,7 @@ BEGIN
     IDS_COMP47              "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP48              "undefined"
     IDS_COMP49              "undefined"
@@ -1234,7 +1243,7 @@ BEGIN
     IDS_COMP63              "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP64              "undefined"
     IDS_COMP65              "undefined"
@@ -1254,7 +1263,7 @@ BEGIN
     IDS_COMP79              "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP80              "undefined"
     IDS_COMP81              "undefined"
@@ -1274,7 +1283,7 @@ BEGIN
     IDS_COMP95              "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP96              "undefined"
     IDS_COMP97              "undefined"
@@ -1294,7 +1303,7 @@ BEGIN
     IDS_COMP111             "Clan Ultra Medium Autocannon"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP112             "Ultra Heavy Autocannon"
     IDS_COMP113             "Clan Gauss Rifle"
@@ -1314,7 +1323,7 @@ BEGIN
     IDS_COMP127             "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP128             "undefined"
     IDS_COMP129             "undefined"
@@ -1334,7 +1343,7 @@ BEGIN
     IDS_COMP143             "ER Laser"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP144             "Pulse Laser"
     IDS_COMP145             "PPC"
@@ -1354,7 +1363,7 @@ BEGIN
     IDS_COMP159             "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP160             "Long Tom Cannon"
     IDS_COMP161             "Thunderbolt Missile"
@@ -1374,7 +1383,7 @@ BEGIN
     IDS_COMP175             "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP176             "undefined"
     IDS_COMP177             "undefined"
@@ -1394,7 +1403,7 @@ BEGIN
     IDS_COMP191             "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP192             "undefined"
     IDS_COMP193             "undefined"
@@ -1414,7 +1423,7 @@ BEGIN
     IDS_COMP207             "Lt. LBX Ammo"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP208             "Ultra AC Ammo"
     IDS_COMP209             "Heavy Ultra AC Ammo"
@@ -1434,7 +1443,7 @@ BEGIN
     IDS_COMP223             "SRM Ammo"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP224             "SRM/6 Pack"
     IDS_COMP225             "ST SRM Ammo"
@@ -1454,7 +1463,7 @@ BEGIN
     IDS_COMP239             "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP240             "undefined"
     IDS_COMP241             "undefined"
@@ -1473,7 +1482,7 @@ BEGIN
     IDS_COMP254             "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR0          "undefined"
     IDS_COMP_ABBR1          "Engine"
@@ -1485,7 +1494,7 @@ BEGIN
     IDS_COMP_ABBR7          "Heat Sink"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR8          "D-HtSnk"
     IDS_COMP_ABBR9          "D-HtSnk"
@@ -1505,7 +1514,7 @@ BEGIN
     IDS_COMP_ABBR23         "Gyro-I"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR24         "PwrAmp"
     IDS_COMP_ABBR25         "Armor"
@@ -1525,7 +1534,7 @@ BEGIN
     IDS_COMP_ABBR39         "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR40         "undefined"
     IDS_COMP_ABBR41         "undefined"
@@ -1545,7 +1554,7 @@ BEGIN
     IDS_COMP_ABBR55         "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR56         "undefined"
     IDS_COMP_ABBR57         "undefined"
@@ -1565,7 +1574,7 @@ BEGIN
     IDS_COMP_ABBR71         "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR72         "undefined"
     IDS_COMP_ABBR73         "undefined"
@@ -1585,7 +1594,7 @@ BEGIN
     IDS_COMP_ABBR87         "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR88         "undefined"
     IDS_COMP_ABBR89         "undefined"
@@ -1605,7 +1614,7 @@ BEGIN
     IDS_COMP_ABBR103        "Ultra Light AC"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR104        "Gauss"
     IDS_COMP_ABBR105        "Machine Gun"
@@ -1625,7 +1634,7 @@ BEGIN
     IDS_COMP_ABBR119        "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR120        "LRM Rack"
     IDS_COMP_ABBR121        "LRM/15"
@@ -1645,7 +1654,7 @@ BEGIN
     IDS_COMP_ABBR135        "C ST SRM Pack"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR136        "S-SRM/6"
     IDS_COMP_ABBR137        "undefined"
@@ -1665,7 +1674,7 @@ BEGIN
     IDS_COMP_ABBR151        "C Large Pulse Laser"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR152        "C ER Laser"
     IDS_COMP_ABBR153        "C Pulse Laser"
@@ -1685,7 +1694,7 @@ BEGIN
     IDS_COMP_ABBR167        "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR168        "undefined"
     IDS_COMP_ABBR169        "undefined"
@@ -1705,7 +1714,7 @@ BEGIN
     IDS_COMP_ABBR183        "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR184        "undefined"
     IDS_COMP_ABBR185        "undefined"
@@ -1725,7 +1734,7 @@ BEGIN
     IDS_COMP_ABBR199        "Lt. Gauss Ammo"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR200        "Lt. AC Ammo"
     IDS_COMP_ABBR201        "AC Ammo"
@@ -1745,7 +1754,7 @@ BEGIN
     IDS_COMP_ABBR215        "AMS"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR216        "C Lt. LBX Ammo"
     IDS_COMP_ABBR217        "C LBX Ammo"
@@ -1765,7 +1774,7 @@ BEGIN
     IDS_COMP_ABBR231        "LRM/15"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR232        "LRM/20"
     IDS_COMP_ABBR233        "C SRM Ammo"
@@ -1785,7 +1794,7 @@ BEGIN
     IDS_COMP_ABBR247        "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMP_ABBR248        "undefined"
     IDS_COMP_ABBR249        "undefined"
@@ -1797,17 +1806,17 @@ BEGIN
     IDS_COMP_ABBR255        "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PILOT1              "Rooster"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PILOT1_DESC         "Rooster is a grizzled veteran with a charming Southern accent."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING_FIRST_LOGISTICS " "
     IDS_SKILL0_HELP         "Piloting Help text goes here"
@@ -1819,7 +1828,7 @@ BEGIN
     IDS_LIGHT_MECH          "Light"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_PILOTING_INDICATOR "PILOTING Value ="
     IDS_HELP_SENSOR         "SENSOR  This displays the relative ability of the pilot to read his sensors"
@@ -1839,7 +1848,7 @@ BEGIN
     IDS_MCL_SCRIPTS_LAST    "The last of Brennan's space"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SKILL0              "Piloting"
     IDS_SKILL1              "Jumping"
@@ -1847,7 +1856,7 @@ BEGIN
     IDS_SKILL3              "Gunnery"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MEDIUM_MECH         "Medium"
     IDS_HEAVY_MECH          "Heavy"
@@ -1867,7 +1876,7 @@ BEGIN
     IDS_PROMOTION_SPECIALTY_SKILLS "SPECIALTY SKILLS"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MR_MECHNAME_FONT    "AgencyFB14.d3f"
     IDS_MR_VARIANT_NAME_FONT "AgencyFB11.d3f"
@@ -1887,7 +1896,7 @@ BEGIN
     IDS_MR_LB_RANGE_FONT    "AgencyFB14.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_Fonts               "Fonts for interface"
     IDS_MAIN_FONT           "Assets\\Graphics\\AgencyFB13.d3f"
@@ -1902,7 +1911,7 @@ BEGIN
     IDS_CM_MISSION_SCREEN_TITLE "MISSION SELECTION AREA"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_CM_CAMPAIGN_OVERVIEW_TITLE "CAMPAIGN OVERVIEW"
     IDS_CM_PLAY_BUTTON      "PLAY COM"
@@ -1913,7 +1922,7 @@ BEGIN
     IDS_CM_AREA_BUTTON_4    "AREA 4"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_ALL_MAIN_MENU_BUTTON "MAIN MENU     Return to the Main Menu."
     IDS_HELP_ALL_CBILLS     "C-BILLS     The amount of currency available for purchasing and customizing 'Mechs."
@@ -1922,7 +1931,7 @@ BEGIN
     IDS_HELP_CM_VIDEO_COM   "VIDCOM     A video device that plays communications from your officers. Here it provides an overview of the selected mission. Use the controls at the lower right to play, pause, and stop the VidCom."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_CM_PLAY_BUTTON "PLAY     Play the mission overview video."
     IDS_HELP_CM_PAUSE_BUTTON "PAUSE     Pause the mission overview video."
@@ -1944,7 +1953,7 @@ BEGIN
     IDS_HELP_REMOVEMW       "REMOVE  Select a Mechwarrior in the DEPLOYMENT TEAM and hit this button to remove him/her and place him/her in AVAILABLE MECHWARRIORS"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_CM_AREA_BUTTON_30   "AREA 30"
     IDS_MN_TITLE            "MISSION BRIEFING"
@@ -1960,7 +1969,7 @@ BEGIN
     IDS_MB_DEPLOYMENT_TITLE "DEPLOYMENT TEAM"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MRPR_DONE_FONT      "AgencyFB20.d3f"
     IDS_MRPR_TITLE_FONT     "AgencyFB20.d3f"
@@ -1980,7 +1989,7 @@ BEGIN
     IDS_MRPR_PROMOTION_HEADER_FONT "AgencyFB17.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MECH_ULLER          "ULLER"
     IDS_MECH_WOLFHOUND      "WOLFHOUND"
@@ -1992,7 +2001,7 @@ BEGIN
     IDS_MECH_BLOODASP       "BLOOD ASP"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MECH_WEREWOLF28912  "RAZORBACK"
     IDS_MECH_HOLLANDER      "HOLLANDER"
@@ -2012,7 +2021,7 @@ BEGIN
     IDS_MECH_CYCLOPS        "CYCLOPS"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MV_LONG             "LONG"
     IDS_MV_SHORT            "SHORTRANGE"
@@ -2032,7 +2041,7 @@ BEGIN
     IDS_MECH_JAGERMECH2     "The JagerMech has a prestigious heritage and a stable, if somewhat antiquated, design. As a long-range fire-support 'Mech, it rarely closes with its enemies, preferring to remain at long distances firing its Ultra Light Autocannons. \n\nCommanders often exploit a crushing barrage of JagerMech autocannon fire to open the door for lighter, nimbler 'Mechs or to rip open a seam on the battlefield in a concentrated heavyweight melee. Rarely outgunned and vulnerable principally when caught off guard in a face-to-face assault, the JagerMech is also a deadly defensive marksman against helicopter attack. Its fast-firing weapons change targets quickly and easily, making it effective against light vehicle swarms.\n\nWhen deployed without good short-range fire support, however, the JagerMech can be reduced to a nonentity on the battlefield. If deployed alone, it serves commanders best when kept well behind the lines.\n\n\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_GN_TONS             "TONS"
     IDS_GN_DROP_WEIGHT      "DROP WEIGHT"
@@ -2044,7 +2053,7 @@ BEGIN
     IDS_GN_UNITS            "UNITS"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SKILL_1             "SKILL 1"
     IDS_SKILL_2             "SKILL 2"
@@ -2056,7 +2065,7 @@ BEGIN
     IDS_SKILL_8             "SKILL 8"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PC_1                "ACE"
     IDS_PC_2                "ELITE"
@@ -2065,7 +2074,7 @@ BEGIN
     IDS_PC_5                "GREEN"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_AVAILABLEMW    "MECHWARRIORS  These are the Mechwarriors that are available for this mission.  Select a Mechwarrior and hit ADD to add him/her to the DEPLOYMENT TEAM"
     IDS_HELP_KILLS          "KILLS The number of enemies destroyed by this Mechwarrior"
@@ -2086,7 +2095,7 @@ BEGIN
     IDS_HELP_ENERGY_TAB     "ENERGY TAB"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_GAMEPAUSED          "GAME PAUSED"
     IDS_HELP_MEDAL1         "CAMPAIGN 1 RIBBON     Medal awarded to this pilot for participation in Campaign 1."
@@ -2107,7 +2116,7 @@ BEGIN
                             "UNCOMMON VALOR     Medal awarded to this pilot for killing 7 or more 'Mechs during a mission."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_SPEC1          "PILOT SPECIALTY 1 This is help information for the pilot's first specialty"
     IDS_HELP_SPEC2          "PILOT SPECIALTY 2 This is help information for the pilot's first specialty"
@@ -2122,7 +2131,7 @@ BEGIN
     IDS_HELP_PILOTING       "PILOTING This displays the relative piloting ability of the pilot"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_MN_TITLE       "MISSION BRIEFING     In this screen, you can study the selected mission's terrain and objectives."
     IDS_HELP_MN_MISSION_MAP "MISSION MAP     A dynamic reconnaissance photo of the selected mission's terrain and features. The mission's drop zone and objectives are shown in conjunction with the VidCom."
@@ -2143,7 +2152,7 @@ BEGIN
     IDS_HELP_MB_JUMPJETS    "JUMP JETS     The distance, in meters, that the selected 'Mech can jump."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_MISSILE_TAB    "MISSILE TAB"
     IDS_HELP_COMPONENT_TAB  "COMPONENT TAB"
@@ -2167,7 +2176,7 @@ BEGIN
     IDS_HELP_PM_TONNAGE     "TONNAGE     The weight, in tons, and class of the selected 'Mech."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MC_TAB_TITLE3       "MISSILES"
     IDS_MC_TAB_TITLE4       "COMPONENTS"
@@ -2178,7 +2187,7 @@ BEGIN
     IDS_KEYBOARD_REF_FONT   "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_LONGRANGE_DESC      "Order the selected 'Mechs to attack at long range."
     IDS_MEDIUMRANGE         "Medium-Range Attack Command (M)"
@@ -2199,7 +2208,7 @@ BEGIN
     IDS_OBJECTIVES_COMMAND  "Objectives List (F9)"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_COMMAND_DESC 
                             "Toggle the list of current mission objectives."
@@ -2220,7 +2229,7 @@ BEGIN
     IDS_DEFAULTRANGE        "Default Range"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SPECIALTY           "Light 'Mech Specialist"
     IDS_SPECIALTY2          "Laser Specialist"
@@ -2231,7 +2240,7 @@ BEGIN
     IDS_SPECIALTY8          "Sensor Specialist"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SPECIALTY9          "Toughness Specialist"
     IDS_SPECIALTY10         "Medium 'Mech Specialist"
@@ -2251,7 +2260,7 @@ BEGIN
     IDS_SPECIALTY24         "Sharpshooter Specialist"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PILOT               "Blade"
     IDS_PILOT2              "Bubba"
@@ -2271,7 +2280,7 @@ BEGIN
     IDS_PILOT16             "Psycho"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PILOT17             "Rooster"
     IDS_PILOT18             "Scooter"
@@ -2291,7 +2300,7 @@ BEGIN
     IDS_PILOT32             "Green"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PILOT33             "Regular"
     IDS_PILOT34             "Veteran"
@@ -2299,7 +2308,7 @@ BEGIN
     IDS_PILOT36             "Unassigned"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVE_FONT_640  "ArialNarrow8.d3f"
     IDS_PAUSEDFONT_800      "Agencyfb14.d3f"
@@ -2319,7 +2328,7 @@ BEGIN
     IDS_PAUSEBUTTON800      "AgencyfB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PAUSEBUTTON1024     "Agencyfb11.d3f"
     IDS_VEHICLEFONT800      "ArialNarrow8.d3f"
@@ -2339,7 +2348,7 @@ BEGIN
     IDS_PILOT_REVIEW_SKILLS "AgencyFB14.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES          "OBJECTIVES"
     IDS_INMISSION           "QUICK SAVE"
@@ -2351,7 +2360,7 @@ BEGIN
     IDS_OBJECTIVES_HELPHEADER "Objectives List"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_INMISSIONSAVE_HEADER "Quick Save"
     IDS_INMISSIONLOAD_HEADER "Quick Load"
@@ -2368,13 +2377,13 @@ BEGIN
     IDS_RETURN_TOGAME_HELP  "Return to the current mission."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MISSION_FAILED      "Mission Failed"
     IDS_MISSION_SUCCESS     "Mission Successful!"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRINGNEXT          "!"
     IDS_REPAIRBAY           "Repairs damaged 'Mechs in the field. Click the bay with a 'Mech selected to repair it."
@@ -2386,7 +2395,7 @@ BEGIN
     IDS_BASE_GENERATOR      "Powers linked gates and spotlights. Destroy to incapacitate linked buildings."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_TURRET_GENERATOR    "Powers linked turrets. Destroy to stop turrets from firing."
     IDS_SENSOR_CONTROL      "Capture to gain sensor information. Cannot capture if enemy is in vicinity."
@@ -2406,7 +2415,7 @@ BEGIN
     IDS_FUEL_PIPE_JUNCTION  "Contains combustibles. Produces small area-effect blast when destroyed."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_EXTRACTION_MARKER   "Move all units to this marker to end the mission once primary objectives are complete."
     IDS_NAVMARKER           "Move units to this navigation marker to complete an objective."
@@ -2426,7 +2435,7 @@ BEGIN
     IDS_DONE_HELP_DESC      "DONE     Proceed to the Pilot Promotion screen."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_GRASS1              "Grasslands Accent 2 (Forest Floor)"
     IDS_GRASS2              "Grasslands Accent 1 (Forest Floor)"
@@ -2446,7 +2455,7 @@ BEGIN
     IDS_STRING10015         "Grasslands Shore 2"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING10016         "Water"
     IDS_STRING10017         "Grasslands Accent 3 (Forest Floor)"
@@ -2466,7 +2475,7 @@ BEGIN
     IDS_STRING10031         "Grasslands Cliffs 2"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING10032         "Jungle Shore 1"
     IDS_STRING10033         "Jungle Shore 2"
@@ -2486,7 +2495,7 @@ BEGIN
     IDS_STRING10047         "Volcanic 4"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING10048         "Volcanic 5"
     IDS_STRING10049         "Volcanic Cliffs 1"
@@ -2506,7 +2515,7 @@ BEGIN
     IDS_STRING10063         "Jungle Cliffs 1"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_DONE                "DONE"
     IDS_SALVAGE_LISTBOX_HELP "Mech Item"
@@ -2528,7 +2537,7 @@ BEGIN
                             "SALVAGE LIST     Select each 'Mech you want to salvage."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING10064         "Jungle Cliffs 2"
     IDS_STRING10065         "Jungle Accent 1 (Volcanic Vents)"
@@ -2544,7 +2553,7 @@ BEGIN
     IDS_STRING10075         "TEST"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PILOTPROMOTION_BIG  "AgencyFB14.d3f"
     IDS_PILOTPROMOTION_SMALL "AgencyFB11.d3f"
@@ -2554,7 +2563,7 @@ BEGIN
     IDS_PILOTREVIEW_PILOTPROMOTED "AgencyFB14.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PROMOTION_SKILL     "LIGHT 'MECH SPECIALIST\nAbility to avoid and evade a great amount of enemy weapons fire when piloting a Light 'Mech."
     IDS_PROMOTION_SKILL2    "LASER SPECIALIST\nAbility to fire the Laser, Large Laser, Heavy Laser, and Heavy Large Laser with high accuracy."
@@ -2574,7 +2583,7 @@ BEGIN
     IDS_PROMOTION_SKILL16   "PPC SPECIALIST\nAbility to fire all Particle Projection Cannons with high accuracy."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PROMOTION_SKILL17   "HEAVY AUTOCANNON SPECIALIST\nAbility to fire all Heavy Autocannons with high accuracy."
     IDS_PROMOTION_SKILL18   "SHORT-RANGE SPECIALIST\nAbility to accurately target enemies within short range. Any target within 60 meters is easier to hit"
@@ -2594,7 +2603,7 @@ BEGIN
     IDS_REGULAR_SKILLS      "Regular Skills"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SPECIALTY25         "Sharpshooter Specialist"
     IDS_SPECIALTY26         "Sensor Specialist"
@@ -2612,7 +2621,7 @@ BEGIN
     IDS_SPECIALTY_HELP11    "PULSE LASER SPECIALIST     Ability to fire Pulse Lasers and Large Pulse Lasers with high accuracy."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SPECIALTY_HELP12    "ER LASER SPECIALIST     Ability to fire ER Lasers and ER Large Lasers with high accuracy."
     IDS_SPECIALTY_HELP13    "LRM SPECIALIST     Ability to fire all long-range missiles with high accuracy."
@@ -2631,7 +2640,7 @@ BEGIN
     IDS_SPECIALTY_HELP27    "SENSOR SPECIALIST     Ability to discern additional information from sensor readouts. Level of information increases with pilot's rank."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_ELITE_SKILLS3       "Elite Skills"
     IDS_ACE_SKILLS          "Ace Skills"
@@ -2651,7 +2660,7 @@ BEGIN
     IDS_MEDAL11             "MISSION SPECIFIC 2     For the design squad to determine."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MEDAL12             "MISSION SPECIFIC 3     For the design squad to determine."
     IDS_MEDAL13             "MISSION SPECIFIC 3     For the design squad to determine."
@@ -2660,7 +2669,7 @@ BEGIN
     IDS_MEDAL16             "STEINER ALLIANCE STAR     For uncommon bravery and honor."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SENSOR_HEAVY_MECH   "Hvy 'Mech"
     IDS_SENSOR_MECH_UNKNOWN "UNKNOWN"
@@ -2670,7 +2679,7 @@ BEGIN
     IDS_STRING30917         "Thor"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HOTKEY1             "Short-Range Attack"
     IDS_HOTKEY2             "Medium-Range Attack"
@@ -2690,7 +2699,7 @@ BEGIN
     IDS_HOTKEY16            "Power Down"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HOTKEY17            "Power Up"
     IDS_HOTKEY18            "Eject"
@@ -2710,7 +2719,7 @@ BEGIN
     IDS_HOTKEY_HEADER       "KEYBOARD REFERENCE"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HOT_KEY_HEADER_FONT "AgencyFB11.d3f"
     IDS_HOTKEY28            "Toggle Hot Keys"
@@ -2730,7 +2739,7 @@ BEGIN
     IDS_HOTKEY_ROTATER      "Rotate Camera Right"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_NEXT                "NEXT"
     IDS_BACK                "BACK"
@@ -2738,7 +2747,7 @@ BEGIN
     IDS_BUY_SELL_BUTTON     "BUY/SELL 'MECHS"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MAIN_MENU_BUTTON    "MAIN MENU"
     IDS_ADD_MECH            "ADD 'MECH"
@@ -2759,7 +2768,7 @@ BEGIN
     IDS_MECH_STORAGE        "'MECH STORAGE"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MECH_STORAGE_FONT   "AgencyfB11.d3f"
     IDS_CBILLS_FONT         "AgencyFB17.d3f"
@@ -2779,7 +2788,7 @@ BEGIN
     IDS_LONG_RANGE          "LONG"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MB_MECH_ICON_FONT   "ArialNarrow8.d3f"
     IDS_MAINMENU_FONT       "AgencyFB14.d3f"
@@ -2787,7 +2796,7 @@ BEGIN
     IDS_PR_HELP_BACK        "BACK     Return to the 'Mech Bay."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PR_HELP_NEXT        "Press this button to continue to Mission review"
     IDS_PR_ADD_FONT         "AgencyFB14.d3f"
@@ -2807,7 +2816,7 @@ BEGIN
     IDS_PR_PILOT_NAME_FONT  "AgencyFB17.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PR_SPECIALTY_SKILL_FONT "AgencyFB11.d3f"
     IDS_PR_NAME_LB_FONT     "AgencyFB11.d3f"
@@ -2821,7 +2830,7 @@ BEGIN
     IDS_PR_HELPFONT         "ArialNarrow8.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PM_PURCHASE         "Purchase 'Mech"
     IDS_PM_BUY              "BUY 'MECH"
@@ -2841,7 +2850,7 @@ BEGIN
     IDS_PM_STORAGE          "'MECH STORAGE"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PM_STORAGE_FONT     "AgencyFB14.d3f"
     IDS_PM_AVAILABLE        "AVAILABLE 'MECHS"
@@ -2853,7 +2862,7 @@ BEGIN
     IDS_PM_MAINMENU_FONT    "agencyfb14.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MC_CANCEL           "CANCEL"
     IDS_MC_CANCEL_FONT      "AgencyFB17.d3f"
@@ -2870,7 +2879,7 @@ BEGIN
     IDS_MC_BALLISTIC_HELP   "BALLISTICS WEAPONS     Review and purchase ballistics weapons. These weapons are typically heavy but generate a low amount of heat relative to the damage they inflict."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_ENERGY_TAB_HELP     "ENERGY WEAPONS     Review and purchase energy weapons. These weapons are typically light but generate a high amount of heat relative to the damage they inflict."
     IDS_MC_MISSILE_TAB_HELP "MISSILE WEAPONS     Review and purchase missile weapons. These weapons are typically of medium weight and generate a high amount of heat relative to the damage they inflict."
@@ -2890,7 +2899,7 @@ BEGIN
     IDS_WEAPON_INFO_DAMAGE_FONT "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MC_HEAT             "HEAT LIMIT:"
     IDS_MC_HEAT_FONT        "AgencyFB11.d3f"
@@ -2906,7 +2915,7 @@ BEGIN
     IDS_MC_UNAVAILABLE_TECH "You are removing a weapon that you cannot yet buy. If you click Accept, you will not be able to reload this weapon on the 'Mech."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_CM_HEADER           "MISSION SELECTION"
     IDS_CM_HEADER_FONT      "AgencyFB17.d3f"
@@ -2918,7 +2927,7 @@ BEGIN
     IDS_CM_HELP_TEXT_FONT   "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_CM_CBILLS_FONT      "AgencyFB17.d3f"
     IDS_CM_HELP_NEXT        "Continue to the Mission Briefing."
@@ -2933,7 +2942,7 @@ BEGIN
     IDS_CM_NEXTBACK_FONT    "AgencyFB17.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MN_HEADER           "MISSION BRIEFING"
     IDS_MN_HEADER_FONT      "AgencyFB17.d3f"
@@ -2941,7 +2950,7 @@ BEGIN
     IDS_MN_MISSION_MAP      "VIDCOM: MISSION MAP"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MN_MISSION_MAP_FONT "AgencyFB14.d3f"
     IDS_MN_TEXTINFO         "MISSION OBJECTIVES"
@@ -2961,7 +2970,7 @@ BEGIN
     IDS_MN_LB_SMALL_FONT    "ArialNarrow8.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MM_NEWCAMPAIGN      "NEW CAMPAIGN"
     IDS_MM_LOAD             "LOAD GAME"
@@ -2982,7 +2991,7 @@ BEGIN
     IDS_MM_EXIT_HELP        "Quit MechCommander 2."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MM_FONT             "AgencyFB17.d3f"
     IDS_MM_SKIRMISH         "SOLO MISSION"
@@ -3002,7 +3011,7 @@ BEGIN
     IDS_PROMPT_TO_DISCONNECT "Disconnect from Multiplayer?"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_DIALOG_OK           "OK"
     IDS_DIALOG_CANCEL       "CANCEL"
@@ -3020,7 +3029,7 @@ BEGIN
     IDS_DIALOG_LIST_FONT    "AgencyFB14.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_DIALOG_OVERWRITE_PROMPT "Overwrite %s?"
     IDS_LOAD                "LOAD"
@@ -3041,7 +3050,7 @@ BEGIN
     IDS_DIALOG_TIME         "TIME : %s  %s"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MINELAYER_HELP      "Select the Lay Mines button, then click the terrain to drop mines."
     IDS_MINELAYER_HELP2     "Select the Lay Mines button, then right-click the terrain to drop mines."
@@ -3049,7 +3058,7 @@ BEGIN
     IDS_REPAIR_HELP2        "Right-click a damaged 'Mech to repair."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_AIRSTRIKE_HELP      "Click a target to attack it with an Airstrike."
     IDS_AIRSTRIKE_HELP2     "Right-click a target to attack it with an Airstrike."
@@ -3079,7 +3088,7 @@ BEGIN
                             "Right-click a disabled 'Mech to deploy a Salvage Craft."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_RECOVER_HELP        "Click a disabled 'Mech to recover."
     IDS_RECOVER_HELP2       "Right-click a disabled 'Mech to recover."
@@ -3099,7 +3108,7 @@ BEGIN
     IDS_HOUSE4              "CLAN"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_EN_ENCYLOPEDIA      "ENCYCLOPEDIA"
     IDS_EN_ENCYLOPEDIA_FONT "AgencyFB17.d3f"
@@ -3115,7 +3124,7 @@ BEGIN
     IDS_EN_LISTBOX_FONT     "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MECH_MADCAT2        "Upon its first appearance to the Inner Sphere in the Oberon Confederation, ComStar named this impressive 'Mech the Mad Cat because it shares its hunched torso chassis with the old Marauder as well as the Catapult. Soon after, the Mad Cat gained an infamous reputation as a devastating opponent. \n\nA powerful mix of long-range weapons and speed; the Mad Cat often cripples enemies before they can even engage properly. Rushing tactics employed against other long-range 'Mechs prove suicidal against the Mad Cat, due to its excellent armor protection and arsenal of machine guns and lasers.\n\nMost closely associated with Clan Wolf, the Mad Cat has long been a symbol of Clan martial superiority. Although the fall of their homeworld has eliminated any immediate threat from the Clans, the appearance of the Mad Cat on a battlefield still unnerves even the most hardened mechwarrior."
     IDS_MECH_BLOODASP2      "Virtually unknown to the Inner Sphere, the Blood Asp was introduced recently by Clan Star Adder. Only a handful of these 'Mechs are known to be in Davion ownership, acquired during the assault on the Clan homeworld. \n\nOne of the first 'Mechs to field breakthrough Heavy Laser technology, the Blood Asp proves to be an offensive powerhouse. Delivering incredible damage at all ranges, the Blood Asp makes short work of any enemy regardless of size. All this firepower comes at the cost of mediocre armor protection, something that must be noted by commanders used to the durability of other assault 'Mechs.\n\n\n"
@@ -3135,7 +3144,7 @@ BEGIN
     IDS_MECH_CATAPULT2      "The Catapult is the prototypical support 'Mech, carrying maximum long-range firepower, and is best used with other 'Mechs on the front lines. Its weak short-range weaponry and comparatively weak armor for a Heavy 'Mech make it vulnerable.\n\nA classic design, the Catapult loadout includes Long-Range Missile Racks, which can devastate opponents from a distance without the risk of opposing fire.\n\nJump jets and an effective complement of lasers make the Catapult flexible but slow on the battlefield. Capable of jumping out of range of short-range weapons or returning close volleys with laser blasts, few 'Mechs match the Catapult's deadly stalking prowess.\n\nWhen left alone too long, even against much smaller opponents, the Catapult's lack of defensive capabilities can become all too apparent.\n\n\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MECH_LAOHU2         "A relatively new design drafted at the Victoria Academy of Arms and Technology, the Lao Hu first entered service in 3062 during the St. Ives conflict. Its outstanding performance sealed its role as a powerful new weapon for House Liao.\n\nCombining excellent mobility, jump capability, and state-of-the-art heat dissipation technology, the Lao Hu is an aggressive and deadly fighter. Commanders often assign this unit to the front line, an area where many Liao 'Mechs do not excel."
     IDS_MECH_CYCLOPS2       "House Liao's designers have updated the venerable Cyclops BattleMech with the most advanced communications and sensor hardware available. Able to tap into Liao's sophisticated satellite array even during combat situations, the Cyclops acts as the nerve center of a battle and mobile command center.\n\nIn combat, the Cyclops strikes strategically important targets from long range. Its weapons payload is not as impressive as that of other Assault-class 'Mechs but is more than adequate to handle most situations. "
@@ -3150,7 +3159,7 @@ BEGIN
     IDS_URBANMECH           "URBANMECH"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_EN_MECHNAME_FONT    "AgencyFB14.d3f"
     IDS_MECH_STATS          "'MECH STATS"
@@ -3170,7 +3179,7 @@ BEGIN
     IDS_EN_WEAPON_HEAT      "HEAT : %ld"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HOUSE5              "Clanner House"
     IDS_HOUSE6              "Clanner House"
@@ -3194,7 +3203,7 @@ BEGIN
                             "Click terrain to order selected units to jump to this location."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_JUMP_CURSOR_RIGHT_HELP 
                             "Right-click terrain to order selected units to jump to this location."
@@ -3228,7 +3237,7 @@ BEGIN
                             "Click to attack this target from short range."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_EN_WEAPON_DAMAGE    "DAMAGE : %ld"
     IDS_EN_WEAPON_RANGE     "RANGE : %s"
@@ -3247,7 +3256,7 @@ BEGIN
     IDS_EN_WEAPON_ARMOR_HELP "ARMOR HELP"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO         "undefined"
     IDS_COMPENCYCLO2        "undefined"
@@ -3267,7 +3276,7 @@ BEGIN
     IDS_COMPENCYCLO16       "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO17       "undefined"
     IDS_COMPENCYCLO18       "undefined"
@@ -3287,7 +3296,7 @@ BEGIN
     IDS_COMPENCYCLO32       "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO33       "undefined"
     IDS_COMPENCYCLO34       "undefined"
@@ -3307,7 +3316,7 @@ BEGIN
     IDS_COMPENCYCLO48       "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO49       "undefined"
     IDS_COMPENCYCLO50       "undefined"
@@ -3327,7 +3336,7 @@ BEGIN
     IDS_COMPENCYCLO64       "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO65       "undefined"
     IDS_COMPENCYCLO66       "undefined"
@@ -3347,7 +3356,7 @@ BEGIN
     IDS_COMPENCYCLO80       "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO81       "undefined"
     IDS_COMPENCYCLO82       "undefined"
@@ -3367,7 +3376,7 @@ BEGIN
     IDS_COMPENCYCLO96       "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO97       "undefined"
     IDS_COMPENCYCLO98       "undefined"
@@ -3387,7 +3396,7 @@ BEGIN
     IDS_COMPENCYCLO112      "Clan Ultra Autocannons use mechanical principles similar to those of Ultra Autocannons, but advanced Clan engineering and materials produce even better performance. Overall rate of fire is increased over that of the Ultra Autocannons.\n\nThe Medium Autocannon, or AC/10, has been a weapon in service in some form since the 20th century. Modern versions are automatic and self-feeding, firing shells 40-mm caliber or larger. A versatile and inexpensive weapon, the Medium Autocannon has been mounted on virtually every weapons platform in common use including 'Mechs, tanks, and turrets.\n\n\n\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO113      "Improvements in the design of the feed mechanisms and advanced materials allow Ultra Autocannons to sustain a higher cyclic firing rate over conventional autocannons. Firing the same caliber ammunition, Ultra Autocannons net a significant increase in damage potential as well as cost.\n\nAlso called the AC/20, the Heavy Autocannon is a short-range weapon that fires large-caliber shells between 80 and 120 mm. Although bulky, expensive, and difficult to mount, the Heavy Autocannon overcomes all its faults by delivering extreme damage and excels at disabling heavily armored targets.\n\nFound primarily on larger 'Mechs, the Heavy Autocannon is only suited for anti-'Mech operations, as any other use is considered overkill.\n\n\n\n"
     IDS_COMPENCYCLO114      "Clan Gauss Rifles function on the same principles as the standard Gauss Rifle, accelerating a solid slug along electromagnetic rails to high velocities. Clan engineering improvements over the standard Gauss Rifle can be seen in the power induction system and load mechanisms, resulting in a better firing rate."
@@ -3407,7 +3416,7 @@ BEGIN
     IDS_COMPENCYCLO128      "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO129      "undefined"
     IDS_COMPENCYCLO130      "undefined"
@@ -3427,7 +3436,7 @@ BEGIN
     IDS_COMPENCYCLO144      "An upgrade to basic laser technology, the Extended-Range Laser does the same damage as the standard Laser, but its range is increased. Unfortunately, the stress on the heat capacity of the 'Mech has also been increased."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO145      "The Pulse Laser and Large Pulse Laser fire rapid, short bursts of laser energy rather than a continuous beam. While this enables the weapon to deliver more overall damage, it also generates more heat. "
     IDS_COMPENCYCLO146      "The Particle Projection Cannon, or PPC, fires bolts consisting mainly of high-energy protons or ions. Unlike laser weapons, the PPC is able to deliver both kinetic and thermal energy, resulting in excellent penetration power against armor. \n\nAlthough larger than laser weapons while still generating large amounts of heat, the PPC is a favorite weapon among MechWarriors throughout the Inner Sphere.\n\n\n\n"
@@ -3447,7 +3456,7 @@ BEGIN
     IDS_COMPENCYCLO160      "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO161      "The Long Tom Cannon is a smaller version of the heavy artillery piece. This version can be mounted on a 'Mech chassis, although only the largest 'Mechs have enough payload space to accommodate one.\n\nThe Long Tom lobs high-explosive shells indirectly at targets, clearing any intervening obstacles. The shell itself inflicts high levels of damage to everything within a large radius.\n\nAlthough a powerful weapon, the Long Tom has been cited as the cause of numerous friendly fire casualties on the battlefield. Commanders are advised to be judicious when employing this dangerous device.\n\n\n\n"
     IDS_COMPENCYCLO162      "Experimental technology and not readily available, the Thunderbolt is a large cruise missile that inflicts severe damage to even Assault-class 'Mechs. The large size of the missile carries heavy penalties in terms of payload space and range. Only the largest 'Mechs can mount a Thunderbolt missile system, and the missile is limited to medium range."
@@ -3467,7 +3476,7 @@ BEGIN
     IDS_COMPENCYCLO176      "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO177      "undefined"
     IDS_COMPENCYCLO178      "undefined"
@@ -3487,7 +3496,7 @@ BEGIN
     IDS_COMPENCYCLO192      "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO193      "undefined"
     IDS_COMPENCYCLO194      "undefined"
@@ -3507,7 +3516,7 @@ BEGIN
     IDS_COMPENCYCLO208      "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO209      "undefined"
     IDS_COMPENCYCLO210      "undefined"
@@ -3527,7 +3536,7 @@ BEGIN
     IDS_COMPENCYCLO224      "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO225      "undefined"
     IDS_COMPENCYCLO226      "undefined"
@@ -3547,7 +3556,7 @@ BEGIN
     IDS_COMPENCYCLO240      "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COMPENCYCLO241      "undefined"
     IDS_COMPENCYCLO242      "undefined"
@@ -3566,7 +3575,7 @@ BEGIN
     IDS_COMPENCYCLO255      "undefined"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_VEHICLE_DESCRIPTION_0 
                             "An Armored Car may carry command personnel or intelligence operatives. Its Machine Gun Array and light armor make it an easy target for anything heavier than infantry."
@@ -3602,7 +3611,7 @@ BEGIN
                             "The Aerospotter is a lightly armed and armored combat vehicle that carries extensive positioning and communication equipment. Its main threat lies in the ability to electronically paint targets for aerial bombardment from aerospace fighter bombers."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_VEHICLE_DESCRIPTION_16 "Placeholder text Long Tom Artillery:"
     IDS_VEHICLE_DESCRIPTION_17 
@@ -3636,7 +3645,7 @@ BEGIN
     IDS_VEHICLE_DESCRIPTION_31 "Vehicle needs descripton"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_VEHICLE_DESCRIPTION_32 "Vehicle needs descripton"
     IDS_VEHICLE_DESCRIPTION_33 "Vehicle needs descripton"
@@ -3649,7 +3658,7 @@ BEGIN
     IDS_VEHICLE_DESCRIPTION_40 "Vehicle needs descripton"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PERSONALITY_0       "Archon Katrina Steiner"
     IDS_PERSONALITY_1       "Mandrissa Anita Cho"
@@ -3665,7 +3674,7 @@ BEGIN
     IDS_PERSONALITY_11      "Placeholder 1"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PERSONALITY_12      "Placeholder"
     IDS_PERSONALITY_13      "Placeholder"
@@ -3695,7 +3704,7 @@ BEGIN
     IDS_PERONSALITY_DESCRIPTION11 "Placeholder"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PERONSALITY_DESCRIPTION12 "Placeholder"
     IDS_PERONSALITY_DESCRIPTION13 "Placeholder"
@@ -3706,7 +3715,7 @@ BEGIN
     IDS_PERSONALITY_PICTURE3 "MCL_EN_Person_DavionCommand.tga"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PERSONALITY_PICTURE4 "MCL_EN_Person_TacOfficer.tga"
     IDS_PERSONALITY_PICTURE5 "MCL_EN_Person_CivLeader.tga"
@@ -3721,7 +3730,7 @@ BEGIN
     IDS_PERSONALITY_PICTURE14 "Placeholder"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_COLORMAP0           "Tundra"
     IDS_COLORMAP1           "Forest"
@@ -3730,7 +3739,7 @@ BEGIN
     IDS_COLORMAP4           "Volcanic"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HISTORY_0           "Star League Rise and Collapse"
     IDS_HISTORY_1           "Warring Houses"
@@ -3755,7 +3764,7 @@ BEGIN
                             "In the midst of the Sarna March, now dubbed Chaos March, the battle for House supremacy rages anew among Davion, Steiner, Liao, Marik, and other loyalist forces throughout the Inner Sphere. The battle here on the world of Carver V is but a skirmish in the imbroglio across the Inner Sphere.\n\nBattles between Liao and Davion ended the life of Mandarin Cho, leaving his widow at the helm of House Liao’s forces on Carver V. Her desire for vengeance must indeed burn more fiercely than that of any commander who has tasted mere defeat.\n\nDavion and Steiner forces continue their alliance, although even after numerous historical victories their union is not a perfect one, particularly in the face of civil war spreading fast throughout their respective realms. Both maintain forces on Carver V, and their cooperation could create a juggernaut.\n\nMarik, Kurita, and other notable military entities of the 31st century have not yet shown their hand on Carver V. Aboriginal movements of Carver citizens as well as more shadowy armed bandits on planet have definitely made their presence known, even if their identities and influence have yet to become clear.\n\nAs the wars of 3062 rage on, the future of Carver V is very much undecided.\n\n\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HISTORY_DESCRIPTION_5 "place holder"
     IDS_HISTORY_DESCRIPTION_6 "place holder"
@@ -3775,7 +3784,7 @@ BEGIN
     IDS_SHILONE             "Shilone Bomber"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BUILDING_ENCYCLO0   "Ammo Dumps are lightly armored repositories for ammunition of every sort.\n\nAny Ammo Dump, regardless of controlling forces, can be targeted and destroyed to create significant collateral damage."
     IDS_BUILDING_ENCYCLO1   "Large Fuel Tanks dot several battle theaters. All sides in the battle for Carver V have taken great care to ensure deep redundancies in their fuel storage systems, so almost any fuel tank you encounter on the field is certain to be an attractive target with no consequences for you or your employers.\n\nThe intriguing aspect to the presence of Large Fuel Tanks is their unintended utility as spare ordnance on the field; lure opponents within range of the collateral damage of a tank, and then blast the tank for a crude incendiary device.\n\n\n\n"
@@ -3787,7 +3796,7 @@ BEGIN
     IDS_BUILDING_ENCYCLO7   "A night battle often plays out under the glare of a spotlight system operated by a Spotlight Control. This control serves only a spotlight system and does not augment sensor function even at night."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BUILDING_ENCYCLO8   "A Lookout Tower augments the battle readiness of a Turret Control. Crippling a Lookout Tower may severely hamper a control's turrets for long-range targeting. Without a Lookout Tower, intelligence reports indicate that turrets may depend exclusively on line-of-sight target acquisition.\n\n\n\n"
     IDS_BUILDING_ENCYCLO9   "Placeholder text:  Mech Warrior Barracks"
@@ -3807,7 +3816,7 @@ BEGIN
     IDS_BUILDING_ENCYCLO23  "When a Weapons Facility is captured, the technology being researched there is obtained, and all weapons and components associated with that technology can be manufactured. Technology acquisition is a permanent status and carries over into the logistics phase of any future mission."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BUILDING_ENCYCLO24  "Although the weakest of all turret types, enough Short-Range Missile (SRM) Turrets clustered around a key position can shred a 'Mech team all too quickly, which makes them an inviting target for capture or destruction.\n\nA group of SRM Turrets depends on a Turret Generator and a Turret Control to function. Destroy the generator to cripple the turrets, or capture the control to align the turrets with your own team."
     IDS_BUILDING_ENCYCLO25  "Long-Range Missile (LRM) Turrets offer significant long-range firepower to bases and in defense of other fixed structures. Without requiring the attention of a pilot, LRM Turrets can lock on targets and inflict damage on approaching 'Mechs, in some cases even crippling Light 'Mechs.\n\nA group of LRM Turrets depends on a Turret Generator and a Turret Control to function. Destroy the generator to cripple the turrets, or capture the control to align the turrets with your own team.\n\n\n\n"
@@ -3822,18 +3831,18 @@ BEGIN
     IDS_BUILDING_ENCYCLO35  "Placeholder text: "
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_FIRST_OPERATIONS_STRING "FirstString for operations"
     IDS_OP_MISSION_NAME_FONT "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_LAST_LOGISTICS_HELP_STRINGS "Last of Dana's Strings"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_PM_RANGE       "RANGE     The dominant weapons range of the selected 'Mech."
     IDS_HELP_PM_ARMOR       "ARMOR     The amount of armor on the selected 'Mech."
@@ -3860,7 +3869,7 @@ BEGIN
                             "HEAT GENERATED     The amount of heat the select weapon generates when fired."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_PR_HEADER_TEXT "PILOT READY AREA     In this screen, you can review and assign pilots to the 'Mechs in the Deployment Team area."
     IDS_HELP_PR_DEPLOYMENT_TEAM 
@@ -3881,7 +3890,7 @@ BEGIN
     IDS_HELP_PR_SPECIALTY   "SPECIALTY SKILLS     The special skills of the selected pilot."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP0          "UNDEFINED"
     IDS_HELP_COMP1          "FUSION ENGINE"
@@ -3901,7 +3910,7 @@ BEGIN
     IDS_HELP_COMP15         "SENSOR - ADVANCED\nAdvantage: Has increased range over Intermediate Sensors. Pilots with special sensor skills can determine enemy type and composition.\nDisadvantage: Only certain 'Mechs are equipped with sensors."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP16         "C SENSOR - BASIC"
     IDS_HELP_COMP17         "C SENSOR - ADVANCED\nAdvantage: Has increased range over Intermediate Sensors. Pilots with special sensor skills can determine enemy type and composition.\nDisadvantages: Only certain 'Mechs are equipped with sensors."
@@ -3921,7 +3930,7 @@ BEGIN
     IDS_HELP_COMP31         "CASE"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP32         "C CASE"
     IDS_HELP_COMP33         "SHOULDER"
@@ -3941,7 +3950,7 @@ BEGIN
     IDS_HELP_COMP47         "UNDEFINED"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP48         "UNDEFINED"
     IDS_HELP_COMP49         "UNDEFINED"
@@ -3961,7 +3970,7 @@ BEGIN
     IDS_HELP_COMP63         "UNDEFINED"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP64         "UNDEFINED"
     IDS_HELP_COMP65         "UNDEFINED"
@@ -3981,7 +3990,7 @@ BEGIN
     IDS_HELP_COMP79         "UNDEFINED"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP80         "UNDEFINED"
     IDS_HELP_COMP81         "UNDEFINED"
@@ -4001,7 +4010,7 @@ BEGIN
     IDS_HELP_COMP95         "UNDEFINED"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP96         "UNDEFINED"
     IDS_HELP_COMP97         "UNDEFINED"
@@ -4021,7 +4030,7 @@ BEGIN
     IDS_HELP_COMP111        "CLAN ULTRA MEDIUM AUTOCANNON     Damage:  6.0    Rate of Fire: 2.8     Heat: 3.0 \nAdvantage: Faster firing rate and less heat than the Ultra Medium Autocannon.\nDisadvantages: Very expensive."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP112        "ULTRA HEAVY AUTOCANNON     Damage: 12.0    Rate of Fire: 2.4    Heat: 8.0\nAdvantages: Inflicts heavy damage at a  better firing rate than the Heavy Autocannon.\nDisadvantage: More expensive and higher heat than the Heavy Autocannon."
     IDS_HELP_COMP113        "CLAN GAUSS RIFLE     Damage: 10.0     Rate of Fire: 1.6     Heat: 1.0\nAdvantage: Better firing rate than the Gauss Rifle.\nDisadvantage: Expensive."
@@ -4041,7 +4050,7 @@ BEGIN
     IDS_HELP_COMP127        "UNDEFINED"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP128        "UNDEFINED"
     IDS_HELP_COMP129        "UNDEFINED"
@@ -4061,7 +4070,7 @@ BEGIN
     IDS_HELP_COMP143        "ER LASER     Damage:  2.5     Rate of Fire: 2.4     Heat: 5.0\nAdvantage: Range extended to medium.\nDisadvantage: Generates more heat than the Laser."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP144        "PULSE LASER     Damage:  2.0     Rate of Fire: 3.5     Heat: 4.0\nAdvantage: Rapid firing rate delivers more damage over time than the Laser.\nDisadvantage: Generates more heat than the Laser."
     IDS_HELP_COMP145        "PPC     Damage:  7.0     Rate of Fire: 1.5     Heat: 10.0\nAdvantage: Excellent damage makes this weapon effective against heavily armored targets.\nDisadvantage: Requires more payload space than other energy weapons."
@@ -4081,7 +4090,7 @@ BEGIN
     IDS_HELP_COMP159        "UNDEFINED"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP160        "LONG TOM CANNON     Damage: 15.0    Rate of Fire: 1.4    Heat: 20.0\nAdvantages: Fires over obstacles that block line of sight; explosive shells damage everything in a large area. \nDisadvantages: Extremely large; generates high heat; very expensive."
     IDS_HELP_COMP161        "THUNDERBOLT MISSILE     Damage: 13.0    Rate of Fire: 1.7    Heat: 8.0\nAdvantage: Inflicts extremely heavy damage; performs well against heavily armored targets.\nDisadvantages: Large size; very expensive."
@@ -4101,7 +4110,7 @@ BEGIN
     IDS_HELP_COMP175        "UNDEFINED"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP176        "UNDEFINED"
     IDS_HELP_COMP177        "UNDEFINED"
@@ -4121,7 +4130,7 @@ BEGIN
     IDS_HELP_COMP191        "UNDEFINED"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP192        "UNDEFINED"
     IDS_HELP_COMP193        "UNDEFINED"
@@ -4141,7 +4150,7 @@ BEGIN
     IDS_HELP_COMP207        "LT. LBX AMMO"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP208        "ULTRA AC AMMO"
     IDS_HELP_COMP209        "HEAVY ULTRA AC AMMO"
@@ -4161,7 +4170,7 @@ BEGIN
     IDS_HELP_COMP223        "SRM AMMO"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP224        "SRM/6 PACK"
     IDS_HELP_COMP225        "ST SRM AMMO"
@@ -4181,7 +4190,7 @@ BEGIN
     IDS_HELP_COMP239        "UNDEFINED"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP240        "UNDEFINED"
     IDS_HELP_COMP241        "UNDEFINED"
@@ -4200,12 +4209,12 @@ BEGIN
     IDS_HELP_COMP254        "UNDEFINED"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HELP_COMP256        "First component help"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING30784         "Tall Urban Concrete"
     IDS_STRING30785         "Tall Urban Abandoned"
@@ -4225,12 +4234,12 @@ BEGIN
     IDS_STRING30799         "SRM Grassland Camo Turret"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SPECIALTY_HELP28    "LIGHT 'MECH SPECIALIST     Ability to avoid and evade a great amount of enemy weapons fire when piloting a Light 'Mech."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING_FIRST_MULTIPLAYER_SETUP "MULTIPLAYER SETUP STRINGS GO HERE"
     IDS_MPS_CONNECTION_TYPE "CONNECTION TYPE"
@@ -4250,7 +4259,7 @@ BEGIN
     IDS_STRING26015         "HOST GAME"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING26016         "HOST GAME     Click to host a game."
     IDS_STRING26017         "This connection type will let you play a MechCommander 2 multiplayer game at a location on the Internet that you specify by providing a specific IP address. If you are the host, be sure to give your IP address to other players so they can join your game."
@@ -4270,7 +4279,7 @@ BEGIN
     IDS_MP_CON_MODEM_HOST_FONT "AgencyFB17.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_CON_MODEM_FONT   "AgencyFB11.d3f"
     IDS_MP_CON_MODEM_CONNECTING "Connecting to game %s"
@@ -4290,7 +4299,7 @@ BEGIN
     IDS_MP_LANBROW_NUMPLAYER_FONT "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING26100         "HOST GAME"
     IDS_STRING26101         "New Game Name"
@@ -4306,7 +4315,7 @@ BEGIN
     IDS_MP_HOST_EDIT_FONT   "AgencyFB14.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING26150         "MISSION PARAMETERS: HOST"
     IDS_STRING26151         "PLAYER"
@@ -4320,7 +4329,7 @@ BEGIN
     IDS_STRING26159         "AMMUNITION"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING26160         "RESOURCE PTS"
     IDS_STRING26161         "AIRSTRIKE"
@@ -4340,13 +4349,13 @@ BEGIN
     IDS_STRING26175         "MAP INFO"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_LS_LOADING          "LOADING..."
     IDS_LS_LOADING_FONT     "AgencyFB17.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_GN_MECHENTRY_FONT   "AgencyFB11.d3f"
     IDS_GN_WEIGHT_FONT      "ArialNarrow8.d3f"
@@ -4356,12 +4365,12 @@ BEGIN
     IDS_GN_MECHNAME_FONT    "ArialNarrow8.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_GN_PILOTNAME_FONT   "ArialNarrow8.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MR_PROMOTION_NAME_FONT "AgencyFB14.d3f"
     IDS_MR_PROMOTION_MISSIONS_FONT "AgencyFB11.d3f"
@@ -4375,14 +4384,14 @@ BEGIN
     IDS_MR_SPECIALTY_SKILLS_FONT "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MN_MAINMENUFONT     "AgencyFB17.d3f"
     IDS_MN_NEXTBACKFONT     "AgencyFB17.d3f"
     IDS_MN_HELPFONT         "ArialNarrow8.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_CON_MODEM_PHONE_FONT "AgencyFB14.d3f"
     IDS_MP_CON_MODEM_MODEM_FONT "AgencyFB14.d3f"
@@ -4402,13 +4411,13 @@ BEGIN
     IDS_MP_CONNECT_ERROR_NO_SESSION_FONT "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_HOST_DROPLIST_FONT "AgencyFB11.d3f"
     IDS_MP_LAN_LOCKED_HELP  "LOCKED GAMES     A locked game icon in this column indicates that the host has locked the game and it cannot be joined by any more players."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_LANBROW_MAPNAME_FONT "AgencyFB11.d3f"
     IDS_MP_LANBROW_PING_FONT "AgencyFB11.d3f"
@@ -4438,7 +4447,7 @@ BEGIN
                             "Unable to connect, game versions are different"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_PARAM_MAINMENUFONT "AgencyFB17.d3f"
     IDS_MP_PARAM_LOAD_MAP_FONT "AgencyFB17.d3f"
@@ -4458,7 +4467,7 @@ BEGIN
     IDS_MP_PARAM_BACK_FONT  "AgencyFB17.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_PARAM_PREFS_FONT "AgencyFB17.d3f"
     IDS_MP_PARAM_TITLE_FONT "AgencyFB17.d3f"
@@ -4478,7 +4487,7 @@ BEGIN
     IDS_MP_PARAM_HOSTIP_FONT "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_PARAM_HELP_FONT  "ArialNarrow8.d3f"
     IDS_MP_PARAM_PLAYER_NAME_FONT "AgencyFB11.d3f"
@@ -4498,7 +4507,7 @@ BEGIN
     IDS_MP_PARAM_RP_FOR_MECHS_FONT "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING26250         "ADD AI PLAYER"
     IDS_ADD_AI_ADD_AI_PLAYER_FONT "AgencyFB17.d3f"
@@ -4508,7 +4517,7 @@ BEGIN
     IDS_ADD_AI_EXPERIENCE_FONT "AgencyFB14.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING26256         "FACTION"
     IDS_ADD_AI_FACTION_FONT "AgencyFB14.d3f"
@@ -4516,7 +4525,7 @@ BEGIN
     IDS_ADD_AI_AI_PLAYER_MECH_FONT "AgencyFB14.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_START    "OBJECTIVES STRINGS"
     IDS_OBJECTIVES_1_1      " 1. Investigate Abandoned Airfield"
@@ -4536,7 +4545,7 @@ BEGIN
     IDS_OBJECTIVES_3_3      " 3. Capture Mobile HQ Vehicle"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_LM_LOAD_MAP      "LOAD MAP"
     IDS_MP_LM_LOAD_MAP_FONT "AgencyFB17.d3f"
@@ -4544,7 +4553,7 @@ BEGIN
     IDS_MP_LM_MAP_LIST_FONT "Agencyfb14.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_LM_MAP_LIST_MAX_PLAYERS "%ld MAX PLAYERS"
     IDS_MP_LM_MAP_LIST_MAX_PLAYERS_FONT "AgencyFB11.d3f"
@@ -4565,7 +4574,7 @@ BEGIN
     IDS_MP_LM_TYPE6         "Complex"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_LM_TYPE7         "Mission Type 0"
     IDS_MP_LM_TYPE8         "Mission Type 0"
@@ -4585,7 +4594,7 @@ BEGIN
     IDS_MP_PREFS_BASE_COLOR_FONT "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_TUTORIAL            "Tutorial"
     IDS_STRING60001         "Order your selected 'Mechs to move to a specific location by right-clicking that location on the battlefield."
@@ -4605,7 +4614,7 @@ BEGIN
     IDS_AUTOSAVE_NAME       "After_Mission_%s"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_PARAM_DROPWEIGHT "DROP WEIGHT"
     IDS_MP_PARAM_DROPWEIGHT_FONT "AgencyFB11.d3f"
@@ -4625,7 +4634,7 @@ BEGIN
                             "Your map is a different version than that of the host. Would you like to go to \n %s\n to download a new one?"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BRIEF_START         "Mission Briefings go here"
     IDS_BRIEF_01            "This sector marks the beginning of the area our units have encountered Bandit ambushes and attacks.\n\nInitialize your MechCommander software and systems, and proceed to investigate this area. You are given free license to terminate any Bandit hostiles without confirmation from Steiner High Command.\n\nTactical Officer Notes:\nWelcome to Carver V, Commander. I'll be adding my own notes to the briefings from our employer, House Steiner.\n\nOur patrol area goes through a chain of small islands. 'Mechs and hovercraft will be able to cross the shallow waters, but vehicles and tanks will not. If you encounter a large Bandit group, try to divide the 'Mechs from the vehicles by retreating back over shallow water."
@@ -4637,7 +4646,7 @@ BEGIN
     IDS_BRIEF_07            "Colonel Renard has ordered the seizure of all Liao encampments and neutralization of Liao military facilities that lie on the border of Steiner territory. \n\nDrop into the Garrison Sector. Capture the Headquarters of a Liao base located there, designated Base Leo. Proceed then to a Chemical Plant in operation to the west of the base and destroy it. \n\nIntel analysts consider Base Leo and its nearby chemical processing plant a potential chemical weapons hazard. Such weapons pose a severe threat to unenclosed ground troops and support personnel. Termination of Liao activities in this sector is imperative.\n\nTactical Officer Notes:\nRenard and Steiner High Command aren't playing around; they're launching full-scale assaults into Liao-owned space with every lance available, including us.\n\nSteiner Recon sent some terrain images, and they show minefields in the area. Vibrabomb mines are capable of crippling even Heavy and Assault 'Mechs, so avoid them at all costs. We can clear mines out of an area using Airstrikes.\n\nAnother thing, Commander: Cash tells me any unit 35 tons or lighter won't trigger these mines. We might be able to use that to our advantage.\n\n\n\n\n\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BLURB_START         "Mission Blurbs go here"
     IDS_BLURB_01            "Primary system checks and recon into Bandit area."
@@ -4657,7 +4666,7 @@ BEGIN
     IDS_BLURB_15            "Destroy a new Steiner assault tank prototype and the facilities producing them."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MIS_NAME_START      "Mission Names go Here"
     IDS_MIS_NAME_01         "Scouting Patrol"
@@ -4669,7 +4678,7 @@ BEGIN
     IDS_MIS_NAME_07         "Sector Occupation: Garrison"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_Condition_and_Action_Descriptions "Condition and Action Descriptions"
     IDS_DestroyAllEnemyUnits "All Enemy Units Are Destroyed"
@@ -4684,7 +4693,7 @@ BEGIN
                             "Specific Enemy Unit Is Captured or Destroyed"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_CaptureOrDestroySpecificStructure 
                             "Specific Structure Is Captured or Destroyed"
@@ -4706,7 +4715,7 @@ BEGIN
     IDS_ElapsedMissionTime  "Elapsed Mission Time"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_PlayBIK             "Play BIK"
     IDS_PlayWAV             "Play WAV"
@@ -4716,7 +4725,7 @@ BEGIN
     IDS_MakeNewTechnologyAvailable "Make New Technology Available"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_PREFS_STRIPE_COLOR2 "STRIPE COLOR"
     IDS_MP_PREFS_STRIPE_COLOR_FONT2 "AgencyFB11.d3f"
@@ -4747,19 +4756,19 @@ BEGIN
     IDS_MP_STATS_HEADER_FONT "AgencyFB17.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING30800         "Hardened Resource Building"
     IDS_STRING30801         "Headquarters"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_CHAT_HELP_FONT      "ArialNarrow8.d3f"
     IDS_CHAT_FONT           "ArialNarrow9.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_STATS_PLAYER_NAME "PLAYER"
     IDS_MP_STATS_PLAYER_NAME_FONT "AgencyFB11.d3f"
@@ -4779,7 +4788,7 @@ BEGIN
     IDS_MP_STATS_TEAM       "TEAM"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_STATS_RESULTS_ENTRY_FONT "AgencyFB11.d3f"
     IDS_MPLAYER_GAME_ABOUT_TO_START 
@@ -4810,7 +4819,7 @@ BEGIN
                             "PLAYER     The name of each player currently connected to the mission and his or her unit name and insignia."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OPTIONS_HEADER      "OPTIONS"
     IDS_OPTIONS_HEADER_FONT "AgencyFB17.d3f"
@@ -4826,7 +4835,7 @@ BEGIN
     IDS_OPTIONS_FULL_SCREEN_FONT "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OPTIONS_PILOT_VIDEOS "PILOT VIDEOS"
     IDS_OPTIONS_PILOT_VIDEO_FONT "AgencyFB11.d3f"
@@ -4846,7 +4855,7 @@ BEGIN
     IDS_OPTIONS_ASYNC_MOUSE_FONT "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OPTIONS_RESOLUTION  "RESOLUTION"
     IDS_OPTIONS_RESOLUTION_FONT "AgencyFB11.d3f"
@@ -4866,7 +4875,7 @@ BEGIN
     IDS_RESOLUTION5         "1024 x 768 x 32"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_RESOLUTION6         "1280 x 1024 x 16"
     IDS_RESOLUTION7         "1280 x 1024 x 32"
@@ -4886,7 +4895,7 @@ BEGIN
     IDS_OPTIONS_VOLUME_LOW_FONT "agencyfb11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OPTIONS_VOLUME_HIGH "HIGH"
     IDS_OPTIONS_VOLUME_HIGH_FONT "agencyfb11.d3f"
@@ -4906,7 +4915,7 @@ BEGIN
     IDS_OPTIONS_BASE_COLOR  "BASE COLOR"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OPTIONS_BASE_COLOR_FONT "AGENCYFB11.D3F"
     IDS_OPTIONS_ACCENT_COLOR "STRIPE COLOR"
@@ -4926,7 +4935,7 @@ BEGIN
     IDS_OPTIONS_HOTKEY_ENTRY_FONT "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OPTIONS_HOTKEY_ERROR "Hotkey already in use. Overwrite it?"
     IDS_OPTIONS_HELP_GRAPHICS_TAB 
@@ -4961,7 +4970,7 @@ BEGIN
                             "LOCAL SHADOWS     Select to turn off shadows caused by special effects such as weapons fire and explosions. Turning off local shadows may dramatically improve performance."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_CONNECTION_ERROR_WRONG_VERSION_FONT "AgencyFB11.d3f"
     IDS_MP_CONNECTION_ERROR_FULL "This session is already full."
@@ -4985,7 +4994,7 @@ BEGIN
                             "The game will not begin until %s has the proper version of the map."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OPTIONS_HELP_PILOT_VIDEOS 
                             "PILOT VIDEOS     Select to turn on pilot message videos that play during a mission. Turning off these videos may dramatically improve performance."
@@ -5020,7 +5029,7 @@ BEGIN
     IDS_OPTIONS_CARD        "VIDEO CARD"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_LAWYER_BABBLE       "(c) & (p) 1999-2001 Microsoft Corporation. All rights reserved.\n\nBattleTech, MechCommander, MechWarrior, BattleMech and 'Mech are trademarks or registered trademarks of FASA Corporation and Microsoft Corporation in the U.S. and/or other countries. Microsoft, Windows, DirectDraw, DirectPlay, DirectSound, DirectX, and MSN are either registered trademarks or trademarks of Microsoft Corporation in the United States and/or other countries/regions.\n\nUses movie Video. Copyright (C) 1997-2001 by RAD Game Tools, Inc.\n\nWarning: This computer program is protected by copyright law and international treaties. Unauthorized reproduction or distribution of this program, or any portion of it, may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under the law.\n\nThis product is licensed. Your product identification number is: %s\n"
     IDS_LAWYER_BABBLE2      "(c) & (p) 1999-2001 Microsoft Corporation. All rights reserved. This program is protected by U.S. and International copyright laws as described in the i screen.\n"
@@ -5041,7 +5050,7 @@ BEGIN
     IDS_SWAPFILE_TOO_SMALL  "The Swapfile must be at least 250 MB to run MechCommander 2. The current Swapfile is %d MB. Increase the Swapfile size."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OPTIONS_CARD_FONT   "AgencyFB11.d3f"
     IDS_OPTIONS_HELP_VIDEO_CARD 
@@ -5049,14 +5058,14 @@ BEGIN
     IDS_OPTIONS_ACCEPT_CANCEL_FONT "AgencyFB14.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_WATSON_CRASH_MSG    "MechCommander 2 has crashed unexpectedly. Please send this information to Microsoft. There may be an available patch that fixes this. We cannot fix the problem if we don't know about it. Thank You!"
     IDS_QUICKSAVE_VERSION_WRONG 
                             "Cannot load Quick Save. Version does not match game. Click Continue."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_PARAMETERS_TEAM_HELP 
                             "TEAM     The team number each player is currently on. To change teams, click the drop-down arrow, and then select the desired team number in the list."
@@ -5092,7 +5101,7 @@ BEGIN
                             "UNLIMITED AMMO     When selected, allows players an unlimited supply of ammunition."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_PARAMETERS_RP_FOR_MECHS_HELP 
                             "RP FOR 'MECHS     When selected, awards resource points (RPs) to players every time they destroy a 'Mech or force a pilot to eject. The larger the 'Mech, the more RPs awarded. RPs will not be rewarded more than once per 'Mech unless it was salvaged in-between ""deaths."""
@@ -5126,12 +5135,12 @@ BEGIN
                             "TEAM ONLY/ALL TOGGLE     Switch between chatting to only your team members and chatting to all players in the game."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MM_LEGAL_BUTTON_HELP "Access your product identification number."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SHORT_RANGE_CURSOR_RIGHT_HELP 
                             "Right-click to attack this target from short range."
@@ -5148,7 +5157,7 @@ BEGIN
                             "Right-click to force fire on this target."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_3_4      " 4. Capture Weapons Facility"
     IDS_OBJECTIVES_3_5      " 5. Defeat Bandit Counterattack"
@@ -5168,7 +5177,7 @@ BEGIN
     IDS_OBJECTIVES_6_4      " b. Capture Turret Control"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_7_1      " 1. Capture Liao Headquarters"
     IDS_OBJECTIVES_7_2      " 2. Destroy Chemical Plant"
@@ -5188,7 +5197,7 @@ BEGIN
     IDS_OBJECTIVES_11_1     " 1. Capture Davion Weapons Facility"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MIS_NAME_08         "Combat Rescue: Claymore  "
     IDS_MIS_NAME_09         "Breach: Bandit Headquarters"
@@ -5208,7 +5217,7 @@ BEGIN
     IDS_MIS_NAME_23         "Liberate: Starport"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BRIEF_08            "Task Force Sig-9 fell under heavy fire en route to disable a Bandit Airfield. The only survivor is MechWarrior Claymore, now trapped in a hostile area.\n\nDrop into the Hart Sector and link up with Claymore, and then complete his original mission to destroy the Bandit Airfield.\n\nSteiner High Command suspects the Hart Airfield to be the major supply artery between House Liao and Bandit forces. Elimination of the Airfield will leave the Bandits without critical supplies and munitions.\n\nTactical Officer Notes:\nThe Steiner MechWarrior is in a tough spot; he's surrounded by Bandits on all sides.  We're going to punch through from the south and make our way toward his last transmitted location. His 'Mech will be powered down to avoid detection, so we won't have a sensor contact for him.\n\nOnce we find him, we're going to finish his original mission: to destroy the Bandit Airfield.\n\nBe careful, Commander.  Claymore's task force was a heavy and assault lance. It doesn't make any sense that just Bandits could repel 'Mechs of that size, unless they had some help."
     IDS_BRIEF_09            "Steiner Intel has pinpointed the location of the Bandit Headquarters, confirmed by Recon imaging. Colonel Renard has committed all of his troops not engaging Liao to the front and drawn a similar Bandit response. Renard has ordered a small task force dropped into the central Bandit sector to destroy the Headquarters.\n\nDrop into the Ivan Sector and proceed to strategic targets: the Weapons Facility, the Fuel Reserves, and finally the main Bandit Headquarters.\n\nDenial of these critical assets will neutralize the Bandit forces as a threat to House Steiner on Carver V. \n\n>>> PRIORITY ADDENDUM L410464EHR\nFROM:  COLONEL RENARD\nCommander, this operation is of the utmost importance to me. I will personally be monitoring the communication channels and your mission progress. Your victory here will eliminate a thorn in my side and earn you not only my gratitude but also that of the Archon herself.\n>>> ADDENDUM END \n\nTactical Officer Notes:\nThis is it, Sir. If we take out the Bandit Headquarters and these other targets, they're done for on Carver V.\n\nEven though Steiner has pulled away most of their defenses, we have to expect large numbers of Fire Ants and UrbanMechs protecting their main HQ.\n\nOne other thing: Steel mentioned that the Bandit leader was an ex-Liao officer, and a good one at that. So keep an eye on your sensors."
@@ -5228,7 +5237,7 @@ BEGIN
     IDS_BRIEF_23            "Renard has finally gone mad. He has declared martial law, seized the civilian Starport, and confiscated all food and medical supplies. He's willing to let thousands die for his war.\n\nWe have to get that Starport back. Sending our forces to the Starport is exactly what Renard wants and he'll be prepared, but we have no choice.\n\nBut we do have an advantage. The destruction of Liao Palace has given the people hope, and a group of partisans are willing to join the cause against Steiner. They're located in a town northwest of the Starport. They won't be able to do much against trained Steiner units, but they're willing to fight for us.\n\nGo get that Starport back, Commander. Lives are at stake.\n\nBaxter\n\nTactical Officer Notes:\nSir, be very careful on this mission. Renard knows we're coming and we're severely outgunned.\n\nThe Sensor Control for the sector is located to the north; we should take that as soon as possible. It will deny the Steiner information and tell us where they are. If we let the Steiner track us and concentrate their forces, we won't stand a chance.\n"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_11_2     " 2. Capture Steiner Weapons Facility"
     IDS_OBJECTIVES_11_3     " 3. Capture Steiner Headquarters"
@@ -5248,7 +5257,7 @@ BEGIN
     IDS_OBJECTIVES_13_6     " 6. Extract"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_10_3     " 2. Destroy Steiner Reinforcements"
     IDS_OBJECTIVES_10_4     " 3. Destroy All Airfield Defenders"
@@ -5268,7 +5277,7 @@ BEGIN
     IDS_OBJECTIVES_15_3     " 3. Extract"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BLURB_16            "Capture a vulnerable Davion base before units move in to reinforce the base."
     IDS_BLURB_17            "Liao and Steiner wish to meet and settle a truce. Protect and escort Jason Cho to the rendezvous point."
@@ -5288,7 +5297,7 @@ BEGIN
     IDS_BLURB_M2            "Last Man Standing: Destroy all opponents and have the last 'Mech still standing to win."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_15_4     " a. Destroy Relay Station's Power Generator"
     IDS_OBJECTIVES_15_5     " b. Destroy 2 Medium Factories"
@@ -5308,7 +5317,7 @@ BEGIN
     IDS_OBJECTIVES_18_3     " a. Recapture Davion Headquarters"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MIS_NAME_24         "Operation Goliath"
     IDS_MP_NAME_01          "Ravines Remix"
@@ -5328,7 +5337,7 @@ BEGIN
     IDS_MP_NAME_15          "Capture Base"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MP_NAME_16          "2 of 3"
     IDS_MP_NAME_17          "Orbital"
@@ -5342,7 +5351,7 @@ BEGIN
     IDS_MIS_NAME_T5         "Training 5: Advanced Support"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BRIEF_24            "Our victory at the Starport has driven Renard into a rage. He's attacking every town and city even remotely suspected of supporting us, destroying civilian homes without care for the lives lost.\n\nMajor Kelly has tried reasoning with Renard to convince him to give himself up, but he refuses.  \n\nWe cannot allow Renard to continue his slaughter of Carver V. If we can destroy the Steiner High Command, the Steiner forces will be in disarray, and we can assume control and stop this bloodshed.\n\nRenard himself will be at the Steiner High Command. Major Kelly refuses to attack her former commanding officer. I need you to save this planet, Commander.\n\nBaxter\n\nTactical Officer Notes:\nSir, we won't be alone out there. The citizens of Carver V are willing to fight with us. Baxter has informed me that a group of partisans will join our assault.\n\nThe partisan forces will attack from the east, initially going after a fuel convoy sitting just outside the walls. The resulting blast should take out a section of wall and allow easy entry into the base proper. The partisans will then split into two groups. The first will move south toward the front of the base and attempt to capture the Turret Controls there. The second will move deeper into the base and engage any Steiner units they find, hopefully drawing units away from the first group.\n\nWhile the partisans draw the attention of the Steiner forces, our units will move in during the confusion and destroy the Steiner High Command itself.\n\nAll intelligence data has been uploaded, the pilots are rested, and Cash has the 'Mechs working like new. We're ready, Sir.\n\n\n\n\n\n\n"
     IDS_BRIEF_T1            "Topics:\n\nCamera and how to control the view.\nWalking, running, and jumping your units.\nUsing the tac map."
@@ -5362,7 +5371,7 @@ BEGIN
     IDS_BRIEF_m10           "This mission has a time limit, Commander. When that timer runs out, you need to have captured the HQ on the top of the hill. It doesn't matter if you've had the most kills or held the HQ for most of the battle. Just be in possession of that HQ at the end. You could try and hold the HQ for the entirety of the battle, or sneak in at the last minute and seize it. Just remember, all the other commanders want it just as badly as you do."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_18_4     " b. Recapture the City's Power Generator"
     IDS_OBJECTIVES_18_5     " c. Recapture Sensor Control"
@@ -5382,7 +5391,7 @@ BEGIN
     IDS_OBJECTIVES_20_4     " 4. Destroy Mobile Orbital Gun A"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_20_5     " 5. Destroy Mobile Orbital Gun B"
     IDS_OBJECTIVES_20_6     " 6. Extract "
@@ -5402,7 +5411,7 @@ BEGIN
     IDS_OBJECTIVES_23_5     " c. Destroy Steiner Dropships"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_23_6     " d. Capture Mobile HQ Vehicle"
     IDS_OBJECTIVES_24_1     " 1. Destroy Steiner High Command"
@@ -5422,7 +5431,7 @@ BEGIN
     IDS_OBJECTIVES_T4_1     " 1. Capture Resource Building"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_T4_2     " 2. Destroy Enemy 'Mech"
     IDS_OBJECTIVES_T4_3     " 3. Salvage Enemy 'Mech"
@@ -5442,7 +5451,7 @@ BEGIN
     IDS_OBJECTIVES_T5_2     " 2. Move Minelayer to Nav Marker"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SALVAGE_TONNAGE_HELP 
                             "TONNAGE     The weight, in tons, and class of the selected 'Mech."
@@ -5453,7 +5462,7 @@ BEGIN
     IDS_SALVAGE_IMAGE_HELP  "CURRENT SELECTION     The name and image of the currently selected 'Mech."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_HOTKEY_TILTU        "Tilt Camera Up"
     IDS_HOTKEY_TILTD        "Tilt Camera Down"
@@ -5461,7 +5470,7 @@ BEGIN
     IDS_HOTKEY_CHAT_TEAM    "Team Chat"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BRIEF_m11           "This mission has a time limit, Commander. When that timer runs out, you need to have captured the HQ on the top of the hill. It doesn't matter if you've had the most kills or held the HQ for most of the battle. Just be in possession of that HQ at the end. You could try and hold the HQ for the entirety of the battle, or sneak in at the last minute and seize it. Just remember, all the other commanders want it just as badly as you do."
     IDS_BRIEF_m12           "This mission isn't about how many 'Mechs you can drop but. rather, how much territory you can grab. There are six unaligned bases on the map, each with an HQ that can be captured. Grabbing one base isn't a problem; grabbing most of the bases is. You can choose to capture one or two bases, then defend those, hoping to whittle down your enemies, or make a dash for as many bases you can, trusting that your opponents won't be able to recapture them in time. The winner is the team that controls the most HQs when time runs out ... but if a team captures all the HQs, they instantly win!"
@@ -5473,12 +5482,12 @@ BEGIN
     IDS_BRIEF_m18           "Commander, there are other bases in the area; your job is to capture them while defending your own. You've got a couple choices as to where to fight. If you plan to stick to the ravines, then watch out for enemy jumpers with LRMs. If they get above you, expect a lot of headshots. If you plan on moving into the central area, you've got a lot of shallow water that'll cordon movement. Remember that equipping your 'Mechs with the right loadout for the terrain is half the battle.\n\nEach player has an HQ that they must defend. If a player's HQ is captured, all of their MechWarriors will eject, leaving their 'Mechs as salvage for the remaining players to fight over. The winning team is the one with the most captures."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SWAPFILE_CAPTION    "Error: Swapfile Too Small!"
     IDS_MP_PLAYER_READY     "%s is ready to launch."
     IDS_MC2_CDMISSING       "Please insert the MechCommander 2 CD, and then click \nOK to continue."
-    IDS_MC2_movieMISSING     "MechCommander 2 could not open the movie movie %s.\n%s"
+    IDS_MC2_movieMISSING    "MechCommander 2 could not open the movie movie %s.\n%s"
     IDS_MC2_MISSING_TITLE   "MechCommander 2 CD Not Inserted"
     IDS_MC2_FILEMISSING     "MechCommander 2 could not open the file %s.\n%s"
     IDS_FINAL_MISSION       "AfterGame"
@@ -5493,12 +5502,12 @@ BEGIN
     IDS_GAME_HDSPACE_MSG    "MechCommander 2 may not have enough disk space to save games.  Press OK to continue.  Press Cancel to exit the game and free up disk space."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_IME_USE_LANGDLL_SETTING "0"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_UNCOMMON_VALOR_HELP4 
                             "UNCOMMON VALOR     Medal awarded to this pilot for killing 7 or more 'Mechs during a mission."
@@ -5507,7 +5516,7 @@ BEGIN
     IDS_STEINER_MEDAL_HELP  "STEINER ALLIANCE STAR     Medal awarded to this pilot for uncommon bravery and honor."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_BLURB_M3            "King of the Hill: Control the Headquarters at the top of the hill for the longest amount of time to win."
     IDS_BLURB_M4            "Last Man on the Hill: Have control of the Headquarters when the timer runs out to win."
@@ -5520,7 +5529,7 @@ BEGIN
     IDS_BLURB_M11           "Elimination: Destroy opponents for points. The player with the most points wins.\nUsing Quickstart allows everyone to control vehicles in this version of Ravines."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_OBJECTIVES_T5_3     " 3. Destroy Approaching Enemy Units"
     IDS_OBJECTIVES_T5_4     " 4. Move Scout 'Copter to Island"
@@ -5531,12 +5540,12 @@ BEGIN
     IDS_OBJECTIVES_M4       " Defend 2 of 3 HQ Buildings, or Destroy All Enemies"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_DIALOG_LB_FONT      "AgencyFB11.d3f"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_MPLAYER_NO_MORE_SUPPORT_VEHICLES 
                             "Sgt. Cash: Sir, we're out of support vehicles.  "

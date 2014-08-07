@@ -5,17 +5,18 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #define WIN32_EXTRA_LEAN			// Reduce windows header size
-#define VC_EXTRALEAN				// Reduce windows header size
 #include <windows.h>
-#include <GameOS\Platform.hpp>
-#include <GameOS\GameOS.hpp>
+#include <gameos\platform.hpp>
+#include <gameos\gameos.hpp>
 
 
-long _stdcall ProcessException( EXCEPTION_POINTERS* ep );
-void _stdcall InitExceptionHandler( char* CommandLine );
-void _stdcall InitGameOS( HINSTANCE hInstance, HWND hWindow, char* CommandLine );
-LRESULT CALLBACK GameOSWinProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
-DWORD _stdcall RunGameOSLogic();
-void _stdcall ExitGameOS();
+NTSTATUS _stdcall ProcessException( PEXCEPTION_POINTERS pep);
+void _stdcall InitExceptionHandler( PSTR CommandLine);
+void _stdcall InitGameOS( HINSTANCE hInstance, HWND hWindow, PSTR CommandLine);
+LRESULT _stdcall GameOSWinProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+ULONG _stdcall RunGameOSLogic(void);
+void _stdcall ExitGameOS(void);
 

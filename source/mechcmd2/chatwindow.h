@@ -6,9 +6,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
-#endif
+//#ifndef LOGISTICSSCREEN_H
+//#include "logisticsscreen.h"
+//#endif
 
 //*************************************************************************************************
 

@@ -144,7 +144,7 @@ class FIGuaranteedMessageHeader: public FIMessageHeader,public MessageTagger
 };
 
 
-#pragma warning (disable : 4200)
+//#pragma warning (disable : 4200)
 class FIGenericGuaranteedMessage:public FIGuaranteedMessageHeader
 {
 private:
@@ -255,7 +255,7 @@ public:
 
 
 
-#pragma warning (default : 4200)
+//#pragma warning (default : 4200)
 
 
 #pragma pack()

@@ -13,8 +13,7 @@ namespace gosFX {
 	class Curve
 	{
 	public:
-		enum CurveType
-		{
+		typedef enum CurveType {
 			e_ConstantType,
 			e_LinearType,
 			e_SplineType,
@@ -27,7 +26,7 @@ namespace gosFX {
 			e_ConstantSplineType,
 			e_SplineLinearType,
 			e_SplineSplineType
-		};
+		} CurveType;
 
 		const CurveType
 			m_type;
@@ -140,7 +139,7 @@ namespace gosFX {
 			)
 				{
 					Check_Object(this); Check_Pointer(low); Check_Pointer(hi);
-					*hi = *low = m_value;
+					if(hi && low) *hi = *low = m_value;
 				}
 	};
 
@@ -340,15 +339,15 @@ namespace gosFX {
 		CurveKey&
 			operator[](int index)
 				{Check_Object(this); return m_keys[index];}
-		int
+		size_t
 			GetKeyCount()
-				{Check_Object(this); return m_keys.GetLength();}
+				{ Check_Object(this); return m_keys.GetLength(); }
 		int
 			GetKeyIndex(Stuff::Scalar time)
 				{
 					Check_Object(this);
 					int i;
-					for (i=0; i<m_keys.GetLength(); ++i)
+					for (i=0; i<(int)m_keys.GetLength(); ++i)
 						if (m_keys[i].m_time > time)
 							break;
 					return --i;

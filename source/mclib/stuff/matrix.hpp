@@ -34,8 +34,7 @@ namespace Stuff {
 	class Matrix4D
 	{
 	public:
-		static const Matrix4D
-			Identity;
+		static const Matrix4D Identity;	// ???
 
 		Scalar
 			entries[16];
@@ -163,13 +162,15 @@ namespace Stuff {
 				Check_Pointer(this);
 				Check_Object(&Source1);
 				Check_Object(&Source2);
+				(void)Source1;
+				(void)Source2;
 
 #if USE_ASSEMBLER_CODE
 				Scalar *f = entries;
 				_asm {
-                    mov         edx, Source1.entries
+                    mov         edx, [edx]Source1.entries
 					push        esi
-					mov         esi, Source2.entries
+					mov         esi, [esi]Source2.entries
 					
 					mov         eax, f
 

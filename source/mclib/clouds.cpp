@@ -115,8 +115,8 @@ void Clouds::update (void)
 		// Create the grid.
 		long cloudInc = float2long(MAX_CLOUDS_SIZE * 2.0f / gridSize);
 		float uvInc = MAX_UV_REPEAT / float(gridSize);
-		
-		for (long y=0;y<gridSize;y++)
+		long y;
+		for (y=0;y<gridSize;y++)
 		{
 			for (long x=0;x<gridSize;x++)
 			{

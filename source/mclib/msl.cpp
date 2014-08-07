@@ -13,6 +13,8 @@
 //
 //-------------------------------------------------------------------------------
 
+#include "stdafx.h"
+
 //-------------------------------------------------------------------------------
 // Include Files
 #ifndef MSL_H
@@ -61,7 +63,7 @@ extern long		ObjectTextureSize;
 
 #define CURRENT_SHAPE_VERSION		0xBAFDECAF
 #define CURRENT_ANIM_VERSION		0xBADDECAF
-#define MAX_PATH					256
+//#define MAX_PATH					256
 
 //-------------------------------------------------------------------------------
 void GetNextLine (char *rawData, char *result)
@@ -128,7 +130,8 @@ TG_MultiShapePtr TG_TypeMultiShape::CreateFrom (void)
 
 	memset(newShape->listOfShapes,0,sizeof(TG_ShapeRec) * numTG_TypeShapes);
 
-	for (long i=0;i<numTG_TypeShapes;i++)
+	long i, j;
+	for (i=0;i<numTG_TypeShapes;i++)
 	{
 		newShape->listOfShapes[i].node = listOfTypeShapes[i]->CreateFrom();
 	}
@@ -149,7 +152,7 @@ TG_MultiShapePtr TG_TypeMultiShape::CreateFrom (void)
 
 		//----------------------------------------------------------------------------------
 		// For each shape, look for another node whose NodeId matches this shape's parentId
-		for (long j=0;j<numTG_TypeShapes;j++)
+		for (j=0;j<numTG_TypeShapes;j++)
 		{
 			if (strcmp(newShape->listOfShapes[i].node->myType->getParentId(),newShape->listOfShapes[j].node->myType->getNodeId()) == 0)
 			{
@@ -206,7 +209,8 @@ long TG_TypeMultiShape::LoadBinaryCopy (char *fileName)
 	
 		memset(listOfTypeShapes,0,sizeof(TG_TypeNodePtr) * numTG_TypeShapes);
 	
-		for (long i=0;i<numTG_TypeShapes;i++)
+		long i, j;
+		for (i=0;i<numTG_TypeShapes;i++)
 		{
 			long nodeType = binFile.readLong();
 			
@@ -238,7 +242,7 @@ long TG_TypeMultiShape::LoadBinaryCopy (char *fileName)
 			{
 				//------------------------------------------------------------------
 				// Scan list of vertices and create minBox, maxBox and extentRadius
-				for (long j=0;j<listOfTypeShapes[i]->GetNumTypeVertices();j++)
+				for (j=0;j<listOfTypeShapes[i]->GetNumTypeVertices();j++)
 				{
 					Stuff::Vector3D relNodeCenter;
 					relNodeCenter = listOfTypeShapes[i]->GetRelativeNodeCenter();
@@ -381,6 +385,7 @@ long TG_TypeMultiShape::LoadTGMultiShapeFromASE (char *fileName, bool forceMakeB
 	// MUCH FASTER!
 	//
 	bool makeBinary = false;
+	long i, j;
 
 	char drive[MAX_PATH];
 	char dir[MAX_PATH];
@@ -555,7 +560,7 @@ long TG_TypeMultiShape::LoadTGMultiShapeFromASE (char *fileName, bool forceMakeB
 			memset(listOfTextures,0x0,sizeof(TG_Texture) * numTextures);
 
 			char *txmData = (char *)aseContents;
-			for (long i=0;i<(numTextures/2);i++)
+			for (i=0;i<(numTextures/2);i++)
 			{
 				//-------------------------------------------------------------------------------
 				// Get and store texture Name.  Will need multiple for Multi-Sub if implemented
@@ -806,12 +811,12 @@ long TG_TypeMultiShape::LoadTGMultiShapeFromASE (char *fileName, bool forceMakeB
 		// FOURTH PASS.  Setup Heirarchy ALWAYS or NO Shape BOUNDS!!!
 		{
 			aseScan = (char *)aseContents;
-			for (long i=0;i<numTG_TypeShapes;i++)
+			for (i=0;i<numTG_TypeShapes;i++)
 			{
 				//----------------------------------------------------------------------------------
 				// For each shape, look for another node whose NodeId matches this shape's parentId
 				TG_TypeNodePtr parentNode = NULL;
-				for (long j=0;j<numTG_TypeShapes;j++)
+				for (j=0;j<numTG_TypeShapes;j++)
 				{
 					if (strcmp(listOfTypeShapes[i]->getParentId(),listOfTypeShapes[j]->getNodeId()) == 0)
 					{
@@ -957,7 +962,7 @@ long TG_MultiShape::SetNodeRotation (char *nodeName, Stuff::UnitQuaternion *rot)
 {
 	for (long i=0;i<numTG_Shapes;i++)
 	{
-		if (stricmp(listOfShapes[i].node->myType->getNodeId(),nodeName) == 0)
+		if (_stricmp(listOfShapes[i].node->myType->getNodeId(),nodeName) == 0)
 		{
 			//-------------------------------
 			// Found it!
@@ -1082,7 +1087,7 @@ Stuff::Vector3D TG_MultiShape::GetTransformedNodePosition (Stuff::Point3D *pos, 
 		// Scan through the list of shapes and dig out the number needed.
 		// DO NOT UPDATE THE HEIRARCHY!!!!
 		// This thing may not have updated itself this turn yet!!!
-		if (stricmp(listOfShapes[i].node->myType->getNodeId(),nodeId) == 0)
+		if (_stricmp(listOfShapes[i].node->myType->getNodeId(),nodeId) == 0)
 		{
 			result.x = -listOfShapes[i].shapeToWorld.entries[3];
 			result.z = listOfShapes[i].shapeToWorld.entries[7];
@@ -1162,7 +1167,7 @@ long TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuatern
 	shadowOrigin.BuildRotation(Stuff::EulerAngles(-angles.pitch,0.0f,0.0f));
 	shadowOrigin.BuildTranslation(*pos);
 	
-	long i=0;
+	long i, j;
 	Stuff::Point3D camPosition;
 	camPosition = *TG_Shape::cameraOrigin;
 
@@ -1175,7 +1180,7 @@ long TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuatern
 	{
 		//----------------------------------------------
 		// Must set each transform!  Animating Textures!
-		for (long j=0;j<myMultiType->numTextures;j++)
+		for (j=0;j<myMultiType->numTextures;j++)
 		{
 			listOfShapes[i].node->myType->SetTextureHandle(j,myMultiType->listOfTextures[j].mcTextureNodeIndex);
 			listOfShapes[i].node->myType->SetTextureAlpha(j,myMultiType->listOfTextures[j].textureAlpha); 
@@ -1597,7 +1602,7 @@ void TG_MultiShape::StopUsing (char *nodeName)
 		zero.x = zero.y = zero.z = 0.0f;
 		for (long j=curChild;j>=0;j--)
 		{
-			if (stricmp(childChain[j]->node->getNodeName(),nodeName) == 0)
+			if (_stricmp(childChain[j]->node->getNodeName(),nodeName) == 0)
 			{
 				detachables[curShape] = childChain[0];
 				curShape++;
@@ -1610,7 +1615,7 @@ void TG_MultiShape::StopUsing (char *nodeName)
 	for (i=0;i<curShape;i++)
 	{
 		//Keep the joint_xUARM so that the shoulder sparks work.
-		if (stricmp(detachables[i]->node->getNodeName(),nodeName) != 0)
+		if (_stricmp(detachables[i]->node->getNodeName(),nodeName) != 0)
 			detachables[i]->processMe = false;
 	}
 }
@@ -1645,7 +1650,7 @@ TG_MultiShapePtr TG_MultiShape::Detach (char *nodeName)
 		zero.x = zero.y = zero.z = 0.0f;
 		for (long j=curChild;j>=0;j--)
 		{
-			if (stricmp(childChain[j]->node->getNodeName(),nodeName) == 0)
+			if (_stricmp(childChain[j]->node->getNodeName(),nodeName) == 0)
 			{
 				detachables[curShape] = childChain[0];
 				curShape++;
@@ -1676,7 +1681,7 @@ TG_MultiShapePtr TG_MultiShape::Detach (char *nodeName)
 	{
 		resultShape->listOfShapes[i] = *detachables[i];
 		
-		if (stricmp(resultShape->listOfShapes[i].node->getNodeName(),nodeName) == 0)
+		if (_stricmp(resultShape->listOfShapes[i].node->getNodeName(),nodeName) == 0)
 			resultShape->listOfShapes[i].parentNode = NULL;		//Set new top O heirarchy.
 		
 		for (long j=0;j<numTG_Shapes;j++)
@@ -1780,7 +1785,7 @@ bool TG_MultiShape::isChildOf (char *nodeName, char* parentName)
 		zero.x = zero.y = zero.z = 0.0f;
 		for (long j=curChild;j>=0;j--)
 		{
-			if (stricmp(childChain[j]->node->getNodeName(),parentName) == 0)
+			if (_stricmp(childChain[j]->node->getNodeName(),parentName) == 0)
 			{
 				detachables[curShape] = childChain[0];
 				curShape++;
@@ -1794,7 +1799,7 @@ bool TG_MultiShape::isChildOf (char *nodeName, char* parentName)
 		
 	for (i=0;i<curShape;i++)
 	{
-		if (stricmp(detachables[i]->node->getNodeName(), nodeName) == 0)
+		if (_stricmp(detachables[i]->node->getNodeName(), nodeName) == 0)
 			return true;
 	}
 	
@@ -1818,7 +1823,7 @@ void *TG_AnimateShape::operator new (size_t mySize)
 //-------------------------------------------------------------------------------
 void _TG_Animation::SaveBinaryCopy (File *binFile)
 {
-	if (stricmp(nodeId,"NONE") != 0)
+	if (_stricmp(nodeId,"NONE") != 0)
 	{
 		binFile->write((MemoryPtr)nodeId,TG_NODE_ID);	
 		binFile->writeLong(-1);			//ShapeIds ALWAYS start with -1.  We will scan on frame 1 please!
@@ -1919,7 +1924,7 @@ void TG_AnimateShape::SaveBinaryCopy (char *fileName)
 	{
  		for (long i=0;i<count;i++)
 		{
-			if (stricmp(listOfAnimation[i].nodeId,"NONE") != 0)
+			if (_stricmp(listOfAnimation[i].nodeId,"NONE") != 0)
 				actualCount++;
 		}
 	}
@@ -2370,7 +2375,7 @@ void TG_AnimateShape::SetAnimationState (TG_MultiShapePtr shape)
 			bool foundNode = false;
 			for (i=0;i<shape->GetNumShapes();i++)
 			{
-				if (stricmp(listOfAnimation[j].nodeId,shape->GetNodeId(i)) == 0)
+				if (_stricmp(listOfAnimation[j].nodeId,shape->GetNodeId(i)) == 0)
 				{
 					shape->SetCurrentAnimation(i,&listOfAnimation[j]);
 					listOfAnimation[j].shapeId = i;

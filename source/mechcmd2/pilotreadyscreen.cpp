@@ -4,6 +4,7 @@ PilotReadyScreen.cpp			: Implementation of the PilotReadyScreen component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "PilotReadyScreen.h"
 #include "LogisticsMech.h"

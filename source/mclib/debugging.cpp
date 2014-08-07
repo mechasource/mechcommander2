@@ -7,6 +7,8 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
+// #include <string.h>
 
 #ifndef DEBUGGING_H
 #include "debugging.h"
@@ -16,7 +18,6 @@
 #include "heap.h"
 #endif
 
-#include <string.h>
 
 extern UserHeapPtr systemHeap;
 
@@ -78,10 +79,11 @@ void GameDebugWindow::render (void) {
 	if (!display)
 		return;
 
+	long i;
 	gos_TextSetAttributes(font, 0xffffffff, 1.0, true, true, false, false);
 	gos_TextSetRegion( 0, 0, Environment.screenWidth, Environment.screenHeight );
 	long curY = pos[1] + 5;
-	for (long i = linePos; i < MAX_DEBUG_WINDOW_LINES; i++) {
+	for (i = linePos; i < MAX_DEBUG_WINDOW_LINES; i++) {
 		gos_TextSetPosition(pos[0] + 5, curY);
 		curY += fontHeight;
 		gos_TextDraw(textBuffer[i]);

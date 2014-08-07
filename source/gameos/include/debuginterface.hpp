@@ -1,4 +1,3 @@
-#pragma once
 //===========================================================================//
 // File:	 DebugInterface.cpp												 //
 // Contents: Debug interface classes / routines								 //
@@ -6,14 +5,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
 
-
-void ShowDebuggingInformation();
-
-
-
-
-
-
-
+void __stdcall ShowDebuggingInformation(void);
 

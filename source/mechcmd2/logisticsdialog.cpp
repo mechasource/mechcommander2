@@ -5,6 +5,7 @@ LogisticsDialog.cpp			: Implementation of the LogisticsDialog component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "LogisticsDialog.h"
 #include "aButton.h"
@@ -1256,7 +1257,7 @@ void LogisticsVariantDialog::initTranscript()
 	{
 		do
 		{
-			if ((findResult.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 && stricmp( findResult.cFileName, "transcript.txt" ) != 0 )
+			if ((findResult.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 && _stricmp( findResult.cFileName, "transcript.txt" ) != 0 )
 			{
 				aAnimTextListItem* pEntry = new aAnimTextListItem(IDS_DIALOG_LIST_FONT);
 				*pEntry = s_instance->templateItem;

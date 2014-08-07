@@ -5,6 +5,7 @@ LoadScreen.cpp			: Implementation of the LoadScreen component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include <windows.h>
 #include <ddraw.h>

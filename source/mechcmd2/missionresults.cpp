@@ -5,6 +5,7 @@ MissionResults.cpp			: Implementation of the MissionResults component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MissionResults.h"
 #include "McLib.h"

@@ -6,9 +6,10 @@
 //								ABLDBUG.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
-#include <stdlib.h>
-#include <string.h>
+//#include <stdlib.h>
+//#include <string.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"

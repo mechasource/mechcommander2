@@ -1,5 +1,3 @@
-#pragma once
-
 //===========================================================================//
 // File:	 ACM.cpp														 //
 // Contents: Wrappers for the Audio Compression Manager						 //																		 //
@@ -7,10 +5,14 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-MMRESULT wACMStreamPrepareHeader( HACMSTREAM hACMStream, ACMSTREAMHEADER *ACMHeader, DWORD fdwPrepare );
-MMRESULT wACMStreamConvert( HACMSTREAM hACMStream, ACMSTREAMHEADER *ACMHeader, DWORD flags );
-MMRESULT wACMStreamUnprepareHeader( HACMSTREAM hACMStream, ACMSTREAMHEADER *ACMHeader, DWORD fdwPrepare );
-MMRESULT wACMStreamClose( HACMSTREAM hACMStream, DWORD flags );
-MMRESULT wACMStreamOpen( LPHACMSTREAM phas, HACMDRIVER had, LPWAVEFORMATEX pwfxSrc, LPWAVEFORMATEX pwfxDst, LPWAVEFILTER pwfltr, DWORD dwCallback, DWORD dwInstance, DWORD fdwOpen );
-MMRESULT wACMStreamSize( HACMSTREAM has, DWORD cbInput, LPDWORD pdwOutputBytes, DWORD fdwSize );
-MMRESULT wACMFormatSuggest( HACMDRIVER had, LPWAVEFORMATEX pwfxSrc, LPWAVEFORMATEX pwfxDst, DWORD cbwfxDst, DWORD fdwSuggest );
+#pragma once
+
+#include <msacm.h>
+
+MMRESULT __stdcall wACMStreamPrepareHeader( HACMSTREAM hACMStream, ACMSTREAMHEADER *ACMHeader, ULONG fdwPrepare );
+MMRESULT __stdcall wACMStreamConvert( HACMSTREAM hACMStream, ACMSTREAMHEADER *ACMHeader, ULONG flags );
+MMRESULT __stdcall wACMStreamUnprepareHeader( HACMSTREAM hACMStream, ACMSTREAMHEADER *ACMHeader, ULONG fdwPrepare );
+MMRESULT __stdcall wACMStreamClose( HACMSTREAM hACMStream, ULONG flags );
+MMRESULT __stdcall wACMStreamOpen( LPHACMSTREAM phas, HACMDRIVER had, LPWAVEFORMATEX pwfxSrc, LPWAVEFORMATEX pwfxDst, LPWAVEFILTER pwfltr, ULONG dwCallback, ULONG dwInstance, ULONG fdwOpen );
+MMRESULT __stdcall wACMStreamSize( HACMSTREAM has, ULONG cbInput, LPDWORD pdwOutputBytes, ULONG fdwSize );
+MMRESULT __stdcall wACMFormatSuggest( HACMDRIVER had, LPWAVEFORMATEX pwfxSrc, LPWAVEFORMATEX pwfxDst, ULONG cbwfxDst, ULONG fdwSuggest );

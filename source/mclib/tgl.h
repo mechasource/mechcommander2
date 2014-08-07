@@ -26,7 +26,7 @@
 //-------------------------------------------------------------------------------
 // Structs used by layer.
 //
-typedef DWORD* DWORDPtr;
+typedef ULONG* DWORDPtr;
 
 //-------------------------------------------------------------------------------
 // TG_TypeVertex
@@ -36,7 +36,7 @@ typedef struct _TG_TypeVertex
 	//Only changes at load time.
 	Stuff::Point3D	position;				//Position of vertex relative to base position of shape.
 	Stuff::Vector3D normal;					//Vertex Normal
-	DWORD    		aRGBLight;				//Vertex Light and Alpha
+	ULONG    		aRGBLight;				//Vertex Light and Alpha
 
 } TG_TypeVertex;
 
@@ -74,7 +74,7 @@ typedef  TG_ShadowVertex* TG_ShadowVertexPtr;
 // Stores VOLATILE information for the shadow vertices.  These can come from a pool!
 typedef struct _TG_ShadowVertexTemp
 {
-	DWORD    		fRGBFog;				//Vertex Fog and Specular Color.  Needed if shadow is fogged.
+	ULONG    		fRGBFog;				//Vertex Fog and Specular Color.  Needed if shadow is fogged.
 											//Every frame for local light.  Once in a blue moon for infinite light.
 
 	//Changes each call to Transform.
@@ -103,9 +103,9 @@ typedef  TG_UVData* TG_UVDataPtr;
 // This structure stores the information needed to draw the triangle which does NOT change per instance
 typedef struct _TG_TypeTriangle
 {
-	DWORD    		Vertices[3];			//Indices into Vertex List.
-	DWORD    		localTextureHandle;		//Index into texture List.
-	DWORD    		renderStateFlags;		//Flags about render for this face.
+	ULONG    		Vertices[3];			//Indices into Vertex List.
+	ULONG    		localTextureHandle;		//Index into texture List.
+	ULONG    		renderStateFlags;		//Flags about render for this face.
 											//Bit 0 -- backFacing
 	TG_UVData  		uvdata;					//Texture UVs for this face.
 	Stuff::Vector3D faceNormal;				//Normal Vector to face
@@ -120,8 +120,8 @@ typedef TG_TypeTriangle* TG_TypeTrianglePtr;
 // This structure stores the information needed to draw the triangle per instance.
 typedef struct _TG_Triangle
 {
-	DWORD    		aRGBLight[3];			//RGB Light for this triangle's vertices.
-	DWORD    		fRGBLight[3];			//RGB Fog for this triangle's vertices.
+	ULONG    		aRGBLight[3];			//RGB Light for this triangle's vertices.
+	ULONG    		fRGBLight[3];			//RGB Fog for this triangle's vertices.
 } TG_Triangle;
 
 // Texture handle can change from frame to frame. Texture Animation!
@@ -133,7 +133,7 @@ typedef TG_Triangle* TG_TrianglePtr;
 // This structure stores the information needed to draw the shadow triangle.
 typedef struct _TG_ShadowTriangle
 {
-	DWORD    		Vertices[3];			//Indices into Shadow Vertex List.
+	ULONG    		Vertices[3];			//Indices into Shadow Vertex List.
 } TG_ShadowTriangle;
 
 // Texture handle can change from frame to frame. Texture Animation!
@@ -164,12 +164,12 @@ typedef TG_ShadowTriangle* TG_ShadowTrianglePtr;
 // This structure stores the information necessary to light the shape.
 typedef struct _TG_Light
 {
-	DWORD    				lightType;			//Ambient, directional, etc.
+	ULONG    				lightType;			//Ambient, directional, etc.
 	bool					active;				//Should this light be considered on?
 	
 	protected:
-	DWORD    				aRGB;				//Color
-	DWORD					OEMaRGB;
+	ULONG    				aRGB;				//Color
+	ULONG					OEMaRGB;
 	
 	public:
 	float					intensity;			//How Bright
@@ -182,7 +182,7 @@ typedef struct _TG_Light
 	Stuff::Point3D			spotDir;			//Direction of the actual Spotlight to help with shadows, etc.
 	float					maxSpotLength;		//Maximum length spotlight can be from target.
 
-	void init (DWORD lType)
+	void init (ULONG lType)
 	{
 		gosASSERT((lType != TG_LIGHT_NONE) && (lType >= TG_LIGHT_AMBIENT) && (lType <= TG_LIGHT_TERRAIN));
 
@@ -199,12 +199,12 @@ typedef struct _TG_Light
 		active = false;
 	}
 
-	void SetaRGB (DWORD newaRGB)
+	void SetaRGB (ULONG newaRGB)
 	{
 		OEMaRGB = aRGB = newaRGB;
 	}
 
-	DWORD GetaRGB (void)
+	ULONG GetaRGB (void)
 	{
 		return aRGB;
 	}
@@ -233,10 +233,10 @@ typedef struct _TG_Light
 			intensity = 1.0f;
 
 		//Scale aRGB by intensity
-		DWORD r,g,b;
-		r = intensity * ((OEMaRGB >> 16) & 0x000000ff);
-		g = intensity * ((OEMaRGB >> 8) & 0x000000ff);
-		b = intensity * ((OEMaRGB) & 0x000000ff);
+		ULONG r,g,b;
+		r = (ULONG)(intensity * ((OEMaRGB >> 16) & 0x000000ff));
+		g = (ULONG)(intensity * ((OEMaRGB >> 8) & 0x000000ff));
+		b = (ULONG)(intensity * ((OEMaRGB) & 0x000000ff));
 
 		aRGB = (0xff << 24) + (r << 16) + (g << 8) + (b);
 	}
@@ -267,8 +267,8 @@ typedef  TG_Light *TG_LightPtr;
 typedef struct _TG_Texture
 {
 	char				textureName[256];
-	DWORD				mcTextureNodeIndex;
-	DWORD				gosTextureHandle;
+	ULONG				mcTextureNodeIndex;
+	ULONG				gosTextureHandle;
 	bool				textureAlpha;
 } TG_Texture;
 
@@ -278,8 +278,8 @@ typedef TG_Texture* TG_TexturePtr;
 // TG_TinyTexture
 typedef struct _TG_TinyTexture
 {
-	DWORD				mcTextureNodeIndex;
-	DWORD				gosTextureHandle;
+	ULONG				mcTextureNodeIndex;
+	ULONG				gosTextureHandle;
 	bool				textureAlpha;
 } TG_TinyTexture;
 
@@ -291,8 +291,8 @@ class TG_Shape;
 typedef struct _TG_Animation
 {
 	char 						nodeId[TG_NODE_ID];		//Node ID
-	DWORD						shapeId;				//DON'T SCAN EVERY FRAME.  WOW IS IT SLOW!!!!!  Set this first time through and its simple.
-	DWORD						numFrames;				//Number of Frames of animation.
+	ULONG						shapeId;				//DON'T SCAN EVERY FRAME.  WOW IS IT SLOW!!!!!  Set this first time through and its simple.
+	ULONG						numFrames;				//Number of Frames of animation.
 	float 						frameRate;				//Number of Frames Per Second.
 	float						tickRate;				//Number of Ticks Per Second.
 	Stuff::UnitQuaternion		*quat;					//Stores animation offset in Quaternion rotation.
@@ -365,12 +365,12 @@ class TG_TypeNode
 		
 		virtual void destroy (void);
 		
-		char *getNodeId (void)
+		PSTR getNodeId (void)
 		{
 			return nodeId;
 		}
 
-		char *getParentId (void)
+		PSTR getParentId (void)
 		{
 			return parentId;
 		}
@@ -412,7 +412,7 @@ class TG_TypeNode
 		//
 		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long ParseASEFile (BYTE *aseBuffer, char *filename)
+		virtual long ParseASEFile (PUCHAR /*aseBuffer*/, PSTR /*filename*/)
 		{
 			return 0;
 		}
@@ -424,7 +424,7 @@ class TG_TypeNode
 		//
 		// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long MakeFromHelper (BYTE *aseBuffer, char *filename);
+		virtual long MakeFromHelper (PUCHAR aseBuffer, PSTR filename);
 
 		//Function returns 0 if OK.  -1 if file not found or file not ASE Format.		
 		//This function loads the ASE file into the TG_Triangle and TG_Vertex lists.
@@ -432,7 +432,7 @@ class TG_TypeNode
 		//
 		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long LoadTGShapeFromASE (char *fileName)
+		virtual long LoadTGShapeFromASE (PSTR /*fileName*/)
 		{
 			return 0;
 		}
@@ -440,7 +440,7 @@ class TG_TypeNode
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual long SetTextureHandle (DWORD textureNum, DWORD gosTextureHandle)
+		virtual long SetTextureHandle (ULONG /*textureNum*/, ULONG /*gosTextureHandle*/)
 		{
 			return 0;
 		}
@@ -448,13 +448,13 @@ class TG_TypeNode
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual long SetTextureAlpha (DWORD textureNum, bool alphaFlag)
+		virtual long SetTextureAlpha (ULONG /*textureNum*/, bool /*alphaFlag*/)
 		{
 			return 0;
 		}
 
 		//Need this so that Multi-Shapes can let each shape know texture info.
-		virtual void CreateListOfTextures (TG_TexturePtr list, DWORD numTxms)
+		virtual void CreateListOfTextures (TG_TexturePtr /*list*/, ULONG /*numTxms*/)
 		{
 		}
 
@@ -462,15 +462,15 @@ class TG_TypeNode
 		// Creates an instance of this shape for the game to muck with.
 		virtual TG_Shape *CreateFrom (void);
 
-		virtual void SetAlphaTest (bool flag)
+		virtual void SetAlphaTest (bool /*flag*/)
 		{
 		}
 
-		virtual void SetFilter (bool flag)
+		virtual void SetFilter (bool /*flag*/)
 		{
 		}
 
-		virtual void SetLightRGBs (DWORD hPink, DWORD hGreen, DWORD hYellow)
+		virtual void SetLightRGBs (ULONG /*hPink*/, ULONG /*hGreen*/, ULONG /*hYellow*/)
 		{
 		}
 		
@@ -502,17 +502,17 @@ class TG_TypeShape : public TG_TypeNode
 	//-------------
 	//Data Members
 	protected:
-		DWORD					numTypeVertices;			//Number of vertices in Shape
-		DWORD					numTypeTriangles;			//NUmber of triangles in Shape
-		DWORD					numTextures;				//Number of textures in Shape
+		ULONG					numTypeVertices;			//Number of vertices in Shape
+		ULONG					numTypeTriangles;			//NUmber of triangles in Shape
+		ULONG					numTextures;				//Number of textures in Shape
 
 		TG_TypeVertexPtr		listOfTypeVertices;			//Memory holding all vertex data
 		TG_TypeTrianglePtr		listOfTypeTriangles;		//Memory holding all triangle data
 		TG_TinyTexturePtr		listOfTextures;				//List of texture Structures for this shape.
 
-		DWORD					hotPinkRGB;					//Stores the value for this shape to replace hot Pink With
-		DWORD					hotYellowRGB;				//Stores the value for this shape to replace hot Yellow With 
-		DWORD					hotGreenRGB;            	//Stores the value for this shape to replace hot Green With 
+		ULONG					hotPinkRGB;					//Stores the value for this shape to replace hot Pink With
+		ULONG					hotYellowRGB;				//Stores the value for this shape to replace hot Yellow With 
+		ULONG					hotGreenRGB;            	//Stores the value for this shape to replace hot Green With 
 
 		bool					alphaTestOn;				//Decides if we should draw alphaTest On or not!
 		bool					filterOn;					//Decides if we should filter the shape or not!
@@ -566,7 +566,7 @@ class TG_TypeShape : public TG_TypeNode
 		//
 		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long ParseASEFile (BYTE *aseBuffer, char *filename);	//filename for error reporting ONLY
+		virtual long ParseASEFile (PUCHAR aseBuffer, PSTR filename);	//filename for error reporting ONLY
 
 		//Function return 0 is OK.  -1 if file is not ASE Format or missing data.
 		//This function simply parses the ASE buffers handed to it.  This allows
@@ -575,7 +575,7 @@ class TG_TypeShape : public TG_TypeNode
 		//
 		// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long MakeFromHelper (BYTE *aseBuffer, char *filename);
+		virtual long MakeFromHelper (PUCHAR aseBuffer, PSTR filename);
 
 		//Function returns 0 if OK.  -1 if file not found or file not ASE Format.		
 		//This function loads the ASE file into the TG_Triangle and TG_Vertex lists.
@@ -583,20 +583,20 @@ class TG_TypeShape : public TG_TypeNode
 		//
 		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long LoadTGShapeFromASE (char *fileName);
+		virtual long LoadTGShapeFromASE (PSTR fileName);
 
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual long SetTextureHandle (DWORD textureNum, DWORD gosTextureHandle);
+		virtual long SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle);
 
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual long SetTextureAlpha (DWORD textureNum, bool alphaFlag);
+		virtual long SetTextureAlpha (ULONG textureNum, bool alphaFlag);
 
 		//Need this so that Multi-Shapes can let each shape know texture info.
-		virtual void CreateListOfTextures (TG_TexturePtr list, DWORD numTxms);
+		virtual void CreateListOfTextures (TG_TexturePtr list, ULONG numTxms);
 
  		virtual void movePosRelativeCenterNode (void);
 		
@@ -614,7 +614,7 @@ class TG_TypeShape : public TG_TypeNode
 			filterOn = flag;
 		}
 
-		virtual void SetLightRGBs (DWORD hPink, DWORD hGreen, DWORD hYellow)
+		virtual void SetLightRGBs (ULONG hPink, ULONG hGreen, ULONG hYellow)
 		{
 			hotPinkRGB = hPink;
 			hotGreenRGB = hGreen;
@@ -650,10 +650,10 @@ class TG_Shape
 	//Data Members
 	protected:
 		TG_TypeNodePtr			myType;						//Pointer to the instance of the shape.
-		DWORD					numVertices;				//Number of vertices in Shape
-		DWORD					numTriangles;				//NUmber of triangles in Shape
-		DWORD					numVisibleFaces;			//Number of non-backfaced non-clipped faces.
-		DWORD					numVisibleShadows;			//Number of visible Shadow Faces.
+		ULONG					numVertices;				//Number of vertices in Shape
+		ULONG					numTriangles;				//NUmber of triangles in Shape
+		ULONG					numVisibleFaces;			//Number of non-backfaced non-clipped faces.
+		ULONG					numVisibleShadows;			//Number of visible Shadow Faces.
 
 		TG_Vertex *				listOfColors;				//Memory holding all unchanged or rarely changed color data.
 		gos_VERTEX * 			listOfVertices;				//Memory holding all vertex data
@@ -673,8 +673,8 @@ class TG_Shape
 
 		bool					shadowsVisible[MAX_SHADOWS];//Is this shadow worth drawing?
 
-		DWORD					aRGBHighlight;				//Color to add to vertices to make building stand out.
-		DWORD					fogRGB;						//Color to make fog.
+		ULONG					aRGBHighlight;				//Color to add to vertices to make building stand out.
+		ULONG					fogRGB;						//Color to make fog.
 		
 		float					shapeScalar;
 
@@ -684,7 +684,7 @@ class TG_Shape
 		bool					isWindow;
 		bool					isSpotlight;
 
-		DWORD					lastTurnTransformed;
+		ULONG					lastTurnTransformed;
 
 	public:
 		//Matrices used to transform the shapes.
@@ -693,14 +693,14 @@ class TG_Shape
 		static Stuff::Matrix4D			worldToClip;
 		static Stuff::LinearMatrix4D	worldToCamera;
 		static TG_LightPtr				*listOfLights;		//List passed in a transform time
-		static DWORD					numLights;
+		static ULONG					numLights;
 
 		static float					viewMulX;
 		static float					viewAddX;
 		static float					viewMulY;
 		static float					viewAddY;
 
-		static DWORD					fogColor;
+		static ULONG					fogColor;
 		static float					fogFull;
 		static float					fogStart;
 
@@ -711,7 +711,7 @@ class TG_Shape
 
 		static UserHeapPtr 				tglHeap;		//Stores all TGL data so we don't need to go through the FREE merry go round of GOS!
 		
-		static DWORD					lighteningLevel;
+		static ULONG					lighteningLevel;
 
 	//-----------------
 	//Member Functions
@@ -768,16 +768,16 @@ class TG_Shape
 
 		static void SetViewport (float mulX, float mulY, float addX, float addY);
 
-		static void SetFog (DWORD fRGB, float fStart, float fFull);
+		static void SetFog (ULONG fRGB, float fStart, float fFull);
 
 		//This function sets the list of lights used by the TransformShape function
 		//to light the shape.
 		//Function returns 0 if lightList entries are all OK.  -1 otherwise.
 		//
-		long SetLightList (TG_LightPtr *lightList, DWORD nLights);
+		long SetLightList (TG_LightPtr *lightList, ULONG nLights);
 		
 		//This function sets the fog values for the shape.  Straight fog right now.
-		void SetFogRGB (DWORD fRGB);
+		void SetFogRGB (ULONG fRGB);
 
 		//This function does exactly what TranformShape does EXCEPT that the shapeToClip,
 		//Lighting and backface matrices have been calculated in the step above this one.
@@ -801,7 +801,7 @@ class TG_Shape
 		//gos_DrawTriangle.  Does clipping, too!
 		long RenderShadows (long startFace);
 
-		void SetARGBHighLight (DWORD argb)
+		void SetARGBHighLight (ULONG argb)
 		{
 			aRGBHighlight = argb;
 		}
@@ -811,7 +811,7 @@ class TG_Shape
 			lightsOut = lightFlag;
 		}
 		
-		char * getNodeName (void)
+		PSTR  getNodeName (void)
 		{
 			return myType->getNodeId();
 		}
@@ -844,8 +844,8 @@ class TG_VertexPool
 		TG_Vertex 	*tgVertexPool;
 		TG_Vertex 	*nextVertex;
 		
-		DWORD		totalVertices;
-		DWORD		numVertices;
+		ULONG		totalVertices;
+		ULONG		numVertices;
 		
 	public:
 		TG_VertexPool (void)
@@ -866,7 +866,7 @@ class TG_VertexPool
 			totalVertices = numVertices = 0;
 		}
 		
-		void init (DWORD maxVertices)
+		void init (ULONG maxVertices)
 		{
 			tgVertexPool = (TG_VertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Vertex) * maxVertices);
 			gosASSERT(tgVertexPool != NULL);
@@ -883,7 +883,7 @@ class TG_VertexPool
 			numVertices = 0;
 		}
 		
-		TG_VertexPtr getColorsFromPool (DWORD numRequested)
+		TG_VertexPtr getColorsFromPool (ULONG numRequested)
 		{
 			TG_VertexPtr result = NULL;
 			numVertices += numRequested;
@@ -903,8 +903,8 @@ class TG_GOSVertexPool
 		gos_VERTEX 	*gVertexPool;
 		gos_VERTEX 	*nextVertex;
 		
-		DWORD		totalVertices;
-		DWORD		numVertices;
+		ULONG		totalVertices;
+		ULONG		numVertices;
 		
 	public:
 		TG_GOSVertexPool (void)
@@ -925,7 +925,7 @@ class TG_GOSVertexPool
 			totalVertices = numVertices = 0;
 		}
 		
-		void init (DWORD maxVertices)
+		void init (ULONG maxVertices)
 		{
 			gVertexPool = (gos_VERTEX *)TG_Shape::tglHeap->Malloc(sizeof(gos_VERTEX) * maxVertices);
 			gosASSERT(gVertexPool != NULL);
@@ -942,7 +942,7 @@ class TG_GOSVertexPool
 			numVertices = 0;
 		}
 		
-		gos_VERTEX * getVerticesFromPool (DWORD numRequested)
+		gos_VERTEX * getVerticesFromPool (ULONG numRequested)
 		{
 			gos_VERTEX* result = NULL;
 			numVertices += numRequested;
@@ -962,8 +962,8 @@ class TG_TrianglePool
 		TG_Triangle *trianglePool;
 		TG_Triangle	*nextTriangle;
 		
-		DWORD		totalTriangles;
-		DWORD		numTriangles;
+		ULONG		totalTriangles;
+		ULONG		numTriangles;
 		
 	public:
 		TG_TrianglePool (void)
@@ -984,7 +984,7 @@ class TG_TrianglePool
 			totalTriangles = numTriangles = 0;
 		}
 		
-		void init (DWORD maxTriangles)
+		void init (ULONG maxTriangles)
 		{
 			trianglePool = (TG_Triangle *)TG_Shape::tglHeap->Malloc(sizeof(TG_Triangle) * maxTriangles);
 			gosASSERT(trianglePool != NULL);
@@ -1001,7 +1001,7 @@ class TG_TrianglePool
 			numTriangles = 0;
 		}
 		
-		TG_Triangle * getTrianglesFromPool (DWORD numRequested)
+		TG_Triangle * getTrianglesFromPool (ULONG numRequested)
 		{
 			TG_Triangle* result = NULL;
 			numTriangles += numRequested;
@@ -1021,8 +1021,8 @@ class TG_ShadowPool
 		TG_ShadowVertexTemp 	*tVertexPool;
 		TG_ShadowVertexTemp 	*nextVertex;
 		
-		DWORD					totalVertices;
-		DWORD					numVertices;
+		ULONG					totalVertices;
+		ULONG					numVertices;
 		
 	public:
 		TG_ShadowPool (void)
@@ -1043,7 +1043,7 @@ class TG_ShadowPool
 			totalVertices = numVertices = 0;
 		}
 		
-		void init (DWORD maxVertices)
+		void init (ULONG maxVertices)
 		{
 			tVertexPool = (TG_ShadowVertexTempPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_ShadowVertexTemp) * maxVertices);
 			gosASSERT(tVertexPool != NULL);
@@ -1060,7 +1060,7 @@ class TG_ShadowPool
 			numVertices = 0;
 		}
 		
-		TG_ShadowVertexTempPtr getShadowsFromPool (DWORD numRequested)
+		TG_ShadowVertexTempPtr getShadowsFromPool (ULONG numRequested)
 		{
 			TG_ShadowVertexTempPtr result = NULL;
 			numVertices += numRequested;
@@ -1077,11 +1077,11 @@ class TG_ShadowPool
 class TG_DWORDPool
 {
 	protected:
-		DWORD 	*triPool;
-		DWORD	*nextTri;
+		ULONG 	*triPool;
+		ULONG	*nextTri;
 		
-		DWORD	totalTriangles;
-		DWORD	numTriangles;
+		ULONG	totalTriangles;
+		ULONG	numTriangles;
 		
 	public:
 		TG_DWORDPool (void)
@@ -1102,9 +1102,9 @@ class TG_DWORDPool
 			totalTriangles = numTriangles = 0;
 		}
 		
-		void init (DWORD maxTriangles)
+		void init (ULONG maxTriangles)
 		{
-			triPool = (DWORD *)TG_Shape::tglHeap->Malloc(sizeof(DWORD) * maxTriangles);
+			triPool = (ULONG *)TG_Shape::tglHeap->Malloc(sizeof(ULONG) * maxTriangles);
 			gosASSERT(triPool != NULL);
 			
 			nextTri = triPool;
@@ -1119,9 +1119,9 @@ class TG_DWORDPool
 			numTriangles = 0;
 		}
 		
-		DWORD * getFacesFromPool (DWORD numRequested)
+		ULONG * getFacesFromPool (ULONG numRequested)
 		{
-			DWORD* result = NULL;
+			ULONG* result = NULL;
 			numTriangles += numRequested;
 			if (numTriangles < totalTriangles)
 			{

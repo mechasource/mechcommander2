@@ -227,7 +227,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (unsigned long apprNum, char
 	//-----------------------------------------------------------
 	// Scan the list of appearances and see if we have this one.
 	appearanceType = head;
-	while (appearanceType && stricmp(appearanceType->name,appearFile) != 0)
+	while (appearanceType && _stricmp(appearanceType->name,appearFile) != 0)
 	{
 		appearanceType = appearanceType->next;
 	}

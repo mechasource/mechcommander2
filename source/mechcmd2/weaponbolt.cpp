@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 //---------------------------------------------------------------------------
 // Include Files
@@ -2468,7 +2469,7 @@ void WeaponBolt::init (bool create, ObjectTypePtr _type)
 	//----------------------------------------------
 	// Get a texture Handle from the textureManager
 	// Assume ALPHA!
-	if (((WeaponBoltTypePtr)_type)->textureName && stricmp(((WeaponBoltTypePtr)_type)->textureName,"NONE") != 0)
+	if (((WeaponBoltTypePtr)_type)->textureName && _stricmp(((WeaponBoltTypePtr)_type)->textureName,"NONE") != 0)
 	{
 		char tPath[1024];
 		sprintf(tPath,"%s128\\",tglPath);

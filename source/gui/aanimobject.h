@@ -1,18 +1,18 @@
-#ifndef AANIMOBJECT_H
-#define AANIMOBJECT_H
 /*************************************************************************************************\
 aAnimObject.h			: Interface for the aAnimObject component of the GUI library.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#ifndef AANIMOBJECT_H
+#define AANIMOBJECT_H
 
 #ifndef ASYSTEM_H
-#include "aSystem.h"
+#include "asystem.h"
 #endif
 
 #ifndef AANIM_H
-#include "aAnim.h"
+#include "aanim.h"
 #endif
 
 //*************************************************************************************************

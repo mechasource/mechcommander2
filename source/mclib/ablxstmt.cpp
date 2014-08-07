@@ -6,9 +6,10 @@
 //								ABLEXEC.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
-#include <stdio.h>
-#include <string.h>
+//#include <stdio.h>
+//#include <string.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"
@@ -346,11 +347,11 @@ TypePtr execDeclaredRoutineCall (SymTableNodePtr routineIdPtr, bool skipOrder) {
 
 		if (functionExecTime > ProfileLogFunctionTimeLimit) {
 			char s[512];
-			sprintf(s, "[%08d] ", NumExecutions);
+			sprintf_s(s, _countof(s), "[%08d] ", NumExecutions);
 			for (long i = 0; i < CallStackLevel; i++)
 				strcat(s, " ");
 			char s1[512];
-			sprintf(s1, "%s (%d)\n", routineIdPtr->name, functionExecTime);
+			sprintf_s(s1, _countof(s1), "%s (%d)\n", routineIdPtr->name, functionExecTime);
 			strcat(s, s1);
 			ABL_AddToProfileLog(s);
 		}

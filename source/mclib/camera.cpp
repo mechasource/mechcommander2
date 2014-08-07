@@ -51,7 +51,7 @@ extern void AG_shape_draw (PANE *pane, void *shape_table,LONG shape_number, LONG
 extern void AG_shape_translate_draw (PANE *pane, void *shape_table,LONG shape_number, LONG hotX, LONG hotY);
 extern void AG_shape_lookaside(MemoryPtr palette);
 
-#pragma warning(disable:4305/*double to float truncation*/)
+//#pragma warning(disable:4305/*double to float truncation*/)
 
 inline float agsqrt( float _a, float _b )
 {

@@ -1,11 +1,12 @@
-#include "gosFXHeaders.hpp"
-
 //==========================================================================//
 // File:	 gosFX_EffectCloud.cpp											//
 // Contents: Base gosFX::EffectCloud Component								//
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
+
+#include "gosFXHeaders.hpp"
 
 //------------------------------------------------------------------------------
 //

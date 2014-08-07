@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "SortedSocket.hpp"
-#include "SortedChain.hpp"
+#include "stuff.hpp"
+#include "sortedsocket.hpp"
+#include "sortedchain.hpp"
 
 namespace GetHashFunctions {
 	inline Stuff::IteratorPosition
@@ -124,7 +124,7 @@ namespace Stuff {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Hash inlines ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	inline void
-		Hash::RemovePlug(Plug *plug)
+		Hash::RemovePlug(Plug* /*plug*/)
 	{
 		STOP((
 			"Hash::RemovePlug - no efficient implementation, use iterator find & remove"
@@ -132,7 +132,7 @@ namespace Stuff {
 	}
 
 	inline bool
-		Hash::IsPlugMember(Plug *plug)
+		Hash::IsPlugMember(Plug* /*plug*/)
 	{
 		STOP((
 			"Hash::IsPlugMember - no efficient implementation, use find"

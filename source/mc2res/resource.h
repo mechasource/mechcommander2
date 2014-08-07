@@ -1,9 +1,5 @@
-//===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
-//===========================================================================//
-
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by mc2res.rc
 //
 #define IDNEXT                          3
@@ -4391,7 +4387,7 @@
 #define IDS_SWAPFILE_CAPTION            60032
 #define IDS_MP_PLAYER_READY             60033
 #define IDS_MC2_CDMISSING               60034
-#define IDS_MC2_movieMISSING             60035
+#define IDS_MC2_movieMISSING            60035
 #define IDS_MC2_MISSING_TITLE           60036
 #define IDS_MC2_FILEMISSING             60037
 #define IDS_FINAL_MISSION               60038

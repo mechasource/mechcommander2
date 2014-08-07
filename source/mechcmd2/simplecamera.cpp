@@ -4,6 +4,8 @@ SimpleCamera.cpp	: Implementation of the SimpleCamera component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
+
 #include "SimpleCamera.h"
 #include "appear.h"
 #include "mclib.h"

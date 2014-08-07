@@ -6,10 +6,11 @@
 //								ABLRTN.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"
@@ -280,19 +281,19 @@ void ABL_AddToProfileLog (char* profileString);
 // ABL library interface routines
 //***************************************************************************
 
-long DefaultRandom (long range) {
+long DefaultRandom (long /* range */) {
 
 	return(0);
 }
 
 //---------------------------------------------------------------------------
 
-void DefaultSeedRandom (unsigned long seed) {
+void DefaultSeedRandom (unsigned long /* seed */) {
 }
 
 //---------------------------------------------------------------------------
 
-void DefaultDebugPrintCallback (char* s) {
+void DefaultDebugPrintCallback (char* /* s */) {
 }
 
 //---------------------------------------------------------------------------
@@ -372,8 +373,9 @@ profile = true;
 	//-------------------------------------------------------------------
 	// Let's make sure we have not created too many built-in ABL routines
 	// for the lovely user...
-	if (NUM_ABL_ROUTINES > 254)
-		ABL_Fatal(0, " MAJOR ABL ERROR: Too Many ABL Routines ");
+#if (NUM_ABL_ROUTINES > 254)
+#error MAJOR ABL ERROR: Too Many ABL Routines
+#endif
 
 	ABLSystemMallocCallback = systemMallocCallback;
 	ABLStackMallocCallback = stackMallocCallback;
@@ -476,7 +478,8 @@ profile = true;
 	
 	//----------------------------------
 	// Initialize the character table...
-	for (long curCh = 0; curCh < 256; curCh++)
+	long curCh;
+	for (curCh = 0; curCh < 256; curCh++)
 		charTable[curCh] = CHR_SPECIAL;
 	for (curCh = '0'; curCh <= '9'; curCh++)
 		charTable[curCh] = CHR_DIGIT;
@@ -575,7 +578,8 @@ long ABLi_preProcess (char* sourceFileName, long* numErrors, long* numLinesProce
 
 	//--------------------------------------------------------------------------------
 	// First, check if this module has already been registered into the environment...
-	for (long i = 0; i < NumModulesRegistered; i++)
+	long i;
+	for (i = 0; i < NumModulesRegistered; i++)
 		if (strcmp(strlwr(sourceFileName), ModuleRegistry[i].fileName) == 0)
 			return(i);
 
@@ -769,7 +773,9 @@ long ABLi_preProcess (char* sourceFileName, long* numErrors, long* numLinesProce
 
 //***************************************************************************
 
-long ABLi_execute (SymTableNodePtr moduleIdPtr, SymTableNodePtr functionIdPtr, ABLParamPtr paramList, StackItemPtr returnVal) {
+long ABLi_execute (SymTableNodePtr  moduleIdPtr , SymTableNodePtr /* functionIdPtr */, 
+				   ABLParamPtr paramList, StackItemPtr returnVal) 
+{
 
 	//insertSymTable(&SymTableDisplay[0], moduleIdPtr);
 
@@ -903,7 +909,7 @@ long ABLi_execute (SymTableNodePtr moduleIdPtr, SymTableNodePtr functionIdPtr, A
 
 //***************************************************************************
 
-long ABLi_deleteModule (SymTableNodePtr moduleIdPtr) {
+long ABLi_deleteModule (SymTableNodePtr /* moduleIdPtr */) {
 
 	return(ABL_NO_ERR);
 }
@@ -1090,7 +1096,7 @@ long ABLi_registerInteger (char* name, long* address, long numElements) {
 
 //***************************************************************************
 
-long ABLi_registerReal (char* name, float* address, long numElements) {
+long ABLi_registerReal (char* name, float* address, long /* numElements */) {
 
 	if (strlen(name) >= MAXLEN_TOKENSTRING)
 		ABL_Fatal(0, " ABLi_registerInteger: variable name too long ");

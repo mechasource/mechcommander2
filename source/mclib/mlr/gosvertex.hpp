@@ -5,9 +5,9 @@
 #pragma once
 #define MLR_GOSVERTEX_HPP
 
-#include <MLR\MLR.hpp>
-#include <Stuff\Scalar.hpp>
-#include <GameOS.hpp>
+#include <mlr\mlr.hpp>
+#include <stuff\scalar.hpp>
+#include <gameos.hpp>
 
 namespace MidLevelRenderer {
 
@@ -95,7 +95,7 @@ namespace MidLevelRenderer {
 				}
 
 		inline GOSVertex&
-			operator=(const DWORD c)
+			operator=(const ULONG c)
 				{
 					Check_Pointer(this);
 
@@ -148,17 +148,18 @@ namespace MidLevelRenderer {
 	const float float_cheat = 12582912.0f/256.0f;
 	const float One_Over_256 = 1.0f/256.0f;
 
-	#pragma warning (disable : 4725)
+	//#pragma warning (disable : 4725)
 
 void
 	GOSVertex::GOSTransformNoClip(
-		const Stuff::Point3D &_v,
-		const Stuff::Matrix4D &m,
-		Stuff::Scalar *uv
+	const Stuff::Point3D &_v,
+	const Stuff::Matrix4D &m,
+	Stuff::Scalar *uv
 #if FOG_HACK
-				, int foggy
+	, int foggy
 #endif
 	)
+
 {
 	Check_Pointer(this);
 	Check_Object(&_v);
@@ -168,7 +169,6 @@ void
 	Stuff::Scalar *f = &x;
 	_asm {
 		mov         edx, m
-		
 		mov         eax, _v
 
 		fld			dword ptr [eax]			//	v.x
@@ -267,10 +267,10 @@ void
 
 	}
 #else
-	x = v.x*m(0,0) + v.y*m(1,0) + v.z*m(2,0) + m(3,0);
-	y = v.x*m(0,1) + v.y*m(1,1) + v.z*m(2,1) + m(3,1);
-	z = v.x*m(0,2) + v.y*m(1,2) + v.z*m(2,2) + m(3,2);
-	rhw = v.x*m(0,3) + v.y*m(1,3) + v.z*m(2,3) + m(3,3);
+	x = _v.x*m(0,0) + _v.y*m(1,0) + _v.z*m(2,0) + m(3,0);
+	y = _v.x*m(0,1) + _v.y*m(1,1) + _v.z*m(2,1) + m(3,1);
+	z = _v.x*m(0,2) + _v.y*m(1,2) + _v.z*m(2,2) + m(3,2);
+	rhw = _v.x*m(0,3) + _v.y*m(1,3) + _v.z*m(2,3) + m(3,3);
 #endif
 	
 #if 0	//USE_ASSEMBLER_CODE
@@ -342,12 +342,13 @@ void
 }
 
 //	create a dword color out of 4 rgba floats
-	inline DWORD
+	inline ULONG
 		GOSCopyColor( const Stuff::RGBAColor *color )
 	{
 		Stuff::Scalar f;
+		ULONG argb;
+
 #if USE_ASSEMBLER_CODE
-		DWORD argb;
 
 		_asm {
 			fld		float_cheat
@@ -497,10 +498,10 @@ void
 		return argb;
 	}
 
-	inline DWORD
+	inline ULONG
 		Color_DWORD_Lerp (
-			DWORD _from,
-			DWORD _to,
+			ULONG _from,
+			ULONG _to,
 			Stuff::Scalar _lerp
 		)
 	{
@@ -546,40 +547,40 @@ void
 	//	the lines below will produce following functions:
 	//
 	//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, int);
-	//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const DWORD*, int);
+	//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const ULONG*, int);
 	//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, int);
 	//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const Vector2DScalar*, int);
-	//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const DWORD*, const Vector2DScalar*, int);
+	//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const ULONG*, const Vector2DScalar*, int);
 	//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, const Vector2DScalar*, int);
 	//
 	//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, int, int, int);
-	//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const DWORD*, int, int, int);
+	//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const ULONG*, int, int, int);
 	//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, int, int, int);
 	//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const Vector2DScalar*, int, int, int);
-	//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const DWORD*, const Vector2DScalar*, int, int, int);
+	//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const ULONG*, const Vector2DScalar*, int, int, int);
 	//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, const Vector2DScalar*, int, int, int);
 	//#######################################################################################################################
 
 	#define I_SAY_YES_TO_COLOR
 	#define I_SAY_YES_TO_TEXTURE
 	#define I_SAY_YES_TO_DWORD_COLOR
-	#include <MLR\GOSVertexManipulation.hpp>
+	#include <mlr\gosvertexmanipulation.hpp>
 
 	#undef I_SAY_YES_TO_DWORD_COLOR
-	#include <MLR\GOSVertexManipulation.hpp>
+	#include <mlr\gosvertexmanipulation.hpp>
 
 	#undef I_SAY_YES_TO_COLOR
-	#include <MLR\GOSVertexManipulation.hpp>
+	#include <mlr\gosvertexmanipulation.hpp>
 
 	#define I_SAY_YES_TO_COLOR
 	#undef I_SAY_YES_TO_TEXTURE
-	#include <MLR\GOSVertexManipulation.hpp>
+	#include <mlr\gosvertexmanipulation.hpp>
 
 	#define I_SAY_YES_TO_DWORD_COLOR
-	#include <MLR\GOSVertexManipulation.hpp>
+	#include <mlr\gosvertexmanipulation.hpp>
 
 	#undef I_SAY_YES_TO_COLOR
-	#include <MLR\GOSVertexManipulation.hpp>
+	#include <mlr\gosvertexmanipulation.hpp>
 
 	#define MLR_GOSVERTEXMANIPULATION_HPP
 

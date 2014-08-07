@@ -5,6 +5,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #include "McLib.h"
 #include "LogisticsPilot.h"
@@ -185,7 +186,8 @@ long LogisticsPilot::save( FitIniFile& file, long which )
 	file.writeIdBoolean( "Dead", bDead );
 
 	char buffer[64];
-	for ( int i = 0; i < MAX_MEDAL; i++ )
+	int i;
+	for ( i = 0; i < MAX_MEDAL; i++ )
 	{
 		sprintf( buffer, "Medal%ld", i );
 		file.writeIdBoolean( buffer, medals[i] );
@@ -222,7 +224,8 @@ long LogisticsPilot::load( FitIniFile& file )
 	file.readIdBoolean( "Dead", bDead );
 
 	char buffer[64];
-	for ( int i = 0; i < MAX_MEDAL; i++ )
+	int i;
+	for ( i = 0; i < MAX_MEDAL; i++ )
 	{
 		sprintf( buffer, "Medal%ld", i );
 		file.readIdBoolean( buffer, medals[i] );

@@ -6,14 +6,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "LinkedList.hpp"
-#include "DirectX.hpp"
-#include "Sound Resource.hpp"
-#include "Sound DS3DChannel.hpp"
-#include "Sound DS3DMixer.hpp"
+#include "linkedlist.hpp"
+#include "directx.hpp"
+#include "sound_resource.hpp"
+#include "sound_ds3dchannel.hpp"
+#include "sound_ds3dmixer.hpp"
 
-
-//
 // This structure is used to initialize sound channels
 //
 // When GameOS is started, the init structure passed to GameOS by the application will contain a master frequency (11025,22050 or 44100), a number of channels (int) and a pointer to an array, a byte per channel containing flags listed above.
@@ -25,14 +23,12 @@
 //
 // Used for sound device enumeration - Maximum of 8 devices
 //
-typedef struct
-{
+typedef struct SoundDeviceInfo {
 	GUID				Guid;
 	char				Description[128];
 	char				Driver[128];
 	char				Version[256];
 	DSCAPS				Caps;
-
 } SoundDeviceInfo;
 
 #define MAX_SOUNDCHANNELS 64
@@ -59,52 +55,39 @@ typedef struct _srdata
 		m_workBuffer;
 
 	SoundDeviceInfo m_DeviceArray[8];
-	DWORD m_numDevices;
-	DWORD m_PreferredDevice;
+	ULONG m_numDevices;
+	ULONG m_PreferredDevice;
 	bool m_reset;
 	bool m_allPaused;
-#ifdef LAB_ONLY
+#if defined(LAB_ONLY)
 	char m_playHistory[32][128];
 	bool m_verboseDebugger;
-	DWORD m_playHistoryItr;
+	ULONG m_playHistoryItr;
 #endif
 
 } SoundRendererData;
 
 extern HGOSHEAP SoundHeap;
 
-void SoundRendererInstall(int);
+void __stdcall SoundRendererInstall(int);
+void __stdcall SoundRendererStartFrame();
+void __stdcall SoundRendererEndFrame();
+ULONG __stdcall SoundRendererUpdate( PVOID ThreadParam );
+void __stdcall SoundRendererUninstall();
+void __stdcall SoundRendererCreateTimer();
+void __stdcall SoundRendererDestroyTimer();
+void __stdcall SoundRendererPause();
+void __stdcall SoundRendererContinue();
+void __stdcall SoundRendererFF(double sec);
+bool __stdcall IsValidSoundResource(HGOSAUDIO gosAudio);
 
-void SoundRendererStartFrame();
-
-void SoundRendererEndFrame();
-
-DWORD WINAPI SoundRendererUpdate( LPVOID ThreadParam );
-
-void SoundRendererUninstall();
-
-void SoundRendererCreateTimer();
-
-void SoundRendererDestroyTimer();
-
-void SoundRendererPause();
-
-void SoundRendererContinue();
-
-void SoundRendererFF(double sec);
-
-bool IsValidSoundResource(HGOSAUDIO gosAudio);
-
-
-void CALLBACK 
-	TimeFunc
-( 
+void __stdcall TimeFunc( 
 	UINT uTimerID, 
 	UINT uMsg, 
-	DWORD dwUser,
-	DWORD dw1, 
-	DWORD dw2 
+	ULONG dwUser,
+	ULONG dw1, 
+	ULONG dw2 
 );
 
-void SoundRendererNotify();
+void __stdcall SoundRendererNotify();
 

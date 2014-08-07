@@ -2,6 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#include "stdafx.h"
+
 #include <io.h> // for _chmod()
 
 #include "prefs.h"
@@ -57,7 +59,8 @@ CPrefs::CPrefs() {
 	fullScreen = false;
 	gammaLevel = 0;
 	useLeftRightMouseProfile = true; // if false, use old style commands
-	for ( int i = 0; i < 10; i++ )
+	int i;
+	for ( i = 0; i < 10; i++ )
 		playerName[i][0] = 0;
 
 	for (i = 0; i < 10; i++ )
@@ -484,12 +487,13 @@ void CPrefs::setNewName( const char* pNewName )
 	if ( !pNewName )
 		return;
 	// check and see if this name is already in here
-	for ( int i = 0; i < 10; i++ )
+	int i, j;
+	for ( i = 0; i < 10; i++ )
 	{
-		if ( !stricmp( pNewName, playerName[i] ) )
+		if ( !_stricmp( pNewName, playerName[i] ) )
 		{
 			// found the same one so now we just shuffle
-			for ( int j = i; j < 9; j++ )
+			for ( j = i; j < 9; j++ )
 			{
 				strcpy( playerName[j], playerName[j+1] );
 			}
@@ -522,12 +526,13 @@ void CPrefs::setNewIP( const char* pNewIP )
 	if ( !pNewIP )
 		return;
 	// check and see if this name is already in here
-	for ( int i = 0; i < 10; i++ )
+	int i, j;
+	for ( i = 0; i < 10; i++ )
 	{
-		if ( !stricmp( pNewIP, ipAddresses[i] ) )
+		if ( !_stricmp( pNewIP, ipAddresses[i] ) )
 		{
 			// found the same one so now we just shuffle
-			for ( int j = i; j < 9; j++ )
+			for ( j = i; j < 9; j++ )
 			{
 				strcpy( ipAddresses[j], ipAddresses[j+1] );
 			}
@@ -554,12 +559,13 @@ void CPrefs::setNewUnit( const char* pNewUnit )
 	if ( !pNewUnit )
 		return;
 // check and see if this name is already in here
-	for ( int i = 0; i < 10; i++ )
+	int i, j;
+	for ( i = 0; i < 10; i++ )
 	{
-		if ( !stricmp( pNewUnit, unitName[i] ) )
+		if ( !_stricmp( pNewUnit, unitName[i] ) )
 		{
 			// found the same one so now we just shuffle
-			for ( int j = i; j < 9; j++ )
+			for ( j = i; j < 9; j++ )
 			{
 				strcpy( unitName[j], unitName[j+1] );
 			}

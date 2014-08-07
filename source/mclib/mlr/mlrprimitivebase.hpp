@@ -202,14 +202,14 @@ namespace MidLevelRenderer {
 				{ Check_Object(this); return passes; }
 
 		virtual void
-			HurtMe(const Stuff::LinearMatrix4D&, Stuff::Scalar radius)
+			HurtMe(const Stuff::LinearMatrix4D&, Stuff::Scalar /*radius*/)
 				{ Check_Object(this); }
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// This functions using the static buffers
 	//
 		void
-			SetClipCoord(Stuff::Point3D &point, int index)
+			SetClipCoord(Stuff::Point3D &point, size_t index)
 				{
 					Check_Object(this); Verify(clipExtraCoords->GetLength() > index);
 					(*clipExtraCoords)[index].x = point.x;
@@ -217,11 +217,11 @@ namespace MidLevelRenderer {
 					(*clipExtraCoords)[index].z = point.z;
 				}
 		void
-			FlashClipCoords(int num)
+			FlashClipCoords(size_t num)
 				{
 					Check_Object(this); Verify(clipExtraCoords->GetLength() > num);
 					coords.SetLength(num);
-					for(int i=0;i<num;i++)
+					for(size_t i=0;i<num;i++)
 					{
 						coords[i].x = (*clipExtraCoords)[i].x;
 						coords[i].y = (*clipExtraCoords)[i].y;
@@ -229,7 +229,7 @@ namespace MidLevelRenderer {
 					}
 				}
 		void
-			SetClipTexCoord(Vector2DScalar &uvs, int index)
+			SetClipTexCoord(Vector2DScalar &uvs, size_t index)
 				{
 					Check_Object(this); Verify(clipExtraTexCoords->GetLength() > index);
 					Verify(	MLRState::GetHasMaxUVs() ? (uvs[0]>=-100.0 && uvs[0]<=100.0) : 1);
@@ -238,7 +238,7 @@ namespace MidLevelRenderer {
 					(*clipExtraTexCoords)[index] = uvs;
 				}
 		void
-			FlashClipTexCoords(int num)
+			FlashClipTexCoords(size_t num)
 				{
 					Check_Object(this); Verify(clipExtraTexCoords->GetLength() > num);
 					texCoords.SetLength(num);

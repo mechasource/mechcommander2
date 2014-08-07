@@ -67,7 +67,8 @@ class ContactInfo {
 		}
 
 		void init (void) {
-			for (long i = 0; i < MAX_TEAMS; i++) {
+			long i;
+			for (i = 0; i < MAX_TEAMS; i++) {
 				contactStatus[i] = CONTACT_NONE;
 				//allContactStatus[i] = CONTACT_NONE;
 				contactCount[i] = 0;
@@ -139,7 +140,7 @@ class SensorSystem {
 		long					masterIndex;
 		GameObjectPtr			owner;
 		float					range;
-		long					skill;
+		ULONG					skill;
 		bool					broken;
 		bool					notShutdown;
 		bool					hasLOSCapability;
@@ -195,7 +196,10 @@ class SensorSystem {
 
 		float getEffectiveRange (void);
 
-		void setSkill (long newSkill);
+		void setSkill (ULONG newSkill)
+		{
+			skill = newSkill;
+		}
 
 		long getSkill (void) {
 			return(skill);

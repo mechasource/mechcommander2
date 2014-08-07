@@ -1,13 +1,14 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
-#include "McLib.h"
-#include "aSystem.h"
+#include "mclib.h"
+#include "asystem.h"
 #include "packet.h"
 #include "afont.h"
 #include "paths.h"
-#include "userInput.h"
+#include "userinput.h"
 
 
 long helpTextID = 0;
@@ -384,7 +385,8 @@ void aObject::moveToNoRecurse(long xPos, long yPos )
 
 void aObject::move( float offsetX, float offsetY )
 {
-	for ( int i = 0; i < 4; i++ )
+	int i;
+	for ( i = 0; i < 4; i++ )
 	{
 		location[i].x += offsetX;
 		location[i].y += offsetY;

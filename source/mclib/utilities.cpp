@@ -12,7 +12,7 @@ Utilities.cpp			: Implementation of the Utilities component.
 #include "McLib.h"
 
 
-#pragma warning(disable:4514)
+//#pragma warning(disable:4514)
 
 void drawRect( const GUI_RECT& area, unsigned long color )
 {

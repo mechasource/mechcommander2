@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #include "ChatWindow.h"
 #include "Mclib.h"

@@ -15,7 +15,7 @@
 #define	MAX_SYNTAX_ERRORS		1 //20
 #define	MAXLEN_ERROR_MESSAGE	256
 
-#pragma warning( disable : 4514 )  
+//#pragma warning( disable : 4514 )  
 
 typedef enum {
 	ABL_ERR_SYNTAX_NONE,									// 0

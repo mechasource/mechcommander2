@@ -1,64 +1,66 @@
-#pragma once
 //===========================================================================//
 // File:	 Debugger.hpp													 //
 // Contents: Debugger														 //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
+#pragma once
+
 //
 // Size of scroll back buffer for spew
 //
 #define DebuggerBufferSize 128*1024
 
 extern gos_VERTEX pTextVertices[80];
-extern DWORD TextVertex;
-extern DWORD WantAA;
-extern DWORD Want32;
-extern DWORD Want32T;
-extern DWORD WantRes;
-extern DWORD WantRVRAM;
-extern DWORD WantSW;
-extern DWORD WantSW1;
-extern DWORD WantHW;
-extern DWORD FrameAdvance;							// Used to step or fast forward through scripts
-extern DWORD OldFreeze;								// Old value of gFreezeLogic
-extern DWORD OldRender;								// Old value of gStopRendering;
-extern DWORD PerfCounterSelected;
+extern ULONG TextVertex;
+extern ULONG WantAA;
+extern ULONG Want32;
+extern ULONG Want32T;
+extern ULONG WantRes;
+extern ULONG WantRVRAM;
+extern ULONG WantSW;
+extern ULONG WantSW1;
+extern ULONG WantHW;
+extern ULONG FrameAdvance;							// Used to step or fast forward through scripts
+extern ULONG OldFreeze;								// Old value of gFreezeLogic
+extern ULONG OldRender;								// Old value of gStopRendering;
+extern ULONG PerfCounterSelected;
 extern int PerfYStart,PerfYEnd;
-extern DWORD DoUpdateWindow;
-extern DWORD DoingAdvance;
-extern DWORD OldgStopSystem;
-extern DWORD OldgGameLogicActive;
-extern bool MenuActive;
-extern bool SubMenuActive;
-extern bool	DebounceMenu;
-extern DWORD OldStop;
-extern DWORD OldRendering;
+extern ULONG DoUpdateWindow;
+extern ULONG DoingAdvance;
+extern ULONG OldgStopSystem;
+extern ULONG OldgGameLogicActive;
+extern UCHAR MenuActive;
+extern UCHAR SubMenuActive;
+extern UCHAR	DebounceMenu;
+extern ULONG OldStop;
+extern ULONG OldRendering;
 extern int AreaL, AreaR, AreaT, AreaB;
-extern DWORD PolygonsInArea;
+extern ULONG PolygonsInArea;
 extern float DebuggerTexelOffset;
 extern int DBWheelDelta;
-extern DWORD gShowMemoryUseage;						// 2=Enable at next frame, 1=show data, 0=Do not show data
-extern DWORD gShowWSUseage;							// 2=Enable at next frame, 1=show data, 0=Do not show data
-extern DWORD gShowFTOLUseage;						// 2=Enable at next frame, 1=show data, 0=Do not show data
-extern DWORD gShowALLUseage;
+extern ULONG gShowMemoryUseage;						// 2=Enable at next frame, 1=show data, 0=Do not show data
+extern ULONG gShowWSUseage;							// 2=Enable at next frame, 1=show data, 0=Do not show data
+extern ULONG gShowFTOLUseage;						// 2=Enable at next frame, 1=show data, 0=Do not show data
+extern ULONG gShowALLUseage;
 extern gos_VERTEX Graph[512];
-extern DWORD gScreenBMP;
+extern ULONG gScreenBMP;
 
-void WalkStack( DWORD* RoutineAddresses, DWORD NumberOfLevels, DWORD IgnoreLevels );
-char* DecodeAddress( DWORD Address, bool brief = true );
-void DrawLines( int X1, int Y1, int X2, int Y2, DWORD Color );
+void	__stdcall WalkStack( ULONG* RoutineAddresses, ULONG NumberOfLevels, ULONG IgnoreLevels );
+PSTR	__stdcall DecodeAddress( ULONG Address, UCHAR brief = true );
+void	__stdcall DrawLines( int X1, int Y1, int X2, int Y2, ULONG Color );
 
 typedef struct _MenuItem
 {
-	_MenuItem*	pNext;
-	_MenuItem* pSubMenu;							// Pointer to sub menu list, or NULL
-	DWORD(__stdcall *Callback)(char* Name, DWORD MenuFunction);
-	void (*Routine)();								// Sub menu list pointer
-	bool (*Greyed)();
-	bool (*CheckMark)();							// 0 When no check mark routine, 1 when sub menu
-	char* FullName;
-	char* Name;
+	struct _MenuItem*	pNext;
+	struct _MenuItem*	pSubMenu;							// Pointer to sub menu list, or NULL
+	ULONG	(__stdcall *Callback)(PSTR Name, ULONG MenuFunction);
+	void	(__stdcall *Routine)(void);								// Sub menu list pointer
+	UCHAR	(__stdcall *Greyed)(void);
+	UCHAR	(__stdcall *CheckMark)(void);							// 0 When no check mark routine, 1 when sub menu
+	PSTR FullName;
+	PSTR Name;
 } MenuItem;
 
 
@@ -71,10 +73,10 @@ extern MenuItem*	pGameMenu;
 extern MenuItem*	CurrentMenu;
 extern MenuItem*	MenuHighlight;
 extern MenuItem**	pCurrentMenu;
-extern void CleanUpDebugger();
-extern void InitDebuggerMenus();
+extern void __stdcall CleanUpDebugger(void);
+extern void __stdcall InitDebuggerMenus(void);
 
-#ifdef LAB_ONLY
+#if defined(LAB_ONLY)
 //
 // Pie chart data
 //
@@ -85,28 +87,25 @@ extern void InitDebuggerMenus();
 //
 // Array of textures in texture heap display
 //
-typedef struct _TextureHeap
-{
-	_TextureHeap*	pNext;
-	int				X1;
-	int				Y1;
-	int				X2;
-	int				Y2;
-	DWORD			Handle;
-
+typedef struct _TextureHeap {
+	struct _TextureHeap*	pNext;
+	int						X1;
+	int						Y1;
+	int						X2;
+	int						Y2;
+	ULONG					Handle;
 } TextureHeap;
 
 extern TextureHeap* pTextureHeap;
-extern DWORD SelectedHandle;
-extern DWORD TextureToUnload;
-bool CheckWindow();
+extern ULONG SelectedHandle;
+extern ULONG TextureToUnload;
+UCHAR __stdcall CheckWindow(void);
 
 //
 // Main Debugger Screens
 //
 
-enum EDbgScreen
-{
+typedef enum EDbgScreen {
 	DbgS_Stat,					// 0
 	DbgS_Spew,					// 1
 	DbgS_Texture,				// 2
@@ -130,14 +129,14 @@ enum EDbgScreen
 	DbgS_AllTextureDetail,		// 20
 	DbgS_AllTextureNoUpload,	// 21
 	DbgS_TextureLog,			// 22
-};
+} EDbgScreen;
 extern  EDbgScreen DebugDisplay;
 
 
 //
 // Framegraph information
 //
-typedef enum {
+typedef enum FrameGraphMode {
 	Graph_Chart=0,
 	Graph_30,
 	Graph_Pie30,
@@ -146,84 +145,81 @@ typedef enum {
 } FrameGraphMode;
 
 extern FrameGraphMode GraphMode;
-extern DWORD ShowColorInfo;
-
-
-
+extern ULONG ShowColorInfo;
 
 //
 // True when the debugger window is visible on the display
 //
-extern bool DebuggerActive;
-extern bool InDebugger;						// During debugger rendering
-extern bool ProcessMemorySize;				// When true will calculate each processes memory size in the exception handler (can take about 1 second!)
+extern UCHAR DebuggerActive;
+extern UCHAR InDebugger;						// During debugger rendering
+extern UCHAR ProcessMemorySize;				// When true will calculate each processes memory size in the exception handler (can take about 1 second!)
 extern int ZoomMode;						// Zoom screen around cursor
 extern int BaseZoom;
-extern DWORD gForceNoFlip;					// Force blt instead of flip in fullscreen
-extern DWORD gShowAverage;
-extern DWORD gShowGraphsAsTime;
-extern DWORD gShowGraphBackground;
-extern DWORD gNoGraph;
-extern DWORD WhichImage;					// Original / Special mode image?
+extern ULONG gForceNoFlip;					// Force blt instead of flip in fullscreen
+extern ULONG gShowAverage;
+extern ULONG gShowGraphsAsTime;
+extern ULONG gShowGraphBackground;
+extern ULONG gNoGraph;
+extern ULONG WhichImage;					// Original / Special mode image?
 //
 // Scroll back buffer for Dumplog (128K)
 //
 extern char DebuggerBuffer[DebuggerBufferSize];
-extern DWORD CurrentDebugSpewPos;		// Current position in buffer
-extern DWORD CurrentDebugTopOfScreen;	// Current top of screen
+extern ULONG CurrentDebugSpewPos;		// Current position in buffer
+extern ULONG CurrentDebugTopOfScreen;	// Current top of screen
 //
 // Alpha values to added to debugger window
 //
-extern DWORD DebuggerAlpha;
+extern ULONG DebuggerAlpha;
 //
 // Mouse position
 //
 extern int DBMouseX,DBMouseY;
-extern DWORD DBMouseMoved;
+extern ULONG DBMouseMoved;
 extern int ExMouseX,ExMouseY;
-extern DWORD DBButtons;
+extern ULONG DBButtons;
 
-extern DWORD gEnableMulti;
-extern DWORD gForceMono;
-extern DWORD gForceFlat;
-extern DWORD gForceBlend;
-extern DWORD gForceGouraud;
-extern DWORD gForcePerspective;
-extern DWORD gForceNoPerspective;
-extern DWORD gForceSpecular;
-extern DWORD gForceNoSpecular;
-extern DWORD gForceAlpha;
-extern DWORD gShowVertexData;
-extern DWORD gForceNoFog;
-extern DWORD gForceNoTextures;
-extern DWORD gForceBiLinear;
-extern DWORD gForceTriLinear;
+extern ULONG gEnableMulti;
+extern ULONG gForceMono;
+extern ULONG gForceFlat;
+extern ULONG gForceBlend;
+extern ULONG gForceGouraud;
+extern ULONG gForcePerspective;
+extern ULONG gForceNoPerspective;
+extern ULONG gForceSpecular;
+extern ULONG gForceNoSpecular;
+extern ULONG gForceAlpha;
+extern ULONG gShowVertexData;
+extern ULONG gForceNoFog;
+extern ULONG gForceNoTextures;
+extern ULONG gForceBiLinear;
+extern ULONG gForceTriLinear;
 extern int	 gForceMipBias;
-extern DWORD gForceNoFiltering;
-extern DWORD gForceNoDithering;
-extern DWORD gForceDithering;
-extern DWORD gForceChessTexture;
-extern DWORD gForceNoAlphaTest;
-extern DWORD gForceAlphaTest;
-extern DWORD ChessTexture;				// The chess texture
-extern DWORD MipColorTexture;			// The mipmap colored texture
-extern DWORD gForceAlphaBlending;
-extern DWORD gUseGameSpew;
-extern DWORD gControlsActive;					// Allow controls for the game during the debugger
-extern DWORD gGameLogicActive;					// Allow game logic to run when debugger up
-extern DWORD gStopSystem;						// Stop whole system in debugger
-extern DWORD gFrameGraph;
-extern DWORD gStopGameRendering;
-extern DWORD gStopRendering;					// Stop rendering
-extern DWORD gFreezeLogic;						// Stop rendering
-extern DWORD gShowLFControls;
-extern bool NoDebuggerStats;						// When 0 Stats and spews are active during GameOS functions like debugger
-extern DWORD gEnableRS;
-extern DWORD gTextureOverrun;
-extern DWORD gDisableLighting;
-extern DWORD gDisableNormalizing;
-extern DWORD gDisableHardwareTandL;
-extern DWORD gDisableVertexBlending;
+extern ULONG gForceNoFiltering;
+extern ULONG gForceNoDithering;
+extern ULONG gForceDithering;
+extern ULONG gForceChessTexture;
+extern ULONG gForceNoAlphaTest;
+extern ULONG gForceAlphaTest;
+extern ULONG ChessTexture;				// The chess texture
+extern ULONG MipColorTexture;			// The mipmap colored texture
+extern ULONG gForceAlphaBlending;
+extern ULONG gUseGameSpew;
+extern ULONG gControlsActive;					// Allow controls for the game during the debugger
+extern ULONG gGameLogicActive;					// Allow game logic to run when debugger up
+extern ULONG gStopSystem;						// Stop whole system in debugger
+extern ULONG gFrameGraph;
+extern ULONG gStopGameRendering;
+extern ULONG gStopRendering;					// Stop rendering
+extern ULONG gFreezeLogic;						// Stop rendering
+extern ULONG gShowLFControls;
+extern UCHAR NoDebuggerStats;						// When 0 Stats and spews are active during GameOS functions like debugger
+extern ULONG gEnableRS;
+extern ULONG gTextureOverrun;
+extern ULONG gDisableLighting;
+extern ULONG gDisableNormalizing;
+extern ULONG gDisableHardwareTandL;
+extern ULONG gDisableVertexBlending;
 
 //
 // Debugger window variables
@@ -231,7 +227,7 @@ extern DWORD gDisableVertexBlending;
 extern int DbTopX,DbTopY;
 extern int DbMaxX,DbMaxY,DbMinX;
 
-extern DWORD TopStatistics;
+extern ULONG TopStatistics;
 
 //
 // Debugger window constants
@@ -246,19 +242,19 @@ extern int StartX,StartY;			// Current start of line
 
 
 
-void UpdateDebugger();
-void InitDebugger();
-void EndRenderMode();
-void DestroyDebugger();
-void SpewToDebugger( char* Message );
-int GetMipmapUsed( DWORD Handle, gos_VERTEX* Pickv1, gos_VERTEX* Pickv2, gos_VERTEX* Pickv3 );
-void ShowFrameGraphs();
-void UpdateDebugMouse();
-void UpdateDebugWindow();
-void InitTextDisplay();
-void DrawText( DWORD Color, char* String );
-void DrawSquare( int TopX, int TopY, int Width, int Height, DWORD Color );
-void DrawChr( char Chr );
+void __stdcall UpdateDebugger(void);
+void __stdcall InitDebugger(void);
+void __stdcall EndRenderMode(void);
+void __stdcall DestroyDebugger(void);
+void __stdcall SpewToDebugger( PSTR Message );
+int __stdcall GetMipmapUsed( ULONG Handle, pgos_VERTEX Pickv1, pgos_VERTEX Pickv2, pgos_VERTEX Pickv3 );
+void __stdcall ShowFrameGraphs(void);
+void __stdcall UpdateDebugMouse(void);
+void __stdcall UpdateDebugWindow(void);
+void __stdcall InitTextDisplay(void);
+void __stdcall DrawText( ULONG Color, PSTR String );
+void __stdcall DrawSquare( int TopX, int TopY, int Width, int Height, ULONG Color );
+void __stdcall DrawChr( char Chr );
 
 
 

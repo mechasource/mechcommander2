@@ -5,6 +5,276 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
+
+
+<Filter Name="mechcmd2">
+<File RelativePath="..\mechcmd2\dw.cpp"></File>
+<File RelativePath="..\mechcmd2\mechcmd2.cpp"></File>
+<File RelativePath="..\mechcmd2\version.h"></File>
+<Filter Name="Object">
+<File RelativePath="..\mechcmd2\artlry.cpp"></File>
+<File RelativePath="..\mechcmd2\bldng.cpp"></File>
+<File RelativePath="..\mechcmd2\carnage.cpp"></File>
+<File RelativePath="..\mechcmd2\collsn.cpp"></File>
+<File RelativePath="..\mechcmd2\comndr.cpp"></File>
+<File RelativePath="..\mechcmd2\contact.cpp"></File>
+<File RelativePath="..\mechcmd2\gameobj.cpp"></File>
+<File RelativePath="..\mechcmd2\gate.cpp"></File>
+<File RelativePath="..\mechcmd2\goal.cpp"></File>
+<File RelativePath="..\mechcmd2\group.cpp"></File>
+<File RelativePath="..\mechcmd2\gvehicl.cpp"></File>
+<File RelativePath="..\mechcmd2\light.cpp"></File>
+<File RelativePath="..\mechcmd2\mech.cpp"></File>
+<File RelativePath="..\mechcmd2\mover.cpp"></File>
+<File RelativePath="..\mechcmd2\objmgr.cpp"></File>
+<File RelativePath="..\mechcmd2\objtype.cpp"></File>
+<File RelativePath="..\mechcmd2\tacordr.cpp"></File>
+<File RelativePath="..\mechcmd2\team.cpp"></File>
+<File RelativePath="..\mechcmd2\terrobj.cpp"></File>
+<File RelativePath="..\mechcmd2\turret.cpp"></File>
+<File RelativePath="..\mechcmd2\warrior.cpp"></File>
+<File RelativePath="..\mechcmd2\weaponbolt.cpp"></File>
+<Filter Name="Object headers">
+<File RelativePath="..\mechcmd2\artlry.h"></File>
+<File RelativePath="..\mechcmd2\bldng.h"></File>
+<File RelativePath="..\mechcmd2\carnage.h"></File>
+<File RelativePath="..\mechcmd2\collsn.h"></File>
+<File RelativePath="..\mechcmd2\comndr.h"></File>
+<File RelativePath="..\mechcmd2\contact.h"></File>
+<File RelativePath="..\mechcmd2\dartlry.h"></File>
+<File RelativePath="..\mechcmd2\dbldng.h"></File>
+<File RelativePath="..\mechcmd2\dcollsn.h"></File>
+<File RelativePath="..\mechcmd2\dcomndr.h"></File>
+<File RelativePath="..\mechcmd2\dcontact.h"></File>
+<File RelativePath="..\mechcmd2\delemntl.h"></File>
+<File RelativePath="..\mechcmd2\dgameobj.h"></File>
+<File RelativePath="..\mechcmd2\dgate.h"></File>
+<File RelativePath="..\mechcmd2\dgoal.h"></File>
+<File RelativePath="..\mechcmd2\dgroup.h"></File>
+<File RelativePath="..\mechcmd2\dgvehicl.h"></File>
+<File RelativePath="..\mechcmd2\dmech.h"></File>
+<File RelativePath="..\mechcmd2\dmover.h"></File>
+<File RelativePath="..\mechcmd2\dobjmgr.h"></File>
+<File RelativePath="..\mechcmd2\dobjnum.h"></File>
+<File RelativePath="..\mechcmd2\dobjtype.h"></File>
+<File RelativePath="..\mechcmd2\dtacordr.h"></File>
+<File RelativePath="..\mechcmd2\dteam.h"></File>
+<File RelativePath="..\mechcmd2\dterrobj.h"></File>
+<File RelativePath="..\mechcmd2\dwarrior.h"></File>
+<File RelativePath="..\mechcmd2\dweaponbolt.h"></File>
+<File RelativePath="..\mechcmd2\gameobj.h"></File>
+<File RelativePath="..\mechcmd2\gate.h"></File>
+<File RelativePath="..\mechcmd2\goal.h"></File>
+<File RelativePath="..\mechcmd2\group.h"></File>
+<File RelativePath="..\mechcmd2\gvehicl.h"></File>
+<File RelativePath="..\mechcmd2\light.h"></File>
+<File RelativePath="..\mechcmd2\mech.h"></File>
+<File RelativePath="..\mechcmd2\mechclass.h"></File>
+<File RelativePath="..\mechcmd2\mover.h"></File>
+<File RelativePath="..\mechcmd2\objmgr.h"></File>
+<File RelativePath="..\mechcmd2\objtype.h"></File>
+<File RelativePath="..\mechcmd2\tacordr.h"></File>
+<File RelativePath="..\mechcmd2\team.h"></File>
+<File RelativePath="..\mechcmd2\terrobj.h"></File>
+<File RelativePath="..\mechcmd2\turret.h"></File>
+<File RelativePath="..\mechcmd2\unitdesg.h"></File>
+<File RelativePath="..\mechcmd2\warrior.h"></File>
+<File RelativePath="..\mechcmd2\weaponbolt.h"></File>
+</Filter>
+</Filter>
+<Filter Name="Mission">
+<File RelativePath="..\mechcmd2\ablmc2.cpp"></File>
+<File RelativePath="..\mechcmd2\gamecam.cpp"></File>
+<File RelativePath="..\mechcmd2\mission.cpp"></File>
+<File RelativePath="..\mechcmd2\mission2.cpp"></File>
+<File RelativePath="..\mechcmd2\objective.cpp"></File>
+<File RelativePath="..\mechcmd2\saveload.cpp"></File>
+<File RelativePath="..\mechcmd2\trigger.cpp"></File>
+<File RelativePath="..\mechcmd2\weather.cpp"></File>
+<Filter Name="Mission headers">
+<File RelativePath="..\mechcmd2\gamecam.h"></File>
+<File RelativePath="..\mechcmd2\mission.h"></File>
+<File RelativePath="..\mechcmd2\objective.h"></File>
+<File RelativePath="..\mechcmd2\trigger.h"></File>
+<File RelativePath="..\mechcmd2\weather.h"></File>
+</Filter>
+</Filter>
+<Filter Name="GUI">
+<Filter Name="gui files">
+<File RelativePath="..\gui\aanim.cpp"></File>
+<File RelativePath="..\gui\aanimobject.cpp"></File>
+<File RelativePath="..\gui\abutton.cpp"></File>
+<File RelativePath="..\gui\aedit.cpp"></File>
+<File RelativePath="..\gui\afont.cpp"></File>
+<File RelativePath="..\gui\alistbox.cpp"></File>
+<File RelativePath="..\gui\ascroll.cpp"></File>
+<File RelativePath="..\gui\asystem.cpp"></File>
+</Filter>
+<File RelativePath="..\mechcmd2\attributemeter.cpp"></File>
+<File RelativePath="..\mechcmd2\controlgui.cpp"></File>
+<File RelativePath="..\mechcmd2\forcegroupbar.cpp"></File>
+<File RelativePath="..\mechcmd2\gametacmap.cpp"></File>
+<File RelativePath="..\mechcmd2\infowindow.cpp"></File>
+<File RelativePath="..\mechcmd2\keyboardref.cpp"></File>
+<File RelativePath="..\mechcmd2\mechicon.cpp"></File>
+<File RelativePath="..\mechcmd2\missiongui.cpp"></File>
+<File RelativePath="..\mechcmd2\mpconnectiontype.cpp"></File>
+<File RelativePath="..\mechcmd2\mpgamebrowser.cpp"></File>
+<File RelativePath="..\mechcmd2\mphostgame.cpp"></File>
+<File RelativePath="..\mechcmd2\mploadmap.cpp"></File>
+<File RelativePath="..\mechcmd2\mpparameterscreen.cpp"></File>
+<File RelativePath="..\mechcmd2\mpsetuparea.cpp"></File>
+<File RelativePath="..\mechcmd2\optionsarea.cpp"></File>
+<File RelativePath="..\mechcmd2\optionsscreenwrapper.cpp"></File>
+<File RelativePath="..\mechcmd2\pausewindow.cpp"></File>
+<File RelativePath="..\mechcmd2\prefs.cpp"></File>
+<File RelativePath="..\mechcmd2\simplecamera.cpp"></File>
+<Filter Name="GUI headers">
+<Filter Name="gui files">
+<File RelativePath="..\gui\aanim.h"></File>
+<File RelativePath="..\gui\aanimobject.h"></File>
+<File RelativePath="..\gui\abutton.h"></File>
+<File RelativePath="..\gui\aedit.h"></File>
+<File RelativePath="..\gui\afont.h"></File>
+<File RelativePath="..\gui\alistbox.h"></File>
+<File RelativePath="..\gui\ascroll.h"></File>
+<File RelativePath="..\gui\asystem.h"></File>
+</Filter>
+<File RelativePath="..\mechcmd2\attributemeter.h"></File>
+<File RelativePath="..\mechcmd2\controlgui.h"></File>
+<File RelativePath="..\mechcmd2\forcegroupbar.h"></File>
+<File RelativePath="..\mechcmd2\gametacmap.h"></File>
+<File RelativePath="..\mechcmd2\infowindow.h"></File>
+<File RelativePath="..\mechcmd2\keyboardref.h"></File>
+<File RelativePath="..\mechcmd2\mechicon.h"></File>
+<File RelativePath="..\mechcmd2\missiongui.h"></File>
+<File RelativePath="..\mechcmd2\mpconnectiontype.h"></File>
+<File RelativePath="..\mechcmd2\mpgamebrowser.h"></File>
+<File RelativePath="..\mechcmd2\mphostgame.h"></File>
+<File RelativePath="..\mechcmd2\mploadmap.h"></File>
+<File RelativePath="..\mechcmd2\mpparameterscreen.h"></File>
+<File RelativePath="..\mechcmd2\mpsetuparea.h"></File>
+<File RelativePath="..\mechcmd2\optionsarea.h"></File>
+<File RelativePath="..\mechcmd2\optionsscreenwrapper.h"></File>
+<File RelativePath="..\mechcmd2\pausewindow.h"></File>
+<File RelativePath="..\mechcmd2\prefs.h"></File>
+<File RelativePath="..\mechcmd2\simplecamera.h"></File>
+</Filter>
+</Filter>
+<Filter Name="Logistics">
+<Filter Name="gui files">
+<File RelativePath="..\gui\logisticsscreen.cpp"></File>
+<File RelativePath="..\gui\logisticsscreen.h"></File>
+</Filter>
+<File RelativePath="..\mechcmd2\componentlistbox.cpp"></File>
+<File RelativePath="..\mechcmd2\loadscreen.cpp"></File>
+<File RelativePath="..\mechcmd2\logistics.cpp"></File>
+<File RelativePath="..\mechcmd2\logisticscomponent.cpp"></File>
+<File RelativePath="..\mechcmd2\logisticsdata.cpp"></File>
+<File RelativePath="..\mechcmd2\logisticsdialog.cpp"></File>
+<File RelativePath="..\mechcmd2\logisticsmech.cpp"></File>
+<File RelativePath="..\mechcmd2\logisticsmechdisplay.cpp"></File>
+<File RelativePath="..\mechcmd2\logisticsmechicon.cpp"></File>
+<File RelativePath="..\mechcmd2\logisticsmissioninfo.cpp"></File>
+<File RelativePath="..\mechcmd2\logisticspilot.cpp"></File>
+<File RelativePath="..\mechcmd2\logisticspilotlistbox.cpp"></File>
+<File RelativePath="..\mechcmd2\logisticsvariant.cpp"></File>
+<File RelativePath="..\mechcmd2\mainmenu.cpp"></File>
+<File RelativePath="..\mechcmd2\mechbayscreen.cpp"></File>
+<File RelativePath="..\mechcmd2\mechlabscreen.cpp"></File>
+<File RelativePath="..\mechcmd2\mechlistbox.cpp"></File>
+<File RelativePath="..\mechcmd2\mechlopedia.cpp"></File>
+<File RelativePath="..\mechcmd2\mechlopedia.h"></File>
+<File RelativePath="..\mechcmd2\mechpurchasescreen.cpp"></File>
+<File RelativePath="..\mechcmd2\missionbegin.cpp"></File>
+<File RelativePath="..\mechcmd2\missionbriefingscreen.cpp"></File>
+<File RelativePath="..\mechcmd2\missionresults.cpp"></File>
+<File RelativePath="..\mechcmd2\missionselectionscreen.cpp"></File>
+<File RelativePath="..\mechcmd2\mpprefs.cpp"></File>
+<File RelativePath="..\mechcmd2\pilotreadyscreen.cpp"></File>
+<File RelativePath="..\mechcmd2\pilotreviewarea.cpp"></File>
+<File RelativePath="..\mechcmd2\salvagemecharea.cpp"></File>
+<File RelativePath="..\mechcmd2\simplecomponentlistbox.cpp"></File>
+<Filter Name="Logistics headers">
+<File RelativePath="..\mechcmd2\simplecomponentlistbox.h"></File>
+<File RelativePath="..\mechcmd2\componentlistbox.h"></File>
+<File RelativePath="..\mechcmd2\loadscreen.h"></File>
+<File RelativePath="..\mechcmd2\logistics.h"></File>
+<File RelativePath="..\mechcmd2\logisticscomponent.h"></File>
+<File RelativePath="..\mechcmd2\logisticsdata.h"></File>
+<File RelativePath="..\mechcmd2\logisticsdialog.h"></File>
+<File RelativePath="..\mechcmd2\logisticserrors.h"></File>
+<File RelativePath="..\mechcmd2\logisticsmech.h"></File>
+<File RelativePath="..\mechcmd2\logisticsmechdisplay.h"></File>
+<File RelativePath="..\mechcmd2\logisticsmechicon.h"></File>
+<File RelativePath="..\mechcmd2\logisticsmechlistbox.h"></File>
+<File RelativePath="..\mechcmd2\logisticsmissioninfo.h"></File>
+<File RelativePath="..\mechcmd2\logisticspilot.h"></File>
+<File RelativePath="..\mechcmd2\logisticspilotlistbox.h"></File>
+<File RelativePath="..\mechcmd2\logisticsvariant.h"></File>
+<File RelativePath="..\mechcmd2\mainmenu.h"></File>
+<File RelativePath="..\mechcmd2\mechbayscreen.h"></File>
+<File RelativePath="..\mechcmd2\mechlabscreen.h"></File>
+<File RelativePath="..\mechcmd2\mechlistbox.h"></File>
+<File RelativePath="..\mechcmd2\mechpurchasescreen.h"></File>
+<File RelativePath="..\mechcmd2\missionbegin.h"></File>
+<File RelativePath="..\mechcmd2\missionbriefingscreen.h"></File>
+<File RelativePath="..\mechcmd2\missionresults.h"></File>
+<File RelativePath="..\mechcmd2\missionselectionscreen.h"></File>
+<File RelativePath="..\mechcmd2\mpprefs.h"></File>
+<File RelativePath="..\mechcmd2\pilotreadyscreen.h"></File>
+<File RelativePath="..\mechcmd2\pilotreviewarea.h"></File>
+<File RelativePath="..\mechcmd2\salvagemecharea.h"></File>
+</Filter>
+</Filter>
+<Filter Name="Sound">
+<File RelativePath="..\mechcmd2\gamesound.cpp"></File>
+<File RelativePath="..\mechcmd2\radio.cpp"></File>
+<Filter Name="Sound headers">
+<File RelativePath="..\mechcmd2\dradio.h"></File>
+<File RelativePath="..\mechcmd2\gamesound.h"></File>
+<File RelativePath="..\mechcmd2\radio.h"></File>
+</Filter>
+</Filter>
+<Filter Name="Movement">
+<File RelativePath="..\mechcmd2\movemgr.cpp"></File>
+<File RelativePath="..\mechcmd2\movemgr.h"></File>
+</Filter>
+</Filter>
+<Filter Name="Multiplayer">
+<File RelativePath="..\mechcmd2\chatwindow.cpp"></File>
+<File RelativePath="..\mechcmd2\mpstats.cpp"></File>
+<File RelativePath="..\mechcmd2\multplyr.cpp"></File>
+<Filter Name="Multiplayer headers">
+<File RelativePath="..\mechcmd2\chatwindow.h"></File>
+<File RelativePath="..\mechcmd2\dmultplyr.h"></File>
+<File RelativePath="..\mechcmd2\mpstats.h"></File>
+<File RelativePath="..\mechcmd2\multplyr.h"></File>
+</Filter>
+</Filter>
+<Filter Name="movie">
+<File RelativePath="..\mechcmd2\mc2movie.cpp"></File>
+<File RelativePath="..\mechcmd2\mc2movie.h"></File>
+</Filter>
+<Filter Name="Resources">
+<File RelativePath="mechcommander2.ico"></File>
+<File RelativePath="resource.h"></File>
+<File RelativePath="script1.rc"></File>
+<File RelativePath="icon.ico"></File>
+</Filter>
+
+
+
+
+
+
+
+
+
+
+
+
 
 //-----------------------------------
 // Include Files

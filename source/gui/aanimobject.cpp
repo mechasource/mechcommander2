@@ -1,12 +1,14 @@
-#define AANIMOBJECT_CPP
 /*************************************************************************************************\
 aAnimObject.cpp			: Implementation of the aAnimObject component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#define AANIMOBJECT_CPP
 
-#include "aAnimObject.h"
+#include "stdafx.h"
+
+#include "aanimobject.h"
 #include "mclib.h"
 
 aAnimObject::aAnimObject(  )

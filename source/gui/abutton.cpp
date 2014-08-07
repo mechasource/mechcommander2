@@ -1,12 +1,13 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
-#include "aButton.h"
-#include "aFont.h"
+#include "abutton.h"
+#include "afont.h"
 #include "mclib.h"
 #include <windows.h>
-#include "soundSys.h"
+#include "soundsys.h"
 
 extern SoundSystem *sndSystem;
 

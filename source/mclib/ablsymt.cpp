@@ -7,9 +7,11 @@
 //
 //***************************************************************************
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "stdafx.h"
+
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"

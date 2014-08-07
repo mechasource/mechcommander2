@@ -6,9 +6,10 @@
 //								ABLERR.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+//#include <stdio.h>
+//#include <stdlib.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"
@@ -152,6 +153,7 @@ void ABL_Fatal (long errCode, char* s) {
 
 void ABL_Assert (bool test, long errCode, char* s) {
 
+	test; errCode; s;
 #ifdef _DEBUG
 	if (!test)
 		ABLFatalCallback(errCode, s);

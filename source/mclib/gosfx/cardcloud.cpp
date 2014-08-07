@@ -2,8 +2,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "gosFXHeaders.hpp"
-#include <MLR\MLRCardCloud.hpp>
+#include "stdafx.h"
+#include "gosfxheaders.hpp"
+#include <mlr\mlrcardcloud.hpp>
 
 //------------------------------------------------------------------------------
 //

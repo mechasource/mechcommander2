@@ -1,11 +1,13 @@
-#pragma once
-#define DIRECTINPUT_VERSION 0x0700
 //===========================================================================//
 // File:	 pch.hpp														 //
 // Contents: Precompiled header file - heads that don't change much			 //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
+#pragma once
+#define DIRECTINPUT_VERSION 0x0700
+
 #pragma pack(4)
 //
 // These are used to disable features of GameOS
@@ -62,20 +64,20 @@
 //
 // Disable stupid warnings (So warning 4 can be used)
 //
-#pragma warning( disable: 4018 )	// signed/unsigned mismatches
-#pragma warning( disable: 4097 )	// typedef synonyms
-#pragma warning( disable: 4100 )	// unreferenced formal parameter
-#pragma warning( disable: 4102 )	// unreferenced labels
-#pragma warning( disable: 4127 )	// conditional expression is constant eg: While(1)
-#pragma warning( disable: 4201 )	// nameless struct/union
-#pragma warning( disable: 4245 )	// conversion from 'const int' to 'unsigned long', signed/unsigned mismatch
-#pragma warning( disable: 4355 )	// this used in base initializers
-#pragma warning( disable: 4511 )	// no copy constructor
-#pragma warning( disable: 4512 )	// no assignment operator
-#pragma warning( disable: 4514 )	// unreferenced inline function has been removed
-#pragma warning( disable: 4702 )	// Unreachable code
-#pragma warning( disable: 4710 )	// inline not expanded
-#pragma warning( disable: 4711 )	// auto-inline selection
+//#pragma warning( disable: 4018 )	// signed/unsigned mismatches
+//#pragma warning( disable: 4097 )	// typedef synonyms
+//#pragma warning( disable: 4100 )	// unreferenced formal parameter
+//#pragma warning( disable: 4102 )	// unreferenced labels
+//#pragma warning( disable: 4127 )	// conditional expression is constant eg: While(1)
+//#pragma warning( disable: 4201 )	// nameless struct/union
+//#pragma warning( disable: 4245 )	// conversion from 'const int' to 'unsigned long', signed/unsigned mismatch
+//#pragma warning( disable: 4355 )	// this used in base initializers
+//#pragma warning( disable: 4511 )	// no copy constructor
+//#pragma warning( disable: 4512 )	// no assignment operator
+//#pragma warning( disable: 4514 )	// unreferenced inline function has been removed
+//#pragma warning( disable: 4702 )	// Unreachable code
+//#pragma warning( disable: 4710 )	// inline not expanded
+//#pragma warning( disable: 4711 )	// auto-inline selection
 //
 // Common synonyms
 //
@@ -134,16 +136,16 @@ typedef float			real;
 //
 // So the GameOS can call it's own functions, GameOS.hpp is included
 //
-#include "GameOS.hpp"
-#include "ToolOS.hpp"
-#include "Platform.hpp"
+#include "gameos.hpp"
+#include "toolos.hpp"
+#include "platform.hpp"
 #include "eax.h"
-#include "Language.h"
+#include "language.h"
 //
 // Reads time stamp into an __int64, End finds difference
 //
-#define GetTimeStampStart(x) { _asm push eax  _asm push edx _asm rdtsc __asm mov dword ptr x,eax __asm mov dword ptr x+4,edx _asm pop edx _asm pop eax}
-#define GetTimeStampEnd(x) {  _asm push eax _asm push edx _asm rdtsc __asm sub eax,dword ptr x __asm sbb edx,dword ptr x+4 __asm mov dword ptr x,eax __asm mov dword ptr x+4,edx _asm pop edx _asm pop eax}
+//#define GetTimeStampStart(x) { _asm push eax  _asm push edx _asm rdtsc __asm mov dword ptr x,eax __asm mov dword ptr x+4,edx _asm pop edx _asm pop eax}
+//#define GetTimeStampEnd(x) {  _asm push eax _asm push edx _asm rdtsc __asm sub eax,dword ptr x __asm sbb edx,dword ptr x+4 __asm mov dword ptr x,eax __asm mov dword ptr x+4,edx _asm pop edx _asm pop eax}
 //
 // Faster float to long  (Always rounds to nearest)  ie: -2.7 goes to 3
 //

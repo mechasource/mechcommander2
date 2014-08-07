@@ -5,6 +5,7 @@ aEdit.cpp			: Implementation of the aEdit component of the GUI library.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "aEdit.h"
 #include "userInput.h"

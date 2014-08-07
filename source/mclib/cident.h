@@ -45,13 +45,13 @@ class IDString
 
 		void init (char *new_id)
 		{
-			strncpy(id,new_id,ID_SIZE-1);   // pads unused ID with 0s!
+			strncpy_s(id, ID_SIZE, new_id, ID_SIZE-1);   // pads unused ID with 0s!
 			id[ID_SIZE-1] = 0;
 		}
 
 		void init (IDString & new_ids)
 		{
-			strncpy(id,new_ids.id,ID_SIZE-1);
+			strncpy_s(id, ID_SIZE, new_ids.id, ID_SIZE-1);
 			id[ID_SIZE-1] = 0;
 		}
 
@@ -184,7 +184,7 @@ class IDString
 
 		void standardize (void)
 		{
-			strupr(id);
+			_strupr_s(id, ID_SIZE);
 		}
 };
 

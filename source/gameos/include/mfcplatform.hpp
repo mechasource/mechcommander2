@@ -12,7 +12,7 @@
 #include <Platform.hpp>
 #include <GameOS.hpp>
 
-long _stdcall ProcessException( EXCEPTION_POINTERS* ep );
+NTSTATUS _stdcall ProcessException( PEXCEPTION_POINTERS ep );
 void _stdcall InitExceptionHandler( char* CommandLine );
 void _stdcall InitGameOS( HINSTANCE hInstance, HWND hWindow, char* CommandLine );
 LRESULT CALLBACK GameOSWinProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );

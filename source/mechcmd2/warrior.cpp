@@ -7,6 +7,7 @@
 //								WARRIOR.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
 #ifndef MCLIB_H
 #include "mclib.h"
@@ -8502,7 +8503,7 @@ bool MechWarrior::warriorInUse (char *warriorName)
 {
 	for (long i=0; i < numWarriors;i++)
 	{
-		if (stricmp(MechWarrior::warriorList[i]->name,warriorName) == 0)
+		if (_stricmp(MechWarrior::warriorList[i]->name,warriorName) == 0)
 			return true;
 	}
 

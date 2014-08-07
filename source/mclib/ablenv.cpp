@@ -6,10 +6,11 @@
 //								ABLENV.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"
@@ -287,7 +288,8 @@ void UserFile::write (char* s) {
 UserFile* UserFile::getNewFile (void) {
 
 	long fileHandle = -1;
-	for (long i = 0; i < MAX_USER_FILES; i++)
+	long i;
+	for (i = 0; i < MAX_USER_FILES; i++)
 		if (!files[i]->inUse) {
 			fileHandle = i;
 			break;
@@ -600,7 +602,7 @@ void ABLModule::read (ABLFile* moduleFile) {
 	else {
 		char tempName[1024];
 		moduleFile->readString((unsigned char*)tempName);
-		long ignore = moduleFile->readLong();
+		//long ignore = moduleFile->readLong();
 	}
 
 	char stateName[256];
@@ -1320,12 +1322,13 @@ void buildRoutineList (SymTableNodePtr curSymbol, ModuleInfo* moduleInfo) {
 
 void ABLModule::getInfo (ModuleInfo* moduleInfo) {
 
+	long i;
 	strcpy(moduleInfo->name, name);
 	strcpy(moduleInfo->fileName, ModuleRegistry[handle].fileName);
 
 	moduleInfo->numRoutines = 0;
 	buildRoutineList(ModuleRegistry[handle].moduleIdPtr->defn.info.routine.localSymTable, moduleInfo);
-	for (long i = 0; i < moduleInfo->numRoutines; i++)
+	for (i = 0; i < moduleInfo->numRoutines; i++)
 		moduleInfo->totalCodeSegmentSize += moduleInfo->routineInfo[i].codeSegmentSize;
 
 	moduleInfo->numStaticVars = ModuleRegistry[handle].numStaticVars;
@@ -1346,10 +1349,11 @@ void ABLModule::getInfo (ModuleInfo* moduleInfo) {
 
 void ABLModule::destroy (void) {
 
+	long i;
 	if ((id > -1) && ModuleInstanceRegistry) {
 		//-----------------------------------------------
 		// It's on the active registry, so pull it off...
-		for (long i = 0; i < NumModuleInstances; i++)
+		for (i = 0; i < NumModuleInstances; i++)
 			if (ModuleInstanceRegistry[i] == this) {
 				ModuleInstanceRegistry[i] = ModuleInstanceRegistry[NumModuleInstances - 1];
 				ModuleInstanceRegistry[NumModuleInstances - 1] = NULL;
@@ -1381,10 +1385,11 @@ void ABLModule::destroy (void) {
 
 void ABLi_saveEnvironment (ABLFile* ablFile) {
 
+	long i;
 	ablFile->writeLong(numLibrariesLoaded);
 	ablFile->writeLong(NumModulesRegistered);
 	ablFile->writeLong(NumModules);
-	for (long i = 0; i < NumModulesRegistered; i++) {
+	for (i = 0; i < NumModulesRegistered; i++) {
 		ablFile->writeString(ModuleRegistry[i].fileName);
 		ablFile->writeByte(NULL);
 	}
@@ -1410,8 +1415,9 @@ void ABLi_loadEnvironment (ABLFile* ablFile, bool malloc) {
 	long numLibs = ablFile->readLong();
 	long numModsRegistered = ablFile->readLong();
 	long numMods = ablFile->readLong();
+	long i;
 
-	for (long i = 0; i < numLibs; i++) {
+	for (i = 0; i < numLibs; i++) {
 		unsigned char fileName[1024];
 		long result = ablFile->readString(fileName);
 		if (!result) {
@@ -1448,7 +1454,7 @@ void ABLi_loadEnvironment (ABLFile* ablFile, bool malloc) {
 			}
 		}
 	}
-	long mark = ablFile->readLong();
+	//long mark = ablFile->readLong();
 	for (i = 0; i < eternalOffset; i++) {
 		StackItemPtr dataPtr = (StackItemPtr)stack + i;
 		if (EternalVariablesSizes[i] > 0)

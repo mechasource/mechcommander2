@@ -172,3 +172,10 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+# directories to ignore
+source/gameos/lib/debug/
+source/gameos/lib/x86/dllplatform/
+source/gameos/lib/x86/gameplatform/
+source/gameos/lib/x86/mfcplatform/
+source/gameos/lib/x86/gameos/

@@ -7,8 +7,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#include "stdafx.h"
+// #include <stdlib.h>
+
 #include <gameos.hpp>
-#include <stdlib.h>
 
 void memclear(void *Dest,int Length);
 void memfill(void *Dest,int Length);

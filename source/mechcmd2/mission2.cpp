@@ -5,6 +5,7 @@ mission2.cpp			: The parts of mission.cpp that we need for the mech viewer
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "mission.h"
 
@@ -97,6 +98,7 @@ void Mission::initBareMinimum()
 {
 
 	long result = 0;
+	result;
 
 	if ( !mcTextureManager )
 	{

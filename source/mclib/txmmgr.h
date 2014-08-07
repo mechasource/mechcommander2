@@ -499,7 +499,7 @@ class MC_TextureManager
 						}
 						#endif
 
-						memcpy(vertices,data,sizeof(gos_VERTEX) * 3);
+						if(vertices) memcpy(vertices,data,sizeof(gos_VERTEX) * 3);
 						vertices += 3;
 					}
 					
@@ -510,11 +510,13 @@ class MC_TextureManager
 				{
 					gos_VERTEX * vertices = masterTextureNodes[nodeId].vertexData2->currentVertex;
 					
-					#if defined( _DEBUG) || defined(_ARMOR)
+#if defined( _DEBUG) || defined(_ARMOR)
 					gos_VERTEX * oldVertices = vertices;
-					gos_VERTEX * oldStart = (masterTextureNodes[nodeId].vertexData2->vertices + masterTextureNodes[nodeId].vertexData2->numVertices);
-					#endif
+					gos_VERTEX * oldStart = (masterTextureNodes[nodeId].vertexData2->vertices + 
+						masterTextureNodes[nodeId].vertexData2->numVertices);
+					(void)oldVertices;(void)oldStart;	// 4189
 					gosASSERT(oldVertices < oldStart);
+#endif
 
 					if (!vertices && !masterTextureNodes[nodeId].vertexData2->vertices)
 					{
@@ -548,7 +550,7 @@ class MC_TextureManager
 						}
 						#endif
 						
-						memcpy(vertices,data,sizeof(gos_VERTEX) * 3);
+						if(vertices) memcpy(vertices,data,sizeof(gos_VERTEX) * 3);
 						vertices += 3;
 					}
 					
@@ -558,13 +560,13 @@ class MC_TextureManager
 						 masterTextureNodes[nodeId].vertexData3->flags == flags)
 				{
 					gos_VERTEX * vertices = masterTextureNodes[nodeId].vertexData3->currentVertex;
-					
-					#if defined(_DEBUG) || defined(_ARMOR)
+
+#if defined(_DEBUG) || defined(_ARMOR)
 					gos_VERTEX * oldVertices = vertices;
 					gos_VERTEX * oldStart = (masterTextureNodes[nodeId].vertexData3->vertices + masterTextureNodes[nodeId].vertexData3->numVertices);
-					#endif
+					(void)oldVertices;(void)oldStart;	// 4189
 					gosASSERT(oldVertices < oldStart);
-
+#endif
 					if (!vertices && !masterTextureNodes[nodeId].vertexData3->vertices)
 					{
 						masterTextureNodes[nodeId].vertexData3->currentVertex =
@@ -597,7 +599,7 @@ class MC_TextureManager
 						}
 						#endif
 						
-						memcpy(vertices,data,sizeof(gos_VERTEX) * 3);
+						if(vertices) memcpy(vertices,data, sizeof(gos_VERTEX) * 3);
 						vertices += 3;
 					}
 					

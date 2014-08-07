@@ -5,13 +5,43 @@
 // ablt.cpp : Defines the entry point for the console application.
 //
 
+//<Filter Name="abl">
+//<File RelativePath="..\mclib\abl.h"></File>
+//<File RelativePath="..\mclib\abldbug.cpp"></File>
+//<File RelativePath="..\mclib\abldbug.h"></File>
+//<File RelativePath="..\mclib\abldecl.cpp"></File>
+//<File RelativePath="..\mclib\ablenv.cpp"></File>
+//<File RelativePath="..\mclib\ablenv.h"></File>
+//<File RelativePath="..\mclib\ablerr.cpp"></File>
+//<File RelativePath="..\mclib\ablerr.h"></File>
+//<File RelativePath="..\mclib\ablexec.cpp"></File>
+//<File RelativePath="..\mclib\ablexec.h"></File>
+//<File RelativePath="..\mclib\ablexpr.cpp"></File>
+//<File RelativePath="..\mclib\ablgen.h"></File>
+//<File RelativePath="..\mclib\ablparse.h"></File>
+//<File RelativePath="..\mclib\ablrtn.cpp"></File>
+//<File RelativePath="..\mclib\ablscan.cpp"></File>
+//<File RelativePath="..\mclib\ablscan.h"></File>
+//<File RelativePath="..\mclib\ablstd.cpp"></File>
+//<File RelativePath="..\mclib\ablstmt.cpp"></File>
+//<File RelativePath="..\mclib\ablsymt.cpp"></File>
+//<File RelativePath="..\mclib\ablsymt.h"></File>
+//<File RelativePath="..\mclib\ablxexpr.cpp"></File>
+//<File RelativePath="..\mclib\ablxstd.cpp"></File>
+//<File RelativePath="..\mclib\ablxstmt.cpp"></File>
+//<File RelativePath="..\mclib\dabldbug.h"></File>
+//<File RelativePath="..\mclib\dablenv.h"></File>
+//</Filter>
+
+
 #include "stdafx.h"
-#include "string.h"
+//#include "string.h"
 
 void initABL (void);
 void closeABL (void);
  
-int main(int argc, char* argv[])
+extern "C" int __cdecl 
+main(int argc, char* argv[])
 {
 	if ((argc < 2) || (argc > 3)) {
 		printf("Try again.\n");
@@ -25,6 +55,10 @@ int main(int argc, char* argv[])
 	initABL();
 	unsigned char s[256];
 
+	long handle;
+	long numErrs = 0;
+	long numLines = 0;
+	long numFiles = 0;
 	if (argc == 3) {
 		//------------------------
 		// load the environment...
@@ -39,15 +73,15 @@ int main(int argc, char* argv[])
 			bFile->readString(s);
 			if (s[strlen((char*)s)-1] == 10)
 				s[strlen((char*)s)-1] = NULL;
-			long numErrs = 0;
-			long numLines = 0;
-			long numFiles = 0;
+			numErrs = 0;
+			numLines = 0;
+			numFiles = 0;
 			if ((s[0] == 'l') && (s[1] == ' ')){
-				long handle = (long)ABLi_loadLibrary((char*)&s[2], &numErrs, &numLines, &numFiles, false);
+				handle = (long)ABLi_loadLibrary((char*)&s[2], &numErrs, &numLines, &numFiles, false);
 				printf("     Loaded: %s [%d lines, %d files]\n", &s[2], numLines, numFiles);
 				}
 			else if ((s[0] == 'm') && (s[1] == ' ')) {
-				long handle = ABLi_preProcess((char*)&s[2], &numErrs, &numLines, &numFiles, false);
+				handle = ABLi_preProcess((char*)&s[2], &numErrs, &numLines, &numFiles, false);
 				printf("     Loaded: %s [%d lines, %d files]\n", &s[2], numLines, numFiles);
 			}
 		}
@@ -57,10 +91,10 @@ int main(int argc, char* argv[])
 		printf("\n");
 	}
 
-	long numErrs = 0;
-	long numLines = 0;
-	long numFiles = 0;
-	long handle = ABLi_preProcess(argv[argc-1], &numErrs, &numLines, &numFiles, false);
+	numErrs = 0;
+	numLines = 0;
+	numFiles = 0;
+	handle = ABLi_preProcess(argv[argc-1], &numErrs, &numLines, &numFiles, false);
 	printf("SUCCESS: %s [%d lines, %d files]\n", argv[argc-1], numLines, numFiles);
 	scanf(" ");
 

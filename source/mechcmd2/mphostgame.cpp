@@ -5,6 +5,7 @@ MPHostGame.cpp			: Implementation of the MPHostGame component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MPHostGame.h"
 #include "prefs.h"

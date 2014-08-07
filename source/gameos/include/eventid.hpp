@@ -18,7 +18,7 @@ class GosEventIdMgr
 
 
 	static EventInfo			*pEventInfo;
-	static unsigned long		NextEntry;
+	static ULONG				NextEntry;
 	static int					ListSize;
 	static int					ListSpace;
 

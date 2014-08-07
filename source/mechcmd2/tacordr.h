@@ -324,8 +324,9 @@ class TacticalOrder {
 
 		long getGroup (long commanderID, MoverPtr* moverList, MoverPtr* point, long sortType = 0);
 
-		void setStage (long newStage) {
-			stage = newStage;
+		void setStage (long newStage)
+		{
+			stage = (char)newStage;
 		}
 
 		GameObjectPtr getTarget (void);

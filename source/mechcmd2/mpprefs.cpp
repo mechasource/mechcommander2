@@ -5,6 +5,7 @@ mpprefs.cpp			: Implementation of the mpprefs component.ef
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "mpprefs.h"
 #include "mclib.h"

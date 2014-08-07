@@ -3,6 +3,35 @@
 //===========================================================================//
 // Viewer.cpp : Defines the class behaviors for the application.
 //
+// 
+
+//<File RelativePath="..\gui\aanimobject.cpp" ></File>
+//<File RelativePath="..\mechcmd2\gamesound.cpp" ></File>
+//<File RelativePath="..\mechcmd2\logisticscomponent.cpp" ></File>
+//<File RelativePath="..\mechcmd2\logisticsdata.cpp" ></File>
+//<File RelativePath="..\mechcmd2\logisticsmech.cpp" ></File>
+//<File RelativePath="..\mechcmd2\logisticsmissioninfo.cpp" ></File>
+//<File RelativePath="..\mechcmd2\logisticspilot.cpp" ></File>
+//<File RelativePath="..\mechcmd2\logisticsvariant.cpp" ></File>
+//<File RelativePath="..\mechcmd2\mechlopedia.cpp" ></File>
+//<File RelativePath="..\mechcmd2\mission2.cpp" ></File>
+//<File RelativePath="..\mechcmd2\prefs.cpp" ></File>
+//<File RelativePath="..\mechcmd2\radio.cpp" ></File>
+//<File RelativePath="..\mechcmd2\simplecamera.cpp" ></File>
+//<File RelativePath="..\mechcmd2\simplecomponentlistbox.cpp" ></File>
+
+//_ARMOR;USE_PROTOTYPES;STRICT;WIN32;_DEBUG;_WINDOWS;VIEWER
+//NDEBUG;_WINDOWS;WIN32;NOMINMAX;VIEWER
+//VIEWER;WIN32;NDEBUG;_WINDOWS
+
+//..\mclib\$(ConfigurationName)\mclib.lib ..\gameos\lib\$(ConfigurationName)\gameos.lib ..\gameos\lib\$(ConfigurationName)\gameplatform.lib ..\mclib\gosfx\$(ConfigurationName)\gosfx.lib ..\mclib\mlr\$(ConfigurationName)\mlr.lib ..\mclib\stuff\$(ConfigurationName)\stuff.lib ..\gui\$(ConfigurationName)\gui.lib ..\gameos\lib\$(ConfigurationName)\zlib.lib
+//..\mclib\$(ConfigurationName)\mclib.lib ..\gameos\lib\$(ConfigurationName)\gameos.lib ..\gameos\lib\$(ConfigurationName)\gameplatform.lib ..\mclib\gosfx\$(ConfigurationName)\gosfx.lib ..\mclib\mlr\$(ConfigurationName)\mlr.lib ..\mclib\stuff\$(ConfigurationName)\stuff.lib ..\gui\$(ConfigurationName)\gui.lib ..\gameos\lib\$(ConfigurationName)\zlib.lib
+//.\window;..\gameos\include;..\MCLIB;..\gui;..\code;..\netlib;"$(VCInstallDir)PlatformSDK\Include\mfc"
+//.\window;..\gameos\include;..\MCLIB;..\gui;..\code;..\netlib;"$(VCInstallDir)PlatformSDK\Include\mfc"
+
+#ifndef VIEWER
+#define VIEWER
+#endif
 
 
 #ifndef VERSION_H
@@ -280,6 +309,7 @@ void __stdcall InitializeGameEngine()
 		gosASSERT(systemBlockResult == NO_ERR);
 		{
 			long result = systemFile.readIdULong("systemHeapSize",systemHeapSize);
+			result;
 			gosASSERT(result == NO_ERR);
 		}
 

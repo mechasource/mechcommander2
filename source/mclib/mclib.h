@@ -6,6 +6,7 @@
 // Precompiled header for the mechcommander libraries.
 //
 //-----------------------------------------------------------------------
+#pragma once
 
 #ifndef MCLIB_H
 #define MCLIB_H

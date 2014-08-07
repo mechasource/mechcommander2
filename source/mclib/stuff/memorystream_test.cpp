@@ -55,8 +55,8 @@ bool SingeBitStreamTest(int total_sections_to_write)
 	bool *comp_array_of_bools = new bool[total_sections_to_write];
 	Register_Pointer(comp_array_of_bools);
 
-	
-	for (int i = 0; i < total_sections_to_write; ++i)
+	int i;
+	for (i = 0; i < total_sections_to_write; ++i)
 	{
 		int random = Random::GetLessThan(10);
 
@@ -218,9 +218,8 @@ bool FloatIntBitStreamTest(int total_sections_to_write)
 	MinMaxHolderOf<float> *float_min_max = new MinMaxHolderOf<float>[total_sections_to_write];
 	Register_Pointer(float_min_max);
 
-
-
-	for (int i = 0; i < total_sections_to_write; ++i)
+	int i;
+	for (i = 0; i < total_sections_to_write; ++i)
 	{
 		int random = Random::GetLessThan(10);
 
@@ -393,7 +392,8 @@ bool MultipleBitStreamTest(int total_sections_to_write)
 
 	int total_bit_depth = 0;
 
-	for (int i = 0; i < total_sections_to_write; ++i)
+	int i, byte_count;
+	for (i = 0; i < total_sections_to_write; ++i)
 	{
 		bit_depth[i] = Random::GetLessThan(63) + 1;
 
@@ -503,7 +503,7 @@ bool MultipleBitStreamTest(int total_sections_to_write)
 
 		MString text = "\t---- Src Bit Value : "; 
 
-		for (int byte_count = 0; byte_count < 8; ++byte_count)
+		for (byte_count = 0; byte_count < 8; ++byte_count)
 		{
 			//Test_Assumption(source_byte_array == copy_byte_array);
 

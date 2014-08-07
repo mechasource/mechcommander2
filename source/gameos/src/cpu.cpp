@@ -24,11 +24,11 @@
 
 *******************************************************************************/
 /*******************************************************************************
- cpu.cpp  - gameos
+ cpu.cpp - gameos
 
  MechCommander 2 source code
 
- 2011-08-04 jerker_back, created
+ 2014-07-24 jerker_back, created
  
  $LastChangedBy$
  

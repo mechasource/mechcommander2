@@ -1,4 +1,3 @@
-#pragma once
 //===========================================================================//
 // File:	 DXRasterizer.hpp												 //
 // Contents: DirectDraw Manager routines									 //
@@ -6,49 +5,41 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
 
+// videocard.cpp functions
+void __stdcall FindVideoCards(void);
+void __stdcall CreateCopyBuffers(void);
+void __stdcall RestoreAreas(void);
+void __stdcall DestroyDirtyRectangles(void);
+void __stdcall InvalidateVertexBuffers(void);
+void __stdcall ReCreateVertexBuffers(void);
 
-
-//
-// VideoCard.cpp functions
-//
-void FindVideoCards();
-
-
-void CreateCopyBuffers();
-void RestoreAreas();
-void DestroyDirtyRectangles();
-void InvalidateVertexBuffers();
-void ReCreateVertexBuffers();
-
-//
 // IME displays directly to backbuffer, that's why it's in DXRasterizer.hpp
-//
-void RenderIMEToBackBuffer(int POS_X, int POS_Y, float FONTHEIGHT);
+void __stdcall RenderIMEToBackBuffer(int POS_X, int POS_Y, float FONTHEIGHT);
 
-//
 // Variables for gamma correction
-//
-extern BYTE GammaTable[256];
+extern UCHAR GammaTable[256];
 extern float GammaSetting;
-extern bool UseGammaCorrection;
-extern DWORD GlobalWidth;
-extern DWORD GlobalHeight;
-extern bool GlobalZBuffer;
-extern bool GlobalFullScreen;
-HRESULT CALLBACK CheckEnumProc( DDPIXELFORMAT* ddpfPixelFormat, LPVOID lpContext );
-extern DWORD ValidTextures;
-extern void CopyBackBuffer( IDirectDrawSurface7* Dest, IDirectDrawSurface7* Source );
-extern bool ModeChanged;
-extern bool DebuggerUsed;
+extern UCHAR UseGammaCorrection;
+extern ULONG GlobalWidth;
+extern ULONG GlobalHeight;
+extern UCHAR GlobalZBuffer;
+extern UCHAR GlobalFullScreen;
+extern ULONG ValidTextures;
+extern UCHAR ModeChanged;
+extern UCHAR DebuggerUsed;
 extern DDSURFACEDESC2 BackBufferddsd;
-extern DWORD AllowBrightness;
-extern DWORD AllowContrast;
+extern ULONG AllowBrightness;
+extern ULONG AllowContrast;
+
+HRESULT __stdcall CheckEnumProc(DDPIXELFORMAT* ddpfPixelFormat, PVOID lpContext);
+extern void __stdcall CopyBackBuffer(LPDIRECTDRAWSURFACE7 Dest, LPDIRECTDRAWSURFACE7 Source);
+
 //
 // Compatibility flags for different video cards
 //
-enum
-{
+typedef enum __compatibilityconst {
 	SceneRenderer=1,				// Scene based renderer (PowerVR, Kyro etc...)
 	NoAlphaTest=1<<1,				// Disable alpha test (conflicts with other modes)
 	NoTriLinear=1<<2,				// Do not attempt trilinear filtering
@@ -82,158 +73,134 @@ enum
 //
 // This is the current cards compatiblity flags
 //
-extern DWORD Compatibility3D;
+extern ULONG Compatibility3D;
 
 //
 // Used to store all known video cards
 //
-typedef struct
-{
-	DWORD VendorID;						// Vendor ID, ie: S3=0x5333
-	DWORD DeviceID;						// Device ID, ie: ATI Rage=0x4750
-
-	DWORD DriverH;						// High and Low dword of driver version number (Windows 9x)
-	DWORD DriverL;
-
-	DWORD NTDriverH;					// High and Low dword of driver version number (Windows 2000)
-	DWORD NTDriverL;
-
-	char* VendorName;					// Friendly name for Vendor
-
-	char* CardName;						// Friendly name for card type
-
-	DWORD CompatibilityFlags;			// Flags that may alter how GameOS behaves
-
+typedef struct CardInfo {
+	ULONG VendorID;						// Vendor ID, ie: S3=0x5333
+	ULONG DeviceID;						// Device ID, ie: ATI Rage=0x4750
+	ULONG DriverH;						// High and Low dword of driver version number (Windows 9x)
+	ULONG DriverL;
+	ULONG NTDriverH;					// High and Low dword of driver version number (Windows 2000)
+	ULONG NTDriverL;
+	PSTR VendorName;					// Friendly name for Vendor
+	PSTR CardName;						// Friendly name for card type
+	ULONG CompatibilityFlags;			// Flags that may alter how GameOS behaves
 } CardInfo;
 
-extern CardInfo *KnownCards;
+extern CardInfo*	KnownCards;
 
 //
 // Used to store information about video cards in machine
 //
-typedef struct
-{
+typedef struct DeviceInfo {
 	GUID				DeviceGUID;
-
 	DDDEVICEIDENTIFIER2	DDid;					// Use DDid.szDescription for the readable name
-
-	DWORD				Empty;					// Bug in GetDeviceIdentifier - it overwrites the next 4 bytes!
-	
+	ULONG				Empty;					// Bug in GetDeviceIdentifier - it overwrites the next 4 bytes!
 	DDCAPS				DDCaps;
-
 	D3DDEVICEDESC7		D3DCaps;
-
 	char				FourCC[16*4];			// First 16 FourCC codes
-
 	DDPIXELFORMAT		TextureFormats[16];		// First 16 texture formats (ends in 0)
-
-	WORD				Modes16[16*2];			// First 16, 16 bit screen modes above 640*480
-	WORD				Refresh16[16];			// Refresh rates for above modes
-
-	WORD				Modes32[16*2];			// First 16, 32 bit screen modes above 640*480
-	WORD				Refresh32[16];			// Refresh rates for above modes
-
+	USHORT				Modes16[16*2];			// First 16, 16 bit screen modes above 640*480
+	USHORT				Refresh16[16];			// Refresh rates for above modes
+	USHORT				Modes32[16*2];			// First 16, 32 bit screen modes above 640*480
+	USHORT				Refresh32[16];			// Refresh rates for above modes
 	DDPIXELFORMAT		ZFormats[16];			// First 16 Z Buffer formats
-
-	DWORD				TotalVid;
-	DWORD				TotalLocalTex;
-	DWORD				TotalTex;
-
-	DWORD				MultitextureLightMap;			// Lightmap support
-	DWORD				MultitextureSpecularMap;		// Specular support
-	DWORD				MultitextureDetail;				// Detail support
-	DWORD				MultitextureLightMapFilter;		// Lightmap support (1=Disable trilinear)
-	DWORD				MultitextureSpecularMapFilter;	// Specular support (1=Disable trilinear)
-	DWORD				MultitextureDetailFilter;		// Detail support (1=Disable trilinear)
-
-	DWORD				CurrentCard;			// Which entry in the KnownCard array. (-1=Unknown)
-
-	bool				Failed60Hz;				// Set to only try full screen 60Hz once
-	bool				LinearMemory;			// Set if linear memory, not rectangular
+	ULONG				TotalVid;
+	ULONG				TotalLocalTex;
+	ULONG				TotalTex;
+	ULONG				MultitextureLightMap;			// Lightmap support
+	ULONG				MultitextureSpecularMap;		// Specular support
+	ULONG				MultitextureDetail;				// Detail support
+	ULONG				MultitextureLightMapFilter;		// Lightmap support (1=Disable trilinear)
+	ULONG				MultitextureSpecularMapFilter;	// Specular support (1=Disable trilinear)
+	ULONG				MultitextureDetailFilter;		// Detail support (1=Disable trilinear)
+	ULONG				CurrentCard;			// Which entry in the KnownCard array. (-1=Unknown)
+	UCHAR				Failed60Hz;				// Set to only try full screen 60Hz once
+	UCHAR				LinearMemory;			// Set if linear memory, not rectangular
+	UCHAR				_padding1[2];
 	int					MaxRefreshRate;			// Maximum refresh rate
-
-	char*				CurrentVendor;			// If vendor known, point to name, else 0
-
+	PSTR				CurrentVendor;			// If vendor known, point to name, else 0
 } DeviceInfo;
 
 extern DeviceInfo	DeviceArray[8];
 extern int			HardwareRenderer;			// Set when using a hardware renderer
 extern char DisplayInfoText[128];
 
-extern DWORD TripleBuffer;						// Copied from Environment for current card (so can be disabled on 3Dfx)
-extern DWORD StencilActive;
+extern ULONG TripleBuffer;						// Copied from Environment for current card (so can be disabled on 3Dfx)
+extern ULONG StencilActive;
 extern DDSURFACEDESC2 BBddsd;
 extern DDSURFACEDESC2 ZBddsd;
 
-extern IDirectDraw7*			DDobject;
-extern IDirectDraw7*			CurrentDDobject;
-extern IDirectDrawSurface7*		FrontBufferSurface;
-extern IDirectDrawSurface7*		BackBufferSurface;
-extern IDirectDrawSurface7*		ZBufferSurface;
-extern IDirectDrawSurface7*		g_RefBackBuffer;
-extern IDirectDrawSurface7*		g_CopyBackBuffer;
-extern IDirectDrawClipper*		g_lpDDClipper;
-extern IDirectDrawSurface7*		CopyTarget;
-extern IDirectDrawSurface7*		CopyZBuffer;
-extern IDirectDrawGammaControl*	GammaControlInterface;
+extern LPDIRECTDRAW7			DDobject;
+extern LPDIRECTDRAW7			CurrentDDobject;
+extern LPDIRECTDRAWSURFACE7		FrontBufferSurface;
+extern LPDIRECTDRAWSURFACE7		BackBufferSurface;
+extern LPDIRECTDRAWSURFACE7		ZBufferSurface;
+extern LPDIRECTDRAWSURFACE7		g_RefBackBuffer;
+extern LPDIRECTDRAWSURFACE7		g_CopyBackBuffer;
+extern LPDIRECTDRAWCLIPPER		g_lpDDClipper;
+extern LPDIRECTDRAWSURFACE7		CopyTarget;
+extern LPDIRECTDRAWSURFACE7		CopyZBuffer;
+extern LPDIRECTDRAWGAMMACONTROL	GammaControlInterface;
 
-extern IDirect3D7*				d3d7;
-extern IDirect3DDevice7*		d3dDevice7;				// Current D3D Device
-extern IDirect3DDevice7*		Refd3dDevice7;			// Reference D3D Device
-extern IDirect3DDevice7*		Maind3dDevice7;			// Selected D3D Device
-extern IDirect3DDevice7*		RenderDevice;
-extern bool						InsideBeginScene;
-extern bool						NeedToInitRenderStates;
+extern LPDIRECT3D7				d3d7;
+extern LPDIRECT3DDEVICE7		d3dDevice7;				// Current D3D Device
+extern LPDIRECT3DDEVICE7		Refd3dDevice7;			// Reference D3D Device
+extern LPDIRECT3DDEVICE7		Maind3dDevice7;			// Selected D3D Device
+extern LPDIRECT3DDEVICE7		RenderDevice;
+extern UCHAR					InsideBeginScene;
+extern UCHAR					NeedToInitRenderStates;
 extern int						HardwareRenderer;
-extern DWORD					BGColor;
+extern ULONG					BGColor;
 extern D3DDEVICEDESC7			CapsDirect3D;
 
 extern D3DVIEWPORT7				viewData;
 extern float					gosViewportMulX,gosViewportAddX,gosViewportMulY,gosViewportAddY;
-extern DWORD					NumDevices;
-extern DWORD					NumHWDevices;
-extern DWORD					NumMonitors;
-extern DWORD gosColorTable[];
-extern DWORD DepthResults[8];
-extern DWORD DepthPixels;
+extern ULONG					NumDevices;
+extern ULONG					NumHWDevices;
+extern ULONG					NumMonitors;
+extern ULONG gosColorTable[];
+extern ULONG DepthResults[8];
+extern ULONG DepthPixels;
 
-extern void InitRenderer();
-extern char* GetDirectXVersion();
+extern void __stdcall InitRenderer(void);
+extern PSTR __stdcall GetDirectXVersion(void);
 
 //
 // MipMapping flags
 //
-extern DWORD HasBiLinear;
-extern DWORD HasTriLinear;
+extern ULONG HasBiLinear;
+extern ULONG HasTriLinear;
 extern int HasTLHAL;
 //
 // Card specific changes triggered by these values
 //
-extern DWORD HasVertexBlending;
-extern DWORD HasClamp;
-extern DWORD HasFog;
-extern DWORD HasAlphaTest;
-extern DWORD HasAlphaModes;
-extern DWORD HasMultitextureLightmap;
-extern DWORD HasMultitextureSpecularmap;
-extern DWORD HasMultitextureDetailTexture;
-extern DWORD HasMultitextureLightmapFilter;
-extern DWORD HasMultitextureSpecularmapFilter;
-extern DWORD HasMultitextureDetailTextureFilter;
+extern ULONG HasVertexBlending;
+extern ULONG HasClamp;
+extern ULONG HasFog;
+extern ULONG HasAlphaTest;
+extern ULONG HasAlphaModes;
+extern ULONG HasMultitextureLightmap;
+extern ULONG HasMultitextureSpecularmap;
+extern ULONG HasMultitextureDetailTexture;
+extern ULONG HasMultitextureLightmapFilter;
+extern ULONG HasMultitextureSpecularmapFilter;
+extern ULONG HasMultitextureDetailTextureFilter;
 
-void DisplayBackBuffer();
-void End3DScene();
+void __stdcall DisplayBackBuffer(void);
+void __stdcall End3DScene(void);
 
-void RenderWithReferenceRasterizer( DWORD Type );
-void DirectDrawInstall();
-void ShowFrameGraphs();
-void DirectDrawUninstall();
-void DirectDrawCreateDDObject();
-BOOL CALLBACK DirectDrawEnumerateCallback( GUID* lpGUID, LPSTR, LPSTR, LPVOID lpContext );
-HRESULT CALLBACK DirectDrawEnumDisplayModesCallback( LPDDSURFACEDESC2 pddsd, LPVOID lpContext );
-void DirectDrawCreateAllBuffers();
-void EnterWindowMode();
-void EnterFullScreenMode();
-void RenderIMEtoScreen();
-
-
+void __stdcall RenderWithReferenceRasterizer(ULONG Type);
+void __stdcall DirectDrawInstall(void);
+void __stdcall ShowFrameGraphs(void);
+void __stdcall DirectDrawUninstall(void);
+void __stdcall DirectDrawCreateDDObject(void);
+BOOL __stdcall DirectDrawEnumerateCallback(GUID* lpGUID, PSTR, PSTR, PVOID lpContext);
+HRESULT __stdcall DirectDrawEnumDisplayModesCallback(LPDDSURFACEDESC2 pddsd, PVOID lpContext);
+void __stdcall DirectDrawCreateAllBuffers(void);
+void __stdcall EnterWindowMode(void);
+void __stdcall EnterFullScreenMode(void);
+void __stdcall RenderIMEtoScreen(void);

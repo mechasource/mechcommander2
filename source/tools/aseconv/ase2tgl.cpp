@@ -2,6 +2,15 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+// ..\..\mclib\$(ConfigurationName)\mclib.lib
+// ..\..\gameos\lib\$(ConfigurationName)\gameos.lib
+// ..\..\gameos\lib\$(ConfigurationName)\dllplatform.lib
+// ..\..\gameos\lib\$(ConfigurationName)\mfcplatform.lib
+// ..\..\mclib\gosfx\$(ConfigurationName)\gosfx.lib
+// ..\..\mclib\mlr\$(ConfigurationName)\mlr.lib
+// ..\..\mclib\stuff\$(ConfigurationName)\stuff.lib
+// ..\..\gameos\lib\$(ConfigurationName)\zlib.lib
+
 #include "stdafx.h"
 
 #include "version.h" 

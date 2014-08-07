@@ -7,6 +7,8 @@
 
 //----------------------------------------------------------------------------------
 // Include Files
+#include "stdafx.h"
+
 #ifndef BITFLAG_H
 #include "bitflag.h"
 #endif
@@ -280,6 +282,8 @@ void ByteFlag::initTGA (char *tgaFileName)
 	gosASSERT(result == NO_ERR);
 
 	MemoryPtr tgaBuffer = (MemoryPtr)malloc(tgaFile.fileSize());
+	if(tgaBuffer == NULL)
+		return;
 
 	tgaFile.read(tgaBuffer,tgaFile.fileSize());
 

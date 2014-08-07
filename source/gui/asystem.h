@@ -13,8 +13,8 @@ class InterfaceObject;
 
 #include <gameos.hpp>
 
-#include "EString.h"
-#include "aFont.h"
+#include "estring.h"
+#include "afont.h"
 
 #define MAX_CHILDREN 64
 
@@ -41,8 +41,7 @@ class InterfaceObject;
 #define aMSG_BUTTONCLICKED			111
 #define aMSG_SELCHANGED		112
 
-typedef enum
-{
+typedef enum WINDOW_ID {
 	UNDEFINEDWINDOW = -1,
 	GENERIC = 1,
 	STATIC,

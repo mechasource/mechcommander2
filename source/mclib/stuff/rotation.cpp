@@ -511,9 +511,7 @@ void
 	tableIncrementStepOverOne = 1.0f / increment_step;
 	float cosom = MinCosom;
 
-	
-
-
+	int i;
 	for (int i = 0; i < QuaternionLerpTableSize; ++i)
 	{
 		Verify(cosom >= MinCosom);

@@ -21,8 +21,7 @@ namespace Stuff {
 		public Vector3D
 	{
 	public:
-		static const Point3D
-			Identity;
+		static const Point3D Identity;	// ??? strange
 
 		//
 		// Constructors

@@ -2,10 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "gosFXHeaders.hpp"
+#include "stdafx.h"
+#include "gosfxheaders.hpp"
 
-HGOSHEAP
-	gosFX::Heap = NULL;
+HGOSHEAP gosFX::Heap = NULL;
 
 DEFINE_TIMER(gosFX, Animation_Time);
 DEFINE_TIMER(gosFX, Draw_Time);

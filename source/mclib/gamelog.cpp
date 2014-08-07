@@ -121,7 +121,8 @@ GameLog* GameLog::getNewFile (void) {
 		setup();
 
 	long fileHandle = -1;
-	for (long i = 0; i < MAX_GAMELOGS; i++)
+	long i;
+	for (i = 0; i < MAX_GAMELOGS; i++)
 		if (!files[i]->inUse) {
 			fileHandle = i;
 			break;

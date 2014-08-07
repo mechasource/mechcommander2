@@ -4,6 +4,7 @@ gameTacMap.cpp			: Implementation of the gameTacMap component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "gameTacMap.h"
 #include "team.h"

@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #ifndef TGL_H
 #include "tgl.h"
@@ -769,7 +770,8 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 
 	memset(vertexNormalCount,0,sizeof(long) * numTypeVertices);
 
-	for (long i=0;i<numTypeVertices;i++)
+	long i;
+	for (i=0;i<numTypeVertices;i++)
 	{
 		char numberData[256];
 
@@ -1593,8 +1595,9 @@ long TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Point3D
 		return(1);
 
 	lastTurnTransformed = turn;
+	long j;
 
-	for (long j=0;j<numVertices;j++)
+	for (j=0;j<numVertices;j++)
 	{
 		Stuff::Point3D pos = theShape->listOfTypeVertices[j].position;
 		if (shapeScalar > 0.0f)
@@ -2406,7 +2409,7 @@ void TG_Shape::Render (float forceZ, bool isHudElement, BYTE alphaValue, bool is
 		!listOfTriangles ||
 		!listOfVisibleFaces ||
 		!listOfVisibleShadows ||
-		(/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != turn)))
+		(/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != (DWORD)turn)))
 		return;
 
 	if (fogColor != 0xffffffff)
@@ -2570,7 +2573,7 @@ bool TG_Shape::PerPolySelect (float mouseX, float mouseY)
 			!listOfTriangles ||
 			!listOfVisibleFaces ||
 			!listOfVisibleShadows ||
-			((lastTurnTransformed != (turn-1)) /*&& (lastTurnTransformed != turn)*/))
+			((lastTurnTransformed != (DWORD)(turn-1)) /*&& (lastTurnTransformed != turn)*/))
 			return false;
 	}
 	else
@@ -2581,7 +2584,7 @@ bool TG_Shape::PerPolySelect (float mouseX, float mouseY)
 			!listOfTriangles ||
 			!listOfVisibleFaces ||
 			!listOfVisibleShadows ||
-			((lastTurnTransformed != (turn-1)) && (lastTurnTransformed != turn)))
+			((lastTurnTransformed != (DWORD)(turn-1)) && (lastTurnTransformed != (DWORD)turn)))
 			return false;
 	}
 
@@ -3039,7 +3042,7 @@ long TG_Shape::RenderShadows (long startFace)
 		!listOfTriangles ||
 		!listOfVisibleFaces ||
 		!listOfVisibleShadows ||
-		(/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != turn)))
+		(/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != (DWORD)turn)))
 		return startFace;
 
  	if (fogColor != 0xffffffff)

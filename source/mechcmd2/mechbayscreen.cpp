@@ -4,6 +4,7 @@ MechBayScreen.cpp			: Implementation of the MechBayScreen component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MechBayScreen.h"
 #include "LogisticsMech.h"

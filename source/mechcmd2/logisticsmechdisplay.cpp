@@ -5,6 +5,7 @@ LogisticsMechDisplay.cpp			: Implementation of the LogisticsMechDisplay componen
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "LogisticsMechDisplay.h"
 #include "LogisticsMech.h"

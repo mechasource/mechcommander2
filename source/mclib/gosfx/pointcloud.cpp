@@ -1,6 +1,3 @@
-#include "gosFXHeaders.hpp"
-#include <MLR\MLRPointCloud.hpp>
-
 //==========================================================================//
 // File:	 gosFX_PointCloud.cpp											//
 // Contents: Base gosFX::PointCloud Component								//
@@ -11,6 +8,11 @@
 //############################################################################
 //########################  gosFX::PointCloud__Specification  #############################
 //############################################################################
+
+#include "stdafx.h"
+#include "gosFXHeaders.hpp"
+#include <MLR\MLRPointCloud.hpp>
+
 
 //------------------------------------------------------------------------------
 //

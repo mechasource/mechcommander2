@@ -6,8 +6,9 @@
 //								ABLXEXPR.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
-#include <string.h>
+//#include <string.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"

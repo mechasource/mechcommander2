@@ -4,6 +4,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#include "stdafx.h"
 #include "gosFXHeaders.hpp"
 
 //##########################################################################
@@ -722,8 +723,8 @@ gosFX::Curve::TranslateTo(Stuff::Scalar pos,int curvenum)
 			Stuff::Scalar delta,x1,x2,y1,y2,slp;
 			
 			delta=pos-SCurve->ComputeValue(0.0f,0.0f);
-			
-			for(int key=0;key<SCurve->GetKeyCount()-1;key++)
+			int key;
+			for(key=0;key<SCurve->GetKeyCount()-1;key++)
 			{
 				x1=(*SCurve)[key].m_time;
 				x2=(*SCurve)[key+1].m_time;
@@ -874,8 +875,8 @@ gosFX::Curve::TranslateBy(Stuff::Scalar delta,int curvenum)
 			ComplexCurve *SCurve=(ComplexCurve *)this;
 			Stuff::Scalar x1,x2,y1,y2;
 			
-			
-			for(int key=0;key<SCurve->GetKeyCount()-1;key++)
+			int key;
+			for(key=0;key<SCurve->GetKeyCount()-1;key++)
 			{
 				x1=(*SCurve)[key].m_time;
 				x2=(*SCurve)[key+1].m_time;
@@ -1035,8 +1036,8 @@ gosFX::Curve::AxisScale(Stuff::Scalar sfactor,Stuff::Scalar axis,int curvenum)
 			ComplexCurve *SCurve=(ComplexCurve *)this;
 			Stuff::Scalar x1,x2,y1,y2;
 			
-			
-			for(int key=0;key<SCurve->GetKeyCount()-1;key++)
+			int key;
+			for(key=0;key<SCurve->GetKeyCount()-1;key++)
 			{
 				x1=(*SCurve)[key].m_time;
 				x2=(*SCurve)[key+1].m_time;

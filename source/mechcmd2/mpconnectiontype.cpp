@@ -5,6 +5,7 @@ MPConnectionType.cpp			: Implementation of the MPConnectionType component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MPConnectionType.h"
 #include "prefs.h"

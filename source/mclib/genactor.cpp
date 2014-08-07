@@ -276,10 +276,11 @@ void GenericAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	if (appearType)
 	{
 		genShape = appearType->genShape->CreateFrom();
+		long i;
 
 		//-------------------------------------------------
 		// Load the texture and store its handle.
-		for (long i=0;i<genShape->GetNumTextures();i++)
+		for (i=0;i<genShape->GetNumTextures();i++)
 		{
 			char txmName[1024];
 			if ((i == 0) && (appearType->textureName[0]))

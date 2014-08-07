@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 //----------------------------------------------------------------------------------
 // Include Files
@@ -666,7 +667,7 @@ void Mission::load (const char *loadFileName)
 	const char *cmpName = campaignName.Data();
 
 	/*
-	if (stricmp(campName,cmpName) != 0)
+	if (_stricmp(campName,cmpName) != 0)
 	{
 		char msg[2048];
 		cLoadString(IDS_QUICKSAVE_CAMPAIGN_WRONG,msg,2047);

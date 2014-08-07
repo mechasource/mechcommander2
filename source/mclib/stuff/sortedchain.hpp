@@ -363,10 +363,14 @@ namespace Stuff {
 		Check_Pointer(ptr1);
 		Check_Pointer(ptr2);
 
-		if (*ptr1 == *ptr2)
-			return 0;
-		else
-			return ((*ptr1 > *ptr2) ? 1 : -1);
+		if (ptr1 && ptr2)
+		{
+			if (*ptr1 == *ptr2)
+				return 0;
+			else
+				return ((*ptr1 > *ptr2) ? 1 : -1);
+		}
+		return 0;
 	}
 
 	template <class T, class V> int
@@ -377,13 +381,18 @@ namespace Stuff {
 	{
 		Check_Pointer(value);
 
-		V *ptr = Cast_Object(SortedChainLinkOf<V>*, node)->GetValuePointer();
-		Check_Pointer(ptr);
-
-		if (*Cast_Pointer(const V*, value) == *ptr)
-			return 0;
-		else
-			return (*Cast_Pointer(const V*, value) > *ptr) ? 1 : -1;
+		if (value){
+			V *ptr = Cast_Object(SortedChainLinkOf<V>*, node)->GetValuePointer();
+			Check_Pointer(ptr);
+			if (ptr)
+			{
+				if (*Cast_Pointer(const V*, value) == *ptr)
+					return 0;
+				else
+					return (*Cast_Pointer(const V*, value) > *ptr) ? 1 : -1;
+			}
+		}
+		return 0;
 	}
 
 	template <class T, class V> void*

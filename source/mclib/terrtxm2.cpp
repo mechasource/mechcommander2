@@ -222,7 +222,8 @@ void TerrainColorMap::refractalizeBaseMesh (char *fileName, long Threshold, long
 	//Find max and min vertex elevations for scaling below.
 	float maxVertex = land->getTerrainElevation(0,0);
 	float minVertex = maxVertex;
-	for (long y=0;y<Terrain::realVerticesMapSide;y++)
+	long y;
+	for (y=0;y<Terrain::realVerticesMapSide;y++)
 	{
 		for (long x=0;x<Terrain::realVerticesMapSide;x++)
 		{
@@ -264,7 +265,8 @@ void TerrainColorMap::refractalizeBaseMesh (char *fileName, long Threshold, long
 	
 	float *tmpEdge = srcData;
 	MemoryPtr tmpOutput = sourceData;
-	for (long i=0;i<Terrain::realVerticesMapSide * Terrain::realVerticesMapSide;i++)
+	long i;
+	for (i=0;i<Terrain::realVerticesMapSide * Terrain::realVerticesMapSide;i++)
 	{
 		*tmpOutput = (BYTE)CLAMP(*tmpEdge,BLACK_PIXEL,WHITE_PIXEL);
 		tmpOutput++;
@@ -850,7 +852,8 @@ void TerrainColorMap::burnInShadows (bool doBumpPass, char *fileName)
 	}
 	
 	//Smooth out the shadow map to make shadows better.
-	for (long i=pixelWidth;i<((pixelWidth * pixelWidth)-pixelWidth);i++)
+	long i;
+	for (i=pixelWidth;i<((pixelWidth * pixelWidth)-pixelWidth);i++)
 	{
 		if (shadowMap[i] == -1.0f)
 		{
@@ -1255,7 +1258,8 @@ void TerrainColorMap::recalcLight(char *fileName)
 void TerrainColorMap::resetBaseTexture (char *fileName)
 {
 	//First, free up the existing colormap.
-	for (unsigned long i=0;i<numTextures;i++)
+	unsigned long i;
+	for (i=0;i<numTextures;i++)
 	{
 		mcTextureManager->removeTextureNode(textures[i].mcTextureNodeIndex);
 		textures[i].mcTextureNodeIndex = 0xffffffff;

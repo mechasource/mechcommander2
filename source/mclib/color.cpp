@@ -7,6 +7,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#include "stdafx.h"
+
 #ifndef COLOR_H
 #include "color.h"
 #endif

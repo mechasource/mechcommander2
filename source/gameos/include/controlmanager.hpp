@@ -1,4 +1,3 @@
-#pragma once
 //===========================================================================//
 // File:	 ControlManager.hpp												 //
 // Contents: Control Manager routines										 //
@@ -6,97 +5,74 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-
-
-
+#pragma once
 
 //
 // Mouse handling functions
 //
-void CMCreateMouse();
-void CMUpdateMouse();
-void ReInitControlManager();
-gosEnum_KeyStatus GetStatus( gosEnum_KeyIndex index );
+void __stdcall CMCreateMouse(void);
+void __stdcall CMUpdateMouse(void);
+void __stdcall ReInitControlManager(void);
+gosEnum_KeyStatus __stdcall GetStatus( gosEnum_KeyIndex index );
 
 
-extern DWORD KeyBoardBuffer[256];
-extern DWORD KeyCurrent;				// Where the next key to be read is
-extern DWORD KeyPressed;				// Where the next key pressed will go
-extern DWORD dbKeyBoardBuffer[256];
-extern DWORD dbKeyCurrent;				// Where the next key to be read is
-extern DWORD dbKeyPressed;				// Where the next key pressed will go
-extern DWORD LastWMDown;				// Last WM_KEYDOWN message scan code
-extern void SaveOldKeyState();
-extern void DoKeyReleased( DWORD KeyCode );
-extern void DealWithKey( DWORD wParam, DWORD lParam );
-extern void AddKeyEvent(DWORD KeyEvent);
+extern ULONG KeyBoardBuffer[256];
+extern ULONG KeyCurrent;				// Where the next key to be read is
+extern ULONG KeyPressed;				// Where the next key pressed will go
+extern ULONG dbKeyBoardBuffer[256];
+extern ULONG dbKeyCurrent;				// Where the next key to be read is
+extern ULONG dbKeyPressed;				// Where the next key pressed will go
+extern ULONG LastWMDown;				// Last WM_KEYDOWN message scan code
+extern void __stdcall SaveOldKeyState(void);
+extern void __stdcall DoKeyReleased( ULONG KeyCode );
+extern void __stdcall DealWithKey( ULONG wParam, ULONG lParam );
+extern void __stdcall AddKeyEvent(ULONG KeyEvent);
 
 #define MAX_DI_DEVICES 16
 
-typedef struct _cmd
-{
+typedef struct _cmd {
 	LPDIRECTINPUT7	m_lpDirectInput7;
 
 	LPDIRECTINPUTDEVICE7	m_lpSysMouse7;
 	LPDIRECTINPUTDEVICE7	m_lpJoystick7[MAX_DI_DEVICES];
 
-	bool m_disabled[MAX_DI_DEVICES];
-	bool m_validAxis[MAX_DI_DEVICES][12];
-	bool m_pollMe[MAX_DI_DEVICES];
+	UCHAR m_disabled[MAX_DI_DEVICES];
+	UCHAR m_validAxis[MAX_DI_DEVICES][12];
+	UCHAR m_pollMe[MAX_DI_DEVICES];
 	float m_howOften[MAX_DI_DEVICES];
 	double m_nextPoll[MAX_DI_DEVICES];
-	bool m_bForceFeedback[MAX_DI_DEVICES];
+	UCHAR m_bForceFeedback[MAX_DI_DEVICES];
 
-	unsigned char
-		m_numJoysticks,
-		m_numMouseButtons,
-		m_numMouseAxes,
-		m_numPOVs[MAX_DI_DEVICES],
-		m_numSliders[MAX_DI_DEVICES],
-		m_numButtons[MAX_DI_DEVICES];
+	UCHAR 	m_numJoysticks;
+	UCHAR 	m_numMouseButtons;
+	UCHAR 	m_numMouseAxes;
+	UCHAR 	m_numPOVs[MAX_DI_DEVICES];
+	UCHAR 	m_numSliders[MAX_DI_DEVICES];
+	UCHAR 	m_numButtons[MAX_DI_DEVICES];
+	LONG	m_mousePos[3];
+	LONG	m_mouseAxis[3];
+	LONG	m_joyAxis[MAX_DI_DEVICES][12];
 
-	LONG
-		m_mousePos[3],
-		m_mouseAxis[3],
-		m_joyAxis[MAX_DI_DEVICES][12];
-
-	unsigned char
-		m_joyButton[MAX_DI_DEVICES][64];
-	char
-		m_joyName[MAX_DI_DEVICES][64];
-	gosEnum_KeyStatus
-		m_mouseButton[4];
-	bool
-		m_requiresAcquire;
-	HANDLE
-		m_hMouseEvent;
+	UCHAR	m_joyButton[MAX_DI_DEVICES][64];
+	char	m_joyName[MAX_DI_DEVICES][64];
+	gosEnum_KeyStatus m_mouseButton[4];
+	UCHAR	m_requiresAcquire;
+	HANDLE	m_hMouseEvent;
 } ControlManagerDataStruct;
 
-void CMInstall();
-
-void CMUninstall();
-
-void CMCreateKeyboard();
-
-void CMReadJoystick(DWORD index);
-
-void CMReadKeyboard();
-
-void CMGetKeyState();
-
-void CMRestore();
-
-void CMReleaseControls();
-
-void CMAcquireControls();
-
-void CMUnacquireControls();
-
-void CMUpdate();
-
-void CMCreateJoysticks();
-
-BOOL WINAPI CMCreateJoystick7( LPCDIDEVICEINSTANCE pdinst, LPVOID pvRef );
+void __stdcall CMInstall(void);
+void __stdcall CMUninstall(void);
+void __stdcall CMCreateKeyboard(void);
+void __stdcall CMReadJoystick(ULONG index);
+void __stdcall CMReadKeyboard(void);
+void __stdcall CMGetKeyState(void);
+void __stdcall CMRestore(void);
+void __stdcall CMReleaseControls(void);
+void __stdcall CMAcquireControls(void);
+void __stdcall CMUnacquireControls(void);
+void __stdcall CMUpdate(void);
+void __stdcall CMCreateJoysticks(void);
+BOOL __stdcall CMCreateJoystick7( LPCDIDEVICEINSTANCE pdinst, PVOID pvRef );
 
 // This data structure holds all the information necessary for setting up, using,
 // and uninstalling joysticks, a keyboard, and a mouse.

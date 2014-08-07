@@ -131,8 +131,8 @@ long SoundSystem::init (char *soundFileName)
 		sounds = (SoundBite *)soundHeap->Malloc(sizeof(SoundBite) * numSoundBites);
 		gosASSERT(sounds != NULL);
 		memset(sounds,0,sizeof(SoundBite) * numSoundBites);
-		
-		for (long i=0;i<(long)numSoundBites;i++)
+		long i;
+		for (i=0;i<(long)numSoundBites;i++)
 		{
 			char biteBlock[20];
 			sprintf(biteBlock,"SoundBite%d",i);

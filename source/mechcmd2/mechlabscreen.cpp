@@ -5,6 +5,7 @@ MechLabScreen.cpp			: Implementation of the MechLabScreen component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MechLabScreen.h"
 #include "IniFile.h"

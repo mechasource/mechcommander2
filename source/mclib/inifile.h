@@ -8,6 +8,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef INIFILE_H
 #define INIFILE_H
 //---------------------------------------------------------------------------

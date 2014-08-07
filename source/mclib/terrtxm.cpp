@@ -181,7 +181,8 @@ long TerrainTextures::init (char *fileName, char *baseName)
 
 	//-----------------------------------
 	// Read in the Base Terrain Textures.
-	for (long i=0;i<numTypes;i++)
+	long i;
+	for (i=0;i<numTypes;i++)
 	{
 		char blockName[512];
 		sprintf(blockName,"TerrainType%d",i);
@@ -953,7 +954,8 @@ void TerrainTextures::combineOverlayTxm (MemoryPtr dest, long type, long mipLeve
 	//Convert overlay Type to actual overlay Index.
 	long oType = 0;
 	long oIndx = 0;
-	for (long i=0;i<numOverlays;i++)
+	long i;
+	for (i=0;i<numOverlays;i++)
 	{
 		if ((type >= overlays[i].baseTXMIndex) &&
 			(type < (overlays[i].baseTXMIndex + overlays[i].numTextures)))
@@ -1090,7 +1092,8 @@ long TerrainTextures::createTransition (DWORD typeInfo, DWORD overlayInfo)
 		// Search Existing Transitions for this typeInfo.
 		// Does not need to be fast yet.  May not ever since we
 		// only do this on load can be done on Heidi's end.
-		for (long i=0;i<nextTransition;i++)
+		long i;
+		for (i=0;i<nextTransition;i++)
 		{
 			if ((typeInfo == transitions[i].transitionIndex) && 
 				(overlayInfo == transitions[i].overlayIndex))
@@ -1126,12 +1129,12 @@ long TerrainTextures::createTransition (DWORD typeInfo, DWORD overlayInfo)
 				DWORD fileSize = txmFile.fileSize();
 				MemoryPtr fileRAM = (MemoryPtr)malloc(fileSize);
 				long result = txmFile.read(fileRAM,fileSize);
-				if (result != fileSize)
+				if (result != (long)fileSize)
 					STOP(("Read Error with Texture %s",testPath));
 
 				MemoryPtr lzBuffer = (MemoryPtr)malloc(mipSize * mipSize * sizeof(DWORD));
 				long bufferSize = LZDecomp(lzBuffer,fileRAM,fileSize);
-				if (bufferSize != (mipSize * mipSize * sizeof(DWORD)))
+				if (bufferSize != (long)(mipSize * mipSize * sizeof(DWORD)))
 					STOP(("Texture not correct size!"));
 
 				txmFile.close();

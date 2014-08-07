@@ -6,8 +6,9 @@
 //								ABLSTD.CPP
 //
 //***************************************************************************
+#include "stdafx.h"
 
-#include <stdio.h>
+//#include <stdio.h>
 
 #ifndef ABLGEN_H
 #include "ablgen.h"

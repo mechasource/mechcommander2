@@ -803,7 +803,8 @@ void MissionMap::init (long h, long w) {
 	MapCellDiagonal = Terrain::worldUnitsPerCell * 1.4142 * metersPerWorldUnit;
 	HalfMapCell = Terrain::worldUnitsPerCell / 2.0;
 
-	for (long i = 0; i < MAX_MAP_CELL_WIDTH; i++)
+	long i;
+	for (i = 0; i < MAX_MAP_CELL_WIDTH; i++)
 		tileMulMAPCELL_DIM[i] = i * MAPCELL_DIM;
 
 	long tileWidth = width / MAPCELL_DIM;
@@ -1549,7 +1550,8 @@ long GlobalMap::init (PacketFilePtr packetFile, long whichPacket) {
 	doorInfos = (DoorInfoPtr)systemHeap->Malloc(sizeof(DoorInfo) * numDoorInfos);
 	gosASSERT(doorInfos != NULL);
 	long curDoorInfo = 0;
-	for (long i = 0; i < numAreas; i++)
+	long i;
+	for (i = 0; i < numAreas; i++)
 		if (areas[i].numDoors) {
 			result = packetFile->readPacket(whichPacket++, (unsigned char*)&doorInfos[curDoorInfo]);
 			if (result == 0)
@@ -1614,7 +1616,7 @@ long GlobalMap::init (PacketFilePtr packetFile, long whichPacket) {
 
 	if (logEnabled && !blank) {
 		char s[256];
-		for (long i = 0; i < numDoors; i++) {
+		for (i = 0; i < numDoors; i++) {
 			sprintf(s, "door %05d, %s(%d), areas %d & %d", i, doors[i].open ? "opened" : "CLOSED", doors[i].teamID, doors[i].area[0], doors[i].area[1]);
 			log->write(s);
 			for (long side = 0; side < 2; side++) {
@@ -1669,7 +1671,8 @@ long GlobalMap::write (PacketFilePtr packetFile, long whichPacket) {
 	// If mapFile NULL, return the number of packets we need...
 
 	long numDrInfos = 0;
-	for (long i = 0; i < numAreas; i++)
+	long i;
+	for (i = 0; i < numAreas; i++)
 		if (areas[i].numDoors)
 			numDrInfos++;
 #ifdef USE_PATH_COST_TABLE
@@ -3892,6 +3895,7 @@ void GlobalMap::destroy (void) {
 
 bool GlobalMap::toggleLog (void) {
 
+	long i;
 	if (!log) {
 		GameLog::setup();
 		log = GameLog::getNewFile();
@@ -3904,7 +3908,7 @@ bool GlobalMap::toggleLog (void) {
 		GlobalMapPtr map = GlobalMoveMap[0];
 		if (true) {
 			char s[256];
-			for (long i = 0; i < map->numDoors; i++) {
+			for (i = 0; i < map->numDoors; i++) {
 				sprintf(s, "door %05d, %s(%d), areas %d & %d", i, map->doors[i].open ? "opened" : "CLOSED", map->doors[i].teamID, map->doors[i].area[0], map->doors[i].area[1]);
 				log->write(s);
 				for (long side = 0; side < 2; side++) {
@@ -3990,7 +3994,8 @@ void MoveMap::init (long maxW, long maxH) {
 
 	mapRowStartTable = (long*)systemHeap->Malloc(maxHeight * sizeof(long));
 	gosASSERT(mapRowStartTable != NULL);
-	for (long r = 0; r < maxHeight; r++)
+	long r;
+	for (r = 0; r < maxHeight; r++)
 		mapRowStartTable[r] = r * maxWidth;
 
 	mapRowTable = (long*)systemHeap->Malloc(maxHeight * maxWidth * sizeof(long));
@@ -4208,12 +4213,13 @@ inline long MoveMap::markGoals (Stuff::Vector3D finalGoal) {
 					}
 		}
 
+		long c;
 		if (!nextToGoal) {
 			long adjCost = clearCost / 2;
 			long doorCenter = doorLength / 2;
 			long cellIndex = cellR * maxWidth + cellC;
 			long curCost = doorCenter * adjCost;
-			for (long c = 0; c < doorCenter; c++) {
+			for (c = 0; c < doorCenter; c++) {
 				if (doorCellState[c]) {
 					map[cellIndex].setFlag(MOVEFLAG_GOAL);
 					numGoalCells++;
@@ -4247,13 +4253,13 @@ inline long MoveMap::markGoals (Stuff::Vector3D finalGoal) {
 				numGoalCells++;
 				nextToGoal = true;
 			}
-			
+		long r;	
 		if (!nextToGoal) {
 			long adjCost = clearCost / 2;
 			long doorCenter = doorLength / 2;
 			long cellIndex = cellR * maxWidth + cellC;
 			long curCost = doorCenter * adjCost;
-			for (long r = 0; r < doorCenter; r++) {
+			for (r = 0; r < doorCenter; r++) {
 				if (doorCellState[r]) {
 					map[cellIndex].setFlag(MOVEFLAG_GOAL);
 					numGoalCells++;
@@ -4481,7 +4487,9 @@ long MoveMap::setUp (long mapULr,
 	else
 		map[goalR * maxWidth + goalC].setFlag(MOVEFLAG_GOAL);
 
+#ifdef LAB_ONLY
 	__int64 startTime = GetCycles();
+#endif
 
 	if (params & MOVEPARAM_STATIONARY_MOVERS)
 		if (placeStationaryMoversCallback)
@@ -4508,7 +4516,9 @@ long MoveMap::setUp (long level,
 					 long offsets,
 					 unsigned long params) {
 
+#ifdef LAB_ONLY
 	__int64 startTime = GetCycles();
+#endif
 
 	//-----------------------------------------------------------------------------
 	// If the map has not been allocated yet, then the tile height and width passed
@@ -4767,8 +4777,12 @@ inline bool MoveMap::adjacentCellOpenJUMP (long r, long c, long dir) {
 
 //---------------------------------------------------------------------------
 
-inline long MoveMap::calcHPrime (long r, long c) {
+inline long MoveMap::calcHPrime (long r, long c)
+{
+#ifdef LAB_ONLY
 	__int64 startTime = GetCycles();
+#endif
+
 	long sum = 0;
 	if (r > goalR)
 		sum += (r - goalR);
@@ -6344,7 +6358,8 @@ void MoveMap::writeDebug (File* debugFile) {
 	
 	debugFile->writeString("PARENT:\n");
 	debugFile->writeString("-------\n");
-	for (long r = 0; r < height; r++) {
+	long r;
+	for (r = 0; r < height; r++) {
 		outString[0] = NULL;
 		char numStr[10];
 		for (long c = 0; c < width; c++) {

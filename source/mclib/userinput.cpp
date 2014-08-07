@@ -8,6 +8,9 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
+//#include <windows.h>
+//#include <math.h>
 
 #ifndef USERINPUT_H
 #include "userinput.h"
@@ -37,10 +40,7 @@
 #include "txmmgr.h"
 #endif
 
-#include <windows.h>
-
 #include <stuff\stuff.hpp>
-#include <math.h>
 
 //---------------------------------------------------------------------------
 UserInput *userInput = NULL;

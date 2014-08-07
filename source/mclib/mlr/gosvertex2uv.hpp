@@ -116,7 +116,7 @@ namespace MidLevelRenderer {
 	protected:
 	};
 
-	#pragma warning (disable : 4725)
+	//#pragma warning (disable : 4725)
 
 void
 	GOSVertex2UV::GOSTransformNoClip(

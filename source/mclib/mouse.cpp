@@ -41,12 +41,14 @@
 //
 //
 //-----------------------------------------------------------------------
+#include "stdafx.h"
+
+//#include <windows.h>
+//#include <mmsystem.h>
+//#include <ddraw.h>
 
 #include "dstd.h"
 #include "userinput.h"
-#include <windows.h>
-#include <mmsystem.h>
-#include <ddraw.h>
 #include <gameos.hpp>
 
 extern volatile bool mc2IsInDisplayBackBuffer;
@@ -76,7 +78,7 @@ void (*AsynFunc)(RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc ) = 0;
 
 
 //External GameOS stuff
-extern IDirectDrawSurface7*	FrontBufferSurface;
+extern LPDIRECTDRAWSURFACE7	FrontBufferSurface;
 extern HWND					hWindow;
 extern POINT				clientToScreen;
 extern DWORD 				MouseInWindow;
@@ -164,7 +166,7 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD
 	HRESULT lockResult = -1;
 	HRESULT unlockResult = -1;
 	RECT WinRect;
-	DDSURFACEDESC2 mouseSurfaceDesc;
+	DDSURFACEDESC2 mouseSurfaceDesc = {0};
 	mouseSurfaceDesc.dwSize = sizeof(DDSURFACEDESC2);
 	long screenX = Environment.screenWidth;
 	long screenY = Environment.screenHeight;

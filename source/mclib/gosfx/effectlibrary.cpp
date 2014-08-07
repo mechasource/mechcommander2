@@ -1,11 +1,12 @@
-#include "gosFXHeaders.hpp"
-
 //==========================================================================//
 // File:	 gosFX_Effect.cpp												//
 // Contents: Base gosFX::Effect Component									//
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
+#include "stdafx.h"
+#include "gosFXHeaders.hpp"
 
 gosFX::EffectLibrary*
 	gosFX::EffectLibrary::Instance = NULL;

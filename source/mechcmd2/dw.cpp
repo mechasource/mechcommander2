@@ -1,6 +1,7 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #include <windows.h>
 #include <stdio.h>

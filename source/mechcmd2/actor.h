@@ -22,9 +22,9 @@
 #include "apprtype.h"
 #endif
 
-#ifndef TGATXM_H
-#include "tgatxm.h"
-#endif
+//#ifndef TGATXM_H
+//#include "tgatxm.h"
+//#endif
 
 
 //***********************************************************************

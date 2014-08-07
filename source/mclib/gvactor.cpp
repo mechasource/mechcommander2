@@ -119,10 +119,11 @@ void GVAppearanceType::init (char * fileName)
 
 	char aseFileName[512];
 	result = iniFile.readIdString("FileName",aseFileName,511);
+	long i;
 	if (result != NO_ERR)
 	{
 		//Check for LOD filenames instead
-		for (long i=0;i<MAX_LODS;i++)
+		for (i=0;i<MAX_LODS;i++)
 		{
 			char baseName[256];
 			char baseLODDist[256];
@@ -220,7 +221,7 @@ void GVAppearanceType::init (char * fileName)
 	//--------------------------------------------------------------------
 	// Load Animation Information.
 	// We can load up to 10 Animation States.
-	for (long i=0;i<MAX_GV_ANIMATIONS;i++)
+	for (i=0;i<MAX_GV_ANIMATIONS;i++)
 	{
 		char blockId[512];
 		sprintf(blockId,"Animation:%d",i);
@@ -362,8 +363,9 @@ void GVAppearanceType::init (char * fileName)
 void GVAppearanceType::destroy (void)
 {
 	AppearanceType::destroy();
+	long i;
 
-	for (long i=0;i<MAX_LODS;i++)
+	for (i=0;i<MAX_LODS;i++)
 	{
 		if (gvShape[i])
 		{
@@ -740,10 +742,11 @@ void GVAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	if (appearType)
 	{
 		gvShape = appearType->gvShape[0]->CreateFrom();
+		long i;
 	
 		//-------------------------------------------------
 		// Load the texture and store its handle.
-		for (long i=0;i<gvShape->GetNumTextures();i++)
+		for (i=0;i<gvShape->GetNumTextures();i++)
 		{
 			char txmName[1024];
 			gvShape->GetTextureName(i,txmName,256);
@@ -1754,7 +1757,7 @@ bool GVAppearance::recalcBounds (void)
 						}
 						
 						// we are at this LOD level.
-						if (selectLOD != currentLOD)
+						if (selectLOD != (DWORD)currentLOD)
 						{
 							currentLOD = selectLOD;
 

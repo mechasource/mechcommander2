@@ -4,6 +4,7 @@ MissionBegin.cpp			: Implementation of the MissionBegin component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "MissionBegin.h"
 #include "McLib.h"

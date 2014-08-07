@@ -227,7 +227,7 @@ long FastFile::openFast (DWORD hash, char *fName)
 	//-- In order to use this, the file name must be part of the index.
 	for (long i=0;i<numFiles;i++)
 	{
-		if ((hash == files[i].pfe->hash) && (stricmp(files[i].pfe->name,fName) == 0))
+		if ((hash == files[i].pfe->hash) && (_stricmp(files[i].pfe->name,fName) == 0))
 		{
 			files[i].inuse = TRUE;
 			files[i].pos = 0;

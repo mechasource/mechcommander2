@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
 
 #ifndef MCLIB_H
 #include "mclib.h"
@@ -901,7 +902,7 @@ void Carnage::init (bool create, ObjectTypePtr _type)
 		info.explosion.chunkSize = ((ExplosionType *)_type)->chunkSize;
 		info.explosion.timer = ((ExplosionType *)_type)->delayUntilCollidable; 
 			
-		if (stricmp(weaponEffects->GetEffectName(effectId),"NONE") != 0)
+		if (_stricmp(weaponEffects->GetEffectName(effectId),"NONE") != 0)
 		{
 			//--------------------------------------------------------------
 			// We need to create the GOSFX we need for this explosion here.

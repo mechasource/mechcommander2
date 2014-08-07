@@ -40,10 +40,9 @@
 #include <tchar.h>
 #endif
 
-#pragma warning( disable:4505 )
-
-#pragma warning( push )
-#pragma warning( disable:4100 )
+//#pragma warning( disable:4505 )
+//#pragma warning( push )
+//#pragma warning( disable:4100 )
 
 #define INT_SIZE_LENGTH 20
 extern int __ismbcodepage;
@@ -241,7 +240,7 @@ EWCharString::EBuffer*   EWCharString::EBuffer::s_p_Empty_Buffer = &EWCharString
 // inlines
 #define A2W(p_String) (\
 	((const char*)p_String == NULL) ? NULL : (\
-	EWCharString::ToUnicode( (LPWSTR)_alloca((lstrlenA(p_String)+1)*2),\
+	EWCharString::ToUnicode( (unsigned short*)_alloca((lstrlenA(p_String)+1)*2),\
 	(const unsigned char*)p_String, (lstrlenA(p_String)+1)*2)))
 
 // if this doesn't want to link properly, this will have to become
@@ -256,7 +255,7 @@ inline	unsigned short*	EWCharString::ToUnicode( unsigned short* p_Buffer,
 
 	p_Buffer[0] = 0;
 
-	MultiByteToWideChar( CP_ACP, 0, (const char*)p_Str, -1, p_Buffer, Num_Chars );
+	MultiByteToWideChar(CP_ACP, 0, (const char*)p_Str, -1, (PWSTR)p_Buffer, Num_Chars );
 
 	return p_Buffer;	
 }
@@ -266,7 +265,7 @@ inline int EWCharString::StrSize( const EWCSChar* p_Str )
 {
 	return ( p_Str == NULL  ? 0 : 
 #ifdef UNICODE 
-	wcslen( p_Str )
+	wcslen( (PWCHAR)p_Str )
 #else 
 	lstrlen( (const char*)p_Str )
 #endif 
@@ -550,14 +549,14 @@ void EWCharString::Swap( EWCharString& Src )
 void EWCharString::MakeUpper()
 {
 	ChecEBufferDoRealloc();
-	KToUpper( m_pBuffer->Data() );
+	KToUpper( (PWSTR)m_pBuffer->Data() );
 }
 
 ///////////////////////////////////////////////////////////////
 void EWCharString::MakeLower()
 {
 	ChecEBufferDoRealloc();
-	KToLower( m_pBuffer->Data() );
+	KToLower( (PWSTR)m_pBuffer->Data() );
 }
 
 ///////////////////////////////////////////////////////////////
@@ -565,7 +564,7 @@ void EWCharString::Reverse()
 {
 	ChecEBufferDoRealloc();
 	
-	KReverse( m_pBuffer->Data() );
+	KReverse( (PWSTR)m_pBuffer->Data() );
 }
 
 // works like sprintf
@@ -610,11 +609,11 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 		if ( Width == 0)
 		{
 			// width indicated by
-			Width = KToI(p_Tmp);
+			Width = KToI((PWCHAR)p_Tmp);
 			unsigned short buffer;
 			for (; *p_Tmp != '\0'; )
 			{
-				GetStringTypeEx(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, p_Tmp, 1, &buffer);
+				GetStringTypeEx(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, (PWSTR)p_Tmp, 1, &buffer);
 				if (buffer == C1_DIGIT || buffer == C1_XDIGIT)
 					p_Tmp = KSInc(p_Tmp);
 				else
@@ -638,11 +637,11 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 			}
 			else
 			{
-				Precision = KToI(p_Tmp);
+				Precision = KToI((PWCHAR)p_Tmp);
 				for (; *p_Tmp != '\0'; )
 				{
 					unsigned short buffer;
-					GetStringTypeEx(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, p_Tmp, 1, &buffer);
+					GetStringTypeEx(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, (PWSTR)p_Tmp, 1, &buffer);
 					//if (buffer == C1_DIGIT || buffer == C1_XDIGIT)
 					if (buffer & C1_DIGIT)	//mh
 						p_Tmp = KSInc(p_Tmp);
@@ -838,7 +837,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 	}
 
 #ifdef UNICODE
-	vswprintf(m_pBuffer->Data(), p_Str, Arg_List_Save);
+	vswprintf((PWCHAR)m_pBuffer->Data(), (PWCHAR)p_Str, Arg_List_Save);
 #else
 	vsprintf(m_pBuffer->Data(), p_Str, Arg_List_Save);
 #endif
@@ -955,7 +954,7 @@ int EWCharString::Compare( const EWCSChar* p_String, bool Case_Sensitive ) const
 	{
 		return ( memcmp( m_pBuffer->Data(), p_String, Length ) );
 	}	
-	return (KStrCmp( m_pBuffer->Data(), p_String ) );
+	return (KStrCmp( (PWCHAR)m_pBuffer->Data(), (PWCHAR)p_String ) );
 	
 }
  	
@@ -971,7 +970,7 @@ int EWCharString::Length() const	// number of characters
 {
 
 #ifdef UNICODE
-	return wcslen( m_pBuffer->Data() );
+	return wcslen( (PWCHAR)m_pBuffer->Data() );
 #else
 	return lstrlen( (char*)m_pBuffer->Data() );
 #endif
@@ -1013,8 +1012,8 @@ int EWCharString::Find( const EWCharString& Str_To_Find, int Start_Index ) const
 		Start_Index = 0;
 	}
 	
-	EWCSChar* p_Tmp = KStrStr( m_pBuffer->Data() + Start_Index, 
-							Str_To_Find.m_pBuffer->Data() );
+	EWCSChar* p_Tmp = (EWCSChar*)KStrStr( (PWCHAR)(m_pBuffer->Data() + Start_Index), 
+							(PWCHAR)(Str_To_Find.m_pBuffer->Data()) );
 
 	return ( p_Tmp ? p_Tmp - m_pBuffer->Data() : INVALID_INDEX );
 }
@@ -1028,8 +1027,8 @@ int EWCharString::Find( const EWCSChar* p_Str_To_Find, int Start_Index ) const
 	}
 
 	
-	EWCSChar* p_Tmp = KStrStr( m_pBuffer->Data() + Start_Index, 
-							p_Str_To_Find );
+	EWCSChar* p_Tmp = (EWCSChar*)KStrStr((PWCHAR)(m_pBuffer->Data() + Start_Index), 
+							(PWCHAR)p_Str_To_Find );
 
 	return ( p_Tmp ? p_Tmp - m_pBuffer->Data() : INVALID_INDEX );
 
@@ -1121,7 +1120,7 @@ char* 	EWCharString::CreateMBCS() const
 	char* p_Ret_String = new char[m_pBuffer->m_Data_Length + 1];
 
 #ifdef K_UNICODE
-	wcstombs( p_Ret_String, m_pBuffer->Data(), m_pBuffer->m_Data_Length + 1  );
+	wcstombs( p_Ret_String, (PWCHAR)(m_pBuffer->Data()), m_pBuffer->m_Data_Length + 1  );
 
 #else
 	 memcpy( p_Ret_String, m_pBuffer->Data(), m_pBuffer->m_Data_Length + 1 );
@@ -1146,7 +1145,7 @@ EWCharString::EWCharString(const  char* p_String )
 {
 	if ( p_String )
 	{
-		Assign( A2W( p_String ) );
+		Assign( (EWCSChar*)A2W( p_String ) );
 	}
 }
 		
@@ -1551,7 +1550,7 @@ int EWCharString::Find( char Char, int Start_Index ) const
 {
 	EWCSChar Tmp; 
 
-	mbtowc( &Tmp, &Char, 1 );
+	mbtowc( (PWCHAR)&Tmp, &Char, 1 );
 	
 	return Find( Tmp, Start_Index );
 }
@@ -1561,7 +1560,7 @@ const EWCharString& EWCharString::operator=( char Char )
 {
 	EWCSChar Tmp; 
 
-	mbtowc( &Tmp, &Char, 1 );
+	mbtowc( (PWCHAR)&Tmp, &Char, 1 );
 
 	return operator=( Tmp );
 }
@@ -1598,4 +1597,4 @@ const EWCharString& EWCharString::operator=( char Char )
 
 //****************************************************************
 
-#pragma warning( pop )
+//#pragma warning( pop )

@@ -8,6 +8,12 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+#include "stdafx.h"
+//#include <windows.h>
+//#include <imagehlp.h>
+//#include <tchar.h>
+//#include <stdio.h>             // For sprintf
+//#include <string.h>            // For strchr
 
 //---------------------------------------------------------------------------
 // Include Files
@@ -19,14 +25,7 @@
 #include "file.h"
 #endif
 
-#include <windows.h>
-#include <imagehlp.h>
-
 #include <gameos.hpp>
-
-#include <tchar.h>
-#include <stdio.h>             // For sprintf
-#include <string.h>            // For strchr
 
 //---------------------------------------------------------------------------
 // Static Globals
@@ -83,7 +82,7 @@ char* DecodeAddress( DWORD Address , bool brief);
 #define CHECK_HEAP
 #endif
 
-#ifdef LAB_ONLY
+#if defined(LAB_ONLY)
 #define CHECK_HEAP
 #endif
 

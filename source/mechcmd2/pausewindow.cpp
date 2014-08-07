@@ -5,6 +5,7 @@ PauseWindow.cpp			: Implementation of the PauseWindow component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
 #include "PauseWindow.h"
 #include "controlGui.h"
@@ -241,7 +242,7 @@ void PauseWindow::update()
 	_splitpath(campaignName,NULL,NULL,campName,NULL);
 	if ( MPlayer || 
 		LogisticsData::instance->isSingleMission() ||
-		(stricmp("tutorial",campName) == 0))
+		(_stricmp("tutorial",campName) == 0))
 	{
 		buttons[ SAVE ].disable( true );
 		buttons[ LOAD ].disable( true );

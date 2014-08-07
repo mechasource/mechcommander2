@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "Hash.hpp"
-#include "Scalar.hpp"
+#include "stuff.hpp"
+#include "hash.hpp"
+#include "scalar.hpp"
 
 namespace Stuff
 {
@@ -20,12 +20,12 @@ namespace Stuff
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR  group,
 			const Stuff::MStringRepresentation& string
 		);
 	void
 		Spew(
-			const char* group,
+			PCSTR  group,
 			const Stuff::MString& string
 		);
 #endif
@@ -73,42 +73,42 @@ namespace Stuff {
 	//
 	void
 		Convert_From_Ascii(
-			const char* str,
+			PCSTR  str,
 			char* value
 		);
 	void
 		Convert_From_Ascii(
-			const char* str,
+			PCSTR  str,
 			BYTE* value
 		);
 	void
 		Convert_From_Ascii(
-			const char* str,
+			PCSTR  str,
 			short* value
 		);
 	void
 		Convert_From_Ascii(
-			const char* str,
+			PCSTR  str,
 			WORD* value
 		);
 	void
 		Convert_From_Ascii(
-			const char* str,
+			PCSTR  str,
 			int* value
 		);
 	void
 		Convert_From_Ascii(
-			const char* str,
+			PCSTR  str,
 			unsigned* value
 		);
 	void
 		Convert_From_Ascii(
-			const char* str,
+			PCSTR  str,
 			long* value
 		);
 	void
 		Convert_From_Ascii(
-			const char* str,
+			PCSTR  str,
 			DWORD* value
 		);
 
@@ -267,7 +267,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR  group,
 					const MStringRepresentation& string
 				);
 		#endif
@@ -464,20 +464,18 @@ namespace Stuff {
 		}
 	}
 
+#if USE_ASSEMBLER_CODE
 	inline IteratorPosition
 		MStringRepresentation::GetHashValue()
 	{
-		//
+
 		// Verify that the IteratorPosition is 32 bits wide
 		// Hash value is first 16 bits of fileID and first 16 bits of recordID
-		//
 		Verify(sizeof(IteratorPosition) == sizeof(DWORD));
-
 		static int andAway[3] = {0x000000ff, 0x0000ffff, 0x00ffffff };
-
 		IteratorPosition ret = 0;
 
-		register i, r, len = stringLength >> 2;
+		register int i, r, len = stringLength >> 2;
 
 		for(i=0;i<len;i++)
 		{
@@ -491,6 +489,8 @@ namespace Stuff {
 
 		return (ret & 0x7fffffff);
 	}
+
+#endif
 
 	//##########################################################################
 	//############################    MString    ###############################
@@ -630,7 +630,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR  group,
 					const MString &string
 				);
 		#endif
@@ -867,7 +867,7 @@ namespace Stuff {
 #if !defined(Spew)
 	inline void
 		Spew(
-			const char* group,
+			PCSTR  group,
 			const Stuff::MStringRepresentation &string
 		)
 	{
@@ -877,7 +877,7 @@ namespace Stuff {
 
 	inline void
 		Spew(
-			const char* group,
+			PCSTR  group,
 			const Stuff::MString &string
 		)
 	{

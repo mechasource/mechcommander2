@@ -179,3 +179,6 @@ source/gameos/lib/x86/dllplatform/
 source/gameos/lib/x86/gameplatform/
 source/gameos/lib/x86/mfcplatform/
 source/gameos/lib/x86/gameos/
+.svn/
+.clang/
+.codelite/

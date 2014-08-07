@@ -1,7 +1,3 @@
-#include "StuffHeaders.hpp"
-#include "Database.hpp"
-#include <ToolOS.hpp>
-
 //===========================================================================//
 // File:	Database.cpp                                                     //
 // Contents: Database functionality											 //												 
@@ -9,7 +5,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+#include "database.hpp"
+#include <toolos.hpp>
 
 //
 // A pointer to this structure is the handle to the database

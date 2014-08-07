@@ -5,35 +5,6 @@
 // ablt.cpp : Defines the entry point for the console application.
 //
 
-//<Filter Name="abl">
-//<File RelativePath="..\mclib\abl.h"></File>
-//<File RelativePath="..\mclib\abldbug.cpp"></File>
-//<File RelativePath="..\mclib\abldbug.h"></File>
-//<File RelativePath="..\mclib\abldecl.cpp"></File>
-//<File RelativePath="..\mclib\ablenv.cpp"></File>
-//<File RelativePath="..\mclib\ablenv.h"></File>
-//<File RelativePath="..\mclib\ablerr.cpp"></File>
-//<File RelativePath="..\mclib\ablerr.h"></File>
-//<File RelativePath="..\mclib\ablexec.cpp"></File>
-//<File RelativePath="..\mclib\ablexec.h"></File>
-//<File RelativePath="..\mclib\ablexpr.cpp"></File>
-//<File RelativePath="..\mclib\ablgen.h"></File>
-//<File RelativePath="..\mclib\ablparse.h"></File>
-//<File RelativePath="..\mclib\ablrtn.cpp"></File>
-//<File RelativePath="..\mclib\ablscan.cpp"></File>
-//<File RelativePath="..\mclib\ablscan.h"></File>
-//<File RelativePath="..\mclib\ablstd.cpp"></File>
-//<File RelativePath="..\mclib\ablstmt.cpp"></File>
-//<File RelativePath="..\mclib\ablsymt.cpp"></File>
-//<File RelativePath="..\mclib\ablsymt.h"></File>
-//<File RelativePath="..\mclib\ablxexpr.cpp"></File>
-//<File RelativePath="..\mclib\ablxstd.cpp"></File>
-//<File RelativePath="..\mclib\ablxstmt.cpp"></File>
-//<File RelativePath="..\mclib\dabldbug.h"></File>
-//<File RelativePath="..\mclib\dablenv.h"></File>
-//</Filter>
-
-
 #include "stdafx.h"
 //#include "string.h"
 

@@ -47,8 +47,9 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 #else 
 // VIEWER;WIN32;NDEBUG;_WINDOWS
 #endif
+#ifndef VIEWER
 #define VIEWER		1
-
+#endif
 
 namespace Utilities {
 

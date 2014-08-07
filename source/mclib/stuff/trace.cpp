@@ -5,8 +5,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
-#include <ToolOS.hpp>
+#include "stuffheaders.hpp"
+#include <toolos.hpp>
 
 #if defined(TRACE_ENABLED)
 

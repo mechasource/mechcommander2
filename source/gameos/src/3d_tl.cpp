@@ -36,6 +36,109 @@
  RcsID = $Id$ */
 
 #include "stdafx.h"
+#include <gameos.hpp>
+#include <directx.hpp>
 
+#pragma region gos_SetTransform
+// Sets the WORLD/VIEW or PROJECTION matrix
+#pragma endregion local info
+/// <summary>
+/// <c>gos_SetTransform</c> sets the WORLD/VIEW or PROJECTION matrix
+/// </summary>
+/// <remarks>
+/// </remarks>
+/// <param name="TransformType"></param>
+/// <param name="pMatrixData"></param>
+/// <returns></returns>
+void __stdcall gos_SetTransform(
+	D3DTRANSFORMSTATETYPE TransformType, LPD3DMATRIX pMatrixData)
+{
+	gosASSERT(InsideBeginScene);
+	gosASSERT(TransformType>=D3DTRANSFORMSTATE_WORLD && TransformType<=D3DTRANSFORMSTATE_WORLD1);
 
+	wSetTransform(d3dDevice7, TransformType, pMatrixData);
 
+	GameOSFPU();
+}
+
+#pragma region gos_MultiplyTransform
+// Multiplies the current WORLD/VIEW or PROJECTION matrix by another
+#pragma endregion local info
+/// <summary>
+/// <c>gos_MultiplyTransform</c> multiplies the current WORLD/VIEW or PROJECTION 
+/// matrix by another
+/// </summary>
+/// <remarks>
+/// </remarks>
+/// <param name="TransformType"></param>
+/// <param name="pMatrixData"></param>
+/// <returns></returns>
+void __stdcall gos_MultiplyTransform(
+	D3DTRANSFORMSTATETYPE TransformType, LPD3DMATRIX pMatrixData)
+{
+	gosASSERT(InsideBeginScene);
+	gosASSERT(TransformType>=D3DTRANSFORMSTATE_WORLD && TransformType<=D3DTRANSFORMSTATE_WORLD1);
+
+	wMultiplyTransform(d3dDevice7, TransformType, pMatrixData);
+
+	GameOSFPU();
+}
+
+#pragma region gos_SetLight
+// Sets the parameters of a light (LightNumber can be any number)
+#pragma endregion local info
+/// <summary>
+/// <c>gos_SetLight</c> sets the parameters of a light (LightNumber can be any number)
+/// </summary>
+/// <remarks>
+/// </remarks>
+/// <param name="LightNumber"></param>
+/// <param name="pLightData"></param>
+/// <returns></returns>
+void __stdcall gos_SetLight(ULONG LightNumber, LPD3DLIGHT7 pLightData)
+{
+	gosASSERT(InsideBeginScene);
+
+	wSetLight(d3dDevice7, LightNumber, pLightData);
+
+	GameOSFPU();
+}
+
+#pragma region gos_LightEnable
+// Enables / Disables a light (Maximum of gos_GetMachineInformation( gos_Info_GetMaximumActiveLights ) lights enabled at once)
+#pragma endregion local info
+/// <summary>
+/// <c>gos_LightEnable</c> enables or disables a light
+/// </summary>
+/// <remarks>
+/// </remarks>
+/// <param name="LightNumber"></param>
+/// <param name="Enable"></param>
+/// <returns></returns>
+void __stdcall gos_LightEnable(ULONG LightNumber, UCHAR Enable)
+{
+	gosASSERT(InsideBeginScene);
+
+	wLightEnable(d3dDevice7, LightNumber, Enable);
+
+	GameOSFPU();
+}
+
+#pragma region gos_SetMaterial
+// Sets the parameters of the current material
+#pragma endregion local info
+/// <summary>
+/// <c>gos_SetMaterial</c> 
+/// </summary>
+/// <remarks>
+/// </remarks>
+/// <param name="pMaterialData"></param>
+/// <returns></returns>
+void __stdcall gos_SetMaterial(LPD3DMATERIAL7 pMaterialData)
+{
+	gosASSERT(InsideBeginScene);
+
+	wSetMaterial(d3dDevice7, pMaterialData);
+
+	GameOSFPU();
+}

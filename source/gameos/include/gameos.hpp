@@ -2153,8 +2153,7 @@ typedef struct
 //
 // Vertex definition for transform, blending and lighting with two u,v coordinates
 //
-typedef struct
-{
+typedef struct gosD3DBLENDVERTEX_2UV {
 	float x,y,z;
 	float blend;
 	float nx,ny,nz;
@@ -2184,18 +2183,18 @@ typedef enum gosVERTEXTYPE {
 //
 // Vector definition (Identical to D3DVECTOR)
 //
+#if _CONSIDERED_OBSOLETE
 typedef struct
 {
 	float x,y,z;
 
 } gosVECTOR;
-
+#endif
 
 //
 // Matrix definition (Identical to D3DMATRIX)
-//
-typedef struct
-{
+#if _CONSIDERED_OBSOLETE
+typedef struct gosMATRIX {
 	union
 	{
 		struct
@@ -2209,42 +2208,37 @@ typedef struct
 	};
 
 } gosMATRIX;
-
-
+#endif
+// #define gosMATRIX (struct _D3DMATRIX)
 //
 // Color definition (Identical to D3DCOLORVALUE)
-//
-typedef struct
-{
+#if _CONSIDERED_OBSOLETE
+typedef struct gosCOLOR {
 	float r,g,b,a;
-
 } gosCOLOR;
-
+#endif
 
 //
 // Material definition (Identical to D3DMATERIAL7)
-//
-typedef struct
-{
+#if _CONSIDERED_OBSOLETE
+typedef struct gosMATERIAL {
 	gosCOLOR	diffuse;
 	gosCOLOR	ambient;
 	gosCOLOR	specular;
 	gosCOLOR	emissive;
 	float		power;
-
 } gosMATERIAL;
-
+#endif
 
 //
 // Used to specify type of light (Identical to D3DLIGHTTYPE)
-//
+#if _CONSIDERED_OBSOLETE
 typedef enum gosLIGHTTYPE {
 	LIGHT_POINT=1,
 	LIGHT_SPOT,
 	LIGHT_DIRECTIONAL,
-
 } gosLIGHTTYPE;
-
+#endif
 
 //
 // Maximum distance for lights
@@ -2253,15 +2247,15 @@ typedef enum gosLIGHTTYPE {
 
 //
 // Light definition (Identical to D3DLIGHT7)
-//
+#if _CONSIDERED_OBSOLETE
 typedef struct gosLIGHT
 {
     gosLIGHTTYPE	dltType;
     gosCOLOR		dcvDiffuse;
     gosCOLOR		dcvSpecular;
     gosCOLOR		dcvAmbient;
-    gosVECTOR		dvPosition;
-    gosVECTOR		dvDirection;
+    D3DVECTOR		dvPosition;
+    D3DVECTOR		dvDirection;
     float			dvRange;
     float			dvFalloff;
     float			dvAttenuation0;
@@ -2269,21 +2263,20 @@ typedef struct gosLIGHT
     float			dvAttenuation2;
     float			dvTheta;
     float			dvPhi;
-
 } gosLIGHT;
-
+#endif
 
 //
 // Used to specify which matrix (Identical to D3DTRANSFORMSTATETYPE)
-//
+#if _CONSIDERED_OBSOLETE
 typedef enum gosTRANSFORMTYPE {
 	MATRIX_WORLD=1,
 	MATRIX_VIEW,
 	MATRIX_PROJECTION,
 	MATRIX_WORLD1,				// 2nd world matrix used in vertex blending
 } gosTRANSFORMTYPE;
-
-
+#endif
+#define gosTRANSFORMTYPE D3DTRANSFORMSTATETYPE
 //
 // Used to specify type of primitive being rendered in gos_RenderIndexedArray and gos_RenderVertexBuffer
 //
@@ -2303,17 +2296,17 @@ void __stdcall gos_SetViewport( ULONG LeftX, ULONG RightX, ULONG Width, ULONG he
 //
 // Sets the WORLD/VIEW or PROJECTION matrix
 //
-void __stdcall gos_SetTransform( gosTRANSFORMTYPE TransformType, gosMATRIX* MatrixData );
+void __stdcall gos_SetTransform( D3DTRANSFORMSTATETYPE TransformType, LPD3DMATRIX pMatrixData );
 
 //
 // Multiplies the current WORLD/VIEW or PROJECTION matrix by another
 //
-void __stdcall gos_MultiplyTransform( gosTRANSFORMTYPE TransformType, gosMATRIX* MatrixData );
+void __stdcall gos_MultiplyTransform( D3DTRANSFORMSTATETYPE TransformType, LPD3DMATRIX pMatrixData );
 
 //
 // Sets the parameters of a light (LightNumber can be any number)
 //
-void __stdcall gos_SetLight( ULONG LightNumber, gosLIGHT* LightData );
+void __stdcall gos_SetLight( ULONG LightNumber, LPD3DLIGHT7 pLightData );
 
 //
 // Enables / Disables a light (Maximum of gos_GetMachineInformation( gos_Info_GetMaximumActiveLights ) lights enabled at once)
@@ -2323,7 +2316,7 @@ void __stdcall gos_LightEnable( ULONG LightNumber, UCHAR Enable );
 //
 // Sets the parameters of the current material
 //
-void __stdcall gos_SetMaterial( gosMATERIAL* MaterialData );
+void __stdcall gos_SetMaterial( LPD3DMATERIAL7 pMaterialData );
 
 //
 // Transforms and renders an indexed array of vertices

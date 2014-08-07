@@ -80,8 +80,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -177,8 +175,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -277,8 +273,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -377,8 +371,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -428,6 +420,10 @@
 			<Filter
 				Name="gameos"
 				>
+				<File
+					RelativePath="..\gameos\src\3d_tl.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\gameos\src\3dprimitives.cpp"
 					>
@@ -717,7 +713,67 @@
 					>
 				</File>
 				<File
+					RelativePath="..\gameos\src\sound_api.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\sound_ds3dchannel.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\sound_ds3dmixer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\sound_renderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\sound_resource.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\gameos\src\spew.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\texture_api.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\texture_convert.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\texture_create.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\texture_format.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\texture_manager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\texture_mipmap.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\texture_original.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\texture_sysmem.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\texture_update.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\gameos\src\texture_vidmem.cpp"
 					>
 				</File>
 				<File

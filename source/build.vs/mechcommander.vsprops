@@ -12,6 +12,11 @@
 		Name="VCLinkerTool"
 		AdditionalLibraryDirectories="$(OutDir)"
 	/>
+	<Tool
+		Name="VCResourceCompilerTool"
+		PreprocessorDefinitions="APP_NAME=\&quot;$(TargetName)\&quot;;PLATFORM=$(PlatformName);$(PlatformName)"
+		AdditionalIncludeDirectories="$(mc2res_dir);$(IntDir)"
+	/>
 	<UserMacro
 		Name="gameos_dir"
 		Value="..\gameos"
@@ -30,6 +35,11 @@
 	<UserMacro
 		Name="gui_dir"
 		Value="..\gui"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="mc2res_dir"
+		Value="..\mc2res"
 		PerformEnvironmentSet="true"
 	/>
 </VisualStudioPropertySheet>

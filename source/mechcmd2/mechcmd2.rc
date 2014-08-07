@@ -55,7 +55,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PROJNAME            "ablt"
+    IDS_PROJNAME            "mechcmd2"
 END
 
 #endif    // Neutral resources

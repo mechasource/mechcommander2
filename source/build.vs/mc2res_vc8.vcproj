@@ -80,8 +80,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -178,8 +176,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -279,8 +275,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -380,8 +374,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -486,7 +478,11 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="..\mc2res\bmech.ani"
+				RelativePath="..\mc2res\mc2version.h"
+				>
+			</File>
+			<File
+				RelativePath="..\mc2res\mechcommander2.ver"
 				>
 			</File>
 			<Filter
@@ -505,11 +501,19 @@
 				Name="icons"
 				>
 				<File
-					RelativePath="..\mc2res\Icon.ico"
+					RelativePath="..\mc2res\icon.ico"
 					>
 				</File>
 				<File
-					RelativePath="..\mc2res\MechCommander2.ico"
+					RelativePath="..\mc2res\mechcommander2.ico"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="animations"
+				>
+				<File
+					RelativePath="..\mc2res\bmech.ani"
 					>
 				</File>
 			</Filter>
@@ -540,18 +544,6 @@
 			<Filter
 				Name="mc2res"
 				>
-				<File
-					RelativePath="..\mc2res\MechCommander2.s14"
-					>
-				</File>
-				<File
-					RelativePath="..\mc2res\system.cfg"
-					>
-				</File>
-				<File
-					RelativePath="..\mc2res\vidcard.csv"
-					>
-				</File>
 			</Filter>
 		</Filter>
 	</Files>

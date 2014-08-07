@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by ablt.rc
+// Used by gameos.rc
 //
 
 #define IDS_PROJNAME                    100

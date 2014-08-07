@@ -1,0 +1,176 @@
+/*******************************************************************************
+ Copyright (c) 2011-2014, Jerker Back. All rights reserved.
+
+ Permission to use, copy, modify, and distribute this software for any
+ purpose with or without fee is hereby granted, provided that the following 
+ conditions are met (OSI approved BSD 2-clause license):
+
+ 1. Redistributions of source code must retain the above copyright notice, 
+    this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright notice, 
+    this list of conditions and the following disclaimer in the documentation 
+    and/or other materials provided with the distribution.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE 
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*******************************************************************************/
+/*******************************************************************************
+ mechcommander2.ver - global unified scriptable version management
+
+ MechCommander 2 source code
+
+ 2014-08-07 jerker_back, created
+ 
+ $LastChangedBy$
+ 
+================================================================================
+ RcsID = $Id$ */
+
+#include "mc2version.h"
+
+//===================================================================
+#define _QUOTE(x) #x
+#define QUOTE(x) _QUOTE(x)
+
+// 64-bit version number as comma-separated list of 4 unsigned short integers
+#ifndef MC2_VERSION_MAJOR
+#define MC2_VERSION_MAJOR			0
+#define MC2_VERSION_MINOR			1
+#define MC2_VERSION_RELEASE			6
+#define MC2_VERSION_BUILD			2522    // release or repository snapshot
+#define MC2_VERSION_BETA			0		// TRUE 1  or FALSE 0
+#define MC2_VERSION_BUILD_COMMENT	L"MechCommander 2 patched source"
+#endif
+#if defined(x64) || (defined(PLATFORM) && PLATFORM == x64)
+#define MC2_BUILD_ARCH				L"x64"
+#else
+#define MC2_BUILD_ARCH				L"x86"
+#endif
+#define MC2_BUILD_TARGET			MC2_BUILD_ARCH L"-windows"
+
+// Common strings from config.h - only needed to be edited once
+// All strings are nullterminated UTF16 unicode strings
+//===================================================================
+#ifndef APP_NAME                    // compiler/makefile define 
+#define APP_NAME                    L"MechCommander 2"
+#endif
+#ifndef PACKAGE_NAME                // config.h makefile define 
+#define PACKAGE_NAME                APP_NAME
+#endif
+#ifndef PACKAGE                     // config.h makefile define 
+#define PACKAGE                     APP_NAME
+#endif
+#define VER_INTERNALNAME_STR        PACKAGE_NAME
+#ifdef _WINDLL
+#define VER_ORIGINALFILENAME_STR    PACKAGE L".dll"
+#else
+#define VER_ORIGINALFILENAME_STR    PACKAGE L".exe"
+#endif
+#ifndef PACKAGE_BUGREPORT           // config.h makefile define 
+#define PACKAGE_BUGREPORT           L"https://github.com/mechasource/mechcommander2/issues"
+#endif
+#define VER_TARGET_STR              MC2_BUILD_TARGET
+#define VER_PRODUCTNAME_STR         L"MechCommander 2"
+#ifdef _WINDLL
+#define VER_FILEDESCRIPTION_STR     PACKAGE L" MC2 library"
+#else
+#define VER_FILEDESCRIPTION_STR     PACKAGE L" MC2 utility"
+#endif
+#define VER_COMPANYNAME_STR         L"Microsoft"
+#define VER_LEGALCOPYRIGHT_STR      L"\251 2001 Microsoft"
+#define VER_LEGALTRADEMARKS_STR     L"'Mech"
+#define VER_COMMENTS_STR            PACKAGE L" built for " VER_TARGET_STR L". Report bugs to " PACKAGE_BUGREPORT
+#if (MC2_VERSION_BUILD == 0)
+#define VER_SPECIAL_STR             L"This is an official release"
+#define VER_PRIVATE_STR             MC2_VERSION_BUILD_COMMENT
+#else
+#define VER_SPECIAL_STR             L"This is an intermediate release built from current source tree"
+#define VER_PRIVATE_STR             MC2_VERSION_BUILD_COMMENT
+#endif
+
+//===================================================================
+// version macros - do not edit!!
+#define VER_PRODUCTVERSION          MC2_VERSION_MAJOR,MC2_VERSION_MINOR,MC2_VERSION_RELEASE,MC2_VERSION_BUILD
+#define VER_PRODUCTVERSION_STR      QUOTE(MC2_VERSION_MAJOR) "." QUOTE(MC2_VERSION_MINOR) "." QUOTE(MC2_VERSION_RELEASE) "." QUOTE(MC2_VERSION_BUILD)
+#define VER_FILEVERSION             VER_PRODUCTVERSION
+#ifndef VER_FILEVERSION_STR
+#define VER_FILEVERSION_STR         VER_PRODUCTVERSION_STR
+#endif
+
+#define VER_LANGNEUTRAL             0,0             // LANG_NEUTRAL, SUBLANG_NEUTRAL
+#define VER_LANGUAGE                VER_LANGNEUTRAL
+#ifndef VER_VERSION_UNICODE_LANG
+#define VER_VERSION_UNICODE_LANG	"000004B0"		// LANG_NEUTRAL/SUBLANG_NEUTRAL, Unicode CP
+#endif
+#ifndef VER_VERSION_TRANSLATION
+#define VER_VERSION_TRANSLATION		0x0000, 0x04B0
+#endif
+
+#if defined(_DEBUG) || defined(DEBUG) || defined(DBG) || defined(POSIX_DEBUG)
+#define VER_DEBUG                   0x00000001L     // VS_FF_DEBUG
+#else
+#define VER_DEBUG                   0
+#endif
+#define VER_PRERELEASE              MC2_VERSION_BETA
+#define VER_PRIVATE                 0x00000008L     // VS_FF_PRIVATEBUILD
+#define VER_SPECIAL                 0x00000020L     // VS_FF_SPECIALBUILD
+
+#ifdef _WINDLL
+#define VER_FILETYPE                0x00000002L     // VFT_DLL
+#else
+#define VER_FILETYPE                0x00000001L     // VFT_APP
+#endif
+#define VER_FILESUBTYPE             0x00000000L     // VFT2_UNKNOWN
+#define VER_FILEFLAGSMASK           0x0000003FL     // VS_FFI_FILEFLAGSMASK
+#define VER_FILEOS                  0x00040000L     // VOS_NT
+#define VER_FILEFLAGS               (VER_PRERELEASE|VER_DEBUG|VER_PRIVATE|VER_SPECIAL)
+
+#ifndef VS_VERSION_INFO
+#define VS_VERSION_INFO             1
+#endif
+
+#ifdef RC_INVOKED
+LANGUAGE            VER_LANGUAGE
+VS_VERSION_INFO     VERSIONINFO
+FILEVERSION         VER_FILEVERSION
+PRODUCTVERSION      VER_PRODUCTVERSION
+FILEFLAGSMASK       VER_FILEFLAGSMASK
+FILEFLAGS           VER_FILEFLAGS
+FILEOS              VER_FILEOS
+FILETYPE            VER_FILETYPE
+FILESUBTYPE         VER_FILESUBTYPE
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK VER_VERSION_UNICODE_LANG
+        BEGIN
+            VALUE "CompanyName",     VER_COMPANYNAME_STR
+            VALUE "FileDescription", VER_FILEDESCRIPTION_STR
+            VALUE "FileVersion",     VER_FILEVERSION_STR
+            VALUE "InternalName",    VER_INTERNALNAME_STR
+            VALUE "LegalCopyright",  VER_LEGALCOPYRIGHT_STR
+			VALUE "LegalTrademarks", VER_LEGALTRADEMARKS_STR
+            VALUE "OriginalFilename",VER_ORIGINALFILENAME_STR
+            VALUE "ProductName",     VER_PRODUCTNAME_STR
+            VALUE "ProductVersion",  VER_PRODUCTVERSION_STR
+            VALUE "Comments",        VER_COMMENTS_STR
+            VALUE "SpecialBuild",    VER_SPECIAL_STR
+			VALUE "PrivateBuild",    VER_PRIVATE_STR
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", VER_VERSION_TRANSLATION
+    END
+END
+
+#endif

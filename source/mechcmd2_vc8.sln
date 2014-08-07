@@ -30,6 +30,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gameos", "build.vs\gameos_v
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "viewer", "build.vs\viewer_vc8.vcproj", "{D6A172C0-ACCD-4F05-BADA-D8DEBD36B666}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{DE2F4131-38FF-4205-94C8-6032A0BC76C2}"
+	ProjectSection(SolutionItems) = preProject
+		initial_preparations.txt = initial_preparations.txt
+		..\LICENSE = ..\LICENSE
+		..\original_source.txt = ..\original_source.txt
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32

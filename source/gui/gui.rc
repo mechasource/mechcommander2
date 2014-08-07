@@ -55,7 +55,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_PROJNAME            "ablt"
+    IDS_PROJNAME            "gui"
 END
 
 #endif    // Neutral resources

@@ -81,8 +81,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -179,8 +177,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -280,8 +276,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -381,8 +375,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
 				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
 				Version="1.1"
 				LinkIncremental="1"
@@ -1360,10 +1352,6 @@
 			<Filter
 				Name="mechcmd2"
 				>
-				<File
-					RelativePath="..\mechcmd2\version.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter

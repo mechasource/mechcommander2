@@ -73,7 +73,7 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				AdditionalIncludeDirectories="$(IntDir)"
+				AdditionalIncludeDirectories="&quot;$(IntDir)&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -564,6 +564,14 @@
 			<Filter
 				Name="ablt"
 				>
+				<File
+					RelativePath="..\ablt\ablt.rc"
+					>
+				</File>
+				<File
+					RelativePath="..\ablt\resource.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

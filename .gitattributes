@@ -25,6 +25,10 @@
 *.dll binary
 *.exe binary
 *.zip binary
+*.lib binary
+*.a binary
+*.obj binary
+*.o binary
 *.ani binary
 *.bmp binary
 *.cur binary

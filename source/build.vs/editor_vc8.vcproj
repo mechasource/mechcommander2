@@ -342,7 +342,7 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="Action.cpp"
+				RelativePath="..\editor\Action.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -380,7 +380,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="BooleanFlagIsSetDialog.cpp"
+				RelativePath="..\editor\BooleanFlagIsSetDialog.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -415,45 +415,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="BuildingBrush.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="BuildingLink.cpp"
+				RelativePath="..\editor\BuildingBrush.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -491,182 +453,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="BuildingSettingsDlg.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="CampaignData.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="CampaignDialog.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="ChooseBuildingDlg.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="ChooseUnitDlg.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="DamageBrush.cpp"
+				RelativePath="..\editor\BuildingLink.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -704,7 +491,182 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="DlgFileOpen.cpp"
+				RelativePath="..\editor\BuildingSettingsDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\CampaignData.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\CampaignDialog.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\ChooseBuildingDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\ChooseUnitDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\DamageBrush.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -742,7 +704,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="DragTool.cpp"
+				RelativePath="..\editor\DlgFileOpen.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -780,112 +742,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="dropZoneBrush.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\Code\dw.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="EditForestDlg.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Editor.cpp"
+				RelativePath="..\editor\DragTool.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -923,7 +780,112 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="EditorData.cpp"
+				RelativePath="..\editor\dropZoneBrush.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\mechcmd2\dw.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\EditForestDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\Editor.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -961,7 +923,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="Editores.cpp"
+				RelativePath="..\editor\EditorData.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -999,7 +961,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="EditorInterface.cpp"
+				RelativePath="..\editor\Editores.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1037,7 +999,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="EditorMFC.cpp"
+				RelativePath="..\editor\EditorInterface.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1075,7 +1037,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="EditorObjectMgr.cpp"
+				RelativePath="..\editor\EditorMFC.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1113,7 +1075,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="EditorObjects.cpp"
+				RelativePath="..\editor\EditorObjectMgr.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1151,42 +1113,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="EditorTacMap.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="EditorView.cpp"
+				RelativePath="..\editor\EditorObjects.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1224,7 +1151,42 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="eraser.cpp"
+				RelativePath="..\editor\EditorTacMap.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\EditorView.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1262,7 +1224,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="FlattenBrush.cpp"
+				RelativePath="..\editor\eraser.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1300,7 +1262,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="FogDlg.cpp"
+				RelativePath="..\editor\FlattenBrush.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1338,147 +1300,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="forest.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="ForestDlg.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="fractaldialog.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="GroupDialog.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="HeightDlg.cpp"
+				RelativePath="..\editor\FogDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1516,7 +1338,147 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="LinkBrush.cpp"
+				RelativePath="..\editor\forest.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\ForestDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\fractaldialog.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\GroupDialog.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\HeightDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1554,7 +1516,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="MainFrm.cpp"
+				RelativePath="..\editor\LinkBrush.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1592,182 +1554,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="mapsizedlg.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="MineBrush.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="MissionDialog.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="MissionSettingsDlg.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="newsinglemission.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="Objective.cpp"
+				RelativePath="..\editor\MainFrm.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1805,7 +1592,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="ObjectiveDlg.cpp"
+				RelativePath="..\editor\mapsizedlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1840,7 +1627,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="ObjectivesDlg.cpp"
+				RelativePath="..\editor\MineBrush.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1875,45 +1662,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="OverlayBrush.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="PlayerSettingsDlg.cpp"
+				RelativePath="..\editor\MissionDialog.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1948,7 +1697,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="PointerSelectObjectDlg.cpp"
+				RelativePath="..\editor\MissionSettingsDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1983,7 +1732,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="ResourceStringSelectionDlg.cpp"
+				RelativePath="..\editor\newsinglemission.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2018,7 +1767,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="SelectionBrush.cpp"
+				RelativePath="..\editor\Objective.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2056,7 +1805,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="SelectSlopeDialog.cpp"
+				RelativePath="..\editor\ObjectiveDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2091,7 +1840,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="SelectTerrainTypeDlg.cpp"
+				RelativePath="..\editor\ObjectivesDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2126,45 +1875,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="SingleValueDlg.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="StdAfx.cpp"
+				RelativePath="..\editor\OverlayBrush.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2202,7 +1913,112 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="sunDlg.cpp"
+				RelativePath="..\editor\PlayerSettingsDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\PointerSelectObjectDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\ResourceStringSelectionDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\SelectionBrush.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2240,7 +2056,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="tacMapTGA.cpp"
+				RelativePath="..\editor\SelectSlopeDialog.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2275,7 +2091,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="TargetAreaDlg.cpp"
+				RelativePath="..\editor\SelectTerrainTypeDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2310,45 +2126,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="terrainBrush.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="3"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						UsePrecompiledHeader="0"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="TerrainDlg.cpp"
+				RelativePath="..\editor\SingleValueDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2386,7 +2164,83 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="TextMessageDlg.cpp"
+				RelativePath="..\editor\StdAfx.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\sunDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\tacMapTGA.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2421,7 +2275,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="tgawnd.cpp"
+				RelativePath="..\editor\TargetAreaDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2456,7 +2310,83 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="TilingFactorsDialog.cpp"
+				RelativePath="..\editor\terrainBrush.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\TerrainDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\TextMessageDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2491,7 +2421,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="UnitSettingsDlg.cpp"
+				RelativePath="..\editor\tgawnd.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2526,7 +2456,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="UserTextEdit.cpp"
+				RelativePath="..\editor\TilingFactorsDialog.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2561,7 +2491,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="ViewConditionOrActionDlg.cpp"
+				RelativePath="..\editor\UnitSettingsDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2596,7 +2526,77 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="WaterDlg.cpp"
+				RelativePath="..\editor\UserTextEdit.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\ViewConditionOrActionDlg.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Profile|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="3"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\editor\WaterDlg.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -2636,267 +2636,267 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
-				RelativePath="Action.h"
+				RelativePath="..\editor\action.h"
 				>
 			</File>
 			<File
-				RelativePath="BooleanFlagIsSetDialog.h"
+				RelativePath="..\editor\booleanflagissetdialog.h"
 				>
 			</File>
 			<File
-				RelativePath="Brush.h"
+				RelativePath="..\editor\brush.h"
 				>
 			</File>
 			<File
-				RelativePath="BuildingBrush.h"
+				RelativePath="..\editor\buildingbrush.h"
 				>
 			</File>
 			<File
-				RelativePath="BuildingLink.h"
+				RelativePath="..\editor\buildinglink.h"
 				>
 			</File>
 			<File
-				RelativePath="BuildingSettingsDlg.h"
+				RelativePath="..\editor\buildingsettingsdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="campaignData.h"
+				RelativePath="..\editor\campaigndata.h"
 				>
 			</File>
 			<File
-				RelativePath="CampaignDialog.h"
+				RelativePath="..\editor\campaigndialog.h"
 				>
 			</File>
 			<File
-				RelativePath="ChooseBuildingDlg.h"
+				RelativePath="..\editor\choosebuildingdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="ChooseUnitDlg.h"
+				RelativePath="..\editor\chooseunitdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="DamageBrush.h"
+				RelativePath="..\editor\damagebrush.h"
 				>
 			</File>
 			<File
-				RelativePath="DlgFileOpen.h"
+				RelativePath="..\editor\dlgfileopen.h"
 				>
 			</File>
 			<File
-				RelativePath="DragTool.h"
+				RelativePath="..\editor\dragtool.h"
 				>
 			</File>
 			<File
-				RelativePath="DropZoneBrush.h"
+				RelativePath="..\editor\dropzonebrush.h"
 				>
 			</File>
 			<File
-				RelativePath="EditForestDlg.h"
+				RelativePath="..\editor\editforestdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="EditorCamera.h"
+				RelativePath="..\editor\editorcamera.h"
 				>
 			</File>
 			<File
-				RelativePath="EditorData.h"
+				RelativePath="..\editor\editordata.h"
 				>
 			</File>
 			<File
-				RelativePath="EditorInterface.h"
+				RelativePath="..\editor\editorinterface.h"
 				>
 			</File>
 			<File
-				RelativePath="EditorMessages.h"
+				RelativePath="..\editor\editormessages.h"
 				>
 			</File>
 			<File
-				RelativePath="EditorMFC.h"
+				RelativePath="..\editor\editormfc.h"
 				>
 			</File>
 			<File
-				RelativePath="EditorObjectMgr.h"
+				RelativePath="..\editor\editorobjectmgr.h"
 				>
 			</File>
 			<File
-				RelativePath="EditorObjects.h"
+				RelativePath="..\editor\editorobjects.h"
 				>
 			</File>
 			<File
-				RelativePath="EditorTacMap.h"
+				RelativePath="..\editor\editortacmap.h"
 				>
 			</File>
 			<File
-				RelativePath="EditorView.h"
+				RelativePath="..\editor\editorview.h"
 				>
 			</File>
 			<File
-				RelativePath="Eraser.h"
+				RelativePath="..\editor\eraser.h"
 				>
 			</File>
 			<File
-				RelativePath="FlattenBrush.h"
+				RelativePath="..\editor\flattenbrush.h"
 				>
 			</File>
 			<File
-				RelativePath="FogDlg.h"
+				RelativePath="..\editor\fogdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="Forest.h"
+				RelativePath="..\editor\forest.h"
 				>
 			</File>
 			<File
-				RelativePath="ForestDlg.h"
+				RelativePath="..\editor\forestdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="fractaldialog.h"
+				RelativePath="..\editor\fractaldialog.h"
 				>
 			</File>
 			<File
-				RelativePath="GroupDialog.h"
+				RelativePath="..\editor\groupdialog.h"
 				>
 			</File>
 			<File
-				RelativePath="HeightDlg.h"
+				RelativePath="..\editor\heightdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="LinkBrush.h"
+				RelativePath="..\editor\linkbrush.h"
 				>
 			</File>
 			<File
-				RelativePath="MainFrm.h"
+				RelativePath="..\editor\mainfrm.h"
 				>
 			</File>
 			<File
-				RelativePath="mapsizedlg.h"
+				RelativePath="..\editor\mapsizedlg.h"
 				>
 			</File>
 			<File
-				RelativePath="MessageBox.h"
+				RelativePath="..\editor\messagebox.h"
 				>
 			</File>
 			<File
-				RelativePath="MineBrush.h"
+				RelativePath="..\editor\minebrush.h"
 				>
 			</File>
 			<File
-				RelativePath="MissionDialog.h"
+				RelativePath="..\editor\missiondialog.h"
 				>
 			</File>
 			<File
-				RelativePath="MissionSettingsDlg.h"
+				RelativePath="..\editor\missionsettingsdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="newsinglemission.h"
+				RelativePath="..\editor\newsinglemission.h"
 				>
 			</File>
 			<File
-				RelativePath="Objective.h"
+				RelativePath="..\editor\objective.h"
 				>
 			</File>
 			<File
-				RelativePath="ObjectiveDlg.h"
+				RelativePath="..\editor\objectivedlg.h"
 				>
 			</File>
 			<File
-				RelativePath="ObjectivesDlg.h"
+				RelativePath="..\editor\objectivesdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="OverlayBrush.h"
+				RelativePath="..\editor\overlaybrush.h"
 				>
 			</File>
 			<File
-				RelativePath="PlayerSettingsDlg.h"
+				RelativePath="..\editor\playersettingsdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="PointerSelectObjectDlg.h"
+				RelativePath="..\editor\pointerselectobjectdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="resource.h"
+				RelativePath="..\editor\resource.h"
 				>
 			</File>
 			<File
-				RelativePath="ResourceStringSelectionDlg.h"
+				RelativePath="..\editor\resourcestringselectiondlg.h"
 				>
 			</File>
 			<File
-				RelativePath="SelectionBrush.h"
+				RelativePath="..\editor\selectionbrush.h"
 				>
 			</File>
 			<File
-				RelativePath="SelectSlopeDialog.h"
+				RelativePath="..\editor\selectslopedialog.h"
 				>
 			</File>
 			<File
-				RelativePath="SelectTerrainTypeDlg.h"
+				RelativePath="..\editor\selectterraintypedlg.h"
 				>
 			</File>
 			<File
-				RelativePath="SingleValueDlg.h"
+				RelativePath="..\editor\singlevaluedlg.h"
 				>
 			</File>
 			<File
-				RelativePath="StdAfx.h"
+				RelativePath="..\editor\stdafx.h"
 				>
 			</File>
 			<File
-				RelativePath="SunDlg.h"
+				RelativePath="..\editor\sundlg.h"
 				>
 			</File>
 			<File
-				RelativePath="TACMapTGA.h"
+				RelativePath="..\editor\tacmaptga.h"
 				>
 			</File>
 			<File
-				RelativePath="TargetAreaDlg.h"
+				RelativePath="..\editor\targetareadlg.h"
 				>
 			</File>
 			<File
-				RelativePath="TerrainBrush.h"
+				RelativePath="..\editor\terrainbrush.h"
 				>
 			</File>
 			<File
-				RelativePath="TerrainDlg.h"
+				RelativePath="..\editor\terraindlg.h"
 				>
 			</File>
 			<File
-				RelativePath="TextMessageDlg.h"
+				RelativePath="..\editor\textmessagedlg.h"
 				>
 			</File>
 			<File
-				RelativePath="TGaWnd.h"
+				RelativePath="..\editor\tgawnd.h"
 				>
 			</File>
 			<File
-				RelativePath="TilingFactorsDialog.h"
+				RelativePath="..\editor\tilingfactorsdialog.h"
 				>
 			</File>
 			<File
-				RelativePath="UnitSettingsDlg.h"
+				RelativePath="..\editor\unitsettingsdlg.h"
 				>
 			</File>
 			<File
-				RelativePath="UserTextEdit.h"
+				RelativePath="..\editor\usertextedit.h"
 				>
 			</File>
 			<File
-				RelativePath="version.h"
+				RelativePath="..\editor\version.h"
 				>
 			</File>
 			<File
-				RelativePath="ViewConditionOrActionDlg.h"
+				RelativePath="..\editor\viewconditionoractiondlg.h"
 				>
 			</File>
 			<File
-				RelativePath="WaterDlg.h"
+				RelativePath="..\editor\waterdlg.h"
 				>
 			</File>
 		</Filter>
@@ -2909,87 +2909,87 @@
 				>
 			</File>
 			<File
-				RelativePath="res\arrow.cur"
+				RelativePath="..\editor\res\arrow.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\cur00001.cur"
+				RelativePath="..\editor\res\cur00001.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\cursor1.cur"
+				RelativePath="..\editor\res\cursor1.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\dropzone.cur"
+				RelativePath="..\editor\res\dropzone.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\eraser.cur"
+				RelativePath="..\editor\res\eraser.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\flatten.cur"
+				RelativePath="..\editor\res\flatten.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\hammer.cur"
+				RelativePath="..\editor\res\hammer.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\hand.cur"
+				RelativePath="..\editor\res\hand.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\IC_Normal.BMP"
+				RelativePath="..\editor\res\ic_normal.bmp"
 				>
 			</File>
 			<File
-				RelativePath="res\ico128.ico"
+				RelativePath="..\editor\res\ico128.ico"
 				>
 			</File>
 			<File
-				RelativePath="res\ico210.ico"
+				RelativePath="..\editor\res\ico210.ico"
 				>
 			</File>
 			<File
-				RelativePath="res\ico211.ico"
+				RelativePath="..\editor\res\ico211.ico"
 				>
 			</File>
 			<File
-				RelativePath="res\Link.cur"
+				RelativePath="..\editor\res\Link.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\paint.cur"
+				RelativePath="..\editor\res\paint.cur"
 				>
 			</File>
 			<File
-				RelativePath="resource.rc"
+				RelativePath="..\editor\resource.rc"
 				>
 			</File>
 			<File
-				RelativePath="res\targe.cur"
+				RelativePath="..\editor\res\targe.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\target.cur"
+				RelativePath="..\editor\res\target.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\Toolbar.bmp"
+				RelativePath="..\editor\res\Toolbar.bmp"
 				>
 			</File>
 			<File
-				RelativePath="res\unlink.cur"
+				RelativePath="..\editor\res\unlink.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\up.cur"
+				RelativePath="..\editor\res\up.cur"
 				>
 			</File>
 			<File
-				RelativePath="res\wrench.cur"
+				RelativePath="..\editor\res\wrench.cur"
 				>
 			</File>
 		</Filter>

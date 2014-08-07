@@ -1,0 +1,128 @@
+.\Debug\DirtyRectangle.obj
+.\Debug\DXRasterizer.obj
+.\Debug\RenderIME.obj
+.\Debug\VertexBuffer.obj
+.\Debug\VideoCard.obj
+.\Debug\3D T&L.obj
+.\Debug\3DPrimitives.obj
+.\Debug\3DRasterizer.obj
+.\Debug\Clipping.obj
+.\Debug\RenderStates.obj
+.\Debug\RenderToTexture.obj
+.\Debug\Loader_BMP.obj
+.\Debug\Loader_JPG.obj
+.\Debug\Loader_PNG.obj
+.\Debug\Loader_TGA.obj
+.\Debug\Texture API.obj
+.\Debug\Texture Convert.obj
+.\Debug\Texture Create.obj
+.\Debug\Texture Format.obj
+.\Debug\Texture Manager.obj
+.\Debug\Texture MipMap.obj
+.\Debug\Texture Original.obj
+.\Debug\Texture SysMem.obj
+.\Debug\Texture Update.obj
+.\Debug\Texture VidMem.obj
+.\Debug\png.obj
+.\Debug\pngerror.obj
+.\Debug\pngget.obj
+.\Debug\pngmem.obj
+.\Debug\pngpread.obj
+.\Debug\pngread.obj
+.\Debug\pngrio.obj
+.\Debug\pngrtran.obj
+.\Debug\pngrutil.obj
+.\Debug\pngset.obj
+.\Debug\pngtrans.obj
+.\Debug\pngwio.obj
+.\Debug\pngwrite.obj
+.\Debug\pngwtran.obj
+.\Debug\pngwutil.obj
+.\Debug\adler32.obj
+.\Debug\compress.obj
+.\Debug\crc32.obj
+.\Debug\deflate.obj
+.\Debug\gzio.obj
+.\Debug\infblock.obj
+.\Debug\infcodes.obj
+.\Debug\inffast.obj
+.\Debug\inflate.obj
+.\Debug\inftrees.obj
+.\Debug\infutil.obj
+.\Debug\trees.obj
+.\Debug\uncompr.obj
+.\Debug\zutil.obj
+.\Debug\ControlManager.obj
+.\Debug\ForceFeedback.obj
+.\Debug\Keyboard.obj
+.\Debug\Mouse.obj
+.\Debug\Cpu.obj
+.\Debug\ErrorDialogs.obj
+.\Debug\ErrorHandler.obj
+.\Debug\Exceptions.obj
+.\Debug\ExitGameOS.obj
+.\Debug\ImageHlp.obj
+.\Debug\Logfile.obj
+.\Debug\MachineDetails.obj
+.\Debug\Mail.obj
+.\Debug\raid.obj
+.\Debug\Spew.obj
+.\Debug\ThunkDLLs.obj
+.\Debug\FileIO.obj
+.\Debug\Font3D.obj
+.\Debug\Font3D_Load.obj
+.\Debug\Font3D_DBCS.obj
+.\Debug\Font3D_DBCS_Storage.obj
+.\Debug\Font3D_DBCS_Surface.obj
+.\Debug\LocalizationManager.obj
+.\Debug\MemoryManager.obj
+.\Debug\Games_GUN.obj
+.\Debug\Games_LAN.obj
+.\Debug\GUNGameList.obj
+.\Debug\Net_Globals.obj
+.\Debug\Net_Main.obj
+.\Debug\Net_Packet.obj
+.\Debug\Net_Protocol.obj
+.\Debug\Net_Routines.obj
+.\Debug\Net_Threads.obj
+.\Debug\nglog_mark.obj
+.\Debug\UserInterface.obj
+.\Debug\zping.obj
+.\Debug\Registry.obj
+.\Debug\ACM.obj
+.\Debug\EZVector.obj
+.\Debug\Sound API.obj
+.\Debug\Sound DS3DChannel.obj
+.\Debug\Sound DS3DMixer.obj
+.\Debug\Sound Renderer.obj
+.\Debug\Sound Resource.obj
+.\Debug\Time.obj
+.\Debug\Globals.obj
+.\Debug\Libraries.obj
+.\Debug\Threads.obj
+.\Debug\Windows.obj
+.\Debug\WindowsDebugging.obj
+.\Debug\WinMain.obj
+.\Debug\WinProc.obj
+.\Debug\Direct3D.obj
+.\Debug\DirectDraw.obj
+.\Debug\DirectInput.obj
+.\Debug\DirectPlay.obj
+.\Debug\DirectShow.obj
+.\Debug\DirectSound.obj
+.\Debug\DirectX.obj
+.\Debug\DirectXDebugging.obj
+.\Debug\DirectXErrors.obj
+.\Debug\perf.obj
+.\Debug\Profiler.obj
+.\Debug\Debugger.obj
+.\Debug\DebugGraphs.obj
+.\Debug\DebugGUI.obj
+.\Debug\DebugMenus.obj
+.\Debug\guids.obj
+.\Debug\pch.obj
+.\Debug\VideoPlayback.obj
+.\Debug\Music.obj
+.\Debug\eventid.obj
+.\Debug\goslog.obj
+.\Debug\gvserver.obj

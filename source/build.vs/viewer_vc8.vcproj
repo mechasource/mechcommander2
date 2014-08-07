@@ -323,7 +323,7 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="..\GUI\aAnimObject.cpp"
+				RelativePath="..\gui\aanimobject.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -358,7 +358,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\gamesound.cpp"
+				RelativePath="..\mechcmd2\gamesound.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -393,7 +393,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\LogisticsComponent.cpp"
+				RelativePath="..\mechcmd2\logisticscomponent.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -428,7 +428,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\LogisticsData.cpp"
+				RelativePath="..\mechcmd2\logisticsdata.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -463,7 +463,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\LogisticsMech.cpp"
+				RelativePath="..\mechcmd2\logisticsmech.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -498,7 +498,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\LogisticsMissionInfo.cpp"
+				RelativePath="..\mechcmd2\logisticsmissioninfo.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -533,7 +533,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\LogisticsPilot.cpp"
+				RelativePath="..\mechcmd2\logisticspilot.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -568,7 +568,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\LogisticsVariant.cpp"
+				RelativePath="..\mechcmd2\logisticsvariant.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -603,7 +603,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\Mechlopedia.cpp"
+				RelativePath="..\mechcmd2\mechlopedia.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -638,7 +638,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\mission2.cpp"
+				RelativePath="..\mechcmd2\mission2.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -673,7 +673,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\prefs.cpp"
+				RelativePath="..\mechcmd2\prefs.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -708,7 +708,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\radio.cpp"
+				RelativePath="..\mechcmd2\radio.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -743,7 +743,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\simpleCamera.cpp"
+				RelativePath="..\mechcmd2\simplecamera.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -778,7 +778,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\Code\SimpleComponentListBox.cpp"
+				RelativePath="..\mechcmd2\simplecomponentlistbox.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -813,7 +813,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="View.cpp"
+				RelativePath="..\viewer\view.cpp"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -853,7 +853,7 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
-				RelativePath="..\Code\version.h"
+				RelativePath="..\mechcmd2\version.h"
 				>
 			</File>
 		</Filter>
@@ -866,15 +866,15 @@
 				>
 			</File>
 			<File
-				RelativePath="Mechlopedia.ico"
+				RelativePath="..\viewer\mechlopedia.ico"
 				>
 			</File>
 			<File
-				RelativePath="resource.h"
+				RelativePath="..\viewer\resource.h"
 				>
 			</File>
 			<File
-				RelativePath="Script1.rc"
+				RelativePath="..\viewer\viewer.rc"
 				>
 			</File>
 		</Filter>

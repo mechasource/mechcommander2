@@ -1,0 +1,5 @@
+dllplatform
+gameplatform
+mfcplatform
+gameos
+;zlib

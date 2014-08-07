@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="mc2res"
 	ProjectGUID="{CFE8A9D5-80DF-4ACC-B91F-64AB2167BC3A}"
+	RootNamespace="MechCommander"
+	Keyword="AtlProj"
 	>
 	<Platforms>
 		<Platform
 			Name="Win32"
+		/>
+		<Platform
+			Name="x64"
 		/>
 	</Platforms>
 	<ToolFiles>
@@ -15,12 +20,12 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug"
-			IntermediateDirectory=".\Debug"
+			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
+			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
+			InheritedPropertySheets=".\mechcommander.vsprops"
+			UseOfATL="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -37,29 +42,30 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
+				MkTypLibCompatible="false"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/mc2res.tlb"
-				HeaderFileName=""
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
+				HeaderFileName="$(IntDir)/$(TargetName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
+				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
+				ValidateParameters="true"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="-sdl -MP"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(VCInstallDir)PlatformSDK\Include\mfc"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;RESOURCES_EXPORTS"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				FloatingPointModel="2"
-				PrecompiledHeaderFile=".\Debug/mc2res.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="stdafx.h"
+				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
-				DisableSpecificWarnings="4996;4537"
+				EnablePREfast="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -67,22 +73,24 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
-				Culture="1033"
-				AdditionalIncludeDirectories="$(VCInstallDir)PlatformSDK\Include\mfc"
+				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				RegisterOutput="true"
 				IgnoreImportLibrary="true"
-				OutputFile=".\Debug/mc2res.dll"
+				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
+				Version="1.1"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
+				ModuleDefinitionFile="$(TargetName).def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\Debug/mc2res.pdb"
-				ImportLibrary=".\Debug/mc2res.lib"
-				TargetMachine="1"
+				SubSystem="2"
+				ResourceOnlyDLL="true"
+				SetChecksum="true"
+				SupportUnloadOfDelayLoadedDLL="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -107,18 +115,116 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="copy Debug\mc2res.dll Editor\Debug\mc2res.dll"
-				CommandLine="copy Debug\mc2res.dll Editor\Debug\mc2res.dll"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
+			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
+			ConfigurationType="2"
+			InheritedPropertySheets=".\mechcommander.vsprops"
+			UseOfATL="0"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="false"
+				TargetEnvironment="3"
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
+				HeaderFileName="$(IntDir)/$(TargetName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
+				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="-sdl -MP"
+				Optimization="0"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="stdafx.h"
+				WarningLevel="4"
+				DebugInformationFormat="3"
+				CallingConvention="2"
+				EnablePREfast="true"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				AdditionalIncludeDirectories="$(IntDir)"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				RegisterOutput="true"
+				IgnoreImportLibrary="true"
+				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
+				Version="1.1"
+				LinkIncremental="1"
+				ModuleDefinitionFile="$(TargetName).def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				ResourceOnlyDLL="true"
+				SetChecksum="true"
+				SupportUnloadOfDelayLoadedDLL="true"
+				TargetMachine="17"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
+			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
+			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
+			InheritedPropertySheets=".\mechcommander.vsprops"
+			UseOfATL="0"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -135,27 +241,29 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
+				MkTypLibCompatible="false"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release/mc2res.tlb"
-				HeaderFileName=""
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
+				HeaderFileName="$(IntDir)/$(TargetName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
+				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
+				ValidateParameters="true"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="-sdl -MP"
 				Optimization="3"
-				InlineFunctionExpansion="1"
-				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="$(VCInstallDir)PlatformSDK\Include\mfc"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;RESOURCES_EXPORTS"
-				RuntimeLibrary="0"
-				PrecompiledHeaderFile=".\Release/mc2res.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
+				FavorSizeOrSpeed="2"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="stdafx.h"
+				WarningLevel="4"
+				DebugInformationFormat="3"
 				CallingConvention="2"
 			/>
 			<Tool
@@ -164,21 +272,26 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1033"
-				AdditionalIncludeDirectories="$(VCInstallDir)PlatformSDK\Include\mfc"
+				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				RegisterOutput="true"
 				IgnoreImportLibrary="true"
-				OutputFile=".\Release/mc2res.dll"
+				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
+				Version="1.1"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
-				ProgramDatabaseFile=".\Release/mc2res.pdb"
-				ImportLibrary=".\Release/mc2res.lib"
-				TargetMachine="1"
+				ModuleDefinitionFile="$(TargetName).def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ResourceOnlyDLL="true"
+				SetChecksum="true"
+				SupportUnloadOfDelayLoadedDLL="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -203,18 +316,17 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="copy Release\mc2res.dll Editor\Release\mc2res.dll"
-				CommandLine="copy Release\mc2res.dll Editor\Release\mc2res.dll"
 			/>
 		</Configuration>
 		<Configuration
-			Name="Profile|Win32"
-			OutputDirectory=".\Profile"
-			IntermediateDirectory=".\Profile"
+			Name="Release|x64"
+			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
+			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
 			ConfigurationType="2"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
+			InheritedPropertySheets=".\mechcommander.vsprops"
+			UseOfATL="0"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -231,29 +343,29 @@
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Profile/mc2res.tlb"
-				HeaderFileName=""
+				MkTypLibCompatible="false"
+				TargetEnvironment="3"
+				GenerateStublessProxies="true"
+				TypeLibraryName="$(IntDir)/$(TargetName).tlb"
+				HeaderFileName="$(IntDir)/$(TargetName).h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="$(IntDir)/$(TargetName)_i.c"
+				ProxyFileName="$(IntDir)/$(TargetName)_p.c"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="-sdl -MP"
 				Optimization="3"
-				InlineFunctionExpansion="1"
-				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="$(VCInstallDir)PlatformSDK\Include\mfc"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;RESOURCES_EXPORTS"
-				RuntimeLibrary="0"
-				PrecompiledHeaderFile=".\Profile/mc2res.pch"
-				AssemblerListingLocation=".\Profile/"
-				ObjectFile=".\Profile/"
-				ProgramDataBaseFileName=".\Profile/"
-				WarningLevel="3"
-				SuppressStartupBanner="true"
+				FavorSizeOrSpeed="2"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
+				StringPooling="true"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="2"
+				PrecompiledHeaderThrough="stdafx.h"
+				WarningLevel="4"
+				DebugInformationFormat="3"
 				CallingConvention="2"
-				DisableSpecificWarnings="4996;4537"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -261,21 +373,27 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
-				Culture="1033"
-				AdditionalIncludeDirectories="$(VCInstallDir)PlatformSDK\Include\mfc"
+				AdditionalIncludeDirectories="$(IntDir)"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				RegisterOutput="true"
 				IgnoreImportLibrary="true"
-				OutputFile=".\Profile/mc2res.dll"
+				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
+				Version="1.1"
 				LinkIncremental="1"
-				SuppressStartupBanner="true"
-				ProgramDatabaseFile=".\Profile/mc2res.pdb"
-				ImportLibrary=".\Profile/mc2res.lib"
-				TargetMachine="1"
+				ModuleDefinitionFile="$(TargetName).def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ResourceOnlyDLL="true"
+				SetChecksum="true"
+				SupportUnloadOfDelayLoadedDLL="true"
+				TargetMachine="17"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -300,58 +418,142 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				Description="Copy profile\mc2res.dll editor\profile\mc2res.dll"
-				CommandLine="copy profile\mc2res.dll editor\profile\mc2res.dll&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath="..\mc2res\mc2res.cpp"
+		<Filter
+			Name="Sources"
+			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<FileConfiguration
-				Name="Debug|Win32"
+			<Filter
+				Name="mc2res"
 				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="0"
-					PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_MBCS;_USRDLL;RESOURCES_EXPORTS;$(NoInherit)"
-					BasicRuntimeChecks="3"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Release|Win32"
+				<File
+					RelativePath="..\mc2res\mc2res.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|x64"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="Headers"
+			Filter="h;hh;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
+			<Filter
+				Name="mc2res"
 				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="3"
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;RESOURCES_EXPORTS;$(NoInherit)"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Profile|Win32"
+			</Filter>
+		</Filter>
+		<Filter
+			Name="Resources"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
+			<File
+				RelativePath="..\mc2res\bmech.ani"
 				>
-				<Tool
-					Name="VCCLCompilerTool"
-					Optimization="3"
-					PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_MBCS;_USRDLL;RESOURCES_EXPORTS;$(NoInherit)"
-				/>
-			</FileConfiguration>
-		</File>
-		<File
-			RelativePath="..\mc2res\mechcommander2.ico"
+			</File>
+			<Filter
+				Name="mc2res"
+				>
+				<File
+					RelativePath="..\mc2res\$(TargetName).rc"
+					>
+				</File>
+				<File
+					RelativePath="..\mc2res\resource.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="icons"
+				>
+				<File
+					RelativePath="..\mc2res\Icon.ico"
+					>
+				</File>
+				<File
+					RelativePath="..\mc2res\MechCommander2.ico"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="build"
 			>
-		</File>
-		<File
-			RelativePath="..\mc2res\resource.h"
+			<Filter
+				Name="WinDDK"
+				>
+			</Filter>
+			<Filter
+				Name="precompiled"
+				>
+			</Filter>
+			<Filter
+				Name="DLL"
+				>
+				<File
+					RelativePath="..\mc2res\$(TargetName).def"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="scripts"
 			>
-		</File>
-		<File
-			RelativePath="..\mc2res\mc2res.rc"
-			>
-		</File>
+			<Filter
+				Name="mc2res"
+				>
+				<File
+					RelativePath="..\mc2res\MechCommander2.s14"
+					>
+				</File>
+				<File
+					RelativePath="..\mc2res\system.cfg"
+					>
+				</File>
+				<File
+					RelativePath="..\mc2res\vidcard.csv"
+					>
+				</File>
+			</Filter>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

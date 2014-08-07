@@ -1,10 +1,6 @@
-//===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
-//===========================================================================//
-
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
-// Used by resource.rc
+// Microsoft Visual C++ generated include file.
+// Used by editor.rc
 //
 #define MBOK                            1
 #define IDC_CHOOSE_UNIT_USING_POINTER_BUTTON 3

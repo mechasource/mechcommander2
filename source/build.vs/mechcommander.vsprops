@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="mechcommander"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		AdditionalIncludeDirectories="$(gameos_dir)/include;$(mclib_dir)"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		AdditionalLibraryDirectories="$(OutDir)"
+	/>
+	<UserMacro
+		Name="gameos_dir"
+		Value="..\gameos"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="mclib_dir"
+		Value="..\mclib"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="mechcmd2_dir"
+		Value="..\mechcmd2"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="gui_dir"
+		Value="..\gui"
+		PerformEnvironmentSet="true"
+	/>
+</VisualStudioPropertySheet>

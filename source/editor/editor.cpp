@@ -2,17 +2,18 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+
 #include "stdafx.h"
 
 #ifndef EDITORINTERFACE_H
-#include "EditorInterface.h"
+#include "editorinterface.h"
 #endif
 
-#include <GameOS.hpp>
-#include <ToolOS.hpp>
+#include <gameos.hpp>
+#include <toolos.hpp>
 #include <mlr\mlr.hpp>
-#include <Stuff\stuff.hpp>
-#include "EditorData.h"
+#include <stuff\stuff.hpp>
+#include "editordata.h"
 #include "version.h"
 #include "..\resource.h"
 
@@ -668,8 +669,7 @@ void InitializeGameEngine()
 	MOVE_init(30);
 
 	//--------------------------
-	// Create and Load the master Effects File
-	weaponEffects = new WeaponEffects;
+	// Create and Load the master Effects File 	weaponEffects = new WeaponEffects;
 	weaponEffects->init("Effects");
 
 	editor = new Editor();
@@ -731,8 +731,7 @@ void TerminateGameEngine()
 	editor = NULL;
 
 	//--------------------------
-	// master Effects File
-	if (weaponEffects)
+	// master Effects File 	if (weaponEffects)
 		delete weaponEffects;
 	weaponEffects = NULL;
 

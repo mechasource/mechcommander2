@@ -7,27 +7,50 @@
 //      are changed infrequently
 //
 
-#if !defined(AFX_STDAFX_H__05FE54C7_36AB_4243_BAB1_3FA8FB6F103F__INCLUDED_)
-#define AFX_STDAFX_H__05FE54C7_36AB_4243_BAB1_3FA8FB6F103F__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+#ifndef VC_EXTRALEAN
+#define VC_EXTRALEAN            // Exclude rarely-used stuff from Windows headers
+#endif
 
-//include "mclib.h"
+#define  _WIN32_WINNT   0x0501	// _WIN32_WINNT_WINXP
+#include <sdkddkver.h>
 
-#include <afxwin.h>         // MFC core and standard components
-#include <afxext.h>         // MFC extensions
-#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
+#define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS      // some CString constructors will be explicit
+
+// turns off MFC's hiding of some common and often safely ignored warning messages
+#define _AFX_ALL_WARNINGS
+
+#include <afxwin.h>				// MFC core and standard components
+#include <afxext.h>				// MFC extensions
+#include <afxdisp.h>			// MFC Automation classes
+#ifndef _AFX_NO_OLE_SUPPORT
+#include <afxdtctl.h>           // MFC support for Internet Explorer 4 Common Controls
+#endif
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			// MFC support for Windows Common Controls
-#endif // _AFX_NO_AFXCMN_SUPPORT
-#include "MFCPlatform.hpp"
+#include <afxcmn.h>             // MFC support for Windows Common Controls
+#endif
+
+#ifdef _DEBUG
+// WIN32;_DEBUG;_WINDOWS;LAB_ONLY;_ARMOR;WINVER=0x0501
+#define LAB_ONLY 1
+#define _ARMOR 1
+#else 
+// WIN32;NDEBUG;_WINDOWS;WINVER=0x0501
+// WIN32;NDEBUG;_WINDOWS;WINVER=0x0501	- profile
+#endif
 
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+// MechCommander GameOS
+#include "mfcplatform.hpp"
 
-#endif // !defined(AFX_STDAFX_H__05FE54C7_36AB_4243_BAB1_3FA8FB6F103F__INCLUDED_)
+#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+
+//..\GameOS\include;..\MCLIB;.\window;"$(VCInstallDir)PlatformSDK\Include\mfc";"$(VCInstallDir)PlatformSDK\Include\atl"
+//..\mclib\$(ConfigurationName)\mclib.lib
+//..\gameos\lib\$(ConfigurationName)\gameos.lib
+//..\gameos\lib\$(ConfigurationName)\mfcplatform.lib 
+//..\mclib\gosfx\$(ConfigurationName)\gosfx.lib
+//..\mclib\mlr\$(ConfigurationName)\mlr.lib
+//..\mclib\stuff\$(ConfigurationName)\stuff.lib
+//..\gameos\lib\$(ConfigurationName)\zlib.lib

@@ -6,9 +6,9 @@
 #include "EditorInterface.h"
 #include "dstd.h"
 
-#pragma warning( disable:4201 )
+//#pragma warning( disable:4201 )
 #include "mmsystem.h"
-#pragma warning( default:4201 )
+//#pragma warning( default:4201 )
 
 #ifndef EDITORCAMERA_H
 #include "EditorCamera.h"
@@ -153,7 +153,7 @@ using namespace Microsoft::Xna::Arm;
 IProviderEngine * armProvider;
 
 
-#pragma warning( disable:4244 )
+//#pragma warning( disable:4244 )
 
 //-----------------------------------
 // Frank at work!
@@ -3922,7 +3922,7 @@ void EditorInterface::OnDestroy()
 	}
 }
 
-#pragma warning( default:4244 )
+//#pragma warning( default:4244 )
 
 void EditorInterface::OnForestTool() 
 {

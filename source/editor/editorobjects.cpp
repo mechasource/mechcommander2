@@ -698,7 +698,7 @@ bool Brain::load( FitIniFile* file, int warriorNumber )
 	// if not explicitly set, then redo
 	if ( strcmp( brainName, "PBrain" ) == 0 )
 		brainName[0] = 0;
-	else if ( stricmp( brainName, "DredAttack01" ) == 0 )
+	else if ( _stricmp( brainName, "DredAttack01" ) == 0 )
 		brainName[0] = 0;
 
 	if (0 < numCells)
@@ -805,7 +805,7 @@ void Pilot::load( FitIniFile* file, int bGoodGuy )
 	{
 		for ( int i = 0; i < goodCount; i++ )
 		{
-			if ( stricmp( buffer, s_GoodPilots[i].fileName ) == 0 )
+			if ( _stricmp( buffer, s_GoodPilots[i].fileName ) == 0 )
 			{
 				info = &s_GoodPilots[i];
 				bFound = 1;
@@ -817,7 +817,7 @@ void Pilot::load( FitIniFile* file, int bGoodGuy )
 		{
 			for ( int i = 0; i < badCount; i++ )
 			{
-				if ( stricmp( buffer, s_BadPilots[i].fileName ) == 0 )
+				if ( _stricmp( buffer, s_BadPilots[i].fileName ) == 0 )
 				{
 					info = &s_BadPilots[i];
 					bFound = 1;
@@ -947,7 +947,7 @@ void Pilot::setName( const char* newName )
 {
 	for ( int i = 0; i < goodCount; i++ )
 	{
-		if ( stricmp( newName, s_GoodPilots[i].name ) == 0 )
+		if ( _stricmp( newName, s_GoodPilots[i].name ) == 0 )
 		{
 			info = &s_GoodPilots[i];
 			return;
@@ -956,7 +956,7 @@ void Pilot::setName( const char* newName )
 
 	for ( i = 0; i < badCount; i++ )
 	{
-		if ( stricmp( newName, s_BadPilots[i].name ) == 0 )
+		if ( _stricmp( newName, s_BadPilots[i].name ) == 0 )
 		{
 			info = &s_BadPilots[i];
 			return;

@@ -29,11 +29,11 @@ typedef enum {
 	NUM_MISSION_TYPES
 } MissionType;
 
-#pragma warning( disable:4201 )
+//#pragma warning( disable:4201 )
 #include "mmsystem.h"
-#pragma warning( default:4201 )
+//#pragma warning( default:4201 )
 
-#pragma warning( disable:4244 )
+//#pragma warning( disable:4244 )
 
 #include <objbase.h>
 
@@ -2625,4 +2625,4 @@ bool CPlayers::Save( FitIniFile* missionFile ) {
 	return true;
 }
 
-#pragma warning( default:4244 )
+//#pragma warning( default:4244 )

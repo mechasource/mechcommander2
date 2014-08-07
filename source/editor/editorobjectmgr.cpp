@@ -256,11 +256,11 @@ void EditorObjectMgr::init( const char* bldgListFileName, const char* objectFile
 		// extract the type
 		if ( ExtractNextString( pCur,  tmpBuffer, bufferLength ) )
 		{
-			if ( stricmp( tmpBuffer, "BUILDING" ) == 0 )
+			if ( _stricmp( tmpBuffer, "BUILDING" ) == 0 )
 				bldg.type = BLDG_TYPE;
-			else if ( stricmp( tmpBuffer, "TREE" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "TREE" ) == 0 )
 				bldg.type = TREED_TYPE;
-			else if ( stricmp( tmpBuffer, "VEHICLE" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "VEHICLE" ) == 0 )
 				bldg.type = GV_TYPE;
 			else 
 				bldg.type = MECH_TYPE;
@@ -306,41 +306,41 @@ void EditorObjectMgr::init( const char* bldgListFileName, const char* objectFile
 			{
 				bldg.forestId = atoi( tmpBuffer + 4 );
 			}
-			else if ( stricmp( tmpBuffer, "GATE" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "GATE" ) == 0 )
 				bldg.specialType = EDITOR_GATE;
-			else if ( stricmp( tmpBuffer, "GATE_CONTROL" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "GATE_CONTROL" ) == 0 )
 				bldg.specialType = GATE_CONTROL;
-			else if ( stricmp( tmpBuffer, "POWER_GENERATOR" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "POWER_GENERATOR" ) == 0 )
 				bldg.specialType = POWER_STATION;
-			else if ( stricmp( tmpBuffer, "SENSOR_CONTROL" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "SENSOR_CONTROL" ) == 0 )
 				bldg.specialType = SENSOR_CONTROL;
-			else if ( stricmp( tmpBuffer, "SENSOR" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "SENSOR" ) == 0 )
 				bldg.specialType = SENSOR_TOWER;
-			else if ( stricmp( tmpBuffer, "SPOTLIGHT_CONTROL" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "SPOTLIGHT_CONTROL" ) == 0 )
 				bldg.specialType = SPOTLIGHT_CONTROL;
-			else if ( stricmp( tmpBuffer, "SPOTLIGHT" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "SPOTLIGHT" ) == 0 )
 				bldg.specialType = SPOTLIGHT;
-			else if ( stricmp( tmpBuffer, "LOOKOUT" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "LOOKOUT" ) == 0 )
 				bldg.specialType = LOOKOUT;
-			else if ( stricmp( tmpBuffer, "TURRET_CONTROL" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "TURRET_CONTROL" ) == 0 )
 				bldg.specialType = TURRET_CONTROL;
-			else if ( stricmp( tmpBuffer, "TURRET_GENERATOR" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "TURRET_GENERATOR" ) == 0 )
 				bldg.specialType = TURRET_GENERATOR;
-			else if ( stricmp( tmpBuffer, "BRIDGE_CONTROL" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "BRIDGE_CONTROL" ) == 0 )
 				bldg.specialType = BRIDGE_CONTROL;
-			else if ( stricmp( tmpBuffer, "BRIDGE" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "BRIDGE" ) == 0 )
 				bldg.specialType = EDITOR_BRIDGE;		
-			else if ( stricmp( tmpBuffer, "DROPZONE" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "DROPZONE" ) == 0 )
 				bldg.specialType = DROPZONE;
-			else if ( stricmp( tmpBuffer, "TURRET" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "TURRET" ) == 0 )
 				bldg.specialType = EDITOR_TURRET;
-			else if ( stricmp( tmpBuffer, "NAVMARKER" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "NAVMARKER" ) == 0 )
 				bldg.specialType = NAV_MARKER;
-			else if ( stricmp( tmpBuffer, "WALL" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "WALL" ) == 0 )
 				bldg.specialType = WALL;
-			else if ( stricmp( tmpBuffer, "RPBUILDING" ) == 0 )
+			else if ( _stricmp( tmpBuffer, "RPBUILDING" ) == 0 )
 				bldg.specialType = RESOURCE_BUILDING;
-			else if ( stricmp( tmpBuffer, "HELICOPTER" ) == 0 ) 
+			else if ( _stricmp( tmpBuffer, "HELICOPTER" ) == 0 ) 
 				bldg.specialType = HELICOPTER;
 		}
 

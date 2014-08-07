@@ -4,7 +4,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#pragma warning( disable : 4786 )
+//#pragma warning( disable : 4786 )
 
 
 #ifndef MCLIB_H

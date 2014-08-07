@@ -87,7 +87,7 @@ void DlgFileOpen::OnOK()
 	strcat( tmpExtension, extension );
 
 	if ( !fileName || (strlen( fileName ) < 4 ||
-		0 != stricmp( tmpExtension, fileName + strlen( fileName ) - 4 )) )
+		0 != _stricmp( tmpExtension, fileName + strlen( fileName ) - 4 )) )
 	{
 		strcat( fileName, "." );
 		strcat( fileName, extension );

@@ -778,7 +778,7 @@ void UnitSettingsDlg::updateMemberVariables()
 
 		const char* tmpName = pPilot->info->fileName;
 
-		if ( stricmp( tmpName, defaultPilot ) != 0 )
+		if ( _stricmp( tmpName, defaultPilot ) != 0 )
 		{
 			defaultPilot = 0;
 			break;
@@ -848,7 +848,7 @@ void UnitSettingsDlg::OnAlign1( UINT whichID )
 
 		const char* tmpName = pPilot->getName();
 
-		if ( stricmp( tmpName, defaultPilot ) != 0 )
+		if ( _stricmp( tmpName, defaultPilot ) != 0 )
 		{
 			defaultPilot = 0;
 			break;

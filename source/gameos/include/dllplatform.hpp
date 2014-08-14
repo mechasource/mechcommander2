@@ -12,11 +12,10 @@
 #include <gameos\platform.hpp>
 #include <gameos\gameos.hpp>
 
-
-NTSTATUS _stdcall ProcessException( PEXCEPTION_POINTERS pep);
-void _stdcall InitExceptionHandler( PSTR CommandLine);
-void _stdcall InitGameOS( HINSTANCE hInstance, HWND hWindow, PSTR CommandLine);
-LRESULT _stdcall GameOSWinProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-ULONG _stdcall RunGameOSLogic(void);
-void _stdcall ExitGameOS(void);
+NTSTATUS	__stdcall ProcessException( PEXCEPTION_POINTERS pep);
+void		__stdcall InitExceptionHandler( PSTR pCmdLine);
+void		__stdcall InitGameOS( HINSTANCE hInstance, HWND hWindow, PSTR pCmdLine);
+LRESULT		__stdcall GameOSWinProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+ULONG		__stdcall RunGameOSLogic(void);
+void		__stdcall ExitGameOS(void);
 

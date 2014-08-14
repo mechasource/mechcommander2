@@ -324,13 +324,17 @@ void __stdcall gos_AbortTermination(void);
 
 
 //
-// This API can be used to create 'modal' dialogs. It will run the GameOS main lopp (reading input devices, rendering etc...) WITHOUT running the gamelogic.
-// This allows you to call this function in a loop from within your GameLogic to wait for a key, do a modal dialog etc.. Then continue with your game logic.
-// This API returns true if the user closed the window or called gos_TerminateApplication. The application will exit when it finishs it's GameLogic loop
-// It is passed the function to call in place of the original gamelogic. If this is passed 0, no game logic is called. If the original gamelogic loop should be used, pass Environment.DoGameLogic
+// This API can be used to create 'modal' dialogs. It will run the GameOS main lopp 
+// (reading input devices, rendering etc...) WITHOUT running the gamelogic.
+// This allows you to call this function in a loop from within your GameLogic to 
+// wait for a key, do a modal dialog etc.. Then continue with your game logic.
+// This API returns true if the user closed the window or called gos_TerminateApplication. 
+// The application will exit when it finishs it's GameLogic loop
+// It is passed the function to call in place of the original gamelogic. If this 
+// is passed 0, no game logic is called. If the original gamelogic loop should be used, pass Environment.DoGameLogic
 // Returns true if the game was terminated
 //
-UCHAR __stdcall gos_RunMainLoop( void(__stdcall *DoGameLogic)()=0 );
+UCHAR __stdcall gos_RunMainLoop( void(__stdcall *DoGameLogic)(void)=0 );
 
 
 

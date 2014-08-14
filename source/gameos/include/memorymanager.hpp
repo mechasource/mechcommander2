@@ -45,28 +45,26 @@ const int MemoryEndMarker=0x7fb1deaf;			// Placed at the end of allocations in _
 //
 // Information block for all blocks in pools with < 256 bytes
 //
-typedef struct
-{
+typedef struct SMALLPOOLBLOCK {
 #if defined(LAB_ONLY)
-	BYTE			Size;						// Size of block (note pools are always <64K)
+	UCHAR			Size;						// Size of block (note pools are always <64K)
 #endif
 #ifdef _DEBUG
 	DOUBLE			dTimeStamp;					// at what time was the block alloc'd
-	DWORD			pContext[0];				// we'll allocate the right size based on gMemoryStackWalkLevel
+	ULONG			pContext[0];				// we'll allocate the right size based on gMemoryStackWalkLevel
 #endif
 } SMALLPOOLBLOCK;
 
 //
 // Information block for all blocks in pools with >= 256 bytes
 //
-typedef struct
-{
+typedef struct POOLBLOCK {
 #if defined(LAB_ONLY)
-	WORD			Size;						// Size of block (note pools are always <64K)
+	USHORT			Size;						// Size of block (note pools are always <64K)
 #endif
 #ifdef _DEBUG
 	DOUBLE			dTimeStamp;					// at what time was the block alloc'd
-	DWORD			pContext[0];				// we'll allocate the right size based on gMemoryStackWalkLevel
+	ULONG			pContext[0];				// we'll allocate the right size based on gMemoryStackWalkLevel
 #endif
 } POOLBLOCK;
 
@@ -75,13 +73,13 @@ typedef struct
 //
 typedef struct _LARGEBLOCK
 {
-	DWORD				Size;					// Size of block (note can be any size)
+	ULONG				Size;					// Size of block (note can be any size)
 	_LARGEBLOCKHEADER*	pLast;					// Pointer to previous large memory block
 	_LARGEBLOCKHEADER*	pNext;					// Pointer to next large memory block
-	BYTE				Heap;
+	UCHAR				Heap;
 #ifdef _DEBUG
 	DOUBLE				dTimeStamp;				// at what time was the block alloc'd
-	DWORD				pContext[0];			// we'll allocate the right size based on gMemoryStackWalkLevel
+	ULONG				pContext[0];			// we'll allocate the right size based on gMemoryStackWalkLevel
 #endif
 } LARGEBLOCK;
 
@@ -91,7 +89,7 @@ typedef struct _LARGEBLOCK
 typedef struct _LARGEBLOCKHEADER
 {
 	LARGEBLOCK*		pLargeBlockInfo;
-	BYTE			LargeMagicNumber;			// Magic_LargeBlock or Magic_BeforeInit
+	UCHAR			LargeMagicNumber;			// Magic_LargeBlock or Magic_BeforeInit
 } LARGEBLOCKHEADER;
 
 //
@@ -99,19 +97,19 @@ typedef struct _LARGEBLOCKHEADER
 //
 typedef struct _MEMORYPOOL
 {
-	DWORD				HeapTag;				// Tag so that memory is easily spotted in VM viewers
+	ULONG				HeapTag;				// Tag so that memory is easily spotted in VM viewers
 	_MEMORYPOOL*		pLast;					// Points to the last heap of the SAME block size
 	_MEMORYPOOL*		pNext;					// Points to the next heap of the SAME block size
 	POOLBLOCK*			pInfoBlocks;			// an array of blocks which describe particular memory blocks (may point to a SMALLPOOLBLOCK header for >256 bytes)
-	BYTE*				pMemoryPool;			// Pointer to the base of the memory blocks (pointer to header byte before allocation)
-	WORD				wBlockSize;				// what is the size of the individual blocks?
-	WORD				wTotalBlocks;			// Total blocks available
+	PUCHAR				pMemoryPool;			// Pointer to the base of the memory blocks (pointer to header byte before allocation)
+	USHORT				wBlockSize;				// what is the size of the individual blocks?
+	USHORT				wTotalBlocks;			// Total blocks available
 	#if defined(LAB_ONLY)
-	WORD				wUserBytes;				// the amount of memory in the pool that is actual user data
+	USHORT				wUserBytes;				// the amount of memory in the pool that is actual user data
 	#endif
-	WORD				AllocCount[16];			// Number of blocks allocated in each 4K page (when 0, block can be decommitted)
-	WORD				FreeBlockPtr;			// Next available block in FreeBlockStack
-	WORD				FreeBlockStack[0];		// Free block offsets (from base of pool - pointer to header byte before allocation)
+	USHORT				AllocCount[16];			// Number of blocks allocated in each 4K page (when 0, block can be decommitted)
+	USHORT				FreeBlockPtr;			// Next available block in FreeBlockStack
+	USHORT				FreeBlockStack[0];		// Free block offsets (from base of pool - pointer to header byte before allocation)
 } MEMORYPOOL;
 
 //
@@ -135,14 +133,14 @@ typedef struct gos_Heap
 	int			AllocationsLastLoop;
 	int			TotalAllocations;
 	int			PeakSize;
-	bool		bExpanded;							// this is used for collapsing tree in debugger
-	bool		bExamined;							// this is used for collapsing tree in debugger
+	UCHAR		bExpanded;							// this is used for collapsing tree in debugger
+	UCHAR		bExamined;							// this is used for collapsing tree in debugger
 	int			LargeAllocations;
 	int			LargeAllocated;
 	int			DXAllocations;
 	int			DXAllocated;
 #endif
-	BYTE		HeapNumber;							// Heap number in HeapList[]  (<<24)
+	UCHAR		HeapNumber;							// Heap number in HeapList[]  (<<24)
 } gos_Heap;
 #pragma pack(pop)
 
@@ -151,11 +149,11 @@ typedef struct gos_Heap
 
 
 extern gos_Heap* AllHeaps;
-extern WORD PoolSizes[MemoryPools];
+extern USHORT PoolSizes[MemoryPools];
 extern HGOSHEAP HeapList[256];
-extern DWORD LargeMemorySize;
-extern DWORD LargeMemoryAllocations;
-extern DWORD gMemoryBlockOverhead;
+extern ULONG LargeMemorySize;
+extern ULONG LargeMemoryAllocations;
+extern ULONG gMemoryBlockOverhead;
 extern HGOSHEAP Heap_Texture;
 extern HGOSHEAP Heap_Texture32;
 extern HGOSHEAP Heap_Texture16;
@@ -166,13 +164,13 @@ extern HGOSHEAP DefaultHeap;
 extern MEMORYPOOL* gMemoryPool[MemoryPools];
 
 
-void gos_ChangeHeapSize( HGOSHEAP Heap, int Change, bool SystemAllocation=0 );
-void MM_CheckRegistered();
-void MM_Shutdown();
-void MM_UpdateStatistics( HGOSHEAP Heap );
-void MM_Startup();
-void SetupVirtualMemory();
-void AnalyzeWS( char* Title );
+void __stdcall gos_ChangeHeapSize( HGOSHEAP Heap, int Change, UCHAR SystemAllocation=0 );
+void __stdcall MM_CheckRegistered(void);
+void __stdcall MM_Shutdown(void);
+void __stdcall MM_UpdateStatistics( HGOSHEAP Heap );
+void __stdcall MM_Startup(void);
+void __stdcall SetupVirtualMemory(void);
+void __stdcall AnalyzeWS( PSTR Title );
 
 
 extern PSAPI_WS_WATCH_INFORMATION* pMemBlockInfo;

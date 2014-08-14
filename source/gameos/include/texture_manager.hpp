@@ -29,7 +29,7 @@ extern VidMemHeap* pFreeVidMemTextures;
 	#define TEXPTR_TO_HANDLE(ptr) ((ULONG)(ptr))
 #else
 	#define TEXHANDLE_TO_PTR(handle) (CTexInfo::TextureHandleToPtr(handle))
-	#define TEXPTR_TO_HANDLE(ptr) (ptr->TexturePointerToHandle())
+	#define TEXPTR_TO_HANDLE(ptr) (ptr->TexturePointerToHandle(void))
 #endif
 
 extern int						HasMipMap;					// Can do mipmapping
@@ -38,7 +38,7 @@ extern D3DDEVICEDESC7			CapsDirect3D;				// Current 3D device caps
 // Pixel conversion helper functions
 ULONG GetPixelColor( ULONG In );
 ULONG GetBackBufferColor( USHORT In );
-void UpdateBackBufferFormat();
+void UpdateBackBufferFormat(void);
 
 void __stdcall DecodeBMPDimensions( PCSTR FileName, PUCHAR Data, ULONG DataSize, PULONG pTextureWidth, PULONG pTextureHeight );
 void __stdcall DecodeJPGDimensions( PCSTR FileName, PUCHAR Data, ULONG DataSize, PULONG pTextureWidth, PULONG pTextureHeight );
@@ -132,37 +132,37 @@ static CTexInfo				MostRecentSysMem;	// A recently freed "sysmem" - ony m_pSysMe
 
 public:
 	// Read-only operations
-	USHORT					Width() { return m_nWidth; }
-	USHORT					Height() { return m_nHeight; }
-	USHORT					Hints() { return m_Hints; }
-	bool					HasAlpha() { return (m_Flags & tFlag_Alpha)!=0; }
-	bool					IsLocked() { return (m_Flags & tFlag_Locked)!=0; }
-	bool					InVidMem() { return (m_Flags & tFlag_InVidMem)!=0; }
-	bool					InAGP() { return (m_Flags & tFlag_InAGP)!=0; }
-	bool					InSysMem() { return (m_Flags & tFlag_InSysMem)!=0; }
-	bool					Detected() { return (m_Flags & tFlag_Detect)!=0; }
-	bool					MipmapDisabled() { return (m_Hints & gosHint_DisableMipmap)!=0; }
-	bool					CanRebuild() { return m_pRebuild!=NULL; }
-	int						MipFilter() { return ( m_Hints / gosHint_MipmapFilter0 ) & 3; }
-	ULONG					Area() { return ULONG(m_nWidth * m_nHeight); }
-	int						MipMapLevels() { return (MipmapDisabled())?1:MipLevelsRequired(m_nWidth,m_nHeight); }
-	PCSTR 					Name() { return m_pName; }
-	PVOID 					pInstance() { return m_pInstance; }
-	DDSURFACEDESC2 *		Description() { return &TextureDesc[Format()][(m_Hints&gosHint_Try32bpp)?1:0][(m_Hints&(gosHint_Compress0|gosHint_Compress1))/gosHint_Compress0]; }
-static bool					ManagerInitialized() { return Initialized; }
-	bool					ValidTexture() { return (CTexInfo::Initialized)&&(this>=TexInfo)&&(this-MaximumTextures<TexInfo)&&(m_Flags&tFlag_Valid); }
-	bool					SpecialTexture() { return ( m_Flags & tFlag_Special ) != 0; }
-	void					SetSpecial() { m_Flags |= tFlag_Special; }
-	gos_RebuildFunction		pRebuildFunc() { return m_pRebuild; }
-	static CTexInfo *		FirstTexture() { return pFirstUsedTexture; }
-	CTexInfo *				NextTexture() { return m_NextOffset?(this+m_NextOffset):NULL; }
-	gos_TextureFormat		Format() { return (gos_TextureFormat)((m_Flags&FormatMask)>>tFlag_FormatShift); }
-	bool					Used() { return m_nLastFrameUsed == FrameNo; }
+	USHORT					Width(void) { return m_nWidth; }
+	USHORT					Height(void) { return m_nHeight; }
+	USHORT					Hints(void) { return m_Hints; }
+	bool					HasAlpha(void) { return (m_Flags & tFlag_Alpha)!=0; }
+	bool					IsLocked(void) { return (m_Flags & tFlag_Locked)!=0; }
+	bool					InVidMem(void) { return (m_Flags & tFlag_InVidMem)!=0; }
+	bool					InAGP(void) { return (m_Flags & tFlag_InAGP)!=0; }
+	bool					InSysMem(void) { return (m_Flags & tFlag_InSysMem)!=0; }
+	bool					Detected(void) { return (m_Flags & tFlag_Detect)!=0; }
+	bool					MipmapDisabled(void) { return (m_Hints & gosHint_DisableMipmap)!=0; }
+	bool					CanRebuild(void) { return m_pRebuild!=NULL; }
+	int						MipFilter(void) { return ( m_Hints / gosHint_MipmapFilter0 ) & 3; }
+	ULONG					Area(void) { return ULONG(m_nWidth * m_nHeight); }
+	int						MipMapLevels(void) { return (MipmapDisabled(void))?1:MipLevelsRequired(m_nWidth,m_nHeight); }
+	PCSTR 					Name(void) { return m_pName; }
+	PVOID 					pInstance(void) { return m_pInstance; }
+	DDSURFACEDESC2 *		Description(void) { return &TextureDesc[Format(void)][(m_Hints&gosHint_Try32bpp)?1:0][(m_Hints&(gosHint_Compress0|gosHint_Compress1))/gosHint_Compress0]; }
+static bool					ManagerInitialized(void) { return Initialized; }
+	bool					ValidTexture(void) { return (CTexInfo::Initialized)&&(this>=TexInfo)&&(this-MaximumTextures<TexInfo)&&(m_Flags&tFlag_Valid); }
+	bool					SpecialTexture(void) { return ( m_Flags & tFlag_Special ) != 0; }
+	void					SetSpecial(void) { m_Flags |= tFlag_Special; }
+	gos_RebuildFunction		pRebuildFunc(void) { return m_pRebuild; }
+	static CTexInfo *		FirstTexture(void) { return pFirstUsedTexture; }
+	CTexInfo *				NextTexture(void) { return m_NextOffset?(this+m_NextOffset):NULL; }
+	gos_TextureFormat		Format(void) { return (gos_TextureFormat)((m_Flags&FormatMask)>>tFlag_FormatShift); }
+	bool					Used(void) { return m_nLastFrameUsed == FrameNo; }
 	USHORT					ScaledHeightWidth( bool WantHeight );
-	USHORT					ScaledWidth() { return ScaledHeightWidth(false); }
-	USHORT					ScaledHeight() { return ScaledHeightWidth(true); }
-	static int				GlobalScaleShift() { return ScaleShift; }
-	bool					SysMemSurfUsable();
+	USHORT					ScaledWidth(void) { return ScaledHeightWidth(false); }
+	USHORT					ScaledHeight(void) { return ScaledHeightWidth(true); }
+	static int				GlobalScaleShift(void) { return ScaleShift; }
+	bool					SysMemSurfUsable(void);
 // Texture Update.cpp
 	int						MemoryUsage( bool Current=true, EGraphicsMemType MemType=gmt_All); // current or required bytes
 
@@ -170,32 +170,32 @@ static bool					ManagerInitialized() { return Initialized; }
 
 // Texture Manager.cpp
 	// Maintenance of static members & texture manager
-	static void				InitializeTextureManager(); // System startup
-	static void				DestroyTextureManager(); // System shutdown
-	static void				PreloadTextures(); // Once per frame, upload any "preload" textures to VRAM/AGP
-	static bool				RecreateHeaps(); // initializes texture types, ReleaseTextureHeaps()
+	static void				InitializeTextureManager(void); // System startup
+	static void				DestroyTextureManager(void); // System shutdown
+	static void				PreloadTextures(void); // Once per frame, upload any "preload" textures to VRAM/AGP
+	static bool				RecreateHeaps(void); // initializes texture types, ReleaseTextureHeaps()
 	static void				ReleaseTextures( bool ReleaseSysmem ); // releases vram and optionally sysmem copies
 
 // Texture Create.cpp
 	// Fundamental new/init/delete of a CtexInfo
-	static CTexInfo *		Allocate();
+	static CTexInfo *		Allocate(void);
 	void					Initialize( gos_TextureFormat Format, PCSTR FileName, PUCHAR pBitmap, ULONG Size,
 								USHORT Width, USHORT Height, ULONG Hints, gos_RebuildFunction pFunc, PVOID pInstance );
-	void					Free();
+	void					Free(void);
 
 // Texture Update.cpp	
 	// Rebuild / Reload / Convert / Upload as required to get a usable texture handle
-	ULONG					GetD3DTextureHandle(); // HW Rasterizer: VidMemSurf, SW Rasterizer: SysMemSurf
+	ULONG					GetD3DTextureHandle(void); // HW Rasterizer: VidMemSurf, SW Rasterizer: SysMemSurf
 	// Altering the surface contents of a texture
 	void					Lock( ULONG MipMapWidth, bool ReadOnly, TEXTUREPTR* TextureInfo );
-	void					Unlock();
-	void					InvalidateVidMem();	// mark vidmem as invalid and check if current texture
+	void					Unlock(void);
+	void					InvalidateVidMem(void);	// mark vidmem as invalid and check if current texture
 	void					UpdateRect( ULONG DestLeft, ULONG DestTop, ULONG *Source, ULONG SourcePitch, ULONG Width,
 								ULONG Height );
 	// Various setters
-	void					SetPreload();
+	void					SetPreload(void);
 	void					SetName( PCSTR name );
-	void					SetUsed() { m_nLastFrameUsed = FrameNo; m_nLastTimeUsed = TimeNo++; }
+	void					SetUsed(void) { m_nLastFrameUsed = FrameNo; m_nLastTimeUsed = TimeNo++; }
 	// Active private routines used within the texture manager
 
 	// Notes on Get...( bool populate, USHORT MipMapWidth=0 )
@@ -221,33 +221,33 @@ static bool					ManagerInitialized() { return Initialized; }
 public:
 	LPDIRECTDRAWSURFACE7	GetOriginalSurf( bool populate, USHORT MipMapWidth=0 );
 private:
-	void					AllocateOriginal();	// Allocates original 32bpp surface
-	void					PopulateOriginal();	// Rebuilds or Reloads (assumes surface exists but is not valid)
+	void					AllocateOriginal(void);	// Allocates original 32bpp surface
+	void					PopulateOriginal(void);	// Rebuilds or Reloads (assumes surface exists but is not valid)
 	void					Reload( PUCHAR pData, ULONG Size, bool Detect ); // reloads 32bpp surface from file or pData
-	void					Rebuild();			// Calls rebuild function of app to re-populate the surface
-	void					FreeOriginal();		// Frees the original surface (assumes it exists and is ok to free)
+	void					Rebuild(void);			// Calls rebuild function of app to re-populate the surface
+	void					FreeOriginal(void);		// Frees the original surface (assumes it exists and is ok to free)
 	void					DecodeImageLevel( PCSTR FileName, PUCHAR pSourceData, ULONG Size, LPDIRECTDRAWSURFACE7 pSurface );
 // Texture SysMem.cpp
 	// System Memory Surface
 public:
 	LPDIRECTDRAWSURFACE7	GetSysMemSurf( bool populate, USHORT MipMapWidth=0 );
 private:
-	void					AllocateSysMem();	// Allocates (probably 16bpp) system memory surface
-	void					PopulateSysMem();	// (Assumes valid original) Converts the Original Level(s)
+	void					AllocateSysMem(void);	// Allocates (probably 16bpp) system memory surface
+	void					PopulateSysMem(void);	// (Assumes valid original) Converts the Original Level(s)
 	void					ConvertLevel( LPDIRECTDRAWSURFACE7 dest, LPDIRECTDRAWSURFACE7 source );
 												// ...Converts one level from original to sysmem
-	void					FreeSysMem();		// Frees the SysMem surface/chain (assumes it exists and is ok to free)
+	void					FreeSysMem(void);		// Frees the SysMem surface/chain (assumes it exists and is ok to free)
 // Mipmap.cpp
-	void					GenerateMipMaps();	// Filters top level of SysMem chain to all lower levels
+	void					GenerateMipMaps(void);	// Filters top level of SysMem chain to all lower levels
 // Texture VidMem.cpp
 	// Video Memory or AGP Surface
 	LPDIRECTDRAWSURFACE7	GetVidMemSurf( bool populate, USHORT MipMapWidth=0 );
-	bool					CreateTexture();	// Called by AllocateVidMem() to attempt texture creation
-	void					AllocateVidMem();	// Uses various techniques to allocate video memory
-	void					PopulateVidMem();	// Uploads level(s) from SysMem to VidMem/AGP
+	bool					CreateTexture(void);	// Called by AllocateVidMem(void) to attempt texture creation
+	void					AllocateVidMem(void);	// Uses various techniques to allocate video memory
+	void					PopulateVidMem(void);	// Uploads level(s) from SysMem to VidMem/AGP
 	void					UploadLevel( LPDIRECTDRAWSURFACE7 dest, LPDIRECTDRAWSURFACE7 source );
 public:
-	void					FreeVidMem();		// Frees the Vidmem Surface(s) (assumes it exists and is ok to free)
+	void					FreeVidMem(void);		// Frees the Vidmem Surface(s) (assumes it exists and is ok to free)
 private:
 
 	// Private helper function(s)
@@ -256,20 +256,20 @@ private:
 	LPDIRECTDRAWSURFACE7 	FindTextureLevel( LPDIRECTDRAWSURFACE7 pSurf, USHORT MipMapWidth ); // Helper function
 public:
 	static CTexInfo *		TextureHandleToPtr( ULONG Handle );
-	ULONG					TexturePointerToHandle();
+	ULONG					TexturePointerToHandle(void);
 
-	static void				NewAGPLimit();		// called by debugger when AGP limit changes
-	static void				NewLocalLimit();	// called by debugger when local limit changes
-	static void				FreeDummyTextures();// Free the artificially created vidmem textures
+	static void				NewAGPLimit(void);		// called by debugger when AGP limit changes
+	static void				NewLocalLimit(void);	// called by debugger when local limit changes
+	static void				FreeDummyTextures(void);// Free the artificially created vidmem textures
 
 public:
-	static void				NextFrame() { FrameNo++; }
+	static void				NextFrame(void) { FrameNo++; }
 private:
-	static void				AnalyzeTextureFormats();
+	static void				AnalyzeTextureFormats(void);
 // Texture Create.cpp
-	static void				CheckChain();
+	static void				CheckChain(void);
 
-	static void				PurgeTextures();	// removes all app textures and does flip's to let them go
+	static void				PurgeTextures(void);	// removes all app textures and does flip's to let them go
 
 #if defined(LAB_ONLY)
 	static char				LogString[MaximumTextureLogs][256];

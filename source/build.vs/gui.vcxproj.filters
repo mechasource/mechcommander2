@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\gui">
+      <UniqueIdentifier>{a7af0fcb-d336-4f0e-8024-57d965974de4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\gui">
+      <UniqueIdentifier>{8fe957b2-e838-4bc3-a9cb-45a8e6e64816}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resources\gui">
+      <UniqueIdentifier>{15499b5e-c3b3-4314-b77a-36d5837c1577}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{e76656b6-5ba9-4fc7-9df8-44246c6e44ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\WinDDK">
+      <UniqueIdentifier>{17054647-a2c9-47c9-b8ed-c38edbba3a2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\precompiled">
+      <UniqueIdentifier>{4d2fc811-e172-4b23-9cdd-ee5caeef5e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\DLL">
+      <UniqueIdentifier>{28a402ea-2280-4f0e-bbef-bf7329a7f643}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\gui\aanim.cpp">
+      <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui\aanimobject.cpp">
+      <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui\abutton.cpp">
+      <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui\aedit.cpp">
+      <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui\afont.cpp">
+      <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui\alistbox.cpp">
+      <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui\ascroll.cpp">
+      <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui\asystem.cpp">
+      <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui\logisticsscreen.cpp">
+      <Filter>Sources\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui\stdafx.cpp">
+      <Filter>build\precompiled</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\gui\aanim.h">
+      <Filter>Headers\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui\aanimobject.h">
+      <Filter>Headers\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui\abutton.h">
+      <Filter>Headers\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui\aedit.h">
+      <Filter>Headers\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui\afont.h">
+      <Filter>Headers\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui\alistbox.h">
+      <Filter>Headers\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui\ascroll.h">
+      <Filter>Headers\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui\asystem.h">
+      <Filter>Headers\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui\logisticsscreen.h">
+      <Filter>Headers\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui\resource.h">
+      <Filter>Resources\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gui\stdafx.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\gui\gui.rc">
+      <Filter>Resources\gui</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

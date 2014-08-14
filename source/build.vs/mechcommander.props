@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <gameos_dir>..\gameos</gameos_dir>
+    <mclib_dir>..\mclib</mclib_dir>
+    <mechcmd2_dir>..\mechcmd2</mechcmd2_dir>
+    <gui_dir>..\gui</gui_dir>
+    <mc2res_dir>..\mc2res</mc2res_dir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(gameos_dir)/include;$(mclib_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions>APP_NAME="$(TargetName)";PLATFORM=$(Platform);$(Platform);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(mc2res_dir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="gameos_dir">
+      <Value>$(gameos_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="mclib_dir">
+      <Value>$(mclib_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="mechcmd2_dir">
+      <Value>$(mechcmd2_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="gui_dir">
+      <Value>$(gui_dir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="mc2res_dir">
+      <Value>$(mc2res_dir)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

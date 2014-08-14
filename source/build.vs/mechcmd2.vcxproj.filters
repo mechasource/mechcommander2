@@ -1,0 +1,737 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\mechcmd2">
+      <UniqueIdentifier>{a86776c3-db98-4097-91eb-111b71c4b7a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mechcmd2\Object">
+      <UniqueIdentifier>{9ac1f786-271f-42db-8b9e-f0329185abf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mechcmd2\Mission">
+      <UniqueIdentifier>{b5ab8e60-b4db-4582-bd5d-3d8d39824f56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mechcmd2\GUI">
+      <UniqueIdentifier>{db2f1d20-ba6b-4130-a01a-86826ac6b4eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mechcmd2\Logistics">
+      <UniqueIdentifier>{4954d5b0-a875-4dc1-a5f7-e9a5208c4f6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mechcmd2\Sound">
+      <UniqueIdentifier>{c5141089-e06e-4d05-8ee7-03ad5ceaf13e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mechcmd2\Movement">
+      <UniqueIdentifier>{78cd9eff-b69a-4a10-9536-8fcf266c1d7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mechcmd2\Multiplayer">
+      <UniqueIdentifier>{f81abe2c-4235-4786-916c-f2b6ac9ca55f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mechcmd2\Movie">
+      <UniqueIdentifier>{7f62f095-5fcd-4a11-af24-a597950f1985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\extra">
+      <UniqueIdentifier>{c78c9a48-394d-4ad6-98f7-439795a82381}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\extra">
+      <UniqueIdentifier>{70989f7a-64ea-4a03-b2ed-557c6af84cf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mechcmd2">
+      <UniqueIdentifier>{caad8ff9-9c70-4f69-ae5c-1235f37ac0fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mechcmd2\GUI">
+      <UniqueIdentifier>{a3890686-30d1-4ebb-8c96-5d106d983a0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mechcmd2\Logistics">
+      <UniqueIdentifier>{585c9f2a-3dff-44e8-aceb-9c8cfc9fc40c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mechcmd2\Mission">
+      <UniqueIdentifier>{6f466ac3-7e0a-4d84-af27-12843293e1b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mechcmd2\Movement">
+      <UniqueIdentifier>{ada1f200-9a90-4bf8-a000-88bab81bb17e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mechcmd2\Movie">
+      <UniqueIdentifier>{d251c5f0-de85-4408-a99c-1233c47afcbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mechcmd2\Multiplayer">
+      <UniqueIdentifier>{d406c288-5e84-4469-aa32-faa35ea94c34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mechcmd2\Object">
+      <UniqueIdentifier>{7a8718ec-88f3-40ba-a54d-0a29e8b20e72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\mechcmd2\Sound">
+      <UniqueIdentifier>{1c11e525-87ed-4add-b0f4-6b65d0951ed1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resources\mechcmd2">
+      <UniqueIdentifier>{a5f1eff4-8b09-4c29-b3d8-682338b3bd49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{667c81d9-1fb3-411b-8bd7-2ad607252501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\WinDDK">
+      <UniqueIdentifier>{e177bf5f-82d3-4f6e-a347-76a16e60b893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\precompiled">
+      <UniqueIdentifier>{fb81c2af-2c93-4876-ab85-873eacd5d076}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\DLL">
+      <UniqueIdentifier>{8b2731bc-e4ce-42a3-b7e7-34e0724f3404}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\mechcmd2\dw.cpp">
+      <Filter>Sources\mechcmd2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechcmd2.cpp">
+      <Filter>Sources\mechcmd2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\artlry.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\bldng.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\carnage.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\collsn.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\comndr.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\contact.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\gameobj.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\gate.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\goal.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\group.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\gvehicl.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\light.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mech.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mover.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\objmgr.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\objtype.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\tacordr.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\team.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\terrobj.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\turret.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\warrior.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\weaponbolt.cpp">
+      <Filter>Sources\mechcmd2\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\ablmc2.cpp">
+      <Filter>Sources\mechcmd2\Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\gamecam.cpp">
+      <Filter>Sources\mechcmd2\Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mission.cpp">
+      <Filter>Sources\mechcmd2\Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mission2.cpp">
+      <Filter>Sources\mechcmd2\Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\objective.cpp">
+      <Filter>Sources\mechcmd2\Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\saveload.cpp">
+      <Filter>Sources\mechcmd2\Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\trigger.cpp">
+      <Filter>Sources\mechcmd2\Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\weather.cpp">
+      <Filter>Sources\mechcmd2\Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\attributemeter.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\controlgui.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\forcegroupbar.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\gametacmap.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\infowindow.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\keyboardref.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechicon.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\missiongui.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mpconnectiontype.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mpgamebrowser.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mphostgame.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mploadmap.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mpparameterscreen.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mpsetuparea.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\optionsarea.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\optionsscreenwrapper.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\pausewindow.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\prefs.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\simplecamera.cpp">
+      <Filter>Sources\mechcmd2\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\componentlistbox.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\loadscreen.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logistics.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticscomponent.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticsdata.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticsdialog.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticsmech.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticsmechdisplay.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticsmechicon.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticsmissioninfo.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticspilot.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticspilotlistbox.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticsvariant.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mainmenu.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechbayscreen.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechlabscreen.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechlistbox.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechlopedia.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechpurchasescreen.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\missionbegin.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\missionbriefingscreen.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\missionresults.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\missionselectionscreen.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mpprefs.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\pilotreadyscreen.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\pilotreviewarea.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\salvagemecharea.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\simplecomponentlistbox.cpp">
+      <Filter>Sources\mechcmd2\Logistics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\gamesound.cpp">
+      <Filter>Sources\mechcmd2\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\radio.cpp">
+      <Filter>Sources\mechcmd2\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\movemgr.cpp">
+      <Filter>Sources\mechcmd2\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\chatwindow.cpp">
+      <Filter>Sources\mechcmd2\Multiplayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mpstats.cpp">
+      <Filter>Sources\mechcmd2\Multiplayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\multplyr.cpp">
+      <Filter>Sources\mechcmd2\Multiplayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mc2movie.cpp">
+      <Filter>Sources\mechcmd2\Movie</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\actor.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\debugging.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\fastshp.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logmain.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mpaddaiplayer.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mpdirecttcpip.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\vfxshape.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\stdafx.cpp">
+      <Filter>build\precompiled</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\mechcmd2\actor.h">
+      <Filter>Headers\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dcarnage.h">
+      <Filter>Headers\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\debugging.h">
+      <Filter>Headers\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dturret.h">
+      <Filter>Headers\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mpaddaiplayer.h">
+      <Filter>Headers\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mpdirecttcpip.h">
+      <Filter>Headers\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\objblck.h">
+      <Filter>Headers\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\vfxshape.h">
+      <Filter>Headers\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\attributemeter.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\controlgui.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\forcegroupbar.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\gametacmap.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\infowindow.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\keyboardref.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechicon.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\missiongui.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mpconnectiontype.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mpgamebrowser.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mphostgame.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mploadmap.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mpparameterscreen.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mpsetuparea.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\optionsarea.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\optionsscreenwrapper.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\pausewindow.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\prefs.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\simplecamera.h">
+      <Filter>Headers\mechcmd2\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\componentlistbox.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\loadscreen.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logistics.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticscomponent.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticsdata.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticsdialog.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticserrors.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticsmech.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticsmechdisplay.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticsmechicon.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticsmechlistbox.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticsmissioninfo.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticspilot.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticspilotlistbox.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\logisticsvariant.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mainmenu.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechbayscreen.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechlabscreen.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechlistbox.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechlopedia.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechpurchasescreen.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\missionbegin.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\missionbriefingscreen.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\missionresults.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\missionselectionscreen.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mpprefs.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\pilotreadyscreen.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\pilotreviewarea.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\salvagemecharea.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\simplecomponentlistbox.h">
+      <Filter>Headers\mechcmd2\Logistics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\gamecam.h">
+      <Filter>Headers\mechcmd2\Mission</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mission.h">
+      <Filter>Headers\mechcmd2\Mission</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\objective.h">
+      <Filter>Headers\mechcmd2\Mission</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\trigger.h">
+      <Filter>Headers\mechcmd2\Mission</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\weather.h">
+      <Filter>Headers\mechcmd2\Mission</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\movemgr.h">
+      <Filter>Headers\mechcmd2\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mc2movie.h">
+      <Filter>Headers\mechcmd2\Movie</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\chatwindow.h">
+      <Filter>Headers\mechcmd2\Multiplayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dmultplyr.h">
+      <Filter>Headers\mechcmd2\Multiplayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mpstats.h">
+      <Filter>Headers\mechcmd2\Multiplayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\multplyr.h">
+      <Filter>Headers\mechcmd2\Multiplayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\artlry.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\bldng.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\carnage.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\collsn.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\comndr.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\contact.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dartlry.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dbldng.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dcollsn.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dcomndr.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dcontact.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\delemntl.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dgameobj.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dgate.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dgoal.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dgroup.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dgvehicl.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dmech.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dmover.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dobjmgr.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dobjnum.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dobjtype.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dtacordr.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dteam.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dterrobj.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dwarrior.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dweaponbolt.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\gameobj.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\gate.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\goal.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\group.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\gvehicl.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\light.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mech.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mechclass.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\mover.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\objmgr.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\objtype.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\tacordr.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\team.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\terrobj.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\turret.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\unitdesg.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\warrior.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\weaponbolt.h">
+      <Filter>Headers\mechcmd2\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\dradio.h">
+      <Filter>Headers\mechcmd2\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\gamesound.h">
+      <Filter>Headers\mechcmd2\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\radio.h">
+      <Filter>Headers\mechcmd2\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\resource.h">
+      <Filter>Resources\mechcmd2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mechcmd2\stdafx.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\mechcmd2\mechcmd2.rc">
+      <Filter>Resources\mechcmd2</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

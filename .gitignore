@@ -173,6 +173,20 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 
+# project files to ignore (these are the old original ones and you may still want them there)
+source/build.vs/ablt.vcproj
+source/build.vs/aseconv.vcproj
+source/build.vs/editor.vcproj
+source/build.vs/gameos.vcproj
+source/build.vs/gosfx.vcproj
+source/build.vs/gui.vcproj
+source/build.vs/mc2res.vcproj
+source/build.vs/mclib.vcproj
+source/build.vs/mechcmd2.vcproj
+source/build.vs/mlr.vcproj
+source/build.vs/stuff.vcproj
+source/build.vs/viewer.vcproj
+
 # directories to ignore
 source/gameos/lib/debug/
 source/gameos/lib/x86/dllplatform/

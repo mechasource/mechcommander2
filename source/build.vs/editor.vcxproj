@@ -1,0 +1,458 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{61FF0D0E-7063-4843-A009-A764F7AD72D4}</ProjectGuid>
+    <RootNamespace>MechCommander</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfAtl>false</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfAtl>false</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfAtl>false</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfAtl>false</UseOfAtl>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="mechcommander.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\..\bin\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(TEMP)\$(SolutionName)\$(ProjectName)\$(Platform)_$(Configuration)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <TypeLibraryName>$(IntDir)$(TargetName).tlb</TypeLibraryName>
+      <HeaderFileName>$(IntDir)$(TargetName).h</HeaderFileName>
+      <DllDataFileName />
+      <InterfaceIdentifierFileName>$(IntDir)$(TargetName)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>$(IntDir)$(TargetName)_p.c</ProxyFileName>
+      <ValidateAllParameters>true</ValidateAllParameters>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CallingConvention>StdCall</CallingConvention>
+      <EnablePREfast>true</EnablePREfast>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <RegisterOutput>true</RegisterOutput>
+      <AdditionalOptions> -ignore:4199 -pdbcompress -dynamicbase -nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <Version>1.1</Version>
+      <ModuleDefinitionFile>$(TargetName).def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <TypeLibraryName>$(IntDir)$(TargetName).tlb</TypeLibraryName>
+      <HeaderFileName>$(IntDir)$(TargetName).h</HeaderFileName>
+      <DllDataFileName />
+      <InterfaceIdentifierFileName>$(IntDir)$(TargetName)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>$(IntDir)$(TargetName)_p.c</ProxyFileName>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CallingConvention>StdCall</CallingConvention>
+      <EnablePREfast>true</EnablePREfast>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <RegisterOutput>true</RegisterOutput>
+      <AdditionalOptions> -ignore:4199 -pdbcompress -dynamicbase -nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <Version>1.1</Version>
+      <ModuleDefinitionFile>$(TargetName).def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <TypeLibraryName>$(IntDir)$(TargetName).tlb</TypeLibraryName>
+      <HeaderFileName>$(IntDir)$(TargetName).h</HeaderFileName>
+      <DllDataFileName />
+      <InterfaceIdentifierFileName>$(IntDir)$(TargetName)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>$(IntDir)$(TargetName)_p.c</ProxyFileName>
+      <ValidateAllParameters>true</ValidateAllParameters>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CallingConvention>StdCall</CallingConvention>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <RegisterOutput>true</RegisterOutput>
+      <AdditionalOptions> -ignore:4199 -pdbcompress -dynamicbase -nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <Version>1.1</Version>
+      <ModuleDefinitionFile>$(TargetName).def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <TypeLibraryName>$(IntDir)$(TargetName).tlb</TypeLibraryName>
+      <HeaderFileName>$(IntDir)$(TargetName).h</HeaderFileName>
+      <DllDataFileName />
+      <InterfaceIdentifierFileName>$(IntDir)$(TargetName)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>$(IntDir)$(TargetName)_p.c</ProxyFileName>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CallingConvention>StdCall</CallingConvention>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <RegisterOutput>true</RegisterOutput>
+      <AdditionalOptions> -ignore:4199 -pdbcompress -dynamicbase -nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <Version>1.1</Version>
+      <ModuleDefinitionFile>$(TargetName).def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <SetChecksum>true</SetChecksum>
+      <SupportUnloadOfDelayLoadedDLL>true</SupportUnloadOfDelayLoadedDLL>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\editor\action.cpp" />
+    <ClCompile Include="..\editor\booleanflagissetdialog.cpp" />
+    <ClCompile Include="..\editor\buildingbrush.cpp" />
+    <ClCompile Include="..\editor\buildinglink.cpp" />
+    <ClCompile Include="..\editor\buildingsettingsdlg.cpp" />
+    <ClCompile Include="..\editor\campaigndata.cpp" />
+    <ClCompile Include="..\editor\campaigndialog.cpp" />
+    <ClCompile Include="..\editor\choosebuildingdlg.cpp" />
+    <ClCompile Include="..\editor\chooseunitdlg.cpp" />
+    <ClCompile Include="..\editor\damagebrush.cpp" />
+    <ClCompile Include="..\editor\dlgfileopen.cpp" />
+    <ClCompile Include="..\editor\dragtool.cpp" />
+    <ClCompile Include="..\editor\dropzonebrush.cpp" />
+    <ClCompile Include="..\editor\editforestdlg.cpp" />
+    <ClCompile Include="..\editor\editor.cpp" />
+    <ClCompile Include="..\editor\editordata.cpp" />
+    <ClCompile Include="..\editor\editores.cpp" />
+    <ClCompile Include="..\editor\editorinterface.cpp" />
+    <ClCompile Include="..\editor\editormfc.cpp" />
+    <ClCompile Include="..\editor\editorobjectmgr.cpp" />
+    <ClCompile Include="..\editor\editorobjects.cpp" />
+    <ClCompile Include="..\editor\editortacmap.cpp" />
+    <ClCompile Include="..\editor\editorview.cpp" />
+    <ClCompile Include="..\editor\eraser.cpp" />
+    <ClCompile Include="..\editor\flattenbrush.cpp" />
+    <ClCompile Include="..\editor\fogdlg.cpp" />
+    <ClCompile Include="..\editor\forest.cpp" />
+    <ClCompile Include="..\editor\forestdlg.cpp" />
+    <ClCompile Include="..\editor\fractaldialog.cpp" />
+    <ClCompile Include="..\editor\groupdialog.cpp" />
+    <ClCompile Include="..\editor\heightdlg.cpp" />
+    <ClCompile Include="..\editor\linkbrush.cpp" />
+    <ClCompile Include="..\editor\mainfrm.cpp" />
+    <ClCompile Include="..\editor\mainmenu.cpp" />
+    <ClCompile Include="..\editor\mapsizedlg.cpp" />
+    <ClCompile Include="..\editor\minebrush.cpp" />
+    <ClCompile Include="..\editor\missiondialog.cpp" />
+    <ClCompile Include="..\editor\missionsettingsdlg.cpp" />
+    <ClCompile Include="..\editor\newsinglemission.cpp" />
+    <ClCompile Include="..\editor\objective.cpp" />
+    <ClCompile Include="..\editor\objectivedlg.cpp" />
+    <ClCompile Include="..\editor\objectivesdlg.cpp" />
+    <ClCompile Include="..\editor\objectselectionbrush.cpp" />
+    <ClCompile Include="..\editor\overlaybrush.cpp" />
+    <ClCompile Include="..\editor\playersettingsdlg.cpp" />
+    <ClCompile Include="..\editor\pointerselectobjectdlg.cpp" />
+    <ClCompile Include="..\editor\resourcestringselectiondlg.cpp" />
+    <ClCompile Include="..\editor\selectionbrush.cpp" />
+    <ClCompile Include="..\editor\selectslopedialog.cpp" />
+    <ClCompile Include="..\editor\selectterraintypedlg.cpp" />
+    <ClCompile Include="..\editor\singlevaluedlg.cpp" />
+    <ClCompile Include="..\editor\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\editor\sundlg.cpp" />
+    <ClCompile Include="..\editor\tacmaptga.cpp" />
+    <ClCompile Include="..\editor\targetareadlg.cpp" />
+    <ClCompile Include="..\editor\terrainbrush.cpp" />
+    <ClCompile Include="..\editor\terraindlg.cpp" />
+    <ClCompile Include="..\editor\textmessagedlg.cpp" />
+    <ClCompile Include="..\editor\tgawnd.cpp" />
+    <ClCompile Include="..\editor\tilingfactorsdialog.cpp" />
+    <ClCompile Include="..\editor\unitsettingsdlg.cpp" />
+    <ClCompile Include="..\editor\usertextedit.cpp" />
+    <ClCompile Include="..\editor\viewconditionoractiondlg.cpp" />
+    <ClCompile Include="..\editor\waterdlg.cpp" />
+    <ClCompile Include="..\editor\wavedlg.cpp" />
+    <ClCompile Include="..\mechcmd2\dw.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\editor\action.h" />
+    <ClInclude Include="..\editor\booleanflagissetdialog.h" />
+    <ClInclude Include="..\editor\brush.h" />
+    <ClInclude Include="..\editor\buildingbrush.h" />
+    <ClInclude Include="..\editor\buildinglink.h" />
+    <ClInclude Include="..\editor\buildingsettingsdlg.h" />
+    <ClInclude Include="..\editor\campaigndata.h" />
+    <ClInclude Include="..\editor\campaigndialog.h" />
+    <ClInclude Include="..\editor\choosebuildingdlg.h" />
+    <ClInclude Include="..\editor\chooseunitdlg.h" />
+    <ClInclude Include="..\editor\damagebrush.h" />
+    <ClInclude Include="..\editor\dlgfileopen.h" />
+    <ClInclude Include="..\editor\dragtool.h" />
+    <ClInclude Include="..\editor\dropzonebrush.h" />
+    <ClInclude Include="..\editor\editforestdlg.h" />
+    <ClInclude Include="..\editor\editorcamera.h" />
+    <ClInclude Include="..\editor\editordata.h" />
+    <ClInclude Include="..\editor\editorinterface.h" />
+    <ClInclude Include="..\editor\editormessages.h" />
+    <ClInclude Include="..\editor\editormfc.h" />
+    <ClInclude Include="..\editor\editorobjectmgr.h" />
+    <ClInclude Include="..\editor\editorobjects.h" />
+    <ClInclude Include="..\editor\editortacmap.h" />
+    <ClInclude Include="..\editor\editorview.h" />
+    <ClInclude Include="..\editor\eraser.h" />
+    <ClInclude Include="..\editor\flattenbrush.h" />
+    <ClInclude Include="..\editor\fogdlg.h" />
+    <ClInclude Include="..\editor\forest.h" />
+    <ClInclude Include="..\editor\forestdlg.h" />
+    <ClInclude Include="..\editor\fractaldialog.h" />
+    <ClInclude Include="..\editor\groupdialog.h" />
+    <ClInclude Include="..\editor\heightdlg.h" />
+    <ClInclude Include="..\editor\linkbrush.h" />
+    <ClInclude Include="..\editor\mainfrm.h" />
+    <ClInclude Include="..\editor\mainmenu.h" />
+    <ClInclude Include="..\editor\mapsizedlg.h" />
+    <ClInclude Include="..\editor\messagebox.h" />
+    <ClInclude Include="..\editor\minebrush.h" />
+    <ClInclude Include="..\editor\missiondialog.h" />
+    <ClInclude Include="..\editor\missionsettingsdlg.h" />
+    <ClInclude Include="..\editor\newsinglemission.h" />
+    <ClInclude Include="..\editor\objective.h" />
+    <ClInclude Include="..\editor\objectivedlg.h" />
+    <ClInclude Include="..\editor\objectivesdlg.h" />
+    <ClInclude Include="..\editor\objectselectionbrush.h" />
+    <ClInclude Include="..\editor\overlaybrush.h" />
+    <ClInclude Include="..\editor\playersettingsdlg.h" />
+    <ClInclude Include="..\editor\pointerselectobjectdlg.h" />
+    <ClInclude Include="..\editor\resource.h" />
+    <ClInclude Include="..\editor\resourcestringselectiondlg.h" />
+    <ClInclude Include="..\editor\selectionbrush.h" />
+    <ClInclude Include="..\editor\selectslopedialog.h" />
+    <ClInclude Include="..\editor\selectterraintypedlg.h" />
+    <ClInclude Include="..\editor\singlevaluedlg.h" />
+    <ClInclude Include="..\editor\stdafx.h" />
+    <ClInclude Include="..\editor\sundlg.h" />
+    <ClInclude Include="..\editor\tacmaptga.h" />
+    <ClInclude Include="..\editor\targetareadlg.h" />
+    <ClInclude Include="..\editor\terrainbrush.h" />
+    <ClInclude Include="..\editor\terraindlg.h" />
+    <ClInclude Include="..\editor\textmessagedlg.h" />
+    <ClInclude Include="..\editor\tgawnd.h" />
+    <ClInclude Include="..\editor\tilingfactorsdialog.h" />
+    <ClInclude Include="..\editor\unitsettingsdlg.h" />
+    <ClInclude Include="..\editor\usertextedit.h" />
+    <ClInclude Include="..\editor\viewconditionoractiondlg.h" />
+    <ClInclude Include="..\editor\waterdlg.h" />
+    <ClInclude Include="..\editor\wavedlg.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\editor\editor.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\editor\res\ico128.ico" />
+    <Image Include="..\editor\res\ico210.ico" />
+    <Image Include="..\editor\res\ico211.ico" />
+    <Image Include="..\editor\res\ic_normal.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\editor\res\arrow.cur" />
+    <None Include="..\editor\res\cursor1.cur" />
+    <None Include="..\editor\res\dropzone.cur" />
+    <None Include="..\editor\res\eraser.cur" />
+    <None Include="..\editor\res\flatten.cur" />
+    <None Include="..\editor\res\hammer.cur" />
+    <None Include="..\editor\res\hand.cur" />
+    <None Include="..\editor\res\link.cur" />
+    <None Include="..\editor\res\paint.cur" />
+    <None Include="..\editor\res\target.cur" />
+    <None Include="..\editor\res\unlink.cur" />
+    <None Include="..\editor\res\up.cur" />
+    <None Include="..\editor\res\wrench.cur" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

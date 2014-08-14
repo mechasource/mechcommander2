@@ -1,0 +1,522 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\editor">
+      <UniqueIdentifier>{b77f2e51-77f8-475f-b149-f9855588f48c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\mechcmd2">
+      <UniqueIdentifier>{93679ba7-f317-4183-81e7-2cbf889c43db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\extra">
+      <UniqueIdentifier>{20eb30c2-417c-4a36-a111-751eb3ebb1a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\editor">
+      <UniqueIdentifier>{593dc230-8f9c-4c2b-81e5-18fc1c57a8f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\extra">
+      <UniqueIdentifier>{f88625da-9893-430e-8782-9f5805dcbd48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resources\editor">
+      <UniqueIdentifier>{0d1f5b58-99ce-4526-9c7c-2b3a986731f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\bitmaps">
+      <UniqueIdentifier>{5a3498aa-9995-4706-ae4d-71cf3b9dae68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\cursors">
+      <UniqueIdentifier>{c9961760-e230-4743-9e26-3e2b5715d24c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\icons">
+      <UniqueIdentifier>{864606be-772e-4b69-b0e6-8ac725a55e79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{708ef1b9-4913-4a87-a1c5-dbab1a2a1b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\WinDDK">
+      <UniqueIdentifier>{8cc68802-3bec-42b1-898a-eac8ae70d368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\precompiled">
+      <UniqueIdentifier>{03201280-41fb-4d49-9ef9-ecf7d7edc775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\DLL">
+      <UniqueIdentifier>{9ec21340-1a12-4d6a-8190-0df3132d10a1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\editor\action.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\booleanflagissetdialog.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\buildingbrush.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\buildinglink.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\buildingsettingsdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\campaigndata.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\campaigndialog.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\choosebuildingdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\chooseunitdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\damagebrush.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\dlgfileopen.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\dragtool.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\dropzonebrush.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\editforestdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\editor.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\editordata.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\editores.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\editorinterface.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\editormfc.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\editorobjectmgr.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\editorobjects.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\editortacmap.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\editorview.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\eraser.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\flattenbrush.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\fogdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\forest.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\forestdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\fractaldialog.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\groupdialog.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\heightdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\linkbrush.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\mainfrm.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\mapsizedlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\minebrush.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\missiondialog.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\missionsettingsdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\newsinglemission.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\objective.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\objectivedlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\objectivesdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\overlaybrush.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\playersettingsdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\pointerselectobjectdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\resourcestringselectiondlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\selectionbrush.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\selectslopedialog.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\selectterraintypedlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\singlevaluedlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\sundlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\tacmaptga.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\targetareadlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\terrainbrush.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\terraindlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\textmessagedlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\tgawnd.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\tilingfactorsdialog.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\unitsettingsdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\usertextedit.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\viewconditionoractiondlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\waterdlg.cpp">
+      <Filter>Sources\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\dw.cpp">
+      <Filter>Sources\mechcmd2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\mainmenu.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\objectselectionbrush.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\wavedlg.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\editor\stdafx.cpp">
+      <Filter>build\precompiled</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\editor\action.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\booleanflagissetdialog.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\brush.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\buildingbrush.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\buildinglink.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\buildingsettingsdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\campaigndata.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\campaigndialog.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\choosebuildingdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\chooseunitdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\damagebrush.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\dlgfileopen.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\dragtool.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\dropzonebrush.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\editforestdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\editorcamera.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\editordata.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\editorinterface.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\editormessages.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\editormfc.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\editorobjectmgr.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\editorobjects.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\editortacmap.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\editorview.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\eraser.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\flattenbrush.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\fogdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\forest.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\forestdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\fractaldialog.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\groupdialog.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\heightdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\linkbrush.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\mainfrm.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\mapsizedlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\messagebox.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\minebrush.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\missiondialog.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\missionsettingsdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\newsinglemission.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\objective.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\objectivedlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\objectivesdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\overlaybrush.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\playersettingsdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\pointerselectobjectdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\resourcestringselectiondlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\selectionbrush.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\selectslopedialog.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\selectterraintypedlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\singlevaluedlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\sundlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\tacmaptga.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\targetareadlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\terrainbrush.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\terraindlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\textmessagedlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\tgawnd.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\tilingfactorsdialog.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\unitsettingsdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\usertextedit.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\viewconditionoractiondlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\waterdlg.h">
+      <Filter>Headers\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\mainmenu.h">
+      <Filter>Headers\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\objectselectionbrush.h">
+      <Filter>Headers\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\wavedlg.h">
+      <Filter>Headers\extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\resource.h">
+      <Filter>Resources\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\editor\stdafx.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\editor\editor.rc">
+      <Filter>Resources\editor</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\editor\res\ic_normal.bmp">
+      <Filter>Resources\bitmaps</Filter>
+    </Image>
+    <Image Include="..\editor\res\ico128.ico">
+      <Filter>Resources\icons</Filter>
+    </Image>
+    <Image Include="..\editor\res\ico210.ico">
+      <Filter>Resources\icons</Filter>
+    </Image>
+    <Image Include="..\editor\res\ico211.ico">
+      <Filter>Resources\icons</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\editor\res\arrow.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\cursor1.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\dropzone.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\eraser.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\flatten.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\hammer.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\hand.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\link.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\paint.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\target.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\unlink.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\up.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+    <None Include="..\editor\res\wrench.cur">
+      <Filter>Resources\cursors</Filter>
+    </None>
+  </ItemGroup>
+</Project>

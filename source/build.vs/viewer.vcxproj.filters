@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Sources\viewer">
+      <UniqueIdentifier>{7116f105-d674-4f89-bf06-649c486ee6e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\extra">
+      <UniqueIdentifier>{22184169-b59d-42d6-8fd3-f6bd38ffbfac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\gameplatform">
+      <UniqueIdentifier>{8b632901-4cb6-4ade-9cf3-06fc25e73072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Headers\viewer">
+      <UniqueIdentifier>{f0cf5284-dbfd-4d8b-bee4-6f1909ea23da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\extra">
+      <UniqueIdentifier>{53824c40-eac2-4a5f-bc34-246c6680536d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resources\viewer">
+      <UniqueIdentifier>{e1c38299-51b5-4bc9-96b2-669732e446df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build">
+      <UniqueIdentifier>{8c5a21e9-13df-4561-b435-125d671cf019}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\WinDDK">
+      <UniqueIdentifier>{1fcca9ba-55f8-4bcc-ab66-b66029cbbcae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="build\precompiled">
+      <UniqueIdentifier>{076daf42-eb8e-4284-b391-56e7b1010778}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\viewer\view.cpp">
+      <Filter>Sources\viewer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gui\aanimobject.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\gamesound.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticscomponent.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticsdata.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticsmech.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticsmissioninfo.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticspilot.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\logisticsvariant.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mechlopedia.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\mission2.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\prefs.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\radio.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\simplecamera.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mechcmd2\simplecomponentlistbox.cpp">
+      <Filter>Sources\extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gameos\src\startup\gameplatform.cpp">
+      <Filter>Sources\gameplatform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\viewer\stdafx.cpp">
+      <Filter>build\precompiled</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\viewer\mechlopedia.ico">
+      <Filter>Resources\viewer</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\viewer\resource.h">
+      <Filter>Resources\viewer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\viewer\stdafx.h">
+      <Filter>build\precompiled</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\viewer\viewer.rc">
+      <Filter>Resources\viewer</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

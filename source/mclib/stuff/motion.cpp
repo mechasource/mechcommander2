@@ -5,7 +5,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+
 
 const Motion3D
 	Motion3D::Identity(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f));

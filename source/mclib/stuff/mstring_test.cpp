@@ -2,7 +2,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+
 
 #define TEST_STRING "Test String"
 #define TEST_STRING_2 "Test StringTest String"

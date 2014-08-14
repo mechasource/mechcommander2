@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "Ray.hpp"
+#include "stuff.hpp"
+#include "ray.hpp"
 
 namespace Stuff {
 

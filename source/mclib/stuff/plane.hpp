@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "Normal.hpp"
-#include "Point3D.hpp"
+#include "stuff.hpp"
+#include "normal.hpp"
+#include "point3d.hpp"
 
 namespace Stuff {class Plane;}
 

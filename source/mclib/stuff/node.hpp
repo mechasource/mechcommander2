@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "Socket.hpp"
+#include "stuff.hpp"
+#include "socket.hpp"
 
 namespace Stuff {
 

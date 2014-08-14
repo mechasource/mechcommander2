@@ -11,7 +11,9 @@
 //                      PROPRIETARY AND CONFIDENTIAL                         //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ Hash ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

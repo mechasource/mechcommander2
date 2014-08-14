@@ -2,11 +2,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
-
-#if !defined(TOOLOS_HPP)
-	#include <ToolOS.hpp>
-#endif
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+#include <toolos.hpp>
 
 //#############################################################################
 //#############################    Directory    ###############################

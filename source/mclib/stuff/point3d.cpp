@@ -5,7 +5,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+
 
 const Point3D
 	Point3D::Identity(0.0f,0.0f,0.0f);

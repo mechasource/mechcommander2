@@ -5,7 +5,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+
 
 const Matrix4D
 	Matrix4D::Identity(true);

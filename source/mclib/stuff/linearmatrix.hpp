@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "AffineMatrix.hpp"
-#include "UnitVector.hpp"
-#include "Rotation.hpp"
+#include "stuff.hpp"
+#include "affinematrix.hpp"
+#include "unitvector.hpp"
+#include "rotation.hpp"
 
 namespace Stuff {
 

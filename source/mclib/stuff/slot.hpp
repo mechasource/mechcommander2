@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "Socket.hpp"
-#include "MemoryBlock.hpp"
+#include "stuff.hpp"
+#include "socket.hpp"
+#include "memoryblock.hpp"
 
 namespace Stuff {
 

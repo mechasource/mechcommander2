@@ -5,21 +5,22 @@
 //===========================================================================//
 
 #pragma once
-#undef Verify
-#undef Warn
-#undef Check_Pointer
-#undef Check_Signature 
-#undef Check
-#undef Cast_Pointer
-#undef Cast_Object
-#undef Mem_Copy
-#undef Str_Copy
-#undef Str_Cat
-#undef Spew
 
-#undef USE_TIME_ANALYSIS			// trace time statistics
-#undef USE_TRACE_LOG					// logging functions
-#undef USE_EVENT_STATISTICS      // event statistics
+//#undef Verify
+//#undef Warn
+//#undef Check_Pointer
+//#undef Check_Signature 
+//#undef Check
+//#undef Cast_Pointer
+//#undef Cast_Object
+//#undef Mem_Copy
+//#undef Str_Copy
+//#undef Str_Cat
+//#undef Spew
+
+//#undef USE_TIME_ANALYSIS			// trace time statistics
+//#undef USE_TRACE_LOG					// logging functions
+//#undef USE_EVENT_STATISTICS      // event statistics
 
 #if !defined(NO_ANALYSIS)
 	#define USE_TIME_ANALYSIS

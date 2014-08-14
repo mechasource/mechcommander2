@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "Point3D.hpp"
-#include "UnitVector.hpp"
+#include "stuff.hpp"
+#include "point3d.hpp"
+#include "unitvector.hpp"
 
 namespace Stuff {
 

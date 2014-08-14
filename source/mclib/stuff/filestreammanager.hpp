@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "FileStream.hpp"
+#include "stuff.hpp"
+#include "filestream.hpp"
 
 namespace Stuff {
 

@@ -6,7 +6,7 @@
 #ifndef PTR_HPP
 #define PTR_HPP
 
-#include "Stuff.hpp"
+#include "stuff.hpp"
 
 
 namespace Stuff

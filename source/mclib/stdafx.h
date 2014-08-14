@@ -40,8 +40,8 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 #include <tchar.h>
 #include <imagehlp.h>
 #include <mmsystem.h>
+#include <d3dtypes.h>
 #include <ddraw.h>
-
 // MClib
 #ifdef _DEBUG
 // _ARMOR;LAB_ONLY;WIN32;_DEBUG;_WINDOWS

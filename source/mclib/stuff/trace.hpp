@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include <ToolOS.hpp>
+#include "stuff.hpp"
+#include <toolos.hpp>
 
 namespace Stuff {
 

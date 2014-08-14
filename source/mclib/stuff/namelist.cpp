@@ -7,8 +7,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
-#include "NameList.hpp"
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+#include "namelist.hpp"
 
 //#############################################################################
 //##############    ObjectNameList    #########################################

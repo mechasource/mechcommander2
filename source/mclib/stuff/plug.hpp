@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "RegisteredClass.hpp"
-#include "Iterator.hpp"
-#include "Link.hpp"
+#include "stuff.hpp"
+#include "registeredclass.hpp"
+#include "iterator.hpp"
+#include "link.hpp"
 
 namespace Stuff {
 

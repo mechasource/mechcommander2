@@ -5,7 +5,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+
 
 AffinerMatrix4DStack&
 	AffinerMatrix4DStack::Concatenate(const AffineMatrix4D& matrix)

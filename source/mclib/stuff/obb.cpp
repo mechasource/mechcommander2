@@ -2,7 +2,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+
 
 OBB
 	OBB::Identity(LinearMatrix4D::Identity, Vector3D::Identity, 0.0f);

@@ -5,7 +5,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+
 
 const UnitVector3D
 	UnitVector3D::Forward(FORWARD_X, FORWARD_Y, FORWARD_Z);

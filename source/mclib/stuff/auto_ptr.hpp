@@ -6,7 +6,7 @@
 #ifndef Auto_Ptr_HPP
 #define Auto_Ptr_HPP
 
-#include "Stuff.hpp"
+#include "stuff.hpp"
 
 
 namespace Stuff

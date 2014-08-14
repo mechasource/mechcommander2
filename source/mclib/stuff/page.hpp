@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "NotationFile.hpp"
+#include "stuff.hpp"
+#include "notationfile.hpp"
 
 namespace Stuff {
 

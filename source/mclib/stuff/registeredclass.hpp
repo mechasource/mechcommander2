@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Stuff.hpp"
+#include "stuff.hpp"
 
 namespace Stuff {
 
@@ -72,7 +72,7 @@ namespace Stuff {
 		static ClassData*
 			FindClassData(ClassID class_id)
 				{
-					Verify(static_cast<unsigned>(class_id) < ClassIDCount);
+					ATLVERIFY(static_cast<unsigned>(class_id) < ClassIDCount);
 					return ClassDataArray[class_id];
 				}
 		static ClassData

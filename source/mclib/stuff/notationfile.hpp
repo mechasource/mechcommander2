@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "Scalar.hpp"
-#include "FileStream.hpp"
-#include "Tree.hpp"
+#include "stuff.hpp"
+#include "scalar.hpp"
+#include "filestream.hpp"
+#include "tree.hpp"
 
 namespace Stuff {
 

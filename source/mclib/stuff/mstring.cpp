@@ -5,9 +5,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StuffHeaders.hpp"
+#include "stdafx.h"
+#include "stuffheaders.hpp"
+//#include <windows.h>
 
-#include <windows.h>
 //#############################################################################
 //#######################    MStringRepresentation    #########################
 //#############################################################################

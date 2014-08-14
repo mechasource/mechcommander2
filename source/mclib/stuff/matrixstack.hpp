@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "Stuff.hpp"
-#include "MemoryBlock.hpp"
-#include "Matrix.hpp"
-#include "LinearMatrix.hpp"
+#include "stuff.hpp"
+#include "memoryblock.hpp"
+#include "matrix.hpp"
+#include "linearmatrix.hpp"
 
 namespace Stuff {
 

@@ -1352,6 +1352,14 @@
 			<Filter
 				Name="mechcmd2"
 				>
+				<File
+					RelativePath="..\mechcmd2\mechcmd2.rc"
+					>
+				</File>
+				<File
+					RelativePath="..\mechcmd2\resource.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1402,6 +1410,14 @@
 				</File>
 				<File
 					RelativePath="..\mechcmd2\stdafx.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="DLL"
+				>
+				<File
+					RelativePath="..\mechcmd2\$(TargetName).def"
 					>
 				</File>
 			</Filter>

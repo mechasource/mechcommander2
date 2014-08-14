@@ -449,13 +449,13 @@
 				Name="aseconv"
 				>
 				<File
-					RelativePath="..\tools\aseconv\version.h"
+					RelativePath="..\tools\aseconv\aseconv.rc"
 					>
 				</File>
-			</Filter>
-			<Filter
-				Name="Registryscripts"
-				>
+				<File
+					RelativePath="..\tools\aseconv\resource.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

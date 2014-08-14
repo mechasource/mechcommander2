@@ -512,10 +512,14 @@
 			<Filter
 				Name="gui"
 				>
-			</Filter>
-			<Filter
-				Name="Registryscripts"
-				>
+				<File
+					RelativePath="..\gui\gui.rc"
+					>
+				</File>
+				<File
+					RelativePath="..\gui\resource.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -573,7 +577,7 @@
 				Name="DLL"
 				>
 				<File
-					RelativePath="..\adblockie\$(TargetName).def"
+					RelativePath="..\gui\$(TargetName).def"
 					>
 				</File>
 			</Filter>

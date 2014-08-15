@@ -24,13 +24,13 @@ namespace Stuff {
 	public:
 		DatabaseHandle
 			*m_databaseHandle;
-		DWORD
+		ULONG
 			m_ID;
-		const char*
+		PCSTR 
 			m_name;
 		__int64
 			m_timeStamp;
-		DWORD
+		ULONG
 			m_length;
 		const void*
 			m_data;
@@ -96,7 +96,7 @@ namespace Stuff {
 			*m_dataBase;
 
 		DatabaseHandle(
-			const char* filename,
+			PCSTR  filename,
 			bool read_only
 		);
 		~DatabaseHandle();
@@ -108,7 +108,7 @@ namespace Stuff {
 		//
 		// GetNumberOfRecords - Returns the number of records in the database
 		//
-		DWORD
+		ULONG
 			GetNumberOfRecords();
 
 		//
@@ -121,18 +121,13 @@ namespace Stuff {
 			TestInstance() const;
 
 	protected:
-		DWORD
-			m_handle;
-		bool
-			m_dirtyFlag,
-			m_readOnly;
-		DWORD
-			m_currentRecord,
-			m_baseAddress;
-		Record
-			*m_currentPointer;
-		MString
-			m_fileName;
+		HANDLE 		m_handle;
+		bool		m_dirtyFlag;
+		bool		m_readOnly;
+		ULONG 		m_currentRecord;
+		UINT_PTR	m_baseAddress;
+		Record*		m_currentPointer;
+		MString		m_fileName;
 	};
 
 }

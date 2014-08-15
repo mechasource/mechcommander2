@@ -46,15 +46,15 @@ namespace Stuff {
 		#define Initialize_Timer(t, name)\
 			do {\
 				AddStatistic(name, "%", gos_timedata, &t##FrameTime, 0);\
-			} while (0);
+			} ATL_SUPPRESS_WARNING(4127) while (0);
 		#define Start_Timer(t)\
 			do {\
 				t##FrameTime -= GetCycles();\
-			} while (0);
+			} ATL_SUPPRESS_WARNING(4127) while (0);
 		#define Stop_Timer(t)\
 			do {\
 				t##FrameTime += GetCycles();\
-			} while (0);
+			} ATL_SUPPRESS_WARNING(4127) while (0);
 		#define Set_Statistic(s,v) (s=v)
 	#else
 		#define Initialize_Timer(t, name)

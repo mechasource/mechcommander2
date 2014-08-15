@@ -74,7 +74,7 @@ void
 
 
 DWORD
-	Stuff::Scaled_Float_To_Bits(float in, float min, float max, int bits)
+	Stuff::Scaled_Float_To_Bits(float in, float min, float max, ULONG bits)
 {
 	Verify(bits < 32);
 	Verify(bits > 0);
@@ -91,16 +91,15 @@ DWORD
 	
 	DWORD return_value = (DWORD)((local_in/range) * (float)biggest_number);
 	
-	Verify((DWORD)return_value >= 0x00000000);
+	//Verify((DWORD)return_value >= 0x00000000);
 	Verify((DWORD)return_value <= (DWORD)biggest_number);
-
 
 	return return_value;
 
 }
 
 float
-	Stuff::Scaled_Float_From_Bits(DWORD in, float min, float max, int bits)
+	Stuff::Scaled_Float_From_Bits(DWORD in, float min, float max, ULONG bits)
 {
 	Verify(bits < 32);
 	Verify(bits > 0);
@@ -121,7 +120,7 @@ float
 }
 
 DWORD
-	Stuff::Scaled_Int_To_Bits(int in, int min, int max, int bits)
+	Stuff::Scaled_Int_To_Bits(int in, int min, int max, ULONG bits)
 {
 
 	Verify(bits < 32);
@@ -138,7 +137,7 @@ DWORD
 	
 	DWORD return_value = (DWORD)(((float)local_in/(float)range) * (float)biggest_number);
 	
-	Verify((DWORD)return_value >= 0x00000000);
+	//Verify((DWORD)return_value >= 0x00000000);
 	Verify((DWORD)return_value < (DWORD)biggest_number);
 
 	return return_value;
@@ -146,7 +145,7 @@ DWORD
 }
 
 int
-	Stuff::Scaled_Int_From_Bits(DWORD in, int min, int max, int bits)
+	Stuff::Scaled_Int_From_Bits(DWORD in, int min, int max, ULONG bits)
 {
 	Verify(bits < 32);
 	Verify(bits > 0);

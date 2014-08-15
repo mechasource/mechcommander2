@@ -63,7 +63,7 @@
 		Trace(name, BitType)
 	{
 		activeLine = NextActiveLine++;
-		bitFlag = (NextBit < 32) ? 1 << NextBit++ : 0;
+		bitFlag = (NextBit < 32) ? DWORD(1 << NextBit++) : DWORD(0);
 		#if defined(USE_ACTIVE_PROFILE)
 			DEBUG_STREAM << name << " used trace line "
 			 << static_cast<int>(activeLine) << "!\n";
@@ -385,7 +385,7 @@
 			}
 		}
 		Check_Object(trace);
-		return trace->traceName;
+		return trace ? trace->traceName : NULL;
 	}
 
 	#if defined(USE_TIME_ANALYSIS)
@@ -517,7 +517,7 @@
 					//
 					ChainIteratorOf<Trace*> traces(&traceChain);
 					Trace *trace;
-					int header_size = sizeof(int);
+					size_t header_size = sizeof(int);
 					while ((trace = traces.ReadAndNext()) != NULL)
 					{
 						header_size += 2*sizeof(int);
@@ -529,7 +529,7 @@
 					traces.First();
 					while ((trace = traces.ReadAndNext()) != NULL)
 					{
-						int str_len = strlen(trace->traceName) + 1;
+						size_t str_len = strlen(trace->traceName) + 1;
 						header_size = sizeof(int) + ((str_len+4)&~3);
 						output << header_size << static_cast<int>(trace->traceType);
 						output.WriteBytes(trace->traceName, str_len);

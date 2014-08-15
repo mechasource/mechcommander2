@@ -85,8 +85,7 @@ namespace Stuff {
 		static ClassData
 			*DefaultData;
 
-		static const char
-			*WhiteSpace;
+		static PCSTR WhiteSpace;
 
 		void
 			TestInstance() const;
@@ -104,14 +103,14 @@ namespace Stuff {
 
 		FileStream();
 		explicit FileStream(
-			const char* file_name,
+			PCSTR file_name,
 			WriteStatus writable = ReadOnly
 		);
 		~FileStream();
 
 		void
 			Open(
-				const char* file_name = NULL,
+				PCSTR file_name = NULL,
 				WriteStatus writable = ReadOnly
 			);
 		void
@@ -122,30 +121,30 @@ namespace Stuff {
 	//
 	public:
 		void
-			SetPointer(void *)
+			SetPointer(PVOID)
 				{
 					STOP((
-					 "No implementation possible for FileStream::SetPointer(void*)"
+					 "No implementation possible for FileStream::SetPointer(PVOID)"
 					));
 				}
 		void
-			SetPointer(DWORD index);
+			SetPointer(size_t index);
 
 		MemoryStream&
-			AdvancePointer(DWORD count);
+			AdvancePointer(size_t count);
 
 		MemoryStream&
-			RewindPointer(DWORD count);
+			RewindPointer(size_t count);
 
 		MemoryStream&
 			ReadBytes(
-				void *ptr,
-				DWORD number_of_bytes
+				PVOID ptr,
+				size_t number_of_bytes
 			);
 		MemoryStream&
 			WriteBytes(
-				const void *ptr,
-				DWORD number_of_bytes
+				PCVOID ptr,
+				size_t number_of_bytes
 			);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -154,7 +153,7 @@ namespace Stuff {
 	public:
 		virtual bool
 			IsFileOpened();
-		const char*
+		PCSTR
 			GetFileName()
 				{Check_Object(this); return fileName;}
 
@@ -194,5 +193,5 @@ namespace Stuff {
 		StripDirectory(MString *file_name);
 
 	bool
-		CreateDirectories(const char *directories);
+		CreateDirectories(PCSTR directories);
 }

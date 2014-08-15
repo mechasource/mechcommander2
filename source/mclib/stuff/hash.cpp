@@ -95,7 +95,7 @@ void
 //###########################################################################
 //
 void
-	Hash::AddImplementation(Plug *plug)
+	Hash::AddImplementation(Plug* /*plug*/)
 {
 	Check_Object(this);
 	STOP(("Hash::AddImplementation - Must add with value"));

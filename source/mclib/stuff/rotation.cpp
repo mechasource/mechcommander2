@@ -14,21 +14,28 @@
 const EulerAngles
 	EulerAngles::Identity(0.0f,0.0f,0.0f);
 
+static bool UseFastLerp = true;
+static bool UseFastNormalize = true;
 
+static UCHAR __stdcall Check_UseFastLerp(void) 
+{
+	return (UseFastLerp == true) ? 1 : 0;
+}
 
-bool UseFastLerp = true;
-bool UseFastNormalize = true;
+static UCHAR __stdcall Check_UseFastNormalize(void)
+{
+	return (UseFastNormalize == true) ? 1 : 0;
+}
 
+static void __stdcall Activate_UseFastLerp(void)
+{
+	UseFastLerp = !UseFastLerp;
+}
 
-
-static bool __stdcall Check_UseFastLerp() {return UseFastLerp == true;}
-static bool __stdcall Check_UseFastNormalize() {return UseFastNormalize == true;}
-
-
-static void __stdcall Activate_UseFastLerp() {UseFastLerp = !UseFastLerp;}
-static void __stdcall Activate_UseFastNormalize() {UseFastNormalize = !UseFastNormalize;}
-
-
+static void __stdcall Activate_UseFastNormalize(void)
+{
+	UseFastNormalize = !UseFastNormalize;
+}
 
 //
 //#############################################################################

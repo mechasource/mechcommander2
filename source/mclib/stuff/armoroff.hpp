@@ -5,21 +5,21 @@
 //===========================================================================//
 
 #pragma once
-#undef Verify
-#undef Warn
-#undef Check_Signature
-#undef Check_Pointer
-#undef Mem_Copy
-#undef Str_Copy
-#undef Str_Cat
-#undef Check
-#undef Cast_Pointer
-#undef Cast_Object
-#undef Spew
-
-#undef USE_TIME_ANALYSIS			// trace time statistics
-#undef USE_TRACE_LOG					// logging functions
-#undef USE_EVENT_STATISTICS      // event statistics
+//#undef Verify
+//#undef Warn
+//#undef Check_Signature
+//#undef Check_Pointer
+//#undef Mem_Copy
+//#undef Str_Copy
+//#undef Str_Cat
+//#undef Check
+//#undef Cast_Pointer
+//#undef Cast_Object
+//#undef Spew
+//
+//#undef USE_TIME_ANALYSIS			// trace time statistics
+//#undef USE_TRACE_LOG					// logging functions
+//#undef USE_EVENT_STATISTICS      // event statistics
 
 #if defined(LAB_ONLY) && !defined(NO_ANALYSIS)
 	#define USE_TIME_ANALYSIS
@@ -39,6 +39,6 @@
 
 #define Check_Object(p) ((void)0)
 #define Check_Signature(p) ((void)0)
-#define Cast_Pointer(type, ptr) reinterpret_cast<type>(ptr)
+#define Cast_Pointer(type, ptr) (ATL_SUPPRESS_WARNING(4946) reinterpret_cast<type>(ptr))
 #define Cast_Object(type, ptr) static_cast<type>(ptr)
 #define Spew(x,y) ((void)0)

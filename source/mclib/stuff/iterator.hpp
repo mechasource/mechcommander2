@@ -13,8 +13,8 @@ namespace Stuff {
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Iterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	typedef int CollectionSize;
-	typedef int IteratorPosition;
+	typedef size_t CollectionSize;
+	typedef size_t IteratorPosition;
 
 	class _declspec(novtable) Iterator
 		#if defined(_ARMOR)

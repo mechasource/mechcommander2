@@ -16,14 +16,14 @@
 #define DELETE_FILL_CHAR ('0')
 
 size_t
-	MStringRepresentation::allocationIncrement = 8;
+MStringRepresentation::allocationIncrement = 8;
 
 //
 //#############################################################################
 //#############################################################################
 //
 inline size_t
-	MStringRepresentation::CalculateSize(size_t needed)
+MStringRepresentation::CalculateSize(size_t needed)
 {
 	//
 	// calculate the allocation size for a string
@@ -31,7 +31,7 @@ inline size_t
 	Verify(allocationIncrement);
 	size_t x =
 		((needed + allocationIncrement) / allocationIncrement) *
-			allocationIncrement;
+		allocationIncrement;
 	return x;
 }
 
@@ -102,9 +102,9 @@ MStringRepresentation::~MStringRepresentation()
 {
 	if (stringText != NULL)
 	{
-		#if defined(_ARMOR)
-			memset(stringText, DELETE_FILL_CHAR, stringSize);
-		#endif
+#if defined(_ARMOR)
+		memset(stringText, DELETE_FILL_CHAR, stringSize);
+#endif
 		Unregister_Pointer(stringText);
 		delete[] stringText;
 	}
@@ -115,7 +115,7 @@ MStringRepresentation::~MStringRepresentation()
 //#############################################################################
 //
 void
-	MStringRepresentation::TestInstance() const
+MStringRepresentation::TestInstance() const
 {
 #if 0
 	if (stringLength > 0 || stringText != NULL)
@@ -132,15 +132,15 @@ void
 //#############################################################################
 //
 void
-	MStringRepresentation::AllocateLength(size_t length)
+MStringRepresentation::AllocateLength(size_t length)
 {
 	Check_Object(this);
 
 	if (stringText != NULL)
 	{
-      #if defined(_ARMOR)
-			memset(stringText, DELETE_FILL_CHAR, stringSize);
-		#endif
+#if defined(_ARMOR)
+		memset(stringText, DELETE_FILL_CHAR, stringSize);
+#endif
 		Unregister_Pointer(stringText);
 		delete[] stringText;
 	}
@@ -165,7 +165,7 @@ void
 //#############################################################################
 //
 MStringRepresentation
-	MStringRepresentation::operator = (const MStringRepresentation &str)
+MStringRepresentation::operator = (const MStringRepresentation &str)
 {
 	Check_Object(this);
 
@@ -174,21 +174,21 @@ MStringRepresentation
 
 	if (stringText != NULL)
 	{
-      #if defined(_ARMOR)
-			memset(stringText, DELETE_FILL_CHAR, stringSize);
-		#endif
+#if defined(_ARMOR)
+		memset(stringText, DELETE_FILL_CHAR, stringSize);
+#endif
 		Unregister_Pointer(stringText);
 		delete[] stringText;
 	}
 
-   Check_Object(&str);
+	Check_Object(&str);
 	stringLength = str.stringLength;
 	stringSize = str.stringSize;
 
 	if (stringSize == 0)
-   {
+	{
 		stringText = NULL;
-   }
+	}
 	else
 	{
 		stringText = new char[stringSize];
@@ -204,15 +204,15 @@ MStringRepresentation
 //#############################################################################
 //
 MStringRepresentation
-	MStringRepresentation::operator = (const char *cstr)
+MStringRepresentation::operator = (const char *cstr)
 {
 	Check_Object(this);
 
 	if (stringText != NULL)
 	{
-      #if defined(_ARMOR)
-			memset(stringText, DELETE_FILL_CHAR, stringSize);
-		#endif
+#if defined(_ARMOR)
+		memset(stringText, DELETE_FILL_CHAR, stringSize);
+#endif
 		Unregister_Pointer(stringText);
 		delete[] stringText;
 	}
@@ -241,10 +241,9 @@ MStringRepresentation
 //#############################################################################
 //
 MStringRepresentation
-	Stuff::operator + (
-		const MStringRepresentation &str1,
-		const MStringRepresentation &str2
-	)
+Stuff::operator + (
+	const MStringRepresentation &str1,
+	const MStringRepresentation &str2)
 {
 	Check_Object(&str1);
 	Check_Object(&str2);
@@ -255,16 +254,16 @@ MStringRepresentation
 		str1.stringLength + str2.stringLength;
 
 	if (totalLen == 0)
-   {
+	{
 		return temp;
-   }
+	}
 
 	temp.stringLength = 0;
 	temp.stringSize = MStringRepresentation::CalculateSize((size_t)totalLen);
 	temp.stringText = new char[temp.stringSize];
 	Register_Pointer(temp.stringText);
 
-   Verify(temp.stringSize >= 1);
+	Verify(temp.stringSize >= 1);
 	temp.stringText[0] = '\000';
 
 	if (str1.stringText != NULL)
@@ -281,7 +280,7 @@ MStringRepresentation
 			str2.stringText,
 			str2.stringLength + 1,
 			temp.stringSize - temp.stringLength
-		);
+			);
 		temp.stringLength += str2.stringLength;
 	}
 
@@ -294,7 +293,7 @@ MStringRepresentation
 //#############################################################################
 //
 MStringRepresentation
-	Stuff::operator + (const MStringRepresentation &str, char ch)
+Stuff::operator + (const MStringRepresentation &str, char ch)
 {
 	Check_Object(&str);
 
@@ -341,7 +340,7 @@ MStringRepresentation
 //#############################################################################
 //
 int
-	MStringRepresentation::Compare(const MStringRepresentation &str) const
+MStringRepresentation::Compare(const MStringRepresentation &str) const
 {
 	Check_Object(this);
 	Check_Object(&str);
@@ -355,9 +354,9 @@ int
 			return -1;
 	}
 	if (str.stringText == NULL)
-   {
+	{
 		return 1;
-   }
+	}
 
 	return strcmp(stringText, str.stringText);
 }
@@ -367,10 +366,9 @@ int
 //#############################################################################
 //
 MStringRepresentation
-	MStringRepresentation::GetNthToken(
-		size_t nth_token,
-		char *delimiters
-	) const
+MStringRepresentation::GetNthToken(
+	size_t nth_token,
+	char *delimiters) const
 {
 	Check_Object(this);
 
@@ -385,17 +383,17 @@ MStringRepresentation
 	}
 	Check_Pointer(delimter_string);
 
-   //
+	//
 	// Make temporary
-   //
+	//
 	MStringRepresentation temp(*this);
 
-   if (temp.stringText == NULL)
+	if (temp.stringText == NULL)
 		return temp;
 
-   //
+	//
 	// Parse string with strtok
-   //
+	//
 	size_t i;
 	char *ptr;
 
@@ -421,12 +419,12 @@ MStringRepresentation
 //#############################################################################
 //
 void
-	MStringRepresentation::ToUpper()
+MStringRepresentation::ToUpper()
 {
 	Check_Object(this);
 	if (stringText != NULL)
 	{
-		for (int i = 0; i < stringLength; i++)
+		for (size_t i = 0; i < stringLength; i++)
 		{
 			stringText[i] = (char)toupper(stringText[i]);
 		}
@@ -442,7 +440,8 @@ void MStringRepresentation::ToLower()
 	Check_Object(this);
 	if (stringText != NULL)
 	{
-		CharLower(stringText);
+		// CharLowerA(stringText);
+		_strlwr_s(stringText, stringLength);
 	}
 }
 
@@ -451,15 +450,14 @@ void MStringRepresentation::ToLower()
 //#############################################################################
 //
 MemoryStream&
-	MemoryStreamIO::Read(
-		MemoryStream *stream,
-		MStringRepresentation *str
-   )
+MemoryStreamIO::Read(
+	MemoryStream *stream,
+	MStringRepresentation *str)
 {
 	Check_Object(stream);
-   Check_Object(str);
+	Check_Object(str);
 
-   size_t string_length;
+	size_t string_length;
 
 	Read(stream, &string_length);
 	if (string_length > 0)
@@ -483,10 +481,9 @@ MemoryStream&
 //#############################################################################
 //
 MemoryStream&
-	MemoryStreamIO::Write(
-		MemoryStream *stream,
-		const MStringRepresentation &str
-	)
+MemoryStreamIO::Write(
+	MemoryStream *stream,
+	const MStringRepresentation &str)
 {
 	Check_Object(stream);
 	Check_Object(&str);
@@ -504,26 +501,25 @@ MemoryStream&
 //#############################################################################
 //
 void
-	Stuff::Convert_From_Ascii(
-		const char *str,
-		MStringRepresentation *value
-	)
+Stuff::Convert_From_Ascii(
+	const char *str,
+	MStringRepresentation *value)
 {
-	#if 0
-		Check_Pointer(str);
-		Check_Object(value);
-		*value = str;
-	#else
-		if (str == NULL)
-		{
-			STOP(("Convert_From_Ascii - str == NULL"));
-		}
-		if (value == NULL)
-		{
-			STOP(("Convert_From_Ascii - value == NULL"));
-		}
-		*value = str;
-	#endif
+#if 0
+	Check_Pointer(str);
+	Check_Object(value);
+	*value = str;
+#else
+	if (str == NULL)
+	{
+		STOP(("Convert_From_Ascii - str == NULL"));
+	}
+	if (value == NULL)
+	{
+		STOP(("Convert_From_Ascii - value == NULL"));
+	}
+	if (value) *value = str;
+#endif
 }
 
 //#############################################################################
@@ -535,7 +531,7 @@ void
 //#############################################################################
 //
 MString&
-	MString::operator = (const MString &str)
+MString::operator = (const MString &str)
 {
 	Check_Object(this);
 	Check_Object(&str);
@@ -555,7 +551,7 @@ MString&
 //#############################################################################
 //
 MString&
-	MString::operator = (const char *cstr)
+MString::operator = (const char *cstr)
 {
 	Check_Object(representation);
 	representation->DecrementReferenceCount();
@@ -570,7 +566,7 @@ MString&
 //#############################################################################
 //
 void
-	MString::ToUpper()
+MString::ToUpper()
 {
 	MStringRepresentation *old = representation;
 	Check_Object(old);
@@ -589,7 +585,7 @@ void
 //#############################################################################
 //
 void
-	MString::ToLower()
+MString::ToLower()
 {
 	MStringRepresentation *old = representation;
 	Check_Object(old);
@@ -608,10 +604,9 @@ void
 //#############################################################################
 //
 MemoryStream&
-	MemoryStreamIO::Read(
-		MemoryStream *stream,
-		MString *str
-	)
+MemoryStreamIO::Read(
+	MemoryStream *stream,
+	MString *str)
 {
 	Check_Object(str);
 	Check_Object(str->representation);
@@ -628,10 +623,9 @@ MemoryStream&
 //#############################################################################
 //
 void
-	Stuff::Convert_From_Ascii(
-		const char *str,
-		MString *value
-	)
+Stuff::Convert_From_Ascii(
+	const char *str,
+	MString *value)
 {
 	Check_Object(value);
 	Check_Object(value->representation);
@@ -647,21 +641,20 @@ void
 //#############################################################################
 //
 bool
-	Stuff::Close_Enough(
-		const char *str1,
-		const char *str2,
-		Scalar e
-	)
+Stuff::Close_Enough(
+	const char *str1,
+	const char *str2,
+	Scalar e)
 {
 	Check_Pointer(str1);
 	Check_Pointer(str2);
+	(void)e;
 
-	return
-		!_stricmp(str1, str2);
+	return !_stricmp(str1, str2);
 }
 
-		IteratorPosition
-			GetHashFunctions::GetHashValue(const MString &value)
-				{
-					return value.GetHashValue();
-				}
+IteratorPosition
+GetHashFunctions::GetHashValue(const MString &value)
+{
+	return value.GetHashValue();
+}

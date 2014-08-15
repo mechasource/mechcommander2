@@ -475,17 +475,18 @@ namespace Stuff {
 		static int andAway[3] = {0x000000ff, 0x0000ffff, 0x00ffffff };
 		IteratorPosition ret = 0;
 
-		register int i, r, len = stringLength >> 2;
+		register size_t i, r, len = stringLength >> 2;
 
 		for(i=0;i<len;i++)
 		{
-			r = ((int *)stringText)[i];
+			r = ((size_t*)stringText)[i];
 			_asm mov ecx, i
 			_asm ror r, cl
 			ret += r;
 		}
 
-		ret += stringLength&0x3 ? ((int *)stringText)[i] & andAway[stringLength&0x3-1] : 0;
+		ret += stringLength & 0x3 ? 
+			((size_t*)stringText)[i] & andAway[stringLength & 0x3 - 1] : 0;
 
 		return (ret & 0x7fffffff);
 	}

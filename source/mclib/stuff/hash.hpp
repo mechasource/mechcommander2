@@ -13,7 +13,7 @@
 
 namespace GetHashFunctions {
 	inline Stuff::IteratorPosition
-		GetHashValue(int value_to_hash)
+		GetHashValue(size_t value_to_hash)
 	{
 		return value_to_hash;
 	}

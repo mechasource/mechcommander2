@@ -18,7 +18,7 @@ namespace Stuff {
 		#pragma pack( push, trace_pack, 4 )
 		struct TraceSample
 		{
-			int
+			size_t
 				sampleLength;
 			Time
 				sampleTime;

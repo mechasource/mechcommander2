@@ -43,16 +43,17 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
+#if _CONSIDERED_DISABLED
 MemoryStream::MemoryStream(
-	void *stream_start,
-	DWORD stream_size,
-	DWORD initial_offset
+	PVOID stream_start,
+	size_t stream_size,
+	size_t initial_offset
 ):
 	RegisteredClass(DefaultData)
 {
 	Check_Pointer(this);
 
-	streamStart = static_cast<BYTE*>(stream_start);
+	streamStart = static_cast<PUCHAR>(stream_start);
 	streamSize = stream_size;
 	Verify(initial_offset <= stream_size);
 	currentPosition = streamStart + initial_offset;
@@ -63,40 +64,41 @@ MemoryStream::MemoryStream(
 //
 MemoryStream::MemoryStream(
 	ClassData *class_data,
-	void *stream_start,
-	DWORD stream_size,
-	DWORD initial_offset
+	PVOID stream_start,
+	size_t stream_size,
+	size_t initial_offset
 ):
 	RegisteredClass(class_data)
 {
 	Check_Pointer(this);
 
-	streamStart = static_cast<BYTE*>(stream_start);
+	streamStart = static_cast<PUCHAR>(stream_start);
 	streamSize = stream_size;
 	Verify(initial_offset <= stream_size);
 	currentPosition = streamStart + initial_offset;
 	currentBit = 0;
 }
+#endif
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MemoryStream::~MemoryStream()
-{
-}
+//MemoryStream::~MemoryStream()
+//{
+//}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MemoryStream&
 	MemoryStream::ReadBytes(
-		void *ptr,
-		DWORD number_of_bytes
+		PVOID ptr,
+		size_t number_of_bytes
 	)
 {
 	Check_Object(this);
 	Check_Pointer(ptr);
 	Verify(number_of_bytes > 0);
 	#if defined(_ARMOR)
-		DWORD remaining = GetBytesRemaining();
+		size_t remaining = GetBytesRemaining();
 		Verify(remaining >= number_of_bytes);
 	#endif
 
@@ -111,7 +113,7 @@ int
 	MemoryStream::ReadChar()
 {
 	Check_Object(this);
-	DWORD bytes_remaining = GetBytesRemaining();
+	size_t bytes_remaining = GetBytesRemaining();
 	if (bytes_remaining > 0)
 	{
 		BYTE byte;
@@ -125,14 +127,15 @@ int
 //
 bool
 	MemoryStream::ReadLine(
-		char *buffer,
-		int max_number_of_bytes,
+		PSTR buffer,
+		size_t max_number_of_bytes,
 		char continuator
 	)
 {
 	Check_Object(this);
 	Check_Pointer(buffer);
 	Verify(max_number_of_bytes > 0);
+	(void)continuator;
 
 	//
 	// while the character is not end of file &&
@@ -143,12 +146,12 @@ bool
 	if (c == End_Of_Stream)
 		return false;
 
-	char *p = buffer;
-	int i = 0;
+	PSTR p = buffer;
+	size_t i = 0;
 
 	Check_Object(FileStreamManager::Instance);
-	const char *eol = "\r\n";
-	DWORD eol_length = strlen(eol);
+	PCSTR eol = "\r\n";
+	size_t eol_length = strlen(eol);
 
 	while (c != End_Of_Stream && i < max_number_of_bytes)
 	{
@@ -207,7 +210,7 @@ bool
 //
 MString
 	MemoryStream::ReadString(
-		DWORD size_of_buffer,
+		size_t size_of_buffer,
 		char continuator
 	)
 {
@@ -229,8 +232,8 @@ MString
 //
 MemoryStream&
 	MemoryStream::ReadSwappedBytes(
-		void *ptr,
-		DWORD number_of_bytes
+		PVOID ptr,
+		size_t number_of_bytes
 	)
 {
 	Check_Object(this);
@@ -241,9 +244,9 @@ MemoryStream&
 	BYTE *buffer = new BYTE[number_of_bytes];
 	Check_Pointer(buffer);
 	ReadBytes(buffer, number_of_bytes);
-	for (DWORD i=0; i<number_of_bytes; ++i)
+	for (size_t i=0; i<number_of_bytes; ++i)
 	{
-		static_cast<BYTE*>(ptr)[i] = buffer[number_of_bytes-1 - i];
+		static_cast<PUCHAR>(ptr)[i] = buffer[number_of_bytes-1 - i];
 	}
 	Check_Pointer(buffer);
 	delete[] buffer;
@@ -253,7 +256,7 @@ MemoryStream&
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MemoryStream::WriteLine(char *buffer)
+	MemoryStream::WriteLine(PSTR buffer)
 {
 	Check_Object(this);
 	Check_Pointer(buffer);
@@ -264,10 +267,11 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
+#if _CONSIDERED_DISABLED
 MemoryStream&
 	MemoryStream::WriteBytes(
-		const void *ptr,
-		DWORD number_of_bytes
+		PCVOID ptr,
+		size_t number_of_bytes
 	)
 {
 	Check_Object(this);
@@ -278,13 +282,14 @@ MemoryStream&
 	AdvancePointer(number_of_bytes);
 	return *this;
 }
+#endif
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//
+
 MemoryStream&
 	MemoryStream::WriteSwappedBytes(
-		const void *ptr,
-		DWORD number_of_bytes
+		PCVOID ptr,
+		size_t number_of_bytes
 	)
 {
 	Check_Object(this);
@@ -294,9 +299,9 @@ MemoryStream&
 
 	BYTE *buffer = new BYTE[number_of_bytes];
 	Check_Pointer(buffer);
-	for (DWORD i=0; i<number_of_bytes; ++i)
+	for (size_t i=0; i<number_of_bytes; ++i)
 	{
-		buffer[number_of_bytes-1 - i] = static_cast<const BYTE*>(ptr)[i];
+		buffer[number_of_bytes-1 - i] = static_cast<PCUCHAR>(ptr)[i];
 	}
 	WriteBytes(buffer, number_of_bytes);
 	Check_Pointer(buffer);
@@ -495,8 +500,8 @@ MemoryStream&
 //
 MemoryStream&
 	MemoryStream::ReadUnsafeBits(
-		void *ptr, 
-		DWORD number_of_bits
+		PVOID ptr, 
+		ULONG number_of_bits
 	)
 {
 	Check_Object(this);
@@ -513,7 +518,7 @@ MemoryStream&
 	Verify(currentBit < 8);
 
 	int total_number_of_bytes = (int)(number_of_bits/8.0f);
-	int total_remainder_bits = number_of_bits - (total_number_of_bytes*8);
+	int total_remainder_bits = (int)(number_of_bits - (total_number_of_bytes*8));
 
 	if ( total_remainder_bits != 0)
 	{
@@ -523,7 +528,7 @@ MemoryStream&
 	BYTE *dest_array = Cast_Pointer(BYTE *, ptr);
 	int dest_byte_counter = 0;
 
-	int bits_remaining = number_of_bits;
+	int bits_remaining = (int)number_of_bits;
 
 	while (bits_remaining > 0)
 	{
@@ -595,8 +600,8 @@ MemoryStream&
 
 MemoryStream&
 	MemoryStream::WriteBits(
-		const void *ptr, 
-		DWORD number_of_bits
+		PCVOID ptr, 
+		ULONG number_of_bits
 	)
 {
 	Check_Object(this);
@@ -616,7 +621,7 @@ MemoryStream&
 	
 
 	int total_number_of_bytes = (int)(number_of_bits/8.0f);
-	int total_remainder_bits = number_of_bits  - (total_number_of_bytes*8);
+	int total_remainder_bits = (int)(number_of_bits  - (total_number_of_bytes*8));
 
 	if ( total_remainder_bits != 0)
 	{
@@ -627,7 +632,7 @@ MemoryStream&
 	const BYTE *source_array = Cast_Pointer(const BYTE *, ptr);
 	int source_byte_counter = 0;
 	
-	int bits_remaining = number_of_bits;
+	int bits_remaining = (int)number_of_bits;
 
 	while (bits_remaining > 0)
 	{
@@ -688,7 +693,7 @@ MemoryStream&
 //
 
 MemoryStream&
-	MemoryStream::ReadBitsToScaledInt(int &number, int min, int max,  DWORD number_of_bits)
+	MemoryStream::ReadBitsToScaledInt(int &number, int min, int max,  ULONG number_of_bits)
 {
 
 	DWORD buffer = 0x0;
@@ -704,7 +709,7 @@ MemoryStream&
 //
 
 MemoryStream&
-	MemoryStream::WriteScaledIntToBits(const int &number, int min, int max,  DWORD number_of_bits)
+	MemoryStream::WriteScaledIntToBits(const int &number, int min, int max,  ULONG number_of_bits)
 {
 	Check_Object(this);
 	
@@ -721,11 +726,11 @@ MemoryStream&
 //
 
 MemoryStream&
-	MemoryStream::ReadBitsToScaledFloat(float &number, float min, float max,  DWORD number_of_bits)
+	MemoryStream::ReadBitsToScaledFloat(float &number, float min, float max,  ULONG number_of_bits)
 {
 	Check_Object(this);
 	
-	DWORD buffer = 0x0;
+	ULONG buffer = 0x0;
 
 	ReadBits(&buffer, number_of_bits);
 	
@@ -738,11 +743,11 @@ MemoryStream&
 //
 
 MemoryStream&
-	MemoryStream::WriteScaledFloatToBits(const float &number, float min, float max,  DWORD number_of_bits)
+	MemoryStream::WriteScaledFloatToBits(const float &number, float min, float max,  ULONG number_of_bits)
 {
 	Check_Object(this);
 	
-	DWORD buffer;
+	ULONG buffer;
 
 	buffer = Scaled_Float_To_Bits(number, min, max, number_of_bits);
 
@@ -757,7 +762,7 @@ void
 	MemoryStream::TestInstance() const
 {
 	Verify(IsDerivedFrom(DefaultData));
-	Verify(DWORD(currentPosition - streamStart) <= streamSize);
+	Verify(size_t(currentPosition - streamStart) <= streamSize);
 }
 
 //#############################################################################
@@ -767,15 +772,15 @@ void
 //
 // calculate the allocation size for stream
 //
-static inline DWORD
-	Calculate_Buffer_Size(DWORD needed)
+static inline size_t
+	Calculate_Buffer_Size(size_t needed)
 {
 	return (needed+0x80)&~0x7F;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-DynamicMemoryStream::DynamicMemoryStream(DWORD stream_size):
+DynamicMemoryStream::DynamicMemoryStream(size_t stream_size):
 	MemoryStream(NULL, stream_size)
 {
 	Check_Pointer(this);
@@ -811,9 +816,9 @@ DynamicMemoryStream::DynamicMemoryStream(const DynamicMemoryStream &otherStream)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 DynamicMemoryStream::DynamicMemoryStream(
-	void *stream_start,
-	DWORD stream_size,
-	DWORD initial_offset
+	PVOID stream_start,
+	size_t stream_size,
+	size_t initial_offset
 ):
 	MemoryStream(stream_start, stream_size, initial_offset)
 {
@@ -837,12 +842,12 @@ DynamicMemoryStream::~DynamicMemoryStream()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	DynamicMemoryStream::AllocateBytes(DWORD count)
+	DynamicMemoryStream::AllocateBytes(size_t count)
 {
 	Check_Object(this);
 
-	DWORD current_offset = currentPosition - streamStart;
-	DWORD new_stream_size = current_offset + count;
+	size_t current_offset = currentPosition - streamStart;
+	size_t new_stream_size = current_offset + count;
 	if (ownsStream && bufferSize - current_offset < count)
 	{
 		bufferSize = Calculate_Buffer_Size(new_stream_size);
@@ -865,8 +870,8 @@ bool
 //
 MemoryStream&
 	DynamicMemoryStream::WriteBytes(
-		const void *ptr,
-		DWORD number_of_bytes
+		PCVOID ptr,
+		size_t number_of_bytes
 	)
 {
 	Check_Object(this);

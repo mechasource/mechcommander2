@@ -28,13 +28,16 @@
 	#define USE_EVENT_STATISTICS
 #endif
 
+#if _CONSIDERED_OBSOLETE
 #define Verify(c)\
-	do {if (Stuff::ArmorLevel>0 && !(c)) PAUSE(("Failed " #c));} while(0)
+	do {if (Stuff::ArmorLevel>0 && !(c)) PAUSE(("Failed " #c));} ATL_SUPPRESS_WARNING(4127) while(0)
+#endif
+#define Verify(c) ATLASSERT(c)
 
 #define Warn(c)\
 	do {\
 		if (Stuff::ArmorLevel>0 && (c)) SPEW((0, #c));\
-	} while(0)
+	} ATL_SUPPRESS_WARNING(4127) while(0)
 
 #define Check_Pointer(p) Verify((p) && reinterpret_cast<int>(p)!=Stuff::SNAN_NEGATIVE_LONG)
 
@@ -46,7 +49,8 @@ template <class T> T
 	return p;
 }
 
-#define Cast_Pointer(type, ptr) Stuff::Cast_Pointer_Function(reinterpret_cast<type>(ptr))
+#define Cast_Pointer(type, ptr) ATL_SUPPRESS_WARNING(4946) \
+	Stuff::Cast_Pointer_Function(reinterpret_cast<type>(ptr))
 
 #define Mem_Copy(destination, source, length, available)\
 	do {\
@@ -60,7 +64,7 @@ template <class T> T
 			)) >= length\
 		);\
 		memcpy(destination, source, length);\
-	} while (0)
+	} ATL_SUPPRESS_WARNING(4127) while (0)
 
 #define Str_Copy(destination, source, available)\
 	do {\
@@ -69,7 +73,7 @@ template <class T> T
 		Verify((strlen(source) + 1) <= (available));\
 		Verify(abs(destination - source) >= (strlen(source) + 1));\
 		strcpy(destination, source);\
-	} while (0)
+	} ATL_SUPPRESS_WARNING(4127) while (0)
 
 #define Str_Cat(destination, source, available)\
 	do {\
@@ -77,7 +81,7 @@ template <class T> T
 		Check_Pointer(source);\
 		Verify((strlen(destination) + strlen(source) + 1) <= (available));\
 		strcat(destination, source);\
-	} while (0)
+	} ATL_SUPPRESS_WARNING(4127) while (0)
 
 #define Check_Signature(p) Stuff::Is_Signature_Bad(p)
 

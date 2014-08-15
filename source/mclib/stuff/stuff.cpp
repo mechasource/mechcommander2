@@ -9,16 +9,14 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	Stuff::Flood_Memory_With_NAN(
-		void *where,
-		size_t how_much
-	)
+void Stuff::Flood_Memory_With_NAN(
+	void *where,
+	size_t how_much)
 {
 	Verify(!(reinterpret_cast<int>(where)&3));
 	Check_Pointer(where);
 	long *filler = Cast_Pointer(long *, where);
-	for (int i = how_much >> 2; i; --i)
+	for (size_t i = how_much >> 2; i; --i)
 	{
 		*filler++ = SNAN_NEGATIVE_LONG;
 	}
@@ -27,40 +25,39 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	__cdecl Terminate_Handler()
+	__cdecl Terminate_Handler(void)
 {
 	STOP(("Unhandled exception"));
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-static bool __stdcall Check_0() {return ArmorLevel == 0;}
-static bool __stdcall Check_1() {return ArmorLevel == 1;}
-static bool __stdcall Check_2() {return ArmorLevel == 2;}
-static bool __stdcall Check_3() {return ArmorLevel == 3;}
-static bool __stdcall Check_4() {return ArmorLevel == 4;}
+static UCHAR __stdcall Check_0(void) {return UCHAR((ArmorLevel == 0) ? 1 : 0);}
+static UCHAR __stdcall Check_1(void) {return UCHAR((ArmorLevel == 1) ? 1 : 0);}
+static UCHAR __stdcall Check_2(void) {return UCHAR((ArmorLevel == 2) ? 1 : 0);}
+static UCHAR __stdcall Check_3(void) {return UCHAR((ArmorLevel == 3) ? 1 : 0);}
+static UCHAR __stdcall Check_4(void) {return UCHAR((ArmorLevel == 4) ? 1 : 0);}
 
-static void __stdcall Activate_0() {ArmorLevel = 0;}
-static void __stdcall Activate_1() {ArmorLevel = 1;}
-static void __stdcall Activate_2() {ArmorLevel = 2;}
-static void __stdcall Activate_3() {ArmorLevel = 3;}
-static void __stdcall Activate_4() {ArmorLevel = 4;}
+static void __stdcall Activate_0(void) {ArmorLevel = 0;}
+static void __stdcall Activate_1(void) {ArmorLevel = 1;}
+static void __stdcall Activate_2(void) {ArmorLevel = 2;}
+static void __stdcall Activate_3(void) {ArmorLevel = 3;}
+static void __stdcall Activate_4(void) {ArmorLevel = 4;}
 
-static bool
-	__stdcall Greyed()
+static UCHAR __stdcall Greyed(void)
 {
 	#if defined(_ARMOR)
-		return false;
+		return UCHAR(0);
 	#else
-		return true;
+		return UCHAR(1);
 	#endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-static bool __stdcall Check_4hz() {return Environment.MaxTimeDelta == 0.25f;}
-static bool __stdcall Check_40hz() {return Environment.MaxTimeDelta == 0.025f;}
-static bool __stdcall Check_400hz() {return Environment.MaxTimeDelta == 0.0025f;}
+static UCHAR __stdcall Check_4hz() {return UCHAR((Environment.MaxTimeDelta == 0.25f) ? 1 : 0);}
+static UCHAR __stdcall Check_40hz() {return UCHAR((Environment.MaxTimeDelta == 0.025f) ? 1 : 0);}
+static UCHAR __stdcall Check_400hz() {return UCHAR((Environment.MaxTimeDelta == 0.0025f) ? 1 : 0);}
 
 static void __stdcall Activate_4hz() {Environment.MaxTimeDelta = Environment.MinimumTimeDelta = 0.25f;}
 static void __stdcall Activate_40hz() {Environment.MaxTimeDelta = Environment.MinimumTimeDelta = 0.025f;}
@@ -68,8 +65,7 @@ static void __stdcall Activate_400hz() {Environment.MaxTimeDelta = Environment.M
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	Stuff::InitializeClasses()
+void Stuff::InitializeClasses(void)
 {
 	set_terminate(Terminate_Handler);
 
@@ -130,8 +126,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	Stuff::TerminateClasses()
+void Stuff::TerminateClasses(void)
 {
 	//
 	//-----------------------------------------------

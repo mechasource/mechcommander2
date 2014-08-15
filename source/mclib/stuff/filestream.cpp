@@ -13,7 +13,7 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Directory::Directory(
-	char *find_files,
+	PSTR find_files,
 	bool directories
 ):
 	fileEntries(NULL,NULL),
@@ -33,7 +33,7 @@ Directory::Directory(
 	// Now look for the files and add each entry into the chain
 	//---------------------------------------------------------
 	//
-	const char* file_name = gos_FindFiles(new_directory_string);
+	PCSTR file_name = gos_FindFiles(new_directory_string);
 	while (file_name)
 	{
 		MString file_name_string = file_name;
@@ -117,7 +117,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-char * Directory::GetCurrentFolderName( void )
+PSTR  Directory::GetCurrentFolderName( void )
 {
 	Check_Object(this);
 	if (folderWalker == NULL)
@@ -152,7 +152,7 @@ void Directory::AdvanceCurrentFolder( void )
 FileStream::ClassData*
 	FileStream::DefaultData = NULL;
 
-const char *
+PCSTR 
 	FileStream::WhiteSpace = " \t\n";
 
 char
@@ -207,7 +207,7 @@ FileStream::FileStream():
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 FileStream::FileStream(
-	const char* file_name,
+	PCSTR file_name,
 	WriteStatus writable
 ):
 	MemoryStream(DefaultData, NULL, 0)
@@ -228,7 +228,7 @@ FileStream::~FileStream()
 //
 void
 	FileStream::Open(
-		const char* file_name,
+		PCSTR file_name,
 		WriteStatus writable
 	)
 {
@@ -249,7 +249,7 @@ void
 	{
 		if (IsRedirected)
 		{
-			void (__stdcall *old_hook)(const char*, BYTE**, DWORD*) = Environment.HookGetFile;
+			void (__stdcall *old_hook)(PCSTR, PUCHAR*, DWORD*) = Environment.HookGetFile;
 			Environment.HookGetFile = NULL;
 			gos_GetFile(RedirectedName, &streamStart, &streamSize);
 			Environment.HookGetFile = old_hook;
@@ -277,7 +277,7 @@ void
 		writeEnabled = writable;
 		if (IgnoreReadOnlyFlag)
 		{
-			bool (__stdcall *old_hook)(const char*) = Environment.HookDoesFileExist;
+			UCHAR (__stdcall *old_hook)(PCSTR) = Environment.HookDoesFileExist;
 			Environment.HookDoesFileExist = NULL;
 			if (gos_DoesFileExist(file_name))
 				gos_FileSetReadWrite(file_name);
@@ -335,7 +335,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	FileStream::SetPointer(DWORD index)
+	FileStream::SetPointer(size_t index)
 {
 	Check_Object(this);
 	Verify(IsFileOpened());
@@ -346,7 +346,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MemoryStream&
-	FileStream::AdvancePointer(DWORD index)
+	FileStream::AdvancePointer(size_t index)
 {
 	Check_Object(this);
 	Verify(IsFileOpened());
@@ -357,7 +357,7 @@ MemoryStream&
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MemoryStream&
-	FileStream::RewindPointer(DWORD index)
+	FileStream::RewindPointer(size_t index)
 {
 	Check_Object(this);
 	Verify(IsFileOpened());
@@ -369,8 +369,8 @@ MemoryStream&
 //
 MemoryStream&
 	FileStream::ReadBytes(
-		void *ptr,
-		DWORD number_of_bytes
+		PVOID ptr,
+		size_t number_of_bytes
 	)
 {
 	Check_Object(this);
@@ -383,8 +383,8 @@ MemoryStream&
 //
 MemoryStream&
 	FileStream::WriteBytes(
-		const void *ptr,
-		DWORD number_of_bytes
+		PCVOID ptr,
+		size_t number_of_bytes
 	)
 {
 	Check_Object(this);
@@ -393,7 +393,7 @@ MemoryStream&
 	DWORD written =
 		gos_WriteFile(
 			fileHandle,
-			Cast_Pointer(BYTE*, const_cast<void*>(ptr)),
+			Cast_Pointer(PUCHAR, const_cast<PVOID>(ptr)),
 			number_of_bytes
 		);
 	Verify(written == number_of_bytes);
@@ -413,7 +413,7 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	Stuff::CreateDirectories(const char *directory_path)
+	Stuff::CreateDirectories(PCSTR directory_path)
 {
 	
 	if (directory_path == NULL)
@@ -422,8 +422,8 @@ bool
 	Check_Pointer(directory_path);
 
 
-	const char *start_position = directory_path;
-	const char *current_position = directory_path;
+	PCSTR start_position = directory_path;
+	PCSTR current_position = directory_path;
 
 	if (*current_position != '\\')
 	{
@@ -447,7 +447,7 @@ bool
 	while((current_position != NULL))
 	{
 		//make a substring with the path...
-		const char *next_slash;
+		PCSTR next_slash;
 		next_slash = strchr( current_position + 1, '\\' );
 
 		char *new_string = NULL;
@@ -455,7 +455,7 @@ bool
 		if (next_slash == NULL)
 		{
 			//copy the whole string
-			int length = strlen(start_position)+1;
+			size_t length = strlen(start_position)+1;
 			new_string = new char[length];
 			Check_Pointer(new_string);
 
@@ -474,7 +474,7 @@ bool
 			}
 
 			//copy the sub string
-			int length = next_slash - start_position;
+			size_t length = size_t(next_slash - start_position);
 			new_string = new char[length+1];
 			Check_Pointer(new_string);
 
@@ -495,7 +495,7 @@ bool
 
 
 		Check_Pointer(new_string);
-		delete new_string;
+		delete[] new_string;
 
 		current_position = next_slash;
 	}

@@ -11,9 +11,9 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MMIOstream ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-bool SingeBitStreamTest(int total_sections_to_write);
-bool MultipleBitStreamTest(int total_sections_to_write);
-bool FloatIntBitStreamTest(int total_sections_to_write);
+bool SingeBitStreamTest(size_t total_sections_to_write);
+bool MultipleBitStreamTest(size_t total_sections_to_write);
+bool FloatIntBitStreamTest(size_t total_sections_to_write);
 
 //
 //#############################################################################
@@ -48,7 +48,7 @@ bool
 //
 //#############################################################################
 
-bool SingeBitStreamTest(int total_sections_to_write)
+bool SingeBitStreamTest(size_t total_sections_to_write)
 {
 	bool *source_array_of_bools = new bool[total_sections_to_write];
 	Register_Pointer(source_array_of_bools);
@@ -182,7 +182,7 @@ MinMaxHolderOf<float>::MinMaxHolderOf()
 //#############################################################################
 
 
-bool FloatIntBitStreamTest(int total_sections_to_write)
+bool FloatIntBitStreamTest(size_t total_sections_to_write)
 {
 
 
@@ -374,7 +374,7 @@ bool FloatIntBitStreamTest(int total_sections_to_write)
 //
 //#############################################################################
 
-bool MultipleBitStreamTest(int total_sections_to_write)
+bool MultipleBitStreamTest(size_t total_sections_to_write)
 {
 
 	

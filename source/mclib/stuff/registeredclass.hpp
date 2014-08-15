@@ -72,7 +72,7 @@ namespace Stuff {
 		static ClassData*
 			FindClassData(ClassID class_id)
 				{
-					ATLVERIFY(static_cast<unsigned>(class_id) < ClassIDCount);
+					Verify(static_cast<unsigned>(class_id) < ClassIDCount);
 					return ClassDataArray[class_id];
 				}
 		static ClassData

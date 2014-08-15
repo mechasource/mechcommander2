@@ -110,7 +110,7 @@ void
 		// Isolate macro name
 		//-------------------
 		//
-		int len = p-buffer - 2;
+		size_t len = p-buffer - 2;
 		MString macro_name;
 		macro_name.AllocateLength(len+1);
 		char *t = macro_name;
@@ -701,7 +701,7 @@ void
 	//----------------------------
 	//
 	char *p;
-	if (!strnicmp(buffer, "include", 7))
+	if (!_strnicmp(buffer, "include", 7))
 	{
 		p = buffer+7;
 

@@ -79,17 +79,17 @@ namespace Stuff {
 		return *Cast_Pointer(BYTE*, &in);
 	}
 
-	DWORD
-		Scaled_Float_To_Bits(float in, float min, float max, int bits);
+	ULONG
+		Scaled_Float_To_Bits(float in, float min, float max, ULONG number_of_bits);
 	
 	float
-		Scaled_Float_From_Bits(DWORD in, float min, float max, int bits);
+		Scaled_Float_From_Bits(DWORD in, float min, float max, ULONG number_of_bits);
 
-	DWORD
-		Scaled_Int_To_Bits(int in, int min, int max, int bits);
+	ULONG
+		Scaled_Int_To_Bits(int in, int min, int max, ULONG number_of_bits);
 
 	int
-		Scaled_Int_From_Bits(DWORD in, int min, int max, int bits);
+		Scaled_Int_From_Bits(DWORD in, int min, int max, ULONG number_of_bits);
 
 	
 

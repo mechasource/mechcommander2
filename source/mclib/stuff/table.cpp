@@ -9,7 +9,7 @@
 #include "stuffheaders.hpp"
 
 
-#define VERIFY_INDEX(x) 		Verify(0 <= (x) && (x) < numItems)
+#define VERIFY_INDEX(x) 		Verify(0 <= intptr_t(x) && intptr_t(x) < numItems)
 
 //
 //###########################################################################
@@ -98,7 +98,7 @@ Table::~Table()
 {
 	Check_Object(this);
 	SetReleaseNode(NULL);
-	int i = numItems;
+	CollectionSize i = numItems;
 	while (i > 0) 
 	{
 		--i;
@@ -254,7 +254,7 @@ TableEntry*
 // CompareTableEntries
 //###########################################################################
 //
-int
+IteratorPosition
 	Table::CompareTableEntries(
       TableEntry*,
       TableEntry*
@@ -270,8 +270,7 @@ int
 // CompareValueToTableEntry
 //###########################################################################
 //
-int
-	Table::CompareValueToTableEntry(
+IteratorPosition Table::CompareValueToTableEntry(
       const void*,
       TableEntry*
    )
@@ -371,8 +370,9 @@ IteratorPosition
 	)
 {
 	Check_Object(this);
-	size_t n = numItems;
-	size_t i = 0, j;
+	CollectionSize n = numItems;
+	size_t i = 0;
+	IteratorPosition j;
 	IteratorPosition k;
 	
 	while (i < n) 
@@ -385,7 +385,7 @@ IteratorPosition
 		if ((k = CompareValueToTableEntry(value, array[j])) == 0)
 			return j;
 		
-		if (k < 0)
+		if (intptr_t(k) < 0)
 			n = j;
 		else
 			i = j + 1;
@@ -508,7 +508,7 @@ void
 	{
 		Check_Object(this);
 		Check_Pointer(array);
-		Verify(0 <= index && index < numItems);
+		Verify(0 <= intptr_t(index) && intptr_t(index) < numItems);
 		Check_Object(array[index]);
 
 		return array[index];
@@ -718,7 +718,7 @@ Plug
 		if (!table->HasUniqueEntries())
 		{
 			while (
-				index-1 >= 0 &&
+				intptr_t(index-1) >= 0 &&
 				table->CompareTableEntries(NthEntry(index-1), NthEntry(index)) == 0
 			)
 			{

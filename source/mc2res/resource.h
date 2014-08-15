@@ -21,6 +21,7 @@
 #define IDOBJFIRE                       12
 #define IDOBJARTILLERY                  13
 #define IDOBJTERROBJ                    14
+#define IDS_PROJNAME                    100
 #define IDR_MENU1                       101
 #define IDI_ICON1                       102
 #define IDD_DIALOG1                     103

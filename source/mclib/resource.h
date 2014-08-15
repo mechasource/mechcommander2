@@ -1,11 +1,8 @@
-//===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
-//===========================================================================//
-
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
-// Used by MCLib.rc
+// Microsoft Visual C++ generated include file.
+// Used by mclib.rc
 //
+#define IDS_PROJNAME                    100
 #define IDS_ERROR                       1000
 #define IDS_CANCEL                      1006
 #define IDS_OK                          1007

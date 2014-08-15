@@ -38,6 +38,7 @@
 #define IDC_FLATTEN                     126
 #define IDC_HAMMER                      127
 #define IDC_WRENCH                      128
+#define IDR_MAINFRAME				128
 #define IDI_ICON1                       128
 #define IDC_TARGET                      129
 #define IDC_DROPZONE                    130

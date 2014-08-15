@@ -35,12 +35,13 @@ END
 2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
     "\0"
 END
 
 3 TEXTINCLUDE 
 BEGIN
-    "\r\n"
+    "#include <mechcommander2.ver>\r\n"
     "\0"
 END
 
@@ -51,7 +52,7 @@ END
 // Bitmap
 //
 
-IDB_BITMAP1             BITMAP                  "res\\IC_Normal.BMP"
+IDB_BITMAP1             BITMAP                  "res\\ic_normal.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -60,7 +61,7 @@ IDB_BITMAP1             BITMAP                  "res\\IC_Normal.BMP"
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-128                     ICON                    "res\\ico128.ico"
+IDI_ICON1               ICON                    "res\\ico128.ico"
 210                     ICON                    "res\\ico210.ico"
 211                     ICON                    "res\\ico211.ico"
 
@@ -70,7 +71,7 @@ IDB_BITMAP1             BITMAP                  "res\\IC_Normal.BMP"
 //
 
 IDC_MC2ARROW            CURSOR                  "res\\arrow.cur"
-IDC_LINK                CURSOR                  "res\\Link.cur"
+IDC_LINK                CURSOR                  "res\\link.cur"
 IDC_UNLINK              CURSOR                  "res\\unlink.cur"
 IDC_UP                  CURSOR                  "res\\up.cur"
 IDC_HILLS               CURSOR                  "res\\cursor1.cur"
@@ -1589,6 +1590,7 @@ END
 // Generated from the TEXTINCLUDE 3 resource.
 //
 
+#include <mechcommander2.ver>
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

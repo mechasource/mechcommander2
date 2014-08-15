@@ -1,16 +1,56 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
-#include "MCLibresource.h"
+#include "resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "afxres.h"
+#include <winres.h>
+#include <verrsrc.h>
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include <winres.h>\r\n"
+    "#include <verrsrc.h>\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include <mechcommander2.ver>\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
 
 /////////////////////////////////////////////////////////////////////////////
 // English (U.S.) resources
@@ -21,111 +61,39 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
 
-#ifdef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// TEXTINCLUDE
-//
-
-1 TEXTINCLUDE DISCARDABLE 
-BEGIN
-    "MCLibresource.h\0"
-END
-
-2 TEXTINCLUDE DISCARDABLE 
-BEGIN
-    "#include ""afxres.h""\r\n"
-    "\0"
-END
-
-3 TEXTINCLUDE DISCARDABLE 
-BEGIN
-    "\r\n"
-    "\0"
-END
-
-#endif    // APSTUDIO_INVOKED
-
-
-#ifndef _MAC
-/////////////////////////////////////////////////////////////////////////////
-//
-// Version
-//
-
-VS_VERSION_INFO VERSIONINFO
- FILEVERSION 00,1,6,2522
- PRODUCTVERSION 00,1,6,2522
- FILEFLAGSMASK 0x3fL
-#ifdef _DEBUG
- FILEFLAGS 0x1L
-#else
- FILEFLAGS 0x0L
-#endif
- FILEOS 0x40004L
- FILETYPE 0x1L
- FILESUBTYPE 0x0L
-BEGIN
-    BLOCK "StringFileInfo"
-    BEGIN
-        BLOCK "040904b0"
-        BEGIN
-            VALUE "Comments", "\0"
-            VALUE "CompanyName", "Microsoft\0"
-            VALUE "FileDescription", "MechCommander 2 Resource DLL\0"
-            VALUE "FileVersion", "00,1,6,2522"
-            VALUE "InternalName", "MechCommander 2 Resource DLL\0"
-            VALUE "LegalCopyright", "Copyright © 2001 Microsoft\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "editores.dll\0"
-            VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "MechCommander 2\0"
-            VALUE "ProductVersion", "00,1,6,2522"
-            VALUE "SpecialBuild", "\0"
-        END
-    END
-    BLOCK "VarFileInfo"
-    BEGIN
-        VALUE "Translation", 0x409, 1200
-    END
-END
-
-#endif    // !_MAC
-
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
 //
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_ERROR               "Error"
     IDS_CANCEL              "Cancel"
     IDS_OK                  "OK"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_YES                 "Yes"
     IDS_NO                  "No"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SAVE_CAMERAS        "Save Current Camera"
     IDS_TERRAINS            "Terrains"
     IDS_BUILDINGS           "O&bjects"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_DIRTROAD            "Dirt Road"
     IDS_PAVED_ROAD          "Paved road"
     IDS_ROUGH               "Rough"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_GROUPS              "Markers"
     IDS_GROUP1              "Trees"
@@ -141,13 +109,13 @@ BEGIN
     IDS_STRING10111         "Regular Buildings"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SELECT              "Select"
     IDS_FLATTEN             "Flatten"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_SAVE_CAMERA_FAIL    "You need to save first!"
     IDS_NO_VERTEX_SEL       "You must first select some vertices!"
@@ -159,7 +127,7 @@ BEGIN
     IDS_MUST_HAVE_PLAYER    "You must have one player mech!"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_NEED_ENEMY          "You must have one enemy mech!"
     IDS_CANT_SAVE           "Can't save"
@@ -177,7 +145,7 @@ BEGIN
     IDS_ELAPSED_TIME        "Elapsed Mission Time"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_STRING10112         "Rocks"
     IDS_STRING10113         "Gulag Set Piece"
@@ -190,14 +158,14 @@ BEGIN
     IDS_STRING10120         "Dummy Objects"
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_UNNAMDE_FOREST      "Unnamed Forest %ld"
     IDS_TOO_MANY_PILOTS     "Too many units on map.  Limit is 104."
     IDS_INVALID_COLOR_MAP   "Color Map wrong size or not valid TGA."
 END
 
-STRINGTABLE DISCARDABLE 
+STRINGTABLE 
 BEGIN
     IDS_NO_PLAYER_UNITS     "Single-player Map: There are no player units. A player unit  needs to be placed to indicate the dropzone location."
 END
@@ -212,7 +180,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
+#include <mechcommander2.ver>
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

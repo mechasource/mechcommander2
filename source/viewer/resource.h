@@ -1,10 +1,8 @@
-//===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
-//===========================================================================//
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by viewer.rc
 //
+#define IDS_PROJNAME                    100
 #define IDI_ICON1                       101
 
 // Next default values for new objects

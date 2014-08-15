@@ -46,7 +46,7 @@
 // Check !=0 only in debug builds (can be continued)
 //
 #ifdef _ARMOR
-#define gosASSERT(x)	do { if(!(x)&&ErrorHandler(gos_ErrorVerify+gos_ErrorNoRegisters,#x)) ENTER_DEBUGGER } while(0)
+#define gosASSERT(x)	do { if(!(x)&&ErrorHandler(gos_ErrorVerify+gos_ErrorNoRegisters,#x)) ENTER_DEBUGGER } ATL_SUPPRESS_WARNING(4127) while(0)
 #else
 #define gosASSERT(x)	((void)0)
 #endif
@@ -54,18 +54,22 @@
 // Report an error if the condition is false
 //
 #ifdef _ARMOR
-#define gosREPORT(x,Message)	do { if(!(x)&&ErrorHandler(gos_ErrorMessage+gos_ErrorNoRegisters,Message)) ENTER_DEBUGGER } while(0)
+#define gosREPORT(x,Message)	do { if(!(x)&&ErrorHandler(gos_ErrorMessage+gos_ErrorNoRegisters,Message)) ENTER_DEBUGGER } ATL_SUPPRESS_WARNING(4127) while(0)
 #else
 #define gosREPORT(x,Message)	((void)0)
 #endif
 //
 // Display a message and enter exception handler (can not be continued)
 //
-#define STOP(x)		do { if(InternalFunctionStop x) ENTER_DEBUGGER } while(0)
+#define STOP(x) \
+	do { if(InternalFunctionStop x) ENTER_DEBUGGER } ATL_SUPPRESS_WARNING(4127) while(0)
+
 //
 // Display a message and enter exception handler (can be continued)
 //
-#define PAUSE(x)	do { if(InternalFunctionPause x) ENTER_DEBUGGER } while(0)
+#define PAUSE(x) \
+	do { if(InternalFunctionPause x) ENTER_DEBUGGER } ATL_SUPPRESS_WARNING(4127) while(0)
+
 //
 // Displays a message to the debuglog or OutputDebugString  -  Three parameters are required.
 //
@@ -310,7 +314,7 @@ typedef struct gosEnvironment {
 //
 void __stdcall GetGameOSEnvironment( PSTR CommandLine );
 //
-// Called by the Game to cause GameOS to quit and exit (at the end of the current frame - not immediatly)
+// Called by the Game to cause GameOS to quit and exit (at the end of the current frame - not immediately)
 //
 void __stdcall gos_TerminateApplication(void);
 //
@@ -958,18 +962,18 @@ void __stdcall gos_TextDrawV( PCSTR Message, PSTR arglist );
 // The whole file in read into memory, MemoryImage will point to the start of the file,
 // Size will be the size of the file.
 //
-void __stdcall gos_GetFile( PCSTR FileName, PUCHAR* MemoryImage, PULONG Size );
+void __stdcall gos_GetFile( PCSTR FileName, PUCHAR* MemoryImage, size_t* pSize );
 
 
 //
 // Opens a memory mapped file - returns a handle that must be passed to the Close function below.
 //
-ULONG __stdcall gos_OpenMemoryMappedFile( PCSTR FileName, PUCHAR* MemoryImage, PULONG Size );
+HANDLE __stdcall gos_OpenMemoryMappedFile( PCSTR FileName, PUCHAR* MemoryImage, size_t* pSize );
 
 //
 // Closes a memory mapped file
 //
-void __stdcall gos_CloseMemoryMappedFile( ULONG Handle );
+void __stdcall gos_CloseMemoryMappedFile( HANDLE Handle );
 
 
 //
@@ -3042,8 +3046,8 @@ class GosEventLog
 	static ULONG		LogOffset;		// Offset into log in ULONGS
 	static ULONG		LogMod;			// Mod in ULONGS
 	static ULONG		NullLog[16];
-	static UCHAR			WaitingToStart;
-	static UCHAR			LoggingInProgress;
+	static UCHAR		WaitingToStart;
+	static UCHAR		LoggingInProgress;
 
 	// after stopping, the following members point to the frozen log
 	static PSTR 		m_pLogStart1;

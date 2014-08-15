@@ -10,6 +10,7 @@
 
 #define ATL_SUPPRESS_WARNING_PUSH(x)    __pragma(warning(push)); __pragma(warning(disable: x))
 #define ATL_SUPPRESS_WARNING_POP        __pragma(warning(pop))
+#define ATL_SUPPRESS_WARNING(x)         __pragma(warning(suppress:x))
 #define ATL_ADD_LIBRARY(x)				__pragma(comment(lib, x))
 
 #define  _WIN32_WINNT   0x0501	// minimum Windows XP
@@ -22,6 +23,14 @@
 
 #define _CRT_SECURE_NO_WARNINGS 1
 
+// disable useless warnings when compiling with -Wall
+#pragma warning(disable: 4514 4710 4711)
+// uncomment for diagnostic messages
+#pragma warning(disable: 4625 4820)
+
+// temporary disable warnings when compiling with -Wall
+#pragma warning(push)
+#pragma warning(disable: 4191 4365)
 #include <atlbase.h>
 #if (_ATL_VER < 0x0700)	// linking with system (WDK) atl.dll
 extern ATL::CComModule& _Module;
@@ -42,6 +51,8 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 #include <mmsystem.h>
 #include <d3dtypes.h>
 #include <ddraw.h>
+#pragma warning(pop)
+
 // MClib
 #ifdef _DEBUG
 // _ARMOR;LAB_ONLY;WIN32;_DEBUG;_WINDOWS

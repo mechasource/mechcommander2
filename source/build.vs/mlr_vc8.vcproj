@@ -22,10 +22,11 @@
 			Name="Debug|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -66,6 +67,7 @@
 				DebugInformationFormat="3"
 				CallingConvention="2"
 				EnablePREfast="true"
+				OmitDefaultLibName="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -79,23 +81,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
-				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
-				Version="1.1"
-				LinkIncremental="1"
-				ModuleDefinitionFile="$(TargetName).def"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				SetChecksum="true"
-				SupportUnloadOfDelayLoadedDLL="true"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -105,12 +94,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -120,10 +103,11 @@
 			Name="Debug|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -163,6 +147,7 @@
 				DebugInformationFormat="3"
 				CallingConvention="2"
 				EnablePREfast="true"
+				OmitDefaultLibName="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -176,24 +161,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
-				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
-				Version="1.1"
-				LinkIncremental="1"
-				ModuleDefinitionFile="$(TargetName).def"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				SetChecksum="true"
-				SupportUnloadOfDelayLoadedDLL="true"
-				TargetMachine="17"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -205,12 +176,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -218,11 +183,11 @@
 			Name="Release|Win32"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
-			WholeProgramOptimization="1"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -263,6 +228,7 @@
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
+				OmitDefaultLibName="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -276,25 +242,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
-				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
-				Version="1.1"
-				LinkIncremental="1"
-				ModuleDefinitionFile="$(TargetName).def"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				SetChecksum="true"
-				SupportUnloadOfDelayLoadedDLL="true"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -306,12 +257,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -319,11 +264,11 @@
 			Name="Release|x64"
 			OutputDirectory="..\..\bin\$(PlatformName)_$(ConfigurationName)\"
 			IntermediateDirectory="$(TEMP)\$(SolutionName)\$(ProjectName)\$(PlatformName)_$(ConfigurationName)\"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			InheritedPropertySheets=".\mechcommander.vsprops"
 			UseOfATL="0"
 			CharacterSet="1"
-			WholeProgramOptimization="1"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -363,6 +308,7 @@
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CallingConvention="2"
+				OmitDefaultLibName="true"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -376,26 +322,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				RegisterOutput="true"
-				IgnoreImportLibrary="true"
-				AdditionalOptions=" -ignore:4199 -pdbcompress -dynamicbase -nxcompat"
-				Version="1.1"
-				LinkIncremental="1"
-				ModuleDefinitionFile="$(TargetName).def"
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				SetChecksum="true"
-				SupportUnloadOfDelayLoadedDLL="true"
-				TargetMachine="17"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -405,12 +335,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"

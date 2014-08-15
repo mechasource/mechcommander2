@@ -2,9 +2,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "MLRHeaders.hpp"
-
-#include "OwnTrace.hpp"
+#include "stdafx.h"
+#include "mlrheaders.hpp"
+#include "owntrace.hpp"
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	BitTrace *MLRPolyMesh_Clip;

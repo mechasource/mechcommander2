@@ -2,7 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "MLRHeaders.hpp"
+#include "stdafx.h"
+#include "mlrheaders.hpp"
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	BitTrace *MLR_I_DT_TMesh_Clip;

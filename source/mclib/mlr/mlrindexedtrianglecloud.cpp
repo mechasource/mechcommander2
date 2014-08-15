@@ -2,14 +2,15 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "MLRHeaders.hpp"
+#include "stdafx.h"
+#include "mlrheaders.hpp"
 
 #if !defined(MLR_MLRCLIPTRICK_HPP)
-	#include <MLR\MLRClipTrick.hpp>
+	#include <mlr\mlrcliptrick.hpp>
 #endif
 
 #if !defined(MLR_MLRINDEXEDTRIANGLECLOUD_HPP)
-	#include <MLR\MLRIndexedTriangleCloud.hpp>
+	#include <mlr\mlrindexedtrianglecloud.hpp>
 #endif
 
 extern DWORD gShowClippedPolys;

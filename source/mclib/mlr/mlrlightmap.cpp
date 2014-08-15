@@ -2,10 +2,11 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "MLRHeaders.hpp"
+#include "stdafx.h"
+#include "mlrheaders.hpp"
 
 #if !defined(MLR_MLRCLIPTRICK_HPP)
-	#include <MLR\MLRClipTrick.hpp>
+	#include <mlr\mlrcliptrick.hpp>
 #endif
 
 //#############################################################################

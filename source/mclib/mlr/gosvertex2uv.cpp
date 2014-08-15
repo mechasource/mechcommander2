@@ -2,8 +2,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "MLRHeaders.hpp"
-#include "MLR\GOSVertex2UV.hpp"
+#include "stdafx.h"
+#include "mlrheaders.hpp"
+#include "mlr\gosvertex2uv.hpp"
 
 //#############################################################################
 //##########################    GOSVertex2UV   ################################

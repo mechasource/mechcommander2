@@ -54,7 +54,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP"
+				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
@@ -149,7 +149,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP"
+				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				BasicRuntimeChecks="3"
@@ -247,7 +247,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP"
+				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -345,7 +345,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP"
+				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
@@ -500,6 +500,18 @@
 				</File>
 				<File
 					RelativePath="..\gui\logisticsscreen.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="common"
+				>
+				<File
+					RelativePath="..\include\mechresources.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\mechtypes.h"
 					>
 				</File>
 			</Filter>

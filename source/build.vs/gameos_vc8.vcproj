@@ -1462,124 +1462,24 @@
 					RelativePath="..\gameos\include\zping.h"
 					>
 				</File>
-				<Filter
-					Name="rm"
-					>
-					<File
-						RelativePath="..\gameos\include\zlib.old\deflate.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\include\zlib.old\infblock.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\include\zlib.old\infcodes.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\include\zlib.old\inffast.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\include\zlib.old\inffixed.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\include\zlib.old\inftrees.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\include\zlib.old\infutil.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\include\zlib.old\trees.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\include\zlib.old\zconf.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\include\zlib.old\zlib.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\include\zlib.old\zutil.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="zlib"
-					>
-					<File
-						RelativePath="..\gameos\src\zlib-1.2.8\crc32.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\src\zlib-1.2.8\deflate.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\src\zlib-1.2.8\gzguts.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\src\zlib-1.2.8\inffast.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\src\zlib-1.2.8\inffixed.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\src\zlib-1.2.8\inflate.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\src\zlib-1.2.8\inftrees.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\src\zlib-1.2.8\trees.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\src\zlib-1.2.8\zconf.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\src\zlib-1.2.8\zlib.h"
-						>
-					</File>
-					<File
-						RelativePath="..\gameos\src\zlib-1.2.8\zutil.h"
-						>
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="xnamath"
 				>
+			</Filter>
+			<Filter
+				Name="zlib"
+				>
+			</Filter>
+			<Filter
+				Name="common"
+				>
 				<File
-					RelativePath="..\gameos\include\xnamath\xnamath.h"
+					RelativePath="..\include\mechresources.h"
 					>
 				</File>
 				<File
-					RelativePath="..\gameos\include\xnamath\xnamathconvert.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\gameos\include\xnamath\xnamathmatrix.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\gameos\include\xnamath\xnamathmisc.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\gameos\include\xnamath\xnamathvector.inl"
+					RelativePath="..\include\mechtypes.h"
 					>
 				</File>
 			</Filter>

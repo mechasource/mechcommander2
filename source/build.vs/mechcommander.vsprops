@@ -6,7 +6,7 @@
 	>
 	<Tool
 		Name="VCCLCompilerTool"
-		AdditionalIncludeDirectories="$(gameos_dir)/include;$(mclib_dir)"
+		AdditionalIncludeDirectories="../include;$(gameos_dir)/include;$(mclib_dir)"
 	/>
 	<Tool
 		Name="VCLinkerTool"

@@ -54,7 +54,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP"
+				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				BasicRuntimeChecks="3"
@@ -151,7 +151,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP"
+				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				BasicRuntimeChecks="3"
@@ -251,7 +251,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP"
+				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
@@ -351,7 +351,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-sdl -MP"
+				AdditionalOptions="-sdl -MP -Wall"
 				Optimization="3"
 				FavorSizeOrSpeed="2"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
@@ -514,6 +514,18 @@
 			<Filter
 				Name="extra"
 				>
+			</Filter>
+			<Filter
+				Name="common"
+				>
+				<File
+					RelativePath="..\include\mechresources.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\mechtypes.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

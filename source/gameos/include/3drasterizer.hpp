@@ -62,7 +62,7 @@ void __stdcall DestroyRenderToTexture(void);
 
 // RenderStates.cpp
 extern UCHAR DirtyStates;
-extern BYTE UpdatedState[gos_MaxState];
+extern UCHAR UpdatedState[gos_MaxState];
 void __stdcall FlushRenderStates(void);
 
 // 3DRasterizer.hpp

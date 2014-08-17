@@ -101,8 +101,8 @@ typedef float			real;
 //
 // We have modified imagehlp.h so that it does not require a lot more platformsdk files.
 //
-#define WINTRUST_H
-#define ULONG_PTR DWORD
+//#define WINTRUST_H
+//#define ULONG_PTR DWORD
 #include "imagehlp.h"
 //
 // Debugging library (Win2K only - from the platform SDK)

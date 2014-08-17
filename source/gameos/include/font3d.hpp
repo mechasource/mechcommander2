@@ -24,7 +24,7 @@ typedef struct {
 	ULONG dwWidths[256];
 	int nA[256];
 	int nC[256];
-	BYTE bPixels[0];
+	UCHAR bPixels[0];
 } D3DFontData;
 
 #pragma pack(push,1)
@@ -41,10 +41,10 @@ typedef struct
 	int iWeight;				// weight of font created
 	int iTextureCount; 
 	ULONG dwFontHeight;			// height in pixels of the resulatant font
-	BYTE bTexture[256];			// indicate which texture each character is on
-	BYTE bX[256];				// indicates x position of each character on it's texture
-	BYTE bY[256];				// indicates y position of each character on it's texture
-	BYTE bW[256];				// indicates width of each character in the texture
+	UCHAR bTexture[256];			// indicate which texture each character is on
+	UCHAR bX[256];				// indicates x position of each character on it's texture
+	UCHAR bY[256];				// indicates y position of each character on it's texture
+	UCHAR bW[256];				// indicates width of each character in the texture
 	signed char cA[256];		// indicates amount of space to add before each character (may be -)
 	signed char cC[256];		// indicates amount of space to add after each character (may be -)
 } D3DFontData1;
@@ -52,7 +52,7 @@ typedef struct
 typedef struct
 {
 	ULONG dwSize;
-	BYTE bPixels[0];
+	UCHAR bPixels[0];
 } D3DFontTexture;
 
 #pragma pack( pop )
@@ -77,13 +77,13 @@ typedef struct _FontInfo
 	ULONG		Across;					// Number of characters across one line
 	ULONG		Aliased;				// True if 4444 texture (may be aliased - else 1555 keyed)
 	ULONG		FromTextureHandle;		// True is from a texture handle
-	BYTE		BlankPixels[256-32];	// Empty pixels before character
-	BYTE		UsedPixels[256-32];		// Width of character
-	BYTE		TopU[256-32];
-	BYTE		TopV[256-32];			// Position of character
-	BYTE		TopOffset[256-32];		// Offset from top (number of blank lines)
-	BYTE		RealHeight[256-32];		// Height of character
-	BYTE		TextureHandle[256-32];	// Which texture handle to use
+	UCHAR		BlankPixels[256-32];	// Empty pixels before character
+	UCHAR		UsedPixels[256-32];		// Width of character
+	UCHAR		TopU[256-32];
+	UCHAR		TopV[256-32];			// Position of character
+	UCHAR		TopOffset[256-32];		// Offset from top (number of blank lines)
+	UCHAR		RealHeight[256-32];		// Height of character
+	UCHAR		TextureHandle[256-32];	// Which texture handle to use
 	ULONG		NumberOfTextures;		// Number of texture handles used (normally 1)
 	HFONT		hFontTTF;				// handle to a GDI font
 	ULONG		Texture[8];				// Texture handle array

@@ -156,7 +156,7 @@ namespace Browse
         CItem* GetNext(POSITION&);
         CItem* GetPrev(POSITION&);
         CItem* GetHead(void);
-        unsigned int GetSize(void);
+        uint32_t GetSize(void);
 
         void * operator new(size_t size);
         void operator delete( void* ptr );
@@ -483,9 +483,9 @@ public:
     virtual bool Filter( TableList::TableItem & tableItem );
 
     // filter attributes specific to the game list
-    void SetPingFilter(unsigned int minPing, unsigned int maxPing);
-    unsigned int GetMaxPing( void ) const;
-    unsigned int GetMinPing( void ) const;
+    void SetPingFilter(uint32_t minPing, uint32_t maxPing);
+    uint32_t GetMaxPing( void ) const;
+    uint32_t GetMinPing( void ) const;
     void EnablePingFilter( bool val );
     bool GetPingFilterEnabled( void ) const;
 
@@ -495,10 +495,10 @@ public:
     void EnableAvailableFilter( bool val );
     bool GetAvailableFilterEnabled( void ) const;
 
-    bool SetPlayerCountFilter(unsigned int minPlayers,
-                              unsigned int maxPlayers ) ;
-    unsigned int GetMinPlayers( void ) const;
-    unsigned int GetMaxPlayers( void ) const;
+    bool SetPlayerCountFilter(uint32_t minPlayers,
+                              uint32_t maxPlayers ) ;
+    uint32_t GetMinPlayers( void ) const;
+    uint32_t GetMaxPlayers( void ) const;
     void EnablePlayerCountFilter( bool val );
     bool GetPlayerCountFilterEnabled( void ) const;
 
@@ -522,14 +522,14 @@ private:
 
     // pings
     bool    m_pingOn;
-    unsigned int     m_minPing, m_maxPing;
+    uint32_t     m_minPing, m_maxPing;
     // is game available to be played?
     bool    m_availableOn;
     // does game have at least one player in it?
     bool    m_activeOn;
     // player count
     bool    m_playerCountOn;
-    unsigned int     m_minPlayers, m_maxPlayers;
+    uint32_t     m_minPlayers, m_maxPlayers;
     // game type
     bool    m_gameTypeOn;
     char *  m_gameType;

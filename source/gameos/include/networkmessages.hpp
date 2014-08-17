@@ -97,7 +97,7 @@ class FIMessageHeader
 			flags &= ~GuaranteedFlag;
 		}
 
-		inline void SetType(unsigned int new_type)
+		inline void SetType(uint32_t new_type)
 		{
 			gosASSERT(new_type < 0x3FF);
 			flags &= ~TypeMask; // clear the type

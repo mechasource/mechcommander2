@@ -38,7 +38,7 @@ public:
 
 	// data
 	FIDPMessage *	messageDescriptor;
-	unsigned int	fileID;
+	uint32_t	fileID;
 	FILE *			fileToTransfer;
 	char *			fileName;
 	char *			relativeFilePath;

@@ -1706,11 +1706,11 @@ typedef enum gosNetFlags {
 //
 // These are the system messages that may be recieved by the application
 //
-const UCHAR gosNet_PlayerAdded=240;		// FromID will contain the new PlayerID of the player. gos_NetInformation(gos_NumberOfPlayers) will be greater than last game logic.
-const UCHAR gosNet_PlayerDeleted=241;	// FromID will contain the old PlayerID of the player. gos_NetInformation will work with this ID only for the remainder of the current GameLogic. (Packets sent to the player will be ignored)
-const UCHAR gosNet_GameEnded=242;		// The server has ended the network game. This is the last packet the game will see.
-const UCHAR gosNet_Ping=243;				// Used to send a ping packet. You will eventually receive back a ping packet containing four ULONG containing the milliseconds time at each end of a 'double ping'.
-const UCHAR gosNet_Heartbeat=244;		// Used to send a heartbeat packet to keep the outbound window up to date.
+cuint8_t gosNet_PlayerAdded=240;		// FromID will contain the new PlayerID of the player. gos_NetInformation(gos_NumberOfPlayers) will be greater than last game logic.
+cuint8_t gosNet_PlayerDeleted=241;	// FromID will contain the old PlayerID of the player. gos_NetInformation will work with this ID only for the remainder of the current GameLogic. (Packets sent to the player will be ignored)
+cuint8_t gosNet_GameEnded=242;		// The server has ended the network game. This is the last packet the game will see.
+cuint8_t gosNet_Ping=243;				// Used to send a ping packet. You will eventually receive back a ping packet containing four ULONG containing the milliseconds time at each end of a 'double ping'.
+cuint8_t gosNet_Heartbeat=244;		// Used to send a heartbeat packet to keep the outbound window up to date.
 
 // This is a network packet header for sent and recieved packets. This is not sent 
 // with each packet, it just contains packet information
@@ -1769,7 +1769,7 @@ void __stdcall gos_NetServerCommands( gos_NetCommands Command, ULONG Data1 );
 //
 // Seed the random number generator
 //
-void __stdcall gos_srand( unsigned int seed );
+void __stdcall gos_srand( uint32_t seed );
 //
 // Return a random number between 0 and 32767
 //
@@ -2069,9 +2069,9 @@ MECH_IMPEXP HRESULT MECH_CALL gos_DrawQuads(pgos_VERTEX Vertices, int NumVertice
 // The vertex colors in the array may be changed in some wireframe modes. Otherwise the data is
 // not altered.
 //
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray1( pgos_VERTEX pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices );
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray2( pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices );
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray3( pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices );
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices );
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices );
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices );
 
 //
 // Set a renderstate

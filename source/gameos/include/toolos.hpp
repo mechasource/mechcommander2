@@ -57,13 +57,13 @@ void __stdcall gos_TriggerThread( DWORD ThreadHandle, bool* ThreadFinished, void
 // LZ Compression - returns length of compressed destination buffer
 //
 //
-DWORD __stdcall gos_LZCompress( BYTE* dest, BYTE* src, DWORD srcLen, DWORD destLen=0 );
+DWORD __stdcall gos_LZCompress( PUCHAR dest, PUCHAR src, DWORD srcLen, DWORD destLen=0 );
 //
 //
 // LZ Decompression routine, returns length to decompressed output in dest buffer
 //
 //
-DWORD __stdcall gos_LZDecompress( BYTE* dest, BYTE* src, DWORD srcLen );
+DWORD __stdcall gos_LZDecompress( PUCHAR dest, PUCHAR src, DWORD srcLen );
 
 
 

@@ -1,19 +1,8 @@
-#pragma once
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 // SessionManager.h: interface for the SessionManager class.
 //
-#include "networkingglobals.hpp"
-#include "flinkedlist.hpp"
-#include "session.hpp"
-#include "netplayer.hpp"
-#include "networkmessages.hpp"
-
-typedef void(*LPVOIDCALLBACK)(void);
-
-#include "network.hpp"
-
 //============================================================
 //
 // Contents:  Low level networking
@@ -24,9 +13,16 @@ typedef void(*LPVOIDCALLBACK)(void);
 // This unpublished sourcecode is PROPRIETARY and CONFIDENTIAL               
 //============================================================
 
+#pragma once
+
+#include "networkingglobals.hpp"
+#include "flinkedlist.hpp"
 #include "session.hpp"
+#include "netplayer.hpp"
+#include "networkmessages.hpp"
+#include "network.hpp"
 
-
+typedef void(__stdcall *LPVOIDCALLBACK)(void);
 
 //
 // Current session
@@ -123,7 +119,7 @@ typedef struct _DPAddressInfo
 
 class SessionManager
 {
-	public:
+public:
 
 	FLinkedList<FIDPSession>	listOfSessions;
 	FLinkedList<FIDPPlayer>		listOfPlayers;
@@ -144,10 +140,10 @@ class SessionManager
 	// rtPlayerListIterator is used to iterate the player list from the
 	// receiveThread.
 	FListIterator<FIDPPlayer> *rtPlayerListIterator;
-	
+
 	// this list is filled in with players who have dropped out.
 	DPID cancelledPlayerID[MAXPLAYERS];
-	
+
 	FIServerIDMessage *serverIDMessage;
 
 	HANDLE hPlayerEvent;
@@ -163,8 +159,8 @@ class SessionManager
 	BOOL inReceiveThread; // TRUE while in ReceiveThread, FALSE while in another thread.
 	BOOL DisabledCallerID;
 	BOOL CallerIDChanged[6];
-	
-	
+
+
 	long enterGameTime;
 
 
@@ -189,11 +185,11 @@ class SessionManager
 	// gets a list of player ids from the server.
 	BOOL canSendGuaranteedMessages;
 
-	
+
 
 
 	int NetworkProtocolFlags;
-	
+
 	UCHAR messageBuffer[1024];
 
 
@@ -217,7 +213,7 @@ class SessionManager
 	FIVerifyCluster *verifyClusterBuffer;
 	FIVerifyCluster *verifyMessageCluster[MAXPLAYERS];
 	DPID receiveThreadPlayerIDs[MAXPLAYERS];
-	
+
 	int serverOrder[MAXPLAYERS];
 	ULONG pingUpdateTime;
 	ULONG pingUpdateFrequency;
@@ -240,29 +236,29 @@ class SessionManager
 	void EnumeratePlayers(FIDPSession *session);
 
 	void AddPlayerOrGroup(
-						ULONG dwPlayerType,
-						DPID dpId,
-						DPID dpIdParent,
-						LPDPNAME dpnName,
-						ULONG dwFlags);
-	
+		ULONG dwPlayerType,
+		DPID dpId,
+		DPID dpIdParent,
+		LPDPNAME dpnName,
+		ULONG dwFlags);
+
 	// DeletePlayerOrGroup is called when a player or group leaves the
 	// game -- after calling AppCallback.  It actually deletes this player
 	// or group from the linked list.
 	void DeletePlayerOrGroup(
-						ULONG dwPlayerType,
-						DPID dpId);
+		ULONG dwPlayerType,
+		DPID dpId);
 
 
 	// PlayerOrGroupLeaving is called when a player or group leaves the
 	// game -- before calling AppCallback.
 	void PlayerOrGroupLeaving(	ULONG dwPlayerType,
-								DPID dpId);
-	
+		DPID dpId);
+
 	void HandleApplicationMessage(FIDPMessage *msg);
 
 	void UpdatePlayerGuaranteedMessages
-			(FIDPPlayer *player, ULONG time);
+		(FIDPPlayer *player, ULONG time);
 
 	// ProcessGuaranteedMessages is called by ProcessApplicationMessages
 	// once all messages have been initially handled.  Guaranteed messages
@@ -282,9 +278,9 @@ class SessionManager
 
 
 public:
-		// Returns the session in the listOfSessions with a matching guid
-		// or NULL if there is no match.
-		FIDPSession *FindMatchingSession(LPGUID pguid);
+	// Returns the session in the listOfSessions with a matching guid
+	// or NULL if there is no match.
+	FIDPSession *FindMatchingSession(LPGUID pguid);
 private:
 
 
@@ -294,24 +290,24 @@ private:
 	// itself cannot be a member function of a class, the callback
 	// bounces the message into the class using the lpContext member.
 	BOOL FAR PASCAL AddConnection(
-						LPCGUID     lpguidSP,
-						PVOID		lpConnection,
-						ULONG		dwConnectionSize,
-						LPCDPNAME   lpName,
-						ULONG 		dwFlags,
-						PVOID 		lpContext);
+		LPCGUID     lpguidSP,
+		PVOID		lpConnection,
+		ULONG		dwConnectionSize,
+		LPCDPNAME   lpName,
+		ULONG 		dwFlags,
+		PVOID 		lpContext);
 
 	BOOL FAR PASCAL AddSession(
-						LPCDPSESSIONDESC2 lpThisSD,
-						LPDWORD lpdwTimeOut,
-						ULONG dwFlags,
-						PVOID lpContext
-						);
+		LPCDPSESSIONDESC2 lpThisSD,
+		PULONG lpdwTimeOut,
+		ULONG dwFlags,
+		PVOID lpContext
+		);
 
 	BOOL FAR PASCAL NewPlayerEnumeration(DPID dp_id,
-										ULONG dwPlayerType,
-										LPCDPNAME lpName,
-										ULONG dwFlags);
+		ULONG dwPlayerType,
+		LPCDPNAME lpName,
+		ULONG dwFlags);
 
 	// RTProcessApplicationMessage is called by the receive thread when
 	// a new application message arrives.
@@ -323,18 +319,18 @@ private:
 
 	// returns a DPID from a player number
 	DPID RTGetIDFromPlayerNumber(int pn);
-	
+
 	FIDPPlayer *RTGetPlayer(DPID id);
 
 	void ClearSessionList(void);
-	
+
 
 	void HandlePreSystemMessage(FIDPMessage *msg);
 	void HandlePostSystemMessage(FIDPMessage *msg);
 
 	void SetupMessageSendCounts(
-						FIGuaranteedMessageHeader *message,
-						FLinkedList<FIDPPlayer> *player_list);
+		FIGuaranteedMessageHeader *message,
+		FLinkedList<FIDPPlayer> *player_list);
 
 	// SendPreIDGuaranteedMessages is called once when the new player
 	// gets a list of player numbers and the server ID.
@@ -346,209 +342,209 @@ private:
 	void GivePlayerAnID(FIDPPlayer *player);
 
 
-	public:
-		
-		SessionManager(GUID app_guid);
-		
-		virtual ~SessionManager(void);
+public:
 
-		virtual void destroy (void);
+	SessionManager(GUID app_guid);
 
+	virtual ~SessionManager(void);
 
-		friend BOOL FAR PASCAL DPSessionMgrSessionsCallback(
-						LPCDPSESSIONDESC2	lpSessionDesc,
-						LPDWORD				lpdwTimeOut,
-						ULONG				dwFlags,
-						PVOID				lpContext);
-
-		friend BOOL FAR PASCAL EnumPlayersCallback (DPID dpId,
-										ULONG dwPlayerType,
-										LPCDPNAME lpName,
-										ULONG dwFlags,
-										PVOID lpContext);
-
-		friend BOOL FAR PASCAL EnumGroupsCallback (DPID dpId,
-									  ULONG dwPlayerType,
-									  LPCDPNAME lpName,
-									  ULONG dwFlags,
-									  PVOID lpContext);
-
-		friend ULONG WINAPI
-			SessionManagerReceiveThread(PVOID lpThreadParameter);
+	virtual void destroy (void);
 
 
-		// ReceiveThread is called by the SessionManagerReceiveThread
-		// callback to handle thread events.
-		int ReceiveThread(void);
+	friend BOOL FAR PASCAL DPSessionMgrSessionsCallback(
+		LPCDPSESSIONDESC2	lpSessionDesc,
+		PULONG				lpdwTimeOut,
+		ULONG				dwFlags,
+		PVOID				lpContext);
+
+	friend BOOL FAR PASCAL EnumPlayersCallback (DPID dpId,
+		ULONG dwPlayerType,
+		LPCDPNAME lpName,
+		ULONG dwFlags,
+		PVOID lpContext);
+
+	friend BOOL FAR PASCAL EnumGroupsCallback (DPID dpId,
+		ULONG dwPlayerType,
+		LPCDPNAME lpName,
+		ULONG dwFlags,
+		PVOID lpContext);
+
+	friend ULONG WINAPI
+		SessionManagerReceiveThread(PVOID lpThreadParameter);
 
 
-
-		// InitializeConnection is called by one of the following functions
-		// to allow the user to bypass the crappy windows dialogs.
-		long InitializeConnection(
-			DPCOMPOUNDADDRESSELEMENT *compound_address, int n_items);
-
-		long Dial(void);
-		void CancelDialing(void);
-
-
-		// Call this function at program start up to find out if
-		// we were launched from a lobby.
-		BOOL WasLaunchedFromLobby(void);
-
-		// If we were launched from a lobby, SetupLobbyConnection creates
-		// a protocol, session, and player to start the game.
-		ULONG SetupLobbyConnection(LPVOIDCALLBACK create_callback,LPVOIDCALLBACK destroy_callback);
-
-
-		// returns the name of the modem at index or NULL if index
-		// is greater than the # of modems.
-		char *GetModemName(long index);
-
-		// Host or join a session
-		//
-		// This must be done before attempting to Send or Receive
-		// any messages
-		// A return value of DP_OK means it worked
-		//	A return value of -1 means the guid passed to JoinSession is
-		// invalid.  Any other return value is a directplay error code.
-		HRESULT HostSession(FIDPSession& new_session, char *player_name);
-
-		HRESULT JoinSession(LPGUID p_guid, char *player_name);
-
-		// LockSession can only be done by the host.  If successful, it
-		// returns 1, else it returns 0
-		int LockSession(void);
-
-		// LeaveSession kills the current player and removes him from the session.
-		int LeaveSession(void);
-
-
-		void CreateGroup 
-			(	LPDPID id, 
-				char* name, 
-				PVOID data = NULL, 
-				ULONG size = 0, 
-				ULONG flags = 0);
-
-		void SetGroupData 
-			(	DPID id, 
-				PVOID data, 
-				ULONG size, 
-				ULONG flags = 0);
-
-		// If player_id is 0 or not filled in, the local player is
-		// added.  If the group doesn't exist, the player isn't added.
-		// returns 1 if successful, 0 if not.
-		int AddPlayerToGroup(DPID group_id, DPID player_id=0);
-
-		int RemovePlayerWithID(DPID player_id);
-
-		int RemovePlayerFromGame(FIDPPlayer *p);
-
-		// Returns 1 if successful, 0 if not.
-		int RemovePlayerFromGroup(DPID group_id, DPID player_id=0);
-
-		void GetPlayerListForGroup(
-					DPID id, 
-					FLinkedList<FIDPPlayer> *player_list);
+	// ReceiveThread is called by the SessionManagerReceiveThread
+	// callback to handle thread events.
+	int ReceiveThread(void);
 
 
 
-		// 3. Send a message
-		//
-		// Messages can be broadcasted to all players,
-		// sent to a group, or
-		// sent to individual players.
+	// InitializeConnection is called by one of the following functions
+	// to allow the user to bypass the crappy windows dialogs.
+	long InitializeConnection(
+		DPCOMPOUNDADDRESSELEMENT *compound_address, int n_items);
 
-		void SendMessageToGroupGuaranteed(
-						DPID group_id, 
-						FIGuaranteedMessageHeader *message, 
-						ULONG size);
-		
-		void SendMessageToPlayerGuaranteed(
-						DPID player_id, 
-						FIGuaranteedMessageHeader *message, 
-						ULONG size,
-						BOOL set_send_count = TRUE);
-		
-		void SendMessageToServerGuaranteed(
-						FIGuaranteedMessageHeader *message, 
-						ULONG size);
-						
-		void BroadcastMessage(FIMessageHeader *message, ULONG size);
-		
-		void SendMessageToServer(
-						FIMessageHeader *message, 
-						ULONG size);
-		
-		HRESULT SendMessage(
-						DPID group_or_player_id,
-						FIMessageHeader *message, 
-						ULONG size);
-
-		HRESULT SendGOSMessage(NetworkMessageContainer& message_info);
-
-		void SendMessageFromInfo(FIDPMessage *message);
-
-		int SendVerifies(void);
+	long Dial(void);
+	void CancelDialing(void);
 
 
-		// Accessor functions to update lists of network specifics
-		FLinkedList<FIDPSession> *GetSessions(bool refresh=true);
-		FLinkedList<FIDPPlayer> *GetPlayers(FIDPSession *session=NULL);
-		
+	// Call this function at program start up to find out if
+	// we were launched from a lobby.
+	BOOL WasLaunchedFromLobby(void);
 
-		inline FIDPSession *GetCurrentSession(void)
-		{
-			return currentSession;
-		}
-
-		inline FIDPPlayer *GetLocalPlayer(void)
-		{
-			return thisPlayer;
-		}
-
-		DPID GetServerID(void)
-		{
-			return serverID;
-		}
+	// If we were launched from a lobby, SetupLobbyConnection creates
+	// a protocol, session, and player to start the game.
+	ULONG SetupLobbyConnection(LPVOIDCALLBACK create_callback,LPVOIDCALLBACK destroy_callback);
 
 
-		// FindSession returns the session with the corresponding id or NULL
-		// if no match is found.
-		FIDPSession *FindSession(int session_id);
+	// returns the name of the modem at index or NULL if index
+	// is greater than the # of modems.
+	char *GetModemName(long index);
 
-		// IsLocked returns the status of the session with the given session_id.
-		// If the session_id is -1, it returns the status of the current session.
-		BOOL IsLocked(int session_id = -1);
+	// Host or join a session
+	//
+	// This must be done before attempting to Send or Receive
+	// any messages
+	// A return value of DP_OK means it worked
+	//	A return value of -1 means the guid passed to JoinSession is
+	// invalid.  Any other return value is a directplay error code.
+	HRESULT HostSession(FIDPSession& new_session, char *player_name);
 
-		FIDPPlayer *GetPlayerNumber(long i);
+	HRESULT JoinSession(LPGUID p_guid, char *player_name);
 
-		FIDPPlayer *GetPlayer(unsigned long id);
+	// LockSession can only be done by the host.  If successful, it
+	// returns 1, else it returns 0
+	int LockSession(void);
 
-		inline BOOL IsLocalHost(void)
-		{
-			return bSessionHost;
-		}
+	// LeaveSession kills the current player and removes him from the session.
+	int LeaveSession(void);
 
 
-		// ProcessMessages should be called to get all new messages and
-		// send guaranteed and file messages.
-		void ProcessMessages(void);
+	void CreateGroup 
+		(	LPDPID id, 
+		char* name, 
+		PVOID data = NULL, 
+		ULONG size = 0, 
+		ULONG flags = 0);
 
-		//ProcessSystemMessages processes all of the system messages in the
-		//receive buffer.  If the application needs to deal with them
-		//individually, the sys_callback function is called for each one.
-		int ProcessSystemMessages(void);
+	void SetGroupData 
+		(	DPID id, 
+		PVOID data, 
+		ULONG size, 
+		ULONG flags = 0);
 
-		int ProcessApplicationMessages(void);
+	// If player_id is 0 or not filled in, the local player is
+	// added.  If the group doesn't exist, the player isn't added.
+	// returns 1 if successful, 0 if not.
+	int AddPlayerToGroup(DPID group_id, DPID player_id=0);
 
-		// UpdateGuaranteedMessages should be sent by the application???
-		void UpdateGuaranteedMessages(void);
+	int RemovePlayerWithID(DPID player_id);
 
-		
-		
+	int RemovePlayerFromGame(FIDPPlayer *p);
+
+	// Returns 1 if successful, 0 if not.
+	int RemovePlayerFromGroup(DPID group_id, DPID player_id=0);
+
+	void GetPlayerListForGroup(
+		DPID id, 
+		FLinkedList<FIDPPlayer> *player_list);
+
+
+
+	// 3. Send a message
+	//
+	// Messages can be broadcasted to all players,
+	// sent to a group, or
+	// sent to individual players.
+
+	void SendMessageToGroupGuaranteed(
+		DPID group_id, 
+		FIGuaranteedMessageHeader *message, 
+		ULONG size);
+
+	void SendMessageToPlayerGuaranteed(
+		DPID player_id, 
+		FIGuaranteedMessageHeader *message, 
+		ULONG size,
+		BOOL set_send_count = TRUE);
+
+	void SendMessageToServerGuaranteed(
+		FIGuaranteedMessageHeader *message, 
+		ULONG size);
+
+	void BroadcastMessage(FIMessageHeader *message, ULONG size);
+
+	void SendMessageToServer(
+		FIMessageHeader *message, 
+		ULONG size);
+
+	HRESULT SendMessage(
+		DPID group_or_player_id,
+		FIMessageHeader *message, 
+		ULONG size);
+
+	HRESULT SendGOSMessage(NetworkMessageContainer& message_info);
+
+	void SendMessageFromInfo(FIDPMessage *message);
+
+	int SendVerifies(void);
+
+
+	// Accessor functions to update lists of network specifics
+	FLinkedList<FIDPSession> *GetSessions(bool refresh=true);
+	FLinkedList<FIDPPlayer> *GetPlayers(FIDPSession *session=NULL);
+
+
+	inline FIDPSession *GetCurrentSession(void)
+	{
+		return currentSession;
+	}
+
+	inline FIDPPlayer *GetLocalPlayer(void)
+	{
+		return thisPlayer;
+	}
+
+	DPID GetServerID(void)
+	{
+		return serverID;
+	}
+
+
+	// FindSession returns the session with the corresponding id or NULL
+	// if no match is found.
+	FIDPSession *FindSession(int session_id);
+
+	// IsLocked returns the status of the session with the given session_id.
+	// If the session_id is -1, it returns the status of the current session.
+	BOOL IsLocked(int session_id = -1);
+
+	FIDPPlayer *GetPlayerNumber(long i);
+
+	FIDPPlayer *GetPlayer(unsigned long id);
+
+	inline BOOL IsLocalHost(void)
+	{
+		return bSessionHost;
+	}
+
+
+	// ProcessMessages should be called to get all new messages and
+	// send guaranteed and file messages.
+	void ProcessMessages(void);
+
+	//ProcessSystemMessages processes all of the system messages in the
+	//receive buffer.  If the application needs to deal with them
+	//individually, the sys_callback function is called for each one.
+	int ProcessSystemMessages(void);
+
+	int ProcessApplicationMessages(void);
+
+	// UpdateGuaranteedMessages should be sent by the application???
+	void UpdateGuaranteedMessages(void);
+
+
+
 };
 
 

@@ -83,6 +83,8 @@ const int					tFlag_FormatShift = 10;	// Bits 10,11,12 used for format
 const USHORT					FormatMask = (7<<tFlag_FormatShift);
 const USHORT					tFlag_Special=8192;	// Special texture (font, chess, or color mipmap)
 
+
+
 typedef enum EGraphicsMemType { 
 	gmt_All, gmt_Original, gmt_SysMem, gmt_VidMem
 } EGraphicsMemType;

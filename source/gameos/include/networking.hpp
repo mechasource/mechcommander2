@@ -67,13 +67,13 @@ public:
 
 	// {type} is the messsage type.  This value should be between GOSFIRSTAPPMESSAGETYPE
 	// and GOSLASTAPPMESSAGETYPE.  If not, the send will result in an error.
-	unsigned int	type;
+	uint32_t	type;
 
 	// {data} is the information sent across the network.
-	BYTE*			buffer;
+	PUCHAR			buffer;
 
 	// Number of bytes to be sent or number of bytes received.
-	unsigned int	messageSize;
+	uint32_t	messageSize;
 	
 	// Sending: {guaranteed} is false by default.  If true, this message is
 	// sent guaranteed.  Use this flag sparingly.
@@ -98,7 +98,7 @@ public:
 
 
 	// Priority of zero is the default.  Higher number means a higher priority message.
-	unsigned int			priority;
+	uint32_t			priority;
 
 	NetworkMessageContainer();
 	

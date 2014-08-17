@@ -165,7 +165,7 @@ void __stdcall MD5SecurityCheckStop();
 
 
 void __stdcall MD5Init (MD5_CTX *);
-void __stdcall MD5Update  (MD5_CTX *, unsigned char *, unsigned int);
+void __stdcall MD5Update  (MD5_CTX *, unsigned char *, uint32_t);
 void __stdcall MD5Final (unsigned char [16], MD5_CTX *);
 
 

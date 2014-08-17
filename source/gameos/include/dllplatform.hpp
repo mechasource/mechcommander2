@@ -10,7 +10,7 @@
 #define WIN32_EXTRA_LEAN			// Reduce windows header size
 #include <windows.h>
 #include <gameos\platform.hpp>
-#include <gameos\gameos.hpp>
+#include <gameos.hpp>
 
 NTSTATUS	__stdcall ProcessException( PEXCEPTION_POINTERS pep);
 void		__stdcall InitExceptionHandler( PSTR pCmdLine);

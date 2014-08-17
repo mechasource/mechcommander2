@@ -1,4 +1,3 @@
-#pragma once
 //
 //============================================================
 //
@@ -8,87 +7,85 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 //
-#include "Network.hpp"
-#include "DirectX.hpp"
+
+#pragma once
+
+#include "network.hpp"
+#include "directx.hpp"
+
+// define
+#define OUTBOUND_WINDOW
 
 //
 // Packet overhead of DirectPlay
 //
-#define PACKET_OVERHEAD 42
-
-
-#define OUTBOUND_WINDOW
-
+typedef enum __net_header_const {
+	PACKET_OVERHEAD = 42,
+	MAX_DP_OBJECTS	= 8
+};
 
 //
 //
 // Used to store network packets
 //
 //
-typedef struct _PacketBuffer
-{
-	_PacketBuffer*	pNext;
-	DWORD			Size;			// Size of buffer
-	DWORD			PacketSize;
-	DWORD			FromID;
-	DWORD			ToID;
-	double			TimeStamp;
-	bool			Encrypted;
-	BYTE			Data[0];		// Data follows
-
+typedef struct _PacketBuffer {
+	struct _PacketBuffer*	pNext;
+	size_t					Size;			// Size of buffer
+	size_t					PacketSize;
+	uint32_t				FromID;
+	uint32_t				ToID;
+	uint64_t				TimeStamp;
+#if _CONSIDERED_OBSOLETE
+	uint8_t					Encrypted;		// changed from bool due to packing
+#else
+	uint32_t				Encrypted;
+#endif
+	uint8_t					Data[0];		// Data follows
 } PacketBuffer;
 
 //
 // List of names, used for modems, serial ports, players, games etc...
 //
-typedef struct _ListOfNames
-{
-	_ListOfNames*	pNext;				// Pointer to next in chain
-	DWORD			Data;				// Data that is list dependent
-	DWORD			PacketsReceived;	// NUmber of packets received from a player
-	double			LastTime;			// Time last packet received
-	char			Name[1];			// Name
-
+typedef struct _ListOfNames {
+	struct _ListOfNames*	pNext;				// Pointer to next in chain
+	uint32_t				Data;				// Data that is list dependent
+	uint32_t				PacketsReceived;	// NUmber of packets received from a player
+	uint64_t				LastTime;			// Time last packet received
+	char					Name[1];			// Name
 } ListOfNames;
-
+typedef ListOfNames* PListOfNames;
 
 //
 // List of games (and players in those games)
 //
 typedef struct _ListOfGames
 {
-	_ListOfGames*	pNext;				// Pointer to next in chain
-	DPSESSIONDESC2	SessionDescriptor;	// Session description
-	ListOfNames*	pPlayers;			// Pointer to list of player names
-	bool			bIPX;				// whether the game is hosted with IPX or not (TCP/IP)
-	char			Name[1];			// Name
-
+	struct _ListOfGames*	pNext;				// Pointer to next in chain
+	DPSESSIONDESC2			SessionDescriptor;	// Session description
+	ListOfNames*			pPlayers;			// Pointer to list of player names
+	bool					bIPX;				// whether the game is hosted with IPX or not (TCP/IP)
+	char					Name[1];			// Name
 } ListOfGames;
 
 //
 // List of messages waiting for the application to get
 //
-typedef struct _Messages
-{
-	_Messages*	pNext;
-	NetPacket	Data;
-
+typedef struct _Messages {
+	struct _Messages*	pNext;
+	NetPacket			Data;
 } Messages;
-
 
 //
 // All memory in networking must be allocated on this heap
 //
 extern HGOSHEAP Heap_Network;
 
-
 //
 // Interfaces
 //
-#define MAX_DP_OBJECTS	8
 extern IDirectPlayLobby3*		dplobby3;	// Lobby interface
 extern IDirectPlay4*			dplay4;	// Direct Play interface
-
 
 //
 // Current joined or opened session description
@@ -175,7 +172,7 @@ extern ListOfNames* CurrentPlayers;
 //
 // Buffer used while receiving messages
 //
-extern BYTE* MessageBuffer;
+extern PUCHAR MessageBuffer;
 extern DWORD MessageBufferSize;
 
 //
@@ -223,10 +220,10 @@ extern PacketLogging*	pDebugPacketLog;
 
 
 
-#pragma pack(push,1)
 //
 // Structure sent with all network packets
 //
+#pragma pack(push,1)
 #ifdef OUTBOUND_WINDOW
 typedef struct _PacketHeader
 {
@@ -242,53 +239,50 @@ typedef struct _PacketHeader
 
 } PacketHeader;
 #endif
-
-
-
 #pragma pack(pop)
 
 
 //
 // Routine's
 //
-void CheckProtocols();
-void ReceivePackets();
-void GetCurrentPlayers();
-void AddGOSMessage( Messages* pMessage );
-BOOL PASCAL EnumSessionsCallback( LPCDPSESSIONDESC2 lpSessionDesc, LPDWORD lpdwTimeOut, DWORD dwFlags, void* lpContext );
-BOOL PASCAL EnumJoinSessionCallback( LPCDPSESSIONDESC2 lpSessionDesc, LPDWORD lpdwTimeOut, DWORD dwFlags, void* lpContext );
-BOOL PASCAL EnumPlayersCallback( DPID dpId, DWORD dwPlayerType, LPCDPNAME lpName, DWORD dwFlags, LPVOID lpContext );
-BOOL FAR PASCAL ModemCallback( REFGUID guidDataType, DWORD dwDataSize, LPCVOID lpData, void* lpContext );
-BOOL FAR PASCAL TCPIPCallback( REFGUID guidDataType, DWORD dwDataSize, LPCVOID lpData, void* lpContext );
-void WaitTillQueueEmpty();
-void AddPlayerToGame( ListOfNames** pListOfPlayers, char* Name, DPID dpId );
-void RemovePlayerFromGame( ListOfNames** pListOfPlayers, char* Name, DPID dpId );
-char* GetName10( DWORD Id );
-void UpdateNetworkDebugInfo();
-char* DecodeIPAddress( DPLCONNECTION* pConnection );
-WORD DecodePORTAddress( DPLCONNECTION* pConnection );
+void __stdcall CheckProtocols(void);
+void __stdcall ReceivePackets(void);
+void __stdcall GetCurrentPlayers(void);
+void __stdcall AddGOSMessage( Messages* pMessage );
+BOOL __stdcall EnumSessionsCallback( LPCDPSESSIONDESC2 lpSessionDesc, PULONG lpdwTimeOut, DWORD dwFlags, void* lpContext );
+BOOL __stdcall EnumJoinSessionCallback( LPCDPSESSIONDESC2 lpSessionDesc, PULONG lpdwTimeOut, DWORD dwFlags, void* lpContext );
+BOOL __stdcall EnumPlayersCallback( DPID dpId, DWORD dwPlayerType, LPCDPNAME lpName, DWORD dwFlags, LPVOID lpContext );
+BOOL __stdcall ModemCallback( REFGUID guidDataType, DWORD dwDataSize, LPCVOID lpData, void* lpContext );
+BOOL __stdcall TCPIPCallback( REFGUID guidDataType, DWORD dwDataSize, LPCVOID lpData, void* lpContext );
+void __stdcall WaitTillQueueEmpty(void);
+void __stdcall AddPlayerToGame( ListOfNames** pListOfPlayers, char* Name, DPID dpId );
+void __stdcall RemovePlayerFromGame( ListOfNames** pListOfPlayers, char* Name, DPID dpId );
+char* __stdcall GetName10( DWORD Id );
+void __stdcall UpdateNetworkDebugInfo(void);
+char* __stdcall DecodeIPAddress( DPLCONNECTION* pConnection );
+WORD __stdcall DecodePORTAddress( DPLCONNECTION* pConnection );
 
 
 //
 // Receive packet thread variables
 //
-extern unsigned int __stdcall NetworkThread(void*);
-extern unsigned int NetworkThreadID;
+extern uint32_t __stdcall NetworkThread(void*);
+extern uint32_t NetworkThreadID;
 extern HANDLE HandleNetworkThread;
 extern CRITICAL_SECTION NetworkCriticalSection;
 extern HANDLE NetworkEvent;
 extern HANDLE KillNetworkEvent;
-extern unsigned int __stdcall NetworkThread(void*);
+extern uint32_t __stdcall NetworkThread(void*);
 
 //
 // Enumeration thread variables
 //
-extern unsigned int EnumThreadID;
+extern uint32_t EnumThreadID;
 extern HANDLE HandleEnumThread;
 extern CRITICAL_SECTION EnumCriticalSection;
 extern HANDLE EnumEvent;
 extern HANDLE KillEnumEvent;
-extern unsigned int __stdcall EnumThread(void*);
+extern uint32_t __stdcall EnumThread(void*);
 
 //
 // Used to hold list of packets to pass data between threads
@@ -303,13 +297,13 @@ extern PacketBuffer* pLastPacket;		// End of list of received packets
 // Functions used initialize game list drivers
 //
 
-int InitLanGames();
-int InitGUNGames();
-void GUNDestroyNetworking();
-void CheckForInternet();
+int InitLanGames(void);
+int InitGUNGames(void);
+void GUNDestroyNetworking(void);
+void CheckForInternet(void);
 
 
-// InternalJoinGame() needs this for joining GUN Games.
+// InternalJoinGame(void) needs this for joining GUN Games.
 void PushGameList( void );
 bool GUNPrepareDPlay( const char * GameName );
 
@@ -318,11 +312,9 @@ HRESULT QuickEnum( bool async ); // quickly begin dplay enumeration of sessions.
 
 
 #ifdef OUTBOUND_WINDOW
-typedef struct tagPACKETQUEUE
-{ 
-	NetPacket *				pPacket;
-	struct tagPACKETQUEUE *	pNext;
-
+typedef struct tagPACKETQUEUE { 
+	NetPacket*				pPacket;
+	struct tagPACKETQUEUE*	pNext;
 } PACKETQUEUE;
 
 
@@ -390,4 +382,4 @@ public:
 
 };
 
-#endif OUTBOUND_WINDOW
+#endif // OUTBOUND_WINDOW

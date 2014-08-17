@@ -6,11 +6,11 @@
 #define MLR_GOSIMAGE_HPP
 
 #if !defined(MLR_MLR_HPP)
-	#include <MLR\MLR.hpp>
+	#include <mlr/mlr.hpp>
 #endif
 
 #if !defined(GAMEOS_HPP)
-	#include <GameOS.hpp>
+	#include <gameos.hpp>
 #endif
 
 #ifndef TXMMGR_H

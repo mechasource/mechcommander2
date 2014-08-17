@@ -6,19 +6,19 @@
 #define MLR_MLRSHAPE_HPP
 
 #if !defined(MLR_MLR_HPP)
-	#include <MLR\MLR.hpp>
+	#include <mlr/mlr.hpp>
 #endif
 
 #if !defined(MLR_MLRPRIMITIVE_HPP)
-	#include <MLR\MLRPrimitiveBase.hpp>
+	#include <mlr/mlrprimitivebase.hpp>
 #endif
 
 #if !defined(MLR_MLRLIGHT_HPP)
-	#include <MLR\MLRLight.hpp>
+	#include <mlr/mlrlight.hpp>
 #endif
 
 #if !defined(MLR_GOSVERTEXPOOL_HPP)
-	#include <MLR\GOSVertexPool.hpp>
+	#include <mlr/gosvertexpool.hpp>
 #endif
 
 namespace MidLevelRenderer {

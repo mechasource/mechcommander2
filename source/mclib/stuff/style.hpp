@@ -7,13 +7,15 @@
 
 #pragma once
 
-#include "stuff.hpp"
+#include <stuff/stuff.hpp>
 
 namespace Stuff {
 
 	extern int ArmorLevel;
 
-	enum {SNAN_NEGATIVE_LONG=0xffb1ffb1};
+	enum {
+		SNAN_NEGATIVE_LONG=0xffb1ffb1
+	};
 
 	#if !defined(Verify)
 		#if !defined(_ARMOR)
@@ -97,9 +99,10 @@ namespace Stuff {
 				Is_Signature_Bad(const volatile Signature *p);
 		};
 
-		inline void
-			Is_Signature_Bad(const volatile void* p)
-				{Check_Pointer(p);}
+		inline void Is_Signature_Bad(const volatile void* p)
+		{
+			Check_Pointer(p);
+		}
 	#endif
 
 	//##########~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

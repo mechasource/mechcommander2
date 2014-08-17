@@ -43,7 +43,7 @@
 #include <gameos.hpp>
 //#pragma warning(pop)
 
-#if _M_IX86
+#if defined(_M_IX86)
 #define USE_ASSEMBLER_CODE	1
 #else
 #define USE_ASSEMBLER_CODE	0
@@ -193,40 +193,40 @@ namespace Stuff {
 #define GROUP_STUFF_MEMORY "Stuff::Memory"
 #define GROUP_STUFF_TRACE "Stuff::Trace"
 
-#include "style.hpp"
-#include "mstring.hpp"
-#include "slot.hpp"
-#include "chain.hpp"
-#include "safechain.hpp"
-#include "sortedchain.hpp"
-#include "table.hpp"
-#include "tree.hpp"
-#include "hash.hpp"
-#include "angle.hpp"
-#include "color.hpp"
-#include "extentbox.hpp"
-#include "filestream.hpp"
-#include "filestreammanager.hpp"
-#include "line.hpp"
-#include "marray.hpp"
-#include "matrixstack.hpp"
-#include "auto_ptr.hpp"
-#include "auto_container.hpp"
-#include "noncopyable.hpp"
-#include "initialized_ptr.hpp"
-#include "motion.hpp"
-#include "notationfile.hpp"
-#include "page.hpp"
-#include "note.hpp"
-#include "obb.hpp"
-#include "origin.hpp"
-#include "plane.hpp"
-#include "point3d.hpp"
-#include "polar.hpp"
-#include "random.hpp"
-#include "sphere.hpp"
-#include "vector2d.hpp"
-#include "vector4d.hpp"
-#include "trace.hpp"
-#include "average.hpp"
-#include "database.hpp"
+#include <stuff/style.hpp>
+#include <stuff/mstring.hpp>
+#include <stuff/slot.hpp>
+#include <stuff/chain.hpp>
+#include <stuff/safechain.hpp>
+#include <stuff/sortedchain.hpp>
+#include <stuff/table.hpp>
+#include <stuff/tree.hpp>
+#include <stuff/hash.hpp>
+#include <stuff/angle.hpp>
+#include <stuff/color.hpp>
+#include <stuff/extentbox.hpp>
+#include <stuff/filestream.hpp>
+#include <stuff/filestreammanager.hpp>
+#include <stuff/line.hpp>
+#include <stuff/marray.hpp>
+//#include <stuff/matrixstack.hpp>
+//#include <stuff/auto_ptr.hpp>
+//#include <stuff/auto_container.hpp>
+//#include <stuff/noncopyable.hpp>
+//#include <stuff/initialized_ptr.hpp>
+#include <stuff/motion.hpp>
+#include <stuff/notationfile.hpp>
+#include <stuff/page.hpp>
+#include <stuff/note.hpp>
+#include <stuff/obb.hpp>
+#include <stuff/origin.hpp>
+#include <stuff/plane.hpp>
+#include <stuff/point3d.hpp>
+#include <stuff/polar.hpp>
+#include <stuff/random.hpp>
+#include <stuff/sphere.hpp>
+#include <stuff/vector2d.hpp>
+#include <stuff/vector4d.hpp>
+#include <stuff/trace.hpp>
+#include <stuff/average.hpp>
+#include <stuff/database.hpp>

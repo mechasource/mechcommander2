@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "vector3d.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/vector3d.hpp>
 
 namespace Stuff {
 
@@ -200,4 +200,4 @@ namespace Stuff {
 
 }
 
-#include "AffineMatrix.hpp"
+#include <stuff/affinematrix.hpp>

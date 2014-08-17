@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "hash.hpp"
-#include "scalar.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/hash.hpp>
+#include <stuff/scalar.hpp>
 
 namespace Stuff
 {
@@ -79,7 +79,7 @@ namespace Stuff {
 	void
 		Convert_From_Ascii(
 			PCSTR  str,
-			BYTE* value
+			PUCHAR value
 		);
 	void
 		Convert_From_Ascii(

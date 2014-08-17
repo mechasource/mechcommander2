@@ -2,24 +2,26 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "MLRStuff.hpp"
+#include "stdafx.h"
+#include "mlrheaders.hpp"
+// #include "mlrstuff.hpp"
 
 #include "ctype.h"
 
 #if !defined(MSTRING_HPP)
-	#include "MString.hpp"
+	#include <stuff/mstring.hpp>
 #endif
 
 #if !defined(MLRSTATE_HPP)
-	#include "MLRState.hpp"
+	#include "mlrstate.hpp"
 #endif
 
 #if !defined(MLRPOLYMESH_HPP)
-	#include "MLRPolyMesh.hpp"
+	#include "mlrpolymesh.hpp"
 #endif
 
 #if !defined(MLRSHAPE_HPP)
-	#include "MLRShape.hpp"
+	#include "mlrshape.hpp"
 #endif
 
 // #define	FORGETFUL	1

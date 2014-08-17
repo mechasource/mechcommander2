@@ -13,7 +13,7 @@ void Stuff::Flood_Memory_With_NAN(
 	void *where,
 	size_t how_much)
 {
-	Verify(!(reinterpret_cast<int>(where)&3));
+	Verify(!(reinterpret_cast<intptr_t>(where)&3));
 	Check_Pointer(where);
 	long *filler = Cast_Pointer(long *, where);
 	for (size_t i = how_much >> 2; i; --i)

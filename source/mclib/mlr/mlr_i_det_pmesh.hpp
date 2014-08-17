@@ -5,8 +5,8 @@
 #pragma once
 #define MLR_MLR_I_DeT_PMESH_HPP
 
-#include <MLR\MLR.hpp>
-#include <MLR\MLR_I_PMesh.hpp>
+#include <mlr/mlr.hpp>
+#include <mlr/mlr_i_pmesh.hpp>
 
 namespace MidLevelRenderer {
 

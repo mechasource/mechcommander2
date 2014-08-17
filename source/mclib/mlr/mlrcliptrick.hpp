@@ -6,7 +6,7 @@
 #define MLR_MLRCLIPTRICK_HPP
 
 #if !defined(STUFF_VECTOR4D_HPP)
-	#include <Stuff\Vector4D.hpp>
+	#include <stuff/vector4d.hpp>
 #endif
 
 //	defined in MLRPrimitiveBase.cpp

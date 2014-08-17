@@ -1,13 +1,17 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+/*
+This header and class is not used
+*/
 
 #pragma once
+
 #ifndef Auto_Ptr_HPP
 #define Auto_Ptr_HPP
 
-#include "stuff.hpp"
-
+#if _CONSIDERED_OBSOLETE
+#include <stuff/stuff.hpp>
 
 namespace Stuff
 {
@@ -32,7 +36,7 @@ namespace Stuff
 		Auto_Ptr()
 			: m_ptr(0)
 		{
-			Verify(sizeof(T*) == sizeof(unsigned int));
+			Verify(sizeof(T*) == sizeof(unsigned int));	// 
 		}
 
 		explicit Auto_Ptr(T* ptr, bool delete_as_array = DELETE_NORMAL)
@@ -240,6 +244,5 @@ namespace Stuff
 	}
 
 }; // namespace Stuff
-
-
+#endif
 #endif // Auto_Ptr_HPP

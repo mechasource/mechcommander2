@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "linearmatrix.hpp"
-#include "sphere.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/linearmatrix.hpp>
+#include <stuff/sphere.hpp>
 
 namespace Stuff {class OBB;}
 

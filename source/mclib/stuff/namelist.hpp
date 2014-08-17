@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "scalar.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/scalar.hpp>
 
 namespace Stuff {class NameList;}
 

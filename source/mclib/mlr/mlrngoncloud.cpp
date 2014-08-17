@@ -6,7 +6,7 @@
 #include "mlrheaders.hpp"
 
 #if !defined(MLR_MLRCLIPTRICK_HPP)
-	#include <mlr\mlrcliptrick.hpp>
+	#include <mlr/mlrcliptrick.hpp>
 #endif
 
 extern DWORD gShowClippedPolys;

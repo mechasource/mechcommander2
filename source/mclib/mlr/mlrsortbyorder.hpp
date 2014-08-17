@@ -6,11 +6,11 @@
 #define MLR_MLRSORTBYORDER_HPP
 
 #if !defined(MLR_MLR_HPP)
-	#include <MLR\MLR.hpp>
+	#include <mlr/mlr.hpp>
 #endif
 
 #if !defined(MLR_MLRSTATE_HPP)
-	#include <MLR\MLRState.hpp>
+	#include <mlr/mlrstate.hpp>
 #endif
 
 namespace MidLevelRenderer {

@@ -6,11 +6,11 @@
 #define MLR_MLRTEXTURE_HPP
 
 #if !defined(MLR_MLR_HPP)
-	#include <MLR\MLR.hpp>
+	#include <mlr/mlr.hpp>
 #endif
 
 #if !defined(MLR_GOSIMAGE_HPP)
-	#include <MLR\GOSImage.hpp>
+	#include <mlr/gosimage.hpp>
 #endif
 
 namespace MidLevelRenderer {

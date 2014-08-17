@@ -39,7 +39,7 @@ FileDependencies&
 	if (len)
 	{
 		MemoryStream scanner(
-			static_cast<BYTE*>(dependencies.m_fileNameStream.GetPointer())-len,
+			static_cast<PUCHAR>(dependencies.m_fileNameStream.GetPointer())-len,
 			len
 		);
 		m_fileNameStream.AllocateBytes(len);
@@ -69,7 +69,7 @@ void
 	// Make a new memorystream that wraps our current one
 	//---------------------------------------------------
 	//
-	BYTE *end = Cast_Pointer(BYTE*, m_fileNameStream.GetPointer());
+	BYTE *end = Cast_Pointer(PUCHAR, m_fileNameStream.GetPointer());
 	int len = m_fileNameStream.GetBytesUsed();
 	MemoryStream scanner(end-len, len);
 
@@ -111,7 +111,7 @@ void
 		// Make a new memorystream that wraps our current one
 		//---------------------------------------------------
 		//
-		BYTE *end = static_cast<BYTE*>(m_fileNameStream.GetPointer());
+		BYTE *end = static_cast<PUCHAR>(m_fileNameStream.GetPointer());
 		MemoryStream scanner(end-m_fileNameStream.GetBytesUsed(), old_len);
 
 		//

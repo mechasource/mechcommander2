@@ -56,7 +56,7 @@ bool
 //#############################################################################
 //
 #define NUMBER_OF_MULTIPLICATIONS 30
-#include "random.hpp"
+#include <stuff/random.hpp>
 
 class fstream;
 bool

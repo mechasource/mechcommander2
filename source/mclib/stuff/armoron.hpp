@@ -39,7 +39,11 @@
 		if (Stuff::ArmorLevel>0 && (c)) SPEW((0, #c));\
 	} ATL_SUPPRESS_WARNING(4127) while(0)
 
-#define Check_Pointer(p) Verify((p) && reinterpret_cast<int>(p)!=Stuff::SNAN_NEGATIVE_LONG)
+#if defined(_M_IX86)
+#define Check_Pointer(p) Verify((p) && reinterpret_cast<size_t>(p)!=Stuff::SNAN_NEGATIVE_LONG)
+#else
+#define Check_Pointer(p) Verify(p)
+#endif
 
 template <class T> T
 	Cast_Pointer_Function(T p)

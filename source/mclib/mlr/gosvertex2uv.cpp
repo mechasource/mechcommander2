@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "mlrheaders.hpp"
-#include "mlr\gosvertex2uv.hpp"
+#include "mlr/gosvertex2uv.hpp"
 
 //#############################################################################
 //##########################    GOSVertex2UV   ################################

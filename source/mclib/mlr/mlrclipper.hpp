@@ -6,23 +6,23 @@
 #define MLR_MLRCLIPPER_HPP
 
 #if !defined(MLR_MLR_HPP)
-	#include <MLR\MLR.hpp>
+	#include <mlr/mlr.hpp>
 #endif
 
 #if !defined(MLR_MLRSORTER_HPP)
-	#include <MLR\MLRSorter.hpp>
+	#include <mlr/mlrsorter.hpp>
 #endif
 
 #if !defined(MLR_MLRLIGHT_HPP)
-	#include <MLR\MLRLight.hpp>
+	#include <mlr/mlrlight.hpp>
 #endif
 
 #if !defined(MLR_MLRSHAPE_HPP)
-	#include <MLR\MLRShape.hpp>
+	#include <mlr/mlrshape.hpp>
 #endif
 
 #if !defined(MLR_GOSVERTEXPOOL_HPP)
-	#include <MLR\GOSVertexPool.hpp>
+	#include <mlr/gosvertexpool.hpp>
 #endif
 
 namespace MidLevelRenderer {

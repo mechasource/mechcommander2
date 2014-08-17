@@ -5,8 +5,8 @@
 #pragma once
 #define MLR_GOSVERTEX_HPP
 
-#include <mlr\mlr.hpp>
-#include <stuff\scalar.hpp>
+#include <mlr/mlr.hpp>
+#include <stuff/scalar.hpp>
 #include <gameos.hpp>
 
 namespace MidLevelRenderer {

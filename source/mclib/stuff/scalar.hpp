@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "memorystream.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/memorystream.hpp>
 
 namespace Stuff {
 
@@ -58,7 +58,7 @@ namespace Stuff {
 	{
 		Verify(in >= 0.0f && in < 256.0f);
 		in += 12582912.0f;
-		return *Cast_Pointer(BYTE*, &in);
+		return *Cast_Pointer(PUCHAR, &in);
 	}
 
 	inline WORD
@@ -76,7 +76,7 @@ namespace Stuff {
 		Verify(in >= 0.0f && in < 256.0f);
 		in -= 0.5f;
 		in += 12582912.0f;
-		return *Cast_Pointer(BYTE*, &in);
+		return *Cast_Pointer(PUCHAR, &in);
 	}
 
 	ULONG

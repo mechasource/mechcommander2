@@ -6,11 +6,11 @@
 #include "mlrheaders.hpp"
 
 #if !defined(MLR_MLRCLIPTRICK_HPP)
-	#include <mlr\mlrcliptrick.hpp>
+	#include <mlr/mlrcliptrick.hpp>
 #endif
 
 #if !defined(MLR_MLRINDEXEDTRIANGLECLOUD_HPP)
-	#include <mlr\mlrindexedtrianglecloud.hpp>
+	#include <mlr/mlrindexedtrianglecloud.hpp>
 #endif
 
 extern DWORD gShowClippedPolys;

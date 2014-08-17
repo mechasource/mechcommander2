@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "stuff.hpp"
+#include <stuff/stuff.hpp>
 
 namespace Stuff {
 
@@ -22,67 +22,53 @@ namespace Stuff {
 	class RecordHandle
 	{
 	public:
-		DatabaseHandle
-			*m_databaseHandle;
-		ULONG
-			m_ID;
-		PCSTR 
-			m_name;
-		__int64
-			m_timeStamp;
-		ULONG
-			m_length;
-		const void*
-			m_data;
-		const Record*
-			m_record;
+		DatabaseHandle*		m_databaseHandle;
+		ULONG				m_ID;
+		PCSTR				m_name;
+		__int64				m_timeStamp;
+		size_t				m_length;
+		const void*			m_data;
+		const Record*		m_record;
 
 		//
 		// Add - Adds a record to the database and returns a unique ID that can be used to access the record.
 		//       The record can be found by the RecordID returned or the RecordName
 		//       The info fields will be changed to point at the database's copy of the field
 		//
-		void
-			Add();
+		void Add(void);
 
 		//
 		// Replace - Overwrites a record based on the RecordID passed.
 		//       The record can be found by the RecordID returned or the RecordName
 		//       The info fields will be changed to point at the database's copy of the field
 		//
-		void
-			Replace();
+		void Replace(void);
 
 		//
 		// Delete - Removes the record with the given RecordID.
 		//
-		void
-			Delete();
+		void Delete(void);
 
 		//
 		// FindID - Returns a pointer to the Data contained in the record with the ID specified, also fills in a pointer to the original name.
 		//			True is returned if a record is found
 		//
-		bool
-			FindID();
+		bool FindID(void);
 
 		//
 		// FindName - Returns a pointer to the Data contained in the record with the Name specified, also fills in a pointer to the record ID number.
 		//       True is returned if a record is found
 		//       The info fields will be changed to point at the database's copy of the field
 		//
-		bool
-			FindName();
+		bool FindName(void);
 
 		//
 		// Return the current record information and moves the current record to the next record.
 		// If there is a current record, True will be returned.
 		//
-		bool
-			ReadAndNext();
+		bool ReadAndNext(void);
 
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 	};
 
 	class DatabaseHandle

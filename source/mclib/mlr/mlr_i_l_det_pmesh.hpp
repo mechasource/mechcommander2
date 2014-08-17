@@ -6,11 +6,11 @@
 #define MLR_MLR_I_L_DeT_PMESH_HPP
 
 #if !defined(MLR_MLR_HPP)
-	#include <MLR\MLR.hpp>
+	#include <mlr/mlr.hpp>
 #endif
 
 #if !defined(MLR_MLR_I_C_DeT_PMESH_HPP)
-	#include <MLR\MLR_I_C_DeT_PMesh.hpp>
+	#include <mlr/mlr_i_c_det_pmesh.hpp>
 #endif
 
 namespace MidLevelRenderer {

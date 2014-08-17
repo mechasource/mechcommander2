@@ -5,9 +5,9 @@
 #pragma once
 #define MLR_MLR_I_DeT_TMESH_HPP
 
-#include <MLR\MLR.hpp>
-#include <MLR\MLR_I_TMesh.hpp>
-#include <MLR\MLR_I_DeT_PMesh.hpp>
+#include <mlr/mlr.hpp>
+#include <mlr/mlr_i_tmesh.hpp>
+#include <mlr/mlr_i_det_pmesh.hpp>
 
 extern DWORD gEnableDetailTexture;
 

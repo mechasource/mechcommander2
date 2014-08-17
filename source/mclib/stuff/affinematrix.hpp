@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "point3d.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/point3d.hpp>
 
 namespace Stuff {class AffineMatrix4D;}
 

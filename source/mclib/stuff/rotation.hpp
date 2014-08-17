@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "angle.hpp"
-#include "vector3d.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/angle.hpp>
+#include <stuff/vector3d.hpp>
 
 namespace Stuff {
 	class UnitQuaternion;

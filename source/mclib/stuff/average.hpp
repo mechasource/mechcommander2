@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "stuff.hpp"
+#include <stuff/stuff.hpp>
 
 namespace Stuff {
 

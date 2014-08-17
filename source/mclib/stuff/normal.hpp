@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "unitvector.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/unitvector.hpp>
 
 namespace Stuff {
 

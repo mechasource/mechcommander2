@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "node.hpp"
-#include "sortedsocket.hpp"
-#include "memoryblock.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/node.hpp>
+#include <stuff/sortedsocket.hpp>
+#include <stuff/memoryblock.hpp>
 
 namespace Stuff {
 

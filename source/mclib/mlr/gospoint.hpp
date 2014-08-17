@@ -5,16 +5,14 @@
 #if !defined(MLR_GOSPOINT_HPP)
 	#define MLR_GOSPOINT_HPP
 
-	#if !defined(MLR_MLRSTUFF_HPP)
-		#include <MLR\MLRStuff.hpp>
-	#endif
+	#include <mlr/mlr.hpp>
 
 	#if !defined(MLR_GOSVERTEX_HPP)
-		#include <MLR\GOSVertex.hpp>
+		#include <mlr/gosvertex.hpp>
 	#endif
 
 	#if !defined(GAMEOS_HPP)
-		#include <GameOS\GameOS.hpp>
+		#include <gameos.hpp>
 	#endif
 
 namespace MidLevelRenderer {

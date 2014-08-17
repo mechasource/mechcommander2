@@ -5,11 +5,11 @@
 #pragma once
 #define MLR_MLRSORTER_HPP
 
-#include <MLR\MLR.hpp>
-#include <MLR\MLRLight.hpp>
-#include <MLR\GOSVertex.hpp>
-#include <MLR\GOSVertex2UV.hpp>
-#include <MLR\GOSVertexPool.hpp>
+#include <mlr/mlr.hpp>
+#include <mlr/mlrlight.hpp>
+#include <mlr/gosvertex.hpp>
+#include <mlr/gosvertex2uv.hpp>
+#include <mlr/gosvertexpool.hpp>
 
 namespace MidLevelRenderer {
 

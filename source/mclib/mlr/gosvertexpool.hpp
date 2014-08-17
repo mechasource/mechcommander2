@@ -5,9 +5,9 @@
 #pragma once
 #define MLR_GOSVERTEXPOOL_HPP
 
-#include <MLR\MLR.hpp>
-#include <MLR\GOSVertex.hpp>
-#include <MLR\GOSVertex2UV.hpp>
+#include <mlr/mlr.hpp>
+#include <mlr/gosvertex.hpp>
+#include <mlr/gosvertex2uv.hpp>
 
 extern bool MLRVertexLimitReached;
 

@@ -6,11 +6,11 @@
 #define MLR_MLRPOLYMESH_HPP
 
 #if !defined(MLR_MLR_HPP)
-	#include <MLR\MLR.hpp>
+	#include <mlr/mlr.hpp>
 #endif
 
 #if !defined(MLR_MLRPRIMITIVE_HPP)
-	#include <MLR\MLRPrimitive.hpp>
+	#include <mlr/mlrprimitive.hpp>
 #endif
 
 namespace MidLevelRenderer {

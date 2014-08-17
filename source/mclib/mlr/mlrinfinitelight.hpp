@@ -5,7 +5,7 @@
 #pragma once
 #define MLR_MLRINFINITELIGHT_HPP
 
-#include "MLR.hpp"
+#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer {
 

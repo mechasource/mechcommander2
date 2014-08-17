@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "point3d.hpp"
-#include "rotation.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/point3d.hpp>
+#include <stuff/rotation.hpp>
 
 namespace Stuff {class Origin3D;}
 

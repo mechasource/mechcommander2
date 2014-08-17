@@ -6,11 +6,11 @@
 #define MLR_MLR_TERRAIN_HPP
 
 #if !defined(MLR_MLR_HPP)
-	#include <MLR\MLR.hpp>
+	#include <mlr/mlr.hpp>
 #endif
 
 #if !defined(MLR_MLR_I_DeT_TMESH_HPP)
-	#include <MLR\MLR_I_DeT_TMesh.hpp>
+	#include <mlr/mlr_i_det_tmesh.hpp>
 #endif
 
 namespace MidLevelRenderer {

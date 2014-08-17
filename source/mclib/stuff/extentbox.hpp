@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "scalar.hpp"
-#include "marray.hpp"
-#include "plane.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/marray.hpp>
+#include <stuff/plane.hpp>
 
 namespace Stuff {class ExtentBox;}
 

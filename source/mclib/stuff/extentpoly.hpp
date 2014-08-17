@@ -9,19 +9,19 @@
 	#define STUFF_EXTENTPOLY_HPP
 
 	#if !defined(STUFF_STUFF_HPP)
-		#include <stuff\stuff.hpp>
+		#include <stuff/stuff.hpp>
 	#endif
 
 	#if !defined(STUFF_SCALAR_HPP)
-		#include <stuff\scalar.hpp>
+		#include <stuff/scalar.hpp>
 	#endif
 
 	#if !defined(STUFF_MARRAY_HPP)
-		#include <stuff\marray.hpp>
+		#include <stuff/marray.hpp>
 	#endif
 
 	#if !defined(STUFF_PLANE_HPP)
-		#include <stuff\plane.hpp>
+		#include <stuff/plane.hpp>
 	#endif
 
 namespace Stuff {

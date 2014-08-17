@@ -5,9 +5,9 @@
 #pragma once
 #define MLR_MLR_I_L_TMESH_HPP
 
-#include <MLR\MLR.hpp>
-#include <MLR\MLR_I_C_TMesh.hpp>
-#include <MLR\MLR_I_L_PMesh.hpp>
+#include <mlr/mlr.hpp>
+#include <mlr/mlr_i_c_tmesh.hpp>
+#include <mlr/mlr_i_l_pmesh.hpp>
 
 namespace MidLevelRenderer {
 

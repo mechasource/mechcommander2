@@ -5,8 +5,8 @@
 #pragma once
 #define MLR_MLRPOINTLIGHT_HPP
 
-#include "MLR.hpp"
-#include "MLRInfiniteLightWithFalloff.hpp"
+#include <mlr/mlr.hpp>
+#include <mlr/mlrinfinitelightwithfalloff.hpp>
 
 namespace MidLevelRenderer {
 

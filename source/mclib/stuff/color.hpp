@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "memorystream.hpp"
-#include "scalar.hpp"
-#include "vector3d.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/memorystream.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/vector3d.hpp>
 
 namespace Stuff {
 	class RGBColor;

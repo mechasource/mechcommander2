@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "rotation.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/rotation.hpp>
 
 namespace Stuff {class YawPitchRange;}
 

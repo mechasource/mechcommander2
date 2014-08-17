@@ -7,7 +7,7 @@
 
 #include "stdafx.h"
 #include "stuffheaders.hpp"
-#include "database.hpp"
+#include <stuff/database.hpp>
 #include <toolos.hpp>
 
 //
@@ -50,36 +50,29 @@ public:
 	Record::Record(
 		const RecordHandle *handle,
 		ULONG record_hash,
-		ULONG name_length
+		size_t name_length
 	);
-	void
-		Unhook(const RecordHandle *handle);
+	void Unhook(const RecordHandle* handle);
 
-	__int64
-		m_lastModified;				// Time record was last modifyed
+	__int64 	m_lastModified;			// Time record was last modifyed
+	uintptr_t	m_nextIDRecord;			// offset to chain of records that share the same hash
+	uintptr_t	m_nextNameRecord;		// offset to chain of records that share the same hash
+	size_t		m_length;				// If this is zero, the record has been 
+										// deleted (used to signify gaps before compressing)
+	size_t		m_nameLength;
+	ULONG		m_ID;					// ID
+	ULONG		m_hash;					// Hash value
 
-	ULONG
-		m_nextIDRecord,				// offset to chain of records that share the same hash
-		m_nextNameRecord,			// offset to chain of records that share the same hash
-		m_ID,						// ID
-		m_hash,						// Hash value
-		m_nameLength,
-		m_length;					// If this is zero, the record has been deleted (used to signify gaps before compressing)
+	bool		m_mustFree;					// When 1 gos_Free must be called on the block
+	char		m_name[1];
+	BYTE		m_data[1];
 
-	bool
-		m_mustFree;					// When 1 gos_Free must be called on the block
-	char
-		m_name[1];
-	BYTE
-		m_data[1];
-
-	void
-		TestInstance() const
-			{}
+	void TestInstance(void) const
+	{
+	}
 };
 
-static HGOSHEAP
-	Database_Heap = NULL;
+static HGOSHEAP Database_Heap = NULL;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -103,7 +96,7 @@ static ULONG
 Record::Record(
 	const RecordHandle *handle,
 	ULONG record_hash,
-	ULONG name_length
+	size_t name_length
 )
 {
 	Check_Pointer(this);
@@ -279,7 +272,8 @@ void
 	// Figure out how long the name is and its hash value
 	//---------------------------------------------------
 	//
-	ULONG record_hash, name_length;
+	ULONG record_hash;
+	size_t name_length;
 	if (m_name)
 	{
 		record_hash = GenerateHash(m_name);
@@ -346,7 +340,8 @@ void
 	// Figure out how long the name is and its hash value
 	//---------------------------------------------------
 	//
-	ULONG record_hash, name_length;
+	ULONG record_hash;
+	size_t name_length;
 	if (m_name)
 	{
 		record_hash = GenerateHash(m_name);
@@ -746,17 +741,15 @@ void
 	//
 	struct OutputRecord
 	{
-		ULONG
-			m_ID,
-			m_offset,
-			m_nextIDRecord,
-			m_nextNameRecord;
-		Record
-			*m_data;
+		ULONG		m_ID;
+		uintptr_t	m_offset;
+		uintptr_t	m_nextIDRecord;
+		uintptr_t	m_nextNameRecord;
+		Record*		m_data;
 	};
 	OutputRecord *new_records = new OutputRecord[m_dataBase->m_numberOfRecords];
 	Check_Pointer(new_records);
-	ULONG new_id_index[Database::e_DataBlockSize];
+	size_t new_id_index[Database::e_DataBlockSize];
 	memset(new_id_index, 0, sizeof(new_id_index));
 
 	//
@@ -773,7 +766,7 @@ void
 		if (old_record)
 		{
 			output_db.m_idOffsets[i] = offset;
-			new_id_index[i] = new_record - new_records;
+			new_id_index[i] = (new_record - new_records);
 			while (old_record)
 			{
 				old_record = reinterpret_cast<Record*>((UINT_PTR)old_record + m_baseAddress);
@@ -816,10 +809,10 @@ void
 			//
 			size_t index = old_record->m_ID % Database::e_DataBlockSize;
 			size_t j = new_id_index[index];
-			OutputRecord *new_record = &new_records[j];
-			for (; j < m_dataBase->m_numberOfRecords; ++j, ++new_record)
+			OutputRecord* recordptr = &new_records[j];
+			for (; j < m_dataBase->m_numberOfRecords; ++j, ++recordptr)
 			{
-				if (new_record->m_ID == old_record->m_ID)
+				if (recordptr->m_ID == old_record->m_ID)
 					break;
 			}
 			Verify(j < m_dataBase->m_numberOfRecords);
@@ -829,7 +822,7 @@ void
 			// Set up the hash chain
 			//----------------------
 			//
-			output_db.m_nameOffsets[i] = new_record->m_offset;
+			output_db.m_nameOffsets[i] = recordptr->m_offset;
 			while (old_record)
 			{
 				Check_Object(old_record);
@@ -854,8 +847,8 @@ void
 							break;
 					}
 					Verify(j<m_dataBase->m_numberOfRecords);
-					new_record->m_nextNameRecord = next_record->m_offset;
-					new_record = next_record;
+					recordptr->m_nextNameRecord = next_record->m_offset;
+					recordptr = next_record;
 				}
 			}
 		}
@@ -886,8 +879,8 @@ void
 		//------------------------------------------------------------
 		//
 		bool free_block = old_record->m_mustFree;
-		ULONG next_id = old_record->m_nextIDRecord;
-		ULONG next_name = old_record->m_nextNameRecord;
+		uintptr_t next_id = old_record->m_nextIDRecord;
+		uintptr_t next_name = old_record->m_nextNameRecord;
 		old_record->m_mustFree = false;
 		old_record->m_nextIDRecord = new_record->m_nextIDRecord;
 		old_record->m_nextNameRecord = new_record->m_nextNameRecord;

@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "sortedsocket.hpp"
-#include "sortedchain.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/sortedsocket.hpp>
+#include <stuff/sortedchain.hpp>
 
 namespace GetHashFunctions {
 	inline Stuff::IteratorPosition
@@ -211,7 +211,7 @@ namespace Stuff {
 	{
 		#if defined(_ARMOR)
 			CollectionSize over_loaded_bins = 0;
-			for (int i = 0; i < hashTableSize; i++)
+			for (size_t i = 0; i < hashTableSize; i++)
 			{
 				Check_Pointer(hashTable);
 				if (hashTable[i] != NULL)

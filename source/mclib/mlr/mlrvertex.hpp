@@ -5,9 +5,7 @@
 #if !defined(MLR_MLRVERTEX_HPP)
 	#define MLR_MLRVERTEX_HPP
 
-	#if !defined(MLR_MLRSTUFF_HPP)
-		#include <MLR\MLRStuff.hpp>
-	#endif
+	#include <mlr/mlr.hpp>
 
 	//##########################################################################
 	//##########################    MLRVertex    ###############################

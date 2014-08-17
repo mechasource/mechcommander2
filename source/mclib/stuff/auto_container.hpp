@@ -1,14 +1,17 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+/*
+This header and class is not used
+*/
 
 #pragma once
 #ifndef AUTO_CONTAINER_HPP
 #define AUTO_CONTAINER_HPP
 
 //#pragma warning (disable:4786)							// this is necessary to avoid "truncated to 255 characters in debug info" message
-#include "Auto_Ptr.hpp"
-#include "Noncopyable.hpp"
+#include <stuff/auto_ptr.hpp>
+#include <stuff/noncopyable.hpp>
 
 
 

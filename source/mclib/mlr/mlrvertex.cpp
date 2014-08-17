@@ -2,10 +2,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "MLRStuff.hpp"
+#include "stdafx.h"
+#include "mlrheaders.hpp"
+// #include "mlr/mlrstuff.hpp"
 
 #if !defined(MLRVERTEX_HPP)
-	#include "MLRVertex.hpp"
+	#include "mlrvertex.hpp"
 #endif
 
 //#############################################################################

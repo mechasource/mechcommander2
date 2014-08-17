@@ -6,11 +6,11 @@
 #define MLR_MLRCardCloud_HPP
 
 #if !defined(MLR_MLR_HPP)
-	#include <mlr\mlr.hpp>
+	#include <mlr/mlr.hpp>
 #endif
 
 #if !defined(MLR_MLREFFECT_HPP)
-	#include <mlr\mlreffect.hpp>
+	#include <mlr/mlreffect.hpp>
 #endif
 
 namespace MidLevelRenderer {

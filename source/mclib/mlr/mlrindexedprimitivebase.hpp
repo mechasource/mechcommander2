@@ -6,7 +6,7 @@
 #define MLR_MLRINDEXEDPRIMITIVEBASE_HPP
 
 #if !defined(MLR_MLR_HPP)
-	#include <MLR\MLR.hpp>
+	#include <mlr/mlr.hpp>
 #endif
 
 namespace MidLevelRenderer {

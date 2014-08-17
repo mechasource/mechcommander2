@@ -3,7 +3,7 @@
 //===========================================================================//
 
 #if !defined(MLR_MLRCLIPTRICK_HPP)
-	#include <MLR\MLRClipTrick.hpp>
+	#include <mlr/mlrcliptrick.hpp>
 #endif
 
 extern DWORD gEnableTextureSort, gShowClippedPolys, gEnableDetailTexture;

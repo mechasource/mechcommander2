@@ -5,9 +5,9 @@
 #pragma once
 #define MLR_GOSVERTEX2UV_HPP
 
-#include <GameOS.hpp>
-#include <MLR\MLR.hpp>
-#include "MLR\GOSVertex.hpp"
+#include <gameos.hpp>
+#include <mlr/mlr.hpp>
+#include <mlr/gosvertex.hpp>
 
 namespace MidLevelRenderer {
 

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "stuff.hpp"
+#include <stuff/stuff.hpp>
 
 namespace Stuff {class MemoryStream;}
 
@@ -24,8 +24,6 @@ namespace Stuff {
 
 	class MemoryStream;
 	class DynamicMemoryStream;
-	typedef const void*				PCVOID;
-	typedef const unsigned char*	PCUCHAR;
 
 	//##########################################################################
 	//#######################    MemoryStream    ###############################

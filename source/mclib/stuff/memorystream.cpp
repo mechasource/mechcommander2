@@ -629,7 +629,7 @@ MemoryStream&
 	}
 
 	
-	const BYTE *source_array = Cast_Pointer(const BYTE *, ptr);
+	pcuint8_t source_array = Cast_Pointer(pcuint8_t, ptr);
 	int source_byte_counter = 0;
 	
 	int bits_remaining = (int)number_of_bits;
@@ -639,7 +639,7 @@ MemoryStream&
 	
 		
 		// if we are writing the full byte
-		const BYTE *source = &source_array[source_byte_counter];
+		pcuint8_t source = &source_array[source_byte_counter];
 	
 		int total_bits_to_be_written = 8;
 		Max_Clamp(total_bits_to_be_written, bits_remaining);

@@ -3,6 +3,7 @@
 //===========================================================================//
 
 
+#include "stdafx.h"
 #include "mlrheaders.hpp"
 
 DWORD	gShowClippedPolys=0;

@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "stuff.hpp"
-#include "page.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/page.hpp>
 
 namespace Stuff {
 

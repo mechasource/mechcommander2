@@ -4,13 +4,16 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+/*
+This header and class is not used
+*/
 
 #pragma once
 
-#include "stuff.hpp"
-#include "memoryblock.hpp"
-#include "matrix.hpp"
-#include "linearmatrix.hpp"
+#include <stuff/stuff.hpp>
+#include <stuff/memoryblock.hpp>
+#include <stuff/matrix.hpp>
+#include <stuff/linearmatrix.hpp>
 
 namespace Stuff {
 

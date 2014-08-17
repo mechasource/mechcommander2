@@ -7,7 +7,7 @@
 	#define MEMORYHEAP_HPP
 
 	#if !defined(STUFF_HPP)
-		#include <stuff.hpp>
+		#include <stuff/stuff.hpp>
 	#endif
 
 	// Experimental

@@ -1,12 +1,16 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+/*
+This header and class is not used
+*/
 
 #pragma once
+
 #ifndef PTR_HPP
 #define PTR_HPP
 
-#include "stuff.hpp"
+#include <stuff/stuff.hpp>
 
 
 namespace Stuff

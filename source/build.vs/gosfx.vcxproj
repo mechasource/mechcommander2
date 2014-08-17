@@ -266,6 +266,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
     <ClInclude Include="..\mclib\gosfx\card.hpp" />
     <ClInclude Include="..\mclib\gosfx\cardcloud.hpp" />
     <ClInclude Include="..\mclib\gosfx\debriscloud.hpp" />

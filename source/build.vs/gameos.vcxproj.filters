@@ -21,12 +21,6 @@
     <Filter Include="Headers\gameos">
       <UniqueIdentifier>{e9b8661f-969b-4a6b-afaa-5c90417b8cef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headers\gameos\rm">
-      <UniqueIdentifier>{017f68fc-b537-4256-9033-4e294e29812b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Headers\gameos\zlib">
-      <UniqueIdentifier>{d029d258-3955-4d82-a36c-dd40be3bd582}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Headers\xnamath">
       <UniqueIdentifier>{c45ad5e6-e492-454b-9cc1-b2a061994824}</UniqueIdentifier>
     </Filter>
@@ -51,6 +45,12 @@
     </Filter>
     <Filter Include="build\DLL">
       <UniqueIdentifier>{710fb564-6c56-45a3-b1ef-2e5e9a5fa25a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{1e186baf-b20e-4a41-986b-3d3be5bb957e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\zlib">
+      <UniqueIdentifier>{d029d258-3955-4d82-a36c-dd40be3bd582}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -398,9 +398,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\gameos\include\3drasterizer.hpp">
-      <Filter>Headers\gameos</Filter>
-    </ClInclude>
     <ClInclude Include="..\gameos\include\acm.hpp">
       <Filter>Headers\gameos</Filter>
     </ClInclude>
@@ -584,95 +581,24 @@
     <ClInclude Include="..\gameos\include\zping.h">
       <Filter>Headers\gameos</Filter>
     </ClInclude>
-    <ClInclude Include="..\gameos\include\zlib.old\deflate.h">
-      <Filter>Headers\gameos\rm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\zlib.old\infblock.h">
-      <Filter>Headers\gameos\rm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\zlib.old\infcodes.h">
-      <Filter>Headers\gameos\rm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\zlib.old\inffast.h">
-      <Filter>Headers\gameos\rm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\zlib.old\inffixed.h">
-      <Filter>Headers\gameos\rm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\zlib.old\inftrees.h">
-      <Filter>Headers\gameos\rm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\zlib.old\infutil.h">
-      <Filter>Headers\gameos\rm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\zlib.old\trees.h">
-      <Filter>Headers\gameos\rm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\zlib.old\zconf.h">
-      <Filter>Headers\gameos\rm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\zlib.old\zlib.h">
-      <Filter>Headers\gameos\rm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\zlib.old\zutil.h">
-      <Filter>Headers\gameos\rm</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\crc32.h">
-      <Filter>Headers\gameos\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\deflate.h">
-      <Filter>Headers\gameos\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\gzguts.h">
-      <Filter>Headers\gameos\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\inffast.h">
-      <Filter>Headers\gameos\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\inffixed.h">
-      <Filter>Headers\gameos\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\inflate.h">
-      <Filter>Headers\gameos\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\inftrees.h">
-      <Filter>Headers\gameos\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\trees.h">
-      <Filter>Headers\gameos\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\zconf.h">
-      <Filter>Headers\gameos\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\zlib.h">
-      <Filter>Headers\gameos\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\zutil.h">
-      <Filter>Headers\gameos\zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\gameos\include\xnamath\xnamath.h">
-      <Filter>Headers\xnamath</Filter>
-    </ClInclude>
     <ClInclude Include="..\gameos\src\resource.h">
       <Filter>Resources\gameos</Filter>
     </ClInclude>
     <ClInclude Include="..\gameos\src\stdafx.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\gameos\include\xnamath\xnamathconvert.inl">
-      <Filter>Headers\xnamath</Filter>
-    </None>
-    <None Include="..\gameos\include\xnamath\xnamathmatrix.inl">
-      <Filter>Headers\xnamath</Filter>
-    </None>
-    <None Include="..\gameos\include\xnamath\xnamathmisc.inl">
-      <Filter>Headers\xnamath</Filter>
-    </None>
-    <None Include="..\gameos\include\xnamath\xnamathvector.inl">
-      <Filter>Headers\xnamath</Filter>
-    </None>
+    <ClInclude Include="..\gameos\include\3drasterizer.hpp">
+      <Filter>Headers\gameos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\dplay.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\gameos\src\gameos.rc">

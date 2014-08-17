@@ -34,6 +34,9 @@
     <Filter Include="build\DLL">
       <UniqueIdentifier>{28a402ea-2280-4f0e-bbef-bf7329a7f643}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{a47bb544-d2d0-4e4c-8a8f-e34deec49175}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\gui\aanim.cpp">
@@ -100,6 +103,12 @@
     </ClInclude>
     <ClInclude Include="..\gui\stdafx.h">
       <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

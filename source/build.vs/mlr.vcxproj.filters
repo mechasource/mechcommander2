@@ -103,6 +103,9 @@
     <Filter Include="build\DLL">
       <UniqueIdentifier>{71854007-1b61-458a-9c16-ad70a3e0ff33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{37b5dad9-b8b1-4b13-a1df-f804aedfd5af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\mclib\mlr\mlr.cpp">
@@ -487,6 +490,12 @@
     </ClInclude>
     <ClInclude Include="..\mclib\stdafx.h">
       <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

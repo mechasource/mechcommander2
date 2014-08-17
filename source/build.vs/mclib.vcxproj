@@ -368,6 +368,8 @@
     <ClCompile Include="..\mclib\weaponfx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
     <ClInclude Include="..\mclib\abl.h" />
     <ClInclude Include="..\mclib\abldbug.h" />
     <ClInclude Include="..\mclib\ablenv.h" />

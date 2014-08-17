@@ -52,6 +52,9 @@
     <Filter Include="build\DLL">
       <UniqueIdentifier>{9ec21340-1a12-4d6a-8190-0df3132d10a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{3e8f809b-cc15-4621-88cb-dd07108c95fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\editor\action.cpp">
@@ -457,6 +460,12 @@
     </ClInclude>
     <ClInclude Include="..\editor\stdafx.h">
       <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

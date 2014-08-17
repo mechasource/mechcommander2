@@ -384,6 +384,8 @@
     <ClCompile Include="..\mclib\stuff\vector4d_test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
     <ClInclude Include="..\mclib\stdafx.h" />
     <ClInclude Include="..\mclib\stuff\affinematrix.hpp" />
     <ClInclude Include="..\mclib\stuff\angle.hpp" />

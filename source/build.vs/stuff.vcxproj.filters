@@ -73,6 +73,9 @@
     <Filter Include="build\DLL">
       <UniqueIdentifier>{25beb4d6-a4d0-437e-a032-53b0e7351206}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{21553958-638f-4f25-bbd6-1c70fec40112}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\mclib\stuff\stuff.cpp">
@@ -511,6 +514,12 @@
     </ClInclude>
     <ClInclude Include="..\mclib\stuff\stuffheaders.hpp">
       <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -309,6 +309,8 @@
     <Image Include="..\viewer\mechlopedia.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
     <ClInclude Include="..\viewer\resource.h" />
     <ClInclude Include="..\viewer\stdafx.h" />
   </ItemGroup>

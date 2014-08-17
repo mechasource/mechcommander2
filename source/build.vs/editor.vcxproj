@@ -427,6 +427,8 @@
     <ClInclude Include="..\editor\viewconditionoractiondlg.h" />
     <ClInclude Include="..\editor\waterdlg.h" />
     <ClInclude Include="..\editor\wavedlg.h" />
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\editor\editor.rc" />

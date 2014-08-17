@@ -34,6 +34,9 @@
     <Filter Include="build\DLL">
       <UniqueIdentifier>{5500f4b4-17f5-43c7-bdf1-81b3f3c5ac21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{3d109b93-21e3-4f7e-bcfe-cc83059e889a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tools\aseconv\ase2tgl.cpp">
@@ -51,6 +54,12 @@
     </ClInclude>
     <ClInclude Include="..\tools\aseconv\stdafx.h">
       <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

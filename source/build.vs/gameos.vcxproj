@@ -537,38 +537,12 @@
     <ClInclude Include="..\gameos\include\videoplayback.hpp" />
     <ClInclude Include="..\gameos\include\windows.hpp" />
     <ClInclude Include="..\gameos\include\winproc.hpp" />
-    <ClInclude Include="..\gameos\include\xnamath\xnamath.h" />
-    <ClInclude Include="..\gameos\include\zlib.old\deflate.h" />
-    <ClInclude Include="..\gameos\include\zlib.old\infblock.h" />
-    <ClInclude Include="..\gameos\include\zlib.old\infcodes.h" />
-    <ClInclude Include="..\gameos\include\zlib.old\inffast.h" />
-    <ClInclude Include="..\gameos\include\zlib.old\inffixed.h" />
-    <ClInclude Include="..\gameos\include\zlib.old\inftrees.h" />
-    <ClInclude Include="..\gameos\include\zlib.old\infutil.h" />
-    <ClInclude Include="..\gameos\include\zlib.old\trees.h" />
-    <ClInclude Include="..\gameos\include\zlib.old\zconf.h" />
-    <ClInclude Include="..\gameos\include\zlib.old\zlib.h" />
-    <ClInclude Include="..\gameos\include\zlib.old\zutil.h" />
     <ClInclude Include="..\gameos\include\zping.h" />
     <ClInclude Include="..\gameos\src\resource.h" />
     <ClInclude Include="..\gameos\src\stdafx.h" />
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\crc32.h" />
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\deflate.h" />
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\gzguts.h" />
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\inffast.h" />
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\inffixed.h" />
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\inflate.h" />
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\inftrees.h" />
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\trees.h" />
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\zconf.h" />
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\zlib.h" />
-    <ClInclude Include="..\gameos\src\zlib-1.2.8\zutil.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\gameos\include\xnamath\xnamathconvert.inl" />
-    <None Include="..\gameos\include\xnamath\xnamathmatrix.inl" />
-    <None Include="..\gameos\include\xnamath\xnamathmisc.inl" />
-    <None Include="..\gameos\include\xnamath\xnamathvector.inl" />
+    <ClInclude Include="..\include\dplay.h" />
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\gameos\src\gameos.rc" />

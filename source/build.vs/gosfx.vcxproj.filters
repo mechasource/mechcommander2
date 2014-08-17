@@ -64,6 +64,9 @@
     <Filter Include="build\DLL">
       <UniqueIdentifier>{47094ed7-ab25-4ed0-bc20-f1e26c447e08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{aa3ccc07-7d13-4b29-a248-1c235666b66c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\mclib\gosfx\gosfx.cpp">
@@ -187,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="..\mclib\stdafx.h">
       <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

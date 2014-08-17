@@ -37,6 +37,9 @@
     <Filter Include="build\precompiled">
       <UniqueIdentifier>{c8932c74-9ccb-40dc-aed0-c6072dbde340}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{b2b6b881-1fda-4fdc-92f5-b3e320a34c5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ABLT\ablmc2.cpp">
@@ -130,6 +133,12 @@
     </ClInclude>
     <ClInclude Include="..\ABLT\stdafx.h">
       <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

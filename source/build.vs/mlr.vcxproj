@@ -354,6 +354,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
     <ClInclude Include="..\mclib\mlr\gosimage.hpp" />
     <ClInclude Include="..\mclib\mlr\gosimagepool.hpp" />
     <ClInclude Include="..\mclib\mlr\gospoint.hpp" />

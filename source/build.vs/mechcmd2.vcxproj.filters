@@ -88,6 +88,9 @@
     <Filter Include="build\DLL">
       <UniqueIdentifier>{8b2731bc-e4ce-42a3-b7e7-34e0724f3404}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{da7de515-d2d3-43d8-844e-4a4924401312}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\mechcmd2\dw.cpp">
@@ -727,6 +730,12 @@
     </ClInclude>
     <ClInclude Include="..\mechcmd2\stdafx.h">
       <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

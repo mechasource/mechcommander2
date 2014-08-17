@@ -284,6 +284,8 @@
     <ResourceCompile Include="..\tools\aseconv\aseconv.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
     <ClInclude Include="..\tools\aseconv\resource.h" />
     <ClInclude Include="..\tools\aseconv\stdafx.h" />
   </ItemGroup>

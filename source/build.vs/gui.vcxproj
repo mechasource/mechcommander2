@@ -302,6 +302,8 @@
     <ClInclude Include="..\gui\logisticsscreen.h" />
     <ClInclude Include="..\gui\resource.h" />
     <ClInclude Include="..\gui\stdafx.h" />
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\gui\gui.rc" />

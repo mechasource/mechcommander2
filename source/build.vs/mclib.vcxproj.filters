@@ -106,6 +106,9 @@
     <Filter Include="build\DLL">
       <UniqueIdentifier>{2c1752ce-4ce7-4e45-a4e9-611394be7be2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\common">
+      <UniqueIdentifier>{d10caced-d43a-4bd3-b2f5-637e67266b2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\mclib\alphapalette.cpp">
@@ -670,6 +673,12 @@
     </ClInclude>
     <ClInclude Include="..\mclib\stdafx.h">
       <Filter>build\precompiled</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechresources.h">
+      <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\mechtypes.h">
+      <Filter>Headers\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

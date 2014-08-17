@@ -379,6 +379,8 @@
     <ClCompile Include="..\mechcmd2\weather.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\mechresources.h" />
+    <ClInclude Include="..\include\mechtypes.h" />
     <ClInclude Include="..\mechcmd2\actor.h" />
     <ClInclude Include="..\mechcmd2\artlry.h" />
     <ClInclude Include="..\mechcmd2\attributemeter.h" />

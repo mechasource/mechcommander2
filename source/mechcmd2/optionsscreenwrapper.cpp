@@ -1,16 +1,16 @@
-#define OPTIONSSCREENWRAPPER_CPP
 /*************************************************************************************************\
 OptionsScreenWrapper.cpp			: Implementation of the OptionsScreenWrapper component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+
+#define OPTIONSSCREENWRAPPER_CPP
+
 #include "stdafx.h"
-
-#include "OptionsScreenWrapper.h"
-#include "McLib.h"
-#include "OptionsArea.h"
-
+#include "optionsscreenwrapper.h"
+#include <mclib.h>
+#include "optionsarea.h"
 
 OptionsScreenWrapper::OptionsScreenWrapper()
 {

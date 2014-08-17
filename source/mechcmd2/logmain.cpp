@@ -10,7 +10,7 @@
 //-----------------------------------
 // Include Files
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef LOGISTICS_H
@@ -25,7 +25,7 @@
 #include "version.h"
 #endif
 
-#include <GameOS\GameOS.hpp>
+#include <gameos.hpp>
 #include <GameOS\ToolOS.hpp>
 #include <GOSScript\GOSScriptHeaders.hpp>
 #include <Stuff\stuff.hpp>

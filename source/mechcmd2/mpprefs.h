@@ -8,15 +8,15 @@ MPPrefs.h			: Interface for the MPPrefs component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
 #ifndef ALISTBOX_H
-#include "AListBox.h"
+#include "alistbox.h"
 #endif
 
 #ifndef SIMPLECAMERA_H
-#include "SimpleCamera.h"
+#include "simplecamera.h"
 #endif
 
 class FitIniFile;

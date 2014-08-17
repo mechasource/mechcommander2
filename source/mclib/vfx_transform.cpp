@@ -9,23 +9,20 @@ void CopySprite( PANE *pane, void *texture, int X, int Y, int Width, int Height,
 void AG_shape_fill (PANE *pane, void *shape_table,LONG shape_number, LONG hotX, LONG hotY);
 void AG_shape_draw (PANE *pane, void *shape_table,LONG shape_number, LONG hotX, LONG hotY);
 void AG_shape_translate_fill (PANE *pane, void *shape_table,LONG shape_number, LONG hotX, LONG hotY);
-extern unsigned int lookaside;
+extern uint32_t lookaside;
 
 
 int SqrtCount=0;
 
 
-typedef unsigned int DWORD;
-typedef struct
-{
-
+//typedef unsigned int DWORD;
+typedef struct SHAPEHEADER {
 	DWORD	bounds;
 	DWORD	origin;
 	DWORD	xmin;
 	DWORD	ymin;
 	DWORD	xmax;
 	DWORD	ymax;
-
 } SHAPEHEADER;
 
 //
@@ -39,11 +36,13 @@ typedef struct
 // Bit 0 = 1	String packet [7654321] bytes
 //
 
-static unsigned int SourceWidth,tWidth,tHeight,DestWidth;			// Used for code optimizing
+static uint32_t SourceWidth,tWidth,tHeight,DestWidth;			// Used for code optimizing
 static _int64 xmask=-1;
-static unsigned int tempXmax,tempXmin;
-static unsigned int minX,minY,maxY,maxX,SkipLeft,NewWidth,StartofLine,StartofClip,EndofClip;
-static unsigned int lines,paneX0,paneX1,paneY0,paneY1,SourcePointer,DestPointer;
+static uint32_t tempXmax,tempXmin;
+static uint32_t minX,minY,maxY,maxX,SkipLeft,NewWidth,StartofLine,StartofClip,EndofClip;
+static uint32_t lines,paneX0,paneX1,paneY0,paneY1;
+static uintptr_t SourcePointer;
+static uintptr_t DestPointer;
 static signed int X,Y,X1;
 
 static PANE tempPANE;
@@ -211,7 +210,7 @@ void CopySprite( PANE *pane, void *texture, int X, int Y, int Width, int Height,
 	X+=paneX0;
 	Y+=paneY0;
 
-	SourcePointer = (unsigned int)texture;
+	SourcePointer = texture;
 	SourceWidth=Width;
 	
 	if( X<paneX0 )
@@ -286,7 +285,7 @@ void CopySprite( PANE *pane, void *texture, int X, int Y, int Width, int Height,
 		 (Height<=0))
 		return;
 
-	DestPointer = (unsigned int)pane->window->buffer + X + Y*DestWidth;
+	DestPointer = pane->window->buffer + X + Y*DestWidth;
 
 	tWidth=Width;
 	tHeight=Height;

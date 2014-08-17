@@ -14,55 +14,55 @@ DWORD	gEnableAlphaSort=1;
 DWORD	gEnableMultiTexture=1;
 DWORD	gEnableLightMaps=1;
 
-static bool __stdcall CheckDetailTexture()
+static UCHAR __stdcall CheckDetailTexture(void)
 {
-	return gEnableDetailTexture!=0;
+	return UCHAR((gEnableDetailTexture!=0) ? 1 : 0);
 }
-static bool __stdcall CheckTextureSort()
+static UCHAR __stdcall CheckTextureSort(void)
 {
-	return gEnableTextureSort!=0;
+	return UCHAR((gEnableTextureSort!=0) ? 1 : 0);
 }
-static bool __stdcall CheckAlphaSort()
+static UCHAR __stdcall CheckAlphaSort(void)
 {
-	return gEnableAlphaSort!=0;
+	return UCHAR((gEnableAlphaSort!=0) ? 1 : 0);
 }
-static bool __stdcall CheckMultiTexture()
+static UCHAR __stdcall CheckMultiTexture(void)
 {
-	return gEnableMultiTexture!=0;
+	return UCHAR((gEnableMultiTexture!=0) ? 1 : 0);
 }
-static bool __stdcall CheckLightMaps()
+static UCHAR __stdcall CheckLightMaps(void)
 {
-	return gEnableLightMaps!=0;
+	return UCHAR((gEnableLightMaps!=0) ? 1 : 0);
 }
 
-static void __stdcall EnableDetailTexture()
+static void __stdcall EnableDetailTexture(void)
 {
 	gEnableDetailTexture=!gEnableDetailTexture;
 }
-static void __stdcall EnableTextureSort()
+static void __stdcall EnableTextureSort(void)
 {
 	gEnableTextureSort=!gEnableTextureSort;
 }
-static void __stdcall EnableAlphaSort()
+static void __stdcall EnableAlphaSort(void)
 {
 	gEnableAlphaSort=!gEnableAlphaSort;
 }
-static void __stdcall EnableMultiTexture()
+static void __stdcall EnableMultiTexture(void)
 {
 	gEnableMultiTexture=!gEnableMultiTexture;
 }
-static void __stdcall EnableLightMaps()
+static void __stdcall EnableLightMaps(void)
 {
 	gEnableLightMaps=!gEnableLightMaps;
 }
 
 extern DWORD gShowClippedPolys;
-static bool __stdcall Check_ShowClippedPolys() {return gShowClippedPolys!=0;}
-static void __stdcall Toggle_ShowClippedPolys() {gShowClippedPolys=!gShowClippedPolys;}
+static UCHAR __stdcall Check_ShowClippedPolys(void) {return UCHAR((gShowClippedPolys!=0) ? 1 : 0);}
+static void __stdcall Toggle_ShowClippedPolys(void) {gShowClippedPolys=!gShowClippedPolys;}
 
 extern DWORD gShowBirdView;
-static bool __stdcall Check_ShowBirdView() {return gShowBirdView!=0;}
-static void __stdcall Toggle_ShowBirdView() {gShowBirdView=!gShowBirdView;}
+static UCHAR __stdcall Check_ShowBirdView(void) {return UCHAR((gShowBirdView!=0) ? 1 : 0);}
+static void __stdcall Toggle_ShowBirdView(void) {gShowBirdView=!gShowBirdView;}
 
 unsigned
 	Limits::Max_Number_Vertices_Per_Frame,
@@ -258,7 +258,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MidLevelRenderer::TerminateClasses()
+	MidLevelRenderer::TerminateClasses(void)
 {
 	if ( !MLRLookUpLight::DefaultData ) //  make sure there is something to termiante
 		return;

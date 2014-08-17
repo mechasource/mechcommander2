@@ -18,7 +18,7 @@
 #endif
 
 #ifndef EDITOROBJECTMGR_H
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #endif
 
 #ifndef BUILDINGLINK_H
@@ -26,7 +26,7 @@
 #endif
 
 #ifndef EDITORDATA_H
-#include "EditorData.h"
+#include "editordata.h"
 #endif
 
 #include "resource.h"
@@ -865,7 +865,7 @@ void Pilot::initPilots()
 	{
 		while( true )
 		{
-			int bytesRead = file.readLine( (BYTE*)pilotFileName, 256 );
+			int bytesRead = file.readLine( (PUCHAR)pilotFileName, 256 );
 
 			if ( bytesRead < 2 )
 				break;

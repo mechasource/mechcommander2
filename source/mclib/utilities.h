@@ -97,7 +97,7 @@ extern DWORD gosResourceHandle;
 
 #if 1
 inline int cLoadString(
-  unsigned int uID,             // resource identifier
+  uint32_t uID,             // resource identifier
   char* lpBuffer,      // pointer to buffer for resource
   int nBufferMax,        // size of buffer
   unsigned long handle = gosResourceHandle
@@ -114,7 +114,7 @@ inline int cLoadString(
 
 #else
 
-inline char * cLoadString (unsigned int uID)
+inline char * cLoadString (uint32_t uID)
 {
 	return gos_GetResourceString(gosResourceHandle, uID);
 }

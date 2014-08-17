@@ -39,7 +39,7 @@
 #include "weather.h"
 #endif
 
-#include <MLR\MLR.hpp>
+#include <mlr/mlr.hpp>
 
 //---------------------------------------------------------------------------
 CameraPtr eye = NULL;

@@ -9,15 +9,15 @@ OptionsArea.h			: Interface for the OptionsArea component.
 
 //*************************************************************************************************
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
 #ifndef SIMPLECAMERA_H
-#include "SimpleCamera.h"
+#include "simplecamera.h"
 #endif
 
-#include "aListBox.h"
-#include "AttributeMeter.h"
+#include "alistbox.h"
+#include "attributemeter.h"
 
 class aButton;
 

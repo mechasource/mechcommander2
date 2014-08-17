@@ -5,7 +5,7 @@
 #include "StdAfx.h"
 #include "CampaignData.h"
 
-#include "EString.h"
+#include "estring.h"
 #include "ECharString.h"
 
 #include "assert.h"

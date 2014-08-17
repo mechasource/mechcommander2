@@ -12,7 +12,7 @@
 #define	WARRIOR_H
 
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef MOVE_H

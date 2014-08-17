@@ -21,7 +21,7 @@
 
 #include "utilities.h"
 
-#include <stuff\stuff.hpp>
+#include <stuff/stuff.hpp>
 //---------------------------------------------------------------------------
 class EllipseElement : public Element
 {
@@ -48,7 +48,7 @@ class EllipseElement : public Element
 	
 	private:
 
-		static	unsigned long s_textureHandle;
+		static	size_t s_textureHandle;
 };
 
 //---------------------------------------------------------------------------

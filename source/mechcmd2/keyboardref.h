@@ -8,11 +8,11 @@ KeyboardRef.h			: Interface for the KeyboardRef component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
 #ifndef ALISTBOX_H
-#include "aListBox.h"
+#include "alistbox.h"
 #endif
 
 #ifndef MISSIONGUI_H

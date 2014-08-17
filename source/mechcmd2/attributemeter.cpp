@@ -1,14 +1,15 @@
-#define ATTRIBUTEMETER_CPP
 //===========================================================================//
 //AttributeMeter.cpp	: Implementation of the AttributeMeter component.    //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
 
-#include "AttributeMeter.h"
-#include "IniFile.h"
-#include "mcLib.h"
+#define ATTRIBUTEMETER_CPP
+
+#include "stdafx.h"
+#include "attributemeter.h"
+#include "inifile.h"
+#include <mclib.h>
 
 extern long helpTextID;
 extern long helpTextHeaderID;

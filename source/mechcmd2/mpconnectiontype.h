@@ -10,19 +10,19 @@ MPConnectionType.h			: Interface for the MPConnectionType component.
 //*************************************************************************************************
 
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
-#include "aSystem.h"
+#include "asystem.h"
 #include "aButton.h"
-#include "aListBox.h"
+#include "alistbox.h"
 
 #ifndef AANIM_H
-#include "aAnim.h"
+#include "aanim.h"
 #endif
 
 #ifndef MPHOSTGAME_H
-#include "MPHostGame.h"
+#include "mphostgame.h"
 #endif
 
 #include "assert.h"

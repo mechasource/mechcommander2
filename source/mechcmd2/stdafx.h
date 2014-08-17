@@ -51,7 +51,7 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 // #define FINAL
 #endif
 
-#include "mclib.h"
+#include <mclib.h>
 
 namespace Utilities {
 

@@ -6,7 +6,7 @@ controlGui.cpp			: Implementation of the controlGui component.
 \*************************************************************************************************/
 #include "stdafx.h"
 
-#include "controlGui.h"
+#include "controlgui.h"
 #include "Team.h"
 #include "gamesound.h"
 #include "comndr.h"
@@ -17,7 +17,7 @@ controlGui.cpp			: Implementation of the controlGui component.
 
 
 #ifndef GAMETACMAP_H
-#include "GameTacMap.h"
+#include "gametacmap.h"
 #endif
 
 #ifndef LOGISTICSDATA_H
@@ -25,7 +25,7 @@ controlGui.cpp			: Implementation of the controlGui component.
 #endif
 
 #ifndef PAUSEWINDOW_H
-#include "PauseWindow.h"
+#include "pausewindow.h"
 #endif
 
 #include "Objective.h"

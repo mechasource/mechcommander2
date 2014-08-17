@@ -28,9 +28,9 @@ namespace MidLevelRenderer {
 	//
 	public:
 		static void
-			InitializeClass();
+			InitializeClass(void);
 		static void
-			TerminateClass();
+			TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
@@ -40,10 +40,10 @@ namespace MidLevelRenderer {
 			Stuff::MemoryStream *stream,
 			int version
 		);
-		~MLRPolyMesh();
+		~MLRPolyMesh(void);
 
 	public:
-		MLRPolyMesh();
+		MLRPolyMesh(void);
 
 		static MLRPolyMesh*
 			Make(
@@ -57,14 +57,14 @@ namespace MidLevelRenderer {
 		virtual void	SetPrimitiveLength(unsigned char *, int);
 		virtual void	GetPrimitiveLength(unsigned char **, int*);
 
-		void	FindFacePlanes();
+		void	FindFacePlanes(void);
 
 		virtual int	FindBackFace(const Stuff::Point3D&);
 
 		const Stuff::Plane *GetPolygonPlane(int i)
 			{
 				Check_Object(this);
-				Verify(i<facePlanes.GetLength());
+				Verify(i<facePlanes.GetLength(void));
 
 				return &facePlanes[i];
 			}
@@ -81,7 +81,7 @@ namespace MidLevelRenderer {
 
 	//	Initializes the visibility test list
 		void
-			ResetTestList();
+			ResetTestList(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
@@ -95,15 +95,15 @@ namespace MidLevelRenderer {
 	//
 	public:
 		void
-			TestInstance() const;
+			TestInstance(void) const;
 
 	virtual int
-			GetSize()
+			GetSize(void)
 		{ 
 			Check_Object(this);
-			int ret = MLRPrimitive::GetSize();
-			ret += testList.GetSize();
-			ret += facePlanes.GetSize();
+			int ret = MLRPrimitive::GetSize(void);
+			ret += testList.GetSize(void);
+			ret += facePlanes.GetSize(void);
 
 			return ret;
 		}

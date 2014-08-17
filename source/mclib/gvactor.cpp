@@ -8,6 +8,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#include "stdafx.h"
+
 #ifndef GVACTOR_H
 #include "gvactor.h"
 #endif

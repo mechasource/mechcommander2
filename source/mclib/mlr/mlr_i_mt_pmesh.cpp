@@ -175,7 +175,7 @@ void
 
 	drawMode = pMesh->GetSortDataMode();
 
-	unsigned short *index_array;
+	USHORT *index_array;
 	pMesh->GetIndexData(&index_array, &num);
 	SetIndexData(index_array, num);
 
@@ -406,7 +406,7 @@ MLRShape*
 		Register_Pointer(texCoords[i]);
 	}
 
-	unsigned short	*index = new unsigned short [nrTri*3];
+	USHORT	*index = new USHORT [nrTri*3];
 	Register_Pointer(index);
 
 	int uniquePoints = 0;
@@ -447,7 +447,7 @@ MLRShape*
 				{
 					collapsedCoords[uniquePoints++] = coords[i];
 				}
-				index[i] = static_cast<unsigned short>(j);
+				index[i] = static_cast<USHORT>(j);
 			}
 			mesh->SetCoordData(collapsedCoords, uniquePoints);
 		}
@@ -456,7 +456,7 @@ MLRShape*
 			uniquePoints = nrTri*3;
 			for(i=0;i<nrTri*3;i++)
 			{
-				index[i] = static_cast<unsigned short>(i);
+				index[i] = static_cast<USHORT>(i);
 			}
 			mesh->SetCoordData(coords, nrTri*3);
 		}

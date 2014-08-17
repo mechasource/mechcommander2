@@ -746,7 +746,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRClipper::Clear (unsigned int flags)
+	MLRClipper::Clear (uint32_t flags)
 {
 	Check_Object(this);
 }

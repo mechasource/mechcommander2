@@ -6,8 +6,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-//---------------------------------------------------------------------------
-// Include Files
+#include "stdafx.h"
+
 #ifndef CAMERA_H
 #include "camera.h"
 #endif
@@ -1419,9 +1419,9 @@ void Camera::updateDaylight (bool bInitialize)
 		fFogGreen = fFogGreen + fFogTransparency * fSkyGreen;
 		fFogBlue = fFogBlue + fFogTransparency * fSkyBlue;
 
-		unsigned int fogRed = fFogRed;
-		unsigned int fogGreen = fFogGreen;
-		unsigned int fogBlue = fFogBlue;
+		uint32_t fogRed = fFogRed;
+		uint32_t fogGreen = fFogGreen;
+		uint32_t fogBlue = fFogBlue;
 		if (0xff < fogRed) { fogRed = 0xff; }
 		if (0xff < fogGreen) { fogGreen = 0xff; }
 		if (0xff < fogBlue) { fogBlue = 0xff; }

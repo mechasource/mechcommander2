@@ -8,19 +8,19 @@ LogisticsMechDisplay.h			: Interface for the LogisticsMechDisplay component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
 #ifndef SIMPLECAMERA_H
-#include "SimpleCamera.h"
+#include "simplecamera.h"
 #endif
 
 #ifndef ATTRIBUTEMETER_H
-#include "AttributeMeter.h"
+#include "attributemeter.h"
 #endif
 
 #ifndef SIMPLECOMPONENTLISTBOX_H
-#include "SimpleComponentListBox.h"
+#include "simplecomponentlistbox.h"
 #endif
 
 class LogisticsMech;

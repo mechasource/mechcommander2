@@ -11,7 +11,7 @@
 
 #include "stdafx.h"
 #include "gosfxheaders.hpp"
-#include <mlr\mlrindexedtrianglecloud.hpp>
+#include <mlr/mlrindexedtrianglecloud.hpp>
 
 //------------------------------------------------------------------------------
 //

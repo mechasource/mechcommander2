@@ -1,25 +1,23 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
 #include "stdafx.h"
 
 #ifndef ASYSTEM_H
 #include "asystem.h"
 #endif
-
 #ifndef AFONT_H
 #include "afont.h"
 #endif
-
 #ifndef ALISTBOX_H
 #include "alistbox.h"
 #endif
 
 #include "soundsys.h"
+#include <mclib.h>
 
 extern SoundSystem *sndSystem;
-
-#include "mclib.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // aListBox methods

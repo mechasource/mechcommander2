@@ -102,7 +102,7 @@ static void useMtl (char *name);
 		}
 
 MLRPolyMesh*
-	BuildPolyMesh(Poly *p, unsigned int& pCount,
+	BuildPolyMesh(Poly *p, uint32_t& pCount,
 				  Point3D *v, Vector3D *n,
 				  Vector2DOf<Scalar> *t, RGBAColor *c)
 {
@@ -330,28 +330,28 @@ MLRShape*
 
 // growable vertex coordinate list (X, Y, Z) 
 	Point3D       *v          = 0;
-	unsigned int  vCount     = 0;
-	unsigned int  vAvailable = 0;
+	uint32_t  vCount     = 0;
+	uint32_t  vAvailable = 0;
 
 // growable vertex normal list (Nx, Ny, Nz) 
 	Vector3D	*n          = 0;
-	unsigned int  nCount     = 0;
-	unsigned int  nAvailable = 0;
+	uint32_t  nCount     = 0;
+	uint32_t  nAvailable = 0;
 
 // growable texture coordinate list (S, T )
 	Vector2DOf<Scalar> *t          = 0;
-	unsigned int  tCount     = 0;
-	unsigned int  tAvailable = 0;
+	uint32_t  tCount     = 0;
+	uint32_t  tAvailable = 0;
 
 // growable color list (Cr, Cg, Cb, Ca) 
 	RGBAColor	*c          = 0;
-	unsigned int  cCount     = 0;
-	unsigned int  cAvailable = 0;
+	uint32_t  cCount     = 0;
+	uint32_t  cAvailable = 0;
 
 // growable polygon list
 	Poly		*p			= 0;
-	unsigned int  pCount     = 0;
-	unsigned int  pAvailable = 0;
+	uint32_t  pCount     = 0;
+	uint32_t  pAvailable = 0;
 
 // tmp count vars 
 	int                 i;
@@ -940,7 +940,7 @@ static void
 	{
 		int                  j, foo;
 		static int				comp;
-		unsigned int        *image;
+		uint32_t        *image;
 		char                *sp;
 
 // convert texture name from blah.rla to blah.rgb etc. 

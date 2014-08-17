@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "gosFXHeaders.hpp"
-#include <MLR\MLRPointLight.hpp>
+#include <mlr/mlrpointlight.hpp>
 
 gosFX::LightManager
 	*gosFX::LightManager::Instance = NULL;

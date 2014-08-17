@@ -5,9 +5,10 @@ HeightDlg.cpp			: Implementation of the AssignHeight component.  This thing lets
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "SingleValueDlg.h"
+
+#include "singlevaluedlg.h"
 #include "resource.h"
-#include "mclib.h"
+#include <mclib.h>
 #include "utilities.h"
 
 extern DWORD gameResourceHandle;		//Default handle must be used for mc2res.dll due to shared game/editor code

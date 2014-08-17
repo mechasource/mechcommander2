@@ -8,7 +8,7 @@
 #include "stdafx.h"
 
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #include "crtdbg.h"
@@ -78,7 +78,7 @@
 #endif
 
 #ifndef CONTROLGUI_H
-#include "controlGui.h"
+#include "controlgui.h"
 #endif
 
 #ifndef LOGISTICS_H

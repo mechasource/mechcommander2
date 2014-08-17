@@ -1,22 +1,24 @@
-#define LOADSCREEN_CPP
 /*************************************************************************************************\
 LoadScreen.cpp			: Implementation of the LoadScreen component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
-#include <windows.h>
-#include <ddraw.h>
-#include "LoadScreen.h"
-#include "aAnimObject.h"
-#include "tgaInfo.h"
-#include "mclib.h"
-#include "Prefs.h"
+#define LOADSCREEN_CPP
+
+#include "stdafx.h"
+//#include <windows.h>
+//#include <ddraw.h>
+#include "loadscreen.h"
+#include "aanimobject.h"
+#include "tgainfo.h"
+#include <mclib.h>
+#include "prefs.h"
 #include "multplyr.h"
 #include "mission.h"
-#include "gameSound.h"
+#include "gamesound.h"
+
 float loadProgress = 0.0f;
 
 long LoadScreen::xProgressLoc = 0;
@@ -229,7 +231,7 @@ void LoadScreen::changeRes( FitIniFile& outFile )
 		waitingForPlayersMemory = (TGAFileHeader*)new char[size];
 		tgaFile.read( (unsigned char*)waitingForPlayersMemory, tgaFile.fileSize() );
 
-		flipTopToBottom( (BYTE*)(waitingForPlayersMemory + 1), waitingForPlayersMemory->pixel_depth, 
+		flipTopToBottom( (PUCHAR)(waitingForPlayersMemory + 1), waitingForPlayersMemory->pixel_depth, 
 			waitingForPlayersMemory->width, waitingForPlayersMemory->height );
 	}
 }
@@ -493,7 +495,7 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 	long destX = 0;
 	long destY = 0;
 
-	BYTE* pMem = (BYTE*)(LoadScreen::mergedTexture + 1);
+	PUCHAR pMem = (PUCHAR)(LoadScreen::mergedTexture + 1);
 	long destRight = 0;
 	long destBottom = 0;
 
@@ -540,7 +542,7 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 		destX = WinRect.left + (LoadScreen::xProgressLoc);
 		destY = WinRect.top + (LoadScreen::yProgressLoc);
 
-		pMem = (BYTE*)(LoadScreen::mergedTexture + 1);
+		pMem = (PUCHAR)(LoadScreen::mergedTexture + 1);
 		destRight = destX + LoadScreen::progressBackground->width;
 		destBottom = (destY + LoadScreen::progressBackground->height);
 
@@ -552,7 +554,7 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 		destX = WinRect.left + LoadScreen::xWaitLoc;
 		destY = WinRect.top + LoadScreen::yWaitLoc;
 
-		pMem = (BYTE*)(LoadScreen::waitingForPlayersMemory + 1);
+		pMem = (PUCHAR)(LoadScreen::waitingForPlayersMemory + 1);
 		destRight = destX + LoadScreen::waitingForPlayersMemory->width;
 		destBottom = (destY + LoadScreen::waitingForPlayersMemory->height);
 		destRight = destRight > WinRect.right ? WinRect.right : destRight;
@@ -574,8 +576,8 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 
 		for ( int y = 0; y < destHeight; y++ )
 		{
-			BYTE* pSrc = pMem + y * srcWidth * srcDepth;
-			BYTE* pDest = (MemoryPtr)mouseSurfaceDesc.lpSurface + destX * mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount/8 + 										
+			PUCHAR pSrc = pMem + y * srcWidth * srcDepth;
+			PUCHAR pDest = (MemoryPtr)mouseSurfaceDesc.lpSurface + destX * mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount/8 + 										
 										((destY + y) * mouseSurfaceDesc.lPitch);
 
 			for ( long x = 0; x < destWidth; x++ )

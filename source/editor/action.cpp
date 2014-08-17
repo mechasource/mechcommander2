@@ -377,7 +377,7 @@ VertexInfo::VertexInfo( long newRow, long newColumn )
 
 
 #ifndef EDITOROBJECTMGR_H
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #endif
 ModifyBuildingAction::~ModifyBuildingAction()
 {

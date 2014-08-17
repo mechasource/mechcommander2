@@ -8,7 +8,7 @@ ComponentListBox.h			: Interface for the ComponentListBox component.
 \*************************************************************************************************/
 
 #ifndef ALISTBOX_H
-#include "aListBox.h"
+#include "alistbox.h"
 #endif
 
 #ifndef AANIM_H
@@ -16,7 +16,7 @@ ComponentListBox.h			: Interface for the ComponentListBox component.
 #endif
 
 #ifndef ELIST_H
-#include "eList.h"
+#include "elist.h"
 #endif
 
 class LogisticsVariant;

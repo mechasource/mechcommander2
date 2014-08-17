@@ -30,8 +30,8 @@
 #include "objmgr.h"
 #endif
 
-#include <stuff\stuff.hpp>
-#include <gosFX\gosfxheaders.hpp>
+#include <stuff/stuff.hpp>
+#include <gosfx/gosfxheaders.hpp>
 //---------------------------------------------------------------------------
 // Macro Definitions
 #define ALL_COLORS			4

@@ -10,7 +10,7 @@
 #include "stdafx.h"
 
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef MOVEMGR_H
@@ -21,7 +21,7 @@
 #include "warrior.h"
 #endif
 
-//#include <gameos\gameos.hpp>
+//#include <gameos.hpp>
 
 
 long MovePathManager::numPaths = 0;

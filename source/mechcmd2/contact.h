@@ -13,7 +13,7 @@
 
 //---------------------------------------------------------------------------
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef DCONTACT_H

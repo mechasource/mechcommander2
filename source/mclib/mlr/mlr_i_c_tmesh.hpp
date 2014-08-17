@@ -3,6 +3,8 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLR_I_C_TMESH_HPP
 #define MLR_MLR_I_C_TMESH_HPP
 
 #include <mlr/mlr.hpp>
@@ -36,7 +38,7 @@ namespace MidLevelRenderer {
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLR_I_C_TMesh();
 
 	public:
@@ -44,8 +46,8 @@ namespace MidLevelRenderer {
 
 		static MLR_I_C_TMesh*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
@@ -55,24 +57,24 @@ namespace MidLevelRenderer {
 #if COLOR_AS_DWORD
 		virtual void
 			SetColorData(
-				const DWORD *array,
-				int point_count
+			const DWORD *array,
+			int point_count
 			);
 		virtual void
 			GetColorData(
-				DWORD **array,
-				int *point_count
+			DWORD **array,
+			int *point_count
 			);
 #else
 		virtual void
 			SetColorData(
-				const Stuff::RGBAColor *array,
-				int point_count
+			const Stuff::RGBAColor *array,
+			int point_count
 			);
 		virtual void
 			GetColorData(
-				Stuff::RGBAColor **array,
-				int *point_count
+			Stuff::RGBAColor **array,
+			int *point_count
 			);
 #endif
 
@@ -99,27 +101,29 @@ namespace MidLevelRenderer {
 	//
 		void
 #if COLOR_AS_DWORD
-			SetClipColor(DWORD &color, int index)
+			SetClipColor(DWORD &color, size_t index)
 #else
-			SetClipColor(Stuff::RGBAColor &color, int index)
+			SetClipColor(Stuff::RGBAColor &color, size_t index)
 #endif
-				{
-					Check_Object(this); Verify(clipExtraColors->GetLength() > index);
-					(*clipExtraColors)[index] = color;
-				}
+		{
+			Check_Object(this); Verify(clipExtraColors->GetLength() > index);
+			(*clipExtraColors)[index] = color;
+		}
 
 		void
-			FlashClipColors(int num)
-				{
-					Check_Object(this); Verify(clipExtraTexCoords->GetLength() > num);
-					colors.SetLength(num);
-					visibleIndexedVertices.SetLength(num);
+			FlashClipColors(size_t num)
+		{
+			Check_Object(this); Verify(clipExtraTexCoords->GetLength() > num);
+			colors.SetLength(num);
+			visibleIndexedVertices.SetLength(num);
 #if COLOR_AS_DWORD
-					Mem_Copy(colors.GetData(), clipExtraColors->GetData(), sizeof(DWORD)*num, sizeof(DWORD)*num);
+			Mem_Copy(colors.GetData(), clipExtraColors->GetData(), 
+				sizeof(DWORD)*num, sizeof(DWORD)*num);
 #else
-					Mem_Copy(colors.GetData(), clipExtraColors->GetData(), sizeof(Stuff::RGBAColor)*num, sizeof(Stuff::RGBAColor)*num);
+			Mem_Copy(colors.GetData(), clipExtraColors->GetData(), 
+				sizeof(Stuff::RGBAColor)*num, sizeof(Stuff::RGBAColor)*num);
 #endif
-				}
+		}
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
 	//
@@ -134,7 +138,7 @@ namespace MidLevelRenderer {
 		void
 			TestInstance() const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -158,8 +162,10 @@ namespace MidLevelRenderer {
 		CreateIndexedTriCube_Color_NoLit(Stuff::Scalar, MLRState*);
 	MLRShape*
 		CreateIndexedTriIcosahedron_Color_NoLit(
-			IcoInfo&,
-			MLRState*
+		IcoInfo&,
+		MLRState*
 		);
 
 }
+
+#endif	// MLR_MLR_I_C_TMESH_HPP

@@ -12,7 +12,7 @@
 //----------------------------------------------------------------------------------
 // Include Files
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef MISSION_H
@@ -117,7 +117,7 @@
 
 #include "..\resource.h"
 
-#include <GameOS.hpp>
+#include <gameos.hpp>
 
 //----------------------------------------------------------------------------------
 // Macro Definitions

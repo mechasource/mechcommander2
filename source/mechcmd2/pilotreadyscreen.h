@@ -8,9 +8,9 @@ PilotReadyScreen.h : Header file for pilot selection
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "LogisticsScreen.h"
-#include "AttributeMeter.h"
-#include "aAnim.h"
+#include "logisticsscreen.h"
+#include "attributemeter.h"
+#include "aanim.h"
 #include "LogisticsPilotListBox.h"
 #include "LogisticsMechDisplay.h"
 

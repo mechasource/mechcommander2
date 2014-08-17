@@ -35,10 +35,10 @@ typedef unsigned char* MemoryPtr;
 #define COS_SIN_45		0.70710678f		 	// Used to convert results in Deg to Rad
 #define PI				3.1415926535897932384626433832795
 
-typedef unsigned long DWORD;
-typedef unsigned int UINT;
-typedef unsigned char BYTE;
-typedef void *PVOID;
+//typedef unsigned long DWORD;
+//typedef unsigned int UINT;
+//typedef unsigned char BYTE;
+//typedef void *PVOID;
 //--------------------------------------------------------------------------
 // Macro Definitions
 #define NONE -1

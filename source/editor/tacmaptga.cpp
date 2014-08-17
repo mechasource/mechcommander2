@@ -7,8 +7,8 @@ TgaMapTGA.cpp			: Implementation of the TgaMapTGA component.
 \*************************************************************************************************/
 #include "stdafx.h"
 #include "TacMapTGA.h"
-#include "tacMap.h"
-#include "EditorData.h"
+#include "tacmap.h"
+#include "editordata.h"
 
 
 BEGIN_MESSAGE_MAP(TacMapTGA, TGAWnd)
@@ -80,7 +80,7 @@ void TacMapTGA::OnPaint()
 
 void TacMapTGA::refreshBmp()
 {
-	EditorData::instance->drawTacMap( (BYTE*)m_pBits, 128 * 128 * 4, 128 );
+	EditorData::instance->drawTacMap( (PUCHAR)m_pBits, 128 * 128 * 4, 128 );
 	RedrawWindow( );
 }
 	

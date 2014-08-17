@@ -7,8 +7,8 @@
 //
 #pragma once
 
-#include "gosFX.hpp"
-#include "Effect.hpp"
+#include <gosfx/gosfx.hpp>
+#include <gosfx/effect.hpp>
 
 namespace MidLevelRenderer {class MLRIndexedTriangleCloud;}
 

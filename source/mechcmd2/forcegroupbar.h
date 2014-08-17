@@ -8,7 +8,7 @@ ForceGroupBar.h			: Interface for the ForceGroupBar component.
 \*************************************************************************************************/
 
 #ifndef MCLIB_H
-#include "MCLib.h"
+#include <mclib.h>
 #endif
 
 //*************************************************************************************************
@@ -20,7 +20,7 @@ class StaticInfo;
 
 #define MAX_ICONS 16
 
-#include "MechIcon.h"
+#include "mechicon.h"
 
 #define FORCEGROUP_TOP	ForceGroupIcon::selectionRect[0].top
 

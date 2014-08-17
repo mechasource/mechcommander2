@@ -1,16 +1,17 @@
-#define MECHLOPEDIA_CPP
 /*************************************************************************************************\
 Mechlopedia.cpp			: Implementation of the Mechlopedia component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
-#include "Mechlopedia.h"
-#include "iniFile.h"
-#include "mclib.h"
-#include "LogisticsData.h"
+#define MECHLOPEDIA_CPP
+
+#include "stdafx.h"
+#include "mechlopedia.h"
+#include "inifile.h"
+#include <mclib.h>
+#include "logisticsdata.h"
 #include "..\resource.h"
 #include "prefs.h"
 #include "cmponent.h"

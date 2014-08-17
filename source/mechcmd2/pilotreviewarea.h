@@ -8,10 +8,10 @@ PilotReviewARea.h			: Interface for the PilotReviewARea component.
 \*************************************************************************************************/
 
 //*************************************************************************************************
-#include "LogisticsScreen.h"
-#include "aListBox.h"
-#include "AttributeMeter.h"
-#include "aAnim.h"
+#include "logisticsscreen.h"
+#include "alistbox.h"
+#include "attributemeter.h"
+#include "aanim.h"
 #include "LogisticsPilot.h"
 
 class aButton;

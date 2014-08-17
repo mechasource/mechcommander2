@@ -1,12 +1,12 @@
-#define LOGISTICSSCREEN_CPP
 /*************************************************************************************************\
 LogisticsScreen.cpp			: Implementation of the LogisticsScreen component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================// 
 \*************************************************************************************************/
-#include "stdafx.h"
+#define LOGISTICSSCREEN_CPP
 
+#include "stdafx.h"
 #include "logisticsscreen.h"
 #include "inifile.h"
 #include "asystem.h"

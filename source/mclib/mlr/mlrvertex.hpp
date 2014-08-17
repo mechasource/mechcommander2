@@ -19,9 +19,9 @@
 	//
 	public:
 		static void
-			InitializeClass();
+			InitializeClass(void);
 		static void
-			TerminateClass();
+			TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
@@ -33,10 +33,10 @@
 		);
 
 	public:
-		MLRVertex();
+		MLRVertex(void);
 		MLRVertex(const Point3D*, const RGBAColor*, const Vector3D*, const Vector2DOf<Scalar>*);
 		MLRVertex(const Point3D&, const RGBAColor&, const Vector3D&, const Vector2DOf<Scalar>&);
-		~MLRVertex();
+		~MLRVertex(void);
 
 		static MLRVertex*
 			Make(
@@ -108,7 +108,7 @@
 	//
 	public:
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{};
 
 	protected:

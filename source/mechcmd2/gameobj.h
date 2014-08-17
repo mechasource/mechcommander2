@@ -17,7 +17,7 @@
 // Include Files
 
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef DOBJTYPE_H
@@ -57,7 +57,7 @@
 #endif
 
 #ifndef STUFF_HPP
-#include <stuff\stuff.hpp>
+#include <stuff/stuff.hpp>
 #endif
 
 extern float metersPerWorldUnit;

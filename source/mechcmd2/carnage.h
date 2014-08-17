@@ -27,7 +27,7 @@
 #include "objtype.h"
 #endif
 
-#include <gosFX\gosfxheaders.hpp>
+#include <gosfx/gosfxheaders.hpp>
 //***************************************************************************
 typedef union _CarnageInfo 
 {

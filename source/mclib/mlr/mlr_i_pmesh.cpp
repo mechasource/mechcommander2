@@ -1214,7 +1214,7 @@ float MidLevelRenderer::vdata[12][3] = {
   {ICO_Z, ICO_X, 0.0f}, {-ICO_Z, ICO_X, 0.0f}, {ICO_Z, -ICO_X, 0.0f}, {-ICO_Z, -ICO_X, 0.0f}
 };
 
-unsigned int MidLevelRenderer::tindices [20][3] = {
+uint32_t MidLevelRenderer::tindices [20][3] = {
   {0, 4, 1}, {0, 9, 4}, {9, 5, 4}, {4, 5, 8}, {4, 8, 1},
   {8, 10, 1}, {8, 3, 10}, {5, 3, 8}, {5, 2, 3}, {2, 7, 3},
   {7, 10, 3}, {7, 6, 10}, {7, 11, 6}, {11, 0, 6}, {0, 1, 6},

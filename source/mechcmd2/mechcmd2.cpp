@@ -10,7 +10,7 @@
 //-----------------------------------
 // Include Files
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef MISSION_H
@@ -69,10 +69,10 @@ extern CPrefs prefs;
 
 #include "..\resource.h"
 
-#include <GameOS.hpp>
+#include <gameos.hpp>
 #include <ToolOS.hpp>
 #include <Stuff\stuff.hpp>
-#include <MLR\MLR.hpp>
+#include <mlr/mlr.hpp>
 #include <GosFX\gosfxheaders.hpp>
 
 //------------------------------------------------------------------------------------------------------------

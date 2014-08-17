@@ -11,7 +11,7 @@ EditorObjectMgr.h	: Interface for the EditorObjectMgr component.  This thing hol
 
 
 #ifndef ELIST_H
-#include "Elist.h"
+#include "elist.h"
 #endif
 
 #ifndef EDITOROBJECTS_H
@@ -22,8 +22,7 @@ EditorObjectMgr.h	: Interface for the EditorObjectMgr component.  This thing hol
 #include "Forest.h"
 #endif
 
-#include "mclib.h"
-
+#include <mclib.h>
 
 class ObjectAppearance;
 class AppearanceType;

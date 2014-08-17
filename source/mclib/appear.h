@@ -24,7 +24,7 @@
 #include "floathelp.h"
 #endif
 
-#include <stuff\stuff.hpp>
+#include <stuff/stuff.hpp>
 //---------------------------------------------------------------------------
 // Macro definitions
 #ifndef MAX_ULONG
@@ -43,7 +43,7 @@
 #define	BARTEST			0.001f
 
 extern FloatHelpPtr globalFloatHelp;
-extern unsigned long currentFloatHelp;
+extern size_t currentFloatHelp;
 
 
 // would have loved to make object flags, but it looks like we're out...
@@ -175,9 +175,9 @@ class Appearance
 		virtual void drawBars (void);
 
 		void drawTextHelp (char *text);
-		void drawTextHelp (char *text, unsigned long color);
+		void drawTextHelp (char *text, size_t color);
 
-		void drawPilotName(char *text, unsigned long color ); // next line below drawTextHelp
+		void drawPilotName(char *text, size_t color ); // next line below drawTextHelp
 
 		
 		virtual bool recalcBounds (void)
@@ -188,7 +188,7 @@ class Appearance
 			return inView;
 		}
 
-		virtual void setGesture (unsigned long /*gestureId*/)
+		virtual void setGesture (size_t /*gestureId*/)
 		{
 		}
 
@@ -206,7 +206,7 @@ class Appearance
 			return 0;
 		}
 
-		virtual unsigned long getAppearanceClass (void)
+		virtual size_t getAppearanceClass (void)
 		{
 			return BASE_APPEARANCE;
 		}
@@ -558,9 +558,9 @@ class Appearance
 		{
 		}
 
-		void drawIcon(  unsigned long bmpHandle, unsigned long bmpWidth,
-						  unsigned long bmpHeight, unsigned long color, 
-						  unsigned long where = 0 );
+		void drawIcon(  size_t bmpHandle, size_t bmpWidth,
+						  size_t bmpHeight, size_t color, 
+						  size_t where = 0 );
 						  
 		virtual void setSkyNumber (long /*skyNum*/)
 		{

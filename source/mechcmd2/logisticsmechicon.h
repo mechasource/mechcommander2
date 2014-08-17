@@ -5,8 +5,8 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "aSystem.h"
-#include "aAnim.h"
+#include "asystem.h"
+#include "aanim.h"
 
 class LogisticsMech;
 class LogisticsPilot;

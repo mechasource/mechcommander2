@@ -7,7 +7,7 @@ MessageBox.h			: quick helper function to call up a message box
 //===========================================================================//
 \*************************************************************************************************/
 #ifndef UTILITIES_H
-#include "Utilities.h"
+#include "utilities.h"
 #endif
 
 #include "EditorInterface.h"

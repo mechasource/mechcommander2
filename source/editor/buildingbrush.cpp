@@ -9,7 +9,7 @@ BuildingBrush.cpp	: Implementation of the BuildingBrush component.
 #include "BuildingBrush.h"
 
 #ifndef EDITOROBJECTMGR_H
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #endif
 
 #ifndef TERRAIN_H

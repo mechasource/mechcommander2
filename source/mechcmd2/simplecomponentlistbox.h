@@ -8,7 +8,7 @@ SimpleComponentListBox.h			: Interface for the SimpleComponentListBox component.
 \*************************************************************************************************/
 
 #ifndef ALISTBOX_H
-#include "aListBox.h"
+#include "alistbox.h"
 #endif
 
 class LogisticsVariant;

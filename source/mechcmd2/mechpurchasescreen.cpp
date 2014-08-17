@@ -1,22 +1,23 @@
-#define MECHPURCHASESCREEN_CPP
 /*************************************************************************************************\
 MechPurchaseScreen.cpp			: Implementation of the MechPurchaseScreen component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
-#include "MechPurchaseScreen.h"
-#include "mcLib.h"
-#include "LogisticsData.h"
-#include "MechBayScreen.h"
+#define MECHPURCHASESCREEN_CPP
+
+#include "stdafx.h"
+#include "mechpurchasescreen.h"
+#include <mclib.h>
+#include "logisticsdata.h"
+#include "mechbayscreen.h"
 #include "gamesound.h"
 #include "..\resource.h"
-#include "SimpleCamera.h"
-#include "AttributeMeter.h"
-#include "Chatwindow.h"
-#include "Multplyr.h"
+#include "simplecamera.h"
+#include "attributemeter.h"
+#include "chatwindow.h"
+#include "multplyr.h"
 
 MechPurchaseScreen* MechPurchaseScreen::s_instance = NULL;
 

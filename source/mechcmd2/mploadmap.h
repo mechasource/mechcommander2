@@ -13,13 +13,13 @@ MPLoadMap.h			: Interface for the MPLoadMap component.
 #include "LogisticsDialog.h"
 #endif
 
-#include "aSystem.h"
-#include "aListBox.h"
-#include "AttributeMeter.h"
-#include "SimpleCamera.h"
+#include "asystem.h"
+#include "alistbox.h"
+#include "attributemeter.h"
+#include "simplecamera.h"
 
 #ifndef AANIM_H
-#include "aAnim.h"
+#include "aanim.h"
 #endif
 
 class aButton;

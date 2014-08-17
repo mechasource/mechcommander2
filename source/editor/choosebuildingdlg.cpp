@@ -11,13 +11,13 @@ ChooseBuildingDlg.cpp			: Implementation of the ChooseBuildingDlg component.
 
 #include <stdlib.h>
 #include <assert.h>
-#include "EString.h"
+#include "estring.h"
 
 #include "ChooseBuildingDlg.h"
 #include "Objective.h"
 
 #include "EditorInterface.h"
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 
 
 //-------------------------------------------------------------------------------------------------

@@ -9,7 +9,7 @@ PointerSelectObjectDlg.cpp			: Implementation of the PointerSelectObjectDlg comp
 
 #include <stdlib.h>
 #include <assert.h>
-#include "EString.h"
+#include "estring.h"
 
 #include "PointerSelectObjectDlg.h"
 #include "Objective.h"
@@ -149,7 +149,7 @@ BOOL PointerSelectObjectDlg::OnWndMsg( UINT message, WPARAM wParam, LPARAM lPara
 			BOOL result = PeekMessage(&msg, GetSafeHwnd(), 0, 0, PM_NOREMOVE);
 			depth -= 1;
 			if ((0 == result) && (m_bTimerIsReset)) {
-				unsigned int ui = ::SetTimer(GetSafeHwnd(), 1/*arbitrary non-zero ID*/, 2/*milliseconds*/, NULL);
+				uint32_t ui = ::SetTimer(GetSafeHwnd(), 1/*arbitrary non-zero ID*/, 2/*milliseconds*/, NULL);
 				assert(ui);
 				m_bTimerIsReset = false;
 			}

@@ -8,19 +8,19 @@ mechlopedia.h			: Interface for the mechlopedia component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
 #ifndef SIMPLECAMERA_H
-#include "SimpleCamera.h"
+#include "simplecamera.h"
 #endif
 
 #ifndef ALISTBOX_H
-#include "aListBox.h"
+#include "alistbox.h"
 #endif
 
 #ifndef COMPONENTLISTBOX_H
-#include "SimpleComponentListBox.h"
+#include "simplecomponentlistbox.h"
 #endif
 
 #include "..\resource.h"

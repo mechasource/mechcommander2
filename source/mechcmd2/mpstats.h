@@ -8,7 +8,7 @@ MPStats.h			: Interface for the MPStats component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
 #ifndef MULTPLYR_H

@@ -9,7 +9,7 @@
 #include "resource.h"
 #include "EditForestDlg.h"
 #include "Forest.h"
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #include "ForestDlg.h"
 #include "malloc.h"
 

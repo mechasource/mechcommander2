@@ -15,7 +15,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <GameOS\GameOS.hpp>
+#include <gameos.hpp>
 #include <GameOS\ToolOS.hpp>
 
 HGOSFONT3D GameDebugWindow::font = NULL;

@@ -7,9 +7,9 @@
 //
 #pragma once
 
-#include "gosFX.hpp"
-#include "SpinningCloud.hpp"
-#include <MLR\MLR.hpp>
+#include <gosfx/gosfx.hpp>
+#include <gosfx/spinningcloud.hpp>
+#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer {class MLRNGonCloud;}
 

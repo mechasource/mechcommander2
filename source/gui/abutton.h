@@ -5,9 +5,9 @@
 #ifndef ABUTTON_H
 #define ABUTTON_H
 
-#include "aSystem.h"
-#include "aFont.h"
-#include "aAnim.h"
+#include "asystem.h"
+#include "afont.h"
+#include "aanim.h"
 
 
 class FitIniFile;

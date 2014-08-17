@@ -8,11 +8,11 @@ aEdit.h			: Interface for the aEdit component of the GUI library.
 \*************************************************************************************************/
 
 #ifndef ASYSTEM_H
-#include "aSystem.h"
+#include "asystem.h"
 #endif
 
 #ifndef ESTRING_H
-#include "EString.h"
+#include "estring.h"
 #endif
 
 //*************************************************************************************************

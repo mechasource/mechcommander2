@@ -11,7 +11,7 @@ Objective.cpp			: Implementation of the Objective component.
 
 #include "Objective.h"
 
-#include "EString.h"
+#include "estring.h"
 #include "ECharString.h"
 
 #ifndef INIFILE_H
@@ -35,18 +35,18 @@ Objective.cpp			: Implementation of the Objective component.
 #endif
 
 #ifndef TACMAP_H
-#include "TacMap.h"
+#include "tacmap.h"
 #endif
 
 #ifndef AFONT_H
-#include "aFont.h"
+#include "afont.h"
 #endif
 
 #include "Logisticsdata.h"
 #include "team.h"
 #include "comndr.h"
 
-#include "ControlGui.h"
+#include "controlgui.h"
 
 #include "..\resource.h"
 

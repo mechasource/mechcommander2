@@ -21,7 +21,7 @@
 #endif
 
 #ifndef UTILITIES_H
-#include "Utilities.h"
+#include "utilities.h"
 #endif
 
 #include <string.h>

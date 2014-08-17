@@ -32,7 +32,7 @@
 //------------
 // TOKEN CODES
 
-typedef enum {
+typedef enum TokenCodeType {
 	TKN_NONE,
 	TKN_IDENTIFIER,
 	TKN_NUMBER,
@@ -112,7 +112,7 @@ typedef enum {
 	NUM_TOKENS
 } TokenCodeType;
 
-typedef enum {
+typedef enum CharCodeType {
 	CHR_LETTER,
 	CHR_DIGIT,
 	CHR_DQUOTE,
@@ -120,7 +120,7 @@ typedef enum {
 	CHR_EOF
 } CharCodeType;
 
-typedef struct {
+typedef struct ReservedWord {
 	char*			string;
 	TokenCodeType	tokenCode;
 } ReservedWord;
@@ -130,13 +130,13 @@ typedef struct {
 //------------------
 // LITERAL structure
 
-typedef enum {
+typedef enum LiteralType {
 	LIT_INTEGER,
 	LIT_REAL,
 	LIT_STRING
 } LiteralType;
 
-typedef struct {
+typedef struct Literal {
 	LiteralType		type;
 	struct {
 		long		integer;
@@ -152,7 +152,6 @@ typedef struct CaseItem {
 	char*				branchLocation;
 	struct CaseItem*	next;
 } CaseItem;
-
 typedef CaseItem* CaseItemPtr;
 
 //***************************************************************************
@@ -233,47 +232,45 @@ class ABLFile {
 //----------
 // FUNCTIONS
 
-inline CharCodeType calcCharCode (long ch);
-long isReservedWord (void);
-void initScanner (char* fileName);
-void quitScanner (void);
-void skipComment (void);
-void skipBlanks (void);
-void getChar(void);
-void crunchToken (void);
-void downShiftWord (void);
-void getToken(void);
-void getWord (void);
-void accumulateValue (float* valuePtr, SyntaxErrorType errCode);
-void getNumber (void);
-void getString (void);
-void getSpecial (void);
-bool tokenIn (TokenCodeType* tokenList);
-void synchronize (TokenCodeType* tokenList1,
-				  TokenCodeType* tokenList2,
-				  TokenCodeType* tokenList3);
-bool getSourceLine (void);
-void printLine (char* line);
-void initPageHeader (char* fileName);
-void printPageHeader (void);
+inline CharCodeType __stdcall calcCharCode(long ch);
+long __stdcall isReservedWord(void);
+void __stdcall initScanner(char* fileName);
+void __stdcall quitScanner(void);
+void __stdcall skipComment(void);
+void __stdcall skipBlanks(void);
+void __stdcall getChar(void);
+void __stdcall crunchToken(void);
+void __stdcall downShiftWord(void);
+void __stdcall getToken(void);
+void __stdcall getWord (void);
+void __stdcall accumulateValue(float* valuePtr, SyntaxErrorType errCode);
+void __stdcall getNumber(void);
+void __stdcall getString(void);
+void __stdcall getSpecial(void);
+bool __stdcall tokenIn (TokenCodeType* tokenList);
+void __stdcall synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType* tokenList3);
+bool __stdcall getSourceLine(void);
+void __stdcall printLine (char* line);
+void __stdcall initPageHeader(char* fileName);
+void __stdcall printPageHeader(void);
 
 //----------
 // VARIABLES
 
-extern char			wordString[MAXLEN_TOKENSTRING];
-extern void* (*ABLSystemMallocCallback) (unsigned long memSize);
-extern void* (*ABLStackMallocCallback) (unsigned long memSize);
-extern void* (*ABLCodeMallocCallback) (unsigned long memSize);
-extern void* (*ABLSymbolMallocCallback) (unsigned long memSize);
-extern void (*ABLSystemFreeCallback) (void* memBlock);
-extern void (*ABLStackFreeCallback) (void* memBlock);
-extern void (*ABLCodeFreeCallback) (void* memBlock);
-extern void (*ABLSymbolFreeCallback) (void* memBlock);
-extern void (*ABLDebugPrintCallback) (char* s);
-extern long (*ABLRandomCallback) (long range);
-extern void (*ABLSeedRandomCallback) (unsigned long range);
-extern unsigned long (*ABLGetTimeCallback) (void);
-extern void (*ABLFatalCallback) (long code, char* s);
+extern char		wordString[MAXLEN_TOKENSTRING];
+extern void*	(__stdcall *ABLSystemMallocCallback) (size_t memSize);
+extern void*	(__stdcall *ABLStackMallocCallback) (size_t memSize);
+extern void*	(__stdcall *ABLCodeMallocCallback) (size_t memSize);
+extern void*	(__stdcall *ABLSymbolMallocCallback) (size_t memSize);
+extern void		(__stdcall *ABLSystemFreeCallback) (void* memBlock);
+extern void		(__stdcall *ABLStackFreeCallback) (void* memBlock);
+extern void		(__stdcall *ABLCodeFreeCallback) (void* memBlock);
+extern void		(__stdcall *ABLSymbolFreeCallback) (void* memBlock);
+extern void		(__stdcall *ABLDebugPrintCallback) (char* s);
+extern long		(__stdcall *ABLRandomCallback) (long range);
+extern void		(__stdcall *ABLSeedRandomCallback) (size_t range);
+extern size_t	(__stdcall *ABLGetTimeCallback) (void);
+extern void		(__stdcall *ABLFatalCallback) (long code, char* s);
 
 //***************************************************************************
 	

@@ -3079,7 +3079,7 @@ void MissionInterfaceManager::initTacMap( PacketFile* file, int packet )
 {
 	file->seekPacket(packet);
 	int size = file->getPacketSize( );
-	BYTE* mem = new BYTE[size];
+	PUCHAR mem = new BYTE[size];
 
 	file->readPacket( packet, mem );
 

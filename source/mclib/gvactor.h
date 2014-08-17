@@ -29,7 +29,7 @@
 #include "ObjectAppearance.h"
 #endif
 
-#include <gosFX\gosfxheaders.hpp>
+#include <gosfx/gosfxheaders.hpp>
 //**************************************************************************************
 #ifndef NO_ERR
 #define NO_ERR						0
@@ -260,7 +260,7 @@ class GVAppearance : public ObjectAppearance
 		
 		virtual void destroy (void);
 
-		virtual unsigned long getAppearanceClass (void)
+		virtual size_t getAppearanceClass (void)
 		{
 			return VEHICLE_APPR_TYPE;
 		}
@@ -315,7 +315,7 @@ class GVAppearance : public ObjectAppearance
 			return (canTransition == false);
 		}
 
-		virtual void setGesture (unsigned long gestureId);
+		virtual void setGesture (size_t gestureId);
 		
 		virtual long getCurrentGestureId (void)
 		{

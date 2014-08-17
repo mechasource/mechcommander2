@@ -1,20 +1,19 @@
-#define LOGISTICSPILOT_CPP
-
 //===========================================================================//
 // LogisticsPilot.cpp		: Implementation of the LogisticsPilot component.//
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
+#define LOGISTICSPILOT_CPP
+
 #include "stdafx.h"
-
-#include "McLib.h"
-#include "LogisticsPilot.h"
-#include "LogisticsErrors.h"
-#include "LogisticsData.h"
-
+#include <mclib.h>
+#include "logisticspilot.h"
+#include "logisticserrors.h"
+#include "logisticsdata.h"
 #include "warrior.h"
 #include "..\resource.h"
-#include "MechIcon.h"
+#include "mechicon.h"
 #include "objmgr.h"
 
 char	LogisticsPilot::skillTexts[NUM_SPECIALTY_SKILLS][255] = {0};

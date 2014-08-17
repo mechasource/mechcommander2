@@ -10,8 +10,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-//---------------------------------------------------------------------------
-// Include files
+#include "stdafx.h"
 
 #ifndef CSVFILE_H
 #include "csvfile.h"

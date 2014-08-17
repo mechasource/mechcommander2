@@ -97,11 +97,19 @@ void
 		{
 			if(texture2==0)
 			{
-				gos_RenderIndexedArray( (GOSVertex *)vertices, numVertices, newIndicies, startIndex);
+				void __stdcall gos_RenderIndexedArray(
+					PVOID pVertexArray, 
+					ULONG NumberVertices, 
+					PUSHORT lpwIndices, 
+					ULONG NumberIndices, 
+					gosVERTEXTYPE VertexType, 
+					gosPRIMITIVETYPE PrimitiveType=PRIMITIVE_TRIANGLELIST );
+
+				gos_RenderIndexedArray((GOSVertex*)vertices, numVertices, newIndicies, startIndex);
 			}
 			else
 			{
-				gos_RenderIndexedArray( (GOSVertex2UV *)vertices, numVertices, indices, numIndices);
+				gos_RenderIndexedArray((GOSVertex2UV*)vertices, numVertices, indices, numIndices);
 			}
 		}
 	}
@@ -516,7 +524,7 @@ SortData *
 		(
 			void *vertices, 
 			int numVertices, 
-			unsigned short *indices, 
+			USHORT *indices, 
 			int numIndices, 
 			const MLRState& state,
 			const int& mode,

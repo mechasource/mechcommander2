@@ -14,7 +14,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // UnitSettingsDlg dialog
 
-#include "EList.h"
+#include "elist.h"
 #include "Action.h"
 class Unit;
 

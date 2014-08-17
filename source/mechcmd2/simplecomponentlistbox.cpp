@@ -7,7 +7,7 @@ SimpleComponentListBox.cpp			: Implementation of the SimpleComponentListBox comp
 \*************************************************************************************************/
 #include "stdafx.h"
 
-#include "SimpleComponentListBox.h"
+#include "simplecomponentlistbox.h"
 #include "..\resource.h"
 #include "LogisticsVariant.h"
 #include "LogisticsComponent.h"

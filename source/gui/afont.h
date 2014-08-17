@@ -5,7 +5,7 @@
 #ifndef AFONT_H
 #define AFONT_H
 
-#include <gameOS.hpp>
+#include <gameos.hpp>
 
 class aFont;
 

@@ -8,8 +8,8 @@ MechIcon.cpp			: Implementation of the MechIcon component.
 #include "stdafx.h"
 
 #include "MechIcon.h"
-#include "Mover.h"
-#include "Utilities.h"
+#include "mover.h"
+#include "utilities.h"
 #include "Mech.h"
 #include "gvehicl.h"
 #include "GameCam.h"
@@ -458,8 +458,8 @@ bool MechIcon::initTextures()
 		int size = file.getLength();
 
 		s_MechTextures = (TGAFileHeader*)new char[size];
-		file.read( (BYTE*)s_MechTextures, size );
-		BYTE* pTmp = (BYTE*)(s_MechTextures + 1);
+		file.read( (PUCHAR)s_MechTextures, size );
+		PUCHAR pTmp = (PUCHAR)(s_MechTextures + 1);
 
 		flipTopToBottom (pTmp, s_MechTextures->pixel_depth, s_MechTextures->width, s_MechTextures->height );
 
@@ -1136,8 +1136,8 @@ bool VehicleIcon::init( Mover* pMover )
 		int size = file.getLength();
 
 		s_VehicleTextures = (TGAFileHeader*)new char[size];
-		file.read( (BYTE*)s_VehicleTextures, size );
-		BYTE* pTmp = (BYTE*)(s_VehicleTextures + 1); 
+		file.read( (PUCHAR)s_VehicleTextures, size );
+		PUCHAR pTmp = (PUCHAR)(s_VehicleTextures + 1); 
 
 		flipTopToBottom (pTmp, s_VehicleTextures->pixel_depth, s_VehicleTextures->width, s_VehicleTextures->height );
 

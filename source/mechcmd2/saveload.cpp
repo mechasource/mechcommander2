@@ -12,7 +12,7 @@
 //----------------------------------------------------------------------------------
 // Include Files
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef MISSION_H
@@ -112,7 +112,7 @@
 #endif
 
 #include "..\resource.h"
-#include <GameOS.hpp>
+#include <gameos.hpp>
 #include <ddraw.h>
 
 //----------------------------------------------------------------------------------------------------

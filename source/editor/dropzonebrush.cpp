@@ -7,7 +7,7 @@ dropZoneBrush.cpp			: Implementation of the dropZoneBrush component.
 \*************************************************************************************************/
 
 #include "dropZoneBrush.h"
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 
 DropZoneBrush::DropZoneBrush(int align, bool bVtol)
 {

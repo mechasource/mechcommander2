@@ -19,8 +19,7 @@ LinkBrush.h			: Interface for the LinkBrush component.
 #include "BuildingLink.h"
 #endif
 
-#include "mclib.h"
-
+#include <mclib.h>
 class EditorObject;
 
 //*************************************************************************************************

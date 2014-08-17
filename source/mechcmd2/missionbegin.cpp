@@ -4,34 +4,34 @@ MissionBegin.cpp			: Implementation of the MissionBegin component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+
 #include "stdafx.h"
-
-#include "MissionBegin.h"
-#include "McLib.h"
-#include "objMgr.h"
-#include "Mech.h"
-#include "LogisticsVariant.h"
-#include "MechIcon.h"
-#include "LogisticsData.h"
-#include "MissionSelectionScreen.h"
-#include "MechBayScreen.h"
-#include "PilotReadyScreen.h"
-#include "MechPurchaseScreen.h"
-#include "MechLabScreen.h"
-#include "MissionBriefingScreen.h"
-#include "MPConnectionType.h"
-#include "MPParameterScreen.h"
-#include "MPGameBrowser.h"
-#include "MPLoadMap.h"
-#include "MainMenu.h"
+#include "missionbegin.h"
+#include <mclib.h>
+#include "objmgr.h"
+#include "mech.h"
+#include "logisticsvariant.h"
+#include "mechicon.h"
+#include "logisticsdata.h"
+#include "missionselectionscreen.h"
+#include "mechbayscreen.h"
+#include "pilotreadyscreen.h"
+#include "mechpurchasescreen.h"
+#include "mechlabscreen.h"
+#include "missionbriefingscreen.h"
+#include "mpconnectiontype.h"
+#include "mpparameterscreen.h"
+#include "mpgamebrowser.h"
+#include "mploadmap.h"
+#include "mainmenu.h"
 #include "mission.h"
-#include "gameSound.h"
-#include "LoadScreen.h"
-#include "MPPrefs.h"
-#include "ChatWindow.h"
-#include "LogisticsMechIcon.h"
-
+#include "gamesound.h"
+#include "loadscreen.h"
+#include "mpprefs.h"
+#include "chatwindow.h"
+#include "logisticsmechicon.h"
 #include "prefs.h"
+
 extern CPrefs prefs;
 
 class MechLabScreen;

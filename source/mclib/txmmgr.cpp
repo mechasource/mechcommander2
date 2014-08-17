@@ -46,7 +46,7 @@
 #endif
 
 #include <gameos.hpp>
-#include <MLR\MLR.hpp>
+#include <mlr/mlr.hpp>
 #include <GosFX\gosfxheaders.hpp>
 
 //---------------------------------------------------------------------------
@@ -1332,9 +1332,13 @@ long MC_TextureManager::saveTexture (DWORD textureIndex, const char *textureFull
 		{
 			//------------------------------------------
 			// Badboys are now LZ Compressed in texture cache.
-			long origSize = LZDecomp(MC_TextureManager::lzBuffer2,(MemoryPtr)masterTextureNodes[textureIndex].textureData,masterTextureNodes[textureIndex].lzCompSize);
-			if (origSize != (long)(masterTextureNodes[textureIndex].width & 0x0fffffff))
-				STOP(("Decompressed to different size from original!  Txm:%s  Width:%d  DecompSize:%d",masterTextureNodes[textureIndex].nodeName,(masterTextureNodes[textureIndex].width & 0x0fffffff),origSize));
+			size_t origSize = LZDecomp(MC_TextureManager::lzBuffer2,
+				(MemoryPtr)masterTextureNodes[textureIndex].textureData,
+				masterTextureNodes[textureIndex].lzCompSize);
+			if (origSize != (masterTextureNodes[textureIndex].width & 0x0fffffff))
+				STOP(("Decompressed to different size from original!  Txm:%s  Width:%d  DecompSize:%d",
+				masterTextureNodes[textureIndex].nodeName,
+				(masterTextureNodes[textureIndex].width & 0x0fffffff),origSize));
 
 			if (origSize >= MAX_LZ_BUFFER_SIZE)
 				STOP(("Texture TOO large: %s",masterTextureNodes[textureIndex].nodeName));
@@ -1396,9 +1400,10 @@ DWORD MC_TextureNode::get_gosTextureHandle (void)	//If texture is not in VidRAM,
 			// Cache this badboy IN.
 			// Badboys are now LZ Compressed in texture cache.
 			// Uncompress, then memcpy.
-			long origSize = LZDecomp(MC_TextureManager::lzBuffer2,(MemoryPtr)textureData,lzCompSize);
-			if (origSize != (long)(width & 0x0fffffff))
-				STOP(("Decompressed to different size from original!  Txm:%s  Width:%d  DecompSize:%d",nodeName,(width & 0x0fffffff),origSize));
+			size_t origSize = LZDecomp(MC_TextureManager::lzBuffer2,(MemoryPtr)textureData,lzCompSize);
+			if (origSize != (width & 0x0fffffff))
+				STOP(("Decompressed to different size from original!  Txm:%s  Width:%d  DecompSize:%d",
+				nodeName,(width & 0x0fffffff),origSize));
 
 			if (origSize >= MAX_LZ_BUFFER_SIZE)
 				STOP(("Texture TOO large: %s",nodeName));

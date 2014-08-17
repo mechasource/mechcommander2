@@ -8,7 +8,7 @@
 #include "resource.h"
 #include "PlayerSettingsDlg.h"
 
-#include "EditorData.h"
+#include "editordata.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

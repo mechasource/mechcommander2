@@ -10,7 +10,7 @@ ChooseBuildingDlg.h		: Interface for the ChooseBuildingDlg component.
 #include "resource.h"
 #include <elist.h>
 #include "Objective.h"
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #include "stdafx.h"
 
 

@@ -9,11 +9,11 @@ SelectionBrush.cpp			: Implementation of the SelectionBrush component.
 #include "SelectionBrush.h"
 
 #ifndef CAMERA_H
-#include "Camera.h"
+#include "camera.h"
 #endif
 
 #ifndef EDITOROBJECTMGR_H
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #endif
 
 #ifndef ACTION_H

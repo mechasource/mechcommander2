@@ -6,17 +6,16 @@ InfoWindow.h			: Interface for the InfoWindow component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "mclib.h"
-
+#include <mclib.h>
 #ifndef CONTROLGUI_H
-#include "controlGui.h"
+#include "controlgui.h"
 #endif
 
 class Mover;
 class ForceGroupIcon;
 
 #ifndef AFONT_H
-#include "aFont.h"
+#include "afont.h"
 #endif
 
 #define SCROLLUP	1

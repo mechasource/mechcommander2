@@ -16,7 +16,7 @@ class FitIniFile;
 #include "utilities.h"
 
 #ifndef AFONT_H
-#include "aFont.h"
+#include "afont.h"
 #endif
 
 /**************************************************************************************************

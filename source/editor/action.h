@@ -15,7 +15,7 @@ class ActionUndoMgr;
 class Action;
 
 #ifndef ELIST_H
-#include "Elist.h"
+#include "elist.h"
 #endif
 
 // Abstract base class for all action objects

@@ -8,11 +8,11 @@ LoadScreen.h			: Interface for the LoadScreen component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
 #ifndef AANIM_H
-#include "aAnim.h"
+#include "aanim.h"
 #endif
 
 struct TGAFileHeader;

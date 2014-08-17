@@ -6,7 +6,7 @@ TacMap.cpp			: Implementation of the TacMap component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "TacMap.h"
+#include "tacmap.h"
 #include "TGAInfo.h"
 #include "gameOS.hpp"
 

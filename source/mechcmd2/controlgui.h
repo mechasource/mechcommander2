@@ -9,11 +9,11 @@ ControlGui.h			: Interface for the ControlGui component.  This thing holds the t
 \*************************************************************************************************/
 
 #ifndef GAMETACMAP_H
-#include "GameTacMap.h"
+#include "gametacmap.h"
 #endif
 
 #ifndef FORCEGROUPBAR_H
-#include "ForceGroupBar.h"
+#include "forcegroupbar.h"
 #endif
 
 #ifndef MOVER_H
@@ -21,19 +21,19 @@ ControlGui.h			: Interface for the ControlGui component.  This thing holds the t
 #endif
 
 #ifndef UTILITIES_H
-#include "Utilities.h"
+#include "utilities.h"
 #endif
 
 #ifndef PAUSEWINDOW_H
-#include "PauseWindow.h"
+#include "pausewindow.h"
 #endif
 
 #ifndef AFONT_H
-#include "aFont.h"
+#include "afont.h"
 #endif
 
 #ifndef AEDIT_H
-#include "aEdit.h"
+#include "aedit.h"
 #endif
 
 #ifndef MC2movie_H
@@ -41,7 +41,7 @@ ControlGui.h			: Interface for the ControlGui component.  This thing holds the t
 #endif
 
 #ifndef MPSTATS_H
-#include "MPStats.h"
+#include "mpstats.h"
 #endif
 class CObjective;
 class InfoWindow;

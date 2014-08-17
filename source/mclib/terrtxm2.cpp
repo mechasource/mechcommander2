@@ -56,7 +56,7 @@
 
 bool forceShadowBurnIn = false;
 
-void* DecodeJPG( const char* FileName, BYTE* Data, DWORD DataSize, DWORD* TextureWidth, DWORD* TextureHeight, bool TextureLoad, void *pDestSurf );
+void* DecodeJPG( const char* FileName, PUCHAR Data, DWORD DataSize, DWORD* TextureWidth, DWORD* TextureHeight, bool TextureLoad, void *pDestSurf );
 
 DWORD			TerrainColorMap::terrainTypeIDs[ TOTAL_COLORMAP_TYPES ] = 
 {

@@ -10,7 +10,7 @@
 //---------------------------------------------------------------------------
 // Include files
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef ACTOR_H

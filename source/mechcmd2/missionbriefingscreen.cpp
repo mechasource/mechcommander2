@@ -8,7 +8,7 @@
 #include "MechBayScreen.h"
 #include "LogisticsData.h"
 #include "IniFile.h"
-#include "Packet.h"
+#include "packet.h"
 #include "..\resource.h"
 #include "Objective.h"
 #include "Multplyr.h"
@@ -300,14 +300,14 @@ long	MissionBriefingScreen::getMissionTGA( const char* missionName )
 	
 			file.seekPacket(3);
 			long size = file.getPacketSize( );
-			BYTE* mem = new BYTE[size];
+			PUCHAR mem = new BYTE[size];
 
 			file.readPacket( 3, mem );
 			
 			TGAFileHeader* pHeader = (TGAFileHeader*)mem;
 			long bmpWidth = pHeader->width;
 			long bmpHeight = pHeader->height;
-			flipTopToBottom( (BYTE*)(pHeader + 1), pHeader->pixel_depth, bmpWidth, bmpHeight );
+			flipTopToBottom( (PUCHAR)(pHeader + 1), pHeader->pixel_depth, bmpWidth, bmpHeight );
 			
 			// set up the texture
 			long tmpMapTextureHandle = mcTextureManager->textureFromMemory( (unsigned long*)(pHeader+1), gos_Texture_Solid, 0, bmpWidth );

@@ -32,7 +32,7 @@
 #include "ObjectAppearance.h"
 #endif
 
-#include <gosFX\gosfxheaders.hpp>
+#include <gosfx/gosfxheaders.hpp>
 //**************************************************************************************
 #ifndef NO_ERR
 #define NO_ERR						0
@@ -265,14 +265,14 @@ class BldgAppearance : public ObjectAppearance
 			fadeTable = fTable;
 		}
 
-		virtual void setGesture (unsigned long gestureId);
+		virtual void setGesture (size_t gestureId);
 		
 		virtual long getCurrentGestureId (void)
 		{
 			return bdAnimationState;
 		}
 
-		virtual unsigned long getAppearanceClass (void)
+		virtual size_t getAppearanceClass (void)
 		{
 			return BUILDING_APPR_TYPE;
 		}
@@ -493,7 +493,7 @@ class TreeAppearance : public ObjectAppearance
 			destroy();
 		}
 
-		virtual unsigned long getAppearanceClass (void)
+		virtual size_t getAppearanceClass (void)
 		{
 			return TREE_APPR_TYPE;
 		}

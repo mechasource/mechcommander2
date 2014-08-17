@@ -1,22 +1,23 @@
-#define LOGISTICSDIALOG_CPP
 /*************************************************************************************************\
 LogisticsDialog.cpp			: Implementation of the LogisticsDialog component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
-#include "LogisticsDialog.h"
-#include "aButton.h"
-#include "iniFile.h"
-#include "mcLib.h"
+#define LOGISTICSDIALOG_CPP
+
+#include "stdafx.h"
+#include "logisticsdialog.h"
+#include "abutton.h"
+#include "inifile.h"
+#include <mclib.h>
 #include "windows.h"
 #include "..\resource.h"
-#include "aEdit.h"
-#include "LogisticsData.h"
+#include "aedit.h"
+#include "logisticsdata.h"
 #include <malloc.h>
-#include "MissionBriefingScreen.h"
+#include "missionbriefingscreen.h"
 #include "sounds.h"
 #include "gamesound.h"
 

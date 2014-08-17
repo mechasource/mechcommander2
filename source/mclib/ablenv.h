@@ -161,7 +161,7 @@ class ABLModule {
 		char					name[MAX_ABLMODULE_NAME];
 		long					handle;
 		StackItemPtr			staticData;
-		unsigned long*			orderCallFlags;
+		size_t*			orderCallFlags;
 		StackItem				returnVal;
 		bool					initCalled;
 		SymTableNodePtr			prevState;
@@ -238,7 +238,7 @@ class ABLModule {
 
 		void setName (char* _name);
 
-		unsigned long* getOrderCallFlags (void) {
+		size_t* getOrderCallFlags (void) {
 			return(orderCallFlags);
 		}
 

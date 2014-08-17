@@ -25,7 +25,7 @@ namespace MidLevelRenderer {
 		public gos_POINT
 	{
 	public:
-		GOSPoint();
+		GOSPoint(void);
 
 		inline GOSPoint&
 			operator=(const Stuff::Vector4D& v)

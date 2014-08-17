@@ -28,9 +28,9 @@ namespace MidLevelRenderer {
 	//
 	public:
 		static void
-			InitializeClass();
+			InitializeClass(void);
 		static void
-			TerminateClass();
+			TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
@@ -40,10 +40,10 @@ namespace MidLevelRenderer {
 			Stuff::MemoryStream *stream,
 			int version
 		);
-		~MLRIndexedPolyMesh();
+		~MLRIndexedPolyMesh(void);
 
 	public:
-		MLRIndexedPolyMesh();
+		MLRIndexedPolyMesh(void);
 
 		static MLRIndexedPolyMesh*
 			Make(
@@ -58,7 +58,7 @@ namespace MidLevelRenderer {
 			operator new(size_t size)
 				{
 					Verify(size == sizeof(MLRIndexedPolyMesh));
-					return AllocatedMemory->New();
+					return AllocatedMemory->New(void);
 				}
 		void
 			operator delete(void *where)
@@ -74,14 +74,14 @@ namespace MidLevelRenderer {
 		virtual void	SetPrimitiveLength(unsigned char *, int);
 		virtual void	GetPrimitiveLength(unsigned char **, int*);
 
-		void	FindFacePlanes();
+		void	FindFacePlanes(void);
 
 		virtual int	FindBackFace(const Stuff::Point3D&);
 
 		const Stuff::Plane *GetPolygonPlane(int i)
 			{
 				Check_Object(this);
-				Verify(i<facePlanes.GetLength());
+				Verify(i<facePlanes.GetLength(void));
 
 				return &facePlanes[i];
 			}
@@ -106,12 +106,12 @@ namespace MidLevelRenderer {
 
 	//	Initializes the visibility test list
 		void
-			ResetTestList();
+			ResetTestList(void);
 
 	//	find which vertices are visible which not - returns nr of visible vertices
 	//	the result is stored in the visibleIndexedVertices array
 		int
-			FindVisibleVertices();
+			FindVisibleVertices(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Class Data Support
@@ -125,15 +125,15 @@ namespace MidLevelRenderer {
 	//
 	public:
 		void
-			TestInstance() const;
+			TestInstance(void) const;
 
 	virtual int
-			GetSize()
+			GetSize(void)
 		{ 
 			Check_Object(this);
-			int ret = MLRIndexedPrimitive::GetSize();
-			ret += testList.GetSize();
-			ret += facePlanes.GetSize();
+			int ret = MLRIndexedPrimitive::GetSize(void);
+			ret += testList.GetSize(void);
+			ret += facePlanes.GetSize(void);
 
 			return ret;
 		}

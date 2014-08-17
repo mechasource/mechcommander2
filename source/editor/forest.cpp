@@ -7,10 +7,9 @@ forest.cpp			: Implementation of the forest component.
 \*************************************************************************************************/
 
 #include "forest.h"
-#include "mclib.h"
+#include <mclib.h>
 #include "resource.h"
-
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 
 extern unsigned long gameResourceHandle;
 

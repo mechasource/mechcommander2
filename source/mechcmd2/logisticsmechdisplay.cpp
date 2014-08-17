@@ -1,17 +1,18 @@
-#define LOGISTICSMECHDISPLAY_CPP
 /*************************************************************************************************\
 LogisticsMechDisplay.cpp			: Implementation of the LogisticsMechDisplay component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
-#include "LogisticsMechDisplay.h"
-#include "LogisticsMech.h"
-#include "mclib.h"
+#define LOGISTICSMECHDISPLAY_CPP
+
+#include "stdafx.h"
+#include "logisticsmechdisplay.h"
+#include "logisticsmech.h"
+#include <mclib.h>
 #include "..\resource.h"
-#include "Prefs.h"
+#include "prefs.h"
 
 LogisticsMechDisplay::LogisticsMechDisplay(  )
 {

@@ -1,21 +1,22 @@
-#define MISSIONRESULTS_CPP
 /*************************************************************************************************\
 MissionResults.cpp			: Implementation of the MissionResults component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
-#include "MissionResults.h"
-#include "McLib.h"
-#include "objMgr.h"
-#include "Mech.h"
-#include "LogisticsVariant.h"
-#include "MechIcon.h"
-#include "LogisticsData.h"
-#include "SalvageMechArea.h"
-#include "PilotReviewArea.h"
+#define MISSIONRESULTS_CPP
+
+#include "stdafx.h"
+#include "missionresults.h"
+#include <mclib.h>
+#include "objmgr.h"
+#include "mech.h"
+#include "logisticsvariant.h"
+#include "mechicon.h"
+#include "logisticsdata.h"
+#include "salvagemecharea.h"
+#include "pilotreviewarea.h"
 #include "gamesound.h"
 #include "..\resource.h"
 

@@ -22,7 +22,7 @@ Objective.cpp			: Implementation of the Objective component.
 #include "EditorInterface.h"
 #include "../resource.h"/*this is mc2res.dll's header file*/
 
-#include "EString.h"
+#include "estring.h"
 #include "ECharString.h"
 
 #ifndef INIFILE_H

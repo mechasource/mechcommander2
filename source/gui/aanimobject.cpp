@@ -7,17 +7,16 @@ aAnimObject.cpp			: Implementation of the aAnimObject component.
 #define AANIMOBJECT_CPP
 
 #include "stdafx.h"
-
 #include "aanimobject.h"
-#include "mclib.h"
+#include <mclib.h>
 
-aAnimObject::aAnimObject(  )
+aAnimObject::aAnimObject(void)
 {
 }
 
 //-------------------------------------------------------------------------------------------------
 
-aAnimObject::~aAnimObject()
+aAnimObject::~aAnimObject(void)
 {
 }
 

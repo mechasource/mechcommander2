@@ -18,7 +18,7 @@ CLASS DESCRIPTION
 Eraser:
 **************************************************************************************************/
 #ifndef ELIST_H
-#include "EList.h"
+#include "elist.h"
 #endif
 
 #ifndef ACTION_H

@@ -9,7 +9,7 @@
 #include "resource.h"
 #include "UnitSettingsDlg.h"
 #include "EditorObjects.h"
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #include "EditorInterface.h" // just for the undo manager
 
 

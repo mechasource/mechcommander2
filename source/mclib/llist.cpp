@@ -7,6 +7,7 @@
 
 //---------------------------------------------------------------------------
 // Include Files
+#include "stdafx.h"
 
 #ifndef LLIST_H
 #include "llist.h"

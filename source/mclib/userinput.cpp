@@ -40,7 +40,7 @@
 #include "txmmgr.h"
 #endif
 
-#include <stuff\stuff.hpp>
+#include <stuff/stuff.hpp>
 
 //---------------------------------------------------------------------------
 UserInput *userInput = NULL;

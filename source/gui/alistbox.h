@@ -14,15 +14,15 @@
 #endif
 
 #ifndef AEDIT_H
-#include "aEdit.h"
+#include "aedit.h"
 #endif
 
 #ifndef AFONT_H
-#include "aFont.h"
+#include "afont.h"
 #endif
 
 #ifndef ESTRING_H
-#include "EString.h"
+#include "estring.h"
 #endif
 
 class aListItem : public aObject

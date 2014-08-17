@@ -4,23 +4,25 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
 
-#ifndef _MBCS
-#include <gameos.hpp>
+//#include "stdafx.h"
+#include "lz.h"
 
-#ifndef HEAP_H
-#include "heap.h"
-#endif
-
-#else
-#include <assert.h>
-#include <malloc.h>
-#define gosASSERT assert
-#define gos_Malloc malloc
-#define gos_Free free
-#endif
-
+//#ifndef _MBCS
+//#include <gameos.hpp>
+//
+//#ifndef HEAP_H
+//#include "heap.h"
+//#endif
+//
+//#else
+//#include <assert.h>
+//#include <malloc.h>
+//#define gosASSERT assert
+//#define gos_Malloc malloc
+//#define gos_Free free
+//#endif
+//
 //---------------------------------------------------------------------------
 // Static Globals
 
@@ -33,34 +35,31 @@ typedef unsigned char* MemoryPtr;
 //-----------------------------
 //Used by Compressor Routine
 MemoryPtr		LZCHashBuf = NULL;
-
-unsigned long 	InBufferUpperLimit = 0;
-unsigned long 	InBufferPos = 0;	
+size_t			InBufferUpperLimit = 0;
+size_t			InBufferPos = 0;	
 MemoryPtr		InBuffer = NULL;
-
-unsigned long 	OutBufferPos = 0;
-MemoryPtr 		OutBuffer = NULL;
-
-unsigned long 	PrefixCode = 0;
-unsigned long 	FreeCode = 0;
-unsigned long 	MaxCode = 0;
-unsigned long 	NBits = 0;
-unsigned long 	BitOffset = 0;
+size_t			OutBufferPos = 0;
+MemoryPtr		OutBuffer = NULL;
+unsigned long	PrefixCode = 0;
+unsigned long	FreeCode = 0;
+unsigned long	MaxCode = 0;
+unsigned long	NBits = 0;
+unsigned long	BitOffset = 0;
+unsigned long	codeToWrite = 0;
 unsigned char 	K = 0;
 
-unsigned long	codeToWrite = 0;
+typedef enum __lzcomp_const {
+	MaxMax		= 4096,
+	Clear		= 256,
+	EOF			= 257,
+	First_Free	= 258,
+};
 
-#define MaxMax		4096
-#define Clear		256
-#define EOF			257
-#define First_Free	258
-
-struct Hash
-{
+typedef struct Hash {
 	unsigned long hashFirst;
 	unsigned long hashNext;
 	unsigned char hashChar;
-};
+} Hash;
 
 static unsigned char		tag_LZCHashBuf[sizeof(Hash) * MaxMax + 1024];
 //-----------------------------
@@ -69,9 +68,9 @@ static unsigned char		tag_LZCHashBuf[sizeof(Hash) * MaxMax + 1024];
 // LZ Compress Routine
 // Takes a pointer to dest buffer, a pointer to source buffer and len of source.
 // returns length of compressed image.
-long LZCompress (MemoryPtr dest, MemoryPtr src, unsigned long srcLen)
+size_t __stdcall LZCompress (MemoryPtr dest, MemoryPtr src, size_t srcLen)
 {
-	long result = 0;
+	size_t result = 0;
 
 	if (!LZCHashBuf)
 	{

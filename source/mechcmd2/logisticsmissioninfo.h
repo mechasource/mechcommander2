@@ -8,10 +8,10 @@ LogisticsMissionInfo.h			: Interface for the LogisticsMissionInfo component.
 \*************************************************************************************************/
 
 #ifndef ELIST_H
-#include "EList.h"
+#include "elist.h"
 #endif
 
-#include "EString.h"
+#include "estring.h"
 
 #define MAX_PLAYER_NAME_LENGTH 64
 

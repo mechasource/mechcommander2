@@ -31,7 +31,7 @@
 #include "inifile.h"
 #endif
 
-#include <stuff\stuff.hpp>
+#include <stuff/stuff.hpp>
 
 inline signed short int float2short(float _in)
 {
@@ -423,7 +423,7 @@ class Camera
 		
 		void projectCamera (Stuff::Vector3D &point);
 
-		unsigned long inverseProject (Stuff::Vector2DOf<long> &screenPos, Stuff::Vector3D &point);
+		size_t inverseProject (Stuff::Vector2DOf<long> &screenPos, Stuff::Vector3D &point);
 
 		void getClosestVertex (Stuff::Vector2DOf<long> &screenPos, long &row, long &col);
 		

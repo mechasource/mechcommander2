@@ -8,19 +8,19 @@ MechLabScreen.h			: Interface for the MechLabScreen component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
 #ifndef ATTRIBUTEMETER_H
-#include "AttributeMeter.h"
+#include "attributemeter.h"
 #endif
 
 #ifndef COMPONENTLISTBOX_H
-#include "ComponentListBox.h"
+#include "componentlistbox.h"
 #endif
 
 #ifndef SIMPLECAMERA_H
-#include "SimpleCamera.h"
+#include "simplecamera.h"
 #endif
 
 #define MECH_LAB_ATTRIBUTE_METER_COUNT	9

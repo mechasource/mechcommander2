@@ -1,29 +1,30 @@
-#define MAINMENU_CPP
 /*************************************************************************************************\
 MainMenu.cpp			: Implementation of the MainMenu component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
+#define MAINMENU_CPP
+
+#include "stdafx.h"
 #include <windows.h>
 #include <ddraw.h>
-#include "MainMenu.h"
-#include "McLIb.h"
-#include "iniFile.h"
-#include "LogisticsData.h"
-#include "LogisticsDialog.h"
-#include "aButton.h"
-#include "OptionsScreenWrapper.h"
-#include <windows.h>
+#include "mainmenu.h"
+#include <mclib.h>
+#include "inifile.h"
+#include "logisticsdata.h"
+#include "logisticsdialog.h"
+#include "abutton.h"
+#include "optionsscreenwrapper.h"
+//#include <windows.h>
 #include "..\resource.h"
 #include "mechlopedia.h"
-#include "gameSound.h"
-#include "aAnimObject.h"
-#include "Multplyr.h"
-
+#include "gamesound.h"
+#include "aanimobject.h"
+#include "multplyr.h"
 #include "prefs.h"
+
 extern CPrefs prefs;
 
 

@@ -6,8 +6,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-//---------------------------------------------------------------------------
-// Include files
+#include "stdafx.h"
+
 #ifndef FFILE_H
 #include "ffile.h"
 #endif
@@ -17,20 +17,17 @@
 #endif
 
 #include "lz.h"
-
-#include "zlib.h"
-
-#include <windows.h>
-
-#include <string.h>
+#include <zlib.h>
+// #include <windows.h>
+// #include <string.h>
 #include <gameos.hpp>
 
 MemoryPtr 		LZPacketBuffer = NULL;
-unsigned long	LZPacketBufferSize = 512000;
+size_t			LZPacketBufferSize = 512000;
 
 extern char CDInstallPath[];
-void EnterWindowMode();
-void EnterFullScreenMode();
+void __stdcall EnterWindowMode(void);
+void __stdcall EnterFullScreenMode(void);
 void __stdcall ExitGameOS();
 
 char FileMissingString[512];
@@ -395,7 +392,7 @@ long FastFile::readFast (long fastFileHandle, void *bfr, long size)
 				//--------------------------------------------------------
 				//USED to LZ Compress here.  It is NOW zLib Compression.
 				//  We should not try to use old fastfiles becuase version check above should fail when trying to open!!
-				unsigned long decompLength = 0;
+				size_t decompLength = 0;
 				if (useLZCompress)
 				{
 					decompLength = LZDecomp((MemoryPtr)bfr,LZPacketBuffer,files[fastFileHandle].pfe->size);

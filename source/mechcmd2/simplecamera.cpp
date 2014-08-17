@@ -4,13 +4,13 @@ SimpleCamera.cpp	: Implementation of the SimpleCamera component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
-#include "SimpleCamera.h"
+#include "stdafx.h"
+#include "simplecamera.h"
 #include "appear.h"
-#include "mclib.h"
+#include <mclib.h>
 #include "mech3d.h"
-#include "Mission.h"
+#include "mission.h"
 #include "bdactor.h"
 
 extern bool useShadows;

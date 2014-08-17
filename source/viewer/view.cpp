@@ -17,11 +17,10 @@
 
 #include <gameos.hpp>
 #include <toolos.hpp>
-
 #include "..\resource.h"
-#include "mclib.h"
+#include <mclib.h>
 #include "gamesound.h"
-#include <windows.h>
+//#include <windows.h>
 #include "mission.h"
 #include "mechlopedia.h"
 #include "logisticsdata.h"

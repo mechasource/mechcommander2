@@ -5,12 +5,11 @@ Utilities.cpp			: Implementation of the Utilities component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "Utilities.h"
+#include "utilities.h"
 
 #include "txmmgr.h"
 #include "IniFile.h"
-#include "McLib.h"
-
+#include <mclib.h>
 
 //#pragma warning(disable:4514)
 

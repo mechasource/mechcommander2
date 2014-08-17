@@ -4,7 +4,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 #include <windows.h>
-#include "EString.h"
+#include "estring.h"
 
 #include <gameos.hpp>
 

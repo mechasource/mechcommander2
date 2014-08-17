@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <stuff\stuff.hpp>
+#include <stuff/stuff.hpp>
 
 namespace gosFX
 {
@@ -60,4 +60,4 @@ namespace gosFX
 	extern DWORD Profile_Count;
 }
 
-#include "Fcurve.hpp"
+#include <gosfx/fcurve.hpp>

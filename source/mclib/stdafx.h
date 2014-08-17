@@ -25,7 +25,7 @@
 
 // disable useless warnings when compiling with -Wall
 #pragma warning(disable: 4514 4710 4711)
-// uncomment for diagnostic messages
+// comment out for diagnostic messages
 #pragma warning(disable: 4625 4820)
 
 // temporary disable warnings when compiling with -Wall
@@ -52,6 +52,8 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 #include <d3dtypes.h>
 #include <ddraw.h>
 #pragma warning(pop)
+
+#include <mechtypes.h>
 
 // MClib
 #ifdef _DEBUG

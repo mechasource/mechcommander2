@@ -1,10 +1,9 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
 #include "stdafx.h"
-
-#include "mclib.h"
-
+#include <mclib.h>
 #ifndef ASCROLL_H
 #include "ascroll.h"
 #endif

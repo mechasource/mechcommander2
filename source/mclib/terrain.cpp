@@ -47,7 +47,7 @@
 #endif
 
 #ifndef PACKET_H
-#include "Packet.h"
+#include "packet.h"
 #endif
 
 #ifndef INIFILE_H

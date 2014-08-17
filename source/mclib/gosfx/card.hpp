@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "gosFX.hpp"
-#include "Singleton.hpp"
-#include <MLR\MLR.hpp>
+#include <gosfx/gosfx.hpp>
+#include <gosfx/singleton.hpp>
+#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer {class MLRCardCloud;}
 

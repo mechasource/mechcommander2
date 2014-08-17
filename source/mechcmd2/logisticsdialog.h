@@ -8,15 +8,15 @@ LogisticsDialog.h			: Interface for the LogisticsDialog component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
 #ifndef AANIM_H
-#include "AAnim.h"
+#include "aanim.h"
 #endif
 
 #ifndef ALISTBOX_H
-#include "aListBox.h"
+#include "alistbox.h"
 #endif
 
 //*************************************************************************************************

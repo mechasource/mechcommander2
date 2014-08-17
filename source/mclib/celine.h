@@ -19,7 +19,7 @@
 #include "vfx.h"
 #endif
 
-#include <stuff\stuff.hpp>
+#include <stuff/stuff.hpp>
 //---------------------------------------------------------------------------
 class LineElement : public Element
 {

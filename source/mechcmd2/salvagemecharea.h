@@ -8,11 +8,11 @@ SalvageMechArea.h			: Interface for the SalvageMechArea component.
 \*************************************************************************************************/
 
 //*************************************************************************************************
-#include "aSystem.h"
-#include "SimpleComponentListBox.h"
-#include "AttributeMeter.h"
-#include "LogisticsScreen.h"
-#include "SimpleCamera.h"
+#include "asystem.h"
+#include "simplecomponentlistbox.h"
+#include "attributemeter.h"
+#include "logisticsscreen.h"
+#include "simplecamera.h"
 
 class aButton;
 class MechIcon;

@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "mlrheaders.hpp"
+#include "mlrindexedprimitive.hpp"
 
 //#############################################################################
 //#####################    MLRIndexedPrimitive    #############################

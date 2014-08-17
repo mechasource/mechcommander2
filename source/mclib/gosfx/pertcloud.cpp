@@ -7,7 +7,7 @@
 
 #include "stdafx.h"
 #include "gosFXHeaders.hpp"
-#include <MLR\MLRNGonCloud.hpp>
+#include <mlr/mlrngoncloud.hpp>
 
 //------------------------------------------------------------------------------
 //

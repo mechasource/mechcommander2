@@ -107,18 +107,18 @@ class File
 		FastFilePtr				fastFile;
 		long					fastFileHandle;
 
-		unsigned long 			length;
-		unsigned long 			logicalPosition;
+		size_t 			length;
+		size_t 			logicalPosition;
 
-		unsigned long			bufferResult;
+		size_t			bufferResult;
 
 		FilePtr					*childList;
-		unsigned long			numChildren;
-		unsigned long			maxChildren;
+		size_t			numChildren;
+		size_t			maxChildren;
 				
 		FilePtr					parent;
-		unsigned long			parentOffset;
-		unsigned long			physicalLength;
+		size_t			parentOffset;
+		size_t			physicalLength;
 
 		bool					inRAM;
 		MemoryPtr				fileImage;
@@ -126,7 +126,7 @@ class File
 	public:
 
 		static bool				logFileTraffic;
-		static unsigned long	lastError;
+		static size_t	lastError;
 
 	// Member Functions
 	//------------------
@@ -152,7 +152,7 @@ class File
 
 			virtual void close (void);
 
-			virtual long open (File *_parent, unsigned long fileSize, long numChildren = 50);
+			virtual long open (File *_parent, size_t fileSize, long numChildren = 50);
 			
 			void deleteFile (void);
 
@@ -160,12 +160,12 @@ class File
 			void seekEnd (void);
 			void skip (long bytesToSkip);
 
-			long read (unsigned long pos, MemoryPtr buffer, long length);
+			long read (size_t pos, MemoryPtr buffer, long length);
 			long read (MemoryPtr buffer, long length);
 
 			//Used to dig the LZ data directly out of the fastfiles.
 			// For textures.
-			long readRAW (unsigned long * &buffer, UserHeapPtr heap);
+			long readRAW (size_t * &buffer, UserHeapPtr heap);
 
 			unsigned char readByte (void);
 			short readWord (void);
@@ -177,7 +177,7 @@ class File
 			long readLine (MemoryPtr buffer, long maxLength);
 			long readLineEx (MemoryPtr buffer, long maxLength);
 
-			long write (unsigned long pos, MemoryPtr buffer, long bytes);
+			long write (size_t pos, MemoryPtr buffer, long bytes);
 			long write (MemoryPtr buffer, long bytes);
 
 			long writeByte (unsigned char value);
@@ -198,15 +198,15 @@ class File
 
 			char* getFilename (void);
 
-			unsigned long getLength (void);
-			unsigned long fileSize (void);
-			unsigned long getNumLines (void);
+			size_t getLength (void);
+			size_t fileSize (void);
+			size_t getNumLines (void);
 
-			unsigned long getLastError (void) {
+			size_t getLastError (void) {
 				return(lastError);
 			}
 
-			unsigned long getLogicalPosition (void)
+			size_t getLogicalPosition (void)
 			{
 				return logicalPosition;
 			}

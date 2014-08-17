@@ -8,11 +8,11 @@ EditorCamera.h			: Interface for the EditorCamera component.
 \*************************************************************************************************/
 
 #ifndef CAMERA_H
-#include "Camera.h"
+#include "camera.h"
 #endif
 
 #ifndef EDITOROBJECTMGR_H
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #endif
 
 #ifndef OBJSTATUS_H

@@ -11,7 +11,7 @@ MechBayScreen.cpp			: Implementation of the MechBayScreen component.
 #include "LogisticsData.h"
 #include "LogisticsMechIcon.h"
 #include "..\resource.h"
-#include "SimpleCamera.h"
+#include "simplecamera.h"
 #include "windows.h"
 #include "gameSound.h"
 #include "multPlyr.h"

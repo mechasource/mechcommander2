@@ -27,7 +27,7 @@
 //--------------------------------------------------------------------------------------
 // Include Files
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef MOVER_H
@@ -35,7 +35,7 @@
 #endif
 
 #ifndef CONTROLGUI_H
-#include "ControlGui.h"
+#include "controlgui.h"
 #endif
 
 

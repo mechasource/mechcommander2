@@ -5,18 +5,17 @@ LogisticsMissionInfo.cpp			: Implementation of the LogisticsMissionInfo componen
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+
 #include "stdafx.h"
-
-#include "McLib.h"
-
-#include "LogisticsMissionInfo.h"
+#include <mclib.h>
+#include "logisticsmissioninfo.h"
 
 #ifndef FITINIFILE_H
-#include "IniFile.h"
+#include "inifile.h"
 #endif
 
-#include "LogisticsErrors.h"
-#include "Multplyr.h"
+#include "logisticserrors.h"
+#include "multplyr.h"
 
 extern char missionName[1024];
 

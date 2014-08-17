@@ -1,8 +1,8 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
 
+#include "stdafx.h"
 #include "aanim.h"
 #include <mclib.h>
 #include "estring.h"

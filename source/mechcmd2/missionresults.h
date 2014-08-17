@@ -14,9 +14,9 @@ CLASS DESCRIPTION
 MissionResults:
 **************************************************************************************************/
 
-#include "aSystem.h"
-#include "aListBox.h"
-#include "mpStats.h"
+#include "asystem.h"
+#include "alistbox.h"
+#include "mpstats.h"
 
 
 class SalvageMechScreen;

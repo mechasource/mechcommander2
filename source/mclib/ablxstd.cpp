@@ -818,9 +818,9 @@ void execStdSeedRandom (void) {
 	long seed  = ABLi_popInteger();
 
 	if (seed == -1)
-		ABLSeedRandomCallback((unsigned int)time(NULL));
+		ABLSeedRandomCallback(time(NULL));
 	else
-		ABLSeedRandomCallback((unsigned int)seed);
+		ABLSeedRandomCallback(seed);
 }
 
 //-----------------------------------------------------------------------------

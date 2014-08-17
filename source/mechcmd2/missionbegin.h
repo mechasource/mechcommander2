@@ -14,9 +14,9 @@ CLASS DESCRIPTION
 MissionBegin:
 **************************************************************************************************/
 
-#include "aSystem.h"
-#include "aListBox.h"
-#include "aAnim.h"
+#include "asystem.h"
+#include "alistbox.h"
+#include "aanim.h"
 #include "abl.h"
 
 class LogisticsScreen;

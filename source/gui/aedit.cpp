@@ -1,21 +1,21 @@
-#define AEDIT_CPP
 /*************************************************************************************************\
 aEdit.cpp			: Implementation of the aEdit component of the GUI library.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
+#define AEDIT_CPP
 
-#include "aEdit.h"
-#include "userInput.h"
-#include "cType.h"
-#include "IniFile.h"
-#include "mclib.h"
-#include <windows.h>
+#include "stdafx.h"
+#include "aedit.h"
+#include "userinput.h"
+#include "ctype.h"
+#include "inifile.h"
+#include <mclib.h>
+// #include <windows.h>
 #include <mbstring.h>
 #include <winnls.h>
-#include "soundSys.h"
+#include "soundsys.h"
 #include "..\resource.h"
 
 #define ENTRY_MAX_CHARS 1000

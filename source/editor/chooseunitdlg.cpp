@@ -11,14 +11,14 @@ ChooseUnitDlg.cpp			: Implementation of the ChooseUnitDlg component.
 
 #include <stdlib.h>
 #include <assert.h>
-#include "EString.h"
+#include "estring.h"
 
 #include "ChooseUnitDlg.h"
 #include "PointerSelectObjectDlg.h"
 #include "Objective.h"
 
 #include "EditorInterface.h"
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 
 
 //-------------------------------------------------------------------------------------------------

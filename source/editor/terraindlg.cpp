@@ -6,9 +6,8 @@ TerrainDlg.cpp		: Implementation of the TerrainDlg component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "mclib.h"
-#include "TerrainDlg.h"
-
+#include <mclib.h>
+#include "terraindlg.h"
 #include "resource.h"
 #include "mclibresource.h"
 #include "utilities.h"

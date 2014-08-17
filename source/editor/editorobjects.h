@@ -16,7 +16,7 @@ class FitIniFile;
 #endif
 
 #ifndef ELIST_H
-#include "EList.h"
+#include "elist.h"
 #endif
 
 #include "DAprType.h"

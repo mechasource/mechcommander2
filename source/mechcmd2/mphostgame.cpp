@@ -7,7 +7,7 @@ MPHostGame.cpp			: Implementation of the MPHostGame component.
 \*************************************************************************************************/
 #include "stdafx.h"
 
-#include "MPHostGame.h"
+#include "mphostgame.h"
 #include "prefs.h"
 #include "IniFile.h"
 #include "../MCLib/UserInput.h"

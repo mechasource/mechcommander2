@@ -8,11 +8,11 @@ MechIcon.h			: Interface for the MechIcon component.
 \*************************************************************************************************/
 
 #ifndef MCLIB_H
-#include "McLib.h"
+#include <mclib.h>
 #endif
 
 #ifndef AFONT_H
-#include "aFont.h"
+#include "afont.h"
 #endif
 
 #ifndef MC2movie_H

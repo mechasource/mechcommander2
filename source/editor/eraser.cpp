@@ -10,7 +10,7 @@ eraser.cpp			: Implementation of the eraser component.
 #include "MineBrush.h"
 
 #ifndef OBJECTMGR_H
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #endif
 
 //---------------------------------------------------------------------------

@@ -4,9 +4,9 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "EditorData.h"
-#include "MCLib.h"
-#include "EditorObjectMgr.h"
+#include "editordata.h"
+#include <mclib.h>
+#include "editorobjectmgr.h"
 #include "mclibresource.h"
 #include "resource.h"
 #include "action.h"
@@ -634,8 +634,8 @@ bool EditorData::initTerrainFromPCV( const char* fileName )
 
 	long ramSize = ((land->realVerticesMapSide) * MAPCELL_DIM) * ((land->realVerticesMapSide) * MAPCELL_DIM);
 	
-	BYTE* pMemory = (BYTE*)malloc(ramSize * 4 );
-	tacMapBmp = (DWORD*)((BYTE*)pMemory);
+	PUCHAR pMemory = (PUCHAR)malloc(ramSize * 4 );
+	tacMapBmp = (DWORD*)((PUCHAR)pMemory);
 	
 	setMapName( fileName );
 
@@ -692,7 +692,7 @@ bool EditorData::reassignHeightsFromTGA( const char* fileName, int min, int max 
 	gosASSERT( header->width == header->height );
 	gosASSERT( !(header->width % 20) );
 
-	BYTE* pTmp = NULL;
+	PUCHAR pTmp = NULL;
 
 	float mapMin = 255.;
 	float mapMax = 0.;
@@ -728,7 +728,7 @@ bool EditorData::reassignHeightsFromTGA( const char* fileName, int min, int max 
 			flipTopToBottom(pTmp,header->pixel_depth,header->width,header->height);
 		}
 
-		BYTE* pLine = pTmp;
+		PUCHAR pLine = pTmp;
 		for ( int j = 0; j < header->height, j < land->realVerticesMapSide; ++j )
 		{
 			pTmp = pLine + linePreAdd;
@@ -759,7 +759,7 @@ bool EditorData::reassignHeightsFromTGA( const char* fileName, int min, int max 
 
 }
 
-void* DecodeJPG( const char* FileName, BYTE* Data, DWORD DataSize, DWORD* TextureWidth, DWORD* TextureHeight, bool TextureLoad, void *pDestSurf );
+void* DecodeJPG( const char* FileName, PUCHAR Data, DWORD DataSize, DWORD* TextureWidth, DWORD* TextureHeight, bool TextureLoad, void *pDestSurf );
 //-------------------------------------------------------------------------------------------------
 void CreateScaledColorMap(long mapWidth, char *localColorMapName, MemoryPtr tmpRAM, long fileSize)
 {
@@ -987,8 +987,8 @@ bool EditorData::initTerrainFromTGA( int mapSize, int min, int max, int terrain 
 
 	long ramSize = ((land->realVerticesMapSide) * MAPCELL_DIM) * ((land->realVerticesMapSide) * MAPCELL_DIM);
 	
-	BYTE* pMemory = (BYTE*)malloc( ramSize * 4 );
-	tacMapBmp = (DWORD*)((BYTE*)pMemory);
+	PUCHAR pMemory = (PUCHAR)malloc( ramSize * 4 );
+	tacMapBmp = (DWORD*)((PUCHAR)pMemory);
 
 	MOVE_buildData( land->realVerticesMapSide * 3, land->realVerticesMapSide * 3, NULL, 0, NULL);
 
@@ -1843,7 +1843,7 @@ bool EditorData::saveHeightMap( File* file )
 	header.pixel_depth = 8;
 	header.image_descriptor = 0;
 
-	file->write( (BYTE*)&header, sizeof( header ) );
+	file->write( (PUCHAR)&header, sizeof( header ) );
 
 	// now write image, upside down
 	for ( int j = land->realVerticesMapSide - 1; j >= 0; j-- )
@@ -1855,10 +1855,10 @@ bool EditorData::saveHeightMap( File* file )
 			// turn this into 256 scale
 			float difference = height - lowest;
 			float ratio = (difference * 256)/(highest - lowest);
-			BYTE final = ratio + .5 > 255. ? 255 : (int)(ratio + .5);
+			UCHAR final = ratio + .5 > 255. ? 255 : (int)(ratio + .5);
 
 			// I could buffer this up if I need to make it faster.
-			file->write( &final, sizeof( BYTE ) );
+			file->write( &final, sizeof( UCHAR ) );
 		}
 	}
 
@@ -1890,7 +1890,7 @@ inline bool isCementType (DWORD type)
 }
 
 //---------------------------------------------------------------------------
-void EditorData::drawTacMap( BYTE* pDest, long dataSize, int tacMapSize )
+void EditorData::drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize )
 {
 	EditorInterface::instance()->SetBusyMode();
 
@@ -2210,7 +2210,7 @@ void EditorData::drawTacMap( BYTE* pDest, long dataSize, int tacMapSize )
 				if (nRed > 255.0f)
 					nRed = 255.0f;
 				
-				BYTE nb = nBlue,ng = nGreen,nr = nRed;
+				UCHAR nb = nBlue,ng = nGreen,nr = nRed;
 				DWORD nColor = (nr << 16) + (ng << 8) + (nb);
 
 				if (i && j && 
@@ -2347,7 +2347,7 @@ void EditorData::drawTacMap( BYTE* pDest, long dataSize, int tacMapSize )
 									if (nRed > 255.0f)
 										nRed = 255.0f;
 									
-									BYTE nb = nBlue,ng = nGreen,nr = nRed;
+									UCHAR nb = nBlue,ng = nGreen,nr = nRed;
 									DWORD nColor = (nr << 16) + (ng << 8) + (nb);
 									
 									*tmptBMP = nColor;
@@ -2401,7 +2401,7 @@ void EditorData::drawTacMap( BYTE* pDest, long dataSize, int tacMapSize )
 	EditorInterface::instance()->UnsetBusyMode();
 }
 
-void EditorData::makeTacMap(BYTE*& pReturn, long& dataSize, int tacMapSize )
+void EditorData::makeTacMap(PUCHAR& pReturn, long& dataSize, int tacMapSize )
 {
 	// the bitmap is always 128 * 128, the size of the tac map can be anything,
 	// the edges will be filled in with transparency
@@ -2411,9 +2411,9 @@ void EditorData::makeTacMap(BYTE*& pReturn, long& dataSize, int tacMapSize )
 	// 24 Bits of color at Cell resolution.
 	long outputSize = 128 * 128 * 4;
 
-	BYTE* pOutput = (BYTE*)malloc( outputSize + sizeof( TGAFileHeader ) );
+	PUCHAR pOutput = (PUCHAR)malloc( outputSize + sizeof( TGAFileHeader ) );
 	pReturn = pOutput;
-	BYTE* pShrunken = pOutput + sizeof( TGAFileHeader );
+	PUCHAR pShrunken = pOutput + sizeof( TGAFileHeader );
 	
 	dataSize = outputSize + sizeof( TGAFileHeader );
 
@@ -2435,7 +2435,7 @@ void EditorData::makeTacMap(BYTE*& pReturn, long& dataSize, int tacMapSize )
 }
 
 //---------------------------------------------------------------------------
-void EditorData::loadTacMap(PacketFile *file, BYTE*& pReturn, long dataSize, int tacMapSize )
+void EditorData::loadTacMap(PacketFile *file, PUCHAR& pReturn, long dataSize, int tacMapSize )
 {
 	// the bitmap is always 128 * 128, the size of the tac map can be anything,
 	// the edges will be filled in with transparency
@@ -2445,9 +2445,9 @@ void EditorData::loadTacMap(PacketFile *file, BYTE*& pReturn, long dataSize, int
 	// 24 Bits of color at Cell resolution.
 	long outputSize = 128 * 128 * 4;
 
-	BYTE* pOutput = (BYTE*)new BYTE[ outputSize + sizeof( TGAFileHeader )];
+	PUCHAR pOutput = (PUCHAR)new UCHAR[ outputSize + sizeof( TGAFileHeader )];
 	pReturn = pOutput;
-	BYTE* pShrunken = pOutput + sizeof( TGAFileHeader );
+	PUCHAR pShrunken = pOutput + sizeof( TGAFileHeader );
 	
 	dataSize = outputSize + sizeof( TGAFileHeader );
 
@@ -2466,7 +2466,7 @@ void EditorData::loadTacMap(PacketFile *file, BYTE*& pReturn, long dataSize, int
 //---------------------------------------------------------------------------
 bool EditorData::saveTacMap (PacketFile* file, long whichPacket )
 {
-	BYTE* data = NULL;
+	PUCHAR data = NULL;
 	long size = 0;
 
 	makeTacMap( data, size, 128 );

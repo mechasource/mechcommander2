@@ -128,7 +128,7 @@ void LogisticsData::initComponents()
 		componentFile.open( componentPath );
 	gosASSERT( result == NO_ERR );
 
-	BYTE* data = new BYTE[componentFile.getLength()];
+	PUCHAR data = new BYTE[componentFile.getLength()];
 
 	componentFile.read( data, componentFile.getLength() );
 

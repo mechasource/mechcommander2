@@ -7,7 +7,7 @@ DamageBrush.cpp			: Implementation of the DamageBrush component.
 \*************************************************************************************************/
 
 #include "DamageBrush.h"
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 
 
 

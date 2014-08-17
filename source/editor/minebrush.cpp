@@ -7,7 +7,7 @@ MineBrush.cpp			: Implementation of the MineBrush component.
 \*************************************************************************************************/
 
 #include "MineBrush.h"
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #include "Move.h"
 
 

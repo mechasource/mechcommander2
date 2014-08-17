@@ -10,7 +10,7 @@
 #include "stdafx.h"
 
 #ifndef MCLIB
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef TACORDR_H

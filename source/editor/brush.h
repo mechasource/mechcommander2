@@ -13,7 +13,7 @@
 class Action;
 class Map;
 
-#include "mclib.h"
+#include <mclib.h>
 
 class Brush
 {

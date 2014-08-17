@@ -9,7 +9,7 @@
 
 #include "LinkBrush.h"
 #include "BuildingLink.h"
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 
 LinkBrush::LinkBrush( bool Link ) 
 {

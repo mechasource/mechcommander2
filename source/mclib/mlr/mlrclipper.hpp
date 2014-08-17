@@ -160,13 +160,13 @@ namespace MidLevelRenderer {
 			{ Check_Object(this); sorter->RenderNow(); }
     
 //	clear the film
-		void Clear (unsigned int flags);
+		void Clear (uint32_t flags);
 
 		AndyDisplay* GetDisplay () const
 			{ Check_Object(this); return display; };
 
 // statistics and time
-		unsigned int GetFrameRate () const
+		uint32_t GetFrameRate () const
 			{ Check_Object(this); return frameRate; }
 		void SetTime (Stuff::Scalar t) 
 			{ Check_Object(this); nowTime = t; }
@@ -204,7 +204,7 @@ namespace MidLevelRenderer {
 
 	protected:
 //	statistics and time
-		unsigned int frameRate;
+		uint32_t frameRate;
 		Stuff::Scalar usedTime;
 		Stuff::Scalar nowTime;
 

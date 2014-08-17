@@ -4,7 +4,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "mclib.h"
+#include <mclib.h>
 
 #ifndef OBJECTIVE_H
 #include "Objective.h"
@@ -15,7 +15,7 @@
 #endif
 
 #ifndef ESTRING_H
-#include "EString.h"
+#include "estring.h"
 #endif
 
 static const int GAME_MAX_PLAYERS = 8;
@@ -287,9 +287,9 @@ class EditorData
 		bool DoTeamDialog(int team) { return TeamsRef().TeamRef(team).ObjectivesRef().EditDialog(); }
 		void handleObjectInvalidation(const EditorObject *pObj) { TeamsRef().handleObjectInvalidation(pObj); }
 
-		void makeTacMap(BYTE*& pOutput, long& dataSize, int tacMapSize ); // this allocates memory, below just draws
-		void drawTacMap( BYTE* pDest, long dataSize, int tacMapSize );
-		void loadTacMap(PacketFile *file, BYTE*& pDest, long dataSize, int tacMapSize ); // this allocates memory.  Saves millions of CPU cycles on load 
+		void makeTacMap(PUCHAR& pOutput, long& dataSize, int tacMapSize ); // this allocates memory, below just draws
+		void drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize );
+		void loadTacMap(PacketFile *file, PUCHAR& pDest, long dataSize, int tacMapSize ); // this allocates memory.  Saves millions of CPU cycles on load 
 
 	private:
 

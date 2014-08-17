@@ -11,7 +11,7 @@
 #include "LogisticsMech.h"
 #include "LogisticsPilot.h"
 #include "..\resource.h"
-#include "aListBox.h"
+#include "alistbox.h"
 #include "LogisticsPilotListBox.h"
 #include "gameSound.h"
 

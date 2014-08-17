@@ -57,12 +57,12 @@ class CSVFile : public File
 		long countRows (void);
 		long countCols (void);
 		
-		long getNextWord (char *&line, char *buffer, unsigned long bufLen);
+		long getNextWord (char *&line, char *buffer, size_t bufLen);
 
 		float textToFloat (char *num);
 		
 		long textToLong (char *num);
-		unsigned long textToULong (char *num);
+		size_t textToULong (char *num);
 		
 		short textToShort (char *num);
 		unsigned short textToUShort (char *num);
@@ -72,25 +72,25 @@ class CSVFile : public File
 
 		bool booleanToLong (char *num);
 
-		long floatToText (char *result, float num, unsigned long bufLen);
+		long floatToText (char *result, float num, size_t bufLen);
 		
-		long longToTextDec (char *result, long num, unsigned long bufLen);
-		long longToTextHex (char *result, long num, unsigned long bufLen);
+		long longToTextDec (char *result, long num, size_t bufLen);
+		long longToTextHex (char *result, long num, size_t bufLen);
 
-		long shortToTextDec (char *result, short num, unsigned long bufLen);
-		long shortToTextHex (char *result, short num, unsigned long bufLen);
+		long shortToTextDec (char *result, short num, size_t bufLen);
+		long shortToTextHex (char *result, short num, size_t bufLen);
 
-		long byteToTextDec (char *result, byte num, unsigned long bufLen);	
-		long byteToTextHex (char *result, byte num, unsigned long bufLen);
+		long byteToTextDec (char *result, byte num, size_t bufLen);	
+		long byteToTextHex (char *result, byte num, size_t bufLen);
 		
-		long copyString (char* dest, char *src, unsigned long bufLen);
+		long copyString (char* dest, char *src, size_t bufLen);
 
 	public:
 		CSVFile (void);
 		~CSVFile (void);
 
 		virtual long open (const char* fName, FileMode _mode = READ, long numChildren = 50);
-		virtual long open (FilePtr _parent, unsigned long fileSize, long numChildren = 50);
+		virtual long open (FilePtr _parent, size_t fileSize, long numChildren = 50);
 		
 		virtual long create (char* fName);
 
@@ -107,7 +107,7 @@ class CSVFile : public File
 		
 		long readBoolean (DWORD row, DWORD col, bool &value);
 		long readLong (DWORD row, DWORD col, long &value);
-		long readULong (DWORD row, DWORD col, unsigned long &value);
+		long readULong (DWORD row, DWORD col, size_t &value);
 		
 		long readShort (DWORD row, DWORD col, short &value);
 		long readUShort (DWORD row, DWORD col, unsigned short &value);
@@ -115,7 +115,7 @@ class CSVFile : public File
 		long readChar (DWORD row, DWORD col, char &value);
 		long readUChar (DWORD row, DWORD col, unsigned char &value);
 		
-		long readString (DWORD row, DWORD col, char *result, unsigned long bufferSize);
+		long readString (DWORD row, DWORD col, char *result, size_t bufferSize);
 };
 
 //---------------------------------------------------------------------------

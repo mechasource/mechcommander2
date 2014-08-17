@@ -1,20 +1,21 @@
-#define INFOWINDOW_CPP
 /*************************************************************************************************\
 InfoWindow.cpp			: Implementation of the InfoWindow component.
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
-#include "InfoWindow.h"
-#include "MCLib.h"
+#define INFOWINDOW_CPP
+
+#include "stdafx.h"
+#include "infowindow.h"
+#include <mclib.h>
 #include "..\resource.h"
 #include "mover.h"
-#include "mechIcon.h"
-#include "Team.h"
+#include "mechicon.h"
+#include "team.h"
 #include "txmmgr.h"
-#include "EString.h"
+#include "estring.h"
 
 long InfoWindow::SCROLLLEFT = 0;
 long InfoWindow::SCROLLRIGHT = 0;
@@ -32,7 +33,7 @@ long InfoWindow::HEALTHBOTTOM = 0;
 long InfoWindow::DIVIDERCOLOR = 0;
 long InfoWindow::DIVIDERLEFT = 0;
 long InfoWindow::DIVIDERRIGHT = 0;
-long	InfoWindow::PILOTLEFT = 0;
+long InfoWindow::PILOTLEFT = 0;
 long InfoWindow::PILOTRIGHT = 0;
 long InfoWindow::PILOTHEIGHT = 0;
 long InfoWindow::MECHLEFT = 0;

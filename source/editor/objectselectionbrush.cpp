@@ -9,11 +9,11 @@ ObjectSelectionBrush.cpp			: Implementation of the ObjectSelectionBrush componen
 #include "ObjectSelectionBrush.h"
 
 #ifndef CAMERA_H
-#include "Camera.h"
+#include "camera.h"
 #endif
 
 #ifndef EDITOROBJECTMGR_H
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #endif
 
 #ifndef ACTION_H

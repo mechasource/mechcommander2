@@ -8,10 +8,10 @@ MechBayScreen.h : Header file for mech selection
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "LogisticsScreen.h"
-#include "AttributeMeter.h"
+#include "logisticsscreen.h"
+#include "attributemeter.h"
 #include "MechListBox.h"
-#include "SimpleComponentListBox.h"
+#include "simplecomponentlistbox.h"
 
 
 class LogisticsMech;

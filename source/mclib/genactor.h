@@ -192,14 +192,14 @@ class GenericAppearance : public ObjectAppearance
 			return (canTransition == false);
 		}
 
-		virtual void setGesture (unsigned long gestureId);
+		virtual void setGesture (size_t gestureId);
 		
 		virtual long getCurrentGestureId (void)
 		{
 			return genAnimationState;
 		}
 
-		virtual unsigned long getAppearanceClass (void)
+		virtual size_t getAppearanceClass (void)
 		{
 			return GENERIC_APPR_TYPE;
 		}

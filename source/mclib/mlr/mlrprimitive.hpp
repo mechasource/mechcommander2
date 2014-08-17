@@ -52,9 +52,9 @@ namespace MidLevelRenderer {
 	//
 	public:
 		static void
-			InitializeClass();
+			InitializeClass(void);
 		static void
-			TerminateClass();
+			TerminateClass(void);
 		typedef MLRPrimitive__ClassData ClassData;
 		static ClassData
 			*DefaultData;
@@ -69,7 +69,7 @@ namespace MidLevelRenderer {
 			int version
 		);
 
-		~MLRPrimitive();
+		~MLRPrimitive(void);
 
 	public:
 		MLRPrimitive(ClassData *class_data);
@@ -98,8 +98,8 @@ namespace MidLevelRenderer {
 	// the data for the coord/color/texcoord/normal or index
 	// ARE IN THIS ORDER
 		int
-			GetNumPrimitives()
-				{ Check_Object(this); return lengths.GetLength(); }
+			GetNumPrimitives(void)
+				{ Check_Object(this); return lengths.GetLength(void); }
 
 		virtual void
 			SetSubprimitiveLengths(
@@ -119,10 +119,10 @@ namespace MidLevelRenderer {
 		void	SetReferenceState(const MLRState& _state)
 			{ Check_Object(this); referenceState = _state; };
 		const MLRState&
-			GetReferenceState() const
+			GetReferenceState(void) const
 				{ Check_Object(this); return referenceState; }; 
 		const MLRState&
-			GetCurrentState() const
+			GetCurrentState(void) const
 				{ Check_Object(this); return state; }; 
 
 		virtual void
@@ -191,23 +191,23 @@ namespace MidLevelRenderer {
 
 		virtual void	PaintMe(const Stuff::RGBAColor *paintMe);
 
-		static	void	InitializeDraw();
+		static	void	InitializeDraw(void);
 
 		virtual	void	InitializeDrawPrimitive(int, int=0);
 
-		int	GetVisible () 
+		int	GetVisible (void) 
 			{ Check_Object(this); return visible; }
 
 		GOSVertex*
-			GetGOSVertices()
+			GetGOSVertices(void)
 				{ Check_Object(this); return gos_vertices; }
 
 		int
-			GetNumGOSVertices()
+			GetNumGOSVertices(void)
 				{ Check_Object(this); return numGOSVertices; }
 
 		int
-			GetSortDataMode()
+			GetSortDataMode(void)
 				{ Check_Object(this); return drawMode; }
 
 		virtual bool
@@ -227,10 +227,10 @@ namespace MidLevelRenderer {
 	//
 	public:
 		void
-			AttachReference()
+			AttachReference(void)
 				{Check_Object(this); ++referenceCount;}
 		void
-			DetachReference()
+			DetachReference(void)
 				{
 					Check_Object(this); Verify(referenceCount > 0);
 					if ((--referenceCount) == 0)
@@ -241,7 +241,7 @@ namespace MidLevelRenderer {
 				}
 
 		int
-			GetReferenceCount()
+			GetReferenceCount(void)
 				{return referenceCount;}
 
 	protected:
@@ -253,20 +253,20 @@ namespace MidLevelRenderer {
 	//
 	public:
 		void
-			TestInstance() const;
+			TestInstance(void) const;
 
 		virtual int
-			GetSize()
+			GetSize(void)
 		{ 
 			Check_Object(this);
 			int ret = 0;
-			ret += coords.GetSize();
-			ret += colors.GetSize();
-			ret += normals.GetSize();
-			ret += texCoords.GetSize();
-			ret += litColors.GetSize();
-			ret += transformedCoords.GetSize();
-			ret += lengths.GetSize();
+			ret += coords.GetSize(void);
+			ret += colors.GetSize(void);
+			ret += normals.GetSize(void);
+			ret += texCoords.GetSize(void);
+			ret += litColors.GetSize(void);
+			ret += transformedCoords.GetSize(void);
+			ret += lengths.GetSize(void);
 
 			return ret;
 		}
@@ -308,14 +308,14 @@ namespace MidLevelRenderer {
 
 		static Stuff::DynamicArrayOf<int> clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
 
-		static Stuff::DynamicArrayOf<unsigned short> clipExtraLength; // , Max_Number_Primitives_Per_Frame
+		static Stuff::DynamicArrayOf<USHORT> clipExtraLength; // , Max_Number_Primitives_Per_Frame
 
 		MLRState	state, referenceState;
 
 		int drawMode;
 
 		GOSVertex *gos_vertices;
-		unsigned short	numGOSVertices;
+		USHORT	numGOSVertices;
 	};
 
 	inline Stuff::Scalar
@@ -456,12 +456,12 @@ namespace MidLevelRenderer {
 	//
 	public:
 		void
-			TestInstance();
+			TestInstance(void);
 	};
 
 	struct ClipPolygon
 	{
-		ClipPolygon();
+		ClipPolygon(void);
 
 		Stuff::DynamicArrayOf<Stuff::Vector4D> coords; // [Max_Number_Vertices_Per_Polygon]
 #if COLOR_AS_DWORD
@@ -485,7 +485,7 @@ namespace MidLevelRenderer {
 		MLRClippingState *clipPerVertex;
 
 		int flags;
-		unsigned short length;
+		USHORT length;
 	};
 
 }

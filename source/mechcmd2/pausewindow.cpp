@@ -7,8 +7,8 @@ PauseWindow.cpp			: Implementation of the PauseWindow component.
 \*************************************************************************************************/
 #include "stdafx.h"
 
-#include "PauseWindow.h"
-#include "controlGui.h"
+#include "pausewindow.h"
+#include "controlgui.h"
 #include "..\resource.h"
 #include "userInput.h"
 #include "missiongui.h"

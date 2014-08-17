@@ -8,7 +8,7 @@ OverlayBrush.cpp			: Implementation of the OverlayBrush component.
 
 #include "OverlayBrush.h"
 #include "Action.h"
-#include "EList.h"
+#include "elist.h"
 #include <map>
 
 //-------------------------------------------------------------------------------------------------

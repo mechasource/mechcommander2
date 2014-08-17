@@ -17,7 +17,7 @@ CLASS DESCRIPTION
 ChatWindow:
 **************************************************************************************************/
 #ifndef ALISTBOX_H
-#include "aListBox.h"
+#include "alistbox.h"
 #endif
 
 class ChatMessageItem : public aListItem

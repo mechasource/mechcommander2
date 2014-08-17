@@ -1,19 +1,19 @@
-#define LOGISTICSVARIANT_CPP
 /*************************************************************************************************\
 LogisticsVariant.cpp			: Implementation of the LogisticsVariant component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
-#include "LogisticsVariant.h"
-#include "mclib.h"
-#include "LogisticsData.h"
+#define LOGISTICSVARIANT_CPP
+
+#include "stdafx.h"
+#include "logisticsvariant.h"
+#include <mclib.h>
+#include "logisticsdata.h"
 #include "..\resource.h"
 #include "cmponent.h" 
-#include "LogisticsErrors.h"
-
+#include "logisticserrors.h"
 
 int LogisticsChassis::weightClasses[5] = { 0, 35, 55, 75, 100};
 /*[0- 34	Light

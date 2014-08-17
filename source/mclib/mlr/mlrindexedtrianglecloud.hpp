@@ -43,7 +43,7 @@ namespace MidLevelRenderer {
 			SetData(
 				const int *tri_count,
 				const int *point_count,
-				const unsigned short *index_data,
+				const USHORT *index_data,
 				const Stuff::Point3D *point_data,
 				const Stuff::RGBAColor *color_data,
 				const Vector2DScalar *uv_data

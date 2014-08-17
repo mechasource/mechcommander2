@@ -10,19 +10,19 @@ MPParameterScreen.h			: Interface for the MPParameterScreen component.
 //*************************************************************************************************
 
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
-#include "aSystem.h"
-#include "aListBox.h"
-#include "AttributeMeter.h"
-#include "SimpleCamera.h"
-#include "EList.h"
+#include "asystem.h"
+#include "alistbox.h"
+#include "attributemeter.h"
+#include "simplecamera.h"
+#include "elist.h"
 #include "Multplyr.h"
 #include "MPLoadMap.h"
 
 #ifndef AANIM_H
-#include "aAnim.h"
+#include "aanim.h"
 #endif
 
 struct _MC2Player;

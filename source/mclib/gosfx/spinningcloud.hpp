@@ -7,8 +7,8 @@
 //
 #pragma once
 
-#include "gosFX.hpp"
-#include "ParticleCloud.hpp"
+#include <gosfx/gosfx.hpp>
+#include <gosfx/particlecloud.hpp>
 
 namespace gosFX
 {

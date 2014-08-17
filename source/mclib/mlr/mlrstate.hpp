@@ -178,7 +178,7 @@ namespace MidLevelRenderer {
 					renderDeltaMask |= TextureMask;
 					Verify(texture <= TextureMask); renderState |= texture;
 				}
-		unsigned
+		uint32_t
 			GetTextureHandle() const
 				{Check_Object(this); return renderState & TextureMask;}
 
@@ -384,13 +384,13 @@ namespace MidLevelRenderer {
 				{Check_Object(this); return static_cast<BackFaceMode>(processState & BackFaceOnMode);}
 
 		void
-			SetPriority(unsigned priority)
+			SetPriority(uint32_t priority)
 				{
 					Check_Object(this); processState &= ~PriorityMask;
 					processDeltaMask |= PriorityMask;
 					Verify(priority < PriorityCount); processState |= priority;
 				}
-		unsigned
+		uint32_t
 			GetPriority() const
 				{Check_Object(this); return processState & PriorityMask;}
 
@@ -567,7 +567,7 @@ namespace MidLevelRenderer {
 			maxUV;
 
 #ifdef OLDFOG
-		unsigned int
+		uint32_t
 			fogColor;
 		Stuff::Scalar
 			fogDensity,
@@ -575,7 +575,7 @@ namespace MidLevelRenderer {
 			farFog;
 #else
 	public:
-		static unsigned int
+		static uint32_t
 			fogColor;
 #endif
 	};

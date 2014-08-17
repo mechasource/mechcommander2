@@ -14,8 +14,8 @@ CLASS DESCRIPTION
 OptionsScreenWrapper:
 **************************************************************************************************/
 
-#include "aSystem.h"
-#include "aListBox.h"
+#include "asystem.h"
+#include "alistbox.h"
 
 
 class OptionsXScreen;

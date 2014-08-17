@@ -28,7 +28,7 @@
 #include "msl.h"
 #endif
 
-#include <gosFX\gosfxheaders.hpp>
+#include <gosfx/gosfxheaders.hpp>
 //-------------------------------------------------------------------------------
 // Structs used by layer.
 //
@@ -527,7 +527,7 @@ class Mech3DAppearance: public ObjectAppearance
 			return currentGestureId;
 		}
 
-		virtual void setGesture (unsigned long gestureId)
+		virtual void setGesture (size_t gestureId)
 		{
 			//--------------------------------
 			// We are at the goal.  Store off
@@ -602,7 +602,7 @@ class Mech3DAppearance: public ObjectAppearance
 			return frameNum;
 		}
 
-		virtual float getNumFramesInGesture (unsigned long gestureId)
+		virtual float getNumFramesInGesture (size_t gestureId)
 		{
 			if (mechType)
 				return mechType->getNumFrames(gestureId);
@@ -610,7 +610,7 @@ class Mech3DAppearance: public ObjectAppearance
 			return (0.0f);
 		}
 
-		virtual float getVelocityOfGesture (unsigned long gestureId)
+		virtual float getVelocityOfGesture (size_t gestureId)
 		{
 			float result = mechType->getStartVel(gestureId);
 			float otherResult = mechType->getEndVel(gestureId);
@@ -667,7 +667,7 @@ class Mech3DAppearance: public ObjectAppearance
 
 		static void LoadPaintSchemata (void);
 
-		virtual unsigned long getAppearanceClass (void)
+		virtual size_t getAppearanceClass (void)
 		{
 			return MECH_APPR_TYPE;
 		}

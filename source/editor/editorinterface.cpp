@@ -19,7 +19,7 @@
 #endif
 
 #ifndef EDITORDATA_H
-#include "EditorData.h"
+#include "editordata.h"
 #endif
 
 #ifndef OVERLAYBRUSH_H
@@ -35,7 +35,7 @@
 #endif
 
 #ifndef UTILITIES_H
-#include "Utilities.h"
+#include "utilities.h"
 #endif
 
 #ifndef BUILDINGBRUSH_H
@@ -105,7 +105,7 @@
 #endif
 
 #ifndef MESSAGEBOX_H
-#include "MessageBox.h"
+#include "messagebox.h"
 #endif
 
 #ifndef DRAGTOOL_H
@@ -3652,7 +3652,7 @@ void EditorInterface::initTacMap()
 	// We go through all the damned trouble to save it every time!
 	// This takes a LONG time.
 	// -fs
-	BYTE* pData = NULL;
+	PUCHAR pData = NULL;
 	long size = 0;
 	
 	FullPathFileName mPath;

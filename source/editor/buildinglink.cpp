@@ -6,9 +6,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "mclib.h"
-#include "BuildingLink.h"
-#include "EditorObjectMgr.h"
+#include <mclib.h>
+#include "buildinglink.h"
+#include "editorobjectmgr.h"
 #include <algorithm>
 #include "celine.h"
 

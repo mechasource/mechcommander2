@@ -21,7 +21,7 @@
 #endif
 
 #ifndef STUFF_HPP
-#include <stuff\stuff.hpp>
+#include <stuff/stuff.hpp>
 #endif
 
 //---------------------------------------------------------------------------

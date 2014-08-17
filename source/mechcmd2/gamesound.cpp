@@ -20,7 +20,7 @@
 
 #ifndef VIEWER
 #ifndef CONTROLGUI_H
-#include "ControlGui.h"
+#include "controlgui.h"
 #endif 
 #endif
 

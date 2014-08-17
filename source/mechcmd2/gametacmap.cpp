@@ -6,7 +6,7 @@ gameTacMap.cpp			: Implementation of the gameTacMap component.
 \*************************************************************************************************/
 #include "stdafx.h"
 
-#include "gameTacMap.h"
+#include "gametacmap.h"
 #include "team.h"
 #include "comndr.h"
 #include "objMgr.h"

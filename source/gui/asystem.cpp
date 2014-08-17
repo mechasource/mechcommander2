@@ -1,9 +1,9 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
 
-#include "mclib.h"
+#include "stdafx.h"
+#include <mclib.h>
 #include "asystem.h"
 #include "packet.h"
 #include "afont.h"

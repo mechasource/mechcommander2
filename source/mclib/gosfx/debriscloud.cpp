@@ -783,7 +783,7 @@ bool
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::DebrisCloud::DestroyParticle(unsigned int index)
+	gosFX::DebrisCloud::DestroyParticle(uint32_t index)
 {
 	Particle *particle = GetParticle(index);
 	Check_Object(particle);

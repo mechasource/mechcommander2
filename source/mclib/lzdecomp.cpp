@@ -4,18 +4,21 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
+
+//#include "stdafx.h"
+#include "lz.h"
 
 //---------------------------------------------------------------------------
 // Static Globals
 
-#define HASH_CLEAR		256               //clear hash table command code
-#define HASH_EOF        257               //End Of Data command code
-#define HASH_FREE       258               //First Hash Table Chain Offset Value
-
-#define BASE_BITS       9
-#define MAX_BIT_INDEX   (1 << BASE_BITS)
-#define NO_RAM_FOR_LZ_DECOMP	0xCBCB0002
+typedef enum __lzdecomp_const {
+	HASH_CLEAR				= 256,               //clear hash table command code
+	HASH_EOF				= 257,               //End Of Data command code
+	HASH_FREE				= 258,               //First Hash Table Chain Offset Value
+	BASE_BITS				= 9,
+	MAX_BIT_INDEX			= (1 << BASE_BITS),
+	NO_RAM_FOR_LZ_DECOMP	= 0xCBCB0002,
+};
 
 #ifndef NULL
 #define NULL			0
@@ -23,13 +26,11 @@
 
 typedef unsigned char* MemoryPtr;
 
-struct HashStruct
-{
+typedef struct HashStruct {
 	unsigned short Chain;
 	unsigned char Suffix;
-};
-
-typedef HashStruct *HashStructPtr;
+} HashStruct;
+typedef HashStruct*	HashStructPtr;
 	
 HashStructPtr	LZOldChain = NULL;			//Old Chain Value Found
 HashStructPtr	LZChain = NULL;				//Current Chain Value Found 
@@ -48,9 +49,9 @@ char			LZOldSuffix = 0;			//Current Suffix Value found
 // LZ DeCompress Routine
 // Takes a pointer to dest buffer, a pointer to source buffer and len of source.
 // returns length of decompressed image.
-long LZDecomp (MemoryPtr dest, MemoryPtr src, unsigned long srcLen)
+size_t LZDecomp (MemoryPtr dest, MemoryPtr src, size_t srcLen)
 {
-	long result = 0;
+	size_t result = 0;
 	
 	__asm
 	{

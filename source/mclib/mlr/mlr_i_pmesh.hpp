@@ -67,7 +67,7 @@ namespace MidLevelRenderer {
 
 		virtual int	FindBackFace(const Stuff::Point3D&);
 
-		const Stuff::Plane *GetPolygonPlane(int i)
+		const Stuff::Plane *GetPolygonPlane(size_t i)
 			{
 				Check_Object(this);
 				Verify(i<facePlanes.GetLength());
@@ -81,9 +81,9 @@ namespace MidLevelRenderer {
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(const DWORD *paintMe) {};
+			PaintMe(const DWORD* paintMe) {(void)paintMe;};
 #else
-			PaintMe(const Stuff::RGBAColor *paintMe) {};
+			PaintMe(const Stuff::RGBAColor* paintMe) {(void)paintMe;};
 #endif
 
 		virtual int	TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*,bool=false);
@@ -145,7 +145,7 @@ namespace MidLevelRenderer {
 	#define ICO_Z 0.850650808352039932f
 
 	extern float vdata[12][3];
-	extern unsigned int tindices [20][3];
+	extern uint32_t tindices [20][3];
 
 	extern long triDrawn;
 

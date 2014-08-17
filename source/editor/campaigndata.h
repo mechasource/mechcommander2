@@ -5,7 +5,7 @@
 #ifndef CAMPAIGNDATA_H
 #define CAMPAIGNDATA_H
 
-#include "EList.h"
+#include "elist.h"
 #include "Inifile.h"
 
 class CMissionData {

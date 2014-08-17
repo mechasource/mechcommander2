@@ -7,12 +7,12 @@ ForceGroupBar.cpp			: Implementation of the ForceGroupBar component.
 \*************************************************************************************************/
 #include "stdafx.h"
 
-#include "ForceGroupBar.h"
+#include "forcegroupbar.h"
 #include "MechIcon.h"
 #include "ObjMgr.h"
 #include "Team.h"
 #include "MissionGui.h"
-#include "ControlGui.h"
+#include "controlgui.h"
 #include "..\resource.h"
 #include "multplyr.h"
 #include "mc2movie.h"

@@ -4,16 +4,13 @@
 
 extern char AlphaTable[256*256];
 
-typedef struct
-{
-
+typedef struct SHAPEHEADER {
 	DWORD	bounds;
 	DWORD	origin;
 	DWORD	xmin;
 	DWORD	ymin;
 	DWORD	xmax;
 	DWORD	ymax;
-
 } SHAPEHEADER;
 
 //
@@ -27,10 +24,10 @@ typedef struct
 // Bit 0 = 1	String packet [7654321] bytes
 //
 
-unsigned int lookaside;
-static unsigned int tempXmax,tempXmin;
-static unsigned int minX,minY,maxY,SkipLeft,NewWidth,StartofLine,StartofClip,EndofClip;
-static unsigned int lines,DestWidth,paneX0,paneX1,paneY0,paneY1;
+uint32_t lookaside;
+static uint32_t tempXmax,tempXmin;
+static uint32_t minX,minY,maxY,SkipLeft,NewWidth,StartofLine,StartofClip,EndofClip;
+static uint32_t lines,DestWidth,paneX0,paneX1,paneY0,paneY1;
 
 
 

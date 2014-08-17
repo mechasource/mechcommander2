@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "gosFX.hpp"
-#include <MLR\MLR.hpp>
+#include <gosfx/gosfx.hpp>
+#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer
 {

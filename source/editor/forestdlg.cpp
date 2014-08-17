@@ -7,12 +7,10 @@
 
 #include "stdafx.h"
 #include "resource.h"
-#include "ForestDlg.h"
-#include "Terrain.h"
-#include "mclib.h"
-#include "EditorObjectMgr.h"
-#include "mclib.h"
-
+#include "forestdlg.h"
+#include "terrain.h"
+#include "editorobjectmgr.h"
+#include <mclib.h>
 
 /////////////////////////////////////////////////////////////////////////////
 // ForestDlg dialog

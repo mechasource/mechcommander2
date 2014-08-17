@@ -13,7 +13,7 @@ int MLRState::systemFlags;
 float MLRState::maxUV;
 
 #ifndef OLDFOG
-	unsigned int
+	uint32_t
 		MLRState::fogColor;
 #endif
 

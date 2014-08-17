@@ -4,10 +4,10 @@
 //===========================================================================//
 
 #ifndef BDACTOR_H
-#include "bdActor.h"
+#include "bdactor.h"
 #endif
 
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 
 
 #ifndef FILE_H
@@ -15,7 +15,7 @@
 #endif
 
 #ifndef UTILITIES_H
-#include "Utilities.h"
+#include "utilities.h"
 #endif
 
 #ifndef TERRAIN_H
@@ -23,15 +23,15 @@
 #endif
 
 #ifndef ERR_H
-#include "Err.h"
+#include "err.h"
 #endif
 
 #ifndef CAMERA_H
-#include "Camera.h"
+#include "camera.h"
 #endif
 
 #ifndef PATHS_H
-#include "Paths.h"
+#include "paths.h"
 #endif
 
 #ifndef CIDENT_H
@@ -39,7 +39,7 @@
 #endif
 
 #ifndef PACKET_H
-#include "Packet.h"
+#include "packet.h"
 #endif
 
 #ifndef CAMERA_H
@@ -47,15 +47,15 @@
 #endif
 
 #ifndef BDACTOR_H
-#include "bdActor.h"
+#include "bdactor.h"
 #endif
 
 #ifndef MECH3D_H
-#include "Mech3d.h"
+#include "mech3d.h"
 #endif
 
 #ifndef MESSAGEBOX_H
-#include "MessageBox.h"
+#include "messagebox.h"
 #endif
 
 #ifndef APPRTYPE_H
@@ -63,11 +63,11 @@
 #endif
 
 #ifndef TACMAP_H
-#include "tacMap.h"
+#include "tacmap.h"
 #endif
 
 #ifndef EDITORDATA_H
-#include "EditorData.h"
+#include "editordata.h"
 #endif
 
 #include "resource.h"
@@ -75,7 +75,7 @@
 #include "McLibResource.h"
 
 #include "BuildingLink.h"
-#include "Utilities.h"
+#include "utilities.h"
 
 #include "malloc.h"
 
@@ -1225,7 +1225,7 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
 
 	*pTacMapPoints = pointCounter;
 
-	PakFile.writePacket( whichPacket + 1, (BYTE*)pTacMapPoints, ( pointCounter * 2 + 1 ) * sizeof( long ) );
+	PakFile.writePacket( whichPacket + 1, (PUCHAR)pTacMapPoints, ( pointCounter * 2 + 1 ) * sizeof( long ) );
 
 	free( pTacMapPoints );
 	free( pBuffer );

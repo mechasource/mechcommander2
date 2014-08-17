@@ -6,8 +6,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-//---------------------------------------------------------------------------
-// Include files
+#include "stdafx.h"
 
 #ifndef CEVFX_H
 #include "cevfx.h"

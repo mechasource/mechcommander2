@@ -7,7 +7,7 @@
 
 #include "stdafx.h"
 #include "gosFXHeaders.hpp"
-#include <MLR\MLRTriangleCloud.hpp>
+#include <mlr/mlrtrianglecloud.hpp>
 
 //------------------------------------------------------------------------------
 //

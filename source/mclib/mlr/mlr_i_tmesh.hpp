@@ -35,16 +35,16 @@ namespace MidLevelRenderer {
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
-		~MLR_I_TMesh();
+			);
+		~MLR_I_TMesh(void);
 
 	public:
 		MLR_I_TMesh(ClassData *class_data=MLR_I_TMesh::DefaultData);
 
 		static MLR_I_TMesh*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
@@ -55,32 +55,32 @@ namespace MidLevelRenderer {
 
 		virtual int
 			GetNumPrimitives()
-				{ Check_Object(this); return numOfTriangles; }
+		{ Check_Object(this); return numOfTriangles; }
 
 		virtual void
 			SetSubprimitiveLengths(
-				unsigned char *length_array,
-				int subprimitive_count
-				)
-				{
-					Check_Object(this);
-					Verify(gos_GetCurrentHeap() == Heap);
-					numOfTriangles = subprimitive_count;
-					testList.SetLength(numOfTriangles);
-					facePlanes.SetLength(numOfTriangles);
-				}
+			unsigned char *length_array,
+			int subprimitive_count
+			)
+		{
+			Check_Object(this);(void)length_array;
+			Verify(gos_GetCurrentHeap() == Heap);
+			numOfTriangles = subprimitive_count;
+			testList.SetLength(numOfTriangles);
+			facePlanes.SetLength(numOfTriangles);
+		}
 
 		void	FindFacePlanes();
 
 		virtual int	FindBackFace(const Stuff::Point3D&);
 
-		const Stuff::Plane *GetTrianglePlane(int i)
-			{
-				Check_Object(this);
-				Verify(i<facePlanes.GetLength());
+		const Stuff::Plane *GetTrianglePlane(size_t i)
+		{
+			Check_Object(this);
+			Verify(i<facePlanes.GetLength());
 
-				return &facePlanes[i];
-			}
+			return &facePlanes[i];
+		}
 
 		virtual void	Lighting(MLRLight* const*, int nrLights);
 
@@ -88,31 +88,31 @@ namespace MidLevelRenderer {
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(const DWORD *paintMe) {};
+			PaintMe(const DWORD* paintMe) {(void)paintMe;};
 #else
-			PaintMe(const Stuff::RGBAColor *paintMe) {};
+			PaintMe(const Stuff::RGBAColor* paintMe) {(void)paintMe;};
 #endif
 
 		virtual int	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
 
 		bool
 			CastRay(
-				Stuff::Line3D *line,
-				Stuff::Normal3D *normal
+			Stuff::Line3D *line,
+			Stuff::Normal3D *normal
 			);
 
-//		void
-//			Transform(Stuff::Matrix4D*);
+		//		void
+		//			Transform(Stuff::Matrix4D*);
 
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
-	//	Initializes the visibility test list
+		//	Initializes the visibility test list
 		void
 			ResetTestList();
 
-	//	find which vertices are visible which not - returns nr of visible vertices
-	//	the result is stored in the visibleIndexedVertices array
+		//	find which vertices are visible which not - returns nr of visible vertices
+		//	the result is stored in the visibleIndexedVertices array
 		int
 			FindVisibleVertices();
 
@@ -133,7 +133,7 @@ namespace MidLevelRenderer {
 		void
 			TestInstance() const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -146,27 +146,16 @@ namespace MidLevelRenderer {
 
 	protected:
 		int numOfTriangles;
-
 		Stuff::DynamicArrayOf<unsigned char>	testList;
-		
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
-		
 	};
 
-	#define ICO_X 0.525731112119133606f
-	#define ICO_Z 0.850650808352039932f
+#define ICO_X 0.525731112119133606f
+#define ICO_Z 0.850650808352039932f
 
 	extern float vdata[12][3];
-	extern unsigned int tindices [20][3];
-
+	extern uint32_t tindices [20][3];
 	extern long triDrawn;
-
-	MLR_I_TMesh*
-		CreateIndexedTriCube_NoColor_NoLit(Stuff::Scalar, MLRState*);
-	MLRShape*
-		CreateIndexedTriIcosahedron_NoColor_NoLit(
-			IcoInfo&,
-			MLRState*
-		);
-
+	MLR_I_TMesh* CreateIndexedTriCube_NoColor_NoLit(Stuff::Scalar, MLRState*);
+	MLRShape* CreateIndexedTriIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
 }

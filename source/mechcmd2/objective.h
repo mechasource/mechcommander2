@@ -11,7 +11,7 @@ Objective.h			: Interface for the Objective component.
 #define OBJECTIVE_H
 
 #include "elist.h"
-#include "EString.h"
+#include "estring.h"
 #include "tchar.h"
 #include "mover.h"
 

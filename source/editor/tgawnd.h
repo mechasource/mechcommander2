@@ -26,7 +26,7 @@ class TGAWnd : public CStatic
 public:
 	TGAWnd();
 	void SetTGAFileName( const CString& str );
-	void SetTGAFileData( BYTE* data, int size );
+	void SetTGAFileData( PUCHAR data, int size );
 
 	char* GetImageData( ) { return m_pImage; }
 

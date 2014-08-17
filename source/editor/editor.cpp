@@ -11,8 +11,8 @@
 
 #include <gameos.hpp>
 #include <toolos.hpp>
-#include <mlr\mlr.hpp>
-#include <stuff\stuff.hpp>
+#include <mlr/mlr.hpp>
+#include <stuff/stuff.hpp>
 #include "editordata.h"
 #include "version.h"
 #include "..\resource.h"

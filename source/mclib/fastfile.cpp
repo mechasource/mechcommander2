@@ -5,10 +5,10 @@
 //----------------------------------------------------------------------------
 // Global Fast File Code.
 //
-
+#include "stdafx.h"
 #include "heap.h"
 #include "fastfile.h"
-#include <ctype.h>
+//#include <ctype.h>
 
 long ffLastError = 0;
 

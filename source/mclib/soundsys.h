@@ -41,7 +41,7 @@
 
 #include <math.h>
 #include <gameos.hpp>
-#include <Stuff\Stuff.hpp>
+#include <stuff/stuff.hpp>
 //---------------------------------------------------------------------------
 // Macro Defintiions
 // Channels 0 through 10 are Main Sound Effect Channels

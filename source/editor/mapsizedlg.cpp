@@ -6,9 +6,8 @@ mapsizeDlg.cpp		: Implementation of the mapsizeDlg component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "mclib.h"
+#include <mclib.h>
 #include "mapsizedlg.h"
-
 #include "resource.h"
 #include "mclibresource.h"
 #include "utilities.h"

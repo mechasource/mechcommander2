@@ -12,7 +12,7 @@
 #define DEBUGGING_H
 
 #include <stdio.h>
-#include <GameOS\GameOS.hpp>
+#include <gameos.hpp>
 //#include <GameOS\ToolOS.hpp>
 
 //---------------------------------------------------------------------------

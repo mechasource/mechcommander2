@@ -1,20 +1,21 @@
-#define COMPONENTLISTBOX_CPP
 /*************************************************************************************************\
 ComponentListBox.cpp			: Implementation of the ComponentListBox component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
-#include "ComponentListBox.h"
-#include "LogisticsVariant.h"
-#include "LogisticsComponent.h"
+#define COMPONENTLISTBOX_CPP
+
+#include "stdafx.h"
+#include "componentlistbox.h"
+#include "logisticsvariant.h"
+#include "logisticscomponent.h"
 #include "..\resource.h"
 #include "malloc.h"
-#include "mcLib.h"
-#include "LogisticsData.h"
-#include "MechLabScreen.h"
+#include <mclib.h>
+#include "logisticsdata.h"
+#include "mechlabscreen.h"
 #include "gamesound.h"
 #include "logisticserrors.h"
 

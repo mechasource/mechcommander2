@@ -64,7 +64,7 @@ class VFXShapeElement : public Element
 		long			frameNum[MAX_ELEMENT_SHAPES];
 		bool			reverse[MAX_ELEMENT_SHAPES];
 		long			x,y,xHS,yHS;
-		unsigned long	*fadeTable;
+		size_t	*fadeTable;
 		DWORD			textureMemoryHandle;
 		long			actualHeight;
 		float			textureFactor;
@@ -91,7 +91,7 @@ class VFXShapeElement : public Element
 		fogRGB = 0xffffffff;		//NO Fog
 	}
 
-	void init (MemoryPtr _shape, long _x, long _y, long frame, bool rev, unsigned long *fTable = NULL, float _z = 0.0, float tZ = 0.0);
+	void init (MemoryPtr _shape, long _x, long _y, long frame, bool rev, size_t *fTable = NULL, float _z = 0.0, float tZ = 0.0);
 
 	long getTextureHandle (long height = -1);					//Return the block of memory so I store it for this mech/vehicle,etc.
 	void setTextureHandle (DWORD handle, long height = -1);

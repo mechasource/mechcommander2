@@ -10,6 +10,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#include "stdafx.h"
+
 #ifndef MECH3D_H
 #include "mech3d.h"
 #endif

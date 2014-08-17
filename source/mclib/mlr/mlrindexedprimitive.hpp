@@ -23,9 +23,9 @@ namespace MidLevelRenderer {
 	//
 	public:
 		static void
-			InitializeClass();
+			InitializeClass(void);
 		static void
-			TerminateClass();
+			TerminateClass(void);
 		static ClassData
 			*DefaultData;
 
@@ -38,7 +38,7 @@ namespace MidLevelRenderer {
 			Stuff::MemoryStream *stream,
 			int version
 		);
-		~MLRIndexedPrimitive();
+		~MLRIndexedPrimitive(void);
 
 	public:
 		MLRIndexedPrimitive(ClassData *class_data);
@@ -64,22 +64,22 @@ namespace MidLevelRenderer {
 
 		virtual void
 			SetIndexData(
-				unsigned short *index_array,
+				USHORT *index_array,
 				int index_count
 			);
 
 		virtual void
 			GetIndexData(
-				unsigned short **index_array,
+				USHORT **index_array,
 				int *index_count
 			);
 
-		unsigned short*
-			GetGOSIndices()
+		USHORT*
+			GetGOSIndices(void)
 				{ Check_Object(this); return gos_indices; }
 
 		int
-			GetNumGOSIndices()
+			GetNumGOSIndices(void)
 				{ Check_Object(this); return numGOSIndices; }
 
 		virtual void
@@ -93,15 +93,15 @@ namespace MidLevelRenderer {
 	//
 	public:
 		void
-			TestInstance() const;
+			TestInstance(void) const;
 
 	virtual int
-			GetSize()
+			GetSize(void)
 		{ 
 			Check_Object(this);
-			int ret = MLRPrimitive::GetSize();
-			ret += visibleIndexedVertices.GetSize();
-			ret += index.GetSize();
+			int ret = MLRPrimitive::GetSize(void);
+			ret += visibleIndexedVertices.GetSize(void);
+			ret += index.GetSize(void);
 
 			return ret;
 		}
@@ -109,12 +109,12 @@ namespace MidLevelRenderer {
 	protected:
 		bool visibleIndexedVerticesKey;
 
-		Stuff::DynamicArrayOf<unsigned short>	visibleIndexedVertices;
+		Stuff::DynamicArrayOf<USHORT>	visibleIndexedVertices;
 
-		Stuff::DynamicArrayOf<unsigned short>	index;	// List of color indexes 
+		Stuff::DynamicArrayOf<USHORT>	index;	// List of color indexes 
 
-		unsigned short *gos_indices;
-		unsigned short	numGOSIndices;
+		USHORT *gos_indices;
+		USHORT	numGOSIndices;
 	};
 
 }

@@ -20,7 +20,7 @@
 #ifdef BUILD_GAME
 
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef MISSION_H

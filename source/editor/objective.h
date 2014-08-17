@@ -8,7 +8,7 @@ Objective.h			: Interface for the Objective component.
 \*************************************************************************************************/
 
 #include "elist.h"
-#include "EString.h"
+#include "estring.h"
 #include "tchar.h"
 
 class EditorObject;

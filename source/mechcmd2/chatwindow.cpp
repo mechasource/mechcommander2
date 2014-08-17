@@ -1,14 +1,15 @@
-#define CHATWINDOW_CPP
 //===========================================================================//
 //ChatWindow.cpp		: Implementation of the ChatWindow component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "stdafx.h"
 
-#include "ChatWindow.h"
-#include "Mclib.h"
-#include "Multplyr.h"
+#define CHATWINDOW_CPP
+
+#include "stdafx.h"
+#include "chatwindow.h"
+#include <mclib.h>
+#include "multplyr.h"
 #include "..\resource.h"
 
 ChatWindow* ChatWindow::s_instance = NULL;

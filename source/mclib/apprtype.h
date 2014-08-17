@@ -43,8 +43,8 @@ class AppearanceType
 	//-------------
 	public:
 	
-		unsigned long 		numUsers;			//Number of users using this appearanceType.
-		unsigned long		appearanceNum;		//What kind am I.
+		size_t 		numUsers;			//Number of users using this appearanceType.
+		size_t		appearanceNum;		//What kind am I.
 		AppearanceTypePtr	next;				//Pointer to next type in list.
 
 		char 				*name;				//Appearance Base FileName.
@@ -101,7 +101,7 @@ class AppearanceType
 			return designerTypeBounds;
 		}
 
-		unsigned long getAppearanceClass (void)
+		size_t getAppearanceClass (void)
 		{
 			return(appearanceNum >> 24);
 		}
@@ -136,9 +136,9 @@ class AppearanceTypeList
 			appearanceHeap = NULL;
 		}
 
-		void init (unsigned long heapSize);
+		void init (size_t heapSize);
 
-		AppearanceTypePtr getAppearance (unsigned long apprNum, char * apprFile);
+		AppearanceTypePtr getAppearance (size_t apprNum, char * apprFile);
 		
 		long removeAppearance (AppearanceTypePtr which);
 		

@@ -7,7 +7,7 @@
 #include "stdafx.h"
 
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef GAMEOBJ_H

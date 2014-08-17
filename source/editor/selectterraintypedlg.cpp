@@ -9,7 +9,7 @@
 #include "resource.h"
 #include "SelectTerrainTypeDlg.h"
 
-#include "Utilities.h"
+#include "utilities.h"
 #include "TerrTxm.h"
 #include "Terrain.h"
 

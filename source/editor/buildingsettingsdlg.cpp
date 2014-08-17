@@ -9,7 +9,7 @@
 #include "resource.h"
 #include "BuildingSettingsDlg.h"
 #include "EditorObjects.h"
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #include "EditorInterface.h" // just for the undo manager
 
 #include "../Code/unitdesg.h" /* just for definition of MIN_TERRAIN_PART_ID and MAX_MAP_CELL_WIDTH */

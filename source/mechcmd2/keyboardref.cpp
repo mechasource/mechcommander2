@@ -5,10 +5,10 @@ KeyboardRef.cpp			: Implementation of the KeyboardRef component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
-#include "KeyboardRef.h"
-#include "mclib.h"
+#include "stdafx.h"
+#include "keyboardref.h"
+#include <mclib.h>
 #include "..\resource.h"
 #include "missiongui.h"
 #include "utilities.h"

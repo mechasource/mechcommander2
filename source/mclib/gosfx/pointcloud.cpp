@@ -11,7 +11,7 @@
 
 #include "stdafx.h"
 #include "gosFXHeaders.hpp"
-#include <MLR\MLRPointCloud.hpp>
+#include <mlr/mlrpointcloud.hpp>
 
 
 //------------------------------------------------------------------------------

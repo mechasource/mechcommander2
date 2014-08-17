@@ -8,11 +8,11 @@ MainMenu.h			: Interface for the MainMenu component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "LogisticsScreen.h"
+#include "logisticsscreen.h"
 #endif
 
 #ifndef AANIM_H
-#include "AAnim.h"
+#include "aanim.h"
 #endif
 
 #ifndef MPLOADMAP_H

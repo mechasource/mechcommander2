@@ -5,15 +5,15 @@ mpprefs.cpp			: Implementation of the mpprefs component.ef
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#include "stdafx.h"
 
+#include "stdafx.h"
 #include "mpprefs.h"
-#include "mclib.h"
-#include "MechBayScreen.h"
-#include "Prefs.h"
-#include "Multplyr.h"
-#include "gameSound.h"
-#include "ChatWindow.h"
+#include <mclib.h>
+#include "mechbayscreen.h"
+#include "prefs.h"
+#include "multplyr.h"
+#include "gamesound.h"
+#include "chatwindow.h"
 
 #define MP_PREFS_BASE	200
 #define MP_PREFS_STRIPE	201
@@ -652,7 +652,7 @@ int aBmpListItem::setBmp( const char* pFileName )
 	File file;
 	if ( NO_ERR == file.open( path ) )
 	{
-		file.read( (BYTE*)&header, sizeof( header ) );
+		file.read( (PUCHAR)&header, sizeof( header ) );
 		if ( header.width != 32 || header.height != 32 || header.pixel_depth < 24 )
 			return 0;
 	}

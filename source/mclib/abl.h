@@ -34,14 +34,14 @@
 
 #define	DEBUGGING
 
-void ABLi_init (unsigned long runtimeStackSize, // = 20480,
-				unsigned long maxCodeBufferSize, // = 10240,
-				unsigned long maxRegisteredModules, // = 200,
-				unsigned long maxStaticVariables, // = 100,
-				void* (*systemMallocCallback) (unsigned long memSize),
-				void* (*stackMallocCallback) (unsigned long memSize),
-				void* (*codeMallocCallback) (unsigned long memSize),
-				void* (*symbolMallocCallback) (unsigned long memSize),
+void ABLi_init (size_t runtimeStackSize, // = 20480,
+				size_t maxCodeBufferSize, // = 10240,
+				size_t maxRegisteredModules, // = 200,
+				size_t maxStaticVariables, // = 100,
+				void* (*systemMallocCallback) (size_t memSize),
+				void* (*stackMallocCallback) (size_t memSize),
+				void* (*codeMallocCallback) (size_t memSize),
+				void* (*symbolMallocCallback) (size_t memSize),
 				void (*systemFreeCallback) (void* memBlock),
 				void (*stackFreeCallback) (void* memBlock),
 				void (*codeFreeCallback) (void* memBlock),
@@ -110,10 +110,10 @@ void ABLi_addFunction (char* name,
 					   char* returnType,
 					   void (*codeCallback)(void));
 
-void ABLi_setRandomCallbacks (void (*seedRandomCallback) (unsigned long seed),
+void ABLi_setRandomCallbacks (void (*seedRandomCallback) (size_t seed),
 							  long (*randomCallback) (long range));
 void ABLi_setDebugPrintCallback (void (*ABLDebugPrintCallback) (char* s));
-void ABLi_setGetTimeCallback (unsigned long (*ABLGetTimeCallback) (void));
+void ABLi_setGetTimeCallback (size_t (*ABLGetTimeCallback) (void));
 
 void ABLi_setEndlessStateCallback (void (*endlessStateCallback) (UserFile* log));
 

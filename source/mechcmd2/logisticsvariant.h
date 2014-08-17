@@ -14,7 +14,7 @@ class LogisticsComponent;
 class CSVFile;
 class FitIniFile;
 
-#include "EString.h"
+#include "estring.h"
 
 //#pragma warning (disable:4514)
 

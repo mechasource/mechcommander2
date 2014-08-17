@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 #include "owntrace.hpp"
+#include "mlrindexedpolymesh.hpp"
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	BitTrace *MLRIndexedPolyMesh_Clip;

@@ -14,8 +14,8 @@ class ForceGroupIcon;
 CLASS DESCRIPTION
 LogisticsPilot:
 **************************************************************************************************/
-#include "EString.h"
-#include "EList.h"
+#include "estring.h"
+#include "elist.h"
 #include "warrior.h"
 
 #define MAX_MISSIONS		50

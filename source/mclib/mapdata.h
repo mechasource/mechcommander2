@@ -33,7 +33,7 @@
 #include "quad.h"
 #endif
 
-#include <stuff\stuff.hpp>
+#include <stuff/stuff.hpp>
 
 //---------------------------------------------------------------------------
 enum  Overlays

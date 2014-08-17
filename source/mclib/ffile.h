@@ -59,8 +59,8 @@ class FastFile
 		char 					*fileName;
 		FILE					*handle;
 
-		unsigned long 			length;
-		unsigned long 			logicalPosition;
+		size_t 			length;
+		size_t 			logicalPosition;
 
 		bool					useLZCompress;
 

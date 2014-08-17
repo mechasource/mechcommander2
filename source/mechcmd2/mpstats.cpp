@@ -7,7 +7,7 @@ MPStats.cpp			: Implementation of the MPStats component.
 \*************************************************************************************************/
 #include "stdafx.h"
 
-#include "MPStats.h"
+#include "mpstats.h"
 #include "..\resource.h"
 #include "MissionBriefingScreen.h"
 #include "ChatWindow.h"

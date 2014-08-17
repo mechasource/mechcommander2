@@ -29,7 +29,7 @@
 #include "contact.h"
 #endif
 
-#include <gosFX\gosfxheaders.hpp>
+#include <gosfx/gosfxheaders.hpp>
 //***************************************************************************
 
 #define NO_RAM_FOR_ARTY					0xDEFD0000

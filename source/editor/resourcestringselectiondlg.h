@@ -11,7 +11,7 @@
 // ResourceStringSelectionDlg.h : header file
 //
 
-#include "EList.h"
+#include "elist.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // ResourceStringSelectionDlg dialog

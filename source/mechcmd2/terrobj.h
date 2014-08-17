@@ -27,7 +27,7 @@
 #include "dcarnage.h"
 #endif
 
-#include <gosFX\gosfxheaders.hpp>
+#include <gosfx/gosfxheaders.hpp>
 //---------------------------------------------------------------------------
 // Macro Definitions
 //#define NO_RAM_FOR_BUILDING				0xDCDC0006

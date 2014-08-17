@@ -20,7 +20,7 @@
 #include "file.h"
 #endif
 
-#include <stuff\stuff.hpp>
+#include <stuff/stuff.hpp>
 #include <gameos.hpp>
 
 //-------------------------------------------------------------------------------

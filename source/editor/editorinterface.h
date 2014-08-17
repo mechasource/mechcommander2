@@ -8,7 +8,7 @@
 
 
 #ifndef MCLIB_H
-#include "mclib.h"
+#include <mclib.h>
 #endif
 
 #ifndef ACTION_H
@@ -16,11 +16,11 @@
 #endif
 
 #ifndef EDITOROBJECTMGR_H
-#include "EditorObjectMgr.h"
+#include "editorobjectmgr.h"
 #endif
 
 #ifndef EDITORDATA_H
-#include "EditorData.h"
+#include "editordata.h"
 #endif
 
 #ifndef EDITORTACMAP_H

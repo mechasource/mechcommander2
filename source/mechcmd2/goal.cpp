@@ -28,8 +28,7 @@
 #endif
 
 #include "heap.h"
-#include "mclib.h"
-
+#include <mclib.h>
 extern UserHeapPtr missionHeap;
 
 //***************************************************************************

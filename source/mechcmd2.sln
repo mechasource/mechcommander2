@@ -9,6 +9,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{E9E993DF-D613-4091-A6EF-2B166ED87A4F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{DE2F4131-38FF-4205-94C8-6032A0BC76C2}"
+	ProjectSection(SolutionItems) = preProject
+		patches\initial_commit.diff = patches\initial_commit.diff
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ablt", "build.vs\ablt.vcxproj", "{533EB470-9743-48C3-A77F-1490873B7CBB}"
 EndProject

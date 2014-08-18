@@ -177,7 +177,7 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_TMesh::InitializeDrawPrimitive(unsigned char vis, int parameter)
+	MLR_I_TMesh::InitializeDrawPrimitive(uint8_t vis, int parameter)
 {
 	MLRIndexedPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
 
@@ -219,7 +219,7 @@ int
 	Check_Object(this);
 
 	int ret = 0;
-	unsigned char *iPtr;
+	PUCHAR iPtr;
 	Plane *p;
 
 	if(numOfTriangles <= 0)
@@ -244,12 +244,12 @@ int
 		{
 			if(p->GetDistanceTo(u)>= 0.0f)
 			{
-				iPtr[i] = (unsigned char)(ret = 1);
+				iPtr[i] = (uint8_t)(ret = 1);
 			}
 		}
 	}
 
-	visible = (unsigned char)ret;
+	visible = (uint8_t)ret;
 
 	FindVisibleVertices();
 
@@ -262,7 +262,7 @@ void
 	MLR_I_TMesh::ResetTestList()
 {
 	int i, numPrimitives = GetNumPrimitives();
-	unsigned char *iPtr = &testList[0];
+	PUCHAR iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
 	{
@@ -338,7 +338,7 @@ void
 	Stuff::Vector4D *v4d = transformedCoords.GetData();
 	Stuff::Point3D *p3d = coords.GetData();
 	MLRClippingState *cs = clipPerVertex.GetData();
-	unsigned char *viv = visibleIndexedVertices.GetData();
+	PUCHAR viv = visibleIndexedVertices.GetData();
 
 	for(i=0;i<len;i++,p3d++,v4d++,cs++,viv++)
 	{
@@ -1051,7 +1051,7 @@ MLR_I_TMesh*
 	coords[6] = Point3D( half,  half, -half);
 	coords[7] = Point3D(-half,  half, -half);
 
-	unsigned char *lengths = new unsigned char [6];
+	PUCHAR lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
 	int i;

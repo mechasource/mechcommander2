@@ -156,7 +156,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPolyMesh::SetPrimitiveLength (unsigned char *data, int numPrimitives)
+	MLRIndexedPolyMesh::SetPrimitiveLength (PUCHAR data, int numPrimitives)
 {
 	Check_Object(this); 
 
@@ -170,7 +170,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPolyMesh::GetPrimitiveLength (unsigned char **data, int *l)
+	MLRIndexedPolyMesh::GetPrimitiveLength (PUCHAR *data, int *l)
 {
 	Check_Object(this);
 	*l = lengths.GetLength();
@@ -212,7 +212,7 @@ int
 
 	int i, numPrimitives = GetNumPrimitives();
 	int ret = 0, len = lengths.GetLength();
-	unsigned char *iPtr;
+	PUCHAR iPtr;
 	Plane *p;
 
 	if(len <= 0)
@@ -238,15 +238,15 @@ int
 
 //			*iPtr = !Get_Sign_Bit(s);
 
-			*iPtr = (p->DistanceTo(u) >= 0.0f) ? (unsigned char)1: (unsigned char)0;
+			*iPtr = (p->DistanceTo(u) >= 0.0f) ? (uint8_t)1: (uint8_t)0;
 			
 			ret += *iPtr;
 		}
 
-		visible = ret ? (unsigned char)1 : (unsigned char)0;
+		visible = ret ? (uint8_t)1 : (uint8_t)0;
 	}
 
-	visible = ret ? (unsigned char)1 : (unsigned char)0;
+	visible = ret ? (uint8_t)1 : (uint8_t)0;
 
 	FindVisibleVertices();
 
@@ -259,7 +259,7 @@ void
 	MLRIndexedPolyMesh::ResetTestList()
 {
 	int i, numPrimitives = GetNumPrimitives();
-	unsigned char *iPtr = &testList[0];
+	PUCHAR iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
 	{
@@ -1743,7 +1743,7 @@ MLRIndexedPolyMesh*
 	coords[6] = Point3D( half,  half, -half);
 	coords[7] = Point3D(-half,  half, -half);
 
-	unsigned char *lengths = new unsigned char [6];
+	PUCHAR lengths = new uint8_t [6];
 
 	int i;
 

@@ -111,12 +111,12 @@ class BuildingType : public ObjectType {
 typedef struct _BuildingData : public TerrainObjectData
 {
 	char					teamId;
-	unsigned char			baseTileId;
+	uint8_t			baseTileId;
 	char					commanderId;
 	GameObjectWatchID		refitBuddyWID;
 	DWORD					parentId;
 	GameObjectWatchID		parent;
-	unsigned char			listID;
+	uint8_t			listID;
 	float					captureTime;
 
 	//PerimeterAlarms 		
@@ -130,13 +130,13 @@ class Building : public TerrainObject
 	public:
 			
 		char					teamId;
-		unsigned char			baseTileId;
+		uint8_t			baseTileId;
 		SensorSystemPtr			sensorSystem;
 		char					commanderId;									//If capturable, who last captured it...
 		GameObjectWatchID		refitBuddyWID;
 		DWORD					parentId;
 		GameObjectWatchID		parent;
-		unsigned char			listID;
+		uint8_t			listID;
 		float					captureTime;
 		float					scoreTime;
 

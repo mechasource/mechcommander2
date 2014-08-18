@@ -22,22 +22,14 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef MISSIONGUI_H
 #define MISSIONGUI_H
-//--------------------------------------------------------------------------------------
-// Include Files
-#ifndef MCLIB_H
+
 #include <mclib.h>
-#endif
-
-#ifndef MOVER_H
 #include "mover.h"
-#endif
-
-#ifndef CONTROLGUI_H
 #include "controlgui.h"
-#endif
-
 
 class KeyboardRef;
 enum COMMAND_KEY_INDEX
@@ -134,7 +126,7 @@ public:
 		// Mouse Event Data
 		bool						isDragging;
 		float						vTolSpeed;
-		const char*					vehicleFile;
+		PCSTR					vehicleFile;
 		long						vehicleID[MAX_TEAMS];
 		Stuff::Vector3D				dragStart;
 		Stuff::Vector3D				dragEnd;
@@ -211,7 +203,7 @@ public:
 						
 		void	initMechs(){ controlGui.initMechs(); }	
 
-		const char* getSupportVehicleNameFromID (long ID) { return controlGui.getVehicleNameFromID(ID); }
+		PCSTR getSupportVehicleNameFromID (long ID) { return controlGui.getVehicleNameFromID(ID); }
 
 		void	addMover (MoverPtr mover){ controlGui.addMover(mover); }	
 		void	removeMover (MoverPtr mover){ controlGui.removeMover(mover); }	
@@ -280,7 +272,7 @@ public:
 
 		//Tutorial Stuff goes here.
 		bool startAnimation(long buttonId,bool isButton,bool isPressed,float timeToScroll,long numFlashes);
-		void setTutorialText(const char *text);
+		void setTutorialText(PCSTR text);
 
 		bool isInCalloutAnimation ()
 		{
@@ -464,7 +456,7 @@ public:
 
 		bool	canSalvage( GameObject* pMover );
 		bool	selectionIsHelicopters( );
-		void	drawHotKey( const char* string, const char* descStr, long x, long y );
+		void	drawHotKey( PCSTR string, PCSTR descStr, long x, long y );
 		void	drawHotKeys();
 
 

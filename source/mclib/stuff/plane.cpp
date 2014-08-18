@@ -266,7 +266,7 @@ bool
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Plane& plane
 		)
 	{

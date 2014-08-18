@@ -95,7 +95,7 @@ namespace MidLevelRenderer {
 			GetNumDrawnTriangles();
 
 	// is to call at begin of every frame 
-		void	InitializePrimitives(unsigned char, const MLRState& master, int=0);
+		void	InitializePrimitives(uint8_t, const MLRState& master, int=0);
 
 	// clips the geometry and fills the data into the vertex pool
 	// the clipping states defines the planes against the shape might have be culled
@@ -184,7 +184,7 @@ namespace MidLevelRenderer {
 			shapeToClipMatrix;
 
 	private:
-		int	numPrimitives;
+		uint32_t	numPrimitives;
 	};
 
 }

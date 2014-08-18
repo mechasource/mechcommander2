@@ -239,7 +239,7 @@ class SoundSystem
 		
 		long playDigitalMusic (long musicId);
 		
-		long playDigitalStream (const char *streamName);
+		long playDigitalStream (PCSTR streamName);
 											 
 		bool isDigitalMusicPlaying (void);
 		bool isPlayingSample(long sampleId);
@@ -259,15 +259,15 @@ class SoundSystem
 		void setDigitalMasterVolume (byte volume);
 		long getDigitalMasterVolume (void);
 		
-		unsigned char getSFXVolume();
-		unsigned char getRadioVolume();
-		unsigned char getMusicVolume();
-		unsigned char getBettyVolume();
+		uint8_t getSFXVolume();
+		uint8_t getRadioVolume();
+		uint8_t getMusicVolume();
+		uint8_t getBettyVolume();
 
-		void setSFXVolume(unsigned char volume);
-		void setRadioVolume(unsigned char volume);
-		void setMusicVolume(unsigned char volume);
-		void setBettyVolume(unsigned char volume);
+		void setSFXVolume(uint8_t volume);
+		void setRadioVolume(uint8_t volume);
+		void setMusicVolume(uint8_t volume);
+		void setBettyVolume(uint8_t volume);
 
 		virtual void update (void);
 		

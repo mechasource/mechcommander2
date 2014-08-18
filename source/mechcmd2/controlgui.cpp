@@ -90,7 +90,7 @@ long ControlGui::vehicleCosts[LAST_VEHICLE] =
 	0
 };
 
-const char* ControlGui::vehicleNames[5] = {
+PCSTR ControlGui::vehicleNames[5] = {
 	"repairTruck",
 	"scout",
 	"minelayer",
@@ -108,7 +108,7 @@ long ControlGui::vehicleIDs[5] =
 	415
 };
 
-const char* ControlGui::vehiclePilots[5] =
+PCSTR ControlGui::vehiclePilots[5] =
 {
 	"PMWRepair",
 	"PMWScout",
@@ -2068,7 +2068,7 @@ void ControlGui::disableAllVehicleButtons()
 
 }
 
-const char* ControlGui::getVehicleName( long& ID)
+PCSTR ControlGui::getVehicleName( long& ID)
 {
 	for ( int i = GUARD_TOWER; i <= RECOVERY_TEAM; i++ )
 	{
@@ -2090,7 +2090,7 @@ const char* ControlGui::getVehicleName( long& ID)
 	return 0;
 }
 
-const char* ControlGui::getVehicleNameFromID (long ID) {
+PCSTR ControlGui::getVehicleNameFromID (long ID) {
 
 	for (long i = 0; i < 5; i++)
 		if (vehicleIDs[i] == ID)
@@ -2239,7 +2239,7 @@ bool ControlGui::getVehicleCommand( )
 	return false;
 }
 
-void ControlButton::initButtons( FitIniFile& buttonFile, long buttonCount, ControlButton* Buttons, ButtonData* Data, const char* str, aFont* font )
+void ControlButton::initButtons( FitIniFile& buttonFile, long buttonCount, ControlButton* Buttons, ButtonData* Data, PCSTR str, aFont* font )
 {
 	char path[256];
 	for ( int i = 0; i < buttonCount; ++i )
@@ -2813,7 +2813,7 @@ void ControlGui::switchTabs(int direction)
 
 }
 
-void ControlGui::playMovie( const char* fileName )
+void ControlGui::playMovie( PCSTR fileName )
 {
 	if (moviePlaying)
 		return;
@@ -2957,7 +2957,7 @@ void ControlGui::toggleChat(bool isTeamOnly)
 		{
 		
 			char team = chatIsTeamOnly ? MPlayer->getPlayerInfo( MPlayer->commanderID )->team : -1;
-			MPlayer->sendChat(0, team, (char*)(const char*)tmp);
+			MPlayer->sendChat(0, team, (char*)(PCSTR)tmp);
 		}
 		personalEdit.setFocus( 0 );
 	}
@@ -2979,7 +2979,7 @@ void ControlGui::eatChatKey()
 		personalEdit.setFocus( false );
 }
 
-void ControlGui::setChatText( const char* playerName, const char* message, unsigned long color, unsigned long chatColor )
+void ControlGui::setChatText( PCSTR playerName, PCSTR message, unsigned long color, unsigned long chatColor )
 {
 	for ( int i = 0; i < MAX_CHAT_COUNT - 1; i++ )
 	{

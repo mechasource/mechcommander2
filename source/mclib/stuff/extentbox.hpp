@@ -17,7 +17,7 @@ namespace Stuff {class ExtentBox;}
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::ExtentBox& box
 		);
 #endif
@@ -92,7 +92,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const ExtentBox& box
 				);
 		#endif
@@ -102,7 +102,7 @@ namespace Stuff {
 
 	void
    	Convert_From_Ascii(
-      	const char *str,
+      	PCSTR str,
          ExtentBox *extent_box
 		);
 

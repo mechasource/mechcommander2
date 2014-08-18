@@ -319,7 +319,7 @@ long GroundVehicleType::init (FilePtr objFile, unsigned long fileSize) {
 	if (result != NO_ERR)
 		LOSFactor = 1.0f;
 		
- 	result = vehicleFile.readIdUChar("Chassis", chassis);
+ 	result = vehicleFile.readIdUCHAR("Chassis", chassis);
 	if (result != NO_ERR)
 		Fatal(result, " GroundVehicle:Init - Unable to find Chassis ");
 
@@ -380,7 +380,7 @@ long GroundVehicleType::init (FilePtr objFile, unsigned long fileSize) {
 
 	for (long curLocation = 0; curLocation < NUM_GROUNDVEHICLE_LOCATIONS; curLocation++) 
 	{
-		result = vehicleFile.readIdUChar(bodyLocationString[curLocation], maxInternalStructure[curLocation]);
+		result = vehicleFile.readIdUCHAR(bodyLocationString[curLocation], maxInternalStructure[curLocation]);
 		if (result != NO_ERR)
 			Fatal(curLocation, " GroundVehicle:Init - Unable to find Internal Structure Piece");
 	}
@@ -1048,15 +1048,15 @@ long GroundVehicle::init (FitIniFile* vehicleFile)
 	if (result != NO_ERR)
 		return(result);
 
-	result = vehicleFile->readIdUChar("NumOther", numOther);
+	result = vehicleFile->readIdUCHAR("NumOther", numOther);
 	if (result != NO_ERR)
 		return(result);
 
-	result = vehicleFile->readIdUChar("NumWeapons", numWeapons);
+	result = vehicleFile->readIdUCHAR("NumWeapons", numWeapons);
 	if (result != NO_ERR)
 		return(result);
 
-	result = vehicleFile->readIdUChar("NumAmmo", numAmmos);
+	result = vehicleFile->readIdUCHAR("NumAmmo", numAmmos);
 	if (result != NO_ERR)
 		return(result);
 
@@ -1071,7 +1071,7 @@ long GroundVehicle::init (FitIniFile* vehicleFile)
 		if (result != NO_ERR)
 			return(result);
 
-		result = vehicleFile->readIdUChar("MasterID", inventory[curItem].masterID);
+		result = vehicleFile->readIdUCHAR("MasterID", inventory[curItem].masterID);
 		if (result != NO_ERR)
 			return(result);
 		inventory[curItem].health = MasterComponent::masterList[inventory[curItem].masterID].getHealth();
@@ -1123,7 +1123,7 @@ long GroundVehicle::init (FitIniFile* vehicleFile)
 		if (result != NO_ERR)
 			return(result);
 
-		result = vehicleFile->readIdUChar("MasterID", inventory[curItem].masterID);
+		result = vehicleFile->readIdUCHAR("MasterID", inventory[curItem].masterID);
 		if (result != NO_ERR)
 			return(result);
 
@@ -1151,7 +1151,7 @@ long GroundVehicle::init (FitIniFile* vehicleFile)
 		if (result != NO_ERR)
 			return(result);
 
-		result = vehicleFile->readIdUChar("MasterID", inventory[curItem].masterID);
+		result = vehicleFile->readIdUCHAR("MasterID", inventory[curItem].masterID);
 		if (result != NO_ERR)
 			return(result);
 
@@ -1180,8 +1180,8 @@ long GroundVehicle::init (FitIniFile* vehicleFile)
 
 		body[curLocation].CASE = false;
 
-		unsigned char internalStructure;
-		result = vehicleFile->readIdUChar("CurInternalStructure", internalStructure);
+		uint8_t internalStructure;
+		result = vehicleFile->readIdUCHAR("CurInternalStructure", internalStructure);
 		if (result != NO_ERR)
 			return(result);
 
@@ -1197,13 +1197,13 @@ long GroundVehicle::init (FitIniFile* vehicleFile)
 		else
 			body[curLocation].damageState = IS_DAMAGE_NONE;
 
-		result = vehicleFile->readIdUChar("MaxArmorPoints", armor[curLocation].maxArmor);
+		result = vehicleFile->readIdUCHAR("MaxArmorPoints", armor[curLocation].maxArmor);
 		if (result != NO_ERR)
 			return(result);
 
-		unsigned char armorPts;
+		uint8_t armorPts;
 
-		result = vehicleFile->readIdUChar("CurArmorPoints", armorPts);
+		result = vehicleFile->readIdUCHAR("CurArmorPoints", armorPts);
 		if (result != NO_ERR)
 			return(result);
 
@@ -4720,7 +4720,7 @@ long GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, long wea
 				addWeaponFireChunk(CHUNK_SEND, &chunk);
 				LogWeaponFireChunk(&chunk, this, target);
 			}
-			unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			if (!weaponFX) 
 			{
@@ -4815,7 +4815,7 @@ long GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, long wea
 				LogWeaponFireChunk(&chunk, this, target);
 			}
 
-			unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			if (!weaponFX) {
 				if (target)
@@ -4948,7 +4948,7 @@ long GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, long wea
 						addWeaponFireChunk(CHUNK_SEND, &chunk);
 						LogWeaponFireChunk(&chunk, this, target);
 					}
-					unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+					uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 					weaponFX = ObjectManager->createWeaponBolt(effectType);
 					if (!weaponFX) {
 						//-----------------------------------------
@@ -5052,7 +5052,7 @@ long GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, long wea
 					addWeaponFireChunk(CHUNK_SEND, &chunk);
 					LogWeaponFireChunk(&chunk, this, target);
 				}
-				unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+				uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 				weaponFX = ObjectManager->createWeaponBolt(effectType);
 				if (!weaponFX) {
 					//-----------------------------------------
@@ -5168,7 +5168,7 @@ long GroundVehicle::handleWeaponFire (long weaponIndex,
 								 hitLocation,
 								 entryAngle);
 	
-				unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+				uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 				weaponFX = ObjectManager->createWeaponBolt(effectType);
 				if (!weaponFX) {
 					if (target) {
@@ -5205,7 +5205,7 @@ long GroundVehicle::handleWeaponFire (long weaponIndex,
 				hitLocation,
 				entryAngle);
 
-			unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			if (!weaponFX) {
 				if (target) {
@@ -5253,7 +5253,7 @@ long GroundVehicle::handleWeaponFire (long weaponIndex,
 				// a MissileGen Object is ALL of the clusters.
 				// Don't make a thousand of them or the game implodes!
 				//numClusters = 1;
-				unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+				uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 				weaponFX = ObjectManager->createWeaponBolt(effectType);
 				if (!weaponFX)
 					Fatal(-1," couldnt create weapon FX ");
@@ -5278,7 +5278,7 @@ long GroundVehicle::handleWeaponFire (long weaponIndex,
 				MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponDamage(),
 				-1,
 				entryAngle);
-			unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			if (!weaponFX)
 				Fatal(-1," couldnt create weapon FX ");

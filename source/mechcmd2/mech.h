@@ -215,10 +215,10 @@ class BattleMechType : public ObjectType {
 	public:
 
 		bool				isEndoSteel;								// has endosteel frame?
-		unsigned char		maxInternalStructure[NUM_BODY_LOCATIONS];
+		uint8_t		maxInternalStructure[NUM_BODY_LOCATIONS];
 
 		char*				anim;
-		unsigned char		moveAnimSpeed[3];
+		uint8_t		moveAnimSpeed[3];
 
 		//unsigned long		controlType;								// Who controls us, Player, AI or NET?
 		//unsigned long		controlDataType;							// which data set do we use.
@@ -284,12 +284,12 @@ typedef struct _MechData : public MoverData
 	char				legStatus;					   
 	char				torsoStatus;				   
 
-	unsigned char		actuator[NUM_ACTUATORS];	   
-	unsigned char		gyro;						   
+	uint8_t		actuator[NUM_ACTUATORS];	   
+	uint8_t		gyro;						   
 
 	bool				sensorOK;
 
-	unsigned char		numJumpJets;
+	uint8_t		numJumpJets;
 	float				lastJumpTime;
 	bool				inJump;
 	Stuff::Vector3D		jumpGoal;
@@ -358,12 +358,12 @@ class BattleMech : public Mover {
 
 		//--------------------------------------
 		// Additional Critical Component Indices
-		unsigned char		actuator[NUM_ACTUATORS];		// actuator inventory index
-		unsigned char		gyro;							// gyro inventory index
+		uint8_t		actuator[NUM_ACTUATORS];		// actuator inventory index
+		uint8_t		gyro;							// gyro inventory index
 
 		//------------------
 		// Additional Engine
-		unsigned char		numJumpJets;
+		uint8_t		numJumpJets;
 		float				lastJumpTime;
 		bool				inJump;
 		Stuff::Vector3D		jumpGoal;

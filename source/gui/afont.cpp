@@ -15,7 +15,7 @@ aFont::aFont()
 	size = 1;
 }
 
-long aFont::init( const char* newFontName )
+long aFont::init( PCSTR newFontName )
 {
 	destroy();
 	gosFont = 0;
@@ -71,7 +71,7 @@ unsigned long aFont::height( ) const
 	return height;
 }
 
-void	aFont::getSize( unsigned long& width, unsigned long& height, const char* pText )
+void	aFont::getSize( unsigned long& width, unsigned long& height, PCSTR pText )
 {
 	gos_TextSetAttributes (gosFont, 0, size, false, true, false, false);
 	gos_TextStringLength(&width,&height,pText);
@@ -79,7 +79,7 @@ void	aFont::getSize( unsigned long& width, unsigned long& height, const char* pT
 }
 
 
-unsigned long aFont::height( const char* st, int areaWidth ) const
+unsigned long aFont::height( PCSTR st, int areaWidth ) const
 {
 	unsigned long width, height;
 	gos_TextSetAttributes (gosFont, 0, size, false, true, false, false);
@@ -187,8 +187,8 @@ unsigned long aFont::height( const char* st, int areaWidth ) const
 				*(pTmpLine+1) = *(pTmp+1);
 			}
 
-			pTmpLine = (char*)_mbsinc( (unsigned char*)pTmpLine );
-			pTmp = (char*)_mbsinc( (unsigned char*)pTmp );
+			pTmpLine = (char*)_mbsinc( (PUCHAR)pTmpLine );
+			pTmp = (char*)_mbsinc( (PUCHAR)pTmp );
 		}
 
 		// one last check
@@ -208,7 +208,7 @@ unsigned long aFont::height( const char* st, int areaWidth ) const
 	return (height) * lineCount ;
 }
 
-unsigned long aFont::width( const char* st ) const
+unsigned long aFont::width( PCSTR st ) const
 {
 	unsigned long width, height;
 	gos_TextSetAttributes (gosFont, 0, size, false, true, false, false);
@@ -216,7 +216,7 @@ unsigned long aFont::width( const char* st ) const
 	return width;
 }
 
-long aFont::load( const char* fontName )
+long aFont::load( PCSTR fontName )
 {
 	destroy();
 
@@ -234,7 +234,7 @@ void aFont::destroy()
 
 }
 
-void aFont::render( const char* text, int xPos, int yPos, int areaWidth, int areaHeight, 
+void aFont::render( PCSTR text, int xPos, int yPos, int areaWidth, int areaHeight, 
 				   unsigned long color, bool bBold, int alignment )
 {
 	gos_TextSetAttributes( gosFont, color, size, true, true, bBold, false, alignment );

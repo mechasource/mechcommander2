@@ -27,7 +27,7 @@ BEGIN_MESSAGE_MAP(DlgFileOpen,CDialog )
 END_MESSAGE_MAP()
 
 //-------------------------------------------------------------------------------------------------
-DlgFileOpen::DlgFileOpen( const char* directory, const char* dlgExtension,  bool bsave ):CDialog(IDD_FILEOPEN)
+DlgFileOpen::DlgFileOpen( PCSTR directory, PCSTR dlgExtension,  bool bsave ):CDialog(IDD_FILEOPEN)
 {
 	strcpy(m_directory, directory);
 	strcpy(fileName, directory);

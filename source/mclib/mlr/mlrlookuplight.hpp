@@ -56,7 +56,7 @@ namespace MidLevelRenderer {
 			{ Check_Object(this); return mapOrigin; }
 
 	void
-		SetMapSizeAndName(int x, int z, const char *name);
+		SetMapSizeAndName(int x, int z, PCSTR name);
 
 	int
 		GetMapZoneCountX()
@@ -65,7 +65,7 @@ namespace MidLevelRenderer {
 		GetMapZoneCountZ()
 			{ Check_Object(this); return mapZoneCountZ; }
 
-	const char*
+	PCSTR
 		GetMapName()
 			{ Check_Object(this); return mapName; }
 
@@ -110,7 +110,7 @@ namespace MidLevelRenderer {
 		int mapZoneCountX, mapZoneCountZ;
 		MString mapName;
 
-		unsigned char **maps;
+		PUCHAR *maps;
 
 		Stuff::LinearMatrix4D
 			shapeToWorld;

@@ -95,8 +95,8 @@ class PacketFile : public File
 		}
 
 		long readPacketOffset (long packet, long *lastType = 0);
-		long readPacket (long packet, unsigned char *buffer);
-		long readPackedPacket (long packet, unsigned char *buffer);
+		long readPacket (long packet, PUCHAR buffer);
+		long readPackedPacket (long packet, PUCHAR buffer);
 
 		long seekPacket (long packet);
 
@@ -125,8 +125,8 @@ class PacketFile : public File
 		//-------------------------------------------
 		// Functions to Write Packet Files
 		void reserve (long count, bool withCheckSum = FALSE);
-		long writePacket (long packet, MemoryPtr buffer, long nbytes, unsigned char p_type = ANY_PACKET_TYPE);
-		long insertPacket (long packet, MemoryPtr buffer, long nbytes, unsigned char p_type = ANY_PACKET_TYPE);
+		long writePacket (long packet, MemoryPtr buffer, long nbytes, uint8_t p_type = ANY_PACKET_TYPE);
+		long insertPacket (long packet, MemoryPtr buffer, long nbytes, uint8_t p_type = ANY_PACKET_TYPE);
 		long writePacket (long packet, MemoryPtr buffer);
 };
 

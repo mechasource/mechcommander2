@@ -88,10 +88,10 @@ char* DecodeAddress( DWORD Address , bool brief);
 
 //---------------------------------------------------------------------------
 // Class HeapManager Member Functions
-HeapManager::~HeapManager (void)
-{
-	destroy();
-}
+//HeapManager::~HeapManager (void)
+//{
+//	destroy();
+//}
 		
 //---------------------------------------------------------------------------
 void HeapManager::destroy (void)
@@ -122,10 +122,10 @@ void HeapManager::destroy (void)
 }
 		
 //---------------------------------------------------------------------------
-HeapManager::HeapManager (void)
-{
-	init();
-}
+//HeapManager::HeapManager (void)
+//{
+//	init();
+//}
 		
 //---------------------------------------------------------------------------
 void HeapManager::init (void)
@@ -1896,7 +1896,7 @@ unsigned long textToLong (char *num)
 	
 	for (long count = numDigits;count >= 0;count--,power++)
 	{
-		unsigned char currentDigit = toupper(hexOffset[count]);
+		uint8_t currentDigit = toupper(hexOffset[count]);
 		
 		if (currentDigit >= 'A' && currentDigit <= 'F')
 		{

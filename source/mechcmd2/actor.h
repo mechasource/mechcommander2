@@ -51,8 +51,8 @@ enum ActorState
 struct ActorData
 {
 	ActorState			state;
-	unsigned char 		symmetrical;					// are second-half rotations flip versions of first half?
-	unsigned char		numRotations;					// number of rotations (including flips)
+	uint8_t 		symmetrical;					// are second-half rotations flip versions of first half?
+	uint8_t		numRotations;					// number of rotations (including flips)
 	unsigned long		numFrames;						// number of frames for this gesture (if -1, does not exist)
 	unsigned long		basePacketNumber;				// Where in packet file does this gesture start.
 	float				frameRate;						// intended frame rate of playback
@@ -75,7 +75,7 @@ class VFXAppearanceType : public AppearanceType
 		TGATexturePtr		*textureList;				//These go NULL when a texture is cached out.
 		long				numPackets;
 		DWORD				textureMemoryHandle;
-		unsigned char		numStates;
+		uint8_t		numStates;
 
 	public:
 	

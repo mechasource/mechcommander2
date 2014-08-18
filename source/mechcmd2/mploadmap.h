@@ -44,9 +44,9 @@ public:
 
 	void				beginSingleMission();
 
-	const char* getMapFileName(){ return selMapName; }
+	PCSTR getMapFileName(){ return selMapName; }
 
-	static void			getMapNameFromFile( const char* pFileName, char* pBuffer, long bufferLength );
+	static void			getMapNameFromFile( PCSTR pFileName, char* pBuffer, long bufferLength );
 
 
 
@@ -68,8 +68,8 @@ private:
 
 
 	void	updateMapInfo();
-	void	seedFromFile( const char* pFileName );
-	void	addFile( const char* pFileName, bool bSeedSingle );
+	void	seedFromFile( PCSTR pFileName );
+	void	addFile( PCSTR pFileName, bool bSeedSingle );
 
 
 

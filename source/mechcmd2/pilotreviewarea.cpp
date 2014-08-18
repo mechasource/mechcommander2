@@ -407,7 +407,7 @@ DeadPilotListItem::DeadPilotListItem( LogisticsPilot* pPilot )
 	sprintf( realText, tmpText, numberOfKills );	
 	killsText.setText( realText);
 
-	const char* name = pPilot->getName();
+	PCSTR name = pPilot->getName();
 	cLoadString( IDS_PILOT_NAME, tmpText, 255 );
 	sprintf( realText, tmpText, name );	
 	nameText.setText( realText);
@@ -1188,7 +1188,7 @@ ActivePilotListItem::ActivePilotListItem( LogisticsPilot* pPilot )
 	cLoadString( IDS_KILLS_NO_COUNT, tmpText, 255 );
 	killsText.setText( tmpText);
 
-	const char* name = pPilot->getName();
+	PCSTR name = pPilot->getName();
 	cLoadString( IDS_PILOT_NAME, tmpText, 255 );
 	sprintf( realText, tmpText, name );	
 	nameText.setText( realText);
@@ -1424,7 +1424,7 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 	areaLeft.textObjects[2].setText( realText );
 
 
-	const char* name = pPilot->getName();
+	PCSTR name = pPilot->getName();
 	cLoadString( IDS_PILOT_NAME, tmpText, 255 );
 	sprintf( realText, tmpText, name );	
 	areaLeft.textObjects[1].setText( realText );
@@ -1459,7 +1459,7 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 	int specSkills = pPilot->getSpecialtySkillCount();
 	if ( specSkills )
 	{
-		const char* tmp[NUM_SPECIALTY_SKILLS];
+		PCSTR tmp[NUM_SPECIALTY_SKILLS];
 		specSkills = 10;
 		pPilot->getSpecialtySkills( tmp, specSkills );
 		for ( int i = 0; i < specSkills; i++ )

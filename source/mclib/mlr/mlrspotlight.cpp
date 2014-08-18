@@ -87,7 +87,7 @@ MLRSpotLight::MLRSpotLight(Stuff::Page *page):
 	Check_Object(page);
 	Verify(gos_GetCurrentHeap() == Heap);
 	lightMap = NULL;
-	const char* lightmap;
+	PCSTR lightmap;
 	if (page->GetEntry("LightMap", &lightmap))
 	{
 		Check_Pointer(lightmap);

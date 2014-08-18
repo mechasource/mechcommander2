@@ -14,25 +14,25 @@ DWORD	gEnableAlphaSort=1;
 DWORD	gEnableMultiTexture=1;
 DWORD	gEnableLightMaps=1;
 
-static UCHAR __stdcall CheckDetailTexture(void)
+static uint8_t __stdcall CheckDetailTexture(void)
 {
-	return UCHAR((gEnableDetailTexture!=0) ? 1 : 0);
+	return uint8_t((gEnableDetailTexture!=0) ? 1 : 0);
 }
-static UCHAR __stdcall CheckTextureSort(void)
+static uint8_t __stdcall CheckTextureSort(void)
 {
-	return UCHAR((gEnableTextureSort!=0) ? 1 : 0);
+	return uint8_t((gEnableTextureSort!=0) ? 1 : 0);
 }
-static UCHAR __stdcall CheckAlphaSort(void)
+static uint8_t __stdcall CheckAlphaSort(void)
 {
-	return UCHAR((gEnableAlphaSort!=0) ? 1 : 0);
+	return uint8_t((gEnableAlphaSort!=0) ? 1 : 0);
 }
-static UCHAR __stdcall CheckMultiTexture(void)
+static uint8_t __stdcall CheckMultiTexture(void)
 {
-	return UCHAR((gEnableMultiTexture!=0) ? 1 : 0);
+	return uint8_t((gEnableMultiTexture!=0) ? 1 : 0);
 }
-static UCHAR __stdcall CheckLightMaps(void)
+static uint8_t __stdcall CheckLightMaps(void)
 {
-	return UCHAR((gEnableLightMaps!=0) ? 1 : 0);
+	return uint8_t((gEnableLightMaps!=0) ? 1 : 0);
 }
 
 static void __stdcall EnableDetailTexture(void)
@@ -57,11 +57,11 @@ static void __stdcall EnableLightMaps(void)
 }
 
 extern DWORD gShowClippedPolys;
-static UCHAR __stdcall Check_ShowClippedPolys(void) {return UCHAR((gShowClippedPolys!=0) ? 1 : 0);}
+static uint8_t __stdcall Check_ShowClippedPolys(void) {return uint8_t((gShowClippedPolys!=0) ? 1 : 0);}
 static void __stdcall Toggle_ShowClippedPolys(void) {gShowClippedPolys=!gShowClippedPolys;}
 
 extern DWORD gShowBirdView;
-static UCHAR __stdcall Check_ShowBirdView(void) {return UCHAR((gShowBirdView!=0) ? 1 : 0);}
+static uint8_t __stdcall Check_ShowBirdView(void) {return uint8_t((gShowBirdView!=0) ? 1 : 0);}
 static void __stdcall Toggle_ShowBirdView(void) {gShowBirdView=!gShowBirdView;}
 
 unsigned

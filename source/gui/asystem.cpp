@@ -81,7 +81,7 @@ long aObject::init(long xPos, long yPos,long w, long h)
 	return (NO_ERR);
 }
 
-void aObject::init(FitIniFile* file, const char* blockName, DWORD neverFlush)
+void aObject::init(FitIniFile* file, PCSTR blockName, DWORD neverFlush)
 {
 	memset( location, 0, sizeof( location ) );
 	char fileName[256];
@@ -442,7 +442,7 @@ void	aObject::render(long x, long y)
 	move( -x, -y );
 }
 	
-void	aObject::setTexture( const char* fileName )
+void	aObject::setTexture( PCSTR fileName )
 {
 	
 	if ( textureHandle )
@@ -596,7 +596,7 @@ void aRect::render( long x, long y )
 
 }
 
-void aRect::init( FitIniFile* file, const char* blockName )
+void aRect::init( FitIniFile* file, PCSTR blockName )
 {
 	if ( NO_ERR != file->seekBlock( blockName ) )
 	{
@@ -677,7 +677,7 @@ aText::~aText()
 {
 }
 
-void aText::init( FitIniFile* file, const char* header )
+void aText::init( FitIniFile* file, PCSTR header )
 {
 	int result = file->seekBlock( header );
 	

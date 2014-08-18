@@ -21,9 +21,9 @@ MPSetupArea.cpp			: Implementation of the MPSetupArea component.
 
 static int connectionType = 0;
 
-static const int FIRST_BUTTON_ID = 1000010;
-static const int OK_BUTTON_ID = 1000001;
-static const int CANCEL_BUTTON_ID = 1000002;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
+static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 MPSetupXScreen::MPSetupXScreen()
 {
@@ -458,7 +458,7 @@ long aColorPicker::init(long xPos, long yPos,long w, long h )
 	return (NO_ERR);
 }
 
-void aColorPicker::init( FitIniFile* file, const char* blockName )
+void aColorPicker::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock(blockName);
 
@@ -724,7 +724,7 @@ void aColorPicker::setColor1(int color)
 }
 
 
-long aStyle1TextListItem::init( FitIniFile* file, const char* blockName )
+long aStyle1TextListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
@@ -776,7 +776,7 @@ void aStyle1TextListItem::render()
 }
 
 
-long aInsigniaListItem::init( FitIniFile* file, const char* blockName )
+long aInsigniaListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 

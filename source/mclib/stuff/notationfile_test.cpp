@@ -23,33 +23,32 @@ bool
 
 	Check_Object(FileStreamManager::Instance);
 
-	const char
-		*notation_snapshot = "notation.snapshot",
-		*page_1_name = "Page 1",
-		*page_2_name = "Page 2",
-		*page_3_name = "Page 3",
-		*page_5_name = "Page 5",
-		*page_8_name = "Page 8",
-		*page_9_name = "Page9",
-		*sub_page_name = "SubPage1",
+	PCSTR notation_snapshot = "notation.snapshot";
+	PCSTR page_1_name = "Page 1";
+	PCSTR page_2_name = "Page 2";
+	PCSTR page_3_name = "Page 3";
+	PCSTR page_5_name = "Page 5";
+	PCSTR page_8_name = "Page 8";
+	PCSTR page_9_name = "Page9";
+	PCSTR sub_page_name = "SubPage1";
 
-		*note_1_name = "Entry 1",
-		*note_2_name = "Entry 2",
-		*note_3_name = "Entry 3",
-		*note_4_name = "Entry 4",
-		*note_5_name = "Entry 5",
-		*note_6_name = "Entry 6",
-		*note_9_name = "Entry 9",
+	PCSTR note_1_name = "Entry 1";
+	PCSTR note_2_name = "Entry 2";
+	PCSTR note_3_name = "Entry 3";
+	PCSTR note_4_name = "Entry 4";
+	PCSTR note_5_name = "Entry 5";
+	PCSTR note_6_name = "Entry 6";
+	PCSTR note_9_name = "Entry 9";
 
-		*text_a = "Text Line A",
-		*text_b = "Text Line B",
-		*text_c = "Text Line C",
-		*text_i = "-35",
-		*text_s = "3.1415",
-		*text_d = "1.99d+199",
-		*text_t = "yes",
-		*text_f = "no",
-		*string_value;
+	PCSTR text_a = "Text Line A";
+	PCSTR text_b = "Text Line B";
+	PCSTR text_c = "Text Line C";
+	PCSTR text_i = "-35";
+	PCSTR text_s = "3.1415";
+	PCSTR text_d = "1.99d+199";
+	PCSTR text_t = "yes";
+	PCSTR text_f = "no";
+	PCSTR string_value;
 
 	Page
 		*page,
@@ -260,9 +259,9 @@ bool
 	//
 	// TESTING PRE-PROCESSOR STYLE COMMANDS
 	//
-	const char* include_temp;
-	const char* base_name = "base.ini";
-	const char* inc_name = "inc.ini";
+	PCSTR include_temp;
+	PCSTR base_name = "base.ini";
+	PCSTR inc_name = "inc.ini";
 	{
 		NotationFile basefile;
 		page = basefile.AddPage("Page 1");

@@ -364,7 +364,7 @@ void CraterManager::render (void)
 				DWORD lightRGB = 0xffffffff;
 				DWORD specR = 0, specB = 0, specG = 0;
 				
-				unsigned char lightr = 0xff,lightg = 0xff,lightb = 0xff;
+				uint8_t lightr = 0xff,lightg = 0xff,lightb = 0xff;
 				lightr = eye->ambientRed;
 				lightg = eye->ambientGreen;
 				lightb = eye->ambientBlue;
@@ -415,7 +415,7 @@ void CraterManager::render (void)
 								fogFactor = 256.0;
 							}
 
-							unsigned char fogResult = fogFactor;
+							uint8_t fogResult = fogFactor;
 							fogValue = fogFactor;
 							fogRGB = (fogResult << 24) + (specR<<16) + (specG<<8) + specB;
 						}

@@ -42,7 +42,7 @@ void GOSImagePool::UnLoadImages (void)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 GOSImage*
-	GOSImagePool::GetImage(const char* image_name)
+	GOSImagePool::GetImage(PCSTR image_name)
 {
 	Check_Object(this);
 
@@ -72,7 +72,7 @@ GOSImage*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 GOSImage*
-	GOSImagePool::GetImage(const char *image_name, gos_TextureFormat format, int size, gos_TextureHints hints)
+	GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format, int size, gos_TextureHints hints)
 {
 	Check_Object(this);
 
@@ -117,7 +117,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-TGAFilePool::TGAFilePool(const char* path)
+TGAFilePool::TGAFilePool(PCSTR path)
 {
 	texturePath = path;
 }

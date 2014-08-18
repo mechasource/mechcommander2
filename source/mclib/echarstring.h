@@ -47,7 +47,7 @@ class ECharString
 public:
 
 	// ENUMERATIONS & CONSTANTS
-	static const int INVALID_INDEX;
+	static cint32_t INVALID_INDEX;
 
 	// CONSTRUCTORS/DESTRUCTORS
 	/*explicit*/ ECharString( const ECSChar* newString );
@@ -163,7 +163,7 @@ public:
 
 	// we'll convert string literals for you 
 	
-	ECharString( const char* );
+	ECharString( PCSTR );
 			
 	friend ECharString operator+( const ECharString&, char* );
 	friend ECharString operator+( char*, const ECharString& );
@@ -171,30 +171,30 @@ public:
 	friend ECharString operator+( char, const ECharString& );
 	friend ECharString operator+( const ECharString&, char );
 	
-	const ECharString& operator+=( const char* );
+	const ECharString& operator+=( PCSTR );
 	const ECharString& operator+=( char );
 
 	const ECharString& operator=( char );
 
-	bool operator==( const char* );
-	friend bool operator==( const char*, const ECharString& );
+	bool operator==( PCSTR );
+	friend bool operator==( PCSTR, const ECharString& );
 
-	bool operator!=( const char*) const;
-	friend bool operator!=( const char*, const ECharString& );
+	bool operator!=( PCSTR) const;
+	friend bool operator!=( PCSTR, const ECharString& );
 
-	bool operator<( const char* ) const;
-	friend bool operator<( const char*, const ECharString& );
+	bool operator<( PCSTR ) const;
+	friend bool operator<( PCSTR, const ECharString& );
 	
-	bool operator>( const char* ) const;
-	friend bool operator>( const char*, const ECharString& );
+	bool operator>( PCSTR ) const;
+	friend bool operator>( PCSTR, const ECharString& );
 
-	bool operator<=( const char*) const;
-	friend bool operator<=( const char*, const ECharString&);
+	bool operator<=( PCSTR) const;
+	friend bool operator<=( PCSTR, const ECharString&);
 
-	bool operator>=( const char*) const;
-	friend bool operator>=( const char*, const ECharString&);
+	bool operator>=( PCSTR) const;
+	friend bool operator>=( PCSTR, const ECharString&);
 
-	void	Format( const char*, ... );
+	void	Format( PCSTR, ... );
 
 	int Find( char, int Start_Index = ECharString::INVALID_INDEX) const;
 
@@ -217,7 +217,7 @@ private:
 	void	Assign( const ECSChar* p_Str );
 
 
-	static  inline  unsigned short*	ToUnicode( unsigned short* Buffer, const unsigned char* p_Str, int Num_Chars  );
+	static  inline  unsigned short*	ToUnicode( unsigned short* Buffer, pcuint8_t p_Str, int Num_Chars  );
 	static	inline	int	StrSize( const ECSChar* p_Str );
 	
 	struct EBuffer
@@ -234,9 +234,9 @@ private:
 	};
 
 	EBuffer*		m_pBuffer;
-	static const int s_Alloc_Allign;
-	static const int s_Force_Ansi;
-	static const int s_Force_Unicode;
+	static cint32_t s_Alloc_Allign;
+	static cint32_t s_Force_Ansi;
+	static cint32_t s_Force_Unicode;
 
 };
 

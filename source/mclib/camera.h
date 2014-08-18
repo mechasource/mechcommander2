@@ -166,41 +166,41 @@ class Camera
 		float					viewMulX, viewMulY,		//GOS Viewport data variables
 			 					viewAddX, viewAddY;
 
-		unsigned char			lightRed;				//Red component of World Light
-		unsigned char			lightGreen;				//Green component of World Light
-		unsigned char			lightBlue;				//Blue component of World Light
+		uint8_t			lightRed;				//Red component of World Light
+		uint8_t			lightGreen;				//Green component of World Light
+		uint8_t			lightBlue;				//Blue component of World Light
 
-		unsigned char			ambientRed;				//Red component of World Light
-		unsigned char			ambientGreen;			//Green component of World Light
-		unsigned char			ambientBlue; 			//Blue component of World Light
+		uint8_t			ambientRed;				//Red component of World Light
+		uint8_t			ambientGreen;			//Green component of World Light
+		uint8_t			ambientBlue; 			//Blue component of World Light
 
 		bool			terrainShadowColorEnabled;
-		unsigned char			terrainShadowRed;			//Red component of World Light
-		unsigned char			terrainShadowGreen;		//Green component of World Light
-		unsigned char			terrainShadowBlue; 		//Blue component of World Light
+		uint8_t			terrainShadowRed;			//Red component of World Light
+		uint8_t			terrainShadowGreen;		//Green component of World Light
+		uint8_t			terrainShadowBlue; 		//Blue component of World Light
 		
 		//Day/Night transition data.
 		float					dayLightPitch;
 		
-		unsigned char			dayLightRed;			//Red component of World Light
-		unsigned char			dayLightGreen;			//Green component of World Light
-		unsigned char			dayLightBlue;			//Blue component of World Light
+		uint8_t			dayLightRed;			//Red component of World Light
+		uint8_t			dayLightGreen;			//Green component of World Light
+		uint8_t			dayLightBlue;			//Blue component of World Light
 
-		unsigned char			dayAmbientRed;			//Red component of World Light
-		unsigned char			dayAmbientGreen;		//Green component of World Light
-		unsigned char			dayAmbientBlue; 		//Blue component of World Light
+		uint8_t			dayAmbientRed;			//Red component of World Light
+		uint8_t			dayAmbientGreen;		//Green component of World Light
+		uint8_t			dayAmbientBlue; 		//Blue component of World Light
 		
-		unsigned char			sunsetLightRed;			//Red component of World Light
-		unsigned char			sunsetLightGreen;			//Green component of World Light
-		unsigned char			sunsetLightBlue;			//Blue component of World Light
+		uint8_t			sunsetLightRed;			//Red component of World Light
+		uint8_t			sunsetLightGreen;			//Green component of World Light
+		uint8_t			sunsetLightBlue;			//Blue component of World Light
  		
-		unsigned char			nightLightRed;			//Red component of World Light
-		unsigned char			nightLightGreen;		//Green component of World Light
-		unsigned char			nightLightBlue;			//Blue component of World Light
+		uint8_t			nightLightRed;			//Red component of World Light
+		uint8_t			nightLightGreen;		//Green component of World Light
+		uint8_t			nightLightBlue;			//Blue component of World Light
 
-		unsigned char			nightAmbientRed;		//Red component of World Light
-		unsigned char			nightAmbientGreen;		//Green component of World Light
-		unsigned char			nightAmbientBlue; 		//Blue component of World Light
+		uint8_t			nightAmbientRed;		//Red component of World Light
+		uint8_t			nightAmbientGreen;		//Green component of World Light
+		uint8_t			nightAmbientBlue; 		//Blue component of World Light
 		
 		bool					terrainLightNight;		//What state are the terrain lights in?
 		bool					terrainLightCalc;		//Should we activate all terrain lights this frame and burn their lights in?
@@ -215,13 +215,13 @@ class Camera
 		float					dayLightTime;			//Current dayToNight Transition time.
 		bool					forceShadowRecalc;		//Has the sun/moon moved enough for shadows to have changed?
 		
- 		unsigned char			seenRed;				//Red component of World Light
-		unsigned char			seenGreen;				//Green component of World Light
-		unsigned char			seenBlue;	 			//Blue component of World Light
+ 		uint8_t			seenRed;				//Red component of World Light
+		uint8_t			seenGreen;				//Green component of World Light
+		uint8_t			seenBlue;	 			//Blue component of World Light
 
-		unsigned char			baseRed;				//Red component of World Light
-		unsigned char			baseGreen;				//Green component of World Light
-		unsigned char			baseBlue; 				//Blue component of World Light
+		uint8_t			baseRed;				//Red component of World Light
+		uint8_t			baseGreen;				//Green component of World Light
+		uint8_t			baseBlue; 				//Blue component of World Light
 
 		float 					cameraShiftZ;
 		float 					goalPositionZ;
@@ -691,9 +691,9 @@ class Camera
 		void rotateLightUp(float amount);
 		void rotateLightDown(float amount);
 
-		unsigned char getLightRed (float intensity);
-		unsigned char getLightGreen (float intensity);
-		unsigned char getLightBlue (float intensity);
+		uint8_t getLightRed (float intensity);
+		uint8_t getLightGreen (float intensity);
+		uint8_t getLightBlue (float intensity);
 
 		void setPosition(Stuff::Vector3D newPosition, bool swoopy = true);
 

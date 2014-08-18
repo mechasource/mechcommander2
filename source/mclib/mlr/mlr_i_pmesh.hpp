@@ -58,10 +58,10 @@ namespace MidLevelRenderer {
 	public:
 //		void Copy(MLRIndexedPolyMesh*);
 
-		virtual	void	InitializeDrawPrimitive(unsigned char, int=0);
+		virtual	void	InitializeDrawPrimitive(uint8_t, int=0);
 
-		virtual void	SetSubprimitiveLengths(unsigned char *, int);
-		virtual void	GetSubprimitiveLengths(unsigned char **, int*);
+		virtual void	SetSubprimitiveLengths(PUCHAR , int);
+		virtual void	GetSubprimitiveLengths(PUCHAR *, int*);
 
 		void	FindFacePlanes();
 
@@ -135,7 +135,7 @@ namespace MidLevelRenderer {
 		void
 			Transform(Stuff::Matrix4D*);
 
-		Stuff::DynamicArrayOf<unsigned char>	testList;
+		Stuff::DynamicArrayOf<uint8_t>	testList;
 		
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
 		

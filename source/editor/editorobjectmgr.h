@@ -99,7 +99,7 @@ public:
 
 	void		renderShadows();
 
-	void		init( const char* bldgListFileName, const char* objectFileName );
+	void		init( PCSTR bldgListFileName, PCSTR objectFileName );
 
 	EditorObject*	addBuilding( const Stuff::Vector3D& position, 
 								unsigned long group, 
@@ -142,16 +142,16 @@ public:
 
 	int			getBuildingGroupCount() const;		// mechs count too!
 	int			getNumberBuildingsInGroup( int Group ) const;
-	void		getBuildingGroupNames( const char** names, int& numberOfNames ) const;
-	void		getNamesOfObjectsInGroup( const char* groupName, const char** names, int& numberOfNames ) const;
-	void		getBuildingNamesInGroup( int Group, const char** names, int& numberOfNames ) const;
+	void		getBuildingGroupNames( PCSTR* names, int& numberOfNames ) const;
+	void		getNamesOfObjectsInGroup( PCSTR groupName, PCSTR* names, int& numberOfNames ) const;
+	void		getBuildingNamesInGroup( int Group, PCSTR* names, int& numberOfNames ) const;
 	int			getNumberOfVariants( int group, int indexInGroup ) const;
-	void		getVariantNames( int group, int indexInGroup, const char** names, int& numberOfNames ) const;
-	const char*	getGroupName( int group ) const;
-	const char*	getObjectName( int ID ) const;
+	void		getVariantNames( int group, int indexInGroup, PCSTR* names, int& numberOfNames ) const;
+	PCSTR	getGroupName( int group ) const;
+	PCSTR	getObjectName( int ID ) const;
 
 	int			getUnitGroupCount() const;
-	void		getUnitGroupNames( const char** names, int* IDs, int& numberOfNames ) const;
+	void		getUnitGroupNames( PCSTR* names, int* IDs, int& numberOfNames ) const;
 
 
 	bool		save( PacketFile&  file, int whichPacket );
@@ -213,8 +213,8 @@ public:
 	inline float getScale( int ID );
 	inline bool isAlignable( int ID );
 	inline int getObjectTypeNum( int ID );
-	inline const char* getFileName( int ID ) const;
-	inline const char* getTGAFileName( int ID ) const;
+	inline PCSTR getFileName( int ID ) const;
+	inline PCSTR getTGAFileName( int ID ) const;
 	inline DWORD getTacMapColor( int ID ) const;
 
 	typedef EList< EditorObject*, EditorObject*>  BUILDING_LIST;	// buildings on the map
@@ -288,9 +288,9 @@ public:
 		void syncSelectedObjectPointerList();	// makes sure that the "selectedObjects" list corresponds to the objects marked as selected
 
 		// HELPERS
-		int ExtractNextString( unsigned char*& pFileLine, char* pBuffer, int bufferLength );
-		int ExtractNextInt( unsigned char*& pFileLine );
-		float ExtractNextFloat( unsigned char*& pFileLine );
+		int ExtractNextString( PUCHAR& pFileLine, char* pBuffer, int bufferLength );
+		int ExtractNextInt( PUCHAR& pFileLine );
+		float ExtractNextFloat( PUCHAR& pFileLine );
 
 		int  getType( unsigned long group, unsigned long indexWithinGroup );
 		void getRandomTreeFromGroup( int treeGroup, int& group, int& index );
@@ -332,12 +332,12 @@ inline int EditorObjectMgr::getObjectTypeNum( int ID )
 	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].objectTypeNum;
 }
 
-inline const char* EditorObjectMgr::getFileName( int ID ) const
+inline PCSTR EditorObjectMgr::getFileName( int ID ) const
 {
 	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].fileName;
 }
 
-inline const char* EditorObjectMgr::getTGAFileName( int ID ) const
+inline PCSTR EditorObjectMgr::getTGAFileName( int ID ) const
 {
 	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].tgaName;
 }

@@ -63,18 +63,18 @@ namespace MidLevelRenderer {
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
 		void
-			SetCurrentDepth(unsigned char d);
+			SetCurrentDepth(uint8_t d);
 
-		unsigned char
+		uint8_t
 			GetCurrentDepth()
 				{ Check_Object(this); return currentDepth; }
 
 		void
-			SetDepthData(unsigned char md, unsigned char mad)
+			SetDepthData(uint8_t md, uint8_t mad)
 				{ Check_Object(this); maxDepth = md; maxAllDepth = mad; }
 
 		void
-			SetTileData(unsigned char tx, unsigned char tz)
+			SetTileData(uint8_t tx, uint8_t tz)
 				{ Check_Object(this); tileX = tx; tileZ = tz; }
 
 		void
@@ -129,8 +129,8 @@ namespace MidLevelRenderer {
 		int textures[8];
 		Scalar frame[8][4];
 
-		unsigned char tileX, tileZ;
-		unsigned char currentDepth, maxDepth, maxAllDepth;
+		uint8_t tileX, tileZ;
+		uint8_t currentDepth, maxDepth, maxAllDepth;
 
 		Stuff::Scalar borderPixelFun;
 

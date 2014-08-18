@@ -267,7 +267,7 @@ void MissionBriefingScreen::update()
 	
 }
 
-long	MissionBriefingScreen::getMissionTGA( const char* missionName )
+long	MissionBriefingScreen::getMissionTGA( PCSTR missionName )
 {
 	if ( !missionName )
 		return 0;
@@ -591,14 +591,14 @@ void MissionBriefingScreen::addObjectiveButton( float fX, float fY, int count, i
 	}
 }
 
-/*int MissionBriefingScreen::addLBItem( FitIniFile& file, const char* itemName, unsigned long color, int ID)
+/*int MissionBriefingScreen::addLBItem( FitIniFile& file, PCSTR itemName, unsigned long color, int ID)
 {
 	char buffer[1024];
 	file.readIdString( itemName, buffer, 1023 );
 	return addLBItem( buffer, color, ID);
 }*/
 
-int MissionBriefingScreen::addLBItem( const char* text, unsigned long color, int ID)
+int MissionBriefingScreen::addLBItem( PCSTR text, unsigned long color, int ID)
 {
 	aTextListItem* pEntry = new aTextListItem( IDS_MN_LB_FONT );
 	pEntry->setID( ID );

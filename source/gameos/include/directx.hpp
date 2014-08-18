@@ -7,7 +7,7 @@
 
 #pragma once
 
-extern UCHAR	AllowFail;
+extern uint8_t	AllowFail;
 extern volatile USHORT FPUControl;	// Current FPU control word
 extern USHORT FPUDefault;				// Default FPU control word
 extern PSTR __stdcall ErrorNumberToMessage(HRESULT hResult);
@@ -68,7 +68,7 @@ HRESULT __stdcall wDrawPrimitiveVB(LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYP
 HRESULT __stdcall wDrawIndexedPrimitiveVB(LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE d3dptPrimitiveType, LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer, ULONG dwStartVertex, ULONG dwNumVertices, PUSHORT lpwIndices, ULONG dwIndexCount, ULONG dwFlags );
 HRESULT __stdcall wSetMaterial(LPDIRECT3DDEVICE7 d3dDevice7, LPD3DMATERIAL7 lpMaterial );
 HRESULT __stdcall wSetLight(LPDIRECT3DDEVICE7 d3dDevice7, ULONG dwLightIndex, LPD3DLIGHT7 lpLight );
-HRESULT __stdcall wLightEnable(LPDIRECT3DDEVICE7 d3dDevice7, ULONG dwLightIndex, UCHAR Enable );
+HRESULT __stdcall wLightEnable(LPDIRECT3DDEVICE7 d3dDevice7, ULONG dwLightIndex, uint8_t Enable );
 HRESULT __stdcall wMultiplyTransform(LPDIRECT3DDEVICE7 d3dDevice7, D3DTRANSFORMSTATETYPE dtstTransformStateType, LPD3DMATRIX lpD3DMatrix );
 HRESULT __stdcall wSetTransform(LPDIRECT3DDEVICE7 d3dDevice7, D3DTRANSFORMSTATETYPE dtstTransformStateType, LPD3DMATRIX lpD3DMatrix );
 HRESULT __stdcall wBeginScene(LPDIRECT3DDEVICE7 d3dDevice7 );

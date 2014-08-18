@@ -272,7 +272,7 @@ void TacticalOrder::addWayPoint (Stuff::Vector3D wayPoint, long travelMode) {
 	moveParams.wayPath.points[moveParams.wayPath.numPoints * 3] = wayPoint.x;
 	moveParams.wayPath.points[moveParams.wayPath.numPoints * 3 + 1] = wayPoint.y;
 	moveParams.wayPath.points[moveParams.wayPath.numPoints * 3 + 2] = wayPoint.z;
-	moveParams.wayPath.mode[moveParams.wayPath.numPoints] = (unsigned char)travelMode;
+	moveParams.wayPath.mode[moveParams.wayPath.numPoints] = (uint8_t)travelMode;
 	moveParams.wayPath.numPoints++;
 }
 

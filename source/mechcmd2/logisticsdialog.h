@@ -68,7 +68,7 @@ class LogisticsOKDialog : public LogisticsDialog
 		static int init( FitIniFile& file );
 
 		void				setText( int textID, int CancelButton, int OKButton );
-		void				setText( const char* mainText );
+		void				setText( PCSTR mainText );
 
 
 
@@ -99,7 +99,7 @@ class LogisticsOneButtonDialog : public LogisticsDialog
 		static int init( FitIniFile& file );
 
 		void				setText( int textID, int CancelButton, int OKButton );
-		void				setText( const char* mainText );
+		void				setText( PCSTR mainText );
 
 
 
@@ -174,9 +174,9 @@ class LogisticsSaveDialog : public LogisticsDialog
 
 		EString		selectedName;
 
-		void	initDialog(const char* path, bool bCampaign);
+		void	initDialog(PCSTR path, bool bCampaign);
 		void	updateCampaignMissionInfo();
-		void	setMission( const char* path );
+		void	setMission( PCSTR path );
 		void	readCampaignNameFromFile( char* fileName, char* resultName, long len );
 		bool	isCorrectVersionSaveGame( char *fileName );
 
@@ -263,7 +263,7 @@ public:
 		~LogisticsMapInfoDialog();
 		virtual void end();
 
-		void setMap( const char* pFileName );
+		void setMap( PCSTR pFileName );
 		
 		int init( );
 		virtual int			handleMessage( unsigned long, unsigned long );

@@ -20,12 +20,14 @@
 
 //***************************************************************************
 
-#define	TAB_SIZE				4
-
 //#define	MIN_INTEGER				-2147483648
-#define	MAX_INTEGER				2147483647
-#define	MAX_DIGIT_COUNT			20
-#define	MAX_EXPONENT			20
+//#define	MAX_INTEGER				2147483647
+
+typedef enum __ablscan_const {
+	TAB_SIZE					= 4,
+	MAX_DIGIT_COUNT				= 20,
+	MAX_EXPONENT				= 20,
+};
 
 //***************************************************************************
 
@@ -163,67 +165,59 @@ class ABLFile {
 		char*		fileName;
 		void*		file;
 
-		static long (*createCB) (void** file, char* fName);
-		static long (*openCB) (void** file, char* fName);
-		static long (*closeCB) (void** file);
-		static bool (*eofCB) (void* file);
-		static long (*readCB) (void* file, unsigned char* buffer, long length);
-		static long (*readLongCB) (void* file);
-		static long (*readStringCB) (void* file, unsigned char* buffer);
-		static long (*readLineExCB) (void* file, unsigned char* buffer, long maxLength);
-		static long (*writeCB) (void* file, unsigned char* buffer, long length);
-		static long (*writeByteCB) (void* file, unsigned char byte);
-		static long (*writeLongCB) (void* file, long value);
-		static long (*writeStringCB) (void* file, char* buffer);
+		static long (__stdcall *createCB)(void** file, char* fName);
+		static long (__stdcall *openCB)(void** file, char* fName);
+		static long (__stdcall *closeCB)(void** file);
+		static bool (__stdcall *eofCB)(void* file);
+		static long (__stdcall *readCB)(void* file, PUCHAR buffer, long length);
+		static long (__stdcall *readLongCB)(void* file);
+		static long (__stdcall *readStringCB)(void* file, PUCHAR buffer);
+		static long (__stdcall *readLineExCB)(void* file, PUCHAR buffer, long maxLength);
+		static long (__stdcall *writeCB)(void* file, PUCHAR buffer, long length);
+		static long (__stdcall *writeByteCB)(void* file, uint8_t byte);
+		static long (__stdcall *writeLongCB)(void* file, long value);
+		static long (__stdcall *writeStringCB)(void* file, char* buffer);
 
 	public:
 
 		void* operator new (size_t ourSize);
-
 		void operator delete (void *us);
 
-		void init (void);
+		void init(void);
 	
-		ABLFile (void) {
+		ABLFile(void)
+		{
 			init();
 		}
 
 		void destroy (void);
 
-		~ABLFile (void) {
+		~ABLFile (void)
+		{
 			destroy();
 		}
 		
-		long set (void* fPtr) {
+		long set (void* fPtr)
+		{
 			file = fPtr;
 		}
 
-		void* get (void) {
+		void* get (void)
+		{
 			return(file);
 		}
 
 		long create (char* fileName);
-
 		long open (char* fileName);
-
 		long close (void);
-
 		bool eof (void);
-
-		long read (unsigned char* buffer, long length);
-
+		long read (PUCHAR buffer, long length);
 		long readLong (void);
-
-		long readString (unsigned char* buffer);
-
-		long readLineEx (unsigned char* buffer, long maxLength);
-
-		long write (unsigned char* buffer, long length);
-
-		long writeByte (unsigned char val);
-
+		long readString (PUCHAR buffer);
+		long readLineEx (PUCHAR buffer, long maxLength);
+		long write (PUCHAR buffer, long length);
+		long writeByte (uint8_t val);
 		long writeLong (long val);
-
 		long writeString (char* buffer);
 };
 

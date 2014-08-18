@@ -241,7 +241,7 @@ void
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const ExtentBox &box
 		)
 	{
@@ -265,7 +265,7 @@ void
 //
 void
 	Stuff::Convert_From_Ascii(
-      const char *str,
+      PCSTR str,
       ExtentBox *extent_box
    )
 {

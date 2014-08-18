@@ -70,7 +70,7 @@
 //#pragma warning( disable: 4102 )	// unreferenced labels
 //#pragma warning( disable: 4127 )	// conditional expression is constant eg: While(1)
 //#pragma warning( disable: 4201 )	// nameless struct/union
-//#pragma warning( disable: 4245 )	// conversion from 'const int' to 'unsigned long', signed/unsigned mismatch
+//#pragma warning( disable: 4245 )	// conversion from 'cint32_t' to 'unsigned long', signed/unsigned mismatch
 //#pragma warning( disable: 4355 )	// this used in base initializers
 //#pragma warning( disable: 4511 )	// no copy constructor
 //#pragma warning( disable: 4512 )	// no assignment operator
@@ -81,7 +81,7 @@
 //
 // Common synonyms
 //
-typedef	unsigned char	U8;
+typedef	uint8_t	U8;
 typedef signed char		S8;
 typedef unsigned short	U16;
 typedef signed short	S16;

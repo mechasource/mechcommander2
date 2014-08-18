@@ -34,15 +34,15 @@ class LogisticsMissionInfo
 		long load( FitIniFile& file );// init previously saved stuff
 
 
-		long getAvailableMissions( const char** missions, int& numberOfEm );
-		long getCurrentMissions( const char** missions, int& numberOfEm );
+		long getAvailableMissions( PCSTR* missions, int& numberOfEm );
+		long getCurrentMissions( PCSTR* missions, int& numberOfEm );
 
-		bool getMissionAvailable( const char* missionName );
+		bool getMissionAvailable( PCSTR missionName );
 
-		bool isMissionComplete( const char* missionName );
+		bool isMissionComplete( PCSTR missionName );
 		bool isSingleMission() const;
 
-		long setNextMission( const char* missionName );
+		long setNextMission( PCSTR missionName );
 		void setMissionComplete( );
 
 		long getCurrentLogisticsTuneId();
@@ -54,12 +54,12 @@ class LogisticsMissionInfo
 		const EString& getLastMission() const { return lastMissionName; }
 
 		long				getCurrentDropWeight() const;
-		const char*			getCurrentVideo() const;
-		const char*			getCurrentOperationFile() const;
-		const char*			getCurrentMissionDescription() const;
-		const char*			getCurrentMissionFriendlyName() const;
-		const char*			getMissionFriendlyName( const char* missionName ) const;
-		const char*			getCurrentABLScriptName() const;
+		PCSTR			getCurrentVideo() const;
+		PCSTR			getCurrentOperationFile() const;
+		PCSTR			getCurrentMissionDescription() const;
+		PCSTR			getCurrentMissionFriendlyName() const;
+		PCSTR			getMissionFriendlyName( PCSTR missionName ) const;
+		PCSTR			getCurrentABLScriptName() const;
 
 		int					getCurrentRP() const;
 		int					getCBills() const { return CBills; }
@@ -71,17 +71,17 @@ class LogisticsMissionInfo
 
 		bool				campaignOver() const;
 
-		const char*			getCurrentBigVideo() const;
-		const char*			getFinalVideo() const;
+		PCSTR			getCurrentBigVideo() const;
+		PCSTR			getFinalVideo() const;
 
 		void				setMultiplayer();
-		void				setPurchaseFile( const char* fileName );
+		void				setPurchaseFile( PCSTR fileName );
 
 //		long				getMaxTeams() const { return maxTeams; }
 //		long				getMaxPlayers() const { return maxPlayers; }
 
-		int					getAdditionalPurachaseFiles( const char** list, long& maxCount );
-		void				addBonusPurchaseFile( const char* fileName ); // extra bonus
+		int					getAdditionalPurachaseFiles( PCSTR* list, long& maxCount );
+		void				addBonusPurchaseFile( PCSTR fileName ); // extra bonus
 
 		bool				skipLogistics();
 		bool				showChooseMission();
@@ -90,7 +90,7 @@ class LogisticsMissionInfo
 		bool				skipSalvageScreen();
 		bool				skipPurchasing();
 
-		void				setSingleMission( const char* pName );
+		void				setSingleMission( PCSTR pName );
 
 		bool				canHaveSalavageCraft();
 		bool				canHaveRepairTruck();

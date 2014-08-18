@@ -117,8 +117,8 @@ float						Terrain::waterAmplitude = 10.0f;
 long						Terrain::userMin = 0;
 long						Terrain::userMax = 0;
 unsigned long				Terrain::baseTerrain = 0;
-unsigned char				Terrain::fractalThreshold = 1;
-unsigned char				Terrain::fractalNoise = 0;
+uint8_t				Terrain::fractalThreshold = 1;
+uint8_t				Terrain::fractalNoise = 0;
 bool						Terrain::recalcShadows = false;
 bool						Terrain::recalcLight = false;
 
@@ -146,7 +146,7 @@ bool 						useVertexLighting = true;
 bool 						useFaceLighting = false;
 extern bool					useRealLOS;
 
-unsigned char 				godMode = 0;			//Can I simply see everything, enemy and friendly?
+uint8_t 				godMode = 0;			//Can I simply see everything, enemy and friendly?
 
 extern long 				DrawDebugCells;
 
@@ -1330,8 +1330,8 @@ bool Terrain::save( FitIniFile* fitFile )
 	fitFile->writeIdLong( "UserMax", userMax );
 	fitFile->writeIdFloat( "TerrainMinX", tileColToWorldCoord[0] );
 	fitFile->writeIdFloat( "TerrainMinY", tileRowToWorldCoord[0] );
-	fitFile->writeIdUChar( "Noise", fractalNoise);
-	fitFile->writeIdUChar( "Threshold", fractalThreshold);
+	fitFile->writeIdUCHAR( "Noise", fractalNoise);
+	fitFile->writeIdUCHAR( "Threshold", fractalThreshold);
 
 	if (terrainTextures2)
 	{

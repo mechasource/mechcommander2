@@ -1159,7 +1159,7 @@ DWORD MC_TextureManager::textureFromMemory (DWORD *data, gos_TextureFormat key, 
 }
 
 //----------------------------------------------------------------------
-DWORD MC_TextureManager::textureInstanceExists (const char *textureFullPathName, gos_TextureFormat key, DWORD hints, DWORD uniqueInstance, DWORD nFlush)
+DWORD MC_TextureManager::textureInstanceExists (PCSTR textureFullPathName, gos_TextureFormat key, DWORD hints, DWORD uniqueInstance, DWORD nFlush)
 {
 	long i=0;
 
@@ -1191,7 +1191,7 @@ DWORD MC_TextureManager::textureInstanceExists (const char *textureFullPathName,
 }
 
 //----------------------------------------------------------------------
-DWORD MC_TextureManager::loadTexture (const char *textureFullPathName, gos_TextureFormat key, DWORD hints, DWORD uniqueInstance, DWORD nFlush)
+DWORD MC_TextureManager::loadTexture (PCSTR textureFullPathName, gos_TextureFormat key, DWORD hints, DWORD uniqueInstance, DWORD nFlush)
 {
 	long i=0;
 
@@ -1308,7 +1308,7 @@ DWORD MC_TextureManager::loadTexture (const char *textureFullPathName, gos_Textu
 }
 
 //----------------------------------------------------------------------
-long MC_TextureManager::saveTexture (DWORD textureIndex, const char *textureFullPathName)
+long MC_TextureManager::saveTexture (DWORD textureIndex, PCSTR textureFullPathName)
 {
 	if ((MC_MAXTEXTURES <= textureIndex) || (NULL == masterTextureNodes[textureIndex].textureData))
 	{

@@ -527,7 +527,7 @@ int	PilotReadyScreen::handleMessage( unsigned long message, unsigned long who )
 			MC2Player* pInfo = MPlayer->getPlayerInfo( MPlayer->commanderID );
 			if ( pInfo )
 			{
-				const char* name = pInfo->name;
+				PCSTR name = pInfo->name;
 				MPlayer->sendPlayerActionChat(NULL, name, IDS_MP_PLAYER_READY );
 			}
 
@@ -786,7 +786,7 @@ void PilotReadyScreen::setPilot( LogisticsPilot* pPilot )
 		textObjects[8].setText( name  );
 
 		int count = 32;
-		const char* specialtySkills[32];
+		PCSTR specialtySkills[32];
 		int skillIDs[32];
  		pCurPilot->getSpecialtySkills( specialtySkills, count );
 		count = 32;

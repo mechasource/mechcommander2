@@ -1331,7 +1331,7 @@ long TG_TypeShape::LoadTGShapeFromASE (char *fileName)
 	long numMaterials = atol(numberData);
 
 	numTextures = 0;
-	unsigned char *aseBuffer = aseContents;
+	PUCHAR aseBuffer = aseContents;
 	for (long nmt=0;nmt<numMaterials;nmt++)
 	{
 		sprintf(textureId,ASE_MATERIAL_CLASS);
@@ -1360,7 +1360,7 @@ long TG_TypeShape::LoadTGShapeFromASE (char *fileName)
 			numTextures += atol(numberData);
 		}
 
-		aseBuffer = (unsigned char *)textureData;
+		aseBuffer = (PUCHAR )textureData;
 	}
 
 	listOfTextures = (TG_TinyTexturePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TinyTexture) * numTextures);
@@ -2809,7 +2809,7 @@ void TG_Shape::MultiTransformShadows (Stuff::Point3D *pos, Stuff::LinearMatrix4D
 												fogFactor = 256.0;
 											}
 		
-											unsigned char fogResult = float2long(fogFactor);
+											uint8_t fogResult = float2long(fogFactor);
 											fogRGB = (fogResult << 24);
 										}
 									}
@@ -2946,7 +2946,7 @@ void TG_Shape::MultiTransformShadows (Stuff::Point3D *pos, Stuff::LinearMatrix4D
 													fogFactor = 256.0;
 												}
 			
-												unsigned char fogResult = float2long(fogFactor);
+												uint8_t fogResult = float2long(fogFactor);
 												fogRGB = (fogResult << 24);
 											}
 										}

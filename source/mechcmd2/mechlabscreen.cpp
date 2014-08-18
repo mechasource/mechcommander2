@@ -1452,7 +1452,7 @@ void MechLabScreen::beginDrag( LogisticsComponent* pComponent )
 			int sizeX = pComponent->getComponentWidth();
 			int sizeY = pComponent->getComponentHeight();
 			
-			const char* pFile = pComponent->getIconFileName();
+			PCSTR pFile = pComponent->getIconFileName();
 
 			FullPathFileName path;
 			path.init( artPath, pFile, "tga" );
@@ -1642,7 +1642,7 @@ void MechLabScreen::updateDiagram()
 		int sizeY = pComponent->getComponentHeight();
 	
 
-		const char* pFile = pComponent->getIconFileName();
+		PCSTR pFile = pComponent->getIconFileName();
 
 		FullPathFileName path;
 		path.init( artPath, pFile, "tga" );

@@ -103,13 +103,13 @@ namespace MidLevelRenderer {
 
 		virtual void
 			SetSubprimitiveLengths(
-				unsigned char *length_array,
+				PUCHAR length_array,
 				int subprimitive_count
 			);
 
 	// returns the number of subprimitives
 		int
-			GetSubprimitiveLengths(unsigned char **length_array);
+			GetSubprimitiveLengths(PUCHAR *length_array);
 
 		int
 			GetSubprimitiveLength(int i) const;
@@ -299,7 +299,7 @@ namespace MidLevelRenderer {
 		static Stuff::DynamicArrayOf<Stuff::RGBAColor> clipExtraColors;  // , Max_Number_Vertices_Per_Mesh
 #endif
 
-		Stuff::DynamicArrayOf<unsigned char>	lengths;	// List of strip lengths 
+		Stuff::DynamicArrayOf<uint8_t>	lengths;	// List of strip lengths 
 
 		static Stuff::DynamicArrayOf<MLRClippingState> clipPerVertex; // , Max_Number_Vertices_Per_Mesh
 
@@ -441,7 +441,7 @@ namespace MidLevelRenderer {
 	public:
 		MLRPrimitive__ClassData(
 			Stuff::RegisteredClass::ClassID class_id,
-			const char* class_name,
+			PCSTR class_name,
 			Stuff::Plug::ClassData *parent_class,
 			MLRPrimitive::Factory primitive_factory
 		):

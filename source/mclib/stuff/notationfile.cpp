@@ -23,8 +23,8 @@ Macro::Macro(MString *macro, MString *replace):
 void
 	Macro::AddValue(
 		MacroTree *macro_tree,
-		const char* name,
-		const char* value
+		PCSTR name,
+		PCSTR value
 	)
 {
 	Check_Object(macro_tree);
@@ -61,7 +61,7 @@ void
 void
 	Macro::ReplaceMacros(
 		MacroTree *macro_tree,
-		const char *buffer,
+		PCSTR buffer,
 		char *new_buf,
 		int new_buf_size
 	)
@@ -97,7 +97,7 @@ void
 		// Find the end of the macro name
 		//-------------------------------
 		//
-		const char *p = strchr(buffer, ')');
+		PCSTR p = strchr(buffer, ')');
 		if (!p)
 		{
 			Verify(new_buf_size > 0);
@@ -154,7 +154,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 NotationFile::NotationFile(
-	const char *file_name,
+	PCSTR file_name,
 	Type type
 ):
 	m_pages(NULL)
@@ -473,9 +473,9 @@ Parse:
 			ProcessLine(stream, macro_tree, page, p);
 	}
 	if (comment_mode)
-		PAUSE(("There is a missing */ in %s", (const char*)m_fileName));
+		PAUSE(("There is a missing */ in %s", (PCSTR)m_fileName));
 	if (nested)
-		PAUSE(("There is a missing } in %s", (const char*)m_fileName));
+		PAUSE(("There is a missing } in %s", (PCSTR)m_fileName));
 
 	//
 	//------------------------------------------------------------------------
@@ -546,7 +546,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	NotationFile::SaveAs(const char* file_name)
+	NotationFile::SaveAs(PCSTR file_name)
 {
 	Check_Object(this);
 
@@ -667,7 +667,7 @@ void
 			nested_file.Write(&file_buffer);
 			file_buffer << "}" << '\0';
 			file_buffer.Rewind();
-			notation->m_text = static_cast<const char*>(file_buffer.GetPointer());
+			notation->m_text = static_cast<PCSTR>(file_buffer.GetPointer());
 		}
 	}
 }
@@ -806,7 +806,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Page*
-	NotationFile::FindPage(const char *pagename)
+	NotationFile::FindPage(PCSTR pagename)
 {
 	Check_Object(this);
 	Check_Pointer(pagename);
@@ -816,7 +816,7 @@ Page*
 	while ((page = pages.ReadAndNext()) != NULL)
 	{
 		Check_Object(page);
-		const char* name = page->m_name;
+		PCSTR name = page->m_name;
 		if (name && !_stricmp(name, pagename))
 			return page;
 	}
@@ -826,7 +826,7 @@ Page*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Page*
-	NotationFile::GetPage(const char *pagename)
+	NotationFile::GetPage(PCSTR pagename)
 {
 	Page *page = FindPage(pagename);
 	if (!page)
@@ -841,7 +841,7 @@ Page*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Page*
-	NotationFile::SetPage(const char *pagename)
+	NotationFile::SetPage(PCSTR pagename)
 {
 	Check_Object(this);
 	Check_Pointer(pagename);
@@ -856,7 +856,7 @@ Page*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Page*
-	NotationFile::AddPage(const char *pagename)
+	NotationFile::AddPage(PCSTR pagename)
 {
 	Check_Object(this);
 	Check_Pointer(pagename);
@@ -873,7 +873,7 @@ Page*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	NotationFile::DeletePage(const char *pagename)
+	NotationFile::DeletePage(PCSTR pagename)
 {
 	Check_Object(this);
 	Check_Pointer(pagename);

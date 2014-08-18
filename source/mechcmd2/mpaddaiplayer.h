@@ -28,7 +28,7 @@ class aStyle4TextListItem : public aTextListItem
 {
 public:
 	aStyle4TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual long	init( FitIniFile* file, const char* blockName );
+	virtual long	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
 protected:

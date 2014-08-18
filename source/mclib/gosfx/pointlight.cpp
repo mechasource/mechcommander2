@@ -10,7 +10,7 @@ gosFX::LightManager
 	*gosFX::LightManager::Instance = NULL;
 
 gosFX::Light*
-	gosFX::LightManager::MakePointLight(const char* light_map)
+	gosFX::LightManager::MakePointLight(PCSTR light_map)
 {
 	return reinterpret_cast<Light*>(this);
 }

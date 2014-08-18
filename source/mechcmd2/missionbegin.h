@@ -35,7 +35,7 @@ class MissionBegin
 
 		void init();
 
-		const char* update();
+		PCSTR update();
 		void render();
 
 		void begin();
@@ -43,7 +43,7 @@ class MissionBegin
 		bool isDone(){ return bDone; }
 		bool readyToLoad() { return bReadyToLoad; }
 
-		void beginSplash( const char* playerName = 0 );
+		void beginSplash( PCSTR playerName = 0 );
 
 		void beginMPlayer();
 		void beginSPlayer();
@@ -60,7 +60,7 @@ class MissionBegin
 
 		void beginAtConnectionScreen();
 
-		void restartMPlayer( const char* playerName);
+		void restartMPlayer( PCSTR playerName);
 
 	private:
 

@@ -79,7 +79,7 @@ const USHORT					tFlag_Preload=64;	// Preload this texture at the end of the cur
 const USHORT					tFlag_Locked=128;	// Set when texture locked
 const USHORT					tFlag_Filler=256;	// Indicates a debug texture used to fill vidmem
 const USHORT					tFlag_Detect=512;	// GameOS detected the format
-const int					tFlag_FormatShift = 10;	// Bits 10,11,12 used for format
+cint32_t					tFlag_FormatShift = 10;	// Bits 10,11,12 used for format
 const USHORT					FormatMask = (7<<tFlag_FormatShift);
 const USHORT					tFlag_Special=8192;	// Special texture (font, chess, or color mipmap)
 

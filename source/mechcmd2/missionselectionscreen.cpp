@@ -30,7 +30,7 @@ MissionSelectionScreen::MissionSelectionScreen(  )
 
 	missionCount = 0;
 
-	memset( missionNames, 0, sizeof( const char* ) * MAX_MISSIONS_IN_GROUP );
+	memset( missionNames, 0, sizeof( PCSTR ) * MAX_MISSIONS_IN_GROUP );
 	bStop = 0;
 
 	missionDescriptionListBox.setPressFX( -1 );
@@ -207,7 +207,7 @@ void MissionSelectionScreen::begin()
 		operationScreen.beginFadeIn( fadeInTime );
 
 	// initialize the operation
-	const char* str = LogisticsData::instance->getCurrentOperationFileName();
+	PCSTR str = LogisticsData::instance->getCurrentOperationFileName();
 
 	FullPathFileName fileName;
 	fileName.init( artPath, str, ".fit" );

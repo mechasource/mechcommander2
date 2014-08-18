@@ -544,7 +544,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 
 		}
 
-		SPEW((GROUP_STUFF_TEST, "%s", (const char *)text));
+		SPEW((GROUP_STUFF_TEST, "%s", (PCSTR )text));
 
 		//SPEW((GROUP_STUFF_TEST, "%d ---- Dst Bit Value : +", i));
 
@@ -584,7 +584,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		}
 
 
-		SPEW((GROUP_STUFF_TEST, "%s", (const char *)text));
+		SPEW((GROUP_STUFF_TEST, "%s", (PCSTR )text));
 
 		SPEW((GROUP_STUFF_TEST, "\t---- Src Hex Value : +", i));
 		for (byte_count = 0; byte_count < 8; ++byte_count)

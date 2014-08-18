@@ -15,7 +15,7 @@ namespace Stuff {class Vector4D;}
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::Vector4D& vector
 		);
 #endif
@@ -555,7 +555,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const Vector4D& vector
 				);
 		#endif

@@ -20,22 +20,22 @@ struct _LARGEBLOCKHEADER;
 // 255   = Unused
 //
 //
-const int Magic_LargeBlock=253;					// Larger than 4k memory block (no in pools)
-const int Magic_BeforeInit=254;					// Allocated before inited  (was 0xabadcafe)
+cint32_t Magic_LargeBlock=253;					// Larger than 4k memory block (no in pools)
+cint32_t Magic_BeforeInit=254;					// Allocated before inited  (was 0xabadcafe)
 
 //
 // This is the largest 'pool' size - blocks larger than this use the system allocator
 //
-const int LargestMemoryBlock=1024;				// Largest memory block managed
+cint32_t LargestMemoryBlock=1024;				// Largest memory block managed
 //
 // This is the total number of pools being managed
 //
-const int MemoryPools=18;						// Number of memory pools (defined in PoolSizes[])
+cint32_t MemoryPools=18;						// Number of memory pools (defined in PoolSizes[])
 
 //
 // Magic number placed after allocations in DEBUG/ARMOR
 //
-const int MemoryEndMarker=0x7fb1deaf;			// Placed at the end of allocations in _ARMOR builds
+cint32_t MemoryEndMarker=0x7fb1deaf;			// Placed at the end of allocations in _ARMOR builds
 
 
 
@@ -47,7 +47,7 @@ const int MemoryEndMarker=0x7fb1deaf;			// Placed at the end of allocations in _
 //
 typedef struct SMALLPOOLBLOCK {
 #if defined(LAB_ONLY)
-	UCHAR			Size;						// Size of block (note pools are always <64K)
+	uint8_t			Size;						// Size of block (note pools are always <64K)
 #endif
 #ifdef _DEBUG
 	DOUBLE			dTimeStamp;					// at what time was the block alloc'd
@@ -76,7 +76,7 @@ typedef struct _LARGEBLOCK
 	ULONG				Size;					// Size of block (note can be any size)
 	_LARGEBLOCKHEADER*	pLast;					// Pointer to previous large memory block
 	_LARGEBLOCKHEADER*	pNext;					// Pointer to next large memory block
-	UCHAR				Heap;
+	uint8_t				Heap;
 #ifdef _DEBUG
 	DOUBLE				dTimeStamp;				// at what time was the block alloc'd
 	ULONG				pContext[0];			// we'll allocate the right size based on gMemoryStackWalkLevel
@@ -89,7 +89,7 @@ typedef struct _LARGEBLOCK
 typedef struct _LARGEBLOCKHEADER
 {
 	LARGEBLOCK*		pLargeBlockInfo;
-	UCHAR			LargeMagicNumber;			// Magic_LargeBlock or Magic_BeforeInit
+	uint8_t			LargeMagicNumber;			// Magic_LargeBlock or Magic_BeforeInit
 } LARGEBLOCKHEADER;
 
 //
@@ -133,14 +133,14 @@ typedef struct gos_Heap
 	int			AllocationsLastLoop;
 	int			TotalAllocations;
 	int			PeakSize;
-	UCHAR		bExpanded;							// this is used for collapsing tree in debugger
-	UCHAR		bExamined;							// this is used for collapsing tree in debugger
+	uint8_t		bExpanded;							// this is used for collapsing tree in debugger
+	uint8_t		bExamined;							// this is used for collapsing tree in debugger
 	int			LargeAllocations;
 	int			LargeAllocated;
 	int			DXAllocations;
 	int			DXAllocated;
 #endif
-	UCHAR		HeapNumber;							// Heap number in HeapList[]  (<<24)
+	uint8_t		HeapNumber;							// Heap number in HeapList[]  (<<24)
 } gos_Heap;
 #pragma pack(pop)
 
@@ -164,7 +164,7 @@ extern HGOSHEAP DefaultHeap;
 extern MEMORYPOOL* gMemoryPool[MemoryPools];
 
 
-void __stdcall gos_ChangeHeapSize( HGOSHEAP Heap, int Change, UCHAR SystemAllocation=0 );
+void __stdcall gos_ChangeHeapSize( HGOSHEAP Heap, int Change, uint8_t SystemAllocation=0 );
 void __stdcall MM_CheckRegistered(void);
 void __stdcall MM_Shutdown(void);
 void __stdcall MM_UpdateStatistics( HGOSHEAP Heap );

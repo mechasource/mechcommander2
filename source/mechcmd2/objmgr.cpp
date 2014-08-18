@@ -783,7 +783,7 @@ void GameObjectManager::countTerrainObjects (PacketFile* terrainFile, long first
 {
 	int packet = terrainFile->getCurrentPacket();
 	int size = terrainFile->getPacketSize();
-	MemoryPtr pBuffer = new unsigned char[size];
+	MemoryPtr pBuffer = new uint8_t[size];
 
 #ifdef _DEBUG	
 	int bytesRead = 
@@ -1103,7 +1103,7 @@ void GameObjectManager::addObject (ObjDataLoader *objData, long& curTerrainObjec
 		numbers.x = objData->vertexNumber;
 		numbers.y = objData->blockNumber;
 
-		unsigned char realDmg = objData->damage & 0x0f;
+		uint8_t realDmg = objData->damage & 0x0f;
 		switch (objType->getObjectClass()) {
 			case TERRAINOBJECT:
 			case TREE:

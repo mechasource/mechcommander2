@@ -102,7 +102,7 @@ void Forest::init()
 	if ( NO_ERR != file.open( fileName ) )
 	{
 		char errorString[256];
-		sprintf( errorString, "Couldn't open file %s", (const char*)fileName);
+		sprintf( errorString, "Couldn't open file %s", (PCSTR)fileName);
 		Assert( 0, 0, errorString );
 		return;
 	}
@@ -147,10 +147,10 @@ void Forest::init( FitIniFile& file )
 void Forest::save()
 {
 	FitIniFile file;
-	if ( NO_ERR != file.create( (char*)(const char*)fileName ) )
+	if ( NO_ERR != file.create( (char*)(PCSTR)fileName ) )
 	{
 		char errorString[256];
-		sprintf( errorString, "Couldn't create file %s", (const char*)fileName);
+		sprintf( errorString, "Couldn't create file %s", (PCSTR)fileName);
 		Assert( 0, 0, errorString );
 		return;
 	}

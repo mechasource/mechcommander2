@@ -835,8 +835,8 @@ void execStdResetOrders (void) {
 		long startIndex = CurRoutineIdPtr->defn.info.routine.orderCallIndex;
 		long endIndex = startIndex + CurRoutineIdPtr->defn.info.routine.numOrderCalls;
 		for (long i = startIndex; i < endIndex; i++) {
-			unsigned char orderDWord = (unsigned char)(i / 32);
-			unsigned char orderBitMask = (unsigned char)(i % 32);
+			uint8_t orderDWord = (uint8_t)(i / 32);
+			uint8_t orderBitMask = (uint8_t)(i % 32);
 			CurModule->clearOrderCallFlag(orderDWord, orderBitMask);
 		}
 	}

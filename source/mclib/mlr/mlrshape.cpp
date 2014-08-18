@@ -150,7 +150,7 @@ MLRShape::MLRShape(
 					)
 				)
 				{
-					unsigned char *length;
+					PUCHAR length;
 					int i, num, threes, nonThrees;
 
 					pt->GetSubprimitiveLengths(&length, &num);
@@ -531,7 +531,7 @@ int
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRShape::InitializePrimitives(unsigned char vis, const MLRState& master, int parameter)
+	MLRShape::InitializePrimitives(uint8_t vis, const MLRState& master, int parameter)
 {
 	Check_Object(this); 
 

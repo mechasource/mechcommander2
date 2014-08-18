@@ -692,7 +692,7 @@ long SoundSystem::playDigitalMusic (long musicId)
 							stream1Handle = 0;
 						}
 							
-						gosAudio_CreateResource(&stream1Handle, gosAudio_StreamedFile, (const char *) digitalStream);
+						gosAudio_CreateResource(&stream1Handle, gosAudio_StreamedFile, (PCSTR ) digitalStream);
 						
 						stream1Time = streamFadeDownTime;
 						
@@ -711,7 +711,7 @@ long SoundSystem::playDigitalMusic (long musicId)
 							stream2Handle = 0;
 						}
 							
-						gosAudio_CreateResource( &stream2Handle, gosAudio_StreamedFile, (const char *) digitalStream );
+						gosAudio_CreateResource( &stream2Handle, gosAudio_StreamedFile, (PCSTR ) digitalStream );
 						
 						//Need to check if stream1 ever got all the way faded up!
 						if (stream1Time > 0.0f)
@@ -736,7 +736,7 @@ long SoundSystem::playDigitalMusic (long musicId)
 							stream1Handle = 0;
 						}
 							
-						gosAudio_CreateResource(&stream1Handle, gosAudio_StreamedFile, (const char *) digitalStream);
+						gosAudio_CreateResource(&stream1Handle, gosAudio_StreamedFile, (PCSTR ) digitalStream);
 						
 						stream1Time = streamFadeDownTime;
 
@@ -766,7 +766,7 @@ long SoundSystem::playDigitalMusic (long musicId)
 }
 
 //---------------------------------------------------------------------------
-long SoundSystem::playDigitalStream (const char *streamName)
+long SoundSystem::playDigitalStream (PCSTR streamName)
 {
 	//-------------------------------------------------------------------
 	// Make sure we have a real music filename.
@@ -794,7 +794,7 @@ long SoundSystem::playDigitalStream (const char *streamName)
 					stream3Handle = 0;
 				}
 						
-				gosAudio_CreateResource(&stream3Handle, gosAudio_StreamedFile, (const char *) digitalStream);
+				gosAudio_CreateResource(&stream3Handle, gosAudio_StreamedFile, (PCSTR ) digitalStream);
 				
 				stream3Active = false;
 				
@@ -1152,7 +1152,7 @@ long SoundSystem::getDigitalMasterVolume (void)
 }	
 
 //---------------------------------------------------------------------------
-void SoundSystem::setSFXVolume(unsigned char volume)
+void SoundSystem::setSFXVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1162,7 +1162,7 @@ void SoundSystem::setSFXVolume(unsigned char volume)
 }
 
 //---------------------------------------------------------------------------
-unsigned char SoundSystem::getSFXVolume(void)
+uint8_t SoundSystem::getSFXVolume(void)
 {
 	if (useSound)
 	{
@@ -1173,7 +1173,7 @@ unsigned char SoundSystem::getSFXVolume(void)
 }	
 
 //---------------------------------------------------------------------------
-void SoundSystem::setRadioVolume(unsigned char volume)
+void SoundSystem::setRadioVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1183,7 +1183,7 @@ void SoundSystem::setRadioVolume(unsigned char volume)
 }
 
 //---------------------------------------------------------------------------
-unsigned char SoundSystem::getRadioVolume(void)
+uint8_t SoundSystem::getRadioVolume(void)
 {
 	if (useSound)
 	{
@@ -1194,7 +1194,7 @@ unsigned char SoundSystem::getRadioVolume(void)
 }	
 
 //---------------------------------------------------------------------------
-void SoundSystem::setMusicVolume(unsigned char volume)
+void SoundSystem::setMusicVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1215,7 +1215,7 @@ void SoundSystem::setMusicVolume(unsigned char volume)
 }
 
 //---------------------------------------------------------------------------
-unsigned char SoundSystem::getMusicVolume(void)
+uint8_t SoundSystem::getMusicVolume(void)
 {
 	if (useSound)
 	{
@@ -1226,7 +1226,7 @@ unsigned char SoundSystem::getMusicVolume(void)
 }	
 
 //---------------------------------------------------------------------------
-void SoundSystem::setBettyVolume(unsigned char volume)
+void SoundSystem::setBettyVolume(uint8_t volume)
 {
 	if (useSound)
 	{
@@ -1236,7 +1236,7 @@ void SoundSystem::setBettyVolume(unsigned char volume)
 }
 
 //---------------------------------------------------------------------------
-unsigned char SoundSystem::getBettyVolume(void)
+uint8_t SoundSystem::getBettyVolume(void)
 {
 	if (useSound)
 	{

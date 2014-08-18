@@ -63,7 +63,7 @@ long aListBox::init(long xPos, long yPos,long w, long h )
 	return (NO_ERR);
 }
 
-void aListBox::init( FitIniFile* file, const char* blockName )
+void aListBox::init( FitIniFile* file, PCSTR blockName )
 {
 	long x, y, width, height;
 	file->readIdLong( "XLocation", x );
@@ -656,7 +656,7 @@ aDropList& aDropList::operator=( const aDropList& src)
 }
 
 
-long aDropList::init( FitIniFile* file, const char* blockName )
+long aDropList::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
@@ -904,7 +904,7 @@ long aDropList::AddItem(aListItem* itemString)
 	return retval;
 }
 
-long				aDropList::AddItem( const char* text, unsigned long color )
+long				aDropList::AddItem( PCSTR text, unsigned long color )
 {
 	aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 	*pItem = templateItem;
@@ -995,7 +995,7 @@ aComboBox& aComboBox::operator=(const aComboBox& src )
 	return *this;
 }
 
-long aComboBox::init( FitIniFile* file, const char* blockName )
+long aComboBox::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
@@ -1218,7 +1218,7 @@ long aComboBox::AddItem( unsigned long textID, unsigned long color )
 		return AddItem( pItem );
 }
 
-long				aComboBox::AddItem( const char* text, unsigned long color )
+long				aComboBox::AddItem( PCSTR text, unsigned long color )
 {
 	aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 	*pItem = templateItem;
@@ -1269,11 +1269,11 @@ aTextListItem::~aTextListItem()
 {
 }
 
-void		aTextListItem::setText( const char* newText )
+void		aTextListItem::setText( PCSTR newText )
 {
 	text = newText;
 }
-const char* aTextListItem::getText() const
+PCSTR aTextListItem::getText() const
 {
 	return text;
 }
@@ -1315,7 +1315,7 @@ void aTextListItem::sizeToText()
 	
 }
 
-void aTextListItem::init( FitIniFile& file, const char* blockName )
+void aTextListItem::init( FitIniFile& file, PCSTR blockName )
 {
 	file.seekBlock( blockName );
 
@@ -1350,7 +1350,7 @@ aAnimTextListItem& aAnimTextListItem::operator=( const aAnimTextListItem& src )
 	return *this;
 }
 
-void aAnimTextListItem::init( FitIniFile& file, const char* blockName )
+void aAnimTextListItem::init( FitIniFile& file, PCSTR blockName )
 {
 	file.seekBlock( blockName );
 
@@ -1405,7 +1405,7 @@ void aAnimTextListItem::update()
 aLocalizedListItem::aLocalizedListItem() : aAnimTextListItem( 27663 )
 { 
 }
-long aLocalizedListItem::init( FitIniFile* file, const char* blockName )
+long aLocalizedListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 

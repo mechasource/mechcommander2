@@ -49,7 +49,7 @@ private:
 	//HGOSVIDEO			video;
 	//unsigned long		videoTexture;
 
-	const char*			missionNames[MAX_MISSIONS_IN_GROUP];
+	PCSTR			missionNames[MAX_MISSIONS_IN_GROUP];
 	long				missionCount;
 
 	void				setMission( int whichOne );

@@ -86,11 +86,11 @@ typedef StateHandleInfo* StateHandleInfoPtr;
 
 typedef struct _Routine {
 	RoutineKey				key;
-	unsigned char			flags;
+	uint8_t			flags;
 	unsigned short			orderCallIndex;
 	unsigned short			numOrderCalls;
-	unsigned char			paramCount;
-	unsigned char			totalParamSize;
+	uint8_t			paramCount;
+	uint8_t			totalParamSize;
 	unsigned short			totalLocalSize;
 	SymTableNodePtr			params;
 	SymTableNodePtr			locals;
@@ -132,7 +132,7 @@ typedef struct _SymTableNode {
 	Definition			defn;
 	TypePtr				typePtr;
 	ABLModulePtr		library;
-	unsigned char		level;
+	uint8_t		level;
 	long				labelIndex;		// really for compiling only...
 } SymTableNode;
 

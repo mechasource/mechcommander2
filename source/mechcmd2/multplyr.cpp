@@ -494,7 +494,7 @@ bool MultiPlayer::playersReadyToLoad (void) {
 
 //-----------------------------------------------------------------------------
 
-bool MultiPlayer::launchBrowser (const char* link) {
+bool MultiPlayer::launchBrowser (PCSTR link) {
 
 	return(false);
 }
@@ -750,7 +750,7 @@ void MultiPlayer::sendPlayerInfo (NETPLAYER receiver) {
 
 //---------------------------------------------------------------------------
 
-void MultiPlayer::sendPlayerCID (NETPLAYER receiver, unsigned char subType, char CID) {
+void MultiPlayer::sendPlayerCID (NETPLAYER receiver, uint8_t subType, char CID) {
 
 }
 
@@ -772,7 +772,7 @@ void MultiPlayer::sendChat (NETPLAYER receiver, char team, char* chatMessage) {
 
 }
 
-void MultiPlayer::sendPlayerActionChat(NETPLAYER receiver, const char* playerName, unsigned long resID )
+void MultiPlayer::sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, unsigned long resID )
 {
 }
 
@@ -791,7 +791,7 @@ void MultiPlayer::sendPlayerSetup (void) {
 
 //---------------------------------------------------------------------------
 
-void MultiPlayer::sendPlayerInsignia (char* insigniaFileName, unsigned char* insigniaData, long dataSize) {
+void MultiPlayer::sendPlayerInsignia (char* insigniaFileName, PUCHAR insigniaData, long dataSize) {
 
 }
 
@@ -822,7 +822,7 @@ void MultiPlayer::sendEndMission (long result) {
 //---------------------------------------------------------------------------
 extern MoverPtr BringInReinforcement (long vehicleID, long rosterIndex, long commanderID, Stuff::Vector3D pos, bool exists);
 
-void MultiPlayer::sendReinforcement (long vehicleID, long rosterIndex, char pilotName[16], long commanderID, Stuff::Vector3D pos, unsigned char stage) {
+void MultiPlayer::sendReinforcement (long vehicleID, long rosterIndex, char pilotName[16], long commanderID, Stuff::Vector3D pos, uint8_t stage) {
 
 }
 
@@ -1174,7 +1174,7 @@ extern char* GetTime();
 
 extern char *SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
 
-long MultiPlayer::saveTranscript (const char* fileName, bool debugging) {
+long MultiPlayer::saveTranscript (PCSTR fileName, bool debugging) {
 
 	return(MPLAYER_NO_ERR);
 }

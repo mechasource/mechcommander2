@@ -496,7 +496,7 @@ void SensorSystem::updateContacts (void) {
 				//--------------------------------------------------
 				// Better sensor info, so update the team sensors...
 				contactInfo->contactStatus[owner->getTeamId()] = contactStatus;
-				contactInfo->teamSpotter[owner->getTeamId()] = (unsigned char)owner->getHandle();
+				contactInfo->teamSpotter[owner->getTeamId()] = (uint8_t)owner->getHandle();
 			}
 */			i++;
 		}

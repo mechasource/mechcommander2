@@ -191,14 +191,14 @@ void
 	//
 	// Create a file for testing.  Fill with a sequence numbers.
 	//
-	unsigned char *buffer;
+	PUCHAR buffer;
 	size_t i;
 	
-	buffer = new unsigned char[FILE_BUFFERSIZE];
+	buffer = new uint8_t[FILE_BUFFERSIZE];
 	Register_Pointer(buffer);
 	for (i = 0; i < FILE_BUFFERSIZE; i++)
 	{
-		buffer[i] = (unsigned char)(i % 255);
+		buffer[i] = (uint8_t)(i % 255);
 	}	
 
 	Check_Object(Munga_Application);
@@ -223,7 +223,7 @@ void
 	//
 	// Perform test
 	//	
-	const int iterations = 1000;	
+	cint32_t iterations = 1000;	
 	TestFileManagerReceiver *receiver;
 	ChainOf<TestFileManagerReceiver*> socket(NULL);
 	

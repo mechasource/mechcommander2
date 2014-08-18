@@ -107,7 +107,7 @@ void LogisticsData::init()
 
 	// temporary, just so we can test
 	int count = 32;
-	const char* missionNames[32];
+	PCSTR missionNames[32];
 	missionInfo->getAvailableMissions( missionNames, count );
 
 	setCurrentMission( missionNames[0] );
@@ -509,7 +509,7 @@ int LogisticsData::sellMech( LogisticsMech* pVar )
 	return -1;
 }
 
-int LogisticsData::removeVariant( const char* varName )
+int LogisticsData::removeVariant( PCSTR varName )
 {
 	if ( !varName )
 		return -1;
@@ -710,7 +710,7 @@ LogisticsPilot* LogisticsData::getFirstAvailablePilot()
 
 
 // GetAvailableMissions( char** missionNames, long& count )
-int LogisticsData::getAvailableMissions( const char** missionNames, long& count )
+int LogisticsData::getAvailableMissions( PCSTR* missionNames, long& count )
 {
 	int numberOfEm = 0;
 
@@ -730,7 +730,7 @@ int LogisticsData::getAvailableMissions( const char** missionNames, long& count 
 
 }
 
-int LogisticsData::getCurrentMissions( const char** missionNames, long& count )
+int LogisticsData::getCurrentMissions( PCSTR* missionNames, long& count )
 {
 	int numberOfEm = 0;
 
@@ -752,14 +752,14 @@ int LogisticsData::getCurrentMissions( const char** missionNames, long& count )
 
 }
 
-bool LogisticsData::getMissionAvailable( const char* missionName )
+bool LogisticsData::getMissionAvailable( PCSTR missionName )
 {
 	return missionInfo->getMissionAvailable( missionName );
 }
 
 
 // SetCurrentMission( char* missionName )
-int LogisticsData::setCurrentMission( const char* missionName )
+int LogisticsData::setCurrentMission( PCSTR missionName )
 {
 	long result = missionInfo->setNextMission( missionName );
 
@@ -799,7 +799,7 @@ void LogisticsData::removeDeadWeight()
 
 int		LogisticsData::setCurrentMission( const EString& missionName )
 {
-	return setCurrentMission( (const char*)missionName );
+	return setCurrentMission( (PCSTR)missionName );
 }
 
 
@@ -871,7 +871,7 @@ void	LogisticsData::addMechToInventory( LogisticsVariant* pVar, int addToForceGr
 	}
 }
 
-LogisticsVariant* LogisticsData::getVariant( const char* pCSVFileName, int VariantNum )
+LogisticsVariant* LogisticsData::getVariant( PCSTR pCSVFileName, int VariantNum )
 {
 	EString lowerCase = pCSVFileName;
 	lowerCase.MakeLower();
@@ -905,7 +905,7 @@ void LogisticsData::removeMechsInForceGroup()
 	}
 }
 
-const char*	LogisticsData::getBestPilot( long mechWeight )
+PCSTR	LogisticsData::getBestPilot( long mechWeight )
 {
 	if ( !pilots.Count() )
 		initPilots();
@@ -918,7 +918,7 @@ const char*	LogisticsData::getBestPilot( long mechWeight )
 	for ( PILOT_LIST::EIterator iter = pilots.Begin();
 		!iter.IsDone(); iter++ )
 		{
-			const char *nameCheck = (*iter).getName();
+			PCSTR nameCheck = (*iter).getName();
 			if ( (*iter).isAvailable() && (MPlayer || !MechWarrior::warriorInUse((char *)nameCheck)) )
 				pPilots[counter++] = &(*iter);
 		}
@@ -973,7 +973,7 @@ bool		LogisticsData::gotPilotsLeft()
 	for ( PILOT_LIST::EIterator iter = pilots.Begin();
 		!iter.IsDone(); iter++ )
 		{
-			const char *nameCheck = (*iter).getName();
+			PCSTR nameCheck = (*iter).getName();
 			if ( (*iter).isAvailable() && ( MPlayer || !MechWarrior::warriorInUse((char *)nameCheck)) )
 				pPilots[counter++] = &(*iter);
 		}
@@ -1312,7 +1312,7 @@ long LogisticsData::loadMech( FitIniFile& file, int& count )
 void	LogisticsData::setMissionCompleted( )
 {
 #ifndef VIEWER
-	const char* pMissionName = missionInfo->getCurrentMission();
+	PCSTR pMissionName = missionInfo->getCurrentMission();
 	missionInfo->setMissionComplete();
 
 	rpJustAdded = 0;
@@ -1405,7 +1405,7 @@ void	LogisticsData::setMissionCompleted( )
 #endif
 }
 
-LogisticsMech*  LogisticsData::getMech( const char* MechName, const char* pilotName )
+LogisticsMech*  LogisticsData::getMech( PCSTR MechName, PCSTR pilotName )
 {
 	for( MECH_LIST::EIterator iter = inventory.Begin(); !iter.IsDone(); iter++ )
 	{
@@ -1428,7 +1428,7 @@ LogisticsMech*  LogisticsData::getMech( const char* MechName, const char* pilotN
 	return NULL;
 }
 
-void LogisticsData::removeMechFromInventory( const char* mechName, const char* pilotName )
+void LogisticsData::removeMechFromInventory( PCSTR mechName, PCSTR pilotName )
 {
 	LogisticsMech* pMech = getMech( mechName, pilotName );
 
@@ -1441,7 +1441,7 @@ void LogisticsData::removeMechFromInventory( const char* mechName, const char* p
 	}
 }
 
-LogisticsPilot*	LogisticsData::getPilot( const char* pilotName )
+LogisticsPilot*	LogisticsData::getPilot( PCSTR pilotName )
 {
 	// look for available ones first
 	PILOT_LIST::EIterator iter;
@@ -1467,7 +1467,7 @@ LogisticsPilot*	LogisticsData::getPilot( const char* pilotName )
 	return NULL;
 }
 
-LogisticsVariant* LogisticsData::getVariant( const char* mechName )
+LogisticsVariant* LogisticsData::getVariant( PCSTR mechName )
 {
 	for ( VARIANT_LIST::EIterator iter = variants.Begin(); !iter.IsDone(); iter++ )
 	{
@@ -1506,11 +1506,11 @@ long LogisticsData::updateAvailability()
 
 	// make sure its around and you can open it 
 	FitIniFile file;
-	if ( NO_ERR != file.open( (char*)(const char*)purchaseFileName ) )
+	if ( NO_ERR != file.open( (char*)(PCSTR)purchaseFileName ) )
 	{
 		EString error;
-		error.Format( "Couldn't open %s", (char*)(const char*)purchaseFileName );
-		PAUSE(((char*)(const char*)error ));
+		error.Format( "Couldn't open %s", (char*)(PCSTR)purchaseFileName );
+		PAUSE(((char*)(PCSTR)error ));
 		return NO_PURCHASE_FILE;
 	}
 	// read in available components
@@ -1557,7 +1557,7 @@ long LogisticsData::updateAvailability()
 		}
 	}
 
-	const char* pFileNames[512];
+	PCSTR pFileNames[512];
 	long count = 512;
  	missionInfo->getAdditionalPurachaseFiles( pFileNames, count );
 
@@ -1677,7 +1677,7 @@ long LogisticsData::updateAvailability()
 
 }
 
-void LogisticsData::appendAvailability(const char* pFileName, bool* availableArray )
+void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 {
 	FitIniFile file;
 	if ( NO_ERR != file.open( pFileName ) )
@@ -1790,7 +1790,7 @@ const EString& LogisticsData::getLastMission() const
 	return missionInfo->getLastMission(); 
 }
 
-const char * LogisticsData::getCurrentABLScript() const
+PCSTR  LogisticsData::getCurrentABLScript() const
 {
 	return missionInfo->getCurrentABLScriptName();
 }
@@ -2040,7 +2040,7 @@ void decryptFile (char *inputFile, char *outputFile)
 	}
 }
 
-int LogisticsData::acceptMechModifications( const char* name )
+int LogisticsData::acceptMechModifications( PCSTR name )
 {
 	if ( !currentlyModifiedMech )
 		return -1;
@@ -2147,7 +2147,7 @@ int LogisticsData::acceptMechModifications( const char* name )
 
 	return 0;
 }
-int LogisticsData::acceptMechModificationsUseOldVariant( const char* name )
+int LogisticsData::acceptMechModificationsUseOldVariant( PCSTR name )
 {
 	if ( !currentlyModifiedMech )
 		return -1;
@@ -2174,7 +2174,7 @@ int LogisticsData::acceptMechModificationsUseOldVariant( const char* name )
 	return 0;
 }
 
-bool LogisticsData::canReplaceVariant( const char* name )
+bool LogisticsData::canReplaceVariant( PCSTR name )
 {
 	int nameCount = 0;
 	for ( MECH_LIST::EIterator iter = inventory.Begin();
@@ -2203,7 +2203,7 @@ bool LogisticsData::canReplaceVariant( const char* name )
 		return true;
 }
 
-bool	LogisticsData::canDeleteVariant( const char* name )
+bool	LogisticsData::canDeleteVariant( PCSTR name )
 {
 	LogisticsVariant* pVariant = getVariant( name );
 	if ( !pVariant )
@@ -2236,27 +2236,27 @@ int LogisticsData::cancelMechModfications()
 	return 0;
 }
 
-const char*			LogisticsData::getCurrentOperationFileName()
+PCSTR			LogisticsData::getCurrentOperationFileName()
 {
 	return missionInfo->getCurrentOperationFile();
 }
-const char*			LogisticsData::getCurrentVideoFileName()
+PCSTR			LogisticsData::getCurrentVideoFileName()
 {
 	return missionInfo->getCurrentVideo();
 }
 
-const char*			LogisticsData::getCurrentMissionDescription()
+PCSTR			LogisticsData::getCurrentMissionDescription()
 {
 	return missionInfo->getCurrentMissionDescription();
 }
 
 
-const char*				LogisticsData::getCurrentMissionFriendlyName( )
+PCSTR				LogisticsData::getCurrentMissionFriendlyName( )
 {
 	return missionInfo->getCurrentMissionFriendlyName();
 }
 
-const char*				LogisticsData::getMissionFriendlyName( const char* missionName )
+PCSTR				LogisticsData::getMissionFriendlyName( PCSTR missionName )
 {
 	return missionInfo->getMissionFriendlyName( missionName );
 }
@@ -2267,7 +2267,7 @@ const char*				LogisticsData::getMissionFriendlyName( const char* missionName )
 }*/
 
 
-void				LogisticsData::startNewCampaign( const char* fileName )
+void				LogisticsData::startNewCampaign( PCSTR fileName )
 {
 #ifndef VIEWER
 	if ( MPlayer )
@@ -2294,7 +2294,7 @@ void				LogisticsData::startNewCampaign( const char* fileName )
 
 	// temporary, just so we can test
 	int count = 32;
-	const char* missionNames[32];
+	PCSTR missionNames[32];
 	missionInfo->getAvailableMissions( missionNames, count );
 
 	setCurrentMission( missionNames[0] );
@@ -2361,7 +2361,7 @@ void LogisticsData::startMultiPlayer()
 #endif
 
 }
-void				LogisticsData::setPurchaseFile( const char* fileName )
+void				LogisticsData::setPurchaseFile( PCSTR fileName )
 {
 	missionInfo->setPurchaseFile( fileName );
 	if ( MPlayer )
@@ -2384,7 +2384,7 @@ void				LogisticsData::decrementCBills( int amount )
 	missionInfo->decrementCBills(amount); 
 }
 
-int					LogisticsData::getPlayerVariantNames( const char** array, int& count )
+int					LogisticsData::getPlayerVariantNames( PCSTR* array, int& count )
 {
 	int maxCount = count;
 	count = 0;
@@ -2480,7 +2480,7 @@ int		LogisticsData::getVehicles( const LogisticsVehicle** pChassis, int& count )
 }
 
 
-LogisticsVehicle*	LogisticsData::getVehicle( const char* pName )
+LogisticsVehicle*	LogisticsData::getVehicle( PCSTR pName )
 {
 	char tmpStr[256];
 	for ( VEHICLE_LIST::EIterator vIter = vehicles.Begin(); !vIter.IsDone(); vIter++ )
@@ -2630,16 +2630,16 @@ bool				LogisticsData::campaignOver()
 { 
 	return missionInfo->campaignOver();
 }
-const char*			LogisticsData::getCurrentBigVideo() const 
+PCSTR			LogisticsData::getCurrentBigVideo() const 
 { 
 	return missionInfo->getCurrentBigVideo(); 
 }
-const char*			LogisticsData::getFinalVideo() const
+PCSTR			LogisticsData::getFinalVideo() const
 { 
 	return missionInfo->getFinalVideo();
 }
 
-void				LogisticsData::addNewBonusPurchaseFile( const char* pFileName )
+void				LogisticsData::addNewBonusPurchaseFile( PCSTR pFileName )
 {
 	missionInfo->addBonusPurchaseFile( pFileName );
 }
@@ -2666,7 +2666,7 @@ bool				LogisticsData::showChooseMission()
 	return missionInfo->showChooseMission();
 }
 
-void	LogisticsData::setSingleMission( const char* pName )
+void	LogisticsData::setSingleMission( PCSTR pName )
 {
 	missionInfo->setSingleMission( pName );
 	clearVariants();
@@ -2741,7 +2741,7 @@ void				LogisticsData::setVideoShown()
 		missionInfo->setVideoShown();
 
 }
-void	LogisticsData::setPilotUnused( const char* pName )
+void	LogisticsData::setPilotUnused( PCSTR pName )
 {
 	for ( PILOT_LIST::EIterator iter = pilots.Begin(); !iter.IsDone(); iter++  )
 	{

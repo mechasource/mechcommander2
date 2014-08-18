@@ -161,7 +161,7 @@ MLRPrimitive::MLRPrimitive(
 
 			for(i=0;i<len;i++)
 			{
-				lengths[i] = (unsigned char)(tempLengths[i] & 0xff);
+				lengths[i] = (uint8_t)(tempLengths[i] & 0xff);
 			}
 
 			*stream >> visible;
@@ -332,7 +332,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitive::SetSubprimitiveLengths(unsigned char *data, int l)
+	MLRPrimitive::SetSubprimitiveLengths(PUCHAR data, int l)
 {
 	Check_Object(this); 
 	lengths.AssignData(data, l);
@@ -341,7 +341,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 int
-	MLRPrimitive::GetSubprimitiveLengths(unsigned char **data)
+	MLRPrimitive::GetSubprimitiveLengths(PUCHAR *data)
 {
 	Check_Object(this); 
 	*data = lengths.GetData();

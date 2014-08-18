@@ -101,12 +101,12 @@ public:
 		}
 	}
 
-	const char *GetShortName()
+	PCSTR GetShortName()
 	{
 		return shortName;
 	}
 
-	const char *GetLongName()
+	PCSTR GetLongName()
 	{
 		return longName;
 	}

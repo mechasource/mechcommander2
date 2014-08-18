@@ -161,7 +161,7 @@ extern float				ContactUpdateFrequency;
 extern float				OrderRequestFrequency;
 extern float 				elmDamageOnImpact;
 extern bool 				drawTerrainGrid;
-extern unsigned char		footPrints;
+extern uint8_t		footPrints;
 
 extern float				MaxTimeRevealed;
 
@@ -714,7 +714,7 @@ long BattleMechType::init (FilePtr objFile, unsigned long fileSize)
 	// Row 4, Cols 2,4,6,8,10,12,14,16
 	for (long curLocation = 0; curLocation < NUM_BODY_LOCATIONS; curLocation++) 
 	{
-		result = mechCSVFile.readUChar(17,stupidNewSageColumns[curLocation],maxInternalStructure[curLocation]);
+		result = mechCSVFile.readUCHAR(17,stupidNewSageColumns[curLocation],maxInternalStructure[curLocation]);
 		if (result != NO_ERR)
 			return(result);
 	}
@@ -1413,8 +1413,8 @@ long BattleMech::init (DWORD variantNum)
 
 	mechFile->readLong( 12, 2, iconPictureIndex );
 
-	unsigned char speed;	
-	mechFile->readUChar(7,5,speed);
+	uint8_t speed;	
+	mechFile->readUCHAR(7,5,speed);
 	maxMoveSpeed = (float)speed;
 
 	result = mechFile->readString( 23 + ( 97 * variantNum ), 2, variantName, 63 );
@@ -1430,60 +1430,60 @@ long BattleMech::init (DWORD variantNum)
 
 	status = 0;
 
-	mechFile->readUChar(18,2,armor[MECH_ARMOR_LOCATION_HEAD].maxArmor);
+	mechFile->readUCHAR(18,2,armor[MECH_ARMOR_LOCATION_HEAD].maxArmor);
 
-	mechFile->readUChar(18,7,armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor);
+	mechFile->readUCHAR(18,7,armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor);
 
-	mechFile->readUChar(18,5,armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor);
+	mechFile->readUCHAR(18,5,armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor);
 
-	mechFile->readUChar(18,6,armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor);
+	mechFile->readUCHAR(18,6,armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor);
 	
-	mechFile->readUChar(18,3,armor[MECH_ARMOR_LOCATION_LARM].maxArmor);
+	mechFile->readUCHAR(18,3,armor[MECH_ARMOR_LOCATION_LARM].maxArmor);
 
-	mechFile->readUChar(18,4,armor[MECH_ARMOR_LOCATION_RARM].maxArmor);
+	mechFile->readUCHAR(18,4,armor[MECH_ARMOR_LOCATION_RARM].maxArmor);
 
-	mechFile->readUChar(18,8,armor[MECH_ARMOR_LOCATION_LLEG].maxArmor);
+	mechFile->readUCHAR(18,8,armor[MECH_ARMOR_LOCATION_LLEG].maxArmor);
 
-	mechFile->readUChar(18,9,armor[MECH_ARMOR_LOCATION_RLEG].maxArmor);
+	mechFile->readUCHAR(18,9,armor[MECH_ARMOR_LOCATION_RLEG].maxArmor);
 
-	mechFile->readUChar(18,12,armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor);
+	mechFile->readUCHAR(18,12,armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor);
 
-	mechFile->readUChar(18,10,armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor);
+	mechFile->readUCHAR(18,10,armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor);
 
-	mechFile->readUChar(18,11,armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor);
+	mechFile->readUCHAR(18,11,armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor);
 
-	unsigned char currentArmor;
-	mechFile->readUChar(115 + (97 * variantNum),2,currentArmor);
+	uint8_t currentArmor;
+	mechFile->readUCHAR(115 + (97 * variantNum),2,currentArmor);
 	armor[MECH_ARMOR_LOCATION_HEAD].curArmor = currentArmor;
 
-	mechFile->readUChar(115 + (97 * variantNum),7,currentArmor);
+	mechFile->readUCHAR(115 + (97 * variantNum),7,currentArmor);
 	armor[MECH_ARMOR_LOCATION_CTORSO].curArmor = currentArmor;
 
-	mechFile->readUChar(115 + (97 * variantNum),5,currentArmor);
+	mechFile->readUCHAR(115 + (97 * variantNum),5,currentArmor);
 	armor[MECH_ARMOR_LOCATION_LTORSO].curArmor = currentArmor;
 
-	mechFile->readUChar(115 + (97 * variantNum),6,currentArmor);
+	mechFile->readUCHAR(115 + (97 * variantNum),6,currentArmor);
 	armor[MECH_ARMOR_LOCATION_RTORSO].curArmor = currentArmor;
 
-	mechFile->readUChar(115 + (97 * variantNum),3,currentArmor);
+	mechFile->readUCHAR(115 + (97 * variantNum),3,currentArmor);
 	armor[MECH_ARMOR_LOCATION_LARM].curArmor = currentArmor;
 
-	mechFile->readUChar(115 + (97 * variantNum),4,currentArmor);
+	mechFile->readUCHAR(115 + (97 * variantNum),4,currentArmor);
 	armor[MECH_ARMOR_LOCATION_RARM].curArmor = currentArmor;
 
-	mechFile->readUChar(115 + (97 * variantNum),8,currentArmor);
+	mechFile->readUCHAR(115 + (97 * variantNum),8,currentArmor);
 	armor[MECH_ARMOR_LOCATION_LLEG].curArmor = currentArmor;
 
-	mechFile->readUChar(115 + (97 * variantNum),9,currentArmor);
+	mechFile->readUCHAR(115 + (97 * variantNum),9,currentArmor);
 	armor[MECH_ARMOR_LOCATION_RLEG].curArmor = currentArmor;
 
-	mechFile->readUChar(115 + (97 * variantNum),12,currentArmor);
+	mechFile->readUCHAR(115 + (97 * variantNum),12,currentArmor);
 	armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor = currentArmor;
 
-	mechFile->readUChar(115 + (97 * variantNum),10,currentArmor);
+	mechFile->readUCHAR(115 + (97 * variantNum),10,currentArmor);
 	armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor = currentArmor;
 
-	mechFile->readUChar(115 + (97 * variantNum),11,currentArmor);
+	mechFile->readUCHAR(115 + (97 * variantNum),11,currentArmor);
 	armor[MECH_ARMOR_LOCATION_RRTORSO].curArmor = currentArmor;
 
 	//---------------------------------------------------------------------------
@@ -1501,7 +1501,7 @@ long BattleMech::init (DWORD variantNum)
 	//Read in everything but weapons and AMMO
 	for (long curItem = 0;curItem < MAX_MOVER_INVENTORY_ITEMS;curItem++)
 	{
-		mechFile->readUChar((26 + (97 * variantNum)) + curItem, 5, inventory[realItemNum].masterID);
+		mechFile->readUCHAR((26 + (97 * variantNum)) + curItem, 5, inventory[realItemNum].masterID);
 		
 		if (inventory[realItemNum].masterID && (inventory[realItemNum].masterID != 255))
 		{
@@ -1558,7 +1558,7 @@ long BattleMech::init (DWORD variantNum)
 	//NOW read in the weapons.
 	for (curItem = 0;curItem < MAX_MOVER_INVENTORY_ITEMS;curItem++)
 	{
-		mechFile->readUChar((26 + (97 * variantNum)) + curItem, 5, inventory[realItemNum].masterID);
+		mechFile->readUCHAR((26 + (97 * variantNum)) + curItem, 5, inventory[realItemNum].masterID);
 		
 		if (inventory[realItemNum].masterID && (inventory[realItemNum].masterID != 255))
 		{
@@ -1626,7 +1626,7 @@ long BattleMech::init (DWORD variantNum)
 	//NOW read in the AMMO
 	for (curItem = 0;curItem < MAX_MOVER_INVENTORY_ITEMS;curItem++)
 	{
-		mechFile->readUChar((26 + (97 * variantNum)) + curItem, 5, inventory[realItemNum].masterID);
+		mechFile->readUCHAR((26 + (97 * variantNum)) + curItem, 5, inventory[realItemNum].masterID);
 		
 		if (inventory[realItemNum].masterID && (inventory[realItemNum].masterID != 255))
 		{
@@ -1695,8 +1695,8 @@ long BattleMech::init (DWORD variantNum)
 	{
 		body[curLocation].CASE = true;	//ALL MC2 Mechs have CASE everywhere.
 
-		unsigned char internalStructure;
-		mechFile->readUChar(114 + (97 * variantNum), stupidNewSageColumns[curLocation], internalStructure);
+		uint8_t internalStructure;
+		mechFile->readUCHAR(114 + (97 * variantNum), stupidNewSageColumns[curLocation], internalStructure);
 		body[curLocation].curInternalStructure = internalStructure;
 
 		//---------------------------------------------------------
@@ -1716,8 +1716,8 @@ long BattleMech::init (DWORD variantNum)
 
 		for (long curSpace = 0; curSpace < numSpaces; curSpace++)
 		{
-			unsigned char spaceData;
-			mechFile->readUChar((102 + (97*variantNum))+curSpace,stupidNewSageColumns[curLocation], spaceData);
+			uint8_t spaceData;
+			mechFile->readUCHAR((102 + (97*variantNum))+curSpace,stupidNewSageColumns[curLocation], spaceData);
 			spaceData = ItemLocationToInvLocation[spaceData];
 			
 			body[curLocation].criticalSpaces[curSpace].inventoryID = spaceData;
@@ -2479,7 +2479,7 @@ void BattleMech::resetComponents (long totalComponents, long *componentList)
 		for (long curSpace = 0; curSpace < numSpaces; curSpace++)
 		{
 			//Find out where in the space table this location lies.
-			unsigned char spaceData = 0xff;
+			uint8_t spaceData = 0xff;
 			for (long curTable = 0;curTable < MAX_MOVER_INVENTORY_ITEMS;curTable++)
 			{
 				if ((logisticsTable[curTable].bodyLocation == curLocation) &&
@@ -2743,16 +2743,16 @@ long BattleMech::init (FitIniFile* mechFile) {
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("HeatSinkType", heatSinkType);
+	result = mechFile->readIdUCHAR("HeatSinkType", heatSinkType);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("ExtraHeatSinks", extraHeatSinks);
+	result = mechFile->readIdUCHAR("ExtraHeatSinks", extraHeatSinks);
 	if (result != NO_ERR)
 		return(result);
 
-	unsigned char heat;
-	result = mechFile->readIdUChar("HeatBuildUp", heat);
+	uint8_t heat;
+	result = mechFile->readIdUCHAR("HeatBuildUp", heat);
 	if (result != NO_ERR)
 		return(result);
 	heat = (float)heat;
@@ -2766,8 +2766,8 @@ long BattleMech::init (FitIniFile* mechFile) {
 	if (result != NO_ERR)
 		return(result);
 
-	unsigned char speed;	
-	result = mechFile->readIdUChar("MaxRunSpeed", speed);
+	uint8_t speed;	
+	result = mechFile->readIdUCHAR("MaxRunSpeed", speed);
 	if (result != NO_ERR)
 		return(result);
 	maxMoveSpeed = (float)speed;
@@ -2801,47 +2801,47 @@ long BattleMech::init (FitIniFile* mechFile) {
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("Head", armor[MECH_ARMOR_LOCATION_HEAD].maxArmor);
+	result = mechFile->readIdUCHAR("Head", armor[MECH_ARMOR_LOCATION_HEAD].maxArmor);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("CenterTorso", armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor);
+	result = mechFile->readIdUCHAR("CenterTorso", armor[MECH_ARMOR_LOCATION_CTORSO].maxArmor);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("LeftTorso", armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor);
+	result = mechFile->readIdUCHAR("LeftTorso", armor[MECH_ARMOR_LOCATION_LTORSO].maxArmor);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("RightTorso", armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor);
+	result = mechFile->readIdUCHAR("RightTorso", armor[MECH_ARMOR_LOCATION_RTORSO].maxArmor);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("LeftArm", armor[MECH_ARMOR_LOCATION_LARM].maxArmor);
+	result = mechFile->readIdUCHAR("LeftArm", armor[MECH_ARMOR_LOCATION_LARM].maxArmor);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("RightArm", armor[MECH_ARMOR_LOCATION_RARM].maxArmor);
+	result = mechFile->readIdUCHAR("RightArm", armor[MECH_ARMOR_LOCATION_RARM].maxArmor);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("LeftLeg", armor[MECH_ARMOR_LOCATION_LLEG].maxArmor);
+	result = mechFile->readIdUCHAR("LeftLeg", armor[MECH_ARMOR_LOCATION_LLEG].maxArmor);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("RightLeg", armor[MECH_ARMOR_LOCATION_RLEG].maxArmor);
+	result = mechFile->readIdUCHAR("RightLeg", armor[MECH_ARMOR_LOCATION_RLEG].maxArmor);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("RearCenterTorso", armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor);
+	result = mechFile->readIdUCHAR("RearCenterTorso", armor[MECH_ARMOR_LOCATION_RCTORSO].maxArmor);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("RearLeftTorso", armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor);
+	result = mechFile->readIdUCHAR("RearLeftTorso", armor[MECH_ARMOR_LOCATION_RLTORSO].maxArmor);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("RearRightTorso", armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor);
+	result = mechFile->readIdUCHAR("RearRightTorso", armor[MECH_ARMOR_LOCATION_RRTORSO].maxArmor);
 	if (result != NO_ERR)
 		return(result);
 
@@ -2849,68 +2849,68 @@ long BattleMech::init (FitIniFile* mechFile) {
 	if (result != NO_ERR)
 		return(result);
 
-	unsigned char currentArmor;
-	result = mechFile->readIdUChar("Head", currentArmor);
+	uint8_t currentArmor;
+	result = mechFile->readIdUCHAR("Head", currentArmor);
 	if (result != NO_ERR)
 		return(result);
 
 	armor[MECH_ARMOR_LOCATION_HEAD].curArmor = currentArmor;
 
-	result = mechFile->readIdUChar("CenterTorso", currentArmor);
+	result = mechFile->readIdUCHAR("CenterTorso", currentArmor);
 	if (result != NO_ERR)
 		return(result);
 
 	armor[MECH_ARMOR_LOCATION_CTORSO].curArmor = currentArmor;
 
-	result = mechFile->readIdUChar("LeftTorso", currentArmor);
+	result = mechFile->readIdUCHAR("LeftTorso", currentArmor);
 	if (result != NO_ERR)
 		return(result);
 
 	armor[MECH_ARMOR_LOCATION_LTORSO].curArmor = currentArmor;
 
-	result = mechFile->readIdUChar("RightTorso", currentArmor);
+	result = mechFile->readIdUCHAR("RightTorso", currentArmor);
 	if (result != NO_ERR)
 		return(result);
 
 	armor[MECH_ARMOR_LOCATION_RTORSO].curArmor = currentArmor;
 
-	result = mechFile->readIdUChar("LeftArm", currentArmor);
+	result = mechFile->readIdUCHAR("LeftArm", currentArmor);
 	if (result != NO_ERR)
 		return(result);
 
 	armor[MECH_ARMOR_LOCATION_LARM].curArmor = currentArmor;
 
-	result = mechFile->readIdUChar("RightArm", currentArmor);
+	result = mechFile->readIdUCHAR("RightArm", currentArmor);
 	if (result != NO_ERR)
 		return(result);
 
 	armor[MECH_ARMOR_LOCATION_RARM].curArmor = currentArmor;
 
-	result = mechFile->readIdUChar("LeftLeg", currentArmor);
+	result = mechFile->readIdUCHAR("LeftLeg", currentArmor);
 	if (result != NO_ERR)
 		return(result);
 
 	armor[MECH_ARMOR_LOCATION_LLEG].curArmor = currentArmor;
 
-	result = mechFile->readIdUChar("RightLeg", currentArmor);
+	result = mechFile->readIdUCHAR("RightLeg", currentArmor);
 	if (result != NO_ERR)
 		return(result);
 
 	armor[MECH_ARMOR_LOCATION_RLEG].curArmor = currentArmor;
 
-	result = mechFile->readIdUChar("RearCenterTorso", currentArmor);
+	result = mechFile->readIdUCHAR("RearCenterTorso", currentArmor);
 	if (result != NO_ERR)
 		return(result);
 
 	armor[MECH_ARMOR_LOCATION_RCTORSO].curArmor = currentArmor;
 
-	result = mechFile->readIdUChar("RearLeftTorso", currentArmor);
+	result = mechFile->readIdUCHAR("RearLeftTorso", currentArmor);
 	if (result != NO_ERR)
 		return(result);
 
 	armor[MECH_ARMOR_LOCATION_RLTORSO].curArmor = currentArmor;
 
-	result = mechFile->readIdUChar("RearRightTorso", currentArmor);
+	result = mechFile->readIdUCHAR("RearRightTorso", currentArmor);
 	if (result != NO_ERR)
 		return(result);
 
@@ -2922,15 +2922,15 @@ long BattleMech::init (FitIniFile* mechFile) {
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("NumOther", numOther);
+	result = mechFile->readIdUCHAR("NumOther", numOther);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("NumWeapons", numWeapons);
+	result = mechFile->readIdUCHAR("NumWeapons", numWeapons);
 	if (result != NO_ERR)
 		return(result);
 
-	result = mechFile->readIdUChar("NumAmmo", numAmmos);
+	result = mechFile->readIdUCHAR("NumAmmo", numAmmos);
 	if (result != NO_ERR)
 		return(result);
 
@@ -2949,7 +2949,7 @@ long BattleMech::init (FitIniFile* mechFile) {
 		if (result != NO_ERR)
 			return(result);
 
-		result = mechFile->readIdUChar("MasterID", inventory[curItem].masterID);
+		result = mechFile->readIdUCHAR("MasterID", inventory[curItem].masterID);
 		if (result != NO_ERR)
 			return(result);
 		inventory[curItem].health = MasterComponent::masterList[inventory[curItem].masterID].getHealth();
@@ -2984,11 +2984,11 @@ long BattleMech::init (FitIniFile* mechFile) {
 		if (result != NO_ERR)
 			return(result);
 
-		result = mechFile->readIdUChar("MasterID", inventory[curItem].masterID);
+		result = mechFile->readIdUCHAR("MasterID", inventory[curItem].masterID);
 		if (result != NO_ERR)
 			return(result);
 
-		result = mechFile->readIdUChar("FacesForward", inventory[curItem].facing);
+		result = mechFile->readIdUCHAR("FacesForward", inventory[curItem].facing);
 		if (result != NO_ERR)
 			return(result);
 
@@ -3017,15 +3017,15 @@ long BattleMech::init (FitIniFile* mechFile) {
 		if (result != NO_ERR)
 			return(result);
 
-		result = mechFile->readIdUChar("MasterID", inventory[curItem].masterID);
+		result = mechFile->readIdUCHAR("MasterID", inventory[curItem].masterID);
 		if (result != NO_ERR)
 			return(result);
 
 		long itemAmount;
 		result = mechFile->readIdLong("Amount", itemAmount);
 		if (result != NO_ERR) {
-			unsigned char itemAmount2;
-			result = mechFile->readIdUChar("Amount", itemAmount2);
+			uint8_t itemAmount2;
+			result = mechFile->readIdUCHAR("Amount", itemAmount2);
 			if (result != NO_ERR)
 				return(result);
 			else
@@ -3062,20 +3062,20 @@ long BattleMech::init (FitIniFile* mechFile) {
 		if (result != NO_ERR)
 			return(result);
 
-		unsigned char caseHere;
-		result = mechFile->readIdUChar("CASE", caseHere);
+		uint8_t caseHere;
+		result = mechFile->readIdUCHAR("CASE", caseHere);
 		if (result != NO_ERR)
 			return(result);
 		body[curLocation].CASE = caseHere ? true : false;
 
-		unsigned char internalStructure;
-		result = mechFile->readIdUChar("CurInternalStructure", internalStructure);
+		uint8_t internalStructure;
+		result = mechFile->readIdUCHAR("CurInternalStructure", internalStructure);
 		if (result != NO_ERR)
 			return(result);
 
 		body[curLocation].curInternalStructure = internalStructure;
 
-		result = mechFile->readIdUChar("HotSpotNumber", body[curLocation].hotSpotNumber);
+		result = mechFile->readIdUCHAR("HotSpotNumber", body[curLocation].hotSpotNumber);
 		if (result != NO_ERR)
 			return(result);
 
@@ -3098,8 +3098,8 @@ long BattleMech::init (FitIniFile* mechFile) {
 		{
 			char componentString[128];
 			sprintf(componentString, "Component:%d", curSpace);
-			unsigned char spaceData[2];
-			result = mechFile->readIdUCharArray(componentString, spaceData, 2);
+			uint8_t spaceData[2];
+			result = mechFile->readIdUCHARArray(componentString, spaceData, 2);
 
 			if (result != NO_ERR)
 				return(result);
@@ -7107,7 +7107,7 @@ void BattleMech::handleCriticalHit (long bodyLocation, long criticalSpace) {
 long BattleMech::updateCriticalHitChunks (long which) {
 
 	for (long i = 0; i < numCriticalHitChunks[which]; i++) {
-		unsigned char chunkData = criticalHitChunks[which][i];
+		uint8_t chunkData = criticalHitChunks[which][i];
 		long criticalSpace = chunkData & 0x0F;
 		long bodyLocation = (chunkData >> 4);
 		handleCriticalHit(bodyLocation, criticalSpace);
@@ -8062,7 +8062,7 @@ long BattleMech::fireWeapon (GameObjectPtr target, float targetTime, long weapon
 
 			//--------------------------------------------------------
 			// a MissileGen Object is ALL missiles--clusters no more:)
-			unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 
 			//--------------------------------------------------
 			// Need to know which hotspot this comes from.
@@ -8211,7 +8211,7 @@ long BattleMech::fireWeapon (GameObjectPtr target, float targetTime, long weapon
 				LogWeaponFireChunk(&chunk, this, target);
 			}
 
-			unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			if (!weaponFX)
 			{
@@ -8359,7 +8359,7 @@ long BattleMech::fireWeapon (GameObjectPtr target, float targetTime, long weapon
 						}
 	
 					//-------------------------------------------------------------------
-					unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+					uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 					weaponFX = ObjectManager->createWeaponBolt(effectType);
 					if (!weaponFX)
 					{
@@ -8469,7 +8469,7 @@ long BattleMech::fireWeapon (GameObjectPtr target, float targetTime, long weapon
 					LogWeaponFireChunk(&chunk, this, target);
 				}
 	
-				unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+				uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 				weaponFX = ObjectManager->createWeaponBolt(effectType);
 				if (!weaponFX)
 				{
@@ -8577,7 +8577,7 @@ long BattleMech::handleWeaponFire (long weaponIndex,
 
 			//------------------
 			// Clusters no more!
-			unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 
 			if (numMissiles > 0) {
 				//-------------------------------------------------------------------
@@ -8638,7 +8638,7 @@ long BattleMech::handleWeaponFire (long weaponIndex,
 				hitLocation,
 				entryAngle);
 
-			unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			
 			if (!weaponFX) 
@@ -8691,7 +8691,7 @@ long BattleMech::handleWeaponFire (long weaponIndex,
 			if (numMissiles) {
 				//------------------
 				// Clusters no more!
-				unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+				uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 				weaponFX = ObjectManager->createWeaponBolt(effectType);
 				
 				if (!weaponFX) 
@@ -8732,7 +8732,7 @@ long BattleMech::handleWeaponFire (long weaponIndex,
 				-1,
 				entryAngle);
 
-			unsigned char effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponSpecialEffect();
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			
 			if (!weaponFX) 
@@ -9044,7 +9044,7 @@ void BattleMech::CopyTo (MechData *data)
 	data->legStatus 					                        = legStatus;                                           
 	data->torsoStatus 				                            = torsoStatus;                                         
 																													 
-	memcpy(data->actuator,actuator, sizeof(unsigned char) * NUM_ACTUATORS);
+	memcpy(data->actuator,actuator, sizeof(uint8_t) * NUM_ACTUATORS);
 
 	data->gyro 						                            = gyro;                                                
 
@@ -9121,7 +9121,7 @@ void BattleMech::Load (MechData *data)
 	legStatus 					                        = data->legStatus;                                           
 	torsoStatus 				                        = data->torsoStatus;                                         
 																													 
-	memcpy(actuator,data->actuator, sizeof(unsigned char) * NUM_ACTUATORS);
+	memcpy(actuator,data->actuator, sizeof(uint8_t) * NUM_ACTUATORS);
 
 	gyro 						                        = data->gyro;                                                
 																													 

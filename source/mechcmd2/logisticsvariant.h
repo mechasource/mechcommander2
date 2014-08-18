@@ -168,7 +168,7 @@ protected:
 
 		const LogisticsChassis* getChassis() const { return chassis; }
 		bool			addComponent( int idFromFitFile, long& x, long& y );
-		void			setName( const char* name ); // will allocate for you
+		void			setName( PCSTR name ); // will allocate for you
 
 		void		setAvailable( bool available );
 

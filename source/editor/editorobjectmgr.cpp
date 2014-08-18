@@ -198,13 +198,13 @@ void EditorObjectMgr::clear()
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::init( const char* bldgListFileName, const char* objectFileName )
+void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 {
 	File lstFile;
 
 	lstFile.open( const_cast< char* >(bldgListFileName) );
 
-	unsigned char buffer[512];
+	uint8_t buffer[512];
 
 	lstFile.readLine( buffer, 512 );
 	PacketFile objectFile;
@@ -230,7 +230,7 @@ void EditorObjectMgr::init( const char* bldgListFileName, const char* objectFile
 		
 		char tmpBuffer[64];
 		int  bufferLength = 64;
-		unsigned char* pCur = buffer;
+		PUCHAR pCur = buffer;
 		char GroupName[64];
 
 		// extract the file name
@@ -409,7 +409,7 @@ void EditorObjectMgr::init( const char* bldgListFileName, const char* objectFile
 
 
 
-int EditorObjectMgr::ExtractNextString( unsigned char*& pFileLine, char* pBuffer, int bufferLength )
+int EditorObjectMgr::ExtractNextString( PUCHAR& pFileLine, char* pBuffer, int bufferLength )
 {
 	for ( int i = 0; i < 512; ++i )
 	{
@@ -435,7 +435,7 @@ int EditorObjectMgr::ExtractNextString( unsigned char*& pFileLine, char* pBuffer
 }
 
 //---------------------------------------------------------------------------
-long textToLong (const char *num)
+long textToLong (PCSTR num)
 {
 	long result = 0;
 	
@@ -462,7 +462,7 @@ long textToLong (const char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -486,7 +486,7 @@ long textToLong (const char *num)
 	return(result);
 }
 
-int EditorObjectMgr::ExtractNextInt( unsigned char*& pFileLine )
+int EditorObjectMgr::ExtractNextInt( PUCHAR& pFileLine )
 {
 	char buffer[1024];
 
@@ -500,7 +500,7 @@ int EditorObjectMgr::ExtractNextInt( unsigned char*& pFileLine )
 	return -1;
 }
 
-float EditorObjectMgr::ExtractNextFloat( unsigned char*& pFileLine )
+float EditorObjectMgr::ExtractNextFloat( PUCHAR& pFileLine )
 {
 	char buffer[1024];
 
@@ -865,7 +865,7 @@ int EditorObjectMgr::getNumberBuildingsInGroup( int group ) const
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::getBuildingGroupNames( const char** names, int& NumberOfNames ) const
+void EditorObjectMgr::getBuildingGroupNames( PCSTR* names, int& NumberOfNames ) const
 {
 	if ( NumberOfNames < groups.Count() )
 		NumberOfNames = groups.Count();
@@ -882,7 +882,7 @@ void EditorObjectMgr::getBuildingGroupNames( const char** names, int& NumberOfNa
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::getBuildingNamesInGroup( int group, const char** names, int& NumberOfNames ) const
+void EditorObjectMgr::getBuildingNamesInGroup( int group, PCSTR* names, int& NumberOfNames ) const
 {
 	Group* pGroup = &groups[group];
 	
@@ -1218,7 +1218,7 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
 	int pos = file.getLogicalPosition();
 	file.seek( 0 );
 
-	if ( !PakFile.writePacket( whichPacket, (unsigned char*)pBuffer, pos ) )
+	if ( !PakFile.writePacket( whichPacket, (PUCHAR)pBuffer, pos ) )
 	{
 		gosASSERT( false );
 	}
@@ -1259,7 +1259,7 @@ bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
 	PakFile.seekPacket( whichPacket );
 	int size = PakFile.getPacketSize( );
 	char* pBuffer = (char *)malloc(size);
-	PakFile.readPacket( whichPacket, (unsigned char*)pBuffer );
+	PakFile.readPacket( whichPacket, (PUCHAR)pBuffer );
 	
 	File file;
 	file.open( pBuffer, size );
@@ -2676,17 +2676,17 @@ void EditorObjectMgr::deleteLink( BuildingLink* pLink )
 	}
 }
 
-const char*	EditorObjectMgr::getObjectName( int ID ) const
+PCSTR	EditorObjectMgr::getObjectName( int ID ) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].name;
 }
 
-const char* EditorObjectMgr::getGroupName( int ID ) const
+PCSTR EditorObjectMgr::getGroupName( int ID ) const
 {
 	return groups[ID].name;
 }
 
-void EditorObjectMgr::getUnitGroupNames( const char** names, int* ids, int& numberOfEm ) const
+void EditorObjectMgr::getUnitGroupNames( PCSTR* names, int* ids, int& numberOfEm ) const
 {
 	int counter = 0;
 	int index = 0;
@@ -2750,7 +2750,7 @@ int			EditorObjectMgr::getNumberOfVariants( int group, int indexInGroup ) const
 		return i + 1;			
 }
 
-void		EditorObjectMgr::getVariantNames( int group, int indexInGroup, const char** names, int& numberOfNames ) const
+void		EditorObjectMgr::getVariantNames( int group, int indexInGroup, PCSTR* names, int& numberOfNames ) const
 {
 	Building bldg = groups[group].buildings[indexInGroup];
 

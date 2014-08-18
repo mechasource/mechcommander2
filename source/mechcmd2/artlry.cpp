@@ -1317,7 +1317,7 @@ void Artillery::setSensorData (TeamPtr team, float sensorTime, float range)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::drawSelectBox (unsigned char color) 
+void Artillery::drawSelectBox (uint8_t color) 
 {
 }
 	

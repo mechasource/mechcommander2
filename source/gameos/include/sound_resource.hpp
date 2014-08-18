@@ -15,9 +15,9 @@ struct SoundResource
 			m_Type;			// Specifies which other structure members are valid
 		char *	
 			m_FileName;	// SOUNDTYPE_FILE and SOUNDTYPE_STREAMINGFILE
-		unsigned char *	
+		PUCHAR	
 			m_FileDataPointer;	// SOUNDTYPE_MEMORY
-		unsigned char *	
+		PUCHAR	
 			m_DataPointer;		// SOUNDTYPE_MEMORY
 		DWORD		
 			m_FileLength,		// SOUNDTYPE_MEMORY only
@@ -59,7 +59,7 @@ struct SoundResource
 	public:
 		SoundResource
 		(
-			const char * file_name,
+			PCSTR  file_name,
 			enum gosAudio_ResourceType rt,
 			bool only2D
 		);
@@ -67,19 +67,19 @@ struct SoundResource
 		(
 			void * data,
 			gosAudio_Format * wf,
-			const char * caching_nametag,
+			PCSTR  caching_nametag,
 			int size,
 			bool only2D
 		);
 		SoundResource
 		(
-			const char * name,
+			PCSTR  name,
 			gosAudio_PlayList * playlist,
 			bool only2D
 		);
 		SoundResource
 		(
-			const char * identifier_name,
+			PCSTR  identifier_name,
 			HGOSFILE file,
 			DWORD offset,
 			bool only2D
@@ -89,9 +89,9 @@ struct SoundResource
 		~SoundResource();
 		void GetWaveInfo
 			( 
-				unsigned char * lpBuffer,
+				PUCHAR lpBuffer,
 				WAVEFORMATEX *lplpWaveFormatEX,
-				unsigned char  **lplpWaveData,
+				PUCHAR* lplpWaveData,
 				DWORD *lpWaveSize 
 			);
 		void LoadFile();

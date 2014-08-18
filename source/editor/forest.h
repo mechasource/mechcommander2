@@ -33,11 +33,11 @@ public:
 	void save( FitIniFile& file );
 
 
-	const char* getFileName() const { return fileName; }
-	void		setFileName( const char* newName ){ fileName = newName; }
+	PCSTR getFileName() const { return fileName; }
+	void		setFileName( PCSTR newName ){ fileName = newName; }
 
-	const char* getName() const { return name;}
-	void		setName( const char* newName ){ name = newName; }
+	PCSTR getName() const { return name;}
+	void		setName( PCSTR newName ){ name = newName; }
 
 	long		getID() const { return ID; }
 	

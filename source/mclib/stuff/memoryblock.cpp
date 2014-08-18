@@ -37,7 +37,7 @@ MemoryBlockBase::MemoryBlockBase(
 	size_t rec_size,
 	size_t start,
 	size_t delta,
-	const char* name,
+	PCSTR name,
 	HGOSHEAP parent
 )
 {
@@ -333,7 +333,7 @@ void
 static int
 	compare_function(const void* a, const void* b)
 {
-	return static_cast<const char*>(a) - static_cast<const char*>(b);
+	return static_cast<PCSTR>(a) - static_cast<PCSTR>(b);
 }
 #endif
 

@@ -100,16 +100,16 @@ void BitFlag::setFlag (unsigned long r, unsigned long c)
 	//-------------------------------
 	// find out where we are setting.
 	unsigned long location = (c>>3) + (r*colWidth);
-	unsigned char shiftValue = (c % divValue);
+	uint8_t shiftValue = (c % divValue);
 
 	//----------------------------------------
 	// find the location we care about.
-	unsigned char *bitResult = flagHeap->getHeapPtr();
+	PUCHAR bitResult = flagHeap->getHeapPtr();
 	bitResult += location;
 
 	//----------------------------------------
 	// Shift bits to correct place.
-	unsigned char bits = 1;
+	uint8_t bits = 1;
 	bits <<= shiftValue;
 	*bitResult |= bits;
 }	
@@ -125,18 +125,18 @@ void BitFlag::setGroup (unsigned long r, unsigned long c, unsigned long length)
 		//-------------------------------
 		// find out where we are setting.
 		unsigned long location = (c>>3) + (r*colWidth);
-		unsigned char shiftValue = (c % divValue);
+		uint8_t shiftValue = (c % divValue);
 	
 		//----------------------------------------
 		// find the location we care about.
-		unsigned char *bitResult = flagHeap->getHeapPtr();
+		PUCHAR bitResult = flagHeap->getHeapPtr();
 		bitResult += location;
 	
 		//--------------------------------------------------
 		// We are only setting bits in the current location
 		if ((8 - shiftValue) >= (long)length)
 		{
-			unsigned char startVal = 1;
+			uint8_t startVal = 1;
 			unsigned long repeatVal = length;
 			for (long i=0;i<long(repeatVal-1);i++)
 			{
@@ -146,7 +146,7 @@ void BitFlag::setGroup (unsigned long r, unsigned long c, unsigned long length)
 			
 			//----------------------------------------
 			// Shift bits to correct place.
-			unsigned char bits = startVal;
+			uint8_t bits = startVal;
 			bits <<= shiftValue;
 			*bitResult |= bits;
 			length -= repeatVal;
@@ -158,7 +158,7 @@ void BitFlag::setGroup (unsigned long r, unsigned long c, unsigned long length)
 			// Remember Intel Architecture (MSB -> LSB)
 			if (shiftValue)
 			{
-				unsigned char startVal = 1;
+				uint8_t startVal = 1;
 				unsigned long repeatVal = (8-shiftValue);
 				for (long i=0;i<long(repeatVal-1);i++)
 				{
@@ -168,7 +168,7 @@ void BitFlag::setGroup (unsigned long r, unsigned long c, unsigned long length)
 			
 				//----------------------------------------
 				// Shift bits to correct place.
-				unsigned char bits = startVal;
+				uint8_t bits = startVal;
 				bits <<= shiftValue;
 				*bitResult |= bits;
 				length -= repeatVal;
@@ -184,7 +184,7 @@ void BitFlag::setGroup (unsigned long r, unsigned long c, unsigned long length)
 			if (length)
 			{
 				bitResult++;
-				unsigned char startVal = 1;
+				uint8_t startVal = 1;
 				for (long i=0;i<long(length-1);i++)
 				{
 					startVal<<=1;
@@ -193,7 +193,7 @@ void BitFlag::setGroup (unsigned long r, unsigned long c, unsigned long length)
 			
 				//----------------------------------------
 				// Shift bits to correct place.
-				unsigned char bits = startVal;
+				uint8_t bits = startVal;
 				*bitResult |= bits;
 			}
 		}
@@ -201,7 +201,7 @@ void BitFlag::setGroup (unsigned long r, unsigned long c, unsigned long length)
 }
 
 //------------------------------------------------------------------------
-unsigned char BitFlag::getFlag (unsigned long r, unsigned long c)
+uint8_t BitFlag::getFlag (unsigned long r, unsigned long c)
 {
 	if ((r < 0) || (r >= rows) || (c < 0) || (c > columns))
 		return 0;
@@ -209,16 +209,16 @@ unsigned char BitFlag::getFlag (unsigned long r, unsigned long c)
 	//------------------------------------
 	// Find out where we are getting from
 	unsigned long location = (c>>3) + (r*colWidth);
-	unsigned char shiftValue = (c % divValue);
+	uint8_t shiftValue = (c % divValue);
 
 	//-------------------------------------
 	// Create mask to remove unwanted bits
-	unsigned char mask = maskValue;
+	uint8_t mask = maskValue;
 	mask <<= shiftValue;
 		
 	//-------------------------------------
 	// get Location value
-	unsigned char result = *(flagHeap->getHeapPtr() + location);
+	uint8_t result = *(flagHeap->getHeapPtr() + location);
 	
 	//-------------------------------------
 	// mask then shift Bits
@@ -341,14 +341,14 @@ void ByteFlag::initTGA (char *tgaFileName)
 }	
 
 //------------------------------------------------------------------------
-void ByteFlag::setCircle (unsigned long x, unsigned long y, unsigned long radius, unsigned char value)
+void ByteFlag::setCircle (unsigned long x, unsigned long y, unsigned long radius, uint8_t value)
 {
 	if (radius)
 		AG_ellipse_fillOr(flagPane,x,y,radius,radius,value);
 }	
 
 //------------------------------------------------------------------------
-void ByteFlag::clearCircle (unsigned long x, unsigned long y, unsigned long radius, unsigned char value)
+void ByteFlag::clearCircle (unsigned long x, unsigned long y, unsigned long radius, uint8_t value)
 {
 	if (radius)
 		AG_ellipse_fillXor(flagPane,x,y,radius,radius,value);
@@ -397,7 +397,7 @@ void ByteFlag::setFlag (unsigned long r, unsigned long c)
 
 	//----------------------------------------
 	// find the location we care about.
-	unsigned char *bitResult = flagHeap->getHeapPtr();
+	PUCHAR bitResult = flagHeap->getHeapPtr();
 	bitResult += location;
 
 	//--------------------------------------------
@@ -419,7 +419,7 @@ void ByteFlag::setGroup (unsigned long r, unsigned long c, unsigned long length)
 	
 		//----------------------------------------
 		// find the location we care about.
-		unsigned char *bitResult = flagHeap->getHeapPtr();
+		PUCHAR bitResult = flagHeap->getHeapPtr();
 		bitResult += location;
 	
 		//--------------------------------------------------
@@ -429,7 +429,7 @@ void ByteFlag::setGroup (unsigned long r, unsigned long c, unsigned long length)
 }
 
 //------------------------------------------------------------------------
-unsigned char ByteFlag::getFlag (unsigned long r, unsigned long c)
+uint8_t ByteFlag::getFlag (unsigned long r, unsigned long c)
 {
 	if ((r < 0) || (r >= rows) || (c < 0) || (c > columns))
 		return 0;
@@ -440,7 +440,7 @@ unsigned char ByteFlag::getFlag (unsigned long r, unsigned long c)
 
 	//-------------------------------------
 	// get Location value
-	unsigned char result = *(flagHeap->getHeapPtr() + location);
+	uint8_t result = *(flagHeap->getHeapPtr() + location);
 	
 	//-------------------
 	// Just return bits.

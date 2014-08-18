@@ -51,7 +51,7 @@ namespace MidLevelRenderer {
 			Save(Stuff::MemoryStream *stream);
 
 	public:
-		virtual	void	InitializeDrawPrimitive(unsigned char, int=0);
+		virtual	void	InitializeDrawPrimitive(uint8_t, int=0);
 
 		virtual int
 			GetNumPrimitives()
@@ -59,7 +59,7 @@ namespace MidLevelRenderer {
 
 		virtual void
 			SetSubprimitiveLengths(
-			unsigned char *length_array,
+			PUCHAR length_array,
 			int subprimitive_count
 			)
 		{
@@ -146,7 +146,7 @@ namespace MidLevelRenderer {
 
 	protected:
 		int numOfTriangles;
-		Stuff::DynamicArrayOf<unsigned char>	testList;
+		Stuff::DynamicArrayOf<uint8_t>	testList;
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
 	};
 

@@ -24,9 +24,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(FogDlg)
 	enum { IDD = IDD_FOG };
-	UCHAR	m_blue;
-	UCHAR	m_green;
-	UCHAR	m_red;
+	uint8_t	m_blue;
+	uint8_t	m_green;
+	uint8_t	m_red;
 	float	m_start;
 	float	m_end;
 	//}}AFX_DATA

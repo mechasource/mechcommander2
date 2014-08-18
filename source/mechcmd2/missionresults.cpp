@@ -116,7 +116,7 @@ void MissionResults::end()
 {
 	//Need to save the game here so salvage and pilot promotion get saved as well!
 	// Pity we never call ::end!
-	const char* pMissionName = LogisticsData::instance->getLastMission();
+	PCSTR pMissionName = LogisticsData::instance->getLastMission();
 
 	if ( pMissionName && !LogisticsData::instance->isSingleMission() && !LogisticsData::instance->campaignOver() && !MPlayer )
 	{
@@ -219,7 +219,7 @@ void MissionResults::render()
 		pPilotScreen->render();
 }
 
-void MissionResults::setHostLeftDlg( const char* pName )
+void MissionResults::setHostLeftDlg( PCSTR pName )
 {
 	if ( MPlayer && mpStats.getStatus() == LogisticsScreen::RUNNING )
 	{

@@ -21,7 +21,7 @@
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
 	Trace::Trace(
-		const char* name,
+		PCSTR name,
 		Type type 
 	):
 		Plug(DefaultData)
@@ -59,7 +59,7 @@
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
-	BitTrace::BitTrace(const char* name):
+	BitTrace::BitTrace(PCSTR name):
 		Trace(name, BitType)
 	{
 		activeLine = NextActiveLine++;
@@ -364,7 +364,7 @@
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
-	const char*
+	PCSTR
 		TraceManager::GetNameOfTrace(int bit_no)
 	{
 		//
@@ -485,7 +485,7 @@
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//
 		void
-			TraceManager::SaveTraceLog(const char* filename)
+			TraceManager::SaveTraceLog(PCSTR filename)
 		{
 			Check_Object(this);
 			if (allocatedTraceLog)

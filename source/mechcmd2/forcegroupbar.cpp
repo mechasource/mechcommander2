@@ -409,7 +409,7 @@ void ForceGroupBar::swapResolutions()
 	
 }
 
-bool ForceGroupBar::setPilotVideo( const char* pVideo, MechWarrior* pPilot )
+bool ForceGroupBar::setPilotVideo( PCSTR pVideo, MechWarrior* pPilot )
 {
 	if ( !pVideo  )
 	{

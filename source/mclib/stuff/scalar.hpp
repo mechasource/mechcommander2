@@ -26,7 +26,7 @@ namespace Stuff {
 	const Scalar Two_Pi=static_cast<Scalar>(2.0*M_PI);
 	const Scalar Degrees_Per_Radian=static_cast<Scalar>(180.0/M_PI);
 	const Scalar Radians_Per_Degree=static_cast<Scalar>(M_PI/180.0);
-	const int FP_ONE_BITS = 0x3F800000;
+	cint32_t FP_ONE_BITS = 0x3F800000;
 
 
 	inline Scalar
@@ -212,7 +212,7 @@ namespace Stuff {
 	}
 
 	inline Scalar
-		AtoF(const char* v)
+		AtoF(PCSTR v)
 	{
 		return static_cast<Scalar>(atof(v));
 	}

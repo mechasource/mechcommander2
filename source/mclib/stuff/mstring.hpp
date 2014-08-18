@@ -143,7 +143,7 @@ namespace Stuff {
 
 		friend void
 			Convert_From_Ascii(
-				const char *str,
+				PCSTR str,
 				MString *value
 			);
 
@@ -153,7 +153,7 @@ namespace Stuff {
 	private:
 		MStringRepresentation();
 		MStringRepresentation(const MStringRepresentation &str);
-		MStringRepresentation(const char *cstr);
+		MStringRepresentation(PCSTR cstr);
 
 	public:
 		~MStringRepresentation();
@@ -197,7 +197,7 @@ namespace Stuff {
 		MStringRepresentation
 			operator = (const MStringRepresentation &str);
 		MStringRepresentation
-			operator = (const char *cstr);
+			operator = (PCSTR cstr);
 
 		//
 		// concatenation methods
@@ -239,7 +239,7 @@ namespace Stuff {
 			operator != (const MStringRepresentation &str) const;
 
 		bool
-			operator == (const char *cstr) const;
+			operator == (PCSTR cstr) const;
 
 		//
 		// character retrieval method
@@ -286,7 +286,7 @@ namespace Stuff {
 
 		friend void
 			Convert_From_Ascii(
-				const char *str,
+				PCSTR str,
 				MStringRepresentation *value
 			);
 
@@ -430,7 +430,7 @@ namespace Stuff {
    }
 
 	inline bool
-		MStringRepresentation::operator == (const char *cstr) const
+		MStringRepresentation::operator == (PCSTR cstr) const
    {
       return (Compare(cstr) == 0);
    }
@@ -508,7 +508,7 @@ namespace Stuff {
 	public:
 		MString();
 		MString(const MString &str);
-		MString(const char *cstr);
+		MString(PCSTR cstr);
 
 		~MString();
 
@@ -553,7 +553,7 @@ namespace Stuff {
 		MString&
 			operator = (const MString &str);
 		MString&
-			operator = (const char *cstr);
+			operator = (PCSTR cstr);
 
 		//
 		// concatenation methods
@@ -572,8 +572,8 @@ namespace Stuff {
 
 		friend bool
 			Close_Enough(
-				const char *str1,
-				const char *str2,
+				PCSTR str1,
+				PCSTR str2,
 				Scalar e = SMALL
 			);
 
@@ -602,7 +602,7 @@ namespace Stuff {
 			operator != (const MString &str) const;
 
 		bool
-			operator == (const char *cstr) const;
+			operator == (PCSTR cstr) const;
 		
 		//
 		// character retrieval method		
@@ -650,7 +650,7 @@ namespace Stuff {
 
 		friend void
 			Convert_From_Ascii(
-				const char *str,
+				PCSTR str,
 				MString *value
 			);
 
@@ -692,7 +692,7 @@ namespace Stuff {
 	}
 
 	inline
-		MString::MString(const char *cstr)
+		MString::MString(PCSTR cstr)
 	{
 		representation = new MStringRepresentation(cstr);
 		Register_Object(representation);
@@ -837,7 +837,7 @@ namespace Stuff {
    }
 
 	inline bool
-		MString::operator == (const char *cstr) const
+		MString::operator == (PCSTR cstr) const
    {
 		return (Compare(cstr) == 0);
 	}

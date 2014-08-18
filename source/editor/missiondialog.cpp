@@ -92,7 +92,7 @@ void CMissionDialog::OnMiPurchaseFileBrowseButton() {
 			CString purchasePath = selectFileDialog.GetPathName();
 			FitIniFile file;
 			long result = 0;
-			result = file.open( (char*)(const char*)purchasePath );
+			result = file.open( (char*)(PCSTR)purchasePath );
 			if (NO_ERR != result) {
 				AfxMessageBox(IDS_COULDNT_OPEN_PURCHASE_FILE);
 			} else {

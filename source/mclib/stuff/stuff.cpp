@@ -32,11 +32,11 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-static UCHAR __stdcall Check_0(void) {return UCHAR((ArmorLevel == 0) ? 1 : 0);}
-static UCHAR __stdcall Check_1(void) {return UCHAR((ArmorLevel == 1) ? 1 : 0);}
-static UCHAR __stdcall Check_2(void) {return UCHAR((ArmorLevel == 2) ? 1 : 0);}
-static UCHAR __stdcall Check_3(void) {return UCHAR((ArmorLevel == 3) ? 1 : 0);}
-static UCHAR __stdcall Check_4(void) {return UCHAR((ArmorLevel == 4) ? 1 : 0);}
+static uint8_t __stdcall Check_0(void) {return uint8_t((ArmorLevel == 0) ? 1 : 0);}
+static uint8_t __stdcall Check_1(void) {return uint8_t((ArmorLevel == 1) ? 1 : 0);}
+static uint8_t __stdcall Check_2(void) {return uint8_t((ArmorLevel == 2) ? 1 : 0);}
+static uint8_t __stdcall Check_3(void) {return uint8_t((ArmorLevel == 3) ? 1 : 0);}
+static uint8_t __stdcall Check_4(void) {return uint8_t((ArmorLevel == 4) ? 1 : 0);}
 
 static void __stdcall Activate_0(void) {ArmorLevel = 0;}
 static void __stdcall Activate_1(void) {ArmorLevel = 1;}
@@ -44,20 +44,20 @@ static void __stdcall Activate_2(void) {ArmorLevel = 2;}
 static void __stdcall Activate_3(void) {ArmorLevel = 3;}
 static void __stdcall Activate_4(void) {ArmorLevel = 4;}
 
-static UCHAR __stdcall Greyed(void)
+static uint8_t __stdcall Greyed(void)
 {
 	#if defined(_ARMOR)
-		return UCHAR(0);
+		return uint8_t(0);
 	#else
-		return UCHAR(1);
+		return uint8_t(1);
 	#endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-static UCHAR __stdcall Check_4hz() {return UCHAR((Environment.MaxTimeDelta == 0.25f) ? 1 : 0);}
-static UCHAR __stdcall Check_40hz() {return UCHAR((Environment.MaxTimeDelta == 0.025f) ? 1 : 0);}
-static UCHAR __stdcall Check_400hz() {return UCHAR((Environment.MaxTimeDelta == 0.0025f) ? 1 : 0);}
+static uint8_t __stdcall Check_4hz() {return uint8_t((Environment.MaxTimeDelta == 0.25f) ? 1 : 0);}
+static uint8_t __stdcall Check_40hz() {return uint8_t((Environment.MaxTimeDelta == 0.025f) ? 1 : 0);}
+static uint8_t __stdcall Check_400hz() {return uint8_t((Environment.MaxTimeDelta == 0.0025f) ? 1 : 0);}
 
 static void __stdcall Activate_4hz() {Environment.MaxTimeDelta = Environment.MinimumTimeDelta = 0.25f;}
 static void __stdcall Activate_40hz() {Environment.MaxTimeDelta = Environment.MinimumTimeDelta = 0.025f;}

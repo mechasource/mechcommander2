@@ -5,11 +5,11 @@
 //===========================================================================//
 
 #pragma once
+
+#if !defined(MLR_MLR_HPP)
 #define MLR_MLR_HPP
 
-#if !defined(STUFF_STUFF_HPP)
-	#include <stuff/stuff.hpp>
-#endif
+#include <stuff/stuff.hpp>
 
 namespace MidLevelRenderer
 {
@@ -172,3 +172,5 @@ namespace MidLevelRenderer
 #include <mlr/mlrlight.hpp>
 #include <mlr/mlrshape.hpp>
 #include <mlr/mlreffect.hpp>
+
+#endif

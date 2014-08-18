@@ -23,9 +23,9 @@ MPGameBrowser.cpp			: Implementation of the MPGameBrowser component.
 
 static int connectionType = 0;
 
-static const int FIRST_BUTTON_ID = 1000010;
-static const int OK_BUTTON_ID = 1000001;
-static const int CANCEL_BUTTON_ID = 1000002;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
+static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 #define SORT_ORDER_NAME	200
 #define SORT_ORDER_PLAYERS	201
@@ -403,7 +403,7 @@ void MPGameBrowser::update()
 
 
 
-long aStyle3TextListItem::init( FitIniFile* file, const char* blockName )
+long aStyle3TextListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
@@ -508,7 +508,7 @@ aGameListItem::aGameListItem() : latency( IDS_MP_LANBROW_PING_FONT )
 
 
 }
-long aGameListItem::init( FitIniFile* file, const char* blockName )
+long aGameListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
@@ -693,7 +693,7 @@ void aGameListItem::setSessionInfo( MC2Session* pSession )
 
 }
 
-const char* aGameListItem::getText( int which )
+PCSTR aGameListItem::getText( int which )
 {
 	if ( which == SORT_ORDER_NAME )
 		return gameName.getText();
@@ -708,7 +708,7 @@ const char* aGameListItem::getText( int which )
 
 }
 
-const char* aGameListItem::getSessionName(  )
+PCSTR aGameListItem::getSessionName(  )
 {
 	return gameName.getText();
 }

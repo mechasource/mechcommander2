@@ -793,7 +793,7 @@ void MechBayScreen::setMech( LogisticsMech* pMech,  bool bCommandFromLB )
 
 		// weight
 		cLoadString( IDS_MB_MECH_WEIGHT, tmpStr, 63 );
-		sprintf( str, tmpStr, pCurMech->getMaxWeight(), (const char*)pCurMech->getMechClass() );
+		sprintf( str, tmpStr, pCurMech->getMaxWeight(), (PCSTR)pCurMech->getMechClass() );
 		textObjects[7].setText( str );
 
 		// firing range

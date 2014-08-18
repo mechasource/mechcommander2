@@ -577,9 +577,9 @@ void ABLModule::write (ABLFile* moduleFile) {
 	long* sizeList = ModuleRegistry[handle].sizeStaticVars;
 	for (long i = 0; i < numStatics; i++) {
 		if (sizeList[i] > 0)
-			moduleFile->write((unsigned char*)staticData[i].address, sizeList[i]);
+			moduleFile->write((PUCHAR)staticData[i].address, sizeList[i]);
 		else
-			moduleFile->write((unsigned char*)&staticData[i], sizeof(StackItem));
+			moduleFile->write((PUCHAR)&staticData[i], sizeof(StackItem));
 	}
 }
 
@@ -595,25 +595,25 @@ void ABLModule::read (ABLFile* moduleFile) {
 	bool fresh = (id == -1);
 	if (fresh) {
 		id = NumModules++;
-		moduleFile->readString((unsigned char*)name);
+		moduleFile->readString((PUCHAR)name);
 		handle = moduleFile->readLong();
 		staticData = NULL;
 		}
 	else {
 		char tempName[1024];
-		moduleFile->readString((unsigned char*)tempName);
+		moduleFile->readString((PUCHAR)tempName);
 		//long ignore = moduleFile->readLong();
 	}
 
 	char stateName[256];
 	memset(stateName,0,256);
-	moduleFile->readString((unsigned char*)stateName);
+	moduleFile->readString((PUCHAR)stateName);
 	prevState = NULL;
 	if (strcmp(stateName, "NULLPrevState"))
 		prevState = findState(stateName);
 	
 	memset(stateName,0,256);
-	moduleFile->readString((unsigned char*)stateName);
+	moduleFile->readString((PUCHAR)stateName);
 	state = NULL;
 	if (strcmp(stateName, "NULLState"))
 		state = findState(stateName);
@@ -641,7 +641,7 @@ void ABLModule::read (ABLFile* moduleFile) {
 						ABL_Fatal(0, err);
 					}
 				}
-				long result = moduleFile->read((unsigned char*)staticData[i].address, sizeList[i]);
+				long result = moduleFile->read((PUCHAR)staticData[i].address, sizeList[i]);
 				if (!result) {
 					char err[255];
 					sprintf(err, "ABL: Unable to read staticData.address [Module %d]", id);
@@ -650,7 +650,7 @@ void ABLModule::read (ABLFile* moduleFile) {
 				}
 			else {
 				staticData[i].integer = 0;
-				long result = moduleFile->read((unsigned char*)&staticData[i], sizeof(StackItem));
+				long result = moduleFile->read((PUCHAR)&staticData[i], sizeof(StackItem));
 				if (!result) {
 					char err[255];
 					sprintf(err, "ABL: Unable to read staticData [Module %d]", id);
@@ -732,14 +732,14 @@ void ABLModule::resetOrderCallFlags (void) {
 
 //---------------------------------------------------------------------------
 
-void ABLModule::setOrderCallFlag (unsigned char dword, unsigned char bit) {
+void ABLModule::setOrderCallFlag (uint8_t dword, uint8_t bit) {
 
 	orderCallFlags[dword] |= (1 << bit);
 }
 
 //---------------------------------------------------------------------------
 
-void ABLModule::clearOrderCallFlag(unsigned char dword, unsigned char bit) {
+void ABLModule::clearOrderCallFlag(uint8_t dword, uint8_t bit) {
 
 	orderCallFlags[dword] &= ((1 << bit) ^ 0xFFFFFFFF);
 }
@@ -1397,9 +1397,9 @@ void ABLi_saveEnvironment (ABLFile* ablFile) {
 	for (i = 0; i < eternalOffset; i++) {
 		StackItemPtr dataPtr = (StackItemPtr)stack + i;
 		if (EternalVariablesSizes[i] > 0)
-			ablFile->write((unsigned char*)dataPtr->address, EternalVariablesSizes[i]);
+			ablFile->write((PUCHAR)dataPtr->address, EternalVariablesSizes[i]);
 		else
-			ablFile->write((unsigned char*)dataPtr, sizeof(StackItem));
+			ablFile->write((PUCHAR)dataPtr, sizeof(StackItem));
 	}
 	for (i = 0; i < NumModules; i++)
 	{
@@ -1418,7 +1418,7 @@ void ABLi_loadEnvironment (ABLFile* ablFile, bool malloc) {
 	long i;
 
 	for (i = 0; i < numLibs; i++) {
-		unsigned char fileName[1024];
+		uint8_t fileName[1024];
 		long result = ablFile->readString(fileName);
 		if (!result) {
 			char err[255];
@@ -1437,7 +1437,7 @@ void ABLi_loadEnvironment (ABLFile* ablFile, bool malloc) {
 	}
 
 	for (i = 0; i < (numModsRegistered - numLibs); i++) {
-		unsigned char fileName[1024];
+		uint8_t fileName[1024];
 		long result = ablFile->readString(fileName);
 		if (!result) {
 			char err[255];
@@ -1458,9 +1458,9 @@ void ABLi_loadEnvironment (ABLFile* ablFile, bool malloc) {
 	for (i = 0; i < eternalOffset; i++) {
 		StackItemPtr dataPtr = (StackItemPtr)stack + i;
 		if (EternalVariablesSizes[i] > 0)
-			ablFile->read((unsigned char*)dataPtr->address, EternalVariablesSizes[i]);
+			ablFile->read((PUCHAR)dataPtr->address, EternalVariablesSizes[i]);
 		else
-			ablFile->read((unsigned char*)dataPtr, sizeof(StackItem));
+			ablFile->read((PUCHAR)dataPtr, sizeof(StackItem));
 	}
 	for (i = 0; i < numLibs; i++) {
 		ABLModulePtr library = LibraryInstanceRegistry[i];

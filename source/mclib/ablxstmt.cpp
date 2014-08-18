@@ -115,8 +115,8 @@ void execStatement (void) {
 			ABL_Assert(idPtr != NULL, 0, " oops ");
 			if (idPtr->defn.key == DFN_FUNCTION) {
 				bool skipOrder = false;
-				unsigned char orderDWord = 0;
-				unsigned char orderBitMask = 0;
+				uint8_t orderDWord = 0;
+				uint8_t orderBitMask = 0;
 				if ((idPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER) && CurModule->getOrderCallFlags()) {
 					orderDWord = getCodeByte();
 					orderBitMask = getCodeByte();
@@ -576,7 +576,7 @@ void execForStatement (void) {
 			if (controlTypePtr == IntegerTypePtr)
 				targetPtr->integer = controlValue;
 			else
-				targetPtr->byte = (unsigned char)controlValue;
+				targetPtr->byte = (uint8_t)controlValue;
 
 			getCodeToken();
 
@@ -600,7 +600,7 @@ void execForStatement (void) {
 			if (controlTypePtr == IntegerTypePtr)
 				targetPtr->integer = controlValue;
 			else
-				targetPtr->byte = (unsigned char)controlValue;
+				targetPtr->byte = (uint8_t)controlValue;
 
 			getCodeToken();
 

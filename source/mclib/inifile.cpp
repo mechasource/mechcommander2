@@ -260,21 +260,21 @@ void FitIniFile::atClose (void)
 }
 
 //---------------------------------------------------------------------------
-float FitIniFile::textToFloat (const char *num)
+float FitIniFile::textToFloat (PCSTR num)
 {
 	float result = atof(num);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-double FitIniFile::textToDouble (const char *num)
+double FitIniFile::textToDouble (PCSTR num)
 {
 	double result = atof(num);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::textToLong (const char *num)
+long FitIniFile::textToLong (PCSTR num)
 {
 	long result = 0;
 	
@@ -301,7 +301,7 @@ long FitIniFile::textToLong (const char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -327,7 +327,7 @@ long FitIniFile::textToLong (const char *num)
 
 
 //---------------------------------------------------------------------------
-short FitIniFile::textToShort (const char *num)
+short FitIniFile::textToShort (PCSTR num)
 {
 	short result = 0;
 	
@@ -354,7 +354,7 @@ short FitIniFile::textToShort (const char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -379,7 +379,7 @@ short FitIniFile::textToShort (const char *num)
 
 
 //---------------------------------------------------------------------------
-char FitIniFile::textToChar (const char *num)
+char FitIniFile::textToChar (PCSTR num)
 {
 	char result = 0;
 	
@@ -406,7 +406,7 @@ char FitIniFile::textToChar (const char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -430,7 +430,7 @@ char FitIniFile::textToChar (const char *num)
 }
 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::textToULong (const char *num)
+unsigned long FitIniFile::textToULong (PCSTR num)
 {
 	unsigned long result = 0;
 	
@@ -457,7 +457,7 @@ unsigned long FitIniFile::textToULong (const char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -482,7 +482,7 @@ unsigned long FitIniFile::textToULong (const char *num)
 
 
 //---------------------------------------------------------------------------
-unsigned short FitIniFile::textToUShort (const char *num)
+unsigned short FitIniFile::textToUShort (PCSTR num)
 {
 	unsigned short result = 0;
 	
@@ -509,7 +509,7 @@ unsigned short FitIniFile::textToUShort (const char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -534,9 +534,9 @@ unsigned short FitIniFile::textToUShort (const char *num)
 
 
 //---------------------------------------------------------------------------
-unsigned char FitIniFile::textToUChar (const char *num)
+uint8_t FitIniFile::textToUCHAR (PCSTR num)
 {
-	unsigned char result = 0;
+	uint8_t result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
@@ -561,7 +561,7 @@ unsigned char FitIniFile::textToUChar (const char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -585,7 +585,7 @@ unsigned char FitIniFile::textToUChar (const char *num)
 }
 
 //---------------------------------------------------------------------------
-bool FitIniFile::booleanToLong (const char *num)
+bool FitIniFile::booleanToLong (PCSTR num)
 {
 char testChar = 0;
 	while (num[testChar] && isspace(num[testChar]))
@@ -710,7 +710,7 @@ long FitIniFile::byteToTextHex (char *result, byte num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::open (const char* fName, FileMode _mode, long numChild)
+long FitIniFile::open (PCSTR fName, FileMode _mode, long numChild)
 {
 	long result = File::open(fName,_mode,numChild);
 	if (result != NO_ERR)
@@ -762,7 +762,7 @@ void FitIniFile::close (void)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::seekBlock (const char *blockId)
+long FitIniFile::seekBlock (PCSTR blockId)
 {
 	unsigned long blockNum = 0;
 	
@@ -799,7 +799,7 @@ long FitIniFile::seekBlock (const char *blockId)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdFloat (const char *varName, float &value)
+long FitIniFile::readIdFloat (PCSTR varName, float &value)
 {
 	char line[255];
 	char searchString[255];
@@ -852,7 +852,7 @@ long FitIniFile::readIdFloat (const char *varName, float &value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdDouble (const char *varName, double &value)
+long FitIniFile::readIdDouble (PCSTR varName, double &value)
 {
 	char line[255];
 	char searchString[255];
@@ -905,7 +905,7 @@ long FitIniFile::readIdDouble (const char *varName, double &value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdLong (const char *varName, long &value)
+long FitIniFile::readIdLong (PCSTR varName, long &value)
 {
 	char line[255];
 	char searchString[255];
@@ -958,7 +958,7 @@ long FitIniFile::readIdLong (const char *varName, long &value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdBoolean (const char *varName, bool &value)
+long FitIniFile::readIdBoolean (PCSTR varName, bool &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1011,7 +1011,7 @@ long FitIniFile::readIdBoolean (const char *varName, bool &value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdShort (const char *varName, short &value)
+long FitIniFile::readIdShort (PCSTR varName, short &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1064,7 +1064,7 @@ long FitIniFile::readIdShort (const char *varName, short &value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdChar (const char *varName, char &value)
+long FitIniFile::readIdChar (PCSTR varName, char &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1117,7 +1117,7 @@ long FitIniFile::readIdChar (const char *varName, char &value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdULong (const char *varName, unsigned long &value)
+long FitIniFile::readIdULong (PCSTR varName, unsigned long &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1172,7 +1172,7 @@ long FitIniFile::readIdULong (const char *varName, unsigned long &value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdUShort (const char *varName, unsigned short &value)
+long FitIniFile::readIdUShort (PCSTR varName, unsigned short &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1225,7 +1225,7 @@ long FitIniFile::readIdUShort (const char *varName, unsigned short &value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdUChar (const char *varName, unsigned char &value)
+long FitIniFile::readIdUChar (PCSTR varName, uint8_t &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1267,7 +1267,7 @@ long FitIniFile::readIdUChar (const char *varName, unsigned char &value)
 	if (equalSign)
 	{
 		equalSign++;
-		value = textToUChar(equalSign);
+		value = textToUCHAR(equalSign);
 	}
 	else
 	{
@@ -1313,7 +1313,7 @@ long FitIniFile::copyString (char *dest, char *src, unsigned long bufLen)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdString (const char *varName, char *result, unsigned long bufferSize)
+long FitIniFile::readIdString (PCSTR varName, char *result, unsigned long bufferSize)
 {
 	char line[2048];
 	char searchString[255];
@@ -1396,7 +1396,7 @@ long FitIniFile::readIdString (const char *varName, char *result, unsigned long 
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::getIdStringLength (const char *varName)
+long FitIniFile::getIdStringLength (PCSTR varName)
 {
 	char line[255];
 	char searchString[255];
@@ -1450,7 +1450,7 @@ long FitIniFile::getIdStringLength (const char *varName)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdFloatArray (const char *varName, float *result, unsigned long numElements)
+long FitIniFile::readIdFloatArray (PCSTR varName, float *result, unsigned long numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1545,7 +1545,7 @@ long FitIniFile::readIdFloatArray (const char *varName, float *result, unsigned 
 }
 		
 //---------------------------------------------------------------------------
-long FitIniFile::readIdLongArray (const char *varName, long *result, unsigned long numElements)
+long FitIniFile::readIdLongArray (PCSTR varName, long *result, unsigned long numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1640,7 +1640,7 @@ long FitIniFile::readIdLongArray (const char *varName, long *result, unsigned lo
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdULongArray (const char *varName, unsigned long *result, unsigned long numElements)
+long FitIniFile::readIdULongArray (PCSTR varName, unsigned long *result, unsigned long numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1735,7 +1735,7 @@ long FitIniFile::readIdULongArray (const char *varName, unsigned long *result, u
 }
 		
 //---------------------------------------------------------------------------
-long FitIniFile::readIdShortArray (const char *varName, short *result, unsigned long numElements)
+long FitIniFile::readIdShortArray (PCSTR varName, short *result, unsigned long numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1830,7 +1830,7 @@ long FitIniFile::readIdShortArray (const char *varName, short *result, unsigned 
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdUShortArray (const char *varName, unsigned short *result, unsigned long numElements)
+long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, unsigned long numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1925,7 +1925,7 @@ long FitIniFile::readIdUShortArray (const char *varName, unsigned short *result,
 }
 		
 //---------------------------------------------------------------------------
-long FitIniFile::readIdCharArray (const char *varName, char *result, unsigned long numElements)
+long FitIniFile::readIdCharArray (PCSTR varName, char *result, unsigned long numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2020,7 +2020,7 @@ long FitIniFile::readIdCharArray (const char *varName, char *result, unsigned lo
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdUCharArray (const char *varName, unsigned char *result, unsigned long numElements)
+long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, unsigned long numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2099,7 +2099,7 @@ long FitIniFile::readIdUCharArray (const char *varName, unsigned char *result, u
 				return(errorCode);
 			}
 			
-			result[elementsRead] = textToUChar(elementString);
+			result[elementsRead] = textToUCHAR(elementString);
 			elementsRead++;
 		}
 		
@@ -2115,7 +2115,7 @@ long FitIniFile::readIdUCharArray (const char *varName, unsigned char *result, u
 }
 		
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdFloatArrayElements (const char *varName)
+unsigned long FitIniFile::getIdFloatArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2170,7 +2170,7 @@ unsigned long FitIniFile::getIdFloatArrayElements (const char *varName)
 }	
 	
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdLongArrayElements (const char *varName)
+unsigned long FitIniFile::getIdLongArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2225,7 +2225,7 @@ unsigned long FitIniFile::getIdLongArrayElements (const char *varName)
 }
 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdULongArrayElements (const char *varName)
+unsigned long FitIniFile::getIdULongArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2280,7 +2280,7 @@ unsigned long FitIniFile::getIdULongArrayElements (const char *varName)
 }
 											 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdShortArrayElements (const char *varName)
+unsigned long FitIniFile::getIdShortArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2335,7 +2335,7 @@ unsigned long FitIniFile::getIdShortArrayElements (const char *varName)
 }
 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdUShortArrayElements (const char *varName)
+unsigned long FitIniFile::getIdUShortArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2390,7 +2390,7 @@ unsigned long FitIniFile::getIdUShortArrayElements (const char *varName)
 }
 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdCharArrayElements (const char *varName)
+unsigned long FitIniFile::getIdCharArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2445,7 +2445,7 @@ unsigned long FitIniFile::getIdCharArrayElements (const char *varName)
 }
 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdUCharArrayElements (const char *varName)
+unsigned long FitIniFile::getIdUCHARArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2500,7 +2500,7 @@ unsigned long FitIniFile::getIdUCharArrayElements (const char *varName)
 }
 	
 //---------------------------------------------------------------------------
-long FitIniFile::writeBlock (const char *blockId)
+long FitIniFile::writeBlock (PCSTR blockId)
 {
 	char thisLine[255];
 	sprintf(thisLine,"\r\n[%s]\r\n",blockId);
@@ -2510,7 +2510,7 @@ long FitIniFile::writeBlock (const char *blockId)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdFloat (const char *varName, float value)
+long FitIniFile::writeIdFloat (PCSTR varName, float value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"f %s = %f\r\n",varName,value);
@@ -2520,7 +2520,7 @@ long FitIniFile::writeIdFloat (const char *varName, float value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdBoolean (const char *varName, bool value)
+long FitIniFile::writeIdBoolean (PCSTR varName, bool value)
 {
 	char thisLine[255];
 	if (value)
@@ -2533,7 +2533,7 @@ long FitIniFile::writeIdBoolean (const char *varName, bool value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdLong (const char *varName, long value)
+long FitIniFile::writeIdLong (PCSTR varName, long value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"l %s = %d\r\n",varName,value);
@@ -2543,7 +2543,7 @@ long FitIniFile::writeIdLong (const char *varName, long value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdShort (const char *varName, short value)
+long FitIniFile::writeIdShort (PCSTR varName, short value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"s %s = %d\r\n",varName,value);
@@ -2553,7 +2553,7 @@ long FitIniFile::writeIdShort (const char *varName, short value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdChar (const char *varName, char value)
+long FitIniFile::writeIdChar (PCSTR varName, char value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"c %s = %d\r\n",varName,value);
@@ -2563,7 +2563,7 @@ long FitIniFile::writeIdChar (const char *varName, char value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdULong (const char *varName, unsigned long value)
+long FitIniFile::writeIdULong (PCSTR varName, unsigned long value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"ul %s = %d\r\n",varName,value);
@@ -2573,7 +2573,7 @@ long FitIniFile::writeIdULong (const char *varName, unsigned long value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdUShort (const char *varName, unsigned short value)
+long FitIniFile::writeIdUShort (PCSTR varName, unsigned short value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"us %s = %d\r\n",varName,value);
@@ -2583,7 +2583,7 @@ long FitIniFile::writeIdUShort (const char *varName, unsigned short value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdUChar (const char *varName, unsigned char value)
+long FitIniFile::writeIdUCHAR (PCSTR varName, uint8_t value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"uc %s = %d\r\n",varName,value);
@@ -2593,7 +2593,7 @@ long FitIniFile::writeIdUChar (const char *varName, unsigned char value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdString (const char *varName, const char *result)
+long FitIniFile::writeIdString (PCSTR varName, PCSTR result)
 {
 	char thisLine[4096];
 	char tmpString[4000];
@@ -2610,7 +2610,7 @@ long FitIniFile::writeIdString (const char *varName, const char *result)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdUShortArray (const char *varName, unsigned short *array, unsigned long numElements)
+long FitIniFile::writeIdUShortArray (PCSTR varName, unsigned short *array, unsigned long numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"us[%d] %s = %d,",numElements,varName,array[0]);
@@ -2629,7 +2629,7 @@ long FitIniFile::writeIdUShortArray (const char *varName, unsigned short *array,
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdLongArray (const char *varName, long *array, unsigned long numElements)
+long FitIniFile::writeIdLongArray (PCSTR varName, long *array, unsigned long numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"l[%d] %s = %d,",numElements,varName,array[0]);
@@ -2648,7 +2648,7 @@ long FitIniFile::writeIdLongArray (const char *varName, long *array, unsigned lo
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdFloatArray (const char *varName, float *array, unsigned long numElements)
+long FitIniFile::writeIdFloatArray (PCSTR varName, float *array, unsigned long numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"f[%d] %s = %.2f,",numElements,varName,array[0]);
@@ -2667,7 +2667,7 @@ long FitIniFile::writeIdFloatArray (const char *varName, float *array, unsigned 
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdUCharArray (const char *varName, unsigned char *array, unsigned long numElements)
+long FitIniFile::writeIdUCHARArray (PCSTR varName, PUCHAR array, unsigned long numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"uc[%d] %s = %d,",numElements,varName,array[0]);

@@ -1,6 +1,39 @@
-// stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently,
-// but are changed infrequently
+/*******************************************************************************
+ Copyright (c) 2011-2014, Jerker Back. All rights reserved.
+
+ Permission to use, copy, modify, and distribute this software for any
+ purpose with or without fee is hereby granted, provided that the following 
+ conditions are met (OSI approved BSD 2-clause license):
+
+ 1. Redistributions of source code must retain the above copyright notice, 
+    this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright notice, 
+    this list of conditions and the following disclaimer in the documentation 
+    and/or other materials provided with the distribution.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE 
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*******************************************************************************/
+/*******************************************************************************
+ stdafx.h - mechcmd2 standard includes
+
+ MechCommander 2 source code
+
+ 2014-07-24 jerker_back, created
+ 
+ $LastChangedBy$
+ 
+================================================================================
+ RcsID = $Id$ */
 
 #pragma once
 
@@ -10,9 +43,10 @@
 
 #define ATL_SUPPRESS_WARNING_PUSH(x)    __pragma(warning(push)); __pragma(warning(disable: x))
 #define ATL_SUPPRESS_WARNING_POP        __pragma(warning(pop))
+#define ATL_SUPPRESS_WARNING(x)         __pragma(warning(suppress:x))
 #define ATL_ADD_LIBRARY(x)				__pragma(comment(lib, x))
 
-#define  _WIN32_WINNT   0x0600	// minimum Windows Vista
+#define  _WIN32_WINNT   0x0501	// minimum Windows XP
 #include <sdkddkver.h>
 
 #define _ATL_APARTMENT_THREADED
@@ -22,24 +56,38 @@
 
 #define _CRT_SECURE_NO_WARNINGS 1
 
+// disable useless warnings when compiling with -Wall
+#pragma warning(disable: 4514 4710 4711)
+// comment out for diagnostic messages
+#pragma warning(disable: 4625 4820)
+
+// temporary disable warnings when compiling with -Wall
+#pragma warning(push)
+#pragma warning(disable: 4191 4365)
 #include <atlbase.h>
 #if (_ATL_VER < 0x0700)	// linking with system (WDK) atl.dll
 extern ATL::CComModule& _Module;
 ATL_ADD_LIBRARY("atlthunk.lib")
 #endif
 
+#include <limits.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <memory.h>
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
+#include <float.h>
 #include <math.h>
-#include <tchar.h>
 #include <imagehlp.h>
 #include <mmsystem.h>
+#include <d3dtypes.h>
 #include <ddraw.h>
+#pragma warning(pop)
 
-// MClib
+#include <mechtypes.h>
+
+// mechcmd2
 #ifdef _DEBUG
 // _ARMOR;LAB_ONLY;USE_PROTOTYPES;STRICT;WIN32;_DEBUG;_WINDOWS;BUGLOG
 #define _ARMOR		1
@@ -51,7 +99,7 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 // #define FINAL
 #endif
 
-#include <mclib.h>
+// #include <mclib.h>
 
 namespace Utilities {
 

@@ -60,8 +60,8 @@ class WeaponBoltType : public ObjectType
 		float			bulgeWidth;
 		float			velocity;
 		
-		unsigned char	boltAlpha;
-		unsigned char	edgeAlpha;
+		uint8_t	boltAlpha;
+		uint8_t	edgeAlpha;
 
 		bool			lightSource;
 		float			maxRadius;

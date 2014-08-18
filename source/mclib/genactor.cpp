@@ -1029,7 +1029,7 @@ long GenericAppearance::update (bool animate)
 		rot = pitchAngle;
 		rot.Multiply(pitchAngle,yawAngle);
 	
-		unsigned char lightr,lightg,lightb;
+		uint8_t lightr,lightg,lightb;
 		float lightIntensity = 1.0f;
 		if (land)
 			land->getTerrainLight(position);
@@ -1070,7 +1070,7 @@ long GenericAppearance::update (bool animate)
 					fogFactor = 256.0;
 				}
 	
-				unsigned char fogResult = float2long(fogFactor);
+				uint8_t fogResult = float2long(fogFactor);
 				fogRGB = fogResult << 24;
 			}
 		}

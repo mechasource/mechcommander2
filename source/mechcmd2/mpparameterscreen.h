@@ -33,7 +33,7 @@ class aStyle2TextListItem : public aTextListItem
 {
 public:
 	aStyle2TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual long	init( FitIniFile* file, const char* blockName );
+	virtual long	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
 protected:
@@ -52,7 +52,7 @@ public:
 	aPlayerParams& operator=( const aPlayerParams& src );
 
 	virtual long		init(long xPos, long yPos, long w, long h);
-	void				init( FitIniFile* file, const char* blockName );
+	void				init( FitIniFile* file, PCSTR blockName );
 
 	virtual void		destroy();
 	virtual void		render();
@@ -142,11 +142,11 @@ public:
 	
 	static void			resetCheckBoxes();
 
-	void				setHostLeftDlg( const char* playerName);
+	void				setHostLeftDlg( PCSTR playerName);
 
-	static GUID			getGUIDFromFile( const char* fileName );
+	static GUID			getGUIDFromFile( PCSTR fileName );
 
-	static void			initializeMap( const char* fileName );
+	static void			initializeMap( PCSTR fileName );
 
 	static MPParameterScreen* s_instance;
 
@@ -156,9 +156,9 @@ private:
 	
 	int					chatToSend;
 
-	void				setMission( const char* fileName, bool resetData = 1 );
-	void				setMissionClientOnly( const char* pNewMapName );
-	void				checkVersionClientOnly( const char* pNewMapName );
+	void				setMission( PCSTR fileName, bool resetData = 1 );
+	void				setMissionClientOnly( PCSTR pNewMapName );
+	void				checkVersionClientOnly( PCSTR pNewMapName );
 
 
 

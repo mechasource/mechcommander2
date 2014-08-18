@@ -81,56 +81,61 @@ class HeapManager
 {
 	//Data Members
 	//-------------
-	protected:
+protected:
 
-		MemoryPtr				heap;
-		bool					memReserved;
-		unsigned long   		totalSize;
-		unsigned long   		committedSize;
-		unsigned long			whoMadeMe;
+	MemoryPtr				heap;
+	bool					memReserved;
+	unsigned long   		totalSize;
+	unsigned long   		committedSize;
+	unsigned long			whoMadeMe;
 
-//		BOOL	VMQuery (PVOID pvAddress, PVMQUERY pVMQ);
-//		LPCTSTR GetMemStorageText (DWORD dwStorage);
-//		LPTSTR	GetProtectText (DWORD dwProtect, LPTSTR szBuf, BOOL fShowFlags);
-//		void	ConstructRgnInfoLine (PVMQUERY pVMQ, LPTSTR szLine, int nMaxLen);
-//		void	ConstructBlkInfoLine (PVMQUERY pVMQ, LPTSTR szLine, int nMaxLen);
+	//		BOOL	VMQuery (PVOID pvAddress, PVMQUERY pVMQ);
+	//		LPCTSTR GetMemStorageText (DWORD dwStorage);
+	//		LPTSTR	GetProtectText (DWORD dwProtect, LPTSTR szBuf, BOOL fShowFlags);
+	//		void	ConstructRgnInfoLine (PVMQUERY pVMQ, LPTSTR szLine, int nMaxLen);
+	//		void	ConstructBlkInfoLine (PVMQUERY pVMQ, LPTSTR szLine, int nMaxLen);
 
-	public:
-		HeapManagerPtr			nxt;
-	
+public:
+	HeapManagerPtr			nxt;
+
 	//Member Functions
 	//-----------------
-	public:
+public:
 
-		void init (void);
-		HeapManager (void);
-		
-		void destroy (void);
-		~HeapManager (void);
+	HeapManager(void)
+	{
+		init();
+	}
+	virtual ~HeapManager(void)
+	{
+		destroy();
+	}
 
-		long createHeap (unsigned long memSize);
-		long commitHeap (unsigned long commitSize = 0);
-		long decommitHeap (unsigned long decommitSize = 0);
-		
-		MemoryPtr getHeapPtr (void);
-		operator MemoryPtr (void);
+	void destroy (void);
+	void init (void);
+	long createHeap (unsigned long memSize);
+	long commitHeap (unsigned long commitSize = 0);
+	long decommitHeap (unsigned long decommitSize = 0);
 
-		void HeapManager::MemoryDump();
-		
-		virtual unsigned char heapType (void)
-		{
-			return BASE_HEAP;
-		}
-		
-		unsigned long owner (void)
-		{
-			return whoMadeMe;
-		}
-		
-		unsigned long tSize (void)
-		{
-			return committedSize;
-		}
+	MemoryPtr getHeapPtr (void);
+	operator MemoryPtr (void);
+
+	void HeapManager::MemoryDump();
+
+	virtual uint8_t heapType (void)
+	{
+		return BASE_HEAP;
+	}
+
+	unsigned long owner (void)
+	{
+		return whoMadeMe;
+	}
+
+	unsigned long tSize (void)
+	{
+		return committedSize;
+	}
 
 };
 
@@ -148,98 +153,98 @@ class UserHeap : public HeapManager
 {
 	//Data Members
 	//-------------	
-	protected:
-		HeapBlockPtr		heapStart;
-		HeapBlockPtr		heapEnd;
-		HeapBlockPtr		firstNearBlock;
-		unsigned long		heapSize;
-		bool				mallocFatals;
-		
-		long				heapState;
+protected:
+	HeapBlockPtr		heapStart;
+	HeapBlockPtr		heapEnd;
+	HeapBlockPtr		firstNearBlock;
+	unsigned long		heapSize;
+	bool				mallocFatals;
 
-		char				*heapName;
+	long				heapState;
 
-		bool				useGOSGuardPage;
-		HGOSHEAP			gosHeap;
+	char				*heapName;
 
-		#ifdef _DEBUG
-		memRecord			*recordArray;
-		long				recordCount;
-		bool				logMallocs;
-		#endif
+	bool				useGOSGuardPage;
+	HGOSHEAP			gosHeap;
+
+#ifdef _DEBUG
+	memRecord			*recordArray;
+	long				recordCount;
+	bool				logMallocs;
+#endif
 
 	//Member Functions
 	//-----------------
-	protected:
-		void	relink (HeapBlockPtr newBlock);
-		void	unlink (HeapBlockPtr oldBlock);
-		bool	mergeWithLower (HeapBlockPtr block);
-		
-	public:
-	
-		UserHeap (void);
-		long init (unsigned long memSize, char *heapId = NULL, bool useGOS = false);
-		
-		~UserHeap (void);
-		void destroy (void);
-		
-		unsigned long totalCoreLeft (void);
-		unsigned long coreLeft (void);
-		unsigned long size (void) { return heapSize;}
-		
-		void *Malloc (unsigned long memSize);
-		long Free (void *memBlock);
-		
-		void *calloc (unsigned long memSize);
-		
-		void walkHeap (bool printIt = FALSE, bool skipAllocated = FALSE);
-		
-		long getLastError (void);
+protected:
+	void	relink (HeapBlockPtr newBlock);
+	void	unlink (HeapBlockPtr oldBlock);
+	bool	mergeWithLower (HeapBlockPtr block);
 
-		bool heapReady (void)
-		{
-			return (heapSize != 0);
-		}
+public:
 
-		void setMallocFatals (bool fatalFlag)
-		{
-			mallocFatals = fatalFlag;
-		}
-		
-		virtual unsigned char heapType (void)
-		{
-			return USER_HEAP;
-		}
-		
-		char *getHeapName (void)
-		{
-			return heapName;
-		}
+	UserHeap (void);
+	long init (unsigned long memSize, char *heapId = NULL, bool useGOS = false);
 
-		bool pointerOnHeap (void *ptr);
+	~UserHeap (void);
+	void destroy (void);
 
-		#ifdef _DEBUG
-		void startHeapMallocLog (void);		//This function will start recoding each malloc and
-											//free to insure that there are no leaks.
-											
-		void stopHeapMallocLog (void);		//This can be used to suspend logging when mallocs
-											//that are not desired to be logged are called.
-											
-		void dumpRecordLog (void);
-											
-		#else
-		void startHeapMallocLog (void)		//DOES NOTHING IN RELEASE/PROFILE BUILDS!
-		{
-		}
-										
-		void stopHeapMallocLog (void)
-		{
-		}
-		
-		void dumpRecordLog (void)
-		{
-		}
-		#endif
+	unsigned long totalCoreLeft (void);
+	unsigned long coreLeft (void);
+	unsigned long size (void) { return heapSize;}
+
+	void *Malloc (unsigned long memSize);
+	long Free (void *memBlock);
+
+	void *calloc (unsigned long memSize);
+
+	void walkHeap (bool printIt = FALSE, bool skipAllocated = FALSE);
+
+	long getLastError (void);
+
+	bool heapReady (void)
+	{
+		return (heapSize != 0);
+	}
+
+	void setMallocFatals (bool fatalFlag)
+	{
+		mallocFatals = fatalFlag;
+	}
+
+	virtual uint8_t heapType (void)
+	{
+		return USER_HEAP;
+	}
+
+	char *getHeapName (void)
+	{
+		return heapName;
+	}
+
+	bool pointerOnHeap (void *ptr);
+
+#ifdef _DEBUG
+	void startHeapMallocLog (void);		//This function will start recoding each malloc and
+	//free to insure that there are no leaks.
+
+	void stopHeapMallocLog (void);		//This can be used to suspend logging when mallocs
+	//that are not desired to be logged are called.
+
+	void dumpRecordLog (void);
+
+#else
+	void startHeapMallocLog (void)		//DOES NOTHING IN RELEASE/PROFILE BUILDS!
+	{
+	}
+
+	void stopHeapMallocLog (void)
+	{
+	}
+
+	void dumpRecordLog (void)
+	{
+	}
+#endif
 };
 
 //---------------------------------------------------------------------------
@@ -250,43 +255,43 @@ class HeapList
 {
 	//Data Members
 	//-------------
-		protected:
-			static GlobalHeapRec heapRecords[MAX_HEAPS];
-			static bool heapInstrumented;
-		
+protected:
+	static GlobalHeapRec heapRecords[MAX_HEAPS];
+	static bool heapInstrumented;
+
 	//Member Functions
 	//----------------
-		public:
-			void init (void)
-			{
-				memset(heapRecords,0,sizeof(GlobalHeapRec)*MAX_HEAPS);
+public:
+	void init (void)
+	{
+		memset(heapRecords,0,sizeof(GlobalHeapRec)*MAX_HEAPS);
 
-				heapInstrumented = false;
-			}
-			
-			HeapList (void)
-			{
-				init();
-			}
-			
-			void destroy (void)
-			{
-				init();
-			}
-			
-			~HeapList (void)
-			{
-				destroy();
-			}
-			
-			void addHeap (HeapManagerPtr newHeap);
-			void removeHeap (HeapManagerPtr oldHeap);
-			
-			void update (void);			//Called every frame in Debug to monitor heaps!
+		heapInstrumented = false;
+	}
 
-			void dumpLog (void);
+	HeapList (void)
+	{
+		init();
+	}
 
-			static void initializeStatistics();
+	void destroy (void)
+	{
+		init();
+	}
+
+	~HeapList (void)
+	{
+		destroy();
+	}
+
+	void addHeap (HeapManagerPtr newHeap);
+	void removeHeap (HeapManagerPtr oldHeap);
+
+	void update (void);			//Called every frame in Debug to monitor heaps!
+
+	void dumpLog (void);
+
+	static void initializeStatistics();
 
 };
 

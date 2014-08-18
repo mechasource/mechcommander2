@@ -5,6 +5,7 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
 #include "stdafx.h"
 
 //-----------------------------------
@@ -2320,7 +2321,7 @@ long textToLong (char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{

@@ -566,7 +566,7 @@ class Appearance
 		{
 		}
 
-		virtual void setMechName( const char* /*pName*/ ){}
+		virtual void setMechName( PCSTR /*pName*/ ){}
 		
 		virtual void startSmoking (long /*smokeLvl*/)
 		{

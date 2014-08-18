@@ -177,7 +177,7 @@ bool EditorData::clear()
 
 //-------------------------------------------------------------------------------------------------
 
-static long sReadIdBoolean(FitIniFile* missionFile, const char *varName, bool &value) {
+static long sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) {
 	long result = 0;
 	bool tmpBool;
 	result = missionFile->readIdBoolean((char *)varName, tmpBool);
@@ -189,7 +189,7 @@ static long sReadIdBoolean(FitIniFile* missionFile, const char *varName, bool &v
 	return result;
 }
 
-static long sReadIdWholeNum(FitIniFile* missionFile, const char *varName, int &value) {
+static long sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) {
 	long result = 0;
 	unsigned long tmpULong;
 	result = missionFile->readIdULong((char *)varName, tmpULong);
@@ -201,7 +201,7 @@ static long sReadIdWholeNum(FitIniFile* missionFile, const char *varName, int &v
 	return result;
 }
 
-static long sReadIdString(FitIniFile* missionFile, const char *varName, ECharString &ECStr) {
+static long sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString &ECStr) {
 	long result = 0;
 	char buffer[2001/*buffer size*/]; buffer[0] = '\0';
 	result = missionFile->readIdString((char *)varName, buffer, 2001/*buffer size*/ - 1);
@@ -216,7 +216,7 @@ static long sReadIdString(FitIniFile* missionFile, const char *varName, ECharStr
 	return result;
 }
 
-static long sWriteIdString(FitIniFile* missionFile, const char *varName, const char *szStr) {
+static long sWriteIdString(FitIniFile* missionFile, PCSTR varName, PCSTR szStr) {
 	if (!szStr) { return !(NO_ERR); }
 	long result = 0;
 	CString CStr = szStr;
@@ -229,7 +229,7 @@ static long sWriteIdString(FitIniFile* missionFile, const char *varName, const c
 //-------------------------------------------------------------------------------------------------
 bool bIsLoading = false;
 
-bool EditorData::initTerrainFromPCV( const char* fileName )
+bool EditorData::initTerrainFromPCV( PCSTR fileName )
 {
 	bool bRetVal = true;
 	bIsLoading = true;
@@ -262,9 +262,9 @@ bool EditorData::initTerrainFromPCV( const char* fileName )
 
 	FitIniFile file;
 
-	if ( fileExists( (char*)(const char*)camFileName ) )
+	if ( fileExists( (char*)(PCSTR)camFileName ) )
 	{
-		file.open( (char*)(const char*)camFileName );
+		file.open( (char*)(PCSTR)camFileName );
 	}
 	else
 	{
@@ -430,8 +430,8 @@ bool EditorData::initTerrainFromPCV( const char* fileName )
 				EditorData::instance->MaxPlayers(tmpULong);
 			}
 
-			unsigned char tmpUChar = 0;
-			result = file.readIdUChar("scenarioTuneNum", tmpUChar);
+			uint8_t tmpUChar = 0;
+			result = file.readIdUCHAR("scenarioTuneNum", tmpUChar);
 			if (NO_ERR == result)
 			{
 				EditorData::instance->ScenarioTune(tmpUChar);
@@ -646,7 +646,7 @@ bool EditorData::initTerrainFromPCV( const char* fileName )
 }
 
 //-------------------------------------------------------------------------------------------------
-bool EditorData::reassignHeightsFromTGA( const char* fileName, int min, int max )
+bool EditorData::reassignHeightsFromTGA( PCSTR fileName, int min, int max )
 {
 	float MinVal = min;
 	float  MaxVal = max; // should prompt the user for these
@@ -759,7 +759,7 @@ bool EditorData::reassignHeightsFromTGA( const char* fileName, int min, int max 
 
 }
 
-void* DecodeJPG( const char* FileName, PUCHAR Data, DWORD DataSize, DWORD* TextureWidth, DWORD* TextureHeight, bool TextureLoad, void *pDestSurf );
+void* DecodeJPG( PCSTR FileName, PUCHAR Data, DWORD DataSize, DWORD* TextureWidth, DWORD* TextureHeight, bool TextureLoad, void *pDestSurf );
 //-------------------------------------------------------------------------------------------------
 void CreateScaledColorMap(long mapWidth, char *localColorMapName, MemoryPtr tmpRAM, long fileSize)
 {
@@ -1001,7 +1001,7 @@ bool EditorData::initTerrainFromTGA( int mapSize, int min, int max, int terrain 
 float CliffTerrainAngle = 45.0f;
 
 //-------------------------------------------------------------------------------------------------
-bool EditorData::save( const char* fileName, bool quickSave )
+bool EditorData::save( PCSTR fileName, bool quickSave )
 {
 	EditorInterface::instance()->SetBusyMode();
 
@@ -1079,7 +1079,7 @@ bool EditorData::save( const char* fileName, bool quickSave )
 					for ( int cellJ = 0; cellJ < 3; ++cellJ )
 					{
 						pTmp->terrain = MC_NONE_TYPE;
-						pTmp->overlay = (unsigned char)INVALID_OVERLAY;
+						pTmp->overlay = (uint8_t)INVALID_OVERLAY;
 						pTmp->road = false;
 						pTmp->specialID = 0;
 						pTmp->specialType = SPECIAL_NONE;
@@ -1444,7 +1444,7 @@ bool EditorData::save( const char* fileName, bool quickSave )
 
 				if (id)
 				{
-					const char * objFilename = EditorObjectMgr::instance()->getFileName(id);
+					PCSTR  objFilename = EditorObjectMgr::instance()->getFileName(id);
 					char buf[512] = {0};
 
 					if (objFilename[0])
@@ -1609,7 +1609,7 @@ bool EditorData::save( const char* fileName, bool quickSave )
 }
 
 //-------------------------------------------------------------------------------------------------
-bool EditorData::quickSave( const char* fileName )
+bool EditorData::quickSave( PCSTR fileName )
 {
 	return save(fileName, true/*quick save enabled*/);
 }
@@ -1643,7 +1643,7 @@ bool EditorData::saveMissionFitFileStuff( FitIniFile &fitFile )
 	fitFile.writeIdULong( "IsSinglePlayer", EditorData::instance->IsSinglePlayer()?1:0 );
 	fitFile.writeIdULong( "MaximumNumberOfTeams", EditorData::instance->MaxTeams() );
 	fitFile.writeIdULong( "MaximumNumberOfPlayers", EditorData::instance->MaxPlayers() );
-	fitFile.writeIdUChar( "scenarioTuneNum", EditorData::instance->ScenarioTune() );
+	fitFile.writeIdUCHAR( "scenarioTuneNum", EditorData::instance->ScenarioTune() );
 	fitFile.writeIdString( "AVIFilename", EditorData::instance->VideoFilename() );
 	fitFile.writeIdLong( "AdditionalCBills", EditorData::instance->m_CBills );
 	fitFile.writeIdULong( "NumRandomRPbuildings", EditorData::instance->NumRandomRPbuildings() );
@@ -1675,7 +1675,7 @@ bool EditorData::saveMissionFitFileStuff( FitIniFile &fitFile )
 	PlayersRef().Save( &fitFile );
 
 	fitFile.writeBlock( "Music" );
-	fitFile.writeIdUChar( "scenarioTuneNum", 0 );
+	fitFile.writeIdUCHAR( "scenarioTuneNum", 0 );
 	fitFile.writeBlock( "Script" );
 	fitFile.writeIdString( "ScenarioScript", missionScriptName );
 
@@ -1743,7 +1743,7 @@ bool EditorData::saveMissionFitFileStuff( FitIniFile &fitFile )
 	return bRetVal;
 }
 
-void EditorData::setMapName( const char* name )
+void EditorData::setMapName( PCSTR name )
 {
 	if ( name )
 	{
@@ -1855,10 +1855,10 @@ bool EditorData::saveHeightMap( File* file )
 			// turn this into 256 scale
 			float difference = height - lowest;
 			float ratio = (difference * 256)/(highest - lowest);
-			UCHAR final = ratio + .5 > 255. ? 255 : (int)(ratio + .5);
+			uint8_t final = ratio + .5 > 255. ? 255 : (int)(ratio + .5);
 
 			// I could buffer this up if I need to make it faster.
-			file->write( &final, sizeof( UCHAR ) );
+			file->write( &final, sizeof( uint8_t ) );
 		}
 	}
 
@@ -2210,7 +2210,7 @@ void EditorData::drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize )
 				if (nRed > 255.0f)
 					nRed = 255.0f;
 				
-				UCHAR nb = nBlue,ng = nGreen,nr = nRed;
+				uint8_t nb = nBlue,ng = nGreen,nr = nRed;
 				DWORD nColor = (nr << 16) + (ng << 8) + (nb);
 
 				if (i && j && 
@@ -2347,7 +2347,7 @@ void EditorData::drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize )
 									if (nRed > 255.0f)
 										nRed = 255.0f;
 									
-									UCHAR nb = nBlue,ng = nGreen,nr = nRed;
+									uint8_t nb = nBlue,ng = nGreen,nr = nRed;
 									DWORD nColor = (nr << 16) + (ng << 8) + (nb);
 									
 									*tmptBMP = nColor;
@@ -2445,7 +2445,7 @@ void EditorData::loadTacMap(PacketFile *file, PUCHAR& pReturn, long dataSize, in
 	// 24 Bits of color at Cell resolution.
 	long outputSize = 128 * 128 * 4;
 
-	PUCHAR pOutput = (PUCHAR)new UCHAR[ outputSize + sizeof( TGAFileHeader )];
+	PUCHAR pOutput = (PUCHAR)new uint8_t[ outputSize + sizeof( TGAFileHeader )];
 	pReturn = pOutput;
 	PUCHAR pShrunken = pOutput + sizeof( TGAFileHeader );
 	

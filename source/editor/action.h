@@ -28,7 +28,7 @@ public:
 	virtual bool redo() = 0;
 	virtual bool undo() = 0;
 	Action& operator=( const Action& src );
-	const char* getDescription(){  return m_strDescription; }
+	PCSTR getDescription(){  return m_strDescription; }
 
 
 	char  m_strDescription[MAX_DESC_LENGTH];
@@ -37,7 +37,7 @@ public:
 protected:
 	
 	// suppressed
-	Action( const char* pStr )
+	Action( PCSTR pStr )
 	{ 
 		gosASSERT( strlen( pStr ) < MAX_DESC_LENGTH );
 		strcpy( m_strDescription, pStr );
@@ -82,7 +82,7 @@ class ActionPaintTile : public Action
 		
 		bool doRedo(); // so we don't go through virtual functions
 
-		ActionPaintTile( const char* pStr ) 
+		ActionPaintTile( PCSTR pStr ) 
 			: Action( pStr ){}
 
 		void addChangedVertexInfo( int row, int column );
@@ -151,8 +151,8 @@ public:
 	bool HaveUndo() const;
 	bool HaveRedo() const;
 
-	const char* GetUndoString();
-	const char* GetRedoString();
+	PCSTR GetUndoString();
+	PCSTR GetRedoString();
 
 	void NoteThatASaveHasJustOccurred();
 	bool ThereHasBeenANetChangeFromWhenLastSaved();

@@ -12,7 +12,7 @@ namespace Stuff {class YawPitchRange;}
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::YawPitchRange &polar
 		);
 #endif
@@ -94,7 +94,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const YawPitchRange &polar
 				);
 		#endif

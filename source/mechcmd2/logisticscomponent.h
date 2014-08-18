@@ -37,11 +37,11 @@ class LogisticsComponent
 		inline float getWeight() const { return weight; }
 		inline int getCost() const { return cost; }
 		inline float getHeat() const { return heat; }
-		inline const char* getName() const { return name; }
-		inline const char* getFlavorText() const { return flavorText; }
+		inline PCSTR getName() const { return name; }
+		inline PCSTR getFlavorText() const { return flavorText; }
 		inline int	getHelpID() const { return helpStringID; }
-		inline const char* getIconFileName() const { return iconFileName; }
-		inline const char* getPictureFileName() const { return pictureFileName; }
+		inline PCSTR getIconFileName() const { return iconFileName; }
+		inline PCSTR getPictureFileName() const { return pictureFileName; }
 		inline int		getComponentWidth() const { return iconX; }
 		inline int		getComponentHeight() const { return iconY; }
 		bool			compare( LogisticsComponent* second, int type );

@@ -121,7 +121,7 @@ MLR_Terrain2::MLR_Terrain2(
 
 	*stream >> borderPixelFun;
 
-	unsigned char textureFlags, mask = 1;
+	uint8_t textureFlags, mask = 1;
 
 	*stream >> textureFlags;
 
@@ -141,7 +141,7 @@ MLR_Terrain2::MLR_Terrain2(
 	Check_Object(MLRTexturePool::Instance);
 	MLRTexture *orgTexture = (*MLRTexturePool::Instance)[referenceState.GetTextureHandle()];
 	Check_Object(orgTexture);
-	const char *texName = orgTexture->GetTextureName();
+	PCSTR texName = orgTexture->GetTextureName();
 	char texRoot[1024], name[1024];
 
 	int len;
@@ -157,7 +157,7 @@ MLR_Terrain2::MLR_Terrain2(
 
 		MLRTexture *texture;
 
-		unsigned char mask = 1;
+		uint8_t mask = 1;
 		for(i=0;i<8;i++)
 		{
 			if(textureFlags & mask)
@@ -282,13 +282,13 @@ void
 
 	*stream << borderPixelFun;
 
-	unsigned char textureFlags = 0;
+	uint8_t textureFlags = 0;
 
 //	HACK
 /*
 	Check_Object(MLRTexturePool::Instance);
 	MLRTexture *orgTexture = (*MLRTexturePool::Instance)[referenceState.GetTextureHandle()];
-	const char *texName = orgTexture->GetTextureName();
+	PCSTR texName = orgTexture->GetTextureName();
 	char texRoot[1024], name[1024];
 
 	int len;
@@ -304,7 +304,7 @@ void
 
 		MLRTexture *texture;
 
-		unsigned char mask = 1;
+		uint8_t mask = 1;
 		for(i=0;i<d;i++)
 		{
 			sprintf(name, "%s_%1d_%02x%02x", texRoot, i, tileX/(1<<(maxAllDepth-i)), tileZ/(1<<(maxAllDepth-i)));
@@ -342,7 +342,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_Terrain2::SetCurrentDepth(unsigned char d)
+	MLR_Terrain2::SetCurrentDepth(uint8_t d)
 {
 	if(d == currentDepth)
 	{
@@ -352,7 +352,7 @@ void
 	{
 		Verify(d <= maxAllDepth);
 
-		unsigned char dt;
+		uint8_t dt;
 		dt = d<maxDepth ? d : maxDepth;
 
 		while(dt>0 && textures[dt]==0)

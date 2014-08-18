@@ -351,12 +351,12 @@ void ABLi_init (unsigned long runtimeStackSize,
 				long (*fileOpenCB) (void** file, char* fName),
 				long (*fileCloseCB) (void** file),
 				bool (*fileEofCB) (void* file),
-				long (*fileReadCB) (void* file, unsigned char* buffer, long length),
+				long (*fileReadCB) (void* file, PUCHAR buffer, long length),
 				long (*fileReadLongCB) (void* file),
-				long (*fileReadStringCB) (void* file, unsigned char* buffer),
-				long (*fileReadLineExCB) (void* file, unsigned char* buffer, long maxLength),
-				long (*fileWriteCB) (void* file, unsigned char* buffer, long length),
-				long (*fileWriteByteCB) (void* file, unsigned char byte),
+				long (*fileReadStringCB) (void* file, PUCHAR buffer),
+				long (*fileReadLineExCB) (void* file, PUCHAR buffer, long maxLength),
+				long (*fileWriteCB) (void* file, PUCHAR buffer, long length),
+				long (*fileWriteByteCB) (void* file, uint8_t byte),
 				long (*fileWriteLongCB) (void* file, long value),
 				long (*fileWriteStringCB) (void* file, char* buffer),
 				void (*debuggerPrintCallback) (char* s),
@@ -561,7 +561,7 @@ profile = true;
 	delete aFile;
 	aFile = NULL;
 
-	unsigned char s[100];
+	uint8_t s[100];
 	ABLFile* bFile = new ABLFile;
 	bFile->open("ablFile.txt");
 	bFile->readString(s);
@@ -1201,8 +1201,8 @@ SymTableNodePtr moduleHeader (void) {
 		//if (forwardFlag)
 		//	syntaxError(ABL_ERR_SYNTAX_ALREADY_FORWARDED);
 		//else {
-			moduleIdPtr->defn.info.routine.paramCount = (unsigned char)paramCount;
-			moduleIdPtr->defn.info.routine.totalParamSize = (unsigned char)totalParamSize;
+			moduleIdPtr->defn.info.routine.paramCount = (uint8_t)paramCount;
+			moduleIdPtr->defn.info.routine.totalParamSize = (uint8_t)totalParamSize;
 			moduleIdPtr->defn.info.routine.params = paramListPtr;
 		//}
 	}
@@ -1424,8 +1424,8 @@ SymTableNodePtr functionHeader (void) {
 		if (forwardFlag)
 			syntaxError(ABL_ERR_SYNTAX_ALREADY_FORWARDED);
 		else {
-			functionIdPtr->defn.info.routine.paramCount = (unsigned char)paramCount;
-			functionIdPtr->defn.info.routine.totalParamSize = (unsigned char)totalParamSize;
+			functionIdPtr->defn.info.routine.paramCount = (uint8_t)paramCount;
+			functionIdPtr->defn.info.routine.totalParamSize = (uint8_t)totalParamSize;
 			functionIdPtr->defn.info.routine.params = paramListPtr;
 		}
 		}

@@ -59,12 +59,12 @@ class FIDPSession: public ListItem
 			return SessionDescriptor.dwMaxPlayers;
 		}
 
-		inline const char *GetName()
+		inline PCSTR GetName()
 		{
 			return SessionDescriptor.lpszSessionNameA;
 		}
 		
-		inline const char *GetPassword()
+		inline PCSTR GetPassword()
 		{
 			return SessionDescriptor.lpszPasswordA;
 		}

@@ -13,7 +13,7 @@
 #include "vfx.h"
 #include <gameos.hpp>
 
-unsigned char FindClosest( VFX_RGB* Palette, int r, int g, int b );
+uint8_t FindClosest( VFX_RGB* Palette, int r, int g, int b );
 
 
 //
@@ -158,9 +158,9 @@ void InitAlphaLookup( VFX_RGB* Palette)
 //
 // Returns the closest matching color in a palette, dose not check windows colors
 //
-unsigned char FindClosest( VFX_RGB* Palette, int r, int g, int b )
+uint8_t FindClosest( VFX_RGB* Palette, int r, int g, int b )
 {
-	unsigned char Closest = 10;
+	uint8_t Closest = 10;
 	int Distance = 255*255*255;
 	int tempR,tempG,tempB,tdist;
 

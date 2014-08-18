@@ -19,16 +19,16 @@ void __stdcall ReCreateVertexBuffers(void);
 void __stdcall RenderIMEToBackBuffer(int POS_X, int POS_Y, float FONTHEIGHT);
 
 // Variables for gamma correction
-extern UCHAR GammaTable[256];
+extern uint8_t GammaTable[256];
 extern float GammaSetting;
-extern UCHAR UseGammaCorrection;
+extern uint8_t UseGammaCorrection;
 extern ULONG GlobalWidth;
 extern ULONG GlobalHeight;
-extern UCHAR GlobalZBuffer;
-extern UCHAR GlobalFullScreen;
+extern uint8_t GlobalZBuffer;
+extern uint8_t GlobalFullScreen;
 extern ULONG ValidTextures;
-extern UCHAR ModeChanged;
-extern UCHAR DebuggerUsed;
+extern uint8_t ModeChanged;
+extern uint8_t DebuggerUsed;
 extern DDSURFACEDESC2 BackBufferddsd;
 extern ULONG AllowBrightness;
 extern ULONG AllowContrast;
@@ -118,9 +118,9 @@ typedef struct DeviceInfo {
 	ULONG				MultitextureSpecularMapFilter;	// Specular support (1=Disable trilinear)
 	ULONG				MultitextureDetailFilter;		// Detail support (1=Disable trilinear)
 	ULONG				CurrentCard;			// Which entry in the KnownCard array. (-1=Unknown)
-	UCHAR				Failed60Hz;				// Set to only try full screen 60Hz once
-	UCHAR				LinearMemory;			// Set if linear memory, not rectangular
-	UCHAR				_padding1[2];
+	uint8_t				Failed60Hz;				// Set to only try full screen 60Hz once
+	uint8_t				LinearMemory;			// Set if linear memory, not rectangular
+	uint8_t				_padding1[2];
 	int					MaxRefreshRate;			// Maximum refresh rate
 	PSTR				CurrentVendor;			// If vendor known, point to name, else 0
 } DeviceInfo;
@@ -151,8 +151,8 @@ extern LPDIRECT3DDEVICE7		d3dDevice7;				// Current D3D Device
 extern LPDIRECT3DDEVICE7		Refd3dDevice7;			// Reference D3D Device
 extern LPDIRECT3DDEVICE7		Maind3dDevice7;			// Selected D3D Device
 extern LPDIRECT3DDEVICE7		RenderDevice;
-extern UCHAR					InsideBeginScene;
-extern UCHAR					NeedToInitRenderStates;
+extern uint8_t					InsideBeginScene;
+extern uint8_t					NeedToInitRenderStates;
 extern int						HardwareRenderer;
 extern ULONG					BGColor;
 extern D3DDEVICEDESC7			CapsDirect3D;

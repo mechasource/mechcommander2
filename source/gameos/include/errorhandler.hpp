@@ -14,11 +14,11 @@ typedef LPDIRECT3DVERTEXBUFFER7 (__stdcall *GETDXFUNC)(LPDIRECT3DVERTEXBUFFER7, 
 extern GETDXFUNC g_pGetDXVB;
 
 //
-const int MAX_MESSAGE_SIZE=65536;	// Maximum total error message size
-const int MAX_BUG_NOTES=1024;		// Maximum characters entered as bug notes
-const int MAX_LINE_LENGTH=256;		// Maximum characters per line in a file (shown as error line)
-const int MAX_SUBJECT_LENGTH=128;	// Maximum length of email subject
-const int MAX_RAID_DESC=2048;		// Maximum length of the Raid description (may need to be longer to accomodate RTF info)
+cint32_t MAX_MESSAGE_SIZE=65536;	// Maximum total error message size
+cint32_t MAX_BUG_NOTES=1024;		// Maximum characters entered as bug notes
+cint32_t MAX_LINE_LENGTH=256;		// Maximum characters per line in a file (shown as error line)
+cint32_t MAX_SUBJECT_LENGTH=128;	// Maximum length of email subject
+cint32_t MAX_RAID_DESC=2048;		// Maximum length of the Raid description (may need to be longer to accomodate RTF info)
 
 extern ULONG DisableErrors;
 extern volatile USHORT FPUControl;	// Current FPU control word
@@ -43,7 +43,7 @@ extern void __stdcall ShowFTOL(void);
 //
 // Log file data types
 //
-const int Log_Type = 4;			// Number of bits for log file 'type' data
+cint32_t Log_Type = 4;			// Number of bits for log file 'type' data
 enum { Log_Invalid, Log_JoystickCount, Log_JoystickAxis, Log_JoystickButton, Log_JoystickInfo, Log_JoystickEffectStatus, Log_Keypress, Log_GetKey, Log_Endmarker, Log_DataBlock, Log_NetInfo, Log_Media }; 
 
 
@@ -213,7 +213,7 @@ typedef struct _LogStruct {
 	int			pXDelta;
 	int			pYDelta;
 	int			pWheelDelta;
-	UCHAR		pButtonsPressed;
+	uint8_t		pButtonsPressed;
 	USHORT		Length;							// Length of bitstream (or 0)
 } LogStructure;
 #pragma pack(pop)
@@ -263,7 +263,7 @@ extern HANDLE hSpewOutput;
 void __stdcall ExitGameOS(void);
 void __stdcall InitializeSpew(void);
 void __stdcall TerminateSpew(void);
-void __stdcall DebugColor( UCHAR red, UCHAR green, UCHAR blue );
+void __stdcall DebugColor( uint8_t red, uint8_t green, uint8_t blue );
 void __stdcall InitProcessorSpeed(void);
 void __stdcall DestroyExceptions(void);
 

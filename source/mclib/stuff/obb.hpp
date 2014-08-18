@@ -13,7 +13,7 @@ namespace Stuff {class OBB;}
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::OBB &box
 		);
 #endif
@@ -41,7 +41,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const OBB &box
 				);
 		#endif

@@ -187,7 +187,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRTexture*
-	MLRTexturePool::Add(const char *tn, int instance)
+	MLRTexturePool::Add(PCSTR tn, int instance)
 {
 	MString textureName(tn);
 
@@ -397,7 +397,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRTexture*
-	MLRTexturePool::operator()(const char *tn, int instance)
+	MLRTexturePool::operator()(PCSTR tn, int instance)
 {
 	Check_Object(this);
 

@@ -565,6 +565,7 @@ void
 
 	MLRShape *shape = dInfo->shape;
 	MLRPrimitiveBase *primitive = NULL;
+	size_t i;
 
 	shape->shapeToClipMatrix.Multiply(*dInfo->shapeToWorld, worldToClipMatrix);
 
@@ -590,9 +591,6 @@ void
 	}
 
 	shape->worldToShape = NULL;
-
-	int i;
-
 	gos_GetViewport( &ViewportScalars::MulX, &ViewportScalars::MulY, &ViewportScalars::AddX, &ViewportScalars::AddY );
 
 #ifdef LAB_ONLY
@@ -746,7 +744,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRClipper::Clear (uint32_t flags)
+	MLRClipper::Clear (uint32_t /*flags*/)
 {
 	Check_Object(this);
 }

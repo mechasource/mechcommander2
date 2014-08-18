@@ -134,10 +134,10 @@ namespace MidLevelRenderer {
 				{Check_Object(this); lightMask &= ~MLRState::TerrainLightingMode;}
 
 		void
-			SetName(const char *name)
+			SetName(PCSTR name)
 				{Check_Object(this); lightName = name;}
 
-		const char*
+		PCSTR
 			GetName()
 				{Check_Object(this); return lightName;}
 

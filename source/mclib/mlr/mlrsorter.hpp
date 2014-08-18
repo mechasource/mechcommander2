@@ -145,7 +145,7 @@ namespace MidLevelRenderer {
 				(	void *vertices, 
 					int numVertices,
 					const MLRState& state,
-					const int& mode,
+					cint32_t& mode,
 					int tex2 = 0
 				);
 
@@ -156,7 +156,7 @@ namespace MidLevelRenderer {
 					unsigned short *indices,
 					int numIndices,
 					const MLRState& state, 
-					const int& mode,
+					cint32_t& mode,
 					int tex2 = 0
 				);
 

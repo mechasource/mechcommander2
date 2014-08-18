@@ -421,7 +421,7 @@ BOOL ObjectiveDlg::OnInitDialog()
 	
 	int groupCount = pMgr->getBuildingGroupCount();
 
-	const char** pGroups = new const char*[groupCount];
+	PCSTR* pGroups = new PCSTR[groupCount];
 		
 	pMgr->getBuildingGroupNames(pGroups, groupCount);
 
@@ -688,7 +688,7 @@ void ObjectiveDlg::OnSelchangeGroup()
 	int group = m_modelGroup.GetCurSel();
 	group = m_modelGroup.GetItemData( group );
 
-	const char* MechNames[256];
+	PCSTR MechNames[256];
 	int count = 256;
 		
 	EditorObjectMgr::instance()->getBuildingNamesInGroup( group, MechNames, count );

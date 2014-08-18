@@ -87,7 +87,7 @@ class FixedLengthString
 //
 // Strings can be initialized by char* strings
 //
-	inline FixedLengthString& operator = (const char* Source)
+	inline FixedLengthString& operator = (PCSTR Source)
 	{
 		if( Source )
 		{

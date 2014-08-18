@@ -24,11 +24,11 @@ typedef enum __lzdecomp_const {
 #define NULL			0
 #endif
 
-typedef unsigned char* MemoryPtr;
+typedef uint8_t* MemoryPtr;
 
 typedef struct HashStruct {
 	unsigned short Chain;
-	unsigned char Suffix;
+	uint8_t Suffix;
 } HashStruct;
 typedef HashStruct*	HashStructPtr;
 	

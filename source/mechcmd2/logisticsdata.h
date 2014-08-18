@@ -36,26 +36,26 @@ public:
 
 	LogisticsComponent* getComponent( int componentID );
 	LogisticsPilot*		getPilot( int pilotID );
-	LogisticsPilot*		getPilot( const char* pilotName );
+	LogisticsPilot*		getPilot( PCSTR pilotName );
 	int					getPilotCount();
 	int					getPilots( LogisticsPilot**, long& count );
-	const char*			getBestPilot( long mechWeight );
+	PCSTR			getBestPilot( long mechWeight );
 	bool				gotPilotsLeft();
 
-	void				setPilotUnused( const char* pPilot );
+	void				setPilotUnused( PCSTR pPilot );
 
 	int					getVariantsInInventory( LogisticsVariant* pVar, bool bIncludeForceGroup );
-	int					getPlayerVariantNames( const char**, int& count );
+	int					getPlayerVariantNames( PCSTR*, int& count );
 	int					getChassisVariants( const LogisticsChassis* pChassis, LogisticsVariant** pVar, int& count );
 	
 	LogisticsVariant*	getVariant( int ID );
-	LogisticsVariant*	getVariant( const char* mechName );
-	LogisticsVariant*	getVariant( const char* pCSVFileNaem, int VariantNum );
-	int					removeVariant( const char* varName );
+	LogisticsVariant*	getVariant( PCSTR mechName );
+	LogisticsVariant*	getVariant( PCSTR pCSVFileNaem, int VariantNum );
+	int					removeVariant( PCSTR varName );
 
 
 	LogisticsMech*		getMech( int ID );
-	LogisticsMech*		getMech( const char* MechName, const char* pilotName );
+	LogisticsMech*		getMech( PCSTR MechName, PCSTR pilotName );
 	LogisticsMech*		getMechWithoutForceGroup( LogisticsMech* clone );
 
 	void				addMechToInventory( LogisticsVariant* pVar, LogisticsPilot* pPilot, int ForceGrup,
@@ -76,7 +76,7 @@ public:
 											unsigned long color1 = 0xffffffff, 
 											unsigned long color2 = 0xffffffff,
 											unsigned long color3 = 0xffffffff);
-	void				removeMechFromInventory( const char* mechName, const char* pilotName );
+	void				removeMechFromInventory( PCSTR mechName, PCSTR pilotName );
 
 	int					addMechToForceGroup( LogisticsMech* pMech, int slot );
 	int					removeMechFromForceGroup( LogisticsMech* pMech, bool bRemovePilot );
@@ -109,10 +109,10 @@ public:
 	const EString&		getCurrentMission() const;
 	const EString&		getLastMission() const;
 	int					setCurrentMission( const EString& missionName );
-	void				setSingleMission( const char* pName );
+	void				setSingleMission( PCSTR pName );
 	bool				isSingleMission();
 	long				getCurrentMissionTune();
-	const char *		getCurrentABLScript() const;
+	PCSTR 		getCurrentABLScript() const;
 	long 				getCurrentMissionId();
 
 	void				clearInventory();
@@ -125,51 +125,51 @@ public:
 	int					getHelicopters( const LogisticsVariant**, int& count );
 	
 	int					getVehicles( const LogisticsVehicle**, int& count );
-	LogisticsVehicle*	getVehicle( const char* pName );
+	LogisticsVehicle*	getVehicle( PCSTR pName );
 
 
 	int					setMechToModify( LogisticsMech* pVariant );
 	LogisticsMech*		getMechToModify( ){ return currentlyModifiedMech; }
-	int					acceptMechModifications( const char* pNewVariantName );
+	int					acceptMechModifications( PCSTR pNewVariantName );
 	int					cancelMechModfications();
-	bool				canReplaceVariant( const char* name );
-	bool				canDeleteVariant( const char* name );
+	bool				canReplaceVariant( PCSTR name );
+	bool				canDeleteVariant( PCSTR name );
 
 	void				setCurrentMissionNum (long cMission);
 	long				getCurrentMissionNum (void);
 
 	int					getAvailableComponents( LogisticsComponent** pComps, int& maxCount );
 	int					getAllComponents( LogisticsComponent** pComps, int& maxCount );
-	const char*			getCurrentOperationFileName();
-	const char*			getCurrentVideoFileName();
-	const char*			getCurrentMissionDescription();
-	int					getAvailableMissions( const char** missionNames, long& count );
-	int					getCurrentMissions( const char** missionNames, long& count );
-	bool				getMissionAvailable( const char* missionName );
-	const char*			getCurrentMissionFriendlyName( );
-	const char*			getMissionFriendlyName( const char* missionName );
+	PCSTR			getCurrentOperationFileName();
+	PCSTR			getCurrentVideoFileName();
+	PCSTR			getCurrentMissionDescription();
+	int					getAvailableMissions( PCSTR* missionNames, long& count );
+	int					getCurrentMissions( PCSTR* missionNames, long& count );
+	bool				getMissionAvailable( PCSTR missionName );
+	PCSTR			getCurrentMissionFriendlyName( );
+	PCSTR			getMissionFriendlyName( PCSTR missionName );
 	long				getMaxTeams() const;
 	long				getMaxPlayers() const;
 
-	int					acceptMechModificationsUseOldVariant( const char* name );
+	int					acceptMechModificationsUseOldVariant( PCSTR name );
 
 	const EString&		getCampaignName() const;
 
 
 
 
-	int					setCurrentMission( const char* missionName );
+	int					setCurrentMission( PCSTR missionName );
 
-	void				startNewCampaign( const char* fileName = "campaign");
+	void				startNewCampaign( PCSTR fileName = "campaign");
 	void				startMultiPlayer();
-	void				setPurchaseFile( const char* fileName );
+	void				setPurchaseFile( PCSTR fileName );
 
 	Building*			getBuilding( int nameID );
 	int					getBuildings( Building** bdgs, int& count );
 
 	bool				campaignOver();
-	const char*			getCurrentBigVideo() const;
-	const char*			getFinalVideo() const;
+	PCSTR			getCurrentBigVideo() const;
+	PCSTR			getFinalVideo() const;
 
 	bool				newMechsAvailable() { return bNewMechs; }
 	bool				newPilotsAvailable() { return bNewPilots; }
@@ -179,8 +179,8 @@ public:
 	void				setNewWeaponsAcknowledged(){ bNewWeapons = 0; }
 	void				setNewMechsAcknowledged(){ bNewMechs = 0; }
 
-	void				addNewBonusPurchaseFile( const char* pFileName ); 
-	void				appendAvailability(const char* pFileName, bool* availableArray );
+	void				addNewBonusPurchaseFile( PCSTR pFileName ); 
+	void				appendAvailability(PCSTR pFileName, bool* availableArray );
 
 	bool				skipLogistics();
 	bool				showChooseMission();

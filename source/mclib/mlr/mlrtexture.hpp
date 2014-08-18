@@ -33,7 +33,7 @@ namespace MidLevelRenderer {
 	public:
 		MLRTexture(
 			MLRTexturePool *pool,
-			const char* name,
+			PCSTR name,
 			int instance,
 			int handle,
 			int hint=0
@@ -59,7 +59,7 @@ namespace MidLevelRenderer {
 			GetImage(int *h=NULL)
 				{ Check_Object(this); if(h) { *h = hint; } return image; }
 
-		const char*
+		PCSTR
 			GetTextureName()
 				{Check_Object(this); return textureName;}
 

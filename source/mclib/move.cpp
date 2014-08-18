@@ -628,15 +628,15 @@ long MOVE_saveData (PacketFile* packetFile, long whichPacket) {
 	long numGlobalMap1Packets = GlobalMoveMap[1]->write(packetFile, whichPacket + numMissionMapPackets + numGlobalMap0Packets);
 	long numGlobalMap2Packets = GlobalMoveMap[2]->write(packetFile, whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets);
 
-	long result = packetFile->writePacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets, (unsigned char*)&tempNumSpecialAreas, sizeof(long));
+	long result = packetFile->writePacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets, (PUCHAR)&tempNumSpecialAreas, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " MOVE_saveData: Unable to write num special area ");
 	//-------------------------------------------------------------------------------------------------
 	// If there are no special areas, we just write the specialArea count as a filler for the packet...
 	if (tempNumSpecialAreas == 0)
-		result = packetFile->writePacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets + 1, (unsigned char*)&tempNumSpecialAreas, sizeof(long));
+		result = packetFile->writePacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets + 1, (PUCHAR)&tempNumSpecialAreas, sizeof(long));
 	else
-		result = packetFile->writePacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets + 1, (unsigned char*)tempSpecialAreaFootPrints, sizeof(GameObjectFootPrint) * tempNumSpecialAreas);
+		result = packetFile->writePacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets + 1, (PUCHAR)tempSpecialAreaFootPrints, sizeof(GameObjectFootPrint) * tempNumSpecialAreas);
 	if (result <= 0)
 		Fatal(result, " MOVE_saveData: Unable to write special area footprints ");
 
@@ -710,7 +710,7 @@ long MOVE_readData (PacketFile* packetFile, long whichPacket) {
 		systemHeap->Free(GlobalMoveMap[2]->pathExistsTable);
 		GlobalMoveMap[2]->pathExistsTable = NULL;
 
-		long numBytes = packetFile->readPacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets, (unsigned char*)&tempNumSpecialAreas);
+		long numBytes = packetFile->readPacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets, (PUCHAR)&tempNumSpecialAreas);
 		if (numBytes <= 0)
 			Fatal(numBytes, " MOVE_readData: Unable to read num special areas ");
 		if (tempSpecialAreaFootPrints) {
@@ -719,7 +719,7 @@ long MOVE_readData (PacketFile* packetFile, long whichPacket) {
 		}
 		if (tempNumSpecialAreas > 0) {
 			tempSpecialAreaFootPrints = (GameObjectFootPrint*)systemHeap->Malloc(sizeof(GameObjectFootPrint) * tempNumSpecialAreas);
-			numBytes = packetFile->readPacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets + 1, (unsigned char*)tempSpecialAreaFootPrints);
+			numBytes = packetFile->readPacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets + 1, (PUCHAR)tempSpecialAreaFootPrints);
 			if (numBytes <= 0)
 				Fatal(numBytes, " MOVE_readData: Unable to read num special areas ");
 		}
@@ -838,11 +838,11 @@ void MissionMap::init (long h, long w) {
 
 long MissionMap::init (PacketFile* packetFile, long whichPacket) {
 
-	packetFile->readPacket(whichPacket++, (unsigned char*)&height);
-	packetFile->readPacket(whichPacket++, (unsigned char*)&width);
-	packetFile->readPacket(whichPacket++, (unsigned char*)&planet);
+	packetFile->readPacket(whichPacket++, (PUCHAR)&height);
+	packetFile->readPacket(whichPacket++, (PUCHAR)&width);
+	packetFile->readPacket(whichPacket++, (PUCHAR)&planet);
 	init(height, width);
-	packetFile->readPacket(whichPacket++, (unsigned char*)map);
+	packetFile->readPacket(whichPacket++, (PUCHAR)map);
 
 	//-----------------------
 	// Just some debugging...
@@ -874,16 +874,16 @@ long MissionMap::write (PacketFile* packetFile, long whichPacket) {
 	if (!packetFile)
 		return(NUM_MISSIONMAP_PACKETS);
 
-	long result = packetFile->writePacket(whichPacket++, (unsigned char*)&height, sizeof(long));
+	long result = packetFile->writePacket(whichPacket++, (PUCHAR)&height, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write height packet ");
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)&width, sizeof(long));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)&width, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write width packet ");
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)&planet, sizeof(long));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)&planet, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write planet packet ");
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)map, sizeof(MapCell) * height * width);
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)map, sizeof(MapCell) * height * width);
 	if (result <= 0)
 		Fatal(result, " MissionMap.write: Unable to write map packet ");
 	return(NUM_MISSIONMAP_PACKETS);
@@ -1487,39 +1487,39 @@ long GlobalMap::init (PacketFilePtr packetFile, long whichPacket) {
 	long startPacket = whichPacket;
 
 	unsigned long version = 0;
-	long result = packetFile->readPacket(whichPacket++, (unsigned char*)&version);
+	long result = packetFile->readPacket(whichPacket++, (PUCHAR)&version);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read version packet ");
 	bool badVersion = false;
 	if (version != GLOBALMAP_VERSION_NUMBER)
 		badVersion = true;
 
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)&height);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)&height);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read height packet ");
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)&width);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)&width);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read width packet ");
 	long sectorDim; // this is no longer used...
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)&sectorDim);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)&sectorDim);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read sectorDim packet ");
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)&sectorHeight);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)&sectorHeight);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read sectorHeight packet ");
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)&sectorWidth);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)&sectorWidth);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read sectorWidth packet ");
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)&numAreas);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)&numAreas);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read numAreas packet ");
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)&numDoors);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)&numDoors);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read numDoors packet ");
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)&numDoorInfos);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)&numDoorInfos);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read numDoorInfos packet ");
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)&numDoorLinks);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)&numDoorLinks);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read numDoorLinks packet ");
 
@@ -1537,13 +1537,13 @@ long GlobalMap::init (PacketFilePtr packetFile, long whichPacket) {
 
 	areaMap = (short*)systemHeap->Malloc(sizeof(short) * height * width);
 	gosASSERT(areaMap != NULL);
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)areaMap);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)areaMap);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read areaMap packet ");
 
 	areas = (GlobalMapAreaPtr)systemHeap->Malloc(sizeof(GlobalMapArea) * numAreas);
 	gosASSERT(areas != NULL);
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)areas);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)areas);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read areas packet ");
 
@@ -1553,7 +1553,7 @@ long GlobalMap::init (PacketFilePtr packetFile, long whichPacket) {
 	long i;
 	for (i = 0; i < numAreas; i++)
 		if (areas[i].numDoors) {
-			result = packetFile->readPacket(whichPacket++, (unsigned char*)&doorInfos[curDoorInfo]);
+			result = packetFile->readPacket(whichPacket++, (PUCHAR)&doorInfos[curDoorInfo]);
 			if (result == 0)
 				Fatal(result, " GlobalMap.init: unable to read doorInfos packet ");
 			curDoorInfo += areas[i].numDoors;
@@ -1570,7 +1570,7 @@ long GlobalMap::init (PacketFilePtr packetFile, long whichPacket) {
 
 	doors = (GlobalMapDoorPtr)systemHeap->Malloc(sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
 	gosASSERT(doors != NULL);
-	result = packetFile->readPacket(whichPacket++, (unsigned char*)doors);
+	result = packetFile->readPacket(whichPacket++, (PUCHAR)doors);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read doors packet ");
 
@@ -1582,7 +1582,7 @@ long GlobalMap::init (PacketFilePtr packetFile, long whichPacket) {
 	for (i = 0; i < (numDoors + NUM_DOOR_OFFSETS); i++) {
 		long numLinks = doors[i].numLinks[0] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		result = packetFile->readPacket(whichPacket++, (unsigned char*)&doorLinks[numLinksRead]);
+		result = packetFile->readPacket(whichPacket++, (PUCHAR)&doorLinks[numLinksRead]);
 		if (result <= 0)
 			Fatal(result, " GlobalMap.init: Unable to write doorLinks packet ");
 		doors[i].links[0] = &doorLinks[numLinksRead];
@@ -1590,7 +1590,7 @@ long GlobalMap::init (PacketFilePtr packetFile, long whichPacket) {
 
 		numLinks = doors[i].numLinks[1] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		result = packetFile->readPacket(whichPacket++, (unsigned char*)&doorLinks[numLinksRead]);
+		result = packetFile->readPacket(whichPacket++, (PUCHAR)&doorLinks[numLinksRead]);
 		if (result <= 0)
 			Fatal(result, " GlobalMap.init: Unable to write doorLinks packet ");
 		doors[i].links[1] = &doorLinks[numLinksRead];
@@ -1609,7 +1609,7 @@ long GlobalMap::init (PacketFilePtr packetFile, long whichPacket) {
 
 	//--------------------------
 	// Create pathExistsTable...
-	pathExistsTable = (unsigned char*)systemHeap->Malloc(numAreas * (numAreas / 4 + 1));
+	pathExistsTable = (PUCHAR)systemHeap->Malloc(numAreas * (numAreas / 4 + 1));
 	if (!pathExistsTable)
 		STOP(("GlobalMap.init: unable to malloc pathExistsTable"));
 	clearPathExistsTable();
@@ -1685,39 +1685,39 @@ long GlobalMap::write (PacketFilePtr packetFile, long whichPacket) {
 		return(numPackets);
 
 	unsigned long version = GLOBALMAP_VERSION_NUMBER;
-	long result = packetFile->writePacket(whichPacket++, (unsigned char*)&version, sizeof(long));
+	long result = packetFile->writePacket(whichPacket++, (PUCHAR)&version, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write version packet ");
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)&height, sizeof(long));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)&height, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write height packet ");
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)&width, sizeof(long));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)&width, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write width packet ");
 	long sectorDim = SECTOR_DIM;
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)&sectorDim, sizeof(long));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)&sectorDim, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write sectorDim packet ");
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)&sectorHeight, sizeof(long));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)&sectorHeight, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write sectorHeight packet ");
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)&sectorWidth, sizeof(long));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)&sectorWidth, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write sectorWidth packet ");
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)&numAreas, sizeof(long));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)&numAreas, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numAreas packet ");
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)&numDoors, sizeof(long));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)&numDoors, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numDoors packet ");
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)&numDoorInfos, sizeof(long));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)&numDoorInfos, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numDoorInfos packet ");
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)&numDoorLinks, sizeof(long));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)&numDoorLinks, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numDoorLinks packet ");
 
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)areaMap, sizeof(short) * height * width);
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)areaMap, sizeof(short) * height * width);
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write areaMap packet ");
 
@@ -1734,7 +1734,7 @@ long GlobalMap::write (PacketFilePtr packetFile, long whichPacket) {
 		//areas[i].offMap = false;
 		areas[i].open = true;
 	}
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)areas, sizeof(GlobalMapArea) * numAreas);
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)areas, sizeof(GlobalMapArea) * numAreas);
 	for (i = 0; i < numAreas; i++) {
 		//---------------------
 		// restore the doors...
@@ -1762,7 +1762,7 @@ long GlobalMap::write (PacketFilePtr packetFile, long whichPacket) {
 	for (i = 0; i < numAreas; i++)
 		if (areas[i].numDoors) {
 			long packetSize = sizeof(DoorInfo) * areas[i].numDoors;
-			result = packetFile->writePacket(whichPacket++, (unsigned char*)areas[i].doors, packetSize);
+			result = packetFile->writePacket(whichPacket++, (PUCHAR)areas[i].doors, packetSize);
 			if (result <= 0)
 				Fatal(result, " GlobalMap.write: Unable to write doorInfos packet ");
 			numDoorInfosWritten += areas[i].numDoors;
@@ -1785,7 +1785,7 @@ long GlobalMap::write (PacketFilePtr packetFile, long whichPacket) {
 		doors[i].hPrime = 0;
 		doors[i].fPrime = 0;
 	}
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)doors, sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)doors, sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
 	for (i = 0; i < (numDoors + NUM_DOOR_OFFSETS); i++) {
 		//---------------------
 		// restore the links...
@@ -1802,14 +1802,14 @@ long GlobalMap::write (PacketFilePtr packetFile, long whichPacket) {
 	for (i = 0; i < (numDoors + NUM_DOOR_OFFSETS); i++) {
 		long numLinks = doors[i].numLinks[0] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		result = packetFile->writePacket(whichPacket++, (unsigned char*)doors[i].links[0], sizeof(DoorLink) * numLinks);
+		result = packetFile->writePacket(whichPacket++, (PUCHAR)doors[i].links[0], sizeof(DoorLink) * numLinks);
 		if (result <= 0)
 			Fatal(result, " GlobalMap.write: Unable to write doorLinks packet ");
 		numberL += numLinks;
 
 		numLinks = doors[i].numLinks[1] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		result = packetFile->writePacket(whichPacket++, (unsigned char*)doors[i].links[1], sizeof(DoorLink) * numLinks);
+		result = packetFile->writePacket(whichPacket++, (PUCHAR)doors[i].links[1], sizeof(DoorLink) * numLinks);
 		if (result <= 0)
 			Fatal(result, " GlobalMap.write: Unable to write doorLinks packet ");
 		numberL += numLinks;
@@ -1823,7 +1823,7 @@ long GlobalMap::write (PacketFilePtr packetFile, long whichPacket) {
 		calcPathCostTable();
 	else
 		initPathCostTable();
-	result = packetFile->writePacket(whichPacket++, (unsigned char*)pathCostTable, numAreas * numAreas);
+	result = packetFile->writePacket(whichPacket++, (PUCHAR)pathCostTable, numAreas * numAreas);
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write doors packet ");
 #endif
@@ -2625,14 +2625,14 @@ void GlobalMap::calcDoorLinks (void) {
 	for (long i = 0; i < (numDoors + NUM_DOOR_OFFSETS); i++) {
 		long numLinks = doors[i].numLinks[0] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		//result = packetFile->writePacket(whichPacket++, (unsigned char*)doors[i].links[0], sizeof(DoorLink) * numLinks);
+		//result = packetFile->writePacket(whichPacket++, (PUCHAR)doors[i].links[0], sizeof(DoorLink) * numLinks);
 		//if (result <= 0)
 		//	Fatal(result, " GlobalMap.write: Unable to write doorLinks packet ");
 		numberL += numLinks;
 
 		numLinks = doors[i].numLinks[1] + NUM_EXTRA_DOOR_LINKS;
 		gosASSERT(numLinks >= 2);
-		//result = packetFile->writePacket(whichPacket++, (unsigned char*)doors[i].links[1], sizeof(DoorLink) * numLinks);
+		//result = packetFile->writePacket(whichPacket++, (PUCHAR)doors[i].links[1], sizeof(DoorLink) * numLinks);
 		//if (result <= 0)
 		//	Fatal(result, " GlobalMap.write: Unable to write doorLinks packet ");
 		numberL += numLinks;
@@ -2670,9 +2670,9 @@ long GlobalMap::getPathCost (long startArea, long goalArea, bool withSpecialArea
 	return(cost);
 #else
 	calcedPathCost = false;
-	unsigned char data = pathCostTable[startArea * numAreas + goalArea];
+	uint8_t data = pathCostTable[startArea * numAreas + goalArea];
 	if (withSpecialAreas) {
-		unsigned char cost = (data & 0x0C) >> 2;
+		uint8_t cost = (data & 0x0C) >> 2;
 		if (data & GLOBAL_FLAG_SPECIAL_IMPOSSIBLE) {
 			cost = 0;
 			confidence = GLOBAL_CONFIDENCE_GOOD;
@@ -2695,7 +2695,7 @@ long GlobalMap::getPathCost (long startArea, long goalArea, bool withSpecialArea
 		return(cost);
 		}
 	else {
-		unsigned char cost = (data & 0x03);
+		uint8_t cost = (data & 0x03);
 		if (data & GLOBAL_FLAG_SPECIAL_IMPOSSIBLE) {
 			cost = 0;
 			confidence = GLOBAL_CONFIDENCE_GOOD;
@@ -2736,7 +2736,7 @@ long GlobalMap::getPathCost (long startArea, long goalArea, bool withSpecialArea
 
 #if USE_PATH_COST_TABLE
 
-void GlobalMap::setPathFlag (long startArea, long goalArea, unsigned char flag, bool set) {
+void GlobalMap::setPathFlag (long startArea, long goalArea, uint8_t flag, bool set) {
 
 	long index = startArea * numAreas + goalArea;
 	pathCostTable[index] &= (flag ^ 0xFF);
@@ -2746,14 +2746,14 @@ void GlobalMap::setPathFlag (long startArea, long goalArea, unsigned char flag, 
 
 //---------------------------------------------------------------------------
 
-long GlobalMap::getPathFlag (long startArea, long goalArea, unsigned char flag) {
+long GlobalMap::getPathFlag (long startArea, long goalArea, uint8_t flag) {
 
 	return(pathCostTable[startArea * numAreas + goalArea] & flag);
 }
 
 //---------------------------------------------------------------------------
 
-void GlobalMap::setPathCost (long startArea, long goalArea, bool withSpecialAreas, unsigned char cost) {
+void GlobalMap::setPathCost (long startArea, long goalArea, bool withSpecialAreas, uint8_t cost) {
 
 	if (cost > 0) {
 		if (cost < 6) 
@@ -2786,7 +2786,7 @@ void GlobalMap::initPathCostTable (void) {
 //	if (numAreas > 600)
 //		numAreas = 600;
 
-	pathCostTable = (unsigned char*)systemHeap->Malloc(numAreas * numAreas);
+	pathCostTable = (PUCHAR)systemHeap->Malloc(numAreas * numAreas);
 	gosASSERT(pathCostTable != NULL);
 
 	for (long startArea = 0; startArea < numAreas; startArea++)
@@ -2832,7 +2832,7 @@ void GlobalMap::calcPathCostTable (void) {
 		systemHeap->Free(pathCostTable);
 		pathCostTable = NULL;
 	}
-	pathCostTable = (unsigned char*)systemHeap->Malloc(numAreas * numAreas);
+	pathCostTable = (PUCHAR)systemHeap->Malloc(numAreas * numAreas);
 	gosASSERT(pathCostTable != NULL);
 
 	for (long i = 0; i < numAreas; i++)
@@ -2888,7 +2888,7 @@ void GlobalMap::clearPathExistsTable (void) {
 
 //------------------------------------------------------------------------------------------
 
-void GlobalMap::setPathExists (long fromArea, long toArea, unsigned char set) {
+void GlobalMap::setPathExists (long fromArea, long toArea, uint8_t set) {
 
 	if (!pathExistsTable)
 		return;
@@ -2898,10 +2898,10 @@ void GlobalMap::setPathExists (long fromArea, long toArea, unsigned char set) {
 		return;
 
 	long rowWidth = numAreas / 4 + 1;
-	unsigned char* pathByte = pathExistsTable;
+	PUCHAR pathByte = pathExistsTable;
 	pathByte += (rowWidth * fromArea + (toArea / 4));
-	unsigned char pathShift = (toArea % 4) * 2;
-	unsigned char pathBit = 0x03 << pathShift;
+	uint8_t pathShift = (toArea % 4) * 2;
+	uint8_t pathBit = 0x03 << pathShift;
 	*pathByte &= (pathBit ^ 0xFF);
 	if (set)
 		*pathByte |= (set << pathShift);
@@ -2909,7 +2909,7 @@ void GlobalMap::setPathExists (long fromArea, long toArea, unsigned char set) {
 
 //------------------------------------------------------------------------------------------
 
-unsigned char GlobalMap::getPathExists (long fromArea, long toArea) {
+uint8_t GlobalMap::getPathExists (long fromArea, long toArea) {
 
 	if (!pathExistsTable)
 		return(false);
@@ -2919,10 +2919,10 @@ unsigned char GlobalMap::getPathExists (long fromArea, long toArea) {
 		return(false);
 
 	long rowWidth = numAreas / 4 + 1;
-	unsigned char* pathByte = pathExistsTable;
+	PUCHAR pathByte = pathExistsTable;
 	pathByte += (rowWidth * fromArea + (toArea / 4));
-	unsigned char pathShift = (toArea % 4) * 2;
-	unsigned char pathBit = 0x03 << pathShift;
+	uint8_t pathShift = (toArea % 4) * 2;
+	uint8_t pathBit = 0x03 << pathShift;
 	return(*pathByte & pathBit);
 }
 

@@ -120,7 +120,7 @@ void AttributeMeter::render( long xOffset, long yOffset )
 }
 
 
-void AttributeMeter::init( FitIniFile* file, const char* headerName )
+void AttributeMeter::init( FitIniFile* file, PCSTR headerName )
 {
 	if ( NO_ERR != file->seekBlock( headerName ) )
 	{

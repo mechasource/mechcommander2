@@ -80,7 +80,7 @@ Motion3D&
 #if !defined(Spew)
 	void
 		Spew(
-			const char *group,
+			PCSTR group,
 			const Motion3D& motion
 		)
 	{

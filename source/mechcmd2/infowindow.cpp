@@ -342,7 +342,7 @@ void InfoWindow::setUnit(Mover* pNewMover)
 	}
 }
 
-void InfoWindow::drawName( const char* name )
+void InfoWindow::drawName( PCSTR name )
 {
 	GUI_RECT rect = { NAMELEFT, NAMETOP, NAMERIGHT, SCROLLTOP};
 	drawRect( rect, 0xff000000 );

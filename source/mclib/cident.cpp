@@ -47,7 +47,7 @@ void FullPathFileName::destroy (void)
 }
 
 //---------------------------------------------------------------------------
-void FullPathFileName::init (char * dir_path, const char * name, char * ext)
+void FullPathFileName::init (char * dir_path, PCSTR  name, char * ext)
 {
 	destroy();
 

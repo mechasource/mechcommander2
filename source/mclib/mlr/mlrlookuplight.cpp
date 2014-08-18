@@ -78,12 +78,12 @@ MLRLookUpLight::MLRLookUpLight(
 	one_Over_zoneSizeX = 1.0f/zoneSizeX;
 	one_Over_zoneSizeZ = 1.0f/zoneSizeZ;
 
-	maps = new unsigned char * [mapZoneCountX * mapZoneCountZ];
+	maps = new PUCHAR  [mapZoneCountX * mapZoneCountZ];
 	Check_Pointer(maps);
 
 	for(int i=0;i<mapZoneCountX*mapZoneCountZ;i++)
 	{
-		maps[i] = new unsigned char [256*256];
+		maps[i] = new uint8_t [256*256];
 		Check_Pointer(maps[i]);
 
 		stream->ReadBytes(maps[i], 256*256);
@@ -101,7 +101,7 @@ MLRLookUpLight::MLRLookUpLight(Stuff::Page *page):
 
 	maps = NULL;
 
-	const char *data;
+	PCSTR data;
 
 	mapOrigin.x = 0.0f;
 	mapOrigin.y = 0.0f;
@@ -203,7 +203,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRLookUpLight::SetMapSizeAndName(int x, int z, const char *name)
+	MLRLookUpLight::SetMapSizeAndName(int x, int z, PCSTR name)
 {
 	Check_Object(this);
 
@@ -236,12 +236,12 @@ bool
 
 	Stuff::FileStream element_stream(mapName);
 
-	unsigned char *map = new unsigned char [mapZoneCountX*mapZoneCountZ*256*256];
+	PUCHAR map = new uint8_t [mapZoneCountX*mapZoneCountZ*256*256];
 	Check_Pointer(map);
 	element_stream.ReadBytes(map, mapZoneCountX*mapZoneCountZ*256*256);
 
 	Verify(maps==NULL);
-	maps = new unsigned char * [mapZoneCountX * mapZoneCountZ];
+	maps = new PUCHAR  [mapZoneCountX * mapZoneCountZ];
 	Check_Pointer(maps);
 
 	int i, j, k;
@@ -249,12 +249,12 @@ bool
 	{
 		for(i=0;i<mapZoneCountX;i++)
 		{
-			maps[j*mapZoneCountX+i] = new unsigned char [256*256];
+			maps[j*mapZoneCountX+i] = new uint8_t [256*256];
 			Check_Pointer(maps[j*mapZoneCountX+i]);
 		}
 	}
 
-	unsigned char *uptr = map;
+	PUCHAR uptr = map;
 	for(j=0;j<mapZoneCountZ;j++)
 	{
 		for(k=0;k<256;k++)

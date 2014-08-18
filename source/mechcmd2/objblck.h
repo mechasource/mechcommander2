@@ -93,7 +93,7 @@ struct ObjData
 	short				objTypeNum;		//Type number of object
 	unsigned short		vertexNumber;	//Vertex Number in Block.
 	unsigned short		blockNumber;	//Which terrain Block.
-	unsigned char		damage;			//Damage
+	uint8_t		damage;			//Damage
 };
 
 struct MiscObjectData

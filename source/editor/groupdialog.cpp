@@ -77,7 +77,7 @@ void CGroupDialog::OnGrOperationFileBrowseButton() {
 			CString operationPath = selectFileDialog.GetPathName();
 			FitIniFile file;
 			long result = 0;
-			result = file.open( (char*)(const char*)operationPath );
+			result = file.open( (char*)(PCSTR)operationPath );
 			if (NO_ERR != result) {
 				AfxMessageBox(IDS_COULDNT_OPEN_OPERATION_FILE);
 			} else {

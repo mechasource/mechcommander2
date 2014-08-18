@@ -296,7 +296,7 @@ void Editor::init( char* loader )
 						if (  IDOK == fileDlg.DoModal() )
 						{
 							EditorInterface::instance()->SetBusyMode();
-							const char* pFile = fileDlg.m_ofn.lpstrFile;		
+							PCSTR pFile = fileDlg.m_ofn.lpstrFile;		
 							bOK = EditorData::initTerrainFromPCV( pFile );
 							EditorInterface::instance()->UnsetBusyMode();
 						}
@@ -689,7 +689,7 @@ void EditorInterface::terminate()
 	}
 }
 
-void EditorInterface::init( const char* fileName )
+void EditorInterface::init( PCSTR fileName )
 {
 	SetBusyMode(false/*no redraw*/);
 
@@ -764,7 +764,7 @@ void EditorInterface::addBuildingsToNewMenu()
 	// now i need to add the buildings to the toolbars/menus
 	int groupCount = pMgr->getBuildingGroupCount( );
 
-	const char** pNames = ( const char** )malloc( sizeof( const char *) * groupCount );
+	PCSTR* pNames = ( PCSTR* )malloc( sizeof( PCSTR ) * groupCount );
 	pMgr->getBuildingGroupNames( pNames, groupCount );
 
 	menus = (CMenu**) malloc( sizeof( CMenu* ) * (groupCount + 2) );
@@ -780,7 +780,7 @@ void EditorInterface::addBuildingsToNewMenu()
 		// now add sub items to the group
 		int buildingCount = pMgr->getNumberBuildingsInGroup( i );
 
-		const char** pBuildingNames = (const char**)malloc( sizeof( const char * ) * buildingCount );
+		PCSTR* pBuildingNames = (PCSTR*)malloc( sizeof( PCSTR  ) * buildingCount );
  
 		pMgr->getBuildingNamesInGroup( i, pBuildingNames, buildingCount );
 
@@ -1162,7 +1162,7 @@ int EditorInterface::FileOpen()
 	if (  IDOK == fileDlg.DoModal() )
 	{
 		SetBusyMode();
-		const char* pFile = fileDlg.m_ofn.lpstrFile;		
+		PCSTR pFile = fileDlg.m_ofn.lpstrFile;		
 		EditorData::initTerrainFromPCV( pFile );
 		tacMap.UpdateMap();
 		syncScrollBars();
@@ -1752,7 +1752,7 @@ int EditorInterface::SaveAs()
 	if (  IDOK == retVal )
 	{
 		SetBusyMode();
-		const char* pFile = fileDlg.m_ofn.lpstrFile;
+		PCSTR pFile = fileDlg.m_ofn.lpstrFile;
 		
 		//-----------------------------------------------------
 		//New Stuff here.
@@ -1833,7 +1833,7 @@ int EditorInterface::SaveAs()
 
 int EditorInterface::Save()
 {
-	const char* pFileName = EditorData::instance->getMapName();
+	PCSTR pFileName = EditorData::instance->getMapName();
 	if ( pFileName && (0 != strcmp("data\\missions\\newmap.pak", pFileName)) )
 	{
 		EditorData::instance->save( pFileName );
@@ -1846,7 +1846,7 @@ int EditorInterface::Save()
 
 int EditorInterface::QuickSave()
 {
-	const char* pFileName = EditorData::instance->getMapName();
+	PCSTR pFileName = EditorData::instance->getMapName();
 	if ( pFileName && (0 != strcmp("data\\missions\\newmap.pak", pFileName)) )
 		EditorData::instance->quickSave( pFileName );
 	else
@@ -2088,7 +2088,7 @@ int EditorInterface::NewHeightMap()
 		endFlag = true;
 		if (  IDOK == fileDlg.DoModal() )
 		{
-			const char* pFile = fileDlg.m_ofn.lpstrFile;
+			PCSTR pFile = fileDlg.m_ofn.lpstrFile;
 			
 			if (pFile)
 			{
@@ -2360,7 +2360,7 @@ int EditorInterface::SelectTerrainType()
 	dlg.SelectedTerrainType(-1);
 	if (( dlg.DoModal() == IDOK ) && (ID_TERRAINS_BLUEWATER <= dlg.SelectedTerrainType()))
 	{
-		const int selectedTerrainType = dlg.SelectedTerrainType() - ID_TERRAINS_BLUEWATER;
+		cint32_t selectedTerrainType = dlg.SelectedTerrainType() - ID_TERRAINS_BLUEWATER;
 		land->unselectAll();
 
 		for ( int j = 0; j < land->realVerticesMapSide; ++j )
@@ -2595,7 +2595,7 @@ int EditorInterface::SaveHeightMap()
 	
 	if (  IDOK == fileDlg.DoModal() )
 	{
-		const char* pFile = fileDlg.m_ofn.lpstrFile;
+		PCSTR pFile = fileDlg.m_ofn.lpstrFile;
 		
 		File file;
 		if ( NO_ERR != file.create( (char*)pFile ) )
@@ -2945,7 +2945,7 @@ int EditorInterface::SelectWaterTexture()
 }
 
 //---------------------------------------------------------------------------
-inline bool colorMapIsOKFormat (const char *fileName)
+inline bool colorMapIsOKFormat (PCSTR fileName)
 {
 	DWORD localColorMapSizeCheck = land->realVerticesMapSide * 12.8;
 

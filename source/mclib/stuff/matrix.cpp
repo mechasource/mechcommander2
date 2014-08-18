@@ -960,7 +960,7 @@ Matrix4D&
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Matrix4D& matrix
 		)
 	{

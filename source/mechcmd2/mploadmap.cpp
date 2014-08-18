@@ -23,9 +23,9 @@ MPLoadMap.cpp			: Implementation of the MPLoadMap component.
 
 static int connectionType = 0;
 
-static const int FIRST_BUTTON_ID = 1000010;
-static const int OK_BUTTON_ID = 1000001;
-static const int CANCEL_BUTTON_ID = 1000002;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
+static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 MPLoadMap::MPLoadMap()
 {
@@ -167,7 +167,7 @@ void MPLoadMap::seedDialog( bool bSeedSingle )
 	updateMapInfo();
 }
 
-void MPLoadMap::addFile( const char* pFileName, bool bSeedSingle )
+void MPLoadMap::addFile( PCSTR pFileName, bool bSeedSingle )
 {
 
 	FitIniFile tmp;
@@ -247,7 +247,7 @@ void MPLoadMap::addFile( const char* pFileName, bool bSeedSingle )
 	}
 }
 
-void MPLoadMap::seedFromFile( const char* pFileName )
+void MPLoadMap::seedFromFile( PCSTR pFileName )
 {
 	FullPathFileName path;
 	path.init( missionPath, pFileName, ".csv" );
@@ -534,7 +534,7 @@ void MPLoadMap::updateMapInfo()
 
 		FitIniFile file;
 		FullPathFileName path;
-		const char* fileName = ((aTextListItem*)mapList.GetItem( sel ))->getText();
+		PCSTR fileName = ((aTextListItem*)mapList.GetItem( sel ))->getText();
 		selMapName = ((aLocalizedListItem*)mapList.GetItem(sel))->getHiddenText();
 		path.init( missionPath, selMapName, ".fit" );
 
@@ -630,14 +630,14 @@ void MPLoadMap::updateMapInfo()
 	}
 }
 
-void MPLoadMap::getMapNameFromFile( const char* pFileName, char* missionName, long bufferLength )
+void MPLoadMap::getMapNameFromFile( PCSTR pFileName, char* missionName, long bufferLength )
 {
 	FullPathFileName path;
 	path.init( missionPath, pFileName, ".fit" );
 
 	FitIniFile file;
 
-	if ( NO_ERR != file.open( (char*)(const char*)path ) )
+	if ( NO_ERR != file.open( (char*)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", path );

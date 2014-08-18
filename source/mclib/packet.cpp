@@ -282,7 +282,7 @@ long PacketFile::readPacketOffset (long packet, long *lastType)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::readPacket (long packet, unsigned char *buffer)
+long PacketFile::readPacket (long packet, PUCHAR buffer)
 {
 	long result = 0;
 
@@ -371,7 +371,7 @@ long PacketFile::readPacket (long packet, unsigned char *buffer)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::readPackedPacket (long packet, unsigned char *buffer)
+long PacketFile::readPackedPacket (long packet, PUCHAR buffer)
 {
 	long result = 0;
 
@@ -554,7 +554,7 @@ void PacketFile::reserve (long count, bool useCheckSum)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::writePacket (long packet, MemoryPtr buffer, long nbytes, unsigned char pType)
+long PacketFile::writePacket (long packet, MemoryPtr buffer, long nbytes, uint8_t pType)
 {
 	//--------------------------------------------------------
 	// This function writes the packet to the current end
@@ -673,7 +673,7 @@ long PacketFile::writePacket (long packet, MemoryPtr buffer, long nbytes, unsign
 
 #define DEFAULT_MAX_PACKET		65535
 //---------------------------------------------------------------------------
-long PacketFile::insertPacket (long packet, MemoryPtr buffer, long nbytes, unsigned char pType)
+long PacketFile::insertPacket (long packet, MemoryPtr buffer, long nbytes, uint8_t pType)
 {
 	//--------------------------------------------------------
 	// This function writes the packet to the current end

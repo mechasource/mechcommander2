@@ -256,7 +256,7 @@ void	LogisticsOKDialog::setText( int textID, int CancelButton, int OKButton )
 
 }
 
-void				LogisticsOKDialog::setText( const char* mainText )
+void				LogisticsOKDialog::setText( PCSTR mainText )
 {
 	textObjects[0].setText( mainText );
 }
@@ -347,7 +347,7 @@ void	LogisticsOneButtonDialog::setText( int textID, int CancelButton, int OKButt
 
 }
 
-void				LogisticsOneButtonDialog::setText( const char* mainText )
+void				LogisticsOneButtonDialog::setText( PCSTR mainText )
 {
 	textObjects[0].setText( mainText );
 }
@@ -513,7 +513,7 @@ void LogisticsSaveDialog::beginCampaign()
 }
 
 
-void LogisticsSaveDialog::initDialog( const char* path, bool bCampaign )
+void LogisticsSaveDialog::initDialog( PCSTR path, bool bCampaign )
 {
 	gameListBox.removeAllItems( true );
 	// need to add items to the save game list
@@ -608,7 +608,7 @@ bool LogisticsSaveDialog::isCorrectVersionSaveGame( char* fileName )
 
 	FitIniFile file;
 
-	if ( NO_ERR != file.open( (char*)(const char*)path ) )
+	if ( NO_ERR != file.open( (char*)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", path );
@@ -635,7 +635,7 @@ void LogisticsSaveDialog::readCampaignNameFromFile( char* fileName, char* result
 
 	FitIniFile file;
 
-	if ( NO_ERR != file.open( (char*)(const char*)path ) )
+	if ( NO_ERR != file.open( (char*)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", path );
@@ -811,7 +811,7 @@ void LogisticsSaveDialog::update()
 					gameListBox.GetItem( i )->setColor( edits[0].getColor() );
 				}
 				gameListBox.GetItem( item )->setColor( edits[0].getHighlightColor() );
-				const char* text = ((aTextListItem*)gameListBox.GetItem( item ))->getText();
+				PCSTR text = ((aTextListItem*)gameListBox.GetItem( item ))->getText();
 				edits[0].setEntry( text );
 				selectedName = ((aLocalizedListItem*)gameListBox.GetItem( item ))->getHiddenText();
 
@@ -939,7 +939,7 @@ void LogisticsSaveDialog::updateMissionInfo()
 
 }
 
-void LogisticsSaveDialog::setMission( const char* fileName)
+void LogisticsSaveDialog::setMission( PCSTR fileName)
 {
 	if ( strlen( fileName ) )
 	{
@@ -1079,7 +1079,7 @@ int	LogisticsSaveDialog::handleMessage( unsigned long what, unsigned long who )
 			char str[256];
 			cLoadString( IDS_DIALOG_OVERWRITE_PROMPT, str, 255 );
 			char promptString[256];
-			sprintf( promptString, str, (const char*)selectedName );
+			sprintf( promptString, str, (PCSTR)selectedName );
 			LogisticsOKDialog::instance()->setText( IDS_DIALOG_QUIT_PROMPT,
 				IDS_DIALOG_NO, IDS_DIALOG_YES );
 			LogisticsOKDialog::instance()->setText( promptString );
@@ -1118,7 +1118,7 @@ int	LogisticsSaveDialog::handleMessage( unsigned long what, unsigned long who )
 			edits[0].getEntry(tmpName);
 			for ( int i = 0; i < gameListBox.GetItemCount(); i++ )
 			{
-				const char* pFileName = ((aLocalizedListItem*)gameListBox.GetItem(i))->getHiddenText();
+				PCSTR pFileName = ((aLocalizedListItem*)gameListBox.GetItem(i))->getHiddenText();
 				if ( tmpName.Compare( pFileName, 0  ) == 0 )
 				{
 					selectedName = pFileName;
@@ -1128,7 +1128,7 @@ int	LogisticsSaveDialog::handleMessage( unsigned long what, unsigned long who )
 			char str[256];
 			cLoadString( IDS_DIALOG_DELETE_PROMPT, str, 255 );
 			char promptString[256];
-			sprintf( promptString, str, (const char*)tmpName );
+			sprintf( promptString, str, (PCSTR)tmpName );
 	
 			LogisticsOKDialog::instance()->setText( IDS_DIALOG_QUIT_PROMPT,
 						IDS_DIALOG_NO, IDS_DIALOG_YES );	
@@ -1283,7 +1283,7 @@ void LogisticsVariantDialog::initVariantList()
 
 	if ( count )
 	{
-		const char** pNames = (const char**)_alloca( count * sizeof( char*) );
+		PCSTR* pNames = (PCSTR*)_alloca( count * sizeof( char*) );
 		LogisticsData::instance->getPlayerVariantNames( pNames, count );
 
 		int bValid = 0;
@@ -1393,7 +1393,7 @@ void LogisticsVariantDialog::update()
 					gameListBox.GetItem( i )->setColor( edits[0].getColor() );
 				}
 				gameListBox.GetItem( item )->setColor( edits[0].getHighlightColor() );
-				const char* text = ((aTextListItem*)gameListBox.GetItem( item ))->getText();
+				PCSTR text = ((aTextListItem*)gameListBox.GetItem( item ))->getText();
 				edits[0].setEntry( text );
 				selectedName = text;
 			}
@@ -1525,7 +1525,7 @@ int	LogisticsVariantDialog::handleMessage ( unsigned long what, unsigned long wh
 				char str[256];
 				cLoadString( IDS_DIALOG_OVERWRITE_PROMPT, str, 255 );
 				char promptString[256];
-				sprintf( promptString, str, (const char*)selectedName );
+				sprintf( promptString, str, (PCSTR)selectedName );
 				LogisticsOKDialog::instance()->setText( IDS_DIALOG_QUIT_PROMPT,
 					IDS_DIALOG_NO, IDS_DIALOG_YES );
 				LogisticsOKDialog::instance()->setText( promptString );
@@ -1554,7 +1554,7 @@ int	LogisticsVariantDialog::handleMessage ( unsigned long what, unsigned long wh
 		char str[256];
 		cLoadString( IDS_DIALOG_DELETE_PROMPT, str, 255 );
 		char promptString[256];
-		sprintf( promptString, str, (const char*)selectedName );
+		sprintf( promptString, str, (PCSTR)selectedName );
 
 		LogisticsOKDialog::instance()->setText( IDS_DIALOG_QUIT_PROMPT,
 					IDS_DIALOG_NO, IDS_DIALOG_YES );	
@@ -1644,7 +1644,7 @@ void LogisticsAcceptVariantDialog::update()
 					gameListBox.GetItem( i )->setColor( edits[0].getColor() );
 				}
 				gameListBox.GetItem( item )->setColor( edits[0].getHighlightColor() );
-				const char* text = ((aTextListItem*)gameListBox.GetItem( item ))->getText();
+				PCSTR text = ((aTextListItem*)gameListBox.GetItem( item ))->getText();
 				edits[0].setEntry( text );
 				selectedName = text;
 			}
@@ -1767,7 +1767,7 @@ void LogisticsMapInfoDialog::end()
 	statics[10].setTexture( ( unsigned long)0 );
 	statics[10].setColor( (long)0 );
 }
-void LogisticsMapInfoDialog::setMap( const char* pFileName )
+void LogisticsMapInfoDialog::setMap( PCSTR pFileName )
 {
 	long textureHandle = MissionBriefingScreen::getMissionTGA( pFileName );
 	statics[10].setTexture( textureHandle );

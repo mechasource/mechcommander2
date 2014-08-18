@@ -52,9 +52,9 @@ class LogisticsScreen : public aObject
 	LogisticsScreen( const LogisticsScreen& src );
 	LogisticsScreen& operator=( const LogisticsScreen& src );
 
-	void init(FitIniFile& file, const char* staticName, const char* textName, const char* rectName,
-					  const char* buttonName, const char* editName = "Edit",
-					  const char* animObjectName = "AnimObject", DWORD neverFlush = 0 );
+	void init(FitIniFile& file, PCSTR staticName, PCSTR textName, PCSTR rectName,
+					  PCSTR buttonName, PCSTR editName = "Edit",
+					  PCSTR animObjectName = "AnimObject", DWORD neverFlush = 0 );
 
 	virtual void update();
 	virtual void render();

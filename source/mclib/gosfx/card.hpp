@@ -115,7 +115,7 @@ namespace gosFX
 			m_colors[4];
 		Stuff::Vector2DOf<Stuff::Scalar>
 			m_uvs[4];
-		const int
+		cint32_t
 			m_cardCount;
 
 	public:

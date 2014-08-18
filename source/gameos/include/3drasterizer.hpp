@@ -30,10 +30,10 @@ typedef struct _VertexBuffer {
 	LPDIRECT3DVERTEXBUFFER7	CopyvBuffer;			// D3D handle to a system memory vertex buffer for debugging (Readable copy of D3DVERTEX data)
 #endif
 	ULONG					NumberVertices;			// Number of vertices when created
-	UCHAR					Locked;					// True when locked
-	UCHAR					WantOptimize;			// True to optimize after the next unlock
-	UCHAR					Optimized;				// True once buffer is optimized
-	UCHAR					Lost;					// True when mode changed and buffer invalid
+	uint8_t					Locked;					// True when locked
+	uint8_t					WantOptimize;			// True to optimize after the next unlock
+	uint8_t					Optimized;				// True once buffer is optimized
+	uint8_t					Lost;					// True when mode changed and buffer invalid
 	PVOID					Pointer;				// Pointer to start of data when locked
 } VertexBuffer;
 typedef VertexBuffer *PVertexBuffer;
@@ -44,7 +44,7 @@ typedef VertexBuffer *PVertexBuffer;
 extern USHORT QuadIndex[192];
 extern ULONG AlphaInvAlpha;			// Set when alpha blend mode is AlphaInvAlpha
 
-extern UCHAR ViewPortChanged;			// Set when game changes viewport
+extern uint8_t ViewPortChanged;			// Set when game changes viewport
 extern ULONG InUpdateRenderers;		// True when in 'Update Renderers'
 extern ULONG DrawingPolys;			// Current polygon
 extern ULONG gCulledTriangles;		// Number of culled triangles
@@ -61,8 +61,8 @@ void __stdcall InitRenderToTexture(void);
 void __stdcall DestroyRenderToTexture(void);
 
 // RenderStates.cpp
-extern UCHAR DirtyStates;
-extern UCHAR UpdatedState[gos_MaxState];
+extern uint8_t DirtyStates;
+extern uint8_t UpdatedState[gos_MaxState];
 void __stdcall FlushRenderStates(void);
 
 // 3DRasterizer.hpp
@@ -72,7 +72,7 @@ void __stdcall Save3DState(void);
 void __stdcall Restore3DState(void);
 void __stdcall ReInit3D(void);
 void __stdcall Destroy3D(void);
-void __stdcall CheckVertices( pgos_VERTEX pVertexArray, ULONG NumberVertices, UCHAR PointsLines=0 );
+void __stdcall CheckVertices( pgos_VERTEX pVertexArray, ULONG NumberVertices, uint8_t PointsLines=0 );
 void __stdcall CheckVertices2( pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices );
 void __stdcall CheckVertices3( pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices );
 void __stdcall DebugTriangle( pgos_VERTEX v1, pgos_VERTEX v2, pgos_VERTEX v3 );

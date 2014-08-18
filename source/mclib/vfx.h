@@ -72,10 +72,10 @@ extern "C" {
 #ifndef TYPEDEFS1
 #define TYPEDEFS1
 
-typedef unsigned char  UBYTE;
+typedef uint8_t  UBYTE;
 typedef unsigned short UWORD;
 typedef unsigned long  ULONG;
-typedef unsigned char  BYTE;
+typedef uint8_t  BYTE;
 
 #ifndef WIN32
 typedef unsigned		  WORD;
@@ -143,7 +143,7 @@ typedef signed   long  FIXED30;   // 2:30 fixed-VFX_POINT type [-1.999,+1.999]
 // VFX data structures
 //
 
-typedef unsigned char STENCIL;
+typedef uint8_t STENCIL;
 
 typedef struct _window
 {
@@ -327,7 +327,7 @@ extern LONG  VFX_line_draw (PANE *pane, LONG x0, LONG y0,
 extern long  VFX_shape_draw (PANE *pane, void *shape_table,
                                   LONG shape_number, LONG hotX, LONG hotY);
 
-extern long VFX_nTile_draw (PANE* pane, void *tile, LONG hotX, LONG hotY, unsigned char *fadeTable = 0);
+extern long VFX_nTile_draw (PANE* pane, void *tile, LONG hotX, LONG hotY, PUCHAR fadeTable = 0);
 
 extern long VFX_newShape_count (void *shape);
 
@@ -346,10 +346,10 @@ void  VFX_shape_visible_rectangle(void *shape_table,
 extern LONG  VFX_shape_scan (PANE *pane, ULONG transparentColor,
                                   LONG hotX, LONG hotY, void *buffer);
 								  
-extern long VFX_newShape_scan (PANE *shapePane, UBYTE xparentColor, UBYTE Hsx, UBYTE Hsy, unsigned char* *shapeBuffer);
-extern long VFX_deltaShape_scan (PANE *shapePane, UBYTE xparentColor, UBYTE Hsx, UBYTE Hsy, unsigned char* *shapeBuffer);
+extern long VFX_newShape_scan (PANE *shapePane, UBYTE xparentColor, UBYTE Hsx, UBYTE Hsy, PUCHAR *shapeBuffer);
+extern long VFX_deltaShape_scan (PANE *shapePane, UBYTE xparentColor, UBYTE Hsx, UBYTE Hsy, PUCHAR *shapeBuffer);
 
-extern long VFX_tile_scan (PANE *shapePane, UBYTE xparentColor, UBYTE Hsx, UBYTE Hsy, unsigned char* *shapeBuffer);
+extern long VFX_tile_scan (PANE *shapePane, UBYTE xparentColor, UBYTE Hsx, UBYTE Hsy, PUCHAR *shapeBuffer);
 								  
 extern LONG  VFX_shape_bounds(void *shape_table, LONG shape_num);
 extern LONG  VFX_shape_origin(void *shape_table, LONG shape_num);

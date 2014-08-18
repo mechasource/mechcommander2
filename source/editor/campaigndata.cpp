@@ -10,7 +10,7 @@
 
 #include "assert.h"
 
-static long sReadIdBoolean(FitIniFile &missionFile, const char *varName, bool &value) {
+static long sReadIdBoolean(FitIniFile &missionFile, PCSTR varName, bool &value) {
 	long result = 0;
 	bool tmpBool;
 	result = missionFile.readIdBoolean((char *)varName, tmpBool);
@@ -22,7 +22,7 @@ static long sReadIdBoolean(FitIniFile &missionFile, const char *varName, bool &v
 	return result;
 }
 
-static long sReadIdInteger(FitIniFile &missionFile, const char *varName, int &value) {
+static long sReadIdInteger(FitIniFile &missionFile, PCSTR varName, int &value) {
 	long result = 0;
 	long tmpLong;
 	result = missionFile.readIdLong((char *)varName, tmpLong);
@@ -34,7 +34,7 @@ static long sReadIdInteger(FitIniFile &missionFile, const char *varName, int &va
 	return result;
 }
 
-static long sReadIdString(FitIniFile &missionFile, const char *varName, CString &CStr) {
+static long sReadIdString(FitIniFile &missionFile, PCSTR varName, CString &CStr) {
 	long result = 0;
 	char buffer[2001/*buffer size*/]; buffer[0] = '\0';
 	result = missionFile.readIdString((char *)varName, buffer, 2001/*buffer size*/ - 1);
@@ -120,7 +120,7 @@ bool CGroupData::operator==(const CGroupData &rhs) const {
 	}
 }
 
-bool CGroupData::Save(FitIniFile &fitFile, const char *groupName) {
+bool CGroupData::Save(FitIniFile &fitFile, PCSTR groupName) {
 	fitFile.writeIdString( "Label", m_Label.GetBuffer(0));
 	fitFile.writeIdLong("NumberToComplete", m_NumMissionsToComplete);
 	fitFile.writeIdString( "OperationFile", m_OperationFile.GetBuffer(0));
@@ -143,7 +143,7 @@ bool CGroupData::Save(FitIniFile &fitFile, const char *groupName) {
 	return true;
 }
 
-bool CGroupData::Read(FitIniFile &fitFile, const char *groupName) {
+bool CGroupData::Read(FitIniFile &fitFile, PCSTR groupName) {
 	int result;
 	result = sReadIdString(fitFile, "Label", m_Label);
 	result = sReadIdInteger(fitFile, "NumberToComplete", m_NumMissionsToComplete);

@@ -895,8 +895,8 @@ bool Team::lineOfSight (float startLocal, long mCellRow, long mCellCol, long tCe
 		return true;
 
 	if (checkVisibleBits) {
-		unsigned char teamMask = 0x01 << teamId;
-		unsigned char visbBits[4];
+		uint8_t teamMask = 0x01 << teamId;
+		uint8_t visbBits[4];
 	
 		//----------------------------------------------------------------------------
 		// First check is simple.  Is anyone within the magical line of sight radius?
@@ -1088,8 +1088,8 @@ bool Team::lineOfSight (float startLocal, long mCellRow, long mCellCol, float en
 
 #if 0		//Don't need to check this anymore.  We do a distance check outside of this function.
 	if (checkVisibleBits) {
-		unsigned char teamMask = 0x01 << teamId;
-		unsigned char visbBits[4];
+		uint8_t teamMask = 0x01 << teamId;
+		uint8_t visbBits[4];
 	
 		//----------------------------------------------------------------------------
 		// First check is simple.  Is anyone within the magical line of sight radius?

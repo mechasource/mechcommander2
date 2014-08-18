@@ -40,7 +40,7 @@
 
 typedef struct _SourceFile {
 	char					fileName[MAXLEN_FILENAME];
-	unsigned char			fileNumber;
+	uint8_t			fileNumber;
 	ABLFile*				filePtr;
 	long					lineNumber;
 } SourceFile;
@@ -266,11 +266,11 @@ class ABLModule {
 
 		void resetOrderCallFlags (void);
 
-		void setOrderCallFlag (unsigned char dword, unsigned char bit);
+		void setOrderCallFlag (uint8_t dword, uint8_t bit);
 
-		void clearOrderCallFlag (unsigned char orderDWord, unsigned char orderBitMask);
+		void clearOrderCallFlag (uint8_t orderDWord, uint8_t orderBitMask);
 
-		bool getOrderCallFlag (unsigned char dword, unsigned char bit) {
+		bool getOrderCallFlag (uint8_t dword, uint8_t bit) {
 			return((orderCallFlags[dword] & (1 << bit)) != 0);
 		}
 

@@ -357,7 +357,7 @@ long Logistics::update (void)
 					}
 					else
 					{
-						const char* videoName = LogisticsData::instance->getCurrentBigVideo();
+						PCSTR videoName = LogisticsData::instance->getCurrentBigVideo();
 
 						if ( videoName )
 						{
@@ -399,7 +399,7 @@ long Logistics::update (void)
 	{
 		if ( missionBegin )
 		{
-			const char* pVid =  missionBegin->update();
+			PCSTR pVid =  missionBegin->update();
 			if ( pVid && (0 != strcmp("", pVid)) )
 			{
 				playFullScreenVideo( pVid );
@@ -498,7 +498,7 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 			char dropZoneList[8];
 			char hqs[MAX_TEAMS];
 			if (MPlayer->missionSettings.missionType == MISSION_TYPE_OTHER) {
-				bool goodToLoad = mission->calcComplexDropZones((char*)(const char*)LogisticsData::instance->getCurrentMission(), dropZoneList);
+				bool goodToLoad = mission->calcComplexDropZones((char*)(PCSTR)LogisticsData::instance->getCurrentMission(), dropZoneList);
 				if (!goodToLoad)
 					STOP(("Logisitics.beginMission: teams do not match up for complex mission"));
 				for (long i = 0; i < MAX_TEAMS; i++)
@@ -581,7 +581,7 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 		useUnlimitedAmmo = MPlayer->missionSettings.unlimitedAmmo;
 	}
 
-	mission->init((char*)(const char*)LogisticsData::instance->getCurrentMission(), missionLoadType, dropZoneID, dropZoneList, commandersToLoad, numMoversPerCommander[numPlayers - 1]);
+	mission->init((char*)(PCSTR)LogisticsData::instance->getCurrentMission(), missionLoadType, dropZoneID, dropZoneList, commandersToLoad, numMoversPerCommander[numPlayers - 1]);
 
 	LogisticsData::instance->rpJustAdded = 0;
 
@@ -619,7 +619,7 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 					if (otherCount != mechData.numComponents)
 						STOP(("Heidi's getComponentCount does not agree with count returned from getComponents"));
 					for (long i = 0; i < mechData.numComponents; i++)
-						mechData.components[i] = (unsigned char)componentList[i];
+						mechData.components[i] = (uint8_t)componentList[i];
 				}
 				MPlayer->sendMissionSetup(0, 1, &mechData);
 			}
@@ -876,7 +876,7 @@ void Logistics::initializeLogData()
 	}
 }
 
-void Logistics::playFullScreenVideo( const char* fileName )
+void Logistics::playFullScreenVideo( PCSTR fileName )
 {
 	if ( !fileName || !fileName[0])
 		return;
@@ -896,7 +896,7 @@ void Logistics::playFullScreenVideo( const char* fileName )
 	soundSystem->stopDigitalMusic();
 }
 
-void Logistics::setResultsHostLeftDlg( const char* pName )
+void Logistics::setResultsHostLeftDlg( PCSTR pName )
 {
 	if ( missionResults && logisticsState == log_RESULTS )
 	{

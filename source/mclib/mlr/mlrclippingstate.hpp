@@ -196,7 +196,7 @@ namespace MidLevelRenderer {
 				}
 
 		bool
-			operator==(const int &s)
+			operator==(cint32_t &s)
 				{
 					Check_Pointer(this);
 					return (clippingState == s);
@@ -210,7 +210,7 @@ namespace MidLevelRenderer {
 				}
 
 		bool
-			operator!=(const int &s)
+			operator!=(cint32_t &s)
 				{
 					Check_Pointer(this);
 					return (clippingState != s);

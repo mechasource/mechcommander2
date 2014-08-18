@@ -76,7 +76,7 @@ enum MARKER_TYPES
 };
 
 
-static const char *g_conditionSpeciesStringArray[] = {
+static PCSTR g_conditionSpeciesStringArray[] = {
 	"DestroyAllEnemyUnits",
 		"DestroyNumberOfEnemyUnits",
 		"DestroyEnemyUnitGroup",
@@ -522,7 +522,7 @@ enum action_species_type {
 	NUM_ACTION_SPECIES
 };
 
-static const char *g_actionSpeciesStringArray[] = {
+static PCSTR g_actionSpeciesStringArray[] = {
 	"PlayBIK",
 	"PlayWAV",
 	"DisplayTextMessage",

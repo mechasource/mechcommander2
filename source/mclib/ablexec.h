@@ -62,7 +62,7 @@ typedef ABLParam* ABLParamPtr;
 typedef union {
 	long			integer;
 	float			real;
-	unsigned char	byte;
+	uint8_t	byte;
 	Address			address;
 } StackItem;
 
@@ -148,14 +148,14 @@ void uncrunchStatementMarker (void);
 char* crunchAddressMarker (Address address);
 char* fixupAddressMarker (Address address);
 void crunchInteger (long value);
-void crunchByte (unsigned char value);
+void crunchByte (uint8_t value);
 void crunchOffset (Address address);
 char* createCodeSegment (long& codeSegmentSize);
 SymTableNodePtr getCodeSymTableNodePtr (void);
 long getCodeStatementMarker (void);
 char* getCodeAddressMarker (void);
 long getCodeInteger (void);
-unsigned char getCodeByte (void);
+uint8_t getCodeByte (void);
 char* getCodeAddress (void);
 
 //***************

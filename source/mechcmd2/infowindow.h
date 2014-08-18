@@ -1,26 +1,24 @@
-#ifndef INFOWINDOW_H
-#define INFOWINDOW_H
 /*************************************************************************************************\
 InfoWindow.h			: Interface for the InfoWindow component.
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+
+#pragma once
+
+#ifndef INFOWINDOW_H
+#define INFOWINDOW_H
+
 #include <mclib.h>
-#ifndef CONTROLGUI_H
 #include "controlgui.h"
-#endif
+#include "afont.h"
 
 class Mover;
 class ForceGroupIcon;
 
-#ifndef AFONT_H
-#include "afont.h"
-#endif
-
 #define SCROLLUP	1
 #define SCROLLDOWN	2
-
 
 //*************************************************************************************************
 
@@ -69,7 +67,7 @@ class InfoWindow
 		void drawDivider( float yVal );
 		void drawSkillBar( int skill, float yVal, float height );
 		void setScrollPos( int where );
-		void drawName( const char* name );
+		void drawName( PCSTR name );
 
 		ForceGroupIcon* icon;
 

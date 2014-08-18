@@ -223,7 +223,7 @@ void ChatWindow::update()
 				MPlayer->getPlayerInfo( MPlayer->commanderID )->team : -1;
 			if ( text.Length() )
 			{
-				MPlayer->sendChat( 0, team, (char*)(const char*)text );
+				MPlayer->sendChat( 0, team, (char*)(PCSTR)text );
 			}
 			edits[0].setEntry( "" );
 			edits[0].setFocus( false );
@@ -356,7 +356,7 @@ ChatMessageItem::ChatMessageItem()
 	lineCount = 1;
 }
 
-void ChatMessageItem::setPlayerName( const char* pName )
+void ChatMessageItem::setPlayerName( PCSTR pName )
 {
 	name.setText( pName );
 	name.moveTo( globalX()+1, globalY()+1 );
@@ -370,7 +370,7 @@ void ChatMessageItem::setPlayerName( const char* pName )
 
 }
 
-int ChatMessageItem::setText( const char* pText )
+int ChatMessageItem::setText( PCSTR pText )
 {
 	playerText.setText( pText );
 	lineCount = 1;

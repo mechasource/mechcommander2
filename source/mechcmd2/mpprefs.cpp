@@ -65,7 +65,7 @@ int MPPrefs::init( FitIniFile& file )
 	file.readIdLong( "ComboBoxCount", count );
 	char blockName[256];
 
-	const char* headers[3] = {"PlayerNameComboBox", "UnitNameComboBox", "UnitInsigniaComboBox" };
+	PCSTR headers[3] = {"PlayerNameComboBox", "UnitNameComboBox", "UnitInsigniaComboBox" };
 	for ( i = 0;  i< count; i++ )
 	{
 		sprintf( blockName, "ComboBox%ld",  i );
@@ -292,7 +292,7 @@ void MPPrefs::update()
 	if ( newSel != oldSel && newSel != -1 )
 	{
 		aBmpListItem* pItem = (aBmpListItem*)(comboBox[2].ListBox().GetItem( newSel ));
-		const char* pName = pItem->getBmp();
+		PCSTR pName = pItem->getBmp();
 
 		MC2Player* pInfo = MPlayer->getPlayerInfo( MPlayer->commanderID );
 
@@ -312,7 +312,7 @@ void MPPrefs::update()
 		file.open( path );
 		long size = file.getLength();
 
-		unsigned char* pData = new unsigned char[size];
+		PUCHAR pData = new uint8_t[size];
 
 		file.read( pData, size );
 		MPlayer->sendPlayerInsignia( (char*)pName, pData, size );
@@ -596,7 +596,7 @@ void MPPrefs::saveSettings()
 		aBmpListItem* pItem = (aBmpListItem*)(comboBox[2].ListBox().GetItem( index ));
 		if ( pItem )
 		{
-			const char* pName = pItem->getBmp();
+			PCSTR pName = pItem->getBmp();
 			strcpy( prefs.insigniaFile, pName );
 			strcpy( pInfo->insigniaFile, pName );
 		}
@@ -640,7 +640,7 @@ void MPPrefs::initColors()
 
 }
 
-int aBmpListItem::setBmp( const char* pFileName )
+int aBmpListItem::setBmp( PCSTR pFileName )
 {
 	if ( strlen( pFileName ) >= MAXLEN_INSIGNIA_FILE )
 		return 0;

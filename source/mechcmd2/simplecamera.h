@@ -19,15 +19,15 @@ public:
 	SimpleCamera();
 	~SimpleCamera();
 
-	void setMech( const char* fileName, long base = 0xffff7e00, long highlight = 0xffff7e00, long h2 = 0xffbcbcbc );
-	void setComponent( const char* fileName );
-	void setBuilding( const char* fileName );
-	void setVehicle( const char* vehicle, long base = 0xffff7e00, long highlight = 0xffff7e00, long h2 = 0xffbcbcbc );
+	void setMech( PCSTR fileName, long base = 0xffff7e00, long highlight = 0xffff7e00, long h2 = 0xffbcbcbc );
+	void setComponent( PCSTR fileName );
+	void setBuilding( PCSTR fileName );
+	void setVehicle( PCSTR vehicle, long base = 0xffff7e00, long highlight = 0xffff7e00, long h2 = 0xffbcbcbc );
 	ObjectAppearance* getObjectAppearance() const { return pObject; }
 
 	void init( float left, float right, float top, float bottom );
 
-	void setObject( const char* fileName, long type, long base = 0xffff7e00, long highlight = 0xffff7e00, long h2 = 0xffbcbcbc );
+	void setObject( PCSTR fileName, long type, long base = 0xffff7e00, long highlight = 0xffff7e00, long h2 = 0xffbcbcbc );
 
 	virtual void render();
 	virtual void render(long xOffset, long yOffset);

@@ -65,7 +65,7 @@ namespace gosFX
 			m_effects;
 
 		Effect::Specification*
-			Find(const char* name);
+			Find(PCSTR name);
 		Effect*
 			MakeEffect(
 				unsigned index,

@@ -121,7 +121,7 @@ void LogisticsMechDisplay::setMech( LogisticsMech* pMech, bool bFromLB )
 				char text[64];
 				char tmpStr[64];
 				cLoadString( IDS_MB_MECH_WEIGHT, tmpStr, 63 );
-				sprintf( text, tmpStr, pCurMech->getMaxWeight(), (const char*)pCurMech->getMechClass() );
+				sprintf( text, tmpStr, pCurMech->getMaxWeight(), (PCSTR)pCurMech->getMechClass() );
 				textObjects[3].setText( text );
 				
 				long tmpColor;

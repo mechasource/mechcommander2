@@ -320,7 +320,7 @@ typedef struct _CompressedMech {
 	long			cBills;
 	bool			designerMech;
 	long			numComponents;
-	unsigned char	components[50];
+	uint8_t	components[50];
 } CompressedMech;
 
 #pragma pack(1)
@@ -424,7 +424,7 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 	// for the class.
 	MCMSG_DeployForce();
 	
-	unsigned char dataFlags;
+	uint8_t dataFlags;
 
 	enum 
 	{
@@ -449,9 +449,9 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 
 	public:
 		// data
-		unsigned char partNameIndex;
-		unsigned char pilotNameIndex[2];
-		unsigned char inventoryCount; // Number of components
+		uint8_t partNameIndex;
+		uint8_t pilotNameIndex[2];
+		uint8_t inventoryCount; // Number of components
 		unsigned short  componentIDs[];
 
 		// member functions
@@ -579,8 +579,8 @@ class MCMSG_RemoveForce:public FIGuaranteedMessageHeader
 			lanceNumber = 0;
 		}
 
-		unsigned char slotNumber;
-		unsigned char lanceNumber;
+		uint8_t slotNumber;
+		uint8_t lanceNumber;
 };
 */
 
@@ -590,7 +590,7 @@ class MCMSG_Generic {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 
 	public:
 
@@ -609,9 +609,9 @@ class MCMSG_PlayerCID {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 		char				commanderID;
-		unsigned char		subType;
+		uint8_t		subType;
 		
 	public:
 
@@ -633,7 +633,7 @@ class MCMSG_PlayerUpdate {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 		char				stage;
 		float				senderTime;
 		char				sessionIPAddress[16];
@@ -659,7 +659,7 @@ class MCMSG_MissionSettingsUpdate {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 		MissionSettings		missionSettings;
 
 	public:
@@ -679,7 +679,7 @@ class MCMSG_MissionSetup {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 		long				randomSeed;
 		char				subType;
 		char				commandersToLoad[MAX_MC_PLAYERS][3];
@@ -703,7 +703,7 @@ class MCMSG_PlayerInfo {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 		char				commanderID;
 
 	public:
@@ -726,7 +726,7 @@ class MCMSG_Chat {
 
 	public:
 	
-		unsigned char		type;
+		uint8_t		type;
 		bool				allPlayers;
 		bool				isDeadChat;
 		bool				hideName;
@@ -755,7 +755,7 @@ class MCMSG_PlayerCheckIn {
 
 	public:
 	
-		unsigned char		type;
+		uint8_t		type;
 		char				commanderID;
 
 	public:
@@ -778,8 +778,8 @@ class MCMSG_PlayerSetup {
 
 	public:
 
-		unsigned char		type;
-		unsigned char		moverData[MAX_MULTIPLAYER_MOVERS];
+		uint8_t		type;
+		uint8_t		moverData[MAX_MULTIPLAYER_MOVERS];
 
 	public:
 
@@ -800,11 +800,11 @@ class MCMSG_PlayerInsignia {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 		char				commanderID;
 		char				fileName[64];
 		long				dataSize;
-		unsigned char		data[];
+		uint8_t		data[];
 
 	public:
 
@@ -825,7 +825,7 @@ class MCMSG_StartMission {
 
 	public:
 
-		unsigned char	type;
+		uint8_t	type;
 		long			huh;
 	
 
@@ -849,7 +849,7 @@ class MCMSG_EndMission {
 
 	public:
 
-		unsigned char	type;
+		uint8_t	type;
 		long			teamScore[MAX_MC_PLAYERS];
 		long			playerScore[MAX_MC_PLAYERS];
 		long			result;
@@ -872,8 +872,8 @@ class MCMSG_LeaveSession {
 
 	public:
 
-		unsigned char	type;
-		unsigned char	subType;
+		uint8_t	type;
+		uint8_t	subType;
 		char			commanderID;
 
 	public:
@@ -897,9 +897,9 @@ class MCMSG_PlayerOrder {
 
 	public:
 
-		unsigned char	type;
+		uint8_t	type;
 		char			commanderID;
-		unsigned char	flags;
+		uint8_t	flags;
 		float			location[2];
 		unsigned long	tacOrderChunk[2];
 
@@ -926,7 +926,7 @@ class MCMSG_HoldPosition {
 
 	public:
 
-		unsigned char	type;
+		uint8_t	type;
 		char			commanderID;
 		unsigned short	flags;
 
@@ -955,8 +955,8 @@ class MCMSG_PlayerMoverGroup {
 
 	public:
 
-		unsigned char		type;
-		unsigned char		action;
+		uint8_t		type;
+		uint8_t		action;
 		char				commanderID;
 		char				groupId;
 		unsigned short		moverGroupInfo;
@@ -984,7 +984,7 @@ class MCMSG_PlayerArtillery {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 		float				location[2];
 		unsigned long		chunk;
 
@@ -1006,13 +1006,13 @@ class MCMSG_MoverUpdate {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 		long				teamScore[MAX_MC_PLAYERS];
 		long				playerScore[MAX_MC_PLAYERS];
 		//long				resourcePoints[MAX_MC_PLAYERS];
 		unsigned short		updateId;
-		unsigned char		numRLEs;
-		unsigned char		moveData[];
+		uint8_t		numRLEs;
+		uint8_t		moveData[];
 
 	public:
 
@@ -1033,7 +1033,7 @@ class MCMSG_TurretUpdate {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 		unsigned short		updateId;
 		char				targetList[];
 
@@ -1059,9 +1059,9 @@ class MCMSG_MoverWeaponFireUpdate {
 
 	public:
 
-		unsigned char		type;
-		unsigned char		numRLEs;
-		unsigned char		weaponFireData[];
+		uint8_t		type;
+		uint8_t		numRLEs;
+		uint8_t		weaponFireData[];
 
 	public:
 
@@ -1083,7 +1083,7 @@ class MCMSG_TurretWeaponFireUpdate {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 		char				numTurrets;
 		unsigned short		info[];
 
@@ -1107,10 +1107,10 @@ class MCMSG_MoverCriticalUpdate {
 
 	public:
 
-		unsigned char		type;
-		unsigned char		numCritHitChunks[MAX_MULTIPLAYER_MOVERS];
-		unsigned char		numRadioChunks[MAX_MULTIPLAYER_MOVERS];
-		unsigned char		chunk[];
+		uint8_t		type;
+		uint8_t		numCritHitChunks[MAX_MULTIPLAYER_MOVERS];
+		uint8_t		numRadioChunks[MAX_MULTIPLAYER_MOVERS];
+		uint8_t		chunk[];
 
 	public:
 
@@ -1135,8 +1135,8 @@ class MCMSG_WeaponHitUpdate {
 
 	public:
 
-		unsigned char		type;
-		unsigned char		numWeaponHits;
+		uint8_t		type;
+		uint8_t		numWeaponHits;
 		unsigned long		weaponHitChunk[];
 
 	public:
@@ -1159,9 +1159,9 @@ class MCMSG_WorldUpdate {
 
 	public:
 
-		unsigned char		type;
-		unsigned char		numWorldChanges;
-		unsigned char		numArtilleryStrikes;
+		uint8_t		type;
+		uint8_t		numWorldChanges;
+		uint8_t		numArtilleryStrikes;
 		unsigned long		worldChunk[];
 
 	public:
@@ -1183,9 +1183,9 @@ class MCMSG_Reinforcement {
 
 	public:
 
-		unsigned char	type;
-		unsigned char	stage;
-		unsigned char	rosterIndex;
+		uint8_t	type;
+		uint8_t	stage;
+		uint8_t	rosterIndex;
 		long			vehicleID;
 		char			pilotName[24];
 		char			commanderID;
@@ -1215,7 +1215,7 @@ class MCMSG_NewServer {
 
 	public:
 
-		unsigned char	type;
+		uint8_t	type;
 		char			ipAddress[16];
 
 	public:
@@ -1239,7 +1239,7 @@ class MCMSG_FileReport {
 
 	public:
 
-		unsigned char		type;
+		uint8_t		type;
 		unsigned long		checkSum;
 		GUID				fileGuid;
 		char				fileName[];
@@ -1346,11 +1346,11 @@ class MultiPlayer {
 
 		long				mode;
 		long				sessionEntry;
-		unsigned char*		msgBuffer;
+		PUCHAR		msgBuffer;
 		long				numLocalMovers;
 		long				numMovers;
 		long				numTurrets;
-		unsigned char		moverRosterRLE[MAX_MULTIPLAYER_MOVERS];
+		uint8_t		moverRosterRLE[MAX_MULTIPLAYER_MOVERS];
 		long				numMoverRosterRLE;
 		MoverPtr			localMovers[MAX_LOCAL_MOVERS];
 		MoverPtr			moverRoster[MAX_MULTIPLAYER_MOVERS];
@@ -1576,7 +1576,7 @@ class MultiPlayer {
 
 		void handleTerminateSession (void);
 
-		bool launchBrowser (const char* link);
+		bool launchBrowser (PCSTR link);
 
 		void initParametersScreen (void);
 
@@ -1738,9 +1738,9 @@ class MultiPlayer {
 		void handleWorldUpdate (NETPLAYER sender, MCMSG_WorldUpdate* msg);
 
 		void sendChat (NETPLAYER receiver, char team, char* chatString);
-		void sendPlayerActionChat(NETPLAYER receiver, const char* playerName, unsigned long resID );
+		void sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, unsigned long resID );
 
-		void sendPlayerCID (NETPLAYER receiver, unsigned char subType, char CID);
+		void sendPlayerCID (NETPLAYER receiver, uint8_t subType, char CID);
 
 		void sendPlayerUpdate (NETPLAYER receiver, long stage, long commanderID);
 
@@ -1752,7 +1752,7 @@ class MultiPlayer {
 
 		void sendPlayerSetup (void);
 
-		void sendPlayerInsignia (char* insigniaFileName, unsigned char* insigniaData, long insigniaDataSize);
+		void sendPlayerInsignia (char* insigniaFileName, PUCHAR insigniaData, long insigniaDataSize);
 
 		void sendMissionSetup (NETPLAYER receiver, long stage, CompressedMech* mechData);
 
@@ -1762,7 +1762,7 @@ class MultiPlayer {
 
 		void sendEndMission (long result);
 
-		void sendReinforcement (long vehicleID, long rosterIndex, char pilotName[16], long commanderID, Stuff::Vector3D pos, unsigned char stage);
+		void sendReinforcement (long vehicleID, long rosterIndex, char pilotName[16], long commanderID, Stuff::Vector3D pos, uint8_t stage);
 
 		void sendNewServer (void);
 
@@ -1825,7 +1825,7 @@ class MultiPlayer {
 
 		void calcDropZones (char dropZonesCID[8], char hqs[MAX_TEAMS]);
 
-		long saveTranscript (const char* fileName, bool debugging = false);
+		long saveTranscript (PCSTR fileName, bool debugging = false);
 
 		void playerLeftGame (DWORD playerId);
 

@@ -68,7 +68,7 @@ class CSVFile : public File
 		unsigned short textToUShort (char *num);
 		
 		char textToChar (char *num);
-		unsigned char textToUChar (char *num);
+		uint8_t textToUCHAR (char *num);
 
 		bool booleanToLong (char *num);
 
@@ -89,7 +89,7 @@ class CSVFile : public File
 		CSVFile (void);
 		~CSVFile (void);
 
-		virtual long open (const char* fName, FileMode _mode = READ, long numChildren = 50);
+		virtual long open (PCSTR fName, FileMode _mode = READ, long numChildren = 50);
 		virtual long open (FilePtr _parent, size_t fileSize, long numChildren = 50);
 		
 		virtual long create (char* fName);
@@ -113,7 +113,7 @@ class CSVFile : public File
 		long readUShort (DWORD row, DWORD col, unsigned short &value);
 		
 		long readChar (DWORD row, DWORD col, char &value);
-		long readUChar (DWORD row, DWORD col, unsigned char &value);
+		long readUCHAR (DWORD row, DWORD col, uint8_t &value);
 		
 		long readString (DWORD row, DWORD col, char *result, size_t bufferSize);
 };

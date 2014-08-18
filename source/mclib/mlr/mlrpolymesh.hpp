@@ -54,8 +54,8 @@ namespace MidLevelRenderer {
 		void
 			Save(Stuff::MemoryStream *stream);
 
-		virtual void	SetPrimitiveLength(unsigned char *, int);
-		virtual void	GetPrimitiveLength(unsigned char **, int*);
+		virtual void	SetPrimitiveLength(PUCHAR , int);
+		virtual void	GetPrimitiveLength(PUCHAR *, int*);
 
 		void	FindFacePlanes(void);
 
@@ -109,7 +109,7 @@ namespace MidLevelRenderer {
 		}
 
 	protected:
-		Stuff::DynamicArrayOf<unsigned char>	testList;
+		Stuff::DynamicArrayOf<uint8_t>	testList;
 		
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
 		

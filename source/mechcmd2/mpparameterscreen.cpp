@@ -63,9 +63,9 @@ extern bool quitGame;
 #define MP_DECREMENT_PLAYER_CBILLS 251
 
 
-static const int FIRST_BUTTON_ID = 1000010;
-static const int OK_BUTTON_ID = 1000001;
-static const int CANCEL_BUTTON_ID = 1000002;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
+static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 MPParameterScreen* MPParameterScreen::s_instance = NULL;
 
@@ -76,7 +76,7 @@ GUID NO_VERSION_GUID = {
 };
 
 
-const char* pPurchaseFiles[5] = 
+PCSTR pPurchaseFiles[5] = 
 {
 	"purchase_Steiner",
 	"purchase_Davion",
@@ -590,18 +590,18 @@ int	MPParameterScreen::handleMessage( unsigned long message, unsigned long who)
 
 }
 
-void MPParameterScreen::initializeMap ( const char* fileName )
+void MPParameterScreen::initializeMap ( PCSTR fileName )
 {
 	s_instance->setMission(fileName, true);
 }
 
-void MPParameterScreen::setMission( const char* fileName, bool resetData )
+void MPParameterScreen::setMission( PCSTR fileName, bool resetData )
 {
 	FullPathFileName path;
 	path.init( missionPath, fileName, ".fit" );
 	FitIniFile missionFile;
 	
-	if ( NO_ERR != missionFile.open( (char*)(const char*)path ) )
+	if ( NO_ERR != missionFile.open( (char*)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", fileName );
@@ -867,7 +867,7 @@ void MPParameterScreen::update()
 		{
 			long size = file.getLength();
 
-			unsigned char* pData = new unsigned char[size];
+			PUCHAR pData = new uint8_t[size];
 
 			file.read( pData, size );
 			MPlayer->sendPlayerInsignia( (char*)pPlayer->insigniaFile, pData, size );
@@ -949,7 +949,7 @@ void MPParameterScreen::update()
 			if ( mpLoadMap.getStatus() == YES )
 			{
 				 // need to pull in this map information....
-				const char* pName = mpLoadMap.getMapFileName();
+				PCSTR pName = mpLoadMap.getMapFileName();
 				LogisticsData::instance->setCurrentMission( pName );
 
 				// now I need to update the other people....
@@ -1376,14 +1376,14 @@ void MPParameterScreen::update()
 	*/
 }
 
-GUID			MPParameterScreen::getGUIDFromFile( const char* pNewMapName)
+GUID			MPParameterScreen::getGUIDFromFile( PCSTR pNewMapName)
 {
 	GUID retVal;
 	memset( &retVal, 0xff, sizeof( GUID ) );
 	FullPathFileName path;
 	path.init( missionPath, pNewMapName, ".pak" );
 	PacketFile pakFile;
-	if ( NO_ERR != pakFile.open( (char*)(const char*)path ) )
+	if ( NO_ERR != pakFile.open( (char*)(PCSTR)path ) )
 	{
 		return retVal;
 	}
@@ -1392,7 +1392,7 @@ GUID			MPParameterScreen::getGUIDFromFile( const char* pNewMapName)
 	pakFile.seekPacket( packetCount - 1 );
 	if ( sizeof( GUID ) == pakFile.getPacketSize( ) ) 
 	{
-		pakFile.readPacket( packetCount - 1, (unsigned char*)&retVal );
+		pakFile.readPacket( packetCount - 1, (PUCHAR)&retVal );
 
 		return retVal;
 	}
@@ -1404,13 +1404,13 @@ GUID			MPParameterScreen::getGUIDFromFile( const char* pNewMapName)
 
 }
 
-void MPParameterScreen::setMissionClientOnly( const char* pNewMapName )
+void MPParameterScreen::setMissionClientOnly( PCSTR pNewMapName )
 {
 	FullPathFileName path;
 	path.init( missionPath, pNewMapName, ".fit" );
 	FitIniFile missionFile;
 	
-	if ( NO_ERR != missionFile.open( (char*)(const char*)path ) )
+	if ( NO_ERR != missionFile.open( (char*)(PCSTR)path ) )
 	{
 		char tmp[256];
 		char final[1024];
@@ -1444,7 +1444,7 @@ void MPParameterScreen::setMissionClientOnly( const char* pNewMapName )
  	mapName = MPlayer->missionSettings.map;
 }
 
-void MPParameterScreen::checkVersionClientOnly( const char* pNewMapName )
+void MPParameterScreen::checkVersionClientOnly( PCSTR pNewMapName )
 {
 	GUID version = getGUIDFromFile( pNewMapName );
 	if ( MPlayer->missionSettings.mapGuid != NO_VERSION_GUID &&
@@ -1497,7 +1497,7 @@ void MPParameterScreen::resetCheckBoxes()
 
 }
 
-void MPParameterScreen::setHostLeftDlg( const char* playerName )
+void MPParameterScreen::setHostLeftDlg( PCSTR playerName )
 {
 	char leaveStr[256];
 	char formatStr[256];
@@ -1611,7 +1611,7 @@ long aPlayerParams::init(long xPos, long yPos,long w, long h )
 	return (NO_ERR);
 }
 
-void aPlayerParams::init( FitIniFile* pFile, const char* blockNameParam )
+void aPlayerParams::init( FitIniFile* pFile, PCSTR blockNameParam )
 {
 
 	FitIniFile &file = (*pFile);
@@ -1644,9 +1644,9 @@ void aPlayerParams::init( FitIniFile* pFile, const char* blockNameParam )
 	ReadyButton.setDisabledFX( LOG_WRONGBUTTON );
 
 
-	const char* staticName = "PlayerParamsStatic";
-	const char* textName = "PlayerParamsText";
-	const char* rectName = "PlayerParamsRect";
+	PCSTR staticName = "PlayerParamsStatic";
+	PCSTR textName = "PlayerParamsText";
+	PCSTR rectName = "PlayerParamsRect";
 
 	char blockName[256];
 
@@ -1981,7 +1981,7 @@ void aPlayerParams::update()
 		// need to check for changes
 		int oldSel = teamNumberDropList.GetSelectedItem();
 		int oldFaction = factionDropList.GetSelectedItem();
-		const char* pText = textObjects[1].text;
+		PCSTR pText = textObjects[1].text;
 		
 		long oldCBills = 0;
 		
@@ -2127,7 +2127,7 @@ void	aPlayerParams::setData( const _MC2Player* data)
 
 	// set up the insignia...
 	// I really need to store this... really don't want to allocate a texture every time
-	const char* pFileName = data->insigniaFile;
+	PCSTR pFileName = data->insigniaFile;
 	if ( pFileName != insigniaName )
 	{
 		FullPathFileName path;
@@ -2239,7 +2239,7 @@ void aPlayerParams::move( float offsetX, float offsetY )
 
 
 
-long aStyle2TextListItem::init( FitIniFile* file, const char* blockName )
+long aStyle2TextListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 

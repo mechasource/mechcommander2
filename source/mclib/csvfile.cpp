@@ -228,7 +228,7 @@ long CSVFile::textToLong (char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -281,7 +281,7 @@ short CSVFile::textToShort (char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -333,7 +333,7 @@ char CSVFile::textToChar (char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -384,7 +384,7 @@ unsigned long CSVFile::textToULong (char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -436,7 +436,7 @@ unsigned short CSVFile::textToUShort (char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -461,9 +461,9 @@ unsigned short CSVFile::textToUShort (char *num)
 
 
 //---------------------------------------------------------------------------
-unsigned char CSVFile::textToUChar (char *num)
+uint8_t CSVFile::textToUCHAR (char *num)
 {
-	unsigned char result = 0;
+	uint8_t result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
@@ -488,7 +488,7 @@ unsigned char CSVFile::textToUChar (char *num)
 		long power = 0;
 		for (long count = numDigits;count >= 0;count--,power++)
 		{
-			unsigned char currentDigit = toupper(hexOffset[count]);
+			uint8_t currentDigit = toupper(hexOffset[count]);
 			
 			if (currentDigit >= 'A' && currentDigit <= 'F')
 			{
@@ -638,7 +638,7 @@ long CSVFile::byteToTextHex (char *result, byte num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long CSVFile::open (const char* fName, FileMode _mode, long numChild)
+long CSVFile::open (PCSTR fName, FileMode _mode, long numChild)
 {
 	long result = File::open(fName,_mode,numChild);
 	if (result != NO_ERR)
@@ -830,12 +830,12 @@ long CSVFile::readUShort (DWORD row, DWORD col, unsigned short &value)
 }
 
 //---------------------------------------------------------------------------
-long CSVFile::readUChar (DWORD row, DWORD col, unsigned char &value)
+long CSVFile::readUCHAR (DWORD row, DWORD col, uint8_t &value)
 {
 	long result = seekRowCol(row,col);
 	if (result == NO_ERR)
 	{
-		value = textToUChar(dataBuffer);
+		value = textToUCHAR(dataBuffer);
 	}
 	else
 		value = 0.0f;

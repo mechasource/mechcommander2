@@ -26,7 +26,7 @@ namespace Stuff {
 		AffinerMatrix4DStack(
 			size_t start,
 			size_t delta,
-			const char* name
+			PCSTR name
 		):
 			MemoryStackOf<AffineMatrix4D>(start, delta, name)
 				{}
@@ -50,7 +50,7 @@ namespace Stuff {
 		LinearMatrix4DStack(
 			size_t start,
 			size_t delta,
-			const char* name
+			PCSTR name
 		):
 			MemoryStackOf<LinearMatrix4D>(start, delta, name)
 				{}
@@ -74,7 +74,7 @@ namespace Stuff {
 		Matrix4DStack(
 			size_t start,
 			size_t delta,
-			const char* name
+			PCSTR name
 		):
 			MemoryStackOf<Matrix4D>(start, delta, name)
 				{}

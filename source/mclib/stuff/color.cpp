@@ -129,7 +129,7 @@ RGBColor&
 //
 void
 	Stuff::Convert_From_Ascii(
-		const char *str,
+		PCSTR str,
 		RGBColor *color
 	)
 {
@@ -138,7 +138,7 @@ void
 
 	MString parse_string(str);
 
-	const char* token = parse_string.GetNthToken(0);
+	PCSTR token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->red = AtoF(token);
 
@@ -182,7 +182,7 @@ bool
 //
 void
 	Stuff::Convert_From_Ascii(
-		const char *str,
+		PCSTR str,
 		RGBAColor *color
 	)
 {
@@ -191,7 +191,7 @@ void
 
 	MString parse_string(str);
 
-	const char* token = parse_string.GetNthToken(0);
+	PCSTR token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->red = AtoF(token);
 
@@ -311,7 +311,7 @@ HSVColor&
 //
 void
 	Stuff::Convert_From_Ascii(
-		const char *str,
+		PCSTR str,
 		HSVColor *color
 	)
 {
@@ -320,7 +320,7 @@ void
 
 	MString parse_string(str);
 
-	const char* token = parse_string.GetNthToken(0);
+	PCSTR token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->hue = AtoF(token);
 
@@ -364,7 +364,7 @@ bool
 //
 void
 	Stuff::Convert_From_Ascii(
-		const char *str,
+		PCSTR str,
 		HSVAColor *color
 	)
 {
@@ -373,7 +373,7 @@ void
 
 	MString parse_string(str);
 
-	const char* token = parse_string.GetNthToken(0);
+	PCSTR token = parse_string.GetNthToken(0);
 	Check_Pointer(token);
 	color->hue = AtoF(token);
 

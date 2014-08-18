@@ -53,7 +53,7 @@ class aEdit: public aObject
 		bool hasFocus()const { return bFocus; }
 
 
-		void init( FitIniFile* file, const char* header );
+		void init( FitIniFile* file, PCSTR header );
 		long getHighlightColor( ) const { return highlightColor; }
 		long getColor() const { return textColor; }
 		long getCursorColor() const { return cursorColor; }

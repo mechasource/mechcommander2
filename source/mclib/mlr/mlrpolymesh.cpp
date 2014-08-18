@@ -133,7 +133,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPolyMesh::SetPrimitiveLength (unsigned char *data, int numPrimitives)
+	MLRPolyMesh::SetPrimitiveLength (PUCHAR data, int numPrimitives)
 {
 	Check_Object(this); 
 
@@ -147,7 +147,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPolyMesh::GetPrimitiveLength (unsigned char **data, int *l)
+	MLRPolyMesh::GetPrimitiveLength (PUCHAR *data, int *l)
 {
 	Check_Object(this); 
 	*l = lengths.GetLength();
@@ -184,7 +184,7 @@ int
 {
 	Check_Object(this);
 
-	unsigned char *iPtr;
+	PUCHAR iPtr;
 	int i, numPrimitives = GetNumPrimitives();
 	int ret = 0, len = lengths.GetLength();
 	Plane *p;
@@ -204,25 +204,25 @@ int
 		for(i=0;i<numPrimitives;i++,p++,iPtr++)
 		{
 #if defined(_ARMOR)
-			*iPtr = (p->DistanceTo(u) >= 0.0f) ? (unsigned char)1: (unsigned char)0;
+			*iPtr = (p->DistanceTo(u) >= 0.0f) ? (uint8_t)1: (uint8_t)0;
 
-			Verify (*iPtr != (unsigned char)0);
+			Verify (*iPtr != (uint8_t)0);
 #else
-			*iPtr = (unsigned char)1;
+			*iPtr = (uint8_t)1;
 #endif
 		}
-		ret = (unsigned char)1;
+		ret = (uint8_t)1;
 	}
 	else
 	{
 		for(i=0;i<numPrimitives;i++,p++,iPtr++)
 		{
-			*iPtr = (p->DistanceTo(u) >= 0.0f) ? (unsigned char)1: (unsigned char)0;
+			*iPtr = (p->DistanceTo(u) >= 0.0f) ? (uint8_t)1: (uint8_t)0;
 			
 			ret += *iPtr;
 		}
 
-		visible = ret ? (unsigned char)1 : (unsigned char)0;
+		visible = ret ? (uint8_t)1 : (uint8_t)0;
 	}
 
 	return ret;
@@ -234,7 +234,7 @@ void
 	MLRPolyMesh::ResetTestList()
 {
 	int i, numPrimitives = GetNumPrimitives();
-	unsigned char *iPtr = &testList[0];
+	PUCHAR iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
 	{
@@ -1419,7 +1419,7 @@ MLRPolyMesh*
 		Vector3D(-half,  half, -half)
 	};
 
-	unsigned char *lengths = new unsigned char [6];
+	PUCHAR lengths = new uint8_t [6];
 
 	int i;
 

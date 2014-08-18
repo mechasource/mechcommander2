@@ -40,7 +40,7 @@ class MissionResults
 		void end();
 		bool isDone(){ return bDone; }
 
-		void setHostLeftDlg( const char* pName );
+		void setHostLeftDlg( PCSTR pName );
 
 		//Tutorial - Used to play Voice Over, first time in!!
 		// THIS must be added to savegame!!

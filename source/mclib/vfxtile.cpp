@@ -20,7 +20,7 @@
 #endif
 
 static unsigned long pwXMax,count;		// Must be static for assembly optimizations
-static unsigned char *FadeTable;		// Must be static for assembly optimizations
+static PUCHAR FadeTable;		// Must be static for assembly optimizations
 
 //-----------------------------------------------------------
 struct tileStruct

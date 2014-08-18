@@ -59,7 +59,7 @@ class MainMenu: public LogisticsScreen
 		virtual void update();
 		virtual void render();
 
-		void setHostLeftDlg( const char* playerName );
+		void setHostLeftDlg( PCSTR playerName );
 
 		void setDrawBackground( bool bDrawBackground );
 		void skipIntro();

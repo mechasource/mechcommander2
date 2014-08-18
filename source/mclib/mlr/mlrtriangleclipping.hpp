@@ -455,7 +455,7 @@ void
 		vt->IncreaseIndex(numGOSIndices);
 	}
 
-	visible = numGOSVertices ? (unsigned char)1 : (unsigned char)0;
+	visible = numGOSVertices ? (uint8_t)1 : (uint8_t)0;
 
 	Stop_Timer(Transform_Time);
 }
@@ -506,7 +506,7 @@ int
 	Stuff::Vector4D *v4d = transformedCoords->GetData();
 	Stuff::Point3D *p3d = coords.GetData();
 	int *cs = (int *)clipPerVertex->GetData();
-	unsigned char *viv = visibleIndexedVertices.GetData();
+	PUCHAR viv = visibleIndexedVertices.GetData();
 
 	for(i=0;i<len;i++,p3d++,v4d++,cs++,viv++)
 	{
@@ -2084,7 +2084,7 @@ int
 		vt->IncreaseIndex(numGOSIndices);
 	}
 
-	visible = numGOSVertices ? (unsigned char)1 : (unsigned char)0;
+	visible = numGOSVertices ? (uint8_t)1 : (uint8_t)0;
 
 	if(visible)
 	{

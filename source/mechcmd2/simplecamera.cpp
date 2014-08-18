@@ -276,7 +276,7 @@ long SimpleCamera::update()
 	return 0;
 }
 
-void SimpleCamera::setMech(const char* fileName, long baseColor, long highlight1, long highlight2 )
+void SimpleCamera::setMech(PCSTR fileName, long baseColor, long highlight1, long highlight2 )
 {
 	shapeScale = 0.0f;
 
@@ -337,7 +337,7 @@ void SimpleCamera::setMech(const char* fileName, long baseColor, long highlight1
 
 }
 
-void SimpleCamera::setVehicle(const char* fileName,long base, long highlight, long h2)
+void SimpleCamera::setVehicle(PCSTR fileName,long base, long highlight, long h2)
 {
 	shapeScale = 0.0f;
 
@@ -395,7 +395,7 @@ void SimpleCamera::setVehicle(const char* fileName,long base, long highlight, lo
 
 
 
-void SimpleCamera::setComponent(const char* fileName )
+void SimpleCamera::setComponent(PCSTR fileName )
 {
 	shapeScale = 0.0f;
 
@@ -457,7 +457,7 @@ void SimpleCamera::setScale( float newAltitude )
 	shapeScale = newAltitude;
 }
 
-void SimpleCamera::setBuilding( const char* pBuilding )
+void SimpleCamera::setBuilding( PCSTR pBuilding )
 {
 	shapeScale = 0.0f;
 
@@ -466,7 +466,7 @@ void SimpleCamera::setBuilding( const char* pBuilding )
 	bIsComponent = 0;
 }
 
-void SimpleCamera::setObject( const char* pFileName, long type, long base, long highlight, long h2 )
+void SimpleCamera::setObject( PCSTR pFileName, long type, long base, long highlight, long h2 )
 {
 	if ( !pFileName || !strlen( pFileName ) )
 	{

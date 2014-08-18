@@ -74,15 +74,15 @@ namespace Stuff {
 		virtual
 			~ObjectNameList();
 
-		virtual const char*
+		virtual PCSTR
 			AddEntry(
-				const char *name,
+				PCSTR name,
 				void *data
 			);
 		void*
-			FindObject(const char *name);
+			FindObject(PCSTR name);
 		void
-			DeleteEntry(const char *name);	// ** DANGEROUS!! see notice above **
+			DeleteEntry(PCSTR name);	// ** DANGEROUS!! see notice above **
 		int
 			GetEntryCount() const;	// (implementation assumes infrequent use)
 		bool
@@ -103,7 +103,7 @@ namespace Stuff {
 		int
 			BuildSubList(
 				const ObjectNameList &source_list,
-				const char *prefix
+				PCSTR prefix
 			);
 
 		void
@@ -133,21 +133,21 @@ namespace Stuff {
 
 	protected:
 		void
-			SetName(const char *name);
+			SetName(PCSTR name);
 	
 	public:
-		const char*
+		PCSTR
 			GetName() const
 				{
 					Check_Object(this);
 					return &(
-						Cast_Pointer(const char*, this)[
+						Cast_Pointer(PCSTR, this)[
 							sizeof(ObjectNameList::Entry)
 						]
 					);
 				}
 		bool
-			IsName(const char *name) const;
+			IsName(PCSTR name) const;
 		void*
 			GetObject()
 				{ Check_Object(this); return dataReference; }
@@ -160,29 +160,29 @@ namespace Stuff {
 		char*
 			GetChar()
 				{Check_Object(this); return Cast_Pointer(char *,dataReference);}
-		const char*
+		PCSTR
 			GetChar() const
 				{
 					Check_Object(this);
-					return Cast_Pointer(const char *,dataReference);
+					return Cast_Pointer(PCSTR ,dataReference);
 				}
 		int
 			GetAtoi() const
 				{
 					Check_Object(this); Check_Pointer(dataReference);
-					return atoi(Cast_Pointer(const char *, dataReference));
+					return atoi(Cast_Pointer(PCSTR , dataReference));
 				}
 		long
 			GetAtol() const
 				{
 					Check_Object(this); Check_Pointer(dataReference);
-					return atol(Cast_Pointer(const char *, dataReference));
+					return atol(Cast_Pointer(PCSTR , dataReference));
 				}
 		Scalar
 			GetAtof() const
 				{
 					Check_Object(this); Check_Pointer(dataReference);
-					return AtoF(Cast_Pointer(const char *, dataReference));
+					return AtoF(Cast_Pointer(PCSTR , dataReference));
 				}
 		ObjectNameList::Entry*
 			GetNextEntry()
@@ -207,18 +207,18 @@ namespace Stuff {
 		~NameList();
 
 		void*
-			FindData(const char *name)
+			FindData(PCSTR name)
 				{ return FindObject(name); }
-		const char*
+		PCSTR
 			FindName(void *data);
 		Entry*
-			FindEntry(const char *name);
+			FindEntry(PCSTR name);
 		int
-			FindEntryIndex(const char *name);
+			FindEntryIndex(PCSTR name);
 		Entry*
 			FindEntry(void *data);
 		void
-			DeleteEntry(const char *name);	// this one is searches for name
+			DeleteEntry(PCSTR name);	// this one is searches for name
 		static bool
 			TestClass();
 
@@ -245,9 +245,9 @@ namespace Stuff {
 		AlphaNameList();
 		~AlphaNameList();
 
-		const char*
+		PCSTR
 			AddEntry(
-				const char *name,
+				PCSTR name,
 				void *data
 			);
 		static bool

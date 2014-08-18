@@ -957,7 +957,7 @@ AffineMatrix4D&
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const AffineMatrix4D &matrix
 		)
 	{

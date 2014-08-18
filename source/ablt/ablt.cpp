@@ -24,7 +24,7 @@ main(int argc, char* argv[])
 	printf("\n");
 
 	initABL();
-	unsigned char s[256];
+	uint8_t s[256];
 
 	long handle;
 	long numErrs = 0;

@@ -144,10 +144,10 @@ class File
 
 			bool eof (void);
 
-			virtual long open ( const char* fName, FileMode _mode = READ, long numChildren = 50);
-			virtual long open( const char* buffer, int bufferLength ); // for streaming from memory
+			virtual long open ( PCSTR fName, FileMode _mode = READ, long numChildren = 50);
+			virtual long open( PCSTR buffer, int bufferLength ); // for streaming from memory
 
-			virtual long create (const char* fName);
+			virtual long create (PCSTR fName);
 			virtual long createWithCase( char* fName ); // don't strlwr for me please!
 
 			virtual void close (void);
@@ -167,7 +167,7 @@ class File
 			// For textures.
 			long readRAW (size_t * &buffer, UserHeapPtr heap);
 
-			unsigned char readByte (void);
+			uint8_t readByte (void);
 			short readWord (void);
 			short readShort (void);
 			long readLong (void);
@@ -180,7 +180,7 @@ class File
 			long write (size_t pos, MemoryPtr buffer, long bytes);
 			long write (MemoryPtr buffer, long bytes);
 
-			long writeByte (unsigned char value);
+			long writeByte (uint8_t value);
 			long writeWord (short value);
 			long writeShort (short value);
 			long writeLong (long value);

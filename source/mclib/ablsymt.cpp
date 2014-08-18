@@ -412,7 +412,7 @@ SymTableNodePtr enterSymTable (char* name, SymTableNodePtr* ptrToNodePtr) {
 	newNode->defn.info.data.varType = VAR_TYPE_NORMAL;
 	newNode->defn.info.data.offset = 0;
 	newNode->typePtr = NULL;
-	newNode->level = (unsigned char)level;
+	newNode->level = (uint8_t)level;
 	newNode->labelIndex = 0;
 
 	//-------------------------------------

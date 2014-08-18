@@ -33,8 +33,8 @@ public:
 	CGroupData();
 	bool operator==(const CGroupData &rhs) const;
 	bool operator!=(const CGroupData &rhs) const { return (!((*this) == rhs)); }
-	bool Save(FitIniFile &fitFile, const char *groupName);
-	bool Read(FitIniFile &fitFile, const char *groupName);
+	bool Save(FitIniFile &fitFile, PCSTR groupName);
+	bool Read(FitIniFile &fitFile, PCSTR groupName);
 
 	CMissionList	m_MissionList;
 	CString	m_OperationFile;

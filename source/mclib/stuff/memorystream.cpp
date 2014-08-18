@@ -629,7 +629,7 @@ MemoryStream&
 	}
 
 	
-	pcuint8_t source_array = Cast_Pointer(pcuint8_t, ptr);
+	pcUCHAR source_array = Cast_Pointer(pcUCHAR, ptr);
 	int source_byte_counter = 0;
 	
 	int bits_remaining = (int)number_of_bits;
@@ -639,7 +639,7 @@ MemoryStream&
 	
 		
 		// if we are writing the full byte
-		pcuint8_t source = &source_array[source_byte_counter];
+		pcUCHAR source = &source_array[source_byte_counter];
 	
 		int total_bits_to_be_written = 8;
 		Max_Clamp(total_bits_to_be_written, bits_remaining);
@@ -709,7 +709,7 @@ MemoryStream&
 //
 
 MemoryStream&
-	MemoryStream::WriteScaledIntToBits(const int &number, int min, int max,  ULONG number_of_bits)
+	MemoryStream::WriteScaledIntToBits(cint32_t &number, int min, int max,  ULONG number_of_bits)
 {
 	Check_Object(this);
 	

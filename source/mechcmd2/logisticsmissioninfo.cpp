@@ -204,7 +204,7 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 				
 				FitIniFile missionFile;
 				
-				if ( NO_ERR != missionFile.open( (char*)(const char*)path ) )
+				if ( NO_ERR != missionFile.open( (char*)(PCSTR)path ) )
 				{
 					char errorStr[256];
 					sprintf( errorStr, "couldn't open file %s", fileName );
@@ -520,7 +520,7 @@ void LogisticsMissionInfo::save( FitIniFile& file )
 
 }
 
-long LogisticsMissionInfo::getAvailableMissions( const char** missions, int& numberOfEm )
+long LogisticsMissionInfo::getAvailableMissions( PCSTR* missions, int& numberOfEm )
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -553,7 +553,7 @@ long LogisticsMissionInfo::getAvailableMissions( const char** missions, int& num
 	return 0;
 }
 
-long LogisticsMissionInfo::getCurrentMissions( const char** missions, int& numberOfEm )
+long LogisticsMissionInfo::getCurrentMissions( PCSTR* missions, int& numberOfEm )
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -585,7 +585,7 @@ long LogisticsMissionInfo::getCurrentMissions( const char** missions, int& numbe
 
 	return 0;
 }
-long LogisticsMissionInfo::setNextMission( const char* missionName )
+long LogisticsMissionInfo::setNextMission( PCSTR missionName )
 {
 	if ( !missionName || !strlen( missionName ) )
 		return -1;
@@ -608,7 +608,7 @@ long LogisticsMissionInfo::setNextMission( const char* missionName )
 				
 			FitIniFile missionFile;
 			
-			if ( NO_ERR != missionFile.open( (char*)(const char*)path ) )
+			if ( NO_ERR != missionFile.open( (char*)(PCSTR)path ) )
 			{
 				char errorStr[256];
 				sprintf( errorStr, "couldn't open file %s", missionName );
@@ -692,7 +692,7 @@ long LogisticsMissionInfo::setNextMission( const char* missionName )
 
 }
 
-void LogisticsMissionInfo::setSingleMission( const char* missionFileName )
+void LogisticsMissionInfo::setSingleMission( PCSTR missionFileName )
 {
 	clear();
 	bMultiplayer = true;
@@ -734,7 +734,7 @@ void LogisticsMissionInfo::setSingleMission( const char* missionFileName )
 		
 	FitIniFile missionFile;
 	
-	if ( NO_ERR != missionFile.open( (char*)(const char*)path ) )
+	if ( NO_ERR != missionFile.open( (char*)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", missionName );
@@ -890,7 +890,7 @@ long LogisticsMissionInfo::getCurrentDropWeight() const
 		return 10000;
 }
 
-const char* LogisticsMissionInfo::getCurrentOperationFile() const
+PCSTR LogisticsMissionInfo::getCurrentOperationFile() const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -901,7 +901,7 @@ const char* LogisticsMissionInfo::getCurrentOperationFile() const
 	
 }
 
-const char* LogisticsMissionInfo::getCurrentVideo() const
+PCSTR LogisticsMissionInfo::getCurrentVideo() const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -929,7 +929,7 @@ long LogisticsMissionInfo::getCurrentLogisticsTuneId()
 	return -1;
 }
 
-const char*	LogisticsMissionInfo::getCurrentMissionDescription() const
+PCSTR	LogisticsMissionInfo::getCurrentMissionDescription() const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -939,7 +939,7 @@ const char*	LogisticsMissionInfo::getCurrentMissionDescription() const
 	return NULL;
 }
 
-bool LogisticsMissionInfo::getMissionAvailable( const char* missionName )
+bool LogisticsMissionInfo::getMissionAvailable( PCSTR missionName )
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -953,7 +953,7 @@ bool LogisticsMissionInfo::getMissionAvailable( const char* missionName )
 	return NULL;
 }
 
-const char*			LogisticsMissionInfo::getCurrentMissionFriendlyName() const
+PCSTR			LogisticsMissionInfo::getCurrentMissionFriendlyName() const
 {
 	if ( currentStage >= groupCount )
 		return NULL;
@@ -966,7 +966,7 @@ const char*			LogisticsMissionInfo::getCurrentMissionFriendlyName() const
 
 }
 
-const char*			LogisticsMissionInfo::getCurrentABLScriptName() const
+PCSTR			LogisticsMissionInfo::getCurrentABLScriptName() const
 {
 	if ( currentStage >= groupCount )
 		return NULL;
@@ -979,7 +979,7 @@ const char*			LogisticsMissionInfo::getCurrentABLScriptName() const
 	return NULL;
 }
 
-const char* LogisticsMissionInfo::getMissionFriendlyName( const char* missionName ) const
+PCSTR LogisticsMissionInfo::getMissionFriendlyName( PCSTR missionName ) const
 {
 	if ( currentStage >= groupCount )
 		return NULL;
@@ -1006,7 +1006,7 @@ int		LogisticsMissionInfo::getCurrentRP() const
 
 }
 
-const char*			LogisticsMissionInfo::getCurrentBigVideo() const
+PCSTR			LogisticsMissionInfo::getCurrentBigVideo() const
 {
 	if ( currentStage == -1 )
 		return NULL;
@@ -1020,7 +1020,7 @@ const char*			LogisticsMissionInfo::getCurrentBigVideo() const
 	return pGroup->bigVideoName;
 		
 }
-const char*			LogisticsMissionInfo::getFinalVideo() const
+PCSTR			LogisticsMissionInfo::getFinalVideo() const
 {
 	return finalVideoName;
 }
@@ -1048,7 +1048,7 @@ void		LogisticsMissionInfo::setMultiplayer()
 			
 
 }
-void		LogisticsMissionInfo::setPurchaseFile( const char* fileName )
+void		LogisticsMissionInfo::setPurchaseFile( PCSTR fileName )
 {
 	gosASSERT( bMultiplayer) ;
 
@@ -1059,7 +1059,7 @@ void		LogisticsMissionInfo::setPurchaseFile( const char* fileName )
 	pInfo->purchaseFileName += ".fit";
 }
 
-int			LogisticsMissionInfo::getAdditionalPurachaseFiles( const char** list, long& maxCount )
+int			LogisticsMissionInfo::getAdditionalPurachaseFiles( PCSTR* list, long& maxCount )
 {
 	if ( maxCount >=  additionalPurchaseFiles.Count() )
 	{
@@ -1075,7 +1075,7 @@ int			LogisticsMissionInfo::getAdditionalPurachaseFiles( const char** list, long
 
 	return additionalPurchaseFiles.Count();
 }
-void				LogisticsMissionInfo::addBonusPurchaseFile( const char* fileName )
+void				LogisticsMissionInfo::addBonusPurchaseFile( PCSTR fileName )
 {
 	if ( !fileName )
 		return;

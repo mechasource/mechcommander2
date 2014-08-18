@@ -293,7 +293,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 
 	Stop_Timer(Transform_Time);
 
-	visible = numGOSVertices ? (unsigned char)1 : (unsigned char)0;
+	visible = numGOSVertices ? (uint8_t)1 : (uint8_t)0;
 }
 
 static MLRClippingState theAnd, theOr, theTest;
@@ -1705,7 +1705,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 		vt->IncreaseIndex(numGOSIndices);
 	}
 
-	visible = numGOSVertices ? (unsigned char)1 : (unsigned char)0;
+	visible = numGOSVertices ? (uint8_t)1 : (uint8_t)0;
 
 	if(visible)
 	{

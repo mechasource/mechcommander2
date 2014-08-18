@@ -41,10 +41,10 @@ class BitFlag
 	protected:
 	
 		HeapManagerPtr		flagHeap;
-		unsigned char		numBitsPerFlag;
+		uint8_t		numBitsPerFlag;
 		unsigned long		rows;
 		unsigned long		columns;
-		unsigned char		maskValue;
+		uint8_t		maskValue;
 		unsigned long		divValue;
 		unsigned long		colWidth;
 		unsigned long		totalFlags;
@@ -85,7 +85,7 @@ class BitFlag
 		void setGroup (unsigned long r, unsigned long c, unsigned long length);
 		void clearGroup (unsigned long r, unsigned long c, unsigned long length);
 		
-		unsigned char getFlag (unsigned long r, unsigned long c);
+		uint8_t getFlag (unsigned long r, unsigned long c);
 };
 
 //----------------------------------------------------------------------------------
@@ -155,10 +155,10 @@ class ByteFlag
 		void setGroup (unsigned long r, unsigned long c, unsigned long length);
 		void clearGroup (unsigned long r, unsigned long c, unsigned long length);
 		
-		unsigned char getFlag (unsigned long r, unsigned long c);
+		uint8_t getFlag (unsigned long r, unsigned long c);
 		
-		void setCircle (unsigned long x, unsigned long y, unsigned long radius, unsigned char value);
-		void clearCircle (unsigned long x, unsigned long y, unsigned long radius, unsigned char value);
+		void setCircle (unsigned long x, unsigned long y, unsigned long radius, uint8_t value);
+		void clearCircle (unsigned long x, unsigned long y, unsigned long radius, uint8_t value);
 };
 
 //----------------------------------------------------------------------------------

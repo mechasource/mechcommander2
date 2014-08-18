@@ -50,7 +50,7 @@ class ObjectType {
 		bool					keepMe;					//Do not EVER cache this objType out.
 		long					iconNumber;				//my index into the big strip o' icons
 		long					teamId;					//DEfault for this type
-		unsigned char			subType;				//if building, what type of building? etc.
+		uint8_t			subType;				//if building, what type of building? etc.
 
 	public:
 
@@ -171,11 +171,11 @@ class ObjectType {
 			return teamId;
 		}
 
-		void setSubType (unsigned char type) {
+		void setSubType (uint8_t type) {
 			subType = type;
 		}
 
-		unsigned char getSubType (void) {
+		uint8_t getSubType (void) {
 			return(subType);
 		}
 

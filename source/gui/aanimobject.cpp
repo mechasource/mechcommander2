@@ -32,7 +32,7 @@ aAnimObject& aAnimObject::operator =( const aAnimObject& src )
 }
 
 
-int aAnimObject::init( FitIniFile* file, const char* blockName, DWORD neverFlush )
+int aAnimObject::init( FitIniFile* file, PCSTR blockName, DWORD neverFlush )
 {
 	aObject::init( file, blockName, neverFlush );
 

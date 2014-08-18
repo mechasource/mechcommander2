@@ -411,7 +411,7 @@ void Mechlopedia::MechScreen::update()
 
 void Mechlopedia::MechScreen::select( aTextListItem* pItem )
 {
-	const char* pText = pItem->getText();
+	PCSTR pText = pItem->getText();
 
 
 	if ( !bIsVehicle )
@@ -506,7 +506,7 @@ void Mechlopedia::MechScreen::setVehicle( LogisticsVehicle* pVehicle )
 	pItem = new aTextListItem( IDS_EN_LISTBOX_FONT );
 
 	cLoadString( IDS_EN_CLASS, text, 255 );
-	sprintf( formatText, text, (const char*)pVehicle->getMechClass() );	
+	sprintf( formatText, text, (PCSTR)pVehicle->getMechClass() );	
 	
 	pItem->setText( formatText );
 	pItem->setColor( color );
@@ -599,7 +599,7 @@ void Mechlopedia::MechScreen::setMech( LogisticsVariant* pChassis, bool bShowJum
 	pItem = new aTextListItem( IDS_EN_LISTBOX_FONT );
 
 	cLoadString( IDS_EN_CLASS, text, 255 );
-	sprintf( formatText, text, (const char*)pChassis->getMechClass() );	
+	sprintf( formatText, text, (PCSTR)pChassis->getMechClass() );	
 	
 	pItem->setText( formatText );
 	pItem->setColor( color );

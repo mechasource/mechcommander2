@@ -511,7 +511,7 @@ long TG_TypeMultiShape::LoadTGMultiShapeFromASE (char *fileName, bool forceMakeB
 		long numMaterials = atol(numberData);
 	
 		numTextures = 0;
-		unsigned char *aseBuffer = aseContents;
+		PUCHAR aseBuffer = aseContents;
 		for (long nmt=0;nmt<numMaterials;nmt++)
 		{
 			sprintf(textureId,ASE_MATERIAL_CLASS);
@@ -540,7 +540,7 @@ long TG_TypeMultiShape::LoadTGMultiShapeFromASE (char *fileName, bool forceMakeB
 				numTextures += atol(numberData);
 			}
 	
-			aseBuffer = (unsigned char *)textureData;
+			aseBuffer = (PUCHAR )textureData;
 		}
 
 		IProviderAssetPtr armAssetPtr = NULL;
@@ -728,7 +728,7 @@ long TG_TypeMultiShape::LoadTGMultiShapeFromASE (char *fileName, bool forceMakeB
 				// Is this a forbidden helper object?
 				if ((strstr(chkWord,"handle") == NULL) && (strstr(chkWord,"World") == NULL))
 				{
-					long parseResult = listOfTypeShapes[startIndex]->MakeFromHelper((unsigned char *)aseData,fileName);
+					long parseResult = listOfTypeShapes[startIndex]->MakeFromHelper((PUCHAR )aseData,fileName);
 					if (parseResult != 0)
 						return(parseResult);
 	
@@ -755,7 +755,7 @@ long TG_TypeMultiShape::LoadTGMultiShapeFromASE (char *fileName, bool forceMakeB
 				if ((strstr(chkWord,"handle") == NULL) && (strstr(chkWord,"World") == NULL))
 				{
 					//-------------------------------------------------------------------
-					long parseResult = listOfTypeShapes[startIndex]->MakeFromHelper((unsigned char *)aseScan,fileName);
+					long parseResult = listOfTypeShapes[startIndex]->MakeFromHelper((PUCHAR )aseScan,fileName);
 					if (parseResult != 0)
 						return(parseResult);
 	
@@ -789,7 +789,7 @@ long TG_TypeMultiShape::LoadTGMultiShapeFromASE (char *fileName, bool forceMakeB
 				ZeroMemory(aseData, aseFileSize+1);
 				memcpy(aseData,aseScan,aseEnd - aseScan);
 				
-				long parseResult = listOfTypeShapes[startIndex]->ParseASEFile((unsigned char *)aseData,fileName);
+				long parseResult = listOfTypeShapes[startIndex]->ParseASEFile((PUCHAR )aseData,fileName);
 				if (parseResult != 0)
 					return(parseResult);
 	
@@ -797,7 +797,7 @@ long TG_TypeMultiShape::LoadTGMultiShapeFromASE (char *fileName, bool forceMakeB
 			}
 			else
 			{
-				long parseResult = listOfTypeShapes[startIndex]->ParseASEFile((unsigned char *)aseScan,fileName);
+				long parseResult = listOfTypeShapes[startIndex]->ParseASEFile((PUCHAR )aseScan,fileName);
 				if (parseResult != 0)
 					return(parseResult);
 			}

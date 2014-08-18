@@ -39,7 +39,7 @@ void
 {
 	Check_Object(this);
 
-	const char* name = m_name;
+	PCSTR name = m_name;
 	if (name)
 		*stream << '[' << name << "]\r\n";
 	NoteIterator notes(&m_notes);
@@ -55,7 +55,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Note*
-	Page::FindNote(const char *entryname)
+	Page::FindNote(PCSTR entryname)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
@@ -85,7 +85,7 @@ Note*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 ChainOf<Note*>*
-	Page::MakeNoteChain(const char *entryname)
+	Page::MakeNoteChain(PCSTR entryname)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
@@ -107,7 +107,7 @@ ChainOf<Note*>*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Note*
-	Page::AddNote(const char *entryname)
+	Page::AddNote(PCSTR entryname)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
@@ -124,7 +124,7 @@ Note*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::DeleteNote(const char *entryname)
+	Page::DeleteNote(PCSTR entryname)
 {
 	Check_Object(this);
 	Check_Pointer(entryname);
@@ -158,8 +158,8 @@ void
 //
 bool
 	Page::GetEntry(
-		const char *entryname,
-		const char **contents,
+		PCSTR entryname,
+		PCSTR *contents,
 		bool required
 	)
 {
@@ -189,8 +189,8 @@ bool
 //
 void
 	Page::SetEntry(
-		const char *entryname,
-		const char *contents
+		PCSTR entryname,
+		PCSTR contents
 	)
 {
 	Check_Object(this);
@@ -208,8 +208,8 @@ void
 //
 void
 	Page::AppendEntry(
-		const char *entryname,
-		const char *contents
+		PCSTR entryname,
+		PCSTR contents
 	)
 {
 	Check_Object(this);
@@ -225,7 +225,7 @@ void
 //
 bool
 	Page::GetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		int *contents,
 		bool required
 	)
@@ -256,7 +256,7 @@ bool
 //
 void
 	Page::SetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		int contents
 	)
 {
@@ -274,7 +274,7 @@ void
 //
 void
 	Page::AppendEntry(
-		const char *entryname,
+		PCSTR entryname,
 		int contents
 	)
 {
@@ -290,7 +290,7 @@ void
 //
 bool
 	Page::GetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		Scalar *contents,
 		bool required
 	)
@@ -321,7 +321,7 @@ bool
 //
 void
 	Page::SetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		Scalar value
 	)
 {
@@ -339,7 +339,7 @@ void
 //
 void
 	Page::AppendEntry(
-		const char *entryname,
+		PCSTR entryname,
 		Scalar value
 	)
 {
@@ -355,7 +355,7 @@ void
 //
 bool
 	Page::GetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		bool *contents,
 		bool required
 	)
@@ -386,7 +386,7 @@ bool
 //
 void
 	Page::SetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		bool value
 	)
 {
@@ -404,7 +404,7 @@ void
 //
 void
 	Page::AppendEntry(
-		const char *entryname,
+		PCSTR entryname,
 		bool value
 	)
 {
@@ -420,7 +420,7 @@ void
 //
 bool
 	Page::GetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		Vector3D *contents,
 		bool required
 	)
@@ -451,7 +451,7 @@ bool
 //
 void
 	Page::SetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const Vector3D &value
 	)
 {
@@ -469,7 +469,7 @@ void
 //
 void
 	Page::AppendEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const Vector3D &value
 	)
 {
@@ -485,7 +485,7 @@ void
 //
 bool
 	Page::GetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		YawPitchRoll *contents,
 		bool required
 	)
@@ -516,7 +516,7 @@ bool
 //
 void
 	Page::SetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const YawPitchRoll &value
 	)
 {
@@ -534,7 +534,7 @@ void
 //
 void
 	Page::AppendEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const YawPitchRoll &value
 	)
 {
@@ -550,7 +550,7 @@ void
 //
 bool
 	Page::GetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		UnitQuaternion *contents,
 		bool required
 	)
@@ -581,7 +581,7 @@ bool
 //
 void
 	Page::SetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const UnitQuaternion &value
 	)
 {
@@ -599,7 +599,7 @@ void
 //
 void
 	Page::AppendEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const UnitQuaternion &value
 	)
 {
@@ -615,7 +615,7 @@ void
 //
 bool
 	Page::GetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		Motion3D *contents,
 		bool required
 	)
@@ -646,7 +646,7 @@ bool
 //
 void
 	Page::SetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const Motion3D &value
 	)
 {
@@ -664,7 +664,7 @@ void
 //
 void
 	Page::AppendEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const Motion3D &value
 	)
 {
@@ -680,7 +680,7 @@ void
 //
 bool
 	Page::GetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		RGBColor *contents,
 		bool required
 	)
@@ -711,7 +711,7 @@ bool
 //
 void
 	Page::SetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const RGBColor &value
 	)
 {
@@ -729,7 +729,7 @@ void
 //
 void
 	Page::AppendEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const RGBColor &value
 	)
 {
@@ -745,7 +745,7 @@ void
 //
 bool
 	Page::GetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		RGBAColor *contents,
 		bool required
 	)
@@ -776,7 +776,7 @@ bool
 //
 void
 	Page::SetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const RGBAColor &value
 	)
 {
@@ -794,7 +794,7 @@ void
 //
 void
 	Page::AppendEntry(
-		const char *entryname,
+		PCSTR entryname,
 		const RGBAColor &value
 	)
 {
@@ -810,7 +810,7 @@ void
 //
 bool
 	Page::GetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		NotationFile *contents,
 		bool required
 	)
@@ -841,7 +841,7 @@ bool
 //
 void
 	Page::SetEntry(
-		const char *entryname,
+		PCSTR entryname,
 		NotationFile *value
 	)
 {
@@ -859,7 +859,7 @@ void
 //
 void
 	Page::AppendEntry(
-		const char *entryname,
+		PCSTR entryname,
 		NotationFile *value
 	)
 {

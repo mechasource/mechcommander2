@@ -212,9 +212,9 @@ long Camera::init (FitIniFilePtr cameraFile )
 	result = cameraFile->readIdUChar("AmbientBlue",ambientBlue);
 	gosASSERT(result == NO_ERR);
 
-	unsigned char tmpUChar;
-	result = cameraFile->readIdUChar("TerrainShadowColorEnabled",tmpUChar);
-	if ((result != NO_ERR) || (0 == tmpUChar)) {
+	uint8_t tmpUCHAR;
+	result = cameraFile->readIdUChar("TerrainShadowColorEnabled",tmpUCHAR);
+	if ((result != NO_ERR) || (0 == tmpUCHAR)) {
 		terrainShadowColorEnabled = false;
 	}
 	else
@@ -2962,7 +2962,7 @@ float Camera::getCameraRotation (void)
 
 #define OBSCURED_FACTOR	0.5f;
 //---------------------------------------------------------------------------
-unsigned char Camera::getLightRed (float intensity)
+uint8_t Camera::getLightRed (float intensity)
 {
 	//ASM and Inline
 	if (intensity > 0.0)
@@ -2978,7 +2978,7 @@ unsigned char Camera::getLightRed (float intensity)
 }
 
 //---------------------------------------------------------------------------
-unsigned char Camera::getLightGreen (float intensity)
+uint8_t Camera::getLightGreen (float intensity)
 {
 	//ASM and Inline
 	if (intensity > 0.0)
@@ -2994,7 +2994,7 @@ unsigned char Camera::getLightGreen (float intensity)
 }
 
 //---------------------------------------------------------------------------
-unsigned char Camera::getLightBlue (float intensity)
+uint8_t Camera::getLightBlue (float intensity)
 {
 	//ASM and Inline
 	if (intensity > 0.0)
@@ -3018,47 +3018,47 @@ bool Camera::save( FitIniFile* file )
 	file->writeIdFloat( "PositionZ", 0.0 );
 	file->writeIdBoolean( "Ready", true );
 
-	file->writeIdUChar( "LightRed", lightRed );
-	file->writeIdUChar( "LightGreen", lightGreen );
-	file->writeIdUChar( "LightBlue", lightBlue );
-	file->writeIdUChar( "AmbientBlue", ambientBlue );
-	file->writeIdUChar( "AmbientGreen", ambientGreen );
-	file->writeIdUChar( "AmbientRed", ambientRed );
+	file->writeIdUCHAR( "LightRed", lightRed );
+	file->writeIdUCHAR( "LightGreen", lightGreen );
+	file->writeIdUCHAR( "LightBlue", lightBlue );
+	file->writeIdUCHAR( "AmbientBlue", ambientBlue );
+	file->writeIdUCHAR( "AmbientGreen", ambientGreen );
+	file->writeIdUCHAR( "AmbientRed", ambientRed );
 	if (terrainShadowColorEnabled)
 	{
-		file->writeIdUChar( "TerrainShadowColorEnabled", 1 );
+		file->writeIdUCHAR( "TerrainShadowColorEnabled", 1 );
 	}
 	else
 	{
-		file->writeIdUChar( "TerrainShadowColorEnabled", 0 );
+		file->writeIdUCHAR( "TerrainShadowColorEnabled", 0 );
 	}
-	file->writeIdUChar( "TerrainShadowBlue", terrainShadowBlue );
-	file->writeIdUChar( "TerrainShadowGreen", terrainShadowGreen );
-	file->writeIdUChar( "TerrainShadowRed", terrainShadowRed );
+	file->writeIdUCHAR( "TerrainShadowBlue", terrainShadowBlue );
+	file->writeIdUCHAR( "TerrainShadowGreen", terrainShadowGreen );
+	file->writeIdUCHAR( "TerrainShadowRed", terrainShadowRed );
 
 	
-	file->writeIdUChar( "DayLightRed", dayLightRed );
-	file->writeIdUChar( "DayLightGreen", dayLightGreen );
-	file->writeIdUChar( "DayLightBlue", dayLightBlue );
-	file->writeIdUChar( "DayAmbientBlue", dayAmbientBlue );
-	file->writeIdUChar( "DayAmbientGreen", dayAmbientGreen );
-	file->writeIdUChar( "DayAmbientRed", dayAmbientRed );
-	file->writeIdUChar( "SunsetLightRed", sunsetLightRed );
-	file->writeIdUChar( "SunsetLightGreen", sunsetLightGreen );
-	file->writeIdUChar( "SunsetLightBlue", sunsetLightBlue );
-	file->writeIdUChar( "NightLightRed", nightLightRed );
-	file->writeIdUChar( "NightLightGreen", nightLightGreen );
-	file->writeIdUChar( "NightLightBlue", nightLightBlue );
-	file->writeIdUChar( "NightAmbientBlue", nightAmbientBlue );
-	file->writeIdUChar( "NightAmbientGreen", nightAmbientGreen );
-	file->writeIdUChar( "NightAmbientRed", nightAmbientRed );
+	file->writeIdUCHAR( "DayLightRed", dayLightRed );
+	file->writeIdUCHAR( "DayLightGreen", dayLightGreen );
+	file->writeIdUCHAR( "DayLightBlue", dayLightBlue );
+	file->writeIdUCHAR( "DayAmbientBlue", dayAmbientBlue );
+	file->writeIdUCHAR( "DayAmbientGreen", dayAmbientGreen );
+	file->writeIdUCHAR( "DayAmbientRed", dayAmbientRed );
+	file->writeIdUCHAR( "SunsetLightRed", sunsetLightRed );
+	file->writeIdUCHAR( "SunsetLightGreen", sunsetLightGreen );
+	file->writeIdUCHAR( "SunsetLightBlue", sunsetLightBlue );
+	file->writeIdUCHAR( "NightLightRed", nightLightRed );
+	file->writeIdUCHAR( "NightLightGreen", nightLightGreen );
+	file->writeIdUCHAR( "NightLightBlue", nightLightBlue );
+	file->writeIdUCHAR( "NightAmbientBlue", nightAmbientBlue );
+	file->writeIdUCHAR( "NightAmbientGreen", nightAmbientGreen );
+	file->writeIdUCHAR( "NightAmbientRed", nightAmbientRed );
 
-	file->writeIdUChar( "SeenBlue", seenBlue );
-	file->writeIdUChar( "SeenGreen", seenGreen );
-	file->writeIdUChar( "SeenRed", seenRed );
-	file->writeIdUChar( "BaseBlue", baseBlue );
-	file->writeIdUChar( "BaseGreen", baseGreen );
-	file->writeIdUChar( "BaseRed", baseRed );
+	file->writeIdUCHAR( "SeenBlue", seenBlue );
+	file->writeIdUCHAR( "SeenGreen", seenGreen );
+	file->writeIdUCHAR( "SeenRed", seenRed );
+	file->writeIdUCHAR( "BaseBlue", baseBlue );
+	file->writeIdUCHAR( "BaseGreen", baseGreen );
+	file->writeIdUCHAR( "BaseRed", baseRed );
 	
 	file->writeIdFloat( "LightDirPitch", lightPitch );
 	file->writeIdFloat("DayLightPitch",dayLightPitch);

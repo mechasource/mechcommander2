@@ -28,14 +28,11 @@ public:
 	// dymanic naming of the objects represented by that class.  TestHost
 	// provides a means of testing the functionality of ObjectNameList.
 	//--------------------------------------------------------------------
-	const char
-		*name;
-	TestHost
-		*next;
-	static ObjectNameList
-		names;
+	PCSTR					name;
+	TestHost*				next;
+	static ObjectNameList	names;
 
-	TestHost(const char *a_name);
+	TestHost(PCSTR a_name);
 	~TestHost();
 
 	bool
@@ -49,7 +46,7 @@ ObjectNameList
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-TestHost::TestHost(const char *a_name)
+TestHost::TestHost(PCSTR a_name)
 {
 	Check_Pointer(this);
 	Check_Pointer(a_name);

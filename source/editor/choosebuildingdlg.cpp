@@ -67,7 +67,7 @@ BOOL ChooseBuildingDlg::OnInitDialog()
 	while (!it.IsDone()) {
 		EString tmpEStr;
 		Stuff::Vector3D pos = (*it)->getPosition();
-		const char *szDisplayName = (*it)->getDisplayName(); // nb: localization
+		PCSTR szDisplayName = (*it)->getDisplayName(); // nb: localization
 		assert(szDisplayName);
 		tmpEStr.Format("(pos: %.3f, %.3f) %s", pos.x, pos.y, szDisplayName);
 		m_pComboBox->AddString(tmpEStr.Data());

@@ -42,7 +42,7 @@ typedef struct _MineResult
 		mineData = 0;
 	}
 	
-	void setMine (DWORD pos, unsigned char data)
+	void setMine (DWORD pos, uint8_t data)
 	{
 		DWORD result = (data << (pos << 1));
 		mineData |= result;

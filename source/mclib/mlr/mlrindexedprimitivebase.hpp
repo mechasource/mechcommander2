@@ -52,7 +52,7 @@ namespace MidLevelRenderer {
 		virtual void
 			Save(Stuff::MemoryStream *stream);
 
-		virtual	void	InitializeDrawPrimitive(unsigned char, int=0);
+		virtual	void	InitializeDrawPrimitive(uint8_t, int=0);
 
 		virtual void	Lighting(MLRLight* const*, int nrLights) = 0;
 
@@ -123,7 +123,7 @@ namespace MidLevelRenderer {
 	protected:
 		bool visibleIndexedVerticesKey;
 
-		Stuff::DynamicArrayOf<unsigned char>	visibleIndexedVertices;
+		Stuff::DynamicArrayOf<uint8_t>	visibleIndexedVertices;
 
 		Stuff::DynamicArrayOf<unsigned short>	index;	// List of color indexes 
 

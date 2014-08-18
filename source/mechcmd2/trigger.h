@@ -46,7 +46,7 @@ class TriggerAreaManager {
 	public:
 
 		TriggerArea				triggerAreas[MAX_TRIGGER_AREAS];
-		unsigned char			map[MAX_MAP_CELL_WIDTH / 3][MAX_MAP_CELL_WIDTH / 3];
+		uint8_t			map[MAX_MAP_CELL_WIDTH / 3][MAX_MAP_CELL_WIDTH / 3];
 		
 	public:
 

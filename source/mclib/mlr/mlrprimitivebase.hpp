@@ -102,13 +102,13 @@ namespace MidLevelRenderer {
 
 		virtual void
 			SetSubprimitiveLengths(
-				unsigned char *length_array,
+				PUCHAR length_array,
 				int subprimitive_count
 			) = 0;
 
 	// returns the number of subprimitives
 		void
-			GetSubprimitiveLengths(unsigned char **length_array, int*);
+			GetSubprimitiveLengths(PUCHAR *length_array, int*);
 
 		int
 			GetSubprimitiveLength(int i) const;
@@ -161,7 +161,7 @@ namespace MidLevelRenderer {
 
 		static	void	InitializeDraw();
 
-		virtual	void	InitializeDrawPrimitive(unsigned char, int=0);
+		virtual	void	InitializeDrawPrimitive(uint8_t, int=0);
 
 		int	GetVisible () 
 			{ Check_Object(this); return visible; }
@@ -299,8 +299,8 @@ namespace MidLevelRenderer {
 
 		static ClipPolygon2 *clipBuffer;
 
-		unsigned char	visible;	//	primitive visibilty per frame
-		unsigned char	passes;
+		uint8_t	visible;	//	primitive visibilty per frame
+		uint8_t	passes;
 
 //		int		numPrimitives;	// Number of primitives, e.g. - num quads 
 //		Replaced by GetNumPrimitives
@@ -313,7 +313,7 @@ namespace MidLevelRenderer {
 
 		static Stuff::DynamicArrayOf<Stuff::Vector4D> *transformedCoords;
 
-		Stuff::DynamicArrayOf<unsigned char>	lengths;	// List of strip lengths 
+		Stuff::DynamicArrayOf<uint8_t>	lengths;	// List of strip lengths 
 
 #if COLOR_AS_DWORD	// clipExtraColors for the future generations !!!
 		static Stuff::DynamicArrayOf<DWORD> *clipExtraColors; // , Max_Number_Vertices_Per_Mesh
@@ -343,7 +343,7 @@ namespace MidLevelRenderer {
 		Stuff::Scalar radius;
 		Stuff::Scalar all;
 		bool onOff;
-		const char *GetTypeName();
+		PCSTR GetTypeName();
 	};
 
 	MLRShape*
@@ -364,7 +364,7 @@ namespace MidLevelRenderer {
 	public:
 		MLRPrimitiveBase__ClassData(
 			Stuff::RegisteredClass::ClassID class_id,
-			const char* class_name,
+			PCSTR class_name,
 			Stuff::RegisteredClass::ClassData *parent_class,
 			MLRPrimitiveBase::Factory primitive_factory
 		):

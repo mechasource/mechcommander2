@@ -69,8 +69,7 @@ namespace Stuff {
 		protected:
 			static BYTE NextTraceID;
 
-			const char
-				*traceName;
+			PCSTR	traceName;
 			Time
 				lastActivity;
 			BYTE
@@ -78,7 +77,7 @@ namespace Stuff {
 				traceType;
 
 			Trace(
-				const char* name,
+				PCSTR name,
 				Type type
 			);
 
@@ -145,7 +144,7 @@ namespace Stuff {
 			#endif
 
 		public:
-			BitTrace(const char* name);
+			BitTrace(PCSTR name);
 
 			void
 				Set();
@@ -200,7 +199,7 @@ namespace Stuff {
 
 		public:
 			TraceOf(
-				const char* name,
+				PCSTR name,
 				const T& initial_value,
 				Type trace_type,
 				TraceSample::Type sample_type
@@ -213,7 +212,7 @@ namespace Stuff {
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//
 		template <class T> TraceOf<T>::TraceOf(
-				const char* name,
+				PCSTR name,
 				const T& initial_value,
 				Type trace_type,
 				TraceSample::Type sample_type
@@ -370,7 +369,7 @@ namespace Stuff {
 			DWORD
 				GetBitTraceStatus()
 					{Check_Object(this); return activeBits;}
-			const char*
+			PCSTR
 				GetNameOfTrace(int bit_no);
 
 			#if defined(USE_TIME_ANALYSIS)
@@ -387,7 +386,7 @@ namespace Stuff {
                   bool start_sampling
 					);
 				void
-					SaveTraceLog(const char* filename);
+					SaveTraceLog(PCSTR filename);
 				void
 					MarkTraceLog();
 				void

@@ -56,7 +56,7 @@
 
 bool forceShadowBurnIn = false;
 
-void* DecodeJPG( const char* FileName, PUCHAR Data, DWORD DataSize, DWORD* TextureWidth, DWORD* TextureHeight, bool TextureLoad, void *pDestSurf );
+void* DecodeJPG( PCSTR FileName, PUCHAR Data, DWORD DataSize, DWORD* TextureWidth, DWORD* TextureHeight, bool TextureLoad, void *pDestSurf );
 
 DWORD			TerrainColorMap::terrainTypeIDs[ TOTAL_COLORMAP_TYPES ] = 
 {
@@ -976,7 +976,7 @@ void saveTGAFile(MemoryPtr ColorMap, char * fileName, long pixelWidth)
 }
 	
 //---------------------------------------------------------------------------
-inline bool textureIsOKFormat (const char *fileName)
+inline bool textureIsOKFormat (PCSTR fileName)
 {
 	File tgaFile;
 	long result = tgaFile.open(fileName);
@@ -999,7 +999,7 @@ inline bool textureIsOKFormat (const char *fileName)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::resetDetailTexture (const char *fileName)
+void TerrainColorMap::resetDetailTexture (PCSTR fileName)
 {
 	if (!textureIsOKFormat(fileName))
 	{
@@ -1030,7 +1030,7 @@ void TerrainColorMap::resetDetailTexture (const char *fileName)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::resetWaterTexture (const char *fileName)
+void TerrainColorMap::resetWaterTexture (PCSTR fileName)
 {
 	if (!textureIsOKFormat(fileName))
 	{
@@ -1547,7 +1547,7 @@ void TerrainColorMap::getScaledColorMap (MemoryPtr bfr, long dWidth)
 	}
 }
 
-static long sReadIdFloat(FitIniFile* missionFile, const char *varName, float &value) {
+static long sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
 	long result = 0;
 	float tmpFloat;
 	result = missionFile->readIdFloat((char *)varName, tmpFloat);
@@ -1641,7 +1641,7 @@ long TerrainColorMap::init (char *fileName)
 			FitIniFile missionFitIni;
 			if (fileExists(missionFitFilePath))
 			{
-				missionFitIni.open((char*)(const char*)missionFitFilePath);
+				missionFitIni.open((char*)(PCSTR)missionFitFilePath);
 				long result = missionFitIni.seekBlock( "Terrain" );
 				gosASSERT( result == NO_ERR );
 				result = sReadIdFloat(&missionFitIni, "DetailTextureTilingFactor", detailTextureTilingFactor);
@@ -1965,7 +1965,7 @@ DWORD TerrainColorMap::getTextureHandle (VertexPtr vMin, VertexPtr vMax, Terrain
 	return 0;
 }
 
-long TerrainColorMap::saveDetailTexture(const char *fileName)
+long TerrainColorMap::saveDetailTexture(PCSTR fileName)
 {
 	char dName[1024];
 	sprintf(dName,"%s.detail",fileName);
@@ -1974,7 +1974,7 @@ long TerrainColorMap::saveDetailTexture(const char *fileName)
 	return mcTextureManager->saveTexture(detailTextureNodeIndex, detailFile);
 }
 
-long TerrainColorMap::saveWaterTexture(const char *fileName)
+long TerrainColorMap::saveWaterTexture(PCSTR fileName)
 {
 	char dName[1024];
 	sprintf(dName,"%s.water",fileName);
@@ -1983,7 +1983,7 @@ long TerrainColorMap::saveWaterTexture(const char *fileName)
 	return mcTextureManager->saveTexture(waterTextureNodeIndex, waterFile);
 }
 
-long TerrainColorMap::saveWaterDetail(const char *fileName)
+long TerrainColorMap::saveWaterDetail(PCSTR fileName)
 {
 	long result = NO_ERR;
 	int i;

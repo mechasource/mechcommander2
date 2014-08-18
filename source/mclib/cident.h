@@ -216,14 +216,14 @@ class FullPathFileName
 			fullName = NULL;
 		}
 
-		void init (char *dir_path, const char *name, char *ext);
+		void init (char *dir_path, PCSTR name, char *ext);
 
 		FullPathFileName (void)
 		{
 			init();
 		}
 
-		FullPathFileName (char *dir_path, const char *name, char *ext)
+		FullPathFileName (char *dir_path, PCSTR name, char *ext)
 		{
 			init();
 			init(dir_path, name, ext);

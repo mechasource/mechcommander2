@@ -130,7 +130,7 @@ void MissionBegin::begin()
 	//Load up the Logistics Brain for Tutorials.
 	// OK if brain file is NOT there!!
 	FullPathFileName brainFileName;
-	const char * brainfile = LogisticsData::instance->getCurrentABLScript();
+	PCSTR  brainfile = LogisticsData::instance->getCurrentABLScript();
 	if ( brainfile )
 		 brainFileName.init(missionPath, brainfile, ".abl");
 	
@@ -453,7 +453,7 @@ long MissionBegin::getCurrentScreenId()
 	return (screenId);
 }
 
-const char* MissionBegin::update()
+PCSTR MissionBegin::update()
 {
 
 	if ( bSplash )
@@ -951,7 +951,7 @@ void MissionBegin::render()
 	animJustBegun = false;
 }
 
-void MissionBegin::beginSplash( const char* playerName)
+void MissionBegin::beginSplash( PCSTR playerName)
 {
 	// check for old screen and end that
 	if ( curScreenX > -1 && curScreenY > -1 )
@@ -1152,7 +1152,7 @@ void MissionBegin::setToMissionBriefing()
 
 }
 
-void MissionBegin::restartMPlayer( const char* playerName )
+void MissionBegin::restartMPlayer( PCSTR playerName )
 {
 	bReadyToLoad = 0;
 	bDone = 0;

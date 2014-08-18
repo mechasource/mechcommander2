@@ -50,7 +50,7 @@ class MissionBriefingScreen: public LogisticsScreen
 	virtual int			handleMessage( unsigned long, unsigned long );
 
 
-	static long	getMissionTGA( const char* missionName );
+	static long	getMissionTGA( PCSTR missionName );
 
 
 
@@ -64,7 +64,7 @@ class MissionBriefingScreen: public LogisticsScreen
 	long			modelColors[MAX_OBJECTIVES][3];
 	aListBox		missionListBox; 
 
-	int			addLBItem( const char* itemName, unsigned long color, int ID);
+	int			addLBItem( PCSTR itemName, unsigned long color, int ID);
 	int			addItem( int ID, unsigned long color, int LBid );
 	void		addObjectiveButton( float fMakerX, float fMarkerY, int count, int priority,
 											   float mapWidth, float mapHeight, bool display );

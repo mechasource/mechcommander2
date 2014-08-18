@@ -41,8 +41,8 @@ namespace MidLevelRenderer {
 
 		void
 			SetData(
-				const int *tri_count,
-				const int *point_count,
+				pcint32_t tri_count,
+				pcint32_t point_count,
 				const USHORT *index_data,
 				const Stuff::Point3D *point_data,
 				const Stuff::RGBAColor *color_data,
@@ -76,7 +76,7 @@ namespace MidLevelRenderer {
 			TestInstance() const;
 
 	protected:
-		const int *usedNrOfPoints;
+		pcint32_t usedNrOfPoints;
 
 		const unsigned short *index;
 		const Vector2DScalar *texCoords;
@@ -85,7 +85,7 @@ namespace MidLevelRenderer {
 
 		static Stuff::DynamicArrayOf<unsigned short> *clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
 
-		static Stuff::DynamicArrayOf<unsigned char>	*visibleIndexedVertices;
+		static Stuff::DynamicArrayOf<uint8_t>	*visibleIndexedVertices;
 
 		unsigned short *gos_indices;
 		unsigned short	numGOSIndices;

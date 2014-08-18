@@ -12,7 +12,7 @@
 #include "networking.hpp"
 
 
-typedef void(__stdcall *LPSTRINGCALLBACK)(const char *string, DWORD value);
+typedef void(__stdcall *LPSTRINGCALLBACK)(PCSTR string, DWORD value);
 
 
 

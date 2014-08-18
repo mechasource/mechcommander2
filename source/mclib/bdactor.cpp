@@ -1982,7 +1982,7 @@ long BldgAppearance::update (bool animate)
 
 		if (!fogLightSet)
 		{
-			unsigned char lightr,lightg,lightb;
+			uint8_t lightr,lightg,lightb;
 			float lightIntensity = 1.0f;
 			if (land)
 				lightIntensity = land->getTerrainLight(position);
@@ -2016,7 +2016,7 @@ long BldgAppearance::update (bool animate)
 						fogFactor = 256.0;
 					}
 
-					unsigned char fogResult = float2long(fogFactor);
+					uint8_t fogResult = float2long(fogFactor);
 					fogRGB = fogResult << 24;
 				}
 			}
@@ -4052,7 +4052,7 @@ long TreeAppearance::update (bool animate)
 
 	if (!fogLightSet)
 	{
-		unsigned char lightr,lightg,lightb;
+		uint8_t lightr,lightg,lightb;
 		float lightIntensity = 1.0f;
 		if (land)
 			lightIntensity = land->getTerrainLight(position);
@@ -4086,7 +4086,7 @@ long TreeAppearance::update (bool animate)
 					fogFactor = 256.0;
 				}
 
-				unsigned char fogResult = float2long(fogFactor);
+				uint8_t fogResult = float2long(fogFactor);
 				fogRGB = fogResult << 24;
 			}
 		}

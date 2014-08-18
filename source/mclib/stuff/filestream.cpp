@@ -277,7 +277,7 @@ void
 		writeEnabled = writable;
 		if (IgnoreReadOnlyFlag)
 		{
-			UCHAR (__stdcall *old_hook)(PCSTR) = Environment.HookDoesFileExist;
+			uint8_t (__stdcall *old_hook)(PCSTR) = Environment.HookDoesFileExist;
 			Environment.HookDoesFileExist = NULL;
 			if (gos_DoesFileExist(file_name))
 				gos_FileSetReadWrite(file_name);

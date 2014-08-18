@@ -44,11 +44,8 @@ namespace Stuff {
 			CollapseBlocks();
 
 	protected:
-		const char
-			*blockName;
-
-		MemoryBlockHeader
-			*blockMemory;			// the first record block allocated
+		PCSTR				blockName;
+		MemoryBlockHeader*	blockMemory;			// the first record block allocated
 
 		size_t
 			blockSize,				// size in bytes of the current record block
@@ -64,7 +61,7 @@ namespace Stuff {
 			size_t rec_size,
 			size_t start,
 			size_t delta,
-			const char* name,
+			PCSTR name,
 			HGOSHEAP parent = ParentClientHeap
 		);
 		~MemoryBlockBase();
@@ -99,7 +96,7 @@ namespace Stuff {
 			size_t rec_size,
 			size_t start,
 			size_t delta,
-			const char* name,
+			PCSTR name,
 			HGOSHEAP parent = ParentClientHeap
 		):
 			MemoryBlockBase(rec_size, start, delta, name, parent)
@@ -123,7 +120,7 @@ namespace Stuff {
 		MemoryBlockOf(
 			size_t start,
 			size_t delta,
-			const char* name,
+			PCSTR name,
 			HGOSHEAP parent = ParentClientHeap
 		):
 			MemoryBlock(sizeof(T), start, delta, name, parent)
@@ -158,7 +155,7 @@ namespace Stuff {
 			size_t rec_size,
 			size_t start,
 			size_t delta,
-			const char* name,
+			PCSTR name,
 			HGOSHEAP parent = ParentClientHeap
 		):
 			MemoryBlockBase(rec_size, start, delta, name, parent)
@@ -184,7 +181,7 @@ namespace Stuff {
 		MemoryStackOf(
 			size_t start,
 			size_t delta,
-			const char *name,
+			PCSTR name,
 			HGOSHEAP parent = ParentClientHeap
 		):
 			MemoryStack(sizeof(T), start, delta, name, parent)

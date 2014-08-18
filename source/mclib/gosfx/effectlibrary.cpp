@@ -89,7 +89,7 @@ void
 //------------------------------------------------------------------------------
 //
 gosFX::Effect::Specification*
-	gosFX::EffectLibrary::Find(const char* name)
+	gosFX::EffectLibrary::Find(PCSTR name)
 {
 	for (unsigned i=0; i<m_effects.GetLength(); ++i)
 	{

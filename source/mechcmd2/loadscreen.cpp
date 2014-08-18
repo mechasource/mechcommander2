@@ -84,7 +84,7 @@ void LoadScreenWrapper::init( FitIniFile& file )
 
 void LoadScreenWrapper::changeRes()
 {
-	const char* Appendix = NULL;
+	PCSTR Appendix = NULL;
 
 	switch( prefs.resolution )
 	{
@@ -188,7 +188,7 @@ void LoadScreen::changeRes( FitIniFile& outFile )
 		long size = tgaFile.fileSize();
 	
 		progressBackground = (TGAFileHeader*)new char[size];
-		tgaFile.read( (unsigned char*)progressBackground, tgaFile.fileSize() );
+		tgaFile.read( (PUCHAR)progressBackground, tgaFile.fileSize() );
 
 		tgaFile.close();
 
@@ -204,7 +204,7 @@ void LoadScreen::changeRes( FitIniFile& outFile )
 		size = tgaFile.fileSize();
 
 		progressTextureMemory = (TGAFileHeader*)new char[size];
-		tgaFile.read( (unsigned char*)progressTextureMemory, tgaFile.fileSize() );
+		tgaFile.read( (PUCHAR)progressTextureMemory, tgaFile.fileSize() );
 
 		mergedTexture = (TGAFileHeader*)new char[size];
 		memcpy( mergedTexture, progressTextureMemory, size );
@@ -229,7 +229,7 @@ void LoadScreen::changeRes( FitIniFile& outFile )
 		size = tgaFile.fileSize();
 
 		waitingForPlayersMemory = (TGAFileHeader*)new char[size];
-		tgaFile.read( (unsigned char*)waitingForPlayersMemory, tgaFile.fileSize() );
+		tgaFile.read( (PUCHAR)waitingForPlayersMemory, tgaFile.fileSize() );
 
 		flipTopToBottom( (PUCHAR)(waitingForPlayersMemory + 1), waitingForPlayersMemory->pixel_depth, 
 			waitingForPlayersMemory->width, waitingForPlayersMemory->height );

@@ -15,7 +15,7 @@ namespace Stuff {class Motion3D;}
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::Motion3D& motion
 		);
 #endif
@@ -82,7 +82,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const Motion3D& motion
 				);
 		#endif

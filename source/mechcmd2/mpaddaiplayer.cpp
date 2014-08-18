@@ -21,9 +21,9 @@ MPAddAIPlayer.cpp			: Implementation of the MPAddAIPlayer component.
 
 static CFocusManager *g_focusManager = NULL;
 
-static const int FIRST_BUTTON_ID = 1000010;
-static const int OK_BUTTON_ID = 1000001;
-static const int CANCEL_BUTTON_ID = 1000002;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
+static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 MPAddAIPlayer::MPAddAIPlayer()
 {
@@ -313,7 +313,7 @@ void MPAddAIPlayer::update()
 
 
 
-long aStyle4TextListItem::init( FitIniFile* file, const char* blockName )
+long aStyle4TextListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 

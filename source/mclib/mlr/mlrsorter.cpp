@@ -489,7 +489,7 @@ SortData *
 			void *vertices, 
 			int numVertices, 
 			const MLRState& state,
-			const int& mode,
+			cint32_t& mode,
 			int tex2
 		)
 {
@@ -527,7 +527,7 @@ SortData *
 			USHORT *indices, 
 			int numIndices, 
 			const MLRState& state,
-			const int& mode,
+			cint32_t& mode,
 			int tex2
 		)
 {

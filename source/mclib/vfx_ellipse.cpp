@@ -599,7 +599,7 @@ __end_ellipse:
 }
 
 PANE *xorgPane = 0;
-unsigned char gColor = 0;
+uint8_t gColor = 0;
 
 void orLineCallback (int x, int y)
 {
@@ -613,7 +613,7 @@ void AG_ellipse_fillOr(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LO
 	if( width==0 || height==0 )
 	{
 		xorgPane = pane;
-		gColor = (unsigned char)color;
+		gColor = (uint8_t)color;
 		VFX_line_draw( pane, xc-width, yc-height, xc+width, yc+height,LD_EXECUTE,(long)(&orLineCallback) );
 		return;
 	}
@@ -819,12 +819,12 @@ void andLineCallback (int x, int y)
 void AG_ellipse_fillXor(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color)
 {
 	long xorResult = color ^ 0xff;
-	unsigned char xorColor = (unsigned char)xorResult;
+	uint8_t xorColor = (uint8_t)xorResult;
 	
 	if( width==0 || height==0 )
 	{
 		xorgPane = pane;
-		gColor = (unsigned char)color;
+		gColor = (uint8_t)color;
 		VFX_line_draw( pane, xc-width, yc-height, xc+width, yc+height, LD_EXECUTE,(long)(&andLineCallback) );
 		return;
 	}

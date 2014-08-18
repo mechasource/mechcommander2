@@ -13,13 +13,13 @@
 class CPrefs {
 public:
 	CPrefs();
-	int load( const char* pFileName = "options");
+	int load( PCSTR pFileName = "options");
 	int save();
 	int applyPrefs(bool bApplyResolution = 1);
 
-	void setNewName( const char* pNewName );
-	void setNewUnit( const char* pNewUnit );
-	void setNewIP( const char* pNewIP );
+	void setNewName( PCSTR pNewName );
+	void setNewUnit( PCSTR pNewUnit );
+	void setNewIP( PCSTR pNewIP );
 
 public:
 	long DigitalMasterVolume;

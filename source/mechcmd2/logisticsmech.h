@@ -23,7 +23,7 @@ class LogisticsMech
 		inline LogisticsPilot* getPilot( ) { return pilot; }
 		inline int getForceGroup() { return forceGroup; }
 		inline void setForceGroup( int bInForceGroup ) { forceGroup = bInForceGroup; }
-		inline const char* getFileName(){ return pVariant->chassis->fileName; }
+		inline PCSTR getFileName(){ return pVariant->chassis->fileName; }
 		inline bool		isAvailable() const { return pVariant->availableToUser; }
 		unsigned long	getID() const { return pVariant->ID; }
 		float			getMaxWeight() const { return pVariant->chassis->maxWeight; }
@@ -37,7 +37,7 @@ class LogisticsMech
 		{ return pVariant->canAddComponent( pComponent, x, y ); }
 		int				getCost() const { return pVariant->getCost(); }
 		int				getWeight() const { return pVariant->getWeight(); }
-		const char*		getMechClass() const { return pVariant->getMechClass(); }
+		PCSTR		getMechClass() const { return pVariant->getMechClass(); }
 		int				getChassisID() const { return pVariant->chassis->ID; }
 		int				getArmor() const { return pVariant->getArmor(); }
 		int				getJumpRange() const { return pVariant->getJumpRange(); }

@@ -17,12 +17,12 @@ const EulerAngles
 static bool UseFastLerp = true;
 static bool UseFastNormalize = true;
 
-static UCHAR __stdcall Check_UseFastLerp(void) 
+static uint8_t __stdcall Check_UseFastLerp(void) 
 {
 	return (UseFastLerp == true) ? 1 : 0;
 }
 
-static UCHAR __stdcall Check_UseFastNormalize(void)
+static uint8_t __stdcall Check_UseFastNormalize(void)
 {
 	return (UseFastNormalize == true) ? 1 : 0;
 }
@@ -236,7 +236,7 @@ EulerAngles&
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const EulerAngles &angle
 		)
 	{
@@ -444,7 +444,7 @@ YawPitchRoll&
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const YawPitchRoll &angle
 		)
 	{
@@ -473,8 +473,8 @@ DWORD
 //#############################################################################
 //
 
-const int QuaternionLerpTableSize=static_cast<int>(1024);
-const int SinTableSize=static_cast<int>(1024);
+cint32_t QuaternionLerpTableSize=static_cast<int>(1024);
+cint32_t SinTableSize=static_cast<int>(1024);
 
 
 const float MinCosom = static_cast<float>(-1.0f);
@@ -1648,7 +1648,7 @@ UnitQuaternion&
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const UnitQuaternion &quat
 		)
 	{

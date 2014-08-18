@@ -118,9 +118,9 @@ typedef struct _TerrainObjectData : public GameObjectData
 	short						numSubAreas1;
 	short						subAreas0[MAX_SPECIAL_SUB_AREAS];
 	short						subAreas1[MAX_SPECIAL_SUB_AREAS];
-	unsigned char				listID;
+	uint8_t				listID;
 
-	unsigned char				numCellsCovered;
+	uint8_t				numCellsCovered;
 	short						cellsCovered[81];
 } TerrainObjectData;
 
@@ -142,9 +142,9 @@ class TerrainObject : public GameObject {
 		short						numSubAreas1;
 		short						*subAreas0;
 		short						*subAreas1;
-		unsigned char				listID;
+		uint8_t				listID;
 		
-		unsigned char				numCellsCovered;
+		uint8_t				numCellsCovered;
 		short*						cellsCovered;
 		gosFX::Effect				*bldgDustPoofEffect;
 			

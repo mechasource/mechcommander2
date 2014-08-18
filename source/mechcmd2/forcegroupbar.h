@@ -1,5 +1,3 @@
-#ifndef FORCEGROUPBAR_H
-#define FORCEGROUPBAR_H
 /*************************************************************************************************\
 ForceGroupBar.h			: Interface for the ForceGroupBar component.
 //---------------------------------------------------------------------------//
@@ -7,9 +5,12 @@ ForceGroupBar.h			: Interface for the ForceGroupBar component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef MCLIB_H
+#pragma once
+
+#ifndef FORCEGROUPBAR_H
+#define FORCEGROUPBAR_H
+
 #include <mclib.h>
-#endif
 
 //*************************************************************************************************
 
@@ -50,7 +51,7 @@ class ForceGroupBar
 		void swapResolutions();
 		int  getIconCount(){ return iconCount; }
 
-		bool setPilotVideo( const char* pVideo, MechWarrior* pPilot );
+		bool setPilotVideo( PCSTR pVideo, MechWarrior* pPilot );
 		bool isPlayingVideo();
 
 		bool flashJumpers (long numFlashes);

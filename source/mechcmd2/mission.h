@@ -195,7 +195,7 @@ class Mission
 		long 							numSensorStrikes;
 		long 							numCameraStrikes;
 										
-		unsigned char					missionTuneNum;
+		uint8_t					missionTuneNum;
 										
 		long							missionScriptHandle;
 		ABLParam						*missionBrainParams;
@@ -365,12 +365,12 @@ class Mission
 			return missionTuneNum;
 		}
 
-		const char* getMissionFileName(){ return missionFileName; }
+		PCSTR getMissionFileName(){ return missionFileName; }
 		
 		static void initializeStatistics();
 
-		void load (const char *filename);
-		void save (const char *filename);
+		void load (PCSTR filename);
+		void save (PCSTR filename);
 
 		bool isActive (void)
 		{
@@ -396,7 +396,7 @@ extern long MineExplosion;
 
 extern float globalMissionValues [];
 
-extern unsigned char godMode;
+extern uint8_t godMode;
 
 extern Mission *mission;
 extern unsigned long scenarioResult;

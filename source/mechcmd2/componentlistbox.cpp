@@ -49,7 +49,7 @@ ComponentListItem::ComponentListItem( LogisticsComponent* pComp )
 		int sizeX = pComponent->getComponentWidth();
 		int sizeY = pComponent->getComponentHeight();
 		
-		const char* pFile = pComponent->getIconFileName();
+		PCSTR pFile = pComponent->getIconFileName();
 
 		FullPathFileName path;
 		path.init( artPath, pFile, "tga" );

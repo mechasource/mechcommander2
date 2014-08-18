@@ -43,7 +43,7 @@ static bool ESLoadString(int resourceID, EString &targetStr) {
 	return (!0);
 }
 
-static long sReadIdFloat(FitIniFile* missionFile, const char *varName, float &value) {
+static long sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
 	long result = 0;
 	float tmpFloat;
 	result = missionFile->readIdFloat((char *)varName, tmpFloat);
@@ -55,7 +55,7 @@ static long sReadIdFloat(FitIniFile* missionFile, const char *varName, float &va
 	return result;
 }
 
-static long sReadIdBoolean(FitIniFile* missionFile, const char *varName, bool &value) {
+static long sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) {
 	long result = 0;
 	bool tmpBool;
 	result = missionFile->readIdBoolean((char *)varName, tmpBool);
@@ -67,7 +67,7 @@ static long sReadIdBoolean(FitIniFile* missionFile, const char *varName, bool &v
 	return result;
 }
 
-static long sReadIdWholeNum(FitIniFile* missionFile, const char *varName, int &value) {
+static long sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) {
 	long result = 0;
 	unsigned long tmpULong;
 	result = missionFile->readIdULong((char *)varName, tmpULong);
@@ -79,7 +79,7 @@ static long sReadIdWholeNum(FitIniFile* missionFile, const char *varName, int &v
 	return result;
 }
 
-static long sReadIdString(FitIniFile* missionFile, const char *varName, ECharString &ECStr) {
+static long sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString &ECStr) {
 	long result = 0;
 	char buffer[2001/*buffer size*/]; buffer[0] = '\0';
 	result = missionFile->readIdString((char *)varName, buffer, 2001/*buffer size*/ - 1);
@@ -94,7 +94,7 @@ static long sReadIdString(FitIniFile* missionFile, const char *varName, ECharStr
 	return result;
 }
 
-static long sWriteIdString(FitIniFile* missionFile, const char *varName, const char *szStr) {
+static long sWriteIdString(FitIniFile* missionFile, PCSTR varName, PCSTR szStr) {
 	if (!szStr) { return !(NO_ERR); }
 	long result = 0;
 	CString CStr = szStr;
@@ -258,7 +258,7 @@ bool CSpecificUnitObjectiveCondition::EditDialog() {
 EString CSpecificUnitObjectiveCondition::InstanceDescription() {
 	EString tmpEStr;
 	Stuff::Vector3D pos = m_pUnit->getPosition();
-	const char *szDisplayName = m_pUnit->getDisplayName(); // nb: localization
+	PCSTR szDisplayName = m_pUnit->getDisplayName(); // nb: localization
 	assert(szDisplayName);
 	tmpEStr.Format("(pos: %.3f, %.3f) %s", pos.x, pos.y, szDisplayName);
 	return tmpEStr;
@@ -372,7 +372,7 @@ bool CSpecificStructureObjectiveCondition::EditDialog() {
 EString CSpecificStructureObjectiveCondition::InstanceDescription() {
 	EString tmpEStr;
 	Stuff::Vector3D pos = m_pBuilding->getPosition();
-	const char *szDisplayName = m_pBuilding->getDisplayName(); // nb: localization
+	PCSTR szDisplayName = m_pBuilding->getDisplayName(); // nb: localization
 	assert(szDisplayName);
 	tmpEStr.Format("(pos: %.3f, %.3f) %s", pos.x, pos.y, szDisplayName);
 	return tmpEStr;
@@ -1332,7 +1332,7 @@ void CObjective::Alignment(int alignment) {
 	}
 }
 
-static condition_species_type ConditionSpeciesMap(const char *speciesString) {
+static condition_species_type ConditionSpeciesMap(PCSTR speciesString) {
 	condition_species_type retval = DESTROY_ALL_ENEMY_UNITS;
 	int i;
 	for (i = 0; i < (int)NUM_CONDITION_SPECIES; i += 1) {
@@ -1345,7 +1345,7 @@ static condition_species_type ConditionSpeciesMap(const char *speciesString) {
 	return retval;
 }
 
-static action_species_type ActionSpeciesMap(const char *speciesString) {
+static action_species_type ActionSpeciesMap(PCSTR speciesString) {
 	action_species_type retval = PLAY_BIK;
 	int i;
 	for (i = 0; i < (int)NUM_ACTION_SPECIES; i += 1) {
@@ -1551,7 +1551,7 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 	file->writeIdULong( "NumFailureConditions", m_failureConditionList.Count() );
 	file->writeIdULong( "NumFailureActions", m_failureActionList.Count() );
 
-	const char* pName = "";
+	PCSTR pName = "";
 	int type = 0;
 	float scale = 1.0;
 	if ( m_modelID != -1 )
@@ -1890,7 +1890,7 @@ bool CObjectives::EditDialog() {
 	return (IDOK == ret);
 }
 
-bool CObjectives::WriteMissionScript(const char *Name, const char *OutputPath)
+bool CObjectives::WriteMissionScript(PCSTR Name, PCSTR OutputPath)
 {
 	return true;
 }

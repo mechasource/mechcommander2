@@ -118,7 +118,7 @@ namespace MidLevelRenderer {
 				}
 
 		virtual	void
-			InitializeDrawPrimitive(unsigned char, int=0);
+			InitializeDrawPrimitive(uint8_t, int=0);
 
 		int
 			GetNumPasses()
@@ -151,7 +151,7 @@ namespace MidLevelRenderer {
 		void
 			SetTexCoordDataPointer(const Vector2DScalar*);
 
-		unsigned char currentNrOfPasses;
+		uint8_t currentNrOfPasses;
 
 		Stuff::DynamicArrayOf<MLRState> multiState, multiReferenceState;
 

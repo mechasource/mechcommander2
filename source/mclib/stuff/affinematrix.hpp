@@ -15,7 +15,7 @@ namespace Stuff {class AffineMatrix4D;}
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::AffineMatrix4D& matrix
 		);
 #endif
@@ -629,7 +629,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const AffineMatrix4D& matrix
 				);
 		#endif

@@ -412,7 +412,7 @@ bool MissionInterfaceManager::startAnimation(long buttonId,bool isButton,bool is
 }
 
 static char tutorialPlayerName[1024];
-void MissionInterfaceManager::setTutorialText(const char *text)
+void MissionInterfaceManager::setTutorialText(PCSTR text)
 {
 	cLoadString(IDS_TUTORIAL,tutorialPlayerName,1023);
 	controlGui.setChatText(tutorialPlayerName,text, 0x00ffffff, 0 );
@@ -4209,7 +4209,7 @@ void MissionInterfaceManager::addVehicle( const Stuff::Vector3D& pos )
 	
 //	LogisticsPilot* pPilot = LogisticsData::instance->getFirstAvailablePilot();
 
-//	const char* pChar = pPilot->getFileName();
+//	PCSTR pChar = pPilot->getFileName();
 //	if ( !pChar )
 //		return;
 
@@ -5470,7 +5470,7 @@ void MissionInterfaceManager::drawHotKeys()
 
 }
 
-void MissionInterfaceManager::drawHotKey( const char* keyString, const char* descString, long x, long y )
+void MissionInterfaceManager::drawHotKey( PCSTR keyString, PCSTR descString, long x, long y )
 {
 	hotKeyFont.render( keyString, 0, y, x, Environment.screenHeight, 0xffffffff, 0, 1 );
 

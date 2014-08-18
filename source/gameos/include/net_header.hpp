@@ -305,7 +305,7 @@ void CheckForInternet(void);
 
 // InternalJoinGame(void) needs this for joining GUN Games.
 void PushGameList( void );
-bool GUNPrepareDPlay( const char * GameName );
+bool GUNPrepareDPlay( PCSTR  GameName );
 
 HRESULT QuickEnum( bool async ); // quickly begin dplay enumeration of sessions.
 
@@ -342,7 +342,7 @@ typedef struct tagPACKETQUEUE {
 class OutboundWindow
 {
 public:
-	static const int m_WindowSize;
+	static cint32_t m_WindowSize;
 	static const double m_ResendTime;
 
 	// we only have one constructor: you MUST supply the DPID when you create one!!!

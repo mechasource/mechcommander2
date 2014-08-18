@@ -106,9 +106,9 @@ typedef struct _WeaponShotInfo {
 //---------------------------------------------------------------------------
 
 typedef struct _SalvageItem {
-	unsigned char		itemID;			// id from MasterComponentList;
-	unsigned char		numItems;		// how many are there?
-	unsigned char		numSalvagers;	// how many are salvagers are going for this item?
+	uint8_t		itemID;			// id from MasterComponentList;
+	uint8_t		numItems;		// how many are there?
+	uint8_t		numSalvagers;	// how many are salvagers are going for this item?
 } SalavageItem;
 
 //------------------------------------------------------------------------------------------
@@ -122,7 +122,7 @@ class WeaponFireChunk {
 		long				targetCell[2];
 		char				specialType;
 		long				specialId;
-		unsigned char		weaponIndex;
+		uint8_t		weaponIndex;
 		bool				hit;
 		char				entryAngle;
 		char				numMissiles;
@@ -284,7 +284,7 @@ typedef struct _GameObjectData
 	long						d_vertexNum;		
 	unsigned long				flags;				
 	unsigned short				debugFlags;			
-	unsigned char				status;				
+	uint8_t				status;				
 
 	float						tonnage;			
 	float			   			rotation;			
@@ -299,8 +299,8 @@ typedef struct _GameObjectData
 	short						curCV;
 	short						threatRating;
 	float						lastFrameTime;		
-	unsigned char				blipFrame;
-	unsigned char				numAttackers;
+	uint8_t				blipFrame;
+	uint8_t				numAttackers;
 
 	long						drawFlags;			
 } GameObjectData;
@@ -321,7 +321,7 @@ class GameObject {
 		long						d_vertexNum;		//Physical Vertex in mapData array that I'm lower right from
 		unsigned long				flags;				//See GAMEOBJECT_FLAGS_ defines
 		unsigned short				debugFlags;			// use ONLY for debugging purposes...
-		unsigned char				status;				//Am I normal, disabled, destroyed, etc..?
+		uint8_t				status;				//Am I normal, disabled, destroyed, etc..?
 	
 		float						tonnage;			//How hefty am I?
 		float			   			rotation;			//everything's base facing
@@ -336,8 +336,8 @@ class GameObject {
 		short						curCV;
 		short						threatRating;
 		float						lastFrameTime;		//Time elapsed since last frame was drawn.  (Replaces HEAT.  No net gain in size!)
-		unsigned char				blipFrame;
-		unsigned char				numAttackers;
+		uint8_t				blipFrame;
+		uint8_t				numAttackers;
 
 		long						drawFlags;			// bars, text, brackets, and highlight colors
 
@@ -606,7 +606,7 @@ class GameObject {
 			return(false);
 		}
 
-		unsigned char getStatus (void) 
+		uint8_t getStatus (void) 
 		{
 			return(status);
 		}
@@ -615,10 +615,10 @@ class GameObject {
 		void setStatus (long newStatus, bool forceStatus = false) 
 		{
 			if (((status != OBJECT_STATUS_DESTROYED) && (status != OBJECT_STATUS_DISABLED)) || forceStatus)
-				status = (UCHAR)newStatus;
+				status = (uint8_t)newStatus;
 
 			if (newStatus == OBJECT_STATUS_DESTROYED)
-				status = (UCHAR)newStatus;
+				status = (uint8_t)newStatus;
 		}
 
 		virtual bool isCrippled (void)

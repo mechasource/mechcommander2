@@ -66,7 +66,7 @@ void BuildingSettingsDlg::OnSelchangeGroup()
 		int group = m_Group.GetCurSel();
 		group = m_Group.GetItemData( group );
 
-		const char* MechNames[256];
+		PCSTR MechNames[256];
 		int count = 256;
 			
 		EditorObjectMgr::instance()->getBuildingNamesInGroup( group, MechNames, count );
@@ -258,7 +258,7 @@ void BuildingSettingsDlg::updateMemberVariables()
 
 	int groupCount = pMgr->getBuildingGroupCount();
 
-	const char** pGroups = new const char*[groupCount];
+	PCSTR* pGroups = new PCSTR[groupCount];
 	
 	m_Group.ResetContent();
 	
@@ -291,13 +291,13 @@ void BuildingSettingsDlg::updateMemberVariables()
 
 	if ( group != -1 ) // we found a valid group
 	{
-		const char* pGroupName = pMgr->getGroupName( group );
+		PCSTR pGroupName = pMgr->getGroupName( group );
 		
 		int index = m_Group.FindString( -1, pGroupName );
 		m_Group.SetCurSel( index );
 
 		// OK, now fill in the index....
-		const char* MechNames[256];
+		PCSTR MechNames[256];
 		int count = 256;
 
 		m_Mech.ResetContent();
@@ -322,7 +322,7 @@ void BuildingSettingsDlg::updateMemberVariables()
 
 		if ( indexInGroup != -1 )
 		{
-			const char* pName = units.GetHead()->getDisplayName();
+			PCSTR pName = units.GetHead()->getDisplayName();
 			index = m_Mech.FindString( -1, pName );
 
 			if ( index != -1 )

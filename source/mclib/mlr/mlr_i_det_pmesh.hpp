@@ -19,7 +19,7 @@ namespace MidLevelRenderer {
 			dStart = 32.0f; dEnd = 64.0f;
 			alphaMode = MLRState::AlphaInvAlphaMode;
 		}
-		const char *name;
+		PCSTR name;
 		Stuff::Scalar xOff, zOff;
 		Stuff::Scalar xFac, zFac;
 		Stuff::Scalar dStart, dEnd;

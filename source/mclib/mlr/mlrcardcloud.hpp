@@ -41,7 +41,7 @@ namespace MidLevelRenderer {
 
 		void
 			SetData(
-				const int *count,
+				pcint32_t count,
 				const Stuff::Point3D *point_data,
 				const Stuff::RGBAColor *color_data,
 				const Vector2DScalar *uv_data
@@ -49,7 +49,7 @@ namespace MidLevelRenderer {
 
 		void
 			SetData(
-				const int *count,
+				pcint32_t count,
 				const Stuff::Point3D *point_data,
 				const Stuff::RGBAColor *color_data
 			);
@@ -73,7 +73,7 @@ namespace MidLevelRenderer {
 			TestInstance() const;
 
 	protected:
-		const int *usedNrOfCards;
+		pcint32_t usedNrOfCards;
 
 		const Vector2DScalar *texCoords;
 

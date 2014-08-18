@@ -62,7 +62,7 @@ class gos_DBCS
 		DWORD m_FontColor;
 
 	public:
-		gos_DBCS(const char * msg, int w, int h, bool cc);
+		gos_DBCS(PCSTR  msg, int w, int h, bool cc);
 		~gos_DBCS();
 		void Render();
 		void Update();

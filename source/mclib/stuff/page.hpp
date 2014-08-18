@@ -44,9 +44,9 @@ namespace Stuff {
 	//
 	public:
 		void
-			SetName(const char *pagename)
+			SetName(PCSTR pagename)
 				{Check_Object(this); m_name = pagename;}
-		const char*
+		PCSTR
 			GetName() const
 				{ Check_Object(this); return m_name; }
 
@@ -70,10 +70,10 @@ namespace Stuff {
 				{Check_Object(this); return m_notes.IsEmpty();}
 
 		bool
-			DoesNoteExist(const char *entryname)
+			DoesNoteExist(PCSTR entryname)
 				{Check_Object(this); return FindNote(entryname) != NULL;}
 		Note*
-			FindNote(const char *entryname);
+			FindNote(PCSTR entryname);
 		Note*
 			GetNote(unsigned index);
 
@@ -83,15 +83,15 @@ namespace Stuff {
 				{Check_Object(this); return new NoteIterator(&m_notes);}
 
 		ChainOf<Note*>*
-			MakeNoteChain(const char* prefix);
+			MakeNoteChain(PCSTR prefix);
 
 		Note*
-			AddNote(const char* entryname);
+			AddNote(PCSTR entryname);
 		Note*
-			SetNote(const char* entryname);
+			SetNote(PCSTR entryname);
 
 		void
-			DeleteNote(const char *entryname);
+			DeleteNote(PCSTR entryname);
 		void
 			DeleteAllNotes();
 
@@ -105,19 +105,19 @@ namespace Stuff {
 	public:
 		bool
 			GetEntry(
-				const char *entryname,
-				const char **contents,
+				PCSTR entryname,
+				PCSTR *contents,
 				bool required=false
 			);
 		void
 			SetEntry(
-				const char *entryname,
-				const char *contents
+				PCSTR entryname,
+				PCSTR contents
 			);
 		void
 			AppendEntry(
-				const char *entryname,
-				const char *contents
+				PCSTR entryname,
+				PCSTR contents
 			);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -126,18 +126,18 @@ namespace Stuff {
 	public:
 		bool
 			GetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				int *value,
 				bool required=false
 			);
 		void
 			SetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				int value
 			);
 		void
 			AppendEntry(
-				const char *entryname,
+				PCSTR entryname,
 				int value
 			);
 
@@ -147,18 +147,18 @@ namespace Stuff {
 	public:
 		bool
 			GetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				Scalar *value,
 				bool required=false
 			);
 		void
 			SetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				Scalar value
 			);
 		void
 			AppendEntry(
-				const char *entryname,
+				PCSTR entryname,
 				Scalar value
 			);
 
@@ -168,18 +168,18 @@ namespace Stuff {
 	public:
 		bool
 			GetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				bool *value,
 				bool required=false
 			);
 		void
 			SetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				bool value
 			);
 		void
 			AppendEntry(
-				const char *entryname,
+				PCSTR entryname,
 				bool value
 			);
 
@@ -189,18 +189,18 @@ namespace Stuff {
 	public:
 		bool
 			GetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				Vector3D *value,
 				bool required=false
 			);
 		void
 			SetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const Vector3D &value
 			);
 		void
 			AppendEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const Vector3D &value
 			);
 
@@ -210,18 +210,18 @@ namespace Stuff {
 	public:
 		bool
 			GetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				YawPitchRoll *value,
 				bool required=false
 			);
 		void
 			SetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const YawPitchRoll &value
 			);
 		void
 			AppendEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const YawPitchRoll &value
 			);
 
@@ -231,18 +231,18 @@ namespace Stuff {
 	public:
 		bool
 			GetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				UnitQuaternion *value,
 				bool required=false
 			);
 		void
 			SetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const UnitQuaternion &value
 			);
 		void
 			AppendEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const UnitQuaternion &value
 			);
 
@@ -252,18 +252,18 @@ namespace Stuff {
 	public:
 		bool
 			GetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				Motion3D *value,
 				bool required=false
 			);
 		void
 			SetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const Motion3D &value
 			);
 		void
 			AppendEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const Motion3D &value
 			);
 
@@ -273,18 +273,18 @@ namespace Stuff {
 	public:
 		bool
 			GetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				RGBColor *value,
 				bool required=false
 			);
 		void
 			SetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const RGBColor &value
 			);
 		void
 			AppendEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const RGBColor &value
 			);
 
@@ -294,18 +294,18 @@ namespace Stuff {
 	public:
 		bool
 			GetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				RGBAColor *value,
 				bool required=false
 			);
 		void
 			SetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const RGBAColor &value
 			);
 		void
 			AppendEntry(
-				const char *entryname,
+				PCSTR entryname,
 				const RGBAColor &value
 			);
 
@@ -315,18 +315,18 @@ namespace Stuff {
 	public:
 		bool
 			GetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				NotationFile *value,
 				bool required=false
 			);
 		void
 			SetEntry(
-				const char *entryname,
+				PCSTR entryname,
 				NotationFile *value
 			);
 		void
 			AppendEntry(
-				const char *entryname,
+				PCSTR entryname,
 				NotationFile *value
 			);
 

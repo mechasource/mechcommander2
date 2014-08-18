@@ -245,7 +245,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::InitializeDrawPrimitive(unsigned char vis, int)
+	MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int)
 {
 	gos_vertices = NULL;
 	numGOSVertices = -1;
@@ -256,7 +256,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::SetSubprimitiveLengths(unsigned char *data, int l)
+	MLRPrimitiveBase::SetSubprimitiveLengths(PUCHAR data, int l)
 {
 	Check_Object(this); 
 	lengths.AssignData(data, l);
@@ -265,7 +265,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::GetSubprimitiveLengths(unsigned char **data, int *len)
+	MLRPrimitiveBase::GetSubprimitiveLengths(PUCHAR *data, int *len)
 {
 	Check_Object(this); 
 	*data = lengths.GetData();
@@ -496,7 +496,7 @@ MLRShape*
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-const char *
+PCSTR 
 	MidLevelRenderer::IcoInfo::GetTypeName()
 {
 	switch(type)

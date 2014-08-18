@@ -582,7 +582,7 @@ void MainMenu::update()
 		{
 			if ( singleLoadDlg.getStatus() == YES )
 			{
-				const char* pName = singleLoadDlg.getMapFileName();
+				PCSTR pName = singleLoadDlg.getMapFileName();
 				if (pName)
 				{
 					LogisticsData::instance->setSingleMission( pName );
@@ -821,7 +821,7 @@ void MainMenu::render()
 	
 }
 
-void MainMenu::setHostLeftDlg( const char* playerName )
+void MainMenu::setHostLeftDlg( PCSTR playerName )
 {
 	char leaveStr[256];
 	char formatStr[256];

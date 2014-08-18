@@ -40,9 +40,9 @@ namespace Stuff {
 			 //
 	public:
 		void
-			SetName(const char *entryname)
+			SetName(PCSTR entryname)
 		{Check_Object(this); Check_Pointer(entryname); m_name = entryname;}
-		const char*
+		PCSTR
 			GetName() const
 		{ Check_Object(this); return m_name; }
 
@@ -69,7 +69,7 @@ namespace Stuff {
 			if (contents) *contents = m_text;
 		}
 		void
-			SetEntry(const char *contents)
+			SetEntry(PCSTR contents)
 		{
 			Check_Object(this); m_text = contents;
 		}

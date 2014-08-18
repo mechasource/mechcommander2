@@ -106,12 +106,12 @@ public:
 	void		removeChild(aObject* c);
 	void		setParent(aObject* p);
 
-	void		setTexture( const char* fileName );
+	void		setTexture( PCSTR fileName );
 	void		setTexture(unsigned long newHandle );
 	void		setUVs( float u1, float v1, float u2, float v2 );
 	void		setColor(unsigned long color, bool bRecurse = 0); // color the vertices
 
-	void		init( FitIniFile* file, const char* block, DWORD neverFlush = 0 ); // for statics
+	void		init( FitIniFile* file, PCSTR block, DWORD neverFlush = 0 ); // for statics
 	
 	aObject*			getParent()
 	{
@@ -218,7 +218,7 @@ public:
 	virtual void render();
 	virtual void		render(long x, long y);
 
-	virtual void init( FitIniFile* file, const char* blockName );
+	virtual void init( FitIniFile* file, PCSTR blockName );
 
 	GUI_RECT getGUI_RECT();
 	GUI_RECT getGlobalGUI_RECT();
@@ -241,7 +241,7 @@ public:
 	virtual void		render(long x, long y);
 	
 
-	void	init( FitIniFile* file, const char* header );
+	void	init( FitIniFile* file, PCSTR header );
 
 	void	setText( const EString& text );
 	void		setText( long resID );

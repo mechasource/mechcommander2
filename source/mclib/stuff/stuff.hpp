@@ -209,6 +209,7 @@ namespace Stuff {
 #include <stuff/filestreammanager.hpp>
 #include <stuff/line.hpp>
 #include <stuff/marray.hpp>
+#include <stuff/matrix.hpp>
 //#include <stuff/matrixstack.hpp>
 //#include <stuff/auto_ptr.hpp>
 //#include <stuff/auto_container.hpp>

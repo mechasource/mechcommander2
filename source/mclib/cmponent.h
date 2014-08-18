@@ -129,10 +129,10 @@ typedef union {
 		float				damage;			// amount of damage
 		float				recycleTime;	// in seconds
 		long				ammoAmount;		// amount of ammo per shot
-		unsigned char		ammoType;		// 0 = unlimited, 1 = finite amount (e.g. bullets)
-		unsigned char		ammoMasterId;	// ammo used by this weapon
-		unsigned char		range;			// short, med or long
-		unsigned char		flags;
+		uint8_t		ammoType;		// 0 = unlimited, 1 = finite amount (e.g. bullets)
+		uint8_t		ammoMasterId;	// ammo used by this weapon
+		uint8_t		range;			// short, med or long
+		uint8_t		flags;
 		short				type;			// which weapon type is this
 		char				specialEffect;	// used to cue whatever visual/sound effects this needs
 	} weapon;
@@ -164,8 +164,8 @@ class MasterComponent {
 		char							health;										// # of hits before destroyed
 		char							criticalSpacesReq[NUM_BODY_LOCATIONS];		// # of critical spaces required in specific location
 		char							disableLevel;								// # of critical spaces to disable
-		unsigned char					uses;
-		unsigned char					techBase;
+		uint8_t					uses;
+		uint8_t					techBase;
 		float							CV;											// CV for this component
 		ComponentStats					stats;
 		unsigned long					art;
@@ -205,7 +205,7 @@ class MasterComponent {
 
 		long initEXCEL (char* dataLine, float baseSensorRange);
 
-		long saveEXCEL (FilePtr file, unsigned char masterId,float baseSensorRange);
+		long saveEXCEL (FilePtr file, uint8_t masterId,float baseSensorRange);
 
 		char* getName (void) {
 			return(&name[0]);
@@ -497,7 +497,7 @@ class MasterComponent {
 			return(stats.sensor.range);
 		}
 
-		unsigned char getTechBase (void) {
+		uint8_t getTechBase (void) {
 			return(techBase);
 		}
 

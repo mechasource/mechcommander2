@@ -22,9 +22,9 @@ MPHostGame.cpp			: Implementation of the MPHostGame component.
 
 static int connectionType = 0;
 
-static const int FIRST_BUTTON_ID = 1000010;
-static const int OK_BUTTON_ID = 1000001;
-static const int CANCEL_BUTTON_ID = 1000002;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
+static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 extern CPrefs prefs;
 
@@ -194,7 +194,7 @@ int	MPHostGame::handleMessage( unsigned long message, unsigned long who)
 //		long maxPlayers = atoi( tmp );
 		edits[0].getEntry(tmp);
 		MPlayer->setMode(MULTIPLAYER_MODE_PARAMETERS);
-		if ( !MPlayer->hostSession ((char*)(const char*)tmp, &prefs.playerName[0][0], 8) )
+		if ( !MPlayer->hostSession ((char*)(PCSTR)tmp, &prefs.playerName[0][0], 8) )
 		{
 			MPlayer->setMode(MULTIPLAYER_MODE_NONE);
 			// need to pop dlg here
@@ -253,7 +253,7 @@ void MPHostGame::update()
 
 
 
-long aStyle5TextListItem::init( FitIniFile* file, const char* blockName )
+long aStyle5TextListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 

@@ -409,7 +409,7 @@ MLR_I_C_DeT_TMesh*
 	coords[6] = Point3D( half,  half, -half);
 	coords[7] = Point3D(-half,  half, -half);
 
-	unsigned char *lengths = new unsigned char [6];
+	PUCHAR lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
 	int i;

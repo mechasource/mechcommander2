@@ -140,7 +140,7 @@ Vector3D&
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Vector3D &vector
 		)
 	{
@@ -157,7 +157,7 @@ Vector3D&
 //
 void
 	Stuff::Convert_From_Ascii(
-      const char *str,
+      PCSTR str,
       Vector3D *vector_3D
    )
 {
@@ -166,7 +166,7 @@ void
 
    MString parse_string(str);
 
-	const char* token = parse_string.GetNthToken(0);
+	PCSTR token = parse_string.GetNthToken(0);
    Check_Pointer(token);
    vector_3D->x = AtoF(token);
 

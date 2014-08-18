@@ -151,8 +151,8 @@ void crunchStatementMarker (void) {
 		*codeBufferPtr = (char)TKN_STATEMENT_MARKER;
 		codeBufferPtr++;
 		if (IncludeDebugInfo) {
-			*((unsigned char*)codeBufferPtr) = (unsigned char)FileNumber;
-			codeBufferPtr += sizeof(unsigned char);
+			*((PUCHAR)codeBufferPtr) = (uint8_t)FileNumber;
+			codeBufferPtr += sizeof(uint8_t);
 			*((long*)codeBufferPtr) = lineNumber;
 			codeBufferPtr += sizeof(long);
 		}
@@ -171,7 +171,7 @@ void uncrunchStatementMarker (void) {
 	//-------------------------------
 	// Pull debug info off the buffer
 	if (IncludeDebugInfo)
-		codeBufferPtr -= (sizeof(unsigned char) + sizeof(long));
+		codeBufferPtr -= (sizeof(uint8_t) + sizeof(long));
 	//-------------------------------------
 	// Pull statement marker off the buffer
 	codeBufferPtr--;
@@ -232,7 +232,7 @@ void crunchInteger (long value) {
 
 //***************************************************************************
 
-void crunchByte (unsigned char value) {
+void crunchByte (uint8_t value) {
 
 	if (!Crunch)
 		return;
@@ -240,8 +240,8 @@ void crunchByte (unsigned char value) {
 	if (codeBufferPtr >= (codeBuffer + MaxCodeBufferSize - 100))
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else {
-		*((unsigned char*)codeBufferPtr) = value;
-		codeBufferPtr += sizeof(unsigned char);
+		*((PUCHAR)codeBufferPtr) = value;
+		codeBufferPtr += sizeof(uint8_t);
 	}
 }
 
@@ -297,8 +297,8 @@ long getCodeStatementMarker (void) {
 	long lineNum = -1;
 	if (codeToken == TKN_STATEMENT_MARKER) {
 		if (IncludeDebugInfo) {
-			FileNumber = *((unsigned char*)codeSegmentPtr);
-			codeSegmentPtr += sizeof(unsigned char);
+			FileNumber = *((PUCHAR)codeSegmentPtr);
+			codeSegmentPtr += sizeof(uint8_t);
 			lineNum = *((long*)codeSegmentPtr);
 			codeSegmentPtr += sizeof(long);
 		}
@@ -330,10 +330,10 @@ long getCodeInteger (void) {
 
 //***************************************************************************
 
-unsigned char getCodeByte (void) {
+uint8_t getCodeByte (void) {
 
-	unsigned char value = *((unsigned char*)codeSegmentPtr);
-	codeSegmentPtr += sizeof(unsigned char);
+	uint8_t value = *((PUCHAR)codeSegmentPtr);
+	codeSegmentPtr += sizeof(uint8_t);
 	return(value);
 }
 

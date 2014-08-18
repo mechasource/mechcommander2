@@ -24,7 +24,7 @@ MLRTexture::MLRTexture(MemoryStream *stream)
 //
 MLRTexture::MLRTexture(
 	MLRTexturePool *tp,
-	const char* texName,
+	PCSTR texName,
 	int _instance,
 	int handle,
 	int _hint

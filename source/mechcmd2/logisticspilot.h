@@ -92,7 +92,7 @@ class LogisticsPilot
 
 
 
-		static		const char* getSkillText( int skillID );
+		static		PCSTR getSkillText( int skillID );
 		const EString&	getFileName(){ return fileName; }
 
 		long		save( FitIniFile& file, long count );
@@ -101,7 +101,7 @@ class LogisticsPilot
 		long		update( MechWarrior* pWarrior );
 
 		int			getSpecialtySkillCount() const;
-		int			getSpecialtySkills( const char** array, int& count );
+		int			getSpecialtySkills( PCSTR* array, int& count );
 		int			getSpecialtySkills( int* array, int& count );
 		bool		*getSpecialtySkills() { return specialtySkills;}
 		void		setSpecialtySkill( int skill, bool set );
@@ -130,7 +130,7 @@ class LogisticsPilot
 		long			vehicleKills;
 		long			infantryKills;
 		long			missionsCompleted;
-		unsigned char	missionsPlayed[MAX_MISSIONS];
+		uint8_t	missionsPlayed[MAX_MISSIONS];
 		long			flavorTextID;
 		bool			bIsUsed;
 		bool			bDead;

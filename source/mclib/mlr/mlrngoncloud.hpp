@@ -41,7 +41,7 @@ namespace MidLevelRenderer {
 
 		void
 			SetData(
-				const int *count,
+				pcint32_t count,
 				const Stuff::Point3D *point_data,
 				const Stuff::RGBAColor *color_data
 			);
@@ -66,7 +66,7 @@ namespace MidLevelRenderer {
 
 	protected:
 		int numOfVertices;
-		const int *usedNrOfNGons;
+		pcint32_t usedNrOfNGons;
 
 		static Stuff::DynamicArrayOf<Stuff::RGBAColor> *clipExtraColors;
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> specialClipColors;

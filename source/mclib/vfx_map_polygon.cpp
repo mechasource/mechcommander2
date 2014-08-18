@@ -179,7 +179,7 @@ void AG_pixel_write (PANE *pane, LONG x, LONG y, ULONG color)
 	int Y=y+pane->y0;
 
 	if( X>pane->x0 && X<pane->x1 && Y>pane->y0 && Y<pane->y1 )
-		*(pane->window->buffer + X + Y*(pane->window->x_max+1))=(unsigned char)color;
+		*(pane->window->buffer + X + Y*(pane->window->x_max+1))=(uint8_t)color;
 }
 
 

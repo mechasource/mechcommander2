@@ -27,7 +27,7 @@ class EString
 public:
 
 	// ENUMERATIONS & CONSTANTS
-	static const int INVALID_INDEX;
+	static cint32_t INVALID_INDEX;
 
 	// CONSTRUCTORS/DESTRUCTORS
 	/*explicit*/ EString( const EChar* newString );
@@ -145,7 +145,7 @@ public:
 
 	// we'll convert string literals for you 
 	
-	EString( const char* );
+	EString( PCSTR );
 			
 	friend EString operator+( const EString&, char* );
 	friend EString operator+( char*, const EString& );
@@ -153,30 +153,30 @@ public:
 	friend EString operator+( char, const EString& );
 	friend EString operator+( const EString&, char );
 	
-	const EString& operator+=( const char* );
+	const EString& operator+=( PCSTR );
 	const EString& operator+=( char );
 
 	const EString& operator=( char );
 
-	bool operator==( const char* );
-	friend bool operator==( const char*, const EString& );
+	bool operator==( PCSTR );
+	friend bool operator==( PCSTR, const EString& );
 
-	bool operator!=( const char*) const;
-	friend bool operator!=( const char*, const EString& );
+	bool operator!=( PCSTR) const;
+	friend bool operator!=( PCSTR, const EString& );
 
-	bool operator<( const char* ) const;
-	friend bool operator<( const char*, const EString& );
+	bool operator<( PCSTR ) const;
+	friend bool operator<( PCSTR, const EString& );
 	
-	bool operator>( const char* ) const;
-	friend bool operator>( const char*, const EString& );
+	bool operator>( PCSTR ) const;
+	friend bool operator>( PCSTR, const EString& );
 
-	bool operator<=( const char*) const;
-	friend bool operator<=( const char*, const EString&);
+	bool operator<=( PCSTR) const;
+	friend bool operator<=( PCSTR, const EString&);
 
-	bool operator>=( const char*) const;
-	friend bool operator>=( const char*, const EString&);
+	bool operator>=( PCSTR) const;
+	friend bool operator>=( PCSTR, const EString&);
 
-	void	Format( const char*, ... );
+	void	Format( PCSTR, ... );
 
 	int Find( char, int Start_Index = EString::INVALID_INDEX) const;
 
@@ -199,7 +199,7 @@ private:
 	void	Assign( const EChar* p_Str );
 
 
-	static  inline  unsigned short*	ToUnicode( unsigned short* Buffer, const unsigned char* p_Str, int Num_Chars  );
+	static  inline  unsigned short*	ToUnicode( unsigned short* Buffer, pcuint8_t p_Str, int Num_Chars  );
 	static	inline	int	StrSize( const EChar* p_Str );
 	
 	struct EBuffer
@@ -216,9 +216,9 @@ private:
 	};
 
 	EBuffer*		m_pBuffer;
-	static const int s_Alloc_Allign;
-	static const int s_Force_Ansi;
-	static const int s_Force_Unicode;
+	static cint32_t s_Alloc_Allign;
+	static cint32_t s_Force_Ansi;
+	static cint32_t s_Force_Unicode;
 
 };
 

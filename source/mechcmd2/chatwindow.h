@@ -27,8 +27,8 @@ public:
 	ChatMessageItem();
 	void		 setPlayerColor(long color);
 	void		 setTextColor( long color );
-	void		 setPlayerName( const char* name );
-	int			 setText( const char* text ); // returns number of lines
+	void		 setPlayerName( PCSTR name );
+	int			 setText( PCSTR text ); // returns number of lines
 	long		 getLineCount() { return lineCount; }
 
 private:

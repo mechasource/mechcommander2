@@ -208,13 +208,13 @@ typedef enum {
 #define	MINE_EXPLODED					2
 
 typedef struct _ScenarioMapCellInfo {
-	unsigned char		terrain;
-	unsigned char		overlay;
+	uint8_t		terrain;
+	uint8_t		overlay;
 	bool				road;
 	bool				gate;
 	bool				forest;
 	char				mine;
-	unsigned char		specialType;
+	uint8_t		specialType;
 	short				specialID;
 	bool				passable;
 	long				lineOfSight;
@@ -1081,7 +1081,7 @@ typedef struct _GameObjectFootPrint {
 } GameObjectFootPrint;
 
 typedef struct _GlobalSpecialAreaInfo {
-	unsigned char			type;
+	uint8_t			type;
 	short					numSubAreas;
 	short					subAreas[MAX_SPECIAL_SUB_AREAS];
 	short					numCells;
@@ -1109,9 +1109,9 @@ class GlobalMap {
 		DoorLinkPtr					doorLinks;
 		GlobalMapDoorPtr			doorBuildList;
 #ifdef USE_PATH_COST_TABLE
-		unsigned char*				pathCostTable;
+		PUCHAR				pathCostTable;
 #endif
-		unsigned char*				pathExistsTable;
+		PUCHAR				pathExistsTable;
 
 		long						numSpecialAreas;
 		GlobalSpecialAreaInfo*		specialAreas;	// used when building data
@@ -1265,17 +1265,17 @@ class GlobalMap {
 
 		void calcPathCostTable (void);
 
-		void setPathCost (long startArea, long goalArea, bool withSpecialAreas, unsigned char cost);
+		void setPathCost (long startArea, long goalArea, bool withSpecialAreas, uint8_t cost);
 
-		void setPathFlag (long startArea, long goalArea, unsigned char flag, bool set);
+		void setPathFlag (long startArea, long goalArea, uint8_t flag, bool set);
 
-		long getPathFlag (long startArea, long goalArea, unsigned char flag);
+		long getPathFlag (long startArea, long goalArea, uint8_t flag);
 #endif
 		void clearPathExistsTable (void);
 
-		void setPathExists (long fromArea, long toArea, unsigned char set);
+		void setPathExists (long fromArea, long toArea, uint8_t set);
 
-		unsigned char getPathExists (long fromArea, long toArea);
+		uint8_t getPathExists (long fromArea, long toArea);
 
 		long exitDirection (long doorIndex, long fromArea);
 

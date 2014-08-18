@@ -65,10 +65,10 @@ namespace Stuff {
 		bool
 			IsDerivedFrom(ClassID class_id) const;
 		bool
-			IsDerivedFrom(const char* parent) const;
+			IsDerivedFrom(PCSTR parent) const;
 
 		static ClassData*
-			FindClassData(const char* name);
+			FindClassData(PCSTR name);
 		static ClassData*
 			FindClassData(ClassID class_id)
 				{
@@ -88,7 +88,7 @@ namespace Stuff {
 	public:
 		ClassID
 			GetClassID() const;
-		const char*
+		PCSTR
 			GetClassString() const;
 		static ClassID
 			AllocateTemporaryClassID()
@@ -128,7 +128,7 @@ namespace Stuff {
 	public:
 		RegisteredClass__ClassData(
 			RegisteredClass::ClassID class_id,
-			const char *class_name,
+			PCSTR class_name,
 			RegisteredClass__ClassData *parent = NULL
 		);
 
@@ -144,7 +144,7 @@ namespace Stuff {
 		RegisteredClass::ClassID
 			GetClassID()
 				{Check_Object(this); return classID;}
-		const char*
+		PCSTR
 			GetClassName()
 				{Check_Object(this); return className;}
 		RegisteredClass__ClassData*
@@ -156,12 +156,11 @@ namespace Stuff {
 			DeriveClass(RegisteredClass__ClassData* child);
 
 		RegisteredClass__ClassData*
-			FindClassData(const char* name);
+			FindClassData(PCSTR name);
 
 		RegisteredClass::ClassID
 			classID;
-		const char
-			*className;
+		PCSTR	className;
 
 		RegisteredClass__ClassData
 			*firstChildClass,
@@ -199,7 +198,7 @@ namespace Stuff {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
 	inline bool
-		RegisteredClass::IsDerivedFrom(const char* parent) const
+		RegisteredClass::IsDerivedFrom(PCSTR parent) const
 	{
 		Check_Object(this);
 		Check_Object(classData);
@@ -220,7 +219,7 @@ namespace Stuff {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
 	inline RegisteredClass::ClassData*
-		RegisteredClass::FindClassData(const char* name)
+		RegisteredClass::FindClassData(PCSTR name)
 	{
 		return DefaultData->FindClassData(name);
 	}

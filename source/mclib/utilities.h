@@ -29,7 +29,7 @@ public:
 	float width(){ return location[2].x - location[0].x; }
 	float height(){ return location[2].y - location[0].y; }
 	
-	void getData(unsigned char * buffer);
+	void getData(PUCHAR  buffer);
 
 	void showGUIWindow( bool bShow );
 
@@ -63,14 +63,14 @@ void drawEmptyRect( const GUI_RECT& rect, unsigned long leftBorderColor = 0xffff
 void drawRect( const GUI_RECT& rect, unsigned long color );
 
 void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, 
-					long left, long top, bool proportional, const char* text, bool bBold, float scale );
+					long left, long top, bool proportional, PCSTR text, bool bBold, float scale );
 
 void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, 
-					long left, long top, bool proportional, const char* text, bool bold, float scale,
+					long left, long top, bool proportional, PCSTR text, bool bold, float scale,
 					long xOffset, long yOffset);
 
 void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, 
-					long left, long top, long right, long bottom, bool proportional, const char* text, bool bold, float scale,
+					long left, long top, long right, long bottom, bool proportional, PCSTR text, bool bold, float scale,
 					long xOffset, long yOffset);
 
 

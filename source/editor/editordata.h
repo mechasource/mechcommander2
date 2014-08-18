@@ -18,7 +18,7 @@
 #include "estring.h"
 #endif
 
-static const int GAME_MAX_PLAYERS = 8;
+static cint32_t GAME_MAX_PLAYERS = 8;
 
 #define EDITOR_VISIBLE_VERTICES			60
 
@@ -130,16 +130,16 @@ class EditorData
 		
 		// makes a terrain from a height map.  
 		static bool initTerrainFromTGA( int mapSize, int min = 0, int max = 512, int terrain = 0 );
-		static bool initTerrainFromPCV( const char* fileName );
-		static bool	reassignHeightsFromTGA( const char* fileName, int min, int max );
+		static bool initTerrainFromPCV( PCSTR fileName );
+		static bool	reassignHeightsFromTGA( PCSTR fileName, int min, int max );
 
-		bool save( const char* fileName, bool quickSave = false );
-		bool quickSave( const char* fileName );
+		bool save( PCSTR fileName, bool quickSave = false );
+		bool quickSave( PCSTR fileName );
 		static bool saveHeightMap( File* file );
 		bool saveMissionFitFileStuff( FitIniFile &fitFile );
 
-		static void setMapName( const char* name );
-		static const char* getMapName(){ return strlen( mapName ) ? mapName : 0; }
+		static void setMapName( PCSTR name );
+		static PCSTR getMapName(){ return strlen( mapName ) ? mapName : 0; }
 		static void updateTitleBar();
 
 		EString MissionName() { return m_missionName; }

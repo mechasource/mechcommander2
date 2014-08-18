@@ -59,7 +59,7 @@ public:
 	void				setDamage( bool bDamage );
 	bool				getDamage() const;
 
-	const char*			getDisplayName() const;
+	PCSTR			getDisplayName() const;
 
 	const Stuff::Vector3D&	getPosition() const { return appearance()->position; }
 	
@@ -139,8 +139,8 @@ public:
 	static	long goodCount;
 	static	long badCount;
 
-	const char* 		getName() const { return info->name; }
-	void	setName( const char* );
+	PCSTR 		getName() const { return info->name; }
+	void	setName( PCSTR );
 
 	void	save( FitIniFile* file, int bGoodGuy );
 	void	load( FitIniFile* file, int bGoodGuy );

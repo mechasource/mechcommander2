@@ -71,7 +71,7 @@ void UnitSettingsDlg::OnSelchangeGroup()
 		int group = m_Group.GetCurSel();
 		group = m_Group.GetItemData( group );
 
-		const char* MechNames[256];
+		PCSTR MechNames[256];
 		int count = 256;
 			
 		EditorObjectMgr::instance()->getBuildingNamesInGroup( group, MechNames, count );
@@ -510,10 +510,10 @@ void UnitSettingsDlg::OnSelchangeMech()
 	int indexInGroup = m_Mech.GetCurSel();
 
 	int varCount =  EditorObjectMgr::instance()->getNumberOfVariants( group, indexInGroup );
-	const char** VariantNames = 0;
+	PCSTR* VariantNames = 0;
 	if (0 < varCount)
 	{
-		VariantNames = new const char*[varCount];
+		VariantNames = new PCSTR[varCount];
 		EditorObjectMgr::instance()->getVariantNames( group, indexInGroup, VariantNames, varCount );
 
 		for ( int v = 0; v < varCount; ++v )
@@ -641,7 +641,7 @@ void UnitSettingsDlg::updateMemberVariables()
 
 	int groupCount = pMgr->getUnitGroupCount();
 
-	const char** pGroups = new const char*[groupCount];
+	PCSTR* pGroups = new PCSTR[groupCount];
 	int*		 groupIDs = new int[groupCount];
 
 	
@@ -671,13 +671,13 @@ void UnitSettingsDlg::updateMemberVariables()
 
 	if ( group != -1 ) // we found a valid group
 	{
-		const char* pGroupName = pMgr->getGroupName( group );
+		PCSTR pGroupName = pMgr->getGroupName( group );
 		
 		int index = m_Group.FindString( -1, pGroupName );
 		m_Group.SetCurSel( index );
 
 		// OK, now fill in the index....
-		const char* MechNames[256];
+		PCSTR MechNames[256];
 		int count = 256;
 
 		m_Mech.ResetContent();
@@ -702,7 +702,7 @@ void UnitSettingsDlg::updateMemberVariables()
 
 		if ( indexInGroup != -1 )
 		{
-			const char* pName = units.GetHead()->getDisplayName();
+			PCSTR pName = units.GetHead()->getDisplayName();
 			index = m_Mech.FindString( -1, pName );
 
 			if ( index != -1 )
@@ -714,10 +714,10 @@ void UnitSettingsDlg::updateMemberVariables()
 				m_Variant.ResetContent();
 				
 				int varCount =  EditorObjectMgr::instance()->getNumberOfVariants( group, indexInGroup );
-				const char** VariantNames = 0;
+				PCSTR* VariantNames = 0;
 				if (0 < varCount)
 				{
-					VariantNames = new const char*[varCount];
+					VariantNames = new PCSTR[varCount];
 					EditorObjectMgr::instance()->getVariantNames( group, indexInGroup, VariantNames, varCount );
 
 					for ( int v = 0; v < varCount; ++v )
@@ -770,13 +770,13 @@ void UnitSettingsDlg::updateMemberVariables()
 
 	Pilot* pPilot = pUnit->getPilot();
 
-	const char* defaultPilot = pPilot->info->fileName;
+	PCSTR defaultPilot = pPilot->info->fileName;
 
 	for ( iter = units.Begin(); !iter.IsDone(); iter++ )
 	{
 		pPilot = (*iter)->getPilot();
 
-		const char* tmpName = pPilot->info->fileName;
+		PCSTR tmpName = pPilot->info->fileName;
 
 		if ( _stricmp( tmpName, defaultPilot ) != 0 )
 		{
@@ -840,13 +840,13 @@ void UnitSettingsDlg::OnAlign1( UINT whichID )
 	Unit * pUnit = (*(units.Begin()));
 	Pilot* pPilot = pUnit->getPilot();
 
-	const char* defaultPilot = pPilot->getName();
+	PCSTR defaultPilot = pPilot->getName();
 
 	for ( UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++ )
 	{
 		pPilot = (*iter)->getPilot();
 
-		const char* tmpName = pPilot->getName();
+		PCSTR tmpName = pPilot->getName();
 
 		if ( _stricmp( tmpName, defaultPilot ) != 0 )
 		{

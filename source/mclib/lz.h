@@ -10,7 +10,7 @@
 #define LZ_H
 
 //---------------------------------------------------------------------------
-typedef unsigned char* MemoryPtr;
+typedef uint8_t* MemoryPtr;
 size_t LZDecomp (MemoryPtr dest, MemoryPtr src, size_t srcLen);
 size_t LZCompress (MemoryPtr dest,  MemoryPtr src, size_t len);
 

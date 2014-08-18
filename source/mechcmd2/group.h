@@ -49,16 +49,16 @@
 typedef struct _GoalMapNode {
 	short				cost;								// normal cost to travel here, based upon terrain
 	//long				parent;								// where we came from (parent cell)
-	unsigned char		flags;								// CLOSED, OPEN, STEP flags
+	uint8_t		flags;								// CLOSED, OPEN, STEP flags
 	long				g;									// known cost from START to this node
 	//long				hPrime;								// estimated cost from this node to GOAL
 	//long				fPrime;								// = g + hPrime
 
-	void setFlag (unsigned char flag) {
+	void setFlag (uint8_t flag) {
 		flags |= flag;
 	}
 
-	void clearFlag (unsigned char flag) {
+	void clearFlag (uint8_t flag) {
 		flags &= (flag ^ 0xFFFFFFFF);
 	}
 } GoalMapNode;

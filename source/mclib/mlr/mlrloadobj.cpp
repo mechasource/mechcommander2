@@ -27,16 +27,16 @@
 // #define	FORGETFUL	1
 
 // length of longest input line in ".obj" file (including continuations) 
-const int BUFFER_SIZE = 8192;
+cint32_t BUFFER_SIZE = 8192;
 
 // maximum number of vertices in a single polygon 
-const int FACE_SIZE = 4096;
+cint32_t FACE_SIZE = 4096;
 
 // initial allocation size for growable arrays 
-const int CHUNK = 4096;
+cint32_t CHUNK = 4096;
 
 // how many different material library files 
-const int MAX_MTL_FILES = 512;
+cint32_t MAX_MTL_FILES = 512;
 
 // case insensitive string equality test 
 #define        SAME(_a, _b)        (_stricmp(_a,_b) == 0)
@@ -308,7 +308,7 @@ MLRPolyMesh*
 // pfdLoadFile_obj -- Load Wavefront ".obj" files into IRIS Performer
 //
 MLRShape*
-	MLRLoadObj (const char *fileName)
+	MLRLoadObj (PCSTR fileName)
 {
 	
 	FILE         *objFile;
@@ -703,16 +703,16 @@ MLRShape*
 // ***        P R O C E S S    M A T E R I A L    F I L E S
 // **
 
-const int MTL_NOT_DEFINED    = 0x0001;
-const int MTL_HAS_GEOSTATE   = 0x0002;
-const int MTL_HAS_AMBIENT    = 0x0004;
-const int MTL_HAS_DIFFUSE    = 0x0008;
-const int MTL_HAS_ALPHA      = 0x0010;
-const int MTL_HAS_SPECULAR   = 0x0020;
-const int MTL_HAS_SHININESS  = 0x0040;
-const int MTL_HAS_TEXTURE    = 0x0080;
-const int MTL_HAS_REFLECTION = 0x0100;
-const int MTL_IS_TWO_SIDED   = 0x0200;
+cint32_t MTL_NOT_DEFINED    = 0x0001;
+cint32_t MTL_HAS_GEOSTATE   = 0x0002;
+cint32_t MTL_HAS_AMBIENT    = 0x0004;
+cint32_t MTL_HAS_DIFFUSE    = 0x0008;
+cint32_t MTL_HAS_ALPHA      = 0x0010;
+cint32_t MTL_HAS_SPECULAR   = 0x0020;
+cint32_t MTL_HAS_SHININESS  = 0x0040;
+cint32_t MTL_HAS_TEXTURE    = 0x0080;
+cint32_t MTL_HAS_REFLECTION = 0x0100;
+cint32_t MTL_IS_TWO_SIDED   = 0x0200;
 
 // data for a single wavefront material
  

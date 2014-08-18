@@ -1,31 +1,39 @@
-#define MPCONNECTIONTYPE_CPP
 /*************************************************************************************************\
 MPConnectionType.cpp			: Implementation of the MPConnectionType component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+
 #include "stdafx.h"
 
-#include "MPConnectionType.h"
-#include "prefs.h"
-#include "IniFile.h"
-#include "../MCLib/UserInput.h"
-#include "..\resource.h"
-#include "Multplyr.h"
-#include "Mechbayscreen.h"
+#include <gui/asystem.h>
 
-#ifndef GAMESOUND_H
-#include "gamesound.h"
-#endif
+//#include "logisticsscreen.h"
+//#include "aButton.h"
+//#include "alistbox.h"
+//#include "aanim.h"
+//#include "mphostgame.h"
+
+#include "mpconnectiontype.h"
+
+//#include "prefs.h"
+//#include "inifile.h"
+//#include <mclib/userinput.h>
+//#include "multplyr.h"
+//#include "mechbayscreen.h"
+//#include "gamesound.h"
+//
+//#include "..\resource.h"
+
 
 #define CHECK_BUTTON 200
 
 static int connectionType = 0;
 
-static const int FIRST_BUTTON_ID = 1000010;
-static const int OK_BUTTON_ID = 1000001;
-static const int CANCEL_BUTTON_ID = 1000002;
+static cint32_t FIRST_BUTTON_ID = 1000010;
+static cint32_t OK_BUTTON_ID = 1000001;
+static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 extern bool quitGame;
 
@@ -856,11 +864,11 @@ int	aTcpipPanel::handleMessage( unsigned long message, unsigned long who)
 		cLoadString( IDS_MP_CON_MODEM_CONNECTING, text, 255 );
 		EString str;
 		comboBox.EditBox().getEntry( str );
-		sprintf( Display, text, (const char*)str );
+		sprintf( Display, text, (PCSTR)str );
 		LogisticsOneButtonDialog::instance()->setText( Display );
 		LogisticsOneButtonDialog::instance()->begin();
 
-		if ( MPlayer->beginSessionScan ( (char*)(const char*)str) )
+		if ( MPlayer->beginSessionScan ( (char*)(PCSTR)str) )
 		{
 			LogisticsOneButtonDialog::instance()->setText( IDS_MP_CONNECT_ERROR_NO_CONNECTION, IDS_DIALOG_OK, IDS_DIALOG_OK );
 		}

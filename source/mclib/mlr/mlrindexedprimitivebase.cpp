@@ -127,7 +127,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPrimitiveBase::InitializeDrawPrimitive(unsigned char vis, int parameter)
+	MLRIndexedPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int parameter)
 {
 	MLRPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
 

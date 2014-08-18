@@ -1,5 +1,3 @@
-#ifndef GAMETACMAP_H
-#define GAMETACMAP_H
 /*************************************************************************************************\
 gameTacMap.h			: Interface for the gameTacMap component.
 //---------------------------------------------------------------------------//
@@ -7,9 +5,12 @@ gameTacMap.h			: Interface for the gameTacMap component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef TACMAP_H
+#pragma once
+
+#ifndef GAMETACMAP_H
+#define GAMETACMAP_H
+
 #include "tacmap.h"
-#endif
 
 //*************************************************************************************************
 
@@ -31,7 +32,7 @@ class GameTacMap: public TacMap
 		}
 	}
 
-	void init( unsigned char* bitmapData, int dataSize );
+	void init( PUCHAR bitmapData, int dataSize );
 	void update(); // do not call these two functions from editor
 	void render();
 	
@@ -43,7 +44,7 @@ class GameTacMap: public TacMap
 
 	bool inRegion( int x, int y ){ return x > left && x < right && y > top && y < bottom; }
 	
-	void initBuildings( unsigned char* data, int size );
+	void initBuildings( PUCHAR data, int size );
 	void setPos( const GUI_RECT& newPos );
 	
 	protected:

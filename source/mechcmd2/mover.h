@@ -396,18 +396,18 @@ typedef struct _RangeRating* RangeRatingPtr;
 typedef struct _InventoryItem {
 	//------------------
 	// general item info
-	unsigned char		masterID;		// master component ID
-	unsigned char		health;			// number of points left before destroyed
+	uint8_t		masterID;		// master component ID
+	uint8_t		health;			// number of points left before destroyed
 	bool				disabled;		// TRUE if effectively destroyed
 
 	//----------------
 	// weapon specific
-	unsigned char		facing;			// weapon facing in torso: 0 = forward, 1 = rear -- NO WEAPONS fire rear.  This is the weapon Node ID now!!!!
+	uint8_t		facing;			// weapon facing in torso: 0 = forward, 1 = rear -- NO WEAPONS fire rear.  This is the weapon Node ID now!!!!
 	short				startAmount;	// ammo's mission-start level
 	short				amount;			// generally for ammo, and weapon's total ammo
 	short				ammoIndex;		// used by ammo to reference ammo pools
 	float				readyTime;		// next time weapon will be ready
-	unsigned char		bodyLocation;	// where is the weapon located
+	uint8_t		bodyLocation;	// where is the weapon located
 	short				effectiveness;	// weapon max effectiveness
 } InventoryItem;
 
@@ -429,7 +429,7 @@ typedef struct _CriticalSpace* CriticalSpacePtr;
 
 typedef struct _CriticalSpace {
 
-	unsigned char		inventoryID;	// indexes into mech's inventory
+	uint8_t		inventoryID;	// indexes into mech's inventory
 	bool				hit;			// TRUE, if this space has been hit
 
 	void operator = (struct _CriticalSpace copy) {
@@ -451,9 +451,9 @@ class BodyLocation {
 		long				totalSpaces;
 		CriticalSpace		criticalSpaces[MAX_CRITSPACES_PER_BODYLOCATION];
 		float				curInternalStructure;
-		unsigned char		hotSpotNumber;
-		unsigned char		maxInternalStructure;
-		unsigned char		damageState;
+		uint8_t		hotSpotNumber;
+		uint8_t		maxInternalStructure;
+		uint8_t		damageState;
 
 	public:
 
@@ -478,7 +478,7 @@ class ArmorLocation {
 	public:
 
 		float			curArmor;
-		unsigned char	maxArmor;
+		uint8_t	maxArmor;
 };
 
 typedef ArmorLocation* ArmorLocationPtr;
@@ -600,7 +600,7 @@ typedef struct _MoverData : public GameObjectData
 	Stuff::Vector3D		positionNormal;						
 	Stuff::Vector3D		velocity;							
 	char				name[MAXLEN_MOVER_NAME];			
-	unsigned char		chassis;							
+	uint8_t		chassis;							
 	bool				startDisabled;
 	float				creationTime;
 
@@ -625,21 +625,21 @@ typedef struct _MoverData : public GameObjectData
 	char				longName[MAXLEN_MECH_LONGNAME];		
 
 	InventoryItem		inventory[MAX_MOVER_INVENTORY_ITEMS];
-	unsigned char		numOther;
-	unsigned char		numWeapons;
-	unsigned char		numAmmos;
+	uint8_t		numOther;
+	uint8_t		numWeapons;
+	uint8_t		numAmmos;
 	AmmoTally			ammoTypeTotal[MAX_AMMO_TYPES];	
 	char				numAmmoTypes;					
 	long				pilotHandle;
 
-	unsigned char		cockpit;										
-	unsigned char		engine;											
-	unsigned char		lifeSupport;									
-	unsigned char		sensor;											
-	unsigned char		ecm;											
-	unsigned char		probe;											
-	unsigned char		jumpJets;										
-	unsigned char		nullSignature;									
+	uint8_t		cockpit;										
+	uint8_t		engine;											
+	uint8_t		lifeSupport;									
+	uint8_t		sensor;											
+	uint8_t		ecm;											
+	uint8_t		probe;											
+	uint8_t		jumpJets;										
+	uint8_t		nullSignature;									
 	float				maxWeaponEffectiveness;							
 	float				weaponEffectiveness;							
 
@@ -649,7 +649,7 @@ typedef struct _MoverData : public GameObjectData
 	long				numFunctionalWeapons;							
 
 	char				numAntiMissileSystems;							
-	unsigned char		antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS];	
+	uint8_t		antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS];	
 
 	float				engineBlowTime;
 	float				maxMoveSpeed;
@@ -759,7 +759,7 @@ class Mover : public GameObject {
 		Stuff::Vector3D		positionNormal;						// normal to terrain at current position
 		Stuff::Vector3D		velocity;							//How fast am I going?
 		char				name[MAXLEN_MOVER_NAME];		// Name of this particular mover
-		unsigned char		chassis;							// type of mover's chassis
+		uint8_t		chassis;							// type of mover's chassis
 		bool				startDisabled;
 		float				creationTime;
 
@@ -790,9 +790,9 @@ class Mover : public GameObject {
 
 		// Inventory
 		InventoryItem		inventory[MAX_MOVER_INVENTORY_ITEMS];
-		unsigned char		numOther;
-		unsigned char		numWeapons;
-		unsigned char		numAmmos;
+		uint8_t		numOther;
+		uint8_t		numWeapons;
+		uint8_t		numAmmos;
 		AmmoTally			ammoTypeTotal[MAX_AMMO_TYPES];	// tracks total ammo per ammo type
 		char				numAmmoTypes;					// number of different ammo types
 		MechWarriorPtr		pilot;
@@ -801,14 +801,14 @@ class Mover : public GameObject {
 		ContactInfoPtr		contactInfo;
 
 		// Critical Component Indices
-		unsigned char		cockpit;										// cockpit inventory index
-		unsigned char		engine;											// engine inventory index
-		unsigned char		lifeSupport;									// life support inventory index
-		unsigned char		sensor;											// sensor inventory index
-		unsigned char		ecm;											// ecm inventory index
-		unsigned char		probe;											// probe inventory index
-		unsigned char		jumpJets;										// jump jets inventory index
-		unsigned char		nullSignature;									// null signature inventory index
+		uint8_t		cockpit;										// cockpit inventory index
+		uint8_t		engine;											// engine inventory index
+		uint8_t		lifeSupport;									// life support inventory index
+		uint8_t		sensor;											// sensor inventory index
+		uint8_t		ecm;											// ecm inventory index
+		uint8_t		probe;											// probe inventory index
+		uint8_t		jumpJets;										// jump jets inventory index
+		uint8_t		nullSignature;									// null signature inventory index
 		float				maxWeaponEffectiveness;							// max total damage possible
 		float				weaponEffectiveness;							// basically, total damage possible
 		
@@ -818,7 +818,7 @@ class Mover : public GameObject {
 		long				numFunctionalWeapons;							// takes into account damage, etc.
 
 		char				numAntiMissileSystems;							// number of anti-missile systems
-		unsigned char		antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS];	// anti-missile system list
+		uint8_t		antiMissileSystem[MAX_ANTI_MISSILE_SYSTEMS];	// anti-missile system list
 
 		// Engine
 		float				engineBlowTime;
@@ -872,9 +872,9 @@ class Mover : public GameObject {
 		long				numWeaponFireChunks[2];
 		unsigned long		weaponFireChunks[2][MAX_WEAPONFIRE_CHUNKS];
 		long				numCriticalHitChunks[2];
-		unsigned char		criticalHitChunks[2][MAX_CRITICALHIT_CHUNKS];
+		uint8_t		criticalHitChunks[2][MAX_CRITICALHIT_CHUNKS];
 		long				numRadioChunks[2];
-		unsigned char		radioChunks[2][MAX_RADIO_CHUNKS];
+		uint8_t		radioChunks[2][MAX_RADIO_CHUNKS];
 		bool				ejectOrderGiven;
 															// Still awaiting final destruct orders from update.
 		long				numWeaponHitsHandled;
@@ -1271,12 +1271,12 @@ class Mover : public GameObject {
 //			return(netPlayerId);
 //		}
 
-		void setNetPlayerName(const char *name) {
+		void setNetPlayerName(PCSTR name) {
 			if (netPlayerName)
 				strncpy(netPlayerName,name,255);
 		}
 
-		const char* getNetPlayerName(void) {
+		PCSTR getNetPlayerName(void) {
 			return(netPlayerName);
 		}
 
@@ -1322,9 +1322,9 @@ class Mover : public GameObject {
 
 		long addCriticalHitChunk (long which, long bodyLocation, long criticalSpace);
 
-		long addCriticalHitChunks (long which, unsigned char* packedChunkBuffer, long numChunks);
+		long addCriticalHitChunks (long which, PUCHAR packedChunkBuffer, long numChunks);
 
-		long grabCriticalHitChunks (long which, unsigned char* packedChunkBuffer);
+		long grabCriticalHitChunks (long which, PUCHAR packedChunkBuffer);
 
 		virtual long updateCriticalHitChunks (long which);
 
@@ -1334,11 +1334,11 @@ class Mover : public GameObject {
 
 		long clearRadioChunks (long which);
 
-		long addRadioChunk (long which, unsigned char msg);
+		long addRadioChunk (long which, uint8_t msg);
 
-		long addRadioChunks (long which, unsigned char* packedChunkBuffer, long numChunks);
+		long addRadioChunks (long which, PUCHAR packedChunkBuffer, long numChunks);
 
-		long grabRadioChunks (long which, unsigned char* packedChunkBuffer);
+		long grabRadioChunks (long which, PUCHAR packedChunkBuffer);
 
 		virtual long updateRadioChunks (long which);
 

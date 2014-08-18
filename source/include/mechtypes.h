@@ -59,6 +59,7 @@ typedef const signed short*			pcint16_t;
 typedef const unsigned short		cuint16_t;
 typedef const unsigned short*		pcuint16_t;
 typedef const signed int			cint32_t;
+typedef const signed int*			pcint32_t;
 typedef const unsigned int			cuint32_t;
 typedef const unsigned int*			pcuint32_t;
 typedef const signed long long		cint64_t;
@@ -83,6 +84,9 @@ typedef unsigned long long*			puint64_t;
 typedef const void*					PCVOID;
 typedef const unsigned char*		PCUCHAR;
 typedef const unsigned short*		PCUSHORT;
+
+typedef static const signed int		staticint32_t;
+typedef static const unsigned int	staticuint32_t;
 
 #ifdef __cplusplus
 }

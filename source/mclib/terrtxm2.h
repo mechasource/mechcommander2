@@ -116,14 +116,14 @@ class TerrainColorMap
 			mcTextureManager->get_gosTextureHandle(detailTextureNodeIndex);
 			return (detailTextureNodeIndex);
 		}
-		long saveDetailTexture(const char *fileName);
+		long saveDetailTexture(PCSTR fileName);
 
 		DWORD getWaterTextureHandle (void)
 		{
 			mcTextureManager->get_gosTextureHandle(waterTextureNodeIndex);
 			return waterTextureNodeIndex;
 		}
-		long saveWaterTexture(const char *fileName);
+		long saveWaterTexture(PCSTR fileName);
 
 		DWORD getWaterDetailHandle (long frameNum)
 		{
@@ -135,7 +135,7 @@ class TerrainColorMap
 			else
 				return 0xffffffff;
 		}
-		long saveWaterDetail(const char *fileName);
+		long saveWaterDetail(PCSTR fileName);
 
 		DWORD getWaterDetailNumFrames (void)
 		{
@@ -188,8 +188,8 @@ class TerrainColorMap
 		// This allows us to change them in the editor and reload here.
 		// Pass in the filename of the mission!!!!
 		void resetBaseTexture (char *fileName);
-		void resetDetailTexture (const char *fileName);
-		void resetWaterTexture (const char *fileName);
+		void resetDetailTexture (PCSTR fileName);
+		void resetWaterTexture (PCSTR fileName);
 		void resetWaterDetailTextures (char *fileName);
 		
 		//Pass in filename of height map to write new data to.

@@ -1,5 +1,3 @@
-#ifndef MPCONNECTIONTYPE_H
-#define MPCONNECTIONTYPE_H
 /*************************************************************************************************\
 MPConnectionType.h			: Interface for the MPConnectionType component.
 //---------------------------------------------------------------------------//
@@ -7,27 +5,23 @@ MPConnectionType.h			: Interface for the MPConnectionType component.
 //===========================================================================//
 \*************************************************************************************************/
 
-//*************************************************************************************************
+#pragma once
 
-#ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
-#endif
+#ifndef MPCONNECTIONTYPE_H
+#define MPCONNECTIONTYPE_H
 
-#include "asystem.h"
-#include "aButton.h"
-#include "alistbox.h"
+//#include "logisticsscreen.h"
+//#include "asystem.h"
+//#include "aButton.h"
+//#include "alistbox.h"
+//#include "aanim.h"
+//#include "mphostgame.h"
 
-#ifndef AANIM_H
-#include "aanim.h"
-#endif
-
-#ifndef MPHOSTGAME_H
-#include "mphostgame.h"
-#endif
-
-#include "assert.h"
-
-static const int ZONE_PANEL_FIRST_BUTTON_ID = 1000100;
+typedef enum __mpconnectiontype_const {
+	ZONE_PANEL_FIRST_BUTTON_ID		= 1000100,
+	LAN_PANEL_FIRST_BUTTON_ID		= 1000200,
+	TCPIP_PANEL_FIRST_BUTTON_ID		= 1000300,
+}; 
 
 class aZonePanel : public aObject
 {
@@ -45,9 +39,6 @@ private:
 
 	bool	bShowWarning;
 };
-
-
-static const int LAN_PANEL_FIRST_BUTTON_ID = 1000200;
 
 class aLanPanel : public aObject
 {
@@ -67,7 +58,6 @@ private:
 };
 
 
-static const int TCPIP_PANEL_FIRST_BUTTON_ID = 1000300;
 
 class aTcpipPanel : public aObject
 {

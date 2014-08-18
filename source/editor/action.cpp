@@ -97,9 +97,9 @@ void ActionUndoMgr::EmptyUndoList()
 // Returns:		string to put in the Undo prompt
 // Descripition: this is the string that should go in the redo prompt
 //***********************************************************************
-const char* ActionUndoMgr::GetRedoString()
+PCSTR ActionUndoMgr::GetRedoString()
 {
-	const char* strRet = NULL;
+	PCSTR strRet = NULL;
 
 	if ( HaveRedo() )
 	{
@@ -120,9 +120,9 @@ const char* ActionUndoMgr::GetRedoString()
 // Returns:		string to put in the Udo prompt
 // Descripition: this is the string that should go in the undo prompt
 //***********************************************************************
-const char* ActionUndoMgr::GetUndoString()
+PCSTR ActionUndoMgr::GetUndoString()
 {
-	const char* strRet = NULL;
+	PCSTR strRet = NULL;
 	if ( HaveUndo() )
 	{
 		ACTION_LIST::EIterator iter = m_listUndoActions.Iterator( m_CurrentPos );

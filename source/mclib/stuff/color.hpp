@@ -23,22 +23,22 @@ namespace Stuff {
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::RGBColor &color
 		);
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::RGBAColor &color
 		);
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::HSVColor &color
 		);
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::HSVAColor &color
 		);
 #endif
@@ -136,7 +136,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const RGBColor &color
 				);
 		#endif
@@ -146,7 +146,7 @@ namespace Stuff {
 
    void
    	Convert_From_Ascii(
-			const char *str,
+			PCSTR str,
 			RGBColor *color
       );
 
@@ -236,7 +236,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const RGBAColor &color
 				);
 		#endif
@@ -246,7 +246,7 @@ namespace Stuff {
 
 	void
 		Convert_From_Ascii(
-			const char *str,
+			PCSTR str,
 		  RGBAColor *color
 		);
 
@@ -339,7 +339,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const HSVColor &color
 				);
 		#endif
@@ -349,7 +349,7 @@ namespace Stuff {
 
    void
    	Convert_From_Ascii(
-			const char *str,
+			PCSTR str,
 			HSVColor *color
       );
 
@@ -445,7 +445,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const HSVAColor &color
 				);
 		#endif
@@ -455,7 +455,7 @@ namespace Stuff {
 
 	void
 		Convert_From_Ascii(
-			const char *str,
+			PCSTR str,
 		  HSVAColor *color
 		);
 

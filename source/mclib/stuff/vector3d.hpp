@@ -16,7 +16,7 @@ namespace Stuff {class Vector3D;}
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::Vector3D &vector
 		);
 #endif
@@ -459,7 +459,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const Vector3D &vector
 				);
 		#endif
@@ -471,7 +471,7 @@ namespace Stuff {
 
    void
    	Convert_From_Ascii(
-      	const char *str,
+      	PCSTR str,
          Vector3D *vector_3D
       );
 

@@ -326,7 +326,7 @@ float OptimalRangePoints[NUM_WEAPON_RANGE_TYPES] = {
 
 bool OptimalRangePointInRange[NUM_WEAPON_RANGE_TYPES][3];
 
-unsigned char OptimalRangeTieTable[32] = {
+uint8_t OptimalRangeTieTable[32] = {
 	255, 0, 1, 1,
 	2, 2, 2, 2,
 	3, 3, 3, 3,
@@ -3816,14 +3816,14 @@ long Mover::addCriticalHitChunk (long which, long bodyLocation, long criticalSpa
 
 	//-----------------------------------------------------------
 	// Since the "chunk" is so simple, we'll just make it here...
-	unsigned char chunkData = (unsigned char)((bodyLocation << 4) + criticalSpace);
+	uint8_t chunkData = (uint8_t)((bodyLocation << 4) + criticalSpace);
 	criticalHitChunks[which][numCriticalHitChunks[which]++] = chunkData;
 	return(numCriticalHitChunks[which]);
 }
 
 //---------------------------------------------------------------------------
 
-long Mover::addCriticalHitChunks (long which, unsigned char* packedChunkBuffer, long numChunks) {
+long Mover::addCriticalHitChunks (long which, PUCHAR packedChunkBuffer, long numChunks) {
 
 	if ((numCriticalHitChunks[which] + numChunks) >= MAX_CRITICALHIT_CHUNKS)
 		Fatal(0, " Mover::addCriticalHitChunks--Too many criticalhit chunks ");
@@ -3835,7 +3835,7 @@ long Mover::addCriticalHitChunks (long which, unsigned char* packedChunkBuffer, 
 
 //---------------------------------------------------------------------------
 
-long Mover::grabCriticalHitChunks (long which, unsigned char* packedChunkBuffer) {
+long Mover::grabCriticalHitChunks (long which, PUCHAR packedChunkBuffer) {
 
 	if (numCriticalHitChunks[which] > 0)
 		memcpy(packedChunkBuffer, criticalHitChunks[which], numCriticalHitChunks[which]);
@@ -3862,7 +3862,7 @@ long Mover::clearRadioChunks (long which) {
 
 //---------------------------------------------------------------------------
 
-long Mover::addRadioChunk (long which, unsigned char msg) {
+long Mover::addRadioChunk (long which, uint8_t msg) {
 
 	if (numRadioChunks[which] == MAX_RADIO_CHUNKS)
 		return(numRadioChunks[which]);
@@ -3876,7 +3876,7 @@ long Mover::addRadioChunk (long which, unsigned char msg) {
 
 //---------------------------------------------------------------------------
 
-long Mover::addRadioChunks (long which, unsigned char* packedChunkBuffer, long numChunks) {
+long Mover::addRadioChunks (long which, PUCHAR packedChunkBuffer, long numChunks) {
 
 //	if ((numRadioChunks[which] + numChunks) >= MAX_RADIO_CHUNKS)
 //		Fatal(0, " Mover::addRadioChunks--Too many radio chunks ");
@@ -3889,7 +3889,7 @@ long Mover::addRadioChunks (long which, unsigned char* packedChunkBuffer, long n
 
 //---------------------------------------------------------------------------
 
-long Mover::grabRadioChunks (long which, unsigned char* packedChunkBuffer) {
+long Mover::grabRadioChunks (long which, PUCHAR packedChunkBuffer) {
 
 	if (numRadioChunks[which] > 0)
 		memcpy(packedChunkBuffer, radioChunks[which], numRadioChunks[which]);
@@ -5867,7 +5867,7 @@ long Mover::calcFireRanges (void) {
 	if (sortList->getValue(0) == sortList->getValue(1)) {
 		//--------------------------------------------------------------
 		// A tie, so pick one based upon the pre-set range priorities...
-		unsigned char tieFlags = 0;
+		uint8_t tieFlags = 0;
 		for (long i = 0; i < 5; i++)
 			if (sortList->getValue(i) == sortList->getValue(0))
 				tieFlags |= (1 << sortList->getId(i));
@@ -7247,7 +7247,7 @@ void Mover::CopyTo (MoverData *data)
 	data->numFunctionalWeapons 					= numFunctionalWeapons;                       		
 																							
 	data->numAntiMissileSystems 				= numAntiMissileSystems;                      			
-	memcpy(data->antiMissileSystem,antiMissileSystem,sizeof(unsigned char) * MAX_ANTI_MISSILE_SYSTEMS);
+	memcpy(data->antiMissileSystem,antiMissileSystem,sizeof(uint8_t) * MAX_ANTI_MISSILE_SYSTEMS);
 																							
 	data->engineBlowTime                        = engineBlowTime;                             
 	data->maxMoveSpeed                          = maxMoveSpeed;                               
@@ -7407,7 +7407,7 @@ void Mover::Load (MoverData *data)
 	numFunctionalWeapons 					= data->numFunctionalWeapons;                       		
 																							
 	numAntiMissileSystems 				= data->numAntiMissileSystems;                      			
-	memcpy(antiMissileSystem,data->antiMissileSystem,sizeof(unsigned char) * MAX_ANTI_MISSILE_SYSTEMS);
+	memcpy(antiMissileSystem,data->antiMissileSystem,sizeof(uint8_t) * MAX_ANTI_MISSILE_SYSTEMS);
 																							
 	engineBlowTime                        = data->engineBlowTime;                             
 	maxMoveSpeed                          = data->maxMoveSpeed;                               

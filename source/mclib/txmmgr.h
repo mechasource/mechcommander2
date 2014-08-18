@@ -290,7 +290,7 @@ class MC_TextureManager
 		// that was already loaded in memory. This function was motivated by the fact that
 		// that an existing texture instance can been modified in memory after it's loaded, and
 		// thus be different the from an instance that would be loaded from disk.
-		DWORD textureInstanceExists (const char *textureFullPathName, gos_TextureFormat key, DWORD hints, DWORD uniqueInstance = 0x0, DWORD nFlush = 0x0);
+		DWORD textureInstanceExists (PCSTR textureFullPathName, gos_TextureFormat key, DWORD hints, DWORD uniqueInstance = 0x0, DWORD nFlush = 0x0);
 
 		//-----------------------------------------------------------------------------
 		// Returns the TextureNode Id based on what you asked for.
@@ -298,9 +298,9 @@ class MC_TextureManager
 		// uniqueInstance is an ID for the instance of the texture. If its value matches that of
 		// an already existing instance of the texture, the handle of the existing instance will
 		// be returned. Used for Mech Coloration possibly, damage states, etc.
-		DWORD loadTexture (const char *textureFullPathName, gos_TextureFormat key, DWORD hints, DWORD uniqueInstance = 0x0, DWORD nFlush = 0x0);
+		DWORD loadTexture (PCSTR textureFullPathName, gos_TextureFormat key, DWORD hints, DWORD uniqueInstance = 0x0, DWORD nFlush = 0x0);
 
-		long saveTexture (DWORD textureIndex, const char *textureFullPathName);
+		long saveTexture (DWORD textureIndex, PCSTR textureFullPathName);
 
 		//-----------------------------------------------------------------------------
 		// Returns the TextureNode Id based on what you asked for.

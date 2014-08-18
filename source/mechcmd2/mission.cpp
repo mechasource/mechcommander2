@@ -753,7 +753,7 @@ long Mission::render (void)
 {
 	if (active)
 	{
-		unsigned char tempAmbientLight[3];
+		uint8_t tempAmbientLight[3];
 		if (KillAmbientLight) {
 			tempAmbientLight[0] = eye->ambientRed;
 			tempAmbientLight[1] = eye->ambientGreen;
@@ -923,9 +923,9 @@ extern float DefaultAttackRange;				//MOVER
 float baseSensorRange = 0.0;
 extern long visualRangeTable[];
 
-extern unsigned char godMode;		//Can I simply see everything, enemy and friendly?
-unsigned char revealTacMap = 0;		//Is Tacmap always revealed?
-unsigned char footPrints = 0;		//Do we use/draw footprints?
+extern uint8_t godMode;		//Can I simply see everything, enemy and friendly?
+uint8_t revealTacMap = 0;		//Is Tacmap always revealed?
+uint8_t footPrints = 0;		//Do we use/draw footprints?
 bool CantTouchThis = false;
 
 long tonnageDivisor = 1.0;			//Amount we divide tons under drop weight by to calc resource bonus
@@ -1786,16 +1786,16 @@ void Mission::init (char *missionName, long loadType, long dropZoneID, Stuff::Ve
 		gosASSERT(loadErr == NO_ERR);
 	}
 
-	result = gameSystemFile->readIdUChar("GodMode", godMode);
+	result = gameSystemFile->readIdUCHAR("GodMode", godMode);
 	if (result != NO_ERR)
 		godMode = 0;
 
-	unsigned char revealTacMap;
-	result = gameSystemFile->readIdUChar("RevealTacMap", revealTacMap);
+	uint8_t revealTacMap;
+	result = gameSystemFile->readIdUCHAR("RevealTacMap", revealTacMap);
 	if (result != NO_ERR)
 		revealTacMap = 0;
 		
-	result = gameSystemFile->readIdUChar("FootPrints", footPrints);
+	result = gameSystemFile->readIdUCHAR("FootPrints", footPrints);
 	if (result != NO_ERR)
 		footPrints = 1;
 
@@ -2105,7 +2105,7 @@ void Mission::init (char *missionName, long loadType, long dropZoneID, Stuff::Ve
 	result = missionFile->seekBlock("MissionSettings");
 	gosASSERT(result == NO_ERR);
 		
-	result = missionFile->readIdUChar("scenarioTuneNum",missionTuneNum);
+	result = missionFile->readIdUCHAR("scenarioTuneNum",missionTuneNum);
 	gosASSERT(result == NO_ERR);
 
 	long numRPoints;

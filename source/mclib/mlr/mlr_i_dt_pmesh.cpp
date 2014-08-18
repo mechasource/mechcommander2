@@ -225,7 +225,7 @@ MLR_I_DT_PMesh*
 	coords[6] = Point3D( half,  half, -half);
 	coords[7] = Point3D(-half,  half, -half);
 
-	unsigned char *lengths = new unsigned char [6];
+	PUCHAR lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
 	int i;
@@ -373,7 +373,7 @@ MLRShape*
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh/3;
 	}
 
-	unsigned char *lengths = new unsigned char [nrTri];
+	PUCHAR lengths = new uint8_t [nrTri];
 	Register_Pointer(lengths);
 
 	for(i=0;i<nrTri;i++)

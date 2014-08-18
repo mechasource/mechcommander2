@@ -19,17 +19,17 @@ public:
 	aFont( const aFont& src );
 	aFont& operator=( const aFont& src );
 
-	long init( const char* fontName);
+	long init( PCSTR fontName);
 	long init( long resourceID );
 	void destroy();
-	void render( const char* text, int XPos, int YPos, int areaWidth, 
+	void render( PCSTR text, int XPos, int YPos, int areaWidth, 
 		int areaHeight, unsigned long color, bool bBold, int alignment );
 
-	long load( const char* fontName);
+	long load( PCSTR fontName);
 	unsigned long height() const;
-	unsigned long width( const char* st) const;
-	unsigned long height( const char* st, int areaWidth ) const;
-	void		  getSize( unsigned long& width, unsigned long& height, const char* pText );
+	unsigned long width( PCSTR st) const;
+	unsigned long height( PCSTR st, int areaWidth ) const;
+	void		  getSize( unsigned long& width, unsigned long& height, PCSTR pText );
 	
 	static HGOSFONT3D loadFont( long resourceID, long& size );
 	long	getSize() { return size; }

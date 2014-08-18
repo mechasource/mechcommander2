@@ -64,7 +64,7 @@ template <class T> T
 		Verify(\
 			(size_t)(abs(\
 				reinterpret_cast<char*>(destination)\
-				 - reinterpret_cast<const char*>(source)\
+				 - reinterpret_cast<PCSTR>(source)\
 			)) >= length\
 		);\
 		memcpy(destination, source, length);\

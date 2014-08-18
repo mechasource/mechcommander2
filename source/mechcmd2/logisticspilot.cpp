@@ -29,7 +29,7 @@ LogisticsPilot::LogisticsPilot()
 	mechKills = vehicleKills = infantryKills =  0;
 	missionsCompleted = 0;
 
-	memset(missionsPlayed,0,sizeof(unsigned char) * MAX_MISSIONS);
+	memset(missionsPlayed,0,sizeof(uint8_t) * MAX_MISSIONS);
 
 	bDead = 0;
 	bAvailable = 0;
@@ -140,7 +140,7 @@ int LogisticsPilot::init( char* pilotFileName )
 
 }
 
-const char* LogisticsPilot::getSkillText( int skillID )
+PCSTR LogisticsPilot::getSkillText( int skillID )
 {
 	gosASSERT( skillID <= NUM_SKILLS );
 	
@@ -181,7 +181,7 @@ long LogisticsPilot::save( FitIniFile& file, long which )
 	file.writeIdLong( "InfantryKills", infantryKills );
 
 	file.writeIdLong( "MissionsCompleted", missionsCompleted );
-	file.writeIdUCharArray( "MissionsPlayed", missionsPlayed, MAX_MISSIONS);
+	file.writeIdUCHARArray( "MissionsPlayed", missionsPlayed, MAX_MISSIONS);
 	file.writeIdBoolean( "Dead", bDead );
 
 	char buffer[64];
@@ -216,9 +216,9 @@ long LogisticsPilot::load( FitIniFile& file )
 	file.readIdLong( "InfantryKills", infantryKills );
 	file.readIdLong( "MissionsCompleted", missionsCompleted );
 
-	long result = file.readIdUCharArray( "MissionsPlayed", missionsPlayed, MAX_MISSIONS);
+	long result = file.readIdUCHARArray( "MissionsPlayed", missionsPlayed, MAX_MISSIONS);
 	if (result != NO_ERR)
-		memset(missionsPlayed,0,sizeof(unsigned char) * MAX_MISSIONS);
+		memset(missionsPlayed,0,sizeof(uint8_t) * MAX_MISSIONS);
 
 	file.readIdBoolean( "Dead", bDead );
 
@@ -541,7 +541,7 @@ int			LogisticsPilot::getSpecialtySkillCount() const
 
 	return count;
 }
-int	LogisticsPilot::getSpecialtySkills( const char** array, int& count )
+int	LogisticsPilot::getSpecialtySkills( PCSTR* array, int& count )
 {
 	int max = count;
 	count = 0;

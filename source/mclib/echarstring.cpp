@@ -107,7 +107,7 @@ static int __cdecl wideToInt(
 }
 
 static long __cdecl atolong(
-        const char *nptr
+        PCSTR nptr
         )
 {
         int c;              /* current char */
@@ -115,19 +115,19 @@ static long __cdecl atolong(
         int sign;           /* if '-', then negative, otherwise positive */
 
         /* skip whitespace */
-        while ( isspace((int)(unsigned char)*nptr) )
+        while ( isspace((int)(uint8_t)*nptr) )
             ++nptr;
 
-        c = (int)(unsigned char)*nptr++;
+        c = (int)(uint8_t)*nptr++;
         sign = c;           /* save sign indication */
         if (c == '-' || c == '+')
-            c = (int)(unsigned char)*nptr++;    /* skip sign */
+            c = (int)(uint8_t)*nptr++;    /* skip sign */
 
         total = 0;
 
         while (isdigit(c)) {
             total = 10 * total + (c - '0');     /* accumulate digit */
-            c = (int)(unsigned char)*nptr++;    /* get next char */
+            c = (int)(uint8_t)*nptr++;    /* get next char */
         }
 
         if (sign == '-')
@@ -138,8 +138,8 @@ static long __cdecl atolong(
 
 
 static char * __cdecl StrStr (
-        const char * str1,
-        const char * str2
+        PCSTR  str1,
+        PCSTR  str2
         )
 {
         char *cp = (char *) str1;
@@ -217,17 +217,17 @@ static char * __cdecl StrRev (
 #else // single byte
 	#define KReverse		StrRev
 	#define KStrStr			StrStr
-	__inline char * __cdecl KSInc(const char * _pc) { return (char *)(_pc+1); }
-	inline 	int ECSCharLen(const char* x){ return 1; }	
+	__inline char * __cdecl KSInc(PCSTR  _pc) { return (char *)(_pc+1); }
+	inline 	int ECSCharLen(PCSTR x){ return 1; }	
 #endif
 #endif
 
 
 
-const int ECharString::INVALID_INDEX = -1;
-const int ECharString::s_Alloc_Allign = 4;
-const int ECharString::s_Force_Ansi =  0x10000;
-const int ECharString::s_Force_Unicode = 0x20000;
+cint32_t ECharString::INVALID_INDEX = -1;
+cint32_t ECharString::s_Alloc_Allign = 4;
+cint32_t ECharString::s_Force_Ansi =  0x10000;
+cint32_t ECharString::s_Force_Unicode = 0x20000;
 
 
 // keep around an empty buffer which all of our empty objects use
@@ -237,15 +237,15 @@ ECharString::EBuffer*   ECharString::EBuffer::s_p_Empty_Buffer = &ECharString::E
 // this must be a macro because the debug versions won't expand
 // inlines
 #define A2W(p_String) (\
-	((const char*)p_String == NULL) ? NULL : (\
+	((PCSTR)p_String == NULL) ? NULL : (\
 	ECharString::ToUnicode( (LPWSTR)_alloca((lstrlenA(p_String)+1)*2),\
-	(const unsigned char*)p_String, (lstrlenA(p_String)+1)*2)))
+	(pcuint8_t)p_String, (lstrlenA(p_String)+1)*2)))
 
 // if this doesn't want to link properly, this will have to become
 // a macro.
 /////////////////////////////////////////////////////////////////
 inline	unsigned short*	ECharString::ToUnicode( unsigned short* p_Buffer, 
-								   const unsigned char* p_Str, 
+								   pcuint8_t p_Str, 
 								   int Num_Chars )
 {
 	gosASSERT( p_Buffer );
@@ -253,7 +253,7 @@ inline	unsigned short*	ECharString::ToUnicode( unsigned short* p_Buffer,
 
 	p_Buffer[0] = 0;
 
-	MultiByteToWideChar(CP_ACP, 0, (const char*)p_Str, -1, (PWSTR)p_Buffer, Num_Chars);
+	MultiByteToWideChar(CP_ACP, 0, (PCSTR)p_Str, -1, (PWSTR)p_Buffer, Num_Chars);
 
 	return p_Buffer;	
 }
@@ -265,7 +265,7 @@ inline int ECharString::StrSize( const ECSChar* p_Str )
 #ifdef UNICODE 
 	wcslen( p_Str )
 #else 
-	lstrlen( (const char*)p_Str )
+	lstrlen( (PCSTR)p_Str )
 #endif 
 		);
 }
@@ -719,7 +719,7 @@ void ECharString::Format( const ECSChar* p_Str, ... )
 			   Item_Len = max(1, Item_Len);
 			}
 #else
-			const char* p_Next_Arg = va_arg(Arg_List, const char*);
+			PCSTR p_Next_Arg = va_arg(Arg_List, PCSTR);
 			if (p_Next_Arg == NULL)
 			   Item_Len = 6; // "(null)"
 			else
@@ -734,7 +734,7 @@ void ECharString::Format( const ECSChar* p_Str, ... )
 		case 's'|s_Force_Ansi:
 		case 'S'|s_Force_Ansi:
 		{
-			const char* p_Next_Arg = va_arg(Arg_List, const char*);
+			PCSTR p_Next_Arg = va_arg(Arg_List, PCSTR);
 			if (p_Next_Arg == NULL)
 			   Item_Len = 6; // "(null)"
 			else
@@ -1107,7 +1107,7 @@ unsigned short* ECharString::CreateUNICODE() const
 	return p_Ret_String;
 #else
 	 unsigned short* p_Ret_String = new unsigned short[lstrlen((char*)m_pBuffer->Data()) + 1];
-	 ToUnicode( p_Ret_String, (unsigned char*)m_pBuffer->Data(), m_pBuffer->m_Data_Length + 1 );
+	 ToUnicode( p_Ret_String, (PUCHAR)m_pBuffer->Data(), m_pBuffer->m_Data_Length + 1 );
 	 return p_Ret_String;
 #endif
 }
@@ -1148,7 +1148,7 @@ ECharString::ECharString(const  char* p_String )
 }
 		
 /////////////////////////////////////////////////////////////////
-const ECharString& ECharString::operator+=( const char* p_String )
+const ECharString& ECharString::operator+=( PCSTR p_String )
 {
 	if ( p_String )
 	{
@@ -1205,53 +1205,53 @@ ECharString operator+( char Char, const ECharString& End_String )
 }
 
 /////////////////////////////////////////////////////////////////
-bool ECharString::operator<( const char* p_String ) const
+bool ECharString::operator<( PCSTR p_String ) const
 {
 	return operator<(A2W( p_String ) );
 }
 
 /////////////////////////////////////////////////////////////////
-bool operator<( const char* p_String, const ECharString& String )
+bool operator<( PCSTR p_String, const ECharString& String )
 {
 	return operator<(A2W(p_String), String ); 
 }
 	
 /////////////////////////////////////////////////////////////////
-bool ECharString::operator>( const char* p_String ) const
+bool ECharString::operator>( PCSTR p_String ) const
 {
 	return ECharString::operator>(A2W( p_String) );
 }
 
 /////////////////////////////////////////////////////////////////
-bool operator>( const char* p_String, const ECharString& String )
+bool operator>( PCSTR p_String, const ECharString& String )
 {
 	return operator>( A2W(p_String), String );
 }
 /////////////////////////////////////////////////////////////////
-bool ECharString::operator<=( const char* p_String) const
+bool ECharString::operator<=( PCSTR p_String) const
 {
 	return ECharString::operator<=( A2W(p_String) );
 }
 
 /////////////////////////////////////////////////////////////////
-bool operator<=( const char* p_String, const ECharString& String)
+bool operator<=( PCSTR p_String, const ECharString& String)
 {
 	return ( A2W( p_String ) <= String );
 }
 
 /////////////////////////////////////////////////////////////////
-bool ECharString::operator>=( const char* p_String) const
+bool ECharString::operator>=( PCSTR p_String) const
 {
 	return ECharString::operator>=( A2W(p_String) );
 }
 /////////////////////////////////////////////////////////////////
-bool operator>=( const char* p_String, const ECharString& String)
+bool operator>=( PCSTR p_String, const ECharString& String)
 {
 	return ( A2W( p_String ) >= String );
 }
 
 /////////////////////////////////////////////////////////////////
-void ECharString::Format( const char* p_Str, ... )
+void ECharString::Format( PCSTR p_Str, ... )
 {
 	// NOTE, we are assuming that the end user has
 	// made ALL STRING parameters UNICODE
@@ -1263,7 +1263,7 @@ void ECharString::Format( const char* p_Str, ... )
 
 	// make a guess at the maximum length of the resulting string
 	int Max_Len = 0;
-	for (const char* p_Tmp = p_Str; *p_Tmp != '\0'; p_Tmp = _tcsinc(p_Tmp))
+	for (PCSTR p_Tmp = p_Str; *p_Tmp != '\0'; p_Tmp = _tcsinc(p_Tmp))
 	{
 		// handle '%' character, but watch out for '%%'
 		if (*p_Tmp != '%' || *(p_Tmp = _tcsinc(p_Tmp)) == '%')
@@ -1367,7 +1367,7 @@ void ECharString::Format( const char* p_Str, ... )
 		// strings
 		case 's':
 		{
-			const char* p_Next_Arg = va_arg(Arg_List, const char*);
+			PCSTR p_Next_Arg = va_arg(Arg_List, PCSTR);
 			if (p_Next_Arg == NULL)
 			   Item_Len = 6;  // "(null)"
 			else
@@ -1390,7 +1390,7 @@ void ECharString::Format( const char* p_Str, ... )
 			   Item_Len = max(1, Item_Len);
 			}
 #else
-			const char* p_Next_Arg = va_arg(Arg_List, const char*);
+			PCSTR p_Next_Arg = va_arg(Arg_List, PCSTR);
 			if (p_Next_Arg == NULL)
 			   Item_Len = 6; // "(null)"
 			else
@@ -1405,7 +1405,7 @@ void ECharString::Format( const char* p_Str, ... )
 		case 's'|s_Force_Ansi:
 		case 'S'|s_Force_Ansi:
 		{
-			const char* p_Next_Arg = va_arg(Arg_List, const char*);
+			PCSTR p_Next_Arg = va_arg(Arg_List, PCSTR);
 			if (p_Next_Arg == NULL)
 			   Item_Len = 6; // "(null)"
 			else
@@ -1520,25 +1520,25 @@ void ECharString::Format( const char* p_Str, ... )
 }
 
 /////////////////////////////////////////////////////////////////
-bool ECharString::operator==( const char* p_String )
+bool ECharString::operator==( PCSTR p_String )
 {
 	return operator==( A2W( p_String ) );
 }
 
 /////////////////////////////////////////////////////////////////
-bool operator==( const char* p_String, const ECharString& String)
+bool operator==( PCSTR p_String, const ECharString& String)
 {
 	return operator==( A2W( p_String ), String );
 }
 
 /////////////////////////////////////////////////////////////////
-bool ECharString::operator!=( const char* p_String) const
+bool ECharString::operator!=( PCSTR p_String) const
 {
 	return operator!=( A2W(p_String) );
 }
 
 /////////////////////////////////////////////////////////////////
-bool operator!=( const char* p_String, const ECharString& String )
+bool operator!=( PCSTR p_String, const ECharString& String )
 {
 	return operator!=( A2W(p_String), String ); 
 }

@@ -20,8 +20,8 @@ public:
 
 	aAnimation& operator=( const aAnimation& src );
 
-	long	init(FitIniFile* file, const char* prependName);
-	long	initWithBlockName( FitIniFile* file, const char* blockName );
+	long	init(FitIniFile* file, PCSTR prependName);
+	long	initWithBlockName( FitIniFile* file, PCSTR blockName );
 	void	destroy();
 
 	void	begin();
@@ -100,7 +100,7 @@ public:
 
 	aAnimGroup(){curState = NORMAL; }
 
-	long init( FitIniFile* file, const char* blockName );
+	long init( FitIniFile* file, PCSTR blockName );
 
 	void setState( STATE );
 	STATE getState() const;

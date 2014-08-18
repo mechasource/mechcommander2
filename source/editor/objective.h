@@ -56,7 +56,7 @@ enum condition_species_type {
 	NUM_CONDITION_SPECIES
 };
 
-static const char *g_conditionSpeciesStringArray[] = {
+static PCSTR g_conditionSpeciesStringArray[] = {
 	"DestroyAllEnemyUnits",
 		"DestroyNumberOfEnemyUnits",
 		"DestroyEnemyUnitGroup",
@@ -380,7 +380,7 @@ enum action_species_type {
 	NUM_ACTION_SPECIES
 };
 
-static const char *g_actionSpeciesStringArray[] = {
+static PCSTR g_actionSpeciesStringArray[] = {
 	"PlayBIK",
 	"PlayWAV",
 	"DisplayTextMessage",
@@ -651,7 +651,7 @@ public:
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
 	bool EditDialog();
-	bool WriteMissionScript(const char *Name, const char *OutputPath);
+	bool WriteMissionScript(PCSTR Name, PCSTR OutputPath);
 	void handleObjectInvalidation(const EditorObject *pObj);
 	bool NoteThePositionsOfObjectsReferenced();
 	bool RestoreObjectPointerReferencesFromNotedPositions();

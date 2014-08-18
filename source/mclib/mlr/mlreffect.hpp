@@ -42,7 +42,7 @@ namespace MidLevelRenderer {
 
 		virtual void
 			SetData(
-				const int *count,
+				pcint32_t count,
 				const Stuff::Point3D *point_data,
 				const Stuff::RGBAColor *color_data
 			) = 0;

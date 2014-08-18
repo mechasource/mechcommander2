@@ -169,7 +169,7 @@ void
 	multiTexCoords[0] = &texCoords;
 	multiTexCoordsPointers[0] = texCoords.GetData();
 
-	unsigned char *length_array;
+	PUCHAR length_array;
 	pMesh->GetSubprimitiveLengths(&length_array, &num);
 	SetSubprimitiveLengths(length_array, num);
 
@@ -251,7 +251,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::InitializeDrawPrimitive(unsigned char vis, int parameter)
+	MLR_I_MT_PMesh::InitializeDrawPrimitive(uint8_t vis, int parameter)
 {
 	MLR_I_PMesh::InitializeDrawPrimitive(vis, parameter);
 
@@ -381,7 +381,7 @@ MLRShape*
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh/3;
 	}
 
-	unsigned char *lengths = new unsigned char [nrTri];
+	PUCHAR lengths = new uint8_t [nrTri];
 	Register_Pointer(lengths);
 
 	for(i=0;i<nrTri;i++)

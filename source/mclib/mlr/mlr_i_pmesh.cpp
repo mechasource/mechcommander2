@@ -114,7 +114,7 @@ void
 	unsigned short *_index;
 	Point3D *_coords;
 	Vector2DScalar *_texCoords;
-	unsigned char *_lengths;
+	PUCHAR _lengths;
 
 	polyMesh->GetCoordData(&_coords, &len);
 	SetCoordData(_coords, len);
@@ -187,7 +187,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_PMesh::InitializeDrawPrimitive(unsigned char vis, int parameter)
+	MLR_I_PMesh::InitializeDrawPrimitive(uint8_t vis, int parameter)
 {
 	MLRIndexedPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
 
@@ -200,7 +200,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_PMesh::SetSubprimitiveLengths (unsigned char *data, int numPrimitives)
+	MLR_I_PMesh::SetSubprimitiveLengths (PUCHAR data, int numPrimitives)
 {
 	Check_Object(this); 
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -215,7 +215,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_PMesh::GetSubprimitiveLengths (unsigned char **data, int *l)
+	MLR_I_PMesh::GetSubprimitiveLengths (PUCHAR *data, int *l)
 {
 	Check_Object(this);
 	*l = lengths.GetLength();
@@ -257,7 +257,7 @@ int
 
 	int i, numPrimitives = GetNumPrimitives();
 	int ret = 0, len = lengths.GetLength();
-	unsigned char *iPtr;
+	PUCHAR iPtr;
 	Plane *p;
 
 	if(len <= 0)
@@ -279,16 +279,12 @@ int
 	{
 		for(i=0;i<numPrimitives;i++,p++,iPtr++)
 		{
-			*iPtr = (p->GetDistanceTo(u) >= 0.0f) ? (unsigned char)0xff : (unsigned char)0;
-			
+			*iPtr = uint8_t((p->GetDistanceTo(u) >= 0.0f) ? 0xff : 0);
 			ret += *iPtr;
 		}
-
-		visible = ret ? (unsigned char)1 : (unsigned char)0;
+		visible = uint8_t(ret ? 1 : 0);
 	}
-
-	visible = ret ? (unsigned char)1 : (unsigned char)0;
-
+	visible = uint8_t(ret ? 1 : 0);
 	FindVisibleVertices();
 
 	return ret;
@@ -300,7 +296,7 @@ void
 	MLR_I_PMesh::ResetTestList()
 {
 	int i, numPrimitives = GetNumPrimitives();
-	unsigned char *iPtr = &testList[0];
+	PUCHAR iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
 	{
@@ -368,7 +364,7 @@ void
 	Stuff::Vector4D *v4d = transformedCoords->GetData();
 	Stuff::Point3D *p3d = coords.GetData();
 	MLRClippingState *cs = clipPerVertex->GetData();
-	unsigned char *viv = visibleIndexedVertices.GetData();
+	PUCHAR viv = visibleIndexedVertices.GetData();
 
 	for(i=0;i<len;i++,p3d++,v4d++,cs++,viv++)
 	{
@@ -1064,7 +1060,7 @@ MLR_I_PMesh*
 	coords[6] = Point3D( half,  half, -half);
 	coords[7] = Point3D(-half,  half, -half);
 
-	unsigned char *lengths = new unsigned char [6];
+	PUCHAR lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
 	int i;
@@ -1242,7 +1238,7 @@ MLRShape*
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh/3;
 	}
 
-	unsigned char *lengths = new unsigned char [nrTri];
+	PUCHAR lengths = new uint8_t [nrTri];
 	Register_Pointer(lengths);
 
 	for(i=0;i<nrTri;i++)

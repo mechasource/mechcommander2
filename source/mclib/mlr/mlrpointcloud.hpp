@@ -41,7 +41,7 @@ namespace MidLevelRenderer {
 
 		void
 			SetData(
-				const int *count,
+				pcint32_t count,
 				const Stuff::Point3D *point_data,
 				const Stuff::RGBAColor *color_data
 			);
@@ -70,7 +70,7 @@ namespace MidLevelRenderer {
 
 	protected:
 		int type;
-		const int *usedNrOfVertices;
+		pcint32_t usedNrOfVertices;
 	};
 
 }

@@ -36,7 +36,7 @@ class aStyle3TextListItem : public aTextListItem
 {
 public:
 	aStyle3TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual long	init( FitIniFile* file, const char* blockName );
+	virtual long	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
 protected:
@@ -49,13 +49,13 @@ class aGameListItem : public aListItem
 {
 public:
 	aGameListItem();
-	virtual long	init( FitIniFile* file, const char* blockName );
+	virtual long	init( FitIniFile* file, PCSTR blockName );
 	virtual void update();
 	void setSessionInfo( _MC2Session* pSessions );
 
-	const char*		getSessionName();
+	PCSTR		getSessionName();
 
-	const char*		getText( int which );
+	PCSTR		getText( int which );
 
 	const MC2Session* getSession (void) { return(&session); }
 

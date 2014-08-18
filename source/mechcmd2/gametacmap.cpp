@@ -16,7 +16,7 @@ gameTacMap.cpp			: Implementation of the gameTacMap component.
 #include "mission.h"
 #include <windows.h>
 #include "..\resource.h"
-extern unsigned char godMode;
+extern uint8_t godMode;
 extern bool useLeftRightMouseProfile;
 
 #define SQUARE_BLIP 0
@@ -46,7 +46,7 @@ GameTacMap::GameTacMap()
 	objectiveNumFlashes = 0;
 }
 
-void GameTacMap::init( unsigned char* bitmapData, int dataSize )
+void GameTacMap::init( PUCHAR bitmapData, int dataSize )
 {
 
 	EllipseElement::init();
@@ -436,7 +436,7 @@ void GameTacMap::worldToTacMap( Stuff::Vector3D& world, gos_VERTEX& tac )
 {
 	TacMap::worldToTacMap( world, left, top, right - left, bottom - top, tac );
 }	
-void GameTacMap::initBuildings( unsigned char* data, int size )
+void GameTacMap::initBuildings( PUCHAR data, int size )
 {
 	if ( data )
 	{

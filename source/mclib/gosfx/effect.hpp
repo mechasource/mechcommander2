@@ -381,7 +381,7 @@ namespace gosFX
 	public:
 		Effect__ClassData(
 			Stuff::RegisteredClass::ClassID class_id,
-			const char* class_name,
+			PCSTR class_name,
 			Stuff::Plug::ClassData *parent_class,
 			Effect::Factory effect_factory,
 			Effect::Specification::Factory spec_factory

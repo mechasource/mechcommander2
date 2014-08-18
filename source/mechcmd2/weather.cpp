@@ -354,7 +354,7 @@ void Weather::update (void)
 				thunderSFX = 0xffffffff;
 			}
 			
-			unsigned char lightening = lighteningLevel;
+			uint8_t lightening = lighteningLevel;
 			TerrainQuad::rainLightLevel = rainLightLevel * 0.2f;
 			{
 				eye->ambientRed  = eye->dayAmbientRed / rainLightLevel;
@@ -494,7 +494,7 @@ void Weather::render (void)
 				onScreen = eye->projectZ(botPos,screen2);
 				if (onScreen)
 				{
-					unsigned char amb = ambientFactor * (1.0f - screen1.z);
+					uint8_t amb = ambientFactor * (1.0f - screen1.z);
 					DWORD rainColor = (amb << 24) + (0xff << 16) + (0xff << 8) + (0xff);
 					
 					//Gotta draw this one!

@@ -32,7 +32,7 @@ public:
 	aColorPicker();
 
 	virtual long		init(long xPos, long yPos, long w, long h);
-	void				init( FitIniFile* file, const char* blockName );
+	void				init( FitIniFile* file, PCSTR blockName );
 
 	virtual void		destroy();
 	virtual void		render();
@@ -70,7 +70,7 @@ class aStyle1TextListItem : public aTextListItem
 {
 public:
 	aStyle1TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual long	init( FitIniFile* file, const char* blockName );
+	virtual long	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
 protected:
@@ -83,7 +83,7 @@ class aInsigniaListItem : public aListItem
 {
 public:
 	aInsigniaListItem() { ; }
-	virtual long	init( FitIniFile* file, const char* blockName );
+	virtual long	init( FitIniFile* file, PCSTR blockName );
 	virtual void update();
 
 protected:

@@ -50,12 +50,12 @@ class ContactInfo {
 
 	public:
 
-		unsigned char				contactStatus[MAX_TEAMS];
-		//unsigned char				allContactStatus[MAX_TEAMS];
-		unsigned char				contactCount[MAX_TEAMS];	//How many mechs/vehicles have me on sensors?
-		unsigned char				sensors[MAX_SENSORS];		//index into sensor's contact list
+		uint8_t				contactStatus[MAX_TEAMS];
+		//uint8_t				allContactStatus[MAX_TEAMS];
+		uint8_t				contactCount[MAX_TEAMS];	//How many mechs/vehicles have me on sensors?
+		uint8_t				sensors[MAX_SENSORS];		//index into sensor's contact list
 		unsigned short				teams[MAX_TEAMS];			//index into team's contact list
-		unsigned char				teamSpotter[MAX_TEAMS];
+		uint8_t				teamSpotter[MAX_TEAMS];
 
 	public:
 

@@ -1,5 +1,3 @@
-#ifndef KEYBOARDREF_H
-#define KEYBOARDREF_H
 /*************************************************************************************************\
 KeyboardRef.h			: Interface for the KeyboardRef component.
 //===========================================================================//
@@ -7,17 +5,14 @@ KeyboardRef.h			: Interface for the KeyboardRef component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef LOGISTICSSCREEN_H
+#pragma once
+
+#ifndef KEYBOARDREF_H
+#define KEYBOARDREF_H
+
 #include "logisticsscreen.h"
-#endif
-
-#ifndef ALISTBOX_H
 #include "alistbox.h"
-#endif
-
-#ifndef MISSIONGUI_H
-#include "MissionGui.h"
-#endif
+#include "missiongui.h"
 
 //*************************************************************************************************
 

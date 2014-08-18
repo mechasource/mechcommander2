@@ -3,7 +3,7 @@
 //===========================================================================//
 
 #pragma once
-#include "Hash.h"
+#include "hash.h"
 
 extern const char GAMELIST_KEY_INSTANCE[];
 extern const char GAMELIST_KEY_SERVER_NAME[];
@@ -64,7 +64,7 @@ extern const char INVALID_PING_STR[];
 
 extern "C" int __stdcall GetDirectPlayPort(void);
 
-const int ZONE_PING_INTERVAL = 20;
+cint32_t ZONE_PING_INTERVAL = 20;
 
 // mdm - change this back to INTERNET_ADDRESS when shipping externally.
 #define ZONE_SERVER_DEFAULT_ADDRESS ZONE_SERVER_LAN_ADDRESS
@@ -240,15 +240,15 @@ public:
 
     // create a new entry in the table, either with an auto-id
     // or with a specified ID.
-    virtual bool CreateEntry( const char * id );
+    virtual bool CreateEntry( PCSTR  id );
 
     // data field operations
-    virtual bool SetField( const char * id, const char * key, 
-                           const char * val );
-    const char * GetDataField( const char * id,
-                               const char * key );
-    virtual bool RemoveField( const char * id, const char * header );
-    virtual bool Remove( const char * id );
+    virtual bool SetField( PCSTR  id, PCSTR  key, 
+                           PCSTR  val );
+    PCSTR  GetDataField( PCSTR  id,
+                               PCSTR  key );
+    virtual bool RemoveField( PCSTR  id, PCSTR  header );
+    virtual bool Remove( PCSTR  id );
     void RemoveAll( void );
 
     // The indexed view is used for array-like access to the
@@ -258,12 +258,12 @@ public:
 
     // misc operations
     int  GetTotalCount( void ); // total number of table items 
-    bool Exists( const char * id );
-    void EnumerateAll( CHash<TableItem, const char *>::PFITERCALLBACK pfnCB,
+    bool Exists( PCSTR  id );
+    void EnumerateAll( CHash<TableItem, PCSTR >::PFITERCALLBACK pfnCB,
                        void * cookie );
-    const char * GetIDFromField( const char * key,
-                           const char * val );
-    const char * GetIDFromField( const char * key,
+    PCSTR  GetIDFromField( PCSTR  key,
+                           PCSTR  val );
+    PCSTR  GetIDFromField( PCSTR  key,
                             int val ); // compares iVal
     static void __cdecl Lock( void );
     static void __cdecl Unlock( void ); 
@@ -275,15 +275,15 @@ public:
     void operator delete[] ( void* ptr );
 
     static FieldItem * FindField( FieldList & pList,
-                                  const char * key );
+                                  PCSTR  key );
 
 protected:
     
 
     // hash table stuff
-    static DWORD HashLPSTR( const char * Key );
-    static bool  HashCompare(TableItem *obj,const char * key);
-    typedef CHash<TableItem, const char *> ItemHash;
+    static DWORD HashLPSTR( PCSTR  Key );
+    static bool  HashCompare(TableItem *obj,PCSTR  key);
+    typedef CHash<TableItem, PCSTR > ItemHash;
     
 
     ////////////////////
@@ -293,9 +293,9 @@ protected:
     void FreeFieldList( FieldList * pList );
     virtual void FreeTableItem( TableItem * pItem );
     void FreeFieldItem( FieldItem * pItem );
-    TableItem * FindItem( const char * id );
-    static const char * FindFieldVal( FieldList & pList,
-                               const char * key );
+    TableItem * FindItem( PCSTR  id );
+    static PCSTR  FindFieldVal( FieldList & pList,
+                               PCSTR  key );
     static bool ForEachFindField( TableItem * tableItem,
                            MTListNodeHandle handle, 
                            void * pThis );
@@ -312,9 +312,9 @@ protected:
     ItemHash m_Items;
 
     // extra vars needed or hash foreach callback
-    const char * m_SearchKey;
-    const char * m_SearchVal;
-    const char * m_SearchResult;
+    PCSTR  m_SearchKey;
+    PCSTR  m_SearchVal;
+    PCSTR  m_SearchResult;
 
     IndexedTableView * m_IndexedView; // make list later if we want multiple views to be possible
 
@@ -334,22 +334,22 @@ public:
     GameList();
     virtual ~GameList();
 
-    virtual bool CreateEntry( const char * id ); 
-    virtual bool SetField( const char * id,
-                           const char * key,
-                           const char * val );
+    virtual bool CreateEntry( PCSTR  id ); 
+    virtual bool SetField( PCSTR  id,
+                           PCSTR  key,
+                           PCSTR  val );
 
-    bool GetGUID( const char * id, GUID & gameGUID );
-    bool GetID( const char * gameName, const char * & id );
+    bool GetGUID( PCSTR  id, GUID & gameGUID );
+    bool GetID( PCSTR  gameName, PCSTR  & id );
 
-    const char * GetReferenceGameID( void );
-    PlayerList * GetPlayerList( const char * id );
+    PCSTR  GetReferenceGameID( void );
+    PlayerList * GetPlayerList( PCSTR  id );
 
     // ping management
     static bool _stdcall StartPingServer( void );
     static bool _stdcall StartPingClient( DWORD ping_interval_sec );
     static void _stdcall ShutdownPing( void );
-    int  GetPing( const char * id );
+    int  GetPing( PCSTR  id );
     int  GetPing( int index );
 
 
@@ -425,9 +425,9 @@ public:
     FilterType GetFilterType( void ) const;
 
     // general field-based filtering
-    void AddNumericFilter( const char * key, int minVal, int maxVal );
-    void AddStringFilter( const char * key, const char * val );
-    virtual bool ClearFilter(const char * key );
+    void AddNumericFilter( PCSTR  key, int minVal, int maxVal );
+    void AddStringFilter( PCSTR  key, PCSTR  val );
+    virtual bool ClearFilter(PCSTR  key );
 
     virtual void ClearAllFilters( void );
     
@@ -502,18 +502,18 @@ public:
     void EnablePlayerCountFilter( bool val );
     bool GetPlayerCountFilterEnabled( void ) const;
 
-    bool SetGameTypeFilter( const char * gameType );
-    const char * GetGameTypeFilter( void ) const;
+    bool SetGameTypeFilter( PCSTR  gameType );
+    PCSTR  GetGameTypeFilter( void ) const;
     void EnableGameTypeFilter( bool val ) ;
     bool GetGameTypeFilterEnabled( void ) const;
 
-    bool SetPlayerFilter( const char * playerName );
-    const char * GetPlayerFilter( void ) const;
+    bool SetPlayerFilter( PCSTR  playerName );
+    PCSTR  GetPlayerFilter( void ) const;
     void EnablePlayerFilter( bool val ) ;
     bool GetPlayerFilterEnabled( void ) const;
 
-    bool SetClanFilter( const char * clanName );
-    const char * GetClanFilter( void ) const;
+    bool SetClanFilter( PCSTR  clanName );
+    PCSTR  GetClanFilter( void ) const;
     void EnableClanFilter( bool val ) ;
     bool GetClanFilterEnabled( void ) const;
 
@@ -568,7 +568,7 @@ public:
     void CreateEntryNotify( TableList::TableItem & item );
     void SetFieldNotify( TableList::TableItem & item, TableList::FieldItem & field );
     void RemoveFieldNotify( TableList::TableItem * item,
-                            const char * key );
+                            PCSTR  key );
     void RemoveNotify( TableList::TableItem & item );
 
     // policy settings
@@ -589,7 +589,7 @@ public:
     bool  Filter( void );
 
     // sorting operations
-    bool Sort( const char * sortKey,
+    bool Sort( PCSTR  sortKey,
                SortOrderType sortOrder );
     bool SortIfDirty( void );
     void SetResortFrequency( double seconds );
@@ -599,9 +599,9 @@ public:
 
 
     // misc operations
-    int GetIndexFromID( const char * id );
-    bool SetSelection( const char * id );
-    const char * GetSelection( void ) const;
+    int GetIndexFromID( PCSTR  id );
+    bool SetSelection( PCSTR  id );
+    PCSTR  GetSelection( void ) const;
 
     // to override gos memory allocation
     void * operator new(size_t size);
@@ -651,9 +651,9 @@ private:
     char * m_SortKey;
     SortOrderType m_SortOrder;
     // extra vars needed or hash foreach callback
-    const char * m_SearchKey;
-    const char * m_SearchVal;
-    const char * m_SearchResult;
+    PCSTR  m_SearchKey;
+    PCSTR  m_SearchVal;
+    PCSTR  m_SearchResult;
     // mdm - used to remember which item is selected in the list
     char * m_Selection;
     // mdm - true if the list has been changed but not resorted

@@ -514,8 +514,8 @@ void aEdit:: backSpace(int nPosition)
 	nCharCount = 1;
 	if ( nPosition > 1 )
 	{
-		unsigned char* pPrev = _mbsdec( (const unsigned char*)(const char*)text, (const unsigned char*)(const char*)text + nPosition );		
-		nCharCount = (const unsigned char*)(const char*)text + nPosition - pPrev;
+		PUCHAR pPrev = _mbsdec( (pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nPosition );		
+		nCharCount = (pcuint8_t)(PCSTR)text + nPosition - pPrev;
 	}
 
 	text.Remove( nPosition-nCharCount, nPosition-1 );
@@ -607,8 +607,8 @@ bool aEdit::handleFormattingKeys(int keycode)
 					int decrementCount = 1;
 					if ( nInsertion2 > 1  )
 					{
-						unsigned char* pPrev = _mbsdec( (const unsigned char*)(const char*)text, (const unsigned char*)(const char*)text + nInsertion2 );
-						decrementCount = (const unsigned char*)(const char*)text + nInsertion2 - pPrev;
+						PUCHAR pPrev = _mbsdec( (pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2 );
+						decrementCount = (pcuint8_t)(PCSTR)text + nInsertion2 - pPrev;
 					}
 					nInsertion2-= decrementCount;
 				}
@@ -622,8 +622,8 @@ bool aEdit::handleFormattingKeys(int keycode)
 					int decrementCount = 1;
 					if ( nInsertion1 > 1 )
 					{
-						unsigned char* pPrev = _mbsdec( (const unsigned char*)(const char*)text, (const unsigned char*)(const char*)text + nInsertion2 );
-						decrementCount = (const unsigned char*)(const char*)text + nInsertion2 - pPrev;	
+						PUCHAR pPrev = _mbsdec( (pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2 );
+						decrementCount = (pcuint8_t)(PCSTR)text + nInsertion2 - pPrev;	
 					}
 					nInsertion1 -= decrementCount;
 				}
@@ -724,15 +724,15 @@ int		aEdit::findChar(int nXPos)
 	nNextPos = nLastPos = 0;
 	n=0;
 
-	unsigned char* pBegin = (unsigned char*)&text[0];
-	unsigned char* pCur = pBegin;
-	unsigned char* pNext = pBegin;
+	PUCHAR pBegin = (PUCHAR)&text[0];
+	PUCHAR pCur = pBegin;
+	PUCHAR pNext = pBegin;
 	if ( text.Length() )
 	{
 		do
 		{	
 			pNext = _mbsinc( pCur );
-			unsigned char tmp = *pNext;
+			uint8_t tmp = *pNext;
 			*pNext = NULL;
 			nLastPos = nNextPos;
 			nNextPos = font.width(text);
@@ -753,7 +753,7 @@ int		aEdit::findChar(int nXPos)
 	return n;
 }
 
-void aEdit::init( FitIniFile* file, const char* header )
+void aEdit::init( FitIniFile* file, PCSTR header )
 {
 	int result = file->seekBlock( header );
 	

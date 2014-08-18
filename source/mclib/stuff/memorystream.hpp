@@ -29,9 +29,9 @@ namespace Stuff {
 	//#######################    MemoryStream    ###############################
 	//##########################################################################
 
-	const int End_Of_Stream=-1;
+	cint32_t End_Of_Stream=-1;
 
-	const int Empty_Bit_Buffer=-20;
+	cint32_t Empty_Bit_Buffer=-20;
 
 
 	class MemoryStream :
@@ -280,7 +280,7 @@ namespace Stuff {
 		int
 			currentBit;
 
-		UCHAR
+		uint8_t
 			workingBitBuffer;
 
 		MemoryStream&
@@ -312,7 +312,7 @@ namespace Stuff {
 		}
 
 		MemoryStream&
-			ReadBits(UCHAR *ptr, ULONG number_of_bits)
+			ReadBits(uint8_t *ptr, ULONG number_of_bits)
 		{
 			Verify(number_of_bits <= 8);
 			Check_Object(this); Check_Pointer(ptr);
@@ -369,7 +369,7 @@ namespace Stuff {
 			ReadBitsToScaledInt(int &number, int min, int max,  ULONG number_of_bits);
 
 		MemoryStream&
-			WriteScaledIntToBits(const int &number, int min, int max,  ULONG number_of_bits);
+			WriteScaledIntToBits(cint32_t &number, int min, int max,  ULONG number_of_bits);
 
 		MemoryStream&
 			ReadBitsToScaledFloat(float &number, float min, float max,  ULONG number_of_bits);
@@ -384,7 +384,7 @@ namespace Stuff {
 		// Protected data
 		//
 	protected:
-		UCHAR
+		uint8_t
 			*streamStart,
 			*currentPosition;
 		size_t
@@ -558,7 +558,7 @@ namespace MemoryStreamIO {
 	inline Stuff::MemoryStream&
 		Read(
 		Stuff::MemoryStream* stream,
-		UCHAR *output
+		uint8_t *output
 		)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
@@ -666,7 +666,7 @@ namespace MemoryStreamIO {
 	inline Stuff::MemoryStream&
 		Write(
 		Stuff::MemoryStream* stream,
-		const int *input
+		pcint32_t input
 		)
 	{
 		return stream->WriteBytes(input, sizeof(*input));

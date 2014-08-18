@@ -1158,15 +1158,15 @@ void GVAppearance::setPaintScheme (void)
 
 					float newColorRed = float((psRed & 0x00ff0000)>>16);
 					newColorRed  *= baseColorRed;
-					unsigned char red = (unsigned char)newColorRed;
+					uint8_t red = (uint8_t)newColorRed;
 
 					float newColorGreen = float((psRed & 0x0000ff00)>>8);
 					newColorGreen  *= baseColorRed;
-					unsigned char green = (unsigned char)newColorGreen;
+					uint8_t green = (uint8_t)newColorGreen;
 
 					float newColorBlue = float(psRed & 0x000000ff);
 					newColorBlue  *= baseColorRed;
-					unsigned char blue = (unsigned char)newColorBlue;
+					uint8_t blue = (uint8_t)newColorBlue;
 
 					newColor = (baseColorAlpha<<24) + (red<<16) + (green<<8) + (blue);
 				}
@@ -1179,15 +1179,15 @@ void GVAppearance::setPaintScheme (void)
 
 					float newColorRed = float((psGreen & 0x00ff0000)>>16);
 					newColorRed  *= baseColorGreen;
-					unsigned char red = (unsigned char)newColorRed;
+					uint8_t red = (uint8_t)newColorRed;
 
 					float newColorGreen = float((psGreen & 0x0000ff00)>>8);
 					newColorGreen  *= baseColorGreen;
-					unsigned char green = (unsigned char)newColorGreen;
+					uint8_t green = (uint8_t)newColorGreen;
 
 					float newColorBlue = float(psGreen & 0x000000ff);
 					newColorBlue  *= baseColorGreen;
-					unsigned char blue = (unsigned char)newColorBlue;
+					uint8_t blue = (uint8_t)newColorBlue;
 
 					newColor = (baseColorAlpha<<24) + (red<<16) + (green<<8) + (blue);
 				}
@@ -1200,15 +1200,15 @@ void GVAppearance::setPaintScheme (void)
 
 					float newColorRed = float((psBlue & 0x00ff0000)>>16);
 					newColorRed  *= baseColorBlue;
-					unsigned char red = (unsigned char)newColorRed;
+					uint8_t red = (uint8_t)newColorRed;
 
 					float newColorGreen = float((psBlue & 0x0000ff00)>>8);
 					newColorGreen  *= baseColorBlue;
-					unsigned char green = (unsigned char)newColorGreen;
+					uint8_t green = (uint8_t)newColorGreen;
 
 					float newColorBlue = float(psBlue & 0x000000ff);
 					newColorBlue  *= baseColorBlue;
-					unsigned char blue = (unsigned char)newColorBlue;
+					uint8_t blue = (uint8_t)newColorBlue;
 
 					newColor = (baseColorAlpha<<24) + (red<<16) + (green<<8) + (blue);
 				}
@@ -2340,7 +2340,7 @@ void GVAppearance::updateGeometry (void)
 		pitchRoll = Stuff::EulerAngles(pitchAngle, 0.0f, rollAngle);
 		totalRotation.Multiply(pitchRoll,rot);
 	
-		unsigned char lightr,lightg,lightb;
+		uint8_t lightr,lightg,lightb;
 		float lightIntensity = 1.0f;
 		if (land)
 			lightIntensity = land->getTerrainLight(position);
@@ -2382,7 +2382,7 @@ void GVAppearance::updateGeometry (void)
 					fogFactor = 256.0;
 				}
 	
-				unsigned char fogResult = fogFactor;
+				uint8_t fogResult = fogFactor;
 				fogRGB = fogResult << 24;
 			}
 		}

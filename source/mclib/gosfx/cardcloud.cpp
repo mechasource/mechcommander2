@@ -313,7 +313,7 @@ gosFX::CardCloud::CardCloud(
 	m_P_uvs = Cast_Pointer(Stuff::Vector2DOf<Stuff::Scalar>*, &m_data[index]);
 
 	m_cloudImplementation->SetData(
-		Cast_Pointer(const int *, &m_activeParticleCount),
+		Cast_Pointer(pcint32_t, &m_activeParticleCount),
 		m_P_vertices,
 		m_P_color,
 		m_P_uvs

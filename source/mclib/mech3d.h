@@ -751,7 +751,7 @@ class Mech3DAppearance: public ObjectAppearance
 			sensorTriangleShape->SetAlphaValue(0xff - aVal);
 		}
 
-		virtual void setMechName( const char* pName )
+		virtual void setMechName( PCSTR pName )
 		{
 			strcpy( mechName, pName );
 		}

@@ -91,8 +91,8 @@ void	LogisticsScreen::clear()
 
 //-------------------------------------------------------------------------------------------------
 
-void LogisticsScreen::init( FitIniFile& file, const char* staticName, const char* textName, const char* rectName,
-					  const char* buttonName, const char* editName, const char* animObjectName, DWORD neverFlush )
+void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, PCSTR rectName,
+					  PCSTR buttonName, PCSTR editName, PCSTR animObjectName, DWORD neverFlush )
 {
 	clear();
 	

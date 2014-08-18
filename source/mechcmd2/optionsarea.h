@@ -180,8 +180,8 @@ public:
 	virtual void render();
 	virtual void update();
 	
-	void setDescription( const char* pText );
-	void setKey( const char* pText );
+	void setDescription( PCSTR pText );
+	void setKey( PCSTR pText );
 
 	HotKeyListItem( );
 	~HotKeyListItem();

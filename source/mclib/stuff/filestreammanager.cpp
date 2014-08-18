@@ -61,7 +61,7 @@ void
 	// Get the new filename
 	//---------------------
 	//
-	const char* new_file = stream->GetFileName();
+	PCSTR new_file = stream->GetFileName();
 	Check_Pointer(new_file);
 
 	//
@@ -80,7 +80,7 @@ void
 	//
 	while (scanner.GetBytesRemaining() > 0)
 	{
-		const char* old_name = Cast_Pointer(const char*, scanner.GetPointer());
+		PCSTR old_name = Cast_Pointer(PCSTR, scanner.GetPointer());
 		int len = strlen(old_name);
 		if (!_stricmp(new_file, old_name))
 			return;
@@ -102,8 +102,8 @@ void
 	dependencies->Rewind();
 	while (dependencies->GetBytesRemaining() > 0)
 	{
-		const char* new_name =
-			Cast_Pointer(const char*, dependencies->GetPointer());
+		PCSTR new_name =
+			Cast_Pointer(PCSTR, dependencies->GetPointer());
 		int new_len = strlen(new_name);
 
 		//
@@ -121,7 +121,7 @@ void
 		//
 		while (scanner.GetBytesRemaining() > 0)
 		{
-			const char* old_name = Cast_Pointer(const char*, scanner.GetPointer());
+			PCSTR old_name = Cast_Pointer(PCSTR, scanner.GetPointer());
 			int len = strlen(old_name);
 			if (!_stricmp(old_name, new_name))
 				break;

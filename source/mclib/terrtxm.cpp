@@ -873,7 +873,7 @@ void TerrainTextures::combineTxm (MemoryPtr dest, DWORD binNumber, long type, lo
 				float combValue = combPercent * float(*combineRAM);
 				float destValue = destPercent * float(*dest);
 				combValue += destValue;
-				unsigned char value = (unsigned char)combValue;
+				uint8_t value = (uint8_t)combValue;
 				*dest = value;
 				dest++;
 				combineRAM++;
@@ -881,7 +881,7 @@ void TerrainTextures::combineTxm (MemoryPtr dest, DWORD binNumber, long type, lo
 				combValue = combPercent * float(*combineRAM);
 				destValue = destPercent * float(*dest);
 				combValue += destValue;
-				value = (unsigned char)combValue;
+				value = (uint8_t)combValue;
 				*dest = value;
 				dest++;
 				combineRAM++;
@@ -890,7 +890,7 @@ void TerrainTextures::combineTxm (MemoryPtr dest, DWORD binNumber, long type, lo
 				combValue = combPercent * float(*combineRAM);
 				destValue = destPercent * float(*dest);
 				combValue += destValue;
-				value = (unsigned char)combValue;
+				value = (uint8_t)combValue;
 				*dest = value;
 				dest++;
 				combineRAM++;
@@ -900,7 +900,7 @@ void TerrainTextures::combineTxm (MemoryPtr dest, DWORD binNumber, long type, lo
 				//combValue = combPercent * float(*combineRAM);
 				//destValue = destPercent * float(*dest);
 				//combValue += destValue;
-				//value = (unsigned char)combValue;
+				//value = (uint8_t)combValue;
 				if (*dest < maskRAM[i])
 					*dest = maskRAM[i];
 				dest++;
@@ -1020,7 +1020,7 @@ void TerrainTextures::combineOverlayTxm (MemoryPtr dest, long type, long mipLeve
 				float combValue = combPercent * float(*combineRAM);
 				float destValue = destPercent * float(*dest);
 				combValue += destValue;
-				unsigned char value = (unsigned char)combValue;
+				uint8_t value = (uint8_t)combValue;
 				*dest = value;
 				dest++;
 				combineRAM++;
@@ -1028,7 +1028,7 @@ void TerrainTextures::combineOverlayTxm (MemoryPtr dest, long type, long mipLeve
 				combValue = combPercent * float(*combineRAM);
 				destValue = destPercent * float(*dest);
 				combValue += destValue;
-				value = (unsigned char)combValue;
+				value = (uint8_t)combValue;
 				*dest = value;
 				dest++;
 				combineRAM++;
@@ -1037,7 +1037,7 @@ void TerrainTextures::combineOverlayTxm (MemoryPtr dest, long type, long mipLeve
 				combValue = combPercent * float(*combineRAM);
 				destValue = destPercent * float(*dest);
 				combValue += destValue;
-				value = (unsigned char)combValue;
+				value = (uint8_t)combValue;
 				*dest = value;
 				dest++;
 				combineRAM++;
@@ -1045,7 +1045,7 @@ void TerrainTextures::combineOverlayTxm (MemoryPtr dest, long type, long mipLeve
 				//combValue = combPercent * float(*combineRAM);
 				//destValue = destPercent * float(*dest);
 				//combValue += destValue;
-				//value = (unsigned char)combValue;
+				//value = (uint8_t)combValue;
 				if (*dest < *combineRAM)
 					*dest = *combineRAM;
 				dest++;

@@ -310,7 +310,7 @@ typedef enum {
 
 typedef struct {
 	char			code;
-	unsigned char	numTriggers;			
+	uint8_t	numTriggers;			
 	long			trigger[MAX_ALARM_TRIGGERS];
 } PilotAlarm;
 
@@ -642,9 +642,9 @@ typedef struct _QueuedTacOrder
 	long						id;
 	Stuff::Vector3D				point;
 	unsigned long				packedData[2];
-	unsigned char				tactic;
+	uint8_t				tactic;
 	BldgAppearance*				marker;
-	unsigned char 				moveMode;			//So save/load can recreate this lovely pointer!
+	uint8_t 				moveMode;			//So save/load can recreate this lovely pointer!
 } QueuedTacOrder;
 
 typedef QueuedTacOrder* QueuedTacOrderPtr;
@@ -777,7 +777,7 @@ typedef struct _MechWarriorData
 
 	unsigned long			debugFlags;
 
-	unsigned char			oldPilot;
+	uint8_t			oldPilot;
 
 	long					warriorBrainHandle;
 } MechWarriorData;
@@ -924,7 +924,7 @@ class MechWarrior {
 
 		RadioPtr				radio;
 		bool					isPlayingMsg;		//Always false unless I'm playing a message!
-		unsigned char			oldPilot;
+		uint8_t			oldPilot;
 
 		//MechWarriorPtr			next;
 
@@ -1081,7 +1081,7 @@ class MechWarrior {
 			return(courage);
 		}
 
-		void setCourage (unsigned char _courage) {
+		void setCourage (uint8_t _courage) {
 			courage = _courage;
 		}
 

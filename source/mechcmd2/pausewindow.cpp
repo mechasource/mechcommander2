@@ -237,7 +237,7 @@ void PauseWindow::update()
 
 	wasDragging = userInput->wasLeftDrag();
 
-	const char * campaignName = LogisticsData::instance->getCampaignName().Data();
+	PCSTR  campaignName = LogisticsData::instance->getCampaignName().Data();
 	char campName[1024];
 	_splitpath(campaignName,NULL,NULL,campName,NULL);
 	if ( MPlayer || 

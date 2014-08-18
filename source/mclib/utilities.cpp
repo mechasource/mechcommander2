@@ -204,7 +204,7 @@ bool StaticInfo::isInside( int mouseX, int mouseY )
 
 //Fills the buffer with the bitmap data.
 // Used by new mouse cursor draw routines.
-void StaticInfo::getData(unsigned char * buffer)
+void StaticInfo::getData(PUCHAR  buffer)
 {
 	if ((vHeight > 32) || (uWidth > 32))
 	{
@@ -368,13 +368,13 @@ void StaticInfo::setNewUVs( float uLeft, float vTop, float uRight, float vBottom
 }
 
 void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, long left, long top,  
-					bool proportional, const char* text, bool bold, float scale )
+					bool proportional, PCSTR text, bool bold, float scale )
 {
 	drawShadowText( colorTop, colorShadow, font, left, top, proportional, text, bold, scale, -1, 1 );
 }
 
 void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, 
-					long left, long top, bool proportional, const char* text, bool bold, float scale,
+					long left, long top, bool proportional, PCSTR text, bool bold, float scale,
 					long xOffset, long yOffset)
 {
 	gos_TextSetAttributes( font, colorShadow, scale, false, proportional, bold, false, 0 );
@@ -388,7 +388,7 @@ void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font,
 }
 
 void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, 
-					long left, long top, long right, long bottom, bool proportional, const char* text, bool bold, float scale,
+					long left, long top, long right, long bottom, bool proportional, PCSTR text, bool bold, float scale,
 					long xOffset, long yOffset)
 {
 	gos_TextSetAttributes( font, colorShadow, scale, true, proportional, bold, false, 2 );

@@ -53,7 +53,7 @@ RegisteredClass::RegisteredClass(ClassData *class_data):
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-const char*
+PCSTR
 	RegisteredClass::GetClassString() const
 {
 	Check_Object(this);
@@ -78,7 +78,7 @@ void
 //
 RegisteredClass__ClassData::RegisteredClass__ClassData(
 	RegisteredClass::ClassID class_id,
-	const char *name,
+	PCSTR name,
 	RegisteredClass__ClassData *parent
 )
 {
@@ -207,7 +207,7 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 RegisteredClass__ClassData*
-	RegisteredClass__ClassData::FindClassData(const char* name)
+	RegisteredClass__ClassData::FindClassData(PCSTR name)
 {
 	Check_Object(this);
 	if (!_stricmp(className, name))

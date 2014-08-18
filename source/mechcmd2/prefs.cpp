@@ -85,7 +85,7 @@ CPrefs::CPrefs() {
 #endif
 }
 
-int CPrefs::load( const char* pFileName ) {
+int CPrefs::load( PCSTR pFileName ) {
 	long result = 0;
 
 	FullPathFileName prefsPathname;
@@ -482,7 +482,7 @@ int CPrefs::applyPrefs(bool applyRes) {
 	return 0;
 }
 
-void CPrefs::setNewName( const char* pNewName )
+void CPrefs::setNewName( PCSTR pNewName )
 {
 	if ( !pNewName )
 		return;
@@ -521,7 +521,7 @@ void CPrefs::setNewName( const char* pNewName )
 	}
 }
 
-void CPrefs::setNewIP( const char* pNewIP )
+void CPrefs::setNewIP( PCSTR pNewIP )
 {
 	if ( !pNewIP )
 		return;
@@ -554,7 +554,7 @@ void CPrefs::setNewIP( const char* pNewIP )
 	}
 }
 
-void CPrefs::setNewUnit( const char* pNewUnit )
+void CPrefs::setNewUnit( PCSTR pNewUnit )
 {
 	if ( !pNewUnit )
 		return;

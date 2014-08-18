@@ -42,11 +42,11 @@ ObjectNameList::~ObjectNameList()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-const char*
-	ObjectNameList::AddEntry(
-		const char *name,
-		void *data
-	)
+PCSTR
+ObjectNameList::AddEntry(
+						 PCSTR name,
+						 void *data
+						 )
 {
 	Check_Object(this);
 	Check_Pointer(name);
@@ -79,7 +79,7 @@ const char*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void*
-	ObjectNameList::FindObject(const char *name)
+ObjectNameList::FindObject(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
@@ -101,7 +101,7 @@ void*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	ObjectNameList::DeleteEntry(const char *name)
+ObjectNameList::DeleteEntry(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
@@ -142,7 +142,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 int
-	ObjectNameList::GetEntryCount() const
+ObjectNameList::GetEntryCount() const
 {
 	Check_Object(this);
 
@@ -163,23 +163,17 @@ int
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 int
-	ObjectNameList::BuildSubList(
-		const ObjectNameList &source_list,
-		const char *prefix
-	)
+ObjectNameList::BuildSubList(
+	const ObjectNameList &source_list, PCSTR prefix)
 {
 	Check_Object(this);
 	Check_Object(&source_list);
 	Check_Pointer(prefix);
 
-   const int
-		length = strlen(prefix);
-	Entry
-		*entry = source_list.firstEntry;
-	const char
-		*name;
-	int
-		count = 0;
+	const size_t	length = strlen(prefix);
+	Entry*			entry = source_list.firstEntry;
+	PCSTR			name;
+	int				count = 0;
 
 	//------------------------------------------------------
 	// add entries to SubList whose name begins with prefix
@@ -207,20 +201,20 @@ int
 //#############################################################################
 
 void
-	ObjectNameList::Entry::SetName(const char *name)
+ObjectNameList::Entry::SetName(PCSTR name)
 {
 	Check_Pointer(this);
 	Check_Pointer(name);
 	strcpy(
 		Cast_Pointer(char*, this) + sizeof(ObjectNameList::Entry),
 		name
-	);
+		);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	ObjectNameList::Entry::IsName(const char *name) const
+ObjectNameList::Entry::IsName(PCSTR name) const
 {
 	Check_Object(this);
 	//do not check name here
@@ -252,8 +246,8 @@ NameList::~NameList()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-const char*
-	NameList::FindName(void *data)
+PCSTR
+NameList::FindName(void *data)
 {
 	Check_Object(this);
 
@@ -274,7 +268,7 @@ const char*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 NameList::Entry*
-	NameList::FindEntry(const char *name)
+NameList::FindEntry(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
@@ -296,7 +290,7 @@ NameList::Entry*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 int
-	NameList::FindEntryIndex(const char *name)
+NameList::FindEntryIndex(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
@@ -321,7 +315,7 @@ int
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 NameList::Entry
-	*NameList::FindEntry(void *data)
+*NameList::FindEntry(void *data)
 {
 	Check_Object(this);
 
@@ -342,7 +336,7 @@ NameList::Entry
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	NameList::DeleteEntry(const char *name)
+NameList::DeleteEntry(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
@@ -383,10 +377,8 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MemoryStream&
-	MemoryStreamIO::Write(
-		MemoryStream *stream,
-		const NameList *names
-	)
+MemoryStreamIO::Write(
+	MemoryStream *stream, const NameList *names)
 {
 	Check_Object(names);
 
@@ -414,7 +406,7 @@ MemoryStream&
 	while (entry)
 	{
 		Check_Object(entry);
-		const char* name = entry->GetName();
+		PCSTR name = entry->GetName();
 		Check_Pointer(name);
 		stream->WriteBytes(name, strlen(name)+1);
 		entry = entry->GetNextEntry();
@@ -426,10 +418,8 @@ MemoryStream&
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MemoryStream&
-	MemoryStreamIO::Read(
-		MemoryStream *stream,
-		NameList *names
-	)
+MemoryStreamIO::Read(
+	MemoryStream *stream, NameList *names)
 {
 	//
 	//---------------------------------------------------------------------
@@ -440,7 +430,7 @@ MemoryStream&
 	*stream >> count;
 	while (count-- > 0)
 	{
-		const char* name = Cast_Pointer(const char*, stream->GetPointer());
+		PCSTR name = Cast_Pointer(PCSTR, stream->GetPointer());
 		names->AddEntry(name, NULL);
 		stream->AdvancePointer(strlen(name)+1);
 	}
@@ -464,11 +454,9 @@ AlphaNameList::~AlphaNameList()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-const char*
-	AlphaNameList::AddEntry(
-		const char *name,
-		void *data
-	)
+PCSTR
+AlphaNameList::AddEntry(
+	PCSTR name, void *data)
 {
 	Check_Object(this);
 	Check_Pointer(name);

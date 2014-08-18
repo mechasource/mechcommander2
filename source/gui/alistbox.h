@@ -70,12 +70,12 @@ public:
 
 	virtual ~aTextListItem();
 
-	void		setText( const char* text );
+	void		setText( PCSTR text );
 	void		setText( long resID );
-	const char* getText() const;
+	PCSTR getText() const;
 	void		sizeToText();
 
-	void init( FitIniFile& file, const char* blockName = "Text0" );
+	void init( FitIniFile& file, PCSTR blockName = "Text0" );
 
 	virtual void render();
 	void		setAlignment( long newA ){ alignment = newA; }
@@ -108,7 +108,7 @@ public:
 	aAnimTextListItem( const aAnimTextListItem& src ); 
 	aAnimTextListItem& operator=( const aAnimTextListItem& src ); 
 
-	void init( FitIniFile& file, const char* blockName = "Text0" );
+	void init( FitIniFile& file, PCSTR blockName = "Text0" );
 	virtual void render();
 	virtual void update();
 
@@ -123,11 +123,11 @@ class aLocalizedListItem : public aAnimTextListItem
 {
 public:
 	aLocalizedListItem();
-	virtual long	init( FitIniFile* file, const char* blockName );
+	virtual long	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
-	void			setHiddenText( const char* pText ){ hiddenText = pText; }
-	const char*		getHiddenText( ) const { return hiddenText;}
+	void			setHiddenText( PCSTR pText ){ hiddenText = pText; }
+	PCSTR		getHiddenText( ) const { return hiddenText;}
 
 protected:
 
@@ -145,7 +145,7 @@ public:
 	aListBox();
 
 	virtual long		init(long xPos, long yPos, long w, long h);
-	void				init( FitIniFile* file, const char* blockName );
+	void				init( FitIniFile* file, PCSTR blockName );
 
 	virtual void		destroy();
 	virtual void		render();
@@ -220,7 +220,7 @@ public:
 
 	aDropList();
 
-	virtual long	init( FitIniFile* file, const char* blockName );
+	virtual long	init( FitIniFile* file, PCSTR blockName );
 	virtual void	destroy();
 	void specialDestroy();
 	virtual void		render();
@@ -243,7 +243,7 @@ public:
 	}
 
 	long				AddItem( unsigned long textID, unsigned long color );
-	long				AddItem( const char* text, unsigned long color );
+	long				AddItem( PCSTR text, unsigned long color );
 	long				GetSelectedItem() const { return selectionIndex; }
 
 	aDropList& operator=( const aDropList& );
@@ -272,7 +272,7 @@ public:
 	aComboBox();
 	~aComboBox() {};
 
-	virtual long	init( FitIniFile* file, const char* blockName );
+	virtual long	init( FitIniFile* file, PCSTR blockName );
 	virtual void	destroy();
 	virtual void		render();
 	virtual void		update();
@@ -285,7 +285,7 @@ public:
 
 	void				setReadOnly( bool bReadOnly ){ entry.setReadOnly( bReadOnly ); }
 	long				AddItem( unsigned long textID, unsigned long color );
-	long				AddItem( const char* text, unsigned long color );
+	long				AddItem( PCSTR text, unsigned long color );
 	long				GetSelectedItem() const { return selectionIndex; }
 
 

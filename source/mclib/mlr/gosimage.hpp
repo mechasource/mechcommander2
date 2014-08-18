@@ -3,19 +3,13 @@
 //===========================================================================//
 
 #pragma once
+
+#if !defined(MLR_GOSIMAGE_HPP)
 #define MLR_GOSIMAGE_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(GAMEOS_HPP)
-	#include <gameos.hpp>
-#endif
-
-#ifndef TXMMGR_H
+#include <mlr/mlr.hpp>
+#include <gameos.hpp>
 #include "txmmgr.h"
-#endif
 
 namespace MidLevelRenderer {
 
@@ -26,39 +20,48 @@ namespace MidLevelRenderer {
 	// Constructors/Destructors
 	//
 	public:
-		GOSImage(const char* imageName);
+		GOSImage(PCSTR imageName);
 		GOSImage(DWORD imageHandle);
-		GOSImage(const char*, gos_TextureHints);
+		GOSImage(PCSTR, gos_TextureHints);
+		~GOSImage(void);
 
-		~GOSImage();
+#if _CONSIDERED_OBSOLETE
 
-		int
-			GetWidth();
+		int		GetWidth(void);
+		int		GetHeight(void);
 
-		int
-			GetHeight();
+		PCSTR	GetName(void)
+		{ 
+			Check_Object(this);
+			return imageName;
+		}
 
-		const char*
-			GetName()
-				{ Check_Object(this); return imageName; }
+		int Ref(void)
+		{
+			Check_Object(this);
+			instance++;
+			return instance;
+		}
 
-		int
-			Ref()
-				{ Check_Object(this); instance++; return instance; }
+		int DeRef(void)
+		{
+			Check_Object(this);
+			instance--;
+			return instance;
+		}
 
-		int
-			DeRef()
-				{ Check_Object(this); instance--; return instance; }
+		int GetRef(void)
+		{ 
+			Check_Object(this); return instance; 
+		}
 
-		int
-			GetRef()
-				{ Check_Object(this); return instance; }
+		bool IsLoaded(void)
+		{
+			Check_Object(this); 
+			return ( (flags & Loaded) != 0);
+		}
 
-		bool
-			IsLoaded()
-				{ Check_Object(this); return ( (flags & Loaded) != 0); }
-
-		DWORD GetHandle()
+		DWORD GetHandle(void)
 		{ 
 			Check_Object(this);
 			DWORD imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
@@ -81,24 +84,26 @@ namespace MidLevelRenderer {
 			Locked = 2
 		};
 
-		void
-			LockImage();
-		void
-			UnlockImage();
+		void	LockImage(void);
+		void	UnlockImage(void);
+		PUCHAR	GetImagePtr(void)
+		{
+			return (PUCHAR )ptr.pTexture;
+		}
+		int		GetPitch(void)
+		{ 
+			return ptr.Pitch;
+		}
 
-		unsigned char*
-			GetImagePtr();
-		int
-			GetPitch()
-				{ return ptr.Pitch; }
+#endif
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const
-				{}
+		void TestInstance(void) const
+		{
+		}
 
 		Stuff::MString imageName;
 		int flags;
@@ -110,3 +115,4 @@ namespace MidLevelRenderer {
 	};
 
 }
+#endif

@@ -41,7 +41,7 @@ namespace MidLevelRenderer {
 
 		void
 			SetData(
-				const int *count,
+				pcint32_t count,
 				const Stuff::Point3D *point_data,
 				const Stuff::RGBAColor *color_data
 			);
@@ -65,7 +65,7 @@ namespace MidLevelRenderer {
 			TestInstance() const;
 
 	protected:
-		const int *usedNrOfTriangles;
+		pcint32_t usedNrOfTriangles;
 
 		static Stuff::DynamicArrayOf<Stuff::RGBAColor> *clipExtraColors; // , Max_Number_Vertices_Per_Mesh
 

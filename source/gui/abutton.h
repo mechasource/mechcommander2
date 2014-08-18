@@ -22,7 +22,7 @@ public:
 	virtual void	update();
 	virtual void	render();
 
-	void	init( FitIniFile& file, const char* headerName, HGOSFONT3D font = 0 );
+	void	init( FitIniFile& file, PCSTR headerName, HGOSFONT3D font = 0 );
 	
 	aButton& operator=( const aButton& src);
 	aButton( const aButton& src);
@@ -116,7 +116,7 @@ class aAnimButton : public aButton
 public:
 
 	aAnimButton();
-	void	init( FitIniFile& file, const char* headerName, HGOSFONT3D font = 0 );
+	void	init( FitIniFile& file, PCSTR headerName, HGOSFONT3D font = 0 );
 	virtual void update();
 	virtual void render();
 

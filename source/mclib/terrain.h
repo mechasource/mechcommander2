@@ -115,8 +115,8 @@ class Terrain
 		static long								userMin;
 		static long								userMax;
 		static unsigned long					baseTerrain;
-		static unsigned char					fractalThreshold;
-		static unsigned char					fractalNoise;
+		static uint8_t					fractalThreshold;
+		static uint8_t					fractalNoise;
 
 		static long								halfVerticesMapSide;		//Half of the below value.
 		static long								realVerticesMapSide;		//Number of vertices on each side of map.

@@ -10,7 +10,7 @@
 	class OwnTrace
 	{
 	public:
-		OwnTrace(const char *);
+		OwnTrace(PCSTR );
 
 		void Start();
 		void Stop();
@@ -25,7 +25,7 @@
 		double start, end;
 	};
 
-	inline OwnTrace::OwnTrace(const char *n)
+	inline OwnTrace::OwnTrace(PCSTR n)
 	{
 		name = n;
 

@@ -110,7 +110,7 @@ class FIMessageHeader
 class MessageTagger
 {
 	public:
-		unsigned char	sendCounts[MAXPLAYERS];
+		uint8_t	sendCounts[MAXPLAYERS];
 
 	
 		inline void Clear()
@@ -154,7 +154,7 @@ private:
 	FIGenericGuaranteedMessage():FIGuaranteedMessageHeader()
 	{}
 public:
-	unsigned char	buffer[0];
+	uint8_t	buffer[0];
 	
 };
 
@@ -168,7 +168,7 @@ private:
 	FIGenericMessage():FIMessageHeader()
 	{}
 public:
-	unsigned char	buffer[0];
+	uint8_t	buffer[0];
 };
 
 
@@ -180,7 +180,7 @@ protected:
 	{}
 
 public:
-	unsigned char n_messages;
+	uint8_t n_messages;
 	MessageTagger message[0];
 
 	void Init()

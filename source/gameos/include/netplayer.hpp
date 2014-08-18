@@ -49,13 +49,13 @@ public:
 	// sendCount is used for guaranteed messages.  It
 	// is always between 0 and 255 and it represents
 	// the next message sent to this player
-	unsigned char				sendCount;
+	uint8_t				sendCount;
 
 	// The incomingHoldIndex is the next expected sendCount for
 	// incoming messages from this player.
-	unsigned char incomingHoldIndex;
+	uint8_t incomingHoldIndex;
 
-	unsigned char nextIncomingSendCount;
+	uint8_t nextIncomingSendCount;
 
 	int nItemsInHoldBuffer;
 
@@ -125,12 +125,12 @@ public:
 		}
 	}
 
-	inline const char *GetShortName()
+	inline PCSTR GetShortName()
 	{
 		return shortName;
 	}
 
-	inline const char *GetLongName()
+	inline PCSTR GetLongName()
 	{
 		return longName;
 	}

@@ -14,8 +14,8 @@
 
 //---------------------------------------------------------------------------
 // Type Definitions
-typedef unsigned char* MemoryPtr;
-//typedef unsigned char byte;
+typedef PUCHAR MemoryPtr;
+//typedef uint8_t byte;
 //typedef unsigned size_t;
 
 #ifndef NULL
@@ -37,7 +37,7 @@ typedef unsigned char* MemoryPtr;
 
 //typedef unsigned long DWORD;
 //typedef unsigned int UINT;
-//typedef unsigned char BYTE;
+//typedef uint8_t BYTE;
 //typedef void *PVOID;
 //--------------------------------------------------------------------------
 // Macro Definitions

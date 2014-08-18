@@ -75,7 +75,7 @@ class MPStats: public LogisticsScreen
 
 		int init();
 
-		void		setHostLeftDlg( const char* hostName );
+		void		setHostLeftDlg( PCSTR hostName );
 
 	private:
 

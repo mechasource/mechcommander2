@@ -20,7 +20,7 @@ class DlgFileOpen: public CDialog
 {
 	public:
 
-		DlgFileOpen( const char* directoryName, const char* extension,  bool bSave );
+		DlgFileOpen( PCSTR directoryName, PCSTR extension,  bool bSave );
 		DlgFileOpen( const DlgFileOpen& lgFileOpen );
 
 		void OnCancel();
@@ -31,8 +31,8 @@ class DlgFileOpen: public CDialog
 
 		void Init(void);
 
-		const char* getFileName() const { return fileName; }
-		const char* getExtension() const { return extension; }
+		PCSTR getFileName() const { return fileName; }
+		PCSTR getExtension() const { return extension; }
 
 	private:
 

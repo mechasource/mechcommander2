@@ -154,7 +154,7 @@ BOOL EditForestDlg::OnInitDialog()
 
 		for ( int i = 0; i < count; i++ )
 		{
-			const char* pName = pForests[i]->getName();
+			PCSTR pName = pForests[i]->getName();
 			int index = -1;
 			
 			// make up name if necessary

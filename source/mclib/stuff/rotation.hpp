@@ -20,17 +20,17 @@ namespace Stuff {
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::EulerAngles &angle
 		);
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::YawPitchRoll &angle
 		);
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::UnitQuaternion &angle
 		);
 #endif
@@ -166,7 +166,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const EulerAngles &angle
 				);
 		#endif
@@ -302,7 +302,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const YawPitchRoll& angle
 				);
 		#endif
@@ -632,7 +632,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const UnitQuaternion &quat
 				);
 		#endif

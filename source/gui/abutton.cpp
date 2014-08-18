@@ -290,7 +290,7 @@ void aButton::makeUVs( gos_VERTEX* vertices, int State, aButton::aButtonData& da
 		}
 }
 
-void aButton::init( FitIniFile& buttonFile, const char* str, HGOSFONT3D font )
+void aButton::init( FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font )
 {
 	textureHandle = 0;
 
@@ -506,7 +506,7 @@ void aAnimButton::destroy()
 	aButton::destroy();
 }
 
-void aAnimButton::init( FitIniFile& file, const char* headerName, HGOSFONT3D font )
+void aAnimButton::init( FitIniFile& file, PCSTR headerName, HGOSFONT3D font )
 {
 	if ( NO_ERR != file.seekBlock( headerName ) )
 	{

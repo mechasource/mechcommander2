@@ -141,7 +141,7 @@ long MasterComponent::initEXCEL (char* dataLine, float baseSensorRange) {
 	resourcePoints = atoi(field);
 	
 	field = strtok_s(NULL, ",", &next_token);
-	unsigned char rangeType = 255;
+	uint8_t rangeType = 255;
 
 _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) char * _Str, _In_ size_t _Size);
 
@@ -269,7 +269,7 @@ _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) ch
 }
 
 //******************************************************************************************
-long MasterComponent::saveEXCEL (FilePtr componentFile, unsigned char masterId, float baseSensorRange) 
+long MasterComponent::saveEXCEL (FilePtr componentFile, uint8_t masterId, float baseSensorRange) 
 {
 	char dataLine[512];
 	char piece[512];

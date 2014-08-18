@@ -1452,7 +1452,7 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 			// a MissileGen Object is ALL of the clusters.
 			// Don't make a thousand of them or the game implodes!
 			//numClusters = 1;
-			unsigned char effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
 
 			//----------------------------------------------------
 			// Need to know which hotspot this comes from.
@@ -1577,7 +1577,7 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 				}
 			}
 
-			unsigned char effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
 			WeaponBoltPtr weaponFX = ObjectManager->createWeaponBolt(effectType);
 			if (!weaponFX)
 				Fatal(-1," couldnt create weapon FX ");
@@ -1627,7 +1627,7 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 					// a MissileGen Object is ALL of the clusters.
 					// Don't make a thousand of them or the game implodes!
 					//numClusters = 1;
-					unsigned char effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
+					uint8_t effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
 	
 					//-------------------------------------------------------------------
 					// This code will mess up if the object is not a BULLET!!!!!!!!!!!
@@ -1730,7 +1730,7 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 					-1,
 					entryAngle);
 
-				unsigned char effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
+				uint8_t effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
 				WeaponBoltPtr weaponFX = ObjectManager->createWeaponBolt(effectType);
 				if (!weaponFX)
 					Fatal(-1," couldnt create weapon FX ");
@@ -1854,7 +1854,7 @@ long Turret::handleWeaponFire (long weaponIndex,
 			// a MissileGen Object is ALL of the clusters.
 			// Don't make a thousand of them or the game implodes!
 			//numClusters = 1;
-			unsigned char effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
 
 			if (numMissiles > 0) {
 				//-------------------------------------------------------------------
@@ -1894,7 +1894,7 @@ long Turret::handleWeaponFire (long weaponIndex,
 						  hitLocation,
 						  entryAngle);
 
-			unsigned char effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
+			uint8_t effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			if (!weaponFX)
 				Fatal(-1," couldnt create weapon FX ");
@@ -1930,7 +1930,7 @@ long Turret::handleWeaponFire (long weaponIndex,
 					// a MissileGen Object is ALL of the clusters.
 					// Don't make a thousand of them or the game implodes!
 					//numClusters = 1;
-					unsigned char effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
+					uint8_t effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
 	
 					//-------------------------------------------------------------------
 					// This code will mess up if the object is not a BULLET!!!!!!!!!!!
@@ -1977,7 +1977,7 @@ long Turret::handleWeaponFire (long weaponIndex,
 					-1,
 					entryAngle);
 
-				unsigned char effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
+				uint8_t effectType = MasterComponent::masterList[weaponMasterId].getWeaponSpecialEffect();
 				weaponFX = ObjectManager->createWeaponBolt(effectType);
 				if (!weaponFX)
 					Fatal(-1," couldnt create weapon FX ");

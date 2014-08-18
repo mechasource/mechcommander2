@@ -18,7 +18,7 @@ PointerSelectObjectDlg.cpp			: Implementation of the PointerSelectObjectDlg comp
 
 #include "MFCPlatform.hpp"
 
-static const int WM_DOTICK = WM_USER + 1;
+static cint32_t WM_DOTICK = WM_USER + 1;
 
 //-------------------------------------------------------------------------------------------------
 PointerSelectObjectDlg::PointerSelectObjectDlg():CDialog(IDD_POINTER_SELECT_OBJECT)

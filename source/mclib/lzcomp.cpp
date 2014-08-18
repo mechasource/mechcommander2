@@ -30,7 +30,7 @@
 #define NULL			0
 #endif
 
-typedef unsigned char* MemoryPtr;
+typedef uint8_t* MemoryPtr;
 
 //-----------------------------
 //Used by Compressor Routine
@@ -46,7 +46,7 @@ unsigned long	MaxCode = 0;
 unsigned long	NBits = 0;
 unsigned long	BitOffset = 0;
 unsigned long	codeToWrite = 0;
-unsigned char 	K = 0;
+uint8_t 	K = 0;
 
 typedef enum __lzcomp_const {
 	MaxMax		= 4096,
@@ -58,10 +58,10 @@ typedef enum __lzcomp_const {
 typedef struct Hash {
 	unsigned long hashFirst;
 	unsigned long hashNext;
-	unsigned char hashChar;
+	uint8_t hashChar;
 } Hash;
 
-static unsigned char		tag_LZCHashBuf[sizeof(Hash) * MaxMax + 1024];
+static uint8_t		tag_LZCHashBuf[sizeof(Hash) * MaxMax + 1024];
 //-----------------------------
 
 //-------------------------------------------------------------------------------

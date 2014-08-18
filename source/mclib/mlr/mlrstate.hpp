@@ -3,11 +3,11 @@
 //===========================================================================//
 
 #pragma once
+
+#if !defined(MLR_MLRSTATE_HPP)
 #define MLR_MLRSTATE_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
+#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer {class MLRState;}
 
@@ -26,9 +26,9 @@ namespace MidLevelRenderer {
 	//##########################################################################
 
 	class MLRState
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 		friend class MLRSorter;
 
@@ -36,28 +36,24 @@ namespace MidLevelRenderer {
 	// Constructors/Destructors
 	//
 	protected:
-		MLRState(
-			Stuff::MemoryStream *stream,
-			int version
-		);
+		MLRState(Stuff::MemoryStream *stream, int version);
 
 	public:
-		MLRState();
+		MLRState(void);
 		MLRState(const MLRState&);
-		~MLRState() {};
+		~MLRState(void)
+		{
 
-		static MLRState*
-			Make(
-				Stuff::MemoryStream *stream,
-				int version
-			);
+		};
+
+		static MLRState* Make(Stuff::MemoryStream *stream, int version);
 
 		void
 			Save(Stuff::MemoryStream *stream);
 		void
 			Load(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,7 +64,7 @@ namespace MidLevelRenderer {
 			TextureNumberBit = 0,
 			TextureNumberBits = Limits::Max_Number_Of_Texture_Bits,
 			TextureMask =
-				(0xFFFFFFFF >> (Stuff::INT_BITS - TextureNumberBits)) << TextureNumberBit,
+			(0xFFFFFFFF >> (Stuff::INT_BITS - TextureNumberBits)) << TextureNumberBit,
 
 			AlphaBit = TextureNumberBit + TextureNumberBits,
 			AlphaBits = 3,
@@ -94,7 +90,7 @@ namespace MidLevelRenderer {
 			WireFrameBit = TextureCorrectionBit + 1,
 			WireFrameBits = 2,
 			WireFrameMask =
-				(0xFFFFFFFF >> (Stuff::INT_BITS - WireFrameBits)) << WireFrameBit,
+			(0xFFFFFFFF >> (Stuff::INT_BITS - WireFrameBits)) << WireFrameBit,
 
 			ZBufferWriteBit = WireFrameBit + WireFrameBits,
 			ZBufferWriteMask = 1<<ZBufferWriteBit,
@@ -170,144 +166,156 @@ namespace MidLevelRenderer {
 			FlatColoringOnMode = 1 << FlatColoringBit
 		};
 
-// manipulate render state
+		// manipulate render state
 		void
 			SetTextureHandle(unsigned texture)
-				{
-					Check_Object(this); renderState &= ~TextureMask;
-					renderDeltaMask |= TextureMask;
-					Verify(texture <= TextureMask); renderState |= texture;
-				}
-		uint32_t
-			GetTextureHandle() const
-				{Check_Object(this); return renderState & TextureMask;}
-
+		{
+			Check_Object(this); renderState &= ~TextureMask;
+			renderDeltaMask |= TextureMask;
+			Verify(texture <= TextureMask); renderState |= texture;
+		}
+		uint32_t GetTextureHandle(void) const
+		{
+			Check_Object(this);
+			return renderState & TextureMask;
+		}
 		void
 			SetAlphaMode(AlphaMode alpha)
-				{Check_Object(this); renderState &= ~AlphaMask; renderState |= alpha; renderDeltaMask |= AlphaMask;}
+		{Check_Object(this); renderState &= ~AlphaMask; renderState |= alpha; renderDeltaMask |= AlphaMask;}
 		AlphaMode
-			GetAlphaMode() const
-				{
-					Check_Object(this);
-					return static_cast<AlphaMode>(renderState & AlphaMask);
-				}
+			GetAlphaMode(void) const
+		{
+			Check_Object(this);
+			return static_cast<AlphaMode>(renderState & AlphaMask);
+		}
 
 		void
 			SetFilterMode(FilterMode filter)
-				{Check_Object(this); renderState &= ~FilterMask; renderState |= filter; renderDeltaMask |= FilterMask;}
+		{Check_Object(this); renderState &= ~FilterMask; renderState |= filter; renderDeltaMask |= FilterMask;}
 		FilterMode
-			GetFilterMode() const
-				{
-					Check_Object(this);
-					return static_cast<FilterMode>(renderState & FilterMask);
-				}
+			GetFilterMode(void) const
+		{
+			Check_Object(this);
+			return static_cast<FilterMode>(renderState & FilterMask);
+		}
+		void SetFogMode(int fog)
+		{
+			Check_Object(this); 
+			renderState &= ~FogMask; 
+			renderState |= (fog<<FogBit); 
+			renderDeltaMask |= FogMask;
+		}
+		uint32_t GetFogMode(void) const
+		{
+			Check_Object(this); 
+			return (renderState & FogMask)>>FogBit;
+		}
 
 		void
-			SetFogMode(int fog)
-				{Check_Object(this); renderState &= ~FogMask; renderState |= (fog<<FogBit); renderDeltaMask |= FogMask;}
-		int
-			GetFogMode() const
-				{Check_Object(this); return (renderState & FogMask)>>FogBit;}
-
+			SetSpecularOn(void)
+		{Check_Object(this); renderState |= SpecularOnMode; renderDeltaMask |= SpecularMask;}
 		void
-			SetSpecularOn()
-				{Check_Object(this); renderState |= SpecularOnMode; renderDeltaMask |= SpecularMask;}
-		void
-			SetSpecularOff()
-				{Check_Object(this); renderState &= ~SpecularOnMode; renderDeltaMask |= SpecularMask;}
+			SetSpecularOff(void)
+		{Check_Object(this); renderState &= ~SpecularOnMode; renderDeltaMask |= SpecularMask;}
 		SpecularMode
-			GetSpecularMode() const
-				{Check_Object(this); return static_cast<SpecularMode>(renderState & SpecularMask);}
+			GetSpecularMode(void) const
+		{Check_Object(this); return static_cast<SpecularMode>(renderState & SpecularMask);}
 
 		void
 			SetTextureWrapMode(TextureWrapMode TextureWrap)
-				{Check_Object(this); renderState &= ~TextureWrapMask; renderState |= TextureWrap; renderDeltaMask |= TextureWrapMask;}
+		{Check_Object(this); renderState &= ~TextureWrapMask; renderState |= TextureWrap; renderDeltaMask |= TextureWrapMask;}
 		TextureWrapMode
-			GetTextureWrapMode() const
-				{
-					Check_Object(this);
-					return static_cast<TextureWrapMode>(renderState & TextureWrapMask);
-				}
+			GetTextureWrapMode(void) const
+		{
+			Check_Object(this);
+			return static_cast<TextureWrapMode>(renderState & TextureWrapMask);
+		}
 
 		void
-			SetDitherOn()
-				{Check_Object(this); renderState |= DitherOnMode; renderDeltaMask |= DitherMask;}
+			SetDitherOn(void)
+		{Check_Object(this); renderState |= DitherOnMode; renderDeltaMask |= DitherMask;}
 		void
-			SetDitherOff()
-				{Check_Object(this); renderState &= ~DitherOnMode; renderDeltaMask |= DitherMask;}
+			SetDitherOff(void)
+		{Check_Object(this); renderState &= ~DitherOnMode; renderDeltaMask |= DitherMask;}
 		DitherMode
-			GetDitherMode() const
-				{Check_Object(this); return static_cast<DitherMode>(renderState & DitherMask);}
+			GetDitherMode(void) const
+		{Check_Object(this); return static_cast<DitherMode>(renderState & DitherMask);}
 
 		void
-			SetTextureCorrectionOn()
-				{Check_Object(this); renderState |= TextureCorrectionOnMode; renderDeltaMask |= TextureCorrectionMask;}
+			SetTextureCorrectionOn(void)
+		{Check_Object(this); renderState |= TextureCorrectionOnMode; renderDeltaMask |= TextureCorrectionMask;}
 		void
-			SetTextureCorrectionOff()
-				{Check_Object(this); renderState &= ~TextureCorrectionOnMode; renderDeltaMask |= TextureCorrectionMask;}
+			SetTextureCorrectionOff(void)
+		{Check_Object(this); renderState &= ~TextureCorrectionOnMode; renderDeltaMask |= TextureCorrectionMask;}
 		TextureCorrectionMode
-			GetTextureCorrectionMode() const
-				{Check_Object(this); return static_cast<TextureCorrectionMode>(renderState & TextureCorrectionMask);}
+			GetTextureCorrectionMode(void) const
+		{Check_Object(this); return static_cast<TextureCorrectionMode>(renderState & TextureCorrectionMask);}
 
 		void
 			SetWireFrameMode(WireFrameMode wire)
-				{Check_Object(this); renderState &= ~WireFrameMask; renderState |= wire; renderDeltaMask |= WireFrameMask;}
+		{Check_Object(this); renderState &= ~WireFrameMask; renderState |= wire; renderDeltaMask |= WireFrameMask;}
 		WireFrameMode
-			GetWireFrameMode() const
-				{
-					Check_Object(this);
-					return static_cast<WireFrameMode>(renderState & WireFrameMask);
-				}
+			GetWireFrameMode(void) const
+		{
+			Check_Object(this);
+			return static_cast<WireFrameMode>(renderState & WireFrameMask);
+		}
 
 		void
-			SetZBufferWriteOn()
-				{Check_Object(this); renderState |= ZBufferWriteOnMode; renderDeltaMask |= ZBufferWriteMask;}
+			SetZBufferWriteOn(void)
+		{Check_Object(this); renderState |= ZBufferWriteOnMode; renderDeltaMask |= ZBufferWriteMask;}
 		void
-			SetZBufferWriteOff()
-				{Check_Object(this); renderState &= ~ZBufferWriteOnMode; renderDeltaMask |= ZBufferWriteMask;}
+			SetZBufferWriteOff(void)
+		{Check_Object(this); renderState &= ~ZBufferWriteOnMode; renderDeltaMask |= ZBufferWriteMask;}
 		ZBufferWriteMode
-			GetZBufferWriteMode() const
-				{Check_Object(this); return static_cast<ZBufferWriteMode>(renderState & ZBufferWriteMask);}
+			GetZBufferWriteMode(void) const
+		{Check_Object(this); return static_cast<ZBufferWriteMode>(renderState & ZBufferWriteMask);}
 
 		void
-			SetZBufferCompareOn()
-				{Check_Object(this); renderState |= ZBufferCompareOnMode; renderDeltaMask |= ZBufferCompareMask;}
+			SetZBufferCompareOn(void)
+		{Check_Object(this); renderState |= ZBufferCompareOnMode; renderDeltaMask |= ZBufferCompareMask;}
 		void
-			SetZBufferCompareOff()
-				{Check_Object(this); renderState &= ~ZBufferCompareOnMode; renderDeltaMask |= ZBufferCompareMask;}
+			SetZBufferCompareOff(void)
+		{Check_Object(this); renderState &= ~ZBufferCompareOnMode; renderDeltaMask |= ZBufferCompareMask;}
 		ZBufferCompareMode
-			GetZBufferCompareMode() const
-				{Check_Object(this); return static_cast<ZBufferCompareMode>(renderState & ZBufferCompareMask);}
+			GetZBufferCompareMode(void) const
+		{Check_Object(this); return static_cast<ZBufferCompareMode>(renderState & ZBufferCompareMask);}
 
 		void
-			SetFlatColoringOn()
-				{Check_Object(this); renderState |= FlatColoringOnMode; renderDeltaMask |= FlatColoringMask;}
+			SetFlatColoringOn(void)
+		{Check_Object(this); renderState |= FlatColoringOnMode; renderDeltaMask |= FlatColoringMask;}
 		void
-			SetFlatColoringOff()
-				{Check_Object(this); renderState &= ~FlatColoringOnMode; renderDeltaMask |= FlatColoringMask;}
+			SetFlatColoringOff(void)
+		{Check_Object(this); renderState &= ~FlatColoringOnMode; renderDeltaMask |= FlatColoringMask;}
 		FlatColoringMode
-			GetFlatColoringMode() const
-				{Check_Object(this); return static_cast<FlatColoringMode>(renderState & FlatColoringMask);}
+			GetFlatColoringMode(void) const
+		{Check_Object(this); return static_cast<FlatColoringMode>(renderState & FlatColoringMask);}
 
-		void
-			SetRenderDeltaMask(int mask)
-				{ Check_Object(this); renderDeltaMask = mask; }
-
-		int
-			GetRenderDeltaMask() const
-				{ Check_Object(this); return renderDeltaMask; }
-
-		void
-			SetRenderPermissionMask(int mask)
-				{ Check_Object(this); renderPermissionMask = mask; }
-
-		int
-			GetRenderPermissionMask() const
-				{ Check_Object(this); return renderPermissionMask; }
-
-		int
-			GetRenderStateFlags() const
-				{Check_Object(this); return renderState;}
+		void SetRenderDeltaMask(uint32_t mask)
+		{
+			Check_Object(this);
+			renderDeltaMask = mask;
+		}
+		uint32_t GetRenderDeltaMask(void) const
+		{
+			Check_Object(this);
+			return renderDeltaMask;
+		}
+		void SetRenderPermissionMask(uint32_t mask)
+		{
+			Check_Object(this); 
+			renderPermissionMask = mask;
+		}
+		uint32_t GetRenderPermissionMask(void) const
+		{
+			Check_Object(this);
+			return renderPermissionMask;
+		}
+		uint32_t GetRenderStateFlags(void) const
+		{
+			Check_Object(this);
+			return renderState;
+		}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Process state
@@ -317,7 +325,7 @@ namespace MidLevelRenderer {
 			PriorityBit = 0,
 			PriorityBits = 4,
 			PriorityMask =
-				(0xFFFFFFFF >> (Stuff::INT_BITS - PriorityBits)) << PriorityBit,
+			(0xFFFFFFFF >> (Stuff::INT_BITS - PriorityBits)) << PriorityBit,
 
 			BackFaceBit = PriorityBit + PriorityBits,
 			BackFaceMask = 1<<BackFaceBit,
@@ -325,12 +333,12 @@ namespace MidLevelRenderer {
 			LightingBit = BackFaceBit + 1,
 			LightingBits = 5,
 			LightingMask =
-				(0xFFFFFFFF >> (Stuff::INT_BITS - LightingBits)) << LightingBit,
+			(0xFFFFFFFF >> (Stuff::INT_BITS - LightingBits)) << LightingBit,
 
 			MultitextureBit = LightingBit + LightingBits,
 			MultitextureBits = 4,
 			MultitextureMask =
-				(0xFFFFFFFF >> (Stuff::INT_BITS - MultitextureBits)) << MultitextureBit,
+			(0xFFFFFFFF >> (Stuff::INT_BITS - MultitextureBits)) << MultitextureBit,
 
 			DrawNowBit = MultitextureBit + MultitextureBits,
 			DrawNowMask = 1<<DrawNowBit,
@@ -360,7 +368,7 @@ namespace MidLevelRenderer {
 			TerrainLightingMode = 16 << LightingBit
 		};
 
-//	if cards are multi texture capable so use this mode
+		//	if cards are multi texture capable so use this mode
 		enum MultiTextureMode {
 			MultiTextureOffMode = 0,
 			MultiTextureLightmapMode = 1 << MultitextureBit,
@@ -372,82 +380,88 @@ namespace MidLevelRenderer {
 			DrawNowOnMode = 1 << DrawNowBit,
 		};
 
-// manipulate process state
+		// manipulate process state
 		void
-			SetBackFaceOn()
-				{Check_Object(this); processState |= BackFaceOnMode; processDeltaMask |= BackFaceMask;}
+			SetBackFaceOn(void)
+		{Check_Object(this); processState |= BackFaceOnMode; processDeltaMask |= BackFaceMask;}
 		void
-			SetBackFaceOff()
-				{Check_Object(this); processState &= ~BackFaceOnMode; processDeltaMask |= BackFaceMask;}
+			SetBackFaceOff(void)
+		{Check_Object(this); processState &= ~BackFaceOnMode; processDeltaMask |= BackFaceMask;}
 		BackFaceMode
-			GetBackFaceMode() const
-				{Check_Object(this); return static_cast<BackFaceMode>(processState & BackFaceOnMode);}
+			GetBackFaceMode(void) const
+		{Check_Object(this); return static_cast<BackFaceMode>(processState & BackFaceOnMode);}
 
 		void
 			SetPriority(uint32_t priority)
-				{
-					Check_Object(this); processState &= ~PriorityMask;
-					processDeltaMask |= PriorityMask;
-					Verify(priority < PriorityCount); processState |= priority;
-				}
+		{
+			Check_Object(this); processState &= ~PriorityMask;
+			processDeltaMask |= PriorityMask;
+			Verify(priority < PriorityCount); processState |= priority;
+		}
 		uint32_t
-			GetPriority() const
-				{Check_Object(this); return processState & PriorityMask;}
+			GetPriority(void) const
+		{Check_Object(this); return processState & PriorityMask;}
 
 		void
 			SetLightingMode(int lighting)
-				{Check_Object(this); processState &= ~LightingMask; processState |= lighting; processDeltaMask |= LightingMask;}
-		 
+		{Check_Object(this); processState &= ~LightingMask; processState |= lighting; processDeltaMask |= LightingMask;}
+
 		int
-			GetLightingMode() const
-				{
-					Check_Object(this);
-					return static_cast<LightingMode>(processState & LightingMask);
-				}
+			GetLightingMode(void) const
+		{
+			Check_Object(this);
+			return static_cast<LightingMode>(processState & LightingMask);
+		}
 
 		void
 			SetMultiTextureMode(MultiTextureMode multiTex)
-				{Check_Object(this); processState &= ~MultitextureMask; processState |= multiTex; processDeltaMask |= MultitextureMask;}
-		 
+		{Check_Object(this); processState &= ~MultitextureMask; processState |= multiTex; processDeltaMask |= MultitextureMask;}
+
 		MultiTextureMode
-			GetMultiTextureMode() const
-				{
-					Check_Object(this);
-					return static_cast<MultiTextureMode>(processState & MultitextureMask);
-				}
+			GetMultiTextureMode(void) const
+		{
+			Check_Object(this);
+			return static_cast<MultiTextureMode>(processState & MultitextureMask);
+		}
 
 		void
-			SetDrawNowOn()
-				{Check_Object(this); processState |= DrawNowOnMode; processDeltaMask |= DrawNowMask;}
+			SetDrawNowOn(void)
+		{Check_Object(this); processState |= DrawNowOnMode; processDeltaMask |= DrawNowMask;}
 		void
-			SetDrawNowOff()
-				{Check_Object(this); processState &= ~DrawNowOnMode; processDeltaMask |= DrawNowMask;}
+			SetDrawNowOff(void)
+		{Check_Object(this); processState &= ~DrawNowOnMode; processDeltaMask |= DrawNowMask;}
 		DrawNowMode
-			GetDrawNowMode() const
-				{Check_Object(this); return static_cast<DrawNowMode>(processState & DrawNowOnMode);}
+			GetDrawNowMode(void) const
+		{Check_Object(this); return static_cast<DrawNowMode>(processState & DrawNowOnMode);}
 
-		void
-			SetProcessDeltaMask(int mask)
-				{ Check_Object(this); processDeltaMask = mask; }
+		void SetProcessDeltaMask(uint32_t mask)
+		{
+			Check_Object(this);
+			processDeltaMask = mask;
+		}
+		uint32_t GetProcessDeltaMask(void) const
+		{
+			Check_Object(this);
+			return processDeltaMask;
+		}
+		void SetProcessPermissionMask(uint32_t mask)
+		{
+			Check_Object(this);
+			processPermissionMask = mask;
+		}
+		uint32_t GetProcessPermissionMask(void) const
+		{
+			Check_Object(this);
+			return processPermissionMask;
+		}
 
-		int
-			GetProcessDeltaMask() const
-				{ Check_Object(this); return processDeltaMask; }
+		uint32_t GetProcessStateFlags(void) const
+		{
+			Check_Object(this);
+			return processState;
+		}
 
-		void
-			SetProcessPermissionMask(int mask)
-				{ Check_Object(this); processPermissionMask = mask; }
-
-		int
-			GetProcessPermissionMask() const
-				{ Check_Object(this); return processPermissionMask; }
-
-		int
-			GetProcessStateFlags() const
-				{Check_Object(this); return processState;}
-
-		void
-			SetRendererState(MLRTexturePool*);
+		void SetRendererState(MLRTexturePool*);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// System flags set at begin of every frame
@@ -462,84 +476,78 @@ namespace MidLevelRenderer {
 
 		static void
 			SetAGPAvailable(bool b)
-				{ if(b==true) systemFlags |= HasAGPAvailable; else systemFlags &= ~HasAGPAvailable; }
+		{ if(b==true) systemFlags |= HasAGPAvailable; else systemFlags &= ~HasAGPAvailable; }
 
 		static void
 			SetMultitextureLightMap(bool b)
-				{ if(b==true) systemFlags |= CanMultitextureLightMap; else systemFlags &= ~CanMultitextureLightMap; }
+		{ if(b==true) systemFlags |= CanMultitextureLightMap; else systemFlags &= ~CanMultitextureLightMap; }
 
 		static void
 			SetMultitextureSpecularMap(bool b)
-				{ if(b==true) systemFlags |= CanMultitextureSpecularMap; else systemFlags &= ~CanMultitextureSpecularMap; }
+		{ if(b==true) systemFlags |= CanMultitextureSpecularMap; else systemFlags &= ~CanMultitextureSpecularMap; }
 
 		static void
 			SetHasMaxUVs(bool b)
-				{ if(b==true) systemFlags |= HasMaxUVs; else systemFlags &= ~HasMaxUVs; }
+		{ if(b==true) systemFlags |= HasMaxUVs; else systemFlags &= ~HasMaxUVs; }
 
 		static bool
-			GetAGPAvailable()
-				{ return (systemFlags & HasAGPAvailable)>0; }
+			GetAGPAvailable(void)
+		{ return (systemFlags & HasAGPAvailable)>0; }
 
 		static bool
-			GetMultitextureLightMap()
-				{ return (systemFlags & CanMultitextureLightMap)>0; }
+			GetMultitextureLightMap(void)
+		{ return (systemFlags & CanMultitextureLightMap)>0; }
 
 		static bool
-			GetMultitextureSpecularMap()
-				{ return (systemFlags & CanMultitextureSpecularMap)>0; }
+			GetMultitextureSpecularMap(void)
+		{ return (systemFlags & CanMultitextureSpecularMap)>0; }
 
 		static bool
-			GetHasMaxUVs()
-				{ return (systemFlags & HasMaxUVs)>0; }
+			GetHasMaxUVs(void)
+		{ return (systemFlags & HasMaxUVs)>0; }
 
 		static void
 			SetMaxUV(float mUV)
-				{ maxUV = mUV; SetHasMaxUVs(mUV > 0.0f); }
+		{ maxUV = mUV; SetHasMaxUVs(mUV > 0.0f); }
 
 		static float
-			GetMaxUV()
-				{ return maxUV; }
+			GetMaxUV(void)
+		{ return maxUV; }
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Assignment operators
 	//
-		MLRState&
-			operator=(const int &s)
-				{Check_Pointer(this); renderState = s; return *this;}
-
-		bool
-			operator==(const MLRState &s) const
-				{
-					Check_Pointer(this);
-					return
-						renderState == s.renderState
-						 && processState == s.processState;
-				}
+		MLRState& operator=(cuint32_t& s)
+		{
+			Check_Pointer(this);
+			renderState = s; 
+			return *this;
+		}
+		bool operator==(const MLRState &s) const
+		{
+			Check_Pointer(this);
+			return (renderState == s.renderState) && (processState == s.processState);
+		}
 
 		bool
 			operator>(const MLRState &s) const
-				{
-					Check_Pointer(this);
-					return
-						renderState > s.renderState
-						 || renderState == s.renderState
-							 && processState > s.processState;
-				}
+		{
+			Check_Pointer(this);
+			return 
+				(renderState > s.renderState) || 
+				(renderState == s.renderState) && 
+				(processState > s.processState);
+		}
 
-		bool
-			operator!=(const MLRState &s) const
-				{
-					Check_Pointer(this);
-					return
-						renderState != s.renderState
-						 || processState != s.processState;
-				}
+		bool operator!=(const MLRState &s) const
+		{
+			Check_Pointer(this);
+			return
+				(renderState != s.renderState) || 
+				(processState != s.processState);
+		}
 
-		MLRState&
-			Combine(
-				const MLRState &master,
-				const MLRState &slave
-			);
+		MLRState& Combine(const MLRState &master, const MLRState &slave);
 
 		friend Stuff::IteratorPosition
 			GetHashFunctions::GetHashValue(const MLRState &value);
@@ -548,35 +556,30 @@ namespace MidLevelRenderer {
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const
-				{}
+		void TestInstance(void) const
+		{
+		}
 
 	protected:
-		int
-			renderState,
-			processState,
-			renderDeltaMask,
-			renderPermissionMask,
-			processDeltaMask,
-			processPermissionMask;
-
-		static int
-			systemFlags;
-		static float
-			maxUV;
+		uint32_t		renderState;
+		uint32_t		processState;
+		uint32_t		renderDeltaMask;
+		uint32_t		renderPermissionMask;
+		uint32_t		processDeltaMask;
+		uint32_t		processPermissionMask;
+		static uint32_t	systemFlags;
+		static float	maxUV;
 
 #ifdef OLDFOG
-		uint32_t
-			fogColor;
-		Stuff::Scalar
-			fogDensity,
-			nearFog,
-			farFog;
+		uint32_t		fogColor;
+		Stuff::Scalar	fogDensity;
+		Stuff::Scalar	nearFog;
+		Stuff::Scalar	farFog;
 #else
 	public:
-		static uint32_t
-			fogColor;
+		static uint32_t	fogColor;
 #endif
 	};
 }
+
+#endif

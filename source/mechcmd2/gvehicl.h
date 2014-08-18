@@ -117,8 +117,8 @@ class GroundVehicleType : public ObjectType {
 
 	public:
 
-		unsigned char		chassis;
-		unsigned char		maxInternalStructure[NUM_GROUNDVEHICLE_LOCATIONS];
+		uint8_t		chassis;
+		uint8_t		maxInternalStructure[NUM_GROUNDVEHICLE_LOCATIONS];
 
 		MoverDynamics		dynamics;								// what dynamics do we use.
 

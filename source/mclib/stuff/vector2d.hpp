@@ -235,7 +235,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				Spew(
-					const char* group,
+					PCSTR group,
 					const Vector2DOf<T>& vector
 				);
 		#endif
@@ -274,7 +274,7 @@ namespace Stuff {
 #if !defined(Spew)
 	template <class T> void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::Vector2DOf<T> &vector
 		)
 	{

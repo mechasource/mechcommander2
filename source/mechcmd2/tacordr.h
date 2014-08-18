@@ -177,7 +177,7 @@ typedef struct _WayPath {
 	long			numPoints;
 	long			curPoint;
 	float			points[3 * MAX_WAYPTS];
-	unsigned char	mode[MAX_WAYPTS];
+	uint8_t	mode[MAX_WAYPTS];
 } WayPath;
 
 typedef WayPath* WayPathPtr;

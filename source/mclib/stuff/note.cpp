@@ -22,9 +22,9 @@ void
 	Check_Object(stream);
 
 	if (m_name)
-		*stream << (const char*)m_name;
+		*stream << (PCSTR)m_name;
 	if (m_text)
-		*stream << '=' << (const char*)m_text;
+		*stream << '=' << (PCSTR)m_text;
 	*stream << "\r\n";
 }
 
@@ -36,7 +36,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	const char *contents = NULL;
+	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = atoi(contents);
@@ -64,7 +64,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	const char *contents = NULL;
+	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = AtoF(contents);
@@ -92,7 +92,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	const char *contents = NULL;
+	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = (!_stricmp(contents, "true") || !_stricmp(contents, "yes") || atoi(contents) != 0);
@@ -116,7 +116,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	const char *contents = NULL;
+	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int count =
@@ -171,7 +171,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	const char *contents = NULL;
+	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int count =
@@ -229,7 +229,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	const char *contents = NULL;
+	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	YawPitchRoll ypr;
@@ -290,7 +290,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	const char *contents = NULL;
+	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int count =
@@ -351,7 +351,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	const char *contents = NULL;
+	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int count =
@@ -406,7 +406,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	const char *contents = NULL;
+	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int count =
@@ -465,7 +465,7 @@ void
 	Check_Object(this);
 	Check_Object(value);
 
-	const char *contents = NULL;
+	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 
@@ -532,7 +532,7 @@ void
 	// If this isn't a nested file, write out the filename
 	//----------------------------------------------------
 	//
-	const char* name = value->GetFileName();
+	PCSTR name = value->GetFileName();
 	if (name && name[strlen(name)-1] != ']')
 		SetEntry(name);
 
@@ -549,7 +549,7 @@ void
 		value->Write(&file_buffer);
 		file_buffer << "}" << '\0';
 		file_buffer.Rewind();
-		SetEntry(static_cast<const char*>(file_buffer.GetPointer()));
+		SetEntry(static_cast<PCSTR>(file_buffer.GetPointer()));
 		value->IgnoreChanges();
 	}
 }

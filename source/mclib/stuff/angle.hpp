@@ -19,17 +19,17 @@ namespace Stuff {
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::Radian& angle
 		);
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::Degree& angle
 		);
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::SinCosPair& angle
 		);
 #endif
@@ -169,7 +169,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const Radian& angle
 				);
 		#endif
@@ -222,7 +222,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const Degree& angle
 				);
 		#endif
@@ -314,7 +314,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const SinCosPair& angle
 				);
 		#endif

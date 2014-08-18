@@ -85,7 +85,7 @@ long VFXAppearanceType::loadIniFile (FilePtr apprFile, unsigned long fileSize)
 	result = VFXAppearanceFile.seekBlock("States");
 	gosASSERT(result == NO_ERR);
 
-	result = VFXAppearanceFile.readIdUChar("NumStates", numStates);
+	result = VFXAppearanceFile.readIdUCHAR("NumStates", numStates);
 	gosASSERT(result == NO_ERR);
 
 	actorStateData = (ActorData *)spriteManager->mallocDataRAM(sizeof(ActorData)*numStates);
@@ -100,8 +100,8 @@ long VFXAppearanceType::loadIniFile (FilePtr apprFile, unsigned long fileSize)
 		result = VFXAppearanceFile.seekBlock(stateBlockName);
 		gosASSERT(result == NO_ERR);
 
-		unsigned char tempState;
-		result = VFXAppearanceFile.readIdUChar("State", tempState);
+		uint8_t tempState;
+		result = VFXAppearanceFile.readIdUCHAR("State", tempState);
 		gosASSERT(result == NO_ERR);
 			
 		actorStateData[curState].state = (ActorState)tempState;
@@ -115,10 +115,10 @@ long VFXAppearanceType::loadIniFile (FilePtr apprFile, unsigned long fileSize)
 		result = VFXAppearanceFile.readIdULong("BasePacketNumber", actorStateData[curState].basePacketNumber);
 		gosASSERT(result == NO_ERR);
 			
-		result = VFXAppearanceFile.readIdUChar("NumRotations", actorStateData[curState].numRotations);
+		result = VFXAppearanceFile.readIdUCHAR("NumRotations", actorStateData[curState].numRotations);
 		gosASSERT(result == NO_ERR);
 
-		result = VFXAppearanceFile.readIdUChar("Symmetrical", actorStateData[curState].symmetrical);
+		result = VFXAppearanceFile.readIdUCHAR("Symmetrical", actorStateData[curState].symmetrical);
 		gosASSERT(result == NO_ERR);
 			
 		result = VFXAppearanceFile.readIdLong("TextureSize", actorStateData[curState].textureSize);
@@ -374,7 +374,7 @@ long VFXAppearance::render (long depthFixup)
 						(appearType->actorStateData[currentShapeTypeId].textureHS & 0x0000ffff),
 						appearType->actorStateData[currentShapeTypeId].textureSize,topZ,screenPos.z);
 
-		unsigned char lightr,lightg,lightb, visible, seen;
+		uint8_t lightr,lightg,lightb, visible, seen;
 		lightIntensity = land->getTerrainLight(position, visible, seen);
 					
 		lightr = eye->getLightRed(lightIntensity,visible,seen);
@@ -482,7 +482,7 @@ long VFXAppearance::update (void)
   			currentFrame += frameInc;
 				
 			unsigned long totalFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
-			unsigned char loop = 1;
+			uint8_t loop = 1;
 			
 			if ((currentFrame >= totalFrames) && (loop) && (endFrame == -1))
 			{

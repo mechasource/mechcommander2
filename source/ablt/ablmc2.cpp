@@ -6093,7 +6093,7 @@ bool ablFileEofCB (void* file) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileReadCB (void* file, unsigned char* buffer, long length) {
+long ablFileReadCB (void* file, PUCHAR buffer, long length) {
 
 	return(((FilePtr)file)->read(buffer, length));
 }
@@ -6107,28 +6107,28 @@ long ablFileReadLongCB (void* file) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileReadStringCB (void* file, unsigned char* buffer) {
+long ablFileReadStringCB (void* file, PUCHAR buffer) {
 
 	return(((FilePtr)file)->readString(buffer));
 }
 
 //-----------------------------------------------------------------------------
 
-long ablFileReadLineExCB (void* file, unsigned char* buffer, long maxLength) {
+long ablFileReadLineExCB (void* file, PUCHAR buffer, long maxLength) {
 
 	return(((FilePtr)file)->readLineEx(buffer, maxLength));
 }
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteCB (void* file, unsigned char* buffer, long length) {
+long ablFileWriteCB (void* file, PUCHAR buffer, long length) {
 
 	return(((FilePtr)file)->write(buffer, length));
 }
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteByteCB (void* file, unsigned char byte) {
+long ablFileWriteByteCB (void* file, uint8_t byte) {
 
 	return(((FilePtr)file)->writeByte(byte));
 }
@@ -6617,7 +6617,7 @@ bool ablFileEofCB (void* file) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileReadCB (void* file, unsigned char* buffer, long length) {
+long ablFileReadCB (void* file, PUCHAR buffer, long length) {
 
 	return(fread(buffer, 1, length, (FILE*)file));
 }
@@ -6633,7 +6633,7 @@ long ablFileReadLongCB (void* file) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileReadStringCB (void* file, unsigned char* buffer) {
+long ablFileReadStringCB (void* file, PUCHAR buffer) {
 
 	buffer[0] = NULL;
 	char* s = fgets((char*)buffer, 9999, (FILE*)file);
@@ -6644,7 +6644,7 @@ long ablFileReadStringCB (void* file, unsigned char* buffer) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileReadLineExCB (void* file, unsigned char* buffer, long maxLength) {
+long ablFileReadLineExCB (void* file, PUCHAR buffer, long maxLength) {
 
 	buffer[0] = NULL;
 	char* s = fgets((char*)buffer, maxLength, (FILE*)file);
@@ -6655,7 +6655,7 @@ long ablFileReadLineExCB (void* file, unsigned char* buffer, long maxLength) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteCB (void* /* file */, unsigned char* /* buffer */, long /* length */) {
+long ablFileWriteCB (void* /* file */, PUCHAR /* buffer */, long /* length */) {
 
 	//return(((FilePtr)file)->write(buffer, length));
 	return(0);
@@ -6663,7 +6663,7 @@ long ablFileWriteCB (void* /* file */, unsigned char* /* buffer */, long /* leng
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteByteCB (void* /* file */, unsigned char /* byte */) {
+long ablFileWriteByteCB (void* /* file */, uint8_t /* byte */) {
 
 	//return(((FilePtr)file)->writeByte(byte));
 	return(0);

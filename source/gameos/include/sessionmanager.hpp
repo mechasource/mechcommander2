@@ -190,7 +190,7 @@ public:
 
 	int NetworkProtocolFlags;
 
-	UCHAR messageBuffer[1024];
+	uint8_t messageBuffer[1024];
 
 
 	DPID newPlayerNumbers[MAXPLAYERS];

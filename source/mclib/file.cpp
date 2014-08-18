@@ -205,7 +205,7 @@ bool File::eof (void)
 }
 
 //---------------------------------------------------------------------------
-long File::open (const char* fName, FileMode _mode, long numChild)
+long File::open (PCSTR fName, FileMode _mode, long numChild)
 {
 	gosASSERT( !isOpen() );
 	//-------------------------------------------------------------
@@ -351,7 +351,7 @@ long File::open (const char* fName, FileMode _mode, long numChild)
 			//-- Then close fastfile!!!!!
 			inRAM = TRUE;
 
-			fileImage = (unsigned char *)malloc(fileSize());
+			fileImage = (PUCHAR )malloc(fileSize());
 			if (fileImage)
 			{
 				fastFile->readFast(fastFileHandle,fileImage,fileSize());
@@ -512,11 +512,11 @@ long File::open (FilePtr _parent, unsigned long fileSize, long numChild)
 	return(NO_ERR);
 }
 
-long File::open(const char* buffer, int bufferLength )
+long File::open(PCSTR buffer, int bufferLength )
 {
 	if ( buffer && bufferLength > 0 )
 	{	
-		fileImage = (unsigned char*)buffer;
+		fileImage = (PUCHAR)buffer;
 		physicalLength = bufferLength;
 		logicalPosition = 0;
 		fileMode = RDWRITE;
@@ -533,7 +533,7 @@ long File::open(const char* buffer, int bufferLength )
 }
 
 //---------------------------------------------------------------------------
-long File::create (const char* fName)
+long File::create (PCSTR fName)
 {
 	return (open(fName,CREATE));
 }
@@ -835,9 +835,9 @@ long File::read (unsigned long pos, MemoryPtr buffer, long length)
 }
 
 //---------------------------------------------------------------------------
-unsigned char File::readByte (void)
+uint8_t File::readByte (void)
 {
-	unsigned char value = 0;
+	uint8_t value = 0;
 	long result = 0;
 
 	if (inRAM && fileImage)
@@ -1092,7 +1092,7 @@ long File::readLine (MemoryPtr buffer, long maxLength)
 	{
 		if (isOpen())
 		{
-			unsigned char *readAddress = (unsigned char *)fileImage+logicalPosition;
+			PUCHAR readAddress = (PUCHAR )fileImage+logicalPosition;
 
 			while ((i<maxLength) && ((i+logicalPosition) < fileSize()) && readAddress[i]!='\r' )
 				i++;
@@ -1171,7 +1171,7 @@ long File::readLineEx (MemoryPtr buffer, long maxLength)
 	{
 		if (isOpen())
 		{
-			unsigned char *readAddress = (unsigned char *)fileImage+logicalPosition;
+			PUCHAR readAddress = (PUCHAR )fileImage+logicalPosition;
 
 			while( i<maxLength && readAddress[i]!='\n' )
 				i++;
@@ -1617,7 +1617,7 @@ unsigned long File::getNumLines (void)
 	seek(0);
 	for (unsigned long i=0;i<getLength();i++)
 	{
-		unsigned char check1 = readByte();
+		uint8_t check1 = readByte();
 		if (check1 == '\n')
 			numLines++;
 	}	

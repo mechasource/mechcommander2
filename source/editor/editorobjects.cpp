@@ -145,7 +145,7 @@ bool EditorObject::getDamage( ) const
 	return appearance()->damage ? true : false;
 }
 
-const char* EditorObject::getDisplayName() const
+PCSTR EditorObject::getDisplayName() const
 {
 	return EditorObjectMgr::instance()->getObjectName( id );
 }
@@ -357,7 +357,7 @@ bool Unit::save( FitIniFile* file, int WarriorNumber, int controlDataType, char*
 	// ARM
 	if (mechAsset)
 	{
-		const char * iniFilename = (const char *)EditorObjectMgr::instance()->getFileName( id );
+		PCSTR  iniFilename = (PCSTR )EditorObjectMgr::instance()->getFileName( id );
 		char buf[512] = {0};
 
 		if (iniFilename && iniFilename[0])
@@ -943,7 +943,7 @@ void Pilot::initPilots()
 	}
 }
 
-void Pilot::setName( const char* newName )
+void Pilot::setName( PCSTR newName )
 {
 	for ( int i = 0; i < goodCount; i++ )
 	{

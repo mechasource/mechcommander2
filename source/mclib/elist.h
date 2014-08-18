@@ -38,7 +38,7 @@ Optionally a name can be supplied, however this will only be used during debug b
 
 Example:
 	EList<KSomeClass, const KSomeClass&>	m_List(10, 5, "SomeList");
-	EList<int, const int>					m_List(100, 10);
+	EList<int, cint32_t>					m_List(100, 10);
 
 
 Note:

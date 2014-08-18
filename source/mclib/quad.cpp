@@ -785,7 +785,7 @@ void TerrainQuad::setupTextures (void)
 				//------------------------------------------------------------
 				float lightIntensity = vertices[0]->pVertex->vertexNormal * eye->lightDirection;
 
-				unsigned char shadow = vertices[0]->pVertex->shadow;
+				uint8_t shadow = vertices[0]->pVertex->shadow;
 				if (shadow && lightIntensity > 0.2f)
 				{
 					lightIntensity = 0.2f;
@@ -941,7 +941,7 @@ void TerrainQuad::setupTextures (void)
 			{
 				float lightIntensity = vertices[1]->pVertex->vertexNormal * eye->lightDirection;
 
-				unsigned char shadow = vertices[1]->pVertex->shadow;
+				uint8_t shadow = vertices[1]->pVertex->shadow;
 				if (shadow && lightIntensity > 0.2f)
 				{
 					lightIntensity = 0.2f;
@@ -1095,7 +1095,7 @@ void TerrainQuad::setupTextures (void)
 			{
 				float lightIntensity = vertices[2]->pVertex->vertexNormal * eye->lightDirection;
 	
-				unsigned char shadow = vertices[2]->pVertex->shadow;
+				uint8_t shadow = vertices[2]->pVertex->shadow;
 				if (shadow && lightIntensity > 0.2f)
 				{
 					lightIntensity = 0.2f;
@@ -1249,7 +1249,7 @@ void TerrainQuad::setupTextures (void)
 			{
 				float lightIntensity = vertices[3]->pVertex->vertexNormal * eye->lightDirection;
 	
-				unsigned char shadow = vertices[3]->pVertex->shadow;
+				uint8_t shadow = vertices[3]->pVertex->shadow;
 				if (shadow && lightIntensity > 0.2f)
 				{
 					lightIntensity = 0.2f;

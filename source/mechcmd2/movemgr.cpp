@@ -48,9 +48,10 @@ void MovePathManager::operator delete (void* us) {
 
 //---------------------------------------------------------------------------
 
-long MovePathManager::init (void) {
-
-	for (long i = 0; i < MAX_MOVERS; i++) {
+long MovePathManager::init (void)
+{
+	long i;
+	for (i = 0; i < MAX_MOVERS; i++) {
 		pool[i].pilot = NULL;
 		pool[i].selectionIndex = 0;
 		pool[i].moveParams = 0;

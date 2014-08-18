@@ -115,7 +115,7 @@ void OptionsXScreen::init(FitIniFile* file)
 
 	LogisticsScreen::init( *file, "Static", "Text", "Rect", "Button", "Edit" );	
 
-	const char* fileNames[4] = 
+	PCSTR fileNames[4] = 
 	{
 		"mcl_optionsgraphics",
 		"mcl_optionsaudio",
@@ -1140,7 +1140,7 @@ void OptionsHotKeys::makeKeyString( long newKey, char* keysString )
 
 int OptionsHotKeys::makeInputKeyString( long& tmpKey, char* hotKeyString )
 {
-		const char* pText = gos_DescribeKey( tmpKey & 0x0001ff00 );
+		PCSTR pText = gos_DescribeKey( tmpKey & 0x0001ff00 );
 
 		long tmp = ( tmpKey >> 8 ) & 0x01ff;
 		if ( tmp == KEY_LSHIFT || tmp == KEY_LMENU || tmp == KEY_LCONTROL )
@@ -1497,11 +1497,11 @@ void HotKeyListItem::update()
 
 }
 
-void HotKeyListItem::setDescription( const char* pText )
+void HotKeyListItem::setDescription( PCSTR pText )
 {
 	description.setText( pText );
 }
-void HotKeyListItem::setKey( const char* pText )
+void HotKeyListItem::setKey( PCSTR pText )
 {
 	text.setText( pText );
 }

@@ -5825,7 +5825,7 @@ void execAnimationCallout (void)
 }
 
 static char tutorialMessages[MAX_CHAT_COUNT][1024];
-static unsigned char currentMessage = 0;
+static uint8_t currentMessage = 0;
 //*****************************************************************************
 void execTutorialText (void)
 {
@@ -6485,7 +6485,7 @@ bool ablFileEofCB (void* file) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileReadCB (void* file, unsigned char* buffer, long length) {
+long ablFileReadCB (void* file, PUCHAR buffer, long length) {
 
 	return(((FilePtr)file)->read(buffer, length));
 }
@@ -6499,28 +6499,28 @@ long ablFileReadLongCB (void* file) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileReadStringCB (void* file, unsigned char* buffer) {
+long ablFileReadStringCB (void* file, PUCHAR buffer) {
 
 	return(((FilePtr)file)->readString(buffer));
 }
 
 //-----------------------------------------------------------------------------
 
-long ablFileReadLineExCB (void* file, unsigned char* buffer, long maxLength) {
+long ablFileReadLineExCB (void* file, PUCHAR buffer, long maxLength) {
 
 	return(((FilePtr)file)->readLineEx(buffer, maxLength));
 }
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteCB (void* file, unsigned char* buffer, long length) {
+long ablFileWriteCB (void* file, PUCHAR buffer, long length) {
 
 	return(((FilePtr)file)->write(buffer, length));
 }
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteByteCB (void* file, unsigned char byte) {
+long ablFileWriteByteCB (void* file, uint8_t byte) {
 
 	return(((FilePtr)file)->writeByte(byte));
 }

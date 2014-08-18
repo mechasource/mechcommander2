@@ -307,12 +307,12 @@ long (*ABLFile::createCB) (void** file, char* fName) = NULL;
 long (*ABLFile::openCB) (void** file, char* fName) = NULL;
 long (*ABLFile::closeCB) (void** file) = NULL;
 bool (*ABLFile::eofCB) (void* file) = NULL;
-long (*ABLFile::readCB) (void* file, unsigned char* buffer, long length) = NULL;
+long (*ABLFile::readCB) (void* file, PUCHAR buffer, long length) = NULL;
 long (*ABLFile::readLongCB) (void* file) = NULL;
-long (*ABLFile::readStringCB) (void* file, unsigned char* buffer) = NULL;
-long (*ABLFile::readLineExCB) (void* file, unsigned char* buffer, long maxLength) = NULL;
-long (*ABLFile::writeCB) (void* file, unsigned char* buffer, long length) = NULL;
-long (*ABLFile::writeByteCB) (void* file, unsigned char byte) = NULL;
+long (*ABLFile::readStringCB) (void* file, PUCHAR buffer) = NULL;
+long (*ABLFile::readLineExCB) (void* file, PUCHAR buffer, long maxLength) = NULL;
+long (*ABLFile::writeCB) (void* file, PUCHAR buffer, long length) = NULL;
+long (*ABLFile::writeByteCB) (void* file, uint8_t byte) = NULL;
 long (*ABLFile::writeLongCB) (void* file, long value) = NULL;
 long (*ABLFile::writeStringCB) (void* file, char* buffer) = NULL;
 
@@ -396,7 +396,7 @@ bool ABLFile::eof (void) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::read (unsigned char* buffer, long length) {
+long ABLFile::read (PUCHAR buffer, long length) {
 
 	if (file)
 		return(readCB(file, buffer, length));
@@ -414,7 +414,7 @@ long ABLFile::readLong (void) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::readString (unsigned char* buffer) {
+long ABLFile::readString (PUCHAR buffer) {
 
 	if (file)
 		return(readStringCB(file, buffer));
@@ -423,7 +423,7 @@ long ABLFile::readString (unsigned char* buffer) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::readLineEx (unsigned char* buffer, long maxLength) {
+long ABLFile::readLineEx (PUCHAR buffer, long maxLength) {
 
 	if (file)
 		return(readLineExCB(file, buffer, maxLength));
@@ -432,7 +432,7 @@ long ABLFile::readLineEx (unsigned char* buffer, long maxLength) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::write (unsigned char* buffer, long length) {
+long ABLFile::write (PUCHAR buffer, long length) {
 
 	if (file)
 		return(writeCB(file, buffer, length));
@@ -441,7 +441,7 @@ long ABLFile::write (unsigned char* buffer, long length) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::writeByte (unsigned char val) {
+long ABLFile::writeByte (uint8_t val) {
 
 	if (file)
 		return(writeByteCB(file, val));
@@ -1239,7 +1239,7 @@ bool getSourceLine (void) {
 
 	if (!sourceFile->eof())
 	{
-		long numChars = sourceFile->readLineEx((unsigned char*)sourceBuffer, MAXLEN_SOURCELINE);
+		long numChars = sourceFile->readLineEx((PUCHAR)sourceBuffer, MAXLEN_SOURCELINE);
 		if (numChars == 0)
 			return(false);
 		lineNumber++;
@@ -1282,7 +1282,7 @@ long openSourceFile (char* sourceFileName) {
 	sourceFile = sFile;
 	strcpy(openFiles[NumOpenFiles].fileName, sourceFileName);
 	openFiles[NumOpenFiles].filePtr = sFile;
-	openFiles[NumOpenFiles].fileNumber = (unsigned char)FileNumber;
+	openFiles[NumOpenFiles].fileNumber = (uint8_t)FileNumber;
 	openFiles[NumOpenFiles].lineNumber = 0;
 	if (NumOpenFiles > 0)
 		openFiles[NumOpenFiles - 1].lineNumber = lineNumber;

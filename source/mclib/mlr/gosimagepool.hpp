@@ -3,58 +3,53 @@
 //===========================================================================//
 
 #pragma once
+
+#if !defined(MLR_GOSIMAGEPOOL_HPP)
 #define MLR_GOSIMAGEPOOL_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
+#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer {
 
 	class GOSImagePool
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
 	//
 	public:
-		GOSImagePool();
-		~GOSImagePool();
+		GOSImagePool(void);
+		virtual ~GOSImagePool(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Image handling
 	//
 	public:
-		GOSImage*
-			GetImage(const char* imageName);
-		GOSImage*
-			GetImage(const char* imageName, gos_TextureFormat format, int size, gos_TextureHints hints);
-		virtual bool
-			LoadImage(GOSImage *image, int=0)=0;
-		void
-			RemoveImage(GOSImage *image);
-		
-		void UnLoadImages (void);
+		GOSImage* GetImage(PCSTR imageName);
+		GOSImage* GetImage(PCSTR imageName, gos_TextureFormat format, int size, gos_TextureHints hints);
 
-		void
-			GetTexturePath(Stuff::MString* pName) const
-				{ Check_Object(this); *pName = texturePath; }
+		virtual bool LoadImage(GOSImage *image, int=0)=0;
+		void RemoveImage(GOSImage *image);
+		void UnLoadImages(void);
+		void GetTexturePath(Stuff::MString* pName) const
+		{
+			Check_Object(this);
+			*pName = texturePath;
+		}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const
-				{}
+		void TestInstance(void) const
+		{
+		}
 
 	protected:
-		Stuff::HashOf<GOSImage*, Stuff::MString>
-			imageHash;
-		Stuff::MString
-			texturePath;
+		Stuff::HashOf<GOSImage*, Stuff::MString> imageHash;
+		Stuff::MString texturePath;
 	};
 
 	class TGAFilePool:
@@ -64,14 +59,13 @@ namespace MidLevelRenderer {
 	// Constructors/Destructors
 	//
 	public:
-		TGAFilePool(const char* path);
+		TGAFilePool(PCSTR path);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Image handling
 	//
 	public:
-		bool
-			LoadImage(GOSImage *image, int=0);
-
+		bool LoadImage(GOSImage *image, int=0);
 	};
 }
+#endif

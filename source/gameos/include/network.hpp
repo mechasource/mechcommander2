@@ -115,7 +115,7 @@ void __stdcall gos_Disconnect();
 //
 // Functionality: If browser services are available, advertise the indicated key/value pair
 //
-bool __stdcall gos_NetSetAdvertItem( DWORD player, const char* Name , const char * Value);
+bool __stdcall gos_NetSetAdvertItem( DWORD player, PCSTR Name , PCSTR  Value);
 
 
 void NGStatsSetPlayerId(char *name, char *passwd);
@@ -134,7 +134,7 @@ int __stdcall GetGUNStatus( void );
 int __stdcall GetGUNRegStatus( void );
 int __stdcall GetGUNNetStatus( void );
 int __stdcall GetGUNLastError( void );
-const char * __stdcall GetGUNErrorMessage( void );
+PCSTR  __stdcall GetGUNErrorMessage( void );
 void __stdcall GetGUNDownloadStats( int * tableSize, int * progress );
 
 
@@ -153,7 +153,7 @@ typedef unsigned int UINT4;
 typedef struct {
   UINT4 state[4];                                   /* state (ABCD) */
   UINT4 count[2];        /* number of bits, modulo 2^64 (lsb first) */
-  unsigned char buffer[64];                         /* input buffer */
+  uint8_t buffer[64];                         /* input buffer */
 } MD5_CTX;
 
 
@@ -165,8 +165,8 @@ void __stdcall MD5SecurityCheckStop();
 
 
 void __stdcall MD5Init (MD5_CTX *);
-void __stdcall MD5Update  (MD5_CTX *, unsigned char *, uint32_t);
-void __stdcall MD5Final (unsigned char [16], MD5_CTX *);
+void __stdcall MD5Update  (MD5_CTX *, PUCHAR, uint32_t);
+void __stdcall MD5Final (uint8_t [16], MD5_CTX *);
 
 
 
@@ -193,11 +193,11 @@ public:
 	static bool __stdcall SynchronizeAll(void);
 	static bool __stdcall DisconnectAll(void);
 	static bool __stdcall ReleaseAll(void);
-	static bool __stdcall JoinGame(const char *szGameName, void **ppDplay );
+	static bool __stdcall JoinGame(PCSTR szGameName, void **ppDplay );
 	static bool __stdcall Update(int browserHandle = -1 );
 	static bool __stdcall RefreshList(void);
     static bool __stdcall CancelAllActivity(void);
-	static bool __stdcall ServerInfo(const char * gameID);
+	static bool __stdcall ServerInfo(PCSTR  gameID);
 	static bool __stdcall StillBusy(void);
     static int  __stdcall GetBrowserCount( void );
 
@@ -233,7 +233,7 @@ protected:
 	virtual	bool __stdcall Disconnect(void) = 0;
 	virtual bool __stdcall Release(void) = 0;		// disconnect, unregister, and free
 	virtual int __stdcall GetStatus(void) = 0;
-	virtual const char * __stdcall GetDescription(void) = 0;
+	virtual PCSTR  __stdcall GetDescription(void) = 0;
 	virtual bool __stdcall Synchronize(void) = 0;	// called every frame
 													// for every active
 													// browser or server
@@ -246,7 +246,7 @@ protected:
 
 
 	// for browsers
-    virtual bool __stdcall PrepareJoinGame(const char * szGameName, void **ppDPlay ) = 0;
+    virtual bool __stdcall PrepareJoinGame(PCSTR  szGameName, void **ppDPlay ) = 0;
 
 	//
 	// server browsers can call these members
@@ -260,7 +260,7 @@ public:
 	// differentiate one server browser from
 	// another
 	//
-	const char * __stdcall GetBrowserHandle(void) { return m_szHandle; }
+	PCSTR  __stdcall GetBrowserHandle(void) { return m_szHandle; }
 
 protected:
 	bool						m_bDelete;
@@ -296,12 +296,12 @@ public:
 	//
 	static bool __stdcall InitializeAll(void);
 	static bool __stdcall SynchronizeAll(void);
-	static bool __stdcall CreateGameAll(const char *szGameName, const char *szPlayerName, int MaxPlayers, const char *szPassword, const GUID &guidInstance, DWORD dwFlags);
-	static bool __stdcall AddPlayerAll(DWORD dwItemID, const char * szPlayerName, bool bBot=false);
+	static bool __stdcall CreateGameAll(PCSTR szGameName, PCSTR szPlayerName, int MaxPlayers, PCSTR szPassword, const GUID &guidInstance, DWORD dwFlags);
+	static bool __stdcall AddPlayerAll(DWORD dwItemID, PCSTR  szPlayerName, bool bBot=false);
 	static bool __stdcall DisconnectAll(void);
-	static bool __stdcall RemovePlayerAll(DWORD dwItemID, const char * szPlayerName, bool bBot );
+	static bool __stdcall RemovePlayerAll(DWORD dwItemID, PCSTR  szPlayerName, bool bBot );
 	static bool __stdcall ReleaseAll(void);
-	static bool __stdcall AdvertiseItem(DWORD dwPlayer, const char * szName , const char * szValue);
+	static bool __stdcall AdvertiseItem(DWORD dwPlayer, PCSTR  szName , PCSTR  szValue);
 	static DWORD __stdcall GetFlagsAllAdvertisers(void);
 	static bool __stdcall SetFlagsAllAdvertisers(DWORD dwFlags);
     
@@ -315,17 +315,17 @@ protected:
 	virtual	bool __stdcall Initialize(void) = 0;
 	virtual	bool __stdcall Disconnect(void) = 0;
 	virtual bool __stdcall Release(void) = 0;		// disconnect, unregister, and free
-	virtual const char * __stdcall GetDescription(void) = 0;
+	virtual PCSTR  __stdcall GetDescription(void) = 0;
 	virtual bool __stdcall Synchronize(void) = 0;	// called every frame
 													// for every active
 													// browser or server
 
 
 	// for servers
-	virtual bool __stdcall CreateGame(const char *szGameName, const char *szPlayerName, int MaxPlayers, const char *szPassword, const GUID &guidInstance, DWORD dwFlags) = 0;
-	virtual bool __stdcall CreatePlayer(DWORD dwItemID, const char *szPlayerName, bool bBot=false) = 0;
-	virtual bool __stdcall RemovePlayer(DWORD dwItemID, const char *szPlayerName, bool bBot=false) = 0;
-	virtual bool __stdcall SetItemValue(DWORD dwPlayer, const char * szName , const char * szValue) = 0;
+	virtual bool __stdcall CreateGame(PCSTR szGameName, PCSTR szPlayerName, int MaxPlayers, PCSTR szPassword, const GUID &guidInstance, DWORD dwFlags) = 0;
+	virtual bool __stdcall CreatePlayer(DWORD dwItemID, PCSTR szPlayerName, bool bBot=false) = 0;
+	virtual bool __stdcall RemovePlayer(DWORD dwItemID, PCSTR szPlayerName, bool bBot=false) = 0;
+	virtual bool __stdcall SetItemValue(DWORD dwPlayer, PCSTR  szName , PCSTR  szValue) = 0;
 	virtual bool __stdcall SetFlags(DWORD dwFlags)=0;
 
 	//

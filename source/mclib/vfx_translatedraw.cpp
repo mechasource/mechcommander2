@@ -825,7 +825,7 @@ Exit:
 /*
 ;----------------------------------------------------------------------------
 ;
-; void cdecl VFX_shape_lookaside (unsigned char *table)
+; void cdecl VFX_shape_lookaside (PUCHAR table)
 ;
 ; Establishes a color translation lookaside table for use by future calls
 ; to VFX_shape_translate_draw().

@@ -34,11 +34,11 @@ public:
 
 	inline  DebugFileStream& operator<<(ostream& (__cdecl * _f)(ostream&)){return *this;}
 	inline  DebugFileStream& operator<<(ios& (__cdecl * _f)(ios&)){return *this;}
-	inline  DebugFileStream& operator<<(const char *){return *this;}
-	inline  DebugFileStream& operator<<(const unsigned char *){return *this;}
+	inline  DebugFileStream& operator<<(PCSTR ){return *this;}
+	inline  DebugFileStream& operator<<(pcuint8_t){return *this;}
 	inline  DebugFileStream& operator<<(const signed char *){return *this;}
 	inline  DebugFileStream& operator<<(char){return *this;}
-	inline  DebugFileStream& operator<<(unsigned char){return *this;}
+	inline  DebugFileStream& operator<<(uint8_t){return *this;}
 	inline  DebugFileStream& operator<<(signed char){return *this;}
 	inline  DebugFileStream& operator<<(short){return *this;}
 	inline  DebugFileStream& operator<<(unsigned short){return *this;}

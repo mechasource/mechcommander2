@@ -27,7 +27,7 @@ class aStyle5TextListItem : public aTextListItem
 {
 public:
 	aStyle5TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual long	init( FitIniFile* file, const char* blockName );
+	virtual long	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
 protected:

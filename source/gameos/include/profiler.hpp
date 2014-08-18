@@ -46,7 +46,7 @@ typedef struct _Stat
 } Stat;
 
 
-const int StatsInBlock=32;				// Number of stats in a single block
+cint32_t StatsInBlock=32;				// Number of stats in a single block
 
 __inline float __stdcall GetHistory( Stat* pStat, int GraphHead )
 {

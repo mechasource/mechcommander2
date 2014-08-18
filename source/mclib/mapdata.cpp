@@ -155,7 +155,7 @@ void MapData::newInit (PacketFile* newFile, long numVertices)
 //---------------------------------------------------------------------------
 long MapData::save( PacketFile* file, int whichPacket )
 {
-	return file->writePacket( whichPacket, (unsigned char*)blocks, 
+	return file->writePacket( whichPacket, (PUCHAR)blocks, 
 		Terrain::realVerticesMapSide * Terrain::realVerticesMapSide *sizeof(PostcompVertex ) );
 }
 

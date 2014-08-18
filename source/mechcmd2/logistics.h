@@ -83,7 +83,7 @@ class Logistics
 		
 		void render (void);
 
-		void setResultsHostLeftDlg( const char* pName );
+		void setResultsHostLeftDlg( PCSTR pName );
 		
 		void setLogisticsState (long state)
 		{
@@ -99,7 +99,7 @@ class Logistics
 		static int _stdcall beginMission( void*, int, void*[] );
 
 		int DoBeginMission();
-		void playFullScreenVideo( const char* fileName );
+		void playFullScreenVideo( PCSTR fileName );
 
 		MC2MoviePtr	bMovie;
 

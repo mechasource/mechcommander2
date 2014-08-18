@@ -11,7 +11,7 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage( const char* iName ) : Plug (DefaultData)
+GOSImage::GOSImage( PCSTR iName ) : Plug (DefaultData)
 {
 	imageName = iName;
 
@@ -45,7 +45,7 @@ GOSImage::GOSImage( DWORD iHandle ) : Plug (DefaultData)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage(const char *name, gos_TextureHints hints) : Plug (DefaultData)
+GOSImage::GOSImage(PCSTR name, gos_TextureHints hints) : Plug (DefaultData)
 {
 	imageName = name;
 
@@ -62,7 +62,7 @@ GOSImage::GOSImage(const char *name, gos_TextureHints hints) : Plug (DefaultData
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::~GOSImage()
+GOSImage::~GOSImage(void)
 {
 	imageName = "";
 
@@ -82,26 +82,25 @@ GOSImage::~GOSImage()
 	flags = 0;
 }
 
+#if _CONSIDERED_OBSOLETE
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
-	GOSImage::GetWidth()
+int GOSImage::GetWidth()
 {
 	return 0;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
-	GOSImage::GetHeight()
+int GOSImage::GetHeight()
 {
 	return 0;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	GOSImage::LockImage()
+void GOSImage::LockImage()
 {
 	if(!(flags & Locked))
 	{
@@ -115,8 +114,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	GOSImage::UnlockImage()
+void GOSImage::UnlockImage()
 {
 	if(flags & Locked)
 	{
@@ -135,8 +133,10 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-unsigned char*
+PUCHAR
 	GOSImage::GetImagePtr()
 {
-	return (unsigned char *)ptr.pTexture;
+	return (PUCHAR )ptr.pTexture;
 }
+
+#endif

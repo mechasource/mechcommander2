@@ -162,11 +162,11 @@ long WeaponBoltType::init (FilePtr objFile, unsigned long fileSize)
 		if (result != NO_ERR)
 			middleRGB = 0x00ffffff;
 				
-		result = bullFile.readIdUChar("EdgeAlpha",edgeAlpha);
+		result = bullFile.readIdUCHAR("EdgeAlpha",edgeAlpha);
 		if (result != NO_ERR)
 			edgeAlpha = 0xff;
 			
-		result = bullFile.readIdUChar("BoltAlpha",boltAlpha);
+		result = bullFile.readIdUCHAR("BoltAlpha",boltAlpha);
 		if (result != NO_ERR)
 			boltAlpha = 0xff;
 		
@@ -238,11 +238,11 @@ long WeaponBoltType::init (FilePtr objFile, unsigned long fileSize)
 		if (result != NO_ERR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find backRGB");
 			
-		result = bullFile.readIdUChar("EdgeAlpha",edgeAlpha);
+		result = bullFile.readIdUCHAR("EdgeAlpha",edgeAlpha);
 		if (result != NO_ERR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find edgeAlpha");
 			
-		result = bullFile.readIdUChar("BoltAlpha",boltAlpha);
+		result = bullFile.readIdUCHAR("BoltAlpha",boltAlpha);
 		if (result != NO_ERR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find boltAlpha");
 		

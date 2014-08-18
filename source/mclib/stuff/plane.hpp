@@ -16,7 +16,7 @@ namespace Stuff {class Plane;}
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Stuff::Plane& plane
 		);
 #endif
@@ -167,7 +167,7 @@ namespace Stuff {
 		#if !defined(Spew)
 			friend void
 				::Spew(
-					const char* group,
+					PCSTR group,
 					const Plane& plane
 				);
 		#endif

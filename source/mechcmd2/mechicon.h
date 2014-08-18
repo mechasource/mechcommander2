@@ -1,5 +1,3 @@
-#ifndef MECHICON_H
-#define MECHICON_H
 /*************************************************************************************************\
 MechIcon.h			: Interface for the MechIcon component.
 //---------------------------------------------------------------------------//
@@ -7,17 +5,14 @@ MechIcon.h			: Interface for the MechIcon component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef MCLIB_H
+#pragma once
+
+#ifndef MECHICON_H
+#define MECHICON_H
+
 #include <mclib.h>
-#endif
-
-#ifndef AFONT_H
 #include "afont.h"
-#endif
-
-#ifndef MC2movie_H
 #include "mc2movie.h"
-#endif
 
 //*************************************************************************************************
 class Mover;
@@ -87,7 +82,7 @@ public:
 
 		static int __cdecl sort( const void* p1, const void* p2 );
 
-		const char* getPilotName();
+		PCSTR getPilotName();
 
 		static void init( FitIniFile& file, int which );
 		void swapResolutions(bool bForce);

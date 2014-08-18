@@ -20,9 +20,9 @@
 //---------------------------------------------------------------------------
 typedef struct _RGB
 {
-	unsigned char r;
-	unsigned char g;
-	unsigned char b;
+	uint8_t r;
+	uint8_t g;
+	uint8_t b;
 } RGB;
 
 //---------------------------------------------------------------------------
@@ -206,7 +206,7 @@ void tgaCopy (MemoryPtr dest, MemoryPtr src, long size)
 }
 
 //---------------------------------------------------------------------------
-static const int g_textureCache_BufferSize = 16384/*64*64*sizeof(DWORD)*/;
+static cint32_t g_textureCache_BufferSize = 16384/*64*64*sizeof(DWORD)*/;
 static BYTE g_textureCache_Buffer[g_textureCache_BufferSize];
 EString *g_textureCache_FilenameOfLastLoadedTexture = NULL;/*This is an (EString *) instead of an EString because apparently gos memory management has a problem with global static allocation of EStrings.*/
 static int g_textureCache_WidthOfLastLoadedTexture = 0;/*just to be sure*/
@@ -223,8 +223,8 @@ void loadTGATexture (FilePtr tgaFile, MemoryPtr ourRAM, long width, long height)
 	{
 		if ((g_textureCache_FilenameOfLastLoadedTexture->Data())
 			&& (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data()))
-			&& ((const int)width == g_textureCache_WidthOfLastLoadedTexture)
-			&& ((const int)height == g_textureCache_HeightOfLastLoadedTexture)
+			&& ((cint32_t)width == g_textureCache_WidthOfLastLoadedTexture)
+			&& ((cint32_t)height == g_textureCache_HeightOfLastLoadedTexture)
 			)
 		{
 			if (g_textureCache_LastTextureIsCached)
@@ -332,8 +332,8 @@ void loadTGATexture (FilePtr tgaFile, MemoryPtr ourRAM, long width, long height)
 	{
 		if ((g_textureCache_FilenameOfLastLoadedTexture->Data())
 			&& (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data()))
-			&& ((const int)width == g_textureCache_WidthOfLastLoadedTexture)
-			&& ((const int)height == g_textureCache_HeightOfLastLoadedTexture)
+			&& ((cint32_t)width == g_textureCache_WidthOfLastLoadedTexture)
+			&& ((cint32_t)height == g_textureCache_HeightOfLastLoadedTexture)
 			)
 		{
 			g_textureCache_NumberOfConsecutiveLoads += 1;

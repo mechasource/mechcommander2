@@ -266,7 +266,7 @@ class Artillery : public GameObject
 			return(info.strike.timeToImpact <= 0);
 		}
 		
-		void drawSelectBox (unsigned char color);
+		void drawSelectBox (uint8_t color);
 
 		bool isStrike (void) 
 		{

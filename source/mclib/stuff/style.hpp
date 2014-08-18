@@ -122,22 +122,22 @@ namespace Stuff {
 	#if !defined(Spew)
 		inline void
 			Spew(
-				const char* group,
+				PCSTR group,
 				int value
 			)
 				{SPEW((group, "%d+", value));}
 
 		inline void
 			Spew(
-				const char* group,
+				PCSTR group,
 				float value
 			)
 				{SPEW((group, "%f+", value));}
 
 		inline void
 			Spew(
-				const char* group,
-				const char* value
+				PCSTR group,
+				PCSTR value
 			)
 				{SPEW((group, "%s+", value));}
 	#endif

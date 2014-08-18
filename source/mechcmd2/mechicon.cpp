@@ -124,7 +124,7 @@ ForceGroupIcon::ForceGroupIcon(  )
 		s_textureMemory->image_type = UNC_PAL;
 
 		if ( s_textureHandle[0] == -1 )
-			s_textureHandle[0] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (unsigned char*)s_textureMemory, size, 0 );
+			s_textureHandle[0] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (PUCHAR)s_textureMemory, size, 0 );
 
 		memset( s_slotUsed, 0, 240 * sizeof( bool ) );
 	}
@@ -333,7 +333,7 @@ void MechIcon::setDrawBack( bool bSet)
 	if ( s_textureHandle[textureIndex] == -1 )
 	{
 		long size = ( 256 * 256 * sizeof( long ) + sizeof( TGAFileHeader ) );
-		s_textureHandle[textureIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (unsigned char*)s_textureMemory, size, 0 );
+		s_textureHandle[textureIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (PUCHAR)s_textureMemory, size, 0 );
 	}
 
 	
@@ -513,7 +513,7 @@ bool MechIcon::init( long whichIndex )
 	if ( s_textureHandle[textureIndex] == -1 )
 	{
 		long size = ( 256 * 256 * sizeof( long ) + sizeof( TGAFileHeader ) );
-		s_textureHandle[textureIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (unsigned char*)s_textureMemory, size, 0 );
+		s_textureHandle[textureIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (PUCHAR)s_textureMemory, size, 0 );
 	}
 
 	// now need to make a copy of the data
@@ -804,7 +804,7 @@ void MechIcon::doDraw( char* newDamage, char* oldDamage, unsigned long handle, u
 			if ( s_textureHandle[texIndex] == -1 )
 			{
 				long size = ( 256 * 256 * sizeof( long ) + sizeof( TGAFileHeader ) );
-				s_textureHandle[texIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (unsigned char*)s_textureMemory, size, 0 );
+				s_textureHandle[texIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (PUCHAR)s_textureMemory, size, 0 );
 			}
 
 			TEXTUREPTR textureData;
@@ -869,7 +869,7 @@ void MechIcon::doDraw( char* newDamage, char* oldDamage, unsigned long handle, u
 
 }
 
-bool IsDbcsString(const char* pszString)
+bool IsDbcsString(PCSTR pszString)
 {
 	if (pszString) {
 		while (*pszString) {
@@ -1174,7 +1174,7 @@ bool VehicleIcon::init( Mover* pMover )
 	if ( s_textureHandle[texIndex] == -1 )
 	{
 		long size = ( 256 * 256 * sizeof( long ) + sizeof( TGAFileHeader ) );
-		s_textureHandle[texIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (unsigned char*)s_textureMemory, size, 0 );
+		s_textureHandle[texIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (PUCHAR)s_textureMemory, size, 0 );
 	}
 
 
@@ -1426,7 +1426,7 @@ int ForceGroupIcon::sort( const void* p1, const void* p2 )
 	return retVal;
 }
 
-const char* ForceGroupIcon::getPilotName()
+PCSTR ForceGroupIcon::getPilotName()
 {
 	return unit->getPilot()->getName();
 }

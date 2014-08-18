@@ -150,7 +150,7 @@ static bool MoverIsCaptured(const long pMoverWID, const long teamID)
 	return retval;
 }
 
-static long sReadIdFloat(FitIniFile* missionFile, const char *varName, float &value) {
+static long sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
 	long result = 0;
 	float tmpFloat;
 	result = missionFile->readIdFloat((char *)varName, tmpFloat);
@@ -162,7 +162,7 @@ static long sReadIdFloat(FitIniFile* missionFile, const char *varName, float &va
 	return result;
 }
 
-static long sReadIdBoolean(FitIniFile* missionFile, const char *varName, bool &value) {
+static long sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) {
 	long result = 0;
 	bool tmpBool;
 	result = missionFile->readIdBoolean((char *)varName, tmpBool);
@@ -174,7 +174,7 @@ static long sReadIdBoolean(FitIniFile* missionFile, const char *varName, bool &v
 	return result;
 }
 
-static long sReadIdWholeNum(FitIniFile* missionFile, const char *varName, int &value) {
+static long sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) {
 	long result = 0;
 	unsigned long tmpULong;
 	result = missionFile->readIdULong((char *)varName, tmpULong);
@@ -186,7 +186,7 @@ static long sReadIdWholeNum(FitIniFile* missionFile, const char *varName, int &v
 	return result;
 }
 
-static long sReadIdLongInt(FitIniFile* missionFile, const char *varName, int &value) {
+static long sReadIdLongInt(FitIniFile* missionFile, PCSTR varName, int &value) {
 	long result = 0;
 	long tmpLong;
 	result = missionFile->readIdLong((char *)varName, tmpLong);
@@ -198,11 +198,11 @@ static long sReadIdLongInt(FitIniFile* missionFile, const char *varName, int &va
 	return result;
 }
 
-static int sReplace(ECharString &ECStr, const char *szOldSub, const char *szNewSub) {
+static int sReplace(ECharString &ECStr, PCSTR szOldSub, PCSTR szNewSub) {
 	if ((!szOldSub) || (0 >= strlen(szOldSub)) || (!szNewSub)) { return -1; }
 	int retval = 0;
 	ECharString newStr;
-	const int lengthOfOldSub = strlen(szOldSub);
+	cint32_t lengthOfOldSub = strlen(szOldSub);
 	int endIndexOfLastOldSub = -1;
 	int startIndexOfOldSub = ECStr.Find(szOldSub, endIndexOfLastOldSub + 1);
 	while ((ECharString::INVALID_INDEX != startIndexOfOldSub) && (0 <= startIndexOfOldSub) && (ECStr.Length() - lengthOfOldSub >= startIndexOfOldSub)) {
@@ -223,7 +223,7 @@ static int sReplace(ECharString &ECStr, const char *szOldSub, const char *szNewS
 	return retval;
 }
 
-static long sReadIdString(FitIniFile* missionFile, const char *varName, ECharString &ECStr) {
+static long sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString &ECStr) {
 	long result = 0;
 	char buffer[2001/*buffer size*/]; buffer[0] = '\0';
 	result = missionFile->readIdString((char *)varName, buffer, 2001/*buffer size*/ -1);
@@ -237,7 +237,7 @@ static long sReadIdString(FitIniFile* missionFile, const char *varName, ECharStr
 	return result;
 }
 
-static long sWriteIdString(FitIniFile* missionFile, const char *varName, const char *szStr) {
+static long sWriteIdString(FitIniFile* missionFile, PCSTR varName, PCSTR szStr) {
 	if (!szStr) { return !(NO_ERR); }
 	long result = 0;
 	ECharString ECStr = szStr;
@@ -1599,7 +1599,7 @@ void CObjective::Alignment(int alignment) {
 	}
 }
 
-static condition_species_type ConditionSpeciesMap(const char *speciesString) {
+static condition_species_type ConditionSpeciesMap(PCSTR speciesString) {
 	condition_species_type retval = DESTROY_ALL_ENEMY_UNITS;
 	int i;
 	for (i = 0; i < (int)NUM_CONDITION_SPECIES; i += 1) {
@@ -1612,7 +1612,7 @@ static condition_species_type ConditionSpeciesMap(const char *speciesString) {
 	return retval;
 }
 
-static action_species_type ActionSpeciesMap(const char *speciesString) {
+static action_species_type ActionSpeciesMap(PCSTR speciesString) {
 	action_species_type retval = PLAY_BIK;
 	int i;
 	for (i = 0; i < (int)NUM_ACTION_SPECIES; i += 1) {
@@ -2202,7 +2202,7 @@ objective_status_type CObjectives::Status() {
 	gos_TextSetAttributes( guiFont, color, 1.0, false, true, false, false, 0 );	
 	gos_TextSetPosition(xPos + 2 * fontWidth, yPos );
 
-	gos_TextDraw( (const char*)m_description );
+	gos_TextDraw( (PCSTR)m_description );
 
 }*/
 

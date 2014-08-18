@@ -74,7 +74,7 @@ MStringRepresentation::MStringRepresentation(const MStringRepresentation &str)
 //#############################################################################
 //#############################################################################
 //
-MStringRepresentation::MStringRepresentation(const char *cstr)
+MStringRepresentation::MStringRepresentation(PCSTR cstr)
 {
 	if ((cstr == NULL) || (cstr[0] == '\x00'))
 	{
@@ -204,7 +204,7 @@ MStringRepresentation::operator = (const MStringRepresentation &str)
 //#############################################################################
 //
 MStringRepresentation
-MStringRepresentation::operator = (const char *cstr)
+MStringRepresentation::operator = (PCSTR cstr)
 {
 	Check_Object(this);
 
@@ -502,7 +502,7 @@ MemoryStreamIO::Write(
 //
 void
 Stuff::Convert_From_Ascii(
-	const char *str,
+	PCSTR str,
 	MStringRepresentation *value)
 {
 #if 0
@@ -551,7 +551,7 @@ MString::operator = (const MString &str)
 //#############################################################################
 //
 MString&
-MString::operator = (const char *cstr)
+MString::operator = (PCSTR cstr)
 {
 	Check_Object(representation);
 	representation->DecrementReferenceCount();
@@ -624,7 +624,7 @@ MemoryStreamIO::Read(
 //
 void
 Stuff::Convert_From_Ascii(
-	const char *str,
+	PCSTR str,
 	MString *value)
 {
 	Check_Object(value);
@@ -642,8 +642,8 @@ Stuff::Convert_From_Ascii(
 //
 bool
 Stuff::Close_Enough(
-	const char *str1,
-	const char *str2,
+	PCSTR str1,
+	PCSTR str2,
 	Scalar e)
 {
 	Check_Pointer(str1);

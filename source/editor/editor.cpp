@@ -79,7 +79,7 @@ long		maxFastFiles = 0;
 #define MAX_SHAPES	0
 
 										//Heidi, turn this FALSE to turn Fog of War ON!
-extern unsigned char godMode;			//Can I simply see everything, enemy and friendly?
+extern uint8_t godMode;			//Can I simply see everything, enemy and friendly?
 
 void InitDW (void);
 
@@ -669,7 +669,8 @@ void InitializeGameEngine()
 	MOVE_init(30);
 
 	//--------------------------
-	// Create and Load the master Effects File 	weaponEffects = new WeaponEffects;
+	// Create and Load the master Effects File 	
+	weaponEffects = new WeaponEffects;
 	weaponEffects->init("Effects");
 
 	editor = new Editor();

@@ -113,7 +113,7 @@ SinCosPair&
 #if !defined(Spew)
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Radian& angle
 		)
 	{
@@ -127,7 +127,7 @@ SinCosPair&
 	//
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const Degree& angle
 		)
 	{
@@ -141,7 +141,7 @@ SinCosPair&
 	//
 	void
 		Spew(
-			const char* group,
+			PCSTR group,
 			const SinCosPair& angle
 		)
 	{

@@ -150,9 +150,9 @@ extern float DefaultAttackRange;
 extern float baseSensorRange;
 extern long visualRangeTable[];
 
-extern unsigned char godMode;	   
-extern unsigned char revealTacMap; 
-extern unsigned char footPrints;   
+extern uint8_t godMode;	   
+extern uint8_t revealTacMap; 
+extern uint8_t footPrints;   
 extern bool CantTouchThis;
 
 extern long tonnageDivisor;		   
@@ -242,7 +242,7 @@ void Part::Save (FitIniFilePtr file, long partNum)
 	file->writeIdULong("VariantNum",variantNum);
 }
 
-void Mission::save (const char *saveFileName)
+void Mission::save (PCSTR saveFileName)
 {
 	//Check for sufficient hard Drive space on drive game is running from
 	char currentPath[1024];
@@ -270,7 +270,7 @@ void Mission::save (const char *saveFileName)
 
 	//Get the campaign name for the campaign we are currently playing.
 	EString campaignName = LogisticsData::instance->getCampaignName();
-	const char *cmpName = campaignName.Data();
+	PCSTR cmpName = campaignName.Data();
 
 	//Open the Save File.
 	// Assume path is correct when we get here.
@@ -317,7 +317,7 @@ void Mission::save (const char *saveFileName)
 	tempFile.writeIdString( "MissionName"						, missionFileName);
 	tempFile.writeIdFloat( "TimeLimit"							, m_timeLimit );
 	tempFile.writeIdLong( "ResourcePoints"						, LogisticsData::instance->getResourcePoints() );
-	tempFile.writeIdUChar( "scenarioTuneNum"					, missionTuneNum );
+	tempFile.writeIdUCHAR( "scenarioTuneNum"					, missionTuneNum );
 
 	tempFile.writeIdLong("OperationId"							, operationId);
 	tempFile.writeIdLong("MissionId"							, missionId);
@@ -620,7 +620,7 @@ void Part::Load (FitIniFilePtr file, long partNum)
 
 }
 
-void Mission::load (const char *loadFileName)
+void Mission::load (PCSTR loadFileName)
 {
 	userInput->mouseOff();
 	loadProgress = 0.0f;
@@ -664,7 +664,7 @@ void Mission::load (const char *loadFileName)
 
 	//Get the campaign name for the campaign we are currently playing.
 	EString campaignName = LogisticsData::instance->getCampaignName();
-	const char *cmpName = campaignName.Data();
+	PCSTR cmpName = campaignName.Data();
 
 	/*
 	if (_stricmp(campName,cmpName) != 0)
@@ -794,16 +794,16 @@ void Mission::load (const char *loadFileName)
 		gosASSERT(loadErr == NO_ERR);
 	}
 
-	result = gameSystemFile->readIdUChar("GodMode", godMode);
+	result = gameSystemFile->readIdUCHAR("GodMode", godMode);
 	if (result != NO_ERR)
 		godMode = 0;
 
-	unsigned char revealTacMap;
-	result = gameSystemFile->readIdUChar("RevealTacMap", revealTacMap);
+	uint8_t revealTacMap;
+	result = gameSystemFile->readIdUCHAR("RevealTacMap", revealTacMap);
 	if (result != NO_ERR)
 		revealTacMap = 0;
 		
-	result = gameSystemFile->readIdUChar("FootPrints", footPrints);
+	result = gameSystemFile->readIdUCHAR("FootPrints", footPrints);
 	if (result != NO_ERR)
 		footPrints = 1;
 
@@ -931,7 +931,7 @@ void Mission::load (const char *loadFileName)
 	if (result != NO_ERR)
 		STOP(("Resource Points missing from IN-Mission Save"));
 
-	result = missionFile.readIdUChar( "scenarioTuneNum"					, missionTuneNum );
+	result = missionFile.readIdUCHAR( "scenarioTuneNum"					, missionTuneNum );
 	if (result != NO_ERR)
 		STOP(("Scenario Tune Num missing from IN-Mission Save"));
 

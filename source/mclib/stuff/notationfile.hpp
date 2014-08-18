@@ -39,14 +39,14 @@ namespace Stuff {
 		static void
 			AddValue(
 				MacroTree *macro_tree,
-				const char* name,
-				const char* value
+				PCSTR name,
+				PCSTR value
 			);
 
 		static void
 			ReplaceMacros(
 				MacroTree *macro_tree,
-				const char *buffer,
+				PCSTR buffer,
 				char *new_buf,
 				int new_buf_size
 			);
@@ -106,7 +106,7 @@ namespace Stuff {
 		};
 
 		NotationFile(
-			const char *file_name,
+			PCSTR file_name,
 			Type type=Standard
 		);
 		NotationFile(
@@ -136,12 +136,12 @@ namespace Stuff {
 			GetFileDependencies() const
 				{Check_Object(this); return &m_fileDependencies;}
 
-		const char*
+		PCSTR
 			GetFileName() const
 				{Check_Object(this); return m_fileName;}
 
 		void
-			SaveAs(const char* file_name);
+			SaveAs(PCSTR file_name);
 		void
 			Save();
 
@@ -201,14 +201,14 @@ namespace Stuff {
 				{Check_Object(this); return m_pages.IsEmpty();}
 
 		bool
-			DoesPageExist(const char *pagename)
+			DoesPageExist(PCSTR pagename)
 				{Check_Object(this); return FindPage(pagename) != NULL;}
 		Page*
-			FindPage(const char* pagename);
+			FindPage(PCSTR pagename);
 		Page*
 			GetPage(unsigned index);
 		Page*
-			GetPage(const char* pagename);
+			GetPage(PCSTR pagename);
 
 		typedef ChainIteratorOf<Page*> PageIterator;
 		PageIterator*
@@ -216,12 +216,12 @@ namespace Stuff {
 				{Check_Object(this); return new PageIterator(&m_pages);}
 
 		Page*
-			AddPage(const char *pagename);
+			AddPage(PCSTR pagename);
 		Page*
-			SetPage(const char *pagename);
+			SetPage(PCSTR pagename);
 
 		void
-			DeletePage(const char *pagename);
+			DeletePage(PCSTR pagename);
 		void
 			DeleteAllPages();
 

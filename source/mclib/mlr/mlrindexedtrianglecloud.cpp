@@ -24,7 +24,7 @@ DynamicArrayOf<unsigned short>
 	*MLRIndexedTriangleCloud::clipExtraIndex;
 DynamicArrayOf<Vector2DScalar>
 	*MLRIndexedTriangleCloud::clipExtraTexCoords;
-DynamicArrayOf<unsigned char>
+DynamicArrayOf<uint8_t>
 	*MLRIndexedTriangleCloud::visibleIndexedVertices;
 
 
@@ -50,7 +50,7 @@ void
 	Register_Pointer(clipExtraIndex);
 	clipExtraTexCoords = new DynamicArrayOf<Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Pointer(clipExtraTexCoords);
-	visibleIndexedVertices = new DynamicArrayOf<unsigned char> (Limits::Max_Number_Vertices_Per_Mesh);
+	visibleIndexedVertices = new DynamicArrayOf<uint8_t> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Pointer(visibleIndexedVertices);
 
 }
@@ -97,8 +97,8 @@ MLRIndexedTriangleCloud::~MLRIndexedTriangleCloud()
 void 
 	MLRIndexedTriangleCloud::SetData
 	(
-		const int *tri_count,
-		const int *point_count,
+		pcint32_t tri_count,
+		pcint32_t point_count,
 		const unsigned short *index_data,
 		const Stuff::Point3D *point_data,
 		const Stuff::RGBAColor *color_data,

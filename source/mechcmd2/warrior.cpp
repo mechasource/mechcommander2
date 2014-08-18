@@ -1042,7 +1042,7 @@ long MechWarrior::init (FitIniFile* warriorFile) {
 	for ( long i = 0; i < strlen( callsign ); i ++ )
 		CharUpper( callsign );
 		
-	result = warriorFile->readIdUChar("OldPilot",oldPilot);
+	result = warriorFile->readIdUCHAR("OldPilot",oldPilot);
 	if (result != NO_ERR)
 		oldPilot = 0;
 	
@@ -1336,7 +1336,7 @@ bool limitFrequency = true;
 		/*
 		else if (MPlayer && MPlayer->isServer() && propogateIfMultiplayer) 
 		{
-			getVehicle()->addRadioChunk(CHUNK_SEND, (unsigned char)message);
+			getVehicle()->addRadioChunk(CHUNK_SEND, (uint8_t)message);
 		}
 		*/
 	}

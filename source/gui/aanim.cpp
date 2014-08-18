@@ -66,7 +66,7 @@ void aAnimation::copyData( const aAnimation& src )
 }
 
 
-long	aAnimation::init(FitIniFile* file, const char* headerName)
+long	aAnimation::init(FitIniFile* file, PCSTR headerName)
 {
 	EString strToCheck = headerName;
 	strToCheck += "AnimationTimeStamps";
@@ -413,7 +413,7 @@ bool aAnimation::isDone() const
 	return 0;
 }
 
-long	aAnimation::initWithBlockName( FitIniFile* file, const char* blockName )
+long	aAnimation::initWithBlockName( FitIniFile* file, PCSTR blockName )
 {
 	if ( NO_ERR != file->seekBlock( blockName ) )
 	{
@@ -436,7 +436,7 @@ float	aAnimation::getMaxTime()
 	return -1;
 }
 
-long aAnimGroup::init( FitIniFile* file, const char* blockName )
+long aAnimGroup::init( FitIniFile* file, PCSTR blockName )
 {
 	if ( NO_ERR != file->seekBlock( blockName ) )
 	{

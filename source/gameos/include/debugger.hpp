@@ -31,9 +31,9 @@ extern ULONG DoUpdateWindow;
 extern ULONG DoingAdvance;
 extern ULONG OldgStopSystem;
 extern ULONG OldgGameLogicActive;
-extern UCHAR MenuActive;
-extern UCHAR SubMenuActive;
-extern UCHAR	DebounceMenu;
+extern uint8_t MenuActive;
+extern uint8_t SubMenuActive;
+extern uint8_t	DebounceMenu;
 extern ULONG OldStop;
 extern ULONG OldRendering;
 extern int AreaL, AreaR, AreaT, AreaB;
@@ -48,7 +48,7 @@ extern gos_VERTEX Graph[512];
 extern ULONG gScreenBMP;
 
 void	__stdcall WalkStack( ULONG* RoutineAddresses, ULONG NumberOfLevels, ULONG IgnoreLevels );
-PSTR	__stdcall DecodeAddress( ULONG Address, UCHAR brief = true );
+PSTR	__stdcall DecodeAddress( ULONG Address, uint8_t brief = true );
 void	__stdcall DrawLines( int X1, int Y1, int X2, int Y2, ULONG Color );
 
 typedef struct _MenuItem
@@ -57,8 +57,8 @@ typedef struct _MenuItem
 	struct _MenuItem*	pSubMenu;							// Pointer to sub menu list, or NULL
 	ULONG	(__stdcall *Callback)(PSTR Name, ULONG MenuFunction);
 	void	(__stdcall *Routine)(void);								// Sub menu list pointer
-	UCHAR	(__stdcall *Greyed)(void);
-	UCHAR	(__stdcall *CheckMark)(void);							// 0 When no check mark routine, 1 when sub menu
+	uint8_t	(__stdcall *Greyed)(void);
+	uint8_t	(__stdcall *CheckMark)(void);							// 0 When no check mark routine, 1 when sub menu
 	PSTR FullName;
 	PSTR Name;
 } MenuItem;
@@ -99,7 +99,7 @@ typedef struct _TextureHeap {
 extern TextureHeap* pTextureHeap;
 extern ULONG SelectedHandle;
 extern ULONG TextureToUnload;
-UCHAR __stdcall CheckWindow(void);
+uint8_t __stdcall CheckWindow(void);
 
 //
 // Main Debugger Screens
@@ -150,9 +150,9 @@ extern ULONG ShowColorInfo;
 //
 // True when the debugger window is visible on the display
 //
-extern UCHAR DebuggerActive;
-extern UCHAR InDebugger;						// During debugger rendering
-extern UCHAR ProcessMemorySize;				// When true will calculate each processes memory size in the exception handler (can take about 1 second!)
+extern uint8_t DebuggerActive;
+extern uint8_t InDebugger;						// During debugger rendering
+extern uint8_t ProcessMemorySize;				// When true will calculate each processes memory size in the exception handler (can take about 1 second!)
 extern int ZoomMode;						// Zoom screen around cursor
 extern int BaseZoom;
 extern ULONG gForceNoFlip;					// Force blt instead of flip in fullscreen
@@ -213,7 +213,7 @@ extern ULONG gStopGameRendering;
 extern ULONG gStopRendering;					// Stop rendering
 extern ULONG gFreezeLogic;						// Stop rendering
 extern ULONG gShowLFControls;
-extern UCHAR NoDebuggerStats;						// When 0 Stats and spews are active during GameOS functions like debugger
+extern uint8_t NoDebuggerStats;						// When 0 Stats and spews are active during GameOS functions like debugger
 extern ULONG gEnableRS;
 extern ULONG gTextureOverrun;
 extern ULONG gDisableLighting;

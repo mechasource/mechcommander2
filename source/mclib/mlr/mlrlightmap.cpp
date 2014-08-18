@@ -46,7 +46,7 @@ void
 		);
 	Register_Object(DefaultData);
 
-	unsigned char *ptr = new unsigned char [Limits::Max_Size_Of_LightMap_MemoryStream];
+	PUCHAR ptr = new uint8_t [Limits::Max_Size_Of_LightMap_MemoryStream];
 	Register_Pointer(ptr);
 
 	stream = new MemoryStream(ptr, Limits::Max_Size_Of_LightMap_MemoryStream);
@@ -92,7 +92,7 @@ void
 	delete clippingStates;
 
 	stream->Rewind();
-	unsigned char *ptr = (unsigned char *)stream->GetPointer();
+	PUCHAR ptr = (PUCHAR )stream->GetPointer();
 
 	Unregister_Object(stream);
 	delete stream;

@@ -10,7 +10,7 @@ TacMap.cpp			: Implementation of the TacMap component.
 #include "TGAInfo.h"
 #include "gameOS.hpp"
 
-extern unsigned char godMode;
+extern uint8_t godMode;
 
 TacMap::TacMap()
 {

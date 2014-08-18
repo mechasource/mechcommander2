@@ -73,8 +73,8 @@ class aBmpListItem : public aListItem
 {
 public:
 
-	int setBmp( const char* pFileName );
-	const char* getBmp(){ return fileName; }
+	int setBmp( PCSTR pFileName );
+	PCSTR getBmp(){ return fileName; }
 	
 private:
 

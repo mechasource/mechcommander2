@@ -49,7 +49,7 @@ typedef enum
 //
 // Routine typedef used to return game and player information
 //
-typedef void(__stdcall *NETCALLBACK)(const char *string, DWORD value);
+typedef void(__stdcall *NETCALLBACK)(PCSTR string, DWORD value);
 
 
 

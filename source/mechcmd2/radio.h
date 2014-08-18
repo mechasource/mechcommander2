@@ -8,26 +8,15 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef RADIO_H
 #define RADIO_H
 
-//------------------------------------------------------------------------------------------
-// Include Files
-#ifndef MCLIB_H
 #include <mclib.h>
-#endif
-
-#ifndef DRADIO_H
 #include "dradio.h"
-#endif
-
-#ifndef DWARRIOR_H
 #include "dwarrior.h"
-#endif
-
-#ifndef DGAMEOBJ_H
 #include "dgameobj.h"
-#endif
 
 //------------------------------------------------------------------------------------------
 #define MAX_FRAGMENTS	16

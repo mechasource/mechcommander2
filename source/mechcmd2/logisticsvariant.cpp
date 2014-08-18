@@ -870,7 +870,7 @@ long LogisticsVariant::save( FitIniFile& file, long counter )
 	return 0;
 }
 
-void LogisticsVariant::setName( const char* pName )
+void LogisticsVariant::setName( PCSTR pName )
 {
 	variantName = pName;
 }
@@ -1037,20 +1037,20 @@ void LogisticsVehicle::init( FitIniFile& file )
 
 	baseArmor = 0;
 
-	unsigned char pts;
+	uint8_t pts;
 	int i;
 	for ( i = 0; i < 5; i++ )
 	{
 		file.seekBlock( parts[i] );
-		file.readIdUChar( "MaxArmorPoints", pts );
+		file.readIdUCHAR( "MaxArmorPoints", pts );
 		baseArmor += pts;
-		file.readIdUChar( "CurInternalStructure", pts );
+		file.readIdUCHAR( "CurInternalStructure", pts );
 		baseArmor += pts;
 
 	}
 
 	file.seekBlock( "InventoryInfo" );
-	file.readIdUChar( "NumWeapons", pts );
+	file.readIdUCHAR( "NumWeapons", pts );
 
 	char blockName[256];
 	for ( i = 4; i < 4 + pts; i++ )
@@ -1059,8 +1059,8 @@ void LogisticsVehicle::init( FitIniFile& file )
 		if ( NO_ERR == file.seekBlock( blockName ) )
 		{
 			
-			unsigned char fitID;
-			file.readIdUChar( "MasterID", fitID );
+			uint8_t fitID;
+			file.readIdUCHAR( "MasterID", fitID );
 
 			LogisticsComponent* pComponent = LogisticsData::instance->getComponent( fitID );
 			if ( pComponent )

@@ -108,7 +108,7 @@ void MusicManagerUninstall();
 
 void MusicManagerUpdate();
 
-void OpenMMStream( const char * pszFileName, IDirectDraw *pDD, IMultiMediaStream **ppMMStream, IBasicAudio ** ppBasicAudio );
+void OpenMMStream( PCSTR  pszFileName, IDirectDraw *pDD, IMultiMediaStream **ppMMStream, IBasicAudio ** ppBasicAudio );
 
 
 

@@ -158,7 +158,7 @@ MLRLight*
 	MLRLight::Make(Stuff::Page *page)
 {
 	gos_PushCurrentHeap(Heap);
-	const char* type;
+	PCSTR type;
 	
 	page->GetEntry("LightType", &type, true);
 	MLRLight *light = NULL;

@@ -84,7 +84,7 @@ public:
 
 	void handleNewMenuMessage( long specificMessage );
 
-	void init( const char* fileName );
+	void init( PCSTR fileName );
 
 	void terminate();
 

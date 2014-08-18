@@ -13,7 +13,7 @@ struct FFEffectData
 	GUID diGUID;
 	DIEFFECT diEffectData;
 	LPDIRECTINPUTEFFECT diEffect;
-	UCHAR diTypeSpecific[64];
+	uint8_t diTypeSpecific[64];
 	DIENVELOPE diEnvelope;
 	DWORD rgdwAxes[12];
 	LONG rglDirection[12];
@@ -33,7 +33,7 @@ public:
 	bool fromFile;
 public:
 	gosForceEffect(gosJoystick_ForceEffect * fe, DWORD joy);
-	gosForceEffect(const char * fe, DWORD joy);
+	gosForceEffect(PCSTR  fe, DWORD joy);
 	void ReCreate();
 	~gosForceEffect();
 	void Play(DWORD times);

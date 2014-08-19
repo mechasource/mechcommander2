@@ -338,7 +338,7 @@ class EditorData
 
 		static char mapName[256];
 
-		static unsigned long*	tacMapBmp; // tac map data, keep around so we can update
+		static ULONG*	tacMapBmp; // tac map data, keep around so we can update
 
 		MissionSettings	missionSettings;
 

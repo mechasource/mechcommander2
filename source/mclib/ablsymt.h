@@ -31,7 +31,7 @@ typedef union {
 	long		integer;
 	char		character;
 	float		real;
-	char*		stringPtr;
+	PSTR		stringPtr;
 } Value;
 
 typedef enum {
@@ -95,7 +95,7 @@ typedef struct _Routine {
 	SymTableNodePtr			params;
 	SymTableNodePtr			locals;
 	SymTableNodePtr			localSymTable;
-	char*					codeSegment;
+	PSTR					codeSegment;
 	long					codeSegmentSize;
 } Routine;
 
@@ -127,8 +127,8 @@ typedef struct _SymTableNode {
 	SymTableNodePtr		parent;
 	SymTableNodePtr		right;
 	SymTableNodePtr		next;
-	char*				name;
-	char*				info;
+	PSTR				name;
+	PSTR				info;
 	Definition			defn;
 	TypePtr				typePtr;
 	ABLModulePtr		library;
@@ -211,25 +211,25 @@ typedef struct _Type {
 //***************************************************************************
 
 void searchLocalSymTable (SymTableNodePtr& IdPtr);
-SymTableNodePtr searchLocalSymTableForFunction (char* name);
+SymTableNodePtr searchLocalSymTableForFunction (PSTR name);
 void searchThisSymTable (SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
 void searchAllSymTables (SymTableNodePtr& IdPtr);
 void enterLocalSymTable (SymTableNodePtr& IdPtr);
-void enterNameLocalSymTable (SymTableNodePtr& IdPtr, char* name);
+void enterNameLocalSymTable (SymTableNodePtr& IdPtr, PSTR name);
 void searchAndFindAllSymTables (SymTableNodePtr& IdPtr);
 void searchAndEnterLocalSymTable (SymTableNodePtr& IdPtr);
 /*inline*/ void searchAndEnterThisTable (SymTableNodePtr& IdPtr, SymTableNodePtr thisTable);
 inline SymTableNodePtr symTableSuccessor (SymTableNodePtr nodeX);
 
-SymTableNodePtr searchSymTable (char* name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableForFunction (char* name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableForState (char* name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableForString (char* name, SymTableNodePtr nodePtr);
-SymTableNodePtr searchSymTableDisplay (char* name);
-SymTableNodePtr enterSymTable (char* name, SymTableNodePtr* ptrToNodePtr);
+SymTableNodePtr searchSymTable (PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr searchSymTableForFunction (PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr searchSymTableForState (PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr searchSymTableForString (PSTR name, SymTableNodePtr nodePtr);
+SymTableNodePtr searchSymTableDisplay (PSTR name);
+SymTableNodePtr enterSymTable (PSTR name, SymTableNodePtr* ptrToNodePtr);
 SymTableNodePtr insertSymTable (SymTableNodePtr* tableRoot, SymTableNodePtr newNode);
 SymTableNodePtr extractSymTable (SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill);
-void enterStandardRoutine (char* name, long routineKey, bool isOrder, char* paramList, char* returnType, void (*callback)(void));
+void enterStandardRoutine (PSTR name, long routineKey, bool isOrder, PSTR paramList, PSTR returnType, void (*callback)(void));
 void enterScope (SymTableNodePtr symTableRoot);
 SymTableNodePtr exitScope (void);
 void initSymTable (void);

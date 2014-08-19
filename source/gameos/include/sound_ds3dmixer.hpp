@@ -48,7 +48,7 @@ class DS3DSoundMixer
 		void GetCaps();
 		void SetSpeakerConfig( DWORD );
 		void GetSpeakerConfig( DWORD* );
-		void ReturnFormattedDebugData( char * dst, DWORD maxlen );
+		void ReturnFormattedDebugData( PSTR  dst, DWORD maxlen );
 		void SetAllParameters();
 
 };

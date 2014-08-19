@@ -259,7 +259,7 @@ typedef struct _MC2Player {
 	char			stripeColor;
 	char			teamSelected;
 	char			team;
-	unsigned long	teamSeniority;
+	ULONG	teamSeniority;
 	char			faction;
 	long			cBills;
 	long			resourcePointsAtStart;
@@ -309,9 +309,9 @@ typedef struct _CompressedMech {
 	bool			lastMech;
 	long			objNumber;
 	char			commanderID;
-	unsigned long	baseColor;
-	unsigned long	highlightColor1;
-	unsigned long	highlightColor2;
+	ULONG	baseColor;
+	ULONG	highlightColor1;
+	ULONG	highlightColor2;
 	char			pilotFile[50];
 	char			mechFile[50];
 	char			variantName[64];
@@ -342,7 +342,7 @@ class WorldChunk {
 		long				param1;
 		long				param2;
 
-		unsigned long		data;
+		ULONG		data;
 
 	public:
 
@@ -901,7 +901,7 @@ class MCMSG_PlayerOrder {
 		char			commanderID;
 		uint8_t	flags;
 		float			location[2];
-		unsigned long	tacOrderChunk[2];
+		ULONG	tacOrderChunk[2];
 
 	public:
 
@@ -986,7 +986,7 @@ class MCMSG_PlayerArtillery {
 
 		uint8_t		type;
 		float				location[2];
-		unsigned long		chunk;
+		ULONG		chunk;
 
 		MCMSG_PlayerArtillery (void) {
 			init();
@@ -1137,7 +1137,7 @@ class MCMSG_WeaponHitUpdate {
 
 		uint8_t		type;
 		uint8_t		numWeaponHits;
-		unsigned long		weaponHitChunk[];
+		ULONG		weaponHitChunk[];
 
 	public:
 
@@ -1162,7 +1162,7 @@ class MCMSG_WorldUpdate {
 		uint8_t		type;
 		uint8_t		numWorldChanges;
 		uint8_t		numArtilleryStrikes;
-		unsigned long		worldChunk[];
+		ULONG		worldChunk[];
 
 	public:
 
@@ -1240,7 +1240,7 @@ class MCMSG_FileReport {
 	public:
 
 		uint8_t		type;
-		unsigned long		checkSum;
+		ULONG		checkSum;
 		GUID				fileGuid;
 		char				fileName[];
 
@@ -1301,7 +1301,7 @@ class MultiPlayer {
 		long				numSessions;
 		bool				availableCIDs[MAX_MC_PLAYERS];
 		MC2Session			sessionList[MAX_SESSIONS];
-		unsigned long		teamSeniority[MAX_TEAMS];
+		ULONG		teamSeniority[MAX_TEAMS];
 		static long			colors[MAX_COLORS];
 		char				colorsCID[MAX_COLORS];
 		char				sessionIPAddress[16];
@@ -1342,7 +1342,7 @@ class MultiPlayer {
 		BuildingPtr*		hqBuildings;
 		long				numResourceBuildings;
 		BuildingPtr*		resourceBuildings;
-		unsigned long		numRandomResourceBuildings;
+		ULONG		numRandomResourceBuildings;
 
 		long				mode;
 		long				sessionEntry;
@@ -1406,10 +1406,10 @@ class MultiPlayer {
 		float				worldUpdateFrequency;
 		float				lastServerUpdateTime;
 		long				numWeaponHitChunks;
-		unsigned long		weaponHitChunks[MAX_WEAPONHIT_CHUNKS];
+		ULONG		weaponHitChunks[MAX_WEAPONHIT_CHUNKS];
 		long				numWorldChunks;
-		unsigned long		worldChunks[MAX_WORLD_CHUNKS];
-		unsigned long		serverOrder[MAX_MC_PLAYERS];
+		ULONG		worldChunks[MAX_WORLD_CHUNKS];
+		ULONG		serverOrder[MAX_MC_PLAYERS];
 		long				reinforcements[MAX_MC_PLAYERS][2];	// index 0 = current reinforcement, index 1 = current recoverery
 		char				reinforcementPilot[MAX_MC_PLAYERS][32];
 		
@@ -1493,7 +1493,7 @@ class MultiPlayer {
 
 		long update (void);
 
-		long beginSessionScan (char* ipAddress, bool persistent = true);
+		long beginSessionScan (PSTR ipAddress, bool persistent = true);
 
 		long endSessionScan (void);
 
@@ -1512,9 +1512,9 @@ class MultiPlayer {
 			return NULL;
 		}
 
-		bool hostSession(char* sessionName, char* playerName, long mxPlayers);
+		bool hostSession(PSTR sessionName, PSTR playerName, long mxPlayers);
 
-		long joinSession (MC2Session* session, char* playerName);
+		long joinSession (MC2Session* session, PSTR playerName);
 
 		bool getOnLAN (void) {
 			return(onLAN);
@@ -1556,9 +1556,9 @@ class MultiPlayer {
 						  bool guaranteed,
 						  bool toSelf = true);
 
-		bool hostGame (char* sessionName, char* playerName, long nPlayers);
+		bool hostGame (PSTR sessionName, PSTR playerName, long nPlayers);
 
-		long joinGame (char* ipAddress, char* sessionName, char* playerName);
+		long joinGame (PSTR ipAddress, PSTR sessionName, PSTR playerName);
 
 		bool waitTillStartLoading (void);
 
@@ -1584,7 +1584,7 @@ class MultiPlayer {
 
 		void initSpecialBuildings (char commandersToLoad[8][3]);
 
-		char* getPlayerName (void) {
+		PSTR getPlayerName (void) {
 			return(NULL);
 		}
 
@@ -1649,7 +1649,7 @@ class MultiPlayer {
 
 		long addEndMissionChunk (void);
 
-		long grabWorldChunks (unsigned long* packedChunkBuffer);
+		long grabWorldChunks (ULONG* packedChunkBuffer);
 
 		long updateWorldChunks (void);
 
@@ -1665,7 +1665,7 @@ class MultiPlayer {
 
 		long addWeaponHitChunk (GameObjectPtr target, WeaponShotInfoPtr shotInfo, bool isRefit = false);
 
-		void grabWeaponHitChunks (unsigned long* packedChunkBuffer, long numChunks);
+		void grabWeaponHitChunks (ULONG* packedChunkBuffer, long numChunks);
 
 		long updateWeaponHitChunks (void);
 
@@ -1737,8 +1737,8 @@ class MultiPlayer {
 
 		void handleWorldUpdate (NETPLAYER sender, MCMSG_WorldUpdate* msg);
 
-		void sendChat (NETPLAYER receiver, char team, char* chatString);
-		void sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, unsigned long resID );
+		void sendChat (NETPLAYER receiver, char team, PSTR chatString);
+		void sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, ULONG resID );
 
 		void sendPlayerCID (NETPLAYER receiver, uint8_t subType, char CID);
 
@@ -1752,7 +1752,7 @@ class MultiPlayer {
 
 		void sendPlayerSetup (void);
 
-		void sendPlayerInsignia (char* insigniaFileName, PUCHAR insigniaData, long insigniaDataSize);
+		void sendPlayerInsignia (PSTR insigniaFileName, PUCHAR insigniaData, long insigniaDataSize);
 
 		void sendMissionSetup (NETPLAYER receiver, long stage, CompressedMech* mechData);
 
@@ -1801,13 +1801,13 @@ class MultiPlayer {
 
 		void sendWorldUpdate (void);
 
-		void sendFile (char* path, char* fileName);
+		void sendFile (PSTR path, PSTR fileName);
 
 		void sendReadyForBattle (void);
 
 		void sendPrepareMission (void);
 
-		void sendFileInquiry (char* filename);
+		void sendFileInquiry (PSTR filename);
 
 		long updateServer (void);
 
@@ -1832,7 +1832,7 @@ class MultiPlayer {
 		// call this to exit the current session.
 		void leaveSession (void);
 
-		void getChatMessages( char** buffer, long* playerIDs, long& count );
+		void getChatMessages( PSTR* buffer, long* playerIDs, long& count );
 
 		void redistributeRP();
 };

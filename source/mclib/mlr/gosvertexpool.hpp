@@ -59,7 +59,7 @@ namespace MidLevelRenderer {
 						}
 						else
 						{
-							return (GOSVertex*)((char*)(vertices.GetData() + lastUsed)+vertexAlignment); 
+							return (GOSVertex*)((PSTR)(vertices.GetData() + lastUsed)+vertexAlignment); 
 						}
 					}
 
@@ -96,7 +96,7 @@ namespace MidLevelRenderer {
 						}
 						else
 						{
-							return (GOSVertex2UV*)((char*)(vertices2uv.GetData() + lastUsed2uv)+vertexAlignment); 
+							return (GOSVertex2UV*)((PSTR)(vertices2uv.GetData() + lastUsed2uv)+vertexAlignment); 
 						}
 					}
 
@@ -127,7 +127,7 @@ namespace MidLevelRenderer {
 						}
 						else
 						{
-							return (unsigned short*)((char*)(indices.GetData() + lastUsedIndex)+indicesAlignment); 
+							return (unsigned short*)((PSTR)(indices.GetData() + lastUsedIndex)+indicesAlignment); 
 						}
 					}
 

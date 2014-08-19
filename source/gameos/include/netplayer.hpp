@@ -26,8 +26,8 @@ class FIDPPlayer:public ListItem
 protected:	
 	char				shortName[128];
 	char				longName[256];
-	unsigned long		playerID;
-	unsigned long		playerFlags;
+	ULONG		playerID;
+	ULONG		playerFlags;
 
 	// The awaitingVerificationList holds a list of messages
 	// that were sent to this player and are awaiting 
@@ -71,10 +71,10 @@ public:
 	// messageResendTime is the time to wait before re-sending a message.  If
 	// a message is re-sent, this value is bumped up a bit.  If the average 
 	// latency is well below the resend time, it is dropped.
-	unsigned long		messageResendTime;
+	ULONG		messageResendTime;
 
 	// physicalMemory is the amount of RAM on this player's machine.
-	unsigned long		physicalMemory;
+	ULONG		physicalMemory;
 
 
 
@@ -101,7 +101,7 @@ public:
 
 	void LeaveGroup(DPID group);
 	
-	inline void  SetShortName(char *name)
+	inline void  SetShortName(PSTR name)
 	{
 		if (name != NULL)
 		{
@@ -113,7 +113,7 @@ public:
 		}
 	}
 	
-	inline void SetLongName(char *name)
+	inline void SetLongName(PSTR name)
 	{
 		if (name != NULL)
 		{

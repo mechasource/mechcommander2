@@ -60,14 +60,14 @@ long LogisticsMech::save( FitIniFile& file, long counter )
 	return 0;
 }
 
-void	LogisticsMech::setColors( unsigned long base, unsigned long high1, unsigned long high2 )
+void	LogisticsMech::setColors( ULONG base, ULONG high1, ULONG high2 )
 {
 	baseColor = base;
 	highlightColor1 = high1;
 	highlightColor2 = high2;
 }
 
-void	LogisticsMech::getColors( unsigned long& base, unsigned long& high1, unsigned long& high2 ) const
+void	LogisticsMech::getColors( ULONG& base, ULONG& high1, ULONG& high2 ) const
 {
 	base = baseColor;
 	high1 = highlightColor1;

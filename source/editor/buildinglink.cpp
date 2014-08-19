@@ -214,7 +214,7 @@ bool BuildingLink::RemoveObject( const EditorObject* pObject )
 
 int BuildingLink::GetChildrenPositions( Stuff::Vector3D* pos, int Count ) const
 {
-	if ( children.Count() > (unsigned long)Count )
+	if ( children.Count() > (ULONG)Count )
 		return children.Count();
 
 	int i = 0;

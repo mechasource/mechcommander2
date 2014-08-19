@@ -23,7 +23,7 @@ extern float frameLength;
 extern bool bInvokeOptionsScreenFlag;
 extern long helpTextHeaderID;
 extern long helpTextID;
-extern unsigned long scenarioResult;
+extern ULONG scenarioResult;
 		
 extern bool loadInMissionSave;
 extern bool saveInMissionSave;

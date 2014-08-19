@@ -69,7 +69,7 @@ void FloatHelp::renderAll (void)
 }
 
 //-----------------------------------------------------------------------------------------
-void FloatHelp::setFloatHelp(char * txt, 
+void FloatHelp::setFloatHelp(PSTR  txt, 
 								Stuff::Vector4D screenPos, 
 								DWORD fClr, 
 								DWORD bClr, 
@@ -96,7 +96,7 @@ void FloatHelp::setFloatHelp(char * txt,
 }
 
 //-----------------------------------------------------------------------------------------
-void FloatHelp::getTextStringLength (char * txt,                  
+void FloatHelp::getTextStringLength (PSTR  txt,                  
 										DWORD fColor,
 										float scl,                
 										bool proportional,        
@@ -108,7 +108,7 @@ void FloatHelp::getTextStringLength (char * txt,
 	// must use globalFloat Scale because of true type fonts
 	gos_TextSetAttributes (gosFontHandle, fColor, gosFontScale, wordWrap, proportional, bold, italic);
 
-	unsigned long gHeight = 0, gWidth = 0;
+	ULONG gHeight = 0, gWidth = 0;
 	if (txt[0])
 	{
 		gos_TextStringLength(&gWidth,&gHeight,txt);

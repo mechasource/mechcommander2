@@ -79,9 +79,9 @@ class GameLog {
 
 		void close (void);
 
-		long open (char* fileName);
+		long open (PSTR fileName);
 
-		void write (char* s);
+		void write (PSTR s);
 
 		static void setup (void);
 

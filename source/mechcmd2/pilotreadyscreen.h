@@ -29,7 +29,7 @@ public:
 	void init(FitIniFile* file);
 	virtual void render(int xOffset, int yOffset);
 	virtual void update();
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 	
 	void beginDrag( LogisticsPilot* pPilot );
 
@@ -51,10 +51,10 @@ private:
 	long				forceGroupCount;
 
 	aObject				specialtySkillIcons[4];
-	GUI_RECT			skillLocations[4];
+	RECT			skillLocations[4];
 	aObject				skillIcons[4];
 	aObject				medalIcons[16];
-	GUI_RECT			medalLocations[16];
+	RECT			medalLocations[16];
 
 	AttributeMeter		attributeMeters[2];
 	LogisticsPilotListBox	pilotListBox;

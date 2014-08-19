@@ -257,7 +257,7 @@ void PilotReviewScreen::render()
 		s_curPromotion->render();
 }
 
-int	PilotReviewScreen::handleMessage( unsigned long message, unsigned long who)
+int	PilotReviewScreen::handleMessage( ULONG message, ULONG who)
 {
 	if ( who == aMSG_DONE && entryAnim.isDone() )
 	{
@@ -451,7 +451,7 @@ void DeadPilotListItem::render()
 	if ( !showWindow )
 		return;
 
-	GUI_RECT tmp;
+	RECT tmp;
 	tmp.left = globalX();
 	tmp.right = globalX() + width();
 	tmp.top = globalY();
@@ -740,7 +740,7 @@ void	ActivePilotListItem::render()
 	
 	aObject::render();
 
-	GUI_RECT tmp;
+	RECT tmp;
 
 	tmp.left = s_area->left();
 	tmp.top = globalY() + s_area->top();
@@ -1571,7 +1571,7 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 
 }
 
-int	PilotPromotionArea::handleMessage( unsigned long msg, unsigned long who )
+int	PilotPromotionArea::handleMessage( ULONG msg, ULONG who )
 {
 	if ( who == aMSG_DONE )
 	{
@@ -1606,7 +1606,7 @@ void		SpecialtyListItem::update()
 {
 
 	normalAnim.update();
-	unsigned long color = normalAnim.getColor();
+	ULONG color = normalAnim.getColor();
 	if ( PilotReviewScreen::s_curPromotion )
 	{
 		aListBox* skillListBox = PilotReviewScreen::s_curPromotion->getSkillListBox();
@@ -1729,7 +1729,7 @@ void			SpecialtyListItem::init( FitIniFile* file )
 
 }
  
-int			SpecialtyListItem::handleMessage( unsigned long message, unsigned long who )
+int			SpecialtyListItem::handleMessage( ULONG message, ULONG who )
 {
 	return 0;
 }

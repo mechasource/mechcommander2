@@ -170,7 +170,7 @@ class Debugger {
 
 		static char				message[512];
 
-		void (*printCallback)(char* s);
+		void (*printCallback)(PSTR s);
 
 	public:
 
@@ -193,7 +193,7 @@ class Debugger {
 			printCallback = NULL;
 		}
 
-		long init (void (*callback)(char* s), ABLModulePtr _module);
+		long init (void (*callback)(PSTR s), ABLModulePtr _module);
 
 		void destroy (void);
 
@@ -217,7 +217,7 @@ class Debugger {
 			return(enabled);
 		}
 
-		long print (char* s);
+		long print (PSTR s);
 
 		void setModule (ABLModulePtr _module);
 
@@ -227,17 +227,17 @@ class Debugger {
 
 		long removeBreakPoint (void);
 
-		void sprintStatement (char* dest);
+		void sprintStatement (PSTR dest);
 
-		void sprintLineNumber (char* dest);
+		void sprintLineNumber (PSTR dest);
 
-		void sprintDataValue (char* dest, StackItemPtr data, TypePtr dataType);
+		void sprintDataValue (PSTR dest, StackItemPtr data, TypePtr dataType);
 
-		long sprintSimpleValue (char* dest, SymTableNodePtr symbol);
+		long sprintSimpleValue (PSTR dest, SymTableNodePtr symbol);
 
-		long sprintArrayValue (char* dest, SymTableNodePtr symbol, char* subscriptString);
+		long sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subscriptString);
 
-		long sprintValue (char* dest, char* exprString);
+		long sprintValue (PSTR dest, PSTR exprString);
 
 		long traceStatementExecution (void);
 
@@ -255,7 +255,7 @@ class Debugger {
 
 		void displayModuleInstanceRegistry (void);
 
-		void processCommand (long commandId, char* strParam1, long numParam1, ABLModulePtr moduleParam1);
+		void processCommand (long commandId, PSTR strParam1, long numParam1, ABLModulePtr moduleParam1);
 
 		void debugMode (void);
 

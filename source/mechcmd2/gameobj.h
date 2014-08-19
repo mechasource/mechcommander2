@@ -128,7 +128,7 @@ class WeaponFireChunk {
 		char				numMissiles;
 		char				hitLocation;
 
-		unsigned long		data;
+		ULONG		data;
 
 	public:
 
@@ -209,7 +209,7 @@ class WeaponHitChunk {
 		char				entryAngle;
 		bool				refit;
 
-		unsigned long		data;
+		ULONG		data;
 
 	public:
 
@@ -275,14 +275,14 @@ typedef struct _GameObjectData
 	ObjectClass					objectClass;		
 	GameObjectHandle			handle;				
 	long						partId;				
-	unsigned long				watchID;			
+	ULONG				watchID;			
 
 	GameObjectTypeHandle		typeHandle;
 	Stuff::Vector3D				position;			
 	unsigned short				cellPositionRow;	
 	unsigned short				cellPositionCol;
 	long						d_vertexNum;		
-	unsigned long				flags;				
+	ULONG				flags;				
 	unsigned short				debugFlags;			
 	uint8_t				status;				
 
@@ -312,14 +312,14 @@ class GameObject {
 		ObjectClass					objectClass;		//What kind of object is this.
 		GameObjectHandle			handle;				//Used to reference into master obj table
 		long						partId;				//What is my unique part number.
-		unsigned long				watchID;			//Used to reference in the game engine
+		ULONG				watchID;			//Used to reference in the game engine
 
 		GameObjectTypeHandle		typeHandle;			//Who made me?
 		Stuff::Vector3D				position;			//Where am I?
 		unsigned short				cellPositionRow;	//Cell RC position
 		unsigned short				cellPositionCol;
 		long						d_vertexNum;		//Physical Vertex in mapData array that I'm lower right from
-		unsigned long				flags;				//See GAMEOBJECT_FLAGS_ defines
+		ULONG				flags;				//See GAMEOBJECT_FLAGS_ defines
 		unsigned short				debugFlags;			// use ONLY for debugging purposes...
 		uint8_t				status;				//Am I normal, disabled, destroyed, etc..?
 	
@@ -341,7 +341,7 @@ class GameObject {
 
 		long						drawFlags;			// bars, text, brackets, and highlight colors
 
-		static unsigned long		spanMask;			//Used to preserve tile's LOS
+		static ULONG		spanMask;			//Used to preserve tile's LOS
 		static float				blockCaptureRange;
 		static bool					initialize;
 
@@ -411,9 +411,9 @@ class GameObject {
 			return(handle);
 		}
 
-		unsigned long getWatchID (bool assign = true);
+		ULONG getWatchID (bool assign = true);
 
-		virtual char* getName (void) {
+		virtual PSTR getName (void) {
 			return(NULL);
 		}
 
@@ -530,7 +530,7 @@ class GameObject {
 			return(position);
 		}
 
-		virtual Stuff::Vector3D relativePosition (float angle, float distance, unsigned long flags);
+		virtual Stuff::Vector3D relativePosition (float angle, float distance, ULONG flags);
 		
 		virtual Stuff::Vector3D getPositionFromHS (long /*weaponType*/) 
 		{
@@ -803,14 +803,14 @@ class GameObject {
 		//---------------
 		// FLAG functions
 
-		virtual void setFlag (unsigned long flag, bool set) {
+		virtual void setFlag (ULONG flag, bool set) {
 			if (set)
 				flags |= flag;
 			else
 				flags &= (flag ^ 0xFFFFFFFF);
 		}
 
-		virtual bool getFlag (unsigned long flag) {
+		virtual bool getFlag (ULONG flag) {
 			return((flags & flag) != 0);
 		}
 

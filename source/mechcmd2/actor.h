@@ -53,8 +53,8 @@ struct ActorData
 	ActorState			state;
 	uint8_t 		symmetrical;					// are second-half rotations flip versions of first half?
 	uint8_t		numRotations;					// number of rotations (including flips)
-	unsigned long		numFrames;						// number of frames for this gesture (if -1, does not exist)
-	unsigned long		basePacketNumber;				// Where in packet file does this gesture start.
+	ULONG		numFrames;						// number of frames for this gesture (if -1, does not exist)
+	ULONG		basePacketNumber;				// Where in packet file does this gesture start.
 	float				frameRate;						// intended frame rate of playback
 	long				textureSize;					// Length of one edge of texture.
 	long				textureHS;						// Where the screen coord should go for texture.
@@ -100,13 +100,13 @@ class VFXAppearanceType : public AppearanceType
 			destroy();
 		}
 
-		void init (FilePtr appearFile, unsigned long fileSize);
+		void init (FilePtr appearFile, ULONG fileSize);
 		
 		//----------------------------------------------
 		// This routine is where the magic happens.
 		TGATexturePtr getTexture (ActorState shapeId, long rot, long currFrame, float &frameRate, bool &mirror);
 
-		long loadIniFile (FilePtr appearFile, unsigned long fileSize);
+		long loadIniFile (FilePtr appearFile, ULONG fileSize);
 
 		void destroy (void);
 
@@ -134,7 +134,7 @@ class VFXAppearance : public Appearance
 
 		VFXAppearanceType*			appearType;
 		TGATexturePtr				currentTexture;		//OK because we make sure each frame before we draw it.
-		unsigned long				currentFrame;
+		ULONG				currentFrame;
 		float						currentRotation;
 		
 		float						lastInView;						//Time since last in view (s)
@@ -142,8 +142,8 @@ class VFXAppearance : public Appearance
 		float						frameInc;
 		long						lastWholeFrame;
 		
-		unsigned long				startFrame;
-		unsigned long				endFrame;
+		ULONG				startFrame;
+		ULONG				endFrame;
 			
 		ActorState					currentShapeTypeId;
 		MemoryPtr 					fadeTable;
@@ -206,7 +206,7 @@ class VFXAppearance : public Appearance
 			endFrame = eFrame;
 		}
 		
-		virtual void setDamageLvl (unsigned long damage);
+		virtual void setDamageLvl (ULONG damage);
 		
 		void setFadeTable (MemoryPtr fTable)
 		{

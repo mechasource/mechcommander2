@@ -9,7 +9,7 @@
 #ifndef ATTRIBUTEMETER_H
 #define ATTRIBUTEMETER_H
 
-#include "utilities.h"
+//#include "utilities.h"
 
 //*************************************************************************************************
 class FifIniFile;
@@ -46,7 +46,7 @@ class AttributeMeter
 
 	private:
 
-	GUI_RECT	outsideRect;
+	RECT	outsideRect;
 	long		unitHeight;
 	long		unitWidth;
 	long		unitCount;

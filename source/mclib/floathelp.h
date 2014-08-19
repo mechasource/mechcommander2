@@ -67,7 +67,7 @@ class FloatHelp
 
 		static void renderAll (void);
 
-		static void setFloatHelp(char * txt, 
+		static void setFloatHelp(PSTR  txt, 
 								Stuff::Vector4D screenPos, 
 								DWORD fClr, 
 								DWORD bClr, 
@@ -77,7 +77,7 @@ class FloatHelp
 								bool italic, 
 								bool wordWrap);
 
-		static void getTextStringLength (char *text,
+		static void getTextStringLength (PSTR text,
 										DWORD fColor,
 										float scl,
 										bool proportional,
@@ -88,7 +88,7 @@ class FloatHelp
 										
 	protected:
 		
-		void setHelpText (char *txt)
+		void setHelpText (PSTR txt)
 		{
 			if (strlen(txt) < 2048)
 			{

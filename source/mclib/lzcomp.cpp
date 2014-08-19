@@ -40,12 +40,12 @@ size_t			InBufferPos = 0;
 MemoryPtr		InBuffer = NULL;
 size_t			OutBufferPos = 0;
 MemoryPtr		OutBuffer = NULL;
-unsigned long	PrefixCode = 0;
-unsigned long	FreeCode = 0;
-unsigned long	MaxCode = 0;
-unsigned long	NBits = 0;
-unsigned long	BitOffset = 0;
-unsigned long	codeToWrite = 0;
+ULONG	PrefixCode = 0;
+ULONG	FreeCode = 0;
+ULONG	MaxCode = 0;
+ULONG	NBits = 0;
+ULONG	BitOffset = 0;
+ULONG	codeToWrite = 0;
 uint8_t 	K = 0;
 
 typedef enum __lzcomp_const {
@@ -56,8 +56,8 @@ typedef enum __lzcomp_const {
 };
 
 typedef struct Hash {
-	unsigned long hashFirst;
-	unsigned long hashNext;
+	ULONG hashFirst;
+	ULONG hashNext;
 	uint8_t hashChar;
 } Hash;
 
@@ -81,7 +81,7 @@ size_t __stdcall LZCompress (MemoryPtr dest, MemoryPtr src, size_t srcLen)
 	
 //Initialize:
 	
-	unsigned long clearSize = sizeof(Hash) * 256;
+	ULONG clearSize = sizeof(Hash) * 256;
 
 	__asm
 	{

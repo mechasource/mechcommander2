@@ -102,7 +102,7 @@ extern bool useNonWeaponEffects;
 extern bool useHighObjectDetail;
 //-----------------------------------------------------------------------------
 // class GVAppearanceType
-void GVAppearanceType::init (char * fileName)
+void GVAppearanceType::init (PSTR  fileName)
 {
 	AppearanceType::init(fileName);
 
@@ -304,7 +304,7 @@ void GVAppearanceType::init (char * fileName)
 		char blockId[512];
 		sprintf(blockId,"Smoke_%02d",i);
 			
-		nodeData[i-1].nodeId = (char *)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId)+1); 
+		nodeData[i-1].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId)+1); 
 		gosASSERT(nodeData[i-1].nodeId != NULL);
 			
 		strcpy(nodeData[i-1].nodeId,blockId);
@@ -316,7 +316,7 @@ void GVAppearanceType::init (char * fileName)
 		char blockId[512];
 		sprintf(blockId,"Weapon_%02d",i);
 		
-		nodeData[(i-1)+numSmokeNodes].nodeId = (char *)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId)+1);
+		nodeData[(i-1)+numSmokeNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId)+1);
 		gosASSERT(nodeData[(i-1)+numSmokeNodes].nodeId != NULL);
 		
 		strcpy(nodeData[(i-1)+numSmokeNodes].nodeId,blockId);
@@ -329,7 +329,7 @@ void GVAppearanceType::init (char * fileName)
 		char blockId[512];
 		sprintf(blockId,"FootNode_%02d",i);
 			
-		nodeData[(i-1)+numSmokeNodes+numWeaponNodes].nodeId = (char *)AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId)+1);       
+		nodeData[(i-1)+numSmokeNodes+numWeaponNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId)+1);       
 		gosASSERT(nodeData[(i-1)+numSmokeNodes+numWeaponNodes].nodeId != NULL);
 			
 		strcpy(nodeData[(i-1)+numSmokeNodes+numWeaponNodes].nodeId,blockId);
@@ -1352,7 +1352,7 @@ void GVAppearance::resetPaintScheme (DWORD red, DWORD green, DWORD blue)
 }	
 
 //-----------------------------------------------------------------------------
-void GVAppearance::setGesture (unsigned long gestureId)
+void GVAppearance::setGesture (ULONG gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -1926,7 +1926,7 @@ bool GVAppearance::playDestruction (void)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D GVAppearance::getNodeNamePosition (char *nodeName)
+Stuff::Vector3D GVAppearance::getNodeNamePosition (PSTR nodeName)
 {
 	Stuff::Vector3D result = position;
 	
@@ -2022,9 +2022,9 @@ long GVAppearance::render (long depthFixup)
 	if (inView)
 	{
 		long color = SD_BLUE;
-		unsigned long highLight = 0x007f7f7f;
+		ULONG highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8)) {
-			static unsigned long highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+			static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
 			static long colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE| 0xff000000, SB_RED | 0xff000000};
 			color = colorTable[homeTeamRelationship];
 			highLight = highLightTable[homeTeamRelationship];

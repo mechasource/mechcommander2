@@ -36,7 +36,7 @@
 using namespace Microsoft::Xna::Arm;
 extern IProviderEngine* armProvider;
 
-extern unsigned long gameResourceHandle;
+extern ULONG gameResourceHandle;
 
 Pilot::PilotInfo Pilot::s_BadPilots[MAX_PILOT] = { 0 };
 Pilot::PilotInfo Pilot::s_GoodPilots[MAX_PILOT] = { 0 };
@@ -218,7 +218,7 @@ void EditorObject::select( bool bSelect )
 	EditorObjectMgr::instance()->select(*this, bSelect);
 }
 
-unsigned long EditorObject::getColor() const
+ULONG EditorObject::getColor() const
 {
 	switch( appearInfo->appearance->teamId )
 	{
@@ -286,7 +286,7 @@ int	EditorObject::getSpecialType() const
 Unit::Unit( int align )
 {
 	pAlternativeInstances = new CUnitList;
-	unsigned long squadNum = EditorObjectMgr::instance()->getNextAvailableSquadNum();
+	ULONG squadNum = EditorObjectMgr::instance()->getNextAvailableSquadNum();
 	setSquad(squadNum);
 	EditorObjectMgr::instance()->registerSquadNum(squadNum);
 	setSelfRepairBehaviorEnabled(true);
@@ -311,7 +311,7 @@ Unit::Unit( const Unit& src ) : EditorObject( src )
 		lance = src.lance;
 		lanceIndex = src.lanceIndex;
 		pilot = src.pilot;
-		unsigned long color1, color2, color3;
+		ULONG color1, color2, color3;
 		src.getColors(color1, color2, color3);
 		setColors(color1, color2, color3);
 		setSelfRepairBehaviorEnabled(src.getSelfRepairBehaviorEnabled());
@@ -352,7 +352,7 @@ bool Unit::save( FitIniFile* file, int WarriorNumber )
 		appearance()->teamId == EDITOR_TEAM1 ? "pv20600" : "pv20500" );
 }
 
-bool Unit::save( FitIniFile* file, int WarriorNumber, int controlDataType, char* objectProfile )
+bool Unit::save( FitIniFile* file, int WarriorNumber, int controlDataType, PSTR objectProfile )
 {
 	// ARM
 	if (mechAsset)
@@ -421,7 +421,7 @@ bool Unit::save( FitIniFile* file, int WarriorNumber, int controlDataType, char*
 	file->writeIdULong( "HighlightColor1", highlightColor );
 	file->writeIdULong( "HighlightColor2", highlightColor2 );
 
-	unsigned long tmpULong = 0;
+	ULONG tmpULong = 0;
 	if (getSelfRepairBehaviorEnabled())
 	{
 		tmpULong = 1;
@@ -462,7 +462,7 @@ bool Unit::load( FitIniFile* file, int warriorNumber )
 	file->readIdULong( "HighlightColor1", highlightColor );
 	file->readIdULong( "HighlightColor2", highlightColor2 );
 
-	unsigned long tmpULong = 1;
+	ULONG tmpULong = 1;
 	result = file->readIdULong( "SelfRepairBehavior", tmpULong );
 	if ((NO_ERR == result) && (0 == tmpULong))
 	{
@@ -475,7 +475,7 @@ bool Unit::load( FitIniFile* file, int warriorNumber )
 
 	file->readIdULong( "VariantNumber", variant );
 
-	unsigned long squadNum = 1;
+	ULONG squadNum = 1;
 	result = file->readIdULong("SquadNum", squadNum);
 	if (NO_ERR != result) {
 		// the unit should already have a valid default squad assigned at construction
@@ -504,14 +504,14 @@ bool Unit::load( FitIniFile* file, int warriorNumber )
 	return true;
 }
 
-void Unit::getColors( unsigned long& color1, unsigned long& color2, unsigned long& color3 ) const
+void Unit::getColors( ULONG& color1, ULONG& color2, ULONG& color3 ) const
 {
 	color1 = baseColor;
 	color2 = highlightColor;
 	color3 = highlightColor2;
 }
 
-void Unit::setColors( unsigned long color1, unsigned long color2, unsigned long color3 ) 
+void Unit::setColors( ULONG color1, ULONG color2, ULONG color3 ) 
 {
 	baseColor = color1;
 	highlightColor = color2;
@@ -528,7 +528,7 @@ Unit& Unit::operator=( const Unit& src )
 		lance = src.lance;
 		lanceIndex = src.lanceIndex;
 		pilot = src.pilot;
-		unsigned long color1, color2, color3;
+		ULONG color1, color2, color3;
 		src.getColors(color1, color2, color3);
 		setColors(color1, color2, color3);
 		setSelfRepairBehaviorEnabled(src.getSelfRepairBehaviorEnabled());
@@ -542,7 +542,7 @@ Unit& Unit::operator=( const Unit& src )
 	return *this;
 }
 
-void Unit::setSquad(unsigned long newSquad) {
+void Unit::setSquad(ULONG newSquad) {
 	squad = newSquad;
 	CUnitList::EIterator iter = pAlternativeInstances->Begin();
 	while (!iter.IsDone())

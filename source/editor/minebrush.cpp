@@ -105,7 +105,7 @@ bool MineBrush::MineAction::undo()
 		!iter.IsDone(); iter++ )
 	{
 		// get current values
-		unsigned long lMineState = GameMap->getMine( (*iter).row, (*iter).column );
+		ULONG lMineState = GameMap->getMine( (*iter).row, (*iter).column );
 
 		// reset to old values
 		GameMap->setMine( (*iter).row, (*iter).column, (*iter).mineState );

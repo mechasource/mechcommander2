@@ -84,7 +84,7 @@ long CSVFile::countCols (void)
 	
 	seek(0);		//Start at the top.
 	char tmp[2048];
-	char *currentChk = tmp;
+	PSTR currentChk = tmp;
 	
 	readLine((MemoryPtr)tmp,2047);
 	currentChk = strstr(tmp,",");
@@ -108,7 +108,7 @@ long CSVFile::countCols (void)
 }
 
 //---------------------------------------------------------------------------
-long CSVFile::getNextWord (char *&line, char *buffer, unsigned long bufLen)
+long CSVFile::getNextWord (PSTR &line, PSTR buffer, ULONG bufLen)
 {
 	//--------------------------------------------------
 	// Check to see if we are at end of line
@@ -142,8 +142,8 @@ long CSVFile::getNextWord (char *&line, char *buffer, unsigned long bufLen)
 		
 	//-------------------------------------------
 	// Find length of word from current location
-	char *startOfWord = line;
-	unsigned long wordLength = 0;
+	PSTR startOfWord = line;
+	ULONG wordLength = 0;
 	while ((*line != '\0') && ((*line != ',')))
 	{
 		line++;
@@ -194,20 +194,20 @@ void CSVFile::atClose (void)
 }
 
 //---------------------------------------------------------------------------
-float CSVFile::textToFloat (char *num)
+float CSVFile::textToFloat (PSTR num)
 {
 	float result = atof(num);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-long CSVFile::textToLong (char *num)
+long CSVFile::textToLong (PSTR num)
 {
 	long result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = strstr(num,"0x");
+	PSTR hexOffset = strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -254,13 +254,13 @@ long CSVFile::textToLong (char *num)
 
 
 //---------------------------------------------------------------------------
-short CSVFile::textToShort (char *num)
+short CSVFile::textToShort (PSTR num)
 {
 	short result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = strstr(num,"0x");
+	PSTR hexOffset = strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -306,13 +306,13 @@ short CSVFile::textToShort (char *num)
 
 
 //---------------------------------------------------------------------------
-char CSVFile::textToChar (char *num)
+char CSVFile::textToChar (PSTR num)
 {
 	char result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = strstr(num,"0x");
+	PSTR hexOffset = strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -357,13 +357,13 @@ char CSVFile::textToChar (char *num)
 }
 
 //---------------------------------------------------------------------------
-unsigned long CSVFile::textToULong (char *num)
+ULONG CSVFile::textToULong (PSTR num)
 {
-	unsigned long result = 0;
+	ULONG result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = strstr(num,"0x");
+	PSTR hexOffset = strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -409,13 +409,13 @@ unsigned long CSVFile::textToULong (char *num)
 
 
 //---------------------------------------------------------------------------
-unsigned short CSVFile::textToUShort (char *num)
+unsigned short CSVFile::textToUShort (PSTR num)
 {
 	unsigned short result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = strstr(num,"0x");
+	PSTR hexOffset = strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -461,13 +461,13 @@ unsigned short CSVFile::textToUShort (char *num)
 
 
 //---------------------------------------------------------------------------
-uint8_t CSVFile::textToUCHAR (char *num)
+uint8_t CSVFile::textToUCHAR (PSTR num)
 {
 	uint8_t result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = strstr(num,"0x");
+	PSTR hexOffset = strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -512,7 +512,7 @@ uint8_t CSVFile::textToUCHAR (char *num)
 }
 
 //---------------------------------------------------------------------------
-bool CSVFile::booleanToLong (char *num)
+bool CSVFile::booleanToLong (PSTR num)
 {
 	char testChar = 0;
 	while (num[testChar] && isspace(num[testChar]))
@@ -526,12 +526,12 @@ bool CSVFile::booleanToLong (char *num)
 }	
 
 //---------------------------------------------------------------------------
-long CSVFile::floatToText (char *result, float num, unsigned long bufLen)
+long CSVFile::floatToText (PSTR result, float num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%f4",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(-2);
 
@@ -542,12 +542,12 @@ long CSVFile::floatToText (char *result, float num, unsigned long bufLen)
 }			
 
 //---------------------------------------------------------------------------
-long CSVFile::longToTextDec (char *result, long num, unsigned long bufLen)
+long CSVFile::longToTextDec (PSTR result, long num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%d",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(-2);
 
@@ -558,12 +558,12 @@ long CSVFile::longToTextDec (char *result, long num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long CSVFile::longToTextHex (char *result, long num, unsigned long bufLen)
+long CSVFile::longToTextHex (PSTR result, long num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"0x%x",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(-2);
 
@@ -574,12 +574,12 @@ long CSVFile::longToTextHex (char *result, long num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long CSVFile::shortToTextDec (char *result, short num, unsigned long bufLen)
+long CSVFile::shortToTextDec (PSTR result, short num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%d",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(-2);
 
@@ -590,12 +590,12 @@ long CSVFile::shortToTextDec (char *result, short num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long CSVFile::shortToTextHex (char *result, short num, unsigned long bufLen)
+long CSVFile::shortToTextHex (PSTR result, short num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"0x%x",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(-2);
 
@@ -606,12 +606,12 @@ long CSVFile::shortToTextHex (char *result, short num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long CSVFile::byteToTextDec (char *result, byte num, unsigned long bufLen)
+long CSVFile::byteToTextDec (PSTR result, byte num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%d",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(-2);
 
@@ -622,12 +622,12 @@ long CSVFile::byteToTextDec (char *result, byte num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long CSVFile::byteToTextHex (char *result, byte num, unsigned long bufLen)
+long CSVFile::byteToTextHex (PSTR result, byte num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"0x%x",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(-2);
 
@@ -652,7 +652,7 @@ long CSVFile::open (PCSTR fName, FileMode _mode, long numChild)
 }
 
 //---------------------------------------------------------------------------
-long CSVFile::open (FilePtr _parent, unsigned long fileSize, long numChild)
+long CSVFile::open (FilePtr _parent, ULONG fileSize, long numChild)
 {
 	numChild = -1;		//Force all parented CSVs to load from RAM.
 	long result = File::open(_parent,fileSize,numChild);
@@ -665,7 +665,7 @@ long CSVFile::open (FilePtr _parent, unsigned long fileSize, long numChild)
 }
 
 //---------------------------------------------------------------------------
-long CSVFile::create (char* fName)
+long CSVFile::create (PSTR fName)
 {
 	fName;
 	//STOP(("CSV file write is not supported %s",fName));
@@ -699,7 +699,7 @@ long CSVFile::seekRowCol (DWORD row, DWORD col)
 		readLine((MemoryPtr)tmp,2047);
 	} while (rowCount != row);  
 	
-	char *currentChk = tmp;
+	PSTR currentChk = tmp;
 	if (col)
 	{
 		DWORD colCount = 1;
@@ -718,7 +718,7 @@ long CSVFile::seekRowCol (DWORD row, DWORD col)
 	// We are now pointing at the row and col specified.
 	if (currentChk)
 	{
-		char *data = dataBuffer;
+		PSTR data = dataBuffer;
 		return getNextWord(currentChk,data,2047);
 	}
 	else
@@ -802,7 +802,7 @@ long CSVFile::readChar (DWORD row, DWORD col, char &value)
 }
 
 //---------------------------------------------------------------------------
-long CSVFile::readULong (DWORD row, DWORD col, unsigned long &value)
+long CSVFile::readULong (DWORD row, DWORD col, ULONG &value)
 {
 	long result = seekRowCol(row,col);
 	if (result == NO_ERR)
@@ -844,9 +844,9 @@ long CSVFile::readUCHAR (DWORD row, DWORD col, uint8_t &value)
 }
 
 //---------------------------------------------------------------------------
-long CSVFile::copyString (char *dest, char *src, unsigned long bufLen)
+long CSVFile::copyString (PSTR dest, PSTR src, ULONG bufLen)
 {
-	unsigned long offset = 0;
+	ULONG offset = 0;
 	//---------------------------------------
 	// Copy each character until close quote
 	while (*src != '"' && *src != '\0' && offset < bufLen)
@@ -870,7 +870,7 @@ long CSVFile::copyString (char *dest, char *src, unsigned long bufLen)
 }
 
 //---------------------------------------------------------------------------
-long CSVFile::readString (DWORD row, DWORD col, char *result, unsigned long bufferSize)
+long CSVFile::readString (DWORD row, DWORD col, PSTR result, ULONG bufferSize)
 {
 	long res = seekRowCol(row,col);
 	if (res == NO_ERR)

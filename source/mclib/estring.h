@@ -130,7 +130,7 @@ public:
 	inline bool 		IsEmpty() const;
 
 	unsigned short*	CreateUNICODE() const;
-	char* 	CreateMBCS() const; 
+	PSTR 	CreateMBCS() const; 
 
 	inline	const EChar* Data() const;
 	void	SetBufferSize( int );
@@ -147,8 +147,8 @@ public:
 	
 	EString( PCSTR );
 			
-	friend EString operator+( const EString&, char* );
-	friend EString operator+( char*, const EString& );
+	friend EString operator+( const EString&, PSTR );
+	friend EString operator+( PSTR, const EString& );
 	
 	friend EString operator+( char, const EString& );
 	friend EString operator+( const EString&, char );
@@ -246,7 +246,7 @@ inline void EString::EBuffer::Release()
 		m_Ref_Count --;
 		if ( m_Ref_Count < 0 )
 		{
-			free( (char*)this ); 
+			free( (PSTR)this ); 
 		}
 	}
 }

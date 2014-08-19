@@ -72,7 +72,7 @@ class DS3DSoundChannel
 		bool IsPlaying();
 		DWORD GetBytesPlayed();
 		void SpewCaps();
-		void ReturnFormattedDebugData( char * dst, DWORD maxlen );
+		void ReturnFormattedDebugData( PSTR  dst, DWORD maxlen );
 		void SetConeAngles( DWORD min, DWORD max );
 		void SetConeOrientation( float x, float y, float z );
 		void SetAllParameters();

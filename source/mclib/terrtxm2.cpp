@@ -115,7 +115,7 @@ void TerrainColorMap::destroy (void)
 
 	if (txmRAM)
 	{
-		for (unsigned long i=0;i<numTextures;i++)
+		for (ULONG i=0;i<numTextures;i++)
 		{
 			colorMapRAMHeap->Free(txmRAM[i].ourRAM);
 			txmRAM[i].ourRAM = NULL;
@@ -217,7 +217,7 @@ void rescaleMap (float *dst, float *src, long dstSize, long srcSize)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::refractalizeBaseMesh (char *fileName, long Threshold, long Noise)
+void TerrainColorMap::refractalizeBaseMesh (PSTR fileName, long Threshold, long Noise)
 {
 	//Find max and min vertex elevations for scaling below.
 	float maxVertex = land->getTerrainElevation(0,0);
@@ -388,7 +388,7 @@ void TerrainColorMap::refractalizeBaseMesh (char *fileName, long Threshold, long
 float ContrastEnhance = 1.5f;
 float ShadowEnhance = 2.0f;
 //---------------------------------------------------------------------------
-void TerrainColorMap::burnInShadows (bool doBumpPass, char *fileName)
+void TerrainColorMap::burnInShadows (bool doBumpPass, PSTR fileName)
 {
 	//-----------------------------------------------------------------
 	// for each pixel in the colormap, figure out where light is and
@@ -941,7 +941,7 @@ void TerrainColorMap::burnInShadows (bool doBumpPass, char *fileName)
 }
 
 //---------------------------------------------------------------------------
-void saveTGAFile(MemoryPtr ColorMap, char * fileName, long pixelWidth)
+void saveTGAFile(MemoryPtr ColorMap, PSTR  fileName, long pixelWidth)
 {
 	TGAFileHeader colorMapInfo;
 	colorMapInfo.image_id_len = 0;
@@ -1061,7 +1061,7 @@ void TerrainColorMap::resetWaterTexture (PCSTR fileName)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::resetWaterDetailTextures (char *fileName)
+void TerrainColorMap::resetWaterDetailTextures (PSTR fileName)
 {
 	//Then, load up the water detail texture(s).
 	// Water detail texture is named the same as the colormap with .water0000 in name
@@ -1079,7 +1079,7 @@ void TerrainColorMap::resetWaterDetailTextures (char *fileName)
 			strcpy(waterFile, fileName);
 			char dName[1024];
 			sprintf(dName,"%04d.tga",i);
-			char *subStringToBeReplaced = &(waterFile[strlen(waterFile)-strlen("0000.tga")]);
+			PSTR subStringToBeReplaced = &(waterFile[strlen(waterFile)-strlen("0000.tga")]);
 			strcpy(subStringToBeReplaced, dName);
 		}
 		
@@ -1117,7 +1117,7 @@ void TerrainColorMap::resetWaterDetailTextures (char *fileName)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::recalcLight(char *fileName)
+void TerrainColorMap::recalcLight(PSTR fileName)
 {
 	colorMapRAMHeap = new UserHeap;
 	colorMapRAMHeap->init(COLOR_MAP_HEAP_SIZE,"ColorMap");
@@ -1220,7 +1220,7 @@ void TerrainColorMap::recalcLight(char *fileName)
 		//Now, divide up the color map into separate COLOR_MAP_TEXTURE_SIZE textures.
 		// and hand the data to the textureManager.
 			
-		for (unsigned long i=0;i<numTextures;i++)
+		for (ULONG i=0;i<numTextures;i++)
 		{
 			mcTextureManager->removeTextureNode(textures[i].mcTextureNodeIndex);
 			
@@ -1235,7 +1235,7 @@ void TerrainColorMap::recalcLight(char *fileName)
 
 	//At this point, the color Map DATA should be freeable!!
 	// All of the textures have been passed to the mcTextureManager!
-	for (unsigned long i=0;i<numTextures;i++)
+	for (ULONG i=0;i<numTextures;i++)
 	{
 		colorMapRAMHeap->Free(txmRAM[i].ourRAM);
 		txmRAM[i].ourRAM = NULL;
@@ -1255,10 +1255,10 @@ void TerrainColorMap::recalcLight(char *fileName)
 }
 
 //---------------------------------------------------------------------------
-void TerrainColorMap::resetBaseTexture (char *fileName)
+void TerrainColorMap::resetBaseTexture (PSTR fileName)
 {
 	//First, free up the existing colormap.
-	unsigned long i;
+	ULONG i;
 	for (i=0;i<numTextures;i++)
 	{
 		mcTextureManager->removeTextureNode(textures[i].mcTextureNodeIndex);
@@ -1377,7 +1377,7 @@ void TerrainColorMap::resetBaseTexture (char *fileName)
 		//Now, divide up the color map into separate COLOR_MAP_TEXTURE_SIZE textures.
 		// and hand the data to the textureManager.
 		
-		for (unsigned long i=0;i<numTextures;i++)
+		for (ULONG i=0;i<numTextures;i++)
 		{
 			txmRAM[i].ourRAM = (MemoryPtr)colorMapRAMHeap->Malloc(sizeof(DWORD) * COLOR_MAP_TEXTURE_SIZE * COLOR_MAP_TEXTURE_SIZE);
 			gosASSERT(txmRAM[i].ourRAM != NULL);
@@ -1418,7 +1418,7 @@ void TerrainColorMap::getScaledColorMap (MemoryPtr bfr, long dWidth)
 	if (!ColorMap)
 	{
 		wasColorMapAround = false;
-		char *fileName = Terrain::colorMapName;
+		PSTR fileName = Terrain::colorMapName;
 		if (!fileName)
 			fileName = Terrain::terrainName;
 
@@ -1550,7 +1550,7 @@ void TerrainColorMap::getScaledColorMap (MemoryPtr bfr, long dWidth)
 static long sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
 	long result = 0;
 	float tmpFloat;
-	result = missionFile->readIdFloat((char *)varName, tmpFloat);
+	result = missionFile->readIdFloat((PSTR )varName, tmpFloat);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -1560,7 +1560,7 @@ static long sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
 }
 
 //---------------------------------------------------------------------------
-long TerrainColorMap::init (char *fileName)
+long TerrainColorMap::init (PSTR fileName)
 {
 	bool usedJPG = false;
 	if (!colorMapStarted)
@@ -1629,7 +1629,7 @@ long TerrainColorMap::init (char *fileName)
 		}
 		sprintf(dName,"%s%04d",waterDetailBaseName,0);
 		waterFile.init(texturePath,dName,".tga");
-		resetWaterDetailTextures((char *)waterFile);
+		resetWaterDetailTextures((PSTR )waterFile);
 
 		{
 			detailTextureTilingFactor = 30.0f;
@@ -1641,7 +1641,7 @@ long TerrainColorMap::init (char *fileName)
 			FitIniFile missionFitIni;
 			if (fileExists(missionFitFilePath))
 			{
-				missionFitIni.open((char*)(PCSTR)missionFitFilePath);
+				missionFitIni.open((PSTR)(PCSTR)missionFitFilePath);
 				long result = missionFitIni.seekBlock( "Terrain" );
 				gosASSERT( result == NO_ERR );
 				result = sReadIdFloat(&missionFitIni, "DetailTextureTilingFactor", detailTextureTilingFactor);
@@ -1702,7 +1702,7 @@ long TerrainColorMap::init (char *fileName)
 			
 			//Now, divide up the color map into separate COLOR_MAP_TEXTURE_SIZE textures.
 			// and hand the data to the textureManager.
-			for (unsigned long i=0;i<numTextures;i++)
+			for (ULONG i=0;i<numTextures;i++)
 			{
 				txmRAM[i].ourRAM = (MemoryPtr)colorMapRAMHeap->Malloc(sizeof(DWORD) * COLOR_MAP_TEXTURE_SIZE * COLOR_MAP_TEXTURE_SIZE);
 				gosASSERT(txmRAM[i].ourRAM != NULL);
@@ -1819,7 +1819,7 @@ long TerrainColorMap::init (char *fileName)
 				//Now, divide up the color map into separate COLOR_MAP_TEXTURE_SIZE textures.
 				// and hand the data to the textureManager.
 
-				for (unsigned long i=0;i<numTextures;i++)
+				for (ULONG i=0;i<numTextures;i++)
 				{
 					txmRAM[i].ourRAM = (MemoryPtr)colorMapRAMHeap->Malloc(sizeof(DWORD) * COLOR_MAP_TEXTURE_SIZE * COLOR_MAP_TEXTURE_SIZE);
 					gosASSERT(txmRAM[i].ourRAM != NULL);
@@ -1836,7 +1836,7 @@ long TerrainColorMap::init (char *fileName)
 
 	//At this point, the color Map DATA should be freeable!!
 	// All of the textures have been passed to the mcTextureManager!
-	for (unsigned long i=0;i<numTextures;i++)
+	for (ULONG i=0;i<numTextures;i++)
 	{
 		colorMapRAMHeap->Free(txmRAM[i].ourRAM);
 		txmRAM[i].ourRAM = NULL;

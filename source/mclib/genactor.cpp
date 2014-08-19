@@ -75,7 +75,7 @@ extern long		ObjectTextureSize;
 extern bool reloadBounds;
 //-----------------------------------------------------------------------------
 // class GenericAppearanceType
-void GenericAppearanceType::init (char * fileName)
+void GenericAppearanceType::init (PSTR  fileName)
 {
 	AppearanceType::init(fileName);
 
@@ -423,7 +423,7 @@ void GenericAppearance::setObjStatus (long oStatus)
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::setGesture (unsigned long gestureId)
+void GenericAppearance::setGesture (ULONG gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -487,7 +487,7 @@ void GenericAppearance::setObjectParameters (Stuff::Vector3D &pos, float Rot, lo
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::changeSkyToSkyNum (char *txmName, char *newName)
+void GenericAppearance::changeSkyToSkyNum (PSTR txmName, PSTR newName)
 {
 	if (strnicmp(txmName,"sky",3) != 0)
 	{
@@ -764,9 +764,9 @@ long GenericAppearance::render (long depthFixup)
 	if (inView)
 	{
 		long color = SD_BLUE;
-		unsigned long highLight = 0x007f7f7f;
+		ULONG highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8)) {
-			static unsigned long highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+			static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
 			static long colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
 			color = colorTable[homeTeamRelationship];
 			highLight = highLightTable[homeTeamRelationship];

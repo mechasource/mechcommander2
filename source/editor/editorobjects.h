@@ -43,7 +43,7 @@ public:
 	void				setAlignment( int align );
 	inline int			getAlignment( )const{ return appearInfo->appearance->teamId; } 
 	
-	unsigned long		getColor() const;
+	ULONG		getColor() const;
 	long				getID() const { return  id; }
 
 	void				getCells( long& cellJ, long& cellI ) const;
@@ -130,8 +130,8 @@ public:
 
 	struct PilotInfo
 	{
-		char*	name;
-		char*	fileName;
+		PSTR	name;
+		PSTR	fileName;
 	};
 	
 	static	PilotInfo s_GoodPilots[MAX_PILOT];
@@ -213,43 +213,43 @@ public:
 	void getLanceInfo( int &newLance, int &index ){ newLance = lance; index = lanceIndex; }
 	virtual int			getType() const { return GV_TYPE; }	
 
-	unsigned long getSquad() const { return squad; }
-	void setSquad(unsigned long newSquad);
+	ULONG getSquad() const { return squad; }
+	void setSquad(ULONG newSquad);
 
 	virtual bool save( FitIniFile* file, int warriorNumber );
 	virtual bool load( FitIniFile* file, int warriorNumber );
 
-	void getColors( unsigned long& base, unsigned long& color1, unsigned long& color2 ) const;
-	void setColors( unsigned long base, unsigned long color1, unsigned long color2 );
+	void getColors( ULONG& base, ULONG& color1, ULONG& color2 ) const;
+	void setColors( ULONG base, ULONG color1, ULONG color2 );
 
 	bool getSelfRepairBehaviorEnabled() const { return selfRepairBehaviorEnabled; }
 	void setSelfRepairBehaviorEnabled(bool val) { selfRepairBehaviorEnabled = val; }
 
 	inline Pilot*	getPilot() { return &pilot; }
 
-	void setVariant( unsigned long newVar ){ variant = newVar; }
+	void setVariant( ULONG newVar ){ variant = newVar; }
 	inline int getVariant() const { return variant; }
 
 	CUnitList *pAlternativeInstances;
-	unsigned long tmpNumAlternativeInstances;
-	unsigned long tmpAlternativeStartIndex;
+	ULONG tmpNumAlternativeInstances;
+	ULONG tmpAlternativeStartIndex;
 
 protected:
 
-	bool save( FitIniFile* file, int WarriorNumber, int controlDataType, char* objectProfile );
+	bool save( FitIniFile* file, int WarriorNumber, int controlDataType, PSTR objectProfile );
 
 	Brain brain;
 	bool selfRepairBehaviorEnabled;
 	int lance;		// which lance
 	int lanceIndex; // number within lance 1 to 12
-	unsigned long squad;
+	ULONG squad;
 	Pilot	pilot;
 
-	unsigned long baseColor;
-	unsigned long highlightColor;
-	unsigned long highlightColor2;
+	ULONG baseColor;
+	ULONG highlightColor;
+	ULONG highlightColor2;
 
-	unsigned long						variant;
+	ULONG						variant;
 };
 
 

@@ -40,13 +40,13 @@ public:
  	virtual void		render( int xOffset, int yOffset );
 	virtual void		render();
 	virtual void		update();
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 
 	void				beginSingleMission();
 
 	PCSTR getMapFileName(){ return selMapName; }
 
-	static void			getMapNameFromFile( PCSTR pFileName, char* pBuffer, long bufferLength );
+	static void			getMapNameFromFile( PCSTR pFileName, PSTR pBuffer, long bufferLength );
 
 
 

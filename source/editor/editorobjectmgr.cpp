@@ -86,7 +86,7 @@
 using namespace Microsoft::Xna::Arm;
 
 EditorObjectMgr*	EditorObjectMgr::s_instance = NULL;
-unsigned long gameResourceHandle = 0;
+ULONG gameResourceHandle = 0;
 
 extern bool renderObjects;
 extern bool renderTrees;
@@ -202,14 +202,14 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 {
 	File lstFile;
 
-	lstFile.open( const_cast< char* >(bldgListFileName) );
+	lstFile.open( const_cast< PSTR >(bldgListFileName) );
 
 	uint8_t buffer[512];
 
 	lstFile.readLine( buffer, 512 );
 	PacketFile objectFile;
 
-	long result = objectFile.open( const_cast< char* >(objectFileName) );
+	long result = objectFile.open( const_cast< PSTR >(objectFileName) );
 	gosASSERT(result == NO_ERR);
 		
 
@@ -219,7 +219,7 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 		
 		lstFile.readLine( buffer, 512 );
 
-		if ( !strlen( (char*)buffer ) )
+		if ( !strlen( (PSTR)buffer ) )
 			break;
 
 		Building bldg;
@@ -277,7 +277,7 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 			FitIniFile bldgFile;
 			result = bldgFile.open(&objectFile, fileSize);
 
-			unsigned long lowTemplate, highTemplate;
+			ULONG lowTemplate, highTemplate;
 			bldgFile.readIdULong( "LowTemplate", lowTemplate );
 			bldgFile.readIdULong( "HighTemplate", highTemplate );
 
@@ -364,12 +364,12 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 		char varName[256];
 		if ( NO_ERR == csvFile.open( csvFileName ) )
 		{
-			bldg.varNames = (char**) malloc( sizeof( char* ) * 16 );
+			bldg.varNames = (PSTR*) malloc( sizeof( PSTR ) * 16 );
 			for ( int i = 0; i < 16; ++i )
 			{
 				if ( NO_ERR == csvFile.readString( 23 + 97 * i, 2, varName, 256 ) && strlen( varName ) )
 				{
-					bldg.varNames[i] = (char *) malloc( sizeof( char ) * ( strlen( varName ) + 1 ) );
+					bldg.varNames[i] = (PSTR ) malloc( sizeof( char ) * ( strlen( varName ) + 1 ) );
 					strcpy( bldg.varNames[i], varName );
 				}
 				else
@@ -409,7 +409,7 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 
 
 
-int EditorObjectMgr::ExtractNextString( PUCHAR& pFileLine, char* pBuffer, int bufferLength )
+int EditorObjectMgr::ExtractNextString( PUCHAR& pFileLine, PSTR pBuffer, int bufferLength )
 {
 	for ( int i = 0; i < 512; ++i )
 	{
@@ -441,7 +441,7 @@ long textToLong (PCSTR num)
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = (char*)strstr(num,"0x");
+	PSTR hexOffset = (PSTR)strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -518,8 +518,8 @@ float EditorObjectMgr::ExtractNextFloat( PUCHAR& pFileLine )
 //-------------------------------------------------------------------------------------------------
 bool EditorObjectMgr::canAddBuilding( const Stuff::Vector3D& position,
 								float rotation,
-								unsigned long group,
-								unsigned long indexWithinGroup )
+								ULONG group,
+								ULONG indexWithinGroup )
 {
 	
 	long realCellI, realCellJ;
@@ -727,8 +727,8 @@ EditorObject* EditorObjectMgr::getObjectAtLocation( float x, float y )
 
 
 //-------------------------------------------------------------------------------------------------
-EditorObject* EditorObjectMgr::addBuilding( const Stuff::Vector3D& position, unsigned long group,
-									 unsigned long indexWithinGroup, int alignment, float rotation,
+EditorObject* EditorObjectMgr::addBuilding( const Stuff::Vector3D& position, ULONG group,
+									 ULONG indexWithinGroup, int alignment, float rotation,
 									 float scale, bool bSnapToCell )
 {
 	if ( group == 255 )
@@ -759,7 +759,7 @@ EditorObject* EditorObjectMgr::addBuilding( const Stuff::Vector3D& position, uns
 		info = tmp;
 		info->appearInfo->appearance = getAppearance( group, indexWithinGroup );
 
-		unsigned long c1, c2, c3;
+		ULONG c1, c2, c3;
 		tmp->getColors(c1, c2, c3);
 		tmp->appearance()->resetPaintScheme(c1, c2, c3);
 	}
@@ -1054,7 +1054,7 @@ void EditorObjectMgr::render()
 			
 			eye->projectZ( pos, screen );
 			
-			GUI_RECT Rect;
+			RECT Rect;
 			Rect.top = screen.y - 3;
 			Rect.left = screen.x - 3;
 			Rect.bottom = screen.y + 3;
@@ -1148,7 +1148,7 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
 	}
 
 	int bufferSize = buildings.Count() * (4 * sizeof(float) + 6 * sizeof(long) ) + 2 * sizeof(long);
-	char* pBuffer = (char *) malloc( bufferSize );
+	PSTR pBuffer = (PSTR ) malloc( bufferSize );
 	long* pTacMapPoints = (long *)malloc( sizeof(long) * ( buildings.Count() * 2 + 1 ) );
 	long* pPoints = pTacMapPoints + 1;
 	long pointCounter = 0;
@@ -1258,7 +1258,7 @@ bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
 {
 	PakFile.seekPacket( whichPacket );
 	int size = PakFile.getPacketSize( );
-	char* pBuffer = (char *)malloc(size);
+	PSTR pBuffer = (PSTR )malloc(size);
 	PakFile.readPacket( whichPacket, (PUCHAR)pBuffer );
 	
 	File file;
@@ -1268,7 +1268,7 @@ bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
 	for ( int i = 0; i < count; ++i )
 	{
 		int id = file.readLong();
-		unsigned long group, index;
+		ULONG group, index;
 		if ( !getBuildingFromID(id, group, index, false ) )
 		{
 			//Until buildings stabilize, just toss 'em when you can't find 'em
@@ -1383,7 +1383,7 @@ bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
 
 //*************************************************************************************************
 // this will NOT RETURN MECHS AND VEHICLES
-bool EditorObjectMgr::getBuildingFromID( int fitID, unsigned long& group, unsigned long& index, bool canBeMech )
+bool EditorObjectMgr::getBuildingFromID( int fitID, ULONG& group, ULONG& index, bool canBeMech )
 {
 	group = 0;
 	index = 0;
@@ -1736,7 +1736,7 @@ ObjectAppearance* EditorObjectMgr::getAppearance( EditorObjectMgr::Building* pBu
 
 }
 
-ObjectAppearance* EditorObjectMgr::getAppearance( unsigned long group, unsigned long indexWithinGroup )
+ObjectAppearance* EditorObjectMgr::getAppearance( ULONG group, ULONG indexWithinGroup )
 {
 	gosASSERT( group >= 0 && group < groups.Count() );
 
@@ -1754,7 +1754,7 @@ bool  EditorObjectMgr::loadMechs( FitIniFile& file )
 	// disable animation loading to decrease loading time
 	Mech3DAppearanceType::disableAnimationLoading();
 
-	unsigned long count;
+	ULONG count;
 	file.seekBlock( "Parts" );
 	file.readIdULong( "NumParts", count );
 
@@ -1766,10 +1766,10 @@ bool  EditorObjectMgr::loadMechs( FitIniFile& file )
 	{
 		sprintf( buffer, "Part%ld", i );
 		file.seekBlock( buffer );
-		unsigned long fitID;
+		ULONG fitID;
 		file.readIdULong( "ObjectNumber",fitID );
 		
-		unsigned long group, index;
+		ULONG group, index;
 		getBuildingFromID( fitID, group, index, true );
 
 		EditorObject* pObject = (EditorObject*)(addBuilding( position, group, index, 0, 0 ));
@@ -1790,10 +1790,10 @@ bool  EditorObjectMgr::loadMechs( FitIniFile& file )
 		{
 			sprintf( buffer, "Part%ld", alternativeInstancesCounter );
 			file.seekBlock( buffer );
-			unsigned long fitID;
+			ULONG fitID;
 			file.readIdULong( "ObjectNumber",fitID );
 			
-			unsigned long group, index;
+			ULONG group, index;
 			getBuildingFromID( fitID, group, index, true );
 
 			EditorObject* pAltObject = (EditorObject*)(addBuilding( position, group, index, 0, 0 ));
@@ -1969,7 +1969,7 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 		char armName[512] = {0};
 		strcpy(armName, file.getFilename());
 		_strlwr(armName);
-		char * fitExt = strstr(armName, ".fit");
+		PSTR  fitExt = strstr(armName, ".fit");
 		*fitExt = '_';
 		sprintf(fitExt+1, "warrior%02d", counter);
 		mapAsset->AddRelationship("warrior", armName);
@@ -2510,7 +2510,7 @@ bool EditorObjectMgr::loadDropZones( FitIniFile& file )
 	
 }
 
-int EditorObjectMgr::getType( unsigned long group, unsigned long indexWithinGroup )
+int EditorObjectMgr::getType( ULONG group, ULONG indexWithinGroup )
 {
 	Group* pGroup = &groups[group];
 
@@ -2767,7 +2767,7 @@ void		EditorObjectMgr::getVariantNames( int group, int indexInGroup, PCSTR* name
 }
 
 
-void EditorObjectMgr::registerSquadNum(unsigned long squadNum)
+void EditorObjectMgr::registerSquadNum(ULONG squadNum)
 {
 	if (squadNum >= nextAvailableSquadNum)
 	{

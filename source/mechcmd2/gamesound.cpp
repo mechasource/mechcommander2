@@ -146,7 +146,7 @@ long i;
 }
 
 //---------------------------------------------------------------------------
-bool GameSoundSystem::checkMessage (MechWarriorPtr pilot, byte priority, unsigned long messageType)
+bool GameSoundSystem::checkMessage (MechWarriorPtr pilot, byte priority, ULONG messageType)
 {
 	for (long i=0;i<MAX_QUEUED_MESSAGES;i++)
 	{

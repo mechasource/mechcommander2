@@ -90,7 +90,7 @@ void TGAWnd::SetTGAFileName( const CString& str )
 	File.Read( &header, sizeof( TGAFileHeader ) );
 	if ( header.image_type == UNC_TRUE )
 	{	
-		m_pImage = (char *)malloc( header.width * header.height * 4 );
+		m_pImage = (PSTR )malloc( header.width * header.height * 4 );
 		File.Read( m_pImage, header.width * header.height * 4);
 
 		m_pBmi->bmiHeader.biHeight = -header.height;
@@ -119,7 +119,7 @@ void TGAWnd::SetTGAFileData( PUCHAR data, int size )
 		
 	}
 	if ( !m_pImage )
-		m_pImage = (char *) malloc( header->width * header->height * 4 );		
+		m_pImage = (PSTR ) malloc( header->width * header->height * 4 );		
 
 
 	if ( header->image_type == UNC_TRUE )

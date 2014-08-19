@@ -46,7 +46,7 @@ static bool ESLoadString(int resourceID, EString &targetStr) {
 static long sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
 	long result = 0;
 	float tmpFloat;
-	result = missionFile->readIdFloat((char *)varName, tmpFloat);
+	result = missionFile->readIdFloat((PSTR )varName, tmpFloat);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -58,7 +58,7 @@ static long sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
 static long sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) {
 	long result = 0;
 	bool tmpBool;
-	result = missionFile->readIdBoolean((char *)varName, tmpBool);
+	result = missionFile->readIdBoolean((PSTR )varName, tmpBool);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -69,8 +69,8 @@ static long sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) 
 
 static long sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) {
 	long result = 0;
-	unsigned long tmpULong;
-	result = missionFile->readIdULong((char *)varName, tmpULong);
+	ULONG tmpULong;
+	result = missionFile->readIdULong((PSTR )varName, tmpULong);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -82,7 +82,7 @@ static long sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) 
 static long sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString &ECStr) {
 	long result = 0;
 	char buffer[2001/*buffer size*/]; buffer[0] = '\0';
-	result = missionFile->readIdString((char *)varName, buffer, 2001/*buffer size*/ - 1);
+	result = missionFile->readIdString((PSTR )varName, buffer, 2001/*buffer size*/ - 1);
 	if ((NO_ERR != result) && (BUFFER_TOO_SMALL != result)) {
 		//assert(false);
 	} else {
@@ -1556,7 +1556,7 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 	float scale = 1.0;
 	if ( m_modelID != -1 )
 	{
-		unsigned long ulGroup, ulIndex;
+		ULONG ulGroup, ulIndex;
 		EditorObjectMgr::instance()->getBuildingFromID( m_modelID, ulGroup, ulIndex, true);
 		int ID = EditorObjectMgr::instance()->getID( ulGroup, ulIndex );
 		pName = EditorObjectMgr::instance()->getFileName( ID );
@@ -1582,7 +1582,7 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dCondition%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "ConditionSpecies", (unsigned long)(*it)->Species());
+			file->writeIdULong( "ConditionSpecies", (ULONG)(*it)->Species());
 			file->writeIdString( "ConditionSpeciesString", g_conditionSpeciesStringArray[(int)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;
@@ -1597,7 +1597,7 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dAction%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "ActionSpecies", (unsigned long)(*it)->Species());
+			file->writeIdULong( "ActionSpecies", (ULONG)(*it)->Species());
 			file->writeIdString( "ActionSpeciesString", g_actionSpeciesStringArray[(int)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;
@@ -1612,7 +1612,7 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dFailureCondition%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "FailureConditionSpecies", (unsigned long)(*it)->Species());
+			file->writeIdULong( "FailureConditionSpecies", (ULONG)(*it)->Species());
 			file->writeIdString( "FailureConditionSpeciesString", g_conditionSpeciesStringArray[(int)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;
@@ -1627,7 +1627,7 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dFailureAction%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "FailureActionSpecies", (unsigned long)(*it)->Species());
+			file->writeIdULong( "FailureActionSpecies", (ULONG)(*it)->Species());
 			file->writeIdString( "FailureActionSpeciesString", g_actionSpeciesStringArray[(int)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;

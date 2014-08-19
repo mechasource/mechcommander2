@@ -17,7 +17,7 @@ class StaticInfo
 {
 public:
 
-	void init( FitIniFile& file, char* blockName, long hiResOffsetX = 0, long hiResOffsetY = 0, DWORD neverFlush = 0 );
+	void init( FitIniFile& file, PSTR blockName, long hiResOffsetX = 0, long hiResOffsetY = 0, DWORD neverFlush = 0 );
 	void render();
 	bool isInside( int mouseX, int mouseY );
 
@@ -38,29 +38,28 @@ public:
 	StaticInfo(){}
 	~StaticInfo();
 
-	unsigned long textureHandle;
+	ULONG textureHandle;
 	gos_VERTEX	location[4];
 	long u, v, uWidth, vHeight;
 
-	unsigned long textureWidth; // textures are square
+	ULONG textureWidth; // textures are square
 };
 
-
-
+#if _CONSIDERED_OBSOLETE
 typedef struct _GUI_RECTd
 {
 	long left;
 	long top;
 	long right;
 	long bottom;
-} GUI_RECT;
+} RECT;
+#endif
+
+void drawEmptyRect( const RECT& rect, ULONG leftBorderColor = 0xffffffff,
+	 ULONG rightBorderColor = 0xff000000 );
 
 
-void drawEmptyRect( const GUI_RECT& rect, unsigned long leftBorderColor = 0xffffffff,
-	 unsigned long rightBorderColor = 0xff000000 );
-
-
-void drawRect( const GUI_RECT& rect, unsigned long color );
+void drawRect( const RECT& rect, ULONG color );
 
 void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, 
 					long left, long top, bool proportional, PCSTR text, bool bBold, float scale );
@@ -77,7 +76,7 @@ void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font,
 
 long interpolateColor( long color1, long color2, float percent );
 
-inline long reverseRGB( long oldVal ) 
+inline COLORREF reverseRGB(COLORREF oldVal) 
 {
 	return ( (oldVal & 0xff000000) | ((oldVal & 0xff0000) >> 16) | (oldVal & 0xff00) | ((oldVal & 0xff) << 16) );
 }
@@ -98,14 +97,14 @@ extern DWORD gosResourceHandle;
 #if 1
 inline int cLoadString(
   uint32_t uID,             // resource identifier
-  char* lpBuffer,      // pointer to buffer for resource
-  int nBufferMax,        // size of buffer
-  unsigned long handle = gosResourceHandle
+  PSTR lpBuffer,      // pointer to buffer for resource
+  size_t nBufferMax,        // size of buffer
+  ULONG handle = gosResourceHandle
   )
 {
 	memset(lpBuffer,0,nBufferMax);
-	char * tmpBuffer = gos_GetResourceString(handle, uID);
-	long stringLength = strlen(tmpBuffer);
+	PSTR  tmpBuffer = gos_GetResourceString(handle, uID);
+	size_t stringLength = strlen(tmpBuffer);
 	if (stringLength >= nBufferMax)
 		STOP(("String too long for buffer.  String Id %d, bufferLen %d, StringLen %d",uID,nBufferMax,stringLength));
 	memcpy(lpBuffer,tmpBuffer,stringLength);
@@ -114,7 +113,7 @@ inline int cLoadString(
 
 #else
 
-inline char * cLoadString (uint32_t uID)
+inline PSTR  cLoadString (uint32_t uID)
 {
 	return gos_GetResourceString(gosResourceHandle, uID);
 }

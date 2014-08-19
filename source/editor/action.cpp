@@ -269,7 +269,7 @@ bool ActionPaintTile::doRedo()
 		float elv = land->getTerrainElevation( (*iter).row, (*iter).column );
 
 		Overlays overlay;
-		unsigned long offset;
+		ULONG offset;
 
 		// reset to old values
 		land->terrainTextures->getOverlayInfoFromHandle( (*iter).textureData, overlay, offset );

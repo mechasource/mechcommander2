@@ -59,9 +59,9 @@ enum FileClass
 //---------------------------------------------------------------------------
 // Function Declarations
 //Returns 1 if file is on HardDrive and 2 if file is in FastFile
-long fileExists(char *fName);
-long fileExistsOnCD(char *fName);
-bool file1OlderThan2(char *file1, char* file2);
+long fileExists(PSTR fName);
+long fileExistsOnCD(PSTR fName);
+bool file1OlderThan2(PSTR file1, PSTR file2);
 
 //---------------------------------------------------------------------------
 // Macro Definitions
@@ -148,7 +148,7 @@ class File
 			virtual long open( PCSTR buffer, int bufferLength ); // for streaming from memory
 
 			virtual long create (PCSTR fName);
-			virtual long createWithCase( char* fName ); // don't strlwr for me please!
+			virtual long createWithCase( PSTR fName ); // don't strlwr for me please!
 
 			virtual void close (void);
 
@@ -186,8 +186,8 @@ class File
 			long writeLong (long value);
 			long writeFloat (float value);
 
-			long writeString (char *buffer);
-			long writeLine (char *buffer);
+			long writeString (PSTR buffer);
+			long writeLine (PSTR buffer);
 
 			bool isOpen (void);
 
@@ -196,7 +196,7 @@ class File
 				return BASEFILE;
 			}
 
-			char* getFilename (void);
+			PSTR getFilename (void);
 
 			size_t getLength (void);
 			size_t fileSize (void);

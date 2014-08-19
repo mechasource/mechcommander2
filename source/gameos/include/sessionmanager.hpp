@@ -48,7 +48,7 @@ extern ULONG NumModems;
 extern bool modemChecked;
 extern bool hasModem;
 bool __stdcall FindModems(void);
-bool __stdcall gos_ConnectModem( char *phone_number, char *modem_name );
+bool __stdcall gos_ConnectModem( PSTR phone_number, PSTR modem_name );
 
 //
 // COM port variables
@@ -66,7 +66,7 @@ bool __stdcall gos_ConnectIPX(void);
 // TCPIP variables
 //
 extern bool hasTCP;
-bool __stdcall gos_ConnectTCP( char *ip_address, USHORT port );
+bool __stdcall gos_ConnectTCP( PSTR ip_address, USHORT port );
 
 /////  AddressInfo is used in connections initialized entirely by
 // user defined data, such as a TCP connection created by calling
@@ -201,12 +201,12 @@ public:
 	int nextFileSendID;
 
 #ifdef _ARMOR
-	unsigned long lastBandwidthRecordingTime;
-	unsigned long bytesSent;
-	unsigned long lastRecordedBytesSent;
-	unsigned long packetNumber;
-	unsigned long lastPacketNumber;
-	unsigned long packetsInBandwidthCheck;
+	ULONG lastBandwidthRecordingTime;
+	ULONG bytesSent;
+	ULONG lastRecordedBytesSent;
+	ULONG packetNumber;
+	ULONG lastPacketNumber;
+	ULONG packetsInBandwidthCheck;
 #endif
 
 
@@ -221,7 +221,7 @@ public:
 
 	HRESULT	ResetDirectPlayInterface(void);
 
-	HRESULT CreatePlayer(char *player_name);
+	HRESULT CreatePlayer(PSTR player_name);
 
 
 	inline HRESULT SetSessionDescriptor(FIDPSession *ss)
@@ -399,7 +399,7 @@ public:
 
 	// returns the name of the modem at index or NULL if index
 	// is greater than the # of modems.
-	char *GetModemName(long index);
+	PSTR GetModemName(long index);
 
 	// Host or join a session
 	//
@@ -408,9 +408,9 @@ public:
 	// A return value of DP_OK means it worked
 	//	A return value of -1 means the guid passed to JoinSession is
 	// invalid.  Any other return value is a directplay error code.
-	HRESULT HostSession(FIDPSession& new_session, char *player_name);
+	HRESULT HostSession(FIDPSession& new_session, PSTR player_name);
 
-	HRESULT JoinSession(LPGUID p_guid, char *player_name);
+	HRESULT JoinSession(LPGUID p_guid, PSTR player_name);
 
 	// LockSession can only be done by the host.  If successful, it
 	// returns 1, else it returns 0
@@ -422,7 +422,7 @@ public:
 
 	void CreateGroup 
 		(	LPDPID id, 
-		char* name, 
+		PSTR name, 
 		PVOID data = NULL, 
 		ULONG size = 0, 
 		ULONG flags = 0);
@@ -521,7 +521,7 @@ public:
 
 	FIDPPlayer *GetPlayerNumber(long i);
 
-	FIDPPlayer *GetPlayer(unsigned long id);
+	FIDPPlayer *GetPlayer(ULONG id);
 
 	inline BOOL IsLocalHost(void)
 	{

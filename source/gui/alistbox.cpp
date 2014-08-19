@@ -205,7 +205,7 @@ void aListBox::update()
 }
 
 	
-int aListBox::handleMessage( unsigned long message, unsigned long who )
+int aListBox::handleMessage( ULONG message, ULONG who )
 {
 	switch ( message )
 	{
@@ -301,7 +301,7 @@ void aListBox::render()
 		// draw black box above this
 		if ( bTop || bBottom )
 		{
-			GUI_RECT rect = { globalX(), globalY() - topHeight, globalX() + width(), globalY() };
+			RECT rect = { globalX(), globalY() - topHeight, globalX() + width(), globalY() };
 			if ( bTop )
 				drawRect( rect, 0xff000000 ); 
 			rect.top = globalY() + height()+1;
@@ -820,7 +820,7 @@ void aDropList::update()
 			int cy = userInput->getMouseY();
 
 			if (expandButton.pointInside(cx, cy)) {
-				handleMessage(aMSG_BUTTONCLICKED, (unsigned long)(&expandButton));
+				handleMessage(aMSG_BUTTONCLICKED, (ULONG)(&expandButton));
 			}
 
 			// lose focus if appropriate
@@ -858,10 +858,10 @@ void aDropList::update()
 }
 
 
-int aDropList::handleMessage( unsigned long message, unsigned long who )
+int aDropList::handleMessage( ULONG message, ULONG who )
 {
 	{
-		if ((unsigned long)(&expandButton) == who) 
+		if ((ULONG)(&expandButton) == who) 
 		{
 			if (aMSG_BUTTONCLICKED == message)
 			{
@@ -904,7 +904,7 @@ long aDropList::AddItem(aListItem* itemString)
 	return retval;
 }
 
-long				aDropList::AddItem( PCSTR text, unsigned long color )
+long				aDropList::AddItem( PCSTR text, ULONG color )
 {
 	aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 	*pItem = templateItem;
@@ -913,7 +913,7 @@ long				aDropList::AddItem( PCSTR text, unsigned long color )
 	return AddItem( pItem );
 }
 
-long aDropList::AddItem( unsigned long textID, unsigned long color )
+long aDropList::AddItem( ULONG textID, ULONG color )
 {
 		aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 		*pItem = templateItem;
@@ -1110,7 +1110,7 @@ void aComboBox::update()
 			int cy = userInput->getMouseY();
 
 			if (expandButton.pointInside(cx, cy)) {
-				handleMessage(aMSG_BUTTONCLICKED, (unsigned long)(&expandButton));
+				handleMessage(aMSG_BUTTONCLICKED, (ULONG)(&expandButton));
 			}
 
 			// lose focus if appropriate
@@ -1161,10 +1161,10 @@ void aComboBox::update()
 }
 
 
-int aComboBox::handleMessage( unsigned long message, unsigned long who )
+int aComboBox::handleMessage( ULONG message, ULONG who )
 {
 	{
-		if ((unsigned long)(&expandButton) == who) 
+		if ((ULONG)(&expandButton) == who) 
 		{
 			if (aMSG_BUTTONCLICKED == message)
 			{
@@ -1209,7 +1209,7 @@ long aComboBox::AddItem(aListItem* itemString)
 	return retval;
 }
 
-long aComboBox::AddItem( unsigned long textID, unsigned long color )
+long aComboBox::AddItem( ULONG textID, ULONG color )
 {
 		aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 		*pItem = templateItem;
@@ -1218,7 +1218,7 @@ long aComboBox::AddItem( unsigned long textID, unsigned long color )
 		return AddItem( pItem );
 }
 
-long				aComboBox::AddItem( PCSTR text, unsigned long color )
+long				aComboBox::AddItem( PCSTR text, ULONG color )
 {
 	aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 	*pItem = templateItem;
@@ -1235,8 +1235,8 @@ long				aComboBox::AddItem( PCSTR text, unsigned long color )
 aTextListItem::aTextListItem( const aFont& newFont )
 {
 	font = newFont;
-	unsigned long height;
-	unsigned long  width;
+	ULONG height;
+	ULONG  width;
 	font.getSize( width, height, "> ");
 	aListItem::init( width, 0, Environment.screenWidth, ((float)height*1.25) );
 	state = ENABLED;
@@ -1246,8 +1246,8 @@ aTextListItem::aTextListItem( const aFont& newFont )
 aTextListItem::aTextListItem(long newFontResID)
 {
 	font.init( newFontResID );
-	unsigned long height;
-	unsigned long  width;
+	ULONG height;
+	ULONG  width;
 	font.getSize( width, height, "> ");
 	aListItem::init( width, 0, Environment.screenWidth, ((float)height*1.25) );
 	state = ENABLED;
@@ -1257,8 +1257,8 @@ aTextListItem::aTextListItem(long newFontResID)
 void aTextListItem::init(long newFontResID)
 {
 	font.init( newFontResID );
-	unsigned long height;
-	unsigned long  width;
+	ULONG height;
+	ULONG  width;
 	font.getSize( width, height, "> ");
 	aListItem::init( width, 0, Environment.screenWidth, ((float)height*1.25) );
 	state = ENABLED;
@@ -1309,7 +1309,7 @@ void aTextListItem::setText( long resID )
 void aTextListItem::sizeToText()
 {
 	// assume the width is right and we need to make the height different
-	unsigned long height = font.height( text, width() );
+	ULONG height = font.height( text, width() );
 	resize( width(), height );
 
 	
@@ -1441,7 +1441,7 @@ void aLocalizedListItem::render()
 	if ( animInfo.getState() != getState() )
 		animInfo.setState( (aAnimGroup::STATE)(long)getState() );
 	color = animInfo.getCurrentColor( animInfo.getState() );
-	aTextListItem::setColor((unsigned long)color);
+	aTextListItem::setColor((ULONG)color);
 	aTextListItem::render();
 }
 

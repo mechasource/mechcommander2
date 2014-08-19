@@ -37,7 +37,7 @@ public:
 	virtual void		destroy();
 	virtual void		render();
 	virtual void		update();
-	virtual int			handleMessage( unsigned long message, unsigned long who );
+	virtual int			handleMessage( ULONG message, ULONG who );
 	virtual void		move( float offsetX, float offsetY );
 	void				setColor0(int color);
 	int				getColor0() const { return color0; }
@@ -105,7 +105,7 @@ public:
  	virtual void render( int xOffset, int yOffset );
 	virtual void render();
 	virtual void update();
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 
 	void updateMPSetup(); // put into inventory
 

@@ -50,7 +50,7 @@ void LightType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long LightType::init (FilePtr objFile, unsigned long fileSize) {
+long LightType::init (FilePtr objFile, ULONG fileSize) {
 
 	long result = 0;
 	
@@ -167,7 +167,7 @@ void Light::init (bool create, ObjectTypePtr _type) {
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 #ifdef USE_LIGHT_APPEARANCE
-	unsigned long appearanceType = _type->getAppearanceTypeNum();
+	ULONG appearanceType = _type->getAppearanceTypeNum();
 	AppearanceTypePtr lightAppearanceType = appearanceTypeList->getAppearance(appearanceType);
 	if (!lightAppearanceType)
 		return(NO_APPEARANCE_TYPE_FOR_EXPL);

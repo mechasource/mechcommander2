@@ -275,7 +275,7 @@ void GameObjectManager::init (void) {
 
 //---------------------------------------------------------------------------
 
-void GameObjectManager::init (char* objTypeDataFile, long objTypeHeapSize, long objHeapSize) {
+void GameObjectManager::init (PSTR objTypeDataFile, long objTypeHeapSize, long objHeapSize) {
 
 	if (objTypeManager)
 		delete objTypeManager;
@@ -488,7 +488,7 @@ void GameObjectManager::setNumObjects (long nMechs,
 	}
 
 	useMoverLineOfSightTable = true;
-	moverLineOfSightTable = (char*)systemHeap->Malloc(maxMovers * maxMovers);
+	moverLineOfSightTable = (PSTR)systemHeap->Malloc(maxMovers * maxMovers);
 	if (!moverLineOfSightTable)
 		Fatal(numGates, " GameObjectManager.setNumObjects: cannot malloc moverLineOfSightTable ");
 
@@ -792,7 +792,7 @@ void GameObjectManager::countTerrainObjects (PacketFile* terrainFile, long first
 	gosASSERT( bytesRead == size );
 	
 	File* terrainObjectFile = new File;
-	terrainObjectFile->open( (char*)pBuffer, size );
+	terrainObjectFile->open( (PSTR)pBuffer, size );
 	
 	totalObjCount = terrainObjectFile->readLong();
 
@@ -1647,7 +1647,7 @@ extern __int64 MCTimeTransformandLight;
 extern __int64 MCTimeAnimationandMatrix;
 extern __int64 MCTimePerShapeTransform;
 
-unsigned long bldgCount = 0;
+ULONG bldgCount = 0;
 #endif
 
 void GameObjectManager::update (bool terrain, bool movers, bool other) 
@@ -3127,7 +3127,7 @@ long GameObjectManager::Load (PacketFilePtr file, long packetNum)
 	}
 
 	useMoverLineOfSightTable = true;
-	moverLineOfSightTable = (char*)systemHeap->Malloc(maxMovers * maxMovers);
+	moverLineOfSightTable = (PSTR)systemHeap->Malloc(maxMovers * maxMovers);
 	if (!moverLineOfSightTable)
 		Fatal(numGates, " GameObjectManager.setNumObjects: cannot malloc moverLineOfSightTable ");
 

@@ -73,9 +73,9 @@ public:
 	void				removeMechsInForceGroup(); // takes mechs that are in the force group out of the inventory
 	void				addMechToInventory( LogisticsVariant* pVar,
 											int addToForceGroup, LogisticsPilot*,
-											unsigned long color1 = 0xffffffff, 
-											unsigned long color2 = 0xffffffff,
-											unsigned long color3 = 0xffffffff);
+											ULONG color1 = 0xffffffff, 
+											ULONG color2 = 0xffffffff,
+											ULONG color3 = 0xffffffff);
 	void				removeMechFromInventory( PCSTR mechName, PCSTR pilotName );
 
 	int					addMechToForceGroup( LogisticsMech* pMech, int slot );

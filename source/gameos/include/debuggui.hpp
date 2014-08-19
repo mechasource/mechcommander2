@@ -10,7 +10,7 @@
 void __stdcall UpdateDebugMouse(void);
 void __stdcall UpdateDebugWindow(void);
 void __stdcall InitTextDisplay(void);
-void __stdcall DrawText( ULONG Color, char* String );
+void __stdcall DrawText( ULONG Color, PSTR String );
 void __stdcall DrawSquare( int TopX, int TopY, int Width, int Height, ULONG Color );
 void __stdcall DrawChr( char Chr );
 

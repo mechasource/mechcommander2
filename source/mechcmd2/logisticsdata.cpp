@@ -134,12 +134,12 @@ void LogisticsData::initComponents()
 
 
 	File dataFile;
-	dataFile.open( (char*)data, componentFile.getLength() );
+	dataFile.open( (PSTR)data, componentFile.getLength() );
 
 	componentFile.close();
 	
 	BYTE line[1024];
-	char* pLine = (char*)line;
+	PSTR pLine = (PSTR)line;
 
 	// skip the first line
 	dataFile.readLine(line, 1024);
@@ -213,7 +213,7 @@ void LogisticsData::initPilots()
 		LogisticsPilot& pilot = pilots.GetTail();
 		pilot.id = id;
 
-		if ( -1 == pilot.init( (char*)pilotFileName ) )
+		if ( -1 == pilot.init( (PSTR)pilotFileName ) )
 			pilots.DeleteTail();
 
 		id++;
@@ -239,7 +239,7 @@ void LogisticsData::initVariants()
 	if ( NO_ERR !=pakFile.open( pakPath ) )
 	{
 		char errorStr[256];
-		sprintf( errorStr, "couldn't open file %s", (char*)pakPath );
+		sprintf( errorStr, "couldn't open file %s", (PSTR)pakPath );
 		Assert( 0, 0, errorStr );
 	}
 
@@ -569,7 +569,7 @@ LogisticsVariant* LogisticsData::getVariant( int ID )
 {
 	for ( VARIANT_LIST::EIterator iter = variants.Begin(); !iter.IsDone(); iter++ )
 	{
-		if ( (*iter)->getID() == (unsigned long)(ID & 0x00ffffff) )
+		if ( (*iter)->getID() == (ULONG)(ID & 0x00ffffff) )
 		{
 			return *iter;
 		}
@@ -709,7 +709,7 @@ LogisticsPilot* LogisticsData::getFirstAvailablePilot()
 
 
 
-// GetAvailableMissions( char** missionNames, long& count )
+// GetAvailableMissions( PSTR* missionNames, long& count )
 int LogisticsData::getAvailableMissions( PCSTR* missionNames, long& count )
 {
 	int numberOfEm = 0;
@@ -758,7 +758,7 @@ bool LogisticsData::getMissionAvailable( PCSTR missionName )
 }
 
 
-// SetCurrentMission( char* missionName )
+// SetCurrentMission( PSTR missionName )
 int LogisticsData::setCurrentMission( PCSTR missionName )
 {
 	long result = missionInfo->setNextMission( missionName );
@@ -849,9 +849,9 @@ void	LogisticsData::addMechToInventory( LogisticsVariant* pVar, LogisticsPilot* 
 }
 void	LogisticsData::addMechToInventory( LogisticsVariant* pVar, int addToForceGroup, 
 										  LogisticsPilot* pPilot,
-										  unsigned long baseColor,
-										  unsigned long highlight1,
-										  unsigned long highlight2 )
+										  ULONG baseColor,
+										  ULONG highlight1,
+										  ULONG highlight2 )
 {
 	if ( pVar )
 	{
@@ -919,7 +919,7 @@ PCSTR	LogisticsData::getBestPilot( long mechWeight )
 		!iter.IsDone(); iter++ )
 		{
 			PCSTR nameCheck = (*iter).getName();
-			if ( (*iter).isAvailable() && (MPlayer || !MechWarrior::warriorInUse((char *)nameCheck)) )
+			if ( (*iter).isAvailable() && (MPlayer || !MechWarrior::warriorInUse((PSTR )nameCheck)) )
 				pPilots[counter++] = &(*iter);
 		}
 #endif
@@ -974,7 +974,7 @@ bool		LogisticsData::gotPilotsLeft()
 		!iter.IsDone(); iter++ )
 		{
 			PCSTR nameCheck = (*iter).getName();
-			if ( (*iter).isAvailable() && ( MPlayer || !MechWarrior::warriorInUse((char *)nameCheck)) )
+			if ( (*iter).isAvailable() && ( MPlayer || !MechWarrior::warriorInUse((PSTR )nameCheck)) )
 				pPilots[counter++] = &(*iter);
 		}
 
@@ -1352,7 +1352,7 @@ void	LogisticsData::setMissionCompleted( )
 			{
 				LogisticsMech* pMech = getMech( pMover->getName(), pMover->getPilot()->getName() );
 
-				unsigned long base, highlight1, highlight2;
+				ULONG base, highlight1, highlight2;
 				((Mech3DAppearance*)pMover->getAppearance())->getPaintScheme( base, highlight1, highlight2 );
 				LogisticsPilot* pPilot = getPilot( pMover->getPilot()->getName() );
 				if ( pMech )
@@ -1506,11 +1506,11 @@ long LogisticsData::updateAvailability()
 
 	// make sure its around and you can open it 
 	FitIniFile file;
-	if ( NO_ERR != file.open( (char*)(PCSTR)purchaseFileName ) )
+	if ( NO_ERR != file.open( (PSTR)(PCSTR)purchaseFileName ) )
 	{
 		EString error;
-		error.Format( "Couldn't open %s", (char*)(PCSTR)purchaseFileName );
-		PAUSE(((char*)(PCSTR)error ));
+		error.Format( "Couldn't open %s", (PSTR)(PCSTR)purchaseFileName );
+		PAUSE(((PSTR)(PCSTR)error ));
 		return NO_PURCHASE_FILE;
 	}
 	// read in available components
@@ -1958,7 +1958,7 @@ int LogisticsData::setMechToModify( LogisticsMech* pMech )
 	return 0;
 }
 
-void encryptFile (char *inputFile, char* outputFile)
+void encryptFile (PSTR inputFile, PSTR outputFile)
 {
 	//Now we encrypt this by zlib Compressing the file passed in.
 	// Then LZ Compressing the resulting zlib data.
@@ -1995,7 +1995,7 @@ void encryptFile (char *inputFile, char* outputFile)
 	free(LZData);
 }
 
-void decryptFile (char *inputFile, char *outputFile)
+void decryptFile (PSTR inputFile, PSTR outputFile)
 {
 	//Now we decrypt this by lz deCompressing the zlib file created.
 	// Then zlib deCompressing the resulting zlib data into the raw File again.
@@ -2534,7 +2534,7 @@ int LogisticsData::addBuilding( long fitID, PacketFile& objectFile, float scale 
 					bIsTurret = true;
 			}
 		}
-		unsigned long tmp;
+		ULONG tmp;
 		file.readIdLong( "BuildingName", bldg.nameID );
 		file.readIdULong( "DmgLevel", tmp );
 		bldg.weight = tmp;

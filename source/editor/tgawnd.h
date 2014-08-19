@@ -28,7 +28,7 @@ public:
 	void SetTGAFileName( const CString& str );
 	void SetTGAFileData( PUCHAR data, int size );
 
-	char* GetImageData( ) { return m_pImage; }
+	PSTR GetImageData( ) { return m_pImage; }
 
 	//{{AFX_VIRTUAL(TGAWnd)
 	//}}AFX_VIRTUAL
@@ -45,7 +45,7 @@ protected:
 
 	CString m_FileName;
 	bool	m_bTGAChanged;
-	char*	m_pImage;
+	PSTR	m_pImage;
 	BITMAPINFO* m_pBmi;
 	HBITMAP	m_hBitmap;
 	void*	m_pBits;

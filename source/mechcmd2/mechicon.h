@@ -41,13 +41,13 @@ public:
 
 private:
 
-	unsigned long pilotTextureIndex;
+	ULONG pilotTextureIndex;
 	
 	static float			pilotIconX;
 	static float			pilotIconY;
 
-	static unsigned long	s_pilotTextureHandle;
-	static unsigned long	s_pilotTextureWidth;
+	static ULONG	s_pilotTextureHandle;
+	static ULONG	s_pilotTextureWidth;
 
 	friend class ForceGroupIcon;
 	friend class MechIcon;
@@ -97,7 +97,7 @@ protected:
 
 		static long		damageColors[4][3];
 
-		static unsigned long	s_textureHandle[5];
+		static ULONG	s_textureHandle[5];
 		static bool				s_slotUsed[240];
 		static TGAFileHeader*	s_textureMemory;
 
@@ -111,10 +111,10 @@ protected:
 		
 		static gos_VERTEX	bmpLocation[17][5]; // in screen coords
 		
-		static GUI_RECT textArea[17];
-		static GUI_RECT pilotRect[17];
-		static GUI_RECT selectionRect[17];
-		static GUI_RECT healthBar[17];
+		static RECT textArea[17];
+		static RECT pilotRect[17];
+		static RECT selectionRect[17];
+		static RECT healthBar[17];
 		static long		pilotTextTop[17];
 
 		static float	pilotLocation[17][4];
@@ -169,7 +169,7 @@ class MechIcon : public ForceGroupIcon
 
 		static TGAFileHeader* s_MechTextures;
 
-		void doDraw( char* newDamage, char* oldDamage, unsigned long handle, unsigned long where);
+		void doDraw( PSTR newDamage, PSTR oldDamage, ULONG handle, ULONG where);
 		virtual void setDrawBack( bool bSet);
 
 		

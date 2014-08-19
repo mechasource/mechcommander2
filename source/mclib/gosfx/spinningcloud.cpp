@@ -116,7 +116,7 @@ bool
 	m_pScale.m_ageCurve.SetCurve(1.0f);
 	m_pScale.m_seeded = false;
 	m_pScale.m_seedCurve.SetCurve(1.0f);
-	PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of Range and has been Reset",(char *)m_name));
+	PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
 
 	}
 	else

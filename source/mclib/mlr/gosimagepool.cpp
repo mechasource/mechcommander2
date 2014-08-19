@@ -134,7 +134,7 @@ bool
 	file_name += image->imageName;
 	file_name += ".tga";
 
-	char *fFileName = file_name;
+	PSTR fFileName = file_name;
 	if (((fFileName[0] != 'F') || (fFileName[0] != 'f')) &&
 		((fFileName[1] != 'X') || (fFileName[1] != 'x')))
 		hint |= gosHint_DisableMipmap;

@@ -142,7 +142,7 @@ void aButton::render()
 	{
 		if ( textureHandle )
 		{
-			unsigned long gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
+			ULONG gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
 			gos_SetRenderState( gos_State_Texture, gosID ); 
 		}
 		else
@@ -175,7 +175,7 @@ void aButton::render()
 		}
 		if ( data.outline )
 		{
-			GUI_RECT tmp;
+			RECT tmp;
 			tmp.left = location[0].x;
 			tmp.top = location[0].y;
 			tmp.right = location[2].x;

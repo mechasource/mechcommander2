@@ -102,8 +102,8 @@ public:
 	void		init( PCSTR bldgListFileName, PCSTR objectFileName );
 
 	EditorObject*	addBuilding( const Stuff::Vector3D& position, 
-								unsigned long group, 
-								unsigned long indexWithinGroup,
+								ULONG group, 
+								ULONG indexWithinGroup,
 								int alignment,
 								float rotation = 0.0,
 								float height = 1.0,
@@ -135,8 +135,8 @@ public:
 	
 	bool		canAddBuilding( const Stuff::Vector3D& position,
 								float rotation,
-								unsigned long group,
-								unsigned long indexWithinGroup );
+								ULONG group,
+								ULONG indexWithinGroup );
 
 	bool		canAddDropZone( const Stuff::Vector3D& position, int alignment, bool bVTol );
 
@@ -178,11 +178,11 @@ public:
 
 	__int64		getImpassability( int id );
 
-	inline static unsigned long getGroup( long id );
-	inline static unsigned long getIndexInGroup( long id );
+	inline static ULONG getGroup( long id );
+	inline static ULONG getIndexInGroup( long id );
 	inline int					getAppearanceType( int ID );
 
-	bool getBuildingFromID( int fitID, unsigned long& group, unsigned long& index, bool canBeMech );
+	bool getBuildingFromID( int fitID, ULONG& group, ULONG& index, bool canBeMech );
 
 	void unselectAll();
 	void select( const Stuff::Vector4D& pos1, const Stuff::Vector4D& pos2 );
@@ -197,8 +197,8 @@ public:
 
 	void adjustObjectsToNewTerrainHeights();
 
-	ObjectAppearance* getAppearance( unsigned long group,
-											 unsigned long indexWithinGroup );
+	ObjectAppearance* getAppearance( ULONG group,
+											 ULONG indexWithinGroup );
 	ObjectAppearance* getAppearance( Building* pBuilding );
 
 	// LINKS!
@@ -224,9 +224,9 @@ public:
 	UNIT_LIST getUnits() { return units; }
 	BUILDING_LIST getBuildings() { return buildings; }
 
-	unsigned long getNextAvailableSquadNum() { return nextAvailableSquadNum; }
-	void registerSquadNum(unsigned long squadNum);
-	void unregisterSquadNum(unsigned long squadNum) {}
+	ULONG getNextAvailableSquadNum() { return nextAvailableSquadNum; }
+	void registerSquadNum(ULONG squadNum);
+	void unregisterSquadNum(ULONG squadNum) {}
 	void resetAvailableSquadNums() { nextAvailableSquadNum = 1; }
 
 	int getNextAvailableForestID();
@@ -242,12 +242,12 @@ public:
 		struct Building
 		{
 			char				name[64];
-			char**				varNames;
+			PSTR*				varNames;
 			int					nameID;
 			char				fileName[64];
 			AppearanceType*		appearanceType;
 			int					type;
-			unsigned long		fitID;
+			ULONG		fitID;
 			__int64				impassability;
 			bool				blocksLineOfFire;
 			BuildingType		specialType;
@@ -288,27 +288,27 @@ public:
 		void syncSelectedObjectPointerList();	// makes sure that the "selectedObjects" list corresponds to the objects marked as selected
 
 		// HELPERS
-		int ExtractNextString( PUCHAR& pFileLine, char* pBuffer, int bufferLength );
+		int ExtractNextString( PUCHAR& pFileLine, PSTR pBuffer, int bufferLength );
 		int ExtractNextInt( PUCHAR& pFileLine );
 		float ExtractNextFloat( PUCHAR& pFileLine );
 
-		int  getType( unsigned long group, unsigned long indexWithinGroup );
+		int  getType( ULONG group, ULONG indexWithinGroup );
 		void getRandomTreeFromGroup( int treeGroup, int& group, int& index );
 
 
 		void doForest( const Forest& forest );
 
 
-		unsigned long nextAvailableSquadNum;
+		ULONG nextAvailableSquadNum;
 
 		static EditorObjectMgr*	s_instance; // the one and only instance of this object
 };
 
-inline unsigned long EditorObjectMgr::getGroup( long id )
+inline ULONG EditorObjectMgr::getGroup( long id )
 {
 	return ((id >> 16) & 0x00ff);
 }
-inline unsigned long EditorObjectMgr::getIndexInGroup( long id )
+inline ULONG EditorObjectMgr::getIndexInGroup( long id )
 {
 	return ((id >> 8) & 0x00ff);
 }

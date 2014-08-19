@@ -35,7 +35,7 @@ public:
 	bool isDone();
 	virtual void render();
 	virtual void update();
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 
 	void updateOptions(); // put into inventory
 
@@ -61,7 +61,7 @@ public:
 	long	init(aButton* pLeft, aButton* pRight, aButton* pTab );
 	virtual void	update();
 
-	virtual int		handleMessage( unsigned long message, unsigned long fromWho );
+	virtual int		handleMessage( ULONG message, ULONG fromWho );
 
 	void			SetScrollMax(float newMax);
 	void			SetScrollPos(float newPos);
@@ -102,7 +102,7 @@ public:
 	virtual void end();
 	void reset( const CPrefs& newPrefs);
 
-	virtual int		handleMessage( unsigned long message, unsigned long fromWho );
+	virtual int		handleMessage( ULONG message, ULONG fromWho );
 
 private:
 	aDropList		resolutionList;
@@ -121,7 +121,7 @@ class OptionsAudio : public LogisticsScreen
 		virtual void end();
 		void reset(const CPrefs& newPrefs);
 
-		virtual int		handleMessage( unsigned long message, unsigned long fromWho );
+		virtual int		handleMessage( ULONG message, ULONG fromWho );
 
 	private:
 
@@ -140,12 +140,12 @@ public:
 		virtual void end();
 		void reset(bool bUseOld);
 
-		virtual int		handleMessage( unsigned long message, unsigned long fromWho );
+		virtual int		handleMessage( ULONG message, ULONG fromWho );
 
 private:
 
-	static void makeKeyString( long hotKey, char* buffer );
-	static int makeInputKeyString( long& hotKey, char* buffer );
+	static void makeKeyString( long hotKey, PSTR buffer );
+	static int makeInputKeyString( long& hotKey, PSTR buffer );
 
 
 	aListBox		hotKeyList;
@@ -163,7 +163,7 @@ public:
 	virtual void end();
 	void reset(const CPrefs& newPrefs);
 
-	virtual int		handleMessage( unsigned long message, unsigned long fromWho );
+	virtual int		handleMessage( ULONG message, ULONG fromWho );
 
 	void resetCamera();
 

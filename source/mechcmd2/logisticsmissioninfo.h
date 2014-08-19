@@ -148,7 +148,7 @@ class LogisticsMissionInfo
 		};	
 
 		typedef EList<MissionInfo*, MissionInfo*> MISSION_LIST;
-		typedef EList< char*, char* > FILE_LIST;
+		typedef EList< PSTR, PSTR > FILE_LIST;
 
 
 		class MissionGroup

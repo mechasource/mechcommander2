@@ -13,11 +13,11 @@ Utilities.cpp			: Implementation of the Utilities component.
 
 //#pragma warning(disable:4514)
 
-void drawRect( const GUI_RECT& area, unsigned long color )
+void drawRect( const RECT& area, ULONG color )
 {
 	if ( color & 0xff000000 )
 	{
-		GUI_RECT clientArea = area;
+		RECT clientArea = area;
 
 		if ( clientArea.left < 0 )
 			clientArea.left = 0;
@@ -72,15 +72,15 @@ void drawRect( const GUI_RECT& area, unsigned long color )
 }
 
 	
-void drawEmptyRect( const GUI_RECT& area, unsigned long leftTopBorderColor, 
-							unsigned long rightBottomBorderColor )
+void drawEmptyRect( const RECT& area, ULONG leftTopBorderColor, 
+							ULONG rightBottomBorderColor )
 {
 	gos_VERTEX v[4];
 
 	memset( v,0,sizeof(v) );
 	v[0].rhw =  v[1].rhw = v[2].rhw = v[3].rhw = 1.0;
 
-	GUI_RECT clientArea = area;
+	RECT clientArea = area;
 
 	if (   (clientArea.left < 0 && clientArea.right < 0 )
 		|| (clientArea.right > Environment.screenWidth && clientArea.left > Environment.screenWidth )
@@ -162,14 +162,14 @@ StaticInfo::~StaticInfo()
 {
 	if (mcTextureManager)
 	{
-		unsigned long gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
+		ULONG gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
 		mcTextureManager->removeTexture( gosID );
 	}
 }
 
 void StaticInfo::render()
 {
-	unsigned long gosID = mcTextureManager->get_gosTextureHandle( textureHandle );	
+	ULONG gosID = mcTextureManager->get_gosTextureHandle( textureHandle );	
 	gos_SetRenderState( gos_State_Texture, gosID );
 	gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 	gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha );
@@ -212,7 +212,7 @@ void StaticInfo::getData(PUCHAR  buffer)
 		return;
 	}
 	
-	unsigned long gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
+	ULONG gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
 	if (gosID)
 	{
 		TEXTUREPTR textureData;
@@ -249,7 +249,7 @@ void StaticInfo::getData(PUCHAR  buffer)
 	}
 }
 
-void StaticInfo::init( FitIniFile& file, char* blockName, long hiResOffsetX, long hiResOffsetY, DWORD neverFlush )
+void StaticInfo::init( FitIniFile& file, PSTR blockName, long hiResOffsetX, long hiResOffsetY, DWORD neverFlush )
 {
 	memset( location, 0, sizeof( location ) );
 	char fileName[256];
@@ -283,7 +283,7 @@ void StaticInfo::init( FitIniFile& file, char* blockName, long hiResOffsetX, lon
 		fullPath.init( artPath, fileName, ".tga" );
 		int ID = mcTextureManager->loadTexture( fullPath, gos_Texture_Alpha, 0, 0, 0x2 );
 		textureHandle = ID;
-		unsigned long gosID = mcTextureManager->get_gosTextureHandle( ID );
+		ULONG gosID = mcTextureManager->get_gosTextureHandle( ID );
 		TEXTUREPTR textureData;
 		gos_LockTexture( gosID, 0, 0, 	&textureData );
 		textureWidth = textureData.Width;

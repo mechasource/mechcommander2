@@ -22,7 +22,7 @@
 #include "utilities.h"
 //******************************************************************************************
 
-char* ComponentFormString [] = {
+PSTR ComponentFormString [] = {
 	"Simple",
 	"Cockpit",
 	"Sensors",
@@ -46,7 +46,7 @@ char* ComponentFormString [] = {
 	NULL
 };
 
-char* WeaponRangeString[] = {
+PSTR WeaponRangeString[] = {
 	"short",
 	"medium",
 	"long"
@@ -84,14 +84,14 @@ void MasterComponent::destroy (void) {
 }
 
 //******************************************************************************************
-long MasterComponent::initEXCEL (char* dataLine, float baseSensorRange) {
+long MasterComponent::initEXCEL (PSTR dataLine, float baseSensorRange) {
 
 	//----------------------------------------------------------
 	// Component data was read in, so parse it. First, parse the
 	// fields common to all components...
 
-	char* next_token = NULL;
-	char* field = strtok_s(dataLine, ",", &next_token);
+	PSTR next_token = NULL;
+	PSTR field = strtok_s(dataLine, ",", &next_token);
 
 	int ammoAmount = 1;
 
@@ -126,7 +126,7 @@ long MasterComponent::initEXCEL (char* dataLine, float baseSensorRange) {
 	float recycleTime = atof(field);
 	
 	field = strtok_s(NULL, ",", &next_token);
-	float heat = (unsigned long)atof(field);
+	float heat = (ULONG)atof(field);
 
 	field = strtok_s(NULL, ",", &next_token); 
 	tonnage = atof( field );
@@ -143,7 +143,7 @@ long MasterComponent::initEXCEL (char* dataLine, float baseSensorRange) {
 	field = strtok_s(NULL, ",", &next_token);
 	uint8_t rangeType = 255;
 
-_Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) char * _Str, _In_ size_t _Size);
+_Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) PSTR  _Str, _In_ size_t _Size);
 
 	_strlwr(field);
 	if (strcmp(field, "0") != 0) {
@@ -632,7 +632,7 @@ bool MasterComponent::isDefensiveWeapon (void) {
 
 //---------------------------------------------------------------------------
 
-long MasterComponent::loadMasterList (char* fileName, long listSize, float baseSensorRange) {
+long MasterComponent::loadMasterList (PSTR fileName, long listSize, float baseSensorRange) {
 
 	if (masterList) 
 	{
@@ -684,7 +684,7 @@ long MasterComponent::loadMasterList (char* fileName, long listSize, float baseS
 
 
 //---------------------------------------------------------------------------
-long MasterComponent::saveMasterList (char* fileName, long listSize, float baseSensorRange) 
+long MasterComponent::saveMasterList (PSTR fileName, long listSize, float baseSensorRange) 
 {
 	//-----------------------------------------------------------------
 	// All components are in one data file. Save it in CSV format!

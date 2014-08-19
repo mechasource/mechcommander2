@@ -14,9 +14,9 @@ class mcScrollButton : public aAnimButton
 public:
 	virtual void render();
 
-	unsigned long lightEdge;
-	unsigned long darkEdge;
-	unsigned long regularColor;
+	ULONG lightEdge;
+	ULONG darkEdge;
+	ULONG regularColor;
 };
 
 class aScrollBar : public aObject
@@ -30,7 +30,7 @@ public:
 	virtual void	update();
 	virtual void	render();
 
-	virtual int		handleMessage( unsigned long message, unsigned long fromWho );
+	virtual int		handleMessage( ULONG message, ULONG fromWho );
 
 	void			SetScrollMax(float newMax);
 	void			SetScrollPos(float newPos);
@@ -56,7 +56,7 @@ protected:
 	long			lastY;
 	long			scrollInc;
 	long			pageInc;
-	unsigned long   color;
+	ULONG   color;
 	void			ResizeAreas(void);
 };
 

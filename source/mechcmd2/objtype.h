@@ -78,7 +78,7 @@ class ObjectType {
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, unsigned long fileSize);
+		virtual long init (FilePtr objFile, ULONG fileSize);
 
 		long init (FitIniFilePtr objFile);
 		
@@ -118,7 +118,7 @@ class ObjectType {
 			return(objTypeNum);
 		}
 
-		char * getAppearanceTypeName (void) 
+		PSTR  getAppearanceTypeName (void) 
 		{
 			return(appearName);
 		}
@@ -220,7 +220,7 @@ class ObjectTypeManager {
 			init();
 		}
 
-		long init (char* objectFileName, long objectTypeCacheSize, long objectCacheSize, long maxObjectTypes = 1024);
+		long init (PSTR objectFileName, long objectTypeCacheSize, long objectCacheSize, long maxObjectTypes = 1024);
 			
 		void destroy (void);
 							

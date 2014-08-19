@@ -1698,7 +1698,7 @@ assertError:
 	
 	//-------------------------------------
 	// Save off the shape data table start
-	char *shapeTable = (char *)shape_table;
+	PSTR shapeTable = (PSTR )shape_table;
 	char version[5];
 	for (long i=0;i<4;i++)
 	{

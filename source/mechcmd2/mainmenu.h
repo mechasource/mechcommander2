@@ -64,7 +64,7 @@ class MainMenu: public LogisticsScreen
 		void setDrawBackground( bool bDrawBackground );
 		void skipIntro();
 
-		virtual int	handleMessage( unsigned long, unsigned long );
+		virtual int	handleMessage( ULONG, ULONG );
 		
 
 		static	bool	bDrawMechlopedia;

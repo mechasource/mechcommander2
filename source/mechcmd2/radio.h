@@ -24,16 +24,16 @@
 
 struct RadioData
 {
-	unsigned long	msgId;
-	unsigned long	msgType;
-	unsigned long	noiseId;
+	ULONG	msgId;
+	ULONG	msgType;
+	ULONG	noiseId;
 	long			numFragments;
 	MemoryPtr		data[MAX_FRAGMENTS];
 	long			dataSize[MAX_FRAGMENTS];
 	MemoryPtr		noise[MAX_FRAGMENTS];
 	long			noiseSize[MAX_FRAGMENTS];
 	UserHeapPtr		msgHeap;
-	unsigned long	turnQueued;
+	ULONG	turnQueued;
 	byte			priority;
 	byte			movieCode;
 	float			expirationDate;
@@ -104,7 +104,7 @@ class Radio
 			destroy();
 		}
 	
-		long init (char *fileName, unsigned long heapSize, char *movie);
+		long init (PSTR fileName, ULONG heapSize, PSTR movie);
 
 		void setOwner (MechWarriorPtr _owner)
 		{

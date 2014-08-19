@@ -14,7 +14,7 @@ long ffLastError = 0;
 
 #define NO_ERR		0
 //-----------------------------------------------------------------------------------
-bool FastFileInit (char *fname)
+bool FastFileInit (PSTR fname)
 {
 	if (numFastFiles == maxFastFiles)
 	{
@@ -63,7 +63,7 @@ void FastFileFini (void)
 }
 
 //-----------------------------------------------------------------------------------
-FastFile *FastFileFind (char *fname, long &fastFileHandle)
+FastFile *FastFileFind (PSTR fname, long &fastFileHandle)
 {
 	if (fastFiles)
 	{
@@ -87,9 +87,9 @@ FastFile *FastFileFind (char *fname, long &fastFileHandle)
 }
 
 //------------------------------------------------------------------
-DWORD elfHash (char *name)
+DWORD elfHash (PSTR name)
 {
-    unsigned long   h = 0, g;
+    ULONG   h = 0, g;
     while ( *name )
     {
         h = ( h << 4 ) + *name++;

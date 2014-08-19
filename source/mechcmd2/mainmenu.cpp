@@ -61,7 +61,7 @@ void SplashIntro::init()
 	if ( NO_ERR != file.open( path ) )
 	{
 		char errorStr[256];
-		sprintf( errorStr, "couldn't open file %s", (char*)path );
+		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
 		Assert(0,0,errorStr );
 	}
 
@@ -106,7 +106,7 @@ int MainMenu::init( FitIniFile& file )
 	if ( NO_ERR != file2.open( name ) )
 	{
 		char errorStr[256];
-		sprintf( errorStr, "couldn't open file %s", (char*)name );
+		sprintf( errorStr, "couldn't open file %s", (PSTR)name );
 		Assert(0,0,errorStr );
 	}
 
@@ -234,7 +234,7 @@ void MainMenu::setDrawBackground( bool bNewDrawBackground )
 	}
 }
 
-int	MainMenu::handleMessage( unsigned long what, unsigned long who )
+int	MainMenu::handleMessage( ULONG what, ULONG who )
 {
 	switch ( who )
 	{
@@ -396,7 +396,7 @@ int	MainMenu::handleMessage( unsigned long what, unsigned long who )
 				char realText[2048];
 				cLoadString(IDS_LAWYER_BABBLE, realText, 2047 );
 				char lawyerBabble[2048];
-				unsigned long pIDLen = 64;
+				ULONG pIDLen = 64;
 				char pID[64];
 				sprintf( pID, "INVALID ID" );
 				gos_LoadDataFromRegistry("PID", pID, &pIDLen);
@@ -766,7 +766,7 @@ void MainMenu::render()
 			}
 		}
 
-		GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+		RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 
 		if ( bDrawBackground )
@@ -781,7 +781,7 @@ void MainMenu::render()
 	}
 	else
 	{
-		GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+		RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 	}
 

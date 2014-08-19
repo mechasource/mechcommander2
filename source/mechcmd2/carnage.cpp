@@ -58,7 +58,7 @@
 #define	EXPLOSION_TIME			0.5
 #define	EXPLOSION_DEPTH_FIXUP	-150
 
-extern unsigned long	NextIdNumber;
+extern ULONG	NextIdNumber;
 extern TeamPtr homeTeam;
 extern bool useSound;
 extern bool somethingOnFire;
@@ -127,7 +127,7 @@ void FireType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long FireType::init (FilePtr objFile, unsigned long fileSize) {
+long FireType::init (FilePtr objFile, ULONG fileSize) {
 
 	long result = 0;
 	
@@ -140,7 +140,7 @@ long FireType::init (FilePtr objFile, unsigned long fileSize) {
 	if (result != NO_ERR)
 		return(result);
 
-	unsigned long dmgLevel;
+	ULONG dmgLevel;
 	result = explFile.readIdULong("DmgLevel",dmgLevel);
 	if (result != NO_ERR)
 		return(result);
@@ -254,7 +254,7 @@ void ExplosionType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long ExplosionType::init (FilePtr objFile, unsigned long fileSize) {
+long ExplosionType::init (FilePtr objFile, ULONG fileSize) {
 
 	long result = 0;
 	
@@ -269,7 +269,7 @@ long ExplosionType::init (FilePtr objFile, unsigned long fileSize) {
 	if (result != NO_ERR)
 		return(result);
 
-	unsigned long dmgLevel;
+	ULONG dmgLevel;
 	result = explFile.readIdULong("DmgLevel",dmgLevel);
 	if (result != NO_ERR)
 		return(result);

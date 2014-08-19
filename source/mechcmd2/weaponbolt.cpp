@@ -83,7 +83,7 @@ void WeaponBoltType::destroy (void)
 DWORD bgrTorgb (DWORD frontRGB);
 	
 //---------------------------------------------------------------------------
-long WeaponBoltType::init (FilePtr objFile, unsigned long fileSize)
+long WeaponBoltType::init (FilePtr objFile, ULONG fileSize)
 {
 	long result = 0;
 	
@@ -124,7 +124,7 @@ long WeaponBoltType::init (FilePtr objFile, unsigned long fileSize)
 		if (result != NO_ERR)
 			strcpy(txmName,"NONE");
 		
-		textureName = (char *)ObjectTypeManager::objectCache->Malloc(strlen(txmName)+1); 
+		textureName = (PSTR )ObjectTypeManager::objectCache->Malloc(strlen(txmName)+1); 
 		strcpy(textureName,txmName);
 
 		result = bullFile.readIdFloat("UVAnimRate",uvAnimRate);

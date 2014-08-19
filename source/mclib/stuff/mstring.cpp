@@ -250,7 +250,7 @@ Stuff::operator + (
 
 	MStringRepresentation temp;
 
-	unsigned long totalLen =
+	ULONG totalLen =
 		str1.stringLength + str2.stringLength;
 
 	if (totalLen == 0)
@@ -368,14 +368,14 @@ MStringRepresentation::Compare(const MStringRepresentation &str) const
 MStringRepresentation
 MStringRepresentation::GetNthToken(
 	size_t nth_token,
-	char *delimiters) const
+	PSTR delimiters) const
 {
 	Check_Object(this);
 
 	//
 	// Which delimters to use
 	//
-	char *delimter_string = " \t,";
+	PSTR delimter_string = " \t,";
 
 	if (delimiters != NULL)
 	{
@@ -395,7 +395,7 @@ MStringRepresentation::GetNthToken(
 	// Parse string with strtok
 	//
 	size_t i;
-	char *ptr;
+	PSTR ptr;
 
 	Check_Pointer(temp.stringText);
 	ptr = strtok(temp.stringText, delimter_string);
@@ -462,7 +462,7 @@ MemoryStreamIO::Read(
 	Read(stream, &string_length);
 	if (string_length > 0)
 	{
-		char *ptr = new char[string_length + 1];
+		PSTR ptr = new char[string_length + 1];
 		Register_Pointer(ptr);
 		stream->ReadBytes(ptr, string_length + 1);
 

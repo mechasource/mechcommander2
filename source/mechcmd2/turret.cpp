@@ -127,7 +127,7 @@ void TurretType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long TurretType::init (FilePtr objFile, unsigned long fileSize) {
+long TurretType::init (FilePtr objFile, ULONG fileSize) {
 
 	long result = 0;
 	
@@ -146,7 +146,7 @@ long TurretType::init (FilePtr objFile, unsigned long fileSize) {
 	if (result != NO_ERR)
 		LOSFactor = 1.0f;
 		
- 	unsigned long dmgLevel;
+ 	ULONG dmgLevel;
 	result = bldgFile.readIdULong("DmgLevel",dmgLevel);
 	if (result != NO_ERR)
 		return(result);
@@ -381,7 +381,7 @@ long Turret::setTeamId (long _teamId, bool setup) {
 	}
 	targetWID = 0;
 
-	static unsigned long highLight[8] = {0x00007f00, 0x007f0000,
+	static ULONG highLight[8] = {0x00007f00, 0x007f0000,
 										  0x0000007f, 0x0000007f,
 										  0x0000007f, 0x0000007f,
 										  0x0000007f, 0x0000007f};
@@ -1110,7 +1110,7 @@ long Turret::addWeaponFireChunk (long which, WeaponFireChunkPtr chunk) {
 
 //---------------------------------------------------------------------------
 
-long Turret::addWeaponFireChunks (long which, unsigned long* packedChunkBuffer, long numChunks) {
+long Turret::addWeaponFireChunks (long which, ULONG* packedChunkBuffer, long numChunks) {
 
 	if ((numWeaponFireChunks[which] + numChunks) >= MAX_WEAPONFIRE_CHUNKS)
 		Fatal(0, " Turret::addWeaponFireChunks--Too many weaponfire chunks ");
@@ -1134,7 +1134,7 @@ long Turret::addWeaponFireChunks (long which, unsigned long* packedChunkBuffer, 
 
 //---------------------------------------------------------------------------
 
-long Turret::grabWeaponFireChunks (long which, unsigned long* packedChunkBuffer) {
+long Turret::grabWeaponFireChunks (long which, ULONG* packedChunkBuffer) {
 
 	if (numWeaponFireChunks[which] > 0)
 		for (long i = 0; i < numWeaponFireChunks[which]; i++)
@@ -1248,7 +1248,7 @@ void Turret::printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* ta
 	if (!CombatLog)
 		return;
 
-	static char* locationStrings [] = {
+	static PSTR locationStrings [] = {
 		"head",
 		"center torso",
 		"left torso",
@@ -1264,7 +1264,7 @@ void Turret::printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* ta
 
 	if (roll < chance) {
 		if (target) {
-			char* targetName = target->getName();
+			PSTR targetName = target->getName();
 			char s[1024];
 			sprintf(s, "[%.2f] turret.fireWeapon HIT: (%05d)%s @ (%05d)%s", scenarioTime, getPartId(), getName(), target->getPartId(), targetName ? targetName : "unknown");
 			CombatLog->write(s);
@@ -1283,7 +1283,7 @@ void Turret::printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* ta
 		}
 	else {
 		if (target) {
-			char* targetName = target->getName();
+			PSTR targetName = target->getName();
 			char s[1024];
 			sprintf(s, "[%.2f] turret.fireWeapon MISS: (%05d)%s @ (%05d)%s", scenarioTime, getPartId(), getName(), target->getPartId(), targetName ? targetName : "unknown");
 			CombatLog->write(s);
@@ -1309,7 +1309,7 @@ void Turret::printHandleWeaponHitDebugInfo (WeaponShotInfo* shotInfo) {
 	if (!CombatLog)
 		return;
 
-	static char* locationStrings [] = {
+	static PSTR locationStrings [] = {
 		"head",
 		"center torso",
 		"left torso",
@@ -1457,8 +1457,8 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 			//----------------------------------------------------
 			// Need to know which hotspot this comes from.
 			// Also need to know which hotspot this is going to.
-			unsigned long sourceHotSpot = currentWeaponNode;
-			unsigned long targetHotSpot = 0;
+			ULONG sourceHotSpot = currentWeaponNode;
+			ULONG targetHotSpot = 0;
 			WeaponShotInfo curShotInfo;
 
 			if (numMissiles > 0) {
@@ -1582,8 +1582,8 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 			if (!weaponFX)
 				Fatal(-1," couldnt create weapon FX ");
 
-			unsigned long sourceHotSpot = currentWeaponNode;
-			unsigned long targetHotSpot = 0;
+			ULONG sourceHotSpot = currentWeaponNode;
+			ULONG targetHotSpot = 0;
 
 			if (target) {
 				if (target->getObjectClass() == BATTLEMECH)
@@ -1635,7 +1635,7 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 					if (!weaponFX)
 						Fatal(-1," couldnt create weapon FX ");
 	
-					unsigned long sourceHotSpot = currentWeaponNode;
+					ULONG sourceHotSpot = currentWeaponNode;
 					WeaponShotInfo curShotInfo;
 	
 					curShotInfo.init(this->getWatchID(),
@@ -1800,7 +1800,7 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 					LogWeaponFireChunk(&chunk, this, target);
 				}
 
-				unsigned long sourceHotSpot = currentWeaponNode;
+				ULONG sourceHotSpot = currentWeaponNode;
 
 				if (canSeeHit)		//miss location is in LOS.  Hit the ground
 					weaponFX->connect(this,positionOffset,&shotInfo,sourceHotSpot);
@@ -1864,7 +1864,7 @@ long Turret::handleWeaponFire (long weaponIndex,
 					Fatal(-1," couldnt create weapon FX ");
 	
 				Assert(hitLocation != -2, 0, " Turret.handleWeaponFire: Bad Hit Location ");
-				unsigned long targetHotSpot = 0;
+				ULONG targetHotSpot = 0;
 				if (target && (target->getObjectClass() == BATTLEMECH))
 					targetHotSpot = ((BattleMechPtr)target)->body[hitLocation].hotSpotNumber;
 	
@@ -1900,7 +1900,7 @@ long Turret::handleWeaponFire (long weaponIndex,
 				Fatal(-1," couldnt create weapon FX ");
 
 			if (target) {
-				unsigned long targetHotSpot = 0;
+				ULONG targetHotSpot = 0;
 				if (target->getObjectClass() == BATTLEMECH)
 					targetHotSpot = ((BattleMechPtr)target)->body[hitLocation].hotSpotNumber;
 				weaponFX->connect(this, target, &shotInfo, 0, targetHotSpot);
@@ -2111,7 +2111,7 @@ void Turret::init (bool create, ObjectTypePtr _type) {
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 	// Need an MLR appearance class
-	char *appearName = _type->getAppearanceTypeName();
+	PSTR appearName = _type->getAppearanceTypeName();
 
 	//--------------------------------------------------------------
 	// New code!!!

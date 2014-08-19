@@ -68,7 +68,7 @@ class PauseWindow
 		long		buttonCount;
 		StaticInfo* statics;
 		long		staticCount;
-		GUI_RECT	backgrounds[2];
+		RECT	backgrounds[2];
 
 		float		finalReference;
 		float		currentPos;

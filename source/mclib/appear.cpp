@@ -64,7 +64,7 @@ void Appearance::operator delete (void * us)
 }		
 
 //---------------------------------------------------------------------------
-void Appearance::drawTextHelp (char *text, unsigned long color)
+void Appearance::drawTextHelp (PSTR text, ULONG color)
 {
 	DWORD width, height;
 	Stuff::Vector4D moveHere;
@@ -82,11 +82,11 @@ void Appearance::drawTextHelp (char *text, unsigned long color)
 	globalFloatHelp->setFloatHelp(text,moveHere,color,SD_BLACK,1.0f,true,false,false,false);
 }
 
-void Appearance::drawTextHelp( char* text )
+void Appearance::drawTextHelp( PSTR text )
 {
 	drawTextHelp( text, SD_GREEN );
 }
-void Appearance::drawPilotName(char *text, unsigned long color )
+void Appearance::drawPilotName(PSTR text, ULONG color )
 {
 	DWORD width, height;
 	Stuff::Vector4D moveHere;
@@ -431,9 +431,9 @@ void DrawBox(float l, float t, float r, float b)
 	}
 }
 
-void Appearance::drawIcon( unsigned long bmpHandle, unsigned long bmpWidth,
-						  unsigned long bmpHeight, unsigned long color, 
-						  unsigned long where )
+void Appearance::drawIcon( ULONG bmpHandle, ULONG bmpWidth,
+						  ULONG bmpHeight, ULONG color, 
+						  ULONG where )
 {
 	// ignoring where for now
 	float			offset = 8.0 * eye->getScaleFactor();

@@ -150,13 +150,13 @@ public:
 	virtual void		destroy();
 	virtual void		render();
 	virtual void		update();
-	virtual int			handleMessage( unsigned long message, unsigned long who );
+	virtual int			handleMessage( ULONG message, ULONG who );
 	virtual void	resize(long w, long h);
 
 	virtual long		AddItem(aListItem* itemString);
 	virtual long		InsertItem(aListItem* itemString, long where);
 	virtual long		RemoveItem( aListItem* itemString, bool bDelete );
-	long 				ChangeItemString(short itemNumber, char* newString);
+	long 				ChangeItemString(short itemNumber, PSTR newString);
 	long				GetSelectedItem(void) {return itemSelected;};
 	long				GetCheckedItem() const;
 	long				SelectItem(long itemNumber);
@@ -225,7 +225,7 @@ public:
 	void specialDestroy();
 	virtual void		render();
 	virtual void		update();
-	virtual int			handleMessage( unsigned long message, unsigned long who );
+	virtual int			handleMessage( ULONG message, ULONG who );
 	virtual bool		pointInside(long xPos, long yPos) const;
 	//virtual void	resize(long w, long h);
 
@@ -242,8 +242,8 @@ public:
 		rects[0].showGUIWindow( !bDisable );  rects[1].showGUIWindow( !bDisable );
 	}
 
-	long				AddItem( unsigned long textID, unsigned long color );
-	long				AddItem( PCSTR text, unsigned long color );
+	long				AddItem( ULONG textID, ULONG color );
+	long				AddItem( PCSTR text, ULONG color );
 	long				GetSelectedItem() const { return selectionIndex; }
 
 	aDropList& operator=( const aDropList& );
@@ -276,7 +276,7 @@ public:
 	virtual void	destroy();
 	virtual void		render();
 	virtual void		update();
-	virtual int			handleMessage( unsigned long message, unsigned long who );
+	virtual int			handleMessage( ULONG message, ULONG who );
 	virtual bool		pointInside(long xPos, long yPos) const;
 	//virtual void	resize(long w, long h);
 
@@ -284,8 +284,8 @@ public:
 	long				SelectItem(long item);
 
 	void				setReadOnly( bool bReadOnly ){ entry.setReadOnly( bReadOnly ); }
-	long				AddItem( unsigned long textID, unsigned long color );
-	long				AddItem( PCSTR text, unsigned long color );
+	long				AddItem( ULONG textID, ULONG color );
+	long				AddItem( PCSTR text, ULONG color );
 	long				GetSelectedItem() const { return selectionIndex; }
 
 

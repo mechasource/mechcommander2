@@ -80,8 +80,8 @@ int	numPrimitives	= 0;
 MLRState	currentState;
 
 // function type and argument declarations 
-static void loadMtl (char *fileName);
-static void useMtl (char *name);
+static void loadMtl (PSTR fileName);
+static void useMtl (PSTR name);
 
 #ifdef        FORGETFUL
 	static void forgetMaterials (void);
@@ -1043,7 +1043,7 @@ static void
 }
 
 static void
-	useMtl (char *name)
+	useMtl (PSTR name)
 {
 	int i;
 
@@ -1090,7 +1090,7 @@ static void
 // parse wafefront material file texture definition
  
 static void
-	parSetexture (char *next, objMaterial *m)
+	parSetexture (PSTR next, objMaterial *m)
 {
 	int                 width = 0;
 
@@ -1148,7 +1148,7 @@ static void
 // load a wavefront-format material file (".mtl")
  
 static void
-	loadMtl (char *fileName)
+	loadMtl (PSTR fileName)
 {
 	FILE        *mtlFile;
 	char         buffer[BUFFER_SIZE];

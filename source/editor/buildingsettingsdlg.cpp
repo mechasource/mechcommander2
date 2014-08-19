@@ -111,7 +111,7 @@ void BuildingSettingsDlg::applyChanges()
 		}
 	}
 
-	unsigned long base=0, color1=0, color2=0;
+	ULONG base=0, color1=0, color2=0;
 	bool bBase = false;
 	bool bColor1 = false; 
 	bool bColor2 = false;

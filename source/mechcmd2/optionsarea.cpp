@@ -220,7 +220,7 @@ void OptionsXScreen::init(FitIniFile* file)
 
 void OptionsXScreen::render()
 {
-	GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+	RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 	drawRect( rect, 0xff000000 );
 	rects[1].setColor( 0xff000000 );
 	rects[1].render();
@@ -241,7 +241,7 @@ void OptionsXScreen::render()
 	}
 }
 
-int	OptionsXScreen::handleMessage( unsigned long message, unsigned long who)
+int	OptionsXScreen::handleMessage( ULONG message, ULONG who)
 {
 	if ( aMSG_LEFTMOUSEDOWN == message )
 	{
@@ -440,7 +440,7 @@ void OptionsGraphics::init(long xOffset, long yOffset)
 
 		if (gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, i) >= minTextureRam)
 		{
-			char *deviceName = (char*)gos_GetMachineInformation( gos_Info_GetDeviceName, i);
+			PSTR deviceName = (PSTR)gos_GetMachineInformation( gos_Info_GetDeviceName, i);
 		
 			//Save name to other string here.
 			cardList.AddItem( deviceName, 0xffffffff );
@@ -483,7 +483,7 @@ void OptionsGraphics::init(long xOffset, long yOffset)
 	
 }
 
-int		OptionsGraphics::handleMessage( unsigned long message, unsigned long fromWho )
+int		OptionsGraphics::handleMessage( ULONG message, ULONG fromWho )
 {
 	if ( fromWho == MSG_RESET )
 		reset(originalSettings);
@@ -676,7 +676,7 @@ void OptionsAudio::init(long xOffset, long yOffset)
 	
 }
 
-int		OptionsAudio::handleMessage( unsigned long message, unsigned long fromWho )
+int		OptionsAudio::handleMessage( ULONG message, ULONG fromWho )
 {
 	if ( fromWho == MSG_RESET )
 		reset(originalSettings);
@@ -788,7 +788,7 @@ void OptionsGamePlay::init(long xOffset, long yOffset)
 	
 }
 
-int		OptionsGamePlay::handleMessage( unsigned long message, unsigned long fromWho )
+int		OptionsGamePlay::handleMessage( ULONG message, ULONG fromWho )
 {
 	if ( fromWho >= MSG_GREEN && fromWho < MSG_ELITE+1 )
 	{
@@ -830,7 +830,7 @@ void OptionsGamePlay::render()
 	{
 		if ( rects[i].getColor() == colorToMatch )
 		{
-			GUI_RECT tmp = { rects[i].globalX() - 2,
+			RECT tmp = { rects[i].globalX() - 2,
 							rects[i].globalY() - 2,
 							rects[i].globalRight() + 1,
 							rects[i].globalBottom() + 1 };
@@ -961,7 +961,7 @@ void OptionsHotKeys::init(long xOffset, long yOffset)
 	helpTextArrayID = 2;
 }
 
-int		OptionsHotKeys::handleMessage( unsigned long message, unsigned long fromWho )
+int		OptionsHotKeys::handleMessage( ULONG message, ULONG fromWho )
 {
 	switch( fromWho )
 	{
@@ -1102,7 +1102,7 @@ void OptionsHotKeys::update()
 	}
 }
 
-void OptionsHotKeys::makeKeyString( long newKey, char* keysString )
+void OptionsHotKeys::makeKeyString( long newKey, PSTR keysString )
 {
 	char shift[32];
 	char control[32];
@@ -1113,7 +1113,7 @@ void OptionsHotKeys::makeKeyString( long newKey, char* keysString )
 	cLoadString( IDS_ALT, alt, 31 );
 
 	long key = newKey;
-	char* pKey = gos_DescribeKey( (key & 0x000fffff) << 8 );
+	PSTR pKey = gos_DescribeKey( (key & 0x000fffff) << 8 );
 
 	if ( ((key & SHIFT)) )
 	{
@@ -1138,7 +1138,7 @@ void OptionsHotKeys::makeKeyString( long newKey, char* keysString )
 }
 
 
-int OptionsHotKeys::makeInputKeyString( long& tmpKey, char* hotKeyString )
+int OptionsHotKeys::makeInputKeyString( long& tmpKey, PSTR hotKeyString )
 {
 		PCSTR pText = gos_DescribeKey( tmpKey & 0x0001ff00 );
 
@@ -1410,7 +1410,7 @@ void ScrollX::update()
 	aObject::update();
 }
 
-int ScrollX::handleMessage( unsigned long message, unsigned long who )
+int ScrollX::handleMessage( ULONG message, ULONG who )
 {
 	switch (who )
 	{

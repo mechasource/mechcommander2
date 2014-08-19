@@ -38,7 +38,7 @@ class MainMenu;
 class Menu;
 
 // global resource handle
-extern unsigned long gameResourceHandle;
+extern ULONG gameResourceHandle;
 extern bool DebuggerActive;
 
 // ARM
@@ -303,7 +303,7 @@ private:
 	HACCEL						m_hAccelTable;
 
 	bool						rightDrag;
-	unsigned long				lastRightClickTime;
+	ULONG				lastRightClickTime;
 
 	HBITMAP m_hSplashBitMap;
 	HCURSOR m_hBusyCursor;
@@ -325,7 +325,7 @@ public:
 
 	void destroy (void);
 
-	void init( char* loader );
+	void init( PSTR loader );
 	
 	void render();
 	

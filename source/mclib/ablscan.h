@@ -123,7 +123,7 @@ typedef enum CharCodeType {
 } CharCodeType;
 
 typedef struct ReservedWord {
-	char*			string;
+	PSTR			string;
 	TokenCodeType	tokenCode;
 } ReservedWord;
 
@@ -151,7 +151,7 @@ typedef struct Literal {
 
 typedef struct CaseItem {
 	int					labelValue;
-	char*				branchLocation;
+	PSTR				branchLocation;
 	struct CaseItem*	next;
 } CaseItem;
 typedef CaseItem* CaseItemPtr;
@@ -162,11 +162,11 @@ class ABLFile {
 
     public:
 
-		char*		fileName;
+		PSTR		fileName;
 		void*		file;
 
-		static long (__stdcall *createCB)(void** file, char* fName);
-		static long (__stdcall *openCB)(void** file, char* fName);
+		static long (__stdcall *createCB)(void** file, PSTR fName);
+		static long (__stdcall *openCB)(void** file, PSTR fName);
 		static long (__stdcall *closeCB)(void** file);
 		static bool (__stdcall *eofCB)(void* file);
 		static long (__stdcall *readCB)(void* file, PUCHAR buffer, long length);
@@ -176,7 +176,7 @@ class ABLFile {
 		static long (__stdcall *writeCB)(void* file, PUCHAR buffer, long length);
 		static long (__stdcall *writeByteCB)(void* file, uint8_t byte);
 		static long (__stdcall *writeLongCB)(void* file, long value);
-		static long (__stdcall *writeStringCB)(void* file, char* buffer);
+		static long (__stdcall *writeStringCB)(void* file, PSTR buffer);
 
 	public:
 
@@ -207,8 +207,8 @@ class ABLFile {
 			return(file);
 		}
 
-		long create (char* fileName);
-		long open (char* fileName);
+		long create (PSTR fileName);
+		long open (PSTR fileName);
 		long close (void);
 		bool eof (void);
 		long read (PUCHAR buffer, long length);
@@ -218,7 +218,7 @@ class ABLFile {
 		long write (PUCHAR buffer, long length);
 		long writeByte (uint8_t val);
 		long writeLong (long val);
-		long writeString (char* buffer);
+		long writeString (PSTR buffer);
 };
 
 //***************************************************************************
@@ -228,7 +228,7 @@ class ABLFile {
 
 inline CharCodeType __stdcall calcCharCode(long ch);
 long __stdcall isReservedWord(void);
-void __stdcall initScanner(char* fileName);
+void __stdcall initScanner(PSTR fileName);
 void __stdcall quitScanner(void);
 void __stdcall skipComment(void);
 void __stdcall skipBlanks(void);
@@ -244,8 +244,8 @@ void __stdcall getSpecial(void);
 bool __stdcall tokenIn (TokenCodeType* tokenList);
 void __stdcall synchronize(TokenCodeType* tokenList1, TokenCodeType* tokenList2, TokenCodeType* tokenList3);
 bool __stdcall getSourceLine(void);
-void __stdcall printLine (char* line);
-void __stdcall initPageHeader(char* fileName);
+void __stdcall printLine (PSTR line);
+void __stdcall initPageHeader(PSTR fileName);
 void __stdcall printPageHeader(void);
 
 //----------
@@ -260,11 +260,11 @@ extern void		(__stdcall *ABLSystemFreeCallback) (void* memBlock);
 extern void		(__stdcall *ABLStackFreeCallback) (void* memBlock);
 extern void		(__stdcall *ABLCodeFreeCallback) (void* memBlock);
 extern void		(__stdcall *ABLSymbolFreeCallback) (void* memBlock);
-extern void		(__stdcall *ABLDebugPrintCallback) (char* s);
+extern void		(__stdcall *ABLDebugPrintCallback) (PSTR s);
 extern long		(__stdcall *ABLRandomCallback) (long range);
 extern void		(__stdcall *ABLSeedRandomCallback) (size_t range);
 extern size_t	(__stdcall *ABLGetTimeCallback) (void);
-extern void		(__stdcall *ABLFatalCallback) (long code, char* s);
+extern void		(__stdcall *ABLFatalCallback) (long code, PSTR s);
 
 //***************************************************************************
 	

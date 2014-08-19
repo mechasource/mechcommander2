@@ -89,7 +89,7 @@ class aEdit: public aObject
 
 		int getFont() { return font.getFontID(); }
 
-		void initBufferSize( unsigned long newSize );
+		void initBufferSize( ULONG newSize );
 		void setBufferSize( int newSize ) { text.SetBufferSize( newSize ); }
 
 		void	allowIME( bool bAllow ){ bAllowIME = bAllow; }
@@ -130,7 +130,7 @@ class aEdit: public aObject
 		EString	text;
 		aFont	font;
 		bool	bFocus;
-		unsigned long dwStyleFlags;
+		ULONG dwStyleFlags;
 		bool	bAllowIME;
 		bool	bWierdChars;
 

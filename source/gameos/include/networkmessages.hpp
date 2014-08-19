@@ -195,7 +195,7 @@ public:
 class FIPlayerIDMessage:public FIGuaranteedMessageHeader
 {
 public:
-	unsigned long playerID[MAXPLAYERS];
+	ULONG playerID[MAXPLAYERS];
 	BYTE serverIndex;
 
 	FIPlayerIDMessage():FIGuaranteedMessageHeader()
@@ -203,7 +203,7 @@ public:
 		SetType(FIDP_MSG_PLAYERID);
 	}
 
-	int GetPlayerNumber(unsigned long player_id)
+	int GetPlayerNumber(ULONG player_id)
 	{
 		int i;
 		for(i=0;i<MAXPLAYERS;i++)
@@ -268,13 +268,13 @@ public:
 class FIDPMessage:public NetworkMessageContainer, public ListItem
 {
 public:
-	unsigned long	time;
-	unsigned long	bufferSize;
+	ULONG	time;
+	ULONG	bufferSize;
 
 	// originalTime is the time at which this message was originally
 	// sent.  It differs from "time" which is the time which this message
 	// was last resent.
-	unsigned long	originalTime;
+	ULONG	originalTime;
 
 	// isResend is set to true when this message is sent for the second time.
 	BOOL			isResend;

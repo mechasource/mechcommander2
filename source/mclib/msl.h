@@ -491,7 +491,7 @@ class TG_MultiShape
 		void StopUsing (PSTR nodeName);
 		
  		// Tells me if the passed in nodeName is a child of the parentName.
-		bool isChildOf (PSTR nodeName, char* parentName);
+		bool isChildOf (PSTR nodeName, PSTR parentName);
 		
 		PSTR GetNodeId (long shapeNum)
 		{

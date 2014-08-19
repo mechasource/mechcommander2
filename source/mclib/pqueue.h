@@ -19,7 +19,7 @@
 
 typedef struct _PQNode {
 	long			key;			// sort value
-	unsigned long	id;				// hash value for this map position
+	ULONG	id;				// hash value for this map position
 	long			row;			// HB-specific
 	long			col;			// HB-specific
 } PQNode;

@@ -45,7 +45,7 @@ class Mechlopedia : public LogisticsScreen
 		virtual ~Mechlopedia();
 
 		int init();
-		virtual int			handleMessage( unsigned long, unsigned long );
+		virtual int			handleMessage( ULONG, ULONG );
 		virtual void		update();
 		virtual void		render();
 		virtual void		begin();

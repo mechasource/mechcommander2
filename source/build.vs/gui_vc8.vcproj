@@ -495,10 +495,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\gui\asystem.h"
-					>
-				</File>
-				<File
 					RelativePath="..\gui\logisticsscreen.h"
 					>
 				</File>
@@ -514,6 +510,14 @@
 					RelativePath="..\include\mechtypes.h"
 					>
 				</File>
+				<Filter
+					Name="gui"
+					>
+					<File
+						RelativePath="..\include\gui\asystem.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

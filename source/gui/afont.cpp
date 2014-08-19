@@ -23,7 +23,7 @@ long aFont::init( PCSTR newFontName )
 	strcpy( fontName, newFontName );
 	char path[256];
 
-	char* pStr = strstr( fontName, "," );
+	PSTR pStr = strstr( fontName, "," );
 	if ( pStr )
 	{
 		size = atoi( pStr + 1 );
@@ -63,15 +63,15 @@ aFont::~aFont()
 
 
 
-unsigned long aFont::height( ) const
+ULONG aFont::height( ) const
 {
-	unsigned long width, height;
+	ULONG width, height;
 	gos_TextSetAttributes (gosFont, 0, size, false, true, false, false);
 	gos_TextStringLength(&width,&height,"ABCDE");
 	return height;
 }
 
-void	aFont::getSize( unsigned long& width, unsigned long& height, PCSTR pText )
+void	aFont::getSize( ULONG& width, ULONG& height, PCSTR pText )
 {
 	gos_TextSetAttributes (gosFont, 0, size, false, true, false, false);
 	gos_TextStringLength(&width,&height,pText);
@@ -79,27 +79,27 @@ void	aFont::getSize( unsigned long& width, unsigned long& height, PCSTR pText )
 }
 
 
-unsigned long aFont::height( PCSTR st, int areaWidth ) const
+ULONG aFont::height( PCSTR st, int areaWidth ) const
 {
-	unsigned long width, height;
+	ULONG width, height;
 	gos_TextSetAttributes (gosFont, 0, size, false, true, false, false);
 	gos_TextSetRegion( 0, 0, areaWidth, Environment.screenHeight );
 	gos_TextStringLength(&width,&height,st);
 
-	unsigned long lineCount = 1;
+	ULONG lineCount = 1;
 
 	if ( width > areaWidth - 1 )
 	{
-		unsigned long curLineWidth = 0;
+		ULONG curLineWidth = 0;
 
 		gosASSERT( strlen( st) < 2048 );
 
 		
 		char pLine[2048]; // should be more than adequate
 
-		char* pLastWord = (char*)st;
-		char* pTmp = (char*)st;
-		char* pTmpLine = (char*)pLine;
+		PSTR pLastWord = (PSTR)st;
+		PSTR pTmp = (PSTR)st;
+		PSTR pTmpLine = (PSTR)pLine;
 
 		int numberOfWordsPerLine = 0;
 
@@ -187,8 +187,8 @@ unsigned long aFont::height( PCSTR st, int areaWidth ) const
 				*(pTmpLine+1) = *(pTmp+1);
 			}
 
-			pTmpLine = (char*)_mbsinc( (PUCHAR)pTmpLine );
-			pTmp = (char*)_mbsinc( (PUCHAR)pTmp );
+			pTmpLine = (PSTR)_mbsinc( (PUCHAR)pTmpLine );
+			pTmp = (PSTR)_mbsinc( (PUCHAR)pTmp );
 		}
 
 		// one last check
@@ -208,9 +208,9 @@ unsigned long aFont::height( PCSTR st, int areaWidth ) const
 	return (height) * lineCount ;
 }
 
-unsigned long aFont::width( PCSTR st ) const
+ULONG aFont::width( PCSTR st ) const
 {
-	unsigned long width, height;
+	ULONG width, height;
 	gos_TextSetAttributes (gosFont, 0, size, false, true, false, false);
 	gos_TextStringLength(&width,&height,st);
 	return width;
@@ -235,7 +235,7 @@ void aFont::destroy()
 }
 
 void aFont::render( PCSTR text, int xPos, int yPos, int areaWidth, int areaHeight, 
-				   unsigned long color, bool bBold, int alignment )
+				   ULONG color, bool bBold, int alignment )
 {
 	gos_TextSetAttributes( gosFont, color, size, true, true, bBold, false, alignment );
 	
@@ -243,7 +243,7 @@ void aFont::render( PCSTR text, int xPos, int yPos, int areaWidth, int areaHeigh
 	{
 		if ( alignment == 1 )
 		{
-			unsigned long width, height;
+			ULONG width, height;
 			gos_TextStringLength( &width, &height, text );
 			xPos -= width;
 			areaWidth = width + 1;
@@ -256,7 +256,7 @@ void aFont::render( PCSTR text, int xPos, int yPos, int areaWidth, int areaHeigh
 	{
 		if ( alignment == 3  ) // bottom
 		{
-			unsigned long width, height;
+			ULONG width, height;
 			gos_TextStringLength( &width, &height, text );
 			yPos -= height;
 			areaHeight = height + 1;
@@ -279,7 +279,7 @@ HGOSFONT3D aFont::loadFont( long resourceID, long& size )
 	char buffer[256];
 	cLoadString( resourceID, buffer, 255 );
 
-	char* pStr = strstr( buffer, "," );
+	PSTR pStr = strstr( buffer, "," );
 	if ( pStr )
 	{
 		size = -atoi( pStr + 1 );

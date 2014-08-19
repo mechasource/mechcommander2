@@ -55,7 +55,7 @@ void SoundSystem::destroy (void)
 }
 
 //---------------------------------------------------------------------------
-long SoundSystem::init (char *soundFileName)
+long SoundSystem::init (PSTR soundFileName)
 {
 	if (useSound)
 	{
@@ -172,7 +172,7 @@ long SoundSystem::init (char *soundFileName)
 		result = soundFile.readIdULong("StreamChannels",digitalStreamChannels);
 		gosASSERT(result == NO_ERR);
 
-		digitalMusicIds = (char **)soundHeap->Malloc(sizeof(char *) * numDMS);
+		digitalMusicIds = (PSTR *)soundHeap->Malloc(sizeof(PSTR ) * numDMS);
 		gosASSERT(digitalMusicIds != NULL);
 			
 		digitalMusicLoopFlags = (bool *)soundHeap->Malloc(sizeof(bool)*numDMS);
@@ -191,7 +191,7 @@ long SoundSystem::init (char *soundFileName)
 			char digitalMSVId[25];
 			sprintf(digitalMSVId,"DMSVolume%d",i);
 			
-			digitalMusicIds[i] = (char *)soundHeap->Malloc(30);
+			digitalMusicIds[i] = (PSTR )soundHeap->Malloc(30);
 			result = soundFile.readIdString(digitalMSId,digitalMusicIds[i],29);
 			gosASSERT(result == NO_ERR);
 			
@@ -343,7 +343,7 @@ void SoundSystem::preloadSoundBite (long soundId)
 	// If there is a packet in this spot, load it.
 	// First, check if there is enough room in the sound heap
 	// and if not, free up any samples whose cache status says dump.
-	unsigned long packetSize = soundDataFile->getPacketSize();
+	ULONG packetSize = soundDataFile->getPacketSize();
 	if (packetSize > 0)
 	{
 		SoundBite *thisSoundBite = (SoundBite *)(&(sounds[soundId]));
@@ -813,7 +813,7 @@ long SoundSystem::playDigitalStream (PCSTR streamName)
 }
 
 //---------------------------------------------------------------------------
-long SoundSystem::playBettySample (unsigned long bettySampleId)
+long SoundSystem::playBettySample (ULONG bettySampleId)
 {
 	if (useSound && (bettySoundBite == NULL))	//Playing Betty takes precedence
 	{
@@ -872,7 +872,7 @@ long SoundSystem::playBettySample (unsigned long bettySampleId)
 }
 
 //---------------------------------------------------------------------------
-long SoundSystem::playSupportSample (unsigned long supportSampleId, char* fileName)
+long SoundSystem::playSupportSample (ULONG supportSampleId, PSTR fileName)
 {
 	if (useSound && (supportSoundBite == NULL))		//Playing Support takes precedence
 	{
@@ -1003,7 +1003,7 @@ long SoundSystem::findOpenChannel (long start, long end)
 }	
 
 //---------------------------------------------------------------------------
-long SoundSystem::playDigitalSample (unsigned long sampleId, Stuff::Vector3D pos, bool allowDupes)
+long SoundSystem::playDigitalSample (ULONG sampleId, Stuff::Vector3D pos, bool allowDupes)
 {
 	if (useSound && allowDupes || (!isPlayingSample(sampleId) && !allowDupes))
 	{
@@ -1061,7 +1061,7 @@ long SoundSystem::playDigitalSample (unsigned long sampleId, Stuff::Vector3D pos
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::stopDigitalSample (unsigned long sampleHandleNumber)
+void SoundSystem::stopDigitalSample (ULONG sampleHandleNumber)
 {
 	if (useSound)
 	{

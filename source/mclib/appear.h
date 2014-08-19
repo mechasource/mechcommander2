@@ -174,10 +174,10 @@ class Appearance
 
 		virtual void drawBars (void);
 
-		void drawTextHelp (char *text);
-		void drawTextHelp (char *text, size_t color);
+		void drawTextHelp (PSTR text);
+		void drawTextHelp (PSTR text, size_t color);
 
-		void drawPilotName(char *text, size_t color ); // next line below drawTextHelp
+		void drawPilotName(PSTR text, size_t color ); // next line below drawTextHelp
 
 		
 		virtual bool recalcBounds (void)

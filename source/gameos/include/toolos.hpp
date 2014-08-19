@@ -70,12 +70,12 @@ DWORD __stdcall gos_LZDecompress( PUCHAR dest, PUCHAR src, DWORD srcLen );
 //
 // Gets a pointer to text data in the windows clip board (NULL=No text)
 //
-DWORD __stdcall gos_GetClipboardText( char* Buffer, DWORD BufferSize );
+DWORD __stdcall gos_GetClipboardText( PSTR Buffer, DWORD BufferSize );
 
 //
 // Sets the windows clipboard to the current text string
 //
-void __stdcall gos_SetClipboardText( char* Text );
+void __stdcall gos_SetClipboardText( PSTR Text );
 
 
 
@@ -86,23 +86,23 @@ void __stdcall gos_SetClipboardText( char* Text );
 //
 // Returns the length of the string
 //
-DWORD __stdcall gos_GetValidDrives( char* Buffer, DWORD buf_len );
+DWORD __stdcall gos_GetValidDrives( PSTR Buffer, DWORD buf_len );
 
 //
 // Returns the drive label for a root directory specified. eg:  "c:\" might return "DriveC"
 //
-bool __stdcall gos_GetDriveLabel( PCSTR RootName, char* DriveLabel, DWORD DriveLabelBufferLen );
+bool __stdcall gos_GetDriveLabel( PCSTR RootName, PSTR DriveLabel, DWORD DriveLabelBufferLen );
 
 //
 // Get the space available on the drive specified, either "x:" or "x:\"
 //
-__int64 __stdcall gos_GetDriveFreeSpace( char* Path );
+__int64 __stdcall gos_GetDriveFreeSpace( PSTR Path );
 
 
 //
 // Gets the current path
 //
-void __stdcall gos_GetCurrentPath( char* Buffer,int buf_len );
+void __stdcall gos_GetCurrentPath( PSTR Buffer,int buf_len );
 
 
 //
@@ -126,11 +126,11 @@ bool __stdcall gos_DeleteFile( PCSTR FileName );
 //
 // Find files matching pattern - returns NULL when no more files (Can be used too see if a directory is empty : ie: 0==gos_FindFiles( "\\graphics\\*.*" )
 //
-char* __stdcall gos_FindFiles( PCSTR PathFileName );
+PSTR __stdcall gos_FindFiles( PCSTR PathFileName );
 //
 // Continues the previous gos_FindFiles
 //
-char* __stdcall gos_FindFilesNext();
+PSTR __stdcall gos_FindFilesNext();
 //
 // Stop the previous gos_FindFiles
 //
@@ -139,11 +139,11 @@ void __stdcall gos_FindFilesClose();
 //
 // Find directories matching pattern - returns NULL when no more directories
 //
-char* __stdcall gos_FindDirectories( PCSTR DirectoryName );
+PSTR __stdcall gos_FindDirectories( PCSTR DirectoryName );
 //
 // Continues the previous gos_FindDirectoriesNext
 //
-char* __stdcall gos_FindDirectoriesNext();
+PSTR __stdcall gos_FindDirectoriesNext();
 //
 // Stop the previous gos_FindDirectories
 //
@@ -152,7 +152,7 @@ void __stdcall gos_FindDirectoriesClose();
 //
 // Return full path name of file - FullPath should point to a 256 byte buffer
 //
-void __stdcall gos_GetFullPathName( char* FullPath, PCSTR FileName );
+void __stdcall gos_GetFullPathName( PSTR FullPath, PCSTR FileName );
 
 //
 // Get file size information (-1 if error)
@@ -169,7 +169,7 @@ __int64 __stdcall gos_GetTimeDate();
 //
 // Returns an ASCII time/date string from a file time
 //
-char* __stdcall gos_FileTimeString( __int64 Time );
+PSTR __stdcall gos_FileTimeString( __int64 Time );
 
 //
 // Get file read only attribute information

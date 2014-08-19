@@ -342,7 +342,7 @@ void aEdit::render()
 		if (nXSelEnd > globalX() + width())
 			nXSelEnd = globalX() + width();
 	
-		GUI_RECT rect = { (int)nXSelStart, 
+		RECT rect = { (int)nXSelStart, 
 						 (int)globalY(), 
 						 (int)nXSelEnd,
 						 (int)(globalY() + height()) };

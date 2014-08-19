@@ -162,7 +162,7 @@ class MoveChunk {
 		long				numSteps;
 		bool				run;
 		bool				moving;
-		unsigned long		data;
+		ULONG		data;
 		static long			err;
 
 	public:
@@ -526,7 +526,7 @@ class StatusChunk {
 
 	public:
 
-		unsigned long		bodyState;
+		ULONG		bodyState;
 		char				targetType;
 		long				targetId;
 		long				targetBlockOrTrainNumber;
@@ -536,7 +536,7 @@ class StatusChunk {
 		bool				ejectOrderGiven;
 		bool				jumpOrder;
 
-		unsigned long		data;
+		ULONG		data;
 
 	public:
 
@@ -870,7 +870,7 @@ class Mover : public GameObject {
 		bool				newMoveChunk;					// set if last movechunk not yet processed
 		MoveChunk			moveChunk;						// last move chunk built/received
 		long				numWeaponFireChunks[2];
-		unsigned long		weaponFireChunks[2][MAX_WEAPONFIRE_CHUNKS];
+		ULONG		weaponFireChunks[2][MAX_WEAPONFIRE_CHUNKS];
 		long				numCriticalHitChunks[2];
 		uint8_t		criticalHitChunks[2][MAX_CRITICALHIT_CHUNKS];
 		long				numRadioChunks[2];
@@ -940,7 +940,7 @@ class Mover : public GameObject {
 		static char			rangedCells[RANGED_CELLS_DIM][2];
 		static long			IndirectFireWeapons[20];
 		static long			AreaEffectWeapons[20];
-		static unsigned long holdFireIconHandle;
+		static ULONG holdFireIconHandle;
 		
 		static TriggerAreaManager* triggerAreaMgr;
 
@@ -991,11 +991,11 @@ class Mover : public GameObject {
 
 		virtual void updateDebugWindow (GameDebugWindow* debugWindow);
 
-		virtual char* getName (void) {
+		virtual PSTR getName (void) {
 			return(name);
 		}
 
-		virtual void setName (char* s) {
+		virtual void setName (PSTR s) {
 			strncpy(name, s, MAXLEN_MOVER_NAME);
 		}
 
@@ -1097,7 +1097,7 @@ class Mover : public GameObject {
 //			frame = newFrame;
 //		}
 		
-		virtual Stuff::Vector3D relativePosition (float angle, float radius, unsigned long flags);
+		virtual Stuff::Vector3D relativePosition (float angle, float radius, ULONG flags);
 
 		long calcLineOfSightView (long range);
 		
@@ -1137,7 +1137,7 @@ class Mover : public GameObject {
 
 		virtual void reduceAntiMissileAmmo (long numAntiMissiles);
 
-		virtual void pilotingCheck (unsigned long situation = 0, float modifier = 0.0);
+		virtual void pilotingCheck (ULONG situation = 0, float modifier = 0.0);
 
 		virtual void forcePilotingCheck (void) {
 			if (pilotCheckModifier < 0)
@@ -1198,7 +1198,7 @@ class Mover : public GameObject {
 		virtual long bounceToAdjCell (void);
 
 #ifdef USE_MOVERCONTROLS
-		unsigned long getControlClass (void) {
+		ULONG getControlClass (void) {
 			return(control->getControlClass());
 		}
 #endif
@@ -1235,7 +1235,7 @@ class Mover : public GameObject {
 
 		virtual void setPilotHandle (long _pilotHandle);
 
-		virtual void loadPilot (char* pilotFileName, char* brainFileName, LogisticsPilot *lPilot);
+		virtual void loadPilot (PSTR pilotFileName, PSTR brainFileName, LogisticsPilot *lPilot);
 
 		virtual void setCommanderId (long _commanderId);
 
@@ -1308,9 +1308,9 @@ class Mover : public GameObject {
 
 		long addWeaponFireChunk (long which, WeaponFireChunkPtr chunk);
 
-		long addWeaponFireChunks (long which, unsigned long* packedChunkBuffer, long numChunks);
+		long addWeaponFireChunks (long which, ULONG* packedChunkBuffer, long numChunks);
 
-		long grabWeaponFireChunks (long which, unsigned long* packedChunkBuffer, long maxChunks);
+		long grabWeaponFireChunks (long which, ULONG* packedChunkBuffer, long maxChunks);
 
 		virtual long updateWeaponFireChunks (long which);
 
@@ -1350,7 +1350,7 @@ class Mover : public GameObject {
 			return(NO_ERR);
 		}
 
-		virtual long handleStatusChunk (long updateAge, unsigned long chunk) {
+		virtual long handleStatusChunk (long updateAge, ULONG chunk) {
 			return(NO_ERR);
 		}
 
@@ -1362,7 +1362,7 @@ class Mover : public GameObject {
 			return(NO_ERR);
 		}
 
-		virtual long handleMoveChunk (unsigned long chunk) {
+		virtual long handleMoveChunk (ULONG chunk) {
 			return(NO_ERR);
 		}
 
@@ -1378,7 +1378,7 @@ class Mover : public GameObject {
 			fieldedCV = CV;
 		}
 
-		unsigned long getFieldedCV (void) {
+		ULONG getFieldedCV (void) {
 			return(fieldedCV);
 		}
 
@@ -1449,9 +1449,9 @@ class Mover : public GameObject {
 			sensorSystem.addContact(contact);
 		}
 */
-		long scanContact (long contactType, unsigned long contactHandle);
+		long scanContact (long contactType, ULONG contactHandle);
 
-		long analyzeContact (long contactType, unsigned long contactHandle);
+		long analyzeContact (long contactType, ULONG contactHandle);
 
 		long scanBattlefield (long quadrant, long contactType, long potentialContactType);
 
@@ -1467,7 +1467,7 @@ class Mover : public GameObject {
 						  Stuff::Vector3D& newGoal,
 						  long numValidAreas,
 						  short* validAreas,
-						  unsigned long moveParams);
+						  ULONG moveParams);
 								   
 
 		virtual long calcMovePath (MovePathPtr path,
@@ -1475,13 +1475,13 @@ class Mover : public GameObject {
 								   Stuff::Vector3D start,
 								   Stuff::Vector3D goal,
 								   long* goalCell,
-								   unsigned long moveParams = MOVEPARAM_NONE);
+								   ULONG moveParams = MOVEPARAM_NONE);
 
 		virtual long calcEscapePath (MovePathPtr path,
 									 Stuff::Vector3D start,
 									 Stuff::Vector3D goal,
 									 long* goalCell,
-									 unsigned long moveParams,
+									 ULONG moveParams,
 									 Stuff::Vector3D& escapeGoal);
 
 		virtual long calcMovePath (MovePathPtr path,
@@ -1491,7 +1491,7 @@ class Mover : public GameObject {
 								   Stuff::Vector3D finalGoal,
 								   Stuff::Vector3D* goalWorldPos,
 								   long* goalCell,
-								   unsigned long moveParams = MOVEPARAM_NONE);
+								   ULONG moveParams = MOVEPARAM_NONE);
 
 		virtual float weaponLocked (long weaponIndex, Stuff::Vector3D targetPosition);
 
@@ -1585,7 +1585,7 @@ class Mover : public GameObject {
 			return(inventory[itemIndex].disabled);
 		}
 
-		virtual void disable (unsigned long cause);
+		virtual void disable (ULONG cause);
 
 		virtual void shutDown (void);
 		
@@ -1687,7 +1687,7 @@ class Mover : public GameObject {
 			return(0.0);
 		}
 
-		virtual long calcSpriteSpeed (float speed, unsigned long flags, long& state, long& throttle) {
+		virtual long calcSpriteSpeed (float speed, ULONG flags, long& state, long& throttle) {
 			state = 0;
 			throttle = 100;
 			return(-1);
@@ -1718,7 +1718,7 @@ class Mover : public GameObject {
 
 		bool enemyRevealed (void);
 
-		virtual char* getIfaceName(void) {
+		virtual PSTR getIfaceName(void) {
 			return ("No Name");
 		}
 
@@ -1792,9 +1792,9 @@ typedef struct _MoverInitData {
 	char			csvFileName[50];
 	long			objNumber;
 	long			rosterIndex;
-	unsigned long	controlType;
-	unsigned long	controlDataType;
-	unsigned long	variant;
+	ULONG	controlType;
+	ULONG	controlDataType;
+	ULONG	variant;
 	Stuff::Vector3D	position;
 	long			rotation;
 	char			teamID;

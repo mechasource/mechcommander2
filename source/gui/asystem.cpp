@@ -124,7 +124,7 @@ void aObject::init(FitIniFile* file, PCSTR blockName, DWORD neverFlush)
 				strcat( buffer, ".tga" );
 			int ID = mcTextureManager->loadTexture( buffer, bAlpha ? gos_Texture_Alpha : gos_Texture_Keyed, 0, 0, 0x2);
 			textureHandle = ID;
-			unsigned long gosID = mcTextureManager->get_gosTextureHandle( ID );
+			ULONG gosID = mcTextureManager->get_gosTextureHandle( ID );
 			TEXTUREPTR textureData;
 			gos_LockTexture( gosID, 0, 0, 	&textureData );
 			fileWidth = textureData.Width;
@@ -221,7 +221,7 @@ bool aObject::rectIntersect(long left, long top, long right, long bottom) const
 		return (FALSE);
 }
 
-bool aObject::rectIntersect(const GUI_RECT& testRect) const
+bool aObject::rectIntersect(const RECT& testRect) const
 {
 	if ((testRect.right > location[0].x) && (testRect.left < location[0].y) &&
 		(testRect.bottom > location[2].y) && (testRect.top < location[2].y))
@@ -418,7 +418,7 @@ void aObject::render()
 {
 	if ( showWindow )
 	{
-		unsigned long gosID = mcTextureManager->get_gosTextureHandle( textureHandle );	
+		ULONG gosID = mcTextureManager->get_gosTextureHandle( textureHandle );	
 		gos_SetRenderState( gos_State_Texture, gosID );
 		gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 		gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha );
@@ -465,7 +465,7 @@ void	aObject::setTexture( PCSTR fileName )
 
 }
 
-void	aObject::setTexture(unsigned long newHandle )
+void	aObject::setTexture(ULONG newHandle )
 {
 	//Gotta check handle.  If its the same as the new one,
 	// We don't gotta delete the old one.  The texture manager already did!!
@@ -492,7 +492,7 @@ void	aObject::setTexture(unsigned long newHandle )
 }
 
 
-void aObject::setColor( unsigned long newColor, bool bRecurse )
+void aObject::setColor( ULONG newColor, bool bRecurse )
 {
 	for ( int i = 0; i < 4; i++ )
 	{
@@ -584,8 +584,8 @@ void aRect::render()
 
 void aRect::render( long x, long y )
 {
-	//GUI_RECT tmpRect = getGUI_RECT();
-	GUI_RECT tmpRect = getGlobalGUI_RECT();
+	//RECT tmpRect = getGUI_RECT();
+	RECT tmpRect = getGlobalGUI_RECT();
 	tmpRect.left += x;
 	tmpRect.right += x;
 	tmpRect.top += y;
@@ -636,9 +636,9 @@ void aRect::init( FitIniFile* file, PCSTR blockName )
 	file->readIdLong( "HelpDesc", helpID );
 }
 
-GUI_RECT aRect::getGUI_RECT()
+RECT aRect::getGUI_RECT()
 {
-	GUI_RECT rect;
+	RECT rect;
 	rect.left = left();
 	rect.right = right();
 	rect.top = top();
@@ -655,9 +655,9 @@ GUI_RECT aRect::getGUI_RECT()
 	return rect;
 }
 
-GUI_RECT aRect::getGlobalGUI_RECT()
+RECT aRect::getGlobalGUI_RECT()
 {
-	GUI_RECT rect;
+	RECT rect;
 	rect.left = globalLeft();
 	rect.right = globalRight();
 	rect.top = globalTop();

@@ -148,7 +148,7 @@ void MissionSelectionScreen::update()
 	long mouseX = userInput->getMouseX();
 	long mouseY = userInput->getMouseY();
 
-	unsigned long highlightColor = 0;
+	ULONG highlightColor = 0;
 
 	for ( int i = 0; i < operationScreen.buttonCount; i++ )
 	{
@@ -333,7 +333,7 @@ void MissionSelectionScreen::end()
 	beginFadeOut( 0 );
 }
 
-int MissionSelectionScreen::handleMessage( unsigned long msg, unsigned long who )
+int MissionSelectionScreen::handleMessage( ULONG msg, ULONG who )
 {
 	if ( who >= MSG_FIRST_MISSION && who < MSG_FIRST_MISSION + MAX_MISSIONS_IN_GROUP )
 	{

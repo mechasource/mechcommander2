@@ -114,7 +114,7 @@ void Mission::initBareMinimum()
 
 	//----------------------------------------------
 	// Start Appearance Type Lists.
-	unsigned long spriteHeapSize = 3072000;
+	ULONG spriteHeapSize = 3072000;
 	if ( !appearanceTypeList )
 	{
 		appearanceTypeList = new AppearanceTypeList;
@@ -219,7 +219,7 @@ void Mission::initializeStatistics()
 void Mission::initTGLForLogistics()
 {
 	//---------------------------------------------------------
-	unsigned long tglHeapSize = 4 * 1024 * 1024;
+	ULONG tglHeapSize = 4 * 1024 * 1024;
 
 	//---------------------------------------------------------
 	//Reset the lightening in case they exitted with a flash on screen!!

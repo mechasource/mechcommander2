@@ -32,7 +32,7 @@ TGAFileHeader* ForceGroupIcon::s_textureMemory = 0;
 StaticInfo*		ForceGroupIcon::jumpJetIcon = NULL;
 
 MC2MoviePtr	ForceGroupIcon::bMovie = NULL;
-unsigned long	ForceGroupIcon::pilotVideoTexture = 0;
+ULONG	ForceGroupIcon::pilotVideoTexture = 0;
 MechWarrior*	ForceGroupIcon::pilotVideoPilot = NULL;
 
 
@@ -47,8 +47,8 @@ float			PilotIcon::pilotIconX = 25;
 float			PilotIcon::pilotIconY = 36;
 const long		PilotIcon::DEAD_PILOT_INDEX = 27;
 
-unsigned long	PilotIcon::s_pilotTextureHandle = 0;
-unsigned long	PilotIcon::s_pilotTextureWidth = 0;
+ULONG	PilotIcon::s_pilotTextureHandle = 0;
+ULONG	PilotIcon::s_pilotTextureWidth = 0;
 long			ForceGroupIcon::pilotTextTop[17] = {0};
 
 
@@ -85,15 +85,15 @@ ForceGroupIcon::AnimationInfo ForceGroupIcon::animationInfos[NUM_DEATH_INFOS] =
 
 };
 
-unsigned long	ForceGroupIcon::s_textureHandle[5] = { -1, -1, -1, -1, -1 };
+ULONG	ForceGroupIcon::s_textureHandle[5] = { -1, -1, -1, -1, -1 };
 bool			ForceGroupIcon::s_slotUsed[240] = { 0 };
 
 gos_VERTEX ForceGroupIcon::	bmpLocation[17][5]  = {0}; // in screen coords
 
-GUI_RECT ForceGroupIcon:: textArea[17]  = {0};
-GUI_RECT ForceGroupIcon:: pilotRect[17]  = {0};
-GUI_RECT ForceGroupIcon:: selectionRect[17]  = {0};
-GUI_RECT ForceGroupIcon:: healthBar[17]  = {0};
+RECT ForceGroupIcon:: textArea[17]  = {0};
+RECT ForceGroupIcon:: pilotRect[17]  = {0};
+RECT ForceGroupIcon:: selectionRect[17]  = {0};
+RECT ForceGroupIcon:: healthBar[17]  = {0};
 
 float ForceGroupIcon::	pilotLocation[17][4]  = {0};
 
@@ -342,9 +342,9 @@ void MechIcon::setDrawBack( bool bSet)
 	gos_LockTexture( s_textureHandle[textureIndex], 0, 0, &textureData );
 
 
-	unsigned long* pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
-	char* pTmp = (char*)s_MechTextures + sizeof ( TGAFileHeader );
-	unsigned long* pSrcRow = (unsigned long*)pTmp;
+	ULONG* pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
+	PSTR pTmp = (PSTR)s_MechTextures + sizeof ( TGAFileHeader );
+	ULONG* pSrcRow = (ULONG*)pTmp;
 
 	long whichMech = unit->getIconPictureIndex();
 
@@ -355,7 +355,7 @@ void MechIcon::setDrawBack( bool bSet)
 
 	pSrcRow += tmpOffset;
 
-	unsigned long* pSrcData = pSrcRow;
+	ULONG* pSrcData = pSrcRow;
 
 	for( int j = 0; j < unitIconY; ++j )
 	{
@@ -520,9 +520,9 @@ bool MechIcon::init( long whichIndex )
 	TEXTUREPTR textureData;
 	gos_LockTexture( s_textureHandle[textureIndex], 0, 0, &textureData );
 
-	unsigned long* pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
-	char* pTmp = (char*)s_MechTextures + sizeof ( TGAFileHeader );
-	unsigned long* pSrcRow = (unsigned long*)pTmp;
+	ULONG* pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
+	PSTR pTmp = (PSTR)s_MechTextures + sizeof ( TGAFileHeader );
+	ULONG* pSrcRow = (ULONG*)pTmp;
 
 
 	offsetY = 0;
@@ -532,7 +532,7 @@ bool MechIcon::init( long whichIndex )
 
 	pSrcRow += tmpOffset;
 
-	unsigned long* pSrcData = pSrcRow;
+	ULONG* pSrcData = pSrcRow;
 
 	for( int j = 0; j < unitIconY; ++j )
 	{
@@ -776,7 +776,7 @@ void MechIcon::update()
 
 }
 
-void MechIcon::doDraw( char* newDamage, char* oldDamage, unsigned long handle, unsigned long index )
+void MechIcon::doDraw( PSTR newDamage, PSTR oldDamage, ULONG handle, ULONG index )
 {
 	int i = 0; 
 	int maxToCheck = 8;
@@ -810,18 +810,18 @@ void MechIcon::doDraw( char* newDamage, char* oldDamage, unsigned long handle, u
 			TEXTUREPTR textureData;
 			gos_LockTexture( s_textureHandle[texIndex], 0, 0, &textureData );
 
-			unsigned long* pData = textureData.pTexture;
+			ULONG* pData = textureData.pTexture;
 
 			// go to write spot in texture
 			int jLine = yIndex * unitIconY;
 
 			int iLine = xIndex * unitIconX;
 
-			unsigned long* pLine = (unsigned long*)(pData + (jLine * textureData.Width) + iLine);
-			unsigned long* pChange = pLine;
+			ULONG* pLine = (ULONG*)(pData + (jLine * textureData.Width) + iLine);
+			ULONG* pChange = pLine;
 
-			unsigned long oldColors[3];
-			unsigned long newColors[3];
+			ULONG oldColors[3];
+			ULONG newColors[3];
 
 			// find the colors we're looking for
 			for ( int p = 0; p < 3; p++ )
@@ -905,7 +905,7 @@ void ForceGroupIcon::render()
 	
 	// draw pilotName
 	
-	GUI_RECT tmpRect = { textArea[locationIndex].left, textArea[locationIndex].top, textArea[locationIndex].right, textArea[locationIndex].bottom };
+	RECT tmpRect = { textArea[locationIndex].left, textArea[locationIndex].top, textArea[locationIndex].right, textArea[locationIndex].bottom };
 	drawRect( tmpRect, color);
 
 	char buffer[256];
@@ -1182,9 +1182,9 @@ bool VehicleIcon::init( Mover* pMover )
 	gos_LockTexture( s_textureHandle[texIndex], 0, 0, &textureData );
 
 	
-	unsigned long* pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
-	char* pTmp = (char*)s_VehicleTextures + sizeof ( TGAFileHeader );
-	unsigned long* pSrcRow = (unsigned long*)pTmp;
+	ULONG* pDestData, *pDestRow = textureData.pTexture + offsetY * textureData.Width + offsetX;
+	PSTR pTmp = (PSTR)s_VehicleTextures + sizeof ( TGAFileHeader );
+	ULONG* pSrcRow = (ULONG*)pTmp;
 
 	long whichMech = pMover->getIconPictureIndex();
 
@@ -1195,7 +1195,7 @@ bool VehicleIcon::init( Mover* pMover )
 
 	pSrcRow += tmpOffset;
 
-	unsigned long* pSrcData = pSrcRow;
+	ULONG* pSrcData = pSrcRow;
 
 	for( int j = 0; j < unitIconY; ++j )
 	{
@@ -1304,18 +1304,18 @@ void VehicleIcon::update()
 			TEXTUREPTR textureData;
 			gos_LockTexture( s_textureHandle[texIndex], 0, 0, &textureData );
 
-			unsigned long* pData = textureData.pTexture;
+			ULONG* pData = textureData.pTexture;
 
 			// go to write spot in texture
 			int jLine = yIndex * unitIconY;
 
 			int iLine = xIndex * unitIconX;
 
-			unsigned long* pLine = (unsigned long*)(pData + (jLine * textureData.Width) + iLine);
-			unsigned long* pChange = pLine;
+			ULONG* pLine = (ULONG*)(pData + (jLine * textureData.Width) + iLine);
+			ULONG* pChange = pLine;
 
-			unsigned long oldColors[3];
-			unsigned long newColors[3];
+			ULONG oldColors[3];
+			ULONG newColors[3];
 
 			for ( int p = 0; p < 3; p++ )
 			{
@@ -1374,7 +1374,7 @@ void ForceGroupIcon::drawBar( float barStatus )
 		color = SB_RED;*/
 		
 	
-	GUI_RECT rect = { healthBar[locationIndex].left, healthBar[locationIndex].top,healthBar[locationIndex].left + barLength, healthBar[locationIndex].bottom };
+	RECT rect = { healthBar[locationIndex].left, healthBar[locationIndex].top,healthBar[locationIndex].left + barLength, healthBar[locationIndex].bottom };
 	drawRect( rect, color );
 	drawEmptyRect( healthBar[locationIndex],  color, color & 0x7f7f7f );
 }

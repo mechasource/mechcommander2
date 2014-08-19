@@ -135,7 +135,7 @@ extern DWORD MyDirectPlayID;
 //
 // String containing my address (when TCPIP)
 //
-extern char* MyIPAddress;
+extern PSTR MyIPAddress;
 
 //
 // Valid serial ports
@@ -152,7 +152,7 @@ extern ListOfNames* ModemNames;
 //
 extern ListOfGames*	GameNames;
 
-extern char** ListOfPassworded;
+extern PSTR* ListOfPassworded;
 
 //
 // Points to a list of the current game names found on the network being enumerated
@@ -255,11 +255,11 @@ BOOL __stdcall EnumPlayersCallback( DPID dpId, DWORD dwPlayerType, LPCDPNAME lpN
 BOOL __stdcall ModemCallback( REFGUID guidDataType, DWORD dwDataSize, LPCVOID lpData, void* lpContext );
 BOOL __stdcall TCPIPCallback( REFGUID guidDataType, DWORD dwDataSize, LPCVOID lpData, void* lpContext );
 void __stdcall WaitTillQueueEmpty(void);
-void __stdcall AddPlayerToGame( ListOfNames** pListOfPlayers, char* Name, DPID dpId );
-void __stdcall RemovePlayerFromGame( ListOfNames** pListOfPlayers, char* Name, DPID dpId );
-char* __stdcall GetName10( DWORD Id );
+void __stdcall AddPlayerToGame( ListOfNames** pListOfPlayers, PSTR Name, DPID dpId );
+void __stdcall RemovePlayerFromGame( ListOfNames** pListOfPlayers, PSTR Name, DPID dpId );
+PSTR __stdcall GetName10( DWORD Id );
 void __stdcall UpdateNetworkDebugInfo(void);
-char* __stdcall DecodeIPAddress( DPLCONNECTION* pConnection );
+PSTR __stdcall DecodeIPAddress( DPLCONNECTION* pConnection );
 WORD __stdcall DecodePORTAddress( DPLCONNECTION* pConnection );
 
 

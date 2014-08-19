@@ -54,7 +54,7 @@ void DlgFileOpen::Init()
 	strcpy( dirBuffer, m_directory );
 	strcat( dirBuffer, "*." );
 	strcat( dirBuffer, extension );
-	char* pFileFirst = gos_FindFiles( dirBuffer );
+	PSTR pFileFirst = gos_FindFiles( dirBuffer );
 	while( pFileFirst )
 	{
 		m_pList->AddString(pFileFirst);
@@ -126,7 +126,7 @@ void DlgFileOpen::OnSelchangeFileopenFilelist()
 	int nStringLength = m_pList->GetTextLen(nSelectionIndex);
 	if (0 < nStringLength)
 	{
-		char *pszSelectionString = new char[nStringLength + 1];
+		PSTR pszSelectionString = new char[nStringLength + 1];
 		m_pList->GetText(nSelectionIndex, pszSelectionString);
 		CEdit* m_pEntry = (CEdit*)GetDlgItem(IDC_FILEOPEN_EDITBOX);
 		m_pEntry->SetWindowText(pszSelectionString);

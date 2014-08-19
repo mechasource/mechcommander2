@@ -74,12 +74,12 @@ void GoalObject::init (void) {
 
 //---------------------------------------------------------------------------
 
-void GoalObject::initObject (char* name, GameObjectPtr obj) {
+void GoalObject::initObject (PSTR name, GameObjectPtr obj) {
 }
 
 //---------------------------------------------------------------------------
 
-void GoalObject::initRegion (char* name, long minRow, long minCol, long maxRow, long maxCol) {
+void GoalObject::initRegion (PSTR name, long minRow, long minCol, long maxRow, long maxCol) {
 
 	init();
 	used = true;
@@ -488,7 +488,7 @@ long GoalManager::setControl (ObstaclePtr controller, ObstaclePtr controllee) {
 */
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::addRegion (GoalObjectPtr parent, GoalLinkType linkType, char* name, long minRow, long minCol, long maxRow, long maxCol) {
+GoalObjectPtr GoalManager::addRegion (GoalObjectPtr parent, GoalLinkType linkType, PSTR name, long minRow, long minCol, long maxRow, long maxCol) {
 
 	GoalObjectPtr newRegion = newGoalObject();
 	newRegion->initRegion(name, minRow, minCol, maxRow, maxCol);
@@ -501,7 +501,7 @@ GoalObjectPtr GoalManager::addRegion (GoalObjectPtr parent, GoalLinkType linkTyp
 
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::addObject (GoalObjectPtr parent, GoalLinkType linkType, char* name, GameObjectPtr object) {
+GoalObjectPtr GoalManager::addObject (GoalObjectPtr parent, GoalLinkType linkType, PSTR name, GameObjectPtr object) {
 
 	GoalObjectPtr newObject = newGoalObject();
 	newObject->initObject(name, object);

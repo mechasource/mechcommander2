@@ -35,7 +35,7 @@ typedef PUCHAR MemoryPtr;
 #define COS_SIN_45		0.70710678f		 	// Used to convert results in Deg to Rad
 #define PI				3.1415926535897932384626433832795
 
-//typedef unsigned long DWORD;
+//typedef ULONG DWORD;
 //typedef unsigned int UINT;
 //typedef uint8_t BYTE;
 //typedef void *PVOID;

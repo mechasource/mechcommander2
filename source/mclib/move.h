@@ -291,22 +291,22 @@ typedef struct _ScenarioMapCellInfo {
 #define	MAPCELL_BUILD_NOT_SET_MASK		0x80000000
 
 typedef struct _MapCell {
-	unsigned long		data;
+	ULONG		data;
 
-	unsigned long getTerrain (void) {
+	ULONG getTerrain (void) {
 		return((data & MAPCELL_TERRAIN_MASK) >> MAPCELL_TERRAIN_SHIFT);
 	}
 
-	void setTerrain (unsigned long terrain) {
+	void setTerrain (ULONG terrain) {
 		data &= (MAPCELL_TERRAIN_MASK ^ 0xFFFFFFFF);
 		data |= (terrain << MAPCELL_TERRAIN_SHIFT);
 	}
 
-	unsigned long getOverlay (void) {
+	ULONG getOverlay (void) {
 		return((data & MAPCELL_OVERLAY_MASK) >> MAPCELL_OVERLAY_SHIFT);
 	}
 
-	void setOverlay (unsigned long overlay) {
+	void setOverlay (ULONG overlay) {
 		data &= (MAPCELL_OVERLAY_MASK ^ 0xFFFFFFFF);
 		data |= (overlay << MAPCELL_OVERLAY_SHIFT);
 	}
@@ -321,11 +321,11 @@ typedef struct _MapCell {
 			data |= MAPCELL_MOVER_MASK;
 	}
 
-	unsigned long getGate (void) {
+	ULONG getGate (void) {
 		return((data & MAPCELL_GATE_MASK) >> MAPCELL_GATE_SHIFT);
 	}
 
-	void setGate (unsigned long gate) {
+	void setGate (ULONG gate) {
 		data &= (MAPCELL_GATE_MASK ^ 0xFFFFFFFF);
 		data |= (gate << MAPCELL_GATE_SHIFT);
 	}
@@ -351,11 +351,11 @@ typedef struct _MapCell {
 			data |= bit;
 	}
 
-	unsigned long getMine (void) {
+	ULONG getMine (void) {
 		return((data & MAPCELL_MINE_MASK) >> MAPCELL_MINE_SHIFT);
 	}
 
-	void setMine (unsigned long mine) {
+	void setMine (ULONG mine) {
 		data &= (MAPCELL_MINE_MASK ^ 0xFFFFFFFF);
 		data |= (mine << MAPCELL_MINE_SHIFT);
 	}
@@ -499,7 +499,7 @@ typedef MapCell* MapCellPtr;
 typedef struct _PreservedCell {
 	short				row;
 	short				col;
-	unsigned long		data;
+	ULONG		data;
 } PreservedCell;
 
 typedef PreservedCell* PreservedCellPtr;
@@ -558,7 +558,7 @@ class MissionMap {
 
 		long init (long curHeight, long curWidth, long curPlanet, MissionMapCellInfo* mapData);
 
-		void setPassable (long row, long col, char* footPrint, bool passable);
+		void setPassable (long row, long col, PSTR footPrint, bool passable);
 
 		long init (PacketFile* packetFile, long whichPacket = 0);
 
@@ -566,19 +566,19 @@ class MissionMap {
 
 		long write (PacketFile* packetFile, long whichPacket = 0);
 
-		unsigned long getTerrain (long row, long col) {
+		ULONG getTerrain (long row, long col) {
 			return(map[row * width + col].getTerrain());
 		}
 
-		void setTerrain (long row, long col, unsigned long terrain) {
+		void setTerrain (long row, long col, ULONG terrain) {
 			map[row * width + col].setTerrain(terrain);
 		}
 
-		unsigned long getOverlay (long row, long col) {
+		ULONG getOverlay (long row, long col) {
 			return(map[row * width + col].getOverlay());
 		}
 
-		void setOverlay (long row, long col, unsigned long overlay) {
+		void setOverlay (long row, long col, ULONG overlay) {
 			map[row * width + col].setOverlay(overlay);
 		}
 
@@ -590,11 +590,11 @@ class MissionMap {
 			map[row * width + col].setMover(moverHere);
 		}
 
-		unsigned long getGate (long row, long col) {
+		ULONG getGate (long row, long col) {
 			return(map[row * width + col].getGate());
 		}
 
-		void setGate (long row, long col, unsigned long gate) {
+		void setGate (long row, long col, ULONG gate) {
 			map[row * width + col].setGate(gate);
 		}
 
@@ -616,11 +616,11 @@ class MissionMap {
 			map[row * width + col].setPathlock(level, pathlock);
 		}
 
-		unsigned long getMine (long row, long col) {
+		ULONG getMine (long row, long col) {
 			return(map[row * width + col].getMine());
 		}
 
-		void setMine (long row, long col, unsigned long mine) {
+		void setMine (long row, long col, ULONG mine) {
 			map[row * width + col].setMine(mine);
 		}
 
@@ -814,7 +814,7 @@ class MissionMap {
 
 		long getLOF (Stuff::Vector3D position);
 
-		unsigned long cellPassable (Stuff::Vector3D cellPosition);
+		ULONG cellPassable (Stuff::Vector3D cellPosition);
 
 		void lineOfSensor (Stuff::Vector3D start, Stuff::Vector3D target, long& numBlockingTiles, long& numBlockingObjects);
 
@@ -832,7 +832,7 @@ class MissionMap {
 								 bool blocksLineOfFire,
 								 long mineType);
 
-		void print (char* fileName);
+		void print (PSTR fileName);
 };
 
 typedef MissionMap* MissionMapPtr;
@@ -1004,7 +1004,7 @@ typedef struct _GlobalMapDoor {
 	long					cost;
 	long					parent;
 	long					fromAreaIndex;
-	unsigned long			flags;
+	ULONG			flags;
 	long					g;
 	long					hPrime;
 	long					fPrime;
@@ -1362,11 +1362,11 @@ class GlobalMap {
 
 		bool getAdjacentAreaCell (long area, long adjacentArea, long& cellRow, long& cellCol);
 
-		void print (char* fileName);
+		void print (PSTR fileName);
 
 		static bool toggleLog (void);
 
-		static void writeLog (char* s);
+		static void writeLog (PSTR s);
 };
 
 typedef GlobalMap* GlobalMapPtr;
@@ -1379,16 +1379,16 @@ typedef struct _MoveMapNode {
 	short				adjCells[NUM_ADJ_CELLS];
 	long				cost;								// normal cost to travel here, based upon terrain
 	long				parent;								// where we came from (parent cell)
-	unsigned long		flags;								// CLOSED, OPEN, STEP flags
+	ULONG		flags;								// CLOSED, OPEN, STEP flags
 	long				g;									// known cost from START to this node
 	long				hPrime;								// estimated cost from this node to GOAL
 	long				fPrime;								// = g + hPrime
 
-	void setFlag (unsigned long flag) {
+	void setFlag (ULONG flag) {
 		flags |= flag;
 	}
 
-	void clearFlag (unsigned long flag) {
+	void clearFlag (ULONG flag) {
 		flags &= (flag ^ 0xFFFFFFFF);
 	}
 } MoveMapNode;
@@ -1439,7 +1439,7 @@ class MoveMap {
 		bool				travelOffMap;
 		bool				cannotEnterOffMap;
 
-		void				(*blockedDoorCallback) (long moveLevel, long door, char* openCells);
+		void				(*blockedDoorCallback) (long moveLevel, long door, PSTR openCells);
 		void				(*placeStationaryMoversCallback) (MoveMapPtr map);
 
 		static float		distanceFloat[DISTANCE_TABLE_DIM][DISTANCE_TABLE_DIM];
@@ -1525,7 +1525,7 @@ class MoveMap {
 					long clearCellCost,
 					long jumpCellCost,
 					long offsets,
-					unsigned long params = MOVEPARAM_NONE);
+					ULONG params = MOVEPARAM_NONE);
 
 		long setUp (long moveLevel,
 					Stuff::Vector3D* startPos,
@@ -1537,7 +1537,7 @@ class MoveMap {
 					long clearCellCost,
 					long jumpCellCost,
 					long offsets,
-					unsigned long params = MOVEPARAM_NONE);
+					ULONG params = MOVEPARAM_NONE);
 
 		void clear (void);
 
@@ -1624,9 +1624,9 @@ inline void MoveMap::setCost (long row, long col, long newCost) {
 
 //---------------------------------------------------------------------------
 
-void SaveMapCells (char* fileName,  long height, long width,  MissionMapCellInfo* mapData);
+void SaveMapCells (PSTR fileName,  long height, long width,  MissionMapCellInfo* mapData);
 
-MissionMapCellInfo* LoadMapCells (char* fileName, long& height, long& width);
+MissionMapCellInfo* LoadMapCells (PSTR fileName, long& height, long& width);
 
 void DeleteMapCells (MissionMapCellInfo* mapData);
 
@@ -1636,7 +1636,7 @@ long MOVE_saveData (PacketFile* packetFile, long whichPacket = 0);
 long MOVE_readData (PacketFile* packetFile, long whichPacket);
 void MOVE_cleanup (void);
 
-//long BuildAndSaveMoveData (char* fileName, long height, long width, MissionMapCellInfo* mapData);
+//long BuildAndSaveMoveData (PSTR fileName, long height, long width, MissionMapCellInfo* mapData);
 
 //***************************************************************************
 

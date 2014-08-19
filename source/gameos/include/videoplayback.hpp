@@ -42,7 +42,7 @@ public:
 	STREAM_TIME					m_nextFrameTime;
 
 public:
-	gos_Video(char * path, bool texture);
+	gos_Video(PSTR  path, bool texture);
 	~gos_Video(void);
 	bool
 		Update(void);

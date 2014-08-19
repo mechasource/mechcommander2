@@ -71,7 +71,7 @@ class FastFile
 		void *operator new (size_t mySize);
 		void operator delete (void *us);
 
-		long open (char* fName);
+		long open (PSTR fName);
 		void close (void);
 
 		bool isOpen (void)
@@ -96,7 +96,7 @@ class FastFile
 			return numFiles;
 		}
 
-		long openFast (DWORD hash, char *fName);
+		long openFast (DWORD hash, PSTR fName);
 
 		void closeFast (long localHandle);
 

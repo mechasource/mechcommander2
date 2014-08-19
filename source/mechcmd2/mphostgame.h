@@ -50,7 +50,7 @@ public:
  	virtual void render( int xOffset, int yOffset );
 	virtual void render();
 	virtual void update();
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 
 
 private:

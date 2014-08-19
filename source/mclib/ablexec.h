@@ -78,7 +78,7 @@ typedef struct {
 		long*		integerPtr;
 		float*		realPtr;
 		bool*		booleanPtr;
-		char*		characterPtr;
+		PSTR		characterPtr;
 	} data;
 } ABLStackItem;
 
@@ -113,11 +113,11 @@ typedef StackFrameHeader* StackFrameHeaderPtr;
 
 //***************************************************************************
 
-extern char*			codeBuffer;
-extern char*			codeBufferPtr;
-extern char*			codeSegmentPtr;
-extern char*			codeSegmentLimit;
-extern char*			statementStartPtr;
+extern PSTR			codeBuffer;
+extern PSTR			codeBufferPtr;
+extern PSTR			codeSegmentPtr;
+extern PSTR			codeSegmentLimit;
+extern PSTR			statementStartPtr;
 
 extern TokenCodeType	codeToken;
 extern long				execLineNumber;
@@ -145,18 +145,18 @@ void crunchToken (void);
 void crunchSymTableNodePtr (SymTableNodePtr nodePtr);
 void crunchStatementMarker (void);
 void uncrunchStatementMarker (void);
-char* crunchAddressMarker (Address address);
-char* fixupAddressMarker (Address address);
+PSTR crunchAddressMarker (Address address);
+PSTR fixupAddressMarker (Address address);
 void crunchInteger (long value);
 void crunchByte (uint8_t value);
 void crunchOffset (Address address);
-char* createCodeSegment (long& codeSegmentSize);
+PSTR createCodeSegment (long& codeSegmentSize);
 SymTableNodePtr getCodeSymTableNodePtr (void);
 long getCodeStatementMarker (void);
-char* getCodeAddressMarker (void);
+PSTR getCodeAddressMarker (void);
 long getCodeInteger (void);
 uint8_t getCodeByte (void);
-char* getCodeAddress (void);
+PSTR getCodeAddress (void);
 
 //***************
 // STACK routines

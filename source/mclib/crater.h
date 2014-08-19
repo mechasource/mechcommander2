@@ -67,13 +67,13 @@ class CraterManager
 		HeapManagerPtr		craterPosHeap;
 		UserHeapPtr			craterShpHeap;
 		
-		unsigned long		craterPosHeapSize;
-		unsigned long		craterShpHeapSize;
+		ULONG		craterPosHeapSize;
+		ULONG		craterShpHeapSize;
 		
 		PacketFilePtr		craterFile;
 		
-		unsigned long		maxCraters;
-		unsigned long		currentCrater;
+		ULONG		maxCraters;
+		ULONG		currentCrater;
 		CraterDataPtr		craterList;
 		long				numCraterTextures;
 
@@ -109,7 +109,7 @@ class CraterManager
 			init();
 		}
 		
-		long init (long numCraters, unsigned long craterTypeSize, char *craterFileName);
+		long init (long numCraters, ULONG craterTypeSize, PSTR craterFileName);
 		
 		~CraterManager (void)
 		{

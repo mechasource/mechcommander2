@@ -50,7 +50,7 @@ long aScrollBar::init(long xPos, long yPos, long w, long h)
 	bottomButton.setDisabledFX( -1 );
 	scrollTab.setDisabledFX( -1 );
 
-	scrollTab.setTexture( (unsigned long)0 );
+	scrollTab.setTexture( (ULONG)0 );
 
 	moveTo(xPos,yPos);
 
@@ -81,7 +81,7 @@ void aScrollBar::render()
 	scrollTab.moveTo( globalX() + 2, scrollTab.globalY() );
 
 	aObject::render();
- 	GUI_RECT area = { location[0].x, location[0].y, location[2].x, location[2].y };
+ 	RECT area = { location[0].x, location[0].y, location[2].x, location[2].y };
 	drawEmptyRect( area, color, color );
 }
 
@@ -211,7 +211,7 @@ void aScrollBar::update()
 	aObject::update();
 }
 
-int aScrollBar::handleMessage( unsigned long message, unsigned long who )
+int aScrollBar::handleMessage( ULONG message, ULONG who )
 {
 	switch (who )
 	{
@@ -303,7 +303,7 @@ long mcScrollBar::init ( long xPos, long yPos, long w, long h  )
 	
 	aScrollBar::init( xPos, yPos, w, h );
 
-	scrollTab.setTexture( (unsigned long)0 );
+	scrollTab.setTexture( (ULONG)0 );
 
 	return 0;
 
@@ -352,7 +352,7 @@ void mcScrollButton::render()
 		setColor( regularColor );
 		aButton::render();
 
-		GUI_RECT rect =  { globalX(), globalY(), globalRight()-1, globalBottom()-1 };
+		RECT rect =  { globalX(), globalY(), globalRight()-1, globalBottom()-1 };
 
 		drawEmptyRect( rect, lightEdge, darkEdge );
 	}

@@ -76,7 +76,7 @@ long					ObjectTypeManager::wallHeavyTypeHandle = 0xFFFFFFFF;
 long					ObjectTypeManager::wallMediumTypeHandle = 0xFFFFFFFF;
 long					ObjectTypeManager::wallLightTypeHandle = 0xFFFFFFFF;
 
-unsigned long			NextIdNumber = 0x30000001;		//Big number to indicate
+ULONG			NextIdNumber = 0x30000001;		//Big number to indicate
 														//This object is NOT a mission
 														//part.  Trust Me. -ffs
 
@@ -121,7 +121,7 @@ void ObjectType::destroy (void) {
 		
 //---------------------------------------------------------------------------
 
-long ObjectType::init (FilePtr objFile, unsigned long fileSize) {
+long ObjectType::init (FilePtr objFile, ULONG fileSize) {
 
 	return(NO_ERR);
 }
@@ -144,7 +144,7 @@ long ObjectType::init (FitIniFilePtr objFile) {
 	result = objFile->readIdString("AppearanceName",apprName,511);
 	if (result == NO_ERR)
 	{
-		appearName = (char *)ObjectTypeManager::objectTypeCache->Malloc(strlen(apprName)+1);
+		appearName = (PSTR )ObjectTypeManager::objectTypeCache->Malloc(strlen(apprName)+1);
 		strcpy(appearName,apprName);
 	}
 
@@ -219,7 +219,7 @@ bool ObjectType::handleDestruction (GameObjectPtr collidee, GameObjectPtr collid
 //* GAMEOBJECT TYPE MANAGER class
 //***************************************************************************
 
-long ObjectTypeManager::init (char* objectFileName, long objectTypeCacheSize, long objectCacheSize, long maxObjectTypes) {
+long ObjectTypeManager::init (PSTR objectFileName, long objectTypeCacheSize, long objectCacheSize, long maxObjectTypes) {
 
 	FullPathFileName objectName;
 	objectName.init(objectPath,objectFileName,".pak");

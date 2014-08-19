@@ -91,7 +91,7 @@ bool __stdcall CheckConnectionAvailable( int Connection );
 // You can pass the address of the server or NULL for the sub net.
 //
 //
-bool __stdcall gos_ConnectTCP( char *ip_address, WORD port );
+bool __stdcall gos_ConnectTCP( PSTR ip_address, WORD port );
 
 //
 // Open an IPX connection
@@ -110,7 +110,7 @@ bool __stdcall gos_ConnectComPort( DWORD com_port );
 //
 // You pass a phone number and optional modem name to use
 //
-bool __stdcall gos_ConnectModem( char *phone_number, char *modem_name );
+bool __stdcall gos_ConnectModem( PSTR phone_number, PSTR modem_name );
 
 //
 // Enumerates all sessions available.
@@ -144,7 +144,7 @@ void __stdcall gos_EnumeratePlayers( DWORD session_id, NETCALLBACK callback );
 //				  
 // Return value: If successful, return value is GOS_OK.  
 //
-GOSERRORCODE __stdcall gos_CreateGame( char *game_name, char *player_name, int max_players );
+GOSERRORCODE __stdcall gos_CreateGame( PSTR game_name, PSTR player_name, int max_players );
 
 
 // Functionality: Joins the game with the given session ID.  The session ids are returned in the
@@ -153,7 +153,7 @@ GOSERRORCODE __stdcall gos_CreateGame( char *game_name, char *player_name, int m
 // Return value: If successful, return value is GOS_OK.  If no session matching <session_id>
 //					is found, returns GOS_ERR_SESSIONNOTFOUND.
 //
-GOSERRORCODE __stdcall gos_JoinGame(DWORD session_id, char *player_name);
+GOSERRORCODE __stdcall gos_JoinGame(DWORD session_id, PSTR player_name);
 
 
 // Functionality: Calls the callback once for each modem installed on this

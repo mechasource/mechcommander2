@@ -276,7 +276,7 @@ void MPSetupXScreen::render()
 	render(0, 0);
 }
 
-int	MPSetupXScreen::handleMessage( unsigned long message, unsigned long who)
+int	MPSetupXScreen::handleMessage( ULONG message, ULONG who)
 {
 	if ( RUNNING == status )
 	{
@@ -624,22 +624,22 @@ void aColorPicker::update()
 
 		if (userInput->isLeftClick()) {
 			if (tab0Button.pointInside(cx, cy)) {
-				handleMessage(aMSG_BUTTONCLICKED, (unsigned long)(&tab0Button));
+				handleMessage(aMSG_BUTTONCLICKED, (ULONG)(&tab0Button));
 			} else if (tab1Button.pointInside(cx, cy)) {
-				handleMessage(aMSG_BUTTONCLICKED, (unsigned long)(&tab1Button));
+				handleMessage(aMSG_BUTTONCLICKED, (ULONG)(&tab1Button));
 			}
 		}
 
 		if (colorPlaneStatic.pointInside(cx, cy)) {
-			handleMessage(aMSG_LEFTMOUSEDOWN, (unsigned long)(&colorPlaneStatic));
+			handleMessage(aMSG_LEFTMOUSEDOWN, (ULONG)(&colorPlaneStatic));
 		}
 	}
 }
 
-int aColorPicker::handleMessage( unsigned long message, unsigned long who )
+int aColorPicker::handleMessage( ULONG message, ULONG who )
 {
 	{
-		if ((unsigned long)(&tab0Button) == who) 
+		if ((ULONG)(&tab0Button) == who) 
 		{
 			if (aMSG_BUTTONCLICKED == message)
 			{
@@ -649,7 +649,7 @@ int aColorPicker::handleMessage( unsigned long message, unsigned long who )
 				return 1;
 			}
 		}
-		else if ((unsigned long)(&tab1Button) == who) 
+		else if ((ULONG)(&tab1Button) == who) 
 		{
 			if (aMSG_BUTTONCLICKED == message)
 			{
@@ -659,7 +659,7 @@ int aColorPicker::handleMessage( unsigned long message, unsigned long who )
 				return 1;
 			}
 		}
-		else if ((unsigned long)(&colorPlaneStatic) == who) 
+		else if ((ULONG)(&colorPlaneStatic) == who) 
 		{
 			if ((aMSG_LEFTMOUSEDOWN == message)
 				|| ((aMSG_MOUSEMOVE == message) && (userInput->isLeftDrag())))
@@ -760,17 +760,17 @@ void aStyle1TextListItem::render()
 	float color;
 	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((unsigned long)normalColor) + 0.67 * ((unsigned long)0xffffffff);
+		color = 0.33 * ((ULONG)normalColor) + 0.67 * ((ULONG)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((unsigned long)normalColor) + 0.33 * ((unsigned long)0xffffffff);
+		color = 0.67 * ((ULONG)normalColor) + 0.33 * ((ULONG)0xffffffff);
 	}
 	else
 	{
 		color = normalColor;
 	}
-	aTextListItem::setColor((unsigned long)color);
+	aTextListItem::setColor((ULONG)color);
 
 	aTextListItem::render();
 }

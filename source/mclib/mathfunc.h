@@ -104,7 +104,7 @@ float angle_from (Stuff::Vector3D &v1, Stuff::Vector3D &v2);
 
 float world_angle_between (Stuff::Vector3D &v1, Stuff::Vector3D &v2);
 
-Stuff::Vector3D relativePositionToPoint (Stuff::Vector3D point, float angle, float distance, unsigned long flags);
+Stuff::Vector3D relativePositionToPoint (Stuff::Vector3D point, float angle, float distance, ULONG flags);
 
 long RandomNumber (long range);
 

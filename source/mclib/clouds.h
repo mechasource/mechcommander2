@@ -80,7 +80,7 @@ class Clouds
 			destroy();
 		}
 		
-		void init (char *textureName, long gSize);
+		void init (PSTR textureName, long gSize);
 		
 		void update (void);
 		void render (void);

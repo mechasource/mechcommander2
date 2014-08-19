@@ -88,7 +88,7 @@ extern bool MLRVertexLimitReached;
 #define MAX_WEAPON_NODES			4
 //-----------------------------------------------------------------------------
 // class BldgAppearanceType
-void BldgAppearanceType::init (char * fileName)
+void BldgAppearanceType::init (PSTR  fileName)
 {
 	AppearanceType::init(fileName);
 
@@ -370,7 +370,7 @@ void BldgAppearanceType::init (char * fileName)
 				strcpy(weaponName,"NONE");
 			}
 			
-			nodeData[i].nodeId = (char *)AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName)+1);
+			nodeData[i].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName)+1);
 			gosASSERT(nodeData[i].nodeId != NULL);
 				
 			strcpy(nodeData[i].nodeId,weaponName);
@@ -924,7 +924,7 @@ void BldgAppearance::setObjStatus (long oStatus)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D BldgAppearance::getNodeNamePosition (char *nodeName)
+Stuff::Vector3D BldgAppearance::getNodeNamePosition (PSTR nodeName)
 {
 	Stuff::Vector3D result = position;
 	
@@ -982,7 +982,7 @@ bool BldgAppearance::PerPolySelect (long mouseX, long mouseY)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::setGesture (unsigned long gestureId)
+void BldgAppearance::setGesture (ULONG gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -994,7 +994,7 @@ void BldgAppearance::setGesture (unsigned long gestureId)
 	if ((status == OBJECT_STATUS_DESTROYED) || (status == OBJECT_STATUS_DISABLED))
 		return;
 		
-	if (gestureId == (unsigned long)bdAnimationState)
+	if (gestureId == (ULONG)bdAnimationState)
 		return;
 
 	//----------------------------------------------------------------------
@@ -1511,9 +1511,9 @@ long BldgAppearance::render (long depthFixup)
 	if (inView)
 	{
 		long color = SD_BLUE;
-		unsigned long highLight = 0x007f7f7f;
+		ULONG highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8)) {
-			static unsigned long highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+			static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
 			static long colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED| 0xff000000};
 			color = colorTable[homeTeamRelationship];
 			highLight = highLightTable[homeTeamRelationship];
@@ -3000,7 +3000,7 @@ void BldgAppearance::calcAdjCell (long& row, long& col)
 
 //-----------------------------------------------------------------------------
 // class TreeAppearanceType
-void TreeAppearanceType::init (char * fileName)
+void TreeAppearanceType::init (PSTR  fileName)
 {
 	AppearanceType::init(fileName);
 
@@ -3869,9 +3869,9 @@ long TreeAppearance::render (long depthFixup)
 	if (inView)
 	{
 		long color = SD_BLUE;
-		//unsigned long highLight = 0x007f7f7f;
+		//ULONG highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8)) {
-			//static unsigned long highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+			//static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
 			static long colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
 			color = colorTable[homeTeamRelationship];
 			//highLight = highLightTable[homeTeamRelationship];

@@ -45,10 +45,10 @@ extern long				execLineNumber;
 	//extern long				execStatementCount;
 extern TokenCodeType	codeToken;
 
-extern char*			codeBuffer;
-extern char*			codeBufferPtr;
-extern char*			codeSegmentPtr;
-extern char*			statementStartPtr;
+extern PSTR			codeBuffer;
+extern PSTR			codeBufferPtr;
+extern PSTR			codeSegmentPtr;
+extern PSTR			statementStartPtr;
 
 extern StackItemPtr		tos;
 	//extern StackItemPtr		stackFrameBasePtr;
@@ -63,8 +63,8 @@ extern Literal			curLiteral;
 extern long				bufferOffset;
 extern char				sourceBuffer[MAXLEN_SOURCELINE];
 	//extern long				bufferOffset;
-extern char*			bufferp;
-	//extern char*			tokenp;
+extern PSTR			bufferp;
+	//extern PSTR			tokenp;
 extern char				wordString[MAXLEN_TOKENSTRING];
 
 extern TypePtr			IntegerTypePtr;
@@ -80,7 +80,7 @@ extern long				NumModulesRegistered;
 extern long				NumModuleInstances;
 extern long				MaxWatchesPerModule;
 extern long				MaxBreakPointsPerModule;
-extern char*			TokenStrings[NUM_TOKENS];
+extern PSTR			TokenStrings[NUM_TOKENS];
 
 
 //extern StackItem*		stack;
@@ -168,7 +168,7 @@ WatchPtr WatchManager::add (SymTableNodePtr idPtr) {
 			if (idPtr->info)
 				return((WatchPtr)idPtr->info);
 			else if (numWatches < maxWatches) {
-				idPtr->info = (char*)&watches[numWatches];
+				idPtr->info = (PSTR)&watches[numWatches];
 				watches[numWatches].idPtr = idPtr;
 				watches[numWatches].store = false;
 				watches[numWatches].breakOnStore = false;
@@ -212,7 +212,7 @@ long WatchManager::remove (SymTableNodePtr idPtr) {
 		watches[i].breakOnStore = watches[i + 1].breakOnStore;
 		watches[i].fetch = watches[i + 1].fetch;
 		watches[i].breakOnFetch = watches[i + 1].breakOnFetch;
-		watches[i].idPtr->info = (char*)&watches[i];
+		watches[i].idPtr->info = (PSTR)&watches[i];
 	}
 
 	return(ABL_NO_ERR);
@@ -469,7 +469,7 @@ void Debugger::operator delete (void* us) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::init (void (*callback)(char* s), ABLModulePtr _module) {
+long Debugger::init (void (*callback)(PSTR s), ABLModulePtr _module) {
 
 	printCallback = callback;
 	module = _module;
@@ -490,7 +490,7 @@ void Debugger::destroy (void) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::print (char* s) {
+long Debugger::print (PSTR s) {
 
 	if (printCallback)
 		(*printCallback)(s);
@@ -587,13 +587,13 @@ long Debugger::removeBreakPoint (void) {
 
 //---------------------------------------------------------------------------
 
-void Debugger::sprintStatement (char* dest) {
+void Debugger::sprintStatement (PSTR dest) {
 
 	//---------------------------------------------------------------------
 	// First, rebuild the the current statement from the module code. Then,
 	// spit it out as we do so...
 	bool done = false;
-	char* cp = statementStartPtr;
+	PSTR cp = statementStartPtr;
 	
 	do {
 		TokenCodeType token = (TokenCodeType)*cp;
@@ -646,7 +646,7 @@ void Debugger::sprintStatement (char* dest) {
 
 //---------------------------------------------------------------------------
 
-void Debugger::sprintLineNumber (char* dest) {
+void Debugger::sprintLineNumber (PSTR dest) {
 
 	//--------------------------
 	// PRINT LINE NUMBER HERE...
@@ -655,7 +655,7 @@ void Debugger::sprintLineNumber (char* dest) {
 
 //---------------------------------------------------------------------------
 
-void Debugger::sprintDataValue (char* dest, StackItemPtr data, TypePtr dataType) {
+void Debugger::sprintDataValue (PSTR dest, StackItemPtr data, TypePtr dataType) {
 
 	if ((dataType->form == FRM_ENUM) && (dataType != BooleanTypePtr))
 		dataType = IntegerTypePtr;
@@ -682,7 +682,7 @@ void Debugger::sprintDataValue (char* dest, StackItemPtr data, TypePtr dataType)
 
 //---------------------------------------------------------------------------
 
-long Debugger::sprintSimpleValue (char* dest, SymTableNodePtr symbol) {
+long Debugger::sprintSimpleValue (PSTR dest, SymTableNodePtr symbol) {
 
 	//--------------------------------------------------------------------
 	// This code is adapted from execVariable(). If that function changes,
@@ -731,7 +731,7 @@ long Debugger::sprintSimpleValue (char* dest, SymTableNodePtr symbol) {
 			if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
 				sprintf(dest, "%d", *((long*)dataPtr));
 			else if (typePtr == CharTypePtr)
-				sprintf(dest, "\"%c\"", *((char*)dataPtr));
+				sprintf(dest, "\"%c\"", *((PSTR)dataPtr));
 			else
 				sprintf(dest, "%.4f", *((float*)dataPtr));
 			}
@@ -744,7 +744,7 @@ long Debugger::sprintSimpleValue (char* dest, SymTableNodePtr symbol) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::sprintArrayValue (char* dest, SymTableNodePtr symbol, char* subscriptString) {
+long Debugger::sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subscriptString) {
 
 	//--------------------------------------------------------------------
 	// This code is adapted from execVariable(). If that function changes,
@@ -781,13 +781,13 @@ long Debugger::sprintArrayValue (char* dest, SymTableNodePtr symbol, char* subsc
 
 		Address elementAddress = (Address)dataPtr->address;
 		if (subscriptString) {
-			char* cp = subscriptString;
+			PSTR cp = subscriptString;
 		
 			//-----------------------------
 			// Get past the open bracket...
 			cp++;
 
-			char* token = strtok(&subscriptString[1], ",]");
+			PSTR token = strtok(&subscriptString[1], ",]");
 			while (token) {
 				//----------------
 				// Read integer...
@@ -808,12 +808,12 @@ long Debugger::sprintArrayValue (char* dest, SymTableNodePtr symbol, char* subsc
 			if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
 				sprintf(dest, "%d", *((long*)elementAddress));
 			else if (typePtr == CharTypePtr)
-				sprintf(dest, "\"%c\"", *((char*)elementAddress));
+				sprintf(dest, "\"%c\"", *((PSTR)elementAddress));
 			else
 				sprintf(dest, "%.4f", *((float*)elementAddress));
 			}
 		else if (typePtr->info.array.elementTypePtr == CharTypePtr)
-			sprintf(dest, "\"%s\"", (char*)elementAddress);
+			sprintf(dest, "\"%s\"", (PSTR)elementAddress);
 		else
 			sprintf(dest, "Could you be more specific?");
 	}
@@ -823,9 +823,9 @@ long Debugger::sprintArrayValue (char* dest, SymTableNodePtr symbol, char* subsc
 
 //---------------------------------------------------------------------------
 
-long Debugger::sprintValue (char* dest, char* exprString) {
+long Debugger::sprintValue (PSTR dest, PSTR exprString) {
 
-	char* subscript = strchr(exprString, '[');
+	PSTR subscript = strchr(exprString, '[');
 	if (!subscript) {
 		//------------------------------------------
 		// Probably a simple variable or constant...
@@ -995,7 +995,7 @@ void Debugger::showValue (void) {
 		if (errorCount > 0)
 			return;
 			
-		char* savedCodeSegmentPtr = codeSegmentPtr;
+		PSTR savedCodeSegmentPtr = codeSegmentPtr;
 		TokenCodeType savedCodeToken = codeToken;
 		execExpression();
 
@@ -1036,7 +1036,7 @@ void Debugger::assignVariable (void) {
 
 		//-------------------
 		// Now, execute it...
-		char* savedCodeSegmentPtr = codeSegmentPtr;
+		PSTR savedCodeSegmentPtr = codeSegmentPtr;
 		long savedCodeToken = codeToken;
 		codeSegmentPtr = codeBuffer + 1;
 		getCodeToken();
@@ -1069,7 +1069,7 @@ void Debugger::displayModuleInstanceRegistry (void) {
 
 //---------------------------------------------------------------------------
 
-void Debugger::processCommand (long commandId, char* strParam1, long numParam1, ABLModulePtr moduleParam1) {
+void Debugger::processCommand (long commandId, PSTR strParam1, long numParam1, ABLModulePtr moduleParam1) {
 
 	switch (commandId) {
 		case DEBUG_COMMAND_SET_MODULE:

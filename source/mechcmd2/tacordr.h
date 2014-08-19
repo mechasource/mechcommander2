@@ -232,8 +232,8 @@ class TacticalOrder {
 
 		// for network use only
 		char					pointLocalMoverId;
-		unsigned long			groupFlags;
-		unsigned long			data[2];
+		ULONG			groupFlags;
+		ULONG			data[2];
 
 	public:
 
@@ -337,7 +337,7 @@ class TacticalOrder {
 			return(statusCode);
 		}
 
-		void debugString (MechWarriorPtr pilot, char* s);
+		void debugString (MechWarriorPtr pilot, PSTR s);
 
 };
 

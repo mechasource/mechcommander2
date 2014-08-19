@@ -105,7 +105,7 @@ struct ObjData {
 	unsigned short		blockNumber;	//Which terrain Block.
 	uint8_t		damage;			//Damage
 	long				teamId;
-	unsigned long		parentId;		//hOW AM i LINKED.
+	ULONG		parentId;		//hOW AM i LINKED.
 };
 
 struct MiscObjectData {
@@ -164,7 +164,7 @@ typedef struct _TeamObjectInfo {
 #define	MAX_CAPTURES_PER_TEAM	30
 
 typedef struct _RemovedMoverRec {
-	unsigned long	turn;
+	ULONG	turn;
 	long			partID;
 } RemovedMoverRec;
 
@@ -229,7 +229,7 @@ class GameObjectManager {
 		long					numPowerGenerators;
 		long					numSpecialBuildings;
 
-		char*					moverLineOfSightTable;
+		PSTR					moverLineOfSightTable;
 		bool					useMoverLineOfSightTable;
 
 		GameObjectPtr*			objList;
@@ -244,7 +244,7 @@ class GameObjectManager {
 		long					nextReinforcementPartId;
 		long					numRemoved;
 		RemovedMoverRec			moversRemoved[MAX_REMOVED];
-		unsigned long			nextWatchID;
+		ULONG			nextWatchID;
 		GameObjectPtr			*watchList;
 
 		long					currentWeaponsIndex;			//points to next entry in rotating weapon array.
@@ -302,7 +302,7 @@ class GameObjectManager {
 			destroy();
 		}
 		
-		void init (char* objTypeDataFile, long objTypeCacheSize, long objCacheSize);
+		void init (PSTR objTypeDataFile, long objTypeCacheSize, long objCacheSize);
 
 		void setNumObjects (long nMechs,
 							long nVehicles,
@@ -483,7 +483,7 @@ class GameObjectManager {
 
 		GameObjectPtr get (long handle);
 
-		GameObjectPtr getByWatchID (unsigned long watchID) {
+		GameObjectPtr getByWatchID (ULONG watchID) {
 			if ((watchID > 0) && (watchID < nextWatchID))
 				return(watchList[watchID]);
 			return(NULL);

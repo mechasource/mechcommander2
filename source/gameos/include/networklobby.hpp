@@ -44,7 +44,7 @@ GOSERRORCODE __stdcall gos_EnumeratePlayers(DWORD session_id, LPSTRINGCALLBACK c
 //				  
 // Return value: If successful, return value is GOS_OK.  
 //
-GOSERRORCODE __stdcall gos_CreateGame(char *game_name, char *player_name, int max_players);
+GOSERRORCODE __stdcall gos_CreateGame(PSTR game_name, PSTR player_name, int max_players);
 
 
 // Functionality: Joins the game with the given session ID.  The session ids are returned in the
@@ -53,7 +53,7 @@ GOSERRORCODE __stdcall gos_CreateGame(char *game_name, char *player_name, int ma
 // Return value: If successful, return value is GOS_OK.  If no session matching <session_id>
 //					is found, returns GOS_ERR_SESSIONNOTFOUND.
 //
-GOSERRORCODE __stdcall gos_JoinGame(DWORD session_id, char *player_name);
+GOSERRORCODE __stdcall gos_JoinGame(DWORD session_id, PSTR player_name);
 
 
 // Functionality: Calls the callback once for each modem installed on this

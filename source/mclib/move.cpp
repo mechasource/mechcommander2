@@ -45,7 +45,7 @@ extern void memclear(void *Dest,int Length);
 extern UserHeapPtr systemHeap;
 extern float metersPerWorldUnit;
 
-extern char* ExceptionGameMsg;
+extern PSTR ExceptionGameMsg;
 extern char ChunkDebugMsg[5120];
 
 long GlobalMap::minRow = 0;
@@ -350,7 +350,7 @@ inline bool inMapBounds (long r, long c, long mapHeight, long mapWidth) {
 
 //---------------------------------------------------------------------------
 
-Stuff::Vector3D relativePositionToPoint (Stuff::Vector3D point, float angle, float distance, unsigned long flags) {
+Stuff::Vector3D relativePositionToPoint (Stuff::Vector3D point, float angle, float distance, ULONG flags) {
 
 	//--------------------------------------------------------
 	// Note that the angle should be -180 <= angle <= 180, and
@@ -413,7 +413,7 @@ Stuff::Vector3D relativePositionToPoint (Stuff::Vector3D point, float angle, flo
 	long cellR, cellC;
 	Stuff::Vector3D curPoint3d(curPoint.x, curPoint.y, 0.0);
 	land->worldToCell(curPoint3d, cellR, cellC);
-	unsigned long cellClear = GameMap->getPassable(cellR, cellC);
+	ULONG cellClear = GameMap->getPassable(cellR, cellC);
 
 	Stuff::Vector3D lastGoodPoint = curPoint;
 	if (flags & RELPOS_FLAG_PASSABLE_START)
@@ -978,7 +978,7 @@ long MissionMap::init (long cellHeight, long cellWidth, long curPlanet, MissionM
 
 //---------------------------------------------------------------------------
 
-void MissionMap::setPassable (long row, long col, char* footPrint, bool passable) {
+void MissionMap::setPassable (long row, long col, PSTR footPrint, bool passable) {
 
 	/* FootPrint Data format:
 			r1, c1, l1, r2, c2, l2, r3, c3, l3, ...
@@ -989,7 +989,7 @@ void MissionMap::setPassable (long row, long col, char* footPrint, bool passable
 			allow foot prints big enuff for all buildings we have.
 	*/
 
-	char* data = footPrint;
+	PSTR data = footPrint;
 	long r = row + *data++;
 	long c = col + *data++;
 	long len = *data++;
@@ -1202,7 +1202,7 @@ long MissionMap::getOverlayWeight (long cellR, long cellC, long moverOverlayWeig
 
 //---------------------------------------------------------------------------
 
-void MissionMap::print (char* fileName) {
+void MissionMap::print (PSTR fileName) {
 
 	File* debugFile = new File;
 	debugFile->create(fileName);
@@ -1486,7 +1486,7 @@ long GlobalMap::init (PacketFilePtr packetFile, long whichPacket) {
 
 	long startPacket = whichPacket;
 
-	unsigned long version = 0;
+	ULONG version = 0;
 	long result = packetFile->readPacket(whichPacket++, (PUCHAR)&version);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read version packet ");
@@ -1640,7 +1640,7 @@ long GlobalMap::init (PacketFilePtr packetFile, long whichPacket) {
 				sprintf(s, "     ownerWID is %d", areas[i].ownerWID);
 				log->write(s);
 			}
-			static char* typeString[] = {
+			static PSTR typeString[] = {
 				"normal area",
 				"wall area",
 				"gate area",
@@ -1684,7 +1684,7 @@ long GlobalMap::write (PacketFilePtr packetFile, long whichPacket) {
 	if (!packetFile)
 		return(numPackets);
 
-	unsigned long version = GLOBALMAP_VERSION_NUMBER;
+	ULONG version = GLOBALMAP_VERSION_NUMBER;
 	long result = packetFile->writePacket(whichPacket++, (PUCHAR)&version, sizeof(long));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write version packet ");
@@ -3080,7 +3080,7 @@ long GlobalMap::build (MissionMapCellInfo* mapData) {
 				sprintf(s, "     ownerWID is %d", areas[i].ownerWID);
 				log->write(s);
 			}
-			static char* typeString[] = {
+			static PSTR typeString[] = {
 				"normal area",
 				"wall area",
 				"gate area",
@@ -3792,7 +3792,7 @@ void GlobalMap::openArea (long area) {
 
 //---------------------------------------------------------------------------
 
-void GlobalMap::print (char* fileName) {
+void GlobalMap::print (PSTR fileName) {
 
 	if (areaMap)
 		return;
@@ -3932,7 +3932,7 @@ bool GlobalMap::toggleLog (void) {
 					sprintf(s, "     ownerWID is %d", map->areas[i].ownerWID);
 					log->write(s);
 				}
-				static char* typeString[] = {
+				static PSTR typeString[] = {
 					"normal area",
 					"wall area",
 					"gate area",
@@ -3959,7 +3959,7 @@ bool GlobalMap::toggleLog (void) {
 
 //----------------------------------------------------------------------------------
 
-void GlobalMap::writeLog (char* s) {
+void GlobalMap::writeLog (PSTR s) {
 
 	if (log)
 		log->write(s);
@@ -4337,7 +4337,7 @@ long MoveMap::setUp (long mapULr,
 					 long clearCellCost,
 					 long jumpCellCost,
 					 long offsets,
-					 unsigned long params) {
+					 ULONG params) {
 
 	//-----------------------------------------------------------------------------
 	// If the map has not been allocated yet, then the tile height and width passed
@@ -4514,7 +4514,7 @@ long MoveMap::setUp (long level,
 					 long clearCellCost,
 					 long jumpCellCost,
 					 long offsets,
-					 unsigned long params) {
+					 ULONG params) {
 
 #ifdef LAB_ONLY
 	__int64 startTime = GetCycles();

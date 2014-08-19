@@ -70,8 +70,8 @@ BOOL ResourceStringSelectionDlg::OnInitDialog()
 	
 	m_ResourceStringIDs.Clear();
 	m_Combo.ResetContent();
-	unsigned long i;
-	for (i = m_BottomOfIDRange; i <= (unsigned long)m_TopOfIDRange; i += 1) {
+	ULONG i;
+	for (i = m_BottomOfIDRange; i <= (ULONG)m_TopOfIDRange; i += 1) {
 		CString tmpStr;
 		//BOOL result = tmpStr.LoadString(i);
 		BOOL result = CSLoadString(i, tmpStr);
@@ -100,7 +100,7 @@ BOOL ResourceStringSelectionDlg::OnInitDialog()
 
 void ResourceStringSelectionDlg::OnOK() 
 {
-	unsigned long selectionIndex = m_Combo.GetCurSel();
+	ULONG selectionIndex = m_Combo.GetCurSel();
 	if (CB_ERR != selectionIndex) {
 		assert(m_ResourceStringIDs.Count() > selectionIndex);
 		m_SelectedResourceStringID = m_ResourceStringIDs[selectionIndex];

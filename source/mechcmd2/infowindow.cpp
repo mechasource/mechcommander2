@@ -69,7 +69,7 @@ long InfoWindow::SCROLLBOXTOP= 0;
 long InfoWindow::SCROLLBOXBOTTOM= 0;
 long InfoWindow::PILOTNAMELEFT = 0;
 
-GUI_RECT InfoWindow::NameRect = { 0 };
+RECT InfoWindow::NameRect = { 0 };
 
 ControlButton InfoWindow::buttons[2] = {0};
 
@@ -344,7 +344,7 @@ void InfoWindow::setUnit(Mover* pNewMover)
 
 void InfoWindow::drawName( PCSTR name )
 {
-	GUI_RECT rect = { NAMELEFT, NAMETOP, NAMERIGHT, SCROLLTOP};
+	RECT rect = { NAMELEFT, NAMETOP, NAMERIGHT, SCROLLTOP};
 	drawRect( rect, 0xff000000 );
 	drawEmptyRect( NameRect, 0xff002f55, 0xff002f55 );
 	nameFont.render( name, NAMELEFT, NAMETOP, NAMERIGHT - NAMELEFT, NAMEBOTTOM - NAMETOP, 0xff5c96c2, 0, 3 );
@@ -356,7 +356,7 @@ void InfoWindow::render()
 	
 	drawScrollingStuff();
 
-	GUI_RECT tmpRect = { SCROLLBOXLEFT, SCROLLBOXBOTTOM, SCROLLBOXRIGHT, INFOTOP + INFOHEIGHT };
+	RECT tmpRect = { SCROLLBOXLEFT, SCROLLBOXBOTTOM, SCROLLBOXRIGHT, INFOTOP + INFOHEIGHT };
 	drawRect( tmpRect, 0xff000000 );
 
 	for ( int i = 0; i < 2; i++ )
@@ -446,7 +446,7 @@ void InfoWindow::render()
 		v[0].y = v[3].y = HEALTHTOP;
 		v[1].y = v[2].y = HEALTHBOTTOM;
 
-		unsigned long dimColor = ( color & 0xff7f7f7f );
+		ULONG dimColor = ( color & 0xff7f7f7f );
 		for ( int i = 0; i < 4; i++ )
 			v[i].argb = dimColor;
 
@@ -467,9 +467,9 @@ void InfoWindow::render()
 		drawName( noUnit );
 	}
 
-	GUI_RECT border = { SCROLLBOXLEFT, SCROLLBOXTOP, SCROLLBOXRIGHT, SCROLLBOXBOTTOM  };
+	RECT border = { SCROLLBOXLEFT, SCROLLBOXTOP, SCROLLBOXRIGHT, SCROLLBOXBOTTOM  };
 	drawEmptyRect( border, SCROLLCOLOR, SCROLLCOLOR );
-	GUI_RECT rect = { SCROLLLEFT, SCROLLTOP, SCROLLRIGHT, SCROLLBOTTOM };
+	RECT rect = { SCROLLLEFT, SCROLLTOP, SCROLLRIGHT, SCROLLBOTTOM };
 	drawEmptyRect( rect, SCROLLCOLOR, SCROLLCOLOR );
 
 
@@ -621,7 +621,7 @@ void InfoWindow::drawScrollingStuff()
 	char ranges[60];
 	long names[60];
 	memset( disabledCount, 0, sizeof( char ) * 60 * 2);
-	memset( names, 0, sizeof( char* ) * 60 );
+	memset( names, 0, sizeof( PSTR ) * 60 );
 	memset( ranges, 0, sizeof( char ) * 60 );
 	memset( ammo, 0, sizeof( long ) * 60 );
 
@@ -680,7 +680,7 @@ void InfoWindow::drawScrollingStuff()
 	curY += SECTIONSKIP;
 
 
-	unsigned long height = componentFont.height();
+	ULONG height = componentFont.height();
 	
 
 	// removing headers for now
@@ -747,7 +747,7 @@ void InfoWindow::drawScrollingStuff()
 
 	}
 
-	memset( names, 0, sizeof( char* ) * 60 );
+	memset( names, 0, sizeof( PSTR ) * 60 );
 	long count[4];
 	count[0] = pUnit->ecm;
 	count[1] = pUnit->probe;
@@ -806,7 +806,7 @@ void InfoWindow::drawScrollingStuff()
 			{
 				if ( pWarrior->active() )
 					icon->renderPilotIcon( PILOTLEFT, curY, PILOTRIGHT, curY + PILOTHEIGHT );
-				GUI_RECT tmpRect = { PILOTLEFT, curY, PILOTRIGHT + 1, curY + PILOTHEIGHT + 1 }; 
+				RECT tmpRect = { PILOTLEFT, curY, PILOTRIGHT + 1, curY + PILOTHEIGHT + 1 }; 
 				drawEmptyRect( tmpRect, SCROLLCOLOR, SCROLLCOLOR  );
 			
 				float right = SCROLLLEFT;
@@ -858,11 +858,11 @@ void InfoWindow::drawScrollingStuff()
 			
 			if ( curY > NAMETOP )
 			{
-				GUI_RECT tmpRect = { v[0].x - .5, v[0].y - .5, v[2].x + 1.5, v[2].y + 1.5 };
+				RECT tmpRect = { v[0].x - .5, v[0].y - .5, v[2].x + 1.5, v[2].y + 1.5 };
 				drawEmptyRect( tmpRect, 0xff002f55, 0xff002f55  );
 
 
-				unsigned long gosID = mcTextureManager->get_gosTextureHandle( skillInfos[currentSkill].textureHandle );
+				ULONG gosID = mcTextureManager->get_gosTextureHandle( skillInfos[currentSkill].textureHandle );
 				gos_SetRenderState( gos_State_Texture, gosID );
 				gos_DrawQuads( v, 4 );
 
@@ -962,11 +962,11 @@ void InfoWindow::drawSkillBar( int skill, float yVal, float height )
 		blueIncrement = (255 - 146)/barCount;
 	}
 
-	unsigned long color = 0xff005392;
+	ULONG color = 0xff005392;
 
-	GUI_RECT outSideRect = { left - SKILLSKIP + .5, yVal - .5, right + SKILLSKIP + .5, yVal + height + 1.5};
+	RECT outSideRect = { left - SKILLSKIP + .5, yVal - .5, right + SKILLSKIP + .5, yVal + height + 1.5};
 	drawRect( outSideRect, 0xff000000 );
-	GUI_RECT rect = { left  + InfoWindow::SKILLSKIP, yVal + InfoWindow::SKILLSKIP + .5,
+	RECT rect = { left  + InfoWindow::SKILLSKIP, yVal + InfoWindow::SKILLSKIP + .5,
 		left  + InfoWindow::SKILLSKIP + SKILLUNITWIDTH, yVal + height - InfoWindow::SKILLSKIP + .5 };
 
 	drawEmptyRect( outSideRect, 0xff002f55, 0xff002f55 );

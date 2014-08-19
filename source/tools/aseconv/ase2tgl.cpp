@@ -47,7 +47,7 @@ static bool createARM = false;
 
 IProviderEngine * armProvider = NULL;
 
-unsigned long tglHeapSize = 16386000;
+ULONG tglHeapSize = 16386000;
 
 FastFile 	**fastFiles = NULL;
 long 		numFastFiles = 0;
@@ -55,7 +55,7 @@ long		maxFastFiles = 0;
 
 HWND		appWnd = NULL;
 
-extern char* MechAnimationNames[MaxGestures];
+extern PSTR MechAnimationNames[MaxGestures];
 
 long ObjectTextureSize = 128;
 bool reloadBounds = false;
@@ -63,19 +63,19 @@ MidLevelRenderer::MLRClipper * theClipper = NULL;
 HGOSFONT3D gosFontHandle = 0;
 extern HGOSFONT3D	FontHandle;
 FloatHelpPtr globalFloatHelp = NULL;
-unsigned long currentFloatHelp = 0;
+ULONG currentFloatHelp = 0;
 
 char fileName[1024];
 char listName[1024];
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
-void ParseCommandLine(char *command_line)
+void ParseCommandLine(PSTR command_line)
 {
 	int i;
 	int n_args = 0;
 	int index = 0;
-	char *argv[30];
+	PSTR argv[30];
 	
 	char tempCommandLine[4096];
 	memset(tempCommandLine,0,4096);
@@ -186,7 +186,7 @@ void ParseCommandLine(char *command_line)
 }
 
 //-----------------------------
-long convertASE2TGL (char *file)
+long convertASE2TGL (PSTR file)
 {
 	//---------------------------------------------------
 	// Get all of the .ASE files in the tgl directory.
@@ -221,7 +221,7 @@ long convertASE2TGL (char *file)
 				return result;
 
 			// ARM
-			IProviderAssetPtr iniAsset = armProvider->OpenAsset((char*)iniName, AssetType_Physical,
+			IProviderAssetPtr iniAsset = armProvider->OpenAsset((PSTR)iniName, AssetType_Physical,
 				ProviderType_Primary);
 			iniAsset->AddProperty("Type", "Object Definition");
 			iniAsset->AddProperty("Version", "1.0");
@@ -335,7 +335,7 @@ long convertASE2TGL (char *file)
 						// Happens ALOT!
 						printf( "Processing Animation %s\n", aseName );
 						
-						IProviderRelationshipPtr armLink = iniAsset->AddRelationship("Animation", (char*)aseName);
+						IProviderRelationshipPtr armLink = iniAsset->AddRelationship("Animation", (PSTR)aseName);
 
 						anim->LoadTGMultiShapeAnimationFromASE(aseName,shape,true);
 
@@ -744,7 +744,7 @@ void DoGameLogic()
 //
 // Setup the GameOS structure
 //
-void GetGameOSEnvironment( char* CommandLine )
+void GetGameOSEnvironment( PSTR CommandLine )
 {
 	CommandLine=CommandLine;
 	Environment.applicationName			= "MechCmdr2";

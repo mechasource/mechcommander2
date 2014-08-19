@@ -25,7 +25,7 @@ class LogisticsComponent
 
 		LogisticsComponent( );
 		~LogisticsComponent();
-		int init( char* dataLine );
+		int init( PSTR dataLine );
 
 		inline int getID() const { return ID; }
 		inline int getType() const { return Type; }
@@ -79,8 +79,8 @@ class LogisticsComponent
 		int iconX;
 		int iconY;
 
-		char* iconFileName;
-		char* pictureFileName;
+		PSTR iconFileName;
+		PSTR pictureFileName;
 		int range;
 		WEAPON_RANGE rangeType;
 
@@ -90,20 +90,20 @@ class LogisticsComponent
 		float weight;
 		int cost;
 		float heat;
-		char* name;
-		char* flavorText;
+		PSTR name;
+		PSTR flavorText;
 
 		bool	bHead;
 		bool	bTorso;
 		bool	bLegs;
 		bool	bAvailable;
 
-		static	char* s_typeString[];
+		static	PSTR s_typeString[];
 
 		// HELPERS
-		int extractString( char*& pFileLine, char* pBuffer, int bufferLength );
-		int extractInt( char*& pFileLine );
-		float extractFloat( char*& pFileLine );
+		int extractString( PSTR& pFileLine, PSTR pBuffer, int bufferLength );
+		int extractInt( PSTR& pFileLine );
+		float extractFloat( PSTR& pFileLine );
 
 
 

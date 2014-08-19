@@ -172,11 +172,11 @@ class MoverGroup {
 
 		virtual long handleTacticalOrder (TacticalOrder tacOrder, long priority, Stuff::Vector3D* jumpGoalList = NULL, bool queueGroupOrder = false);
 
-		long orderMoveToPoint (bool setTacOrder, long origin, Stuff::Vector3D location, unsigned long params);
+		long orderMoveToPoint (bool setTacOrder, long origin, Stuff::Vector3D location, ULONG params);
 
-		long orderMoveToObject (bool setTacOrder, long origin, GameObjectPtr target, long fromArea, unsigned long params);
+		long orderMoveToObject (bool setTacOrder, long origin, GameObjectPtr target, long fromArea, ULONG params);
 
-		long orderTraversePath (long origin, WayPathPtr wayPath, unsigned long params);
+		long orderTraversePath (long origin, WayPathPtr wayPath, ULONG params);
 
 		long orderPatrolPath (long origin, WayPathPtr wayPath);
 
@@ -184,7 +184,7 @@ class MoverGroup {
 
 		long orderPowerUp (long origin);
 
-		long orderAttackObject (long origin, GameObjectPtr target, long attackType, long attackMethod, long attackRange, long aimLocation, long fromArea, unsigned long params);
+		long orderAttackObject (long origin, GameObjectPtr target, long attackType, long attackMethod, long attackRange, long aimLocation, long fromArea, ULONG params);
 
 		long orderWithdraw (long origin, Stuff::Vector3D location);
 
@@ -192,17 +192,17 @@ class MoverGroup {
 
 		//--------------
 		// Combat Events
-		void triggerAlarm (long alarmCode, unsigned long triggerId);
+		void triggerAlarm (long alarmCode, ULONG triggerId);
 
-		long handleMateCrippled (unsigned long mateWID);
+		long handleMateCrippled (ULONG mateWID);
 
-		long handleMateDisabled (unsigned long mateWID);
+		long handleMateDisabled (ULONG mateWID);
 
-		long handleMateDestroyed (unsigned long mateWID);
+		long handleMateDestroyed (ULONG mateWID);
 
-		long handleMateEjected (unsigned long mateWID);
+		long handleMateEjected (ULONG mateWID);
 
-		void handleMateFiredWeapon (unsigned long mateWID);
+		void handleMateFiredWeapon (ULONG mateWID);
 
 		static void sortMovers (long numMoversInGroup, MoverPtr* moverList, Stuff::Vector3D dest);
 

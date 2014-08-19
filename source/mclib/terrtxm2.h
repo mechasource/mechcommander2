@@ -105,7 +105,7 @@ class TerrainColorMap
 			destroy();
 		}
 
-		long init (char *fileName);
+		long init (PSTR fileName);
 
 		void getColorMapData (MemoryPtr ourRAM, long index, long width);
 				
@@ -187,17 +187,17 @@ class TerrainColorMap
  		//Mike, these functions will reload these textures from disk.
 		// This allows us to change them in the editor and reload here.
 		// Pass in the filename of the mission!!!!
-		void resetBaseTexture (char *fileName);
+		void resetBaseTexture (PSTR fileName);
 		void resetDetailTexture (PCSTR fileName);
 		void resetWaterTexture (PCSTR fileName);
-		void resetWaterDetailTextures (char *fileName);
+		void resetWaterDetailTextures (PSTR fileName);
 		
 		//Pass in filename of height map to write new data to.
-		void refractalizeBaseMesh (char *fileName, long Threshold, long Noise);
+		void refractalizeBaseMesh (PSTR fileName, long Threshold, long Noise);
 		
-		void burnInShadows (bool doBumpPass = true, char * fileName = NULL);
+		void burnInShadows (bool doBumpPass = true, PSTR  fileName = NULL);
 		
-		void recalcLight(char *fileName);
+		void recalcLight(PSTR fileName);
 
 		static long getNumTypes (void)
 		{

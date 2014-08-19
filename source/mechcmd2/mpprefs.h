@@ -39,7 +39,7 @@ class MPPrefs: public LogisticsScreen
 		int init( FitIniFile& file );
 		virtual void update();
 		virtual void render( int OffsetX, int OffsetY );
-		virtual int	handleMessage( unsigned long message, unsigned long who );
+		virtual int	handleMessage( ULONG message, ULONG who );
 		virtual void begin();
 		virtual void end();
 		void			initColors();
@@ -47,7 +47,7 @@ class MPPrefs: public LogisticsScreen
 		void	saveSettings();
 		void	cancelSettings();
 
-		void setMechColors( unsigned long base, unsigned long highlight ); // called by MPlayer when it resets a color
+		void setMechColors( ULONG base, ULONG highlight ); // called by MPlayer when it resets a color
 
 	private:
 		MPPrefs( const MPPrefs& src );
@@ -60,9 +60,9 @@ class MPPrefs: public LogisticsScreen
 		// HELPERS
 		void	updateStripeColors(const _MC2Player* players, long playerCount, bool bDrawRect );
 		void	updateBaseColors( const _MC2Player* players, long playerCount, bool bDrawRect);
-		char	getColorIndex( unsigned long color );
-		void	setColor( unsigned long color );
-		void	setHighlightColor( unsigned long color );
+		char	getColorIndex( ULONG color );
+		void	setColor( ULONG color );
+		void	setHighlightColor( ULONG color );
 
 		static MPPrefs* s_instance;
 

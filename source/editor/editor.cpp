@@ -33,9 +33,9 @@ float MaxMinUV = 8.0f;
 
 Stuff::MemoryStream *effectStream = NULL;
 
-unsigned long systemHeapSize = 8192000;
-unsigned long guiHeapSize = 1023999;
-unsigned long tglHeapSize = 65536000;
+ULONG systemHeapSize = 8192000;
+ULONG guiHeapSize = 1023999;
+ULONG tglHeapSize = 65536000;
 
 DWORD BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
 
@@ -56,12 +56,12 @@ DWORD gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
 float gosFontScale = 1.0;
 FloatHelpPtr globalFloatHelp = NULL;
-unsigned long currentFloatHelp = 0;
+ULONG currentFloatHelp = 0;
 extern float CliffTerrainAngle;
 
 extern bool gNoDialogs;
 
-char* ExceptionGameMsg = NULL; // some debugging thing I think
+PSTR ExceptionGameMsg = NULL; // some debugging thing I think
 
 bool quitGame = FALSE;
 
@@ -100,7 +100,7 @@ MidLevelRenderer::MLRClipper *  theClipper = NULL;
 
 // called by gos
 //---------------------------------------------------------------------------
-char* GetGameInformation() 
+PSTR GetGameInformation() 
 {
 	return(ExceptionGameMsg);
 }
@@ -223,7 +223,7 @@ void InitializeGameEngine()
 
 	char temp[256];
 	cLoadString( IDS_FLOAT_HELP_FONT, temp, 255 );
-	char* pStr = strstr( temp, "," );
+	PSTR pStr = strstr( temp, "," );
 	if ( pStr )
 	{
 		gosFontScale = atoi( pStr + 2 );
@@ -516,7 +516,7 @@ void InitializeGameEngine()
 	// Read in Prefs.cfg
 	FitIniFilePtr prefs = new FitIniFile;
 
-	Environment.Key_Exit= (unsigned long)-1;
+	Environment.Key_Exit= (ULONG)-1;
 
 
 #ifdef _DEBUG
@@ -688,7 +688,7 @@ void InitializeGameEngine()
 		long result = loader.open( guiloader );
 		gosASSERT(result == NO_ERR);
 	
-		editor->init( (char*)guiloader );
+		editor->init( (PSTR)guiloader );
 	}
 	
 	//---------------------------------------------------------
@@ -871,12 +871,12 @@ void TerminateGameEngine()
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
-void ParseCommandLine(char *command_line)
+void ParseCommandLine(PSTR command_line)
 {
 	int i;
 	int n_args = 0;
 	int index = 0;
-	char *argv[30];
+	PSTR argv[30];
 	
 	char tempCommandLine[4096];
 	memset(tempCommandLine,0,4096);
@@ -956,7 +956,7 @@ void ParseCommandLine(char *command_line)
 }
 
 //---------------------------------------------------------------------
-void GetGameOSEnvironment( char* CommandLine )
+void GetGameOSEnvironment( PSTR CommandLine )
 {
 	ParseCommandLine(CommandLine);
 

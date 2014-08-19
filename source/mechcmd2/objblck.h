@@ -82,7 +82,7 @@ struct OldObjData
 	short				pixelOffsetY;	//Distance from vertex 0 of tile.
 	short				vertexNumber;	//Vertex Number in Block.
 	short				blockNumber;	//Which terrain Block.
-	unsigned long		damage;			//Damage
+	ULONG		damage;			//Damage
 	float				positionX;		//Where, physically is object.  TOO DAMNED HARD TO CALCULATE!!!!!!!!
 	float 				positionY;
 };
@@ -114,13 +114,13 @@ class ObjectBlockManager
 	//-------------
 	protected:
 	
-		unsigned long		terrainObjectHeapSize;	//Size of TerrainObject Heap
+		ULONG		terrainObjectHeapSize;	//Size of TerrainObject Heap
 		UserHeapPtr			terrainObjectHeap;		//Pointer to Heap.
 
 		ObjectQueueNodePtr	*objectQueues;			//Array of QueueNode Ptrs for each
 													//Active block of terrain.
 
-		unsigned long		numObjectsInDataBlock;	//Number of objects to be read/written
+		ULONG		numObjectsInDataBlock;	//Number of objects to be read/written
 		ObjDataPtr			objDataBlock;			//Block of object data to read/write
 		
 		PacketFilePtr		objectDataFile;			//Packet file with blocks in it.
@@ -129,7 +129,7 @@ class ObjectBlockManager
 	//-----------------
 	protected:
 	
-		long setupObjectQueue (unsigned long blockNum, unsigned long blockSize);
+		long setupObjectQueue (ULONG blockNum, ULONG blockSize);
 
 	public:
 	
@@ -153,7 +153,7 @@ class ObjectBlockManager
 		
 		void destroy (void);
 		
-		long init (char *packetFileName);
+		long init (PSTR packetFileName);
 		
 		~ObjectBlockManager (void)
 		{

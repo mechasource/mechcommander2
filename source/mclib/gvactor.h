@@ -111,7 +111,7 @@ class GVAppearanceType : public AppearanceType
 			destroy();
 		}
 
-		virtual void init (char *fileName);
+		virtual void init (PSTR fileName);
 		
 		virtual void destroy (void);
 		
@@ -338,7 +338,7 @@ class GVAppearance : public ObjectAppearance
 
 		virtual long getLowestWeaponNode (void);
 		
-		virtual Stuff::Vector3D getNodeNamePosition (char *nodeName);
+		virtual Stuff::Vector3D getNodeNamePosition (PSTR nodeName);
 		
  		virtual bool PerPolySelect (long mouseX, long mouseY);
 		

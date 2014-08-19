@@ -40,9 +40,9 @@ public:
 	FIDPMessage *	messageDescriptor;
 	uint32_t	fileID;
 	FILE *			fileToTransfer;
-	char *			fileName;
-	char *			relativeFilePath;
-	unsigned long	fileSize;
+	PSTR 			fileName;
+	PSTR 			relativeFilePath;
+	ULONG	fileSize;
 	int				percentDone;
 	
 	
@@ -57,9 +57,9 @@ public:
 	FileTransferInfo(
 		DPID this_player_id,
 		DPID receiver_id,
-		char *file_name,
-		char *file_path,
-		unsigned long size = 0,
+		PSTR file_name,
+		PSTR file_path,
+		ULONG size = 0,
 		TransferType transfer_direction = FTSend);
 	
 	virtual ~FileTransferInfo();

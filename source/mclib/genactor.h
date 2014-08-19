@@ -123,7 +123,7 @@ class GenericAppearanceType : public AppearanceType
 			return false;
 		}
 		
-  		virtual void init (char *fileName);
+  		virtual void init (PSTR fileName);
 		
 		virtual void destroy (void);
 };
@@ -166,7 +166,7 @@ class GenericAppearance : public ObjectAppearance
 			return appearType;
 		}
 
-		void changeSkyToSkyNum (char *txmName, char *newName);
+		void changeSkyToSkyNum (PSTR txmName, PSTR newName);
 		
 		GenericAppearance (void)
 		{

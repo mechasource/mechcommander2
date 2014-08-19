@@ -158,7 +158,7 @@ extern void DebugWeaponFireChunk (WeaponFireChunkPtr chunk1, WeaponFireChunkPtr 
 // EXTERNS
 
 //extern ObjectMapPtr			GameObjectMap;
-extern unsigned long		NextIdNumber;
+extern ULONG		NextIdNumber;
 
 #ifdef USE_SOUNDS
 extern bool					friendlyDestroyed;
@@ -205,7 +205,7 @@ float WeaponFireModifiers[NUM_WEAPONFIRE_MODIFIERS] = {
 };
 
 extern float				WarriorRankScale[NUM_WARRIOR_RANKS];
-extern char *				SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
+extern PSTR 				SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
 
 float						WeaponSpecialistModifier = 20.0f;
 
@@ -232,7 +232,7 @@ extern bool CantBlowSalvage;
 long TargetRolo = -1;
 WeaponFireChunk CurMoverWeaponFireChunk;
 
-extern char* ExceptionGameMsg;
+extern PSTR ExceptionGameMsg;
 extern char ChunkDebugMsg[5120];
 
 extern char OverlayIsBridge[NUM_OVERLAY_TYPES];
@@ -440,7 +440,7 @@ short Mover::rangedCellsIndices[MAX_ATTACK_CELLRANGE][2];
 char Mover::rangedCells[RANGED_CELLS_DIM][2];
 TriggerAreaManager* Mover::triggerAreaMgr = NULL;
 
-unsigned long Mover::holdFireIconHandle = 0;
+ULONG Mover::holdFireIconHandle = 0;
 
 float HeadShotModifier = 0.0f;
 float ArmShotModifier = 0.0f;
@@ -448,7 +448,7 @@ float LegShotModifier = 0.0f;
 
 bool CalcValidAreaTable = true;
 
-void DEBUGWINS_print (char* s, long window);
+void DEBUGWINS_print (PSTR s, long window);
 
 //***************************************************************************
 // MISC routines
@@ -1363,7 +1363,7 @@ void StatusChunk::unpack (MoverPtr mover) {
 
 	StatusChunkUnpackErr = 0;
 
-	unsigned long tempData = data;
+	ULONG tempData = data;
 
 	bodyState = (tempData & STATUSCHUNK_BODYSTATE_MASK);
 	tempData >>= STATUSCHUNK_BODYSTATE_BITS;
@@ -2388,7 +2388,7 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 	if (sensorSystem)
 	sensorRange = (long)sensorSystem->getEffectiveRange();
 	long contStat = contactInfo->getContactStatus(0, true);
-	static char* contactStr[NUM_CONTACT_STATUSES] = {
+	static PSTR contactStr[NUM_CONTACT_STATUSES] = {
 		"        ",
 		"SENSOR_1",
 		"SENSOR_2",
@@ -2528,7 +2528,7 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 				strcat(s, " +");
 			debugWindow->print(s);
 		}
-		static char* moveStateStr[NUM_MOVESTATES] = {
+		static PSTR moveStateStr[NUM_MOVESTATES] = {
 			"SS",
 			"FF",
 			"RR",
@@ -2568,7 +2568,7 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 		debugWindow->print(s);
 		}
 	else if (debugPage == 2) {
-		static char* locationStrings [] = {
+		static PSTR locationStrings [] = {
 			"head:     ",
 			"c torso:  ",
 			"l torso:  ",
@@ -2586,7 +2586,7 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 			"rear:     ",
 			"turret:   "
 		};
-		static char* bodyState[] = {
+		static PSTR bodyState[] = {
 			"normal",
 			"DAM",
 			"DEST"
@@ -3014,7 +3014,7 @@ void Mover::destroy (void)
 
 //----------------------------------------------------------------------------------
 
-Stuff::Vector3D Mover::relativePosition (float angle, float distance, unsigned long flags) {
+Stuff::Vector3D Mover::relativePosition (float angle, float distance, ULONG flags) {
 
 	//--------------------------------------------------------
 	// Note that the angle should be -180 <= angle <= 180, and
@@ -3306,7 +3306,7 @@ void Mover::reduceAntiMissileAmmo (long numAntiMissiles) {
 
 //----------------------------------------------------------------------------------
 
-void Mover::pilotingCheck (unsigned long situation, float modifier) {
+void Mover::pilotingCheck (ULONG situation, float modifier) {
 
 	failedPilotingCheck = false;
 }
@@ -3341,7 +3341,7 @@ void Mover::setPilotHandle (long _pilotHandle) {
 
 //---------------------------------------------------------------------------
 
-void Mover::loadPilot (char* pilotFileName, char* brainFileName, LogisticsPilot *lPilot) {
+void Mover::loadPilot (PSTR pilotFileName, PSTR brainFileName, LogisticsPilot *lPilot) {
 
 	if (pilot) {
 		MechWarrior::freeWarrior(pilot);
@@ -3507,7 +3507,7 @@ void Mover::printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* tar
 	if (!CombatLog)
 		return;
 
-	static char* locationStrings [] = {
+	static PSTR locationStrings [] = {
 		"head",
 		"center torso",
 		"left torso",
@@ -3523,7 +3523,7 @@ void Mover::printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* tar
 
 	if (roll < chance) {
 		if (target) {
-			char* targetName = target->getName();
+			PSTR targetName = target->getName();
 			char s[1024];
 			if (getObjectClass() == BATTLEMECH)
 				sprintf(s, "[%.2f] mech.fireWeapon HIT: (%05d)%s @ (%05d)%s", scenarioTime, getPartId(), name, target->getPartId(), targetName ? targetName : "unknown");
@@ -3551,7 +3551,7 @@ void Mover::printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* tar
 		}
 	else {
 		if (target) {
-			char* targetName = target->getName();
+			PSTR targetName = target->getName();
 			char s[1024];
 			if (getObjectClass() == BATTLEMECH)
 				sprintf(s, "[%.2f] mech.fireWeapon MISS: (%05d)%s @ (%05d)%s", scenarioTime, getPartId(), name, target->getPartId(), targetName ? targetName : "unknown");
@@ -3588,7 +3588,7 @@ void Mover::printHandleWeaponHitDebugInfo (WeaponShotInfo* shotInfo) {
 	if (!CombatLog)
 		return;
 
-	static char* locationStrings [] = {
+	static PSTR locationStrings [] = {
 		"head",
 		"center torso",
 		"left torso",
@@ -3682,7 +3682,7 @@ long Mover::addWeaponFireChunk (long which, WeaponFireChunkPtr chunk) {
 
 //---------------------------------------------------------------------------
 
-long Mover::addWeaponFireChunks (long which, unsigned long* packedChunkBuffer, long numChunks) {
+long Mover::addWeaponFireChunks (long which, ULONG* packedChunkBuffer, long numChunks) {
 
 	if ((numWeaponFireChunks[which] + numChunks) >= MAX_WEAPONFIRE_CHUNKS)
 		Fatal(0, " Mover::addWeaponFireChunks--Too many weaponfire chunks ");
@@ -3706,7 +3706,7 @@ long Mover::addWeaponFireChunks (long which, unsigned long* packedChunkBuffer, l
 
 //---------------------------------------------------------------------------
 
-long Mover::grabWeaponFireChunks (long which, unsigned long* packedChunkBuffer, long maxChunks) {
+long Mover::grabWeaponFireChunks (long which, ULONG* packedChunkBuffer, long maxChunks) {
 
 	long numChunks = numWeaponFireChunks[which];
 	if (numChunks > maxChunks)
@@ -4370,7 +4370,7 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 						  Stuff::Vector3D& newGoal,
 						  long numValidAreas,
 						  short* validAreas,
-						  unsigned long moveParams) {
+						  ULONG moveParams) {
 
 	__int64 startTime = 0;
 
@@ -4948,7 +4948,7 @@ long Mover::calcMovePath (MovePathPtr path,
 						  Stuff::Vector3D start,
 						  Stuff::Vector3D goal,
 						  long* goalCell,
-						  unsigned long moveParams) {
+						  ULONG moveParams) {
 
 	//-------------------------------------------------------------------------
 	// This assumes the goal is already the "optimum" goal (it should have been
@@ -5127,7 +5127,7 @@ long Mover::calcEscapePath (MovePathPtr path,
 							Stuff::Vector3D start,
 							Stuff::Vector3D goal,
 							long* goalCell,
-							unsigned long moveParams,
+							ULONG moveParams,
 							Stuff::Vector3D& escapeGoal) {
 
 	//------------------------------------------
@@ -5398,7 +5398,7 @@ long Mover::calcMovePath (MovePathPtr path,
 						  Stuff::Vector3D finalGoal,
 						  Stuff::Vector3D* goal,
 						  long* goalCell,
-						  unsigned long moveParams) {
+						  ULONG moveParams) {
 
 	//-------------------------------------------------------------------------
 	// This assumes the goal is already the "optimum" goal (it should have been
@@ -6473,7 +6473,7 @@ void Mover::ammoExplosion (long ammoIndex) {
 }
 
 //---------------------------------------------------------------------------
-void Mover::disable (unsigned long cause) 
+void Mover::disable (ULONG cause) 
 {
 	//-------------------------------------------------
 	// Immediately begin shutting down, then disable...
@@ -6994,7 +6994,7 @@ void Mover::initOptimalCells (long numIncrements) {
 // MOVE ROUTINES CALLBACKS
 //***************************************************************************
 
-void GetBlockedDoorCells (long moveLevel, long door, char* openCells) {
+void GetBlockedDoorCells (long moveLevel, long door, PSTR openCells) {
 
 	Assert((door > -1) && (door < GlobalMoveMap[moveLevel]->numDoors), 0, " FUDGE 1");
 	Assert((GlobalMoveMap[moveLevel]->doors[door].direction[0] == 1) || (GlobalMoveMap[moveLevel]->doors[door].direction[0] == 2), 0, " FUDGE 2");

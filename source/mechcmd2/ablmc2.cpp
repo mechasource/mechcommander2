@@ -133,7 +133,7 @@ extern bool 			enemyDestroyed;
 extern bool 			invulnerableON;		//Used for tutorials so mechs can take damage, but look like they are taking damage!  Otherwise, I'd just use NOPAIN!!
 
 void DEBUGWINS_setGameObject (long debugObj, GameObjectPtr obj);
-void DEBUGWINS_print (char* s, long window);
+void DEBUGWINS_print (PSTR s, long window);
 
 //*****************************************************************************
 // MISC AI
@@ -1117,7 +1117,7 @@ void execGetAttackers (void) {
 
 	long numAttackers = 0;
 	if (CurWarrior)
-		numAttackers = CurWarrior->getAttackers((unsigned long*)attackers, seconds);
+		numAttackers = CurWarrior->getAttackers((ULONG*)attackers, seconds);
 	ABLi_pushInteger(numAttackers);
 }
 
@@ -1140,7 +1140,7 @@ void execGetAttackerInfo (void) {
 	//
 	//-----------------------------------------------------
 
-	unsigned long attackerId = ABLi_popInteger();
+	ULONG attackerId = ABLi_popInteger();
 
 	float timeSince = 1000000.0;
 	if ((attackerId >= MIN_UNIT_PART_ID) && (attackerId <= MAX_UNIT_PART_ID)) {
@@ -1625,7 +1625,7 @@ void execOrderMoveTo (void) {
 	location.y = coordList[1];
 	location.z = coordList[2];
 	
-	unsigned long params = TACORDER_PARAM_NONE;
+	ULONG params = TACORDER_PARAM_NONE;
 	if (run)
 		params |= TACORDER_PARAM_RUN;
 
@@ -1653,7 +1653,7 @@ void execOrderMoveToObject (void) {
 	//
 	//-----------------------------------------------------
 
-	unsigned long objectId = ABLi_popInteger();
+	ULONG objectId = ABLi_popInteger();
 	bool run = ABLi_popBoolean();
 
 	if (ABLi_getSkipOrder()) {
@@ -1790,7 +1790,7 @@ void execOrderAttackObject (void) {
 	//
 	//-----------------------------------------------------
 
-	unsigned long objectId = ABLi_popInteger();
+	ULONG objectId = ABLi_popInteger();
 	long attackType = ABLi_popInteger();
 	long attackMethod = ABLi_popInteger();
 	long attackRange = ABLi_popInteger();
@@ -1798,7 +1798,7 @@ void execOrderAttackObject (void) {
 
 	long result = 1;
 	if (!ABLi_getSkipOrder()) {
-		unsigned long params = TACORDER_PARAM_NONE;
+		ULONG params = TACORDER_PARAM_NONE;
 		if (pursue)
 			params |= TACORDER_PARAM_PURSUE;
 
@@ -1848,7 +1848,7 @@ void execOrderAttackContact (void) {
 
 	long result = 1;
 	if (!ABLi_getSkipOrder()) {
-		unsigned long params = TACORDER_PARAM_NONE;
+		ULONG params = TACORDER_PARAM_NONE;
 		if (pursue)
 			params |= TACORDER_PARAM_PURSUE;
 		result = -2;
@@ -2658,7 +2658,7 @@ void execPlayVideo(void) {
 	//
 	//		Returns: integer (result)
 
-	char* fileName = ABLi_popCharPtr();
+	PSTR fileName = ABLi_popCharPtr();
 
 	mission->missionInterface->playMovie(fileName);
 
@@ -4689,7 +4689,7 @@ void execIsTeamCapturing (void) {
 
 	bool targeting = false;
 	GameObjectPtr target = getObject(targetId);
-	unsigned long targetWID = target ? target->getWatchID(false) : 0;
+	ULONG targetWID = target ? target->getWatchID(false) : 0;
 	if (targetWID) {
 		if ((teamId >= OBJ_ID_FIRST_TEAM) && (teamId <= OBJ_ID_LAST_TEAM)) {
 			TeamPtr team = Team::teams[teamId - OBJ_ID_FIRST_TEAM];
@@ -4799,7 +4799,7 @@ void execSetDebugString (void) {
 
 	long objectId = ABLi_popInteger();
 	long stringNum = ABLi_popInteger();
-	char* debugString = ABLi_popCharPtr();
+	PSTR debugString = ABLi_popCharPtr();
 	GameObjectPtr obj = getObject(objectId);
 	if (obj) {
 		MechWarriorPtr pilot = obj->getPilot();
@@ -4896,7 +4896,7 @@ void execConvertCoords (void) {
 void execCoreMoveTo (void) {
 
 	float* location = ABLi_popRealPtr();
-	unsigned long params = (unsigned long)ABLi_popInteger();
+	ULONG params = (ULONG)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -4923,7 +4923,7 @@ void execCoreMoveTo (void) {
 void execCoreMoveToObject (void) {
 
 	long objectID = ABLi_popInteger();
-	unsigned long params = (unsigned long)ABLi_popInteger();
+	ULONG params = (ULONG)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -4961,7 +4961,7 @@ void execCorePower (void) {
 void execCoreAttack (void) {
 
 	long objectID = ABLi_popInteger();
-	unsigned long params = (unsigned long)ABLi_popInteger();
+	ULONG params = (ULONG)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -4981,7 +4981,7 @@ void execCoreAttack (void) {
 void execCoreCapture (void) {
 
 	long objectID = ABLi_popInteger();
-	unsigned long params = (unsigned long)ABLi_popInteger();
+	ULONG params = (ULONG)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -5001,7 +5001,7 @@ void execCoreCapture (void) {
 void execCoreScan (void) {
 
 	long objectID = ABLi_popInteger();
-	unsigned long params = (unsigned long)ABLi_popInteger();
+	ULONG params = (ULONG)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -5021,7 +5021,7 @@ void execCoreScan (void) {
 void execCoreControl (void) {
 
 	long objectID = ABLi_popInteger();
-	unsigned long params = (unsigned long)ABLi_popInteger();
+	ULONG params = (ULONG)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -5066,7 +5066,7 @@ void execSetPilotState (void) {
 	//
 	//-----------------------------------------------------
 
-	unsigned long newStateHandle = ABLi_popInteger();
+	ULONG newStateHandle = ABLi_popInteger();
 	
 	long curStateHandle = ABLi_getCurrentState();
 	if (curStateHandle > 0) {
@@ -6111,7 +6111,7 @@ void execMCPrint (void) {
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_CHAR_PTR:
-			sprintf(s, "char*=%s", (char*)value.data.characterPtr);
+			sprintf(s, "PSTR=%s", (PSTR)value.data.characterPtr);
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_INTEGER_PTR:
@@ -6256,7 +6256,7 @@ void execClearTacOrder (void) {
 
 void execPlayWave (void) {
 
-	char* fileName = ABLi_popCharPtr();
+	PSTR fileName = ABLi_popCharPtr();
 	long type = ABLi_popInteger();
 
 	soundSystem->playSupportSample(-1, fileName);
@@ -6366,14 +6366,14 @@ void execSetKeepMoving (void) {
 
 //*****************************************************************************
 
-void* ablSystemMallocCallback (unsigned long memSize) {
+void* ablSystemMallocCallback (ULONG memSize) {
 
 	return(systemHeap->Malloc(memSize));
 }
 
 //-----------------------------------------------------------------------------
 
-void* ablStackMallocCallback (unsigned long memSize) {
+void* ablStackMallocCallback (ULONG memSize) {
 
 	if (!AblSymbolHeap)
 		Fatal(0, " ablSymbolMallocCallback: NULL heap ");
@@ -6382,7 +6382,7 @@ void* ablStackMallocCallback (unsigned long memSize) {
 
 //-----------------------------------------------------------------------------
 
-void* ablCodeMallocCallback (unsigned long memSize) {
+void* ablCodeMallocCallback (ULONG memSize) {
 
 	if (!AblCodeHeap)
 		Fatal(0, " ablCodeFreeCallback: NULL heap ");
@@ -6391,7 +6391,7 @@ void* ablCodeMallocCallback (unsigned long memSize) {
 
 //-----------------------------------------------------------------------------
 
-void* ablSymbolMallocCallback (unsigned long memSize) {
+void* ablSymbolMallocCallback (ULONG memSize) {
 
 	if (!AblSymbolHeap)
 		Fatal(0, " ablSymbolMallocCallback: NULL heap ");
@@ -6434,7 +6434,7 @@ void ablSymbolFreeCallback (void* memBlock) {
 
 //*****************************************************************************
 
-long ablFileCreateCB (void** file, char* fName) {
+long ablFileCreateCB (void** file, PSTR fName) {
 
 	*file = new File;
 	if (*file == NULL)
@@ -6449,7 +6449,7 @@ long ablFileCreateCB (void** file, char* fName) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileOpenCB (void** file, char* fName) {
+long ablFileOpenCB (void** file, PSTR fName) {
 
 	*file = new File;
 	if (*file == NULL)
@@ -6534,14 +6534,14 @@ long ablFileWriteLongCB (void* file, long value) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteStringCB (void* file, char* buffer) {
+long ablFileWriteStringCB (void* file, PSTR buffer) {
 
 	return(((FilePtr)file)->writeString(buffer));
 }
 
 //*****************************************************************************
 
-void ablDebuggerPrintCallback (char* s) {
+void ablDebuggerPrintCallback (PSTR s) {
 
 	//ABLDebuggerOut->print(s);
 	char msg[1024];
@@ -6551,21 +6551,21 @@ void ablDebuggerPrintCallback (char* s) {
 
 //*****************************************************************************
 
-void ablDebugPrintCallback (char* s) {
+void ablDebugPrintCallback (PSTR s) {
 
 	DEBUGWINS_print(s, 0);
 }
 
 //*****************************************************************************
 
-void ablSeedRandom (unsigned long seed) {
+void ablSeedRandom (ULONG seed) {
 
 	gos_srand(seed);
 }
 
 //*****************************************************************************
 
-void ablFatalCallback (long code, char* s) {
+void ablFatalCallback (long code, PSTR s) {
 
 	STOP((s));
 }

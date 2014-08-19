@@ -42,13 +42,13 @@ class TurretType : public ObjectType {
 	protected:
 
 		float			damageLevel;
-		//unsigned long	dmgLevelClosed;
+		//ULONG	dmgLevelClosed;
 
 	public:
 		
-		unsigned long	blownEffectId;
-		unsigned long	normalEffectId;
-		unsigned long	damageEffectId;
+		ULONG	blownEffectId;
+		ULONG	normalEffectId;
+		ULONG	damageEffectId;
 		
 		float			baseTonnage;
 		
@@ -91,7 +91,7 @@ class TurretType : public ObjectType {
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, unsigned long fileSize);
+		virtual long init (FilePtr objFile, ULONG fileSize);
 
 		long init (FitIniFilePtr objFile);
 		
@@ -149,7 +149,7 @@ class Turret : public TerrainObject {
 		
 		long					netRosterIndex;
 		long					numWeaponFireChunks[2];
-		unsigned long			weaponFireChunks[2][MAX_TURRET_WEAPONFIRE_CHUNKS];
+		ULONG			weaponFireChunks[2][MAX_TURRET_WEAPONFIRE_CHUNKS];
 
 		TG_LightPtr				pointLight;
 		DWORD					lightId;
@@ -247,9 +247,9 @@ class Turret : public TerrainObject {
 
 		long addWeaponFireChunk (long which, WeaponFireChunkPtr chunk);
 
-		long addWeaponFireChunks (long which, unsigned long* packedChunkBuffer, long numChunks);
+		long addWeaponFireChunks (long which, ULONG* packedChunkBuffer, long numChunks);
 
-		long grabWeaponFireChunks (long which, unsigned long* packedChunkBuffer);
+		long grabWeaponFireChunks (long which, ULONG* packedChunkBuffer);
 
 		virtual long updateWeaponFireChunks (long which);
 

@@ -28,8 +28,8 @@ aText*		SalvageListItem::weightText = NULL;
 aText*		SalvageListItem::costText = NULL;
 aObject*	SalvageListItem::cBillsIcon = NULL;
 aObject*	SalvageListItem::weightIcon = NULL;
-GUI_RECT	SalvageListItem::iconRect;
-GUI_RECT	SalvageListItem::rect;
+RECT	SalvageListItem::iconRect;
+RECT	SalvageListItem::rect;
 
 aAnimation*	SalvageListItem::s_pressedAnim = NULL;
 aAnimation*	SalvageListItem::s_highlightAnim = NULL;
@@ -205,15 +205,15 @@ void SalvageMechScreen::render()
 // this animation draw a big white square and looks like crap
 //	if ( !entryAnim.isDone() )
 //	{
-//		unsigned long color = entryAnim.getColor();
-//		GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+//		ULONG color = entryAnim.getColor();
+//		RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 //		drawRect( rect, color );
 //	}
 
 	
 }
 
-int	SalvageMechScreen::handleMessage( unsigned long message, unsigned long who)
+int	SalvageMechScreen::handleMessage( ULONG message, ULONG who)
 {
 	if ( who == 101 )
 	{
@@ -545,7 +545,7 @@ void SalvageListItem::render()
 		pChildren[i]->setColor( color, 1 );
 	}
 		
-	GUI_RECT tmp;
+	RECT tmp;
 	tmp.left = location[0].x + templateCheckButton->width() + 3;
 	tmp.right = tmp.left + rect.right - rect.left;
 	tmp.top = location[0].y;
@@ -561,7 +561,7 @@ bool SalvageListItem::isChecked()
 	return checkButton->isPressed();
 }
 
-int SalvageListItem::handleMessage( unsigned long message, unsigned long who )
+int SalvageListItem::handleMessage( ULONG message, ULONG who )
 {
 	if ( message == aMSG_LEFTMOUSEDOWN )
 	{

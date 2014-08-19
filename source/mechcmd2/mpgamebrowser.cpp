@@ -174,7 +174,7 @@ void MPGameBrowser::render()
 	render(0, 0);
 }
 
-int	MPGameBrowser::handleMessage( unsigned long message, unsigned long who)
+int	MPGameBrowser::handleMessage( ULONG message, ULONG who)
 {
 	if ( RUNNING == status )
 	{
@@ -442,7 +442,7 @@ long aStyle3TextListItem::init( FitIniFile* file, PCSTR blockName )
 
 void aStyle3TextListItem::render()
 {
-	unsigned long color;
+	ULONG color;
 	animGroup.update();
 	if (aListItem::SELECTED == getState())
 	{
@@ -464,7 +464,7 @@ void aStyle3TextListItem::render()
 		animGroup.setState( aAnimGroup::NORMAL );
 		color = animGroup.getCurrentColor( aAnimGroup::NORMAL );
 	}
-	aTextListItem::setColor((unsigned long)color);
+	aTextListItem::setColor((ULONG)color);
 
 	aTextListItem::render();
 }

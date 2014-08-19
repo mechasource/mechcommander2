@@ -290,7 +290,7 @@ int CPrefs::save() {
 	//MoveFileEx(originalPath, backupPath, MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
 
 	FitIniFilePtr prefsFile = new FitIniFile;
-	int result = prefsFile->create( (char*)originalPath );
+	int result = prefsFile->create( (PSTR)originalPath );
 	if (result != NO_ERR)
 	{
 		gosASSERT( false );

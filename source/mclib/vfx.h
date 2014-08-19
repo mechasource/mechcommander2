@@ -76,7 +76,7 @@ extern "C" {
 
 typedef uint8_t  UBYTE;
 typedef unsigned short UWORD;
-typedef unsigned long  ULONG;
+typedef ULONG  ULONG;
 typedef uint8_t  BYTE;
 
 #ifndef WIN32
@@ -397,7 +397,7 @@ extern LONG  VFX_character_width(void *font, LONG character);
 extern LONG  VFX_character_draw(PANE *pane, LONG x, LONG y, void *font,
    LONG character, UBYTE *color_translate);
 extern void  VFX_string_draw(PANE *pane, LONG x, LONG y, void *font,
-   char *string, UBYTE *color_translate);
+   PSTR string, UBYTE *color_translate);
 
 extern LONG  VFX_ILBM_draw(PANE *pane, UBYTE *ILBM_buffer);
 extern void  VFX_ILBM_palette(UBYTE *ILBM_buffer, VFX_RGB *palette);

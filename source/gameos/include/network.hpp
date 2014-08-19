@@ -45,7 +45,7 @@ bool __stdcall gos_CheckConnectionAvailable( int Connection );
 // You can pass the address of the server or NULL for the sub net.
 //
 //
-bool __stdcall gos_ConnectTCP( char* IPAddress, WORD port );
+bool __stdcall gos_ConnectTCP( PSTR IPAddress, WORD port );
 
 
 //
@@ -54,7 +54,7 @@ bool __stdcall gos_ConnectTCP( char* IPAddress, WORD port );
 // You can pass the address of the server or NULL for the sub net.
 //
 //
-bool __stdcall gos_ConnectZoneMatch( char* IPAddress, WORD port );
+bool __stdcall gos_ConnectZoneMatch( PSTR IPAddress, WORD port );
 
 
 //
@@ -74,7 +74,7 @@ bool __stdcall gos_ConnectZoneMatch( char* IPAddress, WORD port );
 //
 // You pass a phone number and number of modem to use. If 0 is passed for the phone number Answer mode will be entered
 //
-//bool __stdcall gos_ConnectModem( char* PhoneNumber, DWORD Modem );
+//bool __stdcall gos_ConnectModem( PSTR PhoneNumber, DWORD Modem );
 
 
 //
@@ -86,7 +86,7 @@ bool __stdcall gos_ConnectZoneMatch( char* IPAddress, WORD port );
 // 3=Failed
 // 4=Waiting for answer
 //
-int __stdcall gos_CreateGame( char* GameName, char* PlayerName, int MaxPlayers, char* GamePassword=0, bool Secure=0, char* UserPassword=0, DWORD dwFlags=0);
+int __stdcall gos_CreateGame( PSTR GameName, PSTR PlayerName, int MaxPlayers, PSTR GamePassword=0, bool Secure=0, PSTR UserPassword=0, DWORD dwFlags=0);
 
 
 //
@@ -100,7 +100,7 @@ int __stdcall gos_CreateGame( char* GameName, char* PlayerName, int MaxPlayers, 
 // 5=Invalid password
 // 6=Too many players in the game
 //
-int __stdcall gos_JoinGame( char* GameName, char* PlayerName, char* GamePassword=0 , char* UserPassword=0);
+int __stdcall gos_JoinGame( PSTR GameName, PSTR PlayerName, PSTR GamePassword=0 , PSTR UserPassword=0);
 
 
 
@@ -118,7 +118,7 @@ void __stdcall gos_Disconnect();
 bool __stdcall gos_NetSetAdvertItem( DWORD player, PCSTR Name , PCSTR  Value);
 
 
-void NGStatsSetPlayerId(char *name, char *passwd);
+void NGStatsSetPlayerId(PSTR name, PSTR passwd);
 
 extern GUID NGStatsPlayerId;
 
@@ -147,7 +147,7 @@ void __stdcall GetGUNDownloadStats( int * tableSize, int * progress );
 // Alphas really have 8 bytes for longs, which this code
 // assumes only 4.  The original line is commented in case
 // something is terribly terribly wrong with the fix.
-//typedef unsigned long int UINT4;
+//typedef ULONG int UINT4;
 typedef unsigned int UINT4;
 
 typedef struct {
@@ -238,8 +238,8 @@ protected:
 													// for every active
 													// browser or server
 	virtual bool __stdcall PrepareRefresh(void) = 0;
-	virtual bool __stdcall Refresh(char *gameID) = 0;
-	virtual bool __stdcall RefreshServerInfo(char *gameID) = 0;
+	virtual bool __stdcall Refresh(PSTR gameID) = 0;
+	virtual bool __stdcall RefreshServerInfo(PSTR gameID) = 0;
 	virtual bool __stdcall StartUpdate(void) = 0;
 	virtual bool __stdcall CancelActivity(void) = 0;
 	virtual bool __stdcall GetNetStatus(void) = 0;
@@ -278,7 +278,7 @@ private:
 
 extern bool __stdcall InitGUNServerBrowser(void);
 extern bool __stdcall InitGUNServerAdvertiser(void);
-extern int __stdcall InitTCPIPServerBrowser(char *szIPAddress=0);
+extern int __stdcall InitTCPIPServerBrowser(PSTR szIPAddress=0);
 extern bool __stdcall InitIPXServerBrowser(void);
 extern bool __stdcall InitLANServerAdvertiser(void);
 

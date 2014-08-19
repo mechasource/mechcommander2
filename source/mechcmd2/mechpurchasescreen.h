@@ -42,7 +42,7 @@ class MechPurchaseScreen: public LogisticsScreen
 
 		void				setMech( LogisticsMech* pMech, bool bFromLB = 0 );
 		void				beginDrag( LogisticsMech* pMech );
-		virtual int			handleMessage( unsigned long, unsigned long );
+		virtual int			handleMessage( ULONG, ULONG );
 
 	private:
 	

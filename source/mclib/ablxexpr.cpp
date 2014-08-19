@@ -44,7 +44,7 @@
 // EXTERNALS
 
 extern long				level;
-extern char*			codeSegmentPtr;
+extern PSTR			codeSegmentPtr;
 extern TokenCodeType	codeToken;
 
 extern StackItem*		stack;
@@ -161,7 +161,7 @@ TypePtr execVariable (SymTableNodePtr idPtr, UseType use) {
 				StaticDataPtr = CurModule->getStaticData();
 			break;
 		case VAR_TYPE_REGISTERED:
-			tempStackItem.address = (char*)idPtr->defn.info.data.registeredData;
+			tempStackItem.address = (PSTR)idPtr->defn.info.data.registeredData;
 			dataPtr = &tempStackItem;
 			break;
 	}
@@ -208,7 +208,7 @@ TypePtr execVariable (SymTableNodePtr idPtr, UseType use) {
 			tos->integer = *((long*)tos->address);
 			}
 		else if (typePtr == CharTypePtr)
-			tos->byte = *((char*)tos->address);
+			tos->byte = *((PSTR)tos->address);
 		else
 			tos->real = *((float*)tos->address);
 	}

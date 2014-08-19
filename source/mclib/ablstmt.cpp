@@ -44,7 +44,7 @@ extern TokenCodeType	statementStartList[];
 extern TokenCodeType	statementEndList[];
 extern SymTableNodePtr	symTableDisplay[];
 extern long				level;
-extern char*			codeBuffer;
+extern PSTR			codeBuffer;
 extern TypePtr			IntegerTypePtr;
 extern TypePtr			RealTypePtr;
 extern TypePtr			BooleanTypePtr;
@@ -79,7 +79,7 @@ TokenCodeType	CaseLabelStartList[] = {
 					TKN_NONE
 				};
 
-SymTableNodePtr forwardState (char* stateName);
+SymTableNodePtr forwardState (PSTR stateName);
 
 //***************************************************************************
 
@@ -129,7 +129,7 @@ void whileStatement (void) {
 
 	// NEW STYLE, using endwhile keyword...
 	getToken();
-	char* loopEndLocation = crunchAddressMarker(NULL);
+	PSTR loopEndLocation = crunchAddressMarker(NULL);
 	
 	TypePtr exprType = expression();
 	if (exprType != BooleanTypePtr)
@@ -158,7 +158,7 @@ void whileStatement (void) {
 void ifStatement (void) {
 
 	getToken();
-	char* falseLocation = crunchAddressMarker(NULL);
+	PSTR falseLocation = crunchAddressMarker(NULL);
 	
 	TypePtr exprType = expression();
 	if (exprType != BooleanTypePtr)
@@ -181,7 +181,7 @@ void ifStatement (void) {
 	// ELSE branch, if necessary...
 	if (curToken == TKN_ELSE) {
 		getToken();
-		char* ifEndLocation = crunchAddressMarker(NULL);
+		PSTR ifEndLocation = crunchAddressMarker(NULL);
 
 		if (curToken != TKN_END_IF)
 			do {
@@ -203,7 +203,7 @@ void ifStatement (void) {
 void forStatement (void) {
 
 	getToken();
-	char* loopEndLocation = crunchAddressMarker(NULL);
+	PSTR loopEndLocation = crunchAddressMarker(NULL);
 	
 	TypePtr forType = NULL;
 	if (curToken == TKN_IDENTIFIER) {
@@ -397,7 +397,7 @@ void switchStatement (void) {
 	//-------------------------
 	// Init the branch table...
 	getToken();
-	char* branchTableLocation = crunchAddressMarker(NULL);
+	PSTR branchTableLocation = crunchAddressMarker(NULL);
 
 CaseItemPtr	caseItemHead = NULL;
 CaseItemPtr	caseItemTail = NULL;
@@ -419,7 +419,7 @@ long caseLabelCount = 0;
 	//----------------------------
 	// Process each CASE branch...
 	bool moreBranches = (curToken == TKN_CASE);
-	char* caseEndChain = NULL;
+	PSTR caseEndChain = NULL;
 	while (moreBranches) {
 		getToken();
 		if (tokenIn(CaseLabelStartList))

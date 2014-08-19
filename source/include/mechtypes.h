@@ -71,12 +71,12 @@ typedef const unsigned long long*	pcuint64_t;
 #ifndef _POINTER_TYPES_DEFINED
 #define _POINTER_TYPES_DEFINED
 typedef signed char*				pint8_t;
-typedef signed short*				pint16_t;
-typedef signed int*					pint32_t;
-typedef signed long long*			pint64_t;
 typedef unsigned char*				puint8_t;
+typedef signed short*				pint16_t;
 typedef unsigned short*				puint16_t;
+typedef signed int*					pint32_t;
 typedef unsigned int*				puint32_t;
+typedef signed long long*			pint64_t;
 typedef unsigned long long*			puint64_t;
 #endif
 
@@ -84,9 +84,6 @@ typedef unsigned long long*			puint64_t;
 typedef const void*					PCVOID;
 typedef const unsigned char*		PCUCHAR;
 typedef const unsigned short*		PCUSHORT;
-
-typedef static const signed int		staticint32_t;
-typedef static const unsigned int	staticuint32_t;
 
 #ifdef __cplusplus
 }

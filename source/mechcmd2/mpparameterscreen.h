@@ -57,7 +57,7 @@ public:
 	virtual void		destroy();
 	virtual void		render();
 	virtual void		update();
-	virtual int			handleMessage( unsigned long message, unsigned long who );
+	virtual int			handleMessage( ULONG message, ULONG who );
 	virtual void		move( float offsetX, float offsetY );
 
 	void				setData(const _MC2Player* data);
@@ -138,7 +138,7 @@ public:
  	virtual void		render( int xOffset, int yOffset );
 	virtual void		render();
 	virtual void		update();
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 	
 	static void			resetCheckBoxes();
 

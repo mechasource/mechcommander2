@@ -63,7 +63,7 @@ template <class T> T
 		Verify((length) <= (available));\
 		Verify(\
 			(size_t)(abs(\
-				reinterpret_cast<char*>(destination)\
+				reinterpret_cast<PSTR>(destination)\
 				 - reinterpret_cast<PCSTR>(source)\
 			)) >= length\
 		);\

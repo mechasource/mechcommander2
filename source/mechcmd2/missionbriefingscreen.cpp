@@ -310,7 +310,7 @@ long	MissionBriefingScreen::getMissionTGA( PCSTR missionName )
 			flipTopToBottom( (PUCHAR)(pHeader + 1), pHeader->pixel_depth, bmpWidth, bmpHeight );
 			
 			// set up the texture
-			long tmpMapTextureHandle = mcTextureManager->textureFromMemory( (unsigned long*)(pHeader+1), gos_Texture_Solid, 0, bmpWidth );
+			long tmpMapTextureHandle = mcTextureManager->textureFromMemory( (ULONG*)(pHeader+1), gos_Texture_Solid, 0, bmpWidth );
 
 			delete mem;
 
@@ -362,7 +362,7 @@ void MissionBriefingScreen::begin()
 	Assert( result == NO_ERR, 0, "couldn't find the MissionNameUseResourceString" );
 	if ( bRes )
 	{
-		unsigned long ulRes;
+		ULONG ulRes;
 		result = fitFile.readIdULong( "MissionNameResourceStringID", ulRes );
 		Assert( result == NO_ERR, 0, "couldn't find the MissionNameResourceStringID" );
 		addItem(ulRes, 0xff005392, -1);
@@ -381,7 +381,7 @@ void MissionBriefingScreen::begin()
 
 	// put in primary objectives
 	fitFile.seekBlock( "Team0Objectives" );
-	unsigned long objectiveCount;
+	ULONG objectiveCount;
 	fitFile.readIdULong( "NumObjectives", objectiveCount );
 	bool bHasSecondary = 0;
 	int count = 0; 
@@ -456,7 +456,7 @@ void MissionBriefingScreen::begin()
 	result = fitFile.readIdBoolean("BlurbUseResourceString", tmpBool);
 	if (NO_ERR == result && tmpBool )
 	{
-		unsigned long tmpInt = 0;
+		ULONG tmpInt = 0;
 		result = fitFile.readIdULong("BlurbResourceStringID", tmpInt);
 		if (NO_ERR == result)
 		{
@@ -591,14 +591,14 @@ void MissionBriefingScreen::addObjectiveButton( float fX, float fY, int count, i
 	}
 }
 
-/*int MissionBriefingScreen::addLBItem( FitIniFile& file, PCSTR itemName, unsigned long color, int ID)
+/*int MissionBriefingScreen::addLBItem( FitIniFile& file, PCSTR itemName, ULONG color, int ID)
 {
 	char buffer[1024];
 	file.readIdString( itemName, buffer, 1023 );
 	return addLBItem( buffer, color, ID);
 }*/
 
-int MissionBriefingScreen::addLBItem( PCSTR text, unsigned long color, int ID)
+int MissionBriefingScreen::addLBItem( PCSTR text, ULONG color, int ID)
 {
 	aTextListItem* pEntry = new aTextListItem( IDS_MN_LB_FONT );
 	pEntry->setID( ID );
@@ -612,7 +612,7 @@ int MissionBriefingScreen::addLBItem( PCSTR text, unsigned long color, int ID)
 
 }
 
-int  MissionBriefingScreen::addItem( int ID, unsigned long color, int LBid)
+int  MissionBriefingScreen::addItem( int ID, ULONG color, int LBid)
 {
 	
 	aTextListItem* pEntry = new aTextListItem( IDS_MN_LB_FONT );
@@ -634,7 +634,7 @@ void MissionBriefingScreen::end()
 
 }
 
-int MissionBriefingScreen::handleMessage( unsigned long msg, unsigned long who )
+int MissionBriefingScreen::handleMessage( ULONG msg, ULONG who )
 {
 	switch( who )
 	{

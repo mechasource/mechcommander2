@@ -30,7 +30,7 @@ class gos_DBCS
 		int m_RefCount;				// used for whether to always cache
 
 	public:
-		unsigned long
+		ULONG
 			m_height,
 			m_width,
 			m_latticeX,

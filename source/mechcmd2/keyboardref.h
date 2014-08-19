@@ -35,7 +35,7 @@ class KeyboardRef: public LogisticsScreen
 
 		void reseed(MissionInterfaceManager::Command* );
 
-		virtual int			handleMessage( unsigned long, unsigned long );
+		virtual int			handleMessage( ULONG, ULONG );
 
 
 	private:

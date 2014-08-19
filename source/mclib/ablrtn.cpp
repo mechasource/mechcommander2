@@ -67,11 +67,11 @@ extern long				MaxBreakPointsPerModule;
 extern long				MaxCodeBufferSize;
 extern ABLModulePtr		CurModule;
 extern ABLModulePtr		CurLibrary;
-extern char*			codeBuffer;
-extern char*			codeBufferPtr;
-extern char*			codeSegmentPtr;
-extern char*			codeSegmentLimit;
-extern char*			statementStartPtr;
+extern PSTR			codeBuffer;
+extern PSTR			codeBufferPtr;
+extern PSTR			codeSegmentPtr;
+extern PSTR			codeSegmentLimit;
+extern PSTR			statementStartPtr;
 extern StackItem*		stack;
 extern StackItemPtr		tos;
 extern StackItemPtr		stackFrameBasePtr;
@@ -108,8 +108,8 @@ extern long				NumSourceFiles;
 extern long				NumLibrariesUsed;
 extern ABLModulePtr		LibrariesUsed[MAX_LIBRARIES_USED];
 extern long				bufferOffset;
-extern char*			bufferp;
-extern char*			tokenp;
+extern PSTR			bufferp;
+extern PSTR			tokenp;
 extern long				digitCount;
 extern bool				countError;
 extern long				pageNumber;
@@ -156,8 +156,8 @@ extern CharCodeType		charTable[256];
 
 extern char				sourceBuffer[MAXLEN_SOURCELINE];
 extern long				bufferOffset;
-extern char*			bufferp;
-extern char*			tokenp;
+extern PSTR			bufferp;
+extern PSTR			tokenp;
 
 extern long				digitCount;
 extern bool				countError;
@@ -201,19 +201,19 @@ extern void transState (SymTableNodePtr newState);
 long					numLibrariesLoaded = 0;
 long					NumExecutions = 0;
 
-void* (*ABLSystemMallocCallback) (unsigned long memSize) = NULL;
-void* (*ABLStackMallocCallback) (unsigned long memSize) = NULL;
-void* (*ABLCodeMallocCallback) (unsigned long memSize) = NULL;
-void* (*ABLSymbolMallocCallback) (unsigned long memSize) = NULL;
+void* (*ABLSystemMallocCallback) (ULONG memSize) = NULL;
+void* (*ABLStackMallocCallback) (ULONG memSize) = NULL;
+void* (*ABLCodeMallocCallback) (ULONG memSize) = NULL;
+void* (*ABLSymbolMallocCallback) (ULONG memSize) = NULL;
 void (*ABLSystemFreeCallback) (void* memBlock) = NULL;
 void (*ABLStackFreeCallback) (void* memBlock) = NULL;
 void (*ABLCodeFreeCallback) (void* memBlock) = NULL;
 void (*ABLSymbolFreeCallback) (void* memBlock) = NULL;
-void (*ABLDebugPrintCallback) (char* s) = NULL;
+void (*ABLDebugPrintCallback) (PSTR s) = NULL;
 long (*ABLRandomCallback) (long range) = NULL;
-void (*ABLSeedRandomCallback) (unsigned long range) = NULL;
-unsigned long (*ABLGetTimeCallback) (void) = NULL;
-void (*ABLFatalCallback) (long code, char* s) = NULL;
+void (*ABLSeedRandomCallback) (ULONG range) = NULL;
+ULONG (*ABLGetTimeCallback) (void) = NULL;
+void (*ABLFatalCallback) (long code, PSTR s) = NULL;
 void (*ABLEndlessStateCallback) (UserFile* log) = NULL;
 
 //***************************************************************************
@@ -275,7 +275,7 @@ TokenCodeType followDeclsList[] = {
 
 void ABL_CloseProfileLog (void);
 void ABL_OpenProfileLog (void);
-void ABL_AddToProfileLog (char* profileString);
+void ABL_AddToProfileLog (PSTR profileString);
 
 //***************************************************************************
 // ABL library interface routines
@@ -288,24 +288,24 @@ long DefaultRandom (long /* range */) {
 
 //---------------------------------------------------------------------------
 
-void DefaultSeedRandom (unsigned long /* seed */) {
+void DefaultSeedRandom (ULONG /* seed */) {
 }
 
 //---------------------------------------------------------------------------
 
-void DefaultDebugPrintCallback (char* /* s */) {
+void DefaultDebugPrintCallback (PSTR /* s */) {
 }
 
 //---------------------------------------------------------------------------
 
-unsigned long DefaultGetTimeCallback (void) {
+ULONG DefaultGetTimeCallback (void) {
 
 	return(0);
 }
 
 //---------------------------------------------------------------------------
 
-void ABLi_setRandomCallbacks (void (*seedRandomCallback) (unsigned long seed),
+void ABLi_setRandomCallbacks (void (*seedRandomCallback) (ULONG seed),
 							  long (*randomCallback) (long range)) {
 
 	ABLSeedRandomCallback = seedRandomCallback;
@@ -314,14 +314,14 @@ void ABLi_setRandomCallbacks (void (*seedRandomCallback) (unsigned long seed),
 
 //---------------------------------------------------------------------------
 
-void ABLi_setDebugPrintCallback (void (*debugPrintCallback) (char* s)) {
+void ABLi_setDebugPrintCallback (void (*debugPrintCallback) (PSTR s)) {
 
 	ABLDebugPrintCallback = debugPrintCallback;
 }
 
 //---------------------------------------------------------------------------
 
-void ABLi_setGetTimeCallback (unsigned long (*getTimeCallback) (void)) {
+void ABLi_setGetTimeCallback (ULONG (*getTimeCallback) (void)) {
 
 	ABLGetTimeCallback = getTimeCallback;
 }
@@ -335,20 +335,20 @@ void ABLi_setEndlessStateCallback (void (*endlessStateCallback) (UserFile* log))
 
 //---------------------------------------------------------------------------
 
-void ABLi_init (unsigned long runtimeStackSize,
-				unsigned long maxCodeBufferSize,
-				unsigned long maxRegisteredModules,
-				unsigned long maxStaticVariables,
-				void* (*systemMallocCallback) (unsigned long memSize),
-				void* (*stackMallocCallback) (unsigned long memSize),
-				void* (*codeMallocCallback) (unsigned long memSize),
-				void* (*symbolMallocCallback) (unsigned long memSize),
+void ABLi_init (ULONG runtimeStackSize,
+				ULONG maxCodeBufferSize,
+				ULONG maxRegisteredModules,
+				ULONG maxStaticVariables,
+				void* (*systemMallocCallback) (ULONG memSize),
+				void* (*stackMallocCallback) (ULONG memSize),
+				void* (*codeMallocCallback) (ULONG memSize),
+				void* (*symbolMallocCallback) (ULONG memSize),
 				void (*systemFreeCallback) (void* memBlock),
 				void (*stackFreeCallback) (void* memBlock),
 				void (*codeFreeCallback) (void* memBlock),
 				void (*symbolFreeCallback) (void* memBlock),
-				long (*fileCreateCB) (void** file, char* fName),
-				long (*fileOpenCB) (void** file, char* fName),
+				long (*fileCreateCB) (void** file, PSTR fName),
+				long (*fileOpenCB) (void** file, PSTR fName),
 				long (*fileCloseCB) (void** file),
 				bool (*fileEofCB) (void* file),
 				long (*fileReadCB) (void* file, PUCHAR buffer, long length),
@@ -358,9 +358,9 @@ void ABLi_init (unsigned long runtimeStackSize,
 				long (*fileWriteCB) (void* file, PUCHAR buffer, long length),
 				long (*fileWriteByteCB) (void* file, uint8_t byte),
 				long (*fileWriteLongCB) (void* file, long value),
-				long (*fileWriteStringCB) (void* file, char* buffer),
-				void (*debuggerPrintCallback) (char* s),
-				void (*fatalCallback) (long code, char* s),
+				long (*fileWriteStringCB) (void* file, PSTR buffer),
+				void (*debuggerPrintCallback) (PSTR s),
+				void (*fatalCallback) (long code, PSTR s),
 				bool debugInfo,
 				bool debug,
 				bool profile) {
@@ -493,7 +493,7 @@ profile = true;
 	//--------------------------------------------------------------------
 	// Allocate the code buffer used during pre-processing/interpreting...
 	MaxCodeBufferSize = maxCodeBufferSize;
-	codeBuffer = (char*)ABLCodeMallocCallback(maxCodeBufferSize);
+	codeBuffer = (PSTR)ABLCodeMallocCallback(maxCodeBufferSize);
 	if (!codeBuffer)
 		ABL_Fatal(0, " ABL: Unable to AblCodeHeap->malloc preprocess code buffer ");
 	
@@ -574,7 +574,7 @@ profile = true;
 
 //***************************************************************************
 
-long ABLi_preProcess (char* sourceFileName, long* numErrors, long* numLinesProcessed, long* numFilesProcessed, bool printLines) {
+long ABLi_preProcess (PSTR sourceFileName, long* numErrors, long* numLinesProcessed, long* numFilesProcessed, bool printLines) {
 
 	//--------------------------------------------------------------------------------
 	// First, check if this module has already been registered into the environment...
@@ -708,18 +708,18 @@ long ABLi_preProcess (char* sourceFileName, long* numErrors, long* numLinesProce
 
 	//--------------------------------------------------
 	// Register the new module in the ABL environment...
-	ModuleRegistry[NumModulesRegistered].fileName = (char*)ABLStackMallocCallback(strlen(sourceFileName) + 1);
+	ModuleRegistry[NumModulesRegistered].fileName = (PSTR)ABLStackMallocCallback(strlen(sourceFileName) + 1);
 	if (!ModuleRegistry[NumModulesRegistered].fileName)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc module filename ");
 	strcpy(ModuleRegistry[NumModulesRegistered].fileName, strlwr(sourceFileName));
 	ModuleRegistry[NumModulesRegistered].moduleIdPtr = moduleIdPtr;
 
 	ModuleRegistry[NumModulesRegistered].numSourceFiles = NumSourceFiles;
-	ModuleRegistry[NumModulesRegistered].sourceFiles = (char**)ABLStackMallocCallback(NumSourceFiles * sizeof(char*));
+	ModuleRegistry[NumModulesRegistered].sourceFiles = (PSTR*)ABLStackMallocCallback(NumSourceFiles * sizeof(PSTR));
 	if (!ModuleRegistry[NumModulesRegistered].sourceFiles)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc sourceFiles ");
 	for (i = 0; i < NumSourceFiles; i++) {
-		ModuleRegistry[NumModulesRegistered].sourceFiles[i] = (char*)ABLStackMallocCallback(strlen(SourceFiles[i]) + 1);
+		ModuleRegistry[NumModulesRegistered].sourceFiles[i] = (PSTR)ABLStackMallocCallback(strlen(SourceFiles[i]) + 1);
 		strcpy(ModuleRegistry[NumModulesRegistered].sourceFiles[i], SourceFiles[i]);
 	}
 
@@ -870,11 +870,11 @@ long ABLi_execute (SymTableNodePtr  moduleIdPtr , SymTableNodePtr /* functionIdP
 					// The following is a little inefficient, but is kept this way to keep it clear.
 					// Once it's verified to work, optimize...
 					long size = formalTypePtr->size;
-					char* dest = (char*)ABLStackMallocCallback((size_t)size);
+					PSTR dest = (PSTR)ABLStackMallocCallback((size_t)size);
 					if (!dest)
 						ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc module formal array param ");
-					char* src = tos->address;
-					char* savePtr = dest;
+					PSTR src = tos->address;
+					PSTR savePtr = dest;
 					memcpy(dest, src, size);
 					tos->address = savePtr;
 				}
@@ -959,7 +959,7 @@ void ABLi_close (void) {
 
 //***************************************************************************
 
-ABLModulePtr ABLi_loadLibrary (char* sourceFileName, long* numErrors, long* numLinesProcessed, long* numFilesProcessed, bool printLines, bool createInstance) {
+ABLModulePtr ABLi_loadLibrary (PSTR sourceFileName, long* numErrors, long* numLinesProcessed, long* numFilesProcessed, bool printLines, bool createInstance) {
 
 	//--------------------------------------------------------------------
 	// Create an instance of it so it may be used from other modules. Note
@@ -1062,10 +1062,10 @@ bool ABLi_enabled (void) {
 
 //***************************************************************************
 
-void ABLi_addFunction (char* name,
+void ABLi_addFunction (PSTR name,
 					   bool isOrder,
-					   char* paramList,
-					   char* returnType,
+					   PSTR paramList,
+					   PSTR returnType,
 					   void (*codeCallback)(void)) {
 
 	enterStandardRoutine(name, -1, isOrder, paramList, returnType, codeCallback);
@@ -1073,7 +1073,7 @@ void ABLi_addFunction (char* name,
 
 //***************************************************************************
 
-long ABLi_registerInteger (char* name, long* address, long numElements) {
+long ABLi_registerInteger (PSTR name, long* address, long numElements) {
 
 	if (strlen(name) >= MAXLEN_TOKENSTRING)
 		ABL_Fatal(0, " ABLi_registerInteger: variable name too long ");
@@ -1096,7 +1096,7 @@ long ABLi_registerInteger (char* name, long* address, long numElements) {
 
 //***************************************************************************
 
-long ABLi_registerReal (char* name, float* address, long /* numElements */) {
+long ABLi_registerReal (PSTR name, float* address, long /* numElements */) {
 
 	if (strlen(name) >= MAXLEN_TOKENSTRING)
 		ABL_Fatal(0, " ABLi_registerInteger: variable name too long ");
@@ -1336,7 +1336,7 @@ void routine (void) {
 
 //***************************************************************************
 
-SymTableNodePtr forwardState (char* stateName) {
+SymTableNodePtr forwardState (PSTR stateName) {
 
 	SymTableNodePtr stateSymbol = searchSymTableForState(stateName, SymTableDisplay[1]);
 	if (stateSymbol)

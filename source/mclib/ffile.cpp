@@ -77,7 +77,7 @@ FastFile::~FastFile (void)
 }
 
 //---------------------------------------------------------------------------
-long FastFile::open (char* fName)
+long FastFile::open (PSTR fName)
 {
 	//-------------------------------------------------------------
 	long fNameLength = strlen(fName);
@@ -139,8 +139,8 @@ long FastFile::open (char* fName)
 
 	//---------------------------------------------
 	//-- First Long is Version Number of FastFile
-	unsigned long result = 0;
-	unsigned long version = 0;
+	ULONG result = 0;
+	ULONG version = 0;
 	result = fread((&version),1,sizeof(long),handle);
 
 	logicalPosition += sizeof(long);
@@ -176,7 +176,7 @@ long FastFile::open (char* fName)
 		files[i].pfe = (FILEENTRY *)malloc(sizeof(FILEENTRY));
 		memset(files[i].pfe,0,sizeof(FILEENTRY));
 
-		unsigned long result = 0;
+		ULONG result = 0;
 		result = fread(files[i].pfe,1,sizeof(FILEENTRY),handle);
 
 		files[i].inuse = FALSE;
@@ -218,7 +218,7 @@ void FastFile::close (void)
 }
 
 //---------------------------------------------------------------------------
-long FastFile::openFast (DWORD hash, char *fName)
+long FastFile::openFast (DWORD hash, PSTR fName)
 {
 	//------------------------------------------------------------------
 	//-- In order to use this, the file name must be part of the index.

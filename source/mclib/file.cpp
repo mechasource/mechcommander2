@@ -55,7 +55,7 @@
 
 //-----------------
 // Static Variables
-unsigned long File::lastError = NO_ERR;
+ULONG File::lastError = NO_ERR;
 bool		  File::logFileTraffic = FALSE;
 
 FilePtr fileTrafficLog = NULL;
@@ -82,7 +82,7 @@ void createTrafficLog (void)
 
 //---------------------------------------------------------------------------
 // Global Functions
-long fileExists (char* fName)
+long fileExists (PSTR fName)
 {
 	struct _stat st;
 	if (_stat(fName,&st) != -1)
@@ -99,7 +99,7 @@ long fileExists (char* fName)
 }
 
 //---------------------------------------------------------------------------
-long fileExistsOnCD (char* fName)
+long fileExistsOnCD (PSTR fName)
 {
 	//Just add the CD path here and see if its there.
 	char bigPath[2048];
@@ -116,7 +116,7 @@ long fileExistsOnCD (char* fName)
 }
 
 //---------------------------------------------------------------------------
-bool file1OlderThan2 (char* file1, char* file2)
+bool file1OlderThan2 (PSTR file1, PSTR file2)
 {
 	if ((fileExists(file1) == 1) && (fileExists(file2) == 1))
 	{
@@ -211,7 +211,7 @@ long File::open (PCSTR fName, FileMode _mode, long numChild)
 	//-------------------------------------------------------------
 	long fNameLength = strlen(fName);
 	
-	fileName = (char *)systemHeap->Malloc(fNameLength+1);
+	fileName = (PSTR )systemHeap->Malloc(fNameLength+1);
 	gosASSERT(fileName != NULL);
 		
 	strncpy(fileName,fName,fNameLength+1);
@@ -418,7 +418,7 @@ long File::open (PCSTR fName, FileMode _mode, long numChild)
 }
 		
 //---------------------------------------------------------------------------
-long File::open (FilePtr _parent, unsigned long fileSize, long numChild)
+long File::open (FilePtr _parent, ULONG fileSize, long numChild)
 {
 	if (_parent && (_parent->fastFile == NULL))
 	{
@@ -486,7 +486,7 @@ long File::open (FilePtr _parent, unsigned long fileSize, long numChild)
 		{
 			maxChildren = 0;
 			inRAM = TRUE;
-			unsigned long result = 0;
+			ULONG result = 0;
 
 			fileImage = (MemoryPtr)malloc(fileSize);
 			if (!fileImage)
@@ -538,13 +538,13 @@ long File::create (PCSTR fName)
 	return (open(fName,CREATE));
 }
 
-long File::createWithCase( char* fName )
+long File::createWithCase( PSTR fName )
 {
 	gosASSERT( !isOpen() );
 	//-------------------------------------------------------------
 	long fNameLength = strlen(fName);
 	
-	fileName = (char *)systemHeap->Malloc(fNameLength+1);
+	fileName = (PSTR )systemHeap->Malloc(fNameLength+1);
 	gosASSERT(fileName != NULL);
 		
 	strncpy(fileName,fName,fNameLength+1);
@@ -797,14 +797,14 @@ long File::seek (long pos, long from)
 }
 
 //---------------------------------------------------------------------------
-long File::read (unsigned long pos, MemoryPtr buffer, long length)
+long File::read (ULONG pos, MemoryPtr buffer, long length)
 {
 	long result = 0;
 
 	if (inRAM && fileImage)
 	{
-		char *readAddress = ((char *)fileImage)+pos;
-		memcpy((char *)buffer,readAddress,length);
+		PSTR readAddress = ((PSTR )fileImage)+pos;
+		memcpy((PSTR )buffer,readAddress,length);
 		return(length);
 	}
 	else if (fastFile)
@@ -842,13 +842,13 @@ uint8_t File::readByte (void)
 
 	if (inRAM && fileImage)
 	{
-		char *readAddress = (char*)fileImage+logicalPosition;
-		memcpy((char *)&value,readAddress,sizeof(value));
+		PSTR readAddress = (PSTR)fileImage+logicalPosition;
+		memcpy((PSTR )&value,readAddress,sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else if (fastFile)
 	{
-		result = fastFile->readFast(fastFileHandle,(char *)&value,sizeof(value));
+		result = fastFile->readFast(fastFileHandle,(PSTR )&value,sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else
@@ -878,13 +878,13 @@ short File::readWord (void)
 
 	if (inRAM && fileImage)
 	{
-		char *readAddress = (char*)fileImage+logicalPosition;
-		memcpy((char *)(&value),readAddress,sizeof(value));
+		PSTR readAddress = (PSTR)fileImage+logicalPosition;
+		memcpy((PSTR )(&value),readAddress,sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else if (fastFile)
 	{
-		result = fastFile->readFast(fastFileHandle,(char *)&value,sizeof(value));
+		result = fastFile->readFast(fastFileHandle,(PSTR )&value,sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else
@@ -916,17 +916,17 @@ short File::readShort (void)
 long File::readLong (void)
 {
 	long value = 0;
-	unsigned long result = 0;
+	ULONG result = 0;
 
 	if (inRAM && fileImage)	
 	{
-		char *readAddress = (char*)fileImage+logicalPosition;
-		memcpy((char *)(&value),readAddress,sizeof(value));
+		PSTR readAddress = (PSTR)fileImage+logicalPosition;
+		memcpy((PSTR )(&value),readAddress,sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else if (fastFile)
 	{
-		result = fastFile->readFast(fastFileHandle,(char *)&value,sizeof(value));
+		result = fastFile->readFast(fastFileHandle,(PSTR )&value,sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else
@@ -967,17 +967,17 @@ bool isNAN(float *pFloat)
 float File::readFloat( void )
 {
 	float value = 0;
-	unsigned long result = 0;
+	ULONG result = 0;
 
 	if (inRAM && fileImage)	
 	{
-		char *readAddress = (char*)fileImage+logicalPosition;
-		memcpy((char *)(&value),readAddress,sizeof(value));
+		PSTR readAddress = (PSTR)fileImage+logicalPosition;
+		memcpy((PSTR )(&value),readAddress,sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else if (fastFile)
 	{
-		result = fastFile->readFast(fastFileHandle,(char *)&value,sizeof(value));
+		result = fastFile->readFast(fastFileHandle,(PSTR )&value,sizeof(value));
 		logicalPosition += sizeof(value);
 	}
 	else
@@ -1037,8 +1037,8 @@ long File::read (MemoryPtr buffer, long length)
 	
 	if (inRAM && fileImage)
 	{
-		char *readAddress = (char *)fileImage+logicalPosition;
-		memcpy((char *)buffer,readAddress,length);
+		PSTR readAddress = (PSTR )fileImage+logicalPosition;
+		memcpy((PSTR )buffer,readAddress,length);
 		logicalPosition += length;
 		return(length);
 	}
@@ -1067,14 +1067,14 @@ long File::read (MemoryPtr buffer, long length)
 }
 
 //---------------------------------------------------------------------------
-long File::readRAW (unsigned long * &buffer, UserHeapPtr heap)
+long File::readRAW (ULONG * &buffer, UserHeapPtr heap)
 {
 	long result = 0;
 	
 	if (fastFile && heap && fastFile->isLZCompressed())
 	{
 		long lzSizeNeeded = fastFile->lzSizeFast(fastFileHandle);
-		buffer = (unsigned long *)heap->Malloc(lzSizeNeeded);
+		buffer = (ULONG *)heap->Malloc(lzSizeNeeded);
 
 		result = fastFile->readFastRAW(fastFileHandle,buffer,lzSizeNeeded);
 		logicalPosition += result;
@@ -1232,9 +1232,9 @@ long File::readLineEx (MemoryPtr buffer, long maxLength)
 }
 
 //---------------------------------------------------------------------------
-long File::write (unsigned long pos, MemoryPtr buffer, long bytes)
+long File::write (ULONG pos, MemoryPtr buffer, long bytes)
 {
-	unsigned long result = 0;
+	ULONG result = 0;
 
 	if (parent == NULL)	
 	{
@@ -1315,7 +1315,7 @@ long File::writeByte (byte value)
 //---------------------------------------------------------------------------
 long File::writeWord (short value)
 {
-	unsigned long result = 0;
+	ULONG result = 0;
 	
 	if (parent == NULL)
 	{
@@ -1364,7 +1364,7 @@ long File::writeShort (short value)
 //---------------------------------------------------------------------------
 long File::writeLong (long value)
 {
-	unsigned long result = 0;
+	ULONG result = 0;
 	
 	if (parent == NULL)
 	{
@@ -1406,7 +1406,7 @@ long File::writeLong (long value)
 //---------------------------------------------------------------------------
 long File::writeFloat (float value)
 {
-	unsigned long result = 0;
+	ULONG result = 0;
 
 	gosASSERT(!isNAN(&value));
 	if (parent == NULL)
@@ -1448,7 +1448,7 @@ long File::writeFloat (float value)
 
 //---------------------------------------------------------------------------
 
-long File::writeString (char *buffer)
+long File::writeString (PSTR buffer)
 {
 	long result = -1;
 	
@@ -1456,7 +1456,7 @@ long File::writeString (char *buffer)
 	{
 		if (isOpen())
 		{
-			char *ch = buffer;
+			PSTR ch = buffer;
 
 			for(; *ch; ++ch)
 				writeByte((byte)* ch);
@@ -1477,7 +1477,7 @@ long File::writeString (char *buffer)
 }
 
 //---------------------------------------------------------------------------
-long File::writeLine (char *buffer)
+long File::writeLine (PSTR buffer)
 {
 	long result = -1;
 	
@@ -1485,7 +1485,7 @@ long File::writeLine (char *buffer)
 	{
 		if (isOpen())
 		{
-			char *ch = buffer;
+			PSTR ch = buffer;
 
 			for(; *ch; ++ch)
 				writeByte((byte)* ch);
@@ -1556,7 +1556,7 @@ bool File::isOpen (void)
 }
 
 //---------------------------------------------------------------------------
-char* File::getFilename (void)
+PSTR File::getFilename (void)
 {
 	return (fileName);
 }
@@ -1582,7 +1582,7 @@ time_t File::getFileMTime (void)
 }
 
 //---------------------------------------------------------------------------
-unsigned long File::getLength (void)
+ULONG File::getLength (void)
 {
 	if (fastFile && (length == 0))
 	{
@@ -1603,19 +1603,19 @@ unsigned long File::getLength (void)
 }
 
 //---------------------------------------------------------------------------
-unsigned long File::fileSize (void)
+ULONG File::fileSize (void)
 {
 	return getLength();
 }
 
 //---------------------------------------------------------------------------
-unsigned long File::getNumLines (void)
+ULONG File::getNumLines (void)
 {
-	unsigned long currentPos = logicalPosition;
-	unsigned long numLines = 0;
+	ULONG currentPos = logicalPosition;
+	ULONG numLines = 0;
 
 	seek(0);
-	for (unsigned long i=0;i<getLength();i++)
+	for (ULONG i=0;i<getLength();i++)
 	{
 		uint8_t check1 = readByte();
 		if (check1 == '\n')

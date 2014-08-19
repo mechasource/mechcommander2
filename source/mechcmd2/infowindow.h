@@ -51,7 +51,7 @@ class InfoWindow
 		static ButtonData	buttonData[2];
 		static StaticInfo*	skillInfos;
 
-		unsigned long		backgroundTexture;
+		ULONG		backgroundTexture;
 		aFont				nameFont;
 		aFont				componentFont;
 
@@ -121,7 +121,7 @@ class InfoWindow
 		static long SCROLLBOXBOTTOM;
 		static long PILOTNAMELEFT;
 
-		static GUI_RECT NameRect;
+		static RECT NameRect;
 
 		static void InfoWindow::init( FitIniFile& file );
 

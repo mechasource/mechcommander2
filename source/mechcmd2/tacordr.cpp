@@ -424,9 +424,9 @@ long TacticalOrder::pack (MoverGroupPtr group, MoverPtr point) {
 	if (code == TACTICAL_ORDER_GUARD) {
 		//GameObjectPtr curTarget = ObjectManager->getByWatchID(targetWID);
 		if (targetWID)
-			tempData |= (unsigned long)TACTICAL_ORDER_GUARD;
+			tempData |= (ULONG)TACTICAL_ORDER_GUARD;
 		else
-			tempData |= (unsigned long)TACORDERCHUNK_CODE_MASK;
+			tempData |= (ULONG)TACORDERCHUNK_CODE_MASK;
 		}
 	else
 		tempData |= (long)code;
@@ -654,7 +654,7 @@ long TacticalOrder::unpack (void) {
 					}
 				else if (targetType == 1) {
 					// Terrain
-					unsigned long targetPartId = (tempData & TACORDERCHUNK_TERRAINPARTID_MASK) + MIN_TERRAIN_PART_ID;
+					ULONG targetPartId = (tempData & TACORDERCHUNK_TERRAINPARTID_MASK) + MIN_TERRAIN_PART_ID;
 					tempData >>= TACORDERCHUNK_TERRAINPARTID_BITS;
 
 					GameObjectPtr obj = ObjectManager->findByPartId(targetPartId);
@@ -686,7 +686,7 @@ long TacticalOrder::unpack (void) {
 				}
 			else if (targetType == 1) {
 				// Terrain
-				unsigned long targetPartId = (tempData & TACORDERCHUNK_TERRAINPARTID_MASK) + MIN_TERRAIN_PART_ID;
+				ULONG targetPartId = (tempData & TACORDERCHUNK_TERRAINPARTID_MASK) + MIN_TERRAIN_PART_ID;
 				tempData >>= TACORDERCHUNK_TERRAINPARTID_BITS;
 
 				GameObjectPtr obj = ObjectManager->findByPartId(targetPartId);
@@ -722,7 +722,7 @@ long TacticalOrder::unpack (void) {
 
 void TacticalOrder::setGroupFlag (long localMoverId, bool set) {
 
-	unsigned long mask = (1 << localMoverId);
+	ULONG mask = (1 << localMoverId);
 	if (set)
 		groupFlags |= mask;
 	else
@@ -810,7 +810,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 			location.x = moveParams.wayPath.points[0];
 			location.y = moveParams.wayPath.points[1];
 			location.z = moveParams.wayPath.points[2];
-			unsigned long params = TACORDER_PARAM_NONE;
+			ULONG params = TACORDER_PARAM_NONE;
 			if (moveParams.wayPath.mode[0] == TRAVEL_MODE_FAST)
 				params |= TACORDER_PARAM_RUN;
 			if (moveParams.wait)
@@ -826,7 +826,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 			}
 			break;
 		case TACTICAL_ORDER_MOVETO_OBJECT: {
-			unsigned long params = TACORDER_PARAM_NONE;
+			ULONG params = TACORDER_PARAM_NONE;
 			if (moveParams.wayPath.mode[0] == TRAVEL_MODE_FAST)
 				params |= TACORDER_PARAM_RUN;
 			if (moveParams.faceObject)
@@ -867,7 +867,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 			break;
 /*
 		case TACTICAL_ORDER_TRAVERSE_PATH: {
-			unsigned long params = TACORDER_PARAM_NONE;
+			ULONG params = TACORDER_PARAM_NONE;
 			if (moveParams.mode == MOVE_MODE_MINELAYING)
 				params |= TACORDER_PARAM_LAY_MINES;
 			warrior->orderTraversePath( unitOrder, TRUE, origin, &moveParams.wayPath, params);
@@ -939,7 +939,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 					
 				if (!target->isDestroyed())
 				{
-					unsigned long params = TACORDER_PARAM_NONE;
+					ULONG params = TACORDER_PARAM_NONE;
 					if (attackParams.obliterate)
 						params |= TACORDER_PARAM_OBLITERATE;
 					if (attackParams.pursue)
@@ -972,7 +972,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 				// If we want to refuse the order if the range is beyond our personal
 				// attack range, uncomment the following if/then...
 				//if (warrior->getVehicle()->getFireRange(attackParams.range) <= warrior->getVehicle()->getFireRange(FIRERANGE_LONGEST)) {
-					unsigned long params = TACORDER_PARAM_NONE;
+					ULONG params = TACORDER_PARAM_NONE;
 					if (attackParams.obliterate)
 						params |= TACORDER_PARAM_OBLITERATE;
 					if (attackParams.pursue)
@@ -1004,7 +1004,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 			// If we want to refuse the order if the range is beyond our personal
 			// attack range, uncomment the following if/then...
 			//if (warrior->getVehicle()->getFireRange(attackParams.range) <= warrior->getVehicle()->getFireRange(FIRERANGE_LONGEST)) {
-				unsigned long params = TACORDER_PARAM_NONE;
+				ULONG params = TACORDER_PARAM_NONE;
 				if (attackParams.obliterate)
 					params |= TACORDER_PARAM_OBLITERATE;
 				if (attackParams.pursue)
@@ -1053,7 +1053,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 					(((GroundVehiclePtr)warrior->getVehicle())->getRefitPoints() > 0.0) &&
 					(warrior->getVehicle()->refitBuddyWID == 0))
 				{
-					unsigned long params = TACORDER_PARAM_FACE_OBJECT;
+					ULONG params = TACORDER_PARAM_FACE_OBJECT;
 					if (moveParams.wayPath.mode[0] == TRAVEL_MODE_FAST)
 						params |= TACORDER_PARAM_RUN;
 
@@ -1088,7 +1088,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 					((warrior->getVehicle()->getObjectClass() == BATTLEMECH && repairBuilding->getFlag(OBJECT_FLAG_MECHBAY)) ||
 					 (warrior->getVehicle()->getObjectClass() == GROUNDVEHICLE && !repairBuilding->getFlag(OBJECT_FLAG_MECHBAY))))
 				{
-					unsigned long params = TACORDER_PARAM_FACE_OBJECT;
+					ULONG params = TACORDER_PARAM_FACE_OBJECT;
 					if (moveParams.wayPath.mode[0] == TRAVEL_MODE_FAST)
 						params |= TACORDER_PARAM_RUN;
 
@@ -1117,7 +1117,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 				stage = -1;
 			break;
 		case TACTICAL_ORDER_DEPLOY_ELEMENTALS: {
-			unsigned long params = TACORDER_PARAM_NONE;
+			ULONG params = TACORDER_PARAM_NONE;
 			if (moveParams.wayPath.mode[0] == TRAVEL_MODE_FAST)
 				params |= TACORDER_PARAM_RUN;
 			if (moveParams.wait)
@@ -1202,7 +1202,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 
 				if (result == TACORDER_FAILURE)
 				{
-					unsigned long params = TACORDER_PARAM_NONE;
+					ULONG params = TACORDER_PARAM_NONE;
 					if (moveParams.wayPath.mode[0] == TRAVEL_MODE_FAST)
 						params |= TACORDER_PARAM_RUN;
 					if (moveParams.faceObject)
@@ -1224,7 +1224,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 					(((GroundVehiclePtr)warrior->getVehicle())->getRecoverPoints() > 0.0) &&
 					(warrior->getVehicle()->recoverBuddyWID == 0))
 				{
-					unsigned long params = TACORDER_PARAM_FACE_OBJECT;
+					ULONG params = TACORDER_PARAM_FACE_OBJECT;
 					if (moveParams.wayPath.mode[0] == TRAVEL_MODE_FAST)
 						params |= TACORDER_PARAM_RUN;
 					result = warrior->orderMoveToObject(unitOrder, false, origin, target, moveParams.fromArea, selectionIndex, params);
@@ -1458,7 +1458,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 								cellRow++;
 								cellCol++;
 								land->cellToWorld(cellRow, cellCol, destination);
-								unsigned long params = TACORDER_PARAM_FACE_OBJECT;
+								ULONG params = TACORDER_PARAM_FACE_OBJECT;
 								result = warrior->orderMoveToPoint(unitOrder, false, origin, destination, selectionIndex, params);
 							}
 						}
@@ -1845,7 +1845,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 						if (target->isDisabled())
 							target->setStatus(OBJECT_STATUS_SHUTDOWN);
 						mission->tradeMover((Mover*)target, Team::home->getId(), Commander::home->getId(), 
-							(char*)LogisticsData::instance->getBestPilot( (target)->tonnage ), "pbrain");
+							(PSTR)LogisticsData::instance->getBestPilot( (target)->tonnage ), "pbrain");
 						((MoverPtr)target)->recoverBuddyWID = warrior->getVehicle()->getWatchID();
 						warrior->getVehicle()->recoverBuddyWID = target->getWatchID();
 						stage++;
@@ -2039,7 +2039,7 @@ void TacticalOrder::destroy (void) {
 
 //***************************************************************************
 
-void TacticalOrder::debugString (MechWarriorPtr pilot, char* s) {
+void TacticalOrder::debugString (MechWarriorPtr pilot, PSTR s) {
 
 	GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 	switch (code) {
@@ -2112,12 +2112,12 @@ void TacticalOrder::debugString (MechWarriorPtr pilot, char* s) {
 			strcpy(s, "eject");
 			break;
 		case TACTICAL_ORDER_ATTACK_OBJECT: {
-			char* tacticCode[] = {"  ", "RT", "LT", "RR", "SF", "TT", "JS"};
+			PSTR tacticCode[] = {"  ", "RT", "LT", "RR", "SF", "TT", "JS"};
 			sprintf(s, "attack obj (%d) %s", target ? target->getPartId() : 0, tacticCode[attackParams.tactic]);
 			}
 			break;
 		case TACTICAL_ORDER_ATTACK_POINT: {
-			char* tacticCode[] = {"  ", "RT", "LT", "RR", "SF", "TT", "JS"};
+			PSTR tacticCode[] = {"  ", "RT", "LT", "RR", "SF", "TT", "JS"};
 			sprintf(s, "attack pt (%.0f, %.0f) %s",
 				attackParams.targetPoint.x,
 				attackParams.targetPoint.y,

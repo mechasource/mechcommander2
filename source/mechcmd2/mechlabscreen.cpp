@@ -26,7 +26,7 @@ MechLabScreen* MechLabScreen::s_instance = 0;
 LogisticsVariantDialog* MechLabScreen::saveDlg = 0;
 LogisticsAcceptVariantDialog* MechLabScreen::acceptDlg = 0;
 
-GUI_RECT MechLabScreen::sensorRects[4] = { 35, 126, 35 + 64, 126 + 64,
+RECT MechLabScreen::sensorRects[4] = { 35, 126, 35 + 64, 126 + 64,
 											35, 126, 35 + 79, 126 + 64,
 											35, 126, 35 + 94, 126 + 64,
 											249, 126, 249 + 79, 126 + 64 };
@@ -172,7 +172,7 @@ int MechLabScreen::init( FitIniFile& file )
 	if ( NO_ERR != comboFile.open( path ) )
 	{
 		char errorStr[255];
-		sprintf( errorStr, "couldn't open file %s", (char*)path );
+		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, errorStr );
 	}
 
@@ -1015,7 +1015,7 @@ void MechLabScreen::swapVariant()
 	selectFirstDiagramComponent();
 }
 
-int	MechLabScreen::handleMessage( unsigned long msg, unsigned long who)
+int	MechLabScreen::handleMessage( ULONG msg, ULONG who)
 {
 	int i;
 

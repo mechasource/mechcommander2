@@ -44,7 +44,7 @@ extern void AG_shape_translate_draw (PANE *pane, void *shape_table,LONG shape_nu
 MemoryPtr tempBuffer = NULL;
 //---------------------------------------------------------------------------
 //
-long scaleDraw (MemoryPtr shapeTable, unsigned long frameNum, long sx, long sy, bool reverse, MemoryPtr fadeTable, bool scaleUp)
+long scaleDraw (MemoryPtr shapeTable, ULONG frameNum, long sx, long sy, bool reverse, MemoryPtr fadeTable, bool scaleUp)
 {
 	//--------------------------------------------------------------
 	// Check GlobalPane and GlobalWindow for validity.

@@ -18,7 +18,7 @@
 // Error Handling routines
 //***************************************************************************
 
-void Fatal (long errCode, char* errMessage) {
+void Fatal (long errCode, PSTR errMessage) {
 
 	char msg[512];
 	sprintf(msg, " [FATAL %d] %s ", errCode, errMessage);
@@ -27,7 +27,7 @@ void Fatal (long errCode, char* errMessage) {
 
 //---------------------------------------------------------------------------
 
-void Assert (bool test, long errCode, char* errMessage) {
+void Assert (bool test, long errCode, PSTR errMessage) {
 
 	if (!test) {
 		char msg[512];

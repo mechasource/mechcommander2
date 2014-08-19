@@ -112,7 +112,7 @@ static long __cdecl atolong(
         PCSTR nptr
         )
 {
-        int c;              /* current char */
+        int c;              /* current PSTR /
         long total;         /* current total */
         int sign;           /* if '-', then negative, otherwise positive */
 
@@ -129,7 +129,7 @@ static long __cdecl atolong(
 
         while (isdigit(c)) {
             total = 10 * total + (c - '0');     /* accumulate digit */
-            c = (int)(uint8_t)*nptr++;    /* get next char */
+            c = (int)(uint8_t)*nptr++;    /* get next PSTR /
         }
 
         if (sign == '-')
@@ -139,21 +139,21 @@ static long __cdecl atolong(
 }
 
 
-static char * __cdecl StrStr (
+static PSTR  __cdecl StrStr (
         PCSTR  str1,
         PCSTR  str2
         )
 {
-        char *cp = (char *) str1;
-        char *s1, *s2;
+        PSTR cp = (PSTR ) str1;
+        PSTR s1, *s2;
 
         if ( !*str2 )
-            return((char *)str1);
+            return((PSTR )str1);
 
         while (*cp)
         {
                 s1 = cp;
-                s2 = (char *) str2;
+                s2 = (PSTR ) str2;
 
                 while ( *s1 && *s2 && !(*s1-*s2) )
                         s1++, s2++;
@@ -168,12 +168,12 @@ static char * __cdecl StrStr (
 
 }
 
-static char * __cdecl StrRev (
-        char * string
+static PSTR  __cdecl StrRev (
+        PSTR  string
         )
 {
-        char *start = string;
-        char *left = string;
+        PSTR start = string;
+        PSTR left = string;
         char ch;
 
         while (*string++)                 /* find end of string */
@@ -219,7 +219,7 @@ static char * __cdecl StrRev (
 #else // single byte
 	#define KReverse		StrRev
 	#define KStrStr			StrStr
-	__inline char * __cdecl KSInc(PCSTR  _pc) { return (char *)(_pc+1); }
+	__inline PSTR  __cdecl KSInc(PCSTR  _pc) { return (PSTR )(_pc+1); }
 	inline 	int EWCSCharLen(PCSTR x){ return 1; }	
 #endif
 #endif
@@ -972,7 +972,7 @@ int EWCharString::Length() const	// number of characters
 #ifdef UNICODE
 	return wcslen( (PWCHAR)m_pBuffer->Data() );
 #else
-	return lstrlen( (char*)m_pBuffer->Data() );
+	return lstrlen( (PSTR)m_pBuffer->Data() );
 #endif
 }
 
@@ -1108,16 +1108,16 @@ unsigned short* EWCharString::CreateUNICODE() const
 	memcpy( p_Ret_String, m_pBuffer->Data(), 2*(m_pBuffer->m_Data_Length + 1) );
 	return p_Ret_String;
 #else
-	 unsigned short* p_Ret_String = new unsigned short[lstrlen((char*)m_pBuffer->Data()) + 1];
+	 unsigned short* p_Ret_String = new unsigned short[lstrlen((PSTR)m_pBuffer->Data()) + 1];
 	 ToUnicode( p_Ret_String, (PUCHAR)m_pBuffer->Data(), m_pBuffer->m_Data_Length + 1 );
 	 return p_Ret_String;
 #endif
 }
 /////////////////////////////////////////////////////////////////
-char* 	EWCharString::CreateMBCS() const
+PSTR 	EWCharString::CreateMBCS() const
 {
 
-	char* p_Ret_String = new char[m_pBuffer->m_Data_Length + 1];
+	PSTR p_Ret_String = new char[m_pBuffer->m_Data_Length + 1];
 
 #ifdef K_UNICODE
 	wcstombs( p_Ret_String, (PWCHAR)(m_pBuffer->Data()), m_pBuffer->m_Data_Length + 1  );
@@ -1140,7 +1140,7 @@ char* 	EWCharString::CreateMBCS() const
 #ifdef K_UNICODE
 
 /////////////////////////////////////////////////////////////////
-EWCharString::EWCharString(const  char* p_String ) 
+EWCharString::EWCharString(const  PSTR p_String ) 
 : m_pBuffer( EBuffer::s_p_Empty_Buffer ) 
 {
 	if ( p_String )
@@ -1174,7 +1174,7 @@ const EWCharString& EWCharString::operator+=( char Char )
 
 
 /////////////////////////////////////////////////////////////////
-EWCharString operator+( const EWCharString& Begin_String, char* p_End_String )
+EWCharString operator+( const EWCharString& Begin_String, PSTR p_End_String )
 {
 	EWCharString RetString( Begin_String );
 	
@@ -1187,7 +1187,7 @@ EWCharString operator+( const EWCharString& Begin_String, char* p_End_String )
 }
 
 /////////////////////////////////////////////////////////////////
-EWCharString operator+( char* p_Begin_String, const EWCharString& End_String )
+EWCharString operator+( PSTR p_Begin_String, const EWCharString& End_String )
 {
 	EWCharString RetString( A2W( p_Begin_String) +  End_String );
 
@@ -1506,7 +1506,7 @@ void EWCharString::Format( PCSTR p_Str, ... )
 		Alloc( Max_Len + 1 );
 	}
 
-	char* pTmp = new char[ Max_Len + 1];
+	PSTR pTmp = new char[ Max_Len + 1];
 
 	vsprintf(pTmp, p_Str, Arg_List_Save);
 

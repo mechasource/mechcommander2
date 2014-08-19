@@ -57,7 +57,7 @@ extern TokenCodeType	statementEndList[];
 
 extern bool  EnterStateSymbol;
 extern ABLModulePtr		CurFSM;
-SymTableNodePtr forwardState (char* stateName);
+SymTableNodePtr forwardState (PSTR stateName);
 extern SymTableNodePtr	CurModuleIdPtr;
 
 //***************************************************************************
@@ -291,7 +291,7 @@ TypePtr factor (void) {
 					}
 				else {
 					thisNode->typePtr = thisType = makeStringType(length);
-					thisNode->info = (char*)ABLSymbolMallocCallback(length + 1);
+					thisNode->info = (PSTR)ABLSymbolMallocCallback(length + 1);
 					if (!thisNode->info)
 						ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc string literal ");
 					strcpy(thisNode->info, curLiteral.value.string);

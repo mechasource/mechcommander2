@@ -138,7 +138,7 @@ extern float WeaponRanges[NUM_WEAPON_RANGE_TYPES][2];
 extern float OptimalRangePoints[NUM_WEAPON_RANGE_TYPES];
 extern bool OptimalRangePointInRange[NUM_WEAPON_RANGE_TYPES][3];
 
-extern unsigned long missionHeapSize;
+extern ULONG missionHeapSize;
 
 //--------------------------------------------------
 // Game System Constants -- Declarations here.
@@ -192,7 +192,7 @@ void InitDifficultySettings (FitIniFile *gameSystemFile);
 
 extern long GameVisibleVertices;
 
-void GetBlockedDoorCells (long moveLevel, long door, char* openCells);
+void GetBlockedDoorCells (long moveLevel, long door, PSTR openCells);
 void PlaceStationaryMovers (MoveMap* map);
 void PlaceMovers (void);
 
@@ -203,7 +203,7 @@ extern GameLog* CombatLog;
 bool IsGateDisabled (long objectWID);
 bool IsGateOpen (long objectWID);
 
-DWORD elfHash (char *name);
+DWORD elfHash (PSTR name);
 
 extern char versionStamp[];
 //----------------------------------------------------------------------------------------------------
@@ -275,7 +275,7 @@ void Mission::save (PCSTR saveFileName)
 	//Open the Save File.
 	// Assume path is correct when we get here.
 	PacketFile saveFile;
-	long result = saveFile.create((char *)saveFileName);
+	long result = saveFile.create((PSTR )saveFileName);
 
 	loadProgress = 1.0f;
 
@@ -639,7 +639,7 @@ void Mission::load (PCSTR loadFileName)
 
 	//Open the In-Mission Save packet file.
 	PacketFile loadFile;
-	long result = loadFile.open((char *)loadFileName);
+	long result = loadFile.open((PSTR )loadFileName);
 	if (result != NO_ERR)
 		return;		//Can't load.  No File.  Dialog?  Probably not.
 
@@ -658,7 +658,7 @@ void Mission::load (PCSTR loadFileName)
 	}
 
 	loadFile.seekPacket(currentPacket);
-	char *campName = new char [loadFile.getPacketSize()+1];
+	PSTR campName = new char [loadFile.getPacketSize()+1];
 	loadFile.readPacket(currentPacket,(MemoryPtr)(campName));
 	currentPacket++;
 

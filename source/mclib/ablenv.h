@@ -96,9 +96,9 @@ class UserFile {
 
 		void close (void);
 
-		long open (char* fileName);
+		long open (PSTR fileName);
 
-		void write (char* s);
+		void write (PSTR s);
 
 		static void setup (void);
 
@@ -136,10 +136,10 @@ typedef struct {
 } ModuleInfo;
 
 typedef struct {
-	char*					fileName;
+	PSTR					fileName;
 	SymTableNodePtr			moduleIdPtr;
 	long					numSourceFiles;
-	char**					sourceFiles;
+	PSTR*					sourceFiles;
 	long					numLibrariesUsed;
 	ABLModulePtr*			librariesUsed;
 	long					numStaticVars;
@@ -230,13 +230,13 @@ class ABLModule {
 			return(initCalled);
 		}
 
-		char* getFileName (void);
+		PSTR getFileName (void);
 
-		char* getName (void) {
+		PSTR getName (void) {
 			return(name);
 		}
 
-		void setName (char* _name);
+		void setName (PSTR _name);
 
 		size_t* getOrderCallFlags (void) {
 			return(orderCallFlags);
@@ -303,17 +303,17 @@ class ABLModule {
 		long execute (ABLParamPtr paramList = NULL);
 		long execute (ABLParamPtr moduleParamList, SymTableNodePtr functionIdPtr);
 
-		SymTableNodePtr findSymbol (char* symbolName, SymTableNodePtr curFunction = NULL, bool searchLibraries = false);
+		SymTableNodePtr findSymbol (PSTR symbolName, SymTableNodePtr curFunction = NULL, bool searchLibraries = false);
 
-		SymTableNodePtr findFunction (char* functionName, bool searchLibraries = false);
+		SymTableNodePtr findFunction (PSTR functionName, bool searchLibraries = false);
 
-		SymTableNodePtr findState (char* stateName);
+		SymTableNodePtr findState (PSTR stateName);
 
-		long findStateHandle (char* stateName);
+		long findStateHandle (PSTR stateName);
 
-		char* getSourceFile (long fileNumber);
+		PSTR getSourceFile (long fileNumber);
 
-		char* getSourceDirectory (long fileNumber, char* directory);
+		PSTR getSourceDirectory (long fileNumber, PSTR directory);
 
 		void getInfo (ModuleInfo* moduleInfo);
 
@@ -325,21 +325,21 @@ class ABLModule {
 			return(returnVal.integer);
 		}
 
-		long setStaticInteger (char* name, long value);
+		long setStaticInteger (PSTR name, long value);
 
-		long getStaticInteger (char* name);
+		long getStaticInteger (PSTR name);
 
-		long setStaticReal (char* name, float value);
+		long setStaticReal (PSTR name, float value);
 		
-		float getStaticReal (char* name);
+		float getStaticReal (PSTR name);
 
-		long setStaticIntegerArray (char* name, long size, long* values);
+		long setStaticIntegerArray (PSTR name, long size, long* values);
 
-		long getStaticIntegerArray (char* name, long size, long* values);
+		long getStaticIntegerArray (PSTR name, long size, long* values);
 		
-		long setStaticRealArray (char* name, long size, float* values);
+		long setStaticRealArray (PSTR name, long size, float* values);
 
-		long getStaticRealArray (char* name, long size, float* values);
+		long getStaticRealArray (PSTR name, long size, float* values);
 
 		void destroy (void);
 

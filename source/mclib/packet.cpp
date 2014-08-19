@@ -34,7 +34,7 @@
 #include <string.h>
 //---------------------------------------------------------------------------
 extern MemoryPtr 	LZPacketBuffer;
-extern unsigned long LZPacketBufferSize;
+extern ULONG LZPacketBufferSize;
 //---------------------------------------------------------------------------
 // class PacketFile
 void PacketFile::clear (void)
@@ -133,7 +133,7 @@ long PacketFile::checkSumFile (void)
 
 	long sum = 0;
 	MemoryPtr curFileByte = fileMap;
-	for (unsigned long i=4;i<fileSize();i++,curFileByte++)
+	for (ULONG i=4;i<fileSize();i++,curFileByte++)
 	{
 		sum += *curFileByte;
 	}
@@ -203,7 +203,7 @@ PacketFile::~PacketFile (void)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::open (char* fName, FileMode _mode, long numChild)
+long PacketFile::open (PSTR fName, FileMode _mode, long numChild)
 {
 	long openResult = File::open(fName,_mode,numChild);
 	
@@ -217,7 +217,7 @@ long PacketFile::open (char* fName, FileMode _mode, long numChild)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::open (FilePtr _parent, unsigned long fileSize, long numChild)
+long PacketFile::open (FilePtr _parent, ULONG fileSize, long numChild)
 {
 	long result = File::open(_parent,fileSize,numChild);
 	
@@ -229,7 +229,7 @@ long PacketFile::open (FilePtr _parent, unsigned long fileSize, long numChild)
 }
 		
 //---------------------------------------------------------------------------
-long PacketFile::create (char* fName)
+long PacketFile::create (PSTR fName)
 {
 	long openResult = File::create(fName);
 	
@@ -242,7 +242,7 @@ long PacketFile::create (char* fName)
 	return(openResult);
 }
 
-long PacketFile::createWithCase( char* fName )
+long PacketFile::createWithCase( PSTR fName )
 {
 	long openResult = File::createWithCase(fName);
 	
@@ -350,7 +350,7 @@ long PacketFile::readPacket (long packet, PUCHAR buffer)
 					if (LZPacketBuffer)
 					{
 						read(LZPacketBuffer,(packetSize-sizeof(long)));
-						unsigned long decompLength = LZPacketBufferSize;
+						ULONG decompLength = LZPacketBufferSize;
 						long decompResult = uncompress(buffer,&decompLength,LZPacketBuffer,packetSize-sizeof(long));
 						if ((decompResult != Z_OK) || ((long)decompLength != packetUnpackedSize))
 							result = 0;
@@ -599,12 +599,12 @@ long PacketFile::writePacket (long packet, MemoryPtr buffer, long nbytes, uint8_
 		// Find best compression here.
 		// This USED to use LZ.  Use ZLib from now on.
 		// Game will ALWAYS be able to READ LZ Packets!!
-		unsigned long actualSize = nbytes << 1;
+		ULONG actualSize = nbytes << 1;
 		if (actualSize < 4096)
 			actualSize = 4096;
 
-		unsigned long workBufferSize = actualSize;
-		unsigned long oldBufferSize = nbytes;
+		ULONG workBufferSize = actualSize;
+		ULONG oldBufferSize = nbytes;
 		long compressedResult = compress2(workBuffer,&workBufferSize,buffer,nbytes,Z_DEFAULT_COMPRESSION);
 		if (compressedResult != Z_OK)
 			STOP(("Unable to write packet %d to file %s.  Error %d",packet,fileName,compressedResult));

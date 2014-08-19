@@ -12,7 +12,7 @@
 // Fixed length strings are used for error messages. No GOS memory is used and
 // and functions that would cause the string to overrun are simply truncated.
 //
-// Can be initialized, appended to and passed as a char*
+// Can be initialized, appended to and passed as a PSTR
 //
 class FixedLengthString
 {
@@ -22,7 +22,7 @@ class FixedLengthString
 //
 	size_t MaximumLength;
 	size_t CurrentSize;
-	char* Text;
+	PSTR Text;
 //
 // Visible stuff
 //
@@ -33,7 +33,7 @@ class FixedLengthString
 	inline FixedLengthString(size_t Length )
 	{
 		gosASSERT( Length!=0 );
-		Text=(char*)malloc(Length);
+		Text=(PSTR)malloc(Length);
 		MaximumLength=Length;
 		CurrentSize=0;
 		if (Text) *Text=0;
@@ -46,9 +46,9 @@ class FixedLengthString
 		free(Text);
 	}
 //
-// FixedLengthString can be referenced as a char*
+// FixedLengthString can be referenced as a PSTR
 //
-	inline operator char*() const
+	inline operator PSTR() const
 	{
 		return Text;
 	}
@@ -85,7 +85,7 @@ class FixedLengthString
 		return *this;
 	}
 //
-// Strings can be initialized by char* strings
+// Strings can be initialized by PSTR strings
 //
 	inline FixedLengthString& operator = (PCSTR Source)
 	{
@@ -105,9 +105,9 @@ class FixedLengthString
 		return *this;
 	}
 //
-// Strings can be appended with char* strings
+// Strings can be appended with PSTR strings
 //
-	inline FixedLengthString& operator += (char* Source)
+	inline FixedLengthString& operator += (PSTR Source)
 	{
 		size_t Length=strlen(Source)+1;
 
@@ -123,9 +123,9 @@ class FixedLengthString
 		return *this;
 	}
 //
-// Strings can be appended with char* strings
+// Strings can be appended with PSTR strings
 //
-	inline FixedLengthString& operator << (char* Source)
+	inline FixedLengthString& operator << (PSTR Source)
 	{
 		if( Source )
 		{

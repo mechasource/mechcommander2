@@ -34,7 +34,7 @@ void memclear(void *Dest,int Length);
 
 //-----------------------------------------------------------------------------
 // class VFXAppearanceType
-void VFXAppearanceType::init (FilePtr apprFile, unsigned long fileSize)
+void VFXAppearanceType::init (FilePtr apprFile, ULONG fileSize)
 {
 	loadIniFile(apprFile,fileSize);
 
@@ -74,7 +74,7 @@ void VFXAppearanceType::removeTexture (TGATexturePtr texture)		//Cache texture o
 }
 
 //---------------------------------------------------------------------------
-long VFXAppearanceType::loadIniFile (FilePtr apprFile, unsigned long fileSize)
+long VFXAppearanceType::loadIniFile (FilePtr apprFile, ULONG fileSize)
 {
 	FitIniFile VFXAppearanceFile;
 	long result = VFXAppearanceFile.open(apprFile,fileSize);
@@ -406,14 +406,14 @@ long VFXAppearance::render (long depthFixup)
 }
 
 //-----------------------------------------------------------------------------
-void VFXAppearance::setDamageLvl (unsigned long dmg)
+void VFXAppearance::setDamageLvl (ULONG dmg)
 {
 	realBuildingDamage = TRUE;
 	
 	if (dmg)
 	{
-		unsigned long totalFrames1 = appearType->actorStateData[ACTOR_STATE_BLOWING_UP1].numFrames;
-		unsigned long totalFrames2 = appearType->actorStateData[ACTOR_STATE_BLOWING_UP2].numFrames;
+		ULONG totalFrames1 = appearType->actorStateData[ACTOR_STATE_BLOWING_UP1].numFrames;
+		ULONG totalFrames2 = appearType->actorStateData[ACTOR_STATE_BLOWING_UP2].numFrames;
 		
 		if ((dmg >= (totalFrames1 + totalFrames2)))
 		{
@@ -460,7 +460,7 @@ long VFXAppearance::update (void)
 	// Must update animation frame numbers, even if not visible!!
   	// Make sure animation runs no faster than frameRate fps.
 	// Moved to here to make game work.
-	unsigned long anyFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
+	ULONG anyFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
 
 	if (anyFrames > 1)
 	{
@@ -481,7 +481,7 @@ long VFXAppearance::update (void)
 		{
   			currentFrame += frameInc;
 				
-			unsigned long totalFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
+			ULONG totalFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
 			uint8_t loop = 1;
 			
 			if ((currentFrame >= totalFrames) && (loop) && (endFrame == -1))

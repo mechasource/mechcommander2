@@ -40,7 +40,7 @@ int MPStats::init()
 	if ( NO_ERR != file.open( path ) )
 	{
 		char buffer2[512];
-		sprintf( buffer2, "couldn't open file %s", (char*)path );
+		sprintf( buffer2, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, buffer2 );
 		return false;	
 
@@ -120,7 +120,7 @@ void MPStats::begin()
 	sprintf( text2, text, MPlayer->missionSettings.name );
 	textObjects[1].setText( text2 );
 
-	unsigned long type = MPlayer->missionSettings.missionType ;
+	ULONG type = MPlayer->missionSettings.missionType ;
 	cLoadString( IDS_MP_LM_MAP_LIST_TYPE, text, 255 );
 	char mType[128];
 	cLoadString( IDS_MP_LM_TYPE0 + type, mType, 127 );
@@ -128,7 +128,7 @@ void MPStats::begin()
 	sprintf( text2, text, mType );
 	textObjects[6].setText( text2 );
 
-	unsigned long numPlayers = MPlayer->missionSettings.maxPlayers;
+	ULONG numPlayers = MPlayer->missionSettings.maxPlayers;
 
 	cLoadString( IDS_MP_LM_MAP_LIST_MAX_PLAYERS, text, 255 );
 	sprintf( text2, text, numPlayers );
@@ -138,7 +138,7 @@ void MPStats::begin()
 
 }
 
-int MPStats::handleMessage( unsigned long what, unsigned long who )
+int MPStats::handleMessage( ULONG what, ULONG who )
 {
 	if ( who == MP_STATS_SAVE )
 	{
@@ -153,7 +153,7 @@ int MPStats::handleMessage( unsigned long what, unsigned long who )
 		status = NEXT;
 		end();
 		beginFadeOut(.5f);
-		statics[15].setTexture( (unsigned long)0 );
+		statics[15].setTexture( (ULONG)0 );
 		statics[15].setColor( 0 );
 	}
 
@@ -211,7 +211,7 @@ void MPStats::update()
 		memset( scoreShown, 0, sizeof( bool ) * MAX_MC_PLAYERS );
 
 
-		unsigned long winnerColor = 0xffFFCC00; // gold
+		ULONG winnerColor = 0xffFFCC00; // gold
 		if ( winnerCount > 1 )
 			winnerColor = 0xffA6A6A6;
 
@@ -315,7 +315,7 @@ void MPStatsEntry::init()
 	if ( NO_ERR != file.open( path ) )
 	{
 		char buffer2[512];
-		sprintf( buffer2, "couldn't open file %s", (char*)path );
+		sprintf( buffer2, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, buffer2 );
 		return;	
 
@@ -427,7 +427,7 @@ void MPStatsResultsEntry::render( int x, int y )
 	LogisticsScreen::render( x, y );
 	//if ( overlayColor )
 	//{
-	//	GUI_RECT rect = { textObjects[5].left(), rects[0].top(), rects[5].right(), rects[0].y() + rects[0].height() };
+	//	RECT rect = { textObjects[5].left(), rects[0].top(), rects[5].right(), rects[0].y() + rects[0].height() };
 	//	drawRect( rect, overlayColor );
 	//}
 }
@@ -440,7 +440,7 @@ void MPStatsResultsEntry::init()
 	if ( NO_ERR != file.open( path ) )
 	{
 		char buffer2[512];
-		sprintf( buffer2, "couldn't open file %s", (char*)path );
+		sprintf( buffer2, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, buffer2 );
 		return;	
 
@@ -453,7 +453,7 @@ void MPStatsResultsEntry::init()
 
 }
 
-void MPStatsResultsEntry::setData(const MC2Player* data, unsigned long laurelColor, bool bShowScore )
+void MPStatsResultsEntry::setData(const MC2Player* data, ULONG laurelColor, bool bShowScore )
 {
 	rects[4].setColor( MPlayer->colors[data->baseColor[BASECOLOR_TEAM]] );
 	rects[2].setColor( MPlayer->colors[data->stripeColor] );
@@ -523,7 +523,7 @@ void MPStatsResultsEntry::setData(const MC2Player* data, unsigned long laurelCol
 		if ( pData )
 		{
 			int size = pData->pixel_depth/8;
-			int ID = mcTextureManager->textureFromMemory( (unsigned long*)(pData+1), gos_Texture_Solid, 0, pData->width, size  );
+			int ID = mcTextureManager->textureFromMemory( (ULONG*)(pData+1), gos_Texture_Solid, 0, pData->width, size  );
 			statics[0].setTexture( ID );
 			statics[0].setUVs( 0, 32, 32, 0 );
 		}

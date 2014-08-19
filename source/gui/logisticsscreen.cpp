@@ -383,14 +383,14 @@ void LogisticsScreen::render()
 	{
 		fadeTime += frameLength;
 		long color = interpolateColor( 0,fadeOutMaxColor, fadeTime/fadeOutTime );
-		GUI_RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
+		RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 	}
 	else if ( fadeInTime && fadeInTime > fadeTime )
 	{
 		fadeTime += frameLength;
 		long color = interpolateColor( fadeOutMaxColor, 0, fadeTime/fadeInTime );
-		GUI_RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
+		RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 	}
 	
@@ -489,14 +489,14 @@ void LogisticsScreen::render( int xOffset, int yOffset )
 	{
 		fadeTime += frameLength;
 		long color = interpolateColor( 0,0xff000000, fadeTime/fadeOutTime );
-		GUI_RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
+		RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 	}
 	else if ( fadeInTime && fadeInTime > fadeTime )
 	{
 		fadeTime += frameLength;
 		long color = interpolateColor( 0xff000000, 0, fadeTime/fadeInTime );
-		GUI_RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
+		RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 	}
 

@@ -20,7 +20,7 @@ MessageBox.h			: quick helper function to call up a message box
 CLASS DESCRIPTION
 MessageBox:
 **************************************************************************************************/
-extern unsigned long gameResourceHandle;
+extern ULONG gameResourceHandle;
 
 inline int EMessageBox(int MessageID, int CaptionID,DWORD dwS )
 {

@@ -195,7 +195,7 @@ static float g_newHeight = 0.0;
 
 // EDITOR stuff
 
-void Editor::init( char* loader )
+void Editor::init( PSTR loader )
 {
 	volatile float crap = 0;
 	bool bOK = false;
@@ -694,7 +694,7 @@ void EditorInterface::init( PCSTR fileName )
 	SetBusyMode(false/*no redraw*/);
 
 	FitIniFile loader;
-	loader.open( const_cast<char*>(fileName) );
+	loader.open( const_cast<PSTR>(fileName) );
 
 	long result = loader.seekBlock("CameraData");
 	gosASSERT(result == NO_ERR);
@@ -2096,7 +2096,7 @@ int EditorInterface::NewHeightMap()
 
 				gosASSERT( strstr( pFile, ".tga" ) || strstr( pFile, ".TGA" ) );
 
-				long result = tgaFile.open(const_cast<char*>(pFile));
+				long result = tgaFile.open(const_cast<PSTR>(pFile));
 				gosASSERT(result == NO_ERR);
 
 				struct TGAFileHeader theader;
@@ -2598,7 +2598,7 @@ int EditorInterface::SaveHeightMap()
 		PCSTR pFile = fileDlg.m_ofn.lpstrFile;
 		
 		File file;
-		if ( NO_ERR != file.create( (char*)pFile ) )
+		if ( NO_ERR != file.create( (PSTR)pFile ) )
 		{
 			EMessageBox( IDS_INVALID_FILE, IDS_CANT_SAVE, MB_OK );
 			return false;
@@ -2982,7 +2982,7 @@ int EditorInterface::SetBaseTexture()
 			char name[1024];
 			_splitpath(path,NULL,NULL,name,NULL);
 
-			char *testLoc = strstr(name,".burnin");
+			PSTR testLoc = strstr(name,".burnin");
 			if (testLoc)
 				testLoc[0] = 0;	//Prune off the burnin name.
 
@@ -3659,7 +3659,7 @@ void EditorInterface::initTacMap()
 	bool bFile = false;
 	if ( EditorData::instance->getMapName() )
 	{
-		mPath.init(missionPath,(char *)EditorData::instance->getMapName(),".pak");
+		mPath.init(missionPath,(PSTR )EditorData::instance->getMapName(),".pak");
 		bFile = true;
 	}
 	

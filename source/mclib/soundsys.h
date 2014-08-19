@@ -80,10 +80,10 @@ typedef struct {
 //---------------------------------------------------------------------------
 typedef struct _SoundBite
 {
-	unsigned long		priority;
-	unsigned long		cacheStatus;
-	unsigned long		soundId;
-	unsigned long 		biteSize;
+	ULONG		priority;
+	ULONG		cacheStatus;
+	ULONG		soundId;
+	ULONG 		biteSize;
 	MemoryPtr			biteData;
 	float				volume;
 	HGOSAUDIO			resourceHandle;
@@ -99,22 +99,22 @@ class SoundSystem
 		long				channelSampleId[MAX_DIGITAL_SAMPLES];
 		bool				fadeDown[MAX_DIGITAL_SAMPLES];
 		
-		unsigned long		soundHeapSize;
+		ULONG		soundHeapSize;
 		UserHeapPtr			soundHeap;
 		
-		unsigned long		numSoundBites;
+		ULONG		numSoundBites;
 		SoundBite			*sounds;
 
-		unsigned long		numBettySamples;
-		unsigned long		numSupportSamples;
+		ULONG		numBettySamples;
+		ULONG		numSupportSamples;
 		PacketFilePtr		soundDataFile;
 		PacketFilePtr		bettyDataFile;
 		PacketFilePtr		supportDataFile;
 		
 		long				numDMS;
 		float				streamFadeDownTime;
-		unsigned long		digitalStreamBitDepth;
-		unsigned long		digitalStreamChannels;
+		ULONG		digitalStreamBitDepth;
+		ULONG		digitalStreamChannels;
 		long				currentMusicId;
 		
 		HGOSAUDIO			stream1Handle;
@@ -229,13 +229,13 @@ class SoundSystem
 			gamePaused = false;
 		}
 		
-		long init (char *soundFileName);
+		long init (PSTR soundFileName);
 		virtual void destroy (void);
 		
 		void preloadSoundBite (long sampleId);
 		long findOpenChannel (long start, long end);
 
-		long playDigitalSample (unsigned long sampleId, Stuff::Vector3D pos = Stuff::Vector3D(-9999.0f,-9999.0,-9999.0f), bool allowDupes = false);
+		long playDigitalSample (ULONG sampleId, Stuff::Vector3D pos = Stuff::Vector3D(-9999.0f,-9999.0,-9999.0f), bool allowDupes = false);
 		
 		long playDigitalMusic (long musicId);
 		
@@ -246,13 +246,13 @@ class SoundSystem
 		bool isChannelPlaying (long channelId);
 		bool isPlayingVoiceOver (void);
 
-		long playBettySample (unsigned long bettySampleId);
+		long playBettySample (ULONG bettySampleId);
 		void stopBettySample (void);
 
 		
-		long playSupportSample (unsigned long supportSampleId, char* fileName = NULL);
+		long playSupportSample (ULONG supportSampleId, PSTR fileName = NULL);
 		
- 		void stopDigitalSample (unsigned long sampleHandleNumber);
+ 		void stopDigitalSample (ULONG sampleHandleNumber);
 		void stopDigitalMusic (void);
 		void stopSupportSample (void);
 	
@@ -282,7 +282,7 @@ class SoundSystem
 		void playABLVideo (long videoId);
 		void playABLSpeech (long pilotId, long speechId);
 		
-		long playPilotSpeech (char *pilotSpeechFilename, long msgId);
+		long playPilotSpeech (PSTR pilotSpeechFilename, long msgId);
 		
 		void setIsRaining (DWORD rainLevel)
 		{

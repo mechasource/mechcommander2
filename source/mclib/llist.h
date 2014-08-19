@@ -90,7 +90,7 @@ class LinkedList
 		return Tail;
 	}
 
-	unsigned long Count (void);
+	ULONG Count (void);
 };
 
 //---------------------------------------------------------------------------

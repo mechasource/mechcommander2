@@ -63,12 +63,15 @@
 
 // temporary disable warnings when compiling with -Wall
 #pragma warning(push)
-#pragma warning(disable: 4191 4365)
+#pragma warning(disable: 4191 4350 4365)
+#include <string>
+
 #include <atlbase.h>
 #if (_ATL_VER < 0x0700)	// linking with system (WDK) atl.dll
 extern ATL::CComModule& _Module;
 ATL_ADD_LIBRARY("atlthunk.lib")
 #endif
+#pragma warning(pop)
 
 #include <limits.h>
 #include <ctype.h>
@@ -83,7 +86,6 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 #include <mmsystem.h>
 #include <d3dtypes.h>
 #include <ddraw.h>
-#pragma warning(pop)
 
 #include <mechtypes.h>
 

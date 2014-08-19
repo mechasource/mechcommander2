@@ -158,7 +158,7 @@ class BldgAppearanceType : public AppearanceType
 			return false;
 		}
 		
-  		virtual void init (char *fileName);
+  		virtual void init (PSTR fileName);
 		
 		virtual void destroy (void);
 
@@ -365,7 +365,7 @@ class BldgAppearance : public ObjectAppearance
 			return result;
 		}
 		
-		virtual Stuff::Vector3D getNodeNamePosition (char *nodeName);
+		virtual Stuff::Vector3D getNodeNamePosition (PSTR nodeName);
 		
 		virtual void startActivity (long effectId, bool loop);
 		virtual void stopActivity (void);
@@ -433,7 +433,7 @@ class TreeAppearanceType : public AppearanceType
 			destroy();
 		}
 
-		virtual void init (char *fileName);
+		virtual void init (PSTR fileName);
 		
 		virtual void destroy (void);
 };

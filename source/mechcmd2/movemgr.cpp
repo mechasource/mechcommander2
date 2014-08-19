@@ -127,7 +127,7 @@ PathQueueRecPtr MovePathManager::remove (MechWarriorPtr pilot) {
 
 #define	DEBUG_MOVEPATH_QUEUE	0
 
-void MovePathManager::request (MechWarriorPtr pilot, long selectionIndex, unsigned long moveParams, long source) {
+void MovePathManager::request (MechWarriorPtr pilot, long selectionIndex, ULONG moveParams, long source) {
 
 	//-----------------------------------------------------
 	// If the pilot is already awaiting a calc, purge it...
@@ -196,7 +196,7 @@ void MovePathManager::calcPath (void) {
 }
 
 //----------------------------------------------------------------------------------
-void DEBUGWINS_print (char* s, long window);
+void DEBUGWINS_print (PSTR s, long window);
 #ifdef LAB_ONLY
 extern __int64 MCTimePath1Update;
 extern __int64 MCTimePath2Update;

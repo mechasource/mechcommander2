@@ -13,7 +13,7 @@
 static long sReadIdBoolean(FitIniFile &missionFile, PCSTR varName, bool &value) {
 	long result = 0;
 	bool tmpBool;
-	result = missionFile.readIdBoolean((char *)varName, tmpBool);
+	result = missionFile.readIdBoolean((PSTR )varName, tmpBool);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -25,7 +25,7 @@ static long sReadIdBoolean(FitIniFile &missionFile, PCSTR varName, bool &value) 
 static long sReadIdInteger(FitIniFile &missionFile, PCSTR varName, int &value) {
 	long result = 0;
 	long tmpLong;
-	result = missionFile.readIdLong((char *)varName, tmpLong);
+	result = missionFile.readIdLong((PSTR )varName, tmpLong);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -37,7 +37,7 @@ static long sReadIdInteger(FitIniFile &missionFile, PCSTR varName, int &value) {
 static long sReadIdString(FitIniFile &missionFile, PCSTR varName, CString &CStr) {
 	long result = 0;
 	char buffer[2001/*buffer size*/]; buffer[0] = '\0';
-	result = missionFile.readIdString((char *)varName, buffer, 2001/*buffer size*/ - 1);
+	result = missionFile.readIdString((PSTR )varName, buffer, 2001/*buffer size*/ - 1);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {

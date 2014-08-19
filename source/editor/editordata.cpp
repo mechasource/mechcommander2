@@ -45,7 +45,7 @@ IProviderAsset * mechAsset = NULL;
 #include <set>
 
 char EditorData::mapName[256];
-unsigned long* EditorData::tacMapBmp = NULL;
+ULONG* EditorData::tacMapBmp = NULL;
 
 extern char versionStamp[];
 extern bool justResaveAllMaps;
@@ -180,7 +180,7 @@ bool EditorData::clear()
 static long sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) {
 	long result = 0;
 	bool tmpBool;
-	result = missionFile->readIdBoolean((char *)varName, tmpBool);
+	result = missionFile->readIdBoolean((PSTR )varName, tmpBool);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -191,8 +191,8 @@ static long sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) 
 
 static long sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) {
 	long result = 0;
-	unsigned long tmpULong;
-	result = missionFile->readIdULong((char *)varName, tmpULong);
+	ULONG tmpULong;
+	result = missionFile->readIdULong((PSTR )varName, tmpULong);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -204,7 +204,7 @@ static long sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) 
 static long sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString &ECStr) {
 	long result = 0;
 	char buffer[2001/*buffer size*/]; buffer[0] = '\0';
-	result = missionFile->readIdString((char *)varName, buffer, 2001/*buffer size*/ - 1);
+	result = missionFile->readIdString((PSTR )varName, buffer, 2001/*buffer size*/ - 1);
 	CString CStr = buffer;
 	/*readIdString can't read in "\r\n"*/
 	CStr.Replace("\n", "\r\n");
@@ -238,10 +238,10 @@ bool EditorData::initTerrainFromPCV( PCSTR fileName )
 
 	clear();
 
-	_strlwr((char *)fileName);
+	_strlwr((PSTR )fileName);
 
 	PacketFile pFile;
-	int result = pFile.open( (char*)fileName );
+	int result = pFile.open( (PSTR)fileName );
 	if ( result != NO_ERR )
 	{
 		char buffer[512];
@@ -262,9 +262,9 @@ bool EditorData::initTerrainFromPCV( PCSTR fileName )
 
 	FitIniFile file;
 
-	if ( fileExists( (char*)(PCSTR)camFileName ) )
+	if ( fileExists( (PSTR)(PCSTR)camFileName ) )
 	{
-		file.open( (char*)(PCSTR)camFileName );
+		file.open( (PSTR)(PCSTR)camFileName );
 	}
 	else
 	{
@@ -409,7 +409,7 @@ bool EditorData::initTerrainFromPCV( PCSTR fileName )
 
 
 
-			unsigned long tmpULong = 0;
+			ULONG tmpULong = 0;
 			result = file.readIdULong("IsSinglePlayer", tmpULong);
 			if (NO_ERR == result)
 			{
@@ -568,7 +568,7 @@ bool EditorData::initTerrainFromPCV( PCSTR fileName )
 		result = file.seekBlock("Weather");
 		if (NO_ERR == result)
 		{
-			unsigned long tmpULong = 0;
+			ULONG tmpULong = 0;
 			result = file.readIdULong("MaxRainDrops", tmpULong);
 			if (NO_ERR == result)
 			{
@@ -655,7 +655,7 @@ bool EditorData::reassignHeightsFromTGA( PCSTR fileName, int min, int max )
 
 	gosASSERT( strstr( fileName, ".tga" ) || strstr( fileName, ".TGA" ) );
 
-	long result = tgaFile.open(const_cast<char*>(fileName));
+	long result = tgaFile.open(const_cast<PSTR>(fileName));
 	gosASSERT(result == NO_ERR);
 
 	struct TGAFileHeader theader;
@@ -761,7 +761,7 @@ bool EditorData::reassignHeightsFromTGA( PCSTR fileName, int min, int max )
 
 void* DecodeJPG( PCSTR FileName, PUCHAR Data, DWORD DataSize, DWORD* TextureWidth, DWORD* TextureHeight, bool TextureLoad, void *pDestSurf );
 //-------------------------------------------------------------------------------------------------
-void CreateScaledColorMap(long mapWidth, char *localColorMapName, MemoryPtr tmpRAM, long fileSize)
+void CreateScaledColorMap(long mapWidth, PSTR localColorMapName, MemoryPtr tmpRAM, long fileSize)
 {
 	MemoryPtr image = NULL;
 
@@ -950,7 +950,7 @@ bool EditorData::initTerrainFromTGA( int mapSize, int min, int max, int terrain 
 
 			land->terrainTextures2 = new TerrainColorMap;		//Otherwise, this will stay NULL and we know not to use them
 			
-			land->terrainName = (char *)gos_Malloc(strlen(name2) + 1);
+			land->terrainName = (PSTR )gos_Malloc(strlen(name2) + 1);
 			strcpy(land->terrainName,name2);
 
 			FullPathFileName missionName;
@@ -1189,7 +1189,7 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 						
 						
 						Overlays overlay;
-						unsigned long offset;
+						ULONG offset;
 						land->getOverlay( i, j, overlay, offset );
 						if ( overlay != INVALID_OVERLAY )
 						{
@@ -1359,7 +1359,7 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 	newFit.Replace( ".pak", ".fit" );
 
 	FitIniFile fitFile;
-	int result = fitFile.create( (char*)(LPCSTR)newFit );
+	int result = fitFile.create( (PSTR)(LPCSTR)newFit );
 	if ( result != NO_ERR )
 	{
 		char buffer[512];
@@ -1963,7 +1963,7 @@ void EditorData::drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize )
 
 			//----------------------------------------------
 			// Get Pointer to BMP data for this point.
-			unsigned long *tBMP = &(tacMapBmp[(x) + ((y) * land->realVerticesMapSide * 3)]);
+			ULONG *tBMP = &(tacMapBmp[(x) + ((y) * land->realVerticesMapSide * 3)]);
 
 			if (terrainType1RGB != 0xffffffff)
 				*tBMP = terrainType1RGB;
@@ -1981,7 +1981,7 @@ void EditorData::drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize )
 		currentVertex += land->realVerticesMapSide * (y / 3);
 	}
 
-	unsigned long *tBMP = tacMapBmp;
+	ULONG *tBMP = tacMapBmp;
 	// now draw on the trees
 	for( i = 0; i < land->realVerticesMapSide * MAPCELL_DIM; i++ )
 	{
@@ -2016,7 +2016,7 @@ void EditorData::drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize )
 			//-------------------------------------------------------------------------------
 			// Store texture in bottom part from TxmIndex provided by TerrainTextureManager
 			Overlays o = (Overlays)-1;
-			unsigned long offset = 0;
+			ULONG offset = 0;
 			
 			land->getOverlay(y,x,o,offset);
 			
@@ -2038,7 +2038,7 @@ void EditorData::drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize )
 
 			//----------------------------------------------
 			// Get Pointer to BMP data for this point.
-			unsigned long *tBMP = &(tacMapBmp[(x * 3) + ((y * 3) * land->realVerticesMapSide * 3)]); 
+			ULONG *tBMP = &(tacMapBmp[(x * 3) + ((y * 3) * land->realVerticesMapSide * 3)]); 
 			float totalR1, totalG1, totalB1, totalR2, totalG2, totalB2, totalR3, totalG3, totalB3, totalR4, totalG4, totalB4;
 
 			long elvOffset1 = (lightIntensity1 - 0.5f) * CONTRAST;
@@ -2217,7 +2217,7 @@ void EditorData::drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize )
 					(i < ((land->realVerticesMapSide * MAPCELL_DIM) - 1)) &&
 					(j < ((land->realVerticesMapSide * MAPCELL_DIM) - 1)))
 				{
-					unsigned long *tmptBMP = tBMP + (land->realVerticesMapSide * MAPCELL_DIM);
+					ULONG *tmptBMP = tBMP + (land->realVerticesMapSide * MAPCELL_DIM);
 					tmptBMP -= 1;
 					
 					*tmptBMP = nColor;
@@ -2307,8 +2307,8 @@ void EditorData::drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize )
    				
 				if (tgaRAM)
 				{
-					unsigned long *tmptBMP = tBMP;
-					unsigned long *tgaBMP = (unsigned long *)tgaRAM;
+					ULONG *tmptBMP = tBMP;
+					ULONG *tgaBMP = (ULONG *)tgaRAM;
 					for (long ib=0;ib<tHeight;ib++)
 					{
 						if (((i - (tHeight >> 1)) >= 0) &&
@@ -2388,7 +2388,7 @@ void EditorData::drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize )
 		for ( int j = 0; j < tacMapSize; j++ )
 		{
 			long x = ((float)j * xRatio) + .5;
-			unsigned long *tBMP = &(tacMapBmp[(x) + ((y) * land->realVerticesMapSide * 3)]); 
+			ULONG *tBMP = &(tacMapBmp[(x) + ((y) * land->realVerticesMapSide * 3)]); 
 			*pTmp++ = *tBMP;			
 		}
 

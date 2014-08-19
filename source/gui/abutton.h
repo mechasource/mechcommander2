@@ -85,7 +85,7 @@ protected:
 		int				fileWidth;
 		int				fileHeight;
 		bool			textureRotated;
-		GUI_RECT		textRect; // center text in here
+		RECT		textRect; // center text in here
 		bool			outlineText; // draw empty square around text rect
 		bool			outline;		// draw empty square around button
 		long			textAlign;

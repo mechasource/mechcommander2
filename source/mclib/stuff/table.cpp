@@ -463,7 +463,7 @@ void
 	)
 {
 	Check_Object(this);
-	char *itemPtr, *lastItem;
+	PSTR itemPtr, *lastItem;
 	size_t width;
 
 	Check_Pointer(array);
@@ -472,13 +472,13 @@ void
 	/*
 	 * Find the location of the item
 	 */
-	itemPtr = Cast_Pointer(char*, &array[index]);
+	itemPtr = Cast_Pointer(PSTR, &array[index]);
 	
 	/*
 	 * Remove the item from the array
 	 */	
 	width = sizeof(void*);
-	lastItem = Cast_Pointer(char*, array) + (numItems - 1) * width;
+	lastItem = Cast_Pointer(PSTR, array) + (numItems - 1) * width;
 
 	if (itemPtr < lastItem) 
 	{

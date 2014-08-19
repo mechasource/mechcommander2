@@ -114,7 +114,7 @@ ObjectNameList::DeleteEntry(PCSTR name)
 	//----------------------------------------------------
 	// ***** DANGEROUS!!! see notice in namelist.hh *****
 	//----------------------------------------------------
-	entry = Cast_Pointer(Entry *, const_cast<char*>(name - sizeof(Entry)));
+	entry = Cast_Pointer(Entry *, const_cast<PSTR>(name - sizeof(Entry)));
 	prev = NULL;
 	for (cur=firstEntry; cur && cur != entry; cur = cur->nextEntry)
 	{
@@ -206,7 +206,7 @@ ObjectNameList::Entry::SetName(PCSTR name)
 	Check_Pointer(this);
 	Check_Pointer(name);
 	strcpy(
-		Cast_Pointer(char*, this) + sizeof(ObjectNameList::Entry),
+		Cast_Pointer(PSTR, this) + sizeof(ObjectNameList::Entry),
 		name
 		);
 }

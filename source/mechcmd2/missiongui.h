@@ -217,7 +217,7 @@ public:
 			return &controlGui;
 		}
 
-		void playMovie (char *filename)
+		void playMovie (PSTR filename)
 		{
 			controlGui.playMovie(filename);
 		}

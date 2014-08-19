@@ -68,7 +68,7 @@ struct MC_TerrainType
 	MemoryPtr		*textureData;
 	MemoryPtr		*maskData;
 	long			baseTXMIndex;				//Index of Highest MIP Level of Texture.
-	unsigned long	terrainMapRGB;				//Rgb Color used for TacMap.
+	ULONG	terrainMapRGB;				//Rgb Color used for TacMap.
 	long			nameId;
 };
 
@@ -92,7 +92,7 @@ struct MC_OverlayType
 	bool			isMLRAppearance;
 	MemoryPtr		*overlayData;				
 	long			baseTXMIndex;
-	unsigned long	terrainMapRGB;
+	ULONG	terrainMapRGB;
 };
 
 struct TransitionType
@@ -148,12 +148,12 @@ class TerrainTextures
 		long initTexture (long typeNum);
 		void initMask (long typeNum);
 		long initDetail (long typeNum, long detailNum);
-		long initOverlay (long overlayNum, long txmNum, char *txmName);
+		long initOverlay (long overlayNum, long txmNum, PSTR txmName);
 
-		long loadTextureMemory (char *textureName, long mipSize);
-		long loadOverlayMemory (char *overlayName);
+		long loadTextureMemory (PSTR textureName, long mipSize);
+		long loadOverlayMemory (PSTR overlayName);
 		long textureFromMemory (MemoryPtr ourRam, long mipSize);
-		long loadDetailMemory  (char *detailName, long mipSize);
+		long loadDetailMemory  (PSTR detailName, long mipSize);
 		long textureFromMemoryAlpha (MemoryPtr ourRam, long mipSize);
 
 		long createTransition (DWORD typeInfo, DWORD overlayInfo = 0);
@@ -216,7 +216,7 @@ class TerrainTextures
 			destroy();
 		}
 
-		long init (char *fileName, char* baseName);
+		long init (PSTR fileName, PSTR baseName);
 		
 		long setTexture (DWORD typeInfo, DWORD overlayInfo);
 		
@@ -244,7 +244,7 @@ class TerrainTextures
 
 		long setOverlay (DWORD overlayInfo);
 		long getOverlayHandle( Overlays id, int Offset );
-		void getOverlayInfoFromHandle( long handle, Overlays& id, unsigned long& Offset );
+		void getOverlayInfoFromHandle( long handle, Overlays& id, ULONG& Offset );
 
 		void purgeTransitions (void);
 		

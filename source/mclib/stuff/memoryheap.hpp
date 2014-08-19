@@ -11,7 +11,7 @@
 	#endif
 
 	// Experimental
-	extern unsigned long Get_Heap_Size();
-	extern unsigned long Get_Heap_Used();
+	extern ULONG Get_Heap_Size();
+	extern ULONG Get_Heap_Used();
 
 #endif

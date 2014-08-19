@@ -181,7 +181,7 @@ class Mech3DAppearanceType: public AppearanceType
 			destroy();
 		}
 		
-		virtual void init (char *fileName);
+		virtual void init (PSTR fileName);
 		
 		long getTotalNodes (void)
 		{
@@ -685,7 +685,7 @@ class Mech3DAppearance: public ObjectAppearance
 		
 		virtual Stuff::Vector3D getNodePosition (long nodeId);
 		
-		virtual Stuff::Vector3D getNodeNamePosition (char *nodeName);
+		virtual Stuff::Vector3D getNodeNamePosition (PSTR nodeName);
 		
 		virtual long getWeaponNode (long weapontype);
 		

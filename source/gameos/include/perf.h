@@ -9,7 +9,7 @@
 //========================================================================
 // types
 //========================================================================
-typedef HRESULT (__stdcall * PERFMONCALLBACK)(char *szDescription, DWORD dwFlags, DWORD dwId);
+typedef HRESULT (__stdcall * PERFMONCALLBACK)(PSTR szDescription, DWORD dwFlags, DWORD dwId);
 
 //========================================================================
 // external functions

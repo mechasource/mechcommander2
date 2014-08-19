@@ -62,17 +62,17 @@ extern UserHeapPtr systemHeap;
 typedef struct _memRecord 
 {
 	void*			ptr;
-	unsigned long	size;
-	unsigned long	stack[12];
+	ULONG	size;
+	ULONG	stack[12];
 } memRecord;
 #endif
 
 typedef struct _GlobalHeapRec
 {
 	HeapManagerPtr 	thisHeap;
-	unsigned long	heapSize;
-	unsigned long   totalCoreLeft;
-	unsigned long	coreLeft;
+	ULONG	heapSize;
+	ULONG   totalCoreLeft;
+	ULONG	coreLeft;
 } GlobalHeapRec;
 
 //---------------------------------------------------------------------------
@@ -85,9 +85,9 @@ protected:
 
 	MemoryPtr				heap;
 	bool					memReserved;
-	unsigned long   		totalSize;
-	unsigned long   		committedSize;
-	unsigned long			whoMadeMe;
+	ULONG   		totalSize;
+	ULONG   		committedSize;
+	ULONG			whoMadeMe;
 
 	//		BOOL	VMQuery (PVOID pvAddress, PVMQUERY pVMQ);
 	//		LPCTSTR GetMemStorageText (DWORD dwStorage);
@@ -113,9 +113,9 @@ public:
 
 	void destroy (void);
 	void init (void);
-	long createHeap (unsigned long memSize);
-	long commitHeap (unsigned long commitSize = 0);
-	long decommitHeap (unsigned long decommitSize = 0);
+	long createHeap (ULONG memSize);
+	long commitHeap (ULONG commitSize = 0);
+	long decommitHeap (ULONG decommitSize = 0);
 
 	MemoryPtr getHeapPtr (void);
 	operator MemoryPtr (void);
@@ -127,12 +127,12 @@ public:
 		return BASE_HEAP;
 	}
 
-	unsigned long owner (void)
+	ULONG owner (void)
 	{
 		return whoMadeMe;
 	}
 
-	unsigned long tSize (void)
+	ULONG tSize (void)
 	{
 		return committedSize;
 	}
@@ -142,7 +142,7 @@ public:
 //---------------------------------------------------------------------------
 struct HeapBlock
 {
-	unsigned long 	blockSize;
+	ULONG 	blockSize;
 	HeapBlockPtr 	upperBlock;
 	HeapBlockPtr	previous;
 	HeapBlockPtr	next;
@@ -157,7 +157,7 @@ protected:
 	HeapBlockPtr		heapStart;
 	HeapBlockPtr		heapEnd;
 	HeapBlockPtr		firstNearBlock;
-	unsigned long		heapSize;
+	ULONG		heapSize;
 	bool				mallocFatals;
 
 	long				heapState;
@@ -183,19 +183,19 @@ protected:
 public:
 
 	UserHeap (void);
-	long init (unsigned long memSize, char *heapId = NULL, bool useGOS = false);
+	long init (ULONG memSize, PSTR heapId = NULL, bool useGOS = false);
 
 	~UserHeap (void);
 	void destroy (void);
 
-	unsigned long totalCoreLeft (void);
-	unsigned long coreLeft (void);
-	unsigned long size (void) { return heapSize;}
+	ULONG totalCoreLeft (void);
+	ULONG coreLeft (void);
+	ULONG size (void) { return heapSize;}
 
-	void *Malloc (unsigned long memSize);
+	void *Malloc (ULONG memSize);
 	long Free (void *memBlock);
 
-	void *calloc (unsigned long memSize);
+	void *calloc (ULONG memSize);
 
 	void walkHeap (bool printIt = FALSE, bool skipAllocated = FALSE);
 
@@ -216,7 +216,7 @@ public:
 		return USER_HEAP;
 	}
 
-	char *getHeapName (void)
+	PSTR getHeapName (void)
 	{
 		return heapName;
 	}

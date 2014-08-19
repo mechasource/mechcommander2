@@ -88,7 +88,7 @@ bool silentMode = false;		//Used for automated builds to keep errors from poppin
 
 //-------------------------------------------------------------------------------
 // Parse Functions
-void GetNumberData (char *rawData, char *result)
+void GetNumberData (PSTR rawData, PSTR result)
 {
 	long startIndex = 0;
 	long endIndex = 0;
@@ -116,7 +116,7 @@ void GetNumberData (char *rawData, char *result)
 }	
 
 //-------------------------------------------------------------------------------
-void GetWordData (char *rawData, char *result)
+void GetWordData (PSTR rawData, PSTR result)
 {
 	long startIndex = 0;
 	long endIndex = 0;
@@ -141,7 +141,7 @@ void GetWordData (char *rawData, char *result)
 }	
 
 //-------------------------------------------------------------------------------
-void GetNameData (char *rawData, char *result)
+void GetNameData (PSTR rawData, PSTR result)
 {
 	long startIndex = 0;
 	long endIndex = 0;
@@ -240,11 +240,11 @@ TG_ShapePtr TG_TypeNode::CreateFrom (void)
 //users to load the ase file themselves and manage their own memory for it.
 //It allocates memory for internal Lists.  These are straight tglHeap->Mallocs at present.
 //
-long TG_TypeNode::MakeFromHelper (BYTE *aseBuffer, char *fileName)
+long TG_TypeNode::MakeFromHelper (BYTE *aseBuffer, PSTR fileName)
 {
 	//------------------------------------------
 	// Store off the Node Names.
-	char *nodeName = strstr((char *)aseBuffer,ASE_NODE_NAME);
+	PSTR nodeName = strstr((PSTR )aseBuffer,ASE_NODE_NAME);
 	gosASSERT(nodeName != NULL);
 
 	char nodeString[1024];
@@ -261,7 +261,7 @@ long TG_TypeNode::MakeFromHelper (BYTE *aseBuffer, char *fileName)
 
 	strncpy(nodeId,nodeString,24);
 		 
-	char* parentName = strstr((char *)nodeName,ASE_NODE_PARENT);
+	PSTR parentName = strstr((PSTR )nodeName,ASE_NODE_PARENT);
 
 	//-------------------------------------------------------------------
 	// Must also check to make sure we HAVE a parent.
@@ -280,7 +280,7 @@ long TG_TypeNode::MakeFromHelper (BYTE *aseBuffer, char *fileName)
 
 	//----------------------------------------------------
 	// Store off NODE ABS position for heirarchy
-	nodeName = strstr((char *)aseBuffer,ASE_NODE_POS);
+	nodeName = strstr((PSTR )aseBuffer,ASE_NODE_POS);
 	gosASSERT(nodeName != NULL);
 
 	nodeName += strlen(ASE_NODE_POS)+1;
@@ -594,11 +594,11 @@ void TG_Shape::destroy (void)
 //
 // NOTE: Only takes the first HELPOBJECT from the ASE file.  Multi-object
 // Files will require user intervention to parse!!
-long TG_TypeShape::MakeFromHelper (BYTE *aseBuffer, char *fileName)
+long TG_TypeShape::MakeFromHelper (BYTE *aseBuffer, PSTR fileName)
 {
 	//------------------------------------------
 	// Store off the Node Names.
-	char *nodeName = strstr((char *)aseBuffer,ASE_NODE_NAME);
+	PSTR nodeName = strstr((PSTR )aseBuffer,ASE_NODE_NAME);
 	gosASSERT(nodeName != NULL);
 
 	char nodeString[1024];
@@ -615,7 +615,7 @@ long TG_TypeShape::MakeFromHelper (BYTE *aseBuffer, char *fileName)
 
 	strncpy(nodeId,nodeString,24);
 		 
-	char* parentName = strstr((char *)nodeName,ASE_NODE_PARENT);
+	PSTR parentName = strstr((PSTR )nodeName,ASE_NODE_PARENT);
 
 	//-------------------------------------------------------------------
 	// Must also check to make sure we HAVE a parent.
@@ -634,7 +634,7 @@ long TG_TypeShape::MakeFromHelper (BYTE *aseBuffer, char *fileName)
 
 	//----------------------------------------------------
 	// Store off NODE ABS position for heirarchy
-	nodeName = strstr((char *)aseBuffer,ASE_NODE_POS);
+	nodeName = strstr((PSTR )aseBuffer,ASE_NODE_POS);
 	gosASSERT(nodeName != NULL);
 
 	nodeName += strlen(ASE_NODE_POS)+1;
@@ -671,11 +671,11 @@ long TG_TypeShape::MakeFromHelper (BYTE *aseBuffer, char *fileName)
 //
 // NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 // Files will require user intervention to parse!!
-long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
+long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, PSTR fileName)
 {
 	//------------------------------------------
 	// Store off the Node Names.
-	char *nodeName = strstr((char *)aseBuffer,ASE_NODE_NAME);
+	PSTR nodeName = strstr((PSTR )aseBuffer,ASE_NODE_NAME);
 	gosASSERT(nodeName != NULL);
 
 	char nodeString[1024];
@@ -692,7 +692,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 
 	strncpy(nodeId,nodeString,24);
 	
-	char* parentName = strstr((char *)nodeName,ASE_NODE_PARENT);
+	PSTR parentName = strstr((PSTR )nodeName,ASE_NODE_PARENT);
 
 	//-------------------------------------------------------------------
 	// Must also check to make sure we HAVE a parent.
@@ -711,7 +711,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 
 	//----------------------------------------------------
 	// Store off NODE ABS position for heirarchy
-	nodeName = strstr((char *)aseBuffer,ASE_NODE_POS);
+	nodeName = strstr((PSTR )aseBuffer,ASE_NODE_POS);
 	gosASSERT(nodeName != NULL);
 
 	nodeName += strlen(ASE_NODE_POS)+1;
@@ -731,7 +731,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 
 	//----------------------------------------
 	// Find the Number of Vertices
-	char *vertexCount = strstr((char *)aseBuffer,ASE_NUM_VERTEX);
+	PSTR vertexCount = strstr((PSTR )aseBuffer,ASE_NUM_VERTEX);
 	gosASSERT(vertexCount != NULL);
 		
 	vertexCount += strlen(ASE_NUM_FACE)+1;
@@ -749,7 +749,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 
 	//---------------------------------------
 	// Find the Number of faces
-	char *faceCount = strstr((char *)aseBuffer,ASE_NUM_FACE);
+	PSTR faceCount = strstr((PSTR )aseBuffer,ASE_NUM_FACE);
 	gosASSERT(faceCount != NULL);
 		
 	faceCount += strlen(ASE_NUM_FACE)+1;
@@ -780,7 +780,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 		char vertexID[256];
 		sprintf(vertexID,"%s% 5d",ASE_MESH_VERTEX_ID,i);
 
-		char *vertexData = strstr((char *)aseBuffer,vertexID);
+		PSTR vertexData = strstr((PSTR )aseBuffer,vertexID);
 		gosASSERT(vertexData != NULL);
 			
 		vertexData += strlen(vertexID)+1;
@@ -832,7 +832,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 		char faceId[256];
 		sprintf(faceId,"%s% 5d:",ASE_MESH_FACE_ID,i);
 
-		char *faceData = strstr((char *)aseBuffer,faceId);
+		PSTR faceData = strstr((PSTR )aseBuffer,faceId);
 		gosASSERT(faceData != NULL);
 
 		faceData = strstr(faceData,"A:");
@@ -882,7 +882,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 		//Load up the TFaces
 		sprintf(faceId,"%s",ASE_NUM_TVFACES);
 
-		faceData = strstr((char *)aseBuffer,faceId);
+		faceData = strstr((PSTR )aseBuffer,faceId);
 		if (faceData)
 		{
 			faceData += strlen(faceId);
@@ -911,7 +911,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 			//Load up the TVERT0
 			sprintf(faceId,"%s",ASE_NUM_TVERTEX);
 	
-			faceData = strstr((char *)aseBuffer,faceId);
+			faceData = strstr((PSTR )aseBuffer,faceId);
 			gosASSERT(faceData != NULL);
 	
 			sprintf(faceId,"%s %d",ASE_MESH_TVERT_ID,(long)tVFaces.x);
@@ -950,7 +950,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 			//Load up the TVERT1
 			sprintf(faceId,"%s",ASE_NUM_TVERTEX);
 	
-			faceData = strstr((char *)aseBuffer,faceId);
+			faceData = strstr((PSTR )aseBuffer,faceId);
 			gosASSERT(faceData != NULL);
 	
 			sprintf(faceId,"%s %d",ASE_MESH_TVERT_ID,(long)tVFaces.y);
@@ -987,7 +987,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 			//Load up the TVERT2
 			sprintf(faceId,"%s",ASE_NUM_TVERTEX);
 	
-			faceData = strstr((char *)aseBuffer,faceId);
+			faceData = strstr((PSTR )aseBuffer,faceId);
 			gosASSERT(faceData != NULL);
 	
 			sprintf(faceId,"%s %d",ASE_MESH_TVERT_ID,(long)tVFaces.z);
@@ -1038,7 +1038,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 		//Load up the CFaces
 		sprintf(faceId,"%s",ASE_NUM_CVFACES);
 
-		faceData = strstr((char *)aseBuffer,faceId);
+		faceData = strstr((PSTR )aseBuffer,faceId);
 		if (faceData)
 		{
 			gosASSERT(faceData != NULL);
@@ -1069,7 +1069,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 			//Load up the VERTCOL0
 			sprintf(faceId,"%s",ASE_NUM_CVERTEX);
 
-			faceData = strstr((char *)aseBuffer,faceId);
+			faceData = strstr((PSTR )aseBuffer,faceId);
 			gosASSERT(faceData != NULL);
 
 			sprintf(faceId,"%s %d",ASE_MESH_VERTCOL_ID,(long)cVFaces.x);
@@ -1101,7 +1101,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 			//Load up the VERTCOL1
 			sprintf(faceId,"%s",ASE_NUM_CVERTEX);
 
-			faceData = strstr((char *)aseBuffer,faceId);
+			faceData = strstr((PSTR )aseBuffer,faceId);
 			gosASSERT(faceData != NULL);
 
 			sprintf(faceId,"%s %d",ASE_MESH_VERTCOL_ID,(long)cVFaces.y);
@@ -1133,7 +1133,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 			//Load up the VERTCOL2
 			sprintf(faceId,"%s",ASE_NUM_CVERTEX);
 
-			faceData = strstr((char *)aseBuffer,faceId);
+			faceData = strstr((PSTR )aseBuffer,faceId);
 			gosASSERT(faceData != NULL);
 
 			sprintf(faceId,"%s %d",ASE_MESH_VERTCOL_ID,(long)cVFaces.z);
@@ -1174,7 +1174,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 		//------------------------------------------------------------
 		// Dig out the face Normal.
 		sprintf(faceId,"%s %d",ASE_FACE_NORMAL_ID,i);
-		faceData = strstr((char *)aseBuffer,faceId);
+		faceData = strstr((PSTR )aseBuffer,faceId);
 		gosASSERT(faceData != NULL);		
 
 		faceData += strlen(faceId);
@@ -1193,7 +1193,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 		//------------------------------------------------------------
 		char vertexID[256];
 		sprintf(vertexID,"%s",ASE_VERTEX_NORMAL_ID);
-		char *vertexData = strstr((char *)faceData,vertexID);
+		PSTR vertexData = strstr((PSTR )faceData,vertexID);
 		GetNumberData(vertexData,numberData);
 		long vertexNum = atol(numberData);
 		vertexNormalCount[vertexNum]++;
@@ -1211,7 +1211,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 			GetNumberData(vertexData,numberData);
 			listOfTypeVertices[vertexNum].normal.y += (float)atof(numberData);
 
-		vertexData = strstr((char *)vertexData,vertexID);
+		vertexData = strstr((PSTR )vertexData,vertexID);
 		GetNumberData(vertexData,numberData);
 		vertexNum = atol(numberData);
 		vertexNormalCount[vertexNum]++;
@@ -1229,7 +1229,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 			GetNumberData(vertexData,numberData);
 			listOfTypeVertices[vertexNum].normal.y += (float)atof(numberData);
 
-		vertexData = strstr((char *)vertexData,vertexID);
+		vertexData = strstr((PSTR )vertexData,vertexID);
 		GetNumberData(vertexData,numberData);
 		vertexNum = atol(numberData);
 		vertexNormalCount[vertexNum]++;
@@ -1282,7 +1282,7 @@ long TG_TypeShape::ParseASEFile (BYTE *aseBuffer, char *fileName)
 //
 // NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 // Files will require user intervention to parse!!
-long TG_TypeShape::LoadTGShapeFromASE (char *fileName)
+long TG_TypeShape::LoadTGShapeFromASE (PSTR fileName)
 {
 	//-----------------------------------------------------
 	// Fully loads and parses an ASE File.  These files are
@@ -1313,16 +1313,16 @@ long TG_TypeShape::LoadTGShapeFromASE (char *fileName)
 
 	//----------------------------------------
 	// Check for valid ASE Header data.
-	gosASSERT(strnicmp(ASE_HEADER,(char *)aseContents,strlen(ASE_HEADER)) == 0);
+	gosASSERT(strnicmp(ASE_HEADER,(PSTR )aseContents,strlen(ASE_HEADER)) == 0);
 
 	//---------------------------------------
 	// Find the number of Textures
 	char textureId[256];
-	char *textureData;
+	PSTR textureData;
 
 	char numberData[256];
 	sprintf(textureId,ASE_MATERIAL_COUNT);
-	textureData = strstr((char *)aseContents,textureId);
+	textureData = strstr((PSTR )aseContents,textureId);
 	if (!textureData)
 		return(-1);
 
@@ -1335,7 +1335,7 @@ long TG_TypeShape::LoadTGShapeFromASE (char *fileName)
 	for (long nmt=0;nmt<numMaterials;nmt++)
 	{
 		sprintf(textureId,ASE_MATERIAL_CLASS);
-		textureData = strstr((char *)aseBuffer,textureId);
+		textureData = strstr((PSTR )aseBuffer,textureId);
 		if (!textureData)
 			return(-1);
 

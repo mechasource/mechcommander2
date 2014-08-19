@@ -39,7 +39,7 @@ enum gosMusic_PlayMode
 // consult the comments listed under the appropriate command (listed above).
 typedef struct _gosMusic_Info
 {
-	char *					lpstrPath;		// string specified path to data
+	PSTR 					lpstrPath;		// string specified path to data
 	gosMusic_PlayMode		ePlayMode;		// the play mode (see above)
 	gosMusic_PlayMode		ePlayStatus;	// the play mode (see above)
 	float					fDurationSec;	// read-only duration of video (hundredth of a second)
@@ -52,7 +52,7 @@ typedef struct _gosMusic_Info
 // Send a command to an existing music resource or create a new video resource.
 // Consult the structures/enums listed above for more information.
 //
-void __stdcall gosMusic_CreateResource( HGOSMUSIC* Handle, char* filename );
+void __stdcall gosMusic_CreateResource( HGOSMUSIC* Handle, PSTR filename );
 void __stdcall gosMusic_DestroyResource( HGOSMUSIC* Handle );
 void __stdcall gosMusic_GetResourceInfo( HGOSMUSIC Handle, gosMusic_ResourceInfo* gmi );
 
@@ -72,7 +72,7 @@ struct gos_Music
 
 		gosMusic_PlayMode m_musicStatus, m_musicPlayMode;
 
-		char * 	m_lpPath;
+		PSTR  	m_lpPath;
 		_int64	m_lastKnownTime;
 		float m_fVolume, m_fPanning;
 
@@ -82,7 +82,7 @@ struct gos_Music
 		HANDLE phEOS;
 
 	public:
-		gos_Music(char * path);
+		gos_Music(PSTR  path);
 		~gos_Music();
 		void OpenMMStream();
 		bool Update();

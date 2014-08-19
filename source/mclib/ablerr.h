@@ -107,8 +107,8 @@ typedef enum {
 
 void syntaxError (long errCode);
 void runtimeError (long errCode);
-void ABL_Fatal (long errCode, char* s);
-void ABL_Assert (bool test, long errCode, char* s);
+void ABL_Fatal (long errCode, PSTR s);
+void ABL_Assert (bool test, long errCode, PSTR s);
 
 //***************************************************************************
 

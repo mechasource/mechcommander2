@@ -39,8 +39,8 @@ public:
 	float	getScaleX() const;
 	float	getScaleY() const;
 
-	unsigned long getColor() const;
-	unsigned long getColor( float time ) const;
+	ULONG getColor() const;
+	ULONG getColor( float time ) const;
 
 	void setReferencePoints( float X, float Y );
 

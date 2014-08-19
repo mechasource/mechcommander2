@@ -77,7 +77,7 @@ void CGroupDialog::OnGrOperationFileBrowseButton() {
 			CString operationPath = selectFileDialog.GetPathName();
 			FitIniFile file;
 			long result = 0;
-			result = file.open( (char*)(PCSTR)operationPath );
+			result = file.open( (PSTR)(PCSTR)operationPath );
 			if (NO_ERR != result) {
 				AfxMessageBox(IDS_COULDNT_OPEN_OPERATION_FILE);
 			} else {
@@ -193,11 +193,11 @@ void CGroupDialog::OnGrAddButton()
 
 void CGroupDialog::OnGrRemoveButton() 
 {
-	unsigned long selectedItemIndex = m_MissionListControl.GetCurSel();
+	ULONG selectedItemIndex = m_MissionListControl.GetCurSel();
 	if ((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex)) {
 		// should put up confirmation box here
 		CMissionList::EIterator it = m_MissionList.Begin();
-		unsigned long index;
+		ULONG index;
 		for (index = 0; index < selectedItemIndex; index++) {
 			it++;
 			assert(!it.IsDone());
@@ -218,7 +218,7 @@ void CGroupDialog::OnGrRemoveButton()
 
 void CGroupDialog::OnGrEditButton() 
 {
-	unsigned long selectedItemIndex = m_MissionListControl.GetCurSel();
+	ULONG selectedItemIndex = m_MissionListControl.GetCurSel();
 	if ((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex)) {
 		CMissionData &missionDataRef = m_MissionList[selectedItemIndex];
 		CMissionDialog missionDialog;

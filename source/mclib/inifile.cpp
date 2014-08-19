@@ -62,10 +62,10 @@ FitIniFile::~FitIniFile (void)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::findNextBlockStart (char *line, unsigned long lineLen)
+long FitIniFile::findNextBlockStart (PSTR line, ULONG lineLen)
 {
 	char thisLine[255];
-	char *common = NULL;
+	PSTR common = NULL;
 	
 	do
 	{
@@ -109,7 +109,7 @@ long FitIniFile::countBlocks (void)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::getNextWord (char *&line, char *buffer, unsigned long bufLen)
+long FitIniFile::getNextWord (PSTR &line, PSTR buffer, ULONG bufLen)
 {
 	//--------------------------------------------------
 	// Check to see if we are at end of line
@@ -140,8 +140,8 @@ long FitIniFile::getNextWord (char *&line, char *buffer, unsigned long bufLen)
 		
 	//-------------------------------------------
 	// Find length of word from current location
-	char *startOfWord = line;
-	unsigned long wordLength = 0;
+	PSTR startOfWord = line;
+	ULONG wordLength = 0;
 	while ((*line != '\0') && ((*line != ' ') && (*line != '\t') && (*line != ',')))
 	{
 		line++;
@@ -197,7 +197,7 @@ long FitIniFile::afterOpen (void)
 		//--------------------------------------------------------------------------
 		// Put Info into fileBlocks.
 		
-		unsigned long currentBlockNum = 0;
+		ULONG currentBlockNum = 0;
 		while (findNextBlockStart(line,254) != NO_MORE_BLOCKS)
 		{
 			//----------------------------------------------------
@@ -280,7 +280,7 @@ long FitIniFile::textToLong (PCSTR num)
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = (char *)strstr(num,"0x");
+	PSTR hexOffset = (PSTR )strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -333,7 +333,7 @@ short FitIniFile::textToShort (PCSTR num)
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = (char *)strstr(num,"0x");
+	PSTR hexOffset = (PSTR )strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -385,7 +385,7 @@ char FitIniFile::textToChar (PCSTR num)
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = (char *)strstr(num,"0x");
+	PSTR hexOffset = (PSTR )strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -430,13 +430,13 @@ char FitIniFile::textToChar (PCSTR num)
 }
 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::textToULong (PCSTR num)
+ULONG FitIniFile::textToULong (PCSTR num)
 {
-	unsigned long result = 0;
+	ULONG result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = (char *)strstr(num,"0x");
+	PSTR hexOffset = (PSTR )strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -488,7 +488,7 @@ unsigned short FitIniFile::textToUShort (PCSTR num)
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = (char *)strstr(num,"0x");
+	PSTR hexOffset = (PSTR )strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -534,13 +534,13 @@ unsigned short FitIniFile::textToUShort (PCSTR num)
 
 
 //---------------------------------------------------------------------------
-uint8_t FitIniFile::textToUCHAR (PCSTR num)
+uint8_t FitIniFile::textToUChar (PCSTR num)
 {
 	uint8_t result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = (char *)strstr(num,"0x");
+	PSTR hexOffset = (PSTR )strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -598,12 +598,12 @@ char testChar = 0;
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::floatToText (char *result, float num, unsigned long bufLen)
+long FitIniFile::floatToText (PSTR result, float num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%f4",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(BUFFER_TOO_SMALL);
 
@@ -614,12 +614,12 @@ long FitIniFile::floatToText (char *result, float num, unsigned long bufLen)
 }			
 
 //---------------------------------------------------------------------------
-long FitIniFile::longToTextDec (char *result, long num, unsigned long bufLen)
+long FitIniFile::longToTextDec (PSTR result, long num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%d",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(BUFFER_TOO_SMALL);
 
@@ -630,12 +630,12 @@ long FitIniFile::longToTextDec (char *result, long num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::longToTextHex (char *result, long num, unsigned long bufLen)
+long FitIniFile::longToTextHex (PSTR result, long num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"0x%x",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(BUFFER_TOO_SMALL);
 
@@ -646,12 +646,12 @@ long FitIniFile::longToTextHex (char *result, long num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::shortToTextDec (char *result, short num, unsigned long bufLen)
+long FitIniFile::shortToTextDec (PSTR result, short num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%d",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(BUFFER_TOO_SMALL);
 
@@ -662,12 +662,12 @@ long FitIniFile::shortToTextDec (char *result, short num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::shortToTextHex (char *result, short num, unsigned long bufLen)
+long FitIniFile::shortToTextHex (PSTR result, short num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"0x%x",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(BUFFER_TOO_SMALL);
 
@@ -678,12 +678,12 @@ long FitIniFile::shortToTextHex (char *result, short num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::byteToTextDec (char *result, byte num, unsigned long bufLen)
+long FitIniFile::byteToTextDec (PSTR result, byte num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%d",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(BUFFER_TOO_SMALL);
 
@@ -694,12 +694,12 @@ long FitIniFile::byteToTextDec (char *result, byte num, unsigned long bufLen)
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::byteToTextHex (char *result, byte num, unsigned long bufLen)
+long FitIniFile::byteToTextHex (PSTR result, byte num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"0x%x",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(BUFFER_TOO_SMALL);
 
@@ -724,7 +724,7 @@ long FitIniFile::open (PCSTR fName, FileMode _mode, long numChild)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::open (FilePtr _parent, unsigned long fileSize, long numChild)
+long FitIniFile::open (FilePtr _parent, ULONG fileSize, long numChild)
 {
 	numChild = -1;		//Force all parented FitINIs to load from RAM.
 	long result = File::open(_parent,fileSize,numChild);
@@ -737,14 +737,14 @@ long FitIniFile::open (FilePtr _parent, unsigned long fileSize, long numChild)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::create (char* fName)
+long FitIniFile::create (PSTR fName)
 {
 	long result = File::create(fName);
 	afterOpen();
 	return(result);
 }
 
-long FitIniFile::createWithCase( char* fName )
+long FitIniFile::createWithCase( PSTR fName )
 {
 	long result = File::createWithCase( fName );
 	afterOpen();
@@ -764,7 +764,7 @@ void FitIniFile::close (void)
 //---------------------------------------------------------------------------
 long FitIniFile::seekBlock (PCSTR blockId)
 {
-	unsigned long blockNum = 0;
+	ULONG blockNum = 0;
 	
 	while ((blockNum < totalBlocks) && (strcmp(fileBlocks[blockNum].blockId,blockId) != 0))
 	{
@@ -807,7 +807,7 @@ long FitIniFile::readIdFloat (PCSTR varName, float &value)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------
 	// Put prefix on varName.
@@ -822,7 +822,7 @@ long FitIniFile::readIdFloat (PCSTR varName, float &value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-		char* tc = &line[strlen(searchString)];
+		PSTR tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -837,7 +837,7 @@ long FitIniFile::readIdFloat (PCSTR varName, float &value)
 		return(VARIABLE_NOT_FOUND);
 	}
 	
-	char *equalSign = strstr(line, "=");
+	PSTR equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -860,7 +860,7 @@ long FitIniFile::readIdDouble (PCSTR varName, double &value)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------
 	// Put prefix on varName.
@@ -875,7 +875,7 @@ long FitIniFile::readIdDouble (PCSTR varName, double &value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-		char* tc = &line[strlen(searchString)];
+		PSTR tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -890,7 +890,7 @@ long FitIniFile::readIdDouble (PCSTR varName, double &value)
 		return(VARIABLE_NOT_FOUND);
 	}
 	
-	char *equalSign = strstr(line, "=");
+	PSTR equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -913,7 +913,7 @@ long FitIniFile::readIdLong (PCSTR varName, long &value)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------
 	// Put prefix on varName.
@@ -928,7 +928,7 @@ long FitIniFile::readIdLong (PCSTR varName, long &value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-		char* tc = &line[strlen(searchString)];
+		PSTR tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -943,7 +943,7 @@ long FitIniFile::readIdLong (PCSTR varName, long &value)
 		return(VARIABLE_NOT_FOUND);
 	}
 	
-	char *equalSign = strstr(line, "=");
+	PSTR equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -966,7 +966,7 @@ long FitIniFile::readIdBoolean (PCSTR varName, bool &value)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------
 	// Put prefix on varName.
@@ -981,7 +981,7 @@ long FitIniFile::readIdBoolean (PCSTR varName, bool &value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-		char* tc = &line[strlen(searchString)];
+		PSTR tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -996,7 +996,7 @@ long FitIniFile::readIdBoolean (PCSTR varName, bool &value)
 		return(VARIABLE_NOT_FOUND);
 	}
 	
-	char *equalSign = strstr(line, "=");
+	PSTR equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -1019,7 +1019,7 @@ long FitIniFile::readIdShort (PCSTR varName, short &value)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------
 	// Put prefix on varName.
@@ -1034,7 +1034,7 @@ long FitIniFile::readIdShort (PCSTR varName, short &value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-		char* tc = &line[strlen(searchString)];
+		PSTR tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1049,7 +1049,7 @@ long FitIniFile::readIdShort (PCSTR varName, short &value)
 		return(VARIABLE_NOT_FOUND);
 	}
 	
-	char *equalSign = strstr(line, "=");
+	PSTR equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -1072,7 +1072,7 @@ long FitIniFile::readIdChar (PCSTR varName, char &value)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------
 	// Put prefix on varName.
@@ -1087,7 +1087,7 @@ long FitIniFile::readIdChar (PCSTR varName, char &value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-		char* tc = &line[strlen(searchString)];
+		PSTR tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1102,7 +1102,7 @@ long FitIniFile::readIdChar (PCSTR varName, char &value)
 		return(VARIABLE_NOT_FOUND);
 	}
 	
-	char *equalSign = strstr(line, "=");
+	PSTR equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -1117,7 +1117,7 @@ long FitIniFile::readIdChar (PCSTR varName, char &value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdULong (PCSTR varName, unsigned long &value)
+long FitIniFile::readIdULong (PCSTR varName, ULONG &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1125,7 +1125,7 @@ long FitIniFile::readIdULong (PCSTR varName, unsigned long &value)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------
 	// Put prefix on varName.
@@ -1140,7 +1140,7 @@ long FitIniFile::readIdULong (PCSTR varName, unsigned long &value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-			char* tc = &line[strlen(searchString)];
+			PSTR tc = &line[strlen(searchString)];
 			
 			while (isspace(*tc))
 				tc++;
@@ -1157,7 +1157,7 @@ long FitIniFile::readIdULong (PCSTR varName, unsigned long &value)
 		return(VARIABLE_NOT_FOUND);
 	}
 	
-	char *equalSign = strstr(line, "=");
+	PSTR equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -1180,7 +1180,7 @@ long FitIniFile::readIdUShort (PCSTR varName, unsigned short &value)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------
 	// Put prefix on varName.
@@ -1195,7 +1195,7 @@ long FitIniFile::readIdUShort (PCSTR varName, unsigned short &value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-		char* tc = &line[strlen(searchString)];
+		PSTR tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1210,7 +1210,7 @@ long FitIniFile::readIdUShort (PCSTR varName, unsigned short &value)
 		return(VARIABLE_NOT_FOUND);
 	}
 	
-	char *equalSign = strstr(line, "=");
+	PSTR equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
@@ -1233,7 +1233,7 @@ long FitIniFile::readIdUChar (PCSTR varName, uint8_t &value)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------
 	// Put prefix on varName.
@@ -1248,7 +1248,7 @@ long FitIniFile::readIdUChar (PCSTR varName, uint8_t &value)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-		char* tc = &line[strlen(searchString)];
+		PSTR tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1263,11 +1263,11 @@ long FitIniFile::readIdUChar (PCSTR varName, uint8_t &value)
 		return(VARIABLE_NOT_FOUND);
 	}
 	
-	char *equalSign = strstr(line, "=");
+	PSTR equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
-		value = textToUCHAR(equalSign);
+		value = textToUChar(equalSign);
 	}
 	else
 	{
@@ -1278,9 +1278,9 @@ long FitIniFile::readIdUChar (PCSTR varName, uint8_t &value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::copyString (char *dest, char *src, unsigned long bufLen)
+long FitIniFile::copyString (PSTR dest, PSTR src, ULONG bufLen)
 {
-	unsigned long offset = 0;
+	ULONG offset = 0;
 	//---------------------
 	// Find starting Quote
 	while (*src != '"')
@@ -1313,7 +1313,7 @@ long FitIniFile::copyString (char *dest, char *src, unsigned long bufLen)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdString (PCSTR varName, char *result, unsigned long bufferSize)
+long FitIniFile::readIdString (PCSTR varName, PSTR result, ULONG bufferSize)
 {
 	char line[2048];
 	char searchString[255];
@@ -1321,7 +1321,7 @@ long FitIniFile::readIdString (PCSTR varName, char *result, unsigned long buffer
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------
 	// Put prefix on varName.
@@ -1336,7 +1336,7 @@ long FitIniFile::readIdString (PCSTR varName, char *result, unsigned long buffer
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-		char* tc = &line[strlen(searchString)];
+		PSTR tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1350,15 +1350,15 @@ long FitIniFile::readIdString (PCSTR varName, char *result, unsigned long buffer
 		return(VARIABLE_NOT_FOUND);
 	}
 	
-	char *equalSign = strstr(line, "=");
+	PSTR equalSign = strstr(line, "=");
 	if (equalSign)
 	{
 		equalSign++;
 
 		
 
-		char* pFound = NULL;
-		char* pFirstEqual = strstr( equalSign, "\"" );
+		PSTR pFound = NULL;
+		PSTR pFirstEqual = strstr( equalSign, "\"" );
 		// strings can span more than one line, make sure there is another equal sign
 		if ( pFirstEqual && !strstr( pFirstEqual+1, "\"" ) ) 
 		{
@@ -1404,7 +1404,7 @@ long FitIniFile::getIdStringLength (PCSTR varName)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------
 	// Put prefix on varName.
@@ -1419,7 +1419,7 @@ long FitIniFile::getIdStringLength (PCSTR varName)
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
-		char* tc = &line[strlen(searchString)];
+		PSTR tc = &line[strlen(searchString)];
 			while (isspace(*tc))
 				tc++;
 			if (*tc != '=')
@@ -1433,11 +1433,11 @@ long FitIniFile::getIdStringLength (PCSTR varName)
 		return(VARIABLE_NOT_FOUND);
 	}
 	
-	char *equalSign = strchr(line, '"');
+	PSTR equalSign = strchr(line, '"');
 	if (equalSign)
 	{
 		equalSign++;
-		char* end = equalSign;
+		PSTR end = equalSign;
 		while (*end != '"' && *end != 0)
 			end++;
 		if (*end)
@@ -1450,7 +1450,7 @@ long FitIniFile::getIdStringLength (PCSTR varName)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdFloatArray (PCSTR varName, float *result, unsigned long numElements)
+long FitIniFile::readIdFloatArray (PCSTR varName, float *result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1459,7 +1459,7 @@ long FitIniFile::readIdFloatArray (PCSTR varName, float *result, unsigned long n
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -1468,8 +1468,8 @@ long FitIniFile::readIdFloatArray (PCSTR varName, float *result, unsigned long n
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -1488,7 +1488,7 @@ long FitIniFile::readIdFloatArray (PCSTR varName, float *result, unsigned long n
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -1506,8 +1506,8 @@ long FitIniFile::readIdFloatArray (PCSTR varName, float *result, unsigned long n
 		
 	//------------------------------
 	// Parse out the elements here.
-	char *equalSign = strstr(line, "=");
-	unsigned long elementsRead = 0;
+	PSTR equalSign = strstr(line, "=");
+	ULONG elementsRead = 0;
 	if (equalSign)
 	{
 		equalSign++; //Move to char past equal sign.
@@ -1545,7 +1545,7 @@ long FitIniFile::readIdFloatArray (PCSTR varName, float *result, unsigned long n
 }
 		
 //---------------------------------------------------------------------------
-long FitIniFile::readIdLongArray (PCSTR varName, long *result, unsigned long numElements)
+long FitIniFile::readIdLongArray (PCSTR varName, long *result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1554,7 +1554,7 @@ long FitIniFile::readIdLongArray (PCSTR varName, long *result, unsigned long num
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -1563,8 +1563,8 @@ long FitIniFile::readIdLongArray (PCSTR varName, long *result, unsigned long num
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -1583,7 +1583,7 @@ long FitIniFile::readIdLongArray (PCSTR varName, long *result, unsigned long num
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -1601,8 +1601,8 @@ long FitIniFile::readIdLongArray (PCSTR varName, long *result, unsigned long num
 		
 	//------------------------------
 	// Parse out the elements here.
-	char *equalSign = strstr(line, "=");
-	unsigned long elementsRead = 0;
+	PSTR equalSign = strstr(line, "=");
+	ULONG elementsRead = 0;
 	if (equalSign)
 	{
 		equalSign++; //Move to char past equal sign.
@@ -1640,7 +1640,7 @@ long FitIniFile::readIdLongArray (PCSTR varName, long *result, unsigned long num
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdULongArray (PCSTR varName, unsigned long *result, unsigned long numElements)
+long FitIniFile::readIdULongArray (PCSTR varName, ULONG *result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1649,7 +1649,7 @@ long FitIniFile::readIdULongArray (PCSTR varName, unsigned long *result, unsigne
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -1658,8 +1658,8 @@ long FitIniFile::readIdULongArray (PCSTR varName, unsigned long *result, unsigne
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -1678,7 +1678,7 @@ long FitIniFile::readIdULongArray (PCSTR varName, unsigned long *result, unsigne
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -1696,8 +1696,8 @@ long FitIniFile::readIdULongArray (PCSTR varName, unsigned long *result, unsigne
 		
 	//------------------------------
 	// Parse out the elements here.
-	char *equalSign = strstr(line, "=");
-	unsigned long elementsRead = 0;
+	PSTR equalSign = strstr(line, "=");
+	ULONG elementsRead = 0;
 	if (equalSign)
 	{
 		equalSign++; //Move to char past equal sign.
@@ -1735,7 +1735,7 @@ long FitIniFile::readIdULongArray (PCSTR varName, unsigned long *result, unsigne
 }
 		
 //---------------------------------------------------------------------------
-long FitIniFile::readIdShortArray (PCSTR varName, short *result, unsigned long numElements)
+long FitIniFile::readIdShortArray (PCSTR varName, short *result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1744,7 +1744,7 @@ long FitIniFile::readIdShortArray (PCSTR varName, short *result, unsigned long n
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -1753,8 +1753,8 @@ long FitIniFile::readIdShortArray (PCSTR varName, short *result, unsigned long n
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -1773,7 +1773,7 @@ long FitIniFile::readIdShortArray (PCSTR varName, short *result, unsigned long n
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -1791,8 +1791,8 @@ long FitIniFile::readIdShortArray (PCSTR varName, short *result, unsigned long n
 		
 	//------------------------------
 	// Parse out the elements here.
-	char *equalSign = strstr(line, "=");
-	unsigned long elementsRead = 0;
+	PSTR equalSign = strstr(line, "=");
+	ULONG elementsRead = 0;
 	if (equalSign)
 	{
 		equalSign++; //Move to char past equal sign.
@@ -1830,7 +1830,7 @@ long FitIniFile::readIdShortArray (PCSTR varName, short *result, unsigned long n
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, unsigned long numElements)
+long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1839,7 +1839,7 @@ long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, unsig
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -1848,8 +1848,8 @@ long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, unsig
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -1868,7 +1868,7 @@ long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, unsig
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -1886,8 +1886,8 @@ long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, unsig
 		
 	//------------------------------
 	// Parse out the elements here.
-	char *equalSign = strstr(line, "=");
-	unsigned long elementsRead = 0;
+	PSTR equalSign = strstr(line, "=");
+	ULONG elementsRead = 0;
 	if (equalSign)
 	{
 		equalSign++; //Move to char past equal sign.
@@ -1925,7 +1925,7 @@ long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, unsig
 }
 		
 //---------------------------------------------------------------------------
-long FitIniFile::readIdCharArray (PCSTR varName, char *result, unsigned long numElements)
+long FitIniFile::readIdCharArray (PCSTR varName, PSTR result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1934,7 +1934,7 @@ long FitIniFile::readIdCharArray (PCSTR varName, char *result, unsigned long num
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -1943,8 +1943,8 @@ long FitIniFile::readIdCharArray (PCSTR varName, char *result, unsigned long num
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -1963,7 +1963,7 @@ long FitIniFile::readIdCharArray (PCSTR varName, char *result, unsigned long num
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -1981,8 +1981,8 @@ long FitIniFile::readIdCharArray (PCSTR varName, char *result, unsigned long num
 		
 	//------------------------------
 	// Parse out the elements here.
-	char *equalSign = strstr(line, "=");
-	unsigned long elementsRead = 0;
+	PSTR equalSign = strstr(line, "=");
+	ULONG elementsRead = 0;
 	if (equalSign)
 	{
 		equalSign++; //Move to char past equal sign.
@@ -2020,7 +2020,7 @@ long FitIniFile::readIdCharArray (PCSTR varName, char *result, unsigned long num
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, unsigned long numElements)
+long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2029,7 +2029,7 @@ long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, unsigned long n
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -2038,8 +2038,8 @@ long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, unsigned long n
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -2058,7 +2058,7 @@ long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, unsigned long n
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -2076,8 +2076,8 @@ long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, unsigned long n
 		
 	//------------------------------
 	// Parse out the elements here.
-	char *equalSign = strstr(line, "=");
-	unsigned long elementsRead = 0;
+	PSTR equalSign = strstr(line, "=");
+	ULONG elementsRead = 0;
 	if (equalSign)
 	{
 		equalSign++; //Move to char past equal sign.
@@ -2099,7 +2099,7 @@ long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, unsigned long n
 				return(errorCode);
 			}
 			
-			result[elementsRead] = textToUCHAR(elementString);
+			result[elementsRead] = textToUChar(elementString);
 			elementsRead++;
 		}
 		
@@ -2115,7 +2115,7 @@ long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, unsigned long n
 }
 		
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdFloatArrayElements (PCSTR varName)
+ULONG FitIniFile::getIdFloatArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2124,7 +2124,7 @@ unsigned long FitIniFile::getIdFloatArrayElements (PCSTR varName)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -2133,8 +2133,8 @@ unsigned long FitIniFile::getIdFloatArrayElements (PCSTR varName)
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -2153,7 +2153,7 @@ unsigned long FitIniFile::getIdFloatArrayElements (PCSTR varName)
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -2170,7 +2170,7 @@ unsigned long FitIniFile::getIdFloatArrayElements (PCSTR varName)
 }	
 	
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdLongArrayElements (PCSTR varName)
+ULONG FitIniFile::getIdLongArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2179,7 +2179,7 @@ unsigned long FitIniFile::getIdLongArrayElements (PCSTR varName)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -2188,8 +2188,8 @@ unsigned long FitIniFile::getIdLongArrayElements (PCSTR varName)
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -2208,7 +2208,7 @@ unsigned long FitIniFile::getIdLongArrayElements (PCSTR varName)
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -2225,7 +2225,7 @@ unsigned long FitIniFile::getIdLongArrayElements (PCSTR varName)
 }
 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdULongArrayElements (PCSTR varName)
+ULONG FitIniFile::getIdULongArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2234,7 +2234,7 @@ unsigned long FitIniFile::getIdULongArrayElements (PCSTR varName)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -2243,8 +2243,8 @@ unsigned long FitIniFile::getIdULongArrayElements (PCSTR varName)
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -2263,7 +2263,7 @@ unsigned long FitIniFile::getIdULongArrayElements (PCSTR varName)
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -2280,7 +2280,7 @@ unsigned long FitIniFile::getIdULongArrayElements (PCSTR varName)
 }
 											 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdShortArrayElements (PCSTR varName)
+ULONG FitIniFile::getIdShortArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2289,7 +2289,7 @@ unsigned long FitIniFile::getIdShortArrayElements (PCSTR varName)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -2298,8 +2298,8 @@ unsigned long FitIniFile::getIdShortArrayElements (PCSTR varName)
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -2318,7 +2318,7 @@ unsigned long FitIniFile::getIdShortArrayElements (PCSTR varName)
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -2335,7 +2335,7 @@ unsigned long FitIniFile::getIdShortArrayElements (PCSTR varName)
 }
 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdUShortArrayElements (PCSTR varName)
+ULONG FitIniFile::getIdUShortArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2344,7 +2344,7 @@ unsigned long FitIniFile::getIdUShortArrayElements (PCSTR varName)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -2353,8 +2353,8 @@ unsigned long FitIniFile::getIdUShortArrayElements (PCSTR varName)
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -2373,7 +2373,7 @@ unsigned long FitIniFile::getIdUShortArrayElements (PCSTR varName)
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -2390,7 +2390,7 @@ unsigned long FitIniFile::getIdUShortArrayElements (PCSTR varName)
 }
 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdCharArrayElements (PCSTR varName)
+ULONG FitIniFile::getIdCharArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2399,7 +2399,7 @@ unsigned long FitIniFile::getIdCharArrayElements (PCSTR varName)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -2408,8 +2408,8 @@ unsigned long FitIniFile::getIdCharArrayElements (PCSTR varName)
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -2428,7 +2428,7 @@ unsigned long FitIniFile::getIdCharArrayElements (PCSTR varName)
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -2445,7 +2445,7 @@ unsigned long FitIniFile::getIdCharArrayElements (PCSTR varName)
 }
 
 //---------------------------------------------------------------------------
-unsigned long FitIniFile::getIdUCHARArrayElements (PCSTR varName)
+ULONG FitIniFile::getIdUCHARArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2454,7 +2454,7 @@ unsigned long FitIniFile::getIdUCHARArrayElements (PCSTR varName)
 	//--------------------------------
 	// Always read from top of Block.
 	seek(currentBlockOffset);
-	unsigned long endOfBlock = currentBlockOffset+currentBlockSize;
+	ULONG endOfBlock = currentBlockOffset+currentBlockSize;
 	
 	//------------------------------------------------------------------
 	// Create two search strings so that we can match any number in []
@@ -2463,8 +2463,8 @@ unsigned long FitIniFile::getIdUCHARArrayElements (PCSTR varName)
 	
 	//--------------------------------
 	// Search line by line for varName
-	char *fSearch = NULL;
-	char *bSearch = NULL;
+	PSTR fSearch = NULL;
+	PSTR bSearch = NULL;
 	
 	do
 	{
@@ -2483,7 +2483,7 @@ unsigned long FitIniFile::getIdUCHARArrayElements (PCSTR varName)
 	//--------------------------------------
 	// Get number of elements in array.
 	char elementString[10];
-	unsigned long actualElements;
+	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
 	long numDigits = bSearch - fSearch;
@@ -2563,7 +2563,7 @@ long FitIniFile::writeIdChar (PCSTR varName, char value)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdULong (PCSTR varName, unsigned long value)
+long FitIniFile::writeIdULong (PCSTR varName, ULONG value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"ul %s = %d\r\n",varName,value);
@@ -2610,7 +2610,7 @@ long FitIniFile::writeIdString (PCSTR varName, PCSTR result)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdUShortArray (PCSTR varName, unsigned short *array, unsigned long numElements)
+long FitIniFile::writeIdUShortArray (PCSTR varName, unsigned short *array, ULONG numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"us[%d] %s = %d,",numElements,varName,array[0]);
@@ -2629,7 +2629,7 @@ long FitIniFile::writeIdUShortArray (PCSTR varName, unsigned short *array, unsig
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdLongArray (PCSTR varName, long *array, unsigned long numElements)
+long FitIniFile::writeIdLongArray (PCSTR varName, long *array, ULONG numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"l[%d] %s = %d,",numElements,varName,array[0]);
@@ -2648,7 +2648,7 @@ long FitIniFile::writeIdLongArray (PCSTR varName, long *array, unsigned long num
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdFloatArray (PCSTR varName, float *array, unsigned long numElements)
+long FitIniFile::writeIdFloatArray (PCSTR varName, float *array, ULONG numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"f[%d] %s = %.2f,",numElements,varName,array[0]);
@@ -2667,7 +2667,7 @@ long FitIniFile::writeIdFloatArray (PCSTR varName, float *array, unsigned long n
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdUCHARArray (PCSTR varName, PUCHAR array, unsigned long numElements)
+long FitIniFile::writeIdUCHARArray (PCSTR varName, PUCHAR array, ULONG numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"uc[%d] %s = %d,",numElements,varName,array[0]);

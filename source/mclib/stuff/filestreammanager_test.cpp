@@ -159,7 +159,7 @@ void
 	//
 	// Load the segment directly from file
 	//
-	char *confirm_data = new char[size];
+	PSTR confirm_data = new char[size];
 	Register_Pointer(confirm_data);
 	Check_Object(fileStream);
 	fileStream->SetPointer(offset);

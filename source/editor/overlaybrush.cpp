@@ -428,7 +428,7 @@ static void boundSafeGetOverlay( long tileR, long tileC, Overlays& type, int& Of
 		Offset = 0;
 		return;
 	}
-	land->getOverlay(tileR, tileC, type, (unsigned long&)Offset);
+	land->getOverlay(tileR, tileC, type, (ULONG&)Offset);
 }
 
 static int connectivityMaskBasedOnAdjacentTiles( long tileR, long tileC ) {

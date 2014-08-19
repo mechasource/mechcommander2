@@ -882,7 +882,7 @@ Fatal(0, "Need to support jumpGoalList (and goalList) for MOVETO as well in mc2 
 // TAC ORDERS
 //---------------------------------------------------------------------------
 
-long MoverGroup::orderMoveToPoint (bool setTacOrder, long origin, Stuff::Vector3D location, unsigned long params) {
+long MoverGroup::orderMoveToPoint (bool setTacOrder, long origin, Stuff::Vector3D location, ULONG params) {
 
 	long result = TACORDER_FAILURE;
 
@@ -898,7 +898,7 @@ long MoverGroup::orderMoveToPoint (bool setTacOrder, long origin, Stuff::Vector3
 
 //---------------------------------------------------------------------------
 
-long MoverGroup::orderMoveToObject (bool setTacOrder, long origin, GameObjectPtr target, long fromArea, unsigned long params) {
+long MoverGroup::orderMoveToObject (bool setTacOrder, long origin, GameObjectPtr target, long fromArea, ULONG params) {
 
 	long result = TACORDER_FAILURE;
 
@@ -914,7 +914,7 @@ long MoverGroup::orderMoveToObject (bool setTacOrder, long origin, GameObjectPtr
 
 //---------------------------------------------------------------------------
 
-long MoverGroup::orderTraversePath (long origin, WayPathPtr wayPath, unsigned long params) {
+long MoverGroup::orderTraversePath (long origin, WayPathPtr wayPath, ULONG params) {
 
 	long result = TACORDER_FAILURE;
 
@@ -978,7 +978,7 @@ long MoverGroup::orderPowerUp (long origin) {
 
 //---------------------------------------------------------------------------
 
-long MoverGroup::orderAttackObject (long origin, GameObjectPtr target, long attackType, long attackMethod, long attackRange, long aimLocation, long fromArea, unsigned long params) {
+long MoverGroup::orderAttackObject (long origin, GameObjectPtr target, long attackType, long attackMethod, long attackRange, long aimLocation, long fromArea, ULONG params) {
 
 	long result = TACORDER_FAILURE;
 
@@ -1028,7 +1028,7 @@ long MoverGroup::orderEject (long origin) {
 // COMBAT EVENTS
 //---------------------------------------------------------------------------
 
-void MoverGroup::triggerAlarm (long alarmCode, unsigned long triggerId) {
+void MoverGroup::triggerAlarm (long alarmCode, ULONG triggerId) {
 
 	for (long i = 0; i < numMovers; i++) {
 		MechWarriorPtr pilot = getMover(i)->getPilot();
@@ -1039,7 +1039,7 @@ void MoverGroup::triggerAlarm (long alarmCode, unsigned long triggerId) {
 
 //---------------------------------------------------------------------------
 
-long MoverGroup::handleMateCrippled (unsigned long mateWID) {
+long MoverGroup::handleMateCrippled (ULONG mateWID) {
 
 	triggerAlarm(PILOT_ALARM_FRIENDLY_VEHICLE_CRIPPLED, mateWID);
 	return(NO_ERR);
@@ -1047,7 +1047,7 @@ long MoverGroup::handleMateCrippled (unsigned long mateWID) {
 
 //---------------------------------------------------------------------------
 
-long MoverGroup::handleMateDisabled (unsigned long mateWID) {
+long MoverGroup::handleMateDisabled (ULONG mateWID) {
 
 	//triggerAlarm(PILOT_ALARM_DEATH_OF_MATE, mateId);
 	return(NO_ERR);
@@ -1055,7 +1055,7 @@ long MoverGroup::handleMateDisabled (unsigned long mateWID) {
 
 //---------------------------------------------------------------------------
 
-long MoverGroup::handleMateDestroyed (unsigned long mateWID) {
+long MoverGroup::handleMateDestroyed (ULONG mateWID) {
 
 	triggerAlarm(PILOT_ALARM_DEATH_OF_MATE, mateWID);
 	return(NO_ERR);
@@ -1063,7 +1063,7 @@ long MoverGroup::handleMateDestroyed (unsigned long mateWID) {
 
 //---------------------------------------------------------------------------
 
-long MoverGroup::handleMateEjected (unsigned long mateWID) {
+long MoverGroup::handleMateEjected (ULONG mateWID) {
 
 	//triggerAlarm(PILOT_ALARM_DEATH_OF_MATE, mateId);
 	return(NO_ERR);
@@ -1071,7 +1071,7 @@ long MoverGroup::handleMateEjected (unsigned long mateWID) {
 
 //---------------------------------------------------------------------------
 
-void MoverGroup::handleMateFiredWeapon (unsigned long mateWID) {
+void MoverGroup::handleMateFiredWeapon (ULONG mateWID) {
 
 	triggerAlarm(PILOT_ALARM_MATE_FIRED_WEAPON, mateWID);
 }

@@ -74,7 +74,7 @@ class BuildingType : public ObjectType {
 		float			perimeterAlarmTimer;
 		float			lookoutTowerRange;
 		
-		unsigned long	activityEffectId;
+		ULONG	activityEffectId;
 		
 	public:
 
@@ -85,7 +85,7 @@ class BuildingType : public ObjectType {
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, unsigned long fileSize);
+		virtual long init (FilePtr objFile, ULONG fileSize);
 
 		long init (FitIniFilePtr objFile);
 		
@@ -220,7 +220,7 @@ class Building : public TerrainObject
 			return(NO_ERR);
 		}
 
-		virtual char* getName (void);
+		virtual PSTR getName (void);
 
 		virtual Stuff::Vector3D getPositionFromHS (long weaponType) 
 		{

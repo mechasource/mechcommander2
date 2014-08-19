@@ -255,7 +255,7 @@ namespace Stuff {
 
 		virtual bool
 			ReadLine(
-			char *buffer,
+			PSTR buffer,
 			size_t size_of_buffer,
 			char continuator = '\0'
 			);
@@ -267,7 +267,7 @@ namespace Stuff {
 			);
 
 		void
-			WriteLine(char *buffer);
+			WriteLine(PSTR buffer);
 
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

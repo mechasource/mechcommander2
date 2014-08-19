@@ -18,10 +18,10 @@
 // In other words, the global class needs only to register newly opened fastfiles,
 // close them all on exit and provide a find function which returns a pointer to the
 // fastfile containing the file we care about.  If no file is found, returns NULL.
-extern bool FastFileInit (char *fname);
+extern bool FastFileInit (PSTR fname);
 extern void FastFileFini (void);
-extern FastFile *FastFileFind (char *fname, long &fastFileHandle);
-extern DWORD elfHash (char *name);
+extern FastFile *FastFileFind (PSTR fname, long &fastFileHandle);
+extern DWORD elfHash (PSTR name);
 //-----------------------------------------------------------------------------------
 
 

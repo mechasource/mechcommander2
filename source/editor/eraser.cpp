@@ -90,7 +90,7 @@ bool Eraser::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
 		cellCol += tileCol * MAPCELL_DIM;
 		
 		Overlays type;
-		unsigned long Offset;
+		ULONG Offset;
 		land->getOverlay( tileRow, tileCol, type, Offset );
 
 		if ( type != INVALID_OVERLAY )
@@ -128,7 +128,7 @@ bool Eraser::canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int 
 	cellCol += tileCol * MAPCELL_DIM;
 	
 	Overlays type;
-	unsigned long Offset;
+	ULONG Offset;
 	land->getOverlay( tileRow, tileCol, type, Offset );
 
 	if ( type != INVALID_OVERLAY )

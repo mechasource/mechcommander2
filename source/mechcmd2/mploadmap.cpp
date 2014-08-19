@@ -159,7 +159,7 @@ void MPLoadMap::seedDialog( bool bSeedSingle )
 		seedFromFile( "Multi" );
 	}
 
-	statics[18].setTexture( (unsigned long)NULL );
+	statics[18].setTexture( (ULONG)NULL );
 	if ( bSeedSingle )
 		mapList.SelectItem( 0);
 	else
@@ -177,16 +177,16 @@ void MPLoadMap::addFile( PCSTR pFileName, bool bSeedSingle )
 	{
 		if ( NO_ERR == tmp.seekBlock( "MissionSettings" ) )
 		{
-			unsigned long bSingle;
+			ULONG bSingle;
 			long result = tmp.readIdULong( "IsSinglePlayer", bSingle );
 			bool bSingleResult = (bSingle != 0);
 			if ( (result == NO_ERR) && (bSingleResult == bSeedSingle) )
 			{
 
-				char* pExt = (char*)strstr( pFileName, ".fit" );
+				PSTR pExt = (PSTR)strstr( pFileName, ".fit" );
 				if ( !pExt  )
 				{
-					pExt = (char*)(strstr( pFileName, ".FIT" ) );
+					pExt = (PSTR)(strstr( pFileName, ".FIT" ) );
 				}
 				if ( pExt )
 					*pExt = NULL;
@@ -209,7 +209,7 @@ void MPLoadMap::addFile( PCSTR pFileName, bool bSeedSingle )
 
 				if ( !bSingle )
 				{
-					unsigned long type = 0;
+					ULONG type = 0;
 					tmp.readIdULong( "MissionType", type );
 
 					bool bFound = 0;
@@ -397,7 +397,7 @@ void MPLoadMap::seedFromCampaign()
 void MPLoadMap::end()
 {
 	LogisticsDialog::end();
-	statics[18].setTexture( ( unsigned long)NULL );
+	statics[18].setTexture( ( ULONG)NULL );
 	statics[18].setColor( 0 );
 }
 
@@ -429,7 +429,7 @@ void MPLoadMap::render(int, int )
 	}
 
 	
-	GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+	RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 	drawRect( rect, color );
 
 	if ((!enterAnim.isAnimating() || enterAnim.isDone() ) && !exitAnim.isAnimating() )
@@ -461,7 +461,7 @@ void MPLoadMap::render()
 	render(0, 0);
 }
 
-int	MPLoadMap::handleMessage( unsigned long message, unsigned long who)
+int	MPLoadMap::handleMessage( ULONG message, ULONG who)
 {
 
 	status = who;
@@ -552,7 +552,7 @@ void MPLoadMap::updateMapInfo()
 			file.readIdBoolean( "MissionNameUseResourceString", bRes );
 			if ( bRes )
 			{
-				unsigned long lRes;
+				ULONG lRes;
 				file.readIdULong( "MissionNameResourceStringID", lRes );
 				cLoadString( lRes, missionName, 255 );
 			}
@@ -572,7 +572,7 @@ void MPLoadMap::updateMapInfo()
 
 			if ( !bIsSingle )
 			{
-				unsigned long type = 0;
+				ULONG type = 0;
 				file.readIdULong( "MissionType", type );
 				cLoadString( IDS_MP_LM_MAP_LIST_TYPE, text, 255 );
 				char mType[128];
@@ -582,7 +582,7 @@ void MPLoadMap::updateMapInfo()
 				textObjects[4].setText( text2 );
 			
 	
-				unsigned long numPlayers = 0;
+				ULONG numPlayers = 0;
 				file.readIdULong( "MaximumNumberOfPlayers", numPlayers );
 
 				cLoadString( IDS_MP_LM_MAP_LIST_MAX_PLAYERS, text, 255 );
@@ -603,7 +603,7 @@ void MPLoadMap::updateMapInfo()
 			result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
 			if (NO_ERR == result && tmpBool )
 			{
-				unsigned long tmpInt = 0;
+				ULONG tmpInt = 0;
 				result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
 				if (NO_ERR == result)
 				{
@@ -630,14 +630,14 @@ void MPLoadMap::updateMapInfo()
 	}
 }
 
-void MPLoadMap::getMapNameFromFile( PCSTR pFileName, char* missionName, long bufferLength )
+void MPLoadMap::getMapNameFromFile( PCSTR pFileName, PSTR missionName, long bufferLength )
 {
 	FullPathFileName path;
 	path.init( missionPath, pFileName, ".fit" );
 
 	FitIniFile file;
 
-	if ( NO_ERR != file.open( (char*)(PCSTR)path ) )
+	if ( NO_ERR != file.open( (PSTR)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", path );
@@ -655,7 +655,7 @@ void MPLoadMap::getMapNameFromFile( PCSTR pFileName, char* missionName, long buf
 	//Assert( result == NO_ERR, 0, "couldn't find the MissionNameUseResourceString" );
 	if ( bRes )
 	{
-		unsigned long lRes;
+		ULONG lRes;
 		result = file.readIdULong( "MissionNameResourceStringID", lRes );
 		Assert( result == NO_ERR, 0, "couldn't find the MissionNameResourceStringID" );
 		cLoadString( lRes, missionName, bufferLength );

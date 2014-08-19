@@ -272,10 +272,10 @@ void GameTacMap::render()
 
 	gos_DrawQuads( &corners[0], 4 );
 
-	unsigned long colors[MAX_MOVERS];
-	unsigned long ringColors[MAX_MOVERS];
+	ULONG colors[MAX_MOVERS];
+	ULONG ringColors[MAX_MOVERS];
 	Stuff::Vector3D positions[MAX_MOVERS];
-	unsigned long ranges[MAX_MOVERS];
+	ULONG ranges[MAX_MOVERS];
 	bool		  selected[MAX_MOVERS];
 
 	count = 0;
@@ -307,8 +307,8 @@ void GameTacMap::render()
 
 				ObjectClass objClass = pSensor->owner->getObjectClass();
 
-				unsigned long colorBlip = pSensor->owner->getSelected() ? 0xff4bff4b : 0xff00cc00;
-				unsigned long colorRing = 0xff00cc00;
+				ULONG colorBlip = pSensor->owner->getSelected() ? 0xff4bff4b : 0xff00cc00;
+				ULONG colorRing = 0xff00cc00;
 
 			
 				if ( pSensor->owner->getTeam()->isNeutral( Team::home ) )
@@ -352,7 +352,7 @@ void GameTacMap::render()
 		}
 	}
 
-	unsigned long colorBlip, colorRing;
+	ULONG colorBlip, colorRing;
 
 	//-----------------------------------------------------	
 	// draw the movers
@@ -503,7 +503,7 @@ void GameTacMap::drawSensor( const Stuff::Vector3D& pos, float radius, long colo
 
 
 	EllipseElement circle( center, radii, color, 0 ); 
-	GUI_RECT rect = { left, top, right, bottom };
+	RECT rect = { left, top, right, bottom };
 	circle.setClip( rect );
 
 	circle.draw();
@@ -523,7 +523,7 @@ void GameTacMap::drawBlip( const Stuff::Vector3D& pos, long color, int type )
 	gos_SetRenderState( gos_State_Filter, gos_FilterBiLinear);
 	gos_SetRenderState( gos_State_ZCompare, 0);
 	gos_SetRenderState(	gos_State_ZWrite, 0);
-	unsigned long gosID = mcTextureManager->get_gosTextureHandle( blipHandle );
+	ULONG gosID = mcTextureManager->get_gosTextureHandle( blipHandle );
 	gos_SetRenderState( gos_State_Texture, gosID );
 
 	for ( int i = 0; i < 4; ++i )
@@ -551,7 +551,7 @@ void GameTacMap::drawBlip( const Stuff::Vector3D& pos, long color, int type )
 	gos_DrawQuads( triangle, 4 );
 }
 
-void GameTacMap::setPos( const GUI_RECT& newPos )
+void GameTacMap::setPos( const RECT& newPos )
 {
 	left = newPos.left;
 	right = newPos.right;

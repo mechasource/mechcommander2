@@ -84,7 +84,7 @@ void GameLog::destroy (void) {
 
 //---------------------------------------------------------------------------
 
-long GameLog::open (char* fileName) {
+long GameLog::open (PSTR fileName) {
 
 	numLines = 0;
 	totalLines = 0;
@@ -97,7 +97,7 @@ long GameLog::open (char* fileName) {
 
 //---------------------------------------------------------------------------
 
-void GameLog::write (char* s) {
+void GameLog::write (PSTR s) {
 
 	static char buffer[MAX_GAMELOG_LINELEN];
 	

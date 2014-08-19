@@ -89,7 +89,7 @@ Directory::~Directory(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-char*
+PSTR
 	Directory::GetCurrentFileName(void)
 {
 	Check_Object(this);
@@ -450,7 +450,7 @@ bool
 		PCSTR next_slash;
 		next_slash = strchr( current_position + 1, '\\' );
 
-		char *new_string = NULL;
+		PSTR new_string = NULL;
 
 		if (next_slash == NULL)
 		{

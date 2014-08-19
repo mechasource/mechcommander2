@@ -927,7 +927,7 @@ void MapData::setOverlayTile (long block, long vertex, long offset)
 }	
 
 //---------------------------------------------------------------------------
-void MapData::setOverlay( long indexY, long indexX, Overlays type, unsigned long offset )
+void MapData::setOverlay( long indexY, long indexX, Overlays type, ULONG offset )
 {
 	long index = indexX + indexY * Terrain::realVerticesMapSide;
 
@@ -939,7 +939,7 @@ void MapData::setOverlay( long indexY, long indexX, Overlays type, unsigned long
 }
 
 //---------------------------------------------------------------------------
-unsigned long MapData::getTexture( long indexY, long indexX )
+ULONG MapData::getTexture( long indexY, long indexX )
 {
 	gosASSERT( indexX > -1 && indexX < Terrain::realVerticesMapSide );
 	gosASSERT( indexY > -1 && indexY < Terrain::realVerticesMapSide );
@@ -1039,7 +1039,7 @@ long MapData::getTerrain( long tileR, long tileC )
 }
 
 //---------------------------------------------------------------------------
-void MapData::getOverlay( long tileR, long tileC, Overlays& type, unsigned long& Offset )
+void MapData::getOverlay( long tileR, long tileC, Overlays& type, ULONG& Offset )
 {
 	gosASSERT( tileR < Terrain::realVerticesMapSide && tileR > -1 );
 	gosASSERT( tileC < Terrain::realVerticesMapSide && tileC > -1 );
@@ -1827,7 +1827,7 @@ void MapData::unhighlightAll()
 }
 
 //---------------------------------------------------------------------------
-void MapData::selectVertex( unsigned long tileRow, unsigned long tileCol, bool bSelect, bool bToggle)
+void MapData::selectVertex( ULONG tileRow, ULONG tileCol, bool bSelect, bool bToggle)
 {
 	//Just return.  Don't select anything!
 	if ( tileRow >= Terrain::realVerticesMapSide )
@@ -1836,7 +1836,7 @@ void MapData::selectVertex( unsigned long tileRow, unsigned long tileCol, bool b
 	if ( tileCol >= Terrain::realVerticesMapSide )
 		return;
 
-	unsigned long index = tileRow * Terrain::realVerticesMapSide + tileCol;
+	ULONG index = tileRow * Terrain::realVerticesMapSide + tileCol;
 	blocks[index].selected = bToggle ? !blocks[index].selected : bSelect;
 	if ( blocks[index].selected )
 		hasSelection ++;
@@ -1849,12 +1849,12 @@ void MapData::selectVertex( unsigned long tileRow, unsigned long tileCol, bool b
 }
 
 //---------------------------------------------------------------------------
-bool MapData::isVertexSelected( unsigned long tileRow, unsigned long tileCol )
+bool MapData::isVertexSelected( ULONG tileRow, ULONG tileCol )
 {
 	gosASSERT( tileRow < Terrain::realVerticesMapSide );
 	gosASSERT( tileCol < Terrain::realVerticesMapSide );
 
-	unsigned long index = tileRow * Terrain::realVerticesMapSide + tileCol;
+	ULONG index = tileRow * Terrain::realVerticesMapSide + tileCol;
 	return blocks[index].selected ? true : false;
 
 }

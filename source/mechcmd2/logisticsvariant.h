@@ -125,7 +125,7 @@ protected:
 		int		compareWeight( LogisticsVariant* );
 		
 		inline bool			isAvailable() const { return (availableToUser && !bHidden); }
-		unsigned long	getID() const { return ID; }
+		ULONG	getID() const { return ID; }
 		float			getMaxWeight() const { return chassis->maxWeight; }
 		long			getChassisName() const { return chassis->chassisNameID; }
 		const EString&		getName() const { return variantName; }
@@ -199,7 +199,7 @@ protected:
 		const LogisticsChassis::ComponentInfo* getComponentAtLocation(long x, long y) const;
 
 		
-		unsigned long		ID; // bottom 8 bits = mech chassis, next 8 = number within
+		ULONG		ID; // bottom 8 bits = mech chassis, next 8 = number within
 		int					fileID; // in csv file
 		
 		LogisticsChassis*	chassis;

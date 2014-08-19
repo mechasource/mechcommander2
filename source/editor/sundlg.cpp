@@ -50,7 +50,7 @@ void SunDlg::DoDataExchange(CDataExchange* pDX)
 
 void SunDlg::Init()
 {
-	unsigned long color = eye->dayAmbientBlue | (eye->dayAmbientGreen << 8 ) | ( eye->dayAmbientRed << 16 );
+	ULONG color = eye->dayAmbientBlue | (eye->dayAmbientGreen << 8 ) | ( eye->dayAmbientRed << 16 );
 	displayInHex( color, m_AmbientEdit );
 
 	color = eye->dayLightBlue | (eye->dayLightGreen << 8 ) | ( eye->dayLightRed << 16 );
@@ -138,7 +138,7 @@ HBRUSH SunDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			backgroundBrush.DeleteObject();
 
 		// need to swap r's and blue's.
-		unsigned long reverse = reverseRGB( i );
+		ULONG reverse = reverseRGB( i );
 
 	
 		backgroundBrush.CreateSolidBrush( reverse );

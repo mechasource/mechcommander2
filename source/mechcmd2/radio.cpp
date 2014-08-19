@@ -73,7 +73,7 @@ void Radio::operator delete (void *us)
 }
 
 //-------------------------------------------------------------------------------
-long Radio::init (char *fileName, unsigned long heapSize, char *movie)
+long Radio::init (PSTR fileName, ULONG heapSize, PSTR movie)
 {
 	FullPathFileName pilotAudioPath;
 	pilotAudioPath.init(CDsoundPath,fileName,".pak");
@@ -211,7 +211,7 @@ long i, roll, callsign, fragmentNum, dropOut = 0;
 		if (messagesFile[radioID]->seekPacket(callsign) == NO_ERR)
 		{
 
-			unsigned long messageSize = messagesFile[radioID]->getPacketSize();
+			ULONG messageSize = messagesFile[radioID]->getPacketSize();
 			msgData->data[fragmentNum] = (MemoryPtr)radioHeap->Malloc(messageSize);
 			if (!msgData->data[fragmentNum]) 
 			{
@@ -226,7 +226,7 @@ long i, roll, callsign, fragmentNum, dropOut = 0;
 
 	if (messagesFile[radioID]->seekPacket(msgData->msgId) == NO_ERR)
 	{
-		unsigned long messageSize = messagesFile[radioID]->getPacketSize();
+		ULONG messageSize = messagesFile[radioID]->getPacketSize();
 		msgData->data[fragmentNum] = (MemoryPtr)radioHeap->Malloc(messageSize);
 		if (!msgData->data[fragmentNum]) 
 		{
@@ -244,7 +244,7 @@ long i, roll, callsign, fragmentNum, dropOut = 0;
 		
 		if (noiseFile->seekPacket(msgData->noiseId) == NO_ERR)
 		{
-			unsigned long messageSize = noiseFile->getPacketSize();
+			ULONG messageSize = noiseFile->getPacketSize();
 			msgData->noise[0] = (MemoryPtr)radioHeap->Malloc(messageSize);
 			if (!msgData->noise[0])
 			{
@@ -296,7 +296,7 @@ FullPathFileName	messageInfoPath;
 FilePtr				messageInfoFile;
 long				result;
 char				dataLine[512];
-char*				field;
+PSTR				field;
 
 	messageInfoPath.init(soundPath,"radio",".csv");
 	messageInfoFile = new File;

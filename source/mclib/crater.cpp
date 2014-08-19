@@ -113,7 +113,7 @@ float craterUVTable [136] =
 
 //---------------------------------------------------------------------
 // class CraterManager
-long CraterManager::init (long numCraters, unsigned long craterTypeSize, char *craterFileName)
+long CraterManager::init (long numCraters, ULONG craterTypeSize, PSTR craterFileName)
 {
 	init();
 	

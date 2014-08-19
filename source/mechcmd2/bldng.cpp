@@ -85,7 +85,7 @@
 #include "..\resource.h"
 
 #define BLIP_FRAME_RATE		0.067
-//extern unsigned long NextIdNumber;
+//extern ULONG NextIdNumber;
 extern float worldUnitsPerMeter;
 bool drawExtents = false;
 extern bool somethingOnFire;
@@ -165,7 +165,7 @@ void BuildingType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long BuildingType::init (FilePtr objFile, unsigned long fileSize) {
+long BuildingType::init (FilePtr objFile, ULONG fileSize) {
 
 	long result = 0;
 	
@@ -187,7 +187,7 @@ long BuildingType::init (FilePtr objFile, unsigned long fileSize) {
 			return(result);
 	}
 
-	unsigned long dmgLevel;
+	ULONG dmgLevel;
 	result = bldgFile.readIdULong("DmgLevel",dmgLevel);
 	if (result != NO_ERR)
 		return(result);
@@ -954,7 +954,7 @@ long Building::setTeamId (long _teamId, bool setup)
 			soundSystem->playBettySample( BETTY_SENSOR_CAPTURED );
 	}
 
-	static unsigned long highLight[8] = {0x00007f00, 0x0000007f, 0x007f0000};
+	static ULONG highLight[8] = {0x00007f00, 0x0000007f, 0x007f0000};
 	if (turn > 10)
 		appearance->flashBuilding(5.0,0.5,highLight[Team::relations[teamId][Team::home->getId()]]);
 		
@@ -1119,7 +1119,7 @@ void Building::render (void) {
 }
 
 //---------------------------------------------------------------------------
-char* Building::getName (void) 
+PSTR Building::getName (void) 
 {
 	if (((BuildingTypePtr)getObjectType())->buildingTypeName != -1) 
 	{
@@ -1205,7 +1205,7 @@ void Building::init (bool create, ObjectTypePtr objType) {
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 	// Need an MLR appearance class
-	char *appearName = objType->getAppearanceTypeName();
+	PSTR appearName = objType->getAppearanceTypeName();
 
 	//--------------------------------------------------------------
 	// New code!!!

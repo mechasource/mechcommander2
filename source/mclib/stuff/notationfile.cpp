@@ -62,7 +62,7 @@ void
 	Macro::ReplaceMacros(
 		MacroTree *macro_tree,
 		PCSTR buffer,
-		char *new_buf,
+		PSTR new_buf,
 		int new_buf_size
 	)
 {
@@ -113,7 +113,7 @@ void
 		size_t len = p-buffer - 2;
 		MString macro_name;
 		macro_name.AllocateLength(len+1);
-		char *t = macro_name;
+		PSTR t = macro_name;
 		size_t i=0;
 		for (p = buffer+2; *p != ')'; ++p,++i)
 		{
@@ -319,14 +319,14 @@ void
 	char buffer[MAX_LINE_SIZE];
 	while (stream->ReadLine(buffer, sizeof(buffer)))
 	{		
-		char *p = buffer;
+		PSTR p = buffer;
 
 		//
 		//----------------------------------------------------------------
 		// Deal with any comments - C++ style are the easiest to deal with
 		//----------------------------------------------------------------
 		//
-		char *comment_start = NULL;
+		PSTR comment_start = NULL;
 		while ((p = strchr(p, '/')) != NULL)
 		{
 			if (p[1] == '/')
@@ -440,7 +440,7 @@ Parse:
 		//
 		if (m_type != Raw)
 		{
-			char *q;
+			PSTR q;
 			if (*p == '!')
 				HandleBangStuff(p+1, macro_tree, page);
 
@@ -568,7 +568,7 @@ void
 		MemoryStream *stream,
 		MacroTree *macro_tree,
 		Page **notepage,
-		char *buffer
+		PSTR buffer
 	)
 {
 	Check_Object(this);
@@ -582,7 +582,7 @@ void
 	// find first non-blank character
 	//--------------------------------
 	//
-	char *p = buffer;
+	PSTR p = buffer;
 	while (*p == ' ' || *p == '\t')
 		++p;
 
@@ -592,7 +592,7 @@ void
 	// new page
 	//----------------------------------------------------------------------
 	//
-	char *token;
+	PSTR token;
 	if (*p == '[')
 	{
 		token = p+1;
@@ -617,7 +617,7 @@ void
 	//--------------------------------------------------------------
 	//
 	token = p;
-	char *entry = NULL;
+	PSTR entry = NULL;
 	if ((p = strchr(token, '=')) != NULL)
 	{
 		*p = '\0';
@@ -676,7 +676,7 @@ void
 //
 void
 	NotationFile::HandleBangStuff(
-		char *buffer,
+		PSTR buffer,
 		MacroTree *macro_tree,
 		Page **page
 	)
@@ -700,7 +700,7 @@ void
 	// Handle an include directive
 	//----------------------------
 	//
-	char *p;
+	PSTR p;
 	if (!_strnicmp(buffer, "include", 7))
 	{
 		p = buffer+7;
@@ -724,7 +724,7 @@ void
 		// If the filename starts with a quote, strip it off
 		//--------------------------------------------------
 		//
-		char *file_name;
+		PSTR file_name;
 		if (*p == '"')
 		{
 			file_name = ++p;
@@ -770,7 +770,7 @@ void
 	//
 	else
 	{
-		char *entry = NULL;
+		PSTR entry = NULL;
 
 		//
 		//--------------------------------

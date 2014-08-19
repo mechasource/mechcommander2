@@ -168,7 +168,7 @@ class MasterComponent {
 		uint8_t					techBase;
 		float							CV;											// CV for this component
 		ComponentStats					stats;
-		unsigned long					art;
+		ULONG					art;
 
 	public:
 
@@ -203,11 +203,11 @@ class MasterComponent {
 		
 		long init (FitIniFile* componentFile);
 
-		long initEXCEL (char* dataLine, float baseSensorRange);
+		long initEXCEL (PSTR dataLine, float baseSensorRange);
 
 		long saveEXCEL (FilePtr file, uint8_t masterId,float baseSensorRange);
 
-		char* getName (void) {
+		PSTR getName (void) {
 			return(&name[0]);
 		}
 
@@ -320,7 +320,7 @@ class MasterComponent {
 			stats.weapon.ammoAmount = weaponAmmo;
 		}
 
-		unsigned long getWeaponAmmoType (void) {
+		ULONG getWeaponAmmoType (void) {
 			return(stats.weapon.ammoType);
 		}
 
@@ -329,7 +329,7 @@ class MasterComponent {
 			stats.weapon.ammoType = ammoType;
 		}
 
-		unsigned long getWeaponAmmoMasterId (void) {
+		ULONG getWeaponAmmoMasterId (void) {
 			return(stats.weapon.ammoMasterId);
 		}
 
@@ -542,7 +542,7 @@ class MasterComponent {
 			stats.probe.effect = effect;
 		}
 
-		char *getAbbreviation (void) {
+		PSTR getAbbreviation (void) {
 			return (&abbreviation[0]);
 		}
 		
@@ -552,8 +552,8 @@ class MasterComponent {
 
 		void multiplyWeaponRanges (float factor);
 
-		static long loadMasterList (char* fileName, long numComponents, float baseSensorRange);
-		static long saveMasterList (char* fileName, long numComponents,float baseSensorRange);
+		static long loadMasterList (PSTR fileName, long numComponents, float baseSensorRange);
+		static long saveMasterList (PSTR fileName, long numComponents,float baseSensorRange);
 
 		static long freeMasterList (void);
 

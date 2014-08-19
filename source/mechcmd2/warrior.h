@@ -410,7 +410,7 @@ typedef enum {
 } OrderStateType;
 
 typedef struct _AttackerRec {
-	unsigned long				WID;
+	ULONG				WID;
 	float						lastTime;
 } AttackerRec;
 
@@ -433,7 +433,7 @@ typedef struct _MoveOrders {
 	float						speedVelocity;			// based upon speedType (m/s)
 	char						speedState;				// based upon speedVelocity (walk, etc.)
 	char						speedThrottle;			// if speedState is walk, else ignored
-	unsigned long				goalType;				// is there no goal, a location or object?
+	ULONG				goalType;				// is there no goal, a location or object?
 	GameObjectWatchID			goalObjectWID;			// if our goal is an object...
 	Stuff::Vector3D				goalObjectPosition;		// object's position at time of path calc
 	Stuff::Vector3D				goalLocation;			// goal location, if any
@@ -474,7 +474,7 @@ typedef struct _SaveableMoveOrders {
 	float						speedVelocity;			// based upon speedType (m/s)
 	char						speedState;				// based upon speedVelocity (walk, etc.)
 	char						speedThrottle;			// if speedState is walk, else ignored
-	unsigned long				goalType;				// is there no goal, a location or object?
+	ULONG				goalType;				// is there no goal, a location or object?
 	GameObjectWatchID			goalObjectWID;			// if our goal is an object...
 	Stuff::Vector3D				goalObjectPosition;		// object's position at time of path calc
 	Stuff::Vector3D				goalLocation;			// goal location, if any
@@ -641,7 +641,7 @@ typedef struct _QueuedTacOrder
 {
 	long						id;
 	Stuff::Vector3D				point;
-	unsigned long				packedData[2];
+	ULONG				packedData[2];
 	uint8_t				tactic;
 	BldgAppearance*				marker;
 	uint8_t 				moveMode;			//So save/load can recreate this lovely pointer!
@@ -775,7 +775,7 @@ typedef struct _MechWarriorData
 
 	char					orderState;
 
-	unsigned long			debugFlags;
+	ULONG			debugFlags;
 
 	uint8_t			oldPilot;
 
@@ -920,7 +920,7 @@ class MechWarrior {
 
 		PathQueueRecPtr			movePathRequest;
 
-		unsigned long			debugFlags;
+		ULONG			debugFlags;
 
 		RadioPtr				radio;
 		bool					isPlayingMsg;		//Always false unless I'm playing a message!
@@ -958,7 +958,7 @@ class MechWarrior {
 
 		static void freeWarrior (MechWarrior* warrior);
 
-		static bool warriorInUse (char *warriorName);
+		static bool warriorInUse (PSTR warriorName);
 
 		void init (bool create);
 
@@ -983,7 +983,7 @@ class MechWarrior {
 		void updateMissionSkills();
 
 
-		char* getName (void) {
+		PSTR getName (void) {
 			return(name);
 		}
 
@@ -991,7 +991,7 @@ class MechWarrior {
 			return(photoIndex);
 		}
 
-		char* getCallsign (void) {
+		PSTR getCallsign (void) {
 			return(callsign);
 		}
 
@@ -1360,17 +1360,17 @@ class MechWarrior {
 
 		CommanderPtr getCommander (void);
 
-		char *getAudioString (void)
+		PSTR getAudioString (void)
 		{
 			return audioStr;
 		}
 		
-		char *getVideoString (void)
+		PSTR getVideoString (void)
 		{
 			return videoStr;
 		}
 		
-		char *getBrainString (void)
+		PSTR getBrainString (void)
 		{
 			return brainStr;
 		}
@@ -1407,7 +1407,7 @@ class MechWarrior {
 
 		long setBrain (long brainHandle);
 
-		void setBrainName (char *brainName);
+		void setBrainName (PSTR brainName);
 		
 		ABLModulePtr getBrain (void) {
 			return(brain);
@@ -1449,11 +1449,11 @@ class MechWarrior {
 			return(memory[index].real);
 		}
 
-		void updateAttackerStatus (unsigned long attackerWID, float time);
+		void updateAttackerStatus (ULONG attackerWID, float time);
 
-		AttackerRecPtr getAttackerInfo (unsigned long attackerWID);
+		AttackerRecPtr getAttackerInfo (ULONG attackerWID);
 
-		long getAttackers (unsigned long* attackerList, float seconds);
+		long getAttackers (ULONG* attackerList, float seconds);
 
 		long scanOwnVehicle (void);
 
@@ -1517,9 +1517,9 @@ class MechWarrior {
 			return(moveOrders.speedThrottle);
 		}
 
-		long setMoveGoal (unsigned long type, Stuff::Vector3D* location, GameObjectPtr obj = NULL);
+		long setMoveGoal (ULONG type, Stuff::Vector3D* location, GameObjectPtr obj = NULL);
 
-		unsigned long getMoveGoal (Stuff::Vector3D* location = NULL, GameObjectPtr* obj = NULL);
+		ULONG getMoveGoal (Stuff::Vector3D* location = NULL, GameObjectPtr* obj = NULL);
 
 		bool getMoveGlobalGoal (Stuff::Vector3D& location) {
 			if (moveOrders.pathType != MOVEPATH_UNDEFINED) {
@@ -1589,7 +1589,7 @@ class MechWarrior {
 
 		void resumePath (void);
 
-		void rethinkPath (unsigned long strategy);
+		void rethinkPath (ULONG strategy);
 
 		void setMoveState (long state) {
 			moveOrders.moveState = state;
@@ -1689,9 +1689,9 @@ class MechWarrior {
 			return(moveOrders.path[0]->globalStep);
 		}
 
-		void requestMovePath (long selectionIndex, unsigned long moveParams, long source);
+		void requestMovePath (long selectionIndex, ULONG moveParams, long source);
 
-		long calcMovePath (long selectionIndex, unsigned long moveParams = MOVEPARAM_NONE);
+		long calcMovePath (long selectionIndex, ULONG moveParams = MOVEPARAM_NONE);
 
 		long calcMoveSpeedState (void) {
 			//-------------------------------------------------
@@ -1835,7 +1835,7 @@ class MechWarrior {
 
 		void setSituationGuardObject (GameObjectWatchID objWID);
 
-		unsigned long getSituationGuardObjectPartId (void);
+		ULONG getSituationGuardObjectPartId (void);
 		
 		void setMessagePlaying()
 		{
@@ -1871,7 +1871,7 @@ class MechWarrior {
 
 		long calcWeaponsStatus (GameObjectPtr target, long* weaponList, Stuff::Vector3D* targetPoint = NULL);
 
-		void printWeaponsStatus (char* s);
+		void printWeaponsStatus (PSTR s);
 
 		long combatDecisionTree (void);
 
@@ -1883,13 +1883,13 @@ class MechWarrior {
 
 		void collisionAlert (GameObjectPtr obstacle, float distance, float timeToImpact);
 
-		long triggerAlarm (long alarmCode, unsigned long triggerId = 0);
+		long triggerAlarm (long alarmCode, ULONG triggerId = 0);
 
-		long handleAlarm (long alarmCode, unsigned long triggerId = 0);
+		long handleAlarm (long alarmCode, ULONG triggerId = 0);
 
-		long getAlarmTriggers (long alarmCode, unsigned long* triggerList);
+		long getAlarmTriggers (long alarmCode, ULONG* triggerList);
 
-		long getAlarmTriggersHistory (long alarmCode, unsigned long* triggerList);
+		long getAlarmTriggersHistory (long alarmCode, ULONG* triggerList);
 
 		void clearAlarm (long alarmCode);
 
@@ -1917,15 +1917,15 @@ class MechWarrior {
 
 		long mainDecisionTree (void);
 
-		void setDebugFlags (unsigned long flags) {
+		void setDebugFlags (ULONG flags) {
 			debugFlags = flags;
 		}
 
-		void setDebugFlag (unsigned long flag, bool on);
+		void setDebugFlag (ULONG flag, bool on);
 
-		bool getDebugFlag (unsigned long flag);
+		bool getDebugFlag (ULONG flag);
 
-		void debugPrint (char* s, bool debugMode = false);
+		void debugPrint (PSTR s, bool debugMode = false);
 
 		void debugOrders (void);
 
@@ -1950,23 +1950,23 @@ class MechWarrior {
 			return(coreScanTargetWID);
 		}
 
-		long coreMoveTo (Stuff::Vector3D location, unsigned long params);
+		long coreMoveTo (Stuff::Vector3D location, ULONG params);
 
-		long coreMoveToObject (GameObjectPtr object, unsigned long params);
+		long coreMoveToObject (GameObjectPtr object, ULONG params);
 
 		long coreEject (void);
 
 		long corePower (bool powerUp);
 
-		long coreAttack (GameObjectPtr target, unsigned long params);
+		long coreAttack (GameObjectPtr target, ULONG params);
 
-		long coreCapture (GameObjectPtr object, unsigned long params);
+		long coreCapture (GameObjectPtr object, ULONG params);
 
-		long coreScan (GameObjectPtr object, unsigned long params);
+		long coreScan (GameObjectPtr object, ULONG params);
 
-		long coreControl (GameObjectPtr object, unsigned long params);
+		long coreControl (GameObjectPtr object, ULONG params);
 
-		//long coreWithdraw (Stuff::Vector3D location, unsigned long params);
+		//long coreWithdraw (Stuff::Vector3D location, ULONG params);
 
 		long coreSetState (long stateID, bool thinkAgain);
 
@@ -1977,17 +1977,17 @@ class MechWarrior {
 
 		long orderStop (bool unitOrder, bool setTacOrder);
 
-		long orderMoveToPoint (bool unitOrder, bool setTacOrder, long origin, Stuff::Vector3D location, long selectionIndex = -1, unsigned long params = TACORDER_PARAM_NONE);
+		long orderMoveToPoint (bool unitOrder, bool setTacOrder, long origin, Stuff::Vector3D location, long selectionIndex = -1, ULONG params = TACORDER_PARAM_NONE);
 
 		long orderFormation (bool unitOrder, bool setTacOrder, long origin);
 
-		long orderMoveToObject (bool unitOrder, bool setTacOrder, long origin, GameObjectPtr target, long fromArea, long selectionIndex = -1, unsigned long params = TACORDER_PARAM_FACE_OBJECT);
+		long orderMoveToObject (bool unitOrder, bool setTacOrder, long origin, GameObjectPtr target, long fromArea, long selectionIndex = -1, ULONG params = TACORDER_PARAM_FACE_OBJECT);
 
 		long orderJumpToPoint (bool unitOrder, bool setTacOrder, long origin, Stuff::Vector3D location, long selectionIndex = -1);
 
 		long orderJumpToObject (bool unitOrder, bool setTacOrder, long origin, GameObjectPtr target, long selectionIndex = -1);
 
-		long orderTraversePath (bool unitOrder, bool setTacOrder, long origin, WayPathPtr wayPath, unsigned long params = TACORDER_PARAM_NONE);
+		long orderTraversePath (bool unitOrder, bool setTacOrder, long origin, WayPathPtr wayPath, ULONG params = TACORDER_PARAM_NONE);
 		
 		long orderPatrolPath (bool unitOrder, bool setTacOrder, long origin, WayPathPtr wayPath);
 
@@ -2005,9 +2005,9 @@ class MechWarrior {
 
 		long orderUseOrbitRange (long type, float range);
 
-		long orderAttackObject (bool unitOrder, long origin, GameObjectPtr target, long type, long method, long range, long aimLocation = -1, long fromArea = -1, unsigned long params = TACORDER_PARAM_NONE);
+		long orderAttackObject (bool unitOrder, long origin, GameObjectPtr target, long type, long method, long range, long aimLocation = -1, long fromArea = -1, ULONG params = TACORDER_PARAM_NONE);
 
-		long orderAttackPoint (bool unitOrder, long origin, Stuff::Vector3D location, long type, long method, long range, unsigned long params = TACORDER_PARAM_NONE);
+		long orderAttackPoint (bool unitOrder, long origin, Stuff::Vector3D location, long type, long method, long range, ULONG params = TACORDER_PARAM_NONE);
 
 		long orderWithdraw (bool unitOrder, long origin, Stuff::Vector3D location);
 
@@ -2015,17 +2015,17 @@ class MechWarrior {
 
 		//long orderUseFireOdds (long odds);
 
-		long orderRefit (long origin, GameObjectPtr target, unsigned long params = TACORDER_PARAM_NONE);
+		long orderRefit (long origin, GameObjectPtr target, ULONG params = TACORDER_PARAM_NONE);
 
-		long orderRecover (long origin, GameObjectPtr target, unsigned long params = TACORDER_PARAM_NONE);
+		long orderRecover (long origin, GameObjectPtr target, ULONG params = TACORDER_PARAM_NONE);
 
-		long orderGetFixed (long origin, GameObjectPtr target, unsigned long params = TACORDER_PARAM_NONE);
+		long orderGetFixed (long origin, GameObjectPtr target, ULONG params = TACORDER_PARAM_NONE);
 
-		long orderLoadIntoCarrier (long origin, GameObjectPtr target, unsigned long params = TACORDER_PARAM_NONE);
+		long orderLoadIntoCarrier (long origin, GameObjectPtr target, ULONG params = TACORDER_PARAM_NONE);
 
-		long orderDeployElementals (long origin, unsigned long params = TACORDER_PARAM_NONE);
+		long orderDeployElementals (long origin, ULONG params = TACORDER_PARAM_NONE);
 
-		long orderCapture (long origin, GameObjectPtr target, long fromArea = -1, unsigned long params = TACORDER_PARAM_NONE);
+		long orderCapture (long origin, GameObjectPtr target, long fromArea = -1, ULONG params = TACORDER_PARAM_NONE);
 
 		//--------------
 		// Combat Events
@@ -2040,9 +2040,9 @@ class MechWarrior {
 
 		long handleFriendlyVehicleDestruction (void);
 
-		long handleOwnVehicleIncapacitation (unsigned long cause);
+		long handleOwnVehicleIncapacitation (ULONG cause);
 
-		long handleOwnVehicleDestruction (unsigned long cause);
+		long handleOwnVehicleDestruction (ULONG cause);
 
 		long handleOwnVehicleWithdrawn (void);
 
@@ -2080,10 +2080,10 @@ class MechWarrior {
 
 		bool isCloseToFirstTacOrder( Stuff::Vector3D& pos );
 
-		BldgAppearance* getWayPointMarker( const Stuff::Vector3D& pos, char* name );
+		BldgAppearance* getWayPointMarker( const Stuff::Vector3D& pos, PSTR name );
 
 
-		void setDebugString (long stringNum, char* s) {
+		void setDebugString (long stringNum, PSTR s) {
 			if ((stringNum > -1) && (stringNum < NUM_PILOT_DEBUG_STRINGS))
 				if (s == NULL)
 					debugStrings[stringNum][0] = NULL;
@@ -2091,7 +2091,7 @@ class MechWarrior {
 					strncpy(debugStrings[stringNum], s, MAXLEN_PILOT_DEBUG_STRING - 1);
 		}
 
-		char* getDebugString (long stringNum) 
+		PSTR getDebugString (long stringNum) 
 		{
 			if ((stringNum > -1) && (stringNum < NUM_PILOT_DEBUG_STRINGS))
 				return(debugStrings[stringNum]);

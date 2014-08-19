@@ -88,7 +88,7 @@ class GameDebugWindow {
 			}
 		}
 		
-		void print (char* s);
+		void print (PSTR s);
 
 		void render (void);
 
@@ -99,7 +99,7 @@ class GameDebugWindow {
 				textBuffer[i][0] = NULL;
 		}
 
-		static void setFont (char* fontFile);
+		static void setFont (PSTR fontFile);
 };
 
 //***************************************************************************

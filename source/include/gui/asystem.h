@@ -7,42 +7,46 @@
 #ifndef ASYSTEM_H
 #define ASYSTEM_H
 
-class aSystem;
-class aCallback;
-class aObject;
-class aTitleWindow;
-class InterfaceObject;
+//class aSystem;
+//class aCallback;
+//class aObject;
+//class aTitleWindow;
+//class InterfaceObject;
 
-#include <gameos.hpp>
+class FitIniFile;
 
-#include "estring.h"
-#include "afont.h"
+//#include <gameos.hpp>
+//#include "estring.h"
+//#include "afont.h"
+//#include "utilities.h"
 
-#define MAX_CHILDREN 64
+typedef enum __asystem_constants {
+	MAX_CHILDREN					= 64,
+	aMSG_LEFTMOUSEDOWN              = 1,
+	aMSG_MIDDLEMOUSEDOWN			= 2,
+	aMSG_RIGHTMOUSEDOWN             = 3,
+	aMSG_LEFTMOUSEUP                = 4,
+	aMSG_MIDDLEMOUSEUP              = 5,
+	aMSG_RIGHTMOUSEUP               = 6,
+	aMSG_MOUSEMOVE                  = 7,
+	aMSG_LEFTMOUSEDBLCLICK			= 16,
+	aMSG_RIGHTMOUSEDBLCLICK 		= 17,
+	aMSG_LEFTMOUSEHELD				= 18,
+	aMSG_RIGHTMOUSEHELD  		  	= 19,
+	aMSG_SCROLLUP					= 101,
+	aMSG_SCROLLDOWN 				= 102,
+	aMSG_PAGEUP 					= 103,
+	aMSG_PAGEDOWN					= 104,
+	aMSG_TRACKTAB					= 106,
+	aMSG_SCROLLTO					= 107,	//	sent by parent
+	aMSG_SCROLLPARENT				= 108,	//	sent to parent
+	aMSG_SELECTME					= 109,
+	aMSG_DONE						= 110,
+	aMSG_BUTTONCLICKED				= 111,
+	aMSG_SELCHANGED 				= 112,
+};
 
-#define aMSG_LEFTMOUSEDOWN              1
-#define aMSG_MIDDLEMOUSEDOWN			2
-#define aMSG_RIGHTMOUSEDOWN             3
-#define aMSG_LEFTMOUSEUP                4
-#define aMSG_MIDDLEMOUSEUP              5
-#define aMSG_RIGHTMOUSEUP               6
-#define aMSG_MOUSEMOVE                  7
-#define aMSG_LEFTMOUSEDBLCLICK			16
-#define aMSG_RIGHTMOUSEDBLCLICK			17
-#define aMSG_LEFTMOUSEHELD				18
-#define aMSG_RIGHTMOUSEHELD				19
-#define aMSG_SCROLLUP		101
-#define aMSG_SCROLLDOWN		102
-#define aMSG_PAGEUP			103
-#define aMSG_PAGEDOWN		104
-#define aMSG_TRACKTAB		106
-#define aMSG_SCROLLTO		107	//	sent by parent
-#define aMSG_SCROLLPARENT	108	//	sent to parent
-#define aMSG_SELECTME		109
-#define aMSG_DONE			110
-#define aMSG_BUTTONCLICKED			111
-#define aMSG_SELCHANGED		112
-
+#if _CONSIDERED_OBSOLETE
 typedef enum WINDOW_ID {
 	UNDEFINEDWINDOW = -1,
 	GENERIC = 1,
@@ -53,8 +57,6 @@ typedef enum WINDOW_ID {
 	COMBOBOX,
 	NUMBER_OF_WINDOWTYPES
 } WINDOW_ID;
-
-
 
 // Error codes, local to this file...
 #define	DUPLICATE_INSTANCE			-1
@@ -67,83 +69,81 @@ typedef enum WINDOW_ID {
 #define	BLT_FAILURE					-8
 #define FAILED_TO_ALLOCATE_PORT		-9
 #define	USER_INIT_FAILED			-10
-
-#include "utilities.h"
+#endif
 
 extern long helpTextID;
 extern long helpTextHeaderID;
 
-
-
 class aBaseObject
 {
 public:
-	
-	virtual void render(){}
-	virtual void update(){}
+
+	virtual void render(void){}
+	virtual void update(void){}
 };
+
 // base class aObject definition
 class aObject : public aBaseObject
 {
 
 public:
-	aObject();
-	virtual ~aObject();
+	aObject(void);
+	virtual ~aObject(void);
 	aObject( const aObject& src );
 	aObject& operator=( const aObject& src );
-	
-	virtual long init(long xPos, long yPos, long w, long h);
-	virtual void destroy();
 
-	float		width() const;
-	float		height() const;
-	float		x() const;
-	float		y() const ;
-	
+	virtual long init(long xPos, long yPos, long w, long h);
+	virtual void destroy(void);
+
+	float		width(void) const;
+	float		height(void) const;
+	float		x(void) const;
+	float		y(void) const ;
+
 	virtual void	moveTo(long xPos, long yPos);
 	virtual void	moveToNoRecurse(long xPos, long yPos);
-	
+
 	void		resize(long w, long h);
 	void		addChild(aObject* c);
 	void		removeChild(aObject* c);
 	void		setParent(aObject* p);
 
 	void		setTexture( PCSTR fileName );
-	void		setTexture(unsigned long newHandle );
+	void		setTexture(ULONG newHandle );
 	void		setUVs( float u1, float v1, float u2, float v2 );
-	void		setColor(unsigned long color, bool bRecurse = 0); // color the vertices
+	void		setColor(ULONG color, bool bRecurse = 0); // color the vertices
 
 	void		init( FitIniFile* file, PCSTR block, DWORD neverFlush = 0 ); // for statics
-	
-	aObject*			getParent()
+
+	aObject*			getParent(void)
 	{
 		return pParent;			// No Need for this to be virtual!!!!!  Can now check if object has been deleted without crashing!
 	}
-	
-	long				numberOfChildren() const;
-	long				globalX() const;
-	long				globalY() const;
-	long				globalLeft() const { return globalX(); }
-	long				globalTop() const { return globalY(); }
-	long				globalRight() const;
-	long				globalBottom() const;
-	
+
+	long				numberOfChildren(void) const;
+	long				globalX(void) const;
+	long				globalY(void) const;
+	long				globalLeft(void) const { return globalX(); }
+	long				globalTop(void) const { return globalY(); }
+	long				globalRight(void) const;
+	long				globalBottom(void) const;
+
 	virtual aObject*	findObject(long xPos, long yPos);
-	virtual int			handleMessage( unsigned long, unsigned long ){ return 0; }
+	virtual int			handleMessage( ULONG, ULONG ){ return 0; }
 	virtual bool		pointInside(long xPos, long yPos) const;
 	bool				rectIntersect(long top, long left, long bottom, long right) const;
-	bool				rectIntersect(const GUI_RECT& testRect) const;
-	
-	aObject*	children();
+	bool				rectIntersect(const RECT& testRect) const;
+
+	aObject*	children(void);
 	aObject*	child(long w);
 
-	
-	virtual void		render();
-	virtual void		render(long x, long y);
-	virtual void		update();
 
-	long getColor(){ return location[0].argb; }
-		
+	virtual void	render(void);
+	virtual void	render(long x, long y);
+	virtual void	update(void);
+
+	COLORREF		getColor(void){ return location[0].argb; }
+
 
 	void		showGUIWindow(bool show) {showWindow = show;}
 	bool		isShowing(void) const {return showWindow;}
@@ -155,46 +155,46 @@ public:
 	virtual void		moveNoRecurse( float offsetX, float offsetY );
 
 	void				setFileWidth( float newWidth ){ fileWidth = newWidth; }
-	int				getID() const { return ID; }
+	int				getID(void) const { return ID; }
 	void			setID(int newID) { ID = newID; }
 
 	void			setHelpID( int newID ) { helpID = newID; }
-	int				getHelpID() const { return helpID; }
-	
+	int				getHelpID(void) const { return helpID; }
 
-	float		left()
+
+	float		left(void)
 	{
 		return x();
 	}
-	float		top()
+	float		top(void)
 	{
 		return y();
 	}
-	float		right()
+	float		right(void)
 	{
 		return x() + width();
 	}
-	
-	float		bottom()
+
+	float		bottom(void)
 	{
 		return y() + height();
 	}
 
 
-	
+
 protected:
 
 	gos_VERTEX		location[4];
 
-	unsigned long	textureHandle;
+	ULONG	textureHandle;
 	float		fileWidth;
 	bool		showWindow;
 
-	
+
 	aObject*	pChildren[MAX_CHILDREN];
 	long		pNumberOfChildren;
 	aObject*	pParent;
-	
+
 	int			ID;
 
 	void copyData( const aObject& src );
@@ -214,16 +214,16 @@ class aRect : public aObject
 {
 public:
 
-	aRect();
-	virtual ~aRect(){}
+	aRect(void);
+	virtual ~aRect(void){}
 
-	virtual void render();
+	virtual void render(void);
 	virtual void		render(long x, long y);
 
-	virtual void init( FitIniFile* file, PCSTR blockName );
+	void init( FitIniFile* file, PCSTR blockName );
 
-	GUI_RECT getGUI_RECT();
-	GUI_RECT getGlobalGUI_RECT();
+	RECT getGUI_RECT(void);
+	RECT getGlobalGUI_RECT(void);
 
 	bool	bOutline;
 
@@ -233,23 +233,23 @@ class aText : public aObject
 {
 public:
 
-	aText();
+	aText(void);
 	aText( const aText& src );
 	aText& operator=( const aText& src );
 
-	virtual ~aText();
+	virtual ~aText(void);
 
-	virtual void render();
+	virtual void render(void);
 	virtual void		render(long x, long y);
-	
+
 
 	void	init( FitIniFile* file, PCSTR header );
 
-	void	setText( const EString& text );
+	void		setText( const std::string& text );
 	void		setText( long resID );
 
-	EString		text;
-	long			alignment; // left, right, ala GOS
+	std::string	text;
+	long		alignment; // left, right, ala GOS
 	aFont		font;
 
 	virtual bool		pointInside(long xPos, long yPos) const;
@@ -262,6 +262,4 @@ private:
 
 };
 
-
-
-#endif ASYSTEM_H
+#endif // ASYSTEM_H

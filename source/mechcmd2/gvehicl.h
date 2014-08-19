@@ -160,7 +160,7 @@ class GroundVehicleType : public ObjectType {
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, unsigned long fileSize);
+		virtual long init (FilePtr objFile, ULONG fileSize);
 		
 		long loadHotSpots (FitIniFilePtr vehicleFile);
 	
@@ -349,11 +349,11 @@ class GroundVehicle : public Mover {
 
 		virtual long buildStatusChunk (void);
 
-		virtual long handleStatusChunk (long updateAge, unsigned long chunk);
+		virtual long handleStatusChunk (long updateAge, ULONG chunk);
 
 		virtual long buildMoveChunk (void);
 
-		virtual long handleMoveChunk (unsigned long chunk);
+		virtual long handleMoveChunk (ULONG chunk);
 
 		void calcThrottleLimits (long& minThrottle, long& maxThrottle);
 
@@ -383,7 +383,7 @@ class GroundVehicle : public Mover {
 
 		virtual long getSpeedState (void);
 
-		virtual void disable (unsigned long cause);
+		virtual void disable (ULONG cause);
 		
 		virtual float getDestructLevel (void)
 		{
@@ -449,7 +449,7 @@ class GroundVehicle : public Mover {
 		
 		virtual void handleStaticCollision (void);
 
-		virtual char* getIfaceName(void) {
+		virtual PSTR getIfaceName(void) {
 			return(longName);
 		}
 		

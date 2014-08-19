@@ -289,7 +289,7 @@ void SelectionBrush::render( int screenX, int screenY )
 		Stuff::Vector4D Screen;
 		eye->projectZ( firstWorldPos, Screen );
 		
-		GUI_RECT rect = { screenX, screenY, (long)Screen.x, (long)Screen.y };
+		RECT rect = { screenX, screenY, (long)Screen.x, (long)Screen.y };
 		drawRect( rect, 0x30ffffff );
 		drawEmptyRect( rect, 0xff000000, 0xff000000 );
 	}

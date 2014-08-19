@@ -155,7 +155,7 @@ void ObjectSelectionBrush::render( int screenX, int screenY )
 		Stuff::Vector4D Screen;
 		eye->projectZ( lastWorldPos, Screen );
 		
-		GUI_RECT rect = { screenX, screenY, Screen.x, Screen.y };
+		RECT rect = { screenX, screenY, Screen.x, Screen.y };
 		drawRect( rect, 0x30ffffff );
 		drawEmptyRect( rect, 0xff000000, 0xff000000 );
 	}

@@ -58,7 +58,7 @@
 
 //#include "ObjectAppearance.h"
 
-extern unsigned long NextIdNumber;
+extern ULONG NextIdNumber;
 extern float worldUnitsPerMeter;
 extern bool drawExtents;
 extern bool somethingOnFire;
@@ -163,7 +163,7 @@ void TerrainObjectType::initMiscTerrObj (long objTypeNum) {
 
 //---------------------------------------------------------------------------
 
-long TerrainObjectType::init (FilePtr objFile, unsigned long fileSize) {
+long TerrainObjectType::init (FilePtr objFile, ULONG fileSize) {
 
 	long result = 0;
 	
@@ -184,7 +184,7 @@ long TerrainObjectType::init (FilePtr objFile, unsigned long fileSize) {
 		objectClass = TREE;
 	}
 
-	unsigned long dmgLevel;
+	ULONG dmgLevel;
 	result = bldgFile.readIdULong("DmgLevel",dmgLevel);
 	if (result != NO_ERR)
 		return(result);
@@ -403,10 +403,10 @@ bool TerrainObject::isVisible (void) {
 
 //---------------------------------------------------------------------------
 
-char* TerrainObject::getName (void) {
+PSTR TerrainObject::getName (void) {
 
 	/*
-	static char* terrainObjectNames[NUM_TERROBJ_SUBTYPES] = {
+	static PSTR terrainObjectNames[NUM_TERROBJ_SUBTYPES] = {
 		"Nothing",
 		"Tree",
 		"Bridge",
@@ -703,7 +703,7 @@ void TerrainObject::init (bool create, ObjectTypePtr objType) {
 		//-------------------------------------------------------------
 		// The appearance is initialized here using data from the type
 		// Need an MLR appearance class
-		char *appearanceName = objType->getAppearanceTypeName();
+		PSTR appearanceName = objType->getAppearanceTypeName();
 
 		//--------------------------------------------------------------
 		// New code!!!
@@ -732,7 +732,7 @@ void TerrainObject::init (bool create, ObjectTypePtr objType) {
 		//-------------------------------------------------------------
 		// The appearance is initialized here using data from the type
 		// Need an MLR appearance class
-		char *appearanceName = objType->getAppearanceTypeName();
+		PSTR appearanceName = objType->getAppearanceTypeName();
 
 		//--------------------------------------------------------------
 		// New code!!!

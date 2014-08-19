@@ -320,9 +320,9 @@ void SimpleCamera::setMech(PCSTR fileName, long baseColor, long highlight1, long
 	Mech3DAppearanceType* appearanceType = NULL;
 	
 	if ( fileExists( path ) )
-		appearanceType = (Mech3DAppearanceType*)appearanceTypeList->getAppearance( MECH_TYPE << 24, (char*)testName );
+		appearanceType = (Mech3DAppearanceType*)appearanceTypeList->getAppearance( MECH_TYPE << 24, (PSTR)testName );
 	else
-		appearanceType = (Mech3DAppearanceType*)appearanceTypeList->getAppearance( MECH_TYPE << 24, (char*)NoPathFileName );
+		appearanceType = (Mech3DAppearanceType*)appearanceTypeList->getAppearance( MECH_TYPE << 24, (PSTR)NoPathFileName );
 
 	pObject = new Mech3DAppearance;	
 	pObject->init( appearanceType );
@@ -376,9 +376,9 @@ void SimpleCamera::setVehicle(PCSTR fileName,long base, long highlight, long h2)
 	GVAppearanceType* appearanceType = NULL;
 	
 	if ( fileExists( path ) )
-		appearanceType = (GVAppearanceType*)appearanceTypeList->getAppearance( GV_TYPE << 24, (char*)testName );
+		appearanceType = (GVAppearanceType*)appearanceTypeList->getAppearance( GV_TYPE << 24, (PSTR)testName );
 	else
-		appearanceType= (GVAppearanceType*)appearanceTypeList->getAppearance( GV_TYPE << 24, (char*)NoPathFileName );
+		appearanceType= (GVAppearanceType*)appearanceTypeList->getAppearance( GV_TYPE << 24, (PSTR)NoPathFileName );
 
 	pObject = new GVAppearance;	
 	pObject->init( appearanceType );
@@ -429,10 +429,10 @@ void SimpleCamera::setComponent(PCSTR fileName )
 	BldgAppearanceType* appearanceType = NULL;
 	if ( fileExists( path ) )
 	{
-		appearanceType = (BldgAppearanceType*)appearanceTypeList->getAppearance( BLDG_TYPE << 24, (char*)testName );
+		appearanceType = (BldgAppearanceType*)appearanceTypeList->getAppearance( BLDG_TYPE << 24, (PSTR)testName );
 	}
 	else
-		appearanceType = (BldgAppearanceType*)appearanceTypeList->getAppearance( BLDG_TYPE << 24, (char*)fileName );
+		appearanceType = (BldgAppearanceType*)appearanceTypeList->getAppearance( BLDG_TYPE << 24, (PSTR)fileName );
 
 	//MUST ALWAYS CALL GET, EVEN IF WE HAVE AN APPEARANCE TYPE OR REFERENCE COUNT DOES NOT INCREASE!
 	 

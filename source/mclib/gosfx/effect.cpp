@@ -202,7 +202,7 @@ if(minv<0.0f)
 	if(fix_data)
 	{
 		m_lifeSpan.SetCurve(1.0f);
-	PAUSE(("Warning: Curve \"lifespan\" in Effect \"%s\" Is Out of Range and has been Reset",(char *)m_name));
+	PAUSE(("Warning: Curve \"lifespan\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
 
 	}
 	else

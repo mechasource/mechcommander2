@@ -12,7 +12,7 @@ void initABL (void);
 void closeABL (void);
  
 extern "C" int __cdecl 
-main(int argc, char* argv[])
+main(int argc, PSTR argv[])
 {
 	if ((argc < 2) || (argc > 3)) {
 		printf("Try again.\n");
@@ -42,17 +42,17 @@ main(int argc, char* argv[])
 		printf("Loading Environment...\n");
 		while (!bFile->eof()) {
 			bFile->readString(s);
-			if (s[strlen((char*)s)-1] == 10)
-				s[strlen((char*)s)-1] = NULL;
+			if (s[strlen((PSTR)s)-1] == 10)
+				s[strlen((PSTR)s)-1] = NULL;
 			numErrs = 0;
 			numLines = 0;
 			numFiles = 0;
 			if ((s[0] == 'l') && (s[1] == ' ')){
-				handle = (long)ABLi_loadLibrary((char*)&s[2], &numErrs, &numLines, &numFiles, false);
+				handle = (long)ABLi_loadLibrary((PSTR)&s[2], &numErrs, &numLines, &numFiles, false);
 				printf("     Loaded: %s [%d lines, %d files]\n", &s[2], numLines, numFiles);
 				}
 			else if ((s[0] == 'm') && (s[1] == ' ')) {
-				handle = ABLi_preProcess((char*)&s[2], &numErrs, &numLines, &numFiles, false);
+				handle = ABLi_preProcess((PSTR)&s[2], &numErrs, &numLines, &numFiles, false);
 				printf("     Loaded: %s [%d lines, %d files]\n", &s[2], numLines, numFiles);
 			}
 		}

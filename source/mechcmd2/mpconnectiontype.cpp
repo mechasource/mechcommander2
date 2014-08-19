@@ -7,6 +7,7 @@ MPConnectionType.cpp			: Implementation of the MPConnectionType component.
 
 #include "stdafx.h"
 
+#include <gameos.hpp>
 #include <gui/asystem.h>
 
 //#include "logisticsscreen.h"
@@ -220,7 +221,7 @@ void MPConnectionType::render()
 	render(0, 0);
 }
 
-int	MPConnectionType::handleMessage( unsigned long message, unsigned long who)
+int	MPConnectionType::handleMessage( ULONG message, ULONG who)
 {
 	if ( RUNNING == status )
 	{
@@ -451,7 +452,7 @@ void aZonePanel::render()
 
 }
 
-int aZonePanel::handleMessage( unsigned long, unsigned long )
+int aZonePanel::handleMessage( ULONG, ULONG )
 {
 	bShowWarning = true;
 	
@@ -502,7 +503,7 @@ void aLanPanel::init(FitIniFile* pFile)
 	addChild(&text);
 }
 
-int	aLanPanel::handleMessage( unsigned long message, unsigned long who)
+int	aLanPanel::handleMessage( ULONG message, ULONG who)
 {
 	switch ( who )
 	{
@@ -842,7 +843,7 @@ void		aTcpipPanel::render()
 		
 }
 
-long aTcpipPanel::getNum( char* pStr, long index1, long index2 )
+long aTcpipPanel::getNum( PSTR pStr, long index1, long index2 )
 {
 	char tmp = pStr[index2];
 	pStr[index2] = 0;
@@ -850,7 +851,7 @@ long aTcpipPanel::getNum( char* pStr, long index1, long index2 )
 	return atoi( &pStr[index1] );
 
 }
-int	aTcpipPanel::handleMessage( unsigned long message, unsigned long who)
+int	aTcpipPanel::handleMessage( ULONG message, ULONG who)
 {
 	switch ( who )
 	{
@@ -868,7 +869,7 @@ int	aTcpipPanel::handleMessage( unsigned long message, unsigned long who)
 		LogisticsOneButtonDialog::instance()->setText( Display );
 		LogisticsOneButtonDialog::instance()->begin();
 
-		if ( MPlayer->beginSessionScan ( (char*)(PCSTR)str) )
+		if ( MPlayer->beginSessionScan ( (PSTR)(PCSTR)str) )
 		{
 			LogisticsOneButtonDialog::instance()->setText( IDS_MP_CONNECT_ERROR_NO_CONNECTION, IDS_DIALOG_OK, IDS_DIALOG_OK );
 		}

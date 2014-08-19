@@ -63,7 +63,7 @@ class LogisticsOKDialog : public LogisticsDialog
 		LogisticsOKDialog();
 		
 
-		virtual int			handleMessage( unsigned long, unsigned long );
+		virtual int			handleMessage( ULONG, ULONG );
 
 		static int init( FitIniFile& file );
 
@@ -94,7 +94,7 @@ class LogisticsOneButtonDialog : public LogisticsDialog
 		LogisticsOneButtonDialog();
 		
 
-		virtual int			handleMessage( unsigned long, unsigned long );
+		virtual int			handleMessage( ULONG, ULONG );
 
 		static int init( FitIniFile& file );
 
@@ -156,7 +156,7 @@ class LogisticsSaveDialog : public LogisticsDialog
 		virtual void render();
 		
 		static int init( FitIniFile& file );
-		virtual int			handleMessage( unsigned long, unsigned long );
+		virtual int			handleMessage( ULONG, ULONG );
 
 		const EString& getFileName( ){ return selectedName; }
 
@@ -177,8 +177,8 @@ class LogisticsSaveDialog : public LogisticsDialog
 		void	initDialog(PCSTR path, bool bCampaign);
 		void	updateCampaignMissionInfo();
 		void	setMission( PCSTR path );
-		void	readCampaignNameFromFile( char* fileName, char* resultName, long len );
-		bool	isCorrectVersionSaveGame( char *fileName );
+		void	readCampaignNameFromFile( PSTR fileName, PSTR resultName, long len );
+		bool	isCorrectVersionSaveGame( PSTR fileName );
 
 
 
@@ -210,7 +210,7 @@ public:
 		virtual void render();
 		
 		int init( FitIniFile& file );
-		virtual int			handleMessage( unsigned long, unsigned long );
+		virtual int			handleMessage( ULONG, ULONG );
 
 		const EString& getFileName( ){ return selectedName; }
 
@@ -247,7 +247,7 @@ public:
 		virtual void render();
 		
 		int init( FitIniFile& file );
-		virtual int			handleMessage( unsigned long, unsigned long );
+		virtual int			handleMessage( ULONG, ULONG );
  
 private:
 
@@ -266,7 +266,7 @@ public:
 		void setMap( PCSTR pFileName );
 		
 		int init( );
-		virtual int			handleMessage( unsigned long, unsigned long );
+		virtual int			handleMessage( ULONG, ULONG );
  
 private:
 

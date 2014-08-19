@@ -33,7 +33,7 @@ inline signed int double2long(double _in)
 extern long				level;
 extern long				execLineNumber;
 extern long				FileNumber;
-extern char*			codeSegmentPtr;
+extern PSTR			codeSegmentPtr;
 extern TokenCodeType	codeToken;
 extern StackItem*		stack;
 extern StackItemPtr		tos;
@@ -133,13 +133,13 @@ bool ABLi_popBoolean (void) {
 
 //---------------------------------------------------------------------------
 
-char* ABLi_popCharPtr (void) {
+PSTR ABLi_popCharPtr (void) {
 
 	//--------------------------
 	// Get destination string...
 	getCodeToken();
 	execExpression();
-	char* charPtr = (char*)tos->address;
+	PSTR charPtr = (PSTR)tos->address;
 	pop();
 
 	return(charPtr);
@@ -173,13 +173,13 @@ float* ABLi_popRealPtr (void) {
 
 //---------------------------------------------------------------------------
 
-char* ABLi_popBooleanPtr (void) {
+PSTR ABLi_popBooleanPtr (void) {
 
 	//--------------------------
 	// Get destination string...
 	getCodeToken();
 	execExpression();
-	char* charPtr = (char*)tos->address;
+	PSTR charPtr = (PSTR)tos->address;
 	pop();
 
 	return(charPtr);
@@ -212,7 +212,7 @@ long ABLi_popAnything (ABLStackItem* value) {
 	else if (paramTypePtr->form == FRM_ARRAY) {
 		if (paramTypePtr->info.array.elementTypePtr == CharTypePtr) {
 			value->type = type = ABL_STACKITEM_CHAR_PTR;
-			value->data.characterPtr = (char*)tos->address;
+			value->data.characterPtr = (PSTR)tos->address;
 			}
 		else if (paramTypePtr->info.array.elementTypePtr == IntegerTypePtr) {
 			value->type = type = ABL_STACKITEM_INTEGER_PTR;
@@ -304,11 +304,11 @@ bool ABLi_peekBoolean (void) {
 
 //---------------------------------------------------------------------------
 
-char* ABLi_peekCharPtr (void) {
+PSTR ABLi_peekCharPtr (void) {
 
 	getCodeToken();
 	execExpression();
-	return((char*)tos->address);
+	return((PSTR)tos->address);
 }
 
 //---------------------------------------------------------------------------
@@ -382,7 +382,7 @@ void execOrderReturn (long returnVal) {
 		if (returnVal == 0) {
 			//----------------------------------------------------------
 			// Use the "eject" code only if called for a failed Order...
-			codeSegmentPtr = (char*)ExitStateCodeSegment;
+			codeSegmentPtr = (PSTR)ExitStateCodeSegment;
 			getCodeToken();
 		}
 		
@@ -407,7 +407,7 @@ void execOrderReturn (long returnVal) {
 		if (returnVal == 0) {
 			//----------------------------------------------------------
 			// Use the "eject" code only if called for a failed Order...
-			codeSegmentPtr = (char*)ExitOrderCodeSegment;
+			codeSegmentPtr = (PSTR)ExitOrderCodeSegment;
 			getCodeToken();
 		}
 	}
@@ -446,8 +446,8 @@ void execStdReturn (void) {
 		else if (targetTypePtr->form == FRM_ARRAY) {
 			//-------------------------
 			// Copy the array/record...
-			char* dest = (char*)targetPtr;
-			char* src = tos->address;
+			PSTR dest = (PSTR)targetPtr;
+			PSTR src = tos->address;
 			long size = targetTypePtr->size;
 			memcpy(dest, src, size);
 			}
@@ -479,11 +479,11 @@ void execStdReturn (void) {
 	getCodeToken();
 
 	if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_ORDER)
-		codeSegmentPtr = (char*)ExitOrderCodeSegment;
+		codeSegmentPtr = (PSTR)ExitOrderCodeSegment;
 	else if (CurRoutineIdPtr->defn.info.routine.flags & ROUTINE_FLAG_STATE)
-		codeSegmentPtr = (char*)ExitStateCodeSegment;
+		codeSegmentPtr = (PSTR)ExitStateCodeSegment;
 	else
-		codeSegmentPtr = (char*)ExitRoutineCodeSegment;
+		codeSegmentPtr = (PSTR)ExitRoutineCodeSegment;
 	ExitWithReturn = true;
 
 	getCodeToken();
@@ -503,7 +503,7 @@ void execStdPrint (void) {
 	TypePtr paramTypePtr = execExpression();
 
 	char buffer[20];
-	char* s = buffer;
+	PSTR s = buffer;
 	if (paramTypePtr == IntegerTypePtr)
 		sprintf(buffer, "%d", tos->integer);
 	else if (paramTypePtr == BooleanTypePtr)
@@ -513,7 +513,7 @@ void execStdPrint (void) {
 	else if (paramTypePtr == RealTypePtr)
 		sprintf(buffer, "%.4f", tos->real);
 	else if ((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
-		s = (char*)tos->address;
+		s = (PSTR)tos->address;
 	pop();
 
 	if (debugger) {
@@ -559,7 +559,7 @@ TypePtr execStdConcat (void) {
 	// Get destination string...
 	getCodeToken();
 	execExpression();
-	char* dest = (char*)tos->address;
+	PSTR dest = (PSTR)tos->address;
 	pop();
 
 	//----------------------
@@ -584,7 +584,7 @@ TypePtr execStdConcat (void) {
 		strcat(dest, buffer);
 		}
 	else if ((paramTypePtr->form == FRM_ARRAY) && (paramTypePtr->info.array.elementTypePtr == CharTypePtr))
-		strcat(dest, (char*)tos->address);
+		strcat(dest, (PSTR)tos->address);
 
 	tos->integer = 0;
 
@@ -640,7 +640,7 @@ void execStdTrunc (void) {
 
 void execStdFileOpen (void) {
 
-	char* fileName = ABLi_popCharPtr();
+	PSTR fileName = ABLi_popCharPtr();
 
 	long fileHandle = -1;
 	UserFile* userFile = UserFile::getNewFile();
@@ -658,7 +658,7 @@ void execStdFileOpen (void) {
 void execStdFileWrite (void) {
 
 	long fileHandle = ABLi_popInteger();
-	char* string = ABLi_popCharPtr();
+	PSTR string = ABLi_popCharPtr();
 
 	UserFile* userFile = UserFile::files[fileHandle];
 	if (userFile->inUse)
@@ -682,8 +682,8 @@ void execStdGetModule (void) {
 
 	//----------------------------------------------------------
 	// Return the handle of the current module being executed...
-	char* curBuffer = ABLi_popCharPtr();
-	char* fsmBuffer = ABLi_popCharPtr();
+	PSTR curBuffer = ABLi_popCharPtr();
+	PSTR fsmBuffer = ABLi_popCharPtr();
 	strcpy(curBuffer, CurModule->getFileName());
 	strcpy(fsmBuffer, CurFSM ? CurFSM->getFileName() : "none");
 	ABLi_pushInteger(CurModuleHandle);
@@ -730,7 +730,7 @@ void execStdFatal (void) {
 	//----------------------------------------------------------------------
 
 	long code = ABLi_popInteger();
-	char* s = ABLi_popCharPtr();
+	PSTR s = ABLi_popCharPtr();
 
 	char message[512];
 	if (debugger) {
@@ -776,7 +776,7 @@ void execStdAssert (void) {
 
 	long expression = ABLi_popInteger();
 	long code = ABLi_popInteger();
-	char* s = ABLi_popCharPtr();
+	PSTR s = ABLi_popCharPtr();
 
 	if (!expression) {
 		char message[512];
@@ -846,7 +846,7 @@ void execStdResetOrders (void) {
 
 void execStdGetStateHandle (void) {
 
-	char* name = ABLi_popCharPtr();
+	PSTR name = ABLi_popCharPtr();
 
 	long stateHandle = CurFSM->findStateHandle(_strlwr(name));
 	ABLi_pushInteger(stateHandle);
@@ -868,7 +868,7 @@ extern char	SetStateDebugStr[256];
 
 void execStdSetState (void) {
 
-	unsigned long stateHandle = ABLi_popInteger();
+	ULONG stateHandle = ABLi_popInteger();
 
 	if (stateHandle > 0) {
 		SymTableNodePtr stateFunction = ModuleRegistry[CurFSM->getHandle()].stateHandles[stateHandle].state;
@@ -883,11 +883,11 @@ void execStdSetState (void) {
 
 void execStdGetFunctionHandle (void) {
 
-	char* name = ABLi_popCharPtr();
+	PSTR name = ABLi_popCharPtr();
 
 	SymTableNodePtr function = CurModule->findFunction(name, false);
 	if (function)
-		ABLi_pushInteger((unsigned long)function);
+		ABLi_pushInteger((ULONG)function);
 	else
 		ABLi_pushInteger(0);
 }
@@ -896,8 +896,8 @@ void execStdGetFunctionHandle (void) {
 
 void execStdSetFlag (void) {
 
-	unsigned long bits = (unsigned long)ABLi_popInteger();
-	unsigned long flag = (unsigned long)ABLi_popInteger();
+	ULONG bits = (ULONG)ABLi_popInteger();
+	ULONG flag = (ULONG)ABLi_popInteger();
 	bool set = ABLi_popBoolean();
 
 	bits &= (flag ^ 0xFFFFFFFF);
@@ -911,8 +911,8 @@ void execStdSetFlag (void) {
 
 void execStdGetFlag (void) {
 
-	unsigned long bits = (unsigned long)ABLi_popInteger();
-	unsigned long flag = (unsigned long)ABLi_popInteger();
+	ULONG bits = (ULONG)ABLi_popInteger();
+	ULONG flag = (ULONG)ABLi_popInteger();
 
 	bool set = ((bits & flag) != 0);
 
@@ -923,7 +923,7 @@ void execStdGetFlag (void) {
 
 void execStdCallFunction (void) {
 
-	unsigned long address = ABLi_popInteger();
+	ULONG address = ABLi_popInteger();
 
 	if (address) {
 //GLENN: Not functional, yet...

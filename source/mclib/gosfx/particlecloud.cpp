@@ -194,7 +194,7 @@ bool
 		m_pLifeSpan.m_ageCurve.SetCurve(1.0f);
 		m_pLifeSpan.m_seeded = false;
 		m_pLifeSpan.m_seedCurve.SetCurve(1.0f);
-		PAUSE(("Warning: Curve \"pLifeSpan\" in Effect \"%s\" Is Out of Range and has been Reset",(char *)m_name));
+		PAUSE(("Warning: Curve \"pLifeSpan\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
 
 		}
 		else
@@ -206,7 +206,7 @@ bool
 			if(fix_data)
 			{
 				m_startingPopulation.SetCurve(0.0f);
-				PAUSE(("Warning: Curve \"startingPopulation\" in Effect \"%s\" Is Out of Range and has been Reset",(char *)m_name));
+				PAUSE(("Warning: Curve \"startingPopulation\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
 
 			}
 			else
@@ -216,7 +216,7 @@ bool
 		if(fix_data)
 		{
 			m_maxParticleCount=1;
-			PAUSE(("Warning: Value \"maxParticleCount\" in Effect \"%s\" Is Out of Range and has been Reset",(char *)m_name));
+			PAUSE(("Warning: Value \"maxParticleCount\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
 
 		}
 		else

@@ -36,11 +36,11 @@
 
 //--------
 // GLOBALS
-char*					codeBuffer = NULL;
-char*					codeBufferPtr = NULL;
-char*					codeSegmentPtr = NULL;
-char*					codeSegmentLimit = NULL;
-char*					statementStartPtr = NULL;
+PSTR					codeBuffer = NULL;
+PSTR					codeBufferPtr = NULL;
+PSTR					codeSegmentPtr = NULL;
+PSTR					codeSegmentLimit = NULL;
+PSTR					statementStartPtr = NULL;
 
 TokenCodeType			codeToken;
 long					execLineNumber;
@@ -179,12 +179,12 @@ void uncrunchStatementMarker (void) {
 
 //***************************************************************************
 
-char* crunchAddressMarker (Address address) {
+PSTR crunchAddressMarker (Address address) {
 
 	if (!Crunch)
 		return(NULL);
 
-	char* saveCodeBufferPtr = NULL;
+	PSTR saveCodeBufferPtr = NULL;
 
 	if (codeBufferPtr >= (codeBuffer + MaxCodeBufferSize - 100))
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
@@ -204,12 +204,12 @@ char* crunchAddressMarker (Address address) {
 
 //***************************************************************************
 
-char* fixupAddressMarker (Address address) {
+PSTR fixupAddressMarker (Address address) {
 
 	if (!Crunch)
 		return(NULL);
 
-	char* oldAddress = *((Address*)address);
+	PSTR oldAddress = *((Address*)address);
 
 	*((long*)address) = codeBufferPtr - address;
 	return(oldAddress);
@@ -262,10 +262,10 @@ void crunchOffset (Address address) {
 
 //***************************************************************************
 
-char* createCodeSegment (long& codeSegmentSize) {
+PSTR createCodeSegment (long& codeSegmentSize) {
 
 	codeSegmentSize = codeBufferPtr - codeBuffer + 1;
-	char* codeSegment = (char*)ABLCodeMallocCallback(codeSegmentSize);
+	PSTR codeSegment = (PSTR)ABLCodeMallocCallback(codeSegmentSize);
 	if (!codeSegment)
 		ABL_Fatal(0, " ABL: Unable to AblCodeHeap->malloc code segment ");
 
@@ -308,7 +308,7 @@ long getCodeStatementMarker (void) {
 
 //***************************************************************************
 
-char* getCodeAddressMarker (void) {
+PSTR getCodeAddressMarker (void) {
 
 	Address address = NULL;
 
@@ -339,7 +339,7 @@ uint8_t getCodeByte (void) {
 
 //***************************************************************************
 
-char* getCodeAddress (void) {
+PSTR getCodeAddress (void) {
 
 	Address address = *((long*)codeSegmentPtr) + codeSegmentPtr - 1;
 	codeSegmentPtr += sizeof(long);
@@ -489,7 +489,7 @@ void allocLocal (TypePtr typePtr) {
 //				allocLocal(typePtr->info.subrange.rangeTypePtr);
 //				break;
 			case FRM_ARRAY:
-				char* ptr = (char*)ABLStackMallocCallback(typePtr->size);
+				PSTR ptr = (PSTR)ABLStackMallocCallback(typePtr->size);
 				if (!ptr)
 					ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc local array ");
 				pushAddress((Address)ptr);

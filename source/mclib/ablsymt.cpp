@@ -101,7 +101,7 @@ void enterLocalSymTable (SymTableNodePtr& IdPtr) {
 
 //***************************************************************************
 
-inline void enterNameLocalSymTable (SymTableNodePtr& IdPtr, char* name) {
+inline void enterNameLocalSymTable (SymTableNodePtr& IdPtr, PSTR name) {
 
 	IdPtr = enterSymTable(name, &SymTableDisplay[level]);
 }
@@ -221,7 +221,7 @@ void recordLibraryUsed (SymTableNodePtr memberNodePtr) {
 
 //***************************************************************************
 
-SymTableNodePtr searchSymTable (char* name, SymTableNodePtr nodePtr) {
+SymTableNodePtr searchSymTable (PSTR name, SymTableNodePtr nodePtr) {
 
 	while (nodePtr) {
 		long compareResult = strcmp(name, nodePtr->name);
@@ -237,7 +237,7 @@ SymTableNodePtr searchSymTable (char* name, SymTableNodePtr nodePtr) {
 
 //***************************************************************************
 
-SymTableNodePtr searchSymTableForFunction (char* name, SymTableNodePtr nodePtr) {
+SymTableNodePtr searchSymTableForFunction (PSTR name, SymTableNodePtr nodePtr) {
 
 	while (nodePtr) {
 		long compareResult = strcmp(name, nodePtr->name);
@@ -257,7 +257,7 @@ SymTableNodePtr searchSymTableForFunction (char* name, SymTableNodePtr nodePtr) 
 
 //***************************************************************************
 
-SymTableNodePtr searchSymTableForState (char* name, SymTableNodePtr nodePtr) {
+SymTableNodePtr searchSymTableForState (PSTR name, SymTableNodePtr nodePtr) {
 
 	while (nodePtr) {
 		long compareResult = strcmp(name, nodePtr->name);
@@ -278,7 +278,7 @@ SymTableNodePtr searchSymTableForState (char* name, SymTableNodePtr nodePtr) {
 
 //***************************************************************************
 
-SymTableNodePtr searchSymTableForString (char* name, SymTableNodePtr nodePtr) {
+SymTableNodePtr searchSymTableForString (PSTR name, SymTableNodePtr nodePtr) {
 
 	while (nodePtr) {
 		long compareResult = strcmp(name, nodePtr->name);
@@ -299,7 +299,7 @@ SymTableNodePtr searchSymTableForString (char* name, SymTableNodePtr nodePtr) {
 
 //***************************************************************************
 
-SymTableNodePtr searchLibrarySymTable (char* name, SymTableNodePtr nodePtr) {
+SymTableNodePtr searchLibrarySymTable (PSTR name, SymTableNodePtr nodePtr) {
 
 	//-------------------------------------------------------------
 	// Since all libraries are at the symbol display 0-level, we'll
@@ -336,7 +336,7 @@ SymTableNodePtr searchLibrarySymTable (char* name, SymTableNodePtr nodePtr) {
 
 //***************************************************************************
 
-SymTableNodePtr searchLibrarySymTableDisplay (char* name) {
+SymTableNodePtr searchLibrarySymTableDisplay (PSTR name) {
 
 	SymTableNodePtr nodePtr = searchLibrarySymTable(name, SymTableDisplay[0]);
 	return(nodePtr);
@@ -344,12 +344,12 @@ SymTableNodePtr searchLibrarySymTableDisplay (char* name) {
 
 //***************************************************************************
 
-SymTableNodePtr searchSymTableDisplay (char* name) {
+SymTableNodePtr searchSymTableDisplay (PSTR name) {
 
 	//---------------------------------------------------------------------
 	// First check if this is an explicit library reference. If so, we need
 	// to determine which library and which identifier in that library...
-	char* separator = strchr(name, '.');
+	PSTR separator = strchr(name, '.');
 	SymTableNodePtr nodePtr = NULL;
 
 	if (separator) {
@@ -359,7 +359,7 @@ SymTableNodePtr searchSymTableDisplay (char* name) {
 			return(NULL);
 		//-------------------------------------
 		// Now, search for the member symbol...
-		char* memberName = separator + 1;
+		PSTR memberName = separator + 1;
 		SymTableNodePtr memberNodePtr = searchSymTable(memberName, libraryNodePtr->defn.info.routine.localSymTable);
 		if (memberNodePtr)
 			recordLibraryUsed(memberNodePtr);
@@ -391,7 +391,7 @@ SymTableNodePtr searchSymTableDisplay (char* name) {
 
 //***************************************************************************
 
-SymTableNodePtr enterSymTable (char* name, SymTableNodePtr* ptrToNodePtr) {
+SymTableNodePtr enterSymTable (PSTR name, SymTableNodePtr* ptrToNodePtr) {
 
 	//-------------------------------------
 	// First, create the new symbol node...
@@ -399,7 +399,7 @@ SymTableNodePtr enterSymTable (char* name, SymTableNodePtr* ptrToNodePtr) {
 	if (!newNode)
 		ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc symbol ");
 
-	newNode->name = (char*)ABLSymbolMallocCallback(strlen(name) + 1);
+	newNode->name = (PSTR)ABLSymbolMallocCallback(strlen(name) + 1);
 	if (!newNode->name)
 		ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc symbol name ");
 	strcpy(newNode->name, name);
@@ -512,7 +512,7 @@ SymTableNodePtr extractSymTable (SymTableNodePtr* tableRoot, SymTableNodePtr nod
 
 //***************************************************************************
 
-void enterStandardRoutine (char* name, long routineKey, bool isOrder, char* paramList, char* returnType, void (*callback)(void)) {
+void enterStandardRoutine (PSTR name, long routineKey, bool isOrder, PSTR paramList, PSTR returnType, void (*callback)(void)) {
 
 	long tableIndex = routineKey;
 	if (tableIndex == -1) {
@@ -698,7 +698,7 @@ void initSymTable (void) {
 
 	//-------------------------------------------
 	// Set up the standard, built-in functions...
-//(char* name, long routineKey, bool isOrder, char* paramList, char* returnType, void* callback);
+//(PSTR name, long routineKey, bool isOrder, PSTR paramList, PSTR returnType, void* callback);
 	enterStandardRoutine("return", RTN_RETURN, false, NULL, NULL, NULL);
 	enterStandardRoutine("print", RTN_PRINT, false, NULL, NULL, NULL);
 	enterStandardRoutine("concat", RTN_CONCAT, false, NULL, NULL, NULL);

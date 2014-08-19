@@ -116,7 +116,7 @@ class MapData : public HeapManager
 			destroy();
 		}
 
-		long init (char *fileName, long numBlocks, long blockSize);
+		long init (PSTR fileName, long numBlocks, long blockSize);
 
 		void newInit (PacketFile* file, long numVertices);
 		void newInit (long numVertices);
@@ -146,8 +146,8 @@ class MapData : public HeapManager
 		long getOverlayTile (long block, long vertex);
 
 		// new overlay stuff
-		void setOverlay( long tileR, long tileC, Overlays type, unsigned long Offset );
-		void getOverlay( long tileR, long tileC, Overlays& type, unsigned long& Offset );
+		void setOverlay( long tileR, long tileC, Overlays type, ULONG Offset );
+		void getOverlay( long tileR, long tileC, Overlays& type, ULONG& Offset );
 		void setTerrain( long tileR, long tileC, int terrainType );
 		long getTerrain( long tileR, long tileC );
 
@@ -159,7 +159,7 @@ class MapData : public HeapManager
 			return blocks;
 		}
 
-		unsigned long getTexture( long tileR, long tileC );
+		ULONG getTexture( long tileR, long tileC );
 
 		long save( PacketFile* file, int whichPacket);
 
@@ -173,9 +173,9 @@ class MapData : public HeapManager
 		void unselectAll();
 		void unhighlightAll();
 		void highlightAllTransitionsOver2 (void);
-		void selectVertex( unsigned long tileRow, unsigned long tileCol, bool bSelect, bool bToggle );
+		void selectVertex( ULONG tileRow, ULONG tileCol, bool bSelect, bool bToggle );
 		bool selection(){ return hasSelection ? true : false; }
-		bool isVertexSelected( unsigned long tileRow, unsigned long tileCol );
+		bool isVertexSelected( ULONG tileRow, ULONG tileCol );
 
 		void calcTransitions();
 };

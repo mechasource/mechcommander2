@@ -1242,7 +1242,7 @@ DWORD MC_TextureManager::loadTexture (PCSTR textureFullPathName, gos_TextureForm
 	// New Method.  Just store memory footprint of texture.
 	// DO NOT create GOS handle until we need it.
  	masterTextureNodes[i].gosTextureHandle = CACHED_OUT_HANDLE;
-	masterTextureNodes[i].nodeName = (char *)textureStringHeap->Malloc(strlen(textureFullPathName) + 1);
+	masterTextureNodes[i].nodeName = (PSTR )textureStringHeap->Malloc(strlen(textureFullPathName) + 1);
 	gosASSERT(masterTextureNodes[i].nodeName != NULL);
 
 	strcpy(masterTextureNodes[i].nodeName,textureFullPathName);

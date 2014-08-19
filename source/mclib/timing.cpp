@@ -23,7 +23,7 @@ float	scenarioTime = 0.0;
 DWORD	LastTimeGetTime = 0;
 bool dynamicFrameTiming = TRUE;
 
-char *monthName[12] = 
+PSTR monthName[12] = 
 {
 	"Jan",
 	"Feb",

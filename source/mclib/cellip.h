@@ -28,7 +28,7 @@ class EllipseElement : public Element
 	public:
 
 	gos_VERTEX location[5];
-	GUI_RECT	clip;
+	RECT	clip;
 		
 	EllipseElement (void)
 	{
@@ -42,7 +42,7 @@ class EllipseElement : public Element
 
 	static void init(); // gotta call this one time before you can draw
 
-	void setClip( const GUI_RECT& );
+	void setClip( const RECT& );
 
 	static void removeTextureHandle (void);
 	

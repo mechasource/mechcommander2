@@ -51,7 +51,7 @@ typedef struct _srdata
 		m_TimerRefCount;
 	LONG 
 		m_TimerServicing;             // reentrancy semaphore
-	char *
+	PSTR 
 		m_workBuffer;
 
 	SoundDeviceInfo m_DeviceArray[8];

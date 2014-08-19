@@ -1033,7 +1033,7 @@ void LogisticsVehicle::init( FitIniFile& file )
 	file.seekBlock( "VehicleDynamics" );
 	file.readIdFloat( "MaxVelocity", speed );
 
-	char* parts[5] = { "Front", "Left", "Right", "Rear", "Turret" };
+	PSTR parts[5] = { "Front", "Left", "Right", "Rear", "Turret" };
 
 	baseArmor = 0;
 

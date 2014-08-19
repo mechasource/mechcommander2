@@ -98,7 +98,7 @@ extern LineElement *debugLines[];
 
 extern float maxVisualRange;
 extern long	visualRangeTable[];
-extern unsigned long MaxTreeLOSCellBlock;
+extern ULONG MaxTreeLOSCellBlock;
 
 //***************************************************************************
 // TEAM class

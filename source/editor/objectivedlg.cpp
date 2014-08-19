@@ -278,7 +278,7 @@ void ObjectiveDlg::LoadDialogValues() {
 
 	if ( modelID != -1 )
 	{
-		unsigned long ulGroup, ulIndex;
+		ULONG ulGroup, ulIndex;
 		EditorObjectMgr::instance()->getBuildingFromID( modelID, ulGroup, ulIndex, true);
 		m_modelGroup.SetCurSel( ulGroup );
 		OnSelchangeGroup();

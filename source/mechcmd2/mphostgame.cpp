@@ -108,7 +108,7 @@ void MPHostGame::init()
 		if ( NO_ERR != PNfile.open( tmpPath ) )
 		{
 			char error[256];
-			sprintf( error, "couldn't open file %s", (char*)tmpPath );
+			sprintf( error, "couldn't open file %s", (PSTR)tmpPath );
 			Assert( 0, 0, error );
 			return;
 		}
@@ -181,7 +181,7 @@ void MPHostGame::render()
 	render(0, 0);
 }
 
-int	MPHostGame::handleMessage( unsigned long message, unsigned long who)
+int	MPHostGame::handleMessage( ULONG message, ULONG who)
 {
 	status = who;
 	exitAnim.begin();
@@ -194,7 +194,7 @@ int	MPHostGame::handleMessage( unsigned long message, unsigned long who)
 //		long maxPlayers = atoi( tmp );
 		edits[0].getEntry(tmp);
 		MPlayer->setMode(MULTIPLAYER_MODE_PARAMETERS);
-		if ( !MPlayer->hostSession ((char*)(PCSTR)tmp, &prefs.playerName[0][0], 8) )
+		if ( !MPlayer->hostSession ((PSTR)(PCSTR)tmp, &prefs.playerName[0][0], 8) )
 		{
 			MPlayer->setMode(MULTIPLAYER_MODE_NONE);
 			// need to pop dlg here
@@ -289,17 +289,17 @@ void aStyle5TextListItem::render()
 	float color;
 	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((unsigned long)normalColor) + 0.67 * ((unsigned long)0xffffffff);
+		color = 0.33 * ((ULONG)normalColor) + 0.67 * ((ULONG)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((unsigned long)normalColor) + 0.33 * ((unsigned long)0xffffffff);
+		color = 0.67 * ((ULONG)normalColor) + 0.33 * ((ULONG)0xffffffff);
 	}
 	else
 	{
 		color = normalColor;
 	}
-	aTextListItem::setColor((unsigned long)color);
+	aTextListItem::setColor((ULONG)color);
 
 	aTextListItem::render();
 }

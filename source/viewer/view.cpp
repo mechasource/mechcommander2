@@ -46,9 +46,9 @@ bool useLeftRightMouseProfile = true;
 
 float MaxMinUV = 8.0f;
 
-unsigned long systemHeapSize = 65535000;
-unsigned long guiHeapSize = 1023999;
-unsigned long tglHeapSize = 32767000;
+ULONG systemHeapSize = 65535000;
+ULONG guiHeapSize = 1023999;
+ULONG tglHeapSize = 32767000;
 bool		  GeneralAlarm = 0;
 
 extern long DigitalMasterVolume;
@@ -70,7 +70,7 @@ long resolution = 0;
 bool useUnlimitedAmmo = true;
 
 Camera* eye = NULL;
-unsigned long BaseVertexColor  =0;
+ULONG BaseVertexColor  =0;
 
 enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor = CPU_PENTIUM;		//Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
 
@@ -95,7 +95,7 @@ FastFile 	**fastFiles = NULL;
 long 		numFastFiles = 0;
 long		maxFastFiles = 0;
 
-char*	ExceptionGameMsg = "";
+PSTR	ExceptionGameMsg = "";
 
 bool	justResaveAllMaps = 0;
 bool	useLOSAngle = 0;
@@ -109,7 +109,7 @@ Mechlopedia*	pMechlopedia;
 LogisticsData*  pLogData;
 
 
-char *SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
+PSTR SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
 	"LightMechSpecialist",
 	"LaserSpecialist",
 	"LightACSpecialist",
@@ -140,7 +140,7 @@ char *SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
 
 // called by gos
 //---------------------------------------------------------------------------
-char* __stdcall GetGameInformation() 
+PSTR __stdcall GetGameInformation() 
 {
 	return(ExceptionGameMsg);
 }
@@ -217,7 +217,7 @@ void __stdcall InitializeGameEngine()
 	
 	char temp[256];
 	cLoadString( IDS_FLOAT_HELP_FONT, temp, 255 );
-	char* pStr = strstr( temp, "," );
+	PSTR pStr = strstr( temp, "," );
 	if ( pStr )
 	{
 		gosFontScale = atoi( pStr + 2 );
@@ -663,7 +663,7 @@ void __stdcall TerminateGameEngine()
 
 
 //---------------------------------------------------------------------
-void __stdcall GetGameOSEnvironment( char* CommandLine )
+void __stdcall GetGameOSEnvironment( PSTR CommandLine )
 {
 	Environment.applicationName			= "MechCommander 2 Encyclopedia";
 

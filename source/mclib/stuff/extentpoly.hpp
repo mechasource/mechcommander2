@@ -43,7 +43,7 @@ namespace Stuff {
 
 		ExtentPoly() {}
 		ExtentPoly(MemoryStream *stream);
-		ExtentPoly(FileStream *file_stream,	char *page_name);
+		ExtentPoly(FileStream *file_stream,	PSTR page_name);
 		~ExtentPoly(void);
 		void
 			Save(MemoryStream *stream);

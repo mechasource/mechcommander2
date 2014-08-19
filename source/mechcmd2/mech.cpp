@@ -141,7 +141,7 @@ extern float				MaxVisualRadius;
 //--------
 // EXTERNS
 
-extern unsigned long		NextIdNumber;
+extern ULONG		NextIdNumber;
 extern float				MetersPerCell;
 extern long					AttitudeEffectOnMovePath[NUM_ATTITUDES][3];
 extern bool					useSound;
@@ -655,7 +655,7 @@ void BattleMechType::init (void) {
 
 //--------------------------------------------------------------------------
 
-long BattleMechType::init (FilePtr objFile, unsigned long fileSize) 
+long BattleMechType::init (FilePtr objFile, ULONG fileSize) 
 {
 	long result = 0;
 
@@ -1278,7 +1278,7 @@ void BattleMech::init (bool create, ObjectTypePtr _type) {
 
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
-	char *appearanceName = _type->getAppearanceTypeName();
+	PSTR appearanceName = _type->getAppearanceTypeName();
 
 	//--------------------------------------------------------------
 	// New code!!!
@@ -2668,7 +2668,7 @@ void BattleMech::resetComponents (long totalComponents, long *componentList)
 
 long BattleMech::init (FitIniFile* mechFile) {
 
-	char* BodyLocationBlockString[NUM_BODY_LOCATIONS] = {
+	PSTR BodyLocationBlockString[NUM_BODY_LOCATIONS] = {
 		"Head",
 		"CenterTorso",
 		"LeftTorso",
@@ -3472,7 +3472,7 @@ long BattleMech::calcTorsoStatus (void)
 
 //-------------------------------------------------------------------------------------------
 
-void BattleMech::pilotingCheck (unsigned long situation, float modifier) {
+void BattleMech::pilotingCheck (ULONG situation, float modifier) {
 
 	if (MPlayer && !MPlayer->isServer())
 		return;
@@ -3744,7 +3744,7 @@ void BattleMech::mineCheck (void)
 	//------------------------------------------------------------
 	// Must mark the end of the path as desirable or much badness
 	// NOT NEEDED ANYMORE.  Everyone can see mines all of the time.
-	unsigned long mine = 0;
+	ULONG mine = 0;
    	mine = GameMap->getMine(cellPositionRow, cellPositionCol);
 		
 	if (mine == 1)
@@ -7180,7 +7180,7 @@ long BattleMech::buildStatusChunk (void) {
 
 //---------------------------------------------------------------------------
 
-long BattleMech::handleStatusChunk (long updateAge, unsigned long chunk) {
+long BattleMech::handleStatusChunk (long updateAge, ULONG chunk) {
 
 	statusChunk.init();
 	statusChunk.data = chunk;
@@ -7269,7 +7269,7 @@ long BattleMech::buildMoveChunk (void) {
 
 //---------------------------------------------------------------------------
 
-long BattleMech::handleMoveChunk (unsigned long chunk) {
+long BattleMech::handleMoveChunk (ULONG chunk) {
 
 	moveChunk.init();
 	moveChunk.data = chunk;
@@ -8811,7 +8811,7 @@ float BattleMech::calcModerateSpeed (void) {
 
 //---------------------------------------------------------------------------
 
-long BattleMech::calcSpriteSpeed (float speed, unsigned long flags, long& state, long& throttle) {
+long BattleMech::calcSpriteSpeed (float speed, ULONG flags, long& state, long& throttle) {
 
 	state = MECH_STATE_RUNNING;
 	throttle = 100;
@@ -8996,7 +8996,7 @@ float curTorso, maxTorso, armorTorso, pilotEffect;
 		1.0,0.95f,0.85f,0.75f,0.50f,0.30f,0.00
 	};
 	
-	unsigned long pilotWounds = float2long(getPilot()->getWounds());
+	ULONG pilotWounds = float2long(getPilot()->getWounds());
 	if (pilotWounds > 6)
 		pilotWounds = 6;
 		

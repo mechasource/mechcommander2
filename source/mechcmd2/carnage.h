@@ -173,12 +173,12 @@ class FireType : public ObjectType
 	public:
 	
 		float			damageLevel;
-		unsigned long	soundEffectId;
-		unsigned long	lightObjectId;
+		ULONG	soundEffectId;
+		ULONG	lightObjectId;
 		
-		unsigned long 	startLoopFrame;
-		unsigned long	endLoopFrame;
-		unsigned long	numLoops;
+		ULONG 	startLoopFrame;
+		ULONG	endLoopFrame;
+		ULONG	numLoops;
 		
 		float			maxExtent;		//How Good am I at setting off other fires
 		float			timeToMax;		//How long before I grow to MaxExtent size
@@ -227,7 +227,7 @@ class FireType : public ObjectType
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, unsigned long fileSize);
+		virtual long init (FilePtr objFile, ULONG fileSize);
 
 		long init (FitIniFilePtr objFile);
 		
@@ -252,8 +252,8 @@ class ExplosionType : public ObjectType
 	public:
 
 		float				damageLevel;
-		unsigned long		soundEffectId;
-		unsigned long		lightObjectId;
+		ULONG		soundEffectId;
+		ULONG		lightObjectId;
 		long				explRadius;
 		float				chunkSize;
 
@@ -295,7 +295,7 @@ class ExplosionType : public ObjectType
 			init();
 		}
 
-		virtual long init (FilePtr objFile, unsigned long fileSize);
+		virtual long init (FilePtr objFile, ULONG fileSize);
 
 		long init (FitIniFilePtr objFile);
 

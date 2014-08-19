@@ -48,7 +48,7 @@ class LogisticsPilot
 {
 	public:
 
-		int init( char* fileName );
+		int init( PSTR fileName );
 		LogisticsPilot();
 		~LogisticsPilot();
 
@@ -113,7 +113,7 @@ class LogisticsPilot
 		void		clearIcons();
 
 		
-		unsigned long	id;
+		ULONG	id;
 		EList< ForceGroupIcon*, ForceGroupIcon* >	killedIcons;
 
 

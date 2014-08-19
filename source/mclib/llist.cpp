@@ -157,9 +157,9 @@ bool LinkedList::Traverse (Link *&Current)
 }
 
 //---------------------------------------------------------------------------
-unsigned long LinkedList::Count (void)
+ULONG LinkedList::Count (void)
 {
-	unsigned long Counter = 0;
+	ULONG Counter = 0;
 
 	Link *Current = Head;
 	while (Current != NULL)

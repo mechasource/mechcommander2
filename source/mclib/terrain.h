@@ -103,7 +103,7 @@ class Terrain
 	//-------------
 	protected:
 
-		unsigned long							terrainHeapSize;
+		ULONG							terrainHeapSize;
 		
 		long									numberVertices;
 		long									numberQuads;
@@ -114,7 +114,7 @@ class Terrain
 		//For editor
 		static long								userMin;
 		static long								userMax;
-		static unsigned long					baseTerrain;
+		static ULONG					baseTerrain;
 		static uint8_t					fractalThreshold;
 		static uint8_t					fractalNoise;
 
@@ -196,9 +196,9 @@ class Terrain
 			destroy();
 		}
 
-		long init (PacketFile* file, int whichPacket, unsigned long visibleVertices, 
+		long init (PacketFile* file, int whichPacket, ULONG visibleVertices, 
 			volatile float& progress, float progressRange); // open an existing file
-		long init( unsigned long verticesPerMapSide, PacketFile* file, unsigned long visibleVertices,
+		long init( ULONG verticesPerMapSide, PacketFile* file, ULONG visibleVertices,
 				volatile float& percent,
 					float percentRange); // pass in null for a blank new map
 
@@ -238,11 +238,11 @@ class Terrain
 		long getOverlayTile (long block, long vertex);
 	
 		// new overlay stuff
-		void setOverlay( long tileR, long tileC, Overlays type, unsigned long Offset );
-		void getOverlay( long tileR, long tileC, Overlays& type, unsigned long& Offset );
+		void setOverlay( long tileR, long tileC, Overlays type, ULONG Offset );
+		void getOverlay( long tileR, long tileC, Overlays& type, ULONG& Offset );
 		void setTerrain( long tileR, long tileC, int terrainType );
 		int	 getTerrain( long tileR, long tileC );
-		unsigned long getTexture( long tileR, long tileC ); 
+		ULONG getTexture( long tileR, long tileC ); 
 		float getTerrainElevation( long tileR, long tileC );
 
 		void  setVertexHeight( int vertexIndex, float value ); 
@@ -322,7 +322,7 @@ class Terrain
 		void resetVisibleVertices(long maxVisibleVertices);
 
 		void getColorMapName (FitIniFile *file);
-		void setColorMapName (char *mapName);
+		void setColorMapName (PSTR mapName);
 		void saveColorMapName (FitIniFile *file);
 };
 

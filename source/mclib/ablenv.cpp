@@ -37,13 +37,13 @@
 #endif
 
 //***************************************************************************
-long ABLi_preProcess (char* sourceFileName,
+long ABLi_preProcess (PSTR sourceFileName,
 					  long* numErrors = NULL,
 					  long* numLinesProcessed = NULL,
 					  long* numFilesProcessed = NULL,
 					  bool printLines = false);
 
-ABLModulePtr ABLi_loadLibrary (char* sourceFileName,
+ABLModulePtr ABLi_loadLibrary (PSTR sourceFileName,
 					   long* numErrors = NULL,
 					   long* numLinesProcessed = NULL,
 					   long* numFilesProcessed = NULL,
@@ -70,8 +70,8 @@ extern bool				CallModuleInit;
 extern long				FileNumber;
 
 extern Type				DummyType;
-extern char*			codeBuffer;
-extern char*			codeBufferPtr;
+extern PSTR			codeBuffer;
+extern PSTR			codeBufferPtr;
 extern StackItem*		stack;
 //extern StackItem*		eternalStack;
 extern StackItemPtr		tos;
@@ -89,8 +89,8 @@ extern ABLFile*			sourceFile;
 
 extern char				sourceBuffer[MAXLEN_SOURCELINE];
 extern long				bufferOffset;
-extern char*			bufferp;
-extern char*			tokenp;
+extern PSTR			bufferp;
+extern PSTR			tokenp;
 
 extern long				digitCount;
 extern bool				countError;
@@ -103,7 +103,7 @@ extern TypePtr			IntegerTypePtr;
 extern TypePtr			RealTypePtr;
 extern TypePtr			BooleanTypePtr;
 
-extern unsigned long*	OrderCompletionFlags;
+extern ULONG*	OrderCompletionFlags;
 extern StackItemPtr		StaticDataPtr;
 extern StackItem		returnValue;
 
@@ -194,7 +194,7 @@ void ABL_OpenProfileLog (void) {
 
 //---------------------------------------------------------------------------
 
-void ABL_AddToProfileLog (char* profileString) {
+void ABL_AddToProfileLog (PSTR profileString) {
 
 	if (NumProfileLogLines == MAX_PROFILE_LINES)
 		DumpProfileLog();
@@ -254,7 +254,7 @@ void UserFile::close (void) {
 
 //---------------------------------------------------------------------------
 
-long UserFile::open (char* fileName) {
+long UserFile::open (PSTR fileName) {
 
 	numLines = 0;
 	totalLines = 0;
@@ -267,7 +267,7 @@ long UserFile::open (char* fileName) {
 
 //---------------------------------------------------------------------------
 
-void UserFile::write (char* s) {
+void UserFile::write (PSTR s) {
 
 	static char buffer[MAX_USER_FILE_LINELEN];
 	
@@ -493,7 +493,7 @@ long ABLModule::init (long moduleHandle) {
 		long* sizeList = ModuleRegistry[handle].sizeStaticVars;
 		for (long i = 0; i < numStatics; i++)
 			if (sizeList[i] > 0) {
-				staticData[i].address = (char*)ABLStackMallocCallback(sizeList[i]);
+				staticData[i].address = (PSTR)ABLStackMallocCallback(sizeList[i]);
 				if (!staticData) {
 					char err[255];
 					sprintf(err, "ABL: Unable to AblStackHeap->malloc staticData address [Module %d]", id);
@@ -506,7 +506,7 @@ long ABLModule::init (long moduleHandle) {
 
 	if (ModuleRegistry[handle].numOrderCalls) {
 		long numLongs = 1 + ModuleRegistry[handle].numOrderCalls / 32;
-		orderCallFlags = (unsigned long*)ABLStackMallocCallback(sizeof(unsigned long) * numLongs);
+		orderCallFlags = (ULONG*)ABLStackMallocCallback(sizeof(ULONG) * numLongs);
 		if (!orderCallFlags) {
 			char err[255];
 			sprintf(err, "ABL: Unable to AblStackHeap->malloc orderCallFlags [Module %d]", id);
@@ -634,7 +634,7 @@ void ABLModule::read (ABLFile* moduleFile) {
 		for (long i = 0; i < numStatics; i++)
 			if (sizeList[i] > 0) {
 				if (fresh) {
-					staticData[i].address = (char*)ABLStackMallocCallback(sizeList[i]);
+					staticData[i].address = (PSTR)ABLStackMallocCallback(sizeList[i]);
 					if (!staticData) {
 						char err[255];
 						sprintf(err, "ABL: Unable to AblStackHeap->malloc staticData address [Module %d]", id);
@@ -661,7 +661,7 @@ void ABLModule::read (ABLFile* moduleFile) {
 
 	if (ModuleRegistry[handle].numOrderCalls) {
 		long numLongs = 1 + ModuleRegistry[handle].numOrderCalls / 32;
-		orderCallFlags = (unsigned long*)ABLStackMallocCallback(sizeof(unsigned long) * numLongs);
+		orderCallFlags = (ULONG*)ABLStackMallocCallback(sizeof(ULONG) * numLongs);
 		if (!orderCallFlags) {
 			char err[255];
 			sprintf(err, "ABLModule.read: Unable to AblStackHeap->malloc orderCallFlags [Module %d]", id);
@@ -698,14 +698,14 @@ void ABLModule::read (ABLFile* moduleFile) {
 
 //---------------------------------------------------------------------------
 
-char* ABLModule::getFileName (void) {
+PSTR ABLModule::getFileName (void) {
 
 	return(ModuleRegistry[handle].fileName);
 }
 
 //---------------------------------------------------------------------------
 
-void ABLModule::setName (char* _name) {
+void ABLModule::setName (PSTR _name) {
 
 	strncpy(name, _name, MAX_ABLMODULE_NAME);
 	name[MAX_ABLMODULE_NAME] = NULL;
@@ -867,14 +867,14 @@ long ABLModule::execute (ABLParamPtr paramList) {
 					// The following is a little inefficient, but is kept this way to keep it clear.
 					// Once it's verified to work, optimize...
 					long size = formalTypePtr->size;
-					char* dest = (char*)ABLStackMallocCallback((size_t)size);
+					PSTR dest = (PSTR)ABLStackMallocCallback((size_t)size);
 					if (!dest) {
 						char err[255];
 						sprintf(err, "ABL: Unable to AblStackHeap->malloc array parameter [Module %d]", id);
 						ABL_Fatal(0, err);
 					}
-					char* src = tos->address;
-					char* savePtr = dest;
+					PSTR src = tos->address;
+					PSTR savePtr = dest;
 					memcpy(dest, src, size);
 					tos->address = savePtr;
 				}
@@ -1009,14 +1009,14 @@ long ABLModule::execute (ABLParamPtr moduleParamList, SymTableNodePtr functionId
 					// The following is a little inefficient, but is kept this way to keep it clear.
 					// Once it's verified to work, optimize...
 					long size = formalTypePtr->size;
-					char* dest = (char*)ABLStackMallocCallback((size_t)size);
+					PSTR dest = (PSTR)ABLStackMallocCallback((size_t)size);
 					if (!dest) {
 						char err[255];
 						sprintf(err, "ABL: Unable to AblStackHeap->malloc array parameter [Module %d]", id);
 						ABL_Fatal(0, err);
 					}
-					char* src = tos->address;
-					char* savePtr = dest;
+					PSTR src = tos->address;
+					PSTR savePtr = dest;
 					memcpy(dest, src, size);
 					tos->address = savePtr;
 				}
@@ -1051,7 +1051,7 @@ long ABLModule::execute (ABLParamPtr moduleParamList, SymTableNodePtr functionId
 
 //---------------------------------------------------------------------------
 
-SymTableNodePtr ABLModule::findSymbol (char* symbolName, SymTableNodePtr curFunction, bool searchLibraries) {
+SymTableNodePtr ABLModule::findSymbol (PSTR symbolName, SymTableNodePtr curFunction, bool searchLibraries) {
 
 	if (curFunction) {
 		SymTableNodePtr symbol = searchSymTable(strlwr(symbolName), curFunction->defn.info.routine.localSymTable);
@@ -1074,7 +1074,7 @@ SymTableNodePtr ABLModule::findSymbol (char* symbolName, SymTableNodePtr curFunc
 
 //---------------------------------------------------------------------------
 
-SymTableNodePtr ABLModule::findFunction (char* functionName, bool searchLibraries) {
+SymTableNodePtr ABLModule::findFunction (PSTR functionName, bool searchLibraries) {
 
 	SymTableNodePtr symbol = searchSymTableForFunction(functionName, ModuleRegistry[handle].moduleIdPtr->defn.info.routine.localSymTable);
 
@@ -1098,7 +1098,7 @@ SymTableNodePtr ABLModule::findFunction (char* functionName, bool searchLibrarie
 
 //---------------------------------------------------------------------------
 
-SymTableNodePtr ABLModule::findState (char* stateName) {
+SymTableNodePtr ABLModule::findState (PSTR stateName) {
 
 	SymTableNodePtr symbol = searchSymTableForState(stateName, ModuleRegistry[handle].moduleIdPtr->defn.info.routine.localSymTable);
 	return(symbol);
@@ -1106,7 +1106,7 @@ SymTableNodePtr ABLModule::findState (char* stateName) {
 
 //---------------------------------------------------------------------------
 
-long ABLModule::findStateHandle (char* stateName) {
+long ABLModule::findStateHandle (PSTR stateName) {
 
 	for (long i = 1; i < ModuleRegistry[handle].numStateHandles; i++)
 		if (strcmp(stateName, ModuleRegistry[handle].stateHandles[i].name) == 0)
@@ -1116,7 +1116,7 @@ long ABLModule::findStateHandle (char* stateName) {
 
 //---------------------------------------------------------------------------
 
-long ABLModule::setStaticInteger (char* name, long value) {
+long ABLModule::setStaticInteger (PSTR name, long value) {
 
 	SymTableNodePtr symbol = findSymbol(name);
 	if (!symbol)
@@ -1135,7 +1135,7 @@ long ABLModule::setStaticInteger (char* name, long value) {
 
 //---------------------------------------------------------------------------
 
-long ABLModule::getStaticInteger (char* name) {
+long ABLModule::getStaticInteger (PSTR name) {
 
 	SymTableNodePtr symbol = findSymbol(name);
 	if (!symbol)
@@ -1153,7 +1153,7 @@ long ABLModule::getStaticInteger (char* name) {
 
 //---------------------------------------------------------------------------
 
-long ABLModule::setStaticReal (char* name, float value) {
+long ABLModule::setStaticReal (PSTR name, float value) {
 
 	SymTableNodePtr symbol = findSymbol(name);
 	if (!symbol)
@@ -1172,7 +1172,7 @@ long ABLModule::setStaticReal (char* name, float value) {
 
 //---------------------------------------------------------------------------
 
-float ABLModule::getStaticReal (char* name) {
+float ABLModule::getStaticReal (PSTR name) {
 
 	SymTableNodePtr symbol = findSymbol(name);
 	if (!symbol)
@@ -1190,7 +1190,7 @@ float ABLModule::getStaticReal (char* name) {
 
 //---------------------------------------------------------------------------
 
-long ABLModule::setStaticIntegerArray (char* name, long numValues, long* values) {
+long ABLModule::setStaticIntegerArray (PSTR name, long numValues, long* values) {
 
 	SymTableNodePtr symbol = findSymbol(name);
 	if (!symbol)
@@ -1213,7 +1213,7 @@ long ABLModule::setStaticIntegerArray (char* name, long numValues, long* values)
 
 //---------------------------------------------------------------------------
 
-long ABLModule::getStaticIntegerArray (char* name, long numValues, long* values) {
+long ABLModule::getStaticIntegerArray (PSTR name, long numValues, long* values) {
 
 	SymTableNodePtr symbol = findSymbol(name);
 	if (!symbol)
@@ -1235,7 +1235,7 @@ long ABLModule::getStaticIntegerArray (char* name, long numValues, long* values)
 
 //---------------------------------------------------------------------------
 
-long ABLModule::setStaticRealArray (char* name, long numValues, float* values) {
+long ABLModule::setStaticRealArray (PSTR name, long numValues, float* values) {
 
 	SymTableNodePtr symbol = findSymbol(name);
 	if (!symbol)
@@ -1258,7 +1258,7 @@ long ABLModule::setStaticRealArray (char* name, long numValues, float* values) {
 
 //---------------------------------------------------------------------------
 
-long ABLModule::getStaticRealArray (char* name, long numValues, float* values) {
+long ABLModule::getStaticRealArray (PSTR name, long numValues, float* values) {
 
 	SymTableNodePtr symbol = findSymbol(name);
 	if (!symbol)
@@ -1281,16 +1281,16 @@ long ABLModule::getStaticRealArray (char* name, long numValues, float* values) {
 
 //---------------------------------------------------------------------------
 
-char* ABLModule::getSourceFile (long fileNumber) {
+PSTR ABLModule::getSourceFile (long fileNumber) {
 
 	return(ModuleRegistry[handle].sourceFiles[fileNumber]);
 }
 
 //---------------------------------------------------------------------------
 
-char* ABLModule::getSourceDirectory (long fileNumber, char* directory) {
+PSTR ABLModule::getSourceDirectory (long fileNumber, PSTR directory) {
 
-	char* fileName = ModuleRegistry[handle].sourceFiles[fileNumber];
+	PSTR fileName = ModuleRegistry[handle].sourceFiles[fileNumber];
 	long curChar = strlen(fileName);
 	while ((curChar > -1) && (fileName[curChar] != '\\'))
 		curChar--;
@@ -1427,7 +1427,7 @@ void ABLi_loadEnvironment (ABLFile* ablFile, bool malloc) {
 		}
 		if (malloc) {
 			long numErrors, numLinesProcessed;
-			ABLModulePtr library = ABLi_loadLibrary((char*)fileName, &numErrors, &numLinesProcessed, NULL, false, false);
+			ABLModulePtr library = ABLi_loadLibrary((PSTR)fileName, &numErrors, &numLinesProcessed, NULL, false, false);
 			if (!library) {
 				char err[255];
 				sprintf(err, "ABLi_loadEnvironment: Unable to load library [Module %d]", i);
@@ -1446,7 +1446,7 @@ void ABLi_loadEnvironment (ABLFile* ablFile, bool malloc) {
 		}
 		long numErrors, numLinesProcessed;
 		if (malloc) {
-			long handle = ABLi_preProcess((char*)fileName, &numErrors, &numLinesProcessed);
+			long handle = ABLi_preProcess((PSTR)fileName, &numErrors, &numLinesProcessed);
 			if (handle < 0) {
 				char err[255];
 				sprintf(err, "ABLi_loadEnvironment: Unable to preprocess [Module %d]", i);

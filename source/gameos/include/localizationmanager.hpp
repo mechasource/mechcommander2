@@ -33,7 +33,7 @@ struct gos_CaretInfo
 	RECT		margins ;
 } ;
 
-void TextDrawDBCS(  char *Message );
+void TextDrawDBCS(  PSTR Message );
 
 void InitLocalization();
 void DestroyLocalization();

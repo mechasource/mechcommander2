@@ -57,7 +57,7 @@ public:
 	bool isDone();
 	virtual void render();
 	virtual void update();
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 
 	void				updatePilots(); // put into inventory, save??
 
@@ -219,7 +219,7 @@ public:
 	virtual void render();
 	virtual void update();
 	void setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon);
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 	virtual ~PilotPromotionArea();
 
 	aListBox*	getSkillListBox() { return &skillListBox; }
@@ -256,7 +256,7 @@ public:
 	virtual ~SpecialtyListItem();
 
 	static void			init( FitIniFile* file );
-	virtual int			handleMessage( unsigned long message, unsigned long who );
+	virtual int			handleMessage( ULONG message, ULONG who );
 
 	virtual bool		isChecked();
 	virtual void		setCheck( bool );

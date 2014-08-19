@@ -241,11 +241,11 @@ MString*
 		return file_name;
 	}
 
-	char *p = strrchr(*file_name, '.');
+	PSTR p = strrchr(*file_name, '.');
 	if (p)
 	{
 		*p = '\0';
-		file_name->SetLength(p - (char *)*file_name);
+		file_name->SetLength(p - (PSTR )*file_name);
 	}
 
 	Check_Object(file_name);
@@ -264,7 +264,7 @@ MString*
 		return file_name;
 	}
 
-	char *p = strrchr(*file_name, '\\');
+	PSTR p = strrchr(*file_name, '\\');
 	if (p)
 	{
 		*++p = '\0';
@@ -274,7 +274,7 @@ MString*
 		p = *file_name;
 		*p = '\0';
 	}
-	file_name->SetLength(p - (char *)*file_name);
+	file_name->SetLength(p - (PSTR )*file_name);
 	Check_Object(file_name);
 	return file_name;
 }
@@ -285,17 +285,17 @@ MString*
 	Stuff::StripDirectory(MString* file_name)
 {
 	Check_Object(file_name);
-	char *p = strrchr(*file_name, '\\');
+	PSTR p = strrchr(*file_name, '\\');
 	if (p)
 	{
-		char *q = *file_name;
+		PSTR q = *file_name;
 		do
 		{
 			*q++ = *++p;
 		}
 		while (*p);
 		// The following does not handle all cases...
-		// file_name->SetLength(p - (char *)*file_name);
+		// file_name->SetLength(p - (PSTR )*file_name);
 		file_name->SetLength(strlen(*file_name));
 	}
 	Check_Object(file_name);

@@ -73,7 +73,7 @@ class ChatWindow: public LogisticsScreen
 
 		virtual void update();
 		virtual void render( int xOffset, int yOffset );
-		int handleMessage( unsigned long, unsigned long );
+		int handleMessage( ULONG, ULONG );
 
 		virtual bool pointInside( long xPos, long yPos );
 		bool		 isExpanded();
@@ -93,7 +93,7 @@ class ChatWindow: public LogisticsScreen
 		long			maxItems;
 
 
-		static void refillListBox( aListBox& listBox, char** chatTexts, long* playerIDs,  ChatMessageItem* pItems, 
+		static void refillListBox( aListBox& listBox, PSTR* chatTexts, long* playerIDs,  ChatMessageItem* pItems, 
 			long& curItem, long itemCount, long maxCount );
 
 

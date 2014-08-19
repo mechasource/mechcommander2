@@ -38,12 +38,12 @@ class GateType : public ObjectType
 	//Data Members
 	//-------------
 	protected:
-		unsigned long	dmgLevel;
+		ULONG	dmgLevel;
 
 	public:
-		unsigned long	blownEffectId;
-		unsigned long	normalEffectId;
-		unsigned long	damageEffectId;
+		ULONG	blownEffectId;
+		ULONG	normalEffectId;
+		ULONG	damageEffectId;
 	
 		float			baseTonnage;
 		
@@ -90,7 +90,7 @@ class GateType : public ObjectType
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, unsigned long fileSize);
+		virtual long init (FilePtr objFile, ULONG fileSize);
 		long init (FitIniFilePtr objFile);
 		
 		~GateType (void)

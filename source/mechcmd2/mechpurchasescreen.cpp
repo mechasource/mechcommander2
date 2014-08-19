@@ -358,7 +358,7 @@ void MechPurchaseScreen::end()
 		}
 
 
-		unsigned long base, color1, color2;
+		ULONG base, color1, color2;
 		for ( MECH_LIST::EIterator pIter = prevInventory.Begin(); !pIter.IsDone(); pIter++ )
 		{
 			(*pIter).getColors(base, color1, color2);
@@ -453,7 +453,7 @@ void MechPurchaseScreen::endDrag( )
 
 //-------------------------------------------------------------------------------------------------
 
-int	MechPurchaseScreen::handleMessage( unsigned long what, unsigned long who )
+int	MechPurchaseScreen::handleMessage( ULONG what, ULONG who )
 {
 	if ( status == RUNNING )
 	{

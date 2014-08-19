@@ -50,7 +50,7 @@ class MPStatsResultsEntry : public LogisticsScreen
 		virtual void render( int x, int y );
 
 		void init( );
-		void setData( const _MC2Player*, unsigned long laurelColor, bool bShowScore );
+		void setData( const _MC2Player*, ULONG laurelColor, bool bShowScore );
 		long	overlayColor;
 
 };
@@ -71,7 +71,7 @@ class MPStats: public LogisticsScreen
 		virtual void begin();
 		virtual void end();
 
-		virtual int handleMessage( unsigned long what, unsigned long who );
+		virtual int handleMessage( ULONG what, ULONG who );
 
 		int init();
 

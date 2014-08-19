@@ -15,7 +15,7 @@ LogisticsComponent.cpp			: Implementation of the LogisticsComponent component.
 #include "utilities.h"
 
 
-extern char* ComponentFormString[];
+extern PSTR ComponentFormString[];
 
 long LogisticsComponent::XICON_FACTOR = 48;
 long LogisticsComponent::YICON_FACTOR = 32;
@@ -25,7 +25,7 @@ float LogisticsComponent::MAX_RECYCLE = 10.75f;
 float LogisticsComponent::MAX_RANGE = 3.f;
 
 
-/*char* LogisticsComponent::ComponentFormString[NUM_COMPONENT_FORMS] = 
+/*PSTR LogisticsComponent::ComponentFormString[NUM_COMPONENT_FORMS] = 
 {
 	"Simple",
 	"Cockpit",
@@ -76,11 +76,11 @@ LogisticsComponent::~LogisticsComponent()
 		delete pictureFileName;
 }
 
-int LogisticsComponent::init( char* dataLine )
+int LogisticsComponent::init( PSTR dataLine )
 {
-	char* line = dataLine;
+	PSTR line = dataLine;
 
-	char* pLine = line;
+	PSTR pLine = line;
 
 	char pBuffer[1025];
 
@@ -179,7 +179,7 @@ int LogisticsComponent::init( char* dataLine )
 	return ID;
 }
 
-int LogisticsComponent::extractString( char*& pFileLine, char* pBuffer, int bufferLength )
+int LogisticsComponent::extractString( PSTR& pFileLine, PSTR pBuffer, int bufferLength )
 {
 	*pBuffer = 0;
 
@@ -207,7 +207,7 @@ int LogisticsComponent::extractString( char*& pFileLine, char* pBuffer, int buff
 
 }
 
-int LogisticsComponent::extractInt( char*& pFileLine )
+int LogisticsComponent::extractInt( PSTR& pFileLine )
 {
 	char buffer[1024];
 
@@ -221,7 +221,7 @@ int LogisticsComponent::extractInt( char*& pFileLine )
 	return -1;
 }
 
-float LogisticsComponent::extractFloat( char*& pFileLine )
+float LogisticsComponent::extractFloat( PSTR& pFileLine )
 {
 	char buffer[1024];
 

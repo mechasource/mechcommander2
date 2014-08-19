@@ -152,7 +152,7 @@ typedef TimerManager *TimerManagerPtr;
 //----------------------------------------------------------------------------------
 extern TimerManagerPtr timerManager;			
 
-extern char *monthName[];
+extern PSTR monthName[];
 //----------------------------------------------------------------------------------
 // Find out actual system time
 typedef struct _MC_SYSTEMTIME

@@ -47,7 +47,7 @@ namespace Stuff {
 			ReplaceMacros(
 				MacroTree *macro_tree,
 				PCSTR buffer,
-				char *new_buf,
+				PSTR new_buf,
 				int new_buf_size
 			);
 	};
@@ -169,12 +169,12 @@ namespace Stuff {
 				MemoryStream *stream,
 				MacroTree *macro_tree,
 				Page **notepage,
-				char* buffer
+				PSTR buffer
 			);
 
 		void
 			HandleBangStuff(
-				char *buffer,
+				PSTR buffer,
 				MacroTree *macro_tree,
 				Page **page
 			);

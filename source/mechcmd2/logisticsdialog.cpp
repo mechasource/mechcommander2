@@ -113,7 +113,7 @@ void		LogisticsDialog::render()
 	}
 
 	
-	GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+	RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 	drawRect( rect, color );
 	
 	float xOffset = 0;
@@ -237,7 +237,7 @@ int LogisticsOKDialog::init( FitIniFile& file )
 
 //-------------------------------------------------------------------------------------------------
 
-int LogisticsOKDialog::handleMessage( unsigned long, unsigned long who )
+int LogisticsOKDialog::handleMessage( ULONG, ULONG who )
 {
 	status = who;
 	exitAnim.begin();
@@ -328,7 +328,7 @@ int LogisticsLegalDialog::init( FitIniFile& file )
 
 //-------------------------------------------------------------------------------------------------
 
-int LogisticsOneButtonDialog::handleMessage( unsigned long, unsigned long who )
+int LogisticsOneButtonDialog::handleMessage( ULONG, ULONG who )
 {
 	status = who;
 	exitAnim.begin();
@@ -429,7 +429,7 @@ void LogisticsSaveDialog::begin()
 	edits[0].setEntry( "" );
 	edits[0].limitEntry( 20 );
 
-	statics[MAP_STATIC].setTexture( ( unsigned long)0 );
+	statics[MAP_STATIC].setTexture( ( ULONG)0 );
 
 	aListItem* pItem = gameListBox.GetItem( 0 );
 	if ( pItem )
@@ -530,7 +530,7 @@ void LogisticsSaveDialog::initDialog( PCSTR path, bool bCampaign )
 			{
 				aLocalizedListItem* pEntry = new aLocalizedListItem();
 				*pEntry = s_instance->templateItem;
-				char* pExt = strstr( findResult.cFileName, ".fit" );
+				PSTR pExt = strstr( findResult.cFileName, ".fit" );
 				if ( !pExt  )
 				{
 					pExt = (strstr( findResult.cFileName, ".FIT" ) );
@@ -601,14 +601,14 @@ void LogisticsSaveDialog::initDialog( PCSTR path, bool bCampaign )
 	}
 }
 
-bool LogisticsSaveDialog::isCorrectVersionSaveGame( char* fileName )
+bool LogisticsSaveDialog::isCorrectVersionSaveGame( PSTR fileName )
 {
 	FullPathFileName path;
 	path.init( savePath, fileName, ".fit" );
 
 	FitIniFile file;
 
-	if ( NO_ERR != file.open( (char*)(PCSTR)path ) )
+	if ( NO_ERR != file.open( (PSTR)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", path );
@@ -628,14 +628,14 @@ bool LogisticsSaveDialog::isCorrectVersionSaveGame( char* fileName )
 	return false;
 }
 
-void LogisticsSaveDialog::readCampaignNameFromFile( char* fileName, char* resultName, long len )
+void LogisticsSaveDialog::readCampaignNameFromFile( PSTR fileName, PSTR resultName, long len )
 {
 	FullPathFileName path;
 	path.init( campaignPath, fileName, ".fit" );
 
 	FitIniFile file;
 
-	if ( NO_ERR != file.open( (char*)(PCSTR)path ) )
+	if ( NO_ERR != file.open( (PSTR)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", path );
@@ -663,7 +663,7 @@ void LogisticsSaveDialog::readCampaignNameFromFile( char* fileName, char* result
 
 void LogisticsSaveDialog::end()
 {
-	statics[MAP_STATIC].setTexture( ( unsigned long)0 );
+	statics[MAP_STATIC].setTexture( ( ULONG)0 );
 	bCampaign = 0;
 	LogisticsDialog::end();
 
@@ -919,8 +919,8 @@ void LogisticsSaveDialog::updateMissionInfo()
 		time_t time = file.getFileMTime();
 		struct tm* ptm = localtime(&time);
 
-		char* timeStr = gos_GetFormattedTime( ptm->tm_hour, ptm->tm_min, ptm->tm_sec );
-		char* dateStr = gos_GetFormattedDate( 0, ptm->tm_year + 1900, ptm->tm_mon + 1, ptm->tm_mday );
+		PSTR timeStr = gos_GetFormattedTime( ptm->tm_hour, ptm->tm_min, ptm->tm_sec );
+		PSTR dateStr = gos_GetFormattedDate( 0, ptm->tm_year + 1900, ptm->tm_mon + 1, ptm->tm_mday );
 
 
 		cLoadString( IDS_DIALOG_TIME, tmp2, 255 );
@@ -965,7 +965,7 @@ void LogisticsSaveDialog::setMission( PCSTR fileName)
 			file.readIdBoolean( "MissionNameUseResourceString", bRes );
 			if ( bRes )
 			{
-				unsigned long lRes;
+				ULONG lRes;
 				file.readIdULong( "MissionNameResourceStringID", lRes );
 				cLoadString( lRes, missionName, 255 );
 			}
@@ -1036,7 +1036,7 @@ void LogisticsSaveDialog::render()
 		color = 0;
 
 	
-	GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+	RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 	drawRect( rect, color );
 
 
@@ -1060,7 +1060,7 @@ void LogisticsSaveDialog::render()
 		
 }
 
-int	LogisticsSaveDialog::handleMessage( unsigned long what, unsigned long who )
+int	LogisticsSaveDialog::handleMessage( ULONG what, ULONG who )
 {
 	
 	if ( YES == who )
@@ -1283,7 +1283,7 @@ void LogisticsVariantDialog::initVariantList()
 
 	if ( count )
 	{
-		PCSTR* pNames = (PCSTR*)_alloca( count * sizeof( char*) );
+		PCSTR* pNames = (PCSTR*)_alloca( count * sizeof( PSTR) );
 		LogisticsData::instance->getPlayerVariantNames( pNames, count );
 
 		int bValid = 0;
@@ -1475,7 +1475,7 @@ void LogisticsVariantDialog::render()
 	}
 
 	
-	GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+	RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 	drawRect( rect, color );
 
 
@@ -1507,7 +1507,7 @@ void LogisticsVariantDialog::render()
 		
 }
 
-int	LogisticsVariantDialog::handleMessage ( unsigned long what, unsigned long who )
+int	LogisticsVariantDialog::handleMessage ( ULONG what, ULONG who )
 {
 	
 	if ( YES == who )
@@ -1699,7 +1699,7 @@ void LogisticsAcceptVariantDialog::render()
 	}
 
 	
-	GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+	RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 	drawRect( rect, color );
 
 
@@ -1750,7 +1750,7 @@ int LogisticsAcceptVariantDialog::init( FitIniFile& file )
 	return 0;
 }
 
-int LogisticsAcceptVariantDialog::handleMessage( unsigned long p1, unsigned long p2)
+int LogisticsAcceptVariantDialog::handleMessage( ULONG p1, ULONG p2)
 {
 	return LogisticsVariantDialog::handleMessage( p1, p2); 
 }
@@ -1764,7 +1764,7 @@ LogisticsMapInfoDialog::~LogisticsMapInfoDialog()
 }
 void LogisticsMapInfoDialog::end()
 {
-	statics[10].setTexture( ( unsigned long)0 );
+	statics[10].setTexture( ( ULONG)0 );
 	statics[10].setColor( (long)0 );
 }
 void LogisticsMapInfoDialog::setMap( PCSTR pFileName )
@@ -1795,7 +1795,7 @@ void LogisticsMapInfoDialog::setMap( PCSTR pFileName )
 			file.readIdBoolean( "MissionNameUseResourceString", bRes );
 			if ( bRes )
 			{
-				unsigned long lRes;
+				ULONG lRes;
 				file.readIdULong( "MissionNameResourceStringID", lRes );
 				cLoadString( lRes, missionName, 255 );
 			}
@@ -1810,7 +1810,7 @@ void LogisticsMapInfoDialog::setMap( PCSTR pFileName )
 			sprintf( totalText, text2 );
 			strcat( totalText, "\n" );
 
-				unsigned long type = 0;
+				ULONG type = 0;
 			file.readIdULong( "MissionType", type );
 			cLoadString( IDS_MP_LM_MAP_LIST_TYPE, text, 255 );
 			char mType[128];
@@ -1821,7 +1821,7 @@ void LogisticsMapInfoDialog::setMap( PCSTR pFileName )
 			strcat( totalText, text2 );
 			strcat( totalText, "\n" );
 
-			unsigned long numPlayers = 2;
+			ULONG numPlayers = 2;
 
 			file.readIdULong( "MaximumNumberOfPlayers", numPlayers );
 			cLoadString( IDS_MP_LM_MAP_LIST_MAX_PLAYERS, text, 255 );
@@ -1839,7 +1839,7 @@ void LogisticsMapInfoDialog::setMap( PCSTR pFileName )
 			result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
 			if (NO_ERR == result && tmpBool )
 			{
-				unsigned long tmpInt = 0;
+				ULONG tmpInt = 0;
 				result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
 				if (NO_ERR == result)
 				{
@@ -1861,7 +1861,7 @@ int LogisticsMapInfoDialog::init()
 	if ( NO_ERR != file.open( path ) )
 	{
 		char buffer2[512];
-		sprintf( buffer2, "couldn't open file %s", (char*)path );
+		sprintf( buffer2, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, buffer2 );
 		return false;	
 
@@ -1878,7 +1878,7 @@ int LogisticsMapInfoDialog::init()
 
 }
 
-int	LogisticsMapInfoDialog::handleMessage( unsigned long, unsigned long who )
+int	LogisticsMapInfoDialog::handleMessage( ULONG, ULONG who )
 {
 	exitAnim.begin();
 	enterAnim.end();

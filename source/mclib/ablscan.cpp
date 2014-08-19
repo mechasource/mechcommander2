@@ -178,7 +178,7 @@ TokenCodeType declarationStartList[] = {
 	TKN_NONE
 };
 
-char* TokenStrings[NUM_TOKENS] = {
+PSTR TokenStrings[NUM_TOKENS] = {
 	"{BAD TOKEN}",
 	"{IDENTIFIER}",
 	"{NUMBER}",
@@ -282,8 +282,8 @@ char			sourceBuffer[MAXLEN_SOURCELINE];
 char			tokenString[MAXLEN_TOKENSTRING];
 char			wordString[MAXLEN_TOKENSTRING];
 long			bufferOffset = 0;
-char*			bufferp = sourceBuffer;
-char*			tokenp = tokenString;
+PSTR			bufferp = sourceBuffer;
+PSTR			tokenp = tokenString;
 
 long			digitCount = 0;
 bool			countError = false;
@@ -303,8 +303,8 @@ extern bool		DebugCodeEnabled;
 
 extern ABLModulePtr	CurLibrary;
 
-long (*ABLFile::createCB) (void** file, char* fName) = NULL;
-long (*ABLFile::openCB) (void** file, char* fName) = NULL;
+long (*ABLFile::createCB) (void** file, PSTR fName) = NULL;
+long (*ABLFile::openCB) (void** file, PSTR fName) = NULL;
 long (*ABLFile::closeCB) (void** file) = NULL;
 bool (*ABLFile::eofCB) (void* file) = NULL;
 long (*ABLFile::readCB) (void* file, PUCHAR buffer, long length) = NULL;
@@ -314,7 +314,7 @@ long (*ABLFile::readLineExCB) (void* file, PUCHAR buffer, long maxLength) = NULL
 long (*ABLFile::writeCB) (void* file, PUCHAR buffer, long length) = NULL;
 long (*ABLFile::writeByteCB) (void* file, uint8_t byte) = NULL;
 long (*ABLFile::writeLongCB) (void* file, long value) = NULL;
-long (*ABLFile::writeStringCB) (void* file, char* buffer) = NULL;
+long (*ABLFile::writeStringCB) (void* file, PSTR buffer) = NULL;
 
 //***************************************************************************
 // ABL FILE routines
@@ -354,10 +354,10 @@ void ABLFile::destroy (void) {
 
 //---------------------------------------------------------------------------
 
-long ABLFile::create (char* fName) {
+long ABLFile::create (PSTR fName) {
 
 	if (fName) {
-		fileName = (char*)ABLSystemMallocCallback(strlen(fName)+1);
+		fileName = (PSTR)ABLSystemMallocCallback(strlen(fName)+1);
 		strcpy(fileName,fName);
 		return(createCB(&file, fileName));
 	}
@@ -366,10 +366,10 @@ long ABLFile::create (char* fName) {
 
 //---------------------------------------------------------------------------
 
-long ABLFile::open (char* fName) {
+long ABLFile::open (PSTR fName) {
 
 	if (fName) {
-		fileName = (char*)ABLSystemMallocCallback(strlen(fName)+1);
+		fileName = (PSTR)ABLSystemMallocCallback(strlen(fName)+1);
 		strcpy(fileName,fName);
 		return(openCB(&file, fileName));
 	}
@@ -459,7 +459,7 @@ long ABLFile::writeLong (long val) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::writeString (char* buffer) {
+long ABLFile::writeString (PSTR buffer) {
 
 	if (file)
 		return(writeStringCB(file, buffer));
@@ -500,7 +500,7 @@ long isReservedWord (void)
 
 void getChar();
 
-void initScanner (char* fileName) {
+void initScanner (PSTR fileName) {
 
 	long curCh;
 	//----------------------------------
@@ -827,8 +827,8 @@ void getChar (void) {
 void downShiftWord (void) {
 
 	long offset = 'a' - 'A';
-	char* wp = wordString;
-	char* tp = tokenString;
+	PSTR wp = wordString;
+	PSTR tp = tokenString;
 
 	long checkLengthWord = strlen(wordString);
 	long checkLengthToken = strlen(tokenString);
@@ -1044,7 +1044,7 @@ void getNumber (void) {
 
 void getString (void) {
 
-	char* stringPtr = curLiteral.value.string;
+	PSTR stringPtr = curLiteral.value.string;
 	*tokenp = '\"';
 	getChar();
 
@@ -1257,7 +1257,7 @@ bool getSourceLine (void) {
 
 //---------------------------------------------------------------------------
 
-long openSourceFile (char* sourceFileName) {
+long openSourceFile (PSTR sourceFileName) {
 
 	//---------------------------------------
 	// Now, let's open the ABL source file...
@@ -1324,14 +1324,14 @@ long closeSourceFile (void) {
 // PRINTOUT routines
 //***************************************************************************
 
-void printLine (char* line) {
+void printLine (PSTR line) {
 
 	if (++lineCount > MAX_LINES_PER_PAGE) {
 		printPageHeader();
 		lineCount = 1;
 	}
 
-	char* saveChPtr = NULL;
+	PSTR saveChPtr = NULL;
 	char saveCh = ' ';
 	if (strlen(line) > MAXLEN_PRINTLINE) {
 		saveCh = line[MAXLEN_PRINTLINE];
@@ -1345,7 +1345,7 @@ void printLine (char* line) {
 
 //***************************************************************************
 
-void initPageHeader (char* fileName) {
+void initPageHeader (PSTR fileName) {
 
 	//--------------------------
 	// Save the source file name

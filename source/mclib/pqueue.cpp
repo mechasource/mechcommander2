@@ -127,7 +127,7 @@ void PriorityQueue::change (long itemIndex, long newValue) {
 long PriorityQueue::find (long id) {
 
 	for (long index = 0; index <= numItems; index++)
-		if (pqList[index].id == (unsigned long)id)
+		if (pqList[index].id == (ULONG)id)
 			return(index);
 	return(0);
 }

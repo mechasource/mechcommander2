@@ -172,7 +172,7 @@ extern UserHeapPtr systemHeap;
 //extern DebugFileStream Debug;
 #endif
 
-extern char* startupPakFile;
+extern PSTR startupPakFile;
 
 // ConnectUsingDialog is a function defined in dpdialog.cpp.  
 // It allows the user to choose the type of connection.
@@ -194,7 +194,7 @@ MultiPlayer* MPlayer = NULL;
 ///extern Scenario* scenario;
 ///extern Logistics* globalLogPtr;
 
-void DEBUGWINS_print (char* s, long window = 0);
+void DEBUGWINS_print (PSTR s, long window = 0);
 
 //***************************************************************************
 // MISC functions
@@ -367,7 +367,7 @@ long MultiPlayer::update (void) {
 
 //---------------------------------------------------------------------------
 
-long MultiPlayer::beginSessionScan (char* ipAddress, bool persistent) {
+long MultiPlayer::beginSessionScan (PSTR ipAddress, bool persistent) {
 
 	return(MPLAYER_NO_ERR);
 }
@@ -388,7 +388,7 @@ MC2Session* MultiPlayer::getSessions (long& sessionCount) {
 
 //---------------------------------------------------------------------------
 
-bool MultiPlayer::hostSession (char* sessionName, char* playerName, long mxPlayers) {
+bool MultiPlayer::hostSession (PSTR sessionName, PSTR playerName, long mxPlayers) {
 
 	return(true);
 }
@@ -424,7 +424,7 @@ void MultiPlayer::addTeamScore (long teamID, long score) {
 
 //---------------------------------------------------------------------------
 
-long MultiPlayer::joinSession (MC2Session* session, char* playerName) {
+long MultiPlayer::joinSession (MC2Session* session, PSTR playerName) {
 
 	return(MPLAYER_ERR_SESSION_NOT_FOUND);
 }
@@ -572,14 +572,14 @@ void MultiPlayer::sendMessage (NETPLAYER player,
 
 //-----------------------------------------------------------------------------
 
-bool MultiPlayer::hostGame (char* sessionName, char* playerName, long nPlayers) {
+bool MultiPlayer::hostGame (PSTR sessionName, PSTR playerName, long nPlayers) {
 
 	return(true);
 }
 
 //---------------------------------------------------------------------------
 
-long MultiPlayer::joinGame (char* ipAddress, char* sessionName, char* playerName) {
+long MultiPlayer::joinGame (PSTR ipAddress, PSTR sessionName, PSTR playerName) {
 
 	return(MPLAYER_NO_ERR);
 }
@@ -713,7 +713,7 @@ long MultiPlayer::addCaptureBuildingChunk (BuildingPtr building, long prevComman
 
 //---------------------------------------------------------------------------
 
-long MultiPlayer::grabWorldChunks (unsigned long* packedChunkBuffer) {
+long MultiPlayer::grabWorldChunks (ULONG* packedChunkBuffer) {
 
 	return(0);
 }
@@ -736,7 +736,7 @@ long MultiPlayer::addWeaponHitChunk (GameObjectPtr target, WeaponShotInfoPtr sho
 
 //---------------------------------------------------------------------------
 
-void MultiPlayer::grabWeaponHitChunks (unsigned long* packedChunkBuffer, long numChunks) {
+void MultiPlayer::grabWeaponHitChunks (ULONG* packedChunkBuffer, long numChunks) {
 
 }
 
@@ -768,11 +768,11 @@ void MultiPlayer::sendMissionSettingsUpdate (NETPLAYER receiver) {
 
 //---------------------------------------------------------------------------
 
-void MultiPlayer::sendChat (NETPLAYER receiver, char team, char* chatMessage) {
+void MultiPlayer::sendChat (NETPLAYER receiver, char team, PSTR chatMessage) {
 
 }
 
-void MultiPlayer::sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, unsigned long resID )
+void MultiPlayer::sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, ULONG resID )
 {
 }
 
@@ -791,7 +791,7 @@ void MultiPlayer::sendPlayerSetup (void) {
 
 //---------------------------------------------------------------------------
 
-void MultiPlayer::sendPlayerInsignia (char* insigniaFileName, PUCHAR insigniaData, long dataSize) {
+void MultiPlayer::sendPlayerInsignia (PSTR insigniaFileName, PUCHAR insigniaData, long dataSize) {
 
 }
 
@@ -1170,9 +1170,9 @@ void MultiPlayer::initStartupParameters (bool fresh) {
 
 
 //---------------------------------------------------------------------------
-extern char* GetTime();
+extern PSTR GetTime();
 
-extern char *SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
+extern PSTR SpecialtySkillsTable[NUM_SPECIALTY_SKILLS];
 
 long MultiPlayer::saveTranscript (PCSTR fileName, bool debugging) {
 
@@ -1187,7 +1187,7 @@ void MultiPlayer::destroy (void) {
 
 //---------------------------------------------------------------------------
 
-void MultiPlayer::getChatMessages( char** buffer, long* playerIDs, long& count )
+void MultiPlayer::getChatMessages( PSTR* buffer, long* playerIDs, long& count )
 {
 }
 

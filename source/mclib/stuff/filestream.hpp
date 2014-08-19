@@ -26,7 +26,7 @@ namespace Stuff {
 	{
 	public:
 		Directory(
-			char *find_files,
+			PSTR find_files,
 			bool find_directories=false
 		);
 		~Directory();
@@ -35,11 +35,11 @@ namespace Stuff {
 			TestInstance() const
 				{}
 
-		char*
+		PSTR
 			GetCurrentFileName();
 		void
 			AdvanceCurrentFile();
-		char*
+		PSTR
 			GetCurrentFolderName();
 		void
 			AdvanceCurrentFolder();
@@ -175,7 +175,7 @@ namespace Stuff {
 	protected:
 		WriteStatus
 			writeEnabled;
-		char *
+		PSTR 
 			fileName;
 		HGOSFILE
 			fileHandle;

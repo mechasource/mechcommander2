@@ -55,23 +55,23 @@ bool useUnlimitedAmmo = true;
 
 TimerManagerPtr timerManager = NULL;
 
-unsigned long elementHeapSize = 1024000;
-unsigned long maxElements = 2048;
-unsigned long maxGroups = 1024;
+ULONG elementHeapSize = 1024000;
+ULONG maxElements = 2048;
+ULONG maxGroups = 1024;
 
-unsigned long systemHeapSize = 3071999;
-unsigned long guiHeapSize = 1023999;
-unsigned long logisticsHeapSize = 4095999;
-unsigned long missionHeapSize = 1023999;
-unsigned long spriteDataHeapSize = 2048000;
-unsigned long spriteHeapSize = 8192000;
-unsigned long polyHeapSize = 1024000;
-unsigned long tglHeapSize = 32767000;
+ULONG systemHeapSize = 3071999;
+ULONG guiHeapSize = 1023999;
+ULONG logisticsHeapSize = 4095999;
+ULONG missionHeapSize = 1023999;
+ULONG spriteDataHeapSize = 2048000;
+ULONG spriteHeapSize = 8192000;
+ULONG polyHeapSize = 1024000;
+ULONG tglHeapSize = 32767000;
 
 DWORD gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
 FloatHelpPtr globalFloatHelp = NULL;
-unsigned long currentFloatHelp = 0;
+ULONG currentFloatHelp = 0;
 float MaxMinUV = 8.0f;
 
 DWORD BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
@@ -84,17 +84,17 @@ extern bool useSound;
 extern bool useMusic;
 
 bool inViewMode = false;
-unsigned long viewObject = 0x0;
+ULONG viewObject = 0x0;
 char missionName[1024];
 
-char* ExceptionGameMsg = NULL;
+PSTR ExceptionGameMsg = NULL;
 
 char buildNumber[80];
 
 extern long TERRAIN_TXM_SIZE;
 long ObjectTextureSize = 128;
 
-extern unsigned long MultiPlayCommanderId;
+extern ULONG MultiPlayCommanderId;
 extern bool	useRealLOS;
 bool reloadBounds = false;
 
@@ -105,7 +105,7 @@ bool useRealLOS = true;
 
 //***************************************************************************
 
-char* GetGameInformation() 
+PSTR GetGameInformation() 
 {
 	return(ExceptionGameMsg);
 }
@@ -628,13 +628,13 @@ void DoGameLogic()
 }
 
 //---------------------------------------------------------------------------
-long textToLong (char *num)
+long textToLong (PSTR num)
 {
 	long result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
-	char *hexOffset = strstr(num,"0x");
+	PSTR hexOffset = strstr(num,"0x");
 	if (hexOffset == NULL)
 	{
 		result = atol(num);
@@ -681,12 +681,12 @@ long textToLong (char *num)
 
 //----------------------------------------------------------------------------
 // Same command line Parser as MechCommander
-void ParseCommandLine(char *command_line)
+void ParseCommandLine(PSTR command_line)
 {
 	int i;
 	int n_args = 0;
 	int index = 0;
-	char *argv[30];
+	PSTR argv[30];
 	
 	char tempCommandLine[4096];
 	memset(tempCommandLine,0,4096);
@@ -719,7 +719,7 @@ bool notFirstTime = false;
 //
 // Setup the GameOS structure -- This tells GameOS what I am using
 //
-void GetGameOSEnvironment( char* CommandLine )
+void GetGameOSEnvironment( PSTR CommandLine )
 {
 	ParseCommandLine(CommandLine);
 

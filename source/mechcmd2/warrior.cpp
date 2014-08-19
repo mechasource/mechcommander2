@@ -149,7 +149,7 @@ float FireOddsTable[NUM_FIREODDS] = {
 	80.0
 };
 
-char* pilotAlarmFunctionName[NUM_PILOT_ALARMS] = {
+PSTR pilotAlarmFunctionName[NUM_PILOT_ALARMS] = {
 	"handletargetofweaponfire",
 	"handlehitbyweaponfire",
 	"handledamagetakenrate",
@@ -192,7 +192,7 @@ char AmmoConservationModifiers[2][2] = {
 	{20, -10}
 };
 
-char* SkillsTable[NUM_SKILLS] = {
+PSTR SkillsTable[NUM_SKILLS] = {
 	"Piloting",
 	"Sensors",
 	"Gunnery"
@@ -242,7 +242,7 @@ float WarriorRankScale[NUM_WARRIOR_RANKS] = {
 
 
 
-char *SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
+PSTR SpecialtySkillsTable[NUM_SPECIALTY_SKILLS] = {
 	"LightMechSpecialist",
 	"LaserSpecialist",
 	"LightACSpecialist",
@@ -2059,7 +2059,7 @@ void MechWarrior::setVehicle (GameObjectPtr vehicle) {
 }
 
 //---------------------------------------------------------------------------
-void MechWarrior::setBrainName (char *brainName)
+void MechWarrior::setBrainName (PSTR brainName)
 {
 	strncpy(brainStr, brainName, MAXLEN_PILOT_BRAIN - 1);
 	brainStr[MAXLEN_PILOT_BRAIN - 1] = NULL;
@@ -2201,7 +2201,7 @@ long MechWarrior::getVehicleStatus (void) {
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::updateAttackerStatus (unsigned long attackerWID, float time) {
+void MechWarrior::updateAttackerStatus (ULONG attackerWID, float time) {
 
 	long curAttacker;
 	for (curAttacker = 0; curAttacker < numAttackers; curAttacker++)
@@ -2228,7 +2228,7 @@ GameObjectPtr MechWarrior::calcTurretThreats (float threatRange, long minThreat)
 		turretControlThreat[i] = 0;
 	for (i = 0; i < ObjectManager->getNumTurrets(); i++)
 		turretThreat[i] = 0;
-	unsigned long vehicleWID = getVehicle()->getWatchID();
+	ULONG vehicleWID = getVehicle()->getWatchID();
 	for (i = 0; i < ObjectManager->getNumTurrets(); i++) {
 		Turret* turret = ObjectManager->getTurret(i);
 		if (!turret->isDisabled() && (turret->targetWID == vehicleWID)) {
@@ -2267,7 +2267,7 @@ GameObjectPtr MechWarrior::calcTurretThreats (float threatRange, long minThreat)
 
 //---------------------------------------------------------------------------
 
-AttackerRecPtr MechWarrior::getAttackerInfo (unsigned long attackerWID) {
+AttackerRecPtr MechWarrior::getAttackerInfo (ULONG attackerWID) {
 
 	for (long i = 0; i < numAttackers; i++)
 		if (attackers[i].WID == attackerWID)
@@ -2277,7 +2277,7 @@ AttackerRecPtr MechWarrior::getAttackerInfo (unsigned long attackerWID) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::getAttackers (unsigned long* attackerList, float seconds) {
+long MechWarrior::getAttackers (ULONG* attackerList, float seconds) {
 
 	long count = 0;
 	float earliestTime = scenarioTime - seconds;
@@ -2431,7 +2431,7 @@ void MechWarrior::setSituationGuardObject (GameObjectWatchID objWID) {
 
 //---------------------------------------------------------------------------
 
-unsigned long MechWarrior::getSituationGuardObjectPartId (void) {
+ULONG MechWarrior::getSituationGuardObjectPartId (void) {
 
 	GameObjectPtr object = getSituationGuardObject();
 	if (!object)
@@ -2441,7 +2441,7 @@ unsigned long MechWarrior::getSituationGuardObjectPartId (void) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::setMoveGoal (unsigned long type, Stuff::Vector3D* location, GameObjectPtr obj) {
+long MechWarrior::setMoveGoal (ULONG type, Stuff::Vector3D* location, GameObjectPtr obj) {
 
 	moveOrders.goalType = type;
 	switch (type) {
@@ -2468,7 +2468,7 @@ long MechWarrior::setMoveGoal (unsigned long type, Stuff::Vector3D* location, Ga
 
 //---------------------------------------------------------------------------
 
-unsigned long MechWarrior::getMoveGoal (Stuff::Vector3D* location, GameObjectPtr* obj) {
+ULONG MechWarrior::getMoveGoal (Stuff::Vector3D* location, GameObjectPtr* obj) {
 
 	if (obj)
 		*obj = ObjectManager->getByWatchID(moveOrders.goalObjectWID);
@@ -2495,7 +2495,7 @@ void MechWarrior::resumePath (void) {
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::rethinkPath (unsigned long strategy) {
+void MechWarrior::rethinkPath (ULONG strategy) {
 
 	Stuff::Vector3D nextWayPoint;
 	bool haveWayPoint = getNextWayPoint(nextWayPoint, false);
@@ -2513,7 +2513,7 @@ void MechWarrior::rethinkPath (unsigned long strategy) {
 			moveOrders.path[0]->numSteps = 0;
 			//-----------------------------------------------
 			// If you got here, you care about pathlocking...
-			unsigned long params = MOVEPARAM_RECALC | MOVEPARAM_AVOID_PATHLOCKS | MOVEPARAM_FACE_TARGET;
+			ULONG params = MOVEPARAM_RECALC | MOVEPARAM_AVOID_PATHLOCKS | MOVEPARAM_FACE_TARGET;
 			if (curTacOrder.moveParams.jump)
 				params |= MOVEPARAM_JUMP;
 			requestMovePath(curTacOrder.selectionIndex, params, 2);
@@ -2546,7 +2546,7 @@ void MechWarrior::rethinkPath (unsigned long strategy) {
 				moveOrders.path[0]->numSteps = 0;
 				//-----------------------------------------------
 				// If you got here, you care about pathlocking...
-				unsigned long params = MOVEPARAM_RECALC | MOVEPARAM_AVOID_PATHLOCKS | MOVEPARAM_FACE_TARGET;
+				ULONG params = MOVEPARAM_RECALC | MOVEPARAM_AVOID_PATHLOCKS | MOVEPARAM_FACE_TARGET;
 				if (curTacOrder.moveParams.jump)
 					params |= MOVEPARAM_JUMP;
 				requestMovePath(curTacOrder.selectionIndex, params, 3);
@@ -2613,7 +2613,7 @@ MovePathPtr MechWarrior::getMovePath (void) {
 			// We have a new move path, so set move orders appropriately...
 			Stuff::Vector3D goal;
 			GameObjectPtr goalObject;
-			unsigned long goalType = getMoveGoal(&goal, &goalObject);
+			ULONG goalType = getMoveGoal(&goal, &goalObject);
 			if (goalType == MOVEGOAL_NONE) {
 				// No more goal, so no more path:)
 				//clearMovePath(ORDER_CURRENT, 0);
@@ -2720,7 +2720,7 @@ void MechWarrior::setMoveGlobalPath (GlobalPathStepPtr path, long numSteps) {
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::requestMovePath (long selectionIndex, unsigned long moveParams, long source) {
+void MechWarrior::requestMovePath (long selectionIndex, ULONG moveParams, long source) {
 
 	PathManager->request(this, selectionIndex, moveParams, source);
 }
@@ -2733,7 +2733,7 @@ extern __int64 MCTimePath3Update;
 extern __int64 MCTimePath4Update;
 extern __int64 MCTimePath5Update;
 #endif
-long MechWarrior::calcMovePath (long selectionIndex, unsigned long moveParams) {
+long MechWarrior::calcMovePath (long selectionIndex, ULONG moveParams) {
 
  	MoverPtr myVehicle = getVehicle();
 	bool flying = (myVehicle->getMoveLevel() > 0);
@@ -2769,7 +2769,7 @@ long MechWarrior::calcMovePath (long selectionIndex, unsigned long moveParams) {
 
 	Stuff::Vector3D goal;
 	GameObjectPtr goalObject;
-	unsigned long goalType = getMoveGoal(&goal, &goalObject);
+	ULONG goalType = getMoveGoal(&goal, &goalObject);
 	if (goalType == MOVEGOAL_NONE) {
 		LastMoveCalcErr = MOVEPATH_ERR_NO_GOAL;
 		triggerAlarm(PILOT_ALARM_NO_MOVEPATH, LastMoveCalcErr);
@@ -3438,7 +3438,7 @@ long MechWarrior::calcWeaponsStatus (GameObjectPtr target, long* weaponList, Stu
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::printWeaponsStatus (char* s) {
+void MechWarrior::printWeaponsStatus (PSTR s) {
 
 	if (weaponsStatusResult == WEAPONS_STATUS_OUT_OF_RANGE)
 		sprintf(s, "Out of Range");
@@ -3932,7 +3932,7 @@ bool MechWarrior::movementDecisionTree (void) {
 					reroute = reroute || movingOverBlownBridge();
 			}
 			if (reroute) {
-				unsigned long params = MOVEPARAM_RECALC | MOVEPARAM_FACE_TARGET;
+				ULONG params = MOVEPARAM_RECALC | MOVEPARAM_FACE_TARGET;
 				if (curTacOrder.moveParams.jump)
 					params |= MOVEPARAM_JUMP;
 				requestMovePath(curTacOrder.selectionIndex, params, 4);
@@ -3953,7 +3953,7 @@ bool MechWarrior::movementDecisionTree (void) {
 					// And, we don't already have a request to fill the queue for this
 					// complex path, so let's do it...
 					TacticalOrderPtr curTacOrder = getCurTacOrder();
-					unsigned long params = MOVEPARAM_FACE_TARGET;
+					ULONG params = MOVEPARAM_FACE_TARGET;
 					if (curTacOrder->moveParams.jump)
 						params |= MOVEPARAM_JUMP;
 					requestMovePath(curTacOrder->selectionIndex, params, 5);
@@ -3989,7 +3989,7 @@ bool MechWarrior::movementDecisionTree (void) {
 		}
 
 	GameObjectPtr goalObject = NULL;
-	unsigned long goalType = getMoveGoal(NULL, &goalObject);
+	ULONG goalType = getMoveGoal(NULL, &goalObject);
 
 	if (goalType == MOVEGOAL_NONE) {
 		//--------------------------------------------
@@ -4000,7 +4000,7 @@ bool MechWarrior::movementDecisionTree (void) {
 			// We are on the run, so let's choose a new escape goal...
 			Stuff::Vector3D escapeGoal = calcWithdrawGoal();
 			setMoveGoal(MOVEGOAL_LOCATION, &escapeGoal);
-			unsigned long params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
+			ULONG params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
 			if (curTacOrder.moveParams.jump)
 				params |= MOVEPARAM_JUMP;
 			requestMovePath(curTacOrder.selectionIndex, params, 6);
@@ -4038,7 +4038,7 @@ bool MechWarrior::movementDecisionTree (void) {
 				}
 			}
 			setMoveGoal(moveTarget->getWatchID(), &targetPos, moveTarget);
-			unsigned long params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
+			ULONG params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
 			if (curTacOrder.moveParams.jump)
 				params |= MOVEPARAM_JUMP;
 			if (!moveTarget->isMover())
@@ -4058,7 +4058,7 @@ bool MechWarrior::movementDecisionTree (void) {
 			if (curTacOrder.attackParams.method == ATTACKMETHOD_RAMMING) {
 				Stuff::Vector3D pos = target->getPosition();
 				setMoveGoal(target->getWatchID(), &pos, target);
-				unsigned long params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
+				ULONG params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
 				if (curTacOrder.moveParams.jump)
 					params |= MOVEPARAM_JUMP;
 				requestMovePath(curTacOrder.selectionIndex, params, 9);
@@ -4067,7 +4067,7 @@ bool MechWarrior::movementDecisionTree (void) {
 				setMoveStateGoal(MOVESTATE_PIVOT_TARGET);
 			else {
 				bool recalcPath = false;
-				unsigned long moveParams = MOVEPARAM_NONE;
+				ULONG moveParams = MOVEPARAM_NONE;
 
 				//---------------------------------------------------------------
 				// We will want to re-evaluate optimal range if our optimal range
@@ -4181,7 +4181,7 @@ bool MechWarrior::movementDecisionTree (void) {
 						}
 					else {
 						setMoveGoal(MOVEGOAL_LOCATION, &targetPosition);
-						unsigned long params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
+						ULONG params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
 						if (curTacOrder.moveParams.jump)
 							params |= MOVEPARAM_JUMP;
 						requestMovePath(curTacOrder.selectionIndex, params, 11);
@@ -4201,7 +4201,7 @@ bool MechWarrior::movementDecisionTree (void) {
 			// We may be so close that we don't need a move
 			// path...
 			if (!getMovePathRequest()) {
-				unsigned long params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
+				ULONG params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
 				if (curTacOrder.moveParams.jump)
 					params |= MOVEPARAM_JUMP;
 				requestMovePath(curTacOrder.selectionIndex, params, 12);
@@ -4221,7 +4221,7 @@ bool MechWarrior::movementDecisionTree (void) {
 				if (distance_from(targetPos, moveOrders.goalObjectPosition) > 50.0) {
 					Stuff::Vector3D pos = goalObject->getPosition();
 					setMoveGoal(goalObject->getWatchID(), &pos, goalObject);
-					unsigned long params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
+					ULONG params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
 					if (curTacOrder.moveParams.jump)
 						params |= MOVEPARAM_JUMP;
 					requestMovePath(curTacOrder.selectionIndex, params, 13);
@@ -4229,7 +4229,7 @@ bool MechWarrior::movementDecisionTree (void) {
 				else if (getMovePath()->numStepsWhenNotPaused == 0) {
 					Stuff::Vector3D pos = goalObject->getPosition();
 					setMoveGoal(goalObject->getWatchID(), &pos, goalObject);
-					unsigned long params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
+					ULONG params = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
 					if (curTacOrder.moveParams.jump)
 						params |= MOVEPARAM_JUMP;
 					requestMovePath(curTacOrder.selectionIndex, params, 13);
@@ -4240,7 +4240,7 @@ bool MechWarrior::movementDecisionTree (void) {
 				//float relFacing = myVehicle->relViewFacingTo(targetPos);
 				if (target && (target == goalObject) && getAttackPursuit()) {
 					bool recalcPath = false;
-					unsigned long moveParams = MOVEPARAM_NONE;
+					ULONG moveParams = MOVEPARAM_NONE;
 
 					//---------------------------------------------------------------
 					// We will want to re-evaluate optimal range if our optimal range
@@ -4532,7 +4532,7 @@ void MechWarrior::setAlarmTacOrder (TacticalOrder newTacOrder, long priority) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::triggerAlarm (long alarmCode, unsigned long triggerId) {
+long MechWarrior::triggerAlarm (long alarmCode, ULONG triggerId) {
 
 	if (alarm[alarmCode].numTriggers == MAX_ALARM_TRIGGERS)
 		return(-1);
@@ -4606,7 +4606,7 @@ long MechWarrior::getNextEventHistory (long* paramList) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::handleAlarm (long alarmCode, unsigned long triggerId) {
+long MechWarrior::handleAlarm (long alarmCode, ULONG triggerId) {
 
 	MoverPtr myVehicle = getVehicle();
 	Assert(myVehicle != NULL, 0, " bad vehicle for pilot ");
@@ -4671,17 +4671,17 @@ long MechWarrior::handleAlarm (long alarmCode, unsigned long triggerId) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::getAlarmTriggers (long alarmCode, unsigned long* triggerList) {
+long MechWarrior::getAlarmTriggers (long alarmCode, ULONG* triggerList) {
 
-	memcpy(triggerList, alarm[alarmCode].trigger, sizeof(unsigned long) * alarm[alarmCode].numTriggers);
+	memcpy(triggerList, alarm[alarmCode].trigger, sizeof(ULONG) * alarm[alarmCode].numTriggers);
 	return(alarm[alarmCode].numTriggers);
 }
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::getAlarmTriggersHistory (long alarmCode, unsigned long* triggerList) {
+long MechWarrior::getAlarmTriggersHistory (long alarmCode, ULONG* triggerList) {
 
-	memcpy(triggerList, alarmHistory[alarmCode].trigger, sizeof(unsigned long) * alarmHistory[alarmCode].numTriggers);
+	memcpy(triggerList, alarmHistory[alarmCode].trigger, sizeof(ULONG) * alarmHistory[alarmCode].numTriggers);
 	return(alarmHistory[alarmCode].numTriggers);
 }
 
@@ -5089,7 +5089,7 @@ long MechWarrior::mainDecisionTree (void) {
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::setDebugFlag (unsigned long flag, bool on) {
+void MechWarrior::setDebugFlag (ULONG flag, bool on) {
 
 	if (on)
 		debugFlags |= flag;
@@ -5099,14 +5099,14 @@ void MechWarrior::setDebugFlag (unsigned long flag, bool on) {
 
 //---------------------------------------------------------------------------
 
-bool MechWarrior::getDebugFlag (unsigned long flag) {
+bool MechWarrior::getDebugFlag (ULONG flag) {
 
 	return((debugFlags & flag) != 0);
 }
 
 //---------------------------------------------------------------------------
 
-void MechWarrior::debugPrint (char* s, bool debugMode) {
+void MechWarrior::debugPrint (PSTR s, bool debugMode) {
 
 	if (debugger) {
 		debugger->print(s);
@@ -5276,7 +5276,7 @@ GameObjectPtr MechWarrior::selectTarget (bool moversOnly, long criteria) {
 // CORE COMMANDS (MC2 BEHAVIORS)
 //---------------------------------------------------------------------------
 
-long MechWarrior::coreMoveTo (Stuff::Vector3D location, unsigned long params) {
+long MechWarrior::coreMoveTo (Stuff::Vector3D location, ULONG params) {
 
 	bool run = ((params & TACORDER_PARAM_RUN) != 0);
 	bool jump = ((params & TACORDER_PARAM_JUMP) != 0);
@@ -5316,7 +5316,7 @@ long MechWarrior::coreMoveTo (Stuff::Vector3D location, unsigned long params) {
 	if (setOrder)
 		clearAttackOrders();
 
-	unsigned long moveParams = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
+	ULONG moveParams = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
 	if (jump)
 		moveParams |= MOVEPARAM_JUMP;
 	PathManager->request(this, -1, moveParams, 20);
@@ -5333,7 +5333,7 @@ long MechWarrior::coreMoveTo (Stuff::Vector3D location, unsigned long params) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::coreMoveToObject (GameObjectPtr object, unsigned long params) {
+long MechWarrior::coreMoveToObject (GameObjectPtr object, ULONG params) {
 
 	bool run = ((params & TACORDER_PARAM_RUN) != 0);
 	bool jump = ((params & TACORDER_PARAM_JUMP) != 0);
@@ -5403,7 +5403,7 @@ long MechWarrior::coreMoveToObject (GameObjectPtr object, unsigned long params) 
 	if (setOrder)
 		clearAttackOrders();
 
-	unsigned long moveParams = MOVEPARAM_INIT;
+	ULONG moveParams = MOVEPARAM_INIT;
 	if (jump)
 		moveParams |= MOVEPARAM_JUMP;
 	if (faceObject)
@@ -5427,7 +5427,7 @@ long MechWarrior::coreMoveToObject (GameObjectPtr object, unsigned long params) 
 
 #if 0
 
-long MechWarrior::coreJumpTo (Stuff::Vector3D location, unsigned long params) {
+long MechWarrior::coreJumpTo (Stuff::Vector3D location, ULONG params) {
 
 	bool setOrder = ((params & TACORDER_PARAM_DONT_SET_ORDER) == 0);
 
@@ -5568,7 +5568,7 @@ long MechWarrior::corePower (bool powerUp) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::coreAttack (GameObjectPtr target, unsigned long params) {
+long MechWarrior::coreAttack (GameObjectPtr target, ULONG params) {
 
 	bool pursue = ((params & TACORDER_PARAM_PURSUE) != 0);
 	bool obliterate = ((params & TACORDER_PARAM_OBLITERATE) != 0);
@@ -5722,7 +5722,7 @@ long MechWarrior::coreAttack (GameObjectPtr target, unsigned long params) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::coreCapture (GameObjectPtr object, unsigned long params) {
+long MechWarrior::coreCapture (GameObjectPtr object, ULONG params) {
 
 	if (!object) {
 		if (!coreScanTargetWID)
@@ -5778,7 +5778,7 @@ long MechWarrior::coreCapture (GameObjectPtr object, unsigned long params) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::coreScan (GameObjectPtr object, unsigned long params) {
+long MechWarrior::coreScan (GameObjectPtr object, ULONG params) {
 
 	if (object && object->getTeam()) {
 		//--------------------------------------------------------------
@@ -5810,7 +5810,7 @@ long MechWarrior::coreScan (GameObjectPtr object, unsigned long params) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::coreControl (GameObjectPtr object, unsigned long params) {
+long MechWarrior::coreControl (GameObjectPtr object, ULONG params) {
 
 	if (!object) {
 		if (!coreScanTargetWID)
@@ -5832,7 +5832,7 @@ long MechWarrior::coreControl (GameObjectPtr object, unsigned long params) {
 
 #if 0
 
-long MechWarrior::coreWithdraw (Stuff::Vector3D location, unsigned long params) {
+long MechWarrior::coreWithdraw (Stuff::Vector3D location, ULONG params) {
 
 	bool run = ((params & TACORDER_PARAM_RUN) != 0);
 
@@ -5934,7 +5934,7 @@ long MechWarrior::orderStop (bool unitOrder, bool setTacOrder) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::orderMoveToPoint (bool unitOrder, bool setTacOrder, long origin, Stuff::Vector3D location, long selectionIndex, unsigned long params) {
+long MechWarrior::orderMoveToPoint (bool unitOrder, bool setTacOrder, long origin, Stuff::Vector3D location, long selectionIndex, ULONG params) {
 
 	bool jump = ((params & TACORDER_PARAM_JUMP) != 0);
 	bool run = ((params & TACORDER_PARAM_RUN) != 0);
@@ -5979,7 +5979,7 @@ long MechWarrior::orderMoveToPoint (bool unitOrder, bool setTacOrder, long origi
 	if (setTacOrder)
 		clearAttackOrders();
 
-	unsigned long moveParams = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
+	ULONG moveParams = MOVEPARAM_INIT | MOVEPARAM_FACE_TARGET;
 	if (escape)
 		moveParams |= MOVEPARAM_ESCAPE_TILE;
 	if (jump)
@@ -6006,7 +6006,7 @@ void MechWarrior::clearMovePath (long pathNum) {
 }
 
 
-long MechWarrior::orderMoveToObject (bool unitOrder, bool setTacOrder, long origin, GameObjectPtr target, long fromArea, long selectionIndex, unsigned long params) {
+long MechWarrior::orderMoveToObject (bool unitOrder, bool setTacOrder, long origin, GameObjectPtr target, long fromArea, long selectionIndex, ULONG params) {
 
 	bool jump = ((params & TACORDER_PARAM_JUMP) != 0);
 	bool run = ((params & TACORDER_PARAM_RUN) != 0);
@@ -6077,7 +6077,7 @@ long MechWarrior::orderMoveToObject (bool unitOrder, bool setTacOrder, long orig
 	if (setTacOrder)
 		clearAttackOrders();
 
-	unsigned long moveParams = MOVEPARAM_INIT;
+	ULONG moveParams = MOVEPARAM_INIT;
 	if (jump)
 		moveParams |= MOVEPARAM_JUMP;
 	if (faceObject)
@@ -6184,7 +6184,7 @@ long MechWarrior::orderJumpToObject (bool unitOrder, bool setTacOrder, long orig
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::orderTraversePath (bool unitOrder, bool setTacOrder, long origin, WayPathPtr wayPath, unsigned long params) {
+long MechWarrior::orderTraversePath (bool unitOrder, bool setTacOrder, long origin, WayPathPtr wayPath, ULONG params) {
 
 	bool layMines = ((params & TACORDER_PARAM_LAY_MINES) != 0);
 
@@ -6354,7 +6354,7 @@ long orderUseOrbitRange (long type, float range) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::orderAttackObject (bool unitOrder, long origin, GameObjectPtr target, long type, long method, long range, long aimLocation, long fromArea, unsigned long params) {
+long MechWarrior::orderAttackObject (bool unitOrder, long origin, GameObjectPtr target, long type, long method, long range, long aimLocation, long fromArea, ULONG params) {
 
 	bool run = ((params & TACORDER_PARAM_RUN) != 0);
 	bool jump = ((params & TACORDER_PARAM_JUMP) != 0);
@@ -6479,7 +6479,7 @@ long MechWarrior::orderAttackObject (bool unitOrder, long origin, GameObjectPtr 
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::orderAttackPoint (bool unitOrder, long origin, Stuff::Vector3D location, long type, long method, long range, unsigned long params) {
+long MechWarrior::orderAttackPoint (bool unitOrder, long origin, Stuff::Vector3D location, long type, long method, long range, ULONG params) {
 
 	bool pursue = ((params & TACORDER_PARAM_PURSUE) != 0);
 	bool jump = ((params & TACORDER_PARAM_JUMP) != 0);
@@ -6601,7 +6601,7 @@ long MechWarrior::orderUseFireOdds (long odds) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::orderRefit (long origin, GameObjectPtr target, unsigned long params)
+long MechWarrior::orderRefit (long origin, GameObjectPtr target, ULONG params)
 {
 	if (!target || target->getObjectClass() != BATTLEMECH)
 		return(TACORDER_SUCCESS);
@@ -6624,7 +6624,7 @@ long MechWarrior::orderRefit (long origin, GameObjectPtr target, unsigned long p
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::orderRecover (long origin, GameObjectPtr target, unsigned long params)
+long MechWarrior::orderRecover (long origin, GameObjectPtr target, ULONG params)
 {
 	if (!target || target->getObjectClass() != BATTLEMECH)
 		return(TACORDER_SUCCESS);
@@ -6647,7 +6647,7 @@ long MechWarrior::orderRecover (long origin, GameObjectPtr target, unsigned long
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::orderGetFixed (long origin, GameObjectPtr target, unsigned long params)
+long MechWarrior::orderGetFixed (long origin, GameObjectPtr target, ULONG params)
 {
 
 	if (!target || target->getObjectClass() != TREEBUILDING && target->getRefitPoints() <= 0.0)
@@ -6676,7 +6676,7 @@ long MechWarrior::orderGetFixed (long origin, GameObjectPtr target, unsigned lon
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::orderLoadIntoCarrier (long origin, GameObjectPtr target, unsigned long params) {
+long MechWarrior::orderLoadIntoCarrier (long origin, GameObjectPtr target, ULONG params) {
 
 #ifdef USE_ELEMENTALS
 	if ((getVehicle()->getObjectClass() != ELEMENTAL) ||
@@ -6704,7 +6704,7 @@ long MechWarrior::orderLoadIntoCarrier (long origin, GameObjectPtr target, unsig
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::orderDeployElementals (long origin, unsigned long params) {
+long MechWarrior::orderDeployElementals (long origin, ULONG params) {
 
 #ifdef USE_ELEMENTALS
 	if ((getVehicle()->getObjectClass() != GROUNDVEHICLE) || (((GroundVehiclePtr)getVehicle())->elementalCarrier == false))
@@ -6726,7 +6726,7 @@ long MechWarrior::orderDeployElementals (long origin, unsigned long params) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::orderCapture (long origin, GameObjectPtr target, long fromArea, unsigned long params) {
+long MechWarrior::orderCapture (long origin, GameObjectPtr target, long fromArea, ULONG params) {
 
 	if (!target || /*!target->isCaptureable(getTeam()->getId()) ||*/ target->isFriendly(getVehicle()) || 
 			target->getCaptureBlocker(getVehicle()) != NULL)
@@ -6757,7 +6757,7 @@ long MechWarrior::orderCapture (long origin, GameObjectPtr target, long fromArea
 
 long MechWarrior::handleTargetOfWeaponFire (void) {
 
-	//unsigned long attackerId = alarm[PILOT_ALARM_TARGET_OF_WEAPONFIRE].trigger[0];
+	//ULONG attackerId = alarm[PILOT_ALARM_TARGET_OF_WEAPONFIRE].trigger[0];
 
 	//GameObjectPtr myVehicle = getVehicle();
 #ifdef USE_IFACE
@@ -6858,12 +6858,12 @@ long MechWarrior::handleDamageTakenRate (void) {
 
 long MechWarrior::handleUnitMateDeath (void) {
 
-	unsigned long mateWID = alarm[PILOT_ALARM_DEATH_OF_MATE].trigger[0];
+	ULONG mateWID = alarm[PILOT_ALARM_DEATH_OF_MATE].trigger[0];
 
 	//--------------------------------------
 	// First, check if the death was seen...
 	MoverPtr myVehicle = getVehicle();
-	if ((unsigned long)myVehicle->getWatchID() == mateWID)
+	if ((ULONG)myVehicle->getWatchID() == mateWID)
 		return(NO_ERR);
 	MoverPtr mateVehicle = (MoverPtr)ObjectManager->getByWatchID(mateWID);
 	if (!mateVehicle)
@@ -6911,7 +6911,7 @@ long MechWarrior::handleFriendlyVehicleDestruction (void) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::handleOwnVehicleIncapacitation (unsigned long cause) {
+long MechWarrior::handleOwnVehicleIncapacitation (ULONG cause) {
 
 	MoverPtr myVehicle = getVehicle();
 	Assert(myVehicle != NULL, 0, " pilot has no vehicle ");
@@ -6958,9 +6958,9 @@ long MechWarrior::handleOwnVehicleIncapacitation (unsigned long cause) {
 
 //---------------------------------------------------------------------------
 
-long MechWarrior::handleOwnVehicleDestruction (unsigned long cause) {
+long MechWarrior::handleOwnVehicleDestruction (ULONG cause) {
 
-	//unsigned long attackerId = cause;
+	//ULONG attackerId = cause;
 
 	//MoverPtr myVehicle = getVehicle();
 	//Assert(myVehicle != NULL, 0, "handleOwnVehicleDestruction:pilot has no vehicle ");
@@ -7031,7 +7031,7 @@ long MechWarrior::handleCollisionAlert (void) {
 //---------------------------------------------------------------------------
 long MechWarrior::handleKilledTarget (void) {
 
-	unsigned long targetWID = alarm[PILOT_ALARM_KILLED_TARGET].trigger[0];
+	ULONG targetWID = alarm[PILOT_ALARM_KILLED_TARGET].trigger[0];
 	GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 	if (target) 
 	{
@@ -7107,7 +7107,7 @@ long MechWarrior::handleKilledTarget (void) {
 
 long MechWarrior::handleUnitMateFiredWeapon (void) {
 
-	//unsigned long mateVehicleHandle = alarm[PILOT_ALARM_MATE_FIRED_WEAPON].trigger[0];
+	//ULONG mateVehicleHandle = alarm[PILOT_ALARM_MATE_FIRED_WEAPON].trigger[0];
 
 	return(NO_ERR);
 }
@@ -7539,7 +7539,7 @@ void MechWarrior::shutdown (void) {
 	}
 }
 
-BldgAppearance* MechWarrior::getWayPointMarker( const Stuff::Vector3D& pos, char* name )
+BldgAppearance* MechWarrior::getWayPointMarker( const Stuff::Vector3D& pos, PSTR name )
 {
 	int appearanceType = (BLDG_TYPE << 24);
 	AppearanceTypePtr buildingAppearanceType = appearanceTypeList->getAppearance(appearanceType, name );
@@ -8499,7 +8499,7 @@ long MechWarrior::Load (PacketFilePtr file, long packetNum)
 	return packetNum;
 }
 
-bool MechWarrior::warriorInUse (char *warriorName)
+bool MechWarrior::warriorInUse (PSTR warriorName)
 {
 	for (long i=0; i < numWarriors;i++)
 	{

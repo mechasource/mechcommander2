@@ -24,7 +24,7 @@
 
 typedef struct _SortListNode {
 	float			value;			// sort value
-	unsigned long	id;				// item 
+	ULONG	id;				// item 
 } SortListNode;
 
 class SortList {

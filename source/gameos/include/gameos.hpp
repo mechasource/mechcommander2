@@ -90,7 +90,7 @@
 //
 // Types used by GameOS
 //
-typedef unsigned long DWORD;
+typedef ULONG DWORD;
 typedef unsigned short WORD;
 typedef uint8_t BYTE;
 #define FALSE 0
@@ -100,7 +100,7 @@ typedef uint8_t BYTE;
 #define GUID_DEFINED
 typedef struct _GUID
 {
-    unsigned long Data1;
+    ULONG Data1;
     unsigned short Data2;
     unsigned short Data3;
     uint8_t Data4[8];
@@ -1963,8 +1963,8 @@ typedef struct _gos_VERTEX {
 	float x,y;					// Screen coords	- must be 0.0 to Environment.screenWidth/Height (no clipping occurs unless gos_State_Clipping is true)
 	float z;					// 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is not valid)
 	float rhw;					// 0.0 to 1.0		- reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
-	ULONG argb;					// Vertex color and alpha (alpha of 255 means solid, 0=transparent)
-	ULONG frgb;					// Specular color and fog
+	COLORREF argb;					// Vertex color and alpha (alpha of 255 means solid, 0=transparent)
+	COLORREF frgb;					// Specular color and fog
 	float u,v;					// Texture coordinates
 } gos_VERTEX;
 typedef gos_VERTEX *pgos_VERTEX;
@@ -3017,7 +3017,7 @@ GosEventLog::LogStartPoint(void);
 
 class GosLogRef
 {
-	unsigned long	m_Count;
+	ULONG	m_Count;
 	///void			(*m_pFunc)(GosLogRef &);
 	///void			*m_pObj;
 	ULONG			m_id;

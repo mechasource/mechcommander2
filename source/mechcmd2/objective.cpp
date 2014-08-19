@@ -56,7 +56,7 @@ Objective.cpp			: Implementation of the Objective component.
 
 float CObjective::s_blinkLength = .5;
 float CObjective::s_lastBlinkTime = 0.f;
-unsigned long CObjective::s_blinkColor = SB_YELLOW;
+ULONG CObjective::s_blinkColor = SB_YELLOW;
 aFont* CObjective::s_markerFont = 0;
 float MaxExtractUnitDistance = 0.0f;
 
@@ -153,7 +153,7 @@ static bool MoverIsCaptured(const long pMoverWID, const long teamID)
 static long sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
 	long result = 0;
 	float tmpFloat;
-	result = missionFile->readIdFloat((char *)varName, tmpFloat);
+	result = missionFile->readIdFloat((PSTR )varName, tmpFloat);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -165,7 +165,7 @@ static long sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
 static long sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) {
 	long result = 0;
 	bool tmpBool;
-	result = missionFile->readIdBoolean((char *)varName, tmpBool);
+	result = missionFile->readIdBoolean((PSTR )varName, tmpBool);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -176,8 +176,8 @@ static long sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) 
 
 static long sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) {
 	long result = 0;
-	unsigned long tmpULong;
-	result = missionFile->readIdULong((char *)varName, tmpULong);
+	ULONG tmpULong;
+	result = missionFile->readIdULong((PSTR )varName, tmpULong);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -189,7 +189,7 @@ static long sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) 
 static long sReadIdLongInt(FitIniFile* missionFile, PCSTR varName, int &value) {
 	long result = 0;
 	long tmpLong;
-	result = missionFile->readIdLong((char *)varName, tmpLong);
+	result = missionFile->readIdLong((PSTR )varName, tmpLong);
 	if (NO_ERR != result) {
 		//assert(false);
 	} else {
@@ -226,7 +226,7 @@ static int sReplace(ECharString &ECStr, PCSTR szOldSub, PCSTR szNewSub) {
 static long sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString &ECStr) {
 	long result = 0;
 	char buffer[2001/*buffer size*/]; buffer[0] = '\0';
-	result = missionFile->readIdString((char *)varName, buffer, 2001/*buffer size*/ -1);
+	result = missionFile->readIdString((PSTR )varName, buffer, 2001/*buffer size*/ -1);
 	if ((NO_ERR != result) && (BUFFER_TOO_SMALL != result)) {
 		//assert(false);
 	} else {
@@ -2174,16 +2174,16 @@ objective_status_type CObjectives::Status() {
 	return retval;
 }
 
-/*void CObjective::Render( unsigned long xPos, unsigned long yPos, HGOSFONT3D guiFont )
+/*void CObjective::Render( ULONG xPos, ULONG yPos, HGOSFONT3D guiFont )
 {
-	unsigned long fontWidth, fontHeight;
+	ULONG fontWidth, fontHeight;
 	gos_TextStringLength( &fontWidth, &fontHeight, "ABC" );
 	
 	// draw little box first
-	GUI_RECT rect = { xPos, yPos, xPos + fontHeight, yPos + fontHeight };
+	RECT rect = { xPos, yPos, xPos + fontHeight, yPos + fontHeight };
 	drawEmptyRect( rect, 0xffffffff, 0xffffffff );
 
-	unsigned long color = 0xffffffff;
+	ULONG color = 0xffffffff;
 
 	if ( m_resolved )
 	{
@@ -2246,7 +2246,7 @@ bool CObjective::RenderMarkers(GameTacMap *tacMap, bool blink )
 				gos_VERTEX pos;
 				tacMap->worldToTacMap(objectivePos, pos);
 
-				unsigned long width, height;
+				ULONG width, height;
 				height = s_markerFont->height();
 				width = s_markerFont->width( m_markerText );
 				drawShadowText( 0xffffffff, 0xff000000, s_markerFont->getTempHandle(), pos.x - width/2, pos.y - height/2, true, m_markerText, 0, s_markerFont->getSize(), -2, 2 );
@@ -2466,7 +2466,7 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dCondition%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "ConditionSpecies", (unsigned long)(*it)->Species());
+			file->writeIdULong( "ConditionSpecies", (ULONG)(*it)->Species());
 			file->writeIdString( "ConditionSpeciesString", g_conditionSpeciesStringArray[(int)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;
@@ -2481,7 +2481,7 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dAction%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "ActionSpecies", (unsigned long)(*it)->Species());
+			file->writeIdULong( "ActionSpecies", (ULONG)(*it)->Species());
 			file->writeIdString( "ActionSpeciesString", g_actionSpeciesStringArray[(int)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;
@@ -2496,7 +2496,7 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dFailureCondition%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "FailureConditionSpecies", (unsigned long)(*it)->Species());
+			file->writeIdULong( "FailureConditionSpecies", (ULONG)(*it)->Species());
 			file->writeIdString( "FailureConditionSpeciesString", g_conditionSpeciesStringArray[(int)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;
@@ -2511,7 +2511,7 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dFailureAction%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "FailureActionSpecies", (unsigned long)(*it)->Species());
+			file->writeIdULong( "FailureActionSpecies", (ULONG)(*it)->Species());
 			file->writeIdString( "FailureActionSpeciesString", g_actionSpeciesStringArray[(int)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;

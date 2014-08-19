@@ -57,33 +57,33 @@ class CSVFile : public File
 		long countRows (void);
 		long countCols (void);
 		
-		long getNextWord (char *&line, char *buffer, size_t bufLen);
+		long getNextWord (PSTR &line, PSTR buffer, size_t bufLen);
 
-		float textToFloat (char *num);
+		float textToFloat (PSTR num);
 		
-		long textToLong (char *num);
-		size_t textToULong (char *num);
+		long textToLong (PSTR num);
+		size_t textToULong (PSTR num);
 		
-		short textToShort (char *num);
-		unsigned short textToUShort (char *num);
+		short textToShort (PSTR num);
+		unsigned short textToUShort (PSTR num);
 		
-		char textToChar (char *num);
-		uint8_t textToUCHAR (char *num);
+		char textToChar (PSTR num);
+		uint8_t textToUCHAR (PSTR num);
 
-		bool booleanToLong (char *num);
+		bool booleanToLong (PSTR num);
 
-		long floatToText (char *result, float num, size_t bufLen);
+		long floatToText (PSTR result, float num, size_t bufLen);
 		
-		long longToTextDec (char *result, long num, size_t bufLen);
-		long longToTextHex (char *result, long num, size_t bufLen);
+		long longToTextDec (PSTR result, long num, size_t bufLen);
+		long longToTextHex (PSTR result, long num, size_t bufLen);
 
-		long shortToTextDec (char *result, short num, size_t bufLen);
-		long shortToTextHex (char *result, short num, size_t bufLen);
+		long shortToTextDec (PSTR result, short num, size_t bufLen);
+		long shortToTextHex (PSTR result, short num, size_t bufLen);
 
-		long byteToTextDec (char *result, byte num, size_t bufLen);	
-		long byteToTextHex (char *result, byte num, size_t bufLen);
+		long byteToTextDec (PSTR result, byte num, size_t bufLen);	
+		long byteToTextHex (PSTR result, byte num, size_t bufLen);
 		
-		long copyString (char* dest, char *src, size_t bufLen);
+		long copyString (PSTR dest, PSTR src, size_t bufLen);
 
 	public:
 		CSVFile (void);
@@ -92,7 +92,7 @@ class CSVFile : public File
 		virtual long open (PCSTR fName, FileMode _mode = READ, long numChildren = 50);
 		virtual long open (FilePtr _parent, size_t fileSize, long numChildren = 50);
 		
-		virtual long create (char* fName);
+		virtual long create (PSTR fName);
 
 		virtual void close (void);
 
@@ -115,7 +115,7 @@ class CSVFile : public File
 		long readChar (DWORD row, DWORD col, char &value);
 		long readUCHAR (DWORD row, DWORD col, uint8_t &value);
 		
-		long readString (DWORD row, DWORD col, char *result, size_t bufferSize);
+		long readString (DWORD row, DWORD col, PSTR result, size_t bufferSize);
 };
 
 //---------------------------------------------------------------------------

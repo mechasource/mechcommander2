@@ -36,7 +36,7 @@ public:
 	virtual void end();
 	virtual void update();
 	void	init( FitIniFile* file );
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 
 
 private:
@@ -47,7 +47,7 @@ private:
 	bool				playedLogisticsTune;
 
 	//HGOSVIDEO			video;
-	//unsigned long		videoTexture;
+	//ULONG		videoTexture;
 
 	PCSTR			missionNames[MAX_MISSIONS_IN_GROUP];
 	long				missionCount;

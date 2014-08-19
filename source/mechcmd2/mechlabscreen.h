@@ -49,7 +49,7 @@ class MechLabScreen: public LogisticsScreen
 		virtual void update();
 		virtual void render(int xOffset, int yOffset);
 
-		virtual int	handleMessage( unsigned long, unsigned long );
+		virtual int	handleMessage( ULONG, ULONG );
 
 		void	setComponent( LogisticsComponent* pComponent, bool bMessageFromLB = 0 );
 		int		addComponent( LogisticsComponent* pComponent, long& x, long& y );
@@ -111,7 +111,7 @@ class MechLabScreen: public LogisticsScreen
 
 		EString				varName;
 
-		static				GUI_RECT	sensorRects[4];
+		static				RECT	sensorRects[4];
 		static				long		sensorHelpIDs[4];
 
 		float				countDownTime;

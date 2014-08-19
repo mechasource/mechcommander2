@@ -831,7 +831,7 @@ bool
 		STOP((
 			"%s: [%s]%s is a required entry!",
 			m_notationFile->GetFileName(),
-			(char*)m_name,
+			(PSTR)m_name,
 			entryname
 		));
 	return false;

@@ -76,7 +76,7 @@ class MC2Movie
 
 		//Movie name assumes path is correct.
 		// Sets up the MC2 to be played.
-		void init (char *MC2Name, RECT mRect, bool useWaveFile);
+		void init (PSTR MC2Name, RECT mRect, bool useWaveFile);
 
 		//Handles tickling MC2 to make sure we keep playing back
 		// Returns true when MC2 is DONE playing!!
@@ -117,7 +117,7 @@ class MC2Movie
 			return stillPlaying;
 		}
 
-		char *getMovieName (void)
+		PSTR getMovieName (void)
 		{
 			return m_MC2Name;
 		}

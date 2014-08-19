@@ -36,13 +36,13 @@ char SpecialColor[NUM_ALPHACOLORS];
 
 enum { R, G, B, SourceAlpha, DestAlpha };
 
-char *g_logistic_fadetable = &AlphaTable[256*256];
-char *g_logistic_bluefade = &AlphaTable[267*256];
-char *g_logistic_dlgfade = &AlphaTable[268*256];
+PSTR g_logistic_fadetable = &AlphaTable[256*256];
+PSTR g_logistic_bluefade = &AlphaTable[267*256];
+PSTR g_logistic_dlgfade = &AlphaTable[268*256];
 
 void InitAlphaLookup( VFX_RGB* Palette)
 {
-	char* pAlphaTable = AlphaTable;
+	PSTR pAlphaTable = AlphaTable;
 	int r,g,b,i;
 	File *IniFile;
 	char Line[256];

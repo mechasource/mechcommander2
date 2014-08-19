@@ -52,7 +52,7 @@ void __stdcall ExitGameOS();
 
 //-----------------------------------------------------------------------
 // Class MC2Movie
-void MC2Movie::init (char *MC2Name, RECT mRect, bool useWaveFile)
+void MC2Movie::init (PSTR MC2Name, RECT mRect, bool useWaveFile)
 {
 		char MOVIEName[1024];
 		_splitpath(MC2Name,NULL,NULL,MOVIEName,NULL);

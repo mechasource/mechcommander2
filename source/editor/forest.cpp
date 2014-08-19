@@ -11,7 +11,7 @@ forest.cpp			: Implementation of the forest component.
 #include "resource.h"
 #include "editorobjectmgr.h"
 
-extern unsigned long gameResourceHandle;
+extern ULONG gameResourceHandle;
 
 Forest::Forest( int newID )
 { 
@@ -147,7 +147,7 @@ void Forest::init( FitIniFile& file )
 void Forest::save()
 {
 	FitIniFile file;
-	if ( NO_ERR != file.create( (char*)(PCSTR)fileName ) )
+	if ( NO_ERR != file.create( (PSTR)(PCSTR)fileName ) )
 	{
 		char errorString[256];
 		sprintf( errorString, "Couldn't create file %s", (PCSTR)fileName);

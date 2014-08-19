@@ -96,7 +96,7 @@ void KeyboardRef::update()
 
 void KeyboardRef::render()
 {
-	GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+	RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 	drawRect( rect, 0xff000000 );
 
 	listBox.render();
@@ -135,7 +135,7 @@ void KeyboardRef::reseed( MissionInterfaceManager::Command* commands )
 		{
 			cLoadString( commands[i].hotKeyDescriptionText, descText, 127 );
 			long key = commands[i].key;
-			char* pKey = gos_DescribeKey( (key & 0x000fffff) << 8 );
+			PSTR pKey = gos_DescribeKey( (key & 0x000fffff) << 8 );
 			strcpy( keysString, pKey );
 
 			if ( ((key & SHIFT)) )
@@ -181,7 +181,7 @@ void KeyboardRef::reseed( MissionInterfaceManager::Command* commands )
 	}
 }
 
-int	KeyboardRef::handleMessage( unsigned long who, unsigned long )
+int	KeyboardRef::handleMessage( ULONG who, ULONG )
 {
 	return MissionInterfaceManager::instance()->toggleHotKeys();
 }

@@ -48,7 +48,7 @@ public:
 	virtual void begin();
 	virtual void end();
 	
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 	void setMech( LogisticsMech* pMech, bool bCommandFromLB = true );	
 	void beginDrag( LogisticsMech* pMech );
 

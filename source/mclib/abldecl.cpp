@@ -303,7 +303,7 @@ void doConst (SymTableNodePtr constantIdPtr) {
 			}
 		else {
 			long length = strlen(curLiteral.value.string);
-			constantIdPtr->defn.info.constant.value.stringPtr = (char*)ABLSymbolMallocCallback(length + 1);
+			constantIdPtr->defn.info.constant.value.stringPtr = (PSTR)ABLSymbolMallocCallback(length + 1);
 			if (!constantIdPtr->defn.info.constant.value.stringPtr)
 				ABL_Fatal(0, " ABL: Unable to AblSymbolHeap->malloc array string constant ");
 			strcpy(constantIdPtr->defn.info.constant.value.stringPtr, curLiteral.value.string);
@@ -719,7 +719,7 @@ void varOrFieldDeclarations (SymTableNodePtr routineIdPtr, long offset) {
 	if (varFlag) {
 		//----------------------------------------------------------------
 		// If the following error occurs too frequently, simply make the
-		// totalLocalSize field an unsigned long instead, and dramatically
+		// totalLocalSize field an ULONG instead, and dramatically
 		// increase the totalSize limit here...
 		if (totalSize > 32000)
 			syntaxError(ABL_ERR_SYNTAX_TOO_MANY_LOCAL_VARIABLES);

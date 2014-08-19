@@ -247,7 +247,7 @@ void MPParameterScreen::end()
 	}
 
 	bLoading = 0;
-	statics[15].setTexture( ( unsigned long)0 );
+	statics[15].setTexture( ( ULONG)0 );
 
 	delayTime = 0.f;
 	bHostLeftDlg = 0; 
@@ -319,7 +319,7 @@ void MPParameterScreen::render()
 	render(0, 0);
 }
 
-int	MPParameterScreen::handleMessage( unsigned long message, unsigned long who)
+int	MPParameterScreen::handleMessage( ULONG message, ULONG who)
 {
 	if ( RUNNING == status )
 	{
@@ -601,7 +601,7 @@ void MPParameterScreen::setMission( PCSTR fileName, bool resetData )
 	path.init( missionPath, fileName, ".fit" );
 	FitIniFile missionFile;
 	
-	if ( NO_ERR != missionFile.open( (char*)(PCSTR)path ) )
+	if ( NO_ERR != missionFile.open( (PSTR)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", fileName );
@@ -622,7 +622,7 @@ void MPParameterScreen::setMission( PCSTR fileName, bool resetData )
 		Assert( result == NO_ERR, 0, "couldn't find the MissionNameUseResourceString" );
 		if ( bRes )
 		{
-			unsigned long lRes;
+			ULONG lRes;
 			result = missionFile.readIdULong( "MissionNameResourceStringID", lRes );
 			Assert( result == NO_ERR, 0, "couldn't find the MissionNameResourceStringID" );
 			cLoadString( lRes, missionName, 255 );
@@ -664,7 +664,7 @@ void MPParameterScreen::setMission( PCSTR fileName, bool resetData )
 		result = missionFile.readIdBoolean( "ScoutCoptersEnabledDefault", MPlayer->missionSettings.scoutCopter );
 		result = missionFile.readIdBoolean( "RPsForMechsEnabledDefault", MPlayer->missionSettings.resourceForMechs );
 		result = missionFile.readIdString( "DownloadURL", MPlayer->missionSettings.url, 255 );
-		unsigned long lTmp;
+		ULONG lTmp;
 		if ( NO_ERR == missionFile.readIdULong( "MaximumNumberOfTeams", lTmp ) )
 			MPlayer->missionSettings.maxTeams = lTmp;
 		else
@@ -675,7 +675,7 @@ void MPParameterScreen::setMission( PCSTR fileName, bool resetData )
 		else
 			MPlayer->missionSettings.maxPlayers = 8;
 		
-		unsigned long tmp;
+		ULONG tmp;
 		result = missionFile.readIdULong( "MissionType", tmp );
 			MPlayer->missionSettings.missionType = tmp;
 
@@ -870,7 +870,7 @@ void MPParameterScreen::update()
 			PUCHAR pData = new uint8_t[size];
 
 			file.read( pData, size );
-			MPlayer->sendPlayerInsignia( (char*)pPlayer->insigniaFile, pData, size );
+			MPlayer->sendPlayerInsignia( (PSTR)pPlayer->insigniaFile, pData, size );
 			MPlayer->insigniaList[MPlayer->commanderID] = 1;
 		}
 	}*/
@@ -1383,7 +1383,7 @@ GUID			MPParameterScreen::getGUIDFromFile( PCSTR pNewMapName)
 	FullPathFileName path;
 	path.init( missionPath, pNewMapName, ".pak" );
 	PacketFile pakFile;
-	if ( NO_ERR != pakFile.open( (char*)(PCSTR)path ) )
+	if ( NO_ERR != pakFile.open( (PSTR)(PCSTR)path ) )
 	{
 		return retVal;
 	}
@@ -1410,7 +1410,7 @@ void MPParameterScreen::setMissionClientOnly( PCSTR pNewMapName )
 	path.init( missionPath, pNewMapName, ".fit" );
 	FitIniFile missionFile;
 	
-	if ( NO_ERR != missionFile.open( (char*)(PCSTR)path ) )
+	if ( NO_ERR != missionFile.open( (PSTR)(PCSTR)path ) )
 	{
 		char tmp[256];
 		char final[1024];
@@ -2181,7 +2181,7 @@ void	aPlayerParams::setData( const _MC2Player* data)
 }
 
 
-int aPlayerParams::handleMessage( unsigned long message, unsigned long who )
+int aPlayerParams::handleMessage( ULONG message, ULONG who )
 {
 	float increment = 5000;
 	if ( message == aMSG_LEFTMOUSEHELD )
@@ -2283,17 +2283,17 @@ void aStyle2TextListItem::render()
 
 /*	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((unsigned long)normalColor) + 0.67 * ((unsigned long)0xffffffff);
+		color = 0.33 * ((ULONG)normalColor) + 0.67 * ((ULONG)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((unsigned long)normalColor) + 0.33 * ((unsigned long)0xffffffff);
+		color = 0.67 * ((ULONG)normalColor) + 0.33 * ((ULONG)0xffffffff);
 	}
 	else
 	{
 		color = normalColor;
 	}*/
-	aTextListItem::setColor((unsigned long)color);
+	aTextListItem::setColor((ULONG)color);
 
 	aTextListItem::render();
 }

@@ -114,7 +114,7 @@
 
 #include "..\resource.h"
 
-extern unsigned long		NextIdNumber;
+extern ULONG		NextIdNumber;
 
 #define TURN_THRESHOLD		20.0
 #define BLIP_FRAME_RATE		0.067
@@ -290,9 +290,9 @@ void GroundVehicleType::destroy (void)
 
 //----------------------------------------------------------------------------------
 
-long GroundVehicleType::init (FilePtr objFile, unsigned long fileSize) {
+long GroundVehicleType::init (FilePtr objFile, ULONG fileSize) {
 
-	char* bodyLocationString[NUM_GROUNDVEHICLE_LOCATIONS] = {
+	PSTR bodyLocationString[NUM_GROUNDVEHICLE_LOCATIONS] = {
 		"Front",
 		"Left",
 		"Right",
@@ -661,7 +661,7 @@ long GroundVehicleType::loadHotSpots(FitIniFilePtr vehicleFile) {
 				return(result);
 		}
 
-		drawFootprint = (char *)ObjectTypeManager::objectTypeCache->malloc(NUM_MECH_GESTURES);
+		drawFootprint = (PSTR )ObjectTypeManager::objectTypeCache->malloc(NUM_MECH_GESTURES);
 		result = vehicleFile->readIdCharArray("DrawFootprint",drawFootprint,NUM_MECH_GESTURES);
 		if (result != NO_ERR)
 			return(result);
@@ -936,7 +936,7 @@ void GroundVehicle::init (bool create, ObjectTypePtr objType) {
 
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
-	char *appearanceName = objType->getAppearanceTypeName();
+	PSTR appearanceName = objType->getAppearanceTypeName();
 
 	//--------------------------------------------------------------
 	// New code!!!
@@ -985,7 +985,7 @@ void GroundVehicle::setControl (ControlType ctrlType) {
 //----------------------------------------------------------------------------------
 long GroundVehicle::init (FitIniFile* vehicleFile) 
 {
-	char* BodyLocationBlockString[NUM_GROUNDVEHICLE_LOCATIONS] = {
+	PSTR BodyLocationBlockString[NUM_GROUNDVEHICLE_LOCATIONS] = {
 		"Front",
 		"Left",
 		"Right",
@@ -1352,7 +1352,7 @@ void GroundVehicle::mineCheck (void) {
 	if (MPlayer && !MPlayer->isServer())
 		return;
 
-	unsigned long mine = 0;
+	ULONG mine = 0;
 	mine = GameMap->getMine(cellPositionRow, cellPositionCol);
 
 	if (mine == 1)
@@ -2540,7 +2540,7 @@ extern long srObjtUpd;
 //extern L_INTEGER endCk;
 
 //----------------------------------------------------------------------------------
-void GroundVehicle::disable (unsigned long cause)
+void GroundVehicle::disable (ULONG cause)
 {
 	Mover::disable(cause);
 	timeLeft = 0.0;
@@ -4158,7 +4158,7 @@ long GroundVehicle::buildStatusChunk (void) {
 
 //---------------------------------------------------------------------------
 
-long GroundVehicle::handleStatusChunk (long updateAge, unsigned long chunk) {
+long GroundVehicle::handleStatusChunk (long updateAge, ULONG chunk) {
 
 	statusChunk.init();
 	statusChunk.data = chunk;
@@ -4243,7 +4243,7 @@ long GroundVehicle::buildMoveChunk (void) {
 //---------------------------------------------------------------------------
 #pragma optimize("",off)
 
-long GroundVehicle::handleMoveChunk (unsigned long chunk) {
+long GroundVehicle::handleMoveChunk (ULONG chunk) {
 
 	moveChunk.init();
 	moveChunk.data = chunk;

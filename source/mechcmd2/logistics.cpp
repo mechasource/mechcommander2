@@ -82,7 +82,7 @@ extern float loadProgress;
 extern bool aborted;
 
 #include "..\resource.h"
-void DEBUGWINS_print (char* s, long window = 0);
+void DEBUGWINS_print (PSTR s, long window = 0);
 
 
 //----------------------------------------------------------------------------------
@@ -445,8 +445,8 @@ void Logistics::render (void)
 
 //-----------------------------------------------------------------------------
 
-extern unsigned long MultiPlayTeamId;
-extern unsigned long MultiPlayCommanderId;
+extern ULONG MultiPlayTeamId;
+extern ULONG MultiPlayCommanderId;
 
 int _stdcall Logistics::beginMission(void*, int, void*[])
 {
@@ -498,7 +498,7 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 			char dropZoneList[8];
 			char hqs[MAX_TEAMS];
 			if (MPlayer->missionSettings.missionType == MISSION_TYPE_OTHER) {
-				bool goodToLoad = mission->calcComplexDropZones((char*)(PCSTR)LogisticsData::instance->getCurrentMission(), dropZoneList);
+				bool goodToLoad = mission->calcComplexDropZones((PSTR)(PCSTR)LogisticsData::instance->getCurrentMission(), dropZoneList);
 				if (!goodToLoad)
 					STOP(("Logisitics.beginMission: teams do not match up for complex mission"));
 				for (long i = 0; i < MAX_TEAMS; i++)
@@ -581,7 +581,7 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 		useUnlimitedAmmo = MPlayer->missionSettings.unlimitedAmmo;
 	}
 
-	mission->init((char*)(PCSTR)LogisticsData::instance->getCurrentMission(), missionLoadType, dropZoneID, dropZoneList, commandersToLoad, numMoversPerCommander[numPlayers - 1]);
+	mission->init((PSTR)(PCSTR)LogisticsData::instance->getCurrentMission(), missionLoadType, dropZoneID, dropZoneList, commandersToLoad, numMoversPerCommander[numPlayers - 1]);
 
 	LogisticsData::instance->rpJustAdded = 0;
 
@@ -860,7 +860,7 @@ void Logistics::initializeLogData()
 			Mover* pMover = (Mover*)pTeam->getMover( i );
 			LogisticsPilot* pPilot = LogisticsData::instance->getPilot(pMover->getPilot()->getName());
 
-			unsigned long base, highlight1, highlight2;
+			ULONG base, highlight1, highlight2;
 			((Mech3DAppearance*)pMover->getAppearance())->getPaintScheme( highlight1, 
 				highlight2, base );
 			

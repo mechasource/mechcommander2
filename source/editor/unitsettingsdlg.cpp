@@ -298,7 +298,7 @@ void UnitSettingsDlg::applyChanges()
 		(*iter)->setSelfRepairBehaviorEnabled(bSelfRepairBehavior);
 	}
 
-	unsigned long base=0, color1=0, color2=0;
+	ULONG base=0, color1=0, color2=0;
 	bool bBase = false;
 	bool bColor1 = false; 
 	bool bColor2 = false;
@@ -552,8 +552,8 @@ int UnitSettingsDlg::getPossibilityIndex()
 void UnitSettingsDlg::updateMemberVariables()
 {
 	// now need to check all of the colors
-	unsigned long tmpBase, tmpHighlight1, tmpHighlight2;
-	unsigned long base, highlight1, highlight2;
+	ULONG tmpBase, tmpHighlight1, tmpHighlight2;
+	ULONG base, highlight1, highlight2;
 	bool	bBase = true;
 	bool	bHighlight = true;
 	bool	bHighlight2 = true;
@@ -585,7 +585,7 @@ void UnitSettingsDlg::updateMemberVariables()
 		}
 	}
 
-	unsigned long tmpSquadNum = pUnit->getSquad();
+	ULONG tmpSquadNum = pUnit->getSquad();
 	m_SquadEdit.Format("%lu", tmpSquadNum);
 
 	for ( iter = units.Begin(); !iter.IsDone(); iter++ )
@@ -791,7 +791,7 @@ void UnitSettingsDlg::updateMemberVariables()
 		int index;
 		for (index = 0; index < m_Pilot.GetCount(); index++)
 		{
-			char *fileName = (char *)m_Pilot.GetItemDataPtr(index);
+			PSTR fileName = (PSTR )m_Pilot.GetItemDataPtr(index);
 			if (0 == strcmp(fileName, defaultPilot))
 			{
 				break;

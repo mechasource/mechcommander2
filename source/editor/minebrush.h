@@ -50,7 +50,7 @@ class MineBrush: public Brush
 			struct CTileMineInfo {
 				int row;
 				int column;
-				unsigned long mineState;
+				ULONG mineState;
 			};
 			typedef EList< CTileMineInfo, const CTileMineInfo&> MINE_INFO_LIST;
 			MINE_INFO_LIST mineInfoList;

@@ -4,9 +4,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#define ATTRIBUTEMETER_CPP
+// #define ATTRIBUTEMETER_CPP
 
 #include "stdafx.h"
+#include "utilities.h"
 #include "attributemeter.h"
 #include "inifile.h"
 #include <mclib.h>
@@ -72,7 +73,7 @@ void AttributeMeter::render( long xOffset, long yOffset )
 	float remainder = addedPercent * numBars + (barCount - float(nBarCount));
 	int nAddedCount = (int)remainder;
 
-	GUI_RECT tmpOutside = outsideRect;
+	RECT tmpOutside = outsideRect;
 	tmpOutside.left += xOffset;
 	tmpOutside.right += xOffset;
 	tmpOutside.top += yOffset;
@@ -80,7 +81,7 @@ void AttributeMeter::render( long xOffset, long yOffset )
 	//drawRect( tmpOutside, 0xff000000 );
 	drawEmptyRect( tmpOutside, rectColor, rectColor );
 
-	GUI_RECT tmpRect;
+	RECT tmpRect;
 	tmpRect.left = outsideRect.left + 2 * skipWidth + xOffset;
 	tmpRect.right = tmpRect.left + unitWidth;
 	tmpRect.top = outsideRect.top + 2 * skipWidth + yOffset;

@@ -27,7 +27,7 @@ class aZonePanel : public aObject
 {
 public:
 	void init(FitIniFile* pFile, LogisticsScreen* pParent);
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 	virtual void		update();
 	virtual void		render();
 
@@ -48,7 +48,7 @@ public:
 		pParentScreen = &refParentScreenParam;
 	}
 	void init(FitIniFile* pFile);
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 	virtual void update();
 private:
 	LogisticsScreen *pParentScreen;
@@ -69,13 +69,13 @@ public:
 	}
 	void init(FitIniFile* pFile);
 	virtual void destroy();
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 	virtual void		update();
 	virtual void		render();
 	virtual void		begin();
 private:
 
-	long		getNum( char* pStr, long index1, long index2 );
+	long		getNum( PSTR pStr, long index1, long index2 );
 	LogisticsScreen *pParentScreen;
 	aAnimButton button0;
 	aAnimButton button1;
@@ -105,7 +105,7 @@ public:
  	virtual void render( int xOffset, int yOffset );
 	virtual void render();
 	virtual void update();
-	virtual int			handleMessage( unsigned long, unsigned long );
+	virtual int			handleMessage( ULONG, ULONG );
 
 	bool				bDone;
 

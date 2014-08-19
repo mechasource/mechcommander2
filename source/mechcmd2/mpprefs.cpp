@@ -315,7 +315,7 @@ void MPPrefs::update()
 		PUCHAR pData = new uint8_t[size];
 
 		file.read( pData, size );
-		MPlayer->sendPlayerInsignia( (char*)pName, pData, size );
+		MPlayer->sendPlayerInsignia( (PSTR)pName, pData, size );
 		MPlayer->insigniaList[MPlayer->commanderID] = 1;
 
 		delete pData;
@@ -353,7 +353,7 @@ void MPPrefs::update()
 
 }
 
-void MPPrefs::setColor( unsigned long color )
+void MPPrefs::setColor( ULONG color )
 {
 	long playerCount;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
@@ -377,7 +377,7 @@ void MPPrefs::setColor( unsigned long color )
 
 }
 
-void MPPrefs::setHighlightColor( unsigned long color )
+void MPPrefs::setHighlightColor( ULONG color )
 {
 	MC2Player* player = MPlayer->getPlayerInfo( MPlayer->commanderID );
 	player->stripeColor = getColorIndex( color );
@@ -389,7 +389,7 @@ void MPPrefs::setHighlightColor( unsigned long color )
 
 }
 
-char MPPrefs::getColorIndex( unsigned long color )
+char MPPrefs::getColorIndex( ULONG color )
 {
 	for ( int i = 0; i < MAX_COLORS; i++ )
 	{
@@ -413,7 +413,7 @@ void MPPrefs::updateBaseColors( const MC2Player* players, long playerCount, bool
 				{
 					if ( MPlayer->colors[players[i].baseColor[BASECOLOR_PREFERENCE]] == rects[j].getColor() )
 					{
-						GUI_RECT rect = { rects[j].globalX() - 1, rects[j].globalY() - 1,
+						RECT rect = { rects[j].globalX() - 1, rects[j].globalY() - 1,
 							rects[j].right(), rects[j].bottom() };
 
 						if ( bDrawRect )
@@ -457,7 +457,7 @@ void MPPrefs::updateStripeColors(const MC2Player* players, long playerCount, boo
 				{
 					if ( MPlayer->colors[players[i].stripeColor] == rects[j].getColor() )
 					{
-						GUI_RECT rect = { rects[j].globalX() - 1, rects[j].globalY() - 1,
+						RECT rect = { rects[j].globalX() - 1, rects[j].globalY() - 1,
 							rects[j].right(), rects[j].bottom() };
 
 						if ( bDrawRect )
@@ -527,7 +527,7 @@ void MPPrefs ::render(int OffsetX, int OffsetY )
 
 }
 
-int			MPPrefs::handleMessage( unsigned long message, unsigned long who )
+int			MPPrefs::handleMessage( ULONG message, ULONG who )
 {
 	switch ( who )
 	{
@@ -675,7 +675,7 @@ int aBmpListItem::setBmp( PCSTR pFileName )
 	return true;
 }
 
-void MPPrefs::setMechColors( unsigned long base, unsigned long highlight )
+void MPPrefs::setMechColors( ULONG base, ULONG highlight )
 {
 	if ( status == RUNNING )
 	{

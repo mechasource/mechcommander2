@@ -13,7 +13,7 @@ struct SoundResource
 	public:
 		gosAudio_ResourceType	
 			m_Type;			// Specifies which other structure members are valid
-		char *	
+		PSTR 	
 			m_FileName;	// SOUNDTYPE_FILE and SOUNDTYPE_STREAMINGFILE
 		PUCHAR	
 			m_FileDataPointer;	// SOUNDTYPE_MEMORY
@@ -34,7 +34,7 @@ struct SoundResource
 		bool				m_microsoftPCM;
 		WAVEFORMATEX 		m_suggFormat;
 		HACMSTREAM 			m_hACMStream;
-		char *				m_uncompressedData;
+		PSTR 				m_uncompressedData;
 		UINT				m_uncompressedDataSize;
 
 		LPDIRECTSOUNDBUFFER lpMasterBuffer;

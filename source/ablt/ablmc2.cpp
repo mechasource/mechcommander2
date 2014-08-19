@@ -121,7 +121,7 @@ extern float			MaxVisualRadius;
 extern float			WeaponRange[NUM_FIRERANGES];
 
 void DEBUGWINS_setGameObject (long debugObj, GameObjectPtr obj);
-void DEBUGWINS_print (char* s, long window);
+void DEBUGWINS_print (PSTR s, long window);
 
 UserHeapPtr				AblStackHeap = NULL;
 UserHeapPtr				AblCodeHeap = NULL;
@@ -1093,7 +1093,7 @@ void execGetAttackers (void) {
 
 	long numAttackers = 0;
 	if (CurWarrior)
-		numAttackers = CurWarrior->getAttackers((unsigned long*)attackers, seconds);
+		numAttackers = CurWarrior->getAttackers((ULONG*)attackers, seconds);
 	ABLi_pushInteger(numAttackers);
 }
 
@@ -1116,7 +1116,7 @@ void execGetAttackerInfo (void) {
 	//
 	//-----------------------------------------------------
 
-	unsigned long attackerId = ABLi_popInteger();
+	ULONG attackerId = ABLi_popInteger();
 
 	float timeSince = 1000000.0;
 	if ((attackerId >= MIN_UNIT_PART_ID) && (attackerId <= MAX_UNIT_PART_ID)) {
@@ -1595,7 +1595,7 @@ void execOrderMoveTo (void) {
 	location.y = coordList[1];
 	location.z = coordList[2];
 	
-	unsigned long params = TACORDER_PARAM_NONE;
+	ULONG params = TACORDER_PARAM_NONE;
 	if (run)
 		params |= TACORDER_PARAM_RUN;
 
@@ -1623,7 +1623,7 @@ void execOrderMoveToObject (void) {
 	//
 	//-----------------------------------------------------
 
-	unsigned long objectId = ABLi_popInteger();
+	ULONG objectId = ABLi_popInteger();
 	bool run = ABLi_popBoolean();
 
 	if (ABLi_getSkipOrder()) {
@@ -1760,7 +1760,7 @@ void execOrderAttackObject (void) {
 	//
 	//-----------------------------------------------------
 
-	unsigned long objectId = ABLi_popInteger();
+	ULONG objectId = ABLi_popInteger();
 	long attackType = ABLi_popInteger();
 	long attackMethod = ABLi_popInteger();
 	long attackRange = ABLi_popInteger();
@@ -1768,7 +1768,7 @@ void execOrderAttackObject (void) {
 
 	long result = 1;
 	if (!ABLi_getSkipOrder()) {
-		unsigned long params = TACORDER_PARAM_NONE;
+		ULONG params = TACORDER_PARAM_NONE;
 		if (pursue)
 			params |= TACORDER_PARAM_PURSUE;
 
@@ -1818,7 +1818,7 @@ void execOrderAttackContact (void) {
 
 	long result = 1;
 	if (!ABLi_getSkipOrder()) {
-		unsigned long params = TACORDER_PARAM_NONE;
+		ULONG params = TACORDER_PARAM_NONE;
 		if (pursue)
 			params |= TACORDER_PARAM_PURSUE;
 		result = -2;
@@ -4589,7 +4589,7 @@ void execIsTeamCapturing (void) {
 
 	bool targeting = false;
 	GameObjectPtr target = getObject(targetId);
-	unsigned long targetWID = target ? target->getWatchID(false) : 0;
+	ULONG targetWID = target ? target->getWatchID(false) : 0;
 	if (targetWID) {
 		if ((teamId >= OBJ_ID_FIRST_TEAM) && (teamId <= OBJ_ID_LAST_TEAM)) {
 			TeamPtr team = Team::teams[teamId - OBJ_ID_FIRST_TEAM];
@@ -4832,7 +4832,7 @@ void execSetDebugString (void) {
 
 	long objectId = ABLi_popInteger();
 	long stringNum = ABLi_popInteger();
-	char* debugString = ABLi_popCharPtr();
+	PSTR debugString = ABLi_popCharPtr();
 	GameObjectPtr obj = getObject(objectId);
 	if (obj) {
 		MechWarriorPtr pilot = obj->getPilot();
@@ -4929,7 +4929,7 @@ void execConvertCoords (void) {
 void execNewMoveTo (void) {
 
 	float* location = ABLi_popRealPtr();
-	unsigned long params = (unsigned long)ABLi_popInteger();
+	ULONG params = (ULONG)ABLi_popInteger();
 
 	if (_isnan(location[0]) || _isnan(location[1]))
 	{
@@ -4951,7 +4951,7 @@ void execNewMoveTo (void) {
 void execNewMoveToObject (void) {
 
 	long objectID = ABLi_popInteger();
-	unsigned long params = (unsigned long)ABLi_popInteger();
+	ULONG params = (ULONG)ABLi_popInteger();
 
 	GameObjectPtr target = getObject(objectID);
 	long result = 0;
@@ -4979,7 +4979,7 @@ void execNewPower (void) {
 void execNewAttack (void) {
 
 	long objectID = ABLi_popInteger();
-	unsigned long params = (unsigned long)ABLi_popInteger();
+	ULONG params = (ULONG)ABLi_popInteger();
 
 	GameObjectPtr target = getObject(objectID);
 	long result = 0;
@@ -4995,7 +4995,7 @@ void execNewCapture (void) {
 
 	//long objectID = 
 	ABLi_popInteger();
-	//unsigned long params = (unsigned long)
+	//ULONG params = (ULONG)
 	ABLi_popInteger();
 
 	long result = 0;
@@ -5011,7 +5011,7 @@ void execNewCapture (void) {
 void execNewScan (void) {
 
 	long objectID = ABLi_popInteger();
-	unsigned long params = (unsigned long)ABLi_popInteger();
+	ULONG params = (ULONG)ABLi_popInteger();
 
 	long targetID = 0;
 	GameObjectPtr obj = getObject(objectID);
@@ -5026,7 +5026,7 @@ void execNewScan (void) {
 void execNewControl (void) {
 
 	long objectID = ABLi_popInteger();
-	unsigned long params = (unsigned long)ABLi_popInteger();
+	ULONG params = (ULONG)ABLi_popInteger();
 
 	long targetID = 0;
 	GameObjectPtr obj = getObject(objectID);
@@ -5061,7 +5061,7 @@ void execSetPilotState (void) {
 	//
 	//-----------------------------------------------------
 
-	unsigned long newState = ABLi_popInteger();
+	ULONG newState = ABLi_popInteger();
 	
 	SymTableNodePtr curState = ABLi_getCurrentState();
 	if (curState) {
@@ -5073,7 +5073,7 @@ void execSetPilotState (void) {
 			return;
 		}
 		ABLi_transState((SymTableNodePtr)newState);
-		ABLi_pushInteger((unsigned long)curState);
+		ABLi_pushInteger((ULONG)curState);
 		}
 	else {
 		ABLi_resetOrders();
@@ -5796,7 +5796,7 @@ void execMCPrint (void) {
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_CHAR_PTR:
-			sprintf(s, "char*=%s", (char*)value.data.characterPtr);
+			sprintf(s, "PSTR=%s", (PSTR)value.data.characterPtr);
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_INTEGER_PTR:
@@ -5934,7 +5934,7 @@ void execClearTacOrder (void) {
 
 void execPlayWave (void) {
 
-	char* fileName = ABLi_popCharPtr();
+	PSTR fileName = ABLi_popCharPtr();
 	long type = ABLi_popInteger();
 
 	soundSystem->playSupportSample(-1, fileName);
@@ -5978,14 +5978,14 @@ void execGetMapInfo (void) {
 
 //*****************************************************************************
 
-void* ablSystemMallocCallback (unsigned long memSize) {
+void* ablSystemMallocCallback (ULONG memSize) {
 
 	return(systemHeap->Malloc(memSize));
 }
 
 //-----------------------------------------------------------------------------
 
-void* ablStackMallocCallback (unsigned long memSize) {
+void* ablStackMallocCallback (ULONG memSize) {
 
 	if (!AblSymbolHeap)
 		Fatal(0, " ablSymbolMallocCallback: NULL heap ");
@@ -5994,7 +5994,7 @@ void* ablStackMallocCallback (unsigned long memSize) {
 
 //-----------------------------------------------------------------------------
 
-void* ablCodeMallocCallback (unsigned long memSize) {
+void* ablCodeMallocCallback (ULONG memSize) {
 
 	if (!AblCodeHeap)
 		Fatal(0, " ablCodeFreeCallback: NULL heap ");
@@ -6003,7 +6003,7 @@ void* ablCodeMallocCallback (unsigned long memSize) {
 
 //-----------------------------------------------------------------------------
 
-void* ablSymbolMallocCallback (unsigned long memSize) {
+void* ablSymbolMallocCallback (ULONG memSize) {
 
 	if (!AblSymbolHeap)
 		Fatal(0, " ablSymbolMallocCallback: NULL heap ");
@@ -6046,7 +6046,7 @@ void ablSymbolFreeCallback (void* memBlock) {
 
 //*****************************************************************************
 
-long ablFileCreateCB (void** file, char* fName) {
+long ablFileCreateCB (void** file, PSTR fName) {
 
 	*file = new File;
 	if (*file == NULL)
@@ -6061,7 +6061,7 @@ long ablFileCreateCB (void** file, char* fName) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileOpenCB (void** file, char* fName) {
+long ablFileOpenCB (void** file, PSTR fName) {
 
 	*file = new File;
 	if (*file == NULL)
@@ -6142,14 +6142,14 @@ long ablFileWriteLongCB (void* file, long value) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteStringCB (void* file, char* buffer) {
+long ablFileWriteStringCB (void* file, PSTR buffer) {
 
 	return(((FilePtr)file)->writeString(buffer));
 }
 
 //*****************************************************************************
 
-void ablDebuggerPrintCallback (char* s) {
+void ablDebuggerPrintCallback (PSTR s) {
 
 	//ABLDebuggerOut->print(s);
 	char msg[1024];
@@ -6159,21 +6159,21 @@ void ablDebuggerPrintCallback (char* s) {
 
 //*****************************************************************************
 
-void ablDebugPrintCallback (char* s) {
+void ablDebugPrintCallback (PSTR s) {
 
 	DEBUGWINS_print(s, 0);
 }
 
 //*****************************************************************************
 
-void ablSeedRandom (unsigned long seed) {
+void ablSeedRandom (ULONG seed) {
 
 	gos_srand(seed);
 }
 
 //*****************************************************************************
 
-void ablFatalCallback (long code, char* s) {
+void ablFatalCallback (long code, PSTR s) {
 
 	STOP((s));
 }
@@ -6508,33 +6508,33 @@ void closeABL (void) {
 
 //*****************************************************************************
 
-void* ablSystemMallocCallback (unsigned long memSize) {
+void* ablSystemMallocCallback (ULONG memSize) {
 
-	char* mem = new char[memSize];
+	PSTR mem = new char[memSize];
 	return(mem);
 }
 
 //-----------------------------------------------------------------------------
 
-void* ablStackMallocCallback (unsigned long memSize) {
+void* ablStackMallocCallback (ULONG memSize) {
 
-	char* mem = new char[memSize];
+	PSTR mem = new char[memSize];
 	return(mem);
 }
 
 //-----------------------------------------------------------------------------
 
-void* ablCodeMallocCallback (unsigned long memSize) {
+void* ablCodeMallocCallback (ULONG memSize) {
 
-	char* mem = new char[memSize];
+	PSTR mem = new char[memSize];
 	return(mem);
 }
 
 //-----------------------------------------------------------------------------
 
-void* ablSymbolMallocCallback (unsigned long memSize) {
+void* ablSymbolMallocCallback (ULONG memSize) {
 
-	char* mem = new char[memSize];
+	PSTR mem = new char[memSize];
 	return(mem);
 }
 
@@ -6568,7 +6568,7 @@ void ablSymbolFreeCallback (void* memBlock) {
 
 //*****************************************************************************
 
-long ablFileCreateCB (void** /* file */, char* /* fName */ ) {
+long ablFileCreateCB (void** /* file */, PSTR /* fName */ ) {
 
 /*	*file = fopen(fNamenew File;
 	if (*file == NULL)
@@ -6583,7 +6583,7 @@ long ablFileCreateCB (void** /* file */, char* /* fName */ ) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileOpenCB (void** file, char* fName) {
+long ablFileOpenCB (void** file, PSTR fName) {
 
 	//Filenames MUST be all lowercase or Hash won't find 'em!
 	for (size_t i=0;i<strlen(fName);i++)
@@ -6636,9 +6636,9 @@ long ablFileReadLongCB (void* file) {
 long ablFileReadStringCB (void* file, PUCHAR buffer) {
 
 	buffer[0] = NULL;
-	char* s = fgets((char*)buffer, 9999, (FILE*)file);
+	PSTR s = fgets((PSTR)buffer, 9999, (FILE*)file);
 	if (!s)
-		return(strlen((char*)buffer));
+		return(strlen((PSTR)buffer));
 	return(strlen(s));
 }
 
@@ -6647,9 +6647,9 @@ long ablFileReadStringCB (void* file, PUCHAR buffer) {
 long ablFileReadLineExCB (void* file, PUCHAR buffer, long maxLength) {
 
 	buffer[0] = NULL;
-	char* s = fgets((char*)buffer, maxLength, (FILE*)file);
+	PSTR s = fgets((PSTR)buffer, maxLength, (FILE*)file);
 	if (!s)
-		return(strlen((char*)buffer));
+		return(strlen((PSTR)buffer));
 	return(strlen(s));
 }
 
@@ -6679,7 +6679,7 @@ long ablFileWriteLongCB (void* /* file */, long /* value */) {
 
 //-----------------------------------------------------------------------------
 
-long ablFileWriteStringCB (void* /* file */, char* /* buffer */) {
+long ablFileWriteStringCB (void* /* file */, PSTR /* buffer */) {
 
 	//return(((FilePtr)file)->writeString(buffer));
 	return(0);
@@ -6687,7 +6687,7 @@ long ablFileWriteStringCB (void* /* file */, char* /* buffer */) {
 
 //*****************************************************************************
 
-void ablDebuggerPrintCallback (char* /* s */) {
+void ablDebuggerPrintCallback (PSTR /* s */) {
 
 	//ABLDebuggerOut->print(s);
 //	char msg[1024];
@@ -6697,21 +6697,21 @@ void ablDebuggerPrintCallback (char* /* s */) {
 
 //*****************************************************************************
 
-void ablDebugPrintCallback (char* /* s */) {
+void ablDebugPrintCallback (PSTR /* s */) {
 
 //	DEBUGWINS_print(s, 0);
 }
 
 //*****************************************************************************
 
-void ablSeedRandom (unsigned long /* seed */) {
+void ablSeedRandom (ULONG /* seed */) {
 
 //	gos_srand(seed);
 }
 
 //*****************************************************************************
 
-void ablFatalCallback (long code, char* s) {
+void ablFatalCallback (long code, PSTR s) {
 
 	printf("\n");
 	printf(" FATAL: (%d) %s", code, s);

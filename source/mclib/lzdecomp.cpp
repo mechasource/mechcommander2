@@ -34,9 +34,9 @@ typedef HashStruct*	HashStructPtr;
 	
 HashStructPtr	LZOldChain = NULL;			//Old Chain Value Found
 HashStructPtr	LZChain = NULL;				//Current Chain Value Found 
-unsigned long	LZMaxIndex = 0;				//Max index value in Hash Table
-unsigned long	LZCodeMask = 0;
-unsigned long	LZFreeIndex = 0;			//Current Free index into Hash Table
+ULONG	LZMaxIndex = 0;				//Max index value in Hash Table
+ULONG	LZCodeMask = 0;
+ULONG	LZFreeIndex = 0;			//Current Free index into Hash Table
 MemoryPtr		LZSrcBufEnd = NULL;			//ptr to 3rd from last byte in src buffer
 MemoryPtr		LZOrigDOSBuf = NULL;		//original offset to start of src buffer
 char			LZHashBuffer[16384];

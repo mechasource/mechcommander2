@@ -45,9 +45,9 @@ class FIDPSession: public ListItem
 			SessionDescriptor.dwMaxPlayers = maxplayers;
 		}
 
-		void SetName(char *name);
+		void SetName(PSTR name);
 		
-		void SetPassword(char *password);
+		void SetPassword(PSTR password);
 
 		inline int GetNumPlayers()
 		{

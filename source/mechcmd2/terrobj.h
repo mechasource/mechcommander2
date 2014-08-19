@@ -61,7 +61,7 @@ class TerrainObjectType : public ObjectType {
 		long			yImpasse;
 		float			explDmg;
 		float			explRad;
-		unsigned long	fireTypeHandle;
+		ULONG	fireTypeHandle;
 		
 	public:
 
@@ -74,7 +74,7 @@ class TerrainObjectType : public ObjectType {
 		
 		virtual void initMiscTerrObj (long objTypeNum);
 
-		virtual long init (FilePtr objFile, unsigned long fileSize);
+		virtual long init (FilePtr objFile, ULONG fileSize);
 
 		long init (FitIniFilePtr objFile);
 		
@@ -187,7 +187,7 @@ class TerrainObject : public GameObject {
 
 		virtual void updateDebugWindow (GameDebugWindow* debugWindow);
 
-		virtual char* getName (void);
+		virtual PSTR getName (void);
 
 		virtual void killFire (void);
 		

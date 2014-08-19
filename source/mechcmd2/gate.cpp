@@ -62,7 +62,7 @@
 #include "..\resource.h"
 #include <stdio.h>
 
-extern unsigned long NextIdNumber;
+extern ULONG NextIdNumber;
 extern float worldUnitsPerMeter;
 extern bool useSound;
 extern bool useOldProject;
@@ -89,7 +89,7 @@ void GateType::destroy (void)
 }
 		
 //---------------------------------------------------------------------------
-long GateType::init (FilePtr objFile, unsigned long fileSize)
+long GateType::init (FilePtr objFile, ULONG fileSize)
 {
 	long result = 0;
 	
@@ -569,7 +569,7 @@ long Gate::setTeamId (long _teamId, bool setup)
 			teamId = _teamId;	//Otherwise we were set to either -1, 0 or 1.
 	}
 
-	static unsigned long highLight[8] = {0x00007f00, 0x007f0000,
+	static ULONG highLight[8] = {0x00007f00, 0x007f0000,
 										  0x0000007f, 0x0000007f,
 										  0x0000007f, 0x0000007f,
 										  0x0000007f, 0x0000007f};
@@ -662,7 +662,7 @@ void Gate::init (bool create, ObjectTypePtr _type)
 	//-------------------------------------------------------------
 	// The appearance is initialized here using data from the type
 	// Need an MLR appearance class
-	char *appearName = _type->getAppearanceTypeName();
+	PSTR appearName = _type->getAppearanceTypeName();
 
 	//--------------------------------------------------------------
 	// New code!!!

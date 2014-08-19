@@ -52,7 +52,7 @@ extern volatile bool 	mc2IsInMouseTimer;
 void MouseTimerInit();
 void MouseTimerKill();
 //---------------------------------------------------------------------------
-void MouseCursorData::initCursors (char *cursorFileName)
+void MouseCursorData::initCursors (PSTR cursorFileName)
 {
 	//New
 	// add an "a" to the end of the cursorFileName IF we are running in 800x600 or less.
@@ -418,7 +418,7 @@ void UserInput::update (void)
 }
 
 //---------------------------------------------------------------------------
-void UserInput::initMouseCursors (char *mouseFile)
+void UserInput::initMouseCursors (PSTR mouseFile)
 {
 	if (cursors)
 	{

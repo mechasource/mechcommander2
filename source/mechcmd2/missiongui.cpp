@@ -103,7 +103,7 @@
 
 #include "gvehicl.h" // remove
 
-	static char* terrainStr[NUM_TERRAIN_TYPES] = {
+	static PSTR terrainStr[NUM_TERRAIN_TYPES] = {
 			"Blue Water",	//MC_BLUEWATER_TYPE
 			"Green Water",	//MC_GREEN_WATER_TYPE
 			"Mud",	//MC_MUD_TYPE
@@ -135,7 +135,7 @@ extern bool MLRVertexLimitReached;
 // Globals
 extern float frameLength;
 
-extern void DEBUGWINS_print (char* s, long window = 0);
+extern void DEBUGWINS_print (PSTR s, long window = 0);
 extern void DEBUGWINS_setGameObject (long debugObj, GameObjectPtr obj);
 extern void DEBUGWINS_toggle (bool* windowsOpen);
 extern void DEBUGWINS_display (bool* windowsOpen);
@@ -1061,11 +1061,11 @@ void MissionInterfaceManager::updateVTol()
 								((MoverPtr)mechToRecover[vtolNum])->timeLeft = 1.0f;
 								((MoverPtr)mechToRecover[vtolNum])->exploding = false;
 							}
-							char* newPilotName = NULL;
+							PSTR newPilotName = NULL;
 							if (MPlayer)
 								newPilotName = MPlayer->reinforcementPilot[vtolNum];
 							else
-								newPilotName = (char*)LogisticsData::instance->getBestPilot( mechToRecover[vtolNum]->tonnage );
+								newPilotName = (PSTR)LogisticsData::instance->getBestPilot( mechToRecover[vtolNum]->tonnage );
 
 							mission->tradeMover(mechToRecover[vtolNum], Commander::commanders[vtolNum]->getTeam()->getId(), vtolNum, newPilotName, "pbrain");
 							mechRecovered[vtolNum] = true;
@@ -3069,7 +3069,7 @@ void MissionInterfaceManager::render (void)
    		else
    			swapTime = scenarioTime;
    		
-   		GUI_RECT tmpRect = { 0,0, Environment.screenWidth, Environment.screenHeight };
+   		RECT tmpRect = { 0,0, Environment.screenWidth, Environment.screenHeight };
    		drawRect( tmpRect, color );
 
 	}*/
@@ -4143,7 +4143,7 @@ MoverPtr BringInReinforcement (long vehicleID, long rosterIndex, long commanderI
 
 	MoverInitData data;
 	memset( &data, 0, sizeof( data ) );
-	char* vehicleFile = (char*)MissionInterfaceManager::instance()->getSupportVehicleNameFromID(vehicleID);
+	PSTR vehicleFile = (PSTR)MissionInterfaceManager::instance()->getSupportVehicleNameFromID(vehicleID);
 	if (!vehicleFile) {
 		char s[1024];
 		sprintf(s, "BringInReinforcement: null behicleFile (%d)", vehicleID);
@@ -4302,7 +4302,7 @@ void MissionInterfaceManager::beginVtol (long supportID, long commanderID, Stuff
 					vPos[commanderID] = vtolPos;
 					if (!salvageTarget)
 						STOP(("MissionGUI.beginvtol: null target PASSED IN."));
-					char* newPilotName = (char*)LogisticsData::instance->getBestPilot( salvageTarget->tonnage );
+					PSTR newPilotName = (PSTR)LogisticsData::instance->getBestPilot( salvageTarget->tonnage );
 					if (vehicleID[commanderID] != 147)
 						STOP(("missiongui.beginvtol: bad vehicleID"));
 					MPlayer->sendReinforcement(vehicleID[commanderID], salvageTarget->netRosterIndex, newPilotName, commanderID, vPos[commanderID], 3);

@@ -73,7 +73,7 @@ class Logistics
 		
 		void destroy (void);
 		
-		void initSplashScreen (char *screenFile, char *artFile);
+		void initSplashScreen (PSTR screenFile, PSTR artFile);
 		void destroySplashScreen (void);
 		
 		void start (long logState);		//Actually Starts execution of logistics in state Specified

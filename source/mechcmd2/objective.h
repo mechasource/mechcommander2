@@ -719,7 +719,7 @@ private:
 	float m_modelScale;
 	static float s_blinkLength;
 	static float s_lastBlinkTime;
-	static unsigned long s_blinkColor;
+	static ULONG s_blinkColor;
 	static aFont*	s_markerFont;
 public: /* we could make this protected if only the editdialog is to access these functions */
 	static CObjectiveCondition *new_CObjectiveCondition(condition_species_type conditionSpecies, int alignment);
@@ -808,7 +808,7 @@ public:
 	void ModelScale(float modelScale) { m_modelScale = modelScale; }
 	void ActivationTime(double activationTime) { m_activationTime = activationTime; }
 	double ActivationTime() { return m_activationTime; }
-	void Render( unsigned long xPos, unsigned long yPos, HGOSFONT3D );
+	void Render( ULONG xPos, ULONG yPos, HGOSFONT3D );
 	bool RenderMarkers (GameTacMap *tacMap, bool blink);		//TacMap calls this to draw objective markers on tacMap.
 
 	friend class Mission;

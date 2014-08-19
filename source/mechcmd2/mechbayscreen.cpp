@@ -405,7 +405,7 @@ void MechBayScreen::update()
 		bool bLeft = 0;
 		bool bRight = 0;
 		
-		GUI_RECT testRect;
+		RECT testRect;
 		testRect.left = mechListBox.globalX();
 		testRect.right = mechListBox.globalX() + mechListBox.width();
 		testRect.top = mechListBox.globalY();
@@ -609,7 +609,7 @@ void MechBayScreen::update()
 
 }
 
-int	MechBayScreen::handleMessage( unsigned long message, unsigned long who )
+int	MechBayScreen::handleMessage( ULONG message, ULONG who )
 {
 	if ( status != RUNNING )
 		return 0;

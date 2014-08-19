@@ -47,7 +47,7 @@ protected:
 	DPID				parentGroupID;
 	char				shortName[64];
 	char				longName[256];
-	unsigned long		groupFlags;
+	ULONG		groupFlags;
 	
 	LPVOID		groupData;
 	DWORD		dataSize;	
@@ -77,7 +77,7 @@ public:
 
 	BOOL RemovePlayer(DPID& id);
 
-	inline void  SetShortName(char *name)
+	inline void  SetShortName(PSTR name)
 	{
 		if (name != NULL)
 		{
@@ -89,7 +89,7 @@ public:
 		}
 	}
 	
-	inline void SetLongName(char *name)
+	inline void SetLongName(PSTR name)
 	{
 		if (name != NULL)
 		{

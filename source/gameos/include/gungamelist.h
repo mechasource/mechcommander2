@@ -3,54 +3,53 @@
 //===========================================================================//
 
 #pragma once
-#include "hash.h"
 
-extern const char GAMELIST_KEY_INSTANCE[];
-extern const char GAMELIST_KEY_SERVER_NAME[];
-extern const char GAMELIST_KEY_SERVER_ADDRESS[];
-extern const char GAMELIST_KEY_SERVER_PORT[];
-extern const char GAMELIST_KEY_NUM_PLAYERS[];
-extern const char GAMELIST_KEY_NUM_BOTS[];
-extern const char GAMELIST_KEY_MAX_PLAYERS[];
-extern const char GAMELIST_KEY_PRODUCT_NAME[];
-extern const char GAMELIST_KEY_PRODUCT_VERSION[];
-extern const char GAMELIST_KEY_MOD_NAME[];
-extern const char GAMELIST_KEY_MAP_TYPE[];
-extern const char GAMELIST_KEY_PASSWORD_PROTECTED[];
-extern const char GAMELIST_KEY_PASSWORD[];
-extern const char GAMELIST_KEY_BROWSER_HANDLE[];
-extern const char GAMELIST_KEY_PING[];
-extern const char GAMELIST_KEY_GAME_TYPE[]; // rules for game (ctf, team fortress, etc...)
-extern const char GAMELIST_KEY_UPDATE_TIME[]; // whether the game was updated or not in the last EnumSessions
-extern const char GAMELIST_KEY_PROTOCOL[];
-extern const char GAMELIST_KEY_FLAGS[];
-extern const char GAMELIST_KEY_SERVER_INFO_STATUS[];
-extern const char GAMELIST_KEY_REFRESH_PENDING[];
+#ifndef _GUNGAMELIST_H_
+#define _GUNGAMELIST_H_
 
-extern const char GAMELIST_VALUE_PROTOCOL_GUN[];
-extern const char GAMELIST_VALUE_PROTOCOL_TCPIP_LAN[];
-extern const char GAMELIST_VALUE_PROTOCOL_INTERNET[];
-extern const char GAMELIST_VALUE_PROTOCOL_IPX[];
-extern const char GAMELIST_VALUE_PROTOCOL_GAMESPY[];
+// #include "hash.h"
 
-extern const char GAMELIST_VALUE_REFRESH_PENDING_TRUE[];
-extern const char GAMELIST_VALUE_REFRESH_PENDING_FALSE[];
-
-extern const char GAMELIST_VALUE_SERVER_INFO_STATUS_PENDING[];
-extern const char GAMELIST_VALUE_SERVER_INFO_STATUS_SUCCESS[];
-extern const char GAMELIST_VALUE_SERVER_INFO_STATUS_ERROR[];
-extern const char GAMELIST_VALUE_SERVER_INFO_STATUS_NOSERVER[];
-
-extern const char PLAYERLIST_KEY_SERVER_ROWID[];
-extern const char PLAYERLIST_KEY_PLAYER_NAME[];
-extern const char PLAYERLIST_KEY_CLAN_NAME[]; // not yet in MW4 - 8/1/2000
-extern const char PLAYERLIST_KEY_UPDATE_TIME[]; // whether the player was updated or not in the last EnumPlayers
-extern const char ZONE_SERVER_KEY[];
-extern const char ZONE_ADVERTISE_PORT_KEY[];
-extern const char ZONE_SERVER_INTERNET_ADDRESS[];
-extern const char ZONE_SERVER_LAN_ADDRESS[];
-
-extern const char INVALID_PING_STR[];
+extern PCSTR GAMELIST_KEY_INSTANCE;
+extern PCSTR GAMELIST_KEY_SERVER_NAME;
+extern PCSTR GAMELIST_KEY_SERVER_ADDRESS;
+extern PCSTR GAMELIST_KEY_SERVER_PORT;
+extern PCSTR GAMELIST_KEY_NUM_PLAYERS;
+extern PCSTR GAMELIST_KEY_NUM_BOTS;
+extern PCSTR GAMELIST_KEY_MAX_PLAYERS;
+extern PCSTR GAMELIST_KEY_PRODUCT_NAME;
+extern PCSTR GAMELIST_KEY_PRODUCT_VERSION;
+extern PCSTR GAMELIST_KEY_MOD_NAME;
+extern PCSTR GAMELIST_KEY_MAP_TYPE;
+extern PCSTR GAMELIST_KEY_PASSWORD_PROTECTED;
+extern PCSTR GAMELIST_KEY_PASSWORD;
+extern PCSTR GAMELIST_KEY_BROWSER_HANDLE;
+extern PCSTR GAMELIST_KEY_PING;
+extern PCSTR GAMELIST_KEY_GAME_TYPE; // rules for game (ctf, team fortress, etc...)
+extern PCSTR GAMELIST_KEY_UPDATE_TIME; // whether the game was updated or not in the last EnumSessions
+extern PCSTR GAMELIST_KEY_PROTOCOL;
+extern PCSTR GAMELIST_KEY_FLAGS;
+extern PCSTR GAMELIST_KEY_SERVER_INFO_STATUS;
+extern PCSTR GAMELIST_KEY_REFRESH_PENDING;
+extern PCSTR GAMELIST_VALUE_PROTOCOL_GUN;
+extern PCSTR GAMELIST_VALUE_PROTOCOL_TCPIP_LAN;
+extern PCSTR GAMELIST_VALUE_PROTOCOL_INTERNET;
+extern PCSTR GAMELIST_VALUE_PROTOCOL_IPX;
+extern PCSTR GAMELIST_VALUE_PROTOCOL_GAMESPY;
+extern PCSTR GAMELIST_VALUE_REFRESH_PENDING_TRUE;
+extern PCSTR GAMELIST_VALUE_REFRESH_PENDING_FALSE;
+extern PCSTR GAMELIST_VALUE_SERVER_INFO_STATUS_PENDING;
+extern PCSTR GAMELIST_VALUE_SERVER_INFO_STATUS_SUCCESS;
+extern PCSTR GAMELIST_VALUE_SERVER_INFO_STATUS_ERROR;
+extern PCSTR GAMELIST_VALUE_SERVER_INFO_STATUS_NOSERVER;
+extern PCSTR PLAYERLIST_KEY_SERVER_ROWID;
+extern PCSTR PLAYERLIST_KEY_PLAYER_NAME;
+extern PCSTR PLAYERLIST_KEY_CLAN_NAME; // not yet in MW4 - 8/1/2000
+extern PCSTR PLAYERLIST_KEY_UPDATE_TIME; // whether the player was updated or not in the last EnumPlayers
+extern PCSTR ZONE_SERVER_KEY;
+extern PCSTR ZONE_ADVERTISE_PORT_KEY;
+extern PCSTR ZONE_SERVER_INTERNET_ADDRESS;
+extern PCSTR ZONE_SERVER_LAN_ADDRESS;
+extern PCSTR INVALID_PING_STR;
 
 #define NETFLAGS_CONNECTION_TYPE_MASK	0x000000FF
 #define NETFLAGS_DEDICATED_FLAG			0x00000100
@@ -206,8 +205,8 @@ public:
     // node used for implementing field lists.
     struct FieldItem
     {
-        char *          key; // header name
-        char *          value; // value of field
+        PSTR           key; // header name
+        PSTR           value; // value of field
         int             iValue; // atoi() applied to 'value'
 
         // these are needed to override GameOS memory management
@@ -225,7 +224,7 @@ public:
     // specific data in the ListOfItems nodes.
     struct TableItem
     {
-        char * id;
+        PSTR  id;
         FieldList    fieldList;
         ExtraData * extraData;
 
@@ -369,7 +368,7 @@ public:
 
         virtual ~GameExtraData();
 
-        char *       name;
+        PSTR        name;
         GUID         gameGUID;
         PlayerList   players;
 
@@ -443,10 +442,10 @@ protected:
 
     struct FilterItem
     {
-        char *          key;
+        PSTR           key;
         FilterItemType  type;
         int             min,max; // min and max integer values 
-        char *          strVal; // string value
+        PSTR           strVal; // string value
     };
 
 protected:
@@ -532,13 +531,13 @@ private:
     uint32_t     m_minPlayers, m_maxPlayers;
     // game type
     bool    m_gameTypeOn;
-    char *  m_gameType;
+    PSTR   m_gameType;
     // player name
     bool    m_playerNameOn;
-    char *  m_playerName;
+    PSTR   m_playerName;
     // clan name
     bool    m_clanNameOn;
-    char *  m_clanName;
+    PSTR   m_clanName;
 
 };
 
@@ -578,7 +577,7 @@ public:
     void SetDynamicFiltering( bool val );
     bool GetDynamicFiltering( void ) const;
 
-    bool GetIndex( int index, char ** id );
+    bool GetIndex( int index, PSTR * id );
     int  GetCount( void ) const;
 
     // filtering operations
@@ -648,14 +647,14 @@ private:
     CList<SortStruct *> m_SortList; // for dynamic inserts
 
     // control vars for sorting
-    char * m_SortKey;
+    PSTR  m_SortKey;
     SortOrderType m_SortOrder;
     // extra vars needed or hash foreach callback
     PCSTR  m_SearchKey;
     PCSTR  m_SearchVal;
     PCSTR  m_SearchResult;
     // mdm - used to remember which item is selected in the list
-    char * m_Selection;
+    PSTR  m_Selection;
     // mdm - true if the list has been changed but not resorted
     double          m_LastSortTime; // gos_GetHiResTime() from the last sort 
     double          m_ResortFrequency; // maximum frequency at which we will resort the list
@@ -666,10 +665,4 @@ private:
 
 } // namespace Browse
 
-
-
-
-
-
-
-
+#endif

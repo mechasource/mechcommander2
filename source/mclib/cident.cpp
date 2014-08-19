@@ -47,7 +47,7 @@ void FullPathFileName::destroy (void)
 }
 
 //---------------------------------------------------------------------------
-void FullPathFileName::init (char * dir_path, PCSTR  name, char * ext)
+void FullPathFileName::init (PSTR  dir_path, PCSTR  name, PSTR  ext)
 {
 	destroy();
 
@@ -57,7 +57,7 @@ void FullPathFileName::init (char * dir_path, PCSTR  name, char * ext)
 	total_length++;
 
 
-	fullName = (char *)systemHeap->Malloc(total_length);
+	fullName = (PSTR )systemHeap->Malloc(total_length);
 	gosASSERT(fullName != NULL);
 	if (fullName == NULL)
 		return;
@@ -77,15 +77,15 @@ void FullPathFileName::init (char * dir_path, PCSTR  name, char * ext)
 	_strlwr_s(fullName, total_length);
 }
 
-void FullPathFileName::changeExt (char *from, char *to)
+void FullPathFileName::changeExt (PSTR from, PSTR to)
 {
 	if (strlen(from) != strlen(to))
 		return;
 
-	char *ext = strstr(fullName,from);
+	PSTR ext = strstr(fullName,from);
 	if (ext)
 	{
-		for (unsigned long i=0;i<strlen(to);i++)
+		for (ULONG i=0;i<strlen(to);i++)
 			ext[i] = to[i];
 	}
 }

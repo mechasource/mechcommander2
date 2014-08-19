@@ -48,8 +48,8 @@ extern long				level;
 extern long				CallStackLevel;
 extern long				execLineNumber;
 extern long				execStatementCount;
-extern char*			codeSegmentPtr;
-extern char*			statementStartPtr;
+extern PSTR			codeSegmentPtr;
+extern PSTR			statementStartPtr;
 extern TokenCodeType	codeToken;
 extern long				NumExecutions;
 
@@ -76,7 +76,7 @@ extern SymTableNodePtr	CurModuleIdPtr;
 extern long				CurModuleHandle;
 extern bool				CallModuleInit;
 extern StackItemPtr		StaticDataPtr;
-unsigned long*	OrderCompletionFlags = NULL;
+ULONG*	OrderCompletionFlags = NULL;
 extern ModuleEntryPtr	ModuleRegistry;
 extern ABLModulePtr*	ModuleInstanceRegistry;
 extern ABLModulePtr		CurModule;
@@ -88,7 +88,7 @@ extern bool				NewStateSet;
 long	dummyCount = 0;
 
 void execOrderReturn (long returnVal);
-void ABL_AddToProfileLog (char* profileString);
+void ABL_AddToProfileLog (PSTR profileString);
 void transState (SymTableNodePtr newState);
 
 //***************************************************************************
@@ -241,8 +241,8 @@ void execAssignmentStatement (SymTableNodePtr idPtr) {
 	else if (targetTypePtr->form == FRM_ARRAY) {
 		//-------------------------
 		// Copy the array/record...
-		char* dest = (char*)targetPtr;
-		char* src = tos->address;
+		PSTR dest = (PSTR)targetPtr;
+		PSTR src = tos->address;
 		long size = targetTypePtr->size;
 		memcpy(dest, src, size);
 		}
@@ -425,14 +425,14 @@ void execActualParams (SymTableNodePtr routineIdPtr) {
 				// Once it's verified to work, optimize...
 
 				long size = formalTypePtr->size;
-				char* src = tos->address;
-				char* dest = (char*)ABLStackMallocCallback((size_t)size);
+				PSTR src = tos->address;
+				PSTR dest = (PSTR)ABLStackMallocCallback((size_t)size);
 				if (!dest) {
 					char err[255];
 					sprintf(err, " ABL: Unable to AblStackHeap->malloc actual array param in module %s)", CurModule->getName());
 					ABL_Fatal(0, err);
 				}
-				char* savePtr = dest;
+				PSTR savePtr = dest;
 				memcpy(dest, src, size);
 				tos->address = savePtr;
 			}
@@ -452,7 +452,7 @@ void execSwitchStatement (void) {
 
 	getCodeToken();
 		
-	char* branchTableLocation = getCodeAddressMarker();
+	PSTR branchTableLocation = getCodeAddressMarker();
 
 	getCodeToken();
 	TypePtr switchExpressionTypePtr = execExpression();
@@ -470,7 +470,7 @@ void execSwitchStatement (void) {
 	getCodeToken();
 	long caseLabelCount = getCodeInteger();
 	bool done = false;
-	char* caseBranchLocation = NULL;
+	PSTR caseBranchLocation = NULL;
 	while (!done && caseLabelCount--) {
 		long caseLabelValue = getCodeInteger();
 		caseBranchLocation = getCodeAddress();
@@ -517,7 +517,7 @@ void execForStatement (void) {
 
 	//---------------------------------------
 	// Grab address of the end of the loop...
-	char* loopEndLocation = getCodeAddressMarker();
+	PSTR loopEndLocation = getCodeAddressMarker();
 
 	//--------------------------------------------------------
 	// Get the address of the control variable's stack item...
@@ -564,7 +564,7 @@ void execForStatement (void) {
 
 	//----------------------------
 	// Address of start of loop...
-	char* loopStartLocation = codeSegmentPtr;
+	PSTR loopStartLocation = codeSegmentPtr;
 
 	long controlValue = initialValue;
 
@@ -652,7 +652,7 @@ void execIfStatement (void) {
 
 	getCodeToken();
 
-	char* falseLocation = getCodeAddressMarker();
+	PSTR falseLocation = getCodeAddressMarker();
 
 	//-------------------------------
 	// Eval the boolean expression. Note that, unlike C/C++, the expression
@@ -709,7 +709,7 @@ void execIfStatement (void) {
 
 void execRepeatStatement (void) {
 
-	char* loopStartLocation = codeSegmentPtr;
+	PSTR loopStartLocation = codeSegmentPtr;
 
 	long iterations = 0;
 	do {
@@ -746,8 +746,8 @@ void execRepeatStatement (void) {
 void execWhileStatement (void) {
 
 	getCodeToken();
-	char* loopEndLocation = getCodeAddressMarker();
-	char* testLocation = codeSegmentPtr;
+	PSTR loopEndLocation = getCodeAddressMarker();
+	PSTR testLocation = codeSegmentPtr;
 
 	bool loopDone = false;
 	long iterations = 0;

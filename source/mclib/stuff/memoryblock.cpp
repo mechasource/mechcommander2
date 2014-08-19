@@ -55,7 +55,7 @@ MemoryBlockBase::MemoryBlockBase(
 	// the byte sizes of the initial block and delta blocks
 	//-------------------------------------------------------------------------
 	//
-	blockHeap = gos_CreateMemoryHeap(const_cast<char*>(name), 0, parent);
+	blockHeap = gos_CreateMemoryHeap(const_cast<PSTR>(name), 0, parent);
 	recordSize = (rec_size+3)&~3;
 	blockSize = start * recordSize;
 	deltaSize = delta * recordSize;

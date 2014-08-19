@@ -83,10 +83,10 @@ extern float worldUnitsPerMeter;
 extern TeamPtr homeTeam;
 extern float MechClassWeights[NUM_MECH_CLASSES];
 
-extern char* ExceptionGameMsg;
+extern PSTR ExceptionGameMsg;
 char ChunkDebugMsg[5120];
 
-unsigned long GameObject::spanMask = 0;
+ULONG GameObject::spanMask = 0;
 float GameObject::blockCaptureRange = 0.0;
 bool GameObject::initialize = false;
 
@@ -173,7 +173,7 @@ void WeaponShotInfo::init (GameObjectWatchID _attackerWID, long _masterId, float
 
 	Assert((damage >= 0.0) && (damage <= 255.0), (long)damage, " WeaponShotInfo.init: damage out of range ");
 	if (MPlayer && MPlayer->isServer()) {
-		damage = (float)((unsigned long)(damage * 4.0)) * 0.25;
+		damage = (float)((ULONG)(damage * 4.0)) * 0.25;
 		if ((entryAngle >= -45.0) && (entryAngle <= 45.0))
 			entryAngle = 0.0; //MECH_HIT_ARC_FRONT;
 		else if ((entryAngle  > -135.0) && (entryAngle < -45.0))
@@ -191,7 +191,7 @@ void WeaponShotInfo::setDamage (float _damage) {
 
 	damage = _damage;
 	if (MPlayer && MPlayer->isServer())
-		damage = (float)((unsigned long)(damage * 4.0)) * 0.25;
+		damage = (float)((ULONG)(damage * 4.0)) * 0.25;
 }
 
 //---------------------------------------------------------------------------
@@ -413,7 +413,7 @@ long NumWeaponFiresInLog = 0;
 long NumWeaponFiresInLogQueue = 0;
 GameObjectPtr WeaponFireAttackerLog[WEAPONFIRELOG_SIZE];
 GameObjectPtr WeaponFireTargetLog[WEAPONFIRELOG_SIZE];
-unsigned long WeaponFireDataLog[WEAPONFIRELOG_SIZE];
+ULONG WeaponFireDataLog[WEAPONFIRELOG_SIZE];
 File* WeaponFireLog = NULL;
 #endif
 
@@ -427,7 +427,7 @@ void DumpWeaponFireLog (void) {
 	for (long i = 0; i < NumWeaponFiresInLogQueue; i++) {
 		GameObjectPtr attacker = WeaponFireAttackerLog[i];
 		GameObjectPtr target = WeaponFireTargetLog[i];
-		unsigned long data = WeaponFireDataLog[i];
+		ULONG data = WeaponFireDataLog[i];
 
 		WeaponFireChunk chunk;
 		chunk.init();
@@ -725,7 +725,7 @@ void WeaponFireChunk::pack (GameObjectPtr attacker) {
 
 void WeaponFireChunk::unpack (GameObjectPtr attacker) {
 
-	unsigned long tempData = data;
+	ULONG tempData = data;
 
 	targetType = (tempData & WEAPONFIRECHUNK_TARGETTYPE_MASK);
 	tempData >>= WEAPONFIRECHUNK_TARGETTYPE_BITS;
@@ -1182,7 +1182,7 @@ void WeaponHitChunk::build (GameObjectPtr target, WeaponShotInfoPtr shotInfo, bo
 
 	if (!target)
 		Fatal(0, " WeaponHitChunk.build: NULL target ");
-	Assert(((float)((unsigned long)(shotInfo->damage * 4.0)) * 0.25) == shotInfo->damage, 0, " WeaponHitChunk.build: damage round error ");
+	Assert(((float)((ULONG)(shotInfo->damage * 4.0)) * 0.25) == shotInfo->damage, 0, " WeaponHitChunk.build: damage round error ");
 	if (target->isMover()) {
 		//---------------------------------------------------------------
 		// HACK fix for ammoExplosions without needing to save the weapon
@@ -1266,7 +1266,7 @@ void WeaponHitChunk::pack (void) {
 			Fatal(0, " Bad WeaponHitChunk Target Type ");
 	}
 
-	data |= (unsigned long)(damage * 4.0);
+	data |= (ULONG)(damage * 4.0);
 	data <<= WEAPONHITCHUNK_TARGETTYPE_BITS;
 
 	data |= targetType;
@@ -1276,7 +1276,7 @@ void WeaponHitChunk::pack (void) {
 		
 void WeaponHitChunk::unpack (void) {
 
-	unsigned long tempData = data;
+	ULONG tempData = data;
 
 	targetType = (tempData & WEAPONHITCHUNK_TARGETTYPE_MASK);
 	tempData >>= WEAPONHITCHUNK_TARGETTYPE_BITS;
@@ -1561,7 +1561,7 @@ void GameObject::init (bool create, ObjectTypePtr _type) {
 
 //---------------------------------------------------------------------------
 
-unsigned long GameObject::getWatchID (bool assign) {
+ULONG GameObject::getWatchID (bool assign) {
 
 	if ((watchID == 0) && assign)
 		ObjectManager->setWatchID(this);
@@ -1623,7 +1623,7 @@ float GameObject::relFacingTo (Stuff::Vector3D goal, long bodyLocation) {
 
 //---------------------------------------------------------------------------
 
-Stuff::Vector3D GameObject::relativePosition (float angle, float distance, unsigned long flags) {
+Stuff::Vector3D GameObject::relativePosition (float angle, float distance, ULONG flags) {
 
 	//--------------------------------------------------------
 	// Note that the angle should be -180 <= angle <= 180, and

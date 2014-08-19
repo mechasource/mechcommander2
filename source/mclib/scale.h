@@ -10,6 +10,6 @@
 //---------------------------------------------------------------------------
 // Include files
 
-long scaleDraw (MemoryPtr shapeTable, unsigned long frameNum, long sx, long sy, bool reverse, MemoryPtr fadeTable = NULL, bool scaleUp = 0);
+long scaleDraw (MemoryPtr shapeTable, ULONG frameNum, long sx, long sy, bool reverse, MemoryPtr fadeTable = NULL, bool scaleUp = 0);
 //---------------------------------------------------------------------------
 #endif

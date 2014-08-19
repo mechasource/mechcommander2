@@ -2,14 +2,17 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef AFONT_H
 #define AFONT_H
 
-#include <gameos.hpp>
+//#include <gameos.hpp>
 
-class aFont;
-
-
+// Error codes, local to this file...
+typedef enum __afont_constants {
+	FONT_NOT_LOADED			= -3,
+};
 
 class aFont
 {
@@ -23,14 +26,14 @@ public:
 	long init( long resourceID );
 	void destroy();
 	void render( PCSTR text, int XPos, int YPos, int areaWidth, 
-		int areaHeight, unsigned long color, bool bBold, int alignment );
+		int areaHeight, ULONG color, bool bBold, int alignment );
 
 	long load( PCSTR fontName);
-	unsigned long height() const;
-	unsigned long width( PCSTR st) const;
-	unsigned long height( PCSTR st, int areaWidth ) const;
-	void		  getSize( unsigned long& width, unsigned long& height, PCSTR pText );
-	
+	ULONG height() const;
+	ULONG width( PCSTR st) const;
+	ULONG height( PCSTR st, int areaWidth ) const;
+	void		  getSize( ULONG& width, ULONG& height, PCSTR pText );
+
 	static HGOSFONT3D loadFont( long resourceID, long& size );
 	long	getSize() { return size; }
 
@@ -42,10 +45,7 @@ private:
 	char			fontName[64]; // so we can copy fonts
 	long			size;
 	void copyData( const aFont& src );
-	
-};
 
-// Error codes, local to this file...
-#define	FONT_NOT_LOADED			-3
+};
 
 #endif

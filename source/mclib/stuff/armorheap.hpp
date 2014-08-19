@@ -9,7 +9,7 @@
 
 	extern void Set_Heap_Check(int type, int freq);
 	extern void Verify_Heap();
-	extern unsigned long Get_Heap_Size();
+	extern ULONG Get_Heap_Size();
 #endif
 
 #endif

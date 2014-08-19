@@ -42,13 +42,13 @@ class BitFlag
 	
 		HeapManagerPtr		flagHeap;
 		uint8_t		numBitsPerFlag;
-		unsigned long		rows;
-		unsigned long		columns;
+		ULONG		rows;
+		ULONG		columns;
 		uint8_t		maskValue;
-		unsigned long		divValue;
-		unsigned long		colWidth;
-		unsigned long		totalFlags;
-		unsigned long		totalRAM;
+		ULONG		divValue;
+		ULONG		colWidth;
+		ULONG		totalFlags;
+		ULONG		totalRAM;
 		
 	//Member Functions
 	//-----------------
@@ -69,7 +69,7 @@ class BitFlag
 			init();
 		}
 		
-		long init (unsigned long numRows, unsigned long numColumns, unsigned long initialValue = 0);
+		long init (ULONG numRows, ULONG numColumns, ULONG initialValue = 0);
 		void destroy (void);
 		
 		~BitFlag (void)
@@ -77,15 +77,15 @@ class BitFlag
 			destroy();
 		}
 	
-		void resetAll (unsigned long bits);
+		void resetAll (ULONG bits);
 			
-		void setFlag (unsigned long r, unsigned long c);
-		void clearFlag (unsigned long r, unsigned long c);
+		void setFlag (ULONG r, ULONG c);
+		void clearFlag (ULONG r, ULONG c);
 		
-		void setGroup (unsigned long r, unsigned long c, unsigned long length);
-		void clearGroup (unsigned long r, unsigned long c, unsigned long length);
+		void setGroup (ULONG r, ULONG c, ULONG length);
+		void clearGroup (ULONG r, ULONG c, ULONG length);
 		
-		uint8_t getFlag (unsigned long r, unsigned long c);
+		uint8_t getFlag (ULONG r, ULONG c);
 };
 
 //----------------------------------------------------------------------------------
@@ -96,10 +96,10 @@ class ByteFlag
 	protected:
 	
 		HeapManagerPtr		flagHeap;
-		unsigned long		rows;
-		unsigned long		columns;
-		unsigned long		totalFlags;
-		unsigned long		totalRAM;
+		ULONG		rows;
+		ULONG		columns;
+		ULONG		totalFlags;
+		ULONG		totalRAM;
 		
 		PANE				*flagPane;
 		WINDOW				*flagWindow;
@@ -122,8 +122,8 @@ class ByteFlag
 			init();
 		}
 		
-		long init (unsigned long numRows, unsigned long numColumns, unsigned long initialValue = 0);
-		void initTGA (char *tgaFileName);
+		long init (ULONG numRows, ULONG numColumns, ULONG initialValue = 0);
+		void initTGA (PSTR tgaFileName);
 
 		void destroy (void);
 		
@@ -147,18 +147,18 @@ class ByteFlag
 			return columns;
 		}
 
-		void resetAll (unsigned long byte);
+		void resetAll (ULONG byte);
 			
-		void setFlag (unsigned long r, unsigned long c);
-		void clearFlag (unsigned long r, unsigned long c);
+		void setFlag (ULONG r, ULONG c);
+		void clearFlag (ULONG r, ULONG c);
 		
-		void setGroup (unsigned long r, unsigned long c, unsigned long length);
-		void clearGroup (unsigned long r, unsigned long c, unsigned long length);
+		void setGroup (ULONG r, ULONG c, ULONG length);
+		void clearGroup (ULONG r, ULONG c, ULONG length);
 		
-		uint8_t getFlag (unsigned long r, unsigned long c);
+		uint8_t getFlag (ULONG r, ULONG c);
 		
-		void setCircle (unsigned long x, unsigned long y, unsigned long radius, uint8_t value);
-		void clearCircle (unsigned long x, unsigned long y, unsigned long radius, uint8_t value);
+		void setCircle (ULONG x, ULONG y, ULONG radius, uint8_t value);
+		void clearCircle (ULONG x, ULONG y, ULONG radius, uint8_t value);
 };
 
 //----------------------------------------------------------------------------------

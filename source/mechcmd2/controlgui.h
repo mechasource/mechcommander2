@@ -45,7 +45,7 @@ struct	ButtonData {
 	long			textureHeight;
 	int				fileWidth;
 	int				fileHeight;
-	unsigned long	textureHandle;
+	ULONG	textureHandle;
 	bool			textureRotated;
 };
 
@@ -66,7 +66,7 @@ public:
 	void makeAmbiguous( bool bAmbiguous );
 	void hide( bool );
 	void move( float deltaX, float deltaY );
-	void setColor( unsigned long newColor );
+	void setColor( ULONG newColor );
 	static void makeUVs( gos_VERTEX* vertices, int State, ButtonData& data );
 
 	static void initButtons( FitIniFile& file, long buttonCount, 
@@ -249,11 +249,11 @@ public:
 		}
 	}		
 
-	void	setRolloverHelpText( unsigned long textID );
+	void	setRolloverHelpText( ULONG textID );
 
 
-	void	setChatText( PCSTR playerName, PCSTR message, unsigned long backgroundColor, 
-		unsigned long textColor );
+	void	setChatText( PCSTR playerName, PCSTR message, ULONG backgroundColor, 
+		ULONG textColor );
 	void	toggleChat( bool setTeamOnly );
 	void eatChatKey();
 	void	cancelInfo();
@@ -262,7 +262,7 @@ public:
 
 	struct RectInfo
 	{
-		GUI_RECT rect;
+		RECT rect;
 		long color;
 	};
 
@@ -272,10 +272,10 @@ private:
 	{
 		char playerName[32];
 		char message[128];
-		unsigned long backgroundColor;
-		unsigned long time;
-		unsigned long messageLength; // number of lines
-		unsigned long chatTextColor;
+		ULONG backgroundColor;
+		ULONG time;
+		ULONG messageLength; // number of lines
+		ULONG chatTextColor;
 	};
 
 	ChatInfo		chatInfos[MAX_CHAT_COUNT]; // max five lines -- could change
@@ -284,10 +284,10 @@ private:
 	long			rectCount;
 
 	//static	ButtonFile		vehicleFileData[LAST_VEHICLE];
-	static unsigned long RUN;
-	static unsigned long WALK;
-	static unsigned long GUARD;
-	static unsigned long JUMP;
+	static ULONG RUN;
+	static ULONG WALK;
+	static ULONG GUARD;
+	static ULONG JUMP;
 
 	ControlButton*		buttons;
 	ControlButton*		vehicleButtons;
@@ -339,8 +339,8 @@ private:
 
 	StaticInfo*			videoInfos;
 	long				videoInfoCount;
-	GUI_RECT			videoRect;
-	GUI_RECT			videoTextRect;
+	RECT			videoRect;
+	RECT			videoTextRect;
 	MC2MoviePtr			bMovie;
 
 	StaticInfo*			timerInfos;
@@ -353,7 +353,7 @@ private:
 	float				rpFlashTime;
 	long				buttonToPress;
 
-	unsigned long		curOrder;
+	ULONG		curOrder;
 	bool				fireFromCurrentPos;
 	bool				addingVehicle;
 	bool				addingArtillery;

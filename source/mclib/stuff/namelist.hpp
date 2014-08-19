@@ -38,7 +38,7 @@ namespace Stuff {
 	//=======================================================================
 	// Notice:
 	//		In using ObjectNameList class, think of AddEntry sort of like a New
-	// in the sense that you MUST store the (char *) it returns in the name
+	// in the sense that you MUST store the (PSTR ) it returns in the name
 	// field of the class you are bonding ObjectNameList to so that when you
 	// DeleteEntry you can pass that exact same pointer back.  DeleteEntry
 	// does not do a find on the name you pass it.  It expects to receive the
@@ -157,9 +157,9 @@ namespace Stuff {
 		const void*
 			GetData() const
 				{ Check_Object(this); return dataReference; }
-		char*
+		PSTR
 			GetChar()
-				{Check_Object(this); return Cast_Pointer(char *,dataReference);}
+				{Check_Object(this); return Cast_Pointer(PSTR ,dataReference);}
 		PCSTR
 			GetChar() const
 				{

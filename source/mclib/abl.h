@@ -46,8 +46,8 @@ void ABLi_init (size_t runtimeStackSize, // = 20480,
 				void (*stackFreeCallback) (void* memBlock),
 				void (*codeFreeCallback) (void* memBlock),
 				void (*symbolFreeCallback) (void* memBlock),
-				long (*fileCreateCB) (void** file, char* fName),
-				long (*fileOpenCB) (void** file, char* fName),
+				long (*fileCreateCB) (void** file, PSTR fName),
+				long (*fileOpenCB) (void** file, PSTR fName),
 				long (*fileCloseCB) (void** file),
 				bool (*fileEofCB) (void* file),
 				long (*fileReadCB) (void* file, PUCHAR buffer, long length),
@@ -57,9 +57,9 @@ void ABLi_init (size_t runtimeStackSize, // = 20480,
 				long (*fileWriteCB) (void* file, PUCHAR buffer, long length),
 				long (*fileWriteByteCB) (void* file, uint8_t byte),
 				long (*fileWriteLongCB) (void* file, long value),
-				long (*fileWriteStringCB) (void* file, char* buffer),
-				void (*debuggerPrintCallback) (char* s),
-				void (*ablFatalCallback) (long code, char* s),
+				long (*fileWriteStringCB) (void* file, PSTR buffer),
+				void (*debuggerPrintCallback) (PSTR s),
+				void (*ablFatalCallback) (long code, PSTR s),
 				bool debugInfo = false,
 				bool debug = false,
 				bool profile = false);
@@ -72,13 +72,13 @@ void ABLi_setRealParam (ABLParamPtr paramList, long index, float value);
 
 void ABLi_deleteParamList (ABLParamPtr paramList);
 
-long ABLi_preProcess (char* sourceFileName,
+long ABLi_preProcess (PSTR sourceFileName,
 					  long* numErrors = NULL,
 					  long* numLinesProcessed = NULL,
 					  long* numFilesProcessed = NULL,
 					  bool printLines = false);
 
-ABLModulePtr ABLi_loadLibrary (char* sourceFileName,
+ABLModulePtr ABLi_loadLibrary (PSTR sourceFileName,
 					   long* numErrors = NULL,
 					   long* numLinesProcessed = NULL,
 					   long* numFilesProcessed = NULL,
@@ -104,15 +104,15 @@ void ABLi_close (void);
 
 bool ABLi_enabled (void);
 
-void ABLi_addFunction (char* name,
+void ABLi_addFunction (PSTR name,
 					   bool isOrder,
-					   char* paramList,
-					   char* returnType,
+					   PSTR paramList,
+					   PSTR returnType,
 					   void (*codeCallback)(void));
 
 void ABLi_setRandomCallbacks (void (*seedRandomCallback) (size_t seed),
 							  long (*randomCallback) (long range));
-void ABLi_setDebugPrintCallback (void (*ABLDebugPrintCallback) (char* s));
+void ABLi_setDebugPrintCallback (void (*ABLDebugPrintCallback) (PSTR s));
 void ABLi_setGetTimeCallback (size_t (*ABLGetTimeCallback) (void));
 
 void ABLi_setEndlessStateCallback (void (*endlessStateCallback) (UserFile* log));
@@ -124,10 +124,10 @@ bool ABLi_popBoolean (void);
 float ABLi_popIntegerReal (void);
 long ABLi_popAnything (ABLStackItem* value);
 
-char* ABLi_popCharPtr (void);
+PSTR ABLi_popCharPtr (void);
 long* ABLi_popIntegerPtr (void);
 float* ABLi_popRealPtr (void);
-char* ABLi_popBooleanPtr (void);
+PSTR ABLi_popBooleanPtr (void);
 
 void ABLi_pushInteger (long value);
 void ABLi_pushReal (float value);
@@ -137,7 +137,7 @@ long ABLi_peekInteger (void);
 float ABLi_peekReal (void);
 bool ABLi_peekBoolean (void);
 
-char* ABLi_peekCharPtr (void);
+PSTR ABLi_peekCharPtr (void);
 long* ABLi_peekIntegerPtr (void);
 float* ABLi_peekRealPtr (void);
 
@@ -146,8 +146,8 @@ void ABLi_pokeInteger (long val);
 void ABLi_pokeReal (float val);
 void ABLi_pokeBoolean (bool val);
 
-long ABLi_registerInteger (char* name, long* address, long numElements = 0);
-long ABLi_registerReal (char* name, float* address, long numElements = 0);
+long ABLi_registerInteger (PSTR name, long* address, long numElements = 0);
+long ABLi_registerReal (PSTR name, float* address, long numElements = 0);
 
 bool ABLi_getSkipOrder (void);
 void ABLi_resetOrders (void);

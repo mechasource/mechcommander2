@@ -74,7 +74,7 @@ namespace Stuff {
 	void
 		Convert_From_Ascii(
 			PCSTR  str,
-			char* value
+			PSTR value
 		);
 	void
 		Convert_From_Ascii(
@@ -189,7 +189,7 @@ namespace Stuff {
 		// create a c-string from MStringRepresentation method
 		// HACK - ECH 11/1/95 - Remove const to support 3rd party libs
 		//
-		operator char*() const;
+		operator PSTR() const;
 
 		//
 		// assignment method
@@ -250,7 +250,7 @@ namespace Stuff {
 		MStringRepresentation
 			GetNthToken(
 				size_t nth_token,
-				char *delimiters=NULL
+				PSTR delimiters=NULL
 			) const;
 
 		//
@@ -370,7 +370,7 @@ namespace Stuff {
 	// create a c-string from MStringRepresentation method
 	// HACK - ECH 11/1/95 - Remove const to support 3rd party libs
 	inline
-		MStringRepresentation::operator char*() const
+		MStringRepresentation::operator PSTR() const
    {
       Check_Object(this);
 //		Verify(stringText != NULL);
@@ -545,7 +545,7 @@ namespace Stuff {
 		// create a c-string from MString method
 		// HACK - ECH 11/1/95 - Remove const to support 3rd party libs
 		//
-		operator char*() const;
+		operator PSTR() const;
 
 		//
 		// assignment method
@@ -613,7 +613,7 @@ namespace Stuff {
 		MString
 			GetNthToken(
 				size_t nth_token,
-				char *delimiters=NULL
+				PSTR delimiters=NULL
 			) const;
 
 		//
@@ -745,7 +745,7 @@ namespace Stuff {
 	// create a c-string from MString method
 	// HACK - ECH 11/1/95 - Remove const to support 3rd party libs
 	inline
-		MString::operator char*() const
+		MString::operator PSTR() const
 	{
 		Check_Object(representation);
 //		Verify(representation->stringText != NULL);
@@ -853,7 +853,7 @@ namespace Stuff {
 	inline MString
 		MString::GetNthToken(
 			size_t nth_token,
-			char *delimiters
+			PSTR delimiters
 		) const
 	{
 		Check_Object(representation);

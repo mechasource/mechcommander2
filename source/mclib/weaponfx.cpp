@@ -27,7 +27,7 @@ void WeaponEffects::destroy (void)
 }
 		
 //---------------------------------------------------------------------------------
-void WeaponEffects::init (char *effectCSVFileName)
+void WeaponEffects::init (PSTR effectCSVFileName)
 {
 	FullPathFileName effectsName;
 	effectsName.init(objectPath,effectCSVFileName,".csv");

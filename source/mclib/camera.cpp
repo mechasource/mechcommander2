@@ -552,7 +552,7 @@ void Camera::getClosestVertex (Stuff::Vector2DOf<long> &screenPos, long &row, lo
 	// where we are by finding the vertex closest to the clicked 
 	// position and returning its 3d pos.
 	VertexPtr topVertex = land->getVertexList();
-	unsigned long numVertices = land->getNumVertices();
+	ULONG numVertices = land->getNumVertices();
 	VertexPtr closestVertex = NULL;
 	long whichVertex = 0;
 
@@ -728,7 +728,7 @@ inline bool overThisTile (TerrainQuadPtr tile, long mouseX, long mouseY)
 }
 		
 //---------------------------------------------------------------------------
-unsigned long Camera::inverseProject (Stuff::Vector2DOf<long> &screenPos, Stuff::Vector3D &point)
+ULONG Camera::inverseProject (Stuff::Vector2DOf<long> &screenPos, Stuff::Vector3D &point)
 {
 	if (turn < 4)
 	{
@@ -739,7 +739,7 @@ unsigned long Camera::inverseProject (Stuff::Vector2DOf<long> &screenPos, Stuff:
 	//-----------------------------------------------------------
 	// Pick the tile that has the vertex with the LEAST Z value.
 	TerrainQuadPtr currentTile = land->getQuadList();
-	unsigned long numTiles = land->getNumQuads();
+	ULONG numTiles = land->getNumQuads();
 	TerrainQuadPtr closestTiles[100];
 	memset(closestTiles,0,sizeof(TerrainQuadPtr)*100);
 

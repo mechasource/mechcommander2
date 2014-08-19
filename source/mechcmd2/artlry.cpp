@@ -292,7 +292,7 @@ void ArtilleryChunk::pack (void) {
 		
 void ArtilleryChunk::unpack (void) {
 
-	unsigned long tempData = data;
+	ULONG tempData = data;
 
 	commanderId = (tempData & ARTILLERYCHUNK_COMMANDERID_MASK);
 	tempData >>= ARTILLERYCHUNK_COMMANDERID_BITS;
@@ -382,7 +382,7 @@ void ArtilleryType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long ArtilleryType::init (FilePtr objFile, unsigned long fileSize) {
+long ArtilleryType::init (FilePtr objFile, ULONG fileSize) {
 
 	long result = 0;
 	

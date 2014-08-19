@@ -59,7 +59,7 @@ int ChatWindow::initInstance()
 	if ( NO_ERR != file.open( path ) )
 	{
 		char buffer2[512];
-		sprintf( buffer2, "couldn't open file %s", (char*)path );
+		sprintf( buffer2, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, buffer2 );
 		return false;	
 
@@ -104,7 +104,7 @@ bool ChatWindow::isExpanded()
 {
 	return getButton( MP_CHAT_EXPAND )->isPressed();
 }
-int ChatWindow::handleMessage( unsigned long, unsigned long who )
+int ChatWindow::handleMessage( ULONG, ULONG who )
 {
 	if ( who == MP_CHAT_HELPTOGGLE )
 	{
@@ -154,7 +154,7 @@ void ChatWindow::render( int xOffset, int yOffset )
 	
 	if ( getButton( MP_CHAT_EXPAND )->isPressed() )
 	{
-		GUI_RECT rect = { edits[0].globalX(), edits[0].globalY(), listBox.globalRight(), edits[0].globalBottom() };
+		RECT rect = { edits[0].globalX(), edits[0].globalY(), listBox.globalRight(), edits[0].globalBottom() };
 		drawRect( rect, 0xff000000 );
 		chatWidget.render( xOffset, yOffset );
 		edits[0].move(xOffset, yOffset );
@@ -163,7 +163,7 @@ void ChatWindow::render( int xOffset, int yOffset )
 	}
 	else if ( !getButton( MP_CHAT_HELPTOGGLE )->isPressed() )
 	{
-		GUI_RECT rect = { edits[0].globalX(), edits[0].globalY(), listBox.globalRight(), edits[0].globalBottom() };
+		RECT rect = { edits[0].globalX(), edits[0].globalY(), listBox.globalRight(), edits[0].globalBottom() };
 		drawRect( rect, 0xff000000 );
 		edits[0].move(xOffset, yOffset );
 		edits[0].render();
@@ -199,7 +199,7 @@ void ChatWindow::update()
 		rects[2].setColor( rects[2].getColor( ) | 0xff000000 );
 	
 
-	char* chatTexts[MAX_STORED_CHATS];
+	PSTR chatTexts[MAX_STORED_CHATS];
 	long playerIDs[MAX_STORED_CHATS];
 
 	long count = MAX_STORED_CHATS;
@@ -223,7 +223,7 @@ void ChatWindow::update()
 				MPlayer->getPlayerInfo( MPlayer->commanderID )->team : -1;
 			if ( text.Length() )
 			{
-				MPlayer->sendChat( 0, team, (char*)(PCSTR)text );
+				MPlayer->sendChat( 0, team, (PSTR)(PCSTR)text );
 			}
 			edits[0].setEntry( "" );
 			edits[0].setFocus( false );
@@ -240,7 +240,7 @@ void ChatWindow::update()
 
 }
 
-void ChatWindow::refillListBox( aListBox& listBox, char** chatTexts, long* playerIDs, ChatMessageItem* pItems, long& curItem, long itemCount, long maxCount )
+void ChatWindow::refillListBox( aListBox& listBox, PSTR* chatTexts, long* playerIDs, ChatMessageItem* pItems, long& curItem, long itemCount, long maxCount )
 {
 	long linesToAdd = 0;
 	for ( int i = 0; i < itemCount && i < maxCount; i++ )
@@ -320,7 +320,7 @@ void ChatWidget::init( )
 	if ( NO_ERR != file.open( path ) )
 	{
 		char buffer2[512];
-		sprintf( buffer2, "couldn't open file %s", (char*)path );
+		sprintf( buffer2, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, buffer2 );
 		return;
 
@@ -375,7 +375,7 @@ int ChatMessageItem::setText( PCSTR pText )
 	playerText.setText( pText );
 	lineCount = 1;
 
-	unsigned long height = playerText.font.height( pText, playerText.width() );
+	ULONG height = playerText.font.height( pText, playerText.width() );
 	int retVal = 1;
 	if ( height > playerText.font.height() * 2 )
 	{

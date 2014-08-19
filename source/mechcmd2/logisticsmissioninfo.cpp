@@ -204,7 +204,7 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 				
 				FitIniFile missionFile;
 				
-				if ( NO_ERR != missionFile.open( (char*)(PCSTR)path ) )
+				if ( NO_ERR != missionFile.open( (PSTR)(PCSTR)path ) )
 				{
 					char errorStr[256];
 					sprintf( errorStr, "couldn't open file %s", fileName );
@@ -275,7 +275,7 @@ void LogisticsMissionInfo::readMissionInfo( FitIniFile& file, LogisticsMissionIn
 	//Assert( result == NO_ERR, 0, "couldn't find the MissionNameUseResourceString" );
 	if ( bRes )
 	{
-		unsigned long lRes;
+		ULONG lRes;
 		result = file.readIdULong( "MissionNameResourceStringID", lRes );
 		Assert( result == NO_ERR, 0, "couldn't find the MissionNameResourceStringID" );
 		cLoadString( lRes, missionName, 255 );
@@ -297,7 +297,7 @@ void LogisticsMissionInfo::readMissionInfo( FitIniFile& file, LogisticsMissionIn
 	result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
 	if (NO_ERR == result && tmpBool )
 	{
-		unsigned long tmpInt = 0;
+		ULONG tmpInt = 0;
 		result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
 		if (NO_ERR == result)
 		{
@@ -397,7 +397,7 @@ long LogisticsMissionInfo::load( FitIniFile& file )
 		sprintf( header, "Mission%ld", i );
 		file.readIdLong( header, cnt );
 
-		MissionInfo* pInfo = pGroup->infos[(unsigned long)cnt];
+		MissionInfo* pInfo = pGroup->infos[(ULONG)cnt];
 
 		pInfo->completed = 1;
 		numberCompleted ++;
@@ -442,7 +442,7 @@ long LogisticsMissionInfo::load( FitIniFile& file )
 
 			if ( NO_ERR == file.readIdString( header, tmp, 255 ) )
 			{
-				char* pfName = new char[strlen( tmp )+1 ];
+				PSTR pfName = new char[strlen( tmp )+1 ];
 				strcpy( pfName, tmp );
 				additionalPurchaseFiles.Append( pfName );
 				i++;
@@ -608,7 +608,7 @@ long LogisticsMissionInfo::setNextMission( PCSTR missionName )
 				
 			FitIniFile missionFile;
 			
-			if ( NO_ERR != missionFile.open( (char*)(PCSTR)path ) )
+			if ( NO_ERR != missionFile.open( (PSTR)(PCSTR)path ) )
 			{
 				char errorStr[256];
 				sprintf( errorStr, "couldn't open file %s", missionName );
@@ -734,7 +734,7 @@ void LogisticsMissionInfo::setSingleMission( PCSTR missionFileName )
 		
 	FitIniFile missionFile;
 	
-	if ( NO_ERR != missionFile.open( (char*)(PCSTR)path ) )
+	if ( NO_ERR != missionFile.open( (PSTR)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", missionName );
@@ -1080,7 +1080,7 @@ void				LogisticsMissionInfo::addBonusPurchaseFile( PCSTR fileName )
 	if ( !fileName )
 		return;
 
-	char* pNewFile = new char[strlen( fileName )+1];
+	PSTR pNewFile = new char[strlen( fileName )+1];
 	strcpy( pNewFile, fileName ); 
 
  	additionalPurchaseFiles.Append( pNewFile );

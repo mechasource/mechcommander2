@@ -45,7 +45,7 @@
 #define mis_PLAYER_WIN_SMALL 			4
 #define mis_PLAYER_WIN_BIG	 			5
 
-extern unsigned long scenarioResult;
+extern ULONG scenarioResult;
 
 //----------------------------------------------------------------------------------
 // These are placeholders for the scenario specific objects.  This allows us to
@@ -57,7 +57,7 @@ extern unsigned long scenarioResult;
 struct Part
 {
 	GameObjectWatchID	objectWID;			//Pointer to my physical incarnation
-	unsigned long		objNumber;			//What kind of object am I?
+	ULONG		objNumber;			//What kind of object am I?
 	DWORD				baseColor;			//Base color of mech -- Overrides the RED in RGB
 	DWORD				highlightColor1;	//First Highlight Color -- Overrides the GREEN in RGB
 	DWORD				highlightColor2;	//Second Highlight Color -- Overrides the BLUE in RGB
@@ -67,16 +67,16 @@ struct Part
 	Stuff::Vector3D		position;			//Where do I start?  (relative to area)
 	float				velocity;			//How fast am I going?
 	float				rotation;			//Which direction am I facing?
-	unsigned long		gestureId;			//What gesture do I start in?
+	ULONG		gestureId;			//What gesture do I start in?
 	char				alignment;			//Who do I fight for?
 	char				teamId;				//Which team am I on?
 	long				commanderID;		//Used when setting up multiplayer
 	char				squadId;				//Which team am I on?
 	char				myIcon;				//If set, start with Icon on Screen for this part.
-	unsigned long		controlType;		//How am I controlled?
-	unsigned long		controlDataType;	//What data do you need to control me?
+	ULONG		controlType;		//How am I controlled?
+	ULONG		controlDataType;	//What data do you need to control me?
 	char				profileName[9];		//Name of Object Profile file.
-	unsigned long		pilot;				//Name of Pilot File.
+	ULONG		pilot;				//Name of Pilot File.
 	bool				captureable;		//Is this a capturable "enemy" mech?
 	DWORD				variantNum;			//Variant number of the Part.
 
@@ -90,7 +90,7 @@ typedef Part *PartPtr;
 // This is the struct definition for the Scenario Objectives.
 // These can be displayed in a window.  For now they are drawn with just text.
 // There are a whole series of ABL commands to address these objectives.
-typedef unsigned long	ObjectiveType;
+typedef ULONG	ObjectiveType;
 #define					InvisibleGoal	-1
 #define					PrimaryGoal		0
 #define					SecondaryGoal	1
@@ -98,7 +98,7 @@ typedef unsigned long	ObjectiveType;
 #define					BonusGoal		3
 #define 				InvalidGoal		9999
 
-typedef unsigned long	ObjectiveStatus;
+typedef ULONG	ObjectiveStatus;
 #define					Incomplete		0
 #define					Success			1
 #define					Failed			2
@@ -165,7 +165,7 @@ class Mission
 		ABLParamPtr						missionParams;
 		SymTableNodePtr					missionBrainCallback;
 										
-		unsigned long					numParts;
+		ULONG					numParts;
 		PartPtr							parts;
 										
 		bool							active;
@@ -176,14 +176,14 @@ class Mission
 	public:								
 
 		static bool						terminationCounterStarted;
-		static unsigned long			terminationResult;
+		static ULONG			terminationResult;
 
-		unsigned long					numObjectives;
+		ULONG					numObjectives;
 		ObjectivePtr					objectives;
 		float						m_timeLimit;
 		//CObjectives						missionObjectives;
 		//int						numPrimaryObjectives;
-		unsigned long					duration;
+		ULONG					duration;
 		bool							warning1;
 		bool							warning2;
 										
@@ -255,9 +255,9 @@ class Mission
 			init();
 		}
 
-		bool calcComplexDropZones (char* missionName, char dropZoneList[MAX_MC_PLAYERS]);
+		bool calcComplexDropZones (PSTR missionName, char dropZoneList[MAX_MC_PLAYERS]);
 
-		void init (char *missionName, long loadType, long dropZoneID, Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], long numMoversPerCommander);
+		void init (PSTR missionName, long loadType, long dropZoneID, Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], long numMoversPerCommander);
 
 		static void initBareMinimum();
 		
@@ -297,7 +297,7 @@ class Mission
 
 		GameObjectPtr getPartObject (long partNumber)
 		{
-			if ((partNumber <= 0) || ((unsigned long)partNumber > numParts))
+			if ((partNumber <= 0) || ((ULONG)partNumber > numParts))
 				return NULL;
 			if (!ObjectManager)
 				return(NULL);
@@ -310,7 +310,7 @@ class Mission
 		
 		long removeMover (MoverPtr mover);
 
-		void tradeMover (MoverPtr mover, long newTeamID, long newCommanderID, char* pilotFileName, char* brainFileName);
+		void tradeMover (MoverPtr mover, long newTeamID, long newCommanderID, PSTR pilotFileName, PSTR brainFileName);
 
 		void createPartObject (long objectId, MoverPtr mover);
 		
@@ -355,7 +355,7 @@ class Mission
 			return missionId;
 		}
 
-		char * getMissionName (void)
+		PSTR  getMissionName (void)
 		{
 			return missionScriptName;
 		}
@@ -399,7 +399,7 @@ extern float globalMissionValues [];
 extern uint8_t godMode;
 
 extern Mission *mission;
-extern unsigned long scenarioResult;
+extern ULONG scenarioResult;
 
 extern UserHeapPtr missionHeap;
 //----------------------------------------------------------------------------------

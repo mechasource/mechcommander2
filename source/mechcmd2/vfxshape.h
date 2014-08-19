@@ -26,7 +26,7 @@ class Shape
 
 		MemoryPtr			frameList;		//This is binary image of VFX file
 		MemoryPtr			stupidHeader;
-		unsigned long		lastTurnUsed;
+		ULONG		lastTurnUsed;
 		Shape				*next;
 		AppearanceTypePtr	owner;
 

@@ -83,9 +83,9 @@ class WeaponEffects
 		
 		void destroy (void);
 		
-		void init (char *effectCSVFileName);
+		void init (PSTR effectCSVFileName);
 		
-		char *GetEffectName (long effectId)
+		PSTR GetEffectName (long effectId)
 		{
 			if ((effectId >= 0) && (effectId < numEffects))
 			{
@@ -95,7 +95,7 @@ class WeaponEffects
 			return mc2_word_none;
 		}
 		
-		char *GetEffectMuzzleFlashName (long effectId)
+		PSTR GetEffectMuzzleFlashName (long effectId)
 		{
 			if ((effectId >= 0) && (effectId < numEffects))
 			{
@@ -105,7 +105,7 @@ class WeaponEffects
 			return mc2_word_none;
 		}
 		
-		char *GetEffectHitName (long effectId)
+		PSTR GetEffectHitName (long effectId)
 		{
 			if ((effectId >= 0) && (effectId < numEffects))
 			{
@@ -115,7 +115,7 @@ class WeaponEffects
 			return mc2_word_none;
 		}
 		
-		char *GetEffectMissName (long effectId)
+		PSTR GetEffectMissName (long effectId)
 		{
 			if ((effectId >= 0) && (effectId < numEffects))
 			{

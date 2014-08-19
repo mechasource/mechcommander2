@@ -31,7 +31,7 @@
 
 //----------
 // EXTERNALS
-extern char*		tokenp;
+extern PSTR		tokenp;
 extern long			execLineNumber;
 extern long			lineNumber;
 extern long			FileNumber;
@@ -44,7 +44,7 @@ extern char			wordString[];
 //----------------------
 // SYNTAX ERROR messages
 
-char* syntaxErrorMessages[] = {
+PSTR syntaxErrorMessages[] = {
 	"No syntax error",										// 0
 	"Syntax error",
 	"Too many errors",
@@ -120,7 +120,7 @@ char* syntaxErrorMessages[] = {
 //-----------------------
 // RUNTIME ERROR messages
 
-char* runtimeErrorMessages[] = {
+PSTR runtimeErrorMessages[] = {
 	"Runtime stack overflow",
 	"Infinite Loop",
 	"Nested function call",
@@ -144,14 +144,14 @@ extern DebuggerPtr debugger;
 
 //***************************************************************************
 
-void ABL_Fatal (long errCode, char* s) {
+void ABL_Fatal (long errCode, PSTR s) {
 
 	ABLFatalCallback(errCode, s);
 }
 
 //---------------------------------------------------------------------------
 
-void ABL_Assert (bool test, long errCode, char* s) {
+void ABL_Assert (bool test, long errCode, PSTR s) {
 
 	test; errCode; s;
 #ifdef _DEBUG

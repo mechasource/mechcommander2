@@ -64,7 +64,7 @@ extern bool InEditor;
 // At Present, this class doesn't load textures til it needs 'em.  Once loaded
 // they are loaded forever.  This may not be a problem, but if it becomes one,
 // the textures can be preloaded during the init.
-long TerrainTextures::init (char *fileName, char *baseName)
+long TerrainTextures::init (PSTR fileName, PSTR baseName)
 {
 	if (InEditor)
 		quickLoad = false;
@@ -139,7 +139,7 @@ long TerrainTextures::init (char *fileName, char *baseName)
 	//gosASSERT(result == NO_ERR);
 	numTransitions = MAX_MC2_TRANSITIONS;
 
-	unsigned long terrainTileCacheSize = 0;
+	ULONG terrainTileCacheSize = 0;
 	result = textureFile.readIdULong("TextureMemSize",terrainTileCacheSize);
 	gosASSERT(result == NO_ERR);
 
@@ -149,7 +149,7 @@ long TerrainTextures::init (char *fileName, char *baseName)
 	result = tileRAMHeap->init(terrainTileCacheSize,"TextureRAM");
 	gosASSERT(result == NO_ERR);
 
-	localBaseName = (char *)tileRAMHeap->Malloc(strlen(baseName)+1);
+	localBaseName = (PSTR )tileRAMHeap->Malloc(strlen(baseName)+1);
 	strcpy(localBaseName,baseName);
 
 	//--------------------------------------------------------
@@ -196,13 +196,13 @@ long TerrainTextures::init (char *fileName, char *baseName)
 			char tmpy[2048];
 			result = textureFile.readIdString("TerrainName",tmpy,2047);
 			gosASSERT(result == NO_ERR);
-			types[i].terrainName = (char *)tileRAMHeap->Malloc(strlen(tmpy)+1);
+			types[i].terrainName = (PSTR )tileRAMHeap->Malloc(strlen(tmpy)+1);
 			gosASSERT(types[i].terrainName != NULL);
 			strcpy(types[i].terrainName,tmpy);
 	
 			result = textureFile.readIdString("MaskName",tmpy,2047);
 			gosASSERT(result == NO_ERR);
-			types[i].maskName = (char *)tileRAMHeap->Malloc(strlen(tmpy)+1);
+			types[i].maskName = (PSTR )tileRAMHeap->Malloc(strlen(tmpy)+1);
 			gosASSERT(types[i].maskName != NULL);
 			strcpy(types[i].maskName,tmpy);
 	
@@ -285,7 +285,7 @@ long TerrainTextures::init (char *fileName, char *baseName)
 		char tmpy[2048];
 		result = textureFile.readIdString("OverlayName",tmpy,2047);
 		gosASSERT(result == NO_ERR);
-		overlays[i].overlayName = (char *)tileRAMHeap->Malloc(strlen(tmpy)+1);
+		overlays[i].overlayName = (PSTR )tileRAMHeap->Malloc(strlen(tmpy)+1);
 		gosASSERT(overlays[i].overlayName != NULL);
 		strcpy(overlays[i].overlayName,tmpy);
 
@@ -340,7 +340,7 @@ long TerrainTextures::init (char *fileName, char *baseName)
 		char tmpy[2048];
 		result = textureFile.readIdString("DetailName",tmpy,2047);
 		gosASSERT(result == NO_ERR);
-		details[i].detailName = (char *)tileRAMHeap->Malloc(strlen(tmpy)+1);
+		details[i].detailName = (PSTR )tileRAMHeap->Malloc(strlen(tmpy)+1);
 		gosASSERT(details[i].detailName != NULL);
 		strcpy(details[i].detailName,tmpy);
 
@@ -424,7 +424,7 @@ long TerrainTextures::textureFromMemory (MemoryPtr ourRAM, long mipLevel)
 }
 	
 //---------------------------------------------------------------------------
-long TerrainTextures::loadTextureMemory (char *textureName, long mipSize)
+long TerrainTextures::loadTextureMemory (PSTR textureName, long mipSize)
 {
 	textures[nextAvailable].mcTextureNodeIndex = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 
@@ -437,7 +437,7 @@ long TerrainTextures::loadTextureMemory (char *textureName, long mipSize)
 }	
 
 //---------------------------------------------------------------------------
-long TerrainTextures::loadDetailMemory (char *textureName, long mipSize)
+long TerrainTextures::loadDetailMemory (PSTR textureName, long mipSize)
 {
 	textures[nextAvailable].mcTextureNodeIndex = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DontShrink);
 
@@ -450,7 +450,7 @@ long TerrainTextures::loadDetailMemory (char *textureName, long mipSize)
 }	
 
 //---------------------------------------------------------------------------
-long TerrainTextures::loadOverlayMemory (char *textureName)
+long TerrainTextures::loadOverlayMemory (PSTR textureName)
 {
 	textures[nextAvailable].mcTextureNodeIndex = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 
@@ -654,7 +654,7 @@ void TerrainTextures::initMask (long typeNum)
 }	
 
 //---------------------------------------------------------------------------
-long TerrainTextures::initOverlay (long overlayNum, long txmNum, char *txmName)
+long TerrainTextures::initOverlay (long overlayNum, long txmNum, PSTR txmName)
 {
 	long txmResult = -1;
 	for (long j=0;j<MC_MAX_MIP_LEVELS;j++)
@@ -799,7 +799,7 @@ long TerrainTextures::getOverlayHandle( Overlays id, int Offset )
 
 }
 
-void TerrainTextures::getOverlayInfoFromHandle( long handle, Overlays& id, unsigned long& Offset )
+void TerrainTextures::getOverlayInfoFromHandle( long handle, Overlays& id, ULONG& Offset )
 {
 	id = INVALID_OVERLAY;
 	Offset = -1;

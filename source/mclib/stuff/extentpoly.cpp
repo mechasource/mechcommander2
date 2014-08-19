@@ -28,7 +28,7 @@ ExtentPoly::ExtentPoly(MemoryStream *stream)
 //
 ExtentPoly::ExtentPoly(
 		FileStream *file_stream,
-		char *page_name
+		PSTR page_name
 		)
 {
 	Check_Object(this);
@@ -40,7 +40,7 @@ ExtentPoly::ExtentPoly(
 	// Parse fcurve page
 	//------------------
 	//
-	char *assign_delim = "=";
+	PSTR assign_delim = "=";
 	MString line_string;
 
 	// Read page
@@ -65,7 +65,7 @@ ExtentPoly::ExtentPoly(
 	Register_Object(vertex);
 
 	static char buffer[512];
-	char *ptr;
+	PSTR ptr;
 
 	for (int i=0;i<numberOfVertices;i++)
 	{

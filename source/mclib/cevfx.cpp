@@ -303,7 +303,7 @@ long mechRGBLookup2[56] =
 long mechCmdr1PaletteLookup[256];
 
 //---------------------------------------------------------------------------
-void VFXShapeElement::init (MemoryPtr _shape, long _x, long _y, long frame, bool rev, unsigned long *fTable, float _z, float tZ)
+void VFXShapeElement::init (MemoryPtr _shape, long _x, long _y, long frame, bool rev, ULONG *fTable, float _z, float tZ)
 {
 	gosASSERT(_shape != NULL);
 

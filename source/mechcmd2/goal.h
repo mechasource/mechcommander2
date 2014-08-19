@@ -32,7 +32,7 @@ typedef enum {
 
 typedef union {
 	struct {
-		unsigned long		WID;
+		ULONG		WID;
 	} object;
 	struct {
 		short				minRow;
@@ -53,7 +53,7 @@ typedef struct _GoalPathFindInfo {
 	long					cost;
 	long					parent;
 	long					fromIndex;
-	unsigned long			flags;
+	ULONG			flags;
 	long					g;
 	long					hPrime;
 	long					fPrime;
@@ -94,9 +94,9 @@ class GoalObject {
 			destroy();
 		}
 
-		void initObject (char* name, GameObjectPtr obj);
+		void initObject (PSTR name, GameObjectPtr obj);
 
-		void initRegion (char* name, long minRow, long minCol, long maxRow, long maxCol);
+		void initRegion (PSTR name, long minRow, long minCol, long maxRow, long maxCol);
 
 		void addLink (GoalObjectPtr gobject, GoalLinkType linkType);
 
@@ -148,9 +148,9 @@ class GoalManager {
 
 		//long setControl (GoalObjectPtr controller, GoalObjectPtr controllee);
 
-		GoalObjectPtr addRegion (GoalObjectPtr parent, GoalLinkType linkType, char* name, long minRow, long minCol, long maxRow, long maxCol);
+		GoalObjectPtr addRegion (GoalObjectPtr parent, GoalLinkType linkType, PSTR name, long minRow, long minCol, long maxRow, long maxCol);
 
-		GoalObjectPtr addObject (GoalObjectPtr parent, GoalLinkType linkType, char* name, GameObjectPtr object);
+		GoalObjectPtr addObject (GoalObjectPtr parent, GoalLinkType linkType, PSTR name, GameObjectPtr object);
 
 		void clear (void);
 

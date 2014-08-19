@@ -99,7 +99,7 @@ bool TriggerAreaManager::isHit (long areaHandle) {
 }
 
 //---------------------------------------------------------------------------
-void DEBUGWINS_print (char* s, long window);
+void DEBUGWINS_print (PSTR s, long window);
 
 void TriggerAreaManager::setHit (MoverPtr mover) {
 

@@ -217,19 +217,19 @@ class BattleMechType : public ObjectType {
 		bool				isEndoSteel;								// has endosteel frame?
 		uint8_t		maxInternalStructure[NUM_BODY_LOCATIONS];
 
-		char*				anim;
+		PSTR				anim;
 		uint8_t		moveAnimSpeed[3];
 
-		//unsigned long		controlType;								// Who controls us, Player, AI or NET?
-		//unsigned long		controlDataType;							// which data set do we use.
+		//ULONG		controlType;								// Who controls us, Player, AI or NET?
+		//ULONG		controlDataType;							// which data set do we use.
 		MoverDynamics		dynamics;									// what dynamics do we use.
 
 //----------------------------------------------------------------------------------------
 // NO MORE HOTSPOT DATA HERE.  ALL RESIDES IN APPEARANCE NOW!  Including footprint type!
 
-		unsigned long		rightArmDebrisId;							//Id of the shot off right arm.
-		unsigned long		leftArmDebrisId;							//Id of the shot off left arm.
-		unsigned long		destroyedDebrisId;							//Id of the destroyed mech piece.
+		ULONG		rightArmDebrisId;							//Id of the shot off right arm.
+		ULONG		leftArmDebrisId;							//Id of the shot off left arm.
+		ULONG		destroyedDebrisId;							//Id of the destroyed mech piece.
 		long				moveType;
 
 		long				crashAvoidSelf;
@@ -257,7 +257,7 @@ class BattleMechType : public ObjectType {
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, unsigned long fileSize);
+		virtual long init (FilePtr objFile, ULONG fileSize);
 		
 		virtual GameObjectPtr createInstance (void);
 		
@@ -475,7 +475,7 @@ class BattleMech : public Mover {
 			return(MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponHeat());
 		}
 
-		virtual void pilotingCheck (unsigned long situation = 0, float modifier = 0.0);
+		virtual void pilotingCheck (ULONG situation = 0, float modifier = 0.0);
 
 		virtual void mineCheck (void);
 
@@ -523,11 +523,11 @@ class BattleMech : public Mover {
 
 		virtual long buildStatusChunk (void);
 
-		virtual long handleStatusChunk (long updateAge, unsigned long chunk);
+		virtual long handleStatusChunk (long updateAge, ULONG chunk);
 
 		virtual long buildMoveChunk (void);
 
-		virtual long handleMoveChunk (unsigned long chunk);
+		virtual long handleMoveChunk (ULONG chunk);
 
 		virtual void calcCriticalHit (long hitLocation);
 
@@ -669,7 +669,7 @@ class BattleMech : public Mover {
 
 		float calcModerateSpeed (void);
 
-		long calcSpriteSpeed (float speed, unsigned long flags, long& state, long& throttle);
+		long calcSpriteSpeed (float speed, ULONG flags, long& state, long& throttle);
 
 		void forceTorsoAlign (void) {
 			torsoRotation = rightArmRotation = leftArmRotation = 0.0;
@@ -689,7 +689,7 @@ class BattleMech : public Mover {
 		
 		void damageLoadedComponents (void);
 
-		virtual char* getIfaceName(void) {
+		virtual PSTR getIfaceName(void) {
 			return(longName);
 		}
 

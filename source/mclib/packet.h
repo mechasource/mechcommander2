@@ -43,7 +43,7 @@
 #define ANY_PACKET_TYPE				0x07
 #define OFFSET_MASK         		((1L << TYPE_SHIFT) - 1L)
 
-#define GetPacketType(offset) 		(((unsigned long)offset)>>TYPE_SHIFT)
+#define GetPacketType(offset) 		(((ULONG)offset)>>TYPE_SHIFT)
 #define GetPacketOffset(offset)		(offset&OFFSET_MASK)
 #define SetPacketType(offset,type)	((offset)+(long(type)<<TYPE_SHIFT))
 
@@ -82,11 +82,11 @@ class PacketFile : public File
 		PacketFile (void);
 		~PacketFile (void);
 		
-		virtual long open (char* fName, FileMode _mode = READ, long numChildren = 50);
-		virtual long open (FilePtr _parent, unsigned long fileSize, long numChildren = 50);
+		virtual long open (PSTR fName, FileMode _mode = READ, long numChildren = 50);
+		virtual long open (FilePtr _parent, ULONG fileSize, long numChildren = 50);
 		
-		virtual long create (char* fName);
-		virtual long createWithCase( char* fName ); // don't strlwr for me please!
+		virtual long create (PSTR fName);
+		virtual long createWithCase( PSTR fName ); // don't strlwr for me please!
 		virtual void close (void);
 
 		void forceUseCheckSum (void)

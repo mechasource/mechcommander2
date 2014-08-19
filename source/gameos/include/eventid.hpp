@@ -10,8 +10,8 @@ class GosEventIdMgr
 	struct EventInfo
 	{
 		GosLogRef::EventType	m_type;
-		char *					m_pName;
-		char *					m_pFileName;
+		PSTR 					m_pName;
+		PSTR 					m_pFileName;
 		int						m_nLineNo;
 		DWORD					m_id;
 	};
@@ -26,7 +26,7 @@ class GosEventIdMgr
 	static void					Resize();
 	static DWORD				IdToEntry( DWORD id ) { return id & 0x000FFFFF; }
 	static DWORD				EntryToId( DWORD entry, int type ) { return entry|(type<<20); }
-	static DWORD				AssignId( GosLogRef::EventType type, char *name, char *filename, int lineno )
+	static DWORD				AssignId( GosLogRef::EventType type, PSTR name, PSTR filename, int lineno )
 								{
 									if( !ListSpace )
 										Resize();
@@ -40,6 +40,6 @@ class GosEventIdMgr
 									NextEntry++;
 									return pInfo->m_id;
 								}
-	static char *				EventName( DWORD id ) { return pEventInfo[IdToEntry(id)].m_pName; }
+	static PSTR 				EventName( DWORD id ) { return pEventInfo[IdToEntry(id)].m_pName; }
 	static void					Cleanup();
 };

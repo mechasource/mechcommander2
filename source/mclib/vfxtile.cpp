@@ -19,7 +19,7 @@
 #include "vfx.h"
 #endif
 
-static unsigned long pwXMax,count;		// Must be static for assembly optimizations
+static ULONG pwXMax,count;		// Must be static for assembly optimizations
 static PUCHAR FadeTable;		// Must be static for assembly optimizations
 
 //-----------------------------------------------------------
@@ -69,7 +69,7 @@ long VFX_nTile_draw (PANE* pane, void *tile, LONG hotX, LONG hotY, MemoryPtr fad
 	MemoryPtr tileData = (MemoryPtr)tile + sizeof(tileStruct);
 	tileStruct *tileInfo = (tileStruct *)tile;
 	
-	unsigned long *yOffsetTable = (unsigned long *)(tileData);
+	ULONG *yOffsetTable = (ULONG *)(tileData);
 
 	pwXMax = pane->window->x_max+1;
 
@@ -284,8 +284,8 @@ done:
 // This tile needs to be clipped
 //
 	{
-		unsigned long currentOffset = *yOffsetTable++;
-		unsigned long nextOffset=*yOffsetTable++;
+		ULONG currentOffset = *yOffsetTable++;
+		ULONG nextOffset=*yOffsetTable++;
 
 		for (long scanLine = firstScanOffset; scanLine<lastScanOffset; scanLine++)
 		{

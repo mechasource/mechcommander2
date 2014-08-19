@@ -43,7 +43,7 @@ class IDString
 			memset(id,0,ID_SIZE);
 		}
 
-		void init (char *new_id)
+		void init (PSTR new_id)
 		{
 			strncpy_s(id, ID_SIZE, new_id, ID_SIZE-1);   // pads unused ID with 0s!
 			id[ID_SIZE-1] = 0;
@@ -60,7 +60,7 @@ class IDString
 			init();
 		}
 
-		IDString (char * new_id)
+		IDString (PSTR  new_id)
 		{
 			init(new_id);
 		}
@@ -70,12 +70,12 @@ class IDString
 			init(new_ids);
 		}
 
-		inline operator char * (void)
+		inline operator PSTR  (void)
 		{
 			return id;
 		}
 
-		bool operator == (char *other_id)
+		bool operator == (PSTR other_id)
 		{
 			if( other_id[0]!=id[0] )
 				return FALSE;
@@ -157,7 +157,7 @@ class IDString
 //			return (strncmp(id,other_ids.id,ID_SIZE-1) == 0);
 		}
 
-		bool operator != (char *other_id)
+		bool operator != (PSTR other_id)
 		{
 			return !(*this == other_id);
 		}
@@ -167,7 +167,7 @@ class IDString
 			return !(*this == other_ids);
 		}
 
-		void operator = (char *new_id)
+		void operator = (PSTR new_id)
 		{
 			init(new_id);
 		}
@@ -198,7 +198,7 @@ class FullPathFileName
 
 	protected:
 
-		char *fullName;
+		PSTR fullName;
 
 	public:
 
@@ -216,27 +216,27 @@ class FullPathFileName
 			fullName = NULL;
 		}
 
-		void init (char *dir_path, PCSTR name, char *ext);
+		void init (PSTR dir_path, PCSTR name, PSTR ext);
 
 		FullPathFileName (void)
 		{
 			init();
 		}
 
-		FullPathFileName (char *dir_path, PCSTR name, char *ext)
+		FullPathFileName (PSTR dir_path, PCSTR name, PSTR ext)
 		{
 			init();
 			init(dir_path, name, ext);
 		}
 
-		inline operator char * (void)
+		inline operator PSTR  (void)
 		{
 			return fullName;
 		}
 
 		void destroy (void);
 
-		void changeExt (char *from, char *to);
+		void changeExt (PSTR from, PSTR to);
 
 		~FullPathFileName (void);
 };

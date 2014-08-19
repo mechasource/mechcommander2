@@ -149,7 +149,7 @@ public:
 	inline bool 		IsEmpty() const;
 
 	unsigned short*	CreateUNICODE() const;
-	char* 	CreateMBCS() const; 
+	PSTR 	CreateMBCS() const; 
 
 	inline	const EWCSChar* Data() const;
 
@@ -165,8 +165,8 @@ public:
 	
 	EWCharString( PCSTR );
 			
-	friend EWCharString operator+( const EWCharString&, char* );
-	friend EWCharString operator+( char*, const EWCharString& );
+	friend EWCharString operator+( const EWCharString&, PSTR );
+	friend EWCharString operator+( PSTR, const EWCharString& );
 	
 	friend EWCharString operator+( char, const EWCharString& );
 	friend EWCharString operator+( const EWCharString&, char );
@@ -264,7 +264,7 @@ inline void EWCharString::EBuffer::Release()
 		m_Ref_Count --;
 		if ( m_Ref_Count < 0 )
 		{
-			delete [] (char*)this;
+			delete [] (PSTR)this;
 		}
 	}
 }

@@ -317,7 +317,7 @@ void PilotReadyScreen::render(int xOffset, int yOffset )
 	if ( mechSelected )
 	{
 		// hack, cover up pilot stuff.
-		GUI_RECT rect = { 77 + xOffset, 317 + yOffset, 720+ xOffset, 515 + yOffset };
+		RECT rect = { 77 + xOffset, 317 + yOffset, 720+ xOffset, 515 + yOffset };
 		drawRect( rect, 0xff000000 );
 		mechDisplay.render( xOffset, yOffset );
 		// hack, cover up list box overrruns.
@@ -329,7 +329,7 @@ void PilotReadyScreen::render(int xOffset, int yOffset )
 	{
 		launchFadeTime += frameLength;
 		long color = interpolateColor( 0x00000000, 0x7f000000, launchFadeTime/.5f );
-		GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+		RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 	}
 
@@ -512,7 +512,7 @@ void PilotReadyScreen::update()
 
 }
 
-int	PilotReadyScreen::handleMessage( unsigned long message, unsigned long who )
+int	PilotReadyScreen::handleMessage( ULONG message, ULONG who )
 {
 
 	switch( who )

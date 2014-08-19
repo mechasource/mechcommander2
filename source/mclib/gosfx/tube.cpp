@@ -207,7 +207,7 @@ bool
 		if(fix_data)
 		{
 			m_maxProfileCount=2;
-				PAUSE(("Warning: Value \"maxProfileCount\" in Effect \"%s\" Is Out of Range and has been Reset",(char *)m_name));
+				PAUSE(("Warning: Value \"maxProfileCount\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
 
 		}
 			else
@@ -221,7 +221,7 @@ bool
 		m_pScale.m_ageCurve.SetCurve(1.0f);
 		m_pScale.m_seeded = false;
 		m_pScale.m_seedCurve.SetCurve(1.0f);
-		PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of Range and has been Reset",(char *)m_name));
+		PAUSE(("Warning: Curve \"pScale\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
 
 		}
 			else
@@ -251,7 +251,7 @@ bool
 		m_pVOffset.m_ageCurve.SetCurve(0.0f);
 		m_pVOffset.m_seeded = false;
 		m_pVOffset.m_seedCurve.SetCurve(1.0f);
-		PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of Range and has been Reset",(char *)m_name));
+		PAUSE(("Warning: Curve \"VOffset\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
 
 		}
 		else
@@ -281,7 +281,7 @@ bool
 		m_pUOffset.m_ageCurve.SetCurve(0.0f);
 		m_pUOffset.m_seeded = false;
 		m_pUOffset.m_seedCurve.SetCurve(1.0f);
-		PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of Range and has been Reset",(char *)m_name));
+		PAUSE(("Warning: Curve \"UOffset\" in Effect \"%s\" Is Out of Range and has been Reset",(PSTR )m_name));
 		
 		}
 		else

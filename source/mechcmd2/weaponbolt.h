@@ -127,7 +127,7 @@ class WeaponBoltType : public ObjectType
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, unsigned long fileSize);
+		virtual long init (FilePtr objFile, ULONG fileSize);
 		long init (FitIniFilePtr objFile);
 		
 		~WeaponBoltType (void)

@@ -60,7 +60,7 @@ int Mechlopedia::init()
 	if ( NO_ERR != file.open( path ) )
 	{
 		char errorStr[256];
-		sprintf( errorStr, "couldn't open file %s", (char*)path );
+		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, errorStr );
 		return 0;
 	}
@@ -119,7 +119,7 @@ int Mechlopedia::init()
 	return true;
 }
 
-int			Mechlopedia::handleMessage( unsigned long, unsigned long who)
+int			Mechlopedia::handleMessage( ULONG, ULONG who)
 {
 	// unpress all the others
 	for ( int i = ENCYCLO_MECHS; i < ENCYCLO_MM; i++ )
@@ -162,7 +162,7 @@ void Mechlopedia::update()
 
 void Mechlopedia::render()
 {
-	GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+	RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 	drawRect( rect, 0xff000000 );
 
 	if ( subScreens[currentScreen] )
@@ -251,7 +251,7 @@ void Mechlopedia::MechScreen::init()
 	if ( NO_ERR != file.open( path ) )
 	{
 		char errorStr[256];
-		sprintf( errorStr, "couldn't open file %s", (char*)path );
+		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, errorStr );
 		return;
 	}
@@ -653,7 +653,7 @@ void Mechlopedia::WeaponScreen::init()
 	if ( NO_ERR != file.open( path ) )
 	{
 		char errorStr[256];
-		sprintf( errorStr, "couldn't open file %s", (char*)path );
+		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, errorStr );
 	}
 
@@ -889,7 +889,7 @@ void Mechlopedia::PersonalityScreen::init()
 	if ( NO_ERR != file.open( path ) )
 	{
 		char errorStr[256];
-		sprintf( errorStr, "couldn't open file %s", (char*)path );
+		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, errorStr );
 		return;
 	}
@@ -1011,7 +1011,7 @@ void MechlopediaListItem::init( )
 	if ( NO_ERR != file.open( path ) )
 	{
 		char errorStr[256];
-		sprintf( errorStr, "couldn' open file %s", (char*)path );
+		sprintf( errorStr, "couldn' open file %s", (PSTR)path );
 		Assert( 0, 0, errorStr );
 		return;
 	}
@@ -1056,7 +1056,7 @@ void Mechlopedia::BuildingScreen::init()
 	if ( NO_ERR != file.open( path ) )
 	{
 		char errorStr[256];
-		sprintf( errorStr, "couldn't open file %s", (char*)path );
+		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
 		Assert( 0, 0, errorStr );
 		return;
 	}

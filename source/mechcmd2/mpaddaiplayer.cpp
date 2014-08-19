@@ -235,7 +235,7 @@ void MPAddAIPlayer::render()
 	render(0, 0);
 }
 
-int	MPAddAIPlayer::handleMessage( unsigned long message, unsigned long who)
+int	MPAddAIPlayer::handleMessage( ULONG message, ULONG who)
 {
 	if ( RUNNING == status )
 	{
@@ -349,17 +349,17 @@ void aStyle4TextListItem::render()
 	float color;
 	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((unsigned long)normalColor) + 0.67 * ((unsigned long)0xffffffff);
+		color = 0.33 * ((ULONG)normalColor) + 0.67 * ((ULONG)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((unsigned long)normalColor) + 0.33 * ((unsigned long)0xffffffff);
+		color = 0.67 * ((ULONG)normalColor) + 0.33 * ((ULONG)0xffffffff);
 	}
 	else
 	{
 		color = normalColor;
 	}
-	aTextListItem::setColor((unsigned long)color);
+	aTextListItem::setColor((ULONG)color);
 
 	aTextListItem::render();
 }

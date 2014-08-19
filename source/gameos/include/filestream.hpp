@@ -26,7 +26,7 @@
 class DebugFileStream
 {
 public:
-	DebugFileStream(char *)
+	DebugFileStream(PSTR )
 	{}
 
 	DebugFileStream()
@@ -36,7 +36,7 @@ public:
 	inline  DebugFileStream& operator<<(ios& (__cdecl * _f)(ios&)){return *this;}
 	inline  DebugFileStream& operator<<(PCSTR ){return *this;}
 	inline  DebugFileStream& operator<<(pcuint8_t){return *this;}
-	inline  DebugFileStream& operator<<(const signed char *){return *this;}
+	inline  DebugFileStream& operator<<(const signed PSTR ){return *this;}
 	inline  DebugFileStream& operator<<(char){return *this;}
 	inline  DebugFileStream& operator<<(uint8_t){return *this;}
 	inline  DebugFileStream& operator<<(signed char){return *this;}
@@ -45,7 +45,7 @@ public:
 	inline  DebugFileStream& operator<<(int){return *this;}
 	inline  DebugFileStream& operator<<(unsigned int){return *this;}
 	inline  DebugFileStream& operator<<(long){return *this;}
-	inline  DebugFileStream& operator<<(unsigned long){return *this;}
+	inline  DebugFileStream& operator<<(ULONG){return *this;}
 	inline  DebugFileStream& operator<<(float){return *this;}
 	inline	DebugFileStream& operator<<(double){return *this;}
 	inline  DebugFileStream& operator<<(long double){return *this;}

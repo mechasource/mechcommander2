@@ -124,7 +124,7 @@ class MouseCursorData
 		StaticInfo*	cursorInfos;	// gotta be pointer, so destructor is called before texmgr quits
 
 		char mouseHS[MAX_MOUSE_STATES][2];
-		unsigned long numFrames[MAX_MOUSE_STATES];
+		ULONG numFrames[MAX_MOUSE_STATES];
 		float frameLengths[MAX_MOUSE_STATES];
 
 		friend class UserInput;
@@ -177,7 +177,7 @@ class MouseCursorData
 		}
 		
 				
-		void initCursors (char *cursorFile);
+		void initCursors (PSTR cursorFile);
 };
 
 //---------------------------------------------------------------------------
@@ -308,7 +308,7 @@ class UserInput
 			cursors = NULL;
 		}
 
-		void initMouseCursors (char *mouseFile);
+		void initMouseCursors (PSTR mouseFile);
 		
 		void destroy (void)
 		{

@@ -25,7 +25,7 @@ class LogisticsMech
 		inline void setForceGroup( int bInForceGroup ) { forceGroup = bInForceGroup; }
 		inline PCSTR getFileName(){ return pVariant->chassis->fileName; }
 		inline bool		isAvailable() const { return pVariant->availableToUser; }
-		unsigned long	getID() const { return pVariant->ID; }
+		ULONG	getID() const { return pVariant->ID; }
 		float			getMaxWeight() const { return pVariant->chassis->maxWeight; }
 		long			getChassisName() const { return pVariant->chassis->chassisNameID; }
 		const EString&		getName() const { return pVariant->variantName; }
@@ -62,8 +62,8 @@ class LogisticsMech
 		int				getFitID() const { return pVariant->chassis->fitID; }
 		long			save( FitIniFile& file, long count );
 
-		void			setColors( unsigned long base, unsigned long high1, unsigned long high2 );
-		void			getColors( unsigned long& base, unsigned long& high1, unsigned long& high2 ) const;
+		void			setColors( ULONG base, ULONG high1, ULONG high2 );
+		void			getColors( ULONG& base, ULONG& high1, ULONG& high2 ) const;
 		int				getIconIndex() const { return pVariant->chassis->iconPictureIndex; }
 
 		LogisticsVariant* getVariant() { return pVariant; }
@@ -73,7 +73,7 @@ class LogisticsMech
 	private:
 		LogisticsVariant* pVariant;
 
-		unsigned long	pilotID;
+		ULONG	pilotID;
 		int				forceGroup; // 0 if none, 1 if otherwise
 		LogisticsPilot*	pilot;
 		int				ID;

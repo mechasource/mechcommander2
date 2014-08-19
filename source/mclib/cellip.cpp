@@ -20,7 +20,7 @@
 #include "txmmgr.h"
 #endif
 
-unsigned long EllipseElement::s_textureHandle = 0;
+ULONG EllipseElement::s_textureHandle = 0;
 //---------------------------------------------------------------------------
 // Static Globals
 
@@ -126,7 +126,7 @@ void EllipseElement::init()
 	}
 }
 
-void EllipseElement::setClip( const GUI_RECT& rect )
+void EllipseElement::setClip( const RECT& rect )
 {
 	clip = rect;
 }

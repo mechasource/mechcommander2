@@ -45,7 +45,7 @@ class GameTacMap: public TacMap
 	bool inRegion( int x, int y ){ return x > left && x < right && y > top && y < bottom; }
 	
 	void initBuildings( PUCHAR data, int size );
-	void setPos( const GUI_RECT& newPos );
+	void setPos( const RECT& newPos );
 	
 	protected:
 
@@ -58,13 +58,13 @@ class GameTacMap: public TacMap
 	int		buildingCount;
 	gos_VERTEX* buildingPoints;
 
-	unsigned long textureHandle;
-	unsigned long viewRectHandle;
-	unsigned long blipHandle;
+	ULONG textureHandle;
+	ULONG viewRectHandle;
+	ULONG blipHandle;
 
 	Stuff::Vector3D navMarkers[6];
-	unsigned long navMarkerCount;
-	unsigned long curNavMarker;
+	ULONG navMarkerCount;
+	ULONG curNavMarker;
 
 	void drawSensor( const Stuff::Vector3D& pos, float radius, long color);
 	void drawBlip( const Stuff::Vector3D& pos, long color, int shape  );

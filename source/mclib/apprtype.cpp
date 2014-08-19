@@ -65,9 +65,9 @@ void AppearanceType::operator delete (void* treePtr)
 }
 
 //---------------------------------------------------------------------------
-void AppearanceType::init (char *fileName)
+void AppearanceType::init (PSTR fileName)
 {
-	name = (char *)AppearanceTypeList::appearanceHeap->Malloc(strlen(fileName)+1);
+	name = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(fileName)+1);
 	strcpy(name,fileName);
 
 	//Dig out the Type Bounds here for selections
@@ -192,7 +192,7 @@ void AppearanceType::destroy (void)
 
 //---------------------------------------------------------------------------
 // class AppearanceTypeList
-void AppearanceTypeList::init (unsigned long heapSize)
+void AppearanceTypeList::init (ULONG heapSize)
 {
 	appearanceHeap = new UserHeap;
 	gosASSERT(appearanceHeap != NULL);
@@ -204,7 +204,7 @@ void AppearanceTypeList::init (unsigned long heapSize)
 }
 
 //---------------------------------------------------------------------------
-AppearanceTypePtr AppearanceTypeList::getAppearance (unsigned long apprNum, char *appearFile)
+AppearanceTypePtr AppearanceTypeList::getAppearance (ULONG apprNum, PSTR appearFile)
 {
 	//----------------------------------------------------------------
 	// The type of appearance is stored in the upper 8 bits of the

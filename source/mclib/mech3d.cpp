@@ -142,7 +142,7 @@ char MechStateByGesture[MAX_MECH_ANIMATIONS] = {
 #define JUMP_PITCH		(90.0f)
 
 extern bool reloadBounds;
-char* MechAnimationNames[MaxGestures+2] = 
+PSTR MechAnimationNames[MaxGestures+2] = 
 {
 	"StandToPark",		//GesturePark							 0 -- Park 
 	"ParkToStand",		//GestureParkToStand					 1 -- ParkToStand 
@@ -186,7 +186,7 @@ bool Mech3DAppearanceType::animationLoadingEnabled = true;
 
 //-------------------------------------------------------------------------------
 // class Mech3DAppearanceType
-void Mech3DAppearanceType::init (char * fileName)
+void Mech3DAppearanceType::init (PSTR  fileName)
 {
 	AppearanceType::init(fileName);
 
@@ -481,7 +481,7 @@ void Mech3DAppearanceType::init (char * fileName)
 			result = mechFile.readIdString("SmokeNodeName",smokeName,511);
 			gosASSERT(result == NO_ERR);
 			
-			nodeData[i].nodeId = (char *)AppearanceTypeList::appearanceHeap->Malloc(strlen(smokeName)+1); 
+			nodeData[i].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(smokeName)+1); 
 			gosASSERT(nodeData[i].nodeId != NULL);
 			
 			strcpy(nodeData[i].nodeId,smokeName);
@@ -503,7 +503,7 @@ void Mech3DAppearanceType::init (char * fileName)
 			result = mechFile.readIdLong("WeaponType",weaponType);
 			gosASSERT(result == NO_ERR);
 			
-			nodeData[i+numSmokeNodes].nodeId = (char *)AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName)+1); 
+			nodeData[i+numSmokeNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName)+1); 
 			gosASSERT(nodeData[i+numSmokeNodes].nodeId != NULL);
 			
 			strcpy(nodeData[i+numSmokeNodes].nodeId,weaponName);
@@ -522,7 +522,7 @@ void Mech3DAppearanceType::init (char * fileName)
 			result = mechFile.readIdString("JumpNodeName",jumpName,511);
 			gosASSERT(result == NO_ERR);
 			
-			nodeData[i+numSmokeNodes+numWeaponNodes].nodeId = (char *)AppearanceTypeList::appearanceHeap->Malloc(strlen(jumpName)+1); 
+			nodeData[i+numSmokeNodes+numWeaponNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(jumpName)+1); 
 			gosASSERT(nodeData[i+numSmokeNodes+numWeaponNodes].nodeId != NULL);
 			
 			strcpy(nodeData[i+numSmokeNodes+numWeaponNodes].nodeId,jumpName);
@@ -540,7 +540,7 @@ void Mech3DAppearanceType::init (char * fileName)
 			result = mechFile.readIdString("FootNodeName",footName,511);
 			gosASSERT(result == NO_ERR);
 			
-			nodeData[i+numSmokeNodes+numWeaponNodes+numJumpNodes].nodeId = (char *)AppearanceTypeList::appearanceHeap->Malloc(strlen(footName)+1); 
+			nodeData[i+numSmokeNodes+numWeaponNodes+numJumpNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(footName)+1); 
 			gosASSERT(nodeData[i+numSmokeNodes+numWeaponNodes+numJumpNodes].nodeId != NULL);
 			
 			strcpy(nodeData[i+numSmokeNodes+numWeaponNodes+numJumpNodes].nodeId,footName);
@@ -741,7 +741,7 @@ Stuff::Vector3D Mech3DAppearance::getWeaponNodePosition (long nodeId)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D Mech3DAppearance::getNodeNamePosition (char *nodeName)
+Stuff::Vector3D Mech3DAppearance::getNodeNamePosition (PSTR nodeName)
 {
 	Stuff::Vector3D result = position;
 	
@@ -2345,9 +2345,9 @@ long Mech3DAppearance::render (long depthFixup)
 		if (visible)
 		{
 			long color = SD_BLUE;
-			unsigned long highLight = 0x007f7f7f;
+			ULONG highLight = 0x007f7f7f;
 			if ((teamId > -1) && (teamId < 8)) {
-				static unsigned long highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+				static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
 				static long colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
 				color = colorTable[homeTeamRelationship];
 				highLight = highLightTable[homeTeamRelationship];

@@ -35,12 +35,12 @@ static char pformat[] = "%s %s\n";
 GlobalHeapRec HeapList::heapRecords[MAX_HEAPS];
 HeapListPtr globalHeapList = NULL;
 
-unsigned long memCoreLeft = 0;
-unsigned long memTotalLeft = 0;
+ULONG memCoreLeft = 0;
+ULONG memTotalLeft = 0;
 
-unsigned long totalSize = 0;
-unsigned long totalCoreLeft = 0;
-unsigned long totalLeft = 0;
+ULONG totalSize = 0;
+ULONG totalCoreLeft = 0;
+ULONG totalLeft = 0;
 
 bool HeapList::heapInstrumented = 0;
 
@@ -68,7 +68,7 @@ void GetCurrentContext( CONTEXT* Context )
 
 void InitStackWalk(STACKFRAME *sf, CONTEXT *Context);
 int WalkStack(STACKFRAME *sf);
-char* DecodeAddress( DWORD Address , bool brief);
+PSTR DecodeAddress( DWORD Address , bool brief);
 
 //---------------------------------------------------------------------------
 // Macro definitions
@@ -153,7 +153,7 @@ MemoryPtr HeapManager::getHeapPtr (void)
 }
 
 //---------------------------------------------------------------------------
-long HeapManager::createHeap (unsigned long memSize)
+long HeapManager::createHeap (ULONG memSize)
 {
 	heap = (MemoryPtr)VirtualAlloc(NULL,memSize,MEM_RESERVE,PAGE_READWRITE);
 
@@ -168,7 +168,7 @@ long HeapManager::createHeap (unsigned long memSize)
 }
 
 //---------------------------------------------------------------------------
-long HeapManager::commitHeap (unsigned long commitSize)
+long HeapManager::commitHeap (ULONG commitSize)
 {
 	if (commitSize == 0)
 		commitSize = totalSize;
@@ -179,7 +179,7 @@ long HeapManager::commitHeap (unsigned long commitSize)
 	if (commitSize < totalSize)
 		return COULDNT_COMMIT;
 
-	unsigned long memLeft = totalSize - committedSize;
+	ULONG memLeft = totalSize - committedSize;
 	
 	if (!memLeft)
 	{
@@ -209,17 +209,17 @@ long HeapManager::commitHeap (unsigned long commitSize)
 		// If this was a UserHeap,
 		// the UserHeap class will
 		// do its own unwind.
-		unsigned long currentEbp;
-		unsigned long prevEbp;
-		unsigned long retAddr;
+		ULONG currentEbp;
+		ULONG prevEbp;
+		ULONG retAddr;
 		
 		__asm
 		{
 			mov currentEbp,esp
 		}
 		
-		prevEbp = *((unsigned long *)currentEbp);
-		retAddr = *((unsigned long *)(currentEbp+4));
+		prevEbp = *((ULONG *)currentEbp);
+		retAddr = *((ULONG *)(currentEbp+4));
 		whoMadeMe = retAddr;
 
 		return NO_ERR;
@@ -230,7 +230,7 @@ long HeapManager::commitHeap (unsigned long commitSize)
 }
 		
 //---------------------------------------------------------------------------
-long HeapManager::decommitHeap (unsigned long decommitSize)
+long HeapManager::decommitHeap (ULONG decommitSize)
 {
 	long result = 0;
 	
@@ -243,7 +243,7 @@ long HeapManager::decommitHeap (unsigned long decommitSize)
 	if (decommitSize < committedSize)
 		decommitSize = totalSize;
 
-	unsigned long decommitAddress = decommitSize;
+	ULONG decommitAddress = decommitSize;
 	committedSize -= decommitAddress;
 
 	result = VirtualFree((void *)committedSize,decommitSize,MEM_DECOMMIT);
@@ -275,11 +275,11 @@ UserHeap::UserHeap (void) : HeapManager()
 }
 
 //---------------------------------------------------------------------------
-long UserHeap::init (unsigned long memSize, char *heapId, bool useGOS)
+long UserHeap::init (ULONG memSize, PSTR heapId, bool useGOS)
 {
 	if (heapId)
 	{
-		heapName = (char *)::gos_Malloc(strlen(heapId)+1);
+		heapName = (PSTR )::gos_Malloc(strlen(heapId)+1);
 		strcpy(heapName,heapId);
 	}
 	else
@@ -302,27 +302,27 @@ long UserHeap::init (unsigned long memSize, char *heapId, bool useGOS)
 		// If this was a UserHeap,
 		// the UserHeap class will
 		// do its own unwind.
-		unsigned long currentEbp;
-		unsigned long prevEbp;
-		unsigned long retAddr;
+		ULONG currentEbp;
+		ULONG prevEbp;
+		ULONG retAddr;
 		
 		__asm
 		{
 			mov currentEbp,esp
 		}
 		
-		prevEbp = *((unsigned long *)currentEbp);
-		retAddr = *((unsigned long *)(currentEbp+4));
+		prevEbp = *((ULONG *)currentEbp);
+		retAddr = *((ULONG *)(currentEbp+4));
 		whoMadeMe = retAddr;
 		
 		//------------------------------------------------------------------------
 		// Now that we have a pointer to the memory, setup the HEAP.
-		unsigned long heapTop = (unsigned long)heap;
+		ULONG heapTop = (ULONG)heap;
 		heapTop += memSize;
 		heapTop -= 16;				
 		heapTop &= ~3;				//Force top to be DWORD boundary.
 	
-		unsigned long heapBottom = (unsigned long)heap;
+		ULONG heapBottom = (ULONG)heap;
 	
 		heapStart = (HeapBlockPtr)heapBottom;
 		heapEnd = (HeapBlockPtr)heapTop;
@@ -340,7 +340,7 @@ long UserHeap::init (unsigned long memSize, char *heapId, bool useGOS)
 		MemoryPtr start = (MemoryPtr)heapBottom;
 		start += sizeof(HeapBlock);
 	
-		unsigned long length = heapTop-heapBottom;
+		ULONG length = heapTop-heapBottom;
 		length -= sizeof(HeapBlock);
 	
 		FillMemory(start,length,0xff);
@@ -418,7 +418,7 @@ void UserHeap::dumpRecordLog (void)
 			{
 				sprintf(msg, "Allocated block at DS:%08X, size = %u\n", recordArray[i].ptr, recordArray[i].size);
 				log.writeLine(msg);
-				char* addressName = DecodeAddress(recordArray[i].stack[0],false);
+				PSTR addressName = DecodeAddress(recordArray[i].stack[0],false);
 				sprintf(msg, "Call stack: %08X : %s", recordArray[i].stack[0],addressName);
 				log.writeLine(msg);
 				for (int j=1; j<12; j++)
@@ -426,7 +426,7 @@ void UserHeap::dumpRecordLog (void)
 				
 					if (recordArray[i].stack[j] == 0x0)
 						break;
-					char* addressName = DecodeAddress(recordArray[i].stack[j],false);
+					PSTR addressName = DecodeAddress(recordArray[i].stack[j],false);
 					sprintf(msg, "            %08X : %s", recordArray[i].stack[j],addressName);
 					log.writeLine(msg);
 				}
@@ -481,9 +481,9 @@ void UserHeap::destroy (void)
 }
 		
 //---------------------------------------------------------------------------
-unsigned long UserHeap::totalCoreLeft (void)
+ULONG UserHeap::totalCoreLeft (void)
 {
-	unsigned long result = 0;
+	ULONG result = 0;
 
 	if (gosHeap)
 		return result;
@@ -552,9 +552,9 @@ DoneTC:
 }
 
 //---------------------------------------------------------------------------
-unsigned long UserHeap::coreLeft (void)
+ULONG UserHeap::coreLeft (void)
 {
-	unsigned long result = 0;
+	ULONG result = 0;
 
 	if (gosHeap)
 		return result;
@@ -660,7 +660,7 @@ DoneCL:
 }			
 
 //---------------------------------------------------------------------------
-void * UserHeap::Malloc (unsigned long memSize)
+void * UserHeap::Malloc (ULONG memSize)
 {
 	void * result = NULL;
 	if (gosHeap)
@@ -1430,7 +1430,7 @@ Dealloc_Done:
 }
 
 //---------------------------------------------------------------------------
-void * UserHeap::calloc (unsigned long memSize)
+void * UserHeap::calloc (ULONG memSize)
 {
 	void * result = malloc(memSize);
 	memset(result,0,memSize);
@@ -1449,7 +1449,7 @@ void UserHeap::walkHeap (bool printIt, bool skipAllocated)
 
 	HeapBlockPtr walker = heapStart;
 	bool valid, allocated;
-	unsigned long bSize;
+	ULONG bSize;
 
 	if (!walker || (heapState != NO_ERR))
 		return;
@@ -1469,13 +1469,13 @@ void UserHeap::walkHeap (bool printIt, bool skipAllocated)
 		if (walker->upperBlock)
 		{
 			bSize = (walker->upperBlock->blockSize & ~1);
-			bSize += (unsigned long)walker->upperBlock;
-			valid = (bSize == (unsigned long)walker);
+			bSize += (ULONG)walker->upperBlock;
+			valid = (bSize == (ULONG)walker);
 		}
 
 		if (valid)
 		{
-			bSize = (unsigned long)walker + (walker->blockSize & ~1);
+			bSize = (ULONG)walker + (walker->blockSize & ~1);
 			valid = (HeapBlockPtr(bSize)->upperBlock == walker);
 		}
 		else
@@ -1555,7 +1555,7 @@ void UserHeap::walkHeap (bool printIt, bool skipAllocated)
 			#endif
 		}
 
-		walker = HeapBlockPtr((unsigned long)walker + (walker->blockSize & ~1));
+		walker = HeapBlockPtr((ULONG)walker + (walker->blockSize & ~1));
 	}
 }
 
@@ -1885,10 +1885,10 @@ void HeapList::update (void)
 }
 
 //---------------------------------------------------------------------------
-unsigned long textToLong (char *num)
+ULONG textToLong (PSTR num)
 {
 	long result = 0;
-	char *hexOffset = num;
+	PSTR hexOffset = num;
 	
 	hexOffset += 2;
 	long numDigits = strlen(hexOffset)-1;
@@ -1919,12 +1919,12 @@ unsigned long textToLong (char *num)
 }
 
 //-----------------------------------------------------------
-long longToText (char *result, long num, unsigned long bufLen)
+long longToText (PSTR result, long num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%08X",num);
 
-	unsigned long numLength = strlen(temp);
+	ULONG numLength = strlen(temp);
 	if (numLength >= bufLen)
 		return(0);
 
@@ -1935,17 +1935,17 @@ long longToText (char *result, long num, unsigned long bufLen)
 }	
 
 //--------------------------------------------------------------------------
-long getStringFromMap (File &mapFile, unsigned long addr, char *result)
+long getStringFromMap (File &mapFile, ULONG addr, PSTR result)
 {
 	//----------------------------------------
 	// Convert function address to raw offset
 	#ifdef TERRAINEDIT
-	unsigned long offsetAdd = 0x00601000;
+	ULONG offsetAdd = 0x00601000;
 	#else
-	unsigned long offsetAdd = 0x00601000;
+	ULONG offsetAdd = 0x00601000;
 	#endif
 	
-	unsigned long function = addr;
+	ULONG function = addr;
 	function -= offsetAdd;
 	
 	char actualAddr[10];
@@ -1969,7 +1969,7 @@ long getStringFromMap (File &mapFile, unsigned long addr, char *result)
 	// We've found the first code entry.  Now, scan until
 	// the current address is greater than the address asked for.
 	// The previous function name is the function in question.
-	char *currentAddress = &(mapFileLine[6]);
+	PSTR currentAddress = &(mapFileLine[6]);
 	char previousAddress[511];
 	strncpy(previousAddress,&(mapFileLine[6]),510);
 	
@@ -2011,13 +2011,13 @@ void HeapList::dumpLog (void)
 	#endif	
 
 	HeapManagerPtr currentHeap = NULL;
-	unsigned long heapNumber = 1;
-	unsigned long mapStringSize = 0;
+	ULONG heapNumber = 1;
+	ULONG mapStringSize = 0;
 	char msg[1024];
 	char mapInfo[513];
 
-	unsigned long totalCommit = 0;
-	unsigned long totalFree = 0;
+	ULONG totalCommit = 0;
+	ULONG totalFree = 0;
 	
 	for (long i=0;i<MAX_HEAPS;i++)
 	{

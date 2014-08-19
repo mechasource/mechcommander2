@@ -91,8 +91,8 @@ long						Terrain::realVerticesMapSide = 0;
 Stuff::Vector3D				Terrain::mapTopLeft3d;					//Calced during load.
 
 UserHeapPtr					Terrain::terrainHeap = NULL;			//Setup at load time.
-char *						Terrain::terrainName = NULL;
-char * 						Terrain::colorMapName = NULL;			
+PSTR 						Terrain::terrainName = NULL;
+PSTR  						Terrain::colorMapName = NULL;			
 
 long		   				Terrain::numObjBlocks = 0;
 ObjBlockInfo				*Terrain::objBlockInfo = NULL;
@@ -116,7 +116,7 @@ float						Terrain::waterAmplitude = 10.0f;
 
 long						Terrain::userMin = 0;
 long						Terrain::userMax = 0;
-unsigned long				Terrain::baseTerrain = 0;
+ULONG				Terrain::baseTerrain = 0;
 uint8_t				Terrain::fractalThreshold = 1;
 uint8_t				Terrain::fractalNoise = 0;
 bool						Terrain::recalcShadows = false;
@@ -137,7 +137,7 @@ TerrainPtr					land = NULL;
 long 						*usedBlockList;					//Used to determine what objects to deal with.
 long 						*moverBlockList;
 
-unsigned long 				blockMemSize = 0;				//Misc Flags.
+ULONG 				blockMemSize = 0;				//Misc Flags.
 bool 						useOldProject = FALSE;
 bool 						projectAll = FALSE;
 bool 						useClouds = false;
@@ -280,7 +280,7 @@ void Terrain::initMapCellArrays (void)
 }	
 
 //---------------------------------------------------------------------------
-long Terrain::init (PacketFile* pakFile, int whichPacket, unsigned long visibleVertices, volatile float& percent,
+long Terrain::init (PacketFile* pakFile, int whichPacket, ULONG visibleVertices, volatile float& percent,
 					float percentRange )
 {
 	clearList();
@@ -329,7 +329,7 @@ void Terrain::getColorMapName (FitIniFile *file)
 }
 
 //---------------------------------------------------------------------------
-void Terrain::setColorMapName (char *mapName)
+void Terrain::setColorMapName (PSTR mapName)
 {
 	if (colorMapName)
 	{
@@ -355,7 +355,7 @@ void Terrain::saveColorMapName (FitIniFile *file)
 }
 
 //---------------------------------------------------------------------------
-long Terrain::init( unsigned long verticesPerMapSide, PacketFile* pakFile, unsigned long visibleVertices,
+long Terrain::init( ULONG verticesPerMapSide, PacketFile* pakFile, ULONG visibleVertices,
 				   volatile float& percent,
 					float percentRange)
 {
@@ -786,7 +786,7 @@ void Terrain::setOverlayTile (long block, long vertex, long offset)
 }	
 
 //---------------------------------------------------------------------------
-void Terrain::setOverlay( long tileR, long tileC, Overlays type, unsigned long offset )
+void Terrain::setOverlay( long tileR, long tileC, Overlays type, ULONG offset )
 {
 	mapData->setOverlay( tileR, tileC, type, offset );
 }
@@ -816,7 +816,7 @@ long Terrain::getOverlayTile (long block, long vertex)
 }	
 
 //---------------------------------------------------------------------------
-void Terrain::getOverlay( long tileR, long tileC, enum Overlays& type, unsigned long& Offset )
+void Terrain::getOverlay( long tileR, long tileC, enum Overlays& type, ULONG& Offset )
 {
 	mapData->getOverlay( tileR, tileC, type, Offset );
 }
@@ -1138,7 +1138,7 @@ float Terrain::getTerrainElevation( long tileR, long tileC )
 }
 
 //---------------------------------------------------------------------------
-unsigned long Terrain::getTexture( long tileR, long tileC )
+ULONG Terrain::getTexture( long tileR, long tileC )
 {
 	return mapData->getTexture( tileR, tileC );
 }
@@ -1186,8 +1186,8 @@ void Terrain::markSeen (Stuff::Vector3D &looker, byte who, float specialUnitExpa
 	meshOffset.x = float2long(upperLeft.x);
 	meshOffset.y = float2long(upperLeft.y);
 
-	unsigned long xCenter = meshOffset.x;
-	unsigned long yCenter = meshOffset.y;
+	ULONG xCenter = meshOffset.x;
+	ULONG yCenter = meshOffset.y;
 
 	//Figure out altitude above minimum terrain altitude and look up in table.
 	float baseElevation = MapData::waterDepth;
@@ -1250,8 +1250,8 @@ void Terrain::markRadiusSeen (Stuff::Vector3D &looker, float dist, byte who)
 	meshOffset.x = floor(upperLeft.x);
 	meshOffset.y = floor(upperLeft.y);
 
-	unsigned long xCenter = meshOffset.x;
-	unsigned long yCenter = meshOffset.y;
+	ULONG xCenter = meshOffset.x;
+	ULONG yCenter = meshOffset.y;
 
 	//-----------------------------------------------------
 	// Who is the shift value to create the mask

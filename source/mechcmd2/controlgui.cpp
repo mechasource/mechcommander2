@@ -118,10 +118,10 @@ PCSTR ControlGui::vehiclePilots[5] =
 };
 
 
-unsigned long ControlGui::WALK =	0;
-unsigned long ControlGui::RUN =		0x01;
-unsigned long ControlGui::GUARD =	0x02;
-unsigned long ControlGui::JUMP =	0x04;
+ULONG ControlGui::WALK =	0;
+ULONG ControlGui::RUN =		0x01;
+ULONG ControlGui::GUARD =	0x02;
+ULONG ControlGui::JUMP =	0x04;
 
 MoveInfo ControlGui::objectiveMoveInfo[OBJECTVE_MOVE_COUNT] = 
 {
@@ -392,11 +392,11 @@ void ControlGui::render( bool bPaused )
 			}
 		
 			char buffer[32];
-			unsigned long minutes = time/60;
-			unsigned long seconds = time%60;
+			ULONG minutes = time/60;
+			ULONG seconds = time%60;
 			sprintf( buffer, "%03ld : %02ld", minutes, seconds );
 	
-			unsigned long color = timerRect.color;
+			ULONG color = timerRect.color;
 			if ( minutes < 5 )
 			{
 				color = 0xffc61c00;
@@ -453,7 +453,7 @@ void ControlGui::render( bool bPaused )
 			{
 				float scaleX = Environment.screenWidth <= 1024 ? Environment.screenWidth : 1024;
 				float scaleY = Environment.screenHeight <= 768 ? Environment.screenHeight : 768;
-				GUI_RECT rect = { 51 * scaleX/640.f + ControlGui::hiResOffsetX, 317 * scaleY/480.f + ControlGui::hiResOffsetY,
+				RECT rect = { 51 * scaleX/640.f + ControlGui::hiResOffsetX, 317 * scaleY/480.f + ControlGui::hiResOffsetY,
 								74 *scaleX/640.f + ControlGui::hiResOffsetX, 337 * scaleY/480.f  + ControlGui::hiResOffsetY};
 				drawRect( rect, 0xff000000 );
 			}
@@ -540,7 +540,7 @@ void ControlGui::renderResults()
 		{
 			delta = missionResultsMoveInfo[OBJECTVE_MOVE_COUNT - 1].position - missionStatusInfos[0].location[0].y;
 			// grey down the screen
-			GUI_RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
+			RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 			drawEmptyRect( rect, 0x44000000 );
 			if ( resultsTime < missionResultsMoveInfo[OBJECTVE_MOVE_COUNT - 1].time + .25 )
 				startObjectives( 1 );
@@ -588,7 +588,7 @@ void ControlGui::renderResults()
 		if ( !neverEndingStory && (fadeTime > 0.f) )
 		{
 			long color = interpolateColor( 0x00000000, 0xff000000, fadeTime/1.0f );
-			GUI_RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
+			RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
 			drawRect( rect, color );
 		}
 
@@ -671,7 +671,7 @@ void ControlGui::RenderObjectives()
 			guiFont.getSize() );
 
 		// draw primary objectives
-		unsigned long pos = OBJECTIVESTOP;
+		ULONG pos = OBJECTIVESTOP;
 		pos+= OBJECTIVESSKIP;
 
 		float objectiveCount = -objectiveMoveInfo[OBJECTVE_MOVE_COUNT-1].time;
@@ -740,7 +740,7 @@ void ControlGui::RenderObjectives()
 			char total2[256];
 			cLoadString( IDS_TOTAL, total2, 255 );
 			sprintf( total, total2, sum );
-			unsigned long width = guiFont.width( total );
+			ULONG width = guiFont.width( total );
 			drawShadowText( 0xffffffff, 0xff000000, guiFont.getTempHandle(), OBJECTIVESTOTALRIGHT - width, pos, 0, total,
 				0, guiFont.getSize() );
 
@@ -780,7 +780,7 @@ void ControlGui::renderPlayerStatus(float xDelta)
 			mpStats[i].showGUIWindow( 0 );
 	}
 
-	GUI_RECT rect = { mpStats[0].left()-5+xDelta, mpStats[0].top()-5, 
+	RECT rect = { mpStats[0].left()-5+xDelta, mpStats[0].top()-5, 
 		mpStats[0].right()+5+xDelta, mpStats[0].bottom()+5};
 	
 	for ( i = 1; i < 9; i++ )
@@ -858,7 +858,7 @@ void ControlGui::renderObjective( CObjective* pObjective, long xPos, long yPos, 
 			guiFont.getSize() );
 
 		// draw .............
-		unsigned long tmpULong1, tmpULong2;
+		ULONG tmpULong1, tmpULong2;
 		gos_TextStringLength( &tmpULong1, &tmpULong2, pObjective->LocalizedDescription() );
 		descWidth = (int)tmpULong1;
 		height = (int)tmpULong2;
@@ -876,7 +876,7 @@ void ControlGui::renderObjective( CObjective* pObjective, long xPos, long yPos, 
 			numberOfDots = 3;
 		}
 		
-		char* dots = (char*)_alloca( sizeof( char ) * (numberOfDots+1) );
+		PSTR dots = (PSTR)_alloca( sizeof( char ) * (numberOfDots+1) );
 		for ( int i = 0; i < numberOfDots - 2; i++ )
 			dots[i] = '.';
 		
@@ -1440,7 +1440,7 @@ void ControlButton::render()
 {
 	if ( state != HIDDEN )
 	{
-		unsigned long gosID = mcTextureManager->get_gosTextureHandle( data->textureHandle );
+		ULONG gosID = mcTextureManager->get_gosTextureHandle( data->textureHandle );
 		gos_SetRenderState( gos_State_Texture, gosID ); 
 		gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha);
 		gos_SetRenderState( gos_State_Filter, gos_FilterNone);
@@ -1453,7 +1453,7 @@ void ControlButton::render()
 		{
 			char buffer[256];
 			cLoadString( data->textID, buffer, 256 );
-			unsigned long height = data->textFont.height();
+			ULONG height = data->textFont.height();
 			
 			data->textFont.render( buffer, location[0].x,
 				(location[0].y + location[2].y)/2 - height/2 + 1,
@@ -1886,7 +1886,7 @@ void ControlGui::renderVehicleTab()
 		{
 			ControlButton::makeUVs( vehicleButtons[i].location, ControlButton::ENABLED, *vehicleButtons[i].data );	
 			cost = vehicleCosts[i];
-			GUI_RECT rect = { vehicleButtons[i].location[0].x, vehicleButtons[i].location[0].y,
+			RECT rect = { vehicleButtons[i].location[0].x, vehicleButtons[i].location[0].y,
 				vehicleButtons[i].location[2].x, vehicleButtons[i].location[2].y };
 			vehicleButtons[i].render();
 			drawEmptyRect( rect, 0xffffffff, 0xffffffff );
@@ -2137,7 +2137,7 @@ void ControlGui::renderHelpText()
 		char buffer[1024];
 		cLoadString( helpTextID, buffer, 1024 );
 
-		unsigned long width, height;
+		ULONG width, height;
 		width = helpFont.width( buffer );
 		height = helpFont.height( buffer, width );
 
@@ -2708,7 +2708,7 @@ void ControlGui::swapResolutions( int resolution )
 	{
 		for ( int i = 0; i < buttonCount; i++ )
 		{
-			unsigned long gosID = mcTextureManager->get_gosTextureHandle( buttonData[i].textureHandle );
+			ULONG gosID = mcTextureManager->get_gosTextureHandle( buttonData[i].textureHandle );
 			mcTextureManager->removeTexture( gosID );
 		}
 	}
@@ -2717,7 +2717,7 @@ void ControlGui::swapResolutions( int resolution )
 	{
 		for ( int i = 0; i < LAST_VEHICLE; i++ )
 		{
-			unsigned long gosID = mcTextureManager->get_gosTextureHandle( vehicleData[i].textureHandle );
+			ULONG gosID = mcTextureManager->get_gosTextureHandle( vehicleData[i].textureHandle );
 			mcTextureManager->removeTexture( gosID );
 		}
 	}
@@ -2833,7 +2833,7 @@ void ControlGui::playMovie( PCSTR fileName )
 	FullPathFileName movieName;
 	movieName.init(moviePath,realName,".bik");
 	bMovie = new MC2Movie;
-	bMovie->init((char *)movieName,vRect,true);
+	bMovie->init((PSTR )movieName,vRect,true);
 
 	//Maybe not enough frames to run.  Do not flash the border!
 	// Do ONE update to make sure the damned sound starts at least!!
@@ -2875,13 +2875,13 @@ bool ControlGui::resultsDone()
 	return false;
 }
 
-void ControlButton::setColor( unsigned long newColor )
+void ControlButton::setColor( ULONG newColor )
 {
 	for ( int i = 0; i < 4; i++ )
 		location[i].argb = newColor;
 }
 
-void ControlGui::setRolloverHelpText( unsigned long textID )
+void ControlGui::setRolloverHelpText( ULONG textID )
 {
 	if ( helpTextID && textID != 0 )
 		return;
@@ -2957,7 +2957,7 @@ void ControlGui::toggleChat(bool isTeamOnly)
 		{
 		
 			char team = chatIsTeamOnly ? MPlayer->getPlayerInfo( MPlayer->commanderID )->team : -1;
-			MPlayer->sendChat(0, team, (char*)(PCSTR)tmp);
+			MPlayer->sendChat(0, team, (PSTR)(PCSTR)tmp);
 		}
 		personalEdit.setFocus( 0 );
 	}
@@ -2979,7 +2979,7 @@ void ControlGui::eatChatKey()
 		personalEdit.setFocus( false );
 }
 
-void ControlGui::setChatText( PCSTR playerName, PCSTR message, unsigned long color, unsigned long chatColor )
+void ControlGui::setChatText( PCSTR playerName, PCSTR message, ULONG color, ULONG chatColor )
 {
 	for ( int i = 0; i < MAX_CHAT_COUNT - 1; i++ )
 	{

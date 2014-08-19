@@ -131,7 +131,7 @@ float minFrameLength = 1.0/4.0;
 long MissionStartTime =	0;			//No Idea
 
 Mission *mission = NULL;
-unsigned long scenarioResult = mis_PLAYING;
+ULONG scenarioResult = mis_PLAYING;
 long scenarioEndTurn = -1;
 
 extern long GameDifficulty;
@@ -160,13 +160,13 @@ extern DWORD ServerPlayerNum;
 
 extern bool useNonWeaponEffects;
 
-extern unsigned long elementHeapSize;
-extern unsigned long maxElements;
-extern unsigned long maxGroups;
-extern unsigned long missionHeapSize;
-extern unsigned long polyHeapSize;
-extern unsigned long spriteDataHeapSize;
-extern unsigned long spriteHeapSize;
+extern ULONG elementHeapSize;
+extern ULONG maxElements;
+extern ULONG maxGroups;
+extern ULONG missionHeapSize;
+extern ULONG polyHeapSize;
+extern ULONG spriteDataHeapSize;
+extern ULONG spriteHeapSize;
 
 extern long	CurMultiplayCode;
 extern long	CurMultiplayParam;
@@ -177,7 +177,7 @@ extern float MaxExtractUnitDistance;
 extern bool useFog;
 extern bool useShadows;
 extern bool inViewMode;
-extern unsigned long viewObject;
+extern ULONG viewObject;
 extern float loadProgress;
 
 extern char TeamRelations[MAX_TEAMS][MAX_TEAMS];
@@ -187,8 +187,8 @@ ByteFlag *SeenBits = NULL;			//What HAS been seen
 
 UserHeapPtr missionHeap = NULL;
 
-unsigned long MultiPlayTeamId = 0xFFFFFFFF;
-unsigned long MultiPlayCommanderId = 0xFFFFFFFF;
+ULONG MultiPlayTeamId = 0xFFFFFFFF;
+ULONG MultiPlayCommanderId = 0xFFFFFFFF;
 
 bool useSensors = true;
 bool useCollisions = true;
@@ -204,7 +204,7 @@ float CheatHitDamage = 0.0f;
 
 bool neverEndingStory = false;
 
-void GetBlockedDoorCells (long moveLevel, long door, char* openCells);
+void GetBlockedDoorCells (long moveLevel, long door, PSTR openCells);
 void PlaceStationaryMovers (MoveMap* map);
 void PlaceMovers (void);
 //---------------------------------------------------------------------------
@@ -218,7 +218,7 @@ bool showFrameRate = false;
 
 bool Mission::terminationCounterStarted = false;
 double Mission::missionTerminationTime = -1.0;
-unsigned long Mission::terminationResult = mis_PLAYING;
+ULONG Mission::terminationResult = mis_PLAYING;
 
 extern float OneOverProcessorSpeed;
 extern PriorityQueuePtr	openList;
@@ -915,7 +915,7 @@ void InitDifficultySettings (FitIniFile *gameSystemFile)
 //--------------------------------------------------
 // Game System Constants -- Definitions here.
 float maxVisualRange = 0.0;
-unsigned long MaxTreeLOSCellBlock = 0;
+ULONG MaxTreeLOSCellBlock = 0;
 float MaxVisualRadius = 0.0;
 float fireVisualRange = 0.0;
 extern float WeaponRange[];						//MOVER
@@ -1189,9 +1189,9 @@ typedef struct _MoverInitData {
 	char			brainFileName[50];
 	char			profileName[50];
 	long			objNumber;
-	unsigned long	controlType;
-	unsigned long	controlDataType;
-	unsigned long	variant;
+	ULONG	controlType;
+	ULONG	controlDataType;
+	ULONG	variant;
 	float			position[2];
 	long			rotation;
 	char			teamID;
@@ -1446,7 +1446,7 @@ long Mission::removeMover (MoverPtr mover) {
 
 //---------------------------------------------------------------------------
 
-void Mission::tradeMover (MoverPtr mover, long newTeamID, long newCommanderID, char* pilotFileName, char* brainFileName) {
+void Mission::tradeMover (MoverPtr mover, long newTeamID, long newCommanderID, PSTR pilotFileName, PSTR brainFileName) {
 
 	missionInterface->removeMover(mover);
 	if (MPlayer) {
@@ -1477,7 +1477,7 @@ void Mission::tradeMover (MoverPtr mover, long newTeamID, long newCommanderID, c
 
 //----------------------------------------------------------------------------
 
-bool Mission::calcComplexDropZones (char* missionName, char dropZoneCID[MAX_MC_PLAYERS]) {
+bool Mission::calcComplexDropZones (PSTR missionName, char dropZoneCID[MAX_MC_PLAYERS]) {
 
 	for (long p = 0; p < MAX_MC_PLAYERS; p++)
 		dropZoneCID[p] = -1;
@@ -1615,7 +1615,7 @@ bool IsGateOpen (long objectWID) {
 }
 
 //----------------------------------------------------------------------------
-void Mission::init (char *missionName, long loadType, long dropZoneID, Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], long numMoversPerCommander)
+void Mission::init (PSTR missionName, long loadType, long dropZoneID, Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], long numMoversPerCommander)
 {
 	neverEndingStory = false;
 	invulnerableON = false;
@@ -1915,7 +1915,7 @@ void Mission::init (char *missionName, long loadType, long dropZoneID, Stuff::Ve
 			bool isServer = false;
 			result = missionFile->readIdBoolean("Server", isServer);
 			gosASSERT(result == NO_ERR);
-			unsigned long numPlayers;
+			ULONG numPlayers;
 			result = missionFile->readIdULong("NumPlayers", numPlayers);
 			gosASSERT(result == NO_ERR);
 			gosASSERT(MPlayer == NULL);
@@ -2291,7 +2291,7 @@ void Mission::init (char *missionName, long loadType, long dropZoneID, Stuff::Ve
 	result = missionFile->seekBlock("Warriors");
 	gosASSERT(result == NO_ERR);
 
-	unsigned long numWarriors;
+	ULONG numWarriors;
 	result = missionFile->readIdULong("NumWarriors",numWarriors);
 	gosASSERT(result == NO_ERR);
 
@@ -2367,7 +2367,7 @@ void Mission::init (char *missionName, long loadType, long dropZoneID, Stuff::Ve
 	if (loadBrainParameters) {
 		//---------------------------------------------------------------
 		// Load the brain parameter file and load 'em for each warrior...
-		for (unsigned long i = 1; i <= numWarriors; i++) {
+		for (ULONG i = 1; i <= numWarriors; i++) {
 			result = MechWarrior::warriorList[i]->loadBrainParameters(missionFile, i);
 			//Assert(result == NO_ERR, result, " Could not load Warrior Brain Parameters ");
 		}
@@ -2438,7 +2438,7 @@ void Mission::init (char *missionName, long loadType, long dropZoneID, Stuff::Ve
 
 			result = missionFile->seekBlock(partName);
 			gosASSERT(result == NO_ERR);
-			unsigned long squadNum;
+			ULONG squadNum;
 			result = missionFile->readIdULong("squadNum", squadNum);
 			long squadIndex = 0;
 			for (squadIndex = 0; squadIndex < numSquads; squadIndex++)
@@ -2484,7 +2484,7 @@ void Mission::init (char *missionName, long loadType, long dropZoneID, Stuff::Ve
 			for (long i = 0; i < numSquads; i++) {
 				char s[128];
 				sprintf(s, "Squad%d", i);
-				unsigned long alternate = -1;
+				ULONG alternate = -1;
 				result = missionFile->readIdULong(s, alternate);
 				if (result == NO_ERR)
 					randomAlternative[i] = alternate;
@@ -2508,8 +2508,8 @@ void Mission::init (char *missionName, long loadType, long dropZoneID, Stuff::Ve
 			// If we have alternatives, choose which one we're taking before we read
 			// anything else in...
 			bool usingAlternate = false;
-			unsigned long realPilot = 0;
-			unsigned long squadNum;
+			ULONG realPilot = 0;
+			ULONG squadNum;
 			result = missionFile->readIdULong("squadNum", squadNum);
 			parts[i].squadId = squadNum;
 			long squadIndex = 0;
@@ -3066,7 +3066,7 @@ void Mission::initTGLForMission()
 	if ( !TG_Shape::tglHeap )
 	{
 		//---------------------------------------------------------
-		unsigned long tglHeapSize = 40 * 1024 * 1024;
+		ULONG tglHeapSize = 40 * 1024 * 1024;
 
 		TG_Shape::tglHeap = new UserHeap;
 		TG_Shape::tglHeap->init(tglHeapSize,"TinyGeom");
@@ -3415,7 +3415,7 @@ float Mission::checkObjectiveTimer (long objectiveNum)
 	gosASSERT((objectiveNum >= 0) || objectiveNum < (long)numObjectives);
 
 	long timerNumber = OBJECTIVE_1_TIMER + objectiveNum;
-	unsigned long timeLeft = 0;
+	ULONG timeLeft = 0;
 
 	TimerPtr timer = timerManager->getTimer(timerNumber);
 	gosASSERT(timer != NULL);

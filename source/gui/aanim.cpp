@@ -334,12 +334,12 @@ float	aAnimation::getScaleY() const
 }
 
 
-unsigned long aAnimation::getColor(  ) const
+ULONG aAnimation::getColor(  ) const
 {
 	return getColor( currentTime );
 }
 
-unsigned long aAnimation::getColor( float time ) const
+ULONG aAnimation::getColor( float time ) const
 {
 	float t0, t1;
 
@@ -352,8 +352,8 @@ unsigned long aAnimation::getColor( float time ) const
 	}
 
 	t1 = t0 = 0.f;
-	unsigned long color = 0xffffffff;
-	unsigned long color1, color2;
+	ULONG color = 0xffffffff;
+	ULONG color1, color2;
 	color1 = color2 = 0;
 	
 	// figure out where we are in animation

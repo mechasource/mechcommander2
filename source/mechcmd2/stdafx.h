@@ -37,6 +37,9 @@
 
 #pragma once
 
+#ifndef _STDAFX_H_MECHCMD2_
+#define _STDAFX_H_MECHCMD2_
+
 #ifndef STRICT
 #define STRICT
 #endif
@@ -59,7 +62,7 @@
 // disable useless warnings when compiling with -Wall
 #pragma warning(disable: 4514 4710 4711)
 // comment out for diagnostic messages
-#pragma warning(disable: 4625 4820)
+#pragma warning(disable: 4266 4625 4820)
 
 // temporary disable warnings when compiling with -Wall
 #pragma warning(push)
@@ -73,6 +76,7 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 #endif
 #pragma warning(pop)
 
+#include <sys/types.h>
 #include <limits.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -80,6 +84,7 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
+#include <sys/stat.h>
 #include <float.h>
 #include <math.h>
 #include <imagehlp.h>
@@ -138,7 +143,7 @@ inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
 #endif
 }
 
-inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData,_In_ void* pObject)
+inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData,_In_ PVOID pObject)
 {
 #if (_ATL_VER >= 0x0700)
 	ATL::_AtlWinModule.AddCreateWndData(pData, pObject);
@@ -147,7 +152,7 @@ inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData,_In_ void* pO
 #endif
 }
 
-inline void* ExtractCreateWndData(void)
+inline PVOID ExtractCreateWndData(void)
 {
 #if (_ATL_VER >= 0x0700)
 	return ATL::_AtlWinModule.ExtractCreateWndData();
@@ -213,3 +218,5 @@ using namespace Utilities;
 //#ifdef _MSC_VER
 //#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 //#endif
+
+#endif

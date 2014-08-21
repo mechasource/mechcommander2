@@ -1,3 +1,6 @@
+
+#pragma once
+
 #ifndef MISSIONBRIEFINGSCREEN_H
 #define MISSIONBRIEFINGSCREEN_H
 //===========================================================================//
@@ -50,7 +53,7 @@ class MissionBriefingScreen: public LogisticsScreen
 	virtual int			handleMessage( ULONG, ULONG );
 
 
-	static long	getMissionTGA( PCSTR missionName );
+	static int32_t	getMissionTGA( PCSTR missionName );
 
 
 
@@ -59,9 +62,9 @@ class MissionBriefingScreen: public LogisticsScreen
 	aObject*		objectiveButtons[MAX_OBJECTIVES];
 	aObject			dropZoneButton;
 	EString			objectiveModels[MAX_OBJECTIVES];
-	long			modelTypes[MAX_OBJECTIVES];
+	int32_t			modelTypes[MAX_OBJECTIVES];
 	float			modelScales[MAX_OBJECTIVES];
-	long			modelColors[MAX_OBJECTIVES][3];
+	int32_t			modelColors[MAX_OBJECTIVES][3];
 	aListBox		missionListBox; 
 
 	int			addLBItem( PCSTR itemName, ULONG color, int ID);

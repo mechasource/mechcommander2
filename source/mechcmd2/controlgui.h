@@ -34,15 +34,15 @@ ControlGui:
 
 struct	ButtonData {
 	uint32_t		ID;
-	long			helpTextHeader;
-	long			helpTextID;
-	long			textID;
-	long			textColors[4];
+	int32_t			helpTextHeader;
+	int32_t			helpTextID;
+	int32_t			textID;
+	int32_t			textColors[4];
 	aFont			textFont;
 	char			fileName[32];
-	long			stateCoords[4][2];	
-	long			textureWidth;
-	long			textureHeight;
+	int32_t			stateCoords[4][2];	
+	int32_t			textureWidth;
+	int32_t			textureHeight;
 	int				fileWidth;
 	int				fileHeight;
 	ULONG	textureHandle;
@@ -53,7 +53,7 @@ class ControlButton
 {
 public:
 	gos_VERTEX		location[4];
-	long ID;
+	int32_t ID;
 
 	ButtonData*			data;
 	int					state;
@@ -69,7 +69,7 @@ public:
 	void setColor( ULONG newColor );
 	static void makeUVs( gos_VERTEX* vertices, int State, ButtonData& data );
 
-	static void initButtons( FitIniFile& file, long buttonCount, 
+	static void initButtons( FitIniFile& file, int32_t buttonCount, 
 		ControlButton* buttons, ButtonData* buttonData, PCSTR str, aFont* font = 0 );
 
 
@@ -89,16 +89,16 @@ public:
 
 	static ControlGui*	instance;
 
-	static long			hiResOffsetX;
-	static long			hiResOffsetY;
+	static int32_t			hiResOffsetX;
+	static int32_t			hiResOffsetY;
 
 	ControlGui();
 	~ControlGui();
 	bool inRegion( int mouseX, int mouseY, bool bPaused );
 	void render( bool bPaused );
 	void update( bool bPaused, bool bLOS );
-	void initTacMapBuildings( PUCHAR data, int size ){ tacMap.initBuildings( data, size ); }
-	void initTacMap( PUCHAR data, int size ){ tacMap.init( data, size ); }
+	void initTacMapBuildings( puint8_t data, int size ){ tacMap.initBuildings( data, size ); }
+	void initTacMap( puint8_t data, int size ){ tacMap.init( data, size ); }
 	void initMechs();
 	void unPressAllVehicleButtons();
 	void disableAllVehicleButtons();
@@ -130,12 +130,12 @@ public:
 	bool isChatting() { return bChatting; }
 
 	//TUTORIAL
-	bool animateTacMap (long buttonId,float timeToScroll,long numFlashes);
-	bool pushButton (long buttonId);
-	bool flashRPTotal (long numFlashes);
+	bool animateTacMap (int32_t buttonId,float timeToScroll,int32_t numFlashes);
+	bool pushButton (int32_t buttonId);
+	bool flashRPTotal (int32_t numFlashes);
 
-	PCSTR getVehicleName( long& ID );
-	PCSTR getVehicleNameFromID (long ID);
+	PCSTR getVehicleName( int32_t& ID );
+	PCSTR getVehicleNameFromID (int32_t ID);
 	void swapResolutions( int newResolution );
 
 	GameTacMap						tacMap;
@@ -216,7 +216,7 @@ public:
 	bool	getRepair();
 	bool	getGuardTower();
 	void	switchTabs( int direction );
-	void	renderObjective( CObjective* pObjective, long xPos, long yPos, bool bDrawTotal );
+	void	renderObjective( CObjective* pObjective, int32_t xPos, int32_t yPos, bool bDrawTotal );
 	void	renderMissionStatus( bool bRender){ renderStatusInfo = bRender; }		
 
 	int		getCurrentRange();
@@ -263,7 +263,7 @@ public:
 	struct RectInfo
 	{
 		RECT rect;
-		long color;
+		int32_t color;
 	};
 
 private:
@@ -281,7 +281,7 @@ private:
 	ChatInfo		chatInfos[MAX_CHAT_COUNT]; // max five lines -- could change
 
 	RectInfo*		rectInfos;
-	long			rectCount;
+	int32_t			rectCount;
 
 	//static	ButtonFile		vehicleFileData[LAST_VEHICLE];
 	static ULONG RUN;
@@ -294,23 +294,23 @@ private:
 	static ButtonData*	buttonData;
 	static ButtonData*	vehicleData;
 	static PCSTR	vehicleNames[5];
-	static long			vehicleIDs[5];
+	static int32_t			vehicleIDs[5];
 	static PCSTR	vehiclePilots[5];
 
 
-	static long			vehicleCosts[LAST_VEHICLE];
+	static int32_t			vehicleCosts[LAST_VEHICLE];
 
 	InfoWindow*			infoWnd;
 	PauseWindow*		pauseWnd;
 
 	StaticInfo*			staticInfos;
-	long				staticCount;
+	int32_t				staticCount;
 
 	StaticInfo*			objectiveInfos; //2nd to last one is check, last is x
-	long				objectiveInfoCount;
+	int32_t				objectiveInfoCount;
 
 	StaticInfo*			missionStatusInfos;
-	long				missionStatusInfoCount;
+	int32_t				missionStatusInfoCount;
 	RectInfo			missionStatusRect;
 
 	bool				renderStatusInfo;
@@ -319,39 +319,39 @@ private:
 	float				objectiveTime;
 
 	float				tabFlashTime;
-	static long OBJECTIVESTOP;
-	static long OBJECTIVESLEFT;
-	static long OBJECTIVESSKIP;
-	static long OBJECTIVESTOTALRIGHT;
-	static long OBJEECTIVESHEADERSKIP;
-	static long OBJECTIVESHEADERTOP;
-	static long OBJECTIVEBOXX;
-	static long OBJECTIVEBOXSKIP;
-	static long OBJECTIVECHECKSKIP;
-	static long OBJECTIVEHEADERLEFT;
-	static long HELPAREA_LEFT;
-	static long HELPAREA_BOTTOM;
-	static long RPLEFT;
-	static long RPTOP;
+	static int32_t OBJECTIVESTOP;
+	static int32_t OBJECTIVESLEFT;
+	static int32_t OBJECTIVESSKIP;
+	static int32_t OBJECTIVESTOTALRIGHT;
+	static int32_t OBJEECTIVESHEADERSKIP;
+	static int32_t OBJECTIVESHEADERTOP;
+	static int32_t OBJECTIVEBOXX;
+	static int32_t OBJECTIVEBOXSKIP;
+	static int32_t OBJECTIVECHECKSKIP;
+	static int32_t OBJECTIVEHEADERLEFT;
+	static int32_t HELPAREA_LEFT;
+	static int32_t HELPAREA_BOTTOM;
+	static int32_t RPLEFT;
+	static int32_t RPTOP;
 
 	static MoveInfo objectiveMoveInfo[OBJECTVE_MOVE_COUNT];
 	static MoveInfo missionResultsMoveInfo[RESULTS_MOVE_COUNT];
 
 	StaticInfo*			videoInfos;
-	long				videoInfoCount;
+	int32_t				videoInfoCount;
 	RECT			videoRect;
 	RECT			videoTextRect;
 	MC2MoviePtr			bMovie;
 
 	StaticInfo*			timerInfos;
-	long				timerInfoCount;
+	int32_t				timerInfoCount;
 	RectInfo			timerRect;
 
 	//TUTORIAL!!
 	RectInfo			rpCallout;
-	long				rpNumFlashes;
+	int32_t				rpNumFlashes;
 	float				rpFlashTime;
-	long				buttonToPress;
+	int32_t				buttonToPress;
 
 	ULONG		curOrder;
 	bool				fireFromCurrentPos;
@@ -365,7 +365,7 @@ private:
 	bool				thirtySecondWarningPlayed;
 	bool				bChatting;
 
-	long					idToUnPress;
+	int32_t					idToUnPress;
 	aFont					guiFont;
 	aFont					helpFont;
 	aFont					vehicleFont;
@@ -398,7 +398,7 @@ private:
 
 public:
 
-	RectInfo *getRect (long id)
+	RectInfo *getRect (int32_t id)
 	{
 		if ((id >= 0) && (id < rectCount))
 		{

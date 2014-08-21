@@ -148,32 +148,32 @@ extern float fireVisualRange;
 extern float WeaponRange[];		   
 extern float DefaultAttackRange;   
 extern float baseSensorRange;
-extern long visualRangeTable[];
+extern int32_t visualRangeTable[];
 
 extern uint8_t godMode;	   
 extern uint8_t revealTacMap; 
 extern uint8_t footPrints;   
 extern bool CantTouchThis;
 
-extern long tonnageDivisor;		   
-extern long resourcesPerTonDivided;
+extern int32_t tonnageDivisor;		   
+extern int32_t resourcesPerTonDivided;
 
 extern GameObjectPtr DebugGameObject[];
 
 extern float MineDamage;		   
 extern float MineSplashDamage;	   
 extern float MineSplashRange;	   
-extern long MineExplosion;		   
-extern long MineLayThrottle;	   
-extern long MineSweepThrottle;	   
+extern int32_t MineExplosion;		   
+extern int32_t MineLayThrottle;	   
+extern int32_t MineSweepThrottle;	   
 extern float StrikeWaitTime;	   
 extern float StrikeTimeToImpact;   
 extern float MineWaitTime;		   
 
-extern long totalSmokeSpheres;	   
-extern long totalSmokeShapeSize;   
+extern int32_t totalSmokeSpheres;	   
+extern int32_t totalSmokeShapeSize;   
 
-extern long maxFiresBurning;	   
+extern int32_t maxFiresBurning;	   
 extern float maxFireBurnTime;	   
 
 extern bool force64MB;			   
@@ -190,25 +190,25 @@ extern float CheatHitDamage;
 
 void InitDifficultySettings (FitIniFile *gameSystemFile);
 
-extern long GameVisibleVertices;
+extern int32_t GameVisibleVertices;
 
-void GetBlockedDoorCells (long moveLevel, long door, PSTR openCells);
+void GetBlockedDoorCells (int32_t moveLevel, int32_t door, PSTR openCells);
 void PlaceStationaryMovers (MoveMap* map);
 void PlaceMovers (void);
 
 extern GameObjectFootPrint* tempSpecialAreaFootPrints;
-extern long tempNumSpecialAreas;
+extern int32_t tempNumSpecialAreas;
 extern GameLog* CombatLog;
 
-bool IsGateDisabled (long objectWID);
-bool IsGateOpen (long objectWID);
+bool IsGateDisabled (int32_t objectWID);
+bool IsGateOpen (int32_t objectWID);
 
-DWORD elfHash (PSTR name);
+ULONG elfHash (PSTR name);
 
 extern char versionStamp[];
 //----------------------------------------------------------------------------------------------------
 // Save.
-void Part::Save (FitIniFilePtr file, long partNum)
+void Part::Save (FitIniFilePtr file, int32_t partNum)
 {
 	char partId[1024];
 	sprintf(partId,"Part%d",partNum+1);
@@ -247,7 +247,7 @@ void Mission::save (PCSTR saveFileName)
 	//Check for sufficient hard Drive space on drive game is running from
 	char currentPath[1024];
 	gos_GetCurrentPath( currentPath, 1023 );
-	__int64 driveSpace = gos_GetDriveFreeSpace(currentPath);
+	int64_t driveSpace = gos_GetDriveFreeSpace(currentPath);
 	if (driveSpace < (5 * 1024 * 1024))
 	{
 		soundSystem->playDigitalSample(INVALID_GUI);
@@ -256,8 +256,8 @@ void Mission::save (PCSTR saveFileName)
 
 	userInput->mouseOff();
 
-	DWORD oldXLoc = LoadScreen::xProgressLoc;
-	DWORD oldYLoc = LoadScreen::yProgressLoc;
+	ULONG oldXLoc = LoadScreen::xProgressLoc;
+	ULONG oldYLoc = LoadScreen::yProgressLoc;
 
 	LoadScreen::xProgressLoc = 0;
 	LoadScreen::yProgressLoc = 0;
@@ -275,18 +275,18 @@ void Mission::save (PCSTR saveFileName)
 	//Open the Save File.
 	// Assume path is correct when we get here.
 	PacketFile saveFile;
-	long result = saveFile.create((PSTR )saveFileName);
+	int32_t result = saveFile.create((PSTR )saveFileName);
 
 	loadProgress = 1.0f;
 
 	//A thousand packets ought to get it!!
 	saveFile.reserve(20000);
-	DWORD currentPacket = 0;
+	ULONG currentPacket = 0;
 
-	saveFile.writePacket(currentPacket,(MemoryPtr)versionStamp,strlen(versionStamp)+1,STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket,(PUCHAR)versionStamp,strlen(versionStamp)+1,STORAGE_TYPE_RAW);
 	currentPacket++;
 
-	saveFile.writePacket(currentPacket,(MemoryPtr)cmpName,strlen(cmpName)+1, STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket,(PUCHAR)cmpName,strlen(cmpName)+1, STORAGE_TYPE_RAW);
 	currentPacket++;
 
 	loadProgress = 3.0f;
@@ -334,7 +334,7 @@ void Mission::save (PCSTR saveFileName)
 	tempFile.writeIdULong("NumParts",numParts);
 
 	//Must save all of the part data.  Not sure if its ever used after INIT!  Better safe then sorry.
-	for (long i=0;i<numParts;i++)
+	for (int32_t i=0;i<numParts;i++)
 		parts[i].Save(&tempFile,i);
 
 	loadProgress = 35.0f;
@@ -365,8 +365,8 @@ void Mission::save (PCSTR saveFileName)
 
 	File dmyFile;
 	result = dmyFile.open(tmpName);
-	DWORD fileSz = dmyFile.fileSize();
-	MemoryPtr tmpRAM = (MemoryPtr)malloc(fileSz);
+	ULONG fileSz = dmyFile.fileSize();
+	PUCHAR tmpRAM = (PUCHAR)malloc(fileSz);
 	dmyFile.read(tmpRAM,fileSz);
 
 	saveFile.writePacket(currentPacket,tmpRAM,fileSz,STORAGE_TYPE_ZLIB);
@@ -403,7 +403,7 @@ void Mission::save (PCSTR saveFileName)
 	//Create a dummy file to stick in the packet file
 	result = dmyFile.open(tmpName);
 	fileSz = dmyFile.fileSize();
-	tmpRAM = (MemoryPtr)malloc(fileSz);
+	tmpRAM = (PUCHAR)malloc(fileSz);
 	dmyFile.read(tmpRAM,fileSz);
 
 	saveFile.writePacket(currentPacket,tmpRAM,fileSz,STORAGE_TYPE_ZLIB);
@@ -461,7 +461,7 @@ void Mission::save (PCSTR saveFileName)
 	//Create a dummy file to stick in the packet file
 	result = dmyFile.open(tmpName);
 	fileSz = dmyFile.fileSize();
-	tmpRAM = (MemoryPtr)malloc(fileSz);
+	tmpRAM = (PUCHAR)malloc(fileSz);
 	dmyFile.read(tmpRAM,fileSz);
 
 	saveFile.writePacket(currentPacket,tmpRAM,fileSz,STORAGE_TYPE_ZLIB);
@@ -475,12 +475,12 @@ void Mission::save (PCSTR saveFileName)
 
 	//-------------------------------------------------------------------------------------------
 	// Save the CurrentMission number in logistics cause Heidi don't save it with logisticsData.
-	long currentMissionNum = LogisticsData::instance->getCurrentMissionNum();
-	saveFile.writePacket(currentPacket,(MemoryPtr)&currentMissionNum,4,STORAGE_TYPE_RAW);
+	int32_t currentMissionNum = LogisticsData::instance->getCurrentMissionNum();
+	saveFile.writePacket(currentPacket,(PUCHAR)&currentMissionNum,4,STORAGE_TYPE_RAW);
 	currentPacket++;
 
 	//-------------------------------------------------------------------------------------------
-	saveFile.writePacket(currentPacket,(MemoryPtr)"END",4,STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket,(PUCHAR)"END",4,STORAGE_TYPE_RAW);
 	currentPacket++;
 
 	saveFile.close();
@@ -509,113 +509,113 @@ void Mission::save (PCSTR saveFileName)
 
 //----------------------------------------------------------------------------------------------------
 // Load.
-void Part::Load (FitIniFilePtr file, long partNum)
+void Part::Load (FitIniFilePtr file, int32_t partNum)
 {
 	char partId[1024];
 	sprintf(partId,"Part%d",partNum);
 
-	long result = file->seekBlock(partId);
-	if (result != NO_ERR)
+	int32_t result = file->seekBlock(partId);
+	if (result != NO_ERROR)
 		STOP(("Part Number %d missing from In-Mission Save",partNum));
 
 	result = file->readIdLong("ObjectWID",objectWID);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d ObjectWID missing from In-Mission Save",partNum));
 
 	result = file->readIdULong("ObjectNumber", objNumber);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d ObjectNumber missing from In-Mission Save",partNum));
 
 	result = file->readIdULong("BaseColor",baseColor);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d BaseColor missing from In-Mission Save",partNum));
 
 	result = file->readIdULong("HighlightColor1",highlightColor1);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d HighlightColor1 missing from In-Mission Save",partNum));
 
 	result = file->readIdULong("HighlightColor2",highlightColor2);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d HighlightColor2 missing from In-Mission Save",partNum));
 
 	result = file->readIdLong("Active",active);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d Active missing from In-Mission Save",partNum));
 
 	result = file->readIdLong("Exists",exists);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d Exists missing from In-Mission Save",partNum));
 
 	result = file->readIdBoolean("Destroyed",destroyed);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d Destroyed missing from In-Mission Save",partNum));
 
 	result = file->readIdFloat("PositionX",position.x);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d PositionX missing from In-Mission Save",partNum));
 
 	result = file->readIdFloat("PositionY",position.y);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d PositionY missing from In-Mission Save",partNum));
 
 	result = file->readIdFloat("PositionZ",position.z);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d PositionZ missing from In-Mission Save",partNum));
 
 	result = file->readIdFloat("Velocity",velocity);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d Velocity missing from In-Mission Save",partNum));
 
 	result = file->readIdFloat("Rotation",rotation);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d Rotation missing from In-Mission Save",partNum));
 
 	result = file->readIdULong("GestureId",gestureId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d Rotation missing from In-Mission Save",partNum));
 
 	result = file->readIdChar("Alignment",alignment);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d Alignment missing from In-Mission Save",partNum));
 
 	result = file->readIdChar("TeamId",teamId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d TeamId missing from In-Mission Save",partNum));
 
 	result = file->readIdLong("CommanderId",commanderID);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d CommanderId missing from In-Mission Save",partNum));
 
 	result = file->readIdChar("SquadId",squadId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d SquadId missing from In-Mission Save",partNum));
 
 	result = file->readIdChar("MyIcon",myIcon);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d MyIcon missing from In-Mission Save",partNum));
 
 	result = file->readIdULong("ControlType",controlType);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d ControlType missing from In-Mission Save",partNum));
 
 	result = file->readIdULong("ControlDataType",controlDataType);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d ControlDataType missing from In-Mission Save",partNum));
 
 	result = file->readIdString("ProfileName",profileName,8);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d ProfileName missing from In-Mission Save",partNum));
 
 	result = file->readIdULong("Pilot",pilot);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d Pilot missing from In-Mission Save",partNum));
 
 	result = file->readIdBoolean("Captureable",captureable);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d Captureable missing from In-Mission Save",partNum));
 
 	result = file->readIdULong("VariantNum",variantNum);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Part %d VeriantNum missing from In-Mission Save",partNum));
 
 }
@@ -625,8 +625,8 @@ void Mission::load (PCSTR loadFileName)
 	userInput->mouseOff();
 	loadProgress = 0.0f;
 
-	DWORD oldXLoc = LoadScreen::xProgressLoc;
-	DWORD oldYLoc = LoadScreen::yProgressLoc;
+	ULONG oldXLoc = LoadScreen::xProgressLoc;
+	ULONG oldYLoc = LoadScreen::yProgressLoc;
 
 	LoadScreen::xProgressLoc = 0;
 	LoadScreen::yProgressLoc = 0;
@@ -639,14 +639,14 @@ void Mission::load (PCSTR loadFileName)
 
 	//Open the In-Mission Save packet file.
 	PacketFile loadFile;
-	long result = loadFile.open((PSTR )loadFileName);
-	if (result != NO_ERR)
+	int32_t result = loadFile.open((PSTR )loadFileName);
+	if (result != NO_ERROR)
 		return;		//Can't load.  No File.  Dialog?  Probably not.
 
-	DWORD currentPacket = 0;
+	ULONG currentPacket = 0;
 
 	char versionCheck[1024];
-	loadFile.readPacket(currentPacket,(MemoryPtr)versionCheck);
+	loadFile.readPacket(currentPacket,(PUCHAR)versionCheck);
 	currentPacket++;
 
 	if (strcmp(versionCheck,versionStamp) != 0)
@@ -659,7 +659,7 @@ void Mission::load (PCSTR loadFileName)
 
 	loadFile.seekPacket(currentPacket);
 	PSTR campName = new char [loadFile.getPacketSize()+1];
-	loadFile.readPacket(currentPacket,(MemoryPtr)(campName));
+	loadFile.readPacket(currentPacket,(PUCHAR)(campName));
 	currentPacket++;
 
 	//Get the campaign name for the campaign we are currently playing.
@@ -719,32 +719,32 @@ void Mission::load (PCSTR loadFileName)
 	gosASSERT(gameSystemFile != NULL);
 		
 	result = gameSystemFile->open(fullGameSystemName);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->seekBlock("WeaponRanges");
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	float span[2];
 	result = gameSystemFile->readIdFloatArray("Short", span, 2);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_SHORT][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_SHORT][1] = span[1];
 
 	result = gameSystemFile->readIdFloatArray("Medium", span, 2);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_MEDIUM][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_MEDIUM][1] = span[1];
 
 	result = gameSystemFile->readIdFloatArray("Long", span, 2);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	WeaponRanges[WEAPON_RANGE_LONG][0] = span[0];
 	WeaponRanges[WEAPON_RANGE_LONG][1] = span[1];
 
 	result = gameSystemFile->readIdFloatArray("OptimalRangePoints", OptimalRangePoints, 5);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
-	for (long i = 0; i < 5; i++)
-		for (long j = 0; j < 3; j++) {
+	for (int32_t i = 0; i < 5; i++)
+		for (int32_t j = 0; j < 3; j++) {
 			OptimalRangePointInRange[i][j] = false;
 			if (OptimalRangePoints[i] > WeaponRanges[j][0])
 				if (OptimalRangePoints[i] <= WeaponRanges[j][1])
@@ -752,35 +752,35 @@ void Mission::load (PCSTR loadFileName)
 		}
 
 	result = gameSystemFile->seekBlock("General");
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->readIdFloat("MaxVisualRange",maxVisualRange);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	MaxVisualRadius = maxVisualRange * 1.4142;
 
 	result = gameSystemFile->readIdFloat("FireVisualRange",fireVisualRange);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->readIdFloatArray("WeaponRange", WeaponRange, NUM_FIRERANGES);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->readIdFloat("DefaultAttackRange", DefaultAttackRange);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		DefaultAttackRange = 75.0;
 
 	result = gameSystemFile->readIdFloat("BaseSensorRange",baseSensorRange);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->readIdLongArray("VisualRangeTable",visualRangeTable,256);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->readIdFloat("BaseHeadShotElevation",BaseHeadShotElevation);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		BaseHeadShotElevation = 1.0f;
 
-	long forestMoveCost;
+	int32_t forestMoveCost;
 	result = gameSystemFile->readIdLong("ForestMoveCost", forestMoveCost);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 		
 	//----------------------------------------------------------------------
 	// Now that we have some base values, load the master component table...
@@ -788,34 +788,34 @@ void Mission::load (PCSTR loadFileName)
 		FullPathFileName compFileName;
 		compFileName.init(objectPath,"compbas",".csv");
 #ifdef _DEBUG
-		long loadErr = 
+		int32_t loadErr = 
 #endif
 			MasterComponent::loadMasterList(compFileName, 255, baseSensorRange);
-		gosASSERT(loadErr == NO_ERR);
+		gosASSERT(loadErr == NO_ERROR);
 	}
 
-	result = gameSystemFile->readIdUCHAR("GodMode", godMode);
-	if (result != NO_ERR)
+	result = gameSystemFile->readIdUChar("GodMode", godMode);
+	if (result != NO_ERROR)
 		godMode = 0;
 
 	uint8_t revealTacMap;
-	result = gameSystemFile->readIdUCHAR("RevealTacMap", revealTacMap);
-	if (result != NO_ERR)
+	result = gameSystemFile->readIdUChar("RevealTacMap", revealTacMap);
+	if (result != NO_ERROR)
 		revealTacMap = 0;
 		
-	result = gameSystemFile->readIdUCHAR("FootPrints", footPrints);
-	if (result != NO_ERR)
+	result = gameSystemFile->readIdUChar("FootPrints", footPrints);
+	if (result != NO_ERROR)
 		footPrints = 1;
 
 	result = gameSystemFile->readIdLong("BonusTonnageDivisor",tonnageDivisor);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = gameSystemFile->readIdLong("BonusPointsPerTon",resourcesPerTonDivided);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 #ifndef FINAL
  	result = gameSystemFile->readIdFloat("CheatHitDamage",CheatHitDamage);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		CheatHitDamage = 5.0f;
 #endif
 	
@@ -824,68 +824,68 @@ void Mission::load (PCSTR loadFileName)
 	InitDifficultySettings(gameSystemFile);
 
 	result = Mover::loadGameSystem(gameSystemFile, maxVisualRange);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = BattleMech::loadGameSystem(gameSystemFile);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	//--------------------------------------------------------------------
 	result = GroundVehicle::loadGameSystem(gameSystemFile);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->seekBlock("Mine");
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->readIdFloat("BaseDamage", MineDamage);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 		
 	result = gameSystemFile->readIdFloat("SplashDamage", MineSplashDamage);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 		
 	result = gameSystemFile->readIdFloat("SplashRange", MineSplashRange);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 		
 	result = gameSystemFile->readIdLong("Explosion", MineExplosion);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->readIdLong("MineLayThrottle", MineLayThrottle);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		MineLayThrottle = 50;
 
 	result = gameSystemFile->readIdLong("MineSweepThrottle", MineSweepThrottle);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		MineSweepThrottle = 50;
 
 	result = gameSystemFile->readIdFloat("MineWaitTime", MineWaitTime);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->readIdFloat("StrikeWaitTime", StrikeWaitTime);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->readIdFloat("StrikeTimeToImpact", StrikeTimeToImpact);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->seekBlock("Smoke");
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = gameSystemFile->readIdLong("MaxSmokeSpheres",totalSmokeSpheres);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->readIdLong("TotalSmokeShapeSize",totalSmokeShapeSize);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = gameSystemFile->seekBlock("Fire");
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = gameSystemFile->readIdLong("MaxFiresBurning", maxFiresBurning);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = gameSystemFile->readIdFloat("MaxFireBurnTime", maxFireBurnTime);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	//---------------------------------------------------------------------------------
 	// OK, load up the in_mission Save mission data
-	if (loadFile.seekPacket(currentPacket) != NO_ERR)
+	if (loadFile.seekPacket(currentPacket) != NO_ERROR)
 		STOP(("Mission Data missing from IN-Mission Save"));
 
 	duration = 60;
@@ -896,8 +896,8 @@ void Mission::load (PCSTR loadFileName)
 		//Create a dummy file to read the packet into.
 		File dmyFile;
 		result = dmyFile.create(tmpName);
-		DWORD fileSz = loadFile.getPacketSize();
-		MemoryPtr tmpRAM = (MemoryPtr)malloc(fileSz);
+		ULONG fileSz = loadFile.getPacketSize();
+		PUCHAR tmpRAM = (PUCHAR)malloc(fileSz);
 		loadFile.readPacket(currentPacket,tmpRAM);
 		dmyFile.write(tmpRAM,fileSz);
 	
@@ -910,69 +910,69 @@ void Mission::load (PCSTR loadFileName)
 
 	FitIniFile missionFile;
 	result = missionFile.open(tmpName);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Mission Data missing from IN-Mission Save 2"));
 
 	//--------------------------------
 	//Load up the mission Settings.
-	if (missionFile.seekBlock( "MissionSettings" ) != NO_ERR)
+	if (missionFile.seekBlock( "MissionSettings" ) != NO_ERROR)
 		STOP(("MissionSettings missing from IN-Mission Save"));
 
 	result = missionFile.readIdString( "MissionName"					, missionFileName,79);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Mission Name missing from IN-Mission Save"));
 
 	result = missionFile.readIdFloat( "TimeLimit"						, m_timeLimit );
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Time Limit  missing from IN-Mission Save"));
 
-	long rps;
+	int32_t rps;
 	result = missionFile.readIdLong( "ResourcePoints"					, rps );
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Resource Points missing from IN-Mission Save"));
 
-	result = missionFile.readIdUCHAR( "scenarioTuneNum"					, missionTuneNum );
-	if (result != NO_ERR)
+	result = missionFile.readIdUChar( "scenarioTuneNum"					, missionTuneNum );
+	if (result != NO_ERROR)
 		STOP(("Scenario Tune Num missing from IN-Mission Save"));
 
 	result = missionFile.readIdLong("OperationId"						, operationId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Operation ID missing from IN-Mission Save"));
 
 	result = missionFile.readIdLong("MissionId"							, missionId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("MissionId missing from IN-Mission Save"));
 
 	result = missionFile.readIdLong("ABLScriptHandle"					, missionScriptHandle);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("ABL Script Handle missing from IN-Mission Save"));
 
 	result = missionFile.readIdBoolean("Active"							, active);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Active flag missing from IN-Mission Save"));
 
 	result = missionFile.readIdFloat("ActualTime"						, actualTime);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Actual Time missing from IN-Mission Save"));
 
 	result = missionFile.readIdFloat("RunningTime"						, runningTime);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Running Time missing from IN-Mission Save"));
 
 	result = missionFile.readIdFloat("ScenarioTime"						, scenarioTime);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("ScenarioTime missing from IN-Mission Save"));
 
 	result = missionFile.readIdFloat("DropZoneX"						, dropZone.x);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("DropZoneX missing from IN-Mission Save"));
 
 	result = missionFile.readIdFloat("DropZoneY"						, dropZone.y);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("DropZoneY missing from IN-Mission Save"));
 
 	result = missionFile.readIdFloat("DropZoneZ"						, dropZone.z);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("DropZoneZ missing from IN-Mission Save"));
 
 	//-----------------------------------
@@ -981,12 +981,12 @@ void Mission::load (PCSTR loadFileName)
 	// simply make it 1 until its written out
 	// in the magical editor (tm)
 	result = missionFile.seekBlock("TheSky");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		theSkyNumber = DEFAULT_SKY;
 	else
 	{
 		result = missionFile.readIdLong("SkyNumber",theSkyNumber);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			theSkyNumber = DEFAULT_SKY;
 			
 		if ((theSkyNumber < 1) || (theSkyNumber > 20))
@@ -994,12 +994,12 @@ void Mission::load (PCSTR loadFileName)
 	}
 		
 	result = missionFile.seekBlock( "Script" );
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Mission ABL Script missing from In-Mission Save"));
 	else
 	{
 		result = missionFile.readIdString( "ScenarioScript"					, missionScriptName,79 );
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			missionScriptName[0] = 0;
 	}
 
@@ -1007,11 +1007,11 @@ void Mission::load (PCSTR loadFileName)
 	//Start the scenario script the old fashion way for now.
 	//----------------------
 	// Load ABL Libraries...
-	long numErrors, numLinesProcessed;
+	int32_t numErrors, numLinesProcessed;
 	FullPathFileName libraryFileName;
 	libraryFileName.init(missionPath, "orders", ".abx");
-	long err = ABLi_loadLibrary(libraryFileName, &numErrors, &numLinesProcessed);
-	gosASSERT(err == NO_ERR);
+	int32_t err = ABLi_loadLibrary(libraryFileName, &numErrors, &numLinesProcessed);
+	gosASSERT(err == NO_ERROR);
 
 	libraryFileName.init(missionPath, "miscfunc", ".abx");
 	err = ABLi_loadLibrary(libraryFileName, &numErrors, &numLinesProcessed);
@@ -1051,7 +1051,7 @@ void Mission::load (PCSTR loadFileName)
 	gosASSERT(craterManager != NULL);
 		
 	result = craterManager->init(1000,20479,"feet");
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	//-----------------------------------------------------------------
 	// Start the object system next.	
@@ -1059,7 +1059,7 @@ void Mission::load (PCSTR loadFileName)
 	if (!ObjectManager)
 		Fatal(0, " Mission.init: unable to create ObjectManager ");
 	ObjectManager->init("object2", 716799, 3072000);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	//-----------------------------------------------------------------
 	// Start the collision detection system. -- Doesn't need objects?
@@ -1072,16 +1072,16 @@ void Mission::load (PCSTR loadFileName)
 
 	PacketFile pakFile;
 	result = pakFile.open( terrainFileName );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	land = new Terrain;
 	gosASSERT(land != NULL);
 
 	loadProgress = 15.0f;
 
-	long terrainInitResult = land->init(&pakFile, 0, GameVisibleVertices, loadProgress, 15.0 );
+	int32_t terrainInitResult = land->init(&pakFile, 0, GameVisibleVertices, loadProgress, 15.0 );
 
-	if (terrainInitResult != NO_ERR)
+	if (terrainInitResult != NO_ERROR)
 	{
 		STOP(("Could not load terrain.  Probably size was wrong!"));
 	}
@@ -1096,7 +1096,7 @@ void Mission::load (PCSTR loadFileName)
 	// Start GameMap for Movement System
 	Assert(SimpleMovePathRange > 20, SimpleMovePathRange, " Simple MovePath Range too small ");
 	MOVE_init(SimpleMovePathRange);
-	if (loadFile.seekPacket(currentPacket) == NO_ERR)
+	if (loadFile.seekPacket(currentPacket) == NO_ERROR)
 	{
 		if (loadFile.getPacketSize() != 0)
 		{
@@ -1135,15 +1135,15 @@ void Mission::load (PCSTR loadFileName)
 	FullPathFileName dmpName;
 	dmpName.init(savePath,tmpString,".abl");
 
-	if (loadFile.seekPacket(currentPacket) != NO_ERR)
+	if (loadFile.seekPacket(currentPacket) != NO_ERROR)
 		STOP(("ABL SaveData missing from IN-Mission Save"));
 
 	{
 		//Create a dummy file to read the packet into.
 		File dmyFile;
 		result = dmyFile.create(dmpName);
-		DWORD fileSz = loadFile.getPacketSize();
-		MemoryPtr tmpRAM = (MemoryPtr)malloc(fileSz);
+		ULONG fileSz = loadFile.getPacketSize();
+		PUCHAR tmpRAM = (PUCHAR)malloc(fileSz);
 		loadFile.readPacket(currentPacket,tmpRAM);
 		dmyFile.write(tmpRAM,fileSz);
 	
@@ -1193,10 +1193,10 @@ void Mission::load (PCSTR loadFileName)
 	// We then create each object and place it in the world at the 
 	// position we read in with the frame we read in.
 	result = missionFile.seekBlock("Parts");
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 		
 	result = missionFile.readIdULong("NumParts",numParts);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	//--------------------------------------------------------------------------------
 	// IMPORTANT NOTE: mission parts should always start with Part 1.
@@ -1215,9 +1215,9 @@ void Mission::load (PCSTR loadFileName)
 		
 		memset(parts,0,sizeof(Part) * (numParts + 1));
 
-		long i;
+		int32_t i;
 
-		for (i = 1; i < long(numParts+1); i++)
+		for (i = 1; i < int32_t(numParts+1); i++)
 		{
 			char partName[12];
 			sprintf(partName,"Part%d",i);
@@ -1225,55 +1225,55 @@ void Mission::load (PCSTR loadFileName)
 			//------------------------------------------------------------------
 			// Find the object to load
 			result = missionFile.seekBlock(partName);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			//------------------------------------------------------------------
 			// Find out what kind of object this is.
 			result = missionFile.readIdULong("ObjectNumber",parts[i].objNumber);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			//-------------------------------------------------
 			// Read in the data needed to control the object...
 			result = missionFile.readIdULong("ControlType", parts[i].controlType);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = missionFile.readIdULong("ControlDataType", parts[i].controlDataType);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = missionFile.readIdString("ObjectProfile", parts[i].profileName, 9);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 				
 			result = missionFile.readIdULong("ObjectVariant", parts[i].variantNum);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				parts[i].variantNum = 0;		//FOR NOW!!!!!!!!!!!!!!!!
 												//MAKE a REAL error when Heidi fixes editor.
 												//-fs 12/7/99
 
 			result = missionFile.readIdULong("Pilot", parts[i].pilot);
-			gosASSERT(result == NO_ERR,);
+			gosASSERT(result == NO_ERROR,);
 			
 			//------------------------------------------------------------------
 			// Read the object's position, initial velocity and rotation.
 			result = missionFile.readIdFloat("PositionX",parts[i].position.x);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 				
 			result = missionFile.readIdFloat("PositionY",parts[i].position.y);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 				
 			parts[i].position.z = -1.0;
 
 			result = missionFile.readIdFloat("Rotation",parts[i].rotation);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 				
 			result = missionFile.readIdChar("TeamId",parts[i].teamId);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			char cmdId = 0;
 			result = missionFile.readIdChar("CommanderId", cmdId);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 			{
 				result = missionFile.readIdLong("CommanderId", parts[i].commanderID);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 			}
 			else
 			{
@@ -1283,38 +1283,38 @@ void Mission::load (PCSTR loadFileName)
 			parts[i].gestureId = 2; // this has never changed
 	
 			result = missionFile.readIdULong("BaseColor",parts[i].baseColor);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				parts[i].baseColor = 0xffffffff;
 				
 			result = missionFile.readIdULong("HighlightColor1",parts[i].highlightColor1);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				parts[i].highlightColor1 = 0xffffffff;
 				
 			result = missionFile.readIdULong("HighlightColor2",parts[i].highlightColor2);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				parts[i].highlightColor2 = 0xffffffff;
 				
   			parts[i].velocity = 0;
 			
 			result = missionFile.readIdLong("Active",parts[i].active);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = missionFile.readIdLong("Exists",parts[i].exists);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			float fDamage = 0.0f;
 			result = missionFile.readIdFloat("Damage",fDamage);
-			if (result == NO_ERR) {
+			if (result == NO_ERROR) {
 				if (fDamage >= 1.0) {
 					parts[i].destroyed = true;
 				};
 			}
 
 			result = missionFile.readIdChar("MyIcon", parts[i].myIcon);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = missionFile.readIdBoolean("Captureable", parts[i].captureable);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				parts[i].captureable = FALSE;
 		}
 	}
@@ -1333,7 +1333,7 @@ void Mission::load (PCSTR loadFileName)
 	SensorManager = new SensorSystemManager;
 	Assert(SensorManager != NULL, 0, " Unable to init sensor system manager ");
 	result = SensorManager->init(true);
-	Assert(result == NO_ERR, result, " could not start Sensor System Manager ");
+	Assert(result == NO_ERROR, result, " could not start Sensor System Manager ");
 
 	//-----------------------------------------
 	//Object Manager
@@ -1415,7 +1415,7 @@ void Mission::load (PCSTR loadFileName)
 	gosASSERT(eye != NULL);
 
 	result = eye->init(&missionFile);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	loadProgress = 96.0;
 
@@ -1436,7 +1436,7 @@ void Mission::load (PCSTR loadFileName)
 	
 	FitIniFile missionLoader;
 	result = missionLoader.open(missionScreenName);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	missionInterface->init(&missionLoader);
 	missionInterface->initMechs();
@@ -1465,15 +1465,15 @@ void Mission::load (PCSTR loadFileName)
 	missionFile.close();
 	DeleteFile(tmpName);
 
-	if (loadFile.seekPacket(currentPacket) != NO_ERR)
+	if (loadFile.seekPacket(currentPacket) != NO_ERROR)
 		STOP(("Logistics Data missing from IN-Mission Save"));
 
 	{
 		//Create a dummy file to read the packet into.
 		File dmyFile;
 		result = dmyFile.create(tmpName);
-		DWORD fileSz = loadFile.getPacketSize();
-		MemoryPtr tmpRAM = (MemoryPtr)malloc(fileSz);
+		ULONG fileSz = loadFile.getPacketSize();
+		PUCHAR tmpRAM = (PUCHAR)malloc(fileSz);
 		loadFile.readPacket(currentPacket,tmpRAM);
 		dmyFile.write(tmpRAM,fileSz);
 	
@@ -1486,7 +1486,7 @@ void Mission::load (PCSTR loadFileName)
 
 	FitIniFile logisticsFile;
 	result = logisticsFile.open(tmpName);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Logistics Data missing from IN-Mission Save 2"));
 
 	LogisticsData::instance->load(logisticsFile);
@@ -1498,8 +1498,8 @@ void Mission::load (PCSTR loadFileName)
 
 	//-------------------------------------------------------------------------------------------
 	// Load the CurrentMission number in logistics cause Heidi don't save it with logisticsData.
-	long currentMissionNum = 0;
-	loadFile.readPacket(currentPacket,(MemoryPtr)&currentMissionNum);
+	int32_t currentMissionNum = 0;
+	loadFile.readPacket(currentPacket,(PUCHAR)&currentMissionNum);
 
 	LogisticsData::instance->setCurrentMissionNum(currentMissionNum);
 	currentPacket++;
@@ -1535,7 +1535,7 @@ void Mission::load (PCSTR loadFileName)
 
 	//Reset so the LastTimeGetTime is RIGHT NOW!!!
 	//  So quickLoad works!!
-	DWORD currentTimeGetTime = timeGetTime();
+	ULONG currentTimeGetTime = timeGetTime();
 	LastTimeGetTime = currentTimeGetTime;
 }
 

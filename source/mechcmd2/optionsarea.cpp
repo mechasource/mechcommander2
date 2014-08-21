@@ -14,7 +14,7 @@ OptionsArea.cpp			: Implementation of the OptionsArea component.
 #include "..\resource.h"
 #include "prefs.h"
 #include "missionGui.h"
-#include "LogisticsDialog.h"
+#include "logisticsdialog.h"
 #include "gameSound.h"
 #include "LoadScreen.h"
 
@@ -27,11 +27,11 @@ static bool bDetailTexture = true;
 static int objectDetail = 0;
 static int difficulty = 0;
 static bool bUnLimitedAmmo = false;
-static long DigitalMasterVolume = 255;
-static long MusicVolume = 64;
-static long sfxVolume = 64;
-static long RadioVolume = 64;
-static long BettyVolume = 64;
+static int32_t DigitalMasterVolume = 255;
+static int32_t MusicVolume = 64;
+static int32_t sfxVolume = 64;
+static int32_t RadioVolume = 64;
+static int32_t BettyVolume = 64;
 CPrefs prefs;
 CPrefs originalSettings;
 
@@ -137,7 +137,7 @@ void OptionsXScreen::init(FitIniFile* file)
 	{
 		path.init( artPath, fileNames[i], ".fit" );
 		FitIniFile tmpFile;
-		if ( NO_ERR != tmpFile.open( path ) )
+		if ( NO_ERROR != tmpFile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -156,8 +156,8 @@ void OptionsXScreen::init(FitIniFile* file)
 	// 1280: offset x = 240, y = 182
 	// 1600: offset x = 400, y = 270
 
-	long xOffset = 0;
-	long yOffset = 0;
+	int32_t xOffset = 0;
+	int32_t yOffset = 0;
 
 	switch (Environment.screenWidth)
 	{
@@ -339,9 +339,9 @@ void OptionsXScreen::updateOptions()
 //////////////////////////////////////////////
 typedef struct 
 {
-	long xRes;
-	long yRes;
-	long bitDepth;
+	int32_t xRes;
+	int32_t yRes;
+	int32_t bitDepth;
 } ResModes;
 
 ResModes resModes[10] = {
@@ -362,12 +362,12 @@ bool availableMode[10] = {
 	true,true,true,true,true
 };
 
-void OptionsGraphics::init(long xOffset, long yOffset)
+void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 {
 	FullPathFileName path;
 	path.init( artPath, "mcl_options_combobox0", ".fit" );
 	FitIniFile file;
-	if ( NO_ERR !=file.open( path ) )
+	if ( NO_ERROR !=file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -403,7 +403,7 @@ void OptionsGraphics::init(long xOffset, long yOffset)
 	file.close();
 
 	path.init( artPath, "mcl_options_combobox2", ".fit" );
-	if ( NO_ERR !=file.open( path ) )
+	if ( NO_ERROR !=file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -418,17 +418,17 @@ void OptionsGraphics::init(long xOffset, long yOffset)
 	cardList.move( xOffset, yOffset );
 	cardList.ListBox().setOrange( true );
 
-	DWORD numDevices = 0;
+	ULONG numDevices = 0;
 	numDevices = gos_GetMachineInformation( gos_Info_NumberDevices );
 
 	//Theoretically impossible but config would probably like to know if it happens!
 	if (numDevices <= 0)
 		STOP(("GameOS said there were no video cards in the system!"));
 
-	long usableCardCount = 0;
+	int32_t usableCardCount = 0;
 	for (i=0;i<numDevices;i++)
 	{
-		DWORD minTextureRam = 6291456;
+		ULONG minTextureRam = 6291456;
 
 		//If we are a Voodoo 2, we may be a 4/8 or a 4/4.  Try allowing a 4/4 to run
 		// and see what happens!!  NO good has come of this!
@@ -565,7 +565,7 @@ void OptionsGraphics::end()
 	int sel = resolutionList.GetSelectedItem();
 	if ( sel > -1 )
 	{
-		long actualSel = -1;
+		int32_t actualSel = -1;
 		for ( int i = IDS_RESOLUTION0; i < IDS_RESOLUTION9 + 1; i++ )
 		{
 			if (availableMode[i-IDS_RESOLUTION0])
@@ -643,7 +643,7 @@ void OptionsGraphics::reset(const CPrefs& newPrefs)
 
 //////////////////////////////////////////////
 
-void OptionsAudio::init(long xOffset, long yOffset)
+void OptionsAudio::init(int32_t xOffset, int32_t yOffset)
 {
 	getButton( MSG_RESET )->setMessageOnRelease();
 
@@ -763,7 +763,7 @@ void OptionsGamePlay::resetCamera()
 	}
 }
 
-void OptionsGamePlay::init(long xOffset, long yOffset)
+void OptionsGamePlay::init(int32_t xOffset, int32_t yOffset)
 {
 
 	camera.init(rects[1].globalX() + xOffset, rects[1].globalY() + yOffset, 
@@ -824,7 +824,7 @@ void OptionsGamePlay::render()
 	LogisticsScreen::render();
 
 
-	long colorToMatch = getButton( MSG_BASE )->isPressed() ? 
+	int32_t colorToMatch = getButton( MSG_BASE )->isPressed() ? 
 		rects[36].getColor() : rects[37].getColor();
 	for ( int i = 4; i < 36; i++ )
 	{
@@ -946,7 +946,7 @@ void OptionsGamePlay::reset(const CPrefs& newPrefs)
 
 //////////////////////////////////////////////
 
-void OptionsHotKeys::init(long xOffset, long yOffset)
+void OptionsHotKeys::init(int32_t xOffset, int32_t yOffset)
 {
 
 
@@ -1002,8 +1002,8 @@ void OptionsHotKeys::update()
 				makeKeyString( curHotKey, keysString );
 
 				
-				long index = hotKeyList.GetSelectedItem();
-				long oldKey = -1;
+				int32_t index = hotKeyList.GetSelectedItem();
+				int32_t oldKey = -1;
 				
 				if ( index > -1 )
 				{
@@ -1016,7 +1016,7 @@ void OptionsHotKeys::update()
 						{
 
 							// first we've got to see if we can set to the default
-							long*	defaultKeys = MissionInterfaceManager::getOldKeys();
+							int32_t*	defaultKeys = MissionInterfaceManager::getOldKeys();
 							int defaultKey = defaultKeys[pTmpItem->getCommand()];
 							for ( int j = 0; j < hotKeyList.GetItemCount(); j++ )
 							{
@@ -1056,7 +1056,7 @@ void OptionsHotKeys::update()
 	
 	hotKeyList.update();
 
-	long tmpKey = 1;
+	int32_t tmpKey = 1;
 
 	while( tmpKey ) // empty out keyboard buffers...
 	{
@@ -1102,7 +1102,7 @@ void OptionsHotKeys::update()
 	}
 }
 
-void OptionsHotKeys::makeKeyString( long newKey, PSTR keysString )
+void OptionsHotKeys::makeKeyString( int32_t newKey, PSTR keysString )
 {
 	char shift[32];
 	char control[32];
@@ -1112,7 +1112,7 @@ void OptionsHotKeys::makeKeyString( long newKey, PSTR keysString )
 	cLoadString( IDS_CONTROL, control, 31 );
 	cLoadString( IDS_ALT, alt, 31 );
 
-	long key = newKey;
+	int32_t key = newKey;
 	PSTR pKey = gos_DescribeKey( (key & 0x000fffff) << 8 );
 
 	if ( ((key & SHIFT)) )
@@ -1138,15 +1138,15 @@ void OptionsHotKeys::makeKeyString( long newKey, PSTR keysString )
 }
 
 
-int OptionsHotKeys::makeInputKeyString( long& tmpKey, PSTR hotKeyString )
+int OptionsHotKeys::makeInputKeyString( int32_t& tmpKey, PSTR hotKeyString )
 {
 		PCSTR pText = gos_DescribeKey( tmpKey & 0x0001ff00 );
 
-		long tmp = ( tmpKey >> 8 ) & 0x01ff;
+		int32_t tmp = ( tmpKey >> 8 ) & 0x01ff;
 		if ( tmp == KEY_LSHIFT || tmp == KEY_LMENU || tmp == KEY_LCONTROL )
 			return -1;
 
-		long hotKey = tmp;
+		int32_t hotKey = tmp;
 
 		bool shiftDn = userInput->shift();
 		if ( shiftDn )
@@ -1227,14 +1227,14 @@ void OptionsHotKeys::reset( bool useOld )
 	cLoadString( IDS_ALT, alt, 31 );
 
 	MissionInterfaceManager::Command* commands = MissionInterfaceManager::getCommands();
-	long*	oldKeys = MissionInterfaceManager::getOldKeys();
+	int32_t*	oldKeys = MissionInterfaceManager::getOldKeys();
 	for ( int i = 0; i < MAX_COMMAND; i++ )
 	{
 		if ( commands[i].hotKeyDescriptionText != -1 )
 		{
 			keysString[0] = 0;
 			cLoadString( commands[i].hotKeyDescriptionText, descText, 127 );
-			long key = useOld ? oldKeys[i] : commands[i].key;
+			int32_t key = useOld ? oldKeys[i] : commands[i].key;
 			makeKeyString( key, keysString );
 
 			HotKeyListItem* item = new HotKeyListItem();
@@ -1261,7 +1261,7 @@ ScrollX::ScrollX()
 	pageInc = 5;
 }
 
-long ScrollX::init(aButton* pLeft, aButton* pRight, aButton* pTab)
+int32_t ScrollX::init(aButton* pLeft, aButton* pRight, aButton* pTab)
 {
 
 	aObject::init( pLeft->globalX(), pLeft->top(), 
@@ -1290,7 +1290,7 @@ long ScrollX::init(aButton* pLeft, aButton* pRight, aButton* pTab)
 	setColor( 0 );
 
 
-	return (NO_ERR);
+	return (NO_ERROR);
 }
 
 
@@ -1313,7 +1313,7 @@ void ScrollX::SetScrollPos(float newPos)
 	
 }
 
-void ScrollX::SetScroll( long newScrollPos )
+void ScrollX::SetScroll( int32_t newScrollPos )
 {
 	if ( newScrollPos < 0 )
 		newScrollPos = 0;
@@ -1329,8 +1329,8 @@ void ScrollX::SetScroll( long newScrollPos )
 }
 void ScrollX::update()
 {
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 		if ( userInput->isLeftDrag() && lastX ) // dragging the little tab
 		{
@@ -1457,7 +1457,7 @@ void HotKeyListItem::init()
 	FitIniFile file;
 	FullPathFileName path;
 	path.init( artPath, "mcl_options_combobox1", ".fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );

@@ -1,5 +1,3 @@
-#ifndef LOGISTICSMECHDISPLAY_H
-#define LOGISTICSMECHDISPLAY_H
 /*************************************************************************************************\
 LogisticsMechDisplay.h			: Interface for the LogisticsMechDisplay component.
 //---------------------------------------------------------------------------//
@@ -7,24 +5,17 @@ LogisticsMechDisplay.h			: Interface for the LogisticsMechDisplay component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
-#endif
+#pragma once
 
-#ifndef SIMPLECAMERA_H
-#include "simplecamera.h"
-#endif
+#ifndef LOGISTICSMECHDISPLAY_H
+#define LOGISTICSMECHDISPLAY_H
 
-#ifndef ATTRIBUTEMETER_H
-#include "attributemeter.h"
-#endif
-
-#ifndef SIMPLECOMPONENTLISTBOX_H
-#include "simplecomponentlistbox.h"
-#endif
+//#include "logisticsscreen.h"
+//#include "simplecamera.h"
+//#include "attributemeter.h"
+//#include "simplecomponentlistbox.h"
 
 class LogisticsMech;
-
 
 //*************************************************************************************************
 

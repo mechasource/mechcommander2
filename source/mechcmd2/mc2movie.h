@@ -8,22 +8,17 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef MC2MOVIE_H
 #define MC2MOVIE_H
 
-//--------------------------------------------------------------------------
-#ifndef DSTD_H
-#include "dstd.h"
-#endif
-
-#ifndef HEAP_H
-#include "heap.h"
-#endif
-
-#include <windows.h>
+//#include "dstd.h"
+//#include "heap.h"
+//#include <windows.h>
 
 //--------------------------------------------------------------------------
-const DWORD MAX_TEXTURES_NEEDED = 6;
+const ULONG MAX_TEXTURES_NEEDED = 6;
 
 //--------------------------------------------------------------------------
 class MC2Movie
@@ -33,7 +28,7 @@ class MC2Movie
 		{
 			MC2Surface = NULL;
 
-			for (long i=0;i<MAX_TEXTURES_NEEDED;i++)
+			for (int32_t i=0;i<MAX_TEXTURES_NEEDED;i++)
 			{
 				mc2TextureNodeIndex[i] = 0xffffffff;
 			}
@@ -124,17 +119,17 @@ class MC2Movie
 		
 	protected:
 	
-		DWORD*		MC2Surface;									//Extra surface used if MC2 Movie is larger then 256x256
-		DWORD		mc2TextureNodeIndex[MAX_TEXTURES_NEEDED];		//Handles to textures for MC2 movie data.
+		ULONG*		MC2Surface;									//Extra surface used if MC2 Movie is larger then 256x256
+		ULONG		mc2TextureNodeIndex[MAX_TEXTURES_NEEDED];		//Handles to textures for MC2 movie data.
 		RECT		MC2Rect;										//Physical Location on screen for MC2 movie.
 					
-		DWORD 		numWide;										//Number of textures wide display is
-		DWORD		numHigh;										//Number of textures high the display is
-		DWORD		totalTexturesUsed;                              //total Number of texture used to display 
+		ULONG 		numWide;										//Number of textures wide display is
+		ULONG		numHigh;										//Number of textures high the display is
+		ULONG		totalTexturesUsed;                              //total Number of texture used to display 
 					
 		bool		forceStop;										//Should MC2 movie end now?
 					
-		DWORD		singleTextureSize;								//Size of the single texture.  Fit it to smallest texture we can use.
+		ULONG		singleTextureSize;								//Size of the single texture.  Fit it to smallest texture we can use.
 		bool		stillPlaying;									//Is MC2 movie over?
 
 		bool		separateWAVE;									//Tells us if this MC2 movie has a separate soundtrack.

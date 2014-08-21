@@ -17,8 +17,8 @@ LogisticsComponent.cpp			: Implementation of the LogisticsComponent component.
 
 extern PSTR ComponentFormString[];
 
-long LogisticsComponent::XICON_FACTOR = 48;
-long LogisticsComponent::YICON_FACTOR = 32;
+int32_t LogisticsComponent::XICON_FACTOR = 48;
+int32_t LogisticsComponent::YICON_FACTOR = 32;
 float LogisticsComponent::MAX_HEAT = 20.f;
 float LogisticsComponent::MAX_DAMAGE = 15.f;
 float LogisticsComponent::MAX_RECYCLE = 10.75f;
@@ -121,7 +121,7 @@ int LogisticsComponent::init( PSTR dataLine )
 	extractString( pLine, pBuffer, 1024 );
 	if ( !isWeapon() )
 		rangeType = NO_RANGE;
-	else if ( !strcmp( pBuffer, "long" ) )
+	else if ( !strcmp( pBuffer, "int32_t" ) )
 		rangeType = LONG;
 	else if ( !strcmp( pBuffer, "medium" ) )
 		rangeType = MEDIUM;

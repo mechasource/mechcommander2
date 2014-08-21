@@ -1,14 +1,16 @@
-#ifndef CHATWINDOW_H
-#define CHATWINDOW_H
 //===========================================================================//
 //ChatWindow.h			: Interface for the ChatWindow component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-//#ifndef LOGISTICSSCREEN_H
+#pragma once
+
+#ifndef CHATWINDOW_H
+#define CHATWINDOW_H
+
 //#include "logisticsscreen.h"
-//#endif
+// #include "alistbox.h"
 
 //*************************************************************************************************
 
@@ -16,26 +18,23 @@
 CLASS DESCRIPTION
 ChatWindow:
 **************************************************************************************************/
-#ifndef ALISTBOX_H
-#include "alistbox.h"
-#endif
 
 class ChatMessageItem : public aListItem
 {
 public:
 
 	ChatMessageItem();
-	void		 setPlayerColor(long color);
-	void		 setTextColor( long color );
+	void		 setPlayerColor(int32_t color);
+	void		 setTextColor( int32_t color );
 	void		 setPlayerName( PCSTR name );
 	int			 setText( PCSTR text ); // returns number of lines
-	long		 getLineCount() { return lineCount; }
+	int32_t		 getLineCount() { return lineCount; }
 
 private:
 	aText		 name;
 	aText		 playerText;
 	aRect		 playerRect;
-	long		 lineCount;
+	int32_t		 lineCount;
 };
 
 class ChatWidget : public LogisticsScreen  // the one that obscures....
@@ -53,7 +52,7 @@ private:
 	aListBox		listBox;
 
 	ChatMessageItem	listItems[128];
-	long			curItem;
+	int32_t			curItem;
 
 
 };
@@ -75,7 +74,7 @@ class ChatWindow: public LogisticsScreen
 		virtual void render( int xOffset, int yOffset );
 		int handleMessage( ULONG, ULONG );
 
-		virtual bool pointInside( long xPos, long yPos );
+		virtual bool pointInside( int32_t xPos, int32_t yPos );
 		bool		 isExpanded();
 
 
@@ -89,12 +88,12 @@ class ChatWindow: public LogisticsScreen
 		ChatWidget		chatWidget;
 
 		ChatMessageItem	listItems[4];
-		long			curItem;
-		long			maxItems;
+		int32_t			curItem;
+		int32_t			maxItems;
 
 
-		static void refillListBox( aListBox& listBox, PSTR* chatTexts, long* playerIDs,  ChatMessageItem* pItems, 
-			long& curItem, long itemCount, long maxCount );
+		static void refillListBox( aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs,  ChatMessageItem* pItems, 
+			int32_t& curItem, int32_t itemCount, int32_t maxCount );
 
 
 

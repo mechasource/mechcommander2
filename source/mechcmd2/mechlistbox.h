@@ -1,3 +1,6 @@
+
+#pragma once
+
 #ifndef MECHLISTBOX_H
 #define MECHLISTBOX_H
 /*************************************************************************************************\
@@ -32,7 +35,7 @@ class MechListBoxItem : public aListItem
 public:
 	
 	virtual ~MechListBoxItem();
-	MechListBoxItem( LogisticsMech* pMech, long count );
+	MechListBoxItem( LogisticsMech* pMech, int32_t count );
 
 	static void init( FitIniFile& file );
 
@@ -41,7 +44,7 @@ public:
 
 	LogisticsMech* getMech( ){ return pMech; }
 	void	resetMech( ) {pMech = NULL; }
-	virtual bool		pointInside(long xPos, long yPos) const;
+	virtual bool		pointInside(int32_t xPos, int32_t yPos) const;
 
 	bool		bOrange;
 	static bool	bAddCalledThisFrame;
@@ -66,14 +69,14 @@ private:
 	aRect		outline;
 	aRect		line;
 
-	long		animationIDs[9];
+	int32_t		animationIDs[9];
 
 	bool		drawCBills;
 	bool		bIncludeForceGroup;
 
 	LogisticsMech* pMech;
 
-	long mechCount;
+	int32_t mechCount;
 
 	MechListBoxItem& operator=( const MechListBoxItem& src );
 
@@ -82,7 +85,7 @@ private:
 	void setMech();
 	void doAdd();
 	void startDrag();
-	static void assignAnimation( FitIniFile& file, long& curAnimation );
+	static void assignAnimation( FitIniFile& file, int32_t& curAnimation );
 
 
 	bool bDim;
@@ -114,7 +117,7 @@ public:
 
 	static void initIcon( LogisticsMech* pMec, aObject& icon );
 
-	virtual long		AddItem(aListItem* itemString);
+	virtual int32_t		AddItem(aListItem* itemString);
 
 	void	dimItem( LogisticsMech* pMech, bool bDim );
 	void	undimAll();

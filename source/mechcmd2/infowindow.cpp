@@ -17,57 +17,57 @@ InfoWindow.cpp			: Implementation of the InfoWindow component.
 #include "txmmgr.h"
 #include "estring.h"
 
-long InfoWindow::SCROLLLEFT = 0;
-long InfoWindow::SCROLLRIGHT = 0;
-long InfoWindow::SCROLLTOP = 0;
-long InfoWindow::SCROLLBOTTOM = 0;
-long InfoWindow::SECTIONSKIP = 0;
-long InfoWindow::NAMELEFT = 0;
-long InfoWindow::NAMERIGHT = 0;
-long InfoWindow::NAMETOP = 0;
-long InfoWindow::NAMEBOTTOM = 0;
-long InfoWindow::HEALTHLEFT = 0;
-long InfoWindow::HEALTHRIGHT = 0;
-long InfoWindow::HEALTHTOP = 0;
-long InfoWindow::HEALTHBOTTOM = 0;
-long InfoWindow::DIVIDERCOLOR = 0;
-long InfoWindow::DIVIDERLEFT = 0;
-long InfoWindow::DIVIDERRIGHT = 0;
-long InfoWindow::PILOTLEFT = 0;
-long InfoWindow::PILOTRIGHT = 0;
-long InfoWindow::PILOTHEIGHT = 0;
-long InfoWindow::MECHLEFT = 0;
-long InfoWindow::MECHRIGHT = 0;
-long InfoWindow::MECHHEIGHT = 0;
-long InfoWindow::MECHBACKLEFT = 0;
-long InfoWindow::MECHBACKRIGHT = 0;
-long InfoWindow::MECHBACKHEIGHT = 0;
-long InfoWindow::SCROLLBUTTONV = 0;
+int32_t InfoWindow::SCROLLLEFT = 0;
+int32_t InfoWindow::SCROLLRIGHT = 0;
+int32_t InfoWindow::SCROLLTOP = 0;
+int32_t InfoWindow::SCROLLBOTTOM = 0;
+int32_t InfoWindow::SECTIONSKIP = 0;
+int32_t InfoWindow::NAMELEFT = 0;
+int32_t InfoWindow::NAMERIGHT = 0;
+int32_t InfoWindow::NAMETOP = 0;
+int32_t InfoWindow::NAMEBOTTOM = 0;
+int32_t InfoWindow::HEALTHLEFT = 0;
+int32_t InfoWindow::HEALTHRIGHT = 0;
+int32_t InfoWindow::HEALTHTOP = 0;
+int32_t InfoWindow::HEALTHBOTTOM = 0;
+int32_t InfoWindow::DIVIDERCOLOR = 0;
+int32_t InfoWindow::DIVIDERLEFT = 0;
+int32_t InfoWindow::DIVIDERRIGHT = 0;
+int32_t InfoWindow::PILOTLEFT = 0;
+int32_t InfoWindow::PILOTRIGHT = 0;
+int32_t InfoWindow::PILOTHEIGHT = 0;
+int32_t InfoWindow::MECHLEFT = 0;
+int32_t InfoWindow::MECHRIGHT = 0;
+int32_t InfoWindow::MECHHEIGHT = 0;
+int32_t InfoWindow::MECHBACKLEFT = 0;
+int32_t InfoWindow::MECHBACKRIGHT = 0;
+int32_t InfoWindow::MECHBACKHEIGHT = 0;
+int32_t InfoWindow::SCROLLBUTTONV = 0;
 StaticInfo* InfoWindow::skillInfos = 0;
-long InfoWindow::SCROLLBUTTONU = 0;
-long InfoWindow::SCROLLBUTTONHEIGHT = 0;
-long InfoWindow::SCROLLBUTTONWIDTH = 0;
-long InfoWindow::SCROLLBUTTONX = 0;
-long InfoWindow::SCROLLMAX = 0;
-long InfoWindow::SCROLLMIN = 0;
-long InfoWindow::NUMBERSKILLBARS = 0;
-long InfoWindow::SKILLUNITWIDTH = 0;
-long InfoWindow::SKILLSKIP = 0;
-long InfoWindow::SKILLHEIGHT = 0;
-long InfoWindow::SKILLRIGHT = 0;
-long InfoWindow::SKILLLEFT = 0;
-long InfoWindow::SCROLLCOLOR = -1;
-long InfoWindow::INFOHEIGHT = 0;
-long InfoWindow::INFOWIDTH = 0;
-long InfoWindow::INFOTOP = 0;
-long InfoWindow::INFOLEFT = 0;
-long InfoWindow::COMPONENTLEFT = 0;
+int32_t InfoWindow::SCROLLBUTTONU = 0;
+int32_t InfoWindow::SCROLLBUTTONHEIGHT = 0;
+int32_t InfoWindow::SCROLLBUTTONWIDTH = 0;
+int32_t InfoWindow::SCROLLBUTTONX = 0;
+int32_t InfoWindow::SCROLLMAX = 0;
+int32_t InfoWindow::SCROLLMIN = 0;
+int32_t InfoWindow::NUMBERSKILLBARS = 0;
+int32_t InfoWindow::SKILLUNITWIDTH = 0;
+int32_t InfoWindow::SKILLSKIP = 0;
+int32_t InfoWindow::SKILLHEIGHT = 0;
+int32_t InfoWindow::SKILLRIGHT = 0;
+int32_t InfoWindow::SKILLLEFT = 0;
+int32_t InfoWindow::SCROLLCOLOR = -1;
+int32_t InfoWindow::INFOHEIGHT = 0;
+int32_t InfoWindow::INFOWIDTH = 0;
+int32_t InfoWindow::INFOTOP = 0;
+int32_t InfoWindow::INFOLEFT = 0;
+int32_t InfoWindow::COMPONENTLEFT = 0;
 
-long InfoWindow::SCROLLBOXLEFT= 0;
-long InfoWindow::SCROLLBOXRIGHT= 0;
-long InfoWindow::SCROLLBOXTOP= 0;
-long InfoWindow::SCROLLBOXBOTTOM= 0;
-long InfoWindow::PILOTNAMELEFT = 0;
+int32_t InfoWindow::SCROLLBOXLEFT= 0;
+int32_t InfoWindow::SCROLLBOXRIGHT= 0;
+int32_t InfoWindow::SCROLLBOXTOP= 0;
+int32_t InfoWindow::SCROLLBOXBOTTOM= 0;
+int32_t InfoWindow::PILOTNAMELEFT = 0;
 
 RECT InfoWindow::NameRect = { 0 };
 
@@ -104,14 +104,14 @@ InfoWindow::InfoWindow()
 void InfoWindow::init( FitIniFile& file )
 {
 	
-	if ( NO_ERR != file.seekBlock( "Fonts" ) )
+	if ( NO_ERROR != file.seekBlock( "Fonts" ) )
 		Assert( 0, 0, "couldn't find the font block" );
 
 	for ( int i = 0; i < 7; i++ )
 	{
 		if ( skillInfos[i].textureHandle )
 		{
-			long gosID = mcTextureManager->get_gosTextureHandle( skillInfos[i].textureHandle );
+			int32_t gosID = mcTextureManager->get_gosTextureHandle( skillInfos[i].textureHandle );
 			mcTextureManager->removeTexture( gosID );
 		}
 	}
@@ -124,14 +124,14 @@ void InfoWindow::init( FitIniFile& file )
 	{
 		if ( buttonData[i].textureHandle )
 		{
-			long gosID = mcTextureManager->get_gosTextureHandle( buttonData[i].textureHandle );
+			int32_t gosID = mcTextureManager->get_gosTextureHandle( buttonData[i].textureHandle );
 			mcTextureManager->removeTexture( gosID );
 		}
 	}
 
 
-	long fontID;
-	if ( NO_ERR != file.readIdLong( "InfoWndFont", fontID ) )
+	int32_t fontID;
+	if ( NO_ERROR != file.readIdLong( "InfoWndFont", fontID ) )
 	{
 		Assert( 0, 0,"couldn't find infoWndFont in button layout file" );
 	}
@@ -139,7 +139,7 @@ void InfoWindow::init( FitIniFile& file )
 	s_instance->nameFont.init( fontID );
 	
 
-	if ( NO_ERR != file.readIdLong( "ComponentFont", fontID ) )
+	if ( NO_ERROR != file.readIdLong( "ComponentFont", fontID ) )
 	{
 		Assert( 0, 0, "couldn't find componentFont in button layout file" );
 	}
@@ -148,7 +148,7 @@ void InfoWindow::init( FitIniFile& file )
 
 
 
-	if ( NO_ERR != file.seekBlock( "InfoWindow" ) )
+	if ( NO_ERROR != file.seekBlock( "InfoWindow" ) )
 	{
 		Assert( 0, 0, "couldn't find Info block in button layout file" );
 	}
@@ -365,7 +365,7 @@ void InfoWindow::render()
 			buttons[i].render();
 	}
 	
-	long scrollBarLength = buttons[1].location[0].y - buttons[0].location[2].y - 4 - SCROLLBUTTONHEIGHT;
+	int32_t scrollBarLength = buttons[1].location[0].y - buttons[0].location[2].y - 4 - SCROLLBUTTONHEIGHT;
 
 	gos_VERTEX v[4];
 	for ( i = 0; i < 4; i++ )
@@ -427,7 +427,7 @@ void InfoWindow::render()
 		gos_SetRenderState( gos_State_Texture, 0 );
 
 		// draw the health bar
-		DWORD					color;
+		ULONG					color;
 		
 		float barStatus = pUnit->getAppearance()->barStatus;
 			
@@ -485,8 +485,8 @@ void InfoWindow::update()
 		return;
 	}
 
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 
 
@@ -613,17 +613,17 @@ void InfoWindow::drawScrollingStuff()
 
 	}
 
-	long textColors[4] = { 0xff6E7C00, 0xff005392, 0xffA21600 };
+	int32_t textColors[4] = { 0xff6E7C00, 0xff005392, 0xffA21600 };
 	
 
 	char disabledCount[60][2];
-	long ammo[60];
+	int32_t ammo[60];
 	char ranges[60];
-	long names[60];
+	int32_t names[60];
 	memset( disabledCount, 0, sizeof( char ) * 60 * 2);
 	memset( names, 0, sizeof( PSTR ) * 60 );
 	memset( ranges, 0, sizeof( char ) * 60 );
-	memset( ammo, 0, sizeof( long ) * 60 );
+	memset( ammo, 0, sizeof( int32_t ) * 60 );
 
 	bool bDraw[4];
 	memset( bDraw, 0, sizeof( bool ) * 4 );
@@ -632,9 +632,9 @@ void InfoWindow::drawScrollingStuff()
 
 	int i = 0;
 
-	for (long curWeapon = pUnit->numOther; curWeapon < (pUnit->numOther + pUnit->numWeapons); curWeapon++) 
+	for (int32_t curWeapon = pUnit->numOther; curWeapon < (pUnit->numOther + pUnit->numWeapons); curWeapon++) 
 	{
-			long nName = pUnit->inventory[curWeapon].masterID;
+			int32_t nName = pUnit->inventory[curWeapon].masterID;
 			bool bFound = 0;
 			for ( int j = 0; j < i; j++ )
 			{
@@ -684,8 +684,8 @@ void InfoWindow::drawScrollingStuff()
 	
 
 	// removing headers for now
-//	long stringIDs[4] = { IDS_SHORT, IDS_MEDIUM, IDS_LONG, IDS_COMPONENT};
-//	long headerColors[4] = { 0xFFC8E100, 0xff0091FF, 0xFFFF0000, 0xffFF8A00 };
+//	int32_t stringIDs[4] = { IDS_SHORT, IDS_MEDIUM, IDS_LONG, IDS_COMPONENT};
+//	int32_t headerColors[4] = { 0xFFC8E100, 0xff0091FF, 0xFFFF0000, 0xffFF8A00 };
 	EString capHeader;
 
 
@@ -748,7 +748,7 @@ void InfoWindow::drawScrollingStuff()
 	}
 
 	memset( names, 0, sizeof( PSTR ) * 60 );
-	long count[4];
+	int32_t count[4];
 	count[0] = pUnit->ecm;
 	count[1] = pUnit->probe;
 	count[2] = pUnit->jumpJets;
@@ -771,7 +771,7 @@ void InfoWindow::drawScrollingStuff()
 	{
 		if ( count[curWeapon] != 255)
 		{
-			long color = 0xffc29b00;
+			int32_t color = 0xffc29b00;
 			//Neither the ecm, probe, sensors or JumpJets can ever REALLY be disabled. No matter what the setting is!!
 //			if (pUnit->inventory[count[curWeapon]].disabled) 
 //				color = 0xff7f7f7f;

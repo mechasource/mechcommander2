@@ -33,26 +33,26 @@ extern UserHeapPtr missionHeap;
 
 //***************************************************************************
 
-long adjCell[4][2] = {
+int32_t adjCell[4][2] = {
 	{-1, 0},
 	{0, 1},
 	{1, 0},
 	{0, -1}
 };
 
-long recurseCount = 0;
+int32_t recurseCount = 0;
 
 //***************************************************************************
 
-void* GoalObject::operator new (size_t ourSize) {
+PVOID GoalObject::operator new (size_t ourSize) {
 
-	void *result = missionHeap->Malloc(ourSize);
+	PVOID result = missionHeap->Malloc(ourSize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void GoalObject::operator delete (void* us) {
+void GoalObject::operator delete (PVOID us) {
 
 	missionHeap->Free(us);
 }
@@ -79,7 +79,7 @@ void GoalObject::initObject (PSTR name, GameObjectPtr obj) {
 
 //---------------------------------------------------------------------------
 
-void GoalObject::initRegion (PSTR name, long minRow, long minCol, long maxRow, long maxCol) {
+void GoalObject::initRegion (PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol) {
 
 	init();
 	used = true;
@@ -113,15 +113,15 @@ void GoalObject::addController (GoalObjectPtr gobject) {
 
 //#ifdef USE_REGION_MAP
 
-void* GoalManager::operator new (size_t ourSize) {
+PVOID GoalManager::operator new (size_t ourSize) {
 
-	void *result = missionHeap->Malloc(ourSize);
+	PVOID result = missionHeap->Malloc(ourSize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void GoalManager::operator delete (void* us) {
+void GoalManager::operator delete (PVOID us) {
 
 	missionHeap->Free(us);
 }
@@ -136,8 +136,8 @@ void GoalManager::init (void) {
 	goalObjectPool = NULL;
 
 #ifdef USE_REGION_MAP
-	for (long r = 0; r < GameMap->height; r++)
-		for (long c = 0; c < GameMap->width; c++)
+	for (int32_t r = 0; r < GameMap->height; r++)
+		for (int32_t c = 0; c < GameMap->width; c++)
 			regionMap[r][c] = -1;
 #endif
 	numRegions = 0;
@@ -164,12 +164,12 @@ void GoalManager::clear (void) {
 
 	goalObjects = NULL;
 	numGoalObjects = 0;
-	for (long i = 0; i < goalObjectPoolSize; i++)
+	for (int32_t i = 0; i < goalObjectPoolSize; i++)
 		goalObjectPool[i].used = false;
 
 #ifdef USE_REGION_MAP
-	for (long r = 0; r < GameMap->height; r++)
-		for (long c = 0; c < GameMap->width; c++)
+	for (int32_t r = 0; r < GameMap->height; r++)
+		for (int32_t c = 0; c < GameMap->width; c++)
 			regionMap[r][c] = -1;
 #endif
 	numRegions = 0;
@@ -180,7 +180,7 @@ void GoalManager::clear (void) {
 GoalObjectPtr GoalManager::newGoalObject (void) {
 
 	GoalObjectPtr goalObject = NULL;
-	for (long i = 0; i < goalObjectPoolSize; i++)
+	for (int32_t i = 0; i < goalObjectPoolSize; i++)
 		if (!goalObjectPool[i].used) {
 			goalObjectPool[i].used = true;
 			goalObject = &goalObjectPool[i];
@@ -194,7 +194,7 @@ GoalObjectPtr GoalManager::newGoalObject (void) {
 
 //---------------------------------------------------------------------------
 
-void GoalManager::setup (long poolSize) {
+void GoalManager::setup (int32_t poolSize) {
 
 	goalObjectPoolSize = poolSize;
 	if (goalObjectPoolSize  < 10)
@@ -206,7 +206,7 @@ void GoalManager::setup (long poolSize) {
 
 //---------------------------------------------------------------------------
 #if 0
-bool GlobalMap::fillNorthSouthBridgeArea (long row, long col, long area) {
+bool GlobalMap::fillNorthSouthBridgeArea (int32_t row, int32_t col, int32_t area) {
 
 	//----------------------------------------------------------------------
 	// It is assumed that the bridge is erected over non-passable terrain...
@@ -217,8 +217,8 @@ bool GlobalMap::fillNorthSouthBridgeArea (long row, long col, long area) {
 
 	//----------------
 	// Expand North...
-	long adjR = row - 1;
-	long adjC = col;
+	int32_t adjR = row - 1;
+	int32_t adjC = col;
 	if ((adjR >= minRow) && (adjR < maxRow) && (adjC >= minCol) && (adjC < maxCol))
 		if (GameMap->getOverlay(adjR, adjC) == OVERLAY_WATER_BRIDGE_NS)
 			if (areaMap[adjR * width + adjC] == -1)
@@ -238,7 +238,7 @@ bool GlobalMap::fillNorthSouthBridgeArea (long row, long col, long area) {
 
 //------------------------------------------------------------------------------------------
 
-bool GlobalMap::fillEastWestBridgeArea (long row, long col, long area) {
+bool GlobalMap::fillEastWestBridgeArea (int32_t row, int32_t col, int32_t area) {
 
 	//----------------------------------------------------------------------
 	// It is assumed that the bridge is erected over non-passable terrain...
@@ -249,10 +249,10 @@ bool GlobalMap::fillEastWestBridgeArea (long row, long col, long area) {
 
 	//---------------
 	// Expand East...
-	long adjR = row;
-	long adjC = col + 1;
+	int32_t adjR = row;
+	int32_t adjC = col + 1;
 	if ((adjR >= minRow) && (adjR < maxRow) && (adjC >= minCol) && (adjC < maxCol)) {
-		long overlay = GameMap->getOverlay(adjR, adjC);
+		int32_t overlay = GameMap->getOverlay(adjR, adjC);
 		if (overlay == OVERLAY_WATER_BRIDGE_EW)
 			if (areaMap[adjR * width + adjC] == -1)
 				fillEastWestBridgeArea(adjR, adjC, area);
@@ -263,7 +263,7 @@ bool GlobalMap::fillEastWestBridgeArea (long row, long col, long area) {
 	adjR = row;
 	adjC = col - 1;
 	if ((adjR >= minRow) && (adjR < maxRow) && (adjC >= minCol) && (adjC < maxCol)) {
-		long overlay = GameMap->getOverlay(adjR, adjC);
+		int32_t overlay = GameMap->getOverlay(adjR, adjC);
 		if (overlay == OVERLAY_WATER_BRIDGE_EW)
 			if (areaMap[adjR * width + adjC] == -1)
 				fillEastWestBridgeArea(adjR, adjC, area);
@@ -276,7 +276,7 @@ bool GlobalMap::fillEastWestBridgeArea (long row, long col, long area) {
 
 #endif
 
-bool GoalManager::fillWallGateRegion (long row, long col, long region) {
+bool GoalManager::fillWallGateRegion (int32_t row, int32_t col, int32_t region) {
 
 	recurseCount++;
 
@@ -289,9 +289,9 @@ bool GoalManager::fillWallGateRegion (long row, long col, long region) {
 		return(false);
 
 	regionMap[row][col] = region;
-	for (long dir = 0; dir < 4; dir ++) {
-		long adjR = row + adjCell[dir][0];
-		long adjC = col + adjCell[dir][1];
+	for (int32_t dir = 0; dir < 4; dir ++) {
+		int32_t adjR = row + adjCell[dir][0];
+		int32_t adjC = col + adjCell[dir][1];
 		if ((adjR >= 0) && (adjR < GameMap->height) && (adjC >= 0) && (adjC < GameMap->width))
 			if (regionMap[adjR][adjC] == -1)
 				fillWallGateRegion(adjR, adjC, region);
@@ -302,11 +302,11 @@ bool GoalManager::fillWallGateRegion (long row, long col, long region) {
 
 //------------------------------------------------------------------------------------------
 
-bool GoalManager::fillRegion (long row, long col, long region) {
+bool GoalManager::fillRegion (int32_t row, int32_t col, int32_t region) {
 
 #if 1
 
-//	long overlay = GameMap->getOverlay(row, col);
+//	int32_t overlay = GameMap->getOverlay(row, col);
 //	if ((overlay == OVERLAY_WATER_BRIDGE_EW) || (overlay == OVERLAY_WATER_BRIDGE_NS))
 //		return(false);
 		
@@ -324,15 +324,15 @@ bool GoalManager::fillRegion (long row, long col, long region) {
 	while (fillStackIndex > 0) {
 		//--------------------------------
 		// Pop 'em in the reverse order...
-		long col = fillStack[--fillStackIndex];
-		long row = fillStack[--fillStackIndex];
+		int32_t col = fillStack[--fillStackIndex];
+		int32_t row = fillStack[--fillStackIndex];
 
 		bool filling = true;
 		
 		if ((row < 0) || (row >= GameMap->height) || (col < 0) || (col >= GameMap->width))
 			filling = false;
 		
-//		long overlay = GameMap->getOverlay(row, col);
+//		int32_t overlay = GameMap->getOverlay(row, col);
 //		if ((overlay == OVERLAY_WATER_BRIDGE_EW) || (overlay == OVERLAY_WATER_BRIDGE_NS))
 //			filling = false;
 		
@@ -346,9 +346,9 @@ bool GoalManager::fillRegion (long row, long col, long region) {
 		
 		if (filling) {
 			regionMap[row][col] = region;
-			for (long dir = 0; dir < 4; dir ++) {
-				long adjR = row + adjCell[dir][0];
-				long adjC = col + adjCell[dir][1];
+			for (int32_t dir = 0; dir < 4; dir ++) {
+				int32_t adjR = row + adjCell[dir][0];
+				int32_t adjC = col + adjCell[dir][1];
 				if ((adjR >= 0) && (adjR < GameMap->height) && (adjC >= 0) && (adjC < GameMap->width))
 					if (regionMap[adjR][adjC] == -1) {
 						//--------------------------------------------
@@ -370,7 +370,7 @@ bool GoalManager::fillRegion (long row, long col, long region) {
 
 	//----------------------------------------------------------------------
 	// If we hit a bridge cell, politely stop expanding this area into it...
-	long overlay = GameMap->getOverlay(row, col);
+	int32_t overlay = GameMap->getOverlay(row, col);
 	if ((overlay == OVERLAY_WATER_BRIDGE_EW) || (overlay == OVERLAY_WATER_BRIDGE_NS))
 		return(false);
 
@@ -383,9 +383,9 @@ bool GoalManager::fillRegion (long row, long col, long region) {
 	}
 
 	regionMap[row][col] = region;
-	for (long dir = 0; dir < 4; dir ++) {
-		long adjR = row + adjCell[dir][0];
-		long adjC = col + adjCell[dir][1];
+	for (int32_t dir = 0; dir < 4; dir ++) {
+		int32_t adjR = row + adjCell[dir][0];
+		int32_t adjC = col + adjCell[dir][1];
 		if ((adjR >= 0) && (adjR < GameMap->height) && (adjC >= 0) && (adjC < GameMap->width))
 			if (regionMap[adjR][adjC] == -1)
 				fillRegion(adjR, adjC, region);
@@ -401,12 +401,12 @@ void GoalManager::calcRegions (void) {
 
 	//----------------------------------------------------------------------
 	// This is the same method used in GlobalMap::calcAreas, so see notes...
-	for (long r = 0; r < GameMap->height; r++)
-		for (long c = 0; c < GameMap->width; c++)
+	for (int32_t r = 0; r < GameMap->height; r++)
+		for (int32_t c = 0; c < GameMap->width; c++)
 			if (regionMap[r][c] == -1) {
 				recurseCount = 0;
 				#ifdef USE_OVERLAYS
-				long overlay = GameMap->getOverlay(r, c);
+				int32_t overlay = GameMap->getOverlay(r, c);
 				if (overlay == OVERLAY_WATER_BRIDGE_NS) {
 					if (fillNorthSouthBridgeArea(r, c, numAreas))
 						numAreas++;
@@ -437,12 +437,12 @@ void GoalManager::build (void) {
 	//--------------------------------
 	// First, get the list of walls...
 	GameObjectPtr wallObjects[MAX_WALL_OBJECTS];
-	long numWalls = ObjectManager->getSpecificObjects(BUILDING, BUILDING_SUBTYPE_WALL, wallObjects, MAX_WALL_OBJECTS);
+	int32_t numWalls = ObjectManager->getSpecificObjects(BUILDING, BUILDING_SUBTYPE_WALL, wallObjects, MAX_WALL_OBJECTS);
 /*	short cellList[MAX_CELL_COORDS];
-	for (long i = 0; i < numWalls; i++) {
+	for (int32_t i = 0; i < numWalls; i++) {
 		cellList[0] = MAX_CELL_COORDS;
-		long numCells = wallObjects[i]->appearance->markMoveMap(true, NULL, false, cellList);
-		for (long j = 0; j < numCells; j++)
+		int32_t numCells = wallObjects[i]->appearance->markMoveMap(true, NULL, false, cellList);
+		for (int32_t j = 0; j < numCells; j++)
 			GameMap->setWall(cellList[j*2], cellList[j*2+1], true);
 	}
 
@@ -472,7 +472,7 @@ void GoalManager::build (void) {
 //---------------------------------------------------------------------------
 
 /*
-long GoalManager::setControl (ObstaclePtr controller, ObstaclePtr controllee) {
+int32_t GoalManager::setControl (ObstaclePtr controller, ObstaclePtr controllee) {
 
 	if (controller && controllee) {
 		controllee->parent = controller;
@@ -488,7 +488,7 @@ long GoalManager::setControl (ObstaclePtr controller, ObstaclePtr controllee) {
 */
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::addRegion (GoalObjectPtr parent, GoalLinkType linkType, PSTR name, long minRow, long minCol, long maxRow, long maxCol) {
+GoalObjectPtr GoalManager::addRegion (GoalObjectPtr parent, GoalLinkType linkType, PSTR name, int32_t minRow, int32_t minCol, int32_t maxRow, int32_t maxCol) {
 
 	GoalObjectPtr newRegion = newGoalObject();
 	newRegion->initRegion(name, minRow, minCol, maxRow, maxCol);
@@ -515,14 +515,14 @@ GoalObjectPtr GoalManager::addObject (GoalObjectPtr parent, GoalLinkType linkTyp
 //---------------------------------------------------------------------------
 
 /*
-void GoalManager::setControlMap (long row, long col, GoalObjectPtr controller) {
+void GoalManager::setControlMap (int32_t row, int32_t col, GoalObjectPtr controller) {
 
 	controlMap[row][col] = controller->id;
 }
 */
 //---------------------------------------------------------------------------
 
-GoalObjectPtr GoalManager::calcGoal (long startCell[2], long goalCell[2]) {
+GoalObjectPtr GoalManager::calcGoal (int32_t startCell[2], int32_t goalCell[2]) {
 
 	//No Warnings!
 	//ObstaclePtr startObstacle = &obstaclePool[controlMap[startCell[0]][startCell[1]]];
@@ -551,7 +551,7 @@ GoalObjectPtr GoalManager::calcGoal (GameObjectPtr attacker, Stuff::Vector3D loc
 
 GoalObjectPtr GoalManager::calcGoal (Stuff::Vector3D start, Stuff::Vector3D location) {
 
-	long startCell[2], locationCell[2];
+	int32_t startCell[2], locationCell[2];
 	land->worldToCell(start, startCell[0], startCell[1]);
 	land->worldToCell(location, locationCell[0], locationCell[1]);
 	return(calcGoal(startCell, locationCell));

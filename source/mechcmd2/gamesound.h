@@ -12,9 +12,9 @@
 #ifndef GAMESOUND_H
 #define GAMESOUND_H
 
-#include <mclib.h>
-#include "dwarrior.h"
-#include "radio.h"
+//#include <mclib.h>
+//#include "dwarrior.h"
+//#include "radio.h"
 
 //---------------------------------------------------------------------------
 // Macro Defintiions
@@ -33,7 +33,7 @@ class GameSoundSystem : public SoundSystem
 		bool 				wholeMsgDone;							//Are all fragments played?
 		HGOSAUDIO			radioHandle;
 
-		float				generalAlarmTimer;						//How long do we play the alarm buzzer?
+		float				generalAlarmTimer;						//How int32_t do we play the alarm buzzer?
 			
 	//Member Functions
 	//----------------
@@ -64,7 +64,7 @@ class GameSoundSystem : public SoundSystem
 			// Startup the Radio Message Queue.
 			messagesInQueue = 0;
 			wholeMsgDone = true;
-			for (long i=0;i<MAX_QUEUED_MESSAGES;i++)
+			for (int32_t i=0;i<MAX_QUEUED_MESSAGES;i++)
 				queue[i] = NULL;
 
 			generalAlarmTimer = 0.0f;
@@ -73,9 +73,9 @@ class GameSoundSystem : public SoundSystem
 		virtual void update (void);
 
 		void purgeSoundSystem (void);					//This will shutdown all active sound.
-		void removeQueuedMessage (long msgNumber);
+		void removeQueuedMessage (int32_t msgNumber);
 		bool checkMessage (MechWarriorPtr pilot, byte priority, ULONG messageType);
-		long queueRadioMessage (RadioData *msgData);
+		int32_t queueRadioMessage (RadioData *msgData);
 		void moveFromQueueToPlaying (void);
 		void removeCurrentMessage (void);
 };

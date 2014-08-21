@@ -8,70 +8,28 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef OBJMGR_H
 #define OBJMGR_H
 
 //---------------------------------------------------------------------------
 
-#ifndef DOBJMGR_H
-#include "dobjmgr.h"
-#endif
-
-#ifndef GAMEOBJ_H
-#include "gameobj.h"
-#endif
-
-#ifndef MOVER_H
-#include "mover.h"
-#endif
-
-#ifndef DMECH_H
-#include "dmech.h"
-#endif
-
-#ifndef DGVEHICL_H
-#include "dgvehicl.h"
-#endif
-
-#ifndef DELEMNTL_H
-#include "delemntl.h"
-#endif
-
-#ifndef DTERROBJ_H
-#include "dterrobj.h"
-#endif
-
-#ifndef DBLDNG_H
-#include "dbldng.h"
-#endif
-
-#ifndef DWEAPONBOLT_H
-#include "dweaponbolt.h"
-#endif
-
-#ifndef DCARNAGE_H
-#include "dcarnage.h"
-#endif
-
-#ifndef DARTLRY_H
-#include "dartlry.h"
-#endif
-
-#ifndef DOBJBLCK_H
-#include "dobjblck.h"
-#endif
-
-#ifndef DTURRET_H
-#include "dturret.h"
-#endif
-
-#ifndef DGATE_H
-#include "dgate.h"
-#endif
-
-#ifndef DCOLLSN_H
-#include "dcollsn.h"
-#endif
+//#include "dobjmgr.h"
+//#include "gameobj.h"
+//#include "mover.h"
+//#include "dmech.h"
+//#include "dgvehicl.h"
+//#include "delemntl.h"
+//#include "dterrobj.h"
+//#include "dbldng.h"
+//#include "dweaponbolt.h"
+//#include "dcarnage.h"
+//#include "dartlry.h"
+//#include "dobjblck.h"
+//#include "dturret.h"
+//#include "dgate.h"
+//#include "dcollsn.h"
 
 class PacketFile;
 
@@ -101,36 +59,36 @@ class PacketFile;
 
 struct ObjData {
 	short				objTypeNum;		//Type number of object
-	unsigned short		vertexNumber;	//Vertex Number in Block.
-	unsigned short		blockNumber;	//Which terrain Block.
+	uint16_t		vertexNumber;	//Vertex Number in Block.
+	uint16_t		blockNumber;	//Which terrain Block.
 	uint8_t		damage;			//Damage
-	long				teamId;
+	int32_t				teamId;
 	ULONG		parentId;		//hOW AM i LINKED.
 };
 
 struct MiscObjectData {
-	long				blockNumber;	//Terrain Block I occupy
-	long				vertexNumber;	//Terrain Vertex I occupy
-	long				objectTypeNum;	//ObjectTypeNumber for this overlay tile
-	long				damaged;		//Is this overlay tile damaged or not
+	int32_t				blockNumber;	//Terrain Block I occupy
+	int32_t				vertexNumber;	//Terrain Vertex I occupy
+	int32_t				objectTypeNum;	//ObjectTypeNumber for this overlay tile
+	int32_t				damaged;		//Is this overlay tile damaged or not
 };
 
 struct ObjDataLoader {
-		long objTypeNum;
+		int32_t objTypeNum;
 		Stuff::Vector3D vector;
 
 		float rotation;		
-		long damage;
+		int32_t damage;
 		
-		long teamId;
-		long parentId;
+		int32_t teamId;
+		int32_t parentId;
 
 		// convert to block and vertex
-		long tileCol;
-		long tileRow;
+		int32_t tileCol;
+		int32_t tileRow;
 		
-		long blockNumber;
-		long vertexNumber;
+		int32_t blockNumber;
+		int32_t vertexNumber;
 };
 
 #pragma pack()
@@ -165,26 +123,26 @@ typedef struct _TeamObjectInfo {
 
 typedef struct _RemovedMoverRec {
 	ULONG	turn;
-	long			partID;
+	int32_t			partID;
 } RemovedMoverRec;
 
 typedef struct _ObjectManagerData
 {
-	long					maxObjects;
-	long					numElementals;
-	long					numTerrainObjects;
-	long					numBuildings;
-	long					numTurrets;
-	long					numWeapons;
-	long					numCarnage;
-	long					numLights;
-	long					numArtillery;
-	long					numGates;
-	long					maxMechs;
-	long					maxVehicles;
-	long					numMechs;
-	long					numVehicles;
-	long					nextWatchId;
+	int32_t					maxObjects;
+	int32_t					numElementals;
+	int32_t					numTerrainObjects;
+	int32_t					numBuildings;
+	int32_t					numTurrets;
+	int32_t					numWeapons;
+	int32_t					numCarnage;
+	int32_t					numLights;
+	int32_t					numArtillery;
+	int32_t					numGates;
+	int32_t					maxMechs;
+	int32_t					maxVehicles;
+	int32_t					numMechs;
+	int32_t					numVehicles;
+	int32_t					nextWatchId;
 } ObjectManagerData;
 
 class GameObjectManager {
@@ -193,20 +151,20 @@ class GameObjectManager {
 
 		ObjectTypeManagerPtr	objTypeManager;
 
-		long					numMechs;
-		long					numVehicles;
-		long					numElementals;
-		long					numTerrainObjects;
-		long					numBuildings;
-		long					numTurrets;
-		long					numWeapons;
-		long					numCarnage;
-		long					numLights;
-		long					numArtillery;
-		long					numGates;
-		long					maxMechs;
-		long					maxVehicles;
-		long					maxMovers;
+		int32_t					numMechs;
+		int32_t					numVehicles;
+		int32_t					numElementals;
+		int32_t					numTerrainObjects;
+		int32_t					numBuildings;
+		int32_t					numTurrets;
+		int32_t					numWeapons;
+		int32_t					numCarnage;
+		int32_t					numLights;
+		int32_t					numArtillery;
+		int32_t					numGates;
+		int32_t					maxMechs;
+		int32_t					maxVehicles;
+		int32_t					maxMovers;
 
 		BattleMechPtr*			mechs;
 		GroundVehiclePtr*		vehicles;
@@ -224,10 +182,10 @@ class GameObjectManager {
 		BuildingPtr				turretControls[MAX_TURRET_CONTROLS];
 		BuildingPtr				powerGenerators[MAX_POWER_GENERATORS];
 		BuildingPtr				specialBuildings[MAX_SPECIAL_BUILDINGS];		//These must be updated EVERY FRAME.  Perimeter alarms, etc.
-		long					numGateControls;
-		long					numTurretControls;
-		long					numPowerGenerators;
-		long					numSpecialBuildings;
+		int32_t					numGateControls;
+		int32_t					numTurretControls;
+		int32_t					numPowerGenerators;
+		int32_t					numSpecialBuildings;
 
 		PSTR					moverLineOfSightTable;
 		bool					useMoverLineOfSightTable;
@@ -237,58 +195,58 @@ class GameObjectManager {
 		MoverPtr				moverList[MAX_MOVERS];
 		MoverPtr				goodMoverList[MAX_MOVERS];
 		MoverPtr				badMoverList[MAX_MOVERS];
-		long					numCollidables;
-		long					numGoodMovers;
-		long					numBadMovers;
-		long					numMovers;
-		long					nextReinforcementPartId;
-		long					numRemoved;
+		int32_t					numCollidables;
+		int32_t					numGoodMovers;
+		int32_t					numBadMovers;
+		int32_t					numMovers;
+		int32_t					nextReinforcementPartId;
+		int32_t					numRemoved;
 		RemovedMoverRec			moversRemoved[MAX_REMOVED];
 		ULONG			nextWatchID;
 		GameObjectPtr			*watchList;
 
-		long					currentWeaponsIndex;			//points to next entry in rotating weapon array.
-		long					currentCarnageIndex;			//points to next entry in rotating carnage list		
-		long					currentLightIndex;
-		long					currentArtilleryIndex;
+		int32_t					currentWeaponsIndex;			//points to next entry in rotating weapon array.
+		int32_t					currentCarnageIndex;			//points to next entry in rotating carnage list		
+		int32_t					currentLightIndex;
+		int32_t					currentArtilleryIndex;
 		
 		bool					rebuildCollidableList;
 
-		long					numCaptures[MAX_TEAMS];
+		int32_t					numCaptures[MAX_TEAMS];
 		GameObjectWatchID		captureList[MAX_TEAMS][MAX_CAPTURES_PER_TEAM];
 
-		long					totalObjCount;
+		int32_t					totalObjCount;
 		ObjDataLoader			*objData;						//Used to keep from loading twice!!
 		CollisionSystemPtr		collisionSystem;
 
 	private:
 
-		GameObjectPtr findObjectByMouse (long mouseX,
-										 long mouseY,
+		GameObjectPtr findObjectByMouse (int32_t mouseX,
+										 int32_t mouseY,
 										 GameObjectPtr* searchList,
-										 long listSize,
+										 int32_t listSize,
 										 bool skipDisabled = false);
 
-		GameObjectPtr findMoverByMouse (long mouseX,
-										long mouseY,
-										long teamId,
+		GameObjectPtr findMoverByMouse (int32_t mouseX,
+										int32_t mouseY,
+										int32_t teamId,
 										bool skipDisabled = false);
 
-		GameObjectPtr findTerrainObjectByMouse (long mouseX,
-												long mouseY,
+		GameObjectPtr findTerrainObjectByMouse (int32_t mouseX,
+												int32_t mouseY,
 												bool skipDisabled = false);
 
-		void addObject(ObjDataLoader *objData, long& objIndex, long& buildIndex, 
-			long &turretIndex, long &gateIndex, long& curCollideHandle, long& curNonCollideHandle);
+		void addObject(ObjDataLoader *objData, int32_t& objIndex, int32_t& buildIndex, 
+			int32_t &turretIndex, int32_t &gateIndex, int32_t& curCollideHandle, int32_t& curNonCollideHandle);
 
 		void countObject( ObjDataLoader* objType);
 
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 		
 		void init (void);
 		
@@ -302,21 +260,21 @@ class GameObjectManager {
 			destroy();
 		}
 		
-		void init (PSTR objTypeDataFile, long objTypeCacheSize, long objCacheSize);
+		void init (PSTR objTypeDataFile, int32_t objTypeCacheSize, int32_t objCacheSize);
 
-		void setNumObjects (long nMechs,
-							long nVehicles,
-							long nElementals,
-							long nTerrainObjects,
-							long nBuildings,
-							long nTurrets,
-							long nWeapons,
-							long nCarnage,
-							long nLights,
-							long nArtillery,
-							long nGates);
+		void setNumObjects (int32_t nMechs,
+							int32_t nVehicles,
+							int32_t nElementals,
+							int32_t nTerrainObjects,
+							int32_t nBuildings,
+							int32_t nTurrets,
+							int32_t nWeapons,
+							int32_t nCarnage,
+							int32_t nLights,
+							int32_t nArtillery,
+							int32_t nGates);
 
-		long getNumObjects (void) {
+		int32_t getNumObjects (void) {
 			return(numMechs +
 				   numVehicles +
 				   numElementals +
@@ -330,7 +288,7 @@ class GameObjectManager {
 				   numGates);
 		}
 
-		long getMaxObjects (void) {
+		int32_t getMaxObjects (void) {
 			return(maxMechs +
 				   maxVehicles +
 				   numElementals +
@@ -344,9 +302,9 @@ class GameObjectManager {
 				   numGates);
 		}
 
-		long load (File* gameFile);
+		int32_t load (File* gameFile);
 
-		long save (File* gameFile);
+		int32_t save (File* gameFile);
 
 		BattleMechPtr newMech (void);
 
@@ -354,27 +312,27 @@ class GameObjectManager {
 
 		void freeMover (MoverPtr mover);
 		
-		void tradeMover (MoverPtr mover, long newTeamID, long newCommanderID);
+		void tradeMover (MoverPtr mover, int32_t newTeamID, int32_t newCommanderID);
 
 #ifdef USE_ELEMENTAL
 		BattleMechPtr addElemental (void);
 #endif
 
-		BattleMechPtr getMech (long mechIndex);
+		BattleMechPtr getMech (int32_t mechIndex);
 
-		GroundVehiclePtr getVehicle (long vehicleIndex);
+		GroundVehiclePtr getVehicle (int32_t vehicleIndex);
 
 		GroundVehiclePtr getOpenVehicle (void);
 
-		ElementalPtr getElemental (long elementalIndex);
+		ElementalPtr getElemental (int32_t elementalIndex);
 
-		TerrainObjectPtr getTerrainObject (long terrainObjectIndex);
+		TerrainObjectPtr getTerrainObject (int32_t terrainObjectIndex);
 
-		BuildingPtr getBuilding (long buildingIndex);
+		BuildingPtr getBuilding (int32_t buildingIndex);
 
-		TurretPtr getTurret (long turretIndex);
+		TurretPtr getTurret (int32_t turretIndex);
 		
-		GatePtr	getGate (long gateIndex);
+		GatePtr	getGate (int32_t gateIndex);
 		
 		WeaponBoltPtr getWeapon (void);				//gets next available weapon.
 
@@ -388,89 +346,89 @@ class GameObjectManager {
 
 		ArtilleryPtr getArtillery (void);
 
-		long getNumArtillery (void) {
+		int32_t getNumArtillery (void) {
 			return(numArtillery);
 		}
 
-		ArtilleryPtr getArtillery (long artilleryIndex) {
+		ArtilleryPtr getArtillery (int32_t artilleryIndex) {
 			return(artillery[artilleryIndex]);
 		}
 
-		long getNumGateControls (void) {
+		int32_t getNumGateControls (void) {
 			return(numGateControls);
 		}
 
-		long getNumTurretControls (void) {
+		int32_t getNumTurretControls (void) {
 			return(numTurretControls);
 		}
 
-		BuildingPtr getGateControl (long index) {
+		BuildingPtr getGateControl (int32_t index) {
 			return(gateControls[index]);
 		}
 
-		BuildingPtr getTurretControl (long index) {
+		BuildingPtr getTurretControl (int32_t index) {
 			return(turretControls[index]);
 		}
 
-		void countTerrainObjects (PacketFile* pFile, long firstHandle);
+		void countTerrainObjects (PacketFile* pFile, int32_t firstHandle);
 
 		void loadTerrainObjects ( PacketFile* pFile, volatile float& progress, float progressRange );
 
-		long getSpecificObjects (long objClass, long objSubType, GameObjectPtr* objects, long maxObjects);
+		int32_t getSpecificObjects (int32_t objClass, int32_t objSubType, GameObjectPtr* objects, int32_t maxObjects);
 
-		GameObjectPtr getObjBlockObject (long blockNumber, long objLocalIndex) {
+		GameObjectPtr getObjBlockObject (int32_t blockNumber, int32_t objLocalIndex) {
 			return(objList[Terrain::objBlockInfo[blockNumber].firstHandle + objLocalIndex]);
 		}
 
-		long getObjBlockNumObjects (long blockNumber) {
+		int32_t getObjBlockNumObjects (int32_t blockNumber) {
 			return(Terrain::objBlockInfo[blockNumber].numObjects);
 		}
 
-		long getObjBlockNumCollidables (long blockNumber) {
+		int32_t getObjBlockNumCollidables (int32_t blockNumber) {
 			return(Terrain::objBlockInfo[blockNumber].numCollidableObjects);
 		}
 
-		long getObjBlockFirstHandle (long blockNumber) {
+		int32_t getObjBlockFirstHandle (int32_t blockNumber) {
 			return(Terrain::objBlockInfo[blockNumber].firstHandle);
 		}
 
-		long getNumMechs (void) {
+		int32_t getNumMechs (void) {
 			return(numMechs);
 		}
 
-		long getNumVehicles (void) {
+		int32_t getNumVehicles (void) {
 			return(numVehicles);
 		}
 
-		long getNumMovers (void) {
+		int32_t getNumMovers (void) {
 			return(numMovers);
 		}
 
-		long getMaxMovers (void) {
+		int32_t getMaxMovers (void) {
 			return(maxMovers);
 		}
 
-		long getNumGoodMovers (void) {
+		int32_t getNumGoodMovers (void) {
 			return(numGoodMovers);
 		}
 
-		long getNumBadMovers (void) {
+		int32_t getNumBadMovers (void) {
 			return(numBadMovers);
 		}
 
-		long getNumTerrainObjects (void) {
+		int32_t getNumTerrainObjects (void) {
 			return(numTerrainObjects);
 		}
 
-		long getNumBuildings (void) {
+		int32_t getNumBuildings (void) {
 			return(numBuildings);
 		}
 
-		long getNumTurrets (void) {
+		int32_t getNumTurrets (void) {
 			return(numTurrets);
 		}
 
-		long getNumGates (void) {
+		int32_t getNumGates (void) {
 			return(numGates);
 		}
 
@@ -481,7 +439,7 @@ class GameObjectManager {
 		void update (bool terrain, bool movers, bool other);
 		void updateAppearancesOnly( bool terrain, bool mover, bool other);
 
-		GameObjectPtr get (long handle);
+		GameObjectPtr get (int32_t handle);
 
 		GameObjectPtr getByWatchID (ULONG watchID) {
 			if ((watchID > 0) && (watchID < nextWatchID))
@@ -489,37 +447,37 @@ class GameObjectManager {
 			return(NULL);
 		}
 
-		long buildMoverLists (void);
+		int32_t buildMoverLists (void);
 
-		bool modifyMoverLists (MoverPtr mover, long action);
+		bool modifyMoverLists (MoverPtr mover, int32_t action);
 
-		MoverPtr getMover (long index) {
+		MoverPtr getMover (int32_t index) {
 			return(moverList[index]);
 		}
 
-		MoverPtr getGoodMover (long index) {
+		MoverPtr getGoodMover (int32_t index) {
 			return(goodMoverList[index]);
 		}
 
-		MoverPtr getBadMover (long index) {
+		MoverPtr getBadMover (int32_t index) {
 			return(badMoverList[index]);
 		}
 
 		GameObjectPtr findObject (Stuff::Vector3D position);
 
-		GameObjectPtr findByPartId (long partId);
+		GameObjectPtr findByPartId (int32_t partId);
 
-		GameObjectPtr findByBlockVertex (long blockNum, long vertex);
+		GameObjectPtr findByBlockVertex (int32_t blockNum, int32_t vertex);
 
-		GameObjectPtr findByCellPosition (long row, long col);
+		GameObjectPtr findByCellPosition (int32_t row, int32_t col);
 
-		GameObjectPtr findByUnitInfo (long commander, long group, long mate);
+		GameObjectPtr findByUnitInfo (int32_t commander, int32_t group, int32_t mate);
 
-		GameObjectPtr findObjectByTypeHandle (long typeHandle);
+		GameObjectPtr findObjectByTypeHandle (int32_t typeHandle);
 
-		GameObjectPtr findObjectByMouse (long mouseX, long mouseY);
+		GameObjectPtr findObjectByMouse (int32_t mouseX, int32_t mouseY);
 		
-		bool moverInRect(long index, Stuff::Vector3D &dStart, Stuff::Vector3D &dEnd);
+		bool moverInRect(int32_t index, Stuff::Vector3D &dStart, Stuff::Vector3D &dEnd);
 
 		ObjectTypePtr loadObjectType (ObjectTypeNumber typeHandle);
 
@@ -529,17 +487,17 @@ class GameObjectManager {
 
 		GameObjectHandle getHandle (GameObjectPtr obj);
 
-		long calcPartId (long objectClass, long param1 = 0, long param2 = 0, long param3 = 0);
+		int32_t calcPartId (int32_t objectClass, int32_t param1 = 0, int32_t param2 = 0, int32_t param3 = 0);
 
-		void setPartId (GameObjectPtr obj, long param1 = 0, long param2 = 0, long param3 = 0);
+		void setPartId (GameObjectPtr obj, int32_t param1 = 0, int32_t param2 = 0, int32_t param3 = 0);
 
-		long buildCollidableList (void);
+		int32_t buildCollidableList (void);
 
-		long initCollisionSystem (FitIniFile* missionFile);
+		int32_t initCollisionSystem (FitIniFile* missionFile);
 
-		long getCollidableList (GameObjectPtr*& objList);
+		int32_t getCollidableList (GameObjectPtr*& objList);
 
-		long updateCollisions (void);
+		int32_t updateCollisions (void);
 
 		void detectStaticCollision (GameObjectPtr obj1, GameObjectPtr obj2);
 		
@@ -552,7 +510,7 @@ class GameObjectManager {
 							   Stuff::Vector3D& position,
 							   float tonnage);
 
-		CarnagePtr createExplosion (long effectId,
+		CarnagePtr createExplosion (int32_t effectId,
 									GameObjectPtr owner,
 									Stuff::Vector3D& position,
 									float dmg = 0.0,
@@ -560,11 +518,11 @@ class GameObjectManager {
 
 		LightPtr createLight (ObjectTypeNumber lightObjTypeHandle);
 
-		WeaponBoltPtr createWeaponBolt (long effectId);
+		WeaponBoltPtr createWeaponBolt (int32_t effectId);
 
-		ArtilleryPtr createArtillery (long artilleryType, Stuff::Vector3D& position);
+		ArtilleryPtr createArtillery (int32_t artilleryType, Stuff::Vector3D& position);
 
-		RemovedMoverRec* getRemovedMovers (long& numRemovedMovers) {
+		RemovedMoverRec* getRemovedMovers (int32_t& numRemovedMovers) {
 			numRemovedMovers = numRemoved;
 			return(moversRemoved);
 		}
@@ -576,8 +534,8 @@ class GameObjectManager {
 		void CopyTo (ObjectManagerData *data);
 		void CopyFrom (ObjectManagerData *data);
 
-		long Save (PacketFilePtr file, long packetNum);
-		long Load (PacketFilePtr file, long packetNum);
+		int32_t Save (PacketFilePtr file, int32_t packetNum);
+		int32_t Load (PacketFilePtr file, int32_t packetNum);
 };
 
 extern GameObjectManagerPtr ObjectManager;

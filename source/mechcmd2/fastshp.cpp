@@ -13,26 +13,24 @@
 
 extern char AlphaTable[256*256];
 
-
-
-static long			paneX0;
-static long 		paneY0;
-static long 		paneX1;
-static long 		paneY1;
-static long			shapeInfo;
-static long 		yOffsetTable;
-static long 		DestWidth,pwYMax;
-static long 		scanLines;
-static long 		scanCol;
-static long 		topLeftX;
-static long 		topLeftY;
-static long 		firstScanOffset;
-static long 		lastScanOffset;
-static long			totalBlt;
-static long			scanStart;
-static long			screenBuffer;
-static long			currentOffset;
-static long 		leftClipX, rightClipX;
+static int32_t			paneX0;
+static int32_t 		paneY0;
+static int32_t 		paneX1;
+static int32_t 		paneY1;
+static int32_t			shapeInfo;
+static int32_t 		yOffsetTable;
+static int32_t 		DestWidth,pwYMax;
+static int32_t 		scanLines;
+static int32_t 		scanCol;
+static int32_t 		topLeftX;
+static int32_t 		topLeftY;
+static int32_t 		firstScanOffset;
+static int32_t 		lastScanOffset;
+static int32_t			totalBlt;
+static int32_t			scanStart;
+static int32_t			screenBuffer;
+static int32_t			currentOffset;
+static int32_t 		leftClipX, rightClipX;
 
 #define X0_OFFSET			4
 #define Y0_OFFSET			8
@@ -49,16 +47,16 @@ static long 		leftClipX, rightClipX;
 
 
 
-long fastShapeDraw (PANE* pane, void *shp, LONG frameNum, LONG hotX, LONG hotY, MemoryPtr fadeTable)
+int32_t fastShapeDraw (PANE* pane, PVOID shp, LONG frameNum, LONG hotX, LONG hotY, PUCHAR fadeTable)
 {
 	//---------------------------------------------------------------------------------
 	// Format of tile shape header is.
-	//		long	-- ShapeId
-	//		long	-- NumFrames
-	//		long[x]	-- Offset to each shape
+	//		int32_t	-- ShapeId
+	//		int32_t	-- NumFrames
+	//		int32_t[x]	-- Offset to each shape
 	//
 	// Format of tile shape data is.
-	//		long 	-- ShapeId			Always 0x48414e44 'HAND'
+	//		int32_t 	-- ShapeId			Always 0x48414e44 'HAND'
 	//		short	-- HotSpot X
 	//		short	-- HotSpot Y
 	//		short	-- shapeWidth
@@ -151,10 +149,10 @@ long fastShapeDraw (PANE* pane, void *shp, LONG frameNum, LONG hotX, LONG hotY, 
 
 	//------------------------------------------------------------
 	// Calculate topLeft X and Y position on Screen from HotSpots
-	//long topLeftX = (hotX + paneX0) - shapeInfo->HSX;
-	//long topLeftY = (hotY + paneY0) - shapeInfo->HSY;
+	//int32_t topLeftX = (hotX + paneX0) - shapeInfo->HSX;
+	//int32_t topLeftY = (hotY + paneY0) - shapeInfo->HSY;
 	//
-	//MemoryPtr screenBuffer = pane->window->buffer;
+	//PUCHAR screenBuffer = pane->window->buffer;
 	//-----------------------------------------------------------
 
 		mov		ebx,hotX
@@ -228,13 +226,13 @@ long fastShapeDraw (PANE* pane, void *shp, LONG frameNum, LONG hotX, LONG hotY, 
 	//-----------------------------------------------------------
 	// Find pointer to screenBuffer where tile will start.
 	// Also find total Blt Length
-	//long yOffset = paneY0;
+	//int32_t yOffset = paneY0;
 	//
 	//if (topLeftY > paneY0)
 	//	yOffset = topLeftY;
 	//	
 	//screenBuffer += (yOffset * DestWidth);
-	//MemoryPtr scanStart = screenBuffer;
+	//PUCHAR scanStart = screenBuffer;
 	//-----------------------------------------------------------
 
 		cmp		eax, paneX0			//eax is still topLeftX
@@ -277,7 +275,7 @@ FIND_BUF:
 	//if (topLeftY < paneY0)
 	//	firstScanOffset = paneY0 - topLeftY;
 	//
-	//long lastScanOffset = scanLines;
+	//int32_t lastScanOffset = scanLines;
 	//if ((topLeftY + scanLines) > paneY1)
 	//	lastScanOffset = paneY1 - topLeftY + 1;
 	//-----------------------------------------------------------
@@ -308,7 +306,7 @@ LINE311:
 		lea		ebx,[ecx+edx*2+12]
 		mov		ebp,fadeTable
 
-		movzx	ecx, WORD PTR [ebx]
+		movzx	ecx, word ptr [ebx]
 
 		mov		currentOffset, ecx
 		mov		yOffsetTable, ebx
@@ -353,7 +351,7 @@ LOOP_TOP:
 SKIP_X:
 
 		xor		ecx,ecx
-		mov		cl, BYTE PTR [esi]		//Get the first data byte.  This is a runLength for RLE or String
+		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 0x80				//Check if Run or String
 		jb		RLE1
@@ -402,7 +400,7 @@ ENOUGH_SKIP_RLE:
 
 		sub		ebx, leftClipX
 		mov		ecx, ebx
-		mov		al, BYTE PTR [esi]		//Get Byte
+		mov		al, byte ptr [esi]		//Get Byte
 		inc		esi
 		
 		add		edi, paneX0
@@ -422,7 +420,7 @@ SKIP_IN:
 		add		edi, topLeftX			//Skip in to the hotspot for this scanLine if NOT LeftClipped!
 	
 BLT:
-		mov		cl, BYTE PTR [esi]		//Get the first data byte.  This is a runLength for RLE or String
+		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 		inc		esi
 
 		sub		ecx, 128				//Check if Run or String
@@ -464,7 +462,7 @@ BLT_RLE1:
 		mov		ebx, ebp				//Force total Blted to totalBlt
 		
 GO_RLE1:
-		mov		al, BYTE PTR [esi]		//Get Byte
+		mov		al, byte ptr [esi]		//Get Byte
 		inc		esi						//Move ShapePtr
 
 		cmp		al, 0xff
@@ -486,7 +484,7 @@ NEXT_SCANLINE:
 		mov		ebx, yOffsetTable		
 		mov		scanStart, edi
 
-		movzx	ecx, WORD PTR [ebx]		//Get next yOffset
+		movzx	ecx, word ptr [ebx]		//Get next yOffset
 
 		add		ebx, 2					//Move the yOffsetTable Up by one short
 		mov		currentOffset, ecx
@@ -540,7 +538,7 @@ fade_loop:
 fSKIP_X:
 
 		xor		ecx,ecx
-		mov		cl, BYTE PTR [esi]		//Get the first data byte.  This is a runLength for RLE or String
+		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 0x80				//Check if Run or String
 		jb		fRLE1
@@ -585,16 +583,16 @@ fENOUGH_SKIP_STR:
 		test	cl,cl					//Check loop end
 		je 		fBLT
 
-fd1:	mov		al, BYTE PTR [esi]		//Get Byte
+fd1:	mov		al, byte ptr [esi]		//Get Byte
 		inc		esi
 
 		dec		cl						//stringLength--, shapeData++, ScreenBuffer++
 		inc		edi
 
-		mov		ch, BYTE PTR [eax+ebp]	//Get New Color
+		mov		ch, byte ptr [eax+ebp]	//Get New Color
 		test	cl,cl
 		
-		mov		BYTE PTR [edi], ch		//Put color on screen
+		mov		byte ptr [edi], ch		//Put color on screen
 		jnz		fd1
 
 		jmp 	fBLT					//Back to Loop Top
@@ -605,12 +603,12 @@ fd1:	mov		al, BYTE PTR [esi]		//Get Byte
 fENOUGH_SKIP_RLE:
 
 		sub		ebx, leftClipX
-		mov		al, BYTE PTR [esi]		//Get Byte
+		mov		al, byte ptr [esi]		//Get Byte
 
 		mov		ecx, ebx
 		inc		esi
 		
-		mov		al, BYTE PTR [eax+ebp]	//Get New Color
+		mov		al, byte ptr [eax+ebp]	//Get New Color
 		add		edi, paneX0
 
 		cmp		al, 0xff
@@ -631,7 +629,7 @@ fSKIP_IN:
 	
 fBLT:
 		xor		ecx,ecx
-		mov		cl, BYTE PTR [esi]		//Get the first data byte.  This is a runLength for RLE or String
+		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 128				//Check if Run or String
 		jb		fBLT_RLE1				//Jump to RUN Code if RUN
@@ -655,18 +653,18 @@ fFADE_STRING_LOOP2:
 		test	cl,cl					//Check loop end
 
 		je 		fCHK_END_STRING
-		mov		al, BYTE PTR [esi]		//Get Byte
+		mov		al, byte ptr [esi]		//Get Byte
 
 		dec		cl						//stringLength--, shapeData++, ScreenBuffer++
 		inc		esi
 
 		inc		edi
-		mov		ch, BYTE PTR [eax+ebp]	//Get New Color
+		mov		ch, byte ptr [eax+ebp]	//Get New Color
 
 		cmp		ch, 0xff
 		je		fFADE_STRING_LOOP2
 
-		mov		BYTE PTR [edi-1], ch	//Put color on screen
+		mov		byte ptr [edi-1], ch	//Put color on screen
 		jmp 	fFADE_STRING_LOOP2		//Back to Loop Top
 
 
@@ -689,9 +687,9 @@ fBLT_RLE1:
 		mov		ebx, totalBlt			//Force total Blted to totalBlt
 		
 fGO_RLE1:
-		mov		al, BYTE PTR [esi]		//Get Byte
+		mov		al, byte ptr [esi]		//Get Byte
 		inc		esi						//Move ShapePtr
-		mov		al, BYTE PTR [eax+ebp]	//Get New Color
+		mov		al, byte ptr [eax+ebp]	//Get New Color
 		cmp		al, 0xff
 		jne		fDO_BLT2
 		add		edi, ecx
@@ -710,7 +708,7 @@ fNEXT_SCANLINE:
 		mov		ebx, yOffsetTable		
 		mov		scanStart, edi
 
-		movzx	ecx, WORD PTR [ebx]		//Get next yOffset
+		movzx	ecx, word ptr [ebx]		//Get next yOffset
 
 		add		ebx, 2					//Move the yOffsetTable Up by one short
 		mov		currentOffset, ecx
@@ -775,7 +773,7 @@ aLOOP_TOP:
 aSKIP_X:
 
 		xor		ecx,ecx
-		mov		cl, BYTE PTR [esi]		//Get the first data byte.  This is a runLength for RLE or String
+		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 0x80				//Check if Run or String
 		jb		aRLE1
@@ -837,7 +835,7 @@ aENOUGH_SKIP_RLE:
 		sub		ebx, leftClipX
 		mov		ecx, ebx
 		xor		eax,eax
-		mov		ah, BYTE PTR [esi]		//Get Byte
+		mov		ah, byte ptr [esi]		//Get Byte
 		inc		esi
 		
 		add		edi, paneX0
@@ -865,7 +863,7 @@ aSKIP_IN:
 	
 aBLT:
 		xor		ecx,ecx
-		mov		cl, BYTE PTR [esi]		//Get the first data byte.  This is a runLength for RLE or String
+		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 128				//Check if Run or String
 		jb		aBLT_RLE1				//Jump to RUN Code if RUN
@@ -913,7 +911,7 @@ aBLT_RLE1:
 		
 aGO_RLE1:
 		xor		eax,eax
-		mov		al, BYTE PTR [esi]		//Get Byte
+		mov		al, byte ptr [esi]		//Get Byte
 
 		cmp		al, 0xff
 		jne		aDO_BLT2
@@ -934,7 +932,7 @@ aNEXT_SCANLINE:
 		mov		ebx, yOffsetTable		
 		mov		scanStart, edi
 
-		movzx	ecx, WORD PTR [ebx]		//Get next yOffset
+		movzx	ecx, word ptr [ebx]		//Get next yOffset
 
 		add		ebx, 2					//Move the yOffsetTable Up by one short
 		mov		currentOffset, ecx
@@ -983,7 +981,7 @@ afade_loop:
 afSKIP_X:
 
 		xor		ecx,ecx
-		mov		cl, BYTE PTR [esi]		//Get the first data byte.  This is a runLength for RLE or String
+		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 0x80				//Check if Run or String
 		jb		afRLE1
@@ -1029,16 +1027,16 @@ afENOUGH_SKIP_STR:
 		je 		afBLT
 
 afd1:	xor		eax,eax
-		mov		al, BYTE PTR [esi]		//Get Byte
+		mov		al, byte ptr [esi]		//Get Byte
 
 		inc		esi
 		inc		edi
 
-		mov		ah, BYTE PTR [eax+ebp]	//Get New Color
+		mov		ah, byte ptr [eax+ebp]	//Get New Color
 		dec		cl
 		mov		al,[edi]
 		mov		al,AlphaTable[eax]
-		mov		BYTE PTR [edi], al		//Put color on screen
+		mov		byte ptr [edi], al		//Put color on screen
 		jnz		afd1
 
 		jmp 	afBLT					//Back to Loop Top
@@ -1049,12 +1047,12 @@ afd1:	xor		eax,eax
 afENOUGH_SKIP_RLE:
 
 		sub		ebx, leftClipX
-		mov		al, BYTE PTR [esi]		//Get Byte
+		mov		al, byte ptr [esi]		//Get Byte
 
 		mov		ecx, ebx
 		inc		esi
 		
-		mov		ah, BYTE PTR [eax+ebp]	//Get New Color
+		mov		ah, byte ptr [eax+ebp]	//Get New Color
 		add		edi, paneX0
 
 		cmp		ah, 0xff
@@ -1082,7 +1080,7 @@ afSKIP_IN:
 	
 afBLT:
 		xor		ecx,ecx
-		mov		cl, BYTE PTR [esi]		//Get the first data byte.  This is a runLength for RLE or String
+		mov		cl, byte ptr [esi]		//Get the first data byte.  This is a runLength for RLE or String
 
 		cmp		ecx, 128				//Check if Run or String
 		jb		afBLT_RLE1				//Jump to RUN Code if RUN
@@ -1106,13 +1104,13 @@ afFADE_STRING_LOOP2:
 		je 		afCHK_END_STRING
 
 		xor		eax,eax
-		mov		al, BYTE PTR [esi]		//Get Byte
+		mov		al, byte ptr [esi]		//Get Byte
 
 		inc		esi
 		dec		cl						//stringLength--, shapeData++, ScreenBuffer++
 
 		inc		edi
-		mov		ah, BYTE PTR [eax+ebp]	//Get New Color
+		mov		ah, byte ptr [eax+ebp]	//Get New Color
 
 		cmp		ah, 0xff
 		je		afFADE_STRING_LOOP2
@@ -1120,7 +1118,7 @@ afFADE_STRING_LOOP2:
 		mov		al,[edi-1]
 		mov		al,AlphaTable[eax]
 
-		mov		BYTE PTR [edi-1], al	//Put color on screen
+		mov		byte ptr [edi-1], al	//Put color on screen
 		jmp 	afFADE_STRING_LOOP2		//Back to Loop Top
 
 
@@ -1144,10 +1142,10 @@ afBLT_RLE1:
 		
 afGO_RLE1:
 		xor		eax,eax
-		mov		al, BYTE PTR [esi]		//Get Byte
+		mov		al, byte ptr [esi]		//Get Byte
 		
 		inc		esi						//Move ShapePtr
-		mov		ah, BYTE PTR [eax+ebp]	//Get New Color
+		mov		ah, byte ptr [eax+ebp]	//Get New Color
 		cmp		ah, 0xff
 		jne		afDO_BLT2
 		add		edi, ecx
@@ -1166,7 +1164,7 @@ afNEXT_SCANLINE:
 		mov		ebx, yOffsetTable		
 		mov		scanStart, edi
 
-		movzx	ecx, WORD PTR [ebx]		//Get next yOffset
+		movzx	ecx, word ptr [ebx]		//Get next yOffset
 
 		add		ebx, 2					//Move the yOffsetTable Up by one short
 		mov		currentOffset, ecx
@@ -1186,21 +1184,6 @@ aes5:	mov		al,[edi]
 		cmp		ebx, totalBlt			//Are we Done with this scanLine?
 		je		afNEXT_SCANLINE			//yes, next
 		jmp		afBLT						//No, keep Blting
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 LEFTXCLIP:
 		mov		eax, paneX0

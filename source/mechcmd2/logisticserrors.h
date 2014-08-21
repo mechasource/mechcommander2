@@ -1,11 +1,14 @@
-#ifndef LOGISTICSERRORS_H
-#define LOGISTICSERRORS_H
 /*************************************************************************************************\
 LogisticsErrors.h	error codes for logistics
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+
+#pragma once
+
+#ifndef LOGISTICSERRORS_H
+#define LOGISTICSERRORS_H
 
 #define NOT_YET_IMPLEMENTED 1000
 #define INVALID_COMPONENT	1001

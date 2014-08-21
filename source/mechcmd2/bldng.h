@@ -8,28 +8,16 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef BLDNG_H
 #define BLDNG_H
 
-#ifndef DBLDNG_H
-#include "dbldng.h"
-#endif
-
-#ifndef TERROBJ_H
-#include "terrobj.h"
-#endif
-
-#ifndef GAMEOBJ_H
-#include "gameobj.h"
-#endif
-
-#ifndef OBJTYPE_H
-#include "objtype.h"
-#endif
-
-#ifndef DWARRIOR_H
-#include "dwarrior.h"
-#endif
+//#include "dbldng.h"
+//#include "terrobj.h"
+//#include "gameobj.h"
+//#include "objtype.h"
+//#include "dwarrior.h"
 
 //---------------------------------------------------------------------------
 
@@ -55,15 +43,15 @@ class BuildingType : public ObjectType {
 
 		float			damageLevel;
 		float			sensorRange;
-		long			teamId;
+		int32_t			teamId;
 		float			baseTonnage;
 		float			explDmg;
 		float			explRad;
-		long			buildingTypeName;
-		long			buildingDescriptionID;
-		long			startBR;
-		long			numMarines;
-		long			resourcePoints;
+		int32_t			buildingTypeName;
+		int32_t			buildingDescriptionID;
+		int32_t			startBR;
+		int32_t			numMarines;
+		int32_t			resourcePoints;
 		bool			marksImpassableWhenDestroyed;
 
 		bool			canRefit;
@@ -85,9 +73,9 @@ class BuildingType : public ObjectType {
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, ULONG fileSize);
 
-		long init (FitIniFilePtr objFile);
+		int32_t init (FitIniFilePtr objFile);
 		
 		~BuildingType (void) {
 			destroy();
@@ -114,7 +102,7 @@ typedef struct _BuildingData : public TerrainObjectData
 	uint8_t			baseTileId;
 	char					commanderId;
 	GameObjectWatchID		refitBuddyWID;
-	DWORD					parentId;
+	ULONG					parentId;
 	GameObjectWatchID		parent;
 	uint8_t			listID;
 	float					captureTime;
@@ -122,7 +110,7 @@ typedef struct _BuildingData : public TerrainObjectData
 	//PerimeterAlarms 		
 	bool					moverInProximity;
 	float					proximityTimer;
-	long					updatedTurn;
+	int32_t					updatedTurn;
 } BuildingData;
 
 class Building : public TerrainObject 
@@ -134,7 +122,7 @@ class Building : public TerrainObject
 		SensorSystemPtr			sensorSystem;
 		char					commanderId;									//If capturable, who last captured it...
 		GameObjectWatchID		refitBuddyWID;
-		DWORD					parentId;
+		ULONG					parentId;
 		GameObjectWatchID		parent;
 		uint8_t			listID;
 		float					captureTime;
@@ -143,7 +131,7 @@ class Building : public TerrainObject
 		//PerimeterAlarms 		
 		bool					moverInProximity;
 		float					proximityTimer;
-		long					updatedTurn;
+		int32_t					updatedTurn;
 
 	public:
 
@@ -182,7 +170,7 @@ class Building : public TerrainObject
 		
 		virtual void destroy (void);
 		
-		virtual long update (void);
+		virtual int32_t update (void);
 
 		virtual void render (void);
 		
@@ -192,13 +180,13 @@ class Building : public TerrainObject
 
 		void setSensorData (TeamPtr team, float range = -1.0, bool setTeam = true);
 
-		virtual long setTeamId (long _teamId, bool setup);
+		virtual int32_t setTeamId (int32_t _teamId, bool setup);
 		
-		virtual long getTeamId (void) {
+		virtual int32_t getTeamId (void) {
 			return(teamId);
 		}
 
-		virtual long getDescription(){ return ((BuildingType*)getObjectType())->buildingDescriptionID; }
+		virtual int32_t getDescription(){ return ((BuildingType*)getObjectType())->buildingDescriptionID; }
 
 		virtual TeamPtr getTeam (void);
 
@@ -210,19 +198,19 @@ class Building : public TerrainObject
 
 		void lightOnFire (float timeToBurn);
 
-		long updateAnimations (void);
+		int32_t updateAnimations (void);
 		
-		virtual long handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+		virtual int32_t handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
 		virtual void setDamage (float newDamage);		//Damage encodes which groundtile to use, too.
 		
-		virtual long kill (void) {
-			return(NO_ERR);
+		virtual int32_t kill (void) {
+			return(NO_ERROR);
 		}
 
 		virtual PSTR getName (void);
 
-		virtual Stuff::Vector3D getPositionFromHS (long weaponType) 
+		virtual Stuff::Vector3D getPositionFromHS (int32_t weaponType) 
 		{
 			//-----------------------------------------
 			// Hotspot for buildings is position plus 
@@ -278,17 +266,17 @@ class Building : public TerrainObject
 
 		bool isVisible (void);
 
-		virtual bool isCaptureable (long capturingTeamID);
+		virtual bool isCaptureable (int32_t capturingTeamID);
 
-		virtual void setCommanderId (long _commanderId);
+		virtual void setCommanderId (int32_t _commanderId);
 
-		virtual long getCommanderId (void) {
+		virtual int32_t getCommanderId (void) {
 			return(commanderId);
 		}
 
 		virtual float getDamageLevel (void);
 
-		virtual void getBlockAndVertexNumber (long& blockNum, long& vertexNum) {
+		virtual void getBlockAndVertexNumber (int32_t& blockNum, int32_t& vertexNum) {
 			blockNum = blockNumber;
 			vertexNum = vertexNumber;
 		}
@@ -307,7 +295,7 @@ class Building : public TerrainObject
 
 		virtual GameObjectPtr getParent (void);
 
-		virtual void setParentId (DWORD pId);
+		virtual void setParentId (ULONG pId);
 
 		virtual SensorSystem* getSensorSystem(){ return sensorSystem; }
 		
@@ -376,7 +364,7 @@ class Building : public TerrainObject
 
 		virtual bool burnRefitPoints(float pointsToBurn);
 
-		virtual void Save (PacketFilePtr file, long packetNum);
+		virtual void Save (PacketFilePtr file, int32_t packetNum);
 
 		void Load (BuildingData *data);
 

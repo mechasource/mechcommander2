@@ -63,7 +63,7 @@ void PilotReadyScreen::init(FitIniFile* file)
 	strcpy( path, artPath );
 	strcat( path, "mcl_gn_deploymentteams.fit" );
 	strlwr( path );
-	if ( NO_ERR != iconFile.open( path ) )
+	if ( NO_ERROR != iconFile.open( path ) )
 	{
 		gosASSERT( "couldn't open the MCL_GN_DevploymentTeams file" );
 		return;
@@ -74,8 +74,8 @@ void PilotReadyScreen::init(FitIniFile* file)
 	int count = 0;
 
 	
-	long x = 0;
-	long y = 0;
+	int32_t x = 0;
+	int32_t y = 0;
 
 	for ( int j = 0; j < ICON_COUNT_Y; j++ )
 	{
@@ -113,7 +113,7 @@ void PilotReadyScreen::init(FitIniFile* file)
 	FullPathFileName tmpPath;
 	tmpPath.init( artPath, "mcl_pr_availablepilotentry", ".fit" );
 	FitIniFile tmpFile;
-	if ( NO_ERR != tmpFile.open( tmpPath ) )
+	if ( NO_ERROR != tmpFile.open( tmpPath ) )
 	{
 		Assert( 0, 0, "couldn't open MCL_PR_AvailablePilotEntry.fit" );
 	}
@@ -177,7 +177,7 @@ void PilotReadyScreen::begin()
 
 	if ( MPlayer )
 	{
-		long playerCount;
+		int32_t playerCount;
 		MPlayer->getPlayers( playerCount );
 		if ( playerCount )
 			maxUnits = MAX_MULTIPLAYER_MECHS_IN_LOGISTICS/playerCount;
@@ -209,7 +209,7 @@ void PilotReadyScreen::begin()
 
 		pilotListBox.removeAllItems( true );
 
-		long count = 256;
+		int32_t count = 256;
 		LogisticsPilot* pilots[256];
 		LogisticsData::instance->getPilots( pilots, count );
 
@@ -224,7 +224,7 @@ void PilotReadyScreen::begin()
 		{
 			if ( (*iter)->getForceGroup() )
 			{
-				long FG = (*iter)->getForceGroup();
+				int32_t FG = (*iter)->getForceGroup();
 				pIcons[FG-1].setMech( (*iter) );
 				if ( (*iter)->getPilot() )
 				{
@@ -328,7 +328,7 @@ void PilotReadyScreen::render(int xOffset, int yOffset )
 	if ( launchFadeTime )
 	{
 		launchFadeTime += frameLength;
-		long color = interpolateColor( 0x00000000, 0x7f000000, launchFadeTime/.5f );
+		int32_t color = interpolateColor( 0x00000000, 0x7f000000, launchFadeTime/.5f );
 		RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 	}
@@ -423,7 +423,7 @@ void PilotReadyScreen::update()
 			setMech( pIcons[newRightSel].getMech() );
 		}
 
-		long curSel = newSel == -1 ? oldSel : newSel;
+		int32_t curSel = newSel == -1 ? oldSel : newSel;
 
 	
 		if ( !MPlayer || !ChatWindow::instance()->pointInside(userInput->getMouseX(), userInput->getMouseY()) )
@@ -769,12 +769,12 @@ void PilotReadyScreen::setPilot( LogisticsPilot* pPilot )
 		else
 			textObjects[4].setText( IDS_ACE );
 
-		sprintf( str, "%ld", (long)pCurPilot->getGunnery() );
+		sprintf( str, "%ld", (int32_t)pCurPilot->getGunnery() );
 		textObjects[5].setText( str );
 		attributeMeters[0].setValue( ((float)pCurPilot->getGunnery())/80.f );
 
 		char number[64];
-		sprintf( number, "%ld", (long)pCurPilot->getPiloting() );
+		sprintf( number, "%ld", (int32_t)pCurPilot->getPiloting() );
 		textObjects[6].setText( number );
 		attributeMeters[1].setValue( pCurPilot->getPiloting()/80.f );
 
@@ -821,7 +821,7 @@ void PilotReadyScreen::setPilot( LogisticsPilot* pPilot )
 			skillIcons[i].setColor( 0 );
 
 		const bool* medals = pCurPilot->getMedalArray( );
-		long medalCount = 0;
+		int32_t medalCount = 0;
 		for ( i = 0; i < MAX_MEDAL; i++ )
 		{
 			if ( medals[i] )

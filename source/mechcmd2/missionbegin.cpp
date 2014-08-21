@@ -36,7 +36,7 @@ extern CPrefs prefs;
 
 class MechLabScreen;
 
-extern long renderer;
+extern int32_t renderer;
 
 void initABL (void);
 void closeABL (void);
@@ -96,7 +96,7 @@ MissionBegin::~MissionBegin()
 	}
 }
 
-bool MissionBegin::startAnimation (long bId, bool isButton, float scrollTime, long nFlashes)
+bool MissionBegin::startAnimation (int32_t bId, bool isButton, float scrollTime, int32_t nFlashes)
 {
 	if (animationRunning)
 		return false;
@@ -136,7 +136,7 @@ void MissionBegin::begin()
 	
 	if (brainfile && fileExists(brainFileName))
 	{
-		long numErrors, numLinesProcessed;
+		int32_t numErrors, numLinesProcessed;
 		logisticsScriptHandle = ABLi_preProcess(brainFileName, &numErrors, &numLinesProcessed);
 		gosASSERT(logisticsScriptHandle >= 0);
 		
@@ -144,10 +144,10 @@ void MissionBegin::begin()
 		gosASSERT(logisticsBrain != NULL);
 			
 	#ifdef _DEBUG
-		long brainErr = 
+		int32_t brainErr = 
 	#endif
 			logisticsBrain->init(logisticsScriptHandle);
-		gosASSERT(brainErr == NO_ERR);
+		gosASSERT(brainErr == NO_ERROR);
 		
 		logisticsBrain->setName("Logistics");
 	}
@@ -158,7 +158,7 @@ void MissionBegin::begin()
 	}
 
 	//---------------------------------------------
-	DWORD localRenderer = prefs.renderer;
+	ULONG localRenderer = prefs.renderer;
 	if (prefs.renderer != 0 && prefs.renderer != 3)
 		localRenderer = 0;
 
@@ -227,7 +227,7 @@ void MissionBegin::begin()
 	strcat( path, "mcl_mm.fit" );
 
 	FitIniFile file;
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -245,7 +245,7 @@ void MissionBegin::begin()
 	pMissionSelectionScreen = new MissionSelectionScreen();
 	strcpy( path, artPath );
 	strcat( path, "mcl_cm_layout.fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -262,7 +262,7 @@ void MissionBegin::begin()
 	strcpy( path, artPath );
 	strcat( path, "mcl_mn.fit" );
 	
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -277,7 +277,7 @@ void MissionBegin::begin()
 	strcat( path, "mcl_mb_layout.fit" );
 	
 	pMechBayScreen = new MechBayScreen();
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -301,7 +301,7 @@ void MissionBegin::begin()
 	// initialize pilot ready
 	strcpy( path, artPath );
 	strcat( path, "mcl_pr_layout.fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -324,7 +324,7 @@ void MissionBegin::begin()
 	strcpy( path, artPath );
 	strcat( path, "mcl_m$.fit" );
 
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -340,7 +340,7 @@ void MissionBegin::begin()
 
 	strcpy( path, artPath );
 	strcat( path, "mcl_mc.fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -356,7 +356,7 @@ void MissionBegin::begin()
 
 	strcpy( path, artPath );
 	strcat( path, "mcl_loadingscreen.fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -424,7 +424,7 @@ void MissionBegin::end()
 bool inPurchase = false;
 bool inMechLab = false;
 //Returns screen ID as a function of curScreenX and curScreenY 
-long MissionBegin::getCurrentScreenId()
+int32_t MissionBegin::getCurrentScreenId()
 {
 	//singlePlayerScreens[0][1] = pMissionSelectionScreen;		ID 1
 	//singlePlayerScreens[1][1] = pBriefingScreen;				ID 11
@@ -433,7 +433,7 @@ long MissionBegin::getCurrentScreenId()
 	//singlePlayerScreens[2][0] = pPurchaseMechScreen;			ID 20
 	//singlePlayerScreens[2][2] = pMechLabScreen;				ID 22
 	//singlePlayerScreens[4][1] = pLoadScreen;					ID 41
-	long screenId = 10 * curScreenX + curScreenY;
+	int32_t screenId = 10 * curScreenX + curScreenY;
 
 	if ((screenId == 20) && FirstTimePurchase && !MPlayer )
 		inPurchase = true;
@@ -849,8 +849,8 @@ PCSTR MissionBegin::update()
 void MissionBegin::render()
 {
 
-	long xOffset = 0;
-	long yOffset = 0;
+	int32_t xOffset = 0;
+	int32_t yOffset = 0;
 	
 	LogisticsScreen* pOtherScreen = 0;
 	LogisticsScreen* pCurScreen = 0;
@@ -860,8 +860,8 @@ void MissionBegin::render()
 
 	}
 
-	long xOtherOffset = 0;
-	long yOtherOffset = 0;
+	int32_t xOtherOffset = 0;
+	int32_t yOtherOffset = 0;
 
 	if ( bSplash )
 	{
@@ -1001,7 +1001,7 @@ void MissionBegin::beginMPlayer()
 	strcpy( path, artPath );
 	strcat( path, "mcl_mp_connectiontype.fit" );
 
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -1021,7 +1021,7 @@ void MissionBegin::beginMPlayer()
 	strcpy( path, artPath );
 	strcat( path, "mcl_mp_param.fit" );
 
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -1038,7 +1038,7 @@ void MissionBegin::beginMPlayer()
 	strcpy( path, artPath );
 	strcat( path, "mcl_mp_lanbrowser.fit" );
 
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -1056,7 +1056,7 @@ void MissionBegin::beginMPlayer()
 	strcpy( path, artPath );
 	strcat( path, "mcl_mp_playerprefs.fit" );
 
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -1071,7 +1071,7 @@ void MissionBegin::beginMPlayer()
 
 	strcpy( path, artPath );
 	strcat( path, "mcl_loadingscreen.fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -1084,7 +1084,7 @@ void MissionBegin::beginMPlayer()
 
 
 	
-	pMPConnectionType->ppConnectionScreen = (void **)(&(screens[1][1]));
+	pMPConnectionType->ppConnectionScreen = (PVOID*)(&(screens[1][1]));
 	pMPConnectionType->pLocalBrowserScreen = pMPGameBrowser;
 	pMPConnectionType->pDirectTcpipScreen = pMPGameBrowser;
 	pMPConnectionType->pMPPlaceHolderScreen = placeHolderScreen;

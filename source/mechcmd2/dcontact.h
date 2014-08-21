@@ -8,6 +8,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DCONTACT_H
 #define DCONTACT_H
 

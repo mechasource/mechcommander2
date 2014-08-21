@@ -56,7 +56,7 @@ int ChatWindow::initInstance()
 	FitIniFile file;
 	FullPathFileName path;
 	path.init( artPath, "mcl_mp_chatwidget", ".fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char buffer2[512];
 		sprintf( buffer2, "couldn't open file %s", (PSTR)path );
@@ -91,7 +91,7 @@ int ChatWindow::initInstance()
 	return true;
 }
 
-bool ChatWindow::pointInside( long xPos, long yPos )
+bool ChatWindow::pointInside( int32_t xPos, int32_t yPos )
 {
 	if ( getButton( MP_CHAT_EXPAND )->isPressed() )
 		return chatWidget.inside( xPos, yPos );
@@ -200,9 +200,9 @@ void ChatWindow::update()
 	
 
 	PSTR chatTexts[MAX_STORED_CHATS];
-	long playerIDs[MAX_STORED_CHATS];
+	int32_t playerIDs[MAX_STORED_CHATS];
 
-	long count = MAX_STORED_CHATS;
+	int32_t count = MAX_STORED_CHATS;
 	MPlayer->getChatMessages( chatTexts, playerIDs, count );
 	
 	refillListBox( listBox, chatTexts, playerIDs, listItems, curItem, count, maxItems );
@@ -240,9 +240,9 @@ void ChatWindow::update()
 
 }
 
-void ChatWindow::refillListBox( aListBox& listBox, PSTR* chatTexts, long* playerIDs, ChatMessageItem* pItems, long& curItem, long itemCount, long maxCount )
+void ChatWindow::refillListBox( aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs, ChatMessageItem* pItems, int32_t& curItem, int32_t itemCount, int32_t maxCount )
 {
-	long linesToAdd = 0;
+	int32_t linesToAdd = 0;
 	for ( int i = 0; i < itemCount && i < maxCount; i++ )
 	{
 		int item = (curItem+i)%maxCount;
@@ -317,7 +317,7 @@ void ChatWidget::init( )
 	FitIniFile file;
 	FullPathFileName path;
 	path.init( artPath, "mcl_mp_chatwidget_up", ".fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char buffer2[512];
 		sprintf( buffer2, "couldn't open file %s", (PSTR)path );
@@ -360,7 +360,7 @@ void ChatMessageItem::setPlayerName( PCSTR pName )
 {
 	name.setText( pName );
 	name.moveTo( globalX()+1, globalY()+1 );
-	long tmpWidth = name.font.width( pName );
+	int32_t tmpWidth = name.font.width( pName );
 	playerText.moveTo( globalX() + tmpWidth+3, globalY() +1 );
 
 	playerRect.resize( tmpWidth+2, playerText.font.height() - 2 );
@@ -389,7 +389,7 @@ int ChatMessageItem::setText( PCSTR pText )
 	return retVal;
 }
 
-void ChatMessageItem::setPlayerColor( long newColor )
+void ChatMessageItem::setPlayerColor( int32_t newColor )
 {
 	playerRect.setColor( newColor );
 
@@ -399,7 +399,7 @@ void ChatMessageItem::setPlayerColor( long newColor )
 		name.setColor( 0xff000000 );
 }
 
-void ChatMessageItem::setTextColor( long newColor )
+void ChatMessageItem::setTextColor( int32_t newColor )
 {
 	playerText.setColor( newColor );
 }

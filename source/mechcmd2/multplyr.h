@@ -6,71 +6,31 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef MULTPLYR_H
 #define MULTPLYR_H
 
 //***************************************************************************
 
-//--------------
-// Include Files
-
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
-
-#ifndef DMULTPLYR_H
-#include "dmultplyr.h"
-#endif
-
-#ifndef DMOVER_H
-#include "dmover.h"
-#endif
-
-#ifndef DWARRIOR_H
-#include "dwarrior.h"
-#endif
-
-#ifndef DTURRET_H
-#include "dturret.h"
-#endif
-
-#ifndef DTACORDR_H
-#include "dtacordr.h"
-#endif
-
-#ifndef DGAMEOBJ_H
-#include "dgameobj.h"
-#endif
-
-#ifndef DBLDNG_H
-#include "dbldng.h"
-#endif
-
-//#ifndef DUNIT_H
+//#include <mclib.h>
+//#include "dmultplyr.h"
+//#include "dmover.h"
+//#include "dwarrior.h"
+//#include "dturret.h"
+//#include "dtacordr.h"
+//#include "dgameobj.h"
+//#include "dbldng.h"
 //#include <dunit.h>
-//#endif
-
-#ifndef UNITDESG_H
-#include "unitdesg.h"
-#endif
-
-#ifndef DGROUP_H
-#include "dgroup.h"
-#endif
-
-//#ifndef FICOMMONNETWORK_H
+//#include "unitdesg.h"
+//#include "dgroup.h"
 //#include <ficommonnetwork.h>
-//#endif
-
-//#ifndef SESSIONMANAGER_H
 //#include <sessionmanager.h>
-//#endif
-
-#include <windows.h>
+//#include <windows.h>
 //#include <stdio.h>
 
 //***************************************************************************
-typedef void *NETPLAYER;
+typedef PVOIDNETPLAYER;
 
 enum NETMESSAGETYPE
 {
@@ -89,10 +49,10 @@ class NETMESSAGE
 public:
 	NETMESSAGETYPE	m_Type;			// 0==network message
 	NETPLAYER		m_pPlayer;		// player message is to, or who it's from
-	DWORD			m_dwFlags;		// priority, guaranteed, etc.
-	DWORD			m_dwInfo;		// additional message info
-	DWORD			m_dwTimeStamp;
-	void *			m_pData;
+	ULONG			m_dwFlags;		// priority, guaranteed, etc.
+	ULONG			m_dwInfo;		// additional message info
+	ULONG			m_dwTimeStamp;
+	PVOID			m_pData;
 	int				m_size;
 };
 
@@ -215,7 +175,7 @@ typedef struct _MC2Session {
 	char			maxPlayers;
 	char			numPlayers;
 	char			map[MAXLEN_MAP_NAME];
-	long			ping;
+	int32_t			ping;
 	bool			locked;
 	bool			inProgress;
 	bool			cancelled;
@@ -236,8 +196,8 @@ typedef struct _MC2SessionData {
 #pragma pack()
 
 typedef struct _TeamInfo {
-	DWORD id;
-	DWORD team;
+	ULONG id;
+	ULONG team;
 } TeamInfo;
 
 typedef struct _MC2PlayerSlot {
@@ -261,15 +221,15 @@ typedef struct _MC2Player {
 	char			team;
 	ULONG	teamSeniority;
 	char			faction;
-	long			cBills;
-	long			resourcePointsAtStart;
-	long			resourcePointsGained;
-	long			resourcePoints;
-	long			rank;
+	int32_t			cBills;
+	int32_t			resourcePointsAtStart;
+	int32_t			resourcePointsGained;
+	int32_t			resourcePoints;
+	int32_t			rank;
 	bool			ready;
-	long			score;
-	long			kills;
-	long			losses;
+	int32_t			score;
+	int32_t			kills;
+	int32_t			losses;
 	bool			winner;
 	bool			leftSession;
 	bool			booted;
@@ -280,8 +240,8 @@ typedef struct _MissionSettings {
 	char			name[MAXLEN_MAP_DESC];	// displayNmae
 	GUID			mapGuid;				// Insures maps are the same version!!
 	char			url[256]; /// GLENN, you probably want this somewhere else....
-	long			defaultCBills;
-	long			resourcePoints;
+	int32_t			defaultCBills;
+	int32_t			resourcePoints;
 	float			timeLimit;
 	bool			unlimitedAmmo;
 	bool			variants;
@@ -300,14 +260,14 @@ typedef struct _MissionSettings {
 	char			maxTeams;
 	char			maxPlayers;
 	char			numPlayers;
-	long			dropWeight;
+	int32_t			dropWeight;
 	bool			locked;
 	bool			inProgress;
 } MissionSettings;
 
 typedef struct _CompressedMech {
 	bool			lastMech;
-	long			objNumber;
+	int32_t			objNumber;
 	char			commanderID;
 	ULONG	baseColor;
 	ULONG	highlightColor1;
@@ -317,9 +277,9 @@ typedef struct _CompressedMech {
 	char			variantName[64];
 	char			variantNum;
 	float			pos[2];
-	long			cBills;
+	int32_t			cBills;
 	bool			designerMech;
-	long			numComponents;
+	int32_t			numComponents;
 	uint8_t	components[50];
 } CompressedMech;
 
@@ -335,20 +295,20 @@ class WorldChunk {
 
 		char				type;
 		short				tileRC[2];
-		long				objectId;
-		long				objectBlockOrTrainNumber;
-		long				objectVertexOrCarNumber;
+		int32_t				objectId;
+		int32_t				objectBlockOrTrainNumber;
+		int32_t				objectVertexOrCarNumber;
 		char				objectItemNumber;
-		long				param1;
-		long				param2;
+		int32_t				param1;
+		int32_t				param2;
 
 		ULONG		data;
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 		
 		void init (void) {
 			type = -1;
@@ -374,33 +334,33 @@ class WorldChunk {
 			destroy();
 		}
 
-		void buildMissionScriptMessage (long messageCode,
-										long messageParam);
+		void buildMissionScriptMessage (int32_t messageCode,
+										int32_t messageParam);
 
-		void buildArtillery (long artilleryType,
-							 long teamId,
+		void buildArtillery (int32_t artilleryType,
+							 int32_t teamId,
 							 Stuff::Vector3D location,
-							 long seconds);
+							 int32_t seconds);
 
-		void buildMine (long tileR,
-						long tileC,
-						long teamId,
-						long mineState,
-						long explosionType);
+		void buildMine (int32_t tileR,
+						int32_t tileC,
+						int32_t teamId,
+						int32_t mineState,
+						int32_t explosionType);
 
 		void buildTerrainFire (GameObjectPtr object,
-							   long seconds);
+							   int32_t seconds);
 
-		void buildPilotKillStat (long moverIndex,
-								 long vehicleClass);
+		void buildPilotKillStat (int32_t moverIndex,
+								 int32_t vehicleClass);
 
-		void buildScore (long commanderID, long score);
+		void buildScore (int32_t commanderID, int32_t score);
 
-		void buildKillLoss (long killerCID, long loserCID);
+		void buildKillLoss (int32_t killerCID, int32_t loserCID);
 
 		void buildEndMission (void);
 
-		void buildCaptureBuilding (BuildingPtr building, long newCommanderID);
+		void buildCaptureBuilding (BuildingPtr building, int32_t newCommanderID);
 
 		void pack (void);
 
@@ -452,7 +412,7 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 		uint8_t partNameIndex;
 		uint8_t pilotNameIndex[2];
 		uint8_t inventoryCount; // Number of components
-		unsigned short  componentIDs[];
+		uint16_t  componentIDs[];
 
 		// member functions
 		void Init()
@@ -680,7 +640,7 @@ class MCMSG_MissionSetup {
 	public:
 
 		uint8_t		type;
-		long				randomSeed;
+		int32_t				randomSeed;
 		char				subType;
 		char				commandersToLoad[MAX_MC_PLAYERS][3];
 		CompressedMech		mechData;
@@ -789,7 +749,7 @@ class MCMSG_PlayerSetup {
 
 		void init (void) {
 			type = MCMSG_PLAYER_SETUP;
-			for (long i = 0; i < MAX_MULTIPLAYER_MOVERS; i++)
+			for (int32_t i = 0; i < MAX_MULTIPLAYER_MOVERS; i++)
 				moverData[i] = 0;
 		}
 };
@@ -803,7 +763,7 @@ class MCMSG_PlayerInsignia {
 		uint8_t		type;
 		char				commanderID;
 		char				fileName[64];
-		long				dataSize;
+		int32_t				dataSize;
 		uint8_t		data[];
 
 	public:
@@ -826,7 +786,7 @@ class MCMSG_StartMission {
 	public:
 
 		uint8_t	type;
-		long			huh;
+		int32_t			huh;
 	
 
 	public:
@@ -850,9 +810,9 @@ class MCMSG_EndMission {
 	public:
 
 		uint8_t	type;
-		long			teamScore[MAX_MC_PLAYERS];
-		long			playerScore[MAX_MC_PLAYERS];
-		long			result;
+		int32_t			teamScore[MAX_MC_PLAYERS];
+		int32_t			playerScore[MAX_MC_PLAYERS];
+		int32_t			result;
 
 	public:
 
@@ -928,7 +888,7 @@ class MCMSG_HoldPosition {
 
 		uint8_t	type;
 		char			commanderID;
-		unsigned short	flags;
+		uint16_t	flags;
 
 	public:
 
@@ -959,7 +919,7 @@ class MCMSG_PlayerMoverGroup {
 		uint8_t		action;
 		char				commanderID;
 		char				groupId;
-		unsigned short		moverGroupInfo;
+		uint16_t		moverGroupInfo;
 
 	public:
 
@@ -1007,10 +967,10 @@ class MCMSG_MoverUpdate {
 	public:
 
 		uint8_t		type;
-		long				teamScore[MAX_MC_PLAYERS];
-		long				playerScore[MAX_MC_PLAYERS];
-		//long				resourcePoints[MAX_MC_PLAYERS];
-		unsigned short		updateId;
+		int32_t				teamScore[MAX_MC_PLAYERS];
+		int32_t				playerScore[MAX_MC_PLAYERS];
+		//int32_t				resourcePoints[MAX_MC_PLAYERS];
+		uint16_t		updateId;
 		uint8_t		numRLEs;
 		uint8_t		moveData[];
 
@@ -1034,7 +994,7 @@ class MCMSG_TurretUpdate {
 	public:
 
 		uint8_t		type;
-		unsigned short		updateId;
+		uint16_t		updateId;
 		char				targetList[];
 
 	public:
@@ -1046,7 +1006,7 @@ class MCMSG_TurretUpdate {
 		void init (void) {
 			type = MCMSG_TURRET_UPDATE;
 			updateId = 0xFFFF;
-			for (long i = 0; i < MAX_MULTIPLAYER_TURRETS; i++)
+			for (int32_t i = 0; i < MAX_MULTIPLAYER_TURRETS; i++)
 				targetList[i] = 0;
 		}
 };
@@ -1085,7 +1045,7 @@ class MCMSG_TurretWeaponFireUpdate {
 
 		uint8_t		type;
 		char				numTurrets;
-		unsigned short		info[];
+		uint16_t		info[];
 
 	public:
 
@@ -1120,7 +1080,7 @@ class MCMSG_MoverCriticalUpdate {
 
 		void init (void) {
 			type = MCMSG_MOVER_CRITICAL_UPDATE;
-			for (long i = 0; i < MAX_MULTIPLAYER_MOVERS; i++) {
+			for (int32_t i = 0; i < MAX_MULTIPLAYER_MOVERS; i++) {
 				numCritHitChunks[i] = 0;
 				numRadioChunks[i] = 0;
 			}
@@ -1186,7 +1146,7 @@ class MCMSG_Reinforcement {
 		uint8_t	type;
 		uint8_t	stage;
 		uint8_t	rosterIndex;
-		long			vehicleID;
+		int32_t			vehicleID;
 		char			pilotName[24];
 		char			commanderID;
 		float			location[2];
@@ -1263,7 +1223,7 @@ class MCMSG_PassValue {
 
 	public:
 
-		long			value[2];
+		int32_t			value[2];
 
 	public:
 
@@ -1298,25 +1258,25 @@ class MultiPlayer {
 		bool				onLAN;
 		bool				hostLeft;
 		VersionStatus		versionStatus;
-		long				numSessions;
+		int32_t				numSessions;
 		bool				availableCIDs[MAX_MC_PLAYERS];
 		MC2Session			sessionList[MAX_SESSIONS];
 		ULONG		teamSeniority[MAX_TEAMS];
-		static long			colors[MAX_COLORS];
+		static int32_t			colors[MAX_COLORS];
 		char				colorsCID[MAX_COLORS];
 		char				sessionIPAddress[16];
 		bool				sessionScanning;
 		bool				sessionScanningError;
 		bool				sessionScanningPersistent;
 		bool				fitStart;
-		long				numFitPlayers;
+		int32_t				numFitPlayers;
 		MissionSettings		missionSettings;
 		char				commandersToLoad[MAX_MC_PLAYERS][3];
 		CompressedMech		mechData[MAX_MC_PLAYERS][12];
 		bool				locked;
 		bool				inProgress;
 		bool				cancelled;
-		long				randomSeed;
+		int32_t				randomSeed;
 		bool				startLogistics;
 		bool				startLoading;
 		bool				readyToLoad[MAX_MC_PLAYERS];
@@ -1325,54 +1285,54 @@ class MultiPlayer {
 		bool				missionFullySetup[MAX_MC_PLAYERS];
 		bool				leaveSessionConfirmed[MAX_MC_PLAYERS];
 
-		long				numAirStrikesUsed[MAX_MC_PLAYERS];
-		long				numMinelayersUsed[MAX_MC_PLAYERS];
-		long				numScoutCoptersUsed[MAX_MC_PLAYERS];
-		long				numArtilleryPiecesUsed[MAX_MC_PLAYERS];
-		long				numSensorProbesUsed[MAX_MC_PLAYERS];
-		long				numRepairVehiclesUsed[MAX_MC_PLAYERS];
-		long				numSalvageCraftUsed[MAX_MC_PLAYERS];
+		int32_t				numAirStrikesUsed[MAX_MC_PLAYERS];
+		int32_t				numMinelayersUsed[MAX_MC_PLAYERS];
+		int32_t				numScoutCoptersUsed[MAX_MC_PLAYERS];
+		int32_t				numArtilleryPiecesUsed[MAX_MC_PLAYERS];
+		int32_t				numSensorProbesUsed[MAX_MC_PLAYERS];
+		int32_t				numRepairVehiclesUsed[MAX_MC_PLAYERS];
+		int32_t				numSalvageCraftUsed[MAX_MC_PLAYERS];
 
-		long				numTeams;
-		long				teamScore[MAX_TEAMS];
-		long				winningTeam;
+		int32_t				numTeams;
+		int32_t				teamScore[MAX_TEAMS];
+		int32_t				winningTeam;
 		BuildingPtr			mainHqBuildings[MAX_TEAMS];
-		long				numHqBuildings;
-		long*				hqCIDs;
+		int32_t				numHqBuildings;
+		int32_t*				hqCIDs;
 		BuildingPtr*		hqBuildings;
-		long				numResourceBuildings;
+		int32_t				numResourceBuildings;
 		BuildingPtr*		resourceBuildings;
 		ULONG		numRandomResourceBuildings;
 
-		long				mode;
-		long				sessionEntry;
-		PUCHAR		msgBuffer;
-		long				numLocalMovers;
-		long				numMovers;
-		long				numTurrets;
+		int32_t				mode;
+		int32_t				sessionEntry;
+		puint8_t		msgBuffer;
+		int32_t				numLocalMovers;
+		int32_t				numMovers;
+		int32_t				numTurrets;
 		uint8_t		moverRosterRLE[MAX_MULTIPLAYER_MOVERS];
-		long				numMoverRosterRLE;
+		int32_t				numMoverRosterRLE;
 		MoverPtr			localMovers[MAX_LOCAL_MOVERS];
 		MoverPtr			moverRoster[MAX_MULTIPLAYER_MOVERS];
 		MoverPtr			playerMoverRoster[MAX_MC_PLAYERS][MAX_LOCAL_MOVERS];
 		TurretPtr			turretRoster[MAX_MULTIPLAYER_TURRETS];
 
 		bool				iAmHost;
-		//long				serverCID;
+		//int32_t				serverCID;
 		NETPLAYER			myPlayer;
 		NETPLAYER			serverPlayer;
 
 		bool				inSession;
 		bool				hostDroppedOut;
-		long				commanderID;			// same as commanderId
+		int32_t				commanderID;			// same as commanderId
 		char				sessionName[80];
 		char				playerName[80];
 
 		//MC2Player			playerList[MAX_MC_PLAYERS];		// list of players--order doesn't matter
 		MC2PlayerSlot			playerList[MAX_MC_PLAYERS];
 		bool				insigniaList[MAX_MC_PLAYERS];		// list of insignia data
-		long				insigniaSizeList[MAX_MC_PLAYERS];
-		//long				maxPlayers;						// max number of players allowed in session
+		int32_t				insigniaSizeList[MAX_MC_PLAYERS];
+		//int32_t				maxPlayers;						// max number of players allowed in session
 		MC2Player			playerInfo[MAX_MC_PLAYERS];		// list of players--indexed by commanderID
 
 		bool				playerReady[MAX_MC_PLAYERS];
@@ -1385,7 +1345,7 @@ class MultiPlayer {
 		bool				preparingMission;
 		float				startTime;
 		bool				allUnitsDestroyed[MAX_MC_PLAYERS];
-		long				missionStatus;
+		int32_t				missionStatus;
 
 		//TeamInfo			teamInfo[MAX_MC_PLAYERS];
 
@@ -1398,59 +1358,59 @@ class MultiPlayer {
 		float				pingUpdateFrequency;
 		float				moverUpdateTime;
 		float				moverUpdateFrequency;
-		unsigned short		moverUpdateId;
+		uint16_t		moverUpdateId;
 		float				turretUpdateTime;
 		float				turretUpdateFrequency;
-		unsigned short		turretUpdateId;
+		uint16_t		turretUpdateId;
 		float				worldUpdateTime;
 		float				worldUpdateFrequency;
 		float				lastServerUpdateTime;
-		long				numWeaponHitChunks;
+		int32_t				numWeaponHitChunks;
 		ULONG		weaponHitChunks[MAX_WEAPONHIT_CHUNKS];
-		long				numWorldChunks;
+		int32_t				numWorldChunks;
 		ULONG		worldChunks[MAX_WORLD_CHUNKS];
 		ULONG		serverOrder[MAX_MC_PLAYERS];
-		long				reinforcements[MAX_MC_PLAYERS][2];	// index 0 = current reinforcement, index 1 = current recoverery
+		int32_t				reinforcements[MAX_MC_PLAYERS][2];	// index 0 = current reinforcement, index 1 = current recoverery
 		char				reinforcementPilot[MAX_MC_PLAYERS][32];
 		
 		bool				isMPlayerGame;
-		long				badSessionCounter;
+		int32_t				badSessionCounter;
 		float				warpFactor;
 
-		long				totalLoad;
-		long				moverWeaponFireLoad;
-		long				turretWeaponFireLoad;
-		long				moverCriticalLoad;
-		long				weaponHitLoad;
-		long				worldStateLoad;
-		long				maxTotalLoad;
-		long				maxMoverWeaponFireLoad;
-		long				maxTurretWeaponFireLoad;
-		long				maxMoverCriticalLoad;
-		long				maxWeaponHitLoad;
-		long				maxWorldLoad;
-		long				maxReceiveLoad;
-		long				maxReceiveSize;
-		long				worldChunkTally[NUM_WORLDCHUNK_TYPES];
+		int32_t				totalLoad;
+		int32_t				moverWeaponFireLoad;
+		int32_t				turretWeaponFireLoad;
+		int32_t				moverCriticalLoad;
+		int32_t				weaponHitLoad;
+		int32_t				worldStateLoad;
+		int32_t				maxTotalLoad;
+		int32_t				maxMoverWeaponFireLoad;
+		int32_t				maxTurretWeaponFireLoad;
+		int32_t				maxMoverCriticalLoad;
+		int32_t				maxWeaponHitLoad;
+		int32_t				maxWorldLoad;
+		int32_t				maxReceiveLoad;
+		int32_t				maxReceiveSize;
+		int32_t				worldChunkTally[NUM_WORLDCHUNK_TYPES];
 
 
 		char				currentChatMessages[MAX_STORED_CHATS][MAX_CHAT_LENGTH];
-		long				currentChatMessagePlayerIDs[MAX_STORED_CHATS];
-		long				chatCount;
+		int32_t				currentChatMessagePlayerIDs[MAX_STORED_CHATS];
+		int32_t				chatCount;
 
 		static bool			launchedFromLobby;
 		static bool			registerZone;
-		static long			presetDropZones[MAX_MC_PLAYERS];
+		static int32_t			presetDropZones[MAX_MC_PLAYERS];
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 		
 		void init (void);
 
-		long setup (void);
+		int32_t setup (void);
 
 		// initUpdateFrequencies initializes the update frequencies from the 
 		// prefs.cfg file if the entries exist.  Otherwise, it uses defaults.
@@ -1483,7 +1443,7 @@ class MultiPlayer {
 			return(isServer());
 		}
 
-		void setMode (long newMode) {
+		void setMode (int32_t newMode) {
 			mode = newMode;
 		}
 
@@ -1491,30 +1451,30 @@ class MultiPlayer {
 			return(VERSION_STATUS_GOOD);
 		}
 
-		long update (void);
+		int32_t update (void);
 
-		long beginSessionScan (PSTR ipAddress, bool persistent = true);
+		int32_t beginSessionScan (PSTR ipAddress, bool persistent = true);
 
-		long endSessionScan (void);
+		int32_t endSessionScan (void);
 
 		bool getSessionScanFailed (void) {
 			return(false);
 		}
 
-		MC2Session* getSessions (long& sessionCount);
+		MC2Session* getSessions (int32_t& sessionCount);
 
 		// for read purposes
-		const MC2Player* getPlayers (long& playerCount);
+		const MC2Player* getPlayers (int32_t& playerCount);
 
 		// for write purposes....
-		MC2Player* getPlayerInfo( long commanderID )
+		MC2Player* getPlayerInfo( int32_t commanderID )
 		{
 			return NULL;
 		}
 
-		bool hostSession(PSTR sessionName, PSTR playerName, long mxPlayers);
+		bool hostSession(PSTR sessionName, PSTR playerName, int32_t mxPlayers);
 
-		long joinSession (MC2Session* session, PSTR playerName);
+		int32_t joinSession (MC2Session* session, PSTR playerName);
 
 		bool getOnLAN (void) {
 			return(onLAN);
@@ -1542,23 +1502,23 @@ class MultiPlayer {
 			return(inProgress);
 		}
 
-		void addTeamScore (long teamID, long score);
+		void addTeamScore (int32_t teamID, int32_t score);
 
-		long closeSession (void);
+		int32_t closeSession (void);
 
 		void logMessage (NETMESSAGE* message, bool sent);
 		
-		long bootPlayer (NETPLAYER bootedPlayer);
+		int32_t bootPlayer (NETPLAYER bootedPlayer);
 
 		void sendMessage (NETPLAYER player,
-						  void* data,
+						  PVOID data,
 						  int dataSize,
 						  bool guaranteed,
 						  bool toSelf = true);
 
-		bool hostGame (PSTR sessionName, PSTR playerName, long nPlayers);
+		bool hostGame (PSTR sessionName, PSTR playerName, int32_t nPlayers);
 
-		long joinGame (PSTR ipAddress, PSTR sessionName, PSTR playerName);
+		int32_t joinGame (PSTR ipAddress, PSTR sessionName, PSTR playerName);
 
 		bool waitTillStartLoading (void);
 
@@ -1603,11 +1563,11 @@ class MultiPlayer {
 
 		void addToTurretRoster (TurretPtr turret);
 
-		void addToPlayerMoverRoster (long playerCommanderID, MoverPtr mover);
+		void addToPlayerMoverRoster (int32_t playerCommanderID, MoverPtr mover);
 
 		void removeFromPlayerMoverRoster (MoverPtr mover);
 
-		long getNumWorldChunks (void) {
+		int32_t getNumWorldChunks (void) {
 			return(numWorldChunks);
 		}
 
@@ -1615,45 +1575,45 @@ class MultiPlayer {
 			numWorldChunks = 0;
 		}
 
-		long setClosestColor (long colorIndex, long commanderID);
+		int32_t setClosestColor (int32_t colorIndex, int32_t commanderID);
 
-		long setNextFreeColor (long commanderID);
+		int32_t setNextFreeColor (int32_t commanderID);
 
-		void setColor (long colorIndex, long commanderID);
+		void setColor (int32_t colorIndex, int32_t commanderID);
 
-		void setPlayerBaseColor (long commanderID, long colorIndex);
+		void setPlayerBaseColor (int32_t commanderID, int32_t colorIndex);
 
-		void setPlayerTeam (long commanderID, long teamID);
+		void setPlayerTeam (int32_t commanderID, int32_t teamID);
 
 		void calcPlayerRanks (void);
 
-		long addWorldChunk (WorldChunkPtr chunk);
+		int32_t addWorldChunk (WorldChunkPtr chunk);
 
-		long addMissionScriptMessageChunk (long code, long param1);
+		int32_t addMissionScriptMessageChunk (int32_t code, int32_t param1);
 
-//		long addTerrainAlignmentChunk (GameObjectPtr object, long alignment);
+//		int32_t addTerrainAlignmentChunk (GameObjectPtr object, int32_t alignment);
 
-		long addArtilleryChunk (long artilleryType, long teamId, Stuff::Vector3D location, long seconds);
+		int32_t addArtilleryChunk (int32_t artilleryType, int32_t teamId, Stuff::Vector3D location, int32_t seconds);
 
-		long addMineChunk (long tileR, long tileC, long teamId, long mineState, long explosionType);
+		int32_t addMineChunk (int32_t tileR, int32_t tileC, int32_t teamId, int32_t mineState, int32_t explosionType);
 
-		long addLightOnFireChunk (GameObjectPtr object, long seconds);
+		int32_t addLightOnFireChunk (GameObjectPtr object, int32_t seconds);
 
-		long addPilotKillStat (MoverPtr mover, long vehicleClass);
+		int32_t addPilotKillStat (MoverPtr mover, int32_t vehicleClass);
 
-		long addScoreChunk (long commanderID, long score);
+		int32_t addScoreChunk (int32_t commanderID, int32_t score);
 
-		long addKillLossChunk (long killerCID, long loserCID);
+		int32_t addKillLossChunk (int32_t killerCID, int32_t loserCID);
 
-		long addCaptureBuildingChunk (BuildingPtr building, long prevCommanderID, long newCommanderID);
+		int32_t addCaptureBuildingChunk (BuildingPtr building, int32_t prevCommanderID, int32_t newCommanderID);
 
-		long addEndMissionChunk (void);
+		int32_t addEndMissionChunk (void);
 
-		long grabWorldChunks (ULONG* packedChunkBuffer);
+		int32_t grabWorldChunks (ULONG* packedChunkBuffer);
 
-		long updateWorldChunks (void);
+		int32_t updateWorldChunks (void);
 
-		long getNumWeaponHitChunks (void) {
+		int32_t getNumWeaponHitChunks (void) {
 			return(numWeaponHitChunks);
 		}
 
@@ -1661,23 +1621,23 @@ class MultiPlayer {
 			numWeaponHitChunks = 0;
 		}
 
-		long addWeaponHitChunk (WeaponHitChunkPtr chunk);
+		int32_t addWeaponHitChunk (WeaponHitChunkPtr chunk);
 
-		long addWeaponHitChunk (GameObjectPtr target, WeaponShotInfoPtr shotInfo, bool isRefit = false);
+		int32_t addWeaponHitChunk (GameObjectPtr target, WeaponShotInfoPtr shotInfo, bool isRefit = false);
 
-		void grabWeaponHitChunks (ULONG* packedChunkBuffer, long numChunks);
+		void grabWeaponHitChunks (ULONG* packedChunkBuffer, int32_t numChunks);
 
-		long updateWeaponHitChunks (void);
+		int32_t updateWeaponHitChunks (void);
 
-		long getHomeTeamPlayers (DWORD* playerIdList);
+		int32_t getHomeTeamPlayers (ULONG* playerIdList);
 
-		long getEnemyTeamPlayers (DWORD* playerIdList);
+		int32_t getEnemyTeamPlayers (ULONG* playerIdList);
 
 		bool processGameMessage (NETMESSAGE* msg);
 
 		void processMessages (void);
 
-		long findPlayer (NETPLAYER player) {
+		int32_t findPlayer (NETPLAYER player) {
 			return(-1);
 		}
 
@@ -1742,7 +1702,7 @@ class MultiPlayer {
 
 		void sendPlayerCID (NETPLAYER receiver, uint8_t subType, char CID);
 
-		void sendPlayerUpdate (NETPLAYER receiver, long stage, long commanderID);
+		void sendPlayerUpdate (NETPLAYER receiver, int32_t stage, int32_t commanderID);
 
 		void sendMissionSettingsUpdate (NETPLAYER receiver);
 
@@ -1752,17 +1712,17 @@ class MultiPlayer {
 
 		void sendPlayerSetup (void);
 
-		void sendPlayerInsignia (PSTR insigniaFileName, PUCHAR insigniaData, long insigniaDataSize);
+		void sendPlayerInsignia (PSTR insigniaFileName, puint8_t insigniaData, int32_t insigniaDataSize);
 
-		void sendMissionSetup (NETPLAYER receiver, long stage, CompressedMech* mechData);
+		void sendMissionSetup (NETPLAYER receiver, int32_t stage, CompressedMech* mechData);
 
 		void sendStartPlanning (void);
 
 		void sendStartMission (void);
 
-		void sendEndMission (long result);
+		void sendEndMission (int32_t result);
 
-		void sendReinforcement (long vehicleID, long rosterIndex, char pilotName[16], long commanderID, Stuff::Vector3D pos, uint8_t stage);
+		void sendReinforcement (int32_t vehicleID, int32_t rosterIndex, char pilotName[16], int32_t commanderID, Stuff::Vector3D pos, uint8_t stage);
 
 		void sendNewServer (void);
 
@@ -1770,22 +1730,22 @@ class MultiPlayer {
 
 		void sendPlayerOrder (TacticalOrderPtr tacOrder,
 							  bool needsSelection,
-							  long numMovers,
+							  int32_t numMovers,
 							  MoverPtr* moverList,
-							  long numGroups = 0,
+							  int32_t numGroups = 0,
 							  MoverGroupPtr* groupList = NULL,
   							  bool queuedOrder = false);
 
 		void sendHoldPosition (void);
 
-		void sendPlayerMoverGroup (long groupId,
-								   long numMovers,
+		void sendPlayerMoverGroup (int32_t groupId,
+								   int32_t numMovers,
 								   MoverPtr* moverList,
-								   long point);
+								   int32_t point);
 
-		void sendPlayerArtillery (long strikeType, Stuff::Vector3D location, long seconds);
+		void sendPlayerArtillery (int32_t strikeType, Stuff::Vector3D location, int32_t seconds);
 			
-		long sendPing(void);
+		int32_t sendPing(void);
 
 		void sendMoverUpdate (void);
 
@@ -1809,13 +1769,13 @@ class MultiPlayer {
 
 		void sendFileInquiry (PSTR filename);
 
-		long updateServer (void);
+		int32_t updateServer (void);
 
 		void buildMoverRosterRLE (void);
 
-		long updateClients (bool forceIt = false);
+		int32_t updateClients (bool forceIt = false);
 
-		bool isMyTeammate (DWORD playerId);
+		bool isMyTeammate (ULONG playerId);
 
 		bool allPlayersCheckedIn (void);
 
@@ -1825,14 +1785,14 @@ class MultiPlayer {
 
 		void calcDropZones (char dropZonesCID[8], char hqs[MAX_TEAMS]);
 
-		long saveTranscript (PCSTR fileName, bool debugging = false);
+		int32_t saveTranscript (PCSTR fileName, bool debugging = false);
 
-		void playerLeftGame (DWORD playerId);
+		void playerLeftGame (ULONG playerId);
 
 		// call this to exit the current session.
 		void leaveSession (void);
 
-		void getChatMessages( PSTR* buffer, long* playerIDs, long& count );
+		void getChatMessages( PSTR* buffer, int32_t* playerIDs, int32_t& count );
 
 		void redistributeRP();
 };

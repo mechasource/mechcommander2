@@ -1,12 +1,16 @@
-#ifndef LOGISTICSMECHICON_H
-#define LOGISTICSMECHICON_H
 //===========================================================================//
 //LogisticsMechIcon.h		: Interface for the LogisticsMechIcon component. //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
-#include "asystem.h"
-#include "aanim.h"
+
+#pragma once
+
+#ifndef LOGISTICSMECHICON_H
+#define LOGISTICSMECHICON_H
+
+//#include "asystem.h"
+//#include "aanim.h"
 
 class LogisticsMech;
 class LogisticsPilot;
@@ -27,7 +31,7 @@ public:
 	static int init( FitIniFile& file );
 
 	void update();
-	void render( long offsetX, long offsetY );
+	void render( int32_t offsetX, int32_t offsetY );
 
 	void setMech( LogisticsMech* pMech );
 	LogisticsMech* getMech( ){ return pMech; }
@@ -36,18 +40,18 @@ public:
 
 	float width(){ return outline.width(); }
 	float height(){ return outline.height(); }
-	void move( long x, long y );
+	void move( int32_t x, int32_t y );
 
 	bool justSelected(){ return bJustSelected; }
 	void select( bool bSelect );
 	bool isSelected();
 
-	long globalX() const { return outline.globalX(); }
-	long globalY() const { return outline.globalY(); }
+	int32_t globalX() const { return outline.globalX(); }
+	int32_t globalY() const { return outline.globalY(); }
 	float width() const { return outline.width(); }
 	float height() const { return outline.height(); }
 
-	bool pointInside(long x, long y) const { return outline.pointInside( x, y ); }
+	bool pointInside(int32_t x, int32_t y) const { return outline.pointInside( x, y ); }
 
 	void dimPilot( bool bDim );
 	void setHelpID( int newID ) { helpID = newID; }
@@ -68,23 +72,23 @@ private:
 	aObject		pilotIcon;
 	aObject		outline;
 
-	long		pilotID;
-	long		chassisNameID;
-	long		iconConnectorID;
-	long		iconID;
-	long		pilotIconID;
-	long		outlineID;
+	int32_t		pilotID;
+	int32_t		chassisNameID;
+	int32_t		iconConnectorID;
+	int32_t		iconID;
+	int32_t		pilotIconID;
+	int32_t		outlineID;
 
 	aAnimGroup	animations[ICON_ANIM_COUNT];
 
 	LogisticsMech*	pMech;
-	long			state;
+	int32_t			state;
 	bool			bJustSelected;
-	long			helpID;
+	int32_t			helpID;
 	bool			bDisabled;
 
-	void renderObject( aObject& obj, long color, long xOffset, long yOffset );
-	static void assignAnimation( FitIniFile& file, long& number );
+	void renderObject( aObject& obj, int32_t color, int32_t xOffset, int32_t yOffset );
+	static void assignAnimation( FitIniFile& file, int32_t& number );
 
 
 

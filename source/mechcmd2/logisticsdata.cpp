@@ -37,7 +37,7 @@ extern CPrefs prefs;
 //----------------------------------------------------------------------
 // WARNING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //PLEASE CHANGE THIS IF THE SAVEGAME FILE FORMAT CHANGES!!!!!!!!!!!!!
-long SaveGameVersionNumber = 10004;
+int32_t SaveGameVersionNumber = 10004;
 //----------------------------------------------------------------------
 
 LogisticsData* LogisticsData::instance = NULL;
@@ -99,7 +99,7 @@ void LogisticsData::init()
 	missionInfo = new LogisticsMissionInfo;
 
 	FitIniFile file;
-	if ( NO_ERR != file.open( "data\\campaign\\campaign.fit" ) )
+	if ( NO_ERROR != file.open( "data\\campaign\\campaign.fit" ) )
 	{
 		Assert( 0, 0, "coudln't find the campaign file\n" );
 	}
@@ -126,9 +126,9 @@ void LogisticsData::initComponents()
 	int result = 
 #endif
 		componentFile.open( componentPath );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
-	PUCHAR data = new BYTE[componentFile.getLength()];
+	puint8_t data = new UCHAR[componentFile.getLength()];
 
 	componentFile.read( data, componentFile.getLength() );
 
@@ -138,7 +138,7 @@ void LogisticsData::initComponents()
 
 	componentFile.close();
 	
-	BYTE line[1024];
+	UCHAR line[1024];
 	PSTR pLine = (PSTR)line;
 
 	// skip the first line
@@ -163,7 +163,7 @@ void LogisticsData::initComponents()
 
 		if ( -1 == tmp.init( pLine ) ) // failure
 		{
-			Ammo[counter] = (long)tmp.getRecycleTime();
+			Ammo[counter] = (int32_t)tmp.getRecycleTime();
 			components.DeleteTail();
 		}
 
@@ -197,7 +197,7 @@ void LogisticsData::initPilots()
 	File pilotFile;
 	pilotFile.open( pilotPath );
 
-	BYTE pilotFileName[256];
+	UCHAR pilotFileName[256];
 
 	int id = 1;
 
@@ -236,7 +236,7 @@ void LogisticsData::initVariants()
 
 	PacketFile pakFile;
 	
-	if ( NO_ERR !=pakFile.open( pakPath ) )
+	if ( NO_ERROR !=pakFile.open( pakPath ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", (PSTR)pakPath );
@@ -254,7 +254,7 @@ void LogisticsData::initVariants()
 	int i = 1;
 	while( true )
 	{
-		long fitID;
+		int32_t fitID;
 
 		int retVal = variantFile.readString( i, 4, tmpStr, 256 );
 		
@@ -277,7 +277,7 @@ void LogisticsData::initVariants()
 		{
 		
 			float scale;
-			if ( NO_ERR == variantFile.readFloat( i, 11, scale ) && scale )
+			if ( NO_ERROR == variantFile.readFloat( i, 11, scale ) && scale )
 			{
 				variantFile.readLong( i, 5, fitID );
 				addBuilding( fitID, pakFile, scale );
@@ -289,7 +289,7 @@ void LogisticsData::initVariants()
 		}
 		
 		float scale;
-		if ( NO_ERR != variantFile.readFloat( i, 11, scale ))
+		if ( NO_ERROR != variantFile.readFloat( i, 11, scale ))
 			scale = 1.0;
 
 		variantFile.readString( i, 1, variantFileName, 256 );
@@ -302,7 +302,7 @@ void LogisticsData::initVariants()
 		_strlwr( variantFullPath );
 
 		CSVFile mechFile;
-		if ( NO_ERR != mechFile.open( variantFullPath ) )
+		if ( NO_ERROR != mechFile.open( variantFullPath ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", variantFullPath );
@@ -318,7 +318,7 @@ void LogisticsData::initVariants()
 		int row = 23;
 		char buffer[256];
 		int varCount = 0;
-		while( NO_ERR == mechFile.readString( row, 2, buffer, 256 ) )
+		while( NO_ERROR == mechFile.readString( row, 2, buffer, 256 ) )
 		{
 			LogisticsVariant* pVariant = new LogisticsVariant;
 			
@@ -335,9 +335,9 @@ void LogisticsData::initVariants()
 	}
 }
 
-void LogisticsData::addVehicle( long fitID, PacketFile& objectFile, float scale )
+void LogisticsData::addVehicle( int32_t fitID, PacketFile& objectFile, float scale )
 {
-	if ( NO_ERR != objectFile.seekPacket(fitID) )
+	if ( NO_ERROR != objectFile.seekPacket(fitID) )
 		return;
 
 	int fileSize = objectFile.getPacketSize();
@@ -420,8 +420,8 @@ int	LogisticsData::getAllComponents( LogisticsComponent** pComps, int& maxCount 
 
 int LogisticsData::getPurchasableMechs( LogisticsVariant** array, int& count )
 {
-	long retVal = 0;
-	long arraySize = count;
+	int32_t retVal = 0;
+	int32_t arraySize = count;
 
 	count = 0;
 	for( VARIANT_LIST::EIterator iter = instance->variants.Begin(); !iter.IsDone(); iter++ )
@@ -709,8 +709,8 @@ LogisticsPilot* LogisticsData::getFirstAvailablePilot()
 
 
 
-// GetAvailableMissions( PSTR* missionNames, long& count )
-int LogisticsData::getAvailableMissions( PCSTR* missionNames, long& count )
+// GetAvailableMissions( PSTR* missionNames, int32_t& count )
+int LogisticsData::getAvailableMissions( PCSTR* missionNames, int32_t& count )
 {
 	int numberOfEm = 0;
 
@@ -730,7 +730,7 @@ int LogisticsData::getAvailableMissions( PCSTR* missionNames, long& count )
 
 }
 
-int LogisticsData::getCurrentMissions( PCSTR* missionNames, long& count )
+int LogisticsData::getCurrentMissions( PCSTR* missionNames, int32_t& count )
 {
 	int numberOfEm = 0;
 
@@ -761,9 +761,9 @@ bool LogisticsData::getMissionAvailable( PCSTR missionName )
 // SetCurrentMission( PSTR missionName )
 int LogisticsData::setCurrentMission( PCSTR missionName )
 {
-	long result = missionInfo->setNextMission( missionName );
+	int32_t result = missionInfo->setNextMission( missionName );
 
-	if ( result == NO_ERR )
+	if ( result == NO_ERROR )
 	{
 		// if we made it this far
 		updateAvailability();
@@ -905,7 +905,7 @@ void LogisticsData::removeMechsInForceGroup()
 	}
 }
 
-PCSTR	LogisticsData::getBestPilot( long mechWeight )
+PCSTR	LogisticsData::getBestPilot( int32_t mechWeight )
 {
 	if ( !pilots.Count() )
 		initPilots();
@@ -924,7 +924,7 @@ PCSTR	LogisticsData::getBestPilot( long mechWeight )
 		}
 #endif
 
-	long count = counter;
+	int32_t count = counter;
 	int i;
 
 	for ( i = 1; i < count; ++i )
@@ -979,7 +979,7 @@ bool		LogisticsData::gotPilotsLeft()
 		}
 
 	#endif
-	long count = counter;
+	int32_t count = counter;
 
 	for ( int i = 0; i < count; i++ )
 	{
@@ -993,7 +993,7 @@ bool		LogisticsData::gotPilotsLeft()
 
 }
 
-int LogisticsData::comparePilots( LogisticsPilot* p1, LogisticsPilot* p2, long weight )
+int LogisticsData::comparePilots( LogisticsPilot* p1, LogisticsPilot* p2, int32_t weight )
 {
 	if ( p1->isUsed() )
 		return -1;
@@ -1039,7 +1039,7 @@ int LogisticsData::comparePilots( LogisticsPilot* p1, LogisticsPilot* p2, long w
 
 }
 
-long	LogisticsData::save( FitIniFile& file )
+int32_t	LogisticsData::save( FitIniFile& file )
 {
 		
 	int variantCount = 0;
@@ -1104,7 +1104,7 @@ void LogisticsData::clearVariants()
 		
 }
 
-long	LogisticsData::load( FitIniFile& file )
+int32_t	LogisticsData::load( FitIniFile& file )
 {
 	clearInventory();
 	resourcePoints = 0;
@@ -1117,16 +1117,16 @@ long	LogisticsData::load( FitIniFile& file )
 
 	missionInfo->load( file );
 
-	long result = file.seekBlock( "Version" );
-	if (result != NO_ERR)
+	int32_t result = file.seekBlock( "Version" );
+	if (result != NO_ERROR)
 	{
 		PAUSE(("SaveGame has no version number.  Not Loading"));
 		return -1;
 	}
 
-	long testVersionNum = 0;
+	int32_t testVersionNum = 0;
 	result = file.readIdLong( "VersionNumber", testVersionNum);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 	{
 		PAUSE(("SaveGame has no version number.  Not Loading"));
 		return -1;
@@ -1140,7 +1140,7 @@ long	LogisticsData::load( FitIniFile& file )
 
 	file.seekBlock( "General" );	
 	
-	long variantCount, pilotCount, inventoryCount;
+	int32_t variantCount, pilotCount, inventoryCount;
 	variantCount = pilotCount = inventoryCount = 0;
 
 	file.readIdLong( "VariantCount", variantCount );
@@ -1157,7 +1157,7 @@ long	LogisticsData::load( FitIniFile& file )
 		sprintf( tmp, "Variant%ld", i );
 		file.seekBlock( tmp );
 		result = loadVariant( file );
-		if ( result != NO_ERR )
+		if ( result != NO_ERROR )
 		{
 			gosASSERT( 0 );
 			return -1;
@@ -1168,7 +1168,7 @@ long	LogisticsData::load( FitIniFile& file )
 	for ( i = 0; i < pilotCount; i++ )
 	{
 		sprintf( tmp, "Pilot%ld", i );
-		if ( NO_ERR != file.seekBlock( tmp ) )
+		if ( NO_ERROR != file.seekBlock( tmp ) )
 		{
 			gosASSERT( 0 );
 		}
@@ -1192,7 +1192,7 @@ long	LogisticsData::load( FitIniFile& file )
 	for ( i = 0; i < inventoryCount; i++ )
 	{
 		sprintf( tmp, "Inventory%ld", i ) ;
-		if ( NO_ERR != file.seekBlock( tmp ) )
+		if ( NO_ERROR != file.seekBlock( tmp ) )
 		{
 			gosASSERT( 0 );
 		}
@@ -1209,7 +1209,7 @@ long	LogisticsData::load( FitIniFile& file )
 	return 0;
 }
 
-long LogisticsData::loadVariant( FitIniFile& file )
+int32_t LogisticsData::loadVariant( FitIniFile& file )
 {
 	char tmp[256];
 	
@@ -1239,11 +1239,11 @@ long LogisticsData::loadVariant( FitIniFile& file )
 	
 	pVariant->setName( tmp );
 
-	long componentCount = 0;
-	long x = 0;
-	long y = 0;
-	long location = 0;
-	long id = 0;
+	int32_t componentCount = 0;
+	int32_t x = 0;
+	int32_t y = 0;
+	int32_t location = 0;
+	int32_t id = 0;
 
 	char tmp2[256];
 	
@@ -1274,7 +1274,7 @@ long LogisticsData::loadVariant( FitIniFile& file )
 	return 0;
 }
 
-long LogisticsData::loadMech( FitIniFile& file, int& count )
+int32_t LogisticsData::loadMech( FitIniFile& file, int& count )
 {
 	char tmp[256];
 	file.readIdString( "Variant", tmp, 255 );
@@ -1478,7 +1478,7 @@ LogisticsVariant* LogisticsData::getVariant( PCSTR mechName )
 	return NULL;
 }
 
-long LogisticsData::updateAvailability()
+int32_t LogisticsData::updateAvailability()
 {
 	bNewWeapons = 0;
 	EString purchaseFileName = missionInfo->getCurrentPurchaseFile();
@@ -1506,7 +1506,7 @@ long LogisticsData::updateAvailability()
 
 	// make sure its around and you can open it 
 	FitIniFile file;
-	if ( NO_ERR != file.open( (PSTR)(PCSTR)purchaseFileName ) )
+	if ( NO_ERROR != file.open( (PSTR)(PCSTR)purchaseFileName ) )
 	{
 		EString error;
 		error.Format( "Couldn't open %s", (PSTR)(PCSTR)purchaseFileName );
@@ -1517,14 +1517,14 @@ long LogisticsData::updateAvailability()
 	bool available[255];
 	memset( available, 0, sizeof( bool ) * 255 );
 
-	long result = file.seekBlock( "Components" );
-	if ( result != NO_ERR )
+	int32_t result = file.seekBlock( "Components" );
+	if ( result != NO_ERROR )
 	{
 		Assert( 0, 0, "No components in the purchase file" );
 	}
 
 	char tmp[32];
-	long component;
+	int32_t component;
 
 	bool bAll = 0;
 	file.readIdBoolean( "AllComponents", bAll );
@@ -1536,7 +1536,7 @@ long LogisticsData::updateAvailability()
 		else
 		{
 			sprintf( tmp, "Component%ld", i );
-			if ( NO_ERR != file.readIdLong( tmp, component ) )
+			if ( NO_ERROR != file.readIdLong( tmp, component ) )
 				break;
 
 			available[component] = 1;
@@ -1558,7 +1558,7 @@ long LogisticsData::updateAvailability()
 	}
 
 	PCSTR pFileNames[512];
-	long count = 512;
+	int32_t count = 512;
  	missionInfo->getAdditionalPurachaseFiles( pFileNames, count );
 
 
@@ -1589,14 +1589,14 @@ long LogisticsData::updateAvailability()
 
 	// go through each variant, and see if it's available
 	char chassisFileName[255];
-	long componentArray[255];
-	long componentCount;
+	int32_t componentArray[255];
+	int32_t componentCount;
 
 	file.seekBlock( "Mechs" );
 	for ( i = 0; i < 255; i++ )
 	{
 		sprintf( tmp, "Mech%ld", i );
-		if ( NO_ERR != file.readIdString( tmp, chassisFileName, 254 ) )
+		if ( NO_ERROR != file.readIdString( tmp, chassisFileName, 254 ) )
 			break;
 
 		// go through each variant, if it has the same chassis, check and see if all of its components are valid
@@ -1645,7 +1645,7 @@ long LogisticsData::updateAvailability()
 	for ( i = 0; i < 255; i++ )
 	{
 		sprintf( tmp, "Pilot%ld", i );
-		if ( NO_ERR != file.readIdString( tmp, pilotName, 254 ) )
+		if ( NO_ERROR != file.readIdString( tmp, pilotName, 254 ) )
 			break;
 
 		for ( PILOT_LIST::EIterator pIter = pilots.Begin(); !pIter.IsDone(); pIter++ )
@@ -1680,16 +1680,16 @@ long LogisticsData::updateAvailability()
 void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 {
 	FitIniFile file;
-	if ( NO_ERR != file.open( pFileName ) )
+	if ( NO_ERROR != file.open( pFileName ) )
 	{
 		return;
 	}
-	long result = file.seekBlock( "Components" );
-	if ( result == NO_ERR )
+	int32_t result = file.seekBlock( "Components" );
+	if ( result == NO_ERROR )
 	{
 
 		char tmp[32];
-		long component;
+		int32_t component;
 
 		bool bAll = 0;
 		file.readIdBoolean( "AllComponents", bAll );
@@ -1697,7 +1697,7 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 		{
 			{
 				sprintf( tmp, "Component%ld", i );
-				if ( NO_ERR != file.readIdLong( tmp, component ) )
+				if ( NO_ERROR != file.readIdLong( tmp, component ) )
 					break;
 
 				availableArray[component] = true;
@@ -1718,7 +1718,7 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 	for ( i = 0; i < 255; i++ )
 	{
 		sprintf( tmp, "Pilot%ld", i );
-		if ( NO_ERR != file.readIdString( tmp, pilotName, 254 ) )
+		if ( NO_ERROR != file.readIdString( tmp, pilotName, 254 ) )
 			break;
 
 		for ( PILOT_LIST::EIterator pIter = pilots.Begin(); !pIter.IsDone(); pIter++ )
@@ -1739,7 +1739,7 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 	for ( i = 0; i < 255; i++ )
 	{
 		sprintf( tmp, "Mech%ld", i );
-		if ( NO_ERR != file.readIdString( tmp, chassisFileName, 255 ) )
+		if ( NO_ERROR != file.readIdString( tmp, chassisFileName, 255 ) )
 			break;
 
 		// go through each variant, if it has the same chassis, check and see if all of its components are valid
@@ -1750,8 +1750,8 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 			_splitpath( mechName, NULL, NULL, realName, NULL );
 			if ( _stricmp( realName, chassisFileName ) == 0 )
 			{
-				long componentCount = 255;
-				long componentArray[256];
+				int32_t componentCount = 255;
+				int32_t componentArray[256];
 				bool bRight = true;
 				(*vIter)->getComponents( componentCount, componentArray );
 				for ( int i = 0; i < componentCount; i++ )
@@ -1795,12 +1795,12 @@ PCSTR  LogisticsData::getCurrentABLScript() const
 	return missionInfo->getCurrentABLScriptName();
 }
 
-long LogisticsData::getCurrentMissionTune()
+int32_t LogisticsData::getCurrentMissionTune()
 {
 	return missionInfo->getCurrentLogisticsTuneId();
 }
 
-long LogisticsData::getCurrentMissionId()
+int32_t LogisticsData::getCurrentMissionId()
 {
 	return missionInfo->getCurrentMissionId();
 }
@@ -1820,7 +1820,7 @@ int	LogisticsData::getPilotCount()
 {
 	return pilots.Count();
 }
-int	LogisticsData::getPilots( LogisticsPilot** pArray, long& count )
+int	LogisticsData::getPilots( LogisticsPilot** pArray, int32_t& count )
 {
 	if ( count < pilots.Count() )
 	 {
@@ -1844,7 +1844,7 @@ int LogisticsData::getMaxDropWeight() const
 
 int LogisticsData::getCurrentDropWeight() const
 {
-	long retVal = 0;
+	int32_t retVal = 0;
 	for ( MECH_LIST::EIterator iter = instance->inventory.Begin(); !iter.IsDone(); iter++ )
 	{
 		if ( (*iter)->getForceGroup() )
@@ -1868,7 +1868,7 @@ bool	LogisticsData::canAddMechToForceGroup( LogisticsMech* pMech )
 #ifndef VIEWER
 	if ( MPlayer )
 	{
-		long playerCount;
+		int32_t playerCount;
 		MPlayer->getPlayers( playerCount );
 		maxUnits = MAX_MULTIPLAYER_MECHS_IN_LOGISTICS/playerCount;
 
@@ -1899,7 +1899,7 @@ bool	LogisticsData::canAddMechToForceGroup( LogisticsMech* pMech )
 
 int LogisticsData::getVariantsInInventory( LogisticsVariant* pVar, bool bIncludeForceGroup )
 {
-	long retVal = 0;
+	int32_t retVal = 0;
 	for ( MECH_LIST::EIterator iter = instance->inventory.Begin(); !iter.IsDone(); iter++ )
 	{
 		if ( (*iter)->getVariant() == pVar )
@@ -1963,22 +1963,22 @@ void encryptFile (PSTR inputFile, PSTR outputFile)
 	//Now we encrypt this by zlib Compressing the file passed in.
 	// Then LZ Compressing the resulting zlib data.
 	// Since our LZ compression is pretty much non-standard, that should be enough.
-	MemoryPtr rawData = NULL;
-	MemoryPtr zlibData = NULL;
-	MemoryPtr LZData = NULL;
+	PUCHAR rawData = NULL;
+	PUCHAR zlibData = NULL;
+	PUCHAR LZData = NULL;
 
 	File dataFile;
 	dataFile.open(inputFile);
-	DWORD fileSize = dataFile.fileSize();
-	rawData = (MemoryPtr)malloc(fileSize);
-	zlibData = (MemoryPtr)malloc(fileSize*2);
-	LZData = (MemoryPtr)malloc(fileSize*2);
+	ULONG fileSize = dataFile.fileSize();
+	rawData = (PUCHAR)malloc(fileSize);
+	zlibData = (PUCHAR)malloc(fileSize*2);
+	LZData = (PUCHAR)malloc(fileSize*2);
 
 	dataFile.read(rawData,fileSize);
 
-	DWORD zlibSize = fileSize * 2;
+	ULONG zlibSize = fileSize * 2;
 	compress2(zlibData,&zlibSize,rawData,fileSize,0);
-	DWORD lzSize = LZCompress (LZData, zlibData, zlibSize);
+	ULONG lzSize = LZCompress (LZData, zlibData, zlibSize);
 
 	dataFile.close();
 
@@ -2000,30 +2000,30 @@ void decryptFile (PSTR inputFile, PSTR outputFile)
 	//Now we decrypt this by lz deCompressing the zlib file created.
 	// Then zlib deCompressing the resulting zlib data into the raw File again.
 	// Since our LZ compression is pretty much non-standard, that should be enough.
-	MemoryPtr rawData = NULL;
-	MemoryPtr zlibData = NULL;
-	MemoryPtr LZData = NULL;
+	PUCHAR rawData = NULL;
+	PUCHAR zlibData = NULL;
+	PUCHAR LZData = NULL;
 
 	File dataFile;
-	long result = dataFile.open(inputFile);
-	if (result == NO_ERR) 
+	int32_t result = dataFile.open(inputFile);
+	if (result == NO_ERROR) 
 	{
-		DWORD lzSize = dataFile.readLong();
-		DWORD zlibSize = dataFile.readLong();
-		DWORD fileSize = dataFile.readLong();
+		ULONG lzSize = dataFile.readLong();
+		ULONG zlibSize = dataFile.readLong();
+		ULONG fileSize = dataFile.readLong();
 	
-		rawData = (MemoryPtr)malloc(fileSize);
-		zlibData = (MemoryPtr)malloc(zlibSize);
-		LZData = (MemoryPtr)malloc(lzSize);
+		rawData = (PUCHAR)malloc(fileSize);
+		zlibData = (PUCHAR)malloc(zlibSize);
+		LZData = (PUCHAR)malloc(lzSize);
 	
 		dataFile.read(LZData,lzSize);
 	
-		DWORD testSize = fileSize;
-		DWORD test2Size = LZDecomp(zlibData, LZData, lzSize);
+		ULONG testSize = fileSize;
+		ULONG test2Size = LZDecomp(zlibData, LZData, lzSize);
 		if (test2Size != zlibSize) 
 			STOP(("Didn't Decompress to same size as started with!!"));
 	
-		uncompress((MemoryPtr)rawData,&testSize,zlibData,zlibSize);
+		uncompress((PUCHAR)rawData,&testSize,zlibData,zlibSize);
 		if (testSize != fileSize) 
 			STOP(("Didn't Decompress to correct format"));
 	
@@ -2088,8 +2088,8 @@ int LogisticsData::acceptMechModifications( PCSTR name )
 	// 05/04 HKG, actually, if you increment vIter after deleting it, it still won't work
 
 	// Good Point.  As you can see, it was pretty late when I "fixed" this!
-	//long numVariants = variants.Count();
-	//long i=0;
+	//int32_t numVariants = variants.Count();
+	//int32_t i=0;
 	for ( VARIANT_LIST::EIterator vIter = variants.Begin(); !vIter.IsDone();  )
 	{
 		if ( (*vIter)->getName().Compare( name, 0 ) == 0 )
@@ -2261,7 +2261,7 @@ PCSTR				LogisticsData::getMissionFriendlyName( PCSTR missionName )
 	return missionInfo->getMissionFriendlyName( missionName );
 }
 
-/*long				LogisticsData::getMaxTeams() const
+/*int32_t				LogisticsData::getMaxTeams() const
 {
 /	return missionInfo->getMaxTeams( );
 }*/
@@ -2286,7 +2286,7 @@ void				LogisticsData::startNewCampaign( PCSTR fileName )
 
 	FullPathFileName path;
 	path.init( campaignPath, fileName, ".fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		STOP(("COuld not find file %s to load campaign",path));
 	}
@@ -2495,9 +2495,9 @@ LogisticsVehicle*	LogisticsData::getVehicle( PCSTR pName )
 	return NULL;
 }
 
-int LogisticsData::addBuilding( long fitID, PacketFile& objectFile, float scale )
+int LogisticsData::addBuilding( int32_t fitID, PacketFile& objectFile, float scale )
 {
-	if ( NO_ERR != objectFile.seekPacket(fitID) )
+	if ( NO_ERROR != objectFile.seekPacket(fitID) )
 		return -1;
 
 	int fileSize = objectFile.getPacketSize();
@@ -2508,7 +2508,7 @@ int LogisticsData::addBuilding( long fitID, PacketFile& objectFile, float scale 
 
 		FitIniFile file;
 		file.open(&objectFile, fileSize);
-		if ( NO_ERR != file.seekBlock( "ObjectType" ) )
+		if ( NO_ERROR != file.seekBlock( "ObjectType" ) )
 			gosASSERT( 0 );
 
 		file.readIdString( "AppearanceName", bldg.fileName, 63 );
@@ -2517,13 +2517,13 @@ int LogisticsData::addBuilding( long fitID, PacketFile& objectFile, float scale 
 
 		bool bIsTurret = 0;
 
-		if ( NO_ERR != file.seekBlock( "BuildingData" ) )
+		if ( NO_ERROR != file.seekBlock( "BuildingData" ) )
 		{
-			if ( NO_ERR != file.seekBlock( "GateData" ) )
+			if ( NO_ERROR != file.seekBlock( "GateData" ) )
 			{
-				if ( NO_ERR != file.seekBlock( "TurretData" ) )
+				if ( NO_ERROR != file.seekBlock( "TurretData" ) )
 				{
-					if ( NO_ERR != file.seekBlock( "General" ) ) // hack for artillery piece
+					if ( NO_ERROR != file.seekBlock( "General" ) ) // hack for artillery piece
 					{
 						char errorStr[256];
 						sprintf( errorStr, "coudn't find appropriate block in file %s", bldg.fileName );
@@ -2755,12 +2755,12 @@ void	LogisticsData::setPilotUnused( PCSTR pName )
 
 }
 
-void LogisticsData::setCurrentMissionNum (long cMission)
+void LogisticsData::setCurrentMissionNum (int32_t cMission)
 {
 	missionInfo->setCurrentMissionNumber(cMission);
 }
 
-long LogisticsData::getCurrentMissionNum (void)
+int32_t LogisticsData::getCurrentMissionNum (void)
 {
 	return missionInfo->getCurrentMissionNumber();
 }

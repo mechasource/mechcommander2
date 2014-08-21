@@ -140,7 +140,7 @@ void MissionBriefingScreen::update()
 
 	runTime += frameLength;
 	
-	long selItem = missionListBox.GetSelectedItem( );
+	int32_t selItem = missionListBox.GetSelectedItem( );
 	int ID = -1;
 
 	if ( selItem != -1 )
@@ -267,7 +267,7 @@ void MissionBriefingScreen::update()
 	
 }
 
-long	MissionBriefingScreen::getMissionTGA( PCSTR missionName )
+int32_t	MissionBriefingScreen::getMissionTGA( PCSTR missionName )
 {
 	if ( !missionName )
 		return 0;
@@ -293,24 +293,24 @@ long	MissionBriefingScreen::getMissionTGA( PCSTR missionName )
 
 	// read the tga out of the pak file
 	PacketFile file;
-	if ( NO_ERR == file.open( path ) ) // in case file has just been created
+	if ( NO_ERROR == file.open( path ) ) // in case file has just been created
 	{
 		if ( file.getNumPackets() > 3 )
 		{
 	
 			file.seekPacket(3);
-			long size = file.getPacketSize( );
-			PUCHAR mem = new BYTE[size];
+			int32_t size = file.getPacketSize( );
+			puint8_t mem = new UCHAR[size];
 
 			file.readPacket( 3, mem );
 			
 			TGAFileHeader* pHeader = (TGAFileHeader*)mem;
-			long bmpWidth = pHeader->width;
-			long bmpHeight = pHeader->height;
-			flipTopToBottom( (PUCHAR)(pHeader + 1), pHeader->pixel_depth, bmpWidth, bmpHeight );
+			int32_t bmpWidth = pHeader->width;
+			int32_t bmpHeight = pHeader->height;
+			flipTopToBottom( (puint8_t)(pHeader + 1), pHeader->pixel_depth, bmpWidth, bmpHeight );
 			
 			// set up the texture
-			long tmpMapTextureHandle = mcTextureManager->textureFromMemory( (ULONG*)(pHeader+1), gos_Texture_Solid, 0, bmpWidth );
+			int32_t tmpMapTextureHandle = mcTextureManager->textureFromMemory( (ULONG*)(pHeader+1), gos_Texture_Solid, 0, bmpWidth );
 
 			delete mem;
 
@@ -337,7 +337,7 @@ void MissionBriefingScreen::begin()
 	EString missionName = LogisticsData::instance->getCurrentMission();
 
 
-	long tmpMapTextureHandle = getMissionTGA( missionName );
+	int32_t tmpMapTextureHandle = getMissionTGA( missionName );
 	statics[MAP_INDEX].setTexture( tmpMapTextureHandle );
 	statics[MAP_INDEX].setUVs( 0, 127, 127, 0 );
 	statics[MAP_INDEX].setColor( 0xffffffff );
@@ -354,17 +354,17 @@ void MissionBriefingScreen::begin()
 
 	fitFile.seekBlock( "MissionSettings" );
 
-	long result = fitFile.seekBlock( "MissionSettings" );
-	Assert( result == NO_ERR, 0, "Coudln't find the mission settings block in the mission file" );
+	int32_t result = fitFile.seekBlock( "MissionSettings" );
+	Assert( result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file" );
 
 	bool bRes;
 	result = fitFile.readIdBoolean( "MissionNameUseResourceString", bRes );
-	Assert( result == NO_ERR, 0, "couldn't find the MissionNameUseResourceString" );
+	Assert( result == NO_ERROR, 0, "couldn't find the MissionNameUseResourceString" );
 	if ( bRes )
 	{
 		ULONG ulRes;
 		result = fitFile.readIdULong( "MissionNameResourceStringID", ulRes );
-		Assert( result == NO_ERR, 0, "couldn't find the MissionNameResourceStringID" );
+		Assert( result == NO_ERROR, 0, "couldn't find the MissionNameResourceStringID" );
 		addItem(ulRes, 0xff005392, -1);
 	}
 	else
@@ -454,11 +454,11 @@ void MissionBriefingScreen::begin()
 
 	bool tmpBool = false;
 	result = fitFile.readIdBoolean("BlurbUseResourceString", tmpBool);
-	if (NO_ERR == result && tmpBool )
+	if (NO_ERROR == result && tmpBool )
 	{
 		ULONG tmpInt = 0;
 		result = fitFile.readIdULong("BlurbResourceStringID", tmpInt);
-		if (NO_ERR == result)
+		if (NO_ERROR == result)
 		{
 			cLoadString( tmpInt, blurb, 2047 );
 		}
@@ -480,7 +480,7 @@ void MissionBriefingScreen::begin()
 		char blockName[32];
 		sprintf( blockName, "Part%ld", i );
 		i++;
-		if ( NO_ERR != fitFile.seekBlock( blockName ) )
+		if ( NO_ERROR != fitFile.seekBlock( blockName ) )
 			break;
 		
 		bool bPlayer = 0;
@@ -628,7 +628,7 @@ int  MissionBriefingScreen::addItem( int ID, ULONG color, int LBid)
 
 void MissionBriefingScreen::end()
 {
-//	statics[MAP_INDEX].setTexture( (long)0 );
+//	statics[MAP_INDEX].setTexture( (int32_t)0 );
 // 	statics[MAP_INDEX].setColor( 0 );
 	camera.setMech( NULL );
 

@@ -8,6 +8,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DTACORDR_H
 #define DTACORDR_H
 

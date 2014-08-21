@@ -8,22 +8,16 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef TURRET_H
 #define TURRET_H
 
 //---------------------------------------------------------------------------
 
-#ifndef DTURRET_H
-#include "dturret.h"
-#endif
-
-#ifndef OBJMGR_H
-#include "objmgr.h"
-#endif
-
-#ifndef TERROBJ_H
-#include "terrobj.h"
-#endif
+//#include "dturret.h"
+//#include "objmgr.h"
+//#include "terrobj.h"
 
 //---------------------------------------------------------------------------
 // Macro Definitions
@@ -60,12 +54,12 @@ class TurretType : public ObjectType {
 		
 		float			engageRadius;
 		float			turretYawRate;
-		long			weaponMasterId[MAX_TURRET_WEAPONS];
-		long			pilotSkill;
+		int32_t			weaponMasterId[MAX_TURRET_WEAPONS];
+		int32_t			pilotSkill;
 		float			punch;
 		
-		long			turretTypeName;
-		long			buildingDescriptionID;
+		int32_t			turretTypeName;
+		int32_t			buildingDescriptionID;
 
 	public:
 
@@ -91,9 +85,9 @@ class TurretType : public ObjectType {
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, ULONG fileSize);
 
-		long init (FitIniFilePtr objFile);
+		int32_t init (FitIniFilePtr objFile);
 		
 		~TurretType (void) {
 			destroy();
@@ -123,14 +117,14 @@ typedef struct _TurretData : public TerrainObjectData
 	float					lastFireTime[MAX_TURRET_WEAPONS];
 	float					minRange;										// current min attack range
 	float					maxRange;										// current max attack range
-	long					numFunctionalWeapons;							// takes into account damage, etc.
+	int32_t					numFunctionalWeapons;							// takes into account damage, etc.
 
 	float					idleWait;
 	Stuff::Vector3D			idlePosition;
 	Stuff::Vector3D			oldPosition;
-	DWORD					parentId;
+	ULONG					parentId;
 	GameObjectWatchID		parent;
-	long					currentWeaponNode;
+	int32_t					currentWeaponNode;
 } TurretData;
 
 class Turret : public TerrainObject {
@@ -145,20 +139,20 @@ class Turret : public TerrainObject {
 		float					lastFireTime[MAX_TURRET_WEAPONS];
 		float					minRange;										// current min attack range
 		float					maxRange;										// current max attack range
-		long					numFunctionalWeapons;							// takes into account damage, etc.
+		int32_t					numFunctionalWeapons;							// takes into account damage, etc.
 		
-		long					netRosterIndex;
-		long					numWeaponFireChunks[2];
+		int32_t					netRosterIndex;
+		int32_t					numWeaponFireChunks[2];
 		ULONG			weaponFireChunks[2][MAX_TURRET_WEAPONFIRE_CHUNKS];
 
 		TG_LightPtr				pointLight;
-		DWORD					lightId;
+		ULONG					lightId;
 		float					idleWait;
 		Stuff::Vector3D			idlePosition;
 		Stuff::Vector3D			oldPosition;
-		DWORD					parentId;
+		ULONG					parentId;
 		GameObjectWatchID		parent;
-		long					currentWeaponNode;
+		int32_t					currentWeaponNode;
 
 		static bool				turretsEnabled[MAX_TEAMS];
 
@@ -176,9 +170,9 @@ class Turret : public TerrainObject {
 
 		virtual void updateDebugWindow (GameDebugWindow* debugWindow);
 
-		virtual long setTeamId (long _teamId, bool setup);
+		virtual int32_t setTeamId (int32_t _teamId, bool setup);
 		
-		virtual long getTeamId (void) {
+		virtual int32_t getTeamId (void) {
 			return(teamId);
 		}
 
@@ -192,28 +186,28 @@ class Turret : public TerrainObject {
 
 		virtual void destroy (void);
 		
-		virtual long update (void);
+		virtual int32_t update (void);
 		
 		virtual void render (void);
 		
 		virtual void init (bool create, ObjectTypePtr _type);
 
-		virtual long handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+		virtual int32_t handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
-		long getNetRosterIndex (void) {
+		int32_t getNetRosterIndex (void) {
 			return(netRosterIndex);
 		}
 
-		void setNetRosterIndex (long index) {
+		void setNetRosterIndex (int32_t index) {
 			netRosterIndex = index;
 		}
 
 		void lightOnFire (float timeToBurn);
 
-		virtual long kill (void) 
+		virtual int32_t kill (void) 
 		{
 			//Do nothing for now.  Later, Buildings may do something.
-			return NO_ERR;
+			return NO_ERROR;
 		}
 
 		virtual bool isBuilding(void) 
@@ -221,53 +215,53 @@ class Turret : public TerrainObject {
 			return (true);
 		}
 		
-		virtual void getBlockAndVertexNumber (long &blockNum, long &vertexNum) {
+		virtual void getBlockAndVertexNumber (int32_t &blockNum, int32_t &vertexNum) {
 			blockNum = blockNumber;
 			vertexNum = vertexNumber;
 		}
 		
-		bool isWeaponReady (long weaponId);
+		bool isWeaponReady (int32_t weaponId);
 
-		bool isWeaponMissile (long weaponId);
+		bool isWeaponMissile (int32_t weaponId);
 
-		bool isWeaponStreak (long weaponId);
+		bool isWeaponStreak (int32_t weaponId);
 
-		float calcAttackChance (GameObjectPtr target, long* range, long weaponId);
+		float calcAttackChance (GameObjectPtr target, int32_t* range, int32_t weaponId);
 		
-		void recordWeaponFireTime (long weaponId);
+		void recordWeaponFireTime (int32_t weaponId);
 		
-		void startWeaponRecycle (long weaponId);
+		void startWeaponRecycle (int32_t weaponId);
 
-		long getNumWeaponFireChunks (long which) 
+		int32_t getNumWeaponFireChunks (int32_t which) 
 		{
 			return(numWeaponFireChunks[which]);
 		}
 
-		long clearWeaponFireChunks (long which);
+		int32_t clearWeaponFireChunks (int32_t which);
 
-		long addWeaponFireChunk (long which, WeaponFireChunkPtr chunk);
+		int32_t addWeaponFireChunk (int32_t which, WeaponFireChunkPtr chunk);
 
-		long addWeaponFireChunks (long which, ULONG* packedChunkBuffer, long numChunks);
+		int32_t addWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer, int32_t numChunks);
 
-		long grabWeaponFireChunks (long which, ULONG* packedChunkBuffer);
+		int32_t grabWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer);
 
-		virtual long updateWeaponFireChunks (long which);
+		virtual int32_t updateWeaponFireChunks (int32_t which);
 
-		void fireWeapon (GameObjectPtr target, long weaponId);
+		void fireWeapon (GameObjectPtr target, int32_t weaponId);
 		
-		virtual Stuff::Vector3D getPositionFromHS (long weaponNum);
+		virtual Stuff::Vector3D getPositionFromHS (int32_t weaponNum);
 
-		virtual float relFacingTo (Stuff::Vector3D goal, long bodyLocation = -1);
+		virtual float relFacingTo (Stuff::Vector3D goal, int32_t bodyLocation = -1);
 		
-		long handleWeaponFire (long weaponIndex,
+		int32_t handleWeaponFire (int32_t weaponIndex,
 							   GameObjectPtr target,
 							   Stuff::Vector3D* targetPoint,
 							   bool hit,
 							   float entryAngle,
-							   long numMissiles,
-							   long hitLocation);
+							   int32_t numMissiles,
+							   int32_t hitLocation);
 
-		virtual void printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* targetPoint, long chance, long roll, WeaponShotInfo* shotInfo);
+		virtual void printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* targetPoint, int32_t chance, int32_t roll, WeaponShotInfo* shotInfo);
 
 		virtual void printHandleWeaponHitDebugInfo (WeaponShotInfo* shotInfo);
 		
@@ -280,11 +274,11 @@ class Turret : public TerrainObject {
 
 		virtual GameObjectPtr getParent (void);
 
-		virtual void setParentId (DWORD pId);
+		virtual void setParentId (ULONG pId);
 
-		virtual long getDescription(){ return ((TurretType*)getObjectType())->buildingDescriptionID; }
+		virtual int32_t getDescription(){ return ((TurretType*)getObjectType())->buildingDescriptionID; }
 
-		long updateAnimations (void);
+		int32_t updateAnimations (void);
 		
 		virtual Stuff::Vector3D getLOSPosition (void);
 		
@@ -295,9 +289,9 @@ class Turret : public TerrainObject {
 
 		virtual void setDamage (float newDamage);
 
-		virtual long calcFireRanges (void);
+		virtual int32_t calcFireRanges (void);
 
-		virtual void Save (PacketFilePtr file, long packetNum);
+		virtual void Save (PacketFilePtr file, int32_t packetNum);
 
 		void CopyTo (TurretData *data);
 

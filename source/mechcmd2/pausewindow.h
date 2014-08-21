@@ -1,5 +1,3 @@
-#ifndef PAUSEWINDOW_H
-#define PAUSEWINDOW_H
 /*************************************************************************************************\
 PauseWindow.h			: Interface for the PauseWindow component.
 //---------------------------------------------------------------------------//
@@ -8,21 +6,25 @@ PauseWindow.h			: Interface for the PauseWindow component.
 \*************************************************************************************************/
 
 //*************************************************************************************************
-class ControlButton;
-struct ButtonData;
-class StaticInfo;
-class FitIniFile;
 
-#include "utilities.h"
+#pragma once
 
-#ifndef AFONT_H
-#include "afont.h"
-#endif
+#ifndef PAUSEWINDOW_H
+#define PAUSEWINDOW_H
+
+//#include "utilities.h"
+//#include "afont.h"
 
 /**************************************************************************************************
 CLASS DESCRIPTION
 PauseWindow:
 **************************************************************************************************/
+
+class ControlButton;
+struct ButtonData;
+class StaticInfo;
+class FitIniFile;
+
 struct MoveInfo
 {
 	float time; // in seconds
@@ -65,9 +67,9 @@ class PauseWindow
 
 		ControlButton* buttons;
 		ButtonData* buttonData;
-		long		buttonCount;
+		int32_t		buttonCount;
 		StaticInfo* statics;
-		long		staticCount;
+		int32_t		staticCount;
 		RECT	backgrounds[2];
 
 		float		finalReference;

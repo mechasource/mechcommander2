@@ -50,25 +50,25 @@ void LightType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long LightType::init (FilePtr objFile, ULONG fileSize) {
+int32_t LightType::init (FilePtr objFile, ULONG fileSize) {
 
-	long result = 0;
+	int32_t result = 0;
 	
 	FitIniFile explFile;
 	result = explFile.open(objFile,fileSize);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = explFile.seekBlock("LightData");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return result;
 
 	result = explFile.readIdBoolean("OneShotFlag",oneShotFlag);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return result;
 
 	result = explFile.readIdFloat("AltitudeOffset",altitudeOffset);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return result;
 
 	//------------------------------------------------------------------
@@ -106,7 +106,7 @@ void Light::init (bool create) {
 
 //---------------------------------------------------------------------------
 
-long Light::update (void) {
+int32_t Light::update (void) {
 
 	if (!getFlag(OBJECT_FLAG_DONE)) {
 		//----------------------------------
@@ -124,7 +124,7 @@ long Light::update (void) {
 		// Light is NEVER Done.  Unless its done!
 		bool inView = onScreen();
 		lightAppearance->setInView(inView);
-		long result = lightAppearance->update();
+		int32_t result = lightAppearance->update();
 		if (!result && ((LightTypePtr)getObjectType())->oneShotFlag)
 			setFlag(OBJECT_FLAG_DONE, true);
 #endif
@@ -182,7 +182,7 @@ void Light::init (bool create, ObjectTypePtr _type) {
 			return(NO_APPEARANCE_FOR_EXPL);
 
 		result = lightAppearance->init((VFXAppearanceType *)lightAppearanceType, (GameObjectPtr)this);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			return(result);
 	}
 	else

@@ -14,7 +14,7 @@ MechLabScreen.cpp			: Implementation of the MechLabScreen component.
 #include "cmponent.H"
 #include "windows.h"
 #include "..\resource.h"
-#include "LogisticsDialog.h"
+#include "logisticsdialog.h"
 #include <malloc.h>
 #include "gamesound.h"
 #include "ChatWindow.h"
@@ -31,7 +31,7 @@ RECT MechLabScreen::sensorRects[4] = { 35, 126, 35 + 64, 126 + 64,
 											35, 126, 35 + 94, 126 + 64,
 											249, 126, 249 + 79, 126 + 64 };
 
-long	MechLabScreen::sensorHelpIDs[4] = { IDS_HELP_COMP14, IDS_HELP_COMP15, IDS_HELP_COMP17, IDS_HELP_COMP38 };
+int32_t	MechLabScreen::sensorHelpIDs[4] = { IDS_HELP_COMP14, IDS_HELP_COMP15, IDS_HELP_COMP17, IDS_HELP_COMP38 };
 
 
 MechLabScreen::MechLabScreen(  ) 
@@ -109,7 +109,7 @@ int MechLabScreen::init( FitIniFile& file )
 	FullPathFileName path;
 	path.init( artPath, "MCL_SV", ".fit" );
 
-	if ( NO_ERR != saveFile.open( path ) )
+	if ( NO_ERROR != saveFile.open( path ) )
 	{
 		Assert( 0, 0, "couldn't open MCL_SV.fit" );
 		return -1;
@@ -120,7 +120,7 @@ int MechLabScreen::init( FitIniFile& file )
 
 	path.init( artPath, "mcl_sv_acceptchanges", ".fit" );
 
-	if ( NO_ERR != saveFile.open( path ) )
+	if ( NO_ERROR != saveFile.open( path ) )
 	{
 		Assert( 0, 0, "couldn't open MCL_SV.fit" );
 		return -1;
@@ -159,7 +159,7 @@ int MechLabScreen::init( FitIniFile& file )
 	}
 
 	file.seekBlock( "ComboBox0" );
-	long xLoc, yLoc;
+	int32_t xLoc, yLoc;
 	file.readIdLong( "XLocation", xLoc );
 	file.readIdLong( "YLocation", yLoc );
 	char fileName[256];
@@ -169,7 +169,7 @@ int MechLabScreen::init( FitIniFile& file )
 
 	FitIniFile comboFile;
 
-	if ( NO_ERR != comboFile.open( path ) )
+	if ( NO_ERROR != comboFile.open( path ) )
 	{
 		char errorStr[255];
 		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
@@ -513,7 +513,7 @@ void MechLabScreen::update()
 
 	}
 
-	long color = 0xffffffff;
+	int32_t color = 0xffffffff;
 	
 	float newCost = pVariant->getCost();
 
@@ -548,13 +548,13 @@ void MechLabScreen::update()
 
 void MechLabScreen::updateDiagramInput()
 {
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 
 	if ( rects[13].pointInside( mouseX, mouseY ) )
 	{
-		long x, y, x2, y2;
+		int32_t x, y, x2, y2;
 		getMouseDiagramCoords( x, y );	
 		
 		if ( x != -2 )
@@ -562,7 +562,7 @@ void MechLabScreen::updateDiagramInput()
 			// now offset by size of the component
 			if ( pDragComponent )
 			{
-				long screenX, screenY;
+				int32_t screenX, screenY;
 				diagramToScreen( x, y, screenX, screenY );
 
 				x -= pDragComponent->getComponentWidth()/2;
@@ -611,7 +611,7 @@ void MechLabScreen::updateDiagramInput()
 				y2 = y + 1;
 			}
 		
-			long tmpX, tmpY;
+			int32_t tmpX, tmpY;
 
 			diagramToScreen( x, y, tmpX, tmpY );			
 
@@ -624,7 +624,7 @@ void MechLabScreen::updateDiagramInput()
 			LogisticsComponent* pComp = pVariant->getCompAtLocation(x, y, tmpX, tmpY );
 			if ( pComp )
 			{
-				long compX, compY, compX2, compY2;
+				int32_t compX, compY, compX2, compY2;
 				diagramToScreen( tmpX, tmpY, compX, compY );
 				diagramToScreen( tmpX + pComp->getComponentWidth(), tmpY + pComp->getComponentHeight(), compX2, compY2 );
 				if ( (compX <= userInput->getMouseX() && compX2 >= userInput->getMouseX()
@@ -643,11 +643,11 @@ void MechLabScreen::updateDiagramInput()
 		// check for jump jet hot text
 		if ( x == -2 && y == -2 )
 		{
-			long tmpX, tmpY;
+			int32_t tmpX, tmpY;
 			LogisticsComponent* pComp = pVariant->getCompAtLocation(x, y, tmpX, tmpY );
 			if ( pComp )
 			{
-				long compX, compY, compX2, compY2;
+				int32_t compX, compY, compX2, compY2;
 				diagramToScreen( tmpX, tmpY, compX, compY );
 				diagramToScreen( tmpX + pComp->getComponentWidth(), tmpY + pComp->getComponentHeight(), compX2, compY2 );
 				if ( (compX <= userInput->getMouseX() && compX2 >= userInput->getMouseX()
@@ -662,7 +662,7 @@ void MechLabScreen::updateDiagramInput()
 
 		if ( pDragComponent )
 		{
-			if (NO_ERR == pVariant->canAddComponent( pDragComponent, x, y )
+			if (NO_ERROR == pVariant->canAddComponent( pDragComponent, x, y )
 				&& x != -1 && y != -1 )
 			{
 				selRect->setColor( 0xffffffff );
@@ -672,7 +672,7 @@ void MechLabScreen::updateDiagramInput()
 		}			
 		else if ( userInput->isLeftDrag() )
 		{
-			long i, j;
+			int32_t i, j;
 			getMouseDiagramCoords( i, j );
 
 			if ( i != -1 && j != -1 )
@@ -699,7 +699,7 @@ void MechLabScreen::updateDiagramInput()
 		}
 		else if ( userInput->isLeftDoubleClick() )
 		{
-			long tmpI, tmpJ;
+			int32_t tmpI, tmpJ;
 			getMouseDiagramCoords( tmpI, tmpJ );
 
 			if ( tmpI != -1 && tmpJ != -1 )
@@ -724,7 +724,7 @@ void MechLabScreen::updateDiagramInput()
 		}
 		else if ( userInput->isLeftClick() )
 		{
-			long tmpI, tmpJ;
+			int32_t tmpI, tmpJ;
 			getMouseDiagramCoords( tmpI, tmpJ );
 
 			if ( tmpI != -1 && tmpJ != -1 )
@@ -785,13 +785,13 @@ void MechLabScreen::render(int xOffset, int yOffset)
 	if ( pVariant )
 	{
 		int width = pVariant->getComponentAreaWidth();
-		long minX = rects[7 + 6-width].left();
-		long maxY = rects[7].bottom();
-		long minY = maxY - pVariant->getComponentAreaHeight() * LogisticsComponent::YICON_FACTOR;
+		int32_t minX = rects[7 + 6-width].left();
+		int32_t maxY = rects[7].bottom();
+		int32_t minY = maxY - pVariant->getComponentAreaHeight() * LogisticsComponent::YICON_FACTOR;
 		// draw little component slots
 		
-		long x = minX;
-		long y = minY;
+		int32_t x = minX;
+		int32_t y = minY;
 		for ( int j = 0; j < pVariant->getComponentAreaHeight(); j++ )
 		{
 			x = minX;
@@ -815,8 +815,8 @@ void MechLabScreen::render(int xOffset, int yOffset)
 
 	if ( pSelectedComponent && pVariant )
 	{
-		long i = selI;
-		long j = selJ;
+		int32_t i = selI;
+		int32_t j = selJ;
 		pVariant->getComponentLocation( pSelectedComponent, i, j );
 
 		if ( i != -1 && j != -1 )
@@ -831,7 +831,7 @@ void MechLabScreen::render(int xOffset, int yOffset)
 
 			else
 			{
-				long left, right;
+				int32_t left, right;
 				diagramToScreen( i, j, left, right );
 				tmpRect = &selRects[pSelectedComponent->getComponentWidth()-1][pSelectedComponent->getComponentHeight()-1];
 				tmpRect->moveTo( left + xOffset, right + yOffset );
@@ -886,8 +886,8 @@ void MechLabScreen::render(int xOffset, int yOffset)
 
 void MechLabScreen::updateHeatMeter()
 {
-	long maxHeat = pVariant->getMaxHeat();
-	long curHeat = pVariant->getHeat();
+	int32_t maxHeat = pVariant->getMaxHeat();
+	int32_t curHeat = pVariant->getHeat();
 	float fCurHeat = curHeat;
 
 	bool bShowDenom = true;
@@ -950,8 +950,8 @@ void MechLabScreen::updateHeatMeter()
 
 void MechLabScreen::updateArmorMeter()
 {
-	long maxarmor = pVariant->getMaxArmor();
-	long curarmor = pVariant->getArmor();
+	int32_t maxarmor = pVariant->getMaxArmor();
+	int32_t curarmor = pVariant->getArmor();
 	float fCurarmor = curarmor;
 	
 	if ( armorTime )
@@ -1099,8 +1099,8 @@ int	MechLabScreen::handleMessage( ULONG msg, ULONG who)
 
 		case MB_MSG_ADD:
 			{
-			long x = -1; 
-			long y = -1;
+			int32_t x = -1; 
+			int32_t y = -1;
 			addComponent( componentListBox.getComponent(), x, y );
 			}
 			break;
@@ -1277,7 +1277,7 @@ void	MechLabScreen::setComponent( LogisticsComponent* pComponent, bool bMessageF
 		}
 		else
 		{
-			long rangeColors[3] = {0xff6e7c00, 0xff005392,0xffa21600  };
+			int32_t rangeColors[3] = {0xff6e7c00, 0xff005392,0xffa21600  };
 
 			showJumpJetItems( 0 );
 			textObjects[7].setText( pCurComponent->getRangeType() + IDS_SHORT_RANGE );
@@ -1398,15 +1398,15 @@ int MechLabScreen::canAddComponent( LogisticsComponent* pComponent )
 	if ( !pVariant )
 		return 0;
 
-	long i = -1;
-	long j = -1;
+	int32_t i = -1;
+	int32_t j = -1;
 	int retVal = pVariant->canAddComponent( pComponent, i, j );
 
 	return retVal;
 }
 
 
-int MechLabScreen::addComponent( LogisticsComponent* pComponent, long& x, long& y )
+int MechLabScreen::addComponent( LogisticsComponent* pComponent, int32_t& x, int32_t& y )
 {
 	if ( !pComponent )
 		return -1;
@@ -1480,7 +1480,7 @@ void MechLabScreen::endDrag( )
 	float mouseY = userInput->getMouseY();
 	if ( pDragComponent && rects[13].pointInside( mouseX, mouseY ) )
 	{
-		long x, y;
+		int32_t x, y;
 
 		// use selRect, it already has proper coords
 		getMouseDiagramCoords( selRect->left(), selRect->top(), x, y );
@@ -1493,7 +1493,7 @@ void MechLabScreen::endDrag( )
 		}
 		else
 		{
-			if ( NO_ERR == addComponent( pDragComponent, x, y) )
+			if ( NO_ERROR == addComponent( pDragComponent, x, y) )
 			{
 				componentListBox.SelectItem( -1 );
 				selI = x;
@@ -1502,7 +1502,7 @@ void MechLabScreen::endDrag( )
 			}
 			if ( bDragLeft ) // put it bag, if we didn't drag far enough away
 			{
-				if ( NO_ERR == addComponent( pDragComponent, selI, selJ) )
+				if ( NO_ERROR == addComponent( pDragComponent, selI, selJ) )
 				{
 					componentListBox.SelectItem( -1 );
 					pSelectedComponent = pDragComponent;
@@ -1528,17 +1528,17 @@ void MechLabScreen::endDrag( )
 	
 }
 
-void MechLabScreen::getMouseDiagramCoords( long& x, long& y )
+void MechLabScreen::getMouseDiagramCoords( int32_t& x, int32_t& y )
 {
 
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 	getMouseDiagramCoords( mouseX, mouseY, x, y);
 
 }
 
-void MechLabScreen::getMouseDiagramCoords( long screenX, long screenY, long& x, long& y )
+void MechLabScreen::getMouseDiagramCoords( int32_t screenX, int32_t screenY, int32_t& x, int32_t& y )
 {
 	x = -1; 
 	y = -1;
@@ -1547,13 +1547,13 @@ void MechLabScreen::getMouseDiagramCoords( long screenX, long screenY, long& x, 
 	int width = pVariant->getComponentAreaWidth();
 	int height = pVariant->getComponentAreaHeight();
 	
-	long minX = rects[7 + 6-width].left();
-	long maxY = rects[7].bottom();
-	long minY = maxY - height * LogisticsComponent::YICON_FACTOR;
-	long maxX = minX + width * LogisticsComponent::XICON_FACTOR;
+	int32_t minX = rects[7 + 6-width].left();
+	int32_t maxY = rects[7].bottom();
+	int32_t minY = maxY - height * LogisticsComponent::YICON_FACTOR;
+	int32_t maxX = minX + width * LogisticsComponent::XICON_FACTOR;
 
-	long mouseX = screenX;
-	long mouseY = screenY;
+	int32_t mouseX = screenX;
+	int32_t mouseY = screenY;
 
 	// are we in the right area?
 	if ( mouseX >= rects[6].left() 
@@ -1576,7 +1576,7 @@ void MechLabScreen::getMouseDiagramCoords( long screenX, long screenY, long& x, 
 	
 }
 
-void MechLabScreen::diagramToScreen( long i, long j, long& x, long& y  )
+void MechLabScreen::diagramToScreen( int32_t i, int32_t j, int32_t& x, int32_t& y  )
 {
 	if ( i == -2 && j == -2 )
 	{
@@ -1595,9 +1595,9 @@ void MechLabScreen::diagramToScreen( long i, long j, long& x, long& y  )
 	int height = pVariant->getComponentAreaHeight();
 	int width = pVariant->getComponentAreaWidth();
 	
-	long minX = rects[7 + 6-width].left();
-	long maxY = rects[7].bottom();
-	long minY = maxY - height * LogisticsComponent::YICON_FACTOR;
+	int32_t minX = rects[7 + 6-width].left();
+	int32_t maxY = rects[7].bottom();
+	int32_t minY = maxY - height * LogisticsComponent::YICON_FACTOR;
 
 	x = minX + i * LogisticsComponent::XICON_FACTOR;
 	y = minY + j * LogisticsComponent::YICON_FACTOR;
@@ -1612,14 +1612,14 @@ void MechLabScreen::updateDiagram()
 		return;
 
 	int width = pVariant->getComponentAreaWidth();
-	long minX = rects[7 + 6-width].left();
-	long maxY = rects[7].bottom();
+	int32_t minX = rects[7 + 6-width].left();
+	int32_t maxY = rects[7].bottom();
 
-	long minY = maxY - pVariant->getComponentAreaHeight() * LogisticsComponent::YICON_FACTOR;
+	int32_t minY = maxY - pVariant->getComponentAreaHeight() * LogisticsComponent::YICON_FACTOR;
 
-	long IDArray[128];
-	long xLocs[128];
-	long yLocs[128];
+	int32_t IDArray[128];
+	int32_t xLocs[128];
+	int32_t yLocs[128];
 	componentCount = 128;
 
 
@@ -1628,8 +1628,8 @@ void MechLabScreen::updateDiagram()
 	{
 		LogisticsComponent* pComponent = LogisticsData::instance->getComponent( IDArray[i] );
 
-		long xLoc = minX + xLocs[i] * LogisticsComponent::XICON_FACTOR;
-		long yLoc = minY + yLocs[i] * LogisticsComponent::YICON_FACTOR;
+		int32_t xLoc = minX + xLocs[i] * LogisticsComponent::XICON_FACTOR;
+		int32_t yLoc = minY + yLocs[i] * LogisticsComponent::YICON_FACTOR;
 
 		if ( pComponent->getType() == COMPONENT_FORM_JUMPJET )
 		{
@@ -1726,10 +1726,10 @@ int MechLabScreen::selectFirstLBComponent()
 	}
 	return index;
 }
-void MechLabScreen::removeComponent( long i, long j )
+void MechLabScreen::removeComponent( int32_t i, int32_t j )
 {
 
-	long tmpX, tmpY;
+	int32_t tmpX, tmpY;
 	LogisticsComponent* pComp = pVariant->getCompAtLocation(i, j, tmpX, tmpY );
 	if ( pComp )
 	{
@@ -1740,8 +1740,8 @@ void MechLabScreen::removeComponent( long i, long j )
 			bErrorDlg = true;
 		}
 	}
-	long tmpHeat = pVariant->getHeat();
-	long tmpArmor = pVariant->getArmor();
+	int32_t tmpHeat = pVariant->getHeat();
+	int32_t tmpArmor = pVariant->getArmor();
 	pVariant->removeComponent( i, j );
 
 	if ( tmpHeat != pVariant->getHeat() )

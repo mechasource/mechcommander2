@@ -1,5 +1,3 @@
-#ifndef LOADSCREEN_H
-#define LOADSCREEN_H
 /*************************************************************************************************\
 LoadScreen.h			: Interface for the LoadScreen component.
 //---------------------------------------------------------------------------//
@@ -7,21 +5,19 @@ LoadScreen.h			: Interface for the LoadScreen component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
-#endif
+#pragma once
 
-#ifndef AANIM_H
-#include "aanim.h"
-#endif
+#ifndef LOADSCREEN_H
+#define LOADSCREEN_H
+
+//#include "logisticsscreen.h"
+//#include "aanim.h"
 
 struct TGAFileHeader;
 class FitIniFile;
 
 struct tagRECT;
 struct _DDSURFACEDESC2;
-
-
 
 //*************************************************************************************************
 class LoadScreen;
@@ -36,7 +32,7 @@ public:
 	LoadScreenWrapper();
 
 	virtual ~LoadScreenWrapper();
-	
+
 	void init( FitIniFile& file );
 
 	virtual void update();
@@ -54,51 +50,51 @@ public:
 
 class LoadScreen: public LogisticsScreen
 {
-	public:
+public:
 
-		LoadScreen();
-		virtual ~LoadScreen();
+	LoadScreen();
+	virtual ~LoadScreen();
 
-		void init( FitIniFile& file, DWORD neverFlush = 0 );
-		virtual void update();
-		virtual void render( int xOffset, int yOffset );
+	void init( FitIniFile& file, ULONG neverFlush = 0 );
+	virtual void update();
+	virtual void render( int xOffset, int yOffset );
 
-		virtual void begin();
+	virtual void begin();
 
-		void resetExitAnims();
-		void setupOutAnims();
+	void resetExitAnims();
+	void setupOutAnims();
 
-		static void changeRes(FitIniFile& file);
-		
-
-
-	private:
-
-		LoadScreen( const LoadScreen& src );
-		LoadScreen& operator=( const LoadScreen& oadScreen );
+	static void changeRes(FitIniFile& file);
 
 
-		static TGAFileHeader*	progressTextureMemory;
-		static TGAFileHeader*	progressBackground;
-		static TGAFileHeader*	mergedTexture;
-		static TGAFileHeader*	waitingForPlayersMemory;
 
-		static long xProgressLoc;
-		static long yProgressLoc;
-		static long xWaitLoc;
-		static long yWaitLoc;
+private:
 
-		friend void ProgressTimer( tagRECT& WinRect, _DDSURFACEDESC2&  );
-		friend class Mission;
+	LoadScreen( const LoadScreen& src );
+	LoadScreen& operator=( const LoadScreen& oadScreen );
 
-		//Must needs be static cause we create a new one when the res changes!!
-		// This will erase the hardmouse status and we always use async mouse then!
-		static bool	turnOffAsyncMouse;
 
-		aAnimation	outAnims[5];
-		aAnimation	inAnims[5];
-		aText		text;
-		int*		animIndices;
+	static TGAFileHeader*	progressTextureMemory;
+	static TGAFileHeader*	progressBackground;
+	static TGAFileHeader*	mergedTexture;
+	static TGAFileHeader*	waitingForPlayersMemory;
+
+	static int32_t xProgressLoc;
+	static int32_t yProgressLoc;
+	static int32_t xWaitLoc;
+	static int32_t yWaitLoc;
+
+	friend void ProgressTimer( tagRECT& WinRect, _DDSURFACEDESC2&  );
+	friend class Mission;
+
+	//Must needs be static cause we create a new one when the res changes!!
+	// This will erase the hardmouse status and we always use async mouse then!
+	static bool	turnOffAsyncMouse;
+
+	aAnimation	outAnims[5];
+	aAnimation	inAnims[5];
+	aText		text;
+	int*		animIndices;
 
 
 };

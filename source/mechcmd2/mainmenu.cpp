@@ -58,7 +58,7 @@ void SplashIntro::init()
 	path.init( artPath, "mcl_splashscreenintro", ".fit" );
 
 	FitIniFile file;
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
@@ -103,7 +103,7 @@ int MainMenu::init( FitIniFile& file )
 	FullPathFileName name;
 	name.init( artPath, "mcl_sp", ".fit" );
 	FitIniFile file2;
-	if ( NO_ERR != file2.open( name ) )
+	if ( NO_ERROR != file2.open( name ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", (PSTR)name );
@@ -130,7 +130,7 @@ int MainMenu::init( FitIniFile& file )
 
 	FitIniFile mpFile;
 
-	if ( NO_ERR != mpFile.open( path ) )
+	if ( NO_ERROR != mpFile.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -194,7 +194,7 @@ void MainMenu::begin()
 			userInput->mouseOn();
 			userInput->setMouseCursor( mState_LOGISTICS );
 
-			DWORD localRenderer = prefs.renderer;
+			ULONG localRenderer = prefs.renderer;
 			if (prefs.renderer != 0 && prefs.renderer != 3)
 				localRenderer = 0;
 
@@ -391,7 +391,7 @@ int	MainMenu::handleMessage( ULONG what, ULONG who )
 				}
 				LogisticsLegalDialog::instance()->setText( IDS_DIALOG_OK,
 						IDS_DIALOG_OK, IDS_DIALOG_OK );
-				//Needs to be this long for LOC!
+				//Needs to be this int32_t for LOC!
 				// -fs
 				char realText[2048];
 				cLoadString(IDS_LAWYER_BABBLE, realText, 2047 );
@@ -518,7 +518,7 @@ void MainMenu::update()
 				// make sure the save game directory exists, if not create it
 				CreateDirectory( savePath, NULL );
 
-				if ( NO_ERR != file.createWithCase( name ) )
+				if ( NO_ERROR != file.createWithCase( name ) )
 				{
 					char errorStr[1024];
 					sprintf( errorStr, "couldn't open the file %s", name );
@@ -545,7 +545,7 @@ void MainMenu::update()
 			}
 			else
 			{
-				if ( NO_ERR != file.open( name ) )
+				if ( NO_ERROR != file.open( name ) )
 				{
 					char errorStr[1024];
 					sprintf( errorStr, "couldn't open the file %s", name );
@@ -655,7 +655,7 @@ void MainMenu::update()
 					delete MPlayer;
 					MPlayer = NULL;
 				}
-				long oldRes = endResult;
+				int32_t oldRes = endResult;
 				endResult = 0;
 
 				handleMessage( oldRes, oldRes );
@@ -734,7 +734,7 @@ void MainMenu::render()
 	// WOW does it beat up the framerate!
 	float xDelta = 0.f;
 	float yDelta = 0.f;  
-	long color = 0xff000000;
+	int32_t color = 0xff000000;
 
 	if (Environment.Renderer != 3)
 	{

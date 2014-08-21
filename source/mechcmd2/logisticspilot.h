@@ -1,3 +1,6 @@
+
+#pragma once
+
 #ifndef LOGISTICSPILOT_H
 #define LOGISTICSPILOT_H
 
@@ -66,7 +69,7 @@ class LogisticsPilot
 		int			getID() const { return id; }
 		int			getFlavorTextID() const { return flavorTextID; }
 		int			getNumberMissions() const;
-		bool		getMissionPlayed (long missionNum)
+		bool		getMissionPlayed (int32_t missionNum)
 		{
 			if ((missionNum >= 0) && (missionNum < MAX_MISSIONS))
 				return (missionsPlayed[missionNum] == 1);
@@ -85,7 +88,7 @@ class LogisticsPilot
 		bool		isDead() const { return bDead; }
 		bool		justDied() const { return bJustDied; }
 		void		setJustDied( bool bdied){ bJustDied = bdied; }
-		long		getPhotoIndex() const { return photoIndex; }
+		int32_t		getPhotoIndex() const { return photoIndex; }
 
 		bool		promotePilot();
 		int			turnAverageIntoRank( float avg);
@@ -95,10 +98,10 @@ class LogisticsPilot
 		static		PCSTR getSkillText( int skillID );
 		const EString&	getFileName(){ return fileName; }
 
-		long		save( FitIniFile& file, long count );
-		long		load( FitIniFile& file );
+		int32_t		save( FitIniFile& file, int32_t count );
+		int32_t		load( FitIniFile& file );
 
-		long		update( MechWarrior* pWarrior );
+		int32_t		update( MechWarrior* pWarrior );
 
 		int			getSpecialtySkillCount() const;
 		int			getSpecialtySkills( PCSTR* array, int& count );
@@ -122,21 +125,21 @@ class LogisticsPilot
 		EString		name;
 		EString		audio;
 		EString		video;
-		long			rank;
+		int32_t			rank;
 		EString		iconFile; // or file name?
 		float			gunnery;
 		float			piloting;
-		long			mechKills;
-		long			vehicleKills;
-		long			infantryKills;
-		long			missionsCompleted;
+		int32_t			mechKills;
+		int32_t			vehicleKills;
+		int32_t			infantryKills;
+		int32_t			missionsCompleted;
 		uint8_t	missionsPlayed[MAX_MISSIONS];
-		long			flavorTextID;
+		int32_t			flavorTextID;
 		bool			bIsUsed;
 		bool			bDead;
 		bool			bAvailable;
 		bool			bJustDied;
-		long			photoIndex;
+		int32_t			photoIndex;
 		float			newPiloting;
 		float			newGunnery;
 		bool			specialtySkills[NUM_SPECIALTY_SKILLS];

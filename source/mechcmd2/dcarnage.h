@@ -8,6 +8,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DCARNAGE_H
 #define DCARNAGE_H
 

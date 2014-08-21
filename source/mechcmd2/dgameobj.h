@@ -6,21 +6,18 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DGAMEOBJ_H
 #define DGAMEOBJ_H
 
 //---------------------------------------------------------------------------
 
-#ifndef OBJSTATUS_H
-#include "objstatus.h"
-#endif
+//#include "objstatus.h"
+//#include "dobjclass.h"
 
-#ifndef DOBJCLASS_H
-#include "dobjclass.h"
-#endif
-
-#ifndef NO_ERR
-#define NO_ERR		0
+#ifndef NO_ERROR
+#define NO_ERROR		0
 #endif
 
 //#define CANT_MAKE_BASE_FROM_TYPE				0xBEAD0001
@@ -112,9 +109,9 @@
 
 //---------------------------------------------------------------------------
 
-typedef long GameObjectHandle;
-typedef long GameObjectTypeHandle;
-typedef long GameObjectWatchID;
+typedef int32_t GameObjectHandle;
+typedef int32_t GameObjectTypeHandle;
+typedef int32_t GameObjectWatchID;
 
 class GameObject;
 typedef GameObject* GameObjectPtr;
@@ -130,7 +127,7 @@ typedef WeaponHitChunk* WeaponHitChunkPtr;
 
 typedef struct _WeaponShotInfo* WeaponShotInfoPtr;
 
-//typedef long *AICodePtr;
+//typedef int32_t *AICodePtr;
 //---------------------------------------------------------------------------
 // Macro Definitions
 

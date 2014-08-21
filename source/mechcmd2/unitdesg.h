@@ -8,6 +8,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef UNITDESG_H
 #define UNITDESG_H
 

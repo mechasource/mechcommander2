@@ -8,36 +8,24 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef TEAM_H
 #define TEAM_H
 
 //---------------------------------------------------------------------------
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
-
-#ifndef DTEAM_H
-#include "dteam.h"
-#endif
-
-#ifndef DMOVER_H
-#include "dmover.h"
-#endif
-
-#ifndef CONTACT_H
-#include "contact.h"
-#endif
-
-#ifndef OBJECTIVE_H
-#include "Objective.h"
-#endif
+//#include <mclib.h>
+//#include "dteam.h"
+//#include "dmover.h"
+//#include "contact.h"
+//#include "objective.h"
 
 //***************************************************************************
 
 typedef struct _SystemTracker {
 	GameObjectPtr			owner;
-	long					masterId;
+	int32_t					masterId;
 	float					effect;
 	SystemTrackerPtr		prev;
 	SystemTrackerPtr		next;
@@ -46,15 +34,15 @@ typedef struct _SystemTracker {
 //---------------------------------------------------------------------------
 typedef struct _TeamData
 {
-	long 				id;
-	long 				rosterSize;
+	int32_t 				id;
+	int32_t 				rosterSize;
 	GameObjectWatchID	roster[MAX_MOVERS_PER_TEAM];
 } TeamData;
 
 typedef struct _TeamStaticData
 {
-	long		numTeams;
-	long		homeTeamId;
+	int32_t		numTeams;
+	int32_t		homeTeamId;
 	char		relations[MAX_TEAMS][MAX_TEAMS];
 	bool		noPain[MAX_TEAMS];
 } TeamStaticData;
@@ -65,18 +53,18 @@ class Team {
 
 		//-------------
 		// general info
-		long				id;
-		long				rosterSize;
+		int32_t				id;
+		int32_t				rosterSize;
 		GameObjectWatchID	roster[MAX_MOVERS_PER_TEAM];			// list of mover WIDs
 		
 		//-------------
 		// mission info
 		CObjectives				objectives;
-		long					numPrimaryObjectives;
+		int32_t					numPrimaryObjectives;
 
 		//------------------
 		// static class info
-		static long			numTeams;
+		static int32_t			numTeams;
 		static TeamPtr		home;
 		static TeamPtr		teams[MAX_TEAMS];
 		static SortListPtr	sortList;
@@ -91,11 +79,11 @@ class Team {
 			init();
 		}
 			
-		virtual long init (long _id, FitIniFile *pMissionFile = 0);
+		virtual int32_t init (int32_t _id, FitIniFile *pMissionFile = 0);
 
-		virtual long loadObjectives (FitIniFile *pMissionFile = 0);
+		virtual int32_t loadObjectives (FitIniFile *pMissionFile = 0);
 
-		long getId (void) {
+		int32_t getId (void) {
 			return(id);
 		}
 
@@ -103,15 +91,15 @@ class Team {
 
 		void addToRoster (MoverPtr mover);
 
-		long getRosterSize (void) {
+		int32_t getRosterSize (void) {
 			return(rosterSize);
 		}
 
-		MoverPtr getMover (long index);
+		MoverPtr getMover (int32_t index);
 
 		void removeFromRoster (MoverPtr mover);
 
-		virtual long getRoster (GameObjectPtr* objList, bool existsOnly = false);
+		virtual int32_t getRoster (GameObjectPtr* objList, bool existsOnly = false);
 
 
 		void disableTargets (void);
@@ -122,22 +110,22 @@ class Team {
 
 		bool isCapturing (GameObjectWatchID targetWID, GameObjectWatchID exceptWID);
 
-		bool isContact (GameObjectPtr looker, MoverPtr mover, long contactCriteria);
+		bool isContact (GameObjectPtr looker, MoverPtr mover, int32_t contactCriteria);
 
-		virtual long getContacts (GameObjectPtr looker, long* contactList, long contactCriteria, long sortType);
+		virtual int32_t getContacts (GameObjectPtr looker, int32_t* contactList, int32_t contactCriteria, int32_t sortType);
 
-		bool hasSensorContact (long teamID);
+		bool hasSensorContact (int32_t teamID);
 
 		void addToGUI (void);
 
 		Stuff::Vector3D calcEscapeVector (MoverPtr mover, float threatRange);
 
-		void statusCount (long* statusTally);
+		void statusCount (int32_t* statusTally);
 
 		void eject (void);
 
-		virtual long init (FitIniFile* unitFile) {
-			return(NO_ERR);
+		virtual int32_t init (FitIniFile* unitFile) {
+			return(NO_ERROR);
 		}
 		
 		virtual void destroy (void);
@@ -146,9 +134,9 @@ class Team {
 			destroy();
 		}
 
-		static bool lineOfSight (float startLocal, long mCellRow, long mCellCol, float endLocal, long tCellRow, long tCellCol, long teamId, float targetRadius, float startRadius = 0.0f, bool checkVisibleBits = true);
+		static bool lineOfSight (float startLocal, int32_t mCellRow, int32_t mCellCol, float endLocal, int32_t tCellRow, int32_t tCellCol, int32_t teamId, float targetRadius, float startRadius = 0.0f, bool checkVisibleBits = true);
 
-		static bool lineOfSight (Stuff::Vector3D myPos, Stuff::Vector3D targetPosition, long teamId, float targetRadius, float startRadius = 0.0f, bool checkVisibleBits = true);
+		static bool lineOfSight (Stuff::Vector3D myPos, Stuff::Vector3D targetPosition, int32_t teamId, float targetRadius, float startRadius = 0.0f, bool checkVisibleBits = true);
 
 		//-------------------------------------------		
 		// Can anyone on my team see this position?
@@ -166,13 +154,13 @@ class Team {
 			relations[team->getId()][id] = relation;
 		}
 
-		long getRelation (TeamPtr team) {
+		int32_t getRelation (TeamPtr team) {
 			if ( !team )
 				return RELATION_NEUTRAL;
 			return(relations[id][team->getId()]);
 		}
 
-		static long getRelation (long teamID1, long teamID2) {
+		static int32_t getRelation (int32_t teamID1, int32_t teamID2) {
 			if (teamID1 == -1)
 				return(0);
 			if (teamID2 == -1)
@@ -180,8 +168,8 @@ class Team {
 			return(relations[teamID1][teamID2]);
 		}
 
-		static long Save (PacketFilePtr file, long packetNum);
-		static long Load (PacketFilePtr file, long packetNum);
+		static int32_t Save (PacketFilePtr file, int32_t packetNum);
+		static int32_t Load (PacketFilePtr file, int32_t packetNum);
 
 		bool isFriendly (TeamPtr team) {
 			if ( !team )

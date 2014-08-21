@@ -8,31 +8,18 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef TACORDR_H
 #define TACORDR_H
 
 //--------------
-// Include Files
 
-#ifndef GAMEOBJ_H
-#include "gameobj.h"
-#endif
-
-#ifndef DGROUP_H
-#include "dgroup.h"
-#endif
-
-#ifndef DWARRIOR_H
-#include "dwarrior.h"
-#endif
-
-#ifndef DMOVER_H
-#include "dmover.h"
-#endif
-
-#ifndef DTACORDR_H
-#include "dtacordr.h"
-#endif
+//#include "gameobj.h"
+//#include "dgroup.h"
+//#include "dwarrior.h"
+//#include "dmover.h"
+//#include "dtacordr.h"
 
 //***************************************************************************
 
@@ -174,8 +161,8 @@ typedef enum _TravelModeType {
 } TravelModeType;
 
 typedef struct _WayPath {
-	long			numPoints;
-	long			curPoint;
+	int32_t			numPoints;
+	int32_t			curPoint;
 	float			points[3 * MAX_WAYPTS];
 	uint8_t	mode[MAX_WAYPTS];
 } WayPath;
@@ -194,7 +181,7 @@ typedef struct _TacOrderMoveParams {
 	SpecialMoveMode	mode;
 	bool			escapeTile;
 	bool			jump;
-	long			fromArea;
+	int32_t			fromArea;
 	bool			keepMoving;
 } TacOrderMoveParams;
 
@@ -203,7 +190,7 @@ typedef struct _TacOrderAttackParams {
 	AttackMethod	method;
 	FireRangeType	range;
 	TacticType		tactic;
-	long			aimLocation;
+	int32_t			aimLocation;
 	bool			pursue;
 	bool			obliterate;
 	Stuff::Vector3D	targetPoint;
@@ -213,7 +200,7 @@ class TacticalOrder {
 
 	public:
 
-		long					id;
+		int32_t					id;
 		float					time;
 		float					delayedTime;
 		float					lastTime;
@@ -224,8 +211,8 @@ class TacticalOrder {
 		TacOrderMoveParams		moveParams;
 		TacOrderAttackParams	attackParams;
 		GameObjectWatchID		targetWID;
-		long					targetObjectClass;
-		long					selectionIndex;
+		int32_t					targetObjectClass;
+		int32_t					selectionIndex;
 		char					stage;
 		char					statusCode;
 		Stuff::Vector3D			lastMoveGoal;
@@ -237,8 +224,8 @@ class TacticalOrder {
 
 	public:
 
-		void* operator new (size_t ourSize);
-		void operator delete (void* us);
+		PVOID operator new (size_t ourSize);
+		void operator delete (PVOID us);
 
 		void operator = (TacticalOrder copy) {
 			time = copy.time;
@@ -280,25 +267,25 @@ class TacticalOrder {
 			destroy();
 		}
 
-		void setId (long newId) {
+		void setId (int32_t newId) {
 			id = newId;
 		}
 
 		void setId (MechWarriorPtr pilot);
 
-		long getId (void) {
+		int32_t getId (void) {
 			return(id);
 		}
 
-		long execute (MechWarriorPtr warrior, long& message);
+		int32_t execute (MechWarriorPtr warrior, int32_t& message);
 
-		long status (MechWarriorPtr warrior);
+		int32_t status (MechWarriorPtr warrior);
 
-		Stuff::Vector3D getWayPoint (long index);
+		Stuff::Vector3D getWayPoint (int32_t index);
 
-		void setWayPoint (long index, Stuff::Vector3D wayPoint);
+		void setWayPoint (int32_t index, Stuff::Vector3D wayPoint);
 
-		void addWayPoint (Stuff::Vector3D wayPoint, long travelMode);
+		void addWayPoint (Stuff::Vector3D wayPoint, int32_t travelMode);
 
 		GameObjectPtr getRamTarget (void);
 
@@ -314,17 +301,17 @@ class TacticalOrder {
 
 		bool isWayPathOrder (void);
 
-		long getParamData (float* time, long* paramList);
+		int32_t getParamData (float* time, int32_t* paramList);
 
-		long pack (MoverGroupPtr unit, MoverPtr point);
+		int32_t pack (MoverGroupPtr unit, MoverPtr point);
 
-		long unpack (void);
+		int32_t unpack (void);
 
-		void setGroupFlag (long localMoverId, bool set);
+		void setGroupFlag (int32_t localMoverId, bool set);
 
-		long getGroup (long commanderID, MoverPtr* moverList, MoverPtr* point, long sortType = 0);
+		int32_t getGroup (int32_t commanderID, MoverPtr* moverList, MoverPtr* point, int32_t sortType = 0);
 
-		void setStage (long newStage)
+		void setStage (int32_t newStage)
 		{
 			stage = (char)newStage;
 		}

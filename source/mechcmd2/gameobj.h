@@ -16,49 +16,17 @@
 //---------------------------------------------------------------------------
 // Include Files
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
-
-#ifndef DOBJTYPE_H
-#include "dobjtype.h"
-#endif
-
-#ifndef DAPPEAR_H
-#include "dappear.h"
-#endif
-
-#ifndef DCONTACT_H
-#include "dcontact.h"
-#endif
-
-#ifndef DTEAM_H
-#include "dteam.h"
-#endif
-
-#ifndef DWARRIOR_H
-#include "dwarrior.h"
-#endif
-
-#ifndef MECHCLASS_H
-#include "mechclass.h"
-#endif
-
-#ifndef DGAMEOBJ_H
-#include "dgameobj.h"
-#endif
-
-#ifndef DCARNAGE_H
-#include "dcarnage.h"
-#endif
-
-#ifndef MOVE_H
-#include "move.h"
-#endif
-
-#ifndef STUFF_HPP
-#include <stuff/stuff.hpp>
-#endif
+//#include <mclib.h>
+//#include "dobjtype.h"
+//#include "dappear.h"
+//#include "dcontact.h"
+//#include "dteam.h"
+//#include "dwarrior.h"
+//#include "mechclass.h"
+//#include "dgameobj.h"
+//#include "dcarnage.h"
+//#include "move.h"
+//#include <stuff/stuff.hpp>
 
 extern float metersPerWorldUnit;
 extern ObjectTypeManagerPtr objectTypeManager;
@@ -86,12 +54,12 @@ typedef enum {
 
 typedef struct _WeaponShotInfo {
 	GameObjectWatchID	attackerWID;
-	long				masterId;			// attack weapon master ID
+	int32_t				masterId;			// attack weapon master ID
 	float				damage;				// damage caused by this shot
-	long				hitLocation;		// hit location on target
+	int32_t				hitLocation;		// hit location on target
 	float				entryAngle;			// angle from which target was hit
 
-	void init (GameObjectWatchID _attackerWID, long _masterId, float _damage, long _hitLocation, float _entryAngle);
+	void init (GameObjectWatchID _attackerWID, int32_t _masterId, float _damage, int32_t _hitLocation, float _entryAngle);
 	
 	void setDamage (float _damage);
 
@@ -118,10 +86,10 @@ class WeaponFireChunk {
 	public:
 		
 		char				targetType;
-		long				targetId;
-		long				targetCell[2];
+		int32_t				targetId;
+		int32_t				targetCell[2];
 		char				specialType;
-		long				specialId;
+		int32_t				specialId;
 		uint8_t		weaponIndex;
 		bool				hit;
 		char				entryAngle;
@@ -132,9 +100,9 @@ class WeaponFireChunk {
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 		
 		void init (void) {
 			targetType = 0;
@@ -163,27 +131,27 @@ class WeaponFireChunk {
 		}
 
 		void buildMoverTarget (GameObjectPtr target,
-							   long weaponIndex,
+							   int32_t weaponIndex,
 							   bool hit,
 							   float entryAngle,
-							   long numMissiles,
-							   long hitLocation);
+							   int32_t numMissiles,
+							   int32_t hitLocation);
 
 		void buildTerrainTarget (GameObjectPtr target,
-								 long _weaponIndex,
+								 int32_t _weaponIndex,
 								 bool _hit,
-								 long _numMissiles);
+								 int32_t _numMissiles);
 
 		void buildCameraDroneTarget (GameObjectPtr target,
-									 long _weaponIndex,
+									 int32_t _weaponIndex,
 									 bool _hit,
 									 float _entryAngle,
-									 long _numMissiles);
+									 int32_t _numMissiles);
 
 		void buildLocationTarget (Stuff::Vector3D location,
-								  long weaponIndex,
+								  int32_t weaponIndex,
 								  bool hit,
-								  long numMissiles);
+								  int32_t numMissiles);
 
 		void pack (GameObjectPtr attacker);
 
@@ -199,10 +167,10 @@ class WeaponHitChunk {
 	public:
 
 		char				targetType;
-		long				targetId;
-		long				targetCell[2];
+		int32_t				targetId;
+		int32_t				targetCell[2];
 		char				specialType;
-		long				specialId;
+		int32_t				specialId;
 		char				cause;
 		float				damage;
 		char				hitLocation;
@@ -213,9 +181,9 @@ class WeaponHitChunk {
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 		
 		void init (void) {
 			targetType = 0;
@@ -244,9 +212,9 @@ class WeaponHitChunk {
 		}
 
 		void buildMoverTarget (GameObjectPtr target,
-							   long cause,
+							   int32_t cause,
 							   float damage,
-							   long hitLocation,
+							   int32_t hitLocation,
 							   float entryAngle,
 							   bool isRefit);
 
@@ -265,25 +233,25 @@ class WeaponHitChunk {
 
 		bool equalTo (WeaponHitChunkPtr chunk);
 
-		bool valid (long from);
+		bool valid (int32_t from);
 };
  
 //------------------------------------------------------------------------------------------
 typedef struct _GameObjectData
 {
-	long						objectTypeNum;
+	int32_t						objectTypeNum;
 	ObjectClass					objectClass;		
 	GameObjectHandle			handle;				
-	long						partId;				
+	int32_t						partId;				
 	ULONG				watchID;			
 
 	GameObjectTypeHandle		typeHandle;
 	Stuff::Vector3D				position;			
-	unsigned short				cellPositionRow;	
-	unsigned short				cellPositionCol;
-	long						d_vertexNum;		
+	uint16_t				cellPositionRow;	
+	uint16_t				cellPositionCol;
+	int32_t						d_vertexNum;		
 	ULONG				flags;				
-	unsigned short				debugFlags;			
+	uint16_t				debugFlags;			
 	uint8_t				status;				
 
 	float						tonnage;			
@@ -292,7 +260,7 @@ typedef struct _GameObjectData
 	GameObjectWatchID			collisionFreeFromWID;
 	float						collisionFreeTime;
 	Stuff::Vector4D				screenPos;			
-	long						windowsVisible;		
+	int32_t						windowsVisible;		
 	float						explRadius;			
 	float						explDamage;			
 	short						maxCV;
@@ -302,7 +270,7 @@ typedef struct _GameObjectData
 	uint8_t				blipFrame;
 	uint8_t				numAttackers;
 
-	long						drawFlags;			
+	int32_t						drawFlags;			
 } GameObjectData;
 
 class GameObject {
@@ -311,16 +279,16 @@ class GameObject {
 
 		ObjectClass					objectClass;		//What kind of object is this.
 		GameObjectHandle			handle;				//Used to reference into master obj table
-		long						partId;				//What is my unique part number.
+		int32_t						partId;				//What is my unique part number.
 		ULONG				watchID;			//Used to reference in the game engine
 
 		GameObjectTypeHandle		typeHandle;			//Who made me?
 		Stuff::Vector3D				position;			//Where am I?
-		unsigned short				cellPositionRow;	//Cell RC position
-		unsigned short				cellPositionCol;
-		long						d_vertexNum;		//Physical Vertex in mapData array that I'm lower right from
+		uint16_t				cellPositionRow;	//Cell RC position
+		uint16_t				cellPositionCol;
+		int32_t						d_vertexNum;		//Physical Vertex in mapData array that I'm lower right from
 		ULONG				flags;				//See GAMEOBJECT_FLAGS_ defines
-		unsigned short				debugFlags;			// use ONLY for debugging purposes...
+		uint16_t				debugFlags;			// use ONLY for debugging purposes...
 		uint8_t				status;				//Am I normal, disabled, destroyed, etc..?
 	
 		float						tonnage;			//How hefty am I?
@@ -329,7 +297,7 @@ class GameObject {
 		GameObjectWatchID			collisionFreeFromWID;	//Index into GameObject Table
 		float						collisionFreeTime;
 		Stuff::Vector4D				screenPos;			//Actual Screen position
-		long						windowsVisible;		//Which Windows can see me.
+		int32_t						windowsVisible;		//Which Windows can see me.
 		float						explRadius;			//How big is my explosion.
 		float						explDamage;			//How much damage does it do?
 		short						maxCV;
@@ -339,7 +307,7 @@ class GameObject {
 		uint8_t				blipFrame;
 		uint8_t				numAttackers;
 
-		long						drawFlags;			// bars, text, brackets, and highlight colors
+		int32_t						drawFlags;			// bars, text, brackets, and highlight colors
 
 		static ULONG		spanMask;			//Used to preserve tile's LOS
 		static float				blockCaptureRange;
@@ -347,30 +315,27 @@ class GameObject {
 
 	public:
 
-		void* operator new (size_t ourSize);
+		PVOID operator new(size_t ourSize);
+		void operator delete(PVOID us);
+		virtual void set(GameObject copy);
 
-		void operator delete (void *us);
-
-		virtual void set (GameObject copy);
-
-		virtual void init (bool create);
-	
-		GameObject (void) {
+		GameObject (void)
+		{
 			init(true);
 		}
-
-		virtual void destroy (void);
-
-		virtual ~GameObject (void) {
+		virtual ~GameObject (void)
+		{
 			destroy();
 		}
+		virtual void init (bool create);
+		virtual void destroy(void);
 		
 		ObjectClass getObjectClass (void) {
 			return(objectClass);
 		}
 
-		virtual long update (void) {
-			return(NO_ERR);
+		virtual int32_t update (void) {
+			return(NO_ERROR);
 		}
 
 		virtual void render (void) {
@@ -391,15 +356,15 @@ class GameObject {
 			return (false);
 		}
 		
-		virtual long getGroupId (void) {
+		virtual int32_t getGroupId (void) {
 			return(-1);
 		}
 
-		virtual void setPartId (long newPartId) {
+		virtual void setPartId (int32_t newPartId) {
 			partId = newPartId;
 		}
 		
-		long getPartId (void) {
+		int32_t getPartId (void) {
 			return(partId);
 		}
 
@@ -426,7 +391,7 @@ class GameObject {
 			return 5000.0f;		//If we somehow miss a object class, KEEP SHOOTING!!!!
 		}
 
-		void getCellPosition (long& cellRow, long& cellCol) {
+		void getCellPosition (int32_t& cellRow, int32_t& cellCol) {
 			cellRow = cellPositionRow;
 			cellCol = cellPositionCol;
 		}
@@ -434,9 +399,9 @@ class GameObject {
 		virtual void handleStaticCollision (void) {
 		}
 		
-		virtual void getBlockAndVertexNumber (long &blockNum, long &vertexNum);
+		virtual void getBlockAndVertexNumber (int32_t &blockNum, int32_t &vertexNum);
 
-		virtual long getTypeHandle (void) {
+		virtual int32_t getTypeHandle (void) {
 			return(typeHandle);
 		}
 
@@ -444,9 +409,9 @@ class GameObject {
 		
 		virtual void init (bool create, ObjectTypePtr _type);
 
-		virtual long init (FitIniFile* /*objProfile*/)
+		virtual int32_t init (FitIniFile* /*objProfile*/)
 		{
-			return(NO_ERR);
+			return(NO_ERROR);
 		}
 
 		bool isMover (void)
@@ -458,15 +423,15 @@ class GameObject {
 			return((objectClass == BATTLEMECH));
 		}
 
-		virtual long calcHitLocation (GameObjectPtr /*attacker*/, long /*weaponIndex*/, long /*attackSource*/, long /*attackType*/)
+		virtual int32_t calcHitLocation (GameObjectPtr /*attacker*/, int32_t /*weaponIndex*/, int32_t /*attackSource*/, int32_t /*attackType*/)
 		{
 			return(-1);
 		}
 
-		virtual long handleWeaponHit (WeaponShotInfoPtr /*shotInfo*/, bool addMultiplayChunk = false)
+		virtual int32_t handleWeaponHit (WeaponShotInfoPtr /*shotInfo*/, bool addMultiplayChunk = false)
 		{
 			addMultiplayChunk;
-			return(NO_ERR);
+			return(NO_ERROR);
 		}
 
 		virtual void setFireHandle (GameObjectHandle /*handle*/) 
@@ -481,18 +446,18 @@ class GameObject {
 			return 0.0f;
 		}
 		
-		virtual long getTeamId (void) {
+		virtual int32_t getTeamId (void) {
 			return(-1);
 		}
 
-		virtual long getVertexNum (void)
+		virtual int32_t getVertexNum (void)
 		{
 			return d_vertexNum;
 		}
 		
-		virtual long setTeamId (long /*_teamId*/, bool /*setup*/)
+		virtual int32_t setTeamId (int32_t /*_teamId*/, bool /*setup*/)
 		{
-			return(NO_ERR);
+			return(NO_ERROR);
 		}
 
 		virtual TeamPtr getTeam (void)
@@ -500,9 +465,9 @@ class GameObject {
 			return(NULL);
 		}
 
-		virtual long setTeam (TeamPtr /*_team*/)
+		virtual int32_t setTeam (TeamPtr /*_team*/)
 		{
-			return(NO_ERR);
+			return(NO_ERROR);
 		}
 
 		virtual bool isFriendly (TeamPtr /*team*/)
@@ -532,7 +497,7 @@ class GameObject {
 
 		virtual Stuff::Vector3D relativePosition (float angle, float distance, ULONG flags);
 		
-		virtual Stuff::Vector3D getPositionFromHS (long /*weaponType*/) 
+		virtual Stuff::Vector3D getPositionFromHS (int32_t /*weaponType*/) 
 		{
 			//-----------------------------------------
 			// No hot spots with regular game objects.
@@ -543,7 +508,7 @@ class GameObject {
 		virtual void setPosition (const Stuff::Vector3D& newPosition, bool calcPositions = true);
 		
 		virtual void setTerrainPosition (const Stuff::Vector3D& /*position*/, 
-			const Stuff::Vector2DOf<long>& /*numbers*/)
+			const Stuff::Vector2DOf<int32_t>& /*numbers*/)
 		{
 		}
 
@@ -554,7 +519,7 @@ class GameObject {
 			return(result);
 		}
 		
-		virtual Stuff::Vector4D getScreenPos (long /*whichOne*/)
+		virtual Stuff::Vector4D getScreenPos (int32_t /*whichOne*/)
 		{
 			return(screenPos);
 		}
@@ -568,7 +533,7 @@ class GameObject {
 			return(0.0);
 		}
 
-		virtual long getMoveLevel (void)
+		virtual int32_t getMoveLevel (void)
 		{
 			return(0);
 		}
@@ -601,7 +566,7 @@ class GameObject {
 			return(rotationVec);
 		}
 		
-		virtual bool calcAdjacentAreaCell (long /*moveLevel*/, long /*areaID*/, long& /*adjRow*/, long& /*adjCol*/)
+		virtual bool calcAdjacentAreaCell (int32_t /*moveLevel*/, int32_t /*areaID*/, int32_t& /*adjRow*/, int32_t& /*adjCol*/)
 		{
 			return(false);
 		}
@@ -612,7 +577,7 @@ class GameObject {
 		}
 
 		//NEVER call this with forceStatus UNLESS you are recovering a mech!!!
-		void setStatus (long newStatus, bool forceStatus = false) 
+		void setStatus (int32_t newStatus, bool forceStatus = false) 
 		{
 			if (((status != OBJECT_STATUS_DESTROYED) && (status != OBJECT_STATUS_DISABLED)) || forceStatus)
 				status = (uint8_t)newStatus;
@@ -650,7 +615,7 @@ class GameObject {
 			return(0.0);
 		}
 
-		virtual long getContacts (long* /*contactList*/, long /*contactCriteria*/, long /*sortType*/)
+		virtual int32_t getContacts (int32_t* /*contactList*/, int32_t /*contactCriteria*/, int32_t /*sortType*/)
 		{
 			return(0);
 		}
@@ -668,7 +633,7 @@ class GameObject {
 				flags &= (OBJECT_FLAG_TANGIBLE ^ 0xFFFFFFFF);
 		}
 		
-		virtual void setCommanderId (long /*_commanderId*/)
+		virtual void setCommanderId (int32_t /*_commanderId*/)
 		{
 		}
 
@@ -677,53 +642,53 @@ class GameObject {
 			return(NULL);
 		}
 
-		virtual long getCommanderId (void)
+		virtual int32_t getCommanderId (void)
 		{
 			return(-1);
 		}
 
 
-		virtual long write (FilePtr /*objFile*/)
+		virtual int32_t write (FilePtr /*objFile*/)
 		{
-			return NO_ERR;
+			return NO_ERROR;
 		}
 		
 		virtual float distanceFrom (Stuff::Vector3D goal);
 
-		virtual long cellDistanceFrom (Stuff::Vector3D goal);
+		virtual int32_t cellDistanceFrom (Stuff::Vector3D goal);
 
-		virtual long cellDistanceFrom (GameObjectPtr obj);
+		virtual int32_t cellDistanceFrom (GameObjectPtr obj);
 
 		virtual void calcLineOfSightNodes (void)
 		{
 		}
 
-		virtual long getLineOfSightNodes (long eyeCellRow, long eyeCellCol, long* cells);
+		virtual int32_t getLineOfSightNodes (int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells);
 
-		virtual bool lineOfSight (long cellRow, long cellCol, bool checkVisibleBits = true);
+		virtual bool lineOfSight (int32_t cellRow, int32_t cellCol, bool checkVisibleBits = true);
 
 		virtual bool lineOfSight (Stuff::Vector3D point, bool checkVisibleBits = true);
 
 		virtual bool lineOfSight (GameObjectPtr target, float startExtRad = 0.0f, bool checkVisibleBits = true);
 	
-		virtual float relFacingTo (Stuff::Vector3D goal, long bodyLocation = -1);
+		virtual float relFacingTo (Stuff::Vector3D goal, int32_t bodyLocation = -1);
 
 		virtual float relViewFacingTo (Stuff::Vector3D goal) 
 		{
 			return(GameObject::relFacingTo(goal));
 		}
 
-		virtual long openStatusWindow (long /*x*/, long /*y*/, long /*w*/, long /*h*/) 
+		virtual int32_t openStatusWindow (int32_t /*x*/, int32_t /*y*/, int32_t /*w*/, int32_t /*h*/) 
 		{
-			return(NO_ERR);
+			return(NO_ERROR);
 		}
 
-		virtual long closeStatusWindow (void) 
+		virtual int32_t closeStatusWindow (void) 
 		{
-			return(NO_ERR);
+			return(NO_ERROR);
 		}
 
-		virtual long getMoveState (void)
+		virtual int32_t getMoveState (void)
 		{
 			return 0;
 		}
@@ -752,7 +717,7 @@ class GameObject {
 			return(false);
 		}
 
-		virtual bool isCaptureable (long /*capturingTeamID*/)
+		virtual bool isCaptureable (int32_t /*capturingTeamID*/)
 		{
 			return(false);
 		}
@@ -789,14 +754,14 @@ class GameObject {
 		//----------------------
 		// DEBUG FLAGS functions
 
-		virtual void setDebugFlag (unsigned short flag, bool set) {
+		virtual void setDebugFlag (uint16_t flag, bool set) {
 			if (set)
 				debugFlags |= flag;
 			else
 				debugFlags &= (flag ^ 0xFFFF);
 		}
 
-		virtual bool getDebugFlag (unsigned short flag) {
+		virtual bool getDebugFlag (uint16_t flag) {
 			return((debugFlags & flag) != 0);
 		}
 
@@ -875,7 +840,7 @@ class GameObject {
 				drawFlags &=( DRAW_TEXT ^ 0xffffffff );
 		}
 
-		virtual long getDrawText()
+		virtual int32_t getDrawText()
 		{
 			return drawFlags & DRAW_TEXT;
 		}
@@ -888,7 +853,7 @@ class GameObject {
 				drawFlags &=( DRAW_BARS ^ 0xffffffff );
 		}
 
-		virtual long getDrawBars()
+		virtual int32_t getDrawBars()
 		{
 			return drawFlags & DRAW_BARS;
 		}
@@ -901,7 +866,7 @@ class GameObject {
 				drawFlags &=( DRAW_BRACKETS ^ 0xffffffff );
 		}
 
-		virtual long getDrawBrackets()
+		virtual int32_t getDrawBrackets()
 		{
 			return drawFlags & DRAW_BRACKETS;
 		}
@@ -914,7 +879,7 @@ class GameObject {
 				drawFlags &=( DRAW_COLORED ^ 0xffffffff );
 		}
 
-		virtual long getDrawColored()
+		virtual int32_t getDrawColored()
 		{
 			return drawFlags & DRAW_COLORED;
 		}
@@ -1072,14 +1037,14 @@ class GameObject {
 			return(NULL);
 		}
 		
-		virtual long getWindowsVisible (void)
+		virtual int32_t getWindowsVisible (void)
 		{
 			return(windowsVisible);
 		}
 		
-		virtual long getCaptureBlocker (GameObjectPtr capturingMover, GameObjectPtr* blockerList = NULL);
+		virtual int32_t getCaptureBlocker (GameObjectPtr capturingMover, GameObjectPtr* blockerList = NULL);
 
-		virtual long kill (void);
+		virtual int32_t kill (void);
 
 		virtual bool isMarine(void)
 		{
@@ -1106,20 +1071,20 @@ class GameObject {
 			return(false);
 		}
 
-		virtual long getCurCV (void) {
+		virtual int32_t getCurCV (void) {
 			return(curCV);
 		}
 
-		virtual long getMaxCV (void) {
+		virtual int32_t getMaxCV (void) {
 			return(maxCV);
 		}
 		
-		virtual void setCurCV (long newCV)
+		virtual void setCurCV (int32_t newCV)
 		{
 			curCV = (short)newCV;
 		}
 
-		virtual long getThreatRating (void) {
+		virtual int32_t getThreatRating (void) {
 			return(threatRating);
 		}
 
@@ -1136,7 +1101,7 @@ class GameObject {
 			numAttackers--;
 		}
 
-		virtual long getNumAttackers(void) {
+		virtual int32_t getNumAttackers(void) {
 			return(numAttackers);
 		}
 
@@ -1173,7 +1138,7 @@ class GameObject {
 			return NULL;
 		}
 
-		virtual void setParentId (DWORD /*pId*/)
+		virtual void setParentId (ULONG /*pId*/)
 		{
 			//Do Nothing.  Most of the time, this is OK!
 		}
@@ -1184,7 +1149,7 @@ class GameObject {
 			initialize = setting;
 		}
 
-		virtual long getDescription(){ return -1; }
+		virtual int32_t getDescription(){ return -1; }
 		
 		virtual bool isOnGUI (void)
 		{
@@ -1205,7 +1170,7 @@ class GameObject {
 			return false;
 		}
 		
-		virtual void Save (PacketFilePtr file, long packetNum);
+		virtual void Save (PacketFilePtr file, int32_t packetNum);
 
 		void Load (GameObjectData *data);
 

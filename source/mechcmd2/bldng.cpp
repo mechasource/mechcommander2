@@ -101,11 +101,11 @@ extern float scenarioTime;
 //#include "sounds.h"
 //#endif
 
-extern long DefaultPilotId;
+extern int32_t DefaultPilotId;
 extern char marineProfileName[];
 //extern ObjectMapPtr GameObjectMap;
 
-extern long NumMarines;
+extern int32_t NumMarines;
 
 extern bool GeneralAlarm;
 
@@ -114,7 +114,7 @@ inline float agsqrt( float _a, float _b )
 	return sqrt(_a*_a + _b*_b);
 }
 
-DWORD WallType[18] = 
+ULONG WallType[18] = 
 {
 	26,125,152,154,156,158,160,161,162,202,204,206,231,232,233,286,287,288
 };
@@ -165,13 +165,13 @@ void BuildingType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long BuildingType::init (FilePtr objFile, ULONG fileSize) {
+int32_t BuildingType::init (FilePtr objFile, ULONG fileSize) {
 
-	long result = 0;
+	int32_t result = 0;
 	
 	FitIniFile bldgFile;
 	result = bldgFile.open(objFile, fileSize);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	//-------------------------------------------------------------------
@@ -180,108 +180,108 @@ long BuildingType::init (FilePtr objFile, ULONG fileSize) {
 	// stands for animated building. Ultimately, would be nice to get
 	// rid of this misleading legacy object type...
 	result = bldgFile.seekBlock("TreeData");
-	if (result != NO_ERR) 
+	if (result != NO_ERROR) 
 	{
 		result = bldgFile.seekBlock("BuildingData");
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			return(result);
 	}
 
 	ULONG dmgLevel;
 	result = bldgFile.readIdULong("DmgLevel",dmgLevel);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	damageLevel = (float)dmgLevel;
 		
 	result = bldgFile.readIdBoolean("CanRefit", canRefit);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		canRefit = false;
 
 	if (canRefit) 
 	{
 		result = bldgFile.readIdBoolean("MechBay", mechBay);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			mechBay = false;
 	}
 
 	result = bldgFile.readIdFloat("ExplosionRadius", explRad);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		explRad = 0.0;
 		
 	result = bldgFile.readIdFloat("ExplosionDamage", explDmg);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		explDmg = 0.0;
 
 	result = bldgFile.readIdFloat("Tonnage", baseTonnage);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		baseTonnage = 20;
 
 	result = bldgFile.readIdLong("BattleRating", startBR);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		startBR = 20;
 	
 	result = bldgFile.readIdLong("NumMarines", numMarines);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		numMarines = 0;
 	
 	float realExtent = 0.0;
 	result = bldgFile.readIdFloat("ExtentRadius", realExtent);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		realExtent = -1.0;
 
 	result = bldgFile.readIdULong("ActivityEffectID", activityEffectId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		activityEffectId = 0xffffffff;
 		
  	//----------------------------
 	// Init sensor-related data...
 	result = bldgFile.readIdLong("TeamID", teamId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		teamId = -1;
 
 	result = bldgFile.readIdFloat("SensorRange", sensorRange);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		sensorRange = -1.0;
 
 	result = bldgFile.readIdLong ("BuildingName", buildingTypeName);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		buildingTypeName = IDS_BLDOBJ_NAME;
 
 	result = bldgFile.readIdLong( "BuildingDescription", buildingDescriptionID );
-	if ( result != NO_ERR )
+	if ( result != NO_ERROR )
 		buildingDescriptionID = -1;
 
 
 	result = bldgFile.readIdLong( "BuildingDescription", buildingDescriptionID );
-	if ( result != NO_ERR )
+	if ( result != NO_ERROR )
 		buildingDescriptionID = -1;
 
 	result = bldgFile.readIdLong( "ResourcePoints", resourcePoints );
-	if ( result != NO_ERR )
+	if ( result != NO_ERROR )
 		resourcePoints = 0;
 
 	result = bldgFile.readIdBoolean("ImpassableWhenDestroyed",marksImpassableWhenDestroyed);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		marksImpassableWhenDestroyed = true;
 
 	result = bldgFile.readIdBoolean("Capturable",capturable);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		capturable = false;
 
 	result = bldgFile.readIdBoolean("IsPowerSource",powerSource);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		powerSource = false;
 
 	result = bldgFile.readIdFloat("LookoutTowerRange",lookoutTowerRange);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		lookoutTowerRange = 0.0f;
 
 	result = bldgFile.readIdFloat("PerimeterAlarmRange",perimeterAlarmRange);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		perimeterAlarmRange = 0.0f;
 
 	result = bldgFile.readIdFloat("PerimeterAlarmTimer",perimeterAlarmTimer);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		perimeterAlarmTimer = 0.0f;
 
 	result = ObjectType::init(&bldgFile);
@@ -292,7 +292,7 @@ long BuildingType::init (FilePtr objFile, ULONG fileSize) {
 	//--------------------------------------------------------------------------------
 	// HACK!!!!! Must fix this for localization purposes--should be in the object type
 	// data (can't look in the string!) --gd
-	long objectNameID = buildingTypeName;
+	int32_t objectNameID = buildingTypeName;
 	if (objectNameID < IDS_MC2_STRING_START)
 		objectNameID += IDS_MC2_STRING_START;
 
@@ -302,7 +302,7 @@ long BuildingType::init (FilePtr objFile, ULONG fileSize) {
 		cLoadString(objectNameID, s, 254);
 	}
 
-	for (long i=0;i<18;i++)
+	for (int32_t i=0;i<18;i++)
 	{
 		if (objTypeNum == WallType[i])
 		{
@@ -399,14 +399,14 @@ void Building::closeFootPrint (void) {
 }
 
 //---------------------------------------------------------------------------
-long Building::updateAnimations (void)
+int32_t Building::updateAnimations (void)
 {
 	//---------------------------------------------
 	// Animate Sensor Towers first.
 	/*
 	if (sensorSystem != NULL)
 	{
-		long animState = appearance->getCurrentGestureId();
+		int32_t animState = appearance->getCurrentGestureId();
 		if (sensorSystem->numContacts)
 		{
 			switch (animState)
@@ -480,7 +480,7 @@ long Building::updateAnimations (void)
 		{
 			//We are a resource Points Building.
 			//OPEN when we have been CAPTURED!!
-			long animState = appearance->getCurrentGestureId();
+			int32_t animState = appearance->getCurrentGestureId();
 			if (!teamId)	//We've been Captured
 			{
 				switch (animState)
@@ -555,7 +555,7 @@ long Building::updateAnimations (void)
 		{
 			//We are a Mech Repair Bay Building.
 			// Open to the correct place based on our RepairBuddyWID
-			long animState = appearance->getCurrentGestureId();
+			int32_t animState = appearance->getCurrentGestureId();
 			if (!refitBuddyWID)	//We're repairing no one.
 			{
 				switch (animState)
@@ -706,7 +706,7 @@ long Building::updateAnimations (void)
 }
 
 //---------------------------------------------------------------------------
-long Building::update (void) 
+int32_t Building::update (void) 
 {
 	if (getFlag(OBJECT_FLAG_JUSTCREATED)) 
 	{
@@ -836,11 +836,11 @@ long Building::update (void)
 			{
 				//
 				//Find out what vertex we are in the terrain.
-				long mx = (float2long(position.x) >> 7) + Terrain::halfVerticesMapSide;
-				long my = Terrain::halfVerticesMapSide - ((float2long(position.y) >> 7) + 1);
+				int32_t mx = (float2long(position.x) >> 7) + Terrain::halfVerticesMapSide;
+				int32_t my = Terrain::halfVerticesMapSide - ((float2long(position.y) >> 7) + 1);
 
 				Overlays oType;
-				DWORD offset;
+				ULONG offset;
 				Terrain::mapData->getOverlay(my,mx,oType,offset);
 				if (oType == OBRIDGE)
 					Terrain::mapData->setOverlay(my,mx,DAMAGED_BRIDGE,offset);
@@ -920,7 +920,7 @@ long Building::update (void)
 
 //---------------------------------------------------------------------------
 
-long Building::setTeamId (long _teamId, bool setup) 
+int32_t Building::setTeamId (int32_t _teamId, bool setup) 
 {
 	if (sensorSystem)
 		SensorManager->removeTeamSensor(teamId, sensorSystem);
@@ -992,7 +992,7 @@ long Building::setTeamId (long _teamId, bool setup)
 		}
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -1040,7 +1040,7 @@ void Building::lightOnFire (float timeToBurn)
 
 //---------------------------------------------------------------------------
 
-bool Building::isCaptureable (long capturingTeamID) {
+bool Building::isCaptureable (int32_t capturingTeamID) {
 
 //	if (MPlayer)
 //		return(getFlag(OBJECT_FLAG_CAPTURABLE) && !isDestroyed());
@@ -1050,7 +1050,7 @@ bool Building::isCaptureable (long capturingTeamID) {
 
 //---------------------------------------------------------------------------
 
-void Building::setCommanderId (long _commanderId) {
+void Building::setCommanderId (int32_t _commanderId) {
 
 	commanderId = _commanderId;
 }
@@ -1086,7 +1086,7 @@ void Building::render (void) {
 				barStatus = 0.0f;
 			}
 
-			DWORD color = 0xff7f7f7f;
+			ULONG color = 0xff7f7f7f;
 			if ((teamId > -1) && (teamId < 8)) 
 			{
 				if (getTeam()->isFriendly(Team::home))
@@ -1188,7 +1188,7 @@ void Building::setSensorData (TeamPtr team, float range, bool setTeam)
 	}
 }
 
-extern long languageOffset;
+extern int32_t languageOffset;
 //---------------------------------------------------------------------------
 
 void Building::init (bool create, ObjectTypePtr objType) {
@@ -1212,7 +1212,7 @@ void Building::init (bool create, ObjectTypePtr objType) {
 	// We need to append the sprite type to the appearance num now.
 	// The MechEdit tool does not assume a sprite type, nor should it.
 	// MechCmdr2 features much simpler objects which only use 1 type of sprite!
-	long appearanceType = (BLDG_TYPE << 24);
+	int32_t appearanceType = (BLDG_TYPE << 24);
 
 	AppearanceTypePtr buildingAppearanceType = NULL;
 	if (!appearName)
@@ -1289,21 +1289,21 @@ void Building::init (bool create, ObjectTypePtr objType) {
 void Building::createBuildingMarines (void) {
 
 #ifdef USE_ELEMENTALS
-	long totalMarines = ((BuildingTypePtr)type)->numMarines;
-	long numCreated = 0;
+	int32_t totalMarines = ((BuildingTypePtr)type)->numMarines;
+	int32_t numCreated = 0;
 	if (totalMarines) {
 		//-----------------------------------------------------
 		// Scan the Pilot list for non-home team pilots WHICH are
 		// occupying a destroyed vehicle.
-		long numPilots = scenario->getNumWarriors();
-		for (long j=0;j<numPilots;j++)
+		int32_t numPilots = scenario->getNumWarriors();
+		for (int32_t j=0;j<numPilots;j++)
 		{
 			MechWarriorPtr pilot = scenario->getWarrior(j);
 			if (pilot && (pilot->getAlignment() != homeTeam->getAlignment()))
 			{
 				GameObjectPtr myVehicle = pilot->getVehicle();
 				
-				long pilotVehicleStatus = OBJECT_STATUS_DESTROYED;
+				int32_t pilotVehicleStatus = OBJECT_STATUS_DESTROYED;
 				if (myVehicle)
 					pilotVehicleStatus = myVehicle->getStatus();
 				
@@ -1322,8 +1322,8 @@ void Building::createBuildingMarines (void) {
 					FullPathFileName objFullProfileName;
 					objFullProfileName.init(profilePath,marineProfileName,".fit");
 					FitIniFile profileFile;
-					long result = profileFile.open(objFullProfileName);
-					if (result != NO_ERR)
+					int32_t result = profileFile.open(objFullProfileName);
+					if (result != NO_ERROR)
 					{
 						Fatal(result," Unable to open Vehicle Marine Profile ");
 					}
@@ -1332,7 +1332,7 @@ void Building::createBuildingMarines (void) {
 					// <deleted really obnoxious Glenn Slam>
 					// Thanks!
 					result = vehiclePilot->init(&profileFile);
-					if (result != NO_ERR)
+					if (result != NO_ERROR)
 						Fatal(-1," Bad Vehicle Marine Profile File ");
 
 					profileFile.close();
@@ -1420,18 +1420,18 @@ void Building::createBuildingMarines (void) {
 
 //---------------------------------------------------------------------------
 
-long Building::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) 
+int32_t Building::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) 
 {
 	if (!shotInfo)
-		return(NO_ERR);
+		return(NO_ERROR);
 
 	if (addMultiplayChunk) {
 		//----------------------------------
 		// Generic HQs are indestructible...
 		if (getObjectType()->getObjTypeNum() == GENERIC_HQ_BUILDING_OBJNUM)
-			return(NO_ERR);
+			return(NO_ERROR);
 		if (getObjectType()->getObjTypeNum() == GENERIC_INDESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM)
-			return(NO_ERR);
+			return(NO_ERROR);
 		MPlayer->addWeaponHitChunk(this, shotInfo);
 	}
 
@@ -1532,24 +1532,24 @@ long Building::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChu
 					// UNFORTUNATELY, the move code does not store the landBridge stuff.
 					// ALL I can do is blow a guy for standing on impassable terrain now.
 					short* curCoord = cellsCovered;
-					for (long i = 0; i < numCellsCovered; i++) 
+					for (int32_t i = 0; i < numCellsCovered; i++) 
 					{
-						long r = *curCoord++;
-						long c = *curCoord++;
+						int32_t r = *curCoord++;
+						int32_t c = *curCoord++;
 
 						//Traverse the moverLists and blow anyone standing on these cells which JUST went impassable
-						long numMovers = ObjectManager->getNumMovers();
-						for (long j = 0; j < numMovers; j+= 1) 
+						int32_t numMovers = ObjectManager->getNumMovers();
+						for (int32_t j = 0; j < numMovers; j+= 1) 
 						{
 							MoverPtr pMover = ObjectManager->getMover(j);
 							if (pMover && pMover->getExists())
 							{
-								long cellRow, cellCol;
+								int32_t cellRow, cellCol;
 								land->worldToCell(pMover->getPosition(), cellRow, cellCol);
 								if ((cellCol == c) && (cellRow == r))
 								{
 									//DIE DIE DIE
-									for (long k=0;k<50;k++)
+									for (int32_t k=0;k<50;k++)
 									{
 										WeaponShotInfo shotInfo;
 										shotInfo.init(NULL, 160, 50.0f, pMover->calcHitLocation(NULL,-1,ATTACKSOURCE_WEAPONFIRE,0), 0);
@@ -1567,7 +1567,7 @@ long Building::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChu
 		setDamage(dmg);
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 
@@ -1594,19 +1594,19 @@ GameObjectPtr Building::getParent (void)
 }
 
 //---------------------------------------------------------------------------
-void Building::setParentId (DWORD pId)
+void Building::setParentId (ULONG pId)
 {
 	parentId = pId;
 }
 
 //***************************************************************************
-void Building::Save (PacketFilePtr file, long packetNum)
+void Building::Save (PacketFilePtr file, int32_t packetNum)
 {
 	BuildingData data;
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(MemoryPtr)&data,sizeof(BuildingData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(PUCHAR)&data,sizeof(BuildingData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

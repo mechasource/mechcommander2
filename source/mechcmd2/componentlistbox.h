@@ -1,5 +1,3 @@
-#ifndef COMPONENTLISTBOX_H
-#define COMPONENTLISTBOX_H
 /*************************************************************************************************\
 ComponentListBox.h			: Interface for the ComponentListBox component.
 //---------------------------------------------------------------------------//
@@ -7,17 +5,14 @@ ComponentListBox.h			: Interface for the ComponentListBox component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef ALISTBOX_H
-#include "alistbox.h"
-#endif
+#pragma once
 
-#ifndef AANIM_H
-#include "aanim.h"
-#endif
+#ifndef COMPONENTLISTBOX_H
+#define COMPONENTLISTBOX_H
 
-#ifndef ELIST_H
-#include "elist.h"
-#endif
+//#include "alistbox.h"
+//#include "aanim.h"
+//#include "elist.h"
 
 class LogisticsVariant;
 class LogisticsComponent;
@@ -36,47 +31,47 @@ ComponentListBox:
 // complex list box items, icons and all
 class ComponentListItem : public aListItem
 {
-	public:
+public:
 
-		ComponentListItem( LogisticsComponent* pComp );
-		virtual ~ComponentListItem();
+	ComponentListItem( LogisticsComponent* pComp );
+	virtual ~ComponentListItem();
 
-		static int init( FitIniFile& file );
+	static int init( FitIniFile& file );
 
-		LogisticsComponent* getComponent() { return pComponent; }
+	LogisticsComponent* getComponent() { return pComponent; }
 
-		virtual void render();
+	virtual void render();
 
-		void	update();
+	void	update();
 
-	private:
+private:
 
-		friend class ComponentIconListBox;
+	friend class ComponentIconListBox;
 
-		static ComponentListItem* s_templateItem;
+	static ComponentListItem* s_templateItem;
 
-		aText		name;
-		aText		costText;
-		aText		heatText;
-		aObject		costIcon;
-		aObject		heatIcon;
-		aObject		icon;
-		aRect		iconOutline;
-		aRect		outline;
-		aText		disabledText;
+	aText		name;
+	aText		costText;
+	aText		heatText;
+	aObject		costIcon;
+	aObject		heatIcon;
+	aObject		icon;
+	aRect		iconOutline;
+	aRect		outline;
+	aText		disabledText;
 
-		aAnimGroup	animations[COMP_ANIMATION_COUNT];
+	aAnimGroup	animations[COMP_ANIMATION_COUNT];
 
-		aAnimGroup*	pChildAnims[6];
+	aAnimGroup*	pChildAnims[6];
 
-		LogisticsComponent* pComponent;
+	LogisticsComponent* pComponent;
 
-		static void assignAnimation( FitIniFile& file,
-			int whichChild, char animNames[COMP_ANIMATION_COUNT][32], aObject* pObject );
+	static void assignAnimation( FitIniFile& file,
+		int whichChild, char animNames[COMP_ANIMATION_COUNT][32], aObject* pObject );
 
-		void doAdd();
-		void setComponent();
-		void startDrag();
+	void doAdd();
+	void setComponent();
+	void startDrag();
 
 
 
@@ -96,18 +91,16 @@ public:
 
 	static ComponentIconListBox* s_instance;
 
-	
+private:
 
-	private:
+	ComponentIconListBox( const ComponentIconListBox& src );
+	ComponentIconListBox& operator=( const ComponentIconListBox& src );
 
-		ComponentIconListBox( const ComponentIconListBox& src );
-		ComponentIconListBox& operator=( const ComponentIconListBox& src );
+	EList<ComponentListItem*, ComponentListItem*>	masterComponentList;
 
-		EList<ComponentListItem*, ComponentListItem*>	masterComponentList;
+	int type;
 
-		int type;
-
-		void addSortedItem( ComponentListItem* pItem );
+	void addSortedItem( ComponentListItem* pItem );
 
 };
 

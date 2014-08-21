@@ -8,26 +8,17 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef TERROBJ_H
 #define TERROBJ_H
 
-#ifndef DTERROBJ_H
-#include "dterrobj.h"
-#endif
+//#include "dterrobj.h"
+//#include "objtype.h"
+//#include "gameobj.h"
+//#include "dcarnage.h"
+//#include <gosfx/gosfxheaders.hpp>
 
-#ifndef OBJTYPE_H
-#include "objtype.h"
-#endif
-
-#ifndef GAMEOBJ_H
-#include "gameobj.h"
-#endif
-
-#ifndef DCARNAGE_H
-#include "dcarnage.h"
-#endif
-
-#include <gosfx/gosfxheaders.hpp>
 //---------------------------------------------------------------------------
 // Macro Definitions
 //#define NO_RAM_FOR_BUILDING				0xDCDC0006
@@ -54,11 +45,11 @@ class TerrainObjectType : public ObjectType {
 
 		char			subType;
 		float			damageLevel;
-		long			collisionOffsetX;
-		long			collisionOffsetY;
+		int32_t			collisionOffsetX;
+		int32_t			collisionOffsetY;
 		bool			setImpassable;
-		long			xImpasse;
-		long			yImpasse;
+		int32_t			xImpasse;
+		int32_t			yImpasse;
 		float			explDmg;
 		float			explRad;
 		ULONG	fireTypeHandle;
@@ -72,11 +63,11 @@ class TerrainObjectType : public ObjectType {
 			init();
 		}
 		
-		virtual void initMiscTerrObj (long objTypeNum);
+		virtual void initMiscTerrObj (int32_t objTypeNum);
 
-		virtual long init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, ULONG fileSize);
 
-		long init (FitIniFilePtr objFile);
+		int32_t init (FitIniFilePtr objFile);
 		
 		~TerrainObjectType (void) {
 			destroy();
@@ -107,8 +98,8 @@ class TerrainObjectType : public ObjectType {
 typedef struct _TerrainObjectData : public GameObjectData
 {
 	float						damage;
-	long						vertexNumber;
-	long						blockNumber;
+	int32_t						vertexNumber;
+	int32_t						blockNumber;
 	float						pitchAngle;
 	float						fallRate;
 	GameObjectWatchID			powerSupply;
@@ -131,8 +122,8 @@ class TerrainObject : public GameObject {
 	public:
 
 		float						damage;
-		long						vertexNumber;
-		long						blockNumber;
+		int32_t						vertexNumber;
+		int32_t						blockNumber;
 		float						pitchAngle;
 		float						fallRate;
 		GameObjectWatchID			powerSupply;
@@ -148,7 +139,7 @@ class TerrainObject : public GameObject {
 		short*						cellsCovered;
 		gosFX::Effect				*bldgDustPoofEffect;
 			
-		static long					cellArray[9];
+		static int32_t					cellArray[9];
 
 	public:
 
@@ -195,7 +186,7 @@ class TerrainObject : public GameObject {
 		
 		virtual void destroy (void);
 		
-		virtual long update (void);
+		virtual int32_t update (void);
 
 		virtual void render (void);
 
@@ -203,11 +194,11 @@ class TerrainObject : public GameObject {
 		
 		virtual void init (bool create, ObjectTypePtr objType);
 
-		virtual long handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+		virtual int32_t handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
-		virtual void setTerrainPosition (const Stuff::Vector3D& position, const Stuff::Vector2DOf<long>& numbers);
+		virtual void setTerrainPosition (const Stuff::Vector3D& position, const Stuff::Vector2DOf<int32_t>& numbers);
 
-		virtual void setDamage (long newDamage);		//Damage encodes which groundtile to use, too.
+		virtual void setDamage (int32_t newDamage);		//Damage encodes which groundtile to use, too.
 
 		virtual void setRotation( float rot );
 		
@@ -228,24 +219,24 @@ class TerrainObject : public GameObject {
 
 		virtual float getStatusRating (void);
 
-		long getSubType (void) {
+		int32_t getSubType (void) {
 			return(((TerrainObjectTypePtr)getObjectType())->subType);
 		}
 
-		virtual long kill (void) {
+		virtual int32_t kill (void) {
 			//Do nothing for now.  Later, Buildings may do something.
-			return NO_ERR;
+			return NO_ERROR;
 		}
 		
 		bool isVisible (void);
 
-		virtual long getLineOfSightNodes (long eyeCellRow, long eyeCellCol, long* cells);
+		virtual int32_t getLineOfSightNodes (int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells);
 		
 		virtual bool isTerrainObject (void) {
 			return(true);
 		}
 
-		virtual void getBlockAndVertexNumber (long& blockNum, long& vertexNum) {
+		virtual void getBlockAndVertexNumber (int32_t& blockNum, int32_t& vertexNum) {
 			blockNum = blockNumber;
 			vertexNum = vertexNumber;
 		}
@@ -264,9 +255,9 @@ class TerrainObject : public GameObject {
 
 		virtual void calcCellFootprint (Stuff::Vector3D& pos);
 
-		virtual bool calcAdjacentAreaCell (long moveLevel, long areaID, long& adjRow, long& adjCol);
+		virtual bool calcAdjacentAreaCell (int32_t moveLevel, int32_t areaID, int32_t& adjRow, int32_t& adjCol);
 
-		void calcSubAreas (long numCells, short cells[MAX_GAME_OBJECT_CELLS][2]);
+		void calcSubAreas (int32_t numCells, short cells[MAX_GAME_OBJECT_CELLS][2]);
 
 		void markMoveMap (bool passable);
 
@@ -274,15 +265,15 @@ class TerrainObject : public GameObject {
 
 		void closeSubAreas (void);
 
-		void setSubAreasTeamId (long id);
+		void setSubAreasTeamId (int32_t id);
 
-		virtual void Save (PacketFilePtr file, long packetNum);
+		virtual void Save (PacketFilePtr file, int32_t packetNum);
 
 		void Load (TerrainObjectData *data);
 
 		void CopyTo (TerrainObjectData *data);
 
-		virtual Stuff::Vector3D getPositionFromHS (long weaponType) 
+		virtual Stuff::Vector3D getPositionFromHS (int32_t weaponType) 
 		{
 			//-----------------------------------------
 			// Hotspot for buildings is position plus 

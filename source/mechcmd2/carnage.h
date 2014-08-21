@@ -10,31 +10,25 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef CARNAGE_H
 #define CARNAGE_H
 
 //---------------------------------------------------------------------------
 
-#ifndef DCARNAGE_H
-#include "dcarnage.h"
-#endif
+//#include "dcarnage.h"
+//#include "gameobj.h"
+//#include "objtype.h"
+//#include <gosfx/gosfxheaders.hpp>
 
-#ifndef GAMEOBJ_H
-#include "gameobj.h"
-#endif
-
-#ifndef OBJTYPE_H
-#include "objtype.h"
-#endif
-
-#include <gosfx/gosfxheaders.hpp>
 //***************************************************************************
 typedef union _CarnageInfo 
 {
 	struct {
 		float			timeToBurn;
 		float			radius;
-		long			reallyVisible;
+		int32_t			reallyVisible;
 	} fire;
 	
 	struct {
@@ -51,7 +45,7 @@ typedef struct _CarnageData : public GameObjectData
 	GameObjectWatchID	ownerWID;
 	CarnageInfo			info;
 
-	long				effectId;
+	int32_t				effectId;
 } CarnageData;
 
 class Carnage : public GameObject 
@@ -68,12 +62,12 @@ class Carnage : public GameObject
 			static float		maxFireBurnTime;
 			
 			//NEW  GOS FX
-			long				effectId;
+			int32_t				effectId;
 			gosFX::Effect		*gosEffect;
 			
 			//Lighting Data
 			TG_LightPtr			pointLight;
-			DWORD				lightId;
+			ULONG				lightId;
 
 			float				intensity;
 			float				inRadius;
@@ -101,21 +95,21 @@ class Carnage : public GameObject
 
 			virtual void init (CarnageEnumType _carnageType);
 			
-			virtual void init (long fxId)
+			virtual void init (int32_t fxId)
 			{
 				effectId = fxId;
 			}
 
 			virtual void destroy (void);
 
-			virtual long kill (void) 
+			virtual int32_t kill (void) 
 			{
-				return(NO_ERR);
+				return(NO_ERROR);
 			}
 
 			virtual bool onScreen (void);
 
-			virtual long update (void);
+			virtual int32_t update (void);
 
 			virtual void render (void);
 
@@ -132,7 +126,7 @@ class Carnage : public GameObject
 
 			GameObjectPtr getOwner (void);
 
-			bool isVisible (long whichFire = 0);
+			bool isVisible (int32_t whichFire = 0);
 
 			virtual float getExtentRadius (void) 
 			{
@@ -157,7 +151,7 @@ class Carnage : public GameObject
 
 			void finishNow (void);
 
-			virtual void Save (PacketFilePtr file, long packetNum);
+			virtual void Save (PacketFilePtr file, int32_t packetNum);
 
 			void CopyTo (CarnageData *data);
 
@@ -181,17 +175,17 @@ class FireType : public ObjectType
 		ULONG	numLoops;
 		
 		float			maxExtent;		//How Good am I at setting off other fires
-		float			timeToMax;		//How long before I grow to MaxExtent size
+		float			timeToMax;		//How int32_t before I grow to MaxExtent size
 		
-		long			totalFires;
+		int32_t			totalFires;
 		
 		float*			fireOffsetX;
 		float*			fireOffsetY;
 		float*			fireDelay;
 		
-		long*			fireRandomOffsetX;
-		long*			fireRandomOffsetY;
-		long*			fireRandomDelay;
+		int32_t*			fireRandomOffsetX;
+		int32_t*			fireRandomOffsetY;
+		int32_t*			fireRandomDelay;
 		
 	//-----------------
 	// Member Functions
@@ -227,9 +221,9 @@ class FireType : public ObjectType
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, ULONG fileSize);
 
-		long init (FitIniFilePtr objFile);
+		int32_t init (FitIniFilePtr objFile);
 		
 		~FireType (void) 
 		{
@@ -254,14 +248,14 @@ class ExplosionType : public ObjectType
 		float				damageLevel;
 		ULONG		soundEffectId;
 		ULONG		lightObjectId;
-		long				explRadius;
+		int32_t				explRadius;
 		float				chunkSize;
 
 		float 				lightMinMaxRadius;
 		float				lightMaxMaxRadius;
 		float 				lightOutMinRadius;
 		float 				lightOutMaxRadius;
-		DWORD 				lightRGB;
+		ULONG 				lightRGB;
 		float 				maxIntensity;
 		float 				minIntensity;
 		float				duration;
@@ -295,9 +289,9 @@ class ExplosionType : public ObjectType
 			init();
 		}
 
-		virtual long init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, ULONG fileSize);
 
-		long init (FitIniFilePtr objFile);
+		int32_t init (FitIniFilePtr objFile);
 
 		~ExplosionType (void) 
 		{

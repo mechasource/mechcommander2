@@ -6,6 +6,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef OBJBLCK_H
 #define OBJBLCK_H
 //---------------------------------------------------------------------------
@@ -39,8 +41,8 @@
 #endif
 //---------------------------------------------------------------------------
 // Macro Definitions
-#ifndef NO_ERR
-#define NO_ERR		0
+#ifndef NO_ERROR
+#define NO_ERROR		0
 #endif
 
 //---------------------------------------------------------
@@ -91,17 +93,17 @@ struct OldObjData
 struct ObjData
 {
 	short				objTypeNum;		//Type number of object
-	unsigned short		vertexNumber;	//Vertex Number in Block.
-	unsigned short		blockNumber;	//Which terrain Block.
+	uint16_t		vertexNumber;	//Vertex Number in Block.
+	uint16_t		blockNumber;	//Which terrain Block.
 	uint8_t		damage;			//Damage
 };
 
 struct MiscObjectData
 {
-	long				blockNumber;	//Terrain Block I occupy
-	long				vertexNumber;	//Terrain Vertex I occupy
-	long				objectTypeNum;	//ObjectTypeNumber for this overlay tile
-	long				damaged;		//Is this overlay tile damaged or not
+	int32_t				blockNumber;	//Terrain Block I occupy
+	int32_t				vertexNumber;	//Terrain Vertex I occupy
+	int32_t				objectTypeNum;	//ObjectTypeNumber for this overlay tile
+	int32_t				damaged;		//Is this overlay tile damaged or not
 };
 
 #pragma pack()
@@ -129,7 +131,7 @@ class ObjectBlockManager
 	//-----------------
 	protected:
 	
-		long setupObjectQueue (ULONG blockNum, ULONG blockSize);
+		int32_t setupObjectQueue (ULONG blockNum, ULONG blockSize);
 
 	public:
 	
@@ -153,7 +155,7 @@ class ObjectBlockManager
 		
 		void destroy (void);
 		
-		long init (PSTR packetFileName);
+		int32_t init (PSTR packetFileName);
 		
 		~ObjectBlockManager (void)
 		{
@@ -164,20 +166,20 @@ class ObjectBlockManager
 			return(objectDataFile);
 		}
 
-		long update (BOOL createAll = FALSE);
+		int32_t update (BOOL createAll = FALSE);
 
 		void updateAllObjects (void);
 		
 		void destroyAllObjects (void);
 
-		ObjectQueueNodePtr getObjectList (long idNum)
+		ObjectQueueNodePtr getObjectList (int32_t idNum)
 		{
 			return objectQueues[idNum];
 		}
 		
 		#ifdef TERRAINEDIT
-		long addObject (ObjectTypeNumber objNum, vector_2d &pOffset, vector_2d &numbers, vector_3d &position, long dmg = 0, long expTime  = -1);
-		long removeObject (BaseObjectPtr deadObject);
+		int32_t addObject (ObjectTypeNumber objNum, vector_2d &pOffset, vector_2d &numbers, vector_3d &position, int32_t dmg = 0, int32_t expTime  = -1);
+		int32_t removeObject (BaseObjectPtr deadObject);
 		#endif
 			
 };

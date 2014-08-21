@@ -10,21 +10,14 @@ Objective.h			: Interface for the Objective component.
 #ifndef OBJECTIVE_H
 #define OBJECTIVE_H
 
-#include "elist.h"
-#include "estring.h"
-#include "tchar.h"
-#include "mover.h"
-
-#ifndef BLDNG_H
-#include "bldng.h"
-#endif
-
-#ifndef GAMETACMAP_H
-#include "gametacmap.h"
-#endif
+//#include "elist.h"
+//#include "estring.h"
+//#include "tchar.h"
+//#include "mover.h"
+//#include "bldng.h"
+//#include "gametacmap.h"
 
 class FitIniFile;
-
 class aFont;
 
 //*************************************************************************************************
@@ -165,9 +158,9 @@ public:
 		}
 	}
 
-	void save (long alignment, FitIniFile *file);
+	void save (int32_t alignment, FitIniFile *file);
 
-	void load (long alignment, FitIniFile *file);
+	void load (int32_t alignment, FitIniFile *file);
 };
 
 class CObjectiveCondition {
@@ -255,7 +248,7 @@ public:
 
 class CSpecificStructureObjectiveCondition: public CObjectiveCondition { /*abstract class*/
 protected:
-	long m_pBuildingWID;
+	int32_t m_pBuildingWID;
 public:
 	CSpecificStructureObjectiveCondition(int alignment) : CObjectiveCondition(alignment) { m_pBuildingWID = 0; }
 	virtual bool Read( FitIniFile* missionFile );
@@ -662,7 +655,7 @@ public:
 
 class C_RemoveStructure: public CObjectiveAction {
 private:
-	long m_pBuildingWID;
+	int32_t m_pBuildingWID;
 public:
 	C_RemoveStructure(int alignment) : CObjectiveAction(alignment) {}
 	bool SetParams(float positionX, float positionY);

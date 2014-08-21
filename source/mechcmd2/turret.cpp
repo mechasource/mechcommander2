@@ -82,8 +82,8 @@ extern float WeaponRanges[NUM_WEAPON_RANGE_TYPES][2];
 extern float WeaponFireModifiers[NUM_WEAPONFIRE_MODIFIERS];
 extern float MaxVisualRadius;
 
-//extern long ClusterSizeSRM;
-//extern long ClusterSizeLRM;
+//extern int32_t ClusterSizeSRM;
+//extern int32_t ClusterSizeLRM;
 //extern float				MaxVisualRadius;
 //extern float				MetersPerCell;
 
@@ -92,7 +92,7 @@ extern GameLog* CombatLog;
 extern void DebugWeaponFireChunk (WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2, GameObjectPtr attacker);
 extern void LogWeaponFireChunk (WeaponFireChunkPtr chunk, GameObjectPtr attacker, GameObjectPtr target);
 
-//long cLoadString (HINSTANCE hInstance,  UINT uID, LPTSTR lpBuffer, int nBufferMax );
+//int32_t cLoadString (HINSTANCE hInstance,  UINT uID, LPTSTR lpBuffer, int nBufferMax );
 
 bool Turret::turretsEnabled[MAX_TEAMS] = {true, true, true, true, true, true, true, true};
 
@@ -127,65 +127,65 @@ void TurretType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long TurretType::init (FilePtr objFile, ULONG fileSize) {
+int32_t TurretType::init (FilePtr objFile, ULONG fileSize) {
 
-	long result = 0;
+	int32_t result = 0;
 	
 	FitIniFile bldgFile;
 	result = bldgFile.open(objFile, fileSize);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	
 	//------------------------------------------------------------------
 	// Read in the data needed for the TreeBuilding
 	result = bldgFile.seekBlock("TurretData");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = bldgFile.readIdFloat("LOSFactor",LOSFactor);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		LOSFactor = 1.0f;
 		
  	ULONG dmgLevel;
 	result = bldgFile.readIdULong("DmgLevel",dmgLevel);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	damageLevel = (float)dmgLevel;
 
 	bldgFile.readIdULong("BlownEffectId",blownEffectId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		blownEffectId = -1;
 		
 	bldgFile.readIdULong("NormalEffectId",normalEffectId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		normalEffectId = -1;
 		
 	bldgFile.readIdULong("DamageEffectId",damageEffectId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		damageEffectId = -1;
 
 	result = bldgFile.readIdFloat("ExplosionRadius",explRad);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		explRad = 0.0;
 		
 	result = bldgFile.readIdFloat("ExplosionDamage",explDmg);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		explDmg = 0.0;
 
 	result = bldgFile.readIdFloat("Tonnage", baseTonnage);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		baseTonnage = 20;
 	
 	result = bldgFile.readIdFloat("AttackRadius", engageRadius);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return result;
 		
 	result = bldgFile.readIdFloat("MaxTurretYawRate", turretYawRate);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return result;
 		
 	result = bldgFile.readIdLong("WeaponType", weaponMasterId[0]);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	//SPOTLIGHTS!!!!
@@ -195,37 +195,37 @@ long TurretType::init (FilePtr objFile, ULONG fileSize) {
 		punch = 0.0f;
 		
 	result = bldgFile.readIdLong("WeaponType1", weaponMasterId[1]);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		weaponMasterId[1] = -1;
 	else
 		punch += MasterComponent::masterList[weaponMasterId[1]].getCV();
 
 	result = bldgFile.readIdLong("WeaponType2", weaponMasterId[2]);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		weaponMasterId[2] = -1;
 	else
 		punch += MasterComponent::masterList[weaponMasterId[2]].getCV();
 	
 	result = bldgFile.readIdLong("WeaponType3", weaponMasterId[3]);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		weaponMasterId[3] = -1;
 	else
 		punch += MasterComponent::masterList[weaponMasterId[3]].getCV();
 
 	result = bldgFile.readIdLong("PilotSkill", pilotSkill);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 		
 	result = bldgFile.readIdFloat("LittleExtent",littleExtent);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		littleExtent = 20.0;
 
 	result = bldgFile.readIdLong ("BuildingName", turretTypeName);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		turretTypeName = IDS_TRTOBJ_NAME;
 
 	result = bldgFile.readIdLong( "BuildingDescription", buildingDescriptionID );
-		if ( result != NO_ERR )
+		if ( result != NO_ERROR )
 			buildingDescriptionID = -1;
 
 	//------------------------------------------------------------------
@@ -364,7 +364,7 @@ void Turret::init (bool create) {
 
 //---------------------------------------------------------------------------
 
-long Turret::setTeamId (long _teamId, bool setup) {
+int32_t Turret::setTeamId (int32_t _teamId, bool setup) {
 
 	if (MPlayer)
 	{
@@ -389,7 +389,7 @@ long Turret::setTeamId (long _teamId, bool setup) {
 	if ((turn > 10) && (teamId > -1) && (teamId < 8))
 		appearance->flashBuilding(5.0,0.5,highLight[teamId]);
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -442,13 +442,13 @@ void Turret::setDamage (float newDamage)
 }
  
 //---------------------------------------------------------------------------
-long Turret::updateAnimations (void)
+int32_t Turret::updateAnimations (void)
 {
-	long canFire = 0;
+	int32_t canFire = 0;
 	
 	//---------------------------------------------
 	// Animate the turret popping up!
-	long animState = appearance->getCurrentGestureId();
+	int32_t animState = appearance->getCurrentGestureId();
 	if (getAwake() && targetWID)
 	{
 		switch (animState)
@@ -523,7 +523,7 @@ long Turret::updateAnimations (void)
 	
 //---------------------------------------------------------------------------
 
-long Turret::update (void)
+int32_t Turret::update (void)
 {
 	if (getFlag(OBJECT_FLAG_JUSTCREATED)) 
 	{
@@ -798,7 +798,7 @@ long Turret::update (void)
  	appearance->setObjectParameters(position, rotation, drawFlags, teamId,Team::getRelation(teamId, Team::home->getId()));
 	appearance->setMoverParameters(turretRotation,turretPitch,0.0f);
 	bool inView = appearance->recalcBounds();
-	long canFire = updateAnimations();
+	int32_t canFire = updateAnimations();
 
 	if (inView || !didReveal || (turn < 4))
 	{
@@ -916,7 +916,7 @@ long Turret::update (void)
 
 	setFlag(OBJECT_FLAG_CAN_FIRE, true);
 
-	for (long i=0;i<MAX_TURRET_WEAPONS;i++)
+	for (int32_t i=0;i<MAX_TURRET_WEAPONS;i++)
 	{
 		if (!getFlag(OBJECT_FLAG_DESTROYED) && targetWID && isWeaponReady(i) && active && canFire)
 		{
@@ -934,7 +934,7 @@ long Turret::update (void)
 
 //---------------------------------------------------------------------------
 
-float Turret::relFacingTo (Stuff::Vector3D goal, long bodyLocation) 
+float Turret::relFacingTo (Stuff::Vector3D goal, int32_t bodyLocation) 
 {
 	Stuff::Vector3D facingVec;
 	facingVec.x = 0.0f;
@@ -958,7 +958,7 @@ float Turret::relFacingTo (Stuff::Vector3D goal, long bodyLocation)
 
 //---------------------------------------------------------------------------
 
-bool Turret::isWeaponReady (long weaponId) 
+bool Turret::isWeaponReady (int32_t weaponId) 
 {
 	if (((TurretTypePtr)getObjectType())->weaponMasterId[weaponId] == -1)
 		return false;
@@ -971,7 +971,7 @@ bool Turret::isWeaponReady (long weaponId)
 
 //---------------------------------------------------------------------------
 
-bool Turret::isWeaponMissile (long weaponId) 
+bool Turret::isWeaponMissile (int32_t weaponId) 
 {
 	if (((TurretTypePtr)getObjectType())->weaponMasterId[weaponId] == -1)
 		return false;
@@ -981,7 +981,7 @@ bool Turret::isWeaponMissile (long weaponId)
 
 //---------------------------------------------------------------------------
 
-bool Turret::isWeaponStreak (long weaponId) 
+bool Turret::isWeaponStreak (int32_t weaponId) 
 {
 	if (((TurretTypePtr)getObjectType())->weaponMasterId[weaponId] == -1)
 		return false;
@@ -991,7 +991,7 @@ bool Turret::isWeaponStreak (long weaponId)
 
 //---------------------------------------------------------------------------
 
-float Turret::calcAttackChance (GameObjectPtr target, long* range, long weaponId) 
+float Turret::calcAttackChance (GameObjectPtr target, int32_t* range, int32_t weaponId) 
 {
 	if (((TurretTypePtr)getObjectType())->weaponMasterId[weaponId] == -1)
 		return 0.0f;
@@ -1004,7 +1004,7 @@ float Turret::calcAttackChance (GameObjectPtr target, long* range, long weaponId
 	
  	if (target) 
 	{
-		long targetObjectClass = target->getObjectClass();
+		int32_t targetObjectClass = target->getObjectClass();
 		switch (targetObjectClass) 
 		{
 			case BATTLEMECH:
@@ -1034,7 +1034,7 @@ float Turret::calcAttackChance (GameObjectPtr target, long* range, long weaponId
 	
 	//----------------------
 	// Range (Per Weapon)...
-	long weaponMasterId = ((TurretTypePtr)getObjectType())->weaponMasterId[weaponId];
+	int32_t weaponMasterId = ((TurretTypePtr)getObjectType())->weaponMasterId[weaponId];
 	float weaponMinRange = WeaponRanges[MasterComponent::masterList[weaponMasterId].getWeaponRange()][0];
 	float weaponMaxRange = WeaponRanges[MasterComponent::masterList[weaponMasterId].getWeaponRange()][1];
 
@@ -1075,30 +1075,30 @@ float Turret::calcAttackChance (GameObjectPtr target, long* range, long weaponId
 
 //------------------------------------------------------------------------------------------
 
-void Turret::recordWeaponFireTime (long weaponId) {
+void Turret::recordWeaponFireTime (int32_t weaponId) {
 
 	lastFireTime[weaponId] = scenarioTime;
 }
 
 //------------------------------------------------------------------------------------------
 
-void Turret::startWeaponRecycle (long weaponId) 
+void Turret::startWeaponRecycle (int32_t weaponId) 
 {
 	readyTime[weaponId] = scenarioTime + MasterComponent::masterList[((TurretTypePtr)getObjectType())->weaponMasterId[weaponId]].getWeaponRecycleTime();
 }
 
 //---------------------------------------------------------------------------
 
-long Turret::clearWeaponFireChunks (long which) {
+int32_t Turret::clearWeaponFireChunks (int32_t which) {
 
-	long numChunks = numWeaponFireChunks[which];
+	int32_t numChunks = numWeaponFireChunks[which];
 	numWeaponFireChunks[which] = 0;
 	return(numChunks);
 }
 
 //---------------------------------------------------------------------------
 
-long Turret::addWeaponFireChunk (long which, WeaponFireChunkPtr chunk) {
+int32_t Turret::addWeaponFireChunk (int32_t which, WeaponFireChunkPtr chunk) {
 
 	if (numWeaponFireChunks[which] == MAX_WEAPONFIRE_CHUNKS)
 		Fatal(0, " Turret::addWeaponFireChunk--Too many weaponfire chunks ");
@@ -1110,7 +1110,7 @@ long Turret::addWeaponFireChunk (long which, WeaponFireChunkPtr chunk) {
 
 //---------------------------------------------------------------------------
 
-long Turret::addWeaponFireChunks (long which, ULONG* packedChunkBuffer, long numChunks) {
+int32_t Turret::addWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer, int32_t numChunks) {
 
 	if ((numWeaponFireChunks[which] + numChunks) >= MAX_WEAPONFIRE_CHUNKS)
 		Fatal(0, " Turret::addWeaponFireChunks--Too many weaponfire chunks ");
@@ -1119,7 +1119,7 @@ long Turret::addWeaponFireChunks (long which, ULONG* packedChunkBuffer, long num
 	memcpy(&weaponFireChunks[which][numWeaponFireChunks[which]], packedChunkBuffer, 4 * numChunks);
 	numWeaponFireChunks[which] += numChunks;
 #else
-	for (long i = 0; i < numChunks; i++) {
+	for (int32_t i = 0; i < numChunks; i++) {
 		weaponFireChunks[which][numWeaponFireChunks[which]++] = packedChunkBuffer[i];
 		//---------------
 		// FOR TESTING...
@@ -1134,10 +1134,10 @@ long Turret::addWeaponFireChunks (long which, ULONG* packedChunkBuffer, long num
 
 //---------------------------------------------------------------------------
 
-long Turret::grabWeaponFireChunks (long which, ULONG* packedChunkBuffer) {
+int32_t Turret::grabWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer) {
 
 	if (numWeaponFireChunks[which] > 0)
-		for (long i = 0; i < numWeaponFireChunks[which]; i++)
+		for (int32_t i = 0; i < numWeaponFireChunks[which]; i++)
 			packedChunkBuffer[i] = weaponFireChunks[which][i];
 		//memcpy(packedChunkBuffer, weaponFireChunks[which], 4 * numWeaponFireChunks[which]);
 	return(numWeaponFireChunks[which]);
@@ -1145,9 +1145,9 @@ long Turret::grabWeaponFireChunks (long which, ULONG* packedChunkBuffer) {
 
 //---------------------------------------------------------------------------
 
-long Turret::updateWeaponFireChunks (long which) 
+int32_t Turret::updateWeaponFireChunks (int32_t which) 
 {
-	for (long i = 0; i < numWeaponFireChunks[which]; i++) 
+	for (int32_t i = 0; i < numWeaponFireChunks[which]; i++) 
 	{
 		WeaponFireChunk chunk;
 		chunk.init();
@@ -1216,12 +1216,12 @@ long Turret::updateWeaponFireChunks (long which)
 
 	numWeaponFireChunks[which] = 0;
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-Stuff::Vector3D Turret::getPositionFromHS (long nodeId) 
+Stuff::Vector3D Turret::getPositionFromHS (int32_t nodeId) 
 {
 	//-----------------------------------------------------
 	// Need to get this working with SITE code when done!
@@ -1243,7 +1243,7 @@ Stuff::Vector3D Turret::getLOSPosition (void)
 
 //---------------------------------------------------------------------------
 
-void Turret::printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* targetPoint, long chance, long roll, WeaponShotInfo* shotInfo) {
+void Turret::printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* targetPoint, int32_t chance, int32_t roll, WeaponShotInfo* shotInfo) {
 
 	if (!CombatLog)
 		return;
@@ -1350,12 +1350,12 @@ void Turret::printHandleWeaponHitDebugInfo (WeaponShotInfo* shotInfo) {
 
 //----------------------------------------------------------------------------
 
-void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
+void Turret::fireWeapon (GameObjectPtr target, int32_t weaponId) {
 
 	if (!target)
 		return;
 
-	long weaponMasterId = ((TurretTypePtr)getObjectType())->weaponMasterId[weaponId];
+	int32_t weaponMasterId = ((TurretTypePtr)getObjectType())->weaponMasterId[weaponId];
 
 	//--------------------------------------------
 	// Check and make sure we have line of fire...
@@ -1370,7 +1370,7 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 		bool indirectFireWeapon = false;
 		
 		//--------------------------------------------------------------------
-		for (long i=0;i<20;i++)
+		for (int32_t i=0;i<20;i++)
 		{
 			if (Mover::IndirectFireWeapons[i] == ((TurretTypePtr)getObjectType())->weaponMasterId[weaponId])
 			{
@@ -1392,20 +1392,20 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 		return;
 	
 	float entryAngle = 0.0;
-	long aimLocation = -1;
+	int32_t aimLocation = -1;
 	if (target)
 		entryAngle = target->relFacingTo(position);
 
 	bool isStreakMissile = MasterComponent::masterList[weaponMasterId].getWeaponStreak();
 
-	long range;
-	long attackChance = (float)calcAttackChance(target,&range,weaponId);
+	int32_t range;
+	int32_t attackChance = (float)calcAttackChance(target,&range,weaponId);
 	if (attackChance == -1.0)
 		return;
 		
-	long hitRoll = RandomNumber(100);
+	int32_t hitRoll = RandomNumber(100);
 	
-	long hitLocation = -2;
+	int32_t hitLocation = -2;
 
 	MechWarriorPtr targetPilot = NULL;
 	if (target && target->isMover()) {
@@ -1428,8 +1428,8 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 			//---------------------------------------------------------
 			// It's a missile weapon. We need to determine how many hit
 			// (and missed) the target, and in how many clusters...
-			long missileAmount = MasterComponent::masterList[weaponMasterId].getWeaponAmmoAmount();
-			long numMissiles;
+			int32_t missileAmount = MasterComponent::masterList[weaponMasterId].getWeaponAmmoAmount();
+			int32_t numMissiles;
 			if (isStreakMissile)
 				numMissiles = missileAmount;
 			else {
@@ -1441,7 +1441,7 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 			}
 
 			//-----------------------------------------------------------------------------
-			// Is the missile short-range(SRM) or long-range(LRM)? SRMs are handled with
+			// Is the missile short-range(SRM) or int32_t-range(LRM)? SRMs are handled with
 			// each missile spawning a separate damage calc. LRMs are clustered, 5 missiles
 			// to a cluster (with the remainder a final, separate cluster), where each
 			// cluster spawns a separate damage calc...
@@ -1608,15 +1608,15 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 				//---------------------------------------------------------
 				// It's a missile weapon. We need to determine how many hit
 				// (and missed) the target, and in how many clusters...
-				long missileAmount = MasterComponent::masterList[weaponMasterId].getWeaponAmmoAmount();
-				long numMissiles = ((float)missileAmount / 2.0) + 0.5;
+				int32_t missileAmount = MasterComponent::masterList[weaponMasterId].getWeaponAmmoAmount();
+				int32_t numMissiles = ((float)missileAmount / 2.0) + 0.5;
 				if (numMissiles < 1)
 					numMissiles = 1;
 				if (numMissiles > missileAmount)
 					numMissiles = missileAmount;
 
 				//-----------------------------------------------------------------------------
-				// Is the missile short-range(SRM) or long-range(LRM)? SRMs are handled with
+				// Is the missile short-range(SRM) or int32_t-range(LRM)? SRMs are handled with
 				// each missile spawning a separate damage calc. LRMs are clustered, 5 missiles
 				// to a cluster (with the remainder a final, separate cluster), where each
 				// cluster spawns a separate damage calc...
@@ -1822,15 +1822,15 @@ void Turret::fireWeapon (GameObjectPtr target, long weaponId) {
 
 //---------------------------------------------------------------------------
 
-long Turret::handleWeaponFire (long weaponIndex,
+int32_t Turret::handleWeaponFire (int32_t weaponIndex,
 							   GameObjectPtr target,
 							   Stuff::Vector3D* targetPoint,
 							   bool hit,
 							   float entryAngle,
-							   long numMissiles,
-							   long hitLocation) {
+							   int32_t numMissiles,
+							   int32_t hitLocation) {
 
-	long weaponMasterId = ((TurretTypePtr)getObjectType())->weaponMasterId[weaponIndex];
+	int32_t weaponMasterId = ((TurretTypePtr)getObjectType())->weaponMasterId[weaponIndex];
 	bool isStreakMissile = MasterComponent::masterList[weaponMasterId].getWeaponStreak();
 
 	//-----------------------
@@ -1845,7 +1845,7 @@ long Turret::handleWeaponFire (long weaponIndex,
 
 		if (MasterComponent::masterList[weaponMasterId].getForm() == COMPONENT_FORM_WEAPON_MISSILE) {
 			//-----------------------------------------------------------------------------
-			// Is the missile short-range(SRM) or long-range(LRM)? SRMs are handled with
+			// Is the missile short-range(SRM) or int32_t-range(LRM)? SRMs are handled with
 			// each missile spawning a separate damage calc. LRMs are clustered, 5 missiles
 			// to a cluster (with the remainder a final, separate cluster), where each
 			// cluster spawns a separate damage calc...
@@ -1920,7 +1920,7 @@ long Turret::handleWeaponFire (long weaponIndex,
 			// Miss, so check for possible miss resolution here...
 			if (MasterComponent::masterList[weaponMasterId].getForm() == COMPONENT_FORM_WEAPON_MISSILE) {
 				//-----------------------------------------------------------------------------
-				// Is the missile short-range(SRM) or long-range(LRM)? SRMs are handled with
+				// Is the missile short-range(SRM) or int32_t-range(LRM)? SRMs are handled with
 				// each missile spawning a separate damage calc. LRMs are clustered, 5 missiles
 				// to a cluster (with the remainder a final, separate cluster), where each
 				// cluster spawns a separate damage calc...
@@ -2011,7 +2011,7 @@ long Turret::handleWeaponFire (long weaponIndex,
 		targetPilot->triggerAlarm(PILOT_ALARM_TARGET_OF_WEAPONFIRE, getWatchID());
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -2053,7 +2053,7 @@ void Turret::render (void)
 			if (barStatus < 0.0)
 				barStatus = 0.0;
 			
-			DWORD color = 0xff7f7f7f;
+			ULONG color = 0xff7f7f7f;
 			if ((teamId > -1) && (teamId < 8)) {
 				if (getTeam()->isFriendly(Team::home))
 					color = SB_GREEN;
@@ -2118,7 +2118,7 @@ void Turret::init (bool create, ObjectTypePtr _type) {
 	// We need to append the sprite type to the appearance num now.
 	// The MechEdit tool does not assume a sprite type, nor should it.
 	// MechCmdr2 features much simpler objects which only use 1 type of sprite!
-	long appearanceType = (BLDG_TYPE << 24);
+	int32_t appearanceType = (BLDG_TYPE << 24);
 
 	AppearanceTypePtr buildingAppearanceType = NULL;
 	if (!appearName)
@@ -2173,10 +2173,10 @@ void Turret::init (bool create, ObjectTypePtr _type) {
 
 //---------------------------------------------------------------------------
 
-long Turret::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) {
+int32_t Turret::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) {
 
 	if (!shotInfo)
-		return(NO_ERR);
+		return(NO_ERROR);
 
 	if (addMultiplayChunk)
 		MPlayer->addWeaponHitChunk(this, shotInfo);
@@ -2208,22 +2208,22 @@ long Turret::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk
 		}
 	}
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-long Turret::calcFireRanges (void) {
+int32_t Turret::calcFireRanges (void) {
 
 	//---------------------------
 	// Calc min and max ranges...
 	maxRange = 0;
 	minRange = 1000000.0;
 	numFunctionalWeapons = 0;
-	for (long curWeapon = 0; curWeapon < MAX_TURRET_WEAPONS; curWeapon++) {
-		long weaponMasterId = ((TurretTypePtr)getObjectType())->weaponMasterId[curWeapon];
+	for (int32_t curWeapon = 0; curWeapon < MAX_TURRET_WEAPONS; curWeapon++) {
+		int32_t weaponMasterId = ((TurretTypePtr)getObjectType())->weaponMasterId[curWeapon];
 		if (weaponMasterId != -1) {
-			long range = (long)MasterComponent::masterList[weaponMasterId].getWeaponRange();
+			int32_t range = (int32_t)MasterComponent::masterList[weaponMasterId].getWeaponRange();
 			float minWeaponRange = WeaponRanges[range][0];
 			float maxWeaponRange = WeaponRanges[range][1];
 			if (maxWeaponRange > maxRange)
@@ -2251,7 +2251,7 @@ GameObjectPtr Turret::getParent (void)
 }
 
 //---------------------------------------------------------------------------
-void Turret::setParentId (DWORD pId)
+void Turret::setParentId (ULONG pId)
 {
 	parentId = pId;
 }
@@ -2281,13 +2281,13 @@ void Turret::updateDebugWindow (GameDebugWindow* debugWindow) {
 }
 
 //***************************************************************************
-void Turret::Save (PacketFilePtr file, long packetNum)
+void Turret::Save (PacketFilePtr file, int32_t packetNum)
 {
 	TurretData data;
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(MemoryPtr)&data,sizeof(TurretData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(PUCHAR)&data,sizeof(TurretData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

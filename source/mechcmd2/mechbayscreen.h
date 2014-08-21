@@ -1,3 +1,6 @@
+
+#pragma once
+
 #ifndef MECHBAYSCREEN_H
 #define MECHBAYSCREEN_H
 
@@ -60,21 +63,21 @@ private:
 	LogisticsMechIcon*	pIcons;
 	aObject				dragIcon;
 	bool				dragLeft;
-	long				forceGroupCount;
+	int32_t				forceGroupCount;
 
 	AttributeMeter		attributeMeters[3];
 	MechListBox			mechListBox;
 	aListBox			componentListBox;
 	aObject				dropWeightMeter;
 	aAnimation			addWeightAnim;
-	long				addWeightAmount;
+	int32_t				addWeightAmount;
 	aAnimation			removeWeightAnim;
-	long				removeWeightAmount;
+	int32_t				removeWeightAmount;
 
-	long				weightCenterX;
-	long				weightCenterY;
-	long				weightStartColor;
-	long				weightEndColor;
+	int32_t				weightCenterX;
+	int32_t				weightCenterY;
+	int32_t				weightStartColor;
+	int32_t				weightEndColor;
 
 	static	MechBayScreen*	s_instance;
 
@@ -84,7 +87,7 @@ private:
 	void removeSelectedMech();
 	void addSelectedMech();
 	
-	void drawWeightMeter(long xOffset, long yOffset);
+	void drawWeightMeter(int32_t xOffset, int32_t yOffset);
 	void reinitMechs();
 
 

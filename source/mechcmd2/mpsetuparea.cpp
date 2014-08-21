@@ -79,7 +79,7 @@ void MPSetupXScreen::init(FitIniFile* file)
 		strcat( path, "mcl_mp_setup_combobox0.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -103,7 +103,7 @@ void MPSetupXScreen::init(FitIniFile* file)
 		strcat( path, "mcl_mp_setup_combobox1.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -119,7 +119,7 @@ void MPSetupXScreen::init(FitIniFile* file)
 		strcat( path, "mcl_mp_setup_droplist0.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -129,7 +129,7 @@ void MPSetupXScreen::init(FitIniFile* file)
 		insigniaDropList.init(&PNfile, "InsigniaDropList");
 
 		PNfile.seekBlock( "ListItems" );
-		long listItemCount = 0;
+		int32_t listItemCount = 0;
 		PNfile.readIdLong( "ListItemCount", listItemCount );
 
 		aInsigniaListItem *pTmp2;
@@ -405,8 +405,8 @@ void MPSetupXScreen::update()
 	mechCamera.update();
 
 	if (userInput->isLeftClick()) {
-		long mx = userInput->getMouseX();
-		long my = userInput->getMouseY();
+		int32_t mx = userInput->getMouseX();
+		int32_t my = userInput->getMouseY();
 		if (playerNameComboBox.EditBox().pointInside(mx, my)) {
 			playerNameComboBox.EditBox().setFocus(true);
 			unitNameComboBox.EditBox().setFocus(false);
@@ -430,9 +430,9 @@ aColorPicker::aColorPicker()
 	activeTab = 0;
 }
 
-long aColorPicker::init(long xPos, long yPos,long w, long h )
+int32_t aColorPicker::init(int32_t xPos, int32_t yPos,int32_t w, int32_t h )
 {
-	long err;
+	int32_t err;
 	
 	err = aObject::init(xPos,yPos,w,h);
 	if (err)
@@ -455,14 +455,14 @@ long aColorPicker::init(long xPos, long yPos,long w, long h )
 	
 
 
-	return (NO_ERR);
+	return (NO_ERROR);
 }
 
 void aColorPicker::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock(blockName);
 
-	long x, y, width, height;
+	int32_t x, y, width, height;
 	file->readIdLong( "XLocation", x );
 	file->readIdLong( "YLocation", y );
 	file->readIdLong( "Width", width );
@@ -522,7 +522,7 @@ void aColorPicker::init( FitIniFile* file, PCSTR blockName )
 
 	{
 		blockname = "GradientSlider";
-		long x, y, w, h;
+		int32_t x, y, w, h;
 		file->readIdLong("XLocation", x);
 		file->readIdLong("YLocation", y);
 		file->readIdLong("Width", w);
@@ -724,17 +724,17 @@ void aColorPicker::setColor1(int color)
 }
 
 
-long aStyle1TextListItem::init( FitIniFile* file, PCSTR blockName )
+int32_t aStyle1TextListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
-	long fontResID = 0;
+	int32_t fontResID = 0;
 	file->readIdLong( "Font", fontResID );
-	long textID = 0;
+	int32_t textID = 0;
 	file->readIdLong( "TextID", textID );
 	aTextListItem::init(fontResID);
 	setText(textID);
-	long color = 0xff808080;
+	int32_t color = 0xff808080;
 	file->readIdLong( "Color", color );
 	normalColor = color;
 	setColor(color);
@@ -776,11 +776,11 @@ void aStyle1TextListItem::render()
 }
 
 
-long aInsigniaListItem::init( FitIniFile* file, PCSTR blockName )
+int32_t aInsigniaListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
-	long width, height;
+	int32_t width, height;
 	file->readIdLong( "Width", width );
 	file->readIdLong( "Height", height );
 

@@ -1,17 +1,18 @@
-#define MISSIONSELECTIONSCREEN_CPP
 /*************************************************************************************************\
 MissionSelectionScreen.cpp			: Implementation of the MissionSelectionScreen component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+// #define MISSIONSELECTIONSCREEN_CPP
+
 #include "stdafx.h"
 
-#include "MissionSelectionScreen.h"
-#include "MechBayScreen.h"
-#include "LogisticsData.h"
+#include "missionselectionscreen.h"
+#include "mechbayscreen.h"
+#include "logisticsdata.h"
 #include "..\resource.h"
-#include "MissionBriefingScreen.h"
+#include "missionbriefingscreen.h"
 #include "sounds.h"
 #include "mc2movie.h"
 #include "gamesound.h"
@@ -142,11 +143,11 @@ void MissionSelectionScreen::update()
 	LogisticsScreen::update();
 	operationScreen.update();
 
-	long oldButton = -1;
+	int32_t oldButton = -1;
 	int highlightButton = -1;
 
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 	ULONG highlightColor = 0;
 
@@ -213,7 +214,7 @@ void MissionSelectionScreen::begin()
 	fileName.init( artPath, str, ".fit" );
 
 	FitIniFile file;
-	if ( NO_ERR != file.open( fileName ) )
+	if ( NO_ERROR != file.open( fileName ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", fileName );
@@ -234,7 +235,7 @@ void MissionSelectionScreen::begin()
 		FullPathFileName videoName;
 		videoName.init( moviePath, str, ".bik" );
 
-		if (fileExists(videoName) || fileExistsOnCD(videoName))
+		if (fileExists(videoName) /* || fileExistsOnCD(videoName)*/)
 		{
 			RECT movieRect;
 			movieRect.left = rects[VIDEO_RECT].left()+1;
@@ -272,7 +273,7 @@ void MissionSelectionScreen::begin()
 	int result = LogisticsData::instance->getCurrentMissions( missionNames, missionCount );
 
 	EString selMissionName = LogisticsData::instance->getCurrentMission();
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	bool bPressed = 0;
 	for ( int i = 0; i < missionCount; i++ )

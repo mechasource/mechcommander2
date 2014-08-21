@@ -8,6 +8,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DOBJMGR_H
 #define DOBJMGR_H
 

@@ -60,7 +60,7 @@ void Shape::destroy (void)
 
 #define STUPID_OFFSET	6
 //----------------------------------------------------------------------------
-long Shape::init (MemoryPtr fileBlock, AppearanceTypePtr myOwner, long shapeSize)
+int32_t Shape::init (PUCHAR fileBlock, AppearanceTypePtr myOwner, int32_t shapeSize)
 {
 	//-----------------------------------------------------------------
 	// Everything in the below comment is a LIE!!!
@@ -83,7 +83,7 @@ long Shape::init (MemoryPtr fileBlock, AppearanceTypePtr myOwner, long shapeSize
 		frameList = fileBlock;
 	}
 	
-	long numFrames = VFX_shape_count(frameList);
+	int32_t numFrames = VFX_shape_count(frameList);
 
 	if (!numFrames)
 	{
@@ -94,14 +94,14 @@ long Shape::init (MemoryPtr fileBlock, AppearanceTypePtr myOwner, long shapeSize
 	
 	if (numFrames)
 	{
-		long *testOffset = (long *)(frameList + 8);
+		int32_t *testOffset = (int32_t *)(frameList + 8);
 		if (*testOffset >= shapeSize)
 		{
 			frameList = NULL;
 			return(-3);
 		}
 		
-		long minOffset = 8 + (numFrames * 8);		//The first shape MUST be this far in or WRONG
+		int32_t minOffset = 8 + (numFrames * 8);		//The first shape MUST be this far in or WRONG
 		if (minOffset != *testOffset)
 		{
 			frameList = NULL;
@@ -109,7 +109,7 @@ long Shape::init (MemoryPtr fileBlock, AppearanceTypePtr myOwner, long shapeSize
 		}
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //----------------------------------------------------------------------------

@@ -1,5 +1,3 @@
-#ifndef MPPREFS_H
-#define MPPREFS_H
 /*************************************************************************************************\
 MPPrefs.h			: Interface for the MPPrefs component.
 //---------------------------------------------------------------------------//
@@ -7,17 +5,14 @@ MPPrefs.h			: Interface for the MPPrefs component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
-#endif
+#pragma once
 
-#ifndef ALISTBOX_H
-#include "alistbox.h"
-#endif
+#ifndef MPPREFS_H
+#define MPPREFS_H
 
-#ifndef SIMPLECAMERA_H
-#include "simplecamera.h"
-#endif
+//#include "logisticsscreen.h"
+//#include "alistbox.h"
+//#include "simplecamera.h"
 
 class FitIniFile;
 struct _MC2Player;
@@ -58,8 +53,8 @@ class MPPrefs: public LogisticsScreen
 		aObject			insigniaBmp; // the one inside the combo box...
 
 		// HELPERS
-		void	updateStripeColors(const _MC2Player* players, long playerCount, bool bDrawRect );
-		void	updateBaseColors( const _MC2Player* players, long playerCount, bool bDrawRect);
+		void	updateStripeColors(const _MC2Player* players, int32_t playerCount, bool bDrawRect );
+		void	updateBaseColors( const _MC2Player* players, int32_t playerCount, bool bDrawRect);
 		char	getColorIndex( ULONG color );
 		void	setColor( ULONG color );
 		void	setHighlightColor( ULONG color );

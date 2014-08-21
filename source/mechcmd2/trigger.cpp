@@ -13,15 +13,15 @@
 
 //***************************************************************************
 
-void* TriggerAreaManager::operator new (size_t ourSize) {
+PVOID TriggerAreaManager::operator new (size_t ourSize) {
 
-	void* result = systemHeap->Malloc(ourSize);
+	PVOID result = systemHeap->Malloc(ourSize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void TriggerAreaManager::operator delete (void* us) {
+void TriggerAreaManager::operator delete (PVOID us) {
 
 	systemHeap->Free(us);
 }	
@@ -33,9 +33,9 @@ void TriggerAreaManager::destroy (void) {
 
 //---------------------------------------------------------------------------
 
-long TriggerAreaManager::add (long ULrow, long ULcol, long LRrow, long LRcol, long type, long param) {
+int32_t TriggerAreaManager::add (int32_t ULrow, int32_t ULcol, int32_t LRrow, int32_t LRcol, int32_t type, int32_t param) {
 
-	for (long i = 1; i < MAX_TRIGGER_AREAS; i++)
+	for (int32_t i = 1; i < MAX_TRIGGER_AREAS; i++)
 		if (triggerAreas[i].type == TRIGGER_AREA_NONE)
 			break;
 	if (i < MAX_TRIGGER_AREAS) {
@@ -47,13 +47,13 @@ long TriggerAreaManager::add (long ULrow, long ULcol, long LRrow, long LRcol, lo
 		triggerAreas[i].param = param;
 		triggerAreas[i].hit = false;
 
-		long tileDims[4];
+		int32_t tileDims[4];
 		tileDims[0] = ULrow / 3;
 		tileDims[1] = ULcol / 3 + 1;
 		tileDims[2] = LRrow / 3;
 		tileDims[3] = LRcol / 3 + 1;
-		for (long r = tileDims[0]; r < tileDims[2]; r++)
-			for (long c = tileDims[1]; c < tileDims[3]; c++) {
+		for (int32_t r = tileDims[0]; r < tileDims[2]; r++)
+			for (int32_t c = tileDims[1]; c < tileDims[3]; c++) {
 				//sert((map[r][c] == 0) || (map[r][c] == i), i," Duplicate Trigger ");
 				map[r][c] = i;
 			}
@@ -64,18 +64,18 @@ long TriggerAreaManager::add (long ULrow, long ULcol, long LRrow, long LRcol, lo
 
 //---------------------------------------------------------------------------
 
-void TriggerAreaManager::remove (long areaHandle) {
+void TriggerAreaManager::remove (int32_t areaHandle) {
 
 	if (triggerAreas[areaHandle].param == TRIGGER_AREA_NONE)
 		return;
 
-	long tileDims[4];
+	int32_t tileDims[4];
 	tileDims[0] = triggerAreas[areaHandle].dim[0] / 3;
 	tileDims[1] = triggerAreas[areaHandle].dim[1] / 3 + 1;
 	tileDims[2] = triggerAreas[areaHandle].dim[2] / 3;
 	tileDims[3] = triggerAreas[areaHandle].dim[3] / 3 + 1;
-	for (long r = tileDims[0]; r < tileDims[2]; r++)
-		for (long c = tileDims[1]; c < tileDims[3]; c++)
+	for (int32_t r = tileDims[0]; r < tileDims[2]; r++)
+		for (int32_t c = tileDims[1]; c < tileDims[3]; c++)
 			if (map[r][c] == areaHandle)
 				map[r][c] = 0;
 	triggerAreas[areaHandle].type = TRIGGER_AREA_NONE;
@@ -84,14 +84,14 @@ void TriggerAreaManager::remove (long areaHandle) {
 
 //---------------------------------------------------------------------------
 
-void TriggerAreaManager::reset (long areaHandle) {
+void TriggerAreaManager::reset (int32_t areaHandle) {
 
 	triggerAreas[areaHandle].hit = false;
 }
 
 //---------------------------------------------------------------------------
 
-bool TriggerAreaManager::isHit (long areaHandle) {
+bool TriggerAreaManager::isHit (int32_t areaHandle) {
 
 	if (triggerAreas[areaHandle].type == TRIGGER_AREA_NONE)
 		return(false);
@@ -99,12 +99,12 @@ bool TriggerAreaManager::isHit (long areaHandle) {
 }
 
 //---------------------------------------------------------------------------
-void DEBUGWINS_print (PSTR s, long window);
+void DEBUGWINS_print (PSTR s, int32_t window);
 
 void TriggerAreaManager::setHit (MoverPtr mover) {
 
 #if 1
-	for (long i = 0; i < MAX_TRIGGER_AREAS; i++) {
+	for (int32_t i = 0; i < MAX_TRIGGER_AREAS; i++) {
 		if (triggerAreas[i].type == TRIGGER_AREA_NONE)
 			continue;
 		if (mover->cellPositionRow >= triggerAreas[i].dim[0])
@@ -138,7 +138,7 @@ void TriggerAreaManager::setHit (MoverPtr mover) {
 						}
 	}
 #else
-	long areaHandle = map[mover->cellPositionRow / 3][mover->cellPositionCol / 3];
+	int32_t areaHandle = map[mover->cellPositionRow / 3][mover->cellPositionCol / 3];
 	if (areaHandle > 0) {
 		switch (triggerAreas[areaHandle].type) {
 			case TRIGGER_AREA_MOVER:

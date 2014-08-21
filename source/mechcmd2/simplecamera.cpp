@@ -29,7 +29,7 @@ SimpleCamera::SimpleCamera()
 	strcpy( path, cameraPath );
 	strcat( path, "cameras.fit" );
 	FitIniFile camFile;
-	if ( NO_ERR != camFile.open( path ) )
+	if ( NO_ERROR != camFile.open( path ) )
 	{
 		STOP(( "Need Camera File " ));
 	}
@@ -93,7 +93,7 @@ void SimpleCamera::render()
 	render( 0, 0 );
 }
 
-void SimpleCamera::render(long xOffset, long yOffset)
+void SimpleCamera::render(int32_t xOffset, int32_t yOffset)
 {
 	if ( xOffset != 0 && yOffset != 0 ) // don't know how to do this
 		return;
@@ -204,7 +204,7 @@ void SimpleCamera::render(long xOffset, long yOffset)
 }
 
 ////////////////////////////////////////////////
-long SimpleCamera::update()
+int32_t SimpleCamera::update()
 {
 	if ( pObject )
 	{
@@ -276,7 +276,7 @@ long SimpleCamera::update()
 	return 0;
 }
 
-void SimpleCamera::setMech(PCSTR fileName, long baseColor, long highlight1, long highlight2 )
+void SimpleCamera::setMech(PCSTR fileName, int32_t baseColor, int32_t highlight1, int32_t highlight2 )
 {
 	shapeScale = 0.0f;
 
@@ -337,7 +337,7 @@ void SimpleCamera::setMech(PCSTR fileName, long baseColor, long highlight1, long
 
 }
 
-void SimpleCamera::setVehicle(PCSTR fileName,long base, long highlight, long h2)
+void SimpleCamera::setVehicle(PCSTR fileName,int32_t base, int32_t highlight, int32_t h2)
 {
 	shapeScale = 0.0f;
 
@@ -466,7 +466,7 @@ void SimpleCamera::setBuilding( PCSTR pBuilding )
 	bIsComponent = 0;
 }
 
-void SimpleCamera::setObject( PCSTR pFileName, long type, long base, long highlight, long h2 )
+void SimpleCamera::setObject( PCSTR pFileName, int32_t type, int32_t base, int32_t highlight, int32_t h2 )
 {
 	if ( !pFileName || !strlen( pFileName ) )
 	{
@@ -498,7 +498,7 @@ void SimpleCamera::setObject( PCSTR pFileName, long type, long base, long highli
 	}
 }
 
-void SimpleCamera::setColors( long base, long highlight, long h2 )
+void SimpleCamera::setColors( int32_t base, int32_t highlight, int32_t h2 )
 {
 	pObject->resetPaintScheme( base, highlight, h2 );
 }

@@ -12,7 +12,7 @@ MPStats.cpp			: Implementation of the MPStats component.
 #include "MissionBriefingScreen.h"
 #include "ChatWindow.h"
 #include "MechBayScreen.h"
-#include "LogisticsDialog.h"
+#include "logisticsdialog.h"
 
 #define MP_STATS_SAVE	400
 
@@ -37,7 +37,7 @@ int MPStats::init()
 	FitIniFile file;
 	FullPathFileName path;
 	path.init( artPath, "mcl_mp_stats", ".fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char buffer2[512];
 		sprintf( buffer2, "couldn't open file %s", (PSTR)path );
@@ -68,7 +68,7 @@ int MPStats::init()
 	return true;
 }
 
-int __cdecl sortStats( const void* pPlayer1, const void* pPlayer2 )
+int __cdecl sortStats( PCVOID pPlayer1, PCVOID pPlayer2 )
 {
 	MC2Player* player1 = *(MC2Player**)pPlayer1;
 	MC2Player* player2 = *(MC2Player**)pPlayer2;
@@ -190,13 +190,13 @@ void MPStats::update()
 {
 	if ( status == RUNNING && !statics[15].getColor() )
 	{
-		long textureHandle = MissionBriefingScreen::getMissionTGA( MPlayer->missionSettings.map );
+		int32_t textureHandle = MissionBriefingScreen::getMissionTGA( MPlayer->missionSettings.map );
 
 		statics[15].setTexture( textureHandle );
 		statics[15].setUVs( 0, 127, 127, 0 );
 		statics[15].setColor( 0xffffffff );
 
-		long playerCount = 0;
+		int32_t playerCount = 0;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 		const MC2Player* sorted[MAX_MC_PLAYERS];
 		int winnerCount = 0;
@@ -312,7 +312,7 @@ void MPStatsEntry::init()
 	FitIniFile file;
 	FullPathFileName path;
 	path.init( artPath, "mcl_mp_scoreboard", ".fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char buffer2[512];
 		sprintf( buffer2, "couldn't open file %s", (PSTR)path );
@@ -333,10 +333,10 @@ void MPStatsEntry::init()
 
 void MPStatsEntry::setData(const MC2Player* data, bool bShowScore )
 {
-	long color = data ? MPlayer->colors[data->baseColor[BASECOLOR_TEAM]] : 0x00000000;
-	long color2 = data ? MPlayer->colors[data->stripeColor] : 0x00000000;
+	int32_t color = data ? MPlayer->colors[data->baseColor[BASECOLOR_TEAM]] : 0x00000000;
+	int32_t color2 = data ? MPlayer->colors[data->stripeColor] : 0x00000000;
 
-	long scoreColor = 0xffffffff;
+	int32_t scoreColor = 0xffffffff;
 
 	if ( data && MPlayer->allUnitsDestroyed[data->commanderID] )
 		scoreColor = 0xff7f7f7f;
@@ -344,7 +344,7 @@ void MPStatsEntry::setData(const MC2Player* data, bool bShowScore )
 	rects[0].setColor( color2 );
 	rects[1].setColor( color );
 
-	long textColor = 0xff000000;
+	int32_t textColor = 0xff000000;
 
 	if ( ((color & 0xff) + ( (color & 0xff00)>>8 ) + ( (color & 0xff0000)>>16 ))/3 < 85 )
 		textColor = 0xffffffff;
@@ -394,19 +394,19 @@ void MPStatsEntry::setData(const MC2Player* data, bool bShowScore )
 
 }
 
-long MPStatsEntry::	getPlayerHeadingX()
+int32_t MPStatsEntry::	getPlayerHeadingX()
 {
 	return location[0].x;
 }
-long MPStatsEntry::	getRankingX()
+int32_t MPStatsEntry::	getRankingX()
 {
 	return textObjects[0].globalX();
 }
-long MPStatsEntry::	getKillsX()
+int32_t MPStatsEntry::	getKillsX()
 {
 	return textObjects[1].globalX();
 }
-long MPStatsEntry::	getLossesX()
+int32_t MPStatsEntry::	getLossesX()
 {
 	return textObjects[2].globalX();
 }
@@ -437,7 +437,7 @@ void MPStatsResultsEntry::init()
 	FitIniFile file;
 	FullPathFileName path;
 	path.init( artPath, "mcl_mp_stats_entry", ".fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char buffer2[512];
 		sprintf( buffer2, "couldn't open file %s", (PSTR)path );
@@ -464,8 +464,8 @@ void MPStatsResultsEntry::setData(const MC2Player* data, ULONG laurelColor, bool
 		overlayColor = 0;
 
 
-	long color = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
-	long textColor = 0xff000000;
+	int32_t color = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
+	int32_t textColor = 0xff000000;
 
 	if ( ((color & 0xff) + ( (color & 0xff00)>>8 ) + ( (color & 0xff0000)>>16 ))/3 < 85 )
 		textColor = 0xffffffff;

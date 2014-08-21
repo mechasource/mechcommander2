@@ -103,7 +103,7 @@ SalvageMechScreen::~SalvageMechScreen()
 
 }
 	
-int __cdecl sortMechs( const void* pW1, const void* pW2 )
+int __cdecl sortMechs( PCVOID pW1, PCVOID pW2 )
 {
 	BattleMech* p1 = *(BattleMech**)pW1;
 	BattleMech* p2 = *(BattleMech**)pW2;
@@ -113,8 +113,8 @@ int __cdecl sortMechs( const void* pW1, const void* pW2 )
 
 	if ( pV1 && pV2 )
 	{
-		long cost1 = pV1->getCost();
-		long cost2 = pV2->getCost();
+		int32_t cost1 = pV1->getCost();
+		int32_t cost2 = pV2->getCost();
 
 		if ( cost1 < cost2 )
 			return -1;
@@ -140,7 +140,7 @@ void SalvageMechScreen::init(FitIniFile* file)
 	}
 
 
-	long left, right, top, bottom;
+	int32_t left, right, top, bottom;
 	file->seekBlock( "SalvageAreaRect3" );
 	file->readIdLong( "Left", left );
 	file->readIdLong( "Right", right );
@@ -185,8 +185,8 @@ void SalvageMechScreen::init(FitIniFile* file)
 
 void SalvageMechScreen::render()
 {
-	long xOffset = 0;
-	long yOffset = 0;
+	int32_t xOffset = 0;
+	int32_t yOffset = 0;
 	if ( bDone )
 	{
 		xOffset = exitAnim.getXDelta();
@@ -247,7 +247,7 @@ bool SalvageMechScreen::isDone()
 void SalvageMechScreen::update()
 {
 	int amount = LogisticsData::instance->getCBills();
-	long color = 0xff005392;
+	int32_t color = 0xff005392;
 
 	if ( amount != oldCBillsAmount )
 	{
@@ -345,7 +345,7 @@ void	SalvageListItem::init( FitIniFile* file )
 	file->seekBlock( "SalvageAreaMechEntryBox" );
 	file->readIdLong( "XLocation", rect.left );
 	file->readIdLong( "YLocation", rect.top );
-	long width, height;
+	int32_t width, height;
 	file->readIdLong( "Width", width );
 	file->readIdLong( "Height", height );
 
@@ -378,7 +378,7 @@ SalvageListItem::SalvageListItem( BattleMech* pMech )
 {
 	gosASSERT( pMech );
 
-	long width = rect.right - rect.left;
+	int32_t width = rect.right - rect.left;
 	aObject::init( 0, 2, width, rect.bottom - rect.top );
 
 	icon = new MechIcon();
@@ -417,7 +417,7 @@ SalvageListItem::SalvageListItem( BattleMech* pMech )
 
 	// add salvage
 	char text[64];
-	long salvageAmount = costToSalvage;
+	int32_t salvageAmount = costToSalvage;
 	sprintf( text, "%ld", salvageAmount );
  	pText = new aText(  );
 	*pText = *costText;
@@ -425,7 +425,7 @@ SalvageListItem::SalvageListItem( BattleMech* pMech )
 	addChild( pText );
 
 	// add tonnage
-	long tonnage = pMech->tonnage;
+	int32_t tonnage = pMech->tonnage;
 	sprintf( text, "%ld", tonnage );
 	pText = new aText(  );
 	*pText = *weightText;
@@ -456,8 +456,8 @@ SalvageListItem::SalvageListItem( BattleMech* pMech )
 void SalvageListItem::update()
 {
 
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 	if ( costToSalvage > LogisticsData::instance->getCBills()
 		&& !isChecked() )
@@ -533,7 +533,7 @@ void SalvageListItem::render()
 	icon->renderUnitIcon( iconRect.left + location[0].x + 3, iconRect.top + location[0].y + 5, 
 		iconRect.right + location[0].x, iconRect.bottom + location[0].y );
 
-	long color = state == HIGHLITE ? highlightAnim.getColor() : normalAnim.getColor();
+	int32_t color = state == HIGHLITE ? highlightAnim.getColor() : normalAnim.getColor();
 	if ( state == SELECTED )
 		color = pressedAnim.getColor();
 
@@ -600,7 +600,7 @@ SalvageMechArea::~SalvageMechArea()
 void SalvageMechArea::init( FitIniFile* file )
 {
 	file->seekBlock( "SalvageAreaRect8" );
-	long left, right, top, bottom;
+	int32_t left, right, top, bottom;
 	file->readIdLong( "left", left );
 	file->readIdLong( "top", top );
 	file->readIdLong( "right", right );
@@ -636,7 +636,7 @@ void SalvageMechArea::update()
 	loadoutListBox.update();
 	mechCamera.update();
 }
-void SalvageMechArea::setMech( LogisticsVariant* pMech, long red, long green, long blue )
+void SalvageMechArea::setMech( LogisticsVariant* pMech, int32_t red, int32_t green, int32_t blue )
 {
 	if ( pMech == unit )
 		return;
@@ -660,7 +660,7 @@ void SalvageMechArea::setMech( LogisticsVariant* pMech, long red, long green, lo
 		textObjects[SPEED_TEXTID].setText( text );
 		sprintf( text, "%ld", pMech->getJumpRange() * 25 );
 		textObjects[JUMP_TEXTID].setText( text );
-		long tmpColor;
+		int32_t tmpColor;
 		textObjects[RANGE_TEXTID].setText( pMech->getOptimalRangeString( tmpColor ) );
 		textObjects[RANGE_TEXTID].setColor( ( tmpColor ) );
 
@@ -688,7 +688,7 @@ void SalvageMechArea::setMech( LogisticsVariant* pMech, long red, long green, lo
 
 
 
-void SalvageMechArea::render(long xOffset, long yOffset)
+void SalvageMechArea::render(int32_t xOffset, int32_t yOffset)
 {
 	loadoutListBox.move( xOffset, yOffset );
 	loadoutListBox.render();

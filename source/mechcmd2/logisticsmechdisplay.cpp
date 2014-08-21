@@ -78,7 +78,7 @@ int	LogisticsMechDisplay::init( )
 	FitIniFile file;
 	FullPathFileName path;
 	path.init( artPath, "mcl_mechinfo", ".fit" );
-	if ( NO_ERR !=  file.open( path ) )
+	if ( NO_ERROR !=  file.open( path ) )
 	{
 		Assert( 0, 0, "Couldn't open mcl_mechinfo.fit" );
 		return 0;
@@ -124,7 +124,7 @@ void LogisticsMechDisplay::setMech( LogisticsMech* pMech, bool bFromLB )
 				sprintf( text, tmpStr, pCurMech->getMaxWeight(), (PCSTR)pCurMech->getMechClass() );
 				textObjects[3].setText( text );
 				
-				long tmpColor;
+				int32_t tmpColor;
 				textObjects[2].setText( pCurMech->getVariant()->getOptimalRangeString( tmpColor ) );
 				textObjects[2].setColor( tmpColor );
 

@@ -7,6 +7,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DCOLLSN_H
 #define DCOLLSN_H
 //------------------------------------------------------------------------------

@@ -8,33 +8,17 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef MISSION_H
 #define MISSION_H
-//----------------------------------------------------------------------------------
-// Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
 
-#ifndef WARRIOR_H
-#include "warrior.h"
-#endif
-
-#ifndef MISSIONGUI_H
-#include "missiongui.h"
-#endif
-
-#ifndef OBJECTIVE_H
-#include "Objective.h"
-#endif
-
-#ifndef LOGISTICSMECH_H
-#include "logisticsmech.h"
-#endif
-
-#ifndef MULTPLYR_H
-#include "multplyr.h"
-#endif
+//#include <mclib.h>
+//#include "warrior.h"
+//#include "missiongui.h"
+//#include "objective.h"
+//#include "logisticsmech.h"
+//#include "multplyr.h"
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
@@ -58,11 +42,11 @@ struct Part
 {
 	GameObjectWatchID	objectWID;			//Pointer to my physical incarnation
 	ULONG		objNumber;			//What kind of object am I?
-	DWORD				baseColor;			//Base color of mech -- Overrides the RED in RGB
-	DWORD				highlightColor1;	//First Highlight Color -- Overrides the GREEN in RGB
-	DWORD				highlightColor2;	//Second Highlight Color -- Overrides the BLUE in RGB
-	long				active;				//Am I currently awake?
-	long				exists;				//Am I currently in Existance?
+	ULONG				baseColor;			//Base color of mech -- Overrides the RED in RGB
+	ULONG				highlightColor1;	//First Highlight Color -- Overrides the GREEN in RGB
+	ULONG				highlightColor2;	//Second Highlight Color -- Overrides the BLUE in RGB
+	int32_t				active;				//Am I currently awake?
+	int32_t				exists;				//Am I currently in Existance?
 	bool				destroyed;			//Have I been destroyed for this scenario?
 	Stuff::Vector3D		position;			//Where do I start?  (relative to area)
 	float				velocity;			//How fast am I going?
@@ -70,7 +54,7 @@ struct Part
 	ULONG		gestureId;			//What gesture do I start in?
 	char				alignment;			//Who do I fight for?
 	char				teamId;				//Which team am I on?
-	long				commanderID;		//Used when setting up multiplayer
+	int32_t				commanderID;		//Used when setting up multiplayer
 	char				squadId;				//Which team am I on?
 	char				myIcon;				//If set, start with Icon on Screen for this part.
 	ULONG		controlType;		//How am I controlled?
@@ -78,10 +62,10 @@ struct Part
 	char				profileName[9];		//Name of Object Profile file.
 	ULONG		pilot;				//Name of Pilot File.
 	bool				captureable;		//Is this a capturable "enemy" mech?
-	DWORD				variantNum;			//Variant number of the Part.
+	ULONG				variantNum;			//Variant number of the Part.
 
-	void Save (FitIniFilePtr file, long partNum);
-	void Load (FitIniFilePtr file, long partNum);
+	void Save (FitIniFilePtr file, int32_t partNum);
+	void Load (FitIniFilePtr file, int32_t partNum);
 };
 
 typedef Part *PartPtr;
@@ -138,7 +122,7 @@ struct Objective
 	float				timeLeft;
 	ObjectiveStatus		status;
 	Stuff::Vector3D		position;
-	long				points;
+	int32_t				points;
 	float				radius;
 };
 
@@ -156,8 +140,8 @@ class Mission
 	
 		FitIniFilePtr					missionFile;
 										
-		long							operationId;		// aka operation id
-		long							missionId;			// aka mission id
+		int32_t							operationId;		// aka operation id
+		int32_t							missionId;			// aka mission id
 										
 		char							missionFileName[80];
 		char							missionScriptName[80];
@@ -190,21 +174,21 @@ class Mission
 		float							actualTime;
 		float							runningTime;
 										
-		long 							numSmallStrikes;
-		long 							numLargeStrikes;
-		long 							numSensorStrikes;
-		long 							numCameraStrikes;
+		int32_t 							numSmallStrikes;
+		int32_t 							numLargeStrikes;
+		int32_t 							numSensorStrikes;
+		int32_t 							numCameraStrikes;
 										
 		uint8_t					missionTuneNum;
 										
-		long							missionScriptHandle;
+		int32_t							missionScriptHandle;
 		ABLParam						*missionBrainParams;
 		
 		MissionInterfaceManagerPtr		missionInterface;
 
 		Stuff::Vector3D					dropZone;
 		
-		long							theSkyNumber;
+		int32_t							theSkyNumber;
 
 		static bool						statisticsInitialized;
 
@@ -257,7 +241,7 @@ class Mission
 
 		bool calcComplexDropZones (PSTR missionName, char dropZoneList[MAX_MC_PLAYERS]);
 
-		void init (PSTR missionName, long loadType, long dropZoneID, Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], long numMoversPerCommander);
+		void init (PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], int32_t numMoversPerCommander);
 
 		static void initBareMinimum();
 		
@@ -268,8 +252,8 @@ class Mission
 
 		Stuff::Vector3D getDropZone( ) const { return dropZone; }
 		
-		long update (void);
-		long render (void);
+		int32_t update (void);
+		int32_t render (void);
 		
 		void destroy (bool initLogistics = true);
 		
@@ -278,24 +262,24 @@ class Mission
 			destroy(false);
 		}
 
-		long getStatus (void);
+		int32_t getStatus (void);
 
-		long getNumParts (void) 
+		int32_t getNumParts (void) 
 		{
 			return(numParts);
 		}
 
-		PartPtr getPart (long partNumber) 
+		PartPtr getPart (int32_t partNumber) 
 		{
 			return(&parts[partNumber]);
 		}
 
-		long getPartTeamId (long partNumber) 
+		int32_t getPartTeamId (int32_t partNumber) 
 		{
 			return(parts[partNumber].teamId);
 		}
 
-		GameObjectPtr getPartObject (long partNumber)
+		GameObjectPtr getPartObject (int32_t partNumber)
 		{
 			if ((partNumber <= 0) || ((ULONG)partNumber > numParts))
 				return NULL;
@@ -304,39 +288,39 @@ class Mission
 			return ((GameObjectPtr) ObjectManager->getByWatchID(parts[partNumber].objectWID));
 		}
 
-		long addMover (MoverInitData* moveSpec);
-		long addMover (MoverInitData* moveSpec, LogisticsMech* mechData);
-		long addMover (MoverInitData* moveSpec, CompressedMech* mechData);
+		int32_t addMover (MoverInitData* moveSpec);
+		int32_t addMover (MoverInitData* moveSpec, LogisticsMech* mechData);
+		int32_t addMover (MoverInitData* moveSpec, CompressedMech* mechData);
 		
-		long removeMover (MoverPtr mover);
+		int32_t removeMover (MoverPtr mover);
 
-		void tradeMover (MoverPtr mover, long newTeamID, long newCommanderID, PSTR pilotFileName, PSTR brainFileName);
+		void tradeMover (MoverPtr mover, int32_t newTeamID, int32_t newCommanderID, PSTR pilotFileName, PSTR brainFileName);
 
-		void createPartObject (long objectId, MoverPtr mover);
+		void createPartObject (int32_t objectId, MoverPtr mover);
 		
-		void createMissionObject (long partId);		//Moves object from holding area to real world.
+		void createMissionObject (int32_t partId);		//Moves object from holding area to real world.
 		
 		ABLModulePtr getBrain (void) 
 		{
 			return(missionBrain);
 		}
 
-		void handleMultiplayMessage (long code, long param1);
+		void handleMultiplayMessage (int32_t code, int32_t param1);
 
 		//-----------------------------------------------------
 		// Objective Routines
 		void startObjectiveTimers (void);
 		
-		long setObjectiveTimer (long objectiveNum, float timeLeft);
-		float checkObjectiveTimer (long objectiveNum);
+		int32_t setObjectiveTimer (int32_t objectiveNum, float timeLeft);
+		float checkObjectiveTimer (int32_t objectiveNum);
 		
-		long setObjectiveStatus (long objectiveNum, ObjectiveStatus status);
-		ObjectiveStatus checkObjectiveStatus (long objectiveNum);
+		int32_t setObjectiveStatus (int32_t objectiveNum, ObjectiveStatus status);
+		ObjectiveStatus checkObjectiveStatus (int32_t objectiveNum);
 		
-		long setObjectiveType (long objectiveNum, ObjectiveType type);
-		ObjectiveType checkObjectiveType (long objectiveNum);
+		int32_t setObjectiveType (int32_t objectiveNum, ObjectiveType type);
+		ObjectiveType checkObjectiveType (int32_t objectiveNum);
 		
-		void setObjectivePos (long objectiveNum, float realX, float realY, float realZ);
+		void setObjectivePos (int32_t objectiveNum, float realX, float realY, float realZ);
 		
 		void setupBonus (void);
 		
@@ -345,12 +329,12 @@ class Mission
 		bool checkObjectiveFailed (void);
 		//-----------------------------------------------------
 
-		long GetOperationID(void) 
+		int32_t GetOperationID(void) 
 		{
 			return operationId;
 		}
 
-		long GetMissionID(void) 
+		int32_t GetMissionID(void) 
 		{
 			return missionId;
 		}
@@ -360,7 +344,7 @@ class Mission
 			return missionScriptName;
 		}
 
-		long getMissionTuneId (void)
+		int32_t getMissionTuneId (void)
 		{
 			return missionTuneNum;
 		}
@@ -392,7 +376,7 @@ extern bool CantTouchThis;
 extern float MineDamage;
 extern float MineSplashDamage;
 extern float MineSplashRange;
-extern long MineExplosion;
+extern int32_t MineExplosion;
 
 extern float globalMissionValues [];
 

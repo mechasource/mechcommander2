@@ -137,7 +137,7 @@ void MPParameterScreen::init(FitIniFile* file)
 	{
 		for ( int i = 0; i < buttonCount; i++ )
 		{
-			long id = buttons[i].getID();
+			int32_t id = buttons[i].getID();
 			if ( (id < MP_INCREMENT_DROPWEIGHT || id > MP_DECREMENT_RP)
 				 && id != MP_LOCKGAME && id != MP_BOOTPLAYER ) 
 				buttons[i].setMessageOnRelease();
@@ -172,7 +172,7 @@ void MPParameterScreen::init(FitIniFile* file)
 
 	FitIniFile mpFile;
 
-	if ( NO_ERR != mpFile.open( path ) )
+	if ( NO_ERROR != mpFile.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -601,7 +601,7 @@ void MPParameterScreen::setMission( PCSTR fileName, bool resetData )
 	path.init( missionPath, fileName, ".fit" );
 	FitIniFile missionFile;
 	
-	if ( NO_ERR != missionFile.open( (PSTR)(PCSTR)path ) )
+	if ( NO_ERROR != missionFile.open( (PSTR)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", fileName );
@@ -611,26 +611,26 @@ void MPParameterScreen::setMission( PCSTR fileName, bool resetData )
 
 	if ( resetData )
 	{
-		long result = 0;
+		int32_t result = 0;
 
 		char missionName[256];
 		result = missionFile.seekBlock( "MissionSettings" );
-		Assert( result == NO_ERR, 0, "Coudln't find the mission settings block in the mission file" );
+		Assert( result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file" );
 
 		bool bRes;
 		result = missionFile.readIdBoolean( "MissionNameUseResourceString", bRes );
-		Assert( result == NO_ERR, 0, "couldn't find the MissionNameUseResourceString" );
+		Assert( result == NO_ERROR, 0, "couldn't find the MissionNameUseResourceString" );
 		if ( bRes )
 		{
 			ULONG lRes;
 			result = missionFile.readIdULong( "MissionNameResourceStringID", lRes );
-			Assert( result == NO_ERR, 0, "couldn't find the MissionNameResourceStringID" );
+			Assert( result == NO_ERROR, 0, "couldn't find the MissionNameResourceStringID" );
 			cLoadString( lRes, missionName, 255 );
 		}
 		else
 		{
 			result = missionFile.readIdString( "MissionName", missionName, 255 );
-			Assert( result == NO_ERR, 0, "couldn't find the missionName" );
+			Assert( result == NO_ERROR, 0, "couldn't find the missionName" );
 		}
 		
 		gosASSERT( strlen( missionName ) < MAXLEN_MAP_NAME );
@@ -647,7 +647,7 @@ void MPParameterScreen::setMission( PCSTR fileName, bool resetData )
 		result = missionFile.readIdFloat( "DropWeightLimit", fTmp );
 		MPlayer->missionSettings.dropWeight = fTmp;
 		result = missionFile.readIdFloat( "TimeLimit", MPlayer->missionSettings.timeLimit );
-		if ( result != NO_ERR )
+		if ( result != NO_ERROR )
 			MPlayer->missionSettings.timeLimit = -1.f;
 		result = missionFile.readIdBoolean( "UnlimitedAmmoEnabledDefault", MPlayer->missionSettings.unlimitedAmmo );
 		result = missionFile.readIdBoolean( "NoVariantsEnabledDefault", MPlayer->missionSettings.variants );
@@ -665,12 +665,12 @@ void MPParameterScreen::setMission( PCSTR fileName, bool resetData )
 		result = missionFile.readIdBoolean( "RPsForMechsEnabledDefault", MPlayer->missionSettings.resourceForMechs );
 		result = missionFile.readIdString( "DownloadURL", MPlayer->missionSettings.url, 255 );
 		ULONG lTmp;
-		if ( NO_ERR == missionFile.readIdULong( "MaximumNumberOfTeams", lTmp ) )
+		if ( NO_ERROR == missionFile.readIdULong( "MaximumNumberOfTeams", lTmp ) )
 			MPlayer->missionSettings.maxTeams = lTmp;
 		else
 			MPlayer->missionSettings.maxTeams = 8;
 
-		if ( NO_ERR ==  missionFile.readIdULong( "MaximumNumberOfPlayers", lTmp ) )
+		if ( NO_ERROR ==  missionFile.readIdULong( "MaximumNumberOfPlayers", lTmp ) )
 			MPlayer->missionSettings.maxPlayers = lTmp;
 		else
 			MPlayer->missionSettings.maxPlayers = 8;
@@ -685,7 +685,7 @@ void MPParameterScreen::setMission( PCSTR fileName, bool resetData )
  	mapName = MPlayer->missionSettings.map;
 	}
 
-	long textureHandle = MissionBriefingScreen::getMissionTGA( fileName );
+	int32_t textureHandle = MissionBriefingScreen::getMissionTGA( fileName );
 	statics[15].setTexture( textureHandle );
 	statics[15].setUVs(0, 127, 127, 0 );
 	statics[15].setColor( 0xffffffff );
@@ -700,7 +700,7 @@ void MPParameterScreen::setMission( PCSTR fileName, bool resetData )
 
 }
 
-int __cdecl sortPlayers( const void* p1, const void* p2 )
+int __cdecl sortPlayers( PCVOID p1, PCVOID p2 )
 {
 	MC2Player* player1 = *(MC2Player**)p1;
 	MC2Player* player2 = *(MC2Player**)p2;
@@ -841,7 +841,7 @@ void MPParameterScreen::update()
 			getButton( MAP_INFO )->disable( false );
 			if ( !statics[15].getColor() )
 			{
-				long textureHandle = MissionBriefingScreen::getMissionTGA( MPlayer->missionSettings.map );
+				int32_t textureHandle = MissionBriefingScreen::getMissionTGA( MPlayer->missionSettings.map );
 				if ( textureHandle )
 				{
 					statics[15].setTexture( textureHandle );
@@ -863,11 +863,11 @@ void MPParameterScreen::update()
 		path.init( "data\\multiplayer\\insignia\\", pPlayer->insigniaFile, ".tga" );
 
 		File file;
-		if ( NO_ERR == file.open( path ) )
+		if ( NO_ERROR == file.open( path ) )
 		{
-			long size = file.getLength();
+			int32_t size = file.getLength();
 
-			PUCHAR pData = new uint8_t[size];
+			puint8_t pData = new uint8_t[size];
 
 			file.read( pData, size );
 			MPlayer->sendPlayerInsignia( (PSTR)pPlayer->insigniaFile, pData, size );
@@ -1155,7 +1155,7 @@ void MPParameterScreen::update()
 			{
 				EString text;
 				edits[oldEditFocus].getEntry( text );
-				long val = atoi( text );
+				int32_t val = atoi( text );
 				switch (oldEditFocus)
 				{
 					case 0:
@@ -1383,7 +1383,7 @@ GUID			MPParameterScreen::getGUIDFromFile( PCSTR pNewMapName)
 	FullPathFileName path;
 	path.init( missionPath, pNewMapName, ".pak" );
 	PacketFile pakFile;
-	if ( NO_ERR != pakFile.open( (PSTR)(PCSTR)path ) )
+	if ( NO_ERROR != pakFile.open( (PSTR)(PCSTR)path ) )
 	{
 		return retVal;
 	}
@@ -1392,7 +1392,7 @@ GUID			MPParameterScreen::getGUIDFromFile( PCSTR pNewMapName)
 	pakFile.seekPacket( packetCount - 1 );
 	if ( sizeof( GUID ) == pakFile.getPacketSize( ) ) 
 	{
-		pakFile.readPacket( packetCount - 1, (PUCHAR)&retVal );
+		pakFile.readPacket( packetCount - 1, (puint8_t)&retVal );
 
 		return retVal;
 	}
@@ -1410,7 +1410,7 @@ void MPParameterScreen::setMissionClientOnly( PCSTR pNewMapName )
 	path.init( missionPath, pNewMapName, ".fit" );
 	FitIniFile missionFile;
 	
-	if ( NO_ERR != missionFile.open( (PSTR)(PCSTR)path ) )
+	if ( NO_ERROR != missionFile.open( (PSTR)(PCSTR)path ) )
 	{
 		char tmp[256];
 		char final[1024];
@@ -1432,7 +1432,7 @@ void MPParameterScreen::setMissionClientOnly( PCSTR pNewMapName )
 
 	getButton( MAP_INFO )->disable( false );
 
-	long textureHandle = MissionBriefingScreen::getMissionTGA( pNewMapName );
+	int32_t textureHandle = MissionBriefingScreen::getMissionTGA( pNewMapName );
 	if ( textureHandle )
 	{
 		statics[15].setTexture( textureHandle );
@@ -1483,7 +1483,7 @@ void MPParameterScreen::resetCheckBoxes()
 
 	if ( MPlayer->isHost() )
 	{
-		long playerCount = 0;
+		int32_t playerCount = 0;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 
 		for ( int i = 0; i < playerCount; i++ )
@@ -1593,9 +1593,9 @@ aPlayerParams& aPlayerParams::operator=( const aPlayerParams& src )
 	return *this;
 }
 
-long aPlayerParams::init(long xPos, long yPos,long w, long h )
+int32_t aPlayerParams::init(int32_t xPos, int32_t yPos,int32_t w, int32_t h )
 {
-	long err;
+	int32_t err;
 	
 	err = aObject::init(xPos,yPos,w,h);
 	if (err)
@@ -1608,7 +1608,7 @@ long aPlayerParams::init(long xPos, long yPos,long w, long h )
 	}
 
 	
-	return (NO_ERR);
+	return (NO_ERROR);
 }
 
 void aPlayerParams::init( FitIniFile* pFile, PCSTR blockNameParam )
@@ -1654,7 +1654,7 @@ void aPlayerParams::init( FitIniFile* pFile, PCSTR blockNameParam )
 	if ( staticName )
 	{
 		sprintf( blockName, "%s%c", staticName, 's' );
-		if ( NO_ERR == file.seekBlock( blockName ) )
+		if ( NO_ERROR == file.seekBlock( blockName ) )
 		{
 			file.readIdLong( "staticCount", staticCount );
 
@@ -1678,7 +1678,7 @@ void aPlayerParams::init( FitIniFile* pFile, PCSTR blockNameParam )
 	{
 		// init rects
 		sprintf( blockName, "%s%c", rectName, 's' );
-		if ( NO_ERR == file.seekBlock( blockName ) )
+		if ( NO_ERROR == file.seekBlock( blockName ) )
 		{
 			file.readIdLong( "rectCount", rectCount );
 			if ( rectCount )
@@ -1700,9 +1700,9 @@ void aPlayerParams::init( FitIniFile* pFile, PCSTR blockNameParam )
 	if ( textName )
 	{
 		sprintf( blockName, "%s%c", textName, 's' );
-		if ( NO_ERR == file.seekBlock( blockName ) )
+		if ( NO_ERROR == file.seekBlock( blockName ) )
 		{
-			if ( NO_ERR != file.readIdLong( "TextEntryCount", textCount ) )
+			if ( NO_ERROR != file.readIdLong( "TextEntryCount", textCount ) )
 				file.readIdLong( "TextCount", textCount );
 
 			if ( textCount )
@@ -1729,7 +1729,7 @@ void aPlayerParams::init( FitIniFile* pFile, PCSTR blockNameParam )
 		strcat( path, "mcl_mp_param_droplist3.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -1752,7 +1752,7 @@ void aPlayerParams::init( FitIniFile* pFile, PCSTR blockNameParam )
 		strcat( path, "mcl_mp_param_droplist4.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -1983,7 +1983,7 @@ void aPlayerParams::update()
 		int oldFaction = factionDropList.GetSelectedItem();
 		PCSTR pText = textObjects[1].text;
 		
-		long oldCBills = 0;
+		int32_t oldCBills = 0;
 		
 		if ( pText )
 		{
@@ -2019,7 +2019,7 @@ void aPlayerParams::update()
 		bool bNewReady = ReadyButton.isPressed();
 		EString cBillsText;
 		edit.getEntry( cBillsText );
-		long newCBills = 0;
+		int32_t newCBills = 0;
 		if ( cBillsText.Length() )
 		{
 			newCBills = atoi( cBillsText ) * 1000;
@@ -2105,8 +2105,8 @@ void	aPlayerParams::setData( const _MC2Player* data)
 	commanderID = data->commanderID;
 
 
-	long textColor = 0xff000000;
-	long newColor = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
+	int32_t textColor = 0xff000000;
+	int32_t newColor = MPlayer->colors[data->baseColor[BASECOLOR_TEAM]];
 	if ( ((newColor & 0xff) + ( (newColor & 0xff00)>>8 ) + ( (newColor & 0xff0000)>>16 ))/3 < 85 )
 		textColor = 0xffffffff;
 
@@ -2239,17 +2239,17 @@ void aPlayerParams::move( float offsetX, float offsetY )
 
 
 
-long aStyle2TextListItem::init( FitIniFile* file, PCSTR blockName )
+int32_t aStyle2TextListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
-	long fontResID = 0;
+	int32_t fontResID = 0;
 	file->readIdLong( "Font", fontResID );
-	long textID = 0;
+	int32_t textID = 0;
 	file->readIdLong( "TextID", textID );
 	aTextListItem::init(fontResID);
 	setText(textID);
-	long color = 0xff808080;
+	int32_t color = 0xff808080;
 	file->readIdLong( "Color", color );
 	normalColor = color;
 	setColor(color);
@@ -2272,11 +2272,11 @@ long aStyle2TextListItem::init( FitIniFile* file, PCSTR blockName )
 
 void aStyle2TextListItem::render()
 {
-	long color = normalColor;
+	int32_t color = normalColor;
 	if ( hasAnimation )
 	{
 		if ( animGroup.getState() != getState() )
-			animGroup.setState( (aAnimGroup::STATE)(long)getState() );
+			animGroup.setState( (aAnimGroup::STATE)(int32_t)getState() );
 		animGroup.update();
 		color = animGroup.getCurrentColor( animGroup.getState() );
 	}
@@ -2312,10 +2312,10 @@ void CFocusManager::clear()
 	listOfDropListPointers.Clear();
 }
 
-void *CFocusManager::registerDropList(aDropList &DropList)
+PVOID CFocusManager::registerDropList(aDropList &DropList)
 {
 	listOfDropListPointers.Append(&DropList);
-	return ((void *)&DropList);
+	return ((PVOID)&DropList);
 }
 
 void CFocusManager::unregisterDropList(aDropList &DropList)

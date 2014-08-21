@@ -6,6 +6,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef VFXSHAPE_H
 #define VFXSHAPE_H
 //---------------------------------------------------------------------------
@@ -24,8 +26,8 @@ class Shape
 {
 	public:
 
-		MemoryPtr			frameList;		//This is binary image of VFX file
-		MemoryPtr			stupidHeader;
+		PUCHAR			frameList;		//This is binary image of VFX file
+		PUCHAR			stupidHeader;
 		ULONG		lastTurnUsed;
 		Shape				*next;
 		AppearanceTypePtr	owner;
@@ -45,7 +47,7 @@ class Shape
 			init();
 		}
 
-		long init (MemoryPtr fileBlock, AppearanceTypePtr, long shapeSize);
+		int32_t init (PUCHAR fileBlock, AppearanceTypePtr, int32_t shapeSize);
 
 		void destroy (void);
 

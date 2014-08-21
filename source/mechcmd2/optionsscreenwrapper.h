@@ -1,5 +1,3 @@
-#ifndef OPTIONSSCREENWRAPPER_H
-#define OPTIONSSCREENWRAPPER_H
 /*************************************************************************************************\
 OptionsScreenWrapper.h			: Interface for the OptionsScreenWrapper component.
 //---------------------------------------------------------------------------//
@@ -9,14 +7,19 @@ OptionsScreenWrapper.h			: Interface for the OptionsScreenWrapper component.
 
 //*************************************************************************************************
 
+#pragma once
+
+#ifndef OPTIONSSCREENWRAPPER_H
+#define OPTIONSSCREENWRAPPER_H
+
+//#include "asystem.h"
+//#include "alistbox.h"
+
+
 /**************************************************************************************************
 CLASS DESCRIPTION
 OptionsScreenWrapper:
 **************************************************************************************************/
-
-#include "asystem.h"
-#include "alistbox.h"
-
 
 class OptionsXScreen;
 

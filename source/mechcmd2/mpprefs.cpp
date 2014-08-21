@@ -61,7 +61,7 @@ int MPPrefs::init( FitIniFile& file )
 	}
 
 	file.seekBlock( "ComboBoxes" );
-	long count = 0;
+	int32_t count = 0;
 	file.readIdLong( "ComboBoxCount", count );
 	char blockName[256];
 
@@ -72,8 +72,8 @@ int MPPrefs::init( FitIniFile& file )
 		file.seekBlock( blockName );
 		file.readIdString( "FileName", blockName, 255);
 
-		long tmpX;
-		long tmpY;
+		int32_t tmpX;
+		int32_t tmpY;
 		file.readIdLong( "XLocation", tmpX );
 		file.readIdLong( "YLocation", tmpY );
 
@@ -81,7 +81,7 @@ int MPPrefs::init( FitIniFile& file )
 		FullPathFileName path;
 		path.init( artPath, blockName, ".fit" );
 		
-		if ( NO_ERR != tmpFile.open( path ) )
+		if ( NO_ERROR != tmpFile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -178,7 +178,7 @@ void MPPrefs::begin()
 			}
 			else
 			{
-				long index = comboBox[2].AddItem( pItem );
+				int32_t index = comboBox[2].AddItem( pItem );
 				if ( strstr( findResult.cFileName, prefs.insigniaFile ) )
 				{
 					comboBox[2].SelectItem( index );
@@ -201,10 +201,10 @@ void MPPrefs::begin()
 	
 
 	MC2Player* player = MPlayer->getPlayerInfo( MPlayer->commanderID );
-	long mySeniority = player->teamSeniority;
+	int32_t mySeniority = player->teamSeniority;
 	bool bMostSenior = true;
 
-	long playerCount;
+	int32_t playerCount;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
 	for( i = 0; i < playerCount; i++ )
 	{
@@ -249,10 +249,10 @@ void MPPrefs::update()
 {
 
 	MC2Player* player = MPlayer->getPlayerInfo( MPlayer->commanderID );
-	long mySeniority = player->teamSeniority;
+	int32_t mySeniority = player->teamSeniority;
 	bool bMostSenior = true;
 	
-	long playerCount;
+	int32_t playerCount;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
 	for( int i = 0; i < playerCount; i++ )
 	{
@@ -310,9 +310,9 @@ void MPPrefs::update()
 
 		File file;
 		file.open( path );
-		long size = file.getLength();
+		int32_t size = file.getLength();
 
-		PUCHAR pData = new uint8_t[size];
+		puint8_t pData = new uint8_t[size];
 
 		file.read( pData, size );
 		MPlayer->sendPlayerInsignia( (PSTR)pName, pData, size );
@@ -355,7 +355,7 @@ void MPPrefs::update()
 
 void MPPrefs::setColor( ULONG color )
 {
-	long playerCount;
+	int32_t playerCount;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
 	for( int i = 0; i < playerCount; i++ )
 	{
@@ -400,7 +400,7 @@ char MPPrefs::getColorIndex( ULONG color )
 	return 0;
 }
 
-void MPPrefs::updateBaseColors( const MC2Player* players, long playerCount, bool bDrawRect )
+void MPPrefs::updateBaseColors( const MC2Player* players, int32_t playerCount, bool bDrawRect )
 {
 
 	if ( getButton(MP_PREFS_BASE )->isPressed() )
@@ -445,7 +445,7 @@ void MPPrefs::updateBaseColors( const MC2Player* players, long playerCount, bool
 	
 }
 
-void MPPrefs::updateStripeColors(const MC2Player* players, long playerCount, bool bDrawRect)
+void MPPrefs::updateStripeColors(const MC2Player* players, int32_t playerCount, bool bDrawRect)
 {
 	if ( getButton(MP_PREFS_STRIPE )->isPressed() )
 	{
@@ -497,7 +497,7 @@ void MPPrefs ::render(int OffsetX, int OffsetY )
 
 		bool bRect = (pObject == &comboBox[2] || pObject == &comboBox[1]) ? 0 : 1;
 
-		long playerCount;
+		int32_t playerCount;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 		updateBaseColors( players, playerCount, bRect );
 		updateStripeColors( players, playerCount, bRect );
@@ -650,9 +650,9 @@ int aBmpListItem::setBmp( PCSTR pFileName )
 
 	TGAFileHeader header;
 	File file;
-	if ( NO_ERR == file.open( path ) )
+	if ( NO_ERROR == file.open( path ) )
 	{
-		file.read( (PUCHAR)&header, sizeof( header ) );
+		file.read( (puint8_t)&header, sizeof( header ) );
 		if ( header.width != 32 || header.height != 32 || header.pixel_depth < 24 )
 			return 0;
 	}

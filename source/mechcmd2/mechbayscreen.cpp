@@ -70,7 +70,7 @@ void MechBayScreen::init(FitIniFile* file)
 	strcpy( path, artPath );
 	strcat( path, "mcl_gn_deploymentteams.fit" );
 	strlwr( path );
-	if ( NO_ERR != iconFile.open( path ) )
+	if ( NO_ERROR != iconFile.open( path ) )
 	{
 		gosASSERT( "couldn't open the MCL_GN_DevploymentTeams file" );
 		return;
@@ -81,8 +81,8 @@ void MechBayScreen::init(FitIniFile* file)
 	int count = 0;
 
 	
-	long x = 0;
-	long y = 0;
+	int32_t x = 0;
+	int32_t y = 0;
 
 	for ( int j = 0; j < ICON_COUNT_Y; j++ )
 	{
@@ -281,19 +281,19 @@ void MechBayScreen::render(int xOffset, int yOffset)
 
 }
 
-void MechBayScreen::drawWeightMeter(long xOffset, long yOffset)
+void MechBayScreen::drawWeightMeter(int32_t xOffset, int32_t yOffset)
 {
 		// there are 20 rays, each 9 degrees
-	// they should be 50 pixels long
+	// they should be 50 pixels int32_t
 	float currentDropWeight = LogisticsData::instance->getCurrentDropWeight();
 	float maxDropWeight = LogisticsData::instance->getMaxDropWeight();
-	long numAddBars = 0;
-	long numRemoveBars = 0;
+	int32_t numAddBars = 0;
+	int32_t numRemoveBars = 0;
 
-	long addColor = 0;
-	long removeColor = 0;		
+	int32_t addColor = 0;
+	int32_t removeColor = 0;		
 
-	long numberOfBars = 20;
+	int32_t numberOfBars = 20;
 	if ( maxDropWeight != 0 )
 	{
 		float percent = currentDropWeight/maxDropWeight;
@@ -378,8 +378,8 @@ void MechBayScreen::update()
 	sprintf( str, "%ld ", LogisticsData::instance->getCBills() );
 	textObjects[1].setText( str );
 
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 	if ( userInput->isLeftClick() && dropWeightMeter.pointInside( mouseX, mouseY ) )
 	{
 		soundSystem->playDigitalSample( LOG_WRONGBUTTON );
@@ -388,8 +388,8 @@ void MechBayScreen::update()
 	// current drop weight
 	char tmpStr[128];
 	cLoadString( IDS_MB_WEIGHT, tmpStr, 63 );
-	long currentDropWeight = LogisticsData::instance->getCurrentDropWeight();
-	long maxDropWeight = LogisticsData::instance->getMaxDropWeight();
+	int32_t currentDropWeight = LogisticsData::instance->getCurrentDropWeight();
+	int32_t maxDropWeight = LogisticsData::instance->getMaxDropWeight();
 
 	sprintf( str, tmpStr, currentDropWeight, maxDropWeight );
 	textObjects[6].setText( str );
@@ -665,7 +665,7 @@ void MechBayScreen::addSelectedMech()
 		if ( !LogisticsData::instance->canAddMechToForceGroup( mechListBox.getCurrentMech() ) )
 			return;
 
-		if ( NO_ERR != LogisticsData::instance->addMechToForceGroup( mechListBox.getCurrentMech(),
+		if ( NO_ERROR != LogisticsData::instance->addMechToForceGroup( mechListBox.getCurrentMech(),
 			forceGroupCount + 1 ) )
 		{
 			// its already in the force group, add probably called 2x'2
@@ -797,7 +797,7 @@ void MechBayScreen::setMech( LogisticsMech* pMech,  bool bCommandFromLB )
 		textObjects[7].setText( str );
 
 		// firing range
-		long tmpColor;
+		int32_t tmpColor;
 		textObjects[14].setText( pCurMech->getVariant()->getOptimalRangeString( tmpColor ) );
 		textObjects[14].setColor( tmpColor );
 
@@ -929,7 +929,7 @@ void MechBayScreen::reinitMechs()
 
 	if ( MPlayer )
 	{
-		long playerCount;
+		int32_t playerCount;
 		MPlayer->getPlayers( playerCount );
 		if ( playerCount )
 			maxUnits = MAX_MULTIPLAYER_MECHS_IN_LOGISTICS/playerCount;
@@ -965,7 +965,7 @@ void MechBayScreen::reinitMechs()
 		{
 			if ( (*iter)->getForceGroup() )
 			{
-				long FG = (*iter)->getForceGroup();
+				int32_t FG = (*iter)->getForceGroup();
 
 				if ( FG <= maxUnits )
 				{

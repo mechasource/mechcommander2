@@ -1,5 +1,3 @@
-#ifndef MPGAMEBROWSER_H
-#define MPGAMEBROWSER_H
 /*************************************************************************************************\
 MPGameBrowser.h			: Interface for the MPGameBrowser component.
 //---------------------------------------------------------------------------//
@@ -9,24 +7,19 @@ MPGameBrowser.h			: Interface for the MPGameBrowser component.
 
 //*************************************************************************************************
 
-#ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
-#endif
+#pragma once
 
-#include "asystem.h"
-#include "alistbox.h"
-#include "attributemeter.h"
-#include "simplecamera.h"
+#ifndef MPGAMEBROWSER_H
+#define MPGAMEBROWSER_H
 
-#include "multplyr.h"
-
-#ifndef AANIM_H
-#include "aanim.h"
-#endif
-
-#ifndef MPHOSTGAME_H
-#include "mphostgame.h"
-#endif
+//#include "logisticsscreen.h"
+//#include "asystem.h"
+//#include "alistbox.h"
+//#include "attributemeter.h"
+//#include "simplecamera.h"
+//#include "multplyr.h"
+//#include "aanim.h"
+//#include "mphostgame.h"
 
 class aButton;
 //struct _MC2Session;
@@ -36,7 +29,7 @@ class aStyle3TextListItem : public aTextListItem
 {
 public:
 	aStyle3TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual long	init( FitIniFile* file, PCSTR blockName );
+	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
 protected:
@@ -49,7 +42,7 @@ class aGameListItem : public aListItem
 {
 public:
 	aGameListItem();
-	virtual long	init( FitIniFile* file, PCSTR blockName );
+	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
 	virtual void update();
 	void setSessionInfo( _MC2Session* pSessions );
 
@@ -109,7 +102,7 @@ private:
 	int						sortOrder;
 
 	int						bSortUpward;
-	long					oldScrollPos;
+	int32_t					oldScrollPos;
 };
 
 

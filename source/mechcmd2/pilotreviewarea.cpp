@@ -26,7 +26,7 @@ aText*		DeadPilotListItem::s_killsText = NULL;
 aRect*		DeadPilotListItem::s_area = NULL;
 aRect*		DeadPilotListItem::s_liveIconRect = NULL;
 aRect*		DeadPilotListItem::s_deadIconRect = NULL;
-long		DeadPilotListItem::s_itemCount = 0;
+int32_t		DeadPilotListItem::s_itemCount = 0;
 
 aText*		ActivePilotListItem::s_nameText = NULL;
 aText*		ActivePilotListItem::s_missionText = NULL;
@@ -36,7 +36,7 @@ aText*		ActivePilotListItem::s_rankText = NULL;
 aText*		ActivePilotListItem::s_gunneryText = NULL;
 aText*		ActivePilotListItem::s_pilotingText = NULL;
 
-long		ActivePilotListItem::s_itemCount = 0;
+int32_t		ActivePilotListItem::s_itemCount = 0;
 aRect*		ActivePilotListItem::s_outline[5];
 aObject*	ActivePilotListItem::s_icons[8];
 aRect*		ActivePilotListItem::s_area = NULL;
@@ -52,7 +52,7 @@ aObject*	ActivePilotListItem::s_medals[MAX_MEDAL] = {0};
 aAnimation*		ActivePilotListItem::s_skillAnim = NULL;
 aAnimation*		ActivePilotListItem::s_medalAwardedAnim = NULL;
 aAnimation*		ActivePilotListItem::s_pilotPromotedAnim = NULL;
-long		ActivePilotListItem::s_totalWidth = 0;	
+int32_t		ActivePilotListItem::s_totalWidth = 0;	
 
 
 
@@ -66,7 +66,7 @@ aAnimation*	SpecialtyListItem::s_pressedAnim = 0;
 aText*		SpecialtyListItem::s_description = 0;
 aRect*		SpecialtyListItem::s_area = 0;
 aRect*		SpecialtyListItem::s_outline = 0;
-long		SpecialtyListItem::s_itemCount = 0; // hack, we really don't want to delete these each time
+int32_t		SpecialtyListItem::s_itemCount = 0; // hack, we really don't want to delete these each time
 
 
 
@@ -105,7 +105,7 @@ PilotReviewScreen::~PilotReviewScreen()
 {
 	pilotListBox.removeAllItems( true );
 
-	long count = LogisticsData::instance->getPilotCount();
+	int32_t count = LogisticsData::instance->getPilotCount();
 	LogisticsPilot** pPilots = (LogisticsPilot**)_alloca( count * sizeof(LogisticsPilot*) );
 	LogisticsData::instance->getPilots( pPilots, count );
 
@@ -127,12 +127,12 @@ void PilotReviewScreen::init(FitIniFile* file)
 		"PilotReviewText", "PilotReviewRect", "PilotReviewButton" );
 
 	file->seekBlock( "PilotReviewMisc" );
-	long tmp;
+	int32_t tmp;
 	file->readIdLong( "PilotReviewSmallSkip", tmp );
 
 	pilotListBox.setSpaceBetweenItems( tmp );
 		
-	long color, font;
+	int32_t color, font;
 	file->readIdLong( "color", color );
 	file->readIdLong( "font", font );
 	
@@ -145,7 +145,7 @@ void PilotReviewScreen::init(FitIniFile* file)
 
 	ActivePilotListItem::s_totalWidth = pilotListBox.width() - 70;
 
-	long count = LogisticsData::instance->getPilotCount();
+	int32_t count = LogisticsData::instance->getPilotCount();
 	LogisticsPilot** pPilots = (LogisticsPilot**)_alloca( count * sizeof(LogisticsPilot*) );
 	LogisticsData::instance->getPilots( pPilots, count );
 
@@ -202,7 +202,7 @@ void PilotReviewScreen::init(FitIniFile* file)
 				aTextListItem* pItem = new aTextListItem( font );
 				pItem->setText( IDS_ACTIVE_DUTY );
 				pItem->setColor( color ) ;
-				long oldHeight = pItem->height();
+				int32_t oldHeight = pItem->height();
 				pItem->resize( pItem->width(), oldHeight + 20 );
 				if ( bDeadTextAdded )
 					pItem->showGUIWindow( 0 );
@@ -234,8 +234,8 @@ void PilotReviewScreen::init(FitIniFile* file)
 
 void PilotReviewScreen::render()
 {
-	long xOffset = 0;
-	long yOffset = 0;
+	int32_t xOffset = 0;
+	int32_t yOffset = 0;
 	if ( !entryAnim.isDone() )
 	{
 		 xOffset = entryAnim.getXDelta();
@@ -413,7 +413,7 @@ DeadPilotListItem::DeadPilotListItem( LogisticsPilot* pPilot )
 	nameText.setText( realText);
 
 
-	long rank = pPilot->getRank();
+	int32_t rank = pPilot->getRank();
 	char rankStr[32];
 	//ACE Not Contiguous with other ranks.  Added too late.
 	if (rank != 4)
@@ -487,7 +487,7 @@ void DeadPilotListItem::render()
 }
 
 
-long PilotListBox::AddItem( aListItem* add )
+int32_t PilotListBox::AddItem( aListItem* add )
 {
 	bDone= 0;
 	DeadPilotListItem* pItem = dynamic_cast< DeadPilotListItem* >(  add );
@@ -548,7 +548,7 @@ long PilotListBox::AddItem( aListItem* add )
 		aListBox::AddItem( add );
 	}
 
-	return NO_ERR;
+	return NO_ERROR;
 
 }
 
@@ -650,7 +650,7 @@ void PilotListBox::update()
 	if ( newScroll )
 	{
 		scrollTime += frameLength;
-		long delta = 140.f * scrollTime;
+		int32_t delta = 140.f * scrollTime;
 		if ( delta + oldScroll < newScroll && delta + oldScroll < scrollBar->GetScrollMax() )
 			scrollBar->SetScroll( oldScroll + delta );
 		else
@@ -762,7 +762,7 @@ void	ActivePilotListItem::render()
 						globalX() + s_iconRect->right(),
 						globalY() + s_iconRect->bottom() );
 
-	long color = s_skillAnim->getColor( currentTime );
+	int32_t color = s_skillAnim->getColor( currentTime );
 	
 
 	for ( int i = 0; i < 2; i++ )
@@ -782,8 +782,8 @@ void	ActivePilotListItem::render()
 		drawEmptyRect( tmp, s_outline[i]->getColor(), s_outline[i]->getColor() );
 	}
 
-	long x = globalX() + s_killIconRect->left();
-	long y = globalY() + s_killIconRect->top();
+	int32_t x = globalX() + s_killIconRect->left();
+	int32_t y = globalY() + s_killIconRect->top();
 
 	int counter = 0;
 	int oldPossible = 2.0 * (currentTime - frameLength - 1.5);
@@ -1167,7 +1167,7 @@ ActivePilotListItem::ActivePilotListItem( LogisticsPilot* pPilot )
 	sprintf( finalText, text, tmpRank );
 	promotionText.setText( finalText );
 
-	long bottom = promotionText.top() + promotionText.font.height() + 34;
+	int32_t bottom = promotionText.top() + promotionText.font.height() + 34;
 
 	if ( !pilotPromoted  )
 	{
@@ -1194,7 +1194,7 @@ ActivePilotListItem::ActivePilotListItem( LogisticsPilot* pPilot )
 	nameText.setText( realText);
 
 
-	long rank = pPilot->getRank();
+	int32_t rank = pPilot->getRank();
 	char rankStr[32];
 	//ACE not Contiguous with other Ranks.  Added too late.
 	if (rank != 4)
@@ -1205,10 +1205,10 @@ ActivePilotListItem::ActivePilotListItem( LogisticsPilot* pPilot )
 	rankText.setText( rankStr);
 
 	char buffer[32];
-	sprintf( buffer, "%ld", (long)pPilot->getGunnery() );
+	sprintf( buffer, "%ld", (int32_t)pPilot->getGunnery() );
 	gunneryText.setText( buffer );
 
-	sprintf( buffer, "%ld", (long)pPilot->getPiloting() );
+	sprintf( buffer, "%ld", (int32_t)pPilot->getPiloting() );
 	pilotingText.setText( buffer );
 
 	for ( i = 0; i < 2; i++ )
@@ -1430,7 +1430,7 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 	areaLeft.textObjects[1].setText( realText );
 
 
-	long rank = pPilot->getRank();
+	int32_t rank = pPilot->getRank();
 	for ( int i = 12; i < 17; i++  )
 	{
 		if ( i - 12 == rank )
@@ -1450,10 +1450,10 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 	areaLeft.textObjects[3].setText( rankStr );
 	
 	char buffer[32];
-	sprintf( buffer, "%ld", (long)pPilot->getGunnery() );
+	sprintf( buffer, "%ld", (int32_t)pPilot->getGunnery() );
 	areaLeft.textObjects[4].setText( buffer );
 
-	sprintf( buffer, "%ld", (long)pPilot->getPiloting() );
+	sprintf( buffer, "%ld", (int32_t)pPilot->getPiloting() );
 	areaLeft.textObjects[5].setText( buffer );
 
 	int specSkills = pPilot->getSpecialtySkillCount();

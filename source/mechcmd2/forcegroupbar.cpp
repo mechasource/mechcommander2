@@ -64,7 +64,7 @@ ForceGroupBar::~ForceGroupBar()
 }
 
 
-bool ForceGroupBar::flashJumpers (long numFlashes)
+bool ForceGroupBar::flashJumpers (int32_t numFlashes)
 {
 	forceNumFlashes = numFlashes;
 	forceFlashTime = 0.0f;
@@ -106,7 +106,7 @@ bool ForceGroupBar::addVehicle( Mover* pMover )
 
 void ForceGroupBar::removeMover (Mover* mover) {
 
-	for (long i = 0; i < iconCount; i++)
+	for (int32_t i = 0; i < iconCount; i++)
 		if (icons[i]->unit == mover) {
 			delete icons[i];
 			iconCount --;
@@ -127,7 +127,7 @@ void ForceGroupBar::update( )
 	if ( bCamera )
 		bSelect = 0;
 
-	Stuff::Vector2DOf<long> screen;
+	Stuff::Vector2DOf<int32_t> screen;
 	screen.x = userInput->getMouseX();
 	screen.y = userInput->getMouseY();
 
@@ -312,7 +312,7 @@ void ForceGroupBar::render()
 
 	if ( MPlayer )
 	{
-		long playerCount;
+		int32_t playerCount;
 		MPlayer->getPlayers( playerCount );
 		if (playerCount)
 			maxUnits = (MAX_MULTIPLAYER_MECHS_IN_LOGISTICS/playerCount) + 4;
@@ -380,13 +380,13 @@ void ForceGroupBar::removeAll()
 void ForceGroupBar::init( FitIniFile& file, StaticInfo* pCoverIcon )
 {
 
-	if ( NO_ERR != file.seekBlock( "Fonts" ) )
+	if ( NO_ERROR != file.seekBlock( "Fonts" ) )
 		Assert( 0, 0, "couldn't find the font block" );
 
 	if ( !ForceGroupIcon::gosFontHandle )
 		ForceGroupIcon::gosFontHandle = new aFont;
 
-	long fontID;
+	int32_t fontID;
 	file.readIdLong( "IconFont", fontID );
 	ForceGroupIcon::gosFontHandle->init( fontID );
 
@@ -500,7 +500,7 @@ bool ForceGroupBar::setPilotVideo( PCSTR pVideo, MechWarrior* pPilot )
 							cLoadString(IDS_MC2_CDMISSING,msg,1023);
 							cLoadString(IDS_MC2_MISSING_TITLE,title,255);
 							sprintf(data,msg1,path,msg);
-							DWORD result = MessageBox(NULL,data,title,MB_OKCANCEL | MB_ICONWARNING);
+							ULONG result = MessageBox(NULL,data,title,MB_OKCANCEL | MB_ICONWARNING);
 							if (result == IDCANCEL)
 							{
 								ExitGameOS();

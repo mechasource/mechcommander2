@@ -1,5 +1,3 @@
-#ifndef SALVAGEMECHAREA_H
-#define SALVAGEMECHAREA_H
 /*************************************************************************************************\
 SalvageMechArea.h			: Interface for the SalvageMechArea component.
 //---------------------------------------------------------------------------//
@@ -8,11 +6,17 @@ SalvageMechArea.h			: Interface for the SalvageMechArea component.
 \*************************************************************************************************/
 
 //*************************************************************************************************
-#include "asystem.h"
-#include "simplecomponentlistbox.h"
-#include "attributemeter.h"
-#include "logisticsscreen.h"
-#include "simplecamera.h"
+
+#pragma once
+
+#ifndef SALVAGEMECHAREA_H
+#define SALVAGEMECHAREA_H
+
+//#include "asystem.h"
+//#include "simplecomponentlistbox.h"
+//#include "attributemeter.h"
+//#include "logisticsscreen.h"
+//#include "simplecamera.h"
 
 class aButton;
 class MechIcon;
@@ -32,9 +36,9 @@ class SalvageMechArea : public LogisticsScreen
 	virtual ~SalvageMechArea();
 
 	void init( FitIniFile* file );
-	void setMech( LogisticsVariant* pMech, long red, long green, long blue );
+	void setMech( LogisticsVariant* pMech, int32_t red, int32_t green, int32_t blue );
 
-	virtual void render(long xOffset, long yOffset);
+	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void update();
 
 	

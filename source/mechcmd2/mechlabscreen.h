@@ -1,3 +1,6 @@
+
+#pragma once
+
 #ifndef MECHLABSCREEN_H
 #define MECHLABSCREEN_H
 /*************************************************************************************************\
@@ -52,7 +55,7 @@ class MechLabScreen: public LogisticsScreen
 		virtual int	handleMessage( ULONG, ULONG );
 
 		void	setComponent( LogisticsComponent* pComponent, bool bMessageFromLB = 0 );
-		int		addComponent( LogisticsComponent* pComponent, long& x, long& y );
+		int		addComponent( LogisticsComponent* pComponent, int32_t& x, int32_t& y );
 		void	beginDrag( LogisticsComponent* pComponent );
 		void	endDrag( );
 
@@ -76,8 +79,8 @@ class MechLabScreen: public LogisticsScreen
 
 		LogisticsVariant*	pVariant;
 		LogisticsComponent*	pSelectedComponent;
-		long				selI;
-		long				selJ;
+		int32_t				selI;
+		int32_t				selJ;
 
 		ComponentIconListBox	componentListBox;
 		aComboBox				variantList;
@@ -85,7 +88,7 @@ class MechLabScreen: public LogisticsScreen
 		AttributeMeter attributeMeters[MECH_LAB_ATTRIBUTE_METER_COUNT];
 
 		aObject				componentIcons[128];
-		long				componentCount;
+		int32_t				componentCount;
 
 		aObject				payloadIcon;
 
@@ -112,7 +115,7 @@ class MechLabScreen: public LogisticsScreen
 		EString				varName;
 
 		static				RECT	sensorRects[4];
-		static				long		sensorHelpIDs[4];
+		static				int32_t		sensorHelpIDs[4];
 
 		float				countDownTime;
 		float				curCount;
@@ -131,17 +134,17 @@ class MechLabScreen: public LogisticsScreen
 
 
 		// HELPER FUNCTIONS
-		void getMouseDiagramCoords( long& x, long& y );
-		void getMouseDiagramCoords( long screenX, long screenY, long& x, long& y );
+		void getMouseDiagramCoords( int32_t& x, int32_t& y );
+		void getMouseDiagramCoords( int32_t screenX, int32_t screenY, int32_t& x, int32_t& y );
 
-		void	diagramToScreen( long i, long j, long& x, long& y  );
+		void	diagramToScreen( int32_t i, int32_t j, int32_t& x, int32_t& y  );
 		int		selectFirstDiagramComponent();
 		int		selectFirstLBComponent(); 
 		void	updateDiagramInput();
 		void	swapVariant();
 		void	updateHeatMeter();
 		void	updateArmorMeter();
-		void	removeComponent( long i, long j );
+		void	removeComponent( int32_t i, int32_t j );
 
 
 

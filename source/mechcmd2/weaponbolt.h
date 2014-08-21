@@ -9,29 +9,19 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef WEAPONBOLT_H
 #define WEAPONBOLT_H
 //---------------------------------------------------------------------------
-// Include Files
 
-#ifndef DWEAPONBOLT_H
-#include "dweaponbolt.h"
-#endif
+//#include "dweaponbolt.h"
+//#include "gameobj.h"
+//#include "objtype.h"
+//#include "objmgr.h"
+//#include <stuff/stuff.hpp>
+//#include <gosfx/gosfxheaders.hpp>
 
-#ifndef GAMEOBJ_H
-#include "gameobj.h"
-#endif
-
-#ifndef OBJTYPE_H
-#include "objtype.h"
-#endif
-
-#ifndef OBJMGR_H
-#include "objmgr.h"
-#endif
-
-#include <stuff/stuff.hpp>
-#include <gosfx/gosfxheaders.hpp>
 //---------------------------------------------------------------------------
 // Macro Definitions
 #define ALL_COLORS			4
@@ -43,17 +33,17 @@ class WeaponBoltType : public ObjectType
 	//-------------
 	public:
 	
-		long			fireSoundFX;
-		long			hitEffectObjNum;
-		long			missEffectObjNum;
-		long			lightEffectObjNum;
-		long			fireEffect;
-		long			trailEffect;
+		int32_t			fireSoundFX;
+		int32_t			hitEffectObjNum;
+		int32_t			missEffectObjNum;
+		int32_t			lightEffectObjNum;
+		int32_t			fireEffect;
+		int32_t			trailEffect;
 		
-		DWORD           frontRGB;
-		DWORD           backRGB;
-		DWORD           middleRGB;
-		DWORD           midEdgeRGB;
+		ULONG           frontRGB;
+		ULONG           backRGB;
+		ULONG           middleRGB;
+		ULONG           midEdgeRGB;
 		
 		float			projLength;
 		float			bulgeLength;
@@ -66,7 +56,7 @@ class WeaponBoltType : public ObjectType
 		bool			lightSource;
 		float			maxRadius;
 		float			outRadius;
-		DWORD			lightRGB;
+		ULONG			lightRGB;
 		float			intensity;
 		
 		bool			isBeam;
@@ -127,8 +117,8 @@ class WeaponBoltType : public ObjectType
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, ULONG fileSize);
-		long init (FitIniFilePtr objFile);
+		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		int32_t init (FitIniFilePtr objFile);
 		
 		~WeaponBoltType (void)
 		{
@@ -151,10 +141,10 @@ class WeaponBoltType : public ObjectType
 typedef struct _WeaponBoltData : public GameObjectData
 {
 	GameObjectWatchID	ownerWID;
-	long				hotSpotNumber;
+	int32_t				hotSpotNumber;
 
 	GameObjectWatchID	targetWID;
-	long				targetHotSpot;
+	int32_t				targetHotSpot;
 	Stuff::Vector3D		targetPosition;
 	float				distanceToTarget;
 	float				halfDistanceToTarget;
@@ -165,15 +155,15 @@ typedef struct _WeaponBoltData : public GameObjectData
 	Stuff::Vector3D		laserVertices[4];
 	Stuff::Vector3D		laserSide[4];
 
-	long				effectId;
+	int32_t				effectId;
 	bool 				hitTarget;
 
 	float				timeLeft;
 	Stuff::Vector3D		hsPos;
 
 	float				hitLeft;
-	DWORD				mcTextureHandle;
-	DWORD				gosTextureHandle;
+	ULONG				mcTextureHandle;
+	ULONG				gosTextureHandle;
 	float				startUV;
 	float				goalHeight;
 } WeaponBoltData;
@@ -185,10 +175,10 @@ class WeaponBolt : public GameObject
 		protected:
 
 			GameObjectWatchID	ownerWID;
-			long				hotSpotNumber;
+			int32_t				hotSpotNumber;
 		
 			GameObjectWatchID	targetWID;
-			long				targetHotSpot;
+			int32_t				targetHotSpot;
 			Stuff::Vector3D		*targetPosition;
 			float				distanceToTarget;
 			float				halfDistanceToTarget;
@@ -200,9 +190,9 @@ class WeaponBolt : public GameObject
 			Stuff::Vector3D		laserSide[4];
 
 			TG_LightPtr			pointLight;
-			DWORD				lightId;
+			ULONG				lightId;
 			
-			long				effectId;
+			int32_t				effectId;
 			bool 				hitTarget;
 			
 			//NEW  GOS FX
@@ -216,8 +206,8 @@ class WeaponBolt : public GameObject
 			Stuff::Vector3D		hsPos;
 			
 			float				hitLeft;
-			DWORD				mcTextureHandle;
-			DWORD				gosTextureHandle;
+			ULONG				mcTextureHandle;
+			ULONG				gosTextureHandle;
 			float				startUV;
 			float				goalHeight;
 			
@@ -274,12 +264,12 @@ class WeaponBolt : public GameObject
 
 		virtual void destroy (void);
 		
-		virtual long update (void);
+		virtual int32_t update (void);
 		virtual void render (void);
 		
 		virtual void init (bool create, ObjectTypePtr _type);
 		
-		virtual void init (long fxId)
+		virtual void init (int32_t fxId)
 		{
 			effectId = fxId;
 		}
@@ -301,7 +291,7 @@ class WeaponBolt : public GameObject
 		void setTarget (GameObjectPtr who);
 		void setTargetPosition (Stuff::Vector3D pos);
 
-		void connect (GameObjectPtr source, GameObjectPtr dest, WeaponShotInfo* shotInfo = NULL, long sourceHS = 0, long targetHS = 0)
+		void connect (GameObjectPtr source, GameObjectPtr dest, WeaponShotInfo* shotInfo = NULL, int32_t sourceHS = 0, int32_t targetHS = 0)
 		{
 			ownerWID = source->getWatchID();
 			targetWID = dest->getWatchID();
@@ -342,7 +332,7 @@ class WeaponBolt : public GameObject
 				myOwner->appearance->setWeaponNodeRecycle(sourceHS,BASE_NODE_RECYCLE_TIME);
 		}
 		
-		void connect (GameObjectPtr source, Stuff::Vector3D targetLoc, WeaponShotInfo* shotInfo = NULL, long sourceHS = 0)
+		void connect (GameObjectPtr source, Stuff::Vector3D targetLoc, WeaponShotInfo* shotInfo = NULL, int32_t sourceHS = 0)
 		{
 			ownerWID = source->getWatchID();
 			targetWID = 0;
@@ -361,7 +351,7 @@ class WeaponBolt : public GameObject
 				myOwner->appearance->setWeaponNodeRecycle(sourceHS,BASE_NODE_RECYCLE_TIME);
 		}
 
-		virtual void Save (PacketFilePtr file, long packetNum);
+		virtual void Save (PacketFilePtr file, int32_t packetNum);
 
 		void Load (WeaponBoltData *data);
 

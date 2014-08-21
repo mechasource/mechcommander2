@@ -1,5 +1,3 @@
-#ifndef MPLOADMAP_H
-#define MPLOADMAP_H
 /*************************************************************************************************\
 MPLoadMap.h			: Interface for the MPLoadMap component.
 //---------------------------------------------------------------------------//
@@ -9,22 +7,19 @@ MPLoadMap.h			: Interface for the MPLoadMap component.
 
 //*************************************************************************************************
 
-#ifndef LOGISTICSDIALOG_H
-#include "LogisticsDialog.h"
-#endif
+#pragma once
 
-#include "asystem.h"
-#include "alistbox.h"
-#include "attributemeter.h"
-#include "simplecamera.h"
+#ifndef MPLOADMAP_H
+#define MPLOADMAP_H
 
-#ifndef AANIM_H
-#include "aanim.h"
-#endif
+//#include "logisticsdialog.h"
+//#include "asystem.h"
+//#include "alistbox.h"
+//#include "attributemeter.h"
+//#include "simplecamera.h"
+//#include "aanim.h"
 
 class aButton;
-
-
 
 class MPLoadMap : public LogisticsDialog
 {
@@ -46,7 +41,7 @@ public:
 
 	PCSTR getMapFileName(){ return selMapName; }
 
-	static void			getMapNameFromFile( PCSTR pFileName, PSTR pBuffer, long bufferLength );
+	static void			getMapNameFromFile( PCSTR pFileName, PSTR pBuffer, int32_t bufferLength );
 
 
 

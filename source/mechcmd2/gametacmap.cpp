@@ -46,7 +46,7 @@ GameTacMap::GameTacMap()
 	objectiveNumFlashes = 0;
 }
 
-void GameTacMap::init( PUCHAR bitmapData, int dataSize )
+void GameTacMap::init( puint8_t bitmapData, int dataSize )
 {
 
 	EllipseElement::init();
@@ -68,7 +68,7 @@ void GameTacMap::init( PUCHAR bitmapData, int dataSize )
 
 void GameTacMap::update()
 {
-	Stuff::Vector2DOf<long> screen;
+	Stuff::Vector2DOf<int32_t> screen;
 	screen.x = userInput->getMouseX();
 	screen.y = userInput->getMouseY();
 
@@ -112,7 +112,7 @@ void GameTacMap::update()
 
 }
 
-bool GameTacMap::animate (long objectiveId, long nFlashes)
+bool GameTacMap::animate (int32_t objectiveId, int32_t nFlashes)
 {
 	if (objectiveAnimationId == -1)
 	{
@@ -171,13 +171,13 @@ void GameTacMap::render()
 	gos_DrawTriangles( &corners[1], 3 );
 
 
-	Stuff::Vector2DOf<long> screen;
+	Stuff::Vector2DOf<int32_t> screen;
 	Stuff::Vector4D 		nScreen;
 	Stuff::Vector3D			world;
 
 	//-----------------------------------------------------------
 	// Render the objective markers
-	long count = 0;
+	int32_t count = 0;
 	for ( EList< CObjective*, CObjective* >::EIterator iter =  Team::home->objectives.Begin();
 		!iter.IsDone(); iter++ )
 	{
@@ -266,7 +266,7 @@ void GameTacMap::render()
 	gos_SetRenderState( gos_State_TextureAddress, gos_TextureWrap );
 	gos_SetRenderState( gos_State_ZCompare, 0);
 	gos_SetRenderState(	gos_State_ZWrite, 0);
-	DWORD gosTextureHandle = mcTextureManager->get_gosTextureHandle(viewRectHandle);
+	ULONG gosTextureHandle = mcTextureManager->get_gosTextureHandle(viewRectHandle);
 
 	gos_SetRenderState( gos_State_Texture, gosTextureHandle );
 
@@ -363,7 +363,7 @@ void GameTacMap::render()
 		{
 			SensorSystem* pSensor = mover->getSensorSystem();
 			float range = pSensor ? pSensor->getRange() : 0;
-			long contactStatus = mover->getContactStatus(Team::home->getId(), true);
+			int32_t contactStatus = mover->getContactStatus(Team::home->getId(), true);
 			if (mover->getTeamId() == Team::home->id)
 			{
 				if (mover->getCommanderId() == Commander::home->getId())
@@ -436,11 +436,11 @@ void GameTacMap::worldToTacMap( Stuff::Vector3D& world, gos_VERTEX& tac )
 {
 	TacMap::worldToTacMap( world, left, top, right - left, bottom - top, tac );
 }	
-void GameTacMap::initBuildings( PUCHAR data, int size )
+void GameTacMap::initBuildings( puint8_t data, int size )
 {
 	if ( data )
 	{
-		long* pData = (long*)data;
+		int32_t* pData = (int32_t*)data;
 		buildingCount = *pData++;
 
 		if (buildingCount)
@@ -463,7 +463,7 @@ void GameTacMap::initBuildings( PUCHAR data, int size )
 	}
 }
 
-void GameTacMap::drawSensor( const Stuff::Vector3D& pos, float radius, long color )
+void GameTacMap::drawSensor( const Stuff::Vector3D& pos, float radius, int32_t color )
 {
 	if ( color == 0 )
 		return;
@@ -494,8 +494,8 @@ void GameTacMap::drawSensor( const Stuff::Vector3D& pos, float radius, long colo
 	sqare[3].y = sqare[0].y + 1;
 
 	// need to draw that round thing
-	Stuff::Vector2DOf< long > center;
-	Stuff::Vector2DOf< long > radii;
+	Stuff::Vector2DOf< int32_t > center;
+	Stuff::Vector2DOf< int32_t > radii;
 	center.x = float2long(sqare[1].x);
 	center.y = float2long(sqare[1].y);
 	radii.x = 2.0f * float2long(radius+.5);
@@ -511,7 +511,7 @@ void GameTacMap::drawSensor( const Stuff::Vector3D& pos, float radius, long colo
 
 }
 
-void GameTacMap::drawBlip( const Stuff::Vector3D& pos, long color, int type )
+void GameTacMap::drawBlip( const Stuff::Vector3D& pos, int32_t color, int type )
 {
 	if ( color == 0 )
 		return;

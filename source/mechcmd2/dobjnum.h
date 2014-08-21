@@ -8,6 +8,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DOBJNUM_H
 #define DOBJNUM_H
 //---------------------------------------------------------------------------

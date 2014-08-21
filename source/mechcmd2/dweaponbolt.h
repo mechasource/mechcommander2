@@ -8,6 +8,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DWEAPONBOLT_H
 #define DWEAPONBOLT_H
 //---------------------------------------------------------------------------

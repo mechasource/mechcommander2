@@ -43,31 +43,31 @@ controlGui.cpp			: Implementation of the controlGui component.
 
 ControlGui* ControlGui::instance = 0;
 
-extern long helpTextHeaderID;
-extern long helpTextID;
+extern int32_t helpTextHeaderID;
+extern int32_t helpTextID;
 
 extern bool neverEndingStory;
 
 ButtonData*	ControlGui::buttonData = NULL;
 ButtonData* ControlGui::vehicleData = NULL;
 
-long ControlGui::hiResOffsetX = 0;
-long ControlGui::hiResOffsetY = 0;
+int32_t ControlGui::hiResOffsetX = 0;
+int32_t ControlGui::hiResOffsetY = 0;
 
-long ControlGui::OBJECTIVESTOP= 0;
-long ControlGui::OBJECTIVESLEFT= 0;
-long ControlGui::OBJECTIVESSKIP= 0;
-long ControlGui::OBJECTIVESTOTALRIGHT= 0;
-long ControlGui::OBJEECTIVESHEADERSKIP= 0;
-long ControlGui::OBJECTIVESHEADERTOP= 0;
-long ControlGui::OBJECTIVEBOXX= 0;
-long ControlGui::OBJECTIVEBOXSKIP= 0;
-long ControlGui::OBJECTIVECHECKSKIP= 0;
-long ControlGui::OBJECTIVEHEADERLEFT = 0;
-long ControlGui::HELPAREA_LEFT = 0;
-long ControlGui::HELPAREA_BOTTOM = 0;
-long ControlGui::RPLEFT = 0;
-long ControlGui::RPTOP = 0;
+int32_t ControlGui::OBJECTIVESTOP= 0;
+int32_t ControlGui::OBJECTIVESLEFT= 0;
+int32_t ControlGui::OBJECTIVESSKIP= 0;
+int32_t ControlGui::OBJECTIVESTOTALRIGHT= 0;
+int32_t ControlGui::OBJEECTIVESHEADERSKIP= 0;
+int32_t ControlGui::OBJECTIVESHEADERTOP= 0;
+int32_t ControlGui::OBJECTIVEBOXX= 0;
+int32_t ControlGui::OBJECTIVEBOXSKIP= 0;
+int32_t ControlGui::OBJECTIVECHECKSKIP= 0;
+int32_t ControlGui::OBJECTIVEHEADERLEFT = 0;
+int32_t ControlGui::HELPAREA_LEFT = 0;
+int32_t ControlGui::HELPAREA_BOTTOM = 0;
+int32_t ControlGui::RPLEFT = 0;
+int32_t ControlGui::RPTOP = 0;
 
 extern bool useLeftRightMouseProfile;
 extern bool drawGUIOn;				//Used to shut off GUI for Screen Shots and Movie Mode
@@ -76,9 +76,9 @@ extern bool paintingMyVtol;
 #define TEXT_SKIP 5.f * Environment.screenHeight/600.f
 #define CHAT_DISPLAY_TIME 30
 
-int __cdecl sortStats( const void* pPlayer1, const void* pPlayer2 );
+int __cdecl sortStats( PCVOID pPlayer1, PCVOID pPlayer2 );
 
-long ControlGui::vehicleCosts[LAST_VEHICLE] = 
+int32_t ControlGui::vehicleCosts[LAST_VEHICLE] = 
 {
 	7000, 
 	8000,
@@ -99,7 +99,7 @@ PCSTR ControlGui::vehicleNames[5] = {
 
 };
 
-long ControlGui::vehicleIDs[5] = 
+int32_t ControlGui::vehicleIDs[5] = 
 {
 	182,
 	393,
@@ -269,7 +269,7 @@ ControlGui::~ControlGui()
 	}
 }
 
-bool ControlGui::pushButton (long buttonId)
+bool ControlGui::pushButton (int32_t buttonId)
 {
 	buttonToPress = buttonId;
 
@@ -292,7 +292,7 @@ bool ControlGui::pushButton (long buttonId)
 	return true;
 }
 
-bool ControlGui::flashRPTotal (long numFlashes)
+bool ControlGui::flashRPTotal (int32_t numFlashes)
 {
 	rpNumFlashes = numFlashes;
 	rpFlashTime = 0.0f;
@@ -300,7 +300,7 @@ bool ControlGui::flashRPTotal (long numFlashes)
 	return true;
 }
 
-bool ControlGui::animateTacMap (long buttonId,float timeToScroll,long numFlashes)
+bool ControlGui::animateTacMap (int32_t buttonId,float timeToScroll,int32_t numFlashes)
 {
 	return tacMap.animate(abs(buttonId), numFlashes);
 }
@@ -410,12 +410,12 @@ void ControlGui::render( bool bPaused )
 			}
 	
 			
-			long width = timerFont.width( buffer );
+			int32_t width = timerFont.width( buffer );
 			drawShadowText( color, 0x00000000, timerFont.getTempHandle(), 
 				timerRect.rect.left - width, timerRect.rect.top, true,
 				buffer, 0, guiFont.getSize() );
 	
-			for (long i = 0; i < timerInfoCount; i++ )
+			for (int32_t i = 0; i < timerInfoCount; i++ )
 				timerInfos[i].render();
 		}
 	
@@ -478,7 +478,7 @@ void ControlGui::startObjectives( bool bStart )
 		bool scoreShown[MAX_MC_PLAYERS]; // keep track of whose shown the score
 		memset( scoreShown, 0, sizeof( bool ) * MAX_MC_PLAYERS );
 
-		long playerCount = 0;
+		int32_t playerCount = 0;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 		
 		const MC2Player* sorted[MAX_MC_PLAYERS];
@@ -587,7 +587,7 @@ void ControlGui::renderResults()
 		
 		if ( !neverEndingStory && (fadeTime > 0.f) )
 		{
-			long color = interpolateColor( 0x00000000, 0xff000000, fadeTime/1.0f );
+			int32_t color = interpolateColor( 0x00000000, 0xff000000, fadeTime/1.0f );
 			RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
 			drawRect( rect, color );
 		}
@@ -757,7 +757,7 @@ void ControlGui::renderPlayerStatus(float xDelta)
 
 
 	MPlayer->calcPlayerRanks();
-	long playerCount = 0;
+	int32_t playerCount = 0;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
 	
 	const MC2Player* sorted[MAX_MC_PLAYERS];
@@ -797,12 +797,12 @@ void ControlGui::renderPlayerStatus(float xDelta)
 	}
 
 
-/*	long xLocs[4] = {	mpStats[0].getPlayerHeadingX(),
+/*	int32_t xLocs[4] = {	mpStats[0].getPlayerHeadingX(),
 						mpStats[0].getRankingX(),
 						mpStats[0].getKillsX(),
 						mpStats[0].getLossesX()
 					};
-	long textIDs[4] = { IDS_MP_STATS_PLAYER_NAME,
+	int32_t textIDs[4] = { IDS_MP_STATS_PLAYER_NAME,
 						IDS_MP_STATS_SCORE,
 						IDS_MP_STATS_KILLS,
 						IDS_MP_STATS_LOSSES
@@ -820,10 +820,10 @@ void ControlGui::renderPlayerStatus(float xDelta)
 
 }
 
-void ControlGui::renderObjective( CObjective* pObjective, long xPos, long yPos, bool bDrawTotal )
+void ControlGui::renderObjective( CObjective* pObjective, int32_t xPos, int32_t yPos, bool bDrawTotal )
 {
 	// draw description
-	long color = pObjective->Status(Team::home->objectives) == OS_FAILED ?  0xffc61c00 : 
+	int32_t color = pObjective->Status(Team::home->objectives) == OS_FAILED ?  0xffc61c00 : 
 	( pObjective->Status(Team::home->objectives) == OS_SUCCESSFUL ? 0xff41c700 : 0xffffc600 );
 
 	gosASSERT(pObjective->IsActive());
@@ -844,9 +844,9 @@ void ControlGui::renderObjective( CObjective* pObjective, long xPos, long yPos, 
 	{
 		/*these used to be declared as unsigned, but mixing signed and unsigned values
 		in arithmetic expressions can be bad news if any intermediate result is negative */
-		long width, height;
-		long descWidth;
-		long dotWidth;
+		int32_t width, height;
+		int32_t descWidth;
+		int32_t dotWidth;
 		
 		char total[64];
 		int amount = pObjective->Status(Team::home->objectives) == OS_SUCCESSFUL ? pObjective->ResourcePoints() : 0;
@@ -869,7 +869,7 @@ void ControlGui::renderObjective( CObjective* pObjective, long xPos, long yPos, 
 		float dotRealWidth = (((float)dotWidth)/20.f);
 
 		float totalLength = (OBJECTIVESTOTALRIGHT - width - xPos - descWidth);
-		long numberOfDots = ((float)totalLength)/dotRealWidth;
+		int32_t numberOfDots = ((float)totalLength)/dotRealWidth;
 
 		if (3 > numberOfDots)
 		{
@@ -972,8 +972,8 @@ void ControlGui::update( bool bPaused, bool bLOS )
 				helpTextHeaderID = buttonData[i].helpTextHeader;
 				helpTextID = buttonData[i].helpTextID;
 				bMouseInButton = true;
-				long lastX = mouseX - userInput->getMouseXDelta();
-				long lastY = mouseY - userInput->getMouseYDelta();
+				int32_t lastX = mouseX - userInput->getMouseXDelta();
+				int32_t lastY = mouseY - userInput->getMouseYDelta();
 
 				if ( buttons[i].location[0].x > lastX || lastX > buttons[i].location[2].x
 				|| lastY < buttons[i].location[0].y || lastY > buttons[i].location[1].y )
@@ -1000,7 +1000,7 @@ void ControlGui::update( bool bPaused, bool bLOS )
 	
 	// update all the attack ranges
 	Team* pTeam = Team::home;
-	long bMover = 0;
+	int32_t bMover = 0;
 	bool bJump = 1;
 
 	// if no mover is selected, disable range buttons
@@ -1625,7 +1625,7 @@ void ControlGui::handleClick( int ID )
 	{
 		getButton( ID )->toggle();
 		bool bPress = getButton( ID )->state == ControlButton::PRESSED ? 1 : 0;
-		for (long i = 0; i < Team::home->getRosterSize(); i++)
+		for (int32_t i = 0; i < Team::home->getRosterSize(); i++)
 		{
 			Mover* pMover = (Mover*)Team::home->getMover( i );
 			if ( pMover->isSelected() && pMover->isGuardTower() && pMover->getCommander()->getId() == Commander::home->getId())
@@ -1669,7 +1669,7 @@ void ControlGui::doStop()
 
 	Team* pTeam = Team::home;
 	
-	for (long i = 0; i < pTeam->getRosterSize(); i++)
+	for (int32_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover( i );
 		if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -1787,8 +1787,8 @@ void ControlGui::updateVehicleTab(int mouseX, int mouseY, bool bLOS )
 					}
 				}
 		
-				long lastX = mouseX - userInput->getMouseXDelta();
-				long lastY = mouseY - userInput->getMouseYDelta();
+				int32_t lastX = mouseX - userInput->getMouseXDelta();
+				int32_t lastY = mouseY - userInput->getMouseYDelta();
 				if (  vehicleButtons[i].location[0].x >= lastX || lastX >= vehicleButtons[i].location[2].x
 					|| lastY <= vehicleButtons[i].location[0].y || lastY >= vehicleButtons[i].location[1].y  )
 					soundSystem->playDigitalSample( LOG_HIGHLIGHTBUTTONS );
@@ -1811,10 +1811,10 @@ void ControlGui::updateVehicleTab(int mouseX, int mouseY, bool bLOS )
 			vehicleButtons[i].disable( false );
 	}
 
-	long maxUnits = MAX_ICONS;
+	int32_t maxUnits = MAX_ICONS;
 	if ( MPlayer )
 	{
-		long playerCount;
+		int32_t playerCount;
 		MPlayer->getPlayers( playerCount );
 		if (playerCount)
 			maxUnits = (MAX_MULTIPLAYER_MECHS_IN_LOGISTICS/playerCount) + 4;
@@ -1871,7 +1871,7 @@ void ControlGui::updateVehicleTab(int mouseX, int mouseY, bool bLOS )
 }
 void ControlGui::renderVehicleTab()
 {
-	long cost = -1;
+	int32_t cost = -1;
 	char buffer[256];
 
 	LogisticsData::instance->rpJustAdded = 0;
@@ -1880,7 +1880,7 @@ void ControlGui::renderVehicleTab()
 	{
 		vehicleButtons[i].render();
 
-		long color = vehicleButtons[i].isEnabled() ?  0xff005392 : 0xff7f7f7f;
+		int32_t color = vehicleButtons[i].isEnabled() ?  0xff005392 : 0xff7f7f7f;
 
 		if ( vehicleButtons[i].state & ControlButton::PRESSED )
 		{
@@ -1896,24 +1896,24 @@ void ControlGui::renderVehicleTab()
 		if ( vehicleCosts[i] )
 		{
 			// need to draw cost under the button
-			long left = float2long(vehicleButtons[i].location[0].x);
-			long top = float2long(vehicleButtons[i].location[2].y + TEXT_SKIP);
-			long right = float2long(vehicleButtons[i].location[2].x);
-			long bottom = float2long(vehicleButtons[i].location[2].y + 30 + TEXT_SKIP);
+			int32_t left = float2long(vehicleButtons[i].location[0].x);
+			int32_t top = float2long(vehicleButtons[i].location[2].y + TEXT_SKIP);
+			int32_t right = float2long(vehicleButtons[i].location[2].x);
+			int32_t bottom = float2long(vehicleButtons[i].location[2].y + 30 + TEXT_SKIP);
 
 			sprintf( buffer, "%ld", vehicleCosts[i] );
 			vehicleFont.render( buffer, left, top, right - left, bottom - top, color, 0, 2 );
 		}
 	}
 
-	long left = RPLEFT;
-	long top = RPTOP;
+	int32_t left = RPLEFT;
+	int32_t top = RPTOP;
 
 	// draw in RP
 	char originalStr[256];
 
 	cLoadString( IDS_RP, originalStr, 256 );
-	sprintf( buffer, originalStr, (long)LogisticsData::instance->getResourcePoints() );
+	sprintf( buffer, originalStr, (int32_t)LogisticsData::instance->getResourcePoints() );
 
 	//We are there.  Start flashing.
 	/// TUTORIAL!!!
@@ -2068,7 +2068,7 @@ void ControlGui::disableAllVehicleButtons()
 
 }
 
-PCSTR ControlGui::getVehicleName( long& ID)
+PCSTR ControlGui::getVehicleName( int32_t& ID)
 {
 	for ( int i = GUARD_TOWER; i <= RECOVERY_TEAM; i++ )
 	{
@@ -2090,9 +2090,9 @@ PCSTR ControlGui::getVehicleName( long& ID)
 	return 0;
 }
 
-PCSTR ControlGui::getVehicleNameFromID (long ID) {
+PCSTR ControlGui::getVehicleNameFromID (int32_t ID) {
 
-	for (long i = 0; i < 5; i++)
+	for (int32_t i = 0; i < 5; i++)
 		if (vehicleIDs[i] == ID)
 			return(vehiclePilots[i]);
 	return(NULL);
@@ -2150,7 +2150,7 @@ void ControlGui::renderHelpText()
 		if ( helpTextHeaderID )
 		{
 			cLoadString( helpTextHeaderID, buffer, 1024 );
-			long yPos = HELPAREA_BOTTOM - height;
+			int32_t yPos = HELPAREA_BOTTOM - height;
 			drawShadowText( 0xffffffff, 0xff000000, helpFont.getTempHandle(),
 				HELPAREA_LEFT, yPos - height, 1, buffer, true, helpFont.getSize() );
 		}
@@ -2239,7 +2239,7 @@ bool ControlGui::getVehicleCommand( )
 	return false;
 }
 
-void ControlButton::initButtons( FitIniFile& buttonFile, long buttonCount, ControlButton* Buttons, ButtonData* Data, PCSTR str, aFont* font )
+void ControlButton::initButtons( FitIniFile& buttonFile, int32_t buttonCount, ControlButton* Buttons, ButtonData* Data, PCSTR str, aFont* font )
 {
 	char path[256];
 	for ( int i = 0; i < buttonCount; ++i )
@@ -2247,8 +2247,8 @@ void ControlButton::initButtons( FitIniFile& buttonFile, long buttonCount, Contr
 		sprintf( path, "%s%ld", str, i );
 		Data[i].textureHandle = 0;
 
-		long result = buttonFile.seekBlock( path );
-		if ( result != NO_ERR )
+		int32_t result = buttonFile.seekBlock( path );
+		if ( result != NO_ERROR )
 		{
 			char errorStr[256];
 			sprintf(  errorStr, "couldn't find button %s", path );
@@ -2269,7 +2269,7 @@ void ControlButton::initButtons( FitIniFile& buttonFile, long buttonCount, Contr
 		if ( font )
 			Data[i].textFont = *font;
 
-		long x, y, width, height;
+		int32_t x, y, width, height;
 
 		buttonFile.readIdLong( "XLocation", x );
 		buttonFile.readIdLong( "YLocation", y );
@@ -2322,34 +2322,34 @@ void ControlButton::initButtons( FitIniFile& buttonFile, long buttonCount, Contr
 			Buttons[i].data->fileHeight = Buttons[i].data->fileWidth;
 		}
 
-		if ( NO_ERR != buttonFile.readIdLong( "UNormal", Buttons[i].data->stateCoords[0][0] ) )
+		if ( NO_ERROR != buttonFile.readIdLong( "UNormal", Buttons[i].data->stateCoords[0][0] ) )
 			Buttons[i].data->stateCoords[0][0] = -1.f;
 
-		if ( NO_ERR != buttonFile.readIdLong( "VNormal", Buttons[i].data->stateCoords[0][1] ) )
+		if ( NO_ERROR != buttonFile.readIdLong( "VNormal", Buttons[i].data->stateCoords[0][1] ) )
 			Buttons[i].data->stateCoords[0][1] = -1.f;
 
 
-		if ( NO_ERR != buttonFile.readIdLong( "UPressed", Buttons[i].data->stateCoords[1][0] ) )
+		if ( NO_ERROR != buttonFile.readIdLong( "UPressed", Buttons[i].data->stateCoords[1][0] ) )
 			Buttons[i].data->stateCoords[1][0] = -1.f;
 
-		if ( NO_ERR != buttonFile.readIdLong( "VPressed", Buttons[i].data->stateCoords[1][1] ) )
+		if ( NO_ERROR != buttonFile.readIdLong( "VPressed", Buttons[i].data->stateCoords[1][1] ) )
 			Buttons[i].data->stateCoords[1][1] = -1.f;
 
-		if ( NO_ERR != buttonFile.readIdLong( "UDisabled", Buttons[i].data->stateCoords[2][0] ) )
+		if ( NO_ERROR != buttonFile.readIdLong( "UDisabled", Buttons[i].data->stateCoords[2][0] ) )
 			Buttons[i].data->stateCoords[2][0] = -1.f;
 
-		if ( NO_ERR != buttonFile.readIdLong( "VDisabled", Buttons[i].data->stateCoords[2][1] ) )
+		if ( NO_ERROR != buttonFile.readIdLong( "VDisabled", Buttons[i].data->stateCoords[2][1] ) )
 			Buttons[i].data->stateCoords[2][1] = -1.f;
 
-		if ( NO_ERR != buttonFile.readIdLong( "UAmbiguous", Buttons[i].data->stateCoords[3][0] ) )
+		if ( NO_ERROR != buttonFile.readIdLong( "UAmbiguous", Buttons[i].data->stateCoords[3][0] ) )
 		{
-			if ( NO_ERR != buttonFile.readIdLong( "UHighlight", Buttons[i].data->stateCoords[3][0] ) )
+			if ( NO_ERROR != buttonFile.readIdLong( "UHighlight", Buttons[i].data->stateCoords[3][0] ) )
 				Buttons[i].data->stateCoords[3][0] = -1.f;
 		}
 
-		if ( NO_ERR != buttonFile.readIdLong( "VAmbiguous", Buttons[i].data->stateCoords[3][1] ) )
+		if ( NO_ERROR != buttonFile.readIdLong( "VAmbiguous", Buttons[i].data->stateCoords[3][1] ) )
 		{
-			if ( NO_ERR != buttonFile.readIdLong( "VHighlight", Buttons[i].data->stateCoords[3][1] ) )
+			if ( NO_ERROR != buttonFile.readIdLong( "VHighlight", Buttons[i].data->stateCoords[3][1] ) )
 				Buttons[i].data->stateCoords[3][1] = -1.f;
 		}
 
@@ -2413,7 +2413,7 @@ void ControlGui::initStatics( FitIniFile& file )
 	if ( staticCount > 20 )
 		staticInfos[20].showGUIWindow( 0 );
 
-	if ( NO_ERR != file.seekBlock( "HelpText" ) )
+	if ( NO_ERROR != file.seekBlock( "HelpText" ) )
 	{
 		Assert( 0, 0, "couldn't find the help text block in the layout file" );
 	}
@@ -2424,7 +2424,7 @@ void ControlGui::initStatics( FitIniFile& file )
 	HELPAREA_LEFT		+= hiResOffsetX;
 	HELPAREA_BOTTOM		+= hiResOffsetY;
 
-	if ( NO_ERR != file.seekBlock( "ResourcePoints" ) )
+	if ( NO_ERROR != file.seekBlock( "ResourcePoints" ) )
 	{
 		Assert( 0, 0, "couldn't find the help text block in the layout file" );
 	}
@@ -2441,7 +2441,7 @@ void ControlGui::initStatics( FitIniFile& file )
 	rpCallout.rect.top = RPTOP;
 	rpCallout.rect.bottom = RPTOP;
 
-	if ( NO_ERR != file.seekBlock( "Objectives" ) )
+	if ( NO_ERROR != file.seekBlock( "Objectives" ) )
 	{
 		Assert( 0, 0, "couldn't find the objective block in the button layout file" );
 	}
@@ -2474,7 +2474,7 @@ void ControlGui::initStatics( FitIniFile& file )
 
 	objectiveInfoCount = i;
 
-	if ( NO_ERR != file.seekBlock( "VideoWindow" ) )
+	if ( NO_ERROR != file.seekBlock( "VideoWindow" ) )
 	{
 		Assert( 0, 0, "couldn't find th videoWindow block in the button layout file" );
 	}
@@ -2546,7 +2546,7 @@ void ControlGui::initStatics( FitIniFile& file )
 	file.readIdLong( "ResultsTextColor", missionStatusRect.color );	
 
 	file.seekBlock( "ChatPlayerNameRect" );
-	long left, top, width, height;
+	int32_t left, top, width, height;
 	file.readIdLong( "xlocation", left );
 	file.readIdLong( "yLocation", top );
 	file.readIdLong( "Width", width );
@@ -2591,7 +2591,7 @@ void ControlGui::initRects( FitIniFile& file )
 	rectInfos = 0;
 	rectCount = 0;
 	
-	if ( NO_ERR != file.seekBlock( "Rects" ) )
+	if ( NO_ERROR != file.seekBlock( "Rects" ) )
 		return;
 
 	file.readIdLong( "rectCount", rectCount );
@@ -2603,7 +2603,7 @@ void ControlGui::initRects( FitIniFile& file )
 		for ( int i = 0; i < rectCount; i++ )
 		{
 			sprintf( buffer, "Rect%ld", i );
-			if ( NO_ERR != file.seekBlock( buffer ) )
+			if ( NO_ERROR != file.seekBlock( buffer ) )
 			{
 				Assert( 0, i, "couldn't find the rect block" );
 				return;
@@ -2648,7 +2648,7 @@ void ControlGui::swapResolutions( int resolution )
 		strcpy( fileName, "buttonlayout1024.fit" );
 	
 	strcat( path, fileName );
-	if ( NO_ERR != buttonFile.open( path ) )
+	if ( NO_ERROR != buttonFile.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't find the file %s", path );
@@ -2657,15 +2657,15 @@ void ControlGui::swapResolutions( int resolution )
 
 	//------------------------------------
 	//Get the Resolution Centering Values
-	long result = buttonFile.seekBlock("HiresOffsets");
-	if (result == NO_ERR)
+	int32_t result = buttonFile.seekBlock("HiresOffsets");
+	if (result == NO_ERROR)
 	{
 		result = buttonFile.readIdLong("xOffset",hiResOffsetX);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			hiResOffsetX = 0;
 			
 		result = buttonFile.readIdLong("yOffset",hiResOffsetY);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			hiResOffsetY = 0;
 	}
 	else
@@ -2676,11 +2676,11 @@ void ControlGui::swapResolutions( int resolution )
 	infoWnd->init( buttonFile );
 
 
-	if ( NO_ERR != buttonFile.seekBlock( "Fonts" ) )
+	if ( NO_ERROR != buttonFile.seekBlock( "Fonts" ) )
 		Assert( 0, 0, "couldn't find the font block" );
 
 
-	long fontID;
+	int32_t fontID;
 	buttonFile.readIdLong( "HelpFont", fontID );
 	helpFont.init( fontID );
 
@@ -2694,12 +2694,12 @@ void ControlGui::swapResolutions( int resolution )
 	missionResultsFont.init( fontID );
 
 	result = buttonFile.seekBlock( "ControlButtons" );
-	if ( result != NO_ERR )
+	if ( result != NO_ERROR )
 	{
 		Assert( 0, 0, "Control button block not found" );
 	}
 
-	long buttonCount;
+	int32_t buttonCount;
 	buttonFile.readIdLong( "ButtonCount", buttonCount );
 	Assert( buttonCount == 20, buttonCount, "wrong number of control buttons" );
 
@@ -2735,7 +2735,7 @@ void ControlGui::swapResolutions( int resolution )
 	getButton( SALVAGE )->setColor( 0 );
 	
 	 result = buttonFile.seekBlock( "VehicleButtons" );
-	 if ( result != NO_ERR )
+	 if ( result != NO_ERROR )
 	 {
 		 Assert( 0, 0, "No Vehicle Buttons" );
 	 }
@@ -2909,7 +2909,7 @@ void	ControlGui::toggleHoldPosition()
 	if (MPlayer && !MPlayer->isServer())
 		MPlayer->sendHoldPosition();
 	else {
-		for (long i = 0; i < Team::home->getRosterSize(); i++) {
+		for (int32_t i = 0; i < Team::home->getRosterSize(); i++) {
 			Mover* pMover = Team::home->getMover( i );
 			if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId() )
 			{
@@ -2997,8 +2997,8 @@ void ControlGui::setChatText( PCSTR playerName, PCSTR message, ULONG color, ULON
 	chatInfos[i].time = scenarioTime;
 	chatInfos[i].chatTextColor = chatColor;
 
-	long totalHeight = chatEdit.font.height( message, chatEdit.width() );
-	long lineHeight = chatEdit.font.height( "A", chatEdit.width() );
+	int32_t totalHeight = chatEdit.font.height( message, chatEdit.width() );
+	int32_t lineHeight = chatEdit.font.height( "A", chatEdit.width() );
 
 
 	chatInfos[i].messageLength = totalHeight/lineHeight;
@@ -3015,7 +3015,7 @@ void ControlGui::setChatText( PCSTR playerName, PCSTR message, ULONG color, ULON
 
 void ControlGui::renderChatText()
 {
-	long curLine = 0;
+	int32_t curLine = 0;
 
 	if ( bChatting && MPlayer)
 	{
@@ -3023,15 +3023,15 @@ void ControlGui::renderChatText()
 		if ( MPlayer )
 		{
 			MC2Player* pInfo = MPlayer->getPlayerInfo( MPlayer->commanderID );
-			long color = MPlayer->colors[pInfo->baseColor[BASECOLOR_TEAM]];
-			long textColor = 0xff000000;
+			int32_t color = MPlayer->colors[pInfo->baseColor[BASECOLOR_TEAM]];
+			int32_t textColor = 0xff000000;
 
 			if ( ((color & 0xff) + ( (color & 0xff00)>>8 ) + ( (color & 0xff0000)>>16 ))/3 < 85 )
 				textColor = 0xffffffff;
 
 			playerNameEdit.setColor( color );
 			playerNameEdit.setTextColor( textColor );
-			long width = playerNameEdit.getFontObject()->width( pInfo->name ) + playerNameEdit.getFontObject()->width( " " );
+			int32_t width = playerNameEdit.getFontObject()->width( pInfo->name ) + playerNameEdit.getFontObject()->width( " " );
 			playerNameEdit.resize( width + 8, playerNameEdit.height() );
 			playerNameEdit.setEntry( pInfo->name );
 			personalEdit.move( playerNameEdit.right() - personalEdit.left(), 0 );
@@ -3081,8 +3081,8 @@ void ControlGui::renderChatText()
 		{
 			if ( chatInfos[i].messageLength )
 			{
-				long color = chatInfos[i].backgroundColor;
-				long textColor = 0xff000000;
+				int32_t color = chatInfos[i].backgroundColor;
+				int32_t textColor = 0xff000000;
 
 				if ( ((color & 0xff) + ( (color & 0xff00)>>8 ) + ( (color & 0xff0000)>>16 ))/3 < 85 )
 					textColor = 0xffffffff;
@@ -3091,7 +3091,7 @@ void ControlGui::renderChatText()
 				playerNameEdit.setColor( color );
 				playerNameEdit.setTextColor( textColor );
 				playerNameEdit.move( 0, curLine * (height+1) );
-				long width = playerNameEdit.getFontObject()->width( chatInfos[i].playerName ) + playerNameEdit.getFontObject()->width( " " );
+				int32_t width = playerNameEdit.getFontObject()->width( chatInfos[i].playerName ) + playerNameEdit.getFontObject()->width( " " );
 				playerNameEdit.resize( width + 8, playerNameEdit.height() );
 				playerNameEdit.setEntry( chatInfos[i].playerName );
 				chatEdit.setText( chatInfos[i].message );

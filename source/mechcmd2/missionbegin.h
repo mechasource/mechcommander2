@@ -1,3 +1,6 @@
+
+#pragma once
+
 #ifndef MISSIONNBEGIN_H
 #define MISSIONNBEGIN_H
 /*************************************************************************************************\
@@ -50,8 +53,8 @@ class MissionBegin
 		void beginZone();
 		void setToMissionBriefing();
 
-		long getCurrentScreenId();	//Returns screen ID as a function of curScreenX and curScreenY
-		bool startAnimation (long bId, bool isButton, float scrollTime, long nFlashes);
+		int32_t getCurrentScreenId();	//Returns screen ID as a function of curScreenX and curScreenY
+		bool startAnimation (int32_t bId, bool isButton, float scrollTime, int32_t nFlashes);
 
 		bool isInCalloutAnimation()
 		{
@@ -68,7 +71,7 @@ class MissionBegin
 		bool						bReadyToLoad;
 
 		ABLModulePtr				logisticsBrain;
-		long						logisticsScriptHandle;
+		int32_t						logisticsScriptHandle;
 
 		aAnimation					leftAnim;
 		aAnimation					rightAnim;
@@ -82,8 +85,8 @@ class MissionBegin
 		LogisticsScreen*			screens[5/*dim screen X*/][3/*dim screen Y*/];
 		LogisticsScreen*			placeHolderScreen;
 
-		long						curScreenX;
-		long						curScreenY;
+		int32_t						curScreenX;
+		int32_t						curScreenY;
 
 		MainMenu*					mainMenu;
 		bool						bSplash;
@@ -96,9 +99,9 @@ class MissionBegin
 		// Tutorial Data
 		bool						animationRunning;
 		float						timeLeftToScroll;
-		long						targetButtonId;
+		int32_t						targetButtonId;
 		bool						targetIsButton;
-		long						buttonNumFlashes;
+		int32_t						buttonNumFlashes;
 		float						buttonFlashTime;
 };
 

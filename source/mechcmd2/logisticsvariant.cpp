@@ -48,76 +48,76 @@ int LogisticsChassis::init( CSVFile* file, int chassisID )
 	fileName = file->getFilename();
 	fileName.MakeLower();
 
-	long result = file->readLong( 11, 5, baseCost );
-	gosASSERT( result == NO_ERR );
+	int32_t result = file->readLong( 11, 5, baseCost );
+	gosASSERT( result == NO_ERROR );
 
 	result = file->readLong( 5, 2, chassisNameID );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 	
 	result = file->readFloat(  3, 5, maxWeight );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	result = file->readLong( 12, 5, maxArmor );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 	
 	result = file->readLong( 8,2, helpID );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 	
 	result = file->readLong( 6, 2,  encyclopediaID );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	file->readLong( 12, 2, iconPictureIndex );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	
 	houseID;
 	result = file->readLong( 4, 2, houseID );
 	ID |= ((houseID << 8) & 0x0000ff00);
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	for ( int row = 9; row < 12; ++row )
 	{
 		result = file->readString( row, 2, buffer, 256 );
-		gosASSERT( result == NO_ERR );
+		gosASSERT( result == NO_ERROR );
 		iconFileNames[row - 9] = buffer;
 	}
 
 	result = file->readBoolean(  3, 8, canHaveAdvSensor );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 	
 	result = file->readBoolean(4, 8, canHaveOptics );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 	
 	result = file->readBoolean( 5, 8, canHaveGlobalSensor );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 	
 	result = file->readBoolean( 6, 8, canHaveECM );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 	
 	result = file->readBoolean( 7, 8, canHaveActiveProbe );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	result = file->readBoolean( 8,8, canHaveJumpJets );
-	 gosASSERT( result == NO_ERR );
+	 gosASSERT( result == NO_ERROR );
 
  	result = file->readBoolean( 9,8, canHaveExtendedSensor );
-	 gosASSERT( result == NO_ERR );
+	 gosASSERT( result == NO_ERROR );
 
 
 	result = file->readFloat(  7, 5, speed );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	result = file->readLong( 4, 5, maxHeat );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	result = file->readLong( 6, 5, baseArmor );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	result = file->readLong( 13, 2, componentAreaWidth );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	result = file->readLong( 14, 2, componentAreaHeight );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	int ID = IDS_VERY_LIGHT;
 	for ( int i = 4; i > -1; --i )
@@ -157,7 +157,7 @@ int LogisticsChassis::getArmorClass() const
 
 int LogisticsChassis::getDisplaySpeed() const
 {
-	switch( (long)speed )
+	switch( (int32_t)speed )
 	{
 	case 5:
 		return 17;
@@ -338,21 +338,21 @@ int LogisticsVariant::init( CSVFile* file, LogisticsChassis* pChassis, int Varia
 	file->readBoolean( 21 + offset, 4, bHidden );
 
 	char buffer[256];
-	if ( NO_ERR == file->readString( 23 + offset, 2, buffer, 256 ) )
+	if ( NO_ERROR == file->readString( 23 + offset, 2, buffer, 256 ) )
 	{
 		variantName = buffer;
 	}
 
 	LogisticsComponent*  pComps[128];
-	long xLocs[128];
-	long yLocs[128];
+	int32_t xLocs[128];
+	int32_t yLocs[128];
 	memset( pComps, 0, sizeof( LogisticsComponent* ) * 128 );
-	long componentCount = 0;
+	int32_t componentCount = 0;
 	int i, j, k;
 	for ( i =26; i < 97; i++ )
 	{
-		long componentID;
-		if ( NO_ERR == file->readLong( offset + i, 5, componentID ) && componentID != 0xff )
+		int32_t componentID;
+		if ( NO_ERROR == file->readLong( offset + i, 5, componentID ) && componentID != 0xff )
 		{
 			LogisticsComponent* pComp = LogisticsData::instance->getComponent(componentID );
 			if ( pComp )
@@ -391,7 +391,7 @@ int LogisticsVariant::init( CSVFile* file, LogisticsChassis* pChassis, int Varia
 	return 0;
 }
 
-bool LogisticsVariant::addComponent( int idFromFitFile, long& x, long& y )
+bool LogisticsVariant::addComponent( int idFromFitFile, int32_t& x, int32_t& y )
 {
 	LogisticsComponent*
 		pComponent = LogisticsData::instance->getComponent( idFromFitFile );
@@ -421,8 +421,8 @@ bool LogisticsVariant::addComponent( int idFromFitFile, long& x, long& y )
 
 
 		// need to see if this thing will fit
-		long componentWidth = pComponent->getComponentWidth();
-		long componentHeight = pComponent->getComponentHeight();
+		int32_t componentWidth = pComponent->getComponentWidth();
+		int32_t componentHeight = pComponent->getComponentHeight();
 
 		if ( x == -1 && y == -1 )
 		{
@@ -591,7 +591,7 @@ int		LogisticsVariant::getMaxHeat() const
 	return heat + chassis->maxHeat;
 }
 // if you pass in -1's for x and y, we'll figure out where it can go, and return where it went
-int LogisticsVariant::canAddComponent( LogisticsComponent* pComponent, long& x, long& y ) const
+int LogisticsVariant::canAddComponent( LogisticsComponent* pComponent, int32_t& x, int32_t& y ) const
 {
 	/*  weight no longer matters
 	int weight = getWeight();
@@ -701,7 +701,7 @@ int LogisticsVariant::canAddComponent( LogisticsComponent* pComponent, long& x, 
 
 }
 
-const LogisticsChassis::ComponentInfo* LogisticsVariant::getComponentAtLocation( long x, long y ) const
+const LogisticsChassis::ComponentInfo* LogisticsVariant::getComponentAtLocation( int32_t x, int32_t y ) const
 {
 	if ( x == -1 && y == -1 )
 		return NULL;
@@ -760,7 +760,7 @@ bool LogisticsVariant::hasSensor() const
 }
 
 
-int	LogisticsVariant::getComponentsWithLocation( long& count, long* IDArray, long* xLocationArray, long* yLocationArray )
+int	LogisticsVariant::getComponentsWithLocation( int32_t& count, int32_t* IDArray, int32_t* xLocationArray, int32_t* yLocationArray )
 {
 	if ( count < componentCount ) 
 		return NEED_BIGGER_ARRAY;
@@ -777,7 +777,7 @@ int	LogisticsVariant::getComponentsWithLocation( long& count, long* IDArray, lon
 	return 0;
 }
 
-int	LogisticsVariant::getComponents( long& count, long* array )
+int	LogisticsVariant::getComponents( int32_t& count, int32_t* array )
 {
  	for ( int i = 0; i < componentCount; ++i )
 	{
@@ -791,7 +791,7 @@ int	LogisticsVariant::getComponents( long& count, long* array )
 
 }
 
-int		LogisticsVariant::removeComponent( long xCoord, long yCoord )
+int		LogisticsVariant::removeComponent( int32_t xCoord, int32_t yCoord )
 {
 	LogisticsChassis::ComponentInfo* info = const_cast<LogisticsChassis::ComponentInfo*>(getComponentAtLocation( xCoord, yCoord ));
 
@@ -823,7 +823,7 @@ int		LogisticsVariant::removeComponent( long xCoord, long yCoord )
 }
 
 // if you pass in -1's for x and y, we'll figure out where it can go, and return where it went
-int		LogisticsVariant::addComponent( LogisticsComponent* pComponent, long& xCoord, long& yCoord )
+int		LogisticsVariant::addComponent( LogisticsComponent* pComponent, int32_t& xCoord, int32_t& yCoord )
 {
 	int retVal = canAddComponent( pComponent, xCoord, yCoord );
 
@@ -838,7 +838,7 @@ int		LogisticsVariant::addComponent( LogisticsComponent* pComponent, long& xCoor
 	return retVal;
 }
 
-long LogisticsVariant::save( FitIniFile& file, long counter )
+int32_t LogisticsVariant::save( FitIniFile& file, int32_t counter )
 {
 	char tmp[256];
 	char tmp2[256];
@@ -875,7 +875,7 @@ void LogisticsVariant::setName( PCSTR pName )
 	variantName = pName;
 }
 
-int	LogisticsVariant::getComponents( long& count, LogisticsComponent** array )
+int	LogisticsVariant::getComponents( int32_t& count, LogisticsComponent** array )
 {
 	if ( count < componentCount ) 
 		return NEED_BIGGER_ARRAY;
@@ -891,7 +891,7 @@ int	LogisticsVariant::getComponents( long& count, LogisticsComponent** array )
 
 }
 
-LogisticsComponent*	LogisticsVariant::getCompAtLocation( int i, int j, long& realI, long& realJ )
+LogisticsComponent*	LogisticsVariant::getCompAtLocation( int i, int j, int32_t& realI, int32_t& realJ )
 {
 	realI = realJ = -1;
 	const LogisticsChassis::ComponentInfo* pInfo = getComponentAtLocation( i, j );
@@ -906,7 +906,7 @@ LogisticsComponent*	LogisticsVariant::getCompAtLocation( int i, int j, long& rea
 	return 0;
 }
 
-int	LogisticsVariant::getComponentLocation( LogisticsComponent* pComp, long& x, long& y )
+int	LogisticsVariant::getComponentLocation( LogisticsComponent* pComp, int32_t& x, int32_t& y )
 {
 	const LogisticsChassis::ComponentInfo* pInfo = getComponentAtLocation( x, y );
 	x = y = -1;
@@ -934,11 +934,11 @@ int	LogisticsVariant::getComponentLocation( LogisticsComponent* pComp, long& x, 
 
 }
 
-int			LogisticsVariant::getOptimalRangeString( long& color ) const
+int			LogisticsVariant::getOptimalRangeString( int32_t& color ) const
 {
 	float rangeDamage[3];
 
-	long rangeColors[3] = {0xff6e7c00, 0xff005392,0xffa21600  };
+	int32_t rangeColors[3] = {0xff6e7c00, 0xff005392,0xffa21600  };
 
 
 	memset( rangeDamage, 0, sizeof ( float ) * 3 );
@@ -1021,11 +1021,11 @@ void LogisticsVehicle::init( FitIniFile& file )
 
 	mechClass = tmpWeightClass;
 
-	if ( NO_ERR !=file.readIdLong( "HouseID", houseID ) )
+	if ( NO_ERROR !=file.readIdLong( "HouseID", houseID ) )
 	{
 		houseID = -1;
 	}
-	if ( NO_ERR != file.readIdLong( "EncyclopediaID", encyclopediaID ) )
+	if ( NO_ERROR != file.readIdLong( "EncyclopediaID", encyclopediaID ) )
 	{
 		encyclopediaID = IDS_VEHICLE_DESCRIPTION_0;
 	}
@@ -1042,25 +1042,25 @@ void LogisticsVehicle::init( FitIniFile& file )
 	for ( i = 0; i < 5; i++ )
 	{
 		file.seekBlock( parts[i] );
-		file.readIdUCHAR( "MaxArmorPoints", pts );
+		file.readIdUChar( "MaxArmorPoints", pts );
 		baseArmor += pts;
-		file.readIdUCHAR( "CurInternalStructure", pts );
+		file.readIdUChar( "CurInternalStructure", pts );
 		baseArmor += pts;
 
 	}
 
 	file.seekBlock( "InventoryInfo" );
-	file.readIdUCHAR( "NumWeapons", pts );
+	file.readIdUChar( "NumWeapons", pts );
 
 	char blockName[256];
 	for ( i = 4; i < 4 + pts; i++ )
 	{
 		sprintf( blockName, "Item:%ld", i );
-		if ( NO_ERR == file.seekBlock( blockName ) )
+		if ( NO_ERROR == file.seekBlock( blockName ) )
 		{
 			
 			uint8_t fitID;
-			file.readIdUCHAR( "MasterID", fitID );
+			file.readIdUChar( "MasterID", fitID );
 
 			LogisticsComponent* pComponent = LogisticsData::instance->getComponent( fitID );
 			if ( pComponent )
@@ -1076,7 +1076,7 @@ void LogisticsVehicle::init( FitIniFile& file )
 	}
 }
 
-int LogisticsVehicle::getComponents( long& count, LogisticsComponent** array )
+int LogisticsVehicle::getComponents( int32_t& count, LogisticsComponent** array )
 {
 	gosASSERT( componentCount <= count );
 	

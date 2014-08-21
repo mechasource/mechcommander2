@@ -69,7 +69,7 @@ int LogisticsPilot::init( PSTR pilotFileName )
 	strcat( path, ".fit" );
 
 	FitIniFile pilotFile;
-	if ( NO_ERR != pilotFile.open( path ) )
+	if ( NO_ERROR != pilotFile.open( path ) )
 	{
 		char errorString[256];
 		sprintf( errorString, "Couldn't open file %s", fileName);
@@ -81,16 +81,16 @@ int LogisticsPilot::init( PSTR pilotFileName )
 	int result = pilotFile.seekBlock( "General" );
 	gosASSERT( result == 0 );
 
-	long tmp;
+	int32_t tmp;
 	result = pilotFile.readIdLong( "descIndex", tmp );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 
 	cLoadString( tmp, path, 256 );
 
 	name = path;
 
 	result = pilotFile.readIdLong("PictureIndex", photoIndex);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		photoIndex = 0;
 
 	
@@ -116,20 +116,20 @@ int LogisticsPilot::init( PSTR pilotFileName )
 
 	char tPilot, tGunnery;
 	result = pilotFile.readIdChar( "Piloting", tPilot );
-	gosASSERT( result == NO_ERR );
+	gosASSERT( result == NO_ERROR );
 	pilotFile.readIdChar( "Gunnery", tGunnery );
 
 	piloting = tPilot;
 	gunnery = tGunnery;
 
 	result = pilotFile.seekBlock("SpecialtySkills");
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		for (int i = 0; i < NUM_SPECIALTY_SKILLS; i++) 
 		{
 			char tmpChar;
 			result = pilotFile.readIdChar(SpecialtySkillsTable[i], tmpChar);
-			if (result == NO_ERR)
+			if (result == NO_ERROR)
 				specialtySkills[i] = (tmpChar == 1);
 		}
 	}
@@ -166,7 +166,7 @@ int	LogisticsPilot::getNumberMissions() const
 
 }
 
-long LogisticsPilot::save( FitIniFile& file, long which )
+int32_t LogisticsPilot::save( FitIniFile& file, int32_t which )
 {
 	char tmp[256];
 	sprintf( tmp, "Pilot%ld", which );
@@ -202,7 +202,7 @@ long LogisticsPilot::save( FitIniFile& file, long which )
 	return 0;
 }
 
-long LogisticsPilot::load( FitIniFile& file )
+int32_t LogisticsPilot::load( FitIniFile& file )
 {
 	char tmp[256];
 	file.readIdString( "FileName", tmp, 255 );
@@ -216,8 +216,8 @@ long LogisticsPilot::load( FitIniFile& file )
 	file.readIdLong( "InfantryKills", infantryKills );
 	file.readIdLong( "MissionsCompleted", missionsCompleted );
 
-	long result = file.readIdUCHARArray( "MissionsPlayed", missionsPlayed, MAX_MISSIONS);
-	if (result != NO_ERR)
+	int32_t result = file.readIdUCHARArray( "MissionsPlayed", missionsPlayed, MAX_MISSIONS);
+	if (result != NO_ERROR)
 		memset(missionsPlayed,0,sizeof(uint8_t) * MAX_MISSIONS);
 
 	file.readIdBoolean( "Dead", bDead );
@@ -254,7 +254,7 @@ void LogisticsPilot::clearIcons()
 	killedIcons.Clear();
 }
 
-long LogisticsPilot::update( MechWarrior* pWarrior )
+int32_t LogisticsPilot::update( MechWarrior* pWarrior )
 {
 #ifndef VIEWER
 	
@@ -268,7 +268,7 @@ long LogisticsPilot::update( MechWarrior* pWarrior )
 	killedIcons.Clear();
 
 	missionsCompleted++;
-	long missionJustPlayed = LogisticsData::instance->getCurrentMissionId();
+	int32_t missionJustPlayed = LogisticsData::instance->getCurrentMissionId();
 	if ((missionJustPlayed < 0) || (missionJustPlayed > MAX_MISSIONS))
 		STOP(("Logistics thinks last mission played was %d",missionJustPlayed));
 
@@ -317,7 +317,7 @@ long LogisticsPilot::update( MechWarrior* pWarrior )
 
 	rank = pWarrior->getRank();
 
-	long deadMechCount = 0;
+	int32_t deadMechCount = 0;
 	for ( int i = 0; i < pWarrior->numKilled; i++ )
 	{
 		GameObject* pDead = ObjectManager->getByWatchID(pWarrior->killed[i]);
@@ -367,7 +367,7 @@ long LogisticsPilot::update( MechWarrior* pWarrior )
 
 	//Check for the campaign ribbons and medals.
 	// NOTE: NONE of these should be awarded UNLESS we are playing the shipping campaign.
-	long anySteinerPlayed = missionsPlayed[0] + 
+	int32_t anySteinerPlayed = missionsPlayed[0] + 
 							missionsPlayed[1] +  
 							missionsPlayed[2] +  
 							missionsPlayed[3] +  
@@ -377,7 +377,7 @@ long LogisticsPilot::update( MechWarrior* pWarrior )
 							missionsPlayed[7] +  
 							missionsPlayed[8];
 
-	long anyLiaoPlayed = missionsPlayed[9] +
+	int32_t anyLiaoPlayed = missionsPlayed[9] +
 						missionsPlayed[10] +  
 						missionsPlayed[11] +  
 						missionsPlayed[12] +  
@@ -386,7 +386,7 @@ long LogisticsPilot::update( MechWarrior* pWarrior )
 						missionsPlayed[15] +  
 						missionsPlayed[16];
 
-	long anyDavionPlayed = missionsPlayed[17] +
+	int32_t anyDavionPlayed = missionsPlayed[17] +
 							missionsPlayed[18] +  
 							missionsPlayed[19] +  
 							missionsPlayed[20] +  

@@ -85,7 +85,7 @@ int MechPurchaseScreen::init( FitIniFile& file )
 		buttons[i].setMessageOnRelease();
 
 
-	return NO_ERR;
+	return NO_ERROR;
 }
 //-------------------------------------------------------------------------------------------------
 
@@ -100,7 +100,7 @@ void MechPurchaseScreen::update()
 	// update CBills
 
 	int amount = LogisticsData::instance->getCBills();
-	long color = 0xff005392;
+	int32_t color = 0xff005392;
 	if ( amount != oldCBillsAmount )
 	{
 		previousAmount = oldCBillsAmount - amount;
@@ -470,7 +470,7 @@ int	MechPurchaseScreen::handleMessage( ULONG what, ULONG who )
 						{
 							LogisticsMech* pMech = ((MechListBoxItem*)pItem)->getMech();
 							int oldCount = LogisticsData::instance->getVariantsInInventory( pMech->getVariant(), true );
-							if ( NO_ERR == LogisticsData::instance->sellMech( pMech ) && ( oldCount < 2 ) )
+							if ( NO_ERROR == LogisticsData::instance->sellMech( pMech ) && ( oldCount < 2 ) )
 								((MechListBoxItem*)pItem)->resetMech( );
 							soundSystem->playDigitalSample( LOG_SELECT );		
 						}                                    
@@ -555,7 +555,7 @@ void MechPurchaseScreen::removeMech( LogisticsMech* pMech )
 	aListItem* pItem = inventoryListBox.GetItem( index );
 
 	int oldCount = LogisticsData::instance->getVariantsInInventory( pMech->getVariant(), true );
-	if ( NO_ERR == LogisticsData::instance->sellMech( pMech ) && ( oldCount < 2 ) )
+	if ( NO_ERROR == LogisticsData::instance->sellMech( pMech ) && ( oldCount < 2 ) )
 	{
 		inventoryListBox.RemoveItem( pItem, true );
 	}
@@ -573,7 +573,7 @@ bool MechPurchaseScreen::selectFirstBuyableMech()
 {
 	for ( int i = 0; i < variantListBox.GetItemCount(); i++ )
 	{
-		if ( NO_ERR == LogisticsData::instance->canPurchaseMech( 
+		if ( NO_ERROR == LogisticsData::instance->canPurchaseMech( 
 			((MechListBoxItem*)variantListBox.GetItem(i))->getMech()->getVariant() ) )
 		{
 			variantListBox.SelectItem( i );

@@ -75,7 +75,7 @@ void LogisticsMissionInfo::clear()
 }
 
 
-long LogisticsMissionInfo::init( FitIniFile& file )
+int32_t LogisticsMissionInfo::init( FitIniFile& file )
 {
 
 	clear();
@@ -87,24 +87,24 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 
 	char resultName[256];
 	resultName[0] = 0;
-	long lName = 0;
+	int32_t lName = 0;
 
-	long result = file.readIdLong( "NameID", lName );
-	if ( result == NO_ERR )
+	int32_t result = file.readIdLong( "NameID", lName );
+	if ( result == NO_ERROR )
 	{
 		cLoadString( lName, resultName, 255 );
 	}
 	else
 	{
 		result = file.readIdString( "CampaignName", resultName, 255 );
-		Assert( result == NO_ERR, 0, "couldn't find the missionName" );
+		Assert( result == NO_ERROR, 0, "couldn't find the missionName" );
 	}
 
 	campaignDisplayName = resultName;
 
 
 	result = file.readIdLong( "GroupCount", groupCount );
-	if ( result != NO_ERR )
+	if ( result != NO_ERROR )
 	{
 		Assert( 0, 0, "No group count in campaign file" );
 		return -1;
@@ -113,7 +113,7 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 	result = file.readIdLong( "CBills", CBills );
 
 	char tmp[256];
-	if ( NO_ERR == file.readIdString( "FinalVideo", tmp, 255 ) )
+	if ( NO_ERROR == file.readIdString( "FinalVideo", tmp, 255 ) )
 	{
 		finalVideoName = tmp;
 	}
@@ -131,7 +131,7 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 		groups[i].numberToBeCompleted = -1; // initialize
 
 		sprintf( blockName, "Group%ld", i );
-		if ( NO_ERR != file.seekBlock( blockName ) )
+		if ( NO_ERROR != file.seekBlock( blockName ) )
 		{
 			Assert( 0, i, "couldn't find this group in the campaign file" );
 			continue;
@@ -140,7 +140,7 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 		file.readIdLong( "NumberToComplete", groups[i].numberToBeCompleted );
 		file.readIdLong( "Tune", groups[i].logisticsTuneId);
 
-		if ( NO_ERR != file.readIdString( "ABLScript", tmp, 255 ) )
+		if ( NO_ERROR != file.readIdString( "ABLScript", tmp, 255 ) )
 		{
 			//Perfectly valid to have no ABL brain for this group!
 			groups[i].ablBrainName = "NONE";
@@ -150,7 +150,7 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 			groups[i].ablBrainName = tmp;
 		}
 
-		if ( NO_ERR != file.readIdString( "Video", tmp, 255 ) )
+		if ( NO_ERROR != file.readIdString( "Video", tmp, 255 ) )
 		{
 			char errorStr[256];
 			sprintf( errorStr, "couldn't find the video for operation %ld", i );
@@ -160,20 +160,20 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 		groups[i].videoFileName = tmp;
 		groups[i].videoShown = 0;
 
-		if ( NO_ERR == file.readIdString( "PreVideo", tmp, 255 ) )
+		if ( NO_ERROR == file.readIdString( "PreVideo", tmp, 255 ) )
 		{
 			groups[i].bigVideoName = tmp;
 			groups[i].bigVideoShown = 0;
 		}
 
-		if ( NO_ERR != file.readIdString( "OperationFile", tmp, 255  )
+		if ( NO_ERROR != file.readIdString( "OperationFile", tmp, 255  )
 			|| !strlen( tmp ) )
 		{
 			strcpy( tmp, "mcl_cm_opplayer.fit" );			
 		}
 		groups[i].operationFileName = tmp;
 
-		long missionCount;
+		int32_t missionCount;
 		// read the number of missions in the group
 		file.readIdLong( "MissionCount", missionCount );
 
@@ -182,10 +182,10 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 			MissionInfo* pInfo = new MissionInfo;
 
 			sprintf( blockName, "Group%ldMission%ld", i, j );
-			if ( NO_ERR == file.seekBlock( blockName ) )
+			if ( NO_ERROR == file.seekBlock( blockName ) )
 			{
 				char fileName[1024];
-				if ( NO_ERR != file.readIdString( "FileName", fileName, 1023 ) )
+				if ( NO_ERROR != file.readIdString( "FileName", fileName, 1023 ) )
 				{				
 					Assert( 0, j, "couldn't find a mission file name in the campaign file" );
 					continue;
@@ -204,7 +204,7 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 				
 				FitIniFile missionFile;
 				
-				if ( NO_ERR != missionFile.open( (PSTR)(PCSTR)path ) )
+				if ( NO_ERROR != missionFile.open( (PSTR)(PCSTR)path ) )
 				{
 					char errorStr[256];
 					sprintf( errorStr, "couldn't open file %s", fileName );
@@ -215,37 +215,37 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 				readMissionInfo( missionFile, pInfo );
 
 				char videoFileName[255];
-				if ( NO_ERR == file.readIdString( "VideoOverride", videoFileName, 255 ) )
+				if ( NO_ERROR == file.readIdString( "VideoOverride", videoFileName, 255 ) )
 					pInfo->videoName = videoFileName; 
 
 				file.readIdBoolean( "Mandatory", pInfo->mandatory );				
 
 				file.readIdBoolean( "CompletePrevious", pInfo->completePrevious );
 				
-				long result = file.readIdString( "PurchaseFile", fileName, 1023 );
-				if ((NO_ERR != result) || (0 == strcmp("", fileName)))
+				int32_t result = file.readIdString( "PurchaseFile", fileName, 1023 );
+				if ((NO_ERROR != result) || (0 == strcmp("", fileName)))
 				{
 					strcpy(fileName, "purchase_All");
 				}
 
 				file.readIdBoolean( "Hidden", pInfo->hidden );
 
-				if ( NO_ERR != file.readIdBoolean( "PlayLogistics", pInfo->playLogistics ) )
+				if ( NO_ERROR != file.readIdBoolean( "PlayLogistics", pInfo->playLogistics ) )
 					pInfo->playLogistics = true;
 
 				
-				if ( NO_ERR != file.readIdBoolean( "PlaySalvage", pInfo->playSalvage ) )
+				if ( NO_ERROR != file.readIdBoolean( "PlaySalvage", pInfo->playSalvage ) )
 					pInfo->playSalvage = true;
 
 				
-				if ( NO_ERR != file.readIdBoolean( "PlayPilotPromotion", pInfo->playPilotPromotion ) )
+				if ( NO_ERROR != file.readIdBoolean( "PlayPilotPromotion", pInfo->playPilotPromotion ) )
 					pInfo->playPilotPromotion = true;
 
 	
-				if ( NO_ERR != file.readIdBoolean( "PlayPurchasing", pInfo->playPurchasing ) )
+				if ( NO_ERROR != file.readIdBoolean( "PlayPurchasing", pInfo->playPurchasing ) )
 					pInfo->playPurchasing = true;
 
-				if ( NO_ERR != file.readIdBoolean( "PlaySelection", pInfo->playMissionSelection ) )
+				if ( NO_ERROR != file.readIdBoolean( "PlaySelection", pInfo->playMissionSelection ) )
 				{
 					pInfo->playMissionSelection = false;
 				}
@@ -264,26 +264,26 @@ long LogisticsMissionInfo::init( FitIniFile& file )
 void LogisticsMissionInfo::readMissionInfo( FitIniFile& file, LogisticsMissionInfo::MissionInfo* pInfo )
 {
 
-	long result = file.seekBlock( "MissionSettings" );
-	Assert( result == NO_ERR, 0, "Coudln't find the mission settings block in the mission file" );
+	int32_t result = file.seekBlock( "MissionSettings" );
+	Assert( result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file" );
 
 	char missionName[256];
 	missionName[0] = 0;
 	bool bRes = 0;
 
 	result = file.readIdBoolean( "MissionNameUseResourceString", bRes );
-	//Assert( result == NO_ERR, 0, "couldn't find the MissionNameUseResourceString" );
+	//Assert( result == NO_ERROR, 0, "couldn't find the MissionNameUseResourceString" );
 	if ( bRes )
 	{
 		ULONG lRes;
 		result = file.readIdULong( "MissionNameResourceStringID", lRes );
-		Assert( result == NO_ERR, 0, "couldn't find the MissionNameResourceStringID" );
+		Assert( result == NO_ERROR, 0, "couldn't find the MissionNameResourceStringID" );
 		cLoadString( lRes, missionName, 255 );
 	}
 	else
 	{
 		result = file.readIdString( "MissionName", missionName, 255 );
-		Assert( result == NO_ERR, 0, "couldn't find the missionName" );
+		Assert( result == NO_ERROR, 0, "couldn't find the missionName" );
 	}
 	
 	pInfo->missionDescriptiveName = missionName;
@@ -291,15 +291,15 @@ void LogisticsMissionInfo::readMissionInfo( FitIniFile& file, LogisticsMissionIn
 	char blurb[4096];
 	
 	result = file.readIdString( "Blurb2", blurb, 4095 );
-	Assert( result == NO_ERR, 0, "couldn't find the mission blurb" );
+	Assert( result == NO_ERROR, 0, "couldn't find the mission blurb" );
 
 	bool tmpBool = false;
 	result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
-	if (NO_ERR == result && tmpBool )
+	if (NO_ERROR == result && tmpBool )
 	{
 		ULONG tmpInt = 0;
 		result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
-		if (NO_ERR == result)
+		if (NO_ERROR == result)
 		{
 			cLoadString( tmpInt, blurb, 2047 );
 		}
@@ -311,48 +311,48 @@ void LogisticsMissionInfo::readMissionInfo( FitIniFile& file, LogisticsMissionIn
 	result = file.readIdLong("AdditionalCBills", pInfo->additionalCBills );
 	float fTmp;
 	result = file.readIdFloat( "DropWeightLimit", fTmp );
-	if ( result != NO_ERR )
+	if ( result != NO_ERROR )
 		pInfo->dropWeight = 300;
 	else
 		pInfo->dropWeight = fTmp;
 
 	
-	if ( NO_ERR != file.readIdBoolean( "AirStrikesEnabledDefault", pInfo->enableAirStrike) )
+	if ( NO_ERROR != file.readIdBoolean( "AirStrikesEnabledDefault", pInfo->enableAirStrike) )
 		pInfo->enableAirStrike = 1;
 
-	if ( NO_ERR != file.readIdBoolean( "MineLayersEnabledDefault", pInfo->enableMineLayer) )
+	if ( NO_ERROR != file.readIdBoolean( "MineLayersEnabledDefault", pInfo->enableMineLayer) )
 		pInfo->enableMineLayer = 1;
 
-	if ( NO_ERR != file.readIdBoolean("ScoutCoptersEnabledDefault", pInfo->enableScoutCopter) )
+	if ( NO_ERROR != file.readIdBoolean("ScoutCoptersEnabledDefault", pInfo->enableScoutCopter) )
 		pInfo->enableScoutCopter = 1;
 
-	if ( NO_ERR != file.readIdBoolean("SalvageCraftEnabledDefault", pInfo->enableSalavageCraft) )
+	if ( NO_ERROR != file.readIdBoolean("SalvageCraftEnabledDefault", pInfo->enableSalavageCraft) )
 		pInfo->enableSalavageCraft = 1;
 
 
-	if ( NO_ERR != file.readIdBoolean( "SensorProbesEnabledDefault", pInfo->enableSensorStrike) )
+	if ( NO_ERROR != file.readIdBoolean( "SensorProbesEnabledDefault", pInfo->enableSensorStrike) )
 		pInfo->enableSensorStrike = true;
 
-	if ( NO_ERR != file.readIdBoolean( "RepairVehicleEnabledDefault", pInfo->enableRepairTruck ) )
+	if ( NO_ERROR != file.readIdBoolean( "RepairVehicleEnabledDefault", pInfo->enableRepairTruck ) )
 		pInfo->enableRepairTruck = true;
 
-	if ( NO_ERR != file.readIdBoolean("ArtilleryPieceEnabledDefault", pInfo->enableArtilleryPiece) )
+	if ( NO_ERROR != file.readIdBoolean("ArtilleryPieceEnabledDefault", pInfo->enableArtilleryPiece) )
 		pInfo->enableArtilleryPiece = 0;
 }
 
-long LogisticsMissionInfo::load( FitIniFile& file )
+int32_t LogisticsMissionInfo::load( FitIniFile& file )
 {
 	// read the campaign file name
 	char path[1024];
 	char fileName[64];
-	long result = file.seekBlock( "General" );
-	Assert( result == NO_ERR, 0, "couldn't find general block in campaign file" );
+	int32_t result = file.seekBlock( "General" );
+	Assert( result == NO_ERROR, 0, "couldn't find general block in campaign file" );
 
 	result = file.readIdString( "CampaignFile", fileName, 63);
 
 
 	FitIniFile campaignFile;
-	if ( NO_ERR != campaignFile.open( fileName ) )
+	if ( NO_ERROR != campaignFile.open( fileName ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't find file %s", path );
@@ -362,7 +362,7 @@ long LogisticsMissionInfo::load( FitIniFile& file )
 	campaignName = fileName;
 	
 	// initialize this with campaign info
-	if ( NO_ERR != init( campaignFile ) )
+	if ( NO_ERROR != init( campaignFile ) )
 	{
 		Assert( 0, 0, "couldn't initialize the campaign" );
 		return -1;
@@ -379,7 +379,7 @@ long LogisticsMissionInfo::load( FitIniFile& file )
 		currentStage = groupCount-1;
 
 	// set completed missions
-	long count;
+	int32_t count;
 	file.readIdLong( "CompletedMissions", count );
 
 	char header[32];
@@ -388,12 +388,12 @@ long LogisticsMissionInfo::load( FitIniFile& file )
 
 	file.readIdBoolean( "BigMoviePlayed", pGroup->bigVideoShown);
 
-	long numberCompleted = 0;
+	int32_t numberCompleted = 0;
 
 	int i;
 	for ( i = 0; i < count; i++ )
 	{
-		long cnt = 0;
+		int32_t cnt = 0;
 		sprintf( header, "Mission%ld", i );
 		file.readIdLong( header, cnt );
 
@@ -432,7 +432,7 @@ long LogisticsMissionInfo::load( FitIniFile& file )
 	file.readIdString( "PlayerName", tmpPlayerName, 63 );
 	playerName = tmpPlayerName;
 
-	if ( NO_ERR == file.seekBlock( "AdditionalPurchaseFiles" ) )
+	if ( NO_ERROR == file.seekBlock( "AdditionalPurchaseFiles" ) )
 	{
 		i = 0;
 		while( true )
@@ -440,7 +440,7 @@ long LogisticsMissionInfo::load( FitIniFile& file )
 			sprintf( header, "File%ld", i );
 			char tmp[256];
 
-			if ( NO_ERR == file.readIdString( header, tmp, 255 ) )
+			if ( NO_ERROR == file.readIdString( header, tmp, 255 ) )
 			{
 				PSTR pfName = new char[strlen( tmp )+1 ];
 				strcpy( pfName, tmp );
@@ -520,7 +520,7 @@ void LogisticsMissionInfo::save( FitIniFile& file )
 
 }
 
-long LogisticsMissionInfo::getAvailableMissions( PCSTR* missions, int& numberOfEm )
+int32_t LogisticsMissionInfo::getAvailableMissions( PCSTR* missions, int& numberOfEm )
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -553,7 +553,7 @@ long LogisticsMissionInfo::getAvailableMissions( PCSTR* missions, int& numberOfE
 	return 0;
 }
 
-long LogisticsMissionInfo::getCurrentMissions( PCSTR* missions, int& numberOfEm )
+int32_t LogisticsMissionInfo::getCurrentMissions( PCSTR* missions, int& numberOfEm )
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -585,7 +585,7 @@ long LogisticsMissionInfo::getCurrentMissions( PCSTR* missions, int& numberOfEm 
 
 	return 0;
 }
-long LogisticsMissionInfo::setNextMission( PCSTR missionName )
+int32_t LogisticsMissionInfo::setNextMission( PCSTR missionName )
 {
 	if ( !missionName || !strlen( missionName ) )
 		return -1;
@@ -608,7 +608,7 @@ long LogisticsMissionInfo::setNextMission( PCSTR missionName )
 				
 			FitIniFile missionFile;
 			
-			if ( NO_ERR != missionFile.open( (PSTR)(PCSTR)path ) )
+			if ( NO_ERROR != missionFile.open( (PSTR)(PCSTR)path ) )
 			{
 				char errorStr[256];
 				sprintf( errorStr, "couldn't open file %s", missionName );
@@ -734,7 +734,7 @@ void LogisticsMissionInfo::setSingleMission( PCSTR missionFileName )
 		
 	FitIniFile missionFile;
 	
-	if ( NO_ERR != missionFile.open( (PSTR)(PCSTR)path ) )
+	if ( NO_ERROR != missionFile.open( (PSTR)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", missionName );
@@ -746,20 +746,20 @@ void LogisticsMissionInfo::setSingleMission( PCSTR missionFileName )
 	readMissionInfo( missionFile, pInfo );
 
 	float fTmp;
-	long result = missionFile.readIdFloat( "DropWeightLimit", fTmp );
+	int32_t result = missionFile.readIdFloat( "DropWeightLimit", fTmp );
 	pInfo->dropWeight = fTmp;
 
 	result = missionFile.readIdLong("AdditionalCBills", pInfo->additionalCBills );
-	if ( result != NO_ERR || !pInfo->additionalCBills )
+	if ( result != NO_ERROR || !pInfo->additionalCBills )
 		pInfo->additionalCBills = 1200 * fTmp + 100000;
 	CBills = pInfo->additionalCBills;
 	
 }
 
-long LogisticsMissionInfo::getCurrentMissionId( )
+int32_t LogisticsMissionInfo::getCurrentMissionId( )
 {
-	long missionId = 0;
-	for (long i=0;i<=lastStage;i++)
+	int32_t missionId = 0;
+	for (int32_t i=0;i<=lastStage;i++)
 	{
 		MissionGroup* pGroup = &groups[i];
 
@@ -769,7 +769,7 @@ long LogisticsMissionInfo::getCurrentMissionId( )
 		}
 		else
 		{
-			long count = 0;
+			int32_t count = 0;
 			MISSION_LIST::EIterator iter = pGroup->infos.Begin();
 			while( !iter.IsDone() )
 			{
@@ -880,7 +880,7 @@ const EString& LogisticsMissionInfo::getCurrentPurchaseFile() const
 	return pGroup->infos[currentMission]->purchaseFileName;
 }
 
-long LogisticsMissionInfo::getCurrentDropWeight() const
+int32_t LogisticsMissionInfo::getCurrentDropWeight() const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -919,7 +919,7 @@ PCSTR LogisticsMissionInfo::getCurrentVideo() const
 	return NULL;
 }
 
-long LogisticsMissionInfo::getCurrentLogisticsTuneId()
+int32_t LogisticsMissionInfo::getCurrentLogisticsTuneId()
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -1059,11 +1059,11 @@ void		LogisticsMissionInfo::setPurchaseFile( PCSTR fileName )
 	pInfo->purchaseFileName += ".fit";
 }
 
-int			LogisticsMissionInfo::getAdditionalPurachaseFiles( PCSTR* list, long& maxCount )
+int			LogisticsMissionInfo::getAdditionalPurachaseFiles( PCSTR* list, int32_t& maxCount )
 {
 	if ( maxCount >=  additionalPurchaseFiles.Count() )
 	{
-		long i = 0;
+		int32_t i = 0;
 		
 		for ( FILE_LIST::EIterator iter = additionalPurchaseFiles.Begin(); !iter.IsDone(); iter++ )
 		{

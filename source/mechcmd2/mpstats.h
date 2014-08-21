@@ -1,5 +1,3 @@
-#ifndef MPSTATS_H
-#define MPSTATS_H
 /*************************************************************************************************\
 MPStats.h			: Interface for the MPStats component.
 //---------------------------------------------------------------------------//
@@ -7,13 +5,13 @@ MPStats.h			: Interface for the MPStats component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
-#endif
+#pragma once
 
-#ifndef MULTPLYR_H
-#include "Multplyr.h"
-#endif
+#ifndef MPSTATS_H
+#define MPSTATS_H
+
+//#include "logisticsscreen.h"
+//#include "Multplyr.h"
 
 //*************************************************************************************************
 struct _MC2Player;
@@ -32,11 +30,11 @@ class MPStatsEntry : public LogisticsScreen
 		void setData( const _MC2Player*, bool bShowScore );
 		virtual void render( int x, int y );
 
-		long	getPlayerHeadingX();
-		long	getRankingX();
-		long	getKillsX();
-		long	getLossesX();
-		long	overlayColor;
+		int32_t	getPlayerHeadingX();
+		int32_t	getRankingX();
+		int32_t	getKillsX();
+		int32_t	getLossesX();
+		int32_t	overlayColor;
 
 		
 
@@ -51,7 +49,7 @@ class MPStatsResultsEntry : public LogisticsScreen
 
 		void init( );
 		void setData( const _MC2Player*, ULONG laurelColor, bool bShowScore );
-		long	overlayColor;
+		int32_t	overlayColor;
 
 };
 

@@ -58,7 +58,7 @@ void MissionResults::begin()
 			strcpy( path, artPath );
 			strcat( path, "mcui_mr_layout.fit" );
 			
-			if ( NO_ERR != file.open( path ) )
+			if ( NO_ERROR != file.open( path ) )
 			{
 				char error[256];
 				sprintf( error, "couldn't open file %s", path );
@@ -77,7 +77,7 @@ void MissionResults::begin()
 			strcat( path, "mcui_mr_layout.fit" );
 
 			pPilotScreen = new PilotReviewScreen();
-			if ( NO_ERR != file.open( path ) )
+			if ( NO_ERROR != file.open( path ) )
 			{
 				char error[256];
 				sprintf( error, "couldn't open file %s", path );
@@ -127,7 +127,7 @@ void MissionResults::end()
 		sprintf( fullName, name, pMissionName );
 		FullPathFileName path;
 		path.init( savePath, fullName, ".fit" );
-		if ( NO_ERR == file.create( path ) )
+		if ( NO_ERROR == file.create( path ) )
 			LogisticsData::instance->save( file );
 	}
 }

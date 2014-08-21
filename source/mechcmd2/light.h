@@ -8,26 +8,17 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef LIGHT_H
 #define LIGHT_H
 
 //---------------------------------------------------------------------------
 
-#ifndef DCARNAGE_H
-#include "dcarnage.h"
-#endif
-
-#ifndef GAMEOBJ_H
-#include "gameobj.h"
-#endif
-
-#ifndef OBJMGR_H
-#include "objmgr.h"
-#endif
-
-#ifndef OBJTYPE_H
-#include "objtype.h"
-#endif
+//#include "dcarnage.h"
+//#include "gameobj.h"
+//#include "objmgr.h"
+//#include "objtype.h"
 
 //---------------------------------------------------------------------------
 /*
@@ -54,9 +45,9 @@ class LightType : public ObjectType {
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, ULONG fileSize);
 
-		long init (FitIniFilePtr objFile);
+		int32_t init (FitIniFilePtr objFile);
 		
 		~LightType (void) {
 			destroy();
@@ -89,14 +80,14 @@ class Light : public GameObject {
 
 		virtual void destroy (void);
 				
-		virtual long update (void);
+		virtual int32_t update (void);
 
 		virtual void render (void);
 		
 		virtual void init (bool create, ObjectTypePtr _type);
 
-		virtual long kill (void) {
-			return(NO_ERR);
+		virtual int32_t kill (void) {
+			return(NO_ERROR);
 		}
 };
 

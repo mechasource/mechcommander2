@@ -27,7 +27,7 @@ LogisticsVariantDialog* LogisticsVariantDialog::s_instance = NULL;
 LogisticsOneButtonDialog* LogisticsOneButtonDialog::s_instance = NULL;
 LogisticsLegalDialog* LogisticsLegalDialog::s_instance = NULL;
 
-extern long SaveGameVersionNumber;
+extern int32_t SaveGameVersionNumber;
 
 #define DELETE_BUTTON 40
 #define MAP_STATIC 10
@@ -608,7 +608,7 @@ bool LogisticsSaveDialog::isCorrectVersionSaveGame( PSTR fileName )
 
 	FitIniFile file;
 
-	if ( NO_ERR != file.open( (PSTR)(PCSTR)path ) )
+	if ( NO_ERROR != file.open( (PSTR)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", path );
@@ -616,26 +616,26 @@ bool LogisticsSaveDialog::isCorrectVersionSaveGame( PSTR fileName )
 	}
 
 	
-	long result = file.seekBlock( "Version" );
-	if (result != NO_ERR)
+	int32_t result = file.seekBlock( "Version" );
+	if (result != NO_ERROR)
 		return false;
 
-	long testVersionNum = 0;
+	int32_t testVersionNum = 0;
 	result = file.readIdLong( "VersionNumber", testVersionNum );
-	if ( (result == NO_ERR) && (testVersionNum == SaveGameVersionNumber))
+	if ( (result == NO_ERROR) && (testVersionNum == SaveGameVersionNumber))
 		return true;
 
 	return false;
 }
 
-void LogisticsSaveDialog::readCampaignNameFromFile( PSTR fileName, PSTR resultName, long len )
+void LogisticsSaveDialog::readCampaignNameFromFile( PSTR fileName, PSTR resultName, int32_t len )
 {
 	FullPathFileName path;
 	path.init( campaignPath, fileName, ".fit" );
 
 	FitIniFile file;
 
-	if ( NO_ERR != file.open( (PSTR)(PCSTR)path ) )
+	if ( NO_ERROR != file.open( (PSTR)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", path );
@@ -643,21 +643,21 @@ void LogisticsSaveDialog::readCampaignNameFromFile( PSTR fileName, PSTR resultNa
 	}
 
 	
-	long result = file.seekBlock( "Campaign" );
-	Assert( result == NO_ERR, 0, "Coudln't find the mission settings block in the mission file" );
+	int32_t result = file.seekBlock( "Campaign" );
+	Assert( result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file" );
 
 	resultName[0] = 0;
-	long lName = 0;
+	int32_t lName = 0;
 
 	result = file.readIdLong( "NameID", lName );
-	if ( result == NO_ERR )
+	if ( result == NO_ERROR )
 	{
 		cLoadString( lName, resultName, len );
 	}
 	else
 	{
 		result = file.readIdString( "CampaignName", resultName, len );
-		Assert( result == NO_ERR, 0, "couldn't find the missionName" );
+		Assert( result == NO_ERROR, 0, "couldn't find the missionName" );
 	}
 }
 
@@ -837,16 +837,16 @@ void LogisticsSaveDialog::updateCampaignMissionInfo()
 	FitIniFile file;
 	FullPathFileName path;
 	path.init( campaignPath, selectedName, ".fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		Assert( 0, 0, "coudln't find the campaign file\n" );
 	}
 
 	char fileName[256];
 
-	if ( NO_ERR == file.seekBlock( "Group0Mission0" ) )
+	if ( NO_ERROR == file.seekBlock( "Group0Mission0" ) )
 	{
-		if ( NO_ERR != file.readIdString( "FileName", fileName, 1023 ) )
+		if ( NO_ERROR != file.readIdString( "FileName", fileName, 1023 ) )
 		{				
 			setMission( "" );
 		}		
@@ -878,7 +878,7 @@ void LogisticsSaveDialog::updateMissionInfo()
 	fileName.init( savePath, selectedName, ".fit" );
 
 	FitIniFile file;
-	if ( NO_ERR == file.open( fileName ) )
+	if ( NO_ERROR == file.open( fileName ) )
 	{
 		char tmp[256];
 		char tmp2[256];
@@ -891,15 +891,15 @@ void LogisticsSaveDialog::updateMissionInfo()
 		strcpy( real, tmp2 );
 		strcat( real, "\n" );
 
-		if ( NO_ERR == file.readIdString( "MissionName", tmp, 255 ) )
+		if ( NO_ERROR == file.readIdString( "MissionName", tmp, 255 ) )
 		{
 			strcat( real, tmp );
 			strcat( real, "\n" );
 		}
 
-		if ( NO_ERR == file.readIdString( "MissionFileName", tmp, 255 ) )
+		if ( NO_ERROR == file.readIdString( "MissionFileName", tmp, 255 ) )
 		{
-			long textureHandle = MissionBriefingScreen::getMissionTGA( tmp );
+			int32_t textureHandle = MissionBriefingScreen::getMissionTGA( tmp );
 
 			statics[MAP_STATIC].setTexture( textureHandle );
 			statics[MAP_STATIC].setUVs( 0, 127, 127, 0 );
@@ -909,7 +909,7 @@ void LogisticsSaveDialog::updateMissionInfo()
 			statics[MAP_STATIC].setColor( 0 );
 
 
-		long cBills;
+		int32_t cBills;
 		file.readIdLong( "CBills", cBills );
 		cLoadString( IDS_DIALOG_CBILLS, tmp2, 255 );
 		sprintf( tmp, tmp2, cBills );
@@ -944,7 +944,7 @@ void LogisticsSaveDialog::setMission( PCSTR fileName)
 	if ( strlen( fileName ) )
 	{
 
-		long textureHandle = MissionBriefingScreen::getMissionTGA( fileName );
+		int32_t textureHandle = MissionBriefingScreen::getMissionTGA( fileName );
 
 		statics[MAP_STATIC].setTexture( textureHandle );
 		statics[MAP_STATIC].setUVs( 0, 127, 127, 0);
@@ -955,7 +955,7 @@ void LogisticsSaveDialog::setMission( PCSTR fileName)
 
 		path.init( missionPath, fileName, ".fit" );
 
-		if ( NO_ERR == file.open( path ) )
+		if ( NO_ERROR == file.open( path ) )
 		{
 			char missionName[256];
 			missionName[0] = 0;
@@ -1765,11 +1765,11 @@ LogisticsMapInfoDialog::~LogisticsMapInfoDialog()
 void LogisticsMapInfoDialog::end()
 {
 	statics[10].setTexture( ( ULONG)0 );
-	statics[10].setColor( (long)0 );
+	statics[10].setColor( (int32_t)0 );
 }
 void LogisticsMapInfoDialog::setMap( PCSTR pFileName )
 {
-	long textureHandle = MissionBriefingScreen::getMissionTGA( pFileName );
+	int32_t textureHandle = MissionBriefingScreen::getMissionTGA( pFileName );
 	statics[10].setTexture( textureHandle );
 	statics[10].setUVs( 0, 127, 127, 0  );
 	statics[10].setColor( 0xffffffff );
@@ -1780,7 +1780,7 @@ void LogisticsMapInfoDialog::setMap( PCSTR pFileName )
 		FullPathFileName path;
 		path.init( missionPath, pFileName, ".fit" );
 
-		if ( NO_ERR == file.open( path ) )
+		if ( NO_ERROR == file.open( path ) )
 		{
 		
 			char missionName[256];
@@ -1833,15 +1833,15 @@ void LogisticsMapInfoDialog::setMap( PCSTR pFileName )
 			textObjects[1].setText( totalText );
 
 			char blurb[1024];
-			long result = file.readIdString("Blurb2", blurb, 1023 );
+			int32_t result = file.readIdString("Blurb2", blurb, 1023 );
 
 			bool tmpBool = false;
 			result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
-			if (NO_ERR == result && tmpBool )
+			if (NO_ERROR == result && tmpBool )
 			{
 				ULONG tmpInt = 0;
 				result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
-				if (NO_ERR == result)
+				if (NO_ERROR == result)
 				{
 					cLoadString( tmpInt, blurb, 1024 );
 				}
@@ -1858,7 +1858,7 @@ int LogisticsMapInfoDialog::init()
 	FitIniFile file;
 	FullPathFileName path;
 	path.init( artPath, "mcl_mp_mapinfo", ".fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char buffer2[512];
 		sprintf( buffer2, "couldn't open file %s", (PSTR)path );

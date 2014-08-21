@@ -6,20 +6,14 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef TRIGGER_H
 #define TRIGGER_H
 
-#ifndef TERRAIN_H
-#include "terrain.h"
-#endif
-
-#ifndef DMOVER_H
-#include "dmover.h"
-#endif
-
-//#ifndef DSTD_H
+//#include "terrain.h"
+//#include "dmover.h"
 //#include "dstd.h"
-//#endif
 
 //---------------------------------------------------------------------------
 
@@ -36,8 +30,8 @@ typedef enum {
 
 typedef struct {
 	char	type;
-	long	param;
-	long	dim[4];
+	int32_t	param;
+	int32_t	dim[4];
 	bool	hit;
 } TriggerArea;
 
@@ -50,15 +44,15 @@ class TriggerAreaManager {
 		
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 			
 		void init (void) {
-			for (long i = 0; i < MAX_TRIGGER_AREAS; i++)
+			for (int32_t i = 0; i < MAX_TRIGGER_AREAS; i++)
 				triggerAreas[i].type = TRIGGER_AREA_NONE;
-			for (long r = 0; r < MAX_MAP_CELL_WIDTH / 3; r++)
-				for (long c = 0; c < MAX_MAP_CELL_WIDTH / 3; c++)
+			for (int32_t r = 0; r < MAX_MAP_CELL_WIDTH / 3; r++)
+				for (int32_t c = 0; c < MAX_MAP_CELL_WIDTH / 3; c++)
 					map[r][c] = 0;
 		}
 
@@ -72,13 +66,13 @@ class TriggerAreaManager {
 			destroy();
 		}
 
-		long add (long ULrow, long ULcol, long LRrow, long LRcol, long type, long param);
+		int32_t add (int32_t ULrow, int32_t ULcol, int32_t LRrow, int32_t LRcol, int32_t type, int32_t param);
 
-		void remove (long areaHandle);
+		void remove (int32_t areaHandle);
 
-		void reset (long areaHandle);
+		void reset (int32_t areaHandle);
 
-		bool isHit (long areaHandle);
+		bool isHit (int32_t areaHandle);
 
 		void setHit (MoverPtr mover);
 };

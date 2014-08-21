@@ -27,15 +27,15 @@
 #include <gameos.hpp>
 
 //-----------------------------------------------------------------------
-const DWORD MAX_TEXTURE_WIDTH 	= 256;
-const DWORD MAX_TEXTURE_HEIGHT 	= 256;
-const DWORD MAX_MOVIE_WIDTH 	= 640;
-const DWORD MAX_MOVIE_HEIGHT 	= 480;
+const ULONG MAX_TEXTURE_WIDTH 	= 256;
+const ULONG MAX_TEXTURE_HEIGHT 	= 256;
+const ULONG MAX_MOVIE_WIDTH 	= 640;
+const ULONG MAX_MOVIE_HEIGHT 	= 480;
 const float TEXTURE_ADJUST_MIN	= (0.4f / MAX_TEXTURE_WIDTH);
 const float TEXTURE_ADJUST_MAX	= (1.0f - TEXTURE_ADJUST_MIN);
 
 float averageFrameRate = 0.0f;
-long currentFrameNum = 0;
+int32_t currentFrameNum = 0;
 float last30Frames[30] = {
 	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,

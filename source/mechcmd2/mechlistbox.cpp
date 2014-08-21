@@ -120,7 +120,7 @@ int MechListBox::init()
 	strcpy( path, artPath );
 	strcat( path, "mcl_gn_availablemechentry.fit" );
 	FitIniFile file;
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", path );
@@ -134,7 +134,7 @@ int MechListBox::init()
 }
 
 //-------------------------------------------------------------------------------------------------
-bool	MechListBoxItem::pointInside(long xPos, long yPos) const
+bool	MechListBoxItem::pointInside(int32_t xPos, int32_t yPos) const
 {
 
 	int minX = location[0].x + outline.globalX();
@@ -148,7 +148,7 @@ bool	MechListBoxItem::pointInside(long xPos, long yPos) const
 
 	return 0;
 }
-MechListBoxItem::MechListBoxItem( LogisticsMech* pRefMech, long count )
+MechListBoxItem::MechListBoxItem( LogisticsMech* pRefMech, int32_t count )
 {
 	
 	
@@ -215,20 +215,20 @@ void MechListBoxItem::init( FitIniFile& file )
 		s_templateItem = new MechListBoxItem( NULL, 0 );
 		file.seekBlock( "MainBox" );
 
-		long width, height;
+		int32_t width, height;
 
 		file.readIdLong( "Width", width );
 		file.readIdLong( "Height", height );
 
 		((aObject*)s_templateItem)->init( 0, 0, width, height );
 
-		memset( s_templateItem->animationIDs, 0, sizeof(long) * 9  );
+		memset( s_templateItem->animationIDs, 0, sizeof(int32_t) * 9  );
 
 		// rects
 		s_templateItem->line.init( &file, "Rect1" );
 		s_templateItem->outline.init( &file, "Rect0" );
 
-		long curAnim = 0;
+		int32_t curAnim = 0;
 		// statics
 		s_templateItem->weightIcon.init( &file, "Static0" );
 		assignAnimation( file, curAnim );
@@ -263,12 +263,12 @@ void MechListBoxItem::init( FitIniFile& file )
 
 }
 
-void MechListBoxItem::assignAnimation( FitIniFile& file, long& curAnim )
+void MechListBoxItem::assignAnimation( FitIniFile& file, int32_t& curAnim )
 {
 	char tmpStr[64];
 
 	s_templateItem->animationIDs[curAnim] = -1;
-	if ( NO_ERR == file.readIdString( "Animation", tmpStr, 63 ) )
+	if ( NO_ERROR == file.readIdString( "Animation", tmpStr, 63 ) )
 	{
 		for ( int j = 0; j < strlen( tmpStr ); j++ )
 		{
@@ -410,14 +410,14 @@ void MechListBoxItem::render()
 
 	for ( int i = 0; i < this->pNumberOfChildren; i++ )
 	{
-		long index = animationIDs[i];
+		int32_t index = animationIDs[i];
 		if ( index != -1 )
 		{
 			if ( pChildren[i]->isShowing() )
 			{
 				if ( !animTime || pChildren[i] != &countText )
 				{
-					long color = animations[bOrange][index].getCurrentColor( animations[bOrange][index].getState());
+					int32_t color = animations[bOrange][index].getCurrentColor( animations[bOrange][index].getState());
 					pChildren[i]->setColor( color );
 				}
 
@@ -472,9 +472,9 @@ void MechListBox::initIcon( LogisticsMech* pMech, aObject& mechIcon )
 {
 	mechIcon = (MechListBoxItem::s_templateItem->mechIcon);
 
-	long index = pMech->getIconIndex();
-	long xIndex = index % 10;
-	long yIndex = index / 10;
+	int32_t index = pMech->getIconIndex();
+	int32_t xIndex = index % 10;
+	int32_t yIndex = index / 10;
 
 	float fX = xIndex;
 	float fY = yIndex;
@@ -496,7 +496,7 @@ void MechListBox::initIcon( LogisticsMech* pMech, aObject& mechIcon )
 
 }
 
-long MechListBox::AddItem(aListItem* itemString)
+int32_t MechListBox::AddItem(aListItem* itemString)
 {
 	itemString->setID( ID );
 	MechListBoxItem* pItem = dynamic_cast<MechListBoxItem*>(itemString);
@@ -520,7 +520,7 @@ long MechListBox::AddItem(aListItem* itemString)
 		for ( int i = 0; i < itemCount; i++ )
 		{
 
-			long ID = ((MechListBoxItem*)items[i])->pMech->getChassisName();
+			int32_t ID = ((MechListBoxItem*)items[i])->pMech->getChassisName();
 			char tmpChassisName[256];
 			cLoadString( ID, tmpChassisName, 255 );
 			chassisName = tmpChassisName;

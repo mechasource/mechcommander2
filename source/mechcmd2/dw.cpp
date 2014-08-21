@@ -12,7 +12,7 @@
 
 #include <gameos.hpp>
 
-long _stdcall ProcessException( EXCEPTION_POINTERS* ep );
+int32_t _stdcall ProcessException( EXCEPTION_POINTERS* ep );
 extern HWND			hWindow;
 void EnterWindowMode();
 
@@ -41,7 +41,7 @@ WCHAR *WatsonCrashMessageUnicode = NULL;
 HRESULT __fastcall AnsiToUnicode(LPCSTR pszA, LPOLESTR* ppszW)
 {
     ULONG cCharacters;
-    DWORD dwError;
+    ULONG dwError;
 
     // If input is null then just return the same.
     if (NULL == pszA)
@@ -99,7 +99,7 @@ LONG WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	
 	char szCommandLine[MAX_PATH * 2];
 	
-	DWORD dw;
+	ULONG dw;
 	BOOL fDwRunning;  
 	
 	STARTUPINFO si;
@@ -162,7 +162,7 @@ LONG WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	pdwsm->hMutex = hMutex;
 	pdwsm->dwSize = sizeof(DWSharedMem);
 	pdwsm->pep = pep;
-	pdwsm->eip = (DWORD) pep->ExceptionRecord->ExceptionAddress;
+	pdwsm->eip = (ULONG) pep->ExceptionRecord->ExceptionAddress;
 	pdwsm->bfmsoctdsOffer = msoctdsQuit;
 	pdwsm->bfmsoctdsLetRun = msoctdsQuit;
 	pdwsm->bfDWBehaviorFlags = fDwCheckSig;
@@ -199,7 +199,7 @@ LONG WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	si.cb = sizeof(STARTUPINFO);
 	memset(&pi, 0, sizeof(PROCESS_INFORMATION));
 	
-	wsprintfA(szCommandLine, "dw -x -s %u", (DWORD) hFileMap); 
+	wsprintfA(szCommandLine, "dw -x -s %u", (ULONG) hFileMap); 
 
 	//Check if we are in fullScreen mode.  If so, switch back to WindowMode to insure DW screen comes up.
 	if(Environment.fullScreen && hWindow )

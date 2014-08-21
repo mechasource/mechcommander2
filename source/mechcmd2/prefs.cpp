@@ -15,30 +15,30 @@
 
 extern SoundSystem *sndSystem;
 
-extern long DigitalMasterVolume;
-extern long MusicVolume;
-extern long sfxVolume;
-extern long RadioVolume;
-extern long BettyVolume;
+extern int32_t DigitalMasterVolume;
+extern int32_t MusicVolume;
+extern int32_t sfxVolume;
+extern int32_t RadioVolume;
+extern int32_t BettyVolume;
 extern bool useShadows;
 extern bool useLocalShadows;
 extern bool useWaterInterestTexture;
 
 extern bool useUnlimitedAmmo;
-extern long GameDifficulty;
-extern long renderer;
-extern long resolution;
-extern long gammaLevel;
+extern int32_t GameDifficulty;
+extern int32_t renderer;
+extern int32_t resolution;
+extern int32_t gammaLevel;
 extern bool useLeftRightMouseProfile;
 extern bool useNonWeaponEffects;
 extern bool useHighObjectDetail;
 
-extern long GameVisibleVertices;
+extern int32_t GameVisibleVertices;
 
 extern volatile bool mc2UseAsyncMouse;		//Should mouse draw and update in separate thread?
 
 
-extern DWORD gEnableDetailTexture;
+extern ULONG gEnableDetailTexture;
 
 CPrefs::CPrefs() {
 	DigitalMasterVolume = 255;
@@ -86,69 +86,69 @@ CPrefs::CPrefs() {
 }
 
 int CPrefs::load( PCSTR pFileName ) {
-	long result = 0;
+	int32_t result = 0;
 
 	FullPathFileName prefsPathname;
 	prefsPathname.init("./",pFileName,".cfg");
 	FitIniFilePtr prefsFile = new FitIniFile;
 
 #ifdef _DEBUG
-	long prefsOpenResult = 
+	int32_t prefsOpenResult = 
 #endif
 	prefsFile->open(prefsPathname);
 
-	gosASSERT (prefsOpenResult == NO_ERR);
+	gosASSERT (prefsOpenResult == NO_ERROR);
 	{
 #ifdef _DEBUG
-		long prefsBlockResult = 
+		int32_t prefsBlockResult = 
 #endif
 			prefsFile->seekBlock("MechCommander2");
-		gosASSERT(prefsBlockResult == NO_ERR);
+		gosASSERT(prefsBlockResult == NO_ERROR);
 		{
 			// store volume settings in global variable since soundsystem 
 			// does not exist yet.  These will be set in SoundSystem::init()
 			result = prefsFile->readIdLong("DigitalMasterVolume",DigitalMasterVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				DigitalMasterVolume = 255;
 
 			result = prefsFile->readIdLong("MusicVolume",MusicVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				MusicVolume = 64;
 
 			result = prefsFile->readIdLong("RadioVolume",RadioVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				RadioVolume = 64;
 
 			result = prefsFile->readIdLong("SFXVolume",sfxVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				sfxVolume = 64;
 
 			result = prefsFile->readIdLong("BettyVolume",BettyVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				BettyVolume = 64;
 
 			result = prefsFile->readIdBoolean( "Shadows", useShadows);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				useShadows = true;
 
 			result = prefsFile->readIdBoolean( "DetailTexture", useWaterInterestTexture);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				useWaterInterestTexture = true;
 
 			result = prefsFile->readIdBoolean( "HighObjectDetail", useHighObjectDetail );
-			if ( result != NO_ERR )
+			if ( result != NO_ERROR )
 				useHighObjectDetail = true;
 
 			result = prefsFile->readIdLong("Difficulty",GameDifficulty);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				GameDifficulty = 1;
 
 			result = prefsFile->readIdBoolean("UnlimitedAmmo",useUnlimitedAmmo);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				useUnlimitedAmmo = true;
 
 			result = prefsFile->readIdLong("Rasterizer",renderer);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				renderer = 0;
 
 			if ((renderer < 0) || (renderer > 3))
@@ -160,7 +160,7 @@ int CPrefs::load( PCSTR pFileName ) {
 				(gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, renderer) +
 				gos_GetMachineInformation(gos_Info_GetDeviceAGPMemory, renderer)) < 6291456)
 			{
-				long testRender = 0;
+				int32_t testRender = 0;
 				while (testRender < 3)
 				{
 					if ((gos_GetMachineInformation(gos_Info_GetDeviceLocalMemory, testRender) +
@@ -178,19 +178,19 @@ int CPrefs::load( PCSTR pFileName ) {
 			}
 				
 			result = prefsFile->readIdLong("Resolution",resolution);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				resolution = 1;
 
 			result = prefsFile->readIdBoolean("FullScreen",fullScreen);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				fullScreen = false;
 
 			result = prefsFile->readIdLong("Brightness",gammaLevel);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				gammaLevel = 0;
 
 			result = prefsFile->readIdBoolean( "useLeftRightMouseProfile", useLeftRightMouseProfile );
-			if ( result != NO_ERR )
+			if ( result != NO_ERROR )
 				useLeftRightMouseProfile = true;
 
 			char blockName[64];
@@ -199,7 +199,7 @@ int CPrefs::load( PCSTR pFileName ) {
 				sprintf( blockName, "PlayerName%ld", i );
 				result = prefsFile->readIdString( blockName, &playerName[i][0], 255 );
 
-				if ( result != NO_ERR && i == 0 )
+				if ( result != NO_ERROR && i == 0 )
 				{
 					result = prefsFile->readIdString( "PlayerName", &playerName[0][0], 255 );
 					result = prefsFile->readIdString( "UnitName", &unitName[0][0], 255 );
@@ -217,41 +217,41 @@ int CPrefs::load( PCSTR pFileName ) {
 
 		
 			result = prefsFile->readIdLong( "BaseColor", baseColor );
-			if ( result != NO_ERR )	
+			if ( result != NO_ERROR )	
 				baseColor = 0xffff7e00;
 			result = prefsFile->readIdLong( "Highlightcolor", highlightColor );
-			if ( result != NO_ERR )	
+			if ( result != NO_ERROR )	
 				highlightColor = 0xffff7e00;
 			
 			result = prefsFile->readIdLong( "faction", faction );
 			result = prefsFile->readIdString( "InsigniaFile", insigniaFile, 255 );
 
 			result = prefsFile->readIdBoolean( "PilotVideos",	pilotVideos );
-			if ( result != NO_ERR )
+			if ( result != NO_ERROR )
 			{
 				pilotVideos = true;
 			}
 			result = prefsFile->readIdBoolean( "UseLocalShadows",	useLocalShadows );
-			if ( result != NO_ERR )
+			if ( result != NO_ERROR )
 			{
 				useLocalShadows = true;
 			}
 			result = prefsFile->readIdBoolean( "UseNonWeaponEffects",	useNonWeaponEffects );
-			if ( result != NO_ERR )
+			if ( result != NO_ERROR )
 			{
 				useNonWeaponEffects = 0;
 			}
 			result = prefsFile->readIdBoolean( "AsyncMouse",	asyncMouse );
-			if ( result != NO_ERR )
+			if ( result != NO_ERROR )
 				asyncMouse = 0;
 
 			result = prefsFile->readIdLong( "FogPos",	fogPos );
-			if ( result != NO_ERR )
+			if ( result != NO_ERROR )
 			{
 				fogPos = 50;
 			}
 			result = prefsFile->readIdChar( "BitDepth",	bitDepth );
-			if ( result != NO_ERR )
+			if ( result != NO_ERROR )
 				bitDepth = 0;
 
 			if (bitDepth && (renderer == 3))
@@ -259,7 +259,7 @@ int CPrefs::load( PCSTR pFileName ) {
 
 			result = prefsFile->readIdBoolean( "SaveTranscripts", saveTranscripts );
 			result = prefsFile->readIdBoolean( "Tutorials", tutorials );
-			if ( result != NO_ERR )
+			if ( result != NO_ERROR )
 				tutorials = true;
 
 		}
@@ -291,7 +291,7 @@ int CPrefs::save() {
 
 	FitIniFilePtr prefsFile = new FitIniFile;
 	int result = prefsFile->create( (PSTR)originalPath );
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 	{
 		gosASSERT( false );
 		return -1;
@@ -299,7 +299,7 @@ int CPrefs::save() {
 
 	{
 #ifdef _DEBUG
-		long prefsBlockResult = 
+		int32_t prefsBlockResult = 
 #endif
 		prefsFile->writeBlock("MechCommander2");
 		gosASSERT(prefsBlockResult == strlen("\r\n[") + strlen("MechCommander2") + strlen("]\r\n"));
@@ -416,7 +416,7 @@ int CPrefs::applyPrefs(bool applyRes) {
 
 	if ( applyRes )
 	{
-		long localRenderer = renderer;
+		int32_t localRenderer = renderer;
 		if ((renderer != 0) && (renderer != 3))
 			localRenderer = 0;
 

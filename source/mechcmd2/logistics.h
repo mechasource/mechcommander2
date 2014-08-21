@@ -7,19 +7,14 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef LOGISTICS_H
 #define LOGISTICS_H
-//----------------------------------------------------------------------------------
-// Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
 
-#ifndef MC2movie_H
-#include "mc2movie.h"
-#endif
-
-#include "LogisticsData.h"
+//#include <mclib.h>
+//#include "mc2movie.h"
+//#include "logisticsdata.h"
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
@@ -41,8 +36,8 @@ class Logistics
 		
 		bool							active;						//Am I currently in control?
 		
-		long							logisticsState;
-		long							prevState;					//Used to cleanup previous state
+		int32_t							logisticsState;
+		int32_t							prevState;					//Used to cleanup previous state
 		
 		LogisticsData					logisticsData;
 
@@ -76,16 +71,16 @@ class Logistics
 		void initSplashScreen (PSTR screenFile, PSTR artFile);
 		void destroySplashScreen (void);
 		
-		void start (long logState);		//Actually Starts execution of logistics in state Specified
+		void start (int32_t logState);		//Actually Starts execution of logistics in state Specified
 		void stop (void);				//Guess what this does!
 				
-		long update (void);
+		int32_t update (void);
 		
 		void render (void);
 
 		void setResultsHostLeftDlg( PCSTR pName );
 		
-		void setLogisticsState (long state)
+		void setLogisticsState (int32_t state)
 		{
 			prevState = logisticsState;
 			logisticsState = state;
@@ -96,7 +91,7 @@ class Logistics
 			return missionBegin;
 		}
 
-		static int _stdcall beginMission( void*, int, void*[] );
+		static int _stdcall beginMission( PVOID, int, PVOID[] );
 
 		int DoBeginMission();
 		void playFullScreenVideo( PCSTR fileName );
@@ -110,7 +105,7 @@ class Logistics
 
 		void initializeLogData();
 		bool		bMissionLoaded;
-		long		lastMissionResult;
+		int32_t		lastMissionResult;
 };
 
 extern Logistics *logistics;

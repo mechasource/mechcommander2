@@ -7,26 +7,20 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef COLLSN_H
 #define COLLSN_H
 //------------------------------------------------------------------------------
-// Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
 
-#ifndef DCOLLSN_H
-#include "dcollsn.h"
-#endif
-
-#ifndef DGAMEOBJ_H
-#include "dgameobj.h"
-#endif
+//#include <mclib.h>
+//#include "dcollsn.h"
+//#include "dgameobj.h"
 
 //------------------------------------------------------------------------------
 // Macro Definitions
-#ifndef NO_ERR
-#define NO_ERR	0
+#ifndef NO_ERROR
+#define NO_ERROR	0
 #endif
 
 //------------------------------------------------------------------------------
@@ -64,7 +58,7 @@ class GlobalCollisionAlert
 			maxAlerts = 0;
 		}
 
-		long init (ULONG maxCollisionAlerts);
+		int32_t init (ULONG maxCollisionAlerts);
 		
 		void destroy (void);
 		
@@ -73,7 +67,7 @@ class GlobalCollisionAlert
 			destroy();
 		}
 		
-		long addRecord (GameObjectPtr obj1, GameObjectPtr obj2, float distance, float time);
+		int32_t addRecord (GameObjectPtr obj1, GameObjectPtr obj2, float distance, float time);
 		
 		CollisionAlertRecordPtr findAlert (GameObjectPtr object, CollisionAlertRecordPtr startRecord = NULL);
 		
@@ -118,8 +112,8 @@ class CollisionGrid
 	//-----------------
 	public:
 
-		void * operator new (size_t mySize);
-		void operator delete (void *us);
+		PVOID operator new (size_t mySize);
+		void operator delete (PVOID us);
 		
 		void init (void)
 		{
@@ -143,7 +137,7 @@ class CollisionGrid
 			init();
 		}
 		
-		long init (Stuff::Vector3D &newOrigin);
+		int32_t init (Stuff::Vector3D &newOrigin);
 		
 		void destroy (void);
 		
@@ -152,8 +146,8 @@ class CollisionGrid
 			destroy();
 		}
 		
-		long add (ULONG gridIndex, GameObjectPtr object);
-		long add (GameObjectPtr object);
+		int32_t add (ULONG gridIndex, GameObjectPtr object);
+		int32_t add (GameObjectPtr object);
 		
 		void createGrid (void);		//Put all objects in world into grids
 		
@@ -199,8 +193,8 @@ class CollisionSystem
 
 	public:
 	
-		void * operator new (size_t mySize);
-		void operator delete (void *us);
+		PVOID operator new (size_t mySize);
+		void operator delete (PVOID us);
 		
 		void init (void)
 		{
@@ -212,7 +206,7 @@ class CollisionSystem
 			init();
 		}
 
-		long init (FitIniFile *scenarioFile);
+		int32_t init (FitIniFile *scenarioFile);
 				
 		void destroy (void);
 		

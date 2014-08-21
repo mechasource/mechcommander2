@@ -71,7 +71,7 @@
 
 //extern ObjectMapPtr GameObjectMap;
 
-//long NumCameraDrones = 0;
+//int32_t NumCameraDrones = 0;
 
 #define	ARTILLERYCHUNK_COMMANDERID_BITS			3
 #define	ARTILLERYCHUNK_STRIKETYPE_BITS			3
@@ -97,14 +97,14 @@ extern bool MLRVertexLimitReached;
 // MISC
 //***************************************************************************
 
-void CallArtillery (long commanderID, long strikeType, Stuff::Vector3D strikeLoc, long secondsToImpact, bool randomOff) 
+void CallArtillery (int32_t commanderID, int32_t strikeType, Stuff::Vector3D strikeLoc, int32_t secondsToImpact, bool randomOff) 
 {
 
 	//-------------------------------------------------------------------
 	// If this commander already has 10 strikes going and I'm the server,
 	// then no more! If I'm a client, trust the server...
-	long numArtillery = 0;
-	for (long i = 0; i < ObjectManager->getNumArtillery(); i++) 
+	int32_t numArtillery = 0;
+	for (int32_t i = 0; i < ObjectManager->getNumArtillery(); i++) 
 	{
 		ArtilleryPtr artillery = ObjectManager->getArtillery(i);
 		if (artillery && artillery->getExists() && (artillery->getCommanderId() == commanderID))
@@ -157,7 +157,7 @@ void CallArtillery (long commanderID, long strikeType, Stuff::Vector3D strikeLoc
 
 //---------------------------------------------------------------------------
 
-void IfaceCallStrike (long strikeID,
+void IfaceCallStrike (int32_t strikeID,
 					  Stuff::Vector3D* strikeLoc,
 					  GameObjectPtr strikeTarget,
 					  bool playerStrike,
@@ -179,7 +179,7 @@ void IfaceCallStrike (long strikeID,
 
 	bool bRandom = 0;
 
-	long commanderID = -1;
+	int32_t commanderID = -1;
 	if (playerStrike) 
 	{
 		commanderID = Commander::home->getId();
@@ -206,7 +206,7 @@ void IfaceCallStrike (long strikeID,
 			break;
 	}
 
-	long secondsToImpact = (long)timeToImpact;
+	int32_t secondsToImpact = (int32_t)timeToImpact;
 
 	if (strikeID == ARTILLERY_SMALL)
 		strikeID = ARTILLERY_LARGE;
@@ -235,26 +235,26 @@ void IfaceCallStrike (long strikeID,
 // ARTILLERY CHUNK
 //***************************************************************************
 
-void* ArtilleryChunk::operator new (size_t ourSize) {
+PVOID ArtilleryChunk::operator new (size_t ourSize) {
 
-	void* result;
+	PVOID result;
 	result = systemHeap->Malloc(ourSize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void ArtilleryChunk::operator delete (void* us) {
+void ArtilleryChunk::operator delete (PVOID us) {
 
 	systemHeap->Free(us);
 }	
 
 //---------------------------------------------------------------------------
 
-void ArtilleryChunk::build (long _commanderId,
-							long _strikeType,
+void ArtilleryChunk::build (int32_t _commanderId,
+							int32_t _strikeType,
 							Stuff::Vector3D location,
-							long _seconds) {
+							int32_t _seconds) {
 
 	commanderId = _commanderId;
 
@@ -382,94 +382,94 @@ void ArtilleryType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long ArtilleryType::init (FilePtr objFile, ULONG fileSize) {
+int32_t ArtilleryType::init (FilePtr objFile, ULONG fileSize) {
 
-	long result = 0;
+	int32_t result = 0;
 	
 	FitIniFile miFile;
 	result = miFile.open(objFile,fileSize);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	//---------------------------------------------------------------
 	// Load up the artillery data.
 	result = miFile.seekBlock("Artillery");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	
 	char artillerySpriteName[80];	
 	result = miFile.readIdString("ArtillerySpriteName",artillerySpriteName,79);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 		
 	result = miFile.readIdULong("FrameCount",frameCount);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 		
 	result = miFile.readIdULong("StartFrame",startFrame);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 		
 	result = miFile.readIdFloat("FrameRate",frameRate);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdFloat("NominalTimeToImpact",nominalTimeToImpact);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdFloat("NominalTimeToLaunch",nominalTimeToLaunch);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		nominalTimeToLaunch = nominalTimeToImpact - 10;
 
 	result = miFile.readIdFloat("NominalDamage",nominalDamage);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdFloat("NominalMajorRange",nominalMajorRange);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdFloat("NominalMajorHits",nominalMajorHits);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdFloat("NominalMinorRange",nominalMinorRange);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdFloat("NominalMinorHits",nominalMinorHits);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdFloat("NominalSensorTime",nominalSensorTime);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdFloat("NominalSensorRange",nominalSensorRange);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdFloat("fontScale",fontScale);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdFloat("fontXOffset",fontXOffset);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdFloat("fontYOffset",fontYOffset);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = miFile.readIdULong("fontColor",fontColor);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	
 	if (nominalDamage)
 	{
 		result = miFile.readIdLong("NumExplosions",numExplosions);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			return(result);
 			
 		explosionOffsetX = (float *)systemHeap->Malloc(sizeof(float)*numExplosions);
@@ -481,40 +481,40 @@ long ArtilleryType::init (FilePtr objFile, ULONG fileSize) {
 		explosionDelay   = (float *)systemHeap->Malloc(sizeof(float)*numExplosions);
 		gosASSERT(explosionDelay != NULL);
 
-		for (long i=0;i<numExplosions;i++)
+		for (int32_t i=0;i<numExplosions;i++)
 		{
 			char explosionId[50];
 
 			sprintf(explosionId,"ExplosionDelay%d",i);
 			result = miFile.readIdFloat(explosionId,explosionDelay[i]);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				return(result);
 				
 			sprintf(explosionId,"ExplosionOffsetX%d",i);
 			result = miFile.readIdFloat(explosionId,explosionOffsetX[i]);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				return(result);
 
 			sprintf(explosionId,"ExplosionOffsetY%d",i);
 			result = miFile.readIdFloat(explosionId,explosionOffsetY[i]);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				return(result);
 		}
 
 		result = miFile.readIdLong("ExplosionsPerExplosion",numExplosionsPerExplosion);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			return(result);
 
 		result = miFile.readIdLong("ExplosionRandomOffsetX",explosionRandomX);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			return(result);
 		
 		result = miFile.readIdLong("ExplosionRandomOffsetY",explosionRandomY);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			return(result);
 
 		result = miFile.readIdLong("MinArtilleryHeadRange",minArtilleryHeadRange);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			minArtilleryHeadRange = 5.0;
 
 	}
@@ -593,11 +593,11 @@ bool ArtilleryType::handleCollision (GameObjectPtr collidee, GameObjectPtr colli
 		}
 		
 		bool isMajorHit = (range <= artilleryType->nominalMajorRange);
-		long numHits = artilleryType->nominalMajorHits; 
+		int32_t numHits = artilleryType->nominalMajorHits; 
 		if (!isMajorHit)
 			numHits = artilleryType->nominalMinorHits;
 			
-		for (long i = 0; i < numHits; i++) 
+		for (int32_t i = 0; i < numHits; i++) 
 		{
 			WeaponShotInfo shot;
 			shot.init(collidee->getWatchID(), -3, artilleryType->nominalDamage, 0, 0);
@@ -654,7 +654,7 @@ void Artillery::init (bool create)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::init (bool create, long _artilleryType) 
+void Artillery::init (bool create, int32_t _artilleryType) 
 {
 	init(create);
 
@@ -674,28 +674,28 @@ void Artillery::handleStaticCollision (void)
 	{
 		//-----------------------------------------------------
 		// What is our block and vertex number?
-		long blockNumber = 0;
-		long vertexNumber = 0;
+		int32_t blockNumber = 0;
+		int32_t vertexNumber = 0;
 		
 		getBlockAndVertexNumber(blockNumber,vertexNumber);
 
-		long CellRow, CellCol;
+		int32_t CellRow, CellCol;
 		land->worldToCell(getPosition(), CellRow, CellCol);
 		
 		//-------------------------------------------------------
 		// MUST figure out radius to set off mines in CELLS now.
 		// -fs
-		long startCellRow = CellRow - 4;
-		long startCellCol = CellCol - 4;
+		int32_t startCellRow = CellRow - 4;
+		int32_t startCellCol = CellCol - 4;
 			
-		long i=0;
+		int32_t i=0;
 		for (i = startCellRow; i < startCellRow + 9; i++) 
 		{
-			for (long j = startCellCol; j < startCellCol + 9; j++) 
+			for (int32_t j = startCellCol; j < startCellCol + 9; j++) 
 			{
 				if (GameMap->inBounds(i,j)) 
 				{
-					long mineResult = 0;
+					int32_t mineResult = 0;
 					mineResult = GameMap->getMine(i,j);
 					
 					if (mineResult == 1)
@@ -729,18 +729,18 @@ void Artillery::handleStaticCollision (void)
 		// We must now move out into other tiles for the artillery strike to work.
 		// Remember, Its pretty big!
 		// Just grab the nine vertices around this one.  Problems arise when on Block border.  Handle it.
-		long topLeftBlockNumber = blockNumber - Terrain::blocksMapSide - 1;
-		long currentBlockNumber = topLeftBlockNumber;
-		long totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
+		int32_t topLeftBlockNumber = blockNumber - Terrain::blocksMapSide - 1;
+		int32_t currentBlockNumber = topLeftBlockNumber;
+		int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 
 		for (i = 0; i < 3; i++) 
 		{
-			for (long j = 0; j < 3; j++) 
+			for (int32_t j = 0; j < 3; j++) 
 			{
 				if ((currentBlockNumber >= 0) && (currentBlockNumber < totalBlocks))
 				{
-					long numObjectsInBlock = ObjectManager->getObjBlockNumObjects(currentBlockNumber);
-					for (long objIndex = 0; objIndex < numObjectsInBlock; objIndex++) 
+					int32_t numObjectsInBlock = ObjectManager->getObjBlockNumObjects(currentBlockNumber);
+					for (int32_t objIndex = 0; objIndex < numObjectsInBlock; objIndex++) 
 					{
 						GameObjectPtr obj = ObjectManager->getObjBlockObject(currentBlockNumber, objIndex);
 						if (!obj)
@@ -775,7 +775,7 @@ void Artillery::setJustCreated (void)
 
 		if (info.strike.sensorRange)
 		{
-			long cellR, cellC;
+			int32_t cellR, cellC;
 			land->worldToCell(position,cellR, cellC);
 			if (GameMap->getDeepWater(cellR, cellC) || GameMap->getShallowWater(cellR, cellC))
 				effectId--;
@@ -850,7 +850,7 @@ void Artillery::setJustCreated (void)
 }	
 
 //---------------------------------------------------------------------------
-long Artillery::update (void) 
+int32_t Artillery::update (void) 
 {
 	if (getFlag(OBJECT_FLAG_JUSTCREATED)) 
 	{
@@ -1249,19 +1249,19 @@ TeamPtr Artillery::getTeam (void)
 }
 
 //---------------------------------------------------------------------------
-void Artillery::setCommanderId (long _commanderId) 
+void Artillery::setCommanderId (int32_t _commanderId) 
 {
 	commanderId = _commanderId;
 }
 
 //---------------------------------------------------------------------------
-long Artillery::setTeamId (long _teamId, bool setup) 
+int32_t Artillery::setTeamId (int32_t _teamId, bool setup) 
 {
 
 	teamId = _teamId;
 	Assert(teamId > -1, teamId, " Mover.setTeamId: bad teamId ");
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -1382,7 +1382,7 @@ void Artillery::render (void)
 				break;
 			}
 			
-			DWORD width, height;
+			ULONG width, height;
 			Stuff::Vector4D moveHere;
 			eye->projectZ( iFacePosition, moveHere );
 
@@ -1470,9 +1470,9 @@ void Artillery::render (void)
 }
 
 //---------------------------------------------------------------------------
-long Artillery::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) 
+int32_t Artillery::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) 
 {
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -1544,7 +1544,7 @@ void Artillery::init (bool create, ObjectTypePtr _type)
 			// We need to append the sprite type to the appearance num now.
 			// The MechEdit tool does not assume a sprite type, nor should it.
 			// MechCmdr2 features much simpler objects which only use 1 type of sprite!
-			long appearanceType = (BLDG_TYPE << 24);
+			int32_t appearanceType = (BLDG_TYPE << 24);
 		
 			AppearanceTypePtr buildingAppearanceType = NULL;
 			if (!appearName)
@@ -1612,7 +1612,7 @@ void Artillery::init (bool create, ObjectTypePtr _type)
 			// We need to append the sprite type to the appearance num now.
 			// The MechEdit tool does not assume a sprite type, nor should it.
 			// MechCmdr2 features much simpler objects which only use 1 type of sprite!
-			long appearanceType = (BLDG_TYPE << 24);
+			int32_t appearanceType = (BLDG_TYPE << 24);
 		
 			AppearanceTypePtr buildingAppearanceType = NULL;
 			if (!appearName)
@@ -1680,7 +1680,7 @@ void Artillery::init (bool create, ObjectTypePtr _type)
 			// We need to append the sprite type to the appearance num now.
 			// The MechEdit tool does not assume a sprite type, nor should it.
 			// MechCmdr2 features much simpler objects which only use 1 type of sprite!
-			long appearanceType = (BLDG_TYPE << 24);
+			int32_t appearanceType = (BLDG_TYPE << 24);
 		
 			AppearanceTypePtr buildingAppearanceType = NULL;
 			if (!appearName)
@@ -1716,13 +1716,13 @@ void Artillery::init (bool create, ObjectTypePtr _type)
 }	
 
 //---------------------------------------------------------------------------
-void Artillery::Save (PacketFilePtr file, long packetNum)
+void Artillery::Save (PacketFilePtr file, int32_t packetNum)
 {
 	ArtilleryData data;
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(MemoryPtr)&data,sizeof(ArtilleryData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(PUCHAR)&data,sizeof(ArtilleryData),STORAGE_TYPE_ZLIB);
 }
 
 //---------------------------------------------------------------------------
@@ -1761,7 +1761,7 @@ void Artillery::Load (ArtilleryData *data)
 	// If not, create the impact effect and move on.
 	if ((data->info.strike.sensorRange != 0.0f) && (data->info.strike.timeToImpact <= 0.0) && !getFlag(OBJECT_FLAG_SENSORS_GOING))	
 	{
-		long cellR, cellC;
+		int32_t cellR, cellC;
 		land->worldToCell(position,cellR, cellC);
 		if (GameMap->getDeepWater(cellR, cellC) || GameMap->getShallowWater(cellR, cellC))
 			effectId--;

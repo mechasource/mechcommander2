@@ -146,7 +146,7 @@ int LogisticsPilotListBoxItem::init( FitIniFile* file )
 void LogisticsPilotListBoxItem::setAnimation( FitIniFile& file, int whichOne )
 {
 	char animationText[64];
-	if ( NO_ERR == file.readIdString( "Animation", animationText, 63 ) )
+	if ( NO_ERROR == file.readIdString( "Animation", animationText, 63 ) )
 	{
 		for ( int i = 0; i < strlen( animationText ); i++ )
 		{
@@ -170,7 +170,7 @@ void LogisticsPilotListBoxItem::render()
 
 	for ( int i = 0; i < this->pNumberOfChildren; i++ )
 	{
-		long newColor = 0xffffffff;
+		int32_t newColor = 0xffffffff;
 		if ( pChildAnimations[i] != -1 )
 			newColor = animations[pChildAnimations[i]].getCurrentColor((aAnimGroup::STATE)state );
 		pChildren[i]->setColor( newColor, 1 );
@@ -178,7 +178,7 @@ void LogisticsPilotListBoxItem::render()
 	}
 		
 
-/*	long newColor = animations[pChildAnimations[4]].getCurrentColor( (aAnimGroup::STATE)state );		
+/*	int32_t newColor = animations[pChildAnimations[4]].getCurrentColor( (aAnimGroup::STATE)state );		
 	outline.setColor(newColor);
 	outline.render( location[0].x, location[0].y );
 
@@ -251,8 +251,8 @@ void LogisticsPilotListBox::makeUVs( LogisticsPilot* pPilot, aObject& icon )
 	// need to set the UV's
 	int index = pPilot->getPhotoIndex();
 
-	long xIndex = index % 12;
-	long yIndex = index / 12;
+	int32_t xIndex = index % 12;
+	int32_t yIndex = index / 12;
 
 	float fX = xIndex;
 	float fY = yIndex;
@@ -274,7 +274,7 @@ void LogisticsPilotListBox::makeUVs( LogisticsPilot* pPilot, aObject& icon )
 
 }
 
-long LogisticsPilotListBox::AddItem( aListItem* pNewItem )
+int32_t LogisticsPilotListBox::AddItem( aListItem* pNewItem )
 {
 
 	scrollBar->setOrange();

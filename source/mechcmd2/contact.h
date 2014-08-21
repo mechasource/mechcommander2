@@ -8,41 +8,21 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef CONTACT_H
 #define	CONTACT_H
 
 //---------------------------------------------------------------------------
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
 
-#ifndef DCONTACT_H
-#include "dcontact.h"
-#endif
-
-#ifndef DGAMEOBJ_H
-#include "dgameobj.h"
-#endif
-
-#ifndef DMOVER_H
-#include "dmover.h"
-#endif
-
-#ifndef DOBJTYPE_H
-#include "dobjtype.h"
-#endif
-
-#ifndef DWARRIOR_H
-#include "dwarrior.h"
-#endif
-
-#ifndef DTEAM_H
-#include "dteam.h"
-#endif
-
-#ifndef OBJMGR_H
-#include "objmgr.h"
-#endif
+//#include <mclib.h>
+//#include "dcontact.h"
+//#include "dgameobj.h"
+//#include "dmover.h"
+//#include "dobjtype.h"
+//#include "dwarrior.h"
+//#include "dteam.h"
+//#include "objmgr.h"
 
 //***************************************************************************
 
@@ -54,20 +34,20 @@ class ContactInfo {
 		//uint8_t				allContactStatus[MAX_TEAMS];
 		uint8_t				contactCount[MAX_TEAMS];	//How many mechs/vehicles have me on sensors?
 		uint8_t				sensors[MAX_SENSORS];		//index into sensor's contact list
-		unsigned short				teams[MAX_TEAMS];			//index into team's contact list
+		uint16_t				teams[MAX_TEAMS];			//index into team's contact list
 		uint8_t				teamSpotter[MAX_TEAMS];
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 
 		void destroy (void) {
 		}
 
 		void init (void) {
-			long i;
+			int32_t i;
 			for (i = 0; i < MAX_TEAMS; i++) {
 				contactStatus[i] = CONTACT_NONE;
 				//allContactStatus[i] = CONTACT_NONE;
@@ -87,37 +67,37 @@ class ContactInfo {
 			destroy();
 		}
 
-		long getContactStatus (long teamId, bool includingAllies) {
+		int32_t getContactStatus (int32_t teamId, bool includingAllies) {
 			if (teamId == -1)
 				return(CONTACT_NONE);
 			return(contactStatus[teamId]);
 		}
 
-		void incContactCount (long teamId) {
+		void incContactCount (int32_t teamId) {
 			contactCount[teamId]++;
 		}
 
-		void decContactCount (long teamId) {
+		void decContactCount (int32_t teamId) {
 			contactCount[teamId]--;
 		}
 
-		long getContactCount (long teamId) {
+		int32_t getContactCount (int32_t teamId) {
 			return(contactCount[teamId]);
 		}
 
-		void setSensor (long sensor, long contactIndex) {
+		void setSensor (int32_t sensor, int32_t contactIndex) {
 			sensors[sensor] = contactIndex;
 		}
 
-		long getSensor (long sensor) {
+		int32_t getSensor (int32_t sensor) {
 			return(sensors[sensor]);
 		}
 
-		void setTeam (long teamId, long contactIndex) {
+		void setTeam (int32_t teamId, int32_t contactIndex) {
 			teams[teamId] = contactIndex;
 		}
 
-		long getTeam (long teamId) {
+		int32_t getTeam (int32_t teamId) {
 			return(teams[teamId]);
 		}
 };
@@ -135,9 +115,9 @@ class SensorSystem {
 
 	public:
 
-		long					id;
+		int32_t					id;
 		TeamSensorSystemPtr		master;
-		long					masterIndex;
+		int32_t					masterIndex;
 		GameObjectPtr			owner;
 		float					range;
 		ULONG					skill;
@@ -150,23 +130,23 @@ class SensorSystem {
 		float					nextScanUpdate;
 		float					lastScanUpdate;
 
-		unsigned short			contacts[MAX_CONTACTS_PER_SENSOR];
-		long					numContacts;
-		long					numExclusives;
-		long					totalContacts;
+		uint16_t			contacts[MAX_CONTACTS_PER_SENSOR];
+		int32_t					numContacts;
+		int32_t					numExclusives;
+		int32_t					totalContacts;
 
 		SensorSystemPtr			prev;
 		SensorSystemPtr			next;
 
-		static long				numSensors;
+		static int32_t				numSensors;
 		static float			scanFrequency;
 		static SortListPtr		sortList;
 
 	public:
 
-		void* operator new (size_t ourSize);
+		PVOID operator new (size_t ourSize);
 		
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 		
 		void init (void);
 
@@ -182,11 +162,11 @@ class SensorSystem {
 
 		void setShutdown (bool setting);
 
-		void setMasterIndex (long index) {
+		void setMasterIndex (int32_t index) {
 			masterIndex = index;
 		}
 
-		long getMasterIndex (void) {
+		int32_t getMasterIndex (void) {
 			return(masterIndex);
 		}
 
@@ -201,11 +181,11 @@ class SensorSystem {
 			skill = newSkill;
 		}
 
-		long getSkill (void) {
+		int32_t getSkill (void) {
 			return(skill);
 		}
 
-		long getTotalContacts (void) {
+		int32_t getTotalContacts (void) {
 			return(totalContacts);
 		}
 
@@ -225,9 +205,9 @@ class SensorSystem {
 			destroy();
 		}
 
-		long getSensorQuality (void);
+		int32_t getSensorQuality (void);
 
-		long calcContactStatus (MoverPtr mover);
+		int32_t calcContactStatus (MoverPtr mover);
 
 		bool isContact (MoverPtr mover);
 
@@ -235,21 +215,21 @@ class SensorSystem {
 
 		void modifyContact (MoverPtr mover, bool visual);
 
-		void removeContact (long contactIndex);
+		void removeContact (int32_t contactIndex);
 
 		void removeContact (MoverPtr mover);
 
 		void clearContacts (void);
 
-		long scanBattlefield (void);
+		int32_t scanBattlefield (void);
 
-		long scanMover (Mover* mover);
+		int32_t scanMover (Mover* mover);
 
 		void updateContacts (void);
 
 		void updateScan (bool forceUpdate = false);
 
-		long getTeamContacts (long* contactList, long contactCriteria, long sortType);
+		int32_t getTeamContacts (int32_t* contactList, int32_t contactCriteria, int32_t sortType);
 		
 		void setLOSCapability (bool flag)
 		{
@@ -266,29 +246,29 @@ class TeamSensorSystem {
 
 	public:
 
-		long				teamId;
-		long				nextContactId;
-		long				numContactUpdatesPerPass;
-		long				curContactUpdate;
-		long				contacts[MAX_MOVERS];
-		//long				allContacts[MAX_MOVERS];
-		long				numContacts;
-		//long				numAllContacts;
-		long				numEnemyContacts;
+		int32_t				teamId;
+		int32_t				nextContactId;
+		int32_t				numContactUpdatesPerPass;
+		int32_t				curContactUpdate;
+		int32_t				contacts[MAX_MOVERS];
+		//int32_t				allContacts[MAX_MOVERS];
+		int32_t				numContacts;
+		//int32_t				numAllContacts;
+		int32_t				numEnemyContacts;
 		SensorSystemPtr		sensors[MAX_SENSORS_PER_TEAM];
-		long				numSensors;
+		int32_t				numSensors;
 		SystemTrackerPtr	ecms;
-		long				numEcms;
+		int32_t				numEcms;
 		SystemTrackerPtr	jammers;
-		long				numJammers;
+		int32_t				numJammers;
 
 		static bool			homeTeamInContact;
 
 	public:
 
-		void* operator new (size_t ourSize);
+		PVOID operator new (size_t ourSize);
 		
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 		
 		void init (void);
 
@@ -310,11 +290,11 @@ class TeamSensorSystem {
 
 		void decNumEnemyContacts (void);
 
-		void addContact (SensorSystemPtr sensor, MoverPtr contact, long contactIndex, long contactStatus);
+		void addContact (SensorSystemPtr sensor, MoverPtr contact, int32_t contactIndex, int32_t contactStatus);
 
-		SensorSystemPtr findBestSpotter (MoverPtr contact, long* status);
+		SensorSystemPtr findBestSpotter (MoverPtr contact, int32_t* status);
 
-		void modifyContact (SensorSystemPtr sensor, MoverPtr contact, long contactStatus);
+		void modifyContact (SensorSystemPtr sensor, MoverPtr contact, int32_t contactStatus);
 
 		void removeContact (SensorSystemPtr sensor, MoverPtr contact);
 
@@ -322,17 +302,17 @@ class TeamSensorSystem {
 
 		void removeSensor (SensorSystemPtr sensor);
 
-		long getVisualContacts (MoverPtr* moverList);
+		int32_t getVisualContacts (MoverPtr* moverList);
 
-		long getSensorContacts (MoverPtr* moverList);
+		int32_t getSensorContacts (MoverPtr* moverList);
 
-		bool hasSensorContact (long teamID);
+		bool hasSensorContact (int32_t teamID);
 
-		long getContacts (GameObjectPtr looker, long* contactList, long contactCriteria, long sortType);
+		int32_t getContacts (GameObjectPtr looker, int32_t* contactList, int32_t contactCriteria, int32_t sortType);
 
-		long getContactStatus (MoverPtr mover, bool includingAllies);
+		int32_t getContactStatus (MoverPtr mover, bool includingAllies);
 
-		bool meetsCriteria (GameObjectPtr looker, MoverPtr mover, long contactCriteria);
+		bool meetsCriteria (GameObjectPtr looker, MoverPtr mover, int32_t contactCriteria);
 
 		void scanBattlefield (void);
 
@@ -354,13 +334,13 @@ class SensorSystemManager {
 	
 	protected:
 		
-		long					freeSensors;			//How many sensors are currently free
+		int32_t					freeSensors;			//How many sensors are currently free
 		SensorSystemPtr*		sensorPool;				//Pool of ALL sensors
 		SensorSystemPtr			freeList;				//List of available sensors
 		TeamSensorSystemPtr		teamSensors[MAX_TEAMS];
 		ECMInfo					ecms[MAX_ECMS];
-		long					numEcms;
-		long 					teamToUpdate;
+		int32_t					numEcms;
+		int32_t 					teamToUpdate;
 		static float			updateFrequency;
 		
 	public:
@@ -371,8 +351,8 @@ class SensorSystemManager {
 	
 	public:
 
-		void* operator new (size_t ourSize);
-		void operator delete (void* us);
+		PVOID operator new (size_t ourSize);
+		void operator delete (PVOID us);
 		
 		SensorSystemManager (void) {
 			init();
@@ -388,15 +368,15 @@ class SensorSystemManager {
 			freeSensors = 0;
 			sensorPool = NULL;
 			freeList = NULL;
-			for (long i = 0; i < MAX_TEAMS; i++)
+			for (int32_t i = 0; i < MAX_TEAMS; i++)
 				teamSensors[i] = NULL;
 			numEcms = 0;
 			teamToUpdate = 0;
 		}
 		
-		long init (bool debug);
+		int32_t init (bool debug);
 
-		TeamSensorSystemPtr getTeamSensor (long teamId) {
+		TeamSensorSystemPtr getTeamSensor (int32_t teamId) {
 			return(teamSensors[teamId]);
 		}
 		
@@ -404,7 +384,7 @@ class SensorSystemManager {
 
 		void freeSensor (SensorSystemPtr sensor);
 
-		SensorSystemPtr getSensor (long id) 
+		SensorSystemPtr getSensor (int32_t id) 
 		{
 			if ((id < 0) || (id >= MAX_SENSORS))
 				STOP(("Tried to access Sensor outside of range.  Tried to access: %d",id));
@@ -412,11 +392,11 @@ class SensorSystemManager {
 			return(sensorPool[id]);
 		}
 
-		long checkIntegrity (void);
+		int32_t checkIntegrity (void);
 
-		void addTeamSensor (long teamId, SensorSystemPtr sensor);
+		void addTeamSensor (int32_t teamId, SensorSystemPtr sensor);
 
-		void removeTeamSensor (long teamId, SensorSystemPtr sensor);
+		void removeTeamSensor (int32_t teamId, SensorSystemPtr sensor);
 
 		void addEcm (GameObjectPtr owner, float range);
 

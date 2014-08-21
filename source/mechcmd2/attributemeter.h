@@ -30,39 +30,39 @@ class AttributeMeter
 
 	void update();
 	void render();
-	void render( long xOffset, long yOffset );
+	void render( int32_t xOffset, int32_t yOffset );
 
 	void init( FitIniFile* file, PCSTR headerName );
 
 	void setValue( float val ){ percent = val < 0 ? 0 : val; }
 	void setAddedValue( float val ){ addedPercent = val < 0 ? 0 : val; }
-	void setColorMin( long newColor ) { colorMin = newColor; }
-	void setColorMax( long newColor ){ colorMax = newColor; }
-	void setAddedColorMin( long newColor ){ addedColorMin = newColor; }
-	void setAddedColorMax( long newColor ){ addedColorMax = newColor; }
+	void setColorMin( int32_t newColor ) { colorMin = newColor; }
+	void setColorMax( int32_t newColor ){ colorMax = newColor; }
+	void setAddedColorMin( int32_t newColor ){ addedColorMin = newColor; }
+	void setAddedColorMax( int32_t newColor ){ addedColorMax = newColor; }
 	void showGUIWindow( bool show ){ bShow = show; }
-	bool pointInside(long mouseX, long mouseY) const;
+	bool pointInside(int32_t mouseX, int32_t mouseY) const;
 
 
 	private:
 
 	RECT	outsideRect;
-	long		unitHeight;
-	long		unitWidth;
-	long		unitCount;
-	long		skipWidth;
-	long		rectColor;
-	long		colorMin;
-	long		colorMax;
-	long		addedColorMin;
-	long		addedColorMax;
+	int32_t		unitHeight;
+	int32_t		unitWidth;
+	int32_t		unitCount;
+	int32_t		skipWidth;
+	int32_t		rectColor;
+	int32_t		colorMin;
+	int32_t		colorMax;
+	int32_t		addedColorMin;
+	int32_t		addedColorMax;
 	float		percent;
 	float		addedPercent;
-	long		numBars;
+	int32_t		numBars;
 
 	bool		bShow;
 
-	long helpID;
+	int32_t helpID;
 };
 
 

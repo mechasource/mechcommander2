@@ -30,7 +30,7 @@
 #endif
 
 //-----------------------------------------------------------------------------
-void memclear(void *Dest,int Length);
+// void memclear(PVOID Dest,int Length);
 
 //-----------------------------------------------------------------------------
 // class VFXAppearanceType
@@ -45,13 +45,14 @@ void VFXAppearanceType::init (FilePtr apprFile, ULONG fileSize)
 	textureList = (TGATexturePtr *)spriteManager->mallocDataRAM(sizeof(TGATexture *)*numPackets);
 	gosASSERT(textureList != NULL);
 
-	memclear(textureList,sizeof(TGATexture *)*numPackets);
+	// memclear(textureList,sizeof(TGATexture *)*numPackets);
+	memset(textureList, 0, sizeof(TGATexture *)*numPackets);
 }
 
 //---------------------------------------------------------------------------
 void VFXAppearanceType::removeTexture (TGATexturePtr texture)		//Cache texture out
 {
-	for (long i=0;i<numPackets;i++)
+	for (int32_t i=0;i<numPackets;i++)
 	{
 		if (textureList[i] == texture)
 		{
@@ -74,70 +75,71 @@ void VFXAppearanceType::removeTexture (TGATexturePtr texture)		//Cache texture o
 }
 
 //---------------------------------------------------------------------------
-long VFXAppearanceType::loadIniFile (FilePtr apprFile, ULONG fileSize)
+int32_t VFXAppearanceType::loadIniFile (FilePtr apprFile, ULONG fileSize)
 {
 	FitIniFile VFXAppearanceFile;
-	long result = VFXAppearanceFile.open(apprFile,fileSize);
-	gosASSERT(result == NO_ERR);
+	int32_t result = VFXAppearanceFile.open(apprFile,fileSize);
+	gosASSERT(result == NO_ERROR);
 
 	//-----------------
 	// States section
 	result = VFXAppearanceFile.seekBlock("States");
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
-	result = VFXAppearanceFile.readIdUCHAR("NumStates", numStates);
-	gosASSERT(result == NO_ERR);
+	result = VFXAppearanceFile.readIdUChar("NumStates", numStates);
+	gosASSERT(result == NO_ERROR);
 
 	actorStateData = (ActorData *)spriteManager->mallocDataRAM(sizeof(ActorData)*numStates);
 	gosASSERT(actorStateData != NULL);
-	memclear(actorStateData,sizeof(ActorData)*MAX_ACTOR_STATES);
+	// memclear(actorStateData,sizeof(ActorData)*MAX_ACTOR_STATES);
+	memset(actorStateData, 0, sizeof(ActorData)*MAX_ACTOR_STATES);
 	
-	for (long curState = 0; curState < numStates; curState++) 
+	for (int32_t curState = 0; curState < numStates; curState++) 
 	{
 		char stateBlockName[20];
 		sprintf(stateBlockName,"State%d",curState);
 
 		result = VFXAppearanceFile.seekBlock(stateBlockName);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		uint8_t tempState;
-		result = VFXAppearanceFile.readIdUCHAR("State", tempState);
-		gosASSERT(result == NO_ERR);
+		result = VFXAppearanceFile.readIdUChar("State", tempState);
+		gosASSERT(result == NO_ERROR);
 			
 		actorStateData[curState].state = (ActorState)tempState;
 
 		result = VFXAppearanceFile.readIdULong("NumFrames", actorStateData[curState].numFrames);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = VFXAppearanceFile.readIdFloat("FrameRate", actorStateData[curState].frameRate);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 			
 		result = VFXAppearanceFile.readIdULong("BasePacketNumber", actorStateData[curState].basePacketNumber);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 			
-		result = VFXAppearanceFile.readIdUCHAR("NumRotations", actorStateData[curState].numRotations);
-		gosASSERT(result == NO_ERR);
+		result = VFXAppearanceFile.readIdUChar("NumRotations", actorStateData[curState].numRotations);
+		gosASSERT(result == NO_ERROR);
 
-		result = VFXAppearanceFile.readIdUCHAR("Symmetrical", actorStateData[curState].symmetrical);
-		gosASSERT(result == NO_ERR);
+		result = VFXAppearanceFile.readIdUChar("Symmetrical", actorStateData[curState].symmetrical);
+		gosASSERT(result == NO_ERROR);
 			
 		result = VFXAppearanceFile.readIdLong("TextureSize", actorStateData[curState].textureSize);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		
 		result = VFXAppearanceFile.readIdLong("TextureHS", actorStateData[curState].textureHS);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 	}
 
 	VFXAppearanceFile.close();
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //-----------------------------------------------------------------------------
 // This function is the meat and potatoes of this class.  The Mech actor class
 // will use this function to find the gesture it is currently interested in
 // drawing.  This function will handle ALL caching.
-TGATexturePtr VFXAppearanceType::getTexture (ActorState shapeId, long rot, long currFrame, float &frameRate, bool &mirror)
+TGATexturePtr VFXAppearanceType::getTexture (ActorState shapeId, int32_t rot, int32_t currFrame, float &frameRate, bool &mirror)
 {
 	bool mirrorOn = FALSE;
 	mirror = FALSE;
@@ -162,8 +164,8 @@ TGATexturePtr VFXAppearanceType::getTexture (ActorState shapeId, long rot, long 
 	frameRate = actorStateData[shapeId].frameRate;
 	//---------------------------------------------------------------------------------------
 	// Remember: sprites use 0 degrees as facing camera, and degrees rotate counter-clockwise
-//	long rotation = (long)(rot / (360.0 / (actorStateData[shapeId].numRotations)));
-	long rotation = float2short( (1.0/360.0) * (rot * (actorStateData[shapeId].numRotations) ));
+//	int32_t rotation = (int32_t)(rot / (360.0 / (actorStateData[shapeId].numRotations)));
+	int32_t rotation = float2short( (1.0/360.0) * (rot * (actorStateData[shapeId].numRotations) ));
 
 	//-------------------------------------------------------------------
 	// Using the information provided, figure out which packet we really
@@ -173,7 +175,7 @@ TGATexturePtr VFXAppearanceType::getTexture (ActorState shapeId, long rot, long 
 	// memory, we may load some other gestures to help offset a future load.
 	// If no memory is left in this Sprite's cache, mark as free any block not
 	// used recently.  LRU cache.
-	long packetNum = actorStateData[shapeId].basePacketNumber;
+	int32_t packetNum = actorStateData[shapeId].basePacketNumber;
 	packetNum += rotation * actorStateData[shapeId].numFrames;		//Each frame is its own packet NOW!
 	packetNum += currFrame;
 	
@@ -203,7 +205,7 @@ void VFXAppearanceType::destroy (void)
 	//---------------------------------------------------------------------------------------------
 	//-- If we are going away, inform ALL of the shapes in the cache that their owner is NULL now.
 	//-- Next dumpLRU will purge these FIRST!!
-	for (long i=0;i<numPackets;i++)
+	for (int32_t i=0;i<numPackets;i++)
 	{
 		if (textureList[i])
 		{
@@ -342,16 +344,16 @@ bool VFXAppearance::recalcBounds (void)
 }
 
 //-----------------------------------------------------------------------------
-void VFXAppearance::setObjectParameters (Stuff::Vector3D &pos, float rot, long sel)
+void VFXAppearance::setObjectParameters (Stuff::Vector3D &pos, float rot, int32_t sel)
 {
 	position = pos;
 	rotation = rot;
 	selected = sel;
 }	
 
-extern long mechCmdr1PaletteLookup[];
+extern int32_t mechCmdr1PaletteLookup[];
 //-----------------------------------------------------------------------------
-long VFXAppearance::render (long depthFixup)
+int32_t VFXAppearance::render (int32_t depthFixup)
 {
 	//-------------------------------------------------------------------------
 	// First step is figure out where we are and cache the appropriate shapes
@@ -381,7 +383,7 @@ long VFXAppearance::render (long depthFixup)
 		lightg = eye->getLightGreen(lightIntensity,visible,seen);
 		lightb = eye->getLightBlue(lightIntensity,visible,seen);
 					
-		DWORD lightRGB = lightb + (lightr<<16) + (lightg << 8) + (0xff << 24);
+		ULONG lightRGB = lightb + (lightr<<16) + (lightg << 8) + (0xff << 24);
 			
 		newElement.setLight(lightRGB);
 	
@@ -402,7 +404,7 @@ long VFXAppearance::render (long depthFixup)
 
 	selected = FALSE;
 
-	return NO_ERR;
+	return NO_ERROR;
 }
 
 //-----------------------------------------------------------------------------
@@ -444,7 +446,7 @@ void VFXAppearance::debugUpdate (void)
 }
 
 //-----------------------------------------------------------------------------
-long VFXAppearance::update (void)
+int32_t VFXAppearance::update (void)
 {
 	//--------------------------------------------------------
 	// Check if we are just starting out.  If so, set
@@ -464,7 +466,7 @@ long VFXAppearance::update (void)
 
 	if (anyFrames > 1)
 	{
-		long frameInc = 0;
+		int32_t frameInc = 0;
 		float frameRate = appearType->actorStateData[currentShapeTypeId].frameRate;
 		//------------------------------------------------------
 		// Make sure animation runs no faster than frameRate fps.
@@ -512,7 +514,7 @@ void VFXAppearance::destroy (void)
 }
 
 //-----------------------------------------------------------------------------
-long VFXAppearance::stateExists (ActorState typeId)
+int32_t VFXAppearance::stateExists (ActorState typeId)
 {
 	if ((typeId < appearType->numStates) && (typeId >= 0))
 		return (appearType->actorStateData[typeId].numFrames);

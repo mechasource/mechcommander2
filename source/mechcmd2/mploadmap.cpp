@@ -82,7 +82,7 @@ void MPLoadMap::init(FitIniFile* file)
 		strcat( path, "mcl_mp_loadmap_list0.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -173,14 +173,14 @@ void MPLoadMap::addFile( PCSTR pFileName, bool bSeedSingle )
 	FitIniFile tmp;
 	FullPathFileName path;
 	path.init( missionPath, pFileName, ".fit" );
-	if ( NO_ERR == tmp.open( path ) )
+	if ( NO_ERROR == tmp.open( path ) )
 	{
-		if ( NO_ERR == tmp.seekBlock( "MissionSettings" ) )
+		if ( NO_ERROR == tmp.seekBlock( "MissionSettings" ) )
 		{
 			ULONG bSingle;
-			long result = tmp.readIdULong( "IsSinglePlayer", bSingle );
+			int32_t result = tmp.readIdULong( "IsSinglePlayer", bSingle );
 			bool bSingleResult = (bSingle != 0);
-			if ( (result == NO_ERR) && (bSingleResult == bSeedSingle) )
+			if ( (result == NO_ERROR) && (bSingleResult == bSeedSingle) )
 			{
 
 				PSTR pExt = (PSTR)strstr( pFileName, ".fit" );
@@ -253,7 +253,7 @@ void MPLoadMap::seedFromFile( PCSTR pFileName )
 	path.init( missionPath, pFileName, ".csv" );
 
 	CSVFile file;
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		Assert( 0, 0, "couldn't open multiplayer mission .csv file" );
 		return;
@@ -263,7 +263,7 @@ void MPLoadMap::seedFromFile( PCSTR pFileName )
 	char fileName[255];
 	while( true )
 	{
-		if ( NO_ERR != file.readString( i, 1, fileName, 255 ) )
+		if ( NO_ERROR != file.readString( i, 1, fileName, 255 ) )
 			break;
 
 		path.init( missionPath, fileName, ".fit" );
@@ -286,8 +286,8 @@ void MPLoadMap::seedFromCampaign()
 		findPath.init( savePath, finalStr, ".fit" );
 
 		EString newestFile;
-		long	groupCount = -1;
-		long	missionCount = -1;
+		int32_t	groupCount = -1;
+		int32_t	missionCount = -1;
 		FitIniFile tmpFile;
 
 		WIN32_FIND_DATA	findResult;
@@ -302,9 +302,9 @@ void MPLoadMap::seedFromCampaign()
 					path.init( savePath, findResult.cFileName, ".fit" );
  					tmpFile.open( path  );
 
-					 if ( NO_ERR == tmpFile.seekBlock( "General" ) )
+					 if ( NO_ERROR == tmpFile.seekBlock( "General" ) )
 					 {
-						 long group, missions;
+						 int32_t group, missions;
 
 						tmpFile.readIdLong( "Group ", group );
 						if ( group > groupCount )
@@ -336,13 +336,13 @@ void MPLoadMap::seedFromCampaign()
 		 {
 			 findPath.init( savePath, newestFile, ".fit" );
 			 FitIniFile file;
-			 long group;
-			 long missions;
+			 int32_t group;
+			 int32_t missions;
 			 char campaignFileName[256];
 			 campaignFileName[0] = 0;
-			 if ( NO_ERR == file.open( findPath ) )
+			 if ( NO_ERROR == file.open( findPath ) )
 			 {
-				 if ( NO_ERR == file.seekBlock( "General" ) )
+				 if ( NO_ERROR == file.seekBlock( "General" ) )
 				 {
 					file.readIdLong( "Group ", group );
 					file.readIdLong( "CompletedMissions", missions );
@@ -353,15 +353,15 @@ void MPLoadMap::seedFromCampaign()
 			 if ( strlen( campaignFileName ) && ( group || missions ) )
 			 {
 				FitIniFile campaignFile;
-				if ( NO_ERR == campaignFile.open( campaignFileName ) )
+				if ( NO_ERROR == campaignFile.open( campaignFileName ) )
 				{
 					for ( int i = 0; i < group+1; i++ )
 					{
 						char blockName[64];
 						sprintf( blockName,  "Group%ld", i );
-						if ( NO_ERR == campaignFile.seekBlock( blockName ) )
+						if ( NO_ERROR == campaignFile.seekBlock( blockName ) )
 						{
-							long count = missions;
+							int32_t count = missions;
 							if ( i < group )
 							{
 								campaignFile.readIdLong( "MissionCount", count );
@@ -370,7 +370,7 @@ void MPLoadMap::seedFromCampaign()
 							for ( int j = 0; j < count; j++ )
 							{
 								sprintf( blockName, "Group%ldMission%ld", i, j );
-								if ( NO_ERR == campaignFile.seekBlock( blockName ) )
+								if ( NO_ERROR == campaignFile.seekBlock( blockName ) )
 								{
 									char tmpFileName[255];
 									campaignFile.readIdString( "FileName", tmpFileName, 255 );
@@ -538,7 +538,7 @@ void MPLoadMap::updateMapInfo()
 		selMapName = ((aLocalizedListItem*)mapList.GetItem(sel))->getHiddenText();
 		path.init( missionPath, selMapName, ".fit" );
 
-		if ( NO_ERR == file.open( path ) )
+		if ( NO_ERROR == file.open( path ) )
 		{
 			
 			char missionName[256];
@@ -561,7 +561,7 @@ void MPLoadMap::updateMapInfo()
 				file.readIdString( "MissionName", missionName, 255 );
 			}
 
-			long textureHandle = MissionBriefingScreen::getMissionTGA( selMapName );
+			int32_t textureHandle = MissionBriefingScreen::getMissionTGA( selMapName );
 			statics[18].setTexture( textureHandle );
 			statics[18].setUVs( 0, 127, 127, 0 );
 			statics[18].setColor( 0xffffffff );
@@ -597,15 +597,15 @@ void MPLoadMap::updateMapInfo()
 
 			char blurb[1024];
 			blurb[0] = 0;
-			long result = file.readIdString("Blurb2", blurb, 1023 );
+			int32_t result = file.readIdString("Blurb2", blurb, 1023 );
 
 			bool tmpBool = false;
 			result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
-			if (NO_ERR == result && tmpBool )
+			if (NO_ERROR == result && tmpBool )
 			{
 				ULONG tmpInt = 0;
 				result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
-				if (NO_ERR == result)
+				if (NO_ERROR == result)
 				{
 					cLoadString( tmpInt, blurb, 1024 );
 				}
@@ -630,14 +630,14 @@ void MPLoadMap::updateMapInfo()
 	}
 }
 
-void MPLoadMap::getMapNameFromFile( PCSTR pFileName, PSTR missionName, long bufferLength )
+void MPLoadMap::getMapNameFromFile( PCSTR pFileName, PSTR missionName, int32_t bufferLength )
 {
 	FullPathFileName path;
 	path.init( missionPath, pFileName, ".fit" );
 
 	FitIniFile file;
 
-	if ( NO_ERR != file.open( (PSTR)(PCSTR)path ) )
+	if ( NO_ERROR != file.open( (PSTR)(PCSTR)path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", path );
@@ -645,25 +645,25 @@ void MPLoadMap::getMapNameFromFile( PCSTR pFileName, PSTR missionName, long buff
 	}
 
 	
-	long result = file.seekBlock( "MissionSettings" );
-	Assert( result == NO_ERR, 0, "Coudln't find the mission settings block in the mission file" );
+	int32_t result = file.seekBlock( "MissionSettings" );
+	Assert( result == NO_ERROR, 0, "Coudln't find the mission settings block in the mission file" );
 
 	missionName[0] = 0;
 	bool bRes = 0;
 
 	result = file.readIdBoolean( "MissionNameUseResourceString", bRes );
-	//Assert( result == NO_ERR, 0, "couldn't find the MissionNameUseResourceString" );
+	//Assert( result == NO_ERROR, 0, "couldn't find the MissionNameUseResourceString" );
 	if ( bRes )
 	{
 		ULONG lRes;
 		result = file.readIdULong( "MissionNameResourceStringID", lRes );
-		Assert( result == NO_ERR, 0, "couldn't find the MissionNameResourceStringID" );
+		Assert( result == NO_ERROR, 0, "couldn't find the MissionNameResourceStringID" );
 		cLoadString( lRes, missionName, bufferLength );
 	}
 	else
 	{
 		result = file.readIdString( "MissionName", missionName, bufferLength );
-		Assert( result == NO_ERR, 0, "couldn't find the missionName" );
+		Assert( result == NO_ERROR, 0, "couldn't find the missionName" );
 	}
 }
 

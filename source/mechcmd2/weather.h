@@ -7,13 +7,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef WEATHER_H
 #define WEATHER_H
-//----------------------------------------------------------------------------------
-// Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
+
+// #include <mclib.h>
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
@@ -68,12 +67,12 @@ class Weather
 													
 		float			lighteningLevel;			// Brightness of lightening this frame.  Effects Ambient/sun lighting.
 		float			thunderTime;				// Time until crack of thunder is heard.
-		DWORD			thunderSFX;					// Sound Effect of thunder to play
+		ULONG			thunderSFX;					// Sound Effect of thunder to play
 		float			lighteningCheck;			// Interval between checks of lightening.
 		float			baseLighteningChance;		// Base chance lightening will flash at each check.
 		
-		DWORD			totalRainDrops;				// Total number of drops I can draw.
-		DWORD			currentRainDrops;			// Current number of drops in use.
+		ULONG			totalRainDrops;				// Total number of drops I can draw.
+		ULONG			currentRainDrops;			// Current number of drops in use.
 		
 		RainDrops*		rainDrops;					// Pointer to data for the drops.
 		
@@ -81,7 +80,7 @@ class Weather
 		float			rainFactor;					// Increase/decrease in rainLevel per second based on rainTrend.
 		float			rainLightLevel;				// Matches the rainLevel but moves slowly per frame slow light fades out.
 		float			rainUpdateTime;				// Time until next RainTrend check in seconds.
-		long			baseRainChance;				// Chance of it raining on any given rainUpdateTime.
+		int32_t			baseRainChance;				// Chance of it raining on any given rainUpdateTime.
 		
 		float			oldFog;						// Original FOGFull Height value.
 		
@@ -121,7 +120,7 @@ class Weather
 			destroy();
 		}
 		
-		void init (DWORD maxDrops, float startingRain, float baseRainChance, float baseLighteningChance = BASE_LIGHTENING_CHANCE);
+		void init (ULONG maxDrops, float startingRain, float baseRainChance, float baseLighteningChance = BASE_LIGHTENING_CHANCE);
 		
 		void init (FitIniFilePtr missionFile);
 		

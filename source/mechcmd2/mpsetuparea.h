@@ -1,5 +1,3 @@
-#ifndef MPSETUP_H
-#define MPSETUP_H
 /*************************************************************************************************\
 MPSetupArea.h			: Interface for the MPSetupArea component.
 //---------------------------------------------------------------------------//
@@ -9,18 +7,17 @@ MPSetupArea.h			: Interface for the MPSetupArea component.
 
 //*************************************************************************************************
 
-#ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
-#endif
+#pragma once
 
-#include "asystem.h"
-#include "alistbox.h"
-#include "attributemeter.h"
-#include "simplecamera.h"
+#ifndef MPSETUP_H
+#define MPSETUP_H
 
-#ifndef AANIM_H
-#include "aanim.h"
-#endif
+//#include "logisticsscreen.h"
+//#include "asystem.h"
+//#include "alistbox.h"
+//#include "attributemeter.h"
+//#include "simplecamera.h"
+//#include "aanim.h"
 
 class aButton;
 
@@ -31,7 +28,7 @@ public:
 
 	aColorPicker();
 
-	virtual long		init(long xPos, long yPos, long w, long h);
+	virtual int32_t		init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
 	void				init( FitIniFile* file, PCSTR blockName );
 
 	virtual void		destroy();
@@ -70,7 +67,7 @@ class aStyle1TextListItem : public aTextListItem
 {
 public:
 	aStyle1TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual long	init( FitIniFile* file, PCSTR blockName );
+	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
 protected:
@@ -83,7 +80,7 @@ class aInsigniaListItem : public aListItem
 {
 public:
 	aInsigniaListItem() { ; }
-	virtual long	init( FitIniFile* file, PCSTR blockName );
+	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
 	virtual void update();
 
 protected:
@@ -111,10 +108,10 @@ public:
 
 	bool				bDone;
 
-	void **ppConnectionScreen;
-	void *pLocalBrowserScreen;
-	void *pDirectTcpipScreen;
-	void *pModem2ModemScreen;
+	PVOID*	ppConnectionScreen;
+	PVOID	pLocalBrowserScreen;
+	PVOID	pDirectTcpipScreen;
+	PVOID	pModem2ModemScreen;
 
 private:
 

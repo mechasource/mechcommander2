@@ -21,10 +21,10 @@ LoadScreen.cpp			: Implementation of the LoadScreen component.
 
 float loadProgress = 0.0f;
 
-long LoadScreen::xProgressLoc = 0;
-long LoadScreen::yProgressLoc = 0;
-long LoadScreen::xWaitLoc = 0;
-long LoadScreen::yWaitLoc = 0;
+int32_t LoadScreen::xProgressLoc = 0;
+int32_t LoadScreen::yProgressLoc = 0;
+int32_t LoadScreen::xWaitLoc = 0;
+int32_t LoadScreen::yWaitLoc = 0;
 bool LoadScreen::turnOffAsyncMouse = false;
 
 TGAFileHeader* LoadScreen::progressTextureMemory = 0;
@@ -44,7 +44,7 @@ extern CPrefs prefs;
 
 //
 // Returns the number of bits in a given mask.  Used to determine if we are in 555 mode vs 565 mode.
-WORD GetNumberOfBits( DWORD dwMask );
+WORD GetNumberOfBits( ULONG dwMask );
 
 void MouseTimerInit();
 void MouseTimerKill();
@@ -127,7 +127,7 @@ void LoadScreenWrapper::changeRes()
 
 	FitIniFile outFile;
 
-	if ( NO_ERR != outFile.open( path ) )
+	if ( NO_ERROR != outFile.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -165,8 +165,8 @@ void LoadScreen::changeRes( FitIniFile& outFile )
 
 
 
-		long result = outFile.seekBlock( "LoadingBar" );
-		gosASSERT( result == NO_ERR );
+		int32_t result = outFile.seekBlock( "LoadingBar" );
+		gosASSERT( result == NO_ERROR );
 
 		outFile.readIdLong( "XLocation", xProgressLoc );
 		outFile.readIdLong( "YLocation", yProgressLoc );
@@ -177,7 +177,7 @@ void LoadScreen::changeRes( FitIniFile& outFile )
 		File tgaFile;
 		FullPathFileName path;
 		path.init( artPath, progressBackgroundPath, ".tga" );
-		if ( NO_ERR != tgaFile.open( path ) )
+		if ( NO_ERROR != tgaFile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -185,15 +185,15 @@ void LoadScreen::changeRes( FitIniFile& outFile )
 			return;
 		}
 
-		long size = tgaFile.fileSize();
+		int32_t size = tgaFile.fileSize();
 	
 		progressBackground = (TGAFileHeader*)new char[size];
-		tgaFile.read( (PUCHAR)progressBackground, tgaFile.fileSize() );
+		tgaFile.read( (puint8_t)progressBackground, tgaFile.fileSize() );
 
 		tgaFile.close();
 
 		path.init( artPath, progressPath, ".tga" );
-		if ( NO_ERR != tgaFile.open( path ) )
+		if ( NO_ERROR != tgaFile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -204,7 +204,7 @@ void LoadScreen::changeRes( FitIniFile& outFile )
 		size = tgaFile.fileSize();
 
 		progressTextureMemory = (TGAFileHeader*)new char[size];
-		tgaFile.read( (PUCHAR)progressTextureMemory, tgaFile.fileSize() );
+		tgaFile.read( (puint8_t)progressTextureMemory, tgaFile.fileSize() );
 
 		mergedTexture = (TGAFileHeader*)new char[size];
 		memcpy( mergedTexture, progressTextureMemory, size );
@@ -212,13 +212,13 @@ void LoadScreen::changeRes( FitIniFile& outFile )
 		tgaFile.close();
 
 		result = outFile.seekBlock( "WaitImage" );
-		gosASSERT( result == NO_ERR );
+		gosASSERT( result == NO_ERROR );
 		outFile.readIdString( "FileName", progressPath, 255 );
 		outFile.readIdLong( "XLocation", xWaitLoc );
 		outFile.readIdLong( "YLocation", yWaitLoc );
 
 		path.init( artPath, progressPath, ".tga" );
-		if ( NO_ERR != tgaFile.open( path ) )
+		if ( NO_ERROR != tgaFile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -229,9 +229,9 @@ void LoadScreen::changeRes( FitIniFile& outFile )
 		size = tgaFile.fileSize();
 
 		waitingForPlayersMemory = (TGAFileHeader*)new char[size];
-		tgaFile.read( (PUCHAR)waitingForPlayersMemory, tgaFile.fileSize() );
+		tgaFile.read( (puint8_t)waitingForPlayersMemory, tgaFile.fileSize() );
 
-		flipTopToBottom( (PUCHAR)(waitingForPlayersMemory + 1), waitingForPlayersMemory->pixel_depth, 
+		flipTopToBottom( (puint8_t)(waitingForPlayersMemory + 1), waitingForPlayersMemory->pixel_depth, 
 			waitingForPlayersMemory->width, waitingForPlayersMemory->height );
 	}
 }
@@ -344,7 +344,7 @@ void LoadScreen::begin()
 	// This will be keep ghost images from occuring.
 	userInput->mouseOff();	
 }
-void LoadScreen::init(FitIniFile& file, DWORD neverFlush)
+void LoadScreen::init(FitIniFile& file, ULONG neverFlush)
 {
 	LogisticsScreen::init( file, "Static", "Text", "Rect", "Button", "Edit", "AnimObject", neverFlush );
 
@@ -492,15 +492,15 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 	if ( !LoadScreen::progressBackground )
 		return;
 
-	long destX = 0;
-	long destY = 0;
+	int32_t destX = 0;
+	int32_t destY = 0;
 
-	PUCHAR pMem = (PUCHAR)(LoadScreen::mergedTexture + 1);
-	long destRight = 0;
-	long destBottom = 0;
+	puint8_t pMem = (puint8_t)(LoadScreen::mergedTexture + 1);
+	int32_t destRight = 0;
+	int32_t destBottom = 0;
 
-	long srcWidth = 0;
-	long srcDepth = 0;
+	int32_t srcWidth = 0;
+	int32_t srcDepth = 0;
 
 
 	if ( loadProgress > 0 && loadProgress < 100 )
@@ -508,13 +508,13 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 		destX = 0;
 		destY = 0;
 
-		long destWidth = LoadScreen::progressBackground->width;
-		long destHeight = LoadScreen::progressBackground->height;
+		int32_t destWidth = LoadScreen::progressBackground->width;
+		int32_t destHeight = LoadScreen::progressBackground->height;
 
 		float widthIncPerProgress = (float)destWidth * 0.01f;
 
-		long* pLSrc =  (long*)(LoadScreen::progressBackground+1);
-		long* pLDest = (long*)(LoadScreen::mergedTexture+1);
+		int32_t* pLSrc =  (int32_t*)(LoadScreen::progressBackground+1);
+		int32_t* pLDest = (int32_t*)(LoadScreen::mergedTexture+1);
 
 		// merge background and current progress together...
 		for ( int i = 0; i < 2; i++ )
@@ -522,7 +522,7 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 			for ( int y = 0; y < destHeight; y++ )
 			{
 
-				for ( long x = 0; x < LoadScreen::progressBackground->width; x++ )
+				for ( int32_t x = 0; x < LoadScreen::progressBackground->width; x++ )
 				{
 					if ( x < destWidth )
 						*pLDest++ = *pLSrc++;
@@ -533,8 +533,8 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 					}
 				}
 			}
-			pLSrc = (long*)( LoadScreen::progressTextureMemory + 1 );
-			pLDest = (long*)(LoadScreen::mergedTexture+1);
+			pLSrc = (int32_t*)( LoadScreen::progressTextureMemory + 1 );
+			pLDest = (int32_t*)(LoadScreen::mergedTexture+1);
 
 			destWidth = loadProgress * widthIncPerProgress;
 		}
@@ -542,7 +542,7 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 		destX = WinRect.left + (LoadScreen::xProgressLoc);
 		destY = WinRect.top + (LoadScreen::yProgressLoc);
 
-		pMem = (PUCHAR)(LoadScreen::mergedTexture + 1);
+		pMem = (puint8_t)(LoadScreen::mergedTexture + 1);
 		destRight = destX + LoadScreen::progressBackground->width;
 		destBottom = (destY + LoadScreen::progressBackground->height);
 
@@ -554,7 +554,7 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 		destX = WinRect.left + LoadScreen::xWaitLoc;
 		destY = WinRect.top + LoadScreen::yWaitLoc;
 
-		pMem = (PUCHAR)(LoadScreen::waitingForPlayersMemory + 1);
+		pMem = (puint8_t)(LoadScreen::waitingForPlayersMemory + 1);
 		destRight = destX + LoadScreen::waitingForPlayersMemory->width;
 		destBottom = (destY + LoadScreen::waitingForPlayersMemory->height);
 		destRight = destRight > WinRect.right ? WinRect.right : destRight;
@@ -570,29 +570,29 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 
 		// now put it on the screen...
 
-		long destWidth = destRight - destX;
-		long destHeight = destBottom - destY;
+		int32_t destWidth = destRight - destX;
+		int32_t destHeight = destBottom - destY;
 
 
 		for ( int y = 0; y < destHeight; y++ )
 		{
-			PUCHAR pSrc = pMem + y * srcWidth * srcDepth;
-			PUCHAR pDest = (MemoryPtr)mouseSurfaceDesc.lpSurface + destX * mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount/8 + 										
+			puint8_t pSrc = pMem + y * srcWidth * srcDepth;
+			puint8_t pDest = (PUCHAR)mouseSurfaceDesc.lpSurface + destX * mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount/8 + 										
 										((destY + y) * mouseSurfaceDesc.lPitch);
 
-			for ( long x = 0; x < destWidth; x++ )
+			for ( int32_t x = 0; x < destWidth; x++ )
 			{
 
-					DWORD mColor = *(long*)pSrc;
-					BYTE baseAlpha 		= 0;
-					BYTE baseColorRed	= (mColor & 0x00ff0000)>>16;
-					BYTE baseColorGreen	= (mColor & 0x0000ff00)>>8;
-					BYTE baseColorBlue 	= (mColor & 0x000000ff);
+					ULONG mColor = *(int32_t*)pSrc;
+					UCHAR baseAlpha 		= 0;
+					UCHAR baseColorRed	= (mColor & 0x00ff0000)>>16;
+					UCHAR baseColorGreen	= (mColor & 0x0000ff00)>>8;
+					UCHAR baseColorBlue 	= (mColor & 0x000000ff);
 					pSrc += 4;
 
 					if ( mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32 )
 					{
-						(*(long*)pDest) = mColor;
+						(*(int32_t*)pDest) = mColor;
 						pDest += 4;
 					}
 					else if ( mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 24 )
@@ -618,7 +618,7 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 
 						if ( !baseAlpha )
 						{
-							long clr;
+							int32_t clr;
 							if (in555Mode)
 							{
 								clr = (baseColorRed >> 3) << 10;

@@ -24,33 +24,33 @@
 //#include <gameos.hpp>
 
 
-long MovePathManager::numPaths = 0;
-long MovePathManager::peakPaths = 0;
-long MovePathManager::sourceTally[50];
+int32_t MovePathManager::numPaths = 0;
+int32_t MovePathManager::peakPaths = 0;
+int32_t MovePathManager::sourceTally[50];
 MovePathManagerPtr PathManager = NULL;
 
 //***************************************************************************
 // PATH MANAGER class
 //***************************************************************************
 
-void* MovePathManager::operator new (size_t mySize) {
+PVOID MovePathManager::operator new (size_t mySize) {
 
-	void *result = systemHeap->Malloc(mySize);
+	PVOID result = systemHeap->Malloc(mySize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void MovePathManager::operator delete (void* us) {
+void MovePathManager::operator delete (PVOID us) {
 
 	systemHeap->Free(us);
 }
 
 //---------------------------------------------------------------------------
 
-long MovePathManager::init (void)
+int32_t MovePathManager::init (void)
 {
-	long i;
+	int32_t i;
 	for (i = 0; i < MAX_MOVERS; i++) {
 		pool[i].pilot = NULL;
 		pool[i].selectionIndex = 0;
@@ -76,7 +76,7 @@ long MovePathManager::init (void)
 	for (i =0; i < 50; i++)
 		sourceTally[i] = 0;
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -127,7 +127,7 @@ PathQueueRecPtr MovePathManager::remove (MechWarriorPtr pilot) {
 
 #define	DEBUG_MOVEPATH_QUEUE	0
 
-void MovePathManager::request (MechWarriorPtr pilot, long selectionIndex, ULONG moveParams, long source) {
+void MovePathManager::request (MechWarriorPtr pilot, int32_t selectionIndex, ULONG moveParams, int32_t source) {
 
 	//-----------------------------------------------------
 	// If the pilot is already awaiting a calc, purge it...
@@ -191,24 +191,24 @@ void MovePathManager::calcPath (void) {
 		if (!mover)
 			return;
 
-		/*long err = */pilot->calcMovePath(curQRec->selectionIndex, curQRec->moveParams);
+		/*int32_t err = */pilot->calcMovePath(curQRec->selectionIndex, curQRec->moveParams);
 	}
 }
 
 //----------------------------------------------------------------------------------
-void DEBUGWINS_print (PSTR s, long window);
+void DEBUGWINS_print (PSTR s, int32_t window);
 #ifdef LAB_ONLY
-extern __int64 MCTimePath1Update;
-extern __int64 MCTimePath2Update;
-extern __int64 MCTimePath3Update;
-extern __int64 MCTimePath4Update;
-extern __int64 MCTimePath5Update;
-extern __int64 MCTimeCalcGoal1Update;
-extern __int64 MCTimeCalcGoal2Update;
-extern __int64 MCTimeCalcGoal3Update;
-extern __int64 MCTimeCalcGoal4Update;
-extern __int64 MCTimeCalcGoal5Update;
-extern __int64 MCTimeCalcGoal6Update;
+extern int64_t MCTimePath1Update;
+extern int64_t MCTimePath2Update;
+extern int64_t MCTimePath3Update;
+extern int64_t MCTimePath4Update;
+extern int64_t MCTimePath5Update;
+extern int64_t MCTimeCalcGoal1Update;
+extern int64_t MCTimeCalcGoal2Update;
+extern int64_t MCTimeCalcGoal3Update;
+extern int64_t MCTimeCalcGoal4Update;
+extern int64_t MCTimeCalcGoal5Update;
+extern int64_t MCTimeCalcGoal6Update;
 #endif
 void MovePathManager::update (void) {
 
@@ -231,10 +231,10 @@ void MovePathManager::update (void) {
 	QueryPerformanceCounter(startCk);
 	#endif
 
-	long numPathsToProcess = 6;
+	int32_t numPathsToProcess = 6;
 	//if (numPaths > 15)
 	//	numPathsToProcess = 10;
-	for (long i = 0; i < numPathsToProcess; i++) {
+	for (int32_t i = 0; i < numPathsToProcess; i++) {
 		if (!queueFront)
 			break;
 		calcPath();

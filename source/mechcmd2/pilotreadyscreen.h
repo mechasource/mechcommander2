@@ -1,6 +1,3 @@
-#ifndef PILOTREADYSCREEN_H
-#define PILOTREADYSCREEN_H
-
 /*************************************************************************************************\
 PilotReadyScreen.h : Header file for pilot selection
 //---------------------------------------------------------------------------//
@@ -8,11 +5,16 @@ PilotReadyScreen.h : Header file for pilot selection
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "logisticsscreen.h"
-#include "attributemeter.h"
-#include "aanim.h"
-#include "LogisticsPilotListBox.h"
-#include "LogisticsMechDisplay.h"
+#pragma once
+
+#ifndef PILOTREADYSCREEN_H
+#define PILOTREADYSCREEN_H
+
+//#include "logisticsscreen.h"
+//#include "attributemeter.h"
+//#include "aanim.h"
+//#include "logisticspilotlistbox.h"
+//#include "logisticsmechdisplay.h"
 
 class LogisticsPilot;
 class LogisticsMechIcon;
@@ -48,7 +50,7 @@ private:
 	LogisticsMechIcon*	pIcons;
 	aObject				dragIcon;
 	bool				dragLeft;
-	long				forceGroupCount;
+	int32_t				forceGroupCount;
 
 	aObject				specialtySkillIcons[4];
 	RECT			skillLocations[4];

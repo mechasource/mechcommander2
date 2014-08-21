@@ -125,28 +125,28 @@
 
 //--------
 // GLOBALS
-extern long					SimpleMovePathRange;
-extern long					GroupMoveTrailLen[2];
-extern long		tileMulMAPCELL_DIM[MAX_MAP_CELL_WIDTH];
+extern int32_t					SimpleMovePathRange;
+extern int32_t					GroupMoveTrailLen[2];
+extern int32_t		tileMulMAPCELL_DIM[MAX_MAP_CELL_WIDTH];
 
-extern long					RamObjectWID;
+extern int32_t					RamObjectWID;
 
-long						MaxMoveGoalChecks = 60;
+int32_t						MaxMoveGoalChecks = 60;
 float						DelayedOrderTime = 1.0;
 float						GroupOrderGoalOffset = 127.0;
 
 //BaseObjectPtr				MoverRoster[MAX_MOVER_PART_ID - MIN_MOVER_PART_ID + 1];
 
 extern MoveMapPtr			PathFindMap[2/*NUM_PATHMAPS*/];
-long						goalMap[GOALMAP_CELL_DIM * GOALMAP_CELL_DIM];
-long						goalMapRowStart[GOALMAP_CELL_DIM] = {
+int32_t						goalMap[GOALMAP_CELL_DIM * GOALMAP_CELL_DIM];
+int32_t						goalMapRowStart[GOALMAP_CELL_DIM] = {
 								-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 								-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 								-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 								-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
 							};
 char						goalMapRowCol[GOALMAP_CELL_DIM * GOALMAP_CELL_DIM][2];
-long						Mover::numMovers = 0;
+int32_t						Mover::numMovers = 0;
 SortListPtr					Mover::sortList = NULL;
 
 extern float				DefaultAttackRadius;
@@ -213,23 +213,23 @@ extern float				MovementUpdateFrequency;
 extern float				CombatUpdateFrequency;
 extern float				CommandUpdateFrequency;
 extern float				PilotCheckUpdateFrequency;
-extern long					PilotCheckModifierTable[2];
+extern int32_t					PilotCheckModifierTable[2];
 //extern float				ElementalTargetNoJumpDistance;
-extern long					MechSalvageChance;
+extern int32_t					MechSalvageChance;
 extern float				MapCellDiagonal;
 
-//extern long OverlayWeightIndex[NUM_OVERLAY_TYPES];
+//extern int32_t OverlayWeightIndex[NUM_OVERLAY_TYPES];
 
-extern long NumLocationCriticalSpaces[NUM_BODY_LOCATIONS];
+extern int32_t NumLocationCriticalSpaces[NUM_BODY_LOCATIONS];
 
 extern GlobalMapPtr			GlobalMoveMap[3];
 
-extern long adjCellTable[MAPCELL_DIM * MAPCELL_DIM][8][4];
+extern int32_t adjCellTable[MAPCELL_DIM * MAPCELL_DIM][8][4];
 
 extern bool useUnlimitedAmmo;
 
 extern bool CantBlowSalvage;
-long TargetRolo = -1;
+int32_t TargetRolo = -1;
 WeaponFireChunk CurMoverWeaponFireChunk;
 
 extern PSTR ExceptionGameMsg;
@@ -256,19 +256,19 @@ float Mover::recoverRange;
 float Mover::recoverTime;
 float Mover::recoverCost;
 float Mover::recoverAmount;
-long Mover::IndirectFireWeapons[20] = {-1,-1,-1,-1,-1,
+int32_t Mover::IndirectFireWeapons[20] = {-1,-1,-1,-1,-1,
 									   -1,-1,-1,-1,-1,  
 									   -1,-1,-1,-1,-1, 
 									   -1,-1,-1,-1,-1};
 
-long Mover::AreaEffectWeapons[20] 	= {-1,-1,-1,-1,-1,
+int32_t Mover::AreaEffectWeapons[20] 	= {-1,-1,-1,-1,-1,
 									   -1,-1,-1,-1,-1,  
 									   -1,-1,-1,-1,-1, 
 									   -1,-1,-1,-1,-1};
 
 bool Mover::inRecoverUpdate = false;
 
-long StatusChunkUnpackErr = 0;
+int32_t StatusChunkUnpackErr = 0;
 
 char AttackParameters[14][3] = {
 	{ATTACK_TO_DESTROY, FIRERANGE_OPTIMAL, 1},		// DESTROY
@@ -287,7 +287,7 @@ char AttackParameters[14][3] = {
 	{ATTACK_TO_DISABLE, FIRERANGE_MEDIUM, 1}		// DISABLE MAX SALVAGE
 };
 
-long rearAttackTable[NUM_DIRECTIONS][3][2] = {
+int32_t rearAttackTable[NUM_DIRECTIONS][3][2] = {
 	{{1, 0}, {1, -1}, {0, 1}},
 	{{1, -1}, {0, -1}, {1, 1}},
 	{{0, -1}, {-1, -1}, {1, 0}},
@@ -345,15 +345,15 @@ float SalvageAttackModifier = 30.0;
 
 float PilotingCheckFactor = 1.0;
 
-long hitLevel[2] = {
+int32_t hitLevel[2] = {
 	10,		// weak hit is damage of <10
 	20		// moderate hit is damage <20, else heavy hit
 };
 
-long ClusterSizeSRM = 2;	// eventually, let's just kill clusters!
-long ClusterSizeLRM = 5;	// eventually, let's just kill clusters!
+int32_t ClusterSizeSRM = 2;	// eventually, let's just kill clusters!
+int32_t ClusterSizeLRM = 5;	// eventually, let's just kill clusters!
 
-long AntiMissileSystemStats[2][2] = {
+int32_t AntiMissileSystemStats[2][2] = {
 	{1, 2},		// IS
 	{2, 2}		// CLAN
 };
@@ -376,7 +376,7 @@ byte AttitudeEffect[NUM_ATTITUDES][6] = {
 float SensorBaseChance = 50.0;
 float SensorSkillFactor = 10.0;
 
-extern long DebugMovePathType;
+extern int32_t DebugMovePathType;
 
 #ifdef USEHEAT
 float SensorHeatMultiplier = 5.0;
@@ -400,8 +400,8 @@ float SensorSizeModifier[3][2] = {
 };
 float SensorBlockingTerrain[2] = {-25.0, -5.0};
 
-long AimedFireAbort;
-long AimedFireHitTable[3];
+int32_t AimedFireAbort;
+int32_t AimedFireHitTable[3];
 float FireArc[3];
 
 //bool LongRangeMovementEnabled[MAX_TEAMS];
@@ -409,12 +409,12 @@ float FireArc[3];
 extern char ProfessionalismOffsetTable[NUM_OFFSET_RANGES][2];
 extern char DecorumOffsetTable[NUM_OFFSET_RANGES][2];
 extern char AmmoConservationModifiers[2][2];
-//extern long OverlayWeightTable[NUM_OVERLAY_WEIGHT_CLASSES * NUM_OVERLAY_TYPES * MAPCELL_DIM * MAPCELL_DIM];
-//extern long OverlayWeightIndex[NUM_OVERLAY_TYPES];
+//extern int32_t OverlayWeightTable[NUM_OVERLAY_WEIGHT_CLASSES * NUM_OVERLAY_TYPES * MAPCELL_DIM * MAPCELL_DIM];
+//extern int32_t OverlayWeightIndex[NUM_OVERLAY_TYPES];
 //extern float MoveMarginOfError[2];
 extern float MoveTimeOut;
 extern float MoveYieldTime;
-extern long DefaultMechJumpCost;
+extern int32_t DefaultMechJumpCost;
 
 extern char SensorSkillMoveRange[4];
 extern float SensorSkillMoveFactor[8];
@@ -425,7 +425,7 @@ float KillSkill[6];
 float WeaponHit;
 float SensorSkill;
 
-long MoveChunk::err = 0;
+int32_t MoveChunk::err = 0;
 
 float MaxStationaryTime = 0.0;
 float MaxTimeRevealed = 0.0f;
@@ -435,7 +435,7 @@ float MaxTimeRevealed = 0.0f;
 
 extern float worldUnitsPerMeter;
 char Mover::optimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
-long Mover::numOptimalIncrements = 0;
+int32_t Mover::numOptimalIncrements = 0;
 short Mover::rangedCellsIndices[MAX_ATTACK_CELLRANGE][2];
 char Mover::rangedCells[RANGED_CELLS_DIM][2];
 TriggerAreaManager* Mover::triggerAreaMgr = NULL;
@@ -448,13 +448,13 @@ float LegShotModifier = 0.0f;
 
 bool CalcValidAreaTable = true;
 
-void DEBUGWINS_print (PSTR s, long window);
+void DEBUGWINS_print (PSTR s, int32_t window);
 
 //***************************************************************************
 // MISC routines
 //***************************************************************************
 
-inline MoverPtr getMoverFromHandle (long handle) {
+inline MoverPtr getMoverFromHandle (int32_t handle) {
 
 	return(dynamic_cast<MoverPtr>(ObjectManager->get(handle)));
 }
@@ -496,14 +496,14 @@ void DebugMoveChunk (MoverPtr mover, MoveChunkPtr chunk1, MoveChunkPtr chunk2) {
 			mover->getPosition().z);
 		strcat(ChunkDebugMsg, outString);
 
-		long cellPos[2];
+		int32_t cellPos[2];
 		mover->getCellPosition(cellPos[0], cellPos[1]);
 		sprintf(outString, "Mover Obj Cell Pos = [%d, %d]\n", cellPos[0], cellPos[1]);
 		strcat(ChunkDebugMsg, outString);
 		if (mover->getPilot() == NULL)
 			strcat(ChunkDebugMsg, "NULL pilot!\n");
 		if ((mover->getObjectClass() == BATTLEMECH) && ((BattleMechPtr)mover)->inJump) {
-			long jumpDest[2];
+			int32_t jumpDest[2];
 			land->worldToCell(((BattleMechPtr)mover)->jumpGoal, jumpDest[0], jumpDest[1]);
 			sprintf(outString, "Jumping to [%d, %d]\n", jumpDest[0], jumpDest[1]);
 			strcat(ChunkDebugMsg, outString);
@@ -514,7 +514,7 @@ void DebugMoveChunk (MoverPtr mover, MoveChunkPtr chunk1, MoveChunkPtr chunk2) {
 	if (chunk1) {
 		strcat(ChunkDebugMsg, "CHUNK1\n");
 
-		for (long i = 0; i < 4; i++) {
+		for (int32_t i = 0; i < 4; i++) {
 			sprintf(outString, "stepPos[%d] = (%d, %d)\n",
 				i,
 				chunk1->stepPos[i][0],
@@ -541,7 +541,7 @@ void DebugMoveChunk (MoverPtr mover, MoveChunkPtr chunk1, MoveChunkPtr chunk2) {
 	if (chunk2) {
 		strcat(ChunkDebugMsg, "\nCHUNK2\n");
 
-		for (long i = 0; i < 4; i++) {
+		for (int32_t i = 0; i < 4; i++) {
 			sprintf(outString, "stepPos[%d] = (%d, %d)\n",
 				i,
 				chunk2->stepPos[i][0],
@@ -577,28 +577,28 @@ void DebugMoveChunk (MoverPtr mover, MoveChunkPtr chunk1, MoveChunkPtr chunk2) {
 
 //---------------------------------------------------------------------------
 
-void* MoveChunk::operator new (size_t ourSize) {
+PVOID MoveChunk::operator new (size_t ourSize) {
 
-	void* result = systemHeap->Malloc(ourSize);
+	PVOID result = systemHeap->Malloc(ourSize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void MoveChunk::operator delete (void* us) {
+void MoveChunk::operator delete (PVOID us) {
 
 	systemHeap->Free(us);
 }	
 
 //---------------------------------------------------------------------------
 
-inline void getAdjCell (long row,
-						long col,
-						long dir,
-						long& adjRow,
-						long& adjCol) {
+inline void getAdjCell (int32_t row,
+						int32_t col,
+						int32_t dir,
+						int32_t& adjRow,
+						int32_t& adjCol) {
 
-	long adjMod[8][2] = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1},
+	int32_t adjMod[8][2] = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1},
 						 {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
 	adjRow = row + adjMod[dir][0];
 	adjCol = col + adjMod[dir][1];
@@ -606,25 +606,25 @@ inline void getAdjCell (long row,
 
 //---------------------------------------------------------------------------
 
-inline long cellDirToCell (long fromCellRow,
-						   long fromCellCol,
-						   long toCellRow,
-						   long toCellCol) {
+inline int32_t cellDirToCell (int32_t fromCellRow,
+						   int32_t fromCellCol,
+						   int32_t toCellRow,
+						   int32_t toCellCol) {
 
 	//-------------------------------------------------
 	// This routine assumes the two cells are adjacent!
-	static long deltaDir[3][3] = {
+	static int32_t deltaDir[3][3] = {
 		{7, 0, 1},
 		{6, -1, 2},
 		{5, 4, 3}
 	};
-	long rowCellDelta = toCellRow - fromCellRow + 1;
-	long colCellDelta = toCellCol - fromCellCol + 1;
+	int32_t rowCellDelta = toCellRow - fromCellRow + 1;
+	int32_t colCellDelta = toCellCol - fromCellCol + 1;
 	if ((rowCellDelta < 0) || (rowCellDelta > 2))
 		return(-2);
 	if ((colCellDelta < 0) || (colCellDelta > 2))
 		return(-2);
-	long dir = deltaDir[rowCellDelta][colCellDelta];
+	int32_t dir = deltaDir[rowCellDelta][colCellDelta];
 	if (dir == -1)
 		return(-2);
 	return(dir);
@@ -634,7 +634,7 @@ inline long cellDirToCell (long fromCellRow,
 
 void MoveChunk::build (MoverPtr mover, MovePathPtr path1, MovePathPtr path2) {
 
-	long cellPos[2];
+	int32_t cellPos[2];
 	mover->getCellPosition(cellPos[0], cellPos[1]);
 	stepPos[0][0] = cellPos[0];
 	stepPos[0][1] = cellPos[1];
@@ -648,10 +648,10 @@ void MoveChunk::build (MoverPtr mover, MovePathPtr path1, MovePathPtr path2) {
 	moving = path1 && (path1->numSteps > 0);
 	if (path1 && path1->numSteps > 0) {
 		bool reachedEndOfPath1 = true;
-		long curStep = 1;
+		int32_t curStep = 1;
 		if (path1->curStep < path1->numSteps) {
 			reachedEndOfPath1 = false;
-			long curPath1Step = path1->curStep;
+			int32_t curPath1Step = path1->curStep;
 			bool startWithCurStep = false;
 			if ((cellPos[0] == path1->stepList[curPath1Step].cell[0]) &&
 				(cellPos[1] == path1->stepList[curPath1Step].cell[1]))
@@ -660,7 +660,7 @@ void MoveChunk::build (MoverPtr mover, MovePathPtr path1, MovePathPtr path2) {
 				//--------------------------------------------------------------
 				// Whacky case, since current object position is not next to the
 				// next step in the path...
-				long relDir = cellDirToCell(cellPos[0],
+				int32_t relDir = cellDirToCell(cellPos[0],
 											cellPos[1],
 											path1->stepList[curPath1Step].cell[0],
 											path1->stepList[curPath1Step].cell[1]);
@@ -680,12 +680,12 @@ void MoveChunk::build (MoverPtr mover, MovePathPtr path1, MovePathPtr path2) {
 				curPath1Step++;
 
 				numSteps = MOVECHUNK_NUM_STEPS;
-				long numStepsLeft = path1->numSteps - curPath1Step;
+				int32_t numStepsLeft = path1->numSteps - curPath1Step;
 				if (numStepsLeft < MOVECHUNK_NUM_STEPS) {
 					numSteps = numStepsLeft;
 					reachedEndOfPath1 = true;
 				}
-				for (long i = 0; i < numSteps; i++) {
+				for (int32_t i = 0; i < numSteps; i++) {
 					stepPos[curStep][0] = path1->stepList[curPath1Step].cell[0];
 					stepPos[curStep][1] = path1->stepList[curPath1Step].cell[1];
 					if (curStep == 1)
@@ -712,12 +712,12 @@ void MoveChunk::build (MoverPtr mover, MovePathPtr path1, MovePathPtr path2) {
 				// step 3 = curStep + 2
 
 				numSteps = MOVECHUNK_NUM_STEPS;
-				long numStepsLeft = path1->numSteps - curPath1Step;
+				int32_t numStepsLeft = path1->numSteps - curPath1Step;
 				if (numStepsLeft < MOVECHUNK_NUM_STEPS) {
 					numSteps = numStepsLeft;
 					reachedEndOfPath1 = true;
 				}
-				for (long i = 0; i < numSteps; i++) {
+				for (int32_t i = 0; i < numSteps; i++) {
 					stepPos[curStep][0] = path1->stepList[curPath1Step].cell[0];
 					stepPos[curStep][1] = path1->stepList[curPath1Step].cell[1];
 					if (curStep == 1)
@@ -748,10 +748,10 @@ void MoveChunk::build (MoverPtr mover, MovePathPtr path1, MovePathPtr path2) {
 				//-----------------------------------------------------
 				// Let's fill up the remaining steps in this chunk with
 				// steps from the second path...
-				long numAdditionalSteps = (MOVECHUNK_NUM_STEPS + 1) - numSteps;
+				int32_t numAdditionalSteps = (MOVECHUNK_NUM_STEPS + 1) - numSteps;
 				if (path2->numSteps < numAdditionalSteps)
 					numAdditionalSteps = path2->numSteps;
-				for (long i = 0; i < numAdditionalSteps; i++) {
+				for (int32_t i = 0; i < numAdditionalSteps; i++) {
 					Assert(curStep <= MOVECHUNK_NUM_STEPS, curStep, " MoveChunk.build: path2 and bad curStep > MOVECHUNK_NUM_STEPS ");
 					stepPos[curStep][0] = path2->stepList[i].cell[0];
 					stepPos[curStep][1] = path2->stepList[i].cell[1];
@@ -799,7 +799,7 @@ void MoveChunk::build (MoverPtr mover, MovePathPtr path1, MovePathPtr path2) {
 
 void MoveChunk::build (MoverPtr mover, Stuff::Vector3D jumpGoal) {
 
-	long jumpCoords[2];
+	int32_t jumpCoords[2];
 	land->worldToCell(jumpGoal, jumpCoords[0], jumpCoords[1]);
 
 	stepPos[0][0] = jumpCoords[0];
@@ -898,8 +898,8 @@ void MoveChunk::unpack (MoverPtr mover) {
 		return;
 	}
 	if (numSteps > 1) {
-		for (long i = 0; i < (numSteps - 1); i++) {
-			long nextStep = i + 1;
+		for (int32_t i = 0; i < (numSteps - 1); i++) {
+			int32_t nextStep = i + 1;
 			if ((i < 0) || (i > 2)) {
 				err = 2;
 				return;
@@ -947,7 +947,7 @@ bool MoveChunk::equalTo (MoverPtr mover, MoveChunkPtr chunk) {
 		return(false);
 	}
 
-	for (long i = 0; i < numSteps; i++)
+	for (int32_t i = 0; i < numSteps; i++)
 		if ((stepPos[i][0] != chunk->stepPos[i][0]) || (stepPos[i][1] != chunk->stepPos[i][1])) {
 			DebugMoveChunk(mover, this, chunk);
 			return(false);
@@ -967,7 +967,7 @@ bool MoveChunk::equalTo (MoverPtr mover, MoveChunkPtr chunk) {
 
 void Mover::setMoveChunk (MovePathPtr path, MoveChunkPtr chunk) {
 
-	for (long i = 0; i < chunk->numSteps; i++) {
+	for (int32_t i = 0; i < chunk->numSteps; i++) {
 		PathStepPtr pathStep = &path->stepList[i];
 		pathStep->cell[0] = chunk->stepPos[i][0];
 		pathStep->cell[1] = chunk->stepPos[i][1];
@@ -1044,9 +1044,9 @@ void DebugStatusChunk (MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chu
 				//---------------------------------------------------------------------
 				// If the TargetType is terrain, let's at least list all of the terrain
 				// objects in this Block/Vertex...
-				long numObjsInTile = 0;
-				long partId = chunk1->targetId - chunk1->targetItemNumber;
-				for (long i = 0; i < MAX_TERRAIN_TILE_ITEMS; i++) {
+				int32_t numObjsInTile = 0;
+				int32_t partId = chunk1->targetId - chunk1->targetItemNumber;
+				for (int32_t i = 0; i < MAX_TERRAIN_TILE_ITEMS; i++) {
 					GameObjectPtr curTarget = ObjectManager->findByPartId(partId + i);
 					if (curTarget) {
 						numObjsInTile++;
@@ -1136,9 +1136,9 @@ void DebugStatusChunk (MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chu
 				//---------------------------------------------------------------------
 				// If the TargetType is terrain, let's at least list all of the terrain
 				// objects in this Block/Vertex...
-				long numObjsInTile = 0;
-				long partId = chunk1->targetId - chunk2->targetItemNumber;
-				for (long i = 0; i < MAX_TERRAIN_TILE_ITEMS; i++) {
+				int32_t numObjsInTile = 0;
+				int32_t partId = chunk1->targetId - chunk2->targetItemNumber;
+				for (int32_t i = 0; i < MAX_TERRAIN_TILE_ITEMS; i++) {
 					GameObjectPtr curTarget = ObjectManager->findByPartId(partId + i);
 					if (curTarget) {
 						numObjsInTile++;
@@ -1196,16 +1196,16 @@ void DebugStatusChunk (MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chu
 
 //---------------------------------------------------------------------------
 
-void* StatusChunk::operator new (size_t ourSize) {
+PVOID StatusChunk::operator new (size_t ourSize) {
 
-	void* result;
+	PVOID result;
 	result = systemHeap->Malloc(ourSize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void StatusChunk::operator delete (void* us) {
+void StatusChunk::operator delete (PVOID us) {
 
 	systemHeap->Free(us);
 }	
@@ -1590,30 +1590,30 @@ void MoverDynamics::init (CSVFilePtr dynamicsFile) {
 	}
 	else if (type == DYNAMICS_GROUNDVEHICLE) {
 	/*
-		long result = 0;
+		int32_t result = 0;
 		result = dynamicsFile->seekBlock("VehicleDynamics");
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 0 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 0 ");
 
 		result = dynamicsFile->readIdLong("maxTurretYawRate",max.groundVehicle.turretYawRate);
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 1 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 1 ");
 	
 		result = dynamicsFile->readIdLong("maxTurretYaw",max.groundVehicle.turretYaw);
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 2 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 2 ");
 	
 		result = dynamicsFile->readIdLong("maxVehicleYawRate",max.groundVehicle.yawRate);
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 3 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 3 ");
 		if (max.groundVehicle.yawRate < 720)
 			max.groundVehicle.yawRate = 720;
 
 		result = dynamicsFile->readIdLong("maxVehiclePivotRate",max.groundVehicle.pivotRate);
-		if (result != NO_ERR)
-			max.groundVehicle.pivotRate = (long)((float)max.groundVehicle.yawRate * GroundVehiclePivotYawMultiplier);
+		if (result != NO_ERROR)
+			max.groundVehicle.pivotRate = (int32_t)((float)max.groundVehicle.yawRate * GroundVehiclePivotYawMultiplier);
 
 		result = dynamicsFile->readIdFloat("maxAccel",max.groundVehicle.accel);
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 4 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 4 ");
 			
 		result = dynamicsFile->readIdFloat("maxVelocity",max.groundVehicle.speed);
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 5 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 5 ");
 		// Frank Hack
 		max.groundVehicle.accel = max.groundVehicle.speed * 5.0;
 	*/
@@ -1633,30 +1633,30 @@ void MoverDynamics::init (FitIniFilePtr dynamicsFile)
 	{
 	}
 	else if (type == DYNAMICS_GROUNDVEHICLE) {
-		long result = 0;
+		int32_t result = 0;
 		result = dynamicsFile->seekBlock("VehicleDynamics");
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 0 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 0 ");
 
 		result = dynamicsFile->readIdLong("maxTurretYawRate",max.groundVehicle.turretYawRate);
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 1 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 1 ");
 	
 		result = dynamicsFile->readIdLong("maxTurretYaw",max.groundVehicle.turretYaw);
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 2 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 2 ");
 	
 		result = dynamicsFile->readIdLong("maxVehicleYawRate",max.groundVehicle.yawRate);
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 3 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 3 ");
 		if (max.groundVehicle.yawRate < 720)
 			max.groundVehicle.yawRate = 720;
 
 		result = dynamicsFile->readIdLong("maxVehiclePivotRate",max.groundVehicle.pivotRate);
-		if (result != NO_ERR)
-			max.groundVehicle.pivotRate = (long)((float)max.groundVehicle.yawRate * GroundVehiclePivotYawMultiplier);
+		if (result != NO_ERROR)
+			max.groundVehicle.pivotRate = (int32_t)((float)max.groundVehicle.yawRate * GroundVehiclePivotYawMultiplier);
 
 		result = dynamicsFile->readIdFloat("maxAccel",max.groundVehicle.accel);
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 4 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 4 ");
 			
 		result = dynamicsFile->readIdFloat("maxVelocity",max.groundVehicle.speed);
-		Assert(result == NO_ERR, result, " MoverDynamics.init: vehicle error 5 ");
+		Assert(result == NO_ERROR, result, " MoverDynamics.init: vehicle error 5 ");
 		// Frank Hack
 		max.groundVehicle.accel = max.groundVehicle.speed * 5.0;
 		}
@@ -1742,350 +1742,350 @@ void MoverControl::update (MoverPtr mover) {
 
 //---------------------------------------------------------------------------
 
-long MoverControl::init (FitIniFilePtr controlFile) {
+int32_t MoverControl::init (FitIniFilePtr controlFile) {
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //***************************************************************************
 // MOVER class
 //***************************************************************************
 
-long Mover::loadGameSystem (FitIniFilePtr mechFile, float visualRange) {
+int32_t Mover::loadGameSystem (FitIniFilePtr mechFile, float visualRange) {
 
-	long result = 0;
+	int32_t result = 0;
 
 	result = mechFile->seekBlock("Pathfinding");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
-//	long longRangeMoveEnabled[MAX_TEAMS];
+//	int32_t longRangeMoveEnabled[MAX_TEAMS];
 //	result = mechFile->readIdLongArray("LongRangeMovementEnabled", longRangeMoveEnabled, NUM_TEAMS);
-//	if (result != NO_ERR)
+//	if (result != NO_ERROR)
 //		return(result);
-//	for (long i = 0; i < NUM_TEAMS; i++)
+//	for (int32_t i = 0; i < NUM_TEAMS; i++)
 //		LongRangeMovementEnabled[i] = (longRangeMoveEnabled[i] == 1);
 
 	result = mechFile->readIdLong("SimplePathTileRange", SimpleMovePathRange);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("DelayedOrderTime", DelayedOrderTime);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("MoveTimeOut", MoveTimeOut);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		MoveTimeOut = 30.0;
 
 	result = mechFile->readIdFloat("MoveYieldTime", MoveYieldTime);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		MoveYieldTime = 1.5;
 
 	result = mechFile->readIdLongArray("GroupMoveTrailLength", GroupMoveTrailLen, 2);
-	if (result != NO_ERR) {
+	if (result != NO_ERROR) {
 		GroupMoveTrailLen[0] = 0;
 		GroupMoveTrailLen[1] = 1;
 	}
 
 	result = mechFile->readIdLongArray("GroupMoveTrailLength", GroupMoveTrailLen, 2);
-	if (result != NO_ERR) {
+	if (result != NO_ERROR) {
 		GroupMoveTrailLen[0] = 0;
 		GroupMoveTrailLen[1] = 1;
 	}
 
 	result = mechFile->readIdFloat("GroupOrderGoalOffset", GroupOrderGoalOffset);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloatArray("MoveMarginOfError", Mover::marginOfError, 2);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
-//	for (long i = 0; i < NUM_OVERLAY_TYPES; i++)
+//	for (int32_t i = 0; i < NUM_OVERLAY_TYPES; i++)
 //		OverlayWeightIndex[i] = i * MAPCELL_DIM * MAPCELL_DIM;
 //	result = mechFile->readIdLongArray("OverlayCellCosts", OverlayWeightTable, NUM_OVERLAY_WEIGHT_CLASSES * NUM_OVERLAY_TYPES * MAPCELL_DIM * MAPCELL_DIM);
-//	if (result != NO_ERR)
+//	if (result != NO_ERROR)
 //		return(result);
 
 	result = mechFile->seekBlock("Mover:General");
-	Assert(result == NO_ERR, 0, "Couldn't find Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find Mover:General block in gamesys.fit");
 
 	result = mechFile->readIdFloat("NewThreatMultiplier", newThreatMultiplier);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		newThreatMultiplier = 3.0;
 
 	result = mechFile->readIdFloat("BlockCaptureRange", GameObject::blockCaptureRange);
-	Assert(result == NO_ERR, 0, "Couldn't find BlockCaptureRange in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find BlockCaptureRange in Mover:General block in gamesys.fit");
 	
 	result = mechFile->readIdFloat("RefitTime", Mover::refitTime);
-	Assert(result == NO_ERR, 0, "Couldn't find RefitTime in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RefitTime in Mover:General block in gamesys.fit");
 	
 	result = mechFile->readIdFloat("RefitRange", Mover::refitRange);
-	Assert(result == NO_ERR, 0, "Couldn't find RefitRange in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RefitRange in Mover:General block in gamesys.fit");
 	
 	result = mechFile->readIdFloat("RefitAmount", Mover::refitAmount);
-	Assert(result == NO_ERR, 0, "Couldn't find RefitAmount in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RefitAmount in Mover:General block in gamesys.fit");
 
 	result = mechFile->readIdFloat("RefitVehicleArmorCost", Mover::refitCostArray[ARMOR_REFIT_COST][REFIT_VEHICLE]);
-	Assert(result == NO_ERR, 0, "Couldn't find RefitVehicleArmorCost in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RefitVehicleArmorCost in Mover:General block in gamesys.fit");
 
 	result = mechFile->readIdFloat("RecoverTime", Mover::recoverTime);
-	Assert(result == NO_ERR, 0, "Couldn't find RecoverTime in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RecoverTime in Mover:General block in gamesys.fit");
 	
 	result = mechFile->readIdFloat("RecoverRange", Mover::recoverRange);
-	Assert(result == NO_ERR, 0, "Couldn't find RecoverRange in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RecoverRange in Mover:General block in gamesys.fit");
 
 	result = mechFile->readIdFloat("RecoverAmount", Mover::recoverAmount);
-	Assert(result == NO_ERR, 0, "Couldn't find RecoverAmount in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RecoverAmount in Mover:General block in gamesys.fit");
 
 	result = mechFile->readIdFloat("RecoverCost", Mover::recoverCost);
-	Assert(result == NO_ERR, 0, "Couldn't find RecoverCost in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RecoverCost in Mover:General block in gamesys.fit");
 	
 	result = mechFile->readIdFloat("RefitVehicleInternalCost", Mover::refitCostArray[INTERNAL_REFIT_COST][REFIT_VEHICLE]);
-	Assert(result == NO_ERR, 0, "Couldn't find RefitVehicleInternalCost in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RefitVehicleInternalCost in Mover:General block in gamesys.fit");
 	
 	result = mechFile->readIdFloat("RefitVehiclePointsToAmmo", Mover::refitCostArray[AMMO_REFIT_COST][REFIT_VEHICLE]);
-	Assert(result == NO_ERR, 0, "Couldn't find RefitVehiclePointsToAmmo in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RefitVehiclePointsToAmmo in Mover:General block in gamesys.fit");
 	
 	result = mechFile->readIdFloat("RefitBayArmorCost", Mover::refitCostArray[ARMOR_REFIT_COST][REFIT_BAY]);
-	Assert(result == NO_ERR, 0, "Couldn't find RefitBayArmorCost in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RefitBayArmorCost in Mover:General block in gamesys.fit");
 	
 	result = mechFile->readIdFloat("RefitBayInternalCost", Mover::refitCostArray[INTERNAL_REFIT_COST][REFIT_BAY]);
-	Assert(result == NO_ERR, 0, "Couldn't find RefitBayInternalCost in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RefitBayInternalCost in Mover:General block in gamesys.fit");
 	
 	result = mechFile->readIdFloat("RefitBayAmmoCost", Mover::refitCostArray[AMMO_REFIT_COST][REFIT_BAY]);
-	Assert(result == NO_ERR, 0, "Couldn't find RefitBayAmmoCost in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find RefitBayAmmoCost in Mover:General block in gamesys.fit");
 	
 	result = mechFile->readIdLongArray("IndirectFireWeaponComponentIndex",Mover::IndirectFireWeapons,20);
-	Assert(result == NO_ERR, 0, "Couldn't find IndirectFireWeaponComponentIndex in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find IndirectFireWeaponComponentIndex in Mover:General block in gamesys.fit");
 	
 	result = mechFile->readIdLongArray("AreaEffectWeaponComponentIndex",Mover::AreaEffectWeapons,20);
-	Assert(result == NO_ERR, 0, "Couldn't find AreaEffectWeaponComponentIndex in Mover:General block in gamesys.fit");
+	Assert(result == NO_ERROR, 0, "Couldn't find AreaEffectWeaponComponentIndex in Mover:General block in gamesys.fit");
 	
  	result = mechFile->seekBlock("Mover:FireWeapon");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 //	result = mechFile->readIdFloatArray("WeaponFireModifiers", WeaponFireModifiers, NUM_WEAPONFIRE_MODIFIERS);
-//	if (result == NO_ERR) {
-//		for (long i = 0; i < NUM_WARRIOR_RANKS; i++)
-//			for (long j = 0; j < (NUM_MECH_CLASSES - 1); j++)
+//	if (result == NO_ERROR) {
+//		for (int32_t i = 0; i < NUM_WARRIOR_RANKS; i++)
+//			for (int32_t j = 0; j < (NUM_MECH_CLASSES - 1); j++)
 //				RankVersusChassisCombatModifier[i][j + 1] = WeaponFireModifiers[7 + i * NUM_WARRIOR_RANKS + j];
 //	}
 
 	result = mechFile->readIdFloatArray("FireArc", FireArc, 3);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
-	for (long arc = 0; arc < 3; arc++)
+	for (int32_t arc = 0; arc < 3; arc++)
 		FireArc[arc] /= 2.0;
 
 	result = mechFile->readIdLong("AimedFireAbort", AimedFireAbort);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdLongArray("AimedFireHitTable", AimedFireHitTable, 3);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("DisableAttackModifier", DisableAttackModifier);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("DisableGunneryModifier", DisableGunneryModifier);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("SalvageAttackModifier", SalvageAttackModifier);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("MaxStationaryTime", MaxStationaryTime);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("MaxTimeRevealed",MaxTimeRevealed);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 		
 	result = mechFile->readIdFloat("HeadShotModifier",HeadShotModifier);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		HeadShotModifier = 0.08f;
 		
 	result = mechFile->readIdFloat("ArmShotModifier",ArmShotModifier);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		ArmShotModifier = 0.15f;
 		
 	result = mechFile->readIdFloat("LegShotModifier",LegShotModifier);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		LegShotModifier = 0.20f;
 		
 	result = mechFile->seekBlock("Mover:Damage");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdLongArray("HitLevel", hitLevel, 2);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("PilotingCheckFactor", PilotingCheckFactor);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->seekBlock("Components");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdLong("ClusterSizeSRM", ClusterSizeSRM);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	// Hard code--ultimately, we kill clusters in game code!
 	ClusterSizeSRM = 2;
 
 	result = mechFile->readIdLong("ClusterSizeLRM", ClusterSizeLRM);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	// Hard code--ultimately, we kill clusters in game code!
 	ClusterSizeLRM = 5;
 
 	result = mechFile->readIdLongArray("InnerSphereAntiMissile", AntiMissileSystemStats[0], 2);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdLongArray("ClanAntiMissile", AntiMissileSystemStats[1], 2);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->seekBlock("Warrior");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("DefaultAttackRadius", DefaultAttackRadius);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		DefaultAttackRadius = 275.0;
 
 	result = mechFile->readIdFloatArray("WarriorRankScale", WarriorRankScale, NUM_WARRIOR_RANKS);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	char profData[NUM_OFFSET_RANGES * 2];
 	result = mechFile->readIdCharArray("ProfessionalismTable", profData, NUM_OFFSET_RANGES * 2);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
-	for (long i = 0; i < NUM_OFFSET_RANGES; i++)
+	for (int32_t i = 0; i < NUM_OFFSET_RANGES; i++)
 		memcpy(&ProfessionalismOffsetTable[i], &profData[i * 2], 2);
 
 	result = mechFile->readIdCharArray("DecorumTable", profData, NUM_OFFSET_RANGES * 2);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	for (i = 0; i < NUM_OFFSET_RANGES; i++)
 		memcpy(&DecorumOffsetTable[i], &profData[i * 2], 2);
 
 	result = mechFile->readIdCharArray("AmmoTable", profData, 2 * 2);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	for (i = 0; i < 2; i++)
 
 		memcpy(&AmmoConservationModifiers[i], &profData[i * 2], 2);
 #ifdef USEHEAT
 	result = mechFile->readIdFloat("WeaponHeatCheckDelay", WeaponHeatCheckDelay);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 #endif
 
 	result = mechFile->readIdFloat("PilotCheckHalfRate", PilotCheckHalfRate);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdLongArray("PilotCheckModifiers", PilotCheckModifierTable, 2);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("DamageRateFrequency", DamageRateFrequency);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	char charData[NUM_ATTITUDES * 6];
 	result = mechFile->readIdCharArray("AttitudeEffect", charData, NUM_ATTITUDES * 6);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	for (i = 0; i < NUM_ATTITUDES; i++)
 		memcpy(&AttitudeEffect[i], &charData[i * 6], 6);
 
 	result = mechFile->readIdFloat("MovementUpdateFrequency", MovementUpdateFrequency);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("CombatUpdateFrequency", CombatUpdateFrequency);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("CommandUpdateFrequency", CommandUpdateFrequency);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("PilotCheckUpdateFrequency", PilotCheckUpdateFrequency);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 //	result = mechFile->readIdFloatArray("FireOddsTable", FireOddsTable, NUM_FIREODDS);
-//	if (result != NO_ERR)
+//	if (result != NO_ERROR)
 //		return(result);
 
 	result = mechFile->readIdLong("SkillIncreaseCap", MechWarrior::increaseCap);
-	Assert(result == NO_ERR, result, " Couldn't find SkillCap variable in Warrior block of gamesys.fit ");
+	Assert(result == NO_ERROR, result, " Couldn't find SkillCap variable in Warrior block of gamesys.fit ");
 
 	result = mechFile->readIdFloat("SkillMax", MechWarrior::maxSkill);
-	Assert(result == NO_ERR, result, " Couldn't find SkillMax variable in Warrior block of gamesys.fit ");
+	Assert(result == NO_ERROR, result, " Couldn't find SkillMax variable in Warrior block of gamesys.fit ");
 	
 	result = mechFile->readIdFloat("SkillMin", MechWarrior::minSkill);
-	Assert(result == NO_ERR, result, " Couldn't find SkillMin variable in Warrior block of gamesys.fit ");
+	Assert(result == NO_ERROR, result, " Couldn't find SkillMin variable in Warrior block of gamesys.fit ");
 
 //	result = mechFile->readIdLong("JumpSkillMod", PilotJumpMod);
-//	Assert(result == NO_ERR, result, " Couldn't find JumpSkillMod variable in Warrior block of gamesys.fit ");
+//	Assert(result == NO_ERROR, result, " Couldn't find JumpSkillMod variable in Warrior block of gamesys.fit ");
 		
 	result = mechFile->seekBlock("Sensors");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 //	result = mechFile->readIdFloatArray("SensorModifiers", SensorModifier, 8);
-//	if (result != NO_ERR)
+//	if (result != NO_ERROR)
 //		return(result);
 
 	result = mechFile->readIdFloat("BaseSensorRollTarget", SensorBaseChance);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("SensorSkillFactor", SensorSkillFactor);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("BlockingObjectModifier", SensorBlockingObjectModifier);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("ShutdownMech", SensorShutDownMechModifier);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 #ifdef USEHEAT
 	result = mechFile->readIdFloat("HeatMultiplier", SensorHeatMultiplier);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("WeaponHeatMultiplier", SensorWeaponHeatMultiplier);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloatArray("HeatSourceModifiers", SensorHeatSourceModifiers, 2);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 #endif
 
 	float rangeTable[8];
 	result = mechFile->readIdFloatArray("SensorRangeModifier", rangeTable, 8);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	for (i = 0; i < 4; i++) {
 		SensorRangeModifier[i][0] = rangeTable[i * 2];
@@ -2094,22 +2094,22 @@ long Mover::loadGameSystem (FitIniFilePtr mechFile, float visualRange) {
 
 	float sizeTable[6];
 	result = mechFile->readIdFloatArray("SizeModifier", sizeTable, 6);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	for (i = 0; i < 3; i++) {
 		SensorSizeModifier[i][0] = sizeTable[i * 2];
 		SensorSizeModifier[i][1] = sizeTable[i * 2 + 1];
 	}
 
-	long masterIDs[9];
+	int32_t masterIDs[9];
 	result = mechFile->readIdLongArray("SensorMasterIDs", masterIDs, 9);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	
 /*
 	float rangeMultipliers[9];
 	result = mechFile->readIdFloatArray("SensorRangeMultipliers", rangeMultipliers, 9);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	//------------------------------------------------------------------------------
 	// The following relies upon knowing the MasterComponentID for all of the sensor
@@ -2119,32 +2119,32 @@ long Mover::loadGameSystem (FitIniFilePtr mechFile, float visualRange) {
 			MasterComponentList[masterIDs[i]].setSensorRange(visualRange * rangeMultipliers[i]);
 */
 	result = mechFile->readIdFloatArray("BlockingTerrainModifiers", SensorBlockingTerrain, 2);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->seekBlock("Skills");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		Fatal(result, "Couldn't find skill block in gamesys.fit");
 
 	result = mechFile->readIdFloatArray("Skill Attempt", SkillTry, 4);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloatArray("Skill Success", SkillSuccess, 4);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = mechFile->readIdFloat("WeaponHit", WeaponHit);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	result = mechFile->readIdFloatArray("KillSkillValues", KillSkill, 6);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	result = mechFile->readIdFloat("Sensor Contact Skill", SensorSkill);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -2164,7 +2164,7 @@ void Mover::set (Mover copy) {
 	pilotCheckDamageTally = copy.pilotCheckDamageTally;
 
 	numBodyLocations = copy.numBodyLocations;
-	for (long i = 0; i < numBodyLocations; i++)
+	for (int32_t i = 0; i < numBodyLocations; i++)
 		body[i] = copy.body[i];
 	fieldedCV = copy.fieldedCV;
 		
@@ -2381,13 +2381,13 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 	debugWindow->clear();
 	static char s[128];
 	MovePathPtr path = getPilot()->getMovePath();
-	long distToObj1 = -1;
+	int32_t distToObj1 = -1;
 	if (DebugGameObject[2])
-		distToObj1 = (long)distanceFrom(DebugGameObject[2]->getPosition());
-	long sensorRange = 0;
+		distToObj1 = (int32_t)distanceFrom(DebugGameObject[2]->getPosition());
+	int32_t sensorRange = 0;
 	if (sensorSystem)
-	sensorRange = (long)sensorSystem->getEffectiveRange();
-	long contStat = contactInfo->getContactStatus(0, true);
+	sensorRange = (int32_t)sensorSystem->getEffectiveRange();
+	int32_t contStat = contactInfo->getContactStatus(0, true);
 	static PSTR contactStr[NUM_CONTACT_STATUSES] = {
 		"        ",
 		"SENSOR_1",
@@ -2400,13 +2400,13 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 	if (debugPage == 0) {
 		sprintf(s, "%s (%s %02d)", getName(), getPilot()->getName(), getPilot()->getIndex());
 		debugWindow->print(s);
-		long gestID = -1;
+		int32_t gestID = -1;
 		if (getObjectClass() == BATTLEMECH)
 			gestID = ((Mech3DAppearance*)appearance)->getCurrentGestureId();
 		sprintf(s, "cmdr: %d, team: %d, gestID: %d, partID: %d", getCommanderId(), getTeamId(), gestID, getPartId());
 		debugWindow->print(s);
 		if (path->curStep < path->numStepsWhenNotPaused) {
-			long curDir = path->stepList[path->curStep].direction;
+			int32_t curDir = path->stepList[path->curStep].direction;
 			if (curDir > 7)
 				sprintf(s, "pos: [%d, %d](%d) snsr: %d[%s] JMP", cellPositionRow, cellPositionCol, distToObj1, sensorRange, contactStr[contStat]);
 			else
@@ -2465,10 +2465,10 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 		sprintf(s, "cont:");
 		if (sensorSystem) {
 			// display up to 4...
-			long numConts = 4;
+			int32_t numConts = 4;
 			if (sensorSystem->numContacts < 4)
 				numConts = sensorSystem->numContacts;
-			for (long i = 0; i < numConts; i++) {
+			for (int32_t i = 0; i < numConts; i++) {
 				MoverPtr contact = (MoverPtr)ObjectManager->get(sensorSystem->contacts[i] & 0x7FFF);
 				Assert(contact != NULL, sensorSystem->contacts[i] & 0x7FFF, " null contact ");
 				char s2[10];
@@ -2488,7 +2488,7 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 		else
 			sprintf(s, "no current target");
 		debugWindow->print(s);
-		for (long i = 0; i < 5; i++) {
+		for (int32_t i = 0; i < 5; i++) {
 			sprintf(s, "%s", getPilot()->getDebugString(i));
 			debugWindow->print(s);
 		}
@@ -2499,7 +2499,7 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 		sprintf(s, "team: %d, handle: %d, partID: %d, rank: %d", getTeamId(), getHandle(), getPartId(), getPilot()->getRank());
 		debugWindow->print(s);
 		if (path->curStep < path->numStepsWhenNotPaused) {
-			long curDir = path->stepList[path->curStep].direction;
+			int32_t curDir = path->stepList[path->curStep].direction;
 			if (curDir > 7)
 				sprintf(s, "pos: [%d, %d](%d) snsr: %d[%s] JMP", cellPositionRow, cellPositionCol, distToObj1, sensorRange, contactStr[contStat]);
 			else
@@ -2513,10 +2513,10 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 		MoveOrders* moveOrders = getPilot()->getMoveOrders();
 		if (moveOrders->numGlobalSteps > 0) {
 			sprintf(s, "LR:");
-			long lastIndex = moveOrders->curGlobalStep + 8;
+			int32_t lastIndex = moveOrders->curGlobalStep + 8;
 			if (lastIndex > moveOrders->numGlobalSteps)
 				lastIndex = moveOrders->numGlobalSteps;
-			for (long i = 0; i < lastIndex; i++) {
+			for (int32_t i = 0; i < lastIndex; i++) {
 				char ss[15];
 				if (i == moveOrders->curGlobalStep)
 					sprintf(ss, " [%d]", moveOrders->globalPath[i].thruArea);
@@ -2597,7 +2597,7 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 		debugWindow->print(s);
 		debugWindow->print(" ");
 		if (getObjectClass() == BATTLEMECH) {
-			for (long i = 0; i < numBodyLocations; i++) {
+			for (int32_t i = 0; i < numBodyLocations; i++) {
 				sprintf(s, "%s IS:%3.1f(%02d) AR:%3.1f(%02d) %s",
 					locationStrings[i],
 					body[i].curInternalStructure,
@@ -2616,7 +2616,7 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 			}
 		}
 		else if (getObjectClass() == GROUNDVEHICLE) {
-			for (long i = 0; i < numBodyLocations; i++) {
+			for (int32_t i = 0; i < numBodyLocations; i++) {
 				sprintf(s, "%s IS:%3.1f(%02d) AR:%3.1f(%02d) %s",
 					locationStrings[i + 11],
 					body[i].curInternalStructure,
@@ -2632,7 +2632,7 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 
 //---------------------------------------------------------------------------
 
-void Mover::setPartId (long newPartId) {
+void Mover::setPartId (int32_t newPartId) {
 
 	partId = newPartId;
 	//MoverRoster[newPartId - MIN_MOVER_PART_ID] = (BaseObjectPtr)this;
@@ -2640,7 +2640,7 @@ void Mover::setPartId (long newPartId) {
 
 //---------------------------------------------------------------------------
 
-long Mover::setTeamId (long _teamId, bool setup) {
+int32_t Mover::setTeamId (int32_t _teamId, bool setup) {
 
 	if (teamId > -1) {
 		//----------------------------------
@@ -2669,7 +2669,7 @@ long Mover::setTeamId (long _teamId, bool setup) {
 				pilot->setTeam(team);
 		}
 	}
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -2719,7 +2719,7 @@ bool Mover::isNeutral (TeamPtr team) {
 
 //---------------------------------------------------------------------------
 
-long Mover::setGroupId (long _groupId, bool setup) {
+int32_t Mover::setGroupId (int32_t _groupId, bool setup) {
 
 	groupId = _groupId;
 	if (setup && (groupId > -1) && pilot) {
@@ -2727,7 +2727,7 @@ long Mover::setGroupId (long _groupId, bool setup) {
 		pilot->setOrderState(ORDERSTATE_GENERAL);
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -2886,7 +2886,7 @@ float Mover::relFacingDelta (Stuff::Vector3D goalPos, Stuff::Vector3D targetPos)
 
 //---------------------------------------------------------------------------
 
-float Mover::relFacingTo (Stuff::Vector3D goal, long bodyLocation) {
+float Mover::relFacingTo (Stuff::Vector3D goal, int32_t bodyLocation) {
 
 #if 1
 	Stuff::Vector3D facingVec = getRotationVector();
@@ -3074,7 +3074,7 @@ Stuff::Vector3D Mover::relativePosition (float angle, float distance, ULONG flag
 	curRay.Zero();
 	float rayLength = 0.0;
 
-	long cellR, cellC;
+	int32_t cellR, cellC;
 	land->worldToCell(curPoint, cellR, cellC);
 	bool cellClear = GameMap->getPassable(cellR, cellC);
 
@@ -3142,7 +3142,7 @@ bool Mover::hasNullSignature (void) {
 
 extern bool InitWayPath;
 
-long Mover::handleTacticalOrder (TacticalOrder tacOrder, long priority, bool queuePlayerOrder) {
+int32_t Mover::handleTacticalOrder (TacticalOrder tacOrder, int32_t priority, bool queuePlayerOrder) {
 
 //queuePlayerOrder = true;
 if (queuePlayerOrder)
@@ -3163,7 +3163,7 @@ if (queuePlayerOrder)
 	//----------------------------------------------------
 	// Any tacorder that gets here IS NOT a lance order...
 	bool processOrder = true;
-	long message = -1;
+	int32_t message = -1;
 	switch (tacOrder.code) {
 		case TACTICAL_ORDER_WAIT:
 			suppressionFire = false;
@@ -3193,7 +3193,7 @@ if (queuePlayerOrder)
 			if (getJumpRange() < distanceFrom(tacOrder.getWayPoint(0)))
 				canJump = false;
 			if (getObjectClass() == BATTLEMECH) {
-				long cellR, cellC;
+				int32_t cellR, cellC;
 				land->worldToCell(tacOrder.getWayPoint(0), cellR, cellC);
 			if (!GameMap->getPassable(cellR, cellC))
 					canJump = false;
@@ -3293,12 +3293,12 @@ if (queuePlayerOrder)
 				pilot->setAlarmTacOrder(tacOrder, priority);
 				break;
 		}
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //----------------------------------------------------------------------------------
 
-void Mover::reduceAntiMissileAmmo (long numAntiMissiles) {
+void Mover::reduceAntiMissileAmmo (int32_t numAntiMissiles) {
 
 	if (numAntiMissiles > 0)
 		reduceAmmo(MasterComponent::masterList[inventory[antiMissileSystem[0]].masterID].getWeaponAmmoMasterId(), numAntiMissiles);
@@ -3316,7 +3316,7 @@ void Mover::pilotingCheck (ULONG situation, float modifier) {
 void Mover::updateDamageTakenRate (void) {
 
 	if (damageRateCheckTime < scenarioTime) {
-		long damageRate = (damageRateTally / DamageRateFrequency);
+		int32_t damageRate = (damageRateTally / DamageRateFrequency);
 		if (damageRate > 10 /*AttitudeEffect[pilot->getAttitude(ORDER_CURRENT)][5]*/)
 			pilot->triggerAlarm(PILOT_ALARM_DAMAGE_TAKEN_RATE, damageRate);
 		damageRateTally = 0;
@@ -3326,7 +3326,7 @@ void Mover::updateDamageTakenRate (void) {
 
 //-------------------------------------------------------------------------------------------
 
-void Mover::setPilotHandle (long _pilotHandle) {
+void Mover::setPilotHandle (int32_t _pilotHandle) {
 
 	if (pilot) {
 		pilot->setVehicle(NULL);
@@ -3362,10 +3362,10 @@ void Mover::loadPilot (PSTR pilotFileName, PSTR brainFileName, LogisticsPilot *l
 	FitIniFile* pilotFile = new FitIniFile;
 	gosASSERT(pilotFile != NULL);
 		
-	long result = pilotFile->open(pilotFullFileName);
-	gosASSERT(result == NO_ERR);
+	int32_t result = pilotFile->open(pilotFullFileName);
+	gosASSERT(result == NO_ERROR);
 	result = pilot->init(pilotFile);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 			
 	pilotFile->close();
 	delete pilotFile;
@@ -3386,7 +3386,7 @@ void Mover::loadPilot (PSTR pilotFileName, PSTR brainFileName, LogisticsPilot *l
 	// mover data!
 	//*********************
 
-	long numErrors, numLinesProcessed;
+	int32_t numErrors, numLinesProcessed;
 	FullPathFileName brainFullFileName;
 	if (MPlayer) {
 		pilot->setBrainName("pbrain");
@@ -3397,7 +3397,7 @@ void Mover::loadPilot (PSTR pilotFileName, PSTR brainFileName, LogisticsPilot *l
 		brainFullFileName.init(warriorPath, brainFileName, ".abl");
 	}
 		
-	long moduleHandle = ABLi_preProcess(brainFullFileName, &numErrors, &numLinesProcessed);
+	int32_t moduleHandle = ABLi_preProcess(brainFullFileName, &numErrors, &numLinesProcessed);
 	gosASSERT(moduleHandle >= 0);
 	pilot->setBrain(moduleHandle);
 	setPilotHandle(pilot->getIndex());
@@ -3405,7 +3405,7 @@ void Mover::loadPilot (PSTR pilotFileName, PSTR brainFileName, LogisticsPilot *l
 
 //---------------------------------------------------------------------------
 
-void Mover::setCommanderId (long _commanderId) {
+void Mover::setCommanderId (int32_t _commanderId) {
 
 	if (commanderId > -1)
 		prevCommanderId = commanderId;
@@ -3502,7 +3502,7 @@ Stuff::Vector3D Mover::getLOSPosition (void)
 
 //---------------------------------------------------------------------------
 
-void Mover::printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* targetPoint, long chance, long aimLocation, long roll, WeaponShotInfo* shotInfo) {
+void Mover::printFireWeaponDebugInfo (GameObjectPtr target, Stuff::Vector3D* targetPoint, int32_t chance, int32_t aimLocation, int32_t roll, WeaponShotInfo* shotInfo) {
 
 	if (!CombatLog)
 		return;
@@ -3652,16 +3652,16 @@ void Mover::printHandleWeaponHitDebugInfo (WeaponShotInfo* shotInfo) {
 
 //----------------------------------------------------------------------------
 
-long Mover::clearWeaponFireChunks (long which) {
+int32_t Mover::clearWeaponFireChunks (int32_t which) {
 
-	long numChunks = numWeaponFireChunks[which];
+	int32_t numChunks = numWeaponFireChunks[which];
 	numWeaponFireChunks[which] = 0;
 	return(numChunks);
 }
 
 //---------------------------------------------------------------------------
 
-long Mover::addWeaponFireChunk (long which, WeaponFireChunkPtr chunk) {
+int32_t Mover::addWeaponFireChunk (int32_t which, WeaponFireChunkPtr chunk) {
 
 	if (numWeaponFireChunks[which] == MAX_WEAPONFIRE_CHUNKS)
 		Fatal(0, " Mover::addWeaponFireChunk--Too many weaponfire chunks ");
@@ -3682,7 +3682,7 @@ long Mover::addWeaponFireChunk (long which, WeaponFireChunkPtr chunk) {
 
 //---------------------------------------------------------------------------
 
-long Mover::addWeaponFireChunks (long which, ULONG* packedChunkBuffer, long numChunks) {
+int32_t Mover::addWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer, int32_t numChunks) {
 
 	if ((numWeaponFireChunks[which] + numChunks) >= MAX_WEAPONFIRE_CHUNKS)
 		Fatal(0, " Mover::addWeaponFireChunks--Too many weaponfire chunks ");
@@ -3691,7 +3691,7 @@ long Mover::addWeaponFireChunks (long which, ULONG* packedChunkBuffer, long numC
 	memcpy(&weaponFireChunks[which][numWeaponFireChunks[which]], packedChunkBuffer, 4 * numChunks);
 	numWeaponFireChunks[which] += numChunks;
 #else
-	for (long i = 0; i < numChunks; i++) {
+	for (int32_t i = 0; i < numChunks; i++) {
 		weaponFireChunks[which][numWeaponFireChunks[which]++] = packedChunkBuffer[i];
 		//---------------
 		// FOR TESTING...
@@ -3706,13 +3706,13 @@ long Mover::addWeaponFireChunks (long which, ULONG* packedChunkBuffer, long numC
 
 //---------------------------------------------------------------------------
 
-long Mover::grabWeaponFireChunks (long which, ULONG* packedChunkBuffer, long maxChunks) {
+int32_t Mover::grabWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer, int32_t maxChunks) {
 
-	long numChunks = numWeaponFireChunks[which];
+	int32_t numChunks = numWeaponFireChunks[which];
 	if (numChunks > maxChunks)
 		numChunks = maxChunks;
 	if (numChunks > 0) {
-		for (long i = 0; i < numChunks; i++)
+		for (int32_t i = 0; i < numChunks; i++)
 			packedChunkBuffer[i] = weaponFireChunks[which][i];
 		//memcpy(packedChunkBuffer, weaponFireChunks[which], 4 * numWeaponFireChunks[which]);
 	}
@@ -3722,9 +3722,9 @@ long Mover::grabWeaponFireChunks (long which, ULONG* packedChunkBuffer, long max
 
 //---------------------------------------------------------------------------
 
-long Mover::updateWeaponFireChunks (long which) {
+int32_t Mover::updateWeaponFireChunks (int32_t which) {
 
-	for (long i = 0; i < numWeaponFireChunks[which]; i++) {
+	for (int32_t i = 0; i < numWeaponFireChunks[which]; i++) {
 		WeaponFireChunk chunk;
 		chunk.init();
 		chunk.data = weaponFireChunks[which][i];
@@ -3736,7 +3736,7 @@ long Mover::updateWeaponFireChunks (long which) {
 
 		static float entryQuadTable[4] = {0.0, 180.0, -90.0, 90.0};
 
-		long weaponIndex = chunk.weaponIndex + numOther;
+		int32_t weaponIndex = chunk.weaponIndex + numOther;
 		if (!isWeaponIndex(weaponIndex))
 			continue;
 
@@ -3795,21 +3795,21 @@ long Mover::updateWeaponFireChunks (long which) {
 
 	numWeaponFireChunks[which] = 0;
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-long Mover::clearCriticalHitChunks (long which) {
+int32_t Mover::clearCriticalHitChunks (int32_t which) {
 
-	long numChunks = numCriticalHitChunks[which];
+	int32_t numChunks = numCriticalHitChunks[which];
 	numCriticalHitChunks[which] = 0;
 	return(numChunks);
 }
 
 //---------------------------------------------------------------------------
 
-long Mover::addCriticalHitChunk (long which, long bodyLocation, long criticalSpace) {
+int32_t Mover::addCriticalHitChunk (int32_t which, int32_t bodyLocation, int32_t criticalSpace) {
 
 	if (numCriticalHitChunks[which] == MAX_CRITICALHIT_CHUNKS)
 		Fatal(0, " Mover::addCriticalHitChunk--Too many criticalhit chunks ");
@@ -3823,7 +3823,7 @@ long Mover::addCriticalHitChunk (long which, long bodyLocation, long criticalSpa
 
 //---------------------------------------------------------------------------
 
-long Mover::addCriticalHitChunks (long which, PUCHAR packedChunkBuffer, long numChunks) {
+int32_t Mover::addCriticalHitChunks (int32_t which, puint8_t packedChunkBuffer, int32_t numChunks) {
 
 	if ((numCriticalHitChunks[which] + numChunks) >= MAX_CRITICALHIT_CHUNKS)
 		Fatal(0, " Mover::addCriticalHitChunks--Too many criticalhit chunks ");
@@ -3835,7 +3835,7 @@ long Mover::addCriticalHitChunks (long which, PUCHAR packedChunkBuffer, long num
 
 //---------------------------------------------------------------------------
 
-long Mover::grabCriticalHitChunks (long which, PUCHAR packedChunkBuffer) {
+int32_t Mover::grabCriticalHitChunks (int32_t which, puint8_t packedChunkBuffer) {
 
 	if (numCriticalHitChunks[which] > 0)
 		memcpy(packedChunkBuffer, criticalHitChunks[which], numCriticalHitChunks[which]);
@@ -3844,25 +3844,25 @@ long Mover::grabCriticalHitChunks (long which, PUCHAR packedChunkBuffer) {
 
 //---------------------------------------------------------------------------
 
-long Mover::updateCriticalHitChunks (long which) {
+int32_t Mover::updateCriticalHitChunks (int32_t which) {
 
 	numCriticalHitChunks[which] = 0;
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-long Mover::clearRadioChunks (long which) {
+int32_t Mover::clearRadioChunks (int32_t which) {
 
-	long numChunks = numRadioChunks[which];
+	int32_t numChunks = numRadioChunks[which];
 	numRadioChunks[which] = 0;
 	return(numChunks);
 }
 
 //---------------------------------------------------------------------------
 
-long Mover::addRadioChunk (long which, uint8_t msg) {
+int32_t Mover::addRadioChunk (int32_t which, uint8_t msg) {
 
 	if (numRadioChunks[which] == MAX_RADIO_CHUNKS)
 		return(numRadioChunks[which]);
@@ -3876,11 +3876,11 @@ long Mover::addRadioChunk (long which, uint8_t msg) {
 
 //---------------------------------------------------------------------------
 
-long Mover::addRadioChunks (long which, PUCHAR packedChunkBuffer, long numChunks) {
+int32_t Mover::addRadioChunks (int32_t which, puint8_t packedChunkBuffer, int32_t numChunks) {
 
 //	if ((numRadioChunks[which] + numChunks) >= MAX_RADIO_CHUNKS)
 //		Fatal(0, " Mover::addRadioChunks--Too many radio chunks ");
-	for (long i = 0; i < numChunks; i++)
+	for (int32_t i = 0; i < numChunks; i++)
 		addRadioChunk(which, packedChunkBuffer[i]);
 	//memcpy(&radioChunks[which][numRadioChunks[which]], packedChunkBuffer, numChunks);
 	//numRadioChunks[which] += numChunks;
@@ -3889,7 +3889,7 @@ long Mover::addRadioChunks (long which, PUCHAR packedChunkBuffer, long numChunks
 
 //---------------------------------------------------------------------------
 
-long Mover::grabRadioChunks (long which, PUCHAR packedChunkBuffer) {
+int32_t Mover::grabRadioChunks (int32_t which, puint8_t packedChunkBuffer) {
 
 	if (numRadioChunks[which] > 0)
 		memcpy(packedChunkBuffer, radioChunks[which], numRadioChunks[which]);
@@ -3898,15 +3898,15 @@ long Mover::grabRadioChunks (long which, PUCHAR packedChunkBuffer) {
 
 //---------------------------------------------------------------------------
 
-long Mover::updateRadioChunks (long which) {
+int32_t Mover::updateRadioChunks (int32_t which) {
 
 	if (getCommander() == Commander::home)
-		for (long i = 0; i < numRadioChunks[which]; i++)
+		for (int32_t i = 0; i < numRadioChunks[which]; i++)
 			playMessage((RadioMessageType)radioChunks[which][i]);
 
 	numRadioChunks[which] = 0;
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -3931,10 +3931,10 @@ void Mover::setThreatRating (short rating) {
 
 //---------------------------------------------------------------------------
 
-long Mover::getThreatRating (void) {
+int32_t Mover::getThreatRating (void) {
 
 	if ((scenarioTime - creationTime) < 5.0)
-		return((long)((float)threatRating * newThreatMultiplier));
+		return((int32_t)((float)threatRating * newThreatMultiplier));
 	return(threatRating);
 }
 
@@ -3954,7 +3954,7 @@ bool Mover::enemyRevealed (void)
 
 #if 0
 
-void Mover::getDamageClass (long& damageClass, bool& shutDown) {
+void Mover::getDamageClass (int32_t& damageClass, bool& shutDown) {
 
 	//--------------------------------------------
 	// DamageClass is based upon the current CV...
@@ -3986,7 +3986,7 @@ void Mover::setTeleportPosition (Stuff::Vector3D& newPos) {
 
 //------------------------------------------------------------------------------------------
 
-long Mover::getInventoryDamage (long itemIndex) {
+int32_t Mover::getInventoryDamage (int32_t itemIndex) {
 
 	if (itemIndex < (numOther + numWeapons + numAmmos))
 		return (MasterComponent::masterList[inventory[itemIndex].masterID].getHealth() - inventory[itemIndex].health);
@@ -4048,7 +4048,7 @@ Stuff::Vector3D Mover::calcOffsetMoveGoal (Stuff::Vector3D target) {
 	deltaVector *= cellLength;
 	//if (deltaVector.GetLength() == 0.0) {
 	//	newGoal = start;
-	//	return(NO_ERR);
+	//	return(NO_ERROR);
 	//}
 	//------------------------------------------
 	// Determine how far the ray must be cast...
@@ -4066,7 +4066,7 @@ Stuff::Vector3D Mover::calcOffsetMoveGoal (Stuff::Vector3D target) {
 	curRay.y = 0.0;
 	float rayLength = 0.0;
 
-	long cellR, cellC;
+	int32_t cellR, cellC;
 	Stuff::Vector3D curPoint3d(curPoint.x, curPoint.y, 0.0);
 	land->worldToCell(curPoint3d, cellR, cellC);
 	if (!GameMap->getPassable(cellR, cellC))
@@ -4089,17 +4089,17 @@ Stuff::Vector3D Mover::calcOffsetMoveGoal (Stuff::Vector3D target) {
 
 #define	MAX_MOVE_GOALS		60
 
-inline void insertMoveGoal (long goalList[MAX_MOVE_GOALS][3], long r, long c, long wt) {
+inline void insertMoveGoal (int32_t goalList[MAX_MOVE_GOALS][3], int32_t r, int32_t c, int32_t wt) {
 
 	//------------------------------------------------------------
 	// This routine assumes wt > goaList[MAX_MOVE_GOALS - 1][2]...
 	// AND that MAX_MOVE_GOALS >= 2...
-	for (long i = MAX_MOVE_GOALS - 2; i > -1; i--)
+	for (int32_t i = MAX_MOVE_GOALS - 2; i > -1; i--)
 		if (wt < goalList[i][2])
 			break;
 
 	if (i < (MAX_MOVE_GOALS - 2))
-		memmove(&goalList[i + 2][0], &goalList[i + 1][0], (MAX_MOVE_GOALS - 2 - i) * sizeof(long) * 3);
+		memmove(&goalList[i + 2][0], &goalList[i + 1][0], (MAX_MOVE_GOALS - 2 - i) * sizeof(int32_t) * 3);
 	goalList[i + 1][0] = r;
 	goalList[i + 1][1] = c;
 	goalList[i + 1][2] = wt;
@@ -4107,14 +4107,14 @@ inline void insertMoveGoal (long goalList[MAX_MOVE_GOALS][3], long r, long c, lo
 
 //---------------------------------------------------------------------------
 
-inline bool inMapBounds (long r, long c, long mapHeight, long mapWidth) {
+inline bool inMapBounds (int32_t r, int32_t c, int32_t mapHeight, int32_t mapWidth) {
 
 	return((r >= 0) && (r < mapHeight) && (c >= 0) && (c < mapWidth));
 }
 
 //---------------------------------------------------------------------------
 
-long calcBestGoalFromTarget (long targetPos[2], long maxPos[2], float minRange, float bestRange, long* bestCell) {
+int32_t calcBestGoalFromTarget (int32_t targetPos[2], int32_t maxPos[2], float minRange, float bestRange, int32_t* bestCell) {
 float startLocal = 40.0f;
 
 	//------------------------------------------------------------------------------------------
@@ -4138,8 +4138,8 @@ float startLocal = 40.0f;
 	float cellLength = (Terrain::worldUnitsPerCell * metersPerWorldUnit);
 	float length = deltaCellVec.GetApproximateLength();
 
-	long lastCellR = -1;
-	long lastCellC = -1;
+	int32_t lastCellR = -1;
+	int32_t lastCellC = -1;
 	if (length > Stuff::SMALL) {
 		float colLength = deltaCellVec.x / length;
 		float rowLength = deltaCellVec.y / length;
@@ -4178,8 +4178,8 @@ float startLocal = 40.0f;
 			}
 			startHeight += heightLen;
 				
-			long startCellC = startCellCol;
-			long startCellR = startCellRow;
+			int32_t startCellC = startCellCol;
+			int32_t startCellR = startCellRow;
 
 			land->getCellPos(startCellR,startCellC,currentPos);
 			float localElev = (worldUnitsPerMeter * (float)GameMap->getLocalHeight(startCellR,startCellC));
@@ -4232,11 +4232,11 @@ float startLocal = 40.0f;
 
 //----------------------------------------------------------------------------
 
-long Mover::calcLineOfSightView (long range) {
+int32_t Mover::calcLineOfSightView (int32_t range) {
 
 	GameMap->clearCellDebugs(1);
-	for (long r = cellPositionRow - range; r < cellPositionRow + range; r++)
-		for (long c = cellPositionCol - range; c < cellPositionCol + range; c++) {
+	for (int32_t r = cellPositionRow - range; r < cellPositionRow + range; r++)
+		for (int32_t c = cellPositionCol - range; c < cellPositionCol + range; c++) {
 			if (GameMap->inBounds(r, c)) {
 				if (lineOfSight(r, c, false))
 					GameMap->setCellDebug(r, c, 1, 1);
@@ -4250,7 +4250,7 @@ long Mover::calcLineOfSightView (long range) {
 
 //----------------------------------------------------------------------------
 
-void Mover::setMoveType (long type) {
+void Mover::setMoveType (int32_t type) {
 
 	moveType = type;
 	//--------------------------------------------------------------------
@@ -4271,19 +4271,19 @@ void Mover::setMoveType (long type) {
 
 //-----------------------------------------------------------------------------
 
-long Mover::calcGlobalPath (GlobalPathStep* globalPath, GameObjectPtr obj, Stuff::Vector3D* location, bool useClosedAreas) {
+int32_t Mover::calcGlobalPath (GlobalPathStep* globalPath, GameObjectPtr obj, Stuff::Vector3D* location, bool useClosedAreas) {
 
 #if 1
-	long startArea = GlobalMoveMap[moveLevel]->calcArea(cellPositionRow, cellPositionCol);
-	long goalArea = -1;
-	long goalCell[2] = {-1, -1};
+	int32_t startArea = GlobalMoveMap[moveLevel]->calcArea(cellPositionRow, cellPositionCol);
+	int32_t goalArea = -1;
+	int32_t goalCell[2] = {-1, -1};
 	if (obj) {
 		goalArea = GlobalMoveMap[moveLevel]->calcArea(obj->cellPositionRow, obj->cellPositionCol);
 		if (goalArea == -1) {
 			Stuff::Vector3D goalPos = obj->getPosition();
 			if (obj->isBuilding()) {
 				BuildingPtr building = (BuildingPtr)obj;
-				long goalRow = 0, goalCol = 0;
+				int32_t goalRow = 0, goalCol = 0;
 				bool foundGoal = building->calcAdjacentAreaCell(moveLevel, -1, goalRow, goalCol);
 				if (foundGoal)
 					land->cellToWorld(goalRow, goalCol, goalPos);
@@ -4308,7 +4308,7 @@ long Mover::calcGlobalPath (GlobalPathStep* globalPath, GameObjectPtr obj, Stuff
 		return(0);
 
 	bool startAreaOpen = (startArea >= 0) && GlobalMoveMap[moveLevel]->areas[startArea].open;
-	long numSteps = -1;
+	int32_t numSteps = -1;
 	if (startAreaOpen) {
 		if (numFunctionalWeapons > 0)
 			GlobalMoveMap[moveLevel]->useClosedAreas = useClosedAreas;
@@ -4354,32 +4354,32 @@ bool Mover::canMoveHere (Stuff::Vector3D worldPos) {
 //-----------------------------------------------------------------------------
 
 #ifdef LAB_ONLY
-extern __int64 MCTimeCalcGoal1Update;
-extern __int64 MCTimeCalcGoal2Update;
-extern __int64 MCTimeCalcGoal3Update;
-extern __int64 MCTimeCalcGoal4Update;
-extern __int64 MCTimeCalcGoal5Update;
-extern __int64 MCTimeCalcGoal6Update;
+extern int64_t MCTimeCalcGoal1Update;
+extern int64_t MCTimeCalcGoal2Update;
+extern int64_t MCTimeCalcGoal3Update;
+extern int64_t MCTimeCalcGoal4Update;
+extern int64_t MCTimeCalcGoal5Update;
+extern int64_t MCTimeCalcGoal6Update;
 #endif
 
-long Mover::calcMoveGoal (GameObjectPtr target,
+int32_t Mover::calcMoveGoal (GameObjectPtr target,
 						  Stuff::Vector3D moveCenter,
 						  float moveRadius,
 						  Stuff::Vector3D moveGoal,
-						  long selectionIndex,
+						  int32_t selectionIndex,
 						  Stuff::Vector3D& newGoal,
-						  long numValidAreas,
+						  int32_t numValidAreas,
 						  short* validAreas,
 						  ULONG moveParams) {
 
-	__int64 startTime = 0;
+	int64_t startTime = 0;
 
 	if (goalMapRowStart[0] == -1) {
-		for (long i = 0; i < GOALMAP_CELL_DIM; i++)
+		for (int32_t i = 0; i < GOALMAP_CELL_DIM; i++)
 			goalMapRowStart[i] = i * GOALMAP_CELL_DIM;
-		for (long r = 0; r < GOALMAP_CELL_DIM; r++)
-			for (long c = 0; c < GOALMAP_CELL_DIM; c++) {
-				long index = r * GOALMAP_CELL_DIM + c;
+		for (int32_t r = 0; r < GOALMAP_CELL_DIM; r++)
+			for (int32_t c = 0; c < GOALMAP_CELL_DIM; c++) {
+				int32_t index = r * GOALMAP_CELL_DIM + c;
 				goalMapRowCol[index][0] = r;
 				goalMapRowCol[index][1] = c;
 			}
@@ -4393,7 +4393,7 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 
 	if (moveParams & MOVEPARAM_MYSTERY_PARAM) {
 		newGoal = moveGoal;
-		return(NO_ERR);
+		return(NO_ERROR);
 	}
 
 	if (moveParams & MOVEPARAM_STEP_TOWARD_TARGET) {
@@ -4414,7 +4414,7 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 			newGoal = calcOffsetMoveGoal(targetGoal);
 		}
 
-		return(NO_ERR);
+		return(NO_ERROR);
 	}
 
 	if (moveParams & MOVEPARAM_STEP_ADJACENT_TARGET) {
@@ -4422,19 +4422,19 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 		// We want to pick a goal just a couple cells away from our position, but in
 		// the direction of our target...
 		newGoal = calcOffsetMoveGoal(moveGoal);
-		return(NO_ERR);
+		return(NO_ERROR);
 	}
 	
 	//----------------------------
 	// The Goal Map is in CELLS...
-	memset(goalMap, 0, sizeof(long) * GOALMAP_CELL_DIM * GOALMAP_CELL_DIM);
+	memset(goalMap, 0, sizeof(int32_t) * GOALMAP_CELL_DIM * GOALMAP_CELL_DIM);
 
-	long centerCell[2];
+	int32_t centerCell[2];
 	land->worldToCell(moveCenter, centerCell[0], centerCell[1]);
-	long goalCell[2];
+	int32_t goalCell[2];
 	land->worldToCell(moveGoal, goalCell[0], goalCell[1]);
 
-	long mapCellUL[2];
+	int32_t mapCellUL[2];
 	mapCellUL[0] = centerCell[0] - GOALMAP_CELL_DIM / 2;
 	mapCellUL[1] = centerCell[1] - GOALMAP_CELL_DIM / 2;
 	
@@ -4447,7 +4447,7 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 	bool isAttackOrder = pilot->getCurTacOrder()->isCombatOrder();
 	if (!target && !isAttackOrder) {
 		newGoal = calcOffsetMoveGoal(moveGoal);
-		return(NO_ERR);
+		return(NO_ERROR);
 	}
 
 	//--------
@@ -4457,15 +4457,15 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 
 	if (!target)
 		moveGoal.z = land->getTerrainElevation(moveGoal);
-	long optimalCellRange = 2;
+	int32_t optimalCellRange = 2;
 	if (movingToRepair)
 		optimalCellRange = 1;
 	if (isAttackOrder) {
 		float metersPerCell = Terrain::worldUnitsPerCell * metersPerWorldUnit;
 		float fireRangeInMeters = pilot->getSituationFireRange();
-		long fireCellRange = 0;
+		int32_t fireCellRange = 0;
 		if (fireRangeInMeters > 0.0) {
-			fireCellRange = (long)(pilot->getSituationFireRange() / metersPerCell);
+			fireCellRange = (int32_t)(pilot->getSituationFireRange() / metersPerCell);
 			if (fireCellRange < 1)
 				fireCellRange = 1;
 			if (fireCellRange > (MAX_ATTACK_CELLRANGE - 1)/*(GOALMAP_CELL_DIM / 2)*/)
@@ -4473,22 +4473,22 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 			}
 		else if (fireRangeInMeters == -1.0)
 			fireCellRange = 2;
-		long minCellRange = (long)(getMinFireRange() / metersPerCell);
+		int32_t minCellRange = (int32_t)(getMinFireRange() / metersPerCell);
 		if (minCellRange > (MAX_ATTACK_CELLRANGE - 1)/*(GOALMAP_CELL_DIM / 2)*/)
 			minCellRange = (MAX_ATTACK_CELLRANGE - 1)/*(GOALMAP_CELL_DIM / 2)*/;
-		long maxCellRange = (long)(getMaxFireRange() / metersPerCell);
+		int32_t maxCellRange = (int32_t)(getMaxFireRange() / metersPerCell);
 		if (maxCellRange > (MAX_ATTACK_CELLRANGE - 1)/*(GOALMAP_CELL_DIM / 2)*/)
 			maxCellRange = (MAX_ATTACK_CELLRANGE - 1)/*(GOALMAP_CELL_DIM / 2)*/;
 
 		//----------------------------------------
 		// Anything beyond our max range is bad...
-		long fireRange = (long)pilot->getCurTacOrder()->attackParams.range;
+		int32_t fireRange = (int32_t)pilot->getCurTacOrder()->attackParams.range;
 		if (/*!playerMove && */(fireRange != FIRERANGE_SHORT) && (fireRange != FIRERANGE_MEDIUM) && (fireRange != FIRERANGE_LONG)) {
-			long firstIndex = rangedCellsIndices[maxCellRange + 1][0];
-			long lastIndex = rangedCellsIndices[MAX_ATTACK_CELLRANGE - 1][1];
-			for (long i = firstIndex; i < lastIndex; i++) {
-				long r = goalCell[0] - mapCellUL[0] + rangedCells[i][0];
-				long c = goalCell[1] - mapCellUL[1] + rangedCells[i][1];
+			int32_t firstIndex = rangedCellsIndices[maxCellRange + 1][0];
+			int32_t lastIndex = rangedCellsIndices[MAX_ATTACK_CELLRANGE - 1][1];
+			for (int32_t i = firstIndex; i < lastIndex; i++) {
+				int32_t r = goalCell[0] - mapCellUL[0] + rangedCells[i][0];
+				int32_t c = goalCell[1] - mapCellUL[1] + rangedCells[i][1];
 				if (inMapBounds(r, c, GOALMAP_CELL_DIM, GOALMAP_CELL_DIM))
 					goalMap[goalMapRowStart[r] + c] -= 500;
 			}
@@ -4499,16 +4499,16 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 		// anything beyond our radius is bad...
 		startTime = GetCycles();
 		if (moveRadius > 0.0) {
-			long moveCellRange = moveRadius / metersPerCell;
+			int32_t moveCellRange = moveRadius / metersPerCell;
 			if (moveCellRange < 1)
 				moveCellRange = 1;
 			if (moveCellRange > (MAX_ATTACK_CELLRANGE - 1))
 				moveCellRange = (MAX_ATTACK_CELLRANGE - 1);
-			long firstIndex = rangedCellsIndices[moveCellRange + 1][0];
-			long lastIndex = rangedCellsIndices[MAX_ATTACK_CELLRANGE - 1][1];
-			for (long i = firstIndex; i < lastIndex; i++) {
-				long r = centerCell[0] - mapCellUL[0] + rangedCells[i][0];
-				long c = centerCell[1] - mapCellUL[1] + rangedCells[i][1];
+			int32_t firstIndex = rangedCellsIndices[moveCellRange + 1][0];
+			int32_t lastIndex = rangedCellsIndices[MAX_ATTACK_CELLRANGE - 1][1];
+			for (int32_t i = firstIndex; i < lastIndex; i++) {
+				int32_t r = centerCell[0] - mapCellUL[0] + rangedCells[i][0];
+				int32_t c = centerCell[1] - mapCellUL[1] + rangedCells[i][1];
 				if (inMapBounds(r, c, GOALMAP_CELL_DIM, GOALMAP_CELL_DIM))
 					goalMap[goalMapRowStart[r] + c] -= 5000;
 			}
@@ -4525,10 +4525,10 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 			// Due to new minimum range rule, we do NOT want to be within our
 			// min range...
 			if (minCellRange > 0) {
-				long lastIndex = rangedCellsIndices[minCellRange][0];
-				for (long i = 0; i < lastIndex; i++) {
-					long r = goalCell[0] - mapCellUL[0] + rangedCells[i][0];
-					long c = goalCell[1] - mapCellUL[1] + rangedCells[i][1];
+				int32_t lastIndex = rangedCellsIndices[minCellRange][0];
+				for (int32_t i = 0; i < lastIndex; i++) {
+					int32_t r = goalCell[0] - mapCellUL[0] + rangedCells[i][0];
+					int32_t c = goalCell[1] - mapCellUL[1] + rangedCells[i][1];
 					if (inMapBounds(r, c, GOALMAP_CELL_DIM, GOALMAP_CELL_DIM))
 						goalMap[goalMapRowStart[r] + c] -= 500;
 				}
@@ -4541,23 +4541,23 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 	//-----------------------------------------------------------------------
 	// Optimal Range (based upon current fire range of pilot, if possible)...
 	if (moveParams & MOVEPARAM_RANDOM_OPTIMAL)
-		for (long i = 0; i < numOptimalIncrements; i++) {
-			long r = goalCell[0] - mapCellUL[0] + optimalCells[optimalCellRange][i][0];
-			long c = goalCell[0] - mapCellUL[0] + optimalCells[optimalCellRange][i][1];
+		for (int32_t i = 0; i < numOptimalIncrements; i++) {
+			int32_t r = goalCell[0] - mapCellUL[0] + optimalCells[optimalCellRange][i][0];
+			int32_t c = goalCell[0] - mapCellUL[0] + optimalCells[optimalCellRange][i][1];
 			if (inMapBounds(r, c, GOALMAP_CELL_DIM, GOALMAP_CELL_DIM))
 				goalMap[goalMapRowStart[r] + c] += (500 + RandomNumber(40) * 5);
 		}
 	else
-		for (long i = 0; i < numOptimalIncrements; i++) {
-			long r = goalCell[0] - mapCellUL[0] + optimalCells[optimalCellRange][i][0];
-			long c = goalCell[0] - mapCellUL[0] + optimalCells[optimalCellRange][i][1];
+		for (int32_t i = 0; i < numOptimalIncrements; i++) {
+			int32_t r = goalCell[0] - mapCellUL[0] + optimalCells[optimalCellRange][i][0];
+			int32_t c = goalCell[0] - mapCellUL[0] + optimalCells[optimalCellRange][i][1];
 			if (inMapBounds(r, c, GOALMAP_CELL_DIM, GOALMAP_CELL_DIM))
 				goalMap[goalMapRowStart[r] + c] += 500;
 		}
 
 	//--------------------------------------
 	// Calc the closest map cell to start...
-	long startCell[2];
+	int32_t startCell[2];
 	land->worldToCell(position, startCell[0], startCell[1]);
 	startCell[0] -= mapCellUL[0];
 	startCell[1] -= mapCellUL[1];
@@ -4576,10 +4576,10 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 	//--------------------------------------------------------------
 	// The closer we are to the goal, the better (within reason:)...
 	if (!playerMove)
-		for (long cellR = -1; cellR < 2; cellR++)
-			for (long cellC = -1; cellC < 2; cellC++) {
-				long r = goalCell[0] - mapCellUL[0] + cellR;
-				long c = goalCell[1] - mapCellUL[1] + cellC;
+		for (int32_t cellR = -1; cellR < 2; cellR++)
+			for (int32_t cellC = -1; cellC < 2; cellC++) {
+				int32_t r = goalCell[0] - mapCellUL[0] + cellR;
+				int32_t c = goalCell[1] - mapCellUL[1] + cellC;
 				if (inMapBounds(r, c, GOALMAP_CELL_DIM, GOALMAP_CELL_DIM))
 					goalMap[goalMapRowStart[r] + c] += 100;
 			}
@@ -4592,9 +4592,9 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 	//-------------------------------------
 	// Cells closer to the start cell get a
 	// slight bonus...
-	for (long r = 0; r < GOALMAP_CELL_DIM; r++)
-		for (long c = 0; c < GOALMAP_CELL_DIM; c++) {
-			long dist = 0;
+	for (int32_t r = 0; r < GOALMAP_CELL_DIM; r++)
+		for (int32_t c = 0; c < GOALMAP_CELL_DIM; c++) {
+			int32_t dist = 0;
 			if (r > startCell[0])
 				dist += (r - startCell[0]);
 			else
@@ -4611,15 +4611,15 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 	// the number of people in my unit attacking this target...
 	if (getGroup()) {
 		MoverPtr mates[MAX_MOVERGROUP_COUNT];
-		long numMates = getGroup()->getMovers(mates);
-		for (long i = 0; i < numMates; i++) {
+		int32_t numMates = getGroup()->getMovers(mates);
+		for (int32_t i = 0; i < numMates; i++) {
 			if (mates[i] == this)
 				continue;
 			MechWarriorPtr pilot = mates[i]->getPilot();
 			Stuff::Vector3D goal;
 			goal.x = goal.y = goal.z = 0.0f;
 			if (pilot && pilot->getMoveGlobalGoal(goal)) {
-				long worldCell[2];
+				int32_t worldCell[2];
 				land->worldToCell(goal, worldCell[0], worldCell[1]);
 				worldCell[0] -= mapCellUL[0];
 				worldCell[1] -= mapCellUL[1];
@@ -4632,12 +4632,12 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 	//-----------------------
 	// Init the area lists...
 	char validAreaTable[MAX_GLOBALMAP_AREAS];
-	for (long i = 0; i < GlobalMoveMap[moveLevel]->numAreas; i++)
+	for (int32_t i = 0; i < GlobalMoveMap[moveLevel]->numAreas; i++)
 		validAreaTable[i] = -1;
-	long curArea = GlobalMoveMap[moveLevel]->calcArea(cellPositionRow, cellPositionCol);
-	long goalArea = GlobalMoveMap[moveLevel]->calcArea(goalCell[0], goalCell[1]);
+	int32_t curArea = GlobalMoveMap[moveLevel]->calcArea(cellPositionRow, cellPositionCol);
+	int32_t goalArea = GlobalMoveMap[moveLevel]->calcArea(goalCell[0], goalCell[1]);
 	if (numValidAreas > 0) {
-		for (long i = 0; i < numValidAreas; i++) {
+		for (int32_t i = 0; i < numValidAreas; i++) {
 			if (validAreas[i] == goalArea) {
 				numValidAreas = i + 1;
 				break;
@@ -4648,26 +4648,26 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 		validAreaTable[validAreas[i]] = 1;
 
 	startTime = GetCycles();
-	long deepWaterWeight = ((moveLevel == 1) ? 0 : 999999);
+	int32_t deepWaterWeight = ((moveLevel == 1) ? 0 : 999999);
 
 	//-----------------------------------------
 	// Finally, lay down the terrain weights...
 	for (r = 0; r < GOALMAP_CELL_DIM; r++)
-		for (long c = 0; c < GOALMAP_CELL_DIM; c++) {
-			long curCellRow = mapCellUL[0] + r;
-			long curCellCol = mapCellUL[1] + c;
+		for (int32_t c = 0; c < GOALMAP_CELL_DIM; c++) {
+			int32_t curCellRow = mapCellUL[0] + r;
+			int32_t curCellCol = mapCellUL[1] + c;
 			if (GameMap->inBounds(curCellRow, curCellCol)) 
 			{
 				//------------------------------------------------------------
-				// In the long run, we should simply have a look-up table that
+				// In the int32_t run, we should simply have a look-up table that
 				// contains a weight for each terrain\tile type (including
 				// transitions)...
 				MapCellPtr mapCell = GameMap->getCell(curCellRow, curCellCol);
 
 				//-----------------------
 				// Tile (terrain) type...
-				//long tileType = curTile.getTileType();
-				long goalMapIndex = goalMapRowStart[r] + c; 
+				//int32_t tileType = curTile.getTileType();
+				int32_t goalMapIndex = goalMapRowStart[r] + c; 
 				if (!mapCell->getPassable())
 					goalMap[goalMapIndex] -= 10000;
 				if (mapCell->getOffMap())
@@ -4683,17 +4683,17 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 					goalMap[goalMapIndex] -= 50000;
 
 
-				long area = GlobalMoveMap[moveLevel]->calcArea(curCellRow, curCellCol);
+				int32_t area = GlobalMoveMap[moveLevel]->calcArea(curCellRow, curCellCol);
 				if ((area != curArea) && (area != -1) && (curArea != -1)) {
 					if (moveLevel < 2) {
 					//if (GlobalMoveMap[moveLevel]->areas[area].type == AREA_TYPE_NORMAL) {
 						if (GlobalMoveMap[moveLevel]->getPathExists(curArea, area) == GLOBALPATH_EXISTS_UNKNOWN) {
 							if (CalcValidAreaTable) {
 								GlobalPathStep globalPath[128];
-								long numSteps = GlobalMoveMap[moveLevel]->calcPath(curArea, area, globalPath);
+								int32_t numSteps = GlobalMoveMap[moveLevel]->calcPath(curArea, area, globalPath);
 								if (numSteps > 0) {
-									for (long j = 0; j < numSteps; j++)
-										for (long k = 0; k < numSteps; k++)
+									for (int32_t j = 0; j < numSteps; j++)
+										for (int32_t k = 0; k < numSteps; k++)
 											GlobalMoveMap[moveLevel]->setPathExists(globalPath[j].thruArea, globalPath[k].thruArea, GLOBALPATH_EXISTS_TRUE);
 									}
 								else {
@@ -4718,7 +4718,7 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 #endif
 
 	startTime = GetCycles();
-	long goalList[MAX_MOVE_GOALS][2];
+	int32_t goalList[MAX_MOVE_GOALS][2];
 	//------------------
 	// Setup the list...
 	for (i = 0; i < MAX_MOVE_GOALS; i++) {
@@ -4728,13 +4728,13 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 	for (i = 0; i < MAX_MOVE_GOALS; i++) {
 		//-----------------------------------------
 		// This assumes that MAX_MOVE_GOALS >= 2...
-		long weight = goalMap[i];
-		for (long j = MAX_MOVE_GOALS - 2; j > -1; j--)
+		int32_t weight = goalMap[i];
+		for (int32_t j = MAX_MOVE_GOALS - 2; j > -1; j--)
 			if (weight < goalList[j][1])
 				break;
 
 		if (j < (MAX_MOVE_GOALS - 2))
-			memmove(&goalList[j + 2][0], &goalList[j + 1][0], (MAX_MOVE_GOALS - 2 - j) * sizeof(long) * 2);
+			memmove(&goalList[j + 2][0], &goalList[j + 1][0], (MAX_MOVE_GOALS - 2 - j) * sizeof(int32_t) * 2);
 		goalList[j + 1][0] = i;
 		goalList[j + 1][1] = weight;
 	}
@@ -4742,13 +4742,13 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 		//------------------------------------------------------------
 		// This routine assumes wt > goaList[MAX_MOVE_GOALS - 1][2]...
 		// AND that MAX_MOVE_GOALS >= 2...
-		long weight = goalMap[i];
+		int32_t weight = goalMap[i];
 		if (weight > goalList[MAX_MOVE_GOALS - 1][1]) {
-			for (long j = MAX_MOVE_GOALS - 2; j > -1; j--)
+			for (int32_t j = MAX_MOVE_GOALS - 2; j > -1; j--)
 				if (weight < goalList[j][1])
 					break;
 			if (j < (MAX_MOVE_GOALS - 2))
-				memmove(&goalList[j + 2][0], &goalList[j + 1][0], (MAX_MOVE_GOALS - 2 - j) * sizeof(long) * 2);
+				memmove(&goalList[j + 2][0], &goalList[j + 1][0], (MAX_MOVE_GOALS - 2 - j) * sizeof(int32_t) * 2);
 			goalList[j + 1][0] = i;
 			goalList[j + 1][1] = weight;
 		}
@@ -4764,9 +4764,9 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 //#ifdef USE_GROUPS
 	if ((getObjectClass() == ELEMENTAL) && target && getGroup()) {
 		MoverPtr mates[MAX_MOVERGROUP_COUNT];
-		long numMates = getGroup()->getMovers(mates);
+		int32_t numMates = getGroup()->getMovers(mates);
 		selectionIndex = 0;
-		for (long i = 0; i < numMates; i++) {
+		for (int32_t i = 0; i < numMates; i++) {
 			if (mates[i] == this)
 				break;
 			MechWarriorPtr pilot = mates[i]->getPilot();
@@ -4784,10 +4784,10 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 
 	//------------------------------
 	// Now, pick the goal we want...
-	long curGoalIndex = 0;
+	int32_t curGoalIndex = 0;
 	if ((selectionIndex > 0) && (selectionIndex < MAX_MOVE_GOALS))
 		curGoalIndex = selectionIndex;
-	long curGoalCell[2];
+	int32_t curGoalCell[2];
 	bool noLOF = true;
 	curGoalCell[0] = mapCellUL[0] + goalMapRowCol[goalList[0][0]][0];
 	curGoalCell[1] = mapCellUL[1] + goalMapRowCol[goalList[0][0]][1];
@@ -4798,14 +4798,14 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 	if (hasWeaponNode()) {
 		Stuff::Vector3D curMoverPosition;
 		curMoverPosition = position;
-		long curMoverRow = cellPositionRow;
-		long curMoverCol = cellPositionCol;
+		int32_t curMoverRow = cellPositionRow;
+		int32_t curMoverCol = cellPositionCol;
 
 		startTime = GetCycles();
-		long i = 0;
+		int32_t i = 0;
 		ObjectManager->useMoverLineOfSightTable = false;
 		while (noLOF && (i < MaxMoveGoalChecks)) {
-			long index = goalList[i][0];
+			int32_t index = goalList[i][0];
 			curGoalCell[0] = mapCellUL[0] + goalMapRowCol[index][0];
 			curGoalCell[1] = mapCellUL[1] + goalMapRowCol[index][1];
 			i++;
@@ -4818,7 +4818,7 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 				position = start;
 				cellPositionRow = curGoalCell[0];
 				cellPositionCol = curGoalCell[1];
-				__int64 lstartTime = GetCycles();
+				int64_t lstartTime = GetCycles();
 				if (goalList[i][1] > -10000) {
 					if (movingToCapture)
 						noLOF = false;
@@ -4845,12 +4845,12 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 
 	startTime = GetCycles();
 	if (noLOF && hasWeaponNode()) {
-		long targetPos[2], maxPos[2], bestCell[4][2];
+		int32_t targetPos[2], maxPos[2], bestCell[4][2];
 		float castRange;
-		long result[4];
-		long resultCost[4] = {0, 0, 0, 0};
-		long confidence[4];
-		long bestBest = 0;
+		int32_t result[4];
+		int32_t resultCost[4] = {0, 0, 0, 0};
+		int32_t confidence[4];
+		int32_t bestBest = 0;
 		if (moveRadius > 0.0) {
 			targetPos[0] = centerCell[0];
 			targetPos[1] = centerCell[1];
@@ -4885,7 +4885,7 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 			maxPos[0] = targetPos[0] - 10;
 			maxPos[1] = targetPos[1];
 			castRange = pilot->getSituationFireRange();
-			long bestBest = 0;
+			int32_t bestBest = 0;
 			result[0] = calcBestGoalFromTarget(targetPos, maxPos, 0.0, castRange, bestCell[0]);
 			if (result[0])
 				resultCost[0] = GlobalMoveMap[moveLevel]->getPathCost(GlobalMoveMap[moveLevel]->calcArea(cellPositionRow, cellPositionCol),GlobalMoveMap[moveLevel]->calcArea(bestCell[0][0], bestCell[0][1]), false, confidence[0], true);
@@ -4938,16 +4938,16 @@ long Mover::calcMoveGoal (GameObjectPtr target,
 	land->cellToWorld(curGoalCell[0], curGoalCell[1], newGoal);
 	newGoal = calcOffsetMoveGoal(newGoal);
 	//float distToGoal = distance_from(newGoal, goal) * metersPerWorldUnit;
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-long Mover::calcMovePath (MovePathPtr path,
-						  long pathType,
+int32_t Mover::calcMovePath (MovePathPtr path,
+						  int32_t pathType,
 						  Stuff::Vector3D start,
 						  Stuff::Vector3D goal,
-						  long* goalCell,
+						  int32_t* goalCell,
 						  ULONG moveParams) {
 
 	//-------------------------------------------------------------------------
@@ -4957,30 +4957,30 @@ long Mover::calcMovePath (MovePathPtr path,
 	if (!PathFindMap[SECTOR_PATHMAP] || !PathFindMap[SIMPLE_PATHMAP])
 		Fatal(0, " No PathFindMap in Mover::calcMovePath ");
 
-	long posCellR, posCellC;
+	int32_t posCellR, posCellC;
 	land->worldToCell(start, posCellR, posCellC);
 
-	long goalCellR, goalCellC;
+	int32_t goalCellR, goalCellC;
 	land->worldToCell(goal, goalCellR, goalCellC);
 
 	path->clear();
-	long result = 0;
+	int32_t result = 0;
 
 	if (pathType == MOVEPATH_SIMPLE) {
-		long mapULr = posCellR - SimpleMovePathRange;
+		int32_t mapULr = posCellR - SimpleMovePathRange;
 		if (mapULr < 0)
 			mapULr = 0;
-		long mapULc = posCellC - SimpleMovePathRange;
+		int32_t mapULc = posCellC - SimpleMovePathRange;
 		if (mapULc < 0)
 			mapULc = 0;
 
 		float cellLength = (Terrain::worldUnitsPerCell * metersPerWorldUnit);
-		long clearCost = 0;
+		int32_t clearCost = 0;
 		if (maxMoveSpeed != 0.0)
 			clearCost = (float2short)(cellLength / maxMoveSpeed * 50.0);
 		if (clearCost > 0) {
-			long jumpCost = 0;
-			long numOffsets = 8;
+			int32_t jumpCost = 0;
+			int32_t numOffsets = 8;
 			if (!pilot->onHomeTeam() && !MPlayer)
 				getJumpRange(&numOffsets, &jumpCost);
 			#ifdef USE_ELEMENTALS
@@ -5023,7 +5023,7 @@ long Mover::calcMovePath (MovePathPtr path,
 			// Set up debug info...
 			DebugMovePathType = pathType;
 
-			long goalCell[2];
+			int32_t goalCell[2];
 			if (numOffsets > 8)
 				result = PathFindMap[SIMPLE_PATHMAP]->calcPathJUMP(path, NULL, goalCell);
 			else
@@ -5037,24 +5037,24 @@ long Mover::calcMovePath (MovePathPtr path,
 		// We are now assuming all local pathfinding will fit within two adjacent sectors.
 		// So, we can assume both the start and goal locations are within the two adj sectors...
 		float cellLength = (Terrain::worldUnitsPerCell * metersPerWorldUnit);
-		long clearCost = 0;
+		int32_t clearCost = 0;
 		if (maxMoveSpeed != 0.0)
-			clearCost = (long)(cellLength / maxMoveSpeed * 50.0);
+			clearCost = (int32_t)(cellLength / maxMoveSpeed * 50.0);
 		if (clearCost > 0) {
-			long jumpCost = 0;
-			long numOffsets = 8;
+			int32_t jumpCost = 0;
+			int32_t numOffsets = 8;
 			if (!pilot->onHomeTeam() && !MPlayer)
 				getJumpRange(&numOffsets, &jumpCost);
-			long startSector[2];
+			int32_t startSector[2];
 			startSector[0] = posCellR / SECTOR_DIM;
 			startSector[1] = posCellC / SECTOR_DIM;
-			long goalSector[2];
+			int32_t goalSector[2];
 			goalSector[0] = goalCellR / SECTOR_DIM;
 			goalSector[1] = goalCellC / SECTOR_DIM;
-			long sectorULr = startSector[0] * SECTOR_DIM;
+			int32_t sectorULr = startSector[0] * SECTOR_DIM;
 			if (startSector[0] > goalSector[0])
 				sectorULr = goalSector[0] * SECTOR_DIM;
-			long sectorULc = startSector[1] * SECTOR_DIM;
+			int32_t sectorULc = startSector[1] * SECTOR_DIM;
 			if (startSector[1] > goalSector[1])
 				sectorULc = goalSector[1] * SECTOR_DIM;
 
@@ -5123,10 +5123,10 @@ long Mover::calcMovePath (MovePathPtr path,
 
 //---------------------------------------------------------------------------
 
-long Mover::calcEscapePath (MovePathPtr path,
+int32_t Mover::calcEscapePath (MovePathPtr path,
 							Stuff::Vector3D start,
 							Stuff::Vector3D goal,
-							long* goalCell,
+							int32_t* goalCell,
 							ULONG moveParams,
 							Stuff::Vector3D& escapeGoal) {
 
@@ -5139,29 +5139,29 @@ long Mover::calcEscapePath (MovePathPtr path,
 	if (!PathFindMap[SECTOR_PATHMAP] || !PathFindMap[SIMPLE_PATHMAP])
 		Fatal(0, " No PathFindMap in Mover::calcMovePath ");
 
-	long posCellR, posCellC;
+	int32_t posCellR, posCellC;
 	land->worldToCell(start, posCellR, posCellC);
 
-	long goalCellR, goalCellC;
+	int32_t goalCellR, goalCellC;
 	land->worldToCell(goal, goalCellR, goalCellC);
 
 	path->clear();
-	long result = 0;
+	int32_t result = 0;
 
-	long mapULr = posCellR - SimpleMovePathRange;
+	int32_t mapULr = posCellR - SimpleMovePathRange;
 	if (mapULr < 0)
 		mapULr = 0;
-	long mapULc = posCellC - SimpleMovePathRange;
+	int32_t mapULc = posCellC - SimpleMovePathRange;
 	if (mapULc < 0)
 		mapULc = 0;
 
 	float cellLength = (Terrain::worldUnitsPerCell * metersPerWorldUnit);
-	long clearCost = 0;
+	int32_t clearCost = 0;
 	if (maxMoveSpeed != 0.0)
 		clearCost = (float2short)(cellLength / maxMoveSpeed * 50.0);
 	if (clearCost > 0) {
-		long jumpCost = 0;
-		long numOffsets = 8;
+		int32_t jumpCost = 0;
+		int32_t numOffsets = 8;
 		if (!pilot->onHomeTeam() && !MPlayer)
 			getJumpRange(&numOffsets, &jumpCost);
 
@@ -5202,7 +5202,7 @@ long Mover::calcEscapePath (MovePathPtr path,
 		// Set up debug info...
 		DebugMovePathType = 0;
 
-		long goalCell[2];
+		int32_t goalCell[2];
 		result = PathFindMap[SIMPLE_PATHMAP]->calcEscapePath(path, &escapeGoal, goalCell);
 		JumpOnBlocked = false;
 		FindingEscapePath = false;
@@ -5221,9 +5221,9 @@ long Mover::calcEscapePath (MovePathPtr path,
 
 //---------------------------------------------------------------------------
 
-bool Mover::getAdjacentCellPathLocked (long level, long cellRow, long cellCol, long dir) {
+bool Mover::getAdjacentCellPathLocked (int32_t level, int32_t cellRow, int32_t cellCol, int32_t dir) {
 
-	static long adjCellTable[8][2] = {
+	static int32_t adjCellTable[8][2] = {
 		{-1, 0},
 		{-1, 1},
 		{0, 1},
@@ -5233,8 +5233,8 @@ bool Mover::getAdjacentCellPathLocked (long level, long cellRow, long cellCol, l
 		{0, -1},
 		{-1, -1}
 	};
-	long adjCellRow = cellRow + adjCellTable[dir][0];
-	long adjCellCol = cellCol + adjCellTable[dir][1];
+	int32_t adjCellRow = cellRow + adjCellTable[dir][0];
+	int32_t adjCellCol = cellCol + adjCellTable[dir][1];
 	if (level < 0)
 		return(false);
 	if (level > (NUM_MOVE_LEVELS - 1))
@@ -5244,7 +5244,7 @@ bool Mover::getAdjacentCellPathLocked (long level, long cellRow, long cellCol, l
 
 //---------------------------------------------------------------------------
 
-bool Mover::getPathRangeLock (long range, bool* reachedEnd) {
+bool Mover::getPathRangeLock (int32_t range, bool* reachedEnd) {
 
 	MovePathPtr path = pilot->getMovePath();
 	if (path)
@@ -5254,20 +5254,20 @@ bool Mover::getPathRangeLock (long range, bool* reachedEnd) {
 
 //---------------------------------------------------------------------------
 
-long Mover::setPathRangeLock (bool set, long range) {
+int32_t Mover::setPathRangeLock (bool set, int32_t range) {
 
 	MovePathPtr path = pilot->getMovePath();
-	long lockLevel = (moveLevel == 2);
+	int32_t lockLevel = (moveLevel == 2);
 	if (set) {
 		if (pathLockLength > 0)
 			setPathRangeLock(false);
 		if (path && (path->numSteps > 0)) {
-			long start = path->curStep;
-			long lastStep = start + range;
+			int32_t start = path->curStep;
+			int32_t lastStep = start + range;
 			if (lastStep >= path->numStepsWhenNotPaused)
 				lastStep = path->numStepsWhenNotPaused;
 			pathLockLength = 0;
-			for (long i = start; i < lastStep; i++) {
+			for (int32_t i = start; i < lastStep; i++) {
 				if (GameMap->getPathlock(lockLevel, path->stepList[i].cell[0], path->stepList[i].cell[1]))
 					return(-1);
 				GameMap->setPathlock((moveLevel == 2), path->stepList[i].cell[0], path->stepList[i].cell[1], true);
@@ -5278,12 +5278,12 @@ long Mover::setPathRangeLock (bool set, long range) {
 		}
 		}
 	else {
-		for (long i = 0; i < pathLockLength; i++)
+		for (int32_t i = 0; i < pathLockLength; i++)
 			GameMap->setPathlock(lockLevel, pathLockList[i][0], pathLockList[i][1], false);
 		pathLockLength = 0;
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -5311,7 +5311,7 @@ void Mover::updatePathLock (bool set)
 
 //---------------------------------------------------------------------------
 
-bool Mover::getPathRangeBlocked (long range, bool* reachedEnd) {
+bool Mover::getPathRangeBlocked (int32_t range, bool* reachedEnd) {
 
 	if (moveLevel > 0)
 		return(false);
@@ -5326,7 +5326,7 @@ bool Mover::getPathRangeBlocked (long range, bool* reachedEnd) {
 void Mover::updateHustleTime (void) {
 
 #if 0		//Redo when bridges come into play.
-	long overlay = GameMap->getOverlay(cellPositionRow, cellPositionCol);
+	int32_t overlay = GameMap->getOverlay(cellPositionRow, cellPositionCol);
 
 	//---------------------------------------------------------------------------------
 	// To avoid blocking movement on bridges, we'll keep track of a "hustle" time
@@ -5351,12 +5351,12 @@ void Mover::updateHustleTime (void) {
 
 //---------------------------------------------------------------------------
 
-long Mover::bounceToAdjCell (void) {
+int32_t Mover::bounceToAdjCell (void) {
 
 	//--------------------------------------------------------------------
 	// Bounces mover to an adjacent open cell. Convenient for collisions:)
-	for (long dir = 0; dir < 8; dir++) {
-		static long adjCellTable[8][2] = {
+	for (int32_t dir = 0; dir < 8; dir++) {
+		static int32_t adjCellTable[8][2] = {
 			{-1, 0},
 			{-1, 1},
 			{0,	1},
@@ -5366,8 +5366,8 @@ long Mover::bounceToAdjCell (void) {
 			{0, -1},
 			{-1, -1}
 		};
-		long adjRow = cellPositionRow + adjCellTable[dir][0];
-		long adjCol = cellPositionCol + adjCellTable[dir][1];
+		int32_t adjRow = cellPositionRow + adjCellTable[dir][0];
+		int32_t adjCol = cellPositionCol + adjCellTable[dir][1];
 		bool cellPathLocked = GameMap->getPathlock((moveLevel == 2), adjRow, adjCol);
 		bool cellPassable = GameMap->getPassable(adjRow, adjCol);
 
@@ -5391,13 +5391,13 @@ long Mover::bounceToAdjCell (void) {
 
 //---------------------------------------------------------------------------
 
-long Mover::calcMovePath (MovePathPtr path,
+int32_t Mover::calcMovePath (MovePathPtr path,
 						  Stuff::Vector3D start,
-						  long thruArea[2],
-						  long goalDoor,
+						  int32_t thruArea[2],
+						  int32_t goalDoor,
 						  Stuff::Vector3D finalGoal,
 						  Stuff::Vector3D* goal,
-						  long* goalCell,
+						  int32_t* goalCell,
 						  ULONG moveParams) {
 
 	//-------------------------------------------------------------------------
@@ -5410,20 +5410,20 @@ long Mover::calcMovePath (MovePathPtr path,
 	// We are now assuming all local pathfinding will fit within one sector. So, we can
 	// assume both the start and goal locations are within the sector...
 
-	long result = 0;
+	int32_t result = 0;
 	path->clear();
 
 	float cellLength = (Terrain::worldUnitsPerCell * metersPerWorldUnit);
-	long clearCost = 0;
+	int32_t clearCost = 0;
 	if (maxMoveSpeed != 0)
-		clearCost = (long)(cellLength / maxMoveSpeed * 50.0);
+		clearCost = (int32_t)(cellLength / maxMoveSpeed * 50.0);
 	if (clearCost > 0) {
-		long jumpCost = 0;
-		long numOffsets = 8;
+		int32_t jumpCost = 0;
+		int32_t numOffsets = 8;
 		if (!pilot->onHomeTeam() && !MPlayer)
 			getJumpRange(&numOffsets, &jumpCost);
 
-		long posCellR, posCellC;
+		int32_t posCellR, posCellC;
 		land->worldToCell(start, posCellR, posCellC);
 
 		#ifdef USE_ELEMENTALS
@@ -5490,7 +5490,7 @@ long Mover::calcMovePath (MovePathPtr path,
 
 //---------------------------------------------------------------------------
 
-long Mover::getContacts (long* contactList, long contactCriteria, long sortType) {
+int32_t Mover::getContacts (int32_t* contactList, int32_t contactCriteria, int32_t sortType) {
 
 	if (sensorSystem)
 		return(sensorSystem->getTeamContacts(contactList, contactCriteria, sortType));
@@ -5499,7 +5499,7 @@ long Mover::getContacts (long* contactList, long contactCriteria, long sortType)
 
 //------------------------------------------------------------------------------------------
 
-long Mover::getContactStatus (long scanningTeamID, bool includingAllies) {
+int32_t Mover::getContactStatus (int32_t scanningTeamID, bool includingAllies) {
 
 	if (getFlag(OBJECT_FLAG_REMOVED))
 		return(CONTACT_NONE);
@@ -5508,15 +5508,15 @@ long Mover::getContactStatus (long scanningTeamID, bool includingAllies) {
 
 //------------------------------------------------------------------------------------------
 
-float Mover::weaponLocked (long weaponIndex, Stuff::Vector3D targetPosition) {
+float Mover::weaponLocked (int32_t weaponIndex, Stuff::Vector3D targetPosition) {
 
-	long bodyLocation = inventory[weaponIndex].bodyLocation;
+	int32_t bodyLocation = inventory[weaponIndex].bodyLocation;
 	return(relFacingTo(targetPosition, bodyLocation));
 }
 
 //------------------------------------------------------------------------------------------
 
-bool Mover::weaponInRange (long weaponIndex, float metersToTarget, float buffer) {
+bool Mover::weaponInRange (int32_t weaponIndex, float metersToTarget, float buffer) {
 
 	MasterComponentPtr weapon = &MasterComponent::masterList[inventory[weaponIndex].masterID];
 
@@ -5531,15 +5531,15 @@ bool Mover::weaponInRange (long weaponIndex, float metersToTarget, float buffer)
 
 //------------------------------------------------------------------------------------------
 
-long Mover::getWeaponsReady (long* list, long listSize) {
+int32_t Mover::getWeaponsReady (int32_t* list, int32_t listSize) {
 
 	//-----------------------------------------
 	// Make sure list is >= the number of ready
 	// weapons!
 
-	long numReady = 0;
+	int32_t numReady = 0;
 	if (listSize == -1)
-		for (long item = numOther; item < (numOther + numWeapons); item++) {
+		for (int32_t item = numOther; item < (numOther + numWeapons); item++) {
 			if (isWeaponReady(item)) {
 				if (list)
 					list[numReady++] = item;
@@ -5548,7 +5548,7 @@ long Mover::getWeaponsReady (long* list, long listSize) {
 			}
 		}
 	else
-		for (long item = 0; item < listSize; item++) {
+		for (int32_t item = 0; item < listSize; item++) {
 			if (isWeaponReady(list[item])) {
 				if (list)
 					list[numReady++] = list[item];
@@ -5562,7 +5562,7 @@ long Mover::getWeaponsReady (long* list, long listSize) {
 
 //------------------------------------------------------------------------------------------
 
-long Mover::getWeaponsLocked (long* list, long listSize) {
+int32_t Mover::getWeaponsLocked (int32_t* list, int32_t listSize) {
 
 	//------------------------------------------
 	// Make sure list is >= the number of locked
@@ -5574,16 +5574,16 @@ long Mover::getWeaponsLocked (long* list, long listSize) {
 
 	Stuff::Vector3D targetPosition = target->getPosition();
 
-	long numLocked = 0;
+	int32_t numLocked = 0;
 	float fireArc = getFireArc();
 	if (listSize == -1)
-		for (long item = numOther; item < (numOther + numWeapons); item++) {
+		for (int32_t item = numOther; item < (numOther + numWeapons); item++) {
 			float relAngle = weaponLocked(item, targetPosition);
 			if ((relAngle >= -fireArc) && (relAngle <= fireArc))
 				list[numLocked++] = item;
 		}
 	else
-		for (long item = 0; item < listSize; item++) {
+		for (int32_t item = 0; item < listSize; item++) {
 			float relAngle = weaponLocked(list[item], targetPosition);
 			if ((relAngle >= -fireArc) && (relAngle <= fireArc))
 				list[numLocked++] = list[item];
@@ -5593,7 +5593,7 @@ long Mover::getWeaponsLocked (long* list, long listSize) {
 
 //------------------------------------------------------------------------------------------
 
-long Mover::getWeaponsInRange (long* list, long listSize, float fireRangeOrder) {
+int32_t Mover::getWeaponsInRange (int32_t* list, int32_t listSize, float fireRangeOrder) {
 
 	//------------------------------------------
 	// Make sure list is >= the number of locked
@@ -5611,14 +5611,14 @@ long Mover::getWeaponsInRange (long* list, long listSize, float fireRangeOrder) 
 		return(-3);
 	#endif	
 
-	long numInRange = 0;
+	int32_t numInRange = 0;
 	if (listSize == -1) {
-		for (long item = numOther; item < (numOther + numWeapons); item++)
+		for (int32_t item = numOther; item < (numOther + numWeapons); item++)
 			if (weaponInRange(item, rangeToTarget, MapCellDiagonal))
 				list[numInRange++] = item;
 		}
 	else {
-		for (long item = 0; item < listSize; item++)
+		for (int32_t item = 0; item < listSize; item++)
 			if (weaponInRange(list[item], rangeToTarget, MapCellDiagonal))
 				list[numInRange++] = list[item];
 	}
@@ -5627,7 +5627,7 @@ long Mover::getWeaponsInRange (long* list, long listSize, float fireRangeOrder) 
 
 //------------------------------------------------------------------------------------------
 
-long Mover::getWeaponShots (long weaponIndex) {
+int32_t Mover::getWeaponShots (int32_t weaponIndex) {
 
 	if (!isWeaponIndex(weaponIndex))
 		return(-1);
@@ -5644,13 +5644,13 @@ long Mover::getWeaponShots (long weaponIndex) {
 }
 
 //------------------------------------------------------------------------------------------
-bool Mover::getWeaponIndirectFire (long weaponIndex)
+bool Mover::getWeaponIndirectFire (int32_t weaponIndex)
 {
 	if (!isWeaponIndex(weaponIndex))
 		return(false);
 
 	//--------------------------------------------------------------------
-	for (long i=0;i<20;i++)
+	for (int32_t i=0;i<20;i++)
 	{
 		if (IndirectFireWeapons[i] == inventory[weaponIndex].masterID)
 			return true;
@@ -5662,13 +5662,13 @@ bool Mover::getWeaponIndirectFire (long weaponIndex)
 }
 
 //------------------------------------------------------------------------------------------
-bool Mover::getWeaponAreaEffect (long weaponIndex)
+bool Mover::getWeaponAreaEffect (int32_t weaponIndex)
 {
 	if (!isWeaponIndex(weaponIndex))
 		return(false);
 
 	//--------------------------------------------------------------------
-	for (long i=0;i<20;i++)
+	for (int32_t i=0;i<20;i++)
 	{
 		if (AreaEffectWeapons[i] == inventory[weaponIndex].masterID)
 			return true;
@@ -5681,7 +5681,7 @@ bool Mover::getWeaponAreaEffect (long weaponIndex)
 
 //------------------------------------------------------------------------------------------
 
-float Mover::getWeaponAmmoLevel (long weaponIndex) {
+float Mover::getWeaponAmmoLevel (int32_t weaponIndex) {
 
 	if (!isWeaponIndex(weaponIndex))
 		return(-1.0);
@@ -5689,7 +5689,7 @@ float Mover::getWeaponAmmoLevel (long weaponIndex) {
 	return((float)(ammoTypeTotal[inventory[weaponIndex].ammoIndex].curAmount) / (float)(ammoTypeTotal[inventory[weaponIndex].ammoIndex].maxAmount));
 }
 
-bool Mover::getWeaponIsEnergy( long weaponIndex )
+bool Mover::getWeaponIsEnergy( int32_t weaponIndex )
 {
 	return MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() == COMPONENT_FORM_WEAPON_ENERGY;
 
@@ -5699,7 +5699,7 @@ bool Mover::getWeaponIsEnergy( long weaponIndex )
 
 void Mover::calcWeaponEffectiveness (bool setMax) {
 
-	long effectiveness = 0;
+	int32_t effectiveness = 0;
 	float avgSkill;
 
 	//----------------------------------
@@ -5714,7 +5714,7 @@ void Mover::calcWeaponEffectiveness (bool setMax) {
 	//Ammo is NOT part of weapon effectiveness anymore
 	// Per Mike Lee
 	// -fs
-	for (long curWeapon = numOther; curWeapon < (numOther + numWeapons); curWeapon++) {
+	for (int32_t curWeapon = numOther; curWeapon < (numOther + numWeapons); curWeapon++) {
 		if (setMax || (!inventory[curWeapon].disabled ))
 			effectiveness += inventory[curWeapon].effectiveness * avgSkill;
 	}
@@ -5741,13 +5741,13 @@ void Mover::calcAmmoTotals (void)
 		//-----------------------------------------------------------
 		// We have some ammo in our inventory, so let's count 'em up.
 		// First, make a list of all weapon types we have...
-		for (long i = numOther; i < (numOther + numWeapons); i++) 
+		for (int32_t i = numOther; i < (numOther + numWeapons); i++) 
 		{
-			long weaponMasterId = inventory[i].masterID;
+			int32_t weaponMasterId = inventory[i].masterID;
 			bool newAmmoType = true;
-			for (long curAmmo = 0; curAmmo < (long)numAmmoTypes; curAmmo++)
+			for (int32_t curAmmo = 0; curAmmo < (int32_t)numAmmoTypes; curAmmo++)
 			{
-				if (totalList[curAmmo].masterId == (long)MasterComponent::masterList[weaponMasterId].getWeaponAmmoMasterId()) 
+				if (totalList[curAmmo].masterId == (int32_t)MasterComponent::masterList[weaponMasterId].getWeaponAmmoMasterId()) 
 				{
 					newAmmoType = false;
 					break;
@@ -5775,9 +5775,9 @@ void Mover::calcAmmoTotals (void)
 		// Now, go through all ammo we have and tally 'em...
 		for (i = numOther + numWeapons; i < (numOther + numWeapons + numAmmos); i++) 
 		{
-			long ammoMasterId = inventory[i].masterID;
+			int32_t ammoMasterId = inventory[i].masterID;
 			bool foundAmmoWeapon = false;
-			for (long curAmmo = 0; curAmmo < numAmmoTypes; curAmmo++)
+			for (int32_t curAmmo = 0; curAmmo < numAmmoTypes; curAmmo++)
 			{
 				if (totalList[curAmmo].masterId == ammoMasterId) 
 				{
@@ -5809,7 +5809,7 @@ void Mover::calcAmmoTotals (void)
 
 //------------------------------------------------------------------------------------------
 
-long Mover::calcFireRanges (void) {
+int32_t Mover::calcFireRanges (void) {
 
 	lastOptimalRangeCalc = scenarioTime;
 
@@ -5818,9 +5818,9 @@ long Mover::calcFireRanges (void) {
 	maxRange = 0;
 	minRange = 1000000.0;
 	numFunctionalWeapons = 0;
-	for (long curWeapon = numOther; curWeapon < (numOther + numWeapons); curWeapon++) {
+	for (int32_t curWeapon = numOther; curWeapon < (numOther + numWeapons); curWeapon++) {
 		if (!inventory[curWeapon].disabled && (getWeaponShots(curWeapon) > 0)) {
-			long range = (long)MasterComponent::masterList[inventory[curWeapon].masterID].getWeaponRange();
+			int32_t range = (int32_t)MasterComponent::masterList[inventory[curWeapon].masterID].getWeaponRange();
 			float minWeaponRange = WeaponRanges[range][0];
 			float maxWeaponRange = WeaponRanges[range][1];
 			if (maxWeaponRange > maxRange)
@@ -5840,7 +5840,7 @@ long Mover::calcFireRanges (void) {
 			float damageTimeRating = weapon->getWeaponDamage() / weapon->getWeaponRecycleTime();
 			//---------------------------------
 			// Go thru the five range points...
-			for (long i = 0; i < 5; i++)
+			for (int32_t i = 0; i < 5; i++)
 				if (OptimalRangePointInRange[i][weapon->getWeaponRange()])
 					rangeTotals[i] += damageTimeRating;
 		}
@@ -5852,7 +5852,7 @@ long Mover::calcFireRanges (void) {
 		}
 	else {
 		sortList->clear();
-		for (long i = 0; i < NUM_WEAPON_RANGE_TYPES; i++) {
+		for (int32_t i = 0; i < NUM_WEAPON_RANGE_TYPES; i++) {
 			sortList->setId(i, i);
 			sortList->setValue(i, rangeTotals[i]);
 		}
@@ -5863,12 +5863,12 @@ long Mover::calcFireRanges (void) {
 		}
 	}
 
-	long optimalRangeType = sortList->getId(0);
+	int32_t optimalRangeType = sortList->getId(0);
 	if (sortList->getValue(0) == sortList->getValue(1)) {
 		//--------------------------------------------------------------
 		// A tie, so pick one based upon the pre-set range priorities...
 		uint8_t tieFlags = 0;
-		for (long i = 0; i < 5; i++)
+		for (int32_t i = 0; i < 5; i++)
 			if (sortList->getValue(i) == sortList->getValue(0))
 				tieFlags |= (1 << sortList->getId(i));
 
@@ -5886,9 +5886,9 @@ long Mover::calcFireRanges (void) {
 
 //------------------------------------------------------------------------------------------
 
-float Mover::getOrderedFireRange (long* attackRange) {
+float Mover::getOrderedFireRange (int32_t* attackRange) {
 
-	long fireRange = pilot->getCurTacOrder()->attackParams.range;
+	int32_t fireRange = pilot->getCurTacOrder()->attackParams.range;
 	if (attackRange)
 		fireRange = *attackRange;
 	float orderedFireRange = -1.0;
@@ -5943,21 +5943,21 @@ float Mover::getOptimalFireRange (void) {
 // COMBAT routines
 //------------------------------------------------------------------------------------------
 
-bool Mover::isWeaponIndex (long itemIndex) {
+bool Mover::isWeaponIndex (int32_t itemIndex) {
 
 	return((itemIndex >= numOther) && (itemIndex < (numOther + numWeapons)));
 }
 
 //---------------------------------------------------------------------------
 
-bool Mover::isWeaponMissile (long weaponIndex) {
+bool Mover::isWeaponMissile (int32_t weaponIndex) {
 
 	return(MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() == COMPONENT_FORM_WEAPON_MISSILE);
 }
 
 //---------------------------------------------------------------------------
 
-bool Mover::isWeaponReady (long weaponIndex) {
+bool Mover::isWeaponReady (int32_t weaponIndex) {
 
 	if (inventory[weaponIndex].disabled)
 		return(false);
@@ -5968,7 +5968,7 @@ bool Mover::isWeaponReady (long weaponIndex) {
 
 //------------------------------------------------------------------------------------------
 
-void Mover::startWeaponRecycle (long weaponIndex) {
+void Mover::startWeaponRecycle (int32_t weaponIndex) {
 
 	inventory[weaponIndex].readyTime = scenarioTime +
 									   MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponRecycleTime();
@@ -5976,11 +5976,11 @@ void Mover::startWeaponRecycle (long weaponIndex) {
 
 //------------------------------------------------------------------------------------------
 
-long Mover::tallyAmmo (long ammoMasterId) {
+int32_t Mover::tallyAmmo (int32_t ammoMasterId) {
 
-	long tally = 0;
-	long firstAmmo = numOther + numWeapons;
-	for (long item = firstAmmo; item < firstAmmo + numAmmos; item++) {
+	int32_t tally = 0;
+	int32_t firstAmmo = numOther + numWeapons;
+	for (int32_t item = firstAmmo; item < firstAmmo + numAmmos; item++) {
 		if (inventory[item].masterID == ammoMasterId)
 			tally += inventory[item].amount;
 	}
@@ -5996,7 +5996,7 @@ bool Mover::needsRefit(void) {
 
 	if (!refitBuddyWID && getObjectClass() == BATTLEMECH)
 	{
-		for (long loc=0; loc<numArmorLocations; loc++)
+		for (int32_t loc=0; loc<numArmorLocations; loc++)
 		{
 			if (loc<numBodyLocations && (loc == MECH_ARMOR_LOCATION_LARM || loc == MECH_ARMOR_LOCATION_RARM) &&
 					body[loc].damageState == IS_DAMAGE_DESTROYED)
@@ -6009,7 +6009,7 @@ bool Mover::needsRefit(void) {
 			}
 		}
 		if (!result)
-			for (long ammo = 0; ammo < numAmmoTypes; ammo++)
+			for (int32_t ammo = 0; ammo < numAmmoTypes; ammo++)
 				if (ammoTypeTotal[ammo].curAmount < ammoTypeTotal[ammo].maxAmount)
 				{
 					result = true;
@@ -6021,14 +6021,14 @@ bool Mover::needsRefit(void) {
 
 //---------------------------------------------------------------------------
 
-long Mover::reduceAmmo (long ammoMasterId, long amount) {
+int32_t Mover::reduceAmmo (int32_t ammoMasterId, int32_t amount) {
 
-	long amountUsed = amount;
+	int32_t amountUsed = amount;
 
 	//----------------------------------------------------------
 	// Deduct it from the first available ammo critical space...
-	long firstAmmo = numOther + numWeapons;
-	for (long item = firstAmmo; item < firstAmmo + numAmmos; item++) {
+	int32_t firstAmmo = numOther + numWeapons;
+	for (int32_t item = firstAmmo; item < firstAmmo + numAmmos; item++) {
 		if (inventory[item].masterID == ammoMasterId)
 			if (inventory[item].amount > amount) {
 				inventory[item].amount -= amount;
@@ -6043,7 +6043,7 @@ long Mover::reduceAmmo (long ammoMasterId, long amount) {
 	//-------------------------------------------------------------------
 	// Make sure the ammoTypeTotal list, in which we track total ammo for
 	// all of the ammo types this mover uses, is adjusted...
-	for (long ammo = 0; ammo < numAmmoTypes; ammo++)
+	for (int32_t ammo = 0; ammo < numAmmoTypes; ammo++)
 		if (ammoTypeTotal[ammo].masterId == ammoMasterId) {
 			ammoTypeTotal[ammo].curAmount -= amountUsed;
 			if (ammoTypeTotal[ammo].curAmount <= 0) {
@@ -6063,14 +6063,14 @@ long Mover::reduceAmmo (long ammoMasterId, long amount) {
 
 //---------------------------------------------------------------------------
 /*
-long Mover::refillAmmo (long ammoMasterId, long amount) {
+int32_t Mover::refillAmmo (int32_t ammoMasterId, int32_t amount) {
 
-	long amountUsed = amount;
+	int32_t amountUsed = amount;
 
 	//----------------------------------------------------------
 	// Deduct it from the first available ammo critical space...
-	long firstAmmo = numOther + numWeapons;
-	for (long item = firstAmmo; item < firstAmmo + numAmmos; item++) {
+	int32_t firstAmmo = numOther + numWeapons;
+	for (int32_t item = firstAmmo; item < firstAmmo + numAmmos; item++) {
 		if (inventory[item].masterID == ammoMasterId)
 			if (inventory[item].amount > amount) {
 				inventory[item].amount -= amount;
@@ -6085,7 +6085,7 @@ long Mover::refillAmmo (long ammoMasterId, long amount) {
 	//-------------------------------------------------------------------
 	// Make sure the ammoTypeTotal list, in which we track total ammo for
 	// all of the ammo types this mover uses, is adjusted...
-	for (long ammo = 0; ammo < numAmmoTypes; ammo++)
+	for (int32_t ammo = 0; ammo < numAmmoTypes; ammo++)
 		if (ammoTypeTotal[ammo].masterId == ammoMasterId) {
 			ammoTypeTotal[ammo].curAmount -= amountUsed;
 			if (ammoTypeTotal[ammo].curAmount <= 0) {
@@ -6105,7 +6105,7 @@ long Mover::refillAmmo (long ammoMasterId, long amount) {
 */
 //---------------------------------------------------------------------------
 
-void Mover::deductWeaponShot (long weaponIndex, long ammoAmount) {
+void Mover::deductWeaponShot (int32_t weaponIndex, int32_t ammoAmount) {
 
 	if (ammoAmount > 0)
 		reduceAmmo(MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponAmmoMasterId(), ammoAmount);
@@ -6113,7 +6113,7 @@ void Mover::deductWeaponShot (long weaponIndex, long ammoAmount) {
 
 //---------------------------------------------------------------------------
 
-long Mover::sortWeapons (long* weaponList, long* valueList, long listSize, long sortType, bool skillCheck) {
+int32_t Mover::sortWeapons (int32_t* weaponList, int32_t* valueList, int32_t listSize, int32_t sortType, bool skillCheck) {
 
 	//------------------------------------------
 	// Make sure list is >= the number of locked
@@ -6122,14 +6122,14 @@ long Mover::sortWeapons (long* weaponList, long* valueList, long listSize, long 
 	if (!target)
 		return(-2);
 
-	long aimLocation = -1;
+	int32_t aimLocation = -1;
 	if (pilot && pilot->getCurTacOrder()->isCombatOrder())
 		aimLocation = pilot->getCurTacOrder()->attackParams.aimLocation;
 	//----------------------------------------------------------------------
 	// BIG ASSUMPTION HERE: That a mech will not have more than 100 weapons.
 	sortList->clear();
 	if (listSize == -1) {
-		for (long item = numOther; item < (numOther + numWeapons); item++) {
+		for (int32_t item = numOther; item < (numOther + numWeapons); item++) {
 			sortList->setId(item - numOther, item);
 			switch (sortType) {
 				case WEAPONSORT_ATTACKCHANCE:
@@ -6148,7 +6148,7 @@ long Mover::sortWeapons (long* weaponList, long* valueList, long listSize, long 
 		}
 		}
 	else {
-		for (long item = 0; item < listSize; item++) {
+		for (int32_t item = 0; item < listSize; item++) {
 			sortList->setId(item, weaponList[item]);
 			float sortValue = 0.0;
 			if (weaponList[item] == -1)
@@ -6172,13 +6172,13 @@ long Mover::sortWeapons (long* weaponList, long* valueList, long listSize, long 
 		}
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 bool Mover::hasNonAreaWeapon (void)
 {
-	for (long i=numOther;i<numOther+numWeapons;i++)
+	for (int32_t i=numOther;i<numOther+numWeapons;i++)
 	{
 		if (!getWeaponAreaEffect(i))
 			return true;
@@ -6195,7 +6195,7 @@ bool Mover::hasNonAreaWeapon (void)
 
 extern float applyDifficultySkill (float chance, bool isPlayer);
 //---------------------------------------------------------------------------
-float Mover::calcAttackChance (GameObjectPtr target, long aimLocation, float targetTime, long weaponIndex, float modifiers, long* range, Stuff::Vector3D* targetPoint) 
+float Mover::calcAttackChance (GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint) 
 {
 	if ((weaponIndex < numOther) || (weaponIndex >= numOther + numWeapons))
 		return(-9999.0);
@@ -6208,7 +6208,7 @@ float Mover::calcAttackChance (GameObjectPtr target, long aimLocation, float tar
 	
 	if (target) 
 	{
-		long targetObjectClass = target->getObjectClass();
+		int32_t targetObjectClass = target->getObjectClass();
 		switch (targetObjectClass) 
 		{
 			case BATTLEMECH:
@@ -6417,22 +6417,22 @@ float Mover::calcAttackChance (GameObjectPtr target, long aimLocation, float tar
 /*
 void Mover::buildAttackChanceTable (void) {
 
-	for (long i = 0; i < 
+	for (int32_t i = 0; i < 
 }
 */
 
 //---------------------------------------------------------------------------
 
-void Mover::ammoExplosion (long ammoIndex) {
+void Mover::ammoExplosion (int32_t ammoIndex) {
 
 	pilot->injure(2);
 
 	Assert(ammoIndex < (numOther + numWeapons + numAmmos),ammoIndex," Ammo Index out of range ");
 	Assert(ammoIndex >= (numOther + numWeapons),ammoIndex," Ammo Index too low ");
 
-	long ammoMasterId = inventory[ammoIndex].masterID;
-	long bodyLocation = inventory[ammoIndex].bodyLocation;
-	long remainingAmmo = inventory[ammoIndex].amount;
+	int32_t ammoMasterId = inventory[ammoIndex].masterID;
+	int32_t bodyLocation = inventory[ammoIndex].bodyLocation;
+	int32_t remainingAmmo = inventory[ammoIndex].amount;
 	float damage = float(remainingAmmo) *
 				  MasterComponent::masterList[ammoMasterId].getAmmoExplosiveDamage();
 	inventory[ammoIndex].amount = 0;
@@ -6590,12 +6590,12 @@ bool Mover::refit (float pointsAvailable, float& pointsUsed, bool ammoOnly) {
 
 	if (refitPoints > 0.0) 	{
 		float areaMax = refitAmount / 3.0;	// size of pool for each section (armor, internals, and ammo) before depletions
-		long rearmCount = 0;
-		long repairCount = 0;
+		int32_t rearmCount = 0;
+		int32_t repairCount = 0;
 		
 		// how many locations need armor or IS repaired?
 		if (!ammoOnly) {
-			for (long i = 0; i < numArmorLocations; i++) {
+			for (int32_t i = 0; i < numArmorLocations; i++) {
 				//-------------------------------
 				// don't repair destroyed arms...
 				if (((i == MECH_BODY_LOCATION_LARM) || (i == MECH_BODY_LOCATION_RARM)) && (body[i].damageState == IS_DAMAGE_DESTROYED))
@@ -6608,7 +6608,7 @@ bool Mover::refit (float pointsAvailable, float& pointsUsed, bool ammoOnly) {
 		}
 
 		// how many ammo types need refilling, and how much?
-		for (long i = 0; i < numAmmoTypes; i++)
+		for (int32_t i = 0; i < numAmmoTypes; i++)
 			if (ammoTypeTotal[i].curAmount < ammoTypeTotal[i].maxAmount)
 				rearmCount++;
 
@@ -6646,7 +6646,7 @@ bool Mover::refit (float pointsAvailable, float& pointsUsed, bool ammoOnly) {
 				}
 				
 				body[i].curInternalStructure += repairValue;
-				long newDamageState = IS_DAMAGE_NONE;
+				int32_t newDamageState = IS_DAMAGE_NONE;
 				if (body[i].curInternalStructure <= 0.0)
 					newDamageState = IS_DAMAGE_DESTROYED;
 				else if ((body[i].curInternalStructure / body[i].maxInternalStructure) <= 0.5)
@@ -6736,7 +6736,7 @@ bool Mover::refit (float pointsAvailable, float& pointsUsed, bool ammoOnly) {
 	// MultiPlayer)...
 	if ((pointsUsed > 0.0) && (pointsUsed < 0.25))
 		pointsUsed = 0.25;
-	pointsUsed = (float)((long)((pointsUsed + 0.125) / 0.25)) / 4.0;
+	pointsUsed = (float)((int32_t)((pointsUsed + 0.125) / 0.25)) / 4.0;
 
 	return(result);
 }
@@ -6746,7 +6746,7 @@ bool Mover::refit (float pointsAvailable, float& pointsUsed, bool ammoOnly) {
 float Mover::calcRecoverPrice (void) {
 
 	float repairValue = 0;
-	for (long i = 0; i < numBodyLocations; i++) {
+	for (int32_t i = 0; i < numBodyLocations; i++) {
 		if (((i == MECH_BODY_LOCATION_LARM) || (i == MECH_BODY_LOCATION_RARM)) && (body[i].damageState == IS_DAMAGE_DESTROYED))
 			continue;
 		if ((i < numBodyLocations) && (body[i].curInternalStructure < body[i].maxInternalStructure))
@@ -6759,7 +6759,7 @@ float Mover::calcRecoverPrice (void) {
 	// MultiPlayer)...
 	if ((pointsToUse > 0.0) && (pointsToUse < 0.25))
 		pointsToUse = 0.25;
-	pointsToUse = (float)((long)((pointsToUse + 0.125) / 0.25)) / 4.0;
+	pointsToUse = (float)((int32_t)((pointsToUse + 0.125) / 0.25)) / 4.0;
 	return(pointsToUse);
 }
 
@@ -6772,9 +6772,9 @@ bool Mover::recover (void) {
 	float recoverPoints = 100000.0;
 
 	if (recoverPoints > 0.0) 	{
-		long repairCount = 0;
+		int32_t repairCount = 0;
 		// how many locations need IS repaired?
-		for (long i = 0; i < numBodyLocations; i++) {
+		for (int32_t i = 0; i < numBodyLocations; i++) {
 			//-------------------------------
 			// don't repair destroyed arms...
 			if (((i == MECH_BODY_LOCATION_LARM) || (i == MECH_BODY_LOCATION_RARM)) && (body[i].damageState == IS_DAMAGE_DESTROYED))
@@ -6805,7 +6805,7 @@ bool Mover::recover (void) {
 				}
 				
 				body[i].curInternalStructure += repairValue;
-				long newDamageState = IS_DAMAGE_NONE;
+				int32_t newDamageState = IS_DAMAGE_NONE;
 				if (body[i].curInternalStructure <= 0.0)
 					newDamageState = IS_DAMAGE_DESTROYED;
 				else if ((body[i].curInternalStructure / body[i].maxInternalStructure) <= 0.5)
@@ -6841,7 +6841,7 @@ bool Mover::recover (void) {
 		if (repairCount == 0) 
 		{
 			// done fixing, move on
-			for (long i = 0; i < numOther; i++) 
+			for (int32_t i = 0; i < numOther; i++) 
 			{
 				MasterComponentPtr component = &MasterComponent::masterList[inventory[i].masterID];
 				switch (component->getForm()) {
@@ -6861,7 +6861,7 @@ bool Mover::recover (void) {
 			}
 
 			for (i = 0; i < numBodyLocations; i++)
-				for (long j = 0; j < NumLocationCriticalSpaces[i]; j++)
+				for (int32_t j = 0; j < NumLocationCriticalSpaces[i]; j++)
 					if (body[i].criticalSpaces[j].inventoryID < 255)
 						body[i].criticalSpaces[j].hit = inventory[body[i].criticalSpaces[j].inventoryID].disabled;
 
@@ -6891,9 +6891,9 @@ bool Mover::recover (void) {
  
 //---------------------------------------------------------------------------
 
-void Mover::drawSensorTextHelp (float screenX, float screenY, long resID, DWORD color, bool drawBOLD)
+void Mover::drawSensorTextHelp (float screenX, float screenY, int32_t resID, ULONG color, bool drawBOLD)
 {
-	DWORD width, height;
+	ULONG width, height;
 	Stuff::Vector4D moveHere;
 	moveHere.x = screenX;
 	moveHere.y = screenY;
@@ -6926,14 +6926,14 @@ void Mover::updateDrawWaypointPath()
 
 //---------------------------------------------------------------------------
 
-void Mover::initOptimalCells (long numIncrements) {
+void Mover::initOptimalCells (int32_t numIncrements) {
 
 	numOptimalIncrements = numIncrements;
 	double degreesToRadians = (double)DEGREES_TO_RADS;
 	double incrementDegrees = 360.0 / numOptimalIncrements;
 	double doptimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
-	for (long r = 0; r < MAX_ATTACK_CELLRANGE; r++)
-		for (long i = 0; i < numIncrements; i++) {
+	for (int32_t r = 0; r < MAX_ATTACK_CELLRANGE; r++)
+		for (int32_t i = 0; i < numIncrements; i++) {
 			double incrementRadians = incrementDegrees * (double)i * degreesToRadians;
 			doptimalCells[r][i][0] = sin(incrementRadians) * (double)r;
 			doptimalCells[r][i][1] = cos(incrementRadians) * (double)r;
@@ -6946,11 +6946,11 @@ void Mover::initOptimalCells (long numIncrements) {
 	// the desired range (i.e. there's an error of 10 or so meters in these
 	// calcs, in some situations). Therefore, it's imperative that this is
 	// acceptable (re: max fire range for the mover), otherwise the mover
-	// may select an "optimal" cell from which it's out of range. As long
+	// may select an "optimal" cell from which it's out of range. As int32_t
 	// as these optimal ranges fall well within their weapon fire ranges,
 	// this should be no problem.
 	for (r = 0; r < MAX_ATTACK_CELLRANGE; r++)
-		for (long i = 0; i < numIncrements; i++) {
+		for (int32_t i = 0; i < numIncrements; i++) {
 			if (doptimalCells[r][i][0] < 0.00)
 				optimalCells[r][i][0] = (char)(doptimalCells[r][i][0] - 0.50);
 			else
@@ -6965,7 +6965,7 @@ void Mover::initOptimalCells (long numIncrements) {
 	// Now, initialize the tables for Ranged Areas...
 	char rangedMap[MAX_ATTACK_CELLRANGE * 2 + 1][MAX_ATTACK_CELLRANGE * 2 + 1];
 	for (r = 0; r < (MAX_ATTACK_CELLRANGE * 2 + 1); r++)
-		for (long c = 0; c < (MAX_ATTACK_CELLRANGE * 2 + 1); c++) {
+		for (int32_t c = 0; c < (MAX_ATTACK_CELLRANGE * 2 + 1); c++) {
 			Stuff::Vector3D start, goal;
 			start.x = c;
 			start.y = r;
@@ -6976,11 +6976,11 @@ void Mover::initOptimalCells (long numIncrements) {
 			double dist = distance_from(start, goal);
 			rangedMap[r][c] = (char)(dist + 0.5);
 		}
-	long index = 0;
-	for (long range = 0; range < MAX_ATTACK_CELLRANGE; range++) {
+	int32_t index = 0;
+	for (int32_t range = 0; range < MAX_ATTACK_CELLRANGE; range++) {
 		rangedCellsIndices[range][0] = index;
-		for (long r = 0; r < (MAX_ATTACK_CELLRANGE * 2 + 1); r++)
-			for (long c = 0; c < (MAX_ATTACK_CELLRANGE * 2 + 1); c++)
+		for (int32_t r = 0; r < (MAX_ATTACK_CELLRANGE * 2 + 1); r++)
+			for (int32_t c = 0; c < (MAX_ATTACK_CELLRANGE * 2 + 1); c++)
 				if (rangedMap[r][c] == range) {
 					rangedCells[index][0] = r - MAX_ATTACK_CELLRANGE;
 					rangedCells[index][1] = c - MAX_ATTACK_CELLRANGE;
@@ -6994,12 +6994,12 @@ void Mover::initOptimalCells (long numIncrements) {
 // MOVE ROUTINES CALLBACKS
 //***************************************************************************
 
-void GetBlockedDoorCells (long moveLevel, long door, PSTR openCells) {
+void GetBlockedDoorCells (int32_t moveLevel, int32_t door, PSTR openCells) {
 
 	Assert((door > -1) && (door < GlobalMoveMap[moveLevel]->numDoors), 0, " FUDGE 1");
 	Assert((GlobalMoveMap[moveLevel]->doors[door].direction[0] == 1) || (GlobalMoveMap[moveLevel]->doors[door].direction[0] == 2), 0, " FUDGE 2");
 	Assert((GlobalMoveMap[moveLevel]->doors[door].length > 0) && (GlobalMoveMap[moveLevel]->doors[door].length < 1024), 0, " FUDGE 3");
-	long doorWorldCellRec[4] = {-1, -1, -1, -1};
+	int32_t doorWorldCellRec[4] = {-1, -1, -1, -1};
 	if (GlobalMoveMap[moveLevel]->doors[door].direction[0] == 1) {
 		doorWorldCellRec[0] = GlobalMoveMap[moveLevel]->doors[door].row;
 		doorWorldCellRec[1] = GlobalMoveMap[moveLevel]->doors[door].col;
@@ -7007,17 +7007,17 @@ void GetBlockedDoorCells (long moveLevel, long door, PSTR openCells) {
 		doorWorldCellRec[3] = doorWorldCellRec[1] + 2;
 
 		//NOTE: DO NOT set cells for elementals--only mechs and vehicles.
-		long numMovers = ObjectManager->getNumMovers();
-		for (long i = 0; i < numMovers; i++) {
+		int32_t numMovers = ObjectManager->getNumMovers();
+		for (int32_t i = 0; i < numMovers; i++) {
 			MoverPtr mover = ObjectManager->getMover(i);
 			if ((mover->getWatchID() != PathFindMap[SECTOR_PATHMAP]->moverWID) && (mover->getWatchID() != RamObjectWID) && !mover->isDisabled()) {
-				long cellPos[2];
+				int32_t cellPos[2];
 				mover->getCellPosition (cellPos[0], cellPos[1]);
-				long worldCellRow = cellPos[0];
-				long worldCellCol = cellPos[1];
+				int32_t worldCellRow = cellPos[0];
+				int32_t worldCellCol = cellPos[1];
 				if ((worldCellRow >= doorWorldCellRec[0]) && (worldCellRow < doorWorldCellRec[2]))
 					if ((worldCellCol >= doorWorldCellRec[1]) && (worldCellCol < doorWorldCellRec[3])) {
-						long cellIndex = worldCellRow - doorWorldCellRec[0];
+						int32_t cellIndex = worldCellRow - doorWorldCellRec[0];
 						Assert((cellIndex > -1) && (cellIndex < GlobalMoveMap[moveLevel]->doors[door].length), 0, " Bad Cell Index ");
 						openCells[cellIndex] = 0;
 					}
@@ -7031,17 +7031,17 @@ void GetBlockedDoorCells (long moveLevel, long door, PSTR openCells) {
 		doorWorldCellRec[2] = doorWorldCellRec[0] + 2;
 		doorWorldCellRec[3] = doorWorldCellRec[1] + GlobalMoveMap[moveLevel]->doors[door].length;
 
-		long numMovers = ObjectManager->getNumMovers();
-		for (long i = 0; i < numMovers; i++) {
+		int32_t numMovers = ObjectManager->getNumMovers();
+		for (int32_t i = 0; i < numMovers; i++) {
 			MoverPtr mover = ObjectManager->getMover(i);
 			if ((mover->getObjectClass() != ELEMENTAL) && (mover->getWatchID() != PathFindMap[SECTOR_PATHMAP]->moverWID) && (mover->getWatchID() != RamObjectWID) && !mover->isDisabled()) {
-				long cellPos[2];
+				int32_t cellPos[2];
 				mover->getCellPosition (cellPos[0], cellPos[1]);
-				long worldCellRow = cellPos[0];
-				long worldCellCol = cellPos[1];
+				int32_t worldCellRow = cellPos[0];
+				int32_t worldCellCol = cellPos[1];
 				if ((worldCellRow >= doorWorldCellRec[0]) && (worldCellRow < doorWorldCellRec[2]))
 					if ((worldCellCol >= doorWorldCellRec[1]) && (worldCellCol < doorWorldCellRec[3])) {
-						long cellIndex = worldCellCol - doorWorldCellRec[1];
+						int32_t cellIndex = worldCellCol - doorWorldCellRec[1];
 						Assert((cellIndex > -1) && (cellIndex < GlobalMoveMap[moveLevel]->doors[door].length), 0, " Bad Cell Index ");
 						openCells[cellIndex] = 0;
 					}
@@ -7054,11 +7054,11 @@ void GetBlockedDoorCells (long moveLevel, long door, PSTR openCells) {
 
 void PlaceMovers (void) {
 
-	long numMovers = ObjectManager->getNumMovers();
-	for (long i = 0; i < numMovers; i++) {
+	int32_t numMovers = ObjectManager->getNumMovers();
+	for (int32_t i = 0; i < numMovers; i++) {
 		MoverPtr mover = (MoverPtr)ObjectManager->getMover(i);
 		if (mover->getUseMe()) {
-			long cellRow, cellCol;
+			int32_t cellRow, cellCol;
 			mover->getCellPosition(cellRow, cellCol);
 			if (!GameMap->getPreserved(cellRow, cellCol))
 				GameMap->setPreserved(cellRow, cellCol, true);
@@ -7070,15 +7070,15 @@ void PlaceMovers (void) {
 
 //---------------------------------------------------------------------------
 
-void adjustMoveMapCellCost (MoveMapNodePtr cell, long costAdj);
+void adjustMoveMapCellCost (MoveMapNodePtr cell, int32_t costAdj);
 
 void PlaceStationaryMovers (MoveMap* map) {
 
-	long numMovers = ObjectManager->getNumMovers();
-	for (long i = 0; i < numMovers; i++) {
+	int32_t numMovers = ObjectManager->getNumMovers();
+	for (int32_t i = 0; i < numMovers; i++) {
 		MoverPtr mover = ObjectManager->getMover(i);
 		if ((mover->getObjectClass() != ELEMENTAL) && (mover->getWatchID() != map->moverWID) && (mover->getWatchID() != RamObjectWID) && !mover->isDisabled()) {
-			long cellRow, cellCol;
+			int32_t cellRow, cellCol;
 			mover->getCellPosition(cellRow, cellCol);
 			if ((cellRow >= 0) && (cellRow < map->height) && (cellCol >= 0) && (cellCol < map->width)) {
 	
@@ -7088,8 +7088,8 @@ void PlaceStationaryMovers (MoveMap* map) {
 						if (path && (path->numSteps == 0)) {
 							map->map[cellRow * map->maxWidth + cellCol].setFlag(MOVEFLAG_MOVER_HERE);
 #ifdef USE_OVERLAYS
-							long bridgeCost = COST_BLOCKED / 3;
-							long overlay = GameMap->getOverlay(cellRow, cellCol);
+							int32_t bridgeCost = COST_BLOCKED / 3;
+							int32_t overlay = GameMap->getOverlay(cellRow, cellCol);
 							if (OverlayIsBridge[overlay])
 								map->adjustCellCost(cellRow, cellCol, bridgeCost);
 							else
@@ -7165,7 +7165,7 @@ bool Mover::handleEjection()
 	return(true);
 }
 
-bool	 Mover::isWeaponWorking (long weaponIndex)
+bool	 Mover::isWeaponWorking (int32_t weaponIndex)
 {
 	if (inventory[weaponIndex].disabled)
 		return(FALSE);
@@ -7175,13 +7175,13 @@ bool	 Mover::isWeaponWorking (long weaponIndex)
 }
 
 //***************************************************************************
-void Mover::Save (PacketFilePtr file, long packetNum)
+void Mover::Save (PacketFilePtr file, int32_t packetNum)
 {
 	MoverData data;
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(MemoryPtr)&data,sizeof(MoverData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(PUCHAR)&data,sizeof(MoverData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************
@@ -7202,7 +7202,7 @@ void Mover::CopyTo (MoverData *data)
 	data->moveLevel                             = moveLevel;                                  
 	data->followRoads                           = followRoads;                                
 																							
-	memcpy(data->lastMapCell,lastMapCell,sizeof(long) * 2);
+	memcpy(data->lastMapCell,lastMapCell,sizeof(int32_t) * 2);
 																							
 	data->damageRateTally					    = damageRateTally;                            
 	data->damageRateCheckTime				    = damageRateCheckTime;                        
@@ -7304,7 +7304,7 @@ void Mover::CopyTo (MoverData *data)
 	data->crashYieldTime                        = crashYieldTime;                             
 	data->pathLockLength                        = pathLockLength;                             
 
-	memcpy(data->pathLockList,pathLockList, sizeof(long) * MAX_LOCK_RANGE * 2);
+	memcpy(data->pathLockList,pathLockList, sizeof(int32_t) * MAX_LOCK_RANGE * 2);
 
 	data->moveCenter                            = moveCenter;                                 
 	data->moveRadius                            = moveRadius;                                 
@@ -7362,7 +7362,7 @@ void Mover::Load (MoverData *data)
 	moveLevel                             	= data->moveLevel;                                  
 	followRoads                           	= data->followRoads;                                
 																							
-	memcpy(lastMapCell,data->lastMapCell,sizeof(long) * 2);
+	memcpy(lastMapCell,data->lastMapCell,sizeof(int32_t) * 2);
 																							
 	damageRateTally					    = data->damageRateTally;                            
 	damageRateCheckTime				    = data->damageRateCheckTime;                        
@@ -7464,7 +7464,7 @@ void Mover::Load (MoverData *data)
 	crashYieldTime                        = data->crashYieldTime;                             
 	pathLockLength                        = data->pathLockLength;                             
 
-	memcpy(pathLockList,data->pathLockList, sizeof(long) * MAX_LOCK_RANGE * 2);
+	memcpy(pathLockList,data->pathLockList, sizeof(int32_t) * MAX_LOCK_RANGE * 2);
 
 	moveCenter                            = data->moveCenter;                                 
 	moveRadius                            = data->moveRadius;                                 

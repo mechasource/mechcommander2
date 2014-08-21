@@ -8,27 +8,24 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef MOVEMGR_H
 #define MOVEMGR_H
 
 //---------------------------------------------------------------------------
 
-#ifndef DMOVEMGR_H
-#include "dmovemgr.h"
-#endif
-
-#ifndef DWARRIOR_H
-#include "dwarrior.h"
-#endif
+//#include "dmovemgr.h"
+//#include "dwarrior.h"
 
 //***************************************************************************
 
 typedef struct _PathQueueRec* PathQueueRecPtr;
 
 typedef struct _PathQueueRec {
-	long				num;
+	int32_t				num;
 	MechWarriorPtr		pilot;
-	long				selectionIndex;
+	int32_t				selectionIndex;
 	ULONG		moveParams;
 	bool				initPath;
 	bool				faceObject;
@@ -46,15 +43,15 @@ class MovePathManager {
 		PathQueueRecPtr		queueFront;
 		PathQueueRecPtr		queueEnd;
 		PathQueueRecPtr		freeList;
-		static long			numPaths;
-		static long			peakPaths;
-		static long			sourceTally[50];
+		static int32_t			numPaths;
+		static int32_t			peakPaths;
+		static int32_t			sourceTally[50];
 
 	public:
 
-		void* operator new (size_t ourSize);
+		PVOID operator new (size_t ourSize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 		
 		MovePathManager (void) {
 			init();
@@ -66,13 +63,13 @@ class MovePathManager {
 		
 		void destroy (void);
 		
-		long init (void);
+		int32_t init (void);
 
 		void remove (PathQueueRecPtr rec);
 
 		PathQueueRecPtr remove (MechWarriorPtr pilot);
 
-		void request (MechWarriorPtr pilot, long selectionIndex, ULONG moveParams, long source);
+		void request (MechWarriorPtr pilot, int32_t selectionIndex, ULONG moveParams, int32_t source);
 
 		void calcPath (void);
 

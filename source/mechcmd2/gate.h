@@ -8,26 +8,17 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef GATE_H
 #define GATE_H
 //---------------------------------------------------------------------------
 // Include Files
 
-#ifndef DGATE_H
-#include "dgate.h"
-#endif
-
-#ifndef OBJTYPE_H
-#include "objtype.h"
-#endif
-
-#ifndef TERROBJ_H
-#include "terrobj.h"
-#endif
-
-#ifndef DMOVER_H
-#include "dmover.h"
-#endif
+//#include "dgate.h"
+//#include "objtype.h"
+//#include "terrobj.h"
+//#include "dmover.h"
 					
 //---------------------------------------------------------------------------
 // Macro Definitions
@@ -47,8 +38,8 @@ class GateType : public ObjectType
 	
 		float			baseTonnage;
 		
-		long			basePixelOffsetX;
-		long			basePixelOffsetY;
+		int32_t			basePixelOffsetX;
+		int32_t			basePixelOffsetY;
 		
 		float			explDmg;
 		float			explRad;
@@ -57,11 +48,11 @@ class GateType : public ObjectType
 		
 		float			littleExtent;
 				
-		long			gateTypeName;
+		int32_t			gateTypeName;
 
 		bool			blocksLineOfFire;
 
-		long			buildingDescriptionID;
+		int32_t			buildingDescriptionID;
 
 	//Member Functions
 	//-----------------
@@ -90,15 +81,15 @@ class GateType : public ObjectType
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, ULONG fileSize);
-		long init (FitIniFilePtr objFile);
+		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		int32_t init (FitIniFilePtr objFile);
 		
 		~GateType (void)
 		{
 			destroy();
 		}
 		
-		long getDamageLvl (void)
+		int32_t getDamageLvl (void)
 		{
 			return dmgLevel;
 		}
@@ -129,11 +120,11 @@ typedef struct _GateData : public TerrainObjectData
 
 	MoverPtr				closestObject;
 
-	DWORD					parentId;
+	ULONG					parentId;
 	GameObjectWatchID		parent;
-	long					buildingDescriptionID;
+	int32_t					buildingDescriptionID;
 
-	long					updatedTurn;
+	int32_t					updatedTurn;
 } GateData;
 
 class Gate : public TerrainObject
@@ -156,11 +147,11 @@ class Gate : public TerrainObject
 
 			MoverPtr				closestObject;
 			
-			DWORD					parentId;
+			ULONG					parentId;
 			GameObjectWatchID		parent;
-			long					buildingDescriptionID;
+			int32_t					buildingDescriptionID;
 
-			long					updatedTurn;
+			int32_t					updatedTurn;
 
 	//Member Functions
 	//-----------------
@@ -197,16 +188,16 @@ class Gate : public TerrainObject
 
 		virtual void destroy (void);
 		
-		virtual long update (void);
+		virtual int32_t update (void);
 		virtual void render (void);
 		
 		virtual void init (bool create, ObjectTypePtr _type);
 
-		virtual long handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = FALSE);
+		virtual int32_t handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = FALSE);
 
-		virtual long setTeamId (long _teamId, bool setup);
+		virtual int32_t setTeamId (int32_t _teamId, bool setup);
 		
-		virtual long getTeamId (void) {
+		virtual int32_t getTeamId (void) {
 			return(teamId);
 		}
 
@@ -219,10 +210,10 @@ class Gate : public TerrainObject
 			return ((GateTypePtr)getObjectType())->getDamageLvl() - damage;
 		}
 
-		virtual long kill (void)
+		virtual int32_t kill (void)
 		{
 			//Do nothing for now.  Later, Buildings may do something.
-			return NO_ERR;
+			return NO_ERROR;
 		}
 
 		bool isVisible (CameraPtr camera);
@@ -234,7 +225,7 @@ class Gate : public TerrainObject
 			return (TRUE);
 		}
 
-		virtual void getBlockAndVertexNumber (long &blockNum, long &vertexNum)
+		virtual void getBlockAndVertexNumber (int32_t &blockNum, int32_t &vertexNum)
 		{
 			blockNum = blockNumber;
 			vertexNum = vertexNumber;
@@ -268,13 +259,13 @@ class Gate : public TerrainObject
 
 		virtual GameObjectPtr getParent (void);
 
-		virtual void setParentId (DWORD pId);
+		virtual void setParentId (ULONG pId);
 
-		virtual long getDescription(){ return ((GateType*)getObjectType())->buildingDescriptionID; }
+		virtual int32_t getDescription(){ return ((GateType*)getObjectType())->buildingDescriptionID; }
 		
 		virtual void setDamage (float newDamage);
 
-		virtual void Save (PacketFilePtr file, long packetNum);
+		virtual void Save (PacketFilePtr file, int32_t packetNum);
 
 		void CopyTo (GateData *data);
 

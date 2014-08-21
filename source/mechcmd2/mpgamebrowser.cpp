@@ -93,7 +93,7 @@ void MPGameBrowser::init(FitIniFile* file)
 		strcat( path, "mcl_mp_lanbrowsercombobox0.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -215,7 +215,7 @@ int	MPGameBrowser::handleMessage( ULONG message, ULONG who)
 					{
 						if ( MPlayer )
 						{
-							long retVal = MPlayer->joinSession ( (MC2Session*)pItem->getSession(), &prefs.playerName[0][0] );
+							int32_t retVal = MPlayer->joinSession ( (MC2Session*)pItem->getSession(), &prefs.playerName[0][0] );
 							if ( retVal == MPLAYER_NO_ERR ) {
 								MPlayer->setMode(MULTIPLAYER_MODE_PARAMETERS);
 								status = NEXT;
@@ -349,7 +349,7 @@ void MPGameBrowser::update()
 	helpTextID = 0;
 	helpTextHeaderID = 0;
 
-	long sessionCount = 0;
+	int32_t sessionCount = 0;
 	if ( MPlayer )
 	{
 		MC2Session* pSessions =  MPlayer->getSessions (sessionCount);
@@ -390,7 +390,7 @@ void MPGameBrowser::update()
 			gameList.GetItem( oldHighlight )->setState( aListItem::HIGHLITE );
 	}
 
-	long sel = gameList.GetSelectedItem();
+	int32_t sel = gameList.GetSelectedItem();
 	if ( sel == -1 )
 	{
 		getButton( MB_MSG_NEXT )->disable( true );
@@ -403,22 +403,22 @@ void MPGameBrowser::update()
 
 
 
-long aStyle3TextListItem::init( FitIniFile* file, PCSTR blockName )
+int32_t aStyle3TextListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
-	long x = 0;
-	long y = 0;
+	int32_t x = 0;
+	int32_t y = 0;
 	file->readIdLong( "XLocation", x );
 	file->readIdLong( "YLocation", y );
 
-	long fontResID = 0;
+	int32_t fontResID = 0;
 	file->readIdLong( "Font", fontResID );
-	long textID = 0;
+	int32_t textID = 0;
 	file->readIdLong( "TextID", textID );
 	aTextListItem::init(fontResID);
 	setText(textID);
-	long color = 0xff808080;
+	int32_t color = 0xff808080;
 	file->readIdLong( "Color", color );
 	normalColor = color;
 	setColor(color);
@@ -508,12 +508,12 @@ aGameListItem::aGameListItem() : latency( IDS_MP_LANBROW_PING_FONT )
 
 
 }
-long aGameListItem::init( FitIniFile* file, PCSTR blockName )
+int32_t aGameListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
-	long width = 0;
-	long height = 0;
+	int32_t width = 0;
+	int32_t height = 0;
 	file->readIdLong( "Width", width );
 	file->readIdLong( "Height", height );
 
@@ -677,7 +677,7 @@ void aGameListItem::setSessionInfo( MC2Session* pSession )
 	if ( pSession->numPlayers == pSession->maxPlayers || pSession->inProgress )
 		setState( DISABLED );
 
-	long color = 0xff00ff00;
+	int32_t color = 0xff00ff00;
 	if ( pSession->ping > 500 )
 		color = 0xffff0000;
 	else if ( pSession->ping > 300 )

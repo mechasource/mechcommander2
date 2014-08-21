@@ -46,8 +46,8 @@ enum COMMAND_KEY_INDEX
 //--------------------------------------------------------------------------------------
 // Externs
 extern UserHeapPtr guiHeap;
-void *gMalloc (long size);
-void gFree (void *me);
+PVOID gMalloc (size_t size);
+void gFree (PVOID me);
 
 #define MAX_COMMAND 107
 //--------------------------------------------------------------------------------------
@@ -76,17 +76,17 @@ public:
 
 	struct Command
 		{
-			long	key;
-			long	cursor;
-			long	cursorLOS;
+			int32_t	key;
+			int32_t	cursor;
+			int32_t	cursorLOS;
 			bool	singleClick;
 			COMMAND function;
 			COMMAND	releaseFunction;
-			long	hotKeyDescriptionText;
+			int32_t	hotKeyDescriptionText;
 		};
 
 	static Command*		getCommands() { return commands; }
-	static long*		getOldKeys() { return OldKeys; }
+	static int32_t*		getOldKeys() { return OldKeys; }
 	
 	protected:
 
@@ -100,9 +100,9 @@ public:
 	
 
 		static Command		commands[MAX_COMMAND];
-		static long			OldKeys[MAX_COMMAND];
+		static int32_t			OldKeys[MAX_COMMAND];
 
-		long terrainLineChanged;
+		int32_t terrainLineChanged;
 
 		//-------------------------------------------
 		// Data to control scroll, rotation and zoom
@@ -120,14 +120,14 @@ public:
 		float						realRotation;
 		float						degPerSecRot;
 		
-		long						zoomChoice;			//Can range from 0 to 3 right now.
+		int32_t						zoomChoice;			//Can range from 0 to 3 right now.
 		
 		//----------------------------------------------
 		// Mouse Event Data
 		bool						isDragging;
 		float						vTolSpeed;
 		PCSTR					vehicleFile;
-		long						vehicleID[MAX_TEAMS];
+		int32_t						vehicleID[MAX_TEAMS];
 		Stuff::Vector3D				dragStart;
 		Stuff::Vector3D				dragEnd;
 		bool						selectClicked;			// left click
@@ -152,7 +152,7 @@ public:
 		bool						bPausedWithoutMenu;
 		bool						bEnergyWeapons;
 		bool						bDrawHotKeys;
-		long						resolution;
+		int32_t						resolution;
 		
 		//-----------------------------------------------
 		// Attila (Strategic Commander) Data
@@ -164,8 +164,8 @@ public:
 		// Tutorial Data
 		bool						animationRunning;
 		float						timeLeftToScroll;
-		long						targetButtonId;
-		long						buttonNumFlashes;
+		int32_t						targetButtonId;
+		int32_t						buttonNumFlashes;
 		float						buttonFlashTime;
 		bool						targetIsButton;
 		bool						targetIsPressed;
@@ -203,7 +203,7 @@ public:
 						
 		void	initMechs(){ controlGui.initMechs(); }	
 
-		PCSTR getSupportVehicleNameFromID (long ID) { return controlGui.getVehicleNameFromID(ID); }
+		PCSTR getSupportVehicleNameFromID (int32_t ID) { return controlGui.getVehicleNameFromID(ID); }
 
 		void	addMover (MoverPtr mover){ controlGui.addMover(mover); }	
 		void	removeMover (MoverPtr mover){ controlGui.removeMover(mover); }	
@@ -234,14 +234,14 @@ public:
 		bool	canRepair( GameObject* pMover );
 		bool	canRepairBay ( GameObject* bay );
 
-		void setMechRecovered (long teamID, bool set) {
+		void setMechRecovered (int32_t teamID, bool set) {
 			mechRecovered[teamID] = set;
 		}
 
 		void updateOldStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui, 
-			bool lineOfSight, bool passable, long moverCount, long nonMoverCount );
+			bool lineOfSight, bool passable, int32_t moverCount, int32_t nonMoverCount );
 		void updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui, 
-			bool lineOfSight, bool passable, long moverCount, long nonMoverCount );
+			bool lineOfSight, bool passable, int32_t moverCount, int32_t nonMoverCount );
 
 		static int saveHotKeys( FitIniFile& file );
 		static int loadHotKeys( FitIniFile& file );
@@ -268,10 +268,10 @@ public:
 		void	doMove(const Stuff::Vector3D& pos);
 		void	doGuard(GameObject* pObj);
 		int toggleHotKeys();
-		void	beginVtol(long supportID, long commanderID = 0, Stuff::Vector3D* reinforcePos = NULL, MoverPtr salvageTarget = NULL);
+		void	beginVtol(int32_t supportID, int32_t commanderID = 0, Stuff::Vector3D* reinforcePos = NULL, MoverPtr salvageTarget = NULL);
 
 		//Tutorial Stuff goes here.
-		bool startAnimation(long buttonId,bool isButton,bool isPressed,float timeToScroll,long numFlashes);
+		bool startAnimation(int32_t buttonId,bool isButton,bool isPressed,float timeToScroll,int32_t numFlashes);
 		void setTutorialText(PCSTR text);
 
 		bool isInCalloutAnimation ()
@@ -291,7 +291,7 @@ public:
 	private:
 
 		void makeForceGroup( int forceGroup );
-		bool moveCameraAround( bool lineOfSight, bool passable, bool ctrl, bool bGui, long moverCount, long nonMoverCount );
+		bool moveCameraAround( bool lineOfSight, bool passable, bool ctrl, bool bGui, int32_t moverCount, int32_t nonMoverCount );
 		bool canJump(); // selected units can jump
 		bool canJumpToWPos();
 		void doDrag(bool bGui);
@@ -431,13 +431,13 @@ public:
 
 		bool	canAddVehicle( const Stuff::Vector3D& pos );
 		bool	canRecover( const Stuff::Vector3D& pos );
-		long	makeNoTargetCursor( bool passable, bool lineOfSight, bool ctrl, bool bGui,
-			long moverCount, long nonMoverCount );
-		long	makeRangeCursor( bool LOS);
-		long	makeTargetCursor( bool lineOfSight, long moverCount, long nonMoverCount );
-		long	makeMoveCursor( bool bLineOfSite );
-		long	makeJumpCursor( bool bLineOfSite );
-		long	makeRunCursor( bool bLineOfSite );
+		int32_t	makeNoTargetCursor( bool passable, bool lineOfSight, bool ctrl, bool bGui,
+			int32_t moverCount, int32_t nonMoverCount );
+		int32_t	makeRangeCursor( bool LOS);
+		int32_t	makeTargetCursor( bool lineOfSight, int32_t moverCount, int32_t nonMoverCount );
+		int32_t	makeMoveCursor( bool bLineOfSite );
+		int32_t	makeJumpCursor( bool bLineOfSite );
+		int32_t	makeRunCursor( bool bLineOfSite );
 		void	updateRollovers();
 
 
@@ -447,7 +447,7 @@ public:
 		void	updateTarget(bool bCursorIsInGui);
 		void	drawWayPointPaths();
 
-		long	calcRotation();
+		int32_t	calcRotation();
 
 
 
@@ -456,7 +456,7 @@ public:
 
 		bool	canSalvage( GameObject* pMover );
 		bool	selectionIsHelicopters( );
-		void	drawHotKey( PCSTR string, PCSTR descStr, long x, long y );
+		void	drawHotKey( PCSTR string, PCSTR descStr, int32_t x, int32_t y );
 		void	drawHotKeys();
 
 

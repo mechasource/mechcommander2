@@ -1,5 +1,3 @@
-#ifndef SIMPLECAMERA_H
-#define SIMPLECAMERA_H
 /*************************************************************************************************\
 SimpleCamera.h		: Interface for the camera that renders a single object
 //---------------------------------------------------------------------------//
@@ -7,7 +5,12 @@ SimpleCamera.h		: Interface for the camera that renders a single object
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "camera.h"
+#pragma once
+
+#ifndef SIMPLECAMERA_H
+#define SIMPLECAMERA_H
+
+//#include "camera.h"
 
 class ObjectAppearance;
 
@@ -19,19 +22,19 @@ public:
 	SimpleCamera();
 	~SimpleCamera();
 
-	void setMech( PCSTR fileName, long base = 0xffff7e00, long highlight = 0xffff7e00, long h2 = 0xffbcbcbc );
+	void setMech( PCSTR fileName, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc );
 	void setComponent( PCSTR fileName );
 	void setBuilding( PCSTR fileName );
-	void setVehicle( PCSTR vehicle, long base = 0xffff7e00, long highlight = 0xffff7e00, long h2 = 0xffbcbcbc );
+	void setVehicle( PCSTR vehicle, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc );
 	ObjectAppearance* getObjectAppearance() const { return pObject; }
 
 	void init( float left, float right, float top, float bottom );
 
-	void setObject( PCSTR fileName, long type, long base = 0xffff7e00, long highlight = 0xffff7e00, long h2 = 0xffbcbcbc );
+	void setObject( PCSTR fileName, int32_t type, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc );
 
 	virtual void render();
-	virtual void render(long xOffset, long yOffset);
-	virtual long update();
+	virtual void render(int32_t xOffset, int32_t yOffset);
+	virtual int32_t update();
 
 	void setScale( float newScale );
 	void setRotation( float rotation );
@@ -42,7 +45,7 @@ public:
 		bIsInMission = true;
 	}
 
-	void setColors( long base = 0xffff7e00, long highlight = 0xffff7e00, long h2 = 0xffbcbcbc ); 
+	void setColors( int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc ); 
 
 	float		bounds[4];
 

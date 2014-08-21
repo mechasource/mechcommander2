@@ -1,5 +1,3 @@
-#ifndef MPHOSTGAME_H
-#define MPHOSTGAME_H
 /*************************************************************************************************\
 MPHostGame.h			: Interface for the MPHostGame component.
 //---------------------------------------------------------------------------//
@@ -9,25 +7,23 @@ MPHostGame.h			: Interface for the MPHostGame component.
 
 //*************************************************************************************************
 
-#ifndef LOGISTICSDIALOG_H
-#include "LogisticsDialog.h"
-#endif
+#pragma once
 
-#include "asystem.h"
-#include "alistbox.h"
-#include "attributemeter.h"
-#include "simplecamera.h"
+#ifndef MPHOSTGAME_H
+#define MPHOSTGAME_H
 
-#ifndef AANIM_H
-#include "aanim.h"
-#endif
-
+//#include "logisticsdialog.h"
+//#include "asystem.h"
+//#include "alistbox.h"
+//#include "attributemeter.h"
+//#include "simplecamera.h"
+//#include "aanim.h"
 
 class aStyle5TextListItem : public aTextListItem
 {
 public:
 	aStyle5TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual long	init( FitIniFile* file, PCSTR blockName );
+	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
 protected:

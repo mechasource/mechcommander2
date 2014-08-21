@@ -75,14 +75,14 @@ extern CPrefs prefs;
 
 extern bool quitGame;
 extern bool justStartMission;
-extern long renderer;
+extern int32_t renderer;
 extern bool useUnlimitedAmmo;
 extern float loadProgress;
 
 extern bool aborted;
 
 #include "..\resource.h"
-void DEBUGWINS_print (PSTR s, long window = 0);
+void DEBUGWINS_print (PSTR s, int32_t window = 0);
 
 
 //----------------------------------------------------------------------------------
@@ -102,13 +102,13 @@ void Logistics::destroy (void)
 }	
 		
 //----------------------------------------------------------------------------------
-void Logistics::start (long startMode)
+void Logistics::start (int32_t startMode)
 {
 	bMissionLoaded  = 0;
 	userInput->setMouseCursor( mState_LOGISTICS );
 //	userInput->mouseOn();
 
-	DWORD localRenderer = prefs.renderer;
+	ULONG localRenderer = prefs.renderer;
 	if (prefs.renderer != 0 && prefs.renderer != 3)
 		localRenderer = 0;
 
@@ -261,7 +261,7 @@ void Logistics::stop (void)
 }	
 
 //----------------------------------------------------------------------------------
-long Logistics::update (void)
+int32_t Logistics::update (void)
 {
 	//MUST do this every frame.  The movie movies will play wrong, otherwise!!
 
@@ -448,29 +448,29 @@ void Logistics::render (void)
 extern ULONG MultiPlayTeamId;
 extern ULONG MultiPlayCommanderId;
 
-int _stdcall Logistics::beginMission(void*, int, void*[])
+int _stdcall Logistics::beginMission(PVOID, int, PVOID[])
 {
 
 	if (MPlayer)
 		MPlayer->setMode(MULTIPLAYER_MODE_LOADING);
 
 	char commandersToLoad[MAX_MC_PLAYERS][3] = {{0, 0, 0}, {1, 1, 1}, {2, 2, 2}, {3, 3, 3}, {4, 4, 4}, {5, 5, 5}, {6, 6, 6}, {7, 7, 7}};
-	long missionLoadType = LogisticsData::instance->skipLogistics() ? 
+	int32_t missionLoadType = LogisticsData::instance->skipLogistics() ? 
 							MISSION_LOAD_SP_QUICKSTART : MISSION_LOAD_SP_LOGISTICS;
 	if (MPlayer) {
 		//---------------------------
 		// Calc valid commanderIDs...
-		long curCommanderID = 0;
-		for (long CID = 0; CID < MAX_MC_PLAYERS; CID++) {
+		int32_t curCommanderID = 0;
+		for (int32_t CID = 0; CID < MAX_MC_PLAYERS; CID++) {
 			MPlayer->availableCIDs[CID] = true;
 			if (MPlayer->playerInfo[CID].player && (MPlayer->playerInfo[CID].commanderID > -1)) {
 				if (CID != curCommanderID) {
-					long oldCommanderID = CID;
+					int32_t oldCommanderID = CID;
 					MPlayer->playerInfo[CID].commanderID = curCommanderID;
 					memcpy(&MPlayer->playerInfo[curCommanderID], &MPlayer->playerInfo[CID], sizeof(MC2Player));
 					MPlayer->playerInfo[CID].player = NULL;
 					MPlayer->playerInfo[CID].commanderID = -1;
-					for (long j = 0; j < MAX_MC_PLAYERS; j++)
+					for (int32_t j = 0; j < MAX_MC_PLAYERS; j++)
 						if (MPlayer->playerList[j].player == MPlayer->playerInfo[curCommanderID].player)
 							MPlayer->playerList[j].commanderID = curCommanderID;
 					if (oldCommanderID == MPlayer->commanderID)
@@ -482,10 +482,10 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 		}
 		//----------------------
 		// Calc valid teamIDs...
-		long curTeamID = 0;
-		for (long teamID = 0; teamID < MAX_MC_PLAYERS; teamID++) {
+		int32_t curTeamID = 0;
+		for (int32_t teamID = 0; teamID < MAX_MC_PLAYERS; teamID++) {
 			bool teamFound = false;
-			for (long i = 0; i < MAX_MC_PLAYERS; i++)
+			for (int32_t i = 0; i < MAX_MC_PLAYERS; i++)
 				if (MPlayer->playerInfo[i].player && (MPlayer->playerInfo[i].team == teamID)) {
 					MPlayer->playerInfo[i].team = curTeamID;
 					teamFound = true;
@@ -501,19 +501,19 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 				bool goodToLoad = mission->calcComplexDropZones((PSTR)(PCSTR)LogisticsData::instance->getCurrentMission(), dropZoneList);
 				if (!goodToLoad)
 					STOP(("Logisitics.beginMission: teams do not match up for complex mission"));
-				for (long i = 0; i < MAX_TEAMS; i++)
+				for (int32_t i = 0; i < MAX_TEAMS; i++)
 					hqs[i] = i;
 				}
 			else
 				MPlayer->calcDropZones(dropZoneList, hqs);
 			if (MPlayer->missionSettings.quickStart)
-				for (long i = 0; i < MAX_MC_PLAYERS; i++) {
-					MPlayer->commandersToLoad[i][0] = (long)dropZoneList[i]; //MPlayer->playerInfo[i].commanderID;
-					MPlayer->commandersToLoad[i][1] = (long)(dropZoneList[i] > -1) ? MPlayer->playerInfo[dropZoneList[i]].team : 0;
+				for (int32_t i = 0; i < MAX_MC_PLAYERS; i++) {
+					MPlayer->commandersToLoad[i][0] = (int32_t)dropZoneList[i]; //MPlayer->playerInfo[i].commanderID;
+					MPlayer->commandersToLoad[i][1] = (int32_t)(dropZoneList[i] > -1) ? MPlayer->playerInfo[dropZoneList[i]].team : 0;
 					MPlayer->commandersToLoad[i][2] = hqs[i];
 				}
 			else
-				for (long i = 0; i < MAX_MC_PLAYERS; i++) {
+				for (int32_t i = 0; i < MAX_MC_PLAYERS; i++) {
 					MPlayer->commandersToLoad[i][0] = dropZoneList[i]; //-1;
 					MPlayer->commandersToLoad[i][1] = (dropZoneList[i] > -1) ? MPlayer->playerInfo[dropZoneList[i]].team : 0; //-1;
 					MPlayer->commandersToLoad[i][2] = hqs[i];
@@ -526,7 +526,7 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 		}
 		if (MPlayer->commandersToLoad[0][0] < -1)
 			PAUSE(("Logistics.beginMission: bad commandersToLoad"));
-		for (long i = 0; i < MAX_MC_PLAYERS; i++) {
+		for (int32_t i = 0; i < MAX_MC_PLAYERS; i++) {
 			commandersToLoad[i][0] = MPlayer->commandersToLoad[i][0];
 			commandersToLoad[i][1] = MPlayer->commandersToLoad[i][1];
 			commandersToLoad[i][2] = MPlayer->commandersToLoad[i][2];
@@ -545,7 +545,7 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 			MultiPlayCommanderId = MPlayer->commanderID;
 			missionLoadType = MISSION_LOAD_MP_LOGISTICS;
 		}
-		long maxTeam = -1;
+		int32_t maxTeam = -1;
 		for (i = 0; i < MAX_MC_PLAYERS; i++)
 			if (MPlayer->playerInfo[i].team > maxTeam)
 				maxTeam = MPlayer->playerInfo[i].team;
@@ -565,15 +565,15 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 	if (mission)
 		mission->destroy();
 
-	long numPlayers = 1;
+	int32_t numPlayers = 1;
 	if ( MPlayer )
 		MPlayer->getPlayers(numPlayers);
-	long numMoversPerCommander[MAX_MC_PLAYERS] = {12, 12, 12, 9, 7, 6, 5, 4};
+	int32_t numMoversPerCommander[MAX_MC_PLAYERS] = {12, 12, 12, 9, 7, 6, 5, 4};
 	Stuff::Vector3D dropZoneList[255]; // ubsurdly large, but sometimes we overrun this.
-	long dropZoneID = 0;
+	int32_t dropZoneID = 0;
 	if (MPlayer) {
 		//dropZoneID = MPlayer->commanderID;
-		for (long i = 0; i < MAX_MC_PLAYERS; i++)
+		for (int32_t i = 0; i < MAX_MC_PLAYERS; i++)
 			if (commandersToLoad[i][0] == MPlayer->commanderID) {
 				dropZoneID = i;
 				break;
@@ -590,8 +590,8 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 			EList< LogisticsMech*, LogisticsMech* > list;
 			LogisticsData::instance->getForceGroup(list);
 
-			long dropZoneIndex = 0;
-			long numMechs = 0;
+			int32_t dropZoneIndex = 0;
+			int32_t numMechs = 0;
 			for (EList< LogisticsMech*, LogisticsMech* >::EIterator iter = list.Begin(); !iter.IsDone(); iter++) {
 				numMechs++;
 				if ( !(*iter)->getPilot() )
@@ -613,12 +613,12 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 				mechData.designerMech = (*iter)->getVariant()->isDesignerMech();
 				mechData.numComponents = (*iter)->getComponentCount();
 				if (mechData.numComponents)	{
-					long* componentList = (long*)systemHeap->Malloc(sizeof(long) * mechData.numComponents);
-					long otherCount = mechData.numComponents;
+					int32_t* componentList = (int32_t*)systemHeap->Malloc(sizeof(int32_t) * mechData.numComponents);
+					int32_t otherCount = mechData.numComponents;
 					(*iter)->getComponents(otherCount, componentList);
 					if (otherCount != mechData.numComponents)
 						STOP(("Heidi's getComponentCount does not agree with count returned from getComponents"));
-					for (long i = 0; i < mechData.numComponents; i++)
+					for (int32_t i = 0; i < mechData.numComponents; i++)
 						mechData.components[i] = (uint8_t)componentList[i];
 				}
 				MPlayer->sendMissionSetup(0, 1, &mechData);
@@ -632,9 +632,9 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 	
 			ObjectManager->numMechs = 0;
 			ObjectManager->numVehicles = 0;
-			for (long i = 0; i < MAX_MC_PLAYERS; i++) {
+			for (int32_t i = 0; i < MAX_MC_PLAYERS; i++) {
 				if (MPlayer->mechDataReceived[i]) {
-					for (long j = 0; j < 12; j++) {
+					for (int32_t j = 0; j < 12; j++) {
 						if (MPlayer->mechData[i][j].objNumber > -1) {
 							MoverInitData data;
 							memset(&data, 0, sizeof(MoverInitData));
@@ -661,9 +661,9 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 							strcpy(data.brainFileName, "pbrain");
 							strcpy(data.csvFileName, MPlayer->mechData[i][j].mechFile);
 							data.numComponents = MPlayer->mechData[i][j].numComponents;
-							for (long k = 0; k < MPlayer->mechData[i][j].numComponents; k++)
+							for (int32_t k = 0; k < MPlayer->mechData[i][j].numComponents; k++)
 								data.components[k] = MPlayer->mechData[i][j].components[k];
-							long moverHandle = mission->addMover(&data);
+							int32_t moverHandle = mission->addMover(&data);
 							if (moverHandle < 1)
 								STOP(("Logistics.beginMission: unable to addMover"));
 							MoverPtr mover = (MoverPtr)ObjectManager->get(moverHandle);
@@ -681,7 +681,7 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 		}
 		else // gotta update pilot availability
 		{
-			long count = 256;
+			int32_t count = 256;
 			LogisticsPilot* pilots[256];
 			LogisticsData::instance->getPilots( pilots, count );
 
@@ -783,7 +783,7 @@ int _stdcall Logistics::beginMission(void*, int, void*[])
 		if (MPlayer->isHost())
 			MPlayer->serverCID = MPlayer->commanderID;
 		else {
-			for (long i = 0; i < MAX_MC_PLAYERS; i++)
+			for (int32_t i = 0; i < MAX_MC_PLAYERS; i++)
 				if (MPlayer->serverPlayer && (MPlayer->playerList[i].player == MPlayer->serverPlayer))
 					MPlayer->serverCID = MPlayer->playerList[i].commanderID;
 			if (MPlayer->serverCID == -1)

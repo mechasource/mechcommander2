@@ -1,5 +1,3 @@
-#ifndef SIMPLECOMPONENTLISTBOX_H
-#define SIMPLECOMPONENTLISTBOX_H
 /*************************************************************************************************\
 SimpleComponentListBox.h			: Interface for the SimpleComponentListBox component.
 //---------------------------------------------------------------------------//
@@ -7,9 +5,12 @@ SimpleComponentListBox.h			: Interface for the SimpleComponentListBox component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef ALISTBOX_H
-#include "alistbox.h"
-#endif
+#pragma once
+
+#ifndef SIMPLECOMPONENTLISTBOX_H
+#define SIMPLECOMPONENTLISTBOX_H
+
+//#include "alistbox.h"
 
 class LogisticsVariant;
 class LogisticsVehicle;
@@ -28,7 +29,7 @@ class ComponentListBox: public aListBox
 		~ComponentListBox();
 		void setMech( LogisticsVariant* pMech );
 		void setVehicle( LogisticsVehicle* pVehicle );
-		void setComponents( long componentCount, LogisticsComponent** components );
+		void setComponents( int32_t componentCount, LogisticsComponent** components );
 
 	private:
 

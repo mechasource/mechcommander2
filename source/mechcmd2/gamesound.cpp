@@ -27,7 +27,7 @@
 //---------------------------------------------------------------------------
 GameSoundSystem *soundSystem = NULL;
 
-extern bool wave_ParseWaveMemory(MemoryPtr lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader, MemoryPtr* lplpWaveSamples,DWORD *lpcbWaveSize);
+extern bool wave_ParseWaveMemory(PUCHAR lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader, PUCHAR* lplpWaveSamples,ULONG *lpcbWaveSize);
 
 bool friendlyDestroyed = false;
 bool enemyDestroyed = false;
@@ -48,7 +48,7 @@ void GameSoundSystem::purgeSoundSystem (void)
 	// dump the Radio Message Queue.
 	messagesInQueue = 0;
 	wholeMsgDone = true;
-	long i;
+	int32_t i;
 	for (i=0;i<MAX_QUEUED_MESSAGES;i++)
 		queue[i] = NULL;
 
@@ -93,9 +93,9 @@ void GameSoundSystem::purgeSoundSystem (void)
 }	
 
 //---------------------------------------------------------------------------
-void GameSoundSystem::removeQueuedMessage (long msgNumber)
+void GameSoundSystem::removeQueuedMessage (int32_t msgNumber)
 {
-long i;
+int32_t i;
 
 	if (msgNumber < 0 || msgNumber >= MAX_QUEUED_MESSAGES)
 		return;
@@ -119,7 +119,7 @@ long i;
 			messagesInQueue--;
 
 #ifdef _DEBUG
-		for (long test=0;test<(long)messagesInQueue;test++)
+		for (int32_t test=0;test<(int32_t)messagesInQueue;test++)
 		{
 			if (queue[test])
 				continue;
@@ -133,7 +133,7 @@ long i;
 		queue[MAX_QUEUED_MESSAGES-1] = NULL;
 
 #ifdef _DEBUG
-		for (test=0;test<(long)messagesInQueue;test++)
+		for (test=0;test<(int32_t)messagesInQueue;test++)
 		{
 			if (queue[test])
 				continue;
@@ -148,7 +148,7 @@ long i;
 //---------------------------------------------------------------------------
 bool GameSoundSystem::checkMessage (MechWarriorPtr pilot, byte priority, ULONG messageType)
 {
-	for (long i=0;i<MAX_QUEUED_MESSAGES;i++)
+	for (int32_t i=0;i<MAX_QUEUED_MESSAGES;i++)
 	{
 		if (queue[i])
 			if ((queue[i]->pilot == pilot && priority > queue[i]->priority) ||			// I'm already saying something more important, or
@@ -174,7 +174,7 @@ void GameSoundSystem::moveFromQueueToPlaying(void)
 
 	currentMessage = queue[0];
 
-	for (long i=0;i<MAX_QUEUED_MESSAGES-1;i++)
+	for (int32_t i=0;i<MAX_QUEUED_MESSAGES-1;i++)
 		queue[i] = queue[i+1];
 		
 	queue[MAX_QUEUED_MESSAGES-1] = NULL;
@@ -191,7 +191,7 @@ void GameSoundSystem::removeCurrentMessage(void)
 			currentMessage->pilot->clearMessagePlaying();
 
 		UserHeapPtr msgHeap = currentMessage->msgHeap;
-		for (long j=0;j<MAX_FRAGMENTS;j++)
+		for (int32_t j=0;j<MAX_FRAGMENTS;j++)
 		{
 			msgHeap->Free(currentMessage->data[j]);
 			currentMessage->data[j] = NULL;
@@ -208,9 +208,9 @@ void GameSoundSystem::removeCurrentMessage(void)
 }
 
 //---------------------------------------------------------------------------
-long GameSoundSystem::queueRadioMessage (RadioData *msgData)
+int32_t GameSoundSystem::queueRadioMessage (RadioData *msgData)
 {
-long i;
+int32_t i;
 
 	//-------------------------------------------------
 	// First, search the Queue and see if this message
@@ -249,7 +249,7 @@ long i;
 
 		if (queue[i]->priority > msgData->priority)	// if this messages priority higher (a lower number: 1 is top priority)
 		{											// push things down to make room.
-			for (long j=MAX_QUEUED_MESSAGES-1;j>i;j--)
+			for (int32_t j=MAX_QUEUED_MESSAGES-1;j>i;j--)
 			{
 				queue[j] = queue[j-1];
 			}
@@ -266,7 +266,7 @@ long i;
 	queue[i] = msgData;
 
 #ifdef _DEBUG
-		for (long test=0;test<(long)messagesInQueue;test++)
+		for (int32_t test=0;test<(int32_t)messagesInQueue;test++)
 		{
 			if (queue[test])
 				continue;
@@ -276,7 +276,7 @@ long i;
 #endif
 	messagesInQueue++;
 #ifdef _DEBUG
-		for (test=0;test<(long)messagesInQueue;test++)
+		for (test=0;test<(int32_t)messagesInQueue;test++)
 		{
 			if (queue[test])
 				continue;
@@ -285,7 +285,7 @@ long i;
 		}
 #endif
 
-	return NO_ERR;
+	return NO_ERROR;
 }
 
 //---------------------------------------------------------------------------
@@ -328,9 +328,9 @@ void GameSoundSystem::update (void)
 					soundFormat.wFormatTag = 1;				//PCM
 		
 					MC2_WAVEFORMATEX *waveFormat = NULL;
-					MemoryPtr dataOffset = NULL;
-					DWORD length = 0;
-					DWORD bitsPerSec = 0;
+					PUCHAR dataOffset = NULL;
+					ULONG length = 0;
+					ULONG bitsPerSec = 0;
 					wave_ParseWaveMemory(currentMessage->data[currentFragment],&waveFormat,&dataOffset,&length);
 					
 					bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -370,9 +370,9 @@ void GameSoundSystem::update (void)
 					soundFormat.wFormatTag = 1;				//PCM
 		
 					MC2_WAVEFORMATEX *waveFormat = NULL;
-					MemoryPtr dataOffset = NULL;
-					DWORD length = 0;
-					DWORD bitsPerSec = 0;
+					PUCHAR dataOffset = NULL;
+					ULONG length = 0;
+					ULONG bitsPerSec = 0;
 					wave_ParseWaveMemory(currentMessage->noise[currentFragment],&waveFormat,&dataOffset,&length);
 					
 					bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -409,9 +409,9 @@ void GameSoundSystem::update (void)
 						soundFormat.wFormatTag = 1;				//PCM
 			
 						MC2_WAVEFORMATEX *waveFormat = NULL;
-						MemoryPtr dataOffset = NULL;
-						DWORD length = 0;
-						DWORD bitsPerSec = 0;
+						PUCHAR dataOffset = NULL;
+						ULONG length = 0;
+						ULONG bitsPerSec = 0;
 						wave_ParseWaveMemory(currentMessage->data[currentFragment],&waveFormat,&dataOffset,&length);
 						
 						bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -492,9 +492,9 @@ void GameSoundSystem::update (void)
 			soundFormat.wFormatTag = 1;				//PCM
 
 			MC2_WAVEFORMATEX *waveFormat = NULL;
-			MemoryPtr dataOffset = NULL;
-			DWORD length = 0;
-			DWORD bitsPerSec = 0;
+			PUCHAR dataOffset = NULL;
+			ULONG length = 0;
+			ULONG bitsPerSec = 0;
 			wave_ParseWaveMemory(currentMessage->noise[currentFragment],&waveFormat,&dataOffset,&length);
 			
 			bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -531,9 +531,9 @@ void GameSoundSystem::update (void)
 				soundFormat.wFormatTag = 1;				//PCM
 	
 				MC2_WAVEFORMATEX *waveFormat = NULL;
-				MemoryPtr dataOffset = NULL;
-				DWORD length = 0;
-				DWORD bitsPerSec = 0;
+				PUCHAR dataOffset = NULL;
+				ULONG length = 0;
+				ULONG bitsPerSec = 0;
 				wave_ParseWaveMemory(currentMessage->data[currentFragment],&waveFormat,&dataOffset,&length);
 				
 				bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;

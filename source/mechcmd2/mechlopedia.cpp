@@ -57,7 +57,7 @@ int Mechlopedia::init()
 	path.init( artPath, "mcl_en", ".fit" );
 
 	FitIniFile file;
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
@@ -248,7 +248,7 @@ void Mechlopedia::MechScreen::init()
 	path.init( artPath, "mcl_en_mechs", ".fit" );
 
 	FitIniFile file;
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
@@ -481,10 +481,10 @@ void Mechlopedia::MechScreen::setVehicle( LogisticsVehicle* pVehicle )
 
 
 	
-	long color = textObjects[0].getColor();
+	int32_t color = textObjects[0].getColor();
 	//	pItem = new aTextListItem( IDS_EN_LISTBOX_FONT );
 	// add house stats NO HOUSE FOR VEHICLES
-//	long houseID = pVehicle->getHouseID();
+//	int32_t houseID = pVehicle->getHouseID();
 //	cLoadString( IDS_HOUSE0 + houseID, tmp, 255 );
 //	cLoadString( IDS_EN_HOUSE, text, 255 );
 //	sprintf( formatText, text, tmp );
@@ -528,7 +528,7 @@ void Mechlopedia::MechScreen::setVehicle( LogisticsVehicle* pVehicle )
 	pItem = new aTextListItem( IDS_EN_LISTBOX_FONT );
 
 	cLoadString( IDS_EN_SPEED, text, 255 );
-	sprintf( formatText, text, (long)pVehicle->getDisplaySpeed());	
+	sprintf( formatText, text, (int32_t)pVehicle->getDisplaySpeed());	
 	
 	pItem->setText( formatText );
 	pItem->setColor( color );
@@ -571,12 +571,12 @@ void Mechlopedia::MechScreen::setMech( LogisticsVariant* pChassis, bool bShowJum
 
 	pItem = new aTextListItem( IDS_EN_LISTBOX_FONT );
 
-	long color = textObjects[0].getColor();
+	int32_t color = textObjects[0].getColor();
 
 	// add house stats
 	if ( !bIsVehicle )
 	{
-		long houseID = pChassis->getHouseID();
+		int32_t houseID = pChassis->getHouseID();
 		cLoadString( IDS_HOUSE0 + houseID, tmp, 255 );
 		cLoadString( IDS_EN_HOUSE, text, 255 );
 		sprintf( formatText, text, tmp );
@@ -621,7 +621,7 @@ void Mechlopedia::MechScreen::setMech( LogisticsVariant* pChassis, bool bShowJum
 	pItem = new aTextListItem( IDS_EN_LISTBOX_FONT );
 
 	cLoadString( IDS_EN_SPEED, text, 255 );
-	sprintf( formatText, text, (long)pChassis->getDisplaySpeed());	
+	sprintf( formatText, text, (int32_t)pChassis->getDisplaySpeed());	
 	
 	pItem->setText( formatText );
 	pItem->setColor( color );
@@ -633,7 +633,7 @@ void Mechlopedia::MechScreen::setMech( LogisticsVariant* pChassis, bool bShowJum
 		pItem = new aTextListItem( IDS_EN_LISTBOX_FONT );
 
 		cLoadString( IDS_EN_JUMP, text, 255 );
-		sprintf( formatText, text, (long)pChassis->getJumpRange() * 25 );	
+		sprintf( formatText, text, (int32_t)pChassis->getJumpRange() * 25 );	
 		
 		pItem->setText( formatText );
 		pItem->setColor( color );
@@ -650,7 +650,7 @@ void Mechlopedia::WeaponScreen::init()
 	path.init( artPath, "mcl_en_wep", ".fit" );
 
 	FitIniFile file;
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
@@ -694,7 +694,7 @@ void Mechlopedia::WeaponScreen::select( aTextListItem* pEntry )
 	
 }
 
-int __cdecl sortWeapon( const void* pW1, const void* pW2 )
+int __cdecl sortWeapon( PCVOID pW1, PCVOID pW2 )
 {
 	LogisticsComponent* p1 = *(LogisticsComponent**)pW1;
 	LogisticsComponent* p2 = *(LogisticsComponent**)pW2;
@@ -793,7 +793,7 @@ void Mechlopedia::WeaponScreen::setWeapon ( LogisticsComponent* pComponent )
 		pEntry = new aTextListItem( IDS_EN_WEAPON_FONT );
 		
 		cLoadString( IDS_EN_WEAPON_DAMAGE, buffer, 255 );
-		sprintf( final, buffer, (long)pComponent->getDamage() );
+		sprintf( final, buffer, (int32_t)pComponent->getDamage() );
 		pEntry->setText( final );
 		pEntry->setColor( textObjects[0].getColor() );
 		statsListBox.AddItem( pEntry );
@@ -831,7 +831,7 @@ void Mechlopedia::WeaponScreen::setWeapon ( LogisticsComponent* pComponent )
 	pEntry = new aTextListItem( IDS_EN_WEAPON_FONT );
 	
 	cLoadString( IDS_EN_WEAPON_HEAT, buffer, 255 );
-	sprintf( final, buffer, (long)pComponent->getHeat() );
+	sprintf( final, buffer, (int32_t)pComponent->getHeat() );
 	pEntry->setText( final );
 	pEntry->setColor( textObjects[0].getColor() );
 	statsListBox.AddItem( pEntry );
@@ -842,7 +842,7 @@ void Mechlopedia::WeaponScreen::setWeapon ( LogisticsComponent* pComponent )
 		pEntry = new aTextListItem( IDS_EN_WEAPON_FONT );
 
 		cLoadString( IDS_EN_WEAPON_AMMO, buffer, 255 );
-		sprintf( final, buffer, (long)pComponent->getAmmo() );
+		sprintf( final, buffer, (int32_t)pComponent->getAmmo() );
 		pEntry->setText( final );
 		pEntry->setColor( textObjects[0].getColor() );
 		statsListBox.AddItem( pEntry );
@@ -852,7 +852,7 @@ void Mechlopedia::WeaponScreen::setWeapon ( LogisticsComponent* pComponent )
 	pEntry = new aTextListItem( IDS_EN_WEAPON_FONT );
 
 	cLoadString( IDS_EN_WEAPON_COST, buffer, 255 );
-	sprintf( final, buffer, (long)pComponent->getCost() );
+	sprintf( final, buffer, (int32_t)pComponent->getCost() );
 	pEntry->setText( final );
 	pEntry->setColor( textObjects[0].getColor() );
 	statsListBox.AddItem( pEntry );
@@ -886,7 +886,7 @@ void Mechlopedia::PersonalityScreen::init()
 	path.init( artPath, "mcl_en_person", ".fit" );
 
 	FitIniFile file;
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", (PSTR)path );
@@ -995,7 +995,7 @@ void MechlopediaListItem::render()
 {
 	bmpAnim.setState( (aAnimGroup::STATE)state );
 	bmpAnim.update();
-	long color = bmpAnim.getCurrentColor( (aAnimGroup::STATE)state );
+	int32_t color = bmpAnim.getCurrentColor( (aAnimGroup::STATE)state );
 	bmp.setColor( color );
 	bmp.render();
 
@@ -1008,7 +1008,7 @@ void MechlopediaListItem::init( )
 	FitIniFile file;
 	FullPathFileName path;
 	path.init( artPath, "mcl_en_sub", ".fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn' open file %s", (PSTR)path );
@@ -1053,7 +1053,7 @@ void Mechlopedia::BuildingScreen::init()
 	path.init( artPath, "mcl_en_bldg", ".fit" );
 
 	FitIniFile file;
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", (PSTR)path );

@@ -1,3 +1,6 @@
+
+#pragma once
+
 #ifndef MISSIONRESULTS_H
 #define MISSIONRESULTS_H
 /*************************************************************************************************\

@@ -12,7 +12,7 @@ PauseWindow.cpp			: Implementation of the PauseWindow component.
 #include "..\resource.h"
 #include "userInput.h"
 #include "missiongui.h"
-#include "LogisticsDialog.h"
+#include "logisticsdialog.h"
 #include "gamesound.h"
 #include "mission.h"
 #include "LogisticsData.h"
@@ -21,8 +21,8 @@ PauseWindow.cpp			: Implementation of the PauseWindow component.
 extern float frameLength;
 
 extern bool bInvokeOptionsScreenFlag;
-extern long helpTextHeaderID;
-extern long helpTextID;
+extern int32_t helpTextHeaderID;
+extern int32_t helpTextID;
 extern ULONG scenarioResult;
 		
 extern bool loadInMissionSave;
@@ -98,8 +98,8 @@ void PauseWindow::update()
 		
 	}
 	
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 	gosEnum_KeyIndex key;
 	bool bShift, bCtrl, bAlt;
@@ -172,8 +172,8 @@ void PauseWindow::update()
 				helpTextHeaderID = buttonData[i].helpTextHeader;
 				helpTextID = buttonData[i].helpTextID;
 
-				long lastX = mouseX - userInput->getMouseXDelta();
-				long lastY = mouseY - userInput->getMouseYDelta();
+				int32_t lastX = mouseX - userInput->getMouseXDelta();
+				int32_t lastY = mouseY - userInput->getMouseYDelta();
 
 				if ( buttons[i].location[0].x >= lastX || lastX >= buttons[i].location[2].x
 				|| lastY <= buttons[i].location[0].y || lastY >= buttons[i].location[1].y )
@@ -334,7 +334,7 @@ void PauseWindow::init( FitIniFile& file )
 		}
 	}
 
-	if ( NO_ERR == file.seekBlock( "PauseBackRect" ) )
+	if ( NO_ERROR == file.seekBlock( "PauseBackRect" ) )
 	{
 		file.readIdLong( "left", backgrounds[0].left );
 		file.readIdLong( "right", backgrounds[0].right );
@@ -347,7 +347,7 @@ void PauseWindow::init( FitIniFile& file )
 //		backgrounds[0].bottom += ControlGui::hiResOffsetY;
 	}
 
-	if ( NO_ERR == file.seekBlock( "PauseText" ) )
+	if ( NO_ERROR == file.seekBlock( "PauseText" ) )
 	{
 		file.readIdLong( "left", backgrounds[1].left );
 		file.readIdLong( "right", backgrounds[1].right );

@@ -127,55 +127,55 @@ void FireType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long FireType::init (FilePtr objFile, ULONG fileSize) {
+int32_t FireType::init (FilePtr objFile, ULONG fileSize) {
 
-	long result = 0;
+	int32_t result = 0;
 	
 	FitIniFile explFile;
 	result = explFile.open(objFile,fileSize);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	
 	result = explFile.seekBlock("FireData");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	ULONG dmgLevel;
 	result = explFile.readIdULong("DmgLevel",dmgLevel);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	damageLevel = dmgLevel;
 		
 	result = explFile.readIdULong("SoundEffectId",soundEffectId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	
 	result = explFile.readIdULong("LightObjectId",lightObjectId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		lightObjectId = -1;
 
 	result = explFile.readIdULong("startLoopFrame",startLoopFrame);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = explFile.readIdULong("numLoops",numLoops);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 		
 	result = explFile.readIdULong("endLoopFrame",endLoopFrame);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = explFile.readIdFloat("maxExtentRadius",maxExtent);
-	if (result != NO_ERR)		
+	if (result != NO_ERROR)		
 		maxExtent = 0.0;
 	
 	result = explFile.readIdFloat("TimeToMaxExtent",timeToMax);
-	if (result != NO_ERR)		
+	if (result != NO_ERROR)		
 		timeToMax = 0.0;
 
 	result = explFile.readIdLong("TotalFireShapes",totalFires);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		totalFires = 1;
 
 	//------------------------------------------------------------------
@@ -254,80 +254,80 @@ void ExplosionType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-long ExplosionType::init (FilePtr objFile, ULONG fileSize) {
+int32_t ExplosionType::init (FilePtr objFile, ULONG fileSize) {
 
-	long result = 0;
+	int32_t result = 0;
 	
 	FitIniFile explFile;
 	result = explFile.open(objFile,fileSize);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	
 	//------------------------------------------------------------------
 	// Read in the data needed to fire the laser
 	result = explFile.seekBlock("ExplosionData");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	ULONG dmgLevel;
 	result = explFile.readIdULong("DmgLevel",dmgLevel);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	damageLevel = dmgLevel;
 		
 	result = explFile.readIdULong("SoundEffectId",soundEffectId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 		
 	result = explFile.readIdLong("ExplosionRadius",explRadius);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		explRadius = 0;
 		
 	result = explFile.readIdULong("LightObjectId",lightObjectId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		lightObjectId = -1;
 
 	result = explFile.readIdFloat("DamageChunkSize",chunkSize);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		chunkSize = 5.0;
 
 	result = explFile.readIdFloat("DelayUntilCollidable",delayUntilCollidable);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		delayUntilCollidable = EXPLOSION_TIME;
 
 	result = explFile.seekBlock("LightData");
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		result = explFile.readIdFloat("LightMinMaxRadius",lightMinMaxRadius);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
 
 		result = explFile.readIdFloat("LightMaxMaxRadius",lightMaxMaxRadius);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
 
 		result = explFile.readIdFloat("LightOutMinRadius",lightOutMinRadius);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
 
 		result = explFile.readIdFloat("LightOutMaxRadius",lightOutMaxRadius);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
 
 		result = explFile.readIdULong("LightRGB",lightRGB);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
 
 		result = explFile.readIdFloat("MaxIntensity",maxIntensity);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
 
 		result = explFile.readIdFloat("MinIntensity",minIntensity);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
 
 		result = explFile.readIdFloat("Duration",duration);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Light data for explosion BAD"));
 	}
 
@@ -514,26 +514,26 @@ void Carnage::handleStaticCollision (void)
 	{
 		//-----------------------------------------------------
 		// What is our block and vertex number?
-		long blockNumber = 0;
-		long vertexNumber = 0;
+		int32_t blockNumber = 0;
+		int32_t vertexNumber = 0;
 		getBlockAndVertexNumber(blockNumber,vertexNumber);
 			
 		//-------------------------------------------------------------------------
 		// We must now move out into other tiles for the artillery strike to work.
 		// Remember, Its pretty big!
 		// Just grab the nine vertices around this one.  Problems arise when on Block border.  Handle it.
-		long topLeftBlockNumber = blockNumber - Terrain::blocksMapSide - 1;
-		long currentBlockNumber = topLeftBlockNumber;
-		long totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
+		int32_t topLeftBlockNumber = blockNumber - Terrain::blocksMapSide - 1;
+		int32_t currentBlockNumber = topLeftBlockNumber;
+		int32_t totalBlocks = Terrain::blocksMapSide * Terrain::blocksMapSide;
 
-		for (long i = 0; i < 3; i++) 
+		for (int32_t i = 0; i < 3; i++) 
 		{
-			for (long j = 0; j < 3; j++) 
+			for (int32_t j = 0; j < 3; j++) 
 			{
 				if ((currentBlockNumber >= 0) && (currentBlockNumber < totalBlocks))
 				{
-					long numObjectsInBlock = ObjectManager->getObjBlockNumObjects(currentBlockNumber);
-					for (long objIndex = 0; objIndex < numObjectsInBlock; objIndex++) 
+					int32_t numObjectsInBlock = ObjectManager->getObjBlockNumObjects(currentBlockNumber);
+					for (int32_t objIndex = 0; objIndex < numObjectsInBlock; objIndex++) 
 					{
 						GameObjectPtr obj = ObjectManager->getObjBlockObject(currentBlockNumber, objIndex);
 						if (obj->getExists() && (obj->getObjectClass() != GATE) && (obj->getObjectClass() != TURRET)) 
@@ -551,19 +551,19 @@ void Carnage::handleStaticCollision (void)
 		// -fs
 		if ((effectId != MINE_EXPLOSION_ID) && (info.explosion.radius > 0.0f))
 		{
-			long CellRow, CellCol;
+			int32_t CellRow, CellCol;
 			land->worldToCell(getPosition(), CellRow, CellCol);
 	
-			long startCellRow = CellRow - 4;
-			long startCellCol = CellCol - 4;
+			int32_t startCellRow = CellRow - 4;
+			int32_t startCellCol = CellCol - 4;
 				
 			for (i = startCellRow; i < startCellRow + 9; i++) 
 			{
-				for (long j = startCellCol; j < startCellCol + 9; j++) 
+				for (int32_t j = startCellCol; j < startCellCol + 9; j++) 
 				{
 					if (GameMap->inBounds(i,j)) 
 					{
-						long mineResult = 0;
+						int32_t mineResult = 0;
 						mineResult = GameMap->getMine(i,j);
 						
 						if (mineResult == 1)
@@ -644,7 +644,7 @@ void Carnage::addTimeLeft (float timeLeft)
 }
 
 //---------------------------------------------------------------------------
-long Carnage::update (void) 
+int32_t Carnage::update (void) 
 {
 	if (carnageType == CARNAGE_FIRE) 
 	{
@@ -925,13 +925,13 @@ void Carnage::init (bool create, ObjectTypePtr _type)
 }	
 
 //---------------------------------------------------------------------------
-void Carnage::Save (PacketFilePtr file, long packetNum)
+void Carnage::Save (PacketFilePtr file, int32_t packetNum)
 {
 	CarnageData data;
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(MemoryPtr)&data,sizeof(CarnageData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(PUCHAR)&data,sizeof(CarnageData),STORAGE_TYPE_ZLIB);
 }
 
 //---------------------------------------------------------------------------

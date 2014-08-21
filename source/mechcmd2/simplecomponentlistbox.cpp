@@ -35,7 +35,7 @@ void ComponentListBox::setMech( LogisticsVariant* pMech )
 	if ( pMech )
 	{
 		LogisticsComponent* components[256];
-		long componentCount = 256;
+		int32_t componentCount = 256;
 
 		pMech->getComponents( componentCount, components );
 
@@ -72,7 +72,7 @@ void ComponentListBox::setVehicle( LogisticsVehicle* pVeh )
 	if ( pVeh )
 	{
 		LogisticsComponent* components[256];
-		long componentCount = 256;
+		int32_t componentCount = 256;
 
 		pVeh->getComponents( componentCount, components );
 
@@ -82,24 +82,24 @@ void ComponentListBox::setVehicle( LogisticsVehicle* pVeh )
 }
 
 
-void ComponentListBox::setComponents( long componentCount, LogisticsComponent** components )
+void ComponentListBox::setComponents( int32_t componentCount, LogisticsComponent** components )
 {
 		LogisticsComponent* finalList[64];
 
 
-		long finalListCount[64];
-//		long stringIDs[4] = { IDS_SHORT, IDS_MEDIUM, IDS_LONG, IDS_COMPONENT};
-		long colors[4] = { 0xff6E7C00, 0xff005392, 0xffA21600, 0xffc29b00};
-//		long headerColors[4] = { 0xFFC8E100, 0xff0091FF, 0xFFFF0000, 0xffFF8A00 };
+		int32_t finalListCount[64];
+//		int32_t stringIDs[4] = { IDS_SHORT, IDS_MEDIUM, IDS_LONG, IDS_COMPONENT};
+		int32_t colors[4] = { 0xff6E7C00, 0xff005392, 0xffA21600, 0xffc29b00};
+//		int32_t headerColors[4] = { 0xFFC8E100, 0xff0091FF, 0xFFFF0000, 0xffFF8A00 };
 
 		int i, j , k;
-		for ( i = 0; i < 4; i++ ) // do short, medium long
+		for ( i = 0; i < 4; i++ ) // do short, medium int32_t
 		{
-			memset( finalList, 0, sizeof( long ) * 64 );
-			memset( finalListCount, 0, sizeof( long ) * 64 );
+			memset( finalList, 0, sizeof( int32_t ) * 64 );
+			memset( finalListCount, 0, sizeof( int32_t ) * 64 );
 			for ( j = 0; j < componentCount; j++ )
 			{
-				if ( components[j]->getRangeType() == (LogisticsComponent::WEAPON_RANGE)i ) // short, med, long
+				if ( components[j]->getRangeType() == (LogisticsComponent::WEAPON_RANGE)i ) // short, med, int32_t
 				{
 					bool bFound = 0;
 					for ( k = 0; k < 64; k++ )

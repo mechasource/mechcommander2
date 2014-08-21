@@ -35,7 +35,7 @@ PacketFilePtr 		Radio::noiseFile = NULL;
 RadioPtr	  		Radio::radioList[MAX_RADIOS];	//Warriors no longer delete their radios.
 bool				Radio::radioListGo = false;
 bool				Radio::messageInfoLoaded = false;
-long				Radio::currentRadio = 0;
+int32_t				Radio::currentRadio = 0;
 UserHeapPtr			Radio::radioHeap = NULL;
 PacketFilePtr		Radio::messagesFile[MAX_RADIOS];
 
@@ -44,12 +44,12 @@ RadioMessageInfo	messageInfo[RADIO_MESSAGE_COUNT];
 //------------------------------------------------------------------------------------------
 // Class Radio
 //------------------------------------------------------------------------------------------
-void *Radio::operator new (size_t mySize)
+PVOIDRadio::operator new (size_t mySize)
 {
 	if (!radioListGo)
 	{
 		radioListGo = true;
-		for (long i=0;i<MAX_RADIOS;i++)
+		for (int32_t i=0;i<MAX_RADIOS;i++)
 		{
 			radioList[i] = NULL;
 			messagesFile[i] = NULL;
@@ -62,18 +62,18 @@ void *Radio::operator new (size_t mySize)
 		radioHeap->setMallocFatals(false);
 	}
 
-	void *result = radioHeap->Malloc(mySize);
+	PVOID result = radioHeap->Malloc(mySize);
 	return result;
 }
  
 //-------------------------------------------------------------------------------
-void Radio::operator delete (void *us)
+void Radio::operator delete (PVOID us)
 {
 	radioHeap->Free(us);
 }
 
 //-------------------------------------------------------------------------------
-long Radio::init (PSTR fileName, ULONG heapSize, PSTR movie)
+int32_t Radio::init (PSTR fileName, ULONG heapSize, PSTR movie)
 {
 	FullPathFileName pilotAudioPath;
 	pilotAudioPath.init(CDsoundPath,fileName,".pak");
@@ -87,8 +87,8 @@ long Radio::init (PSTR fileName, ULONG heapSize, PSTR movie)
 	messagesFile[radioID] = new PacketFile;
 	gosASSERT(messagesFile[radioID] != NULL);
 		
-	long result = messagesFile[radioID]->open(pilotAudioPath);
-	gosASSERT(result == NO_ERR);
+	int32_t result = messagesFile[radioID]->open(pilotAudioPath);
+	gosASSERT(result == NO_ERROR);
 	
 	if (!noiseFile)
 	{
@@ -98,13 +98,13 @@ long Radio::init (PSTR fileName, ULONG heapSize, PSTR movie)
 		gosASSERT(noiseFile != NULL);
 			
 		result = noiseFile->open(noisePath);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 	}
 		
 	// load message parameters
 	if (!messageInfoLoaded)
 	{
-		if (loadMessageInfo() == NO_ERR)
+		if (loadMessageInfo() == NO_ERROR)
 			messageInfoLoaded = TRUE;
 		else
 			Fatal(0, "Unable to load message info.");
@@ -113,14 +113,14 @@ long Radio::init (PSTR fileName, ULONG heapSize, PSTR movie)
 	radioList[currentRadio] = this;
 	currentRadio++;
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 		
 #define NO_PLAY			-1
 //------------------------------------------------------------------------------------------
-long Radio::playMessage (RadioMessageType msgType)
+int32_t Radio::playMessage (RadioMessageType msgType)
 {
-long i, roll, callsign, fragmentNum, dropOut = 0;
+int32_t i, roll, callsign, fragmentNum, dropOut = 0;
 
 	if (!useSound)
 		return(NO_PLAY);
@@ -208,11 +208,11 @@ long i, roll, callsign, fragmentNum, dropOut = 0;
 	
 	if (callsign)
 	{
-		if (messagesFile[radioID]->seekPacket(callsign) == NO_ERR)
+		if (messagesFile[radioID]->seekPacket(callsign) == NO_ERROR)
 		{
 
 			ULONG messageSize = messagesFile[radioID]->getPacketSize();
-			msgData->data[fragmentNum] = (MemoryPtr)radioHeap->Malloc(messageSize);
+			msgData->data[fragmentNum] = (PUCHAR)radioHeap->Malloc(messageSize);
 			if (!msgData->data[fragmentNum]) 
 			{
 				radioHeap->Free(msgData);
@@ -224,10 +224,10 @@ long i, roll, callsign, fragmentNum, dropOut = 0;
 		}
 	}
 
-	if (messagesFile[radioID]->seekPacket(msgData->msgId) == NO_ERR)
+	if (messagesFile[radioID]->seekPacket(msgData->msgId) == NO_ERROR)
 	{
 		ULONG messageSize = messagesFile[radioID]->getPacketSize();
-		msgData->data[fragmentNum] = (MemoryPtr)radioHeap->Malloc(messageSize);
+		msgData->data[fragmentNum] = (PUCHAR)radioHeap->Malloc(messageSize);
 		if (!msgData->data[fragmentNum]) 
 		{
 			while (fragmentNum >= 0)
@@ -242,10 +242,10 @@ long i, roll, callsign, fragmentNum, dropOut = 0;
 		messagesFile[radioID]->readPacket(msgData->msgId,msgData->data[fragmentNum]);
 		msgData->dataSize[fragmentNum] = messageSize;
 		
-		if (noiseFile->seekPacket(msgData->noiseId) == NO_ERR)
+		if (noiseFile->seekPacket(msgData->noiseId) == NO_ERROR)
 		{
 			ULONG messageSize = noiseFile->getPacketSize();
-			msgData->noise[0] = (MemoryPtr)radioHeap->Malloc(messageSize);
+			msgData->noise[0] = (PUCHAR)radioHeap->Malloc(messageSize);
 			if (!msgData->noise[0])
 			{
 				radioHeap->Free(msgData);
@@ -265,11 +265,11 @@ long i, roll, callsign, fragmentNum, dropOut = 0;
 	// queue was full.  If it was, memory would leak from
 	// the smacker window.  It wouldn't leak from the RadioHeap
 	// because we clear the radio heap every mission!!
-	if (soundSystem->queueRadioMessage(msgData) != NO_ERR)
+	if (soundSystem->queueRadioMessage(msgData) != NO_ERROR)
 	{
 		if (msgData)
 		{
-			for (long j=0;j<MAX_FRAGMENTS;j++)
+			for (int32_t j=0;j<MAX_FRAGMENTS;j++)
 			{
 				radioHeap->Free(msgData->data[j]);
 				msgData->data[j] = NULL;
@@ -290,11 +290,11 @@ long i, roll, callsign, fragmentNum, dropOut = 0;
 }
 
 //------------------------------------------------------------------------------------------
-long Radio::loadMessageInfo(void)
+int32_t Radio::loadMessageInfo(void)
 {
 FullPathFileName	messageInfoPath;
 FilePtr				messageInfoFile;
-long				result;
+int32_t				result;
 char				dataLine[512];
 PSTR				field;
 
@@ -304,17 +304,17 @@ PSTR				field;
 		return -1; //quasit
 
 	result = messageInfoFile->open(messageInfoPath);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 	{
 		delete messageInfoFile;
 		return result;
 	}
 
-	messageInfoFile->readLine((MemoryPtr)dataLine, 511);	// skip title line
+	messageInfoFile->readLine((PUCHAR)dataLine, 511);	// skip title line
 
-	for (long i=0; i<RADIO_MESSAGE_COUNT; i++)
+	for (int32_t i=0; i<RADIO_MESSAGE_COUNT; i++)
 	{
-		result = messageInfoFile->readLine((MemoryPtr)dataLine, 511);
+		result = messageInfoFile->readLine((PUCHAR)dataLine, 511);
 		if (!result)
 			Fatal(0, "Bad Message Info File");
 
@@ -385,5 +385,5 @@ PSTR				field;
 	}
 	messageInfoFile->close();
 	delete messageInfoFile;
-	return NO_ERR;
+	return NO_ERROR;
 }

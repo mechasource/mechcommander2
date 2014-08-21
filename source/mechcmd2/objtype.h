@@ -8,26 +8,17 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef OBJTYPE_H
 #define OBJTYPE_H
 
 //---------------------------------------------------------------------------
-// Include Files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
 
-#ifndef DOBJTYPE_H
-#include "dobjtype.h"
-#endif
-
-#ifndef DGAMEOBJ_H
-#include "dgameobj.h"
-#endif
-
-#ifndef STUFF_HPP
-#include <stuff/stuff.hpp>
-#endif
+//#include <mclib.h>
+//#include "dobjtype.h"
+//#include "dgameobj.h"
+//#include <stuff/stuff.hpp>
 
 #define MAX_NAME		25
 
@@ -39,8 +30,8 @@ class ObjectType {
 	protected:
 	
 		ObjectTypeNumber		objTypeNum;				//What exactly am I?
-		long					numUsers;				//How many people love me?
-		long					objectTypeClass;		//What type am I?
+		int32_t					numUsers;				//How many people love me?
+		int32_t					objectTypeClass;		//What type am I?
 		ObjectClass				objectClass;			//What object class am i?
 		ObjectTypeNumber		destroyedObject;		//What I turn into when I die.
 		ObjectTypeNumber		explosionObject;		//How I blow up
@@ -48,14 +39,14 @@ class ObjectType {
 		char					*appearName;			//Base Name of appearance Files.
 		float					extentRadius;			//Smallest sphere which will hold me.
 		bool					keepMe;					//Do not EVER cache this objType out.
-		long					iconNumber;				//my index into the big strip o' icons
-		long					teamId;					//DEfault for this type
+		int32_t					iconNumber;				//my index into the big strip o' icons
+		int32_t					teamId;					//DEfault for this type
 		uint8_t			subType;				//if building, what type of building? etc.
 
 	public:
 
-		void* operator new (size_t ourSize);
-		void operator delete (void *us);
+		PVOID operator new (size_t ourSize);
+		void operator delete (PVOID us);
 			
 		void init (void) {
 			objectClass = INVALID;
@@ -78,9 +69,9 @@ class ObjectType {
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, ULONG fileSize);
 
-		long init (FitIniFilePtr objFile);
+		int32_t init (FitIniFilePtr objFile);
 		
 		virtual ~ObjectType (void) {
 			destroy();
@@ -127,7 +118,7 @@ class ObjectType {
 			return(potentialContact);
 		}
 
-		long getObjectTypeClass (void) {
+		int32_t getObjectTypeClass (void) {
 			return(objectTypeClass);
 		}
 
@@ -159,15 +150,15 @@ class ObjectType {
 			objTypeNum = objTNum;
 		}
 
-		void setIconNumber(long newNumber) {
+		void setIconNumber(int32_t newNumber) {
 			iconNumber = newNumber;
 		}
 
-		long getIconNumber(void) {
+		int32_t getIconNumber(void) {
 			return iconNumber;
 		}
 						
-		long getTeamId (void) {
+		int32_t getTeamId (void) {
 			return teamId;
 		}
 
@@ -196,7 +187,7 @@ class ObjectTypeManager {
 
 	public:
 
-		long					numObjectTypes;
+		int32_t					numObjectTypes;
 		ObjectTypePtr*			table;
 
 		static UserHeapPtr		objectTypeCache;
@@ -205,11 +196,11 @@ class ObjectTypeManager {
 
 		//--------------------------------------------------------
 		// Following is done to maintain compatibility with MC1...
-		static long				bridgeTypeHandle;
-		static long				forestTypeHandle;
-		static long				wallHeavyTypeHandle;
-		static long				wallMediumTypeHandle;
-		static long				wallLightTypeHandle;
+		static int32_t				bridgeTypeHandle;
+		static int32_t				forestTypeHandle;
+		static int32_t				wallHeavyTypeHandle;
+		static int32_t				wallMediumTypeHandle;
+		static int32_t				wallLightTypeHandle;
 			
 	public:
 
@@ -220,7 +211,7 @@ class ObjectTypeManager {
 			init();
 		}
 
-		long init (PSTR objectFileName, long objectTypeCacheSize, long objectCacheSize, long maxObjectTypes = 1024);
+		int32_t init (PSTR objectFileName, int32_t objectTypeCacheSize, int32_t objectCacheSize, int32_t maxObjectTypes = 1024);
 			
 		void destroy (void);
 							
@@ -228,7 +219,7 @@ class ObjectTypeManager {
 			destroy();
 		}
 
-		void remove (long objTypeNum);
+		void remove (int32_t objTypeNum);
 
 		void remove (ObjectTypePtr ptr);
 			

@@ -70,11 +70,11 @@
 PacketFilePtr			ObjectTypeManager::objectFile = NULL;
 UserHeapPtr				ObjectTypeManager::objectTypeCache = NULL;
 UserHeapPtr				ObjectTypeManager::objectCache = NULL;
-long					ObjectTypeManager::bridgeTypeHandle = 0xFFFFFFFF;
-long					ObjectTypeManager::forestTypeHandle = 0xFFFFFFFF;
-long					ObjectTypeManager::wallHeavyTypeHandle = 0xFFFFFFFF;
-long					ObjectTypeManager::wallMediumTypeHandle = 0xFFFFFFFF;
-long					ObjectTypeManager::wallLightTypeHandle = 0xFFFFFFFF;
+int32_t					ObjectTypeManager::bridgeTypeHandle = 0xFFFFFFFF;
+int32_t					ObjectTypeManager::forestTypeHandle = 0xFFFFFFFF;
+int32_t					ObjectTypeManager::wallHeavyTypeHandle = 0xFFFFFFFF;
+int32_t					ObjectTypeManager::wallMediumTypeHandle = 0xFFFFFFFF;
+int32_t					ObjectTypeManager::wallLightTypeHandle = 0xFFFFFFFF;
 
 ULONG			NextIdNumber = 0x30000001;		//Big number to indicate
 														//This object is NOT a mission
@@ -84,15 +84,15 @@ ULONG			NextIdNumber = 0x30000001;		//Big number to indicate
 //* OBJECTTYPE class
 //***************************************************************************
 
-void* ObjectType::operator new (size_t ourSize) {
+PVOID ObjectType::operator new (size_t ourSize) {
 
-	void* result = ObjectTypeManager::objectTypeCache->Malloc(ourSize);
+	PVOID result = ObjectTypeManager::objectTypeCache->Malloc(ourSize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void ObjectType::operator delete (void* us) {
+void ObjectType::operator delete (PVOID us) {
 
 	if (!((ObjectTypePtr)us)->inUse()) {
 		ObjectTypeManager::objectTypeCache->Free(us);
@@ -121,18 +121,18 @@ void ObjectType::destroy (void) {
 		
 //---------------------------------------------------------------------------
 
-long ObjectType::init (FilePtr objFile, ULONG fileSize) {
+int32_t ObjectType::init (FilePtr objFile, ULONG fileSize) {
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 	
 //---------------------------------------------------------------------------
-long ObjectType::init (FitIniFilePtr objFile) {
+int32_t ObjectType::init (FitIniFilePtr objFile) {
 
-	long result = 0;
+	int32_t result = 0;
 	
 	result = objFile->seekBlock("ObjectType");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	numUsers = 0;
@@ -142,40 +142,40 @@ long ObjectType::init (FitIniFilePtr objFile) {
 	// exposions, collision extents, etc.
 	char apprName[512];
 	result = objFile->readIdString("AppearanceName",apprName,511);
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		appearName = (PSTR )ObjectTypeManager::objectTypeCache->Malloc(strlen(apprName)+1);
 		strcpy(appearName,apprName);
 	}
 
 	result = objFile->readIdLong("ExplosionObject",explosionObject);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = objFile->readIdLong("DestroyedObject",destroyedObject);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 								
 	result = objFile->readIdFloat("ExtentRadius",extentRadius);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		extentRadius = 0.0f;
 
 		
 	result = objFile->readIdLong("IconNumber", iconNumber);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		iconNumber = -1;
 	
 	keepMe = true;					//Never cache out anymore!
 	teamId = -1;		//Everything starts out Neutral now.
 		   
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
 void ObjectType::createExplosion (Stuff::Vector3D& position, float dmg, float rad) 
 {
-	long effectId = weaponEffects->GetEffectObjNum(explosionObject);
+	int32_t effectId = weaponEffects->GetEffectObjNum(explosionObject);
 	if (explosionObject >= 0) 
 	{
 		if (rad == 0.0)
@@ -219,7 +219,7 @@ bool ObjectType::handleDestruction (GameObjectPtr collidee, GameObjectPtr collid
 //* GAMEOBJECT TYPE MANAGER class
 //***************************************************************************
 
-long ObjectTypeManager::init (PSTR objectFileName, long objectTypeCacheSize, long objectCacheSize, long maxObjectTypes) {
+int32_t ObjectTypeManager::init (PSTR objectFileName, int32_t objectTypeCacheSize, int32_t objectCacheSize, int32_t maxObjectTypes) {
 
 	FullPathFileName objectName;
 	objectName.init(objectPath,objectFileName,".pak");
@@ -228,8 +228,8 @@ long ObjectTypeManager::init (PSTR objectFileName, long objectTypeCacheSize, lon
 	if (!objectFile)
 		return NO_RAM_FOR_OBJECT_TYPE_FILE;
 
-	long result = objectFile->open(objectName);
-	if (result != NO_ERR)
+	int32_t result = objectFile->open(objectName);
+	if (result != NO_ERROR)
 		return(result);
 		
 	objectTypeCache = new UserHeap;
@@ -237,7 +237,7 @@ long ObjectTypeManager::init (PSTR objectFileName, long objectTypeCacheSize, lon
 		return NO_RAM_FOR_OBJECT_TYPE_CACHE;
 
 	result = objectTypeCache->init(objectTypeCacheSize,"ObjectTypeHeap");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	
 	objectCache = new UserHeap;
@@ -245,14 +245,14 @@ long ObjectTypeManager::init (PSTR objectFileName, long objectTypeCacheSize, lon
 		return NO_RAM_FOR_OBJECT_CACHE;
 
 	result = objectCache->init(objectCacheSize,"ObjectHeap");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	numObjectTypes = maxObjectTypes;
 	table = (ObjectTypePtr*)objectTypeCache->Malloc(sizeof(ObjectTypePtr) * numObjectTypes);
 	if (!table)
 		Fatal(0, " ObjectTypeManager.init: unable to create table ");
-	for (long i = 0; i < numObjectTypes; i++)
+	for (int32_t i = 0; i < numObjectTypes; i++)
 		table[i] = NULL;
 
 	//---------------------------------------------------------------------------
@@ -267,7 +267,7 @@ long ObjectTypeManager::init (PSTR objectFileName, long objectTypeCacheSize, lon
 	wallMediumTypeHandle = numObjectTypes - 2;
 	wallLightTypeHandle = numObjectTypes - 1;
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -329,7 +329,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 		return(NULL);
 
 	bool isMiscTerrObj = false;
-	long objectTypeNum = -1;
+	int32_t objectTypeNum = -1;
 	ObjectTypePtr objType = NULL;
 	if ((objTypeNum == bridgeTypeHandle) ||
 		(objTypeNum == forestTypeHandle) ||
@@ -341,7 +341,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 		objectTypeNum = TERRAINOBJECT_TYPE;
 		isMiscTerrObj = true;
 		}
-	else if (objectFile->seekPacket(objTypeNum) == NO_ERR) {
+	else if (objectFile->seekPacket(objTypeNum) == NO_ERROR) {
 		if (objTypeNum == 268) {
 			gosASSERT(objTypeNum == 268);
 		}
@@ -350,16 +350,16 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 		// loading what kind of objectType it is and create it
 		// based on that instead of objTypeNum.
 		FitIniFile objTypeFile;
-		long result = objTypeFile.open(objectFile,objectFile->getPacketSize());
-		if (result != NO_ERR)
+		int32_t result = objTypeFile.open(objectFile,objectFile->getPacketSize());
+		if (result != NO_ERROR)
 			Fatal(objTypeNum, " ObjectTypeManager.load: can't create object ");
 
 		result = objTypeFile.seekBlock("ObjectClass");
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(objTypeNum, " ObjectTypeManager.load: can't create object ");
 				
 		result = objTypeFile.readIdLong("ObjectTypeNum",objectTypeNum);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(objTypeNum, " ObjectTypeManager.load: can't create object ");
 
 		objTypeFile.close();
@@ -381,14 +381,14 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 		case BATTLEMECH_TYPE: {
 			objType = new BattleMechType;
 			objType->setObjTypeNum(objTypeNum);
-			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERR)
+			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERROR)
 				Fatal(objectTypeNum, " ObjectTypeManager.load: unable to init Mech type ");
 			}
 			break;
 		case VEHICLE_TYPE: {
 			objType = new GroundVehicleType;
 			objType->setObjTypeNum(objTypeNum);
-			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERR)
+			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERROR)
 				Fatal(objectTypeNum, " ObjectTypeManager.load: unable to init Vehicle type ");
 			}
 			break;			
@@ -396,14 +396,14 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 		case BUILDING_TYPE: {
 			objType = new BuildingType;
 			objType->setObjTypeNum(objTypeNum);
-			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERR)
+			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERROR)
 				Fatal(objectTypeNum, " ObjectTypeManager.load: unable to init Building type ");
 			}
 			break;
 		case TREE_TYPE: {
 			objType = new TerrainObjectType;
 			objType->setObjTypeNum(objTypeNum);
-			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERR)
+			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERROR)
 				Fatal(objectTypeNum, " ObjectTypeManager.load: unable to init TerrainObject:Tree type ");
 			}
 			break;
@@ -412,7 +412,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 			objType->setObjTypeNum(objTypeNum);
 			if (isMiscTerrObj)
 				((TerrainObjectTypePtr)objType)->initMiscTerrObj(objTypeNum);
-			else if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERR)
+			else if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERROR)
 				Fatal(objectTypeNum, " ObjectTypeManager.load: unable to init TerrainObject type ");
 			}
 			break;
@@ -420,7 +420,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 		{
 			objType = new WeaponBoltType;
 			objType->setObjTypeNum(objTypeNum);
-			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERR)
+			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERROR)
 				Fatal(objectTypeNum, " ObjectTypeManager.load: unable to init WeaponBolt type ");
 		}
 		break;
@@ -428,7 +428,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 		case TURRET_TYPE: {
 			objType = new TurretType;
 			objType->setObjTypeNum(objTypeNum);
-			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERR)
+			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERROR)
 				Fatal(objectTypeNum, " ObjectTypeManager.load: unable to init Turret type ");
 			}
 			break;
@@ -436,7 +436,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 		case EXPLOSION_TYPE: {
 			objType = new ExplosionType;
 			objType->setObjTypeNum(objTypeNum);
-			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERR)
+			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERROR)
 				Fatal(objectTypeNum, " ObjectTypeManager.load: unable to init Explosion type ");
 			}
 			break;
@@ -444,7 +444,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 		case FIRE_TYPE: {
 			objType = new FireType;
 			objType->setObjTypeNum(objTypeNum);
-			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERR)
+			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERROR)
 				Fatal(objectTypeNum, " ObjectTypeManager.load: unable to init Fire type ");
 			}
 			break;
@@ -452,7 +452,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 		case GATE_TYPE: {
 			objType = new GateType;
 			objType->setObjTypeNum(objTypeNum);
-			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERR)
+			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERROR)
 				Fatal(objectTypeNum, " ObjectTypeManager.load: unable to init Gate type ");
 			}
 			break;
@@ -460,7 +460,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 		case ARTILLERY_TYPE: {
 			objType = new ArtilleryType;
 			objType->setObjTypeNum(objTypeNum);
-			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERR)
+			if (objType->init(objectFile,objectFile->getPacketSize()) != NO_ERROR)
 				Fatal(objectTypeNum, " ObjectTypeManager.load: unable to init Artillery type ");
 			}
 			break;
@@ -486,7 +486,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 
 //---------------------------------------------------------------------------
 
-void ObjectTypeManager::remove (long objTypeNum) {
+void ObjectTypeManager::remove (int32_t objTypeNum) {
 
 	if ((objTypeNum <= 0) || (objTypeNum >= numObjectTypes))
 		Fatal(objTypeNum, " ObjectTypeManager.remove: bad objTypeNum ");

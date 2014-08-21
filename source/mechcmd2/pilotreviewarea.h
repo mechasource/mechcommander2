@@ -1,5 +1,3 @@
-#ifndef PILOTREVIEWAREA_H
-#define PILOTREVIEWAREA_H
 /*************************************************************************************************\
 PilotReviewARea.h			: Interface for the PilotReviewARea component.
 //---------------------------------------------------------------------------//
@@ -8,11 +6,17 @@ PilotReviewARea.h			: Interface for the PilotReviewARea component.
 \*************************************************************************************************/
 
 //*************************************************************************************************
-#include "logisticsscreen.h"
-#include "alistbox.h"
-#include "attributemeter.h"
-#include "aanim.h"
-#include "LogisticsPilot.h"
+
+#pragma once
+
+#ifndef PILOTREVIEWAREA_H
+#define PILOTREVIEWAREA_H
+
+//#include "logisticsscreen.h"
+//#include "alistbox.h"
+//#include "attributemeter.h"
+//#include "aanim.h"
+//#include "logisticspilot.h"
 
 class aButton;
 class PilotIcon;
@@ -30,7 +34,7 @@ class PilotListBox : public aListBox
 public:
 
 	PilotListBox();
-	virtual long AddItem( aListItem* item );
+	virtual int32_t AddItem( aListItem* item );
 	virtual void update();
 
 	bool isDone( ){ return bDone; }
@@ -39,8 +43,8 @@ private:
  
 	float		timeSinceStart;
 	int			curItem;
-	long		oldScroll;
-	long		newScroll;
+	int32_t		oldScroll;
+	int32_t		newScroll;
 	float		scrollTime;
 	bool		bDone;
 };
@@ -124,7 +128,7 @@ private:
 	static aRect*		s_area;
 	static aRect*		s_liveIconRect;
 	static aRect*		s_deadIconRect;
-	static long			s_itemCount;
+	static int32_t			s_itemCount;
 	
 	aText				nameText;
 	aText				rankText;
@@ -151,7 +155,7 @@ public:
 
 	static void			init( FitIniFile* file );
 	ActivePilotListItem( LogisticsPilot* pUnit );
-	static long			s_totalWidth;
+	static int32_t			s_totalWidth;
 
 	float				flashTime();
 
@@ -165,7 +169,7 @@ protected:
 	static aText*		s_nameText;
 	static aText*		s_missionText;
 	static aText*		s_killsText;
-	static long			s_itemCount;
+	static int32_t			s_itemCount;
 	static aRect*		s_outline[5];
 
 	static aText*		s_rankText;
@@ -187,7 +191,7 @@ protected:
 	aText		nameText;
 	aText		missionText;
 	aText		killsText;
-	long			itemCount;
+	int32_t			itemCount;
 
 	aText		rankText;
 	aText		gunneryText;
@@ -206,7 +210,7 @@ protected:
 	bool		showingPromotion;
 	bool		promotionShown;
 
-	long		medalCount;
+	int32_t		medalCount;
 
 };
 
@@ -240,7 +244,7 @@ private:
 	aListBox		skillListBox;
 	PilotIcon*		pilotIcon;
 	aAnimation		selSkillAnim;
-	long			lastCheck;
+	int32_t			lastCheck;
 
 };
 
@@ -272,7 +276,7 @@ private:
 	static aText*		s_description;
 	static aRect*		s_area;
 	static aRect*		s_outline;
-	static long			s_itemCount;
+	static int32_t			s_itemCount;
 
 	static void			deleteStatics();
 

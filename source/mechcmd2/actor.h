@@ -6,21 +6,14 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef ACTOR_H
 #define ACTOR_H
-//---------------------------------------------------------------------------
-// Include files
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
 
-#ifndef APPEAR_H
-#include "appear.h"
-#endif
-
-#ifndef APPRTYPE_H
-#include "apprtype.h"
-#endif
+//#include <mclib.h>
+//#include "appear.h"
+//#include "apprtype.h"
 
 //#ifndef TGATXM_H
 //#include "tgatxm.h"
@@ -29,10 +22,6 @@
 
 //***********************************************************************
 // Macro Definitions
-
-#ifndef NO_ERR
-#define NO_ERR						0
-#endif
 
 #define MAX_TREES		20
 
@@ -56,8 +45,8 @@ struct ActorData
 	ULONG		numFrames;						// number of frames for this gesture (if -1, does not exist)
 	ULONG		basePacketNumber;				// Where in packet file does this gesture start.
 	float				frameRate;						// intended frame rate of playback
-	long				textureSize;					// Length of one edge of texture.
-	long				textureHS;						// Where the screen coord should go for texture.
+	int32_t				textureSize;					// Length of one edge of texture.
+	int32_t				textureHS;						// Where the screen coord should go for texture.
 };
 
 //***********************************************************************
@@ -73,8 +62,8 @@ class VFXAppearanceType : public AppearanceType
 	
 		ActorData			*actorStateData;
 		TGATexturePtr		*textureList;				//These go NULL when a texture is cached out.
-		long				numPackets;
-		DWORD				textureMemoryHandle;
+		int32_t				numPackets;
+		ULONG				textureMemoryHandle;
 		uint8_t		numStates;
 
 	public:
@@ -104,15 +93,15 @@ class VFXAppearanceType : public AppearanceType
 		
 		//----------------------------------------------
 		// This routine is where the magic happens.
-		TGATexturePtr getTexture (ActorState shapeId, long rot, long currFrame, float &frameRate, bool &mirror);
+		TGATexturePtr getTexture (ActorState shapeId, int32_t rot, int32_t currFrame, float &frameRate, bool &mirror);
 
-		long loadIniFile (FilePtr appearFile, ULONG fileSize);
+		int32_t loadIniFile (FilePtr appearFile, ULONG fileSize);
 
 		void destroy (void);
 
 		virtual void removeTexture (TGATexture *shape);
 
-		long getNumFrames (ActorState typeId)
+		int32_t getNumFrames (ActorState typeId)
 		{
 			if (actorStateData)
 				return actorStateData[typeId].numFrames;
@@ -140,26 +129,26 @@ class VFXAppearance : public Appearance
 		float						lastInView;						//Time since last in view (s)
 		float						timeInFrame;
 		float						frameInc;
-		long						lastWholeFrame;
+		int32_t						lastWholeFrame;
 		
 		ULONG				startFrame;
 		ULONG				endFrame;
 			
 		ActorState					currentShapeTypeId;
-		MemoryPtr 					fadeTable;
+		PUCHAR 					fadeTable;
 		bool 						realBuildingDamage;
 		bool						changedTypeId;
 		
 		float						lightIntensity;
 		float						topZ;
 		
-		Stuff::Vector2DOf<long>		shapeMin;
-		Stuff::Vector2DOf<long>		shapeMax;
+		Stuff::Vector2DOf<int32_t>		shapeMin;
+		Stuff::Vector2DOf<int32_t>		shapeMax;
 
 		Stuff::Vector3D				position;
 		float						rotation;
-		long						selected;
-		long						alignment;
+		int32_t						selected;
+		int32_t						alignment;
 		
 	public:
 
@@ -170,8 +159,8 @@ class VFXAppearance : public Appearance
 			init();
 		}
 
-		virtual long update (void);
-		virtual long render (long depthFixup = 0);
+		virtual int32_t update (void);
+		virtual int32_t render (int32_t depthFixup = 0);
 
 		virtual void destroy (void);
 
@@ -200,7 +189,7 @@ class VFXAppearance : public Appearance
 			changedTypeId = TRUE;
 		}
 
-		void loopFrames (long sFrame, long eFrame)
+		void loopFrames (int32_t sFrame, int32_t eFrame)
 		{
 			startFrame = sFrame;
 			endFrame = eFrame;
@@ -208,14 +197,14 @@ class VFXAppearance : public Appearance
 		
 		virtual void setDamageLvl (ULONG damage);
 		
-		void setFadeTable (MemoryPtr fTable)
+		void setFadeTable (PUCHAR fTable)
 		{
 			fadeTable = fTable;
 		}
 		
-		void setObjectParameters (Stuff::Vector3D &pos, float rot, long selected);
+		void setObjectParameters (Stuff::Vector3D &pos, float rot, int32_t selected);
 		
-		long stateExists (ActorState typeId);
+		int32_t stateExists (ActorState typeId);
 		
 		void debugUpdate (void);
 		

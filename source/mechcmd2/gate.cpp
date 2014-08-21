@@ -89,72 +89,72 @@ void GateType::destroy (void)
 }
 		
 //---------------------------------------------------------------------------
-long GateType::init (FilePtr objFile, ULONG fileSize)
+int32_t GateType::init (FilePtr objFile, ULONG fileSize)
 {
-	long result = 0;
+	int32_t result = 0;
 	
 	FitIniFile bldgFile;
 	result = bldgFile.open(objFile,fileSize);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	
 	//------------------------------------------------------------------
 	// Read in the data needed for the Gates
 	result = bldgFile.seekBlock("GateData");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = bldgFile.readIdULong("DmgLevel",dmgLevel);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	bldgFile.readIdULong("BlownEffectId",blownEffectId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		blownEffectId = -1;
 		
 	bldgFile.readIdULong("NormalEffectId",normalEffectId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		normalEffectId = -1;
 		
 	bldgFile.readIdULong("DamageEffectId",damageEffectId);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		damageEffectId = -1;
 
 	result = bldgFile.readIdLong("BasePixelOffsetX",basePixelOffsetX);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		basePixelOffsetX = 0;
 	
 	result = bldgFile.readIdLong("BasePixelOffsetY",basePixelOffsetY);
-	if (result != NO_ERR)	
+	if (result != NO_ERROR)	
 		basePixelOffsetY = 0;
 
 	result = bldgFile.readIdFloat("ExplosionRadius",explRad);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		explRad = 0.0;
 		
 	result = bldgFile.readIdFloat("ExplosionDamage",explDmg);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		explDmg = 0.0;
 
 	result = bldgFile.readIdFloat("OpenRadius",openRadius);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	result = bldgFile.readIdFloat("LittleExtent",littleExtent);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		littleExtent = 20.0;
 
 	result = bldgFile.readIdLong ("BuildingName", gateTypeName);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		gateTypeName = IDS_BLDOBJ_NAME;
 
 	result = bldgFile.readIdLong( "BuildingDescription", buildingDescriptionID );
-	if ( result != NO_ERR )
+	if ( result != NO_ERROR )
 			buildingDescriptionID = -1;
 
 
 	result = bldgFile.readIdBoolean("BlocksLineOfFire",blocksLineOfFire);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		blocksLineOfFire = FALSE;
 
 	//------------------------------------------------------------------
@@ -245,7 +245,7 @@ bool Gate::isVisible (CameraPtr camera)
 }
 
 //---------------------------------------------------------------------------
-long Gate::update (void)
+int32_t Gate::update (void)
 {
 	if (getFlag(OBJECT_FLAG_JUSTCREATED)) 
 	{
@@ -269,7 +269,7 @@ long Gate::update (void)
 		}
 	}
 	
-	for (long i = 0; i < numSubAreas0; i++) {
+	for (int32_t i = 0; i < numSubAreas0; i++) {
 		GlobalMoveMap[0]->setAreaOwnerWID(subAreas0[i], getWatchID());
 		GlobalMoveMap[1]->setAreaOwnerWID(subAreas1[i], getWatchID());
 		if (status == OBJECT_STATUS_DESTROYED) {
@@ -298,7 +298,7 @@ long Gate::update (void)
 			if ((ObjectManager->getByWatchID(parent)->getTeamId() != Team::home->getId()) && (turn > 5) && (getTeamId() != -1))
 				soundSystem->playBettySample(BETTY_BUILDING_RECAPTURED);
 
-			long parentTeamID = ObjectManager->getByWatchID(parent)->getTeamId();
+			int32_t parentTeamID = ObjectManager->getByWatchID(parent)->getTeamId();
 			setTeamId(parentTeamID, false);
 		}
 	
@@ -361,7 +361,7 @@ long Gate::update (void)
 		}
 	}
 	
-  	long result = true;
+  	int32_t result = true;
 	return(result);
 }
 
@@ -385,7 +385,7 @@ void Gate::blowAnyOffendingObject (void)
 			WeaponShotInfo shot;
 			shot.init(NULL, -3, 250.00, 0, 0);
 
-			for (long i=0;i<10;i++)
+			for (int32_t i=0;i<10;i++)
 			{
 				shot.hitLocation = closestObject->calcHitLocation(NULL,-1,ATTACKSOURCE_ARTILLERY,0);
 				closestObject->handleWeaponHit(&shot, (MPlayer != NULL));
@@ -409,7 +409,7 @@ void Gate::openGate (void)
 	{
 		if (lockedClose || !reasonToOpen)
 		{
-			long animState = appearance->getCurrentGestureId();
+			int32_t animState = appearance->getCurrentGestureId();
 			if (animState == -1)	//Never Updated - Closed by default
 			{
 				appearance->setGesture(0);
@@ -465,7 +465,7 @@ void Gate::openGate (void)
 		}
 		else if (lockedOpen || reasonToOpen)
 		{
-			long animState = appearance->getCurrentGestureId();
+			int32_t animState = appearance->getCurrentGestureId();
 			if (animState == -1)	//Never Updated - Closed by default
 			{
 				appearance->setGesture(1);
@@ -553,7 +553,7 @@ void Gate::openGate (void)
 }	
 
 //---------------------------------------------------------------------------
-long Gate::setTeamId (long _teamId, bool setup) 
+int32_t Gate::setTeamId (int32_t _teamId, bool setup) 
 {
 	if (MPlayer)
 	{
@@ -579,7 +579,7 @@ long Gate::setTeamId (long _teamId, bool setup)
 
 	setSubAreasTeamId(_teamId);
  		
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -605,7 +605,7 @@ void Gate::render (void)
 			if (barStatus < 0.0)
 				barStatus = 0.0;
 
-			DWORD color = 0xff7f7f7f;
+			ULONG color = 0xff7f7f7f;
 			if ((teamId > -1) && (teamId < 8) && getTeam()) {
 				if (getTeam()->isFriendly(Team::home))
 					color = SB_GREEN;
@@ -669,7 +669,7 @@ void Gate::init (bool create, ObjectTypePtr _type)
 	// We need to append the sprite type to the appearance num now.
 	// The MechEdit tool does not assume a sprite type, nor should it.
 	// MechCmdr2 features much simpler objects which only use 1 type of sprite!
-	long appearanceType = (BLDG_TYPE << 24);
+	int32_t appearanceType = (BLDG_TYPE << 24);
 
 	AppearanceTypePtr buildingAppearanceType = NULL;
 	if (!appearName)
@@ -728,10 +728,10 @@ void Gate::setDamage (float newDamage)
 }
  
 //---------------------------------------------------------------------------
-long Gate::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) 
+int32_t Gate::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) 
 {
 	if (!shotInfo)
-		return(NO_ERR);
+		return(NO_ERROR);
 
 	if (addMultiplayChunk)
 		MPlayer->addWeaponHitChunk(this, shotInfo);
@@ -744,7 +744,7 @@ long Gate::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk)
 		destroyGate();
 	}
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -763,9 +763,9 @@ void Gate::destroyGate(void)
 		//----------------------------------------------------------
 		// Unmark these cells as gate cells, so it'll be passable...
 		short* curCoord = cellsCovered;
-		for (long i = 0; i < numCellsCovered; i++) {
-			long r = *curCoord++;
-			long c = *curCoord++;
+		for (int32_t i = 0; i < numCellsCovered; i++) {
+			int32_t r = *curCoord++;
+			int32_t c = *curCoord++;
 			GameMap->setGate(r, c, false);
 		}
 	}
@@ -825,7 +825,7 @@ GameObjectPtr Gate::getParent (void)
 }
 
 //---------------------------------------------------------------------------
-void Gate::setParentId (DWORD pId)
+void Gate::setParentId (ULONG pId)
 {
 	parentId = pId;
 }
@@ -839,13 +839,13 @@ TeamPtr Gate::getTeam (void) {
 }
 
 //***************************************************************************
-void Gate::Save (PacketFilePtr file, long packetNum)
+void Gate::Save (PacketFilePtr file, int32_t packetNum)
 {
 	GateData data;
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(MemoryPtr)&data,sizeof(GateData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(PUCHAR)&data,sizeof(GateData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

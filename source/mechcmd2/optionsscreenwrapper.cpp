@@ -37,7 +37,7 @@ void OptionsScreenWrapper::begin()
 		strcat( path, "mcl_options.fit" );
 		
 		FitIniFile file;
-		if ( NO_ERR != file.open( path ) )
+		if ( NO_ERROR != file.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );

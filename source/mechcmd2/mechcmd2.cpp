@@ -59,7 +59,7 @@
 #endif
 
 #ifndef LOGISTICSDIALOG_H
-#include "LogisticsDialog.h"
+#include "logisticsdialog.h"
 #endif'
 
 #ifndef PREFS_H
@@ -82,19 +82,19 @@ UserHeapPtr systemHeap = NULL;
 UserHeapPtr guiHeap = NULL;
 
 FastFile 	**fastFiles = NULL;
-long 		numFastFiles = 0;
-long		maxFastFiles = 0;
+int32_t 		numFastFiles = 0;
+int32_t		maxFastFiles = 0;
 
-long GameDifficulty = 0;
-long gammaLevel = 0;
-extern long DigitalMasterVolume;
-extern long MusicVolume;
-extern long sfxVolume;
-extern long RadioVolume;
-extern long BettyVolume;
-long resolution = 0;
-long renderer = 0;
-long FilterState = gos_FilterNone;
+int32_t GameDifficulty = 0;
+int32_t gammaLevel = 0;
+extern int32_t DigitalMasterVolume;
+extern int32_t MusicVolume;
+extern int32_t sfxVolume;
+extern int32_t RadioVolume;
+extern int32_t BettyVolume;
+int32_t resolution = 0;
+int32_t renderer = 0;
+int32_t FilterState = gos_FilterNone;
 bool quitGame = FALSE;
 bool justStartMission = FALSE;
 bool gamePaused = FALSE;
@@ -124,7 +124,7 @@ bool KillAmbientLight = false;
 
 void InitDW (void);
 
-extern DWORD					NumDevices;
+extern ULONG					NumDevices;
 
 ULONG elementHeapSize = 1024000;
 ULONG maxElements = 2048;
@@ -141,7 +141,7 @@ ULONG polyHeapSize = 1024000;
 extern float ProcessorSpeed;
 void __stdcall ExitGameOS();
 
-DWORD gosResourceHandle = 0;
+ULONG gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
 float		gosFontScale = 1.0;
 extern HGOSFONT3D	FontHandle;
@@ -149,16 +149,16 @@ FloatHelpPtr globalFloatHelp = NULL;
 ULONG currentFloatHelp = 0;
 float MaxMinUV = 8.0f;
 
-DWORD BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
+ULONG BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
 
 enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor = CPU_PENTIUM;		//Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
 extern float frameRate;
 void EnterWindowMode();
 
-extern long MaxMoveGoalChecks;
+extern int32_t MaxMoveGoalChecks;
 extern bool useSound;
 extern bool useMusic;
-long MaxResourcePoints = -1;
+int32_t MaxResourcePoints = -1;
 bool ShowMovers = false;
 bool EnemiesGoalPlan = false;
 bool inViewMode = false;
@@ -174,16 +174,16 @@ PSTR ExceptionGameMsg = NULL;
 
 char buildNumber[80];
 
-extern long TERRAIN_TXM_SIZE;
-long ObjectTextureSize = 128;
+extern int32_t TERRAIN_TXM_SIZE;
+int32_t ObjectTextureSize = 128;
 
 extern ULONG MultiPlayCommanderId;
 extern bool	useRealLOS;
 bool reloadBounds = false;
 
-extern long DrawDebugCells;
+extern int32_t DrawDebugCells;
 
-extern long GameVisibleVertices;
+extern int32_t GameVisibleVertices;
 
 bool EULAShown = false;
 SoundSystem* sndSystem;
@@ -236,19 +236,19 @@ Stuff::Vector3D pos[36] =
 };
 
 #ifdef LAB_ONLY
-long currentLineElement = 0;
+int32_t currentLineElement = 0;
 LineElement *debugLines[10000];
 
 #define ProfileTime(x,y)	x=GetCycles();y;x=GetCycles()-x;
-extern __int64 MCTimeMultiplayerUpdate;
+extern int64_t MCTimeMultiplayerUpdate;
 #else
 #define ProfileTime(x,y)	y;
 #endif
 
 #define	MAX_KILL_AT_START	100
 
-long NumDisableAtStart = 0;
-long DisableAtStart[MAX_KILL_AT_START];
+int32_t NumDisableAtStart = 0;
+int32_t DisableAtStart[MAX_KILL_AT_START];
 
 OptionsScreenWrapper *optionsScreenWrapper = NULL;
 bool bInvokeOptionsScreenFlag = false;
@@ -256,11 +256,11 @@ bool bInvokeOptionsScreenFlag = false;
 bool SnifferMode = false;
 gos_VERTEX *testVertex = NULL;
 WORD *indexArray = NULL;
-DWORD testTextureHandle = 0xffffffff;
+ULONG testTextureHandle = 0xffffffff;
 float totalTime = 0;
-DWORD numIterations = 4;
-DWORD curIteration = 0;
-DWORD curDevice = 0;
+ULONG numIterations = 4;
+ULONG curIteration = 0;
+ULONG curDevice = 0;
 bool isUsingSoftware = false;
 #define MAX_HARDWARE_CARDS		5
 float trisPerSecond[MAX_HARDWARE_CARDS] = 
@@ -272,7 +272,7 @@ extern bool loadInMissionSave;
 extern char CDInstallPath[];
 
 extern float averageFrameRate;
-extern long currentFrameNum;
+extern int32_t currentFrameNum;
 extern float last30Frames[];
 
 extern bool WindowsNT;
@@ -289,13 +289,13 @@ bool checkedBomb = false;
 char DebugStatusBarString[256];
 GameDebugWindow* DebugWindow[NUM_DEBUG_WINDOWS] = {NULL, NULL, NULL, NULL};
 GameObjectPtr DebugGameObject[3] = {NULL, NULL, NULL};
-long GameObjectWindowList[3] = {0, 0, 0};
-long NumGameObjectsToDisplay = 0;
+int32_t GameObjectWindowList[3] = {0, 0, 0};
+int32_t NumGameObjectsToDisplay = 0;
 bool DebugWindowOpen[NUM_DEBUG_WINDOWS] = {false, false, false, false};
 bool DebugStatusBarOpen = false;
 bool DebugScoreBoardOpen = false;
 bool DebugHelpOpen = false;
-void DEBUGWINS_print (PSTR s, long window = 0);
+void DEBUGWINS_print (PSTR s, int32_t window = 0);
 
 //---------------------------------------------------------------------------
 
@@ -340,7 +340,7 @@ void DEBUGWINS_init (void) {
 
 void DEBUGWINS_destroy (void) {
 
-	for (long i = 0; i < NUM_DEBUG_WINDOWS; i++)
+	for (int32_t i = 0; i < NUM_DEBUG_WINDOWS; i++)
 		if (DebugWindow[i]) {
 			DebugWindow[i]->destroy();
 			delete DebugWindow[i];
@@ -354,7 +354,7 @@ void initDialogs()
 	path.init( artPath, "mcl_dialog", ".fit" );
 
 	FitIniFile file;
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", (PSTR)path );
@@ -367,7 +367,7 @@ void initDialogs()
 
 	path.init( artPath, "mcl_sm", ".fit" );
 
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", (PSTR)path );
@@ -379,7 +379,7 @@ void initDialogs()
 	file.close();
 
 	path.init( artPath, "mcl_dialog_onebutton", ".fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", (PSTR)path );
@@ -422,7 +422,7 @@ void endDialogs()
 
 void DEBUGWINS_toggle (bool* windowsOpen) {
 
-	for (long i = 0; i < NUM_DEBUG_WINDOWS; i++)
+	for (int32_t i = 0; i < NUM_DEBUG_WINDOWS; i++)
 		if (windowsOpen[i])
 			DebugWindow[i]->toggle();
 	DebugHelpOpen = windowsOpen[NUM_DEBUG_WINDOWS];
@@ -434,7 +434,7 @@ void DEBUGWINS_toggle (bool* windowsOpen) {
 
 void DEBUGWINS_display (bool* windowsOpen) {
 
-	for (long i = 0; i < NUM_DEBUG_WINDOWS; i++) {
+	for (int32_t i = 0; i < NUM_DEBUG_WINDOWS; i++) {
 		if (windowsOpen[i]) {
 			DebugWindowOpen[i] = true;
 			DebugWindow[i]->open();
@@ -451,14 +451,14 @@ void DEBUGWINS_display (bool* windowsOpen) {
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_print (PSTR s, long window) {
+void DEBUGWINS_print (PSTR s, int32_t window) {
 
 	DebugWindow[window]->print(s);
 }
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_setGameObject (long debugObj, GameObjectPtr obj) {
+void DEBUGWINS_setGameObject (int32_t debugObj, GameObjectPtr obj) {
 
 	if (debugObj == -1) {
 		DebugGameObject[2] = DebugGameObject[1];
@@ -470,7 +470,7 @@ void DEBUGWINS_setGameObject (long debugObj, GameObjectPtr obj) {
 
 //---------------------------------------------------------------------------
 
-void DEBUGWINS_viewGameObject (long debugObj) {
+void DEBUGWINS_viewGameObject (int32_t debugObj) {
 
 	if (DebugGameObject[debugObj]) {
 		Stuff::Vector3D newPos = DebugGameObject[debugObj]->getPosition();
@@ -482,7 +482,7 @@ void DEBUGWINS_viewGameObject (long debugObj) {
 
 void DEBUGWINS_removeGameObject (GameObjectPtr obj) {
 
-	for (long i = 0; i < 3; i++)
+	for (int32_t i = 0; i < 3; i++)
 		if (DebugGameObject[i] == obj) {
 			DebugGameObject[i] = NULL;
 			DebugWindow[1 + i]->clear();
@@ -494,7 +494,7 @@ void DEBUGWINS_removeGameObject (GameObjectPtr obj) {
 
 void DEBUGWINS_update (void) {
 
-	for (long i = 0; i < 3; i++)
+	for (int32_t i = 0; i < 3; i++)
 		if (DebugGameObject[i])
 			DebugGameObject[i]->updateDebugWindow(DebugWindow[1 + i]);
 }
@@ -510,8 +510,8 @@ void DEBUGWINS_renderSpecialWindows (void) {
 		gos_TextDraw(DebugStatusBarString);
 	if (DebugScoreBoardOpen) {
 		if (MPlayer) {
-			long curY = Environment.screenHeight - 390;
-			for (long i = 0; i < MPlayer->numTeams; i++) {
+			int32_t curY = Environment.screenHeight - 390;
+			for (int32_t i = 0; i < MPlayer->numTeams; i++) {
 				char s[256];
 				sprintf(s, "Team %d score = %d", i, MPlayer->teamScore[i]);
 				gos_TextSetPosition(Environment.screenWidth - 380, curY);
@@ -645,7 +645,7 @@ void DEBUGWINS_renderSpecialWindows (void) {
 
 void DEBUGWINS_render (void) {
 
-	for (long i = 0; i < NUM_DEBUG_WINDOWS; i++)
+	for (int32_t i = 0; i < NUM_DEBUG_WINDOWS; i++)
 		DebugWindow[i]->render();
 	DEBUGWINS_renderSpecialWindows();
 }
@@ -657,11 +657,11 @@ PSTR GetGameInformation()
 	return(ExceptionGameMsg);
 }
 
-//long cLoadString (HINSTANCE hInstance,  UINT uID, LPTSTR lpBuffer, int nBufferMax );
+//int32_t cLoadString (HINSTANCE hInstance,  UINT uID, LPTSTR lpBuffer, int nBufferMax );
 
 #define SnifferTime(x,y)	
-DWORD startTime;
-DWORD endTime;
+ULONG startTime;
+ULONG endTime;
 
 //---------------------------------------------------------------------------
 void UpdateRenderers()
@@ -677,7 +677,7 @@ void UpdateRenderers()
 		//Assume worst case is +/- 8.0 for now.
 		//MaxMinUV = gos_GetMachineInformation(gos_Info_GetMaximumUVSize);
 
-		DWORD bColor = 0x0;
+		ULONG bColor = 0x0;
 		if (eye && mission->isActive())
 			bColor = eye->fogColor;
 
@@ -727,7 +727,7 @@ void UpdateRenderers()
 		#ifdef LAB_ONLY
 		if (currentLineElement)
 		{
-			for (long i=0;i<currentLineElement;i++)
+			for (int32_t i=0;i<currentLineElement;i++)
 			{
 				debugLines[i]->draw();
 			}
@@ -757,7 +757,7 @@ void UpdateRenderers()
 				gos_SetRenderState( gos_State_TextureAddress, gos_TextureWrap);
 				gos_SetRenderState( gos_State_ZCompare, 1);
 				gos_SetRenderState(	gos_State_ZWrite, 1);
-				//DWORD fogColor = 0x009f9f9f;
+				//ULONG fogColor = 0x009f9f9f;
 				//gos_SetRenderState( gos_State_Fog, (int)&fogColor);
 			}
 			else
@@ -775,16 +775,16 @@ void UpdateRenderers()
 				gos_SetRenderState( gos_State_TextureAddress, gos_TextureWrap);
 				gos_SetRenderState( gos_State_ZCompare, 1);
 				gos_SetRenderState(	gos_State_ZWrite, 1);
-				DWORD fogColor = 0x009f9f9f;
+				ULONG fogColor = 0x009f9f9f;
 				gos_SetRenderState( gos_State_Fog, (int)&fogColor);
 			}
 
 			//Send down 5000 triangles
-			long nIterations = 5;
-			for (long i=0;i<nIterations;i++)
+			int32_t nIterations = 5;
+			for (int32_t i=0;i<nIterations;i++)
 			{
 
-				DWORD totalVertices = 3000;
+				ULONG totalVertices = 3000;
 				gos_SetRenderState( gos_State_Texture, testTextureHandle);
 				gos_RenderIndexedArray( testVertex, totalVertices, indexArray, totalVertices );
 			}
@@ -798,7 +798,7 @@ void UpdateRenderers()
 
 //---------------------------------------------------------------------------
 #define GAME_REG_KEY	 	"Software\\Microsoft\\Microsoft Games\\MechCommander2\\1.0"
-typedef DWORD (*EBUPROC) (LPCTSTR lpRegKeyLocation, LPCTSTR lpEULAFileName, LPCSTR lpWarrantyFileName, BOOL fCheckForFirstRun);
+typedef ULONG (*EBUPROC) (LPCTSTR lpRegKeyLocation, LPCTSTR lpEULAFileName, LPCSTR lpWarrantyFileName, BOOL fCheckForFirstRun);
 
 bool FirstRunEula(void)
 {
@@ -822,7 +822,7 @@ void InitializeGameEngine()
 	// In order to do that, we must force Win2K/XP to enlarge
 	// its swapfile at the get go to insure goodness and that
 	// the message does not come up during game run.
-	void *testMem = VirtualAlloc(NULL,123000000,MEM_COMMIT,PAGE_READWRITE);
+	PVOID testMem = VirtualAlloc(NULL,123000000,MEM_COMMIT,PAGE_READWRITE);
 
    	MEMORYSTATUS ms;
    	GlobalMemoryStatus( &ms );
@@ -862,14 +862,14 @@ void InitializeGameEngine()
 	//Check for sufficient hard Drive space on drive game is running from
 	char currentPath[1024];
 	gos_GetCurrentPath( currentPath, 1023 );
-	__int64 driveSpace = gos_GetDriveFreeSpace(currentPath);
+	int64_t driveSpace = gos_GetDriveFreeSpace(currentPath);
 	if (driveSpace < (20 * 1024 * 1024))
 	{
 		char title[256];
 		char msg[2048];
 		cLoadString(IDS_GAME_HDSPACE_ERROR,title,255);
 		cLoadString(IDS_GAME_HDSPACE_MSG,msg,2047);
-		DWORD result = MessageBox(NULL,msg,title,MB_OKCANCEL | MB_ICONWARNING);
+		ULONG result = MessageBox(NULL,msg,title,MB_OKCANCEL | MB_ICONWARNING);
 		if (result == IDCANCEL)
 			ExitGameOS();
 	}
@@ -929,7 +929,7 @@ void InitializeGameEngine()
 		//---------------------------------------------------------------------
 
 		float doubleClickThreshold = 0.2f;
-		long dragThreshold = .016667;
+		int32_t dragThreshold = .016667;
 	
 		Environment.Key_Exit=-1; // so escape doesn't kill your app
 	
@@ -938,7 +938,7 @@ void InitializeGameEngine()
 		// look in CD Install Path for files.
 		
 		//Changed for the shared source release, just set to current directory
-		//DWORD maxPathLength = 1023;
+		//ULONG maxPathLength = 1023;
 		//gos_LoadDataFromRegistry("CDPath", CDInstallPath, &maxPathLength);
 		//if (!maxPathLength)
 		//	strcpy(CDInstallPath,"..\\");
@@ -979,12 +979,12 @@ void InitializeGameEngine()
 		FitIniFilePtr systemFile = new FitIniFile;
 	
 	#ifdef _DEBUG
-		long systemOpenResult = 
+		int32_t systemOpenResult = 
 	#endif
 			systemFile->open("system.cfg");
 			   
 	#ifdef _DEBUG
-		if( systemOpenResult != NO_ERR)
+		if( systemOpenResult != NO_ERROR)
 		{
 			char Buffer[256];
 			gos_GetCurrentPath( Buffer, 256 );
@@ -994,90 +994,90 @@ void InitializeGameEngine()
 	
 		{
 	#ifdef _DEBUG
-			long systemBlockResult = 
+			int32_t systemBlockResult = 
 	#endif
 				systemFile->seekBlock("systemHeap");
-			gosASSERT(systemBlockResult == NO_ERR);
+			gosASSERT(systemBlockResult == NO_ERROR);
 			{
-				long result = systemFile->readIdULong("systemHeapSize",systemHeapSize);
-				gosASSERT(result == NO_ERR);
+				int32_t result = systemFile->readIdULong("systemHeapSize",systemHeapSize);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdULong("guiHeapSize",guiHeapSize);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdULong("logisticsHeapSize",logisticsHeapSize);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 			}
 	
 	#ifdef _DEBUG
-			long systemPathResult = 
+			int32_t systemPathResult = 
 	#endif
 				systemFile->seekBlock("systemPaths");
-			gosASSERT(systemPathResult == NO_ERR);
+			gosASSERT(systemPathResult == NO_ERROR);
 			{
-				long result = systemFile->readIdString("terrainPath",terrainPath,79);
-				gosASSERT(result == NO_ERR);
+				int32_t result = systemFile->readIdString("terrainPath",terrainPath,79);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("artPath",artPath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("fontPath",fontPath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("savePath",savePath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("spritePath",spritePath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("shapesPath",shapesPath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("soundPath",soundPath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("objectPath",objectPath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("cameraPath",cameraPath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("tilePath",tilePath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("missionPath",missionPath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("warriorPath",warriorPath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("profilePath",profilePath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("interfacepath",interfacePath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("moviepath",moviePath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("CDsoundPath",CDsoundPath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("CDmoviepath",CDmoviePath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 	
 				result = systemFile->readIdString("CDspritePath",CDspritePath,79);
-				gosASSERT(result == NO_ERR);
+				gosASSERT(result == NO_ERROR);
 			}
 	
 	#ifdef _DEBUG
-			long fastFileResult = 
+			int32_t fastFileResult = 
 	#endif
 				systemFile->seekBlock("FastFiles");
-			gosASSERT(fastFileResult == NO_ERR);
+			gosASSERT(fastFileResult == NO_ERROR);
 			{
-				long result = systemFile->readIdLong("NumFastFiles",maxFastFiles);
-				if (result != NO_ERR)
+				int32_t result = systemFile->readIdLong("NumFastFiles",maxFastFiles);
+				if (result != NO_ERROR)
 					maxFastFiles = 0;
 	
 				if (maxFastFiles)
@@ -1085,12 +1085,12 @@ void InitializeGameEngine()
 					fastFiles = (FastFile **)malloc(maxFastFiles*sizeof(FastFile *));
 					memset(fastFiles,0,maxFastFiles*sizeof(FastFile *));
 	
-					long fileNum = 0;
+					int32_t fileNum = 0;
 					char fastFileId[10];
 					char fileName[100];
 					sprintf(fastFileId,"File%d",fileNum);
 		
-					while (systemFile->readIdString(fastFileId,fileName,99) == NO_ERR)
+					while (systemFile->readIdString(fastFileId,fileName,99) == NO_ERROR)
 					{
 						bool result = FastFileInit(fileName);
 						if (!result)
@@ -1102,14 +1102,14 @@ void InitializeGameEngine()
 				}
 			}
 			
-			long result = systemFile->seekBlock("UseMusic");
-			if (result == NO_ERR)
+			int32_t result = systemFile->seekBlock("UseMusic");
+			if (result == NO_ERROR)
 				useMusic = TRUE;
 			else
 				useMusic = FALSE;
 				
 			result = systemFile->seekBlock("UseSound");
-			if (result == NO_ERR)
+			if (result == NO_ERROR)
 			{
 				useSound = TRUE;
 			}
@@ -1120,49 +1120,49 @@ void InitializeGameEngine()
 			}
 
 			result = systemFile->seekBlock("CameraSettings");
-			if (result == NO_ERR)
+			if (result == NO_ERROR)
 			{
 				result = systemFile->readIdFloat("MaxPerspective",Camera::MAX_PERSPECTIVE);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::MAX_PERSPECTIVE = 88.0f;
 
 				if (Camera::MAX_PERSPECTIVE > 90.0f)
 					Camera::MAX_PERSPECTIVE = 90.0f;
 
 				result = systemFile->readIdFloat("MinPerspective",Camera::MIN_PERSPECTIVE);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::MIN_PERSPECTIVE = 18.0f;
 
 				if (Camera::MIN_PERSPECTIVE < 0.0f)
 					Camera::MIN_PERSPECTIVE = 0.0f;
 
 				result = systemFile->readIdFloat("MaxOrtho",Camera::MAX_ORTHO);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::MAX_ORTHO = 88.0f;
 
 				if (Camera::MAX_ORTHO > 90.0f)
 					Camera::MAX_ORTHO = 90.0f;
 
 				result = systemFile->readIdFloat("MinOrtho",Camera::MIN_ORTHO);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::MIN_ORTHO = 18.0f;
 
 				if (Camera::MIN_ORTHO < 0.0f)
 					Camera::MIN_ORTHO = 0.0f;
 
 				result = systemFile->readIdFloat("AltitudeMinimum",Camera::AltitudeMinimum);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::AltitudeMinimum = 560.0f;
 
 				if (Camera::AltitudeMinimum < 110.0f)
 					Camera::AltitudeMinimum = 110.0f;
 
 				result = systemFile->readIdFloat("AltitudeMaximumHi",Camera::AltitudeMaximumHi);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::AltitudeMaximumHi = 1600.0f;
 
 				result = systemFile->readIdFloat("AltitudeMaximumLo",Camera::AltitudeMaximumLo);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::AltitudeMaximumHi = 1500.0f;
 			}
 		}
@@ -1177,7 +1177,7 @@ void InitializeGameEngine()
 				NetLog = GameLog::getNewFile();
 				if (!NetLog)
 					Fatal(0, " Couldn't create Net Log ");
-				long err = NetLog->open("net.log");
+				int32_t err = NetLog->open("net.log");
 				if (err)
 					Fatal(0, " Couldn't open Net Log ");
 			}
@@ -1185,7 +1185,7 @@ void InitializeGameEngine()
 				CombatLog = GameLog::getNewFile();
 				if (!CombatLog)
 					Fatal(0, " Couldn't create Combat Log ");
-				long err = CombatLog->open("combat.log");
+				int32_t err = CombatLog->open("combat.log");
 				if (err)
 					Fatal(0, " Couldn't open Combat Log ");
 			}
@@ -1193,7 +1193,7 @@ void InitializeGameEngine()
 				BugLog = GameLog::getNewFile();
 				if (!BugLog)
 					Fatal(0, " Couldn't create Bug Log ");
-				long err = BugLog->open("bug.log");
+				int32_t err = BugLog->open("bug.log");
 				if (err)
 					Fatal(0, " Couldn't open Bug Log ");
 			}
@@ -1208,21 +1208,21 @@ void InitializeGameEngine()
 		FitIniFilePtr prefsFile = new FitIniFile;
 		FitIniFilePtr optsFile = new FitIniFile;
 	
-		long prefsOpenResult = prefsFile->open("prefs.cfg");
+		int32_t prefsOpenResult = prefsFile->open("prefs.cfg");
 	
-		gosASSERT (prefsOpenResult == NO_ERR);
+		gosASSERT (prefsOpenResult == NO_ERROR);
 		
 		prefsOpenResult = optsFile->open("options.cfg");
 		
-		gosASSERT (prefsOpenResult == NO_ERR);
+		gosASSERT (prefsOpenResult == NO_ERROR);
 		
 		{
 	#ifdef _DEBUG
-			long prefsBlockResult = 
+			int32_t prefsBlockResult = 
 	#endif
 				prefsFile->seekBlock("MechCommander2");
 				optsFile->seekBlock("MechCommander2");
-			gosASSERT(prefsBlockResult == NO_ERR);
+			gosASSERT(prefsBlockResult == NO_ERROR);
 			{
 				/*The following commented out options have been moved to "options.cfg" and are
 				handled by the CPrefs class (in "prefs.h"). They have been moved to CPrefs
@@ -1235,75 +1235,75 @@ void InitializeGameEngine()
 				
 				// store volume settings in global variable since soundsystem 
 				// does not exist yet.  These will be set in SoundSystem::init()
-				long result = optsFile->readIdLong("DigitalMasterVolume",DigitalMasterVolume);
-				if (result != NO_ERR)
+				int32_t result = optsFile->readIdLong("DigitalMasterVolume",DigitalMasterVolume);
+				if (result != NO_ERROR)
 					DigitalMasterVolume = 255;
 	
 				result = optsFile->readIdLong("MusicVolume",MusicVolume);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					MusicVolume = 64;
 	
 				result = optsFile->readIdLong("RadioVolume",RadioVolume);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					RadioVolume = 64;
 	
 				result = optsFile->readIdLong("SFXVolume",sfxVolume);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					sfxVolume = 64;
 	
 				result = optsFile->readIdLong("BettyVolume",BettyVolume);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					BettyVolume = 64;
 	
 				result = optsFile->readIdBoolean( "Shadows", useShadows);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					useShadows = true;
 	
 				result = optsFile->readIdBoolean( "DetailTexture", useWaterInterestTexture);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					useWaterInterestTexture = true;
 	
 				result = optsFile->readIdLong("Difficulty",GameDifficulty);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					GameDifficulty = 1;
 					
 				result = optsFile->readIdBoolean("UnlimitedAmmo",useUnlimitedAmmo);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					useUnlimitedAmmo = true;
 	
 				result = optsFile->readIdLong("Rasterizer",renderer);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					renderer = 0;
 	
 				if ((renderer < 0) || (renderer > 3))
 					renderer = 0;
 	
 				result = optsFile->readIdLong("Resolution",resolution);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					resolution = 0;
 	
 				result = optsFile->readIdBoolean("FullScreen",fullScreen);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					fullScreen = true;
 	
 				result = optsFile->readIdLong("Brightness",gammaLevel);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					gammaLevel = 0;
 	
 				result = optsFile->readIdBoolean( "useLeftRightMouseProfile", useLeftRightMouseProfile );
-				if ( result != NO_ERR )
+				if ( result != NO_ERROR )
 					useLeftRightMouseProfile = true;
 	
 				bool asyncMouse = false;
 				result = optsFile->readIdBoolean( "useAsyncMouse", asyncMouse );
-				if ( result != NO_ERR )
+				if ( result != NO_ERROR )
 					asyncMouse = false;
 	
 				mc2UseAsyncMouse = asyncMouse;
 	
-				long filterSetting;
+				int32_t filterSetting;
 				result = prefsFile->readIdLong("FilterState",filterSetting);
-				if (result == NO_ERR)
+				if (result == NO_ERROR)
 				{
 					switch (filterSetting)
 					{
@@ -1323,71 +1323,71 @@ void InitializeGameEngine()
 				}
 	
 				result = prefsFile->readIdLong("TerrainTextureRes",TERRAIN_TXM_SIZE);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					TERRAIN_TXM_SIZE = 64;
 	
 				result = prefsFile->readIdLong("ObjectTextureRes",ObjectTextureSize);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					ObjectTextureSize = 128;
 	
 				result = prefsFile->readIdFloat("DoubleClickThreshold",doubleClickThreshold);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					doubleClickThreshold = 0.2f;
 	
 				result = prefsFile->readIdLong("DragThreshold",dragThreshold);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					dragThreshold = .01667f;
 					
 				result = prefsFile->readIdULong("BaseVertexColor",BaseVertexColor);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					BaseVertexColor = 0x00000000;
 					
 				result = prefsFile->readIdBoolean("RealLOS",useRealLOS);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					useRealLOS = true;
 					
 				result = prefsFile->readIdLong("GameVisibleVertices",GameVisibleVertices);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					GameVisibleVertices = 30;
 					
 				result = prefsFile->readIdFloat("MaxClipDistance",Camera::MaxClipDistance);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::MaxClipDistance	= 3000.0f;
 					
 				result = prefsFile->readIdFloat("MinHazeDistance",Camera::MinHazeDistance);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::MinHazeDistance	= 2000.0f;
 					
 				result = prefsFile->readIdFloat("View0Zoom",Camera::cameraZoom[0]);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::cameraZoom[0] = 1200.0f;
 					
 				result = prefsFile->readIdFloat("View0Tilt",Camera::cameraTilt[0]);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::cameraTilt[0] = 35.0f;
 					
 				result = prefsFile->readIdFloat("View1Zoom",Camera::cameraZoom[1]);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::cameraZoom[1] = 1200.0f;
 					
 				result = prefsFile->readIdFloat("View1Tilt",Camera::cameraTilt[1]);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::cameraTilt[1] = 35.0f;
 					
 				result = prefsFile->readIdFloat("View2Zoom",Camera::cameraZoom[2]);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::cameraZoom[2] = 1200.0f;
 					
 				result = prefsFile->readIdFloat("View2Tilt",Camera::cameraTilt[2]);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::cameraTilt[2] = 35.0f;
 					
 				result = prefsFile->readIdFloat("View3Zoom",Camera::cameraZoom[3]);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::cameraZoom[3] = 1200.0f;
 					
 				result = prefsFile->readIdFloat("View3Tilt",Camera::cameraTilt[3]);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					Camera::cameraTilt[3] = 35.0f;
 			}
 		}
@@ -1402,7 +1402,7 @@ void InitializeGameEngine()
 		optsFile = NULL;
 		
 		//---------------------------------------------------------------------
-		//void __stdcall gos_SetScreenMode( DWORD Width, DWORD Height, DWORD bitDepth=16, DWORD Device=0, bool disableZBuffer=0, bool AntiAlias=0, bool RenderToVram=0, bool GotoFullScreen=0, int DirtyRectangle=0, bool GotoWindowMode=0, bool EnableStencil=0, DWORD Renderer=0 );
+		//void __stdcall gos_SetScreenMode( ULONG Width, ULONG Height, ULONG bitDepth=16, ULONG Device=0, bool disableZBuffer=0, bool AntiAlias=0, bool RenderToVram=0, bool GotoFullScreen=0, int DirtyRectangle=0, bool GotoWindowMode=0, bool EnableStencil=0, ULONG Renderer=0 );
 	
 		/*The following commented out code is now handled by CPrefs::applyPrefs()
 		(in "prefs.cpp").*/
@@ -1514,12 +1514,12 @@ void InitializeGameEngine()
 		effectsName.init(effectsPath,"mc2.fx","");
 	
 		File effectFile;
-		long result = effectFile.open(effectsName);
-		if (result != NO_ERR)
+		int32_t result = effectFile.open(effectsName);
+		if (result != NO_ERROR)
 			STOP(("Could not find MC2.fx"));
 			
-		long effectsSize = effectFile.fileSize();
-		MemoryPtr effectsData = (MemoryPtr)systemHeap->Malloc(effectsSize);
+		int32_t effectsSize = effectFile.fileSize();
+		PUCHAR effectsData = (PUCHAR)systemHeap->Malloc(effectsSize);
 		effectFile.read(effectsData,effectsSize);
 		effectFile.close();
 		
@@ -1621,9 +1621,9 @@ void InitializeGameEngine()
 	
 		gos_EnableSetting(gos_Set_LoseFocusBehavior, 2 );
 	
-		DWORD numJoysticks = gosJoystick_CountJoysticks();
+		ULONG numJoysticks = gosJoystick_CountJoysticks();
 	
-		for (long i=0;i<numJoysticks;i++)
+		for (int32_t i=0;i<numJoysticks;i++)
 		{
 			gosJoystick_Info joyInfo;
 			gosJoystick_GetInfo(i, &joyInfo);
@@ -1643,7 +1643,7 @@ void InitializeGameEngine()
 		// Set Date and write Binary data to registry under key
 		// GraphicsData!!
 		SYSTEMTIME bombDate;
-		DWORD dataSize = sizeof(SYSTEMTIME);
+		ULONG dataSize = sizeof(SYSTEMTIME);
 		gos_LoadDataFromRegistry("GraphicsDataInit2", &bombDate, &dataSize);
 		if (dataSize == 0)
 		{
@@ -1678,7 +1678,7 @@ void InitializeGameEngine()
 		
 		//Changed for the shared source release, just set to current directory
 
-		//DWORD maxPathLength = 1023;
+		//ULONG maxPathLength = 1023;
 		//gos_LoadDataFromRegistry("CDPath", CDInstallPath, &maxPathLength);
 		//if (!maxPathLength)
 		//	memset(CDInstallPath,0,1024);
@@ -1703,7 +1703,7 @@ void InitializeGameEngine()
 		//Create about a thousand textured random triangles.
 		testVertex = (gos_VERTEX *)malloc(sizeof(gos_VERTEX) * 3000);
 		indexArray = (WORD *)malloc(sizeof(WORD) * 3000);
-		for (long i=0;i<3000;i++)
+		for (int32_t i=0;i<3000;i++)
 		{
 			testVertex[i].x = RandomNumber(1000) - 100;
 			testVertex[i].y = RandomNumber(800) - 100;
@@ -1936,12 +1936,12 @@ bool doTransformMath = true;
 
 extern bool useFog;
 
-extern long terrainLineChanged;
+extern int32_t terrainLineChanged;
 
 float frameNum = 0.0f;
 
 bool enoughTime = true;
-long enoughCount = 0;
+int32_t enoughCount = 0;
 
 //---------------------------------------------------------------------------
 //
@@ -1994,7 +1994,7 @@ void DoGameLogic()
 		last30Frames[currentFrameNum] = frameRate;
 
 		averageFrameRate = 0.0f;
-		for (long fc=0;fc<30;fc++)
+		for (int32_t fc=0;fc<30;fc++)
 			averageFrameRate += last30Frames[fc];
 
 		averageFrameRate /= 30.0f;
@@ -2023,7 +2023,7 @@ void DoGameLogic()
 			// Update Mission and Logistics here.
 			if (logistics)
 			{
-				long result = logistics->update();
+				int32_t result = logistics->update();
 				if (result == log_DONE)
 				{
 					logistics->stop();
@@ -2049,12 +2049,12 @@ void DoGameLogic()
 			else
 			if (mission && (!optionsScreenWrapper || optionsScreenWrapper->isDone() ) )
 			{
-				long result = mission->update();
+				int32_t result = mission->update();
 				if (result == 9999) {
 					mission->destroy();
 					//delete mission;
 					//mission = NULL;
-					for (long i = 0; i < 3; i++) {
+					for (int32_t i = 0; i < 3; i++) {
 						DebugGameObject[i] = NULL;
 						DebugWindow[i + 1]->clear();
 					}
@@ -2089,7 +2089,7 @@ void DoGameLogic()
 						//mission = NULL;
 					}
 	
-					for (long i = 0; i < 3; i++) {
+					for (int32_t i = 0; i < 3; i++) {
 						DebugGameObject[i] = NULL;
 						DebugWindow[i + 1]->clear();
 					}
@@ -2126,7 +2126,7 @@ void DoGameLogic()
 		{
 			SYSTEMTIME checkTime;
 			SYSTEMTIME bombTime;
-			DWORD dataSize = sizeof(SYSTEMTIME);
+			ULONG dataSize = sizeof(SYSTEMTIME);
 			GetSystemTime(&checkTime);
 		
 			if (!gotBombData)
@@ -2183,7 +2183,7 @@ void DoGameLogic()
 	{
 		if (!DoneSniffing)
 		{
-			for (long i=0;i<3000;i++)
+			for (int32_t i=0;i<3000;i++)
 			{
 				testVertex[i].x = RandomNumber(1000) - 100;
 				testVertex[i].y = RandomNumber(800) - 100;
@@ -2294,9 +2294,9 @@ void DoGameLogic()
 }
 
 //---------------------------------------------------------------------------
-long textToLong (PSTR num)
+int32_t textToLong (PSTR num)
 {
-	long result = 0;
+	int32_t result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
@@ -2308,7 +2308,7 @@ long textToLong (PSTR num)
 	else
 	{
 		hexOffset += 2;
-		long numDigits = strlen(hexOffset)-1;
+		int32_t numDigits = strlen(hexOffset)-1;
 		for (int i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
@@ -2318,8 +2318,8 @@ long textToLong (PSTR num)
 			}
 		}
 		numDigits = strlen(hexOffset)-1;
-		long power = 0;
-		for (long count = numDigits;count >= 0;count--,power++)
+		int32_t power = 0;
+		for (int32_t count = numDigits;count >= 0;count--,power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			
@@ -2438,21 +2438,21 @@ void ParseCommandLine(PSTR command_line)
 		else if (strcmpi(argv[i], "-braindead") == 0) {
 			i++;
 			if (i < n_args) {
-				long teamID = textToLong(argv[i]);
+				int32_t teamID = textToLong(argv[i]);
 				MechWarrior::brainsEnabled[teamID] = false;
 			}
 		}
 		else if (strcmpi(argv[i], "-turrets_off") == 0) {
 			i++;
 			if (i < n_args) {
-				long teamID = textToLong(argv[i]);
+				int32_t teamID = textToLong(argv[i]);
 				Turret::turretsEnabled[teamID] = false;
 			}
 		}
 		else if (strcmpi(argv[i], "-debugwins") == 0) {
 			i++;
 			if (i < n_args) {
-				long winState = textToLong(argv[i]);
+				int32_t winState = textToLong(argv[i]);
 				if (winState == 1)
 					DebugWindowOpen[0] = true;
 				else if (winState == 2) {
@@ -2471,7 +2471,7 @@ void ParseCommandLine(PSTR command_line)
 		else if (strcmpi(argv[i], "-objectwins") == 0) {
 			i++;
 			if (i < n_args) {
-				long partNumber = textToLong(argv[i]);
+				int32_t partNumber = textToLong(argv[i]);
 				if (NumGameObjectsToDisplay < 3)
 					GameObjectWindowList[NumGameObjectsToDisplay++] = partNumber;
 			}
@@ -2479,7 +2479,7 @@ void ParseCommandLine(PSTR command_line)
 		else if (strcmpi(argv[i], "-debugcells") == 0) {
 			i++;
 			if (i < n_args) {
-				long setting = textToLong(argv[i]);
+				int32_t setting = textToLong(argv[i]);
 				if ((setting > 0) && (setting < 5))
 					DrawDebugCells = setting;
 			}
@@ -2487,14 +2487,14 @@ void ParseCommandLine(PSTR command_line)
 		else if (strcmpi(argv[i], "-nopain") == 0) {
 			i++;
 			if (i < n_args) {
-				long teamID = textToLong(argv[i]);
+				int32_t teamID = textToLong(argv[i]);
 				Team::noPain[teamID] = true;
 			}
 		}
 		else if (strcmpi(argv[i], "-disable") == 0) {
 			i++;
 			if (i < n_args) {
-				long partID = textToLong(argv[i]);
+				int32_t partID = textToLong(argv[i]);
 				DisableAtStart[NumDisableAtStart++] = partID;
 			}
 		}
@@ -2545,8 +2545,8 @@ void ParseCommandLine(PSTR command_line)
 		else if (strcmpi(argv[i], "-dropzones") == 0) {
 			i++;
 			if (i < n_args) {
-				long numPlayers = strlen(argv[i]);
-				for (long j = 0; j < numPlayers; j++)
+				int32_t numPlayers = strlen(argv[i]);
+				for (int32_t j = 0; j < numPlayers; j++)
 					MultiPlayer::presetDropZones[j] = (argv[i][j] - '0');
 			}
 		}
@@ -2629,7 +2629,7 @@ void GetGameOSEnvironment( PSTR CommandLine )
 	HKEY hKey;
 	LONG result;
 	char pData[1024];
-	DWORD szData = 1023;
+	ULONG szData = 1023;
 
 	result=RegOpenKey(HKEY_CURRENT_USER,GAME_REG_KEY,&hKey);
 	if( ERROR_SUCCESS==result )

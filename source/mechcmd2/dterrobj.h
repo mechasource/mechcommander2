@@ -7,6 +7,9 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
+#pragma once
+
 #ifndef DTERROBJ_H
 #define DTERROBJ_H
 

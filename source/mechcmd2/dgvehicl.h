@@ -5,6 +5,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DGVEHICL_H
 #define DGVEHICL_H
 

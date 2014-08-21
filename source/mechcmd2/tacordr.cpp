@@ -131,15 +131,15 @@ extern TeamPtr homeTeam;
 extern UserHeapPtr systemHeap;
 extern float scenarioTime;
 extern float FireArc;
-extern long LastMoveCalcErr;
+extern int32_t LastMoveCalcErr;
 
 extern char OverlayIsBridge[NUM_OVERLAY_TYPES];
 
-long statusCode;
+int32_t statusCode;
 
 //***************************************************************************
 
-long AttitudeEffectOnMovePath[NUM_ATTITUDES][3] = {
+int32_t AttitudeEffectOnMovePath[NUM_ATTITUDES][3] = {
 	{10, 10, 2},	// Cautious
 	{8, 8, 4},		// Conservative
 	{6, 6, 6},		// Normal
@@ -152,15 +152,15 @@ long AttitudeEffectOnMovePath[NUM_ATTITUDES][3] = {
 // TACTICAL ORDER class
 //***************************************************************************
 
-void* TacticalOrder::operator new (size_t mySize) {
+PVOID TacticalOrder::operator new (size_t mySize) {
 
-	void *result = systemHeap->Malloc(mySize);
+	PVOID result = systemHeap->Malloc(mySize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void TacticalOrder::operator delete (void* us) {
+void TacticalOrder::operator delete (PVOID us) {
 
 	systemHeap->Free(us);
 }
@@ -224,7 +224,7 @@ void TacticalOrder::init (OrderOriginType _origin, TacticalOrderCode _code, bool
 
 void TacticalOrder::initWayPath (LocationNodePtr path) {
 
-	long numPoints = 0;
+	int32_t numPoints = 0;
 	while (path) {
 		if (numPoints == MAX_WAYPTS)
 			Fatal(0, " Way Path Too Long ");
@@ -245,7 +245,7 @@ void TacticalOrder::initWayPath (LocationNodePtr path) {
 
 //---------------------------------------------------------------------------
 
-Stuff::Vector3D TacticalOrder::getWayPoint (long index) {
+Stuff::Vector3D TacticalOrder::getWayPoint (int32_t index) {
 
 	Stuff::Vector3D wayPoint(moveParams.wayPath.points[index * 3],
 							 moveParams.wayPath.points[index * 3 + 1],
@@ -255,7 +255,7 @@ Stuff::Vector3D TacticalOrder::getWayPoint (long index) {
 
 //---------------------------------------------------------------------------
 
-void TacticalOrder::setWayPoint (long index, Stuff::Vector3D wayPoint) {
+void TacticalOrder::setWayPoint (int32_t index, Stuff::Vector3D wayPoint) {
 
 	moveParams.wayPath.points[index * 3] = wayPoint.x;
 	moveParams.wayPath.points[index * 3 + 1] = wayPoint.y;
@@ -264,7 +264,7 @@ void TacticalOrder::setWayPoint (long index, Stuff::Vector3D wayPoint) {
 
 //---------------------------------------------------------------------------
 
-void TacticalOrder::addWayPoint (Stuff::Vector3D wayPoint, long travelMode) {
+void TacticalOrder::addWayPoint (Stuff::Vector3D wayPoint, int32_t travelMode) {
 
 	if (moveParams.wayPath.numPoints == MAX_WAYPTS)
 		Fatal(MAX_WAYPTS, " tacticalOrder.addWayPoint: too many! ");
@@ -336,7 +336,7 @@ void TacticalOrder::setId (MechWarriorPtr pilot) {
 
 	Assert(id == 0, id, " TacticalOrder.setId: id != 0 ");
 
-	long nextId = pilot->getNextTacOrderId();
+	int32_t nextId = pilot->getNextTacOrderId();
 	id = nextId;
 	if (nextId == 255)
 		pilot->setNextTacOrderId(1);
@@ -346,7 +346,7 @@ void TacticalOrder::setId (MechWarriorPtr pilot) {
 
 //---------------------------------------------------------------------------
 
-long TacticalOrder::getParamData (float* timeOfOrder, long* paramList) {
+int32_t TacticalOrder::getParamData (float* timeOfOrder, int32_t* paramList) {
 
 	if (timeOfOrder)
 		*timeOfOrder = time;
@@ -395,19 +395,19 @@ long TacticalOrder::getParamData (float* timeOfOrder, long* paramList) {
 
 //---------------------------------------------------------------------------
 
-long TacticalOrder::pack (MoverGroupPtr group, MoverPtr point) {
+int32_t TacticalOrder::pack (MoverGroupPtr group, MoverPtr point) {
 
-	long tempData = 0;
+	int32_t tempData = 0;
 
 	//--------------------
-	// First data DWORD...
-	tempData |= (long)(attackParams.aimLocation + 2);
+	// First data ULONG...
+	tempData |= (int32_t)(attackParams.aimLocation + 2);
 	tempData <<= TACORDERCHUNK_ATTACKMETHOD_BITS;
 
-	tempData |= (long)attackParams.method;
+	tempData |= (int32_t)attackParams.method;
 	tempData <<= TACORDERCHUNK_ATTACKTYPE_BITS;
 
-	tempData |= (long)attackParams.type;
+	tempData |= (int32_t)attackParams.type;
 	tempData <<= TACORDERCHUNK_GROUP_BITS;
 
 	tempData |= groupFlags;
@@ -416,7 +416,7 @@ long TacticalOrder::pack (MoverGroupPtr group, MoverPtr point) {
 	tempData |= (unitOrder ? 1 : 0);
 	tempData <<= TACORDERCHUNK_ORIGIN_BITS;
 
-	tempData |= (long)origin;
+	tempData |= (int32_t)origin;
 	tempData <<= TACORDERCHUNK_CODE_BITS;
 
 	//------------------------
@@ -429,16 +429,16 @@ long TacticalOrder::pack (MoverGroupPtr group, MoverPtr point) {
 			tempData |= (ULONG)TACORDERCHUNK_CODE_MASK;
 		}
 	else
-		tempData |= (long)code;
+		tempData |= (int32_t)code;
 
 	data[0] = tempData;
 
 	//---------------------
-	// Second data DWORD...
+	// Second data ULONG...
 	tempData = 0;
 
 	bool saveTarget = false;
-	long targetType = 0;
+	int32_t targetType = 0;
 	bool saveLocation = false;
 
 	GameObjectPtr curTarget = ObjectManager->getByWatchID(targetWID);
@@ -497,7 +497,7 @@ long TacticalOrder::pack (MoverGroupPtr group, MoverPtr point) {
 				break;
 			case 3:
 				// Location
-				long worldCell[2] = {0, 0};
+				int32_t worldCell[2] = {0, 0};
 				land->worldToCell(attackParams.targetPoint, worldCell[0], worldCell[1]);
 				tempData |= worldCell[0];
 				tempData <<= TACORDERCHUNK_CELLPOS_BITS;
@@ -513,7 +513,7 @@ long TacticalOrder::pack (MoverGroupPtr group, MoverPtr point) {
 	else if (saveLocation) {
 		//--------------
 		// Move Location
-		long worldCell[2] = {0, 0};
+		int32_t worldCell[2] = {0, 0};
 		land->worldToCell(getWayPoint(0), worldCell[0], worldCell[1]);
 		tempData |= worldCell[0];
 		tempData <<= TACORDERCHUNK_CELLPOS_BITS;
@@ -526,7 +526,7 @@ long TacticalOrder::pack (MoverGroupPtr group, MoverPtr point) {
 	tempData |= ((moveParams.wayPath.mode[0] == TRAVEL_MODE_FAST) ? 1 : 0);
 	tempData <<= TACORDERCHUNK_MODE_BITS;
 
-	tempData |= (long)moveParams.mode;
+	tempData |= (int32_t)moveParams.mode;
 	tempData <<= TACORDERCHUNK_WAIT_BITS;
 
 	tempData |= (moveParams.wait ? 1 : 0);
@@ -541,18 +541,18 @@ long TacticalOrder::pack (MoverGroupPtr group, MoverPtr point) {
 	tempData |= (attackParams.pursue ? 1 : 0);
 	tempData <<= TACORDERCHUNK_ATTACKRANGE_BITS;
 
-	tempData |= (long)(attackParams.range + 4);
+	tempData |= (int32_t)(attackParams.range + 4);
 
 	data[1] = tempData;
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-long TacticalOrder::unpack (void) {
+int32_t TacticalOrder::unpack (void) {
 
-	long tempData = data[0];
+	int32_t tempData = data[0];
 
 	code = (TacticalOrderCode)(tempData & TACORDERCHUNK_CODE_MASK);
 	tempData >>= TACORDERCHUNK_CODE_BITS;
@@ -615,7 +615,7 @@ long TacticalOrder::unpack (void) {
 	switch (code) {
 		case TACTICAL_ORDER_MOVETO_POINT:
 		case TACTICAL_ORDER_JUMPTO_POINT: {
-			long worldCell[2] = {0, 0};
+			int32_t worldCell[2] = {0, 0};
 			worldCell[1] = (tempData & TACORDERCHUNK_CELLPOS_MASK);
 			tempData >>= TACORDERCHUNK_CELLPOS_BITS;
 					
@@ -629,7 +629,7 @@ long TacticalOrder::unpack (void) {
 			break;
 		case TACTICAL_ORDER_GUARD:
 			if (guardLocation) {
-				long worldCell[2] = {0, 0};
+				int32_t worldCell[2] = {0, 0};
 				worldCell[1] = (tempData & TACORDERCHUNK_CELLPOS_MASK);
 				tempData >>= TACORDERCHUNK_CELLPOS_BITS;
 					
@@ -641,11 +641,11 @@ long TacticalOrder::unpack (void) {
 				moveParams.wayPath.numPoints = 1;
 				}
 			else {
-				long targetType = (tempData & TACORDERCHUNK_TARGETTYPE_MASK);
+				int32_t targetType = (tempData & TACORDERCHUNK_TARGETTYPE_MASK);
 				tempData >>= TACORDERCHUNK_TARGETTYPE_BITS;
 				if (targetType == 0) {
 					// Mover Index
-					long netMoverIndex = (tempData & TACORDERCHUNK_MOVERINDEX_MASK);
+					int32_t netMoverIndex = (tempData & TACORDERCHUNK_MOVERINDEX_MASK);
 					if (MPlayer) {
 						targetWID = 0;
 						if (MPlayer->moverRoster[netMoverIndex])
@@ -673,11 +673,11 @@ long TacticalOrder::unpack (void) {
 		case TACTICAL_ORDER_REFIT:
 		case TACTICAL_ORDER_RECOVER:
 		case TACTICAL_ORDER_GETFIXED: {
-			long targetType = (tempData & TACORDERCHUNK_TARGETTYPE_MASK);
+			int32_t targetType = (tempData & TACORDERCHUNK_TARGETTYPE_MASK);
 			tempData >>= TACORDERCHUNK_TARGETTYPE_BITS;
 			if (targetType == 0) {
 				// Mover Index
-				long netMoverIndex = (tempData & TACORDERCHUNK_MOVERINDEX_MASK);
+				int32_t netMoverIndex = (tempData & TACORDERCHUNK_MOVERINDEX_MASK);
 				if (MPlayer) {
 					targetWID = 0;
 					if (MPlayer->moverRoster[netMoverIndex])
@@ -699,7 +699,7 @@ long TacticalOrder::unpack (void) {
 			}
 			break;
 		case TACTICAL_ORDER_ATTACK_POINT: {
-			long worldCell[2] = {0, 0};
+			int32_t worldCell[2] = {0, 0};
 			worldCell[1] = (tempData & TACORDERCHUNK_CELLPOS_MASK);
 			tempData >>= TACORDERCHUNK_CELLPOS_BITS;
 					
@@ -715,12 +715,12 @@ long TacticalOrder::unpack (void) {
 		targetObjectClass = ObjectManager->getByWatchID(targetWID)->getObjectClass();
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-void TacticalOrder::setGroupFlag (long localMoverId, bool set) {
+void TacticalOrder::setGroupFlag (int32_t localMoverId, bool set) {
 
 	ULONG mask = (1 << localMoverId);
 	if (set)
@@ -731,14 +731,14 @@ void TacticalOrder::setGroupFlag (long localMoverId, bool set) {
 
 //---------------------------------------------------------------------------
 
-long TacticalOrder::getGroup (long commanderID, MoverPtr* moverList, MoverPtr* point, long sortType) {
+int32_t TacticalOrder::getGroup (int32_t commanderID, MoverPtr* moverList, MoverPtr* point, int32_t sortType) {
 
 	if (!MPlayer)
 		return(0);
 
-	long numMovers = 0;
-	long gFlags = groupFlags;
-	for (long i = 0; i < MAX_LOCAL_MOVERS; i++) {
+	int32_t numMovers = 0;
+	int32_t gFlags = groupFlags;
+	for (int32_t i = 0; i < MAX_LOCAL_MOVERS; i++) {
 		if (gFlags & 1)
 			moverList[numMovers++] = MPlayer->playerMoverRoster[commanderID][i];
 		gFlags >>= 1;
@@ -753,9 +753,9 @@ long TacticalOrder::getGroup (long commanderID, MoverPtr* moverList, MoverPtr* p
 
 //---------------------------------------------------------------------------
 
-long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
+int32_t TacticalOrder::execute (MechWarriorPtr warrior, int32_t& message) {
 
-	long result = TACORDER_FAILURE;
+	int32_t result = TACORDER_FAILURE;
 	message = -1;
 
 	if (warrior->getVehicle()->refitBuddyWID)	// am I in a refitting operation? if is, point my and my refit
@@ -1059,7 +1059,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 
 //					result = warrior->orderMoveToObject(unitOrder, false, origin, target, moveParams.fromArea, selectionIndex, params);
 
-					long cellRow, cellCol;
+					int32_t cellRow, cellCol;
 					Stuff::Vector3D		destination;
 					land->worldToCell(target->getPosition(), cellRow, cellCol);
 //					cellRow++;
@@ -1149,7 +1149,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 				float distanceToGoal = warrior->getVehicle()->distanceFrom(target->getPosition());
 				result = TACORDER_FAILURE;
 				GameObjectPtr blockerList[MAX_MOVERS];
-				long numBlockers = target->getCaptureBlocker(warrior->getVehicle(), blockerList);
+				int32_t numBlockers = target->getCaptureBlocker(warrior->getVehicle(), blockerList);
 				if (target->getTeam() == warrior->getTeam()) 
 				{
 					//--------------------------------
@@ -1183,7 +1183,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 
 						case GROUNDVEHICLE: 
 						{
-							long cellRow, cellCol;
+							int32_t cellRow, cellCol;
 							target->getCellPosition(cellRow, cellCol);
 							target->setTeamId(warrior->getTeam()->getId(),false);
 							result = TACORDER_SUCCESS;
@@ -1193,7 +1193,7 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 
 						case BATTLEMECH: 
 						{
-							long cellRow, cellCol;
+							int32_t cellRow, cellCol;
 							target->getCellPosition(cellRow, cellCol);
 						}
 						break;
@@ -1260,9 +1260,9 @@ long TacticalOrder::execute (MechWarriorPtr warrior, long& message) {
 //---------------------------------------------------------------------------
 extern Mission *mission;
 
-long TacticalOrder::status (MechWarriorPtr warrior) {
+int32_t TacticalOrder::status (MechWarriorPtr warrior) {
 
-	long result = TACORDER_SUCCESS;
+	int32_t result = TACORDER_SUCCESS;
 
 	GameObjectPtr target = ObjectManager->getByWatchID(targetWID);
 	switch (code) {
@@ -1270,8 +1270,8 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 			result = (scenarioTime > delayedTime) ? TACORDER_SUCCESS : TACORDER_FAILURE;
 			break;
 		case TACTICAL_ORDER_MOVETO_POINT: {
-			long formation = -1;
-			long formationPos = -1;
+			int32_t formation = -1;
+			int32_t formationPos = -1;
 			if ((formation > -1) && (formationPos > 0))
 				result = TACORDER_FAILURE;
 			else {
@@ -1279,7 +1279,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 					if (scenarioTime < delayedTime)
 						return(TACORDER_FAILURE);
 					delayedTime = -1.0;
-					long message;
+					int32_t message;
 					execute(warrior, message);
 				}
 				Stuff::Vector3D location;
@@ -1287,7 +1287,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 				location.y = moveParams.wayPath.points[1];
 				location.z = moveParams.wayPath.points[2];
 				//float distanceToGoal = warrior->getVehicle()->distanceFrom(location);
-				long cellDistanceToGoal = warrior->getVehicle()->cellDistanceFrom(location);
+				int32_t cellDistanceToGoal = warrior->getVehicle()->cellDistanceFrom(location);
 				if (cellDistanceToGoal < 1 /*< Mover::marginOfError[1]*/) {
 					if (moveParams.wait) {
 						code = TACTICAL_ORDER_WAIT;
@@ -1306,7 +1306,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 				location.y = moveParams.wayPath.points[1];
 				location.z = moveParams.wayPath.points[2];
 				//float distanceToGoal = warrior->getVehicle()->distanceFrom(location);
-				long cellDistanceToGoal = warrior->getVehicle()->cellDistanceFrom(location);
+				int32_t cellDistanceToGoal = warrior->getVehicle()->cellDistanceFrom(location);
 				if (cellDistanceToGoal > 0/*Mover::marginOfError[1]*/)
 					result = TACORDER_FAILURE;
 			//	else if (moveParams.faceObject) {
@@ -1354,7 +1354,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 				if (scenarioTime < delayedTime)
 					return(TACORDER_FAILURE);
 				delayedTime = -1.0;
-				long message;
+				int32_t message;
 				execute(warrior, message);
 			}
 			if (warrior->getVehicleStatus() != OBJECT_STATUS_NORMAL)
@@ -1365,7 +1365,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 				if (scenarioTime < delayedTime)
 					return(TACORDER_FAILURE);
 				delayedTime = -1.0;
-				long message;
+				int32_t message;
 				execute(warrior, message);
 			}
 			//-----------------------------------------------------------------
@@ -1407,8 +1407,8 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 			break;
 		case TACTICAL_ORDER_SCRAMBLE: {
 			result = TACORDER_FAILURE;
-			long formation = -1;
-			long formationPos = -1;
+			int32_t formation = -1;
+			int32_t formationPos = -1;
 			if ((formation > -1) && (formationPos > 0))
 				result = TACORDER_FAILURE;
 			else {
@@ -1452,7 +1452,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 							}
 							else
 							{
-								long cellRow, cellCol;
+								int32_t cellRow, cellCol;
 								Stuff::Vector3D		destination;
 								land->worldToCell(target->getPosition(), cellRow, cellCol);
 								cellRow++;
@@ -1481,7 +1481,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 						{
 							float pointsUsed = 0;
 							float pointsAvailable = warrior->getVehicle()->getRefitPoints();
-							long result = ((MoverPtr)target)->refit(pointsAvailable, pointsUsed);
+							int32_t result = ((MoverPtr)target)->refit(pointsAvailable, pointsUsed);
 							warrior->getVehicle()->burnRefitPoints(pointsUsed);
 							if (warrior->getVehicle()->getRefitPoints() <= 0)
 							{
@@ -1566,7 +1566,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 						{
 							float pointsUsed = 0;
 							float pointsAvailable = target->getRefitPoints();
-							long result = warrior->getVehicle()->refit(pointsAvailable, pointsUsed);
+							int32_t result = warrior->getVehicle()->refit(pointsAvailable, pointsUsed);
 							target->burnRefitPoints(pointsUsed);
 							if (MPlayer) 
 							{
@@ -1598,7 +1598,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 								warrior->getVehicle()->startUp();
 								{
 									BuildingPtr repairBuilding = (BuildingPtr)target;
-									long			tileRow, tileCol;
+									int32_t			tileRow, tileCol;
 									Stuff::Vector3D		destination;
 									land->worldToTile(repairBuilding->getPosition(), tileRow, tileCol);
 									tileRow++;
@@ -1639,7 +1639,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 					{
 						warrior->clearMoveOrders();
 						if (myGroup)
-							for (long i = 0; i < myGroup->getNumMovers(); i++)
+							for (int32_t i = 0; i < myGroup->getNumMovers(); i++)
 								myGroup->getMover(i)->getPilot()->clearMoveOrders();	// stop!
 						
 						target->getPilot()->clearMoveOrders();	// stop!
@@ -1650,14 +1650,14 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 					break;
 				case 2:
 					if ((scenarioTime > time + 3) && myGroup) {
-						for (long i = 0; i< myGroup->getNumMovers(); i++)
+						for (int32_t i = 0; i< myGroup->getNumMovers(); i++)
 							myGroup->getMover(i)->getPilot()->orderMoveToObject(false, false, ORDER_ORIGIN_SELF, target, moveParams.fromArea);
 						stage++;
 					}
 					break;
 				case 3:
 					if (scenarioTime > time + 5) {
-						for (long i=0; i < myGroup->getNumMovers(); i++) {
+						for (int32_t i=0; i < myGroup->getNumMovers(); i++) {
 							((ElementalPtr)myGroup->getMover(i))->transport = (MoverPtr)target;
 							for (int j=0; j<MAX_TOADS; j++)
 							{
@@ -1730,7 +1730,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 				float distanceToGoal = warrior->getVehicle()->distanceFrom(target->getPosition());
 				result = TACORDER_FAILURE;
 				GameObjectPtr blockerList[MAX_MOVERS];
-				long numBlockers = target->getCaptureBlocker(warrior->getVehicle(), blockerList);
+				int32_t numBlockers = target->getCaptureBlocker(warrior->getVehicle(), blockerList);
 				if (target->getTeam() == warrior->getTeam()) {
 					//--------------------------------
 					// our team already captured it...
@@ -1802,7 +1802,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 
 						case GROUNDVEHICLE: 
 						{
-							long cellRow, cellCol;
+							int32_t cellRow, cellCol;
 							target->getCellPosition(cellRow, cellCol);
 							target->setTeamId(warrior->getTeam()->getId(),false);
 							result = TACORDER_SUCCESS;
@@ -1812,7 +1812,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 
 						case BATTLEMECH: 
 						{
-							long cellRow, cellCol;
+							int32_t cellRow, cellCol;
 							target->getCellPosition(cellRow, cellCol);
 						}
 						break;
@@ -1864,7 +1864,7 @@ long TacticalOrder::status (MechWarriorPtr warrior) {
 						((GroundVehiclePtr)warrior->getVehicle())->refitting = true;
 						if (scenarioTime > time + Mover::refitTime) {
 							float pointsUsed = 0;
-							long result = ((MoverPtr)target)->recover(warrior->getVehicle()->getRecoverPoints(), pointsUsed);
+							int32_t result = ((MoverPtr)target)->recover(warrior->getVehicle()->getRecoverPoints(), pointsUsed);
 							warrior->getVehicle()->burnRecoverPoints(pointsUsed);
 							if (MPlayer) {
 								STOP((" Need to implement recover for multiplayer "));
@@ -1946,8 +1946,8 @@ bool TacticalOrder::equals (TacticalOrder* tacOrder) {
 				return(false);
 			if (moveParams.wayPath.numPoints != tacOrder->moveParams.wayPath.numPoints)
 				return(false);
-			long numCoords = moveParams.wayPath.numPoints * 3;
-			for (long i = 0; i < numCoords; i++) {
+			int32_t numCoords = moveParams.wayPath.numPoints * 3;
+			for (int32_t i = 0; i < numCoords; i++) {
 				if (moveParams.wayPath.points[i] != tacOrder->moveParams.wayPath.points[i])
 					return(false);
 				if (moveParams.wayPath.mode[i] != tacOrder->moveParams.wayPath.mode[i])
@@ -2054,7 +2054,7 @@ void TacticalOrder::debugString (MechWarriorPtr pilot, PSTR s) {
 			curPos.x = moveParams.wayPath.points[0];
 			curPos.y = moveParams.wayPath.points[1];
 			curPos.z = 0.0;
-			long cell[2];
+			int32_t cell[2];
 			land->worldToCell(curPos, cell[0], cell[1]);
 			sprintf(s, "move to pt (%.0f, %.0f) [%d, %d]",
 				moveParams.wayPath.points[0],
@@ -2070,7 +2070,7 @@ void TacticalOrder::debugString (MechWarriorPtr pilot, PSTR s) {
 			curPos.x = moveParams.wayPath.points[0];
 			curPos.y = moveParams.wayPath.points[1];
 			curPos.z = 0.0;
-			long cell[2];
+			int32_t cell[2];
 			land->worldToCell(curPos, cell[0], cell[1]);
 			sprintf(s, "jump to pt (%.0f, %.0f)",
 				moveParams.wayPath.points[0],
@@ -2136,7 +2136,7 @@ void TacticalOrder::debugString (MechWarriorPtr pilot, PSTR s) {
 		case TACTICAL_ORDER_CAPTURE: {
 			Stuff::Vector3D goalPos;
 			GameObjectPtr obj;
-			long goalType = pilot->getMoveGoal(&goalPos, &obj);
+			int32_t goalType = pilot->getMoveGoal(&goalPos, &obj);
 			if ((goalType > 0) && obj) {
 				sprintf(s, "capture obj (%d) [%d]", target ? target->getPartId() : 0, obj->getPartId());
 				}

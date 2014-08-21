@@ -1,6 +1,3 @@
-#ifndef MISSIONSELECTION_H
-#define MISSIONSELECTION_H
-
 /*************************************************************************************************\
 MissionSelectionScreen.h : Header file for mission selection
 //---------------------------------------------------------------------------//
@@ -8,17 +5,14 @@ MissionSelectionScreen.h : Header file for mission selection
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
-#endif
+#pragma once
 
-#ifndef ALISTBOX_H
-#include "alistbox.h"
-#endif
+#ifndef MISSIONSELECTION_H
+#define MISSIONSELECTION_H
 
-#ifndef MC2movie_H
-#include "mc2movie.h"
-#endif
+//#include "logisticsscreen.h"
+//#include "alistbox.h"
+//#include "mc2movie.h"
 
 class FitIniFile;
 
@@ -31,7 +25,7 @@ public:
 
 	MissionSelectionScreen();
 	virtual ~MissionSelectionScreen();
- 	virtual void render( int xOffset, int yOffset );
+	virtual void render( int xOffset, int yOffset );
 	virtual void begin();
 	virtual void end();
 	virtual void update();
@@ -50,7 +44,7 @@ private:
 	//ULONG		videoTexture;
 
 	PCSTR			missionNames[MAX_MISSIONS_IN_GROUP];
-	long				missionCount;
+	int32_t				missionCount;
 
 	void				setMission( int whichOne );
 
@@ -58,7 +52,7 @@ private:
 
 	void				updateListBox();
 
-	long				pressedButton;
+	int32_t				pressedButton;
 
 	bool				bStop;
 

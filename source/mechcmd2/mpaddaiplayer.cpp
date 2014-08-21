@@ -89,7 +89,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 		strcat( path, "mcl_mp_addai_combobox1.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -99,7 +99,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 		experienceDropList.init(&PNfile, "ExperienceComboBox");
 
 		PNfile.seekBlock( "Texts" );
-		long listItemCount = 0;
+		int32_t listItemCount = 0;
 		PNfile.readIdLong( "Textcount", listItemCount );
 
 		aStyle4TextListItem *pTmp2;
@@ -121,7 +121,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 		strcat( path, "mcl_mp_addai_combobox2.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -131,7 +131,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 		factionDropList.init(&PNfile, "FactionComboBox");
 
 		PNfile.seekBlock( "Texts" );
-		long listItemCount = 0;
+		int32_t listItemCount = 0;
 		PNfile.readIdLong( "Textcount", listItemCount );
 
 		aStyle4TextListItem *pTmp2;
@@ -159,7 +159,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 				strcat( path, "mcl_mp_addai_combobox3.fit" );
 				
 				FitIniFile PNfile;
-				if ( NO_ERR != PNfile.open( path ) )
+				if ( NO_ERROR != PNfile.open( path ) )
 				{
 					char error[256];
 					sprintf( error, "couldn't open file %s", path );
@@ -169,7 +169,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 				mechSelectionDropLists[row][column].init(&PNfile, "MechSelectionComboBox");
 
 				PNfile.seekBlock( "Texts" );
-				long listItemCount = 0;
+				int32_t listItemCount = 0;
 				PNfile.readIdLong( "Textcount", listItemCount );
 
 				aStyle4TextListItem *pTmp2;
@@ -313,17 +313,17 @@ void MPAddAIPlayer::update()
 
 
 
-long aStyle4TextListItem::init( FitIniFile* file, PCSTR blockName )
+int32_t aStyle4TextListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
-	long fontResID = 0;
+	int32_t fontResID = 0;
 	file->readIdLong( "Font", fontResID );
-	long textID = 0;
+	int32_t textID = 0;
 	file->readIdLong( "TextID", textID );
 	aTextListItem::init(fontResID);
 	setText(textID);
-	long color = 0xff808080;
+	int32_t color = 0xff808080;
 	file->readIdLong( "Color", color );
 	normalColor = color;
 	setColor(color);

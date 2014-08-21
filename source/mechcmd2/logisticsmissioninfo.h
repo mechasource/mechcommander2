@@ -1,5 +1,3 @@
-#ifndef LOGISTICSMISSIONINFO_H
-#define LOGISTICSMISSIONINFO_H
 /*************************************************************************************************\
 LogisticsMissionInfo.h			: Interface for the LogisticsMissionInfo component.
 //---------------------------------------------------------------------------//
@@ -7,11 +5,13 @@ LogisticsMissionInfo.h			: Interface for the LogisticsMissionInfo component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef ELIST_H
-#include "elist.h"
-#endif
+#pragma once
 
-#include "estring.h"
+#ifndef LOGISTICSMISSIONINFO_H
+#define LOGISTICSMISSIONINFO_H
+
+//#include "elist.h"
+//#include "estring.h"
 
 #define MAX_PLAYER_NAME_LENGTH 64
 
@@ -29,31 +29,31 @@ class LogisticsMissionInfo
 		~LogisticsMissionInfo();
 		
 		
-		long init( FitIniFile& file ); // init campaign
+		int32_t init( FitIniFile& file ); // init campaign
 		void save( FitIniFile& file );
-		long load( FitIniFile& file );// init previously saved stuff
+		int32_t load( FitIniFile& file );// init previously saved stuff
 
 
-		long getAvailableMissions( PCSTR* missions, int& numberOfEm );
-		long getCurrentMissions( PCSTR* missions, int& numberOfEm );
+		int32_t getAvailableMissions( PCSTR* missions, int& numberOfEm );
+		int32_t getCurrentMissions( PCSTR* missions, int& numberOfEm );
 
 		bool getMissionAvailable( PCSTR missionName );
 
 		bool isMissionComplete( PCSTR missionName );
 		bool isSingleMission() const;
 
-		long setNextMission( PCSTR missionName );
+		int32_t setNextMission( PCSTR missionName );
 		void setMissionComplete( );
 
-		long getCurrentLogisticsTuneId();
+		int32_t getCurrentLogisticsTuneId();
 
-		long getCurrentMissionId();
+		int32_t getCurrentMissionId();
 		
 		const EString& getCurrentPurchaseFile() const;
 		const EString& getCurrentMission() const { return currentMissionName; }
 		const EString& getLastMission() const { return lastMissionName; }
 
-		long				getCurrentDropWeight() const;
+		int32_t				getCurrentDropWeight() const;
 		PCSTR			getCurrentVideo() const;
 		PCSTR			getCurrentOperationFile() const;
 		PCSTR			getCurrentMissionDescription() const;
@@ -77,10 +77,10 @@ class LogisticsMissionInfo
 		void				setMultiplayer();
 		void				setPurchaseFile( PCSTR fileName );
 
-//		long				getMaxTeams() const { return maxTeams; }
-//		long				getMaxPlayers() const { return maxPlayers; }
+//		int32_t				getMaxTeams() const { return maxTeams; }
+//		int32_t				getMaxPlayers() const { return maxPlayers; }
 
-		int					getAdditionalPurachaseFiles( PCSTR* list, long& maxCount );
+		int					getAdditionalPurachaseFiles( PCSTR* list, int32_t& maxCount );
 		void				addBonusPurchaseFile( PCSTR fileName ); // extra bonus
 
 		bool				skipLogistics();
@@ -102,12 +102,12 @@ class LogisticsMissionInfo
 		bool				getVideoShown();
 		void				setVideoShown();
 
-		long				getCurrentMissionNumber()
+		int32_t				getCurrentMissionNumber()
 		{
 			return currentMission;
 		}
 
-		void				setCurrentMissionNumber(long cMission)
+		void				setCurrentMissionNumber(int32_t cMission)
 		{
 			currentMission = cMission;
 		}
@@ -129,9 +129,9 @@ class LogisticsMissionInfo
 			bool mandatory;
 			bool completePrevious;
 			bool completed;
-			long resourcePoints;
-			long additionalCBills;
-			long dropWeight;
+			int32_t resourcePoints;
+			int32_t additionalCBills;
+			int32_t dropWeight;
 			bool playLogistics;
 			bool playSalvage;
 			bool playPilotPromotion;
@@ -154,12 +154,12 @@ class LogisticsMissionInfo
 		class MissionGroup
 		{
 		public:
-			long numberToBeCompleted;
+			int32_t numberToBeCompleted;
 			EString videoFileName;
 			EString operationFileName;
 			EString bigVideoName;
 			EString ablBrainName;
-			long logisticsTuneId;
+			int32_t logisticsTuneId;
 			MISSION_LIST infos;
 			bool	bigVideoShown;
 			bool	videoShown;
@@ -173,17 +173,17 @@ class LogisticsMissionInfo
 		EString					playerName;
 		EString					currentMissionName;
 		EString					finalVideoName;
-		long					currentStage;
-		long					currentMission;
+		int32_t					currentStage;
+		int32_t					currentMission;
 
-		long					lastStage;
-		long					lastMission;
+		int32_t					lastStage;
+		int32_t					lastMission;
 		EString					lastMissionName;
 
 		MissionGroup*			groups;
-		long					groupCount;
+		int32_t					groupCount;
 
-		long					CBills;
+		int32_t					CBills;
 
 		void					clear();
 		bool					bMultiplayer;

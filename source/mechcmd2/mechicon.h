@@ -28,7 +28,7 @@ class PilotIcon
 
 public:
 
-	static const long DEAD_PILOT_INDEX;
+	static const int32_t DEAD_PILOT_INDEX;
 
 	PilotIcon();
 
@@ -80,7 +80,7 @@ public:
 
 		virtual void setDrawBack( bool bSet) { };
 
-		static int __cdecl sort( const void* p1, const void* p2 );
+		static int __cdecl sort( PCVOID p1, PCVOID p2 );
 
 		PCSTR getPilotName();
 
@@ -95,7 +95,7 @@ public:
 
 protected:
 
-		static long		damageColors[4][3];
+		static int32_t		damageColors[4][3];
 
 		static ULONG	s_textureHandle[5];
 		static bool				s_slotUsed[240];
@@ -115,12 +115,12 @@ protected:
 		static RECT pilotRect[17];
 		static RECT selectionRect[17];
 		static RECT healthBar[17];
-		static long		pilotTextTop[17];
+		static int32_t		pilotTextTop[17];
 
 		static float	pilotLocation[17][4];
 		Mover*		unit;
 
-		static long		ForceGroupColors[11];
+		static int32_t		ForceGroupColors[11];
 
 		void drawBar( float barStatus );
 		static void setIconVariables();
@@ -140,7 +140,7 @@ protected:
 		struct AnimationInfo
 		{
 			float	time;
-			long	color;
+			int32_t	color;
 		};
 
 		static AnimationInfo animationInfos[NUM_DEATH_INFOS];
@@ -152,7 +152,7 @@ protected:
 		float		msgPlayTime;
 
 		static		MC2MoviePtr 	bMovie;
-		static		DWORD			pilotVideoTexture;
+		static		ULONG			pilotVideoTexture;
 		static		MechWarrior*	pilotVideoPilot;
 		
 };
@@ -180,7 +180,7 @@ class MechIcon : public ForceGroupIcon
 
 		char	damage[8];
 		char	backDamage[8];
-		bool init( long whichIndex );
+		bool init( int32_t whichIndex );
 		bool initTextures();
 
 		

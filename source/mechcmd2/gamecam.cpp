@@ -131,7 +131,7 @@ void GameCamera::render (void)
 	
 	//-----------------------------------------------
 	// Set Ambient for this pass of rendering	
-	DWORD lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
+	ULONG lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
 		
 	eye->setLightColor(1,lightRGB);
 	eye->setLightIntensity(1,1.0);
@@ -364,19 +364,19 @@ void GameCamera::render (void)
 }	
 
 //---------------------------------------------------------------------------
-long GameCamera::activate (void)
+int32_t GameCamera::activate (void)
 {
 	//------------------------------------------
 	// If camera is already active, just return
 	if (ready && active)
-		return(NO_ERR);
+		return(NO_ERROR);
 	
 	//---------------------------------------------------------
 	// Camera always starts pointing at first mover in lists
 	// CANNOT be infinite because we don't allow missions without at least 1 player mech!!
 	MoverPtr firstMover = NULL;
 	if (ObjectManager->getNumMovers() > 0) {
-		long i = 0;
+		int32_t i = 0;
 		firstMover = ObjectManager->getMover(i);
 		while (firstMover && ((firstMover->getCommander()->getId() != Commander::home->getId()) || !firstMover->isOnGUI()))
 		{
@@ -405,7 +405,7 @@ long GameCamera::activate (void)
 	lastShadowLightPitch = lightPitch;
 	
 	//Startup the SKYBox
-	long appearanceType = (GENERIC_APPR_TYPE << 24);
+	int32_t appearanceType = (GENERIC_APPR_TYPE << 24);
 
 	AppearanceTypePtr genericAppearanceType = NULL;
 	genericAppearanceType = appearanceTypeList->getAppearance(appearanceType,"skybox");
@@ -425,10 +425,10 @@ long GameCamera::activate (void)
 	
 	theSky->setSkyNumber(mission->theSkyNumber);
 			
- 	return NO_ERR;
+ 	return NO_ERROR;
 }
 
-inline GameObjectPtr getCamObject (long partId, bool existsOnly) 
+inline GameObjectPtr getCamObject (int32_t partId, bool existsOnly) 
 {
 	GameObjectPtr obj = NULL;
 	if (partId == -1)
@@ -449,10 +449,10 @@ inline GameObjectPtr getCamObject (long partId, bool existsOnly)
 	return(obj);
 }
 
-long cameraLineChanged = 0;
+int32_t cameraLineChanged = 0;
 bool useLOSAngle = true;
 //---------------------------------------------------------------------------
-long GameCamera::update (void)
+int32_t GameCamera::update (void)
 {
 	if (lookTargetObject != -1)
 		targetObject = getCamObject(lookTargetObject,true);
@@ -510,7 +510,7 @@ long GameCamera::update (void)
 	char text[1024];
 	sprintf(text,"Near Plane: %f     Far Plane: %f",Camera::NearPlaneDistance,Camera::FarPlaneDistance);
 
-	DWORD width, height;
+	ULONG width, height;
 	Stuff::Vector4D moveHere;
 	moveHere.x = 10.0f;
 	moveHere.y = 10.0f;
@@ -541,7 +541,7 @@ long GameCamera::update (void)
 		char text[1024];
 		sprintf(text,"Camera Angle: %f degrees    Camera Altitude: %f    CameraPosition: X=%f Y=%f Z=%f   CameraRotation: %f",projectionAngle,cameraAltitude,position.x,position.y,position.z,cameraRotation);
 		
-		DWORD width, height;
+		ULONG width, height;
 		Stuff::Vector4D moveHere;
 		moveHere.x = 10.0f;
 		moveHere.y = 10.0f;
@@ -562,7 +562,7 @@ long GameCamera::update (void)
 		compass->init( appearanceType );
 	}
 
-	long result = Camera::update();
+	int32_t result = Camera::update();
 	
 //	if ((day2NightTransitionTime > 0.0f) && !getIsNight() && (fabs(lastShadowLightPitch-lightPitch) > MAX_SHADOW_PITCH_CHANGE))
 //	{

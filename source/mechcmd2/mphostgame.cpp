@@ -59,7 +59,7 @@ void MPHostGame::init()
 	FitIniFile file;
 	path.init( artPath, "mcl_mp_hostgamedialog", ".fit" );
 
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -92,7 +92,7 @@ void MPHostGame::init()
 	edits[0].allowIME( false );
 
 
-/*	long tmpX, tmpY;
+/*	int32_t tmpX, tmpY;
 	file.seekBlock( "ComboBox0" );
 	file.readIdLong( "XLocation", tmpX );
 	file.readIdLong( "YLocation", tmpY );
@@ -105,7 +105,7 @@ void MPHostGame::init()
 		tmpPath.init( artPath, tmpStr, ".fit" );
 			
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( tmpPath ) )
+		if ( NO_ERROR != PNfile.open( tmpPath ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", (PSTR)tmpPath );
@@ -191,7 +191,7 @@ int	MPHostGame::handleMessage( ULONG message, ULONG who)
 	{
 		EString tmp;
 //		numPlayersDropList.EditBox().getEntry(tmp);
-//		long maxPlayers = atoi( tmp );
+//		int32_t maxPlayers = atoi( tmp );
 		edits[0].getEntry(tmp);
 		MPlayer->setMode(MULTIPLAYER_MODE_PARAMETERS);
 		if ( !MPlayer->hostSession ((PSTR)(PCSTR)tmp, &prefs.playerName[0][0], 8) )
@@ -237,7 +237,7 @@ void MPHostGame::update()
 	EString tmp;
 	edits[0].getEntry(tmp);
 
-	long len = tmp.Length();
+	int32_t len = tmp.Length();
 
 
 	if ( len >= 1)
@@ -253,17 +253,17 @@ void MPHostGame::update()
 
 
 
-long aStyle5TextListItem::init( FitIniFile* file, PCSTR blockName )
+int32_t aStyle5TextListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
-	long fontResID = 0;
+	int32_t fontResID = 0;
 	file->readIdLong( "Font", fontResID );
-	long textID = 0;
+	int32_t textID = 0;
 	file->readIdLong( "TextID", textID );
 	aTextListItem::init(fontResID);
 	setText(textID);
-	long color = 0xff808080;
+	int32_t color = 0xff808080;
 	file->readIdLong( "Color", color );
 	normalColor = color;
 	setColor(color);

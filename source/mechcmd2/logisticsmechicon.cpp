@@ -103,11 +103,11 @@ int LogisticsMechIcon::init( FitIniFile& file )
 	return true;
 }
 
-void LogisticsMechIcon::assignAnimation( FitIniFile& file, long& number )
+void LogisticsMechIcon::assignAnimation( FitIniFile& file, int32_t& number )
 {
 	number = -1;
 	char buffer[64];
-	if ( NO_ERR == file.readIdString( "Animation", buffer, 63 ) )
+	if ( NO_ERROR == file.readIdString( "Animation", buffer, 63 ) )
 	{
 		for ( int i = 0; i < strlen( buffer ); i++ )
 		{
@@ -127,9 +127,9 @@ void LogisticsMechIcon::setMech( LogisticsMech* pNewMech )
 	if ( pMech )
 	{
 		// need to set the uv's of the mech icon
-		long index = pMech->getIconIndex();
-		long xIndex = index % 10;
-		long yIndex = index / 10;
+		int32_t index = pMech->getIconIndex();
+		int32_t xIndex = index % 10;
+		int32_t yIndex = index / 10;
 
 		float fX = xIndex;
 		float fY = yIndex;
@@ -171,7 +171,7 @@ void LogisticsMechIcon::setMech( LogisticsMech* pNewMech )
 
 }
 
-void LogisticsMechIcon::render(long xOffset, long yOffset )
+void LogisticsMechIcon::render(int32_t xOffset, int32_t yOffset )
 {
 
 	if ( bDisabled )
@@ -189,7 +189,7 @@ void LogisticsMechIcon::render(long xOffset, long yOffset )
 		return;
 
 
-	long color = animations[outlineID].getCurrentColor(animations[outlineID].getState());
+	int32_t color = animations[outlineID].getCurrentColor(animations[outlineID].getState());
 
 	outline.setColor( color );
 	outline.render(xOffset, yOffset);	
@@ -209,9 +209,9 @@ void LogisticsMechIcon::render(long xOffset, long yOffset )
 	
 }
 
-void LogisticsMechIcon::renderObject( aObject& obj, long animIndex, long xOffset, long yOffset )
+void LogisticsMechIcon::renderObject( aObject& obj, int32_t animIndex, int32_t xOffset, int32_t yOffset )
 {
-	long color = 0xffffffff;
+	int32_t color = 0xffffffff;
 
 	if ( animIndex != -1 )
 	{
@@ -229,8 +229,8 @@ void LogisticsMechIcon::update()
 	if ( !pMech )
 		return;
 
-	long x = userInput->getMouseX();
-	long y = userInput->getMouseY();
+	int32_t x = userInput->getMouseX();
+	int32_t y = userInput->getMouseY();
 
 	for ( int i = 0; i < ICON_ANIM_COUNT; i++ )
 	{
@@ -284,7 +284,7 @@ void LogisticsMechIcon::update()
 	
 }
 
-void LogisticsMechIcon::move( long x, long y )
+void LogisticsMechIcon::move( int32_t x, int32_t y )
 {
 	outline.move(x, y);	
 }
@@ -329,8 +329,8 @@ void LogisticsMechIcon::setPilot( LogisticsPilot* pPilot )
 		
 		if ( pPilot )
 		{
-			long x = pilotIcon.globalX();
-			long y = pilotIcon.globalY();
+			int32_t x = pilotIcon.globalX();
+			int32_t y = pilotIcon.globalY();
 			LogisticsPilotListBox::makeUVs( pPilot, pilotIcon );
 			pilotIcon.moveTo( x, y );
 			pilotName.setText( pPilot->getName() );

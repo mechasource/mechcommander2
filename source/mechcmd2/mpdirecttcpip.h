@@ -1,5 +1,3 @@
-#ifndef MPDIRECTTCPIP_H
-#define MPDIRECTTCPIP_H
 /*************************************************************************************************\
 MPDirectTcpip.h			: Interface for the MPDirectTcpip component.
 //---------------------------------------------------------------------------//
@@ -8,6 +6,11 @@ MPDirectTcpip.h			: Interface for the MPDirectTcpip component.
 \*************************************************************************************************/
 
 //*************************************************************************************************
+
+#pragma once
+
+#ifndef MPDIRECTTCPIP_H
+#define MPDIRECTTCPIP_H
 
 #ifndef LOGISTICSSCREEN_H
 #include "logisticsscreen.h"
@@ -29,7 +32,7 @@ class aStyle7TextListItem : public aTextListItem
 {
 public:
 	aStyle7TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual long	init( FitIniFile* file, PCSTR blockName );
+	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
 protected:

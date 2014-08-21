@@ -118,7 +118,7 @@ void KeyboardRef::reseed( MissionInterfaceManager::Command* commands )
 	cLoadString( IDS_ALT, alt, 31 );
 
 	// first count the number of hotTexts
-	long count = 0;
+	int32_t count = 0;
 	for ( int i = 0; i < MAX_COMMAND; i++ )
 	{
 		if ( commands[i].hotKeyDescriptionText != -1 )
@@ -127,14 +127,14 @@ void KeyboardRef::reseed( MissionInterfaceManager::Command* commands )
 		}
 	}
 
-	long curCount = 0;
+	int32_t curCount = 0;
 
 	for ( i = 0; i < MAX_COMMAND; i++ )
 	{
 		if ( commands[i].hotKeyDescriptionText != -1 )
 		{
 			cLoadString( commands[i].hotKeyDescriptionText, descText, 127 );
-			long key = commands[i].key;
+			int32_t key = commands[i].key;
 			PSTR pKey = gos_DescribeKey( (key & 0x000fffff) << 8 );
 			strcpy( keysString, pKey );
 
@@ -163,11 +163,11 @@ void KeyboardRef::reseed( MissionInterfaceManager::Command* commands )
 
 			listBox.AddItem( item );
 
-			long yVal = item->y();
+			int32_t yVal = item->y();
 
 			item = new aTextListItem( IDS_KEYBOARD_REF_FONT );
 			*item = listItemTemplate2;
-			long xVal = listItemTemplate2.left();
+			int32_t xVal = listItemTemplate2.left();
 			item->setText( descText );
 			item->setAlignment( 0 );
 

@@ -8,52 +8,34 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef COMNDR_H
 #define COMNDR_H
 
 //---------------------------------------------------------------------------
 
-#ifndef DCOMNDR_H
-#include "dcomndr.h"
-#endif
-
-#ifndef GAMEOBJ_H
-#include "gameobj.h"
-#endif
-
-#ifndef DMOVER_H
-#include "dmover.h"
-#endif
-
-#ifndef GROUP_H
-#include "group.h"
-#endif
-
-#ifndef DTEAM_H
-#include "dteam.h"
-#endif
-
-#ifndef TACORDR_H
-#include "tacordr.h"
-#endif
-
-#ifndef UNITDESG_H
-#include "unitdesg.h"
-#endif
+//#include "dcomndr.h"
+//#include "gameobj.h"
+//#include "dmover.h"
+//#include "group.h"
+//#include "dteam.h"
+//#include "tacordr.h"
+//#include "unitdesg.h"
 
 //---------------------------------------------------------------------------
 typedef struct _CommanderData
 {
-	long					id;
-	long					teamId;
+	int32_t					id;
+	int32_t					teamId;
 	MoverGroupData			groups[MAX_MOVERGROUPS];
 
 } CommanderData;
 
 typedef struct _StaticCommanderData
 {
-	long	numCommanders;
-	long	homeCommanderId;
+	int32_t	numCommanders;
+	int32_t	homeCommanderId;
 
 } StaticCommanderData;
 
@@ -61,18 +43,18 @@ class Commander {
 
 	public:
 
-		long					id;
+		int32_t					id;
 		TeamPtr					team;
 		MoverGroupPtr			groups[MAX_MOVERGROUPS];
 
-		static long				numCommanders;
+		static int32_t				numCommanders;
 		static CommanderPtr		commanders[MAX_COMMANDERS];
 		static CommanderPtr		home;
 
 	public:
 
-		void* operator new (size_t ourSize);
-		void operator delete (void* us);
+		PVOID operator new (size_t ourSize);
+		void operator delete (PVOID us);
 
 		virtual void init (void);
 		
@@ -86,11 +68,11 @@ class Commander {
 			destroy();
 		}
 
-		virtual long getId (void) {
+		virtual int32_t getId (void) {
 			return(id);
 		}
 
-		virtual void setId (long _id) {
+		virtual void setId (int32_t _id) {
 			id = _id;
 			commanders[id] = this;
 		}
@@ -103,13 +85,13 @@ class Commander {
 			team = _team;
 		}
 
-		virtual MoverGroupPtr getGroup (long groupNumber) {
+		virtual MoverGroupPtr getGroup (int32_t groupNumber) {
 			return(groups[groupNumber]);
 		}
 
-		long setGroup (long id, long numMates, MoverPtr* moverList, long point);
+		int32_t setGroup (int32_t id, int32_t numMates, MoverPtr* moverList, int32_t point);
 
-		void setLocalMoverId (long localMoverId);
+		void setLocalMoverId (int32_t localMoverId);
 		
 		void eject (void);
 
@@ -119,12 +101,12 @@ class Commander {
 			home = this;
 		}
 
-		static CommanderPtr getCommander (long _id) {
+		static CommanderPtr getCommander (int32_t _id) {
 			return(commanders[_id]);
 		}
 
-		static long Save (PacketFilePtr file, long packetNum);
-		static long Load (PacketFilePtr file, long packetNum);
+		static int32_t Save (PacketFilePtr file, int32_t packetNum);
+		static int32_t Load (PacketFilePtr file, int32_t packetNum);
 };
 
 //***************************************************************************

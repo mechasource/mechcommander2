@@ -44,7 +44,7 @@ void LogisticsMech::setVariant( LogisticsVariant* pVar )
 }
 
 
-long LogisticsMech::save( FitIniFile& file, long counter )
+int32_t LogisticsMech::save( FitIniFile& file, int32_t counter )
 {
 	char tmp[256];
 	sprintf( tmp, "Inventory%ld", counter );

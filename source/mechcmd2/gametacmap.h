@@ -32,11 +32,11 @@ class GameTacMap: public TacMap
 		}
 	}
 
-	void init( PUCHAR bitmapData, int dataSize );
+	void init( puint8_t bitmapData, int dataSize );
 	void update(); // do not call these two functions from editor
 	void render();
 	
-	bool animate (long objectiveId, long nFlashes);
+	bool animate (int32_t objectiveId, int32_t nFlashes);
 
 	// if the world coords do not lie on the map, they will be changed.
 	void worldToTacMap( Stuff::Vector3D& world, gos_VERTEX& tac );	
@@ -44,7 +44,7 @@ class GameTacMap: public TacMap
 
 	bool inRegion( int x, int y ){ return x > left && x < right && y > top && y < bottom; }
 	
-	void initBuildings( PUCHAR data, int size );
+	void initBuildings( puint8_t data, int size );
 	void setPos( const RECT& newPos );
 	
 	protected:
@@ -66,15 +66,15 @@ class GameTacMap: public TacMap
 	ULONG navMarkerCount;
 	ULONG curNavMarker;
 
-	void drawSensor( const Stuff::Vector3D& pos, float radius, long color);
-	void drawBlip( const Stuff::Vector3D& pos, long color, int shape  );
+	void drawSensor( const Stuff::Vector3D& pos, float radius, int32_t color);
+	void drawBlip( const Stuff::Vector3D& pos, int32_t color, int shape  );
 
 	const static float s_blinkLength;
 	static float		s_lastBlinkTime;
 
 	//Tutorial
-	long objectiveAnimationId;
-	long objectiveNumFlashes;
+	int32_t objectiveAnimationId;
+	int32_t objectiveNumFlashes;
 	float objectiveFlashTime;
 
 };

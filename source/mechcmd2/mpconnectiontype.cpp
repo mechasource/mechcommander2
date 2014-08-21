@@ -11,7 +11,7 @@ MPConnectionType.cpp			: Implementation of the MPConnectionType component.
 #include <gui/asystem.h>
 
 //#include "logisticsscreen.h"
-//#include "aButton.h"
+//#include "abutton.h"
 //#include "alistbox.h"
 //#include "aanim.h"
 //#include "mphostgame.h"
@@ -28,15 +28,18 @@ MPConnectionType.cpp			: Implementation of the MPConnectionType component.
 //#include "..\resource.h"
 
 
-#define CHECK_BUTTON 200
-
-static int connectionType = 0;
-
-static cint32_t FIRST_BUTTON_ID = 1000010;
-static cint32_t OK_BUTTON_ID = 1000001;
-static cint32_t CANCEL_BUTTON_ID = 1000002;
 
 extern bool quitGame;
+static int connectionType = 0;
+
+typedef enum __mpconnectiontype_constants {
+	CHECK_BUTTON			= 200,
+	FIRST_BUTTON_ID			= 1000010,
+	OK_BUTTON_ID			= 1000001,
+	CANCEL_BUTTON_ID		= 1000002,
+};
+
+
 
 MPConnectionType::MPConnectionType() : lanPanel(*this), tcpipPanel(*this)
 {
@@ -103,7 +106,7 @@ void MPConnectionType::init(FitIniFile* file)
 		strcat( path, "mcl_mp_contype_zone.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -119,7 +122,7 @@ void MPConnectionType::init(FitIniFile* file)
 		strcat( path, "mcl_mp_contype_lan.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -135,7 +138,7 @@ void MPConnectionType::init(FitIniFile* file)
 		strcat( path, "mcl_mp_contype_tcpip.fit" );
 		
 		FitIniFile PNfile;
-		if ( NO_ERR != PNfile.open( path ) )
+		if ( NO_ERROR != PNfile.open( path ) )
 		{
 			char error[256];
 			sprintf( error, "couldn't open file %s", path );
@@ -587,7 +590,7 @@ void aTcpipPanel::init(FitIniFile* pFile)
 	FitIniFile tmpFile;
 	FullPathFileName path;
 	path.init( artPath, "mcl_mp_tcpip_combobox0", ".fit" );
-	if ( NO_ERR != tmpFile.open( path ) )
+	if ( NO_ERROR != tmpFile.open( path ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't open file %s", path );
@@ -624,7 +627,7 @@ void aTcpipPanel::init(FitIniFile* pFile)
 
 void aTcpipPanel::update()
 {
-	long retVal = 0;
+	int32_t retVal = 0;
 
 	if ( bConnectingDlg || bErrorDlg )
 	{
@@ -635,7 +638,7 @@ void aTcpipPanel::update()
 			{
 				if ( bFoundConnection )
 				{
-					long sessionCount;
+					int32_t sessionCount;
 					MC2Session* pSessions =  MPlayer->getSessions( sessionCount );
 					if ( sessionCount )
 					{
@@ -673,7 +676,7 @@ void aTcpipPanel::update()
 		{
 			connectingTime += frameLength;
 
-			long sessionCount;
+			int32_t sessionCount;
 			MC2Session* pSessions =  MPlayer->getSessions( sessionCount );
 			if ( sessionCount )
 			{
@@ -802,7 +805,7 @@ void aTcpipPanel::update()
 			strcpy( tmp, str );
 			for ( int i = 0; i < 4; i++ )
 			{
-				long num = getNum( tmp, dotIndex[i]+1, dotIndex[i+1] );
+				int32_t num = getNum( tmp, dotIndex[i]+1, dotIndex[i+1] );
 				if ( num < 0 || num > 255 )
 				{
 					bValid = 0;
@@ -843,7 +846,7 @@ void		aTcpipPanel::render()
 		
 }
 
-long aTcpipPanel::getNum( PSTR pStr, long index1, long index2 )
+int32_t aTcpipPanel::getNum( PSTR pStr, int32_t index1, int32_t index2 )
 {
 	char tmp = pStr[index2];
 	pStr[index2] = 0;

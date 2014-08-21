@@ -45,21 +45,21 @@ float			MechIcon::unitIconX = 32;
 float			MechIcon::unitIconY = 38;
 float			PilotIcon::pilotIconX = 25;
 float			PilotIcon::pilotIconY = 36;
-const long		PilotIcon::DEAD_PILOT_INDEX = 27;
+const int32_t		PilotIcon::DEAD_PILOT_INDEX = 27;
 
 ULONG	PilotIcon::s_pilotTextureHandle = 0;
 ULONG	PilotIcon::s_pilotTextureWidth = 0;
-long			ForceGroupIcon::pilotTextTop[17] = {0};
+int32_t			ForceGroupIcon::pilotTextTop[17] = {0};
 
 
-long		MechIcon::damageColors[4][3] = 
+int32_t		MechIcon::damageColors[4][3] = 
 		{ 194 << 16 | 229 << 8 | 255 | 0xff << 24,	92 << 16 | 150 << 8 | 194 | 0xff << 24, 0 << 16 | 83 << 8 | 146 | 0xff << 24,
 		  248 << 16 | 241 << 8 | 193 | 0xff << 24,	248 << 16 | 206 << 8 | 31 | 0xff << 24, 139 << 16 | 114 << 8 | 0 | 0xff << 24,
 		  248 << 16 | 193 << 8 | 193 | 0xff << 24,	248 << 16 | 31 << 8 | 31 | 0xff << 24, 139 << 16 | 0 << 8 | 0 | 0xff << 24,
 		  94 << 16 | 101 << 8 | 101 | 0xff << 24,	56 << 16 | 64 << 8 | 64 | 0xff << 24, 26 << 16 | 33 << 8 | 33 | 0xff << 24
 		};
 
-long		MechIcon::ForceGroupColors[11] = {
+int32_t		MechIcon::ForceGroupColors[11] = {
 		0xff005392,
 		0xffC66600,
 		0xff6E7C00,
@@ -115,7 +115,7 @@ ForceGroupIcon::ForceGroupIcon(  )
 	if ( s_textureHandle[0] == -1 )
 	{
 		// this is the textures that all icons are using
-		long size = ( 256 * 256 * sizeof( long ) + sizeof( TGAFileHeader ) );
+		int32_t size = ( 256 * 256 * sizeof( int32_t ) + sizeof( TGAFileHeader ) );
 		s_textureMemory = (TGAFileHeader*)new char[size];
 		memset( s_textureMemory, 0, size );
 		s_textureMemory->height = 256;
@@ -124,7 +124,7 @@ ForceGroupIcon::ForceGroupIcon(  )
 		s_textureMemory->image_type = UNC_PAL;
 
 		if ( s_textureHandle[0] == -1 )
-			s_textureHandle[0] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (PUCHAR)s_textureMemory, size, 0 );
+			s_textureHandle[0] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (puint8_t)s_textureMemory, size, 0 );
 
 		memset( s_slotUsed, 0, 240 * sizeof( bool ) );
 	}
@@ -197,7 +197,7 @@ void ForceGroupIcon::init( FitIniFile& file, int which )
 {
 	char buffer[256];
 	sprintf( buffer, "MechIcon%ld", which );
-	if ( NO_ERR != file.seekBlock( buffer ) )
+	if ( NO_ERROR != file.seekBlock( buffer ) )
 		Assert( 0, 0, "couldn't find the icon" );
 
 	if ( !gosFontHandle )
@@ -217,7 +217,7 @@ void ForceGroupIcon::init( FitIniFile& file, int which )
 	
 	pilotTextTop[which] += ControlGui::hiResOffsetY;  
 
-	long left, right, top, bottom;
+	int32_t left, right, top, bottom;
 	file.readIdLong( "MechIconAreaLeft", 	left );
 	file.readIdLong( "MechIconArearight", 	right );
 	file.readIdLong( "MechIconAreaTop", 	top );
@@ -316,24 +316,24 @@ void MechIcon::setDrawBack( bool bSet)
 	
 	int iconsPerLine = ((int)s_textureMemory->width/(int)unitIconX);
 	int iconsPerPage = ((int)s_textureMemory->width/(int)unitIconY);
-	long textureIndex = 0;
-	long row = (backDamageIndex/iconsPerLine);
+	int32_t textureIndex = 0;
+	int32_t row = (backDamageIndex/iconsPerLine);
 	if ( row >= iconsPerPage )
 	{
 		textureIndex = row/iconsPerPage;
 		row = row % iconsPerPage;
 	}
 
-	long column = (backDamageIndex % iconsPerLine);
-	long offsetY = row * unitIconY;
-	long offsetX = column  * unitIconX;
+	int32_t column = (backDamageIndex % iconsPerLine);
+	int32_t offsetY = row * unitIconY;
+	int32_t offsetX = column  * unitIconX;
 
 	Assert( bFound, bFound, "out of space for icon textures" );
 
 	if ( s_textureHandle[textureIndex] == -1 )
 	{
-		long size = ( 256 * 256 * sizeof( long ) + sizeof( TGAFileHeader ) );
-		s_textureHandle[textureIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (PUCHAR)s_textureMemory, size, 0 );
+		int32_t size = ( 256 * 256 * sizeof( int32_t ) + sizeof( TGAFileHeader ) );
+		s_textureHandle[textureIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (puint8_t)s_textureMemory, size, 0 );
 	}
 
 	
@@ -346,12 +346,12 @@ void MechIcon::setDrawBack( bool bSet)
 	PSTR pTmp = (PSTR)s_MechTextures + sizeof ( TGAFileHeader );
 	ULONG* pSrcRow = (ULONG*)pTmp;
 
-	long whichMech = unit->getIconPictureIndex();
+	int32_t whichMech = unit->getIconPictureIndex();
 
 	offsetY = unitIconY;
 	offsetX = whichMech  * unitIconX;
 
-	long tmpOffset = ((s_MechTextures->width) * (offsetY ) + offsetX);
+	int32_t tmpOffset = ((s_MechTextures->width) * (offsetY ) + offsetX);
 
 	pSrcRow += tmpOffset;
 
@@ -367,12 +367,12 @@ void MechIcon::setDrawBack( bool bSet)
 			// compare colors, only draw back ones which are 4, 5, 6, and 7
 			for ( int i = 0; i < 3; i++ )
 			{
-				long compColor =  damageColors[0][i];
-				long srcColor = *pSrcData;
+				int32_t compColor =  damageColors[0][i];
+				int32_t srcColor = *pSrcData;
 
-				long compMin = compColor >> 16;
+				int32_t compMin = compColor >> 16;
 				compMin += 4;
-				long compMax = compMin + 3;
+				int32_t compMax = compMin + 3;
 
 				if ( srcColor >> 16 >= compMin && srcColor >> 16 <= compMax )
 				{
@@ -447,7 +447,7 @@ bool MechIcon::initTextures()
 
 		_strlwr( path );
 
-		if ( NO_ERR != file.open( path ) ) 
+		if ( NO_ERROR != file.open( path ) ) 
 		{
 			Assert( 0, 0, "Couldn't open the mech parts" );
 			return false;
@@ -458,8 +458,8 @@ bool MechIcon::initTextures()
 		int size = file.getLength();
 
 		s_MechTextures = (TGAFileHeader*)new char[size];
-		file.read( (PUCHAR)s_MechTextures, size );
-		PUCHAR pTmp = (PUCHAR)(s_MechTextures + 1);
+		file.read( (puint8_t)s_MechTextures, size );
+		puint8_t pTmp = (puint8_t)(s_MechTextures + 1);
 
 		flipTopToBottom (pTmp, s_MechTextures->pixel_depth, s_MechTextures->width, s_MechTextures->height );
 
@@ -477,7 +477,7 @@ bool MechIcon::init( Mover* pMover )
 	if ( !pMover )
 		return 0;
 
-	long whichMech = pMover->getIconPictureIndex();
+	int32_t whichMech = pMover->getIconPictureIndex();
 	bool bRetVal = init( whichMech );
 
 	unit = pMover;
@@ -488,7 +488,7 @@ bool MechIcon::init( Mover* pMover )
 
 }
 
-bool MechIcon::init( long whichIndex )
+bool MechIcon::init( int32_t whichIndex )
 {
 	initTextures();
 
@@ -499,21 +499,21 @@ bool MechIcon::init( long whichIndex )
 
 	int iconsPerLine = ((int)s_textureMemory->width/(int)unitIconX);
 	int iconsPerPage = ((int)s_textureMemory->width/(int)unitIconY);
-	long textureIndex = 0;
-	long row = (damageIconIndex/iconsPerLine);
+	int32_t textureIndex = 0;
+	int32_t row = (damageIconIndex/iconsPerLine);
 	if ( row >= iconsPerPage )
 	{
 		textureIndex = row/iconsPerPage;
 		row = row % iconsPerPage;
 	}
-	long column = (damageIconIndex % iconsPerLine);
-	long offsetY = (row) * unitIconY;
-	long offsetX = (column)  * unitIconX;
+	int32_t column = (damageIconIndex % iconsPerLine);
+	int32_t offsetY = (row) * unitIconY;
+	int32_t offsetX = (column)  * unitIconX;
 
 	if ( s_textureHandle[textureIndex] == -1 )
 	{
-		long size = ( 256 * 256 * sizeof( long ) + sizeof( TGAFileHeader ) );
-		s_textureHandle[textureIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (PUCHAR)s_textureMemory, size, 0 );
+		int32_t size = ( 256 * 256 * sizeof( int32_t ) + sizeof( TGAFileHeader ) );
+		s_textureHandle[textureIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (puint8_t)s_textureMemory, size, 0 );
 	}
 
 	// now need to make a copy of the data
@@ -528,7 +528,7 @@ bool MechIcon::init( long whichIndex )
 	offsetY = 0;
 	offsetX = whichIndex * unitIconX;
 
-	long tmpOffset = ((s_MechTextures->width) * (offsetY ) + offsetX);
+	int32_t tmpOffset = ((s_MechTextures->width) * (offsetY ) + offsetX);
 
 	pSrcRow += tmpOffset;
 
@@ -790,7 +790,7 @@ void MechIcon::doDraw( PSTR newDamage, PSTR oldDamage, ULONG handle, ULONG index
 		if ( newDamage[i] != oldDamage[i] )
 		{			
 			// find the icon
-			long texIndex = 0;
+			int32_t texIndex = 0;
 			int iconsPerLine = ((int)s_textureMemory->width/(int)unitIconX);
 			int iconsPerPage = ((int)s_textureMemory->width/(int)unitIconY);
 			int yIndex = index / iconsPerLine;
@@ -803,8 +803,8 @@ void MechIcon::doDraw( PSTR newDamage, PSTR oldDamage, ULONG handle, ULONG index
 
 			if ( s_textureHandle[texIndex] == -1 )
 			{
-				long size = ( 256 * 256 * sizeof( long ) + sizeof( TGAFileHeader ) );
-				s_textureHandle[texIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (PUCHAR)s_textureMemory, size, 0 );
+				int32_t size = ( 256 * 256 * sizeof( int32_t ) + sizeof( TGAFileHeader ) );
+				s_textureHandle[texIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (puint8_t)s_textureMemory, size, 0 );
 			}
 
 			TEXTUREPTR textureData;
@@ -873,7 +873,7 @@ bool IsDbcsString(PCSTR pszString)
 {
 	if (pszString) {
 		while (*pszString) {
-			if (IsDBCSLeadByte((BYTE)*pszString))
+			if (IsDBCSLeadByte((UCHAR)*pszString))
 				return true;
 			pszString++;
 		}
@@ -999,7 +999,7 @@ void ForceGroupIcon::render()
 	{
 		if ( unit->getPilot()->getMessagePlaying() )
 		{
-			long color = 0xffffff00;
+			int32_t color = 0xffffff00;
 			msgPlayTime += frameLength;
 			if ( msgPlayTime > .25 )
 				msgPlayTime = 0;
@@ -1127,7 +1127,7 @@ bool VehicleIcon::init( Mover* pMover )
 		setIconVariables();
 
 		
-		if ( NO_ERR != file.open( path ) )
+		if ( NO_ERROR != file.open( path ) )
 		{
 			Assert( 0, 0, "Couldn't open the vehicle parts" );
 			return false;
@@ -1136,8 +1136,8 @@ bool VehicleIcon::init( Mover* pMover )
 		int size = file.getLength();
 
 		s_VehicleTextures = (TGAFileHeader*)new char[size];
-		file.read( (PUCHAR)s_VehicleTextures, size );
-		PUCHAR pTmp = (PUCHAR)(s_VehicleTextures + 1); 
+		file.read( (puint8_t)s_VehicleTextures, size );
+		puint8_t pTmp = (puint8_t)(s_VehicleTextures + 1); 
 
 		flipTopToBottom (pTmp, s_VehicleTextures->pixel_depth, s_VehicleTextures->width, s_VehicleTextures->height );
 
@@ -1156,11 +1156,11 @@ bool VehicleIcon::init( Mover* pMover )
 	// now need to make a copy of the data
 	// now need to make a copy of the data
 	
-	long texIndex = 0;
+	int32_t texIndex = 0;
 	int iconsPerLine = ((int)s_textureMemory->width/(int)unitIconX);
 	int iconsPerPage = ((int)s_textureMemory->width/(int)unitIconY);
-	long row = damageIconIndex/iconsPerLine;
-	long column = (damageIconIndex % iconsPerLine);
+	int32_t row = damageIconIndex/iconsPerLine;
+	int32_t column = (damageIconIndex % iconsPerLine);
 	if ( row >= iconsPerPage )
 	{
 		texIndex = row/iconsPerPage;
@@ -1168,13 +1168,13 @@ bool VehicleIcon::init( Mover* pMover )
 	}
 
 	
-	long offsetX =  column * unitIconX;
-	long offsetY = row * unitIconY;
+	int32_t offsetX =  column * unitIconX;
+	int32_t offsetY = row * unitIconY;
 	
 	if ( s_textureHandle[texIndex] == -1 )
 	{
-		long size = ( 256 * 256 * sizeof( long ) + sizeof( TGAFileHeader ) );
-		s_textureHandle[texIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (PUCHAR)s_textureMemory, size, 0 );
+		int32_t size = ( 256 * 256 * sizeof( int32_t ) + sizeof( TGAFileHeader ) );
+		s_textureHandle[texIndex] = gos_NewTextureFromMemory( gos_Texture_Alpha, ".tga", (puint8_t)s_textureMemory, size, 0 );
 	}
 
 
@@ -1186,12 +1186,12 @@ bool VehicleIcon::init( Mover* pMover )
 	PSTR pTmp = (PSTR)s_VehicleTextures + sizeof ( TGAFileHeader );
 	ULONG* pSrcRow = (ULONG*)pTmp;
 
-	long whichMech = pMover->getIconPictureIndex();
+	int32_t whichMech = pMover->getIconPictureIndex();
 
 	offsetY = 0;
 	offsetX = whichMech * unitIconX;
 
-	long tmpOffset = ((s_VehicleTextures->width) * (offsetY ) + offsetX);
+	int32_t tmpOffset = ((s_VehicleTextures->width) * (offsetY ) + offsetX);
 
 	pSrcRow += tmpOffset;
 
@@ -1289,7 +1289,7 @@ void VehicleIcon::update()
 	{
 		if ( newDamage[i] != damage[i] )
 		{	
-			long texIndex = 0;
+			int32_t texIndex = 0;
 			int iconsPerLine = ((int)s_textureMemory->width/(int)unitIconX);
 			int iconsPerPage = ((int)s_textureMemory->width/(int)unitIconY);
 			int yIndex = damageIconIndex / iconsPerLine;
@@ -1362,7 +1362,7 @@ void VehicleIcon::update()
 void ForceGroupIcon::drawBar( float barStatus )
 {
 	
-	DWORD					color = SB_GREEN;
+	ULONG					color = SB_GREEN;
 	
 	float barLength =  (healthBar[locationIndex].right - healthBar[locationIndex].left) * barStatus;
 		
@@ -1379,7 +1379,7 @@ void ForceGroupIcon::drawBar( float barStatus )
 	drawEmptyRect( healthBar[locationIndex],  color, color & 0x7f7f7f );
 }
 
-int ForceGroupIcon::sort( const void* p1, const void* p2 )
+int ForceGroupIcon::sort( PCVOID p1, PCVOID p2 )
 {
 	ForceGroupIcon* m1 = *(ForceGroupIcon**)p1;
 	ForceGroupIcon* m2 = *(ForceGroupIcon**)p2;
@@ -1452,31 +1452,31 @@ void ForceGroupIcon::drawDeathEffect()
 			float percent = currentTime/totalTime;
 			
 			// since I know we're going from white to black, I'm only going to much with the alpha separately
-			long alphaMin = (animationInfos[i].color >> 24) & 0xff;
-			long alphaMax = (animationInfos[i+1].color >> 24)& 0xff;
+			int32_t alphaMin = (animationInfos[i].color >> 24) & 0xff;
+			int32_t alphaMax = (animationInfos[i+1].color >> 24)& 0xff;
 
-			long newAlpha = (float)alphaMin + ((float)(alphaMax - alphaMin))*percent;
+			int32_t newAlpha = (float)alphaMin + ((float)(alphaMax - alphaMin))*percent;
 			
-			long redMin = (animationInfos[i].color & 0x00ff0000)>>16;
-			long redMax = (animationInfos[i+1].color & 0x00ff0000)>>16;
-			long newRed = (float)redMin + ((float)(redMax - redMin))*percent;
+			int32_t redMin = (animationInfos[i].color & 0x00ff0000)>>16;
+			int32_t redMax = (animationInfos[i+1].color & 0x00ff0000)>>16;
+			int32_t newRed = (float)redMin + ((float)(redMax - redMin))*percent;
 			
-			long greenMin = (animationInfos[i].color & 0x0000ff00)>>8;
-			long greenMax = (animationInfos[i+1].color & 0x0000ff00)>>8;
-			long newGreen = (float)greenMin + ((float)(greenMax - greenMin))*percent;
+			int32_t greenMin = (animationInfos[i].color & 0x0000ff00)>>8;
+			int32_t greenMax = (animationInfos[i+1].color & 0x0000ff00)>>8;
+			int32_t newGreen = (float)greenMin + ((float)(greenMax - greenMin))*percent;
 			
-			long blueMin = animationInfos[i].color & 0x000000ff;
-			long blueMax = animationInfos[i+1].color & 0x000000ff;
-			long newBlue = (float)blueMin + ((float)(blueMax - blueMin))*percent;
+			int32_t blueMin = animationInfos[i].color & 0x000000ff;
+			int32_t blueMax = animationInfos[i+1].color & 0x000000ff;
+			int32_t newBlue = (float)blueMin + ((float)(blueMax - blueMin))*percent;
 
-			long newColor = newBlue + (newGreen << 8) + (newRed << 16) + (newAlpha <<24);
+			int32_t newColor = newBlue + (newGreen << 8) + (newRed << 16) + (newAlpha <<24);
 							
 			drawRect( selectionRect[locationIndex], newColor );
 			bFinished = false;
 
 			if ( i == 0 )
 			{
-				long color = 0xff000000;
+				int32_t color = 0xff000000;
 				if ( deathAnimationTime < .4 
 					|| (deathAnimationTime > .8 && deathAnimationTime < 1.2)
 					|| deathAnimationTime > 1.6 && deathAnimationTime < 2.0)

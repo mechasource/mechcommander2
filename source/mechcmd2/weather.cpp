@@ -53,19 +53,19 @@ void Weather::save (FitIniFile *missionFile)
 //----------------------------------------------------------------------------------
 void Weather::load (FitIniFile *missionFile)
 {
-	long result = missionFile->seekBlock("Weather");
-	if (result == NO_ERR)
+	int32_t result = missionFile->seekBlock("Weather");
+	if (result == NO_ERROR)
 	{
 		weatherActive = true;
 		result = missionFile->readIdULong("MaxRainDrops",totalRainDrops);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			totalRainDrops = 500;
 			
 		if (totalRainDrops > 500)
 			totalRainDrops = 500;
 			
 		result = missionFile->readIdFloat("StartingRainLevel",rainLevel);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			rainLevel = 0.0f;
 			
 		if (rainLevel < 0.0f)
@@ -75,7 +75,7 @@ void Weather::load (FitIniFile *missionFile)
 			rainLevel = 4.0f;
 			
 		result = missionFile->readIdLong("ChanceOfRain",baseRainChance);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			baseRainChance = 0;
 			
 		if (baseRainChance < 0)
@@ -85,7 +85,7 @@ void Weather::load (FitIniFile *missionFile)
 			baseRainChance = 100;
 			
 		result = missionFile->readIdFloat("BaseLighteningChance",baseLighteningChance);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			baseLighteningChance = BASE_LIGHTENING_CHANCE;
 			
 		if (baseLighteningChance < 0.0f)
@@ -101,19 +101,19 @@ void Weather::load (FitIniFile *missionFile)
 //----------------------------------------------------------------------------------
 void Weather::init (FitIniFilePtr missionFile)
 {
-	long result = missionFile->seekBlock("Weather");
-	if (result == NO_ERR)
+	int32_t result = missionFile->seekBlock("Weather");
+	if (result == NO_ERROR)
 	{
 		weatherActive = true;
 		result = missionFile->readIdULong("MaxRainDrops",totalRainDrops);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			totalRainDrops = 500;
 			
 		if (totalRainDrops > 500)
 			totalRainDrops = 500;
 			
 		result = missionFile->readIdFloat("StartingRainLevel",rainLevel);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			rainLevel = 0.0f;
 			
 		if (rainLevel < 0.0f)
@@ -123,7 +123,7 @@ void Weather::init (FitIniFilePtr missionFile)
 			rainLevel = 4.0f;
 			
 		result = missionFile->readIdLong("ChanceOfRain",baseRainChance);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			baseRainChance = 0;
 			
 		if (baseRainChance < 0)
@@ -133,7 +133,7 @@ void Weather::init (FitIniFilePtr missionFile)
 			baseRainChance = 100;
 			
 		result = missionFile->readIdFloat("BaseLighteningChance",baseLighteningChance);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			baseLighteningChance = BASE_LIGHTENING_CHANCE;
 			
 		if (baseLighteningChance < 0.0f)
@@ -153,7 +153,7 @@ void Weather::init (FitIniFilePtr missionFile)
 }
 
 //----------------------------------------------------------------------------------
-void Weather::init (DWORD maxDrops, float startingRain, float brChance, float ltChance)
+void Weather::init (ULONG maxDrops, float startingRain, float brChance, float ltChance)
 {
 	totalRainDrops = maxDrops;
 	currentRainDrops = 0;
@@ -163,7 +163,7 @@ void Weather::init (DWORD maxDrops, float startingRain, float brChance, float lt
 		rainDrops = (RainDrops *)systemHeap->Malloc(sizeof(RainDrops) * maxDrops);
 		gosASSERT(rainDrops != NULL);
 		
-		for (long i=0;i<totalRainDrops;i++)
+		for (int32_t i=0;i<totalRainDrops;i++)
 			rainDrops[i].init();
 	}
 	else
@@ -391,7 +391,7 @@ void Weather::update (void)
 		{
 			//---------------------------------------------
 			// Calculate how many raindrops are in service
-			DWORD newRainDrops = (rainLevel - 1.0f) * totalRainDrops;
+			ULONG newRainDrops = (rainLevel - 1.0f) * totalRainDrops;
 			if (newRainDrops > totalRainDrops)
 				newRainDrops = totalRainDrops;
 				
@@ -399,7 +399,7 @@ void Weather::update (void)
 			{
 				//----------------------------------------------
 				// Must put the new raindrops into service.
-				for (long i=currentRainDrops;i<newRainDrops;i++)
+				for (int32_t i=currentRainDrops;i<newRainDrops;i++)
 				{
 					Stuff::Vector3D positionOffset;
 					positionOffset.x = RandomNumber(BASE_RAIN_RANDOM_POS_FACTOR * 2) - BASE_RAIN_RANDOM_POS_FACTOR;
@@ -415,7 +415,7 @@ void Weather::update (void)
 			currentRainDrops = newRainDrops;
 		}
 		
-		for (long i=0;i<currentRainDrops;i++)
+		for (int32_t i=0;i<currentRainDrops;i++)
 		{
 			//-----------------------------------------------
 			//Update the position.  Move rain toward ground.
@@ -482,7 +482,7 @@ void Weather::render (void)
 		gos_SetRenderState( gos_State_ZCompare, 1);
 		gos_SetRenderState(	gos_State_ZWrite, 0);
 		
-		for (long i=0;i<currentRainDrops;i++)
+		for (int32_t i=0;i<currentRainDrops;i++)
 		{
 			Stuff::Vector4D screen1, screen2;
 			bool onScreen = eye->projectZ(rainDrops[i].position,screen1);
@@ -495,7 +495,7 @@ void Weather::render (void)
 				if (onScreen)
 				{
 					uint8_t amb = ambientFactor * (1.0f - screen1.z);
-					DWORD rainColor = (amb << 24) + (0xff << 16) + (0xff << 8) + (0xff);
+					ULONG rainColor = (amb << 24) + (0xff << 16) + (0xff << 8) + (0xff);
 					
 					//Gotta draw this one!
 					gos_VERTEX sVertices[2];

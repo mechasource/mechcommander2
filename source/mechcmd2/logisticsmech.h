@@ -1,14 +1,17 @@
-#ifndef LOGISTICSMECH_H
-#define LOGISTICSMECH_H
 //===========================================================================//
 //LogisticsMech.h			: Interface for the LogisticsMech component.     //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-class LogisticsPilot;
+#pragma once
 
-#include "LogisticsVariant.h"
+#ifndef LOGISTICSMECH_H
+#define LOGISTICSMECH_H
+
+//#include "logisticsvariant.h"
+
+class LogisticsPilot;
 
 class LogisticsMech
 {
@@ -27,13 +30,13 @@ class LogisticsMech
 		inline bool		isAvailable() const { return pVariant->availableToUser; }
 		ULONG	getID() const { return pVariant->ID; }
 		float			getMaxWeight() const { return pVariant->chassis->maxWeight; }
-		long			getChassisName() const { return pVariant->chassis->chassisNameID; }
+		int32_t			getChassisName() const { return pVariant->chassis->chassisNameID; }
 		const EString&		getName() const { return pVariant->variantName; }
-		long			getEncyclopediaID() const { return pVariant->chassis->encyclopediaID; }
-		long			getHelpID() const { return pVariant->chassis->helpID; }
-		long			getBaseCost() const { return pVariant->chassis->baseCost; }
-		long			getComponentCount() const { return pVariant->componentCount; }
-		int				canAddComponent( LogisticsComponent* pComponent, long x, long y ) const
+		int32_t			getEncyclopediaID() const { return pVariant->chassis->encyclopediaID; }
+		int32_t			getHelpID() const { return pVariant->chassis->helpID; }
+		int32_t			getBaseCost() const { return pVariant->chassis->baseCost; }
+		int32_t			getComponentCount() const { return pVariant->componentCount; }
+		int				canAddComponent( LogisticsComponent* pComponent, int32_t x, int32_t y ) const
 		{ return pVariant->canAddComponent( pComponent, x, y ); }
 		int				getCost() const { return pVariant->getCost(); }
 		int				getWeight() const { return pVariant->getWeight(); }
@@ -47,12 +50,12 @@ class LogisticsMech
 		const EString&		getSmallIconFileName() const { return pVariant->chassis->iconFileNames[0]; }
 		const EString&		getMediumIconFileName() const { return pVariant->chassis->iconFileNames[1]; }
 		const EString&		getLargeIconFileName() const { return pVariant->chassis->iconFileNames[2]; }
-		int				getComponentsWithLocation( long& count, long* IDArray, long* xLocationArray, long* yLocationArray )
+		int				getComponentsWithLocation( int32_t& count, int32_t* IDArray, int32_t* xLocationArray, int32_t* yLocationArray )
 		{
 			return pVariant->getComponentsWithLocation( count, IDArray, xLocationArray, yLocationArray );
 		}
 
-		int				getComponents( long& count, long* IDArray )
+		int				getComponents( int32_t& count, int32_t* IDArray )
 		{
 			return pVariant->getComponents( count, IDArray );
 		}
@@ -60,7 +63,7 @@ class LogisticsMech
 		void			setVariant( LogisticsVariant* pVariant );
 
 		int				getFitID() const { return pVariant->chassis->fitID; }
-		long			save( FitIniFile& file, long count );
+		int32_t			save( FitIniFile& file, int32_t count );
 
 		void			setColors( ULONG base, ULONG high1, ULONG high2 );
 		void			getColors( ULONG& base, ULONG& high1, ULONG& high2 ) const;
@@ -77,9 +80,9 @@ class LogisticsMech
 		int				forceGroup; // 0 if none, 1 if otherwise
 		LogisticsPilot*	pilot;
 		int				ID;
-		long			baseColor;
-		long			highlightColor1;
-		long			highlightColor2;
+		int32_t			baseColor;
+		int32_t			highlightColor1;
+		int32_t			highlightColor2;
 
 		// DATA
 

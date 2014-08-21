@@ -8,50 +8,21 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef MECH_H
 #define MECH_H
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
-
-#ifndef MOVER_H
-#include "mover.h"
-#endif
-
-#ifndef DMECH_H
-#include "dmech.h"
-#endif
-
-#ifndef GAMEOBJ_H
-#include "gameobj.h"
-#endif
-
-#ifndef OBJTYPE_H
-#include "objtype.h"
-#endif
-
-#ifndef DOBJNUM_H
-#include "dobjnum.h"
-#endif
-
-#ifndef CMPONENT_H
-#include "cmponent.h"
-#endif
-
-#ifndef WARRIOR_H
-#include "warrior.h"
-#endif
-
-#ifdef USE_JETS
-#ifndef DJET_H
-#include "djet.h"
-#endif
-#endif
-
-#ifndef MECHCLASS_H
-#include "mechclass.h"
-#endif
+//#include <mclib.h>
+//#include "mover.h"
+//#include "dmech.h"
+//#include "gameobj.h"
+//#include "objtype.h"
+//#include "dobjnum.h"
+//#include "cmponent.h"
+//#include "warrior.h"
+//#include "djet.h"
+//#include "mechclass.h"
 
 extern float metersPerWorldUnit;
 
@@ -230,12 +201,12 @@ class BattleMechType : public ObjectType {
 		ULONG		rightArmDebrisId;							//Id of the shot off right arm.
 		ULONG		leftArmDebrisId;							//Id of the shot off left arm.
 		ULONG		destroyedDebrisId;							//Id of the destroyed mech piece.
-		long				moveType;
+		int32_t				moveType;
 
-		long				crashAvoidSelf;
-		long				crashAvoidPath;
-		long				crashBlockSelf;
-		long				crashBlockPath;
+		int32_t				crashAvoidSelf;
+		int32_t				crashAvoidPath;
+		int32_t				crashBlockSelf;
+		int32_t				crashBlockPath;
 		float				crashYieldTime;
 
 		float				explDmg;
@@ -257,7 +228,7 @@ class BattleMechType : public ObjectType {
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, ULONG fileSize);
 		
 		virtual GameObjectPtr createInstance (void);
 		
@@ -276,9 +247,9 @@ class BattleMechType : public ObjectType {
 typedef struct _MechData : public MoverData
 {
 	char				chassisClass;				   
-	long				chassisBR;					   
+	int32_t				chassisBR;					   
 
-	long				variantID;					   
+	int32_t				variantID;					   
 	char				variantName[64];			   
 
 	char				legStatus;					   
@@ -315,24 +286,24 @@ typedef struct _MechData : public MoverData
 	float				maxWeaponDamage;			   
 
 	char				longName[MAXLEN_MECH_LONGNAME];
-	long				pilotNum;		
+	int32_t				pilotNum;		
 
 	bool				captureable;
 	bool				notMineYet;		
 
-	long				descID;			
+	int32_t				descID;			
 
 	float				damageThisFrame;
 	bool				sentCrippledMsg;
 
 	float				rotateValues[6];
 
-	long				ItemLocationToInvLocation[MAX_MOVER_INVENTORY_ITEMS];
+	int32_t				ItemLocationToInvLocation[MAX_MOVER_INVENTORY_ITEMS];
 
 	float				damageAfterDisabled;
 											
-	long				numArmorComponents;
-	long				cBills;
+	int32_t				numArmorComponents;
+	int32_t				cBills;
 
 	MechAppearanceData	apData;
 } MechData;
@@ -345,9 +316,9 @@ class BattleMech : public Mover {
 	public:
 
 		char				chassisClass;					// none, light, medium, heavy, assault
-		long				chassisBR;						// chassis Battle Rating
+		int32_t				chassisBR;						// chassis Battle Rating
 
-		long				variantID;						// need to store this for logistics
+		int32_t				variantID;						// need to store this for logistics
 		char				variantName[64];				// user defined
 
 
@@ -390,14 +361,14 @@ class BattleMech : public Mover {
 		
 		float				maxWeaponDamage;				// max total damage possible
 		
-		char				longName[MAXLEN_MECH_LONGNAME];		//Used by logistics (and the interface) to get long name.
-		long				pilotNum;						//Used by logistics to restore pilot on return.
+		char				longName[MAXLEN_MECH_LONGNAME];		//Used by logistics (and the interface) to get int32_t name.
+		int32_t				pilotNum;						//Used by logistics to restore pilot on return.
 
 		bool				captureable;
 		bool				notMineYet;						//Used by logsitics to drop this mech if mission lost.
 
-		long				descID;							//Used by Logistics to Desc.		
-//		long				variant;						// Now we have three longs storing a bytes worth of data well done SJ
+		int32_t				descID;							//Used by Logistics to Desc.		
+//		int32_t				variant;						// Now we have three longs storing a bytes worth of data well done SJ
 		
 		float				damageThisFrame;				// How much damage have we taken this frame.
 		bool				sentCrippledMsg;				// Have I already announced that I'm gimped?
@@ -405,13 +376,13 @@ class BattleMech : public Mover {
 
 		float				rotateValues[6];
 		
-		long				ItemLocationToInvLocation[MAX_MOVER_INVENTORY_ITEMS];
+		int32_t				ItemLocationToInvLocation[MAX_MOVER_INVENTORY_ITEMS];
 		
 		float				damageAfterDisabled;			// Stores damaged inflicted after disabled.
 															// Once we reach the threshold, BLOW the mech for real!!
 															
-		long				numArmorComponents;
-		long				cBills;
+		int32_t				numArmorComponents;
+		int32_t				cBills;
 
 	//----------------
 	//Member Functions
@@ -429,17 +400,17 @@ class BattleMech : public Mover {
 			
 		virtual void init (bool create, ObjectTypePtr _type);
 
-		virtual long init (FitIniFile* mechFile);
+		virtual int32_t init (FitIniFile* mechFile);
 
-		virtual long init (DWORD variantNum);
+		virtual int32_t init (ULONG variantNum);
 
-		virtual long init (FilePtr mechFile);
+		virtual int32_t init (FilePtr mechFile);
 
 		virtual void destroy (void);
 
 		virtual void clear (void);
 
-		virtual long write (FilePtr mechFile);
+		virtual int32_t write (FilePtr mechFile);
 
 		virtual float getStatusRating (void);
 
@@ -455,7 +426,7 @@ class BattleMech : public Mover {
 
 		virtual void updateDynamics (void);
 
-		virtual long update (void);
+		virtual int32_t update (void);
 		
 		virtual void render (void);
 
@@ -465,13 +436,13 @@ class BattleMech : public Mover {
 			return((legStatus == LEG_STATUS_IMPAIRED_RIGHT) ||(legStatus == LEG_STATUS_IMPAIRED_LEFT) || (legStatus == LEG_STATUS_DESTROYED));
 		}
 
-		virtual long calcHitLocation (GameObjectPtr attacker, long weaponIndex, long attackSource, long attackType);
+		virtual int32_t calcHitLocation (GameObjectPtr attacker, int32_t weaponIndex, int32_t attackSource, int32_t attackType);
 
-		virtual long handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+		virtual int32_t handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
-		virtual float weaponLocked (long weaponIndex, Stuff::Vector3D targetPosition);
+		virtual float weaponLocked (int32_t weaponIndex, Stuff::Vector3D targetPosition);
 
-		virtual float getWeaponHeat (long weaponIndex) {
+		virtual float getWeaponHeat (int32_t weaponIndex) {
 			return(MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponHeat());
 		}
 
@@ -485,17 +456,17 @@ class BattleMech : public Mover {
 
 		void updateMoveStateGoal (void);
 
-		bool updateMovePath (float& newRotate, char& newThrottleSetting, long& newGestureStateGoal, long& newMoveState, long& minThrottle, long& maxThrottle, float& facingRotate);
+		bool updateMovePath (float& newRotate, char& newThrottleSetting, int32_t& newGestureStateGoal, int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle, float& facingRotate);
 
-		bool netUpdateMovePath (float& newRotate, char& newThrottleSetting, long& newGestureStateGoal, long& newMoveState, long& minThrottle, long& maxThrottle);
+		bool netUpdateMovePath (float& newRotate, char& newThrottleSetting, int32_t& newGestureStateGoal, int32_t& newMoveState, int32_t& minThrottle, int32_t& maxThrottle);
 
-		void setNextMovePath (char& newThrottleSetting, long& newGestureStateGoal);
+		void setNextMovePath (char& newThrottleSetting, int32_t& newGestureStateGoal);
 
-		void setControlSettings (float& newRotate, char& newThrottleSetting, long& newGestureStateGoal, long& minThrottle, long& maxThrottle, float& facingRotate);
+		void setControlSettings (float& newRotate, char& newThrottleSetting, int32_t& newGestureStateGoal, int32_t& minThrottle, int32_t& maxThrottle, float& facingRotate);
 
 		void updateTorso (float newRotate);
 
-		virtual long getCBills (void) {
+		virtual int32_t getCBills (void) {
 			return(cBills);
 		}
 
@@ -503,47 +474,47 @@ class BattleMech : public Mover {
 
 		virtual void netUpdateMovement (void);
 
-		virtual long calcCV (bool calcMax = false);
+		virtual int32_t calcCV (bool calcMax = false);
 
-		long getResourcePointValue (void);
+		int32_t getResourcePointValue (void);
 
-		virtual bool isWeaponReady (long weaponIndex);
+		virtual bool isWeaponReady (int32_t weaponIndex);
 
-		virtual float calcAttackChance (GameObjectPtr target, long aimLocation, float targetTime, long weaponIndex, float modifiers, long* range, Stuff::Vector3D* targetPoint = NULL);
+		virtual float calcAttackChance (GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint = NULL);
 
 		virtual float getTotalEffectiveness(void);
 
-		virtual bool hitInventoryItem (long itemIndex, bool setupOnly = false);
+		virtual bool hitInventoryItem (int32_t itemIndex, bool setupOnly = false);
 
-		virtual void destroyBodyLocation (long location);
+		virtual void destroyBodyLocation (int32_t location);
 
-		virtual void handleCriticalHit (long bodyLocation, long criticalSpace);
+		virtual void handleCriticalHit (int32_t bodyLocation, int32_t criticalSpace);
 
-		virtual long updateCriticalHitChunks (long which);
+		virtual int32_t updateCriticalHitChunks (int32_t which);
 
-		virtual long buildStatusChunk (void);
+		virtual int32_t buildStatusChunk (void);
 
-		virtual long handleStatusChunk (long updateAge, ULONG chunk);
+		virtual int32_t handleStatusChunk (int32_t updateAge, ULONG chunk);
 
-		virtual long buildMoveChunk (void);
+		virtual int32_t buildMoveChunk (void);
 
-		virtual long handleMoveChunk (ULONG chunk);
+		virtual int32_t handleMoveChunk (ULONG chunk);
 
-		virtual void calcCriticalHit (long hitLocation);
+		virtual void calcCriticalHit (int32_t hitLocation);
 
-		virtual bool injureBodyLocation (long bodyLocation, float damage);
+		virtual bool injureBodyLocation (int32_t bodyLocation, float damage);
 
-		virtual long handleWeaponFire (long weaponIndex,
+		virtual int32_t handleWeaponFire (int32_t weaponIndex,
 									   GameObjectPtr target,
 									   Stuff::Vector3D* targetPoint,
 									   bool hit,
 									   float entryAngle,
-									   long numMissiles,
-									   long hitLocation);
+									   int32_t numMissiles,
+									   int32_t hitLocation);
 
-		virtual long fireWeapon (GameObjectPtr target, float targetTime, long weaponIndex, long attackType, long aimLocation, Stuff::Vector3D* targetPoint, float &damageDone);
+		virtual int32_t fireWeapon (GameObjectPtr target, float targetTime, int32_t weaponIndex, int32_t attackType, int32_t aimLocation, Stuff::Vector3D* targetPoint, float &damageDone);
 
-		virtual float relFacingTo (Stuff::Vector3D goal, long bodyLocation = -1);
+		virtual float relFacingTo (Stuff::Vector3D goal, int32_t bodyLocation = -1);
 
 		virtual float relViewFacingTo (Stuff::Vector3D goal) {
 			return(relFacingTo(goal, MECH_BODY_LOCATION_CTORSO));
@@ -551,9 +522,9 @@ class BattleMech : public Mover {
 
 		virtual bool canPowerUp (void);
 
-		virtual Stuff::Vector3D getPositionFromHS (long weaponType);
+		virtual Stuff::Vector3D getPositionFromHS (int32_t weaponType);
 
-		virtual long getBodyState (void);
+		virtual int32_t getBodyState (void);
 
 		virtual float getDestructLevel (void)
 		{
@@ -569,33 +540,33 @@ class BattleMech : public Mover {
 		
 		Stuff::Vector3D getJumpPosition (void);
 
-		long getActuatorMax (long actuatorId) {
+		int32_t getActuatorMax (int32_t actuatorId) {
 			return(MasterComponent::masterList[inventory[actuator[actuatorId]].masterID].getHealth());
 		}
 		
-		long getActuatorHealth (long actuatorId) {
+		int32_t getActuatorHealth (int32_t actuatorId) {
 			return(inventory[actuator[actuatorId]].health);
 		}
 
-		long calcLegStatus (void);
+		int32_t calcLegStatus (void);
 
-		long calcTorsoStatus (void);
+		int32_t calcTorsoStatus (void);
 
-		bool isTorso (long bodyLocation) {
+		bool isTorso (int32_t bodyLocation) {
 			return((bodyLocation >= MECH_BODY_LOCATION_CTORSO) && (bodyLocation <= MECH_BODY_LOCATION_RTORSO));
 		}
 
-		long transferHitLocation (long hitLocation);
+		int32_t transferHitLocation (int32_t hitLocation);
 
 		bool inTransitionGestureState (void) {
 			return(appearance->getInTransition());
 		}
 
-		long setGestureStateGoal (long state) {
+		int32_t setGestureStateGoal (int32_t state) {
 			return(appearance->setGestureGoal(state));
 		}
 
-		long getGestureFramesLeft (void) 
+		int32_t getGestureFramesLeft (void) 
 		{
 			return(appearance->getNumFramesInGesture(appearance->getCurrentGestureGoal()) - appearance->getFrameNumber());
 		}
@@ -605,7 +576,7 @@ class BattleMech : public Mover {
 			return(appearance->getOldGestureGoal() == MECH_STATE_STANDING);
 		}
 
-		bool isWalking (long* throttle = NULL) 
+		bool isWalking (int32_t* throttle = NULL) 
 		{
 			if (throttle)
 				*throttle = control.settings.mech.throttle;
@@ -651,13 +622,13 @@ class BattleMech : public Mover {
 			return(legStatus != LEG_STATUS_DESTROYED);
 		}
 
-		virtual long getSpeedState (void);
+		virtual int32_t getSpeedState (void);
 
 		virtual bool canJump (void) {
 			return(numJumpJets > 0);
 		}
 
-		virtual float getJumpRange (long* numOffsets = NULL, long* jumpCost = NULL);
+		virtual float getJumpRange (int32_t* numOffsets = NULL, int32_t* jumpCost = NULL);
 
 		virtual bool handleFall (bool forward);
 
@@ -669,7 +640,7 @@ class BattleMech : public Mover {
 
 		float calcModerateSpeed (void);
 
-		long calcSpriteSpeed (float speed, ULONG flags, long& state, long& throttle);
+		int32_t calcSpriteSpeed (float speed, ULONG flags, int32_t& state, int32_t& throttle);
 
 		void forceTorsoAlign (void) {
 			torsoRotation = rightArmRotation = leftArmRotation = 0.0;
@@ -679,13 +650,13 @@ class BattleMech : public Mover {
 			destroy();
 		}
 
-		virtual bool isCaptureable(long capturingTeamID);
+		virtual bool isCaptureable(int32_t capturingTeamID);
 		
 		virtual void handleStaticCollision (void);
 
 		virtual float calcMaxTargetDamage(void);
 
-		bool isWeaponWorking (long weaponIndex);
+		bool isWeaponWorking (int32_t weaponIndex);
 		
 		void damageLoadedComponents (void);
 
@@ -693,7 +664,7 @@ class BattleMech : public Mover {
 			return(longName);
 		}
 
-		static long loadGameSystem (FitIniFilePtr mechFile);
+		static int32_t loadGameSystem (FitIniFilePtr mechFile);
 		
 		virtual bool isMech (void)
 		{
@@ -710,7 +681,7 @@ class BattleMech : public Mover {
 			return false;
 		}
 		
-		void resetComponents (long totalComponents, long* componentList);
+		void resetComponents (int32_t totalComponents, int32_t* componentList);
 		
 		virtual float getLOSFactor (void)
 		{
@@ -719,13 +690,13 @@ class BattleMech : public Mover {
 		
 		virtual void startShutDown (void);
 
-		virtual void Save (PacketFilePtr file, long packetNum);
+		virtual void Save (PacketFilePtr file, int32_t packetNum);
 
 		void CopyTo (MechData *data);
 
 		void Load (MechData *data);
 
- 		static void initOptimalCells (long numIncrements);
+ 		static void initOptimalCells (int32_t numIncrements);
 
 		virtual void repairAll (void);
 };

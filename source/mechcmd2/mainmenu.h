@@ -1,3 +1,6 @@
+
+#pragma once
+
 #ifndef MAINMENU_H
 #define MAINMENU_H
 /*************************************************************************************************\
@@ -89,10 +92,10 @@ class MainMenu: public LogisticsScreen
 		bool	promptToDisconnect;
 		bool	bLegal;
 
-		long	tuneId;			//What music should I play here!
+		int32_t	tuneId;			//What music should I play here!
 		bool	musicStarted;	//Should I restart the tune?
 
-		long	endResult;
+		int32_t	endResult;
 
 		aAnimation	beginAnim;
 		aAnimation	endAnim;

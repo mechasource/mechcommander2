@@ -1,3 +1,6 @@
+
+#pragma once
+
 #ifndef LOGISTICSVARIANT_H
 #define LOGISTICSVARIANT_H
 /*************************************************************************************************\
@@ -40,13 +43,13 @@ public:
 	int				getHouseID() const{ return houseID; }
 	float			getMaxWeight() const{ return maxWeight; }
 	const EString&	getMechClass() const  { return mechClass; }
-	long			getArmor() const { return baseArmor; }
+	int32_t			getArmor() const { return baseArmor; }
 	int				getArmorClass() const;
 	float			getSpeed() const { return speed; }
 	int				getDisplaySpeed() const;
 	void			setScale( float newScale ) { scale = newScale; }
 	float			getScale() const { return scale; }
-	long			getMaxArmor() const { return maxArmor; }
+	int32_t			getMaxArmor() const { return maxArmor; }
 	int				getSensorID() const;
 	int				getECM() const;
 	bool			jumpJetsAllowed() const { return canHaveJumpJets; }
@@ -56,23 +59,23 @@ protected:
 	int					refCount;
 	
 	float				maxWeight;
-	long				chassisNameID;	// resource ID
-	long				baseCost;
-	long				maxHeat;
-	long				baseArmor;
-	long				maxArmor;
+	int32_t				chassisNameID;	// resource ID
+	int32_t				baseCost;
+	int32_t				maxHeat;
+	int32_t				baseArmor;
+	int32_t				maxArmor;
 
 	float					speed;
 	float				scale;
 
-	long				iconPictureIndex;
-	long				ID;
+	int32_t				iconPictureIndex;
+	int32_t				ID;
 	EString				fileName;
 	EString				mechClass;
 	EString				iconFileNames[3];
 
-	long				componentAreaWidth;
-	long				componentAreaHeight;
+	int32_t				componentAreaWidth;
+	int32_t				componentAreaHeight;
 
 	bool canHaveAdvSensor;//can Mech Have Advanced Sensor installed.
 	bool canHaveOptics;//can Mech Have Optics Installed.
@@ -82,11 +85,11 @@ protected:
 	bool canHaveJumpJets;
 	bool canHaveExtendedSensor;
 
-	long				encyclopediaID;
-	long				helpID;
-	long				houseID;
+	int32_t				encyclopediaID;
+	int32_t				helpID;
+	int32_t				houseID;
 
-	long				fitID;
+	int32_t				fitID;
 
 	MechAppearance*		appearance; 
 
@@ -99,8 +102,8 @@ protected:
 
 	struct ComponentInfo
 	{
-		long										xCoord;
-		long										yCoord;
+		int32_t										xCoord;
+		int32_t										yCoord;
 		LOGISTICS_COMPONENT_LOCATION location;
 		LogisticsComponent*				component;
 	};
@@ -127,13 +130,13 @@ protected:
 		inline bool			isAvailable() const { return (availableToUser && !bHidden); }
 		ULONG	getID() const { return ID; }
 		float			getMaxWeight() const { return chassis->maxWeight; }
-		long			getChassisName() const { return chassis->chassisNameID; }
+		int32_t			getChassisName() const { return chassis->chassisNameID; }
 		const EString&		getName() const { return variantName; }
-		long			getEncyclopediaID() const { return chassis->encyclopediaID; }
-		long			getHelpID() const { return chassis->helpID; }
-		long			getBaseCost() const { return chassis->baseCost; }
-		long			getComponentCount() const { return componentCount; }
-		int				canAddComponent( LogisticsComponent* pComponent, long& x, long& y ) const;
+		int32_t			getEncyclopediaID() const { return chassis->encyclopediaID; }
+		int32_t			getHelpID() const { return chassis->helpID; }
+		int32_t			getBaseCost() const { return chassis->baseCost; }
+		int32_t			getComponentCount() const { return componentCount; }
+		int				canAddComponent( LogisticsComponent* pComponent, int32_t& x, int32_t& y ) const;
 		int				getCost() const;
 		int				getWeight() const;
 		const EString&		getMechClass() const;
@@ -149,13 +152,13 @@ protected:
 		const EString&		getSmallIconFileName() const { return chassis->iconFileNames[0]; }
 		const EString&	getMediumIconFileName() const { return chassis->iconFileNames[1]; }
 		const EString&		getLargeIconFileName() const { return chassis->iconFileNames[2]; }
-		int				getComponentsWithLocation( long& count, long* IDArray, long* xLocationArray, long* yLocationArray );
-		int				removeComponent( long xCoord, long yCoord );
-		int				addComponent( LogisticsComponent*, long& xCoord, long& yCoord );
+		int				getComponentsWithLocation( int32_t& count, int32_t* IDArray, int32_t* xLocationArray, int32_t* yLocationArray );
+		int				removeComponent( int32_t xCoord, int32_t yCoord );
+		int				addComponent( LogisticsComponent*, int32_t& xCoord, int32_t& yCoord );
 		inline			bool canDelete( ) const { return !isDesignerMech(); }
 		inline			bool isDesignerMech() const { return bDesignerMech; }
-		int				getComponents( long& count, long* array );
-		int				getComponents( long& count, LogisticsComponent** array );
+		int				getComponents( int32_t& count, int32_t* array );
+		int				getComponents( int32_t& count, LogisticsComponent** array );
 
 		int				getHeat() const;
 		int				getMaxHeat() const;
@@ -164,10 +167,10 @@ protected:
 		bool			operator==( const LogisticsVariant& src );
 		const EString&		getFileName(){ return chassis->fileName; }
 
-		long			save( FitIniFile& file, long counter );
+		int32_t			save( FitIniFile& file, int32_t counter );
 
 		const LogisticsChassis* getChassis() const { return chassis; }
-		bool			addComponent( int idFromFitFile, long& x, long& y );
+		bool			addComponent( int idFromFitFile, int32_t& x, int32_t& y );
 		void			setName( PCSTR name ); // will allocate for you
 
 		void		setAvailable( bool available );
@@ -177,12 +180,12 @@ protected:
 		int			getComponentAreaWidth() const{ return chassis->componentAreaWidth; } 
 		int			getComponentAreaHeight() const { return chassis->componentAreaHeight; } 
 
-		LogisticsComponent*	getCompAtLocation( int i, int j, long& realI, long& realJ );
-		int			getComponentLocation( LogisticsComponent* pComp, long& i, long& j );
+		LogisticsComponent*	getCompAtLocation( int i, int j, int32_t& realI, int32_t& realJ );
+		int			getComponentLocation( LogisticsComponent* pComp, int32_t& i, int32_t& j );
 
-		int			getOptimalRangeString( long& color ) const;
-		long		getHouseID(){ return chassis->houseID; }
-		long		getMaxArmor() const { return chassis->maxArmor; }
+		int			getOptimalRangeString( int32_t& color ) const;
+		int32_t		getHouseID(){ return chassis->houseID; }
+		int32_t		getMaxArmor() const { return chassis->maxArmor; }
 		int			getSensorID() const { return chassis->getSensorID(); }
 		int			getECM() const { return chassis->getECM(); }
 
@@ -196,7 +199,7 @@ protected:
 	protected:
 
 	
-		const LogisticsChassis::ComponentInfo* getComponentAtLocation(long x, long y) const;
+		const LogisticsChassis::ComponentInfo* getComponentAtLocation(int32_t x, int32_t y) const;
 
 		
 		ULONG		ID; // bottom 8 bits = mech chassis, next 8 = number within
@@ -205,7 +208,7 @@ protected:
 		LogisticsChassis*	chassis;
 		EString				variantName;	// in file
 		
-		long				componentCount;
+		int32_t				componentCount;
 		LogisticsChassis::ComponentInfo		components[54]; // I count a max of 54 components, might want to check though
 
 		bool				availableToUser;
@@ -230,10 +233,10 @@ class LogisticsVehicle : public LogisticsChassis
 
 public:
 	void init( FitIniFile& file );
-	int  getComponents( long& count, LogisticsComponent** array );
+	int  getComponents( int32_t& count, LogisticsComponent** array );
 
 protected:
-	long				componentCount;
+	int32_t				componentCount;
 	ComponentInfo		components[54]; // I count a max of 54 components, might want to check though
 
 };

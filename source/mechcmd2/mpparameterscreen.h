@@ -1,5 +1,3 @@
-#ifndef MPPARAMETERSCREEN_H
-#define MPPARAMETERSCREEN_H
 /*************************************************************************************************\
 MPParameterScreen.h			: Interface for the MPParameterScreen component.
 //---------------------------------------------------------------------------//
@@ -9,21 +7,20 @@ MPParameterScreen.h			: Interface for the MPParameterScreen component.
 
 //*************************************************************************************************
 
-#ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
-#endif
+#pragma once
 
-#include "asystem.h"
-#include "alistbox.h"
-#include "attributemeter.h"
-#include "simplecamera.h"
-#include "elist.h"
-#include "Multplyr.h"
-#include "MPLoadMap.h"
+#ifndef MPPARAMETERSCREEN_H
+#define MPPARAMETERSCREEN_H
 
-#ifndef AANIM_H
-#include "aanim.h"
-#endif
+//#include "logisticsscreen.h"
+//#include "asystem.h"
+//#include "alistbox.h"
+//#include "attributemeter.h"
+//#include "simplecamera.h"
+//#include "elist.h"
+//#include "multplyr.h"
+//#include "mploadmap.h"
+//#include "aanim.h"
 
 struct _MC2Player;
 
@@ -33,7 +30,7 @@ class aStyle2TextListItem : public aTextListItem
 {
 public:
 	aStyle2TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual long	init( FitIniFile* file, PCSTR blockName );
+	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
 protected:
@@ -51,7 +48,7 @@ public:
 	~aPlayerParams();
 	aPlayerParams& operator=( const aPlayerParams& src );
 
-	virtual long		init(long xPos, long yPos, long w, long h);
+	virtual int32_t		init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
 	void				init( FitIniFile* file, PCSTR blockName );
 
 	virtual void		destroy();
@@ -79,11 +76,11 @@ protected:
 
 	aObject*			statics;
 	aRect*				rects;
-	long				rectCount;
-	long				staticCount;
+	int32_t				rectCount;
+	int32_t				staticCount;
 
 	aText*				textObjects;
-	long				textCount;
+	int32_t				textCount;
 
 	aDropList				teamNumberDropList;
 	aDropList				factionDropList;
@@ -94,7 +91,7 @@ protected:
 	aEdit					edit;
 
 	bool					bHasFocus;
-	long					commanderID;
+	int32_t					commanderID;
 
 	friend class MPParameterScreen;
 };
@@ -112,11 +109,11 @@ public:
 
 	CFocusManager();
 	void clear();
-	void *registerDropList(aDropList &DropList);
+	PVOID registerDropList(aDropList &DropList);
 	void unregisterDropList(aDropList &DropList);
 	void update();
 	bool somebodyHasTheFocus(); /*this is distinct from the keyboard input focus*/
-	aObject *pControlThatHasTheFocus();
+	aObject* pControlThatHasTheFocus();
 
 private:
 	control_species_data_type speciesOfTheControlWhichHasTheFocus;
@@ -164,7 +161,7 @@ private:
 
 
 	aPlayerParams	playerParameters[MAX_MC_PLAYERS];
-	long			playerCount;
+	int32_t			playerCount;
 
 	MPLoadMap		mpLoadMap;
 	LogisticsMapInfoDialog mapInfoDlg;
@@ -174,7 +171,7 @@ private:
 	bool			bBootDlg;
 	bool			bDisconnectDlg;
 	EString			mapName;
-	long			bootPlayerID;
+	int32_t			bootPlayerID;
 
 	bool			bMapInfoDlg;
 

@@ -36,17 +36,17 @@ UserHeapPtr systemHeap = NULL;
 UserHeapPtr guiHeap = NULL;
 
 FastFile 	**fastFiles = NULL;
-long 		numFastFiles = 0;
-long		maxFastFiles = 0;
+int32_t 		numFastFiles = 0;
+int32_t		maxFastFiles = 0;
 
-long GameDifficulty = 0;
-long gammaLevel = 0;
-long DigitalMasterVolume = 0;
-long MusicVolume = 0;
-long SFXVolume = 0;
-long RadioVolume = 0;
-long resolution = 0;
-long FilterState = gos_FilterNone;
+int32_t GameDifficulty = 0;
+int32_t gammaLevel = 0;
+int32_t DigitalMasterVolume = 0;
+int32_t MusicVolume = 0;
+int32_t SFXVolume = 0;
+int32_t RadioVolume = 0;
+int32_t resolution = 0;
+int32_t FilterState = gos_FilterNone;
 bool quitGame = FALSE;
 bool justStartMission = FALSE;
 bool gamePaused = FALSE;
@@ -68,13 +68,13 @@ ULONG spriteHeapSize = 8192000;
 ULONG polyHeapSize = 1024000;
 ULONG tglHeapSize = 32767000;
 
-DWORD gosResourceHandle = 0;
+ULONG gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
 FloatHelpPtr globalFloatHelp = NULL;
 ULONG currentFloatHelp = 0;
 float MaxMinUV = 8.0f;
 
-DWORD BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
+ULONG BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
 
 enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor = CPU_PENTIUM;		//Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
 extern float frameRate;
@@ -91,8 +91,8 @@ PSTR ExceptionGameMsg = NULL;
 
 char buildNumber[80];
 
-extern long TERRAIN_TXM_SIZE;
-long ObjectTextureSize = 128;
+extern int32_t TERRAIN_TXM_SIZE;
+int32_t ObjectTextureSize = 128;
 
 extern ULONG MultiPlayCommanderId;
 extern bool	useRealLOS;
@@ -110,7 +110,7 @@ PSTR GetGameInformation()
 	return(ExceptionGameMsg);
 }
 
-//long cLoadString (HINSTANCE hInstance,  UINT uID, LPTSTR lpBuffer, int nBufferMax );
+//int32_t cLoadString (HINSTANCE hInstance,  UINT uID, LPTSTR lpBuffer, int nBufferMax );
 
 //---------------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ void UpdateRenderers()
 	//Assume worst case is +/- 8.0 for now.
 	//MaxMinUV = gos_GetMachineInformation(gos_Info_GetMaximumUVSize);
 
-	DWORD bColor = 0x0;
+	ULONG bColor = 0x0;
 	if (eye)
 		bColor = eye->fogColor;
 		
@@ -162,7 +162,7 @@ void InitializeGameEngine()
 {
 	//---------------------------------------------------------------------
 	float doubleClickThreshold = 0.2f;
-	long dragThreshold = 10;
+	int32_t dragThreshold = 10;
 
 	Environment.Key_Exit=-1; // so escape doesn't kill your app
 
@@ -171,12 +171,12 @@ void InitializeGameEngine()
 	FitIniFilePtr systemFile = new FitIniFile;
 
 #ifdef _DEBUG
-	long systemOpenResult = 
+	int32_t systemOpenResult = 
 #endif
 		systemFile->open("system.cfg");
 		   
 #ifdef _DEBUG
-	if( systemOpenResult != NO_ERR)
+	if( systemOpenResult != NO_ERROR)
 	{
 		char Buffer[256];
 		gos_GetCurrentPath( Buffer, 256 );
@@ -186,90 +186,90 @@ void InitializeGameEngine()
 
 	{
 #ifdef _DEBUG
-		long systemBlockResult = 
+		int32_t systemBlockResult = 
 #endif
 			systemFile->seekBlock("systemHeap");
-		gosASSERT(systemBlockResult == NO_ERR);
+		gosASSERT(systemBlockResult == NO_ERROR);
 		{
-			long result = systemFile->readIdULong("systemHeapSize",systemHeapSize);
-			gosASSERT(result == NO_ERR);
+			int32_t result = systemFile->readIdULong("systemHeapSize",systemHeapSize);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdULong("guiHeapSize",guiHeapSize);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdULong("logisticsHeapSize",logisticsHeapSize);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 		}
 
 #ifdef _DEBUG
-		long systemPathResult = 
+		int32_t systemPathResult = 
 #endif
 			systemFile->seekBlock("systemPaths");
-		gosASSERT(systemPathResult == NO_ERR);
+		gosASSERT(systemPathResult == NO_ERROR);
 		{
-			long result = systemFile->readIdString("terrainPath",terrainPath,79);
-			gosASSERT(result == NO_ERR);
+			int32_t result = systemFile->readIdString("terrainPath",terrainPath,79);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("artPath",artPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("fontPath",fontPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("savePath",savePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("spritePath",spritePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("shapesPath",shapesPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("soundPath",soundPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("objectPath",objectPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("cameraPath",cameraPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("tilePath",tilePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("missionPath",missionPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("warriorPath",warriorPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("profilePath",profilePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("interfacepath",interfacePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("moviepath",moviePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("CDsoundPath",CDsoundPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("CDmoviepath",CDmoviePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("CDspritePath",CDspritePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 		}
 
 #ifdef _DEBUG
-		long fastFileResult = 
+		int32_t fastFileResult = 
 #endif
 			systemFile->seekBlock("FastFiles");
-		gosASSERT(fastFileResult == NO_ERR);
+		gosASSERT(fastFileResult == NO_ERROR);
 		{
-			long result = systemFile->readIdLong("NumFastFiles",maxFastFiles);
-			if (result != NO_ERR)
+			int32_t result = systemFile->readIdLong("NumFastFiles",maxFastFiles);
+			if (result != NO_ERROR)
 				maxFastFiles = 0;
 
 			if (maxFastFiles)
@@ -277,12 +277,12 @@ void InitializeGameEngine()
 				fastFiles = (FastFile **)malloc(maxFastFiles*sizeof(FastFile *));
 				memset(fastFiles,0,maxFastFiles*sizeof(FastFile *));
 
-				long fileNum = 0;
+				int32_t fileNum = 0;
 				char fastFileId[10];
 				char fileName[100];
 				sprintf(fastFileId,"File%d",fileNum);
 	
-				while (systemFile->readIdString(fastFileId,fileName,99) == NO_ERR)
+				while (systemFile->readIdString(fastFileId,fileName,99) == NO_ERROR)
 				{
 					FastFileInit(fileName);
 					fileNum++;
@@ -292,14 +292,14 @@ void InitializeGameEngine()
 			}
 		}
 		
-		long result = systemFile->seekBlock("UseMusic");
-		if (result == NO_ERR)
+		int32_t result = systemFile->seekBlock("UseMusic");
+		if (result == NO_ERROR)
 			useMusic = TRUE;
 		else
 			useMusic = FALSE;
 			
 		result = systemFile->seekBlock("UseSound");
-		if (result == NO_ERR)
+		if (result == NO_ERROR)
 		{
 			useSound = TRUE;
 		}
@@ -319,21 +319,21 @@ void InitializeGameEngine()
 	FitIniFilePtr prefs = new FitIniFile;
 
 #ifdef _DEBUG
-	long prefsOpenResult = 
+	int32_t prefsOpenResult = 
 #endif
 		prefs->open("prefs.cfg");
 
-	gosASSERT (prefsOpenResult == NO_ERR);
+	gosASSERT (prefsOpenResult == NO_ERROR);
 	{
 #ifdef _DEBUG
-		long prefsBlockResult = 
+		int32_t prefsBlockResult = 
 #endif
 			prefs->seekBlock("MechCommander2");
-		gosASSERT(prefsBlockResult == NO_ERR);
+		gosASSERT(prefsBlockResult == NO_ERROR);
 		{
-			long filterSetting;
-			long result = prefs->readIdLong("FilterState",filterSetting);
-			if (result == NO_ERR)
+			int32_t filterSetting;
+			int32_t result = prefs->readIdLong("FilterState",filterSetting);
+			if (result == NO_ERROR)
 			{
 				switch (filterSetting)
 				{
@@ -353,61 +353,61 @@ void InitializeGameEngine()
 			}
 
 			result = prefs->readIdLong("TerrainTextureRes",TERRAIN_TXM_SIZE);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				TERRAIN_TXM_SIZE = 64;
 
 			result = prefs->readIdLong("Resolution",resolution);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				resolution = 0;
 
 			result = prefs->readIdLong("ObjectTextureRes",ObjectTextureSize);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				ObjectTextureSize = 128;
 
 			result = prefs->readIdLong("Difficulty",GameDifficulty);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				GameDifficulty = 1;
 
 			result = prefs->readIdLong("Brightness",gammaLevel);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				gammaLevel = 0;
 
 			// store volume settings in global variable since soundsystem 
 			// does not exist yet.  These will be set in SoundSystem::init()
 			result = prefs->readIdLong("DigitalMasterVolume",DigitalMasterVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				DigitalMasterVolume = 255;
 
 			result = prefs->readIdLong("MusicVolume",MusicVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				MusicVolume = 64;
 
 			result = prefs->readIdLong("RadioVolume",RadioVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				RadioVolume = 64;
 
 			result = prefs->readIdLong("SFXVolume",SFXVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				SFXVolume = 64;
 
 			result = prefs->readIdFloat("DoubleClickThreshold",doubleClickThreshold);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				doubleClickThreshold = 0.2f;
 
 			result = prefs->readIdLong("DragThreshold",dragThreshold);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				dragThreshold = 10;
 				
 			result = prefs->readIdULong("BaseVertexColor",BaseVertexColor);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				BaseVertexColor = 0x00000000;
 				
 			result = prefs->readIdBoolean("UnlimitedAmmo",useUnlimitedAmmo);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				useUnlimitedAmmo = true;
 				
 			result = prefs->readIdBoolean("RealLOS",useRealLOS);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				useRealLOS = true;
 		}
 	}
@@ -606,7 +606,7 @@ void DoGameLogic()
 	// Update Mission and Logistics here.
 	if (logistics)
 	{
-		long result = logistics->update();
+		int32_t result = logistics->update();
 		if (result == log_DONE)
 		{
 			logistics->stop();
@@ -628,9 +628,9 @@ void DoGameLogic()
 }
 
 //---------------------------------------------------------------------------
-long textToLong (PSTR num)
+int32_t textToLong (PSTR num)
 {
-	long result = 0;
+	int32_t result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
@@ -642,7 +642,7 @@ long textToLong (PSTR num)
 	else
 	{
 		hexOffset += 2;
-		long numDigits = strlen(hexOffset)-1;
+		int32_t numDigits = strlen(hexOffset)-1;
 		for (int i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
@@ -652,8 +652,8 @@ long textToLong (PSTR num)
 			}
 		}
 		numDigits = strlen(hexOffset)-1;
-		long power = 0;
-		for (long count = numDigits;count >= 0;count--,power++)
+		int32_t power = 0;
+		for (int32_t count = numDigits;count >= 0;count--,power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			

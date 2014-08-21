@@ -54,7 +54,7 @@ class ForceGroupBar
 		bool setPilotVideo( PCSTR pVideo, MechWarrior* pPilot );
 		bool isPlayingVideo();
 
-		bool flashJumpers (long numFlashes);
+		bool flashJumpers (int32_t numFlashes);
 		
 	private:
 
@@ -65,7 +65,7 @@ class ForceGroupBar
 		static StaticInfo* s_coverIcon;
 
 		//Tutorial
-		long forceNumFlashes;
+		int32_t forceNumFlashes;
 		float forceFlashTime;
 
 

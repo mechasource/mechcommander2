@@ -1,5 +1,3 @@
-#ifndef OPTIONSAREA_H
-#define OPTIONSAREA_H
 /*************************************************************************************************\
 OptionsArea.h			: Interface for the OptionsArea component.
 //---------------------------------------------------------------------------//
@@ -8,16 +6,16 @@ OptionsArea.h			: Interface for the OptionsArea component.
 \*************************************************************************************************/
 
 //*************************************************************************************************
-#ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
-#endif
 
-#ifndef SIMPLECAMERA_H
-#include "simplecamera.h"
-#endif
+#pragma once
 
-#include "alistbox.h"
-#include "attributemeter.h"
+#ifndef OPTIONSAREA_H
+#define OPTIONSAREA_H
+
+//#include "logisticsscreen.h"
+//#include "simplecamera.h"
+//#include "alistbox.h"
+//#include "attributemeter.h"
 
 class aButton;
 
@@ -58,7 +56,7 @@ class ScrollX : public aObject
 public:
 
 	ScrollX();
-	long	init(aButton* pLeft, aButton* pRight, aButton* pTab );
+	int32_t	init(aButton* pLeft, aButton* pRight, aButton* pTab );
 	virtual void	update();
 
 	virtual int		handleMessage( ULONG message, ULONG fromWho );
@@ -67,13 +65,13 @@ public:
 	void			SetScrollPos(float newPos);
 	float			GetScrollMax(void){return scrollMax;};
 	float			GetScrollPos(void){return scrollPos;};
-	long			SetSrollInc( long newInc ){ scrollInc = (float)newInc; } // amount you move for one arrow click
-	long			SetScrollPage(long newInc){ pageInc = (float)newInc;} // amount you move if you click on the bar itself
+	int32_t			SetSrollInc( int32_t newInc ){ scrollInc = (float)newInc; } // amount you move for one arrow click
+	int32_t			SetScrollPage(int32_t newInc){ pageInc = (float)newInc;} // amount you move if you click on the bar itself
 	void			ScrollUp(void);
 	void			ScrollPageUp(void);
 	void			ScrollDown(void);
 	void			ScrollPageDown(void);
-	void			SetScroll( long newScrollPos );	
+	void			SetScroll( int32_t newScrollPos );	
 	void			Enable( bool enable );
 
 private:
@@ -87,7 +85,7 @@ private:
 	float			scrollInc;
 	float			pageInc;
 
-	long			lastX;
+	int32_t			lastX;
 
 };
 
@@ -95,7 +93,7 @@ class OptionsGraphics : public LogisticsScreen
 {
 
 public:
-	void init(long xOffset, long yOffset);
+	void init(int32_t xOffset, int32_t yOffset);
 	virtual void render();
 	virtual void update();
 	virtual void begin();
@@ -114,7 +112,7 @@ private:
 class OptionsAudio : public LogisticsScreen
 {
 	public:
-		void init(long xOffset, long yOffset);
+		void init(int32_t xOffset, int32_t yOffset);
 		virtual void render();
 		virtual void update();
 		virtual void begin();
@@ -133,7 +131,7 @@ class OptionsHotKeys : public LogisticsScreen
 {
 
 public:
-		void init(long xOffset, long yOffset);
+		void init(int32_t xOffset, int32_t yOffset);
 		virtual void render();
 		virtual void update();
 		virtual void begin();
@@ -144,19 +142,19 @@ public:
 
 private:
 
-	static void makeKeyString( long hotKey, PSTR buffer );
-	static int makeInputKeyString( long& hotKey, PSTR buffer );
+	static void makeKeyString( int32_t hotKey, PSTR buffer );
+	static int makeInputKeyString( int32_t& hotKey, PSTR buffer );
 
 
 	aListBox		hotKeyList;
 	bool			bShowDlg;
-	long			curHotKey;
+	int32_t			curHotKey;
 };
 
 class OptionsGamePlay : public LogisticsScreen
 {
 public:
-	void init(long xOffset, long yOffset);
+	void init(int32_t xOffset, int32_t yOffset);
 	virtual void render();
 	virtual void update();
 	virtual void begin();
@@ -186,11 +184,11 @@ public:
 	HotKeyListItem( );
 	~HotKeyListItem();
 
-	void	setHotKey( long lNew ){ hotKey = lNew; }
-	void	setCommand( long lCommand ) { command = lCommand; }
+	void	setHotKey( int32_t lNew ){ hotKey = lNew; }
+	void	setCommand( int32_t lCommand ) { command = lCommand; }
 
-	long	getCommand() const { return command; }
-	long	getHotKey() const { return hotKey; }
+	int32_t	getCommand() const { return command; }
+	int32_t	getHotKey() const { return hotKey; }
 
 private:
 
@@ -198,8 +196,8 @@ private:
 	aText		text;
 	aAnimGroup	animations[3];
 	aRect		rects[2];
-	long		hotKey;
-	long		command;
+	int32_t		hotKey;
+	int32_t		command;
 
 	static		HotKeyListItem* s_item;
 	

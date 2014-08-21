@@ -6,6 +6,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DOBJTYPE_H
 #define DOBJTYPE_H
 //---------------------------------------------------------------------------
@@ -13,8 +15,8 @@
 	
 //---------------------------------------------------------------------------
 // Macro definitions
-#ifndef NO_ERR
-#define NO_ERR	0
+#ifndef NO_ERROR
+#define NO_ERROR	0
 #endif
 
 #define CANT_LOAD_INVALID_OBJECT				0xBEEF0001
@@ -104,6 +106,6 @@ typedef ObjectType* ObjectTypePtr;
 class ObjectTypeManager;
 typedef ObjectTypeManager* ObjectTypeManagerPtr;
 
-typedef long ObjectTypeNumber;
+typedef int32_t ObjectTypeNumber;
 //---------------------------------------------------------------------------
 #endif

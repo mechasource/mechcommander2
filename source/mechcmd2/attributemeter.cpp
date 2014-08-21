@@ -9,11 +9,12 @@
 #include "stdafx.h"
 #include "utilities.h"
 #include "attributemeter.h"
+#include "file.h"
 #include "inifile.h"
 #include <mclib.h>
 
-extern long helpTextID;
-extern long helpTextHeaderID;
+extern int32_t helpTextID;
+extern int32_t helpTextHeaderID;
 
 
 AttributeMeter::AttributeMeter()
@@ -33,7 +34,7 @@ AttributeMeter::AttributeMeter()
 	bShow = 1;
 }
 
-bool AttributeMeter::pointInside(long mouseX, long mouseY) const
+bool AttributeMeter::pointInside(int32_t mouseX, int32_t mouseY) const
 {
 	if ( (outsideRect.left)  <= mouseX && 
 		 outsideRect.right >= mouseX && 
@@ -47,8 +48,8 @@ bool AttributeMeter::pointInside(long mouseX, long mouseY) const
 
 void AttributeMeter::update()
 {
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 	if ( pointInside( mouseX, mouseY ) )
 		::helpTextID = helpID;
@@ -60,7 +61,7 @@ void AttributeMeter::render()
 }
 
 
-void AttributeMeter::render( long xOffset, long yOffset )
+void AttributeMeter::render( int32_t xOffset, int32_t yOffset )
 {
 	int i;
 
@@ -87,7 +88,7 @@ void AttributeMeter::render( long xOffset, long yOffset )
 	tmpRect.top = outsideRect.top + 2 * skipWidth + yOffset;
 	tmpRect.bottom = outsideRect.bottom - 2 * skipWidth + yOffset;
 
-	long color = colorMin;
+	int32_t color = colorMin;
 
 	tmpRect.bottom += skipWidth;
 	for ( i = 0; i < nBarCount; i++ )
@@ -123,7 +124,7 @@ void AttributeMeter::render( long xOffset, long yOffset )
 
 void AttributeMeter::init( FitIniFile* file, PCSTR headerName )
 {
-	if ( NO_ERR != file->seekBlock( headerName ) )
+	if ( NO_ERROR != file->seekBlock( headerName ) )
 	{
 		char errorTxt[256];
 		sprintf( errorTxt, "couldn't find block %s in file %s", headerName, file->getFilename() );
@@ -131,7 +132,7 @@ void AttributeMeter::init( FitIniFile* file, PCSTR headerName )
 		return;
 	}
 
-	if ( NO_ERR == file->readIdLong( "left", outsideRect.left ) )
+	if ( NO_ERROR == file->readIdLong( "left", outsideRect.left ) )
 	{
 		file->readIdLong( "right", outsideRect.right );
 		file->readIdLong( "top", outsideRect.top );
@@ -141,7 +142,7 @@ void AttributeMeter::init( FitIniFile* file, PCSTR headerName )
 	{
 		file->readIdLong( "XLocation", outsideRect.left );
 		file->readIdLong( "YLocation", outsideRect.top );
-		long tmp;
+		int32_t tmp;
 		file->readIdLong( "Width", tmp );
 		outsideRect.right = outsideRect.left + tmp;
 		file->readIdLong( "Height", tmp );
@@ -156,13 +157,13 @@ void AttributeMeter::init( FitIniFile* file, PCSTR headerName )
 	file->readIdLong( "HelpDesc", helpID );
 
 
-	long tmp;
-	if ( NO_ERR == file->readIdLong( "ColorMin", tmp ) )
+	int32_t tmp;
+	if ( NO_ERROR == file->readIdLong( "ColorMin", tmp ) )
 	{
 		colorMin = tmp;
 	}
 
-	if ( NO_ERR == file->readIdLong( "ColorMax", tmp ) )
+	if ( NO_ERROR == file->readIdLong( "ColorMax", tmp ) )
 	{
 		colorMax = tmp;
 	}

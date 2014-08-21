@@ -1,3 +1,6 @@
+
+#pragma once
+
 #ifndef MECHPURCHASESCREEN_H
 #define MECHPURCHASESCREEN_H
 /*************************************************************************************************\

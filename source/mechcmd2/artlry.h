@@ -8,28 +8,19 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef ARTLRY_H
 #define ARTLRY_H
 
 //---------------------------------------------------------------------------
 
-#ifndef DARTLRY_H
-#include "dartlry.h"
-#endif
+//#include "dartlry.h"
+//#include "gameobj.h"
+//#include "objtype.h"
+//#include "contact.h"
+//#include <gosfx/gosfxheaders.hpp>
 
-#ifndef GAMEOBJ_H
-#include "gameobj.h"
-#endif
-
-#ifndef OBJTYPE_H
-#include "objtype.h"
-#endif
-
-#ifndef CONTACT_H
-#include "contact.h"
-#endif
-
-#include <gosfx/gosfxheaders.hpp>
 //***************************************************************************
 
 #define NO_RAM_FOR_ARTY					0xDEFD0000
@@ -53,16 +44,16 @@ class ArtilleryChunk {
 
 		char				commanderId;
 		char				strikeType;
-		long				cellRC[2];
+		int32_t				cellRC[2];
 		char				secondsToImpact;
 
 		ULONG		data;
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 		
 		void init (void) {
 			commanderId = -1;
@@ -84,10 +75,10 @@ class ArtilleryChunk {
 			destroy();
 		}
 
-		void build (long commanderId,
-					long strikeType,
+		void build (int32_t commanderId,
+					int32_t strikeType,
 					Stuff::Vector3D location,
-					long seconds);
+					int32_t seconds);
 
 		void pack (void);
 
@@ -102,7 +93,7 @@ class ArtilleryType : public ObjectType {
 
 	public:
 
-		MemoryPtr			frameList;				//Pointer to JMiles shape file binary 
+		PUCHAR			frameList;				//Pointer to JMiles shape file binary 
 		ULONG		frameCount;				//Number of frames in shape file
 		ULONG		startFrame;				//Frame in List to start with.
 		float				frameRate;				//Speed at which frames playback
@@ -124,16 +115,16 @@ class ArtilleryType : public ObjectType {
 		float				fontYOffset;
 		ULONG		fontColor;
 
-		long				numExplosions;
+		int32_t				numExplosions;
 		float*				explosionOffsetX;
 		float*				explosionOffsetY;
 		float*				explosionDelay;
 
-		long				numExplosionsPerExplosion;
-		long				explosionRandomX;
-		long				explosionRandomY;
+		int32_t				numExplosionsPerExplosion;
+		int32_t				explosionRandomX;
+		int32_t				explosionRandomY;
 
-		long				minArtilleryHeadRange;
+		int32_t				minArtilleryHeadRange;
 				
 	public:
 
@@ -143,9 +134,9 @@ class ArtilleryType : public ObjectType {
 			init();
 		}
 		
-		virtual long init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, ULONG fileSize);
 		
-		long init (FitIniFilePtr objFile);
+		int32_t init (FitIniFilePtr objFile);
 		
 		~ArtilleryType (void) {
 			destroy();
@@ -167,7 +158,7 @@ typedef union _ArtilleryInfo {
 		float				timeToImpact;		//Time until strike goes off.
 		float				timeToLaunch;		//Time until strike is launched (and unmoveable).
 		float				sensorRange;		//If I am a sensor round, how big a range.
-		float				timeToBlind;		//How long do I return sensor data.
+		float				timeToBlind;		//How int32_t do I return sensor data.
 		short				sensorSystemIndex;
 		float				contactUpdate;
 		char				timeString[5];
@@ -181,7 +172,7 @@ typedef struct _ArtilleryData : public GameObjectData
 	char				teamId;
 	char				commanderId;
 	ArtilleryInfo		info;
-	long				effectId;
+	int32_t				effectId;
 
 	bool				bombRunStarted;
 	bool				inView;
@@ -200,7 +191,7 @@ class Artillery : public GameObject
 		char				teamId;
 		char				commanderId;
 		ArtilleryInfo		info;
-		long				effectId;
+		int32_t				effectId;
 		
 		gosFX::Effect		*hitEffect;
 		gosFX::Effect		*rightContrail;
@@ -220,7 +211,7 @@ class Artillery : public GameObject
 
 		virtual void init (bool create);
 
-		virtual void init (bool create, long _artilleryType);
+		virtual void init (bool create, int32_t _artilleryType);
 
 	   	Artillery (void) : GameObject() 
 		{
@@ -282,26 +273,26 @@ class Artillery : public GameObject
 
 		virtual void destroy (void);
 		
-		virtual long update (void);
+		virtual int32_t update (void);
 
 		virtual void render (void);
 
 		virtual void init (bool create, ObjectTypePtr _type);
 
-		virtual long kill (void) 
+		virtual int32_t kill (void) 
 		{
-			return(NO_ERR);
+			return(NO_ERROR);
 		}
 		
-		virtual void setCommanderId (long _commanderId);
-		virtual long getCommanderId (void)
+		virtual void setCommanderId (int32_t _commanderId);
+		virtual int32_t getCommanderId (void)
 		{
 			return commanderId;
 		}
 
-		virtual long setTeamId (long _teamId, bool setup);
+		virtual int32_t setTeamId (int32_t _teamId, bool setup);
 		
-		virtual long getTeamId (void) 
+		virtual int32_t getTeamId (void) 
 		{
 			return(teamId);
 		}
@@ -314,11 +305,11 @@ class Artillery : public GameObject
 
 		virtual TeamPtr getTeam (void);
 
-		virtual long handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
+		virtual int32_t handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk = false);
 
 		virtual void handleStaticCollision (void);
 
-		virtual void Save (PacketFilePtr file, long packetNum);
+		virtual void Save (PacketFilePtr file, int32_t packetNum);
 
 		void Load (ArtilleryData *data);
 
@@ -326,13 +317,13 @@ class Artillery : public GameObject
 };
 
 //---------------------------------------------------------------------------
-extern void CallArtillery (long commanderId,
-						   long strikeType,
+extern void CallArtillery (int32_t commanderId,
+						   int32_t strikeType,
 						   Stuff::Vector3D strikeLoc,
-						   long secondsToImpact,
+						   int32_t secondsToImpact,
 						   bool randomOffset);
 
-extern void IfaceCallStrike (long strikeID,
+extern void IfaceCallStrike (int32_t strikeID,
 							 Stuff::Vector3D* strikeLoc,
 							 GameObjectPtr strikeTarget,
 							 bool playerStrike = true,

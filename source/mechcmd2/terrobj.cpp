@@ -122,7 +122,7 @@ void TerrainObjectType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-void TerrainObjectType::initMiscTerrObj (long objTypeNum) {
+void TerrainObjectType::initMiscTerrObj (int32_t objTypeNum) {
 
 	//---------------------------------------------------------------------
 	// This function is here to maintain compatibility with MC1. The values
@@ -163,22 +163,22 @@ void TerrainObjectType::initMiscTerrObj (long objTypeNum) {
 
 //---------------------------------------------------------------------------
 
-long TerrainObjectType::init (FilePtr objFile, ULONG fileSize) {
+int32_t TerrainObjectType::init (FilePtr objFile, ULONG fileSize) {
 
-	long result = 0;
+	int32_t result = 0;
 	
 	FitIniFile bldgFile;
 	result = bldgFile.open(objFile, fileSize);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	
 	//----------------------------------------------
 	// Read in the data needed for the TerrainObject
 	subType = TERROBJ_NONE;
 	result = bldgFile.seekBlock("TerrainObjectData");
-	if (result != NO_ERR) {
+	if (result != NO_ERROR) {
 		result = bldgFile.seekBlock("TreeData");
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			return(result);
 		subType = TERROBJ_TREE;
 		objectClass = TREE;
@@ -186,46 +186,46 @@ long TerrainObjectType::init (FilePtr objFile, ULONG fileSize) {
 
 	ULONG dmgLevel;
 	result = bldgFile.readIdULong("DmgLevel",dmgLevel);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 	damageLevel = (float)dmgLevel;
 		
 	result = bldgFile.readIdLong("CollisionOffsetX",collisionOffsetX);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		collisionOffsetX = 0;
 	
 	result = bldgFile.readIdLong("CollisionOffsetY",collisionOffsetY);
-	if (result != NO_ERR)	
+	if (result != NO_ERROR)	
 		collisionOffsetY = 0;
 
-	long setImpass;
+	int32_t setImpass;
 	result = bldgFile.readIdLong("SetImpassable",setImpass);
 	setImpassable = false;
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 		setImpassable = setImpass ? true : false;
 		
 	result = bldgFile.readIdLong("XImpasse",xImpasse);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		xImpasse = 0;
 	
 	result = bldgFile.readIdLong("YImpasse",yImpasse);
-	if (result != NO_ERR)	
+	if (result != NO_ERROR)	
 		yImpasse = 0;
 
 	float realExtent = 0.0;
 	result = bldgFile.readIdFloat("ExtentRadius", realExtent);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		realExtent = -1.0;
 
 	result = bldgFile.readIdFloat("ExplosionRadius",explRad);
 	//-----------------------------------------------------------------
 	// if this fails, explosion radius is not set and no splash damage.
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		explRad = 0.0;
 		
 	result = bldgFile.readIdFloat("ExplosionDamage",explDmg);
 	// if this fails, explosion damage is not set and no splash damage.
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		explDmg = 0.0;
 
 	//-------------------------------------------------------
@@ -364,7 +364,7 @@ void TerrainObject::updateDebugWindow (GameDebugWindow* debugWindow) {
 	debugWindow->print(s);
 	if (numSubAreas0 > 0) {
 		sprintf(s, "subAreas:");
-		for (long i = 0; i < numSubAreas0; i++) {
+		for (int32_t i = 0; i < numSubAreas0; i++) {
 			char tempStr[15];
 			sprintf(tempStr, " %d", subAreas0[i]);
 			strcat(s, tempStr);
@@ -443,7 +443,7 @@ float TerrainObject::getStatusRating (void) {
 
 #define BRIDGE_OFFSET		60
 
-long TerrainObject::update (void) {
+int32_t TerrainObject::update (void) {
 
 	if (getFlag(OBJECT_FLAG_JUSTCREATED)) 
 	{
@@ -566,7 +566,7 @@ void TerrainObject::render (void) {
 			if (barStatus < 0.0)
 				barStatus = 0.0;
 
-			DWORD color = 0xff7f7f7f;
+			ULONG color = 0xff7f7f7f;
 			
 			appearance->setBarColor(color);
 			appearance->setBarStatus(barStatus);
@@ -666,7 +666,7 @@ void TerrainObject::destroy (void)
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::setDamage (long newDamage) {
+void TerrainObject::setDamage (int32_t newDamage) {
 
 	damage = (float)newDamage;
 
@@ -710,7 +710,7 @@ void TerrainObject::init (bool create, ObjectTypePtr objType) {
 		// We need to append the sprite type to the appearance num now.
 		// The MechEdit tool does not assume a sprite type, nor should it.
 		// MechCmdr2 features much simpler objects which only use 1 type of sprite!
-		long appearanceType = (TREED_TYPE << 24);
+		int32_t appearanceType = (TREED_TYPE << 24);
 
 		AppearanceTypePtr terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType,appearanceName);
 		if (!terrainObjectAppearanceType)
@@ -739,7 +739,7 @@ void TerrainObject::init (bool create, ObjectTypePtr objType) {
 		// We need to append the sprite type to the appearance num now.
 		// The MechEdit tool does not assume a sprite type, nor should it.
 		// MechCmdr2 features much simpler objects which only use 1 type of sprite!
-		long appearanceType = (BLDG_TYPE << 24);
+		int32_t appearanceType = (BLDG_TYPE << 24);
 
 		AppearanceTypePtr terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType,appearanceName);
 		if (!terrainObjectAppearanceType)
@@ -802,10 +802,10 @@ void TerrainObject::lightOnFire (float timeToBurn)
 
 #define DUST_POOF_ID		32
 //---------------------------------------------------------------------------
-long TerrainObject::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) {
+int32_t TerrainObject::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayChunk) {
 
 	if (!shotInfo)
-		return(NO_ERR);
+		return(NO_ERROR);
 
 	if (addMultiplayChunk)
 		MPlayer->addWeaponHitChunk(this, shotInfo);
@@ -923,12 +923,12 @@ long TerrainObject::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultipl
 		}
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::setTerrainPosition (const Stuff::Vector3D& position, const Stuff::Vector2DOf<long>& numbers)
+void TerrainObject::setTerrainPosition (const Stuff::Vector3D& position, const Stuff::Vector2DOf<int32_t>& numbers)
 {
 	setPosition( position );
 				
@@ -948,12 +948,12 @@ void TerrainObject::calcCellFootprint (Stuff::Vector3D& pos) {
 
 	short cellList[MAX_CELL_COORDS];
 	cellList[0] = MAX_CELL_COORDS;
-	long numCoords = appearance->calcCellsCovered(pos, cellList);
-	long minRow = 10000;
-	long minCol = 10000;
-	long maxRow = 0;
-	long maxCol = 0;
-	long curCoord = 0;
+	int32_t numCoords = appearance->calcCellsCovered(pos, cellList);
+	int32_t minRow = 10000;
+	int32_t minCol = 10000;
+	int32_t maxRow = 0;
+	int32_t maxCol = 0;
+	int32_t curCoord = 0;
 	while (curCoord < numCoords) {
 		if (cellList[curCoord] < minRow)
 			minRow = cellList[curCoord];
@@ -994,7 +994,7 @@ void TerrainObject::calcCellFootprint (Stuff::Vector3D& pos) {
 
 //---------------------------------------------------------------------------
 
-long TerrainObject::getLineOfSightNodes (long eyeCellRow, long eyeCellCol, long* cells) {
+int32_t TerrainObject::getLineOfSightNodes (int32_t eyeCellRow, int32_t eyeCellCol, int32_t* cells) {
 
 	cells[0] = cellFootprint[0];
 	cells[1] = cellFootprint[1];
@@ -1013,14 +1013,14 @@ long TerrainObject::getLineOfSightNodes (long eyeCellRow, long eyeCellCol, long*
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::calcSubAreas (long numCells, short cells[MAX_GAME_OBJECT_CELLS][2]) {
+void TerrainObject::calcSubAreas (int32_t numCells, short cells[MAX_GAME_OBJECT_CELLS][2]) {
 
 	numCellsCovered = numCells;
 	if (numCellsCovered) {
 		cellsCovered = (short*)systemHeap->Malloc(4 * numCellsCovered);
 		if (cellsCovered) {
 			short* curCoord = cellsCovered;
-			for (long j = 0; j < numCellsCovered; j++) {
+			for (int32_t j = 0; j < numCellsCovered; j++) {
 				*curCoord++ = cells[j][0];
 				*curCoord++ = cells[j][1];
 			}
@@ -1028,13 +1028,13 @@ void TerrainObject::calcSubAreas (long numCells, short cells[MAX_GAME_OBJECT_CEL
 	
 		numSubAreas0 = 0;
 		short* curCoord = cellsCovered;
-		for (long i = 0; i < numCellsCovered; i++) 
+		for (int32_t i = 0; i < numCellsCovered; i++) 
 		{
-			long r = *curCoord++;
-			long c = *curCoord++;
-			long area = GlobalMoveMap[0]->calcArea(r, c);
+			int32_t r = *curCoord++;
+			int32_t c = *curCoord++;
+			int32_t area = GlobalMoveMap[0]->calcArea(r, c);
 			bool addIt = true;
-			for (long j = 0; j < numSubAreas0; j++)
+			for (int32_t j = 0; j < numSubAreas0; j++)
 				if (subAreas0[j] == area) 
 				{
 					addIt = false;
@@ -1057,11 +1057,11 @@ void TerrainObject::calcSubAreas (long numCells, short cells[MAX_GAME_OBJECT_CEL
 		curCoord = cellsCovered;
 		for (i = 0; i < numCellsCovered; i++) 
 		{
-			long r = *curCoord++;
-			long c = *curCoord++;
-			long area = GlobalMoveMap[1]->calcArea(r, c);
+			int32_t r = *curCoord++;
+			int32_t c = *curCoord++;
+			int32_t area = GlobalMoveMap[1]->calcArea(r, c);
 			bool addIt = true;
-			for (long j = 0; j < numSubAreas1; j++)
+			for (int32_t j = 0; j < numSubAreas1; j++)
 				if (subAreas1[j] == area) 
 				{
 					addIt = false;
@@ -1093,9 +1093,9 @@ void TerrainObject::calcSubAreas (long numCells, short cells[MAX_GAME_OBJECT_CEL
 void TerrainObject::markMoveMap (bool passable) {
 	
 	short* curCoord = cellsCovered;
-	for (long i = 0; i < numCellsCovered; i++) {
-		long r = *curCoord++;
-		long c = *curCoord++;
+	for (int32_t i = 0; i < numCellsCovered; i++) {
+		int32_t r = *curCoord++;
+		int32_t c = *curCoord++;
 		GameMap->setPassable(r, c, passable);
 		if (passable)
 			GameMap->setLocalHeight(r, c, 0.0f);
@@ -1107,7 +1107,7 @@ void TerrainObject::markMoveMap (bool passable) {
 void TerrainObject::openSubAreas (void) {
 
 	markMoveMap(true);
-	for (long i = 0; i < numSubAreas0; i++)
+	for (int32_t i = 0; i < numSubAreas0; i++)
 		GlobalMoveMap[0]->openArea(subAreas0[i]);
 	for (i = 0; i < numSubAreas1; i++)
 		GlobalMoveMap[1]->openArea(subAreas1[i]);
@@ -1118,7 +1118,7 @@ void TerrainObject::openSubAreas (void) {
 void TerrainObject::closeSubAreas (void) {
 
 	markMoveMap(false);
-	for (long i = 0; i < numSubAreas0; i++)
+	for (int32_t i = 0; i < numSubAreas0; i++)
 		GlobalMoveMap[0]->closeArea(subAreas0[i]);
 	for (i = 0; i < numSubAreas1; i++)
 		GlobalMoveMap[1]->closeArea(subAreas1[i]);
@@ -1126,9 +1126,9 @@ void TerrainObject::closeSubAreas (void) {
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::setSubAreasTeamId (long id) {
+void TerrainObject::setSubAreasTeamId (int32_t id) {
 
-	for (long i = 0; i < numSubAreas0; i++)
+	for (int32_t i = 0; i < numSubAreas0; i++)
 		GlobalMoveMap[0]->setAreaTeamID(subAreas0[i], id);
 	for (i = 0; i < numSubAreas1; i++)
 		GlobalMoveMap[1]->setAreaTeamID(subAreas1[i], id);
@@ -1136,14 +1136,14 @@ void TerrainObject::setSubAreasTeamId (long id) {
 
 //---------------------------------------------------------------------------
 
-bool TerrainObject::calcAdjacentAreaCell (long moveLevel, long areaID, long& adjRow, long& adjCol) {
+bool TerrainObject::calcAdjacentAreaCell (int32_t moveLevel, int32_t areaID, int32_t& adjRow, int32_t& adjCol) {
 
 	if (areaID == -1) {
 		short* curCoord = cellsCovered;
-		for (long i = 0; i < numCellsCovered; i++) {
-			long cellRow = *curCoord++;
-			long cellCol = *curCoord++;
-			long adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow - 1, cellCol);
+		for (int32_t i = 0; i < numCellsCovered; i++) {
+			int32_t cellRow = *curCoord++;
+			int32_t cellCol = *curCoord++;
+			int32_t adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow - 1, cellCol);
 			if (adjArea > -1) {
 				adjRow = cellRow - 1;
 				adjCol = cellCol;
@@ -1171,10 +1171,10 @@ bool TerrainObject::calcAdjacentAreaCell (long moveLevel, long areaID, long& adj
 		}
 	else {
 		short* curCoord = cellsCovered;
-		for (long i = 0; i < numCellsCovered; i++) {
-			long cellRow = *curCoord++;
-			long cellCol = *curCoord++;
-			long adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow - 1, cellCol);
+		for (int32_t i = 0; i < numCellsCovered; i++) {
+			int32_t cellRow = *curCoord++;
+			int32_t cellCol = *curCoord++;
+			int32_t adjArea = GlobalMoveMap[moveLevel]->calcArea(cellRow - 1, cellCol);
 			if (adjArea == areaID) {
 				adjRow = cellRow - 1;
 				adjCol = cellCol;
@@ -1204,13 +1204,13 @@ bool TerrainObject::calcAdjacentAreaCell (long moveLevel, long areaID, long& adj
 }
 
 //***************************************************************************
-void TerrainObject::Save (PacketFilePtr file, long packetNum)
+void TerrainObject::Save (PacketFilePtr file, int32_t packetNum)
 {
 	TerrainObjectData data;
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(MemoryPtr)&data,sizeof(TerrainObjectData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(PUCHAR)&data,sizeof(TerrainObjectData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

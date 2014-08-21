@@ -8,35 +8,20 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef GROUP_H
 #define GROUP_H
 
 //--------------
 // Include Files
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
-
-#ifndef GAMEOBJ_H
-#include "gameobj.h"
-#endif
-
-#ifndef DMOVER_H
-#include "dmover.h"
-#endif
-
-#ifndef DGROUP_H
-#include "dgroup.h"
-#endif
-
-#ifndef UNITDESG_H
-#include "unitdesg.h"
-#endif
-
-#ifndef TACORDR_H
-#include "tacordr.h"
-#endif
+//#include <mclib.h>
+//#include "gameobj.h"
+//#include "dmover.h"
+//#include "dgroup.h"
+//#include "unitdesg.h"
+//#include "tacordr.h"
 
 //---------------------------------------------------------------------------
 
@@ -48,11 +33,11 @@
 
 typedef struct _GoalMapNode {
 	short				cost;								// normal cost to travel here, based upon terrain
-	//long				parent;								// where we came from (parent cell)
+	//int32_t				parent;								// where we came from (parent cell)
 	uint8_t		flags;								// CLOSED, OPEN, STEP flags
-	long				g;									// known cost from START to this node
-	//long				hPrime;								// estimated cost from this node to GOAL
-	//long				fPrime;								// = g + hPrime
+	int32_t				g;									// known cost from START to this node
+	//int32_t				hPrime;								// estimated cost from this node to GOAL
+	//int32_t				fPrime;								// = g + hPrime
 
 	void setFlag (uint8_t flag) {
 		flags |= flag;
@@ -65,8 +50,8 @@ typedef struct _GoalMapNode {
 
 typedef struct _MoverGroupData
 {
-	long					id;
-	long					numMovers;
+	int32_t					id;
+	int32_t					numMovers;
 	GameObjectWatchID		moverWIDs[MAX_MOVERGROUP_COUNT];
 	GameObjectWatchID		pointWID;
 	bool					disbandOnNoPoint;
@@ -77,8 +62,8 @@ class MoverGroup {
 
 	public:
 
-		long					id;
-		long					numMovers;
+		int32_t					id;
+		int32_t					numMovers;
 		GameObjectWatchID		moverWIDs[MAX_MOVERGROUP_COUNT];
 		GameObjectWatchID		pointWID;
 		bool					disbandOnNoPoint;
@@ -88,8 +73,8 @@ class MoverGroup {
 
 	public:
 
-		void* operator new (size_t ourSize);
-		void operator delete (void* us);
+		PVOID operator new (size_t ourSize);
+		void operator delete (PVOID us);
 
 		virtual void init (void) {
 			id = -1;
@@ -111,23 +96,23 @@ class MoverGroup {
 			destroy();
 		}
 
-		virtual long getId (void) {
+		virtual int32_t getId (void) {
 			return(id);
 		}
 
-		virtual void setId (long _id) {
+		virtual void setId (int32_t _id) {
 			id = _id;
 		}
 
-		//long calcRosterSize (BOOL checkUnits = TRUE);
+		//int32_t calcRosterSize (BOOL checkUnits = TRUE);
 
-		//void addToRoster (TeamPtr team, long* rosterIndex);
+		//void addToRoster (TeamPtr team, int32_t* rosterIndex);
 
-		long getNumMovers (void) {
+		int32_t getNumMovers (void) {
 			return(numMovers);
 		}
 
-		void setNumMovers (long num) {
+		void setNumMovers (int32_t num) {
 			numMovers = num;
 		}
 
@@ -137,9 +122,9 @@ class MoverGroup {
 
 		virtual bool isMember (MoverPtr mover);
 
-		virtual long disband (void);
+		virtual int32_t disband (void);
 
-		virtual long setPoint (MoverPtr mover);
+		virtual int32_t setPoint (MoverPtr mover);
 
 		virtual MoverPtr getPoint (void);
 
@@ -151,64 +136,64 @@ class MoverGroup {
 			return(disbandOnNoPoint);
 		}
 
-		MoverPtr getMover (long i);
+		MoverPtr getMover (int32_t i);
 
 		MoverPtr selectPoint (bool excludePoint);
 
-		virtual long getMovers (MoverPtr* moverList);
+		virtual int32_t getMovers (MoverPtr* moverList);
 
 		MechWarriorPtr getPointPilot (void);
 
-		void statusCount (long* statusTally);
+		void statusCount (int32_t* statusTally);
 
 		void addToGUI (bool visible = true);
 
-		long calcMoveGoals (Stuff::Vector3D goal, Stuff::Vector3D* goalList);
+		int32_t calcMoveGoals (Stuff::Vector3D goal, Stuff::Vector3D* goalList);
 
-		long calcJumpGoals (Stuff::Vector3D goal, Stuff::Vector3D* goalList, GameObjectPtr DFATarget = NULL);
+		int32_t calcJumpGoals (Stuff::Vector3D goal, Stuff::Vector3D* goalList, GameObjectPtr DFATarget = NULL);
 
 		//----------------
 		// Tactical Orders
 
-		virtual long handleTacticalOrder (TacticalOrder tacOrder, long priority, Stuff::Vector3D* jumpGoalList = NULL, bool queueGroupOrder = false);
+		virtual int32_t handleTacticalOrder (TacticalOrder tacOrder, int32_t priority, Stuff::Vector3D* jumpGoalList = NULL, bool queueGroupOrder = false);
 
-		long orderMoveToPoint (bool setTacOrder, long origin, Stuff::Vector3D location, ULONG params);
+		int32_t orderMoveToPoint (bool setTacOrder, int32_t origin, Stuff::Vector3D location, ULONG params);
 
-		long orderMoveToObject (bool setTacOrder, long origin, GameObjectPtr target, long fromArea, ULONG params);
+		int32_t orderMoveToObject (bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, ULONG params);
 
-		long orderTraversePath (long origin, WayPathPtr wayPath, ULONG params);
+		int32_t orderTraversePath (int32_t origin, WayPathPtr wayPath, ULONG params);
 
-		long orderPatrolPath (long origin, WayPathPtr wayPath);
+		int32_t orderPatrolPath (int32_t origin, WayPathPtr wayPath);
 
-		long orderPowerDown (long origin);
+		int32_t orderPowerDown (int32_t origin);
 
-		long orderPowerUp (long origin);
+		int32_t orderPowerUp (int32_t origin);
 
-		long orderAttackObject (long origin, GameObjectPtr target, long attackType, long attackMethod, long attackRange, long aimLocation, long fromArea, ULONG params);
+		int32_t orderAttackObject (int32_t origin, GameObjectPtr target, int32_t attackType, int32_t attackMethod, int32_t attackRange, int32_t aimLocation, int32_t fromArea, ULONG params);
 
-		long orderWithdraw (long origin, Stuff::Vector3D location);
+		int32_t orderWithdraw (int32_t origin, Stuff::Vector3D location);
 
-		long orderEject (long origin);
+		int32_t orderEject (int32_t origin);
 
 		//--------------
 		// Combat Events
-		void triggerAlarm (long alarmCode, ULONG triggerId);
+		void triggerAlarm (int32_t alarmCode, ULONG triggerId);
 
-		long handleMateCrippled (ULONG mateWID);
+		int32_t handleMateCrippled (ULONG mateWID);
 
-		long handleMateDisabled (ULONG mateWID);
+		int32_t handleMateDisabled (ULONG mateWID);
 
-		long handleMateDestroyed (ULONG mateWID);
+		int32_t handleMateDestroyed (ULONG mateWID);
 
-		long handleMateEjected (ULONG mateWID);
+		int32_t handleMateEjected (ULONG mateWID);
 
 		void handleMateFiredWeapon (ULONG mateWID);
 
-		static void sortMovers (long numMoversInGroup, MoverPtr* moverList, Stuff::Vector3D dest);
+		static void sortMovers (int32_t numMoversInGroup, MoverPtr* moverList, Stuff::Vector3D dest);
 
-		static long calcMoveGoals (Stuff::Vector3D goal, long numMovers, Stuff::Vector3D* goalList);
+		static int32_t calcMoveGoals (Stuff::Vector3D goal, int32_t numMovers, Stuff::Vector3D* goalList);
 
-		static long calcJumpGoals (Stuff::Vector3D goal, long numMovers, Stuff::Vector3D* goalList, GameObjectPtr DFATarget);
+		static int32_t calcJumpGoals (Stuff::Vector3D goal, int32_t numMovers, Stuff::Vector3D* goalList, GameObjectPtr DFATarget);
 
 		//----------------
 		// Save Load

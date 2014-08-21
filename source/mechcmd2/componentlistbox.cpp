@@ -184,7 +184,7 @@ void ComponentListItem::render( )
 	{
 		if ( pChildAnims[i] )
 		{
-			long color = pChildAnims[i]->getCurrentColor( pChildAnims[i]->getState() );
+			int32_t color = pChildAnims[i]->getCurrentColor( pChildAnims[i]->getState() );
 			child(i)->setColor( color );
 		}
 	}
@@ -334,8 +334,8 @@ void	ComponentListItem::update()
 
 void ComponentListItem::doAdd()
 {
-	long x = -1;
-	long y = -1;
+	int32_t x = -1;
+	int32_t y = -1;
 	MechLabScreen::instance()->addComponent( pComponent, x, y);
 }
 
@@ -484,7 +484,7 @@ void ComponentIconListBox::addSortedItem( ComponentListItem* pItem )
 	for ( int i = 0; i < itemCount; i++ )
 	{
 		LogisticsComponent* pTmp = ((ComponentListItem*)items[i])->getComponent();
-		long tmpSize = pTmp->getComponentHeight() * pTmp->getComponentWidth();
+		int32_t tmpSize = pTmp->getComponentHeight() * pTmp->getComponentWidth();
 		if ( size > tmpSize )
 		{
 			InsertItem( pItem, i );

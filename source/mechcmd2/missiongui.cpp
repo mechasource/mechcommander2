@@ -123,8 +123,8 @@
 
 extern void testKeyStuff();
 
-extern long helpTextHeaderID;
-extern long helpTextID;
+extern int32_t helpTextHeaderID;
+extern int32_t helpTextID;
 extern CPrefs prefs;
 
 extern bool invulnerableON;
@@ -135,11 +135,11 @@ extern bool MLRVertexLimitReached;
 // Globals
 extern float frameLength;
 
-extern void DEBUGWINS_print (PSTR s, long window = 0);
-extern void DEBUGWINS_setGameObject (long debugObj, GameObjectPtr obj);
+extern void DEBUGWINS_print (PSTR s, int32_t window = 0);
+extern void DEBUGWINS_setGameObject (int32_t debugObj, GameObjectPtr obj);
 extern void DEBUGWINS_toggle (bool* windowsOpen);
 extern void DEBUGWINS_display (bool* windowsOpen);
-extern void DEBUGWINS_viewGameObject (long debugObj);
+extern void DEBUGWINS_viewGameObject (int32_t debugObj);
 extern MidLevelRenderer::MLRClipper * theClipper;
 
 extern GameObjectPtr DebugGameObject[3];
@@ -184,7 +184,7 @@ extern bool renderTGLShapes;
 extern bool useLeftRightMouseProfile;
 bool drawGUIOn = true;				//Used to shut off GUI for Screen Shots and Movie Mode
 bool toggledGUI = true;				//Used to tell if I shut the GUI off or if its in movieMode
-long lightState = 0;
+int32_t lightState = 0;
 extern bool ShowMovers;
 extern bool CullPathAreas;
 extern bool ZeroHPrime;
@@ -192,7 +192,7 @@ extern bool CalcValidAreaTable;
 extern bool EnemiesGoalPlan;
 bool paintingMyVtol = false;
 
-long			MissionInterfaceManager::OldKeys[MAX_COMMAND] = {-1};
+int32_t			MissionInterfaceManager::OldKeys[MAX_COMMAND] = {-1};
 
 
 MissionInterfaceManager::Command		MissionInterfaceManager::commands[MAX_COMMAND] = { 
@@ -310,7 +310,7 @@ MissionInterfaceManager::Command		MissionInterfaceManager::commands[MAX_COMMAND]
 };
 
 extern bool drawTerrainGrid;
-extern long 	turn;				//What frame of the scenario is it?
+extern int32_t 	turn;				//What frame of the scenario is it?
 
 extern char DebugStatusBarString[256];
 
@@ -322,7 +322,7 @@ void MissionInterfaceManager::init (void)
 	isDragging = FALSE;	
 	terrainLineChanged = 0;
 	
-	for (long i=0;i<MAX_TEAMS;i++)
+	for (int32_t i=0;i<MAX_TEAMS;i++)
 	{
 		vTol[i] = 0;
 		paintingVtol[i] = 0;
@@ -361,7 +361,7 @@ void MissionInterfaceManager::init (void)
 
 #define TACMAP_ID		0
 #define FLASH_JUMPERS	31798
-bool MissionInterfaceManager::startAnimation(long buttonId,bool isButton,bool isPressed,float timeToScroll,long numFlashes)
+bool MissionInterfaceManager::startAnimation(int32_t buttonId,bool isButton,bool isPressed,float timeToScroll,int32_t numFlashes)
 {
 	if (animationRunning)
 		return false;
@@ -608,7 +608,7 @@ void MissionInterfaceManager::update (void)
 	#define MC2_DAMAGE_RRTORSO		9	
 	#define MC2_DAMAGE_RCTORSO		10	
 			
-	DWORD CheatCommand = -1;
+	ULONG CheatCommand = -1;
 	if (userInput->getKeyDown(KEY_1) && shiftDn && ctrlDn && altDn)
 		CheatCommand = MC2_DAMAGE_HEAD;
 	if (userInput->getKeyDown(KEY_2) && shiftDn && ctrlDn && altDn)
@@ -688,7 +688,7 @@ void MissionInterfaceManager::update (void)
 	if (CheatCommand != -1)
 	{
 		Team* pTeam = Team::home;
-		for (long i = 0; i < pTeam->getRosterSize(); i++)
+		for (int32_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* pMover = (Mover*)pTeam->getMover( i );
 			if ( pMover->isSelected() && pMover->isMech())
@@ -731,13 +731,13 @@ void MissionInterfaceManager::update (void)
 		userInput->setMouseCursor( mState_NORMAL );
 
 	// find out where the mouse is
-	Stuff::Vector2DOf<long>	mouseXY;
+	Stuff::Vector2DOf<int32_t>	mouseXY;
 	mouseXY.x = mouseX;
 	mouseXY.y = mouseY;
 	eye->inverseProject(mouseXY, wPos);
 
 	// find out if this position is passable, has line of sight
-	long cellR, cellC;
+	int32_t cellR, cellC;
 	bool passable = 1;
 	bool lineOfSight = 0;
 	if ( Terrain::IsGameSelectTerrainPosition( wPos ) )
@@ -766,10 +766,10 @@ void MissionInterfaceManager::update (void)
 	
 	//-------------------------------
 	// Update the Debug Status Bar...
-	long row, col;
+	int32_t row, col;
 	land->worldToCell(wPos, row, col);
 	sprintf(DebugStatusBarString, "TIME: %06d, MOUSE: [%d, %d] %d,%d,%d (%.2f, %.2f, %.2f), PATHMGR: %02d(%02d)",
-		(long)scenarioTime,
+		(int32_t)scenarioTime,
 		row, col,
 		GlobalMoveMap[0]->calcArea(row, col),
 		GlobalMoveMap[1]->calcArea(row, col),
@@ -822,7 +822,7 @@ void MissionInterfaceManager::update (void)
 
 	int moverCount = 0;
 	int nonMoverCount = 0;
-	for (long i=0;i<pTeam->getRosterSize();i++)
+	for (int32_t i=0;i<pTeam->getRosterSize();i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover( i );
 		if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId()  )
@@ -906,10 +906,10 @@ void MissionInterfaceManager::update (void)
 void MissionInterfaceManager::updateVTol()
 {
 	//We're probably going to use this alot!
-	long commanderID = Commander::home->getId();
+	int32_t commanderID = Commander::home->getId();
 	paintingMyVtol = paintingVtol[commanderID];
 	
-	for (long vtolNum = 0;vtolNum < MAX_TEAMS; vtolNum++)
+	for (int32_t vtolNum = 0;vtolNum < MAX_TEAMS; vtolNum++)
 	{
 		// update the vtol, if it needs it
 		if ( paintingVtol[vtolNum] && (!bPaused || MPlayer))
@@ -1171,7 +1171,7 @@ void MissionInterfaceManager::updateVTol()
 		{
 			if (vTol[vtolNum])	//Might have been deleted above!!
 			{
-				long cFrame = vTol[vtolNum]->currentFrame;
+				int32_t cFrame = vTol[vtolNum]->currentFrame;
 				
 				vTol[vtolNum]->recalcBounds();
 				vTol[vtolNum]->update();			//Must update even if not on screen!
@@ -1247,7 +1247,7 @@ void MissionInterfaceManager::updateTarget( bool bGui)
 void MissionInterfaceManager::drawWayPointPaths()
 {
 	Team* pTeam = Team::home;
-   	for (long i=0;i<pTeam->getRosterSize();i++)
+   	for (int32_t i=0;i<pTeam->getRosterSize();i++)
    	{
    		Mover* pMover = (Mover*)pTeam->getMover( i );
    		if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -1259,13 +1259,13 @@ void MissionInterfaceManager::drawWayPointPaths()
 	
 void MissionInterfaceManager::updateOldStyle( bool shiftDn, bool altDn, bool ctrlDn, 
 											 bool bGui, bool lineOfSight, bool passable, 
-											 long moverCount, long nonMoverCount )
+											 int32_t moverCount, int32_t nonMoverCount )
 {
 
 	printDebugInfo();
 
 	//We're probably going to use this alot!
-	long commanderID = Commander::home->getId();
+	int32_t commanderID = Commander::home->getId();
 	
  	// Update the waypoint markers so that they are visible!
    	if ( userInput->getKeyDown( WAYPOINT_KEY ) || controlGui.getMines() )
@@ -1395,7 +1395,7 @@ void MissionInterfaceManager::updateOldStyle( bool shiftDn, bool altDn, bool ctr
 					bool alreadyThere = false;
 					//-------------------------------------------
 					// First, check if he's already there!
-					for (long i=0;i<pTeam->getRosterSize();i++)
+					for (int32_t i=0;i<pTeam->getRosterSize();i++)
 					{
 						Mover* pMover = (Mover*)pTeam->getMover( i );
 						if (pMover == target && pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
@@ -1421,7 +1421,7 @@ void MissionInterfaceManager::updateOldStyle( bool shiftDn, bool altDn, bool ctr
 					controlGui.setInfoWndMover( (Mover*)target );
 				else if ( target->isMover() && !target->isDisabled() && target->getCommanderId() == Commander::home->getId() )
 				{
-					for (long i=0;i<pTeam->getRosterSize();i++)
+					for (int32_t i=0;i<pTeam->getRosterSize();i++)
 					{
 						Mover* pMover = (Mover*)pTeam->getMover( i );
 						if (pMover->getCommander()->getId() == Commander::home->getId())
@@ -1454,12 +1454,12 @@ void MissionInterfaceManager::updateOldStyle( bool shiftDn, bool altDn, bool ctr
 }	
 void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, 
 											  bool bGui, bool lineOfSight, bool passable, 
-											  long moverCount, long nonMoverCount )
+											  int32_t moverCount, int32_t nonMoverCount )
 {
 	printDebugInfo();
 
 	//We're probably going to use this alot!
-	long commanderID = Commander::home->getId();
+	int32_t commanderID = Commander::home->getId();
 
  	// Update the waypoint markers so that they are visible!
    	if ( userInput->getKeyDown( WAYPOINT_KEY ) || controlGui.getMines() )
@@ -1625,7 +1625,7 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrl
 					bool alreadyThere = false;
 					//-------------------------------------------
 					// First, check if he's already there!
-					for (long i=0;i<pTeam->getRosterSize();i++)
+					for (int32_t i=0;i<pTeam->getRosterSize();i++)
 					{
 						Mover* pMover = (Mover*)pTeam->getMover( i );
 						if (pMover == target && pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -1639,7 +1639,7 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrl
 				}
 				else if ( target->isMover() )
 				{
-					for (long i=0;i<pTeam->getRosterSize();i++)
+					for (int32_t i=0;i<pTeam->getRosterSize();i++)
 					{
 						Mover* pMover = (Mover*)pTeam->getMover( i );
 						if (pMover->getCommander()->getId() == Commander::home->getId())
@@ -1668,7 +1668,7 @@ void MissionInterfaceManager::updateWaypoints (void)
    	if ( userInput->getKeyDown( WAYPOINT_KEY ) || controlGui.getMines() )
    	{
    		Team* pTeam = Team::home;
-   		for (long i=0;i<pTeam->getRosterSize();i++)
+   		for (int32_t i=0;i<pTeam->getRosterSize();i++)
    		{
    			Mover* pMover = (Mover*)pTeam->getMover( i );
    			if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -1704,7 +1704,7 @@ int MissionInterfaceManager::update( bool leftClickedClick, bool rightClickedCli
 	if ( gos_GetKeyStatus( WAYPOINT_KEY ) == KEY_RELEASED )
 	{
 		Team* pTeam  = Team::home;
-		for (long i = 0; i < pTeam->getRosterSize(); i++)
+		for (int32_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* pMover = (Mover*)pTeam->getMover( i );
 			if ( pMover->isSelected() && !pMover->getPilot()->getExecutingTacOrderQueue() && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -1830,7 +1830,7 @@ void MissionInterfaceManager::doAttack()
 	}
 	else
 	{
-		for (long i = 0; i < Team::home->getRosterSize(); i++)
+		for (int32_t i = 0; i < Team::home->getRosterSize(); i++)
 		{
 			Mover* pMover = (Mover*)Team::home->getMover( i );
 			if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -1867,7 +1867,7 @@ void MissionInterfaceManager::doAttack()
 
 	Team* pTeam = Team::home;
 	
-	for (long i = 0; i < pTeam->getRosterSize(); i++)
+	for (int32_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover( i );
 		if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
@@ -1967,7 +1967,7 @@ void MissionInterfaceManager::doJump()
 	{
 		if (Terrain::IsGameSelectTerrainPosition(wPos))
 		{
-			long cellR, cellC;
+			int32_t cellR, cellC;
 			land->worldToCell(wPos, cellR, cellC);
 			passable = GameMap->getPassable(cellR,cellC);
 		}
@@ -2070,7 +2070,7 @@ int MissionInterfaceManager::conserveAmmo()
 int MissionInterfaceManager::selectVisible()
 {
 	Team* pTeam = Team::home;
-	for (long i=0;i<pTeam->getRosterSize();i++)
+	for (int32_t i=0;i<pTeam->getRosterSize();i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover( i );
 		if (pMover->getCommander()->getId() == Commander::home->getId())
@@ -2353,10 +2353,10 @@ Stuff::Vector3D MissionInterfaceManager::makeAirStrikeTarget( const Stuff::Vecto
 	if ( !lineOfSight )
 	{
 		// need to offset x, y, random amounts up to five tiles... 
-		long randX = rand();
-		long randY = rand();
-		long offsetX = randX % (128*5);
-		long offsetY = randY % (128*5);
+		int32_t randX = rand();
+		int32_t randY = rand();
+		int32_t offsetX = randX % (128*5);
+		int32_t offsetY = randY % (128*5);
 		if ( randX % 2 )
 			offsetX = -offsetX;
 		if ( randY % 2 )
@@ -2442,7 +2442,7 @@ bool MissionInterfaceManager::anySelectedWithoutAreaEffect (void)
 	//Scan the list of selected movers and see if any have at least one non-area effect weapon
 	// Used for Called shots which cannot be called if weapon is area effect!!
 	Team* pTeam = Team::home;
-	for (long i = 0; i < pTeam->getRosterSize(); i++)
+	for (int32_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover( i );
 		if ( pMover->isSelected() && pMover->hasNonAreaWeapon() && pMover->getCommander()->getId() == Commander::home->getId())
@@ -2461,9 +2461,9 @@ int MissionInterfaceManager::handleOrders( TacticalOrder& order)
 	// jump locations...
 	bool isMoveOrder = false;
 	Stuff::Vector3D moveGoals[MAX_MOVERS];
-	long numMovers = 0;
+	int32_t numMovers = 0;
 	if (order.code == TACTICAL_ORDER_JUMPTO_POINT) {
-		for (long i = 0; i < pTeam->getRosterSize(); i++) {
+		for (int32_t i = 0; i < pTeam->getRosterSize(); i++) {
 			Mover* pMover = pTeam->getMover(i);
 			if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 				numMovers++;
@@ -2472,7 +2472,7 @@ int MissionInterfaceManager::handleOrders( TacticalOrder& order)
 		isMoveOrder = true;
 		}
 	else if (order.code == TACTICAL_ORDER_MOVETO_POINT) {
-		for (long i = 0; i < pTeam->getRosterSize(); i++) {
+		for (int32_t i = 0; i < pTeam->getRosterSize(); i++) {
 			Mover* pMover = pTeam->getMover(i);
 			if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 				numMovers++;
@@ -2482,7 +2482,7 @@ int MissionInterfaceManager::handleOrders( TacticalOrder& order)
 	}
 
 	numMovers = 0;
-	for (long i = 0; i < pTeam->getRosterSize(); i++)
+	for (int32_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover( i );
 		if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -2754,46 +2754,46 @@ int MissionInterfaceManager::changeLighting()
 
 void MissionInterfaceManager::init (FitIniFilePtr loader)
 {
-	long result = loader->seekBlock("CameraData");
-	gosASSERT(result == NO_ERR);
+	int32_t result = loader->seekBlock("CameraData");
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader->readIdFloat("ScrollIncrement",scrollInc);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader->readIdFloat("RotationIncrement",rotationInc);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader->readIdFloat("ZoomIncrement",zoomInc);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 		
 	result = loader->readIdFloat("ScrollLeft",screenScrollLeft);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 		
 	result = loader->readIdFloat("ScrollRight",screenScrollRight);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader->readIdFloat("ScrollUp",screenScrollUp);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader->readIdFloat("ScrollDown",screenScrollDown);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = loader->readIdFloat("BaseFrameLength",baseFrameLength);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader->readIdFloat("RotationDegPerSec",degPerSecRot);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	float missionDragThreshold;
 	result = loader->readIdFloat("MouseDragThreshold",missionDragThreshold);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	float newThreshold = missionDragThreshold / Environment.screenHeight;
 	userInput->setMouseDragThreshold(newThreshold);
 	
 	float missionDblClkThreshold;
 	result = loader->readIdFloat("MouseDoubleClickThreshold",missionDblClkThreshold);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	userInput->setMouseDoubleClickThreshold(missionDblClkThreshold);
 
@@ -2833,7 +2833,7 @@ void HandlePlayerOrder (MoverPtr mover, TacticalOrderPtr tacOrder) {
 //--------------------------------------------------------------------------------------
 void MissionInterfaceManager::drawVTOL (void)
 {
-	for (long vtolNum = 0;vtolNum < MAX_TEAMS; vtolNum++)
+	for (int32_t vtolNum = 0;vtolNum < MAX_TEAMS; vtolNum++)
 	{
 		if ( paintingVtol[vtolNum] && vTol[vtolNum] )
 		{
@@ -2899,7 +2899,7 @@ void MissionInterfaceManager::render (void)
 		if (isDragging)
 		{
 			gos_VERTEX vertices[5];
-			DWORD color = SB_WHITE;
+			ULONG color = SB_WHITE;
 			
 			gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha );
 		
@@ -2972,7 +2972,7 @@ void MissionInterfaceManager::render (void)
 		if ( userInput->getKeyDown( WAYPOINT_KEY ) || controlGui.getMines() )
 		{
 			Team* pTeam = Team::home;
-			for (long i=0;i<pTeam->getRosterSize();i++)
+			for (int32_t i=0;i<pTeam->getRosterSize();i++)
 			{
 				Mover* pMover = (Mover*)pTeam->getMover( i );
 				if ( pMover->isSelected()  && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -2995,7 +2995,7 @@ void MissionInterfaceManager::render (void)
 			Stuff::Vector4D cursorPos;
 			eye->projectZ(wPos,cursorPos);
 
-			DWORD color = SB_WHITE;
+			ULONG color = SB_WHITE;
 			
 			gos_SetRenderState( gos_State_Texture, 0 );
 
@@ -3057,7 +3057,7 @@ void MissionInterfaceManager::render (void)
 
   /* 	if ( scenarioTime  < 7.0 )
    	{
-   		long color = 0xff000000;
+   		int32_t color = 0xff000000;
    		if ( (prefs.resolution == 0 && Environment.screenWidth == 640)
    		  || (prefs.resolution == 1 && Environment.screenWidth == 800)
    		  || (prefs.resolution == 2 && Environment.screenWidth == 1024)
@@ -3079,7 +3079,7 @@ void MissionInterfaceManager::initTacMap( PacketFile* file, int packet )
 {
 	file->seekPacket(packet);
 	int size = file->getPacketSize( );
-	PUCHAR mem = new BYTE[size];
+	puint8_t mem = new UCHAR[size];
 
 	file->readPacket( packet, mem );
 
@@ -3088,7 +3088,7 @@ void MissionInterfaceManager::initTacMap( PacketFile* file, int packet )
 
 	file->seekPacket(packet + 1);
 	size = file->getPacketSize( );
-	mem = new BYTE[size];
+	mem = new UCHAR[size];
 
 	file->readPacket( packet + 1, mem );
 
@@ -3108,7 +3108,7 @@ void MissionInterfaceManager::initTacMap( PacketFile* file, int packet )
 void MissionInterfaceManager::printDebugInfo()
 {
 	if (userInput->isLeftClick() || userInput->isRightClick()) {
-		long row, col;
+		int32_t row, col;
 		land->worldToCell(wPos, row, col);
 		char debugString[256];
 		if (target)
@@ -3169,7 +3169,7 @@ void MissionInterfaceManager::doMove(const Stuff::Vector3D& pos)
 bool MissionInterfaceManager::makePatrolPath()
 {
 	Team* pTeam = Team::home;
-	for (long i=0;i<pTeam->getRosterSize();i++)
+	for (int32_t i=0;i<pTeam->getRosterSize();i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover( i );
 		if ( pMover->isSelected() && pMover->getPilot()->getNumTacOrdersQueued() && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -3246,7 +3246,7 @@ void MissionInterfaceManager::selectForceGroup( int forceGroup, bool deselect )
 	if ( deselect )
 	{
 
-		for (long i=0;i<pTeam->getRosterSize();i++)
+		for (int32_t i=0;i<pTeam->getRosterSize();i++)
 		{
 			Mover* pMover = (Mover*)pTeam->getMover( i );
 			if (pMover && pMover->isOnGUI() && (pMover->getCommander()->getId() == Commander::home->getId()))
@@ -3257,7 +3257,7 @@ void MissionInterfaceManager::selectForceGroup( int forceGroup, bool deselect )
 	}
 	else // see if the whole force group is already seleced
 	{
-		for (long i=0;i<pTeam->getRosterSize();i++)
+		for (int32_t i=0;i<pTeam->getRosterSize();i++)
 		{
 			Mover* pMover = (Mover*)pTeam->getMover( i );
 			if (pMover && pMover->isInUnitGroup( forceGroup ) && !pMover->isDisabled() && !pMover->isSelected() && pMover->isOnGUI() && (pMover->getCommander()->getId() == Commander::home->getId()))
@@ -3267,7 +3267,7 @@ void MissionInterfaceManager::selectForceGroup( int forceGroup, bool deselect )
 		}
 	}
 
-	for (long i=0;i<pTeam->getRosterSize();i++)
+	for (int32_t i=0;i<pTeam->getRosterSize();i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover( i );
 		if (pMover && pMover->isInUnitGroup( forceGroup ) && !pMover->isDisabled() && pMover->isOnGUI() && (pMover->getCommander()->getId() == Commander::home->getId()))
@@ -3278,7 +3278,7 @@ void MissionInterfaceManager::makeForceGroup( int forceGroup )
 {
 	Team* pTeam = Team::home;
 
-	for (long i=0;i<pTeam->getRosterSize();i++)
+	for (int32_t i=0;i<pTeam->getRosterSize();i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover( i );
 		if (pMover && (pMover->getCommander()->getId() == Commander::home->getId()))
@@ -3300,7 +3300,7 @@ void MissionInterfaceManager::makeForceGroup( int forceGroup )
 }
 
 bool MissionInterfaceManager::moveCameraAround( bool lineOfSight, bool passable, bool ctrl, bool bGui, 
-											   long moverCount, long nonMoverCount )
+											   int32_t moverCount, int32_t nonMoverCount )
 {
 	bool bRetVal = 0;
 	bool middleClicked = (!userInput->isLeftDrag() && !userInput->isRightDrag() && userInput->isMiddleClick());
@@ -3374,7 +3374,7 @@ bool MissionInterfaceManager::moveCameraAround( bool lineOfSight, bool passable,
 	if (cameraClicked)
 	{
 		bRetVal = 1;
-		long mouseXDelta = userInput->getMouseXDelta();
+		int32_t mouseXDelta = userInput->getMouseXDelta();
 		float actualRot = rotationInc * 0.1f * abs(mouseXDelta);
 		if (mouseXDelta > 0)
 		{
@@ -3387,7 +3387,7 @@ bool MissionInterfaceManager::moveCameraAround( bool lineOfSight, bool passable,
 			bRetVal = 1;	
 		}
 		
-		long mouseYDelta = userInput->getMouseYDelta();
+		int32_t mouseYDelta = userInput->getMouseYDelta();
 		float actualTilt = rotationInc * 0.1f * abs(mouseYDelta);
 		if (mouseYDelta > 0)
 		{
@@ -3405,7 +3405,7 @@ bool MissionInterfaceManager::moveCameraAround( bool lineOfSight, bool passable,
 		
 		//--------------------------------------------------
 		// Zoom Camera based on Mouse Wheel input.
-		long mouseWheelDelta = userInput->getMouseWheelDelta();
+		int32_t mouseWheelDelta = userInput->getMouseWheelDelta();
 		if (mouseWheelDelta)
 		{
 			//Mouse wheel just picks zooms now.
@@ -3431,7 +3431,7 @@ bool MissionInterfaceManager::moveCameraAround( bool lineOfSight, bool passable,
 	
 	//--------------------------------------------------
 	// Zoom Camera based on Mouse Wheel input.
-	long mouseWheelDelta = userInput->getMouseWheelDelta();
+	int32_t mouseWheelDelta = userInput->getMouseWheelDelta();
 	if (mouseWheelDelta)
 	{
 		//Mouse wheel just picks zooms now.
@@ -3468,7 +3468,7 @@ bool MissionInterfaceManager::moveCameraAround( bool lineOfSight, bool passable,
 bool MissionInterfaceManager::canJump()
 {
 	bool canJump = true;
-	long i=0;
+	int32_t i=0;
 
 	Team* pTeam = Team::home;
 	
@@ -3495,7 +3495,7 @@ bool MissionInterfaceManager::canJumpToWPos()
 	bool passable = 0;
 	if ( Terrain::IsGameSelectTerrainPosition( wPos ) )
 	{
-		long cellR, cellC;
+		int32_t cellR, cellC;
 		land->worldToCell(wPos, cellR, cellC);
 		passable = GameMap->getPassable(cellR,cellC);
 	}
@@ -3503,7 +3503,7 @@ bool MissionInterfaceManager::canJumpToWPos()
 	if (passable)
 	{
 		bool canJump = true;
-		long i=0;
+		int32_t i=0;
 
 		Team* pTeam = Team::home;
 		
@@ -3515,7 +3515,7 @@ bool MissionInterfaceManager::canJumpToWPos()
 				if ( pMover->canJump() )
 				{
 					TacticalOrder lastQueuedTacOrder;
-					long err = pMover->getPilot()->peekQueuedTacOrder(-1, &lastQueuedTacOrder);
+					int32_t err = pMover->getPilot()->peekQueuedTacOrder(-1, &lastQueuedTacOrder);
 					Stuff::Vector3D lastWayPoint;
 					if (err)
 						lastWayPoint = pMover->getPosition();
@@ -3585,7 +3585,7 @@ void MissionInterfaceManager::doDrag(bool bGui)
 			GameObject*	objsInRect[MAX_ICONS];
 			int count = 0;
 			memset( objsInRect, 0, sizeof( GameObject* ) * 16 );
-			for (long i=0;i<ObjectManager->getNumMovers();i++)
+			for (int32_t i=0;i<ObjectManager->getNumMovers();i++)
 			{
 				Stuff::Vector3D screenStart;
 				Stuff::Vector4D screenPos;
@@ -3639,11 +3639,11 @@ void MissionInterfaceManager::doDrag(bool bGui)
 bool MissionInterfaceManager::canAddVehicle( const Stuff::Vector3D& pos )
 {
 	//We're probably going to use this alot!
-	long commanderID = Commander::home->getId();
+	int32_t commanderID = Commander::home->getId();
 
  	if ( paintingVtol[commanderID] )
 		return 0;
-	long tileI, tileJ;
+	int32_t tileI, tileJ;
 	land->worldToTile( pos, tileJ, tileI );
 
 	if ( tileJ > -1 && tileJ < land->realVerticesMapSide 
@@ -3666,12 +3666,12 @@ bool MissionInterfaceManager::canAddVehicle( const Stuff::Vector3D& pos )
 bool MissionInterfaceManager::canRecover( const Stuff::Vector3D& pos )
 {
 	//We're probably going to use this alot!
-	long commanderID = Commander::home->getId();
+	int32_t commanderID = Commander::home->getId();
 
  	if ( paintingVtol[commanderID] )
 		return 0;
 		
-	long tileI, tileJ;
+	int32_t tileI, tileJ;
 	land->worldToTile( pos, tileJ, tileI );
 
 	if ( tileJ > -1 && tileJ < land->realVerticesMapSide 
@@ -3690,12 +3690,12 @@ bool MissionInterfaceManager::canRecover( const Stuff::Vector3D& pos )
 	return false;
 }
 
-long MissionInterfaceManager::makeTargetCursor( bool lineOfSight, long moverCount, long nonMoverCount)
+int32_t MissionInterfaceManager::makeTargetCursor( bool lineOfSight, int32_t moverCount, int32_t nonMoverCount)
 {
 	//We're probably going to use this alot!
-	long commanderID = Commander::home->getId();
+	int32_t commanderID = Commander::home->getId();
 
- 	long currentCursor = makeRangeCursor( lineOfSight );
+ 	int32_t currentCursor = makeRangeCursor( lineOfSight );
 	if ( !moverCount && !nonMoverCount )
 		currentCursor = mState_NORMAL;
 
@@ -3860,7 +3860,7 @@ long MissionInterfaceManager::makeTargetCursor( bool lineOfSight, long moverCoun
 				{
 					target = NULL;
 					// find out if this position is passable.  Landbridges kinda are, or they'd be useless.
-					long cellR, cellC;
+					int32_t cellR, cellC;
 					bool passable = 1;
 					bool lineOfSight = 0;
 					if ( Terrain::IsGameSelectTerrainPosition( wPos ) )
@@ -3930,10 +3930,10 @@ long MissionInterfaceManager::makeTargetCursor( bool lineOfSight, long moverCoun
 	return currentCursor;
 }
 
-long MissionInterfaceManager::makeRangeCursor( bool lineOfSight)
+int32_t MissionInterfaceManager::makeRangeCursor( bool lineOfSight)
 {
-	long currentCursor = mState_NORMAL;
-	long currentRange = controlGui.getCurrentRange();
+	int32_t currentCursor = mState_NORMAL;
+	int32_t currentRange = controlGui.getCurrentRange();
 
 	if ( bEnergyWeapons )
 		return lineOfSight ? mState_ENERGY_WEAPONS_LOS : mState_ENERGY_WEAPONS;
@@ -3964,8 +3964,8 @@ long MissionInterfaceManager::makeRangeCursor( bool lineOfSight)
 	return currentCursor;
 }
 
-long MissionInterfaceManager::makeNoTargetCursor( bool passable, bool lineOfSight, bool bCtrl, bool bGui,
-												 long moverCount, long nonMoverCount )
+int32_t MissionInterfaceManager::makeNoTargetCursor( bool passable, bool lineOfSight, bool bCtrl, bool bGui,
+												 int32_t moverCount, int32_t nonMoverCount )
 {
 	//-------------------------------------------------------------------------
 	// We are not over enything.  Switch to move cursor based on input.
@@ -3976,7 +3976,7 @@ long MissionInterfaceManager::makeNoTargetCursor( bool passable, bool lineOfSigh
 	// If passable and jumpCommand and cantJump, dont.
 
 	//We're probably going to use this alot!
-	long commanderID = Commander::home->getId();
+	int32_t commanderID = Commander::home->getId();
  	int cursorType = makeMoveCursor( lineOfSight );
 	if ( !moverCount )
 		cursorType = mState_NORMAL;
@@ -4139,7 +4139,7 @@ void MissionInterfaceManager::addAirstrike()
 
 //-----------------------------------------------------------------------------
 
-MoverPtr BringInReinforcement (long vehicleID, long rosterIndex, long commanderID, Stuff::Vector3D pos, bool exists) {
+MoverPtr BringInReinforcement (int32_t vehicleID, int32_t rosterIndex, int32_t commanderID, Stuff::Vector3D pos, bool exists) {
 
 	MoverInitData data;
 	memset( &data, 0, sizeof( data ) );
@@ -4178,7 +4178,7 @@ MoverPtr BringInReinforcement (long vehicleID, long rosterIndex, long commanderI
 		}
 	}
 
-	long moverId = mission->addMover( &data );
+	int32_t moverId = mission->addMover( &data );
 	
 	if ((moverId != -1) && (moverId != 0))
 	{
@@ -4230,7 +4230,7 @@ void MissionInterfaceManager::addVehicle( const Stuff::Vector3D& pos )
 	reinforcement = BringInReinforcement(vehicleID[Commander::home->getId()], 255, Commander::home->getId(), pos, true);
 }
 
-void MissionInterfaceManager::beginVtol (long supportID, long commanderID, Stuff::Vector3D* reinforcePos, MoverPtr salvageTarget)
+void MissionInterfaceManager::beginVtol (int32_t supportID, int32_t commanderID, Stuff::Vector3D* reinforcePos, MoverPtr salvageTarget)
 {
 	Stuff::Vector3D vtolPos = wPos;
 	if (reinforcePos)
@@ -4495,7 +4495,7 @@ bool MissionInterfaceManager::canRepair( GameObject* pMover )
 	// find the selected guy
 	int watchID = 0;
 	Team* pTeam = Team::home;
-	for (long i = 0; i < pTeam->getRosterSize(); i++)
+	for (int32_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
 		Mover* pTmpMover = (Mover*)pTeam->getMover( i );
 		if ( pTmpMover->isSelected() && pTmpMover->getCommander()->getId() == Commander::home->getId() )
@@ -4535,7 +4535,7 @@ bool MissionInterfaceManager::canRepairBay( GameObject* bay)
 	if (bay && bay->getRefitPoints() > 0.0f)
 	{
 		Team* pTeam = Team::home;
-		for (long i = 0; i < pTeam->getRosterSize(); i++)
+		for (int32_t i = 0; i < pTeam->getRosterSize(); i++)
 		{
 			Mover* pMover = (Mover*)pTeam->getMover( i );
 			if ( pMover->isSelected() && pMover->needsRefit() && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -4751,7 +4751,7 @@ int MissionInterfaceManager::quickDebugInfo() {
 	#ifndef FINAL
 	static double lastTime = 0.0;
 	if ((lastTime + 0.5) < gos_GetElapsedTime()) {
-		long row, col;
+		int32_t row, col;
 		land->worldToCell(wPos, row, col);
 		char debugString[256];
 		if (target)
@@ -4777,7 +4777,7 @@ int MissionInterfaceManager::quickDebugInfo() {
 		DEBUGWINS_print(debugString);
 		sprintf(debugString, "REQ =");
 		char s[10];
-		for (long i = 0; i < 25; i++) {
+		for (int32_t i = 0; i < 25; i++) {
 			sprintf(s, " %02d", PathManager->sourceTally[i]);
 			strcat(debugString, s);
 		}
@@ -4892,7 +4892,7 @@ int MissionInterfaceManager::jumpToDebugGameObject3() {
 int MissionInterfaceManager::toggleDebugWins() {
 
 	#ifndef FINAL
-	static long debugWinsState = 0;
+	static int32_t debugWinsState = 0;
 	static double lastTime = 0.0;
 	if ((lastTime + 0.5) < gos_GetElapsedTime()) {
 		debugWinsState = (++debugWinsState % 6);
@@ -4963,8 +4963,8 @@ int MissionInterfaceManager::teleport() {
 	if ((lastTime + 0.5) < gos_GetElapsedTime()) {
 		Team* pTeam = Team::home;
 		Stuff::Vector3D moveGoals[MAX_MOVERS];
-		long numMovers = 0;
-		for (long i = 0; i < pTeam->getRosterSize(); i++) {
+		int32_t numMovers = 0;
+		for (int32_t i = 0; i < pTeam->getRosterSize(); i++) {
 			Mover* mover = pTeam->getMover(i);
 			if (mover->isSelected() && mover->getCommander()->getId() == Commander::home->getId())
 				numMovers++;
@@ -5009,7 +5009,7 @@ int MissionInterfaceManager::brainDead () {
 	#ifndef FINAL
 	static double lastTime = 0.0;
 	if ((lastTime + 0.5) < gos_GetElapsedTime()) {
-		for (long i = 1; i < MAX_TEAMS; i++)
+		for (int32_t i = 1; i < MAX_TEAMS; i++)
 			MechWarrior::brainsEnabled[i] = !MechWarrior::brainsEnabled[i];
 		lastTime = gos_GetElapsedTime();
 	}
@@ -5023,8 +5023,8 @@ int MissionInterfaceManager::goalPlan() {
 	static double lastTime = 0.0;
 	if ((lastTime + 0.5) < gos_GetElapsedTime()) {
 		Team* pTeam = Team::home;
-		long numMovers = 0;
-		for (long i = 0; i < pTeam->getRosterSize(); i++) {
+		int32_t numMovers = 0;
+		for (int32_t i = 0; i < pTeam->getRosterSize(); i++) {
 			Mover* mover = pTeam->getMover(i);
 			if (mover->isSelected() && mover->getCommander()->getId() == Commander::home->getId())
 				numMovers++;
@@ -5048,7 +5048,7 @@ int MissionInterfaceManager::enemyGoalPlan() {
 	static double lastTime = 0.0;
 	if ((lastTime + 0.5) < gos_GetElapsedTime()) {
 		EnemiesGoalPlan = !EnemiesGoalPlan;
-		for (long i = 0; i < ObjectManager->getNumMovers(); i++) {
+		for (int32_t i = 0; i < ObjectManager->getNumMovers(); i++) {
 			Mover* mover = ObjectManager->getMover(i);
 			if (mover->getTeam() != Team::home) {
 				((MoverPtr)mover)->getPilot()->setUseGoalPlan(EnemiesGoalPlan);
@@ -5243,7 +5243,7 @@ int MissionInterfaceManager::toggleCompass()
 bool MissionInterfaceManager::selectionIsHelicopters( )
 {
 	Team* pTeam = Team::home;
-   	for (long i=0;i<pTeam->getRosterSize();i++)
+   	for (int32_t i=0;i<pTeam->getRosterSize();i++)
    	{
    		Mover* pMover = (Mover*)pTeam->getMover( i );
    		if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -5284,7 +5284,7 @@ int MissionInterfaceManager::loadHotKeys( FitIniFile& file )
 		}
 	}
 
-	if ( NO_ERR == file.seekBlock( "Keyboard" ) )
+	if ( NO_ERROR == file.seekBlock( "Keyboard" ) )
 	{
 		for ( int i = 0; i < MAX_COMMAND; i++ )
 		{
@@ -5293,7 +5293,7 @@ int MissionInterfaceManager::loadHotKeys( FitIniFile& file )
 			file.readIdLong( header, commands[i].key );		
 		}
 
-		long tmp;
+		int32_t tmp;
 		file.readIdLong( "WayPointKey", tmp );
 		WAYPOINT_KEY = gosEnum_KeyIndex( tmp );
 
@@ -5308,8 +5308,8 @@ int MissionInterfaceManager::loadHotKeys( FitIniFile& file )
 int MissionInterfaceManager::setHotKey( int whichCommand, gosEnum_KeyIndex newKey, bool bShift, bool bControl, bool bAlt )
 {
 	gosASSERT( whichCommand < MAX_COMMAND );
-	long oldKey = commands[whichCommand].key;
-	long key = newKey;
+	int32_t oldKey = commands[whichCommand].key;
+	int32_t key = newKey;
 	if ( bShift )
 		key |= SHIFT;
 	if ( bControl )
@@ -5340,7 +5340,7 @@ int MissionInterfaceManager::getHotKey( int whichCommand, gosEnum_KeyIndex& newK
 {
 	gosASSERT( whichCommand < MAX_COMMAND );
 	
-	long key = commands[whichCommand].key;
+	int32_t key = commands[whichCommand].key;
 
 	if ( key & SHIFT )
 		bShift = true;
@@ -5396,7 +5396,7 @@ void MissionInterfaceManager::doEject( GameObject* who )
 
 bool MissionInterfaceManager::hotKeyIsPressed( int whichCommand )
 {
-	long key = commands[whichCommand].key;
+	int32_t key = commands[whichCommand].key;
 	bool bShift = 0;
 	bool bControl = 0;
 	bool bAlt = 0;
@@ -5470,7 +5470,7 @@ void MissionInterfaceManager::drawHotKeys()
 
 }
 
-void MissionInterfaceManager::drawHotKey( PCSTR keyString, PCSTR descString, long x, long y )
+void MissionInterfaceManager::drawHotKey( PCSTR keyString, PCSTR descString, int32_t x, int32_t y )
 {
 	hotKeyFont.render( keyString, 0, y, x, Environment.screenHeight, 0xffffffff, 0, 1 );
 
@@ -5482,7 +5482,7 @@ void MissionInterfaceManager::drawHotKey( PCSTR keyString, PCSTR descString, lon
 void MissionInterfaceManager::doGuardTower()
 {
 
-	for (long i = 0; i < Team::home->getRosterSize(); i++)
+	for (int32_t i = 0; i < Team::home->getRosterSize(); i++)
 	{
 		Mover* pMover = Team::home->getMover( i );
 		if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
@@ -5530,10 +5530,10 @@ int	MissionInterfaceManager::handleTeamChatKey()
 }
 
 float slopeTest[8] = {0.09849140f, 0.30334668f, 0.53451114f, 0.82067879f, 1.21850353f, 1.87086841f, 3.29655821f, 10.15317039f};
-long MissionInterfaceManager::makeMoveCursor( bool bLineOfSite )
+int32_t MissionInterfaceManager::makeMoveCursor( bool bLineOfSite )
 {
 
-	long rotation = calcRotation();
+	int32_t rotation = calcRotation();
 
 	// leigh put these in the file funny
 	// OK, rotations go clockwise starting from 180...
@@ -5541,9 +5541,9 @@ long MissionInterfaceManager::makeMoveCursor( bool bLineOfSite )
 	return mState_WALK1 + 32 * bLineOfSite + rotation;
 }
 
-long MissionInterfaceManager::makeJumpCursor( bool bLineOfSite )
+int32_t MissionInterfaceManager::makeJumpCursor( bool bLineOfSite )
 {
-	long rotation = calcRotation();
+	int32_t rotation = calcRotation();
 
 	// leigh put these in the file funny
 	// OK, rotations go clockwise starting from 180...
@@ -5553,9 +5553,9 @@ long MissionInterfaceManager::makeJumpCursor( bool bLineOfSite )
 }
 
 
-long MissionInterfaceManager::makeRunCursor( bool bLineOfSite )
+int32_t MissionInterfaceManager::makeRunCursor( bool bLineOfSite )
 {
-	long rotation = calcRotation();
+	int32_t rotation = calcRotation();
 
 	// leigh put these in the file funny
 	// OK, rotations go clockwise starting from 180...
@@ -5564,14 +5564,14 @@ long MissionInterfaceManager::makeRunCursor( bool bLineOfSite )
 
 }
 
-long MissionInterfaceManager::calcRotation()
+int32_t MissionInterfaceManager::calcRotation()
 {
 	Stuff::Vector3D pos;
 	pos.x = 0.f;
 	pos.y = 0.f;
 	pos.z = 0.f;
 	float count = 0;
-	for (long i = 0; i < Team::home->getRosterSize(); i++)
+	for (int32_t i = 0; i < Team::home->getRosterSize(); i++)
 	{
 		Mover* pMover = Team::home->getMover( i );
 		if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId() )
@@ -5634,7 +5634,7 @@ long MissionInterfaceManager::calcRotation()
 	if ( deltaX < 0 )
 		theta += 180.f;
 
-	long rotation = ((theta/360.f * 32.f));
+	int32_t rotation = ((theta/360.f * 32.f));
 	*/
 
 	//Do it the MC1 way!
@@ -5642,8 +5642,8 @@ long MissionInterfaceManager::calcRotation()
 	if (fabs(screenPosGoal.x - screenPosMover.x) > Stuff::SMALL)
 		slope = fabs(screenPosGoal.y - screenPosMover.y) / fabs(screenPosGoal.x - screenPosMover.x);
 
-	long counter = 0;
-	long rotation = 0;
+	int32_t counter = 0;
+	int32_t rotation = 0;
 	while (slope > slopeTest[counter] && counter < 8)
 		counter++;
 	if (screenPosGoal.y < screenPosMover.y)
@@ -5674,7 +5674,7 @@ long MissionInterfaceManager::calcRotation()
 void MissionInterfaceManager::Save (FitIniFilePtr file)
 {
 	//If VTOL or Karnov are active AND HAVEN'T FINISHED THEIR OPERATION, save them, what vehicle they are going to drop or what mech they were fixing.
-	long vtolNum = Commander::home->getId();
+	int32_t vtolNum = Commander::home->getId();
 
 	if (vTol[vtolNum] && paintingVtol[vtolNum] && (!vehicleDropped[vtolNum] && !mechRecovered[vtolNum]))
 	{
@@ -5701,10 +5701,10 @@ void MissionInterfaceManager::Save (FitIniFilePtr file)
 void MissionInterfaceManager::Load (FitIniFilePtr file)
 {
 	//Is there any VTOL data here?  OK if not!
-	long vtolNum = Commander::home->getId();
-	long commanderID = vtolNum;
+	int32_t vtolNum = Commander::home->getId();
+	int32_t commanderID = vtolNum;
 
-	if (file->seekBlock("VTOLData") == NO_ERR)
+	if (file->seekBlock("VTOLData") == NO_ERROR)
 	{
 		//Load 'em
 		file->readIdFloat("VtolPosX",vPos[vtolNum].x);
@@ -5727,13 +5727,13 @@ void MissionInterfaceManager::Load (FitIniFilePtr file)
 			vTol[commanderID]->init( appearanceType );
 		}
 
-		long mechWID = 0;
+		int32_t mechWID = 0;
 		file->readIdLong("SalvageMechWID", mechWID);
 		mechToRecover[vtolNum] = (MoverPtr)ObjectManager->getByWatchID(mechWID);
 
 		file->readIdFloat("VTOLFrame",vTol[vtolNum]->currentFrame);
 
-		long gestureId = 0;
+		int32_t gestureId = 0;
 		file->readIdLong("VTOLGesture",gestureId);
 		vTol[vtolNum]->setGesture(gestureId);
 
@@ -5901,12 +5901,12 @@ void MissionInterfaceManager::updateRollovers()
 	For all the fire from current position cursors, use strings 45165/45166
 	For all the short-range attack cursors, use strings 45167/45168
 	For all the medium-range attack cursors, use strings 45169/45170
-	For all the long-range attack cursors, use strings 45171/45172
+	For all the int32_t-range attack cursors, use strings 45171/45172
 	For all the force-fire attack cursors, use strings 45173/45174
 	For the guard cursor, use strings 45147/45148 (one each for right-click and left-click models).*/
 
 
-	long cursor = userInput->getMouseCursor();
+	int32_t cursor = userInput->getMouseCursor();
 
 	if ( ( cursor >= mState_RUN1 && cursor <= mState_RUN1 + 64) )
 	{

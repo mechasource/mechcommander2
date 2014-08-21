@@ -80,94 +80,94 @@ void WeaponBoltType::destroy (void)
 }
 
 //---------------------------------------------------------------------------
-DWORD bgrTorgb (DWORD frontRGB);
+ULONG bgrTorgb (ULONG frontRGB);
 	
 //---------------------------------------------------------------------------
-long WeaponBoltType::init (FilePtr objFile, ULONG fileSize)
+int32_t WeaponBoltType::init (FilePtr objFile, ULONG fileSize)
 {
-	long result = 0;
+	int32_t result = 0;
 	
 	FitIniFile bullFile;
 	result = bullFile.open(objFile,fileSize);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		Fatal(result,"WeaponBoltType::init -- Unable to open File");
 	
 	//------------------------------------------------------------------
 	result = bullFile.seekBlock("BoltProjectileData");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 	{
 		//Check if we are a NEW beam type.
 		result = bullFile.seekBlock("BeamProjectileData");
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 		{
 			STOP(("WeaponBoltTYpe::init -- Not a valid weaponBolt"));
 		}
 		
 		result = bullFile.readIdBoolean("IsBeam",isBeam);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			isBeam = false;
 			
 		result = bullFile.readIdFloat("BeamDuration",beamDuration);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			beamDuration = 0.0f;
 			
 		result = bullFile.readIdFloat("BeamWiggle",beamWiggle);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			beamWiggle = 0.0f;
 			
 		result = bullFile.readIdBoolean("PointLight",lightSource);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			lightSource = false;
 	
 		char txmName[1024];
 		result = bullFile.readIdString("TextureName",txmName,1023);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			strcpy(txmName,"NONE");
 		
 		textureName = (PSTR )ObjectTypeManager::objectCache->Malloc(strlen(txmName)+1); 
 		strcpy(textureName,txmName);
 
 		result = bullFile.readIdFloat("UVAnimRate",uvAnimRate);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			uvAnimRate = 0.0f;
 			
 		result = bullFile.readIdFloat("UVRepeat",uvRepeat);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			uvRepeat = 1.0f;
 			
 		result = bullFile.readIdFloat("UnitLength",unitLength);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			unitLength = 1.0f;
 			
 		if (unitLength < Stuff::SMALL)
 			unitLength = 1.0f;
 
 		result = bullFile.readIdBoolean("MipTexture",mipTexture);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			mipTexture = false;
 			
  	 	result = bullFile.readIdLong("FiringSoundFX",fireSoundFX);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			fireSoundFX = 0;
 			
 		result = bullFile.readIdFloat("BulgeWidth",bulgeWidth);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			bulgeWidth = 1.0f;
 			
 		result = bullFile.readIdULong("MidEdgeRGB",midEdgeRGB);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			midEdgeRGB = 0x00ffffff;
 		
 		result = bullFile.readIdULong("MiddleRGB",middleRGB);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			middleRGB = 0x00ffffff;
 				
-		result = bullFile.readIdUCHAR("EdgeAlpha",edgeAlpha);
-		if (result != NO_ERR)
+		result = bullFile.readIdUChar("EdgeAlpha",edgeAlpha);
+		if (result != NO_ERROR)
 			edgeAlpha = 0xff;
 			
-		result = bullFile.readIdUCHAR("BoltAlpha",boltAlpha);
-		if (result != NO_ERR)
+		result = bullFile.readIdUChar("BoltAlpha",boltAlpha);
+		if (result != NO_ERROR)
 			boltAlpha = 0xff;
 		
 		projLength = 1.0f;
@@ -176,128 +176,128 @@ long WeaponBoltType::init (FilePtr objFile, ULONG fileSize)
    		if (lightSource)
 		{
 			result = bullFile.readIdULong("LightRGB",lightRGB);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Fatal(result,"WeaponBoltType::init -- Unable to find lightRGB");
 	
 			result = bullFile.readIdFloat("MaxRadius",maxRadius);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Fatal(result,"WeaponBoltType::init -- Unable to find maxRadius");
 	
 			result = bullFile.readIdFloat("OutRadius",outRadius);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Fatal(result,"WeaponBoltType::init -- Unable to find outRadius");
 	
 			result = bullFile.readIdFloat("Intensity",intensity);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Fatal(result,"WeaponBoltType::init -- Unable to find intensity");
 		}
 	}
 	else
 	{
 		result = bullFile.readIdFloat("ProjectileLength",projLength);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find projectileLength");
 				
 		result = bullFile.readIdFloat("BulgeLength",bulgeLength);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find bulgeLength");
 			
 		result = bullFile.readIdFloat("BulgeWidth",bulgeWidth);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find bulgeWidth");
 		
 		result = bullFile.readIdFloat("Velocity",velocity);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find velocity");
 		
 		result = bullFile.readIdLong("HitEffect",hitEffectObjNum);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find HitEffect");
 		
 		result = bullFile.readIdLong("MissEffect",missEffectObjNum);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find missEffect");
 		
 		result = bullFile.readIdLong("FiringSoundFX",fireSoundFX);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find FiringSoundFx");
 		
 		result = bullFile.readIdULong("FrontRGB",frontRGB);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find FrontRGB");
 			
 		result = bullFile.readIdULong("MidEdgeRGB",midEdgeRGB);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find MIDEDGERGB");
 		
 		result = bullFile.readIdULong("MiddleRGB",middleRGB);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find MiddleRGB");
 		
 		result = bullFile.readIdULong("BackRGB",backRGB);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find backRGB");
 			
-		result = bullFile.readIdUCHAR("EdgeAlpha",edgeAlpha);
-		if (result != NO_ERR)
+		result = bullFile.readIdUChar("EdgeAlpha",edgeAlpha);
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find edgeAlpha");
 			
-		result = bullFile.readIdUCHAR("BoltAlpha",boltAlpha);
-		if (result != NO_ERR)
+		result = bullFile.readIdUChar("BoltAlpha",boltAlpha);
+		if (result != NO_ERROR)
 			Fatal(result,"WeaponBoltType::init -- Unable to find boltAlpha");
 		
 		result = bullFile.readIdBoolean("IsBeam",isBeam);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			isBeam = false;
 			
 		result = bullFile.readIdFloat("BeamDuration",beamDuration);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			beamDuration = 0.0f;
 			
 		result = bullFile.readIdFloat("BeamWiggle",beamWiggle);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			beamWiggle = 0.0f;
 			
 		result = bullFile.readIdBoolean("PointLight",lightSource);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			lightSource = false;
 
 		result = bullFile.readIdBoolean("ArcEffect",arcEffect);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			arcEffect = false;
 			
 		result = bullFile.readIdFloat("ArcHeight",arcHeight);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			arcHeight = -1.0f;
 
 		result = bullFile.readIdFloat("AfterHitTime",afterHitTime);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			afterHitTime = 0.0f;
 			
 		result = bullFile.readIdFloat("AreaEffectDamage",areaEffectDmg);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			areaEffectDmg = 0.0f;
 			
 		result = bullFile.readIdFloat("AreaEffectRadius",areaEffectRad);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			areaEffectRad = 0.0f;
 			
    		if (lightSource)
 		{
 			result = bullFile.readIdULong("LightRGB",lightRGB);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Fatal(result,"WeaponBoltType::init -- Unable to find lightRGB");
 	
 			result = bullFile.readIdFloat("MaxRadius",maxRadius);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Fatal(result,"WeaponBoltType::init -- Unable to find maxRadius");
 	
 			result = bullFile.readIdFloat("OutRadius",outRadius);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Fatal(result,"WeaponBoltType::init -- Unable to find outRadius");
 	
 			result = bullFile.readIdFloat("Intensity",intensity);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Fatal(result,"WeaponBoltType::init -- Unable to find intensity");
 		}
 	
@@ -374,7 +374,7 @@ bool WeaponBolt::isVisible (void)
 }
 
 //---------------------------------------------------------------------------
-long WeaponBolt::update (void)
+int32_t WeaponBolt::update (void)
 {
 	Stuff::Vector3D laserDirection;
 	
@@ -662,7 +662,7 @@ long WeaponBolt::update (void)
 				else
 				{
 					Stuff::Vector3D hotSpot = *targetPosition;
-					long cellR, cellC;
+					int32_t cellR, cellC;
 					land->worldToCell(hotSpot,cellR, cellC);
 					if (GameMap->getDeepWater(cellR, cellC) || GameMap->getShallowWater(cellR, cellC))
 					{
@@ -806,7 +806,7 @@ long WeaponBolt::update (void)
 				}
 				else if (targetPosition)
 				{
-					long randomCrater = 0;
+					int32_t randomCrater = 0;
 					if (weaponShot.damage > 9)
 						randomCrater = 3;
 					else if (weaponShot.damage > 6)
@@ -821,7 +821,7 @@ long WeaponBolt::update (void)
 					// energy weapons don't set off mines
 					// Yes, they should DT, 5/30/98
 					{
-						long cellRow, cellCol;
+						int32_t cellRow, cellCol;
 		
 						land->worldToCell(*targetPosition, cellRow, cellCol);
 						if (GameMap->getMine(cellRow, cellCol) == 1)
@@ -918,7 +918,7 @@ long WeaponBolt::update (void)
 				else
 				{
 					Stuff::Vector3D hotSpot = *targetPosition;
-					long cellR, cellC;
+					int32_t cellR, cellC;
 					land->worldToCell(hotSpot,cellR, cellC);
 					if (GameMap->getDeepWater(cellR, cellC) || GameMap->getShallowWater(cellR, cellC))
 					{
@@ -1058,7 +1058,7 @@ long WeaponBolt::update (void)
 				}
 				else if (targetPosition) 
 				{
-					long randomCrater = 0;
+					int32_t randomCrater = 0;
 					if (weaponShot.damage > 9)
 						randomCrater = 3;
 					else if (weaponShot.damage > 6)
@@ -1073,7 +1073,7 @@ long WeaponBolt::update (void)
 					// energy weapons don't set off mines
 					// Yes, they should DT, 5/30/98
 					{
-						long cellRow, cellCol;
+						int32_t cellRow, cellCol;
 		
 						land->worldToCell(*targetPosition, cellRow, cellCol);
 						if (GameMap->getMine(cellRow, cellCol) == 1)
@@ -1624,10 +1624,10 @@ void WeaponBolt::render (void)
 			gos_VERTEX	lq1Vertices[3], lq2Vertices[3], lq3Vertices[3], lq4Vertices[3];
 			Stuff::Vector4D screenPos;
 			
-			DWORD alphaMode = ((WeaponBoltTypePtr)getObjectType())->boltAlpha;
+			ULONG alphaMode = ((WeaponBoltTypePtr)getObjectType())->boltAlpha;
 			alphaMode <<= 24;
 			
-			DWORD edgeMode = ((WeaponBoltTypePtr)getObjectType())->edgeAlpha;
+			ULONG edgeMode = ((WeaponBoltTypePtr)getObjectType())->edgeAlpha;
 			edgeMode <<= 24;
 			
 			eye->projectZ(laserPosition,screenPos);
@@ -1879,10 +1879,10 @@ void WeaponBolt::render (void)
 			gos_VERTEX	lq1Vertices[3], lq2Vertices[3], lq3Vertices[3], lq4Vertices[3];
 			Stuff::Vector4D screenPos;
 			
-			DWORD alphaMode = ((WeaponBoltTypePtr)getObjectType())->boltAlpha;
+			ULONG alphaMode = ((WeaponBoltTypePtr)getObjectType())->boltAlpha;
 			alphaMode <<= 24;
 			
-			DWORD edgeMode = ((WeaponBoltTypePtr)getObjectType())->edgeAlpha;
+			ULONG edgeMode = ((WeaponBoltTypePtr)getObjectType())->edgeAlpha;
 			edgeMode <<= 24;
 			
 			Stuff::Point3D actualPosition;
@@ -2517,13 +2517,13 @@ void WeaponBolt::setTargetPosition (Stuff::Vector3D pos)
 }
 
 //***************************************************************************
-void WeaponBolt::Save (PacketFilePtr file, long packetNum)
+void WeaponBolt::Save (PacketFilePtr file, int32_t packetNum)
 {
 	WeaponBoltData data;
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(MemoryPtr)&data,sizeof(WeaponBoltData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(PUCHAR)&data,sizeof(WeaponBoltData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

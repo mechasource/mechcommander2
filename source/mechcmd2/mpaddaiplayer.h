@@ -1,5 +1,3 @@
-#ifndef MPADDAIPLAYER_H
-#define MPADDAIPLAYER_H
 /*************************************************************************************************\
 MPAddAIPlayer.h			: Interface for the MPAddAIPlayer component.
 //---------------------------------------------------------------------------//
@@ -8,6 +6,11 @@ MPAddAIPlayer.h			: Interface for the MPAddAIPlayer component.
 \*************************************************************************************************/
 
 //*************************************************************************************************
+
+#pragma once
+
+#ifndef MPADDAIPLAYER_H
+#define MPADDAIPLAYER_H
 
 #ifndef LOGISTICSSCREEN_H
 #include "logisticsscreen.h"
@@ -28,7 +31,7 @@ class aStyle4TextListItem : public aTextListItem
 {
 public:
 	aStyle4TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
-	virtual long	init( FitIniFile* file, PCSTR blockName );
+	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
 	virtual void		render();
 
 protected:

@@ -13,10 +13,10 @@
 #ifndef RADIO_H
 #define RADIO_H
 
-#include <mclib.h>
-#include "dradio.h"
-#include "dwarrior.h"
-#include "dgameobj.h"
+//#include <mclib.h>
+//#include "dradio.h"
+//#include "dwarrior.h"
+//#include "dgameobj.h"
 
 //------------------------------------------------------------------------------------------
 #define MAX_FRAGMENTS	16
@@ -27,11 +27,11 @@ struct RadioData
 	ULONG	msgId;
 	ULONG	msgType;
 	ULONG	noiseId;
-	long			numFragments;
-	MemoryPtr		data[MAX_FRAGMENTS];
-	long			dataSize[MAX_FRAGMENTS];
-	MemoryPtr		noise[MAX_FRAGMENTS];
-	long			noiseSize[MAX_FRAGMENTS];
+	int32_t			numFragments;
+	PUCHAR		data[MAX_FRAGMENTS];
+	int32_t			dataSize[MAX_FRAGMENTS];
+	PUCHAR		noise[MAX_FRAGMENTS];
+	int32_t			noiseSize[MAX_FRAGMENTS];
 	UserHeapPtr		msgHeap;
 	ULONG	turnQueued;
 	byte			priority;
@@ -47,7 +47,7 @@ struct RadioMessageInfo
 	char			movieCode;
 	byte			styleCount;
 	byte			styleChance[3];
-	DWORD			messageMapping;
+	ULONG			messageMapping;
 	bool			pilotIdentifiesSelf;
 	bool			kludgeStyle;
 };
@@ -62,7 +62,7 @@ class Radio
 		MechWarriorPtr	owner;
 		bool			enabled;
 		bool			ammoOutPlayed;
-		long			radioID;
+		int32_t			radioID;
 
 	public:		
 		static PacketFilePtr 	noiseFile;
@@ -73,15 +73,15 @@ class Radio
 														
 		static bool				messageInfoLoaded;
 		static bool				radioListGo;
-		static long				currentRadio;
+		static int32_t				currentRadio;
 		static UserHeapPtr		radioHeap;				//Only one Heap Per Game!!!
 	
 	//Member Functions
 	//-----------------
 	public:
 	
-		void * operator new (size_t mySize);
-		void operator delete (void * us);
+		PVOID operator new (size_t mySize);
+		void operator delete (PVOID us);
 
 		void init (void)
 		{
@@ -104,14 +104,14 @@ class Radio
 			destroy();
 		}
 	
-		long init (PSTR fileName, ULONG heapSize, PSTR movie);
+		int32_t init (PSTR fileName, ULONG heapSize, PSTR movie);
 
 		void setOwner (MechWarriorPtr _owner)
 		{
 			owner = _owner;
 		}
 				
-		long playMessage (RadioMessageType msgId);
+		int32_t playMessage (RadioMessageType msgId);
 
 		void cancelMessage (RadioMessageType msgId);
 		
@@ -123,7 +123,7 @@ class Radio
 			enabled = FALSE;
 		}
 		
-		long loadMessageInfo(void);
+		int32_t loadMessageInfo(void);
 
 		void resetAmmoMessage (void)
 		{

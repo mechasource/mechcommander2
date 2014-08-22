@@ -6,11 +6,16 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
+#include <stuff/node.hpp>
+#include <stuff/slot.hpp>
+
+using namespace Stuff;
 
 
-MemoryBlock*
-	SlotLink::AllocatedMemory = NULL;
+MemoryBlock* SlotLink::AllocatedMemory = NULL;
 
 //
 //#############################################################################

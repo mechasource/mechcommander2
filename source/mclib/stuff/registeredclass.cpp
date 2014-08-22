@@ -6,7 +6,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+//#include <gameos.hpp>
+#include <stuff/registeredclass.hpp>
+
+using namespace Stuff;
 
 
 //#############################################################################
@@ -87,7 +92,7 @@ RegisteredClass__ClassData::RegisteredClass__ClassData(
 	// Set up the class data variables
 	//--------------------------------
 	//
-	Verify(static_cast<unsigned>(class_id) < ClassIDCount);
+	Verify(static_cast<uint32_t>(class_id) < ClassIDCount);
 	classID = class_id;
 	className = name;
 	firstChildClass = NULL;
@@ -151,7 +156,7 @@ RegisteredClass__ClassData::~RegisteredClass__ClassData()
 	// Remove this from the ClassData array
 	//-------------------------------------
 	//
-	Verify(static_cast<unsigned>(classID) < ClassIDCount);
+	Verify(static_cast<uint32_t>(classID) < ClassIDCount);
 	Verify(RegisteredClass::ClassDataArray[classID] == this);
 	RegisteredClass::ClassDataArray[classID] = NULL;
 }

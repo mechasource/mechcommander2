@@ -6,8 +6,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/matrixstack.hpp>
+
+using namespace Stuff;
 
 AffinerMatrix4DStack&
 	AffinerMatrix4DStack::Concatenate(const AffineMatrix4D& matrix)

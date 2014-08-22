@@ -7,8 +7,17 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
-#include <stuff/memorystream.hpp>
+#ifndef _FILESTREAM_HPP_
+#define _FILESTREAM_HPP_
+
+#include <stuff/style.hpp>
+#include <stuff/mstring.hpp>
+#include <stuff/plug.hpp>
+#include <stuff/sortedchain.hpp>
+
+#ifndef _GAMEOS_HPP_
+typedef struct	gosFileStream*	HGOSFILE;
+#endif
 
 namespace Stuff {
 
@@ -20,20 +29,20 @@ namespace Stuff {
 	//##########################################################################
 
 	class Directory
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 	public:
 		Directory(
 			PSTR find_files,
 			bool find_directories=false
-		);
+			);
 		~Directory();
-		
+
 		void
 			TestInstance() const
-				{}
+		{}
 
 		PSTR
 			GetCurrentFileName();
@@ -92,9 +101,9 @@ namespace Stuff {
 		static bool
 			TestClass();
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors
+		//
 	public:
 		enum WriteStatus {
 			ReadOnly,
@@ -105,28 +114,28 @@ namespace Stuff {
 		explicit FileStream(
 			PCSTR file_name,
 			WriteStatus writable = ReadOnly
-		);
+			);
 		~FileStream();
 
 		void
 			Open(
-				PCSTR file_name = NULL,
-				WriteStatus writable = ReadOnly
+			PCSTR file_name = NULL,
+			WriteStatus writable = ReadOnly
 			);
 		void
-	      	Close();
+			Close();
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Status functions
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Status functions
+		//
 	public:
 		void
 			SetPointer(PVOID)
-				{
-					STOP((
-					 "No implementation possible for FileStream::SetPointer(PVOID)"
-					));
-				}
+		{
+#ifdef _GAMEOS_HPP_
+			STOP(("No implementation possible for FileStream::SetPointer(PVOID)"));
+#endif
+		}
 		void
 			SetPointer(size_t index);
 
@@ -138,24 +147,24 @@ namespace Stuff {
 
 		MemoryStream&
 			ReadBytes(
-				PVOID ptr,
-				size_t number_of_bytes
+			PVOID ptr,
+			size_t number_of_bytes
 			);
 		MemoryStream&
 			WriteBytes(
-				PCVOID ptr,
-				size_t number_of_bytes
+			PCVOID ptr,
+			size_t number_of_bytes
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// File functions
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// File functions
+		//
 	public:
 		virtual bool
 			IsFileOpened();
 		PCSTR
 			GetFileName()
-				{Check_Object(this); return fileName;}
+		{Check_Object(this); return fileName;}
 
 		enum SeekType {
 			FromBeginning,
@@ -169,29 +178,21 @@ namespace Stuff {
 
 		static void
 			IgnoreReadOnly(bool flag)
-				{IgnoreReadOnlyFlag = flag;}
-				
+		{IgnoreReadOnlyFlag = flag;}
+
 
 	protected:
-		WriteStatus
-			writeEnabled;
-		PSTR 
-			fileName;
-		HGOSFILE
-			fileHandle;
-		bool
-			isOpen;
-		static bool
-			IgnoreReadOnlyFlag;
+		WriteStatus	writeEnabled;
+		PSTR		fileName;
+		HGOSFILE	fileHandle;
+		bool		isOpen;
+		static bool	IgnoreReadOnlyFlag;
 	};
 
-	MString*
-		StripExtension(MString *file_name);
-	MString*
-		IsolateDirectory(MString *file_name);
-	MString*
-		StripDirectory(MString *file_name);
+	MString* __stdcall StripExtension(MString *file_name);
+	MString* __stdcall IsolateDirectory(MString *file_name);
+	MString* __stdcall StripDirectory(MString *file_name);
 
-	bool
-		CreateDirectories(PCSTR directories);
+	bool CreateDirectories(PCSTR directories);
 }
+#endif

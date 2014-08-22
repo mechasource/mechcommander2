@@ -4,7 +4,10 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _DATABASE_HPP_
+#define _DATABASE_HPP_
+
+#include <stuff/mstring.hpp>
 
 namespace Stuff {
 
@@ -25,9 +28,9 @@ namespace Stuff {
 		DatabaseHandle*		m_databaseHandle;
 		ULONG				m_ID;
 		PCSTR				m_name;
-		__int64				m_timeStamp;
+		int64_t				m_timeStamp;
 		size_t				m_length;
-		const void*			m_data;
+		PCVOID				m_data;
 		const Record*		m_record;
 
 		//
@@ -84,7 +87,7 @@ namespace Stuff {
 		DatabaseHandle(
 			PCSTR  filename,
 			bool read_only
-		);
+			);
 		~DatabaseHandle();
 
 		void
@@ -117,3 +120,4 @@ namespace Stuff {
 	};
 
 }
+#endif

@@ -6,13 +6,19 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/affinematrix.hpp>
+#include <stuff/matrix.hpp>
+#include <stuff/vector4d.hpp>
+
+using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Vector4D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-const Vector4D
-	Vector4D::Identity(0.0f,0.0f,0.0f,0.0f);
+const Vector4D Vector4D::Identity(0.0f,0.0f,0.0f,0.0f);
 
 //
 //###########################################################################

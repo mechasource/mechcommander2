@@ -6,8 +6,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/mstring.hpp>
+#include <stuff/polar.hpp>
+#include <stuff/affinematrix.hpp>
+#include <stuff/linearmatrix.hpp>
+#include <stuff/vector3d.hpp>
+
+using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Vector3D ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

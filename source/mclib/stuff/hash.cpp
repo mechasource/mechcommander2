@@ -12,12 +12,15 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+#include <gameos.hpp>
+#include <stuff/hash.hpp>
 
+using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ Hash ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#define Verify_Index(x) Verify(0 <= (x) && (x) < hashTableSize)
+#define Verify_Index(x) Verify(/*0 <= (x) &&*/ (x) < hashTableSize)
 
 //
 //###########################################################################
@@ -57,7 +60,7 @@ Hash::Hash(
 Hash::~Hash()
 {
 	Check_Object(this);
-	int i;
+	size_t i;
 
 	for (i = 0; i < hashTableSize; i++)
 	{
@@ -109,7 +112,7 @@ void
 void
 	Hash::AddValueImplementation(
 		Plug *plug,
-		const void *value
+		PCVOID value
 	)
 {
 	Check_Object(this);
@@ -164,7 +167,7 @@ void
 //
 Plug*
 	Hash::FindImplementation(
-		const void *value
+		PCVOID value
 	)
 {
 	Check_Object(this);
@@ -211,8 +214,9 @@ bool
 	Hash::IsEmpty()
 {
 	Check_Object(this);
+	size_t i;
 	
-	for (int i = 0; i < hashTableSize; i++)
+	for (i = 0; i < hashTableSize; i++)
 	{
 		Check_Pointer(hashTable);
 		Verify_Index(i);
@@ -246,7 +250,7 @@ SortedChain*
 //###########################################################################
 //
 IteratorPosition
-	Hash::GetHashIndex(const void*)
+	Hash::GetHashIndex(PCVOID)
 {
 	Check_Object(this);
 	STOP(("Hash::GetHashIndex - Should never reach here"));
@@ -262,7 +266,7 @@ void
 	Hash::BuildHashTable()
 {
 	Check_Signature(this);
-	int i;
+	size_t i;
 
 	hashTable = new SortedChain*[hashTableSize];
 	Register_Pointer(hashTable);
@@ -287,7 +291,7 @@ bool
 	Verify(hashTableSize > 2);
 
 	CollectionSize upper_bound =
-		static_cast<CollectionSize>(Sqrt(static_cast<Scalar>(hashTableSize)));
+		static_cast<CollectionSize>(sqrt(static_cast<float>(hashTableSize)));
 
 	for (CollectionSize i = 2; i < upper_bound; i++)
 	{
@@ -299,7 +303,7 @@ bool
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ HashIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-const IteratorPosition HashIteratorNullPosition = -1;
+const IteratorPosition HashIteratorNullPosition = IteratorPosition(-1);
 
 //
 //###########################################################################
@@ -507,7 +511,7 @@ void
 //
 Plug
 	*HashIterator::FindImplementation(
-		const void*
+		PCVOID
 	)
 {
 	Check_Object(this);
@@ -523,7 +527,7 @@ Plug
 void
 	HashIterator::ReceiveMemo(
 		IteratorMemo,
-		void*
+		PVOID
 	)
 {
 	Check_Object(this);
@@ -552,7 +556,7 @@ void
 	HashIterator::NextSortedChainIterator(IteratorPosition index)
 {
 	Check_Object(this);
-	int i;
+	size_t i;
 
 	DeleteSortedChainIterator();
 	currentPosition = HashIteratorNullPosition;

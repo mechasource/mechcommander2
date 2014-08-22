@@ -7,9 +7,12 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
-#include <stuff/node.hpp>
+#ifndef _CHAIN_HPP_
+#define _CHAIN_HPP_
+
+#include <stuff/link.hpp>
 #include <stuff/memoryblock.hpp>
+#include <stuff/socket.hpp>
 
 namespace Stuff {
 
@@ -55,15 +58,15 @@ namespace Stuff {
 			*prevChainLink;
 
 	private:
-		static MemoryBlock
-	    	*AllocatedMemory;
-
-		void*
-			operator new(size_t)
-				{return AllocatedMemory->New();}
-		void
-			operator delete(void *where)
-				{AllocatedMemory->Delete(where);}
+		static MemoryBlock* AllocatedMemory;
+		PVOID operator new(size_t)
+		{
+			return AllocatedMemory->New();
+		}
+		void operator delete(PVOID where)
+		{
+			AllocatedMemory->Delete(where);
+		}
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Chain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -172,7 +175,7 @@ namespace Stuff {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T>
-		ChainOf<T>::ChainOf(Node *node):
+		ChainOf<T>::ChainOf(Node* node):
 			Chain(node)
 	{
 	}
@@ -242,13 +245,13 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		void*
+		PVOID
 			ReadAndNextImplementation();
-		void*
+		PVOID
 			ReadAndPreviousImplementation();
-		void*
+		PVOID
 			GetCurrentImplementation();
-		void*
+		PVOID
 			GetNthImplementation(CollectionSize index);
 		void
 			InsertImplementation(Plug*);
@@ -264,7 +267,7 @@ namespace Stuff {
 			*currentLink;
 	};
 
-	inline void*
+	inline PVOID
 		ChainIterator::ReadAndNextImplementation()
 	{
 		if (currentLink != NULL)
@@ -363,3 +366,5 @@ namespace Stuff {
 	}
 
 }
+
+#endif

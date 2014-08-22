@@ -6,8 +6,13 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
-//#include <windows.h>
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/mstring.hpp>
+
+using namespace Stuff;
 
 //#############################################################################
 //#######################    MStringRepresentation    #########################
@@ -15,15 +20,13 @@
 
 #define DELETE_FILL_CHAR ('0')
 
-size_t
-MStringRepresentation::allocationIncrement = 8;
+size_t MStringRepresentation::allocationIncrement = 8;
 
 //
 //#############################################################################
 //#############################################################################
 //
-inline size_t
-MStringRepresentation::CalculateSize(size_t needed)
+inline size_t MStringRepresentation::CalculateSize(size_t needed)
 {
 	//
 	// calculate the allocation size for a string
@@ -250,8 +253,7 @@ Stuff::operator + (
 
 	MStringRepresentation temp;
 
-	ULONG totalLen =
-		str1.stringLength + str2.stringLength;
+	size_t totalLen = str1.stringLength + str2.stringLength;
 
 	if (totalLen == 0)
 	{
@@ -644,7 +646,7 @@ bool
 Stuff::Close_Enough(
 	PCSTR str1,
 	PCSTR str2,
-	Scalar e)
+	float e)
 {
 	Check_Pointer(str1);
 	Check_Pointer(str2);

@@ -3,7 +3,15 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
+#include <toolos.hpp>
+#include <stuff/page.hpp>
+#include <stuff/note.hpp>
+#include <stuff/notationfile.hpp>
+
+using namespace Stuff;
 
 
 #define MAX_LINE_SIZE 512
@@ -63,7 +71,7 @@ void
 		MacroTree *macro_tree,
 		PCSTR buffer,
 		PSTR new_buf,
-		int new_buf_size
+		size_t new_buf_size
 	)
 {
 	//
@@ -71,6 +79,7 @@ void
 	// Copy the characters one by one until we find the $(
 	//----------------------------------------------------
 	//
+ATL_SUPPRESS_WARNING(4127)
 	while (1)
 	{
 		while (*buffer && (*buffer != '$' || buffer[1] != '('))
@@ -110,7 +119,7 @@ void
 		// Isolate macro name
 		//-------------------
 		//
-		size_t len = p-buffer - 2;
+		size_t len = size_t(p-buffer - 2);
 		MString macro_name;
 		macro_name.AllocateLength(len+1);
 		PSTR t = macro_name;

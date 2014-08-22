@@ -6,21 +6,21 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/affinematrix.hpp>
+#include <stuff/normal.hpp>
 
-const Normal3D
-	Normal3D::Forward(FORWARD_X, FORWARD_Y, FORWARD_Z);
-const Normal3D
-	Normal3D::Backward(BACKWARD_X, BACKWARD_Y, BACKWARD_Z);
-const Normal3D
-	Normal3D::Left(LEFT_X, LEFT_Y, LEFT_Z);
-const Normal3D
-	Normal3D::Right(RIGHT_X, RIGHT_Y, RIGHT_Z);
-const Normal3D
-	Normal3D::Up(UP_X, UP_Y, UP_Z);
-const Normal3D
-	Normal3D::Down(DOWN_X, DOWN_Y, DOWN_Z);
+using namespace Stuff;
+
+const Normal3D Normal3D::Forward(FORWARD_X, FORWARD_Y, FORWARD_Z);
+const Normal3D Normal3D::Backward(BACKWARD_X, BACKWARD_Y, BACKWARD_Z);
+const Normal3D Normal3D::Left(LEFT_X, LEFT_Y, LEFT_Z);
+const Normal3D Normal3D::Right(RIGHT_X, RIGHT_Y, RIGHT_Z);
+const Normal3D Normal3D::Up(UP_X, UP_Y, UP_Z);
+const Normal3D Normal3D::Down(DOWN_X, DOWN_Y, DOWN_Z);
 
 //
 //#############################################################################

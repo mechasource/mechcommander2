@@ -7,8 +7,9 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
-#include <stuff/sortedsocket.hpp>
+#ifndef _HASH_HPP_
+#define _HASH_HPP_
+
 #include <stuff/sortedchain.hpp>
 
 namespace GetHashFunctions {
@@ -87,10 +88,10 @@ namespace Stuff {
 		void
 			AddValueImplementation(
 				Plug *plug,
-				const void *value
+				PCVOID value
 			);
 		Plug
-			*FindImplementation(const void *value);
+			*FindImplementation(PCVOID value);
 
 		//
 		//--------------------------------------------------------------------
@@ -112,7 +113,7 @@ namespace Stuff {
 			MakeSortedChain();
 
 		virtual IteratorPosition
-			GetHashIndex(const void *value);
+			GetHashIndex(PCVOID value);
 
 		void
 			BuildHashTable();
@@ -187,7 +188,7 @@ namespace Stuff {
 			MakeSortedChain();
 
 		IteratorPosition
-			GetHashIndex(const void *value);
+			GetHashIndex(PCVOID value);
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ HashOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -236,7 +237,7 @@ namespace Stuff {
 	}
 
 	template <class T, class V> IteratorPosition
-		HashOf<T, V>::GetHashIndex(const void *value)
+		HashOf<T, V>::GetHashIndex(PCVOID value)
 	{
 		Check_Pointer(value);
 		return (GetHashFunctions::GetHashValue(*Cast_Pointer(const V*, value)) % hashTableSize);
@@ -294,10 +295,10 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		void*
+		PVOID
 			GetCurrentImplementation();
 		Plug*
-			FindImplementation(const void *value);
+			FindImplementation(PCVOID value);
 
 	private:
 		//
@@ -310,7 +311,7 @@ namespace Stuff {
 		void
 			ReceiveMemo(
 				IteratorMemo memo,
-				void *content
+				PVOID content
 			);
 
 		void
@@ -400,3 +401,5 @@ namespace Stuff {
 	}
 
 }
+
+#endif

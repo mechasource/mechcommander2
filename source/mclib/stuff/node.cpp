@@ -6,11 +6,15 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+//#include <gameos.hpp>
+#include <stuff/node.hpp>
+
+using namespace Stuff;
 
 
-Node::ClassData*
-	Node::DefaultData = NULL;
+Node::ClassData* Node::DefaultData = NULL;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //

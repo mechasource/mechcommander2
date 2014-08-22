@@ -7,17 +7,25 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
-#include <stuff/node.hpp>
-#include <stuff/sortedsocket.hpp>
+#ifndef _SORTEDCHAIN_HPP_
+#define _SORTEDCHAIN_HPP_
+
+#include <stuff/link.hpp>
+#include <stuff/iterator.hpp>
 #include <stuff/memoryblock.hpp>
+#include <stuff/sortedsocket.hpp>
 
 namespace Stuff {
 
+
+	// dependent external classes
+	class MemoryBlock;
+
+	// forward declaration of classes in this class
 	class SortedChain;
 	class SortedChainIterator;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class SortedChainLink:
 		public Link
@@ -34,56 +42,53 @@ namespace Stuff {
 		SortedChainLink(
 			SortedChain *vchain,
 			Plug *plug
-		);
+			);
 
 	private:
 		void
 			SetupSortedChainLinks(
-				SortedChainLink *next,
-				SortedChainLink *prev
+			SortedChainLink *next,
+			SortedChainLink *prev
 			);
 
 		SortedChainLink *next;
 		SortedChainLink *prev;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainLinkOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainLinkOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	enum {VChainLink_Memoryblock_Allocation=100};
 
 	template <class V> class SortedChainLinkOf:
-		public SortedChainLink
+	public SortedChainLink
 	{
 	public:
 		SortedChainLinkOf(
 			SortedChain *vchain,
 			Plug *plug,
 			const V &value
-		);
+			);
 		~SortedChainLinkOf();
 
-		void*
+		PVOID
 			operator new(size_t);
 		void
-			operator delete(void *where);
+			operator delete(PVOID where);
 
 		V
 			GetValue()
-				{return value;}
+		{return value;}
 		V*
 			GetValuePointer()
-				{return &value;}
+		{return &value;}
 
 	private:
-		static MemoryBlock
-			*allocatedMemory;
-		static CollectionSize
-			allocationCount;
-
+		static MemoryBlock*		allocatedMemory;
+		static CollectionSize	allocationCount;
 		V value;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainLinkOf templates ~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainLinkOf templates ~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class V> MemoryBlock*
 		SortedChainLinkOf<V>::allocatedMemory = NULL;
@@ -91,22 +96,22 @@ namespace Stuff {
 		SortedChainLinkOf<V>::allocationCount = 0;
 
 	template <class V>
-		SortedChainLinkOf<V>::SortedChainLinkOf(
-			SortedChain *vchain,
-			Plug *plug,
-			const V &value
+	SortedChainLinkOf<V>::SortedChainLinkOf(
+		SortedChain *vchain,
+		Plug *plug,
+		const V &value
 		):
-			SortedChainLink(vchain, plug)
+	SortedChainLink(vchain, plug)
 	{
 		this->value = value;
 	}
 
 	template <class V>
-		SortedChainLinkOf<V>::~SortedChainLinkOf()
+	SortedChainLinkOf<V>::~SortedChainLinkOf()
 	{
 	}
 
-	template <class V> void*
+	template <class V> PVOID
 		SortedChainLinkOf<V>::operator new(size_t)
 	{
 		Verify(allocationCount >= 0);
@@ -114,12 +119,11 @@ namespace Stuff {
 		{
 			allocatedMemory =
 				new MemoryBlock(
-					sizeof(SortedChainLinkOf<V>),
-					VChainLink_Memoryblock_Allocation,
-					VChainLink_Memoryblock_Allocation,
-					"Stuff::SortedChainLinkOf",
-					Stuff::ConnectionEngineHeap
-				);
+				sizeof(SortedChainLinkOf<V>),
+				VChainLink_Memoryblock_Allocation,
+				VChainLink_Memoryblock_Allocation,
+				"Stuff::SortedChainLinkOf",
+				Stuff::ConnectionEngineHeap);
 			Register_Object(allocatedMemory);
 		}
 		Verify(allocationCount < INT_MAX);
@@ -128,7 +132,7 @@ namespace Stuff {
 	}
 
 	template <class V> void
-		SortedChainLinkOf<V>::operator delete(void *where)
+		SortedChainLinkOf<V>::operator delete(PVOID where)
 	{
 		Check_Object(allocatedMemory);
 		allocatedMemory->Delete(where);
@@ -141,7 +145,7 @@ namespace Stuff {
 		Verify(allocationCount >= 0);
 	}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class SortedChain:
 		public SortedSocket
@@ -166,7 +170,7 @@ namespace Stuff {
 		SortedChain(
 			Node *node,
 			bool has_unique_entries
-		);
+			);
 		~SortedChain();
 
 		void
@@ -196,11 +200,11 @@ namespace Stuff {
 			AddImplementation(Plug *);
 		void
 			AddValueImplementation(
-				Plug *plug,
-				const void *value
+			Plug *plug,
+			PCVOID value
 			);
 		Plug
-			*FindImplementation(const void *value);
+			*FindImplementation(PCVOID value);
 
 	private:
 		//
@@ -212,22 +216,22 @@ namespace Stuff {
 		//
 		virtual SortedChainLink
 			*MakeSortedChainLink(
-				Plug *plug,
-				const void *value
+			Plug *plug,
+			PCVOID value
 			);
 		virtual int
 			CompareSortedChainLinks(
-				SortedChainLink *link1,
-				SortedChainLink *link2
+			SortedChainLink *link1,
+			SortedChainLink *link2
 			);
 		virtual int
 			CompareValueToSortedChainLink(
-				const void *value,
-				SortedChainLink *link
+			PCVOID value,
+			SortedChainLink *link
 			);
 
 		SortedChainLink*
-			SearchForValue(const void *value);
+			SearchForValue(PCVOID value);
 
 		//
 		//--------------------------------------------------------------------
@@ -235,15 +239,15 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		SortedChainLink *head;
-      SortedChainLink *tail;
+		SortedChainLink *tail;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	enum {VChain_Memoryblock_Allocation=100};
 
 	template <class T, class V> class SortedChainOf:
-		public SortedChain
+	public SortedChain
 	{
 	public:
 		//
@@ -256,13 +260,11 @@ namespace Stuff {
 		SortedChainOf(
 			Node *node,
 			bool has_unique_entries
-		);
+			);
 		~SortedChainOf();
 
-		void*
-			operator new(size_t);
-		void
-			operator delete(void *where);
+		PVOID	operator new(size_t);
+		void	operator delete(PVOID where);
 
 		//
 		//--------------------------------------------------------------------
@@ -271,16 +273,16 @@ namespace Stuff {
 		//
 		void
 			AddValue(
-				T plug,
-				const V &value
+			T plug,
+			const V &value
 			)
-				{AddValueImplementation(Cast_Object(Plug*,plug), &value);}
+		{AddValueImplementation(Cast_Object(Plug*,plug), &value);}
 		void
 			Remove(T plug)
-				{RemovePlug(Cast_Object(Plug*,plug));}
+		{RemovePlug(Cast_Object(Plug*,plug));}
 		T
 			Find(const V &value)
-				{return (T)FindImplementation(&value);}
+		{return (T)FindImplementation(&value);}
 
 	private:
 		//
@@ -292,26 +294,26 @@ namespace Stuff {
 		//
 		SortedChainLink
 			*MakeSortedChainLink(
-				Plug *plug,
-				const void *value
+			Plug *plug,
+			PCVOID value
 			)
-				{
-					return
-						new SortedChainLinkOf<V>(
-							this,
-							plug,
-							*Cast_Pointer(const V*, value)
-						);
-				}
+		{
+			return
+				new SortedChainLinkOf<V>(
+				this,
+				plug,
+				*Cast_Pointer(const V*, value)
+				);
+		}
 		int
 			CompareSortedChainLinks(
-				SortedChainLink *link1,
-				SortedChainLink *link2
+			SortedChainLink *link1,
+			SortedChainLink *link2
 			);
 		int
 			CompareValueToSortedChainLink(
-				const void *value,
-				SortedChainLink *link
+			PCVOID value,
+			SortedChainLink *link
 			);
 
 		//
@@ -327,7 +329,7 @@ namespace Stuff {
 			allocationCount;
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V> MemoryBlock*
 		SortedChainOf<T, V>::allocatedMemory = NULL;
@@ -335,26 +337,26 @@ namespace Stuff {
 		SortedChainOf<T, V>::allocationCount = 0;
 
 	template <class T, class V>
-		SortedChainOf<T, V>::SortedChainOf(
-			Node *node,
-			bool has_unique_entries
+	SortedChainOf<T, V>::SortedChainOf(
+		Node *node,
+		bool has_unique_entries
 		):
-			SortedChain(
-				node,
-				has_unique_entries
-			)
+	SortedChain(
+		node,
+		has_unique_entries
+		)
 	{
 	}
 
 	template <class T, class V>
-		SortedChainOf<T, V>::~SortedChainOf()
+	SortedChainOf<T, V>::~SortedChainOf()
 	{
 	}
 
 	template <class T, class V> int
 		SortedChainOf<T, V>::CompareSortedChainLinks(
-			SortedChainLink *node1,
-			SortedChainLink *node2
+		SortedChainLink *node1,
+		SortedChainLink *node2
 		)
 	{
 		V *ptr1 = Cast_Object(SortedChainLinkOf<V>*, node1)->GetValuePointer();
@@ -375,8 +377,8 @@ namespace Stuff {
 
 	template <class T, class V> int
 		SortedChainOf<T, V>::CompareValueToSortedChainLink(
-			const void *value,
-			SortedChainLink *node
+		PCVOID value,
+		SortedChainLink *node
 		)
 	{
 		Check_Pointer(value);
@@ -395,7 +397,7 @@ namespace Stuff {
 		return 0;
 	}
 
-	template <class T, class V> void*
+	template <class T, class V> PVOID
 		SortedChainOf<T, V>::operator new(size_t)
 	{
 		Verify(allocationCount >= 0);
@@ -403,11 +405,11 @@ namespace Stuff {
 		{
 			allocatedMemory =
 				new MemoryBlock(
-					sizeof(SortedChainOf<T, V>),
-					VChain_Memoryblock_Allocation,
-					VChain_Memoryblock_Allocation,
-					"Stuff::SortedChainOf",
-					Stuff::ConnectionEngineHeap
+				sizeof(SortedChainOf<T, V>),
+				VChain_Memoryblock_Allocation,
+				VChain_Memoryblock_Allocation,
+				"Stuff::SortedChainOf",
+				Stuff::ConnectionEngineHeap
 				);
 			Register_Object(allocatedMemory);
 		}
@@ -417,7 +419,7 @@ namespace Stuff {
 	}
 
 	template <class T, class V> void
-		SortedChainOf<T, V>::operator delete(void *where)
+		SortedChainOf<T, V>::operator delete(PVOID where)
 	{
 		Check_Object(allocatedMemory);
 		allocatedMemory->Delete(where);
@@ -430,7 +432,7 @@ namespace Stuff {
 		Verify(allocationCount >= 0);
 	}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class SortedChainIterator:
 		public SortedIterator
@@ -483,18 +485,18 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		void*
+		PVOID
 			ReadAndNextImplementation();
-		void*
+		PVOID
 			ReadAndPreviousImplementation();
-		void*
+		PVOID
 			GetCurrentImplementation();
-		void*
+		PVOID
 			GetNthImplementation(
-				CollectionSize index
+			CollectionSize index
 			);
 		Plug*
-			FindImplementation(const void *value);
+			FindImplementation(PCVOID value);
 
 	protected:
 		//
@@ -515,15 +517,15 @@ namespace Stuff {
 		//
 		void
 			ReceiveMemo(
-				IteratorMemo memo,
-				void *content
+			IteratorMemo memo,
+			PVOID content
 			);
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V> class SortedChainIteratorOf:
-		public SortedChainIterator
+	public SortedChainIterator
 	{
 	public:
 		//
@@ -552,37 +554,37 @@ namespace Stuff {
 		//
 		T
 			ReadAndNext()
-				{return (T)ReadAndNextImplementation();}
+		{return (T)ReadAndNextImplementation();}
 		T
 			ReadAndPrevious()
-				{return (T)ReadAndPreviousImplementation();}
+		{return (T)ReadAndPreviousImplementation();}
 		T
 			GetCurrent()
-				{return (T)GetCurrentImplementation();}
+		{return (T)GetCurrentImplementation();}
 		T
 			GetNth(CollectionSize index)
-				{return (T)GetNthImplementation(index);}
+		{return (T)GetNthImplementation(index);}
 		T
 			Find(const V &value)
-				{return (T)FindImplementation(&value);}
+		{return (T)FindImplementation(&value);}
 		V
 			GetValue()
-				{return Cast_Object(SortedChainLinkOf<V>*, currentLink)->GetValue();}
+		{return Cast_Object(SortedChainLinkOf<V>*, currentLink)->GetValue();}
 	};
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V>
-		SortedChainIteratorOf<T, V>::SortedChainIteratorOf(SortedChainOf<T, V> *vchain):
-			SortedChainIterator(vchain)
+	SortedChainIteratorOf<T, V>::SortedChainIteratorOf(SortedChainOf<T, V> *vchain):
+	SortedChainIterator(vchain)
 	{
 	}
 
 	template <class T, class V>
-		SortedChainIteratorOf<T, V>::SortedChainIteratorOf(
-			const SortedChainIteratorOf<T, V> &iterator
+	SortedChainIteratorOf<T, V>::SortedChainIteratorOf(
+		const SortedChainIteratorOf<T, V> &iterator
 		):
-			SortedChainIterator(&iterator)
+	SortedChainIterator(&iterator)
 	{
 	}
 
@@ -593,8 +595,9 @@ namespace Stuff {
 	}
 
 	template <class T, class V>
-		SortedChainIteratorOf<T, V>::~SortedChainIteratorOf()
+	SortedChainIteratorOf<T, V>::~SortedChainIteratorOf()
 	{
 	}
 
 }
+#endif

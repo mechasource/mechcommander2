@@ -6,8 +6,13 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+#include <gameos.hpp>
+#include <stuff/node.hpp>
+#include <stuff/tree.hpp>
+
+using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ TreeNode ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -16,11 +21,8 @@
 // TreeNode
 //###########################################################################
 //
-TreeNode::TreeNode(
-	Tree *tree,
-	Plug *plug
-):
-	Link(tree, plug)
+TreeNode::TreeNode(Tree *tree, Plug *plug)
+	: Link(tree, plug)
 {
 	less = NULL;
 	greater = NULL;
@@ -79,10 +81,10 @@ TreeNode::~TreeNode()
 //###########################################################################
 //
 void
-	TreeNode::TestInstance()
+TreeNode::TestInstance(void)
 {
 	Link::TestInstance();
-	
+
 	if (less != NULL)
 	{
 		Check_Signature(less);
@@ -102,12 +104,7 @@ void
 // SetupTreeLinks
 //###########################################################################
 //
-void
-	TreeNode::SetupTreeLinks(
-		TreeNode *less,
-		TreeNode *greater,
-		TreeNode *parent
-	)
+void TreeNode::SetupTreeLinks(TreeNode *less, TreeNode *greater, TreeNode *parent)
 {
 	Check_Object(this);
 	this->less = less;
@@ -122,11 +119,8 @@ void
 // Tree
 //###########################################################################
 //
-Tree::Tree(
-	Node *node,
-	bool has_unique_entries
-):
-	SortedSocket(node, has_unique_entries)
+Tree::Tree(Node *node, bool has_unique_entries)
+	: SortedSocket(node, has_unique_entries)
 {
 	root = NULL;
 }
@@ -153,7 +147,7 @@ Tree::~Tree()
 //###########################################################################
 //
 void
-	Tree::TestInstance()
+Tree::TestInstance()
 {
 	SortedSocket::TestInstance();
 
@@ -172,9 +166,9 @@ void
 //###########################################################################
 //
 void
-	Tree::AddImplementation(
-		Plug *plug
-	)
+Tree::AddImplementation(
+						Plug *plug
+						)
 {
 	Check_Object(this);
 	AddValueImplementation(plug, NULL);	
@@ -186,31 +180,31 @@ void
 //###########################################################################
 //
 void
-	Tree::AddValueImplementation(
-		Plug *plug,
-		const void *value
-	)
+Tree::AddValueImplementation(
+							 Plug *plug,
+							 PCVOID value
+							 )
 {
 	Check_Object(this);
 	Check_Object(plug);
 
 	/*
-	 * Verify that value has not been added
-	 */
+	* Verify that value has not been added
+	*/
 	Verify(HasUniqueEntries() ? SearchForValue(value) == NULL : true);
 
 	/*
-	 * Make new tree node
-	 */
+	* Make new tree node
+	*/
 	TreeNode *node;
 
 	node = MakeTreeNode(plug, value);
 	Register_Object(node);
 
 	/*
-	 * Add to the tree and send iterators memo to
-	 * update pointers
-	 */
+	* Add to the tree and send iterators memo to
+	* update pointers
+	*/
 	AddTreeNode(node);
 	SendIteratorMemo(PlugAdded, node);
 }
@@ -221,9 +215,9 @@ void
 //###########################################################################
 //
 Plug*
-	Tree::FindImplementation(
-		const void *value
-	)
+Tree::FindImplementation(
+						 PCVOID value
+						 )
 {
 	Check_Object(this);
 	TreeNode *node;
@@ -242,7 +236,7 @@ Plug*
 //#############################################################################
 //
 bool
-	Tree::IsEmpty()
+Tree::IsEmpty()
 {
 	Check_Object(this);
 	return (root == NULL);
@@ -254,10 +248,10 @@ bool
 //###########################################################################
 //
 TreeNode*
-	Tree::MakeTreeNode(
-      Plug*,
-      const void*
-   )
+Tree::MakeTreeNode(
+				   Plug*,
+				   PCVOID
+				   )
 {
 	Check_Object(this);
 	STOP(("Tree::MakeTreeNode - Should never reach here"));
@@ -270,14 +264,14 @@ TreeNode*
 //###########################################################################
 //
 int
-   Tree::CompareTreeNodes(
-      TreeNode*,
-      TreeNode*
-   )
+Tree::CompareTreeNodes(
+					   TreeNode*,
+					   TreeNode*
+					   )
 {
 	Check_Object(this);
 	STOP(("Tree::CompareTreeNodes - Should never reach here"));
-   return 0;
+	return 0;
 }
 
 //
@@ -286,14 +280,14 @@ int
 //###########################################################################
 //
 int
-   Tree::CompareValueToTreeNode(
-      const void*,
-      TreeNode*
-   )
+Tree::CompareValueToTreeNode(
+							 PCVOID,
+							 TreeNode*
+							 )
 {
 	Check_Object(this);
 	STOP(("Tree::CompareValueToTreeNode - Should never reach here"));
-   return 0;
+	return 0;
 }
 
 //
@@ -302,16 +296,16 @@ int
 //###########################################################################
 //
 void
-	Tree::AddTreeNode(
-		TreeNode *newNode
-	)
+Tree::AddTreeNode(
+				  TreeNode *newNode
+				  )
 {
 	Check_Object(this);
 	Check_Object(newNode);
 
 	/*
-	 * If root is NULL this is the first item
-	 */
+	* If root is NULL this is the first item
+	*/
 	if (root == NULL)
 	{
 		newNode->SetupTreeLinks(NULL, NULL, NULL);
@@ -320,15 +314,15 @@ void
 	}
 
 	/*
-	 * Search for insertion point
-	 */
+	* Search for insertion point
+	*/
 	TreeNode *node;
 
 	node = root;
 	while (node != NULL) 
 	{
 		Check_Object(node);
-		
+
 		if (CompareTreeNodes(newNode, node) < 0) 
 		{
 			if (node->less == NULL) 
@@ -360,9 +354,9 @@ void
 //###########################################################################
 //
 void
-	Tree::SeverFromTreeNode(
-		TreeNode *node
-	)
+Tree::SeverFromTreeNode(
+						TreeNode *node
+						)
 {
 	Check_Object(this);
 	Check_Object(node);
@@ -558,9 +552,9 @@ void
 //###########################################################################
 //
 TreeNode*
-	Tree::SearchForValue(
-		const void *value
-	)
+Tree::SearchForValue(
+					 PCVOID value
+					 )
 {
 	Check_Object(this);
 	TreeNode *node;
@@ -583,13 +577,13 @@ TreeNode*
 //###########################################################################
 //
 TreeIterator::TreeIterator(Tree *tree):
-	SortedIterator(tree)
+SortedIterator(tree)
 {
 	First();
 }
 
 Iterator*
-	TreeIterator::MakeClone()
+TreeIterator::MakeClone()
 {
 	Check_Object(this);
 	return new TreeIterator(*this);
@@ -610,10 +604,10 @@ TreeIterator::~TreeIterator()
 //###########################################################################
 //
 void
-	TreeIterator::TestInstance()
+TreeIterator::TestInstance()
 {
 	SortedIterator::TestInstance();
-	
+
 	if (currentNode != NULL) 
 	{
 		Check_Object(currentNode);
@@ -626,7 +620,7 @@ void
 //###########################################################################
 //
 void
-	TreeIterator::First()
+TreeIterator::First()
 {
 	TreeNode *node;
 
@@ -648,18 +642,17 @@ void
 // Last
 //###########################################################################
 //
-void
-	TreeIterator::Last()
+void TreeIterator::Last()
 {
 	Check_Object(this);
 	//
 	// Should never reach here
 	//
-	#ifdef __BCPLUSPLUS__
-		#pragma warn -ccc
-			Verify(False);
-		#pragma warn +ccc
-	#endif
+#ifdef __BCPLUSPLUS__
+#pragma warn -ccc
+	Verify(False);
+#pragma warn +ccc
+#endif
 }
 
 //
@@ -667,15 +660,14 @@ void
 // Next
 //###########################################################################
 //
-void
-	TreeIterator::Next()
+void TreeIterator::Next()
 {
 	Check_Object(this);
 	TreeNode *node;
-	
+
 	if ((node = currentNode) == NULL)
 		return;
-	
+
 	Check_Object(node);
 	if (node->greater != NULL) 
 	{
@@ -689,7 +681,7 @@ void
 		currentNode = node;
 		return;
 	}
-	
+
 	currentNode = NULL;
 	while (node->parent != NULL)
 	{
@@ -710,17 +702,17 @@ void
 //###########################################################################
 //
 void
-	TreeIterator::Previous()
+TreeIterator::Previous()
 {
 	Check_Object(this);
 	//
 	// Should never reach here
 	//
-	#ifdef __BCPLUSPLUS__
-		#pragma warn -ccc
-			Verify(False);
-		#pragma warn +ccc
-	#endif
+#ifdef __BCPLUSPLUS__
+#pragma warn -ccc
+	Verify(False);
+#pragma warn +ccc
+#endif
 }
 
 #if 0
@@ -730,10 +722,10 @@ void
 //###########################################################################
 //
 void
-	*TreeIterator::ReadAndNextImplementation()
+*TreeIterator::ReadAndNextImplementation()
 {
 	Check_Object(this);
-	void *plug;
+	PVOIDplug;
 
 	if ((plug = GetCurrentImplementation()) != NULL)
 	{
@@ -750,14 +742,14 @@ void
 //###########################################################################
 //
 void
-	*TreeIterator::ReadAndPreviousImplementation()
+*TreeIterator::ReadAndPreviousImplementation()
 {
 	Check_Object(this);
-	#ifdef __BCPLUSPLUS__
-		#pragma warn -ccc
-			Verify(False);
-		#pragma warn +ccc
-	#endif
+#ifdef __BCPLUSPLUS__
+#pragma warn -ccc
+	Verify(False);
+#pragma warn +ccc
+#endif
 	return(NULL);
 }
 #endif
@@ -768,7 +760,7 @@ void
 //###########################################################################
 //
 void
-	*TreeIterator::GetCurrentImplementation()
+*TreeIterator::GetCurrentImplementation()
 {
 	Check_Object(this);
 	if (currentNode != NULL)
@@ -785,7 +777,7 @@ void
 //###########################################################################
 //
 CollectionSize
-	TreeIterator::GetSize()
+TreeIterator::GetSize()
 {
 	Check_Object(this);
 	TreeIterator	iterator(Cast_Object(Tree*, socket));
@@ -805,9 +797,9 @@ CollectionSize
 //###########################################################################
 //
 void
-	*TreeIterator::GetNthImplementation(
-		CollectionSize index
-	)
+*TreeIterator::GetNthImplementation(
+									CollectionSize index
+									)
 {
 	Check_Object(this);
 	CollectionSize i = 0;
@@ -831,7 +823,7 @@ void
 //###########################################################################
 //
 void
-	TreeIterator::Remove()
+TreeIterator::Remove()
 {
 	Check_Object(this);
 	if (currentNode != NULL)
@@ -847,13 +839,13 @@ void
 //###########################################################################
 //
 Plug*
-	TreeIterator::FindImplementation(
-		const void *value
-	)
+TreeIterator::FindImplementation(
+								 PCVOID value
+								 )
 {
 	Check_Object(this);
 	TreeNode *node;
-	
+
 	if ((node = Cast_Object(Tree*, socket)->SearchForValue(value)) != NULL)
 	{
 		Check_Object(node);
@@ -868,10 +860,10 @@ Plug*
 //###########################################################################
 //
 void
-	TreeIterator::ReceiveMemo(
-		IteratorMemo memo,
-		void *content
-	)
+TreeIterator::ReceiveMemo(
+						  IteratorMemo memo,
+						  PVOID content
+						  )
 {
 	Check_Object(this);
 	if (memo == PlugRemoved)

@@ -7,7 +7,9 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _SAFESOCKET_HPP_
+#define _SAFESOCKET_HPP_
+
 #include <stuff/socket.hpp>
 
 namespace Stuff {
@@ -41,7 +43,7 @@ namespace Stuff {
 		void
 			SendIteratorMemo(
 				IteratorMemo memo,
-				void *content
+				PVOID content
 			);
 
 	private:
@@ -67,7 +69,7 @@ namespace Stuff {
 		virtual void
 			ReceiveMemo(
 				IteratorMemo memo,
-				void *content
+				PVOID content
 			);
 
 		SafeIterator *nextIterator;
@@ -75,3 +77,4 @@ namespace Stuff {
 	};
 
 }
+#endif

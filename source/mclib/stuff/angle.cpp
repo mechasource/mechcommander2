@@ -6,8 +6,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/angle.hpp>
+
+using namespace Stuff;
 
 //
 //#############################################################################
@@ -111,41 +115,29 @@ SinCosPair&
 //#############################################################################
 //
 #if !defined(Spew)
-	void
-		Spew(
-			PCSTR group,
-			const Radian& angle
-		)
-	{
-		Check_Object(&angle);
-		SPEW((group, "%f rad+", angle.angle));
-	}
+void Spew(PCSTR group, const Radian& angle)
+{
+	Check_Object(&angle);
+	SPEW((group, "%f rad+", angle.angle));
+}
 
-	//
-	//#############################################################################
-	//#############################################################################
-	//
-	void
-		Spew(
-			PCSTR group,
-			const Degree& angle
-		)
-	{
-		Check_Object(&angle);
-		SPEW((group, "%f deg+", angle.angle));
-	}
+//
+//#############################################################################
+//#############################################################################
+//
+void Spew(PCSTR group,const Degree& angle)
+{
+	Check_Object(&angle);
+	SPEW((group, "%f deg+", angle.angle));
+}
 
-	//
-	//#############################################################################
-	//#############################################################################
-	//
-	void
-		Spew(
-			PCSTR group,
-			const SinCosPair& angle
-		)
-	{
-		Check_Object(&angle);
-		SPEW((group, "{%f,%f}+", angle.cosine, angle.sine));
-	}
+//
+//#############################################################################
+//#############################################################################
+//
+void Spew(PCSTR group, const SinCosPair& angle)
+{
+	Check_Object(&angle);
+	SPEW((group, "{%f,%f}+", angle.cosine, angle.sine));
+}
 #endif

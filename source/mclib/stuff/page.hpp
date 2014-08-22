@@ -9,8 +9,14 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _PAGE_HPP_
+#define _PAGE_HPP_
+
 #include <stuff/notationfile.hpp>
+#include <stuff/vector3d.hpp>
+#include <stuff/rotation.hpp>
+#include <stuff/motion.hpp>
+#include <stuff/color.hpp>
 
 namespace Stuff {
 
@@ -24,9 +30,9 @@ namespace Stuff {
 		friend class NotationFile;
 		friend class Note;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructor/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructor/Destructors
+		//
 	protected:
 		Page(NotationFile *notation_file);
 		~Page();
@@ -37,18 +43,18 @@ namespace Stuff {
 	public:
 		NotationFile*
 			GetNotationFile()
-				{Check_Object(this); return m_notationFile;}
+		{Check_Object(this); return m_notationFile;}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Page functions
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Page functions
+		//
 	public:
 		void
 			SetName(PCSTR pagename)
-				{Check_Object(this); m_name = pagename;}
+		{Check_Object(this); m_name = pagename;}
 		PCSTR
 			GetName() const
-				{ Check_Object(this); return m_name; }
+		{ Check_Object(this); return m_name; }
 
 		void
 			WriteNotes(MemoryStream *stream);
@@ -59,28 +65,28 @@ namespace Stuff {
 
 		void
 			SetDirty()
-				{Check_Object(this); Check_Object(m_notationFile); m_notationFile->SetDirty();}
+		{Check_Object(this); Check_Object(m_notationFile); m_notationFile->SetDirty();}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Entry access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Entry access
+		//
 	public:
 		bool
 			IsEmpty()
-				{Check_Object(this); return m_notes.IsEmpty();}
+		{Check_Object(this); return m_notes.IsEmpty();}
 
 		bool
 			DoesNoteExist(PCSTR entryname)
-				{Check_Object(this); return FindNote(entryname) != NULL;}
+		{Check_Object(this); return FindNote(entryname) != NULL;}
 		Note*
 			FindNote(PCSTR entryname);
 		Note*
-			GetNote(unsigned index);
+			GetNote(uint32_t index);
 
 		typedef ChainIteratorOf<Note*> NoteIterator;
 		NoteIterator*
 			MakeNoteIterator()
-				{Check_Object(this); return new NoteIterator(&m_notes);}
+		{Check_Object(this); return new NoteIterator(&m_notes);}
 
 		ChainOf<Note*>*
 			MakeNoteChain(PCSTR prefix);
@@ -99,235 +105,235 @@ namespace Stuff {
 		ChainOf<Note*>
 			m_notes;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// string access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// string access
+		//
 	public:
 		bool
 			GetEntry(
-				PCSTR entryname,
-				PCSTR *contents,
-				bool required=false
+			PCSTR entryname,
+			PCSTR *contents,
+			bool required=false
 			);
 		void
 			SetEntry(
-				PCSTR entryname,
-				PCSTR contents
+			PCSTR entryname,
+			PCSTR contents
 			);
 		void
 			AppendEntry(
-				PCSTR entryname,
-				PCSTR contents
+			PCSTR entryname,
+			PCSTR contents
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// int access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// int access
+		//
 	public:
 		bool
 			GetEntry(
-				PCSTR entryname,
-				int *value,
-				bool required=false
+			PCSTR entryname,
+			int *value,
+			bool required=false
 			);
 		void
 			SetEntry(
-				PCSTR entryname,
-				int value
+			PCSTR entryname,
+			int value
 			);
 		void
 			AppendEntry(
-				PCSTR entryname,
-				int value
+			PCSTR entryname,
+			int value
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// scalar access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// scalar access
+		//
 	public:
 		bool
 			GetEntry(
-				PCSTR entryname,
-				Scalar *value,
-				bool required=false
+			PCSTR entryname,
+			Scalar *value,
+			bool required=false
 			);
 		void
 			SetEntry(
-				PCSTR entryname,
-				Scalar value
+			PCSTR entryname,
+			Scalar value
 			);
 		void
 			AppendEntry(
-				PCSTR entryname,
-				Scalar value
+			PCSTR entryname,
+			Scalar value
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// bool access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// bool access
+		//
 	public:
 		bool
 			GetEntry(
-				PCSTR entryname,
-				bool *value,
-				bool required=false
+			PCSTR entryname,
+			bool *value,
+			bool required=false
 			);
 		void
 			SetEntry(
-				PCSTR entryname,
-				bool value
+			PCSTR entryname,
+			bool value
 			);
 		void
 			AppendEntry(
-				PCSTR entryname,
-				bool value
+			PCSTR entryname,
+			bool value
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Vector3D access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Vector3D access
+		//
 	public:
 		bool
 			GetEntry(
-				PCSTR entryname,
-				Vector3D *value,
-				bool required=false
+			PCSTR entryname,
+			Vector3D *value,
+			bool required=false
 			);
 		void
 			SetEntry(
-				PCSTR entryname,
-				const Vector3D &value
+			PCSTR entryname,
+			const Vector3D &value
 			);
 		void
 			AppendEntry(
-				PCSTR entryname,
-				const Vector3D &value
+			PCSTR entryname,
+			const Vector3D &value
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// YawPitchRoll access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// YawPitchRoll access
+		//
 	public:
 		bool
 			GetEntry(
-				PCSTR entryname,
-				YawPitchRoll *value,
-				bool required=false
+			PCSTR entryname,
+			YawPitchRoll *value,
+			bool required=false
 			);
 		void
 			SetEntry(
-				PCSTR entryname,
-				const YawPitchRoll &value
+			PCSTR entryname,
+			const YawPitchRoll &value
 			);
 		void
 			AppendEntry(
-				PCSTR entryname,
-				const YawPitchRoll &value
+			PCSTR entryname,
+			const YawPitchRoll &value
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// UnitQuaternion access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// UnitQuaternion access
+		//
 	public:
 		bool
 			GetEntry(
-				PCSTR entryname,
-				UnitQuaternion *value,
-				bool required=false
+			PCSTR entryname,
+			UnitQuaternion *value,
+			bool required=false
 			);
 		void
 			SetEntry(
-				PCSTR entryname,
-				const UnitQuaternion &value
+			PCSTR entryname,
+			const UnitQuaternion &value
 			);
 		void
 			AppendEntry(
-				PCSTR entryname,
-				const UnitQuaternion &value
+			PCSTR entryname,
+			const UnitQuaternion &value
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Motion3D access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Motion3D access
+		//
 	public:
 		bool
 			GetEntry(
-				PCSTR entryname,
-				Motion3D *value,
-				bool required=false
+			PCSTR entryname,
+			Motion3D *value,
+			bool required=false
 			);
 		void
 			SetEntry(
-				PCSTR entryname,
-				const Motion3D &value
+			PCSTR entryname,
+			const Motion3D &value
 			);
 		void
 			AppendEntry(
-				PCSTR entryname,
-				const Motion3D &value
+			PCSTR entryname,
+			const Motion3D &value
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// RGBColor access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// RGBColor access
+		//
 	public:
 		bool
 			GetEntry(
-				PCSTR entryname,
-				RGBColor *value,
-				bool required=false
+			PCSTR entryname,
+			RGBColor *value,
+			bool required=false
 			);
 		void
 			SetEntry(
-				PCSTR entryname,
-				const RGBColor &value
+			PCSTR entryname,
+			const RGBColor &value
 			);
 		void
 			AppendEntry(
-				PCSTR entryname,
-				const RGBColor &value
+			PCSTR entryname,
+			const RGBColor &value
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// RGBAColor access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// RGBAColor access
+		//
 	public:
 		bool
 			GetEntry(
-				PCSTR entryname,
-				RGBAColor *value,
-				bool required=false
+			PCSTR entryname,
+			RGBAColor *value,
+			bool required=false
 			);
 		void
 			SetEntry(
-				PCSTR entryname,
-				const RGBAColor &value
+			PCSTR entryname,
+			const RGBAColor &value
 			);
 		void
 			AppendEntry(
-				PCSTR entryname,
-				const RGBAColor &value
+			PCSTR entryname,
+			const RGBAColor &value
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// NotationFile access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// NotationFile access
+		//
 	public:
 		bool
 			GetEntry(
-				PCSTR entryname,
-				NotationFile *value,
-				bool required=false
+			PCSTR entryname,
+			NotationFile *value,
+			bool required=false
 			);
 		void
 			SetEntry(
-				PCSTR entryname,
-				NotationFile *value
+			PCSTR entryname,
+			NotationFile *value
 			);
 		void
 			AppendEntry(
-				PCSTR entryname,
-				NotationFile *value
+			PCSTR entryname,
+			NotationFile *value
 			);
 
 	public:
@@ -336,3 +342,4 @@ namespace Stuff {
 	};
 
 }
+#endif

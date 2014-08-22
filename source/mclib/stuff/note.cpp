@@ -8,7 +8,15 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+
+#include <gameos.hpp>
+#include <stuff/angle.hpp>
+#include <stuff/rotation.hpp>
+#include <stuff/note.hpp>
+
+using namespace Stuff;
 
 
 #define MAX_LINE_SIZE 512
@@ -165,8 +173,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	Note::GetEntry(YawPitchRoll *value)
+void Note::GetEntry(YawPitchRoll* value)
 {
 	Check_Object(this);
 	Check_Pointer(value);
@@ -180,8 +187,7 @@ void
 			"%f %f %f",
 			&value->yaw,
 			&value->pitch,
-			&value->roll
-		);
+			&value->roll);
 	if (count != 3)
 	{
 		Page *page = m_page;
@@ -268,8 +274,7 @@ void
 {
 	Check_Object(this);
 
-	static char
-		contents[32];
+	static char contents[32];
 	YawPitchRoll ypr(value);
 	Verify(strlen(contents) < sizeof(contents));
 	sprintf(

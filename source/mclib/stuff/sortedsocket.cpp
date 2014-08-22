@@ -6,14 +6,16 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
+#include <stuff/sortedsocket.hpp>
+
+using namespace Stuff;
 
 
-SortedSocket::SortedSocket(
-	Node *node,
-	bool has_unique_entries
-):
-	SafeSocket(node)
+SortedSocket::SortedSocket(Node *node, bool has_unique_entries)
+	: SafeSocket(node)
 {
 	hasUniqueEntries = has_unique_entries;
 }
@@ -23,18 +25,13 @@ SortedSocket::~SortedSocket()
 	Check_Object(this);
 }
 
-void
-	SortedSocket::AddValueImplementation(
-		Plug*,
-		const void*
-	)
+void SortedSocket::AddValueImplementation(Plug*, PCVOID)
 {
 	Check_Object(this);
 	STOP(("SortedSocket::AddValueImplementation - Should never reach here"));
 }
 
-Plug*
-	SortedSocket::FindImplementation(const void*)
+Plug* SortedSocket::FindImplementation(PCVOID)
 {
 	Check_Object(this);
 	STOP(("SortedSocket::FindImplementation - Should never reach here"));
@@ -42,7 +39,7 @@ Plug*
 }
 
 SortedIterator::SortedIterator(SortedSocket *sortedSocket):
-	SafeIterator(sortedSocket)
+SafeIterator(sortedSocket)
 {
 }
 
@@ -52,15 +49,15 @@ SortedIterator::~SortedIterator()
 }
 
 Plug*
-	SortedIterator::FindImplementation(const void*)
+SortedIterator::FindImplementation(PCVOID)
 {
 	Check_Object(this);
 	STOP(("SortedIterator::FindImplementation - Should never reach here"));
 	return NULL;
 }
 
-void*
-	SortedIterator::GetValueImplementation()
+PVOID
+SortedIterator::GetValueImplementation()
 {
 	Check_Object(this);
 	STOP(("SortedIterator::GetValueImplementation - Should never reach here"));

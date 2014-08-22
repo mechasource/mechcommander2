@@ -8,7 +8,13 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
+#include <stuff/note.hpp>
+#include <stuff/page.hpp>
+
+using namespace Stuff;
 
 #define MAX_LINE_SIZE 512
 
@@ -74,7 +80,7 @@ Note*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Note*
-	Page::GetNote(unsigned i)
+	Page::GetNote(uint32_t i)
 {
 	Check_Object(this);
 
@@ -94,7 +100,7 @@ ChainOf<Note*>*
 	Note *note;
 	ChainOf<Note*>* chain = new ChainOf<Note*>(NULL);
 	Check_Object(chain);
-	int len = strlen(entryname);
+	size_t len = strlen(entryname);
 	while ((note = notes.ReadAndNext()) != NULL)
 	{
 		Check_Object(note);

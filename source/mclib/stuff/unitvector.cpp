@@ -6,8 +6,13 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/unitvector.hpp>
+
+using namespace Stuff;
 
 const UnitVector3D
 	UnitVector3D::Forward(FORWARD_X, FORWARD_Y, FORWARD_Z);

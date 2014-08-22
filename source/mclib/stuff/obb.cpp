@@ -3,11 +3,15 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/obb.hpp>
 
-OBB
-	OBB::Identity(LinearMatrix4D::Identity, Vector3D::Identity, 0.0f);
+using namespace Stuff;
+
+OBB OBB::Identity(LinearMatrix4D::Identity, Vector3D::Identity, 0.0f);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //

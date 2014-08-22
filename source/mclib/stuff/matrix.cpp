@@ -6,7 +6,14 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/matrix.hpp>
+
+using namespace Stuff;
+
 
 
 const Matrix4D

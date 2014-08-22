@@ -6,7 +6,10 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _AVERAGE_HPP_
+#define _AVERAGE_HPP_
+
+//#include <stuff/stuff.hpp>
 
 namespace Stuff {
 
@@ -15,9 +18,9 @@ namespace Stuff {
 	//##########################################################################
 
 	template <class T> class AverageOf
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 	public:
 		//
@@ -29,12 +32,12 @@ namespace Stuff {
 		AverageOf(
 			size_t size,
 			T initial=(T)0
-		);
+			);
 		~AverageOf();
 
 		void
 			TestInstance() const
-				{Check_Pointer(array); Verify(next < size);}
+		{Check_Pointer(array); Verify(next < size);}
 
 		//
 		//-----------------------------------------------------------------------
@@ -43,8 +46,8 @@ namespace Stuff {
 		//
 		void
 			SetSize(
-				size_t size,
-				T initial=(T)0
+			size_t size,
+			T initial=(T)0
 			);
 
 		//
@@ -105,16 +108,16 @@ namespace Stuff {
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	template <class T>
-		AverageOf<T>::AverageOf()
+	AverageOf<T>::AverageOf()
 	{
 		array = NULL;
 	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	template <class T>
-		AverageOf<T>::AverageOf(
-			size_t the_size,
-			T initial
+	AverageOf<T>::AverageOf(
+		size_t the_size,
+		T initial
 		)
 	{
 		array = NULL;
@@ -124,8 +127,8 @@ namespace Stuff {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	template <class T> void
 		AverageOf<T>::SetSize(
-			size_t the_size,
-			T initial
+		size_t the_size,
+		T initial
 		)
 	{
 		if (array != NULL)
@@ -149,7 +152,7 @@ namespace Stuff {
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	template <class T>
-		AverageOf<T>::~AverageOf()
+	AverageOf<T>::~AverageOf()
 	{
 		Unregister_Pointer(array);
 		delete[] array;
@@ -293,9 +296,9 @@ namespace Stuff {
 	//##########################################################################
 
 	template <class T> class StaticAverageOf
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 	public:
 		//
@@ -304,13 +307,13 @@ namespace Stuff {
 		//-----------------------------------------------------------------------
 		//
 		StaticAverageOf()
-			{size = (size_t)(T)0; total = (T)0;}
+		{size = (size_t)(T)0; total = (T)0;}
 		~StaticAverageOf()
-			{}
+		{}
 
 		void
 			TestInstance() const
-				{}
+		{}
 
 		//
 		//-----------------------------------------------------------------------
@@ -319,7 +322,7 @@ namespace Stuff {
 		//
 		void
 			Add(T value)
-				{Check_Object(this); size++; total += value;}
+		{Check_Object(this); size++; total += value;}
 
 		//
 		//-----------------------------------------------------------------------
@@ -328,7 +331,7 @@ namespace Stuff {
 		//
 		T
 			CalculateAverage()
-				{Check_Object(this); return (size == 0) ? ((T)0) : (total / (T)size);}
+		{Check_Object(this); return (size == 0) ? ((T)0) : (total / (T)size);}
 
 		//
 		//-----------------------------------------------------------------------
@@ -337,7 +340,7 @@ namespace Stuff {
 		//
 		size_t
 			GetSize()
-				{Check_Object(this); return size;}
+		{Check_Object(this); return size;}
 
 	private:
 		//
@@ -350,3 +353,4 @@ namespace Stuff {
 	};
 
 }
+#endif

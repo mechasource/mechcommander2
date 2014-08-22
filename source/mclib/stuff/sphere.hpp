@@ -5,7 +5,9 @@
 //===========================================================================//
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _SPHERE_HPP_
+#define _SPHERE_HPP_
+
 #include <stuff/point3d.hpp>
 
 namespace Stuff {class Sphere;}
@@ -111,3 +113,4 @@ namespace Stuff {
 	};
 
 }
+#endif

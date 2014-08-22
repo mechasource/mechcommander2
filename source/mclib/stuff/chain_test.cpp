@@ -15,9 +15,9 @@ class ChainTestPlug:
 	public Plug
 {
 public:
-	long value;
+	int32_t value;
 
-	ChainTestPlug(long value);
+	ChainTestPlug(int32_t value);
 	~ChainTestPlug();
 };
 
@@ -37,7 +37,7 @@ public:
 	bool RunTest();
 };
 
-ChainTestPlug::ChainTestPlug(long value):
+ChainTestPlug::ChainTestPlug(int32_t value):
 	Plug(DefaultData)
 {
 	this->value = value;

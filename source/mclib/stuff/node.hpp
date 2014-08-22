@@ -7,8 +7,10 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
-#include <stuff/socket.hpp>
+#ifndef _NODE_HPP_
+#define _NODE_HPP_
+
+#include <stuff/plug.hpp>
 
 namespace Stuff {
 
@@ -55,3 +57,5 @@ namespace Stuff {
 	};
 
 }
+
+#endif

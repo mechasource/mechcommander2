@@ -10,7 +10,9 @@ This header and class is not used
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _MATRIXSTACK_HPP_
+#define _MATRIXSTACK_HPP_
+
 #include <stuff/memoryblock.hpp>
 #include <stuff/matrix.hpp>
 #include <stuff/linearmatrix.hpp>
@@ -22,14 +24,14 @@ namespace Stuff {
 	class AffinerMatrix4DStack:
 		public MemoryStackOf<AffineMatrix4D>
 	{
-	 public:
+	public:
 		AffinerMatrix4DStack(
 			size_t start,
 			size_t delta,
 			PCSTR name
-		):
-			MemoryStackOf<AffineMatrix4D>(start, delta, name)
-				{}
+			):
+		MemoryStackOf<AffineMatrix4D>(start, delta, name)
+		{}
 
 		AffinerMatrix4DStack&
 			Concatenate(const AffineMatrix4D& matrix);
@@ -38,7 +40,7 @@ namespace Stuff {
 			Push(const AffineMatrix4D& matrix);
 
 		operator AffineMatrix4D&()
-			{Check_Object(this); return *Peek();}
+		{Check_Object(this); return *Peek();}
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~ LinearMatrix4DStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,14 +48,14 @@ namespace Stuff {
 	class LinearMatrix4DStack:
 		public MemoryStackOf<LinearMatrix4D>
 	{
-	 public:
+	public:
 		LinearMatrix4DStack(
 			size_t start,
 			size_t delta,
 			PCSTR name
-		):
-			MemoryStackOf<LinearMatrix4D>(start, delta, name)
-				{}
+			):
+		MemoryStackOf<LinearMatrix4D>(start, delta, name)
+		{}
 
 		LinearMatrix4DStack&
 			Concatenate(const LinearMatrix4D& matrix);
@@ -62,7 +64,7 @@ namespace Stuff {
 			Push(const LinearMatrix4D& matrix);
 
 		operator LinearMatrix4D&()
-			{Check_Object(this); return *Peek();}
+		{Check_Object(this); return *Peek();}
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~ Matrix4DStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -70,14 +72,14 @@ namespace Stuff {
 	class Matrix4DStack:
 		public MemoryStackOf<Matrix4D>
 	{
-	 public:
+	public:
 		Matrix4DStack(
 			size_t start,
 			size_t delta,
 			PCSTR name
-		):
-			MemoryStackOf<Matrix4D>(start, delta, name)
-				{}
+			):
+		MemoryStackOf<Matrix4D>(start, delta, name)
+		{}
 
 		Matrix4DStack&
 			Concatenate(const Matrix4D& matrix);
@@ -90,7 +92,8 @@ namespace Stuff {
 			Push(const AffineMatrix4D& matrix);
 
 		operator Matrix4D&()
-			{Check_Object(this); return *Peek();}
+		{Check_Object(this); return *Peek();}
 	};
 
 }
+#endif

@@ -6,8 +6,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/sphere.hpp>
+#include <stuff/linearmatrix.hpp>
+#include <stuff/obb.hpp>
+#include <stuff/extentbox.hpp>
+#include <stuff/plane.hpp>
+
+using namespace Stuff;
 
 //
 //#############################################################################
@@ -289,7 +298,7 @@ bool
 	// Compute the sums
 	//-----------------
 	//
-	unsigned count = points.GetLength();
+	size_t count = points.GetLength();
 	Verify(count > 1);
 	Point3D sum = Point3D::Identity;
 	Scalar xx = 0.0f;
@@ -298,7 +307,7 @@ bool
 	Scalar yy = 0.0f;
 	Scalar yz = 0.0f;
 	Scalar zz = 0.0f;
-	unsigned i;
+	uint32_t i;
 	for (i=0; i<count; i++) 
 	{
 		sum += points[i];

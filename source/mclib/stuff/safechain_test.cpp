@@ -15,9 +15,9 @@ class SafeChainTestPlug:
 	public Plug
 {
 public:
-	long value;
+	int32_t value;
 		
-	SafeChainTestPlug(long value);
+	SafeChainTestPlug(int32_t value);
 	~SafeChainTestPlug();
 };
 
@@ -36,7 +36,7 @@ public:
 	bool RunTest();
 };
 
-SafeChainTestPlug::SafeChainTestPlug(long value):
+SafeChainTestPlug::SafeChainTestPlug(int32_t value):
 	Plug(DefaultData)
 {
 	this->value = value;

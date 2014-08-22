@@ -1,7 +1,7 @@
 //===========================================================================//
 // File:     namelist.tst                                                    //
 // Title:    Definition of NameList TestClass methods.                       //
-// Purpose:  Maintains an unsorted list of strings with (void *) to          //
+// Purpose:  Maintains an unsorted list of strings with (PVOID) to          //
 //           anything the client needs to associate with the string.         //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //

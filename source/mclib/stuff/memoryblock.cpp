@@ -6,16 +6,23 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+#include <gameos.hpp>
+#include <stuff/memoryblock.hpp>
+
+using namespace Stuff;
+
+#ifndef GROUP_STUFF_MEMORY
+#define GROUP_STUFF_MEMORY "Stuff::Memory"
+#endif
 
 //#define MEMORY_VERIFY
 //#define MEMORY_BLOCK_VERIFY
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlockBase ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MemoryBlockBase*
-	MemoryBlockBase::firstBlock = NULL;
+MemoryBlockBase* MemoryBlockBase::firstBlock = NULL;
 
 //
 //#############################################################################
@@ -71,7 +78,7 @@ MemoryBlockBase::MemoryBlockBase(
 		blockMemory =
 			Cast_Pointer(
 				MemoryBlockHeader*,
-				new(blockHeap) BYTE[sizeof(MemoryBlockHeader) + blockSize]
+				new(blockHeap) UCHAR[sizeof(MemoryBlockHeader) + blockSize]
 			);
 		Check_Object(blockMemory);
 		blockMemory->nextBlock = NULL;
@@ -84,7 +91,7 @@ MemoryBlockBase::MemoryBlockBase(
 		// deletedRecord records yet, so make sure Deleted is NULL
 		//--------------------------------------------------------------------
 		//
-		firstHeaderRecord = Cast_Pointer(PUCHAR, blockMemory + 1);
+		firstHeaderRecord = Cast_Pointer(puint8_t, blockMemory + 1);
 		Check_Pointer(firstHeaderRecord);
 		freeRecord = firstHeaderRecord;
 		deletedRecord = NULL;
@@ -188,8 +195,7 @@ Unlink:
 //
 //#############################################################################
 //
-void*
-	MemoryBlockBase::Grow()
+PVOID MemoryBlockBase::Grow(void)
 {
 	#if defined(MEMORY_VERIFY)
 		STOP(("MemoryBlockBase::Grow() not available!\n"));
@@ -202,9 +208,9 @@ void*
 	//------------------------------------------------------------------------
 	//
 	Check_Object(this);
-	if (freeRecord - firstHeaderRecord <= blockSize - recordSize)
+	if (intptr_t(freeRecord - firstHeaderRecord) <= intptr_t(blockSize - recordSize))
 	{
-		void *result = freeRecord;
+		PVOID result = freeRecord;
 		freeRecord += recordSize;
 		return result;
 	}
@@ -219,7 +225,7 @@ void*
 	//
 	blockSize = deltaSize;
 	firstHeaderRecord -= sizeof(MemoryBlockHeader);
-	BYTE *new_block = new(blockHeap) BYTE[blockSize + sizeof(MemoryBlockHeader)];
+	puint8_t new_block = new(blockHeap) UCHAR[blockSize + sizeof(MemoryBlockHeader)];
 	Check_Pointer(new_block);
 
 	MemoryBlockHeader *header =
@@ -275,11 +281,11 @@ void
 			byte_count += header->blockSize + sizeof(MemoryBlockHeader);
 			header = header->nextBlock;
 		}
-		BYTE *deletion = block->deletedRecord;
+		puint8_t deletion = block->deletedRecord;
 		while (deletion)
 		{
 			++deletion_count;
-			deletion = *Cast_Pointer(PUCHAR*, deletion);
+			deletion = *Cast_Pointer(puint8_t*, deletion);
 		}
 		record_count -= deletion_count + unused_count;
 		if( record_count!=0 )
@@ -331,7 +337,7 @@ void
 //#############################################################################
 //
 static int
-	compare_function(const void* a, const void* b)
+	compare_function(PCVOID a, PCVOID b)
 {
 	return static_cast<PCSTR>(a) - static_cast<PCSTR>(b);
 }
@@ -350,13 +356,13 @@ void
 	// count up the number of deleted records
 	//---------------------------------------
 	//
-	BYTE *deletion = deletedRecord;
+	puint8_t deletion = deletedRecord;
 	size_t deletion_count = 0;
 	while (deletion)
 	{
 		Check_Pointer(deletion);
 		++deletion_count;
-		deletion = *Cast_Pointer(PUCHAR*, deletion);
+		deletion = *Cast_Pointer(puint8_t*, deletion);
 	}
 	if (!deletion_count)
 	{
@@ -371,13 +377,13 @@ void
 	// the chain
 	//--------------------------------------------------------------------------
 	//
-	BYTE **deletions = new(blockHeap) PUCHAR[deletion_count+1];
+	puint8_t* deletions = new(blockHeap) puint8_t[deletion_count+1];
 	deletion = deletedRecord;
-	int i=deletion_count-1;
-	deletions[deletion_count] = reinterpret_cast<PUCHAR>(SNAN_NEGATIVE_LONG);
+	size_t i = (deletion_count-1);
+	deletions[deletion_count] = reinterpret_cast<puint8_t>(SNAN_NEGATIVE_LONG);
 	deletions[i--] = deletion;
-	deletion = *Cast_Pointer(PUCHAR*, deletion);
-	int j;
+	deletion = *Cast_Pointer(puint8_t*, deletion);
+	size_t j;
 	while (deletion)
 	{
 		//
@@ -394,9 +400,9 @@ void
 			++j;
 		}
 		deletions[j] = deletion;
-		deletion = *Cast_Pointer(PUCHAR*, deletion);
+		deletion = *Cast_Pointer(puint8_t*, deletion);
 	}
-	Verify(i == -1);
+	Verify(intptr_t(i) == -1);
 
 	//
 	//------------------------------------------------------------------------
@@ -415,8 +421,8 @@ void
 		Check_Object(header);
 		i = 0;
 		j = deletion_count - 1;
-		int m = 0;
-		BYTE *key = Cast_Pointer(PUCHAR, header) + sizeof(*header);
+		size_t m = 0;
+		puint8_t key = Cast_Pointer(puint8_t, header) + sizeof(*header);
 		while (i <= j)
 		{
 			m = (i + j) >> 1;
@@ -456,14 +462,14 @@ Real_Block:
 		// ignore the unused space at the end of the block
 		//----------------------------------------------------------------------
 		//
-		BYTE **start = &deletions[m];
+		puint8_t *start = &deletions[m];
 		if (header->nextBlock)
 		{
-			i = header->blockSize / recordSize;
+			i = (header->blockSize / recordSize);
 		}
 		else
 		{
-			i = freeRecord - firstHeaderRecord;
+			i = size_t(freeRecord - firstHeaderRecord);
 			i /= recordSize;
 		}
 
@@ -475,12 +481,9 @@ Real_Block:
 		// collapsed
 		//---------------------------------------------------------------------
 		//
-		BYTE **end = start + i - 1;
-		if (
-			end - deletions >= deletion_count
-			 || *end !=
-				Cast_Pointer(PUCHAR, header) + sizeof(*header) + (i-1)*recordSize
-		)
+		puint8_t* end = (start + i - 1);
+		if (size_t(end - deletions) >= deletion_count || 
+			*end != Cast_Pointer(puint8_t, header) + sizeof(*header) + (i-1)*recordSize)
 		{
 			goto Real_Block;
 		}
@@ -501,9 +504,7 @@ Real_Block:
 		//-----------------------------------------------------------------------
 		//
 		++end;
-		j =
-			Cast_Pointer(PUCHAR, &deletions[deletion_count])
-			 - Cast_Pointer(PUCHAR, end);
+		j =	size_t(Cast_Pointer(puint8_t, &deletions[deletion_count]) - Cast_Pointer(puint8_t, end));
 		deletion_count -= i;
 		if (j>0)
 		{
@@ -528,7 +529,7 @@ Real_Block:
 	for (i=0; i<deletion_count; ++i)
 	{
 		Check_Pointer(deletions[i]);
-		*Cast_Pointer(PUCHAR*, deletions[i]) = deletion;
+		*Cast_Pointer(puint8_t*, deletions[i]) = deletion;
 		deletion = deletions[i];
 	}
 	deletedRecord = deletion;
@@ -544,12 +545,12 @@ Real_Block:
 	last_real_block->nextBlock = NULL;
 	if (
 		firstHeaderRecord !=
-			Cast_Pointer(PUCHAR, last_real_block) + sizeof(*last_real_block)
+			Cast_Pointer(puint8_t, last_real_block) + sizeof(*last_real_block)
 	)
 	{
 		blockSize = last_real_block->blockSize;
 		firstHeaderRecord =
-			Cast_Pointer(PUCHAR, last_real_block) + sizeof(*last_real_block);
+			Cast_Pointer(puint8_t, last_real_block) + sizeof(*last_real_block);
 		freeRecord = firstHeaderRecord + blockSize;
 	}
 #endif
@@ -564,10 +565,10 @@ Real_Block:
 //
 //#############################################################################
 //
-void*
+PVOID
 	MemoryBlock::New()
 {
-	void *result;
+	PVOID result;
 	#if defined(MEMORY_VERIFY)
 		result = new(blockHeap) char[recordSize];
 	#else
@@ -583,7 +584,7 @@ void*
 		if (deletedRecord)
 		{
 			result = deletedRecord;
-			deletedRecord = *Cast_Pointer(PUCHAR*, deletedRecord);
+			deletedRecord = *Cast_Pointer(puint8_t*, deletedRecord);
 		}
 		else
 		{
@@ -618,7 +619,7 @@ void*
 //
 void
 	MemoryBlock::Delete(
-		void* where
+		PVOID where
 	)
 {
 	#if defined(MEMORY_VERIFY)
@@ -640,11 +641,11 @@ void
 			// chain
 			//--------------------------------------------------------------------
 			//
-			void *record;
+			PVOIDrecord;
 			for (
 				record = deletedRecord;
 				record;
-				record = *Cast_Pointer(PUCHAR*, record)
+				record = *Cast_Pointer(puint8_t*, record)
 			)
 			{
 				if (record == where)
@@ -660,7 +661,7 @@ void
 			// until we come to the end of the chain
 			//------------------------------------------------------------------
 			//
-			unsigned
+			uint32_t
 				offset;
 			MemoryBlockHeader*
 				block = blockMemory;
@@ -676,8 +677,8 @@ void
 				//
 				Check_Object(block);
 				offset =
-					static_cast<unsigned>(
-						Cast_Pointer(PUCHAR, where) - Cast_Pointer(PUCHAR, block + 1)
+					static_cast<uint32_t>(
+						Cast_Pointer(puint8_t, where) - Cast_Pointer(puint8_t, block + 1)
 					);
 				if (offset < block->blockSize)
 				{
@@ -710,8 +711,8 @@ void
 		// available for reuse this one
 		//----------------------------------------------------------------------
 		//
-		*Cast_Pointer(PUCHAR*, where) = deletedRecord;
-		deletedRecord = Cast_Pointer(PUCHAR, where);
+		*Cast_Pointer(puint8_t*, where) = deletedRecord;
+		deletedRecord = Cast_Pointer(puint8_t, where);
 	#endif
 }
 
@@ -719,7 +720,7 @@ void
 //#############################################################################
 //#############################################################################
 //
-void*
+PVOID
 	MemoryBlock::operator[](size_t index)
 {
 	#if defined(MEMORY_VERIFY)
@@ -733,8 +734,7 @@ void*
 	//------------------------------------------------------------------
 	//
 	Check_Object(this);
-	MemoryBlockHeader
-		*block = blockMemory;
+	MemoryBlockHeader* block = blockMemory;
 
 	while (block)
 	{
@@ -745,11 +745,10 @@ void*
 		//
 		Check_Object(block);
 		Verify(recordSize);
-		int
-			records = block->blockSize / recordSize;
+		size_t records = (block->blockSize / recordSize);
 		if (index < records)
 		{
-			return Cast_Pointer(PUCHAR, block + 1) + index * recordSize;
+			return Cast_Pointer(puint8_t, block + 1) + index * recordSize;
 		}
 
 		//
@@ -776,15 +775,15 @@ void*
 //#############################################################################
 //#############################################################################
 //
-void*
-	MemoryStack::Push(const void* what)
+PVOID
+	MemoryStack::Push(PCVOID what)
 {
 	Check_Object(this);
 	Check_Pointer(what);
 
-	BYTE *block = firstHeaderRecord;
+	puint8_t block = firstHeaderRecord;
 	topOfStack = freeRecord;
-	BYTE *target = static_cast<PUCHAR>(Grow());
+	puint8_t target = static_cast<puint8_t>(Grow());
 	Mem_Copy(
 		target,
 		what,
@@ -802,11 +801,11 @@ void*
 //#############################################################################
 //#############################################################################
 //
-void*
+PVOID
 	MemoryStack::Push()
 {
 	Check_Object(this);
-	BYTE *block = firstHeaderRecord;
+	puint8_t block = firstHeaderRecord;
 	topOfStack = freeRecord;
 	Grow();
 
@@ -866,7 +865,7 @@ void
 
 				delete new_block;
 				block->nextBlock = NULL;
-				firstHeaderRecord = Cast_Pointer(PUCHAR, block + 1);
+				firstHeaderRecord = Cast_Pointer(puint8_t, block + 1);
 				blockSize = block->blockSize;
 			}
 
@@ -909,7 +908,7 @@ void
 				Check_Object(block);
 			}
 			topOfStack =
-				Cast_Pointer(PUCHAR, block + 1) + block->blockSize - recordSize;
+				Cast_Pointer(puint8_t, block + 1) + block->blockSize - recordSize;
 		}
 	}
 }

@@ -6,12 +6,15 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+#include <gameos.hpp>
+#include <stuff/node.hpp>
+#include <stuff/chain.hpp>
 
+using namespace Stuff;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MemoryBlock*
-	ChainLink::AllocatedMemory = NULL;
+MemoryBlock* ChainLink::AllocatedMemory = NULL;
 
 //
 //#############################################################################
@@ -287,7 +290,7 @@ void
 // ReadAndPreviousImplementation
 //###########################################################################
 //
-void*
+PVOID
 	ChainIterator::ReadAndPreviousImplementation()
 {
 	Check_Object(this);
@@ -308,7 +311,7 @@ void*
 // GetCurrentImplementation
 //###########################################################################
 //
-void*
+PVOID
 	ChainIterator::GetCurrentImplementation()
 {
 	Check_Object(this);
@@ -351,7 +354,7 @@ CollectionSize
 // GetNthImplementation
 //###########################################################################
 //
-void*
+PVOID
 	ChainIterator::GetNthImplementation(CollectionSize index)
 {
 	Check_Object(this);

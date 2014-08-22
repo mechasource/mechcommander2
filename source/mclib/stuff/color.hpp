@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _COLOR_HPP_
+#define _COLOR_HPP_
+
 #include <stuff/memorystream.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/vector3d.hpp>
 
 namespace Stuff {
 	class RGBColor;
@@ -54,10 +54,9 @@ namespace Stuff {
 		friend class RGBAColor;
 
 	public:
-		static const RGBColor
-			Unassigned;
+		static const RGBColor Unassigned;
 
-		Scalar
+		float
 			red,
 			green,
 			blue;
@@ -66,9 +65,9 @@ namespace Stuff {
 			{red = green = blue = -1.0f;}
 
 		RGBColor(
-			Scalar r,
-			Scalar g,
-			Scalar b
+			float r,
+			float g,
+			float b
 		)
 			{red = r; green = g; blue = b;}
 
@@ -76,7 +75,7 @@ namespace Stuff {
 			Close_Enough(
 				const RGBColor &c1,
 				const RGBColor &c2,
-				Scalar e = SMALL
+				float e = SMALL
 			);
 		bool
 			operator==(const RGBColor &color) const
@@ -99,16 +98,16 @@ namespace Stuff {
 			TestInstance() const
 				{}
 
-		Scalar
+		float
 			Infrared() const
 				{Check_Object(this); return 0.3f*red + 0.5f*green + 0.2f*blue;}
 
 		RGBColor&
 			Combine(
 				const RGBColor& c1,
-				Scalar t1,
+				float t1,
 				const RGBColor& c2,
-				Scalar t2
+				float t2
 			)
 				{
 					Check_Pointer(this); Check_Object(&c1); Check_Object(&c2);
@@ -120,7 +119,7 @@ namespace Stuff {
 			Lerp(
 				const RGBColor& c1,
 				const RGBColor& c2,
-				Scalar t
+				float t
 			)
 				{
 					Check_Pointer(this); Check_Object(&c1); Check_Object(&c2);
@@ -161,7 +160,7 @@ namespace Stuff {
 		static const RGBAColor
 			Unassigned;
 
-		Scalar
+		float
 			alpha;
 		
 		RGBAColor():
@@ -169,10 +168,10 @@ namespace Stuff {
 				{alpha = -1.0f;}
 
 		RGBAColor(
-			Scalar r,
-			Scalar g,
-			Scalar b,
-			Scalar a
+			float r,
+			float g,
+			float b,
+			float a
 		):
 			RGBColor(r, g, b)
 				{alpha = a;}
@@ -181,7 +180,7 @@ namespace Stuff {
 			Close_Enough(
 				const RGBAColor &c1,
 				const RGBAColor &c2,
-				Scalar e = SMALL
+				float e = SMALL
 			);
 		bool
 			operator==(const RGBAColor &color) const
@@ -204,9 +203,9 @@ namespace Stuff {
 		RGBAColor&
 			Combine(
 				const RGBAColor& c1,
-				Scalar t1,
+				float t1,
 				const RGBAColor& c2,
-				Scalar t2
+				float t2
 			)
 				{
 					Check_Pointer(this); Check_Object(&c1); Check_Object(&c2);
@@ -219,7 +218,7 @@ namespace Stuff {
 			Lerp(
 				const RGBAColor& c1,
 				const RGBAColor& c2,
-				Scalar t
+				float t
 			)
 				{
 					Check_Pointer(this); Check_Object(&c1); Check_Object(&c2);
@@ -262,7 +261,7 @@ namespace Stuff {
 		static const HSVColor
 			Unassigned;
 
-		Scalar
+		float
 			hue,
 			saturation,
 			value;
@@ -271,9 +270,9 @@ namespace Stuff {
 			{hue = saturation = value = -1.0f;}
 
 		HSVColor(
-			Scalar h,
-			Scalar s,
-			Scalar v
+			float h,
+			float s,
+			float v
 		)
 			{hue = h; saturation = s; value = v;}
 
@@ -281,7 +280,7 @@ namespace Stuff {
 			Close_Enough(
 				const HSVColor &c1,
 				const HSVColor &c2,
-				Scalar e = SMALL
+				float e = SMALL
 			);
 		bool
 			operator==(const HSVColor &color) const
@@ -307,9 +306,9 @@ namespace Stuff {
 		HSVColor&
 			Combine(
 				const HSVColor& c1,
-				Scalar t1,
+				float t1,
 				const HSVColor& c2,
-				Scalar t2
+				float t2
 			)
 				{
 					Check_Pointer(this); Check_Object(&c1); Check_Object(&c2);
@@ -323,7 +322,7 @@ namespace Stuff {
 			Lerp(
 				const HSVColor& c1,
 				const HSVColor& c2,
-				Scalar t
+				float t
 			)
 				{
 					Check_Pointer(this); Check_Object(&c1); Check_Object(&c2);
@@ -364,7 +363,7 @@ namespace Stuff {
 		static const HSVAColor
 			Unassigned;
 
-		Scalar
+		float
 			alpha;
 		
 		HSVAColor():
@@ -372,10 +371,10 @@ namespace Stuff {
 				{alpha = -1.0f;}
 
 		HSVAColor(
-			Scalar h,
-			Scalar s,
-			Scalar v,
-			Scalar a
+			float h,
+			float s,
+			float v,
+			float a
 		):
 			HSVColor(h, s, v)
 				{alpha = a;}
@@ -384,7 +383,7 @@ namespace Stuff {
 			Close_Enough(
 				const HSVAColor &c1,
 				const HSVAColor &c2,
-				Scalar e = SMALL
+				float e = SMALL
 			);
 		bool
 			operator==(const HSVAColor &color) const
@@ -411,9 +410,9 @@ namespace Stuff {
 		HSVAColor&
 			Combine(
 				const HSVAColor& c1,
-				Scalar t1,
+				float t1,
 				const HSVAColor& c2,
-				Scalar t2
+				float t2
 			)
 				{
 					Check_Pointer(this); Check_Object(&c1); Check_Object(&c2);
@@ -428,7 +427,7 @@ namespace Stuff {
 			Lerp(
 				const HSVAColor& c1,
 				const HSVAColor& c2,
-				Scalar t
+				float t
 			)
 				{
 					Check_Pointer(this); Check_Object(&c1); Check_Object(&c2);
@@ -526,3 +525,4 @@ namespace MemoryStreamIO {
 		)
 			{return stream->WriteBytes(input, sizeof(*input));}
 }
+#endif

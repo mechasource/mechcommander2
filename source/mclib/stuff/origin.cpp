@@ -6,14 +6,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/linearmatrix.hpp>
+#include <stuff/origin.hpp>
 
-const Origin3D
-	Origin3D::Identity(
-		Point3D(0.0f, 0.0f, 0.0f),
-		UnitQuaternion(0.0f, 0.0f, 0.0f, 1.0f)
-	);
+using namespace Stuff;
+
+const Origin3D Origin3D::Identity(
+	Point3D(0.0f, 0.0f, 0.0f), UnitQuaternion(0.0f, 0.0f, 0.0f, 1.0f));
 
 //
 //###########################################################################

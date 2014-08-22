@@ -6,8 +6,14 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
 #include <toolos.hpp>
+#include <stuff/filestreammanager.hpp>
+
+using namespace Stuff;
+
 
 //#############################################################################
 //##########################    FileDependencies    ###########################
@@ -35,11 +41,11 @@ FileDependencies&
 	Check_Object(&dependencies);
 
 	m_fileNameStream.Rewind();
-	int len = dependencies.m_fileNameStream.GetBytesUsed();
+	size_t len = dependencies.m_fileNameStream.GetBytesUsed();
 	if (len)
 	{
 		MemoryStream scanner(
-			static_cast<PUCHAR>(dependencies.m_fileNameStream.GetPointer())-len,
+			static_cast<puint8_t>(dependencies.m_fileNameStream.GetPointer())-len,
 			len
 		);
 		m_fileNameStream.AllocateBytes(len);
@@ -69,8 +75,8 @@ void
 	// Make a new memorystream that wraps our current one
 	//---------------------------------------------------
 	//
-	BYTE *end = Cast_Pointer(PUCHAR, m_fileNameStream.GetPointer());
-	int len = m_fileNameStream.GetBytesUsed();
+	puint8_t end = Cast_Pointer(puint8_t, m_fileNameStream.GetPointer());
+	size_t len = m_fileNameStream.GetBytesUsed();
 	MemoryStream scanner(end-len, len);
 
 	//
@@ -81,7 +87,7 @@ void
 	while (scanner.GetBytesRemaining() > 0)
 	{
 		PCSTR old_name = Cast_Pointer(PCSTR, scanner.GetPointer());
-		int len = strlen(old_name);
+		len = strlen(old_name);
 		if (!_stricmp(new_file, old_name))
 			return;
 		scanner.AdvancePointer(len+1);
@@ -97,21 +103,21 @@ void
 	Check_Object(this);
 	Check_Object(dependencies);
 
-	int old_len = m_fileNameStream.GetBytesUsed();
+	size_t old_len = m_fileNameStream.GetBytesUsed();
 
 	dependencies->Rewind();
 	while (dependencies->GetBytesRemaining() > 0)
 	{
 		PCSTR new_name =
 			Cast_Pointer(PCSTR, dependencies->GetPointer());
-		int new_len = strlen(new_name);
+		size_t new_len = strlen(new_name);
 
 		//
 		//---------------------------------------------------
 		// Make a new memorystream that wraps our current one
 		//---------------------------------------------------
 		//
-		BYTE *end = static_cast<PUCHAR>(m_fileNameStream.GetPointer());
+		puint8_t end = static_cast<puint8_t>(m_fileNameStream.GetPointer());
 		MemoryStream scanner(end-m_fileNameStream.GetBytesUsed(), old_len);
 
 		//
@@ -122,7 +128,7 @@ void
 		while (scanner.GetBytesRemaining() > 0)
 		{
 			PCSTR old_name = Cast_Pointer(PCSTR, scanner.GetPointer());
-			int len = strlen(old_name);
+			size_t len = strlen(old_name);
 			if (!_stricmp(old_name, new_name))
 				break;
 			scanner.AdvancePointer(len+1);
@@ -170,7 +176,7 @@ FileStreamManager::~FileStreamManager()
 bool
 	FileStreamManager::CompareModificationDate(
 		const MString &file_name,
-		__int64 time_stamp
+		int64_t time_stamp
 	)
 {
 	Check_Object(this);
@@ -198,7 +204,7 @@ bool
 	// return false == "file older than time stamp"
 	//-------------------------------------------------------------
 	//
-	__int64 file_stats = gos_FileTimeStamp(file_name);
+	int64_t file_stats = gos_FileTimeStamp(file_name);
 	if (file_stats == -1)
 		return false;
 
@@ -245,7 +251,7 @@ MString*
 	if (p)
 	{
 		*p = '\0';
-		file_name->SetLength(p - (PSTR )*file_name);
+		file_name->SetLength(size_t(p - (PSTR)*file_name));
 	}
 
 	Check_Object(file_name);
@@ -274,7 +280,7 @@ MString*
 		p = *file_name;
 		*p = '\0';
 	}
-	file_name->SetLength(p - (PSTR )*file_name);
+	file_name->SetLength(size_t(p - (PSTR )*file_name));
 	Check_Object(file_name);
 	return file_name;
 }

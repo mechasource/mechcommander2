@@ -6,18 +6,23 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/affinematrix.hpp>
+#include <stuff/linearmatrix.hpp>
+#include <stuff/matrix.hpp>
 
-const AffineMatrix4D
-	AffineMatrix4D::Identity(true);
+using namespace Stuff;
+
+const AffineMatrix4D AffineMatrix4D::Identity(true);
 
 //
 //###########################################################################
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::BuildIdentity()
+AffineMatrix4D::BuildIdentity()
 {
 	Check_Pointer(this);
 
@@ -42,8 +47,7 @@ AffineMatrix4D&
 //###########################################################################
 //###########################################################################
 //
-AffineMatrix4D&
-	AffineMatrix4D::operator=(const Matrix4D &m)
+AffineMatrix4D& AffineMatrix4D::operator=(const Matrix4D &m)
 {
 	Check_Pointer(this);
 	Check_Object(&m);
@@ -61,7 +65,7 @@ AffineMatrix4D&
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::operator=(const Origin3D& p)
+AffineMatrix4D::operator=(const Origin3D& p)
 {
 	Check_Pointer(this);
 	Check_Object(&p);
@@ -76,7 +80,7 @@ AffineMatrix4D&
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::operator=(const EulerAngles &angles)
+AffineMatrix4D::operator=(const EulerAngles &angles)
 {
 	Check_Pointer(this);
 	Check_Object(&angles);
@@ -95,7 +99,7 @@ AffineMatrix4D&
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::operator=(const YawPitchRoll &angles)
+AffineMatrix4D::operator=(const YawPitchRoll &angles)
 {
 	Check_Pointer(this);
 	Check_Object(&angles);
@@ -114,7 +118,7 @@ AffineMatrix4D&
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::operator=(const UnitQuaternion &q)
+AffineMatrix4D::operator=(const UnitQuaternion &q)
 {
 	Check_Pointer(this);
 	Check_Object(&q);
@@ -133,7 +137,7 @@ AffineMatrix4D&
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::operator=(const Point3D &p)
+AffineMatrix4D::operator=(const Point3D &p)
 {
 	Check_Pointer(this);
 	Check_Object(&p);
@@ -161,15 +165,15 @@ AffineMatrix4D&
 //#############################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::BuildRotation(const EulerAngles &angles)
+AffineMatrix4D::BuildRotation(const EulerAngles &angles)
 {
 	Check_Pointer(this);
 	Check_Object(&angles);
 
 	Verify(
 		Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f
-		 || Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f
-	);
+		|| Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f
+		);
 
 	SinCosPair
 		x,
@@ -201,15 +205,15 @@ AffineMatrix4D&
 //#############################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::BuildRotation(const YawPitchRoll &angles)
+AffineMatrix4D::BuildRotation(const YawPitchRoll &angles)
 {
 	Check_Pointer(this);
 	Check_Object(&angles);
 
 	Verify(
 		Vector3D::Forward.z == 1.0f && Vector3D::Right.x == -1.0f && Vector3D::Up.y == 1.0f
-		 || Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f
-	);
+		|| Vector3D::Forward.z == -1.0f && Vector3D::Right.x == 1.0f && Vector3D::Up.y == 1.0f
+		);
 
 	SinCosPair
 		x,
@@ -241,7 +245,7 @@ AffineMatrix4D&
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::BuildRotation(const UnitQuaternion &q)
+AffineMatrix4D::BuildRotation(const UnitQuaternion &q)
 {
 	Check_Pointer(this);
 	Check_Object(&q);
@@ -278,7 +282,7 @@ AffineMatrix4D&
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::BuildRotation(const Vector3D &v)
+AffineMatrix4D::BuildRotation(const Vector3D &v)
 {
 	Check_Pointer(this);
 	Check_Object(&v);
@@ -328,11 +332,11 @@ AffineMatrix4D&
 //###########################################################################
 //
 bool
-	Stuff::Close_Enough(
-		const AffineMatrix4D &m1,
-		const AffineMatrix4D &m2,
-		Scalar e
-	)
+Stuff::Close_Enough(
+					const AffineMatrix4D &m1,
+					const AffineMatrix4D &m2,
+					Scalar e
+					)
 {
 	Check_Object(&m2);
 	Check_Object(&m1);
@@ -353,10 +357,10 @@ bool
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::Multiply(
-		const AffineMatrix4D& Source1,
-		const AffineMatrix4D& Source2
-	)
+AffineMatrix4D::Multiply(
+						 const AffineMatrix4D& Source1,
+						 const AffineMatrix4D& Source2
+						 )
 {
 	Check_Pointer(this);
 	Check_Object(&Source1);
@@ -365,299 +369,299 @@ AffineMatrix4D&
 	Verify(this != &Source2);
 
 #if USE_ASSEMBLER_CODE
-				Scalar *f = entries;
-				_asm {
-					mov         edx, Source1.entries
-					push        esi
-					mov         esi, Source2.entries
-					
-					mov         eax, f
+	Scalar *f = entries;
+	_asm {
+		mov         edx, Source1.entries
+			push        esi
+			mov         esi, Source2.entries
 
-					fld         dword ptr [edx]			//	s1[0][0]
-					fmul        dword ptr [esi]			//	s2[0][0]	M0,1
+			mov         eax, f
 
-					fld         dword ptr [edx+010h]	//	s1[0][1]
-					fmul        dword ptr [esi+4]		//	s2[1][0]	M0,2
-					
-					fld         dword ptr [edx+020h]	//	s1[0][2]
-					fmul        dword ptr [esi+8]		//	s2[2][0]	M0,3
+			fld         dword ptr [edx]			//	s1[0][0]
+		fmul        dword ptr [esi]			//	s2[0][0]	M0,1
 
-					fxch		st(2)
-					faddp       st(1),st				//				A0,1
+		fld         dword ptr [edx+010h]	//	s1[0][1]
+		fmul        dword ptr [esi+4]		//	s2[1][0]	M0,2
 
-					fld         dword ptr [edx+4]		//	s1[1][0]
-					fmul        dword ptr [esi]			//	s2[0][0]	M1,1
+		fld         dword ptr [edx+020h]	//	s1[0][2]
+		fmul        dword ptr [esi+8]		//	s2[2][0]	M0,3
 
-					fxch		st(2)
-					faddp       st(1),st				//				A0,2
+		fxch		st(2)
+			faddp       st(1),st				//				A0,1
 
-					fld         dword ptr [edx+14h]		//	s1[1][1]
-					fmul        dword ptr [esi+4]		//	s2[1][0]	M1,2
-					
-					fxch		st(1)
-					fstp        dword ptr [eax]			//	[0][0]		S0
+			fld         dword ptr [edx+4]		//	s1[1][0]
+		fmul        dword ptr [esi]			//	s2[0][0]	M1,1
 
-					fld         dword ptr [edx+24h]		//	s1[1][2]
-					fmul        dword ptr [esi+8]		//	s2[2][0]	M1,3
+		fxch		st(2)
+			faddp       st(1),st				//				A0,2
 
-					fxch		st(2)
-					faddp       st(1),st				//				A1,1
+			fld         dword ptr [edx+14h]		//	s1[1][1]
+		fmul        dword ptr [esi+4]		//	s2[1][0]	M1,2
 
-					fld         dword ptr [edx+8]		//	s1[2][0]
-					fmul        dword ptr [esi]			//	s2[0][0]	M2,1
+		fxch		st(1)
+			fstp        dword ptr [eax]			//	[0][0]		S0
 
-					fxch		st(2)
-					faddp       st(1),st				//				A1,2
+		fld         dword ptr [edx+24h]		//	s1[1][2]
+		fmul        dword ptr [esi+8]		//	s2[2][0]	M1,3
 
-					fld         dword ptr [edx+018h]	//	s1[2][1]
-					fmul        dword ptr [esi+4]		//	s2[1][0]	M2,2
+		fxch		st(2)
+			faddp       st(1),st				//				A1,1
 
-					fxch		st(1)
-					fstp        dword ptr [eax+4]		//	[1][0]		S1
+			fld         dword ptr [edx+8]		//	s1[2][0]
+		fmul        dword ptr [esi]			//	s2[0][0]	M2,1
 
-					fld         dword ptr [edx+28h]		//	s1[2][2]
-					fmul        dword ptr [esi+8]		//	s2[2][0]	M2,3
-					
-					fxch		st(2)
-					faddp       st(1),st				//				A2,1
+		fxch		st(2)
+			faddp       st(1),st				//				A1,2
 
-					fld         dword ptr [edx+0ch]		//	s1[3][0]
-					fmul        dword ptr [esi]			//	s2[0][0]	M3,1
+			fld         dword ptr [edx+018h]	//	s1[2][1]
+		fmul        dword ptr [esi+4]		//	s2[1][0]	M2,2
 
-					fxch		st(2)
-					faddp       st(1),st				//				A2,2
+		fxch		st(1)
+			fstp        dword ptr [eax+4]		//	[1][0]		S1
 
-					fld         dword ptr [edx+1ch]		//	s1[3][1]
-					fmul        dword ptr [esi+4]		//	s2[1][0]	M3,2
+		fld         dword ptr [edx+28h]		//	s1[2][2]
+		fmul        dword ptr [esi+8]		//	s2[2][0]	M2,3
 
-					fxch		st(1)
-					fstp        dword ptr [eax+8]		//	[2][0]		S2
+		fxch		st(2)
+			faddp       st(1),st				//				A2,1
 
-					fld         dword ptr [edx+2ch]		//	s1[3][2]
-					fmul        dword ptr [esi+8]		//	s2[2][0]	M3,3
+			fld         dword ptr [edx+0ch]		//	s1[3][0]
+		fmul        dword ptr [esi]			//	s2[0][0]	M3,1
 
-					fxch		st(2)
-					faddp       st(1),st				//				A3,1
+		fxch		st(2)
+			faddp       st(1),st				//				A2,2
 
-//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+			fld         dword ptr [edx+1ch]		//	s1[3][1]
+		fmul        dword ptr [esi+4]		//	s2[1][0]	M3,2
 
-					fld         dword ptr [edx]			//	s1[0][0]
-					fmul        dword ptr [esi+010h]	//	s2[0][1]	M0,1
+		fxch		st(1)
+			fstp        dword ptr [eax+8]		//	[2][0]		S2
 
-					fxch		st(2)
-					faddp		st(1),st				//				A3,2
+		fld         dword ptr [edx+2ch]		//	s1[3][2]
+		fmul        dword ptr [esi+8]		//	s2[2][0]	M3,3
 
-					fld         dword ptr [edx+010h]	//	s1[0][1]
-					fmul        dword ptr [esi+014h]	//	s2[1][1]	M0,2
+		fxch		st(2)
+			faddp       st(1),st				//				A3,1
 
-					fxch		st(1)
-					fadd        dword ptr [esi+0Ch]		//	s2[3][0]	A3,3
-					
-					fld         dword ptr [edx+020h]	//	s1[0][2]
-					fmul        dword ptr [esi+018h]	//	s2[2][1]	M0,3
+			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-					fxch		st(1)
-					fstp        dword ptr [eax+0Ch]		//	[3][0]		S3
+			fld         dword ptr [edx]			//	s1[0][0]
+		fmul        dword ptr [esi+010h]	//	s2[0][1]	M0,1
 
-//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+		fxch		st(2)
+			faddp		st(1),st				//				A3,2
 
-					fxch		st(2)
-					faddp       st(1),st				//				A0,1
+			fld         dword ptr [edx+010h]	//	s1[0][1]
+		fmul        dword ptr [esi+014h]	//	s2[1][1]	M0,2
 
-					fld         dword ptr [edx+4]		//	s1[1][0]
-					fmul        dword ptr [esi+010h]	//	s2[0][1]	M1,1
+		fxch		st(1)
+			fadd        dword ptr [esi+0Ch]		//	s2[3][0]	A3,3
 
-					fxch		st(2)
-					faddp       st(1),st				//				A0,2
+		fld         dword ptr [edx+020h]	//	s1[0][2]
+		fmul        dword ptr [esi+018h]	//	s2[2][1]	M0,3
 
-					fld         dword ptr [edx+014h]	//	s1[1][1]
-					fmul        dword ptr [esi+014h]	//	s2[1][1]	M1,2
-					
-					fxch		st(1)
-					fstp        dword ptr [eax+010h]	//	[0][1]		S0
+		fxch		st(1)
+			fstp        dword ptr [eax+0Ch]		//	[3][0]		S3
 
-					fld         dword ptr [edx+024h]	//	s1[1][2]
-					fmul        dword ptr [esi+018h]	//	s2[2][1]	M1,3
+		//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
-					fxch		st(2)
-					faddp       st(1),st				//				A1,1
+		fxch		st(2)
+			faddp       st(1),st				//				A0,1
 
-					fld         dword ptr [edx+8]		//	s1[2][0]
-					fmul        dword ptr [esi+010h]	//	s2[0][1]	M2,1
+			fld         dword ptr [edx+4]		//	s1[1][0]
+		fmul        dword ptr [esi+010h]	//	s2[0][1]	M1,1
 
-					fxch		st(2)
-					faddp       st(1),st				//				A1,2
+		fxch		st(2)
+			faddp       st(1),st				//				A0,2
 
-					fld         dword ptr [edx+018h]	//	s1[2][1]
-					fmul        dword ptr [esi+014h]	//	s2[1][1]	M2,2
+			fld         dword ptr [edx+014h]	//	s1[1][1]
+		fmul        dword ptr [esi+014h]	//	s2[1][1]	M1,2
 
-					fxch		st(1)
-					fstp        dword ptr [eax+014h]	//	[1][1]		S1
+		fxch		st(1)
+			fstp        dword ptr [eax+010h]	//	[0][1]		S0
 
-					fld         dword ptr [edx+028h]	//	s1[2][2]
-					fmul        dword ptr [esi+018h]	//	s2[2][1]	M2,3
-					
-					fxch		st(2)
-					faddp       st(1),st				//				A2,1
+		fld         dword ptr [edx+024h]	//	s1[1][2]
+		fmul        dword ptr [esi+018h]	//	s2[2][1]	M1,3
 
-					fld         dword ptr [edx+0ch]		//	s1[3][0]
-					fmul        dword ptr [esi+010h]	//	s2[0][1]	M3,1
+		fxch		st(2)
+			faddp       st(1),st				//				A1,1
 
-					fxch		st(2)
-					faddp       st(1),st				//				A2,2
+			fld         dword ptr [edx+8]		//	s1[2][0]
+		fmul        dword ptr [esi+010h]	//	s2[0][1]	M2,1
 
-					fld         dword ptr [edx+01ch]	//	s1[3][1]
-					fmul        dword ptr [esi+014h]	//	s2[1][1]	M3,2
+		fxch		st(2)
+			faddp       st(1),st				//				A1,2
 
-					fxch		st(1)
-					fstp        dword ptr [eax+018h]	//	[2][1]		S2
+			fld         dword ptr [edx+018h]	//	s1[2][1]
+		fmul        dword ptr [esi+014h]	//	s2[1][1]	M2,2
 
-					fld         dword ptr [edx+02ch]	//	s1[3][2]
-					fmul        dword ptr [esi+018h]	//	s2[2][1]	M3,3
+		fxch		st(1)
+			fstp        dword ptr [eax+014h]	//	[1][1]		S1
 
-					fxch		st(2)
-					faddp       st(1),st				//				A3,1
+		fld         dword ptr [edx+028h]	//	s1[2][2]
+		fmul        dword ptr [esi+018h]	//	s2[2][1]	M2,3
 
-//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		fxch		st(2)
+			faddp       st(1),st				//				A2,1
 
-					fld         dword ptr [edx]			//	s1[0][0]
-					fmul        dword ptr [esi+020h]	//	s2[0][2]	M0,1
+			fld         dword ptr [edx+0ch]		//	s1[3][0]
+		fmul        dword ptr [esi+010h]	//	s2[0][1]	M3,1
 
-					fxch		st(2)
-					faddp		st(1),st				//				A3,2
+		fxch		st(2)
+			faddp       st(1),st				//				A2,2
 
-					fld         dword ptr [edx+010h]	//	s1[0][1]
-					fmul        dword ptr [esi+024h]	//	s2[1][2]	M0,2
+			fld         dword ptr [edx+01ch]	//	s1[3][1]
+		fmul        dword ptr [esi+014h]	//	s2[1][1]	M3,2
 
-					fxch		st(1)
-					fadd        dword ptr [esi+01Ch]	//	s2[3][1]	A3,3
-					
-					fld         dword ptr [edx+020h]	//	s1[0][2]
-					fmul        dword ptr [esi+028h]	//	s2[2][2]	M0,3
+		fxch		st(1)
+			fstp        dword ptr [eax+018h]	//	[2][1]		S2
 
-					fxch		st(1)
-					fstp        dword ptr [eax+01Ch]	//	[3][1]		S3
+		fld         dword ptr [edx+02ch]	//	s1[3][2]
+		fmul        dword ptr [esi+018h]	//	s2[2][1]	M3,3
 
-//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+		fxch		st(2)
+			faddp       st(1),st				//				A3,1
 
-					fxch		st(2)
-					faddp       st(1),st				//				A0,1
+			//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-					fld         dword ptr [edx+4]		//	s1[1][0]
-					fmul        dword ptr [esi+020h]	//	s2[0][2]	M1,1
+			fld         dword ptr [edx]			//	s1[0][0]
+		fmul        dword ptr [esi+020h]	//	s2[0][2]	M0,1
 
-					fxch		st(2)
-					faddp       st(1),st				//				A0,2
+		fxch		st(2)
+			faddp		st(1),st				//				A3,2
 
-					fld         dword ptr [edx+014h]	//	s1[1][1]
-					fmul        dword ptr [esi+024h]	//	s2[1][2]	M1,2
-					
-					fxch		st(1)
-					fstp        dword ptr [eax+020h]	//	[0][2]		S0
+			fld         dword ptr [edx+010h]	//	s1[0][1]
+		fmul        dword ptr [esi+024h]	//	s2[1][2]	M0,2
 
-					fld         dword ptr [edx+024h]	//	s1[1][2]
-					fmul        dword ptr [esi+028h]	//	s2[2][2]	M1,3
+		fxch		st(1)
+			fadd        dword ptr [esi+01Ch]	//	s2[3][1]	A3,3
 
-					fxch		st(2)
-					faddp       st(1),st				//				A1,1
+		fld         dword ptr [edx+020h]	//	s1[0][2]
+		fmul        dword ptr [esi+028h]	//	s2[2][2]	M0,3
 
-					fld         dword ptr [edx+8]		//	s1[2][0]
-					fmul        dword ptr [esi+020h]	//	s2[0][2]	M2,1
+		fxch		st(1)
+			fstp        dword ptr [eax+01Ch]	//	[3][1]		S3
 
-					fxch		st(2)
-					faddp       st(1),st				//				A1,2
+		//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
-					fld         dword ptr [edx+018h]	//	s1[2][1]
-					fmul        dword ptr [esi+024h]	//	s2[1][2]	M2,2
+		fxch		st(2)
+			faddp       st(1),st				//				A0,1
 
-					fxch		st(1)
-					fstp        dword ptr [eax+024h]	//	[1][2]		S1
+			fld         dword ptr [edx+4]		//	s1[1][0]
+		fmul        dword ptr [esi+020h]	//	s2[0][2]	M1,1
 
-					fld         dword ptr [edx+028h]	//	s1[2][2]
-					fmul        dword ptr [esi+028h]	//	s2[2][2]	M2,3
-					
-					fxch		st(2)
-					faddp       st(1),st				//				A2,1
+		fxch		st(2)
+			faddp       st(1),st				//				A0,2
 
-					fld         dword ptr [edx+0ch]		//	s1[3][0]
-					fmul        dword ptr [esi+020h]	//	s2[0][2]	M3,1
+			fld         dword ptr [edx+014h]	//	s1[1][1]
+		fmul        dword ptr [esi+024h]	//	s2[1][2]	M1,2
 
-					fxch		st(2)
-					faddp       st(1),st				//				A2,2
+		fxch		st(1)
+			fstp        dword ptr [eax+020h]	//	[0][2]		S0
 
-					fld         dword ptr [edx+01ch]	//	s1[3][1]
-					fmul        dword ptr [esi+024h]	//	s2[1][2]	M3,2
+		fld         dword ptr [edx+024h]	//	s1[1][2]
+		fmul        dword ptr [esi+028h]	//	s2[2][2]	M1,3
 
-					fxch		st(1)
-					fstp        dword ptr [eax+028h]	//	[2][2]		S2
+		fxch		st(2)
+			faddp       st(1),st				//				A1,1
 
-					fld         dword ptr [edx+02ch]	//	s1[3][2]
-					fmul        dword ptr [esi+028h]	//	s2[2][2]	M3,3
+			fld         dword ptr [edx+8]		//	s1[2][0]
+		fmul        dword ptr [esi+020h]	//	s2[0][2]	M2,1
 
-					fxch		st(2)
-					faddp       st(1),st				//				A3,1
+		fxch		st(2)
+			faddp       st(1),st				//				A1,2
 
-					faddp		st(1),st				//				A3,2
-					fadd        dword ptr [esi+02Ch]	//	s2[3][2]	A3,3
-					
-					fstp        dword ptr [eax+02Ch]	//	[3][2]		S3
+			fld         dword ptr [edx+018h]	//	s1[2][1]
+		fmul        dword ptr [esi+024h]	//	s2[1][2]	M2,2
 
-					pop         esi
-				}
+		fxch		st(1)
+			fstp        dword ptr [eax+024h]	//	[1][2]		S1
+
+		fld         dword ptr [edx+028h]	//	s1[2][2]
+		fmul        dword ptr [esi+028h]	//	s2[2][2]	M2,3
+
+		fxch		st(2)
+			faddp       st(1),st				//				A2,1
+
+			fld         dword ptr [edx+0ch]		//	s1[3][0]
+		fmul        dword ptr [esi+020h]	//	s2[0][2]	M3,1
+
+		fxch		st(2)
+			faddp       st(1),st				//				A2,2
+
+			fld         dword ptr [edx+01ch]	//	s1[3][1]
+		fmul        dword ptr [esi+024h]	//	s2[1][2]	M3,2
+
+		fxch		st(1)
+			fstp        dword ptr [eax+028h]	//	[2][2]		S2
+
+		fld         dword ptr [edx+02ch]	//	s1[3][2]
+		fmul        dword ptr [esi+028h]	//	s2[2][2]	M3,3
+
+		fxch		st(2)
+			faddp       st(1),st				//				A3,1
+
+			faddp		st(1),st				//				A3,2
+			fadd        dword ptr [esi+02Ch]	//	s2[3][2]	A3,3
+
+		fstp        dword ptr [eax+02Ch]	//	[3][2]		S3
+
+		pop         esi
+	}
 #else
 	(*this)(0,0) =
 		Source1(0,0)*Source2(0,0)
-		 + Source1(0,1)*Source2(1,0)
-		 + Source1(0,2)*Source2(2,0);
+		+ Source1(0,1)*Source2(1,0)
+		+ Source1(0,2)*Source2(2,0);
 	(*this)(1,0) =
 		Source1(1,0)*Source2(0,0)
-		 + Source1(1,1)*Source2(1,0)
-		 + Source1(1,2)*Source2(2,0);
+		+ Source1(1,1)*Source2(1,0)
+		+ Source1(1,2)*Source2(2,0);
 	(*this)(2,0) =
 		Source1(2,0)*Source2(0,0)
-		 + Source1(2,1)*Source2(1,0)
-		 + Source1(2,2)*Source2(2,0);
+		+ Source1(2,1)*Source2(1,0)
+		+ Source1(2,2)*Source2(2,0);
 	(*this)(3,0) =
 		Source1(3,0)*Source2(0,0)
-		 + Source1(3,1)*Source2(1,0)
-		 + Source1(3,2)*Source2(2,0)
-		 + Source2(3,0);
+		+ Source1(3,1)*Source2(1,0)
+		+ Source1(3,2)*Source2(2,0)
+		+ Source2(3,0);
 
 	(*this)(0,1) =
 		Source1(0,0)*Source2(0,1)
-		 + Source1(0,1)*Source2(1,1)
-		 + Source1(0,2)*Source2(2,1);
+		+ Source1(0,1)*Source2(1,1)
+		+ Source1(0,2)*Source2(2,1);
 	(*this)(1,1) =
 		Source1(1,0)*Source2(0,1)
-		 + Source1(1,1)*Source2(1,1)
-		 + Source1(1,2)*Source2(2,1);
+		+ Source1(1,1)*Source2(1,1)
+		+ Source1(1,2)*Source2(2,1);
 	(*this)(2,1) =
 		Source1(2,0)*Source2(0,1)
-		 + Source1(2,1)*Source2(1,1)
-		 + Source1(2,2)*Source2(2,1);
+		+ Source1(2,1)*Source2(1,1)
+		+ Source1(2,2)*Source2(2,1);
 	(*this)(3,1) =
 		Source1(3,0)*Source2(0,1)
-		 + Source1(3,1)*Source2(1,1)
-		 + Source1(3,2)*Source2(2,1)
-		 + Source2(3,1);
+		+ Source1(3,1)*Source2(1,1)
+		+ Source1(3,2)*Source2(2,1)
+		+ Source2(3,1);
 
 	(*this)(0,2) =
 		Source1(0,0)*Source2(0,2)
-		 + Source1(0,1)*Source2(1,2)
-		 + Source1(0,2)*Source2(2,2);
+		+ Source1(0,1)*Source2(1,2)
+		+ Source1(0,2)*Source2(2,2);
 	(*this)(1,2) =
 		Source1(1,0)*Source2(0,2)
-		 + Source1(1,1)*Source2(1,2)
-		 + Source1(1,2)*Source2(2,2);
+		+ Source1(1,1)*Source2(1,2)
+		+ Source1(1,2)*Source2(2,2);
 	(*this)(2,2) =
 		Source1(2,0)*Source2(0,2)
-		 + Source1(2,1)*Source2(1,2)
-		 + Source1(2,2)*Source2(2,2);
+		+ Source1(2,1)*Source2(1,2)
+		+ Source1(2,2)*Source2(2,2);
 	(*this)(3,2) =
 		Source1(3,0)*Source2(0,2)
-		 + Source1(3,1)*Source2(1,2)
-		 + Source1(3,2)*Source2(2,2)
-		 + Source2(3,2);
+		+ Source1(3,1)*Source2(1,2)
+		+ Source1(3,2)*Source2(2,2)
+		+ Source2(3,2);
 #endif
 
 	return *this;
@@ -669,7 +673,7 @@ AffineMatrix4D&
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::Invert(const AffineMatrix4D& Source)
+AffineMatrix4D::Invert(const AffineMatrix4D& Source)
 {
 	Check_Pointer(this);
 	Check_Object(&Source);
@@ -681,30 +685,30 @@ AffineMatrix4D&
 
 	Scalar det =
 		(*this)(0,0)*Source(0,0)
-		 + (*this)(1,0)*Source(0,1)
-		 + (*this)(2,0)*Source(0,2);
+		+ (*this)(1,0)*Source(0,1)
+		+ (*this)(2,0)*Source(0,2);
 	Verify(!Small_Enough(det));
 
 	(*this)(3,0) =
 		-Source(3,0)*(*this)(0,0)
-		 - Source(3,1)*(*this)(1,0)
-		 - Source(3,2)*(*this)(2,0);
+		- Source(3,1)*(*this)(1,0)
+		- Source(3,2)*(*this)(2,0);
 
 	(*this)(0,1) = Source(0,2)*Source(2,1) - Source(0,1)*Source(2,2);
 	(*this)(1,1) = Source(0,0)*Source(2,2) - Source(0,2)*Source(2,0);
 	(*this)(2,1) = Source(0,1)*Source(2,0) - Source(0,0)*Source(2,1);
 	(*this)(3,1) =
 		-Source(3,0)*(*this)(0,1)
-		 - Source(3,1)*(*this)(1,1)
-		 - Source(3,2)*(*this)(2,1);
+		- Source(3,1)*(*this)(1,1)
+		- Source(3,2)*(*this)(2,1);
 
 	(*this)(0,2) = Source(0,1)*Source(1,2) - Source(0,2)*Source(1,1);
 	(*this)(1,2) = Source(1,0)*Source(0,2) - Source(0,0)*Source(1,2);
 	(*this)(2,2) = Source(0,0)*Source(1,1) - Source(0,1)*Source(1,0);
 	(*this)(3,2) =
 		-Source(3,0)*(*this)(0,2)
-		 - Source(3,1)*(*this)(1,2)
-		 - Source(3,2)*(*this)(2,2);
+		- Source(3,1)*(*this)(1,2)
+		- Source(3,2)*(*this)(2,2);
 
 	det = 1.0f/det;
 	for (int i=0; i<12; ++i)
@@ -720,7 +724,7 @@ AffineMatrix4D&
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::Multiply(const AffineMatrix4D &m,const Vector3D &v)
+AffineMatrix4D::Multiply(const AffineMatrix4D &m,const Vector3D &v)
 {
 	Check_Pointer(this);
 	Check_Object(&m);
@@ -749,7 +753,7 @@ AffineMatrix4D&
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::Multiply(const AffineMatrix4D& m,const UnitQuaternion &q)
+AffineMatrix4D::Multiply(const AffineMatrix4D& m,const UnitQuaternion &q)
 {
 	Check_Pointer(this);
 	Check_Object(&m);
@@ -765,7 +769,7 @@ AffineMatrix4D&
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::Multiply(const AffineMatrix4D &m,const Point3D& p)
+AffineMatrix4D::Multiply(const AffineMatrix4D &m,const Point3D& p)
 {
 	Check_Pointer(this);
 	Check_Object(&m);
@@ -783,14 +787,14 @@ AffineMatrix4D&
 //###########################################################################
 //
 Scalar
-	AffineMatrix4D::Determinant() const
+AffineMatrix4D::Determinant() const
 {
 	Check_Object(this);
 
 	return
 		(*this)(0,0)*((*this)(1,1)*(*this)(2,2) - (*this)(1,2)*(*this)(2,1))
-		 + (*this)(0,1)*((*this)(1,2)*(*this)(2,0) - (*this)(1,0)*(*this)(2,2))
-		 + (*this)(0,2)*((*this)(1,0)*(*this)(2,1) - (*this)(1,1)*(*this)(2,0));
+		+ (*this)(0,1)*((*this)(1,2)*(*this)(2,0) - (*this)(1,0)*(*this)(2,2))
+		+ (*this)(0,2)*((*this)(1,0)*(*this)(2,1) - (*this)(1,1)*(*this)(2,0));
 }
 
 //
@@ -798,11 +802,11 @@ Scalar
 //###########################################################################
 //
 AffineMatrix4D&
-	AffineMatrix4D::Solve()
+AffineMatrix4D::Solve()
 {
 	Check_Object(this);
 
-	int column;
+	size_t column;
 	Scalar temp;
 
 	//
@@ -955,40 +959,12 @@ AffineMatrix4D&
 //############################################################################
 //
 #if !defined(Spew)
-	void
-		Spew(
-			PCSTR group,
-			const AffineMatrix4D &matrix
-		)
-	{
-		Check_Object(&matrix);
-		SPEW((
-			group,
-			"\n\t| %9f, %9f, %9f, 0 |",
-			matrix(0,0),
-			matrix(0,1),
-			matrix(0,2)
-		));
-		SPEW((
-			group,
-			"\t| %9f, %9f, %9f, 0 |",
-			matrix(1,0),
-			matrix(1,1),
-			matrix(1,2)
-		));
-		SPEW((
-			group,
-			"\t| %9f, %9f, %9f, 0 |",
-			matrix(2,0),
-			matrix(2,1),
-			matrix(2,2)
-		));
-		SPEW((
-			group,
-			"\t| %9f, %9f, %9f, 1 |+",
-			matrix(3,0),
-			matrix(3,1),
-			matrix(3,2)
-		));
-	}
+void Spew(PCSTR group, const AffineMatrix4D &matrix)
+{
+	Check_Object(&matrix);
+	SPEW((group, "\n\t| %9f, %9f, %9f, 0 |", matrix(0,0), matrix(0,1), matrix(0,2)));
+	SPEW((group, "\t| %9f, %9f, %9f, 0 |", matrix(1,0), matrix(1,1), matrix(1,2)));
+	SPEW((group, "\t| %9f, %9f, %9f, 0 |", matrix(2,0), matrix(2,1), matrix(2,2)));
+	SPEW((group, "\t| %9f, %9f, %9f, 1 |+", matrix(3,0), matrix(3,1), matrix(3,2)));
+}
 #endif

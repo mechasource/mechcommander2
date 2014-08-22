@@ -7,9 +7,11 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
-#include <stuff/hash.hpp>
-#include <stuff/scalar.hpp>
+#ifndef _MSTRING_HPP_
+#define _MSTRING_HPP_
+
+#include <stuff/memorystream.hpp>
+#include <stuff/iterator.hpp>
 
 namespace Stuff
 {
@@ -18,40 +20,40 @@ namespace Stuff
 }
 
 #if !defined(Spew)
-	void
-		Spew(
-			PCSTR  group,
-			const Stuff::MStringRepresentation& string
-		);
-	void
-		Spew(
-			PCSTR  group,
-			const Stuff::MString& string
-		);
+void
+Spew(
+	 PCSTR  group,
+	 const Stuff::MStringRepresentation& string
+	 );
+void
+Spew(
+	 PCSTR  group,
+	 const Stuff::MString& string
+	 );
 #endif
 
 namespace MemoryStreamIO {
 
 	Stuff::MemoryStream&
 		Read(
-			Stuff::MemoryStream* stream,
-			Stuff::MStringRepresentation *str
+		Stuff::MemoryStream* stream,
+		Stuff::MStringRepresentation *str
 		);
 	Stuff::MemoryStream&
 		Write(
-			Stuff::MemoryStream* stream,
-			const Stuff::MStringRepresentation& str
+		Stuff::MemoryStream* stream,
+		const Stuff::MStringRepresentation& str
 		);
 
 	Stuff::MemoryStream&
 		Read(
-			Stuff::MemoryStream* stream,
-			Stuff::MString *str
+		Stuff::MemoryStream* stream,
+		Stuff::MString *str
 		);
 	Stuff::MemoryStream&
 		Write(
-			Stuff::MemoryStream* stream,
-			const Stuff::MString* str
+		Stuff::MemoryStream* stream,
+		const Stuff::MString* str
 		);
 
 }
@@ -73,43 +75,43 @@ namespace Stuff {
 	//
 	void
 		Convert_From_Ascii(
-			PCSTR  str,
-			PSTR value
+		PCSTR  str,
+		PSTR value
 		);
 	void
 		Convert_From_Ascii(
-			PCSTR  str,
-			PUCHAR value
+		PCSTR  str,
+		puint8_t value
 		);
 	void
 		Convert_From_Ascii(
-			PCSTR  str,
-			short* value
+		PCSTR  str,
+		short* value
 		);
 	void
 		Convert_From_Ascii(
-			PCSTR  str,
-			WORD* value
+		PCSTR  str,
+		WORD* value
 		);
 	void
 		Convert_From_Ascii(
-			PCSTR  str,
-			int* value
+		PCSTR  str,
+		int* value
 		);
 	void
 		Convert_From_Ascii(
-			PCSTR  str,
-			unsigned* value
+		PCSTR  str,
+		puint32_t value
 		);
 	void
 		Convert_From_Ascii(
-			PCSTR  str,
-			long* value
+		PCSTR  str,
+		int32_t* value
 		);
 	void
 		Convert_From_Ascii(
-			PCSTR  str,
-			DWORD* value
+		PCSTR  str,
+		ULONG* value
 		);
 
 	//##########################################################################
@@ -117,39 +119,39 @@ namespace Stuff {
 	//##########################################################################
 
 	class MStringRepresentation
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 		friend MString;
 
 		friend MString
 			operator + (
-				const MString &str1,
-				const MString &str2
+			const MString &str1,
+			const MString &str2
 			);
 
 		friend MString
 			operator + (
-				const MString &str1,
-				char ch
+			const MString &str1,
+			char ch
 			);
 
 		friend MemoryStream&
 			MemoryStreamIO::Read(
-				MemoryStream* stream,
-				MString *str
+			MemoryStream* stream,
+			MString *str
 			);
 
 		friend void
 			Convert_From_Ascii(
-				PCSTR str,
-				MString *value
+			PCSTR str,
+			MString *value
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Construction, Destruction
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Construction, Destruction
+		//
 	private:
 		MStringRepresentation();
 		MStringRepresentation(const MStringRepresentation &str);
@@ -161,9 +163,9 @@ namespace Stuff {
 		void
 			TestInstance() const;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Length, Size
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Length, Size
+		//
 	private:
 		//
 		// Length returns strlen of string
@@ -181,9 +183,9 @@ namespace Stuff {
 		size_t
 			GetSize() const;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Accesors & Manipulation
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Accesors & Manipulation
+		//
 	private:
 		//
 		// create a c-string from MStringRepresentation method
@@ -204,14 +206,14 @@ namespace Stuff {
 		//
 		friend MStringRepresentation
 			operator + (
-				const MStringRepresentation &str1,
-				const MStringRepresentation &str2
+			const MStringRepresentation &str1,
+			const MStringRepresentation &str2
 			);
 
 		friend MStringRepresentation
 			operator + (
-				const MStringRepresentation & str1,
-				char ch
+			const MStringRepresentation & str1,
+			char ch
 			);
 
 		void
@@ -249,8 +251,8 @@ namespace Stuff {
 
 		MStringRepresentation
 			GetNthToken(
-				size_t nth_token,
-				PSTR delimiters=NULL
+			size_t nth_token,
+			PSTR delimiters=NULL
 			) const;
 
 		//
@@ -264,38 +266,38 @@ namespace Stuff {
 		//
 		// stream input/output methods
 		//
-		#if !defined(Spew)
-			friend void
-				::Spew(
-					PCSTR  group,
-					const MStringRepresentation& string
-				);
-		#endif
+#if !defined(Spew)
+		friend void
+			::Spew(
+			PCSTR  group,
+			const MStringRepresentation& string
+			);
+#endif
 
 		friend MemoryStream&
 			MemoryStreamIO::Read(
-				MemoryStream* stream,
-				MStringRepresentation *str
+			MemoryStream* stream,
+			MStringRepresentation *str
 			);
 
 		friend MemoryStream&
 			MemoryStreamIO::Write(
-				MemoryStream* stream,
-				const MStringRepresentation& str
+			MemoryStream* stream,
+			const MStringRepresentation& str
 			);
 
 		friend void
 			Convert_From_Ascii(
-				PCSTR str,
-				MStringRepresentation *value
+			PCSTR str,
+			MStringRepresentation *value
 			);
 
 		IteratorPosition
 			GetHashValue();
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Reference count methods
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Reference count methods
+		//
 	private:
 		void
 			IncrementReferenceCount();
@@ -303,9 +305,9 @@ namespace Stuff {
 		void
 			DecrementReferenceCount();
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Private Data
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Private Data
+		//
 	private:
 		//
 		// class constant
@@ -345,9 +347,9 @@ namespace Stuff {
 		Check_Object(this);
 		Verify(
 			(stringText != NULL) ? 
-				(stringLength == strlen(stringText)) : 
-				(stringLength == 0)
-		);
+			(stringLength == strlen(stringText)) : 
+		(stringLength == 0)
+			);
 		return stringLength;
 	}
 
@@ -371,11 +373,11 @@ namespace Stuff {
 	// HACK - ECH 11/1/95 - Remove const to support 3rd party libs
 	inline
 		MStringRepresentation::operator PSTR() const
-   {
-      Check_Object(this);
-//		Verify(stringText != NULL);
+	{
+		Check_Object(this);
+		//		Verify(stringText != NULL);
 		return stringText;
-   }
+	}
 
 	// concatenation methods
 	inline void
@@ -397,43 +399,43 @@ namespace Stuff {
 		MStringRepresentation::operator < (const MStringRepresentation &str) const
 	{
 		return (Compare(str) < 0);
-   }
+	}
 
 	inline bool
 		MStringRepresentation::operator > (const MStringRepresentation &str) const
-   {
+	{
 		return (Compare(str) > 0);
 	}
 
 	inline bool
 		MStringRepresentation::operator <= (const MStringRepresentation &str) const
 	{
-      return !(Compare(str) > 0);
-   }
+		return !(Compare(str) > 0);
+	}
 
 	inline bool
 		MStringRepresentation::operator >= (const MStringRepresentation &str) const
 	{
-      return !(Compare(str) < 0);
+		return !(Compare(str) < 0);
 	}
 
 	inline bool
 		MStringRepresentation::operator == (const MStringRepresentation &str) const
-   {
-      return (Compare(str) == 0);
-   }
+	{
+		return (Compare(str) == 0);
+	}
 
 	inline bool
 		MStringRepresentation::operator != (const MStringRepresentation &str) const
 	{
 		return (Compare(str) != 0);
-   }
+	}
 
 	inline bool
 		MStringRepresentation::operator == (PCSTR cstr) const
-   {
-      return (Compare(cstr) == 0);
-   }
+	{
+		return (Compare(cstr) == 0);
+	}
 
 	// character retrieval method
 	inline char
@@ -471,7 +473,7 @@ namespace Stuff {
 
 		// Verify that the IteratorPosition is 32 bits wide
 		// Hash value is first 16 bits of fileID and first 16 bits of recordID
-		Verify(sizeof(IteratorPosition) == sizeof(DWORD));
+		Verify(sizeof(IteratorPosition) == sizeof(ULONG));
 		static int andAway[3] = {0x000000ff, 0x0000ffff, 0x00ffffff };
 		IteratorPosition ret = 0;
 
@@ -481,8 +483,8 @@ namespace Stuff {
 		{
 			r = ((size_t*)stringText)[i];
 			_asm mov ecx, i
-			_asm ror r, cl
-			ret += r;
+				_asm ror r, cl
+				ret += r;
 		}
 
 		ret += stringLength & 0x3 ? 
@@ -498,13 +500,13 @@ namespace Stuff {
 	//##########################################################################
 
 	class MString
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Construction, Destruction
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Construction, Destruction
+		//
 	public:
 		MString();
 		MString(const MString &str);
@@ -517,9 +519,9 @@ namespace Stuff {
 		static bool
 			TestClass();
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Length, Size
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Length, Size
+		//
 	public:
 		//
 		// Length returns strlen of string
@@ -537,9 +539,9 @@ namespace Stuff {
 		size_t
 			GetSize() const;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Accesors & Manipulation
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Accesors & Manipulation
+		//
 	public:
 		//
 		// create a c-string from MString method
@@ -560,21 +562,21 @@ namespace Stuff {
 		//
 		friend MString
 			operator + (
-				const MString &str1, 
-				const MString &str2
+			const MString &str1, 
+			const MString &str2
 			);
 
 		friend MString
 			operator + (
-				const MString & str1,
-				char ch
+			const MString & str1,
+			char ch
 			);
 
 		friend bool
 			Close_Enough(
-				PCSTR str1,
-				PCSTR str2,
-				Scalar e = SMALL
+			PCSTR str1,
+			PCSTR str2,
+			float e = SMALL
 			);
 
 		void
@@ -603,17 +605,17 @@ namespace Stuff {
 
 		bool
 			operator == (PCSTR cstr) const;
-		
+
 		//
 		// character retrieval method		
 		//
 		char
 			operator [] (size_t pos) const;
-	
+
 		MString
 			GetNthToken(
-				size_t nth_token,
-				PSTR delimiters=NULL
+			size_t nth_token,
+			PSTR delimiters=NULL
 			) const;
 
 		//
@@ -628,43 +630,43 @@ namespace Stuff {
 		//
 		// stream input/output methods
 		//
-		#if !defined(Spew)
-			friend void
-				::Spew(
-					PCSTR  group,
-					const MString &string
-				);
-		#endif
+#if !defined(Spew)
+		friend void
+			::Spew(
+			PCSTR  group,
+			const MString &string
+			);
+#endif
 
 		friend MemoryStream&
 			MemoryStreamIO::Read(
-				MemoryStream* stream,
-				MString* str
+			MemoryStream* stream,
+			MString* str
 			);
 
 		friend MemoryStream&
 			MemoryStreamIO::Write(
-				MemoryStream* stream,
-				const MString* str
+			MemoryStream* stream,
+			const MString* str
 			);
 
 		friend void
 			Convert_From_Ascii(
-				PCSTR str,
-				MString *value
+			PCSTR str,
+			MString *value
 			);
 
 		IteratorPosition
 			GetHashValue() const
-				{ return representation->GetHashValue(); }
+		{ return representation->GetHashValue(); }
 
 		friend IteratorPosition
 			GetHashFunctions::GetHashValue(const MString &value);
 
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Private Data
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Private Data
+		//
 	private:
 		MStringRepresentation
 			*representation;
@@ -748,15 +750,15 @@ namespace Stuff {
 		MString::operator PSTR() const
 	{
 		Check_Object(representation);
-//		Verify(representation->stringText != NULL);
+		//		Verify(representation->stringText != NULL);
 		return representation->stringText;
 	}
 
 	// concatenation methods
 	inline MString
 		operator + (
-			const MString &str1,
-			const MString &str2
+		const MString &str1,
+		const MString &str2
 		)
 	{
 		Check_Object(&str1);
@@ -767,8 +769,8 @@ namespace Stuff {
 
 	inline MString
 		operator + (
-			const MString &str1,
-			char ch
+		const MString &str1,
+		char ch
 		)
 	{
 		Check_Object(&str1);
@@ -798,47 +800,47 @@ namespace Stuff {
 		Check_Object(&str);
 		Check_Object(representation);
 		return representation->Compare(*str.representation);
-   }
+	}
 
 	inline bool
 		MString::operator < (const MString &str) const
 	{
-      return (Compare(str) < 0);
-   }
+		return (Compare(str) < 0);
+	}
 
 	inline bool
 		MString::operator > (const MString &str) const
-   {
-      return (Compare(str) > 0);
-   }
+	{
+		return (Compare(str) > 0);
+	}
 
 	inline bool
 		MString::operator <= (const MString &str) const
-   {
+	{
 		return !(Compare(str) > 0);
-   }
+	}
 
 	inline bool
 		MString::operator >= (const MString &str) const
-   {
-      return !(Compare(str) < 0);
-   }
+	{
+		return !(Compare(str) < 0);
+	}
 
 	inline bool
 		MString::operator == (const MString &str) const
-   {
+	{
 		return (Compare(str) == 0);
 	}
 
 	inline bool
 		MString::operator != (const MString &str) const
-   {
-      return (Compare(str) != 0);
-   }
+	{
+		return (Compare(str) != 0);
+	}
 
 	inline bool
 		MString::operator == (PCSTR cstr) const
-   {
+	{
 		return (Compare(cstr) == 0);
 	}
 
@@ -852,8 +854,8 @@ namespace Stuff {
 
 	inline MString
 		MString::GetNthToken(
-			size_t nth_token,
-			PSTR delimiters
+		size_t nth_token,
+		PSTR delimiters
 		) const
 	{
 		Check_Object(representation);
@@ -866,36 +868,37 @@ namespace Stuff {
 
 // stream input/output methods
 #if !defined(Spew)
-	inline void
-		Spew(
-			PCSTR  group,
-			const Stuff::MStringRepresentation &string
-		)
-	{
-		Check_Object(&string);
-		SPEW((group, string.stringText));
-	}
+inline void
+Spew(
+	 PCSTR  group,
+	 const Stuff::MStringRepresentation &string
+	 )
+{
+	Check_Object(&string);
+	SPEW((group, string.stringText));
+}
 
-	inline void
-		Spew(
-			PCSTR  group,
-			const Stuff::MString &string
-		)
-	{
-		Check_Object(&string);
-		Spew(group, *string.representation);
-	}
+inline void
+Spew(
+	 PCSTR  group,
+	 const Stuff::MString &string
+	 )
+{
+	Check_Object(&string);
+	Spew(group, *string.representation);
+}
 #endif
 
 namespace MemoryStreamIO {
 
 	inline Stuff::MemoryStream&
 		Write(
-			Stuff::MemoryStream* stream,
-			const Stuff::MString* str
+		Stuff::MemoryStream* stream,
+		const Stuff::MString* str
 		)
 	{
 		return Write(stream, *str->representation);
 	}
 
 }
+#endif

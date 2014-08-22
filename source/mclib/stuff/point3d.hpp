@@ -7,7 +7,9 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _POINT3D_HPP_
+#define _POINT3D_HPP_
+
 #include <stuff/vector3d.hpp>
 
 namespace Stuff {
@@ -27,34 +29,34 @@ namespace Stuff {
 		// Constructors
 		//
 		Point3D()
-			{}
+		{}
 		Point3D(
 			Scalar x,
 			Scalar y,
 			Scalar z
-		):
-			Vector3D(x,y,z)
-				{}
+			):
+		Vector3D(x,y,z)
+		{}
 		Point3D(const Point3D &p):
-			Vector3D(p)
-				{}
+		Vector3D(p)
+		{}
 		explicit Point3D(const Vector3D &v)
-			{*this = v;}
+		{*this = v;}
 		explicit Point3D(const Vector4D &v)
-			{*this = v;}
+		{*this = v;}
 		explicit Point3D(const Origin3D &origin)
-			{*this = origin;}
+		{*this = origin;}
 		explicit Point3D(const AffineMatrix4D &matrix)
-			{*this = matrix;}
+		{*this = matrix;}
 		explicit Point3D(const YawPitchRange &polar)
-			{*this = polar;}
+		{*this = polar;}
 
 		//
 		// Assignment operators
 		//
 		Point3D&
 			operator=(const Vector3D& v)
-				{Vector3D::operator=(v); return *this;}
+		{Vector3D::operator=(v); return *this;}
 		Point3D&
 			operator=(const Vector4D& v);
 		Point3D&
@@ -63,112 +65,112 @@ namespace Stuff {
 			operator=(const AffineMatrix4D &matrix);
 		Point3D&
 			operator=(const YawPitchRange &polar)
-				{Vector3D::operator=(polar); return *this;}
+		{Vector3D::operator=(polar); return *this;}
 
 		//
 		// Math operators
 		//
 		Point3D&
 			Negate(const Vector3D &v)
-				{Vector3D::Negate(v); return *this;}
+		{Vector3D::Negate(v); return *this;}
 
 		Point3D&
 			Add(
-				const Vector3D& v1,
-				const Vector3D& v2
+			const Vector3D& v1,
+			const Vector3D& v2
 			)
-				{Vector3D::Add(v1,v2); return *this;}
+		{Vector3D::Add(v1,v2); return *this;}
 		Point3D&
 			operator+=(const Vector3D& v)
-				{return Add(*this,v);}
+		{return Add(*this,v);}
 
 		Point3D&
 			Subtract(
-				const Point3D& p,
-				const Vector3D& v
+			const Point3D& p,
+			const Vector3D& v
 			)
-				{Vector3D::Subtract(p,v); return *this;}
+		{Vector3D::Subtract(p,v); return *this;}
 		Point3D&
 			operator-=(const Vector3D& v)
-				{return Subtract(*this,v);}
+		{return Subtract(*this,v);}
 
 		Scalar
 			operator*(const Vector3D& v) const
-				{return Vector3D::operator*(v);}
+		{return Vector3D::operator*(v);}
 
 		Point3D&
 			Multiply(
-				const Vector3D& v,
-				Scalar scale
+			const Vector3D& v,
+			Scalar scale
 			)
-				{Vector3D::Multiply(v,scale); return *this;}
+		{Vector3D::Multiply(v,scale); return *this;}
 		Point3D&
 			Multiply(
-				const Point3D& p,
-				Scalar scale
+			const Point3D& p,
+			Scalar scale
 			)
-				{Vector3D::Multiply(p,scale); return *this;}
+		{Vector3D::Multiply(p,scale); return *this;}
 		Point3D&
 			operator*=(Scalar value)
-				{return Multiply(*this,value);}
+		{return Multiply(*this,value);}
 
 		Point3D&
 			Multiply(
-				const Point3D& p,
-				const Vector3D& v
+			const Point3D& p,
+			const Vector3D& v
 			)
-				{Vector3D::Multiply(p,v); return *this;}
+		{Vector3D::Multiply(p,v); return *this;}
 		Point3D&
 			operator*=(const Vector3D &v)
-				{return Multiply(*this,v);}
+		{return Multiply(*this,v);}
 
 		Point3D&
 			Divide(
-				const Vector3D& v,
-				Scalar scale
+			const Vector3D& v,
+			Scalar scale
 			)
-				{Vector3D::Divide(v,scale); return *this;}
+		{Vector3D::Divide(v,scale); return *this;}
 		Point3D&
 			operator/=(Scalar value)
-				{return Divide(*this,value);}
+		{return Divide(*this,value);}
 
 		Point3D&
 			Divide(
-				const Vector3D& v1,
-				const Vector3D& v2
+			const Vector3D& v1,
+			const Vector3D& v2
 			)
-				{Vector3D::Divide(v1,v2); return *this;}
+		{Vector3D::Divide(v1,v2); return *this;}
 		Point3D&
 			operator/=(const Vector3D &v)
-				{return Divide(*this,v);}
+		{return Divide(*this,v);}
 
 		//
 		// Transforms
 		//
 		Point3D&
 			Multiply(
-				const Vector3D &v,
-				const AffineMatrix4D &m
+			const Vector3D &v,
+			const AffineMatrix4D &m
 			)
-				{Vector3D::Multiply(v,m); return *this;}
+		{Vector3D::Multiply(v,m); return *this;}
 		Point3D&
 			Multiply(
-				const Point3D &p,
-				const AffineMatrix4D &m
+			const Point3D &p,
+			const AffineMatrix4D &m
 			);
 		Point3D&
 			operator*=(const AffineMatrix4D &m)
-				{Point3D src(*this); return Multiply(src,m);}
+		{Point3D src(*this); return Multiply(src,m);}
 		Point3D&
 			MultiplyByInverse(
-				const Vector3D &v,
-				const LinearMatrix4D &m
+			const Vector3D &v,
+			const LinearMatrix4D &m
 			)
-				{Vector3D::MultiplyByInverse(v,m); return *this;}
+		{Vector3D::MultiplyByInverse(v,m); return *this;}
 		Point3D&
 			MultiplyByInverse(
-				const Point3D &p,
-				const LinearMatrix4D &m
+			const Point3D &p,
+			const LinearMatrix4D &m
 			);
 
 		//
@@ -176,28 +178,28 @@ namespace Stuff {
 		//
 		Point3D&
 			Combine(
-				const Vector3D& v1,
-				Scalar t1,
-				const Vector3D& v2,
-				Scalar t2
+			const Vector3D& v1,
+			Scalar t1,
+			const Vector3D& v2,
+			Scalar t2
 			)
-				{Vector3D::Combine(v1,t1,v2,t2); return *this;}
+		{Vector3D::Combine(v1,t1,v2,t2); return *this;}
 
 		//
 		// Template support functions
 		//
 		Point3D&
 			Lerp(
-				const Vector3D& v1,
-				const Vector3D& v2,
-				Scalar t
+			const Vector3D& v1,
+			const Vector3D& v2,
+			Scalar t
 			)
-				{Vector3D::Lerp(v1,v2,t); return *this;}
+		{Vector3D::Lerp(v1,v2,t); return *this;}
 
 		static bool
 			TestClass();
 	};
 
 }
-
-#include <stuff/affinematrix.hpp>
+// #include <stuff/affinematrix.hpp>
+#endif

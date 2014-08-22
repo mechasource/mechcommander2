@@ -6,7 +6,9 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _LINE_HPP_
+#define _LINE_HPP_
+
 #include <stuff/ray.hpp>
 
 namespace Stuff {
@@ -16,27 +18,27 @@ namespace Stuff {
 	class Line3D:
 		public Ray3D
 	{
-	 public:
+	public:
 		Scalar
 			length;
 
 		Line3D()
-			{}
+		{}
 		Line3D(
 			const Ray3D &ray,
 			Scalar length
-		):
-			Ray3D(ray),
+			):
+		Ray3D(ray),
 			length(length)
-				{}
+		{}
 		Line3D(
 			const Point3D &start,
 			const UnitVector3D &direction,
 			Scalar length
-		):
-			Ray3D(start,direction),
+			):
+		Ray3D(start,direction),
 			length(length)
-				{}
+		{}
 
 		//
 		// Assignment operators
@@ -46,29 +48,29 @@ namespace Stuff {
 
 		void
 			FindEnd(Point3D *result)
-				{Check_Object(this); Check_Pointer(result); Ray3D::Project(length, result);}
-			
+		{Check_Object(this); Check_Pointer(result); Ray3D::Project(length, result);}
+
 		//
 		// Intersection functions
 		//
 		Scalar
 			GetDistanceTo(
-				const Plane &plane,
-				Scalar *product
+			const Plane &plane,
+			Scalar *product
 			) const
-				{Check_Object(this); return Ray3D::GetDistanceTo(plane, product);}
+		{Check_Object(this); return Ray3D::GetDistanceTo(plane, product);}
 		Scalar
 			GetDistanceTo(
-				const Sphere &sphere,
-				Scalar *penetration
+			const Sphere &sphere,
+			Scalar *penetration
 			) const;
 		Scalar
 			GetDistanceTo(const OBB& box);
 		Scalar
 			GetDistanceTo(
-				const OBB& box,
-				int *axis
-			);
+			const OBB& box,
+			size_t* axis);
 	};
 
 }
+#endif

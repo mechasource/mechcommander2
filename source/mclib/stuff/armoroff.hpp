@@ -5,26 +5,20 @@
 //===========================================================================//
 
 #pragma once
-//#undef Verify
-//#undef Warn
-//#undef Check_Signature
-//#undef Check_Pointer
-//#undef Mem_Copy
-//#undef Str_Copy
-//#undef Str_Cat
-//#undef Check
-//#undef Cast_Pointer
-//#undef Cast_Object
-//#undef Spew
-//
-//#undef USE_TIME_ANALYSIS			// trace time statistics
-//#undef USE_TRACE_LOG					// logging functions
-//#undef USE_EVENT_STATISTICS      // event statistics
+
+#ifndef _ARMOROFF_HPP_
+#define _ARMOROFF_HPP_
+
+#ifndef SPEW
+#define SPEW(x)		((void)0)
+#endif
+
+namespace Stuff {
 
 #if defined(LAB_ONLY) && !defined(NO_ANALYSIS)
-	#define USE_TIME_ANALYSIS
-	#define USE_TRACE_LOG
-	#define USE_EVENT_STATISTICS
+#define USE_TIME_ANALYSIS
+#define USE_TRACE_LOG
+#define USE_EVENT_STATISTICS
 #endif
 
 #define Verify(c) ((void)0)
@@ -42,3 +36,6 @@
 #define Cast_Pointer(type, ptr) (ATL_SUPPRESS_WARNING(4946) reinterpret_cast<type>(ptr))
 #define Cast_Object(type, ptr) static_cast<type>(ptr)
 #define Spew(x,y) ((void)0)
+
+}
+#endif

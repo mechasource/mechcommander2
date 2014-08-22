@@ -191,7 +191,7 @@ void
 	//
 	// Create a file for testing.  Fill with a sequence numbers.
 	//
-	PUCHAR buffer;
+	puint8_t buffer;
 	size_t i;
 	
 	buffer = new uint8_t[FILE_BUFFERSIZE];

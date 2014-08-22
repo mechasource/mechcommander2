@@ -6,9 +6,9 @@ This header and class is not used
 */
 
 #pragma once
+
 #ifndef NONCOPYABLE_HPP
 #define NONCOPYABLE_HPP
-
 
 namespace Stuff
 {
@@ -22,7 +22,4 @@ namespace Stuff
 		const Noncopyable& operator=(const Noncopyable&);
 	};
 };
-
-
-
 #endif // NONCOPYABLE_HPP

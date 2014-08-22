@@ -6,7 +6,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+
+using namespace Stuff;
 
 
 int
@@ -73,7 +78,7 @@ void
 }
 
 
-DWORD
+ULONG
 	Stuff::Scaled_Float_To_Bits(float in, float min, float max, ULONG bits)
 {
 	Verify(bits < 32);
@@ -84,22 +89,22 @@ DWORD
 	Verify(in >= min);
 	
 
-	unsigned int biggest_number = (0xffffffff>>(32-bits));
+	uint32_t biggest_number = (0xffffffff>>(32-bits));
 	float local_in =  in - min;
 	float range = (max-min);
 
 	
-	DWORD return_value = (DWORD)((local_in/range) * (float)biggest_number);
+	ULONG return_value = (ULONG)((local_in/range) * (float)biggest_number);
 	
-	//Verify((DWORD)return_value >= 0x00000000);
-	Verify((DWORD)return_value <= (DWORD)biggest_number);
+	//Verify((ULONG)return_value >= 0x00000000);
+	Verify((ULONG)return_value <= (ULONG)biggest_number);
 
 	return return_value;
 
 }
 
 float
-	Stuff::Scaled_Float_From_Bits(DWORD in, float min, float max, ULONG bits)
+	Stuff::Scaled_Float_From_Bits(ULONG in, float min, float max, ULONG bits)
 {
 	Verify(bits < 32);
 	Verify(bits > 0);
@@ -109,7 +114,7 @@ float
 
 	in &= (0xffffffff>>(32-bits));
 
-	unsigned int biggest_number = (0xffffffff>>(32-bits));
+	uint32_t biggest_number = (0xffffffff>>(32-bits));
 
 	float ratio = in/(float)biggest_number;
 	float range = (max-min);
@@ -119,7 +124,7 @@ float
 	return return_value;
 }
 
-DWORD
+ULONG
 	Stuff::Scaled_Int_To_Bits(int in, int min, int max, ULONG bits)
 {
 
@@ -130,22 +135,22 @@ DWORD
 	Verify(in <= max);
 	Verify(in >= min);
 
-	unsigned int biggest_number = (0xffffffff>>(32-bits));
+	uint32_t biggest_number = (0xffffffff>>(32-bits));
 	int local_in =  in - min;
 	int range = (max-min);
 
 	
-	DWORD return_value = (DWORD)(((float)local_in/(float)range) * (float)biggest_number);
+	ULONG return_value = (ULONG)(((float)local_in/(float)range) * (float)biggest_number);
 	
-	//Verify((DWORD)return_value >= 0x00000000);
-	Verify((DWORD)return_value < (DWORD)biggest_number);
+	//Verify((ULONG)return_value >= 0x00000000);
+	Verify((ULONG)return_value < (ULONG)biggest_number);
 
 	return return_value;
 
 }
 
 int
-	Stuff::Scaled_Int_From_Bits(DWORD in, int min, int max, ULONG bits)
+	Stuff::Scaled_Int_From_Bits(ULONG in, int min, int max, ULONG bits)
 {
 	Verify(bits < 32);
 	Verify(bits > 0);
@@ -153,7 +158,7 @@ int
 	Verify(min < max);
 
 
-	unsigned int biggest_number = (0xffffffff>>(32-bits));
+	uint32_t biggest_number = (0xffffffff>>(32-bits));
 
 	float ratio = (float)in/(float)biggest_number;
 	int range = (max-min);

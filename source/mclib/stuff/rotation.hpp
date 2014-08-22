@@ -7,7 +7,9 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _ROTATION_HPP_
+#define _ROTATION_HPP_
+
 #include <stuff/angle.hpp>
 #include <stuff/vector3d.hpp>
 
@@ -18,21 +20,9 @@ namespace Stuff {
 }
 
 #if !defined(Spew)
-	void
-		Spew(
-			PCSTR group,
-			const Stuff::EulerAngles &angle
-		);
-	void
-		Spew(
-			PCSTR group,
-			const Stuff::YawPitchRoll &angle
-		);
-	void
-		Spew(
-			PCSTR group,
-			const Stuff::UnitQuaternion &angle
-		);
+void Spew(PCSTR group, const Stuff::EulerAngles &angle);
+void Spew(PCSTR group, const Stuff::YawPitchRoll &angle);
+void Spew(PCSTR group, const Stuff::UnitQuaternion &angle);
 #endif
 
 namespace Stuff {
@@ -55,14 +45,12 @@ namespace Stuff {
 			yaw,
 			roll;
 
-		static const EulerAngles
-			Identity;
+		static const EulerAngles Identity;
 
 		//
 		// Constructors
 		//
-		EulerAngles()
-			{}
+		EulerAngles() {}
 		EulerAngles(
 			const Radian &p,
 			const Radian &y,
@@ -136,14 +124,14 @@ namespace Stuff {
 			operator[](size_t index) const
 				{
 					Check_Pointer(this);
-					Verify(static_cast<unsigned>(index) <= Z_Axis);
+					Verify(static_cast<uint32_t>(index) <= Z_Axis);
 					return (&pitch)[index];
 				}
 		Radian&
 			operator[](size_t index)
 				{
 					Check_Pointer(this);
-					Verify(static_cast<unsigned>(index) <= Z_Axis);
+					Verify(static_cast<uint32_t>(index) <= Z_Axis);
 					return (&pitch)[index];
 				}
 
@@ -247,14 +235,14 @@ namespace Stuff {
 			operator[](size_t index) const
 				{
 					Check_Pointer(this);
-					Verify(static_cast<unsigned>(index) <= Z_Axis);
+					Verify(static_cast<uint32_t>(index) <= Z_Axis);
 					return (&yaw)[index];
 				}
 		Radian&
 			operator[](size_t index)
 				{
 					Check_Pointer(this);
-					Verify(static_cast<unsigned>(index) <= Z_Axis);
+					Verify(static_cast<uint32_t>(index) <= Z_Axis);
 					return (&yaw)[index];
 				}
 
@@ -324,17 +312,13 @@ namespace Stuff {
 	class UnitQuaternion
 	{
 	public:
-		static const UnitQuaternion
-			Identity;
+		static const UnitQuaternion Identity;
 
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void InitializeClass();
+		static void TerminateClass();
 
 		DECLARE_TIMER(static, SlerpTime);
-		static DWORD
-			SlerpCount;
+		static ULONG SlerpCount;
 
 		Scalar
 			x,
@@ -413,14 +397,14 @@ namespace Stuff {
 			operator[](size_t index) const
 				{
 					Check_Pointer(this);
-					Verify(static_cast<unsigned>(index) <= W_Axis);
+					Verify(static_cast<uint32_t>(index) <= W_Axis);
 					return (&x)[index];
 				}
 		Scalar&
 			operator[](size_t index)
 				{
 					Check_Pointer(this);
-					Verify(static_cast<unsigned>(index) <= W_Axis);
+					Verify(static_cast<uint32_t>(index) <= W_Axis);
 					return (&x)[index];
 				}
 
@@ -686,3 +670,4 @@ namespace MemoryStreamIO {
 			{return stream->WriteBytes(input, sizeof(*input));}
 
 }
+#endif

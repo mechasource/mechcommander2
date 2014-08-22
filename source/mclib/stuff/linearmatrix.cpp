@@ -6,26 +6,26 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/linearmatrix.hpp>
+
+using namespace Stuff;
 
 const LinearMatrix4D
 	LinearMatrix4D::Identity(true);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	LinearMatrix4D::AlignLocalAxisToWorldVector(
-		const Vector3D &world_target,
-		int pointing_axis,
-		int rotating_axis,
-		int minor_axis
-	)
+void LinearMatrix4D::AlignLocalAxisToWorldVector(
+	const Vector3D &world_target, size_t pointing_axis, size_t rotating_axis, size_t minor_axis)
 {
 	Check_Object(this);
 	Check_Object(&world_target);
-	Verify(static_cast<unsigned>(pointing_axis) <= Z_Axis);
-	Verify(static_cast<unsigned>(rotating_axis) <= Z_Axis);
+	Verify(static_cast<uint32_t>(pointing_axis) <= Z_Axis);
+	Verify(static_cast<uint32_t>(rotating_axis) <= Z_Axis);
 	Verify(rotating_axis != pointing_axis);
 
 	//
@@ -33,15 +33,14 @@ void
 	// These are the variables that the alignment algorithm must fill in
 	//------------------------------------------------------------------
 	//
-	UnitVector3D
-		rotation_vector,
-		pointing_vector,
-		minor_vector;
+	UnitVector3D	rotation_vector;
+	UnitVector3D	pointing_vector;
+	UnitVector3D	minor_vector;
 
 	//
 	//------------------------------------------------------------------
 	// Extract the current target axis direction, then cross it with the
-	// plane target to find the minor axis direction (unsigned)
+	// plane target to find the minor axis direction (uint32_t)
 	//------------------------------------------------------------------
 	//
 	if (Small_Enough(world_target.GetLengthSquared()))

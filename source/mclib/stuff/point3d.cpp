@@ -6,11 +6,19 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/affinematrix.hpp>
+#include <stuff/linearmatrix.hpp>
+#include <stuff/matrix.hpp>
+#include <stuff/vector4d.hpp>
+#include <stuff/point3d.hpp>
 
-const Point3D
-	Point3D::Identity(0.0f,0.0f,0.0f);
+using namespace Stuff;
+
+const Point3D Point3D::Identity(0.0f,0.0f,0.0f);
 
 //
 //###########################################################################

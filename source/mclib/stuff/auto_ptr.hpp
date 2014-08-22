@@ -11,7 +11,7 @@ This header and class is not used
 #define Auto_Ptr_HPP
 
 #if _CONSIDERED_OBSOLETE
-#include <stuff/stuff.hpp>
+//#include <stuff/stuff.hpp>
 
 namespace Stuff
 {
@@ -36,18 +36,18 @@ namespace Stuff
 		Auto_Ptr()
 			: m_ptr(0)
 		{
-			Verify(sizeof(T*) == sizeof(unsigned int));	// 
+			Verify(sizeof(T*) == sizeof(size_t));	// 
 		}
 
 		explicit Auto_Ptr(T* ptr, bool delete_as_array = DELETE_NORMAL)
 		{
-			Verify(sizeof(T *) == sizeof(unsigned int));
+			Verify(sizeof(T*) == sizeof(size_t));
 			Set(ptr,true,delete_as_array);
 		}
 
 		Auto_Ptr(Auto_Ptr const& src)
 		{
-			Verify(sizeof(T*) == sizeof(unsigned int));
+			Verify(sizeof(T*) == sizeof(size_t));
 			m_ptr = src.m_ptr;
 			src.SetAsOwner(false);
 		}
@@ -211,7 +211,7 @@ namespace Stuff
 		mutable union
 		{
 			T *m_ptr;
-			mutable int unsigned m_bits;
+			mutable int uint32_t m_bits;
 		};
 
 		enum

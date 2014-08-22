@@ -6,16 +6,18 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/random.hpp>
 
-int
-	Random::Numbers[250];
-int
-	Random::Index = -1;
+using namespace Stuff;
 
-Random*
-	Random::Instance = NULL;
+int Random::Numbers[250];
+int Random::Index = -1;
+
+Random*	Random::Instance = NULL;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //

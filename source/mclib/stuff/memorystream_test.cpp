@@ -82,7 +82,7 @@ bool SingeBitStreamTest(size_t total_sections_to_write)
 	}
 
 	
-	BYTE *big_byte_array = new BYTE[total_number_of_bytes];
+	puint8_t big_byte_array = new UCHAR[total_number_of_bytes];
 	Register_Pointer(big_byte_array);
 	
 	MemoryStream bit_stream(big_byte_array, total_number_of_bytes);
@@ -264,7 +264,7 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 	}
 
 	
-	BYTE *big_byte_array = new BYTE[total_number_of_bytes];
+	puint8_t big_byte_array = new UCHAR[total_number_of_bytes];
 	Register_Pointer(big_byte_array);
 	
 	MemoryStream bit_stream(big_byte_array, total_number_of_bytes);
@@ -305,7 +305,7 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
 
-		DWORD buffer;
+		ULONG buffer;
 
 
 		buffer = 0x00;
@@ -409,7 +409,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		bits_to_write[i] = 0x00;
 		bits_to_read[i] = 0x00;
 
-		BYTE *byte_array = Cast_Pointer(BYTE *, &bits_to_write[i]);
+		puint8_t byte_array = Cast_Pointer(puint8_t , &bits_to_write[i]);
 
 		
 		int number_of_bytes = (int)(bit_depth[i]/8.0f);
@@ -423,7 +423,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 
 		for (int byte_count = 0; byte_count < number_of_bytes; ++byte_count)
 		{
-			byte_array[byte_count] = (BYTE)Random::GetLessThan(256);
+			byte_array[byte_count] = (UCHAR)Random::GetLessThan(256);
 			//byte_array[byte_count] = 0xff;
 		}
 
@@ -431,7 +431,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		// mask off unused bits...
 		if (remainder_bits != 0)
 		{
-			byte_array[number_of_bytes-1] = (BYTE)(byte_array[number_of_bytes-1] >> (8-remainder_bits));
+			byte_array[number_of_bytes-1] = (UCHAR)(byte_array[number_of_bytes-1] >> (8-remainder_bits));
 		}
 	}
 
@@ -445,7 +445,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 	}
 
 
-	BYTE *big_byte_array = new BYTE[total_number_of_bytes];
+	puint8_t big_byte_array = new UCHAR[total_number_of_bytes];
 	Register_Pointer(big_byte_array);
 
 
@@ -495,8 +495,8 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
-		BYTE *source_byte_array = Cast_Pointer(BYTE *, &bits_to_write[i]);
-		BYTE *copy_byte_array = Cast_Pointer(BYTE *, &bits_to_read[i]);
+		puint8_t source_byte_array = Cast_Pointer(puint8_t , &bits_to_write[i]);
+		puint8_t copy_byte_array = Cast_Pointer(puint8_t , &bits_to_read[i]);
 
 		SPEW((GROUP_STUFF_TEST, "%d\t---- Bit Depth : %d", i, bit_depth[i]));
 
@@ -512,7 +512,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 
 			for (int bit_count = 7; bit_count > -1; --bit_count)
 			{
-				BYTE bit_value = (BYTE)(source_byte_array[byte_count] >> bit_count);
+				UCHAR bit_value = (UCHAR)(source_byte_array[byte_count] >> bit_count);
 
 				bit_value &= 0x01;
 
@@ -554,7 +554,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		{
 			for (int bit_count = 7; bit_count > -1; --bit_count)
 			{
-				BYTE bit_value = (BYTE)(copy_byte_array[byte_count] >> bit_count);
+				UCHAR bit_value = (UCHAR)(copy_byte_array[byte_count] >> bit_count);
 
 				bit_value &= 0x01;
 

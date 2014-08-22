@@ -7,7 +7,9 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _UNITVECTOR_HPP_
+#define _UNITVECTOR_HPP_
+
 #include <stuff/vector3d.hpp>
 
 namespace Stuff {
@@ -24,19 +26,19 @@ namespace Stuff {
 		// Constructors
 		//
 		UnitVector3D()
-			{}
+		{}
 		UnitVector3D(
 			Scalar x,
 			Scalar y,
 			Scalar z
-		):
-			Vector3D(x,y,z)
-				{}
+			):
+		Vector3D(x,y,z)
+		{}
 		UnitVector3D(const UnitVector3D &v):
-			Vector3D(v)
-				{}
+		Vector3D(v)
+		{}
 		explicit UnitVector3D(const Vector3D &v)
-			{*this = v;}
+		{*this = v;}
 
 		static const UnitVector3D
 			Forward;
@@ -56,21 +58,21 @@ namespace Stuff {
 		//
 		UnitVector3D&
 			operator=(const UnitVector3D &vector)
-				{Check_Object(&vector); Vector3D::operator=(vector); return *this;}
+		{Check_Object(&vector); Vector3D::operator=(vector); return *this;}
 		UnitVector3D&
 			operator=(const Vector3D& v)
-				{Vector3D::Normalize(v); return *this;}
+		{Vector3D::Normalize(v); return *this;}
 
 		//
 		// Math operations
 		//
 		UnitVector3D&
 			Negate(const UnitVector3D &v)
-				{Check_Object(&v); Vector3D::Negate(v); return *this;}
+		{Check_Object(&v); Vector3D::Negate(v); return *this;}
 
 		Scalar
 			operator*(const Vector3D& v) const
-				{return Vector3D::operator*(v);}
+		{return Vector3D::operator*(v);}
 
 		//
 		// Transforms
@@ -78,24 +80,24 @@ namespace Stuff {
 		UnitVector3D& Multiply(
 			const UnitVector3D &v,
 			const LinearMatrix4D &m
-		);
+			);
 		UnitVector3D&
 			operator*=(const LinearMatrix4D &m);
 		UnitVector3D&
 			MultiplyByInverse(
-				const UnitVector3D &v,
-				const LinearMatrix4D &m
+			const UnitVector3D &v,
+			const LinearMatrix4D &m
 			)
-				{Vector3D::MultiplyByInverse(v,m); return *this;}
+		{Vector3D::MultiplyByInverse(v,m); return *this;}
 
 		//
 		// Template support
 		//
 		UnitVector3D&
 			Lerp(
-				const UnitVector3D& v1,
-				const UnitVector3D& v2,
-				Scalar t
+			const UnitVector3D& v1,
+			const UnitVector3D& v2,
+			Scalar t
 			);
 
 		//
@@ -127,13 +129,14 @@ namespace Stuff {
 
 	inline UnitVector3D&
 		UnitVector3D::Multiply(
-			const UnitVector3D &v,
-			const LinearMatrix4D &m
+		const UnitVector3D &v,
+		const LinearMatrix4D &m
 		)
-			{Check_Object(&v); Vector3D::Multiply((Vector3D &) v, (AffineMatrix4D &) m); return *this;}
+	{Check_Object(&v); Vector3D::Multiply((Vector3D &) v, (AffineMatrix4D &) m); return *this;}
 
 	inline UnitVector3D&
 		UnitVector3D::operator*=(const LinearMatrix4D &m)
-			{UnitVector3D src(*this); return Multiply(src, m);}
+	{UnitVector3D src(*this); return Multiply(src, m);}
 
 }
+#endif

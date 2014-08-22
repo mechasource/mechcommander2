@@ -7,8 +7,11 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _FILESTREAMMANAGER_HPP_
+#define _FILESTREAMMANAGER_HPP_
+
 #include <stuff/filestream.hpp>
+#include <stuff/tree.hpp>
 
 namespace Stuff {
 
@@ -22,11 +25,11 @@ namespace Stuff {
 	public:
 		FileDependencies();
 		FileDependencies(const FileDependencies &dependencies):
-			Plug(DefaultData)
-				{
-					Check_Object(this); Check_Object(&dependencies);
-					*this = dependencies;
-				}
+		Plug(DefaultData)
+		{
+			Check_Object(this); Check_Object(&dependencies);
+			*this = dependencies;
+		}
 		~FileDependencies();
 
 		FileDependencies&
@@ -48,50 +51,51 @@ namespace Stuff {
 	//##########################################################################
 
 	class FileStreamManager
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructor, destructor, and testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructor, destructor, and testing
+		//
 	public:
 		FileStreamManager();
 		~FileStreamManager();
 
 		void
 			TestInstance()
-				{}
+		{}
 		static void
 			TestClass();
 
 		static FileStreamManager
 			*Instance;
-			
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Utility functions
-	//
+
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Utility functions
+		//
 	public:
 		void
 			CleanUpAfterCompares();
 
 		bool
 			CompareModificationDate(
-				const MString &file_name,
-				__int64 time_stamp
+			const MString &file_name,
+			int64_t time_stamp
 			);
 		void
 			PurgeFileCompareCache();
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Private data
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Private data
+		//
 	protected:
-		typedef Stuff::PlugOf<__int64>
+		typedef Stuff::PlugOf<int64_t>
 			FileStatPlug;
 		Stuff::TreeOf<FileStatPlug*, Stuff::MString>
 			compareCache;
 	};
 
 }
+#endif

@@ -7,14 +7,17 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _SCALAR_HPP_
+#define _SCALAR_HPP_
+
+#include <stuff/style.hpp>
 #include <stuff/memorystream.hpp>
 
 namespace Stuff {
 
-	#if !defined(M_PI)
-		#define M_PI 3.14159265358979323846
-	#endif
+#if !defined(M_PI)
+#define M_PI 3.14159265358979323846
+#endif
 
 	typedef float Scalar;
 	const Scalar Pi=static_cast<Scalar>(M_PI);
@@ -31,19 +34,19 @@ namespace Stuff {
 
 	inline Scalar
 		Fabs(Scalar a)
-			{return static_cast<Scalar>(fabs(a));}
+	{return static_cast<Scalar>(fabs(a));}
 	inline Scalar
 		Lerp(Scalar a, Scalar b, Scalar t)
-			{return a*(1.0f - t) + b*t;}
+	{return a*(1.0f - t) + b*t;}
 	inline bool
 		Small_Enough(Scalar x,Scalar e=SMALL)
-			{return Fabs(x) <= e;}
+	{return Fabs(x) <= e;}
 	inline bool
 		Close_Enough(Scalar x,Scalar y,Scalar e=SMALL)
-			{return Fabs(x-y) <= e;}
+	{return Fabs(x-y) <= e;}
 	inline bool
 		Close_Enough(int x,int y,Scalar e=SMALL)
-			{return Fabs(static_cast<Scalar>(x-y)) <= e;}
+	{return Fabs(static_cast<Scalar>(x-y)) <= e;}
 
 	inline WORD
 		Round_Float_To_Word(float in)
@@ -53,12 +56,12 @@ namespace Stuff {
 		return *Cast_Pointer(WORD*, &in);
 	}
 
-	inline BYTE
+	inline UCHAR
 		Round_Float_To_Byte(float in)
 	{
 		Verify(in >= 0.0f && in < 256.0f);
 		in += 12582912.0f;
-		return *Cast_Pointer(PUCHAR, &in);
+		return *Cast_Pointer(puint8_t, &in);
 	}
 
 	inline WORD
@@ -70,28 +73,28 @@ namespace Stuff {
 		return *Cast_Pointer(WORD*, &in);
 	}
 
-	inline BYTE
+	inline UCHAR
 		Truncate_Float_To_Byte(float in)
 	{
 		Verify(in >= 0.0f && in < 256.0f);
 		in -= 0.5f;
 		in += 12582912.0f;
-		return *Cast_Pointer(PUCHAR, &in);
+		return *Cast_Pointer(puint8_t, &in);
 	}
 
 	ULONG
 		Scaled_Float_To_Bits(float in, float min, float max, ULONG number_of_bits);
-	
+
 	float
-		Scaled_Float_From_Bits(DWORD in, float min, float max, ULONG number_of_bits);
+		Scaled_Float_From_Bits(ULONG in, float min, float max, ULONG number_of_bits);
 
 	ULONG
 		Scaled_Int_To_Bits(int in, int min, int max, ULONG number_of_bits);
 
 	int
-		Scaled_Int_From_Bits(DWORD in, int min, int max, ULONG number_of_bits);
+		Scaled_Int_From_Bits(ULONG in, int min, int max, ULONG number_of_bits);
 
-	
+
 
 	int
 		Round(Scalar value);
@@ -99,49 +102,49 @@ namespace Stuff {
 	// mg: I made some statistic test and came up with an max error of 6%
 	static inline float
 		SqrtApproximate(float f)
-			{
-				Verify(f >= 0.0f);
+	{
+		Verify(f >= 0.0f);
 
 #if USE_ASSEMBLER_CODE
-				float temp;
-				_asm {
+		float temp;
+		_asm {
 			// __int32 i = (AsInt32(f) >> 1) + (INT32_FLOAT_ONE >> 1);
-					mov         eax, f
-					sar         eax, 1
-					add         eax, 1FC00000h
-					mov			temp,eax
-				}
-				return temp;
+			mov         eax, f
+				sar         eax, 1
+				add         eax, 1FC00000h
+				mov			temp,eax
+		}
+		return temp;
 #else
-				return static_cast<Scalar>(sqrt(f));
+		return static_cast<Scalar>(sqrt(f));
 #endif
-			}
+	}
 
 	static inline float
 		OneOverApproximate(float f)
-			{
-				Verify(f != 0.0f);
+	{
+		Verify(f != 0.0f);
 
 #if USE_ASSEMBLER_CODE
-				float temp;
+		float temp;
 
-				int _i = 2 * FP_ONE_BITS - *(int *)&(f);
-				temp = *(float *)&_i;
-				temp = temp * (2.0f - (f) * temp);
+		int _i = 2 * FP_ONE_BITS - *(int *)&(f);
+		temp = *(float *)&_i;
+		temp = temp * (2.0f - (f) * temp);
 
-				return temp;
+		return temp;
 #else
-				return 1.0f/f;
+		return 1.0f/f;
 #endif
-			}
+	}
 
 	void
 		Find_Roots(
-			Scalar a,		// a*x*x + b*x + c = 0
-			Scalar b,
-			Scalar c,
-			Scalar *center,
-			Scalar *range
+		Scalar a,		// a*x*x + b*x + c = 0
+		Scalar b,
+		Scalar c,
+		Scalar *center,
+		Scalar *range
 		);
 
 	inline Scalar
@@ -153,8 +156,8 @@ namespace Stuff {
 
 	inline Scalar
 		Arctan(
-			Scalar y,
-			Scalar x
+		Scalar y,
+		Scalar x
 		)
 	{
 		Verify(!Small_Enough(y) || !Small_Enough(x));
@@ -177,14 +180,14 @@ namespace Stuff {
 
 	inline Scalar
 		Power(
-			Scalar x,
-			Scalar y
+		Scalar x,
+		Scalar y
 		)
 	{
 		Verify(x >= 0);
 		return static_cast<Scalar>(
 			pow(static_cast<double>(x), static_cast<double>(y))
-		);
+			);
 	}
 
 	inline Scalar
@@ -224,15 +227,16 @@ namespace MemoryStreamIO {
 
 	inline Stuff::MemoryStream&
 		Read(
-			Stuff::MemoryStream* stream,
-			Stuff::Scalar *output
+		Stuff::MemoryStream* stream,
+		Stuff::Scalar *output
 		)
-			{return stream->ReadBytes(output, sizeof(*output));}
+	{return stream->ReadBytes(output, sizeof(*output));}
 	inline Stuff::MemoryStream&
 		Write(
-			Stuff::MemoryStream* stream,
-			const Stuff::Scalar *input
+		Stuff::MemoryStream* stream,
+		const Stuff::Scalar *input
 		)
-			{return stream->WriteBytes(input, sizeof(*input));}
+	{return stream->WriteBytes(input, sizeof(*input));}
 
 }
+#endif

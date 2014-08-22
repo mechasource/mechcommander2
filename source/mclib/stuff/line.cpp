@@ -5,7 +5,16 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+//#include <gameos.hpp>
+//#include <stuff/scalar.hpp>
+#include <stuff/sphere.hpp>
+#include <stuff/obb.hpp>
+#include <stuff/line.hpp>
+
+using namespace Stuff;
+
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,6 +127,7 @@ Scalar
 	center = box.localToParent;
 	Vector3D delta;
 	delta.Subtract(center, origin);
+	size_t axis;
 
 	//
 	//--------------------------------------------------
@@ -126,7 +136,7 @@ Scalar
 	//
 	Scalar enters = -100.0f - length;
 	Scalar leaves = length + 100.0f;
-	for (int axis=X_Axis; axis <= Z_Axis; ++axis)
+	for (axis=X_Axis; axis <= Z_Axis; ++axis)
 	{
 		UnitVector3D
 			normal(
@@ -155,7 +165,7 @@ Scalar
 
 		//
 		//--------------------------------------------------------------------
-		// We know the line is not parallel, so we will now calculate how long
+		// We know the line is not parallel, so we will now calculate how int32_t
 		// the line will stay inside the box.  We also will calculate how far
 		// from the origin to the centerplane of the OBB
 		//--------------------------------------------------------------------
@@ -197,7 +207,7 @@ Scalar
 Scalar
 	Line3D::GetDistanceTo(
 		const OBB& box,
-		int *first_axis
+		size_t* first_axis
 	)
 {
 	Check_Object(this);
@@ -214,6 +224,7 @@ Scalar
 	center = box.localToParent;
 	Vector3D delta;
 	delta.Subtract(center, origin);
+	size_t axis;
 
 	//
 	//--------------------------------------------------
@@ -222,7 +233,7 @@ Scalar
 	//
 	Scalar enters = -100.0f - length;
 	Scalar leaves = length + 100.0f;
-	for (int axis=X_Axis; axis <= Z_Axis; ++axis)
+	for (axis=X_Axis; axis <= Z_Axis; ++axis)
 	{
 		UnitVector3D
 			normal(
@@ -251,7 +262,7 @@ Scalar
 
 		//
 		//--------------------------------------------------------------------
-		// We know the line is not parallel, so we will now calculate how long
+		// We know the line is not parallel, so we will now calculate how int32_t
 		// the line will stay inside the box.  We also will calculate how far
 		// from the origin to the centerplane of the OBB
 		//--------------------------------------------------------------------

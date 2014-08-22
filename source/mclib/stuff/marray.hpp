@@ -7,7 +7,10 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _MARRAY_HPP_
+#define _MARRAY_HPP_
+
+#include <stuff/memorystream.hpp>
 
 namespace Stuff {
 
@@ -36,7 +39,7 @@ namespace Stuff {
 		const T& operator[](size_t i) const;
 		void AssignValue(const T &value);
 		void AssignData(const T *data, size_t length);
-		
+
 		size_t GetLength(void) const
 		{
 			return N;
@@ -212,7 +215,7 @@ namespace Stuff {
 		const T& operator[](size_t i) const;
 		void AssignValue(const T &value, size_t length);
 		void AssignData(const T *data, size_t length);
-		
+
 		size_t GetLength(void) const
 		{
 			return length;
@@ -480,3 +483,4 @@ namespace Stuff {
 	}
 
 }
+#endif

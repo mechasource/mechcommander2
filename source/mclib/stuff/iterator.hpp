@@ -7,7 +7,10 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _ITERATOR_HPP_
+#define _ITERATOR_HPP_
+
+#include <stuff/style.hpp>
 
 namespace Stuff {
 
@@ -39,14 +42,11 @@ namespace Stuff {
 		// Destructor and testing
 		//--------------------------------------------------------------------
 		//
-		virtual
-			~Iterator()
-				{}
-		virtual Iterator*
-			MakeClone() = 0;
-		void
-			TestInstance()
-				{}
+		virtual ~Iterator(void) {}
+
+		virtual Iterator* MakeClone(void) = 0;
+
+		void TestInstance(void) {}
 
 		//
 		//--------------------------------------------------------------------
@@ -54,10 +54,8 @@ namespace Stuff {
 		// Last						- Moves to last item
 		//--------------------------------------------------------------------
 		//
-		virtual void
-			First();
-		virtual void
-			Last();
+		virtual void First(void);
+		virtual void Last(void);
 
 		//
 		//--------------------------------------------------------------------
@@ -65,10 +63,8 @@ namespace Stuff {
 		// Previous			 		- Moves to previous item
 		//--------------------------------------------------------------------
 		//
-		virtual void
-			Next();
-		virtual void
-			Previous();
+		virtual void Next(void);
+		virtual void Previous(void);
 
 		//
 		//--------------------------------------------------------------------
@@ -77,15 +73,9 @@ namespace Stuff {
 		// GetCurrentItem			- Returns current item
 		//--------------------------------------------------------------------
 		//
-		void*
-			ReadAndNextItem()
-				{return ReadAndNextImplementation();}
-		void*
-			ReadAndPreviousItem()
-				{return ReadAndPreviousImplementation();}
-		void*
-			GetCurrentItem()
-				{return GetCurrentImplementation();}
+		PVOID ReadAndNextItem(void)		{return ReadAndNextImplementation();}
+		PVOID ReadAndPreviousItem(void)	{return ReadAndPreviousImplementation();}
+		PVOID GetCurrentItem(void)		{return GetCurrentImplementation();}
 
 		//
 		//--------------------------------------------------------------------
@@ -93,11 +83,8 @@ namespace Stuff {
 		// GetNthItem				- Returns nth item
 		//--------------------------------------------------------------------
 		//
-		virtual CollectionSize
-			GetSize();
-		void*
-			GetNthItem(CollectionSize index)
-				{return GetNthImplementation(index);}
+		virtual CollectionSize GetSize(void);
+		PVOID GetNthItem(CollectionSize index)	{return GetNthImplementation(index);}
 
 		//
 		//--------------------------------------------------------------------
@@ -105,12 +92,8 @@ namespace Stuff {
 		// EndIterator				- Moves to last item and returns iterator
 		//--------------------------------------------------------------------
 		//
-		virtual Iterator&
-			BeginIterator()
-				{return BeginImplementation();}
-		virtual Iterator&
-			EndIterator()
-				{return EndImplementation();}
+		virtual Iterator& BeginIterator(void)	{return BeginImplementation();}
+		virtual Iterator& EndIterator(void)		{return EndImplementation();}
 
 		//
 		//--------------------------------------------------------------------
@@ -118,12 +101,8 @@ namespace Stuff {
 		// BackwardIterator	  	- Moves to previous item and returns iterator
 		//--------------------------------------------------------------------
 		//
-		virtual Iterator&
-			ForwardIterator()
-				{return ForwardImplementation();}
-		virtual Iterator&
-			BackwardIterator()
-				{return BackwardImplementation();}
+		virtual Iterator& ForwardIterator(void)		{return ForwardImplementation();}
+		virtual Iterator& BackwardIterator(void)	{return BackwardImplementation();}
 
 	protected:
 		//
@@ -133,35 +112,23 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		Iterator()
-			{}
+		Iterator(void) {}
 
 		//
 		//--------------------------------------------------------------------
 		// Untyped implementations
 		//--------------------------------------------------------------------
 		//
-		virtual void*
-			ReadAndNextImplementation();
-		virtual void*
-			ReadAndPreviousImplementation();
-		virtual void*
-			GetCurrentImplementation();
-		virtual void*
-			GetNthImplementation(CollectionSize index);
+		virtual PVOID ReadAndNextImplementation(void);
+		virtual PVOID ReadAndPreviousImplementation(void);
+		virtual PVOID GetCurrentImplementation(void);
+		virtual PVOID GetNthImplementation(CollectionSize index);
 
-		virtual Iterator&
-			BeginImplementation()
-				{First(); return *this;}
-		virtual Iterator&
-			EndImplementation()
-				{Last(); return *this;}
-		virtual Iterator&
-			ForwardImplementation()
-				{Next(); return *this;}
-		virtual Iterator&
-			BackwardImplementation()
-				{Previous(); return *this;}
+		virtual Iterator& BeginImplementation(void)		{First(); return *this;}
+		virtual Iterator& EndImplementation(void)		{Last(); return *this;}
+		virtual Iterator& ForwardImplementation(void)	{Next(); return *this;}
+		virtual Iterator& BackwardImplementation(void)	{Previous(); return *this;}
 	};
 
 }
+#endif

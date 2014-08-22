@@ -6,18 +6,23 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+#include <gameos.hpp>
+#include <stuff/link.hpp>
+#include <stuff/node.hpp>
+#include <stuff/socket.hpp>
+#include <stuff/plug.hpp>
+
+using namespace Stuff;
 
 //#############################################################################
 //###############################    Plug    ##################################
 //#############################################################################
 
-Plug::ClassData*
-	Plug::DefaultData = NULL;
+Plug::ClassData* Plug::DefaultData = NULL;
 
-HGOSHEAP
-	Stuff::ConnectionEngineHeap = NULL;
+HGOSHEAP Stuff::ConnectionEngineHeap = NULL;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -293,7 +298,7 @@ void
 // ReadAndNextImplementation
 //#############################################################################
 //
-void*
+PVOID
 	PlugIterator::ReadAndNextImplementation()
 {
 	Check_Object(this);
@@ -316,7 +321,7 @@ void*
 // ReadAndPreviousImplementation
 //#############################################################################
 //
-void*
+PVOID
 	PlugIterator::ReadAndPreviousImplementation()
 {
 	Check_Object(this);
@@ -339,7 +344,7 @@ void*
 // GetCurrentImplementation
 //#############################################################################
 //
-void*
+PVOID
 	PlugIterator::GetCurrentImplementation()
 {
 	Check_Object(this);
@@ -377,14 +382,14 @@ CollectionSize
 // GetNthImplementation
 //#############################################################################
 //
-void*
+PVOID
 	PlugIterator::GetNthImplementation(
 		CollectionSize index
 	)
 {
 	Check_Object(this);
 	CollectionSize i = 0;
-	void *item;
+	PVOID item;
 
 	First();
 	while ((item = GetCurrentImplementation()) != NULL)

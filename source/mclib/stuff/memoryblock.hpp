@@ -7,80 +7,66 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _MEMORYBLOCK_HPP_
+#define _MEMORYBLOCK_HPP_
+
+#include <stuff/style.hpp>
+
+#ifndef _GAMEOS_HPP_
+typedef struct	gos_Heap*		HGOSHEAP;
+extern HGOSHEAP ParentClientHeap;
+#endif
 
 namespace Stuff {
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlockHeader ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
+
 	class MemoryBlockHeader
 	{
 	public:
-		MemoryBlockHeader
-			*nextBlock;
-		size_t
-			blockSize;
-
-		void
-			TestInstance()
-				{}
+		MemoryBlockHeader*	nextBlock;
+		size_t				blockSize;
+		void TestInstance() {}
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlockBase ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class MemoryBlockBase
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 	public:
-		void
-			TestInstance()
-				{Verify(blockMemory != NULL);}
+		void TestInstance(void) {Verify(blockMemory != NULL);}
 
-		static void
-			UsageReport();
-		static void
-			CollapseBlocks();
+		static void UsageReport(void);
+		static void	CollapseBlocks(void);
 
 	protected:
 		PCSTR				blockName;
 		MemoryBlockHeader*	blockMemory;			// the first record block allocated
 
-		size_t
-			blockSize,				// size in bytes of the current record block
-			recordSize,				// size in bytes of the individual record
-			deltaSize;				// size in bytes of the growth blocks
+		size_t	blockSize;				// size in bytes of the current record block
+		size_t	recordSize;				// size in bytes of the individual record
+		size_t	deltaSize;				// size in bytes of the growth blocks
 
-		BYTE
-			*firstHeaderRecord,	// the beginning of useful free space
-			*freeRecord,			// the next address to allocate from the block
-			*deletedRecord;		// the next record to reuse
+		puint8_t	firstHeaderRecord;	// the beginning of useful free space
+		puint8_t	freeRecord;			// the next address to allocate from the block
+		puint8_t	deletedRecord;		// the next record to reuse
 
 		MemoryBlockBase(
-			size_t rec_size,
-			size_t start,
-			size_t delta,
-			PCSTR name,
-			HGOSHEAP parent = ParentClientHeap
-		);
-		~MemoryBlockBase();
+			size_t rec_size, size_t start, size_t delta, PCSTR name, 
+			HGOSHEAP parent = ParentClientHeap);
+		~MemoryBlockBase(void);
 
-		void*
-			Grow();
-
-		HGOSHEAP
-			blockHeap;
+		PVOID Grow(void);
+		HGOSHEAP blockHeap;
 
 	private:
-		static MemoryBlockBase
-			*firstBlock;
-		MemoryBlockBase
-			*nextBlock,
-			*previousBlock;
-
-		void
-			Collapse();
+		static MemoryBlockBase*	firstBlock;
+		MemoryBlockBase*		nextBlock;
+		MemoryBlockBase*		previousBlock;
+		void Collapse(void);
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlock ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,8 +75,7 @@ namespace Stuff {
 		public MemoryBlockBase
 	{
 	public:
-		static bool
-			TestClass();
+		static bool TestClass(void);
 
 		MemoryBlock(
 			size_t rec_size,
@@ -98,23 +83,23 @@ namespace Stuff {
 			size_t delta,
 			PCSTR name,
 			HGOSHEAP parent = ParentClientHeap
-		):
-			MemoryBlockBase(rec_size, start, delta, name, parent)
-				{}
+			):
+		MemoryBlockBase(rec_size, start, delta, name, parent)
+		{}
 
-		void*
+		PVOID
 			New();
 		void
-			Delete(void *Where);
+			Delete(PVOID Where);
 
-		void*
+		PVOID
 			operator[](size_t Index);
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlockOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T> class MemoryBlockOf:
-		public MemoryBlock
+	public MemoryBlock
 	{
 	public:
 		MemoryBlockOf(
@@ -122,20 +107,20 @@ namespace Stuff {
 			size_t delta,
 			PCSTR name,
 			HGOSHEAP parent = ParentClientHeap
-		):
-			MemoryBlock(sizeof(T), start, delta, name, parent)
+			):
+		MemoryBlock(sizeof(T), start, delta, name, parent)
 		{}
 
 		T*
 			New()
-				{return Cast_Pointer(T*, MemoryBlock::New());}
+		{return Cast_Pointer(T*, MemoryBlock::New());}
 		void
-			Delete(void *where)
-				{MemoryBlock::Delete(where);}
+			Delete(PVOID where)
+		{MemoryBlock::Delete(where);}
 
 		T*
 			operator[](size_t index)
-				{return Cast_Pointer(T*, MemoryBlock::operator[](index));}
+		{return Cast_Pointer(T*, MemoryBlock::operator[](index));}
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,26 +133,26 @@ namespace Stuff {
 			TestClass();
 
 	protected:
-		BYTE
+		UCHAR
 			*topOfStack;
-	
+
 		MemoryStack(
 			size_t rec_size,
 			size_t start,
 			size_t delta,
 			PCSTR name,
 			HGOSHEAP parent = ParentClientHeap
-		):
-			MemoryBlockBase(rec_size, start, delta, name, parent)
-				{topOfStack = NULL;}
+			):
+		MemoryBlockBase(rec_size, start, delta, name, parent)
+		{topOfStack = NULL;}
 
-		void*
-			Push(const void *What);
-		void*
+		PVOID
+			Push(PCVOID What);
+		PVOID
 			Push();
-		void*
+		PVOID
 			Peek()
-				{return topOfStack;}
+		{return topOfStack;}
 		void
 			Pop();
 	};
@@ -175,7 +160,7 @@ namespace Stuff {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryStackOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T> class MemoryStackOf:
-		public MemoryStack
+	public MemoryStack
 	{
 	public:
 		MemoryStackOf(
@@ -183,19 +168,20 @@ namespace Stuff {
 			size_t delta,
 			PCSTR name,
 			HGOSHEAP parent = ParentClientHeap
-		):
-			MemoryStack(sizeof(T), start, delta, name, parent)
+			):
+		MemoryStack(sizeof(T), start, delta, name, parent)
 		{}
 
 		T*
 			Push(const T *what)
-				{return Cast_Pointer(T*, MemoryStack::Push(what));}
+		{return Cast_Pointer(T*, MemoryStack::Push(what));}
 		T*
 			Peek()
-				{return static_cast<T*>(MemoryStack::Peek());}
+		{return static_cast<T*>(MemoryStack::Peek());}
 		void
 			Pop()
-				{MemoryStack::Pop();}
+		{MemoryStack::Pop();}
 	};
 
 }
+#endif

@@ -6,7 +6,15 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/obb.hpp>
+#include <stuff/mstring.hpp>
+#include <stuff/extentbox.hpp>
+
+using namespace Stuff;
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -302,8 +310,8 @@ void
 	Stuff::Use_Scalar_In_Sorted_Array(
 		DynamicArrayOf<Scalar> *values,
 		Scalar value,
-		unsigned *max_index,
-		unsigned block_size,
+		puint32_t max_index,
+		uint32_t block_size,
 		Scalar threshold
 	)
 {
@@ -315,11 +323,11 @@ void
 	// First, look to see if the table contains the specified value
 	//-------------------------------------------------------------
 	//
-	unsigned bottom = 0;
-	unsigned top = *max_index;
+	uint32_t bottom = 0;
+	uint32_t top = *max_index;
 	while (top > bottom)
 	{
-		unsigned middle = (top + bottom - 1) >> 1;
+		uint32_t middle = (top + bottom - 1) >> 1;
 		if (Close_Enough((*values)[middle], value, threshold))
 		{
 			return;
@@ -345,7 +353,7 @@ void
 	{
 		values->SetLength(*max_index + block_size);
 	}
-	unsigned to_move = *max_index - bottom;
+	uint32_t to_move = *max_index - bottom;
 	Verify(to_move <= *max_index);
 	if (to_move > 0)
 	{
@@ -375,16 +383,14 @@ void
 	// Figure out all the unique axis components used by the boxes
 	//------------------------------------------------------------
 	//
-	DynamicArrayOf<Scalar>
-		xs,
-		ys,
-		zs;
-	unsigned
-		max_x = 0,
-		max_y = 0,
-		max_z = 0,
-		count = boxes.GetLength(),
-		i;
+	DynamicArrayOf<Scalar>		xs;
+	DynamicArrayOf<Scalar>		ys;
+	DynamicArrayOf<Scalar>		zs;
+	uint32_t					max_x = 0;
+	uint32_t					max_y = 0;
+	uint32_t					max_z = 0;
+	size_t						count = boxes.GetLength();
+	uint32_t					i;
 	Verify(count > 0);
 	for (i=0; i<count; ++i)
 	{
@@ -412,7 +418,7 @@ void
 	Plane *plane = &(*planes)[0];
 	for (i=0; i<max_x; ++i)
 	{
-		Verify(static_cast<unsigned>(plane - &(*planes)[0]) < count);
+		Verify(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
 		plane->normal.x = 1.0f;
 		plane->normal.y = 0.0f;
 		plane->normal.z = 0.0f;
@@ -427,7 +433,7 @@ void
 	//
 	for (i=0; i<max_y; ++i)
 	{
-		Verify(static_cast<unsigned>(plane - &(*planes)[0]) < count);
+		Verify(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
 		plane->normal.x = 0.0f;
 		plane->normal.y = 1.0f;
 		plane->normal.z = 0.0f;
@@ -442,7 +448,7 @@ void
 	//
 	for (i=0; i<max_z; ++i)
 	{
-		Verify(static_cast<unsigned>(plane - &(*planes)[0]) < count);
+		Verify(static_cast<uint32_t>(plane - &(*planes)[0]) < count);
 		plane->normal.x = 0.0f;
 		plane->normal.y = 0.0f;
 		plane->normal.z = 1.0f;

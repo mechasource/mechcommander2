@@ -6,9 +6,15 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
-#include <stuff/database.hpp>
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
 #include <toolos.hpp>
+#include <stuff/memoryblock.hpp>
+#include <stuff/filestream.hpp>
+#include <stuff/database.hpp>
+
+using namespace Stuff;
 
 //
 // A pointer to this structure is the handle to the database
@@ -54,7 +60,7 @@ public:
 	);
 	void Unhook(const RecordHandle* handle);
 
-	__int64 	m_lastModified;			// Time record was last modifyed
+	int64_t 	m_lastModified;			// Time record was last modifyed
 	uintptr_t	m_nextIDRecord;			// offset to chain of records that share the same hash
 	uintptr_t	m_nextNameRecord;		// offset to chain of records that share the same hash
 	size_t		m_length;				// If this is zero, the record has been 
@@ -65,7 +71,7 @@ public:
 
 	bool		m_mustFree;					// When 1 gos_Free must be called on the block
 	char		m_name[1];
-	BYTE		m_data[1];
+	UCHAR		m_data[1];
 
 	void TestInstance(void) const
 	{
@@ -269,7 +275,7 @@ void
 
 	//
 	//---------------------------------------------------
-	// Figure out how long the name is and its hash value
+	// Figure out how int32_t the name is and its hash value
 	//---------------------------------------------------
 	//
 	ULONG record_hash;
@@ -293,7 +299,7 @@ void
 	//
 	Verify(!m_record);
 	Record *data =
-		new(new BYTE[sizeof(*m_record) + m_length + name_length])
+		new(new UCHAR[sizeof(*m_record) + m_length + name_length])
 			Record(this, record_hash, name_length);
 	Check_Object(data);
 	m_data = &data->m_name[name_length+1];
@@ -337,7 +343,7 @@ void
 
 	//
 	//---------------------------------------------------
-	// Figure out how long the name is and its hash value
+	// Figure out how int32_t the name is and its hash value
 	//---------------------------------------------------
 	//
 	ULONG record_hash;
@@ -360,7 +366,7 @@ void
 	//------------------
 	//
 	Record *data =
-		new(new BYTE[sizeof(*m_record) + m_length + name_length])
+		new(new UCHAR[sizeof(*m_record) + m_length + name_length])
 			Record(this, record_hash, name_length);
 	Check_Object(data);
 	m_data = &data->m_name[name_length+1];
@@ -590,7 +596,7 @@ DatabaseHandle::DatabaseHandle(
 			m_handle =
 				gos_OpenMemoryMappedFile(
 					filename,
-					reinterpret_cast<PUCHAR*>(&m_dataBase),
+					reinterpret_cast<puint8_t*>(&m_dataBase),
 					&size
 				);
 			if (m_dataBase->m_tag != Database::e_Tag)
@@ -617,7 +623,7 @@ DatabaseHandle::DatabaseHandle(
 			size_t size;
 			gos_GetFile(
 				filename,
-				reinterpret_cast<PUCHAR*>(&m_dataBase),
+				reinterpret_cast<puint8_t*>(&m_dataBase),
 				&size
 			);
 			FileStream::IsRedirected = false;
@@ -766,7 +772,7 @@ void
 		if (old_record)
 		{
 			output_db.m_idOffsets[i] = offset;
-			new_id_index[i] = (new_record - new_records);
+			new_id_index[i] = size_t(new_record - new_records);
 			while (old_record)
 			{
 				old_record = reinterpret_cast<Record*>((UINT_PTR)old_record + m_baseAddress);

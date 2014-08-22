@@ -3,8 +3,13 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
 #include <toolos.hpp>
+#include <stuff/filestream.hpp>
+
+using namespace Stuff;
 
 //#############################################################################
 //#############################    Directory    ###############################
@@ -249,7 +254,7 @@ void
 	{
 		if (IsRedirected)
 		{
-			void (__stdcall *old_hook)(PCSTR, PUCHAR*, DWORD*) = Environment.HookGetFile;
+			void (__stdcall *old_hook)(PCSTR, puint8_t*, ULONG*) = Environment.HookGetFile;
 			Environment.HookGetFile = NULL;
 			gos_GetFile(RedirectedName, &streamStart, &streamSize);
 			Environment.HookGetFile = old_hook;
@@ -390,12 +395,8 @@ MemoryStream&
 	Check_Object(this);
 	Verify(IsFileOpened());
 	Verify(writeEnabled == WriteOnly);
-	DWORD written =
-		gos_WriteFile(
-			fileHandle,
-			Cast_Pointer(PUCHAR, const_cast<PVOID>(ptr)),
-			number_of_bytes
-		);
+	size_t written = gos_WriteFile(
+		fileHandle, Cast_Pointer(puint8_t, const_cast<PVOID>(ptr)), number_of_bytes);
 	Verify(written == number_of_bytes);
 	currentPosition += written;
 	return *this;

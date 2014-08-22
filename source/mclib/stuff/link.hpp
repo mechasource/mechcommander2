@@ -7,21 +7,24 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _LINK_HPP_
+#define _LINK_HPP_
+
+#include <stuff/style.hpp>
 
 namespace Stuff {
 
 	class Socket;
 	class Plug;
-	class PlugIterator;
-   class Node;
+	// class PlugIterator;
+	// class Node;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Link ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	class Link
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 		friend class Plug;
 		friend class PlugIterator;
@@ -31,60 +34,51 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		virtual
-			~Link();
-		void
-			TestInstance();
+		virtual ~Link();
+		void TestInstance();
 
 		//
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		Socket*
-			GetSocket()
-				{return socket;}
-		Plug*
-			GetPlug()
-				{return plug;}
+		Socket* GetSocket(void)	{return socket;}
+		Plug* GetPlug(void)		{ return plug; }
 
 	protected:
 		//
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		Link(
-			Socket *socket,
-			Plug *plug
-		);
+		Link(Socket* socket, Plug* plug);
 
 		//
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		void
-			ReleaseFromPlug();
+		void ReleaseFromPlug(void);
 
 		//
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		Socket *socket;
-		Plug *plug;
+		Socket*	socket;
+		Plug*	plug;
 
 	private:
 		//
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		void
-			AddToPlug(Plug *plug);
+		void AddToPlug(Plug* plug);
 
 		//
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		Link *nextLink;
-		Link *prevLink;
+		Link* nextLink;
+		Link* prevLink;
 	};
 
 }
+
+#endif

@@ -6,11 +6,15 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/motion.hpp>
 
-const Motion3D
-	Motion3D::Identity(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f));
+using namespace Stuff;
+
+const Motion3D Motion3D::Identity(Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f));
 
 Motion3D::Motion3D(const Motion3D& motion)
 {

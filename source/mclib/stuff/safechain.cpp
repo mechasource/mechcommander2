@@ -6,7 +6,13 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
+#include <stuff/node.hpp>
+#include <stuff/safechain.hpp>
+
+using namespace Stuff;
 
 
 //
@@ -386,7 +392,7 @@ void
 // ReadAndNextImplementation
 //###########################################################################
 //
-void*
+PVOID
 	SafeChainIterator::ReadAndNextImplementation()
 {
 	Check_Object(this);
@@ -407,7 +413,7 @@ void*
 // ReadAndPreviousImplementation
 //###########################################################################
 //
-void*
+PVOID
 	SafeChainIterator::ReadAndPreviousImplementation()
 {
 	Check_Object(this);
@@ -428,7 +434,7 @@ void*
 // GetCurrentImplementation
 //###########################################################################
 //
-void*
+PVOID
 	SafeChainIterator::GetCurrentImplementation()
 {
 	Check_Object(this);
@@ -470,7 +476,7 @@ CollectionSize
 // GetNthImplementation
 //###########################################################################
 //
-void*
+PVOID
 	SafeChainIterator::GetNthImplementation(
 		CollectionSize index
 	)
@@ -533,7 +539,7 @@ void
 void
 	SafeChainIterator::ReceiveMemo(
 		IteratorMemo memo,
-		void *content
+		PVOID content
 	)
 {
 	Check_Object(this);

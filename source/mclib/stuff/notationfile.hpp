@@ -9,9 +9,13 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _NOTATIONFILE_HPP_
+#define _NOTATIONFILE_HPP_
+
 #include <stuff/scalar.hpp>
+#include <stuff/chain.hpp>
 #include <stuff/filestream.hpp>
+#include <stuff/filestreammanager.hpp>
 #include <stuff/tree.hpp>
 
 namespace Stuff {
@@ -34,21 +38,21 @@ namespace Stuff {
 		Macro(
 			MString *macro,
 			MString *replace
-		);
+			);
 
 		static void
 			AddValue(
-				MacroTree *macro_tree,
-				PCSTR name,
-				PCSTR value
+			MacroTree *macro_tree,
+			PCSTR name,
+			PCSTR value
 			);
 
 		static void
 			ReplaceMacros(
-				MacroTree *macro_tree,
-				PCSTR buffer,
-				PSTR new_buf,
-				int new_buf_size
+			MacroTree *macro_tree,
+			PCSTR buffer,
+			PSTR new_buf,
+			size_t new_buf_size
 			);
 	};
 
@@ -88,16 +92,16 @@ namespace Stuff {
 	//##########################################################################
 
 	class NotationFile
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 		friend class Page;
 		friend class Note;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructor/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructor/Destructors
+		//
 	public:
 		enum Type {
 			Standard,
@@ -108,11 +112,11 @@ namespace Stuff {
 		NotationFile(
 			PCSTR file_name,
 			Type type=Standard
-		);
+			);
 		NotationFile(
 			MemoryStream *stream=NULL,
 			MacroTree *macro_tree=NULL
-		);
+			);
 
 		~NotationFile();
 
@@ -124,21 +128,21 @@ namespace Stuff {
 	protected:
 		void
 			CommonConstruction(
-				MemoryStream *memory_stream,
-				TreeOf<Macro*, MString> *macro_tree
+			MemoryStream *memory_stream,
+			TreeOf<Macro*, MString> *macro_tree
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Stream access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Stream access
+		//
 	public:
 		const FileDependencies*
 			GetFileDependencies() const
-				{Check_Object(this); return &m_fileDependencies;}
+		{Check_Object(this); return &m_fileDependencies;}
 
 		PCSTR
 			GetFileName() const
-				{Check_Object(this); return m_fileName;}
+		{Check_Object(this); return m_fileName;}
 
 		void
 			SaveAs(PCSTR file_name);
@@ -147,41 +151,41 @@ namespace Stuff {
 
 		void
 			IgnoreChanges()
-				{Check_Object(this); m_dirtyFlag = false;}
+		{Check_Object(this); m_dirtyFlag = false;}
 
 		bool
 			IsChanged() const
-				{Check_Object(this); return m_dirtyFlag;}
+		{Check_Object(this); return m_dirtyFlag;}
 
 	protected:
 		void
 			Read(
-				MemoryStream *stream,
-				MacroTree *macro_tree,
-				Page **page,
-				bool nested
+			MemoryStream *stream,
+			MacroTree *macro_tree,
+			Page **page,
+			bool nested
 			);
 		void
 			Write(MemoryStream *stream);
 
 		void
 			ProcessLine(
-				MemoryStream *stream,
-				MacroTree *macro_tree,
-				Page **notepage,
-				PSTR buffer
+			MemoryStream *stream,
+			MacroTree *macro_tree,
+			Page **notepage,
+			PSTR buffer
 			);
 
 		void
 			HandleBangStuff(
-				PSTR buffer,
-				MacroTree *macro_tree,
-				Page **page
+			PSTR buffer,
+			MacroTree *macro_tree,
+			Page **page
 			);
 
 		void
 			SetDirty()
-				{ Check_Object(this); m_dirtyFlag = true; }
+		{ Check_Object(this); m_dirtyFlag = true; }
 
 		Stuff::MString
 			m_fileName;
@@ -192,28 +196,28 @@ namespace Stuff {
 		FileDependencies
 			m_fileDependencies;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Page access
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Page access
+		//
 	public:
 		bool
 			IsEmpty()
-				{Check_Object(this); return m_pages.IsEmpty();}
+		{Check_Object(this); return m_pages.IsEmpty();}
 
 		bool
 			DoesPageExist(PCSTR pagename)
-				{Check_Object(this); return FindPage(pagename) != NULL;}
+		{Check_Object(this); return FindPage(pagename) != NULL;}
 		Page*
 			FindPage(PCSTR pagename);
 		Page*
-			GetPage(unsigned index);
+			GetPage(uint32_t index);
 		Page*
 			GetPage(PCSTR pagename);
 
 		typedef ChainIteratorOf<Page*> PageIterator;
 		PageIterator*
 			MakePageIterator()
-				{Check_Object(this); return new PageIterator(&m_pages);}
+		{Check_Object(this); return new PageIterator(&m_pages);}
 
 		Page*
 			AddPage(PCSTR pagename);
@@ -231,3 +235,4 @@ namespace Stuff {
 	};
 
 }
+#endif

@@ -7,8 +7,12 @@
 
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+#include <gameos.hpp>
+#include <stuff/iterator.hpp>
+
+using namespace Stuff;
 
 //
 //###########################################################################
@@ -63,7 +67,7 @@ CollectionSize
 	Iterator::GetSize()
 {
 	CollectionSize i = 0;
-	void *item;
+	PVOID item;
 
 	First();
 	while ((item = GetCurrentImplementation()) != NULL)
@@ -82,7 +86,7 @@ CollectionSize
 void
 	*Iterator::ReadAndNextImplementation()
 {
-	void *item;
+	PVOID item;
 
 	if ((item = GetCurrentImplementation()) != NULL)
 	{
@@ -99,7 +103,7 @@ void
 void
 	*Iterator::ReadAndPreviousImplementation()
 {
-	void *item;
+	PVOID item;
 
 	if ((item = GetCurrentImplementation()) != NULL)
 	{
@@ -113,7 +117,7 @@ void
 // GetCurrentImplementation
 //###########################################################################
 //
-void*
+PVOID
 	Iterator::GetCurrentImplementation()
 {
 	STOP(("Iterator::GetCurrentImplementation - Should never reach here"));
@@ -129,7 +133,7 @@ void
 	*Iterator::GetNthImplementation(CollectionSize index)
 {
 	CollectionSize i = 0;
-	void *item;
+	PVOID item;
 
 	First();
 	while ((item = GetCurrentImplementation()) != NULL)

@@ -7,19 +7,19 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
-#include <stuff/scalar.hpp>
-#include <stuff/marray.hpp>
+#ifndef _EXTENTBOX_HPP_
+#define _EXTENTBOX_HPP_
+
 #include <stuff/plane.hpp>
 
 namespace Stuff {class ExtentBox;}
 
 #if !defined(Spew)
-	void
-		Spew(
-			PCSTR group,
-			const Stuff::ExtentBox& box
-		);
+void
+Spew(
+	 PCSTR group,
+	 const Stuff::ExtentBox& box
+	 );
 #endif
 
 namespace Stuff {
@@ -33,8 +33,8 @@ namespace Stuff {
 
 	class ExtentBox
 	{
-	 public:
-		Scalar
+	public:
+		float
 			minX,
 			maxX,
 			minY,
@@ -46,31 +46,31 @@ namespace Stuff {
 		ExtentBox(
 			const Vector3D &min,
 			const Vector3D &max
-		);
+			);
 		ExtentBox(const ExtentBox &box);
 		explicit ExtentBox(const OBB& obb);
 
-		const Scalar&
+		const float&
 			operator[](int index) const
-				{Check_Object(this); return (&minX)[index];}
-		Scalar&
+		{Check_Object(this); return (&minX)[index];}
+		float&
 			operator[](int index)
-				{Check_Object(this); return (&minX)[index];}
+		{Check_Object(this); return (&minX)[index];}
 
 		ExtentBox&
 			Intersect(
-				const ExtentBox &box_1,
-				const ExtentBox &box_2
+			const ExtentBox &box_1,
+			const ExtentBox &box_2
 			);
 		ExtentBox&
 			Union(
-				const ExtentBox &box_1,
-				const ExtentBox &box_2
+			const ExtentBox &box_1,
+			const ExtentBox &box_2
 			);
 		ExtentBox&
 			Union(
-				const ExtentBox &box_1,
-				const Vector3D &point
+			const ExtentBox &box_1,
+			const Vector3D &point
 			);
 		Vector3D*
 			Constrain(Vector3D *point) const;
@@ -89,36 +89,36 @@ namespace Stuff {
 			TestInstance() const;
 		static bool
 			TestClass();
-		#if !defined(Spew)
-			friend void
-				::Spew(
-					PCSTR group,
-					const ExtentBox& box
-				);
-		#endif
+#if !defined(Spew)
+		friend void
+			::Spew(
+			PCSTR group,
+			const ExtentBox& box
+			);
+#endif
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~ ExtentBox functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	void
-   	Convert_From_Ascii(
-      	PCSTR str,
-         ExtentBox *extent_box
+		Convert_From_Ascii(
+		PCSTR str,
+		ExtentBox *extent_box
 		);
 
 	void
 		Use_Scalar_In_Sorted_Array(
-			DynamicArrayOf<Scalar> *values,
-			Scalar value,
-			unsigned *max_index,
-			unsigned block_size,
-			Scalar threshold = SMALL
+		DynamicArrayOf<float> *values,
+		float value,
+		puint32_t max_index,
+		uint32_t block_size,
+		float threshold = SMALL
 		);
 
 	void
 		Find_Planes_Of_Boxes(
-			DynamicArrayOf<Plane> *planes,
-			const DynamicArrayOf<ExtentBox> &boxes
+		DynamicArrayOf<Plane> *planes,
+		const DynamicArrayOf<ExtentBox> &boxes
 		);
 
 }
@@ -127,15 +127,16 @@ namespace MemoryStreamIO {
 
 	inline Stuff::MemoryStream&
 		Read(
-			Stuff::MemoryStream* stream,
-			Stuff::ExtentBox *output
+		Stuff::MemoryStream* stream,
+		Stuff::ExtentBox *output
 		)
-			{return stream->ReadBytes(output, sizeof(*output));}
+	{return stream->ReadBytes(output, sizeof(*output));}
 	inline Stuff::MemoryStream&
 		Write(
-			Stuff::MemoryStream* stream,
-			const Stuff::ExtentBox *input
+		Stuff::MemoryStream* stream,
+		const Stuff::ExtentBox *input
 		)
-			{return stream->WriteBytes(input, sizeof(*input));}
+	{return stream->WriteBytes(input, sizeof(*input));}
 
 }
+#endif

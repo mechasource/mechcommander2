@@ -7,13 +7,18 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
-#include <stuff/socket.hpp>
+#ifndef _SLOT_HPP_
+#define _SLOT_HPP_
+
+#include <stuff/link.hpp>
 #include <stuff/memoryblock.hpp>
+#include <stuff/socket.hpp>
+
 
 namespace Stuff {
 
 	class Slot;
+	class PLug;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SlotLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -45,15 +50,16 @@ namespace Stuff {
 		);
 
 	private:
-		static MemoryBlock
-      	*AllocatedMemory;
+		static MemoryBlock*	AllocatedMemory;
 
-		void*
-			operator new(size_t)
-				{return AllocatedMemory->New();}
-		void
-			operator delete(void *where)
-				{AllocatedMemory->Delete(where);}
+		PVOID operator new(size_t)
+		{
+			return AllocatedMemory->New();
+		}
+		void operator delete(PVOID where)
+		{
+			AllocatedMemory->Delete(where);
+		}
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~ Slot ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -158,4 +164,4 @@ namespace Stuff {
 	}
 
 }
-
+#endif

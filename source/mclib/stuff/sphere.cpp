@@ -5,7 +5,14 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/unitvector.hpp>
+#include <stuff/sphere.hpp>
+
+using namespace Stuff;
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

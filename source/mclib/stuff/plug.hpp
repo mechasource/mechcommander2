@@ -7,10 +7,11 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _PLUG_HPP_
+#define _PLUG_HPP_
+
 #include <stuff/registeredclass.hpp>
 #include <stuff/iterator.hpp>
-#include <stuff/link.hpp>
 
 namespace Stuff {
 
@@ -22,7 +23,7 @@ namespace Stuff {
 
 	typedef RegisteredClass__ClassData Plug__ClassData;
 
-	extern HGOSHEAP ConnectionEngineHeap;
+	extern struct gos_Heap* ConnectionEngineHeap;
 
 	class Plug :
 		public RegisteredClass
@@ -32,16 +33,14 @@ namespace Stuff {
 		friend class Socket;
 
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void InitializeClass(void);
+		static void TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructor/Destructor
 	//
 	public:
-		~Plug();
+		~Plug(void);
 
 	protected:
 		explicit Plug(ClassData *class_data);
@@ -52,37 +51,32 @@ namespace Stuff {
 	public:
 		typedef Plug__ClassData ClassData;
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Utilities
 	//
 	public:
-		CollectionSize
-			GetSocketCount();
+		CollectionSize	GetSocketCount(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Private methods
 	//
 	private:
-		void
-			RemoveSocket(Socket *socket);
-		bool
-			IsSocketMember(Socket *socket);
+		void RemoveSocket(Socket* socket);
+		bool IsSocketMember(Socket* socket);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Private data
 	//
 	private:
-		Link *linkHead;
+		Link*	linkHead;
 	};
 
 	//##########################################################################
@@ -90,33 +84,38 @@ namespace Stuff {
 	//##########################################################################
 
 	template <class T> class PlugOf:
-		public Plug
+	public Plug
 	{
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructor, Destructor
 	//
 	public:
-		//
-		//--------------------------------------------------------------------
-		// Constructor, Destructor
-		//--------------------------------------------------------------------
-		//
+	//
+	//--------------------------------------------------------------------
+	// Constructor, Destructor
+	//--------------------------------------------------------------------
+	//
 		explicit PlugOf(const T &item);
-		~PlugOf();
+		~PlugOf(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Accessors, Casting
 	//
 	public:
-		T
-			GetItem() const
-         	{return item;}
-		T*
-			GetPointer()
-         	{return &item;}
+		T	GetItem(void) const
+		{
+			return item;
+		}
+		
+		T*	GetPointer(void)
+		{
+			return &item;
+		}
 
-		operator T() const
-			{return item;}
+		operator T(void) const
+		{
+			return item;
+		}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Private data
@@ -128,12 +127,12 @@ namespace Stuff {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PlugOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T> PlugOf<T>::PlugOf(const T &the_item):
-		Plug(DefaultData)
+	Plug(DefaultData)
 	{
 		item = the_item;
 	}
 
-	template <class T> PlugOf<T>::~PlugOf()
+	template <class T> PlugOf<T>::~PlugOf(void)
 	{
 	}
 
@@ -151,63 +150,47 @@ namespace Stuff {
 		explicit PlugIterator(
 			Plug *plug,
 			RegisteredClass::ClassID class_to_iterate=NullClassID
-		);
+			);
 		PlugIterator(const PlugIterator &iterator);
-		~PlugIterator();
+		~PlugIterator(void);
 
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Iterator methods (see Iterator for full listing)
 	//
 	public:
-		void
-			First();
-		void
-			Last();
-		void
-			Next();
-		void
-			Previous();
-		CollectionSize
-			GetSize();
-		void
-			Remove();
+		void First(void);
+		void Last(void);
+		void Next(void);
+		void Previous(void);
+		CollectionSize GetSize(void);
+		void Remove(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Protected implementation
 	//
 	protected:
-		void*
-			ReadAndNextImplementation();
-		void*
-			ReadAndPreviousImplementation();
-		void*
-			GetCurrentImplementation();
-		void*
-			GetNthImplementation(CollectionSize index);
+		PVOID ReadAndNextImplementation(void);
+		PVOID ReadAndPreviousImplementation(void);
+		PVOID GetCurrentImplementation(void);
+		PVOID GetNthImplementation(CollectionSize index);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Protected data
 	//
 	protected:
-		Plug
-			*plug;
-		Link
-			*currentLink;
+		Plug*	plug;
+		Link*	currentLink;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Private methods and data
 	//
-   private:
-      void
-      	NextNode();
-      void
-      	PreviousNode();
+	private:
+		void NextNode(void);
+		void PreviousNode(void);
 
-		RegisteredClass::ClassID
-      	classToIterate;
+		RegisteredClass::ClassID classToIterate;
 	};
 
 	//##########################################################################
@@ -215,7 +198,7 @@ namespace Stuff {
 	//##########################################################################
 
 	template <class T> class PlugIteratorOf:
-		public PlugIterator
+	public PlugIterator
 	{
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructor, destructor
@@ -224,65 +207,77 @@ namespace Stuff {
 		PlugIteratorOf(
 			Plug *plug,
 			RegisteredClass::ClassID class_to_iterate=NullClassID
-		);
+			);
 		PlugIteratorOf(
 			Plug &plug,
 			RegisteredClass::ClassID class_to_iterate=NullClassID
-		);
+			);
+		
 		PlugIteratorOf(const PlugIteratorOf<T> &iterator);
-		Iterator*
-			MakeClone()
-				{Check_Object(this); return new PlugIteratorOf<T>(*this);}
+		~PlugIteratorOf(void);
+		
+		Iterator* MakeClone(void)
+		{
+			Check_Object(this);
+			return new PlugIteratorOf<T>(*this);
+		}
 
-		~PlugIteratorOf();
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Iterator methods (see Iterator for full listing)
 	//
 	public:
-		T
-			ReadAndNext()
-				{return (T)ReadAndNextImplementation();}
-		T
-			ReadAndPrevious()
-				{return (T)ReadAndPreviousImplementation();}
-		T
-			GetCurrent()
-				{return (T)GetCurrentImplementation();}
-		T
-			GetNth(CollectionSize index)
-				{return (T)GetNthImplementation(index);}
+		T ReadAndNext(void)
+		{
+			return (T)ReadAndNextImplementation(void);
+		}
+
+		T ReadAndPrevious(void)
+		{
+			return (T)ReadAndPreviousImplementation(void);
+		}
+
+		T GetCurrent(void)
+		{
+			return (T)GetCurrentImplementation(void);
+		}
+
+		T GetNth(CollectionSize index)
+		{
+			return (T)GetNthImplementation(index);
+		}
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~ PlugIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T>
-		PlugIteratorOf<T>::PlugIteratorOf(
-      	Plug *plug,
-         RegisteredClass::ClassID class_to_iterate
+	PlugIteratorOf<T>::PlugIteratorOf(
+		Plug *plug,
+		RegisteredClass::ClassID class_to_iterate
 		):
-			PlugIterator(plug, class_to_iterate)
+	PlugIterator(plug, class_to_iterate)
 	{
 	}
 
 	template <class T>
-		PlugIteratorOf<T>::PlugIteratorOf(
-			Plug &plug,
-			RegisteredClass::ClassID class_to_iterate
+	PlugIteratorOf<T>::PlugIteratorOf(
+		Plug &plug,
+		RegisteredClass::ClassID class_to_iterate
 		):
-			PlugIterator(&plug, class_to_iterate)
+	PlugIterator(&plug, class_to_iterate)
 	{
 	}
 
 	template <class T>
-		PlugIteratorOf<T>::PlugIteratorOf(const PlugIteratorOf<T> &iterator):
-			PlugIterator(iterator)
+	PlugIteratorOf<T>::PlugIteratorOf(const PlugIteratorOf<T> &iterator):
+	PlugIterator(iterator)
 	{
 	}
 
 	template <class T>
-		PlugIteratorOf<T>::~PlugIteratorOf()
+	PlugIteratorOf<T>::~PlugIteratorOf(void)
 	{
 	}
 
 }
+#endif

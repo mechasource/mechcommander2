@@ -3,19 +3,36 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
-#include "eh.h"
-#include "trace.cpp"
+#include <eh.h>
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
+#include <toolos.hpp>
+#include <stuff/plug.hpp>
+#include <stuff/node.hpp>
+#include <stuff/slot.hpp>
+#include <stuff/chain.hpp>
+#include <stuff/safechain.hpp>
+#include <stuff/rotation.hpp>
+#include <stuff/random.hpp>
+#include <stuff/filestream.hpp>
+#include <stuff/filestreammanager.hpp>
+#include <stuff/trace.hpp>
+
+using namespace Stuff;
+
+
+//#include "trace.cpp"
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void Stuff::Flood_Memory_With_NAN(
-	void *where,
+	PVOID where,
 	size_t how_much)
 {
 	Verify(!(reinterpret_cast<intptr_t>(where)&3));
 	Check_Pointer(where);
-	long *filler = Cast_Pointer(long *, where);
+	pint32_t filler = Cast_Pointer(pint32_t, where);
 	for (size_t i = how_much >> 2; i; --i)
 	{
 		*filler++ = SNAN_NEGATIVE_LONG;
@@ -24,8 +41,7 @@ void Stuff::Flood_Memory_With_NAN(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	__cdecl Terminate_Handler(void)
+void __cdecl Terminate_Handler(void)
 {
 	STOP(("Unhandled exception"));
 }

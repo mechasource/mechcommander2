@@ -6,25 +6,33 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/linearmatrix.hpp>
+#include <stuff/vector4d.hpp>
+#include <stuff/matrix.hpp>
+#include <stuff/rotation.hpp>
+
+using namespace Stuff;
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ EulerAngles ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-const EulerAngles
-	EulerAngles::Identity(0.0f,0.0f,0.0f);
+const EulerAngles EulerAngles::Identity(0.0f,0.0f,0.0f);
 
 static bool UseFastLerp = true;
 static bool UseFastNormalize = true;
 
 static uint8_t __stdcall Check_UseFastLerp(void) 
 {
-	return (UseFastLerp == true) ? 1 : 0;
+	return uint8_t((UseFastLerp == true) ? 1 : 0);
 }
 
 static uint8_t __stdcall Check_UseFastNormalize(void)
 {
-	return (UseFastNormalize == true) ? 1 : 0;
+	return uint8_t((UseFastNormalize == true) ? 1 : 0);
 }
 
 static void __stdcall Activate_UseFastLerp(void)
@@ -465,7 +473,7 @@ YawPitchRoll&
 const UnitQuaternion
 	UnitQuaternion::Identity(0.0f, 0.0f, 0.0f, 1.0f);
 DEFINE_TIMER(UnitQuaternion, SlerpTime);
-DWORD
+ULONG
 	UnitQuaternion::SlerpCount;
 
 //
@@ -480,14 +488,14 @@ cint32_t SinTableSize=static_cast<int>(1024);
 const float MinCosom = static_cast<float>(-1.0f);
 const float MaxCosom = static_cast<float>(1.0f);
 const float CosomRangeOverOne = static_cast<float>(1.0f/(MaxCosom-MinCosom));
-const float CosBiggestNumber = (float)static_cast<unsigned int>(0xffffffff>>(32-10));
+const float CosBiggestNumber = (float)static_cast<uint32_t>(0xffffffff>>(32-10));
 
 
 const float MinSin = static_cast<float>(-1.3);
 const float MaxSin = static_cast<float>(1.3);
 const float SinRangeOverOne = static_cast<float>(1.0f/(MaxSin-MinSin));
 const float SinIncrement = static_cast<float>((MaxSin - MinSin) / SinTableSize);
-const float SinBiggestNumber = (float)static_cast<unsigned int>(0xffffffff>>(32-10));
+const float SinBiggestNumber = (float)static_cast<uint32_t>(0xffffffff>>(32-10));
 
 
 float Omega_Table[QuaternionLerpTableSize];
@@ -502,8 +510,7 @@ float tableIncrementStepOverOne;
 //#############################################################################
 //
 
-void
-	UnitQuaternion::InitializeClass()
+void UnitQuaternion::InitializeClass()
 {
 
 	Verify(!quaternionFastLerpTableBuilt);
@@ -520,8 +527,8 @@ void
 	tableIncrementStepOverOne = 1.0f / increment_step;
 	float cosom = MinCosom;
 
-	int i;
-	for (int i = 0; i < QuaternionLerpTableSize; ++i)
+	size_t i;
+	for (i = 0; i < QuaternionLerpTableSize; ++i)
 	{
 		Verify(cosom >= MinCosom);
 		Verify(cosom <= MaxCosom);
@@ -992,10 +999,8 @@ UnitQuaternion&
 	Check_Object(&start);
 	Check_Object(&end);
 
-	Vector3D
-		axis;
-	SinCosPair
-		delta;
+	Vector3D 	axis;
+	SinCosPair	delta;
 	delta.cosine = start*end;
 
 	//
@@ -1027,11 +1032,10 @@ UnitQuaternion&
 		// Pick out the smallest axis
 		//---------------------------
 		//
-		int
-			smallest=0;
-		Scalar
-			value=2.0f;
-		for (int i=X_Axis; i<=Z_Axis; ++i)
+		size_t i;
+		size_t	smallest=0;
+		Scalar	value=2.0f;
+		for (i=X_Axis; i<=Z_Axis; ++i)
 		{
 			if (Abs(start[i]) < value)
 			{

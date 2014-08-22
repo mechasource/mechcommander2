@@ -1,15 +1,19 @@
 //===========================================================================//
 // File:     namelist.cpp                                                    //
 // Title:    Definition of NameList classes.                                 //
-// Purpose:  Maintains an unsorted list of strings with (void *) to          //
+// Purpose:  Maintains an unsorted list of strings with (PVOID) to          //
 //           anything the client needs to associate with the string.         //
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
-#include "namelist.hpp"
+//#include "stuffheaders.hpp"
+
+//#include <gameos.hpp>
+#include <stuff/namelist.hpp>
+
+using namespace Stuff;
 
 //#############################################################################
 //##############    ObjectNameList    #########################################
@@ -45,7 +49,7 @@ ObjectNameList::~ObjectNameList()
 PCSTR
 ObjectNameList::AddEntry(
 						 PCSTR name,
-						 void *data
+						 PVOID data
 						 )
 {
 	Check_Object(this);
@@ -78,7 +82,7 @@ ObjectNameList::AddEntry(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void*
+PVOID
 ObjectNameList::FindObject(PCSTR name)
 {
 	Check_Object(this);
@@ -121,7 +125,7 @@ ObjectNameList::DeleteEntry(PCSTR name)
 		Check_Pointer(cur);
 		prev = cur;
 	}
-	Verify(cur == entry);
+	Verify(cur && cur == entry);
 	if (!prev)
 	{
 		firstEntry = entry->nextEntry;
@@ -247,7 +251,7 @@ NameList::~NameList()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 PCSTR
-NameList::FindName(void *data)
+NameList::FindName(PVOID data)
 {
 	Check_Object(this);
 
@@ -315,7 +319,7 @@ NameList::FindEntryIndex(PCSTR name)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 NameList::Entry
-*NameList::FindEntry(void *data)
+*NameList::FindEntry(PVOID data)
 {
 	Check_Object(this);
 
@@ -456,7 +460,7 @@ AlphaNameList::~AlphaNameList()
 //
 PCSTR
 AlphaNameList::AddEntry(
-	PCSTR name, void *data)
+	PCSTR name, PVOID data)
 {
 	Check_Object(this);
 	Check_Pointer(name);

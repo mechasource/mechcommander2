@@ -9,7 +9,9 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
+#ifndef _NOTE_HPP_
+#define _NOTE_HPP_
+
 #include <stuff/page.hpp>
 
 namespace Stuff {
@@ -170,3 +172,4 @@ namespace Stuff {
 	};
 
 }
+#endif

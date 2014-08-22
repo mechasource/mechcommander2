@@ -7,10 +7,13 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
-#include <stuff/node.hpp>
-#include <stuff/sortedsocket.hpp>
+#ifndef _TREE_HPP_
+#define _TREE_HPP_
+
+#include <stuff/link.hpp>
 #include <stuff/memoryblock.hpp>
+#include <stuff/iterator.hpp>
+#include <stuff/sortedsocket.hpp>
 
 namespace Stuff {
 
@@ -64,10 +67,10 @@ namespace Stuff {
 			);
 		~TreeNodeOf();
 
-		void*
+		PVOID
 			operator new(size_t);
 		void
-			operator delete(void *where);
+			operator delete(PVOID where);
 
 		V
 			GetValue()
@@ -108,7 +111,7 @@ namespace Stuff {
 	{
 	}
 
-	template <class V> void*
+	template <class V> PVOID
 		TreeNodeOf<V>::operator new(size_t)
 	{
 		Verify(allocationCount >= 0);
@@ -130,7 +133,7 @@ namespace Stuff {
 	}
 
 	template <class V> void
-		TreeNodeOf<V>::operator delete(void *where)
+		TreeNodeOf<V>::operator delete(PVOID where)
 	{
 		Check_Object(allocatedMemory);
 		allocatedMemory->Delete(where);
@@ -199,10 +202,10 @@ namespace Stuff {
 		void
 			AddValueImplementation(
 			Plug *plug,
-			const void *value
+			PCVOID value
 			);
 		Plug
-			*FindImplementation(const void *value);
+			*FindImplementation(PCVOID value);
 
 	private:
 		//
@@ -215,7 +218,7 @@ namespace Stuff {
 		virtual TreeNode*
 			MakeTreeNode(
 			Plug *plug,
-			const void *value
+			PCVOID value
 			);
 		virtual int
 			CompareTreeNodes(
@@ -224,7 +227,7 @@ namespace Stuff {
 			);
 		virtual int
 			CompareValueToTreeNode(
-			const void *value,
+			PCVOID value,
 			TreeNode *link
 			);
 
@@ -233,7 +236,7 @@ namespace Stuff {
 		void
 			SeverFromTreeNode(TreeNode *node);
 		TreeNode*
-			SearchForValue(const void *value);
+			SearchForValue(PCVOID value);
 
 		//
 		//--------------------------------------------------------------------
@@ -291,7 +294,7 @@ namespace Stuff {
 		TreeNode
 			*MakeTreeNode(
 			Plug *plug,
-			const void *value
+			PCVOID value
 			)
 		{
 			return
@@ -308,7 +311,7 @@ namespace Stuff {
 			);
 		int
 			CompareValueToTreeNode(
-			const void *value,
+			PCVOID value,
 			TreeNode *link
 			);
 	};
@@ -357,7 +360,7 @@ namespace Stuff {
 
 	template <class T, class V> int
 		TreeOf<T, V>::CompareValueToTreeNode(
-		const void *value,
+		PCVOID value,
 		TreeNode *node
 		)
 	{
@@ -424,10 +427,10 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		void*
+		PVOID
 			GetCurrentImplementation();
 		Plug*
-			FindImplementation(const void *value);
+			FindImplementation(PCVOID value);
 
 	protected:
 		//
@@ -454,7 +457,7 @@ namespace Stuff {
 		void
 			ReceiveMemo(
 			IteratorMemo memo,
-			void *content
+			PVOID content
 			);
 	};
 
@@ -533,3 +536,4 @@ namespace Stuff {
 	}
 
 }
+#endif

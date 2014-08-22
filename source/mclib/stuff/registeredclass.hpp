@@ -7,7 +7,11 @@
 
 #pragma once
 
+#ifndef _REGISTEREDCLASS_HPP_
+#define _REGISTEREDCLASS_HPP_
+
 #include <stuff/stuff.hpp>
+#include <stuff/style.hpp>
 
 namespace Stuff {
 
@@ -20,17 +24,15 @@ namespace Stuff {
 	//##########################################################################
 
 	class RegisteredClass
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 		friend RegisteredClass__ClassData;
 
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void InitializeClass(void);
+		static void TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// ClassID enumeration
@@ -44,8 +46,8 @@ namespace Stuff {
 	//
 	public:
 		virtual
-			~RegisteredClass()
-				{}
+			~RegisteredClass(void)
+		{}
 
 	protected:
 		explicit RegisteredClass(ClassData *class_data);
@@ -58,8 +60,8 @@ namespace Stuff {
 	//
 	public:
 		ClassData*
-			GetClassData() const
-				{Check_Object(this); return classData;}
+			GetClassData(void) const
+		{Check_Object(this); return classData;}
 		bool
 			IsDerivedFrom(ClassData* parent) const;
 		bool
@@ -71,10 +73,10 @@ namespace Stuff {
 			FindClassData(PCSTR name);
 		static ClassData*
 			FindClassData(ClassID class_id)
-				{
-					Verify(static_cast<unsigned>(class_id) < ClassIDCount);
-					return ClassDataArray[class_id];
-				}
+		{
+			Verify(static_cast<uint32_t>(class_id) < ClassIDCount);
+			return ClassDataArray[class_id];
+		}
 		static ClassData
 			*DefaultData;
 
@@ -87,28 +89,26 @@ namespace Stuff {
 	//
 	public:
 		ClassID
-			GetClassID() const;
+			GetClassID(void) const;
 		PCSTR
-			GetClassString() const;
+			GetClassString(void) const;
 		static ClassID
-			AllocateTemporaryClassID()
-				{
-					Verify(FirstTemporaryClassID < ClassIDCount);
-					return FirstTemporaryClassID++;
-				}
+			AllocateTemporaryClassID(void)
+		{
+			Verify(FirstTemporaryClassID < ClassIDCount);
+			return FirstTemporaryClassID++;
+		}
 
 	private:
-		static ClassData*
-			ClassDataArray[ClassIDCount];
-		static ClassID
-			FirstTemporaryClassID;
+		static ClassData* ClassDataArray[ClassIDCount];
+		static ClassID FirstTemporaryClassID;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Test support
 	//
 	public:
 		void
-			TestInstance() const;
+			TestInstance(void) const;
 	};
 
 	//##########################################################################
@@ -116,9 +116,9 @@ namespace Stuff {
 	//##########################################################################
 
 	class RegisteredClass__ClassData
-		#if defined(_ARMOR)
-			: public Stuff::Signature
-		#endif
+#if defined(_ARMOR)
+		: public Stuff::Signature
+#endif
 	{
 		friend class RegisteredClass;
 
@@ -130,9 +130,9 @@ namespace Stuff {
 			RegisteredClass::ClassID class_id,
 			PCSTR class_name,
 			RegisteredClass__ClassData *parent = NULL
-		);
+			);
 
-		~RegisteredClass__ClassData();
+		~RegisteredClass__ClassData(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Inheritance stuff
@@ -142,14 +142,14 @@ namespace Stuff {
 			IsDerivedFrom(RegisteredClass__ClassData* parent);
 
 		RegisteredClass::ClassID
-			GetClassID()
-				{Check_Object(this); return classID;}
+			GetClassID(void)
+		{Check_Object(this); return classID;}
 		PCSTR
-			GetClassName()
-				{Check_Object(this); return className;}
+			GetClassName(void)
+		{Check_Object(this); return className;}
 		RegisteredClass__ClassData*
-			GetParentClass()
-				{Check_Object(this); return parentClass;}
+			GetParentClass(void)
+		{Check_Object(this); return parentClass;}
 
 	protected:
 		void
@@ -167,12 +167,12 @@ namespace Stuff {
 			*nextSiblingClass,
 			*parentClass;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Test support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Test support
+		//
 	public:
 		void
-      	TestInstance();
+			TestInstance(void);
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -208,7 +208,7 @@ namespace Stuff {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//
 	inline RegisteredClass::ClassID
-		RegisteredClass::GetClassID() const
+		RegisteredClass::GetClassID(void) const
 	{
 		Check_Object(this);
 		RegisteredClass__ClassData *data = GetClassData();
@@ -225,3 +225,4 @@ namespace Stuff {
 	}
 
 }
+#endif

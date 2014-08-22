@@ -7,8 +7,14 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+//#include <gameos.hpp>
+#include <stuff/scalar.hpp>
+#include <stuff/mstring.hpp>
+#include <stuff/color.hpp>
+
+using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ RGBColor functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -23,7 +29,7 @@ bool
 	Stuff::Close_Enough(
 		const RGBColor &c1,
 		const RGBColor &c2,
-		Scalar e	// = SMALL
+		float e	// = SMALL
 	)
 {
 	Check_Object(&c1);
@@ -62,11 +68,11 @@ RGBColor&
 	//-----------------------------
 	//
 	Verify(color.hue >= 0.0 && color.hue <= 1.0f);
-	Scalar hue = (color.hue == 1.0f) ? 0.0f : color.hue;
+	float hue = (color.hue == 1.0f) ? 0.0f : color.hue;
 	hue *= 6.0f;
 	int sextant = Truncate_Float_To_Byte(hue);
-	Verify(static_cast<unsigned>(sextant) < 6);
-	Scalar remainder = hue - static_cast<Scalar>(sextant);
+	Verify(static_cast<uint32_t>(sextant) < 6);
+	float remainder = hue - static_cast<float>(sextant);
 
 	//
 	//--------------------
@@ -74,7 +80,7 @@ RGBColor&
 	//--------------------
 	//
 	Verify(color.value >= 0.0f && color.value <= 1.0f);
-	Scalar a = color.value * (1.0f - color.saturation);
+	float a = color.value * (1.0f - color.saturation);
 	Verify(a >= 0.0f && a < 1.0f);
 	switch (sextant)
 	{
@@ -164,7 +170,7 @@ bool
 	Stuff::Close_Enough(
 		const RGBAColor &c1,
 		const RGBAColor &c2,
-		Scalar e	// = SMALL
+		float e	// = SMALL
 	)
 {
 	Check_Object(&c1);
@@ -223,7 +229,7 @@ bool
 	Stuff::Close_Enough(
 		const HSVColor &c1,
 		const HSVColor &c2,
-		Scalar e	// = SMALL
+		float e	// = SMALL
 	)
 {
 	Check_Object(&c1);
@@ -260,7 +266,7 @@ HSVColor&
 	// Set the saturation value
 	//-------------------------
 	//
-	Scalar delta = value - Min(color.red, Min(color.green, color.blue));
+	float delta = value - Min(color.red, Min(color.green, color.blue));
 	if (value > SMALL)
 	{
 		saturation = delta / value;
@@ -346,7 +352,7 @@ bool
 	Stuff::Close_Enough(
 		const HSVAColor &c1,
 		const HSVAColor &c2,
-		Scalar e	// = SMALL
+		float e	// = SMALL
 	)
 {
 	Check_Object(&c1);

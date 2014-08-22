@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <stuff/stuff.hpp>
 #include <stuff/safesocket.hpp>
 
 namespace Stuff {
@@ -23,12 +22,12 @@ namespace Stuff {
 		void
 			AddValuePlug(
 				Plug *plug,
-				const void *value
+				PCVOID value
 			)
          	{AddValueImplementation(plug, value);}
 
 		Plug*
-			FindPlug(const void *value)
+			FindPlug(PCVOID value)
 				{return FindImplementation(value);}
 
 	protected:
@@ -47,11 +46,11 @@ namespace Stuff {
 		virtual void
 			AddValueImplementation(
 				Plug *plug,
-				const void *value
+				PCVOID value
 			);
 
 		virtual Plug*
-			FindImplementation(const void *value);
+			FindImplementation(PCVOID value);
 
 	private:
 		bool
@@ -67,9 +66,9 @@ namespace Stuff {
 		~SortedIterator();
 
 		virtual Plug*
-			FindImplementation(const void *value);
+			FindImplementation(PCVOID value);
 
-		virtual void*
+		virtual PVOID
 			GetValueImplementation();
 
 	protected:

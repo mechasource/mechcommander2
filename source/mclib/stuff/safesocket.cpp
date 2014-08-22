@@ -6,8 +6,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
 
+#include <gameos.hpp>
+#include <stuff/safesocket.hpp>
+
+using namespace Stuff;
 
 //
 //###########################################################################
@@ -54,7 +58,7 @@ void
 void
 	SafeSocket::SendIteratorMemo(
 		IteratorMemo memo,
-		void *content
+		PVOID content
 	)
 {
 	Check_Object(this);
@@ -149,7 +153,7 @@ void
 void
 	SafeIterator::ReceiveMemo(
       IteratorMemo,
-      void*
+      PVOID
    )
 {
 	Check_Object(this);

@@ -6,7 +6,13 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "stuffheaders.hpp"
+//#include "stuffheaders.hpp"
+
+#include <gameos.hpp>
+#include <stuff/node.hpp>
+#include <stuff/sortedchain.hpp>
+
+using namespace Stuff;
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -17,10 +23,7 @@
 //###########################################################################
 //
 SortedChainLink::SortedChainLink(
-	SortedChain *vchain,
-	Plug *plug
-):
-	Link(vchain, plug)
+	SortedChain *vchain, Plug *plug) : Link(vchain, plug)
 {
 	next = NULL;
 	prev = NULL;
@@ -31,7 +34,7 @@ SortedChainLink::SortedChainLink(
 // ~SortedChainLink
 //###########################################################################
 //
-SortedChainLink::~SortedChainLink()
+SortedChainLink::~SortedChainLink(void)
 {
 	Check_Object(this);
 	SortedChain *vchain = Cast_Object(SortedChain*, socket);
@@ -65,7 +68,7 @@ SortedChainLink::~SortedChainLink()
 	}
 	else
 	{
-   	Check_Object(vchain);
+		Check_Object(vchain);
 		vchain->tail = prev;
 	}
 	prev = next = NULL;
@@ -96,11 +99,10 @@ SortedChainLink::~SortedChainLink()
 // TestInstance
 //###########################################################################
 //
-void
-	SortedChainLink::TestInstance()
+void SortedChainLink::TestInstance(void)
 {
 	Link::TestInstance();
-	
+
 	if (next != NULL)
 	{
 		Check_Signature(next);
@@ -116,11 +118,7 @@ void
 // SetupSortedChainLinks
 //###########################################################################
 //
-void
-	SortedChainLink::SetupSortedChainLinks(
-		SortedChainLink *next,
-		SortedChainLink *prev
-	)
+void SortedChainLink::SetupSortedChainLinks(SortedChainLink *next, SortedChainLink *prev)
 {
 	Check_Object(this);
 	this->next = next;
@@ -134,11 +132,8 @@ void
 // SortedChain
 //###########################################################################
 //
-SortedChain::SortedChain(
-	Node *node,
-	bool has_unique_entries
-):
-	SortedSocket(node, has_unique_entries)
+SortedChain::SortedChain(Node *node, bool has_unique_entries) 
+	: SortedSocket(node, has_unique_entries)
 {
 	head = NULL;
 	tail = NULL;
@@ -149,7 +144,7 @@ SortedChain::SortedChain(
 // ~SortedChain
 //###########################################################################
 //
-SortedChain::~SortedChain()
+SortedChain::~SortedChain(void)
 {
 	Check_Object(this);
 	SetReleaseNode(NULL);
@@ -169,11 +164,10 @@ SortedChain::~SortedChain()
 // TestInstance
 //###########################################################################
 //
-void
-	SortedChain::TestInstance()
+void SortedChain::TestInstance(void)
 {
 	SortedSocket::TestInstance();
-	
+
 	if (head != NULL)
 	{
 		Check_Object(head);
@@ -189,15 +183,11 @@ void
 // MakeSortedChainLink
 //###########################################################################
 //
-SortedChainLink
-   *SortedChain::MakeSortedChainLink(
-      Plug*,
-      const void*
-   )
+SortedChainLink* SortedChain::MakeSortedChainLink(Plug*, PCVOID)
 {
 	Check_Object(this);
 	STOP(("SortedChain::MakeSortedChainLink - Should never reach here"));
-   return NULL;
+	return NULL;
 }
 
 //
@@ -205,15 +195,11 @@ SortedChainLink
 // CompareSortedChainLinks
 //###########################################################################
 //
-int
-   SortedChain::CompareSortedChainLinks(
-      SortedChainLink*,
-      SortedChainLink*
-   )
+int SortedChain::CompareSortedChainLinks(SortedChainLink*, SortedChainLink*)
 {
 	Check_Object(this);
 	STOP(("SortedChain::CompareSortedChainLinks - Should never reach here"));
-   return 0;
+	return 0;
 }
 
 //
@@ -221,15 +207,11 @@ int
 // CompareValueToSortedChainLink
 //###########################################################################
 //
-int
-   SortedChain::CompareValueToSortedChainLink(
-      const void*,
-      SortedChainLink*
-   )
+int SortedChain::CompareValueToSortedChainLink(PCVOID, SortedChainLink*)
 {
 	Check_Object(this);
 	STOP(("SortedChain::CompareValueToSortedChainLink - Should never reach here"));
-   return 0;
+	return 0;
 }
 
 //
@@ -237,12 +219,9 @@ int
 // AddImplementation
 //###########################################################################
 //
-void
-	SortedChain::AddImplementation(
-		Plug *plug
-	)
+void SortedChain::AddImplementation(Plug *plug)
 {
-	Check_Object(this);
+	Check_Object(this);(void)plug;
 	STOP(("Must use AddValue call"));
 	// AddValueImplementation(plug, NULL);	
 }
@@ -252,15 +231,11 @@ void
 // AddValueImplementation
 //###########################################################################
 //
-void
-	SortedChain::AddValueImplementation(
-		Plug *plug,
-		const void *value
-	)
+void SortedChain::AddValueImplementation(Plug *plug, PCVOID value)
 {
 	Check_Object(this);
 	SortedChainLink *link;
-	
+
 	//
 	//-------------------------------------------------------------
 	// Verify that value has not been added
@@ -285,20 +260,20 @@ void
 	{
 		link->SetupSortedChainLinks(NULL, NULL);
 		head = link;
-      tail = link;
+		tail = link;
 	}
 	else
 	{
 		SortedChainLink *greater_link;
 
 		Check_Object(head);
-      Check_Object(tail);
+		Check_Object(tail);
 
 		for (
 			greater_link = head;
 			greater_link != NULL;
-			greater_link = greater_link->next
-		)
+		greater_link = greater_link->next
+			)
 		{
 			Check_Object(greater_link);
 			if (CompareValueToSortedChainLink(value, greater_link) < 0)
@@ -342,10 +317,7 @@ void
 // FindImplementation
 //###########################################################################
 //
-Plug*
-	SortedChain::FindImplementation(
-		const void *value
-	)
+Plug* SortedChain::FindImplementation(PCVOID value)
 {
 	Check_Object(this);
 	SortedChainLink *link;
@@ -363,8 +335,7 @@ Plug*
 // IsEmpty
 //#############################################################################
 //
-bool
-	SortedChain::IsEmpty()
+bool SortedChain::IsEmpty(void)
 {
 	Check_Object(this);
 	return (head == NULL);
@@ -375,22 +346,19 @@ bool
 // SearchForValue
 //###########################################################################
 //
-SortedChainLink*
-	SortedChain::SearchForValue(
-		const void *value
-	)
+SortedChainLink* SortedChain::SearchForValue(PCVOID value)
 {
 	Check_Object(this);
 	SortedChainLink *link;
 	int ret;
-	
+
 	for (link = head; link != NULL; link = link->next)
 	{
 		Check_Object(link);
 		if ((ret = CompareValueToSortedChainLink(value, link)) == 0)
 			break;
 		if (ret < 0)
-      	return(NULL);
+			return(NULL);
 	}
 	return link;
 }
@@ -400,8 +368,8 @@ SortedChainLink*
 // SortedChainIterator
 //###########################################################################
 //
-SortedChainIterator::SortedChainIterator(SortedChain *vchain):
-	SortedIterator(vchain)
+SortedChainIterator::SortedChainIterator(SortedChain *vchain)
+	: SortedIterator(vchain)
 {
 	Check_Object(vchain);
 	currentLink = vchain->head;
@@ -412,15 +380,15 @@ SortedChainIterator::SortedChainIterator(SortedChain *vchain):
 // SortedChainIterator
 //###########################################################################
 //
-SortedChainIterator::SortedChainIterator(const SortedChainIterator *iterator):
-	SortedIterator(Cast_Object(SortedChain*, iterator->socket))
+SortedChainIterator::SortedChainIterator(const SortedChainIterator *iterator)
+	: SortedIterator(Cast_Object(SortedChain*, iterator->socket))
 {
 	Check_Object(iterator);
 	currentLink = iterator->currentLink;
 }
 
 Iterator*
-	SortedChainIterator::MakeClone()
+SortedChainIterator::MakeClone(void)
 {
 	Check_Object(this);
 	return new SortedChainIterator(*this);
@@ -430,7 +398,7 @@ Iterator*
 //###########################################################################
 //###########################################################################
 //
-SortedChainIterator::~SortedChainIterator()
+SortedChainIterator::~SortedChainIterator(void)
 {
 	Check_Object(this);
 }
@@ -440,11 +408,10 @@ SortedChainIterator::~SortedChainIterator()
 // TestInstance
 //###########################################################################
 //
-void
-	SortedChainIterator::TestInstance() const
+void SortedChainIterator::TestInstance(void) const
 {
 	SortedIterator::TestInstance();
-	
+
 	if (currentLink != NULL)
 	{
 		Check_Object(currentLink);
@@ -456,8 +423,7 @@ void
 // First
 //###########################################################################
 //
-void
-	SortedChainIterator::First()
+void SortedChainIterator::First(void)
 {
 	Check_Object(this);
 	currentLink = Cast_Object(SortedChain*, socket)->head;
@@ -468,8 +434,7 @@ void
 // Last
 //###########################################################################
 //
-void
-	SortedChainIterator::Last()
+void SortedChainIterator::Last(void)
 {
 	Check_Object(this);
 	currentLink = Cast_Object(SortedChain*, socket)->tail;
@@ -480,8 +445,7 @@ void
 // Next
 //###########################################################################
 //
-void
-	SortedChainIterator::Next()
+void SortedChainIterator::Next(void)
 {
 	Check_Object(this);
 	Check_Object(currentLink);
@@ -493,8 +457,7 @@ void
 // Previous
 //###########################################################################
 //
-void
-	SortedChainIterator::Previous()
+void SortedChainIterator::Previous(void)
 {
 	Check_Object(this);
 	Check_Object(currentLink);
@@ -506,8 +469,7 @@ void
 // ReadAndNextImplementation
 //###########################################################################
 //
-void
-	*SortedChainIterator::ReadAndNextImplementation()
+PVOID SortedChainIterator::ReadAndNextImplementation(void)
 {
 	Check_Object(this);
 	if (currentLink != NULL)
@@ -527,14 +489,13 @@ void
 // ReadAndPreviousImplementation
 //###########################################################################
 //
-void
-	*SortedChainIterator::ReadAndPreviousImplementation()
+PVOID SortedChainIterator::ReadAndPreviousImplementation(void)
 {
 	Check_Object(this);
 	if (currentLink != NULL) 
 	{
 		Plug *plug;
-		
+
 		Check_Object(currentLink);
 		plug = currentLink->plug;
 		currentLink = currentLink->prev;
@@ -548,8 +509,7 @@ void
 // GetCurrentImplementation
 //###########################################################################
 //
-void
-	*SortedChainIterator::GetCurrentImplementation()
+PVOID SortedChainIterator::GetCurrentImplementation(void)
 {
 	Check_Object(this);
 	if (currentLink != NULL) 
@@ -565,8 +525,7 @@ void
 // GetSize
 //###########################################################################
 //
-CollectionSize
-	SortedChainIterator::GetSize()
+CollectionSize SortedChainIterator::GetSize(void)
 {
 	Check_Object(this);
 	SortedChainLink *link;
@@ -576,8 +535,8 @@ CollectionSize
 	for (
 		link = Cast_Object(SortedChain*, socket)->head;
 		link != NULL;
-		link = link->next
-	)
+	link = link->next
+		)
 	{
 		Check_Object(link);
 		count++;
@@ -590,21 +549,18 @@ CollectionSize
 // GetNthImplementation
 //###########################################################################
 //
-void
-	*SortedChainIterator::GetNthImplementation(
-		CollectionSize index
-	)
+PVOID SortedChainIterator::GetNthImplementation(CollectionSize index)
 {
 	Check_Object(this);
 	SortedChainLink *link;
 	CollectionSize count;
-	
+
 	count = 0;
 	for (
 		link = Cast_Object(SortedChain*, socket)->head;
 		link != NULL;
-		link = link->next
-	) 
+	link = link->next
+		) 
 	{
 		Check_Object(link);
 		if (count == index) 
@@ -622,8 +578,7 @@ void
 // Remove
 //###########################################################################
 //
-void
-	SortedChainIterator::Remove()
+void SortedChainIterator::Remove(void)
 {
 	Check_Object(this);
 	Check_Object(currentLink);
@@ -636,14 +591,11 @@ void
 // FindImplementation
 //###########################################################################
 //
-Plug*
-	SortedChainIterator::FindImplementation(
-		const void *value
-	)
+Plug* SortedChainIterator::FindImplementation(PCVOID value)
 {
 	Check_Object(this);
 	SortedChainLink *link;
-	
+
 	if ((link = Cast_Object(SortedChain*, socket)->SearchForValue(value)) != NULL)
 	{
 		Check_Object(link);
@@ -657,11 +609,7 @@ Plug*
 // ReceiveMemo
 //###########################################################################
 //
-void
-	SortedChainIterator::ReceiveMemo(
-		IteratorMemo memo,
-		void *content
-	)
+void SortedChainIterator::ReceiveMemo(IteratorMemo memo, PVOID content)
 {
 	Check_Object(this);
 	if (memo == PlugRemoved) 

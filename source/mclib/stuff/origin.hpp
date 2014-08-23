@@ -123,8 +123,7 @@ namespace Stuff {
 			const Origin3D& origin
 			);
 #endif
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 		static bool
 			TestClass();
 	};

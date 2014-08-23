@@ -181,13 +181,12 @@ void Note::GetEntry(YawPitchRoll* value)
 	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	int count =
-		sscanf(
-			contents,
-			"%f %f %f",
-			&value->yaw,
-			&value->pitch,
-			&value->roll);
+
+	// AFAIU we need pointers to float to avoid warning C6272
+	float fyaw = value->yaw;
+	float fpitch = value->pitch;
+	float froll = value->roll;
+	int count = sscanf(contents, "%f %f %f", &fyaw, &fpitch, &froll);
 	if (count != 3)
 	{
 		Page *page = m_page;
@@ -238,15 +237,13 @@ void
 	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
+
+	// AFAIU we need pointers to float to avoid warning C6272
 	YawPitchRoll ypr;
-	int count =
-		sscanf(
-			contents,
-			"%f %f %f",
-			&ypr.yaw,
-			&ypr.pitch,
-			&ypr.roll
-		);
+	float fyaw = ypr.yaw;
+	float fpitch = ypr.pitch;
+	float froll = ypr.roll;
+	int count = sscanf(contents, "%f %f %f", &fyaw, &fpitch, &froll);
 	if (count != 3)
 	{
 		Page *page = m_page;
@@ -274,7 +271,7 @@ void
 {
 	Check_Object(this);
 
-	static char contents[32];
+	static char contents[32] = {0};
 	YawPitchRoll ypr(value);
 	Verify(strlen(contents) < sizeof(contents));
 	sprintf(

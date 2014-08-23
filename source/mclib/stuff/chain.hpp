@@ -36,8 +36,7 @@ namespace Stuff {
 				size_t block_count = ChainLink_MemoryBlock_Allocation,
 				size_t block_delta = ChainLink_MemoryBlock_Allocation
 			);
-		static void
-			TerminateClass();
+		static void __stdcall TerminateClass(void);
 
 	public:
 		~ChainLink();

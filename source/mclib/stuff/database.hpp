@@ -106,8 +106,7 @@ namespace Stuff {
 		void
 			First();
 
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	protected:
 		HANDLE 		m_handle;

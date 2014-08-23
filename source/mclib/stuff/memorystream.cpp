@@ -760,8 +760,7 @@ MemoryStream&
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MemoryStream::TestInstance() const
+void MemoryStream::TestInstance() const
 {
 	Verify(IsDerivedFrom(DefaultData));
 	Verify(size_t(currentPosition - streamStart) <= streamSize);
@@ -774,8 +773,7 @@ void
 //
 // calculate the allocation size for stream
 //
-static inline size_t
-	Calculate_Buffer_Size(size_t needed)
+static inline size_t Calculate_Buffer_Size(size_t needed)
 {
 	return (needed+0x80)&~0x7F;
 }

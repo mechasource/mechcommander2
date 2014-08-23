@@ -183,9 +183,7 @@ namespace Stuff {
 			operator!=(const Vector3D& v) const
 		{return !Close_Enough(*this,v,SMALL);}
 
-		void
-			TestInstance() const
-		{}
+		void TestInstance(void) const {}
 
 		//
 		// Indexing operations

@@ -314,7 +314,7 @@ namespace Stuff {
 	public:
 		static const UnitQuaternion Identity;
 
-		static void InitializeClass();
+		static void __stdcall InitializeClass(void);
 		static void TerminateClass();
 
 		DECLARE_TIMER(static, SlerpTime);
@@ -620,8 +620,7 @@ namespace Stuff {
 					const UnitQuaternion &quat
 				);
 		#endif
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 		static bool
 			TestClass();
 	};

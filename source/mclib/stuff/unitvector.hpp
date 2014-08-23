@@ -103,8 +103,7 @@ namespace Stuff {
 		//
 		// Support functions
 		//
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 		static bool
 			TestClass();
 

@@ -5,24 +5,19 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#if !defined(STUFF_EXTENTPOLY_HPP)
-	#define STUFF_EXTENTPOLY_HPP
+#pragma once
 
-	#if !defined(STUFF_STUFF_HPP)
-		#include <stuff/stuff.hpp>
-	#endif
+#ifndef STUFF_EXTENTPOLY_HPP
+#define STUFF_EXTENTPOLY_HPP
 
-	#if !defined(STUFF_SCALAR_HPP)
-		#include <stuff/scalar.hpp>
-	#endif
+#include <stuff/memorystream.hpp>
+#include <stuff/filestream.hpp>
 
-	#if !defined(STUFF_MARRAY_HPP)
-		#include <stuff/marray.hpp>
-	#endif
+//#include <stuff/stuff.hpp>
+//#include <stuff/scalar.hpp>
+//#include <stuff/marray.hpp>
+//#include <stuff/plane.hpp>
 
-	#if !defined(STUFF_PLANE_HPP)
-		#include <stuff/plane.hpp>
-	#endif
 
 namespace Stuff {
 
@@ -34,12 +29,12 @@ namespace Stuff {
 
 	class ExtentPoly
 	{
-	 public:
-		Scalar
+	public:
+		float
 			minY,
 			maxY;
-			int numberOfVertices;
-			Vector3D *vertex;
+		int numberOfVertices;
+		Vector3D *vertex;
 
 		ExtentPoly() {}
 		ExtentPoly(MemoryStream *stream);
@@ -50,18 +45,18 @@ namespace Stuff {
 
 		ExtentPoly&
 			Intersect(
-				const ExtentPoly &poly_1,
-				const ExtentPoly &poly_2
+			const ExtentPoly &poly_1,
+			const ExtentPoly &poly_2
 			);
 		ExtentPoly&
 			Union(
-				const ExtentPoly &poly_1,
-				const ExtentPoly &poly_2
+			const ExtentPoly &poly_1,
+			const ExtentPoly &poly_2
 			);
 		ExtentPoly&
 			Union(
-				const ExtentPoly &poly_1,
-				const Vector3D &point
+			const ExtentPoly &poly_1,
+			const Vector3D &point
 			);
 
 		Vector3D*
@@ -71,7 +66,7 @@ namespace Stuff {
 			const Vector3D &p2
 			);
 
-		Scalar
+		float
 			DistanceBetweenLineAndPoint(
 			const Vector3D &point,
 			const Vector3D &p1,
@@ -81,14 +76,13 @@ namespace Stuff {
 			Constrain(Vector3D *point);
 		int
 			InfiniteLineTestWithXAxis(
-				const Vector3D &point,
-				const Vector3D &p1,
-				const Vector3D &p2
-				);
+			const Vector3D &point,
+			const Vector3D &p1,
+			const Vector3D &p2
+			);
 		bool
 			Contains(const Vector3D &point);
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 		static bool
 			TestClass();
 	};

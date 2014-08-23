@@ -82,8 +82,7 @@ static HGOSHEAP Database_Heap = NULL;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-static ULONG
-	GenerateHash(PCSTR name)
+static uint32_t GenerateHash(PCSTR name)
 {
 	ULONG hash=0;
 
@@ -717,9 +716,11 @@ DatabaseHandle::~DatabaseHandle()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	DatabaseHandle::Save()
+void DatabaseHandle::Save()
 {
+	// warning C6262: Function uses '24724' bytes of stack:  exceeds /analyze:stacksize '16384'.
+	// Consider moving some data to heap.
+	
 	Check_Object(this);
 
 	//

@@ -77,8 +77,7 @@ namespace Stuff {
 			Verify(static_cast<uint32_t>(class_id) < ClassIDCount);
 			return ClassDataArray[class_id];
 		}
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 	protected:
 		ClassData
@@ -107,8 +106,7 @@ namespace Stuff {
 	// Test support
 	//
 	public:
-		void
-			TestInstance(void) const;
+		void TestInstance(void) const;
 	};
 
 	//##########################################################################

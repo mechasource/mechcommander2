@@ -59,8 +59,7 @@ namespace Stuff {
 
 	public:
 		~SafeIterator();
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	protected:
 		explicit SafeIterator(SafeSocket *safeSocket);

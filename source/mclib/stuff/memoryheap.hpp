@@ -2,16 +2,13 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
 
-#if !defined(MEMORYHEAP_HPP)
-	#define MEMORYHEAP_HPP
+#ifndef MEMORYHEAP_HPP
+#define MEMORYHEAP_HPP
 
-	#if !defined(STUFF_HPP)
-		#include <stuff/stuff.hpp>
-	#endif
-
-	// Experimental
-	extern ULONG Get_Heap_Size();
-	extern ULONG Get_Heap_Used();
+// Experimental
+extern size_t __stdcall Get_Heap_Size(void);
+extern size_t __stdcall Get_Heap_Used(void);
 
 #endif

@@ -85,8 +85,7 @@ namespace Stuff {
 		void
 			GetCenterpoint(Point3D *point) const;
 
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 		static bool
 			TestClass();
 #if !defined(Spew)

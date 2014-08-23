@@ -71,11 +71,7 @@ namespace Stuff {
 #define Set_Statistic(s,v)
 #endif
 
-	void
-		Flood_Memory_With_NAN(
-		PVOID where,
-		size_t how_much
-		);
+	void __stdcall Flood_Memory_With_NAN(PVOID where, size_t how_much);
 
 #define Test_Assumption(c)\
 	while (!(c)) {SPEW((GROUP_STUFF_TEST, #c" failed!")); return false;}

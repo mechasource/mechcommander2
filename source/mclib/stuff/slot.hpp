@@ -37,8 +37,7 @@ namespace Stuff {
 				size_t block_count = SlotLink_MemoryBlock_Allocation,
 				size_t block_delta = SlotLink_MemoryBlock_Allocation
 			);
-		static void
-			TerminateClass();
+		static void __stdcall TerminateClass(void);
 
 	public:
 		~SlotLink();

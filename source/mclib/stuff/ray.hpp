@@ -102,9 +102,7 @@ namespace Stuff {
 		//
 		// Test support
 		//
-		void
-			TestInstance() const
-		{}
+		void TestInstance(void) const {}
 		static bool
 			TestClass();
 	};

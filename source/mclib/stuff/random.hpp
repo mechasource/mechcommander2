@@ -22,7 +22,7 @@ namespace Stuff {
 #endif
 	{
 	public:
-		static void InitializeClass();
+		static void __stdcall InitializeClass(void);
 		static void TerminateClass();
 
 	private:

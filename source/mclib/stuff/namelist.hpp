@@ -108,9 +108,7 @@ namespace Stuff {
 			PCSTR prefix
 			);
 
-		void
-			TestInstance() const
-		{}
+		void TestInstance(void) const {}
 		static bool
 			TestClass();
 	};
@@ -187,9 +185,7 @@ namespace Stuff {
 		const ObjectNameList::Entry*
 			GetNextEntry() const
 		{ Check_Object(this); return nextEntry; }
-		void
-			TestInstance() const
-		{}
+		void TestInstance(void) const {}
 	};
 
 	//##########################################################################

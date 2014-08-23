@@ -337,8 +337,7 @@ namespace Stuff {
 			);
 
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 	};
 
 }

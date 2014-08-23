@@ -14,6 +14,7 @@ This header and class is not used
 //#include <stuff/auto_ptr.hpp>
 //#include <stuff/noncopyable.hpp>
 
+#if _CONSIDERED_OBSOLETE
 namespace Stuff
 {
 	template <class pointed_to, class container_type>
@@ -128,5 +129,5 @@ namespace Stuff
 };
 
 
-
+#endif
 #endif // AUTO_CONTAINER_HPP

@@ -9,8 +9,6 @@
 #ifndef _AVERAGE_HPP_
 #define _AVERAGE_HPP_
 
-//#include <stuff/stuff.hpp>
-
 namespace Stuff {
 
 	//##########################################################################
@@ -79,8 +77,7 @@ namespace Stuff {
 		// Calculate Trend of Average
 		//-----------------------------------------------------------------------
 		//
-		Scalar
-			CalculateTrend();
+		float CalculateTrend();
 
 		//
 		//-----------------------------------------------------------------------
@@ -88,10 +85,8 @@ namespace Stuff {
 		// Return the highest value in the array
 		//-----------------------------------------------------------------------
 		//
-		T
-			CalculateLowerBound();
-		T
-			CalculateUpperBound();
+		T CalculateLowerBound(void);
+		T CalculateUpperBound(void);
 
 	private:
 		//
@@ -189,7 +184,7 @@ namespace Stuff {
 			accumulate += array[i];
 		}
 
-		Verify(!Small_Enough(static_cast<Scalar>(size)));
+		Verify(!Small_Enough(static_cast<float>(size)));
 		return (accumulate / static_cast<T>(size));
 	}
 
@@ -217,25 +212,25 @@ namespace Stuff {
 		accumulate -= min_value;
 		accumulate -= max_value;
 
-		Verify(!Small_Enough(static_cast<Scalar>(size - 2)));
+		Verify(!Small_Enough(static_cast<float>(size - 2)));
 		return (accumulate / static_cast<T>(size - 2));
 	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	template <class T> Scalar
+	template <class T> float
 		AverageOf<T>::CalculateTrend()
 	{
 		Check_Object(this);
 		size_t i;
-		Scalar f = 0.0f;
-		Scalar fx = 0.0f;
-		Scalar x1 = static_cast<Scalar>(size);
-		Scalar x2 = x1*x1/2.0f;
-		Scalar x3 = x2 + x1*x1*x1/3.0f + x1/6.0f;
+		float f = 0.0f;
+		float fx = 0.0f;
+		float x1 = static_cast<float>(size);
+		float x2 = x1*x1/2.0f;
+		float x3 = x2 + x1*x1*x1/3.0f + x1/6.0f;
 		x2 += x1/2.0f;
 
 		i = next;
-		Scalar t = 1.0f;
+		float t = 1.0f;
 		do
 		{
 			f += array[i];
@@ -311,9 +306,7 @@ namespace Stuff {
 		~StaticAverageOf()
 		{}
 
-		void
-			TestInstance() const
-		{}
+		void TestInstance(void) const {}
 
 		//
 		//-----------------------------------------------------------------------

@@ -324,10 +324,8 @@ namespace Stuff {
 #endif
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		friend class Trace;
 		friend class BitTrace;

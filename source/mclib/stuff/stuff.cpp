@@ -26,9 +26,7 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Stuff::Flood_Memory_With_NAN(
-	PVOID where,
-	size_t how_much)
+void __stdcall Stuff::Flood_Memory_With_NAN(PVOID where, size_t how_much)
 {
 	Verify(!(reinterpret_cast<intptr_t>(where)&3));
 	Check_Pointer(where);
@@ -81,7 +79,7 @@ static void __stdcall Activate_400hz() {Environment.MaxTimeDelta = Environment.M
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Stuff::InitializeClasses(void)
+void __stdcall Stuff::InitializeClasses(void)
 {
 	set_terminate(Terminate_Handler);
 
@@ -142,7 +140,7 @@ void Stuff::InitializeClasses(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Stuff::TerminateClasses(void)
+void __stdcall Stuff::TerminateClasses(void)
 {
 	//
 	//-----------------------------------------------

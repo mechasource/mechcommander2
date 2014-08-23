@@ -22,10 +22,8 @@ namespace Stuff {
 		public Plug
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		void
 			TestInstance();
@@ -45,8 +43,7 @@ namespace Stuff {
 	public:
 		typedef Node__ClassData ClassData;
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// plug detachment

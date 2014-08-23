@@ -120,8 +120,7 @@ namespace Stuff {
 
 		~NotationFile();
 
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 		static bool
 			TestClass();
 

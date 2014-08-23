@@ -147,9 +147,7 @@ namespace Stuff {
 			const Radian& angle
 			);
 #endif
-		void
-			TestInstance() const
-		{}
+		void TestInstance(void) const {}
 		static bool
 			TestClass();
 	};
@@ -200,9 +198,7 @@ namespace Stuff {
 			const Degree& angle
 			);
 #endif
-		void
-			TestInstance() const
-		{}
+		void TestInstance(void) const {}
 		static bool
 			TestClass();
 	};
@@ -292,9 +288,7 @@ namespace Stuff {
 			const SinCosPair& angle
 			);
 #endif
-		void
-			TestInstance() const
-		{}
+		void TestInstance(void) const {}
 		static bool
 			TestClass();
 	};

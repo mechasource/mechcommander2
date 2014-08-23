@@ -11,17 +11,16 @@
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MMIOstream ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-bool SingeBitStreamTest(size_t total_sections_to_write);
-bool MultipleBitStreamTest(size_t total_sections_to_write);
-bool FloatIntBitStreamTest(size_t total_sections_to_write);
+bool __stdcall SingeBitStreamTest(size_t total_sections_to_write);
+bool __stdcall MultipleBitStreamTest(size_t total_sections_to_write);
+bool __stdcall FloatIntBitStreamTest(size_t total_sections_to_write);
 
 //
 //#############################################################################
 //#############################################################################
 //
 
-bool
-	MemoryStream::TestClass()
+bool MemoryStream::TestClass()
 {
 
 

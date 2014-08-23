@@ -10,9 +10,6 @@ This header and class is not used
 #ifndef PTR_HPP
 #define PTR_HPP
 
-//#include <stuff/stuff.hpp>
-
-
 namespace Stuff
 {
 

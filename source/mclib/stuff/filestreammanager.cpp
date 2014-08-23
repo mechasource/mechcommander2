@@ -237,8 +237,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MString*
-	Stuff::StripExtension(MString* file_name)
+MString* __stdcall Stuff::StripExtension(MString* file_name)
 {
 	Check_Object(file_name);
 
@@ -260,8 +259,7 @@ MString*
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MString*
-	Stuff::IsolateDirectory(MString* file_name)
+MString* __stdcall Stuff::IsolateDirectory(MString* file_name)
 {
 	Check_Object(file_name);
 
@@ -287,8 +285,7 @@ MString*
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MString*
-	Stuff::StripDirectory(MString* file_name)
+MString* __stdcall Stuff::StripDirectory(MString* file_name)
 {
 	Check_Object(file_name);
 	PSTR p = strrchr(*file_name, '\\');

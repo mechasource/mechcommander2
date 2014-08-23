@@ -104,9 +104,7 @@ namespace Stuff {
 		//
 		// Test functions
 		//
-		void
-			TestInstance() const
-		{}
+		void TestInstance(void) const {}
 		static bool
 			TestClass();
 	};

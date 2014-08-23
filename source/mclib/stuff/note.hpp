@@ -167,8 +167,7 @@ namespace Stuff {
 			SetEntry(NotationFile *value);
 
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 	};
 
 }

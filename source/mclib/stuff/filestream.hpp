@@ -40,9 +40,7 @@ namespace Stuff {
 			);
 		~Directory();
 
-		void
-			TestInstance() const
-		{}
+		void TestInstance(void) const {}
 
 		PSTR
 			GetCurrentFileName();
@@ -86,18 +84,14 @@ namespace Stuff {
 		friend class FileStreamManager;
 
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 		static PCSTR WhiteSpace;
 
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 		static bool
 			TestClass();
 

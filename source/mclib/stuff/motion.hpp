@@ -88,8 +88,7 @@ namespace Stuff {
 			const Motion3D& motion
 			);
 #endif
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 		static bool
 			TestClass();
 	};

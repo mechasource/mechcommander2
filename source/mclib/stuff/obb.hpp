@@ -27,8 +27,7 @@ namespace Stuff {
 	class OBB
 	{
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 		static OBB
 			Identity;

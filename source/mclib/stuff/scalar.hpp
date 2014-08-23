@@ -48,12 +48,12 @@ namespace Stuff {
 		Close_Enough(int x,int y,Scalar e=SMALL)
 	{return Fabs(static_cast<Scalar>(x-y)) <= e;}
 
-	inline WORD
+	inline uint16_t
 		Round_Float_To_Word(float in)
 	{
 		Verify(in >= 0.0f && in < 65536.0f);
 		in += 12582912.0f;
-		return *Cast_Pointer(WORD*, &in);
+		return *Cast_Pointer(puint16_t, &in);
 	}
 
 	inline UCHAR
@@ -64,13 +64,13 @@ namespace Stuff {
 		return *Cast_Pointer(puint8_t, &in);
 	}
 
-	inline WORD
+	inline uint16_t
 		Truncate_Float_To_Word(float in)
 	{
 		Verify(in >= 0.0f && in < 65536.0f);
 		in -= 0.5f;
 		in += 12582912.0f;
-		return *Cast_Pointer(WORD*, &in);
+		return *Cast_Pointer(puint16_t, &in);
 	}
 
 	inline UCHAR
@@ -228,13 +228,13 @@ namespace MemoryStreamIO {
 	inline Stuff::MemoryStream&
 		Read(
 		Stuff::MemoryStream* stream,
-		Stuff::Scalar *output
+		float *output
 		)
 	{return stream->ReadBytes(output, sizeof(*output));}
 	inline Stuff::MemoryStream&
 		Write(
 		Stuff::MemoryStream* stream,
-		const Stuff::Scalar *input
+		const float *input
 		)
 	{return stream->WriteBytes(input, sizeof(*input));}
 

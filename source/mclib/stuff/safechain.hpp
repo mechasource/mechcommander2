@@ -34,8 +34,7 @@ namespace Stuff {
 			size_t block_count = SafeChainLink_MemoryBlock_Allocation,
 			size_t block_delta = SafeChainLink_MemoryBlock_Allocation
 			);
-		static void
-			TerminateClass();
+		static void __stdcall TerminateClass(void);
 
 	public:
 		~SafeChainLink();
@@ -194,8 +193,7 @@ namespace Stuff {
 		SafeChainIterator(const SafeChainIterator &iterator);
 		~SafeChainIterator();
 
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//
 	//--------------------------------------------------------------------

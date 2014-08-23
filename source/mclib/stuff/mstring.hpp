@@ -91,7 +91,7 @@ namespace Stuff {
 	void
 		Convert_From_Ascii(
 		PCSTR  str,
-		WORD* value
+		puint16_t value
 		);
 	void
 		Convert_From_Ascii(
@@ -160,8 +160,7 @@ namespace Stuff {
 	public:
 		~MStringRepresentation();
 
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Length, Size
@@ -514,8 +513,7 @@ namespace Stuff {
 
 		~MString();
 
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 		static bool
 			TestClass();
 

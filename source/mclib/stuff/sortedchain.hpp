@@ -456,8 +456,7 @@ namespace Stuff {
 		Iterator*
 			MakeClone();
 		~SortedChainIterator();
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 		//
 		//--------------------------------------------------------------------

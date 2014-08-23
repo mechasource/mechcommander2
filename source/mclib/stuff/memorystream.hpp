@@ -41,10 +41,8 @@ namespace Stuff {
 			MemoryStream* stream, const MemoryStream* input_stream);
 
 	public:
-		static void
-			InitializeClass(void);
-		static void
-			TerminateClass(void);
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Construction and testing
@@ -69,8 +67,7 @@ namespace Stuff {
 		{
 		}
 
-		void
-			TestInstance(void) const;
+		void TestInstance(void) const;
 
 		static bool
 			TestClass(void);
@@ -312,7 +309,7 @@ namespace Stuff {
 
 
 		MemoryStream&
-			ReadBits(USHORT *ptr, ULONG number_of_bits)
+			ReadBits(puint16_t ptr, ULONG number_of_bits)
 		{
 			Verify(number_of_bits <= 16);
 			Check_Object(this); Check_Pointer(ptr);
@@ -566,7 +563,7 @@ namespace MemoryStreamIO {
 	inline Stuff::MemoryStream&
 		Read(
 		Stuff::MemoryStream* stream,
-		USHORT *output
+		puint16_t output
 		)
 	{
 		return stream->ReadBytes(output, sizeof(*output));

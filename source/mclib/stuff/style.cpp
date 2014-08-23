@@ -8,7 +8,7 @@
 #include "stdafx.h"
 //#include "stuffheaders.hpp"
 #include <gameos.hpp>
-#include "style.hpp"
+#include <stuff/style.hpp>
 
 //
 //#############################################################################

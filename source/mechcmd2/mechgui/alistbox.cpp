@@ -5,10 +5,10 @@
 #include "stdafx.h"
 
 #ifndef ASYSTEM_H
-#include "asystem.h"
+#include <gui/asystem.h>
 #endif
 #ifndef AFONT_H
-#include "afont.h"
+#include <gui/afont.h>
 #endif
 #ifndef ALISTBOX_H
 #include "alistbox.h"
@@ -39,9 +39,9 @@ aListBox::aListBox()
 
 }
 
-long aListBox::init(long xPos, long yPos,long w, long h )
+int32_t aListBox::init(int32_t xPos, int32_t yPos,int32_t w, int32_t h )
 {
-	long err;
+	int32_t err;
 	
 	err = aObject::init(xPos,yPos,w,h);
 	if (err)
@@ -60,12 +60,12 @@ long aListBox::init(long xPos, long yPos,long w, long h )
 	scrollBar->SetScrollMax( 0 );
 	addChild( scrollBar );
 
-	return (NO_ERR);
+	return (NO_ERROR);
 }
 
 void aListBox::init( FitIniFile* file, PCSTR blockName )
 {
-	long x, y, width, height;
+	int32_t x, y, width, height;
 	file->readIdLong( "XLocation", x );
 	file->readIdLong( "YLocation", y );
 	file->readIdLong( "Width", width );
@@ -129,8 +129,8 @@ void aListBox::update()
 
 		int iSel = -1;
 		int iHighlight = -1;
-		long mouseX = userInput->getMouseX();
-		long mouseY = userInput->getMouseY();
+		int32_t mouseX = userInput->getMouseX();
+		int32_t mouseY = userInput->getMouseY();
 
 		bool bInside = pointInside( mouseX, mouseY );
 		if ( bInside && helpID )
@@ -236,7 +236,7 @@ int aListBox::handleMessage( ULONG message, ULONG who )
 	return 0;
 }
 
-void aListBox::resize(long w, long h)
+void aListBox::resize(int32_t w, int32_t h)
 {
 	aObject::resize(w, h);
 	scrollBar->resize(scrollBar->width(), h - 4);
@@ -265,8 +265,8 @@ void aListBox::render()
 
 		gos_DrawQuads( location, 4 );
 
-		long topHeight = 0;
-		long bottomHeight = 0;
+		int32_t topHeight = 0;
+		int32_t bottomHeight = 0;
 
 
 		bool bItemOutOfRange = 0;
@@ -335,7 +335,7 @@ void aListBox::move( float offsetX, float offsetY )
 	}
 }
 
-long aListBox::AddItem(aListItem* add)
+int32_t aListBox::AddItem(aListItem* add)
 {
 	if (itemCount >= MAX_LIST_ITEMS)
 		return TOO_MANY_ITEMS;
@@ -379,7 +379,7 @@ long aListBox::AddItem(aListItem* add)
 	return itemCount - 1;
 }
 
-long	aListBox::InsertItem(aListItem* itemString, long where)
+int32_t	aListBox::InsertItem(aListItem* itemString, int32_t where)
 {
 	if ( itemCount >= MAX_LIST_ITEMS )
 		return -1;
@@ -434,7 +434,7 @@ long	aListBox::InsertItem(aListItem* itemString, long where)
 	return where;
 }
 
-long	aListBox::RemoveItem( aListItem* item, bool bDelete )
+int32_t	aListBox::RemoveItem( aListItem* item, bool bDelete )
 {
 	if ( !item )
 		return -1;
@@ -486,7 +486,7 @@ long	aListBox::RemoveItem( aListItem* item, bool bDelete )
 	return 0;
 }
 
-long aListBox::SelectItem(long itemNumber)
+int32_t aListBox::SelectItem(int32_t itemNumber)
 {
 	if (itemNumber >= itemCount)
 		return ITEM_OUT_OF_RANGE;
@@ -516,7 +516,7 @@ long aListBox::SelectItem(long itemNumber)
 	}
 
 	
-	return NO_ERR;
+	return NO_ERROR;
 }
 
 void	aListBox::enableAllItems()
@@ -529,7 +529,7 @@ void	aListBox::enableAllItems()
 }
 
 
-aListItem* aListBox::GetItem(long itemNumber)
+aListItem* aListBox::GetItem(int32_t itemNumber)
 {
 	if (itemNumber >= itemCount)
 		return NULL;
@@ -555,7 +555,7 @@ void aListBox::scroll( int amount )
 	}
 }
 
-long aListBox::GetCheckedItem() const
+int32_t aListBox::GetCheckedItem() const
 {
 	int ret = -1;
 	if ( items )
@@ -570,7 +570,7 @@ long aListBox::GetCheckedItem() const
 	return ret;
 }
 
-long	aListBox::getScrollBarWidth()
+int32_t	aListBox::getScrollBarWidth()
 {
 	if ( scrollBar )
 		return scrollBar->width();
@@ -583,7 +583,7 @@ void	aListBox::setOrange(bool bOrange)
 	scrollBar->setOrange();
 }
 
-bool				aListBox::pointInScrollBar( long mouseX, long mouseY )
+bool				aListBox::pointInScrollBar( int32_t mouseX, int32_t mouseY )
 {
 	if ( scrollBar )
 	{
@@ -656,11 +656,11 @@ aDropList& aDropList::operator=( const aDropList& src)
 }
 
 
-long aDropList::init( FitIniFile* file, PCSTR blockName )
+int32_t aDropList::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
-	long x, y, width, height;
+	int32_t x, y, width, height;
 	x = y = width = height = 0;
 	file->readIdLong( "XLocation", x );
 	file->readIdLong( "YLocation", y );
@@ -703,7 +703,7 @@ long aDropList::init( FitIniFile* file, PCSTR blockName )
 	textLeft = 0;
 	textTop = 0;
 
-	if ( NO_ERR == file->seekBlock( "Text0" ) )
+	if ( NO_ERROR == file->seekBlock( "Text0" ) )
 	{
 		file->readIdLong( "XLocation", textLeft );
 		file->readIdLong( "YLocation", textTop );
@@ -881,7 +881,7 @@ int aDropList::handleMessage( ULONG message, ULONG who )
 	return 0;
 }
 
-bool aDropList::pointInside(long xPos, long yPos) const
+bool aDropList::pointInside(int32_t xPos, int32_t yPos) const
 {
 	bool retval = aObject::pointInside(xPos, yPos);
 	if (listBox.isShowing())
@@ -891,9 +891,9 @@ bool aDropList::pointInside(long xPos, long yPos) const
 	return retval;
 }
 
-long aDropList::AddItem(aListItem* itemString)
+int32_t aDropList::AddItem(aListItem* itemString)
 {
-	long retval = ListBox().AddItem(itemString);
+	int32_t retval = ListBox().AddItem(itemString);
 	float newHeight = (itemString->height() + ListBox().getSpaceBetweenItems()) * ListBox().GetItemCount()+4;
 	if (newHeight > listBoxMaxHeight)
 	{
@@ -904,7 +904,7 @@ long aDropList::AddItem(aListItem* itemString)
 	return retval;
 }
 
-long				aDropList::AddItem( PCSTR text, ULONG color )
+int32_t				aDropList::AddItem( PCSTR text, ULONG color )
 {
 	aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 	*pItem = templateItem;
@@ -913,7 +913,7 @@ long				aDropList::AddItem( PCSTR text, ULONG color )
 	return AddItem( pItem );
 }
 
-long aDropList::AddItem( ULONG textID, ULONG color )
+int32_t aDropList::AddItem( ULONG textID, ULONG color )
 {
 		aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 		*pItem = templateItem;
@@ -922,7 +922,7 @@ long aDropList::AddItem( ULONG textID, ULONG color )
 		return AddItem( pItem );
 }
 
-long	aDropList::SelectItem(long item)
+int32_t	aDropList::SelectItem(int32_t item)
  { 
 	listBox.showGUIWindow(false);
 	rects[2].showGUIWindow(false);
@@ -995,11 +995,11 @@ aComboBox& aComboBox::operator=(const aComboBox& src )
 	return *this;
 }
 
-long aComboBox::init( FitIniFile* file, PCSTR blockName )
+int32_t aComboBox::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
-	long x, y, width, height;
+	int32_t x, y, width, height;
 	x = y = width = height = 0;
 	file->readIdLong( "XLocation", x );
 	file->readIdLong( "YLocation", y );
@@ -1064,7 +1064,7 @@ long aComboBox::init( FitIniFile* file, PCSTR blockName )
 	return 0;
 }
 
-long	aComboBox::SelectItem(long item)
+int32_t	aComboBox::SelectItem(int32_t item)
  { 
 	listBox.showGUIWindow(false);
 	rects[2].showGUIWindow(false);
@@ -1186,7 +1186,7 @@ int aComboBox::handleMessage( ULONG message, ULONG who )
 	return 0;
 }
 
-bool aComboBox::pointInside(long xPos, long yPos) const
+bool aComboBox::pointInside(int32_t xPos, int32_t yPos) const
 {
 	bool retval = aObject::pointInside(xPos, yPos);
 	if (listBox.isShowing())
@@ -1196,7 +1196,7 @@ bool aComboBox::pointInside(long xPos, long yPos) const
 	return retval;
 }
 
-long aComboBox::AddItem(aListItem* itemString)
+int32_t aComboBox::AddItem(aListItem* itemString)
 {
 	float newHeight = (itemString->height() + (float)ListBox().getSpaceBetweenItems()) * ((float)ListBox().GetItemCount()+1)+4;
 	if (newHeight > listBoxMaxHeight)
@@ -1205,11 +1205,11 @@ long aComboBox::AddItem(aListItem* itemString)
 	}
 	ListBox().resize(ListBox().width(), newHeight);
 	rects[2].resize(rects[2].width(), newHeight);
-	long retval = ListBox().AddItem(itemString);
+	int32_t retval = ListBox().AddItem(itemString);
 	return retval;
 }
 
-long aComboBox::AddItem( ULONG textID, ULONG color )
+int32_t aComboBox::AddItem( ULONG textID, ULONG color )
 {
 		aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 		*pItem = templateItem;
@@ -1218,7 +1218,7 @@ long aComboBox::AddItem( ULONG textID, ULONG color )
 		return AddItem( pItem );
 }
 
-long				aComboBox::AddItem( PCSTR text, ULONG color )
+int32_t				aComboBox::AddItem( PCSTR text, ULONG color )
 {
 	aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 	*pItem = templateItem;
@@ -1243,7 +1243,7 @@ aTextListItem::aTextListItem( const aFont& newFont )
 	alignment = 0;
 	bForceToTop = 0;
 }
-aTextListItem::aTextListItem(long newFontResID)
+aTextListItem::aTextListItem(int32_t newFontResID)
 {
 	font.init( newFontResID );
 	ULONG height;
@@ -1254,7 +1254,7 @@ aTextListItem::aTextListItem(long newFontResID)
 	alignment = 0;
 }
 
-void aTextListItem::init(long newFontResID)
+void aTextListItem::init(int32_t newFontResID)
 {
 	font.init( newFontResID );
 	ULONG height;
@@ -1298,7 +1298,7 @@ void aTextListItem::render()
 		location[0].argb, 0, alignment ); 
 }
 
-void aTextListItem::setText( long resID )
+void aTextListItem::setText( int32_t resID )
 {
 	char tmp[4096];
 	tmp[0] = 0;
@@ -1319,7 +1319,7 @@ void aTextListItem::init( FitIniFile& file, PCSTR blockName )
 {
 	file.seekBlock( blockName );
 
-	long x, y, width, height;
+	int32_t x, y, width, height;
 
 	file.readIdLong( "XLocation", x );
 	file.readIdLong( "YLocation", y );
@@ -1328,7 +1328,7 @@ void aTextListItem::init( FitIniFile& file, PCSTR blockName )
 
 	aObject::init( x, y, width, height );
 
-	long color;
+	int32_t color;
 	file.readIdLong( "Color", color );
 	setColor( color );
 }
@@ -1354,7 +1354,7 @@ void aAnimTextListItem::init( FitIniFile& file, PCSTR blockName )
 {
 	file.seekBlock( blockName );
 
-	long x, y, width, height;
+	int32_t x, y, width, height;
 
 	file.readIdLong( "XLocation", x );
 	file.readIdLong( "YLocation", y );
@@ -1363,14 +1363,14 @@ void aAnimTextListItem::init( FitIniFile& file, PCSTR blockName )
 
 	aObject::init( x, y, width, height );
 
-	long color;
+	int32_t color;
 	file.readIdLong( "Color", color );
 	setColor( color );
 
 	// I could read the font here
 
 	char animationSt[256];
-	if ( NO_ERR == file.readIdString( "Animation", animationSt, 255 ) )
+	if ( NO_ERROR == file.readIdString( "Animation", animationSt, 255 ) )
 		animInfo.init( &file, animationSt );
 }
 
@@ -1388,7 +1388,7 @@ void aAnimTextListItem::CopyData( const aAnimTextListItem& src )
 void aAnimTextListItem::render()
 {
 	animInfo.setState( (aAnimGroup::STATE)state );
-	long color = animInfo.getCurrentColor( (aAnimGroup::STATE)state );
+	int32_t color = animInfo.getCurrentColor( (aAnimGroup::STATE)state );
 	setColor( color );
 
 	aTextListItem::render();
@@ -1405,22 +1405,22 @@ void aAnimTextListItem::update()
 aLocalizedListItem::aLocalizedListItem() : aAnimTextListItem( 27663 )
 { 
 }
-long aLocalizedListItem::init( FitIniFile* file, PCSTR blockName )
+int32_t aLocalizedListItem::init( FitIniFile* file, PCSTR blockName )
 {
 	file->seekBlock( blockName );
 
-	long x = 0;
-	long y = 0;
+	int32_t x = 0;
+	int32_t y = 0;
 	file->readIdLong( "XLocation", x );
 	file->readIdLong( "YLocation", y );
 
-	long fontResID = 0;
+	int32_t fontResID = 0;
 	file->readIdLong( "Font", fontResID );
-	long textID = 0;
+	int32_t textID = 0;
 	file->readIdLong( "TextID", textID );
 	aTextListItem::init(fontResID);
 	setText(textID);
-	long color = 0xff808080;
+	int32_t color = 0xff808080;
 	file->readIdLong( "Color", color );
 
 	char tmpStr[64];
@@ -1437,9 +1437,9 @@ long aLocalizedListItem::init( FitIniFile* file, PCSTR blockName )
 
 void aLocalizedListItem::render()
 {
-	long color = 0xffffffff;
+	int32_t color = 0xffffffff;
 	if ( animInfo.getState() != getState() )
-		animInfo.setState( (aAnimGroup::STATE)(long)getState() );
+		animInfo.setState( (aAnimGroup::STATE)(int32_t)getState() );
 	color = animInfo.getCurrentColor( animInfo.getState() );
 	aTextListItem::setColor((ULONG)color);
 	aTextListItem::render();

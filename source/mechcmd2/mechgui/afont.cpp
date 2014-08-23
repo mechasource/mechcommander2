@@ -3,7 +3,7 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "afont.h"
+#include <gui/afont.h>
 #include <mclib.h>
 #include <mbstring.h>
 
@@ -15,7 +15,7 @@ aFont::aFont()
 	size = 1;
 }
 
-long aFont::init( PCSTR newFontName )
+int32_t aFont::init( PCSTR newFontName )
 {
 	destroy();
 	gosFont = 0;
@@ -42,7 +42,7 @@ long aFont::init( PCSTR newFontName )
 
 }
 
-long aFont::init( long resourceID )
+int32_t aFont::init( int32_t resourceID )
 {
 	destroy();
 	gosFont = 0;
@@ -187,8 +187,8 @@ ULONG aFont::height( PCSTR st, int areaWidth ) const
 				*(pTmpLine+1) = *(pTmp+1);
 			}
 
-			pTmpLine = (PSTR)_mbsinc( (PUCHAR)pTmpLine );
-			pTmp = (PSTR)_mbsinc( (PUCHAR)pTmp );
+			pTmpLine = (PSTR)_mbsinc( (puint8_t)pTmpLine );
+			pTmp = (PSTR)_mbsinc( (puint8_t)pTmp );
 		}
 
 		// one last check
@@ -216,7 +216,7 @@ ULONG aFont::width( PCSTR st ) const
 	return width;
 }
 
-long aFont::load( PCSTR fontName )
+int32_t aFont::load( PCSTR fontName )
 {
 	destroy();
 
@@ -273,7 +273,7 @@ void aFont::render( PCSTR text, int xPos, int yPos, int areaWidth, int areaHeigh
 
 }
 
-HGOSFONT3D aFont::loadFont( long resourceID, long& size )
+HGOSFONT3D aFont::loadFont( int32_t resourceID, int32_t& size )
 {
 	size = 1;
 	char buffer[256];

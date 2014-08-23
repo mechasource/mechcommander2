@@ -1,5 +1,3 @@
-#ifndef AEDIT_H
-#define AEDIT_H
 /*************************************************************************************************\
 aEdit.h			: Interface for the aEdit component of the GUI library.
 //---------------------------------------------------------------------------//
@@ -7,13 +5,20 @@ aEdit.h			: Interface for the aEdit component of the GUI library.
 //===========================================================================//
 \*************************************************************************************************/
 
+#pragma once
+
+#ifndef AEDIT_H
+#define AEDIT_H
+
 #ifndef ASYSTEM_H
-#include "asystem.h"
+#include <gui/asystem.h>
 #endif
 
 #ifndef ESTRING_H
 #include "estring.h"
 #endif
+
+namespace mechgui {
 
 //*************************************************************************************************
 //Entry field styles
@@ -32,7 +37,7 @@ class aEdit: public aObject
 {
 	public:
 
-		aEdit( long fontID );
+		aEdit( int32_t fontID );
 		virtual ~aEdit();
 		aEdit(); // really need a font for this to work
 		aEdit& operator=( const aEdit& );
@@ -44,20 +49,20 @@ class aEdit: public aObject
 
 	
 		void getEntry(EString& str);
-		void setEntry(const EString& str, BYTE byHighlight = 0);
+		void setEntry(const EString& str, UCHAR byHighlight = 0);
 		void limitEntry(int nNewLimit) { nLimit = nNewLimit; }
 		void setFocus(bool bHasFocus);
-		void setFont( long fontID );
-		void setTextColor( long color ){ textColor = color; }
-		void setSelectedColor( long color ){ selectedColor = color; }
+		void setFont( int32_t fontID );
+		void setTextColor( int32_t color ){ textColor = color; }
+		void setSelectedColor( int32_t color ){ selectedColor = color; }
 		bool hasFocus()const { return bFocus; }
 
 
 		void init( FitIniFile* file, PCSTR header );
-		long getHighlightColor( ) const { return highlightColor; }
-		long getColor() const { return textColor; }
-		long getCursorColor() const { return cursorColor; }
-		long getSelectedColor() const { return selectedColor; }
+		int32_t getHighlightColor( ) const { return highlightColor; }
+		int32_t getColor() const { return textColor; }
+		int32_t getCursorColor() const { return cursorColor; }
+		int32_t getSelectedColor() const { return selectedColor; }
 
 		void allowWierdChars( bool bAllow ){ bWierdChars = bAllow; }
 
@@ -116,11 +121,11 @@ class aEdit: public aObject
 		int charLength( int index );
 		
 
-		long cursorColor;
-		long highlightColor; // backdrop
-		long textColor;
-		long selectedColor; // selected text
-		long outlineColor;
+		int32_t cursorColor;
+		int32_t highlightColor; // backdrop
+		int32_t textColor;
+		int32_t selectedColor; // selected text
+		int32_t outlineColor;
 		int		nLimit;
 		int		nInsertion1,nInsertion2; // beginning and ending highlight positions (when equal there is no highlight)
 		bool	bCursorVisible;

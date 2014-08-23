@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include <mclib.h>
 #ifndef ASCROLL_H
-#include "ascroll.h"
+#include <gui/ascroll.h>
 #endif
 
 
@@ -17,9 +17,9 @@ aScrollBar::aScrollBar()
 	lastY = 0;
 }
 
-long aScrollBar::init(long xPos, long yPos, long w, long h)
+int32_t aScrollBar::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 {
-	long err;
+	int32_t err;
 	
 	err = aObject::init(xPos,yPos,w,h);
 	if (err)
@@ -64,7 +64,7 @@ long aScrollBar::init(long xPos, long yPos, long w, long h)
 	scrollTab.darkEdge = 0xff002D51;
 	scrollTab.regularColor =0xff004275;
 
-	return (NO_ERR);
+	return (NO_ERROR);
 }
 
 void aScrollBar::destroy()
@@ -103,7 +103,7 @@ void aScrollBar::SetScrollPos(float newPos)
 	
 }
 
-void aScrollBar::SetScroll( long newScrollPos )
+void aScrollBar::SetScroll( int32_t newScrollPos )
 {
 	if ( newScrollPos < 0 )
 		newScrollPos = 0;
@@ -119,8 +119,8 @@ void aScrollBar::SetScroll( long newScrollPos )
 }
 void aScrollBar::update()
 {
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 		if ( userInput->isLeftDrag() && lastY ) // dragging the little tab
 		{
@@ -261,14 +261,14 @@ void aScrollBar::Enable( bool enable )
 	bottomButton.disable( !enable );
 }
  
-long mcScrollBar::init ( long xPos, long yPos, long w, long h  )	
+int32_t mcScrollBar::init ( int32_t xPos, int32_t yPos, int32_t w, int32_t h  )	
 {
 
 	FitIniFile file; 
 	char path[256];
 	strcpy( path, artPath );
 	strcat( path, "scrollbar.fit" );
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		char error[256];
 		sprintf( error, "couldn't open file %s", path );
@@ -309,7 +309,7 @@ long mcScrollBar::init ( long xPos, long yPos, long w, long h  )
 
 }
 
-void mcScrollBar::resize(long w, long h)
+void mcScrollBar::resize(int32_t w, int32_t h)
 {
 	aScrollBar::resize(w, h);
 	bottomButton.moveTo( bottomButton.globalX(), globalY() + h - bottomButton.height() - 2 );

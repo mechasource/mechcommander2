@@ -4,11 +4,14 @@ aAnimObject.h			: Interface for the aAnimObject component of the GUI library.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+
+#pragma once
+
 #ifndef AANIMOBJECT_H
 #define AANIMOBJECT_H
 
 #ifndef ASYSTEM_H
-#include "asystem.h"
+#include <gui/asystem.h>
 #endif
 
 #ifndef AANIM_H
@@ -16,6 +19,8 @@ aAnimObject.h			: Interface for the aAnimObject component of the GUI library.
 #endif
 
 //*************************************************************************************************
+
+namespace mechgui {
 
 /**************************************************************************************************
 CLASS DESCRIPTION
@@ -30,7 +35,7 @@ class aAnimObject: public aObject
 		aAnimObject& operator=( const aAnimObject& AnimObject );
 
 
-		int init( FitIniFile* file, PCSTR blockName, DWORD neverFlush = 0);
+		int init( FitIniFile* file, PCSTR blockName, ULONG neverFlush = 0);
 
 		virtual void update();
 		virtual void render();

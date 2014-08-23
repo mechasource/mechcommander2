@@ -22,30 +22,29 @@
     <ProjectGuid>{97985315-F026-4AB8-A765-2DBE7B78CC6C}</ProjectGuid>
     <RootNamespace>MechCommander</RootNamespace>
     <Keyword>AtlProj</Keyword>
+    <ProjectName>mechgui</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v120</PlatformToolset>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v120</PlatformToolset>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v120</PlatformToolset>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v120</PlatformToolset>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
@@ -110,7 +109,7 @@
       <AdditionalOptions>
       </AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -122,6 +121,7 @@
       <EnablePREfast>true</EnablePREfast>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(mechcmd2_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -153,7 +153,7 @@
       <AdditionalOptions>
       </AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -165,6 +165,7 @@
       <EnablePREfast>true</EnablePREfast>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(mechcmd2_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -199,7 +200,7 @@
       </AdditionalOptions>
       <Optimization>Full</Optimization>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -210,6 +211,9 @@
       <CallingConvention>StdCall</CallingConvention>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>$(mechcmd2_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -244,7 +248,7 @@
       </AdditionalOptions>
       <Optimization>Full</Optimization>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -255,6 +259,9 @@
       <CallingConvention>StdCall</CallingConvention>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <OmitFramePointers>true</OmitFramePointers>
+      <AdditionalIncludeDirectories>$(mechcmd2_dir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -274,16 +281,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\gui\aanim.cpp" />
-    <ClCompile Include="..\gui\aanimobject.cpp" />
-    <ClCompile Include="..\gui\abutton.cpp" />
-    <ClCompile Include="..\gui\aedit.cpp" />
-    <ClCompile Include="..\gui\afont.cpp" />
-    <ClCompile Include="..\gui\alistbox.cpp" />
-    <ClCompile Include="..\gui\ascroll.cpp" />
-    <ClCompile Include="..\gui\asystem.cpp" />
-    <ClCompile Include="..\gui\logisticsscreen.cpp" />
-    <ClCompile Include="..\gui\stdafx.cpp">
+    <ClCompile Include="..\mechcmd2\mechgui\aanim.cpp" />
+    <ClCompile Include="..\mechcmd2\mechgui\aanimobject.cpp" />
+    <ClCompile Include="..\mechcmd2\mechgui\abutton.cpp" />
+    <ClCompile Include="..\mechcmd2\mechgui\aedit.cpp" />
+    <ClCompile Include="..\mechcmd2\mechgui\afont.cpp" />
+    <ClCompile Include="..\mechcmd2\mechgui\alistbox.cpp" />
+    <ClCompile Include="..\mechcmd2\mechgui\ascroll.cpp" />
+    <ClCompile Include="..\mechcmd2\mechgui\asystem.cpp" />
+    <ClCompile Include="..\mechcmd2\mechgui\logisticsscreen.cpp" />
+    <ClCompile Include="..\mechcmd2\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -291,22 +298,18 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\gui\aanim.h" />
-    <ClInclude Include="..\gui\aanimobject.h" />
-    <ClInclude Include="..\gui\abutton.h" />
-    <ClInclude Include="..\gui\aedit.h" />
-    <ClInclude Include="..\gui\afont.h" />
-    <ClInclude Include="..\gui\alistbox.h" />
-    <ClInclude Include="..\gui\ascroll.h" />
-    <ClInclude Include="..\gui\asystem.h" />
-    <ClInclude Include="..\gui\logisticsscreen.h" />
-    <ClInclude Include="..\gui\resource.h" />
-    <ClInclude Include="..\gui\stdafx.h" />
+    <ClInclude Include="..\mechcmd2\mechgui\aanim.h" />
+    <ClInclude Include="..\mechcmd2\mechgui\aanimobject.h" />
+    <ClInclude Include="..\mechcmd2\mechgui\abutton.h" />
+    <ClInclude Include="..\mechcmd2\mechgui\aedit.h" />
+    <ClInclude Include="..\mechcmd2\mechgui\afont.h" />
+    <ClInclude Include="..\mechcmd2\mechgui\alistbox.h" />
+    <ClInclude Include="..\mechcmd2\mechgui\ascroll.h" />
+    <ClInclude Include="..\mechcmd2\mechgui\asystem.h" />
+    <ClInclude Include="..\mechcmd2\mechgui\logisticsscreen.h" />
+    <ClInclude Include="..\mechcmd2\stdafx.h" />
     <ClInclude Include="..\include\mechresources.h" />
     <ClInclude Include="..\include\mechtypes.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="..\gui\gui.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

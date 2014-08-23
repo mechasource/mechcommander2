@@ -2,8 +2,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef AANIMATION_H
 #define AANIMATION_H
+
+namespace mechgui {
 
 class aAnimation;
 class FitIniFile;
@@ -20,8 +24,8 @@ public:
 
 	aAnimation& operator=( const aAnimation& src );
 
-	long	init(FitIniFile* file, PCSTR prependName);
-	long	initWithBlockName( FitIniFile* file, PCSTR blockName );
+	int32_t	init(FitIniFile* file, PCSTR prependName);
+	int32_t	initWithBlockName( FitIniFile* file, PCSTR blockName );
 	void	destroy();
 
 	void	begin();
@@ -62,11 +66,11 @@ protected:
 		float positionY; // pixels
 		float scaleX;
 		float scaleY;
-		long color;
+		int32_t color;
 	};
 
 	MoveInfo*	infos;
-	long			infoCount;
+	int32_t			infoCount;
 
 	float		refX;
 	float		refY;
@@ -100,14 +104,14 @@ public:
 
 	aAnimGroup(){curState = NORMAL; }
 
-	long init( FitIniFile* file, PCSTR blockName );
+	int32_t init( FitIniFile* file, PCSTR blockName );
 
 	void setState( STATE );
 	STATE getState() const;
 
-	long getCurrentColor( STATE ) const;
-	long getXDelta( STATE ) const;
-	long getYDelta( STATE ) const;
+	int32_t getCurrentColor( STATE ) const;
+	int32_t getXDelta( STATE ) const;
+	int32_t getYDelta( STATE ) const;
 	float getCurrnetScale( STATE ) const;
 
 	void update();

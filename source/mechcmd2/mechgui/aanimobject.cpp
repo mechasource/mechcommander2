@@ -32,13 +32,13 @@ aAnimObject& aAnimObject::operator =( const aAnimObject& src )
 }
 
 
-int aAnimObject::init( FitIniFile* file, PCSTR blockName, DWORD neverFlush )
+int aAnimObject::init( FitIniFile* file, PCSTR blockName, ULONG neverFlush )
 {
 	aObject::init( file, blockName, neverFlush );
 
-	long color = 0xffffffff;
+	int32_t color = 0xffffffff;
 
-	if ( NO_ERR == file->readIdLong( "Color", color ) )
+	if ( NO_ERROR == file->readIdLong( "Color", color ) )
 	{
 		setColor( color );
 	}
@@ -48,7 +48,7 @@ int aAnimObject::init( FitIniFile* file, PCSTR blockName, DWORD neverFlush )
 	char animName[256];
 	file->readIdString( "Animation", animName, 255 );
 
-	if ( NO_ERR == file->seekBlock( animName ) )
+	if ( NO_ERROR == file->seekBlock( animName ) )
 		animInfo.init( file, "" );
 
 	animInfo.begin();
@@ -64,7 +64,7 @@ void aAnimObject::render( )
 {
 	if ( !isShowing() )
 		return;
-	long color = animInfo.getColor();
+	int32_t color = animInfo.getColor();
 
 
 	float xNewOffset = animInfo.getXDelta()+.5f;

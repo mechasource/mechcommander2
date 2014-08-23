@@ -283,7 +283,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\gameos\src\startup\gameplatform.cpp" />
-    <ClCompile Include="..\gui\aanimobject.cpp" />
+    <ClCompile Include="..\mechcmd2\mechgui\aanimobject.cpp" />
     <ClCompile Include="..\mechcmd2\gamesound.cpp" />
     <ClCompile Include="..\mechcmd2\logisticscomponent.cpp" />
     <ClCompile Include="..\mechcmd2\logisticsdata.cpp" />

@@ -4,22 +4,22 @@
 
 #include "stdafx.h"
 #include <mclib.h>
-#include "asystem.h"
+#include <gui/asystem.h>
 #include "packet.h"
-#include "afont.h"
+#include <gui/afont.h>
 #include "paths.h"
 #include "userinput.h"
 
 
-long helpTextID = 0;
-long helpTextHeaderID = 0;
+int32_t helpTextID = 0;
+int32_t helpTextHeaderID = 0;
 
 
 
 void aObject::update()
 {
-	long x = userInput->getMouseX();
-	long y = userInput->getMouseY();
+	int32_t x = userInput->getMouseX();
+	int32_t y = userInput->getMouseY();
 
 	if ( pointInside( x, y ) && helpID && isShowing())
 	{
@@ -52,7 +52,7 @@ aObject::~aObject()
 				//	it's safe to call twice
 }
 
-long aObject::init(long xPos, long yPos,long w, long h)
+int32_t aObject::init(int32_t xPos, int32_t yPos,int32_t w, int32_t h)
 {
 
 	location[0].x = xPos;
@@ -78,17 +78,17 @@ long aObject::init(long xPos, long yPos,long w, long h)
 
 	pNumberOfChildren = 0;
 	pParent = NULL;
-	return (NO_ERR);
+	return (NO_ERROR);
 }
 
-void aObject::init(FitIniFile* file, PCSTR blockName, DWORD neverFlush)
+void aObject::init(FitIniFile* file, PCSTR blockName, ULONG neverFlush)
 {
 	memset( location, 0, sizeof( location ) );
 	char fileName[256];
 	textureHandle = 0;
 	fileWidth = 256.; 
 	
-	if ( NO_ERR != file->seekBlock( blockName ) )
+	if ( NO_ERROR != file->seekBlock( blockName ) )
 	{
 		char errBuffer[256];
 		sprintf( errBuffer, "couldn't find static block %s", blockName );
@@ -96,7 +96,7 @@ void aObject::init(FitIniFile* file, PCSTR blockName, DWORD neverFlush)
 		return;
 	}
 
-	long x, y, width, height;
+	int32_t x, y, width, height;
 	file->readIdLong( "XLocation", x );
 	file->readIdLong( "YLocation", y );
 
@@ -107,7 +107,7 @@ void aObject::init(FitIniFile* file, PCSTR blockName, DWORD neverFlush)
 	file->readIdLong( "HelpDesc", helpID );
 	
 
-	if ( NO_ERR == file->readIdString( "fileName", fileName, 32 ) )
+	if ( NO_ERROR == file->readIdString( "fileName", fileName, 32 ) )
 	{
 
 		bool bAlpha = 0;
@@ -132,7 +132,7 @@ void aObject::init(FitIniFile* file, PCSTR blockName, DWORD neverFlush)
 		}
 	}
 
-	long u, v, uWidth, vHeight;
+	int32_t u, v, uWidth, vHeight;
 	bool bRotated = 0;
 
 	file->readIdLong( "UNormal", u );
@@ -202,7 +202,7 @@ void aObject::destroy()
 
 
 
-bool aObject::pointInside(long mouseX, long mouseY) const
+bool aObject::pointInside(int32_t mouseX, int32_t mouseY) const
 {
 	if ( (location[0].x)  <= mouseX && 
 		 location[3].x >= mouseX && 
@@ -213,7 +213,7 @@ bool aObject::pointInside(long mouseX, long mouseY) const
 	return false;
 }
 
-bool aObject::rectIntersect(long left, long top, long right, long bottom) const
+bool aObject::rectIntersect(int32_t left, int32_t top, int32_t right, int32_t bottom) const
 {
 	if ((right > location[0].x) && (left < location[2].x) && (bottom > location[0].y) && (top < location[2].y))
 		return (TRUE);
@@ -231,13 +231,13 @@ bool aObject::rectIntersect(const RECT& testRect) const
 }
 
 
-aObject* aObject::findObject(long xPos, long yPos)
+aObject* aObject::findObject(int32_t xPos, int32_t yPos)
 {
 	aObject* target;
 
 	if (showWindow)
 	{
-		for (long i = pNumberOfChildren; i > 0; i--)
+		for (int32_t i = pNumberOfChildren; i > 0; i--)
 		{
 			target = pChildren[i-1]->findObject(xPos,yPos);
 			if (target)
@@ -259,7 +259,7 @@ void aObject::setParent(aObject* p)
 
 
 
-long aObject::numberOfChildren() const
+int32_t aObject::numberOfChildren() const
 {
 	return pNumberOfChildren;
 }
@@ -285,12 +285,12 @@ void aObject::removeChild(aObject* c)
 			
 	if ((c->getParent() == this) || (c->getParent() == NULL))	//Normal situation
 	{
-		for (long cc = 0; cc < pNumberOfChildren; cc++)
+		for (int32_t cc = 0; cc < pNumberOfChildren; cc++)
 		{
 			if (pChildren[cc] == c)
 			{
 				// found the child, remove it and shift the rest of the children up
-				for (long sc = cc; sc < pNumberOfChildren - 1; sc++)
+				for (int32_t sc = cc; sc < pNumberOfChildren - 1; sc++)
 					pChildren[sc] = pChildren[sc+1];
 				pChildren[pNumberOfChildren] = NULL;
 				pNumberOfChildren--;
@@ -307,7 +307,7 @@ void aObject::removeChild(aObject* c)
 
 
 
-aObject* aObject::child(long w)
+aObject* aObject::child(int32_t w)
 {
 	if (w > pNumberOfChildren - 1)
 		return NULL;
@@ -342,27 +342,27 @@ float aObject::y() const
 		return location[0].y;
 }
 
-long aObject::globalX() const
+int32_t aObject::globalX() const
 {
 	return location[0].x;
 }
 
-long aObject::globalY() const
+int32_t aObject::globalY() const
 {
 	return location[0].y;
 }
 
-long aObject::globalRight() const
+int32_t aObject::globalRight() const
 {
-	return globalX() + (long)width();
+	return globalX() + (int32_t)width();
 }
 
-long aObject::globalBottom() const
+int32_t aObject::globalBottom() const
 {
-	return globalY() + (long)height();
+	return globalY() + (int32_t)height();
 }
 
-void aObject::moveTo(long xPos, long yPos )
+void aObject::moveTo(int32_t xPos, int32_t yPos )
 {
 	
 	float offsetX = xPos - location[0].x;
@@ -372,7 +372,7 @@ void aObject::moveTo(long xPos, long yPos )
 
 }
 
-void aObject::moveToNoRecurse(long xPos, long yPos )
+void aObject::moveToNoRecurse(int32_t xPos, int32_t yPos )
 {
 	
 	float offsetX = xPos - location[0].x;
@@ -406,7 +406,7 @@ void aObject::moveNoRecurse( float offsetX, float offsetY )
 		location[i].y += offsetY;
 	}
 }
-void aObject::resize(long w, long h)
+void aObject::resize(int32_t w, int32_t h)
 {
 	location[2].x = location[0].x + w;
 	location[3].x = location[0].x + w;
@@ -435,7 +435,7 @@ void aObject::render()
 	}
 }
 
-void	aObject::render(long x, long y)
+void	aObject::render(int32_t x, int32_t y)
 {
 	move( x, y );
 	render();
@@ -576,13 +576,13 @@ aRect::aRect()
 
 void aRect::render()
 {
-	long color = getColor();
+	int32_t color = getColor();
 	if ( isShowing() )
 		//bOutline ? drawEmptyRect( getGUI_RECT(), color, color ) : drawRect( getGUI_RECT(), color );
 		bOutline ? drawEmptyRect( getGlobalGUI_RECT(), color, color ) : drawRect( getGlobalGUI_RECT(), color );
 }
 
-void aRect::render( long x, long y )
+void aRect::render( int32_t x, int32_t y )
 {
 	//RECT tmpRect = getGUI_RECT();
 	RECT tmpRect = getGlobalGUI_RECT();
@@ -591,14 +591,14 @@ void aRect::render( long x, long y )
 	tmpRect.top += y;
 	tmpRect.bottom += y;
 
-	long color = getColor();
+	int32_t color = getColor();
 	bOutline ? drawEmptyRect( tmpRect, color, color ) : drawRect( tmpRect, color );
 
 }
 
 void aRect::init( FitIniFile* file, PCSTR blockName )
 {
-	if ( NO_ERR != file->seekBlock( blockName ) )
+	if ( NO_ERROR != file->seekBlock( blockName ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't find block %s in file %s", blockName, file->getFilename() );
@@ -606,10 +606,10 @@ void aRect::init( FitIniFile* file, PCSTR blockName )
 	}
 
 
-	long left;
-	if ( NO_ERR == file->readIdLong( "left", 	left ) )
+	int32_t left;
+	if ( NO_ERROR == file->readIdLong( "left", 	left ) )
 	{
-		long right, top, bottom;
+		int32_t right, top, bottom;
 		file->readIdLong( "top", 	top );
 		file->readIdLong( "right", 	right );
 		file->readIdLong( "bottom", 	bottom );
@@ -619,7 +619,7 @@ void aRect::init( FitIniFile* file, PCSTR blockName )
 	{
 		//aObject::init(file, blockName);
 		/*we're not using */
-		long x, y, width, height;
+		int32_t x, y, width, height;
 		file->readIdLong( "XLocation", 	x );
 		file->readIdLong( "YLocation", 	y );
 		file->readIdLong( "Width", 	width );
@@ -627,7 +627,7 @@ void aRect::init( FitIniFile* file, PCSTR blockName )
 		aObject::init(x, y, width, height);
 	}
 
-	long color = 0xff000000;
+	int32_t color = 0xff000000;
 	file->readIdLong( "color", color );
 	setColor(color);
 	file->readIdBoolean( "outline", bOutline );
@@ -681,19 +681,19 @@ void aText::init( FitIniFile* file, PCSTR header )
 {
 	int result = file->seekBlock( header );
 	
-	if ( result != NO_ERR )
+	if ( result != NO_ERROR )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't find the text block%s", header );
-		Assert( result == NO_ERR, 0, errorStr );
+		Assert( result == NO_ERROR, 0, errorStr );
 		return;
 	}
 
-	long lfont;
+	int32_t lfont;
 	file->readIdLong( "Font", lfont );
 	font.init( lfont );
 
-	long left, top, width, height; 
+	int32_t left, top, width, height; 
 
 	file->readIdLong( "XLocation", left );
 	file->readIdLong( "YLocation", top );
@@ -702,7 +702,7 @@ void aText::init( FitIniFile* file, PCSTR header )
 	
 	aObject::init( left, top, width, height );
 	
-	long color;
+	int32_t color;
 	file->readIdLong( "Color", color );
 	for ( int i = 0; i < 4; i++ )
 		location[i].argb = color;
@@ -711,8 +711,8 @@ void aText::init( FitIniFile* file, PCSTR header )
 
 	file->readIdLong( "Alignment", alignment );
 
-	long textID;
-	if ( NO_ERR == file->readIdLong( "TextID", textID ) )
+	int32_t textID;
+	if ( NO_ERROR == file->readIdLong( "TextID", textID ) )
 	{
 		//WAY too small.  Good crash.  Only crashes in profile.
 		// cLoadString now checks buffer length and keeps game from crashing!!
@@ -738,14 +738,14 @@ void aText::render()
 		location[2].y - location[0].y, location[0].argb, 0, alignment );
 }
 
-void aText::render( long x, long y )
+void aText::render( int32_t x, int32_t y )
 {
 	move( x, y );
 	render();
 	move( -x, -y );
 }
 
-void aText::setText( long resID )
+void aText::setText( int32_t resID )
 {
 	char tmp[1280];
 	cLoadString( resID, tmp, 1279 );
@@ -782,22 +782,22 @@ void aText::CopyData( const aText& src )
 	}
 }
 
-bool aText::pointInside(long xPos, long yPos) const
+bool aText::pointInside(int32_t xPos, int32_t yPos) const
 {
 	if ( !width() || !height() )
 	{
-		long left = location[0].x;
-		long top = location[0].y;
-		long width = font.width( text );
-		long height = font.height( );
+		int32_t left = location[0].x;
+		int32_t top = location[0].y;
+		int32_t width = font.width( text );
+		int32_t height = font.height( );
 
 		if ( alignment == 1 ) // right aligned
 		{
 			left -=  width;
 		}
 
-		long mouseX = userInput->getMouseX();;
-		long mouseY = userInput->getMouseY();
+		int32_t mouseX = userInput->getMouseX();;
+		int32_t mouseY = userInput->getMouseY();
 
 		if (  left  <= mouseX && 
 		 left + width >= mouseX && 

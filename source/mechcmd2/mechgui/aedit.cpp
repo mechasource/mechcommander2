@@ -7,7 +7,7 @@ aEdit.cpp			: Implementation of the aEdit component of the GUI library.
 #define AEDIT_CPP
 
 #include "stdafx.h"
-#include "aedit.h"
+#include <gui/aedit.h>
 #include "userinput.h"
 #include "ctype.h"
 #include "inifile.h"
@@ -22,7 +22,7 @@ aEdit.cpp			: Implementation of the aEdit component of the GUI library.
 #define ENTRY_MARGIN 4.f
 #define HalfColorValue(color) (((color >> 1) & 0x007f0000) | ((color >> 1) & 0x00007f00) | ((color >> 1) & 0x0000007f))
 
-static long acp = 0;
+static int32_t acp = 0;
 static bool g_bUseLangDll;
 static gosIME_Appearance g_ia;
 
@@ -180,7 +180,7 @@ void aEdit::handleKeyboard()
 
 	while( true ) // keep getting keys until buffer is empty
 	{
-		DWORD key = gos_GetKey();
+		ULONG key = gos_GetKey();
 
 		if ( !key )
 			return;
@@ -196,7 +196,7 @@ void aEdit::handleKeyboard()
 			// this does happen when IME is enabled.
 			if (key == 0)
 				return;
-			DWORD key2 = 0;
+			ULONG key2 = 0;
 			if ( isleadbyte( key ) )
 			{
 				key2 = gos_GetKey( );	
@@ -301,7 +301,7 @@ void	aEdit::renderWithDropShadow()
 	// do not do this for .ttf where we already are having performance issues
 	if ( font.getSize() == 1 ) 
 	{
-		long realTextColor = textColor;
+		int32_t realTextColor = textColor;
 		textColor = 0xff000000;
 		move( -1, 1 );
 		render();
@@ -402,7 +402,7 @@ void aEdit::render()
 	if ( bFocus && bAllowIME )
 	{
 		gos_TextSetRegion( globalX() + ENTRY_MARGIN, globalY(), globalX() + width(), globalY() + height() - 1 );
-		long pos = charXPos( nInsertion1 );
+		int32_t pos = charXPos( nInsertion1 );
 		if ( acp == 949 && nInsertion1 > nInsertion2 && gos_GetMachineInformation(gos_Info_GetIMEStatus))
 			pos = charXPos( nInsertion2 );
 		gos_PositionIME( globalX() + pos - nLeftOffset + ENTRY_MARGIN, globalY() );
@@ -416,7 +416,7 @@ void aEdit::getEntry(EString& str)
 {
 	str = text;
 }
-void aEdit::setEntry(const EString& str, BYTE byHighlight)
+void aEdit::setEntry(const EString& str, UCHAR byHighlight)
 {
 	text = str;
 
@@ -514,7 +514,7 @@ void aEdit:: backSpace(int nPosition)
 	nCharCount = 1;
 	if ( nPosition > 1 )
 	{
-		PUCHAR pPrev = _mbsdec( (pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nPosition );		
+		puint8_t pPrev = _mbsdec( (pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nPosition );		
 		nCharCount = (pcuint8_t)(PCSTR)text + nPosition - pPrev;
 	}
 
@@ -607,7 +607,7 @@ bool aEdit::handleFormattingKeys(int keycode)
 					int decrementCount = 1;
 					if ( nInsertion2 > 1  )
 					{
-						PUCHAR pPrev = _mbsdec( (pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2 );
+						puint8_t pPrev = _mbsdec( (pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2 );
 						decrementCount = (pcuint8_t)(PCSTR)text + nInsertion2 - pPrev;
 					}
 					nInsertion2-= decrementCount;
@@ -622,7 +622,7 @@ bool aEdit::handleFormattingKeys(int keycode)
 					int decrementCount = 1;
 					if ( nInsertion1 > 1 )
 					{
-						PUCHAR pPrev = _mbsdec( (pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2 );
+						puint8_t pPrev = _mbsdec( (pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2 );
 						decrementCount = (pcuint8_t)(PCSTR)text + nInsertion2 - pPrev;	
 					}
 					nInsertion1 -= decrementCount;
@@ -724,9 +724,9 @@ int		aEdit::findChar(int nXPos)
 	nNextPos = nLastPos = 0;
 	n=0;
 
-	PUCHAR pBegin = (PUCHAR)&text[0];
-	PUCHAR pCur = pBegin;
-	PUCHAR pNext = pBegin;
+	puint8_t pBegin = (puint8_t)&text[0];
+	puint8_t pCur = pBegin;
+	puint8_t pNext = pBegin;
 	if ( text.Length() )
 	{
 		do
@@ -757,15 +757,15 @@ void aEdit::init( FitIniFile* file, PCSTR header )
 {
 	int result = file->seekBlock( header );
 	
-	if ( result != NO_ERR )
+	if ( result != NO_ERROR )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't find the text block%s", header );
-		Assert( result == NO_ERR, 0, errorStr );
+		Assert( result == NO_ERROR, 0, errorStr );
 		return;
 	}
 
-	long left, top, width, height; 
+	int32_t left, top, width, height; 
 
 	file->readIdLong( "XLocation", left );
 	file->readIdLong( "YLocation", top );
@@ -776,7 +776,7 @@ void aEdit::init( FitIniFile* file, PCSTR header )
 	
 	file->readIdLong( "Color", textColor );
 
-	long lfont;
+	int32_t lfont;
 	file->readIdLong( "Font", lfont );
 	font.init( lfont );
 
@@ -803,7 +803,7 @@ int aEdit::charLength( int index )
 	return 1;
 }
 
-void aEdit::setFont( long resID )
+void aEdit::setFont( int32_t resID )
 {
 	font.init( resID );
 }

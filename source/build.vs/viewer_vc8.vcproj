@@ -437,7 +437,7 @@
 				Name="extra"
 				>
 				<File
-					RelativePath="..\gui\aanimobject.cpp"
+					RelativePath="..\mechcmd2\mechgui\aanimobject.cpp"
 					>
 				</File>
 				<File

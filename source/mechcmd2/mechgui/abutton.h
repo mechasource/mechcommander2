@@ -2,13 +2,16 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef ABUTTON_H
 #define ABUTTON_H
 
-#include "asystem.h"
-#include "afont.h"
+#include <gui/asystem.h>
+#include <gui/afont.h>
 #include "aanim.h"
 
+namespace mechgui {
 
 class FitIniFile;
 
@@ -17,7 +20,7 @@ class aButton : public aObject
 {
 public:
 	aButton();
-	long	init(long xPos, long yPos, long w, long h);
+	int32_t	init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
 	void	destroy();
 	virtual void	update();
 	virtual void	render();
@@ -31,7 +34,7 @@ public:
 
 	void	setHoldTime( float newTime ) { holdTime = newTime; }
 
-	virtual bool		pointInside(long xPos, long yPos) const;
+	virtual bool		pointInside(int32_t xPos, int32_t yPos) const;
 	
 
 	
@@ -72,23 +75,23 @@ protected:
 
 	struct	aButtonData
 	{
-		long			ID;
-		long			textID;
-		long			textColors[5];
+		int32_t			ID;
+		int32_t			textID;
+		int32_t			textColors[5];
 		HGOSFONT3D		textFont;
-		long			textSize; // for ttf
+		int32_t			textSize; // for ttf
 
 		char			fileName[32];
-		long			stateCoords[5][2];	
-		long			textureWidth;
-		long			textureHeight;
+		int32_t			stateCoords[5][2];	
+		int32_t			textureWidth;
+		int32_t			textureHeight;
 		int				fileWidth;
 		int				fileHeight;
 		bool			textureRotated;
 		RECT		textRect; // center text in here
 		bool			outlineText; // draw empty square around text rect
 		bool			outline;		// draw empty square around button
-		long			textAlign;
+		int32_t			textAlign;
 	};
 
 	aButtonData		data;
@@ -98,9 +101,9 @@ protected:
 	bool			messageOnRelease;
 	float			holdTime;		
 
-	long			clickSFX;
-	long			highlightSFX;
-	long			disabledSFX;
+	int32_t			clickSFX;
+	int32_t			highlightSFX;
+	int32_t			disabledSFX;
 	
 
 	static void makeUVs( gos_VERTEX* vertices, int State, aButtonData& data );

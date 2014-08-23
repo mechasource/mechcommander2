@@ -76,6 +76,9 @@
     <Filter Include="Headers\common">
       <UniqueIdentifier>{21553958-638f-4f25-bbd6-1c70fec40112}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\stuff\tests">
+      <UniqueIdentifier>{ca33f76e-1471-4d6a-a5ee-f018f606922c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\mclib\stuff\stuff.cpp">
@@ -90,13 +93,7 @@
     <ClCompile Include="..\mclib\stuff\affinematrix.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\affinematrix_test.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\angle.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\angle_test.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\color.cpp">
@@ -111,13 +108,7 @@
     <ClCompile Include="..\mclib\stuff\linearmatrix.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\linearmatrix_test.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\matrix.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\matrix_test.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\motion.cpp">
@@ -126,16 +117,10 @@
     <ClCompile Include="..\mclib\stuff\normal.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\normal_test.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\obb.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\origin.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\origin_test.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\plane.cpp">
@@ -144,28 +129,16 @@
     <ClCompile Include="..\mclib\stuff\point3d.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\point3d_test.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\polar.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\random.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\random_test.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\ray.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\ray_test.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\rotation.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\rotation_test.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\scalar.cpp">
@@ -177,19 +150,10 @@
     <ClCompile Include="..\mclib\stuff\unitvector.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\unitvector_test.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\vector3d.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\vector3d_test.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\vector4d.cpp">
-      <Filter>Sources\stuff\Math Library</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\vector4d_test.cpp">
       <Filter>Sources\stuff\Math Library</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\matrixstack.cpp">
@@ -198,25 +162,13 @@
     <ClCompile Include="..\mclib\stuff\memoryblock.cpp">
       <Filter>Sources\stuff\Memory Allocation</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\memoryblock_test.cpp">
-      <Filter>Sources\stuff\Memory Allocation</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\mstring.cpp">
-      <Filter>Sources\stuff\Memory Allocation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\mstring_test.cpp">
       <Filter>Sources\stuff\Memory Allocation</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\chain.cpp">
       <Filter>Sources\stuff\Connection Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\chain_test.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\hash.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\hash_test.cpp">
       <Filter>Sources\stuff\Connection Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\iterator.cpp">
@@ -237,9 +189,6 @@
     <ClCompile Include="..\mclib\stuff\safechain.cpp">
       <Filter>Sources\stuff\Connection Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\safechain_test.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\safesocket.cpp">
       <Filter>Sources\stuff\Connection Engine</Filter>
     </ClCompile>
@@ -252,22 +201,13 @@
     <ClCompile Include="..\mclib\stuff\sortedchain.cpp">
       <Filter>Sources\stuff\Connection Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\sortedchain_test.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\sortedsocket.cpp">
       <Filter>Sources\stuff\Connection Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\table.cpp">
       <Filter>Sources\stuff\Connection Engine</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\table_test.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\tree.cpp">
-      <Filter>Sources\stuff\Connection Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\tree_test.cpp">
       <Filter>Sources\stuff\Connection Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\database.cpp">
@@ -276,28 +216,16 @@
     <ClCompile Include="..\mclib\stuff\filestream.cpp">
       <Filter>Sources\stuff\Stream Functions</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\filestream_test.cpp">
-      <Filter>Sources\stuff\Stream Functions</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\filestreammanager.cpp">
       <Filter>Sources\stuff\Stream Functions</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\memorystream.cpp">
       <Filter>Sources\stuff\Stream Functions</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\memorystream_test.cpp">
-      <Filter>Sources\stuff\Stream Functions</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\namelist.cpp">
       <Filter>Sources\stuff\Stream Functions</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\namelist_test.cpp">
-      <Filter>Sources\stuff\Stream Functions</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\notationfile.cpp">
-      <Filter>Sources\stuff\Stream Functions</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\notationfile_test.cpp">
       <Filter>Sources\stuff\Stream Functions</Filter>
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\note.cpp">
@@ -317,6 +245,81 @@
     </ClCompile>
     <ClCompile Include="..\mclib\stuff\stuffheaders.cpp">
       <Filter>build\precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\chain_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\hash_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\safechain_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\sortedchain_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\table_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\tree_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\affinematrix_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\angle_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\linearmatrix_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\matrix_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\normal_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\origin_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\point3d_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\random_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\ray_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\rotation_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\unitvector_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\vector3d_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\vector4d_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\filestream_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\memoryblock_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\memorystream_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\mstring_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\namelist_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mclib\stuff\notationfile_test.cpp">
+      <Filter>Sources\stuff\tests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

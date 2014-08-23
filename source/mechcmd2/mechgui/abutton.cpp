@@ -3,8 +3,8 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "abutton.h"
-#include "afont.h"
+#include <gui/abutton.h>
+#include <gui/afont.h>
 #include <mclib.h>
 #include <windows.h>
 #include "soundsys.h"
@@ -29,14 +29,14 @@ aButton::aButton()
 	
 }
 
-long aButton::init(long xPos, long yPos, long w, long h)
+int32_t aButton::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 {
-	long err;
+	int32_t err;
 	err = aObject::init(xPos,yPos,w,h);
 	if (err)
 		return err;
 
-	return (NO_ERR);
+	return (NO_ERROR);
 }
 
 void aButton::destroy()
@@ -69,14 +69,14 @@ void aButton::update()
 	if ( !isShowing() )
 		return;
 
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 
 	if ( pointInside( mouseX, mouseY ) )
 	{
-		long mouseDragX = userInput->getMouseDragX();
-		long mouseDragY = userInput->getMouseDragY();
+		int32_t mouseDragX = userInput->getMouseDragX();
+		int32_t mouseDragY = userInput->getMouseDragY();
 
 		if ( messageOnRelease && userInput->leftMouseReleased()
 			&& pointInside( mouseDragX, mouseDragY ) )
@@ -119,7 +119,7 @@ void aButton::update()
 	aObject::update();
 }
 
-bool		aButton::pointInside(long xPos, long yPos) const
+bool		aButton::pointInside(int32_t xPos, int32_t yPos) const
 {
 	if ( aObject::pointInside( xPos, yPos ) )
 		return true;
@@ -161,7 +161,7 @@ void aButton::render()
 		{
 			char buffer[256];
 			cLoadString( data.textID, buffer, 256 );
-			DWORD width, height;
+			ULONG width, height;
 			gos_TextSetAttributes(data.textFont, data.textColors[state], data.textSize, true, true, false, false, data.textAlign);			
 			gos_TextSetRegion( data.textRect.left, data.textRect.top, data.textRect.right, data.textRect.bottom );
 			gos_TextStringLength( &width, &height, buffer );
@@ -294,8 +294,8 @@ void aButton::init( FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font )
 {
 	textureHandle = 0;
 
-	long result = buttonFile.seekBlock( str );
-	if ( result != NO_ERR )
+	int32_t result = buttonFile.seekBlock( str );
+	if ( result != NO_ERROR )
 	{
 		char errorStr[256];
 		sprintf(  errorStr, "couldn't find button %s", str );
@@ -315,7 +315,7 @@ void aButton::init( FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font )
 	buttonFile.readIdLong( "TextDisabled", data.textColors[2] );
 	buttonFile.readIdBoolean( "Toggle", toggleButton );
 	buttonFile.readIdBoolean( "outline", data.outline );
-	long fontID;
+	int32_t fontID;
 	buttonFile.readIdLong( "Font", fontID );
 	if ( fontID )
 		data.textFont = aFont::loadFont( fontID, data.textSize );
@@ -323,7 +323,7 @@ void aButton::init( FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font )
 		data.textFont = 0;
 
 
-	long x, y, width, height;
+	int32_t x, y, width, height;
 
 	buttonFile.readIdLong( "XLocation", x );
 	buttonFile.readIdLong( "YLocation", y );
@@ -336,7 +336,7 @@ void aButton::init( FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font )
 
 	buttonFile.readIdBoolean( "texturesRotated", data.textureRotated );
 
-	if ( NO_ERR != buttonFile.readIdLong( "Alignment", data.textAlign ) )
+	if ( NO_ERROR != buttonFile.readIdLong( "Alignment", data.textAlign ) )
 		data.textAlign = 2;
 	
 	location[0].x = location[1].x = x;
@@ -375,37 +375,37 @@ void aButton::init( FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font )
 		data.fileHeight = data.fileWidth;
 	}
 
-	if ( NO_ERR != buttonFile.readIdLong( "UNormal", data.stateCoords[0][0] ) )
+	if ( NO_ERROR != buttonFile.readIdLong( "UNormal", data.stateCoords[0][0] ) )
 		data.stateCoords[0][0] = -1.f;
 
-	if ( NO_ERR != buttonFile.readIdLong( "VNormal", data.stateCoords[0][1] ) )
+	if ( NO_ERROR != buttonFile.readIdLong( "VNormal", data.stateCoords[0][1] ) )
 		data.stateCoords[0][1] = -1.f;
 
 
-	if ( NO_ERR != buttonFile.readIdLong( "UPressed", data.stateCoords[1][0] ) )
+	if ( NO_ERROR != buttonFile.readIdLong( "UPressed", data.stateCoords[1][0] ) )
 		data.stateCoords[1][0] = -1.f;
 
-	if ( NO_ERR != buttonFile.readIdLong( "VPressed", data.stateCoords[1][1] ) )
+	if ( NO_ERROR != buttonFile.readIdLong( "VPressed", data.stateCoords[1][1] ) )
 		data.stateCoords[1][1] = -1.f;
 
-	if ( NO_ERR != buttonFile.readIdLong( "UDisabled", data.stateCoords[2][0] ) )
+	if ( NO_ERROR != buttonFile.readIdLong( "UDisabled", data.stateCoords[2][0] ) )
 		data.stateCoords[2][0] = -1.f;
 
-	if ( NO_ERR != buttonFile.readIdLong( "VDisabled", data.stateCoords[2][1] ) )
+	if ( NO_ERROR != buttonFile.readIdLong( "VDisabled", data.stateCoords[2][1] ) )
 		data.stateCoords[2][1] = -1.f;
 
-	if ( NO_ERR != buttonFile.readIdLong( "UAmbiguous", data.stateCoords[3][0] ) )
+	if ( NO_ERROR != buttonFile.readIdLong( "UAmbiguous", data.stateCoords[3][0] ) )
 		data.stateCoords[3][0] = -1.f;
 
-	if ( NO_ERR != buttonFile.readIdLong( "VAmbiguous", data.stateCoords[3][1] ) )
+	if ( NO_ERROR != buttonFile.readIdLong( "VAmbiguous", data.stateCoords[3][1] ) )
 		data.stateCoords[3][1] = -1.f;
 
-	if ( NO_ERR != buttonFile.readIdLong( "UHighlight", data.stateCoords[4][0] ) )
+	if ( NO_ERROR != buttonFile.readIdLong( "UHighlight", data.stateCoords[4][0] ) )
 	{
 		data.stateCoords[4][0] = data.stateCoords[0][0];
 	}
 
-	if ( NO_ERR != buttonFile.readIdLong( "VHighlight", data.stateCoords[4][1] ) )
+	if ( NO_ERROR != buttonFile.readIdLong( "VHighlight", data.stateCoords[4][1] ) )
 	{
 		data.stateCoords[4][1] = data.stateCoords[0][1];
 	}
@@ -417,7 +417,7 @@ void aButton::init( FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font )
 		buttonFile.readIdBoolean( "TextOutline", data.outlineText );
 
 
-	if ( NO_ERR == buttonFile.readIdLong( "XTextLocation", data.textRect.left ) )
+	if ( NO_ERROR == buttonFile.readIdLong( "XTextLocation", data.textRect.left ) )
 	{
 		buttonFile.readIdLong( "YTextLocation", data.textRect.top );
 		buttonFile.readIdLong( "TextWidth", width );
@@ -442,7 +442,7 @@ void aButton::init( FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font )
 	while(true)
 	{
 		sprintf( finalName, "%s%ld", bmpName, counter );
-		if ( NO_ERR != buttonFile.seekBlock( finalName) )
+		if ( NO_ERROR != buttonFile.seekBlock( finalName) )
 			break;
 
 		aObject* pObject = new aObject;
@@ -508,7 +508,7 @@ void aAnimButton::destroy()
 
 void aAnimButton::init( FitIniFile& file, PCSTR headerName, HGOSFONT3D font )
 {
-	if ( NO_ERR != file.seekBlock( headerName ) )
+	if ( NO_ERROR != file.seekBlock( headerName ) )
 	{
 		char errorStr[256];
 		sprintf( errorStr, "couldn't find block %s in file %s", headerName, file.getFilename() );
@@ -524,13 +524,13 @@ void aAnimButton::init( FitIniFile& file, PCSTR headerName, HGOSFONT3D font )
 	disabledData.init( &file, "Disabled" );
 	normalData.begin();
 
-	if ( NO_ERR != file.readIdBoolean( "AnimateBmp", animateBmp ) )
+	if ( NO_ERROR != file.readIdBoolean( "AnimateBmp", animateBmp ) )
 		animateBmp = 1;
-	if ( NO_ERR != file.readIdBoolean( "AnimateText", animateText ) )
+	if ( NO_ERROR != file.readIdBoolean( "AnimateText", animateText ) )
 		animateText = 1;
 
 	bool bTmp = 0;
-	if ( NO_ERR == file.readIdBoolean( "AnimateChildren", bTmp  ) )
+	if ( NO_ERROR == file.readIdBoolean( "AnimateChildren", bTmp  ) )
 	{
 		bAnimateChildren = bTmp;
 	}
@@ -542,8 +542,8 @@ void aAnimButton::update()
 	if ( !isShowing() )
 		return;
 
-	long mouseX = userInput->getMouseX();
-	long mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 	bool bInside = pointInside( mouseX, mouseY );
 
@@ -595,8 +595,8 @@ void aAnimButton::update()
 			getParent()->handleMessage( aMSG_LEFTMOUSEHELD, data.ID );
 		else if ( userInput->leftMouseReleased() && getParent() && messageOnRelease )
 		{
-			long mouseDragX = userInput->getMouseDragX();
-			long mouseDragY = userInput->getMouseDragY();
+			int32_t mouseDragX = userInput->getMouseDragX();
+			int32_t mouseDragY = userInput->getMouseDragY();
 
 			if ( pointInside( mouseDragX, mouseDragY ) )
 			{
@@ -700,14 +700,14 @@ void aAnimButton::update( const aAnimation& animData )
 {
 	if ( !isShowing() )
 		return;
-	long color = animData.getColor();
+	int32_t color = animData.getColor();
 	if ( animateBmp )
 		setColor( color, 0 );
 	if ( animateText )
 		data.textColors[state] = color;
 
-	long xPos = animData.getXDelta();
-	long yPos = animData.getYDelta();
+	int32_t xPos = animData.getXDelta();
+	int32_t yPos = animData.getYDelta();
 
 	move( xPos, yPos );
 

@@ -66,12 +66,12 @@ void aAnimation::copyData( const aAnimation& src )
 }
 
 
-long	aAnimation::init(FitIniFile* file, PCSTR headerName)
+int32_t	aAnimation::init(FitIniFile* file, PCSTR headerName)
 {
 	EString strToCheck = headerName;
 	strToCheck += "AnimationTimeStamps";
 
-	if ( NO_ERR != file->readIdLong( strToCheck, infoCount ) )
+	if ( NO_ERROR != file->readIdLong( strToCheck, infoCount ) )
 	{
 		EString strToCheck = headerName;
 		strToCheck += "NumTimeStamps";
@@ -98,11 +98,11 @@ long	aAnimation::init(FitIniFile* file, PCSTR headerName)
 			file->readIdFloat( strToCheck, infos[i].time );
 
 			strToCheck.Format( "%s%s%ld", headerName, "Color", i );
-			if ( NO_ERR != file->readIdLong( strToCheck, infos[i].color ) )
+			if ( NO_ERROR != file->readIdLong( strToCheck, infos[i].color ) )
 				infos[i].color = 0xffffffff;
 
 			strToCheck.Format( "%s%s%ld%s", headerName, "Pos", i, "X" );
-			long tmp;
+			int32_t tmp;
 			file->readIdLong( strToCheck, tmp );
 			infos[i].positionX = tmp;
 
@@ -111,18 +111,18 @@ long	aAnimation::init(FitIniFile* file, PCSTR headerName)
 			infos[i].positionY = tmp;
 
 			strToCheck.Format( "%s%s%ld", headerName, "Scale", i );
-			if ( NO_ERR != file->readIdFloat( strToCheck, infos[i].scaleX ) )
+			if ( NO_ERROR != file->readIdFloat( strToCheck, infos[i].scaleX ) )
 			{
 				// look for scaleX and scale Y
 				strToCheck.Format( "%s%s%ld", headerName, "ScaleX", i );
-				if ( NO_ERR != file->readIdFloat( strToCheck, infos[i].scaleX ) )
+				if ( NO_ERROR != file->readIdFloat( strToCheck, infos[i].scaleX ) )
 				{
 					infos[i].scaleX = infos[i].scaleY = 1.0f;
 				}
 				else
 				{
 					strToCheck.Format( "%s%s%ld", headerName, "ScaleY", i );
-					if ( NO_ERR != file->readIdFloat( strToCheck, infos[i].scaleY ) )
+					if ( NO_ERROR != file->readIdFloat( strToCheck, infos[i].scaleY ) )
 					{
 						infos[i].scaleY = 1.0f;
 					}
@@ -347,7 +347,7 @@ ULONG aAnimation::getColor( float time ) const
 	{
 
 		float numCycles = infos[infoCount-1].time ?  time/infos[infoCount-1].time : 0;
-		int numCyc = (long)numCycles;
+		int numCyc = (int32_t)numCycles;
 		time -= ((float)numCyc * infos[infoCount-1].time);
 	}
 
@@ -413,9 +413,9 @@ bool aAnimation::isDone() const
 	return 0;
 }
 
-long	aAnimation::initWithBlockName( FitIniFile* file, PCSTR blockName )
+int32_t	aAnimation::initWithBlockName( FitIniFile* file, PCSTR blockName )
 {
-	if ( NO_ERR != file->seekBlock( blockName ) )
+	if ( NO_ERROR != file->seekBlock( blockName ) )
 	{
 		char errorStr[255];
 		sprintf( errorStr, "couldn't find block %s in file %s", blockName, file->getFilename() );
@@ -436,9 +436,9 @@ float	aAnimation::getMaxTime()
 	return -1;
 }
 
-long aAnimGroup::init( FitIniFile* file, PCSTR blockName )
+int32_t aAnimGroup::init( FitIniFile* file, PCSTR blockName )
 {
-	if ( NO_ERR != file->seekBlock( blockName ) )
+	if ( NO_ERROR != file->seekBlock( blockName ) )
 	{
 		char errorStr[255];
 		sprintf( errorStr, "couldn't find block %s in file %s", blockName, file->getFilename() );
@@ -460,7 +460,7 @@ void aAnimGroup::update()
 	animations[getState()].update();
 }
 
-long aAnimGroup::getCurrentColor( aAnimGroup::STATE state) const
+int32_t aAnimGroup::getCurrentColor( aAnimGroup::STATE state) const
 {
 	return animations[state].getColor();
 }

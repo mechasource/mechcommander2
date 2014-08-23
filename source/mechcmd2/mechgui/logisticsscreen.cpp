@@ -9,14 +9,14 @@ LogisticsScreen.cpp			: Implementation of the LogisticsScreen component.
 #include "stdafx.h"
 #include "logisticsscreen.h"
 #include "inifile.h"
-#include "asystem.h"
-#include "abutton.h"
-#include "aedit.h"
+#include <gui/asystem.h>
+#include <gui/abutton.h>
+#include <gui/aedit.h>
 #include "err.h"
 #include "aanimobject.h"
 
-extern long helpTextID;
-extern long helpTextHeaderID;
+extern int32_t helpTextID;
+extern int32_t helpTextHeaderID;
 extern float frameLength;
 
 
@@ -92,7 +92,7 @@ void	LogisticsScreen::clear()
 //-------------------------------------------------------------------------------------------------
 
 void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, PCSTR rectName,
-					  PCSTR buttonName, PCSTR editName, PCSTR animObjectName, DWORD neverFlush )
+					  PCSTR buttonName, PCSTR editName, PCSTR animObjectName, ULONG neverFlush )
 {
 	clear();
 	
@@ -102,7 +102,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 	if ( staticName )
 	{
 		sprintf( blockName, "%s%c", staticName, 's' );
-		if ( NO_ERR == file.seekBlock( blockName ) )
+		if ( NO_ERROR == file.seekBlock( blockName ) )
 		{
 			file.readIdLong( "staticCount", staticCount );
 
@@ -125,7 +125,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 	{
 		// init rects
 		sprintf( blockName, "%s%c", rectName, 's' );
-		if ( NO_ERR == file.seekBlock( blockName ) )
+		if ( NO_ERROR == file.seekBlock( blockName ) )
 		{
 			file.readIdLong( "rectCount", rectCount );
 			if ( rectCount )
@@ -147,7 +147,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 	if ( buttonName )
 	{
 		sprintf( blockName, "%s%c", buttonName, 's' );
-		if ( NO_ERR == file.seekBlock( blockName ) )
+		if ( NO_ERROR == file.seekBlock( blockName ) )
 		{
 			file.readIdLong( "buttonCount", buttonCount );
 
@@ -170,9 +170,9 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 	if ( textName )
 	{
 		sprintf( blockName, "%s%c", textName, 's' );
-		if ( NO_ERR == file.seekBlock( blockName ) )
+		if ( NO_ERROR == file.seekBlock( blockName ) )
 		{
-			if ( NO_ERR != file.readIdLong( "TextEntryCount", textCount ) )
+			if ( NO_ERROR != file.readIdLong( "TextEntryCount", textCount ) )
 				file.readIdLong( "TextCount", textCount );
 
 			if ( textCount )
@@ -192,9 +192,9 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 	if ( editName )
 	{
 		sprintf( blockName, "%s%c", editName, 's' );
-		if ( NO_ERR == file.seekBlock( blockName ) )
+		if ( NO_ERROR == file.seekBlock( blockName ) )
 		{
-			if ( NO_ERR != file.readIdLong( "EditCount", editCount ) )
+			if ( NO_ERROR != file.readIdLong( "EditCount", editCount ) )
 				file.readIdLong( "EditCount", editCount );
 
 			if ( editCount )
@@ -214,7 +214,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 	if ( animObjectName )
 	{
 		sprintf( blockName, "%s%c", animObjectName, 's' );
-		if ( NO_ERR == file.seekBlock( blockName ) )
+		if ( NO_ERROR == file.seekBlock( blockName ) )
 		{
 			file.readIdLong( "Count", animObjectsCount );
 
@@ -233,7 +233,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 	}
 }
 
-aButton* LogisticsScreen::getButton( long who )
+aButton* LogisticsScreen::getButton( int32_t who )
 {
 	for ( int i = 0; i < buttonCount; i++ )
 	{
@@ -246,7 +246,7 @@ aButton* LogisticsScreen::getButton( long who )
 	return NULL;
 }
 
-aRect* LogisticsScreen::getRect( long who )
+aRect* LogisticsScreen::getRect( int32_t who )
 {
 	if ((who >= 0) && (who < rectCount))
 	{
@@ -382,14 +382,14 @@ void LogisticsScreen::render()
 	if ( fadeOutTime )
 	{
 		fadeTime += frameLength;
-		long color = interpolateColor( 0,fadeOutMaxColor, fadeTime/fadeOutTime );
+		int32_t color = interpolateColor( 0,fadeOutMaxColor, fadeTime/fadeOutTime );
 		RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 	}
 	else if ( fadeInTime && fadeInTime > fadeTime )
 	{
 		fadeTime += frameLength;
-		long color = interpolateColor( fadeOutMaxColor, 0, fadeTime/fadeInTime );
+		int32_t color = interpolateColor( fadeOutMaxColor, 0, fadeTime/fadeInTime );
 		RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 	}
@@ -397,7 +397,7 @@ void LogisticsScreen::render()
 
 }
 
-long LogisticsScreen::getStatus()
+int32_t LogisticsScreen::getStatus()
 {
 	if ( status != RUNNING && fadeOutTime )
 	{
@@ -488,14 +488,14 @@ void LogisticsScreen::render( int xOffset, int yOffset )
 	if ( fadeOutTime )
 	{
 		fadeTime += frameLength;
-		long color = interpolateColor( 0,0xff000000, fadeTime/fadeOutTime );
+		int32_t color = interpolateColor( 0,0xff000000, fadeTime/fadeOutTime );
 		RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 	}
 	else if ( fadeInTime && fadeInTime > fadeTime )
 	{
 		fadeTime += frameLength;
-		long color = interpolateColor( 0xff000000, 0, fadeTime/fadeInTime );
+		int32_t color = interpolateColor( 0xff000000, 0, fadeTime/fadeInTime );
 		RECT rect = { 0,0, Environment.screenWidth, Environment.screenHeight };
 		drawRect( rect, color );
 	}
@@ -580,10 +580,10 @@ void LogisticsScreen::copyData( const LogisticsScreen& src )
 	}
 }
 
-void  LogisticsScreen::moveTo( long xPos, long yPos )
+void  LogisticsScreen::moveTo( int32_t xPos, int32_t yPos )
 {
-	long xOffset = xPos - globalX();
-	long yOffset = yPos - globalY();
+	int32_t xOffset = xPos - globalX();
+	int32_t yOffset = yPos - globalY();
 
 	aObject::init( xPos, yPos, 800, 600 );
 
@@ -591,7 +591,7 @@ void  LogisticsScreen::moveTo( long xPos, long yPos )
 	move( xOffset, yOffset );
 }
 
-void  LogisticsScreen::move( long xOffset, long yOffset )
+void  LogisticsScreen::move( int32_t xOffset, int32_t yOffset )
 {
 	int i;
 	for ( i = 0; i < rectCount; i++ )
@@ -624,7 +624,7 @@ void  LogisticsScreen::move( long xOffset, long yOffset )
 }
 
 
-bool	LogisticsScreen::inside( long x, long y)
+bool	LogisticsScreen::inside( int32_t x, int32_t y)
 {
 	int i;
 	for ( i = 0; i < staticCount; i++ )

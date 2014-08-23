@@ -306,7 +306,7 @@
     <ClCompile Include="..\mclib\ablxstmt.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\ablt\resource.h" />
+    <ClInclude Include="..\tools\ablt\resource.h" />
     <ClInclude Include="..\ABLT\stdafx.h" />
     <ClInclude Include="..\include\mechresources.h" />
     <ClInclude Include="..\include\mechtypes.h" />
@@ -323,7 +323,7 @@
     <ClInclude Include="..\mclib\dablenv.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\ablt\ablt.rc" />
+    <ResourceCompile Include="..\tools\ablt\ablt.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

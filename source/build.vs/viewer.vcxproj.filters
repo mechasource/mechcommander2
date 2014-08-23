@@ -45,7 +45,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\viewer\view.cpp">
+    <ClCompile Include="..\tools\viewer\view.cpp">
       <Filter>Sources\viewer</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\mechgui\aanimobject.cpp">
@@ -93,20 +93,20 @@
     <ClCompile Include="..\gameos\src\startup\gameplatform.cpp">
       <Filter>Sources\gameplatform</Filter>
     </ClCompile>
-    <ClCompile Include="..\viewer\stdafx.cpp">
+    <ClCompile Include="..\tools\viewer\stdafx.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\viewer\mechlopedia.ico">
+    <Image Include="..\tools\viewer\mechlopedia.ico">
       <Filter>Resources\viewer</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\viewer\resource.h">
+    <ClInclude Include="..\tools\viewer\resource.h">
       <Filter>Resources\viewer</Filter>
     </ClInclude>
-    <ClInclude Include="..\viewer\stdafx.h">
+    <ClInclude Include="..\tools\viewer\stdafx.h">
       <Filter>build\precompiled</Filter>
     </ClInclude>
     <ClInclude Include="..\include\mechresources.h">
@@ -117,7 +117,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\viewer\viewer.rc">
+    <ResourceCompile Include="..\tools\viewer\viewer.rc">
       <Filter>Resources\viewer</Filter>
     </ResourceCompile>
   </ItemGroup>

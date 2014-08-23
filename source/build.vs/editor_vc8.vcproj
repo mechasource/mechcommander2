@@ -433,247 +433,247 @@
 				Name="editor"
 				>
 				<File
-					RelativePath="..\editor\action.cpp"
+					RelativePath="..\tools\editor\action.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\booleanflagissetdialog.cpp"
+					RelativePath="..\tools\editor\booleanflagissetdialog.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\buildingbrush.cpp"
+					RelativePath="..\tools\editor\buildingbrush.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\buildinglink.cpp"
+					RelativePath="..\tools\editor\buildinglink.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\buildingsettingsdlg.cpp"
+					RelativePath="..\tools\editor\buildingsettingsdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\campaigndata.cpp"
+					RelativePath="..\tools\editor\campaigndata.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\campaigndialog.cpp"
+					RelativePath="..\tools\editor\campaigndialog.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\choosebuildingdlg.cpp"
+					RelativePath="..\tools\editor\choosebuildingdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\chooseunitdlg.cpp"
+					RelativePath="..\tools\editor\chooseunitdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\damagebrush.cpp"
+					RelativePath="..\tools\editor\damagebrush.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\dlgfileopen.cpp"
+					RelativePath="..\tools\editor\dlgfileopen.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\dragtool.cpp"
+					RelativePath="..\tools\editor\dragtool.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\dropzonebrush.cpp"
+					RelativePath="..\tools\editor\dropzonebrush.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editforestdlg.cpp"
+					RelativePath="..\tools\editor\editforestdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editor.cpp"
+					RelativePath="..\tools\editor\editor.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editordata.cpp"
+					RelativePath="..\tools\editor\editordata.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editores.cpp"
+					RelativePath="..\tools\editor\editores.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editorinterface.cpp"
+					RelativePath="..\tools\editor\editorinterface.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editormfc.cpp"
+					RelativePath="..\tools\editor\editormfc.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editorobjectmgr.cpp"
+					RelativePath="..\tools\editor\editorobjectmgr.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editorobjects.cpp"
+					RelativePath="..\tools\editor\editorobjects.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editortacmap.cpp"
+					RelativePath="..\tools\editor\editortacmap.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editorview.cpp"
+					RelativePath="..\tools\editor\editorview.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\eraser.cpp"
+					RelativePath="..\tools\editor\eraser.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\flattenbrush.cpp"
+					RelativePath="..\tools\editor\flattenbrush.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\fogdlg.cpp"
+					RelativePath="..\tools\editor\fogdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\forest.cpp"
+					RelativePath="..\tools\editor\forest.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\forestdlg.cpp"
+					RelativePath="..\tools\editor\forestdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\fractaldialog.cpp"
+					RelativePath="..\tools\editor\fractaldialog.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\groupdialog.cpp"
+					RelativePath="..\tools\editor\groupdialog.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\heightdlg.cpp"
+					RelativePath="..\tools\editor\heightdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\linkbrush.cpp"
+					RelativePath="..\tools\editor\linkbrush.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\mainfrm.cpp"
+					RelativePath="..\tools\editor\mainfrm.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\mapsizedlg.cpp"
+					RelativePath="..\tools\editor\mapsizedlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\minebrush.cpp"
+					RelativePath="..\tools\editor\minebrush.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\missiondialog.cpp"
+					RelativePath="..\tools\editor\missiondialog.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\missionsettingsdlg.cpp"
+					RelativePath="..\tools\editor\missionsettingsdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\newsinglemission.cpp"
+					RelativePath="..\tools\editor\newsinglemission.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\objective.cpp"
+					RelativePath="..\tools\editor\objective.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\objectivedlg.cpp"
+					RelativePath="..\tools\editor\objectivedlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\objectivesdlg.cpp"
+					RelativePath="..\tools\editor\objectivesdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\overlaybrush.cpp"
+					RelativePath="..\tools\editor\overlaybrush.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\playersettingsdlg.cpp"
+					RelativePath="..\tools\editor\playersettingsdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\pointerselectobjectdlg.cpp"
+					RelativePath="..\tools\editor\pointerselectobjectdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\resourcestringselectiondlg.cpp"
+					RelativePath="..\tools\editor\resourcestringselectiondlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\selectionbrush.cpp"
+					RelativePath="..\tools\editor\selectionbrush.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\selectslopedialog.cpp"
+					RelativePath="..\tools\editor\selectslopedialog.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\selectterraintypedlg.cpp"
+					RelativePath="..\tools\editor\selectterraintypedlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\singlevaluedlg.cpp"
+					RelativePath="..\tools\editor\singlevaluedlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\sundlg.cpp"
+					RelativePath="..\tools\editor\sundlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\tacmaptga.cpp"
+					RelativePath="..\tools\editor\tacmaptga.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\targetareadlg.cpp"
+					RelativePath="..\tools\editor\targetareadlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\terrainbrush.cpp"
+					RelativePath="..\tools\editor\terrainbrush.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\terraindlg.cpp"
+					RelativePath="..\tools\editor\terraindlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\textmessagedlg.cpp"
+					RelativePath="..\tools\editor\textmessagedlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\tgawnd.cpp"
+					RelativePath="..\tools\editor\tgawnd.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\tilingfactorsdialog.cpp"
+					RelativePath="..\tools\editor\tilingfactorsdialog.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\unitsettingsdlg.cpp"
+					RelativePath="..\tools\editor\unitsettingsdlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\usertextedit.cpp"
+					RelativePath="..\tools\editor\usertextedit.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\viewconditionoractiondlg.cpp"
+					RelativePath="..\tools\editor\viewconditionoractiondlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\waterdlg.cpp"
+					RelativePath="..\tools\editor\waterdlg.cpp"
 					>
 				</File>
 			</Filter>
@@ -689,7 +689,7 @@
 				Name="extra"
 				>
 				<File
-					RelativePath="..\editor\mainmenu.cpp"
+					RelativePath="..\tools\editor\mainmenu.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -725,7 +725,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\editor\objectselectionbrush.cpp"
+					RelativePath="..\tools\editor\objectselectionbrush.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -761,7 +761,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\editor\wavedlg.cpp"
+					RelativePath="..\tools\editor\wavedlg.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -807,255 +807,255 @@
 				Name="editor"
 				>
 				<File
-					RelativePath="..\editor\action.h"
+					RelativePath="..\tools\editor\action.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\booleanflagissetdialog.h"
+					RelativePath="..\tools\editor\booleanflagissetdialog.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\brush.h"
+					RelativePath="..\tools\editor\brush.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\buildingbrush.h"
+					RelativePath="..\tools\editor\buildingbrush.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\buildinglink.h"
+					RelativePath="..\tools\editor\buildinglink.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\buildingsettingsdlg.h"
+					RelativePath="..\tools\editor\buildingsettingsdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\campaigndata.h"
+					RelativePath="..\tools\editor\campaigndata.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\campaigndialog.h"
+					RelativePath="..\tools\editor\campaigndialog.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\choosebuildingdlg.h"
+					RelativePath="..\tools\editor\choosebuildingdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\chooseunitdlg.h"
+					RelativePath="..\tools\editor\chooseunitdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\damagebrush.h"
+					RelativePath="..\tools\editor\damagebrush.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\dlgfileopen.h"
+					RelativePath="..\tools\editor\dlgfileopen.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\dragtool.h"
+					RelativePath="..\tools\editor\dragtool.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\dropzonebrush.h"
+					RelativePath="..\tools\editor\dropzonebrush.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editforestdlg.h"
+					RelativePath="..\tools\editor\editforestdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editorcamera.h"
+					RelativePath="..\tools\editor\editorcamera.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editordata.h"
+					RelativePath="..\tools\editor\editordata.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editorinterface.h"
+					RelativePath="..\tools\editor\editorinterface.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editormessages.h"
+					RelativePath="..\tools\editor\editormessages.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editormfc.h"
+					RelativePath="..\tools\editor\editormfc.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editorobjectmgr.h"
+					RelativePath="..\tools\editor\editorobjectmgr.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editorobjects.h"
+					RelativePath="..\tools\editor\editorobjects.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editortacmap.h"
+					RelativePath="..\tools\editor\editortacmap.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\editorview.h"
+					RelativePath="..\tools\editor\editorview.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\eraser.h"
+					RelativePath="..\tools\editor\eraser.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\flattenbrush.h"
+					RelativePath="..\tools\editor\flattenbrush.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\fogdlg.h"
+					RelativePath="..\tools\editor\fogdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\forest.h"
+					RelativePath="..\tools\editor\forest.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\forestdlg.h"
+					RelativePath="..\tools\editor\forestdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\fractaldialog.h"
+					RelativePath="..\tools\editor\fractaldialog.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\groupdialog.h"
+					RelativePath="..\tools\editor\groupdialog.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\heightdlg.h"
+					RelativePath="..\tools\editor\heightdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\linkbrush.h"
+					RelativePath="..\tools\editor\linkbrush.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\mainfrm.h"
+					RelativePath="..\tools\editor\mainfrm.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\mapsizedlg.h"
+					RelativePath="..\tools\editor\mapsizedlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\messagebox.h"
+					RelativePath="..\tools\editor\messagebox.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\minebrush.h"
+					RelativePath="..\tools\editor\minebrush.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\missiondialog.h"
+					RelativePath="..\tools\editor\missiondialog.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\missionsettingsdlg.h"
+					RelativePath="..\tools\editor\missionsettingsdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\newsinglemission.h"
+					RelativePath="..\tools\editor\newsinglemission.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\objective.h"
+					RelativePath="..\tools\editor\objective.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\objectivedlg.h"
+					RelativePath="..\tools\editor\objectivedlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\objectivesdlg.h"
+					RelativePath="..\tools\editor\objectivesdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\overlaybrush.h"
+					RelativePath="..\tools\editor\overlaybrush.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\playersettingsdlg.h"
+					RelativePath="..\tools\editor\playersettingsdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\pointerselectobjectdlg.h"
+					RelativePath="..\tools\editor\pointerselectobjectdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\resourcestringselectiondlg.h"
+					RelativePath="..\tools\editor\resourcestringselectiondlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\selectionbrush.h"
+					RelativePath="..\tools\editor\selectionbrush.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\selectslopedialog.h"
+					RelativePath="..\tools\editor\selectslopedialog.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\selectterraintypedlg.h"
+					RelativePath="..\tools\editor\selectterraintypedlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\singlevaluedlg.h"
+					RelativePath="..\tools\editor\singlevaluedlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\sundlg.h"
+					RelativePath="..\tools\editor\sundlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\tacmaptga.h"
+					RelativePath="..\tools\editor\tacmaptga.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\targetareadlg.h"
+					RelativePath="..\tools\editor\targetareadlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\terrainbrush.h"
+					RelativePath="..\tools\editor\terrainbrush.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\terraindlg.h"
+					RelativePath="..\tools\editor\terraindlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\textmessagedlg.h"
+					RelativePath="..\tools\editor\textmessagedlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\tgawnd.h"
+					RelativePath="..\tools\editor\tgawnd.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\tilingfactorsdialog.h"
+					RelativePath="..\tools\editor\tilingfactorsdialog.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\unitsettingsdlg.h"
+					RelativePath="..\tools\editor\unitsettingsdlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\usertextedit.h"
+					RelativePath="..\tools\editor\usertextedit.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\viewconditionoractiondlg.h"
+					RelativePath="..\tools\editor\viewconditionoractiondlg.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\waterdlg.h"
+					RelativePath="..\tools\editor\waterdlg.h"
 					>
 				</File>
 			</Filter>
@@ -1063,15 +1063,15 @@
 				Name="extra"
 				>
 				<File
-					RelativePath="..\editor\mainmenu.h"
+					RelativePath="..\tools\editor\mainmenu.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\objectselectionbrush.h"
+					RelativePath="..\tools\editor\objectselectionbrush.h"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\wavedlg.h"
+					RelativePath="..\tools\editor\wavedlg.h"
 					>
 				</File>
 			</Filter>
@@ -1097,11 +1097,11 @@
 				Name="editor"
 				>
 				<File
-					RelativePath="..\editor\editor.rc"
+					RelativePath="..\tools\editor\editor.rc"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\resource.h"
+					RelativePath="..\tools\editor\resource.h"
 					>
 				</File>
 			</Filter>
@@ -1109,7 +1109,7 @@
 				Name="bitmaps"
 				>
 				<File
-					RelativePath="..\editor\res\ic_normal.bmp"
+					RelativePath="..\tools\editor\res\ic_normal.bmp"
 					>
 				</File>
 			</Filter>
@@ -1117,55 +1117,55 @@
 				Name="cursors"
 				>
 				<File
-					RelativePath="..\editor\res\arrow.cur"
+					RelativePath="..\tools\editor\res\arrow.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\cursor1.cur"
+					RelativePath="..\tools\editor\res\cursor1.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\dropzone.cur"
+					RelativePath="..\tools\editor\res\dropzone.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\eraser.cur"
+					RelativePath="..\tools\editor\res\eraser.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\flatten.cur"
+					RelativePath="..\tools\editor\res\flatten.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\hammer.cur"
+					RelativePath="..\tools\editor\res\hammer.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\hand.cur"
+					RelativePath="..\tools\editor\res\hand.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\link.cur"
+					RelativePath="..\tools\editor\res\link.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\paint.cur"
+					RelativePath="..\tools\editor\res\paint.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\target.cur"
+					RelativePath="..\tools\editor\res\target.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\unlink.cur"
+					RelativePath="..\tools\editor\res\unlink.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\up.cur"
+					RelativePath="..\tools\editor\res\up.cur"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\wrench.cur"
+					RelativePath="..\tools\editor\res\wrench.cur"
 					>
 				</File>
 			</Filter>
@@ -1173,15 +1173,15 @@
 				Name="icons"
 				>
 				<File
-					RelativePath="..\editor\res\ico128.ico"
+					RelativePath="..\tools\editor\res\ico128.ico"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\ico210.ico"
+					RelativePath="..\tools\editor\res\ico210.ico"
 					>
 				</File>
 				<File
-					RelativePath="..\editor\res\ico211.ico"
+					RelativePath="..\tools\editor\res\ico211.ico"
 					>
 				</File>
 			</Filter>
@@ -1197,7 +1197,7 @@
 				Name="precompiled"
 				>
 				<File
-					RelativePath="..\editor\stdafx.cpp"
+					RelativePath="..\tools\editor\stdafx.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -1233,7 +1233,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\editor\stdafx.h"
+					RelativePath="..\tools\editor\stdafx.h"
 					>
 				</File>
 			</Filter>
@@ -1241,7 +1241,7 @@
 				Name="DLL"
 				>
 				<File
-					RelativePath="..\editor\$(TargetName).def"
+					RelativePath="..\tools\editor\$(TargetName).def"
 					>
 				</File>
 			</Filter>

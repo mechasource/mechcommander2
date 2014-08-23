@@ -278,14 +278,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\mc2res\mc2res.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\mc2res\mc2version.h" />
     <ClInclude Include="..\mc2res\resource.h" />
   </ItemGroup>
@@ -296,6 +288,9 @@
   <ItemGroup>
     <Image Include="..\mc2res\icon.ico" />
     <Image Include="..\mc2res\mechcommander2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\mc2res\mc2res.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

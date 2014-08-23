@@ -88,9 +88,6 @@
     <Filter Include="Resources\mlr">
       <UniqueIdentifier>{c416a971-78c0-4d99-ba74-0efc97e44f5d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Registryscripts">
-      <UniqueIdentifier>{a83d204a-ed4a-4045-84cf-a95ab73162bf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="build">
       <UniqueIdentifier>{bc9bde1d-e123-434d-be34-63618ec35336}</UniqueIdentifier>
     </Filter>

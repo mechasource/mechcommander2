@@ -297,25 +297,25 @@
     <ClCompile Include="..\mechcmd2\radio.cpp" />
     <ClCompile Include="..\mechcmd2\simplecamera.cpp" />
     <ClCompile Include="..\mechcmd2\simplecomponentlistbox.cpp" />
-    <ClCompile Include="..\viewer\stdafx.cpp">
+    <ClCompile Include="..\tools\viewer\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\viewer\view.cpp" />
+    <ClCompile Include="..\tools\viewer\view.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\viewer\mechlopedia.ico" />
+    <Image Include="..\tools\viewer\mechlopedia.ico" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\mechresources.h" />
     <ClInclude Include="..\include\mechtypes.h" />
-    <ClInclude Include="..\viewer\resource.h" />
-    <ClInclude Include="..\viewer\stdafx.h" />
+    <ClInclude Include="..\tools\viewer\resource.h" />
+    <ClInclude Include="..\tools\viewer\stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\viewer\viewer.rc" />
+    <ResourceCompile Include="..\tools\viewer\viewer.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

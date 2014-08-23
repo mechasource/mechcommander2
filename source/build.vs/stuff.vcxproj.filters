@@ -58,9 +58,6 @@
     <Filter Include="Resources\stuff">
       <UniqueIdentifier>{8608b5b6-c1cd-4ad3-91c0-b1695c841fdf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Registryscripts">
-      <UniqueIdentifier>{8afd7484-b3d7-43b5-b4c6-fc3165693bb9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="build">
       <UniqueIdentifier>{d43236fd-ff80-428b-9b61-bcef992fb54b}</UniqueIdentifier>
     </Filter>

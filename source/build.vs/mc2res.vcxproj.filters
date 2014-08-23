@@ -48,11 +48,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\mc2res\mc2res.cpp">
-      <Filter>Sources\mc2res</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\mc2res\mc2version.h">
       <Filter>Resources</Filter>
     </ClInclude>
@@ -75,5 +70,10 @@
     <Image Include="..\mc2res\mechcommander2.ico">
       <Filter>Resources\icons</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\mc2res\mc2res.rc">
+      <Filter>Resources\mc2res</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

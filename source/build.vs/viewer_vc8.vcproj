@@ -429,7 +429,7 @@
 				Name="viewer"
 				>
 				<File
-					RelativePath="..\viewer\view.cpp"
+					RelativePath="..\tools\viewer\view.cpp"
 					>
 				</File>
 			</Filter>
@@ -537,15 +537,15 @@
 				Name="viewer"
 				>
 				<File
-					RelativePath="..\viewer\mechlopedia.ico"
+					RelativePath="..\tools\viewer\mechlopedia.ico"
 					>
 				</File>
 				<File
-					RelativePath="..\viewer\resource.h"
+					RelativePath="..\tools\viewer\resource.h"
 					>
 				</File>
 				<File
-					RelativePath="..\viewer\viewer.rc"
+					RelativePath="..\tools\viewer\viewer.rc"
 					>
 				</File>
 			</Filter>
@@ -561,7 +561,7 @@
 				Name="precompiled"
 				>
 				<File
-					RelativePath="..\viewer\stdafx.cpp"
+					RelativePath="..\tools\viewer\stdafx.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -597,7 +597,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\viewer\stdafx.h"
+					RelativePath="..\tools\viewer\stdafx.h"
 					>
 				</File>
 			</Filter>

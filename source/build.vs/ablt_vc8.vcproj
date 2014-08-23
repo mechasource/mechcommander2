@@ -577,11 +577,11 @@
 				Name="ablt"
 				>
 				<File
-					RelativePath="..\ablt\ablt.rc"
+					RelativePath="..\tools\ablt\ablt.rc"
 					>
 				</File>
 				<File
-					RelativePath="..\ablt\resource.h"
+					RelativePath="..\tools\ablt\resource.h"
 					>
 				</File>
 			</Filter>

@@ -45,7 +45,7 @@
 #define ANY_PACKET_TYPE				0x07
 #define OFFSET_MASK         		((1L << TYPE_SHIFT) - 1L)
 
-#define GetPacketType(offset) 		(((ULONG)offset)>>TYPE_SHIFT)
+#define GetPacketType(offset) 		(((uint32_t)offset)>>TYPE_SHIFT)
 #define GetPacketOffset(offset)		(offset&OFFSET_MASK)
 #define SetPacketType(offset,type)	((offset)+(int32_t(type)<<TYPE_SHIFT))
 
@@ -127,9 +127,9 @@ class PacketFile : public File
 		//-------------------------------------------
 		// Functions to Write Packet Files
 		void reserve (int32_t count, bool withCheckSum = FALSE);
-		int32_t writePacket (int32_t packet, PUCHAR buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
-		int32_t insertPacket (int32_t packet, PUCHAR buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
-		int32_t writePacket (int32_t packet, PUCHAR buffer);
+		int32_t writePacket (int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
+		int32_t insertPacket (int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
+		int32_t writePacket (int32_t packet, puint8_t buffer);
 };
 
 

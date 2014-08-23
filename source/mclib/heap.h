@@ -62,7 +62,7 @@ typedef struct _memRecord
 {
 	PVOID			ptr;
 	size_t			size;
-	ULONG			stack[12];
+	uint32_t			stack[12];
 } memRecord;
 #endif
 
@@ -70,8 +70,8 @@ typedef struct _GlobalHeapRec
 {
 	HeapManagerPtr 	thisHeap;
 	size_t	heapSize;
-	ULONG   totalCoreLeft;
-	ULONG	coreLeft;
+	uint32_t   totalCoreLeft;
+	uint32_t	coreLeft;
 } GlobalHeapRec;
 
 //---------------------------------------------------------------------------
@@ -82,17 +82,17 @@ class HeapManager
 	//-------------
 protected:
 
-	PUCHAR			heap;
+	puint8_t			heap;
 	bool			memReserved;
 	size_t   		totalSize;
 	size_t   		committedSize;
-	ULONG			whoMadeMe;
+	uint32_t			whoMadeMe;
 
 	//		BOOL	VMQuery (PVOID pvAddress, PVMQUERY pVMQ);
-	//		LPCTSTR GetMemStorageText (ULONG dwStorage);
-	//		LPTSTR	GetProtectText (ULONG dwProtect, LPTSTR szBuf, BOOL fShowFlags);
-	//		void	ConstructRgnInfoLine (PVMQUERY pVMQ, LPTSTR szLine, int nMaxLen);
-	//		void	ConstructBlkInfoLine (PVMQUERY pVMQ, LPTSTR szLine, int nMaxLen);
+	//		PCSTR   GetMemStorageText (uint32_t dwStorage);
+	//		PSTR	GetProtectText (uint32_t dwProtect, PSTR szBuf, BOOL fShowFlags);
+	//		void	ConstructRgnInfoLine (PVMQUERY pVMQ, PSTR szLine, int32_t nMaxLen);
+	//		void	ConstructBlkInfoLine (PVMQUERY pVMQ, PSTR szLine, int32_t nMaxLen);
 
 public:
 	HeapManagerPtr			nxt;
@@ -112,12 +112,12 @@ public:
 
 	void destroy (void);
 	void init (void);
-	int32_t createHeap (ULONG memSize);
-	int32_t commitHeap (ULONG commitSize = 0);
-	int32_t decommitHeap (ULONG decommitSize = 0);
+	int32_t createHeap (uint32_t memSize);
+	int32_t commitHeap (uint32_t commitSize = 0);
+	int32_t decommitHeap (uint32_t decommitSize = 0);
 
-	PUCHAR getHeapPtr (void);
-	operator PUCHAR (void);
+	puint8_t getHeapPtr (void);
+	operator puint8_t (void);
 
 	void HeapManager::MemoryDump();
 
@@ -126,7 +126,7 @@ public:
 		return BASE_HEAP;
 	}
 
-	ULONG owner (void)
+	uint32_t owner (void)
 	{
 		return whoMadeMe;
 	}
@@ -178,13 +178,13 @@ protected:
 public:
 
 	UserHeap (void);
-	int32_t init (ULONG memSize, PSTR heapId = NULL, bool useGOS = false);
+	int32_t init (uint32_t memSize, PSTR heapId = NULL, bool useGOS = false);
 
 	~UserHeap (void);
 	void destroy (void);
 
-	ULONG totalCoreLeft (void);
-	ULONG coreLeft (void);
+	uint32_t totalCoreLeft (void);
+	uint32_t coreLeft (void);
 	size_t size (void) { return heapSize;}
 
 	PVOID Malloc (size_t memSize);

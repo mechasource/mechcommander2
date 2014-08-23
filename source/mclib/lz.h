@@ -10,9 +10,9 @@
 #define LZ_H
 
 //---------------------------------------------------------------------------
-typedef uint8_t* PUCHAR;
-size_t LZDecomp (PUCHAR dest, PUCHAR src, size_t srcLen);
-size_t LZCompress (PUCHAR dest,  PUCHAR src, size_t len);
+typedef uint8_t* puint8_t;
+size_t LZDecomp (puint8_t dest, puint8_t src, size_t srcLen);
+size_t LZCompress (puint8_t dest,  puint8_t src, size_t len);
 
 //---------------------------------------------------------------------------
 #endif

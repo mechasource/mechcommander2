@@ -119,10 +119,10 @@ typedef union {
 		float				effect;
 	} probe;
 	struct {
-		short				rating;
+		int16_t				rating;
 	} engine;
 	struct {
-		short				dissipation;
+		int16_t				dissipation;
 	} heatsink;
 	struct {
 		float				heat;			// how much heat does it generate?
@@ -131,9 +131,9 @@ typedef union {
 		int32_t				ammoAmount;		// amount of ammo per shot
 		uint8_t		ammoType;		// 0 = unlimited, 1 = finite amount (e.g. bullets)
 		uint8_t		ammoMasterId;	// ammo used by this weapon
-		uint8_t		range;			// short, med or int32_t
+		uint8_t		range;			// int16_t, med or int32_t
 		uint8_t		flags;
-		short				type;			// which weapon type is this
+		int16_t				type;			// which weapon type is this
 		char				specialEffect;	// used to cue whatever visual/sound effects this needs
 	} weapon;
 	struct {
@@ -168,7 +168,7 @@ class MasterComponent {
 		uint8_t					techBase;
 		float							CV;											// CV for this component
 		ComponentStats					stats;
-		ULONG					art;
+		uint32_t					art;
 
 	public:
 
@@ -320,7 +320,7 @@ class MasterComponent {
 			stats.weapon.ammoAmount = weaponAmmo;
 		}
 
-		ULONG getWeaponAmmoType (void) {
+		uint32_t getWeaponAmmoType (void) {
 			return(stats.weapon.ammoType);
 		}
 
@@ -329,7 +329,7 @@ class MasterComponent {
 			stats.weapon.ammoType = ammoType;
 		}
 
-		ULONG getWeaponAmmoMasterId (void) {
+		uint32_t getWeaponAmmoMasterId (void) {
 			return(stats.weapon.ammoMasterId);
 		}
 
@@ -507,7 +507,7 @@ class MasterComponent {
 		
 		void setSensorRange (float range) 
 		{
-			stats.sensor.range = (short)range;
+			stats.sensor.range = (int16_t)range;
 		}
 
 		float getEcmRange (void) {

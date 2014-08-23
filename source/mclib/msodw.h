@@ -122,9 +122,9 @@ enum  // EDwBehaviorFlags
 
 typedef struct _DWSharedMem
 {
-	ULONG dwSize;               // should be set to size of DWSharedMem
-	ULONG pid;                  // Process Id of caller
-	ULONG tid;                  // Id of excepting thread
+	uint32_t dwSize;               // should be set to size of DWSharedMem
+	uint32_t pid;                  // Process Id of caller
+	uint32_t tid;                  // Id of excepting thread
 	DWORD_PTR eip;              // EIP of the excepting instruction
 	PEXCEPTION_POINTERS pep;    // Exception pointers given to the callee's
 	                            // exception handler
@@ -136,28 +136,28 @@ typedef struct _DWSharedMem
 	HANDLE hMutex;              // to protect the signaling of EventDone  
 	HANDLE hProc;               // handle to the calling process (! in Assert)
 	
-	ULONG bfDWBehaviorFlags;    // controls caller-specific behaviors
+	uint32_t bfDWBehaviorFlags;    // controls caller-specific behaviors
 	
-	ULONG msoctdsResult;      // result from crash-time dialog
+	uint32_t msoctdsResult;      // result from crash-time dialog
 	BOOL fReportProblem;      // did user approve reporting?
-	ULONG bfmsoctdsOffer;     // bitfield of user choices to offer
+	uint32_t bfmsoctdsOffer;     // bitfield of user choices to offer
 	                          // note that you must specify two of:
 							  // Quit, Restart, Recover, Ignore
 							  // The Debug choice is independent
-	ULONG bfmsoctdsNotify;    // bitfield of user choices for which the
+	uint32_t bfmsoctdsNotify;    // bitfield of user choices for which the
 	                          // app wants control back instead of simply being
 							  // terminated by DW.  The app will then be
 							  // responsible for pinging DW (if desired) with
 							  // hEventAlive and for notify DW it's ok to
 							  // terminate the app w/ hEventDone       
 
-	ULONG bfmsoctdsLetRun;    // bitfield of user choices for which the
+	uint32_t bfmsoctdsLetRun;    // bitfield of user choices for which the
 	                          // app wants control back instead of being
 							  // terminated by DW.  DW can then safely ignore
 							  // the app and exit.
 
-	int iPingCurrent;         // current count for the recovery progress bar
-	int iPingEnd;             // index for the end of the recovery progress bar
+	int32_t iPingCurrent;         // current count for the recovery progress bar
+	int32_t iPingEnd;             // index for the end of the recovery progress bar
 	
 	char szFormalAppName[DW_APPNAME_LENGTH];   // the app name for display to user (ie "Microsoft Word")
 	char szInformalAppName[DW_APPNAME_LENGTH]; // the app name for display to user (ie "Word")
@@ -165,7 +165,7 @@ typedef struct _DWSharedMem
 	WCHAR wzErrorMessage[DW_MAX_ERROR_CWC];    // Error message to show user.
 	
 	char szServer[DW_MAX_SERVERNAME];  // name of server to try by default
-	char szLCIDKeyValue[DW_MAX_PATH];  // name of key value ULONG containing the
+	char szLCIDKeyValue[DW_MAX_PATH];  // name of key value uint32_t containing the
 	                                   // PlugUI LCID, if this string fails to
 									   // be a valid key-value, DW will use the
 									   // system LCID, and if it can't find
@@ -192,11 +192,11 @@ typedef struct _DWSharedMem
 	char szBrand[DW_APPNAME_LENGTH];   // passed as a param to Privacy Policy link
 #ifdef DEBUG
 	// for Assert communication
-	ULONG dwTag;                       // [in] AssertTag
+	uint32_t dwTag;                       // [in] AssertTag
 	char szFile[DW_MAX_PATH];          // [in] File name of the assert
-	int line;                          // [in] Line number of the assert
+	int32_t line;                          // [in] Line number of the assert
 	char szAssert[DW_MAX_ASSERT_CCH];  // [in] Sz from the assert
-	int AssertActionCode;              // [out] action code to take
+	int32_t AssertActionCode;              // [out] action code to take
 #endif
 } DWSharedMem;
 

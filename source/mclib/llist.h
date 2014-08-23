@@ -88,7 +88,7 @@ class LinkedList
 		return Tail;
 	}
 
-	ULONG Count (void);
+	uint32_t Count (void);
 };
 
 //---------------------------------------------------------------------------

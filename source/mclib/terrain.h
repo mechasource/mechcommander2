@@ -103,7 +103,7 @@ class Terrain
 	//-------------
 	protected:
 
-		ULONG							terrainHeapSize;
+		uint32_t							terrainHeapSize;
 		
 		int32_t									numberVertices;
 		int32_t									numberQuads;
@@ -114,7 +114,7 @@ class Terrain
 		//For editor
 		static int32_t								userMin;
 		static int32_t								userMax;
-		static ULONG					baseTerrain;
+		static uint32_t					baseTerrain;
 		static uint8_t					fractalThreshold;
 		static uint8_t					fractalNoise;
 
@@ -156,9 +156,9 @@ class Terrain
 		static float							frameAngle;					//Used to animate the waves
 		static float							frameCos;
 		static float							frameCosAlpha;
-		static ULONG 							alphaMiddle;				//Used to alpha the water into the shore.
-		static ULONG 							alphaEdge;
-		static ULONG 							alphaDeep;
+		static uint32_t 							alphaMiddle;				//Used to alpha the water into the shore.
+		static uint32_t 							alphaEdge;
+		static uint32_t 							alphaDeep;
 		static float							waterFreq;					//Used to animate waves.
 		static float							waterAmplitude;
 
@@ -196,14 +196,14 @@ class Terrain
 			destroy();
 		}
 
-		int32_t init (PacketFile* file, int whichPacket, ULONG visibleVertices, 
+		int32_t init (PacketFile* file, int32_t whichPacket, uint32_t visibleVertices, 
 			volatile float& progress, float progressRange); // open an existing file
-		int32_t init( ULONG verticesPerMapSide, PacketFile* file, ULONG visibleVertices,
+		int32_t init( uint32_t verticesPerMapSide, PacketFile* file, uint32_t visibleVertices,
 				volatile float& percent,
 					float percentRange); // pass in null for a blank new map
 
 		float getTerrainElevation (Stuff::Vector3D &position);
-		short getTerrainType (Stuff::Vector3D &position);
+		int16_t getTerrainType (Stuff::Vector3D &position);
 		float getTerrainAngle (Stuff::Vector3D &position, Stuff::Vector3D* normal = NULL);
 		Stuff::Vector3D getTerrainNormal (Stuff::Vector3D &position);
 		float getTerrainLight (Stuff::Vector3D& position);
@@ -229,7 +229,7 @@ class Terrain
 		static bool IsEditorSelectTerrainPosition (Stuff::Vector3D pos);
 		static bool IsGameSelectTerrainPosition (Stuff::Vector3D pos);
 
-		int32_t save( PacketFile* fileName, int whichPacket, bool QuickSave = false);
+		int32_t save( PacketFile* fileName, int32_t whichPacket, bool QuickSave = false);
 		bool save( FitIniFile* fitFile ); // save stuff like water info
 		bool load( FitIniFile* fitFile );
 
@@ -238,15 +238,15 @@ class Terrain
 		int32_t getOverlayTile (int32_t block, int32_t vertex);
 	
 		// new overlay stuff
-		void setOverlay( int32_t tileR, int32_t tileC, Overlays type, ULONG Offset );
-		void getOverlay( int32_t tileR, int32_t tileC, Overlays& type, ULONG& Offset );
-		void setTerrain( int32_t tileR, int32_t tileC, int terrainType );
-		int	 getTerrain( int32_t tileR, int32_t tileC );
-		ULONG getTexture( int32_t tileR, int32_t tileC ); 
+		void setOverlay( int32_t tileR, int32_t tileC, Overlays type, uint32_t Offset );
+		void getOverlay( int32_t tileR, int32_t tileC, Overlays& type, uint32_t& Offset );
+		void setTerrain( int32_t tileR, int32_t tileC, int32_t terrainType );
+		int32_t	 getTerrain( int32_t tileR, int32_t tileC );
+		uint32_t getTexture( int32_t tileR, int32_t tileC ); 
 		float getTerrainElevation( int32_t tileR, int32_t tileC );
 
-		void  setVertexHeight( int vertexIndex, float value ); 
-		float getVertexHeight( int vertexIndex );
+		void  setVertexHeight( int32_t vertexIndex, float value ); 
+		float getVertexHeight( int32_t vertexIndex );
 
 		void calcWater (float waterDepth, float waterShallowDepth, float waterAlphaDepth);
 
@@ -274,8 +274,8 @@ class Terrain
 		float getHighestVertex( int32_t& tileR, int32_t& tileC );
 		float getLowestVertex(  int32_t& tileR, int32_t& tileC );
 
-		static void setUserSettings( int32_t min, int32_t max, int terrainType );
-		static void getUserSettings( int32_t& min, int32_t& max, int& terrainType );
+		static void setUserSettings( int32_t min, int32_t max, int32_t terrainType );
+		static void getUserSettings( int32_t& min, int32_t& max, int32_t& terrainType );
 
 		void recalcWater();
 		void reCalcLight(bool doShadows = false);

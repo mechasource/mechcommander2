@@ -35,22 +35,22 @@ typedef struct _TerrainUVData
 
 typedef struct _MineResult
 {
-	ULONG mineData;
+	uint32_t mineData;
 	
 	void init (void)
 	{
 		mineData = 0;
 	}
 	
-	void setMine (ULONG pos, uint8_t data)
+	void setMine (uint32_t pos, uint8_t data)
 	{
-		ULONG result = (data << (pos << 1));
+		uint32_t result = (data << (pos << 1));
 		mineData |= result;
 	}
 	
-	ULONG getMine(ULONG pos)
+	uint32_t getMine(uint32_t pos)
 	{
-		ULONG result = (mineData >> (pos << 1)) & (0x3);
+		uint32_t result = (mineData >> (pos << 1)) & (0x3);
 		return result;
 	}
 	
@@ -64,13 +64,13 @@ class TerrainQuad
 
 		VertexPtr			vertices[4];			//Pointers to vertices defining this tile.
 
-		ULONG				terrainHandle;			//Handle to texture to draw.
-		ULONG				terrainDetailHandle;	//Handle to detail texture to draw.
-		ULONG				waterHandle;			//Handle to water texture to draw.
-		ULONG				waterDetailHandle;		//Handle to Water Detail texture to draw.
-		ULONG				overlayHandle;			//Handle to overlay texture to draw.
+		uint32_t				terrainHandle;			//Handle to texture to draw.
+		uint32_t				terrainDetailHandle;	//Handle to detail texture to draw.
+		uint32_t				waterHandle;			//Handle to water texture to draw.
+		uint32_t				waterDetailHandle;		//Handle to Water Detail texture to draw.
+		uint32_t				overlayHandle;			//Handle to overlay texture to draw.
 
-		ULONG				uvMode;					//Is this a top or bottom triangle?
+		uint32_t				uvMode;					//Is this a top or bottom triangle?
 		MineResult			mineResult;				//Is there a mine or exploded mine in this cell on this tile?
 			
 		TerrainUVData		uvData;					//Stores the min and max UVs for this face.
@@ -78,9 +78,9 @@ class TerrainQuad
 		bool				isCement;				//Need to know if this tile is cement for a number of reasons
 	
 		static float		rainLightLevel;			//How much to darken terrain based on rain
-		static ULONG		lighteningLevel;		//How much to lighten terrain based on lightening.
-		static ULONG 		mineTextureHandle;		//Handle to the mine textures.
-		static ULONG 		blownTextureHandle;
+		static uint32_t		lighteningLevel;		//How much to lighten terrain based on lightening.
+		static uint32_t 		mineTextureHandle;		//Handle to the mine textures.
+		static uint32_t 		blownTextureHandle;
 
 		
 #ifdef _DEBUG
@@ -93,7 +93,7 @@ class TerrainQuad
 
 		void init (void)
 		{
-			for (int i=0;i<4;i++)
+			for (int32_t i=0;i<4;i++)
 				vertices[i] = NULL;
 			
 			terrainHandle = 0xffffffff;

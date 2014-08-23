@@ -75,7 +75,7 @@ class Appearance
 		Stuff::Vector4D				lowerRight;		//used to draw select boxes.
 		
 		float						barStatus;		//Status Bar Length.
-		ULONG						barColor;		//Status Bar Color.
+		uint32_t						barColor;		//Status Bar Color.
 	
 	//Member Functions
 	//-----------------
@@ -168,9 +168,9 @@ class Appearance
 			return FALSE;		//Never over a base appearance
 		}
 				
-		virtual void drawSelectBox (ULONG color);
+		virtual void drawSelectBox (uint32_t color);
 
-		virtual void drawSelectBrackets (ULONG color);
+		virtual void drawSelectBrackets (uint32_t color);
 
 		virtual void drawBars (void);
 
@@ -218,7 +218,7 @@ class Appearance
 				barStatus = 1.0f;
 		}
 
-		virtual void setBarColor (ULONG clr)
+		virtual void setBarColor (uint32_t clr)
 		{
 			barColor = clr;
 		}
@@ -388,15 +388,15 @@ class Appearance
 		{
 		}
 
-		virtual void setPaintScheme (ULONG /*red*/, ULONG /*green*/, ULONG /*blue*/)
+		virtual void setPaintScheme (uint32_t /*red*/, uint32_t /*green*/, uint32_t /*blue*/)
 		{
 		}
 
-		virtual void getPaintScheme (ULONG& /*red*/, ULONG& /*green*/, ULONG& /*blue*/)
+		virtual void getPaintScheme (uint32_t& /*red*/, uint32_t& /*green*/, uint32_t& /*blue*/)
 		{
 		}
 
-		virtual void resetPaintScheme (ULONG /*red*/, ULONG /*green*/, ULONG /*blue*/)
+		virtual void resetPaintScheme (uint32_t /*red*/, uint32_t /*green*/, uint32_t /*blue*/)
 		{
 		}
 		
@@ -446,16 +446,16 @@ class Appearance
 		{
 		}
 		
-		virtual int32_t calcCellsCovered (Stuff::Vector3D& /*pos*/, short* /*cellList*/)
+		virtual int32_t calcCellsCovered (Stuff::Vector3D& /*pos*/, pint16_t /*cellList*/)
 		{
 			return(0);
 		}
 
-		virtual void markTerrain (_ScenarioMapCellInfo* /*pInfo*/, int /*type*/, int /*counter*/)
+		virtual void markTerrain (_ScenarioMapCellInfo* /*pInfo*/, int32_t /*type*/, int32_t /*counter*/)
 		{
 		}
 		
-		virtual int32_t markMoveMap (bool /*passable*/, int32_t* /*lineOfSightRect*/, bool useheight = false, short* cellList = NULL)
+		virtual int32_t markMoveMap (bool /*passable*/, int32_t* /*lineOfSightRect*/, bool useheight = false, pint16_t cellList = NULL)
 		{
 			useheight;cellList;
 			return(0);
@@ -481,7 +481,7 @@ class Appearance
 			return 0.0f;
 		}
 		
-		virtual void flashBuilding (float /*duration*/, float /*flashDuration*/, ULONG /*color*/)
+		virtual void flashBuilding (float /*duration*/, float /*flashDuration*/, uint32_t /*color*/)
 		{
 		}
 		
@@ -554,7 +554,7 @@ class Appearance
 			return result;
 		}
 		
-		virtual void setAlphaValue (UCHAR /*aVal*/)
+		virtual void setAlphaValue (uint8_t /*aVal*/)
 		{
 		}
 

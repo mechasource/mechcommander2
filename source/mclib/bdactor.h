@@ -69,7 +69,7 @@ class BldgAppearanceType : public AppearanceType
 		bool						spinMe;
 		bool						isForestClump;
 		
-		ULONG						terrainLightRGB;
+		uint32_t						terrainLightRGB;
 		float						terrainLightIntensity;
 		float						terrainLightInnerRadius;
 		float						terrainLightOuterRadius;
@@ -110,7 +110,7 @@ class BldgAppearanceType : public AppearanceType
 			destroy();
 		}
 
-		void setAnimation (TG_MultiShapePtr shape, ULONG animationNum);
+		void setAnimation (TG_MultiShapePtr shape, uint32_t animationNum);
 		
 		int32_t getNumFrames (int32_t animationNum)
 		{
@@ -206,7 +206,7 @@ class BldgAppearance : public ObjectAppearance
 		float										duration;
 		float										currentFlash;
 		bool										drawFlash;
-		ULONG										flashColor;
+		uint32_t										flashColor;
 		
 		int32_t										currentLOD;
 		
@@ -214,13 +214,13 @@ class BldgAppearance : public ObjectAppearance
 		float										*nodeRecycle;			//Used for ripple fire to find out if the node has fired recently.
 		
 		TG_LightPtr									pointLight;
-		ULONG										lightId;
+		uint32_t										lightId;
 		bool										forceLightsOut;
 		bool										beenInView;
 		
 		bool										fogLightSet;
-		ULONG										lightRGB;
-		ULONG										fogRGB;
+		uint32_t										lightRGB;
+		uint32_t										fogRGB;
 
 		int32_t										rotationalNodeId;
 		int32_t										hitNodeId;
@@ -260,7 +260,7 @@ class BldgAppearance : public ObjectAppearance
 			return (canTransition == false);
 		}
 
-		void setFadeTable (PUCHAR fTable)
+		void setFadeTable (puint8_t fTable)
 		{
 			fadeTable = fTable;
 		}
@@ -290,11 +290,11 @@ class BldgAppearance : public ObjectAppearance
 		
 		virtual void setObjStatus (int32_t oStatus);
 		
-		virtual int32_t calcCellsCovered (Stuff::Vector3D& pos, short* cellList);
+		virtual int32_t calcCellsCovered (Stuff::Vector3D& pos, pint16_t cellList);
 
-		virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int type, int counter);
+		virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
 		
-		virtual int32_t markMoveMap (bool passable, int32_t* lineOfSightRect, bool useheight = false, short* cellList = NULL);
+		virtual int32_t markMoveMap (bool passable, int32_t* lineOfSightRect, bool useheight = false, pint16_t cellList = NULL);
 
 		virtual void markLOS (bool clearIt = false);
 		
@@ -312,7 +312,7 @@ class BldgAppearance : public ObjectAppearance
 			return OBBRadius;
 		}
 		
-		virtual void flashBuilding (float duration, float flashDuration, ULONG color);
+		virtual void flashBuilding (float duration, float flashDuration, uint32_t color);
 
 		virtual float getTopZ (void)
 		{
@@ -464,8 +464,8 @@ class TreeAppearance : public ObjectAppearance
 		bool										beenInView;
 
 		bool										fogLightSet;
-		ULONG										lightRGB;
-		ULONG										fogRGB;
+		uint32_t										lightRGB;
+		uint32_t										fogRGB;
 
 	public:
 
@@ -500,7 +500,7 @@ class TreeAppearance : public ObjectAppearance
 
 		virtual bool recalcBounds (void);
 		
-		void setFadeTable (PUCHAR fTable)
+		void setFadeTable (puint8_t fTable)
 		{
 			fadeTable = fTable;
 		}
@@ -538,7 +538,7 @@ class TreeAppearance : public ObjectAppearance
 			return appearType->isForestClump;
 		}
 		
-		virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int type, int counter);
+		virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
 
  		virtual Stuff::Point3D getRootNodeCenter (void)
 		{

@@ -46,9 +46,9 @@ typedef struct _GestureData
 
 typedef struct _PaintSchemata
 {
-	ULONG			redColor;				//Replace all Reds in texture with this color scaled by intensity of red!
-	ULONG			greenColor;				//Replace all Greens in texture with this color scaled by intensity of green!
-	ULONG			blueColor;				//Replace all Blues in texture with this color scaled by intensity of blue!
+	uint32_t			redColor;				//Replace all Reds in texture with this color scaled by intensity of red!
+	uint32_t			greenColor;				//Replace all Greens in texture with this color scaled by intensity of green!
+	uint32_t			blueColor;				//Replace all Blues in texture with this color scaled by intensity of blue!
 } PaintSchemata;
 
 typedef PaintSchemata *PaintSchemataPtr;
@@ -188,7 +188,7 @@ class Mech3DAppearanceType: public AppearanceType
 			return numSmokeNodes + numWeaponNodes + numJumpNodes + numFootNodes;
 		}
 
-		void setAnimation (TG_MultiShapePtr shape, ULONG animationNum);
+		void setAnimation (TG_MultiShapePtr shape, uint32_t animationNum);
 		
 		float getStartVel (int32_t animationNum)
 		{
@@ -353,7 +353,7 @@ class Mech3DAppearance: public ObjectAppearance
 		int32_t						currentLOD;
 
 		TG_LightPtr					pointLight;
-		ULONG						lightId;
+		uint32_t						lightId;
 		
 		float						idleTime;				//Elapsed time since I've done something.
 															//If it gets larger then X, play the idle animation.
@@ -408,12 +408,12 @@ class Mech3DAppearance: public ObjectAppearance
 		
 		float						OBBRadius;
 		
-		ULONG						localTextureHandle;
+		uint32_t						localTextureHandle;
 		float						baseRootNodeHeight;
 
-		ULONG						psRed;
-		ULONG						psBlue;
-		ULONG						psGreen;
+		uint32_t						psRed;
+		uint32_t						psBlue;
+		uint32_t						psGreen;
 
 		char						mechName[64];
 
@@ -429,7 +429,7 @@ class Mech3DAppearance: public ObjectAppearance
 		float										duration;
 		float										currentFlash;
 		bool										drawFlash;
-		ULONG										flashColor;
+		uint32_t										flashColor;
 
 		int32_t						rotationalNodeIndex;
 		int32_t						hitLeftNodeIndex;
@@ -442,7 +442,7 @@ class Mech3DAppearance: public ObjectAppearance
 		
 	public:
 		static PaintSchemataPtr		paintSchemata;
-		static ULONG				numPaintSchemata;
+		static uint32_t				numPaintSchemata;
 
 	public:
 		
@@ -477,18 +477,18 @@ class Mech3DAppearance: public ObjectAppearance
 
 		virtual void setPaintScheme (void);
 
-		virtual void setPaintScheme (ULONG red, ULONG green, ULONG blue);
+		virtual void setPaintScheme (uint32_t red, uint32_t green, uint32_t blue);
 
-		virtual void getPaintScheme (ULONG &red, ULONG &green, ULONG &blue);
+		virtual void getPaintScheme (uint32_t &red, uint32_t &green, uint32_t &blue);
 
-		virtual void resetPaintScheme (ULONG red, ULONG green, ULONG blue);
+		virtual void resetPaintScheme (uint32_t red, uint32_t green, uint32_t blue);
 
  		virtual bool isInJump (void)
 		{
 			return inJump;
 		}
 
-		void flashBuilding (float dur, float fDuration, ULONG color);
+		void flashBuilding (float dur, float fDuration, uint32_t color);
 
 
 		virtual bool isJumpSetup (void)
@@ -742,7 +742,7 @@ class Mech3DAppearance: public ObjectAppearance
 			return result;
 		}
 		
-		virtual void setAlphaValue (UCHAR aVal)
+		virtual void setAlphaValue (uint8_t aVal)
 		{
 			mechShape->SetAlphaValue(aVal);
 			

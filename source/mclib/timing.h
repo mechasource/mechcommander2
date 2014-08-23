@@ -17,7 +17,7 @@ extern bool		gamePaused;			//Is the game paused?
 extern int32_t 	turn;				//What frame of the scenario is it?
 extern float	frameLength;		//Duration of last frame in seconds.
 extern float	scenarioTime;		//Time scenario has been running.
-extern ULONG	LastTimeGetTime;	//Stores Interval since timeGetTime last called.
+extern uint32_t	LastTimeGetTime;	//Stores Interval since timeGetTime last called.
 extern bool		dynamicFrameTiming;	//This flag determines if we are using frameLength
 									//To time a frame.  This is FALSE when something
 									//puches a frame length dramatically over 4fps.
@@ -156,23 +156,23 @@ extern PSTR monthName[];
 // Find out actual system time
 typedef struct _MC_SYSTEMTIME
 {
-    ULONG dwYear; 
-	ULONG dwMonth; 
-	ULONG dwDayOfWeek; 
-	ULONG dwDay; 
-	ULONG dwHour; 
-	ULONG dwMinute; 
-	ULONG dwSecond; 
-	ULONG dwMilliseconds;
+    uint32_t dwYear; 
+	uint32_t dwMonth; 
+	uint32_t dwDayOfWeek; 
+	uint32_t dwDay; 
+	uint32_t dwHour; 
+	uint32_t dwMinute; 
+	uint32_t dwSecond; 
+	uint32_t dwMilliseconds;
 
 	void copyFromSystemTime (PVOID systemTime);
 
 } MC_SYSTEMTIME;
 
-ULONG MCTiming_GetTimeZoneInforation(PVOID timeData);
+uint32_t MCTiming_GetTimeZoneInforation(PVOID timeData);
 
-ULONG MCTiming_GetTimeZoneInformationSize (void);
+uint32_t MCTiming_GetTimeZoneInformationSize (void);
 
-void MCTiming_GetUTCSystemTimeFromInformation(ULONG daylightInfo, PVOID timeData, MC_SYSTEMTIME *systemTime);
+void MCTiming_GetUTCSystemTimeFromInformation(uint32_t daylightInfo, PVOID timeData, MC_SYSTEMTIME *systemTime);
 //----------------------------------------------------------------------------------
 #endif

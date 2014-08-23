@@ -70,8 +70,8 @@ typedef struct _MC_VertexArrayNode
 	friend MC_TextureManager;
 
 	public:
-		ULONG				textureIndex;
-		ULONG				flags;						//Marks texture render state and terrain or not, etc.
+		uint32_t				textureIndex;
+		uint32_t				flags;						//Marks texture render state and terrain or not, etc.
 		int32_t				numVertices;				//Number of vertices this texture will be used to draw this frame.
 		gos_VERTEX			*currentVertex;				//CurrentVertex data being added.
 		gos_VERTEX			*vertices;					//Pointer into the vertex Pool for this texture to draw.
@@ -95,20 +95,20 @@ typedef struct _MC_TextureNode
 	friend MC_TextureManager;
 
 	protected:
-		ULONG				gosTextureHandle;			//Handle returned by GOS
+		uint32_t				gosTextureHandle;			//Handle returned by GOS
 		
 	public:
 		char 				*nodeName;					//Used for Unique nodes so I can just return the handle!
-		ULONG				uniqueInstance;				//Texture is modifiable.  DO NOT CACHE OUT!!!!!!
-		ULONG				neverFLUSH;					//Textures used by Userinput, etc.  DO NOT CACHE OUT!!!!!! 
-		ULONG				numUsers;					//Pushed up for each user using.
+		uint32_t				uniqueInstance;				//Texture is modifiable.  DO NOT CACHE OUT!!!!!!
+		uint32_t				neverFLUSH;					//Textures used by Userinput, etc.  DO NOT CACHE OUT!!!!!! 
+		uint32_t				numUsers;					//Pushed up for each user using.
 														//Users can "free" a texture which will decrement the number and actually free it if number is 0
 		gos_TextureFormat 	key;						//Used to recreate texture if cached out.
-		ULONG 				hints;						//Used to recreate texture if cached out.
-		ULONG				width;						//Used to recreate texture if cached out.
-		ULONG				lzCompSize;					//Size of Compressed version.
+		uint32_t 				hints;						//Used to recreate texture if cached out.
+		uint32_t				width;						//Used to recreate texture if cached out.
+		uint32_t				lzCompSize;					//Size of Compressed version.
 		int32_t				lastUsed;					//Last Game turn texture was used.  Used to cache textures.
-		ULONG 				*textureData;				//Raw texture data.  Texture is stored here in system RAM 
+		uint32_t 				*textureData;				//Raw texture data.  Texture is stored here in system RAM 
 														//if we overrun the max number of GOS HAndles.
 														//When the texture is needed, another least used GOS handle is
 														//cached out and this one is copied in.
@@ -141,15 +141,15 @@ typedef struct _MC_TextureNode
 		lzCompSize = 0xffffffff;
 	}
 
-	ULONG findFirstAvailableBlock (void);
+	uint32_t findFirstAvailableBlock (void);
 
 	void destroy (void);							//Frees all blocks, free GOS_TextureHandle, blank all data.
 
-	void removeBlock (ULONG blockNum);				//Just free one block.  DO NOT FREE GOS_TextureHandle.
+	void removeBlock (uint32_t blockNum);				//Just free one block.  DO NOT FREE GOS_TextureHandle.
 
-	void markBlock (ULONG blockNum);
+	void markBlock (uint32_t blockNum);
 	
-	ULONG get_gosTextureHandle (void);				//If texture is not in VidRAM, cache a texture out and cache this one in.
+	uint32_t get_gosTextureHandle (void);				//If texture is not in VidRAM, cache a texture out and cache this one in.
 
 } MC_TextureNode;
 
@@ -195,7 +195,7 @@ class gos_VERTEXManager : public HeapManager
 		void init (int32_t maxVertices)
 		{
 			totalVertices = maxVertices;
-			ULONG heapSize = totalVertices * sizeof(gos_VERTEX);
+			uint32_t heapSize = totalVertices * sizeof(gos_VERTEX);
 			createHeap(heapSize);
 			commitHeap();
 			reset();
@@ -237,11 +237,11 @@ class MC_TextureManager
 		int32_t							totalCacheMisses;			//NUmber of times flush has been called.\
 		
 		static gos_VERTEXManager		*gvManager;					//Stores arrays of vertices for draw.
-		static PUCHAR				lzBuffer1;					//Used to compress/decompress textures from cache.
-		static PUCHAR				lzBuffer2;					//Used to compress/decompress textures from cache.
+		static puint8_t				lzBuffer1;					//Used to compress/decompress textures from cache.
+		static puint8_t				lzBuffer2;					//Used to compress/decompress textures from cache.
 		/* iBufferRefCount is used to help determine if lzBuffer1&2 are valid. The assumption
 		is that if there are no valid MC_TextureManagers then lzBuffer1&2 are not valid. */
-		static int				iBufferRefCount;
+		static int32_t				iBufferRefCount;
 		
 		uint16_t							*indexArray;				//Master Vertex Index array.
 
@@ -290,7 +290,7 @@ class MC_TextureManager
 		// that was already loaded in memory. This function was motivated by the fact that
 		// that an existing texture instance can been modified in memory after it's loaded, and
 		// thus be different the from an instance that would be loaded from disk.
-		ULONG textureInstanceExists (PCSTR textureFullPathName, gos_TextureFormat key, ULONG hints, ULONG uniqueInstance = 0x0, ULONG nFlush = 0x0);
+		uint32_t textureInstanceExists (PCSTR textureFullPathName, gos_TextureFormat key, uint32_t hints, uint32_t uniqueInstance = 0x0, uint32_t nFlush = 0x0);
 
 		//-----------------------------------------------------------------------------
 		// Returns the TextureNode Id based on what you asked for.
@@ -298,16 +298,16 @@ class MC_TextureManager
 		// uniqueInstance is an ID for the instance of the texture. If its value matches that of
 		// an already existing instance of the texture, the handle of the existing instance will
 		// be returned. Used for Mech Coloration possibly, damage states, etc.
-		ULONG loadTexture (PCSTR textureFullPathName, gos_TextureFormat key, ULONG hints, ULONG uniqueInstance = 0x0, ULONG nFlush = 0x0);
+		uint32_t loadTexture (PCSTR textureFullPathName, gos_TextureFormat key, uint32_t hints, uint32_t uniqueInstance = 0x0, uint32_t nFlush = 0x0);
 
-		int32_t saveTexture (ULONG textureIndex, PCSTR textureFullPathName);
+		int32_t saveTexture (uint32_t textureIndex, PCSTR textureFullPathName);
 
 		//-----------------------------------------------------------------------------
 		// Returns the TextureNode Id based on what you asked for.
-		ULONG textureFromMemory (ULONG *data, gos_TextureFormat key, ULONG hints, ULONG width, ULONG bitDepth = 4);
+		uint32_t textureFromMemory (uint32_t *data, gos_TextureFormat key, uint32_t hints, uint32_t width, uint32_t bitDepth = 4);
 
 		// increments the ref count
-		ULONG copyTexture( ULONG texNodeID );
+		uint32_t copyTexture( uint32_t texNodeID );
 
 		//------------------------------------------------------
 		// Tosses ALL of the textureNodes and frees GOS Handles
@@ -323,15 +323,15 @@ class MC_TextureManager
 		
 		//------------------------------------------------------
 		// Frees a specific texture. 
-		void removeTexture (ULONG gosTextureHandle);
+		void removeTexture (uint32_t gosTextureHandle);
 		
 		//------------------------------------------------------
 		// Frees a specific textureNode. 
-		void removeTextureNode (ULONG textureNode);
+		void removeTextureNode (uint32_t textureNode);
 		
  		//-----------------------------------------------------------------
 		// Gets gosTextureHandle for Node ID.  Does all caching necessary.
-		ULONG get_gosTextureHandle (ULONG nodeId)
+		uint32_t get_gosTextureHandle (uint32_t nodeId)
 		{
 			if (nodeId != 0xffffffff)
 				return masterTextureNodes[nodeId].get_gosTextureHandle();
@@ -339,7 +339,7 @@ class MC_TextureManager
 				return nodeId;
 		}
 
-		void addTriangle (ULONG nodeId, ULONG flags)
+		void addTriangle (uint32_t nodeId, uint32_t flags)
 		{
 			if ((nodeId < MC_MAXTEXTURES) && (nextAvailableVertexNode < MC_MAXTEXTURES))
 			{
@@ -458,7 +458,7 @@ class MC_TextureManager
 			}
 		}
 
-		void addVertices (ULONG nodeId, gos_VERTEX *data, ULONG flags)
+		void addVertices (uint32_t nodeId, gos_VERTEX *data, uint32_t flags)
 		{
 			//This function adds the actual vertex data to the texture Node.
 			if (nodeId < MC_MAXTEXTURES)
@@ -720,7 +720,7 @@ class MC_TextureManager
 		//Sends down the triangle lists
 		void renderLists (void);
 
-		ULONG getWidth( ULONG nodeId )
+		uint32_t getWidth( uint32_t nodeId )
 		{
 			if (nodeId != 0xffffffff)
 				return masterTextureNodes[nodeId].width;
@@ -739,7 +739,7 @@ class MC_TextureManager
 		// This routine will run through the TXM Cache on a regular basis and free
 		// up GOS Handles which haven't been used in some time.  Some Time TBD 
 		// more accurately with time.
-		ULONG update (void);
+		uint32_t update (void);
 		
 		bool checkCacheHeap (void)
 		{

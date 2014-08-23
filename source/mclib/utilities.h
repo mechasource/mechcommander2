@@ -17,9 +17,9 @@ class StaticInfo
 {
 public:
 
-	void init( FitIniFile& file, PSTR blockName, int32_t hiResOffsetX = 0, int32_t hiResOffsetY = 0, ULONG neverFlush = 0 );
+	void init( FitIniFile& file, PSTR blockName, int32_t hiResOffsetX = 0, int32_t hiResOffsetY = 0, uint32_t neverFlush = 0 );
 	void render();
-	bool isInside( int mouseX, int mouseY );
+	bool isInside( int32_t mouseX, int32_t mouseY );
 
 	void setLocation( float  newX, float newY );
 	void move( float deltaX, float deltaY );
@@ -38,11 +38,11 @@ public:
 	StaticInfo(){}
 	~StaticInfo();
 
-	ULONG textureHandle;
+	uint32_t textureHandle;
 	gos_VERTEX	location[4];
 	int32_t u, v, uWidth, vHeight;
 
-	ULONG textureWidth; // textures are square
+	uint32_t textureWidth; // textures are square
 };
 
 #if _CONSIDERED_OBSOLETE
@@ -55,11 +55,11 @@ typedef struct _GUI_RECTd
 } RECT;
 #endif
 
-void drawEmptyRect( const RECT& rect, ULONG leftBorderColor = 0xffffffff,
-	 ULONG rightBorderColor = 0xff000000 );
+void drawEmptyRect( const RECT& rect, uint32_t leftBorderColor = 0xffffffff,
+	 uint32_t rightBorderColor = 0xff000000 );
 
 
-void drawRect( const RECT& rect, ULONG color );
+void drawRect( const RECT& rect, uint32_t color );
 
 void drawShadowText( int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, 
 					int32_t left, int32_t top, bool proportional, PCSTR text, bool bBold, float scale );
@@ -89,7 +89,7 @@ inline COLORREF reverseRGB(COLORREF oldVal)
 //
 // Replace with GOS String Resource get when available
 // Replaced.  Andy wants us to call everytime.  Will try and see if practical.
-extern ULONG gosResourceHandle;
+extern uint32_t gosResourceHandle;
 
 
 
@@ -99,7 +99,7 @@ inline size_t cLoadString(
   uint32_t uID,             // resource identifier
   PSTR lpBuffer,      // pointer to buffer for resource
   size_t nBufferMax,        // size of buffer
-  ULONG handle = gosResourceHandle
+  uint32_t handle = gosResourceHandle
   )
 {
 	memset(lpBuffer,0,nBufferMax);

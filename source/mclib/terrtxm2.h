@@ -37,12 +37,12 @@
 // Class Definitions
 typedef struct _ColorMapTextures
 {
-	ULONG 		mcTextureNodeIndex;
+	uint32_t 		mcTextureNodeIndex;
 } ColorMapTextures;
 
 typedef struct _ColorMapRAM
 {
-	PUCHAR 	ourRAM;
+	puint8_t 	ourRAM;
 } ColorMapRAM;
 
 class TerrainColorMap
@@ -50,9 +50,9 @@ class TerrainColorMap
 	//Data Members
 	//-------------
 	protected:
-		PUCHAR				ColorMap;
+		puint8_t				ColorMap;
 		
-		ULONG					numTextures;
+		uint32_t					numTextures;
 		
 		float					numTexturesAcross;
 		float					fractionPerTexture;
@@ -63,20 +63,20 @@ class TerrainColorMap
 		UserHeapPtr				colorMapHeap;
 		UserHeapPtr				colorMapRAMHeap;
 		
-		PUCHAR				detailTextureRAM;
-		ULONG					detailTextureNodeIndex;
+		puint8_t				detailTextureRAM;
+		uint32_t					detailTextureNodeIndex;
 		float					detailTextureTilingFactor;
 		
-		PUCHAR				waterTextureRAM;
-		ULONG					waterTextureNodeIndex;
+		puint8_t				waterTextureRAM;
+		uint32_t					waterTextureNodeIndex;
 		float					waterTextureTilingFactor;
 		
-		ULONG					numWaterDetailFrames;
-		ULONG					waterDetailNodeIndex[MAX_WATER_DETAIL_TEXTURES];
+		uint32_t					numWaterDetailFrames;
+		uint32_t					waterDetailNodeIndex[MAX_WATER_DETAIL_TEXTURES];
 		float					waterDetailFrameRate;
 		float					waterDetailTilingFactor;
 
-		static ULONG			terrainTypeIDs[ TOTAL_COLORMAP_TYPES ];
+		static uint32_t			terrainTypeIDs[ TOTAL_COLORMAP_TYPES ];
 		
 	public:
 	
@@ -107,25 +107,25 @@ class TerrainColorMap
 
 		int32_t init (PSTR fileName);
 
-		void getColorMapData (PUCHAR ourRAM, int32_t index, int32_t width);
+		void getColorMapData (puint8_t ourRAM, int32_t index, int32_t width);
 				
-		ULONG getTextureHandle (VertexPtr vMin, VertexPtr vMax, TerrainUVData *uvData);
+		uint32_t getTextureHandle (VertexPtr vMin, VertexPtr vMax, TerrainUVData *uvData);
 
-		ULONG getDetailHandle (void)
+		uint32_t getDetailHandle (void)
 		{
 			mcTextureManager->get_gosTextureHandle(detailTextureNodeIndex);
 			return (detailTextureNodeIndex);
 		}
 		int32_t saveDetailTexture(PCSTR fileName);
 
-		ULONG getWaterTextureHandle (void)
+		uint32_t getWaterTextureHandle (void)
 		{
 			mcTextureManager->get_gosTextureHandle(waterTextureNodeIndex);
 			return waterTextureNodeIndex;
 		}
 		int32_t saveWaterTexture(PCSTR fileName);
 
-		ULONG getWaterDetailHandle (int32_t frameNum)
+		uint32_t getWaterDetailHandle (int32_t frameNum)
 		{
 			if ((frameNum >= 0) && (frameNum < (int32_t)numWaterDetailFrames))
 			{
@@ -137,7 +137,7 @@ class TerrainColorMap
 		}
 		int32_t saveWaterDetail(PCSTR fileName);
 
-		ULONG getWaterDetailNumFrames (void)
+		uint32_t getWaterDetailNumFrames (void)
 		{
 			return numWaterDetailFrames;
 		}
@@ -213,7 +213,7 @@ class TerrainColorMap
 		}
 
 		//Used by editor for TacMap
-		void getScaledColorMap (PUCHAR bfr, int32_t width);
+		void getScaledColorMap (puint8_t bfr, int32_t width);
 };
 
 typedef TerrainColorMap *TerrainColorMapPtr;

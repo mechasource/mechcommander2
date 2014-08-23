@@ -30,9 +30,9 @@ struct PolyElementData
 	bool		drawTranslucent;		//Used for FX
 	bool		StatusBar;				//Is this a status bar?
 	int32_t		BarWidth;				//Width of status bar
-	int			BarColor;				//Color of status bar
+	int32_t			BarColor;				//Color of status bar
 
-	PUCHAR	textureMap;				//Pointer to Bitmap for Texture
+	puint8_t	textureMap;				//Pointer to Bitmap for Texture
 	int32_t	    width;					//Width of texture
 	int32_t		height;					//Height of texture
 	char		*hazePalette;			//Translucency/haze table

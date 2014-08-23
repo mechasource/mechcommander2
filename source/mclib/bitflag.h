@@ -66,18 +66,18 @@ class BitFlag
 			divValue = 1;
 			colWidth = 1;
 		}
-		int32_t init(ULONG numRows, ULONG numColumns, ULONG initialValue = 0);
+		int32_t init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue = 0);
 		void destroy(void);
 	
-		void resetAll(ULONG bits);
+		void resetAll(uint32_t bits);
 			
-		void setFlag(ULONG r, ULONG c);
-		void clearFlag(ULONG r, ULONG c);
+		void setFlag(uint32_t r, uint32_t c);
+		void clearFlag(uint32_t r, uint32_t c);
 		
-		void setGroup(ULONG r, ULONG c, ULONG length);
-		void clearGroup(ULONG r, ULONG c, ULONG length);
+		void setGroup(uint32_t r, uint32_t c, uint32_t length);
+		void clearGroup(uint32_t r, uint32_t c, uint32_t length);
 		
-		uint8_t getFlag(ULONG r, ULONG c);
+		uint8_t getFlag(uint32_t r, uint32_t c);
 };
 
 //----------------------------------------------------------------------------------
@@ -113,7 +113,7 @@ class ByteFlag
 			init();
 		}
 		
-		int32_t init(ULONG numRows, ULONG numColumns, ULONG initialValue = 0);
+		int32_t init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue = 0);
 		void initTGA(PSTR tgaFileName);
 
 		void destroy(void);
@@ -123,7 +123,7 @@ class ByteFlag
 			destroy();
 		}
 	
-		PUCHAR memDump(void);
+		puint8_t memDump(void);
 	
 		uint32_t getWidth(void)
 		{
@@ -135,18 +135,18 @@ class ByteFlag
 			return columns;
 		}
 
-		void resetAll(ULONG byte);
+		void resetAll(uint32_t byte);
 			
-		void setFlag(ULONG r, ULONG c);
-		void clearFlag(ULONG r, ULONG c);
+		void setFlag(uint32_t r, uint32_t c);
+		void clearFlag(uint32_t r, uint32_t c);
 		
-		void setGroup(ULONG r, ULONG c, ULONG length);
-		void clearGroup(ULONG r, ULONG c, ULONG length);
+		void setGroup(uint32_t r, uint32_t c, uint32_t length);
+		void clearGroup(uint32_t r, uint32_t c, uint32_t length);
 		
-		uint8_t getFlag(ULONG r, ULONG c);
+		uint8_t getFlag(uint32_t r, uint32_t c);
 		
-		void setCircle(ULONG x, ULONG y, ULONG radius, uint8_t value);
-		void clearCircle(ULONG x, ULONG y, ULONG radius, uint8_t value);
+		void setCircle(uint32_t x, uint32_t y, uint32_t radius, uint8_t value);
+		void clearCircle(uint32_t x, uint32_t y, uint32_t radius, uint8_t value);
 };
 
 //----------------------------------------------------------------------------------

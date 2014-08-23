@@ -68,9 +68,9 @@ class ObjectAppearance: public Appearance
 
 
 		int32_t										paintScheme;
-		PUCHAR									fadeTable;
+		puint8_t									fadeTable;
 
-		void setDamage( int Damage ) // editor uses this... nobody else should
+		void setDamage( int32_t Damage ) // editor uses this... nobody else should
 		{
 			damage = Damage;
 			barStatus = Damage ? 0 : 1;

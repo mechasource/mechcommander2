@@ -39,15 +39,15 @@ public:
 	operator ECHARPTR() const { return Data(); }
 	// MANIPULATORS
 
-	void		Replace( int Start_Index, const EString& String );
-	void		Replace( int Start_Index, const EChar* );
+	void		Replace( int32_t Start_Index, const EString& String );
+	void		Replace( int32_t Start_Index, const EChar* );
 
-	bool		Remove( int Start_Index, int End_Index );
+	bool		Remove( int32_t Start_Index, int32_t End_Index );
 	bool Remove( EString& Sub_String );
 
 	// puts this string in the middle of another string
-	inline void	Insert( int Start_Index, const EString& String );
-	void	Insert( int Start_Index, const EChar* String ); 
+	inline void	Insert( int32_t Start_Index, const EString& String );
+	void	Insert( int32_t Start_Index, const EChar* String ); 
 
 	void		Swap( EString& );
 	inline void	Empty();
@@ -84,15 +84,15 @@ public:
 	inline friend bool operator==( const EChar*, const EString& );
 
 	// these functions return -1 if "this" is less than the passed in string
-	int Compare( const EString&, bool Case_Sensitive = false ) const;
-	int Compare( const EChar*, bool Case_Sensitive = false ) const;
+	int32_t Compare( const EString&, bool Case_Sensitive = false ) const;
+	int32_t Compare( const EChar*, bool Case_Sensitive = false ) const;
 
 	bool operator!=( const EString& ) const;
 	bool operator!=( const EChar*) const;
 	friend bool operator!=( const EChar*, const EString& );
 
-	inline EChar& operator[]( int Index );
-	inline const EChar& operator[](int Index) const;
+	inline EChar& operator[]( int32_t Index );
+	inline const EChar& operator[](int32_t Index) const;
 
 	inline bool operator<( const EString& ) const; 
 	inline bool operator<( const EChar* ) const;
@@ -110,22 +110,22 @@ public:
 	inline bool operator>=( const EChar*) const;
 	inline friend bool operator>=( const EChar*, const EString&);
 	
-	int Size() const; 	// number of bytes
-	int Length() const;	// number of characters
+	int32_t Size() const; 	// number of bytes
+	int32_t Length() const;	// number of characters
 
 	// search functions
-	int Find( EChar, int Start_Index = EString::INVALID_INDEX) const;
-	int Find( const EString&, int Start_Index = EString::INVALID_INDEX) const;
-	int Find( const EChar*, int Start_Index = EString::INVALID_INDEX) const;
+	int32_t Find( EChar, int32_t Start_Index = EString::INVALID_INDEX) const;
+	int32_t Find( const EString&, int32_t Start_Index = EString::INVALID_INDEX) const;
+	int32_t Find( const EChar*, int32_t Start_Index = EString::INVALID_INDEX) const;
 
-	int ReverseFind ( EChar, int End_Index = EString::INVALID_INDEX) const;
+	int32_t ReverseFind ( EChar, int32_t End_Index = EString::INVALID_INDEX) const;
 
 	
 	// we are going to treat this object as a TCHAR array, so we 
 	// don't have to worry about #of chars versus #of bytes
-	EString SubString( int Start_Index, int End_Index ) const;
-	inline EString Left( int Num_Chars) const;	 
-	inline EString Right( int Num_Chars) const;	
+	EString SubString( int32_t Start_Index, int32_t End_Index ) const;
+	inline EString Left( int32_t Num_Chars) const;	 
+	inline EString Right( int32_t Num_Chars) const;	
 
 	inline bool 		IsEmpty() const;
 
@@ -133,13 +133,13 @@ public:
 	PSTR 	CreateMBCS() const; 
 
 	inline	const EChar* Data() const;
-	void	SetBufferSize( int );
+	void	SetBufferSize( int32_t );
 
 	// ALL UNICODE SPECIFIC AND
 
 #ifndef UNICODE
 
-	int Find( uint16_t, int Start_Index = -1 ) const;
+	int32_t Find( uint16_t, int32_t Start_Index = -1 ) const;
 
 #else // K_UNICODE
 
@@ -178,7 +178,7 @@ public:
 
 	void	Format( PCSTR, ... );
 
-	int Find( char, int Start_Index = EString::INVALID_INDEX) const;
+	int32_t Find( char, int32_t Start_Index = EString::INVALID_INDEX) const;
 
 
 #endif // Unicode 
@@ -189,7 +189,7 @@ private:
 	// helper functions
 
 	// Allocates a specific amount
-	void	Alloc( int Min_Amount );
+	void	Alloc( int32_t Min_Amount );
 	
 	// Reallocates if you want to make a change to a shared buffer
 	inline	void	ChecEBuffer();
@@ -199,14 +199,14 @@ private:
 	void	Assign( const EChar* p_Str );
 
 
-	static  inline  PWSTR	ToUnicode( puint16_t Buffer, pcuint8_t p_Str, int Num_Chars  );
-	static	inline	int	StrSize( const EChar* p_Str );
+	static  inline  PWSTR	ToUnicode( puint16_t Buffer, pcuint8_t p_Str, int32_t Num_Chars  );
+	static	inline	int32_t	StrSize( const EChar* p_Str );
 	
 	struct EBuffer
 	{
-		int m_Ref_Count;		// reference count
-		int m_Data_Length;		// Length of String
-		int m_Alloc_Length;	// Length of the Buffer
+		int32_t m_Ref_Count;		// reference count
+		int32_t m_Data_Length;		// Length of String
+		int32_t m_Alloc_Length;	// Length of the Buffer
 	
 		inline EChar* Data();
 		inline void Release();
@@ -260,7 +260,7 @@ inline void	EString::Empty()
 
 
 /////////////////////////////////////////////////////////////////
-inline void EString::Insert( int Start_Index, const EString& String )
+inline void EString::Insert( int32_t Start_Index, const EString& String )
 {
 	Insert( Start_Index, String.m_pBuffer->Data() );
 }
@@ -337,14 +337,14 @@ inline bool EString::operator!=( const EChar* p_Str_To_Compare ) const
 }
 
 /////////////////////////////////////////////////////////////////
-inline EString EString::Left( int Num_Chars) const
+inline EString EString::Left( int32_t Num_Chars) const
 {
 	// Bill changed to Num_Chars - 1, this was always returning one character too many
 	return SubString( 0, Num_Chars - 1 ); 
 }
 
 /////////////////////////////////////////////////////////////////
-inline EString EString::Right( int Num_Chars) const
+inline EString EString::Right( int32_t Num_Chars) const
 {
 	return SubString( m_pBuffer->m_Data_Length - Num_Chars, 
 		m_pBuffer->m_Data_Length - 1 );
@@ -397,7 +397,7 @@ inline bool operator!=( const EChar* p_String, const EString& Str )
 	return !(Str == p_String );
 }
 /////////////////////////////////////////////////////////////////
-inline EChar& EString::operator[]( int Index )
+inline EChar& EString::operator[]( int32_t Index )
 {
 	ChecEBufferDoRealloc();
 
@@ -407,7 +407,7 @@ inline EChar& EString::operator[]( int Index )
 }
 
 /////////////////////////////////////////////////////////////////
-inline const EChar& EString::operator[](int Index) const
+inline const EChar& EString::operator[](int32_t Index) const
 {
 	gosASSERT( Index < m_pBuffer->m_Data_Length );
 	

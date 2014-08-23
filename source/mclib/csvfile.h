@@ -43,8 +43,8 @@ class CSVFile : public File
 	// Data Members
 	//--------------
 	protected:
-		ULONG totalRows;			//Number of ROWS CSV file has.
-		ULONG totalCols;			//NUmber of COLS CSV file has.
+		uint32_t totalRows;			//Number of ROWS CSV file has.
+		uint32_t totalCols;			//NUmber of COLS CSV file has.
 		
 		char dataBuffer[2048];
 
@@ -64,7 +64,7 @@ class CSVFile : public File
 		int32_t textToLong (PSTR num);
 		size_t textToULong (PSTR num);
 		
-		short textToShort (PSTR num);
+		int16_t textToShort (PSTR num);
 		uint16_t textToUShort (PSTR num);
 		
 		char textToChar (PSTR num);
@@ -77,8 +77,8 @@ class CSVFile : public File
 		int32_t longToTextDec (PSTR result, int32_t num, size_t bufLen);
 		int32_t longToTextHex (PSTR result, int32_t num, size_t bufLen);
 
-		int32_t shortToTextDec (PSTR result, short num, size_t bufLen);
-		int32_t shortToTextHex (PSTR result, short num, size_t bufLen);
+		int32_t shortToTextDec (PSTR result, int16_t num, size_t bufLen);
+		int32_t shortToTextHex (PSTR result, int16_t num, size_t bufLen);
 
 		int32_t byteToTextDec (PSTR result, byte num, size_t bufLen);	
 		int32_t byteToTextHex (PSTR result, byte num, size_t bufLen);
@@ -101,21 +101,21 @@ class CSVFile : public File
 			return CSVFILE;
 		}
 
-		int32_t seekRowCol (ULONG row, ULONG col);
+		int32_t seekRowCol (uint32_t row, uint32_t col);
 		
-		int32_t readFloat (ULONG row, ULONG col, float &value);
+		int32_t readFloat (uint32_t row, uint32_t col, float &value);
 		
-		int32_t readBoolean (ULONG row, ULONG col, bool &value);
-		int32_t readLong (ULONG row, ULONG col, int32_t &value);
-		int32_t readULong (ULONG row, ULONG col, size_t &value);
+		int32_t readBoolean (uint32_t row, uint32_t col, bool &value);
+		int32_t readLong (uint32_t row, uint32_t col, int32_t &value);
+		int32_t readULong (uint32_t row, uint32_t col, size_t &value);
 		
-		int32_t readShort (ULONG row, ULONG col, short &value);
-		int32_t readUShort (ULONG row, ULONG col, uint16_t &value);
+		int32_t readShort (uint32_t row, uint32_t col, int16_t &value);
+		int32_t readUShort (uint32_t row, uint32_t col, uint16_t &value);
 		
-		int32_t readChar (ULONG row, ULONG col, char &value);
-		int32_t readUCHAR (ULONG row, ULONG col, uint8_t &value);
+		int32_t readChar (uint32_t row, uint32_t col, char &value);
+		int32_t readUCHAR (uint32_t row, uint32_t col, uint8_t &value);
 		
-		int32_t readString (ULONG row, ULONG col, PSTR result, size_t bufferSize);
+		int32_t readString (uint32_t row, uint32_t col, PSTR result, size_t bufferSize);
 };
 
 //---------------------------------------------------------------------------

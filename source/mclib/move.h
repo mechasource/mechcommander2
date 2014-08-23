@@ -215,7 +215,7 @@ typedef struct _ScenarioMapCellInfo {
 	bool				forest;
 	char				mine;
 	uint8_t		specialType;
-	short				specialID;
+	int16_t				specialID;
 	bool				passable;
 	int32_t				lineOfSight;
 } MissionMapCellInfo;
@@ -291,22 +291,22 @@ typedef struct _ScenarioMapCellInfo {
 #define	MAPCELL_BUILD_NOT_SET_MASK		0x80000000
 
 typedef struct _MapCell {
-	ULONG		data;
+	uint32_t		data;
 
-	ULONG getTerrain (void) {
+	uint32_t getTerrain (void) {
 		return((data & MAPCELL_TERRAIN_MASK) >> MAPCELL_TERRAIN_SHIFT);
 	}
 
-	void setTerrain (ULONG terrain) {
+	void setTerrain (uint32_t terrain) {
 		data &= (MAPCELL_TERRAIN_MASK ^ 0xFFFFFFFF);
 		data |= (terrain << MAPCELL_TERRAIN_SHIFT);
 	}
 
-	ULONG getOverlay (void) {
+	uint32_t getOverlay (void) {
 		return((data & MAPCELL_OVERLAY_MASK) >> MAPCELL_OVERLAY_SHIFT);
 	}
 
-	void setOverlay (ULONG overlay) {
+	void setOverlay (uint32_t overlay) {
 		data &= (MAPCELL_OVERLAY_MASK ^ 0xFFFFFFFF);
 		data |= (overlay << MAPCELL_OVERLAY_SHIFT);
 	}
@@ -321,11 +321,11 @@ typedef struct _MapCell {
 			data |= MAPCELL_MOVER_MASK;
 	}
 
-	ULONG getGate (void) {
+	uint32_t getGate (void) {
 		return((data & MAPCELL_GATE_MASK) >> MAPCELL_GATE_SHIFT);
 	}
 
-	void setGate (ULONG gate) {
+	void setGate (uint32_t gate) {
 		data &= (MAPCELL_GATE_MASK ^ 0xFFFFFFFF);
 		data |= (gate << MAPCELL_GATE_SHIFT);
 	}
@@ -340,22 +340,22 @@ typedef struct _MapCell {
 			data |= MAPCELL_PASSABLE_MASK;
 	}
 
-	bool getPathlock (ULONG level) {
+	bool getPathlock (uint32_t level) {
 		return((data & (MAPCELL_PATHLOCK_BASE << level)) ? true : false);
 	}
 
-	void setPathlock (ULONG level, bool pathlock) {
-		ULONG bit = MAPCELL_PATHLOCK_BASE << level;
+	void setPathlock (uint32_t level, bool pathlock) {
+		uint32_t bit = MAPCELL_PATHLOCK_BASE << level;
 		data &= (bit ^ 0xFFFFFFFF);
 		if (pathlock)
 			data |= bit;
 	}
 
-	ULONG getMine (void) {
+	uint32_t getMine (void) {
 		return((data & MAPCELL_MINE_MASK) >> MAPCELL_MINE_SHIFT);
 	}
 
-	void setMine (ULONG mine) {
+	void setMine (uint32_t mine) {
 		data &= (MAPCELL_MINE_MASK ^ 0xFFFFFFFF);
 		data |= (mine << MAPCELL_MINE_SHIFT);
 	}
@@ -370,21 +370,21 @@ typedef struct _MapCell {
 			data |= MAPCELL_PRESERVED_MASK;
 	}
 
-	void setLocalHeight (ULONG localElevation) {
+	void setLocalHeight (uint32_t localElevation) {
 		data &= (MAPCELL_HEIGHT_MASK ^ 0xFFFFFFFF);
 		data |= (localElevation << MAPCELL_HEIGHT_SHIFT);
 	}
 	
-	ULONG getLocalHeight (void) {
+	uint32_t getLocalHeight (void) {
 		return((data & MAPCELL_HEIGHT_MASK) >> MAPCELL_HEIGHT_SHIFT);
 	}
 
-	void setDebug (ULONG value) {
+	void setDebug (uint32_t value) {
 		data &= (MAPCELL_DEBUG_MASK ^ 0xFFFFFFFF);
 		data |= (value << MAPCELL_DEBUG_SHIFT);
 	}
 
-	ULONG getDebug (void) {
+	uint32_t getDebug (void) {
 		return((data & MAPCELL_DEBUG_MASK) >> MAPCELL_DEBUG_SHIFT);
 	}
 
@@ -497,9 +497,9 @@ typedef struct _MapCell {
 typedef MapCell* MapCellPtr;
 
 typedef struct _PreservedCell {
-	short				row;
-	short				col;
-	ULONG		data;
+	int16_t				row;
+	int16_t				col;
+	uint32_t		data;
 } PreservedCell;
 
 typedef PreservedCell* PreservedCellPtr;
@@ -566,19 +566,19 @@ class MissionMap {
 
 		int32_t write (PacketFile* packetFile, int32_t whichPacket = 0);
 
-		ULONG getTerrain (int32_t row, int32_t col) {
+		uint32_t getTerrain (int32_t row, int32_t col) {
 			return(map[row * width + col].getTerrain());
 		}
 
-		void setTerrain (int32_t row, int32_t col, ULONG terrain) {
+		void setTerrain (int32_t row, int32_t col, uint32_t terrain) {
 			map[row * width + col].setTerrain(terrain);
 		}
 
-		ULONG getOverlay (int32_t row, int32_t col) {
+		uint32_t getOverlay (int32_t row, int32_t col) {
 			return(map[row * width + col].getOverlay());
 		}
 
-		void setOverlay (int32_t row, int32_t col, ULONG overlay) {
+		void setOverlay (int32_t row, int32_t col, uint32_t overlay) {
 			map[row * width + col].setOverlay(overlay);
 		}
 
@@ -590,11 +590,11 @@ class MissionMap {
 			map[row * width + col].setMover(moverHere);
 		}
 
-		ULONG getGate (int32_t row, int32_t col) {
+		uint32_t getGate (int32_t row, int32_t col) {
 			return(map[row * width + col].getGate());
 		}
 
-		void setGate (int32_t row, int32_t col, ULONG gate) {
+		void setGate (int32_t row, int32_t col, uint32_t gate) {
 			map[row * width + col].setGate(gate);
 		}
 
@@ -616,11 +616,11 @@ class MissionMap {
 			map[row * width + col].setPathlock(level, pathlock);
 		}
 
-		ULONG getMine (int32_t row, int32_t col) {
+		uint32_t getMine (int32_t row, int32_t col) {
 			return(map[row * width + col].getMine());
 		}
 
-		void setMine (int32_t row, int32_t col, ULONG mine) {
+		void setMine (int32_t row, int32_t col, uint32_t mine) {
 			map[row * width + col].setMine(mine);
 		}
 
@@ -632,18 +632,18 @@ class MissionMap {
 			map[row * width + col].setPreserved(preserved);
 		}
 
-		void setLocalHeight (int32_t row, int32_t col, ULONG localElevation) {
+		void setLocalHeight (int32_t row, int32_t col, uint32_t localElevation) {
 			map[row * width + col].setLocalHeight(localElevation);
 		}
 
-		ULONG getLocalHeight (int32_t row, int32_t col) {
+		uint32_t getLocalHeight (int32_t row, int32_t col) {
 			return(map[row * width + col].getLocalHeight());
 		}
 
-		void setCellDebug (int32_t row, int32_t col, ULONG value, ULONG level) {
+		void setCellDebug (int32_t row, int32_t col, uint32_t value, uint32_t level) {
 			if( row >= 0 && row < height && col >= 0 && col < width )
 			{
-				ULONG curValue = map[row * width + col].getDebug();
+				uint32_t curValue = map[row * width + col].getDebug();
 				if (curValue && (curValue != value)) {
 					for (int32_t i = 0; i < numDebugCells; i++)
 						if (debugCells[i][0] == row)
@@ -699,7 +699,7 @@ class MissionMap {
 			}
 		}
 
-		ULONG getCellDebug (int32_t row, int32_t col) {
+		uint32_t getCellDebug (int32_t row, int32_t col) {
 			return(map[row * width + col].getDebug());
 		}
 
@@ -814,7 +814,7 @@ class MissionMap {
 
 		int32_t getLOF (Stuff::Vector3D position);
 
-		ULONG cellPassable (Stuff::Vector3D cellPosition);
+		uint32_t cellPassable (Stuff::Vector3D cellPosition);
 
 		void lineOfSensor (Stuff::Vector3D start, Stuff::Vector3D target, int32_t& numBlockingTiles, int32_t& numBlockingObjects);
 
@@ -848,11 +848,11 @@ typedef MovePath* MovePathPtr;
 #define	MAX_STEPS_PER_MOVEPATH 200
 
 typedef struct _PathStep {
-	short					cell[2];							// obvious
+	int16_t					cell[2];							// obvious
 	float					distanceToGoal;						// dist, in meters, to goal from this step
 	Stuff::Vector3D			destination;						// world pos of this step
 	char					direction;							// 0 thru 7 direction into this step
-	short					area;
+	int16_t					area;
 } PathStep;
 
 typedef PathStep* PathStepPtr;
@@ -978,7 +978,7 @@ class MovePath {
 #pragma pack(1)
 
 typedef struct _DoorLink {
-	short					doorIndex;
+	int16_t					doorIndex;
 	char					doorSide;
 	int32_t					cost;
 	int32_t					openCost;
@@ -989,22 +989,22 @@ typedef DoorLink* DoorLinkPtr;
 typedef struct _GlobalMapDoor {
 	//----------------
 	// Map layout data
-	short					row;
-	short					col;
+	int16_t					row;
+	int16_t					col;
 	char					length;					// in cells
 	bool					open;
 	char					teamID;
-	short					area[2];
-	short					areaCost[2];
+	int16_t					area[2];
+	int16_t					areaCost[2];
 	char					direction[2];
-	short					numLinks[2];
+	int16_t					numLinks[2];
 	DoorLinkPtr				links[2];
 	//------------------
 	// Pathfinding  data
 	int32_t					cost;
 	int32_t					parent;
 	int32_t					fromAreaIndex;
-	ULONG			flags;
+	uint32_t			flags;
 	int32_t					g;
 	int32_t					hPrime;
 	int32_t					fPrime;
@@ -1013,7 +1013,7 @@ typedef struct _GlobalMapDoor {
 typedef GlobalMapDoor* GlobalMapDoorPtr;
 
 typedef struct _DoorInfo {
-	short					doorIndex;
+	int16_t					doorIndex;
 	char					doorSide;
 } DoorInfo;
 
@@ -1038,16 +1038,16 @@ typedef enum _WaterType {
 typedef struct _GlobalMapArea {
 	//----------------
 	// Map layout data
-	short					sectorR;
-	short					sectorC;
+	int16_t					sectorR;
+	int16_t					sectorC;
 	DoorInfoPtr				doors;
 	AreaType				type;
-	short					numDoors;
+	int16_t					numDoors;
 	int32_t					ownerWID;
 	char					teamID;
 	bool					offMap;
 	bool					open;
-	short*					cellsCovered;
+	pint16_t					cellsCovered;
 } GlobalMapArea;
 
 #pragma pack()
@@ -1073,19 +1073,19 @@ typedef GlobalPathStep* GlobalPathStepPtr;
 #define	MAX_GAME_OBJECT_CELLS	64
 
 typedef struct _GameObjectFootPrint {
-	short				cellPositionRow;
-	short				cellPositionCol;
-	short				preNumCells;
-	short				numCells;
-	short				cells[MAX_GAME_OBJECT_CELLS][2];
+	int16_t				cellPositionRow;
+	int16_t				cellPositionCol;
+	int16_t				preNumCells;
+	int16_t				numCells;
+	int16_t				cells[MAX_GAME_OBJECT_CELLS][2];
 } GameObjectFootPrint;
 
 typedef struct _GlobalSpecialAreaInfo {
 	uint8_t			type;
-	short					numSubAreas;
-	short					subAreas[MAX_SPECIAL_SUB_AREAS];
-	short					numCells;
-	short					cells[MAX_CELLS_PER_SUB_AREA][2];
+	int16_t					numSubAreas;
+	int16_t					subAreas[MAX_SPECIAL_SUB_AREAS];
+	int16_t					numCells;
+	int16_t					cells[MAX_CELLS_PER_SUB_AREA][2];
 } GlobalSpecialAreaInfo;
 
 class GlobalMap {
@@ -1102,7 +1102,7 @@ class GlobalMap {
 		int32_t						numDoorInfos;
 		int32_t						numDoorLinks;
 
-		short*						areaMap;
+		pint16_t						areaMap;
 		GlobalMapAreaPtr			areas;
 		GlobalMapDoorPtr			doors;
 		DoorInfoPtr					doorInfos;
@@ -1133,7 +1133,7 @@ class GlobalMap {
 		bool						calcedPathCost;
 
 		int32_t						numOffMapAreas;
-		short						offMapAreas[MAX_OFFMAP_AREAS];
+		int16_t						offMapAreas[MAX_OFFMAP_AREAS];
 
 		bool (*isGateDisabledCallback) (int32_t objectWID);
 		bool (*isGateOpenCallback) (int32_t objectWID);
@@ -1376,19 +1376,19 @@ typedef GlobalMap* GlobalMapPtr;
 #define	NUM_ADJ_CELLS	8
 
 typedef struct _MoveMapNode {
-	short				adjCells[NUM_ADJ_CELLS];
+	int16_t				adjCells[NUM_ADJ_CELLS];
 	int32_t				cost;								// normal cost to travel here, based upon terrain
 	int32_t				parent;								// where we came from (parent cell)
-	ULONG		flags;								// CLOSED, OPEN, STEP flags
+	uint32_t		flags;								// CLOSED, OPEN, STEP flags
 	int32_t				g;									// known cost from START to this node
 	int32_t				hPrime;								// estimated cost from this node to GOAL
 	int32_t				fPrime;								// = g + hPrime
 
-	void setFlag (ULONG flag) {
+	void setFlag (uint32_t flag) {
 		flags |= flag;
 	}
 
-	void clearFlag (ULONG flag) {
+	void clearFlag (uint32_t flag) {
 		flags &= (flag ^ 0xFFFFFFFF);
 	}
 } MoveMapNode;
@@ -1525,7 +1525,7 @@ class MoveMap {
 					int32_t clearCellCost,
 					int32_t jumpCellCost,
 					int32_t offsets,
-					ULONG params = MOVEPARAM_NONE);
+					uint32_t params = MOVEPARAM_NONE);
 
 		int32_t setUp (int32_t moveLevel,
 					Stuff::Vector3D* startPos,
@@ -1537,7 +1537,7 @@ class MoveMap {
 					int32_t clearCellCost,
 					int32_t jumpCellCost,
 					int32_t offsets,
-					ULONG params = MOVEPARAM_NONE);
+					uint32_t params = MOVEPARAM_NONE);
 
 		void clear (void);
 

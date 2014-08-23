@@ -150,7 +150,7 @@ typedef struct Literal {
 //---------------------------------------------------------------------------
 
 typedef struct CaseItem {
-	int					labelValue;
+	int32_t					labelValue;
 	PSTR				branchLocation;
 	struct CaseItem*	next;
 } CaseItem;

@@ -132,14 +132,14 @@ class Camera
 		
 		float						letterBoxPos;
 		float						letterBoxTime;
-		UCHAR						letterBoxAlpha;
+		uint8_t						letterBoxAlpha;
 		
 		bool						startEnding;
 		
 		bool						inFadeMode;
-		ULONG						fadeColor;
-		ULONG						fadeAlpha;
-		ULONG						fadeStart;
+		uint32_t						fadeColor;
+		uint32_t						fadeAlpha;
+		uint32_t						fadeStart;
 		float						timeLeftToFade;
 		float						startFadeTime;
 		
@@ -228,9 +228,9 @@ class Camera
 
 		float					fogStart;				//Altitude at which fog starts
 		float					fogFull;				//Altitude at which fog is Full;
-		ULONG					dayFogColor;				//Color of FOG.
+		uint32_t					dayFogColor;				//Color of FOG.
 		float					fogTransparency;				//How much of the sky color will show through
-		ULONG					fogColor;				//Color of FOG.
+		uint32_t					fogColor;				//Color of FOG.
 		float            		cameraAltitude;
 		float					cameraAltitudeDesired;	//What would I like the camera to be at!  Maybe smaller due to low angle!
 
@@ -465,13 +465,13 @@ class Camera
 		
 		void deactivate (void);
 		
-		void setLightColor (int32_t index, ULONG argb)
+		void setLightColor (int32_t index, uint32_t argb)
 		{
 			if ((index >= 0) && (index < numLights) && worldLights[index])
 				worldLights[index]->SetaRGB(argb);
 		}
 		
-		ULONG getLightColor (int32_t index)
+		uint32_t getLightColor (int32_t index)
 		{
 			if ((index >= 0) && (index < numLights) && worldLights[index])
 				return worldLights[index]->GetaRGB();
@@ -539,7 +539,7 @@ class Camera
 			return -1;
 		}
 
-		void removeWorldLight (ULONG lightNum, TG_LightPtr light)
+		void removeWorldLight (uint32_t lightNum, TG_LightPtr light)
 		{
 			if ((lightNum < MAX_LIGHTS_IN_WORLD) && (worldLights[lightNum] == light))
 			{
@@ -726,7 +726,7 @@ class Camera
 				startEnding = true;			//Start the letterbox shrinking.  When fully shrunk, inMovieMode goes false!
 		}
 
-		void fadeToColor (ULONG color, float timeToFade)
+		void fadeToColor (uint32_t color, float timeToFade)
 		{
 			if (!inFadeMode && (timeToFade > Stuff::SMALL))
 			{

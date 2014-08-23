@@ -38,7 +38,7 @@ Optionally a name can be supplied, however this will only be used during debug b
 
 Example:
 	EList<KSomeClass, const KSomeClass&>	m_List(10, 5, "SomeList");
-	EList<int, cint32_t>					m_List(100, 10);
+	EList<int32_t, cint32_t>					m_List(100, 10);
 
 
 Note:
@@ -103,10 +103,10 @@ public:
 		inline EConstIterator& operator=(const EConstIterator& rIter)	{ m_pCur_Node = rIter.m_pCur_Node; return(*this); }
 
 		//
-		//	NOTE:	Postfix operators require "int" to be passed as parameter,
+		//	NOTE:	Postfix operators require "int32_t" to be passed as parameter,
 		//			else compiler error C2807 will occur when used
 		//
-		inline EConstIterator& operator++(int)	// postfix increment
+		inline EConstIterator& operator++(int32_t)	// postfix increment
 		{
 			#ifdef	DEBUG
 			if(!(IsValid()))
@@ -119,7 +119,7 @@ public:
 			return(*this);
 		}
 
-		inline EConstIterator& operator--(int)	// postfix decrement
+		inline EConstIterator& operator--(int32_t)	// postfix decrement
 		{
 			#ifdef	KTL_DEBUG
 			if(!(IsValid()))
@@ -132,7 +132,7 @@ public:
 			return(*this);
 		}
 
-		inline EConstIterator& operator+=(ULONG Increment)
+		inline EConstIterator& operator+=(uint32_t Increment)
 		{
 			while(Increment)
 			{
@@ -149,7 +149,7 @@ public:
 			return(*this);
 		}
 
-		inline EConstIterator& operator-=(ULONG Decrement)
+		inline EConstIterator& operator-=(uint32_t Decrement)
 		{
 			while(Decrement)
 			{
@@ -229,9 +229,9 @@ public:
 	//===== OPERATORS =====
 
 	EList<ELIST_TPL_ARG>& operator=(const EList<ELIST_TPL_ARG>& rList);
-	inline	T&		operator[](ULONG Pos);	
+	inline	T&		operator[](uint32_t Pos);	
 	inline	T&		operator[](const typename EList<ELIST_TPL_ARG>::EIterator& rIter);	
-	inline	T_ARG	operator[](ULONG Pos) const;
+	inline	T_ARG	operator[](uint32_t Pos) const;
 	inline	T_ARG	operator[](const typename EList<ELIST_TPL_ARG>::EIterator& rIter) const;
 
 	inline	bool	operator==(const EList<ELIST_TPL_ARG>& rList) const;
@@ -244,58 +244,58 @@ public:
 	inline	bool	Prepend(T_ARG New_Element);	// Add an element to the start of the list
 	inline	bool	Append(T_ARG New_Element);	// Add an element to the end of the list
 	inline	bool	Insert(T_ARG New_Element, const typename EList<ELIST_TPL_ARG>::EIterator& rIter);	// Insert an element bofore the specified position
-	inline	bool	Insert(T_ARG New_Element, ULONG Pos);		// Insert an element bofore the specified position
+	inline	bool	Insert(T_ARG New_Element, uint32_t Pos);		// Insert an element bofore the specified position
 
 	bool	Prepend(const EList<ELIST_TPL_ARG>& rList);	// Prepend a list to this one
 	bool	Append(const EList<ELIST_TPL_ARG>& rList);	// Append a list to this one
 	bool	Insert(const EList<ELIST_TPL_ARG>& rList, const typename EList<ELIST_TPL_ARG>::EIterator& rIter);	// Insert a list at the specified position
-	bool	Insert(const EList<ELIST_TPL_ARG>& rList, ULONG Pos);	// Insert a list at the specified position
+	bool	Insert(const EList<ELIST_TPL_ARG>& rList, uint32_t Pos);	// Insert a list at the specified position
 
 	inline	bool	DeleteHead();					// Remove the element at the beginning of the list
 	inline	bool	DeleteTail();					// Remove the element at the end of the list
 	inline	bool	Delete(const typename EList<ELIST_TPL_ARG>::EIterator& rIter);	// Remove the element at the specified position
-	inline	bool	Delete(ULONG Pos);				// Remove the element at the specified position
+	inline	bool	Delete(uint32_t Pos);				// Remove the element at the specified position
 	inline	bool	Delete(const typename EList<ELIST_TPL_ARG>::EIterator& rStart_Iter, const typename EList<ELIST_TPL_ARG>::EIterator& rEnd_Iter);	// Remove the element at the specified position
-	inline	bool	Delete(ULONG Start_Pos, ULONG End_Pos);	// Remove the element at the specified position
+	inline	bool	Delete(uint32_t Start_Pos, uint32_t End_Pos);	// Remove the element at the specified position
 
 
 	inline	bool	Replace(T_ARG Element, const typename EList<ELIST_TPL_ARG>::EIterator& rIter);	// Replace an element at the specified position
-	inline	bool	Replace(T_ARG Element, ULONG Pos);		// Replace an element at the specified position
+	inline	bool	Replace(T_ARG Element, uint32_t Pos);		// Replace an element at the specified position
 
-	inline	typename EList<ELIST_TPL_ARG>::EIterator Iterator(ULONG Pos);	
-	inline	const typename EList<ELIST_TPL_ARG>::EConstIterator Iterator(ULONG Pos) const;
+	inline	typename EList<ELIST_TPL_ARG>::EIterator Iterator(uint32_t Pos);	
+	inline	const typename EList<ELIST_TPL_ARG>::EConstIterator Iterator(uint32_t Pos) const;
 	inline	typename EList<ELIST_TPL_ARG>::EIterator Begin();
 	inline	const typename EList<ELIST_TPL_ARG>::EConstIterator Begin() const;
 	inline	typename EList<ELIST_TPL_ARG>::EIterator End();
 	inline	const typename EList<ELIST_TPL_ARG>::EConstIterator End() const;
   
 	inline	T&	Get(const typename EList<const ELIST_TPL_ARG>::EIterator& rIter);	// Retrieve the element at the specified position
-	inline	T&	Get(ULONG Pos);			// Retrieve the element at the specified position
+	inline	T&	Get(uint32_t Pos);			// Retrieve the element at the specified position
 	inline	T&	GetHead();				// Retrieve the element at the start of the list
 	inline	T&	GetTail();				// Retrieve the element at the end of the list
 
 	//===== ACCESSORS =====
 
 	inline	T_ARG	Get(const typename EList<ELIST_TPL_ARG>::EConstIterator& rIter) const;	// Retrieve the element at the specified position
-	inline	T_ARG	Get(ULONG Pos) const;	// Retrieve the element at the specified position
+	inline	T_ARG	Get(uint32_t Pos) const;	// Retrieve the element at the specified position
 	inline	T_ARG	GetHead() const;		// Retrieve the element at the start of the list
 	inline	T_ARG	GetTail() const;		// Retrieve the element at the end of the list
 
-	inline	ULONG	Count() const;			// Get the number of elements in the list
+	inline	uint32_t	Count() const;			// Get the number of elements in the list
 	inline	bool	IsEmpty() const;		// Check if the list is empty
-	inline	bool	Exists(ULONG Pos) const;// Check if an element at that position exists
-	inline	typename EList<ELIST_TPL_ARG>::EConstIterator	Find(T_ARG Item, ULONG Start_Index = 0) const;
-	inline	typename EList<ELIST_TPL_ARG>::EIterator	Find(T_ARG Item, ULONG Start_Index = 0);
+	inline	bool	Exists(uint32_t Pos) const;// Check if an element at that position exists
+	inline	typename EList<ELIST_TPL_ARG>::EConstIterator	Find(T_ARG Item, uint32_t Start_Index = 0) const;
+	inline	typename EList<ELIST_TPL_ARG>::EIterator	Find(T_ARG Item, uint32_t Start_Index = 0);
 	inline	typename EList<ELIST_TPL_ARG>::EConstIterator	Find(T_ARG Item, const typename EList<ELIST_TPL_ARG>::EConstIterator& rStart_Iterator) const;
 	inline	typename EList<ELIST_TPL_ARG>::EIterator	Find(T_ARG Item, const typename EList<ELIST_TPL_ARG>::EIterator& rStart_Iterator);
 
-	inline	ULONG GrowSize() const;			// Get the growsize of list
+	inline	uint32_t GrowSize() const;			// Get the growsize of list
 
 private:
 
 	//===== DATA =====
 
-	ULONG				m_Count;			// number of elements currently in list
+	uint32_t				m_Count;			// number of elements currently in list
 
 	ENode*				m_pHead;			// pointer to first node in list
 	ENode*				m_pTail;			// pointer to last node in list
@@ -406,10 +406,10 @@ ELIST_TPL_DEF inline T& EList<ELIST_TPL_ARG>::operator[](const typename EList<EL
 }
 
 //-------------------------------------------------------------------------------------------------
-ELIST_TPL_DEF inline T& EList<ELIST_TPL_ARG>::operator[](ULONG Pos)
+ELIST_TPL_DEF inline T& EList<ELIST_TPL_ARG>::operator[](uint32_t Pos)
 {
 	gosASSERT(Pos < m_Count);		// Need to stay within range of number of elements
-	return  operator[](Iterator((ULONG)Pos));
+	return  operator[](Iterator((uint32_t)Pos));
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -420,7 +420,7 @@ ELIST_TPL_DEF inline T_ARG EList<ELIST_TPL_ARG>::operator[](const typename EList
 }
 
 //-------------------------------------------------------------------------------------------------
-ELIST_TPL_DEF inline T_ARG EList<ELIST_TPL_ARG>::operator[](ULONG Pos) const
+ELIST_TPL_DEF inline T_ARG EList<ELIST_TPL_ARG>::operator[](uint32_t Pos) const
 {
 	gosASSERT(Pos < m_Count);		// Need to stay within range of number of elements
 	return(Get(Iterator(Pos)));
@@ -461,7 +461,7 @@ ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::operator==(const EList<ELIST_TPL
 	//
 	//	Iterate through both lists and check if they're equal
 	//
-	for(ULONG i = 0; i < m_Count; i++)
+	for(uint32_t i = 0; i < m_Count; i++)
 	{
 		if(List_Iter.Item() != This_Iter.Item())
 		{
@@ -492,7 +492,7 @@ INPUT PARAMETERS:
 RETURN VALUE:
 		An iterator that points at the element at the position we passed
 ***************************************************************************************************/
-ELIST_TPL_DEF inline typename EList<ELIST_TPL_ARG>::EIterator EList<ELIST_TPL_ARG>::Iterator(ULONG Pos)
+ELIST_TPL_DEF inline typename EList<ELIST_TPL_ARG>::EIterator EList<ELIST_TPL_ARG>::Iterator(uint32_t Pos)
 {
 	gosASSERT(Pos < m_Count && m_Count);	// Need to stay within range of number of elements
 
@@ -505,7 +505,7 @@ ELIST_TPL_DEF inline typename EList<ELIST_TPL_ARG>::EIterator EList<ELIST_TPL_AR
 	//	Iterate through the list until we get to the element we desire
 	//
 	ENode	*pNode = m_pHead;
-	for(ULONG i = 0; i < Pos; i++)
+	for(uint32_t i = 0; i < Pos; i++)
 	{
 		pNode = pNode->m_pNext;
 	}
@@ -515,7 +515,7 @@ ELIST_TPL_DEF inline typename EList<ELIST_TPL_ARG>::EIterator EList<ELIST_TPL_AR
 }
 
 //-------------------------------------------------------------------------------------------------
-ELIST_TPL_DEF inline const typename EList<ELIST_TPL_ARG>::EConstIterator EList<ELIST_TPL_ARG>::Iterator(ULONG Pos) const
+ELIST_TPL_DEF inline const typename EList<ELIST_TPL_ARG>::EConstIterator EList<ELIST_TPL_ARG>::Iterator(uint32_t Pos) const
 {
 	gosASSERT(Pos < m_Count && m_Count);	// Need to stay within range of number of elements
 
@@ -528,7 +528,7 @@ ELIST_TPL_DEF inline const typename EList<ELIST_TPL_ARG>::EConstIterator EList<E
 	//	Iterate through the list until we get to the element we desire
 	//
 	ENode	*pNode = m_pHead;
-	for(ULONG i = 0; i < Pos; i++)
+	for(uint32_t i = 0; i < Pos; i++)
 	{
 		pNode = pNode->m_pNext;
 	}
@@ -746,7 +746,7 @@ ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Insert(T_ARG New_Element, const 
 }
 
 //-------------------------------------------------------------------------------------------------
-ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Insert(T_ARG  New_Element, ULONG Pos)
+ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Insert(T_ARG  New_Element, uint32_t Pos)
 {
 	gosASSERT(m_Count > Pos && m_Count);
 
@@ -908,7 +908,7 @@ INPUT PARAMETERS:
 RETURN VALUE:
 		TRUE if success
 ***************************************************************************************************/
-ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Delete(ULONG Pos)
+ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Delete(uint32_t Pos)
 {
 	gosASSERT(m_Count > Pos && m_Count);
 
@@ -959,7 +959,7 @@ ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Delete(const typename EList<ELIS
 }
 
 //-------------------------------------------------------------------------------------------------
-ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Delete(ULONG Start_Pos, ULONG End_Pos)
+ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Delete(uint32_t Start_Pos, uint32_t End_Pos)
 {
 	gosASSERT(Start_Pos < End_Pos);
 	return(Delete(Iterator(Start_Pos), Iterator(End_Pos)));
@@ -982,7 +982,7 @@ ELIST_TPL_DEF inline T& EList<ELIST_TPL_ARG>::Get(const typename EList<const ELI
 }
 	
 //-------------------------------------------------------------------------------------------------
-ELIST_TPL_DEF inline T& EList<ELIST_TPL_ARG>::Get(ULONG Pos)
+ELIST_TPL_DEF inline T& EList<ELIST_TPL_ARG>::Get(uint32_t Pos)
 {
 	gosASSERT(m_Count > Pos && m_Count);
 	return(Get(Iterator(Pos)));
@@ -1045,7 +1045,7 @@ INPUT PARAMETERS:
 RETURN VALUE:
 		TRUE if success, FALSE if not
 ***************************************************************************************************/
-ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Replace(T_ARG Element, ULONG Pos)
+ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Replace(T_ARG Element, uint32_t Pos)
 {
 	return(Replace(Element, Iterator(Pos)));
 }
@@ -1066,7 +1066,7 @@ ELIST_TPL_DEF bool EList<ELIST_TPL_ARG>::Append(const EList<ELIST_TPL_ARG>& rLis
 	//	Iterate through the source list and add any element to this one
 	//
 	const ENode*	pNode = rList.m_pHead;
-	for(ULONG i = 0; i < rList.m_Count; i++)
+	for(uint32_t i = 0; i < rList.m_Count; i++)
 	{
 		Append(pNode->m_Data);		// <<TODO>> BR - This needs to be optimized
 		pNode = pNode->m_pNext;
@@ -1090,7 +1090,7 @@ ELIST_TPL_DEF bool EList<ELIST_TPL_ARG>::Prepend(const EList<ELIST_TPL_ARG>& rLi
 	//	Iterate through the source list and add any element to this one
 	//
 	const ENode*	pNode = rList.m_pTail;
-	for(ULONG i = 0; i < rList.m_Count; i++)
+	for(uint32_t i = 0; i < rList.m_Count; i++)
 	{
 		Prepend(pNode->m_Data);		// <<TODO>> BR - This needs to be optimized
 		pNode = pNode->m_pPrev;
@@ -1114,7 +1114,7 @@ ELIST_TPL_DEF bool EList<ELIST_TPL_ARG>::Insert(const EList<ELIST_TPL_ARG>& rLis
 	gosASSERT(rIter.IsValid());
 	EConstIterator	Src_Iter = rList.Begin();
 
-	for(ULONG i = 0; i < rList.m_Count; i++)
+	for(uint32_t i = 0; i < rList.m_Count; i++)
 	{
 		Insert(Src_Iter.Item(), rIter);
 		Src_Iter++;
@@ -1133,7 +1133,7 @@ INPUT PARAMETERS:
 RETURN VALUE:
 		TRUE if success, FALSE if not
 ***************************************************************************************************/
-ELIST_TPL_DEF bool EList<ELIST_TPL_ARG>::Insert(const EList<ELIST_TPL_ARG>& rList, ULONG Pos)
+ELIST_TPL_DEF bool EList<ELIST_TPL_ARG>::Insert(const EList<ELIST_TPL_ARG>& rList, uint32_t Pos)
 {
 	gosASSERT( &rList != this);
 	return(Insert(rList, Iterator(Pos)));
@@ -1167,7 +1167,7 @@ INPUT PARAMETERS:
 RETURN VALUE:
 		The element at the position we passed
 ***************************************************************************************************/
-ELIST_TPL_DEF inline T_ARG EList<ELIST_TPL_ARG>::Get(ULONG Pos) const
+ELIST_TPL_DEF inline T_ARG EList<ELIST_TPL_ARG>::Get(uint32_t Pos) const
 {
 	gosASSERT(m_Count > Pos && m_Count);
 	return(Get(Iterator(Pos)));
@@ -1210,7 +1210,7 @@ RETURN VALUE:
 		The iterator that corresponds with the element in the list we searched for,
 		or INVALID_ITERATOR if the element could not be found
 ***************************************************************************************************/
-ELIST_TPL_DEF inline typename EList<ELIST_TPL_ARG>::EConstIterator EList<ELIST_TPL_ARG>::Find(T_ARG Item, ULONG Start_Index) const
+ELIST_TPL_DEF inline typename EList<ELIST_TPL_ARG>::EConstIterator EList<ELIST_TPL_ARG>::Find(T_ARG Item, uint32_t Start_Index) const
 {
 	gosASSERT(Start_Index < m_Count && (!(IsEmpty())));
 	return(Find(Item, Iterator(Start_Index)));
@@ -1227,7 +1227,7 @@ RETURN VALUE:
 		The iterator that corresponds with the element in the list we searched for,
 		or INVALID_ITERATOR if the element could not be found
 ***************************************************************************************************/
-ELIST_TPL_DEF inline typename EList<ELIST_TPL_ARG>::EIterator EList<ELIST_TPL_ARG>::Find(T_ARG Item, ULONG Start_Index)
+ELIST_TPL_DEF inline typename EList<ELIST_TPL_ARG>::EIterator EList<ELIST_TPL_ARG>::Find(T_ARG Item, uint32_t Start_Index)
 {
 	gosASSERT(Start_Index < m_Count && (!(IsEmpty())));
 	return(Find(Item, Iterator(Start_Index)));
@@ -1296,7 +1296,7 @@ FUNCTION DESCRIPTION:
 RETURN VALUE:
 		The number of elements in the list
 ***************************************************************************************************/
-ELIST_TPL_DEF inline ULONG EList<ELIST_TPL_ARG>::Count() const
+ELIST_TPL_DEF inline uint32_t EList<ELIST_TPL_ARG>::Count() const
 {
 	return(m_Count);
 }
@@ -1321,7 +1321,7 @@ FUNCTION DESCRIPTION:
 RETURN VALUE:
 		Current Growsize
 ***************************************************************************************************/
-ELIST_TPL_DEF inline ULONG EList<ELIST_TPL_ARG>::GrowSize() const
+ELIST_TPL_DEF inline uint32_t EList<ELIST_TPL_ARG>::GrowSize() const
 {
 	return(m_List_Pool.PageSize());
 }
@@ -1336,7 +1336,7 @@ INPUT PARAMETERS:
 RETURN VALUE:
 	TRUE if exist, FALSE if not
 ***************************************************************************************************/
-ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Exists(ULONG Pos) const
+ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::Exists(uint32_t Pos) const
 {
 	if(Pos < m_Count)
 	{
@@ -1435,7 +1435,7 @@ ELIST_TPL_DEF bool EList<ELIST_TPL_ARG>::CopyData(const EList<ELIST_TPL_ARG>& rS
 	m_pHead = m_pTail = pNode;
 	m_pHead->m_pPrev = NULL;
 	
-	for(ULONG i = 1; i<rSrc.m_Count; i++)
+	for(uint32_t i = 1; i<rSrc.m_Count; i++)
 	{
 		pSrc_Node = pSrc_Node->m_pNext;
 		gosASSERT(pSrc_Node);			// Should never be NULL

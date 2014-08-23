@@ -34,7 +34,7 @@ typedef struct _CloudVertex
 	float				pz,pw;				//Depth of vertex.
 	float				pu,pv;				//Scrolling UVs
 	bool				clipInfo;			//Is this vertex visible
-	ULONG				fogRGB;				//Haze ULONG
+	uint32_t				fogRGB;				//Haze uint32_t
 } CloudVertex;
 
 typedef CloudVertex *CloudVertexPtr;
@@ -45,8 +45,8 @@ class Clouds
 	// Data Members
 	//--------------
 	protected:
-		ULONG			mcTextureNodeIndex;			//Pointer to MCTextureNode which is used to cache handles if necessary
-		ULONG			gosTextureHandle;
+		uint32_t			mcTextureNodeIndex;			//Pointer to MCTextureNode which is used to cache handles if necessary
+		uint32_t			gosTextureHandle;
 		bool			renderClouds;
 		int32_t			gridSize;
 		float			scrollU;

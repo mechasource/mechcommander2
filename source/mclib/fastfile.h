@@ -21,7 +21,7 @@
 extern bool __stdcall FastFileInit (PSTR fname);
 extern void __stdcall FastFileFini (void);
 extern FastFile* __stdcall FastFileFind (PSTR fname, int32_t& fastFileHandle);
-extern ULONG __stdcall elfHash(PSTR name);
+extern uint32_t __stdcall elfHash(PSTR name);
 //-----------------------------------------------------------------------------------
 
 

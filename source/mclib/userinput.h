@@ -107,7 +107,7 @@ extern volatile char mc2MouseHeight;
 extern volatile bool mc2UseAsyncMouse;		//Should mouse draw and update in separate thread?
 extern volatile bool mc2MouseThreadStarted;	//Has the thread starting running yet?
 
-extern volatile PUCHAR mc2MouseData;
+extern volatile puint8_t mc2MouseData;
 
 //---------------------------------------------------------------------------
 class MouseCursorData
@@ -124,7 +124,7 @@ class MouseCursorData
 		StaticInfo*	cursorInfos;	// gotta be pointer, so destructor is called before texmgr quits
 
 		char mouseHS[MAX_MOUSE_STATES][2];
-		ULONG numFrames[MAX_MOUSE_STATES];
+		uint32_t numFrames[MAX_MOUSE_STATES];
 		float frameLengths[MAX_MOUSE_STATES];
 
 		friend class UserInput;
@@ -240,7 +240,7 @@ class UserInput
 		bool drawTerrainPointer;				//Draw an inverse project cross
 		int32_t mouseState;						//Which cursor should I draw?
 		int32_t mouseFrame;						//current Mouse Frame
-		ULONG mouseTextureHandle;				//current Mouse Texture handle.
+		uint32_t mouseTextureHandle;				//current Mouse Texture handle.
 		float mouseFrameLength;					//Time in Current Mouse Frame
 		float mouseScale;						//Scale factor for cursor for depth cueing.
 
@@ -252,7 +252,7 @@ class UserInput
 		bool leftMouseJustUp;					// leftButtonUp message equivalent
 		bool rightMouseJustUp;					// right up equivalent
 		
-		ULONG	attilaIndex;					// Set to 0xffffffff if no Attila Present.
+		uint32_t	attilaIndex;					// Set to 0xffffffff if no Attila Present.
 		
 	public:
 
@@ -564,7 +564,7 @@ class UserInput
 		
 		//----------------------------------------------------------
 		// Attila Functionality.
-		void addAttila (ULONG joyIndex)
+		void addAttila (uint32_t joyIndex)
 		{
 			attilaIndex = joyIndex;
 		}

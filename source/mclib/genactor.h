@@ -56,7 +56,7 @@ class GenericAppearanceType : public AppearanceType
 		
 		char						rotationalNodeId[TG_NODE_ID];
 		char						textureName[50];
-		ULONG						dotRGB;
+		uint32_t						dotRGB;
 		
 	public:
 	
@@ -81,7 +81,7 @@ class GenericAppearanceType : public AppearanceType
 			destroy();
 		}
 
-		void setAnimation (TG_MultiShapePtr shape, ULONG animationNum);
+		void setAnimation (TG_MultiShapePtr shape, uint32_t animationNum);
 		
 		int32_t getNumFrames (int32_t animationNum)
 		{
@@ -217,7 +217,7 @@ class GenericAppearance : public ObjectAppearance
 		
 		virtual void setObjStatus (int32_t oStatus);
 		
-		virtual void markTerrain (_ScenarioMapCellInfo* pInfo, int type, int counter);
+		virtual void markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
 		
 		virtual void markMoveMap (bool passable);
 

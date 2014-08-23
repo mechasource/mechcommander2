@@ -68,8 +68,8 @@ class TG_TypeMultiShape
 	//-------------
 	//Data Members
 	protected:
-		ULONG				numTG_TypeShapes;		//Number of TG_Shapes
-		ULONG				numTextures;			//Total Textures for all shapes.
+		uint32_t				numTG_TypeShapes;		//Number of TG_Shapes
+		uint32_t				numTextures;			//Total Textures for all shapes.
 		TG_TypeNodePtr		*listOfTypeShapes;		//Memory holding all TG_TypeNodes and TypeShapes
 		TG_TexturePtr		listOfTextures;			//List of texture Structures for all shapes.
 		
@@ -133,19 +133,19 @@ class TG_TypeMultiShape
 		//Function returns 0 if OK.  -1 if textureName is longer then nameLength-1.
 		//This function digs the texture name(s) out of the ASE file so that the
 		//User can load and manage them anyway they want to.
-		int32_t GetTextureName (ULONG textureNum, PSTR textureName, int32_t nameLength);
+		int32_t GetTextureName (uint32_t textureNum, PSTR textureName, int32_t nameLength);
 
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		int32_t SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle);
+		int32_t SetTextureHandle (uint32_t textureNum, uint32_t gosTextureHandle);
 
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		int32_t SetTextureAlpha (ULONG textureNum, bool alphaFlag);
+		int32_t SetTextureAlpha (uint32_t textureNum, bool alphaFlag);
 
-		ULONG GetTextureHandle (ULONG textureNum)
+		uint32_t GetTextureHandle (uint32_t textureNum)
 		{
 			if (textureNum < numTextures)
 				return listOfTextures[textureNum].mcTextureNodeIndex;
@@ -153,17 +153,17 @@ class TG_TypeMultiShape
 			return 0xffffffff;
 		}
 
-		ULONG GetNumShapes (void)
+		uint32_t GetNumShapes (void)
 		{
 			return numTG_TypeShapes;
 		}
 
-		ULONG GetNumTextures (void)
+		uint32_t GetNumTextures (void)
 		{
 			return numTextures;
 		}
 
-		PSTR GetNodeId (ULONG shapeNum)
+		PSTR GetNodeId (uint32_t shapeNum)
 		{
 			if ((shapeNum >= 0) && (shapeNum < numTG_TypeShapes))
 				return (listOfTypeShapes[shapeNum]->getNodeId());
@@ -171,7 +171,7 @@ class TG_TypeMultiShape
 			return NULL;
 		}
 
-		Stuff::Point3D GetNodeCenter (ULONG shapeNum)
+		Stuff::Point3D GetNodeCenter (uint32_t shapeNum)
 		{
 			Stuff::Point3D result;
 			result.x = result.y = result.z = 0.0f;
@@ -187,7 +187,7 @@ class TG_TypeMultiShape
 			Stuff::Point3D result;
 			result.x = result.y = result.z = 0.0f;
 
-			for (ULONG i=0;i<numTG_TypeShapes;i++)
+			for (uint32_t i=0;i<numTG_TypeShapes;i++)
 			{
 				if (_stricmp(listOfTypeShapes[i]->getNodeId(),nodeId) == 0)
 					result = listOfTypeShapes[i]->GetNodeCenter();
@@ -201,19 +201,19 @@ class TG_TypeMultiShape
 
 		void SetAlphaTest (bool flag)
 		{
-			for (ULONG i=0;i<numTG_TypeShapes;i++)
+			for (uint32_t i=0;i<numTG_TypeShapes;i++)
 				listOfTypeShapes[i]->SetAlphaTest(flag);
 		}
 
 		void SetFilter (bool flag)
 		{
-			for (ULONG i=0;i<numTG_TypeShapes;i++)
+			for (uint32_t i=0;i<numTG_TypeShapes;i++)
 				listOfTypeShapes[i]->SetFilter(flag);
 		}
 		
-		void SetLightRGBs (ULONG hPink, ULONG hGreen, ULONG hYellow)
+		void SetLightRGBs (uint32_t hPink, uint32_t hGreen, uint32_t hYellow)
 		{
-			for (ULONG i=0;i<numTG_TypeShapes;i++)
+			for (uint32_t i=0;i<numTG_TypeShapes;i++)
 				listOfTypeShapes[i]->SetLightRGBs(hPink,hGreen,hYellow);
 		}
 
@@ -250,7 +250,7 @@ class TG_MultiShape
 		float					frameNum;				//Frame number of animation
 		bool					d_useShadows;
 		bool					isHudElement;
-		UCHAR					alphaValue;				//To fade shapes in and out
+		uint8_t					alphaValue;				//To fade shapes in and out
 		bool					isClamped;				//So I can force a shape to clamp its textures
 
 	//-----------------
@@ -293,10 +293,10 @@ class TG_MultiShape
 		//to light the shape.
 		//Function returns 0 if lightList entries are all OK.  -1 otherwise.
 		//
-		int32_t SetLightList (TG_LightPtr *lightList, ULONG nLights);
+		int32_t SetLightList (TG_LightPtr *lightList, uint32_t nLights);
 
 		//This function sets the fog values for the shape.  Straight fog right now.
-		void SetFogRGB (ULONG fRGB);
+		void SetFogRGB (uint32_t fRGB);
 		
 		//This function does the actual transform math, clip checks and lighting math.
 		//The matrices passed in are the translation/rotation matrix for the shape and
@@ -371,7 +371,7 @@ class TG_MultiShape
 		//Function returns 0 if OK.  -1 if textureName is longer then nameLength-1.
 		//This function digs the texture name(s) out of the ASE file so that the
 		//User can load and manage them anyway they want to.
-		int32_t GetTextureName (ULONG textureNum, PSTR textureName, int32_t nameLength)
+		int32_t GetTextureName (uint32_t textureNum, PSTR textureName, int32_t nameLength)
 		{
 			return myMultiType->GetTextureName(textureNum,textureName,nameLength);
 		}
@@ -384,12 +384,12 @@ class TG_MultiShape
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		int32_t SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle)
+		int32_t SetTextureHandle (uint32_t textureNum, uint32_t gosTextureHandle)
 		{
 			return myMultiType->SetTextureHandle(textureNum,gosTextureHandle);
 		}
 
-		ULONG GetTextureHandle (ULONG textureNum)
+		uint32_t GetTextureHandle (uint32_t textureNum)
 		{
 			return myMultiType->GetTextureHandle(textureNum);
 		}
@@ -412,7 +412,7 @@ class TG_MultiShape
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		int32_t SetTextureAlpha (ULONG textureNum, bool alphaFlag)
+		int32_t SetTextureAlpha (uint32_t textureNum, bool alphaFlag)
 		{
 			return myMultiType->SetTextureAlpha(textureNum,alphaFlag);
 		}
@@ -461,7 +461,7 @@ class TG_MultiShape
 				listOfShapes[i].currentAnimation = NULL;
 		}
 
-		void SetARGBHighLight (ULONG argb)
+		void SetARGBHighLight (uint32_t argb)
 		{
 			for (int32_t i=0;i<numTG_Shapes;i++)
 				listOfShapes[i].node->SetARGBHighLight(argb);
@@ -521,12 +521,12 @@ class TG_MultiShape
 			isHudElement = true;
 		}
 
-		void SetAlphaValue (UCHAR aVal)
+		void SetAlphaValue (uint8_t aVal)
 		{
 			alphaValue = aVal;
 		}
 		
-		UCHAR GetAlphaValue (void)
+		uint8_t GetAlphaValue (void)
 		{
 			return alphaValue;
 		}

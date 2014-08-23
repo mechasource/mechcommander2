@@ -71,8 +71,8 @@
 typedef struct {     
 	uint16_t  wFormatTag;     
 	uint16_t  nChannels; 
-    ULONG nSamplesPerSec;     
-	ULONG nAvgBytesPerSec;     
+    uint32_t nSamplesPerSec;     
+	uint32_t nAvgBytesPerSec;     
 	uint16_t  nBlockAlign; 
 } MC2_WAVEFORMATEX;
 #pragma pack()
@@ -80,11 +80,11 @@ typedef struct {
 //---------------------------------------------------------------------------
 typedef struct _SoundBite
 {
-	ULONG		priority;
-	ULONG		cacheStatus;
-	ULONG		soundId;
-	ULONG 		biteSize;
-	PUCHAR			biteData;
+	uint32_t		priority;
+	uint32_t		cacheStatus;
+	uint32_t		soundId;
+	uint32_t 		biteSize;
+	puint8_t			biteData;
 	float				volume;
 	HGOSAUDIO			resourceHandle;
 } SoundBite;
@@ -99,22 +99,22 @@ class SoundSystem
 		int32_t				channelSampleId[MAX_DIGITAL_SAMPLES];
 		bool				fadeDown[MAX_DIGITAL_SAMPLES];
 		
-		ULONG		soundHeapSize;
+		uint32_t		soundHeapSize;
 		UserHeapPtr			soundHeap;
 		
-		ULONG		numSoundBites;
+		uint32_t		numSoundBites;
 		SoundBite			*sounds;
 
-		ULONG		numBettySamples;
-		ULONG		numSupportSamples;
+		uint32_t		numBettySamples;
+		uint32_t		numSupportSamples;
 		PacketFilePtr		soundDataFile;
 		PacketFilePtr		bettyDataFile;
 		PacketFilePtr		supportDataFile;
 		
 		int32_t				numDMS;
 		float				streamFadeDownTime;
-		ULONG		digitalStreamBitDepth;
-		ULONG		digitalStreamChannels;
+		uint32_t		digitalStreamBitDepth;
+		uint32_t		digitalStreamChannels;
 		int32_t				currentMusicId;
 		
 		HGOSAUDIO			stream1Handle;
@@ -136,16 +136,16 @@ class SoundSystem
 				
 		float				maxSoundDistance;
 		
-		PUCHAR			bettySoundBite;							//Used to store current bitching betty sample
+		puint8_t			bettySoundBite;							//Used to store current bitching betty sample
 		int32_t				lastBettyId;
 		HGOSAUDIO			bettyHandle;
 
-		PUCHAR			supportSoundBite;						//USed to store current support officer sample
+		puint8_t			supportSoundBite;						//USed to store current support officer sample
 		int32_t				lastSupportId;
 		HGOSAUDIO			supportHandle;
 		
-		ULONG				isRaining;								//What sound FX should play as an ambient background loop.  Rain/Fire/Nothing, etc.
-		ULONG				oldRaining;								//Check if the old rain doesn't match new.  If so, play new instead!
+		uint32_t				isRaining;								//What sound FX should play as an ambient background loop.  Rain/Fire/Nothing, etc.
+		uint32_t				oldRaining;								//Check if the old rain doesn't match new.  If so, play new instead!
 
 		float				sensorBeepUpdateTime;
 		
@@ -235,7 +235,7 @@ class SoundSystem
 		void preloadSoundBite (int32_t sampleId);
 		int32_t findOpenChannel (int32_t start, int32_t end);
 
-		int32_t playDigitalSample (ULONG sampleId, Stuff::Vector3D pos = Stuff::Vector3D(-9999.0f,-9999.0,-9999.0f), bool allowDupes = false);
+		int32_t playDigitalSample (uint32_t sampleId, Stuff::Vector3D pos = Stuff::Vector3D(-9999.0f,-9999.0,-9999.0f), bool allowDupes = false);
 		
 		int32_t playDigitalMusic (int32_t musicId);
 		
@@ -246,13 +246,13 @@ class SoundSystem
 		bool isChannelPlaying (int32_t channelId);
 		bool isPlayingVoiceOver (void);
 
-		int32_t playBettySample (ULONG bettySampleId);
+		int32_t playBettySample (uint32_t bettySampleId);
 		void stopBettySample (void);
 
 		
-		int32_t playSupportSample (ULONG supportSampleId, PSTR fileName = NULL);
+		int32_t playSupportSample (uint32_t supportSampleId, PSTR fileName = NULL);
 		
- 		void stopDigitalSample (ULONG sampleHandleNumber);
+ 		void stopDigitalSample (uint32_t sampleHandleNumber);
 		void stopDigitalMusic (void);
 		void stopSupportSample (void);
 	
@@ -284,7 +284,7 @@ class SoundSystem
 		
 		int32_t playPilotSpeech (PSTR pilotSpeechFilename, int32_t msgId);
 		
-		void setIsRaining (ULONG rainLevel)
+		void setIsRaining (uint32_t rainLevel)
 		{
 			isRaining = rainLevel;
 		}

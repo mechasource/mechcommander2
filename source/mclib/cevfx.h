@@ -22,11 +22,11 @@ class VFXElement : public Element
 {
 	public:
 	
-		PUCHAR		shapeTable;
+		puint8_t		shapeTable;
 		int32_t			frameNum;
 		int32_t			x,y;
 		bool			reverse;
-		PUCHAR		fadeTable;
+		puint8_t		fadeTable;
 		bool			noScaleDraw;
 		bool			scaleUp;
 
@@ -43,8 +43,8 @@ class VFXElement : public Element
 		scaleUp = FALSE;
 	}
 
-	VFXElement (PUCHAR _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, PUCHAR fTable = NULL, bool noScale = FALSE, bool scaleUp = FALSE);
-	VFXElement (PUCHAR _shape, float _x, float _y, int32_t frame, bool rev, PUCHAR fTable = NULL, bool noScale = FALSE, bool scaleUp = FALSE);
+	VFXElement (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, puint8_t fTable = NULL, bool noScale = FALSE, bool scaleUp = FALSE);
+	VFXElement (puint8_t _shape, float _x, float _y, int32_t frame, bool rev, puint8_t fTable = NULL, bool noScale = FALSE, bool scaleUp = FALSE);
 
 	virtual void draw (void);
 };
@@ -60,16 +60,16 @@ class VFXShapeElement : public Element
 		// the shapes into a single Texture for
 		// rendering.  Can be used for vehicles
 		// and mechs in MechCmdr 2.
-		PUCHAR		shapeTable[MAX_ELEMENT_SHAPES];
+		puint8_t		shapeTable[MAX_ELEMENT_SHAPES];
 		int32_t			frameNum[MAX_ELEMENT_SHAPES];
 		bool			reverse[MAX_ELEMENT_SHAPES];
 		int32_t			x,y,xHS,yHS;
 		size_t	*fadeTable;
-		ULONG			textureMemoryHandle;
+		uint32_t			textureMemoryHandle;
 		int32_t			actualHeight;
 		float			textureFactor;
-		ULONG			lightRGB;
-		ULONG			fogRGB;
+		uint32_t			lightRGB;
+		uint32_t			fogRGB;
 		float			z,topZ;
 
 	VFXShapeElement (void)
@@ -91,17 +91,17 @@ class VFXShapeElement : public Element
 		fogRGB = 0xffffffff;		//NO Fog
 	}
 
-	void init (PUCHAR _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, size_t *fTable = NULL, float _z = 0.0, float tZ = 0.0);
+	void init (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, size_t *fTable = NULL, float _z = 0.0, float tZ = 0.0);
 
 	int32_t getTextureHandle (int32_t height = -1);					//Return the block of memory so I store it for this mech/vehicle,etc.
-	void setTextureHandle (ULONG handle, int32_t height = -1);
+	void setTextureHandle (uint32_t handle, int32_t height = -1);
 
-	void setLight (ULONG light)
+	void setLight (uint32_t light)
 	{
 		lightRGB = light;
 	}
 
-	void setFog (ULONG fog)
+	void setFog (uint32_t fog)
 	{
 		fogRGB = fog;
 	}
@@ -123,9 +123,9 @@ class TextureElement : public Element
 		int32_t			x, y, xHS, yHS;
 		float			tWidth;
 		float			z,topZ;
-		ULONG			textureMemoryHandle;
-		ULONG			lightRGB;
-		ULONG			fogRGB;
+		uint32_t			textureMemoryHandle;
+		uint32_t			lightRGB;
+		uint32_t			fogRGB;
 
 	TextureElement (void)
 	{
@@ -135,17 +135,17 @@ class TextureElement : public Element
 		lightRGB = 0xffffffff;
 	}
 
-	void setLight (ULONG light)
+	void setLight (uint32_t light)
 	{
 		lightRGB = light;
 	}
 
-	void setFog (ULONG fog)
+	void setFog (uint32_t fog)
 	{
 		fogRGB = fog;
 	}
 		
-	void init (ULONG textureHandle, int32_t _x, int32_t _y, int32_t hsx, int32_t hsy, float tWidth, float _z, float tZ);
+	void init (uint32_t textureHandle, int32_t _x, int32_t _y, int32_t hsx, int32_t hsy, float tWidth, float _z, float tZ);
 	virtual void draw (void);
 };
 
@@ -197,7 +197,7 @@ class TexturedPolygonQuadElement : public PolygonQuadElement
 		//--------------------------------
 		// This draws any untextured face.
 		// Useful everywhere
-		ULONG		textureHandle;
+		uint32_t		textureHandle;
 		bool		zWrite;
 		bool		zComp;
 		
@@ -205,7 +205,7 @@ class TexturedPolygonQuadElement : public PolygonQuadElement
 	{
 	}
 	
-	void init (gos_VERTEX *v, ULONG tHandle, bool writeZ = true, bool compZ = true);
+	void init (gos_VERTEX *v, uint32_t tHandle, bool writeZ = true, bool compZ = true);
 	
 	virtual void draw (void);
 
@@ -219,13 +219,13 @@ class TexturedPolygonTriElement : public PolygonTriElement
 		//--------------------------------
 		// This draws any textured face.
 		// Useful everywhere.
-		ULONG		textureHandle;
+		uint32_t		textureHandle;
 		
 	TexturedPolygonTriElement (void)
 	{
 	}
 	
-	void init (gos_VERTEX *v, ULONG tHandle);
+	void init (gos_VERTEX *v, uint32_t tHandle);
 	
 	virtual void draw (void);
 

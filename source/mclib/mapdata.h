@@ -68,7 +68,7 @@ class MapData : public HeapManager
 	protected:
 		PostcompVertexPtr			blocks;
 		PostcompVertexPtr			blankVertex;
-		int							hasSelection;
+		int32_t							hasSelection;
 									
 	public:
 		Stuff::Vector2DOf<float>	topLeftVertex;
@@ -76,7 +76,7 @@ class MapData : public HeapManager
 		static float				shallowDepth;
 		static float				waterDepth;
 		static float				alphaDepth;
-		static ULONG				WaterTXMData;
+		static uint32_t				WaterTXMData;
 
 	//Member Functions
 	//-----------------
@@ -146,22 +146,22 @@ class MapData : public HeapManager
 		int32_t getOverlayTile (int32_t block, int32_t vertex);
 
 		// new overlay stuff
-		void setOverlay( int32_t tileR, int32_t tileC, Overlays type, ULONG Offset );
-		void getOverlay( int32_t tileR, int32_t tileC, Overlays& type, ULONG& Offset );
-		void setTerrain( int32_t tileR, int32_t tileC, int terrainType );
+		void setOverlay( int32_t tileR, int32_t tileC, Overlays type, uint32_t Offset );
+		void getOverlay( int32_t tileR, int32_t tileC, Overlays& type, uint32_t& Offset );
+		void setTerrain( int32_t tileR, int32_t tileC, int32_t terrainType );
 		int32_t getTerrain( int32_t tileR, int32_t tileC );
 
-		void  setVertexHeight( int vertexIndex, float value ); 
-		float getVertexHeight( int vertexIndex );
+		void  setVertexHeight( int32_t vertexIndex, float value ); 
+		float getVertexHeight( int32_t vertexIndex );
 
 		PostcompVertexPtr getData (void)
 		{
 			return blocks;
 		}
 
-		ULONG getTexture( int32_t tileR, int32_t tileC );
+		uint32_t getTexture( int32_t tileR, int32_t tileC );
 
-		int32_t save( PacketFile* file, int whichPacket);
+		int32_t save( PacketFile* file, int32_t whichPacket);
 
 		void calcWater (float waterDepth, float waterShallowDepth, float waterAlphaDepth);
 		void recalcWater (void);									//Uses above values already passed in to just recalc the water
@@ -173,9 +173,9 @@ class MapData : public HeapManager
 		void unselectAll();
 		void unhighlightAll();
 		void highlightAllTransitionsOver2 (void);
-		void selectVertex( ULONG tileRow, ULONG tileCol, bool bSelect, bool bToggle );
+		void selectVertex( uint32_t tileRow, uint32_t tileCol, bool bSelect, bool bToggle );
 		bool selection(){ return hasSelection ? true : false; }
-		bool isVertexSelected( ULONG tileRow, ULONG tileCol );
+		bool isVertexSelected( uint32_t tileRow, uint32_t tileCol );
 
 		void calcTransitions();
 };

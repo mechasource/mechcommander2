@@ -115,7 +115,7 @@ class GVAppearanceType : public AppearanceType
 		
 		virtual void destroy (void);
 		
-		void setAnimation (TG_MultiShapePtr shape, ULONG animationNum);
+		void setAnimation (TG_MultiShapePtr shape, uint32_t animationNum);
 		
 		int32_t getNumFrames (int32_t animationNum)
 		{
@@ -219,17 +219,17 @@ class GVAppearance : public ObjectAppearance
  		int32_t										*nodeUsed;				//Used to stagger the weapon nodes for firing.
 		float										*nodeRecycle;			//Used for ripple fire to find out if the node has fired recently.
 		
-		ULONG										localTextureHandle;
+		uint32_t										localTextureHandle;
 		
-		ULONG										psRed;
-		ULONG										psBlue;
-		ULONG										psGreen;
+		uint32_t										psRed;
+		uint32_t										psBlue;
+		uint32_t										psGreen;
 
 		float										flashDuration;
 		float										duration;
 		float										currentFlash;
 		bool										drawFlash;
-		ULONG										flashColor;
+		uint32_t										flashColor;
 		
 		int32_t										rotationalNodeIndex;
 		int32_t										dustNodeIndex;
@@ -272,18 +272,18 @@ class GVAppearance : public ObjectAppearance
 
 		virtual void setPaintScheme (void);
 
-		virtual void setPaintScheme (ULONG red, ULONG green, ULONG blue);
+		virtual void setPaintScheme (uint32_t red, uint32_t green, uint32_t blue);
 
-		virtual void getPaintScheme (ULONG &red, ULONG &green, ULONG &blue);
+		virtual void getPaintScheme (uint32_t &red, uint32_t &green, uint32_t &blue);
 
-		virtual void resetPaintScheme (ULONG red, ULONG green, ULONG blue);
+		virtual void resetPaintScheme (uint32_t red, uint32_t green, uint32_t blue);
 		
  		virtual bool recalcBounds (void);
 
-		virtual void flashBuilding (float duration, float flashDuration, ULONG color);
+		virtual void flashBuilding (float duration, float flashDuration, uint32_t color);
 
 		
-		void setFadeTable (PUCHAR fTable)
+		void setFadeTable (puint8_t fTable)
 		{
 			fadeTable = fTable;
 		}
@@ -348,7 +348,7 @@ class GVAppearance : public ObjectAppearance
 			return result;
 		}
 		
-		virtual void setAlphaValue (UCHAR aVal)
+		virtual void setAlphaValue (uint8_t aVal)
 		{
 			gvShape->SetAlphaValue(aVal);
 			

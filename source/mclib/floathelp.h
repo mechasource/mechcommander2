@@ -29,15 +29,15 @@ class FloatHelp
 	protected:
 		char 				text[2048];				//Last person to set this displays the font.
 		Stuff::Vector4D 	screenPos;				//x,y are left and top.  z,w are width and height.
-		ULONG 				foregroundColor;		//Color in aRGB Format.
-		ULONG 				backgroundColor;		//Color in aRGB Format.
+		uint32_t 				foregroundColor;		//Color in aRGB Format.
+		uint32_t 				backgroundColor;		//Color in aRGB Format.
 		float 				scale;					//Scale.  1.0f is normal.
 		bool 				proportional;			//if false, spacing is equal for each letter.
 		bool 				bold;					//if true, draws bold.
 		bool 				italic;					//if true, draws italic.
 		bool 				wordWrap;				//if true, wraps word.
 
-		static	ULONG		currentFloatHelp;		//How many of them are we using at present
+		static	uint32_t		currentFloatHelp;		//How many of them are we using at present
 		static	FloatHelp*	floatHelps;				//POinters to all of them.
 
 	public:
@@ -69,8 +69,8 @@ class FloatHelp
 
 		static void setFloatHelp(PSTR  txt, 
 								Stuff::Vector4D screenPos, 
-								ULONG fClr, 
-								ULONG bClr, 
+								uint32_t fClr, 
+								uint32_t bClr, 
 								float scl,
 								bool proportional,
 								bool bold,
@@ -78,13 +78,13 @@ class FloatHelp
 								bool wordWrap);
 
 		static void getTextStringLength (PSTR text,
-										ULONG fColor,
+										uint32_t fColor,
 										float scl,
 										bool proportional,
 										bool bold,        
 										bool italic,      
 										bool wordWrap,
-										ULONG &width, ULONG &height);
+										uint32_t &width, uint32_t &height);
 										
 	protected:
 		
@@ -105,12 +105,12 @@ class FloatHelp
 			screenPos = pos;
 		}
 		
-		void setForegroundColor (ULONG clr)
+		void setForegroundColor (uint32_t clr)
 		{
 			foregroundColor = clr;
 		}
 
-		void setBackgroundColor (ULONG clr)
+		void setBackgroundColor (uint32_t clr)
 		{
 			backgroundColor = clr;
 		}
@@ -153,9 +153,9 @@ class FloatHelp
 				// must use global scale, incase of True Type fonts.
 				gos_TextSetAttributes (gosFontHandle, foregroundColor, gosFontScale, wordWrap, proportional, bold, italic);
 
-				//gos_TextDrawBackground ((int)screenPos.x, (int)screenPos.y, (int)(screenPos.x+screenPos.z), (int)(screenPos.y+screenPos.w), SD_BLACK);
+				//gos_TextDrawBackground ((int32_t)screenPos.x, (int32_t)screenPos.y, (int32_t)(screenPos.x+screenPos.z), (int32_t)(screenPos.y+screenPos.w), SD_BLACK);
 
-				gos_TextSetPosition((int)screenPos.x,(int)screenPos.y);
+				gos_TextSetPosition((int32_t)screenPos.x,(int32_t)screenPos.y);
 
 				gos_TextDraw(text);
 			}

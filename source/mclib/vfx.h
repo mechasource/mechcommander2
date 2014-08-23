@@ -15,7 +15,7 @@
 //00                      Added VFX_bank_reset() call                       00
 //00  V1.04 of  4-Sep-93: Indirect function prototypes changed for C++ use  00
 //00  V1.05 of 26-Sep-93: Added FLOAT typedef                               00
-//00                      VFX_RGB UCHAR members changed to UCHARs           00
+//00                      VFX_RGB uint8_t members changed to UCHARs           00
 //00  V1.06 of 13-Oct-93: Added VFX_pane_refresh(), other new calls         00
 //00  V1.07 of 17-Nov-93: Added MetaWare High C support                     00
 //00  V1.10 of  3-Dec-93: Modified VFX_pane_refresh(), WINDOW structure     00
@@ -137,7 +137,7 @@ typedef uint8_t		STENCIL;
 typedef puint8_t	PSTENCIL;
 
 typedef struct _window {
-	PUCHAR			buffer;
+	puint8_t			buffer;
 	int32_t			x_max;
 	int32_t			y_max;
 	PSTENCIL		stencil;
@@ -156,7 +156,7 @@ typedef PANE*		PPANE;
 
 typedef struct _pane_list {
 	PPANE			array;
-	PULONG			flags;
+	puint32_t			flags;
 	size_t			size;
 } PANE_LIST;
 typedef PANE_LIST*	PPANE_LIST;
@@ -221,11 +221,11 @@ typedef struct _vfx_rect {
 	int32_t y1;
 } VFX_RECT;
 
-#define INT_TO_FIXED16(x)       (((int32_t)(int)(x)) << 16)
+#define INT_TO_FIXED16(x)       (((int32_t)(int32_t)(x)) << 16)
 #define DOUBLE_TO_FIXED16(x)    ((int32_t) ((x) * 65536.0 + 0.5))
 #define FIXED16_TO_DOUBLE(x)    (((double)(x)) / 65536.0)
-#define FIXED16_TO_INT(x)       ((int) ((x)<0 ? -(-(x) >> 16) : (x) >> 16))
-#define ROUND_FIXED16_TO_INT(x) ((int) ((x)<0 ? -((32768-(x)) >> 16) : ((x)+32768) >> 16))
+#define FIXED16_TO_INT(x)       ((int32_t) ((x)<0 ? -(-(x) >> 16) : (x) >> 16))
+#define ROUND_FIXED16_TO_INT(x) ((int32_t) ((x)<0 ? -((32768-(x)) >> 16) : ((x)+32768) >> 16))
 
 #define FIXED16_TO_FIXED30(x)   ((x) << 14)
 #define FIXED30_TO_FIXED16(x)   ((x) >> 14)
@@ -245,20 +245,20 @@ extern void  (VFX_CALL *VFX_init_driver)(void);
 extern void  (VFX_CALL *VFX_shutdown_driver)(void);
 extern void  (VFX_CALL *VFX_wait_vblank)(void);
 extern void  (VFX_CALL *VFX_wait_vblank_leading)(void);
-extern void  (VFX_CALL *VFX_area_wipe)(LONG x0, LONG y0, LONG x1, LONG y1, LONG color);
-extern void  (VFX_CALL *VFX_window_refresh)(PWINDOW target, LONG x0, LONG y0, LONG x1, LONG y1);
-extern void  (VFX_CALL *VFX_window_read)(PWINDOW destination, LONG x0, LONG y0, LONG x1, LONG y1);
-extern void  (VFX_CALL *VFX_pane_refresh)(PPANE target, LONG x0, LONG y0, LONG x1, LONG y1);
-extern void  (VFX_CALL *VFX_DAC_read)(LONG color_number, PVFX_RGB triplet);
-extern void  (VFX_CALL *VFX_DAC_write)(LONG color_number, PVFX_RGB triplet);
+extern void  (VFX_CALL *VFX_area_wipe)(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t color);
+extern void  (VFX_CALL *VFX_window_refresh)(PWINDOW target, int32_t x0, int32_t y0, int32_t x1, int32_t y1);
+extern void  (VFX_CALL *VFX_window_read)(PWINDOW destination, int32_t x0, int32_t y0, int32_t x1, int32_t y1);
+extern void  (VFX_CALL *VFX_pane_refresh)(PPANE target, int32_t x0, int32_t y0, int32_t x1, int32_t y1);
+extern void  (VFX_CALL *VFX_DAC_read)(int32_t color_number, PVFX_RGB triplet);
+extern void  (VFX_CALL *VFX_DAC_write)(int32_t color_number, PVFX_RGB triplet);
 extern void  (VFX_CALL *VFX_bank_reset)(void);
-extern void  (VFX_CALL *VFX_line_address)(LONG x, LONG y, puint8_t *addr, ULONG *nbytes);
+extern void  (VFX_CALL *VFX_line_address)(int32_t x, int32_t y, puint8_t *addr, uint32_t *nbytes);
 */
 
 //
 // Device-independent VFX API functions (VFXC.C)
 //
-extern ULONG	VFX_CALL VFX_stencil_size(PWINDOW source, COLORREF transparent_color);
+extern uint32_t	VFX_CALL VFX_stencil_size(PWINDOW source, COLORREF transparent_color);
 extern PSTENCIL VFX_CALL VFX_stencil_construct(PWINDOW source, PVOID dest, COLORREF transparent_color);
 extern void 	VFX_CALL VFX_stencil_destroy(PSTENCIL stencil);
 extern PWINDOW	VFX_CALL VFX_window_construct(int32_t width, int32_t height);

@@ -26,7 +26,7 @@
 //-------------------------------------------------------------------------------
 // Structs used by layer.
 //
-typedef ULONG* DWORDPtr;
+typedef uint32_t* DWORDPtr;
 
 //-------------------------------------------------------------------------------
 // TG_TypeVertex
@@ -36,7 +36,7 @@ typedef struct _TG_TypeVertex
 	//Only changes at load time.
 	Stuff::Point3D	position;				//Position of vertex relative to base position of shape.
 	Stuff::Vector3D normal;					//Vertex Normal
-	ULONG    		aRGBLight;				//Vertex Light and Alpha
+	uint32_t    		aRGBLight;				//Vertex Light and Alpha
 
 } TG_TypeVertex;
 
@@ -48,10 +48,10 @@ typedef  TG_TypeVertex* TG_TypeVertexPtr;
 // Its used to store UNCHANGING or rarely changing Light/Fog data so I don't have to calc every frame!
 typedef struct _TG_Vertex
 {
-	UCHAR			fog;
-	UCHAR			redSpec;
-	UCHAR			greenSpec;
-	UCHAR			blueSpec;
+	uint8_t			fog;
+	uint8_t			redSpec;
+	uint8_t			greenSpec;
+	uint8_t			blueSpec;
 } TG_Vertex;
 
 typedef  TG_Vertex* TG_VertexPtr;
@@ -74,7 +74,7 @@ typedef  TG_ShadowVertex* TG_ShadowVertexPtr;
 // Stores VOLATILE information for the shadow vertices.  These can come from a pool!
 typedef struct _TG_ShadowVertexTemp
 {
-	ULONG    		fRGBFog;				//Vertex Fog and Specular Color.  Needed if shadow is fogged.
+	uint32_t    		fRGBFog;				//Vertex Fog and Specular Color.  Needed if shadow is fogged.
 											//Every frame for local light.  Once in a blue moon for infinite light.
 
 	//Changes each call to Transform.
@@ -103,9 +103,9 @@ typedef  TG_UVData* TG_UVDataPtr;
 // This structure stores the information needed to draw the triangle which does NOT change per instance
 typedef struct _TG_TypeTriangle
 {
-	ULONG    		Vertices[3];			//Indices into Vertex List.
-	ULONG    		localTextureHandle;		//Index into texture List.
-	ULONG    		renderStateFlags;		//Flags about render for this face.
+	uint32_t    		Vertices[3];			//Indices into Vertex List.
+	uint32_t    		localTextureHandle;		//Index into texture List.
+	uint32_t    		renderStateFlags;		//Flags about render for this face.
 											//Bit 0 -- backFacing
 	TG_UVData  		uvdata;					//Texture UVs for this face.
 	Stuff::Vector3D faceNormal;				//Normal Vector to face
@@ -120,8 +120,8 @@ typedef TG_TypeTriangle* TG_TypeTrianglePtr;
 // This structure stores the information needed to draw the triangle per instance.
 typedef struct _TG_Triangle
 {
-	ULONG    		aRGBLight[3];			//RGB Light for this triangle's vertices.
-	ULONG    		fRGBLight[3];			//RGB Fog for this triangle's vertices.
+	uint32_t    		aRGBLight[3];			//RGB Light for this triangle's vertices.
+	uint32_t    		fRGBLight[3];			//RGB Fog for this triangle's vertices.
 } TG_Triangle;
 
 // Texture handle can change from frame to frame. Texture Animation!
@@ -133,7 +133,7 @@ typedef TG_Triangle* TG_TrianglePtr;
 // This structure stores the information needed to draw the shadow triangle.
 typedef struct _TG_ShadowTriangle
 {
-	ULONG    		Vertices[3];			//Indices into Shadow Vertex List.
+	uint32_t    		Vertices[3];			//Indices into Shadow Vertex List.
 } TG_ShadowTriangle;
 
 // Texture handle can change from frame to frame. Texture Animation!
@@ -164,12 +164,12 @@ typedef TG_ShadowTriangle* TG_ShadowTrianglePtr;
 // This structure stores the information necessary to light the shape.
 typedef struct _TG_Light
 {
-	ULONG    				lightType;			//Ambient, directional, etc.
+	uint32_t    				lightType;			//Ambient, directional, etc.
 	bool					active;				//Should this light be considered on?
 	
 	protected:
-	ULONG    				aRGB;				//Color
-	ULONG					OEMaRGB;
+	uint32_t    				aRGB;				//Color
+	uint32_t					OEMaRGB;
 	
 	public:
 	float					intensity;			//How Bright
@@ -182,7 +182,7 @@ typedef struct _TG_Light
 	Stuff::Point3D			spotDir;			//Direction of the actual Spotlight to help with shadows, etc.
 	float					maxSpotLength;		//Maximum length spotlight can be from target.
 
-	void init (ULONG lType)
+	void init (uint32_t lType)
 	{
 		gosASSERT((lType != TG_LIGHT_NONE) && (lType >= TG_LIGHT_AMBIENT) && (lType <= TG_LIGHT_TERRAIN));
 
@@ -199,12 +199,12 @@ typedef struct _TG_Light
 		active = false;
 	}
 
-	void SetaRGB (ULONG newaRGB)
+	void SetaRGB (uint32_t newaRGB)
 	{
 		OEMaRGB = aRGB = newaRGB;
 	}
 
-	ULONG GetaRGB (void)
+	uint32_t GetaRGB (void)
 	{
 		return aRGB;
 	}
@@ -233,10 +233,10 @@ typedef struct _TG_Light
 			intensity = 1.0f;
 
 		//Scale aRGB by intensity
-		ULONG r,g,b;
-		r = (ULONG)(intensity * ((OEMaRGB >> 16) & 0x000000ff));
-		g = (ULONG)(intensity * ((OEMaRGB >> 8) & 0x000000ff));
-		b = (ULONG)(intensity * ((OEMaRGB) & 0x000000ff));
+		uint32_t r,g,b;
+		r = (uint32_t)(intensity * ((OEMaRGB >> 16) & 0x000000ff));
+		g = (uint32_t)(intensity * ((OEMaRGB >> 8) & 0x000000ff));
+		b = (uint32_t)(intensity * ((OEMaRGB) & 0x000000ff));
 
 		aRGB = (0xff << 24) + (r << 16) + (g << 8) + (b);
 	}
@@ -267,8 +267,8 @@ typedef  TG_Light *TG_LightPtr;
 typedef struct _TG_Texture
 {
 	char				textureName[256];
-	ULONG				mcTextureNodeIndex;
-	ULONG				gosTextureHandle;
+	uint32_t				mcTextureNodeIndex;
+	uint32_t				gosTextureHandle;
 	bool				textureAlpha;
 } TG_Texture;
 
@@ -278,8 +278,8 @@ typedef TG_Texture* TG_TexturePtr;
 // TG_TinyTexture
 typedef struct _TG_TinyTexture
 {
-	ULONG				mcTextureNodeIndex;
-	ULONG				gosTextureHandle;
+	uint32_t				mcTextureNodeIndex;
+	uint32_t				gosTextureHandle;
 	bool				textureAlpha;
 } TG_TinyTexture;
 
@@ -291,8 +291,8 @@ class TG_Shape;
 typedef struct _TG_Animation
 {
 	char 						nodeId[TG_NODE_ID];		//Node ID
-	ULONG						shapeId;				//DON'T SCAN EVERY FRAME.  WOW IS IT SLOW!!!!!  Set this first time through and its simple.
-	ULONG						numFrames;				//Number of Frames of animation.
+	uint32_t						shapeId;				//DON'T SCAN EVERY FRAME.  WOW IS IT SLOW!!!!!  Set this first time through and its simple.
+	uint32_t						numFrames;				//Number of Frames of animation.
 	float 						frameRate;				//Number of Frames Per Second.
 	float						tickRate;				//Number of Ticks Per Second.
 	Stuff::UnitQuaternion		*quat;					//Stores animation offset in Quaternion rotation.
@@ -440,7 +440,7 @@ class TG_TypeNode
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual int32_t SetTextureHandle (ULONG /*textureNum*/, ULONG /*gosTextureHandle*/)
+		virtual int32_t SetTextureHandle (uint32_t /*textureNum*/, uint32_t /*gosTextureHandle*/)
 		{
 			return 0;
 		}
@@ -448,13 +448,13 @@ class TG_TypeNode
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual int32_t SetTextureAlpha (ULONG /*textureNum*/, bool /*alphaFlag*/)
+		virtual int32_t SetTextureAlpha (uint32_t /*textureNum*/, bool /*alphaFlag*/)
 		{
 			return 0;
 		}
 
 		//Need this so that Multi-Shapes can let each shape know texture info.
-		virtual void CreateListOfTextures (TG_TexturePtr /*list*/, ULONG /*numTxms*/)
+		virtual void CreateListOfTextures (TG_TexturePtr /*list*/, uint32_t /*numTxms*/)
 		{
 		}
 
@@ -470,7 +470,7 @@ class TG_TypeNode
 		{
 		}
 
-		virtual void SetLightRGBs (ULONG /*hPink*/, ULONG /*hGreen*/, ULONG /*hYellow*/)
+		virtual void SetLightRGBs (uint32_t /*hPink*/, uint32_t /*hGreen*/, uint32_t /*hYellow*/)
 		{
 		}
 		
@@ -502,17 +502,17 @@ class TG_TypeShape : public TG_TypeNode
 	//-------------
 	//Data Members
 	protected:
-		ULONG					numTypeVertices;			//Number of vertices in Shape
-		ULONG					numTypeTriangles;			//NUmber of triangles in Shape
-		ULONG					numTextures;				//Number of textures in Shape
+		uint32_t					numTypeVertices;			//Number of vertices in Shape
+		uint32_t					numTypeTriangles;			//NUmber of triangles in Shape
+		uint32_t					numTextures;				//Number of textures in Shape
 
 		TG_TypeVertexPtr		listOfTypeVertices;			//Memory holding all vertex data
 		TG_TypeTrianglePtr		listOfTypeTriangles;		//Memory holding all triangle data
 		TG_TinyTexturePtr		listOfTextures;				//List of texture Structures for this shape.
 
-		ULONG					hotPinkRGB;					//Stores the value for this shape to replace hot Pink With
-		ULONG					hotYellowRGB;				//Stores the value for this shape to replace hot Yellow With 
-		ULONG					hotGreenRGB;            	//Stores the value for this shape to replace hot Green With 
+		uint32_t					hotPinkRGB;					//Stores the value for this shape to replace hot Pink With
+		uint32_t					hotYellowRGB;				//Stores the value for this shape to replace hot Yellow With 
+		uint32_t					hotGreenRGB;            	//Stores the value for this shape to replace hot Green With 
 
 		bool					alphaTestOn;				//Decides if we should draw alphaTest On or not!
 		bool					filterOn;					//Decides if we should filter the shape or not!
@@ -588,15 +588,15 @@ class TG_TypeShape : public TG_TypeNode
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual int32_t SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle);
+		virtual int32_t SetTextureHandle (uint32_t textureNum, uint32_t gosTextureHandle);
 
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual int32_t SetTextureAlpha (ULONG textureNum, bool alphaFlag);
+		virtual int32_t SetTextureAlpha (uint32_t textureNum, bool alphaFlag);
 
 		//Need this so that Multi-Shapes can let each shape know texture info.
-		virtual void CreateListOfTextures (TG_TexturePtr list, ULONG numTxms);
+		virtual void CreateListOfTextures (TG_TexturePtr list, uint32_t numTxms);
 
  		virtual void movePosRelativeCenterNode (void);
 		
@@ -614,7 +614,7 @@ class TG_TypeShape : public TG_TypeNode
 			filterOn = flag;
 		}
 
-		virtual void SetLightRGBs (ULONG hPink, ULONG hGreen, ULONG hYellow)
+		virtual void SetLightRGBs (uint32_t hPink, uint32_t hGreen, uint32_t hYellow)
 		{
 			hotPinkRGB = hPink;
 			hotGreenRGB = hGreen;
@@ -650,10 +650,10 @@ class TG_Shape
 	//Data Members
 	protected:
 		TG_TypeNodePtr			myType;						//Pointer to the instance of the shape.
-		ULONG					numVertices;				//Number of vertices in Shape
-		ULONG					numTriangles;				//NUmber of triangles in Shape
-		ULONG					numVisibleFaces;			//Number of non-backfaced non-clipped faces.
-		ULONG					numVisibleShadows;			//Number of visible Shadow Faces.
+		uint32_t					numVertices;				//Number of vertices in Shape
+		uint32_t					numTriangles;				//NUmber of triangles in Shape
+		uint32_t					numVisibleFaces;			//Number of non-backfaced non-clipped faces.
+		uint32_t					numVisibleShadows;			//Number of visible Shadow Faces.
 
 		TG_Vertex *				listOfColors;				//Memory holding all unchanged or rarely changed color data.
 		gos_VERTEX * 			listOfVertices;				//Memory holding all vertex data
@@ -673,8 +673,8 @@ class TG_Shape
 
 		bool					shadowsVisible[MAX_SHADOWS];//Is this shadow worth drawing?
 
-		ULONG					aRGBHighlight;				//Color to add to vertices to make building stand out.
-		ULONG					fogRGB;						//Color to make fog.
+		uint32_t					aRGBHighlight;				//Color to add to vertices to make building stand out.
+		uint32_t					fogRGB;						//Color to make fog.
 		
 		float					shapeScalar;
 
@@ -684,7 +684,7 @@ class TG_Shape
 		bool					isWindow;
 		bool					isSpotlight;
 
-		ULONG					lastTurnTransformed;
+		uint32_t					lastTurnTransformed;
 
 	public:
 		//Matrices used to transform the shapes.
@@ -693,14 +693,14 @@ class TG_Shape
 		static Stuff::Matrix4D			worldToClip;
 		static Stuff::LinearMatrix4D	worldToCamera;
 		static TG_LightPtr				*listOfLights;		//List passed in a transform time
-		static ULONG					numLights;
+		static uint32_t					numLights;
 
 		static float					viewMulX;
 		static float					viewAddX;
 		static float					viewMulY;
 		static float					viewAddY;
 
-		static ULONG					fogColor;
+		static uint32_t					fogColor;
 		static float					fogFull;
 		static float					fogStart;
 
@@ -711,7 +711,7 @@ class TG_Shape
 
 		static UserHeapPtr 				tglHeap;		//Stores all TGL data so we don't need to go through the FREE merry go round of GOS!
 		
-		static ULONG					lighteningLevel;
+		static uint32_t					lighteningLevel;
 
 	//-----------------
 	//Member Functions
@@ -768,16 +768,16 @@ class TG_Shape
 
 		static void SetViewport (float mulX, float mulY, float addX, float addY);
 
-		static void SetFog (ULONG fRGB, float fStart, float fFull);
+		static void SetFog (uint32_t fRGB, float fStart, float fFull);
 
 		//This function sets the list of lights used by the TransformShape function
 		//to light the shape.
 		//Function returns 0 if lightList entries are all OK.  -1 otherwise.
 		//
-		int32_t SetLightList (TG_LightPtr *lightList, ULONG nLights);
+		int32_t SetLightList (TG_LightPtr *lightList, uint32_t nLights);
 		
 		//This function sets the fog values for the shape.  Straight fog right now.
-		void SetFogRGB (ULONG fRGB);
+		void SetFogRGB (uint32_t fRGB);
 
 		//This function does exactly what TranformShape does EXCEPT that the shapeToClip,
 		//Lighting and backface matrices have been calculated in the step above this one.
@@ -787,7 +787,7 @@ class TG_Shape
 		//Function returns 0 if any one vertex screen position is off screen.
 		//Function returns 1 is all vertex screen positions are on screen.
 		// NOTE:  THIS IS NOT A RIGOROUS CLIP!!!!!!!!!
-		int32_t MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Point3D *backFacePoint, TG_ShapeRecPtr parentNode, bool isHudElement, UCHAR alphaValue, bool isClamped);
+		int32_t MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Point3D *backFacePoint, TG_ShapeRecPtr parentNode, bool isHudElement, uint8_t alphaValue, bool isClamped);
 
 		//This function creates the list of shadows and transforms them in preparation to drawing.
 		//
@@ -795,13 +795,13 @@ class TG_Shape
 
 		//This function takes the current listOfVisibleFaces and draws them using
 		//gos_DrawTriangle.  Does clipping, too!
-		void Render (float forceZ = -1.0f, bool isHudElement = false, UCHAR alphaValue = 0xff, bool isClamped = false);
+		void Render (float forceZ = -1.0f, bool isHudElement = false, uint8_t alphaValue = 0xff, bool isClamped = false);
 
 		//This function takes the current listOfShadowTriangles and draws them using
 		//gos_DrawTriangle.  Does clipping, too!
 		int32_t RenderShadows (int32_t startFace);
 
-		void SetARGBHighLight (ULONG argb)
+		void SetARGBHighLight (uint32_t argb)
 		{
 			aRGBHighlight = argb;
 		}
@@ -844,8 +844,8 @@ class TG_VertexPool
 		TG_Vertex 	*tgVertexPool;
 		TG_Vertex 	*nextVertex;
 		
-		ULONG		totalVertices;
-		ULONG		numVertices;
+		uint32_t		totalVertices;
+		uint32_t		numVertices;
 		
 	public:
 		TG_VertexPool (void)
@@ -866,7 +866,7 @@ class TG_VertexPool
 			totalVertices = numVertices = 0;
 		}
 		
-		void init (ULONG maxVertices)
+		void init (uint32_t maxVertices)
 		{
 			tgVertexPool = (TG_VertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Vertex) * maxVertices);
 			gosASSERT(tgVertexPool != NULL);
@@ -883,7 +883,7 @@ class TG_VertexPool
 			numVertices = 0;
 		}
 		
-		TG_VertexPtr getColorsFromPool (ULONG numRequested)
+		TG_VertexPtr getColorsFromPool (uint32_t numRequested)
 		{
 			TG_VertexPtr result = NULL;
 			numVertices += numRequested;
@@ -903,8 +903,8 @@ class TG_GOSVertexPool
 		gos_VERTEX 	*gVertexPool;
 		gos_VERTEX 	*nextVertex;
 		
-		ULONG		totalVertices;
-		ULONG		numVertices;
+		uint32_t		totalVertices;
+		uint32_t		numVertices;
 		
 	public:
 		TG_GOSVertexPool (void)
@@ -925,7 +925,7 @@ class TG_GOSVertexPool
 			totalVertices = numVertices = 0;
 		}
 		
-		void init (ULONG maxVertices)
+		void init (uint32_t maxVertices)
 		{
 			gVertexPool = (gos_VERTEX *)TG_Shape::tglHeap->Malloc(sizeof(gos_VERTEX) * maxVertices);
 			gosASSERT(gVertexPool != NULL);
@@ -942,7 +942,7 @@ class TG_GOSVertexPool
 			numVertices = 0;
 		}
 		
-		gos_VERTEX * getVerticesFromPool (ULONG numRequested)
+		gos_VERTEX * getVerticesFromPool (uint32_t numRequested)
 		{
 			gos_VERTEX* result = NULL;
 			numVertices += numRequested;
@@ -962,8 +962,8 @@ class TG_TrianglePool
 		TG_Triangle *trianglePool;
 		TG_Triangle	*nextTriangle;
 		
-		ULONG		totalTriangles;
-		ULONG		numTriangles;
+		uint32_t		totalTriangles;
+		uint32_t		numTriangles;
 		
 	public:
 		TG_TrianglePool (void)
@@ -984,7 +984,7 @@ class TG_TrianglePool
 			totalTriangles = numTriangles = 0;
 		}
 		
-		void init (ULONG maxTriangles)
+		void init (uint32_t maxTriangles)
 		{
 			trianglePool = (TG_Triangle *)TG_Shape::tglHeap->Malloc(sizeof(TG_Triangle) * maxTriangles);
 			gosASSERT(trianglePool != NULL);
@@ -1001,7 +1001,7 @@ class TG_TrianglePool
 			numTriangles = 0;
 		}
 		
-		TG_Triangle * getTrianglesFromPool (ULONG numRequested)
+		TG_Triangle * getTrianglesFromPool (uint32_t numRequested)
 		{
 			TG_Triangle* result = NULL;
 			numTriangles += numRequested;
@@ -1021,8 +1021,8 @@ class TG_ShadowPool
 		TG_ShadowVertexTemp 	*tVertexPool;
 		TG_ShadowVertexTemp 	*nextVertex;
 		
-		ULONG					totalVertices;
-		ULONG					numVertices;
+		uint32_t					totalVertices;
+		uint32_t					numVertices;
 		
 	public:
 		TG_ShadowPool (void)
@@ -1043,7 +1043,7 @@ class TG_ShadowPool
 			totalVertices = numVertices = 0;
 		}
 		
-		void init (ULONG maxVertices)
+		void init (uint32_t maxVertices)
 		{
 			tVertexPool = (TG_ShadowVertexTempPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_ShadowVertexTemp) * maxVertices);
 			gosASSERT(tVertexPool != NULL);
@@ -1060,7 +1060,7 @@ class TG_ShadowPool
 			numVertices = 0;
 		}
 		
-		TG_ShadowVertexTempPtr getShadowsFromPool (ULONG numRequested)
+		TG_ShadowVertexTempPtr getShadowsFromPool (uint32_t numRequested)
 		{
 			TG_ShadowVertexTempPtr result = NULL;
 			numVertices += numRequested;
@@ -1077,11 +1077,11 @@ class TG_ShadowPool
 class TG_DWORDPool
 {
 	protected:
-		ULONG 	*triPool;
-		ULONG	*nextTri;
+		uint32_t 	*triPool;
+		uint32_t	*nextTri;
 		
-		ULONG	totalTriangles;
-		ULONG	numTriangles;
+		uint32_t	totalTriangles;
+		uint32_t	numTriangles;
 		
 	public:
 		TG_DWORDPool (void)
@@ -1102,9 +1102,9 @@ class TG_DWORDPool
 			totalTriangles = numTriangles = 0;
 		}
 		
-		void init (ULONG maxTriangles)
+		void init (uint32_t maxTriangles)
 		{
-			triPool = (ULONG *)TG_Shape::tglHeap->Malloc(sizeof(ULONG) * maxTriangles);
+			triPool = (uint32_t *)TG_Shape::tglHeap->Malloc(sizeof(uint32_t) * maxTriangles);
 			gosASSERT(triPool != NULL);
 			
 			nextTri = triPool;
@@ -1119,9 +1119,9 @@ class TG_DWORDPool
 			numTriangles = 0;
 		}
 		
-		ULONG * getFacesFromPool (ULONG numRequested)
+		uint32_t * getFacesFromPool (uint32_t numRequested)
 		{
-			ULONG* result = NULL;
+			uint32_t* result = NULL;
 			numTriangles += numRequested;
 			if (numTriangles < totalTriangles)
 			{

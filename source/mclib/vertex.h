@@ -42,15 +42,15 @@ struct PostcompVertex
 
 	float				elevation;			//Stored here so terrain can be locally deformed
 
-	ULONG				textureData;		//Top word is Overlay TXM, Bottom Word is Base TXM
+	uint32_t				textureData;		//Top word is Overlay TXM, Bottom Word is Base TXM
 
-	ULONG				localRGBLight;		//aRGB format
+	uint32_t				localRGBLight;		//aRGB format
 
-	ULONG				terrainType;		//terrainTypeNumber.
-	UCHAR				selected;			// selection
-	UCHAR				water;				//Additional Storage to pull into 16 Byte Alignment
-	UCHAR				shadow;
-	UCHAR				highlighted;		//Used to highlight WHOLE FACES!!!
+	uint32_t				terrainType;		//terrainTypeNumber.
+	uint8_t				selected;			// selection
+	uint8_t				water;				//Additional Storage to pull into 16 Byte Alignment
+	uint8_t				shadow;
+	uint8_t				highlighted;		//Used to highlight WHOLE FACES!!!
 
 		float getElevation (void)
 		{
@@ -85,16 +85,16 @@ class Vertex
 		int32_t				posTile;			//Where are we on the tile!  Saves 24 divides per tile if overlay on tile!!!
 												//Saves a mere 8 if no overlay!
 
-		ULONG				clipInfo;			//Stores data on vertex clip information.
+		uint32_t				clipInfo;			//Stores data on vertex clip information.
 
-		ULONG				lightRGB;			//Light at this vertex.
-		ULONG				fogRGB;				//Fog at this vertex.
+		uint32_t				lightRGB;			//Light at this vertex.
+		uint32_t				fogRGB;				//Fog at this vertex.
 
 		float				wx,wy;				//Screen Coordinates of water face if there is one!
 		float				wz,ww;				//Depth of vertex for water if there is one!
 		float				wAlpha;				//Used to environment Map Sky onto water.
 
-		ULONG				calcThisFrame;		//Calced this vertex this frame?
+		uint32_t				calcThisFrame;		//Calced this vertex this frame?
 
 		float				hazeFactor;			//Used to distance fog the terrain.
 		

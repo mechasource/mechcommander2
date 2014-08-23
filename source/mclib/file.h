@@ -105,7 +105,7 @@ protected:
 	size_t			parentOffset;
 	size_t			physicalLength;
 	bool			inRAM;
-	PUCHAR			fileImage;
+	puint8_t			fileImage;
 
 public:
 	static bool		logFileTraffic;
@@ -141,29 +141,29 @@ public:
 	void seekEnd (void);
 	void skip (int32_t bytesToSkip);
 
-	int32_t read (size_t pos, PUCHAR buffer, int32_t length);
-	int32_t read (PUCHAR buffer, int32_t length);
+	int32_t read (size_t pos, puint8_t buffer, int32_t length);
+	int32_t read (puint8_t buffer, int32_t length);
 
 	//Used to dig the LZ data directly out of the fastfiles.
 	// For textures.
 	int32_t readRAW (size_t* &buffer, UserHeap* heap);
 
 	uint8_t readByte (void);
-	short readWord (void);
-	short readShort (void);
+	int16_t readWord (void);
+	int16_t readShort (void);
 	int32_t readLong (void);
 	float readFloat( void );
 
-	int32_t readString (PUCHAR buffer);
-	int32_t readLine (PUCHAR buffer, int32_t maxLength);
-	int32_t readLineEx (PUCHAR buffer, int32_t maxLength);
+	int32_t readString (puint8_t buffer);
+	int32_t readLine (puint8_t buffer, int32_t maxLength);
+	int32_t readLineEx (puint8_t buffer, int32_t maxLength);
 
-	int32_t write (size_t pos, PUCHAR buffer, int32_t bytes);
-	int32_t write (PUCHAR buffer, int32_t bytes);
+	int32_t write (size_t pos, puint8_t buffer, int32_t bytes);
+	int32_t write (puint8_t buffer, int32_t bytes);
 
 	int32_t writeByte (uint8_t value);
-	int32_t writeWord (short value);
-	int32_t writeShort (short value);
+	int32_t writeWord (int16_t value);
+	int32_t writeShort (int16_t value);
 	int32_t writeLong (int32_t value);
 	int32_t writeFloat (float value);
 

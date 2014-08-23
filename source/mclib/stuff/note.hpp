@@ -77,13 +77,13 @@ namespace Stuff {
 		}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// int access
+		// int32_t access
 		//
 	public:
 		void
-			GetEntry(int *value);
+			GetEntry(pint32_t value);
 		void
-			SetEntry(int value);
+			SetEntry(int32_t value);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// scalar access

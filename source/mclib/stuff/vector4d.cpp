@@ -153,7 +153,7 @@ Vector4D&
 	Vector4D::MultiplySetClip(
 		const Point3D &v,
 		const Matrix4D &m,
-		int *clipper
+		pint32_t clipper
 	)
 {
 	Check_Pointer(this);

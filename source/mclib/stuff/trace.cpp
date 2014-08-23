@@ -54,17 +54,17 @@ Stuff::Trace::PrintUsage(float usage)
 //##########################################################################
 
 uint8_t Stuff::BitTrace::NextActiveLine = 0;
-int		Stuff::BitTrace::NextBit = 0;
+int32_t		Stuff::BitTrace::NextBit = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Stuff::BitTrace::BitTrace(PCSTR name) : Trace(name, BitType)
 {
 	activeLine = NextActiveLine++;
-	bitFlag = (NextBit < 32) ? ULONG(1 << NextBit++) : ULONG(0);
+	bitFlag = (NextBit < 32) ? uint32_t(1 << NextBit++) : uint32_t(0);
 #if defined(USE_ACTIVE_PROFILE)
 	DEBUG_STREAM << name << " used trace line "
-		<< static_cast<int>(activeLine) << "!\n";
+		<< static_cast<int32_t>(activeLine) << "!\n";
 	if (!IsLineValidImplementation(activeLine))
 	{
 		STOP(("Invalid active trace line!"));
@@ -82,7 +82,7 @@ void Stuff::BitTrace::DumpTraceStatus()
 	SPEW((
 		GROUP_STUFF_TRACE,
 		"%d = %d+",
-		static_cast<int>(activeLine),
+		static_cast<int32_t>(activeLine),
 		traceUp
 		));
 }
@@ -134,7 +134,7 @@ void Stuff::BitTrace::PrintUsage(float usage)
 
 	SPEW((GROUP_STUFF_TRACE, "%4f%% CPU+", (usage*100.0f)));
 #if defined(USE_ACTIVE_PROFILE)
-	SPEW((GROUP_STUFF_TRACE, " (active on line %d)", static_cast<int>(activeLine)));
+	SPEW((GROUP_STUFF_TRACE, " (active on line %d)", static_cast<int32_t>(activeLine)));
 #endif
 }
 
@@ -347,7 +347,7 @@ Stuff::TraceManager::ResetTraces()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 PCSTR
-Stuff::TraceManager::GetNameOfTrace(int bit_no)
+Stuff::TraceManager::GetNameOfTrace(int32_t bit_no)
 {
 	//
 	// Set up the iterator
@@ -401,7 +401,7 @@ Stuff::TraceManager::StartTimingAnalysis()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 Stuff::TraceManager::SnapshotTimingAnalysis(bool print)
 {
 	int64_t now = gos_GetHiResTime();
@@ -486,7 +486,7 @@ void Stuff::TraceManager::SaveTraceLog(PCSTR filename)
 			// Write out the record header
 			//----------------------------
 			//
-			output << static_cast<int>('RVNO') << sizeof(int) << 2;
+			output << static_cast<int32_t>('RVNO') << sizeof(int32_t) << 2;
 
 			//
 			//---------------------------------------------------------
@@ -495,21 +495,21 @@ void Stuff::TraceManager::SaveTraceLog(PCSTR filename)
 			//
 			ChainIteratorOf<Trace*> traces(&traceChain);
 			Trace *trace;
-			size_t header_size = sizeof(int);
+			size_t header_size = sizeof(int32_t);
 			while ((trace = traces.ReadAndNext()) != NULL)
 			{
-				header_size += 2*sizeof(int);
+				header_size += 2*sizeof(int32_t);
 				header_size += (strlen(trace->traceName)+4)&~3;
 			}
-			output << static_cast<int>('HDRS') << header_size;
-			output << static_cast<int>(trace_count);
+			output << static_cast<int32_t>('HDRS') << header_size;
+			output << static_cast<int32_t>(trace_count);
 
 			traces.First();
 			while ((trace = traces.ReadAndNext()) != NULL)
 			{
 				size_t str_len = strlen(trace->traceName) + 1;
-				header_size = sizeof(int) + ((str_len+4)&~3);
-				output << header_size << static_cast<int>(trace->traceType);
+				header_size = sizeof(int32_t) + ((str_len+4)&~3);
+				output << header_size << static_cast<int32_t>(trace->traceType);
 				output.WriteBytes(trace->traceName, str_len);
 				while (str_len&3)
 				{
@@ -518,7 +518,7 @@ void Stuff::TraceManager::SaveTraceLog(PCSTR filename)
 				}
 			}
 
-			output << static_cast<int>('LOGS') << ((size+3)&~3);
+			output << static_cast<int32_t>('LOGS') << ((size+3)&~3);
 			allocatedTraceLog->Rewind();
 			output.WriteBytes(allocatedTraceLog->GetPointer(), size);
 			while (size&3)
@@ -623,7 +623,7 @@ Stuff::TraceManager::ResumeTraceLogging()
 void
 Stuff::TraceManager::WriteClassBlocks(MemoryStream& stream)
 {
-	stream << static_cast<int>('MSGS')
+	stream << static_cast<int32_t>('MSGS')
 		<< RegisteredClass::DefaultData->WriteClassBlock(stream, false);
 	RegisteredClass::DefaultData->WriteClassBlock(stream, true);
 }

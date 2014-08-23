@@ -39,7 +39,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::GetEntry(int *value)
+	Note::GetEntry(pint32_t value)
 {
 	Check_Object(this);
 	Check_Pointer(value);
@@ -53,7 +53,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Note::SetEntry(int value)
+	Note::SetEntry(int32_t value)
 {
 	Check_Object(this);
 
@@ -127,7 +127,7 @@ void
 	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	int count =
+	int32_t count =
 		sscanf(
 			contents,
 			"%f %f %f",
@@ -159,7 +159,7 @@ void
 	Check_Object(this);
 
 	static char contents[64];
-	int temp;
+	int32_t temp;
 	temp = sprintf(
 		contents,
 		"%f %f %f",
@@ -186,7 +186,7 @@ void Note::GetEntry(YawPitchRoll* value)
 	float fyaw = value->yaw;
 	float fpitch = value->pitch;
 	float froll = value->roll;
-	int count = sscanf(contents, "%f %f %f", &fyaw, &fpitch, &froll);
+	int32_t count = sscanf(contents, "%f %f %f", &fyaw, &fpitch, &froll);
 	if (count != 3)
 	{
 		Page *page = m_page;
@@ -243,7 +243,7 @@ void
 	float fyaw = ypr.yaw;
 	float fpitch = ypr.pitch;
 	float froll = ypr.roll;
-	int count = sscanf(contents, "%f %f %f", &fyaw, &fpitch, &froll);
+	int32_t count = sscanf(contents, "%f %f %f", &fyaw, &fpitch, &froll);
 	if (count != 3)
 	{
 		Page *page = m_page;
@@ -295,7 +295,7 @@ void
 	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	int count =
+	int32_t count =
 		sscanf(
 			contents,
 			"%f %f %f %f %f %f",
@@ -356,7 +356,7 @@ void
 	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	int count =
+	int32_t count =
 		sscanf(
 			contents,
 			"%f %f %f",
@@ -411,7 +411,7 @@ void
 	PCSTR contents = NULL;
 	GetEntry(&contents);
 	Check_Pointer(contents);
-	int count =
+	int32_t count =
 		sscanf(
 			contents,
 			"%f %f %f %f",

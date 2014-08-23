@@ -25,7 +25,7 @@ class ChainTestNode:
 	public Node
 {
 public:
-	int receivedCommand;
+	int32_t receivedCommand;
 
 	ChainOf<ChainTestPlug*> chain1;
 	ChainOf<ChainTestPlug*> chain2;
@@ -531,7 +531,7 @@ bool
 		}
 	}
 	{
-		int size, index;
+		int32_t size, index;
 		ChainIteratorOf<ChainTestPlug*> iterator1(&chain1);
 		ChainIteratorOf<ChainTestPlug*> iterator2(&chain2);
 

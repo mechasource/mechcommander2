@@ -112,16 +112,16 @@ namespace Stuff {
 		static uint8_t
 			NextActiveLine;
 
-		int
+		int32_t
 			traceUp;
 		int64_t
 			lastUpTime,
 			totalUpTime;
 		uint8_t
 			activeLine;
-		ULONG
+		uint32_t
 			bitFlag;
-		static int
+		static int32_t
 			NextBit;
 
 		void
@@ -333,14 +333,14 @@ namespace Stuff {
 	protected:
 		ChainOf<Trace*> traceChain;
 		int64_t sampleStart;
-		int
+		int32_t
 			actualSampleCount,
 			ignoredSampleCount;
 		MemoryStream
 			*allocatedTraceLog,
 			*activeTraceLog;
 		uint8_t traceCount;
-		ULONG
+		uint32_t
 			activeBits;
 
 		void
@@ -361,16 +361,16 @@ namespace Stuff {
 		void
 			ResetTraces();
 
-		ULONG
+		uint32_t
 			GetBitTraceStatus()
 		{Check_Object(this); return activeBits;}
 		PCSTR
-			GetNameOfTrace(int bit_no);
+			GetNameOfTrace(int32_t bit_no);
 
 #if defined(USE_TIME_ANALYSIS)
 		void
 			StartTimingAnalysis();
-		int
+		int32_t
 			SnapshotTimingAnalysis(bool print=false);
 #endif
 

@@ -314,7 +314,7 @@ Stuff::operator + (const MStringRepresentation &str, char ch)
 	}
 	else
 	{
-		Verify(str.stringLength != UINT_MAX);
+		Verify(str.stringLength != uint32_t_MAX);
 
 		temp.stringLength = str.stringLength + 1;
 
@@ -341,7 +341,7 @@ Stuff::operator + (const MStringRepresentation &str, char ch)
 //#############################################################################
 //#############################################################################
 //
-int
+int32_t
 MStringRepresentation::Compare(const MStringRepresentation &str) const
 {
 	Check_Object(this);

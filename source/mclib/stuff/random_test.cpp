@@ -16,14 +16,14 @@ bool
 
 #define RANDOM_TEST_COUNT 10000
 
-	int i;
+	int32_t i;
 	for (i=0; i<RANDOM_TEST_COUNT; ++i)
 	{
 		Scalar r = Random::Instance->GetFraction();
 		Test_Assumption(r >= 0.0f && r < 1.0f);
 	}
 
-	int array[10];
+	int32_t array[10];
 	for (i = 0; i<ELEMENTS(array); ++i)
 	{
 		array[i] = 0;
@@ -31,7 +31,7 @@ bool
 
 	for (i = 0; i<RANDOM_TEST_COUNT; ++i)
 	{
-		int r = Random::Instance->GetLessThan(ELEMENTS(array));
+		int32_t r = Random::Instance->GetLessThan(ELEMENTS(array));
 		Test_Assumption(r >= 0 && r < ELEMENTS(array));
 		++array[r];
 	}

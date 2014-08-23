@@ -15,9 +15,9 @@ class TableTestPlug:
 	public Plug
 {
 public:
-	int value;
+	int32_t value;
 
-	TableTestPlug(int value);
+	TableTestPlug(int32_t value);
 	~TableTestPlug();
 };
 
@@ -25,8 +25,8 @@ class TableTestNode:
 	public Node
 {
 public:
-	TableOf<TableTestPlug*, int> table1;
-	TableOf<TableTestPlug*, int> table2;
+	TableOf<TableTestPlug*, int32_t> table1;
+	TableOf<TableTestPlug*, int32_t> table2;
 
 	TableTestNode();
 	~TableTestNode();
@@ -35,7 +35,7 @@ public:
 	bool RunTest();
 };
 
-TableTestPlug::TableTestPlug(int value):
+TableTestPlug::TableTestPlug(int32_t value):
 	Plug(DefaultData)
 {
 	this->value = value;
@@ -101,8 +101,8 @@ bool
 	TableTestNode::RunProfile()
 {
 	TableTestPlug	*testPlug1, *testPlug2;
-	int		 		values[TEST_COUNT];
-	int				i, j;
+	int32_t		 		values[TEST_COUNT];
+	int32_t				i, j;
 	Time 				startTicks;
 
 	/*
@@ -112,7 +112,7 @@ bool
 		values[i] = i;
 	}
 	for (i = 0; i < TEST_COUNT; i++) {
-		int  tmp;
+		int32_t  tmp;
                 
 		j = i + Random::GetLessThan(TEST_COUNT - i);
 		tmp = values[j];
@@ -148,8 +148,8 @@ bool
 	 */
 	startTicks = gos_GetHiResTime();
 	{
-		TableIteratorOf<TableTestPlug*, int> iterator1(&table1);
-		TableIteratorOf<TableTestPlug*, int> iterator2(&table2);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator1(&table1);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 	
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -181,8 +181,8 @@ bool
 	 */
 	startTicks = gos_GetHiResTime();
 	{
-		TableIteratorOf<TableTestPlug*, int> iterator1(&table1);
-		TableIteratorOf<TableTestPlug*, int> iterator2(&table2);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator1(&table1);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 
 		for (i = 0; i < TEST_COUNT; i++) 
 		{
@@ -206,8 +206,8 @@ bool
 	 */
 	startTicks = gos_GetHiResTime();
 	{
-		TableIteratorOf<TableTestPlug*, int> iterator1(&table1);
-		TableIteratorOf<TableTestPlug*, int> iterator2(&table2);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator1(&table1);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -238,8 +238,8 @@ bool
 	TableTestNode::RunTest()
 {
 	TableTestPlug	*testPlug1, *testPlug2;
-	int	 		values[TEST_COUNT];
-	int				i, j;
+	int32_t	 		values[TEST_COUNT];
+	int32_t				i, j;
 //	Time 			startTicks;
 
 	/*
@@ -249,7 +249,7 @@ bool
 		values[i] = i;
 	}
 	for (i = 0; i < TEST_COUNT; i++) {
-		int  tmp;
+		int32_t  tmp;
                 
 		j = i + Random::GetLessThan(TEST_COUNT - i);
 		tmp = values[j];
@@ -294,8 +294,8 @@ bool
 	 * Test_Assumption first and last
 	 */
 	{
-		TableIteratorOf<TableTestPlug*, int> iterator1(&table1);
-		TableIteratorOf<TableTestPlug*, int> iterator2(&table2);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator1(&table1);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -325,8 +325,8 @@ bool
 	 * Test_Assumption next and prev
 	 */
 	{
-		TableIteratorOf<TableTestPlug*, int> iterator1(&table1);
-		TableIteratorOf<TableTestPlug*, int> iterator2(&table2);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator1(&table1);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 	
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -373,8 +373,8 @@ bool
 	 * Test_Assumption read next and read prev
 	 */
 	{
-		TableIteratorOf<TableTestPlug*, int> iterator1(&table1);
-		TableIteratorOf<TableTestPlug*, int> iterator2(&table2);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator1(&table1);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 	
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -415,8 +415,8 @@ bool
 	 * Test_Assumption nth
 	 */
 	{
-		TableIteratorOf<TableTestPlug*, int> iterator1(&table1);
-		TableIteratorOf<TableTestPlug*, int> iterator2(&table2);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator1(&table1);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 	
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -437,8 +437,8 @@ bool
 	 * Test_Assumption Remove
 	 */
 	{
-		TableIteratorOf<TableTestPlug*, int> iterator1(&table1);
-		TableIteratorOf<TableTestPlug*, int> iterator2(&table2);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator1(&table1);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 	
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -472,8 +472,8 @@ bool
 		/*
 		 * Add plugs to both sockets
 		 */
-		TableIteratorOf<TableTestPlug*, int> iterator1(&table1);
-		TableIteratorOf<TableTestPlug*, int> iterator2(&table2);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator1(&table1);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 
 		Test_Assumption( iterator1.GetSize() == 0 );
 		Test_Assumption( iterator2.GetSize() == 0 );
@@ -491,9 +491,9 @@ bool
 		/*
 		 * Perform random deletion
 		 */
-		int size, index;
-		TableIteratorOf<TableTestPlug*, int> iterator1(&table1);
-		TableIteratorOf<TableTestPlug*, int> iterator2(&table2);
+		int32_t size, index;
+		TableIteratorOf<TableTestPlug*, int32_t> iterator1(&table1);
+		TableIteratorOf<TableTestPlug*, int32_t> iterator2(&table2);
 
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );

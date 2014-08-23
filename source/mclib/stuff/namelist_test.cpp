@@ -90,7 +90,7 @@ bool
 		*save_entry = NULL;
 	NameList
 		sub_list;
-	int
+	int32_t
 		freq,
 		count,
 		i;

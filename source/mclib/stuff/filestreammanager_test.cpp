@@ -60,7 +60,7 @@ public:
 		size;
 	void
 		*data;		
-	int
+	int32_t
 		tag;
 };
 

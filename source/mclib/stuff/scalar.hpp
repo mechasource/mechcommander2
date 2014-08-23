@@ -45,7 +45,7 @@ namespace Stuff {
 		Close_Enough(Scalar x,Scalar y,Scalar e=SMALL)
 	{return Fabs(x-y) <= e;}
 	inline bool
-		Close_Enough(int x,int y,Scalar e=SMALL)
+		Close_Enough(int32_t x,int32_t y,Scalar e=SMALL)
 	{return Fabs(static_cast<Scalar>(x-y)) <= e;}
 
 	inline uint16_t
@@ -56,7 +56,7 @@ namespace Stuff {
 		return *Cast_Pointer(puint16_t, &in);
 	}
 
-	inline UCHAR
+	inline uint8_t
 		Round_Float_To_Byte(float in)
 	{
 		Verify(in >= 0.0f && in < 256.0f);
@@ -73,7 +73,7 @@ namespace Stuff {
 		return *Cast_Pointer(puint16_t, &in);
 	}
 
-	inline UCHAR
+	inline uint8_t
 		Truncate_Float_To_Byte(float in)
 	{
 		Verify(in >= 0.0f && in < 256.0f);
@@ -82,21 +82,21 @@ namespace Stuff {
 		return *Cast_Pointer(puint8_t, &in);
 	}
 
-	ULONG
-		Scaled_Float_To_Bits(float in, float min, float max, ULONG number_of_bits);
+	uint32_t
+		Scaled_Float_To_Bits(float in, float min, float max, uint32_t number_of_bits);
 
 	float
-		Scaled_Float_From_Bits(ULONG in, float min, float max, ULONG number_of_bits);
+		Scaled_Float_From_Bits(uint32_t in, float min, float max, uint32_t number_of_bits);
 
-	ULONG
-		Scaled_Int_To_Bits(int in, int min, int max, ULONG number_of_bits);
+	uint32_t
+		Scaled_Int_To_Bits(int32_t in, int32_t min, int32_t max, uint32_t number_of_bits);
 
-	int
-		Scaled_Int_From_Bits(ULONG in, int min, int max, ULONG number_of_bits);
+	int32_t
+		Scaled_Int_From_Bits(uint32_t in, int32_t min, int32_t max, uint32_t number_of_bits);
 
 
 
-	int
+	int32_t
 		Round(Scalar value);
 
 	// mg: I made some statistic test and came up with an max error of 6%
@@ -128,7 +128,7 @@ namespace Stuff {
 #if USE_ASSEMBLER_CODE
 		float temp;
 
-		int _i = 2 * FP_ONE_BITS - *(int *)&(f);
+		int32_t _i = 2 * FP_ONE_BITS - *(pint32_t )&(f);
 		temp = *(float *)&_i;
 		temp = temp * (2.0f - (f) * temp);
 

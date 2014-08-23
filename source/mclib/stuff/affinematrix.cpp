@@ -711,7 +711,7 @@ AffineMatrix4D::Invert(const AffineMatrix4D& Source)
 		- Source(3,2)*(*this)(2,2);
 
 	det = 1.0f/det;
-	for (int i=0; i<12; ++i)
+	for (int32_t i=0; i<12; ++i)
 	{
 		entries[i] *= det;
 	}

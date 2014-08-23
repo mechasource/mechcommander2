@@ -232,7 +232,7 @@ void
 bool
 	Page::GetEntry(
 		PCSTR entryname,
-		int *contents,
+		pint32_t contents,
 		bool required
 	)
 {
@@ -263,7 +263,7 @@ bool
 void
 	Page::SetEntry(
 		PCSTR entryname,
-		int contents
+		int32_t contents
 	)
 {
 	Check_Object(this);
@@ -281,7 +281,7 @@ void
 void
 	Page::AppendEntry(
 		PCSTR entryname,
-		int contents
+		int32_t contents
 	)
 {
 	Check_Object(this);

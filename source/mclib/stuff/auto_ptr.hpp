@@ -211,7 +211,7 @@ namespace Stuff
 		mutable union
 		{
 			T *m_ptr;
-			mutable int uint32_t m_bits;
+			mutable int32_t uint32_t m_bits;
 		};
 
 		enum

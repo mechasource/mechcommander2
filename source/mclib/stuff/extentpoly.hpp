@@ -33,7 +33,7 @@ namespace Stuff {
 		float
 			minY,
 			maxY;
-		int numberOfVertices;
+		int32_t numberOfVertices;
 		Vector3D *vertex;
 
 		ExtentPoly() {}
@@ -74,7 +74,7 @@ namespace Stuff {
 			);
 		Vector3D*
 			Constrain(Vector3D *point);
-		int
+		int32_t
 			InfiniteLineTestWithXAxis(
 			const Vector3D &point,
 			const Vector3D &p1,

@@ -220,12 +220,12 @@ namespace Stuff {
 			Plug *plug,
 			PCVOID value
 			);
-		virtual int
+		virtual int32_t
 			CompareTreeNodes(
 			TreeNode *link1,
 			TreeNode *link2
 			);
-		virtual int
+		virtual int32_t
 			CompareValueToTreeNode(
 			PCVOID value,
 			TreeNode *link
@@ -304,12 +304,12 @@ namespace Stuff {
 				*Cast_Pointer(const V*, value)
 				);
 		}
-		int
+		int32_t
 			CompareTreeNodes(
 			TreeNode *link1, 
 			TreeNode *link2
 			);
-		int
+		int32_t
 			CompareValueToTreeNode(
 			PCVOID value,
 			TreeNode *link
@@ -335,7 +335,7 @@ namespace Stuff {
 	{
 	}
 
-	template <class T, class V> int
+	template <class T, class V> int32_t
 		TreeOf<T, V>::CompareTreeNodes(
 		TreeNode *node1,
 		TreeNode *node2
@@ -358,7 +358,7 @@ namespace Stuff {
 		return 0;
 	}
 
-	template <class T, class V> int
+	template <class T, class V> int32_t
 		TreeOf<T, V>::CompareValueToTreeNode(
 		PCVOID value,
 		TreeNode *node

@@ -70,7 +70,7 @@ RGBColor&
 	Verify(color.hue >= 0.0 && color.hue <= 1.0f);
 	float hue = (color.hue == 1.0f) ? 0.0f : color.hue;
 	hue *= 6.0f;
-	int sextant = Truncate_Float_To_Byte(hue);
+	int32_t sextant = Truncate_Float_To_Byte(hue);
 	Verify(static_cast<uint32_t>(sextant) < 6);
 	float remainder = hue - static_cast<float>(sextant);
 

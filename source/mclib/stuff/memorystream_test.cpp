@@ -55,10 +55,10 @@ bool SingeBitStreamTest(size_t total_sections_to_write)
 	bool *comp_array_of_bools = new bool[total_sections_to_write];
 	Register_Pointer(comp_array_of_bools);
 
-	int i;
+	int32_t i;
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
-		int random = Random::GetLessThan(10);
+		int32_t random = Random::GetLessThan(10);
 
 		if (random > 4)
 		{
@@ -73,15 +73,15 @@ bool SingeBitStreamTest(size_t total_sections_to_write)
 
 
 	// calculate total byte depth.
-	int total_number_of_bytes = (int)(total_sections_to_write/8.0f);
-	int total_remainder_bits = total_sections_to_write - (total_number_of_bytes*8);
+	int32_t total_number_of_bytes = (int32_t)(total_sections_to_write/8.0f);
+	int32_t total_remainder_bits = total_sections_to_write - (total_number_of_bytes*8);
 	if ( total_remainder_bits != 0)
 	{
 		total_number_of_bytes += 1;
 	}
 
 	
-	puint8_t big_byte_array = new UCHAR[total_number_of_bytes];
+	puint8_t big_byte_array = new uint8_t[total_number_of_bytes];
 	Register_Pointer(big_byte_array);
 	
 	MemoryStream bit_stream(big_byte_array, total_number_of_bytes);
@@ -141,13 +141,13 @@ template <class T> class MinMaxHolderOf
 		}
 	};
 
-MinMaxHolderOf<int>::MinMaxHolderOf()
+MinMaxHolderOf<int32_t>::MinMaxHolderOf()
 {
 	minValue = -Random::GetInt();
 	maxValue = Random::GetInt();
 
 
-	int ramp = Random::GetLessThan(10)+1;
+	int32_t ramp = Random::GetLessThan(10)+1;
 	ramp *= ramp;
 
 	minValue *= ramp;
@@ -159,7 +159,7 @@ MinMaxHolderOf<int>::MinMaxHolderOf()
 		minValue -= 10;
 	}
 
-	value = (int)((Random::GetFraction() * (maxValue - minValue))+minValue);
+	value = (int32_t)((Random::GetFraction() * (maxValue - minValue))+minValue);
 
 	
 }
@@ -186,7 +186,7 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 
 
 	// just to make this test interesting I will misalign the stream by one byte every number
-	int total_bits = 0;
+	int32_t total_bits = 0;
 
 	bool *source_array_of_bools = new bool[total_sections_to_write];
 	Register_Pointer(source_array_of_bools);
@@ -194,34 +194,34 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 	bool *comp_array_of_bools = new bool[total_sections_to_write];
 	Register_Pointer(comp_array_of_bools);
 
-	int *convert_int_array = new int[total_sections_to_write];
+	pint32_t convert_int_array = new int32_t[total_sections_to_write];
 	Register_Pointer(convert_int_array);
 
 	float *convert_float_array = new float[total_sections_to_write];
 	Register_Pointer(convert_float_array);
 
-	int *comp_int_array = new int[total_sections_to_write];
+	pint32_t comp_int_array = new int32_t[total_sections_to_write];
 	Register_Pointer(comp_int_array);
 
 	float *comp_float_array = new float[total_sections_to_write];
 	Register_Pointer(comp_float_array);
 
-	int *float_bit_depth = new int[total_sections_to_write];
+	pint32_t float_bit_depth = new int32_t[total_sections_to_write];
 	Register_Pointer(float_bit_depth);
 
-	int *int_bit_depth = new int[total_sections_to_write];
+	pint32_t int_bit_depth = new int32_t[total_sections_to_write];
 	Register_Pointer(int_bit_depth);
 
-	MinMaxHolderOf<int> *int_min_max = new MinMaxHolderOf<int>[total_sections_to_write];
+	MinMaxHolderOf<int32_t> *int_min_max = new MinMaxHolderOf<int32_t>[total_sections_to_write];
 	Register_Pointer(int_min_max);
 
 	MinMaxHolderOf<float> *float_min_max = new MinMaxHolderOf<float>[total_sections_to_write];
 	Register_Pointer(float_min_max);
 
-	int i;
+	int32_t i;
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
-		int random = Random::GetLessThan(10);
+		int32_t random = Random::GetLessThan(10);
 
 		if (random > 4)
 		{
@@ -255,15 +255,15 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 
 
 	// calculate total byte depth.
-	int total_number_of_bytes = (int)(total_bits/8.0f);
-	int total_remainder_bits = total_bits - (total_number_of_bytes*8);
+	int32_t total_number_of_bytes = (int32_t)(total_bits/8.0f);
+	int32_t total_remainder_bits = total_bits - (total_number_of_bytes*8);
 	if ( total_remainder_bits != 0)
 	{
 		total_number_of_bytes += 1;
 	}
 
 	
-	puint8_t big_byte_array = new UCHAR[total_number_of_bytes];
+	puint8_t big_byte_array = new uint8_t[total_number_of_bytes];
 	Register_Pointer(big_byte_array);
 	
 	MemoryStream bit_stream(big_byte_array, total_number_of_bytes);
@@ -271,7 +271,7 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
-		//write int
+		//write int32_t
 		bit_stream.WriteScaledIntToBits(int_min_max[i].value, int_min_max[i].minValue, int_min_max[i].maxValue, int_bit_depth[i]);
 
 		//write float
@@ -288,7 +288,7 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
 
-		//read int
+		//read int32_t
 		bit_stream.ReadBitsToScaledInt(comp_int_array[i], int_min_max[i].minValue, int_min_max[i].maxValue, int_bit_depth[i]);
 
 		//read float
@@ -304,7 +304,7 @@ bool FloatIntBitStreamTest(size_t total_sections_to_write)
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
 
-		ULONG buffer;
+		uint32_t buffer;
 
 
 		buffer = 0x00;
@@ -379,7 +379,7 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 	
 
 	
-	int *bit_depth = new int[total_sections_to_write];
+	pint32_t bit_depth = new int32_t[total_sections_to_write];
 	Register_Pointer(bit_depth);
 	
 	double *bits_to_write = new double[total_sections_to_write];
@@ -390,9 +390,9 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 
 	SPEW((GROUP_STUFF_TEST, "Testing %d random bit depth, random value numbers", total_sections_to_write));
 
-	int total_bit_depth = 0;
+	int32_t total_bit_depth = 0;
 
-	int i, byte_count;
+	int32_t i, byte_count;
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
 		bit_depth[i] = Random::GetLessThan(63) + 1;
@@ -411,8 +411,8 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		puint8_t byte_array = Cast_Pointer(puint8_t , &bits_to_write[i]);
 
 		
-		int number_of_bytes = (int)(bit_depth[i]/8.0f);
-		int remainder_bits = bit_depth[i] - (number_of_bytes*8);
+		int32_t number_of_bytes = (int32_t)(bit_depth[i]/8.0f);
+		int32_t remainder_bits = bit_depth[i] - (number_of_bytes*8);
 
 		if ( remainder_bits != 0)
 		{
@@ -420,9 +420,9 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		}
 
 
-		for (int byte_count = 0; byte_count < number_of_bytes; ++byte_count)
+		for (int32_t byte_count = 0; byte_count < number_of_bytes; ++byte_count)
 		{
-			byte_array[byte_count] = (UCHAR)Random::GetLessThan(256);
+			byte_array[byte_count] = (uint8_t)Random::GetLessThan(256);
 			//byte_array[byte_count] = 0xff;
 		}
 
@@ -430,29 +430,29 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		// mask off unused bits...
 		if (remainder_bits != 0)
 		{
-			byte_array[number_of_bytes-1] = (UCHAR)(byte_array[number_of_bytes-1] >> (8-remainder_bits));
+			byte_array[number_of_bytes-1] = (uint8_t)(byte_array[number_of_bytes-1] >> (8-remainder_bits));
 		}
 	}
 
 
 	// calculate total byte depth.
-	int total_number_of_bytes = (int)(total_bit_depth/8.0f);
-	int total_remainder_bits = total_bit_depth - (total_number_of_bytes*8);
+	int32_t total_number_of_bytes = (int32_t)(total_bit_depth/8.0f);
+	int32_t total_remainder_bits = total_bit_depth - (total_number_of_bytes*8);
 	if ( total_remainder_bits != 0)
 	{
 		total_number_of_bytes += 1;
 	}
 
 
-	puint8_t big_byte_array = new UCHAR[total_number_of_bytes];
+	puint8_t big_byte_array = new uint8_t[total_number_of_bytes];
 	Register_Pointer(big_byte_array);
 
 
 	MemoryStream bit_stream(big_byte_array, total_number_of_bytes);
 
-	int bit_depth_test = total_bit_depth;
+	int32_t bit_depth_test = total_bit_depth;
 
-	int total_bits_written = 0;
+	int32_t total_bits_written = 0;
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
 		Test_Assumption(bit_depth_test > 0);
@@ -460,11 +460,11 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 		bit_depth_test -= bit_depth[i];
 
 		total_bits_written += bit_depth[i];
-		int total_bytes_written = (int)(total_bits_written/8.0f);
+		int32_t total_bytes_written = (int32_t)(total_bits_written/8.0f);
 		
 
 		// one is in the pipe so it doesn't count
-		int stream_bytes_written = bit_stream.GetBytesUsed();
+		int32_t stream_bytes_written = bit_stream.GetBytesUsed();
 
 		Test_Assumption(total_bytes_written == stream_bytes_written);
 
@@ -475,18 +475,18 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 	bit_stream.ByteAlign();
 	bit_stream.Rewind();
 
-	int total_bits_read = 0;
+	int32_t total_bits_read = 0;
 	for (i = 0; i < total_sections_to_write; ++i)
 	{
 		bit_stream.ReadBits(&bits_to_read[i], bit_depth[i]);
 		total_bits_read += bit_depth[i];
 
-		int total_bytes_read = (int)(total_bits_read/8.0f);
-		//int total_remainder_bits_read = total_bits_read - (total_bytes_read*8);
+		int32_t total_bytes_read = (int32_t)(total_bits_read/8.0f);
+		//int32_t total_remainder_bits_read = total_bits_read - (total_bytes_read*8);
 
 
 		// one is in the pipe so it doesn't count
-		int stream_bytes_read = bit_stream.GetBytesUsed() - 1;
+		int32_t stream_bytes_read = bit_stream.GetBytesUsed() - 1;
 
 		Test_Assumption(total_bytes_read == stream_bytes_read);
 
@@ -509,9 +509,9 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 
 			
 
-			for (int bit_count = 7; bit_count > -1; --bit_count)
+			for (int32_t bit_count = 7; bit_count > -1; --bit_count)
 			{
-				UCHAR bit_value = (UCHAR)(source_byte_array[byte_count] >> bit_count);
+				uint8_t bit_value = (uint8_t)(source_byte_array[byte_count] >> bit_count);
 
 				bit_value &= 0x01;
 
@@ -551,9 +551,9 @@ bool MultipleBitStreamTest(size_t total_sections_to_write)
 
 		for (byte_count = 0; byte_count < 8; ++byte_count)
 		{
-			for (int bit_count = 7; bit_count > -1; --bit_count)
+			for (int32_t bit_count = 7; bit_count > -1; --bit_count)
 			{
-				UCHAR bit_value = (UCHAR)(copy_byte_array[byte_count] >> bit_count);
+				uint8_t bit_value = (uint8_t)(copy_byte_array[byte_count] >> bit_count);
 
 				bit_value &= 0x01;
 

@@ -254,7 +254,7 @@ void
 	{
 		if (IsRedirected)
 		{
-			void (__stdcall *old_hook)(PCSTR, puint8_t*, ULONG*) = Environment.HookGetFile;
+			void (__stdcall *old_hook)(PCSTR, puint8_t*, uint32_t*) = Environment.HookGetFile;
 			Environment.HookGetFile = NULL;
 			gos_GetFile(RedirectedName, &streamStart, &streamSize);
 			Environment.HookGetFile = old_hook;

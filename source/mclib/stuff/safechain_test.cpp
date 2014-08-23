@@ -100,7 +100,7 @@ bool
 	SafeChainTestNode::RunProfile()
 {
 	SafeChainTestPlug	*testPlug1;
-	int 				i;
+	int32_t 				i;
 	Time 		startTicks;
 
 	//
@@ -196,7 +196,7 @@ bool
 	SafeChainTestNode::RunTest()
 {
 	SafeChainTestPlug	*testPlug1, *testPlug2;
-	int 			i, j;
+	int32_t 			i, j;
 //	Time 		startTicks;
 
 	//
@@ -417,7 +417,7 @@ bool
 		/*
 		 * Perform random deletion
 		 */
-		int size, index;
+		int32_t size, index;
 		SafeChainIteratorOf<SafeChainTestPlug*> iterator1(&chain1);
 		SafeChainIteratorOf<SafeChainTestPlug*> iterator2(&chain2);
 

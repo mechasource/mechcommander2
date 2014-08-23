@@ -199,7 +199,7 @@ bool
 		// Test the integer readers
 		//-------------------------
 		//
-		int integer_value;
+		int32_t integer_value;
 		Scalar scalar_value;
 		bool logical_value;
 		page_3 = file2.FindPage(page_3_name);

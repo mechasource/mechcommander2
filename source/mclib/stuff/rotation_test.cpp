@@ -82,15 +82,15 @@ bool
 	Scalar  r_float;
 
 //DEBUG_STREAM<<"Starting UnitQuaternion::TestClass()\n";
-	for (int k=0; k<TEST_SEQUENCE_LENGTH; ++k)
+	for (int32_t k=0; k<TEST_SEQUENCE_LENGTH; ++k)
 	{
 
-		for(int i=0; i<=NUMBER_OF_MULTIPLICATIONS; ++i)
+		for(int32_t i=0; i<=NUMBER_OF_MULTIPLICATIONS; ++i)
 		{
 		//----------------------
 		//Generate random vector
 		//----------------------
-			for ( int j=0; j<3; ++j)
+			for ( int32_t j=0; j<3; ++j)
 			{
 				r_float = 2.0f*Random - 1.0f;
 				r_vec[j] = r_float;

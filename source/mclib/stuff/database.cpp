@@ -30,20 +30,20 @@ public:
 
 	Database();
 
-	ULONG
+	uint32_t
 		m_tag,							// Magic number to identity file
 		m_version;						// Version number
-	ULONG
+	uint32_t
 		m_numberOfRecords,				// Number of used records in database
 		m_nextRecordID;					// Sequential index assigned in ADD
-	UINT_PTR	m_idOffsets[e_DataBlockSize];	// Offsets to DatabaseRecords ( sorted by index )
-	UINT_PTR	m_nameOffsets[e_DataBlockSize];	// Offsets to DatabaseRecords ( sorted by HASH )
+	uintptr_t	m_idOffsets[e_DataBlockSize];	// Offsets to DatabaseRecords ( sorted by index )
+	uintptr_t	m_nameOffsets[e_DataBlockSize];	// Offsets to DatabaseRecords ( sorted by HASH )
 
 	void
 		TestInstance() const
 			{Verify(m_tag == e_Tag && m_version <= e_Version);}
 
-	static int
+	static int32_t
 		FilesOpened;
 };
 
@@ -55,7 +55,7 @@ class Stuff::Record
 public:
 	Record::Record(
 		const RecordHandle *handle,
-		ULONG record_hash,
+		uint32_t record_hash,
 		size_t name_length
 	);
 	void Unhook(const RecordHandle* handle);
@@ -66,12 +66,12 @@ public:
 	size_t		m_length;				// If this is zero, the record has been 
 										// deleted (used to signify gaps before compressing)
 	size_t		m_nameLength;
-	ULONG		m_ID;					// ID
-	ULONG		m_hash;					// Hash value
+	uint32_t		m_ID;					// ID
+	uint32_t		m_hash;					// Hash value
 
 	bool		m_mustFree;					// When 1 gos_Free must be called on the block
 	char		m_name[1];
-	UCHAR		m_data[1];
+	uint8_t		m_data[1];
 
 	void TestInstance(void) const
 	{
@@ -84,7 +84,7 @@ static HGOSHEAP Database_Heap = NULL;
 //
 static uint32_t GenerateHash(PCSTR name)
 {
-	ULONG hash=0;
+	uint32_t hash=0;
 
 	while (*name)
 	{
@@ -100,7 +100,7 @@ static uint32_t GenerateHash(PCSTR name)
 //
 Record::Record(
 	const RecordHandle *handle,
-	ULONG record_hash,
+	uint32_t record_hash,
 	size_t name_length
 )
 {
@@ -129,8 +129,8 @@ Record::Record(
 	// Store in database
 	//------------------
 	//
-	ULONG index=m_ID % Database::e_DataBlockSize;
-	UINT_PTR offset = (UINT_PTR)this - db_handle->m_baseAddress;
+	uint32_t index=m_ID % Database::e_DataBlockSize;
+	uintptr_t offset = (uintptr_t)this - db_handle->m_baseAddress;
 	m_nextIDRecord = db->m_idOffsets[index];
 	db->m_idOffsets[index] = offset;
 	Check_Pointer(handle->m_name);
@@ -165,12 +165,12 @@ void
 	//--------------------------------------------
 	//
 	Record* record;
-	ULONG index = m_ID % Database::e_DataBlockSize;
+	uint32_t index = m_ID % Database::e_DataBlockSize;
 	#ifdef _ARMOR
 		record = reinterpret_cast<Record*>(db->m_idOffsets[index]);
 		while (record)
 		{
-			record = reinterpret_cast<Record*>((UINT_PTR)record + db_handle->m_baseAddress);
+			record = reinterpret_cast<Record*>((uintptr_t)record + db_handle->m_baseAddress);
 			Check_Object(record);
 			if (record->m_ID == m_ID)
 				break;
@@ -193,9 +193,9 @@ void
 		record = reinterpret_cast<Record*>(db->m_idOffsets[index]);
 		while (record)
 		{
-			record = reinterpret_cast<Record*>((UINT_PTR)record + db_handle->m_baseAddress);
+			record = reinterpret_cast<Record*>((uintptr_t)record + db_handle->m_baseAddress);
 			Check_Object(record);
-			if ((UINT_PTR)record->m_nextIDRecord+db_handle->m_baseAddress == (UINT_PTR)this)
+			if ((uintptr_t)record->m_nextIDRecord+db_handle->m_baseAddress == (uintptr_t)this)
 			{
 				record->m_nextIDRecord = m_nextIDRecord;
 				break;
@@ -218,9 +218,9 @@ void
 		record = reinterpret_cast<Record*>(db->m_nameOffsets[index]);
 		while (record)
 		{
-			record = reinterpret_cast<Record*>((UINT_PTR)record + db_handle->m_baseAddress);
+			record = reinterpret_cast<Record*>((uintptr_t)record + db_handle->m_baseAddress);
 			Check_Object(record);
-			if ((UINT_PTR)record->m_nextNameRecord+db_handle->m_baseAddress == (UINT_PTR)this)
+			if ((uintptr_t)record->m_nextNameRecord+db_handle->m_baseAddress == (uintptr_t)this)
 			{
 				record->m_nextNameRecord = m_nextNameRecord;
 				break;
@@ -277,7 +277,7 @@ void
 	// Figure out how int32_t the name is and its hash value
 	//---------------------------------------------------
 	//
-	ULONG record_hash;
+	uint32_t record_hash;
 	size_t name_length;
 	if (m_name)
 	{
@@ -298,7 +298,7 @@ void
 	//
 	Verify(!m_record);
 	Record *data =
-		new(new UCHAR[sizeof(*m_record) + m_length + name_length])
+		new(new uint8_t[sizeof(*m_record) + m_length + name_length])
 			Record(this, record_hash, name_length);
 	Check_Object(data);
 	m_data = &data->m_name[name_length+1];
@@ -345,7 +345,7 @@ void
 	// Figure out how int32_t the name is and its hash value
 	//---------------------------------------------------
 	//
-	ULONG record_hash;
+	uint32_t record_hash;
 	size_t name_length;
 	if (m_name)
 	{
@@ -365,7 +365,7 @@ void
 	//------------------
 	//
 	Record *data =
-		new(new UCHAR[sizeof(*m_record) + m_length + name_length])
+		new(new uint8_t[sizeof(*m_record) + m_length + name_length])
 			Record(this, record_hash, name_length);
 	Check_Object(data);
 	m_data = &data->m_name[name_length+1];
@@ -422,13 +422,13 @@ bool
 	Database* db = m_databaseHandle->m_dataBase;
 	Check_Object(db);
 
-	ULONG index=m_ID % Database::e_DataBlockSize;
+	uint32_t index=m_ID % Database::e_DataBlockSize;
 	Record* record = reinterpret_cast<Record*>(db->m_idOffsets[index]);
 	while (record)
 	{
 		record =
 			reinterpret_cast<Record*>(
-				(UINT_PTR)record + m_databaseHandle->m_baseAddress
+				(uintptr_t)record + m_databaseHandle->m_baseAddress
 			);
 		Check_Object(record);
 		if (record->m_ID==m_ID)
@@ -458,14 +458,14 @@ bool
 	Check_Object(db);
 
 	Check_Pointer(m_name);
-	ULONG hash = GenerateHash(m_name);
-	ULONG index = hash % Database::e_DataBlockSize;
+	uint32_t hash = GenerateHash(m_name);
+	uint32_t index = hash % Database::e_DataBlockSize;
 
 	Record* record = reinterpret_cast<Record*>(db->m_nameOffsets[index]);
 	while (record)
 	{
 		record = reinterpret_cast<Record*>(
-			(UINT_PTR)record + m_databaseHandle->m_baseAddress
+			(uintptr_t)record + m_databaseHandle->m_baseAddress
 		);
 		Check_Object(record);
 		if (record->m_hash == hash && !_stricmp(m_name,record->m_name))
@@ -520,7 +520,7 @@ bool
 			{
 				m_databaseHandle->m_currentPointer =
 					reinterpret_cast<Record*>(
-						(UINT_PTR)data + m_databaseHandle->m_baseAddress
+						(uintptr_t)data + m_databaseHandle->m_baseAddress
 					);
 				return true;
 			}
@@ -531,7 +531,7 @@ bool
 
 	m_databaseHandle->m_currentPointer = 
 		reinterpret_cast<Record*>(
-			(UINT_PTR)m_databaseHandle->m_currentPointer + m_databaseHandle->m_baseAddress
+			(uintptr_t)m_databaseHandle->m_currentPointer + m_databaseHandle->m_baseAddress
 		);
 	return true;
 }
@@ -545,7 +545,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	Database::FilesOpened = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -602,7 +602,7 @@ DatabaseHandle::DatabaseHandle(
 				STOP(("Invalid database file \"%s\"", filename));
 			if (m_dataBase->m_version > Database::e_Version)
 				STOP(("Application must be recompiled to use database \"%s\"", filename));
-			m_baseAddress = reinterpret_cast<UINT_PTR>(m_dataBase);
+			m_baseAddress = reinterpret_cast<uintptr_t>(m_dataBase);
 			Check_Object(m_dataBase);
 		}
 		else
@@ -636,7 +636,7 @@ DatabaseHandle::DatabaseHandle(
 			}
 			else
 			{
-				m_baseAddress = reinterpret_cast<UINT_PTR>(m_dataBase);
+				m_baseAddress = reinterpret_cast<uintptr_t>(m_dataBase);
 				Check_Object(m_dataBase);
 			}
 		}
@@ -679,14 +679,14 @@ DatabaseHandle::~DatabaseHandle()
 		// Now we need to go through and delete all the records in the database
 		//---------------------------------------------------------------------
 		//
-		for (ULONG i=0; i<Database::e_DataBlockSize; ++i)
+		for (uint32_t i=0; i<Database::e_DataBlockSize; ++i)
 		{
 			Record* record = reinterpret_cast<Record*>(m_dataBase->m_idOffsets[i]);
 			if (record)
 			{
 				while (record)
 				{
-					record = reinterpret_cast<Record*>((UINT_PTR)record + m_baseAddress);
+					record = reinterpret_cast<Record*>((uintptr_t)record + m_baseAddress);
 					Check_Object(record);
 					Record* this_record = record;
 
@@ -748,7 +748,7 @@ void DatabaseHandle::Save()
 	//
 	struct OutputRecord
 	{
-		ULONG		m_ID;
+		uint32_t		m_ID;
 		uintptr_t	m_offset;
 		uintptr_t	m_nextIDRecord;
 		uintptr_t	m_nextNameRecord;
@@ -776,7 +776,7 @@ void DatabaseHandle::Save()
 			new_id_index[i] = size_t(new_record - new_records);
 			while (old_record)
 			{
-				old_record = reinterpret_cast<Record*>((UINT_PTR)old_record + m_baseAddress);
+				old_record = reinterpret_cast<Record*>((uintptr_t)old_record + m_baseAddress);
 				Check_Object(old_record);
 
 				new_record->m_data = old_record;
@@ -806,7 +806,7 @@ void DatabaseHandle::Save()
 		Record* old_record = reinterpret_cast<Record*>(m_dataBase->m_nameOffsets[i]);
 		if (old_record)
 		{
-			old_record = reinterpret_cast<Record*>((UINT_PTR)old_record + m_baseAddress);
+			old_record = reinterpret_cast<Record*>((uintptr_t)old_record + m_baseAddress);
 			Check_Object(old_record);
 
 			//
@@ -843,7 +843,7 @@ void DatabaseHandle::Save()
 				Verify(j<m_dataBase->m_numberOfRecords);
 				if (old_record)
 				{
-					old_record = reinterpret_cast<Record*>((UINT_PTR)old_record + m_baseAddress);
+					old_record = reinterpret_cast<Record*>((uintptr_t)old_record + m_baseAddress);
 					Check_Object(old_record);
 					index = old_record->m_ID % Database::e_DataBlockSize;
 					j = new_id_index[index];
@@ -917,7 +917,7 @@ void DatabaseHandle::Save()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-ULONG
+uint32_t
 	DatabaseHandle::GetNumberOfRecords()
 {
 	Check_Object(this);
@@ -934,7 +934,7 @@ void
 	m_currentRecord = 0;
 	m_currentPointer = NULL;
 
-	for (ULONG i=0; i<Database::e_DataBlockSize; i++)
+	for (uint32_t i=0; i<Database::e_DataBlockSize; i++)
 	{
 		Record* data =
 			reinterpret_cast<Record*>(

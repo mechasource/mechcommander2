@@ -52,7 +52,7 @@ namespace Stuff {
 			AdvanceCurrentFolder();
 
 	public:
-		int 
+		int32_t 
 			fileOk;
 
 		Stuff::MString

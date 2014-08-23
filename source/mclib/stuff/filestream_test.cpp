@@ -20,7 +20,7 @@ bool
 	FileStream::TestClass()
 {
 	char buffer[65535];
-	int i;
+	int32_t i;
 	Time total;
 	Time s; 
 

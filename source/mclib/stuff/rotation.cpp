@@ -473,7 +473,7 @@ YawPitchRoll&
 const UnitQuaternion
 	UnitQuaternion::Identity(0.0f, 0.0f, 0.0f, 1.0f);
 DEFINE_TIMER(UnitQuaternion, SlerpTime);
-ULONG
+uint32_t
 	UnitQuaternion::SlerpCount;
 
 //
@@ -481,8 +481,8 @@ ULONG
 //#############################################################################
 //
 
-cint32_t QuaternionLerpTableSize=static_cast<int>(1024);
-cint32_t SinTableSize=static_cast<int>(1024);
+cint32_t QuaternionLerpTableSize=static_cast<int32_t>(1024);
+cint32_t SinTableSize=static_cast<int32_t>(1024);
 
 
 const float MinCosom = static_cast<float>(-1.0f);
@@ -1273,11 +1273,11 @@ UnitQuaternion&
 			
 			
 
-			//table_entry = (int)Scaled_Float_To_Bits(cosom, MinCosom, MaxCosom, 10);
+			//table_entry = (int32_t)Scaled_Float_To_Bits(cosom, MinCosom, MaxCosom, 10);
 
 
 			float tabled_float =  cosom - MinCosom;
-			int cos_table_entry = Truncate_Float_To_Word(((tabled_float*CosomRangeOverOne) * CosBiggestNumber));
+			int32_t cos_table_entry = Truncate_Float_To_Word(((tabled_float*CosomRangeOverOne) * CosBiggestNumber));
 			
 			Verify(cos_table_entry >= 0);
 			Verify(cos_table_entry <= QuaternionLerpTableSize);
@@ -1293,7 +1293,7 @@ UnitQuaternion&
 
 
 			tabled_float =  ((1.0f - t)*Omega_Table[cos_table_entry]) - MinSin;
-			int sclp_table_entry = Truncate_Float_To_Word(((tabled_float*SinRangeOverOne) * SinBiggestNumber));
+			int32_t sclp_table_entry = Truncate_Float_To_Word(((tabled_float*SinRangeOverOne) * SinBiggestNumber));
 
 
 			if (!(sclp_table_entry < SinTableSize))
@@ -1305,7 +1305,7 @@ UnitQuaternion&
 			Verify(sclp_table_entry >= 0 && sclp_table_entry < SinTableSize);
 			difference = tabled_float - (SinIncrement * sclp_table_entry);
 			percent = difference / SinIncrement;
-			int lerp_to_entry = sclp_table_entry + 1;
+			int32_t lerp_to_entry = sclp_table_entry + 1;
 			Max_Clamp(lerp_to_entry, SinTableSize-1);
 			lerped_sin = Stuff::Lerp(Sin_Table[sclp_table_entry], Sin_Table[lerp_to_entry], percent);
 			sclp = lerped_sin * SinomOverOne_Table[cos_table_entry];
@@ -1313,7 +1313,7 @@ UnitQuaternion&
 
 
 			tabled_float =  (t*Omega_Table[cos_table_entry]) - MinSin;
-			int sclq_table_entry = Truncate_Float_To_Word(((tabled_float*SinRangeOverOne) * SinBiggestNumber));
+			int32_t sclq_table_entry = Truncate_Float_To_Word(((tabled_float*SinRangeOverOne) * SinBiggestNumber));
 			Verify(sclq_table_entry >= 0 && sclq_table_entry < SinTableSize);
 			difference = tabled_float - (SinIncrement * sclq_table_entry);
 			percent = difference / SinIncrement;

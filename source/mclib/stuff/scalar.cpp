@@ -14,10 +14,10 @@
 using namespace Stuff;
 
 
-int
+int32_t
 	Stuff::Round(Scalar value)
 {
-	int whole_part = static_cast<int>(floor(value));
+	int32_t whole_part = static_cast<int32_t>(floor(value));
 	Scalar fractional_part = value - whole_part;
 	if (fractional_part >= 0.5)
 	{
@@ -78,8 +78,8 @@ void
 }
 
 
-ULONG
-	Stuff::Scaled_Float_To_Bits(float in, float min, float max, ULONG bits)
+uint32_t
+	Stuff::Scaled_Float_To_Bits(float in, float min, float max, uint32_t bits)
 {
 	Verify(bits < 32);
 	Verify(bits > 0);
@@ -94,17 +94,17 @@ ULONG
 	float range = (max-min);
 
 	
-	ULONG return_value = (ULONG)((local_in/range) * (float)biggest_number);
+	uint32_t return_value = (uint32_t)((local_in/range) * (float)biggest_number);
 	
-	//Verify((ULONG)return_value >= 0x00000000);
-	Verify((ULONG)return_value <= (ULONG)biggest_number);
+	//Verify((uint32_t)return_value >= 0x00000000);
+	Verify((uint32_t)return_value <= (uint32_t)biggest_number);
 
 	return return_value;
 
 }
 
 float
-	Stuff::Scaled_Float_From_Bits(ULONG in, float min, float max, ULONG bits)
+	Stuff::Scaled_Float_From_Bits(uint32_t in, float min, float max, uint32_t bits)
 {
 	Verify(bits < 32);
 	Verify(bits > 0);
@@ -124,8 +124,8 @@ float
 	return return_value;
 }
 
-ULONG
-	Stuff::Scaled_Int_To_Bits(int in, int min, int max, ULONG bits)
+uint32_t
+	Stuff::Scaled_Int_To_Bits(int32_t in, int32_t min, int32_t max, uint32_t bits)
 {
 
 	Verify(bits < 32);
@@ -136,21 +136,21 @@ ULONG
 	Verify(in >= min);
 
 	uint32_t biggest_number = (0xffffffff>>(32-bits));
-	int local_in =  in - min;
-	int range = (max-min);
+	int32_t local_in =  in - min;
+	int32_t range = (max-min);
 
 	
-	ULONG return_value = (ULONG)(((float)local_in/(float)range) * (float)biggest_number);
+	uint32_t return_value = (uint32_t)(((float)local_in/(float)range) * (float)biggest_number);
 	
-	//Verify((ULONG)return_value >= 0x00000000);
-	Verify((ULONG)return_value < (ULONG)biggest_number);
+	//Verify((uint32_t)return_value >= 0x00000000);
+	Verify((uint32_t)return_value < (uint32_t)biggest_number);
 
 	return return_value;
 
 }
 
-int
-	Stuff::Scaled_Int_From_Bits(ULONG in, int min, int max, ULONG bits)
+int32_t
+	Stuff::Scaled_Int_From_Bits(uint32_t in, int32_t min, int32_t max, uint32_t bits)
 {
 	Verify(bits < 32);
 	Verify(bits > 0);
@@ -161,8 +161,8 @@ int
 	uint32_t biggest_number = (0xffffffff>>(32-bits));
 
 	float ratio = (float)in/(float)biggest_number;
-	int range = (max-min);
-	int return_value = ((int)(ratio * (float)range))+min;
+	int32_t range = (max-min);
+	int32_t return_value = ((int32_t)(ratio * (float)range))+min;
 
 	return return_value;
 }

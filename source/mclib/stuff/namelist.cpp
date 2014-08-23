@@ -145,14 +145,14 @@ ObjectNameList::DeleteEntry(PCSTR name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 ObjectNameList::GetEntryCount() const
 {
 	Check_Object(this);
 
 	Entry
 		*entry = firstEntry;
-	int
+	int32_t
 		count = 0;
 
 	while (entry)
@@ -166,7 +166,7 @@ ObjectNameList::GetEntryCount() const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 ObjectNameList::BuildSubList(
 	const ObjectNameList &source_list, PCSTR prefix)
 {
@@ -177,7 +177,7 @@ ObjectNameList::BuildSubList(
 	const size_t	length = strlen(prefix);
 	Entry*			entry = source_list.firstEntry;
 	PCSTR			name;
-	int				count = 0;
+	int32_t				count = 0;
 
 	//------------------------------------------------------
 	// add entries to SubList whose name begins with prefix
@@ -293,7 +293,7 @@ NameList::FindEntry(PCSTR name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 NameList::FindEntryIndex(PCSTR name)
 {
 	Check_Object(this);
@@ -301,7 +301,7 @@ NameList::FindEntryIndex(PCSTR name)
 
 	Entry
 		*entry;
-	int
+	int32_t
 		result = -1;
 
 	for (entry = firstEntry; entry; entry = entry->nextEntry)
@@ -391,7 +391,7 @@ MemoryStreamIO::Write(
 	// Write out the number of names
 	//------------------------------
 	//
-	int i = 0;
+	int32_t i = 0;
 	const NameList::Entry *entry = names->GetFirstEntry();
 	while (entry)
 	{
@@ -430,7 +430,7 @@ MemoryStreamIO::Read(
 	// Read in the number of strings to add, then loop through and add them
 	//---------------------------------------------------------------------
 	//
-	int count;
+	int32_t count;
 	*stream >> count;
 	while (count-- > 0)
 	{

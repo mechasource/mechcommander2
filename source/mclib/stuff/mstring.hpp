@@ -86,7 +86,7 @@ namespace Stuff {
 	void
 		Convert_From_Ascii(
 		PCSTR  str,
-		short* value
+		pint16_t value
 		);
 	void
 		Convert_From_Ascii(
@@ -96,7 +96,7 @@ namespace Stuff {
 	void
 		Convert_From_Ascii(
 		PCSTR  str,
-		int* value
+		pint32_t value
 		);
 	void
 		Convert_From_Ascii(
@@ -111,7 +111,7 @@ namespace Stuff {
 	void
 		Convert_From_Ascii(
 		PCSTR  str,
-		ULONG* value
+		uint32_t* value
 		);
 
 	//##########################################################################
@@ -223,7 +223,7 @@ namespace Stuff {
 		//
 		// comparison methods
 		//
-		int
+		int32_t
 			Compare(const MStringRepresentation &str) const;
 
 		bool
@@ -333,7 +333,7 @@ namespace Stuff {
 		//
 		// reference count
 		//
-		int
+		int32_t
 			referenceCount;
 	};
 
@@ -472,8 +472,8 @@ namespace Stuff {
 
 		// Verify that the IteratorPosition is 32 bits wide
 		// Hash value is first 16 bits of fileID and first 16 bits of recordID
-		Verify(sizeof(IteratorPosition) == sizeof(ULONG));
-		static int andAway[3] = {0x000000ff, 0x0000ffff, 0x00ffffff };
+		Verify(sizeof(IteratorPosition) == sizeof(uint32_t));
+		static int32_t andAway[3] = {0x000000ff, 0x0000ffff, 0x00ffffff };
 		IteratorPosition ret = 0;
 
 		register size_t i, r, len = stringLength >> 2;
@@ -585,7 +585,7 @@ namespace Stuff {
 		//
 		// comparison methods
 		//
-		int
+		int32_t
 			Compare(const MString &str) const;
 
 		bool
@@ -792,7 +792,7 @@ namespace Stuff {
 	}
 
 	// comparison methods
-	inline int
+	inline int32_t
 		MString::Compare(const MString &str) const
 	{
 		Check_Object(&str);

@@ -189,7 +189,7 @@ namespace Stuff {
 		// Indexing operations
 		//
 
-		static int GetMemberCount(void)
+		static int32_t GetMemberCount(void)
 		{
 			return 3;
 		}

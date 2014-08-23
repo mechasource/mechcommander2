@@ -51,10 +51,10 @@ namespace Stuff {
 		explicit ExtentBox(const OBB& obb);
 
 		const float&
-			operator[](int index) const
+			operator[](int32_t index) const
 		{Check_Object(this); return (&minX)[index];}
 		float&
-			operator[](int index)
+			operator[](int32_t index)
 		{Check_Object(this); return (&minX)[index];}
 
 		ExtentBox&

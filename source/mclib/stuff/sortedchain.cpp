@@ -195,7 +195,7 @@ SortedChainLink* SortedChain::MakeSortedChainLink(Plug*, PCVOID)
 // CompareSortedChainLinks
 //###########################################################################
 //
-int SortedChain::CompareSortedChainLinks(SortedChainLink*, SortedChainLink*)
+int32_t SortedChain::CompareSortedChainLinks(SortedChainLink*, SortedChainLink*)
 {
 	Check_Object(this);
 	STOP(("SortedChain::CompareSortedChainLinks - Should never reach here"));
@@ -207,7 +207,7 @@ int SortedChain::CompareSortedChainLinks(SortedChainLink*, SortedChainLink*)
 // CompareValueToSortedChainLink
 //###########################################################################
 //
-int SortedChain::CompareValueToSortedChainLink(PCVOID, SortedChainLink*)
+int32_t SortedChain::CompareValueToSortedChainLink(PCVOID, SortedChainLink*)
 {
 	Check_Object(this);
 	STOP(("SortedChain::CompareValueToSortedChainLink - Should never reach here"));
@@ -350,7 +350,7 @@ SortedChainLink* SortedChain::SearchForValue(PCVOID value)
 {
 	Check_Object(this);
 	SortedChainLink *link;
-	int ret;
+	int32_t ret;
 
 	for (link = head; link != NULL; link = link->next)
 	{

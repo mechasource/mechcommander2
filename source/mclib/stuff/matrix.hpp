@@ -41,7 +41,7 @@ namespace Stuff {
 		//
 		Matrix4D(void) {}
 		Matrix4D& BuildIdentity(void);
-		explicit Matrix4D(int)
+		explicit Matrix4D(int32_t)
 		{
 			BuildIdentity();
 		}

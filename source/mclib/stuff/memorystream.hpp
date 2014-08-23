@@ -238,7 +238,7 @@ namespace Stuff {
 			size_t number_of_bytes
 			);
 
-		virtual int
+		virtual int32_t
 			ReadChar(void);
 
 		virtual bool
@@ -261,18 +261,18 @@ namespace Stuff {
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Bit operators  
 		//
-		// WARNING - DO NOT MIX AND MATCH WITH UCHAR METHODS!!!!!
+		// WARNING - DO NOT MIX AND MATCH WITH uint8_t METHODS!!!!!
 		//
 
 	private:
-		int
+		int32_t
 			currentBit;
 
 		uint8_t
 			workingBitBuffer;
 
 		MemoryStream&
-			ReadUnsafeBits(PVOID ptr, ULONG number_of_bits);
+			ReadUnsafeBits(PVOID ptr, uint32_t number_of_bits);
 
 	public:
 		MemoryStream&
@@ -283,7 +283,7 @@ namespace Stuff {
 
 
 		template <typename T>
-		MemoryStream& ReadBits(T *ptr, ULONG number_of_bits)
+		MemoryStream& ReadBits(T *ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
 			Check_Object(this); Check_Pointer(ptr);
@@ -292,7 +292,7 @@ namespace Stuff {
 
 #if _CONSIDERED_OBSOLETE
 		MemoryStream&
-			ReadBits(int *ptr, ULONG number_of_bits)
+			ReadBits(pint32_t ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
 			Check_Object(this); Check_Pointer(ptr);
@@ -300,7 +300,7 @@ namespace Stuff {
 		}
 
 		MemoryStream&
-			ReadBits(uint8_t *ptr, ULONG number_of_bits)
+			ReadBits(uint8_t *ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 8);
 			Check_Object(this); Check_Pointer(ptr);
@@ -309,7 +309,7 @@ namespace Stuff {
 
 
 		MemoryStream&
-			ReadBits(puint16_t ptr, ULONG number_of_bits)
+			ReadBits(puint16_t ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 16);
 			Check_Object(this); Check_Pointer(ptr);
@@ -317,7 +317,7 @@ namespace Stuff {
 		}
 
 		MemoryStream&
-			ReadBits(ULONG *ptr, ULONG number_of_bits)
+			ReadBits(uint32_t *ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
 			Check_Object(this); Check_Pointer(ptr);
@@ -325,7 +325,7 @@ namespace Stuff {
 		}
 
 		MemoryStream&
-			ReadBits(size_t *ptr, ULONG number_of_bits)
+			ReadBits(size_t *ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits <= 32);
 			Check_Object(this); Check_Pointer(ptr);
@@ -333,7 +333,7 @@ namespace Stuff {
 		}
 
 		MemoryStream&
-			ReadBits(float *ptr, ULONG number_of_bits)
+			ReadBits(float *ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits == 32);
 			Check_Object(this); Check_Pointer(ptr);
@@ -341,7 +341,7 @@ namespace Stuff {
 		}
 
 		MemoryStream&
-			ReadBits(double *ptr, ULONG number_of_bits)
+			ReadBits(double *ptr, uint32_t number_of_bits)
 		{
 			Verify(number_of_bits == 64);
 			Check_Object(this); Check_Pointer(ptr);
@@ -353,10 +353,10 @@ namespace Stuff {
 		MemoryStream& WriteBits(PCVOID ptr, uint32_t number_of_bits);
 
 		MemoryStream&
-			ReadBitsToScaledInt(int &number, int min, int max,  uint32_t number_of_bits);
+			ReadBitsToScaledInt(int32_t &number, int32_t min, int32_t max,  uint32_t number_of_bits);
 
 		MemoryStream&
-			WriteScaledIntToBits(cint32_t &number, int min, int max,  uint32_t number_of_bits);
+			WriteScaledIntToBits(cint32_t &number, int32_t min, int32_t max,  uint32_t number_of_bits);
 
 		MemoryStream&
 			ReadBitsToScaledFloat(float &number, float min, float max,  uint32_t number_of_bits);
@@ -536,7 +536,7 @@ namespace MemoryStreamIO {
 	inline Stuff::MemoryStream&
 		Read(
 		Stuff::MemoryStream* stream,
-		CHAR *output
+		pint8_t output
 		)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
@@ -545,7 +545,7 @@ namespace MemoryStreamIO {
 	inline Stuff::MemoryStream&
 		Read(
 		Stuff::MemoryStream* stream,
-		uint8_t *output
+		puint8_t output
 		)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
@@ -554,7 +554,7 @@ namespace MemoryStreamIO {
 	inline Stuff::MemoryStream&
 		Read(
 		Stuff::MemoryStream* stream,
-		SHORT *output
+		pint16_t output
 		)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
@@ -572,7 +572,7 @@ namespace MemoryStreamIO {
 	inline Stuff::MemoryStream&
 		Read(
 		Stuff::MemoryStream* stream,
-		int *output
+		pint32_t output
 		)
 	{
 		return stream->ReadBytes(output, sizeof(*output));
@@ -590,7 +590,7 @@ namespace MemoryStreamIO {
 	inline Stuff::MemoryStream&
 		Read(
 		Stuff::MemoryStream* stream,
-		LONG *output
+		int32_t *output
 		)
 	{
 		return stream->ReadBytes(output, sizeof(*output));

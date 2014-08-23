@@ -263,7 +263,7 @@ Tree::MakeTreeNode(
 // CompareTreeNodes
 //###########################################################################
 //
-int
+int32_t
 Tree::CompareTreeNodes(
 					   TreeNode*,
 					   TreeNode*
@@ -279,7 +279,7 @@ Tree::CompareTreeNodes(
 // CompareValueToTreeNode
 //###########################################################################
 //
-int
+int32_t
 Tree::CompareValueToTreeNode(
 							 PCVOID,
 							 TreeNode*
@@ -558,7 +558,7 @@ Tree::SearchForValue(
 {
 	Check_Object(this);
 	TreeNode *node;
-	int ret;
+	int32_t ret;
 
 	node = root;
 	while (node != NULL) 

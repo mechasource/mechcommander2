@@ -78,7 +78,7 @@ MemoryBlockBase::MemoryBlockBase(
 		blockMemory =
 			Cast_Pointer(
 				MemoryBlockHeader*,
-				new(blockHeap) UCHAR[sizeof(MemoryBlockHeader) + blockSize]
+				new(blockHeap) uint8_t[sizeof(MemoryBlockHeader) + blockSize]
 			);
 		Check_Object(blockMemory);
 		blockMemory->nextBlock = NULL;
@@ -225,7 +225,7 @@ PVOID MemoryBlockBase::Grow(void)
 	//
 	blockSize = deltaSize;
 	firstHeaderRecord -= sizeof(MemoryBlockHeader);
-	puint8_t new_block = new(blockHeap) UCHAR[blockSize + sizeof(MemoryBlockHeader)];
+	puint8_t new_block = new(blockHeap) uint8_t[blockSize + sizeof(MemoryBlockHeader)];
 	Check_Pointer(new_block);
 
 	MemoryBlockHeader *header =
@@ -297,7 +297,7 @@ void
 			record_count,
 			deletion_count,
 			unused_count,
-			static_cast<int>((1.0f - (deletion_count+unused_count)/(float)record_count)*100.0f)
+			static_cast<int32_t>((1.0f - (deletion_count+unused_count)/(float)record_count)*100.0f)
 		));
 		}
 		if (block->blockName)
@@ -336,7 +336,7 @@ void
 //#############################################################################
 //#############################################################################
 //
-static int
+static int32_t
 	compare_function(PCVOID a, PCVOID b)
 {
 	return static_cast<PCSTR>(a) - static_cast<PCSTR>(b);

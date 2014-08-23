@@ -16,9 +16,9 @@ class HashTestPlug:
 	public Plug
 {
 public:
-	int value;
+	int32_t value;
 
-	HashTestPlug(int value);
+	HashTestPlug(int32_t value);
 	~HashTestPlug();
 };
 
@@ -26,8 +26,8 @@ class HashTestNode:
 	public Node
 {
 public:
-	HashOf<HashTestPlug*, int> hash1;
-	HashOf<HashTestPlug*, int> hash2;
+	HashOf<HashTestPlug*, int32_t> hash1;
+	HashOf<HashTestPlug*, int32_t> hash2;
 
 	HashTestNode();
 	~HashTestNode();
@@ -36,7 +36,7 @@ public:
 	bool RunTest();
 };
 
-HashTestPlug::HashTestPlug(int value):
+HashTestPlug::HashTestPlug(int32_t value):
 	Plug(DefaultData)
 {
 	this->value = value;
@@ -104,8 +104,8 @@ bool
 	HashTestNode::RunProfile()
 {
 	HashTestPlug	*testPlug1, *testPlug2;
-	int			 	values[TEST_COUNT];
-	int				i, j;
+	int32_t			 	values[TEST_COUNT];
+	int32_t				i, j;
 	Time 				startTicks;
 
 	/*
@@ -115,7 +115,7 @@ bool
 		values[i] = i;
 	}
 	for (i = 0; i < TEST_COUNT; i++) {
-		int   tmp;
+		int32_t   tmp;
 
 		j = i + Random::GetLessThan(TEST_COUNT - i);
 		tmp = values[j];
@@ -151,8 +151,8 @@ bool
 	 */
 	startTicks = gos_GetHiResTime();
 	{
-		HashIteratorOf<HashTestPlug*, int> iterator1(&hash1);
-		HashIteratorOf<HashTestPlug*, int> iterator2(&hash2);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
 		i = 0;
 		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
@@ -198,8 +198,8 @@ bool
 	 */
 	startTicks = gos_GetHiResTime();
 	{
-		HashIteratorOf<HashTestPlug*, int> iterator1(&hash1);
-		HashIteratorOf<HashTestPlug*, int> iterator2(&hash2);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
 		i = 0;
 		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
@@ -224,8 +224,8 @@ bool
 	HashTestNode::RunTest()
 {
 	HashTestPlug	*testPlug1, *testPlug2;
-	int		 		values[TEST_COUNT];
-	int				i, j;
+	int32_t		 		values[TEST_COUNT];
+	int32_t				i, j;
 //	Time 				startTicks;
 
 	/*
@@ -235,7 +235,7 @@ bool
 		values[i] = i;
 	}
 	for (i = 0; i < TEST_COUNT; i++) {
-		int   tmp;
+		int32_t   tmp;
                 
 		j = i + Random::GetLessThan(TEST_COUNT - i);
 		tmp = values[j];
@@ -280,8 +280,8 @@ bool
 	 * Test_Assumption first and last
 	 */
 	{
-		HashIteratorOf<HashTestPlug*, int> iterator1(&hash1);
-		HashIteratorOf<HashTestPlug*, int> iterator2(&hash2);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
 		iterator1.First();
 		iterator2.First();
@@ -296,8 +296,8 @@ bool
 	 * Test_Assumption next and prev
 	 */
 	{
-		HashIteratorOf<HashTestPlug*, int> iterator1(&hash1);
-		HashIteratorOf<HashTestPlug*, int> iterator2(&hash2);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 	
 		i = 0;
 		while ((testPlug1 = iterator1.GetCurrent()) != NULL)
@@ -318,8 +318,8 @@ bool
 	 * Test_Assumption read next and read prev
 	 */
 	{
-		HashIteratorOf<HashTestPlug*, int> iterator1(&hash1);
-		HashIteratorOf<HashTestPlug*, int> iterator2(&hash2);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
 		i = 0;
 		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
@@ -337,8 +337,8 @@ bool
 	 * Test_Assumption Remove
 	 */
 	{
-		HashIteratorOf<HashTestPlug*, int> iterator1(&hash1);
-		HashIteratorOf<HashTestPlug*, int> iterator2(&hash2);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
 		i = 0;
 		while ((testPlug1 = iterator1.GetCurrent()) != NULL)
@@ -365,8 +365,8 @@ bool
 	 * Add plugs to both sockets
 	 */
 	{
-		HashIteratorOf<HashTestPlug*, int> iterator1(&hash1);
-		HashIteratorOf<HashTestPlug*, int> iterator2(&hash2);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
 		Test_Assumption( iterator1.GetCurrent() == NULL );
 		Test_Assumption( iterator2.GetCurrent() == NULL );
@@ -384,9 +384,9 @@ bool
 	 * Perform random deletion
 	 */
 	{
-		int size, index;
-		HashIteratorOf<HashTestPlug*, int> iterator1(&hash1);
-		HashIteratorOf<HashTestPlug*, int> iterator2(&hash2);
+		int32_t size, index;
+		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
+		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
 		i = 0;
 		iterator1.First();

@@ -15,9 +15,9 @@ class SortedChainTestPlug:
 	public Plug
 {
 public:
-	int value;
+	int32_t value;
 
-	SortedChainTestPlug(int value);
+	SortedChainTestPlug(int32_t value);
 	~SortedChainTestPlug();
 };
 
@@ -25,8 +25,8 @@ class SortedChainTestNode:
 	public Node
 {
 public:
-	SortedChainOf<SortedChainTestPlug*, int> vchain1;
-	SortedChainOf<SortedChainTestPlug*, int> vchain2;
+	SortedChainOf<SortedChainTestPlug*, int32_t> vchain1;
+	SortedChainOf<SortedChainTestPlug*, int32_t> vchain2;
 
 	SortedChainTestNode();
 	~SortedChainTestNode();
@@ -35,7 +35,7 @@ public:
 	bool RunTest();
 };
 
-SortedChainTestPlug::SortedChainTestPlug(int value):
+SortedChainTestPlug::SortedChainTestPlug(int32_t value):
 	Plug(DefaultData)
 {
 	this->value = value;
@@ -102,8 +102,8 @@ bool
 	SortedChainTestNode::RunProfile()
 {
 	SortedChainTestPlug	*testPlug1, *testPlug2;
-	int		 		values[TEST_COUNT];
-	int				i, j;
+	int32_t		 		values[TEST_COUNT];
+	int32_t				i, j;
 	Time 		startTicks;
 
 	/*
@@ -113,7 +113,7 @@ bool
 		values[i] = i;
 	}
 	for (i = 0; i < TEST_COUNT; i++) {
-		int  tmp;
+		int32_t  tmp;
                 
 		j = i + Random::GetLessThan(TEST_COUNT - i);
 		tmp = values[j];
@@ -149,8 +149,8 @@ bool
 	 */
 	startTicks = gos_GetHiResTime();
 	{
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator1(&vchain1);
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator2(&vchain2);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator1(&vchain1);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator2(&vchain2);
 
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -182,8 +182,8 @@ bool
 	 */
 	startTicks = gos_GetHiResTime();
 	{
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator1(&vchain1);
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator2(&vchain2);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator1(&vchain1);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator2(&vchain2);
 
 		for (i = 0; i < TEST_COUNT; i++) 
 		{
@@ -208,8 +208,8 @@ bool
 	 */
 	startTicks = gos_GetHiResTime();
 	{
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator1(&vchain1);
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator2(&vchain2);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator1(&vchain1);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator2(&vchain2);
 
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -240,8 +240,8 @@ bool
 	SortedChainTestNode::RunTest()
 {
 	SortedChainTestPlug	*testPlug1, *testPlug2;
-	int	 			values[TEST_COUNT];
-	int				i, j;
+	int32_t	 			values[TEST_COUNT];
+	int32_t				i, j;
 //	Time 				startTicks;
 
 	/*
@@ -251,7 +251,7 @@ bool
 		values[i] = i;
 	}
 	for (i = 0; i < TEST_COUNT; i++) {
-		int  tmp;
+		int32_t  tmp;
                 
 		j = i + Random::GetLessThan(TEST_COUNT - i);
 		tmp = values[j];
@@ -296,8 +296,8 @@ bool
 	 * Test_Assumption first and last
 	 */
 	{
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator1(&vchain1);
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator2(&vchain2);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator1(&vchain1);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator2(&vchain2);
 
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -327,8 +327,8 @@ bool
 	 * Test_Assumption next and prev
 	 */
 	{
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator1(&vchain1);
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator2(&vchain2);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator1(&vchain1);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator2(&vchain2);
 	
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -375,8 +375,8 @@ bool
 	 * Test_Assumption read next and read prev
 	 */
 	{
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator1(&vchain1);
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator2(&vchain2);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator1(&vchain1);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator2(&vchain2);
 	
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -417,8 +417,8 @@ bool
 	 * Test_Assumption nth
 	 */
 	{
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator1(&vchain1);
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator2(&vchain2);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator1(&vchain1);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator2(&vchain2);
 	
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -443,8 +443,8 @@ bool
 	 * Test_Assumption Remove
 	 */
 	{
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator1(&vchain1);
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator2(&vchain2);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator1(&vchain1);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator2(&vchain2);
 
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
@@ -478,8 +478,8 @@ bool
 		/*
 		 * Add plugs to both sockets
 		 */
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator1(&vchain1);
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator2(&vchain2);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator1(&vchain1);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator2(&vchain2);
 
 		Test_Assumption( iterator1.GetSize() == 0 );
 		Test_Assumption( iterator2.GetSize() == 0 );
@@ -497,9 +497,9 @@ bool
 		/*
 		 * Perform random deletion
 		 */
-		int size, index;
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator1(&vchain1);
-		SortedChainIteratorOf<SortedChainTestPlug*, int> iterator2(&vchain2);
+		int32_t size, index;
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator1(&vchain1);
+		SortedChainIteratorOf<SortedChainTestPlug*, int32_t> iterator2(&vchain2);
 
 		Test_Assumption( iterator1.GetSize() == TEST_COUNT );
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );

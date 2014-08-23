@@ -133,7 +133,7 @@ namespace Stuff {
 			TestClass();
 
 	protected:
-		UCHAR
+		uint8_t
 			*topOfStack;
 
 		MemoryStack(

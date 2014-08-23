@@ -38,7 +38,7 @@ namespace Stuff {
 	// ClassID enumeration
 	//
 	public:
-		typedef int ClassID;
+		typedef int32_t ClassID;
 		typedef RegisteredClass__ClassData ClassData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

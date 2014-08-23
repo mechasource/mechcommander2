@@ -16,7 +16,7 @@
 //
 static char Error_Message_Buffer[400];
 
-int Stuff::ArmorLevel = 4;
+int32_t Stuff::ArmorLevel = 4;
 
 float Stuff::SMALL=1e-4f;
 

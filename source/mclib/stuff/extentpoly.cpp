@@ -18,7 +18,7 @@ ExtentPoly::ExtentPoly(MemoryStream *stream)
 	*stream >> numberOfVertices;
 	vertex = new Vector3D[numberOfVertices];
 	Register_Object(vertex);
-	for (int i=0;i<numberOfVertices;i++)
+	for (int32_t i=0;i<numberOfVertices;i++)
 	{
 		*stream >> vertex[i];
 	}
@@ -67,7 +67,7 @@ ExtentPoly::ExtentPoly(
 	static char buffer[512];
 	PSTR ptr;
 
-	for (int i=0;i<numberOfVertices;i++)
+	for (int32_t i=0;i<numberOfVertices;i++)
 	{
 		file_stream->ReadLine(buffer, sizeof(buffer));
 	   ptr = strchr(buffer, '=');
@@ -101,7 +101,7 @@ ExtentPoly::Save(MemoryStream *stream)
 	*stream << minY;
 	*stream << maxY;
 	*stream << numberOfVertices;
-	for (int i=0;i<numberOfVertices;i++)
+	for (int32_t i=0;i<numberOfVertices;i++)
 	{
 		*stream << vertex[i];
 	}
@@ -280,7 +280,7 @@ Vector3D*
 		Vector3D *point1 = NULL;
 		Vector3D *point2 = NULL;
 
-		for (int i=0;i<numberOfVertices - 1;i++)
+		for (int32_t i=0;i<numberOfVertices - 1;i++)
 		{
 			distance = DistanceBetweenLineAndPoint(*point, vertex[i], vertex[i+1]);
 			if (distance < closest)
@@ -305,7 +305,7 @@ Vector3D*
 }
 
 
-int
+int32_t
 	ExtentPoly::InfiniteLineTestWithXAxis(
 	const Vector3D &point,
 	const Vector3D &p1,
@@ -357,10 +357,10 @@ bool
 	{
 		return(false);
 	}
-	int parity = 0;
+	int32_t parity = 0;
 
 	parity += InfiniteLineTestWithXAxis(point, vertex[numberOfVertices - 1], vertex[0]);
-	for (int i=0;i<numberOfVertices - 1;i++)
+	for (int32_t i=0;i<numberOfVertices - 1;i++)
 	{
 		parity += InfiniteLineTestWithXAxis(point, vertex[i], vertex[i+1]);
 	}

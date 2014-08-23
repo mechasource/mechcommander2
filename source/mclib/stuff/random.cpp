@@ -14,8 +14,8 @@
 
 using namespace Stuff;
 
-int Random::Numbers[250];
-int Random::Index = -1;
+int32_t Random::Numbers[250];
+int32_t Random::Index = -1;
 
 Random*	Random::Instance = NULL;
 
@@ -52,7 +52,7 @@ void Random::Init()
 	// Load the random number buffer
 	//------------------------------
 	//
-	int i;
+	int32_t i;
 	Index=0;
 	for (i=0; i<250; i++)
 		Numbers[i] = gos_rand();
@@ -64,9 +64,9 @@ void Random::Init()
 	// 01xx..., 001xx..., 0001xx..., ...
 	//--------------------------------------------------------------------
 	//
-	int mask = RAND_MAX >> 1;
-	int msb = mask + 1;
-	int rand_size;
+	int32_t mask = RAND_MAX >> 1;
+	int32_t msb = mask + 1;
+	int32_t rand_size;
 	for (rand_size=0; !(msb&(1<<rand_size)); ++rand_size);
 	i = 14;
 	while (rand_size--)
@@ -84,10 +84,10 @@ void Random::Init()
 //###########################################################################
 //###########################################################################
 //
-int
+int32_t
 	Random::GetRandomInt()
 {
-	int
+	int32_t
 		indent,
 		result;
 
@@ -131,10 +131,10 @@ Scalar
 //###########################################################################
 //###########################################################################
 //
-int
-	Random::GetLessThan(int range)
+int32_t
+	Random::GetLessThan(int32_t range)
 {
-	int
+	int32_t
 		result,
 		max;
 
@@ -150,7 +150,7 @@ int
 //###########################################################################
 //###########################################################################
 //
-Die::Die(int n)
+Die::Die(int32_t n)
 {
 	dieSides = (n>1)?n:2;
 	highestRandom = RAND_MAX - ((RAND_MAX+1)%dieSides);
@@ -160,8 +160,8 @@ Die::Die(int n)
 //###########################################################################
 //###########################################################################
 //
-Die::operator int() {
-	int
+Die::operator int32_t() {
+	int32_t
 		result;
 
 	//

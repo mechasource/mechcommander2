@@ -337,7 +337,7 @@ bool
 	// Find the largest axis component, and use that to orient the plane
 	//------------------------------------------------------------------
 	//
-	int axis;
+	int32_t axis;
 	if (xx > yy)
 		axis = (xx > zz) ? X_Axis : Z_Axis;
 	else

@@ -16,7 +16,7 @@ namespace Stuff {
 	
 	class SafeIterator;
 	
-	typedef int IteratorMemo;
+	typedef int32_t IteratorMemo;
 
 	enum
 	{

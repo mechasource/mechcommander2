@@ -135,7 +135,7 @@ namespace Stuff {
 		StaticArrayOf<T, N>::AssignValue(const T &value) 
 	{
 		// Do not memcopy, object semantics may be required
-		for (int i = 0; i < N; i++)
+		for (int32_t i = 0; i < N; i++)
 			data[i] = value;
 	}
 
@@ -145,7 +145,7 @@ namespace Stuff {
 		Check_Pointer(data_to_copy);
 		Verify(length <= N);
 		// Do not memcopy, object semantics may be required
-		for (int i = 0; i < length; i++)
+		for (int32_t i = 0; i < length; i++)
 			data[i] = data_to_copy[i];
 	}
 
@@ -155,7 +155,7 @@ namespace Stuff {
 	{
 		if (N != array.GetLength(void))
 			return false;
-		for (int i = 0; i < N; i++)
+		for (int32_t i = 0; i < N; i++)
 		{
 			if (data[i] != array.data[i])
 				return false;
@@ -344,7 +344,7 @@ namespace Stuff {
 	{
 		SetStorageLength(length_to_set);
 		// Do not memcopy, object semantics may be required
-		for (int i = 0; i < length; i++)
+		for (int32_t i = 0; i < length; i++)
 			data[i] = value;
 	}
 
@@ -354,7 +354,7 @@ namespace Stuff {
 		Check_Pointer(data_to_copy);
 		SetStorageLength(length_to_set);
 		// Do not memcopy, object semantics may be required
-		for (int i = 0; i < length; i++)
+		for (int32_t i = 0; i < length; i++)
 			data[i] = data_to_copy[i];
 	}
 
@@ -394,7 +394,7 @@ namespace Stuff {
 	{
 		if (length != array.length)
 			return false;
-		for (int i = 0; i < length; i++)
+		for (int32_t i = 0; i < length; i++)
 		{
 			if (data[i] != array.data[i])
 				return false;

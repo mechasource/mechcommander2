@@ -115,7 +115,7 @@ namespace Stuff {
 		//
 		// Axis index operators
 		//
-		static int GetMemberCount(void)
+		static int32_t GetMemberCount(void)
 			{
 				return 3;
 			}
@@ -226,7 +226,7 @@ namespace Stuff {
 			operator=(const Origin3D &p);
 
 
-		static int GetMemberCount(void)
+		static int32_t GetMemberCount(void)
 			{
 				return 3;
 			}
@@ -318,7 +318,7 @@ namespace Stuff {
 		static void TerminateClass();
 
 		DECLARE_TIMER(static, SlerpTime);
-		static ULONG SlerpCount;
+		static uint32_t SlerpCount;
 
 		Scalar
 			x,

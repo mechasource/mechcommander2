@@ -85,7 +85,7 @@ namespace Stuff {
 			FindObject(PCSTR name);
 		void
 			DeleteEntry(PCSTR name);	// ** DANGEROUS!! see notice above **
-		int
+		int32_t
 			GetEntryCount() const;	// (implementation assumes infrequent use)
 		bool
 			IsEmpty() const
@@ -102,7 +102,7 @@ namespace Stuff {
 		const Entry*
 			GetLastEntry() const
 		{ Check_Object(this); return lastEntry; }
-		int
+		int32_t
 			BuildSubList(
 			const ObjectNameList &source_list,
 			PCSTR prefix
@@ -162,7 +162,7 @@ namespace Stuff {
 			Check_Object(this);
 			return Cast_Pointer(PCSTR ,dataReference);
 		}
-		int
+		int32_t
 			GetAtoi() const
 		{
 			Check_Object(this); Check_Pointer(dataReference);
@@ -206,7 +206,7 @@ namespace Stuff {
 			FindName(PVOID data);
 		Entry*
 			FindEntry(PCSTR name);
-		int
+		int32_t
 			FindEntryIndex(PCSTR name);
 		Entry*
 			FindEntry(PVOID data);

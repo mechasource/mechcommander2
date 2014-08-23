@@ -42,7 +42,7 @@ namespace Stuff {
 		//
 		AffineMatrix4D(void) {}
 		AffineMatrix4D& BuildIdentity(void);
-		explicit AffineMatrix4D(int)						{ BuildIdentity(); }
+		explicit AffineMatrix4D(int32_t)						{ BuildIdentity(); }
 		AffineMatrix4D(const AffineMatrix4D& m)				{*this = m;}
 		explicit AffineMatrix4D(const Origin3D& p)			{*this = p;}
 		explicit AffineMatrix4D(const Matrix4D& m)			{*this = m;}

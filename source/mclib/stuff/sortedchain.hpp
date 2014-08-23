@@ -219,12 +219,12 @@ namespace Stuff {
 			Plug *plug,
 			PCVOID value
 			);
-		virtual int
+		virtual int32_t
 			CompareSortedChainLinks(
 			SortedChainLink *link1,
 			SortedChainLink *link2
 			);
-		virtual int
+		virtual int32_t
 			CompareValueToSortedChainLink(
 			PCVOID value,
 			SortedChainLink *link
@@ -305,12 +305,12 @@ namespace Stuff {
 				*Cast_Pointer(const V*, value)
 				);
 		}
-		int
+		int32_t
 			CompareSortedChainLinks(
 			SortedChainLink *link1,
 			SortedChainLink *link2
 			);
-		int
+		int32_t
 			CompareValueToSortedChainLink(
 			PCVOID value,
 			SortedChainLink *link
@@ -353,7 +353,7 @@ namespace Stuff {
 	{
 	}
 
-	template <class T, class V> int
+	template <class T, class V> int32_t
 		SortedChainOf<T, V>::CompareSortedChainLinks(
 		SortedChainLink *node1,
 		SortedChainLink *node2
@@ -375,7 +375,7 @@ namespace Stuff {
 		return 0;
 	}
 
-	template <class T, class V> int
+	template <class T, class V> int32_t
 		SortedChainOf<T, V>::CompareValueToSortedChainLink(
 		PCVOID value,
 		SortedChainLink *node

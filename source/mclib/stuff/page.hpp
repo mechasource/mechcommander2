@@ -127,24 +127,24 @@ namespace Stuff {
 			);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// int access
+		// int32_t access
 		//
 	public:
 		bool
 			GetEntry(
 			PCSTR entryname,
-			int *value,
+			pint32_t value,
 			bool required=false
 			);
 		void
 			SetEntry(
 			PCSTR entryname,
-			int value
+			int32_t value
 			);
 		void
 			AppendEntry(
 			PCSTR entryname,
-			int value
+			int32_t value
 			);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -20,7 +20,7 @@
 
 namespace Stuff {
 
-	extern int ArmorLevel;
+	extern int32_t ArmorLevel;
 
 	enum {
 		SNAN_NEGATIVE_LONG=0xffb1ffb1
@@ -127,7 +127,7 @@ namespace Stuff {
 	// Spews
 	//
 #if !defined(Spew)
-	inline void Spew(PCSTR group, int value)
+	inline void Spew(PCSTR group, int32_t value)
 	{
 		SPEW((group, "%d+", value));
 	}

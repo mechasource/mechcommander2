@@ -26,7 +26,7 @@ namespace Stuff {
 	{
 	public:
 		DatabaseHandle*		m_databaseHandle;
-		ULONG				m_ID;
+		uint32_t				m_ID;
 		PCSTR				m_name;
 		int64_t				m_timeStamp;
 		size_t				m_length;
@@ -97,7 +97,7 @@ namespace Stuff {
 		//
 		// GetNumberOfRecords - Returns the number of records in the database
 		//
-		ULONG
+		uint32_t
 			GetNumberOfRecords();
 
 		//
@@ -112,8 +112,8 @@ namespace Stuff {
 		HANDLE 		m_handle;
 		bool		m_dirtyFlag;
 		bool		m_readOnly;
-		ULONG 		m_currentRecord;
-		UINT_PTR	m_baseAddress;
+		uint32_t	m_currentRecord;
+		ULONG_PTR	m_baseAddress;
 		Record*		m_currentPointer;
 		MString		m_fileName;
 	};

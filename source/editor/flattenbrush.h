@@ -30,8 +30,8 @@ class FlattenBrush: public Brush
 
 		virtual bool beginPaint();
 		virtual Action* endPaint();
-		virtual bool paint( Stuff::Vector3D& worldPos, int screenX, int screenY );
-		virtual bool canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags ) { return true; } 
+		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY );
+		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ) { return true; } 
 		virtual bool canPaintSelection( ){ return true; }
 		virtual Action* applyToSelection();
 
@@ -42,7 +42,7 @@ class FlattenBrush: public Brush
 	private:
 
 		ActionPaintTile*	pCurAction;
-		void flattenVertex( int row, int col, float val );
+		void flattenVertex( int32_t row, int32_t col, float val );
 
 };
 

@@ -34,9 +34,9 @@ public:
 	//{{AFX_VIRTUAL(MainFrame)
 	public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL OnCmdMsg(UINT nID, int nCode, PVOID pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
+	virtual BOOL OnCmdMsg(uint32_t nID, int32_t nCode, PVOID pExtra, AFX_CMDHANDLERINFO* pHandlerInfo);
 	protected:
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
 // Implementation
@@ -57,7 +57,7 @@ public:  // control bar embedded members
 // Generated message map functions
 protected:
 	//{{AFX_MSG(MainFrame)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg int32_t OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSetFocus(CWnd *pOldWnd);
 	afx_msg void OnClose();
 	//}}AFX_MSG

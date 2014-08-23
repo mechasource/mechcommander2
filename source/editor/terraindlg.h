@@ -27,7 +27,7 @@ class TerrainDlg: public CDialog
 		void OnOK();
 
 
-		int terrain;
+		int32_t terrain;
 };
 
 

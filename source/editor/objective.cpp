@@ -31,7 +31,7 @@ Objective.cpp			: Implementation of the Objective component.
 
 #include <assert.h>
 
-static bool ESLoadString(int resourceID, EString &targetStr) {
+static bool ESLoadString(int32_t resourceID, EString &targetStr) {
 	char szTmp[16384/*max string length*/];
 	cLoadString( resourceID, szTmp, 16384/*max string length*/ );
 	targetStr = szTmp;
@@ -67,9 +67,9 @@ static int32_t sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &valu
 	return result;
 }
 
-static int32_t sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) {
+static int32_t sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int32_t &value) {
 	int32_t result = 0;
-	ULONG tmpULong;
+	uint32_t tmpULong;
 	result = missionFile->readIdULong((PSTR )varName, tmpULong);
 	if (NO_ERROR != result) {
 		//assert(false);
@@ -165,7 +165,7 @@ bool CNumberOfEnemyUnitsObjectiveCondition::Save( FitIniFile* file )
 bool CNumberOfEnemyUnitsObjectiveCondition::EditDialog() {
 	SingleValueDlg NumDialog( IDS_NUM_ENEMY_UNITS, IDS_BLANK_SPACE);
 	NumDialog.SetVal(m_num);
-	int ret = NumDialog.DoModal();
+	int32_t ret = NumDialog.DoModal();
 	if (IDOK == ret) {
 		m_num = NumDialog.GetVal();
 	}
@@ -234,11 +234,11 @@ bool CSpecificUnitObjectiveCondition::Save( FitIniFile* file )
 	file->writeIdULong( "CellX", cellx );
 	file->writeIdULong( "CellY", celly );
 
-	int alignment = m_pUnit->getAlignment();
+	int32_t alignment = m_pUnit->getAlignment();
 	file->writeIdULong( "Commander", alignment );
 
-	int newLance;
-	int index;
+	int32_t newLance;
+	int32_t index;
 	m_pUnit->getLanceInfo(newLance, index);
 	file->writeIdULong( "Group", newLance );
 	file->writeIdULong( "Mate", index );
@@ -247,7 +247,7 @@ bool CSpecificUnitObjectiveCondition::Save( FitIniFile* file )
 
 bool CSpecificUnitObjectiveCondition::EditDialog() {
 	ChooseUnitDlg ChooseUnitDialog(m_pUnit);
-	int ret = ChooseUnitDialog.DoModal();
+	int32_t ret = ChooseUnitDialog.DoModal();
 	if (m_pUnit) {
 		m_LastNotedPositionX = m_pUnit->getPosition().x;
 		m_LastNotedPositionY = m_pUnit->getPosition().y;
@@ -290,7 +290,7 @@ bool CSpecificUnitObjectiveCondition::RestoreObjectPointerReferencesFromNotedPos
 
 bool CSpecificEnemyUnitObjectiveCondition::EditDialog() {
 	ChooseUnitDlg ChooseUnitDialog(m_pUnit, Alignment());
-	int ret = ChooseUnitDialog.DoModal();
+	int32_t ret = ChooseUnitDialog.DoModal();
 	if (m_pUnit) {
 		m_LastNotedPositionX = m_pUnit->getPosition().x;
 		m_LastNotedPositionY = m_pUnit->getPosition().y;
@@ -354,14 +354,14 @@ bool CSpecificStructureObjectiveCondition::Save( FitIniFile* file )
 	file->writeIdULong( "CellX", cellx );
 	file->writeIdULong( "CellY", celly );
 
-	int alignment = m_pBuilding->getAlignment();
+	int32_t alignment = m_pBuilding->getAlignment();
 	file->writeIdULong( "Commander", alignment );
 	return true;
 }
 
 bool CSpecificStructureObjectiveCondition::EditDialog() {
 	ChooseBuildingDlg ChooseBuildingDlg(m_pBuilding);
-	int ret = ChooseBuildingDlg.DoModal();
+	int32_t ret = ChooseBuildingDlg.DoModal();
 	if (m_pBuilding) {
 		m_LastNotedPositionX = m_pBuilding->getPosition().x;
 		m_LastNotedPositionY = m_pBuilding->getPosition().y;
@@ -509,7 +509,7 @@ bool CAreaObjectiveCondition::Save( FitIniFile* file )
 
 bool CAreaObjectiveCondition::EditDialog() {
 	TargetAreaDlg TargetAreaDialog(m_targetCenterX, m_targetCenterY, m_targetRadius);
-	int ret = TargetAreaDialog.DoModal();
+	int32_t ret = TargetAreaDialog.DoModal();
 	return (IDOK == ret);
 }
 
@@ -562,7 +562,7 @@ bool CBooleanFlagIsSet::Read( FitIniFile* missionFile )
 	result = sReadIdString(missionFile, "FlagID", tmpECStr);
 	if (NO_ERROR != result) {
 		/*for backward compatibility*/
-		int flagIndex = 0;
+		int32_t flagIndex = 0;
 		result = sReadIdWholeNum(missionFile, "FlagIndex", flagIndex);
 		if (NO_ERROR != result) { return false; }
 		m_flagID.Format("%d", flagIndex);
@@ -634,7 +634,7 @@ bool CElapsedMissionTime::Save( FitIniFile* file )
 
 bool CElapsedMissionTime::EditDialog() {
 	SingleValueDlg ElapsedMissionTimeDialog( IDS_ELAPSED_TIME, IDS_IN_SECONDS);
-	ElapsedMissionTimeDialog.SetVal((int)m_time);
+	ElapsedMissionTimeDialog.SetVal((int32_t)m_time);
 	if( ElapsedMissionTimeDialog.DoModal()==IDOK ) {
 		m_time = (float)ElapsedMissionTimeDialog.GetVal();
 		return true;
@@ -698,10 +698,10 @@ bool CPlayBIK::EditDialog() {
 		selectAVIFileDialog.m_ofn.lpstrInitialDir = moviePath;
 		if( selectAVIFileDialog.DoModal()==IDOK ) {
 			CString pathname = selectAVIFileDialog.GetPathName();
-			int CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
+			int32_t CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
 			assert(1 <= CurrentDirectoryBufferLength);
 			TCHAR *CurrentDirectoryBuffer = new TCHAR[CurrentDirectoryBufferLength];
-			int ret = GetCurrentDirectory(CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
+			int32_t ret = GetCurrentDirectory(CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
 			assert(CurrentDirectoryBufferLength - 1 == ret);
 			ret = -1;
 			if (pathname.GetLength() > (CurrentDirectoryBufferLength - 1)) {
@@ -767,10 +767,10 @@ bool CPlayWAV::EditDialog() {
 		selectWAVFileDialog.m_ofn.lpstrInitialDir = soundPath;
 		if( selectWAVFileDialog.DoModal()==IDOK ) {
 			CString pathname = selectWAVFileDialog.GetPathName();
-			int CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
+			int32_t CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
 			assert(1 <= CurrentDirectoryBufferLength);
 			TCHAR *CurrentDirectoryBuffer = new TCHAR[CurrentDirectoryBufferLength];
-			int ret = GetCurrentDirectory(CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
+			int32_t ret = GetCurrentDirectory(CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
 			assert(CurrentDirectoryBufferLength - 1 == ret);
 			ret = -1;
 			if (pathname.GetLength() > (CurrentDirectoryBufferLength - 1)) {
@@ -831,7 +831,7 @@ bool CDisplayTextMessage::Save( FitIniFile* file )
 bool CDisplayTextMessage::EditDialog() {
 	TextMessageDlg textMessageDlg;
 	textMessageDlg.m_TextMessage = m_message.Data();
-	int result = textMessageDlg.DoModal();
+	int32_t result = textMessageDlg.DoModal();
 	if (IDOK == result) {
 		m_message = textMessageDlg.m_TextMessage.GetBuffer(0);
 		return true;
@@ -881,7 +881,7 @@ bool CDisplayResourceTextMessage::EditDialog() {
 	//resourceStringSelectionDlg.m_BottomOfIDRange = ;
 	//resourceStringSelectionDlg.m_TopOfIDRange = ;
 	resourceStringSelectionDlg.m_SelectedResourceStringID = m_resourceStringID;
-	int result = resourceStringSelectionDlg.DoModal();
+	int32_t result = resourceStringSelectionDlg.DoModal();
 	if (IDOK == result) {
 		m_resourceStringID = resourceStringSelectionDlg.m_SelectedResourceStringID;
 		return true;
@@ -922,7 +922,7 @@ bool CSetBooleanFlag::Read( FitIniFile* missionFile )
 	result = sReadIdString(missionFile, "FlagID", tmpECStr);
 	if (NO_ERROR != result) {
 		/*for backward compatibility*/
-		int flagIndex = 0;
+		int32_t flagIndex = 0;
 		result = sReadIdWholeNum(missionFile, "FlagIndex", flagIndex);
 		if (NO_ERROR != result) { return false; }
 		m_flagID.Format("%d", flagIndex);
@@ -1002,10 +1002,10 @@ bool CMakeNewTechnologyAvailable::EditDialog() {
 		selectPurchaseFileDialog.m_ofn.lpstrInitialDir = missionPath;
 		if( selectPurchaseFileDialog.DoModal()==IDOK ) {
 			CString pathname = selectPurchaseFileDialog.GetPathName();
-			int CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
+			int32_t CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
 			assert(1 <= CurrentDirectoryBufferLength);
 			TCHAR *CurrentDirectoryBuffer = new TCHAR[CurrentDirectoryBufferLength];
-			int ret = GetCurrentDirectory(CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
+			int32_t ret = GetCurrentDirectory(CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
 			assert(CurrentDirectoryBufferLength - 1 == ret);
 			ret = -1;
 			if (pathname.GetLength() > (CurrentDirectoryBufferLength - 1)) {
@@ -1120,7 +1120,7 @@ void CObjectiveActionList::Clear() {
 	EList <CObjectiveAction *, CObjectiveAction *>::Clear();
 }
 
-CObjectiveCondition *CObjective::new_CObjectiveCondition(condition_species_type conditionSpecies, int alignment) {
+CObjectiveCondition *CObjective::new_CObjectiveCondition(condition_species_type conditionSpecies, int32_t alignment) {
 	CObjectiveCondition *retval = 0;
 	switch (conditionSpecies) {
 	case DESTROY_ALL_ENEMY_UNITS: retval = new CDestroyAllEnemyUnits(alignment); break;
@@ -1165,7 +1165,7 @@ EString CObjective::DescriptionOfConditionSpecies(condition_species_type conditi
 	return retval;
 }
 
-CObjectiveAction *CObjective::new_CObjectiveAction(action_species_type actionSpecies, int alignment) {
+CObjectiveAction *CObjective::new_CObjectiveAction(action_species_type actionSpecies, int32_t alignment) {
 	CObjectiveAction *retval = 0;
 	switch (actionSpecies) {
 	case PLAY_BIK: retval = new CPlayBIK(alignment); break;
@@ -1195,7 +1195,7 @@ EString CObjective::DescriptionOfActionSpecies(action_species_type actionSpecies
 	return retval;
 }
 
-void CObjective::Construct(int alignment) {
+void CObjective::Construct(int32_t alignment) {
 	m_alignment = alignment;
 	Title(_TEXT(""));
 	m_titleUseResourceString = false;
@@ -1297,7 +1297,7 @@ void CObjective::Clear() {
 	m_failureActionList.Clear();
 }
 
-void CObjective::Alignment(int alignment) {
+void CObjective::Alignment(int32_t alignment) {
 	m_alignment = alignment;
 	{
 		EIterator it = Begin();
@@ -1334,31 +1334,31 @@ void CObjective::Alignment(int alignment) {
 
 static condition_species_type ConditionSpeciesMap(PCSTR speciesString) {
 	condition_species_type retval = DESTROY_ALL_ENEMY_UNITS;
-	int i;
-	for (i = 0; i < (int)NUM_CONDITION_SPECIES; i += 1) {
+	int32_t i;
+	for (i = 0; i < (int32_t)NUM_CONDITION_SPECIES; i += 1) {
 		if (0 == strcmp(speciesString, g_conditionSpeciesStringArray[i])) {
 			retval = (condition_species_type)i;
 			break;
 		}
 	}
-	assert(i < (int)NUM_CONDITION_SPECIES);
+	assert(i < (int32_t)NUM_CONDITION_SPECIES);
 	return retval;
 }
 
 static action_species_type ActionSpeciesMap(PCSTR speciesString) {
 	action_species_type retval = PLAY_BIK;
-	int i;
-	for (i = 0; i < (int)NUM_ACTION_SPECIES; i += 1) {
+	int32_t i;
+	for (i = 0; i < (int32_t)NUM_ACTION_SPECIES; i += 1) {
 		if (0 == strcmp(speciesString, g_actionSpeciesStringArray[i])) {
 			retval = (action_species_type)i;
 			break;
 		}
 	}
-	assert(i < (int)NUM_ACTION_SPECIES);
+	assert(i < (int32_t)NUM_ACTION_SPECIES);
 	return retval;
 }
 
-bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
+bool CObjective::Read( FitIniFile* missionFile, int32_t objectiveNum, int32_t version )
 {
 	int32_t result = 0;
 	ECharString tmpECStr;
@@ -1386,7 +1386,7 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 	result = sReadIdString(missionFile, "ActivateFlagID", tmpECStr);
 	if (NO_ERROR != result) {
 		/*for backward compatibility*/
-		int flagIndex = 0;
+		int32_t flagIndex = 0;
 		result = sReadIdWholeNum(missionFile, "ActivateFlagIndex", flagIndex);
 		if (NO_ERROR == result) {
 			m_activateFlagID.Format("%d", flagIndex);
@@ -1409,7 +1409,7 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 	if ( missionFile->readIdLong( "HighlightColor2", m_highlightColor2 ) )
 		m_highlightColor2 = -1;
 
-	int modelIDVersion = 0;
+	int32_t modelIDVersion = 0;
 	result = sReadIdWholeNum(missionFile, "ModelID Version", modelIDVersion);
 	if ((NO_ERROR != result) || (1 >= modelIDVersion) )
 	{
@@ -1422,18 +1422,18 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 	
 
 
-	int numConditions = 0;
+	int32_t numConditions = 0;
 	result = sReadIdWholeNum(missionFile, "NumConditions", numConditions);
 	if (NO_ERROR != result) { return false; }
-	int numActions = 0;
+	int32_t numActions = 0;
 	result = sReadIdWholeNum(missionFile, "NumActions", numActions);
-	int numFailureConditions = 0;
+	int32_t numFailureConditions = 0;
 	result = sReadIdWholeNum(missionFile, "NumFailureConditions", numFailureConditions);
-	int numFailureActions = 0;
+	int32_t numFailureActions = 0;
 	result = sReadIdWholeNum(missionFile, "NumFailureActions", numFailureActions);
 
 	{
-		int i;
+		int32_t i;
 		for (i = 0; i < numConditions; i += 1) {
 			ECharString tmpStr;
 			if (2 == version) {
@@ -1447,7 +1447,7 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 			result = sReadIdString(missionFile, "ConditionSpeciesString", tmpECStr);
 			if (NO_ERROR != result) {
 				/* this is just for backward compatibility, this entry is depricated */
-				int ispecies = 0;
+				int32_t ispecies = 0;
 				result = sReadIdWholeNum(missionFile, "ConditionSpecies", ispecies);
 				if (NO_ERROR != result) { continue; }
 				species = (condition_species_type)ispecies;
@@ -1464,7 +1464,7 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 	}
 
 	{
-		int i;
+		int32_t i;
 		for (i = 0; i < numActions; i += 1) {
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dAction%d", Alignment(), objectiveNum, i);
@@ -1484,7 +1484,7 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 	}
 
 	{
-		int i;
+		int32_t i;
 		for (i = 0; i < numFailureConditions; i += 1) {
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dFailureCondition%d", Alignment(), objectiveNum, i);
@@ -1504,7 +1504,7 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 	}
 
 	{
-		int i;
+		int32_t i;
 		for (i = 0; i < numFailureActions; i += 1) {
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dFailureAction%d", Alignment(), objectiveNum, i);
@@ -1525,7 +1525,7 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 	return true;
 }
 
-bool CObjective::Save( FitIniFile* file, int objectiveNum )
+bool CObjective::Save( FitIniFile* file, int32_t objectiveNum )
 {
 	sWriteIdString( file, "Title", Title().Data());
 	file->writeIdBoolean( "TitleUseResourceString", m_titleUseResourceString );
@@ -1552,13 +1552,13 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 	file->writeIdULong( "NumFailureActions", m_failureActionList.Count() );
 
 	PCSTR pName = "";
-	int type = 0;
+	int32_t type = 0;
 	float scale = 1.0;
 	if ( m_modelID != -1 )
 	{
-		ULONG ulGroup, ulIndex;
+		uint32_t ulGroup, ulIndex;
 		EditorObjectMgr::instance()->getBuildingFromID( m_modelID, ulGroup, ulIndex, true);
-		int ID = EditorObjectMgr::instance()->getID( ulGroup, ulIndex );
+		int32_t ID = EditorObjectMgr::instance()->getID( ulGroup, ulIndex );
 		pName = EditorObjectMgr::instance()->getFileName( ID );
 		type = (ID >> 24) & 0xff;
 		scale = EditorObjectMgr::instance()->getScale( ID );
@@ -1576,14 +1576,14 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 	
 
 	{
-		int i = 0;
+		int32_t i = 0;
 		EIterator it = Begin();
 		while (!it.IsDone()) {
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dCondition%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "ConditionSpecies", (ULONG)(*it)->Species());
-			file->writeIdString( "ConditionSpeciesString", g_conditionSpeciesStringArray[(int)(*it)->Species()]);
+			file->writeIdULong( "ConditionSpecies", (uint32_t)(*it)->Species());
+			file->writeIdString( "ConditionSpeciesString", g_conditionSpeciesStringArray[(int32_t)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;
 			it++;
@@ -1591,14 +1591,14 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 	}
 
 	{
-		int i = 0;
+		int32_t i = 0;
 		action_list_type::EIterator it = m_actionList.Begin();
 		while (!it.IsDone()) {
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dAction%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "ActionSpecies", (ULONG)(*it)->Species());
-			file->writeIdString( "ActionSpeciesString", g_actionSpeciesStringArray[(int)(*it)->Species()]);
+			file->writeIdULong( "ActionSpecies", (uint32_t)(*it)->Species());
+			file->writeIdString( "ActionSpeciesString", g_actionSpeciesStringArray[(int32_t)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;
 			it++;
@@ -1606,14 +1606,14 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 	}
 
 	{
-		int i = 0;
+		int32_t i = 0;
 		condition_list_type::EIterator it = m_failureConditionList.Begin();
 		while (!it.IsDone()) {
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dFailureCondition%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "FailureConditionSpecies", (ULONG)(*it)->Species());
-			file->writeIdString( "FailureConditionSpeciesString", g_conditionSpeciesStringArray[(int)(*it)->Species()]);
+			file->writeIdULong( "FailureConditionSpecies", (uint32_t)(*it)->Species());
+			file->writeIdString( "FailureConditionSpeciesString", g_conditionSpeciesStringArray[(int32_t)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;
 			it++;
@@ -1621,14 +1621,14 @@ bool CObjective::Save( FitIniFile* file, int objectiveNum )
 	}
 
 	{
-		int i = 0;
+		int32_t i = 0;
 		action_list_type::EIterator it = m_failureActionList.Begin();
 		while (!it.IsDone()) {
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dFailureAction%d", Alignment(), objectiveNum, i);
 			file->writeBlock( tmpStr.Data() );
-			file->writeIdULong( "FailureActionSpecies", (ULONG)(*it)->Species());
-			file->writeIdString( "FailureActionSpeciesString", g_actionSpeciesStringArray[(int)(*it)->Species()]);
+			file->writeIdULong( "FailureActionSpecies", (uint32_t)(*it)->Species());
+			file->writeIdString( "FailureActionSpeciesString", g_actionSpeciesStringArray[(int32_t)(*it)->Species()]);
 			(*it)->Save(file);
 			i += 1;
 			it++;
@@ -1655,7 +1655,7 @@ bool CObjective::EditDialog() {
 		ObjectiveDialog.nFailureActionSpeciesSelectionIndex = -1;
 	}
 
-	int ret = ObjectiveDialog.DoModal();
+	int32_t ret = ObjectiveDialog.DoModal();
 
 	if (!EditorInterface::instance()->ObjectSelectOnlyMode()) {
 		if (IDOK == ret) {
@@ -1715,7 +1715,7 @@ bool CObjective::RestoreObjectPointerReferencesFromNotedPositions() {
 	return retval;
 }
 
-static BOOL CSLoadString(int resourceID, CString &targetStr) {
+static BOOL CSLoadString(int32_t resourceID, CString &targetStr) {
 	char szTmp[16384/*max string length*/];
 	cLoadString( resourceID, szTmp, 16384/*max string length*/ );
 	targetStr = szTmp;
@@ -1796,7 +1796,7 @@ void CObjectives::Clear() {
 	inherited::Clear();
 }
 
-void CObjectives::Alignment(int alignment) {
+void CObjectives::Alignment(int32_t alignment) {
 	m_alignment = alignment;
 	EIterator it = Begin();
 	while (!it.IsDone()) {
@@ -1810,7 +1810,7 @@ bool CObjectives::Read( FitIniFile* missionFile )
 	int32_t result = 0;
 	result = missionFile->seekBlock("Objectives Version");
 	if (NO_ERROR != result) { assert(false); }
-	int objectivesVersion = 0;
+	int32_t objectivesVersion = 0;
 	result = sReadIdWholeNum(missionFile, "Version", objectivesVersion);
 	if (result != NO_ERROR) {
 		assert(false); return false;
@@ -1827,10 +1827,10 @@ bool CObjectives::Read( FitIniFile* missionFile )
 			result = missionFile->seekBlock(tmpStr.Data());
 		}
 		if (NO_ERROR != result) { assert(false); }
-		int numObjectives = 0;
+		int32_t numObjectives = 0;
 		result = sReadIdWholeNum(missionFile, "NumObjectives", numObjectives);
 		if (NO_ERROR != result) { return false; }
-		int i;
+		int32_t i;
 		for (i = 0; i < numObjectives; i += 1) {
 			ECharString tmpStr;
 			if (2 == objectivesVersion) {
@@ -1855,7 +1855,7 @@ bool CObjectives::Save( FitIniFile* file )
 	tmpStr.Format("Team%dObjectives", Alignment());
 	file->writeBlock( tmpStr.Data() );
 	file->writeIdULong( "NumObjectives", Count() );
-	int i = 0;
+	int32_t i = 0;
 	EIterator it = Begin();
 	while (!it.IsDone()) {
 		ECharString tmpStr;
@@ -1880,7 +1880,7 @@ bool CObjectives::EditDialog() {
 		ObjectivesDialog.nSelectionIndex = -1;
 	}
 
-	int ret = ObjectivesDialog.DoModal();
+	int32_t ret = ObjectivesDialog.DoModal();
 
 	if (!EditorInterface::instance()->ObjectSelectOnlyMode()) {
 		if (IDOK == ret) {

@@ -34,16 +34,16 @@ public:
 
 	CString m_TitleUnlocalizedText;
 	bool m_TitleUseResourceString;
-	int m_TitleResourceStringID;
+	int32_t m_TitleResourceStringID;
 
 	CString m_DescriptionUnlocalizedText;
 	bool m_DescriptionUseResourceString;
-	int m_DescriptionResourceStringID;
+	int32_t m_DescriptionResourceStringID;
 
-	int nConditionSpeciesSelectionIndex;
-	int nActionSpeciesSelectionIndex;
-	int nFailureConditionSpeciesSelectionIndex;
-	int nFailureActionSpeciesSelectionIndex;
+	int32_t nConditionSpeciesSelectionIndex;
+	int32_t nActionSpeciesSelectionIndex;
+	int32_t nFailureConditionSpeciesSelectionIndex;
+	int32_t nFailureActionSpeciesSelectionIndex;
 
 	class CConditionSpeciesList : public EList <condition_species_type, condition_species_type> {};
 	class CActionSpeciesList : public EList <action_species_type, action_species_type> {};
@@ -71,8 +71,8 @@ public:
 	CComboBox	m_ComboBox;
 	CListBox	m_ActionList;
 	CListBox	m_List;
-	int		m_PriorityRadioButton;
-	int		m_ResourcePointsEdit;
+	int32_t		m_PriorityRadioButton;
+	int32_t		m_ResourcePointsEdit;
 	BOOL	m_PreviousPrimaryObjectiveMustBeCompleteCheckButton;
 	BOOL	m_AllPreviousPrimaryObjectivesMustBeCompleteCheckButton;
 	BOOL	m_DisplayMarkerCheckButton;
@@ -80,7 +80,7 @@ public:
 	float	m_YEdit;
 	BOOL	m_HiddenTriggerCheckButton;
 	BOOL	m_ActivateOnFlagCheckButton;
-	int		m_ActivateFlagIndexEdit;
+	int32_t		m_ActivateFlagIndexEdit;
 	CString	m_TitleEdit;
 	CString	m_DescriptionEdit;
 	CString	m_TitleResourceStringIDEdit;
@@ -116,7 +116,7 @@ protected:
 	afx_msg void OnChangeHighlight1();
 	afx_msg void OnChangeHighlight2();
 	afx_msg void OnChangeBase2();
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
 	afx_msg void OnObjectiveTitleEditButton();
 	afx_msg void OnObjectiveDescriptionEditButton();
 	afx_msg void OnObjectiveAddFailureConditionButton();

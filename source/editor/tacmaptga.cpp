@@ -67,7 +67,7 @@ void TacMapTGA::OnPaint()
 		CPen *pReplacedPen = dc.SelectObject(&ourPen);
 
 		dc.MoveTo( pts[0].x, pts[0].y );
-		for ( int i = 1; i < 5; ++i )
+		for ( int32_t i = 1; i < 5; ++i )
 		{
 			dc.LineTo( pts[i] );
 		}

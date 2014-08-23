@@ -33,8 +33,8 @@ public:
 	//{{AFX_VIRTUAL(EditorMFCApp)
 	public:
 	virtual BOOL InitInstance();
-	virtual BOOL OnIdle(LONG lCount);
-	virtual int ExitInstance();
+	virtual BOOL OnIdle(int32_t lCount);
+	virtual int32_t ExitInstance();
 	//}}AFX_VIRTUAL
 
 // Implementation

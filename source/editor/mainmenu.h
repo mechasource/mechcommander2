@@ -24,7 +24,7 @@ class MainMenu:public Window
 		
 		void DoModal();
 
-		void OnCommand(Window *wnd, int nCommand);
+		void OnCommand(Window *wnd, int32_t nCommand);
 };
 
 extern MainMenu *pMainMenu;

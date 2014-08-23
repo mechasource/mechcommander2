@@ -45,8 +45,8 @@ class Eraser: public Brush
 
 		virtual bool beginPaint();
 		virtual Action* endPaint();
-		virtual bool paint( Stuff::Vector3D& worldPos, int screenX, int screenY );
-		virtual bool canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags );
+		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY );
+		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags );
 		virtual Action* applyToSelection();
 
 

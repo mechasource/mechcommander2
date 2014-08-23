@@ -24,11 +24,11 @@ public:
 	//{{AFX_DATA(PlayerSettingsDlg)
 	enum { IDD = IDD_PLAYER_SETTINGS };
 	CComboBox	m_defaultTeamComboBox;
-	int		m_playerEdit;
+	int32_t		m_playerEdit;
 	//}}AFX_DATA
-	int m_oldDefaultTeam;
-	int m_newDefaultTeam;
-	int m_numTeams;
+	int32_t m_oldDefaultTeam;
+	int32_t m_newDefaultTeam;
+	int32_t m_numTeams;
 
 
 // Overrides

@@ -101,7 +101,7 @@ void TGAWnd::SetTGAFileName( const CString& str )
 	}
 }
 
-void TGAWnd::SetTGAFileData( puint8_t data, int size )
+void TGAWnd::SetTGAFileData( puint8_t data, int32_t size )
 {
 	m_FileName = "";
 	m_bTGAChanged = true;

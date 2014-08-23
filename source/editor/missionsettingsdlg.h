@@ -26,15 +26,15 @@ public:
 
 	CString m_MissionNameUnlocalizedText;
 	bool m_MissionNameUseResourceString;
-	int m_MissionNameResourceStringID;
+	int32_t m_MissionNameResourceStringID;
 
 	CString m_BlurbUnlocalizedText;
 	bool m_BlurbUseResourceString;
-	int m_BlurbResourceStringID;
+	int32_t m_BlurbResourceStringID;
 
 	CString m_Blurb2UnlocalizedText;
 	bool m_Blurb2UseResourceString;
-	int m_Blurb2ResourceStringID;
+	int32_t m_Blurb2ResourceStringID;
 
 // Dialog Data
 	//{{AFX_DATA(MissionSettingsDlg)
@@ -43,17 +43,17 @@ public:
 	CSpinButtonCtrl	m_MaxPlayersSpin;
 	CSpinButtonCtrl	m_MaxTeamsSpin;
 	CString	m_AuthorEdit;
-	int		m_MaxPlayers;
-	int		m_MaxTeams;
-	int		m_TimeLimit;
+	int32_t		m_MaxPlayers;
+	int32_t		m_MaxTeams;
+	int32_t		m_TimeLimit;
 	BOOL	m_SinglePlayerCheck;
-	int		m_InitialResourcePoints;
+	int32_t		m_InitialResourcePoints;
 	CString	m_ScenarioTune;
 	CString	m_VideoFilename;
-	int		m_CBills;
-	int		m_NumRPBuildings;
+	int32_t		m_CBills;
+	int32_t		m_NumRPBuildings;
 	CString	m_DownloadUrlEdit;
-	int		m_MissionType;
+	int32_t		m_MissionType;
 	BOOL	m_AirStrikeCheck;
 	BOOL	m_AllTech;
 	BOOL	m_MineLayerCheck;
@@ -64,7 +64,7 @@ public:
 	BOOL	m_ScoutCopterCheck;
 	BOOL	m_SensorProbeCheck;
 	BOOL	m_UnlimitedAmmoCheck;
-	int		m_DropWeightLimit;
+	int32_t		m_DropWeightLimit;
 	BOOL	m_ArtilleryPieceCheck;
 	BOOL	m_RPsForMechsCheck;
 	CString	m_MissionNameEdit;

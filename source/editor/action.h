@@ -53,10 +53,10 @@ struct VertexInfo
 {
 	VertexInfo( int32_t row, int32_t column );
 	~VertexInfo(){}
-	int row;
-	int column;
-	int terrainData;
-	int textureData;
+	int32_t row;
+	int32_t column;
+	int32_t terrainData;
+	int32_t textureData;
 	float elevation;
 
 private:
@@ -85,9 +85,9 @@ class ActionPaintTile : public Action
 		ActionPaintTile( PCSTR pStr ) 
 			: Action( pStr ){}
 
-		void addChangedVertexInfo( int row, int column );
+		void addChangedVertexInfo( int32_t row, int32_t column );
 		void addVertexInfo( VertexInfo& );
-		bool getOldHeight( int row, int column, float& oldHeight );
+		bool getOldHeight( int32_t row, int32_t column, float& oldHeight );
 
 		VERTEX_INFO_LIST	vertexInfoList;	
 

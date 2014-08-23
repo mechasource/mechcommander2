@@ -91,13 +91,13 @@ static PCSTR g_conditionSpeciesStringArray[] = {
 
 class CObjectiveCondition {
 private:
-	int m_alignment;
+	int32_t m_alignment;
 public:
-	CObjectiveCondition(int alignment) { m_alignment = alignment; }
+	CObjectiveCondition(int32_t alignment) { m_alignment = alignment; }
 	virtual ~CObjectiveCondition() {}
 	virtual bool operator==(const CObjectiveCondition &rhs) const;
-	int Alignment() { return m_alignment; }
-	void Alignment(int alignment) { m_alignment = alignment; }
+	int32_t Alignment() { return m_alignment; }
+	void Alignment(int32_t alignment) { m_alignment = alignment; }
 	bool DoCommonEditDialog() {}
 	virtual condition_species_type Species() const = 0;
 	virtual bool Init() { return true; }
@@ -115,16 +115,16 @@ public:
 
 class CDestroyAllEnemyUnits: public CObjectiveCondition {
 public:
-	CDestroyAllEnemyUnits(int alignment) : CObjectiveCondition(alignment) {}
+	CDestroyAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return DESTROY_ALL_ENEMY_UNITS; }
 	EString Description();
 };
 
 class CNumberOfEnemyUnitsObjectiveCondition: public CObjectiveCondition { /*abstract class*/
 protected:
-	int m_num;
+	int32_t m_num;
 public:
-	CNumberOfEnemyUnitsObjectiveCondition(int alignment) : CObjectiveCondition(alignment) { m_num = 0; }
+	CNumberOfEnemyUnitsObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment) { m_num = 0; }
 	virtual bool operator==(const CObjectiveCondition &rhs) const;
 	virtual bool Read( FitIniFile* missionFile );
 	virtual bool Save( FitIniFile* file );
@@ -135,7 +135,7 @@ public:
 
 class CDestroyNumberOfEnemyUnits: public CNumberOfEnemyUnitsObjectiveCondition {
 public:
-	CDestroyNumberOfEnemyUnits(int alignment) : CNumberOfEnemyUnitsObjectiveCondition(alignment) {}
+	CDestroyNumberOfEnemyUnits(int32_t alignment) : CNumberOfEnemyUnitsObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return DESTROY_NUMBER_OF_ENEMY_UNITS; }
 	EString Description();
 };
@@ -146,7 +146,7 @@ protected:
 	float m_LastNotedPositionX;
 	float m_LastNotedPositionY;
 public:
-	CSpecificUnitObjectiveCondition(int alignment) : CObjectiveCondition(alignment) { m_pUnit = 0; m_LastNotedPositionX = m_LastNotedPositionY = 0.0; }
+	CSpecificUnitObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment) { m_pUnit = 0; m_LastNotedPositionX = m_LastNotedPositionY = 0.0; }
 	virtual bool operator==(const CObjectiveCondition &rhs) const;
 	virtual bool Read( FitIniFile* missionFile );
 	virtual bool Save( FitIniFile* file );
@@ -160,19 +160,19 @@ public:
 
 class CSpecificEnemyUnitObjectiveCondition: public CSpecificUnitObjectiveCondition { /*abstract class*/
 public:
-	CSpecificEnemyUnitObjectiveCondition(int alignment) : CSpecificUnitObjectiveCondition(alignment) {}
+	CSpecificEnemyUnitObjectiveCondition(int32_t alignment) : CSpecificUnitObjectiveCondition(alignment) {}
 	virtual bool EditDialog();
 };
 
 class CSpecificAlliedUnitObjectiveCondition: public CSpecificUnitObjectiveCondition { /*abstract class*/
 public:
-	CSpecificAlliedUnitObjectiveCondition(int alignment) : CSpecificUnitObjectiveCondition(alignment) {}
+	CSpecificAlliedUnitObjectiveCondition(int32_t alignment) : CSpecificUnitObjectiveCondition(alignment) {}
 	//virtual bool EditDialog();
 };
 
 class CDestroySpecificEnemyUnit: public CSpecificEnemyUnitObjectiveCondition {
 public:
-	CDestroySpecificEnemyUnit(int alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
+	CDestroySpecificEnemyUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return DESTROY_SPECIFIC_ENEMY_UNIT; }
 	EString Description();
 };
@@ -183,7 +183,7 @@ protected:
 	float m_LastNotedPositionX;
 	float m_LastNotedPositionY;
 public:
-	CSpecificStructureObjectiveCondition(int alignment) : CObjectiveCondition(alignment) { m_pBuilding = 0; m_LastNotedPositionX = m_LastNotedPositionY = 0.0; }
+	CSpecificStructureObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment) { m_pBuilding = 0; m_LastNotedPositionX = m_LastNotedPositionY = 0.0; }
 	virtual bool operator==(const CObjectiveCondition &rhs) const;
 	virtual bool Read( FitIniFile* missionFile );
 	virtual bool Save( FitIniFile* file );
@@ -197,19 +197,19 @@ public:
 
 class CSpecificEnemyStructureObjectiveCondition: public CSpecificStructureObjectiveCondition { /*abstract class*/
 public:
-	CSpecificEnemyStructureObjectiveCondition(int alignment) : CSpecificStructureObjectiveCondition(alignment) {}
+	CSpecificEnemyStructureObjectiveCondition(int32_t alignment) : CSpecificStructureObjectiveCondition(alignment) {}
 	//virtual bool EditDialog();
 };
 
 class CSpecificAlliedStructureObjectiveCondition: public CSpecificStructureObjectiveCondition { /*abstract class*/
 public:
-	CSpecificAlliedStructureObjectiveCondition(int alignment) : CSpecificStructureObjectiveCondition(alignment) {}
+	CSpecificAlliedStructureObjectiveCondition(int32_t alignment) : CSpecificStructureObjectiveCondition(alignment) {}
 	//virtual bool EditDialog();
 };
 
 class CDestroySpecificStructure: public CSpecificEnemyStructureObjectiveCondition {
 public:
-	CDestroySpecificStructure(int alignment) : CSpecificEnemyStructureObjectiveCondition(alignment) {}
+	CDestroySpecificStructure(int32_t alignment) : CSpecificEnemyStructureObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return DESTROY_SPECIFIC_STRUCTURE; }
 	EString Description();
 };
@@ -218,7 +218,7 @@ class CCaptureOrDestroyAllEnemyUnits: public CObjectiveCondition {
 	/* The CaptureOrDestroyAllEnemyUnits condition should not set the units to be
 	capturable. */
 public:
-	CCaptureOrDestroyAllEnemyUnits(int alignment) : CObjectiveCondition(alignment) {}
+	CCaptureOrDestroyAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return CAPTURE_OR_DESTROY_ALL_ENEMY_UNITS; }
 	EString Description();
 };
@@ -227,70 +227,70 @@ class CCaptureOrDestroyNumberOfEnemyUnits: public CNumberOfEnemyUnitsObjectiveCo
 	/* The CaptureOrDestroyAllEnemyUnits condition should not set the units to be
 	capturable. */
 public:
-	CCaptureOrDestroyNumberOfEnemyUnits(int alignment) : CNumberOfEnemyUnitsObjectiveCondition(alignment) {}
+	CCaptureOrDestroyNumberOfEnemyUnits(int32_t alignment) : CNumberOfEnemyUnitsObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return CAPTURE_OR_DESTROY_NUMBER_OF_ENEMY_UNITS; }
 	EString Description();
 };
 
 class CCaptureOrDestroySpecificEnemyUnit: public CSpecificEnemyUnitObjectiveCondition {
 public:
-	CCaptureOrDestroySpecificEnemyUnit(int alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
+	CCaptureOrDestroySpecificEnemyUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return CAPTURE_OR_DESTROY_SPECIFIC_ENEMY_UNIT; }
 	EString Description();
 };
 
 class CCaptureOrDestroySpecificStructure: public CSpecificEnemyStructureObjectiveCondition {
 public:
-	CCaptureOrDestroySpecificStructure(int alignment) : CSpecificEnemyStructureObjectiveCondition(alignment) {}
+	CCaptureOrDestroySpecificStructure(int32_t alignment) : CSpecificEnemyStructureObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return CAPTURE_OR_DESTROY_SPECIFIC_STRUCTURE; }
 	EString Description();
 };
 
 class CDeadOrFledAllEnemyUnits: public CObjectiveCondition {
 public:
-	CDeadOrFledAllEnemyUnits(int alignment) : CObjectiveCondition(alignment) {}
+	CDeadOrFledAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return DEAD_OR_FLED_ALL_ENEMY_UNITS; }
 	EString Description();
 };
 
 class CDeadOrFledNumberOfEnemyUnits: public CNumberOfEnemyUnitsObjectiveCondition {
 public:
-	CDeadOrFledNumberOfEnemyUnits(int alignment) : CNumberOfEnemyUnitsObjectiveCondition(alignment) {}
+	CDeadOrFledNumberOfEnemyUnits(int32_t alignment) : CNumberOfEnemyUnitsObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return DEAD_OR_FLED_NUMBER_OF_ENEMY_UNITS; }
 	EString Description();
 };
 
 class CDeadOrFledSpecificEnemyUnit: public CSpecificEnemyUnitObjectiveCondition {
 public:
-	CDeadOrFledSpecificEnemyUnit(int alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
+	CDeadOrFledSpecificEnemyUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return DEAD_OR_FLED_SPECIFIC_ENEMY_UNIT; }
 	EString Description();
 };
 
 class CCaptureUnit: public CSpecificEnemyUnitObjectiveCondition {
 public:
-	CCaptureUnit(int alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
+	CCaptureUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return CAPTURE_UNIT; }
 	EString Description();
 };
 
 class CCaptureStructure: public CSpecificEnemyStructureObjectiveCondition {
 public:
-	CCaptureStructure(int alignment) : CSpecificEnemyStructureObjectiveCondition(alignment) {}
+	CCaptureStructure(int32_t alignment) : CSpecificEnemyStructureObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return CAPTURE_STRUCTURE; }
 	EString Description();
 };
 
 class CGuardSpecificUnit: public CSpecificAlliedUnitObjectiveCondition {
 public:
-	CGuardSpecificUnit(int alignment) : CSpecificAlliedUnitObjectiveCondition(alignment) {}
+	CGuardSpecificUnit(int32_t alignment) : CSpecificAlliedUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return GUARD_SPECIFIC_UNIT; }
 	EString Description();
 };
 
 class CGuardSpecificStructure: public CSpecificAlliedStructureObjectiveCondition {
 public:
-	CGuardSpecificStructure(int alignment) : CSpecificAlliedStructureObjectiveCondition(alignment) {}
+	CGuardSpecificStructure(int32_t alignment) : CSpecificAlliedStructureObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return GUARD_SPECIFIC_STRUCTURE; }
 	EString Description();
 };
@@ -301,7 +301,7 @@ private:
 	float m_targetCenterY;
 	float m_targetRadius;
 public:
-	CAreaObjectiveCondition(int alignment) : CObjectiveCondition(alignment) { m_targetCenterX = 0.0; m_targetCenterY = 0.0; m_targetRadius = 0.0; }
+	CAreaObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment) { m_targetCenterX = 0.0; m_targetCenterY = 0.0; m_targetRadius = 0.0; }
 	virtual bool operator==(const CObjectiveCondition &rhs) const;
 	virtual bool Read( FitIniFile* missionFile );
 	virtual bool Save( FitIniFile* file );
@@ -312,28 +312,28 @@ public:
 
 class CMoveAnyUnitToArea: public CAreaObjectiveCondition {
 public:
-	CMoveAnyUnitToArea(int alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAnyUnitToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return MOVE_ANY_UNIT_TO_AREA; }
 	EString Description();
 };
 
 class CMoveAllUnitsToArea: public CAreaObjectiveCondition {
 public:
-	CMoveAllUnitsToArea(int alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAllUnitsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return MOVE_ALL_UNITS_TO_AREA; }
 	EString Description();
 };
 
 class CMoveAllSurvivingUnitsToArea: public CAreaObjectiveCondition {
 public:
-	CMoveAllSurvivingUnitsToArea(int alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAllSurvivingUnitsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return MOVE_ALL_SURVIVING_UNITS_TO_AREA; }
 	EString Description();
 };
 
 class CMoveAllSurvivingMechsToArea: public CAreaObjectiveCondition {
 public:
-	CMoveAllSurvivingMechsToArea(int alignment) : CAreaObjectiveCondition(alignment) {}
+	CMoveAllSurvivingMechsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() const { return MOVE_ALL_SURVIVING_MECHS_TO_AREA; }
 	EString Description();
 };
@@ -343,7 +343,7 @@ protected:
 	EString m_flagID;
 	bool m_value;
 public:
-	CBooleanFlagIsSet(int alignment) : CObjectiveCondition(alignment) { m_flagID = _TEXT("flag0"); m_value = true; }
+	CBooleanFlagIsSet(int32_t alignment) : CObjectiveCondition(alignment) { m_flagID = _TEXT("flag0"); m_value = true; }
 	bool operator==(const CObjectiveCondition &rhs) const;
 	condition_species_type Species() const { return BOOLEAN_FLAG_IS_SET; }
 	bool Read( FitIniFile* missionFile );
@@ -358,7 +358,7 @@ class CElapsedMissionTime: public CObjectiveCondition {
 protected:
 	float m_time;
 public:
-	CElapsedMissionTime(int alignment) : CObjectiveCondition(alignment) { m_time = 0.0; }
+	CElapsedMissionTime(int32_t alignment) : CObjectiveCondition(alignment) { m_time = 0.0; }
 	bool operator==(const CObjectiveCondition &rhs) const;
 	condition_species_type Species() const { return ELAPSED_MISSION_TIME; }
 	bool Read( FitIniFile* missionFile );
@@ -391,13 +391,13 @@ static PCSTR g_actionSpeciesStringArray[] = {
 
 class CObjectiveAction {
 private:
-	int m_alignment;
+	int32_t m_alignment;
 public:
-	CObjectiveAction(int alignment) { m_alignment = alignment; }
+	CObjectiveAction(int32_t alignment) { m_alignment = alignment; }
 	virtual ~CObjectiveAction() {}
 	virtual bool operator==(const CObjectiveAction &rhs) const;
-	int Alignment() { return m_alignment; }
-	void Alignment(int alignment) { m_alignment = alignment; }
+	int32_t Alignment() { return m_alignment; }
+	void Alignment(int32_t alignment) { m_alignment = alignment; }
 	bool DoCommonEditDialog() {}
 	virtual action_species_type Species() const = 0;
 	virtual bool Init() = 0;
@@ -414,7 +414,7 @@ class CPlayBIK: public CObjectiveAction {
 private:
 	EString m_pathname;
 public:
-	CPlayBIK(int alignment) : CObjectiveAction(alignment) {}
+	CPlayBIK(int32_t alignment) : CObjectiveAction(alignment) {}
 	bool operator==(const CObjectiveAction &rhs) const;
 	action_species_type Species() const { return PLAY_BIK; }
 	bool Init() { return true; }
@@ -431,7 +431,7 @@ class CPlayWAV: public CObjectiveAction {
 private:
 	EString m_pathname;
 public:
-	CPlayWAV(int alignment) : CObjectiveAction(alignment) {}
+	CPlayWAV(int32_t alignment) : CObjectiveAction(alignment) {}
 	bool operator==(const CObjectiveAction &rhs) const;
 	action_species_type Species() const { return PLAY_WAV; }
 	bool Init() { return true; }
@@ -448,7 +448,7 @@ class CDisplayTextMessage: public CObjectiveAction {
 private:
 	EString m_message;
 public:
-	CDisplayTextMessage(int alignment) : CObjectiveAction(alignment) {}
+	CDisplayTextMessage(int32_t alignment) : CObjectiveAction(alignment) {}
 	bool operator==(const CObjectiveAction &rhs) const;
 	action_species_type Species() const { return DISPLAY_TEXT_MESSAGE; }
 	bool Init() { return true; }
@@ -463,9 +463,9 @@ public:
 
 class CDisplayResourceTextMessage: public CObjectiveAction {
 private:
-	int m_resourceStringID;
+	int32_t m_resourceStringID;
 public:
-	CDisplayResourceTextMessage(int alignment) : CObjectiveAction(alignment) {}
+	CDisplayResourceTextMessage(int32_t alignment) : CObjectiveAction(alignment) {}
 	bool operator==(const CObjectiveAction &rhs) const;
 	action_species_type Species() const { return DISPLAY_RESOURCE_TEXT_MESSAGE; }
 	bool Init() { return true; }
@@ -483,7 +483,7 @@ private:
 	EString m_flagID;
 	bool m_value;
 public:
-	CSetBooleanFlag(int alignment) : CObjectiveAction(alignment) { m_flagID = _TEXT("flag0"); m_value = true; }
+	CSetBooleanFlag(int32_t alignment) : CObjectiveAction(alignment) { m_flagID = _TEXT("flag0"); m_value = true; }
 	bool operator==(const CObjectiveAction &rhs) const;
 	action_species_type Species() const { return SET_BOOLEAN_FLAG; }
 	bool Init() { return true; }
@@ -500,7 +500,7 @@ class CMakeNewTechnologyAvailable: public CObjectiveAction {
 private:
 	EString m_purchaseFilePathname;
 public:
-	CMakeNewTechnologyAvailable(int alignment) : CObjectiveAction(alignment) {}
+	CMakeNewTechnologyAvailable(int32_t alignment) : CObjectiveAction(alignment) {}
 	bool operator==(const CObjectiveAction &rhs) const;
 	action_species_type Species() const { return MAKE_NEW_TECHNOLOGY_AVAILABLE; }
 	bool Init() { return true; }
@@ -532,15 +532,15 @@ public:
 class CObjective : public/*maybe protected*/ CObjectiveConditionList {
 private:
 	typedef CObjectiveConditionList inherited;
-	int m_alignment;
+	int32_t m_alignment;
 	EString m_title;
 	bool m_titleUseResourceString;
-	int m_titleResourceStringID;
+	int32_t m_titleResourceStringID;
 	EString m_description;
 	bool m_descriptionUseResourceString;
-	int m_descriptionResourceStringID;
-	int m_priority;
-	int m_resourcePoints;
+	int32_t m_descriptionResourceStringID;
+	int32_t m_priority;
+	int32_t m_resourcePoints;
 	bool m_previousPrimaryObjectiveMustBeComplete;
 	bool m_allPreviousPrimaryObjectivesMustBeComplete;
 	bool m_displayMarker;
@@ -557,9 +557,9 @@ private:
 	int32_t m_highlightColor2;
 
 public: /* we could make this protected if only the editdialog is to acces these functions */
-	static CObjectiveCondition *new_CObjectiveCondition(condition_species_type conditionSpecies, int alignment);
+	static CObjectiveCondition *new_CObjectiveCondition(condition_species_type conditionSpecies, int32_t alignment);
 	static EString DescriptionOfConditionSpecies(condition_species_type conditionSpecies);
-	static CObjectiveAction *new_CObjectiveAction(action_species_type actionSpecies, int alignment);
+	static CObjectiveAction *new_CObjectiveAction(action_species_type actionSpecies, int32_t alignment);
 	static EString DescriptionOfActionSpecies(action_species_type actionSpecies);
 public:
 	typedef CObjectiveConditionList condition_list_type;
@@ -568,19 +568,19 @@ public:
 	condition_list_type m_failureConditionList;
 	action_list_type m_failureActionList;
 
-	void Construct(int alignment);
+	void Construct(int32_t alignment);
 	CObjective() { Construct(0); }
-	CObjective(int alignment) { Construct(alignment); }
+	CObjective(int32_t alignment) { Construct(alignment); }
 	CObjective(const CObjective &master) { (*this) = master; }
 	~CObjective() { Clear(); }
 	CObjective &operator=(const CObjective &master);
 	bool operator==(const CObjective &rhs) const;
 	void Init() {}
 	void Clear();
-	int Alignment() { return m_alignment; }
-	void Alignment(int alignment);
-	bool Read( FitIniFile* missionFile, int objectiveNum, int version = 0);
-	bool Save( FitIniFile* file, int objectiveNum);
+	int32_t Alignment() { return m_alignment; }
+	void Alignment(int32_t alignment);
+	bool Read( FitIniFile* missionFile, int32_t objectiveNum, int32_t version = 0);
+	bool Save( FitIniFile* file, int32_t objectiveNum);
 	bool EditDialog();
 	bool NoteThePositionsOfObjectsReferenced();
 	bool RestoreObjectPointerReferencesFromNotedPositions();
@@ -589,20 +589,20 @@ public:
 	void Title(EString title) { m_title = title; }
 	bool TitleUseResourceString() const { return m_titleUseResourceString; }
 	void TitleUseResourceString(bool titleUseResourceString) { m_titleUseResourceString = titleUseResourceString; }
-	int TitleResourceStringID() const { return m_titleResourceStringID; }
-	void TitleResourceStringID(int titleResourceStringID) { m_titleResourceStringID = titleResourceStringID; }
+	int32_t TitleResourceStringID() const { return m_titleResourceStringID; }
+	void TitleResourceStringID(int32_t titleResourceStringID) { m_titleResourceStringID = titleResourceStringID; }
 	EString LocalizedTitle() const;
 	EString Description() const { return m_description; }
 	void Description(EString description) { m_description = description; }
 	bool DescriptionUseResourceString() const { return m_descriptionUseResourceString; }
 	void DescriptionUseResourceString(bool descriptionUseResourceString) { m_descriptionUseResourceString = descriptionUseResourceString; }
-	int DescriptionResourceStringID() const { return m_descriptionResourceStringID; }
-	void DescriptionResourceStringID(int descriptionResourceStringID) { m_descriptionResourceStringID = descriptionResourceStringID; }
+	int32_t DescriptionResourceStringID() const { return m_descriptionResourceStringID; }
+	void DescriptionResourceStringID(int32_t descriptionResourceStringID) { m_descriptionResourceStringID = descriptionResourceStringID; }
 	EString LocalizedDescription() const;
-	int Priority() { return m_priority; }
-	void Priority(int priority) { m_priority = priority; }
-	int ResourcePoints() { return m_resourcePoints; }
-	void ResourcePoints(int resourcePoints) { m_resourcePoints = resourcePoints; }
+	int32_t Priority() { return m_priority; }
+	void Priority(int32_t priority) { m_priority = priority; }
+	int32_t ResourcePoints() { return m_resourcePoints; }
+	void ResourcePoints(int32_t resourcePoints) { m_resourcePoints = resourcePoints; }
 	bool PreviousPrimaryObjectiveMustBeComplete() { return m_previousPrimaryObjectiveMustBeComplete; }
 	void PreviousPrimaryObjectiveMustBeComplete(bool previousPrimaryObjectiveMustBeComplete) { m_previousPrimaryObjectiveMustBeComplete = previousPrimaryObjectiveMustBeComplete; }
 	bool AllPreviousPrimaryObjectivesMustBeComplete() { return m_allPreviousPrimaryObjectivesMustBeComplete; }
@@ -623,31 +623,31 @@ public:
 	bool ResetStatusOnFlag() { return m_resetStatusOnFlag; }
 	void ResetStatusFlagID(EString resetStatusFlagID) { m_resetStatusFlagID = resetStatusFlagID; }
 	EString ResetStatusFlagID() { return m_resetStatusFlagID; }
-	int BaseColor( ) const { return m_baseColor; }
-	void BaseColor( int newColor ) { m_baseColor = newColor; }
-	int HighlightColor( ) const { return m_highlightColor; }
-	void HighlightColor( int newColor ) { m_highlightColor = newColor; }
-	int HighlightColor2( ) const { return m_highlightColor2; }
-	void HighlightColor2( int newColor ) { m_highlightColor2 = newColor; }
+	int32_t BaseColor( ) const { return m_baseColor; }
+	void BaseColor( int32_t newColor ) { m_baseColor = newColor; }
+	int32_t HighlightColor( ) const { return m_highlightColor; }
+	void HighlightColor( int32_t newColor ) { m_highlightColor = newColor; }
+	int32_t HighlightColor2( ) const { return m_highlightColor2; }
+	void HighlightColor2( int32_t newColor ) { m_highlightColor2 = newColor; }
 	int32_t ModelID() const { return m_modelID; }
-	void ModelID( int newID ) { m_modelID = newID; }
+	void ModelID( int32_t newID ) { m_modelID = newID; }
 };
 
 class CObjectives : public/*maybe protected*/ EList <CObjective *, CObjective *> {
 private:
 	typedef EList <CObjective *, CObjective *> inherited;
-	int m_alignment;
+	int32_t m_alignment;
 public:
 	CObjectives() { m_alignment = 0; }
-	CObjectives(int alignment) { m_alignment = alignment; }
+	CObjectives(int32_t alignment) { m_alignment = alignment; }
 	CObjectives(const CObjectives &master) { (*this) = master; }
 	~CObjectives() { Clear(); }
 	CObjectives &operator=(const CObjectives &master);
 	bool operator==(const CObjectives &rhs) const;
 	void Init();
 	void Clear();
-	int Alignment() { return m_alignment; }
-	void Alignment(int alignment);
+	int32_t Alignment() { return m_alignment; }
+	void Alignment(int32_t alignment);
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
 	bool EditDialog();
@@ -660,14 +660,14 @@ public:
 
 class CObjectivesEditState {
 public:
-	int alignment;
+	int32_t alignment;
 	CObjectives ModifiedObjectives;
 	enum objective_function_id_type {
 		ADD,
 		EDIT
 	};
 	objective_function_id_type objectiveFunction;
-	int nSelectionIndex;
+	int32_t nSelectionIndex;
 
 	CObjective ModifiedObjective;
 	enum list_id_type {
@@ -675,10 +675,10 @@ public:
 		FAILURE_CONDITION
 	};
 	list_id_type listID;
-	int nConditionSpeciesSelectionIndex;
-	int nActionSpeciesSelectionIndex;
-	int nFailureConditionSpeciesSelectionIndex;
-	int nFailureActionSpeciesSelectionIndex;
+	int32_t nConditionSpeciesSelectionIndex;
+	int32_t nActionSpeciesSelectionIndex;
+	int32_t nFailureConditionSpeciesSelectionIndex;
+	int32_t nFailureActionSpeciesSelectionIndex;
 
 	PVOIDpModifiedUnitPtr;
 	PVOIDpModifiedBuildingPtr;

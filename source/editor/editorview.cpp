@@ -54,7 +54,7 @@ void EditorView::OnPaint()
 }
 
 
-LRESULT EditorView::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+LRESULT EditorView::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam) 
 {
 
 	if ( eye )

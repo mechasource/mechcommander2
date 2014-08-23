@@ -58,7 +58,7 @@ void ActionUndoMgr::AddAction( Action* pAction )
 			m_PosOfLastSave = -1;
 		}
 		ACTION_LIST::EIterator iter = m_listUndoActions.End();
-		for ( int i = m_listUndoActions.Count() - 1; i > m_CurrentPos; -- i )
+		for ( int32_t i = m_listUndoActions.Count() - 1; i > m_CurrentPos; -- i )
 		{
 			delete (*iter);
 			iter--;
@@ -264,12 +264,12 @@ bool ActionPaintTile::doRedo()
 		!iter.IsDone(); iter++ )
 	{
 		// get current values
-		int terrain = land->getTerrain( (*iter).row, (*iter).column );
-		int texture = land->getTexture( (*iter).row, (*iter).column );
+		int32_t terrain = land->getTerrain( (*iter).row, (*iter).column );
+		int32_t texture = land->getTexture( (*iter).row, (*iter).column );
 		float elv = land->getTerrainElevation( (*iter).row, (*iter).column );
 
 		Overlays overlay;
-		ULONG offset;
+		uint32_t offset;
 
 		// reset to old values
 		land->terrainTextures->getOverlayInfoFromHandle( (*iter).textureData, overlay, offset );
@@ -327,7 +327,7 @@ void ActionPaintTile::addVertexInfo( VertexInfo& info )
 // Returns:		nothing
 // Description:
 ////-----------------------------------------------------------------------
-void ActionPaintTile::addChangedVertexInfo( int row, int column )
+void ActionPaintTile::addChangedVertexInfo( int32_t row, int32_t column )
 {
 
 	// get the info and add it
@@ -346,7 +346,7 @@ void ActionPaintTile::addChangedVertexInfo( int row, int column )
 
 }
 
-bool ActionPaintTile::getOldHeight( int row, int column, float& height )
+bool ActionPaintTile::getOldHeight( int32_t row, int32_t column, float& height )
 {
 	for( VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
 		!iter.IsDone(); iter++ )

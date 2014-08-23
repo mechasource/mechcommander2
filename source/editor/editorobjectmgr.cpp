@@ -86,7 +86,7 @@
 using namespace Microsoft::Xna::Arm;
 
 EditorObjectMgr*	EditorObjectMgr::s_instance = NULL;
-ULONG gameResourceHandle = 0;
+uint32_t gameResourceHandle = 0;
 
 extern bool renderObjects;
 extern bool renderTrees;
@@ -126,7 +126,7 @@ EditorObjectMgr::~EditorObjectMgr()
 
 			if (  (*buildIter ).varNames )
 			{
-				for ( int i = 0; i < 16; i++ )
+				for ( int32_t i = 0; i < 16; i++ )
 				{
 					if ( (*buildIter).varNames[i] )
 					{
@@ -229,7 +229,7 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 		bldg.forestId = 0;
 		
 		char tmpBuffer[64];
-		int  bufferLength = 64;
+		int32_t  bufferLength = 64;
 		puint8_t pCur = buffer;
 		char GroupName[64];
 
@@ -240,14 +240,14 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 		// extract the group
 		if ( ExtractNextString( pCur,  tmpBuffer, bufferLength ) )
 		{
-			int group = atoi( tmpBuffer );
+			int32_t group = atoi( tmpBuffer );
 			cLoadString( IDS_GROUPS + group, GroupName, 64, gameResourceHandle );
 		}
 	
 		// extract the building name
 		if ( ExtractNextString( pCur,  tmpBuffer, bufferLength ) )
 		{
-			int strId = atoi( tmpBuffer );
+			int32_t strId = atoi( tmpBuffer );
 			bldg.nameID = strId;
 			cLoadString( strId, tmpBuffer, 64 );
 			strcpy( bldg.name, tmpBuffer );
@@ -272,12 +272,12 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 			if ( NO_ERROR != objectFile.seekPacket(bldg.fitID) )
 				gosASSERT( false );
 
-			int fileSize = objectFile.getPacketSize();
+			int32_t fileSize = objectFile.getPacketSize();
 
 			FitIniFile bldgFile;
 			result = bldgFile.open(&objectFile, fileSize);
 
-			ULONG lowTemplate, highTemplate;
+			uint32_t lowTemplate, highTemplate;
 			bldgFile.readIdULong( "LowTemplate", lowTemplate );
 			bldgFile.readIdULong( "HighTemplate", highTemplate );
 
@@ -293,7 +293,7 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 			strcpy(tmpBuf, "");
 			bldgFile.readIdString("Name", tmpBuf, 1000);
 			if (0 == strcmp(tmpBuf, "monsoon")) {
-				int i = 11;
+				int32_t i = 11;
 			}
 			bldgFile.close();
 		}
@@ -365,7 +365,7 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 		if ( NO_ERROR == csvFile.open( csvFileName ) )
 		{
 			bldg.varNames = (PSTR*) malloc( sizeof( PSTR ) * 16 );
-			for ( int i = 0; i < 16; ++i )
+			for ( int32_t i = 0; i < 16; ++i )
 			{
 				if ( NO_ERROR == csvFile.readString( 23 + 97 * i, 2, varName, 256 ) && strlen( varName ) )
 				{
@@ -409,9 +409,9 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 
 
 
-int EditorObjectMgr::ExtractNextString( puint8_t& pFileLine, PSTR pBuffer, int bufferLength )
+int32_t EditorObjectMgr::ExtractNextString( puint8_t& pFileLine, PSTR pBuffer, int32_t bufferLength )
 {
-	for ( int i = 0; i < 512; ++i )
+	for ( int32_t i = 0; i < 512; ++i )
 	{
 		if ( pFileLine[i] == '\n' )
 			break;
@@ -450,7 +450,7 @@ int32_t textToLong (PCSTR num)
 	{
 		hexOffset += 2;
 		int32_t numDigits = strlen(hexOffset)-1;
-		for (int i=0; i<=numDigits; i++)
+		for (int32_t i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
@@ -486,11 +486,11 @@ int32_t textToLong (PCSTR num)
 	return(result);
 }
 
-int EditorObjectMgr::ExtractNextInt( puint8_t& pFileLine )
+int32_t EditorObjectMgr::ExtractNextInt( puint8_t& pFileLine )
 {
 	char buffer[1024];
 
-	int count = ExtractNextString( pFileLine, buffer, 1024 );
+	int32_t count = ExtractNextString( pFileLine, buffer, 1024 );
 
 	if ( count > 0 )
 	{
@@ -504,7 +504,7 @@ float EditorObjectMgr::ExtractNextFloat( puint8_t& pFileLine )
 {
 	char buffer[1024];
 
-	int count = ExtractNextString( pFileLine, buffer, 1024 );
+	int32_t count = ExtractNextString( pFileLine, buffer, 1024 );
 
 	if ( count > 0 )
 	{
@@ -518,8 +518,8 @@ float EditorObjectMgr::ExtractNextFloat( puint8_t& pFileLine )
 //-------------------------------------------------------------------------------------------------
 bool EditorObjectMgr::canAddBuilding( const Stuff::Vector3D& position,
 								float rotation,
-								ULONG group,
-								ULONG indexWithinGroup )
+								uint32_t group,
+								uint32_t indexWithinGroup )
 {
 	
 	int32_t realCellI, realCellJ;
@@ -537,10 +537,10 @@ bool EditorObjectMgr::canAddBuilding( const Stuff::Vector3D& position,
 	return land->IsEditorSelectTerrainPosition(position);
 }
 
-bool EditorObjectMgr::canAddDropZone( const Stuff::Vector3D& position, int alignment, bool bVTol )
+bool EditorObjectMgr::canAddDropZone( const Stuff::Vector3D& position, int32_t alignment, bool bVTol )
 {
 
-	int alignmentCount = 0;
+	int32_t alignmentCount = 0;
 	for ( DROP_LIST::EIterator iter = dropZones.Begin(); !iter.IsDone(); iter++ )
 	{
 		if  (bVTol)
@@ -569,7 +569,7 @@ bool EditorObjectMgr::addBuilding( EditorObject* pObj )
 		true : false;
 }
 
-EditorObject* EditorObjectMgr::addDropZone( const Stuff::Vector3D& position, int alignment, bool bVTol )
+EditorObject* EditorObjectMgr::addDropZone( const Stuff::Vector3D& position, int32_t alignment, bool bVTol )
 {
 	gosASSERT( (canAddDropZone( position, alignment, bVTol )  ) );
 	
@@ -615,7 +615,7 @@ EditorObject* EditorObjectMgr::getObjectAtPosition( const Stuff::Vector3D& posit
 
 			if (pAppearance->canBeSeen())
 			{
-				int left, top, right, bottom;
+				int32_t left, top, right, bottom;
 
 				left = pAppearance->upperLeft.x;
 				top = pAppearance->upperLeft.y;
@@ -641,7 +641,7 @@ EditorObject* EditorObjectMgr::getObjectAtPosition( const Stuff::Vector3D& posit
 
 			if (pAppearance->canBeSeen())
 			{
-				int left, top, right, bottom;
+				int32_t left, top, right, bottom;
 
 				left = pAppearance->upperLeft.x;
 				top = pAppearance->upperLeft.y;
@@ -727,15 +727,15 @@ EditorObject* EditorObjectMgr::getObjectAtLocation( float x, float y )
 
 
 //-------------------------------------------------------------------------------------------------
-EditorObject* EditorObjectMgr::addBuilding( const Stuff::Vector3D& position, ULONG group,
-									 ULONG indexWithinGroup, int alignment, float rotation,
+EditorObject* EditorObjectMgr::addBuilding( const Stuff::Vector3D& position, uint32_t group,
+									 uint32_t indexWithinGroup, int32_t alignment, float rotation,
 									 float scale, bool bSnapToCell )
 {
 	if ( group == 255 )
 		return addDropZone( position, alignment, 0 );
 	
-	int type = getType( group, indexWithinGroup );
-	int specialType = getSpecialType( getID( group, indexWithinGroup ) );
+	int32_t type = getType( group, indexWithinGroup );
+	int32_t specialType = getSpecialType( getID( group, indexWithinGroup ) );
 	
 	EditorObject* info = NULL;
 	
@@ -759,7 +759,7 @@ EditorObject* EditorObjectMgr::addBuilding( const Stuff::Vector3D& position, ULO
 		info = tmp;
 		info->appearInfo->appearance = getAppearance( group, indexWithinGroup );
 
-		ULONG c1, c2, c3;
+		uint32_t c1, c2, c3;
 		tmp->getColors(c1, c2, c3);
 		tmp->appearance()->resetPaintScheme(c1, c2, c3);
 	}
@@ -853,24 +853,24 @@ bool	EditorObjectMgr::deleteBuilding( const EditorObject* pInfo )
 
 
 //*************************************************************************************************
-int EditorObjectMgr::getBuildingGroupCount() const
+int32_t EditorObjectMgr::getBuildingGroupCount() const
 {
 	return groups.Count();
 }
 
 //*************************************************************************************************
-int EditorObjectMgr::getNumberBuildingsInGroup( int group ) const
+int32_t EditorObjectMgr::getNumberBuildingsInGroup( int32_t group ) const
 {
 	return groups[group].buildings.Count();
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::getBuildingGroupNames( PCSTR* names, int& NumberOfNames ) const
+void EditorObjectMgr::getBuildingGroupNames( PCSTR* names, int32_t& NumberOfNames ) const
 {
 	if ( NumberOfNames < groups.Count() )
 		NumberOfNames = groups.Count();
 
-	int i = 0;
+	int32_t i = 0;
 	for ( GROUP_LIST::EConstIterator iter = groups.Begin();
 		!iter.IsDone(); iter++, i++ )
 		{
@@ -882,14 +882,14 @@ void EditorObjectMgr::getBuildingGroupNames( PCSTR* names, int& NumberOfNames ) 
 }
 
 //*************************************************************************************************
-void EditorObjectMgr::getBuildingNamesInGroup( int group, PCSTR* names, int& NumberOfNames ) const
+void EditorObjectMgr::getBuildingNamesInGroup( int32_t group, PCSTR* names, int32_t& NumberOfNames ) const
 {
 	Group* pGroup = &groups[group];
 	
 	if ( NumberOfNames < groups.Count() )
 		NumberOfNames = pGroup->buildings.Count();
 
-	int i = 0;
+	int32_t i = 0;
 	for ( EList< Building, Building& >::EIterator iter = pGroup->buildings.Begin();
 		!iter.IsDone(); iter++, i++ )
 		{
@@ -1137,7 +1137,7 @@ void EditorObjectMgr::renderShadows()
 }
 
 //*************************************************************************************************
-bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
+bool EditorObjectMgr::save( PacketFile& PakFile, int32_t whichPacket )
 {
 	File file;
 	
@@ -1147,7 +1147,7 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
 		PakFile.writePacket( whichPacket + 1, NULL );
 	}
 
-	int bufferSize = buildings.Count() * (4 * sizeof(float) + 6 * sizeof(int32_t) ) + 2 * sizeof(int32_t);
+	int32_t bufferSize = buildings.Count() * (4 * sizeof(float) + 6 * sizeof(int32_t) ) + 2 * sizeof(int32_t);
 	PSTR pBuffer = (PSTR ) malloc( bufferSize );
 	int32_t* pTacMapPoints = (int32_t *)malloc( sizeof(int32_t) * ( buildings.Count() * 2 + 1 ) );
 	int32_t* pPoints = pTacMapPoints + 1;
@@ -1161,7 +1161,7 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
 	for ( BUILDING_LIST::EIterator iter = buildings.Begin();
 		!iter.IsDone(); iter++ )
 		{
-			int id = (*iter)->id;
+			int32_t id = (*iter)->id;
 			Building& bldg = groups[(id >> 16) & 0x000000ff].buildings[(id >> 8) & 0x000000ff];
 
 			if ( bldg.writeOnTacMap )
@@ -1215,7 +1215,7 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
 				file.writeLong( 0 );
 		}
 
-	int pos = file.getLogicalPosition();
+	int32_t pos = file.getLogicalPosition();
 	file.seek( 0 );
 
 	if ( !PakFile.writePacket( whichPacket, (puint8_t)pBuffer, pos ) )
@@ -1231,7 +1231,7 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
 	free( pBuffer );
 
 	if (!justResaveAllMaps) {
-		int numTurrets = 0;
+		int32_t numTurrets = 0;
 		for ( BUILDING_LIST::EIterator iter = buildings.Begin(); !iter.IsDone(); iter++ )
 		{
 			switch ((*iter)->getSpecialType())
@@ -1254,21 +1254,21 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
 	return true;
 }
 
-bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
+bool EditorObjectMgr::load( PacketFile& PakFile, int32_t whichPacket )
 {
 	PakFile.seekPacket( whichPacket );
-	int size = PakFile.getPacketSize( );
+	int32_t size = PakFile.getPacketSize( );
 	PSTR pBuffer = (PSTR )malloc(size);
 	PakFile.readPacket( whichPacket, (puint8_t)pBuffer );
 	
 	File file;
 	file.open( pBuffer, size );
-	int count = file.readLong();
+	int32_t count = file.readLong();
 
-	for ( int i = 0; i < count; ++i )
+	for ( int32_t i = 0; i < count; ++i )
 	{
-		int id = file.readLong();
-		ULONG group, index;
+		int32_t id = file.readLong();
+		uint32_t group, index;
 		if ( !getBuildingFromID(id, group, index, false ) )
 		{
 			//Until buildings stabilize, just toss 'em when you can't find 'em
@@ -1288,7 +1288,7 @@ bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
 		if ( pInfo )
 			((EditorObject*)pInfo)->appearance()->rotation = rotation;
 		
-		int damage = file.readLong();
+		int32_t damage = file.readLong();
 
 		if ( damage )
 			((EditorObject*)pInfo)->appearance()->setDamage(1);
@@ -1300,7 +1300,7 @@ bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
 //		if ( !isAlignable( pInfo->id ) )
 //			pInfo->appearance()->teamId = -1;
 
-		int cells = file.readLong();
+		int32_t cells = file.readLong();
 
 		if ( cells && (cells != 0xffffffff)) // this building is linked
 		{
@@ -1383,7 +1383,7 @@ bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
 
 //*************************************************************************************************
 // this will NOT RETURN MECHS AND VEHICLES
-bool EditorObjectMgr::getBuildingFromID( int fitID, ULONG& group, ULONG& index, bool canBeMech )
+bool EditorObjectMgr::getBuildingFromID( int32_t fitID, uint32_t& group, uint32_t& index, bool canBeMech )
 {
 	group = 0;
 	index = 0;
@@ -1414,34 +1414,34 @@ bool EditorObjectMgr::getBuildingFromID( int fitID, ULONG& group, ULONG& index, 
 }
 
 //*************************************************************************************************
-int	EditorObjectMgr::getFitID( int id ) const
+int32_t	EditorObjectMgr::getFitID( int32_t id ) const
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].fitID;
 }
 
 
 //*************************************************************************************************
-bool EditorObjectMgr::getBlocksLineOfFire( int id ) const
+bool EditorObjectMgr::getBlocksLineOfFire( int32_t id ) const
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].blocksLineOfFire;
 
 }
 //*************************************************************************************************
-bool EditorObjectMgr::getIsHoverCraft( int id ) const
+bool EditorObjectMgr::getIsHoverCraft( int32_t id ) const
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].isHoverCraft;
 
 }
 //*************************************************************************************************
-int64_t	EditorObjectMgr::getImpassability( int id )
+int64_t	EditorObjectMgr::getImpassability( int32_t id )
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].impassability;
 }
 
 void EditorObjectMgr::select( const Stuff::Vector4D& pos1, const Stuff::Vector4D& pos2 )
 {
-	int xMin, xMax;
-	int yMin, yMax;
+	int32_t xMin, xMax;
+	int32_t yMin, yMax;
 	
 	if ( pos1.x < pos2.x )
 	{
@@ -1573,13 +1573,13 @@ bool EditorObjectMgr::hasSelection()
 	return false;
 }
 
-int EditorObjectMgr::getSelectionCount()
+int32_t EditorObjectMgr::getSelectionCount()
 {
 #if 1
 	syncSelectedObjectPointerList();
 	return selectedObjects.Count();
 #else
-	int counter = 0;
+	int32_t counter = 0;
 	for ( BUILDING_LIST::EConstIterator iter = buildings.Begin();
 		!iter.IsDone(); iter++ )
 		{
@@ -1736,7 +1736,7 @@ ObjectAppearance* EditorObjectMgr::getAppearance( EditorObjectMgr::Building* pBu
 
 }
 
-ObjectAppearance* EditorObjectMgr::getAppearance( ULONG group, ULONG indexWithinGroup )
+ObjectAppearance* EditorObjectMgr::getAppearance( uint32_t group, uint32_t indexWithinGroup )
 {
 	gosASSERT( group >= 0 && group < groups.Count() );
 
@@ -1754,22 +1754,22 @@ bool  EditorObjectMgr::loadMechs( FitIniFile& file )
 	// disable animation loading to decrease loading time
 	Mech3DAppearanceType::disableAnimationLoading();
 
-	ULONG count;
+	uint32_t count;
 	file.seekBlock( "Parts" );
 	file.readIdULong( "NumParts", count );
 
-	int alternativeInstancesCounter = count + 1;
+	int32_t alternativeInstancesCounter = count + 1;
 	Stuff::Vector3D position;
 	position.x = position.y = position.z = 0;
 	char buffer[256];
-	for ( int i = 1; i < count + 1; ++i )
+	for ( int32_t i = 1; i < count + 1; ++i )
 	{
 		sprintf( buffer, "Part%ld", i );
 		file.seekBlock( buffer );
-		ULONG fitID;
+		uint32_t fitID;
 		file.readIdULong( "ObjectNumber",fitID );
 		
-		ULONG group, index;
+		uint32_t group, index;
 		getBuildingFromID( fitID, group, index, true );
 
 		EditorObject* pObject = (EditorObject*)(addBuilding( position, group, index, 0, 0 ));
@@ -1779,21 +1779,21 @@ bool  EditorObjectMgr::loadMechs( FitIniFile& file )
 		pObject->load( &file, i );		
 
 		alternativeInstancesCounter += 1;
-		int tmpI = ((Unit *)(pObject))->tmpAlternativeStartIndex;
+		int32_t tmpI = ((Unit *)(pObject))->tmpAlternativeStartIndex;
 		if (0 < tmpI)
 		{
 			alternativeInstancesCounter = tmpI;
 		}
 
-		int j;
+		int32_t j;
 		for (j = 0; j < ((Unit *)(pObject))->tmpNumAlternativeInstances; j += 1)
 		{
 			sprintf( buffer, "Part%ld", alternativeInstancesCounter );
 			file.seekBlock( buffer );
-			ULONG fitID;
+			uint32_t fitID;
 			file.readIdULong( "ObjectNumber",fitID );
 			
-			ULONG group, index;
+			uint32_t group, index;
 			getBuildingFromID( fitID, group, index, true );
 
 			EditorObject* pAltObject = (EditorObject*)(addBuilding( position, group, index, 0, 0 ));
@@ -1818,7 +1818,7 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 	{
 		for ( UNIT_LIST::EIterator iter = units.Begin(); !iter.IsDone(); iter++ )
 		{
-			int alignment = (*iter)->getAlignment();
+			int32_t alignment = (*iter)->getAlignment();
 			if (8/*max players*/ > alignment)
 			{
 				unitsByPlayer[alignment].Append((*iter));
@@ -1832,13 +1832,13 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 
 	UNIT_LIST reorderedUnits;
 	UNIT_LIST reorderedUnitsByPlayer[8/*max players*/];
-	for (int playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
+	for (int32_t playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
 	{
 		/*O(n-squared) sort. Who cares.*/
-		int numUnitsOfThisPlayer = unitsByPlayer[playerNum].Count();
-		for (int i = 0; i < numUnitsOfThisPlayer; i+= 1)
+		int32_t numUnitsOfThisPlayer = unitsByPlayer[playerNum].Count();
+		for (int32_t i = 0; i < numUnitsOfThisPlayer; i+= 1)
 		{
-			int lowestSquadNum = INT_MAX;
+			int32_t lowestSquadNum = INT_MAX;
 			UNIT_LIST::EIterator iter;
 			for ( iter = unitsByPlayer[playerNum].Begin(); !iter.IsDone(); iter++ )
 			{
@@ -1877,10 +1877,10 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 	{
 		/*When saving, each player's units need to be grouped into "lances" of 12 units
 		for historical reasons.*/
-		for (int playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
+		for (int32_t playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
 		{
-			int lanceGroup = 0;
-			int mateIndex = 0;
+			int32_t lanceGroup = 0;
+			int32_t mateIndex = 0;
 			UNIT_LIST::EIterator iter;
 			for ( iter = reorderedUnitsByPlayer[playerNum].Begin(); !iter.IsDone(); iter++ )
 			{
@@ -1908,7 +1908,7 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 		if (EditorData::instance->IsSinglePlayer())
 		{
 			bool enemyUnitFound = false;
-			for (int playerNum = 1/*first non-user player*/; 8/*max players*/ > playerNum; playerNum += 1)
+			for (int32_t playerNum = 1/*first non-user player*/; 8/*max players*/ > playerNum; playerNum += 1)
 			{
 				if (0/*player1's (user's) team*/ != EditorData::instance->PlayersRef().PlayerRef(playerNum).DefaultTeam())
 				{
@@ -1931,7 +1931,7 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 		}
 		else
 		{
-			for (int playerNum = 0; EditorData::instance->MaxPlayers() > playerNum; playerNum += 1)
+			for (int32_t playerNum = 0; EditorData::instance->MaxPlayers() > playerNum; playerNum += 1)
 			{
 				if (1 > reorderedUnitsByPlayer[playerNum].Count())
 				{
@@ -1955,8 +1955,8 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 	//file.writeIdBoolean( "AlliedTeam", alignmentCount[NONE] ? true : false );
 
 	char buffer[256];
-	int counter = 1; // for some unknown reason we index from 1
-	int alternativeInstancesCounter = reorderedUnits.Count() + 1;
+	int32_t counter = 1; // for some unknown reason we index from 1
+	int32_t alternativeInstancesCounter = reorderedUnits.Count() + 1;
 
 	UNIT_LIST::EIterator iter;
 	for ( iter = reorderedUnits.Begin(); !iter.IsDone(); counter++, iter++ )
@@ -1986,13 +1986,13 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 		file.writeIdULong( "AlternativeStartIndex", alternativeInstancesCounter + 1 );
 
 		int32_t IndicesOfAlternatives[15/*max alternatives*/] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-		int numAlternatives = (*iter)->pAlternativeInstances->Count();
+		int32_t numAlternatives = (*iter)->pAlternativeInstances->Count();
 		if (15/*max alternatives*/ < numAlternatives)
 		{
 			gosASSERT(false);
 			numAlternatives = 15/*max alternatives*/;
 		}
-		int j;
+		int32_t j;
 		for (j = 0; j <numAlternatives ; j++)
 		{
 			IndicesOfAlternatives[j] = (alternativeInstancesCounter + 1) + j;
@@ -2001,7 +2001,7 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 
 
 		alternativeInstancesCounter += 1;
-		int i;
+		int32_t i;
 		for (i = 0; i < (*iter)->pAlternativeInstances->Count(); i++)
 		{
 			sprintf( buffer, "Warrior%ld", alternativeInstancesCounter );
@@ -2021,15 +2021,15 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 	{
 		/*When saving, each player's units need to be grouped into "lances" of 12 units
 		for historical reasons.*/
-		int reorderedUnitIndex = 1; /*1-based indexing by convention*/
-		for (int playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
+		int32_t reorderedUnitIndex = 1; /*1-based indexing by convention*/
+		for (int32_t playerNum = 0; 8/*max players*/ > playerNum; playerNum += 1)
 		{
-			int reorderedUnitByPlayerIndex = 0;
-			int lanceGroup = 0;
+			int32_t reorderedUnitByPlayerIndex = 0;
+			int32_t lanceGroup = 0;
 			for ( lanceGroup = 0; lanceGroup * (12/*just twelve*/) < reorderedUnitsByPlayer[playerNum].Count(); lanceGroup += 1 )
 			{
 				int32_t mates[12/*just twelve*/];
-				int mateIndex = 0;
+				int32_t mateIndex = 0;
 				for (mateIndex = 0; 12/*just twelve*/ > mateIndex; mateIndex += 1)
 				{
 					if (reorderedUnitByPlayerIndex < reorderedUnitsByPlayer[playerNum].Count())
@@ -2099,9 +2099,9 @@ bool EditorObjectMgr::loadForests( FitIniFile& file )
 	return true;
 }
 
-int EditorObjectMgr::getNextAvailableForestID()
+int32_t EditorObjectMgr::getNextAvailableForestID()
 {
-	int max = -1;
+	int32_t max = -1;
 
 	for ( FOREST_LIST::EIterator iter = forests.Begin(); !iter.IsDone(); iter++)
 	{
@@ -2111,13 +2111,13 @@ int EditorObjectMgr::getNextAvailableForestID()
 		}
 	}
 
-	int ID = max + 1;
+	int32_t ID = max + 1;
 	return ID;
 }
 
 int32_t EditorObjectMgr::createForest( const Forest& forest )
 {
-	int ID = getNextAvailableForestID();
+	int32_t ID = getNextAvailableForestID();
 	Forest* pForest = new Forest( ID );
 	CString oldForestName = pForest->getFileName();
 	*pForest = forest;
@@ -2228,7 +2228,7 @@ void EditorObjectMgr::doForest( const Forest& forest )
 	int32_t probabilities[FOREST_TYPES];
 
 	int32_t probabilityTotal = 0;
-	for ( int i= 0; i < FOREST_TYPES; i++ )
+	for ( int32_t i= 0; i < FOREST_TYPES; i++ )
 	{
 		probabilityTotal += forest.percentages[i];
 	}
@@ -2247,18 +2247,18 @@ void EditorObjectMgr::doForest( const Forest& forest )
 	float r2 = forest.radius; // temporary... calc real radius at some point
 	r2 *= r2; // square it
 
-	for ( int j = 0; j < land->realVerticesMapSide; j++ )
+	for ( int32_t j = 0; j < land->realVerticesMapSide; j++ )
 	{
-		for ( int i = 0; i < land->realVerticesMapSide; i++ )
+		for ( int32_t i = 0; i < land->realVerticesMapSide; i++ )
 		{
 			if ( land->isVertexSelected( j, i ) )
 			{
 				int32_t cellI = i * 3;
 				int32_t cellJ = j * 3;
 
-				for ( int l = -1; l < 2; l++ )
+				for ( int32_t l = -1; l < 2; l++ )
 				{
-					for ( int m = -1; m < 2; m++ )
+					for ( int32_t m = -1; m < 2; m++ )
 					{
 						Stuff::Vector3D pos;
 
@@ -2289,19 +2289,19 @@ void EditorObjectMgr::doForest( const Forest& forest )
 
 						float remainder = density - (float)lDensity;
 
-						int32_t count = (int)density + (RandomNumber( 100 ) < remainder * 100 ? 1 : 0);
+						int32_t count = (int32_t)density + (RandomNumber( 100 ) < remainder * 100 ? 1 : 0);
 
 						// OK, now we have the density randomly (if possible)
 						// populate the tile with these...
 						// might want to break down by cell
 						
-						for ( int t = 0; t < count; t++ )
+						for ( int32_t t = 0; t < count; t++ )
 						{
 							// oh god, now we need to pick a tree
 							int32_t random = RandomNumber( 100 );
-							int group = -1;
-							int index = -1;
-							for ( int k = 0; k < FOREST_TYPES; k++ )
+							int32_t group = -1;
+							int32_t index = -1;
+							for ( int32_t k = 0; k < FOREST_TYPES; k++ )
 							{
 								if ( random < probabilities[k] )
 								{
@@ -2321,7 +2321,7 @@ void EditorObjectMgr::doForest( const Forest& forest )
 							treePos.x += (float)RandomNumber( Terrain::worldUnitsPerCell ) - Terrain::worldUnitsPerCell/2;
 							treePos.y += (float)RandomNumber( Terrain::worldUnitsPerCell ) - Terrain::worldUnitsPerCell/2;
 
-							int rotation = RandomNumber( 32 );
+							int32_t rotation = RandomNumber( 32 );
 
 							float scale = RandomNumber( 100 * (forest.maxHeight - forest.minHeight) );
 							scale = forest.minHeight + (scale)/100.f;
@@ -2385,12 +2385,12 @@ int32_t EditorObjectMgr::getForests( Forest** pForests, int32_t& count )
 	return count;
 }
 
-void EditorObjectMgr::getRandomTreeFromGroup( int treeGroup, int& group, int& index )
+void EditorObjectMgr::getRandomTreeFromGroup( int32_t treeGroup, int32_t& group, int32_t& index )
 {
 	group = TREE_GROUP;
 	index  = 0;
 
-	int treeCount = 0;
+	int32_t treeCount = 0;
 	// figure out how many trees are in the group
 	Group* pGroup = &groups[TREE_GROUP];
 	if ( pGroup )
@@ -2402,10 +2402,10 @@ void EditorObjectMgr::getRandomTreeFromGroup( int treeGroup, int& group, int& in
 					treeCount++;
 			}
 
-		int whichOne = RandomNumber( treeCount );
+		int32_t whichOne = RandomNumber( treeCount );
 		treeCount = 0;
 
-		int counter = 0;
+		int32_t counter = 0;
 		for( buildIter = groups[group].buildings.Begin();
 			!buildIter.IsDone(); buildIter++, counter++ )
 			{
@@ -2427,7 +2427,7 @@ void EditorObjectMgr::getRandomTreeFromGroup( int treeGroup, int& group, int& in
 
 bool EditorObjectMgr::saveDropZones( FitIniFile& file )
 {
-	int counter = 0;
+	int32_t counter = 0;
 	char Header[256];
 
 	for ( DROP_LIST::EIterator iter = dropZones.Begin(); !iter.IsDone(); iter++, counter++ )
@@ -2440,7 +2440,7 @@ bool EditorObjectMgr::saveDropZones( FitIniFile& file )
 	// going to do nav markers here
 	// need to sort this list first.  ick.
 	EditorObject** pObjects = (EditorObject**)_alloca( sizeof( EditorObject* )  * buildings.Count() );
-	int i = 0;
+	int32_t i = 0;
 	for ( BUILDING_LIST::EIterator bIter = buildings.Begin(); !bIter.IsDone(); bIter++ )
 	{
 		pObjects[i++] = *bIter;
@@ -2451,7 +2451,7 @@ bool EditorObjectMgr::saveDropZones( FitIniFile& file )
 	for ( i = 1; i < count; ++i )
 	{
 		EditorObject* cur = pObjects[i];
-		for ( int j = 0; j < i; ++j )
+		for ( int32_t j = 0; j < i; ++j )
 		{
 			if ( (getFitID(cur->getID()) < getFitID(pObjects[j]->getID())) && j != i )
 			{
@@ -2478,7 +2478,7 @@ bool EditorObjectMgr::saveDropZones( FitIniFile& file )
 
 bool EditorObjectMgr::loadDropZones( FitIniFile& file )
 {
-	int counter = 0;
+	int32_t counter = 0;
 	char Header[256];
 
 	while( true )
@@ -2510,7 +2510,7 @@ bool EditorObjectMgr::loadDropZones( FitIniFile& file )
 	
 }
 
-int EditorObjectMgr::getType( ULONG group, ULONG indexWithinGroup )
+int32_t EditorObjectMgr::getType( uint32_t group, uint32_t indexWithinGroup )
 {
 	Group* pGroup = &groups[group];
 
@@ -2575,8 +2575,8 @@ EditorObject* EditorObjectMgr::getObjectAtCell( int32_t realCellJ, int32_t realC
 			{
 				int64_t FootPrint = getImpassability( (*iter)->id );
 				
-				int i = realCellI - ((*iter)->cellColumn - 4);
-				int j = realCellJ - ((*iter)->cellRow - 4);
+				int32_t i = realCellI - ((*iter)->cellColumn - 4);
+				int32_t j = realCellJ - ((*iter)->cellRow - 4);
 				if ( (FootPrint >> ( j * 8 + i )) & 0x00000001 || (i == 4 && j == 4))
 					return (*iter);
 					
@@ -2592,8 +2592,8 @@ EditorObject* EditorObjectMgr::getObjectAtCell( int32_t realCellJ, int32_t realC
 			{
 				int64_t FootPrint = getImpassability( (*uIter)->id );
 				
-				int i = realCellI - ((*uIter)->cellColumn - 4);
-				int j = realCellJ - ((*uIter)->cellRow - 4);
+				int32_t i = realCellI - ((*uIter)->cellColumn - 4);
+				int32_t j = realCellJ - ((*uIter)->cellRow - 4);
 				if ( (FootPrint >> ( j * 8 + i )) & 0x00000001 || (i == 4 && j == 4))
 					return (*uIter);
 					
@@ -2676,20 +2676,20 @@ void EditorObjectMgr::deleteLink( BuildingLink* pLink )
 	}
 }
 
-PCSTR	EditorObjectMgr::getObjectName( int ID ) const
+PCSTR	EditorObjectMgr::getObjectName( int32_t ID ) const
 {
 	return groups[getGroup(ID)].buildings[getIndexInGroup(ID)].name;
 }
 
-PCSTR EditorObjectMgr::getGroupName( int ID ) const
+PCSTR EditorObjectMgr::getGroupName( int32_t ID ) const
 {
 	return groups[ID].name;
 }
 
-void EditorObjectMgr::getUnitGroupNames( PCSTR* names, int* ids, int& numberOfEm ) const
+void EditorObjectMgr::getUnitGroupNames( PCSTR* names, pint32_t ids, int32_t& numberOfEm ) const
 {
-	int counter = 0;
-	int index = 0;
+	int32_t counter = 0;
+	int32_t index = 0;
 	
 	for ( GROUP_LIST::EConstIterator iter = groups.Begin(); !iter.IsDone(); index++, iter++ )
 	{
@@ -2708,9 +2708,9 @@ void EditorObjectMgr::getUnitGroupNames( PCSTR* names, int* ids, int& numberOfEm
 	numberOfEm = counter;
 }
 
-int EditorObjectMgr::getUnitGroupCount( ) const
+int32_t EditorObjectMgr::getUnitGroupCount( ) const
 {
-	int counter = 0;
+	int32_t counter = 0;
 	
 	for ( GROUP_LIST::EConstIterator iter = groups.Begin(); !iter.IsDone(); iter++ )
 	{
@@ -2734,14 +2734,14 @@ void EditorObjectMgr::getSelectedUnits( UNIT_LIST& selUnits )
 	}
 }
 
-int			EditorObjectMgr::getNumberOfVariants( int group, int indexInGroup ) const
+int32_t			EditorObjectMgr::getNumberOfVariants( int32_t group, int32_t indexInGroup ) const
 {
 		Building bldg = groups[group].buildings[indexInGroup];
 
 		if ( !bldg.varNames  )
 			return 0;
 
-		for ( int i = 0; i < 16; ++i )
+		for ( int32_t i = 0; i < 16; ++i )
 		{
 			if ( !bldg.varNames[i] )
 				break;
@@ -2750,11 +2750,11 @@ int			EditorObjectMgr::getNumberOfVariants( int group, int indexInGroup ) const
 		return i + 1;			
 }
 
-void		EditorObjectMgr::getVariantNames( int group, int indexInGroup, PCSTR* names, int& numberOfNames ) const
+void		EditorObjectMgr::getVariantNames( int32_t group, int32_t indexInGroup, PCSTR* names, int32_t& numberOfNames ) const
 {
 	Building bldg = groups[group].buildings[indexInGroup];
 
-		for ( int i = 0; i < 16 && i < numberOfNames; ++i )
+		for ( int32_t i = 0; i < 16 && i < numberOfNames; ++i )
 		{
 			if ( !bldg.varNames[i] )
 				break;
@@ -2767,7 +2767,7 @@ void		EditorObjectMgr::getVariantNames( int group, int indexInGroup, PCSTR* name
 }
 
 
-void EditorObjectMgr::registerSquadNum(ULONG squadNum)
+void EditorObjectMgr::registerSquadNum(uint32_t squadNum)
 {
 	if (squadNum >= nextAvailableSquadNum)
 	{

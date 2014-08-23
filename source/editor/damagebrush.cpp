@@ -37,7 +37,7 @@ Action* DamageBrush::endPaint()
 	return pRetAction;
 }
 
-bool DamageBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY  )
+bool DamageBrush::paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  )
 {
 	EditorObject* pObject = const_cast<EditorObject*>(EditorObjectMgr::instance()->getObjectAtPosition( worldPos ));
 
@@ -50,7 +50,7 @@ bool DamageBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY  )
 	return true;
 }
 
-bool DamageBrush::canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags )
+bool DamageBrush::canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags )
 {
 	const EditorObject* pObject = EditorObjectMgr::instance()->getObjectAtPosition( worldPos );
 

@@ -46,18 +46,18 @@ Action* FlattenBrush::endPaint()
 }
 
 //-------------------------------------------------------------------------------------------------
-bool FlattenBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
+bool FlattenBrush::paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY )
 {
-	int closestX = floor( (worldPos.x - land->mapTopLeft3d.x)/land->worldUnitsPerVertex + .5 );
-	int closestY = floor( (land->mapTopLeft3d.y - worldPos.y)/land->worldUnitsPerVertex + .5 );
+	int32_t closestX = floor( (worldPos.x - land->mapTopLeft3d.x)/land->worldUnitsPerVertex + .5 );
+	int32_t closestY = floor( (land->mapTopLeft3d.y - worldPos.y)/land->worldUnitsPerVertex + .5 );
 
 	float height = 0.f;
 
 	float viable = 0.f;
 
-	for ( int i = closestX - 1; i < closestX + 2; ++i )
+	for ( int32_t i = closestX - 1; i < closestX + 2; ++i )
 	{
-		for ( int j = closestY - 1; j < closestY + 2; ++j )
+		for ( int32_t j = closestY - 1; j < closestY + 2; ++j )
 		{
 			if ( j < land->realVerticesMapSide && j > -1 
 				&& i < land->realVerticesMapSide && i > -1 )
@@ -93,9 +93,9 @@ float FlattenBrush::getAverageHeightOfSelection( )
 	float height = 0.f;
 	float count = 0.0f;
 
-	for ( int j = 0; j < land->realVerticesMapSide; ++j )
+	for ( int32_t j = 0; j < land->realVerticesMapSide; ++j )
 	{
-		for ( int i = 0; i < land->realVerticesMapSide; ++i )
+		for ( int32_t i = 0; i < land->realVerticesMapSide; ++i )
 		{
 			if ( land->isVertexSelected( j, i ) )
 			{
@@ -116,9 +116,9 @@ Action* FlattenBrush::applyHeightToSelection( float height )
 {
 	beginPaint();
 
-	for ( int  j = 0; j < land->realVerticesMapSide; ++j )
+	for ( int32_t  j = 0; j < land->realVerticesMapSide; ++j )
 	{
-		for ( int i = 0; i < land->realVerticesMapSide; ++i )
+		for ( int32_t i = 0; i < land->realVerticesMapSide; ++i )
 		{
 			if ( land->isVertexSelected( j, i ) )
 			{
@@ -132,12 +132,12 @@ Action* FlattenBrush::applyHeightToSelection( float height )
 }
 
 //-------------------------------------------------------------------------------------------------
-void FlattenBrush::flattenVertex( int row, int col, float val )
+void FlattenBrush::flattenVertex( int32_t row, int32_t col, float val )
 {
 #if 1 /*flattening without "area effect"*/
 	{
-		int i = col;
-		int j = row;
+		int32_t i = col;
+		int32_t j = row;
 		if ( i > -1 && i < land->realVerticesMapSide 
 			&& j > -1 && j < land->realVerticesMapSide )
 		{
@@ -146,9 +146,9 @@ void FlattenBrush::flattenVertex( int row, int col, float val )
 		}
 	}
 #else /*flattening without "area effect"*/
-	for ( int i = col - 1; i < col + 2; ++i )
+	for ( int32_t i = col - 1; i < col + 2; ++i )
 	{
-		for ( int j = row - 1; j < row + 2; ++j )
+		for ( int32_t j = row - 1; j < row + 2; ++j )
 		{
 			if ( i > -1 && i < land->realVerticesMapSide 
 				&& j > -1 && j < land->realVerticesMapSide )

@@ -122,8 +122,8 @@ void DlgFileOpen::OnSelchangeFileopenFilelist()
 	CListBox* m_pList = (CListBox *)GetDlgItem(IDC_FILEOPEN_FILELIST);
 	gosASSERT( m_pList );
 
-	int nSelectionIndex = m_pList->GetCurSel();
-	int nStringLength = m_pList->GetTextLen(nSelectionIndex);
+	int32_t nSelectionIndex = m_pList->GetCurSel();
+	int32_t nStringLength = m_pList->GetTextLen(nSelectionIndex);
 	if (0 < nStringLength)
 	{
 		PSTR pszSelectionString = new char[nStringLength + 1];

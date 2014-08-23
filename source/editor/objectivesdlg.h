@@ -24,7 +24,7 @@ public:
 
 	CObjectives m_ModifiedObjectives;
 
-	int nSelectionIndex;
+	int32_t nSelectionIndex;
 
 // Dialog Data
 	//{{AFX_DATA(ObjectivesDlg)
@@ -32,7 +32,7 @@ public:
 	CButton	m_EditButton;
 	CButton	m_AddButton;
 	CListBox	m_List;
-	int		m_TeamEdit;
+	int32_t		m_TeamEdit;
 	//}}AFX_DATA
 
 

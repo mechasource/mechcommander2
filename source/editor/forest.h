@@ -22,7 +22,7 @@ class Forest
 
 public:
 
-	Forest( int newID );
+	Forest( int32_t newID );
 	Forest( const Forest& src );
 
 	Forest& operator=( const Forest& src );

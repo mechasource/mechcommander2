@@ -94,7 +94,7 @@ BOOL ChooseBuildingDlg::OnCommand(WPARAM wParam, LPARAM lParam) // called by chi
 	assert( m_pOKButton );
 
 	HWND hWndCtrl = (HWND)lParam;
-	int nCode = HIWORD(wParam);
+	int32_t nCode = HIWORD(wParam);
 
 	if (hWndCtrl == m_pComboBox->m_hWnd)
 	{
@@ -127,11 +127,11 @@ void ChooseBuildingDlg::OnUsePointer()
 		EditorInterface::instance()->ObjectSelectOnlyMode(false);
 
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjects = EditorObjectMgr::instance()->getSelectedObjectList();
-		int num_buildings_selected = 0;
-		int validObjectIndex = -1;
+		int32_t num_buildings_selected = 0;
+		int32_t validObjectIndex = -1;
 		EditorObjectMgr::EDITOR_OBJECT_LIST::EConstIterator it = selectedObjects.Begin();
 		while (!it.IsDone()) {
-			int index = 0;
+			int32_t index = 0;
 			EditorObjectMgr::BUILDING_LIST::EConstIterator it2 = m_buildingList.Begin();
 			while (!it2.IsDone()) {
 				if ((*it) == (*it2)) {
@@ -163,7 +163,7 @@ void ChooseBuildingDlg::OnCancel()
 
 void ChooseBuildingDlg::OnOK()
 {
-	int nSelectionIndex = m_pComboBox->GetCurSel();
+	int32_t nSelectionIndex = m_pComboBox->GetCurSel();
 	assert(0 <= nSelectionIndex);
 	//(*m_pModifiedBuildingPtr) = m_buildingList[nSelectionIndex];
 	(*m_pModifiedBuildingPtr) = *(m_buildingList.Iterator(nSelectionIndex));

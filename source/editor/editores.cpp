@@ -7,7 +7,7 @@
 #include <windows.h>
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
-                       ULONG  ul_reason_for_call, 
+                       uint32_t  ul_reason_for_call, 
                        LPVOID lpReserved
 					 )
 {

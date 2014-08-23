@@ -44,7 +44,7 @@ Action* LinkBrush::endPaint()
 	return NULL;
 }
 
-bool LinkBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
+bool LinkBrush::paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY )
 {
 	if ( !bLink )
 		return unPaint( worldPos, screenX, screenY );
@@ -123,7 +123,7 @@ bool LinkBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
 }
 
 
-bool LinkBrush::canPaint( Stuff::Vector3D& pos, int x, int y, int flags ) 
+bool LinkBrush::canPaint( Stuff::Vector3D& pos, int32_t x, int32_t y, int32_t flags ) 
 { 
 	if ( !bLink )
 		return canUnPaint( pos, x, y, flags );
@@ -148,7 +148,7 @@ bool LinkBrush::canPaint( Stuff::Vector3D& pos, int x, int y, int flags )
 	return false;
 }
 
-bool LinkBrush::canUnPaint( Stuff::Vector3D& pos, int x, int y, int flags )
+bool LinkBrush::canUnPaint( Stuff::Vector3D& pos, int32_t x, int32_t y, int32_t flags )
 { 
 
 	const EditorObject* pBuilding = EditorObjectMgr::instance()->getObjectAtPosition( pos );
@@ -167,7 +167,7 @@ bool LinkBrush::canUnPaint( Stuff::Vector3D& pos, int x, int y, int flags )
 	 
 } 
 
-int LinkBrush::LinkAction::AddToListOnce( const LinkBrush::LinkInfo& Info )
+int32_t LinkBrush::LinkAction::AddToListOnce( const LinkBrush::LinkInfo& Info )
 {
 	for( EList< LinkInfo, const LinkInfo& >::EIterator iter = changedLinks.Begin();
 	!iter.IsDone(); iter++ )
@@ -223,7 +223,7 @@ bool LinkBrush::LinkAction::undo( )
 			EditorObjectMgr::instance()->addLink( new BuildingLink((*iter).m_LinkCopy) );
 
 			// make sure each of the buildings in the link has the right alignment
-			int LinkCount = (*iter).m_LinkCopy.GetLinkCount();
+			int32_t LinkCount = (*iter).m_LinkCopy.GetLinkCount();
 			Stuff::Vector3D* pPoints = new Stuff::Vector3D[LinkCount];
 			(*iter).m_LinkCopy.GetChildrenPositions( pPoints, LinkCount );
 
@@ -233,9 +233,9 @@ bool LinkBrush::LinkAction::undo( )
 			if ( !pBuilding )
 				return false;
 
-			int align = pBuilding->getAlignment();
+			int32_t align = pBuilding->getAlignment();
 
-			for ( int i = 0; i < LinkCount; ++i )
+			for ( int32_t i = 0; i < LinkCount; ++i )
 			{
 				const EditorObject* pObject = EditorObjectMgr::instance()->getObjectAtLocation( pPoints[i].x, pPoints[i].y );
 				if ( pObject )
@@ -278,7 +278,7 @@ bool LinkBrush::LinkAction::undo( )
 
 }
 
-bool LinkBrush::unPaint( Stuff::Vector3D& pos, int XPos, int yPos )
+bool LinkBrush::unPaint( Stuff::Vector3D& pos, int32_t XPos, int32_t yPos )
 {
  
 	const EditorObject* pBuilding = EditorObjectMgr::instance()->getObjectAtPosition( pos );
@@ -329,7 +329,7 @@ m_LinkCopy( *pOriginal )
 	type = Type;
 }
 
-void LinkBrush::render( int screenX, int screenY )
+void LinkBrush::render( int32_t screenX, int32_t screenY )
 {
 
 	if ( parent )

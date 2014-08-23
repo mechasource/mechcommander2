@@ -63,7 +63,7 @@ BOOL PlayerSettingsDlg::OnInitDialog()
 
 	m_defaultTeamComboBox.SetCurSel(m_oldDefaultTeam);
 	if (0 < m_numTeams) {
-		int i;
+		int32_t i;
 		for (i = m_defaultTeamComboBox.GetCount() - 1; i >= m_numTeams; i--) {
 			m_defaultTeamComboBox.DeleteString(i);
 		}

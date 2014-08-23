@@ -38,7 +38,7 @@ class MainMenu;
 class Menu;
 
 // global resource handle
-extern ULONG gameResourceHandle;
+extern uint32_t gameResourceHandle;
 extern bool DebuggerActive;
 
 // ARM
@@ -88,12 +88,12 @@ public:
 
 	void terminate();
 
-	void ChangeCursor( int ID );
+	void ChangeCursor( int32_t ID );
 
-	int MissionSettings();
+	int32_t MissionSettings();
 
-	int Team( int team );
-	int Player( int player );
+	int32_t Team( int32_t team );
+	int32_t Player( int32_t player );
 	/* When in "ObjectSelectOnlyMode", the interface is put in selection mode and all
 	features are disabled except those pertaining to selection of objects. This mode is
 	engaged from the objectives dialog. */
@@ -102,13 +102,13 @@ public:
 	CObjectivesEditState objectivesEditState;	/* persistent storage for the objective(s) dialog */
 	void SelectionMode() { Select(); }
 	
-	int RefractalizeTerrain( int32_t threshold );
+	int32_t RefractalizeTerrain( int32_t threshold );
 
-	virtual void handleLeftButtonDown( int PosX, int PosY ); // mouse button down
-	virtual void handleLeftButtonDbl( int PosX, int PosY ){} // mouse button dbl click
-	virtual void handleLeftButtonUp( int PosX, int PosY ); // pop ups etc need this
-	virtual void handleKeyDown( int Key );
-	virtual void handleMouseMove( int PosX, int PosY );
+	virtual void handleLeftButtonDown( int32_t PosX, int32_t PosY ); // mouse button down
+	virtual void handleLeftButtonDbl( int32_t PosX, int32_t PosY ){} // mouse button dbl click
+	virtual void handleLeftButtonUp( int32_t PosX, int32_t PosY ); // pop ups etc need this
+	virtual void handleKeyDown( int32_t Key );
+	virtual void handleMouseMove( int32_t PosX, int32_t PosY );
 
 	void update (void);
 
@@ -132,11 +132,11 @@ public:
 
 	afx_msg void UpdateButton( CCmdUI* button );
 
-	int Quit();
-	int Save();
-	int SaveAs();
-	int QuickSave();
-	int PromptAndSaveIfNecessary();
+	int32_t Quit();
+	int32_t Save();
+	int32_t SaveAs();
+	int32_t QuickSave();
+	int32_t PromptAndSaveIfNecessary();
 
 	ActionUndoMgr				undoMgr;
 
@@ -144,25 +144,25 @@ public:
 	public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	protected:
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
 	protected:
 		//{{AFX_MSG(EditorInterface)
-		afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
-	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	afx_msg void OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+		afx_msg int32_t OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnLButtonDown(uint32_t nFlags, CPoint point);
+	afx_msg void OnLButtonUp(uint32_t nFlags, CPoint point);
+	afx_msg void OnMouseMove(uint32_t nFlags, CPoint point);
+	afx_msg BOOL OnSetCursor(CWnd* pWnd, uint32_t nHitTest, uint32_t message);
+	afx_msg void OnKeyUp(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags);
+	afx_msg void OnRButtonDown(uint32_t nFlags, CPoint point);
+	afx_msg void OnRButtonUp(uint32_t nFlags, CPoint point);
+	afx_msg BOOL OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt);
+	afx_msg void OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar);
+	afx_msg void OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar);
+	afx_msg void OnSysKeyDown(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags);
+	afx_msg void OnLButtonDblClk(uint32_t nFlags, CPoint point);
 	afx_msg void OnPaint();
 	afx_msg void OnViewRefreshtacmap();
 	afx_msg void OnUpdateMissionPlayerPlayer3(CCmdUI* pCmdUI);
@@ -182,7 +182,7 @@ public:
 	afx_msg void OnOtherEditforests();
 	afx_msg void OnViewOrthographiccamera();
 	afx_msg void OnViewShowpassabilitymap();
-	afx_msg void OnMButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMButtonUp(uint32_t nFlags, CPoint point);
 	//}}AFX_MSG
 		DECLARE_MESSAGE_MAP()
 
@@ -192,66 +192,66 @@ public:
 private:
 
 	// Message handlers
-	int Undo();
-	int Redo();	
-	int FileOpen();
-	int New();
-	int PaintDirtRoad();
-	int PaintRocks();
-	int PaintPaved();
-	int PaintTwoLaneDirtRoad();
-	int PaintDamagedRoad();
-	int PaintRunway();
-	int PaintBridge();
-	int PaintDamagedBridge();
-	int Erase();
-	int Select();
-	int Flatten();
-	int Fog();
-	int PurgeTransitions();
-	int ShowTransitions();
-	int Light();
-	int AssignElevation();
+	int32_t Undo();
+	int32_t Redo();	
+	int32_t FileOpen();
+	int32_t New();
+	int32_t PaintDirtRoad();
+	int32_t PaintRocks();
+	int32_t PaintPaved();
+	int32_t PaintTwoLaneDirtRoad();
+	int32_t PaintDamagedRoad();
+	int32_t PaintRunway();
+	int32_t PaintBridge();
+	int32_t PaintDamagedBridge();
+	int32_t Erase();
+	int32_t Select();
+	int32_t Flatten();
+	int32_t Fog();
+	int32_t PurgeTransitions();
+	int32_t ShowTransitions();
+	int32_t Light();
+	int32_t AssignElevation();
 
-	int paintBuildings( int message );
-	int PaintTerrain( int type );
-	int PaintOverlay( int type, int message );
+	int32_t paintBuildings( int32_t message );
+	int32_t PaintTerrain( int32_t type );
+	int32_t PaintOverlay( int32_t type, int32_t message );
 
-	int NewHeightMap();
-	int SaveCameras();
-	int SelectSlopes();
-	int SelectAltitude();
-	int SelectTerrainType();
-	int Waves();
-	int SaveHeightMap();
+	int32_t NewHeightMap();
+	int32_t SaveCameras();
+	int32_t SelectSlopes();
+	int32_t SelectAltitude();
+	int32_t SelectTerrainType();
+	int32_t Waves();
+	int32_t SaveHeightMap();
 
-	int DragSmooth();
-	int DragRough();
+	int32_t DragSmooth();
+	int32_t DragRough();
 
-	int SmoothRadius();
-	int Alignment( int specific );
-	int Damage( bool bDamage );
-	int Link( bool bLink );
-	int LayMines();
-	int SelectDetailTexture();
-	int SelectWaterTexture();
-	int SelectWaterDetailTexture();
-	int TextureTilingFactors();
-	int ReloadBaseTexture();
-	int SetBaseTexture();
-	int DropZone( bool bVTol );
-	int UnitSettings( );
+	int32_t SmoothRadius();
+	int32_t Alignment( int32_t specific );
+	int32_t Damage( bool bDamage );
+	int32_t Link( bool bLink );
+	int32_t LayMines();
+	int32_t SelectDetailTexture();
+	int32_t SelectWaterTexture();
+	int32_t SelectWaterDetailTexture();
+	int32_t TextureTilingFactors();
+	int32_t ReloadBaseTexture();
+	int32_t SetBaseTexture();
+	int32_t DropZone( bool bVTol );
+	int32_t UnitSettings( );
 	
-	int SetSky (int32_t skyId);
+	int32_t SetSky (int32_t skyId);
 	
-	int CampaignEditor();
+	int32_t CampaignEditor();
 
 	// helpers
 	void KillCurBrush();
 
 	void addBuildingsToNewMenu();
 
-	void rotateSelectedObjects( int direction );
+	void rotateSelectedObjects( int32_t direction );
 
 	//-------------------------------------------
 	// Data to control scroll, rotation and zoom
@@ -274,27 +274,27 @@ private:
 	bool						prevSelecting;
 	bool						prevPainting;
 	bool						prevDragging;
-	int							oldCursor;
+	int32_t							oldCursor;
 	bool						painting;
 	bool						selecting;
 	bool						dragging;
 	bool						highlighted;
 
-	int							currentBrushID;
-	int							currentBrushMenuID;
+	int32_t							currentBrushID;
+	int32_t							currentBrushMenuID;
 
 	MainMenu					*m_pMainMenu;
 
-	int							smoothRadius;
+	int32_t							smoothRadius;
 	bool						bSmooth;
 
 	static EditorInterface*		s_instance;
 	Stuff::Vector3D				lastClickPos;
 
 	HCURSOR						hCursor;
-	int							curCursorID;
-	int							lastX;
-	int							lastY;
+	int32_t							curCursorID;
+	int32_t							lastX;
+	int32_t							lastY;
 	int32_t						lastKey;
 	bool 						bObjectSelectOnlyMode;
 	CMenu**						menus;
@@ -303,11 +303,11 @@ private:
 	HACCEL						m_hAccelTable;
 
 	bool						rightDrag;
-	ULONG				lastRightClickTime;
+	uint32_t				lastRightClickTime;
 
 	HBITMAP m_hSplashBitMap;
 	HCURSOR m_hBusyCursor;
-	int m_AppIsBusy;
+	int32_t m_AppIsBusy;
 	bool m_bInRunGameOSLogicCall;
 	bool bThisIsInitialized;
 };

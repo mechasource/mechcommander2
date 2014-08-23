@@ -37,7 +37,7 @@ public:
 	//{{AFX_VIRTUAL(EditorTacMap)
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
 protected:

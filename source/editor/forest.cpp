@@ -11,13 +11,13 @@ forest.cpp			: Implementation of the forest component.
 #include "resource.h"
 #include "editorobjectmgr.h"
 
-extern ULONG gameResourceHandle;
+extern uint32_t gameResourceHandle;
 
-Forest::Forest( int newID )
+Forest::Forest( int32_t newID )
 { 
 	centerX = centerY = 0;
 	radius = 1.0f;
-	for ( int i = 0; i < FOREST_TYPES; i++ )
+	for ( int32_t i = 0; i < FOREST_TYPES; i++ )
 	{
 		percentages[i] = 0;
 	}
@@ -58,7 +58,7 @@ Forest::Forest( const Forest& src )
 
 
 	radius = src.radius;
-	for ( int i = 0; i < FOREST_TYPES; i++ )
+	for ( int32_t i = 0; i < FOREST_TYPES; i++ )
 	{
 		percentages[i] = src.percentages[i];
 	}
@@ -83,7 +83,7 @@ Forest& Forest::operator=( const Forest& src )
 
 
 		radius = src.radius;
-		for ( int i = 0; i < FOREST_TYPES; i++ )
+		for ( int32_t i = 0; i < FOREST_TYPES; i++ )
 		{
 			percentages[i] = src.percentages[i];
 		}
@@ -118,7 +118,7 @@ void Forest::init()
 void Forest::init( FitIniFile& file )
 {
 	char headerName[256];
-	for ( int i = 0; i < FOREST_TYPES; i++ )
+	for ( int32_t i = 0; i < FOREST_TYPES; i++ )
 	{
 		sprintf( headerName, "TreeType%ld", i );
 		file.readIdFloat( headerName, percentages[i] );	
@@ -168,7 +168,7 @@ void Forest::save( FitIniFile& file )
 {
 
 	char headerName[256];
-	for ( int i = 0; i < FOREST_TYPES; i++ )
+	for ( int32_t i = 0; i < FOREST_TYPES; i++ )
 	{
 		sprintf( headerName, "TreeType%ld", i );
 		file.writeIdFloat( headerName, percentages[i] );	

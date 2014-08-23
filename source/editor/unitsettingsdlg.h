@@ -29,9 +29,9 @@ public:
 	CComboBox	m_Pilot;
 	CComboBox	m_Mech;
 	CComboBox	m_Group;
-	int		m_Alignment;
+	int32_t		m_Alignment;
 	CString	m_SquadEdit;
-	int		m_SelfRepairBehavior;
+	int32_t		m_SelfRepairBehavior;
 	//}}AFX_DATA
 
 
@@ -55,13 +55,13 @@ protected:
 	afx_msg void OnBaseedit();
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
 	afx_msg void OnSelchangeMech();
 	virtual void OnCancel();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-	afx_msg void OnAlign1(UINT which);
+	afx_msg void OnAlign1(uint32_t which);
 
 	void applyChanges();
 	ModifyBuildingAction *pAction;
@@ -75,7 +75,7 @@ protected:
 
 	void updatePossibiltyControls();
 	Unit *pFirstPossibility;
-	int getPossibilityIndex();
+	int32_t getPossibilityIndex();
 	void updateMemberVariables();
 	ActionUndoMgr *pUndoMgr;
 };

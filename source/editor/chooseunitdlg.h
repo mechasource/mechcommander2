@@ -19,7 +19,7 @@ class ChooseUnitDlg: public CDialog
 public:
 	typedef Unit *unit_ptr_type;
 
-	ChooseUnitDlg( unit_ptr_type &unitPtr, int alignmentToExclude = -1 );
+	ChooseUnitDlg( unit_ptr_type &unitPtr, int32_t alignmentToExclude = -1 );
 
 	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
 	void OnUsePointer();
@@ -37,7 +37,7 @@ private:
 	inline ChooseUnitDlg();
 	ChooseUnitDlg& operator=( const ChooseUnitDlg& lgUnitPtr );
 
-	int m_alignmentToExclude;
+	int32_t m_alignmentToExclude;
 	unit_ptr_type *m_pModifiedUnitPtr;
 	unit_ptr_type *m_pUnitPtr;
 	CComboBox *m_pComboBox;

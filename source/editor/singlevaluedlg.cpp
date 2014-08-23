@@ -11,9 +11,9 @@ HeightDlg.cpp			: Implementation of the AssignHeight component.  This thing lets
 #include <mclib.h>
 #include "utilities.h"
 
-extern ULONG gameResourceHandle;		//Default handle must be used for mc2res.dll due to shared game/editor code
+extern uint32_t gameResourceHandle;		//Default handle must be used for mc2res.dll due to shared game/editor code
 
-SingleValueDlg::SingleValueDlg( int captionID, int staticTextID, int newVal)
+SingleValueDlg::SingleValueDlg( int32_t captionID, int32_t staticTextID, int32_t newVal)
 : CDialog( IDD_VALUE )
 {
 	cLoadString( captionID, caption, 256, gameResourceHandle );
@@ -45,7 +45,7 @@ void SingleValueDlg::OnOK()
 	CDialog::OnOK();
 }
 
-/*void SingleValueDlg::OnCommand(Window *wnd,int nCommand)
+/*void SingleValueDlg::OnCommand(Window *wnd,int32_t nCommand)
 {
 
 	if (nCommand == BC_CLICKED)

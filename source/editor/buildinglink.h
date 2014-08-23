@@ -24,13 +24,13 @@ public:
 
 	bool	HasChild( const EditorObject* ) const;
 	bool	HasParent( const EditorObject* ) const;
-	int		GetLinkCount() const;
+	int32_t		GetLinkCount() const;
 	bool	RemoveObject( const EditorObject* );
 	const	Stuff::Vector3D& GetParentPosition() const;
 	void	SetParentPosition( const Stuff::Vector3D& pos );
-	int		GetChildrenPositions( Stuff::Vector3D*, int MaxNumberOfPoints ) const;
+	int32_t		GetChildrenPositions( Stuff::Vector3D*, int32_t MaxNumberOfPoints ) const;
 	bool	AddChild( const EditorObject* pObject );
-	void	SetParentAlignment( int alignment );
+	void	SetParentAlignment( int32_t alignment );
 	void	FixHeights();
 
 	static	bool TypeCanBeParent( const EditorObject* ); // type gotten from building mgr

@@ -54,9 +54,9 @@ BOOL SelectTerrainTypeDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	m_terrainTypeList.ResetContent();
-	int numTerrains = 0;
+	int32_t numTerrains = 0;
 	numTerrains = land->terrainTextures->getNumTypes();
-	int i;
+	int32_t i;
 	for ( i = 0; i < numTerrains; i++ )
 	{
 		if ( land->terrainTextures->getTextureNameID(i) ) // if we start to repeat, quit
@@ -67,9 +67,9 @@ BOOL SelectTerrainTypeDlg::OnInitDialog()
 
 			CString newStr(buffer);
 
-			int count = m_terrainTypeList.GetCount();
+			int32_t count = m_terrainTypeList.GetCount();
 			bool bPlaced = 0;
-			for ( int j = 0; j < count; ++j )
+			for ( int32_t j = 0; j < count; ++j )
 			{
 				CString tmp;
 				m_terrainTypeList.GetText(j, tmp);
@@ -85,7 +85,7 @@ BOOL SelectTerrainTypeDlg::OnInitDialog()
 
 			if ( !bPlaced )
 			{
-				int j = m_terrainTypeList.GetCount();
+				int32_t j = m_terrainTypeList.GetCount();
 				m_terrainTypeList.InsertString(j, newStr);
 				m_terrainTypeList.SetItemData(j, ID_TERRAINS_BLUEWATER + i);
 			}
@@ -93,7 +93,7 @@ BOOL SelectTerrainTypeDlg::OnInitDialog()
 	}
 
 	if (ID_TERRAINS_BLUEWATER <= SelectedTerrainType()) {
-		int k;
+		int32_t k;
 		for (k = 0; k < m_terrainTypeList.GetCount(); k++) {
 			if (SelectedTerrainType() == m_terrainTypeList.GetItemData(k)) {
 				m_terrainTypeList.SetCurSel(k);
@@ -110,9 +110,9 @@ BOOL SelectTerrainTypeDlg::OnInitDialog()
 
 void SelectTerrainTypeDlg::OnOK() 
 {
-	int curSelIndex = m_terrainTypeList.GetCurSel();
+	int32_t curSelIndex = m_terrainTypeList.GetCurSel();
 	if (LB_ERR != curSelIndex) {
-		int terrainTypeID = m_terrainTypeList.GetItemData(curSelIndex);
+		int32_t terrainTypeID = m_terrainTypeList.GetItemData(curSelIndex);
 		SelectedTerrainType(terrainTypeID);
 	} else {
 		SelectedTerrainType(-1);

@@ -16,7 +16,7 @@ class TerrainBrush: public Brush
 {
 	public:
 
-		inline TerrainBrush( int Type )
+		inline TerrainBrush( int32_t Type )
 		{
 			if ( Type == -1 )
 				Type = s_lastType;
@@ -46,7 +46,7 @@ class TerrainBrush: public Brush
 			pAction  = NULL;
 			return pRetAction;
 		}
-		virtual bool paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
+		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY )
 		{
 			int32_t tileC;
 			int32_t tileR;
@@ -65,7 +65,7 @@ class TerrainBrush: public Brush
 
 			return false;
 		}
-		virtual bool canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags ) { return true; } 
+		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ) { return true; } 
 
 		virtual Action* applyToSelection();
 
@@ -77,9 +77,9 @@ class TerrainBrush: public Brush
 		TerrainBrush( const TerrainBrush& TerrainBrush );
 		TerrainBrush& operator=( const TerrainBrush& TerrainBrush );
 
-		int terrainType;
+		int32_t terrainType;
 
-		static int s_lastType;
+		static int32_t s_lastType;
 
 		ActionPaintTile* pAction;
 };

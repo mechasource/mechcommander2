@@ -180,7 +180,7 @@ void CGroupDialog::OnGrAddButton()
 	CMissionData missionData;
 	CMissionDialog missionDialog;
 	setMissionDialogValues(missionDialog, missionData);
-	int ret = missionDialog.DoModal();
+	int32_t ret = missionDialog.DoModal();
 	if (IDOK == ret) {
 		setMissionDataValues(missionData, missionDialog);
 		m_MissionList.Append(missionData);
@@ -193,18 +193,18 @@ void CGroupDialog::OnGrAddButton()
 
 void CGroupDialog::OnGrRemoveButton() 
 {
-	ULONG selectedItemIndex = m_MissionListControl.GetCurSel();
+	uint32_t selectedItemIndex = m_MissionListControl.GetCurSel();
 	if ((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex)) {
 		// should put up confirmation box here
 		CMissionList::EIterator it = m_MissionList.Begin();
-		ULONG index;
+		uint32_t index;
 		for (index = 0; index < selectedItemIndex; index++) {
 			it++;
 			assert(!it.IsDone());
 		}
 		m_MissionList.Delete(it);
 		UpdateData(TRUE);
-		int selectedItemIndex = m_MissionListControl.GetCurSel();
+		int32_t selectedItemIndex = m_MissionListControl.GetCurSel();
 		setMissionListBoxValues(m_MissionListControl, m_MissionList);
 		if ((LB_ERR != selectedItemIndex) && (0 < m_MissionListControl.GetCount())) {
 			if (m_MissionListControl.GetCount() <= (int32_t)selectedItemIndex) {
@@ -218,7 +218,7 @@ void CGroupDialog::OnGrRemoveButton()
 
 void CGroupDialog::OnGrEditButton() 
 {
-	ULONG selectedItemIndex = m_MissionListControl.GetCurSel();
+	uint32_t selectedItemIndex = m_MissionListControl.GetCurSel();
 	if ((0 <= selectedItemIndex) && (m_MissionList.Count() > selectedItemIndex)) {
 		CMissionData &missionDataRef = m_MissionList[selectedItemIndex];
 		CMissionDialog missionDialog;
@@ -234,7 +234,7 @@ void CGroupDialog::OnGrEditButton()
 
 void CGroupDialog::OnOK() 
 {
-	int tmpInt = m_TuneComboControl.GetCurSel();
+	int32_t tmpInt = m_TuneComboControl.GetCurSel();
 	if ((CB_ERR != tmpInt) && (0 <= tmpInt)) {
 		m_TuneNumber = m_TuneComboControl.GetCurSel();
 	}

@@ -18,13 +18,13 @@ private:
 	bool m_bTimerIsReset;
 public:
 	PointerSelectObjectDlg();
-	PointerSelectObjectDlg(int x, int y);
+	PointerSelectObjectDlg(int32_t x, int32_t y);
 	virtual ~PointerSelectObjectDlg();
 
 	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
-	virtual BOOL OnWndMsg( UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult );
+	virtual BOOL OnWndMsg( uint32_t message, WPARAM wParam, LPARAM lParam, LRESULT* pResult );
 	BOOL OnInitDialog();
-	UINT OnNcHitTest( CPoint point );
+	uint32_t OnNcHitTest( CPoint point );
 
 private:
 	typedef CDialog inherited;

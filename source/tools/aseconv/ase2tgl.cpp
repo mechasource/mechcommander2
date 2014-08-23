@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 // ..\..\mclib\$(ConfigurationName)\mclib.lib
@@ -13,13 +13,13 @@
 
 #include "stdafx.h"
 
-#include "version.h" 
+#include "version.h"
 
 #include "../../ARM/Microsoft.Xna.Arm.h"
 using namespace Microsoft::Xna::Arm;
 
 HINSTANCE hInst = NULL;
-ULONG gosResourceHandle = 0;
+uint32_t gosResourceHandle = 0;
 
 Stuff::MemoryStream *effectStream = NULL;
 
@@ -28,13 +28,13 @@ extern char CDInstallPath[];
 bool hasGuardBand = false;
 bool justResaveAllMaps = false;
 Camera *eye = NULL;
-enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor = CPU_PENTIUM;		//Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
+enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI }Processor = CPU_PENTIUM; //Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
 
 float MaxMinUV = 8.0f;
 
-ULONG BaseVertexColor = 0x00000000;
+uint32_t BaseVertexColor = 0x00000000;
 
-static LPCTSTR lpszAppName = "MechCmdr2";
+static PCSTR lpszAppName = "MechCmdr2";
 
 UserHeapPtr systemHeap = NULL;
 UserHeapPtr guiHeap = NULL;
@@ -47,13 +47,13 @@ static bool createARM = false;
 
 IProviderEngine * armProvider = NULL;
 
-ULONG tglHeapSize = 16386000;
+uint32_t tglHeapSize = 16386000;
 
-FastFile 	**fastFiles = NULL;
-int32_t 		numFastFiles = 0;
-int32_t		maxFastFiles = 0;
+FastFile **fastFiles = NULL;
+int32_t numFastFiles = 0;
+int32_t maxFastFiles = 0;
 
-HWND		appWnd = NULL;
+HWND appWnd = NULL;
 
 extern PSTR MechAnimationNames[MaxGestures];
 
@@ -61,9 +61,9 @@ int32_t ObjectTextureSize = 128;
 bool reloadBounds = false;
 MidLevelRenderer::MLRClipper * theClipper = NULL;
 HGOSFONT3D gosFontHandle = 0;
-extern HGOSFONT3D	FontHandle;
+extern HGOSFONT3D FontHandle;
 FloatHelpPtr globalFloatHelp = NULL;
-ULONG currentFloatHelp = 0;
+uint32_t currentFloatHelp = 0;
 
 char fileName[1024];
 char listName[1024];
@@ -72,16 +72,16 @@ char listName[1024];
 // Same command line Parser as MechCommander
 void ParseCommandLine(PSTR command_line)
 {
-	int i;
-	int n_args = 0;
-	int index = 0;
+	int32_t i;
+	int32_t n_args = 0;
+	int32_t index = 0;
 	PSTR argv[30];
-	
+
 	char tempCommandLine[4096];
 	memset(tempCommandLine,0,4096);
 	strncpy(tempCommandLine,command_line,4095);
 
-	while (tempCommandLine[index] != '\0')  // until we null out
+	while (tempCommandLine[index] != '\0') // until we null out
 	{
 		argv[n_args] = tempCommandLine + index;
 		n_args++;
@@ -201,20 +201,20 @@ int32_t convertASE2TGL (PSTR file)
 		strcpy(findString,tglPath);
 		strcat(findString, file);
 	}
-   
-	int count =0;
-	WIN32_FIND_DATA	findResult;
+
+	int32_t count =0;
+	WIN32_FIND_DATA findResult;
 	HANDLE searchHandle = FindFirstFile(findString,&findResult);
 	do
 	{
 		if ((findResult.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0)
 		{
-			
+
 			//-----------------------------------
 			// Search for TGLData
 			FullPathFileName iniName;
 			iniName.init(tglPath,findResult.cFileName,"");
-			
+
 			FitIniFile iniFile;
 			int32_t result = iniFile.open(iniName);
 			if (result != NO_ERROR)
@@ -225,10 +225,10 @@ int32_t convertASE2TGL (PSTR file)
 				ProviderType_Primary);
 			iniAsset->AddProperty("Type", "Object Definition");
 			iniAsset->AddProperty("Version", "1.0");
-			
-			
+
+
 			TG_TypeMultiShape *shape = NULL;
-			
+
 			result = iniFile.seekBlock("TGLData");
 			if (result == NO_ERROR)
 			{
@@ -243,7 +243,7 @@ int32_t convertASE2TGL (PSTR file)
 					char fileCheck[1024];
 					sprintf(fileCheck,"FileName%d",i);
 					result = iniFile.readIdString(fileCheck,fileName,1023);
-					
+
 					while (result == NO_ERROR)
 					{
 						if (shape)
@@ -251,7 +251,7 @@ int32_t convertASE2TGL (PSTR file)
 							delete shape;
 							shape = NULL;
 						}
-						
+
 						char aseName[1024];
 
 						sprintf(aseName,"%s%s%s",tglPath,fileName,".ase");
@@ -259,9 +259,9 @@ int32_t convertASE2TGL (PSTR file)
 						// Load Base Shape or LOD 0 Shape.
 						shape = new TG_TypeMultiShape;
 						gosASSERT(shape != NULL);
-						
+
 						printf( "Processing Main Shape %s\n", aseName );
-						
+
 						char lodID[4];
 						sprintf(lodID, "%02d", count);
 
@@ -269,26 +269,26 @@ int32_t convertASE2TGL (PSTR file)
 						armLink->AddProperty("LOD", lodID);
 
 						shape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
-						
+
 						i++;
 						sprintf(fileCheck,"FileName%d",i);
 						result = iniFile.readIdString(fileCheck,fileName,1023);
- 					}
+					}
 				}
-					
+
 				char aseName[1024];
 				sprintf(aseName,"%s%s%s",tglPath,fileName,".ase");
 				//---------------------------------------------------------------------------------------------
 				// Load Base Shape or LOD 0 Shape.
 				shape = new TG_TypeMultiShape;
 				gosASSERT(shape != NULL);
-				
+
 				printf( "Processing Main Shape %s\n", aseName );
-				
+
 				IProviderRelationshipPtr armLink = iniAsset->AddRelationship("Main Shape", aseName);
 
 				shape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
-				
+
 				//-------------------------------------------
 				// Gotta make the special shadow shape now!!
 				// MUST use its own shape or animation below
@@ -302,11 +302,11 @@ int32_t convertASE2TGL (PSTR file)
 					// Load Base Shape or LOD 0 Shape.
 					TG_TypeMultiShapePtr shadowShape = new TG_TypeMultiShape;
 					gosASSERT(shadowShape != NULL);
-					
+
 					printf( "Processing Shadow Shape %s\n", aseName );
-					
+
 					IProviderRelationshipPtr armLink = iniAsset->AddRelationship("Shadow Shape", aseName);
-					
+
 					shadowShape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
 
 					delete shadowShape;
@@ -317,8 +317,8 @@ int32_t convertASE2TGL (PSTR file)
 				char animCheck[1024];
 				sprintf(animCheck,"Animation:%d",i);
 				result = iniFile.seekBlock(animCheck);
-				
-				while (result == NO_ERROR)		//This thing has animations.  Process them!
+
+				while (result == NO_ERROR) //This thing has animations. Process them!
 				{
 					char fileName[1024];
 					result = iniFile.readIdString("AnimationName",fileName,1023);
@@ -326,15 +326,15 @@ int32_t convertASE2TGL (PSTR file)
 					{
 						FullPathFileName aseName;
 						aseName.init(tglPath,fileName,".ase");
-						
+
 						TG_AnimateShape *anim = new TG_AnimateShape;
 						gosASSERT(mechAnim != NULL);
-			
+
 						//-----------------------------------------------
 						// Skip this one if its already a binary file.
 						// Happens ALOT!
 						printf( "Processing Animation %s\n", aseName );
-						
+
 						IProviderRelationshipPtr armLink = iniAsset->AddRelationship("Animation", (PSTR)aseName);
 
 						anim->LoadTGMultiShapeAnimationFromASE(aseName,shape,true);
@@ -342,33 +342,33 @@ int32_t convertASE2TGL (PSTR file)
 						delete anim;
 						anim = NULL;
 					}
-					
+
 					i++;
 					sprintf(animCheck,"Animation:%d",i);
 					result = iniFile.seekBlock(animCheck);
 				}
-				
-				if (!i)		//No Animations, BUT they may mean we are a MECH!!!
+
+				if (!i) //No Animations, BUT they may mean we are a MECH!!!
 				{
 					if (iniFile.seekBlock("Gestures0") == NO_ERROR)
 					{
-						//We ARE a mech.  Load all of the animations for this mech and write 'em out.
+						//We ARE a mech. Load all of the animations for this mech and write 'em out.
 						for (int32_t i=0;i<MaxGestures;i++)
 						{
 							char name[MAX_PATH];
 							_splitpath(findResult.cFileName,NULL,NULL,name,NULL);
-							
+
 							char mechFileName[1024];
 							sprintf(mechFileName,"%s%s%s.ase",tglPath,name,MechAnimationNames[i]);
-							
+
 							TG_AnimateShape *anim = new TG_AnimateShape;
 							gosASSERT(anim != NULL);
-				
+
 							//-----------------------------------------------
 							// Skip this one if its already a binary file.
 							// Happens ALOT!
 							printf( "Processing Animation %s\n", mechFileName );
-							
+
 							IProviderRelationshipPtr armLink = iniAsset->AddRelationship("Animation", mechFileName);
 
 							anim->LoadTGMultiShapeAnimationFromASE(mechFileName,shape,true);
@@ -378,26 +378,26 @@ int32_t convertASE2TGL (PSTR file)
 						}
 					}
 				}
-				
-				if (!i)		//No Animations, BUT they may mean we are a MECH!!!
+
+				if (!i) //No Animations, BUT they may mean we are a MECH!!!
 				{
 					if (iniFile.seekBlock("Gestures0") == NO_ERROR)
 					{
-						//We ARE a mech.  Load all of the destroyed shapes for this mech and write 'em out.
+						//We ARE a mech. Load all of the destroyed shapes for this mech and write 'em out.
 						for (int32_t i=MaxGestures;i<MaxGestures+2;i++)
 						{
 							char name[MAX_PATH];
 							_splitpath(findResult.cFileName,NULL,NULL,name,NULL);
-							
+
 							char mechFileName[1024];
 							sprintf(mechFileName,"%s%s%s.ase",tglPath,name,MechAnimationNames[i]);
-							
+
 							//-----------------------------------------------
 							shape = new TG_TypeMultiShape;
 							gosASSERT(shape != NULL);
-						
+
 							printf( "Processing Animation %s\n", mechFileName );
-							
+
 							IProviderRelationshipPtr armLink = iniAsset->AddRelationship("Destroyed Shape", mechFileName);
 
 							shape->LoadTGMultiShapeFromASE(mechFileName, true, armProvider);
@@ -419,22 +419,22 @@ int32_t convertASE2TGL (PSTR file)
 							delete shape;
 							shape = NULL;
 						}
-						
+
 						char aseName[1024];
 						sprintf(aseName,"%s%s%s",tglPath,fileName,".ase");
-						
+
 						//---------------------------------------------------------------------------------------------
 						// Load Base Shape or LOD 0 Shape.
 						shape = new TG_TypeMultiShape;
 						gosASSERT(shape != NULL);
-						
+
 						printf( "Processing Damage Shape %s\n", aseName );
-						
+
 						IProviderRelationshipPtr armLink = iniAsset->AddRelationship("Damage Shape", aseName);
 
 						shape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
 					}
-					
+
 					//-------------------------------------------
 					// Gotta make the special shadow shape now!!
 					// MUST use its own shape or animation below
@@ -448,11 +448,11 @@ int32_t convertASE2TGL (PSTR file)
 						// Load Base Shape or LOD 0 Shape.
 						TG_TypeMultiShapePtr shadowShape = new TG_TypeMultiShape;
 						gosASSERT(shadowShape != NULL);
-						
+
 						printf( "Processing Damage Shadow Shape %s\n", aseName );
-						
+
 						IProviderRelationshipPtr armLink = iniAsset->AddRelationship("Damage Shadow Shape", aseName);
-						
+
 						shadowShape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
 
 						delete shadowShape;
@@ -463,7 +463,7 @@ int32_t convertASE2TGL (PSTR file)
 
 			delete shape;
 			shape = NULL;
-			
+
 			iniAsset->Close();
 		}
 
@@ -475,43 +475,43 @@ int32_t convertASE2TGL (PSTR file)
 }
 
 LRESULT CALLBACK WndProc (HWND hWnd,
-						  UINT message,
+						  uint32_t message,
 						  WPARAM wParam,
 						  LPARAM lParam)
 {
 	switch (message)
 	{
-		case WM_DESTROY:
-			PostQuitMessage(0);
+	case WM_DESTROY:
+		PostQuitMessage(0);
 		break;
 
-		default:
-			return (GameOSWinProc(hWnd,message,wParam,lParam));
+	default:
+		return (GameOSWinProc(hWnd,message,wParam,lParam));
 	}
 
 	return 0;
 }
 
 //-----------------------------
-int APIENTRY WinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPSTR     lpCmdLine,
-                     int       nCmdShow)
+int32_t APIENTRY WinMain(HINSTANCE hInstance,
+						 HINSTANCE hPrevInstance,
+						 LPSTR lpCmdLine,
+						 int32_t nCmdShow)
 {
-	WNDCLASS	wc;
+	WNDCLASS wc;
 
 	if (!hPrevInstance)
 	{
-		wc.style			= CS_HREDRAW | CS_VREDRAW;
-		wc.lpfnWndProc		= (WNDPROC)WndProc;
-		wc.cbClsExtra		= 0;
-		wc.cbWndExtra		= 0;
-		wc.hInstance		= hInstance;
-		wc.hIcon			= LoadIcon(hInstance,MAKEINTRESOURCE(IDI_ICON1));
-		wc.hCursor			= LoadCursor(NULL,IDC_ARROW);
-		wc.hbrBackground	= (HBRUSH)(COLOR_WINDOW+1);
-		wc.lpszMenuName		= MAKEINTRESOURCE(IDR_MENU1);
-		wc.lpszClassName	= lpszAppName;
+		wc.style = CS_HREDRAW | CS_VREDRAW;
+		wc.lpfnWndProc = (WNDPROC)WndProc;
+		wc.cbClsExtra = 0;
+		wc.cbWndExtra = 0;
+		wc.hInstance = hInstance;
+		wc.hIcon = LoadIcon(hInstance,MAKEINTRESOURCE(IDI_ICON1));
+		wc.hCursor = LoadCursor(NULL,IDC_ARROW);
+		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+		wc.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
+		wc.lpszClassName = lpszAppName;
 
 		if (RegisterClass( &wc ) == 0)
 			return false;
@@ -523,16 +523,16 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	sprintf(appTitle, "MechCommander 2 Data Editor %s",versionStamp);
 
 	appWnd = CreateWindow (
-						lpszAppName,
-						appTitle,
-						WS_OVERLAPPEDWINDOW,
-						CW_USEDEFAULT, CW_USEDEFAULT,
-						640, 480,
-						NULL,
-						NULL,
-						hInstance,
-						NULL
-						);
+		lpszAppName,
+		appTitle,
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT, CW_USEDEFAULT,
+		640, 480,
+		NULL,
+		NULL,
+		hInstance,
+		NULL
+		);
 
 	if (appWnd == NULL)
 		return false;
@@ -555,20 +555,20 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	FitIniFilePtr systemFile = new FitIniFile;
 
 #ifdef _DEBUG
-	int32_t systemOpenResult = 
+	int32_t systemOpenResult =
 #endif
 		systemFile->open("system.cfg");
-		   
+
 #ifdef _DEBUG
 	assert( systemOpenResult == NO_ERROR);
 #endif
 
 	{
 #ifdef _DEBUG
-		int32_t systemPathResult = 
+		int32_t systemPathResult =
 #endif
 			systemFile->seekBlock("systemPaths");
-			assert(systemPathResult == NO_ERROR);
+		assert(systemPathResult == NO_ERROR);
 		{
 			int32_t result = systemFile->readIdString("terrainPath",terrainPath,79);
 			assert(result == NO_ERROR);
@@ -636,9 +636,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	delete systemFile;
 	systemFile = NULL;
 
-//
-// Init GameOS with window created
-//
+	//
+	// Init GameOS with window created
+	//
 	//InitGameOS( hInstance, appWnd, lpCmdLine );
 
 	Platform = Platform_DLL;
@@ -647,17 +647,17 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	// Find the CDPath in the registry and save it off so I can
 	// look in CD Install Path for files.
 	//Changed for the shared source release, just set to current directory
-	//ULONG maxPathLength = 1023;
+	//uint32_t maxPathLength = 1023;
 	//gos_LoadDataFromRegistry("CDPath", CDInstallPath, &maxPathLength);
 	//if (!maxPathLength)
-	//	strcpy(CDInstallPath,"..\\");
+	// strcpy(CDInstallPath,"..\\");
 	strcpy(CDInstallPath,".\\");
 
 	//-------------------------------------------------------
 	// Check if we are running this from the command line
-	// with ASE2TGL as the command line parameter.  If so,
+	// with ASE2TGL as the command line parameter. If so,
 	// for each .INI file in data\tgl, find the corresponding
-	// .ASE file and convert to .TGL.  Then Exit!
+	// .ASE file and convert to .TGL. Then Exit!
 	silentMode = true;
 
 	memset( fileName, 0, sizeof(fileName) );
@@ -686,7 +686,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 			while (!file.eof())
 			{
 				char line[1024];
-				file.readLine((PUCHAR)line, 1024);
+				file.readLine((puint8_t)line, 1024);
 				if (line[0] != 0)
 					convertASE2TGL(line);
 			}
@@ -699,35 +699,35 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	// Set Date and write Binary data to registry under key
 	// GraphicsDataInit!!
 	SYSTEMTIME bombDate;
-	ULONG dataSize = sizeof(SYSTEMTIME);
+	uint32_t dataSize = sizeof(SYSTEMTIME);
 	gos_LoadDataFromRegistry("GraphicsDataInit", &bombDate, &dataSize);
 	if (dataSize == 0)
 	{
-		bombDate.wYear = 2001;
-		bombDate.wMonth = 3;
-		bombDate.wDayOfWeek = 4;
-		bombDate.wDay = 31;
-		bombDate.wHour = 0;
-		bombDate.wMinute = 0;
-		bombDate.wSecond = 0;
-		bombDate.wMilliseconds = 0;
-	
-		dataSize = sizeof(SYSTEMTIME);
-		gos_SaveDataToRegistry("GraphicsDataInit", &bombDate, dataSize);
+	bombDate.wYear = 2001;
+	bombDate.wMonth = 3;
+	bombDate.wDayOfWeek = 4;
+	bombDate.wDay = 31;
+	bombDate.wHour = 0;
+	bombDate.wMinute = 0;
+	bombDate.wSecond = 0;
+	bombDate.wMilliseconds = 0;
+
+	dataSize = sizeof(SYSTEMTIME);
+	gos_SaveDataToRegistry("GraphicsDataInit", &bombDate, dataSize);
 	}
 	*/
 
-//
-// Exit app
-//
+	//
+	// Exit app
+	//
 	CoUninitialize();
 
-	//ExitGameOS();	
+	//ExitGameOS();
 
 	return 0;
 }
 
-ULONG	Seed;
+uint32_t Seed;
 
 //
 //
@@ -747,15 +747,15 @@ void DoGameLogic()
 void GetGameOSEnvironment( PSTR CommandLine )
 {
 	CommandLine=CommandLine;
-	Environment.applicationName			= "MechCmdr2";
-	Environment.screenWidth				= 640;
-	Environment.screenHeight			= 480;
-	Environment.bitDepth				= 16;
+	Environment.applicationName = "MechCmdr2";
+	Environment.screenWidth = 640;
+	Environment.screenHeight = 480;
+	Environment.bitDepth = 16;
 
-	Environment.DoGameLogic				= DoGameLogic;
-	Environment.UpdateRenderers			= UpdateRenderers;
+	Environment.DoGameLogic = DoGameLogic;
+	Environment.UpdateRenderers = UpdateRenderers;
 
-	Environment.version					= versionStamp;
+	Environment.version = versionStamp;
 }
 
 

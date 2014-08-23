@@ -33,11 +33,11 @@ float MaxMinUV = 8.0f;
 
 Stuff::MemoryStream *effectStream = NULL;
 
-ULONG systemHeapSize = 8192000;
-ULONG guiHeapSize = 1023999;
-ULONG tglHeapSize = 65536000;
+uint32_t systemHeapSize = 8192000;
+uint32_t guiHeapSize = 1023999;
+uint32_t tglHeapSize = 65536000;
 
-ULONG BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
+uint32_t BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
 
 int32_t gammaLevel = 0;
 bool hasGuardBand = false;
@@ -52,11 +52,11 @@ extern char MissingTitleString[];
 
 extern char CDInstallPath[];
 
-ULONG gosResourceHandle = 0;
+uint32_t gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
 float gosFontScale = 1.0;
 FloatHelpPtr globalFloatHelp = NULL;
-ULONG currentFloatHelp = 0;
+uint32_t currentFloatHelp = 0;
 extern float CliffTerrainAngle;
 
 extern bool gNoDialogs;
@@ -118,7 +118,7 @@ void UpdateRenderers()
 #endif /*RUNNING_REMOTELY*/
 	hasGuardBand = true;
 
-	ULONG bColor = 0x0;
+	uint32_t bColor = 0x0;
 	if (eye)
 		bColor = eye->fogColor;
 
@@ -261,7 +261,7 @@ void InitializeGameEngine()
    	// Find the CDPath in the registry and save it off so I can
    	// look in CD Install Path for files.
 	//Changed for the shared source release, just set to current directory
-	//ULONG maxPathLength = 1023;
+	//uint32_t maxPathLength = 1023;
 	//gos_LoadDataFromRegistry("CDPath", CDInstallPath, &maxPathLength);
 	//if (!maxPathLength)
 	//	strcpy(CDInstallPath,"..\\");
@@ -317,7 +317,7 @@ void InitializeGameEngine()
 		STOP(("Could not find MC2.fx"));
 		
 	int32_t effectsSize = effectFile.fileSize();
-	PUCHAR effectsData = (PUCHAR)systemHeap->Malloc(effectsSize);
+	puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData,effectsSize);
 	effectFile.close();
 	
@@ -516,7 +516,7 @@ void InitializeGameEngine()
 	// Read in Prefs.cfg
 	FitIniFilePtr prefs = new FitIniFile;
 
-	Environment.Key_Exit= (ULONG)-1;
+	Environment.Key_Exit= (uint32_t)-1;
 
 
 #ifdef _DEBUG
@@ -873,9 +873,9 @@ void TerminateGameEngine()
 // Same command line Parser as MechCommander
 void ParseCommandLine(PSTR command_line)
 {
-	int i;
-	int n_args = 0;
-	int index = 0;
+	int32_t i;
+	int32_t n_args = 0;
+	int32_t index = 0;
 	PSTR argv[30];
 	
 	char tempCommandLine[4096];

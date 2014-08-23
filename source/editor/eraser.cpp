@@ -14,7 +14,7 @@ eraser.cpp			: Implementation of the eraser component.
 #endif
 
 //---------------------------------------------------------------------------
-inline bool isCementType (ULONG type)
+inline bool isCementType (uint32_t type)
 {
 	bool isCement = ((type == BASE_CEMENT_TYPE) ||
 					((type >= START_CEMENT_TYPE) && (type <= END_CEMENT_TYPE)));
@@ -48,7 +48,7 @@ Action* Eraser::endPaint()
 }
 
 #define DEFAULT_TERRAIN		2
-bool Eraser::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
+bool Eraser::paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY )
 {
 	EditorObject* pInfo = EditorObjectMgr::instance()->getObjectAtPosition( worldPos );
 	if ( pInfo )
@@ -90,7 +90,7 @@ bool Eraser::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
 		cellCol += tileCol * MAPCELL_DIM;
 		
 		Overlays type;
-		ULONG Offset;
+		uint32_t Offset;
 		land->getOverlay( tileRow, tileCol, type, Offset );
 
 		if ( type != INVALID_OVERLAY )
@@ -115,7 +115,7 @@ bool Eraser::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
 	return false;
 
 }
-bool Eraser::canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags )
+bool Eraser::canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags )
 {
 	if ( EditorObjectMgr::instance()->getObjectAtPosition( worldPos ) )
 		return true;
@@ -128,7 +128,7 @@ bool Eraser::canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int 
 	cellCol += tileCol * MAPCELL_DIM;
 	
 	Overlays type;
-	ULONG Offset;
+	uint32_t Offset;
 	land->getOverlay( tileRow, tileCol, type, Offset );
 
 	if ( type != INVALID_OVERLAY )
@@ -206,9 +206,9 @@ Action* Eraser::applyToSelection()
 	}
 	//EditorObjectMgr::instance()->deleteSelectedObjects();
 
-	for ( int i = 0; i < land->realVerticesMapSide; ++i )
+	for ( int32_t i = 0; i < land->realVerticesMapSide; ++i )
 	{
-		for ( int j = 0; j < land->realVerticesMapSide; ++j )
+		for ( int32_t j = 0; j < land->realVerticesMapSide; ++j )
 		{
 			if ( land->isVertexSelected( j, i ) )
 			{

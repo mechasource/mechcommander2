@@ -57,7 +57,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CUserTextEdit message handlers
 
-static BOOL CSLoadString(int resourceID, CString &targetStr) {
+static BOOL CSLoadString(int32_t resourceID, CString &targetStr) {
 	char szTmp[16384/*max string length*/];
 	cLoadString( resourceID, szTmp, 16384/*max string length*/ );
 	targetStr = szTmp;
@@ -73,7 +73,7 @@ void CUserTextEdit::UpdateTextDisplay() {
 	UpdateData(TRUE);
 	if (m_UseResourceString) {
 		m_ResourceStringIDEdit.Format("%d", m_ResourceStringID);
-		int ret = CSLoadString(m_ResourceStringID, m_Edit);
+		int32_t ret = CSLoadString(m_ResourceStringID, m_Edit);
 		if (0 == ret) {
 			m_Edit = _TEXT("");
 		}
@@ -88,7 +88,7 @@ void CUserTextEdit::OnUserTextEditEnterTextButton()
 {
 	TextMessageDlg textMessageDlg;
 	textMessageDlg.m_TextMessage = m_UnlocalizedText;
-	int ret = textMessageDlg.DoModal();
+	int32_t ret = textMessageDlg.DoModal();
 	if (IDOK == ret) {
 		m_UnlocalizedText = textMessageDlg.m_TextMessage;
 		/*remove trailing "new line"s and "carriage return"s because the game doesn't like them*/
@@ -104,7 +104,7 @@ void CUserTextEdit::OnUserTextEditSelectResourceStringButton()
 {
 	ResourceStringSelectionDlg resourceStringSelectionDlg;
 	resourceStringSelectionDlg.m_SelectedResourceStringID = m_ResourceStringID;
-	int ret = resourceStringSelectionDlg.DoModal();
+	int32_t ret = resourceStringSelectionDlg.DoModal();
 	if (IDOK == ret) {
 		m_ResourceStringID = resourceStringSelectionDlg.m_SelectedResourceStringID;
 		m_UseResourceString = true;

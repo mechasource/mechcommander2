@@ -25,7 +25,7 @@ public:
 	virtual void Init();
 	void DoDataExchange(CDataExchange* pDX);
 
-	//virtual	void OnCommand(Window *wnd,int nCommand);
+	//virtual	void OnCommand(Window *wnd,int32_t nCommand);
 	//virtual void OnOwnerDraw( ODSTRUCT* odStruct );
 
 	public:
@@ -52,7 +52,7 @@ public:
 protected:
 
 	//{{AFX_MSG(SunDlg)
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
 	afx_msg void OnAmbientButton();
 	afx_msg void OnLightButton();
 	virtual void OnOK();
@@ -60,7 +60,7 @@ protected:
 	afx_msg void OnRefractalizeTerrainButton();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-	afx_msg void OnChangeLightcolor(UINT id);
+	afx_msg void OnChangeLightcolor(uint32_t id);
 
 	virtual BOOL OnInitDialog();
 

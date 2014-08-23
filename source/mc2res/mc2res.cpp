@@ -3,8 +3,8 @@
 //===========================================================================//
 
 // Resources.cpp : Defines the entry point for the DLL application.
-//
 // This file is not used
+
 #include <windows.h>
 
 BOOL __stdcall DllMain(
@@ -14,4 +14,3 @@ BOOL __stdcall DllMain(
 {
 	return TRUE;
 }
-

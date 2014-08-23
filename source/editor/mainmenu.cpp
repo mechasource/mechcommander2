@@ -27,7 +27,7 @@ MainMenu::MainMenu(EditorInterface *pEditorInterface):Window(L"MainMenu",0,0,Env
 	assert(m_pEditorInterface);
 
 	/*
-	ULONG dwCheck = gos_NewTextureFromFile(gos_Texture_Alpha,"data/wlib/check.tga",gosHint_VideoMemory|gosHint_DisableMipmap);
+	uint32_t dwCheck = gos_NewTextureFromFile(gos_Texture_Alpha,"data/wlib/check.tga",gosHint_VideoMemory|gosHint_DisableMipmap);
 	CHECKMARK_APPEARANCE ca;
 	ca.dwTexture = dwCheck;
 	ca.fSize = 1.0;
@@ -40,7 +40,7 @@ MainMenu::MainMenu(EditorInterface *pEditorInterface):Window(L"MainMenu",0,0,Env
 }
 
 extern bool gos_RunMainLoop( void(*DoGameLogic)() );
-extern ULONG TerminateGame; // BUGBUG exported function handles this with return value
+extern uint32_t TerminateGame; // BUGBUG exported function handles this with return value
 
 void MainMenu::DoModal()
 {
@@ -51,7 +51,7 @@ void MainMenu::DoModal()
 	}
 }
 
-void MainMenu::OnCommand(Window *wnd, int nCommand)
+void MainMenu::OnCommand(Window *wnd, int32_t nCommand)
 {
 	if (MC_CLICKED == nCommand) {
 		/* Set focus to parent window (EditorInterface). This is not technically correct.

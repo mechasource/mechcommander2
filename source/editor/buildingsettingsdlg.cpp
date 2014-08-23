@@ -63,15 +63,15 @@ void BuildingSettingsDlg::OnSelchangeGroup()
 {
 		m_Mech.ResetContent();
 
-		int group = m_Group.GetCurSel();
+		int32_t group = m_Group.GetCurSel();
 		group = m_Group.GetItemData( group );
 
 		PCSTR MechNames[256];
-		int count = 256;
+		int32_t count = 256;
 			
 		EditorObjectMgr::instance()->getBuildingNamesInGroup( group, MechNames, count );
 
-		for ( int i = 0; i < count; ++i )
+		for ( int32_t i = 0; i < count; ++i )
 		{
 			m_Mech.AddString( MechNames[i] );
 		}
@@ -83,12 +83,12 @@ void BuildingSettingsDlg::OnSelchangeGroup()
 void BuildingSettingsDlg::applyChanges()
 {
 	// get the type info from the dlg box
-	int index = m_Group.GetCurSel( );
+	int32_t index = m_Group.GetCurSel( );
 	if ( index != -1 )
 	{
-		int group = m_Group.GetItemData( index );
+		int32_t group = m_Group.GetItemData( index );
 
-		int indexInGroup = m_Mech.GetCurSel( );
+		int32_t indexInGroup = m_Mech.GetCurSel( );
 
 		if ( indexInGroup != -1 )
 		{
@@ -111,7 +111,7 @@ void BuildingSettingsDlg::applyChanges()
 		}
 	}
 
-	ULONG base=0, color1=0, color2=0;
+	uint32_t base=0, color1=0, color2=0;
 	bool bBase = false;
 	bool bColor1 = false; 
 	bool bColor2 = false;
@@ -208,10 +208,10 @@ BOOL BuildingSettingsDlg::OnInitDialog()
 
 void BuildingSettingsDlg::OnSelchangeMech() 
 {
-	int group = m_Group.GetCurSel();
+	int32_t group = m_Group.GetCurSel();
 	group = m_Group.GetItemData( group );
 
-	/*int indexInGroup =*/ m_Mech.GetCurSel();
+	/*int32_t indexInGroup =*/ m_Mech.GetCurSel();
 }
 
 void BuildingSettingsDlg::updateMemberVariables()
@@ -256,7 +256,7 @@ void BuildingSettingsDlg::updateMemberVariables()
 
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
 
-	int groupCount = pMgr->getBuildingGroupCount();
+	int32_t groupCount = pMgr->getBuildingGroupCount();
 
 	PCSTR* pGroups = new PCSTR[groupCount];
 	
@@ -264,22 +264,22 @@ void BuildingSettingsDlg::updateMemberVariables()
 	
 	pMgr->getBuildingGroupNames(pGroups, groupCount);
 
-	int count = 0;
-	for ( int i = 0; i < groupCount; ++i )
+	int32_t count = 0;
+	for ( int32_t i = 0; i < groupCount; ++i )
 	{
 		if ((4/*mech group*/ == i) || (6/*vehicle group*/ == i))
 		{
 			continue;
 		}
 		m_Group.AddString( pGroups[i] );
-		m_Group.SetItemData( count, (ULONG)i );
+		m_Group.SetItemData( count, (uint32_t)i );
 		count += 1;
 	}
 
 	delete [] pGroups;
 
 	// make sure all the units we are editing are in the same group
-	int group = units.GetHead()->getGroup();	
+	int32_t group = units.GetHead()->getGroup();	
 	for ( iter = units.Begin(); !iter.IsDone(); iter++ )
 	{
 		if ( (*iter)->getGroup() != group )
@@ -293,23 +293,23 @@ void BuildingSettingsDlg::updateMemberVariables()
 	{
 		PCSTR pGroupName = pMgr->getGroupName( group );
 		
-		int index = m_Group.FindString( -1, pGroupName );
+		int32_t index = m_Group.FindString( -1, pGroupName );
 		m_Group.SetCurSel( index );
 
 		// OK, now fill in the index....
 		PCSTR MechNames[256];
-		int count = 256;
+		int32_t count = 256;
 
 		m_Mech.ResetContent();
 		pMgr->getBuildingNamesInGroup( group, MechNames, count );
 
-		for ( int i = 0; i < count; ++i )
+		for ( int32_t i = 0; i < count; ++i )
 		{
 			m_Mech.AddString( MechNames[i] );
 		}
 
 		// ok, now determine if all of the mechs are the same.
-		int indexInGroup = units.GetHead()->getIndexInGroup();
+		int32_t indexInGroup = units.GetHead()->getIndexInGroup();
 
 		for ( iter = units.Begin(); !iter.IsDone(); iter++ )
 		{

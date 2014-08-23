@@ -182,7 +182,7 @@ void ObjectivesDlg::OnObjectivesEditButton()
 	CObjective *pSelectedObjective = 0;
 	if (!EditorInterface::instance()->ObjectSelectOnlyMode()) {
 		nSelectionIndex = m_List.GetCurSel();
-		if ((0 <= nSelectionIndex) && (((int)(m_ModifiedObjectives.Count())) > nSelectionIndex)) {
+		if ((0 <= nSelectionIndex) && (((int32_t)(m_ModifiedObjectives.Count())) > nSelectionIndex)) {
 			pSelectedObjective = *(m_ModifiedObjectives.Iterator(nSelectionIndex));
 		} else {
 			return;

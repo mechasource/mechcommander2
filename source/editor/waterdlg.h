@@ -28,9 +28,9 @@ public:
 	float	elevation;
 	float	shallowElevation;
 	float	alphaElevation;
-	ULONG	alphaDeep;
-	ULONG	alphaMiddle;
-	ULONG	alphaShallow;
+	uint32_t	alphaDeep;
+	uint32_t	alphaMiddle;
+	uint32_t	alphaShallow;
 	//}}AFX_DATA
 
 

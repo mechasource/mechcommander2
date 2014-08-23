@@ -26,7 +26,7 @@ class TGAWnd : public CStatic
 public:
 	TGAWnd();
 	void SetTGAFileName( const CString& str );
-	void SetTGAFileData( puint8_t data, int size );
+	void SetTGAFileData( puint8_t data, int32_t size );
 
 	PSTR GetImageData( ) { return m_pImage; }
 

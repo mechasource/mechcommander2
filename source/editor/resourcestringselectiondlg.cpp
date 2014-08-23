@@ -52,7 +52,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // ResourceStringSelectionDlg message handlers
 
-static BOOL CSLoadString(int resourceID, CString &targetStr) {
+static BOOL CSLoadString(int32_t resourceID, CString &targetStr) {
 	char szTmp[16384/*max string length*/];
 	cLoadString( resourceID, szTmp, 16384/*max string length*/ );
 	targetStr = szTmp;
@@ -70,8 +70,8 @@ BOOL ResourceStringSelectionDlg::OnInitDialog()
 	
 	m_ResourceStringIDs.Clear();
 	m_Combo.ResetContent();
-	ULONG i;
-	for (i = m_BottomOfIDRange; i <= (ULONG)m_TopOfIDRange; i += 1) {
+	uint32_t i;
+	for (i = m_BottomOfIDRange; i <= (uint32_t)m_TopOfIDRange; i += 1) {
 		CString tmpStr;
 		//BOOL result = tmpStr.LoadString(i);
 		BOOL result = CSLoadString(i, tmpStr);
@@ -100,7 +100,7 @@ BOOL ResourceStringSelectionDlg::OnInitDialog()
 
 void ResourceStringSelectionDlg::OnOK() 
 {
-	ULONG selectionIndex = m_Combo.GetCurSel();
+	uint32_t selectionIndex = m_Combo.GetCurSel();
 	if (CB_ERR != selectionIndex) {
 		assert(m_ResourceStringIDs.Count() > selectionIndex);
 		m_SelectedResourceStringID = m_ResourceStringIDs[selectionIndex];

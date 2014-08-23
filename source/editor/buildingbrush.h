@@ -30,16 +30,16 @@ class BuildingBrush: public Brush
 {
 	public:
 
-		BuildingBrush( int group, int indexInGroup, int Alignment );
+		BuildingBrush( int32_t group, int32_t indexInGroup, int32_t Alignment );
 		virtual ~BuildingBrush();
 
 		virtual bool beginPaint();
 		virtual Action* endPaint();
-		virtual bool paint( Stuff::Vector3D& worldPos, int screenX, int screenY );
-		virtual bool canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags );
-		virtual void render( int ScreenMouseX, int ScreenMouseY);
-		virtual void update( int screenX, int screenY );
-		void rotateBrush( int direction );
+		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY );
+		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags );
+		virtual void render( int32_t ScreenMouseX, int32_t ScreenMouseY);
+		virtual void update( int32_t screenX, int32_t screenY );
+		void rotateBrush( int32_t direction );
 
 		
 		class BuildingAction : public Action
@@ -71,15 +71,15 @@ class BuildingBrush: public Brush
 		BuildingBrush& operator=( const BuildingBrush& buildingBrush );
 		BuildingBrush();
 
-		int group;
-		int indexInGroup;
+		int32_t group;
+		int32_t indexInGroup;
 		float curRotation;
 
 		BuildingAction*		pAction;
 
 		ObjectAppearance*	pCursor;
 
-		int					alignment;
+		int32_t					alignment;
 };
 
 

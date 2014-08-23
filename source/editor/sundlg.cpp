@@ -50,7 +50,7 @@ void SunDlg::DoDataExchange(CDataExchange* pDX)
 
 void SunDlg::Init()
 {
-	ULONG color = eye->dayAmbientBlue | (eye->dayAmbientGreen << 8 ) | ( eye->dayAmbientRed << 16 );
+	uint32_t color = eye->dayAmbientBlue | (eye->dayAmbientGreen << 8 ) | ( eye->dayAmbientRed << 16 );
 	displayInHex( color, m_AmbientEdit );
 
 	color = eye->dayLightBlue | (eye->dayLightGreen << 8 ) | ( eye->dayLightRed << 16 );
@@ -123,22 +123,22 @@ void SunDlg::OnOK()
 }
 
 
-HBRUSH SunDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH SunDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor) 
 {
-	int ID = pWnd->GetDlgCtrlID();
+	int32_t ID = pWnd->GetDlgCtrlID();
 	HBRUSH hbr = CDialog ::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	if ( ID == IDC_LIGHTCOLOR || ID == IDC_AMBIENT || ID == IDC_LIGHTCOLOR2 || ID == IDC_AMBIENT2 || ID == IDC_SUNSETCOLOR )
 	{
 	
-		int i = getHexValue( *(CEdit*)pWnd );
+		int32_t i = getHexValue( *(CEdit*)pWnd );
 
 				
 		if ( backgroundBrush.m_hObject )
 			backgroundBrush.DeleteObject();
 
 		// need to swap r's and blue's.
-		ULONG reverse = reverseRGB( i );
+		uint32_t reverse = reverseRGB( i );
 
 	
 		backgroundBrush.CreateSolidBrush( reverse );
@@ -197,13 +197,13 @@ void SunDlg::OnLightButton()
 	DoColorDlg( m_LightColor );
 }
 
-void SunDlg::OnChangeLightcolor(UINT ID) 
+void SunDlg::OnChangeLightcolor(uint32_t ID) 
 {
 	CString text;
 	GetDlgItem( ID )->GetWindowText( text );
 
 	bool bChanged = false;
-	int i = 0;
+	int32_t i = 0;
 	
 	if ( text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X' )) )
 		i = 2;

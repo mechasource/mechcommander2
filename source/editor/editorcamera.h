@@ -102,7 +102,7 @@ public:
 		
 		//-----------------------------------------------
 		// Set Ambient for this pass of rendering	
-		ULONG lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
+		uint32_t lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
 			
 		eye->setLightColor(1,lightRGB);
 		eye->setLightIntensity(1,1.0);

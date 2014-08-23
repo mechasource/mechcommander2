@@ -26,7 +26,7 @@ BuildingBrush.cpp	: Implementation of the BuildingBrush component.
 
 #include "resource.h"
 
-BuildingBrush::BuildingBrush( int Group, int IndexInGroup, int Alignment )
+BuildingBrush::BuildingBrush( int32_t Group, int32_t IndexInGroup, int32_t Alignment )
 {
 	group = Group;
 	indexInGroup = IndexInGroup;
@@ -53,7 +53,7 @@ BuildingBrush::~BuildingBrush()
 		delete pCursor;
 }
 
-bool BuildingBrush::canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags )
+bool BuildingBrush::canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags )
 {
 	if ( !EditorObjectMgr::instance()->canAddBuilding( worldPos, pCursor->rotation, group, indexInGroup ) )
 	{
@@ -74,7 +74,7 @@ bool BuildingBrush::beginPaint()
 	return true; // need to set up undo here
 }
 
-bool BuildingBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
+bool BuildingBrush::paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY )
 {
 	if ((AppearanceTypeList::appearanceHeap->totalCoreLeft() < 1000/*arbitrary*/)
 		|| (AppearanceTypeList::appearanceHeap->totalCoreLeft() < 0.01/*arbitrary*/ * AppearanceTypeList::appearanceHeap->size()))
@@ -186,7 +186,7 @@ void BuildingBrush::BuildingAction::addBuildingInfo(EditorObject& info)
 	objInfoPtrList.Append(pCopy);
 }
 
-void BuildingBrush::update( int ScreenMouseX, int ScreenMouseY )
+void BuildingBrush::update( int32_t ScreenMouseX, int32_t ScreenMouseY )
 {
 	if ( !pCursor )
 		return;
@@ -209,7 +209,7 @@ void BuildingBrush::update( int ScreenMouseX, int ScreenMouseY )
 	pCursor->setVisibility( true, true );
 }
 
-void BuildingBrush::render( int ScreenMouseX, int ScreenMouseY )
+void BuildingBrush::render( int32_t ScreenMouseX, int32_t ScreenMouseY )
 {
 	if ( !pCursor )
 		return;
@@ -235,10 +235,10 @@ void BuildingBrush::render( int ScreenMouseX, int ScreenMouseY )
 	pCursor->render();
 }
 
-void BuildingBrush::rotateBrush( int direction )
+void BuildingBrush::rotateBrush( int32_t direction )
 {
-	int ID = EditorObjectMgr::instance()->getID( group, indexInGroup );
-	int fitID = EditorObjectMgr::instance()->getFitID(ID);
+	int32_t ID = EditorObjectMgr::instance()->getID( group, indexInGroup );
+	int32_t fitID = EditorObjectMgr::instance()->getFitID(ID);
 	if ((EditorObjectMgr::WALL == EditorObjectMgr::instance()->getSpecialType(ID)) || (33/*repair bay*/ == fitID))
 	{
 		pCursor->rotation += direction * 90;

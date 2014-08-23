@@ -27,10 +27,10 @@ public:
 	enum { IDD = IDD_BUILDINGSETTINGS };
 	CComboBox	m_Mech;
 	CComboBox	m_Group;
-	int		m_Alignment;
+	int32_t		m_Alignment;
 	float	m_x;
 	float	m_y;
-	int		m_partID;
+	int32_t		m_partID;
 	CString	m_forestName;
 	//}}AFX_DATA
 

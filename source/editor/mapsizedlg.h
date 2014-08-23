@@ -26,7 +26,7 @@ class MapSizeDlg: public CDialog
 		virtual BOOL OnInitDialog(){ Init(); return true; }
 		void OnOK();
 
-		int mapSize;
+		int32_t mapSize;
 };
 
 

@@ -23,7 +23,7 @@ public:
 
 	CString m_UnlocalizedText;
 	bool m_UseResourceString;
-	int m_ResourceStringID;
+	int32_t m_ResourceStringID;
 
 // Dialog Data
 	//{{AFX_DATA(CUserTextEdit)

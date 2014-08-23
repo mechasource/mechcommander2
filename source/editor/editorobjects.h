@@ -40,21 +40,21 @@ public:
 	void				select( bool bSelect );
 	inline bool			isSelected() const { return appearInfo->appearance->selected ? true : false; }
 
-	void				setAlignment( int align );
-	inline int			getAlignment( )const{ return appearInfo->appearance->teamId; } 
+	void				setAlignment( int32_t align );
+	inline int32_t			getAlignment( )const{ return appearInfo->appearance->teamId; } 
 	
-	ULONG		getColor() const;
+	uint32_t		getColor() const;
 	int32_t				getID() const { return  id; }
 
 	void				getCells( int32_t& cellJ, int32_t& cellI ) const;
 	
-	virtual bool save( FitIniFile* file, int warriorNumber ){ return false; }
-	virtual bool load( FitIniFile* file, int warriorNumber ){ return false; }
-	virtual int			getType() const { return BLDG_TYPE; }
+	virtual bool save( FitIniFile* file, int32_t warriorNumber ){ return false; }
+	virtual bool load( FitIniFile* file, int32_t warriorNumber ){ return false; }
+	virtual int32_t			getType() const { return BLDG_TYPE; }
 
-	int					getSpecialType() const;
-	int					getGroup() const;
-	int					getIndexInGroup() const;
+	int32_t					getSpecialType() const;
+	int32_t					getGroup() const;
+	int32_t					getIndexInGroup() const;
 
 	void				setDamage( bool bDamage );
 	bool				getDamage() const;
@@ -63,18 +63,18 @@ public:
 
 	const Stuff::Vector3D&	getPosition() const { return appearance()->position; }
 	
-	void 				markTerrain (_ScenarioMapCellInfo* pInfo, int type, int counter)
+	void 				markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
 	{
 		appearInfo->appearance->markTerrain(pInfo,type, counter);
 	}
 
-	void setAppearance( int Group, int indexInGroup );
+	void setAppearance( int32_t Group, int32_t indexInGroup );
 
 	ObjectAppearance* appearance() { return appearInfo->appearance; }
 	const ObjectAppearance* appearance() const { return appearInfo->appearance; }
 
 	int32_t				getForestID() const { return forestId; }
-	void				setForestID( int newID ) { forestId = newID; }
+	void				setForestID( int32_t newID ) { forestId = newID; }
 
 	void				setScale( int32_t newScale ) { scale = newScale; }
 	int32_t				getScale( ) const { return scale; }
@@ -84,7 +84,7 @@ protected:
 	struct AppearanceInfo
 	{
 		ObjectAppearance*   appearance;
-		int					refCount; // so we only delete once
+		int32_t					refCount; // so we only delete once
 
 		PVOIDoperator new (size_t mySize)
 		{
@@ -142,8 +142,8 @@ public:
 	PCSTR 		getName() const { return info->name; }
 	void	setName( PCSTR );
 
-	void	save( FitIniFile* file, int bGoodGuy );
-	void	load( FitIniFile* file, int bGoodGuy );
+	void	save( FitIniFile* file, int32_t bGoodGuy );
+	void	load( FitIniFile* file, int32_t bGoodGuy );
 
 	PilotInfo* info;
 	/*note: The value of info should always be NULL or a pointer to static data. So the default
@@ -190,8 +190,8 @@ public:
 	Brain( const Brain&  );
 	Brain& operator=( const Brain& );
 	
-	bool save( FitIniFile* file, int warriorNumber, bool usePBrain = false );
-	bool load( FitIniFile* file, int warriorNumber );
+	bool save( FitIniFile* file, int32_t warriorNumber, bool usePBrain = false );
+	bool load( FitIniFile* file, int32_t warriorNumber );
 }; 
 
 //*************************************************************************************************
@@ -202,54 +202,54 @@ class Unit : public EditorObject
 {
 public:
 
-	Unit( int alignment );
+	Unit( int32_t alignment );
 	Unit( const Unit& src );
 	Unit& operator=( const Unit& src );
 	virtual ~Unit();
 	virtual void CastAndCopy(const EditorObject &master);
 	virtual EditorObject *Clone() { return(new Unit(*this)); }
 
-	void setLanceInfo( int newLance, int index ){ lance = newLance; lanceIndex = index; }
-	void getLanceInfo( int &newLance, int &index ){ newLance = lance; index = lanceIndex; }
-	virtual int			getType() const { return GV_TYPE; }	
+	void setLanceInfo( int32_t newLance, int32_t index ){ lance = newLance; lanceIndex = index; }
+	void getLanceInfo( int32_t &newLance, int32_t &index ){ newLance = lance; index = lanceIndex; }
+	virtual int32_t			getType() const { return GV_TYPE; }	
 
-	ULONG getSquad() const { return squad; }
-	void setSquad(ULONG newSquad);
+	uint32_t getSquad() const { return squad; }
+	void setSquad(uint32_t newSquad);
 
-	virtual bool save( FitIniFile* file, int warriorNumber );
-	virtual bool load( FitIniFile* file, int warriorNumber );
+	virtual bool save( FitIniFile* file, int32_t warriorNumber );
+	virtual bool load( FitIniFile* file, int32_t warriorNumber );
 
-	void getColors( ULONG& base, ULONG& color1, ULONG& color2 ) const;
-	void setColors( ULONG base, ULONG color1, ULONG color2 );
+	void getColors( uint32_t& base, uint32_t& color1, uint32_t& color2 ) const;
+	void setColors( uint32_t base, uint32_t color1, uint32_t color2 );
 
 	bool getSelfRepairBehaviorEnabled() const { return selfRepairBehaviorEnabled; }
 	void setSelfRepairBehaviorEnabled(bool val) { selfRepairBehaviorEnabled = val; }
 
 	inline Pilot*	getPilot() { return &pilot; }
 
-	void setVariant( ULONG newVar ){ variant = newVar; }
-	inline int getVariant() const { return variant; }
+	void setVariant( uint32_t newVar ){ variant = newVar; }
+	inline int32_t getVariant() const { return variant; }
 
 	CUnitList *pAlternativeInstances;
-	ULONG tmpNumAlternativeInstances;
-	ULONG tmpAlternativeStartIndex;
+	uint32_t tmpNumAlternativeInstances;
+	uint32_t tmpAlternativeStartIndex;
 
 protected:
 
-	bool save( FitIniFile* file, int WarriorNumber, int controlDataType, PSTR objectProfile );
+	bool save( FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, PSTR objectProfile );
 
 	Brain brain;
 	bool selfRepairBehaviorEnabled;
-	int lance;		// which lance
-	int lanceIndex; // number within lance 1 to 12
-	ULONG squad;
+	int32_t lance;		// which lance
+	int32_t lanceIndex; // number within lance 1 to 12
+	uint32_t squad;
 	Pilot	pilot;
 
-	ULONG baseColor;
-	ULONG highlightColor;
-	ULONG highlightColor2;
+	uint32_t baseColor;
+	uint32_t highlightColor;
+	uint32_t highlightColor2;
 
-	ULONG						variant;
+	uint32_t						variant;
 };
 
 
@@ -260,11 +260,11 @@ class DropZone : public EditorObject
 {
 public:
 
-	DropZone( const Stuff::Vector3D& position, int alignment, bool bVTol );
+	DropZone( const Stuff::Vector3D& position, int32_t alignment, bool bVTol );
 	DropZone& operator=( const DropZone& src ) { bVTol = src.bVTol; EditorObject::operator=( src ); return *this; }
 	virtual void CastAndCopy(const EditorObject &master);
 	virtual EditorObject *Clone() { return(new DropZone(*this)); }
-	virtual bool save( FitIniFile* file, int number );
+	virtual bool save( FitIniFile* file, int32_t number );
 	
 	bool isVTol() { return bVTol; }
 	
@@ -279,7 +279,7 @@ class NavMarker : public EditorObject
 
 		NavMarker();
 		virtual EditorObject *Clone() { return(new NavMarker(*this)); }
-		virtual bool save( FitIniFile* file, int number );
+		virtual bool save( FitIniFile* file, int32_t number );
 
 };
 

@@ -132,7 +132,7 @@ void EditorMFCApp::OnAppAbout()
 // EditorMFCApp message handlers
 
 
-BOOL EditorMFCApp::OnIdle(LONG lCount) 
+BOOL EditorMFCApp::OnIdle(int32_t lCount) 
 {
 	const CWnd *pW1 = this->GetMainWnd();
 	const CWnd *pW2 = EditorInterface::instance();
@@ -154,7 +154,7 @@ BOOL EditorMFCApp::OnIdle(LONG lCount)
 }
 
 
-int EditorMFCApp::ExitInstance() 
+int32_t EditorMFCApp::ExitInstance() 
 {
 	{
 		Environment.TerminateGameEngine();

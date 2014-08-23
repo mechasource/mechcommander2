@@ -41,8 +41,8 @@ public:
 	CString	m_PreVideoFile;
 	CString	m_VideoFile;
 	CString	m_Label;
-	int		m_NumMissionsToComplete;
-	int		m_TuneNumber;
+	int32_t		m_NumMissionsToComplete;
+	int32_t		m_TuneNumber;
 	CString	m_ABLScript;
 };
 
@@ -61,8 +61,8 @@ public:
 	CGroupList	m_GroupList;
 	CString	m_Name;
 	bool m_NameUseResourceString;
-	int m_NameResourceStringID;
-	int		m_CBills;
+	int32_t m_NameResourceStringID;
+	int32_t		m_CBills;
 	CString	m_FinalVideo;
 };
 

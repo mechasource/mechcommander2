@@ -22,7 +22,7 @@ class CGroupDialog : public CDialog
 public:
 	CGroupDialog(CWnd* pParent = NULL);   // standard constructor
 
-	int m_TuneNumber;
+	int32_t m_TuneNumber;
 	CMissionList m_MissionList;
 
 // Dialog Data
@@ -34,7 +34,7 @@ public:
 	CString	m_PreVideoFileEdit;
 	CString	m_VideoFileEdit;
 	CString	m_LabelEdit;
-	int		m_NumMissionsToCompleteEdit;
+	int32_t		m_NumMissionsToCompleteEdit;
 	//}}AFX_DATA
 
 

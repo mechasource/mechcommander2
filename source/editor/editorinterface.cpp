@@ -179,7 +179,7 @@ extern bool justResaveAllMaps;
 extern bool bIsLoading;
 EditorInterface* EditorInterface::s_instance = NULL;
 
-extern volatile int ProcessingError;
+extern volatile int32_t ProcessingError;
 
 const float HSCROLLBAR_RANGE = 30000.0;
 const float VSCROLLBAR_RANGE = 30000.0;
@@ -231,7 +231,7 @@ void Editor::init( PSTR loader )
 			bool resolved = false;
 			while (!resolved)
 			{
-				int retVal = dlg.DoModal();
+				int32_t retVal = dlg.DoModal();
 				if ( retVal == IDCANCEL )
 				{
 					EditorInterface::instance()->SetBusyMode();
@@ -367,7 +367,7 @@ void Editor::resaveAll (void)
 	strcpy(campaignFiles[0], "Data\\Campaign\\campaign.fit");
 	strcpy(campaignFiles[1], "Data\\Campaign\\tutorial.fit");
 
-	for (int i = 0; i < 2; i++) // once for the campaign, then the tutorial
+	for (int32_t i = 0; i < 2; i++) // once for the campaign, then the tutorial
 	{
 		CCampaignData campaignData;
 		campaignData.Read(campaignFiles[i]);
@@ -376,7 +376,7 @@ void Editor::resaveAll (void)
 
 		campaignAssetPtr->AddProperty("Type", "Campaign");
 
-		int count = 0;
+		int32_t count = 0;
 		char buf[512] = {0};
 		
 		// for all groups
@@ -387,7 +387,7 @@ void Editor::resaveAll (void)
 
 			// Make a virtual group name
 			strcpy(buf, campaignFiles[i]);
-			int campaignLen = strlen(buf);
+			int32_t campaignLen = strlen(buf);
 			buf[campaignLen-4] = '_';
 			buf[campaignLen-3] = 0;
 			strcat(buf, "group");
@@ -674,9 +674,9 @@ void EditorInterface::terminate()
 
 		if (EditorObjectMgr::instance())
 		{
-			int count = EditorObjectMgr:: instance()->getBuildingGroupCount();
+			int32_t count = EditorObjectMgr:: instance()->getBuildingGroupCount();
 
-			for ( int i = 0; i < count+1; ++i )
+			for ( int32_t i = 0; i < count+1; ++i )
 			{
 				delete menus[i]; menus[i] = NULL;
 			}
@@ -762,7 +762,7 @@ void EditorInterface::addBuildingsToNewMenu()
 	pMenu->CreatePopupMenu();
 
 	// now i need to add the buildings to the toolbars/menus
-	int groupCount = pMgr->getBuildingGroupCount( );
+	int32_t groupCount = pMgr->getBuildingGroupCount( );
 
 	PCSTR* pNames = ( PCSTR* )malloc( sizeof( PCSTR ) * groupCount );
 	pMgr->getBuildingGroupNames( pNames, groupCount );
@@ -770,26 +770,26 @@ void EditorInterface::addBuildingsToNewMenu()
 	menus = (CMenu**) malloc( sizeof( CMenu* ) * (groupCount + 2) );
 	menus[0] = pMenu;
 
-	int id = IDS_OBJECT_200;
-	for ( int i = 0; i < groupCount; ++i )
+	int32_t id = IDS_OBJECT_200;
+	for ( int32_t i = 0; i < groupCount; ++i )
 	{
 		CMenu* pChildMenu = new CMenu;
 		pChildMenu->CreatePopupMenu();
 		menus[i + 1] = pChildMenu;
 		
 		// now add sub items to the group
-		int buildingCount = pMgr->getNumberBuildingsInGroup( i );
+		int32_t buildingCount = pMgr->getNumberBuildingsInGroup( i );
 
 		PCSTR* pBuildingNames = (PCSTR*)malloc( sizeof( PCSTR  ) * buildingCount );
  
 		pMgr->getBuildingNamesInGroup( i, pBuildingNames, buildingCount );
 
-		for ( int j = 0; j < buildingCount; ++j, ++id )
+		for ( int32_t j = 0; j < buildingCount; ++j, ++id )
 		{
 			CString oldName;
 			bool bAdded = 0;
-			int count = pChildMenu->GetMenuItemCount();
-			for (int k = 0; k < count; ++k )
+			int32_t count = pChildMenu->GetMenuItemCount();
+			for (int32_t k = 0; k < count; ++k )
 			{
 				pChildMenu->GetMenuString( k, oldName, MF_BYPOSITION );
 				if ( oldName > pBuildingNames[j] )
@@ -807,30 +807,30 @@ void EditorInterface::addBuildingsToNewMenu()
 		
 		CString oldName;
 		bool bAdded = 0;
-		int count =  pMenu->GetMenuItemCount();
-		for (int k = 0; k < count; ++k )
+		int32_t count =  pMenu->GetMenuItemCount();
+		for (int32_t k = 0; k < count; ++k )
 		{
 			pMenu->GetMenuString( k, oldName, MF_BYPOSITION );
 			if ( oldName > pNames[i] )
 			{
-				pMenu->InsertMenu( k, MF_BYPOSITION | MF_POPUP, (UINT)pChildMenu->m_hMenu, pNames[i] );
+				pMenu->InsertMenu( k, MF_BYPOSITION | MF_POPUP, (uint32_t)pChildMenu->m_hMenu, pNames[i] );
 				bAdded = 1;
 				break;
 
 			}
 		}
 		if ( !bAdded )
-			pMenu->AppendMenu(MF_POPUP, (UINT)pChildMenu->m_hMenu, pNames[i]);
+			pMenu->AppendMenu(MF_POPUP, (uint32_t)pChildMenu->m_hMenu, pNames[i]);
 
 		free( pBuildingNames );
 	}
-	AfxGetMainWnd()->GetMenu()->InsertMenu( 5, MF_BYPOSITION | MF_POPUP, (UINT)pMenu->m_hMenu, BuildingHeader );
+	AfxGetMainWnd()->GetMenu()->InsertMenu( 5, MF_BYPOSITION | MF_POPUP, (uint32_t)pMenu->m_hMenu, BuildingHeader );
 
 	CMenu* pChildMenu = new CMenu;
 	pChildMenu->CreatePopupMenu();
 	menus[i + 1] = pChildMenu;
 
-	int numTerrains = 0;
+	int32_t numTerrains = 0;
 	numTerrains = land->terrainTextures->getNumTypes();
 
 	for ( i = groupCount; i < numTerrains + groupCount; i++ )
@@ -838,7 +838,7 @@ void EditorInterface::addBuildingsToNewMenu()
 		
 		char buffer[256];
 		
-		int nameID = land->terrainTextures->getTextureNameID(i - groupCount);
+		int32_t nameID = land->terrainTextures->getTextureNameID(i - groupCount);
 		bool continueFlag = true;
 		switch (nameID)
 		{
@@ -859,10 +859,10 @@ void EditorInterface::addBuildingsToNewMenu()
 			
 		cLoadString( land->terrainTextures->getTextureNameID(i - groupCount), buffer, 256 );
 
-		int count = pChildMenu->GetMenuItemCount();
+		int32_t count = pChildMenu->GetMenuItemCount();
 		bool bPlaced = 0;
 		CString newStr( buffer );
-		for ( int j = 0; j < count; ++j )
+		for ( int32_t j = 0; j < count; ++j )
 		{
 			CString tmp;
 			pChildMenu->GetMenuString( j, tmp, MF_BYPOSITION );
@@ -878,7 +878,7 @@ void EditorInterface::addBuildingsToNewMenu()
 		if ( !bPlaced )
 			pChildMenu->AppendMenu( MF_STRING, ID_TERRAINS_BLUEWATER + i - groupCount, buffer );
 	}
-	AfxGetMainWnd()->GetMenu()->InsertMenu( 4, MF_BYPOSITION | MF_POPUP, (UINT)pChildMenu->m_hMenu, TerrainHeader );
+	AfxGetMainWnd()->GetMenu()->InsertMenu( 4, MF_BYPOSITION | MF_POPUP, (uint32_t)pChildMenu->m_hMenu, TerrainHeader );
 
 
 	AfxGetMainWnd()->DrawMenuBar();
@@ -1070,9 +1070,9 @@ void EditorInterface::handleNewMenuMessage( int32_t specificMessage )
 
 
 //--------------------------------------------------------------------------------------
-int EditorInterface::Quit()
+int32_t EditorInterface::Quit()
 {
-	int res = PromptAndSaveIfNecessary();
+	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL != res) {
 		SetBusyMode();
 		gos_TerminateApplication();
@@ -1083,9 +1083,9 @@ int EditorInterface::Quit()
 }
 
 //--------------------------------------------------------------------------------------
-int EditorInterface::PromptAndSaveIfNecessary()
+int32_t EditorInterface::PromptAndSaveIfNecessary()
 {
-	int res = IDNO;
+	int32_t res = IDNO;
 	bool endFlag = false;
 	while (!endFlag) {
 		endFlag = true;
@@ -1099,7 +1099,7 @@ int EditorInterface::PromptAndSaveIfNecessary()
 		}
 		if (IDYES == res) {
 			SetBusyMode();
-			int saveRes = EditorInterface::instance()->Save();
+			int32_t saveRes = EditorInterface::instance()->Save();
 			UnsetBusyMode();
 			if (IDCANCEL == saveRes) {
 				endFlag = false;
@@ -1110,9 +1110,9 @@ int EditorInterface::PromptAndSaveIfNecessary()
 }
 
 //--------------------------------------------------------------------------------------
-int EditorInterface::New()
+int32_t EditorInterface::New()
 {
-	int res = PromptAndSaveIfNecessary();
+	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL == res) {
 		return false;
 	}
@@ -1149,9 +1149,9 @@ int EditorInterface::New()
 }
 
 //--------------------------------------------------------------------------------------
-int EditorInterface::FileOpen()
+int32_t EditorInterface::FileOpen()
 {
-	int res = PromptAndSaveIfNecessary();
+	int32_t res = PromptAndSaveIfNecessary();
 	if (IDCANCEL == res) {
 		return false;
 	}
@@ -1176,7 +1176,7 @@ int EditorInterface::FileOpen()
 
 //--------------------------------------------------------------------------------------
 
-void EditorInterface::handleLeftButtonDown( int PosX, int PosY )
+void EditorInterface::handleLeftButtonDown( int32_t PosX, int32_t PosY )
 {
 	if ( !eye || !eye->active  )
 		return;
@@ -1198,7 +1198,7 @@ void EditorInterface::handleLeftButtonDown( int PosX, int PosY )
 
 }
 
-void EditorInterface::handleMouseMove( int PosX, int PosY )
+void EditorInterface::handleMouseMove( int32_t PosX, int32_t PosY )
 {
 	if (  !eye || !eye->active  )
 		return;
@@ -1301,7 +1301,7 @@ void EditorInterface::handleMouseMove( int PosX, int PosY )
 
 
 
-void EditorInterface::handleLeftButtonUp( int PosX, int PosY )
+void EditorInterface::handleLeftButtonUp( int32_t PosX, int32_t PosY )
 {
 	if ( !eye || !eye->active  )
 		return;
@@ -1317,7 +1317,7 @@ void EditorInterface::handleLeftButtonUp( int PosX, int PosY )
 
 //--------------------------------------------------------------------------------------
 // THE EDITOR CLASS, kind of like the mission in MCommander
-void EditorInterface::handleKeyDown( int Key )
+void EditorInterface::handleKeyDown( int32_t Key )
 {
 	if ( !eye || !eye->active  )
 		return;
@@ -1651,48 +1651,48 @@ void EditorInterface::KillCurBrush()
 	ChangeCursor( IDC_MC2ARROW );
 }
 
-int EditorInterface::PaintDirtRoad()
+int32_t EditorInterface::PaintDirtRoad()
 {
 	return PaintOverlay( DIRT_ROAD, PAINT_OVERLAY_DIRT );
 }
 
-int EditorInterface::PaintRocks()
+int32_t EditorInterface::PaintRocks()
 {
 	return PaintOverlay( ROUGH, PAINT_OVERLAY_ROUGH );
 }
 
-int EditorInterface::PaintPaved()
+int32_t EditorInterface::PaintPaved()
 {
 	return PaintOverlay( PAVED_ROAD, PAINT_OVERLAY_PAVED );
 }
 
-int EditorInterface::PaintTwoLaneDirtRoad()
+int32_t EditorInterface::PaintTwoLaneDirtRoad()
 {
 	return PaintOverlay( TWO_LANE_DIRT_ROAD, PAINT_OVERLAY_PAVED );
 }
 
-int EditorInterface::PaintDamagedRoad()
+int32_t EditorInterface::PaintDamagedRoad()
 {
 	return PaintOverlay( DAMAGED_ROAD, PAINT_OVERLAY_PAVED );
 }
 
-int EditorInterface::PaintRunway()
+int32_t EditorInterface::PaintRunway()
 {
 	return PaintOverlay( RUNWAY, PAINT_OVERLAY_PAVED );
 }
 
-int EditorInterface::PaintBridge()
+int32_t EditorInterface::PaintBridge()
 {
 	return PaintOverlay( OBRIDGE, PAINT_OVERLAY_PAVED );
 }
 
-int EditorInterface::PaintDamagedBridge()
+int32_t EditorInterface::PaintDamagedBridge()
 {
 	return PaintOverlay( DAMAGED_BRIDGE, PAINT_OVERLAY_PAVED );
 }
 
 
-int EditorInterface::PaintOverlay( int type, int message )
+int32_t EditorInterface::PaintOverlay( int32_t type, int32_t message )
 {
 	KillCurBrush();
 	curBrush = new OverlayBrush( type );
@@ -1702,7 +1702,7 @@ int EditorInterface::PaintOverlay( int type, int message )
 	return true;
 }
 
-int EditorInterface::PaintTerrain( int type )
+int32_t EditorInterface::PaintTerrain( int32_t type )
 {
 	if ( selecting && ( land->hasSelection() ) )
 	{
@@ -1723,14 +1723,14 @@ int EditorInterface::PaintTerrain( int type )
 
 }
 
-int EditorInterface::SaveAs()
+int32_t EditorInterface::SaveAs()
 {
-	int retVal = IDOK;
+	int32_t retVal = IDOK;
 	CFileDialog	fileDlg( 0,  "pak", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter );
 
 	{
 		/* if the mission directory doesn't exist, we attempt to create it */
-		int curDirStrSize = GetCurrentDirectory(0, NULL);
+		int32_t curDirStrSize = GetCurrentDirectory(0, NULL);
 		TCHAR *curDirStr = (TCHAR *)gos_Malloc(curDirStrSize);
 		GetCurrentDirectory(curDirStrSize, curDirStr);
 		BOOL result = SetCurrentDirectory(missionPath);
@@ -1831,7 +1831,7 @@ int EditorInterface::SaveAs()
 	return retVal;
 }
 
-int EditorInterface::Save()
+int32_t EditorInterface::Save()
 {
 	PCSTR pFileName = EditorData::instance->getMapName();
 	if ( pFileName && (0 != strcmp("data\\missions\\newmap.pak", pFileName)) )
@@ -1844,7 +1844,7 @@ int EditorInterface::Save()
 	return IDOK;
 }
 
-int EditorInterface::QuickSave()
+int32_t EditorInterface::QuickSave()
 {
 	PCSTR pFileName = EditorData::instance->getMapName();
 	if ( pFileName && (0 != strcmp("data\\missions\\newmap.pak", pFileName)) )
@@ -1855,7 +1855,7 @@ int EditorInterface::QuickSave()
 	return true;
 }
 
-int EditorInterface::Undo()
+int32_t EditorInterface::Undo()
 {
 	if ( undoMgr.HaveUndo() )
 		undoMgr.Undo();
@@ -1863,7 +1863,7 @@ int EditorInterface::Undo()
 	return true;
 } 
 
-int EditorInterface::Redo()
+int32_t EditorInterface::Redo()
 {
 	if ( undoMgr.HaveRedo() )
 		undoMgr.Redo();
@@ -1871,20 +1871,20 @@ int EditorInterface::Redo()
 	return true;
 }
 
-int	EditorInterface::paintBuildings( int message )
+int32_t	EditorInterface::paintBuildings( int32_t message )
 {
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
-	int groupCount = pMgr->getBuildingGroupCount();
+	int32_t groupCount = pMgr->getBuildingGroupCount();
 
-	int id = IDS_OBJECT_200;
-	for ( int i = 0; i < groupCount; ++i )
+	int32_t id = IDS_OBJECT_200;
+	for ( int32_t i = 0; i < groupCount; ++i )
 	{
-		int buildCount = pMgr->getNumberBuildingsInGroup( i );
+		int32_t buildCount = pMgr->getNumberBuildingsInGroup( i );
 
 		if ( id <= message && message < id + buildCount )
 		{
-				int alignment = EDITOR_TEAM2;
-				for ( int j = 0; j < 9; ++j )
+				int32_t alignment = EDITOR_TEAM2;
+				for ( int32_t j = 0; j < 9; ++j )
 				{
 					if ( GetParent()->GetMenu()->GetMenuState( ID_ALIGNMENT_TEAM1 + j, MF_BYCOMMAND ) & MF_CHECKED )
 					{
@@ -1917,7 +1917,7 @@ int	EditorInterface::paintBuildings( int message )
 	return true;
 }
 
-int EditorInterface::Erase()
+int32_t EditorInterface::Erase()
 {
 	if ( selecting && ( EditorObjectMgr::instance()->hasSelection() ||
 		land->hasSelection() ) )
@@ -2034,15 +2034,15 @@ void EditorInterface::render()
 		{
 			GetCursorPos( &pt );
 			ScreenToClient( &pt );
-			int PosX = (int)pt.x;
-			int PosY = (int)pt.y;
+			int32_t PosX = (int32_t)pt.x;
+			int32_t PosY = (int32_t)pt.y;
 
 			// scroll if painting
-			int scrollLf = (PosX <= (screenScrollLeft));
-			int scrollRt = (PosX >= (Width() - screenScrollRight));
+			int32_t scrollLf = (PosX <= (screenScrollLeft));
+			int32_t scrollRt = (PosX >= (Width() - screenScrollRight));
 			
-			int scrollUp = (PosY <= (screenScrollUp));
-			int scrollDn = (PosY >= (Height() - screenScrollDown));
+			int32_t scrollUp = (PosY <= (screenScrollUp));
+			int32_t scrollDn = (PosY >= (Height() - screenScrollDown));
 
 			float frameFactor = frameLength / baseFrameLength;
 			float scrollFactor = scrollInc / eye->getScaleFactor() * frameFactor;
@@ -2077,7 +2077,7 @@ void EditorInterface::render()
 	}
 }
 
-int EditorInterface::NewHeightMap()
+int32_t EditorInterface::NewHeightMap()
 {
 	CFileDialog	fileDlg( 1,  "tga", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szTGAFilter );
 	fileDlg.m_ofn.lpstrInitialDir = terrainPath;
@@ -2100,7 +2100,7 @@ int EditorInterface::NewHeightMap()
 				gosASSERT(result == NO_ERROR);
 
 				struct TGAFileHeader theader;
-				tgaFile.read((PUCHAR)&theader,sizeof(TGAFileHeader));
+				tgaFile.read((puint8_t)&theader,sizeof(TGAFileHeader));
 
 				if ((theader.width != land->realVerticesMapSide) || (theader.height != land->realVerticesMapSide))
 				{
@@ -2120,8 +2120,8 @@ int EditorInterface::NewHeightMap()
 			HeightDlg htDlg;
 			int32_t tileR, tileC;
 
-			htDlg.SetMin( (int)land->getLowestVertex( tileR, tileC ) );
-			htDlg.SetMax( (int)land->getHighestVertex( tileR, tileC ) );
+			htDlg.SetMin( (int32_t)land->getLowestVertex( tileR, tileC ) );
+			htDlg.SetMax( (int32_t)land->getHighestVertex( tileR, tileC ) );
 			
 			bool chkStatus = false;
 			if ( IDOK == htDlg.DoModal() )
@@ -2144,7 +2144,7 @@ int EditorInterface::NewHeightMap()
 #define MIN_THRESHOLD	1
 #define MIN_NOISE		0
 
-int EditorInterface::RefractalizeTerrain(int32_t Threshold)
+int32_t EditorInterface::RefractalizeTerrain(int32_t Threshold)
 {
 	FractalDlg fDlg;
 	fDlg.SetThreshold(Terrain::fractalThreshold);
@@ -2176,14 +2176,14 @@ int EditorInterface::RefractalizeTerrain(int32_t Threshold)
 	return true;
 }
 
-int EditorInterface::SetSky (int32_t skyId)
+int32_t EditorInterface::SetSky (int32_t skyId)
 {
 	EditorData::instance->TheSkyNumber(skyId);
 
 	return true;
 }
 
-int EditorInterface::Select()
+int32_t EditorInterface::Select()
 {
 	if ( currentBrushID == IDS_SELECT )
 	{
@@ -2194,7 +2194,7 @@ int EditorInterface::Select()
 	{
 		KillCurBrush();
 
-		int radius = GetParent()->GetMenu()->GetMenuState( ID_DRAGNORMAL, MF_BYCOMMAND ) & MF_CHECKED? -1 : smoothRadius;
+		int32_t radius = GetParent()->GetMenu()->GetMenuState( ID_DRAGNORMAL, MF_BYCOMMAND ) & MF_CHECKED? -1 : smoothRadius;
 		curBrush = new SelectionBrush( false, radius );
 		currentBrushID = IDS_SELECT;
 		currentBrushMenuID = ID_OTHER_SELECT;
@@ -2207,7 +2207,7 @@ int EditorInterface::Select()
 	return true;
 }
 
-int EditorInterface::Flatten()
+int32_t EditorInterface::Flatten()
 {
 	if ( selecting && ( land->hasSelection() ) )
 	{
@@ -2231,7 +2231,7 @@ int EditorInterface::Flatten()
 
 }
 
-int EditorInterface::SaveCameras()
+int32_t EditorInterface::SaveCameras()
 {
 	if ( !EditorData::getMapName() )
 	{
@@ -2257,7 +2257,7 @@ int EditorInterface::SaveCameras()
 	return true;
 }
 
-int EditorInterface::SelectSlopes()
+int32_t EditorInterface::SelectSlopes()
 {
 	SelectSlopeDialog dlg;
 	if ( dlg.DoModal() == IDOK )
@@ -2271,16 +2271,16 @@ int EditorInterface::SelectSlopes()
 		float centerElv;
 		float tmpElv;
 
-		int left;
-		int right;
-		int top;
-		int bottom;
+		int32_t left;
+		int32_t right;
+		int32_t top;
+		int32_t bottom;
 
 		land->unselectAll();
 
-		for ( int j = 0; j < land->realVerticesMapSide; ++j )
+		for ( int32_t j = 0; j < land->realVerticesMapSide; ++j )
 		{
-			for ( int i = 0; i < land->realVerticesMapSide; ++i )
+			for ( int32_t i = 0; i < land->realVerticesMapSide; ++i )
 			{
 				left = i > 0 ? i - 1 : 0;
 				right = i < land->realVerticesMapSide ? i + 1 : i;
@@ -2325,7 +2325,7 @@ int EditorInterface::SelectSlopes()
 	return true;
 }
 
-int EditorInterface::SelectAltitude()
+int32_t EditorInterface::SelectAltitude()
 {
 	HeightDlg dlg;
 	if ( dlg.DoModal() == IDOK )
@@ -2337,9 +2337,9 @@ int EditorInterface::SelectAltitude()
 
 		land->unselectAll();
 
-		for ( int j = 0; j < land->realVerticesMapSide; ++j )
+		for ( int32_t j = 0; j < land->realVerticesMapSide; ++j )
 		{
-			for ( int i = 0; i < land->realVerticesMapSide; ++i )
+			for ( int32_t i = 0; i < land->realVerticesMapSide; ++i )
 			{
 				centerElv = land->getVertexHeight( j * land->realVerticesMapSide + i );
 				if ( (centerElv >= minHeight) && (centerElv <= maxHeight) )
@@ -2354,7 +2354,7 @@ int EditorInterface::SelectAltitude()
 	return true;
 }
 
-int EditorInterface::SelectTerrainType()
+int32_t EditorInterface::SelectTerrainType()
 {
 	SelectTerrainTypeDlg dlg;
 	dlg.SelectedTerrainType(-1);
@@ -2363,11 +2363,11 @@ int EditorInterface::SelectTerrainType()
 		cint32_t selectedTerrainType = dlg.SelectedTerrainType() - ID_TERRAINS_BLUEWATER;
 		land->unselectAll();
 
-		for ( int j = 0; j < land->realVerticesMapSide; ++j )
+		for ( int32_t j = 0; j < land->realVerticesMapSide; ++j )
 		{
-			for ( int i = 0; i < land->realVerticesMapSide; ++i )
+			for ( int32_t i = 0; i < land->realVerticesMapSide; ++i )
 			{
-				int tmp = land->getTerrain( j, i );
+				int32_t tmp = land->getTerrain( j, i );
 				if (land->getTerrain( j, i ) == selectedTerrainType)
 				{
 					land->selectVertex( j, i );
@@ -2380,7 +2380,7 @@ int EditorInterface::SelectTerrainType()
 	return true;
 }
 
-int EditorInterface::PurgeTransitions()
+int32_t EditorInterface::PurgeTransitions()
 {
 	land->purgeTransitions();
 
@@ -2390,7 +2390,7 @@ int EditorInterface::PurgeTransitions()
 	return true;
 }
 
-int EditorInterface::ShowTransitions()
+int32_t EditorInterface::ShowTransitions()
 {
 	highlighted ^= true;
 	if (highlighted)
@@ -2401,7 +2401,7 @@ int EditorInterface::ShowTransitions()
 	return true;
 }
 
-int EditorInterface::Fog()
+int32_t EditorInterface::Fog()
 {
 	FogDlg dlg;
 	dlg.m_blue = (eye->dayFogColor) & 0xff;
@@ -2412,7 +2412,7 @@ int EditorInterface::Fog()
 
 	if ( IDOK == dlg.DoModal() )
 	{
-		eye->dayFogColor = ((ULONG)dlg.m_blue) + (((ULONG)dlg.m_green) << 8) + (((ULONG)dlg.m_red) << 16);
+		eye->dayFogColor = ((uint32_t)dlg.m_blue) + (((uint32_t)dlg.m_green) << 8) + (((uint32_t)dlg.m_red) << 16);
 		eye->fogColor = eye->dayFogColor;
 		eye->fogStart = dlg.m_start;
 		eye->fogFull = dlg.m_end;
@@ -2424,7 +2424,7 @@ int EditorInterface::Fog()
 	return true;
 }
 
-int EditorInterface::Light()
+int32_t EditorInterface::Light()
 {
 	SunDlg dlg;
 	if ( IDOK == dlg.DoModal() )
@@ -2439,7 +2439,7 @@ int EditorInterface::Light()
 	return true;
 }
 
-int EditorInterface::Waves()
+int32_t EditorInterface::Waves()
 {
 	WaterDlg dlg;
 
@@ -2477,7 +2477,7 @@ int EditorInterface::Waves()
 }
 
 
-int EditorInterface::DragSmooth()
+int32_t EditorInterface::DragSmooth()
 {
 	if ( IDS_SELECT == currentBrushID )
 	{
@@ -2491,7 +2491,7 @@ int EditorInterface::DragSmooth()
 	return true;
 
 }
-int EditorInterface::DragRough()
+int32_t EditorInterface::DragRough()
 {
 	if ( IDS_SELECT == currentBrushID )
 	{
@@ -2506,7 +2506,7 @@ int EditorInterface::DragRough()
 
 }
 
-int EditorInterface::AssignElevation()
+int32_t EditorInterface::AssignElevation()
 {
 	if ( !land->hasSelection() )
 	{
@@ -2519,14 +2519,14 @@ int EditorInterface::AssignElevation()
 	{
 		FlattenBrush tmp;
 		float val = tmp.getAverageHeightOfSelection( );
-		SingleValueDlg dlg( IDS_ASSIGN_ELEVATION, IDS_ELEVATION, (int)val );
-		dlg.SetVal( (int)val );
+		SingleValueDlg dlg( IDS_ASSIGN_ELEVATION, IDS_ELEVATION, (int32_t)val );
+		dlg.SetVal( (int32_t)val );
 		if ( IDOK == dlg.DoModal() )
 		{
 			ActionPaintTile *pAction = new ActionPaintTile;
-			for ( int  j = 0; j < land->realVerticesMapSide; ++j )
+			for ( int32_t  j = 0; j < land->realVerticesMapSide; ++j )
 			{
-				for ( int i = 0; i < land->realVerticesMapSide; ++i )
+				for ( int32_t i = 0; i < land->realVerticesMapSide; ++i )
 				{
 					if ( land->isVertexSelected( j, i ) )
 					{
@@ -2548,7 +2548,7 @@ int EditorInterface::AssignElevation()
 	return true;
 }
 
-int EditorInterface::SmoothRadius()
+int32_t EditorInterface::SmoothRadius()
 {
 	SingleValueDlg dlg( IDS_SMOOTH_RADIUS, IDS_RADIUS, smoothRadius );
 	if ( IDOK == dlg.DoModal() )
@@ -2567,10 +2567,10 @@ int EditorInterface::SmoothRadius()
 	return true;
 }
 
-int EditorInterface::Alignment( int specific )
+int32_t EditorInterface::Alignment( int32_t specific )
 {
 	
-	for ( int i = 0; i < 9; ++i )
+	for ( int32_t i = 0; i < 9; ++i )
 		GetParent()->GetMenu()->CheckMenuItem( ID_ALIGNMENT_TEAM1 + i, MF_BYCOMMAND | MF_UNCHECKED );
 		
 	
@@ -2578,7 +2578,7 @@ int EditorInterface::Alignment( int specific )
 	
 	if ( currentBrushID >= IDS_OBJECT_200 && currentBrushID <= 30800 )
 	{
-		int tmp = currentBrushID;
+		int32_t tmp = currentBrushID;
 		currentBrushID = 0;
 		paintBuildings( tmp );
 	}
@@ -2586,7 +2586,7 @@ int EditorInterface::Alignment( int specific )
 	return true;
 }
 
-int EditorInterface::SaveHeightMap()
+int32_t EditorInterface::SaveHeightMap()
 {
 	CreateDirectory(terrainPath, NULL);
 	
@@ -2615,7 +2615,7 @@ int EditorInterface::SaveHeightMap()
 
 }
 
-int EditorInterface::MissionSettings()
+int32_t EditorInterface::MissionSettings()
 {
 	MissionSettingsDlg dlg;
 	dlg.m_MissionNameUnlocalizedText = EditorData::instance->MissionName().Data();
@@ -2693,7 +2693,7 @@ int EditorInterface::MissionSettings()
 	return true;
 }
 
-int EditorInterface::Team( int team )
+int32_t EditorInterface::Team( int32_t team )
 {
 	static CTeams originalTeams;
 	if (!ObjectSelectOnlyMode()) {
@@ -2710,7 +2710,7 @@ int EditorInterface::Team( int team )
 	return true;
 }
 
-int EditorInterface::Player( int player )
+int32_t EditorInterface::Player( int32_t player )
 {
 	PlayerSettingsDlg dlg;
 	dlg.m_playerEdit = player + 1;
@@ -2752,7 +2752,7 @@ void EditorInterface::syncHScroll()
 
 	float scrollPos = ((direction * eyeDisplacement) / bound * 0.5f + 0.5f) * HSCROLLBAR_RANGE;
 	SetScrollRange( SB_HORZ, 0, HSCROLLBAR_RANGE, true );
-	SetScrollPos(SB_HORZ, (int)scrollPos);
+	SetScrollPos(SB_HORZ, (int32_t)scrollPos);
 
 	{
 		/* figure out what proportion of the map is visible */
@@ -2805,7 +2805,7 @@ void EditorInterface::syncVScroll()
 
 	float scrollPos = ((direction * eyeDisplacement) / bound * 0.5f + 0.5f) * VSCROLLBAR_RANGE;
 	SetScrollRange( SB_VERT, 0, VSCROLLBAR_RANGE, false );
-	SetScrollPos(SB_VERT, (int)scrollPos);
+	SetScrollPos(SB_VERT, (int32_t)scrollPos);
 
 	{
 		/* figure out what proportion of the map is visible */
@@ -2840,7 +2840,7 @@ void EditorInterface::SetBusyMode(bool bRedrawWindow)
 	}
 	if (0 == m_AppIsBusy) {
 		if (!m_hBusyCursor) {
-#ifndef _DEBUG /*the debugger seems to encounter an infinite loop of user breaks (int 3) ntdll when executing this line*/
+#ifndef _DEBUG /*the debugger seems to encounter an infinite loop of user breaks (int32_t 3) ntdll when executing this line*/
 			m_hBusyCursor = (HCURSOR)LoadImage(NULL, "bmech.ani", IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
 #endif
 		}
@@ -2863,7 +2863,7 @@ void EditorInterface::UnsetBusyMode()
 	m_AppIsBusy -= 1;
 }
 
-int EditorInterface::Damage( bool bDamage )
+int32_t EditorInterface::Damage( bool bDamage )
 {
 	if ( selecting && EditorObjectMgr::instance()->hasSelection() )
 	{
@@ -2888,7 +2888,7 @@ int EditorInterface::Damage( bool bDamage )
 	return true;
 }
 
-int EditorInterface::LayMines()
+int32_t EditorInterface::LayMines()
 {
 	if ( selecting && ( land->hasSelection() ) )
 	{
@@ -2908,7 +2908,7 @@ int EditorInterface::LayMines()
 	return true;
 }
 
-int EditorInterface::SelectDetailTexture()
+int32_t EditorInterface::SelectDetailTexture()
 {
 	CFileDialog fileDlg( TRUE,  "tga", NULL, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
@@ -2926,7 +2926,7 @@ int EditorInterface::SelectDetailTexture()
 	return true;
 }
 
-int EditorInterface::SelectWaterTexture()
+int32_t EditorInterface::SelectWaterTexture()
 {
 	CFileDialog fileDlg( TRUE,  "tga", NULL, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
@@ -2947,14 +2947,14 @@ int EditorInterface::SelectWaterTexture()
 //---------------------------------------------------------------------------
 inline bool colorMapIsOKFormat (PCSTR fileName)
 {
-	ULONG localColorMapSizeCheck = land->realVerticesMapSide * 12.8;
+	uint32_t localColorMapSizeCheck = land->realVerticesMapSide * 12.8;
 
 	File tgaFile;
 	int32_t result = tgaFile.open(fileName);
 	if (result == NO_ERROR)
 	{
 		struct TGAFileHeader tgaHeader;
-		tgaFile.read((PUCHAR)&tgaHeader,sizeof(TGAFileHeader));
+		tgaFile.read((puint8_t)&tgaHeader,sizeof(TGAFileHeader));
 		if ((tgaHeader.image_type == UNC_TRUE) &&
 			(tgaHeader.width == tgaHeader.height) &&
 			(tgaHeader.width == localColorMapSizeCheck))
@@ -2966,7 +2966,7 @@ inline bool colorMapIsOKFormat (PCSTR fileName)
 	return false;
 }
 
-int EditorInterface::SetBaseTexture()
+int32_t EditorInterface::SetBaseTexture()
 {
 	CFileDialog fileDlg( TRUE,  "tga", NULL, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
@@ -3005,7 +3005,7 @@ int EditorInterface::SetBaseTexture()
 	return true;
 }
 
-int EditorInterface::ReloadBaseTexture()
+int32_t EditorInterface::ReloadBaseTexture()
 {
 	if ( land->terrainTextures2  && (land->terrainTextures2->colorMapStarted))
 	{
@@ -3018,7 +3018,7 @@ int EditorInterface::ReloadBaseTexture()
 	return true;
 }
 
-int EditorInterface::SelectWaterDetailTexture()
+int32_t EditorInterface::SelectWaterDetailTexture()
 {
 	CFileDialog fileDlg( TRUE,  "tga", NULL, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
@@ -3036,7 +3036,7 @@ int EditorInterface::SelectWaterDetailTexture()
 	return true;
 }
 
-int EditorInterface::TextureTilingFactors()
+int32_t EditorInterface::TextureTilingFactors()
 {
 	TilingFactorsDialog tilingFactorsDlg;
 	tilingFactorsDlg.m_TerrainDetailTilingFactor = land->terrainTextures2->getDetailTilingFactor();
@@ -3051,7 +3051,7 @@ int EditorInterface::TextureTilingFactors()
 	return true;
 }
 
-int EditorInterface::Link( bool bLink )
+int32_t EditorInterface::Link( bool bLink )
 {
 	LinkBrush *pCurLinkBrush = dynamic_cast<LinkBrush *>(curBrush);
 	if ((0 == pCurLinkBrush) || (pCurLinkBrush->bLink != bLink))
@@ -3066,14 +3066,14 @@ int EditorInterface::Link( bool bLink )
 	return 1;
 }
 
-int EditorInterface::DropZone( bool bVTol )
+int32_t EditorInterface::DropZone( bool bVTol )
 {
 	KillCurBrush();
 
-	int alignment = EDITOR_TEAM1;
+	int32_t alignment = EDITOR_TEAM1;
 	
 	// you'll need this for multiplayer
-	/*for ( int j = 0; j < 9; ++j )
+	/*for ( int32_t j = 0; j < 9; ++j )
 	{
 		if ( GetParent()->GetMenu()->GetMenuState( ID_ALIGNMENT_TEAM1 + j, MF_BYCOMMAND ) & MF_CHECKED )
 		{
@@ -3092,14 +3092,14 @@ int EditorInterface::DropZone( bool bVTol )
 
 }
 
-int EditorInterface::CampaignEditor()
+int32_t EditorInterface::CampaignEditor()
 {
 	CCampaignDialog campaignDialog;
 	campaignDialog.DoModal();
 	return 1;
 }
 
-int EditorInterface::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int32_t EditorInterface::OnCreate(LPCREATESTRUCT lpCreateStruct) 
 {
 	if (CWnd ::OnCreate(lpCreateStruct) == -1)
 		return -1;	
@@ -3121,7 +3121,7 @@ extern bool gActive;
 extern bool gGotFocus;
 extern Editor* editor;
 
-LRESULT EditorInterface::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+LRESULT EditorInterface::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam) 
 {
 	//We're not ready to draw anything.
 	// If you let an event through it'll probably crash!
@@ -3137,10 +3137,10 @@ LRESULT EditorInterface::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 	if ( WM_MOUSEWHEEL == message)
 	{
-		//int i = 17;
+		//int32_t i = 17;
 	}
 	
-	int retVal  = 0;
+	int32_t retVal  = 0;
 	
 	retVal = CWnd::WindowProc(message, wParam, lParam);
 
@@ -3221,26 +3221,26 @@ void EditorInterface::UpdateButton( CCmdUI* pButton )
 }
 
 
-void EditorInterface::OnLButtonDown(UINT nFlags, CPoint point) 
+void EditorInterface::OnLButtonDown(uint32_t nFlags, CPoint point) 
 {
 	SetCapture();
 	handleLeftButtonDown( point.x, point.y );
 	SPEW( (0, "GotClick"));
 }
 
-void EditorInterface::OnLButtonUp(UINT nFlags, CPoint point) 
+void EditorInterface::OnLButtonUp(uint32_t nFlags, CPoint point) 
 {
 	// TODO: Add your message handler code here and/or call default
 	handleLeftButtonUp( point.x, point.y );
 	ReleaseCapture();
 }
 
-void EditorInterface::OnMouseMove(UINT nFlags, CPoint point) 
+void EditorInterface::OnMouseMove(uint32_t nFlags, CPoint point) 
 {
 	handleMouseMove( point.x, point.y );
 }
 
-void EditorInterface::ChangeCursor( int ID )
+void EditorInterface::ChangeCursor( int32_t ID )
 {
 	if ( hCursor )
 		DestroyCursor( hCursor );
@@ -3256,7 +3256,7 @@ void EditorInterface::ChangeCursor( int ID )
 	
 }
 
-BOOL EditorInterface::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL EditorInterface::OnSetCursor(CWnd* pWnd, uint32_t nHitTest, uint32_t message) 
 {
 	if (0 < m_AppIsBusy)
 	{
@@ -3287,7 +3287,7 @@ BOOL EditorInterface::PreCreateWindow(CREATESTRUCT& cs)
 	return CWnd ::PreCreateWindow(cs);
 }
 
-void EditorInterface::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void EditorInterface::OnKeyUp(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags) 
 {
 	if ( nChar == KEY_SPACE )
 	{
@@ -3310,7 +3310,7 @@ void EditorInterface::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	CWnd ::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
-void EditorInterface::OnRButtonDown(UINT nFlags, CPoint point) 
+void EditorInterface::OnRButtonDown(uint32_t nFlags, CPoint point) 
 {
 
 	SetCapture( );
@@ -3320,7 +3320,7 @@ void EditorInterface::OnRButtonDown(UINT nFlags, CPoint point)
 	lastRightClickTime = timeGetTime();
 
 }
-void EditorInterface::OnRButtonUp(UINT nFlags, CPoint point) 
+void EditorInterface::OnRButtonUp(uint32_t nFlags, CPoint point) 
 {
 
 	rightDrag = false;
@@ -3360,7 +3360,7 @@ void EditorInterface::OnRButtonUp(UINT nFlags, CPoint point)
 	}*/
 }
 
-BOOL EditorInterface::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) 
+BOOL EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt) 
 {
 	//--------------------------------------------------
 	// Zoom Camera based on Mouse Wheel input.
@@ -3378,8 +3378,8 @@ BOOL EditorInterface::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		}
 	}
 
-	//int middleClicked = nFlags & MK_MBUTTON;  
-	int middleClicked = (nFlags & MK_MBUTTON) && (nFlags & MK_RBUTTON); // it's too easy to accidentally press the middle button while scrolling on some mice
+	//int32_t middleClicked = nFlags & MK_MBUTTON;  
+	int32_t middleClicked = (nFlags & MK_MBUTTON) && (nFlags & MK_RBUTTON); // it's too easy to accidentally press the middle button while scrolling on some mice
 	//-----------------------------------------------------------------
 	// If middle mouse button is pressed, go to normal tilt, 50% zoom	
 	if (middleClicked)
@@ -3420,7 +3420,7 @@ BOOL EditorInterface::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	return CWnd ::OnMouseWheel(nFlags, zDelta, pt);
 }
 
-void EditorInterface::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void EditorInterface::OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar) 
 {
 	
 	if (pScrollBar != NULL && pScrollBar->SendChildNotifyLastMsg())
@@ -3517,7 +3517,7 @@ void EditorInterface::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 }
 
 
-void EditorInterface::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void EditorInterface::OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar) 
 {
 	SCROLLINFO sInfo;
 	sInfo.cbSize = sizeof ( SCROLLINFO ); 
@@ -3598,13 +3598,13 @@ void EditorInterface::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	syncScrollBars();
 }
 
-void EditorInterface::OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void EditorInterface::OnSysKeyDown(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags) 
 {
 	handleKeyDown( nChar );	
 	CWnd ::OnSysKeyDown(nChar, nRepCnt, nFlags);
 }
 
-int EditorInterface::UnitSettings()
+int32_t EditorInterface::UnitSettings()
 {
 	EList<Unit*, Unit* > list;
 
@@ -3650,7 +3650,7 @@ void EditorInterface::initTacMap()
 {
 	// Why don't we just load it from the frickin' file?
 	// We go through all the damned trouble to save it every time!
-	// This takes a LONG time.
+	// This takes a int32_t time.
 	// -fs
 	puint8_t pData = NULL;
 	int32_t size = 0;
@@ -3694,7 +3694,7 @@ BOOL EditorInterface::PreTranslateMessage(MSG* pMsg)
 	return CWnd ::PreTranslateMessage(pMsg);
 }
 
-void EditorInterface::OnLButtonDblClk(UINT nFlags, CPoint point) 
+void EditorInterface::OnLButtonDblClk(uint32_t nFlags, CPoint point) 
 {
 
 	Stuff::Vector3D pos;
@@ -3736,10 +3736,10 @@ void EditorInterface::OnPaint()
 					pbmOld = dcMem.SelectObject(pSplashBitmap);
 				}
 
-				int gbmLeft = rcClient.right / 2 - bm_struct.bmWidth / 2;
-				int gbmTop = rcClient.bottom / 2 - bm_struct.bmHeight / 2;
-				int gbmRight = gbmLeft + bm_struct.bmWidth;
-				int gbmBottom = gbmTop + bm_struct.bmHeight;
+				int32_t gbmLeft = rcClient.right / 2 - bm_struct.bmWidth / 2;
+				int32_t gbmTop = rcClient.bottom / 2 - bm_struct.bmHeight / 2;
+				int32_t gbmRight = gbmLeft + bm_struct.bmWidth;
+				int32_t gbmBottom = gbmTop + bm_struct.bmHeight;
 
 				CRect rcTmp;
 				rcTmp = rcClient;
@@ -3804,7 +3804,7 @@ bool EditorInterface::SafeRunGameOSLogic()
 	return false;
 }
 
-void EditorInterface::rotateSelectedObjects( int direction )
+void EditorInterface::rotateSelectedObjects( int32_t direction )
 {
 	ModifyBuildingAction *pAction = new ModifyBuildingAction;
 	EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjects;
@@ -3813,8 +3813,8 @@ void EditorInterface::rotateSelectedObjects( int direction )
 	while (!iter.IsDone())
 	{
 		pAction->addBuildingInfo(*(*iter));
-		int id = (*iter)->getID();
-		int fitID = EditorObjectMgr::instance()->getFitID(id);
+		int32_t id = (*iter)->getID();
+		int32_t fitID = EditorObjectMgr::instance()->getFitID(id);
 		if ((EditorObjectMgr::WALL == (*iter)->getSpecialType()) || (33/*repair bay*/ == fitID))
 		{
 			(*iter)->appearance()->rotation += direction * 90;
@@ -3830,7 +3830,7 @@ void EditorInterface::rotateSelectedObjects( int direction )
 	pAction = NULL;
 }
 
-static void UpdateMissionPlayerPlayer(int player, CCmdUI* pCmdUI)
+static void UpdateMissionPlayerPlayer(int32_t player, CCmdUI* pCmdUI)
 {
 	if (EditorData::instance->MaxPlayers() < player) {
 		pCmdUI->Enable(FALSE);
@@ -3869,7 +3869,7 @@ void EditorInterface::OnUpdateMissionPlayerPlayer8(CCmdUI* pCmdUI)
 	UpdateMissionPlayerPlayer(8, pCmdUI);
 }
 
-static void UpdateMissionTeamTeam(int team, CCmdUI* pCmdUI)
+static void UpdateMissionTeamTeam(int32_t team, CCmdUI* pCmdUI)
 {
 	if (EditorData::instance->MaxTeams() < team) {
 		pCmdUI->Enable(FALSE);
@@ -3939,9 +3939,9 @@ void EditorInterface::OnForestTool()
 	
 
 	// figure out selection
-	for ( int j = 0; j < land->realVerticesMapSide; ++j )
+	for ( int32_t j = 0; j < land->realVerticesMapSide; ++j )
 	{
-		for ( int i = 0; i < land->realVerticesMapSide; ++i )
+		for ( int32_t i = 0; i < land->realVerticesMapSide; ++i )
 		{
 			if ( land->isVertexSelected( j, i ) )
 			{
@@ -3962,7 +3962,7 @@ void EditorInterface::OnForestTool()
 	
 	for ( j = 0; j < land->realVerticesMapSide; ++j )
 	{
-		for ( int i = 0; i < land->realVerticesMapSide; ++i )
+		for ( int32_t i = 0; i < land->realVerticesMapSide; ++i )
 		{
 			if ( land->isVertexSelected( j, i ) )
 			{
@@ -4049,7 +4049,7 @@ void EditorInterface::OnViewShowpassabilitymap()
 	}
 }
 
-void EditorInterface::OnMButtonUp(UINT nFlags, CPoint point) 
+void EditorInterface::OnMButtonUp(uint32_t nFlags, CPoint point) 
 {
 	if (ThisIsInitialized() && eye)
 	{

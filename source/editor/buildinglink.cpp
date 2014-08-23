@@ -59,7 +59,7 @@ void BuildingLink::CopyData( const BuildingLink& Src )
 
 bool BuildingLink::AddChild( const EditorObject* pObject )
 {
-	int ID = pObject->getID();
+	int32_t ID = pObject->getID();
 	
 	for( EList< Info, const Info& >::EIterator iter = children.Begin();
 		!iter.IsDone(); iter++ )
@@ -84,7 +84,7 @@ bool BuildingLink::AddChild( const EditorObject* pObject )
 
 }
 
-int BuildingLink::GetLinkCount( ) const
+int32_t BuildingLink::GetLinkCount( ) const
 {
 	return children.Count();
 }
@@ -97,7 +97,7 @@ const Stuff::Vector3D& BuildingLink::GetParentPosition() const
 
 bool BuildingLink::HasChild( const EditorObject* pObject ) const
 {
-	int ID = pObject->getID();
+	int32_t ID = pObject->getID();
 	pObject->getPosition();
 
 	
@@ -116,7 +116,7 @@ bool BuildingLink::HasChild( const EditorObject* pObject ) const
 
 bool BuildingLink::HasParent( const EditorObject* pObject ) const
 {
-	int ID = pObject->getID();
+	int32_t ID = pObject->getID();
 
 	// ignore damage bit and rotation
 	if ( parent.pos == pObject->getPosition() && parent.m_ID == ID )
@@ -127,7 +127,7 @@ bool BuildingLink::HasParent( const EditorObject* pObject ) const
 
 bool BuildingLink::TypeCanBeParent( const EditorObject* pObject )
 {
-	int Type = pObject->getSpecialType();
+	int32_t Type = pObject->getSpecialType();
 	switch (Type)
 	{
 		case EditorObjectMgr::TURRET_CONTROL:
@@ -149,8 +149,8 @@ bool BuildingLink::TypeCanBeParent( const EditorObject* pObject )
 }
 bool BuildingLink::CanLink( const EditorObject* pParent, const EditorObject* pChild  )
 {
-	int ParentType = pParent->getSpecialType();
-	int ChildType = pChild->getSpecialType();
+	int32_t ParentType = pParent->getSpecialType();
+	int32_t ChildType = pChild->getSpecialType();
 	
 	switch (ParentType)
 	{
@@ -212,12 +212,12 @@ bool BuildingLink::RemoveObject( const EditorObject* pObject )
 	return false;
 }
 
-int BuildingLink::GetChildrenPositions( Stuff::Vector3D* pos, int Count ) const
+int32_t BuildingLink::GetChildrenPositions( Stuff::Vector3D* pos, int32_t Count ) const
 {
-	if ( children.Count() > (ULONG)Count )
+	if ( children.Count() > (uint32_t)Count )
 		return children.Count();
 
-	int i = 0;
+	int32_t i = 0;
 	for ( EList< Info, const Info& >::EConstIterator iter = children.Begin();
 	!iter.IsDone(); iter++ )
 	{
@@ -312,7 +312,7 @@ void BuildingLink::render()
 		diffVect.Subtract((*iter).pos, parent.pos);
 		float lineLength = diffVect.GetLength();
 		const float lengthOfATypicalLargeObject = 150.0/*arbitrary*/;
-		int numSegments = lineLength / lengthOfATypicalLargeObject;
+		int32_t numSegments = lineLength / lengthOfATypicalLargeObject;
 		if (1 > numSegments)
 		{
 			numSegments = 1;
@@ -324,7 +324,7 @@ void BuildingLink::render()
 
 		Stuff::Point3D p1(parent.pos.x, parent.pos.y, parent.pos.z);
 		bool p1IsInView = isInView(p1);
-		int i;
+		int32_t i;
 		for (i = 0 ; i < numSegments; i += 1)
 		{
 			Stuff::Point3D p2 = p1;
@@ -359,7 +359,7 @@ void BuildingLink::render()
 	
 }
 
-void	BuildingLink::SetParentAlignment( int alignment )
+void	BuildingLink::SetParentAlignment( int32_t alignment )
 {
 	EditorObject* pTmp = EditorObjectMgr::instance()->getObjectAtLocation( parent.pos.x, parent.pos.y );
 

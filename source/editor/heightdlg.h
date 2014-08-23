@@ -21,23 +21,23 @@ class HeightDlg: public CDialog
 {
 	public:
 
-		HeightDlg( int min = 0, int max = 0);
+		HeightDlg( int32_t min = 0, int32_t max = 0);
 		void Init();
 		void OnOK();
-		//virtual	void OnCommand(Window *wnd,int nCommand);
+		//virtual	void OnCommand(Window *wnd,int32_t nCommand);
 
-		int GetMin(){ return min; }
-		int GetMax(){ return max; }
+		int32_t GetMin(){ return min; }
+		int32_t GetMax(){ return max; }
 
-		void SetMin( int newMin ){ min = newMin; }
-		void SetMax( int newMax ){ max = newMax; }
+		void SetMin( int32_t newMin ){ min = newMin; }
+		void SetMax( int32_t newMax ){ max = newMax; }
 		virtual BOOL OnInitDialog(){ Init(); return TRUE; }
 
 
 	private:
 
-		int min;
-		int max;
+		int32_t min;
+		int32_t max;
 
 };
 

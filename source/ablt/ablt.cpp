@@ -11,8 +11,8 @@
 void initABL (void);
 void closeABL (void);
  
-extern "C" int __cdecl 
-main(int argc, PSTR argv[])
+extern "C" int32_t __cdecl 
+main(int32_t argc, PSTR argv[])
 {
 	if ((argc < 2) || (argc > 3)) {
 		printf("Try again.\n");

@@ -125,10 +125,10 @@ void ForestDlg::OnSave()
 	}
 	CFileDialog dlg( 0, "fit", NULL, OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szFITFilter, this );
 	dlg.m_ofn.lpstrInitialDir = terrainPath;
-	int retVal = dlg.DoModal();
+	int32_t retVal = dlg.DoModal();
 	if ( IDOK == retVal )
 	{
-			for ( int i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15+1; i+= 2 )
+			for ( int32_t i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15+1; i+= 2 )
 			{
 				CWnd* pWnd = GetDlgItem( i );
 				CEdit* pEdit = (CEdit*)( pWnd );
@@ -165,7 +165,7 @@ void ForestDlg::OnOK()
 		return;
 	}
 
-	for ( int i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15+1; i+= 2 )
+	for ( int32_t i = IDC_FOREST_EDIT1; i < IDC_FOREST_EDIT15+1; i+= 2 )
 	{
 		CWnd* pWnd = GetDlgItem( i );
 		CEdit* pEdit = (CEdit*)( pWnd );
@@ -198,7 +198,7 @@ void ForestDlg::OnCancel()
 	CDialog::OnCancel();
 }
 
-void ForestDlg::OnEditChanged( UINT nID )
+void ForestDlg::OnEditChanged( uint32_t nID )
 {
 	CWnd* pWnd = GetDlgItem( nID );
 	CEdit* pEdit = (CEdit*)( pWnd );
@@ -217,13 +217,13 @@ void ForestDlg::OnEditChanged( UINT nID )
 	}
 }
 
-void ForestDlg::OnSliderChanged( UINT id, NMHDR * pNotifyStruct, LRESULT * result )
+void ForestDlg::OnSliderChanged( uint32_t id, NMHDR * pNotifyStruct, LRESULT * result )
 {
 	CWnd* pWnd = GetDlgItem( id );
 	CSliderCtrl* pSlider = (CSliderCtrl*)( pWnd );
 	if ( pSlider )
 	{
-		int Val = pSlider->GetPos();
+		int32_t Val = pSlider->GetPos();
 
 		
 		CEdit* pEdit = (CEdit*)( GetDlgItem( id + 1 ) );
@@ -260,7 +260,7 @@ BOOL ForestDlg::OnInitDialog()
 	UpdateData( 0 );
 	
 	
-	for ( int i = IDC_SLIDER1; i < IDC_SLIDER15; i+= 2 )
+	for ( int32_t i = IDC_SLIDER1; i < IDC_SLIDER15; i+= 2 )
 	{
 		CWnd* pWnd = GetDlgItem( i );
 		CSliderCtrl* pSlider = (CSliderCtrl*)( pWnd );
@@ -319,7 +319,7 @@ void ForestDlg::OnLoad()
 
 		EditorObjectMgr::instance()->unselectAll();
 
-//		int ID = EditorObjectMgr::instance()->createForest( tmp );	
+//		int32_t ID = EditorObjectMgr::instance()->createForest( tmp );	
 		forest.setFileName( dlg.m_ofn.lpstrFile );
 		forest.init();
 		//forest = tmp;

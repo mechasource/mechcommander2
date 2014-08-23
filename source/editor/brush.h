@@ -23,13 +23,13 @@ public:
 	virtual ~Brush(){}
 	virtual bool beginPaint()  = 0;
 	virtual Action* endPaint() = 0;
-	virtual bool paint( Stuff::Vector3D& worldPos, int screenX, int screenY  )  = 0;
-	virtual bool canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags ) { return true; } 
+	virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  )  = 0;
+	virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ) { return true; } 
 	virtual bool canPaintSelection( ){ return true; }
 	virtual Action* applyToSelection(){ return NULL;}
 
-	virtual void render( int screenX, int screenY ){}
-	virtual void update( int screenX, int screenY ){}
+	virtual void render( int32_t screenX, int32_t screenY ){}
+	virtual void update( int32_t screenX, int32_t screenY ){}
 
 private:
 

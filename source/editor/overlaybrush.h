@@ -20,7 +20,7 @@ class OverlayBrush: public Brush
 {
 	public:
 
-		OverlayBrush( int Type, int Offset = 0 )
+		OverlayBrush( int32_t Type, int32_t Offset = 0 )
 		{ 
 			type = (Overlays)Type;
 			offset = Offset; 
@@ -28,10 +28,10 @@ class OverlayBrush: public Brush
 		}
 		virtual ~OverlayBrush(){}	
 
-		virtual void render( int ScreenMousex, int ScreenMouseY ){} // need to figure this out
+		virtual void render( int32_t ScreenMousex, int32_t ScreenMouseY ){} // need to figure this out
 
-		virtual bool canPaint( Stuff::Vector3D&, int screenX, int screenY, int& flags ){ return true; }
-		virtual bool paint( Stuff::Vector3D& worldPos, int screenX, int screenY );
+		virtual bool canPaint( Stuff::Vector3D&, int32_t screenX, int32_t screenY, int32_t& flags ){ return true; }
+		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY );
 
 		bool beginPaint(); // not doing anything yet
 		Action* endPaint();
@@ -43,10 +43,10 @@ class OverlayBrush: public Brush
 		OverlayBrush();
 
 		Overlays	type;		// the kind of overlay we are painting 
-		int			offset;
+		int32_t			offset;
 
-		int lastTileR;
-		int lastTileC;
+		int32_t lastTileR;
+		int32_t lastTileC;
 
 		ActionPaintTile* pAction;
 

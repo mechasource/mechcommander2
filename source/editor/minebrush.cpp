@@ -37,7 +37,7 @@ Action* MineBrush::endPaint()
 	return pRetAction;
 }
 
-bool MineBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY  )
+bool MineBrush::paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  )
 {
 	int32_t tileC;
 	int32_t tileR;
@@ -67,7 +67,7 @@ bool MineBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY  )
 	return true;
 }
 
-bool MineBrush::canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags )
+bool MineBrush::canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags )
 {
 	return true;
 }
@@ -80,9 +80,9 @@ bool MineBrush::canPaintSelection( )
 Action* MineBrush::applyToSelection()
 {
 	MineAction* pRetAction = new MineAction();
-	for ( int i = 0; i < land->realVerticesMapSide; ++i )
+	for ( int32_t i = 0; i < land->realVerticesMapSide; ++i )
 	{
-		for ( int j = 0; j < land->realVerticesMapSide; ++j )
+		for ( int32_t j = 0; j < land->realVerticesMapSide; ++j )
 		{
 			if ( land->isVertexSelected( j, i ) )
 			{
@@ -105,7 +105,7 @@ bool MineBrush::MineAction::undo()
 		!iter.IsDone(); iter++ )
 	{
 		// get current values
-		ULONG lMineState = GameMap->getMine( (*iter).row, (*iter).column );
+		uint32_t lMineState = GameMap->getMine( (*iter).row, (*iter).column );
 
 		// reset to old values
 		GameMap->setMine( (*iter).row, (*iter).column, (*iter).mineState );

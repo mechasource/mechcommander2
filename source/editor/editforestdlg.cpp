@@ -53,10 +53,10 @@ static char szFITFilter[] = "FIT Files (*.FIT)|*.fit||";
 
 void EditForestDlg::OnOK() 
 {
-	int index = m_fileList.GetCurSel();
+	int32_t index = m_fileList.GetCurSel();
 	if ( index != -1 )
 	{
-		int ID = m_fileList.GetItemData( index );
+		int32_t ID = m_fileList.GetItemData( index );
 		EditorObjectMgr::instance()->selectForest( ID );
 	}
 
@@ -66,7 +66,7 @@ void EditForestDlg::OnOK()
 void EditForestDlg::OnEdit() 
 {
 	
-	int index = m_fileList.GetCurSel();
+	int32_t index = m_fileList.GetCurSel();
 	if ( index != -1 )
 	{
 		int32_t ID = m_fileList.GetItemData( index );
@@ -93,10 +93,10 @@ void EditForestDlg::OnEdit()
 
 void EditForestDlg::OnDelete() 
 {
-	int index = m_fileList.GetCurSel();
+	int32_t index = m_fileList.GetCurSel();
 	if ( index != -1 )
 	{
-		int ID = m_fileList.GetItemData( index );
+		int32_t ID = m_fileList.GetItemData( index );
 		EditorObjectMgr::instance()->removeForest( ID );
 		m_fileList.DeleteString( index );
 	}
@@ -115,9 +115,9 @@ void EditForestDlg::OnLoad()
 
 		EditorObjectMgr::instance()->unselectAll();
 
-		int ID = EditorObjectMgr::instance()->createForest( tmp );
+		int32_t ID = EditorObjectMgr::instance()->createForest( tmp );
 
-		int index = m_fileList.AddString( str );
+		int32_t index = m_fileList.AddString( str );
 		m_fileList.SetItemData( index, ID );
 		
 	}
@@ -130,7 +130,7 @@ BOOL EditForestDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	for (int i=0;i < m_fileList.GetCount();i++)
+	for (int32_t i=0;i < m_fileList.GetCount();i++)
 	{
 	   m_fileList.DeleteString( i );
 	}
@@ -152,10 +152,10 @@ BOOL EditForestDlg::OnInitDialog()
 		char final[256];
 
 
-		for ( int i = 0; i < count; i++ )
+		for ( int32_t i = 0; i < count; i++ )
 		{
 			PCSTR pName = pForests[i]->getName();
-			int index = -1;
+			int32_t index = -1;
 			
 			// make up name if necessary
 			if ( !pName || !strlen( pName ))
@@ -176,7 +176,7 @@ BOOL EditForestDlg::OnInitDialog()
 
 void EditForestDlg::OnSave() 
 {
-	int index = m_fileList.GetCurSel();
+	int32_t index = m_fileList.GetCurSel();
 	if ( index != -1 )
 	{
 		int32_t ID = m_fileList.GetItemData( index );
@@ -186,7 +186,7 @@ void EditForestDlg::OnSave()
 
 			CFileDialog dlg( 0, "fit", NULL, OFN_NOCHANGEDIR | OFN_OVERWRITEPROMPT, szFITFilter, this );
 			dlg.m_ofn.lpstrInitialDir = terrainPath;
-			int retVal = dlg.DoModal();
+			int32_t retVal = dlg.DoModal();
 			if ( IDOK == retVal )
 			{
 				pOldForest->setFileName( dlg.m_ofn.lpstrFile );
@@ -205,7 +205,7 @@ void EditForestDlg::OnSave()
 void EditForestDlg::OnRename() 
 {
 	UpdateData();
-	int index = m_fileList.GetCurSel();
+	int32_t index = m_fileList.GetCurSel();
 	if ( index != -1 )
 	{
 		int32_t ID = m_fileList.GetItemData( index );
@@ -223,7 +223,7 @@ void EditForestDlg::OnRename()
 
 void EditForestDlg::OnSelchangeListFiles() 
 {
-	int index = m_fileList.GetCurSel();
+	int32_t index = m_fileList.GetCurSel();
 	if ( index != -1 )
 	{
 		int32_t ID = m_fileList.GetItemData( index );

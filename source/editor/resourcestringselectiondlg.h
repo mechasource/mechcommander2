@@ -22,9 +22,9 @@ class ResourceStringSelectionDlg : public CDialog
 public:
 	ResourceStringSelectionDlg(CWnd* pParent = NULL);   // standard constructor
 
-	int m_BottomOfIDRange;
-	int m_TopOfIDRange;
-	int m_SelectedResourceStringID;
+	int32_t m_BottomOfIDRange;
+	int32_t m_TopOfIDRange;
+	int32_t m_SelectedResourceStringID;
 
 // Dialog Data
 	//{{AFX_DATA(ResourceStringSelectionDlg)
@@ -43,7 +43,7 @@ public:
 // Implementation
 protected:
 
-	class CIntList : public EList<int, int> {};
+	class CIntList : public EList<int32_t, int32_t> {};
 	CIntList m_ResourceStringIDs;
 
 	// Generated message map functions

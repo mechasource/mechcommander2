@@ -23,7 +23,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CBooleanFlagIsSetDialog)
 	enum { IDD = IDD_FLAG_IS_SET_DIALOG };
-	int		m_Value;
+	int32_t		m_Value;
 	CString	m_FlagID;
 	//}}AFX_DATA
 

@@ -21,15 +21,15 @@ class SingleValueDlg: public CDialog
 {
 	public:
 
-		SingleValueDlg( int captionID, int staticTextID, int val = 0);
+		SingleValueDlg( int32_t captionID, int32_t staticTextID, int32_t val = 0);
 		virtual ~SingleValueDlg();
 		virtual void Init();
 		virtual void OnOK();
-//		virtual	void OnCommand(Window *wnd,int nCommand);
+//		virtual	void OnCommand(Window *wnd,int32_t nCommand);
 
-		int GetVal(){ return val; }
+		int32_t GetVal(){ return val; }
 
-		void SetVal( int newVal ){ val = newVal; }
+		void SetVal( int32_t newVal ){ val = newVal; }
 		void Update();
 
 		virtual BOOL OnInitDialog( ){ Init(); return TRUE; }
@@ -39,7 +39,7 @@ class SingleValueDlg: public CDialog
 		char  staticText[256];
 		char  caption[256];
 
-		int val;
+		int32_t val;
 
 };
 

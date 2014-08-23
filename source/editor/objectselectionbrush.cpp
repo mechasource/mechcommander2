@@ -74,7 +74,7 @@ Action* ObjectSelectionBrush::endPaint()
 	return pRetAction;
 }
 
-bool ObjectSelectionBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
+bool ObjectSelectionBrush::paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY )
 {
 	Stuff::Vector4D endPos;
 	endPos.x = screenX;
@@ -146,7 +146,7 @@ bool ObjectSelectionBrush::paint( Stuff::Vector3D& worldPos, int screenX, int sc
 	return true;
 }
 
-void ObjectSelectionBrush::render( int screenX, int screenY )
+void ObjectSelectionBrush::render( int32_t screenX, int32_t screenY )
 {
 	
 	if ( bPainting )

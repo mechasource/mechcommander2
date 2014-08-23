@@ -24,7 +24,7 @@ BEGIN_MESSAGE_MAP(MainFrame, CFrameWnd)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-static UINT indicators[] =
+static uint32_t indicators[] =
 {
 	ID_SEPARATOR,           // status line indicator
 	ID_INDICATOR_CAPS,
@@ -43,7 +43,7 @@ MainFrame::~MainFrame()
 {
 }
 
-int MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+int32_t MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -83,7 +83,7 @@ int MainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
-		  sizeof(indicators)/sizeof(UINT)))
+		  sizeof(indicators)/sizeof(uint32_t)))
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
@@ -138,7 +138,7 @@ void MainFrame::OnSetFocus(CWnd* pOldWnd)
 	}
 }
 
-BOOL MainFrame::OnCmdMsg(UINT nID, int nCode, PVOID pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
+BOOL MainFrame::OnCmdMsg(uint32_t nID, int32_t nCode, PVOID pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
 	// let the view have first crack at the command
 	if (m_wndView.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
@@ -149,7 +149,7 @@ BOOL MainFrame::OnCmdMsg(UINT nID, int nCode, PVOID pExtra, AFX_CMDHANDLERINFO* 
 }
 
 
-LRESULT MainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+LRESULT MainFrame::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam) 
 {
 	if ( message == WM_MOVE )
 	{
@@ -169,7 +169,7 @@ LRESULT MainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 void MainFrame::OnClose() 
 {
-	int res = IDNO;
+	int32_t res = IDNO;
 	if (EditorInterface::instance() && EditorInterface::instance()->ThisIsInitialized()
 		&& EditorData::instance) {
 		res = EditorInterface::instance()->PromptAndSaveIfNecessary();

@@ -79,7 +79,7 @@ void TargetAreaDlg::OnCancel()
 void TargetAreaDlg::OnOK()
 {
 	CString tmpCStr;
-	int result;
+	int32_t result;
 	float tmpFloat;
 
 	m_pTargetCenterXEditBox->GetWindowText(tmpCStr);

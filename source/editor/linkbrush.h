@@ -36,18 +36,18 @@ class LinkBrush: public Brush
 	virtual ~LinkBrush();
 	virtual bool beginPaint();
 	virtual Action* endPaint();
-	virtual bool paint( Stuff::Vector3D& worldPos, int screenX, int screenY  );
-	virtual bool canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags );
+	virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  );
+	virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags );
 	virtual bool canPaintSelection( ){ return false; }
-	virtual void render( int screenX, int screenY );
+	virtual void render( int32_t screenX, int32_t screenY );
 
 	const EditorObject*		parent;
 	Stuff::Vector3D			parentPos;
 	bool					bLink;
 
 
-	bool unPaint( Stuff::Vector3D& worldPos, int screenX, int screenY  );
-	bool canUnPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags );
+	bool unPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  );
+	bool canUnPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags );
 
 	struct LinkInfo
 	{
@@ -62,7 +62,7 @@ class LinkBrush: public Brush
 		LinkInfo( BuildingLink* m_pOriginal, TYPE type = EDIT  );
 		
 		BuildingLink m_LinkCopy;  // copy of link
-		int  type;
+		int32_t  type;
 
 	};
 	

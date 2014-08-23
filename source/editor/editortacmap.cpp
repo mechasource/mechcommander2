@@ -48,7 +48,7 @@ BOOL EditorTacMap::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	int borderSize = GetSystemMetrics( SM_CYSMCAPTION );
+	int32_t borderSize = GetSystemMetrics( SM_CYSMCAPTION );
 	borderSize += GetSystemMetrics( SM_CYEDGE ) * 2;
 	CPoint p(0, 0);
 	EditorInterface::instance()->ClientToScreen(&p);
@@ -97,7 +97,7 @@ void EditorTacMap::ReleaseFocus()
 {
 	if (EditorInterface::instance() && EditorInterface::instance()->m_hWnd)
 	{
-		static int recursionDepth = 0;
+		static int32_t recursionDepth = 0;
 		if (1 > recursionDepth)
 		{
 			recursionDepth += 1;
@@ -108,12 +108,12 @@ void EditorTacMap::ReleaseFocus()
 	return;
 }
 
-LRESULT EditorTacMap::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+LRESULT EditorTacMap::WindowProc(uint32_t message, WPARAM wParam, LPARAM lParam) 
 {
 	/* if the left mouse button is not down, then we don't want focus */
 	CWnd *pCWnd = GetFocus();
 	HWND hwnd = ::GetFocus();
-	SHORT val = GetAsyncKeyState(VK_LBUTTON);
+	int16_t  val = GetAsyncKeyState(VK_LBUTTON);
 	if (/*(GetFocus() == this) &&*/ !(0x8000 && GetAsyncKeyState(VK_LBUTTON)))
 	{
 		ReleaseFocus();

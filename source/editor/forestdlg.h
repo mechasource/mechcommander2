@@ -31,20 +31,20 @@ public:
 	float	m_yLoc;
 	float	m_radius;
 	CString	m_Name;
-	int		m_1;
-	int		m_2;
-	int		m_3;
-	int		m_4;
-	int		m_5;
-	int		m_6;
-	int		m_7;
-	int		m_8;
-	int		m_9;
-	int		m_10;
-	int		m_12;
-	int		m_13;
-	int		m_14;
-	int		m_15;
+	int32_t		m_1;
+	int32_t		m_2;
+	int32_t		m_3;
+	int32_t		m_4;
+	int32_t		m_5;
+	int32_t		m_6;
+	int32_t		m_7;
+	int32_t		m_8;
+	int32_t		m_9;
+	int32_t		m_10;
+	int32_t		m_12;
+	int32_t		m_13;
+	int32_t		m_14;
+	int32_t		m_15;
 	//}}AFX_DATA
 
 	Forest		forest;
@@ -54,8 +54,8 @@ public:
 	virtual void DoDataExchange(CDataExchange* pDX);    
 	//}}AFX_VIRTUAL
 
-	afx_msg void OnEditChanged( UINT nID );
-	afx_msg void OnSliderChanged( UINT id, NMHDR * pNotifyStruct, LRESULT * result );
+	afx_msg void OnEditChanged( uint32_t nID );
+	afx_msg void OnSliderChanged( uint32_t id, NMHDR * pNotifyStruct, LRESULT * result );
 
 
 

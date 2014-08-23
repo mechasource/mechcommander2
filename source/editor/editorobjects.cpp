@@ -36,7 +36,7 @@
 using namespace Microsoft::Xna::Arm;
 extern IProviderEngine* armProvider;
 
-extern ULONG gameResourceHandle;
+extern uint32_t gameResourceHandle;
 
 Pilot::PilotInfo Pilot::s_BadPilots[MAX_PILOT] = { 0 };
 Pilot::PilotInfo Pilot::s_GoodPilots[MAX_PILOT] = { 0 };
@@ -150,7 +150,7 @@ PCSTR EditorObject::getDisplayName() const
 	return EditorObjectMgr::instance()->getObjectName( id );
 }
 
-void EditorObject::setAlignment( int align )
+void EditorObject::setAlignment( int32_t align )
 {
 	if ( appearance()->teamId != align )
 	{
@@ -166,17 +166,17 @@ void EditorObject::setAlignment( int align )
 	}
 }
 
-int EditorObject::getIndexInGroup() const
+int32_t EditorObject::getIndexInGroup() const
 {
 	return EditorObjectMgr::getIndexInGroup( id );
 }
 
-int EditorObject::getGroup() const
+int32_t EditorObject::getGroup() const
 {
 	return EditorObjectMgr::getGroup( id );
 }
 
-void EditorObject::setAppearance( int Group, int indexInGroup )
+void EditorObject::setAppearance( int32_t Group, int32_t indexInGroup )
 {
 	// make sure the thing has changed....
 	if ( Group != EditorObjectMgr::getGroup( id ) || indexInGroup != EditorObjectMgr::getIndexInGroup( id ) )
@@ -218,7 +218,7 @@ void EditorObject::select( bool bSelect )
 	EditorObjectMgr::instance()->select(*this, bSelect);
 }
 
-ULONG EditorObject::getColor() const
+uint32_t EditorObject::getColor() const
 {
 	switch( appearInfo->appearance->teamId )
 	{
@@ -275,7 +275,7 @@ EditorObject::AppearanceInfo& EditorObject::AppearanceInfo::operator=( const App
 	return *this;
 }
 
-int	EditorObject::getSpecialType() const
+int32_t	EditorObject::getSpecialType() const
 {
 	return EditorObjectMgr::instance()->getSpecialType( getID() );
 }
@@ -283,10 +283,10 @@ int	EditorObject::getSpecialType() const
 //*************************************************************************************************
 
 
-Unit::Unit( int align )
+Unit::Unit( int32_t align )
 {
 	pAlternativeInstances = new CUnitList;
-	ULONG squadNum = EditorObjectMgr::instance()->getNextAvailableSquadNum();
+	uint32_t squadNum = EditorObjectMgr::instance()->getNextAvailableSquadNum();
 	setSquad(squadNum);
 	EditorObjectMgr::instance()->registerSquadNum(squadNum);
 	setSelfRepairBehaviorEnabled(true);
@@ -311,7 +311,7 @@ Unit::Unit( const Unit& src ) : EditorObject( src )
 		lance = src.lance;
 		lanceIndex = src.lanceIndex;
 		pilot = src.pilot;
-		ULONG color1, color2, color3;
+		uint32_t color1, color2, color3;
 		src.getColors(color1, color2, color3);
 		setColors(color1, color2, color3);
 		setSelfRepairBehaviorEnabled(src.getSelfRepairBehaviorEnabled());
@@ -338,7 +338,7 @@ void Unit::CastAndCopy(const EditorObject &master)
 	}
 }
 
-bool Unit::save( FitIniFile* file, int WarriorNumber )
+bool Unit::save( FitIniFile* file, int32_t WarriorNumber )
 {
 	
 	bool bIsVehicle = dynamic_cast<GVAppearance*>(appearance()) ? true : false;
@@ -352,7 +352,7 @@ bool Unit::save( FitIniFile* file, int WarriorNumber )
 		appearance()->teamId == EDITOR_TEAM1 ? "pv20600" : "pv20500" );
 }
 
-bool Unit::save( FitIniFile* file, int WarriorNumber, int controlDataType, PSTR objectProfile )
+bool Unit::save( FitIniFile* file, int32_t WarriorNumber, int32_t controlDataType, PSTR objectProfile )
 {
 	// ARM
 	if (mechAsset)
@@ -404,10 +404,10 @@ bool Unit::save( FitIniFile* file, int WarriorNumber, int controlDataType, PSTR 
 	file->writeBlock( tmp );
 	file->writeIdULong( "ObjectNumber", EditorObjectMgr::instance()->getFitID( id ) );
 	file->writeIdULong( "ControlType", 2 );
-	int playerNum = appearance()->teamId;
+	int32_t playerNum = appearance()->teamId;
 	file->writeIdBoolean( "PlayerPart", playerNum == EDITOR_TEAM1 ? true : false );
 	file->writeIdChar( "MyIcon", 0 );
-	int teamNum = EditorData::instance->PlayersRef().PlayerRef(playerNum).DefaultTeam();
+	int32_t teamNum = EditorData::instance->PlayersRef().PlayerRef(playerNum).DefaultTeam();
 	file->writeIdChar( "TeamID", teamNum );
 	file->writeIdChar( "CommanderID",playerNum );
 	file->writeIdULong( "Pilot", WarriorNumber );
@@ -416,12 +416,12 @@ bool Unit::save( FitIniFile* file, int WarriorNumber, int controlDataType, PSTR 
 	file->writeIdFloat( "Rotation", appearance()->rotation );
 	file->writeIdLong( "Active", 1 );
 	file->writeIdLong( "Exists", 1 );
-	file->writeIdFloat( "Damage", (float)((int)getDamage()) );
+	file->writeIdFloat( "Damage", (float)((int32_t)getDamage()) );
 	file->writeIdULong( "BaseColor", baseColor );
 	file->writeIdULong( "HighlightColor1", highlightColor );
 	file->writeIdULong( "HighlightColor2", highlightColor2 );
 
-	ULONG tmpULong = 0;
+	uint32_t tmpULong = 0;
 	if (getSelfRepairBehaviorEnabled())
 	{
 		tmpULong = 1;
@@ -439,7 +439,7 @@ bool Unit::save( FitIniFile* file, int WarriorNumber, int controlDataType, PSTR 
 	return true;
 }
 
-bool Unit::load( FitIniFile* file, int warriorNumber )
+bool Unit::load( FitIniFile* file, int32_t warriorNumber )
 {
 	int32_t result = 0;
 	char tmp;
@@ -462,7 +462,7 @@ bool Unit::load( FitIniFile* file, int warriorNumber )
 	file->readIdULong( "HighlightColor1", highlightColor );
 	file->readIdULong( "HighlightColor2", highlightColor2 );
 
-	ULONG tmpULong = 1;
+	uint32_t tmpULong = 1;
 	result = file->readIdULong( "SelfRepairBehavior", tmpULong );
 	if ((NO_ERROR == result) && (0 == tmpULong))
 	{
@@ -475,7 +475,7 @@ bool Unit::load( FitIniFile* file, int warriorNumber )
 
 	file->readIdULong( "VariantNumber", variant );
 
-	ULONG squadNum = 1;
+	uint32_t squadNum = 1;
 	result = file->readIdULong("SquadNum", squadNum);
 	if (NO_ERROR != result) {
 		// the unit should already have a valid default squad assigned at construction
@@ -504,14 +504,14 @@ bool Unit::load( FitIniFile* file, int warriorNumber )
 	return true;
 }
 
-void Unit::getColors( ULONG& color1, ULONG& color2, ULONG& color3 ) const
+void Unit::getColors( uint32_t& color1, uint32_t& color2, uint32_t& color3 ) const
 {
 	color1 = baseColor;
 	color2 = highlightColor;
 	color3 = highlightColor2;
 }
 
-void Unit::setColors( ULONG color1, ULONG color2, ULONG color3 ) 
+void Unit::setColors( uint32_t color1, uint32_t color2, uint32_t color3 ) 
 {
 	baseColor = color1;
 	highlightColor = color2;
@@ -528,7 +528,7 @@ Unit& Unit::operator=( const Unit& src )
 		lance = src.lance;
 		lanceIndex = src.lanceIndex;
 		pilot = src.pilot;
-		ULONG color1, color2, color3;
+		uint32_t color1, color2, color3;
 		src.getColors(color1, color2, color3);
 		setColors(color1, color2, color3);
 		setSelfRepairBehaviorEnabled(src.getSelfRepairBehaviorEnabled());
@@ -542,7 +542,7 @@ Unit& Unit::operator=( const Unit& src )
 	return *this;
 }
 
-void Unit::setSquad(ULONG newSquad) {
+void Unit::setSquad(uint32_t newSquad) {
 	squad = newSquad;
 	CUnitList::EIterator iter = pAlternativeInstances->Begin();
 	while (!iter.IsDone())
@@ -554,7 +554,7 @@ void Unit::setSquad(ULONG newSquad) {
 
 //*************************************************************************************************
 
-bool DropZone::save( FitIniFile* file, int number )
+bool DropZone::save( FitIniFile* file, int32_t number )
 {
 	Stuff::Vector3D pos = getPosition();
 	
@@ -593,7 +593,7 @@ bool DropZone::save( FitIniFile* file, int number )
 	return true;
 }
 
-DropZone::DropZone( const Stuff::Vector3D& pos, int alignment, bool bvtol )
+DropZone::DropZone( const Stuff::Vector3D& pos, int32_t alignment, bool bvtol )
 {
 	bVTol = bvtol;
 }
@@ -613,7 +613,7 @@ void DropZone::CastAndCopy(const EditorObject &master)
 }
 
 //*************************************************************************************************
-bool Brain::save( FitIniFile* file, int warriorNumber, bool bPlayer )
+bool Brain::save( FitIniFile* file, int32_t warriorNumber, bool bPlayer )
 {
 	if (brainName[0])
 	{
@@ -689,7 +689,7 @@ bool Brain::save( FitIniFile* file, int warriorNumber, bool bPlayer )
 }
 
 //*************************************************************************************************
-bool Brain::load( FitIniFile* file, int warriorNumber )
+bool Brain::load( FitIniFile* file, int32_t warriorNumber )
 {
 	file->readIdLong( "NumCells", numCells );
 	file->readIdLong( "NumStaticVars", numStaticVars );
@@ -780,7 +780,7 @@ Brain& Brain::operator=( const Brain& src )
 	
 }
 
-void Pilot::save( FitIniFile* file, int bGoodGuy )
+void Pilot::save( FitIniFile* file, int32_t bGoodGuy )
 {
 	file->writeIdString( "Profile", info->fileName );
 
@@ -795,7 +795,7 @@ void Pilot::save( FitIniFile* file, int bGoodGuy )
 	}
 }
 
-void Pilot::load( FitIniFile* file, int bGoodGuy )
+void Pilot::load( FitIniFile* file, int32_t bGoodGuy )
 {
 	int32_t result = 0;
 	char buffer[256];
@@ -803,7 +803,7 @@ void Pilot::load( FitIniFile* file, int bGoodGuy )
 	bool bFound = 0;
 	if (NO_ERROR == result)
 	{
-		for ( int i = 0; i < goodCount; i++ )
+		for ( int32_t i = 0; i < goodCount; i++ )
 		{
 			if ( _stricmp( buffer, s_GoodPilots[i].fileName ) == 0 )
 			{
@@ -815,7 +815,7 @@ void Pilot::load( FitIniFile* file, int bGoodGuy )
 
 		if ( !bFound )
 		{
-			for ( int i = 0; i < badCount; i++ )
+			for ( int32_t i = 0; i < badCount; i++ )
 			{
 				if ( _stricmp( buffer, s_BadPilots[i].fileName ) == 0 )
 				{
@@ -861,11 +861,11 @@ void Pilot::initPilots()
 	PilotInfo* infos = s_GoodPilots;
 	int32_t* counter = &goodCount;
 
-	for ( int i = 0; i < 2; i++ )
+	for ( int32_t i = 0; i < 2; i++ )
 	{
 		while( true )
 		{
-			int bytesRead = file.readLine( (puint8_t)pilotFileName, 256 );
+			int32_t bytesRead = file.readLine( (puint8_t)pilotFileName, 256 );
 
 			if ( bytesRead < 2 )
 				break;
@@ -907,7 +907,7 @@ void Pilot::initPilots()
 			strcpy( infos[*counter].fileName, pilotFileName );
 
 			// if we got this far we have a file, make a pilot
-			int result = pilotFile.seekBlock( "General" );
+			int32_t result = pilotFile.seekBlock( "General" );
 			gosASSERT( result == 0 );
 
 			int32_t tmp;
@@ -945,7 +945,7 @@ void Pilot::initPilots()
 
 void Pilot::setName( PCSTR newName )
 {
-	for ( int i = 0; i < goodCount; i++ )
+	for ( int32_t i = 0; i < goodCount; i++ )
 	{
 		if ( _stricmp( newName, s_GoodPilots[i].name ) == 0 )
 		{
@@ -967,7 +967,7 @@ void Pilot::setName( PCSTR newName )
 
 }
 
-bool NavMarker::save( FitIniFile* file, int warriorNumber )
+bool NavMarker::save( FitIniFile* file, int32_t warriorNumber )
 { 
 	char text[32];
 	sprintf( text, "NavMarker%ld", warriorNumber );

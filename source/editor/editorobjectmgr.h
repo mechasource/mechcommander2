@@ -102,9 +102,9 @@ public:
 	void		init( PCSTR bldgListFileName, PCSTR objectFileName );
 
 	EditorObject*	addBuilding( const Stuff::Vector3D& position, 
-								ULONG group, 
-								ULONG indexWithinGroup,
-								int alignment,
+								uint32_t group, 
+								uint32_t indexWithinGroup,
+								int32_t alignment,
 								float rotation = 0.0,
 								float height = 1.0,
 								bool bSnapToCell = true ); // returns NULL if failure
@@ -112,7 +112,7 @@ public:
 	bool addBuilding( EditorObject* pObjectThatWeWillCopy );
 
 	EditorObject*	addDropZone( const Stuff::Vector3D& position, 
-								int alignment, bool bVTol ); // returns NULL if failure
+								int32_t alignment, bool bVTol ); // returns NULL if failure
 
 	bool		deleteBuilding( const EditorObject* pInfo ); // should only be one building in a spot
 	bool		deleteObject( const EditorObject* pInfo){ return deleteBuilding( pInfo ); } // only object FOR NOW
@@ -135,27 +135,27 @@ public:
 	
 	bool		canAddBuilding( const Stuff::Vector3D& position,
 								float rotation,
-								ULONG group,
-								ULONG indexWithinGroup );
+								uint32_t group,
+								uint32_t indexWithinGroup );
 
-	bool		canAddDropZone( const Stuff::Vector3D& position, int alignment, bool bVTol );
+	bool		canAddDropZone( const Stuff::Vector3D& position, int32_t alignment, bool bVTol );
 
-	int			getBuildingGroupCount() const;		// mechs count too!
-	int			getNumberBuildingsInGroup( int Group ) const;
-	void		getBuildingGroupNames( PCSTR* names, int& numberOfNames ) const;
-	void		getNamesOfObjectsInGroup( PCSTR groupName, PCSTR* names, int& numberOfNames ) const;
-	void		getBuildingNamesInGroup( int Group, PCSTR* names, int& numberOfNames ) const;
-	int			getNumberOfVariants( int group, int indexInGroup ) const;
-	void		getVariantNames( int group, int indexInGroup, PCSTR* names, int& numberOfNames ) const;
-	PCSTR	getGroupName( int group ) const;
-	PCSTR	getObjectName( int ID ) const;
+	int32_t			getBuildingGroupCount() const;		// mechs count too!
+	int32_t			getNumberBuildingsInGroup( int32_t Group ) const;
+	void		getBuildingGroupNames( PCSTR* names, int32_t& numberOfNames ) const;
+	void		getNamesOfObjectsInGroup( PCSTR groupName, PCSTR* names, int32_t& numberOfNames ) const;
+	void		getBuildingNamesInGroup( int32_t Group, PCSTR* names, int32_t& numberOfNames ) const;
+	int32_t			getNumberOfVariants( int32_t group, int32_t indexInGroup ) const;
+	void		getVariantNames( int32_t group, int32_t indexInGroup, PCSTR* names, int32_t& numberOfNames ) const;
+	PCSTR	getGroupName( int32_t group ) const;
+	PCSTR	getObjectName( int32_t ID ) const;
 
-	int			getUnitGroupCount() const;
-	void		getUnitGroupNames( PCSTR* names, int* IDs, int& numberOfNames ) const;
+	int32_t			getUnitGroupCount() const;
+	void		getUnitGroupNames( PCSTR* names, pint32_t IDs, int32_t& numberOfNames ) const;
 
 
-	bool		save( PacketFile&  file, int whichPacket );
-	bool		load( PacketFile&  file, int whichPacket );
+	bool		save( PacketFile&  file, int32_t whichPacket );
+	bool		load( PacketFile&  file, int32_t whichPacket );
 
 	bool		saveMechs( FitIniFile& file );
 	bool		loadMechs( FitIniFile& file ); // need to implement this
@@ -166,23 +166,23 @@ public:
 	bool		saveForests( FitIniFile& file );
 	bool		loadForests( FitIniFile& file );
 
-	int			getFitID( int id ) const;
+	int32_t			getFitID( int32_t id ) const;
 
 	bool		moveBuilding( EditorObject* pInfo, int32_t cellI, int32_t cellJ );
-	bool		getBlocksLineOfFire( int id ) const;
-	bool		getIsHoverCraft( int id ) const;
+	bool		getBlocksLineOfFire( int32_t id ) const;
+	bool		getIsHoverCraft( int32_t id ) const;
 
-	inline	int getID( int32_t group, int32_t index ) { return (getType(group,index) << 24) | (group << 16) | (index << 8); }
+	inline	int32_t getID( int32_t group, int32_t index ) { return (getType(group,index) << 24) | (group << 16) | (index << 8); }
 
 	void		clear(); // delete all objects
 
-	int64_t		getImpassability( int id );
+	int64_t		getImpassability( int32_t id );
 
-	inline static ULONG getGroup( int32_t id );
-	inline static ULONG getIndexInGroup( int32_t id );
-	inline int					getAppearanceType( int ID );
+	inline static uint32_t getGroup( int32_t id );
+	inline static uint32_t getIndexInGroup( int32_t id );
+	inline int32_t					getAppearanceType( int32_t ID );
 
-	bool getBuildingFromID( int fitID, ULONG& group, ULONG& index, bool canBeMech );
+	bool getBuildingFromID( int32_t fitID, uint32_t& group, uint32_t& index, bool canBeMech );
 
 	void unselectAll();
 	void select( const Stuff::Vector4D& pos1, const Stuff::Vector4D& pos2 );
@@ -190,15 +190,15 @@ public:
 	void objectSelectionChanged(void) /* use this to notify the EditorObjectMgr when selection states of objects are changed externally */
 	{ selectedObjectsNeedsToBeSynched = true; }
 	bool hasSelection();
-	int  getSelectionCount(); // returns the number of selected items
+	int32_t  getSelectionCount(); // returns the number of selected items
 	EDITOR_OBJECT_LIST getSelectedObjectList();
 
 	void deleteSelectedObjects();
 
 	void adjustObjectsToNewTerrainHeights();
 
-	ObjectAppearance* getAppearance( ULONG group,
-											 ULONG indexWithinGroup );
+	ObjectAppearance* getAppearance( uint32_t group,
+											 uint32_t indexWithinGroup );
 	ObjectAppearance* getAppearance( Building* pBuilding );
 
 	// LINKS!
@@ -208,14 +208,14 @@ public:
 	void addLink( BuildingLink* );
 	void deleteLink( BuildingLink* );
 
-	inline BuildingType	getSpecialType( int ID );
-	inline bool isCapturable( int ID );
-	inline float getScale( int ID );
-	inline bool isAlignable( int ID );
-	inline int getObjectTypeNum( int ID );
-	inline PCSTR getFileName( int ID ) const;
-	inline PCSTR getTGAFileName( int ID ) const;
-	inline ULONG getTacMapColor( int ID ) const;
+	inline BuildingType	getSpecialType( int32_t ID );
+	inline bool isCapturable( int32_t ID );
+	inline float getScale( int32_t ID );
+	inline bool isAlignable( int32_t ID );
+	inline int32_t getObjectTypeNum( int32_t ID );
+	inline PCSTR getFileName( int32_t ID ) const;
+	inline PCSTR getTGAFileName( int32_t ID ) const;
+	inline uint32_t getTacMapColor( int32_t ID ) const;
 
 	typedef EList< EditorObject*, EditorObject*>  BUILDING_LIST;	// buildings on the map
 	typedef EList< Unit*, Unit* > UNIT_LIST;
@@ -224,12 +224,12 @@ public:
 	UNIT_LIST getUnits() { return units; }
 	BUILDING_LIST getBuildings() { return buildings; }
 
-	ULONG getNextAvailableSquadNum() { return nextAvailableSquadNum; }
-	void registerSquadNum(ULONG squadNum);
-	void unregisterSquadNum(ULONG squadNum) {}
+	uint32_t getNextAvailableSquadNum() { return nextAvailableSquadNum; }
+	void registerSquadNum(uint32_t squadNum);
+	void unregisterSquadNum(uint32_t squadNum) {}
 	void resetAvailableSquadNums() { nextAvailableSquadNum = 1; }
 
-	int getNextAvailableForestID();
+	int32_t getNextAvailableForestID();
 	int32_t createForest( const Forest& settings );
 	void editForest( int32_t& ID,  const Forest& newSettings );
 	void removeForest( const Forest& settings );
@@ -243,17 +243,17 @@ public:
 		{
 			char				name[64];
 			PSTR*				varNames;
-			int					nameID;
+			int32_t					nameID;
 			char				fileName[64];
 			AppearanceType*		appearanceType;
-			int					type;
-			ULONG		fitID;
+			int32_t					type;
+			uint32_t		fitID;
 			int64_t				impassability;
 			bool				blocksLineOfFire;
 			BuildingType		specialType;
 			bool				capturable;
 			bool				alignable;
-			ULONG				writeOnTacMap;
+			uint32_t				writeOnTacMap;
 			char				tgaName[64];
 			int32_t				objectTypeNum;
 			char				forestId;
@@ -288,66 +288,66 @@ public:
 		void syncSelectedObjectPointerList();	// makes sure that the "selectedObjects" list corresponds to the objects marked as selected
 
 		// HELPERS
-		int ExtractNextString( puint8_t& pFileLine, PSTR pBuffer, int bufferLength );
-		int ExtractNextInt( puint8_t& pFileLine );
+		int32_t ExtractNextString( puint8_t& pFileLine, PSTR pBuffer, int32_t bufferLength );
+		int32_t ExtractNextInt( puint8_t& pFileLine );
 		float ExtractNextFloat( puint8_t& pFileLine );
 
-		int  getType( ULONG group, ULONG indexWithinGroup );
-		void getRandomTreeFromGroup( int treeGroup, int& group, int& index );
+		int32_t  getType( uint32_t group, uint32_t indexWithinGroup );
+		void getRandomTreeFromGroup( int32_t treeGroup, int32_t& group, int32_t& index );
 
 
 		void doForest( const Forest& forest );
 
 
-		ULONG nextAvailableSquadNum;
+		uint32_t nextAvailableSquadNum;
 
 		static EditorObjectMgr*	s_instance; // the one and only instance of this object
 };
 
-inline ULONG EditorObjectMgr::getGroup( int32_t id )
+inline uint32_t EditorObjectMgr::getGroup( int32_t id )
 {
 	return ((id >> 16) & 0x00ff);
 }
-inline ULONG EditorObjectMgr::getIndexInGroup( int32_t id )
+inline uint32_t EditorObjectMgr::getIndexInGroup( int32_t id )
 {
 	return ((id >> 8) & 0x00ff);
 }
-inline EditorObjectMgr::BuildingType	EditorObjectMgr::getSpecialType( int ID )
+inline EditorObjectMgr::BuildingType	EditorObjectMgr::getSpecialType( int32_t ID )
 {
 	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].specialType;
 }
 
-inline bool EditorObjectMgr::isAlignable( int ID )
+inline bool EditorObjectMgr::isAlignable( int32_t ID )
 {
 	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].alignable;
 }
 
-inline int EditorObjectMgr::getAppearanceType( int ID )
+inline int32_t EditorObjectMgr::getAppearanceType( int32_t ID )
 {
 	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].appearanceType->getAppearanceClass();
 }
 
-inline int EditorObjectMgr::getObjectTypeNum( int ID )
+inline int32_t EditorObjectMgr::getObjectTypeNum( int32_t ID )
 {
 	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].objectTypeNum;
 }
 
-inline PCSTR EditorObjectMgr::getFileName( int ID ) const
+inline PCSTR EditorObjectMgr::getFileName( int32_t ID ) const
 {
 	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].fileName;
 }
 
-inline PCSTR EditorObjectMgr::getTGAFileName( int ID ) const
+inline PCSTR EditorObjectMgr::getTGAFileName( int32_t ID ) const
 {
 	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].tgaName;
 }
 
-inline ULONG EditorObjectMgr::getTacMapColor( int ID ) const
+inline uint32_t EditorObjectMgr::getTacMapColor( int32_t ID ) const
 {
 	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].writeOnTacMap;
 }
 
-inline float EditorObjectMgr::getScale( int ID )
+inline float EditorObjectMgr::getScale( int32_t ID )
 {
 	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].scale;
 }

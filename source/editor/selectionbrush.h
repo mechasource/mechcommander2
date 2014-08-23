@@ -19,23 +19,23 @@ class SelectionBrush: public Brush
 {
 	public:
 
-		SelectionBrush( bool Area, int radius );
+		SelectionBrush( bool Area, int32_t radius );
 		virtual ~SelectionBrush();
 		virtual bool beginPaint();
 		virtual Action* endPaint();
-		virtual bool paint( Stuff::Vector3D& worldPos, int screenX, int screenY );
-		virtual bool canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int flags ) { return true; } 
-		virtual void render( int screenX, int screenY );
-		bool    paintSmooth( Stuff::Vector3D& worldPos, int screenX, int screenY, int radius );
+		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY );
+		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ) { return true; } 
+		virtual void render( int32_t screenX, int32_t screenY );
+		bool    paintSmooth( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t radius );
 
 	private:
 
 		// suppressed
 		SelectionBrush( const SelectionBrush& electionBrush );
 		SelectionBrush& operator=( const SelectionBrush& electionBrush );
-		static float calcNewHeight( int vertexRow, int vertexCol, float screenDeltaY );
-		bool   paintSmoothArea( Stuff::Vector3D& worldPos, int screenX, int screenY, float radiusX, float radiusY,
-									   int j, int i);
+		static float calcNewHeight( int32_t vertexRow, int32_t vertexCol, float screenDeltaY );
+		bool   paintSmoothArea( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, float radiusX, float radiusY,
+									   int32_t j, int32_t i);
 
 		Stuff::Vector4D		lastPos;
 		Stuff::Vector3D		firstWorldPos;
@@ -47,13 +47,13 @@ class SelectionBrush: public Brush
 		EditorObject* pDragBuilding;
 		bool bFirstClick;
 
-		int lastRow;
-		int lastCol;
+		int32_t lastRow;
+		int32_t lastCol;
 
 		ActionPaintTile*	pCurAction;
 		ModifyBuildingAction*	pCurModifyBuildingAction;
 
-		int smoothRadius;
+		int32_t smoothRadius;
 
 
 };

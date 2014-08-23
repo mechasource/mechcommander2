@@ -22,7 +22,7 @@ static int32_t sReadIdBoolean(FitIniFile &missionFile, PCSTR varName, bool &valu
 	return result;
 }
 
-static int32_t sReadIdInteger(FitIniFile &missionFile, PCSTR varName, int &value) {
+static int32_t sReadIdInteger(FitIniFile &missionFile, PCSTR varName, int32_t &value) {
 	int32_t result = 0;
 	int32_t tmpLong;
 	result = missionFile.readIdLong((PSTR )varName, tmpLong);
@@ -86,7 +86,7 @@ bool CMissionData::Save(FitIniFile &fitFile) {
 }
 
 bool CMissionData::Read(FitIniFile &fitFile) {
-	int result;
+	int32_t result;
 	result = sReadIdString(fitFile, "FileName", m_MissionFile);
 	result = sReadIdBoolean(fitFile, "Mandatory", m_IsMandatory);
 	result = sReadIdString(fitFile, "PurchaseFile", m_PurchaseFile);
@@ -133,7 +133,7 @@ bool CGroupData::Save(FitIniFile &fitFile, PCSTR groupName) {
 	}
 
 	CMissionList::EIterator it;
-	int index;
+	int32_t index;
 	for (it = m_MissionList.Begin(), index = 0; !it.IsDone(); it++, index+=1) {
 		ECharString blockName;
 		blockName.Format("%sMission%d", groupName, index);
@@ -144,7 +144,7 @@ bool CGroupData::Save(FitIniFile &fitFile, PCSTR groupName) {
 }
 
 bool CGroupData::Read(FitIniFile &fitFile, PCSTR groupName) {
-	int result;
+	int32_t result;
 	result = sReadIdString(fitFile, "Label", m_Label);
 	result = sReadIdInteger(fitFile, "NumberToComplete", m_NumMissionsToComplete);
 	result = sReadIdString(fitFile, "OperationFile", m_OperationFile);
@@ -152,11 +152,11 @@ bool CGroupData::Read(FitIniFile &fitFile, PCSTR groupName) {
 	result = sReadIdString(fitFile, "PreVideo", m_PreVideoFile);
 	result = sReadIdInteger(fitFile, "Tune", m_TuneNumber);
 	result = sReadIdString(fitFile, "ABLScript", m_ABLScript);
-	int missionCount = 0;
+	int32_t missionCount = 0;
 	result = sReadIdInteger(fitFile, "MissionCount", missionCount);
 	if (NO_ERROR != result) { return false; }
 
-	int index;
+	int32_t index;
 	for (index = 0; missionCount > index; index+=1) {
 		ECharString blockName;
 		blockName.Format("%sMission%d", groupName, index);
@@ -192,7 +192,7 @@ bool CCampaignData::operator==(const CCampaignData &rhs) const {
 
 bool CCampaignData::Save(CString pathName) {
 	FitIniFile fitFile;
-	int result = fitFile.create(pathName.GetBuffer(0));
+	int32_t result = fitFile.create(pathName.GetBuffer(0));
 	if (result != NO_ERROR)
 	{
 		return false;
@@ -210,7 +210,7 @@ bool CCampaignData::Save(CString pathName) {
 	fitFile.writeIdLong("GroupCount", m_GroupList.Count());
 
 	CGroupList::EIterator it;
-	int index;
+	int32_t index;
 	for (it = m_GroupList.Begin(), index = 0; !it.IsDone(); it++, index+=1) {
 		ECharString blockName;
 		blockName.Format("Group%d", index);
@@ -224,7 +224,7 @@ bool CCampaignData::Save(CString pathName) {
 
 bool CCampaignData::Read(CString pathName) {
 	FitIniFile fitFile;
-	int result = fitFile.open(pathName.GetBuffer(0));
+	int32_t result = fitFile.open(pathName.GetBuffer(0));
 	if (NO_ERROR != result) { assert(false); return false; }
 
 	result = fitFile.seekBlock("Campaign");
@@ -236,11 +236,11 @@ bool CCampaignData::Read(CString pathName) {
 	result = sReadIdBoolean(fitFile, "NameUseResourceString", m_NameUseResourceString);
 	result = sReadIdInteger(fitFile, "CBills", m_CBills);
 	result = sReadIdString(fitFile, "FinalVideo", m_FinalVideo);
-	int groupCount = 0;
+	int32_t groupCount = 0;
 	result = sReadIdInteger(fitFile, "GroupCount", groupCount);
 	if (NO_ERROR != result) { return false; }
 
-	int index;
+	int32_t index;
 	for (index = 0; groupCount > index; index+=1) {
 		ECharString blockName;
 		blockName.Format("Group%d", index);

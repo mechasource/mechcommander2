@@ -28,19 +28,19 @@ public:
 	CCampaignData m_LastSavedCampaignData;
 
 	void UpdateNameDisplay();
-	int PromptAndSaveIfNecessary();
-	int SaveAs();
-	int Save();
+	int32_t PromptAndSaveIfNecessary();
+	int32_t SaveAs();
+	int32_t Save();
 
 	CString m_NameUnlocalizedText;
 	bool m_NameUseResourceString;
-	int m_NameResourceStringID;
+	int32_t m_NameResourceStringID;
 
 // Dialog Data
 	//{{AFX_DATA(CCampaignDialog)
 	enum { IDD = IDD_CAMPAIGN };
 	CListBox	m_GroupListControl;
-	int		m_CBillsEdit;
+	int32_t		m_CBillsEdit;
 	CString	m_FinalVideoEdit;
 	CString	m_NameEdit;
 	CString	m_NameResourceStringIDEdit;

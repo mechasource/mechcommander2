@@ -132,7 +132,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // MissionSettingsDlg message handlers
 
-static BOOL CSLoadString(int resourceID, CString &targetStr) {
+static BOOL CSLoadString(int32_t resourceID, CString &targetStr) {
 	char szTmp[16384/*max string length*/];
 	cLoadString( resourceID, szTmp, 16384/*max string length*/ );
 	targetStr = szTmp;
@@ -148,7 +148,7 @@ void MissionSettingsDlg::UpdateMissionNameDisplay() {
 	UpdateData(TRUE);
 	if (m_MissionNameUseResourceString) {
 		m_MissionNameResourceStringIDEdit.Format("%d", m_MissionNameResourceStringID);
-		int ret = CSLoadString(m_MissionNameResourceStringID, m_MissionNameEdit);
+		int32_t ret = CSLoadString(m_MissionNameResourceStringID, m_MissionNameEdit);
 		if (0 == ret) {
 			m_MissionNameEdit = _TEXT("");
 		}
@@ -163,7 +163,7 @@ void MissionSettingsDlg::UpdateBlurbDisplay() {
 	UpdateData(TRUE);
 	if (m_BlurbUseResourceString) {
 		m_BlurbResourceStringIDEdit.Format("%d", m_BlurbResourceStringID);
-		int ret = CSLoadString(m_BlurbResourceStringID, m_BlurbEdit);
+		int32_t ret = CSLoadString(m_BlurbResourceStringID, m_BlurbEdit);
 		if (0 == ret) {
 			m_BlurbEdit = _TEXT("");
 		}
@@ -178,7 +178,7 @@ void MissionSettingsDlg::UpdateBlurb2Display() {
 	UpdateData(TRUE);
 	if (m_Blurb2UseResourceString) {
 		m_Blurb2ResourceStringIDEdit.Format("%d", m_Blurb2ResourceStringID);
-		int ret = CSLoadString(m_Blurb2ResourceStringID, m_Blurb2Edit);
+		int32_t ret = CSLoadString(m_Blurb2ResourceStringID, m_Blurb2Edit);
 		if (0 == ret) {
 			m_Blurb2Edit = _TEXT("");
 		}
@@ -215,11 +215,11 @@ void MissionSettingsDlg::OnBrowseButton()
 		selectAVIFileDialog.m_ofn.lpstrInitialDir = moviePath;
 		if( selectAVIFileDialog.DoModal()==IDOK ) {
 			CString pathname = selectAVIFileDialog.GetPathName();
-			int CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
+			int32_t CurrentDirectoryBufferLength = GetCurrentDirectory(0, 0);
 			assert(1 <= CurrentDirectoryBufferLength);
 			//TCHAR *CurrentDirectoryBuffer = new TCHAR[CurrentDirectoryBufferLength];
 			TCHAR *CurrentDirectoryBuffer = (TCHAR *)malloc(sizeof(TCHAR) * CurrentDirectoryBufferLength);
-			int ret = GetCurrentDirectory(CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
+			int32_t ret = GetCurrentDirectory(CurrentDirectoryBufferLength, CurrentDirectoryBuffer);
 			assert(CurrentDirectoryBufferLength - 1 == ret);
 			ret = -1;
 			if (pathname.GetLength() > (CurrentDirectoryBufferLength - 1)) {
@@ -247,7 +247,7 @@ void MissionSettingsDlg::OnMissionNameEditButton()
 	userTextEditDialog.m_UnlocalizedText = m_MissionNameUnlocalizedText;
 	userTextEditDialog.m_UseResourceString = m_MissionNameUseResourceString;
 	userTextEditDialog.m_ResourceStringID = m_MissionNameResourceStringID;
-	int ret = userTextEditDialog.DoModal();
+	int32_t ret = userTextEditDialog.DoModal();
 	if (IDOK == ret) {
 		m_MissionNameUnlocalizedText = userTextEditDialog.m_UnlocalizedText;
 		m_MissionNameUseResourceString = userTextEditDialog.m_UseResourceString;
@@ -262,7 +262,7 @@ void MissionSettingsDlg::OnBlurbEditButton()
 	userTextEditDialog.m_UnlocalizedText = m_BlurbUnlocalizedText;
 	userTextEditDialog.m_UseResourceString = m_BlurbUseResourceString;
 	userTextEditDialog.m_ResourceStringID = m_BlurbResourceStringID;
-	int ret = userTextEditDialog.DoModal();
+	int32_t ret = userTextEditDialog.DoModal();
 	if (IDOK == ret) {
 		m_BlurbUnlocalizedText = userTextEditDialog.m_UnlocalizedText;
 		m_BlurbUseResourceString = userTextEditDialog.m_UseResourceString;
@@ -277,7 +277,7 @@ void MissionSettingsDlg::OnBlurb2EditButton()
 	userTextEditDialog.m_UnlocalizedText = m_Blurb2UnlocalizedText;
 	userTextEditDialog.m_UseResourceString = m_Blurb2UseResourceString;
 	userTextEditDialog.m_ResourceStringID = m_Blurb2ResourceStringID;
-	int ret = userTextEditDialog.DoModal();
+	int32_t ret = userTextEditDialog.DoModal();
 	if (IDOK == ret) {
 		m_Blurb2UnlocalizedText = userTextEditDialog.m_UnlocalizedText;
 		m_Blurb2UseResourceString = userTextEditDialog.m_UseResourceString;

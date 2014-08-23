@@ -27,7 +27,7 @@ PointerSelectObjectDlg::PointerSelectObjectDlg():CDialog(IDD_POINTER_SELECT_OBJE
 	m_bTimerIsReset = true;
 }
 
-PointerSelectObjectDlg::PointerSelectObjectDlg(int x, int y):CDialog(IDD_POINTER_SELECT_OBJECT)
+PointerSelectObjectDlg::PointerSelectObjectDlg(int32_t x, int32_t y):CDialog(IDD_POINTER_SELECT_OBJECT)
 {
 	m_pButton = 0;
 	m_bTimerIsReset = true;
@@ -45,7 +45,7 @@ BOOL PointerSelectObjectDlg::OnInitDialog()
 	return 1;
 }
 
-UINT PointerSelectObjectDlg::OnNcHitTest( CPoint point )
+uint32_t PointerSelectObjectDlg::OnNcHitTest( CPoint point )
 {
 	return HTCLIENT;
 }
@@ -62,7 +62,7 @@ BOOL PointerSelectObjectDlg::OnCommand(WPARAM wParam, LPARAM lParam) // called b
 }
 
 #include "afxpriv.h" // just for definition of WM_KICKIDLE
-BOOL PointerSelectObjectDlg::OnWndMsg( UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult )
+BOOL PointerSelectObjectDlg::OnWndMsg( uint32_t message, WPARAM wParam, LPARAM lParam, LRESULT* pResult )
 {
 	switch (message)
 	{
@@ -108,7 +108,7 @@ BOOL PointerSelectObjectDlg::OnWndMsg( UINT message, WPARAM wParam, LPARAM lPara
 		break;
 	case WM_KEYDOWN:
 		{
-			//int i = 17;
+			//int32_t i = 17;
 		}
 		break;
 	}
@@ -122,7 +122,7 @@ BOOL PointerSelectObjectDlg::OnWndMsg( UINT message, WPARAM wParam, LPARAM lPara
 		lParam = MAKELPARAM(pt.x, pt.y);
 		EditorInterface::instance()->SendMessage(message, wParam, lParam);
 	} else if ((WM_KEYDOWN == message) || (WM_KEYUP == message)) {
-		switch ((int)wParam) {
+		switch ((int32_t)wParam) {
 		case VK_RETURN:
 		case VK_SPACE:
 		case VK_PRIOR:
@@ -141,7 +141,7 @@ BOOL PointerSelectObjectDlg::OnWndMsg( UINT message, WPARAM wParam, LPARAM lPara
 	}
 
 	{
-		static int depth = 0;
+		static int32_t depth = 0;
 		if (0 == depth) {
 			MSG msg;
 			/* calling PeekMessage() from within OnWndMsg() allows it to become reentrant */

@@ -68,15 +68,15 @@ void UnitSettingsDlg::OnSelchangeGroup()
 {
 		m_Mech.ResetContent();
 
-		int group = m_Group.GetCurSel();
+		int32_t group = m_Group.GetCurSel();
 		group = m_Group.GetItemData( group );
 
 		PCSTR MechNames[256];
-		int count = 256;
+		int32_t count = 256;
 			
 		EditorObjectMgr::instance()->getBuildingNamesInGroup( group, MechNames, count );
 
-		for ( int i = 0; i < count; ++i )
+		for ( int32_t i = 0; i < count; ++i )
 		{
 			m_Mech.AddString( MechNames[i] );
 		}
@@ -103,7 +103,7 @@ void UnitSettingsDlg::OnChangeHighlight1()
 	GetDlgItem( IDC_HIGHLIGHT1 )->GetWindowText( text );
 
 	bool bChanged = false;
-	int i = 0;
+	int32_t i = 0;
 	
 	if ( text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X' )) )
 		i = 2;
@@ -137,7 +137,7 @@ void UnitSettingsDlg::OnChangeHighlight2()
 	GetDlgItem( IDC_HIGHLIGHT2 )->GetWindowText( text );
 
 	bool bChanged = false;
-	int i = 0;
+	int32_t i = 0;
 	
 	if ( text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X' )) )
 		i = 2;
@@ -164,7 +164,7 @@ void UnitSettingsDlg::OnChangeBase()
 	GetDlgItem( IDC_BASE )->GetWindowText( text );
 
 	bool bChanged = false;
-	int i = 0;
+	int32_t i = 0;
 	
 	if ( text.GetLength() > 1 && (text[0] == '0' && (text[1] == 'x' || text[i] == 'X' )) )
 		i = 2;
@@ -220,12 +220,12 @@ void UnitSettingsDlg::DoColorBox( CWnd* pWnd )
 void UnitSettingsDlg::applyChanges()
 {
 	// get the type info from the dlg box
-	int index = m_Group.GetCurSel( );
+	int32_t index = m_Group.GetCurSel( );
 	if ( index != -1 )
 	{
-		int group = m_Group.GetItemData( index );
+		int32_t group = m_Group.GetItemData( index );
 
-		int indexInGroup = m_Mech.GetCurSel( );
+		int32_t indexInGroup = m_Mech.GetCurSel( );
 
 		if ( indexInGroup != -1 )
 		{
@@ -234,7 +234,7 @@ void UnitSettingsDlg::applyChanges()
 				(*iter)->setAppearance( group, indexInGroup );
 			}
 
-			int variant = m_Variant.GetCurSel();
+			int32_t variant = m_Variant.GetCurSel();
 			if ( variant != -1 )
 			{
 				for ( iter = units.Begin(); !iter.IsDone(); iter++ )
@@ -298,7 +298,7 @@ void UnitSettingsDlg::applyChanges()
 		(*iter)->setSelfRepairBehaviorEnabled(bSelfRepairBehavior);
 	}
 
-	ULONG base=0, color1=0, color2=0;
+	uint32_t base=0, color1=0, color2=0;
 	bool bBase = false;
 	bool bColor1 = false; 
 	bool bColor2 = false;
@@ -417,7 +417,7 @@ void UnitSettingsDlg::updatePossibiltyControls()
 	updateMemberVariables();
 }
 
-HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor) 
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
@@ -504,19 +504,19 @@ void UnitSettingsDlg::OnSelchangeMech()
 {
 	m_Variant.ResetContent();
 	
-	int group = m_Group.GetCurSel();
+	int32_t group = m_Group.GetCurSel();
 	group = m_Group.GetItemData( group );
 
-	int indexInGroup = m_Mech.GetCurSel();
+	int32_t indexInGroup = m_Mech.GetCurSel();
 
-	int varCount =  EditorObjectMgr::instance()->getNumberOfVariants( group, indexInGroup );
+	int32_t varCount =  EditorObjectMgr::instance()->getNumberOfVariants( group, indexInGroup );
 	PCSTR* VariantNames = 0;
 	if (0 < varCount)
 	{
 		VariantNames = new PCSTR[varCount];
 		EditorObjectMgr::instance()->getVariantNames( group, indexInGroup, VariantNames, varCount );
 
-		for ( int v = 0; v < varCount; ++v )
+		for ( int32_t v = 0; v < varCount; ++v )
 		{
 			m_Variant.AddString( VariantNames[v] );
 		}
@@ -528,7 +528,7 @@ void UnitSettingsDlg::OnSelchangeMech()
 	}
 }
 
-int UnitSettingsDlg::getPossibilityIndex()
+int32_t UnitSettingsDlg::getPossibilityIndex()
 {
 	if (!pFirstPossibility) { gosASSERT(false); return -1; }
 
@@ -537,8 +537,8 @@ int UnitSettingsDlg::getPossibilityIndex()
 	{
 		return 0;
 	}
-	int i;
-	for (i = 0; i < (int)pFirstPossibility->pAlternativeInstances->Count(); i++)
+	int32_t i;
+	for (i = 0; i < (int32_t)pFirstPossibility->pAlternativeInstances->Count(); i++)
 	{
 		if (pUnit == &(*(pFirstPossibility->pAlternativeInstances->Iterator(i))))
 		{
@@ -552,8 +552,8 @@ int UnitSettingsDlg::getPossibilityIndex()
 void UnitSettingsDlg::updateMemberVariables()
 {
 	// now need to check all of the colors
-	ULONG tmpBase, tmpHighlight1, tmpHighlight2;
-	ULONG base, highlight1, highlight2;
+	uint32_t tmpBase, tmpHighlight1, tmpHighlight2;
+	uint32_t base, highlight1, highlight2;
 	bool	bBase = true;
 	bool	bHighlight = true;
 	bool	bHighlight2 = true;
@@ -585,7 +585,7 @@ void UnitSettingsDlg::updateMemberVariables()
 		}
 	}
 
-	ULONG tmpSquadNum = pUnit->getSquad();
+	uint32_t tmpSquadNum = pUnit->getSquad();
 	m_SquadEdit.Format("%lu", tmpSquadNum);
 
 	for ( iter = units.Begin(); !iter.IsDone(); iter++ )
@@ -639,17 +639,17 @@ void UnitSettingsDlg::updateMemberVariables()
 
 	EditorObjectMgr* pMgr = EditorObjectMgr::instance();
 
-	int groupCount = pMgr->getUnitGroupCount();
+	int32_t groupCount = pMgr->getUnitGroupCount();
 
 	PCSTR* pGroups = new PCSTR[groupCount];
-	int*		 groupIDs = new int[groupCount];
+	pint32_t		 groupIDs = new int32_t[groupCount];
 
 	
 	m_Group.ResetContent();
 	
 	pMgr->getUnitGroupNames(pGroups, groupIDs, groupCount);
 
-	for ( int i = 0; i < groupCount; ++i )
+	for ( int32_t i = 0; i < groupCount; ++i )
 	{
 		m_Group.AddString( pGroups[i] );
 		m_Group.SetItemData( i, groupIDs[i] );
@@ -659,7 +659,7 @@ void UnitSettingsDlg::updateMemberVariables()
 	delete [] groupIDs;
 
 	// make sure all the units we are editing are in the same group
-	int group = units.GetHead()->getGroup();	
+	int32_t group = units.GetHead()->getGroup();	
 	for ( iter = units.Begin(); !iter.IsDone(); iter++ )
 	{
 		if ( (*iter)->getGroup() != group )
@@ -673,23 +673,23 @@ void UnitSettingsDlg::updateMemberVariables()
 	{
 		PCSTR pGroupName = pMgr->getGroupName( group );
 		
-		int index = m_Group.FindString( -1, pGroupName );
+		int32_t index = m_Group.FindString( -1, pGroupName );
 		m_Group.SetCurSel( index );
 
 		// OK, now fill in the index....
 		PCSTR MechNames[256];
-		int count = 256;
+		int32_t count = 256;
 
 		m_Mech.ResetContent();
 		pMgr->getBuildingNamesInGroup( group, MechNames, count );
 
-		for ( int i = 0; i < count; ++i )
+		for ( int32_t i = 0; i < count; ++i )
 		{
 			m_Mech.AddString( MechNames[i] );
 		}
 
 		// ok, now determine if all of the mechs are the same.
-		int indexInGroup = units.GetHead()->getIndexInGroup();
+		int32_t indexInGroup = units.GetHead()->getIndexInGroup();
 
 		for ( iter = units.Begin(); !iter.IsDone(); iter++ )
 		{
@@ -713,14 +713,14 @@ void UnitSettingsDlg::updateMemberVariables()
 
 				m_Variant.ResetContent();
 				
-				int varCount =  EditorObjectMgr::instance()->getNumberOfVariants( group, indexInGroup );
+				int32_t varCount =  EditorObjectMgr::instance()->getNumberOfVariants( group, indexInGroup );
 				PCSTR* VariantNames = 0;
 				if (0 < varCount)
 				{
 					VariantNames = new PCSTR[varCount];
 					EditorObjectMgr::instance()->getVariantNames( group, indexInGroup, VariantNames, varCount );
 
-					for ( int v = 0; v < varCount; ++v )
+					for ( int32_t v = 0; v < varCount; ++v )
 					{
 						m_Variant.AddString( VariantNames[v] );
 					}
@@ -729,7 +729,7 @@ void UnitSettingsDlg::updateMemberVariables()
 					VariantNames = 0;
 
 					// OK, now see if they all have the same variant name
-					int variant = units.GetHead()->getVariant();	
+					int32_t variant = units.GetHead()->getVariant();	
 					for ( iter = units.Begin(); !iter.IsDone(); iter++ )
 					{
 						if ( (*iter)->getVariant() != variant )
@@ -760,7 +760,7 @@ void UnitSettingsDlg::updateMemberVariables()
 	if ( pInfo )
 	{
 		m_Pilot.ResetContent();
-		for ( int i = 0; i < *count; i++ )
+		for ( int32_t i = 0; i < *count; i++ )
 		{
 			m_Pilot.AddString( pInfo[i].name );
 			m_Pilot.SetItemDataPtr(i, (PVOID)pInfo[i].fileName);
@@ -788,7 +788,7 @@ void UnitSettingsDlg::updateMemberVariables()
 	
 	if ( defaultPilot )
 	{
-		int index;
+		int32_t index;
 		for (index = 0; index < m_Pilot.GetCount(); index++)
 		{
 			PSTR fileName = (PSTR )m_Pilot.GetItemDataPtr(index);
@@ -814,7 +814,7 @@ void UnitSettingsDlg::OnCancel()
 	CDialog::OnCancel();
 }
 
-void UnitSettingsDlg::OnAlign1( UINT whichID ) 
+void UnitSettingsDlg::OnAlign1( uint32_t whichID ) 
 {
 	UpdateData();
 
@@ -831,7 +831,7 @@ void UnitSettingsDlg::OnAlign1( UINT whichID )
 	if ( pInfo )
 	{
 		m_Pilot.ResetContent();
-		for ( int i = 0; i < *count; i++ )
+		for ( int32_t i = 0; i < *count; i++ )
 		{
 			m_Pilot.AddString( pInfo[i].name );
 		}
@@ -858,7 +858,7 @@ void UnitSettingsDlg::OnAlign1( UINT whichID )
 	
 	if ( defaultPilot )
 	{
-		int  index = m_Pilot.FindString( -1, defaultPilot );
+		int32_t  index = m_Pilot.FindString( -1, defaultPilot );
 		m_Pilot.SetCurSel( index );
 	}
 

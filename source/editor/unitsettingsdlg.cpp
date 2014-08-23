@@ -201,7 +201,7 @@ void UnitSettingsDlg::DoColorBox( CWnd* pWnd )
 
 		tmpStr.Replace( "0x", "" );
 
-		long base;
+		int32_t base;
 		sscanf( tmpStr, "%x", &base );
 		base &= 0x00ffffff;
 
@@ -428,7 +428,7 @@ HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 		tmpStr.Replace( "0x", "" );
 
-		long base;
+		int32_t base;
 		sscanf( tmpStr, "%x", &base );
 		base &= 0x00ffffff;
 		base = reverseRGB( base );
@@ -453,7 +453,7 @@ HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 		tmpStr.Replace( "0x", "" );
 
-		long base;
+		int32_t base;
 		sscanf( tmpStr, "%x", &base );
 		base &= 0x00ffffff;
 		base = reverseRGB( base );
@@ -476,7 +476,7 @@ HBRUSH UnitSettingsDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		
 		tmpStr.Replace( "0x", "" );
 
-		long base;
+		int32_t base;
 		sscanf( tmpStr, "%x", &base );
 		base &= 0x00ffffff;
 		base = reverseRGB( base );
@@ -748,7 +748,7 @@ void UnitSettingsDlg::updateMemberVariables()
 
 
 	Pilot::PilotInfo* pInfo = Pilot::s_BadPilots;
-	long* count = &Pilot::badCount;
+	int32_t* count = &Pilot::badCount;
 	if ( (m_Alignment == 0) || (!EditorData::instance->IsSinglePlayer()) )
 	{
 		pInfo = Pilot::s_GoodPilots;
@@ -763,7 +763,7 @@ void UnitSettingsDlg::updateMemberVariables()
 		for ( int i = 0; i < *count; i++ )
 		{
 			m_Pilot.AddString( pInfo[i].name );
-			m_Pilot.SetItemDataPtr(i, (void *)pInfo[i].fileName);
+			m_Pilot.SetItemDataPtr(i, (PVOID)pInfo[i].fileName);
 		}
 	}
 
@@ -819,7 +819,7 @@ void UnitSettingsDlg::OnAlign1( UINT whichID )
 	UpdateData();
 
 	Pilot::PilotInfo* pInfo = Pilot::s_BadPilots;
-	long* count = &Pilot::badCount;
+	int32_t* count = &Pilot::badCount;
 	if ( m_Alignment == 0 )
 	{
 		pInfo = Pilot::s_GoodPilots;

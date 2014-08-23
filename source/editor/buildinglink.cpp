@@ -196,7 +196,7 @@ bool BuildingLink::RemoveObject( const EditorObject* pObject )
 	}
 
 	Stuff::Vector3D pos = pObject->getPosition( );
-	long ID = pObject->getID();
+	int32_t ID = pObject->getID();
 	
 	for ( EList< Info, const Info& >::EIterator iter = children.Begin();
 	!iter.IsDone(); iter++ )

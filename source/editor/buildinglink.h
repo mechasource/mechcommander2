@@ -44,7 +44,7 @@ public:
 private:
 	 struct Info
 	 {
-		 long m_ID;		 
+		 int32_t m_ID;		 
 		 Stuff::Vector3D pos;
 	 	 bool operator==( const Info& Src )const;
 	 };

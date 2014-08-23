@@ -14,7 +14,7 @@ eraser.cpp			: Implementation of the eraser component.
 #endif
 
 //---------------------------------------------------------------------------
-inline bool isCementType (DWORD type)
+inline bool isCementType (ULONG type)
 {
 	bool isCement = ((type == BASE_CEMENT_TYPE) ||
 					((type >= START_CEMENT_TYPE) && (type <= END_CEMENT_TYPE)));
@@ -83,8 +83,8 @@ bool Eraser::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
 	}
 	else
 	{
-		long tileRow, tileCol;
-		long cellRow, cellCol;
+		int32_t tileRow, tileCol;
+		int32_t cellRow, cellCol;
 		land->worldToTileCell( worldPos, tileRow, tileCol, cellRow, cellCol );
 		cellRow += tileRow * MAPCELL_DIM;
 		cellCol += tileCol * MAPCELL_DIM;
@@ -105,7 +105,7 @@ bool Eraser::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
 			GameMap->setMine( cellRow, cellCol, 0 );
 		}
 		
-		long terrainType = land->getTerrain(tileRow, tileCol);
+		int32_t terrainType = land->getTerrain(tileRow, tileCol);
 		if (isCementType(terrainType))
 		{
 			land->setTerrain(tileRow, tileCol, DEFAULT_TERRAIN);
@@ -120,8 +120,8 @@ bool Eraser::canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int 
 	if ( EditorObjectMgr::instance()->getObjectAtPosition( worldPos ) )
 		return true;
 
-	long tileRow, tileCol;
-	long cellRow, cellCol;
+	int32_t tileRow, tileCol;
+	int32_t cellRow, cellCol;
 
 	land->worldToTileCell( worldPos, tileRow, tileCol, cellRow, cellCol );
 	cellRow += tileRow * MAPCELL_DIM;
@@ -136,7 +136,7 @@ bool Eraser::canPaint( Stuff::Vector3D& worldPos, int screenX, int screenY, int 
 		return true;
 	}
 
-	long terrainType = land->getTerrain(tileRow, tileCol);
+	int32_t terrainType = land->getTerrain(tileRow, tileCol);
 	if (isCementType(terrainType))
 	{
 		return true;
@@ -216,12 +216,12 @@ Action* Eraser::applyToSelection()
 				land->setOverlay( j, i, INVALID_OVERLAY, 0 );
 				land->setTerrain(j, i, DEFAULT_TERRAIN);
 
-				for (long icell = 0;icell<MAPCELL_DIM;icell++)
+				for (int32_t icell = 0;icell<MAPCELL_DIM;icell++)
 				{
-					for (long jcell = 0;jcell<MAPCELL_DIM;jcell++)
+					for (int32_t jcell = 0;jcell<MAPCELL_DIM;jcell++)
 					{
-						long cellRow = j * MAPCELL_DIM + jcell;
-						long cellCol = i * MAPCELL_DIM + icell;
+						int32_t cellRow = j * MAPCELL_DIM + jcell;
+						int32_t cellCol = i * MAPCELL_DIM + icell;
 						GameMap->setMine(cellRow,cellCol,0);
 					}
 				}

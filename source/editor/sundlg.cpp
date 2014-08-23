@@ -64,7 +64,7 @@ void SunDlg::Init()
 
 }
 
-void SunDlg::displayInHex( long number, CEdit& edit )
+void SunDlg::displayInHex( int32_t number, CEdit& edit )
 {
 	// turn this into hex
 	CString text;
@@ -72,14 +72,14 @@ void SunDlg::displayInHex( long number, CEdit& edit )
 	edit.SetWindowText( text );
 }
 
-long SunDlg::getHexValue( CEdit& edit )
+int32_t SunDlg::getHexValue( CEdit& edit )
 {
 	CString str;
 	edit.GetWindowText( str );
 	str.MakeLower();
 	str.Replace( "0x", 0 );
 
-	long value;
+	int32_t value;
 	sscanf( str, "%x", &value ); 
 
 	return value;
@@ -89,7 +89,7 @@ void SunDlg::applyChanges()
 {
 	UpdateData();
 
-	long color = getHexValue( m_LightColor );
+	int32_t color = getHexValue( m_LightColor );
 	eye->lightBlue = eye->dayLightBlue = ( color & 0xff );
 	eye->lightGreen = eye->dayLightGreen = ( color & 0x0000ff00 ) >> 8 ;
 	eye->lightRed = eye->dayLightRed = ( color & 0x00ff0000 ) >> 16;
@@ -179,7 +179,7 @@ void SunDlg::OnAmbientButton()
 void SunDlg::DoColorDlg( CEdit& edit)
 {
 	CString tmpStr;
-	long base = getHexValue( edit );
+	int32_t base = getHexValue( edit );
 	base &= 0x00ffffff;
 
 	CColorDialog dlg( reverseRGB(base), NULL, this );

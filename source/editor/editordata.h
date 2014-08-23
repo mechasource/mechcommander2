@@ -261,12 +261,12 @@ class EditorData
 		float BaseLightningChance() { return m_baseLightningChance; }
 		void BaseLightningChance(float baseLightningChance) { m_baseLightningChance = baseLightningChance; }
 		
-		long TheSkyNumber() 
+		int32_t TheSkyNumber() 
 		{
 			return m_theSkyNumber;
 		}
 		
-		void TheSkyNumber (long theSkyNumber)
+		void TheSkyNumber (int32_t theSkyNumber)
 		{
 			m_theSkyNumber = theSkyNumber;
 		}
@@ -287,15 +287,15 @@ class EditorData
 		bool DoTeamDialog(int team) { return TeamsRef().TeamRef(team).ObjectivesRef().EditDialog(); }
 		void handleObjectInvalidation(const EditorObject *pObj) { TeamsRef().handleObjectInvalidation(pObj); }
 
-		void makeTacMap(PUCHAR& pOutput, long& dataSize, int tacMapSize ); // this allocates memory, below just draws
-		void drawTacMap( PUCHAR pDest, long dataSize, int tacMapSize );
-		void loadTacMap(PacketFile *file, PUCHAR& pDest, long dataSize, int tacMapSize ); // this allocates memory.  Saves millions of CPU cycles on load 
+		void makeTacMap(puint8_t& pOutput, int32_t& dataSize, int tacMapSize ); // this allocates memory, below just draws
+		void drawTacMap( puint8_t pDest, int32_t dataSize, int tacMapSize );
+		void loadTacMap(PacketFile *file, puint8_t& pDest, int32_t dataSize, int tacMapSize ); // this allocates memory.  Saves millions of CPU cycles on load 
 
 	private:
 
 		EditorData& operator=( const EditorData& editorData );
 		EditorData( const EditorData& editorData );
-		bool saveTacMap (PacketFile* file, long whichPacket );
+		bool saveTacMap (PacketFile* file, int32_t whichPacket );
 
 		EString m_missionName;
 		bool m_missionNameUseResourceString;
@@ -348,7 +348,7 @@ class EditorData
 		float m_chanceOfRain;
 		float m_baseLightningChance;
 		
-		long m_theSkyNumber;
+		int32_t m_theSkyNumber;
 
 		bool m_missionNeedsSaving;
 		bool m_detailTextureNeedsSaving;

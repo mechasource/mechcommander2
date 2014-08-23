@@ -104,7 +104,7 @@ bool ObjectSelectionBrush::paint( Stuff::Vector3D& worldPos, int screenX, int sc
 				EditorObjectMgr::instance->unselectAll();			
 			}
 			lastPos = endPos;
-			Stuff::Vector2DOf<long> screenPos;
+			Stuff::Vector2DOf<int32_t> screenPos;
 			screenPos.x = screenX;
 			screenPos.y = screenY;
 
@@ -120,7 +120,7 @@ bool ObjectSelectionBrush::paint( Stuff::Vector3D& worldPos, int screenX, int sc
 			}
 			else
 			{
-				long tileR, tileC;
+				int32_t tileR, tileC;
 				land->worldToTile( worldPos, tileR, tileC );
 				if ( tileR > -1 && tileR < land->realVerticesMapSide
 					&& tileC > -1 && tileC < land->realVerticesMapSide )

@@ -22,7 +22,7 @@ MessageBox:
 **************************************************************************************************/
 extern ULONG gameResourceHandle;
 
-inline int EMessageBox(int MessageID, int CaptionID,DWORD dwS )
+inline int EMessageBox(int MessageID, int CaptionID,ULONG dwS )
 {
 	char buffer[512];
 	char bufferCaption[512];

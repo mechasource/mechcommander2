@@ -53,8 +53,8 @@ BOOL EditorTacMap::OnInitDialog()
 	CPoint p(0, 0);
 	EditorInterface::instance()->ClientToScreen(&p);
 
-	SetWindowPos( NULL, p.x, p.y + 32/*arbitrary*/,  (long)TACMAP_SIZE, (long)TACMAP_SIZE + borderSize, /*SWP_NOMOVE | */SWP_NOZORDER );
-	picture.SetWindowPos( NULL, 0, 0, (long)TACMAP_SIZE, (long)TACMAP_SIZE, SWP_NOZORDER );
+	SetWindowPos( NULL, p.x, p.y + 32/*arbitrary*/,  (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE + borderSize, /*SWP_NOMOVE | */SWP_NOZORDER );
+	picture.SetWindowPos( NULL, 0, 0, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, SWP_NOZORDER );
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -66,7 +66,7 @@ void EditorTacMap::OnTga()
 	GetCursorPos( &pt );	
 
 	picture.ScreenToClient( &pt );
-	Stuff::Vector2DOf< long > screen;
+	Stuff::Vector2DOf< int32_t > screen;
 	
 	screen.x = pt.x;
 	screen.y = pt.y;
@@ -74,7 +74,7 @@ void EditorTacMap::OnTga()
 
 	Stuff::Vector3D world;
 
-	TacMap::tacMapToWorld( screen, (long)TACMAP_SIZE, (long)TACMAP_SIZE, world );
+	TacMap::tacMapToWorld( screen, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, world );
 
 	eye->setPosition( world, false );
 	/* After calling eye->setPosition(), eye needs to be updated so that

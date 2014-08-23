@@ -26,9 +26,9 @@ public:
 	CListBox	m_terrainTypeList;
 	//}}AFX_DATA
 
-	long m_selectedTerrainType;
-	long SelectedTerrainType() { return m_selectedTerrainType; }
-	void SelectedTerrainType(long selectedTerrainType) { m_selectedTerrainType = selectedTerrainType; }
+	int32_t m_selectedTerrainType;
+	int32_t SelectedTerrainType() { return m_selectedTerrainType; }
+	void SelectedTerrainType(int32_t selectedTerrainType) { m_selectedTerrainType = selectedTerrainType; }
 
 // Overrides
 	// ClassWizard generated virtual function overrides

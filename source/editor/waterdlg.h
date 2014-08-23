@@ -28,9 +28,9 @@ public:
 	float	elevation;
 	float	shallowElevation;
 	float	alphaElevation;
-	DWORD	alphaDeep;
-	DWORD	alphaMiddle;
-	DWORD	alphaShallow;
+	ULONG	alphaDeep;
+	ULONG	alphaMiddle;
+	ULONG	alphaShallow;
 	//}}AFX_DATA
 
 

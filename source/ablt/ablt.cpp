@@ -26,10 +26,10 @@ main(int argc, PSTR argv[])
 	initABL();
 	uint8_t s[256];
 
-	long handle;
-	long numErrs = 0;
-	long numLines = 0;
-	long numFiles = 0;
+	int32_t handle;
+	int32_t numErrs = 0;
+	int32_t numLines = 0;
+	int32_t numFiles = 0;
 	if (argc == 3) {
 		//------------------------
 		// load the environment...
@@ -48,7 +48,7 @@ main(int argc, PSTR argv[])
 			numLines = 0;
 			numFiles = 0;
 			if ((s[0] == 'l') && (s[1] == ' ')){
-				handle = (long)ABLi_loadLibrary((PSTR)&s[2], &numErrs, &numLines, &numFiles, false);
+				handle = (int32_t)ABLi_loadLibrary((PSTR)&s[2], &numErrs, &numLines, &numFiles, false);
 				printf("     Loaded: %s [%d lines, %d files]\n", &s[2], numLines, numFiles);
 				}
 			else if ((s[0] == 'm') && (s[1] == ' ')) {

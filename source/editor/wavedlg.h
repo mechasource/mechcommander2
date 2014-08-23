@@ -30,9 +30,9 @@ class WaveDlg: public CDialog
 		float elevation;
 		float shallowElevation;
 		float alphaElevation;
-		long alphaShallow;
-		long alphaMiddle;
-		long alphaDeep;
+		int32_t alphaShallow;
+		int32_t alphaMiddle;
+		int32_t alphaDeep;
 
 };
 

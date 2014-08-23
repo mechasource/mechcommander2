@@ -25,7 +25,7 @@ class DlgFileOpen: public CDialog
 
 		void OnCancel();
 		void OnOK();
-		//virtual void handleMessage (GObject *from, long messageId, long specificMsg);
+		//virtual void handleMessage (GObject *from, int32_t messageId, int32_t specificMsg);
 		
 		virtual ~DlgFileOpen();
 

@@ -41,7 +41,7 @@ extern float frameRate;
 UserHeapPtr systemHeap = NULL;
 UserHeapPtr guiHeap = NULL;
 
-long GameVisibleVertices = 30;
+int32_t GameVisibleVertices = 30;
 bool useLeftRightMouseProfile = true;
 
 float MaxMinUV = 8.0f;
@@ -51,10 +51,10 @@ ULONG guiHeapSize = 1023999;
 ULONG tglHeapSize = 32767000;
 bool		  GeneralAlarm = 0;
 
-extern long DigitalMasterVolume;
-extern long MusicVolume;
-extern long sfxVolume;
-extern long RadioVolume;
+extern int32_t DigitalMasterVolume;
+extern int32_t MusicVolume;
+extern int32_t sfxVolume;
+extern int32_t RadioVolume;
 
 extern char FileMissingString[];
 extern char CDMissingString[];
@@ -62,11 +62,11 @@ extern char MissingTitleString[];
 
 extern char CDInstallPath[];
 
-long FilterState = gos_FilterNone;
-long gammaLevel = 0;
-long renderer = 0;
-long GameDifficulty = 0;
-long resolution = 0;
+int32_t FilterState = gos_FilterNone;
+int32_t gammaLevel = 0;
+int32_t renderer = 0;
+int32_t GameDifficulty = 0;
+int32_t resolution = 0;
 bool useUnlimitedAmmo = true;
 
 Camera* eye = NULL;
@@ -75,7 +75,7 @@ ULONG BaseVertexColor  =0;
 enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor = CPU_PENTIUM;		//Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
 
 bool	reloadBounds = false;
-long	ObjectTextureSize = 128;
+int32_t	ObjectTextureSize = 128;
 char	missionName[1024];
 float	gosFontScale = 1.0;
 
@@ -83,7 +83,7 @@ float   doubleClickThreshold;
 float	dragThreshold;
 
 
-DWORD gosResourceHandle = 0;
+ULONG gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
 
 
@@ -92,8 +92,8 @@ bool quitGame = FALSE;
 
 // these globals are necessary for fast files for some reason
 FastFile 	**fastFiles = NULL;
-long 		numFastFiles = 0;
-long		maxFastFiles = 0;
+size_t 		numFastFiles = 0;
+size_t		maxFastFiles = 0;
 
 PSTR	ExceptionGameMsg = "";
 
@@ -150,7 +150,7 @@ PSTR __stdcall GetGameInformation()
 void __stdcall UpdateRenderers()
 {
 	
-	DWORD bColor = 0x0;
+	ULONG bColor = 0x0;
 	
  	gos_SetupViewport(1,1.0,1,bColor, 0.0, 0.0, 1.0, 1.0 );		//ALWAYS FULL SCREEN for now
 
@@ -233,7 +233,7 @@ void __stdcall InitializeGameEngine()
    	// Find the CDPath in the registry and save it off so I can
    	// look in CD Install Path for files.
 	//Changed for the shared source release, just set to current directory
-	//DWORD maxPathLength = 1023;
+	//ULONG maxPathLength = 1023;
 	//gos_LoadDataFromRegistry("CDPath", CDInstallPath, &maxPathLength);
 	//if (!maxPathLength)
 	//	strcpy(CDInstallPath,"..\\");
@@ -257,19 +257,19 @@ void __stdcall InitializeGameEngine()
 	systemHeap->init(systemHeapSize,"SYSTEM");
 	
 	float doubleClickThreshold = 0.2f;
-	long dragThreshold = .016667;
+	int32_t dragThreshold = .016667;
 
 	//--------------------------------------------------------------
 	// Read in System.CFG
 	FitIniFile systemFile;
 
 #ifdef _DEBUG
-	long systemOpenResult = 
+	int32_t systemOpenResult = 
 #endif
 		systemFile.open("system.cfg");
 		   
 #ifdef _DEBUG
-	if( systemOpenResult != NO_ERR)
+	if( systemOpenResult != NO_ERROR)
 	{
 		char Buffer[256];
 		gos_GetCurrentPath( Buffer, 256 );
@@ -279,88 +279,88 @@ void __stdcall InitializeGameEngine()
 
 	{
 #ifdef _DEBUG
-		long systemBlockResult = 
+		int32_t systemBlockResult = 
 #endif
 		systemFile.seekBlock("systemHeap");
-		gosASSERT(systemBlockResult == NO_ERR);
+		gosASSERT(systemBlockResult == NO_ERROR);
 		{
-			long result = systemFile.readIdULong("systemHeapSize",systemHeapSize);
+			int32_t result = systemFile.readIdULong("systemHeapSize",systemHeapSize);
 			result;
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 		}
 
 #ifdef _DEBUG
-		long systemPathResult = 
+		int32_t systemPathResult = 
 #endif
 		systemFile.seekBlock("systemPaths");
-		gosASSERT(systemPathResult == NO_ERR);
+		gosASSERT(systemPathResult == NO_ERROR);
 		{
-			long result = systemFile.readIdString("terrainPath",terrainPath,79);
-			gosASSERT(result == NO_ERR);
+			int32_t result = systemFile.readIdString("terrainPath",terrainPath,79);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("artPath",artPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("fontPath",fontPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("savePath",savePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("spritePath",spritePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("shapesPath",shapesPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("soundPath",soundPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("objectPath",objectPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("cameraPath",cameraPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("tilePath",tilePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("missionPath",missionPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("warriorPath",warriorPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("profilePath",profilePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("interfacepath",interfacePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("moviepath",moviePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("CDsoundPath",CDsoundPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("CDmoviepath",CDmoviePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("tglPath",tglPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile.readIdString("texturePath",texturePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 		}
 
 #ifdef _DEBUG
-		long fastFileResult = 
+		int32_t fastFileResult = 
 #endif
 		systemFile.seekBlock("FastFiles");
-		gosASSERT(fastFileResult == NO_ERR);
+		gosASSERT(fastFileResult == NO_ERROR);
 		{
-			long result = systemFile.readIdLong("NumFastFiles",maxFastFiles);
-			if (result != NO_ERR)
+			int32_t result = systemFile.readIdLong("NumFastFiles",maxFastFiles);
+			if (result != NO_ERROR)
 				maxFastFiles = 0;
 
 			if (maxFastFiles)
@@ -368,12 +368,12 @@ void __stdcall InitializeGameEngine()
 				fastFiles = (FastFile **)malloc(maxFastFiles*sizeof(FastFile *));
 				memset(fastFiles,0,maxFastFiles*sizeof(FastFile *));
 
-				long fileNum = 0;
+				int32_t fileNum = 0;
 				char fastFileId[10];
 				char fileName[100];
 				sprintf(fastFileId,"File%d",fileNum);
 	
-				while (systemFile.readIdString(fastFileId,fileName,99) == NO_ERR)
+				while (systemFile.readIdString(fastFileId,fileName,99) == NO_ERROR)
 				{
 					bool result = FastFileInit(fileName);
 					if (!result)
@@ -394,21 +394,21 @@ void __stdcall InitializeGameEngine()
 	FitIniFilePtr prefs = new FitIniFile;
 
 #ifdef _DEBUG
-	long prefsOpenResult = 
+	int32_t prefsOpenResult = 
 #endif
 		prefs->open("prefs.cfg");
 
-	gosASSERT (prefsOpenResult == NO_ERR);
+	gosASSERT (prefsOpenResult == NO_ERROR);
 	{
 #ifdef _DEBUG
-		long prefsBlockResult = 
+		int32_t prefsBlockResult = 
 #endif
 		prefs->seekBlock("MechCommander2");
-		gosASSERT(prefsBlockResult == NO_ERR);
+		gosASSERT(prefsBlockResult == NO_ERROR);
 		{
-			long filterSetting;
-			long result = prefs->readIdLong("FilterState",filterSetting);
-			if (result == NO_ERR)
+			int32_t filterSetting;
+			int32_t result = prefs->readIdLong("FilterState",filterSetting);
+			if (result == NO_ERROR)
 			{
 				switch (filterSetting)
 				{
@@ -428,55 +428,55 @@ void __stdcall InitializeGameEngine()
 			}
 
 			result = prefs->readIdLong("TerrainTextureRes",TERRAIN_TXM_SIZE);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				TERRAIN_TXM_SIZE = 64;
 
 
 			result = prefs->readIdLong("ObjectTextureRes",ObjectTextureSize);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				ObjectTextureSize = 128;
 
 
 			result = prefs->readIdLong("Brightness",gammaLevel);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				gammaLevel = 0;
 
 			// store volume settings in global variable since soundsystem 
 			// does not exist yet.  These will be set in SoundSystem::init()
 			result = prefs->readIdLong("DigitalMasterVolume",DigitalMasterVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				DigitalMasterVolume = 255;
 
 			result = prefs->readIdLong("MusicVolume",MusicVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				MusicVolume = 64;
 
 			result = prefs->readIdLong("RadioVolume",RadioVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				RadioVolume = 64;
 
 			result = prefs->readIdLong("SFXVolume",sfxVolume);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				sfxVolume = 64;
 
 			result = prefs->readIdFloat("DoubleClickThreshold",doubleClickThreshold);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				doubleClickThreshold = 0.2f;
 
 			result = prefs->readIdLong("DragThreshold",dragThreshold);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				dragThreshold = .016667;
 				
 			result = prefs->readIdULong("BaseVertexColor",BaseVertexColor);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				BaseVertexColor = 0x00000000;
 				
 			result = prefs->readIdBoolean("FullScreen",fullScreen);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				fullScreen = true;
 
 			result = prefs->readIdLong("Rasterizer",renderer);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				renderer = 0;
 
 			if ((renderer < 0) || (renderer > 3))
@@ -521,12 +521,12 @@ void __stdcall InitializeGameEngine()
 	effectsName.init(effectsPath,"mc2.fx","");
 
 	File effectFile;
-	long result = effectFile.open(effectsName);
-	if (result != NO_ERR)
+	int32_t result = effectFile.open(effectsName);
+	if (result != NO_ERROR)
 		STOP(("Could not find MC2.fx"));
 		
-	long effectsSize = effectFile.fileSize();
-	MemoryPtr effectsData = (MemoryPtr)systemHeap->Malloc(effectsSize);
+	int32_t effectsSize = effectFile.fileSize();
+	PUCHAR effectsData = (PUCHAR)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData,effectsSize);
 	effectFile.close();
 	

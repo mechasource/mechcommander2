@@ -217,7 +217,7 @@ void BuildingSettingsDlg::OnSelchangeMech()
 void BuildingSettingsDlg::updateMemberVariables()
 {
 
-	long forest = -1;
+	int32_t forest = -1;
 	bool bForests = true;
 
 	EditorObject* pEditorObject = units.GetHead();
@@ -272,7 +272,7 @@ void BuildingSettingsDlg::updateMemberVariables()
 			continue;
 		}
 		m_Group.AddString( pGroups[i] );
-		m_Group.SetItemData( count, (DWORD)i );
+		m_Group.SetItemData( count, (ULONG)i );
 		count += 1;
 	}
 
@@ -335,7 +335,7 @@ void BuildingSettingsDlg::updateMemberVariables()
 
 	m_x = pEditorObject->getPosition().x;
 	m_y = pEditorObject->getPosition().y;
-	long row, column;
+	int32_t row, column;
 	pEditorObject->getCells(row, column);
 	m_partID = MIN_TERRAIN_PART_ID + row * MAX_MAP_CELL_WIDTH + column;
 

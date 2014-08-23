@@ -82,7 +82,7 @@ public:
 	EditorInterface();
 	~EditorInterface();
 
-	void handleNewMenuMessage( long specificMessage );
+	void handleNewMenuMessage( int32_t specificMessage );
 
 	void init( PCSTR fileName );
 
@@ -102,7 +102,7 @@ public:
 	CObjectivesEditState objectivesEditState;	/* persistent storage for the objective(s) dialog */
 	void SelectionMode() { Select(); }
 	
-	int RefractalizeTerrain( long threshold );
+	int RefractalizeTerrain( int32_t threshold );
 
 	virtual void handleLeftButtonDown( int PosX, int PosY ); // mouse button down
 	virtual void handleLeftButtonDbl( int PosX, int PosY ){} // mouse button dbl click
@@ -120,8 +120,8 @@ public:
 	void syncVScroll();
 	void syncScrollBars() { syncHScroll(); syncVScroll(); }
 
-	long Width(){  RECT tmp; GetWindowRect( &tmp ); return tmp.right - tmp.left; }
-	long Height() { RECT tmp; GetWindowRect( &tmp ); return tmp.bottom - tmp.top; }
+	int32_t Width(){  RECT tmp; GetWindowRect( &tmp ); return tmp.right - tmp.left; }
+	int32_t Height() { RECT tmp; GetWindowRect( &tmp ); return tmp.bottom - tmp.top; }
 
 	void SetBusyMode(bool bRedrawWindow = true);
 	void UnsetBusyMode();
@@ -242,7 +242,7 @@ private:
 	int DropZone( bool bVTol );
 	int UnitSettings( );
 	
-	int SetSky (long skyId);
+	int SetSky (int32_t skyId);
 	
 	int CampaignEditor();
 
@@ -295,7 +295,7 @@ private:
 	int							curCursorID;
 	int							lastX;
 	int							lastY;
-	long						lastKey;
+	int32_t						lastKey;
 	bool 						bObjectSelectOnlyMode;
 	CMenu**						menus;
 

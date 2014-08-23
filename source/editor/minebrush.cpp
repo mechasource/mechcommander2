@@ -39,8 +39,8 @@ Action* MineBrush::endPaint()
 
 bool MineBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY  )
 {
-	long tileC;
-	long tileR;
+	int32_t tileC;
+	int32_t tileR;
 
 	land->worldToTile( worldPos, tileR, tileC );
 
@@ -49,8 +49,8 @@ bool MineBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY  )
 		return false;
 	}
 
-	long cellRow;
-	long cellCol;
+	int32_t cellRow;
+	int32_t cellCol;
 	land->worldToCell(worldPos, cellRow, cellCol);
 
 	if (1 == GameMap->getMine(cellRow, cellCol)) {

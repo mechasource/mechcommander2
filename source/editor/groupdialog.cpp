@@ -76,14 +76,14 @@ void CGroupDialog::OnGrOperationFileBrowseButton() {
 		if( selectFileDialog.DoModal()==IDOK ) {
 			CString operationPath = selectFileDialog.GetPathName();
 			FitIniFile file;
-			long result = 0;
+			int32_t result = 0;
 			result = file.open( (PSTR)(PCSTR)operationPath );
-			if (NO_ERR != result) {
+			if (NO_ERROR != result) {
 				AfxMessageBox(IDS_COULDNT_OPEN_OPERATION_FILE);
 			} else {
-				long result = 0;
+				int32_t result = 0;
 				result = file.seekBlock("Button0");
-				if (NO_ERR != result)
+				if (NO_ERROR != result)
 				{
 					AfxMessageBox(IDS_NOT_A_VALID_OPERATION_FILE);
 				}
@@ -207,7 +207,7 @@ void CGroupDialog::OnGrRemoveButton()
 		int selectedItemIndex = m_MissionListControl.GetCurSel();
 		setMissionListBoxValues(m_MissionListControl, m_MissionList);
 		if ((LB_ERR != selectedItemIndex) && (0 < m_MissionListControl.GetCount())) {
-			if (m_MissionListControl.GetCount() <= (long)selectedItemIndex) {
+			if (m_MissionListControl.GetCount() <= (int32_t)selectedItemIndex) {
 				selectedItemIndex = m_MissionListControl.GetCount() - 1;
 			}
 			m_MissionListControl.SetCurSel(selectedItemIndex);

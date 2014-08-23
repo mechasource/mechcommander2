@@ -34,8 +34,8 @@ public:
 	virtual void CastAndCopy(const EditorObject &master) { (*this) = master; }
 	virtual EditorObject *Clone() { return(new EditorObject(*this)); }
 
-	void *operator new (size_t mySize);
-	void operator delete (void *us);
+	PVOIDoperator new (size_t mySize);
+	void operator delete (PVOID us);
 
 	void				select( bool bSelect );
 	inline bool			isSelected() const { return appearInfo->appearance->selected ? true : false; }
@@ -44,9 +44,9 @@ public:
 	inline int			getAlignment( )const{ return appearInfo->appearance->teamId; } 
 	
 	ULONG		getColor() const;
-	long				getID() const { return  id; }
+	int32_t				getID() const { return  id; }
 
-	void				getCells( long& cellJ, long& cellI ) const;
+	void				getCells( int32_t& cellJ, int32_t& cellI ) const;
 	
 	virtual bool save( FitIniFile* file, int warriorNumber ){ return false; }
 	virtual bool load( FitIniFile* file, int warriorNumber ){ return false; }
@@ -73,11 +73,11 @@ public:
 	ObjectAppearance* appearance() { return appearInfo->appearance; }
 	const ObjectAppearance* appearance() const { return appearInfo->appearance; }
 
-	long				getForestID() const { return forestId; }
+	int32_t				getForestID() const { return forestId; }
 	void				setForestID( int newID ) { forestId = newID; }
 
-	void				setScale( long newScale ) { scale = newScale; }
-	long				getScale( ) const { return scale; }
+	void				setScale( int32_t newScale ) { scale = newScale; }
+	int32_t				getScale( ) const { return scale; }
 
 protected:
 
@@ -86,16 +86,16 @@ protected:
 		ObjectAppearance*   appearance;
 		int					refCount; // so we only delete once
 
-		void *operator new (size_t mySize)
+		PVOIDoperator new (size_t mySize)
 		{
-			void *result = NULL;
+			PVOID result = NULL;
 			result = systemHeap->Malloc(mySize);
 			
 			return(result);
 		
 		}
 
-		void operator delete (void *us)
+		void operator delete (PVOID us)
 		{
 			systemHeap->Free(us);
 		}
@@ -105,12 +105,12 @@ protected:
 
 	};
 
-	long	cellColumn;
-	long	cellRow;
-	long	id;
+	int32_t	cellColumn;
+	int32_t	cellRow;
+	int32_t	id;
 	AppearanceInfo* appearInfo;
-	long	forestId;
-	long	scale; // forest only
+	int32_t	forestId;
+	int32_t	scale; // forest only
 
 	friend class EditorObjectMgr; // the only thing that can move and change these things
 
@@ -136,8 +136,8 @@ public:
 	
 	static	PilotInfo s_GoodPilots[MAX_PILOT];
 	static	PilotInfo s_BadPilots[MAX_PILOT];
-	static	long goodCount;
-	static	long badCount;
+	static	int32_t goodCount;
+	static	int32_t badCount;
 
 	PCSTR 		getName() const { return info->name; }
 	void	setName( PCSTR );
@@ -155,12 +155,12 @@ public:
 
 class Brain
 {
-	long numCells;
-	long *cellNum;
-	long *cellType;
+	int32_t numCells;
+	int32_t *cellNum;
+	int32_t *cellType;
 	float *cellData;
 	
-	long numStaticVars;
+	int32_t numStaticVars;
 	
 	char brainName[256];
 	

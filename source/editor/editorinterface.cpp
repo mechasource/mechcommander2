@@ -160,7 +160,7 @@ IProviderEngine * armProvider;
 CameraPtr eye = NULL;
 
 extern bool drawTerrainTiles;
-extern long terrainLineChanged;
+extern int32_t terrainLineChanged;
 extern bool drawTerrainOverlays;
 extern bool renderObjects;
 extern bool renderTrees;
@@ -170,7 +170,7 @@ extern bool useClouds;
 extern bool	useFog;
 extern bool useShadows;
 extern bool useWaterInterestTexture;
-long lightState = 0;
+int32_t lightState = 0;
 extern bool useFaceLighting;
 extern bool useVertexLighting;
 extern bool reloadBounds;
@@ -261,7 +261,7 @@ void Editor::init( PSTR loader )
 								strcpy( path, cameraPath );
 								strcat( path, "cameras.fit" );
 								FitIniFile camFile;
-								if ( NO_ERR != camFile.open( path ) )
+								if ( NO_ERROR != camFile.open( path ) )
 								{
 									STOP(( "Need Camera File " ));
 								}
@@ -507,7 +507,7 @@ void Editor::resaveAll (void)
 				//Force Attributes to RW!
 				SetFileAttributes(pakName,FILE_ATTRIBUTE_NORMAL);
 				SetFileAttributes(fitName,FILE_ATTRIBUTE_NORMAL);
-				long result = EditorData::initTerrainFromPCV(pakName);
+				int32_t result = EditorData::initTerrainFromPCV(pakName);
 				if (result)
 					data.save(pakName);
 
@@ -696,43 +696,43 @@ void EditorInterface::init( PCSTR fileName )
 	FitIniFile loader;
 	loader.open( const_cast<PSTR>(fileName) );
 
-	long result = loader.seekBlock("CameraData");
-	gosASSERT(result == NO_ERR);
+	int32_t result = loader.seekBlock("CameraData");
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader.readIdFloat("ScrollIncrement",scrollInc);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader.readIdFloat("RotationIncrement",rotationInc);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader.readIdFloat("ZoomIncrement",zoomInc);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 		
 	result = loader.readIdFloat("ScrollLeft",screenScrollLeft);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 		
 	result = loader.readIdFloat("ScrollRight",screenScrollRight);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader.readIdFloat("ScrollUp",screenScrollUp);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader.readIdFloat("ScrollDown",screenScrollDown);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = loader.readIdFloat("BaseFrameLength",baseFrameLength);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = loader.readIdFloat("RotationDegPerSec",degPerSecRot);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	float missionDragThreshold;
 	result = loader.readIdFloat("MouseDragThreshold",missionDragThreshold);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	float missionDblClkThreshold;
 	result = loader.readIdFloat("MouseDoubleClickThreshold",missionDblClkThreshold);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 
 	addBuildingsToNewMenu();
@@ -888,7 +888,7 @@ void EditorInterface::addBuildingsToNewMenu()
 }
 
 //--------------------------------------------------------------------------------------
-void EditorInterface::handleNewMenuMessage( long specificMessage )
+void EditorInterface::handleNewMenuMessage( int32_t specificMessage )
 {
 	if ( !eye || !eye->active )
 		return;
@@ -1182,7 +1182,7 @@ void EditorInterface::handleLeftButtonDown( int PosX, int PosY )
 		return;
 
 	Stuff::Vector3D vector;
-	Stuff::Vector2DOf<long> v2( PosX, PosY );
+	Stuff::Vector2DOf<int32_t> v2( PosX, PosY );
 	eye->inverseProject( v2, vector );
 
 	if ( curBrush )
@@ -1205,7 +1205,7 @@ void EditorInterface::handleMouseMove( int PosX, int PosY )
 	
 	
 	Stuff::Vector3D vector;
-	Stuff::Vector2DOf<long> v2( PosX, PosY );
+	Stuff::Vector2DOf<int32_t> v2( PosX, PosY );
 	eye->inverseProject( v2, vector );
 		
 	
@@ -1220,7 +1220,7 @@ void EditorInterface::handleMouseMove( int PosX, int PosY )
 	if ( rightDrag )
 	{
 		
-		long mouseXDelta = PosX - lastX;
+		int32_t mouseXDelta = PosX - lastX;
 		float actualRot = rotationInc * 0.1f * abs(mouseXDelta);
 		if (mouseXDelta > 0)
 		{
@@ -1231,7 +1231,7 @@ void EditorInterface::handleMouseMove( int PosX, int PosY )
 			eye->rotateLeft(actualRot);
 		}
 		
-		long mouseYDelta = PosY - lastY;
+		int32_t mouseYDelta = PosY - lastY;
 		float actualTilt = rotationInc * 0.1f * abs(mouseYDelta);
 		if (mouseYDelta > 0)
 		{
@@ -1274,7 +1274,7 @@ void EditorInterface::handleMouseMove( int PosX, int PosY )
 
 	//IF there is a selected object, find distance to it from camera.
 	float eyeDistance = 0.0f;
-	long selectionCount = EditorObjectMgr::instance()->getSelectionCount();
+	int32_t selectionCount = EditorObjectMgr::instance()->getSelectionCount();
 	if (selectionCount)
 	{
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList = EditorObjectMgr::instance()->getSelectedObjectList();
@@ -1332,7 +1332,7 @@ void EditorInterface::handleKeyDown( int Key )
 
 	bool shiftDn = GetAsyncKeyState( KEY_LSHIFT ) ? true : false;
 	bool ctrlDn = GetAsyncKeyState( KEY_LCONTROL ) ? true : false;
-	long altDn = GetAsyncKeyState( KEY_LMENU ) ? true : false;
+	int32_t altDn = GetAsyncKeyState( KEY_LMENU ) ? true : false;
 
 	if ( Key == KEY_SPACE )
 	{
@@ -1612,7 +1612,7 @@ void EditorInterface::handleKeyDown( int Key )
 	//IF there is a selected object, find distance to it from camera.
 	char buffer[256];
 	float eyeDistance = 0.0f;
-	long selectionCount = EditorObjectMgr::instance()->getSelectionCount();
+	int32_t selectionCount = EditorObjectMgr::instance()->getSelectionCount();
 	if (selectionCount)
 	{
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList = EditorObjectMgr::instance()->getSelectedObjectList();
@@ -1812,7 +1812,7 @@ int EditorInterface::SaveAs()
 		SetFileAttributes(newBaseFile,FILE_ATTRIBUTE_NORMAL);
 		CopyFile(oldBaseFile,newBaseFile,false);
 
-		for (long i=0;i<MAX_WATER_DETAIL_TEXTURES;i++)
+		for (int32_t i=0;i<MAX_WATER_DETAIL_TEXTURES;i++)
 		{
 			char detailExt[256];
 			sprintf(detailExt,".water%04d.tga",i);
@@ -1962,7 +1962,7 @@ void EditorInterface::render()
 	ModifyStyle( 0, WS_HSCROLL | WS_VSCROLL );
 
 	Stuff::Vector3D worldPos;
-	Stuff::Vector2DOf<long> screenPos;
+	Stuff::Vector2DOf<int32_t> screenPos;
 
 	screenPos.x = Environment.screenWidth/2;
 	screenPos.y = Environment.screenHeight/2;
@@ -2096,11 +2096,11 @@ int EditorInterface::NewHeightMap()
 
 				gosASSERT( strstr( pFile, ".tga" ) || strstr( pFile, ".TGA" ) );
 
-				long result = tgaFile.open(const_cast<PSTR>(pFile));
-				gosASSERT(result == NO_ERR);
+				int32_t result = tgaFile.open(const_cast<PSTR>(pFile));
+				gosASSERT(result == NO_ERROR);
 
 				struct TGAFileHeader theader;
-				tgaFile.read((MemoryPtr)&theader,sizeof(TGAFileHeader));
+				tgaFile.read((PUCHAR)&theader,sizeof(TGAFileHeader));
 
 				if ((theader.width != land->realVerticesMapSide) || (theader.height != land->realVerticesMapSide))
 				{
@@ -2118,7 +2118,7 @@ int EditorInterface::NewHeightMap()
 			}
 
 			HeightDlg htDlg;
-			long tileR, tileC;
+			int32_t tileR, tileC;
 
 			htDlg.SetMin( (int)land->getLowestVertex( tileR, tileC ) );
 			htDlg.SetMax( (int)land->getHighestVertex( tileR, tileC ) );
@@ -2144,7 +2144,7 @@ int EditorInterface::NewHeightMap()
 #define MIN_THRESHOLD	1
 #define MIN_NOISE		0
 
-int EditorInterface::RefractalizeTerrain(long Threshold)
+int EditorInterface::RefractalizeTerrain(int32_t Threshold)
 {
 	FractalDlg fDlg;
 	fDlg.SetThreshold(Terrain::fractalThreshold);
@@ -2176,7 +2176,7 @@ int EditorInterface::RefractalizeTerrain(long Threshold)
 	return true;
 }
 
-int EditorInterface::SetSky (long skyId)
+int EditorInterface::SetSky (int32_t skyId)
 {
 	EditorData::instance->TheSkyNumber(skyId);
 
@@ -2412,7 +2412,7 @@ int EditorInterface::Fog()
 
 	if ( IDOK == dlg.DoModal() )
 	{
-		eye->dayFogColor = ((DWORD)dlg.m_blue) + (((DWORD)dlg.m_green) << 8) + (((DWORD)dlg.m_red) << 16);
+		eye->dayFogColor = ((ULONG)dlg.m_blue) + (((ULONG)dlg.m_green) << 8) + (((ULONG)dlg.m_red) << 16);
 		eye->fogColor = eye->dayFogColor;
 		eye->fogStart = dlg.m_start;
 		eye->fogFull = dlg.m_end;
@@ -2539,7 +2539,7 @@ int EditorInterface::AssignElevation()
 			if ( pAction )
 				undoMgr.AddAction( pAction );
 
-			/*Designers say refreshing the tacmap takes too long. User can do it manually.*/
+			/*Designers say refreshing the tacmap takes too int32_t. User can do it manually.*/
 			//tacMap.UpdateMap();
 		}
 	}
@@ -2598,7 +2598,7 @@ int EditorInterface::SaveHeightMap()
 		PCSTR pFile = fileDlg.m_ofn.lpstrFile;
 		
 		File file;
-		if ( NO_ERR != file.create( (PSTR)pFile ) )
+		if ( NO_ERROR != file.create( (PSTR)pFile ) )
 		{
 			EMessageBox( IDS_INVALID_FILE, IDS_CANT_SAVE, MB_OK );
 			return false;
@@ -2756,7 +2756,7 @@ void EditorInterface::syncHScroll()
 
 	{
 		/* figure out what proportion of the map is visible */
- 		Stuff::Vector2DOf< long > screen;
+ 		Stuff::Vector2DOf< int32_t > screen;
 		Stuff::Vector3D world1, world2;
 		screen.y = Environment.screenHeight / 2;
 		screen.x = 1;
@@ -2809,7 +2809,7 @@ void EditorInterface::syncVScroll()
 
 	{
 		/* figure out what proportion of the map is visible */
- 		Stuff::Vector2DOf< long > screen;
+ 		Stuff::Vector2DOf< int32_t > screen;
 		Stuff::Vector3D world1, world2;
 		screen.x = Environment.screenWidth / 2;
 		screen.y = 1;
@@ -2947,14 +2947,14 @@ int EditorInterface::SelectWaterTexture()
 //---------------------------------------------------------------------------
 inline bool colorMapIsOKFormat (PCSTR fileName)
 {
-	DWORD localColorMapSizeCheck = land->realVerticesMapSide * 12.8;
+	ULONG localColorMapSizeCheck = land->realVerticesMapSide * 12.8;
 
 	File tgaFile;
-	long result = tgaFile.open(fileName);
-	if (result == NO_ERR)
+	int32_t result = tgaFile.open(fileName);
+	if (result == NO_ERROR)
 	{
 		struct TGAFileHeader tgaHeader;
-		tgaFile.read((MemoryPtr)&tgaHeader,sizeof(TGAFileHeader));
+		tgaFile.read((PUCHAR)&tgaHeader,sizeof(TGAFileHeader));
 		if ((tgaHeader.image_type == UNC_TRUE) &&
 			(tgaHeader.width == tgaHeader.height) &&
 			(tgaHeader.width == localColorMapSizeCheck))
@@ -3338,7 +3338,7 @@ void EditorInterface::OnRButtonUp(UINT nFlags, CPoint point)
 
 	// is there anything under the mouse
 	/*Stuff::Vector3D pos;
-	Stuff::Vector2DOf<long> screen;
+	Stuff::Vector2DOf<int32_t> screen;
 	screen.x = point.x;
 	screen.y = point.y;
 	eye->inverseProject( screen, pos ); 
@@ -3364,7 +3364,7 @@ BOOL EditorInterface::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	//--------------------------------------------------
 	// Zoom Camera based on Mouse Wheel input.
-	long mouseWheelDelta = zDelta; // 240 is the weird increment that the mouse wheel is in
+	int32_t mouseWheelDelta = zDelta; // 240 is the weird increment that the mouse wheel is in
 	if (mouseWheelDelta)
 	{
 		float actualZoom = zoomInc * abs(mouseWheelDelta) * 0.0001f * eye->getScaleFactor();
@@ -3390,7 +3390,7 @@ BOOL EditorInterface::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 
 	//IF there is a selected object, find distance to it from camera.
 	float eyeDistance = 0.0f;
-	long selectionCount = EditorObjectMgr::instance()->getSelectionCount();
+	int32_t selectionCount = EditorObjectMgr::instance()->getSelectionCount();
 	if (selectionCount)
 	{
 		EditorObjectMgr::EDITOR_OBJECT_LIST selectedObjectsList = EditorObjectMgr::instance()->getSelectedObjectList();
@@ -3652,8 +3652,8 @@ void EditorInterface::initTacMap()
 	// We go through all the damned trouble to save it every time!
 	// This takes a LONG time.
 	// -fs
-	PUCHAR pData = NULL;
-	long size = 0;
+	puint8_t pData = NULL;
+	int32_t size = 0;
 	
 	FullPathFileName mPath;
 	bool bFile = false;
@@ -3698,7 +3698,7 @@ void EditorInterface::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 
 	Stuff::Vector3D pos;
-	Stuff::Vector2DOf<long> screen;
+	Stuff::Vector2DOf<int32_t> screen;
 	screen.x = point.x;
 	screen.y = point.y;
 	eye->inverseProject( screen, pos ); 
@@ -3933,7 +3933,7 @@ void EditorInterface::OnForestTool()
 
 	ForestDlg dlg;
 
-	long count = 0;
+	int32_t count = 0;
 	float xAvg = 0;
 	float yAvg = 0;
 	

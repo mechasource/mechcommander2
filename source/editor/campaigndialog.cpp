@@ -253,7 +253,7 @@ void CCampaignDialog::OnCaRemoveButton()
 		int selectedItemIndex = m_GroupListControl.GetCurSel();
 		setGroupListBoxValues(m_GroupListControl, m_CampaignData.m_GroupList);
 		if ((LB_ERR != selectedItemIndex) && (0 < m_GroupListControl.GetCount())) {
-			if (m_GroupListControl.GetCount() <= (long)selectedItemIndex) {
+			if (m_GroupListControl.GetCount() <= (int32_t)selectedItemIndex) {
 				selectedItemIndex = m_GroupListControl.GetCount() - 1;
 			}
 			m_GroupListControl.SetCurSel(selectedItemIndex);

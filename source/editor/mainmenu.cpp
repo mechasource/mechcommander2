@@ -27,7 +27,7 @@ MainMenu::MainMenu(EditorInterface *pEditorInterface):Window(L"MainMenu",0,0,Env
 	assert(m_pEditorInterface);
 
 	/*
-	DWORD dwCheck = gos_NewTextureFromFile(gos_Texture_Alpha,"data/wlib/check.tga",gosHint_VideoMemory|gosHint_DisableMipmap);
+	ULONG dwCheck = gos_NewTextureFromFile(gos_Texture_Alpha,"data/wlib/check.tga",gosHint_VideoMemory|gosHint_DisableMipmap);
 	CHECKMARK_APPEARANCE ca;
 	ca.dwTexture = dwCheck;
 	ca.fSize = 1.0;
@@ -40,7 +40,7 @@ MainMenu::MainMenu(EditorInterface *pEditorInterface):Window(L"MainMenu",0,0,Env
 }
 
 extern bool gos_RunMainLoop( void(*DoGameLogic)() );
-extern DWORD TerminateGame; // BUGBUG exported function handles this with return value
+extern ULONG TerminateGame; // BUGBUG exported function handles this with return value
 
 void MainMenu::DoModal()
 {

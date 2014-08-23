@@ -29,7 +29,7 @@ void TacMapTGA::OnPaint()
 	
 	if ( eye && land && land->realVerticesMapSide )
 	{
- 		Stuff::Vector2DOf< long > screen;
+ 		Stuff::Vector2DOf< int32_t > screen;
 		gos_VERTEX tmp;
 		Stuff::Vector3D world;
 		POINT pts[5];
@@ -80,7 +80,7 @@ void TacMapTGA::OnPaint()
 
 void TacMapTGA::refreshBmp()
 {
-	EditorData::instance->drawTacMap( (PUCHAR)m_pBits, 128 * 128 * 4, 128 );
+	EditorData::instance->drawTacMap( (puint8_t)m_pBits, 128 * 128 * 4, 128 );
 	RedrawWindow( );
 }
 	

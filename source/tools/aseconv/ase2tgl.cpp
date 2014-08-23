@@ -19,7 +19,7 @@
 using namespace Microsoft::Xna::Arm;
 
 HINSTANCE hInst = NULL;
-DWORD gosResourceHandle = 0;
+ULONG gosResourceHandle = 0;
 
 Stuff::MemoryStream *effectStream = NULL;
 
@@ -32,7 +32,7 @@ enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor = CPU_PENTIUM;	
 
 float MaxMinUV = 8.0f;
 
-DWORD BaseVertexColor = 0x00000000;
+ULONG BaseVertexColor = 0x00000000;
 
 static LPCTSTR lpszAppName = "MechCmdr2";
 
@@ -50,14 +50,14 @@ IProviderEngine * armProvider = NULL;
 ULONG tglHeapSize = 16386000;
 
 FastFile 	**fastFiles = NULL;
-long 		numFastFiles = 0;
-long		maxFastFiles = 0;
+int32_t 		numFastFiles = 0;
+int32_t		maxFastFiles = 0;
 
 HWND		appWnd = NULL;
 
 extern PSTR MechAnimationNames[MaxGestures];
 
-long ObjectTextureSize = 128;
+int32_t ObjectTextureSize = 128;
 bool reloadBounds = false;
 MidLevelRenderer::MLRClipper * theClipper = NULL;
 HGOSFONT3D gosFontHandle = 0;
@@ -186,7 +186,7 @@ void ParseCommandLine(PSTR command_line)
 }
 
 //-----------------------------
-long convertASE2TGL (PSTR file)
+int32_t convertASE2TGL (PSTR file)
 {
 	//---------------------------------------------------
 	// Get all of the .ASE files in the tgl directory.
@@ -216,8 +216,8 @@ long convertASE2TGL (PSTR file)
 			iniName.init(tglPath,findResult.cFileName,"");
 			
 			FitIniFile iniFile;
-			long result = iniFile.open(iniName);
-			if (result != NO_ERR)
+			int32_t result = iniFile.open(iniName);
+			if (result != NO_ERROR)
 				return result;
 
 			// ARM
@@ -230,21 +230,21 @@ long convertASE2TGL (PSTR file)
 			TG_TypeMultiShape *shape = NULL;
 			
 			result = iniFile.seekBlock("TGLData");
-			if (result == NO_ERR)
+			if (result == NO_ERROR)
 			{
 				char fileName[1024];
 				result = iniFile.readIdString("FileName",fileName,1023);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 				{
 					//---------------------------------------------
 					// We have LODs -- handle differently
 					// We will get animation from LAST LOD loaded
-					long i=0;
+					int32_t i=0;
 					char fileCheck[1024];
 					sprintf(fileCheck,"FileName%d",i);
 					result = iniFile.readIdString(fileCheck,fileName,1023);
 					
-					while (result == NO_ERR)
+					while (result == NO_ERROR)
 					{
 						if (shape)
 						{
@@ -294,7 +294,7 @@ long convertASE2TGL (PSTR file)
 				// MUST use its own shape or animation below
 				// will go straight to HELL!!
 				result = iniFile.readIdString("ShadowName",fileName,1023);
-				if (result == NO_ERR)
+				if (result == NO_ERROR)
 				{
 					char aseName[1024];
 					sprintf(aseName,"%s%s%s",tglPath,fileName,".ase");
@@ -313,16 +313,16 @@ long convertASE2TGL (PSTR file)
 					shadowShape = NULL;
 				}
 
-				long i=0;
+				int32_t i=0;
 				char animCheck[1024];
 				sprintf(animCheck,"Animation:%d",i);
 				result = iniFile.seekBlock(animCheck);
 				
-				while (result == NO_ERR)		//This thing has animations.  Process them!
+				while (result == NO_ERROR)		//This thing has animations.  Process them!
 				{
 					char fileName[1024];
 					result = iniFile.readIdString("AnimationName",fileName,1023);
-					if (result == NO_ERR)
+					if (result == NO_ERROR)
 					{
 						FullPathFileName aseName;
 						aseName.init(tglPath,fileName,".ase");
@@ -350,10 +350,10 @@ long convertASE2TGL (PSTR file)
 				
 				if (!i)		//No Animations, BUT they may mean we are a MECH!!!
 				{
-					if (iniFile.seekBlock("Gestures0") == NO_ERR)
+					if (iniFile.seekBlock("Gestures0") == NO_ERROR)
 					{
 						//We ARE a mech.  Load all of the animations for this mech and write 'em out.
-						for (long i=0;i<MaxGestures;i++)
+						for (int32_t i=0;i<MaxGestures;i++)
 						{
 							char name[MAX_PATH];
 							_splitpath(findResult.cFileName,NULL,NULL,name,NULL);
@@ -381,10 +381,10 @@ long convertASE2TGL (PSTR file)
 				
 				if (!i)		//No Animations, BUT they may mean we are a MECH!!!
 				{
-					if (iniFile.seekBlock("Gestures0") == NO_ERR)
+					if (iniFile.seekBlock("Gestures0") == NO_ERROR)
 					{
 						//We ARE a mech.  Load all of the destroyed shapes for this mech and write 'em out.
-						for (long i=MaxGestures;i<MaxGestures+2;i++)
+						for (int32_t i=MaxGestures;i<MaxGestures+2;i++)
 						{
 							char name[MAX_PATH];
 							_splitpath(findResult.cFileName,NULL,NULL,name,NULL);
@@ -408,11 +408,11 @@ long convertASE2TGL (PSTR file)
 					}
 				}
 
-				if (iniFile.seekBlock("TGLDamage") == NO_ERR)
+				if (iniFile.seekBlock("TGLDamage") == NO_ERROR)
 				{
 					char fileName[1024];
 					result = iniFile.readIdString("FileName",fileName,1023);
-					if (result == NO_ERR)
+					if (result == NO_ERROR)
 					{
 						if (shape)
 						{
@@ -440,7 +440,7 @@ long convertASE2TGL (PSTR file)
 					// MUST use its own shape or animation below
 					// will go straight to HELL!!
 					result = iniFile.readIdString("ShadowName",fileName,1023);
-					if (result == NO_ERR)
+					if (result == NO_ERROR)
 					{
 						char aseName[1024];
 						sprintf(aseName,"%s%s%s",tglPath,fileName,".ase");
@@ -555,80 +555,80 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	FitIniFilePtr systemFile = new FitIniFile;
 
 #ifdef _DEBUG
-	long systemOpenResult = 
+	int32_t systemOpenResult = 
 #endif
 		systemFile->open("system.cfg");
 		   
 #ifdef _DEBUG
-	assert( systemOpenResult == NO_ERR);
+	assert( systemOpenResult == NO_ERROR);
 #endif
 
 	{
 #ifdef _DEBUG
-		long systemPathResult = 
+		int32_t systemPathResult = 
 #endif
 			systemFile->seekBlock("systemPaths");
-			assert(systemPathResult == NO_ERR);
+			assert(systemPathResult == NO_ERROR);
 		{
-			long result = systemFile->readIdString("terrainPath",terrainPath,79);
-			assert(result == NO_ERR);
+			int32_t result = systemFile->readIdString("terrainPath",terrainPath,79);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("artPath",artPath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("fontPath",fontPath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("savePath",savePath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("spritePath",spritePath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("shapesPath",shapesPath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("soundPath",soundPath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("objectPath",objectPath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("cameraPath",cameraPath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("tilePath",tilePath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("missionPath",missionPath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("warriorPath",warriorPath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("profilePath",profilePath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("interfacepath",interfacePath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("moviepath",moviePath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("tglpath",tglPath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("texturepath",texturePath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("CDsoundPath",CDsoundPath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("CDmoviepath",CDmoviePath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 
 			result = systemFile->readIdString("CDspritePath",CDspritePath,79);
-			assert(result == NO_ERR);
+			assert(result == NO_ERROR);
 		}
 	}
 
@@ -647,7 +647,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	// Find the CDPath in the registry and save it off so I can
 	// look in CD Install Path for files.
 	//Changed for the shared source release, just set to current directory
-	//DWORD maxPathLength = 1023;
+	//ULONG maxPathLength = 1023;
 	//gos_LoadDataFromRegistry("CDPath", CDInstallPath, &maxPathLength);
 	//if (!maxPathLength)
 	//	strcpy(CDInstallPath,"..\\");
@@ -681,12 +681,12 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		// A list file was provided
 		//
 		File file;
-		if (file.open(listName) == NO_ERR)
+		if (file.open(listName) == NO_ERROR)
 		{
 			while (!file.eof())
 			{
 				char line[1024];
-				file.readLine((MemoryPtr)line, 1024);
+				file.readLine((PUCHAR)line, 1024);
 				if (line[0] != 0)
 					convertASE2TGL(line);
 			}
@@ -699,7 +699,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	// Set Date and write Binary data to registry under key
 	// GraphicsDataInit!!
 	SYSTEMTIME bombDate;
-	DWORD dataSize = sizeof(SYSTEMTIME);
+	ULONG dataSize = sizeof(SYSTEMTIME);
 	gos_LoadDataFromRegistry("GraphicsDataInit", &bombDate, &dataSize);
 	if (dataSize == 0)
 	{
@@ -727,7 +727,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	return 0;
 }
 
-DWORD	Seed;
+ULONG	Seed;
 
 //
 //

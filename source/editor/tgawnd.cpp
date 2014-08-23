@@ -101,7 +101,7 @@ void TGAWnd::SetTGAFileName( const CString& str )
 	}
 }
 
-void TGAWnd::SetTGAFileData( PUCHAR data, int size )
+void TGAWnd::SetTGAFileData( puint8_t data, int size )
 {
 	m_FileName = "";
 	m_bTGAChanged = true;
@@ -163,7 +163,7 @@ void TGAWnd::OnPaint()
 		}
 		
 		if ( !m_hBitmap )
-			m_hBitmap = CreateDIBSection( dc.m_hDC, m_pBmi, DIB_RGB_COLORS, (void **)&m_pBits, NULL, 0 );
+			m_hBitmap = CreateDIBSection( dc.m_hDC, m_pBmi, DIB_RGB_COLORS, (PVOID*)&m_pBits, NULL, 0 );
 
 		memcpy( m_pBits, m_pImage, m_pBmi->bmiHeader.biWidth * -m_pBmi->bmiHeader.biHeight * 4 );
 

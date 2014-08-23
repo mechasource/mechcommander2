@@ -39,14 +39,14 @@ public:
 	PCSTR getName() const { return name;}
 	void		setName( PCSTR newName ){ name = newName; }
 
-	long		getID() const { return ID; }
+	int32_t		getID() const { return ID; }
 	
 
 private:
 
 
 
-		long	ID;
+		int32_t	ID;
 		CString fileName;
 		CString	name;
 		

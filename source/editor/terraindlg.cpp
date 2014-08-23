@@ -13,7 +13,7 @@ TerrainDlg.cpp		: Implementation of the TerrainDlg component.
 #include "utilities.h"
 #include "terrtxm2.h"
 
-extern DWORD gameResourceHandle;		//Default handle must be used for mc2res.dll due to shared game/editor code
+extern ULONG gameResourceHandle;		//Default handle must be used for mc2res.dll due to shared game/editor code
 
 //----------------------------------------------------------------------
 void TerrainDlg::Init()

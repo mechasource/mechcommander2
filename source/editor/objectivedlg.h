@@ -132,7 +132,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	void DoColorBox( CWnd* pWnd );
-	void DoEditColorChange( long ID );
+	void DoEditColorChange( int32_t ID );
 
 	CBrush		baseBrush;
 	CBrush		brush1;

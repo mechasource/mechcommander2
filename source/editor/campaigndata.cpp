@@ -10,11 +10,11 @@
 
 #include "assert.h"
 
-static long sReadIdBoolean(FitIniFile &missionFile, PCSTR varName, bool &value) {
-	long result = 0;
+static int32_t sReadIdBoolean(FitIniFile &missionFile, PCSTR varName, bool &value) {
+	int32_t result = 0;
 	bool tmpBool;
 	result = missionFile.readIdBoolean((PSTR )varName, tmpBool);
-	if (NO_ERR != result) {
+	if (NO_ERROR != result) {
 		//assert(false);
 	} else {
 		value = tmpBool;
@@ -22,11 +22,11 @@ static long sReadIdBoolean(FitIniFile &missionFile, PCSTR varName, bool &value) 
 	return result;
 }
 
-static long sReadIdInteger(FitIniFile &missionFile, PCSTR varName, int &value) {
-	long result = 0;
-	long tmpLong;
+static int32_t sReadIdInteger(FitIniFile &missionFile, PCSTR varName, int &value) {
+	int32_t result = 0;
+	int32_t tmpLong;
 	result = missionFile.readIdLong((PSTR )varName, tmpLong);
-	if (NO_ERR != result) {
+	if (NO_ERROR != result) {
 		//assert(false);
 	} else {
 		value = tmpLong;
@@ -34,11 +34,11 @@ static long sReadIdInteger(FitIniFile &missionFile, PCSTR varName, int &value) {
 	return result;
 }
 
-static long sReadIdString(FitIniFile &missionFile, PCSTR varName, CString &CStr) {
-	long result = 0;
+static int32_t sReadIdString(FitIniFile &missionFile, PCSTR varName, CString &CStr) {
+	int32_t result = 0;
 	char buffer[2001/*buffer size*/]; buffer[0] = '\0';
 	result = missionFile.readIdString((PSTR )varName, buffer, 2001/*buffer size*/ - 1);
-	if (NO_ERR != result) {
+	if (NO_ERROR != result) {
 		//assert(false);
 	} else {
 		CStr = buffer;
@@ -154,14 +154,14 @@ bool CGroupData::Read(FitIniFile &fitFile, PCSTR groupName) {
 	result = sReadIdString(fitFile, "ABLScript", m_ABLScript);
 	int missionCount = 0;
 	result = sReadIdInteger(fitFile, "MissionCount", missionCount);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 
 	int index;
 	for (index = 0; missionCount > index; index+=1) {
 		ECharString blockName;
 		blockName.Format("%sMission%d", groupName, index);
 		result = fitFile.seekBlock(blockName.Data());
-		if (NO_ERR != result) { assert(false); continue; }
+		if (NO_ERROR != result) { assert(false); continue; }
 		CMissionData missionData;
 		bool bresult = missionData.Read(fitFile);
 		if (true != bresult) { assert(false); continue; }
@@ -193,7 +193,7 @@ bool CCampaignData::operator==(const CCampaignData &rhs) const {
 bool CCampaignData::Save(CString pathName) {
 	FitIniFile fitFile;
 	int result = fitFile.create(pathName.GetBuffer(0));
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 	{
 		return false;
 	}
@@ -225,27 +225,27 @@ bool CCampaignData::Save(CString pathName) {
 bool CCampaignData::Read(CString pathName) {
 	FitIniFile fitFile;
 	int result = fitFile.open(pathName.GetBuffer(0));
-	if (NO_ERR != result) { assert(false); return false; }
+	if (NO_ERROR != result) { assert(false); return false; }
 
 	result = fitFile.seekBlock("Campaign");
-	if (NO_ERR != result) { assert(false); }
+	if (NO_ERROR != result) { assert(false); }
 	result = sReadIdString(fitFile, "CampaignName", m_Name);
-	if (NO_ERR == result) { m_NameUseResourceString = false; }
+	if (NO_ERROR == result) { m_NameUseResourceString = false; }
 	result = sReadIdInteger(fitFile, "NameID", m_NameResourceStringID);
-	if (NO_ERR == result) { m_NameUseResourceString = true; }
+	if (NO_ERROR == result) { m_NameUseResourceString = true; }
 	result = sReadIdBoolean(fitFile, "NameUseResourceString", m_NameUseResourceString);
 	result = sReadIdInteger(fitFile, "CBills", m_CBills);
 	result = sReadIdString(fitFile, "FinalVideo", m_FinalVideo);
 	int groupCount = 0;
 	result = sReadIdInteger(fitFile, "GroupCount", groupCount);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 
 	int index;
 	for (index = 0; groupCount > index; index+=1) {
 		ECharString blockName;
 		blockName.Format("Group%d", index);
 		result = fitFile.seekBlock(blockName.Data());
-		if (NO_ERR != result) { assert(false); continue; }
+		if (NO_ERROR != result) { assert(false); continue; }
 		CGroupData groupData;
 		bool bresult = groupData.Read(fitFile, blockName.Data());
 		if (true != bresult) { assert(false); continue; }

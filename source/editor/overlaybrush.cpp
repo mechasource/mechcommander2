@@ -420,7 +420,7 @@ static int TextureToConnectivityMaskMapping(int iTexture) {
 	}
 }
 
-static void boundSafeGetOverlay( long tileR, long tileC, Overlays& type, int& Offset )
+static void boundSafeGetOverlay( int32_t tileR, int32_t tileC, Overlays& type, int& Offset )
 {
 	if ((0 > tileR) || (0 > tileC) || (Terrain::realVerticesMapSide <= tileR) || (Terrain::realVerticesMapSide <= tileR))
 	{
@@ -431,7 +431,7 @@ static void boundSafeGetOverlay( long tileR, long tileC, Overlays& type, int& Of
 	land->getOverlay(tileR, tileC, type, (ULONG&)Offset);
 }
 
-static int connectivityMaskBasedOnAdjacentTiles( long tileR, long tileC ) {
+static int connectivityMaskBasedOnAdjacentTiles( int32_t tileR, int32_t tileC ) {
 	Overlays connectsAbove = INVALID_OVERLAY;
 	Overlays connectsToTheRight = INVALID_OVERLAY;
 	Overlays connectsBelow = INVALID_OVERLAY;
@@ -474,8 +474,8 @@ static int connectivityMaskBasedOnAdjacentTiles( long tileR, long tileC ) {
 
 bool OverlayBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
 {
-	long tileC;
-	long tileR;
+	int32_t tileC;
+	int32_t tileR;
 
 	land->worldToTile( worldPos, tileR, tileC );
 

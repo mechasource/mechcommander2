@@ -43,11 +43,11 @@ static bool ESLoadString(int resourceID, EString &targetStr) {
 	return (!0);
 }
 
-static long sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
-	long result = 0;
+static int32_t sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
+	int32_t result = 0;
 	float tmpFloat;
 	result = missionFile->readIdFloat((PSTR )varName, tmpFloat);
-	if (NO_ERR != result) {
+	if (NO_ERROR != result) {
 		//assert(false);
 	} else {
 		value = tmpFloat;
@@ -55,11 +55,11 @@ static long sReadIdFloat(FitIniFile* missionFile, PCSTR varName, float &value) {
 	return result;
 }
 
-static long sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) {
-	long result = 0;
+static int32_t sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) {
+	int32_t result = 0;
 	bool tmpBool;
 	result = missionFile->readIdBoolean((PSTR )varName, tmpBool);
-	if (NO_ERR != result) {
+	if (NO_ERROR != result) {
 		//assert(false);
 	} else {
 		value = tmpBool;
@@ -67,11 +67,11 @@ static long sReadIdBoolean(FitIniFile* missionFile, PCSTR varName, bool &value) 
 	return result;
 }
 
-static long sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) {
-	long result = 0;
+static int32_t sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) {
+	int32_t result = 0;
 	ULONG tmpULong;
 	result = missionFile->readIdULong((PSTR )varName, tmpULong);
-	if (NO_ERR != result) {
+	if (NO_ERROR != result) {
 		//assert(false);
 	} else {
 		value = tmpULong;
@@ -79,11 +79,11 @@ static long sReadIdWholeNum(FitIniFile* missionFile, PCSTR varName, int &value) 
 	return result;
 }
 
-static long sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString &ECStr) {
-	long result = 0;
+static int32_t sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString &ECStr) {
+	int32_t result = 0;
 	char buffer[2001/*buffer size*/]; buffer[0] = '\0';
 	result = missionFile->readIdString((PSTR )varName, buffer, 2001/*buffer size*/ - 1);
-	if ((NO_ERR != result) && (BUFFER_TOO_SMALL != result)) {
+	if ((NO_ERROR != result) && (BUFFER_TOO_SMALL != result)) {
 		//assert(false);
 	} else {
 		CString CStr = buffer;
@@ -94,9 +94,9 @@ static long sReadIdString(FitIniFile* missionFile, PCSTR varName, ECharString &E
 	return result;
 }
 
-static long sWriteIdString(FitIniFile* missionFile, PCSTR varName, PCSTR szStr) {
-	if (!szStr) { return !(NO_ERR); }
-	long result = 0;
+static int32_t sWriteIdString(FitIniFile* missionFile, PCSTR varName, PCSTR szStr) {
+	if (!szStr) { return !(NO_ERROR); }
+	int32_t result = 0;
 	CString CStr = szStr;
 	/*readIdString can't read in "\r\n"*/
 	CStr.Replace("\r\n", "\n");
@@ -149,9 +149,9 @@ bool CNumberOfEnemyUnitsObjectiveCondition::operator==(const CObjectiveCondition
 
 bool CNumberOfEnemyUnitsObjectiveCondition::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 	result = sReadIdWholeNum(missionFile, "Num", m_num);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 
 	return true;
 }
@@ -197,13 +197,13 @@ bool CSpecificUnitObjectiveCondition::operator==(const CObjectiveCondition &rhs)
 
 bool CSpecificUnitObjectiveCondition::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 
 	float positionX, positionY;
 	result = sReadIdFloat(missionFile, "PositionX", positionX);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	result = sReadIdFloat(missionFile, "PositionY", positionY);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	EditorObjectMgr::UNIT_LIST units = EditorObjectMgr::instance()->getUnits();
 	EditorObjectMgr::UNIT_LIST::EConstIterator it = units.Begin();
 	while (!it.IsDone()) {
@@ -229,7 +229,7 @@ bool CSpecificUnitObjectiveCondition::Save( FitIniFile* file )
 	file->writeIdFloat( "PositionX", m_pUnit->getPosition().x  );
 	file->writeIdFloat( "PositionY", m_pUnit->getPosition().y );
 
-	long cellx, celly;
+	int32_t cellx, celly;
 	m_pUnit->getCells(cellx, celly);
 	file->writeIdULong( "CellX", cellx );
 	file->writeIdULong( "CellY", celly );
@@ -317,13 +317,13 @@ bool CSpecificStructureObjectiveCondition::operator==(const CObjectiveCondition 
 
 bool CSpecificStructureObjectiveCondition::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 
 	float positionX, positionY;
 	result = sReadIdFloat(missionFile, "PositionX", positionX);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	result = sReadIdFloat(missionFile, "PositionY", positionY);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	EditorObjectMgr::BUILDING_LIST buildings = EditorObjectMgr::instance()->getBuildings();
 	EditorObjectMgr::BUILDING_LIST::EConstIterator it = buildings.Begin();
 	while (!it.IsDone()) {
@@ -349,7 +349,7 @@ bool CSpecificStructureObjectiveCondition::Save( FitIniFile* file )
 	file->writeIdFloat( "PositionX", m_pBuilding->getPosition().x  );
 	file->writeIdFloat( "PositionY", m_pBuilding->getPosition().y );
 
-	long cellx, celly;
+	int32_t cellx, celly;
 	m_pBuilding->getCells(cellx, celly);
 	file->writeIdULong( "CellX", cellx );
 	file->writeIdULong( "CellY", celly );
@@ -489,13 +489,13 @@ bool CAreaObjectiveCondition::operator==(const CObjectiveCondition &rhs) const {
 
 bool CAreaObjectiveCondition::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 	result = sReadIdFloat(missionFile, "TargetCenterX", m_targetCenterX);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	result = sReadIdFloat(missionFile, "TargetCenterY", m_targetCenterY);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	result = sReadIdFloat(missionFile, "TargetRadius", m_targetRadius);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	return true;
 }
 
@@ -557,14 +557,14 @@ bool CBooleanFlagIsSet::operator==(const CObjectiveCondition &rhs) const {
 
 bool CBooleanFlagIsSet::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 	ECharString tmpECStr;
 	result = sReadIdString(missionFile, "FlagID", tmpECStr);
-	if (NO_ERR != result) {
+	if (NO_ERROR != result) {
 		/*for backward compatibility*/
 		int flagIndex = 0;
 		result = sReadIdWholeNum(missionFile, "FlagIndex", flagIndex);
-		if (NO_ERR != result) { return false; }
+		if (NO_ERROR != result) { return false; }
 		m_flagID.Format("%d", flagIndex);
 	} else {
 		m_flagID = tmpECStr.Data();
@@ -620,9 +620,9 @@ bool CElapsedMissionTime::operator==(const CObjectiveCondition &rhs) const {
 
 bool CElapsedMissionTime::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 	result = sReadIdFloat(missionFile, "Time", m_time);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	return true;
 }
 
@@ -676,10 +676,10 @@ bool CPlayBIK::operator==(const CObjectiveAction &rhs) const {
 
 bool CPlayBIK::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 	ECharString tmpECStr;
 	result = sReadIdString(missionFile, "AVIFileName", tmpECStr);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	m_pathname = tmpECStr.Data();
 	return true;
 }
@@ -745,10 +745,10 @@ bool CPlayWAV::operator==(const CObjectiveAction &rhs) const {
 
 bool CPlayWAV::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 	ECharString tmpECStr;
 	result = sReadIdString(missionFile, "WAVFileName", tmpECStr);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	m_pathname = tmpECStr.Data();
 	return true;
 }
@@ -814,10 +814,10 @@ bool CDisplayTextMessage::operator==(const CObjectiveAction &rhs) const {
 
 bool CDisplayTextMessage::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 	ECharString tmpECStr;
 	result = sReadIdString(missionFile, "Message", tmpECStr);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	m_message = tmpECStr.Data();
 	return true;
 }
@@ -864,9 +864,9 @@ bool CDisplayResourceTextMessage::operator==(const CObjectiveAction &rhs) const 
 
 bool CDisplayResourceTextMessage::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 	result = sReadIdWholeNum(missionFile, "ResourceStringID", m_resourceStringID);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	return true;
 }
 
@@ -917,14 +917,14 @@ bool CSetBooleanFlag::operator==(const CObjectiveAction &rhs) const {
 
 bool CSetBooleanFlag::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 	ECharString tmpECStr;
 	result = sReadIdString(missionFile, "FlagID", tmpECStr);
-	if (NO_ERR != result) {
+	if (NO_ERROR != result) {
 		/*for backward compatibility*/
 		int flagIndex = 0;
 		result = sReadIdWholeNum(missionFile, "FlagIndex", flagIndex);
-		if (NO_ERR != result) { return false; }
+		if (NO_ERROR != result) { return false; }
 		m_flagID.Format("%d", flagIndex);
 	} else {
 		m_flagID = tmpECStr.Data();
@@ -980,10 +980,10 @@ bool CMakeNewTechnologyAvailable::operator==(const CObjectiveAction &rhs) const 
 
 bool CMakeNewTechnologyAvailable::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 	ECharString tmpECStr;
 	result = sReadIdString(missionFile, "PurchaseFileName", tmpECStr);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	m_purchaseFilePathname = tmpECStr.Data();
 	return true;
 }
@@ -1360,7 +1360,7 @@ static action_species_type ActionSpeciesMap(PCSTR speciesString) {
 
 bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 {
-	long result = 0;
+	int32_t result = 0;
 	ECharString tmpECStr;
 	result = sReadIdString(missionFile, "Title", tmpECStr);
 	Title(_T(tmpECStr.Data()));
@@ -1374,7 +1374,7 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 	result = sReadIdWholeNum(missionFile, "Priority", m_priority);
 	result = sReadIdWholeNum(missionFile, "ResourcePoints", m_resourcePoints);
 	result = sReadIdBoolean(missionFile, "PreviousPrimaryObjectiveMustBeComplete", m_previousPrimaryObjectiveMustBeComplete);
-	if (NO_ERR != result) {
+	if (NO_ERROR != result) {
 		result = sReadIdBoolean(missionFile, "PreviousObjectiveMustBeComplete", m_previousPrimaryObjectiveMustBeComplete);
 	}
 	result = sReadIdBoolean(missionFile, "AllPreviousPrimaryObjectivesMustBeComplete", m_allPreviousPrimaryObjectivesMustBeComplete);
@@ -1384,11 +1384,11 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 	result = sReadIdBoolean(missionFile, "HiddenTrigger", m_isHiddenTrigger);
 	result = sReadIdBoolean(missionFile, "ActivateOnFlag", m_activateOnFlag);
 	result = sReadIdString(missionFile, "ActivateFlagID", tmpECStr);
-	if (NO_ERR != result) {
+	if (NO_ERROR != result) {
 		/*for backward compatibility*/
 		int flagIndex = 0;
 		result = sReadIdWholeNum(missionFile, "ActivateFlagIndex", flagIndex);
-		if (NO_ERR == result) {
+		if (NO_ERROR == result) {
 			m_activateFlagID.Format("%d", flagIndex);
 		}
 	} else {
@@ -1396,14 +1396,14 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 	}
 	result = sReadIdBoolean(missionFile, "ResetStatusOnFlag", m_resetStatusOnFlag);
 	result = sReadIdString(missionFile, "ResetStatusFlagID", tmpECStr);
-	if (NO_ERR == result) {
+	if (NO_ERROR == result) {
 		m_resetStatusFlagID = tmpECStr.Data();
 	}
 
-	if ( NO_ERR != missionFile->readIdLong( "BaseColor", m_baseColor ) )
+	if ( NO_ERROR != missionFile->readIdLong( "BaseColor", m_baseColor ) )
 		m_baseColor = -1;
 
-	if ( NO_ERR != missionFile->readIdLong( "HighlightColor", m_highlightColor ) )
+	if ( NO_ERROR != missionFile->readIdLong( "HighlightColor", m_highlightColor ) )
 		m_highlightColor = -1;
 
 	if ( missionFile->readIdLong( "HighlightColor2", m_highlightColor2 ) )
@@ -1411,11 +1411,11 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 
 	int modelIDVersion = 0;
 	result = sReadIdWholeNum(missionFile, "ModelID Version", modelIDVersion);
-	if ((NO_ERR != result) || (1 >= modelIDVersion) )
+	if ((NO_ERROR != result) || (1 >= modelIDVersion) )
 	{
 		m_modelID = -1;
 	} else {
-		if ( NO_ERR != missionFile->readIdLong( "ModelID", m_modelID ) )
+		if ( NO_ERROR != missionFile->readIdLong( "ModelID", m_modelID ) )
 			m_modelID = -1;
 	}
 
@@ -1424,7 +1424,7 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 
 	int numConditions = 0;
 	result = sReadIdWholeNum(missionFile, "NumConditions", numConditions);
-	if (NO_ERR != result) { return false; }
+	if (NO_ERROR != result) { return false; }
 	int numActions = 0;
 	result = sReadIdWholeNum(missionFile, "NumActions", numActions);
 	int numFailureConditions = 0;
@@ -1442,14 +1442,14 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 				tmpStr.Format("Team%dObjective%dCondition%d", Alignment(), objectiveNum, i);
 			}
 			result = missionFile->seekBlock(tmpStr.Data());
-			if (NO_ERR != result) { assert(false); continue; }
+			if (NO_ERROR != result) { assert(false); continue; }
 			condition_species_type species;
 			result = sReadIdString(missionFile, "ConditionSpeciesString", tmpECStr);
-			if (NO_ERR != result) {
+			if (NO_ERROR != result) {
 				/* this is just for backward compatibility, this entry is depricated */
 				int ispecies = 0;
 				result = sReadIdWholeNum(missionFile, "ConditionSpecies", ispecies);
-				if (NO_ERR != result) { continue; }
+				if (NO_ERROR != result) { continue; }
 				species = (condition_species_type)ispecies;
 			} else {
 				species = ConditionSpeciesMap(tmpECStr.Data());
@@ -1469,10 +1469,10 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dAction%d", Alignment(), objectiveNum, i);
 			result = missionFile->seekBlock(tmpStr.Data());
-			if (NO_ERR != result) { assert(false); continue; }
+			if (NO_ERROR != result) { assert(false); continue; }
 			action_species_type species;
 			result = sReadIdString(missionFile, "ActionSpeciesString", tmpECStr);
-			if (NO_ERR != result) { assert(false); continue; }
+			if (NO_ERROR != result) { assert(false); continue; }
 			species = ActionSpeciesMap(tmpECStr.Data());
 
 			CObjectiveAction *pNewObjectiveAction = new_CObjectiveAction(species, m_alignment);
@@ -1489,10 +1489,10 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dFailureCondition%d", Alignment(), objectiveNum, i);
 			result = missionFile->seekBlock(tmpStr.Data());
-			if (NO_ERR != result) { assert(false); continue; }
+			if (NO_ERROR != result) { assert(false); continue; }
 			condition_species_type species;
 			result = sReadIdString(missionFile, "FailureConditionSpeciesString", tmpECStr);
-			if (NO_ERR != result) { assert(false); continue; }
+			if (NO_ERROR != result) { assert(false); continue; }
 			species = ConditionSpeciesMap(tmpECStr.Data());
 
 			CObjectiveCondition *pNewObjectiveFailureCondition = new_CObjectiveCondition(species, m_alignment);
@@ -1509,10 +1509,10 @@ bool CObjective::Read( FitIniFile* missionFile, int objectiveNum, int version )
 			ECharString tmpStr;
 			tmpStr.Format("Team%dObjective%dFailureAction%d", Alignment(), objectiveNum, i);
 			result = missionFile->seekBlock(tmpStr.Data());
-			if (NO_ERR != result) { assert(false); continue; }
+			if (NO_ERROR != result) { assert(false); continue; }
 			action_species_type species;
 			result = sReadIdString(missionFile, "FailureActionSpeciesString", tmpECStr);
-			if (NO_ERR != result) { assert(false); continue; }
+			if (NO_ERROR != result) { assert(false); continue; }
 			species = ActionSpeciesMap(tmpECStr.Data());
 
 			CObjectiveAction *pNewObjectiveFailureAction = new_CObjectiveAction(species, m_alignment);
@@ -1807,12 +1807,12 @@ void CObjectives::Alignment(int alignment) {
 
 bool CObjectives::Read( FitIniFile* missionFile )
 {
-	long result = 0;
+	int32_t result = 0;
 	result = missionFile->seekBlock("Objectives Version");
-	if (NO_ERR != result) { assert(false); }
+	if (NO_ERROR != result) { assert(false); }
 	int objectivesVersion = 0;
 	result = sReadIdWholeNum(missionFile, "Version", objectivesVersion);
-	if (result != NO_ERR) {
+	if (result != NO_ERROR) {
 		assert(false); return false;
 	} else {
 		if (2 == objectivesVersion) {
@@ -1826,10 +1826,10 @@ bool CObjectives::Read( FitIniFile* missionFile )
 			tmpStr.Format("Team%dObjectives", Alignment());
 			result = missionFile->seekBlock(tmpStr.Data());
 		}
-		if (NO_ERR != result) { assert(false); }
+		if (NO_ERROR != result) { assert(false); }
 		int numObjectives = 0;
 		result = sReadIdWholeNum(missionFile, "NumObjectives", numObjectives);
-		if (NO_ERR != result) { return false; }
+		if (NO_ERROR != result) { return false; }
 		int i;
 		for (i = 0; i < numObjectives; i += 1) {
 			ECharString tmpStr;
@@ -1839,7 +1839,7 @@ bool CObjectives::Read( FitIniFile* missionFile )
 				tmpStr.Format("Team%dObjective%d", Alignment(), i);
 			}
 			result = missionFile->seekBlock(tmpStr.Data());
-			if (NO_ERR != result) { assert(false); continue; }
+			if (NO_ERROR != result) { assert(false); continue; }
 			CObjective *pNewObjective = new CObjective(m_alignment);
 			bool bresult = pNewObjective->Read(missionFile, i, objectivesVersion);
 			if (true != bresult) { assert(false); delete pNewObjective; continue; }

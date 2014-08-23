@@ -551,10 +551,10 @@ private:
 	EString m_activateFlagID;
 	bool m_resetStatusOnFlag;
 	EString m_resetStatusFlagID;
-	long	m_modelID;
-	long m_baseColor;
-	long m_highlightColor;
-	long m_highlightColor2;
+	int32_t	m_modelID;
+	int32_t m_baseColor;
+	int32_t m_highlightColor;
+	int32_t m_highlightColor2;
 
 public: /* we could make this protected if only the editdialog is to acces these functions */
 	static CObjectiveCondition *new_CObjectiveCondition(condition_species_type conditionSpecies, int alignment);
@@ -629,7 +629,7 @@ public:
 	void HighlightColor( int newColor ) { m_highlightColor = newColor; }
 	int HighlightColor2( ) const { return m_highlightColor2; }
 	void HighlightColor2( int newColor ) { m_highlightColor2 = newColor; }
-	long ModelID() const { return m_modelID; }
+	int32_t ModelID() const { return m_modelID; }
 	void ModelID( int newID ) { m_modelID = newID; }
 };
 
@@ -680,8 +680,8 @@ public:
 	int nFailureConditionSpeciesSelectionIndex;
 	int nFailureActionSpeciesSelectionIndex;
 
-	void *pModifiedUnitPtr;
-	void *pModifiedBuildingPtr;
+	PVOIDpModifiedUnitPtr;
+	PVOIDpModifiedBuildingPtr;
 
 	CObjectivesEditState() {
 		Clear();

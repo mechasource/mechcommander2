@@ -37,11 +37,11 @@ ULONG systemHeapSize = 8192000;
 ULONG guiHeapSize = 1023999;
 ULONG tglHeapSize = 65536000;
 
-DWORD BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
+ULONG BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
 
-long gammaLevel = 0;
+int32_t gammaLevel = 0;
 bool hasGuardBand = false;
-extern long terrainLineChanged; // the terrain uses this
+extern int32_t terrainLineChanged; // the terrain uses this
 //extern float frameNum;	// tiny geometry needs this
 extern float frameRate; // tiny geometry needs this
 
@@ -52,7 +52,7 @@ extern char MissingTitleString[];
 
 extern char CDInstallPath[];
 
-DWORD gosResourceHandle = 0;
+ULONG gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
 float gosFontScale = 1.0;
 FloatHelpPtr globalFloatHelp = NULL;
@@ -73,8 +73,8 @@ bool justResaveAllMaps = false;
 extern bool forceShadowBurnIn;
 // these globals are necessary for fast files for some reason
 FastFile 	**fastFiles = NULL;
-long 		numFastFiles = 0;
-long		maxFastFiles = 0;
+size_t 		numFastFiles = 0;
+size_t		maxFastFiles = 0;
 
 #define MAX_SHAPES	0
 
@@ -85,10 +85,10 @@ void InitDW (void);
 
 TimerManagerPtr timerManager = NULL;
 
-long FilterState = gos_FilterNone;
+int32_t FilterState = gos_FilterNone;
 
-extern long TERRAIN_TXM_SIZE;
-long ObjectTextureSize = 128;
+extern int32_t TERRAIN_TXM_SIZE;
+int32_t ObjectTextureSize = 128;
 
 Editor* editor = NULL;
 
@@ -118,7 +118,7 @@ void UpdateRenderers()
 #endif /*RUNNING_REMOTELY*/
 	hasGuardBand = true;
 
-	DWORD bColor = 0x0;
+	ULONG bColor = 0x0;
 	if (eye)
 		bColor = eye->fogColor;
 
@@ -261,13 +261,13 @@ void InitializeGameEngine()
    	// Find the CDPath in the registry and save it off so I can
    	// look in CD Install Path for files.
 	//Changed for the shared source release, just set to current directory
-	//DWORD maxPathLength = 1023;
+	//ULONG maxPathLength = 1023;
 	//gos_LoadDataFromRegistry("CDPath", CDInstallPath, &maxPathLength);
 	//if (!maxPathLength)
 	//	strcpy(CDInstallPath,"..\\");
 	strcpy(CDInstallPath,".\\");
 
-	long lastCharacter = strlen(CDInstallPath)-1;
+	int32_t lastCharacter = strlen(CDInstallPath)-1;
 	if (CDInstallPath[lastCharacter] != '\\')
 	{
 		CDInstallPath[lastCharacter+1] = '\\';
@@ -312,12 +312,12 @@ void InitializeGameEngine()
 	effectsName.init(effectsPath,"mc2.fx","");
 
 	File effectFile;
-	long result = effectFile.open(effectsName);
-	if (result != NO_ERR)
+	int32_t result = effectFile.open(effectsName);
+	if (result != NO_ERROR)
 		STOP(("Could not find MC2.fx"));
 		
-	long effectsSize = effectFile.fileSize();
-	MemoryPtr effectsData = (MemoryPtr)systemHeap->Malloc(effectsSize);
+	int32_t effectsSize = effectFile.fileSize();
+	PUCHAR effectsData = (PUCHAR)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData,effectsSize);
 	effectFile.close();
 	
@@ -333,19 +333,19 @@ void InitializeGameEngine()
 	globalFloatHelp = new FloatHelp(MAX_FLOAT_HELPS);
 	//---------------------------------------------------------------------
 	float doubleClickThreshold = 0.2f;
-	long dragThreshold = 10;
+	int32_t dragThreshold = 10;
 
 	//--------------------------------------------------------------
 	// Read in System.CFG
 	FitIniFilePtr systemFile = new FitIniFile;
 
 #ifdef _DEBUG
-	long systemOpenResult = 
+	int32_t systemOpenResult = 
 #endif
 		systemFile->open("system.cfg");
 		   
 #ifdef _DEBUG
-	if( systemOpenResult != NO_ERR)
+	if( systemOpenResult != NO_ERROR)
 	{
 		char Buffer[256];
 		gos_GetCurrentPath( Buffer, 256 );
@@ -355,87 +355,87 @@ void InitializeGameEngine()
 
 	{
 #ifdef _DEBUG
-		long systemBlockResult = 
+		int32_t systemBlockResult = 
 #endif
 		systemFile->seekBlock("systemHeap");
-		gosASSERT(systemBlockResult == NO_ERR);
+		gosASSERT(systemBlockResult == NO_ERROR);
 		{
-			long result = systemFile->readIdULong("systemHeapSize",systemHeapSize);
-			gosASSERT(result == NO_ERR);
+			int32_t result = systemFile->readIdULong("systemHeapSize",systemHeapSize);
+			gosASSERT(result == NO_ERROR);
 		}
 
 #ifdef _DEBUG
-		long systemPathResult = 
+		int32_t systemPathResult = 
 #endif
 		systemFile->seekBlock("systemPaths");
-		gosASSERT(systemPathResult == NO_ERR);
+		gosASSERT(systemPathResult == NO_ERROR);
 		{
-			long result = systemFile->readIdString("terrainPath",terrainPath,79);
-			gosASSERT(result == NO_ERR);
+			int32_t result = systemFile->readIdString("terrainPath",terrainPath,79);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("artPath",artPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("fontPath",fontPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("savePath",savePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("spritePath",spritePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("shapesPath",shapesPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("soundPath",soundPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("objectPath",objectPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("cameraPath",cameraPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("tilePath",tilePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("missionPath",missionPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("warriorPath",warriorPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("profilePath",profilePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("interfacepath",interfacePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("moviepath",moviePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("CDsoundPath",CDsoundPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("CDmoviepath",CDmoviePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("tglPath",tglPath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = systemFile->readIdString("texturePath",texturePath,79);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 		}
 
 #ifdef _DEBUG
-		long fastFileResult = 
+		int32_t fastFileResult = 
 #endif
 		systemFile->seekBlock("FastFiles");
-		gosASSERT(fastFileResult == NO_ERR);
+		gosASSERT(fastFileResult == NO_ERROR);
 		{
-			long result = systemFile->readIdLong("NumFastFiles",maxFastFiles);
-			if (result != NO_ERR)
+			int32_t result = systemFile->readIdLong("NumFastFiles",maxFastFiles);
+			if (result != NO_ERROR)
 				maxFastFiles = 0;
 
 			if (maxFastFiles)
@@ -443,12 +443,12 @@ void InitializeGameEngine()
 				fastFiles = (FastFile **)malloc(maxFastFiles*sizeof(FastFile *));
 				memset(fastFiles,0,maxFastFiles*sizeof(FastFile *));
 
-				long fileNum = 0;
+				int32_t fileNum = 0;
 				char fastFileId[10];
 				char fileName[100];
 				sprintf(fastFileId,"File%d",fileNum);
 	
-				while (systemFile->readIdString(fastFileId,fileName,99) == NO_ERR)
+				while (systemFile->readIdString(fastFileId,fileName,99) == NO_ERROR)
 				{
 					bool result = FastFileInit(fileName);
 					if (!result)
@@ -461,49 +461,49 @@ void InitializeGameEngine()
 		}
 
 		result = systemFile->seekBlock("CameraSettings");
-		if (result == NO_ERR)
+		if (result == NO_ERROR)
 		{
 			result = systemFile->readIdFloat("MaxPerspective",Camera::MAX_PERSPECTIVE);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Camera::MAX_PERSPECTIVE = 88.0f;
 
 			if (Camera::MAX_PERSPECTIVE > 90.0f)
 				Camera::MAX_PERSPECTIVE = 90.0f;
 
 			result = systemFile->readIdFloat("MinPerspective",Camera::MIN_PERSPECTIVE);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Camera::MIN_PERSPECTIVE = 18.0f;
 
 			if (Camera::MIN_PERSPECTIVE < 0.0f)
 				Camera::MIN_PERSPECTIVE = 0.0f;
 
 			result = systemFile->readIdFloat("MaxOrtho",Camera::MAX_ORTHO);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Camera::MAX_ORTHO = 88.0f;
 
 			if (Camera::MAX_ORTHO > 90.0f)
 				Camera::MAX_ORTHO = 90.0f;
 
 			result = systemFile->readIdFloat("MinOrtho",Camera::MIN_ORTHO);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Camera::MIN_ORTHO = 18.0f;
 
 			if (Camera::MIN_ORTHO < 0.0f)
 				Camera::MIN_ORTHO = 0.0f;
 
 			result = systemFile->readIdFloat("AltitudeMinimum",Camera::AltitudeMinimum);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Camera::AltitudeMinimum = 560.0f;
 
 			if (Camera::AltitudeMinimum < 110.0f)
 				Camera::AltitudeMinimum = 110.0f;
 
 			result = systemFile->readIdFloat("AltitudeMaximumHi",Camera::AltitudeMaximumHi);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Camera::AltitudeMaximumHi = 1600.0f;
 
 			result = systemFile->readIdFloat("AltitudeMaximumLo",Camera::AltitudeMaximumLo);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Camera::AltitudeMaximumHi = 1500.0f;
 		}
 	}
@@ -520,33 +520,33 @@ void InitializeGameEngine()
 
 
 #ifdef _DEBUG
-	long prefsOpenResult = 
+	int32_t prefsOpenResult = 
 #endif
 		prefs->open("prefs.cfg");
 
-	gosASSERT (prefsOpenResult == NO_ERR);
+	gosASSERT (prefsOpenResult == NO_ERROR);
 	{
 #ifdef _DEBUG
-		long prefsBlockResult = 
+		int32_t prefsBlockResult = 
 #endif
 		
 		prefs->seekBlock("MechCommander2Editor");
-		gosASSERT(prefsBlockResult == NO_ERR);
+		gosASSERT(prefsBlockResult == NO_ERROR);
 		{
-			long result = prefs->readIdFloat("CliffTerrainAngle",CliffTerrainAngle);
-			if (result != NO_ERR)
+			int32_t result = prefs->readIdFloat("CliffTerrainAngle",CliffTerrainAngle);
+			if (result != NO_ERROR)
 				CliffTerrainAngle = 45.0f;
 		}
 
 		prefs->seekBlock("MechCommander2");
-		gosASSERT(prefsBlockResult == NO_ERR);
+		gosASSERT(prefsBlockResult == NO_ERROR);
 		{
 			Environment.Key_SwitchMonitors = 0;
 			Environment.Key_FullScreen = 0;
 
-			long bitD = 0;
-			long result = prefs->readIdLong("BitDepth",bitD);
-			if (result != NO_ERR)
+			int32_t bitD = 0;
+			int32_t result = prefs->readIdLong("BitDepth",bitD);
+			if (result != NO_ERROR)
 				Environment.bitDepth				= 16;
 			else if (bitD == 32)
 				Environment.bitDepth				= 32;
@@ -556,28 +556,28 @@ void InitializeGameEngine()
 			//Editor can't draw fullscreen!
 //			bool fullScreen;
 //			result = prefs->readIdBoolean("FullScreen",	fullScreen);
-//			if (result != NO_ERR)
+//			if (result != NO_ERROR)
 //				Environment.fullScreen = 1;
 //			else
 //				Environment.fullScreen = (fullScreen == TRUE);
 
-			long fullScreenCard;
+			int32_t fullScreenCard;
 			result = prefs->readIdLong("FullScreenCard",fullScreenCard);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Environment.FullScreenDevice		= 0;
 			else
 				Environment.FullScreenDevice		= fullScreenCard;
 
-			long rasterizer;
+			int32_t rasterizer;
 			result = prefs->readIdLong("Rasterizer", rasterizer);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				Environment.Renderer				= 0;
 			else
 				Environment.Renderer				= rasterizer;
 
-			long filterSetting;
+			int32_t filterSetting;
 			result = prefs->readIdLong("FilterState",filterSetting);
-			if (result == NO_ERR)
+			if (result == NO_ERROR)
 			{
 				switch (filterSetting)
 				{
@@ -597,27 +597,27 @@ void InitializeGameEngine()
 			}
 
 			result = prefs->readIdLong("TerrainTextureRes",TERRAIN_TXM_SIZE);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				TERRAIN_TXM_SIZE = 64;
 
 			result = prefs->readIdLong("ObjectTextureRes",ObjectTextureSize);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				ObjectTextureSize = 128;
 
 			result = prefs->readIdLong("Brightness",gammaLevel);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				gammaLevel = 0;
 
 			result = prefs->readIdFloat("DoubleClickThreshold",doubleClickThreshold);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				doubleClickThreshold = 0.2f;
 
 			result = prefs->readIdLong("DragThreshold",dragThreshold);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				dragThreshold = 10;
 
 			result = prefs->readIdULong("BaseVertexColor",BaseVertexColor);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				BaseVertexColor = 0x00000000;
 		}
 	}
@@ -685,8 +685,8 @@ void InitializeGameEngine()
 		guiloader.init(artPath,"editorGui",".fit");
 	
 		FitIniFile loader;
-		long result = loader.open( guiloader );
-		gosASSERT(result == NO_ERR);
+		int32_t result = loader.open( guiloader );
+		gosASSERT(result == NO_ERROR);
 	
 		editor->init( (PSTR)guiloader );
 	}

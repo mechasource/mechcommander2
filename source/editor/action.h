@@ -51,7 +51,7 @@ protected:
 
 struct VertexInfo
 {
-	VertexInfo( long row, long column );
+	VertexInfo( int32_t row, int32_t column );
 	~VertexInfo(){}
 	int row;
 	int column;
@@ -162,7 +162,7 @@ public:
 private:
 
 	typedef EList< Action*, Action* >	ACTION_LIST;
-	typedef long	ACTION_POS;
+	typedef int32_t	ACTION_POS;
 
 	void				EmptyUndoList();
 	ACTION_LIST			m_listUndoActions;

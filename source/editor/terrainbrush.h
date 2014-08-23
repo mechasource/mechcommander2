@@ -48,10 +48,10 @@ class TerrainBrush: public Brush
 		}
 		virtual bool paint( Stuff::Vector3D& worldPos, int screenX, int screenY )
 		{
-			long tileC;
-			long tileR;
+			int32_t tileC;
+			int32_t tileR;
 
-			Stuff::Vector2DOf<long> screenPos( screenX, screenY );
+			Stuff::Vector2DOf<int32_t> screenPos( screenX, screenY );
 
 			eye->getClosestVertex( screenPos, tileR, tileC );
 

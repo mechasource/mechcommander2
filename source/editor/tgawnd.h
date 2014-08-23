@@ -26,7 +26,7 @@ class TGAWnd : public CStatic
 public:
 	TGAWnd();
 	void SetTGAFileName( const CString& str );
-	void SetTGAFileData( PUCHAR data, int size );
+	void SetTGAFileData( puint8_t data, int size );
 
 	PSTR GetImageData( ) { return m_pImage; }
 
@@ -48,7 +48,7 @@ protected:
 	PSTR	m_pImage;
 	BITMAPINFO* m_pBmi;
 	HBITMAP	m_hBitmap;
-	void*	m_pBits;
+	PVOID	m_pBits;
 	CDC*	m_pMemDC;
 	CPalette* m_Palette;
 	HBITMAP m_hSplashBitMap;

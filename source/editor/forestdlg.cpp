@@ -278,7 +278,7 @@ BOOL ForestDlg::OnInitDialog()
 		if ( pEdit )
 		{
 			CString str;
-			str.Format( "%ld", (long)forest.percentages[(i-IDC_FOREST_EDIT1)/2] );
+			str.Format( "%ld", (int32_t)forest.percentages[(i-IDC_FOREST_EDIT1)/2] );
 			pEdit->SetWindowText( str );
 		}
 

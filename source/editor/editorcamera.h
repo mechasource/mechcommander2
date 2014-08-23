@@ -44,8 +44,8 @@ public:
 		AppearancePtr			theSky;
 		bool					drawCompass;
 		float					lastShadowLightPitch;
-		long					cameraLineChanged;
-		long					oldSkyNumber;
+		int32_t					cameraLineChanged;
+		int32_t					oldSkyNumber;
 
 		EditorCamera (void)
 		{
@@ -102,7 +102,7 @@ public:
 		
 		//-----------------------------------------------
 		// Set Ambient for this pass of rendering	
-		DWORD lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
+		ULONG lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
 			
 		eye->setLightColor(1,lightRGB);
 		eye->setLightIntensity(1,1.0);
@@ -184,11 +184,11 @@ public:
 		}
  	}
 
-	virtual long activate (void)
+	virtual int32_t activate (void)
 	{
 		// If camera is already active, just return
 		if (ready && active)
-			return(NO_ERR);
+			return(NO_ERROR);
 		
 		//Can set initial position and stuff here.
 		//updateDaylight(true);
@@ -197,10 +197,10 @@ public:
 
 		allNormal();
 
-		return NO_ERR;
+		return NO_ERROR;
 	}
 
-	virtual long update (void)
+	virtual int32_t update (void)
 	{
 		// calculate new near and far plane distance based on 
 		// Current altitude above terrain.
@@ -231,7 +231,7 @@ public:
 		if (!theSky && (turn > 3))
 		{
 			//Startup the SKYBox
-			long appearanceType = (GENERIC_APPR_TYPE << 24);
+			int32_t appearanceType = (GENERIC_APPR_TYPE << 24);
 		
 			AppearanceTypePtr genericAppearanceType = NULL;
 			genericAppearanceType = appearanceTypeList->getAppearance(appearanceType,"skybox");
@@ -260,7 +260,7 @@ public:
 			oldSkyNumber = EditorData::instance->TheSkyNumber();
 		}
 		
-		long result = Camera::update();
+		int32_t result = Camera::update();
 
 		if ((cameraLineChanged + 10) < turn)
 		{

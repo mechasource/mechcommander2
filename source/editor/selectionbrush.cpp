@@ -155,7 +155,7 @@ bool SelectionBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY 
 			if ( !pCurModifyBuildingAction )
 				pCurModifyBuildingAction = new ModifyBuildingAction();
 
-			long newCellI, newCellJ;
+			int32_t newCellI, newCellJ;
 			land->worldToCell( worldPos, newCellJ, newCellI );
 
 			//if ( lastRow  != 0 && lastCol != 0 )
@@ -208,10 +208,10 @@ bool SelectionBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY 
 	
 	else //if ( bFirstClick ) // otherwise, do a new area select
 	{
-		long bShift = GetAsyncKeyState( VK_SHIFT );
-		long bCtrl = GetAsyncKeyState( VK_CONTROL );
+		int32_t bShift = GetAsyncKeyState( VK_SHIFT );
+		int32_t bCtrl = GetAsyncKeyState( VK_CONTROL );
 	
-		Stuff::Vector2DOf<long> screenPos;
+		Stuff::Vector2DOf<int32_t> screenPos;
 		screenPos.x = screenX;
 		screenPos.y = screenY;
 
@@ -254,7 +254,7 @@ bool SelectionBrush::paint( Stuff::Vector3D& worldPos, int screenX, int screenY 
 			}
 			else
 			{
-				long tileR, tileC;
+				int32_t tileR, tileC;
 				land->worldToTile( worldPos, tileR, tileC );
 				if ( tileR > -1 && tileR < land->realVerticesMapSide
 					&& tileC > -1 && tileC < land->realVerticesMapSide )
@@ -289,7 +289,7 @@ void SelectionBrush::render( int screenX, int screenY )
 		Stuff::Vector4D Screen;
 		eye->projectZ( firstWorldPos, Screen );
 		
-		RECT rect = { screenX, screenY, (long)Screen.x, (long)Screen.y };
+		RECT rect = { screenX, screenY, (int32_t)Screen.x, (int32_t)Screen.y };
 		drawRect( rect, 0x30ffffff );
 		drawEmptyRect( rect, 0xff000000, 0xff000000 );
 	}
@@ -302,7 +302,7 @@ void SelectionBrush::render( int screenX, int screenY )
 		if ( EditorObjectMgr::instance()->getSelectionCount() == 1 )
 		{
 			// only drag move one building at a time
-			Stuff::Vector2DOf<long> screenPos;
+			Stuff::Vector2DOf<int32_t> screenPos;
 			screenPos.x = screenX;
 			screenPos.y = screenY;
 
@@ -317,7 +317,7 @@ void SelectionBrush::render( int screenX, int screenY )
 			{
 				EditorInterface::instance()->ChangeCursor( IDC_HAND );
 				pDragBuilding = (EditorObject*)pObject;
-				pObject->getCells( (long&)lastRow, (long&)lastCol );
+				pObject->getCells( (int32_t&)lastRow, (int32_t&)lastCol );
 				lastPos.x = (float)screenX;
 				lastPos.y = (float)screenY;
 				return;
@@ -438,11 +438,11 @@ bool   SelectionBrush::paintSmoothArea( Stuff::Vector3D& worldPos, int screenX, 
 			float b = radiusY * radiusY * land->worldUnitsPerVertex * land->worldUnitsPerVertex;
 	
 			// now set surrounding vertices within radius
-			for ( int k = j - (long)radiusY; k < j + (long)radiusY + 1; ++k )
+			for ( int k = j - (int32_t)radiusY; k < j + (int32_t)radiusY + 1; ++k )
 			{
 				if ( k > -1 && k < land->realVerticesMapSide )
 				{
-					for ( int l = i - (long)radiusX; l < i + (long)radiusX + 1; ++l )
+					for ( int l = i - (int32_t)radiusX; l < i + (int32_t)radiusX + 1; ++l )
 					{
 						if ( l > -1 && l < land->realVerticesMapSide )
 						{

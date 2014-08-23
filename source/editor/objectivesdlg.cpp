@@ -168,7 +168,7 @@ void ObjectivesDlg::OnObjectivesRemoveButton()
 		m_ModifiedObjectives.Delete(nSelectionIndex);
 		syncObjectivesListWithListBox(&m_ModifiedObjectives, &m_List);
 		if (0 < m_List.GetCount()) {
-			if (m_List.GetCount() <= (long)nSelectionIndex) {
+			if (m_List.GetCount() <= (int32_t)nSelectionIndex) {
 				nSelectionIndex = m_List.GetCount() - 1;
 			}
 			m_List.SetCurSel(nSelectionIndex);

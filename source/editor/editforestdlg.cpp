@@ -69,7 +69,7 @@ void EditForestDlg::OnEdit()
 	int index = m_fileList.GetCurSel();
 	if ( index != -1 )
 	{
-		long ID = m_fileList.GetItemData( index );
+		int32_t ID = m_fileList.GetItemData( index );
 		const Forest* pOldForest = EditorObjectMgr::instance()->getForest( ID );
 		if ( pOldForest )
 		{
@@ -137,7 +137,7 @@ BOOL EditForestDlg::OnInitDialog()
 
 
 	Forest** pForests = NULL;
-	long count = 0;
+	int32_t count = 0;
 	EditorObjectMgr::instance()->getForests( pForests,  count );
 
 	if ( count )
@@ -179,7 +179,7 @@ void EditForestDlg::OnSave()
 	int index = m_fileList.GetCurSel();
 	if ( index != -1 )
 	{
-		long ID = m_fileList.GetItemData( index );
+		int32_t ID = m_fileList.GetItemData( index );
 		Forest* pOldForest = (Forest*)EditorObjectMgr::instance()->getForest( ID );
 		if ( pOldForest )
 		{
@@ -208,7 +208,7 @@ void EditForestDlg::OnRename()
 	int index = m_fileList.GetCurSel();
 	if ( index != -1 )
 	{
-		long ID = m_fileList.GetItemData( index );
+		int32_t ID = m_fileList.GetItemData( index );
 		Forest* pOldForest = (Forest*)EditorObjectMgr::instance()->getForest( ID );
 		if ( pOldForest )
 			pOldForest->setName( m_Name );
@@ -226,7 +226,7 @@ void EditForestDlg::OnSelchangeListFiles()
 	int index = m_fileList.GetCurSel();
 	if ( index != -1 )
 	{
-		long ID = m_fileList.GetItemData( index );
+		int32_t ID = m_fileList.GetItemData( index );
 		Forest* pOldForest = (Forest*)EditorObjectMgr::instance()->getForest( ID );
 		m_Name = pOldForest->getName();
 		UpdateData( false );

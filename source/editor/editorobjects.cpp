@@ -40,20 +40,20 @@ extern ULONG gameResourceHandle;
 
 Pilot::PilotInfo Pilot::s_BadPilots[MAX_PILOT] = { 0 };
 Pilot::PilotInfo Pilot::s_GoodPilots[MAX_PILOT] = { 0 };
-long	Pilot::goodCount = 0;
-long	Pilot::badCount = 0;
+int32_t	Pilot::goodCount = 0;
+int32_t	Pilot::badCount = 0;
 
 //--------------------------------------------------------------------------------------
-void *EditorObject::operator new (size_t mySize)
+PVOID EditorObject::operator new (size_t mySize)
 {
-	void *result = NULL;
+	PVOID result = NULL;
 	result = systemHeap->Malloc(mySize);
 	
 	return(result);
 }
 
 //--------------------------------------------------------------------------------------
-void EditorObject::operator delete (void *us)
+void EditorObject::operator delete (PVOID us)
 {
 	systemHeap->Free(us);
 }
@@ -185,7 +185,7 @@ void EditorObject::setAppearance( int Group, int indexInGroup )
 		AppearanceInfo* appearInfo2 = new AppearanceInfo();
 		appearInfo2->appearance = EditorObjectMgr::instance()->getAppearance( Group, indexInGroup );
 		appearInfo2->refCount = 1;
-		static long homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
+		static int32_t homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
 		gosASSERT((8 > appearance()->teamId) && (-1 <= appearance()->teamId));
 		appearInfo2->appearance->setObjectParameters( appearance()->position, appearance()->rotation, appearance()->selected, appearance()->teamId, homeRelations[appearance()->teamId+1]);
 		appearInfo2->appearance->setDamage(appearance()->damage);
@@ -252,7 +252,7 @@ ULONG EditorObject::getColor() const
 	return 0xffffffff;
 }
 
-void EditorObject::getCells( long& row, long& col ) const
+void EditorObject::getCells( int32_t& row, int32_t& col ) const
 {
 	row = cellRow;
 	col = cellColumn;
@@ -441,7 +441,7 @@ bool Unit::save( FitIniFile* file, int WarriorNumber, int controlDataType, PSTR 
 
 bool Unit::load( FitIniFile* file, int warriorNumber )
 {
-	long result = 0;
+	int32_t result = 0;
 	char tmp;
 	file->readIdChar( "CommanderID", tmp );
 	appearance()->teamId = tmp;
@@ -453,7 +453,7 @@ bool Unit::load( FitIniFile* file, int warriorNumber )
 
 	float fDamage = 0.0;
 	result = file->readIdFloat( "Damage", fDamage );
-	if ((NO_ERR == result) && (0.0 != fDamage))
+	if ((NO_ERROR == result) && (0.0 != fDamage))
 	{
 		setDamage(true);
 	}
@@ -464,7 +464,7 @@ bool Unit::load( FitIniFile* file, int warriorNumber )
 
 	ULONG tmpULong = 1;
 	result = file->readIdULong( "SelfRepairBehavior", tmpULong );
-	if ((NO_ERR == result) && (0 == tmpULong))
+	if ((NO_ERROR == result) && (0 == tmpULong))
 	{
 		setSelfRepairBehaviorEnabled(false);
 	}
@@ -477,7 +477,7 @@ bool Unit::load( FitIniFile* file, int warriorNumber )
 
 	ULONG squadNum = 1;
 	result = file->readIdULong("SquadNum", squadNum);
-	if (NO_ERR != result) {
+	if (NO_ERROR != result) {
 		// the unit should already have a valid default squad assigned at construction
 	} else {
 		setSquad(squadNum);
@@ -622,7 +622,7 @@ bool Brain::save( FitIniFile* file, int warriorNumber, bool bPlayer )
 		file->writeIdLong( "NumStaticVars", numStaticVars );
 		
 		char text[256];
-		for (long i=0;i<numCells;i++)
+		for (int32_t i=0;i<numCells;i++)
 		{
 			sprintf( text, "Warrior%ldCell%d", warriorNumber, i );
 			file->writeBlock(text);
@@ -650,7 +650,7 @@ bool Brain::save( FitIniFile* file, int warriorNumber, bool bPlayer )
 			file->writeIdLong( "NumStaticVars", 0 );
 			
 			char text[256];
-			for (long i=0;i<3;i++)
+			for (int32_t i=0;i<3;i++)
 			{
 				sprintf( text, "Warrior%ldCell%d", warriorNumber, i );
 				file->writeBlock(text);
@@ -703,19 +703,19 @@ bool Brain::load( FitIniFile* file, int warriorNumber )
 
 	if (0 < numCells)
 	{
-		cellNum = (long *)malloc(sizeof(long) * numCells);
-		cellType = (long *)malloc(sizeof(long) * numCells); 
+		cellNum = (int32_t *)malloc(sizeof(int32_t) * numCells);
+		cellType = (int32_t *)malloc(sizeof(int32_t) * numCells); 
 		cellData = (float *)malloc(sizeof(float) * numCells);
 	}
 	else
 	{
-		cellNum = (long *)0;
-		cellType = (long *)0; 
+		cellNum = (int32_t *)0;
+		cellType = (int32_t *)0; 
 		cellData = (float *)0;
 	}
 
 	char text[256];
-	for (long i=0;i<numCells;i++)
+	for (int32_t i=0;i<numCells;i++)
 	{
 		sprintf( text, "Warrior%ldCell%d", warriorNumber, i );
 		
@@ -734,12 +734,12 @@ Brain::Brain( const Brain& src )
 	numStaticVars = src.numStaticVars;
 	strcpy( brainName, src.brainName );
 
-	cellNum = (long *)malloc(sizeof(long) * numCells);
-	cellType = (long *)malloc(sizeof(long) * numCells); 
+	cellNum = (int32_t *)malloc(sizeof(int32_t) * numCells);
+	cellType = (int32_t *)malloc(sizeof(int32_t) * numCells); 
 	cellData = (float *)malloc(sizeof(float) * numCells);
 
 
-	for (long i=0;i<numCells;i++)
+	for (int32_t i=0;i<numCells;i++)
 	{
 		cellNum[i] = src.cellNum[i];
 		cellType[i] = src.cellType[i];
@@ -757,11 +757,11 @@ Brain& Brain::operator=( const Brain& src )
 
 		if (0 < numCells)
 		{
-			cellNum = (long *)malloc(sizeof(long) * numCells);
-			cellType = (long *)malloc(sizeof(long) * numCells); 
+			cellNum = (int32_t *)malloc(sizeof(int32_t) * numCells);
+			cellType = (int32_t *)malloc(sizeof(int32_t) * numCells); 
 			cellData = (float *)malloc(sizeof(float) * numCells);
 
-			for (long i=0;i<numCells;i++)
+			for (int32_t i=0;i<numCells;i++)
 			{
 				cellNum[i] = src.cellNum[i];
 				cellType[i] = src.cellType[i];
@@ -770,8 +770,8 @@ Brain& Brain::operator=( const Brain& src )
 		}
 		else
 		{
-			cellNum = (long *)0;
-			cellType = (long *)0; 
+			cellNum = (int32_t *)0;
+			cellType = (int32_t *)0; 
 			cellData = (float *)0;
 		}
 	}
@@ -797,11 +797,11 @@ void Pilot::save( FitIniFile* file, int bGoodGuy )
 
 void Pilot::load( FitIniFile* file, int bGoodGuy )
 {
-	long result = 0;
+	int32_t result = 0;
 	char buffer[256];
 	result = file->readIdString( "Profile", buffer, 256 );
 	bool bFound = 0;
-	if (NO_ERR == result)
+	if (NO_ERROR == result)
 	{
 		for ( int i = 0; i < goodCount; i++ )
 		{
@@ -849,7 +849,7 @@ void Pilot::initPilots()
 	strcpy( path, objectPath );
 	strcat( path, "pilots.csv" );
 
-	if ( NO_ERR != file.open( path ) )
+	if ( NO_ERROR != file.open( path ) )
 	{
 		STOP(( "couldn't find pilots.csv file" ));
 		return;
@@ -859,13 +859,13 @@ void Pilot::initPilots()
 	strcpy(pilotFileName, "");
 
 	PilotInfo* infos = s_GoodPilots;
-	long* counter = &goodCount;
+	int32_t* counter = &goodCount;
 
 	for ( int i = 0; i < 2; i++ )
 	{
 		while( true )
 		{
-			int bytesRead = file.readLine( (PUCHAR)pilotFileName, 256 );
+			int bytesRead = file.readLine( (puint8_t)pilotFileName, 256 );
 
 			if ( bytesRead < 2 )
 				break;
@@ -895,7 +895,7 @@ void Pilot::initPilots()
 			FullPathFileName tmpPath;
 			tmpPath.init(warriorPath,pilotFileName,".fit");
 
-			if ( NO_ERR != pilotFile.open( tmpPath ) )
+			if ( NO_ERROR != pilotFile.open( tmpPath ) )
 			{
 				char errorString[256];
 				sprintf( errorString, "Couldn't open file %s", tmpPath);
@@ -910,9 +910,9 @@ void Pilot::initPilots()
 			int result = pilotFile.seekBlock( "General" );
 			gosASSERT( result == 0 );
 
-			long tmp;
+			int32_t tmp;
 			result = pilotFile.readIdLong( "descIndex", tmp );
-			gosASSERT( result == NO_ERR );
+			gosASSERT( result == NO_ERROR );
 
 			cLoadString( tmp, pilotFileName, 64);
 			strcat(pilotFileName, "  ");
@@ -931,7 +931,7 @@ void Pilot::initPilots()
 		FullPathFileName path;
 		path.init(objectPath,"BadPilots",".csv");
 
-		if ( NO_ERR != file.open( path ) )
+		if ( NO_ERROR != file.open( path ) )
 		{
 			STOP(( "couldn't find BadPilots.csv file" ));
 			return;

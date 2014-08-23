@@ -91,14 +91,14 @@ void CMissionDialog::OnMiPurchaseFileBrowseButton() {
 		if( selectFileDialog.DoModal()==IDOK ) {
 			CString purchasePath = selectFileDialog.GetPathName();
 			FitIniFile file;
-			long result = 0;
+			int32_t result = 0;
 			result = file.open( (PSTR)(PCSTR)purchasePath );
-			if (NO_ERR != result) {
+			if (NO_ERROR != result) {
 				AfxMessageBox(IDS_COULDNT_OPEN_PURCHASE_FILE);
 			} else {
-				long result = 0;
+				int32_t result = 0;
 				result = file.seekBlock("Mechs");
-				if (NO_ERR != result)
+				if (NO_ERROR != result)
 				{
 					AfxMessageBox(IDS_NOT_A_VALID_PURCHASE_FILE);
 				}

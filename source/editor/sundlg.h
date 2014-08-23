@@ -33,8 +33,8 @@ public:
 	float yaw;
 	float pitch;
 
-	long sunRGB;
-	long ambientRGB;
+	int32_t sunRGB;
+	int32_t ambientRGB;
 
 	CBrush brush;
 
@@ -64,8 +64,8 @@ protected:
 
 	virtual BOOL OnInitDialog();
 
-	void displayInHex( long number, CEdit& edit );
-	long getHexValue( CEdit& edit );
+	void displayInHex( int32_t number, CEdit& edit );
+	int32_t getHexValue( CEdit& edit );
 	void DoColorDlg( CEdit& edit);
 
 	void applyChanges();

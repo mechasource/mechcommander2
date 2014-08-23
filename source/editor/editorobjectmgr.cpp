@@ -209,8 +209,8 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 	lstFile.readLine( buffer, 512 );
 	PacketFile objectFile;
 
-	long result = objectFile.open( const_cast< PSTR >(objectFileName) );
-	gosASSERT(result == NO_ERR);
+	int32_t result = objectFile.open( const_cast< PSTR >(objectFileName) );
+	gosASSERT(result == NO_ERROR);
 		
 
 	while( lstFile.getLogicalPosition() < lstFile.getLength() )
@@ -230,7 +230,7 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 		
 		char tmpBuffer[64];
 		int  bufferLength = 64;
-		PUCHAR pCur = buffer;
+		puint8_t pCur = buffer;
 		char GroupName[64];
 
 		// extract the file name
@@ -269,7 +269,7 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 		if ( ExtractNextString( pCur,  tmpBuffer, bufferLength ) )
 		{
 			bldg.fitID = atoi( tmpBuffer );
-			if ( NO_ERR != objectFile.seekPacket(bldg.fitID) )
+			if ( NO_ERROR != objectFile.seekPacket(bldg.fitID) )
 				gosASSERT( false );
 
 			int fileSize = objectFile.getPacketSize();
@@ -362,12 +362,12 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 		csvFileName.init(objectPath,bldg.fileName,".csv");
 
 		char varName[256];
-		if ( NO_ERR == csvFile.open( csvFileName ) )
+		if ( NO_ERROR == csvFile.open( csvFileName ) )
 		{
 			bldg.varNames = (PSTR*) malloc( sizeof( PSTR ) * 16 );
 			for ( int i = 0; i < 16; ++i )
 			{
-				if ( NO_ERR == csvFile.readString( 23 + 97 * i, 2, varName, 256 ) && strlen( varName ) )
+				if ( NO_ERROR == csvFile.readString( 23 + 97 * i, 2, varName, 256 ) && strlen( varName ) )
 				{
 					bldg.varNames[i] = (PSTR ) malloc( sizeof( char ) * ( strlen( varName ) + 1 ) );
 					strcpy( bldg.varNames[i], varName );
@@ -409,7 +409,7 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 
 
 
-int EditorObjectMgr::ExtractNextString( PUCHAR& pFileLine, PSTR pBuffer, int bufferLength )
+int EditorObjectMgr::ExtractNextString( puint8_t& pFileLine, PSTR pBuffer, int bufferLength )
 {
 	for ( int i = 0; i < 512; ++i )
 	{
@@ -435,9 +435,9 @@ int EditorObjectMgr::ExtractNextString( PUCHAR& pFileLine, PSTR pBuffer, int buf
 }
 
 //---------------------------------------------------------------------------
-long textToLong (PCSTR num)
+int32_t textToLong (PCSTR num)
 {
-	long result = 0;
+	int32_t result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
@@ -449,7 +449,7 @@ long textToLong (PCSTR num)
 	else
 	{
 		hexOffset += 2;
-		long numDigits = strlen(hexOffset)-1;
+		int32_t numDigits = strlen(hexOffset)-1;
 		for (int i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
@@ -459,8 +459,8 @@ long textToLong (PCSTR num)
 			}
 		}
 		numDigits = strlen(hexOffset)-1;
-		long power = 0;
-		for (long count = numDigits;count >= 0;count--,power++)
+		int32_t power = 0;
+		for (int32_t count = numDigits;count >= 0;count--,power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			
@@ -486,7 +486,7 @@ long textToLong (PCSTR num)
 	return(result);
 }
 
-int EditorObjectMgr::ExtractNextInt( PUCHAR& pFileLine )
+int EditorObjectMgr::ExtractNextInt( puint8_t& pFileLine )
 {
 	char buffer[1024];
 
@@ -500,7 +500,7 @@ int EditorObjectMgr::ExtractNextInt( PUCHAR& pFileLine )
 	return -1;
 }
 
-float EditorObjectMgr::ExtractNextFloat( PUCHAR& pFileLine )
+float EditorObjectMgr::ExtractNextFloat( puint8_t& pFileLine )
 {
 	char buffer[1024];
 
@@ -522,7 +522,7 @@ bool EditorObjectMgr::canAddBuilding( const Stuff::Vector3D& position,
 								ULONG indexWithinGroup )
 {
 	
-	long realCellI, realCellJ;
+	int32_t realCellI, realCellJ;
 	land->worldToCell( position, realCellJ, realCellI );
 	
 	EditorObject * cellObject = getObjectAtCell( realCellJ, realCellI );
@@ -587,7 +587,7 @@ EditorObject* EditorObjectMgr::addDropZone( const Stuff::Vector3D& position, int
 
 	Stuff::Vector3D realPos;
 	land->getCellPos( pLast->cellRow, pLast->cellColumn, realPos );
-	long homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
+	int32_t homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
 	gosASSERT((8 > alignment) && (-1 <= alignment));
 	pLast->appearance()->setObjectParameters( realPos, 0, false, alignment,homeRelations[alignment+1]);
 
@@ -769,7 +769,7 @@ EditorObject* EditorObjectMgr::addBuilding( const Stuff::Vector3D& position, ULO
 
 	Stuff::Vector3D realPos;
 	land->getCellPos( info->cellRow, info->cellColumn, realPos );
-	long homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
+	int32_t homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
 	gosASSERT((8 > alignment) && (-1 <= alignment));
     Stuff::Vector3D pos = bSnapToCell ? realPos : position;
 	info->appearance()->setObjectParameters( pos, 0, false, alignment,homeRelations[alignment+1]);
@@ -905,7 +905,7 @@ void EditorObjectMgr::getBuildingNamesInGroup( int group, PCSTR* names, int& Num
 //*************************************************************************************************
 void EditorObjectMgr::update()
 {
-	static long homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
+	static int32_t homeRelations[9] = {0, 0, 2, 1, 1, 1, 1, 1, 1};
 	if (renderObjects)
 	{
 		for ( BUILDING_LIST::EIterator iter = buildings.Begin();
@@ -917,7 +917,7 @@ void EditorObjectMgr::update()
 					if ( (*iter)->appearance()->recalcBounds() )
 					{
 						Stuff::Vector3D pos = (*iter)->appearance()->position;
-						long cellR, cellC;
+						int32_t cellR, cellC;
 						land->worldToCell(pos, cellR, cellC);
 						/*We're calling what appears to be a redundant moveBuilding() here to
 						ensure that the objects are level with the terrain (incase the terrain got
@@ -1147,11 +1147,11 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
 		PakFile.writePacket( whichPacket + 1, NULL );
 	}
 
-	int bufferSize = buildings.Count() * (4 * sizeof(float) + 6 * sizeof(long) ) + 2 * sizeof(long);
+	int bufferSize = buildings.Count() * (4 * sizeof(float) + 6 * sizeof(int32_t) ) + 2 * sizeof(int32_t);
 	PSTR pBuffer = (PSTR ) malloc( bufferSize );
-	long* pTacMapPoints = (long *)malloc( sizeof(long) * ( buildings.Count() * 2 + 1 ) );
-	long* pPoints = pTacMapPoints + 1;
-	long pointCounter = 0;
+	int32_t* pTacMapPoints = (int32_t *)malloc( sizeof(int32_t) * ( buildings.Count() * 2 + 1 ) );
+	int32_t* pPoints = pTacMapPoints + 1;
+	int32_t pointCounter = 0;
 	
 	file.open(pBuffer, bufferSize );
 	file.writeLong( buildings.Count() );
@@ -1188,10 +1188,10 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
 			{
 				Stuff::Vector3D pos = pLink->GetParentPosition();
 				// convert to cells
-				long cellI, cellJ;
+				int32_t cellI, cellJ;
 				land->worldToCell( pos, cellJ, cellI );
 
-				long val = (cellJ << 16) | cellI;
+				int32_t val = (cellJ << 16) | cellI;
 
 				//How about BEFORE we write this, we make sure there's really a building there!
 				EditorObject* pObject = getObjectAtCell( cellJ, cellI );
@@ -1218,14 +1218,14 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int whichPacket )
 	int pos = file.getLogicalPosition();
 	file.seek( 0 );
 
-	if ( !PakFile.writePacket( whichPacket, (PUCHAR)pBuffer, pos ) )
+	if ( !PakFile.writePacket( whichPacket, (puint8_t)pBuffer, pos ) )
 	{
 		gosASSERT( false );
 	}
 
 	*pTacMapPoints = pointCounter;
 
-	PakFile.writePacket( whichPacket + 1, (PUCHAR)pTacMapPoints, ( pointCounter * 2 + 1 ) * sizeof( long ) );
+	PakFile.writePacket( whichPacket + 1, (puint8_t)pTacMapPoints, ( pointCounter * 2 + 1 ) * sizeof( int32_t ) );
 
 	free( pTacMapPoints );
 	free( pBuffer );
@@ -1259,7 +1259,7 @@ bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
 	PakFile.seekPacket( whichPacket );
 	int size = PakFile.getPacketSize( );
 	PSTR pBuffer = (PSTR )malloc(size);
-	PakFile.readPacket( whichPacket, (PUCHAR)pBuffer );
+	PakFile.readPacket( whichPacket, (puint8_t)pBuffer );
 	
 	File file;
 	file.open( pBuffer, size );
@@ -1304,8 +1304,8 @@ bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
 
 		if ( cells && (cells != 0xffffffff)) // this building is linked
 		{
-			long cellJ = cells >> 16;
-			long cellI = cells & 0x0000ffff;
+			int32_t cellJ = cells >> 16;
+			int32_t cellI = cells & 0x0000ffff;
 
 			Stuff::Vector3D pos;
 
@@ -1336,7 +1336,7 @@ bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
 		}
 		// forest stuff
 		pInfo->setForestID( file.readLong() - 1 );
-		long scale = file.readLong();
+		int32_t scale = file.readLong();
 		if ( pInfo->getForestID() != -1 )
 			pInfo->setScale( scale );
 
@@ -1355,7 +1355,7 @@ bool EditorObjectMgr::load( PacketFile& PakFile, int whichPacket )
 					// At this point, we're still loading!!!
 					// We should, instead, be checking getObjectAtCell which ALWAYS works!
 					// -fs
-					long cellR, cellC;
+					int32_t cellR, cellC;
 					land->worldToCell((*iter)->parent.pos,cellR,cellC);
 
 					EditorObject* pObject = getObjectAtCell( cellR, cellC );
@@ -1433,7 +1433,7 @@ bool EditorObjectMgr::getIsHoverCraft( int id ) const
 
 }
 //*************************************************************************************************
-__int64	EditorObjectMgr::getImpassability( int id )
+int64_t	EditorObjectMgr::getImpassability( int id )
 {
 	return groups[getGroup(id)].buildings[getIndexInGroup(id)].impassability;
 }
@@ -1985,7 +1985,7 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 		
 		file.writeIdULong( "AlternativeStartIndex", alternativeInstancesCounter + 1 );
 
-		long IndicesOfAlternatives[15/*max alternatives*/] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+		int32_t IndicesOfAlternatives[15/*max alternatives*/] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 		int numAlternatives = (*iter)->pAlternativeInstances->Count();
 		if (15/*max alternatives*/ < numAlternatives)
 		{
@@ -2028,7 +2028,7 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 			int lanceGroup = 0;
 			for ( lanceGroup = 0; lanceGroup * (12/*just twelve*/) < reorderedUnitsByPlayer[playerNum].Count(); lanceGroup += 1 )
 			{
-				long mates[12/*just twelve*/];
+				int32_t mates[12/*just twelve*/];
 				int mateIndex = 0;
 				for (mateIndex = 0; 12/*just twelve*/ > mateIndex; mateIndex += 1)
 				{
@@ -2059,7 +2059,7 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 
 bool EditorObjectMgr::saveForests( FitIniFile& file ) 
 {
-	long counter = 0;
+	int32_t counter = 0;
 	char header[256];
 	for ( FOREST_LIST::EIterator iter = forests.Begin(); !iter.IsDone(); iter++, counter++)
 	{
@@ -2073,14 +2073,14 @@ bool EditorObjectMgr::saveForests( FitIniFile& file )
 
 bool EditorObjectMgr::loadForests( FitIniFile& file ) 
 {
-	long counter = 0;
+	int32_t counter = 0;
 	char header[256];
-	long tmp;
+	int32_t tmp;
 	
 	while( true )
 	{
 		sprintf( header, "Forest%ld", counter );
-		if ( NO_ERR != file.seekBlock( header ) )
+		if ( NO_ERROR != file.seekBlock( header ) )
 			break;
 
 		file.readIdString( "FileName", header, 255 );
@@ -2115,7 +2115,7 @@ int EditorObjectMgr::getNextAvailableForestID()
 	return ID;
 }
 
-long EditorObjectMgr::createForest( const Forest& forest )
+int32_t EditorObjectMgr::createForest( const Forest& forest )
 {
 	int ID = getNextAvailableForestID();
 	Forest* pForest = new Forest( ID );
@@ -2134,7 +2134,7 @@ long EditorObjectMgr::createForest( const Forest& forest )
 
 }
 
-void EditorObjectMgr::editForest( long& oldID, const Forest& forest )
+void EditorObjectMgr::editForest( int32_t& oldID, const Forest& forest )
 {
 	land->unselectAll();
 
@@ -2142,10 +2142,10 @@ void EditorObjectMgr::editForest( long& oldID, const Forest& forest )
 	{
 		if ( (*bIter)->getForestID() == oldID )
 		{
-			long cellI, cellJ;
+			int32_t cellI, cellJ;
 			(*bIter)->getCells( cellJ, cellI );
-			long tileI = cellI/3;
-			long tileJ = cellJ/3;
+			int32_t tileI = cellI/3;
+			int32_t tileJ = cellJ/3;
 
 			land->selectVertex( tileJ, tileI, true );
 
@@ -2204,7 +2204,7 @@ void EditorObjectMgr::removeForest( const Forest& forest )
 	}
 }
 
-void EditorObjectMgr::selectForest( long ID )
+void EditorObjectMgr::selectForest( int32_t ID )
 {
 	unselectAll();
 
@@ -2225,9 +2225,9 @@ void EditorObjectMgr::doForest( const Forest& forest )
 	float maxDensity = forest.maxDensity/9;
 	float minDensity = forest.minDensity/9;
 
-	long probabilities[FOREST_TYPES];
+	int32_t probabilities[FOREST_TYPES];
 
-	long probabilityTotal = 0;
+	int32_t probabilityTotal = 0;
 	for ( int i= 0; i < FOREST_TYPES; i++ )
 	{
 		probabilityTotal += forest.percentages[i];
@@ -2253,8 +2253,8 @@ void EditorObjectMgr::doForest( const Forest& forest )
 		{
 			if ( land->isVertexSelected( j, i ) )
 			{
-				long cellI = i * 3;
-				long cellJ = j * 3;
+				int32_t cellI = i * 3;
+				int32_t cellJ = j * 3;
 
 				for ( int l = -1; l < 2; l++ )
 				{
@@ -2285,11 +2285,11 @@ void EditorObjectMgr::doForest( const Forest& forest )
 
 						float fm = (minDensity - maxDensity)/forest.radius;
 						float density = maxDensity + fm * ( tmpR );
-						long lDensity = (long)density;
+						int32_t lDensity = (int32_t)density;
 
 						float remainder = density - (float)lDensity;
 
-						long count = (int)density + (RandomNumber( 100 ) < remainder * 100 ? 1 : 0);
+						int32_t count = (int)density + (RandomNumber( 100 ) < remainder * 100 ? 1 : 0);
 
 						// OK, now we have the density randomly (if possible)
 						// populate the tile with these...
@@ -2298,7 +2298,7 @@ void EditorObjectMgr::doForest( const Forest& forest )
 						for ( int t = 0; t < count; t++ )
 						{
 							// oh god, now we need to pick a tree
-							long random = RandomNumber( 100 );
+							int32_t random = RandomNumber( 100 );
 							int group = -1;
 							int index = -1;
 							for ( int k = 0; k < FOREST_TYPES; k++ )
@@ -2353,7 +2353,7 @@ void EditorObjectMgr::doForest( const Forest& forest )
 	}
 }
 
-const Forest* EditorObjectMgr::getForest( long ID )
+const Forest* EditorObjectMgr::getForest( int32_t ID )
 {
 	for ( FOREST_LIST::EIterator iter = forests.Begin(); !iter.IsDone(); iter++ )
 		{
@@ -2366,7 +2366,7 @@ const Forest* EditorObjectMgr::getForest( long ID )
 	return NULL;
 }
 
-long EditorObjectMgr::getForests( Forest** pForests, long& count )
+int32_t EditorObjectMgr::getForests( Forest** pForests, int32_t& count )
 {
 
 	if ( forests.Count() > count )
@@ -2446,7 +2446,7 @@ bool EditorObjectMgr::saveDropZones( FitIniFile& file )
 		pObjects[i++] = *bIter;
 	}
 
-	long count = i;
+	int32_t count = i;
 
 	for ( i = 1; i < count; ++i )
 	{
@@ -2484,7 +2484,7 @@ bool EditorObjectMgr::loadDropZones( FitIniFile& file )
 	while( true )
 	{
 		sprintf( Header, "DropZone%ld", counter );
-		if ( NO_ERR != file.seekBlock( Header ) )
+		if ( NO_ERROR != file.seekBlock( Header ) )
 			return counter > 0 ? true : false;
 
 		bool bVTol;
@@ -2526,7 +2526,7 @@ EditorObjectMgr::Building::~Building()
 
 }
 
-bool EditorObjectMgr::moveBuilding( EditorObject* pInfo, long cellJ, long cellI )
+bool EditorObjectMgr::moveBuilding( EditorObject* pInfo, int32_t cellJ, int32_t cellI )
 {
 	
 	if (getObjectAtCell( cellJ, cellI ) && (getObjectAtCell( cellJ, cellI ) != pInfo))
@@ -2565,7 +2565,7 @@ bool EditorObjectMgr::moveBuilding( EditorObject* pInfo, long cellJ, long cellI 
 	return true;
 }
 
-EditorObject* EditorObjectMgr::getObjectAtCell( long realCellJ, long realCellI )
+EditorObject* EditorObjectMgr::getObjectAtCell( int32_t realCellJ, int32_t realCellI )
 {
 	for( BUILDING_LIST::EIterator iter = buildings.Begin();
 		!iter.IsDone(); iter++ )
@@ -2573,7 +2573,7 @@ EditorObject* EditorObjectMgr::getObjectAtCell( long realCellJ, long realCellI )
 			if (  labs( realCellI - ((*iter)->cellColumn - 4)) <= 8
 				&& labs( realCellJ - ((*iter)->cellRow - 4)) <= 8 )
 			{
-				__int64 FootPrint = getImpassability( (*iter)->id );
+				int64_t FootPrint = getImpassability( (*iter)->id );
 				
 				int i = realCellI - ((*iter)->cellColumn - 4);
 				int j = realCellJ - ((*iter)->cellRow - 4);
@@ -2590,7 +2590,7 @@ EditorObject* EditorObjectMgr::getObjectAtCell( long realCellJ, long realCellI )
 			if (  labs( realCellI - ((*uIter)->cellColumn - 4)) <= 8
 				&& labs( realCellJ - ((*uIter)->cellRow - 4)) <= 8 )
 			{
-				__int64 FootPrint = getImpassability( (*uIter)->id );
+				int64_t FootPrint = getImpassability( (*uIter)->id );
 				
 				int i = realCellI - ((*uIter)->cellColumn - 4);
 				int j = realCellJ - ((*uIter)->cellRow - 4);

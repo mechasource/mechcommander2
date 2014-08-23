@@ -192,7 +192,7 @@ void BuildingBrush::update( int ScreenMouseX, int ScreenMouseY )
 		return;
 	
 	Stuff::Vector3D pos;
-	Stuff::Vector2DOf<long> pt;
+	Stuff::Vector2DOf<int32_t> pt;
 	pt.x = ScreenMouseX;
 	pt.y = ScreenMouseY;
 	eye->inverseProject( pt, pos );
@@ -216,7 +216,7 @@ void BuildingBrush::render( int ScreenMouseX, int ScreenMouseY )
 	
 	/*
 	Stuff::Vector3D pos;
-	Stuff::Vector2DOf<long> pt;
+	Stuff::Vector2DOf<int32_t> pt;
 	pt.x = ScreenMouseX;
 	pt.y = ScreenMouseY;
 	eye->inverseProject( pt, pos );

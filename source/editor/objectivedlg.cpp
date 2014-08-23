@@ -348,7 +348,7 @@ void ObjectiveDlg::SaveDialogValues() {
 	}
 	m_ModifiedObjective.ResetStatusFlagID(m_ResetStatusFlagIDEdit.GetBuffer(0));
 
-	long base, highlight1, highlight2;
+	int32_t base, highlight1, highlight2;
 
 	CWnd* pWnd = GetDlgItem( IDC_BASE2 );
 	if ( pWnd )
@@ -429,7 +429,7 @@ BOOL ObjectiveDlg::OnInitDialog()
 	for ( int i = 0; i < groupCount; ++i )
 	{
 		m_modelGroup.AddString( pGroups[i] );
-		m_modelGroup.SetItemData( i, (DWORD)i );
+		m_modelGroup.SetItemData( i, (ULONG)i );
 	}
 
 	delete [] pGroups;
@@ -561,7 +561,7 @@ BOOL ObjectiveDlg::OnInitDialog()
 void ObjectiveDlg::OnObjectiveAddConditionButton() 
 {
 	{
-		DWORD comboboxSelection = (&m_ComboBox)->GetCurSel();
+		ULONG comboboxSelection = (&m_ComboBox)->GetCurSel();
 		if ((0 <= comboboxSelection) && (comboBoxItems.Count() > comboboxSelection)) {
 			//condition_species_type species = comboBoxItems[comboboxSelection];
 			condition_species_type species = *(comboBoxItems.Iterator(comboboxSelection));
@@ -609,7 +609,7 @@ void ObjectiveDlg::OnObjectiveRemoveConditionButton()
 		m_ModifiedObjective.Delete(nSelectionIndex);
 		syncConditionsListWithListBox((&m_ModifiedObjective), (&m_List));
 		if (0 < m_List.GetCount()) {
-			if (m_List.GetCount() <= (long)nSelectionIndex) {
+			if (m_List.GetCount() <= (int32_t)nSelectionIndex) {
 				nSelectionIndex = m_List.GetCount() - 1;
 			}
 			m_List.SetCurSel(nSelectionIndex);
@@ -620,7 +620,7 @@ void ObjectiveDlg::OnObjectiveRemoveConditionButton()
 void ObjectiveDlg::OnObjectiveAddActionButton() 
 {
 	{
-		DWORD actionComboboxSelection = (&m_ActionComboBox)->GetCurSel();
+		ULONG actionComboboxSelection = (&m_ActionComboBox)->GetCurSel();
 		if ((0 <= actionComboboxSelection) && (actionComboBoxItems.Count() > actionComboboxSelection)) {
 			//action_species_type species = actionComboBoxItems[actionComboboxSelection];
 			action_species_type species = *(actionComboBoxItems.Iterator(actionComboboxSelection));
@@ -667,7 +667,7 @@ void ObjectiveDlg::OnObjectiveRemoveActionButton()
 		m_ModifiedObjective.m_actionList.Delete(nSelectionIndex);
 		syncActionsListWithListBox(&(m_ModifiedObjective.m_actionList), (&m_ActionList));
 		if (0 < m_ActionList.GetCount()) {
-			if (m_ActionList.GetCount() <= (long)nSelectionIndex) {
+			if (m_ActionList.GetCount() <= (int32_t)nSelectionIndex) {
 				nSelectionIndex = m_ActionList.GetCount() - 1;
 			}
 			m_ActionList.SetCurSel(nSelectionIndex);
@@ -726,7 +726,7 @@ void ObjectiveDlg::OnHighlight1edit()
 	
 }
 
-void ObjectiveDlg::DoEditColorChange( long ID )
+void ObjectiveDlg::DoEditColorChange( int32_t ID )
 {
 	CString text;
 	GetDlgItem( ID )->GetWindowText( text );
@@ -780,7 +780,7 @@ void ObjectiveDlg::DoColorBox( CWnd* pWnd )
 
 		tmpStr.Replace( "0x", "" );
 
-		long base;
+		int32_t base;
 		sscanf( tmpStr, "%x", &base );
 		base &= 0x00ffffff;
 
@@ -809,7 +809,7 @@ HBRUSH ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 		tmpStr.Replace( "0x", "" );
 
-		long base;
+		int32_t base;
 		sscanf( tmpStr, "%x", &base );
 		base &= 0x00ffffff;
 		base = reverseRGB( base );
@@ -834,7 +834,7 @@ HBRUSH ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 		tmpStr.Replace( "0x", "" );
 
-		long base;
+		int32_t base;
 		sscanf( tmpStr, "%x", &base );
 		base &= 0x00ffffff;
 		base = reverseRGB( base );
@@ -857,7 +857,7 @@ HBRUSH ObjectiveDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		
 		tmpStr.Replace( "0x", "" );
 
-		long base;
+		int32_t base;
 		sscanf( tmpStr, "%x", &base );
 		base &= 0x00ffffff;
 		base = reverseRGB( base );
@@ -913,7 +913,7 @@ void ObjectiveDlg::OnObjectiveDescriptionEditButton()
 void ObjectiveDlg::OnObjectiveAddFailureConditionButton() 
 {
 	{
-		DWORD comboboxSelection = (&m_FailureConditionComboBox)->GetCurSel();
+		ULONG comboboxSelection = (&m_FailureConditionComboBox)->GetCurSel();
 		if ((0 <= comboboxSelection) && (failureConditionComboBoxItems.Count() > comboboxSelection)) {
 			//condition_species_type species = failureConditionComboBoxItems[comboboxSelection];
 			condition_species_type species = *(failureConditionComboBoxItems.Iterator(comboboxSelection));
@@ -961,7 +961,7 @@ void ObjectiveDlg::OnObjectiveRemoveFailureConditionButton()
 		m_ModifiedObjective.m_failureConditionList.Delete(nSelectionIndex);
 		syncConditionsListWithListBox(&(m_ModifiedObjective.m_failureConditionList), (&m_FailureConditionList));
 		if (0 < m_FailureConditionList.GetCount()) {
-			if (m_FailureConditionList.GetCount() <= (long)nSelectionIndex) {
+			if (m_FailureConditionList.GetCount() <= (int32_t)nSelectionIndex) {
 				nSelectionIndex = m_FailureConditionList.GetCount() - 1;
 			}
 			m_FailureConditionList.SetCurSel(nSelectionIndex);
@@ -972,7 +972,7 @@ void ObjectiveDlg::OnObjectiveRemoveFailureConditionButton()
 void ObjectiveDlg::OnObjectiveAddFailureActionButton() 
 {
 	{
-		DWORD actionComboboxSelection = (&m_FailureActionComboBox)->GetCurSel();
+		ULONG actionComboboxSelection = (&m_FailureActionComboBox)->GetCurSel();
 		if ((0 <= actionComboboxSelection) && (failureActionComboBoxItems.Count() > actionComboboxSelection)) {
 			//action_species_type species = failureActionComboBoxItems[actionComboboxSelection];
 			action_species_type species = *(failureActionComboBoxItems.Iterator(actionComboboxSelection));
@@ -1019,7 +1019,7 @@ void ObjectiveDlg::OnObjectiveRemoveFailureActionButton()
 		m_ModifiedObjective.m_failureActionList.Delete(nSelectionIndex);
 		syncActionsListWithListBox(&(m_ModifiedObjective.m_failureActionList), (&m_FailureActionList));
 		if (0 < m_FailureActionList.GetCount()) {
-			if (m_FailureActionList.GetCount() <= (long)nSelectionIndex) {
+			if (m_FailureActionList.GetCount() <= (int32_t)nSelectionIndex) {
 				nSelectionIndex = m_FailureActionList.GetCount() - 1;
 			}
 			m_FailureActionList.SetCurSel(nSelectionIndex);

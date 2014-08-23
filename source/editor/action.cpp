@@ -361,7 +361,7 @@ bool ActionPaintTile::getOldHeight( int row, int column, float& height )
 		return false;
 }
 
-VertexInfo::VertexInfo( long newRow, long newColumn )
+VertexInfo::VertexInfo( int32_t newRow, int32_t newColumn )
 {
 	gosASSERT( newRow > -1 && newColumn > -1 );
 	gosASSERT( newRow < land->realVerticesMapSide && newColumn < land->realVerticesMapSide );
@@ -419,7 +419,7 @@ bool ModifyBuildingAction::doRedo()
 					pBuilding->setDamage(d);
 				}
 
-				long row, column;
+				int32_t row, column;
 				pBuilding->getCells(row, column);
 				EditorObjectMgr::instance()->moveBuilding(pBuilding, row, column);
 

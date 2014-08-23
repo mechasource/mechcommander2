@@ -3,8 +3,8 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include <gui/abutton.h>
-#include <gui/afont.h>
+#include <mechgui/abutton.h>
+#include <mechgui/afont.h>
 #include <mclib.h>
 #include <windows.h>
 #include "soundsys.h"

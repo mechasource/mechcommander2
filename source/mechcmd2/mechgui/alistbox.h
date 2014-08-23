@@ -7,9 +7,9 @@
 #ifndef ALISTBOX_H
 #define ALISTBOX_H
 
-#include <gui/ascroll.h>
-#include <gui/aedit.h>
-#include <gui/afont.h>
+#include <mechgui/ascroll.h>
+#include <mechgui/aedit.h>
+#include <mechgui/afont.h>
 
 #include "estring.h"
 

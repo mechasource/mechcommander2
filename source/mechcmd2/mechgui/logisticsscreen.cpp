@@ -7,13 +7,13 @@ LogisticsScreen.cpp			: Implementation of the LogisticsScreen component.
 #define LOGISTICSSCREEN_CPP
 
 #include "stdafx.h"
-#include "logisticsscreen.h"
+#include <mechgui/logisticsscreen.h>
 #include "inifile.h"
-#include <gui/asystem.h>
-#include <gui/abutton.h>
-#include <gui/aedit.h>
+#include <mechgui/asystem.h>
+#include <mechgui/abutton.h>
+#include <mechgui/aedit.h>
 #include "err.h"
-#include "aanimobject.h"
+#include <mechgui/aanimobject.h>
 
 extern int32_t helpTextID;
 extern int32_t helpTextHeaderID;

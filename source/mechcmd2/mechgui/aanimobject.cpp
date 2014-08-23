@@ -7,7 +7,7 @@ aAnimObject.cpp			: Implementation of the aAnimObject component.
 #define AANIMOBJECT_CPP
 
 #include "stdafx.h"
-#include "aanimobject.h"
+#include <mechgui/aanimobject.h>
 #include <mclib.h>
 
 aAnimObject::aAnimObject(void)

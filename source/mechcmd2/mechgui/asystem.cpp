@@ -4,9 +4,9 @@
 
 #include "stdafx.h"
 #include <mclib.h>
-#include <gui/asystem.h>
+#include <mechgui/asystem.h>
 #include "packet.h"
-#include <gui/afont.h>
+#include <mechgui/afont.h>
 #include "paths.h"
 #include "userinput.h"
 

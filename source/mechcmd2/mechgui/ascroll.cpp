@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include <mclib.h>
 #ifndef ASCROLL_H
-#include <gui/ascroll.h>
+#include <mechgui/ascroll.h>
 #endif
 
 

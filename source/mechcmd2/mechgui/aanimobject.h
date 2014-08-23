@@ -10,13 +10,8 @@ aAnimObject.h			: Interface for the aAnimObject component of the GUI library.
 #ifndef AANIMOBJECT_H
 #define AANIMOBJECT_H
 
-#ifndef ASYSTEM_H
-#include <gui/asystem.h>
-#endif
-
-#ifndef AANIM_H
-#include "aanim.h"
-#endif
+#include <mechgui/asystem.h>
+#include <mechgui/aanim.h>
 
 //*************************************************************************************************
 

@@ -7,8 +7,8 @@
 #ifndef ASCROLL_H
 #define ASCROLL_H
 
-#include <gui/asystem.h>
-#include <gui/abutton.h>
+#include <mechgui/asystem.h>
+#include <mechgui/abutton.h>
 
 namespace mechgui {
 

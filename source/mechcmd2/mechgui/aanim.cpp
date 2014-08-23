@@ -3,7 +3,7 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "aanim.h"
+#include <mechgui/aanim.h>
 #include <mclib.h>
 #include "estring.h"
 

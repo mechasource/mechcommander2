@@ -10,7 +10,7 @@ LogisticsScreen.h			: Interface for the LogisticsScreen component.
 #ifndef LOGISTICSSCREEN_H
 #define LOGISTICSSCREEN_H
 
-#include <gui/asystem.h>
+#include <mechgui/asystem.h>
 
 
 //*************************************************************************************************

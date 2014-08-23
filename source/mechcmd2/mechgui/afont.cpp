@@ -3,7 +3,7 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include <gui/afont.h>
+#include <mechgui/afont.h>
 #include <mclib.h>
 #include <mbstring.h>
 

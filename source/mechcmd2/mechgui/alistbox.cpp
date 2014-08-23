@@ -5,13 +5,13 @@
 #include "stdafx.h"
 
 #ifndef ASYSTEM_H
-#include <gui/asystem.h>
+#include <mechgui/asystem.h>
 #endif
 #ifndef AFONT_H
-#include <gui/afont.h>
+#include <mechgui/afont.h>
 #endif
 #ifndef ALISTBOX_H
-#include "alistbox.h"
+#include <mechgui/alistbox.h>
 #endif
 
 #include "soundsys.h"

@@ -11,7 +11,7 @@ aEdit.h			: Interface for the aEdit component of the GUI library.
 #define AEDIT_H
 
 #ifndef ASYSTEM_H
-#include <gui/asystem.h>
+#include <mechgui/asystem.h>
 #endif
 
 #ifndef ESTRING_H

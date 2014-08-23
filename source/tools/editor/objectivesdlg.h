@@ -2,16 +2,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_OBJECTIVESDLG_H__2D45CD01_42FA_4FF0_AB18_BBBAA9B0E3A5__INCLUDED_)
 #define AFX_OBJECTIVESDLG_H__2D45CD01_42FA_4FF0_AB18_BBBAA9B0E3A5__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// ObjectivesDlg.h : header file
-//
-
-#include "Objective.h"
+//#include "objective.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // ObjectivesDlg dialog

@@ -2,18 +2,13 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_CAMPAIGNDIALOG_H__911BFC1D_2B46_40F8_A288_1E0BDB371BDE__INCLUDED_)
 #define AFX_CAMPAIGNDIALOG_H__911BFC1D_2B46_40F8_A288_1E0BDB371BDE__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// CampaignDialog.h : header file
-//
-
-//include "CampaignEditor.h"
-#include "resource.h"
-#include "CampaignData.h"
+//#include "campaigneditor.h"
+//#include "campaigndata.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CCampaignDialog dialog

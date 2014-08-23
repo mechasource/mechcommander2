@@ -1,5 +1,3 @@
-#ifndef DRAGTOOL_H
-#define DRAGTOOL_H
 /*************************************************************************************************\
 DragTool.h			: Interface for the DragTool component.  When you hold down the space bar,
 						this thing lets you scroll around		
@@ -8,9 +6,12 @@ DragTool.h			: Interface for the DragTool component.  When you hold down the spa
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef BRUSH_H
-#include "Brush.h"
-#endif
+#pragma once
+
+#ifndef DRAGTOOL_H
+#define DRAGTOOL_H
+
+// #include "brush.h"
 
 class DragTool: public Brush
 {

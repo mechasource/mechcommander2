@@ -1,5 +1,3 @@
-#ifndef CHOOSEUNITDLG_H
-#define CHOOSEUNITDLG_H
 /*************************************************************************************************\
 ChooseUnitDlg.h		: Interface for the ChooseUnitDlg component.
 //---------------------------------------------------------------------------//
@@ -7,11 +5,14 @@ ChooseUnitDlg.h		: Interface for the ChooseUnitDlg component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "resource.h"
-#include <elist.h>
-#include "Objective.h"
-#include "editorobjectmgr.h"
-#include "stdafx.h"
+#pragma once
+
+#ifndef CHOOSEUNITDLG_H
+#define CHOOSEUNITDLG_H
+
+//#include <elist.h>
+//#include "objective.h"
+//#include "editorobjectmgr.h"
 
 
 class ChooseUnitDlg: public CDialog

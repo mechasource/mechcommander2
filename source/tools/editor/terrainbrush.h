@@ -1,5 +1,3 @@
-#ifndef TERRAINBRUSH_H
-#define TERRAINBRUSH_H
 /*************************************************************************************************\
 TerrainBrush.h		: Interface for the TerrainBrush component. used to paint textures
 //---------------------------------------------------------------------------//
@@ -7,10 +5,13 @@ TerrainBrush.h		: Interface for the TerrainBrush component. used to paint textur
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef BRUSH_H
-#include "Brush.h"
-#endif
-#include "Action.h"
+#pragma once
+
+#ifndef TERRAINBRUSH_H
+#define TERRAINBRUSH_H
+
+//#include "brush.h"
+//#include "action.h"
 
 class TerrainBrush: public Brush
 {

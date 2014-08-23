@@ -1,35 +1,18 @@
-#ifndef EDITORINTERFACE_H
-#define EDITORINTERFACE_H
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-//#pragma warning( disable : 4786 )
+#pragma once
 
+#ifndef EDITORINTERFACE_H
+#define EDITORINTERFACE_H
 
-#ifndef MCLIB_H
-#include <mclib.h>
-#endif
-
-#ifndef ACTION_H
-#include "Action.h"
-#endif
-
-#ifndef EDITOROBJECTMGR_H
-#include "editorobjectmgr.h"
-#endif
-
-#ifndef EDITORDATA_H
-#include "editordata.h"
-#endif
-
-#ifndef EDITORTACMAP_H
-#include "EditorTacMap.h"
-#endif
-
-#include "Objective.h"
-
-#include "stdafx.h"
+//#include <mclib.h>
+//#include "action.h"
+//#include "editorobjectmgr.h"
+//#include "editordata.h"
+//#include "editortacmap.h"
+//#include "objective.h"
 
 // forward declarations
 class DlgFileOpen;
@@ -40,22 +23,6 @@ class Menu;
 // global resource handle
 extern uint32_t gameResourceHandle;
 extern bool DebuggerActive;
-
-// ARM
-namespace Microsoft
-{
-	namespace Xna
-	{
-		namespace Arm
-		{
-			struct IProviderEngine;
-			struct IProviderAsset;
-		}
-	}
-}
-
-extern Microsoft::Xna::Arm::IProviderEngine * armProvider;
-
 
 //--------------------------------------------------------------------------------------
 //

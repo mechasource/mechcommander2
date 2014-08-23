@@ -2,14 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_SELECTTERRAINTYPEDLG_H__48CD1D5A_9E04_4C8A_95C4_39A1C6D659D0__INCLUDED_)
 #define AFX_SELECTTERRAINTYPEDLG_H__48CD1D5A_9E04_4C8A_95C4_39A1C6D659D0__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// SelectTerrainTypeDlg.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // SelectTerrainTypeDlg dialog

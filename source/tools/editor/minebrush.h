@@ -1,5 +1,3 @@
-#ifndef MINEBRUSH_H
-#define MINEBRUSH_H
 /*************************************************************************************************\
 MineBrush.h			: Interface for the MineBrush component.
 //---------------------------------------------------------------------------//
@@ -7,14 +5,14 @@ MineBrush.h			: Interface for the MineBrush component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef BRUSH_H
-#include "Brush.h"
-#endif
+#pragma once
 
-#include "Action.h"
-#include "EditorObjects.h"
+#ifndef MINEBRUSH_H
+#define MINEBRUSH_H
 
-
+//#include "brush.h"
+//#include "action.h"
+//#include "editorobjects.h"
 
 //*************************************************************************************************
 

@@ -1,5 +1,3 @@
-#ifndef TARGETAREADLG_H
-#define TARGETAREADLG_H
 /*************************************************************************************************\
 TargetAreaDlg.h		: Interface for the TargetAreaDlg component.
 //---------------------------------------------------------------------------//
@@ -7,12 +5,14 @@ TargetAreaDlg.h		: Interface for the TargetAreaDlg component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "resource.h"
-#include <elist.h>
-#include "Objective.h"
-#include "editorobjectmgr.h"
-#include "stdafx.h"
+#pragma once
 
+#ifndef TARGETAREADLG_H
+#define TARGETAREADLG_H
+
+//#include <elist.h>
+//#include "objective.h"
+//#include "editorobjectmgr.h"
 
 class TargetAreaDlg: public CDialog
 {

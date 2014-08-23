@@ -1,18 +1,18 @@
-#ifndef MESSAGEBOX_H
-#define MESSAGEBOX_H
 /*************************************************************************************************\
 MessageBox.h			: quick helper function to call up a message box
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
-#ifndef UTILITIES_H
-#include "utilities.h"
-#endif
 
-#include "EditorInterface.h"
+#pragma once
 
-#include "stdafx.h"
+#ifndef MESSAGEBOX_H
+#define MESSAGEBOX_H
+
+//#include "utilities.h"
+//#include "editorinterface.h"
+//#include "stdafx.h"
 
 //*************************************************************************************************
 

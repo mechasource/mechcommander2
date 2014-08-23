@@ -2,14 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_TILINGFACTORSDIALOG_H__6448B5D2_29B1_452A_AE46_4E493B6C5EE6__INCLUDED_)
 #define AFX_TILINGFACTORSDIALOG_H__6448B5D2_29B1_452A_AE46_4E493B6C5EE6__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// TilingFactorsDialog.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // TilingFactorsDialog dialog

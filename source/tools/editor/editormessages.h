@@ -1,5 +1,3 @@
-#ifndef EDITORMESSAGES_H
-#define EDITORMESSAGES_H
 /*************************************************************************************************\
 EditorMessages.h			: Interface for the EditorMessages component.
 //---------------------------------------------------------------------------//
@@ -7,7 +5,10 @@ EditorMessages.h			: Interface for the EditorMessages component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "..\MCLib\MCLibresource.h"
+#pragma once
+
+#ifndef EDITORMESSAGES_H
+#define EDITORMESSAGES_H
 
 #define PAINT_OVERLAY_DIRT		IDS_DIRTROAD
 #define PAINT_OVERLAY_PAVED		IDS_PAVED_ROAD

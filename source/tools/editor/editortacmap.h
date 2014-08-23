@@ -2,17 +2,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// EditorTacMap.h : header file
-//
 
-#include "resource.h"
-
-#ifndef TGAWND_H
-#include "TacMapTGA.h"
-#endif
+// #include "tacmaptga.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // EditorTacMap dialog
@@ -27,7 +19,7 @@ public:
 	TacMapTGA	picture;
 	//}}AFX_DATA
 
-	void SetData( puint8_t pData, int32_t size ){ picture.SetTGAFileData( pData, size ); }
+	void SetData( puint8_t pData, size_t size ){ picture.SetTGAFileData( pData, size ); }
 	void UpdateMap( ){ picture.refreshBmp(); }
 
 	void ReleaseFocus();

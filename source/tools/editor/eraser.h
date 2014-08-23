@@ -1,5 +1,3 @@
-#ifndef ERASER_H
-#define ERASER_H
 /*************************************************************************************************\
 Eraser.h			: Interface for the Eraser component.
 //---------------------------------------------------------------------------//
@@ -7,9 +5,17 @@ Eraser.h			: Interface for the Eraser component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef BRUSH_H
-#include "Brush.h"
-#endif
+#pragma once
+
+#ifndef ERASER_H
+#define ERASER_H
+
+//#include "brush.h"
+//#include <elist.h>
+//#include "action.h"
+//#include "buildingbrush.h"
+//#include "linkbrush.h"
+//#include "editorinterface.h" /*only for the definition of teamsaction*/
 
 //*************************************************************************************************
 
@@ -17,25 +23,6 @@ Eraser.h			: Interface for the Eraser component.
 CLASS DESCRIPTION
 Eraser:
 **************************************************************************************************/
-#ifndef ELIST_H
-#include "elist.h"
-#endif
-
-#ifndef ACTION_H
-#include "Action.h"
-#endif
-
-#ifndef BUILDINGBRUSH_H
-#include "BuildingBrush.h"
-#endif
-
-#ifndef LINKBRUSH_H
-#include "LinkBrush.h"
-#endif
-
-#ifndef EDITORINTERFACE_H
-#include "EditorInterface.h" /*only for the definition of TeamsAction*/
-#endif
 
 class Eraser: public Brush
 {

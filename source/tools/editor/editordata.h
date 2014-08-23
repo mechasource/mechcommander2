@@ -1,41 +1,20 @@
-#ifndef EDITORDATA_H
-#define EDITORDATA_H
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include <mclib.h>
+#pragma once
 
-#ifndef OBJECTIVE_H
-#include "Objective.h"
-#endif
+#ifndef EDITORDATA_H
+#define EDITORDATA_H
 
-#ifndef ELIST_H
-#include "elist.h"
-#endif
-
-#ifndef ESTRING_H
-#include "estring.h"
-#endif
+//#include <mclib.h>
+//#include <elist.h>
+//#include <estring.h>
+//#include "objective.h"
 
 static cint32_t GAME_MAX_PLAYERS = 8;
 
 #define EDITOR_VISIBLE_VERTICES			60
-
-// ARM
-namespace Microsoft
-{
-	namespace Xna
-	{
-		namespace Arm
-		{
-			struct IProviderAsset;
-		}
-	}
-}
-
-extern Microsoft::Xna::Arm::IProviderAsset * mapAsset;
-extern Microsoft::Xna::Arm::IProviderAsset * mechAsset;
 
 class CTeam
 {

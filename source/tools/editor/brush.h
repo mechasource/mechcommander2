@@ -7,13 +7,15 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef BRUSH_H_
 #define BRUSH_H_
 
+// #include <mclib.h>
+
 class Action;
 class Map;
-
-#include <mclib.h>
 
 class Brush
 {
@@ -35,7 +37,4 @@ private:
 
 
 };
-
-
-
 #endif // BRUSH_H_

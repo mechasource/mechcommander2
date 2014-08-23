@@ -1,5 +1,3 @@
-#ifndef SELECTIONBRUSH_H
-#define SELECTIONBRUSH_H
 /*************************************************************************************************\
 SelectionBrush.h	: Interface for the SelectionBrush component.
 //---------------------------------------------------------------------------//
@@ -7,9 +5,12 @@ SelectionBrush.h	: Interface for the SelectionBrush component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef BRUSH_H
-#include "Brush.h"
-#endif
+#pragma once
+
+#ifndef SELECTIONBRUSH_H
+#define SELECTIONBRUSH_H
+
+//#include "brush.h"
 
 class ActionPaintTile;
 class ModifyBuildingAction;

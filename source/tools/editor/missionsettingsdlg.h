@@ -2,14 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_MISSIONSETTINGSDLG_H__5A7645E1_81E6_419B_9FBD_C269597F248C__INCLUDED_)
 #define AFX_MISSIONSETTINGSDLG_H__5A7645E1_81E6_419B_9FBD_C269597F248C__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// MissionSettingsDlg.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // MissionSettingsDlg dialog

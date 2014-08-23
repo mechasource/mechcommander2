@@ -1,6 +1,3 @@
-#ifndef FOGDLG_H
-#define FOGDLG_H
-
 /*************************************************************************************************\
 FogDlg.h			: Interface for the FogDlg component.  This thing lets the user input fog
 						settings
@@ -9,8 +6,13 @@ FogDlg.h			: Interface for the FogDlg component.  This thing lets the user input
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "stdafx.h"
-#include "resource.h"
+#pragma once
+
+#ifndef FOGDLG_H
+#define FOGDLG_H
+
+//#include "stdafx.h"
+//#include "resource.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // FogDlg dialog

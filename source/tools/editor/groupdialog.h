@@ -2,16 +2,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_GROUPDIALOG_H__E1CC8418_9550_4243_8187_6746DEF69E20__INCLUDED_)
 #define AFX_GROUPDIALOG_H__E1CC8418_9550_4243_8187_6746DEF69E20__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// GroupDialog.h : header file
-//
-
-#include "CampaignData.h"
+//#include "campaigndata.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CGroupDialog dialog

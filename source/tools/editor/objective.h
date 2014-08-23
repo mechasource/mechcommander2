@@ -1,5 +1,3 @@
-#ifndef OBJECTIVE_H
-#define OBJECTIVE_H
 /*************************************************************************************************\
 Objective.h			: Interface for the Objective component.
 //---------------------------------------------------------------------------//
@@ -7,9 +5,14 @@ Objective.h			: Interface for the Objective component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "elist.h"
-#include "estring.h"
-#include "tchar.h"
+#pragma once
+
+#ifndef OBJECTIVE_H
+#define OBJECTIVE_H
+
+//#include <elist.h>
+//#include <estring.h>
+//#include "tchar.h"
 
 class EditorObject;
 class Unit;

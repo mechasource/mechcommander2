@@ -1,5 +1,3 @@
-#ifndef EDITORCAMERA_H
-#define EDITORCAMERA_H
 /*************************************************************************************************\
 EditorCamera.h			: Interface for the EditorCamera component.
 //---------------------------------------------------------------------------//
@@ -7,17 +5,14 @@ EditorCamera.h			: Interface for the EditorCamera component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef CAMERA_H
-#include "camera.h"
-#endif
+#pragma once
 
-#ifndef EDITOROBJECTMGR_H
-#include "editorobjectmgr.h"
-#endif
+#ifndef EDITORCAMERA_H
+#define EDITORCAMERA_H
 
-#ifndef OBJSTATUS_H
-#include "objstatus.h"
-#endif
+//#include "camera.h"
+//#include "editorobjectmgr.h"
+//#include "objstatus.h"
 
 //*************************************************************************************************
 

@@ -1,6 +1,3 @@
-#ifndef FRACTALDLG_H
-#define FRACTALDLG_H
-
 /*************************************************************************************************\
 FogDlg.h			: Interface for the FractalDlg component.  Lets user change refractalize 
 						terrain settings
@@ -9,8 +6,13 @@ FogDlg.h			: Interface for the FractalDlg component.  Lets user change refractal
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "stdafx.h"
-#include "resource.h"
+#pragma once
+
+#ifndef FRACTALDLG_H
+#define FRACTALDLG_H
+
+//#include "stdafx.h"
+//#include "resource.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // FractalDlg dialog

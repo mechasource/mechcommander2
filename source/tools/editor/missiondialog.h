@@ -2,14 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_MISSIONDIALOG_H__7B092FC7_3350_44B4_881D_79E7AF47E4DA__INCLUDED_)
 #define AFX_MISSIONDIALOG_H__7B092FC7_3350_44B4_881D_79E7AF47E4DA__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// MissionDialog.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // CMissionDialog dialog

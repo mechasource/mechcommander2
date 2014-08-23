@@ -2,14 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_EDITFORESTDLG_H__DDB46B57_6D01_4DAF_8296_C5003400222B__INCLUDED_)
 #define AFX_EDITFORESTDLG_H__DDB46B57_6D01_4DAF_8296_C5003400222B__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// EditForestDlg.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // EditForestDlg dialog

@@ -1,14 +1,16 @@
-#ifndef MAPSIZEDLG_H
-#define MAPSIZEDLG_H
 /*************************************************************************************************\
 mapsizedlg.h			: Interface for the MapSizeDlg component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#pragma once
 
-#include "stdafx.h"
-#include "resource.h"
+#ifndef MAPSIZEDLG_H
+#define MAPSIZEDLG_H
+
+//#include "stdafx.h"
+//#include "resource.h"
 
 //*************************************************************************************************
 

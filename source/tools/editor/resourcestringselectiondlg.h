@@ -2,16 +2,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_RESOURCESTRINGSELECTIONDLG_H__90F375DF_47EA_4C33_A4EB_281A4DADDC12__INCLUDED_)
 #define AFX_RESOURCESTRINGSELECTIONDLG_H__90F375DF_47EA_4C33_A4EB_281A4DADDC12__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// ResourceStringSelectionDlg.h : header file
-//
-
-#include "elist.h"
+//#include <elist.h>
 
 /////////////////////////////////////////////////////////////////////////////
 // ResourceStringSelectionDlg dialog

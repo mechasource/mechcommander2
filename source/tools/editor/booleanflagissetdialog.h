@@ -2,14 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_BOOLEANFLAGISSETDIALOG_H__08B5296B_F425_414C_92EE_86E619EC994B__INCLUDED_)
 #define AFX_BOOLEANFLAGISSETDIALOG_H__08B5296B_F425_414C_92EE_86E619EC994B__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// BooleanFlagIsSetDialog.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // CBooleanFlagIsSetDialog dialog

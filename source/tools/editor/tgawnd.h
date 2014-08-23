@@ -2,8 +2,11 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef TGAWND_H
 #define TGAWND_H
+
 //----------------------------------------------------------------------------
 //
 // TGaWnd.h - window that displays a targa with a given window name
@@ -13,12 +16,6 @@
 // Copyright (c) 1998 FASA Interactive Technologies
 //
 //---------------------------------------------------------------------------
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
-#include "stdafx.h"
 
 class TGAWnd : public CStatic
 {

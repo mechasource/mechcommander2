@@ -2,14 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_TEXTMESSAGEDLG_H__0B7C2BD0_F277_4D66_9FF8_2169FF65ABC2__INCLUDED_)
 #define AFX_TEXTMESSAGEDLG_H__0B7C2BD0_F277_4D66_9FF8_2169FF65ABC2__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// TextMessageDlg.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // TextMessageDlg dialog

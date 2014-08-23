@@ -1,5 +1,3 @@
-#ifndef DLGFILEOPEN_H
-#define DLGFILEOPEN_H
 /*************************************************************************************************\
 DlgFileOpen.h		: Interface for the DlgFileOpen component.
 //---------------------------------------------------------------------------//
@@ -7,9 +5,12 @@ DlgFileOpen.h		: Interface for the DlgFileOpen component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "resource.h"
-#include "EditorMessages.h"		// only for the definition of IDS_OK and IDS_CANCEL
-#include "stdafx.h"
+#pragma once
+
+#ifndef DLGFILEOPEN_H
+#define DLGFILEOPEN_H
+
+//#include "editormessages.h"		// only for the definition of ids_ok and ids_cancel
 
 /**************************************************************************************************
 CLASS DESCRIPTION  this is a fileOpenDlg ...

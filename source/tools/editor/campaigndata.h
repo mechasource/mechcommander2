@@ -1,12 +1,15 @@
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+/******************************************************************************/
+
+#pragma once
 
 #ifndef CAMPAIGNDATA_H
 #define CAMPAIGNDATA_H
 
-#include "elist.h"
-#include "Inifile.h"
+//#include <elist.h>
+//#include "inifile.h"
 
 class CMissionData {
 public:

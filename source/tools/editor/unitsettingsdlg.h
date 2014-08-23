@@ -2,20 +2,17 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_UNITSETTINGSDLG_H__66842972_D1C0_48E8_8DF6_930ED43A3896__INCLUDED_)
 #define AFX_UNITSETTINGSDLG_H__66842972_D1C0_48E8_8DF6_930ED43A3896__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// UnitSettingsDlg.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // UnitSettingsDlg dialog
 
-#include "elist.h"
-#include "Action.h"
+//#include <elist.h>
+//#include "action.h"
+
 class Unit;
 
 class UnitSettingsDlg : public CDialog

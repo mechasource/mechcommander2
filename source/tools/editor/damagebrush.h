@@ -1,5 +1,3 @@
-#ifndef DAMAGEBRUSH_H
-#define DAMAGEBRUSH_H
 /*************************************************************************************************\
 DamageBrush.h			: Interface for the DamageBrush component.
 //---------------------------------------------------------------------------//
@@ -7,14 +5,14 @@ DamageBrush.h			: Interface for the DamageBrush component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef BRUSH_H
-#include "Brush.h"
-#endif
+#pragma once
 
-#include "Action.h"
-#include "EditorObjects.h"
+#ifndef DAMAGEBRUSH_H
+#define DAMAGEBRUSH_H
 
-
+//#include "brush.h"
+//#include "action.h"
+//#include "editorobjects.h"
 
 //*************************************************************************************************
 

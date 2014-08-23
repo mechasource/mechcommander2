@@ -11,7 +11,7 @@ ObjectSelectionBrush.h	: Interface for the ObjectSelectionBrush component.
 #include "Brush.h"
 #endif
 
-#include "elist.h"
+#include <elist.h>
 
 class ActionPaintTile;
 class EditorObject;

@@ -1,5 +1,3 @@
-#ifndef EDITOROBJECTS_H
-#define EDITOROBJECTS_H
 /*************************************************************************************************\
 EditorObjects.h			: Interface for the EditorObjects, buildings, mechs etc.
 //---------------------------------------------------------------------------//
@@ -7,20 +5,20 @@ EditorObjects.h			: Interface for the EditorObjects, buildings, mechs etc.
 //===========================================================================//
 \*************************************************************************************************/
 
+#pragma once
+
+#ifndef EDITOROBJECTS_H
+#define EDITOROBJECTS_H
+
+//#include "objectappearance.h"
+//#include <heap.h>
+//#include <elist.h>
+//#include "daprtype.h"
+
+#define MAX_PILOT	64
+
 class FitIniFile;
 
-#include "ObjectAppearance.h"
-
-#ifndef HEAP_H
-#include <heap.h>
-#endif
-
-#ifndef ELIST_H
-#include "elist.h"
-#endif
-
-#include "DAprType.h"
-#define MAX_PILOT	64
 //*************************************************************************************************
 
 class EditorObject

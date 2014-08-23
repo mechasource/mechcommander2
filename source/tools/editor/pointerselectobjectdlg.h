@@ -1,5 +1,3 @@
-#ifndef POINTERSELECTOBJECTDLG_H
-#define POINTERSELECTOBJECTDLG_H
 /*************************************************************************************************\
 PointerSelectObjectDlg.h		: Interface for the PointerSelectObjectDlg component.
 //---------------------------------------------------------------------------//
@@ -7,10 +5,14 @@ PointerSelectObjectDlg.h		: Interface for the PointerSelectObjectDlg component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "resource.h"
-#include "Objective.h"
-#include "stdafx.h"
+#pragma once
 
+#ifndef POINTERSELECTOBJECTDLG_H
+#define POINTERSELECTOBJECTDLG_H
+
+//#include "resource.h"
+//#include "objective.h"
+//#include "stdafx.h"
 
 class PointerSelectObjectDlg: public CDialog
 {

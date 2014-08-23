@@ -6,14 +6,12 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#pragma once
+
 #if !defined(AFX_MAINFRM_H__A4EA81D6_9511_4D40_A8C5_25390ECDC6FB__INCLUDED_)
 #define AFX_MAINFRM_H__A4EA81D6_9511_4D40_A8C5_25390ECDC6FB__INCLUDED_
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
-#include "EditorInterface.h"
+//#include "editorinterface.h"
 
 class MainFrame : public CFrameWnd
 {

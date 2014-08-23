@@ -1,5 +1,3 @@
-#ifndef OVERLAYBRUSH_H
-#define OVERLAYBRUSH_H
 /*************************************************************************************************\
 OverlayBrush.h		: Interface for the OverlayBrush component.  This is the thing you use
 						to create overlays
@@ -8,9 +6,12 @@ OverlayBrush.h		: Interface for the OverlayBrush component.  This is the thing y
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef BRUSH_H
-#include "Brush.h"
-#endif
+#pragma once
+
+#ifndef OVERLAYBRUSH_H
+#define OVERLAYBRUSH_H
+
+//#include "brush.h"
 
 class ActionPaintTile;
 

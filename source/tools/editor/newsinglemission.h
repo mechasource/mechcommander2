@@ -2,14 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_NEWSINGLEMISSION_H__B7294D0A_D020_48C8_B409_E2EA0323998E__INCLUDED_)
 #define AFX_NEWSINGLEMISSION_H__B7294D0A_D020_48C8_B409_E2EA0323998E__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// newsinglemission.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // NewSingleMission dialog

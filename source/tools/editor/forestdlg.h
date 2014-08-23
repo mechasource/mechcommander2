@@ -2,17 +2,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef FORESTDLG_H
 #define FORESTDLG_H
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
-
-#ifndef FOREST_H
-#include "Forest.h"
-#endif
+//#include "forest.h"
 
 class ForestDlg : public CDialog
 {

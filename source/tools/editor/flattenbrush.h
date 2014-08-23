@@ -1,5 +1,3 @@
-#ifndef FLATTENBRUSH_H
-#define FLATTENBRUSH_H
 /*************************************************************************************************\
 FlattenBrush.h			: Interface for the FlattenBrush component.
 //---------------------------------------------------------------------------//
@@ -7,13 +5,13 @@ FlattenBrush.h			: Interface for the FlattenBrush component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef BRUSH_H
-#include "Brush.h"
-#endif
+#pragma once
 
-#ifndef ACTION_H
-#include "Action.h"
-#endif
+#ifndef FLATTENBRUSH_H
+#define FLATTENBRUSH_H
+
+//#include "brush.h"
+//#include "action.h"
 
 //*************************************************************************************************
 
@@ -21,6 +19,7 @@ FlattenBrush.h			: Interface for the FlattenBrush component.
 CLASS DESCRIPTION
 FlattenBrush:
 **************************************************************************************************/
+
 class FlattenBrush: public Brush
 {
 	public:
@@ -45,7 +44,5 @@ class FlattenBrush: public Brush
 		void flattenVertex( int32_t row, int32_t col, float val );
 
 };
-
-
 //*************************************************************************************************
 #endif  // end of file ( FLATTENBRUSH_H.h )

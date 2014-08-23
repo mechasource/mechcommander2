@@ -2,14 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_SELECTSLOPEDIALOG_H__49EB9E50_A5AD_4B8C_925A_7D0CD9AD616B__INCLUDED_)
 #define AFX_SELECTSLOPEDIALOG_H__49EB9E50_A5AD_4B8C_925A_7D0CD9AD616B__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// SelectSlopeDialog.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // SelectSlopeDialog dialog

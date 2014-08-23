@@ -5,12 +5,10 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#pragma once
+
 #if !defined(AFX_EDITORVIEW_H__9E5FF9E4_BE22_4D61_AC89_58B0AA90DD56__INCLUDED_)
 #define AFX_EDITORVIEW_H__9E5FF9E4_BE22_4D61_AC89_58B0AA90DD56__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
 
 /////////////////////////////////////////////////////////////////////////////
 // EditorView window

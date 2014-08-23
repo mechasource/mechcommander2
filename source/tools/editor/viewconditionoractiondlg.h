@@ -2,14 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_VIEWCONDITIONORACTIONDLG_H__9A818E75_A25C_4F93_9BC7_F990A52B8CD8__INCLUDED_)
 #define AFX_VIEWCONDITIONORACTIONDLG_H__9A818E75_A25C_4F93_9BC7_F990A52B8CD8__INCLUDED_
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// ViewConditionOrActionDlg.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // ViewConditionOrActionDlg dialog

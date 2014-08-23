@@ -1,5 +1,3 @@
-#ifndef LINKBRUSH_H
-#define LINKBRUSH_H
 /*************************************************************************************************\
 LinkBrush.h			: Interface for the LinkBrush component.
 //---------------------------------------------------------------------------//
@@ -7,19 +5,16 @@ LinkBrush.h			: Interface for the LinkBrush component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef BRUSH_H
-#include "Brush.h"
-#endif
+#pragma once
 
-#ifndef ACTION_H
-#include "Action.h"
-#endif
+#ifndef LINKBRUSH_H
+#define LINKBRUSH_H
 
-#ifndef BUILDINGLINK_H
-#include "BuildingLink.h"
-#endif
+//#include "brush.h"
+//#include "action.h"
+//#include "buildinglink.h"
+//#include <mclib.h>
 
-#include <mclib.h>
 class EditorObject;
 
 //*************************************************************************************************

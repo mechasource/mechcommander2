@@ -2,14 +2,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #if !defined(AFX_WATERDLG_H)
 #define AFX_WATERDLG_H
-
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// WaterDlg.h : header file
-//
 
 /////////////////////////////////////////////////////////////////////////////
 // WaterDlg dialog

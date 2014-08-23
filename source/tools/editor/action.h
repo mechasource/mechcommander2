@@ -1,5 +1,3 @@
-#ifndef ACTION_H
-#define ACTION_H
 //--------------------------------------------------------------------------------
 //
 // Actions.h - header file for the Action Base object and the Action Mgr.
@@ -9,14 +7,18 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
+#ifndef ACTION_H
+#define ACTION_H
+
+//#include <elist.h>
+
 #define MAX_DESC_LENGTH 256
 
 class ActionUndoMgr;
 class Action;
 
-#ifndef ELIST_H
-#include "elist.h"
-#endif
 
 // Abstract base class for all action objects
 class Action 

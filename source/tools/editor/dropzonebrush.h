@@ -1,5 +1,3 @@
-#ifndef DROPZONEBRUSH_H
-#define DROPZONEBRUSH_H
 /*************************************************************************************************\
 DropZoneBrush.h			: Interface for the DropZoneBrush component.
 //---------------------------------------------------------------------------//
@@ -7,9 +5,12 @@ DropZoneBrush.h			: Interface for the DropZoneBrush component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef BUILDINGBRUSH_H
-#include "BuildingBrush.h"
-#endif
+#pragma once
+
+#ifndef DROPZONEBRUSH_H
+#define DROPZONEBRUSH_H
+
+//#include "buildingbrush.h"
 
 //*************************************************************************************************
 

@@ -1,5 +1,3 @@
-#ifndef BUILDINGBRUSH_H
-#define BUILDINGBRUSH_H
 /*************************************************************************************************\
 BuildingBrush.h		: Interface for the BuildingBrush component. The thing you use to paint 
 						buildings
@@ -8,17 +6,14 @@ BuildingBrush.h		: Interface for the BuildingBrush component. The thing you use 
 //===========================================================================//
 \*************************************************************************************************/
 
-#ifndef BRUSH_H
-#include "Brush.h"
-#endif
+#pragma once
 
-#ifndef ACTION_H
-#include "Action.h"
-#endif
+#ifndef BUILDINGBRUSH_H
+#define BUILDINGBRUSH_H
 
-#ifndef EDITOROBJECTMGR_H
-#include "EditorObjects.h"
-#endif
+//#include "brush.h"
+//#include "action.h"
+//#include "editorobjects.h"
 
 //*************************************************************************************************
 

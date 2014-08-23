@@ -1,5 +1,3 @@
-#ifndef CHOOSEBUILDINGDLG_H
-#define CHOOSEBUILDINGDLG_H
 /*************************************************************************************************\
 ChooseBuildingDlg.h		: Interface for the ChooseBuildingDlg component.
 //---------------------------------------------------------------------------//
@@ -7,12 +5,14 @@ ChooseBuildingDlg.h		: Interface for the ChooseBuildingDlg component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "resource.h"
-#include <elist.h>
-#include "Objective.h"
-#include "editorobjectmgr.h"
-#include "stdafx.h"
+#pragma once
 
+#ifndef CHOOSEBUILDINGDLG_H
+#define CHOOSEBUILDINGDLG_H
+
+//#include <elist.h>
+//#include "objective.h"
+//#include "editorobjectmgr.h"
 
 class ChooseBuildingDlg: public CDialog
 {

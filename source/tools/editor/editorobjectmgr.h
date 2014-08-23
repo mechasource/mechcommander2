@@ -1,5 +1,3 @@
-#ifndef EDITOROBJECTMGR_H
-#define EDITOROBJECTMGR_H
 /*************************************************************************************************\
 EditorObjectMgr.h	: Interface for the EditorObjectMgr component.  This thing holds lists
 						of all the objects on the map.  
@@ -8,21 +6,15 @@ EditorObjectMgr.h	: Interface for the EditorObjectMgr component.  This thing hol
 //===========================================================================//
 \*************************************************************************************************/
 
+#pragma once
 
+#ifndef EDITOROBJECTMGR_H
+#define EDITOROBJECTMGR_H
 
-#ifndef ELIST_H
-#include "elist.h"
-#endif
-
-#ifndef EDITOROBJECTS_H
-#include "EditorObjects.h"
-#endif
-
-#ifndef FOREST_H
-#include "Forest.h"
-#endif
-
-#include <mclib.h>
+//#include <elist.h>
+//#include "editorobjects.h"
+//#include "forest.h"
+//#include <mclib.h>
 
 class ObjectAppearance;
 class AppearanceType;

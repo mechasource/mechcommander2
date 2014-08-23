@@ -66,6 +66,8 @@ typedef const signed long long		cint64_t;
 typedef const signed long long*		pcint64_t;
 typedef const unsigned long long	cuint64_t;
 typedef const unsigned long long*	pcuint64_t;
+typedef const size_t				csize_t;
+typedef const size_t*				pcsize_t;
 #endif
 
 #ifndef _POINTER_TYPES_DEFINED
@@ -78,12 +80,27 @@ typedef signed int*					pint32_t;
 typedef unsigned int*				puint32_t;
 typedef signed long long*			pint64_t;
 typedef unsigned long long*			puint64_t;
+typedef size_t*						psize_t;
 #endif
 
 // addition to Windows types
 typedef const void*					PCVOID;
 typedef const unsigned char*		PCUCHAR;
 typedef const unsigned short*		PCUSHORT;
+typedef const unsigned long			CCOLORREF;
+typedef const unsigned long*		PCCOLORREF;
+
+#ifdef _WIN64
+typedef const long long				CLONG_PTR;
+typedef const unsigned long long	CULONG_PTR;
+typedef const long long*			PCLONG_PTR;
+typedef const unsigned long long*	PCULONG_PTR;
+#else
+typedef const long					CLONG_PTR;
+typedef const unsigned long			CULONG_PTR;
+typedef const long*					PCLONG_PTR;
+typedef const unsigned long*		PCULONG_PTR;
+#endif
 
 #ifdef __cplusplus
 }

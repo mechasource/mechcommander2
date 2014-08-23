@@ -3,15 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLR_TERRAIN_HPP
 #define MLR_MLR_TERRAIN_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(MLR_MLR_I_DeT_TMESH_HPP)
-	#include <mlr/mlr_i_det_tmesh.hpp>
-#endif
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlr_i_det_tmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -23,24 +20,22 @@ namespace MidLevelRenderer {
 	class MLR_Terrain:
 		public MLR_I_DeT_TMesh
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLR_Terrain(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLR_Terrain();
 
 	public:
@@ -48,8 +43,8 @@ namespace MidLevelRenderer {
 
 		static MLR_Terrain*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
@@ -63,23 +58,21 @@ namespace MidLevelRenderer {
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
 		void
-			SetUVData(Stuff::Scalar, Stuff::Scalar, Stuff::Scalar, Stuff::Scalar, Stuff::Scalar);
+			SetUVData(float, float, float, float, float);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -89,17 +82,18 @@ namespace MidLevelRenderer {
 		}
 
 	protected:
-		Stuff::Scalar borderPixelFun;
-		Stuff::Scalar xUVFac, zUVFac, minX, minZ;
+		float borderPixelFun;
+		float xUVFac, zUVFac, minX, minZ;
 
 		static Stuff::DynamicArrayOf<Vector2DScalar> *clipTexCoords;  // , Max_Number_Vertices_Per_Mesh
 	};
 
 	MLRShape*
 		CreateIndexedTriIcosahedron_TerrainTest(
-			IcoInfo&,
-			MLRState*,
-			MLRState*
+		IcoInfo&,
+		MLRState*,
+		MLRState*
 		);
 
 }
+#endif

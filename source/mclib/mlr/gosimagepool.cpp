@@ -139,7 +139,7 @@ bool
 		((fFileName[1] != 'X') || (fFileName[1] != 'x')))
 		hint |= gosHint_DisableMipmap;
 
-	DWORD nodeIndex = mcTextureManager->loadTexture(file_name,gos_Texture_Detect, hint);
+	ULONG nodeIndex = mcTextureManager->loadTexture(file_name,gos_Texture_Detect, hint);
 
 	image->SetHandle(nodeIndex);
 	

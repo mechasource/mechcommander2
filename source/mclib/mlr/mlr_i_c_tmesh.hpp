@@ -7,9 +7,9 @@
 #ifndef MLR_MLR_I_C_TMESH_HPP
 #define MLR_MLR_I_C_TMESH_HPP
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlr_i_tmesh.hpp>
-#include <mlr/mlr_i_c_pmesh.hpp>
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlr_i_tmesh.hpp>
+//#include <mlr/mlr_i_c_pmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -21,18 +21,16 @@ namespace MidLevelRenderer {
 	class MLR_I_C_TMesh:
 		public MLR_I_TMesh
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLR_I_C_TMesh(
 			ClassData *class_data,
@@ -57,12 +55,12 @@ namespace MidLevelRenderer {
 #if COLOR_AS_DWORD
 		virtual void
 			SetColorData(
-			const DWORD *array,
+			const ULONG *array,
 			int point_count
 			);
 		virtual void
 			GetColorData(
-			DWORD **array,
+			ULONG **array,
 			int *point_count
 			);
 #else
@@ -80,7 +78,7 @@ namespace MidLevelRenderer {
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(const DWORD *paintMe);
+			PaintMe(const ULONG *paintMe);
 #else
 			PaintMe(const Stuff::RGBAColor *paintMe);
 #endif
@@ -94,14 +92,14 @@ namespace MidLevelRenderer {
 			Copy(MLR_I_C_PMesh*);
 
 		void
-			HurtMe(const Stuff::LinearMatrix4D& pain, Stuff::Scalar radius);
+			HurtMe(const Stuff::LinearMatrix4D& pain, float radius);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// This functions using the static buffers
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// This functions using the static buffers
+		//
 		void
 #if COLOR_AS_DWORD
-			SetClipColor(DWORD &color, size_t index)
+			SetClipColor(ULONG &color, size_t index)
 #else
 			SetClipColor(Stuff::RGBAColor &color, size_t index)
 #endif
@@ -118,25 +116,23 @@ namespace MidLevelRenderer {
 			visibleIndexedVertices.SetLength(num);
 #if COLOR_AS_DWORD
 			Mem_Copy(colors.GetData(), clipExtraColors->GetData(), 
-				sizeof(DWORD)*num, sizeof(DWORD)*num);
+				sizeof(ULONG)*num, sizeof(ULONG)*num);
 #else
 			Mem_Copy(colors.GetData(), clipExtraColors->GetData(), 
 				sizeof(Stuff::RGBAColor)*num, sizeof(Stuff::RGBAColor)*num);
 #endif
 		}
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 		virtual int
 			GetSize()
@@ -150,8 +146,8 @@ namespace MidLevelRenderer {
 
 	protected:
 #if COLOR_AS_DWORD
-		Stuff::DynamicArrayOf<DWORD> colors;	// Base address of color list 
-		Stuff::DynamicArrayOf<DWORD> *actualColors;
+		Stuff::DynamicArrayOf<ULONG> colors;	// Base address of color list 
+		Stuff::DynamicArrayOf<ULONG> *actualColors;
 #else
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> colors;	// Base address of color list 
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> *actualColors;
@@ -159,7 +155,7 @@ namespace MidLevelRenderer {
 	};
 
 	MLR_I_C_TMesh*
-		CreateIndexedTriCube_Color_NoLit(Stuff::Scalar, MLRState*);
+		CreateIndexedTriCube_Color_NoLit(float, MLRState*);
 	MLRShape*
 		CreateIndexedTriIcosahedron_Color_NoLit(
 		IcoInfo&,

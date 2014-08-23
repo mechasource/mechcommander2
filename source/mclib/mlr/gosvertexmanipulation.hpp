@@ -2,44 +2,49 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-//#if !defined(MLR_GOSVERTEXMANIPULATION_HPP)
+//#pragma once
+
+//#ifndef MLR_GOSVERTEXMANIPULATION_HPP
+//#define MLR_GOSVERTEXMANIPULATION_HPP
+
+#if defined(MLR_GOSVERTEX_HPP) || defined(MLR_GOSVERTEX2UV_HPP)
 
 extern bool PerspectiveMode;
 
 #define FCR_TRICK 0
 
 #ifdef I_SAY_YES_TO_MULTI_TEXTURE
-#define VERTEX_STRUCT_SIZE	0x28	//	(sizeof(GOSVertex2UV))
-#define VERTEX_STRUCT_SIZEx2	0x50	//	(sizeof(GOSVertex2UV))
+#define VERTEX_STRUCT_SIZE				0x28	//	(sizeof(GOSVertex2UV))
+#define VERTEX_STRUCT_SIZEx2			0x50	//	(sizeof(GOSVertex2UV))
 #else
-#define VERTEX_STRUCT_SIZE	0x20	//	(sizeof(GOSVertex))
-#define VERTEX_STRUCT_SIZEx2	0x40	//(sizeof(GOSVertex))
+#define VERTEX_STRUCT_SIZE				0x20	//	(sizeof(GOSVertex))
+#define VERTEX_STRUCT_SIZEx2			0x40	//  (sizeof(GOSVertex))
 #endif
 
 //	copies vertex data into rasterizer format
 inline bool GOSCopyData (
 #ifdef I_SAY_YES_TO_MULTI_TEXTURE
-	GOSVertex2UV *gos_vertices,
+	GOSVertex2UV*				gos_vertices,
 #else
-	GOSVertex *gos_vertices,
+	GOSVertex*					gos_vertices,
 #endif
-	const Stuff::Vector4D *coords,
+	const Stuff::Vector4D*		coords,
 #ifdef I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DWORD_COLOR
-	const DWORD *colors,
+	const puint32_t				colors,
 #else	//	I_SAY_YES_TO_DWORD_COLOR
-	const Stuff::RGBAColor *colors,
+	const Stuff::RGBAColor*		colors,
 #endif	//	I_SAY_YES_TO_DWORD_COLOR
 #endif	//	I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_TEXTURE
 #ifdef I_SAY_YES_TO_MULTI_TEXTURE
-	const Vector2DScalar *texCoords1,
-	const Vector2DScalar *texCoords2,
+	const Stuff::Vector2DScalar*		texCoords1,
+	const Stuff::Vector2DScalar*		texCoords2,
 #else
-	const Vector2DScalar *texCoords,
+	const Vector2DScalar*		texCoords,
 #endif
 #endif
-	int _offset
+	size_t _index
 #if FOG_HACK
 	, int foggy = 1
 #endif	//	FOG_HACK
@@ -49,12 +54,12 @@ inline bool GOSCopyData (
 	if (PerspectiveMode)
 	{
 		gos_vertices[0].rhw = 1.0f;
-		if (fabs(coords[_offset].w) > Stuff::SMALL)
-			gos_vertices[0].rhw = 1.0f / coords[_offset].w;
+		if (fabs(coords[_index].w) > Stuff::SMALL)
+			gos_vertices[0].rhw = 1.0f / coords[_index].w;
 
-		gos_vertices[0].x = coords[_offset].x * gos_vertices[0].rhw;
-		gos_vertices[0].y = coords[_offset].y * gos_vertices[0].rhw;
-		gos_vertices[0].z = coords[_offset].z * gos_vertices[0].rhw; 
+		gos_vertices[0].x = coords[_index].x * gos_vertices[0].rhw;
+		gos_vertices[0].y = coords[_index].y * gos_vertices[0].rhw;
+		gos_vertices[0].z = coords[_index].z * gos_vertices[0].rhw; 
 		gos_vertices[0].rhw = (float)fabs(gos_vertices[0].rhw);
 
 		gos_vertices[0].x = gos_vertices[0].x*ViewportScalars::MulX + ViewportScalars::AddX;
@@ -64,9 +69,9 @@ inline bool GOSCopyData (
 	{
 		gos_vertices[0].rhw = 0.000001f;
 
-		gos_vertices[0].x = (1.0f - coords[_offset].x);
-		gos_vertices[0].y = (1.0f - coords[_offset].y);
-		gos_vertices[0].z = coords[_offset].z;
+		gos_vertices[0].x = (1.0f - coords[_index].x);
+		gos_vertices[0].y = (1.0f - coords[_index].y);
+		gos_vertices[0].z = coords[_index].z;
 
 		gos_vertices[0].x = gos_vertices[0].x*ViewportScalars::MulX + ViewportScalars::AddX;
 		gos_vertices[0].y = gos_vertices[0].y*ViewportScalars::MulY + ViewportScalars::AddY;
@@ -74,25 +79,25 @@ inline bool GOSCopyData (
 
 #ifdef I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DWORD_COLOR
-	gos_vertices[0].argb = colors[_offset];
+	gos_vertices[0].argb = colors[_index];
 #else	//	I_SAY_YES_TO_DWORD_COLOR
-	gos_vertices[0].argb = GOSCopyColor(&colors[_offset]);
+	gos_vertices[0].argb = GOSCopyColor(&colors[_index]);
 #endif	//	I_SAY_YES_TO_DWORD_COLOR
 #else	//	I_SAY_YES_TO_COLOR
 	gos_vertices[0].argb = 0xffffffff;
 #endif	//	I_SAY_YES_TO_COLOR
 
-	*((BYTE *)&gos_vertices[0].frgb + 3) = 0xff;
+	*((puint8_t )&gos_vertices[0].frgb + 3) = 0xff;
 
 #ifdef I_SAY_YES_TO_TEXTURE
 #ifdef I_SAY_YES_TO_MULTI_TEXTURE
-	gos_vertices[0].u1 = texCoords1[_offset][0];
-	gos_vertices[0].v1 = texCoords1[_offset][1];
-	gos_vertices[0].u2 = texCoords2[_offset][0];
-	gos_vertices[0].v2 = texCoords2[_offset][1];
+	gos_vertices[0].u1 = texCoords1[_index][0];
+	gos_vertices[0].v1 = texCoords1[_index][1];
+	gos_vertices[0].u2 = texCoords2[_index][0];
+	gos_vertices[0].v2 = texCoords2[_index][1];
 #else	//	I_SAY_YES_TO_MULTI_TEXTURE
-	gos_vertices[0].u = texCoords[_offset][0];
-	gos_vertices[0].v = texCoords[_offset][1];
+	gos_vertices[0].u = texCoords[_index][0];
+	gos_vertices[0].v = texCoords[_index][1];
 #endif	//	I_SAY_YES_TO_MULTI_TEXTURE
 #else	//	I_SAY_YES_TO_TEXTURE
 #ifdef I_SAY_YES_TO_MULTI_TEXTURE
@@ -113,33 +118,33 @@ inline bool GOSCopyData (
 }
 
 //	copies 3 vertex data into rasterizer format
-inline bool GOSCopyTriangleData (
+inline bool GOSCopyTriangleData(
 #ifdef I_SAY_YES_TO_MULTI_TEXTURE
-								 GOSVertex2UV *gos_vertices,
-#else	//	I_SAY_YES_TO_MULTI_TEXTURE
-								 GOSVertex *gos_vertices,
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURE
-								 const Stuff::Vector4D *coords, 
+	GOSVertex2UV* gos_vertices,
+#else
+	GOSVertex* gos_vertices,
+#endif
+	const Stuff::Vector4D *coords, 
 #ifdef I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DWORD_COLOR
-								 const DWORD *colors,
-#else	//	I_SAY_YES_TO_DWORD_COLOR
-								 const Stuff::RGBAColor *colors,
-#endif	//	I_SAY_YES_TO_DWORD_COLOR
-#endif	//	I_SAY_YES_TO_COLOR
+	const ULONG* colors,
+#else
+	const Stuff::RGBAColor *colors,
+#endif
+#endif
 #ifdef I_SAY_YES_TO_TEXTURE
 #ifdef I_SAY_YES_TO_MULTI_TEXTURE
-								 const Vector2DScalar *texCoords1,
-								 const Vector2DScalar *texCoords2,
-#else	//	I_SAY_YES_TO_MULTI_TEXTURE
-								 const Vector2DScalar *texCoords,
-#endif	//	I_SAY_YES_TO_MULTI_TEXTURE
-#endif	//	I_SAY_YES_TO_TEXTURE
-								 int offset0, int offset1, int offset2
+	const Stuff::Vector2DScalar *texCoords1,
+	const Stuff::Vector2DScalar *texCoords2,
+#else
+	const Stuff::Vector2DScalar *texCoords,
+#endif
+#endif
+	int offset0, int offset1, int offset2
 #if FOG_HACK
-								 , int foggy = 1
+ , int foggy = 1
 #endif	//	FOG_HACK
-								 )
+	)
 {
 	//Changed for MC2  due to Perspective and Parallel mode BOTH supported
 	if (PerspectiveMode)
@@ -223,9 +228,9 @@ inline bool GOSCopyTriangleData (
 	gos_vertices[2].argb = 0xffffffff;
 #endif	//	I_SAY_YES_TO_COLOR
 
-	*((BYTE *)&gos_vertices[0].frgb + 3) = 0xff;
-	*((BYTE *)&gos_vertices[1].frgb + 3) = 0xff;
-	*((BYTE *)&gos_vertices[2].frgb + 3) = 0xff;
+	*((puint8_t )&gos_vertices[0].frgb + 3) = 0xff;
+	*((puint8_t )&gos_vertices[1].frgb + 3) = 0xff;
+	*((puint8_t )&gos_vertices[2].frgb + 3) = 0xff;
 
 #ifdef I_SAY_YES_TO_TEXTURE
 #ifdef I_SAY_YES_TO_MULTI_TEXTURE
@@ -284,4 +289,5 @@ inline bool GOSCopyTriangleData (
 
 #undef VERTEX_STRUCT_SIZE
 #undef VERTEX_STRUCT_SIZEx2
-//#endif
+
+#endif

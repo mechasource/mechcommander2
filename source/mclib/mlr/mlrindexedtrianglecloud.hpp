@@ -3,15 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRINDEXEDTRIANGLECLOUD_HPP
 #define MLR_MLRINDEXEDTRIANGLECLOUD_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(MLR_MLRTRIANGLECLOUD_HPP)
-	#include <mlr/mlrtrianglecloud.hpp>
-#endif
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlrtrianglecloud.hpp>
 
 namespace MidLevelRenderer {
 
@@ -23,71 +20,67 @@ namespace MidLevelRenderer {
 	class MLRIndexedTriangleCloud:
 		public MLRTriangleCloud
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	public:
 		MLRIndexedTriangleCloud(int);
 		~MLRIndexedTriangleCloud();
 
 		void
 			SetData(
-				pcint32_t tri_count,
-				pcint32_t point_count,
-				const USHORT *index_data,
-				const Stuff::Point3D *point_data,
-				const Stuff::RGBAColor *color_data,
-				const Vector2DScalar *uv_data
+			pcint32_t				tri_count,
+			pcint32_t				point_count,
+			pcuint16_t				index_data,
+			const Stuff::Point3D*	point_data,
+			const Stuff::RGBAColor*	color_data,
+			const Vector2DScalar*	uv_data
 			);
 
 		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
 		int	Clip(MLRClippingState, GOSVertexPool*);		
 
-		virtual unsigned short*
+		virtual puint16_t
 			GetGOSIndices(int=0)
-				{ Check_Object(this); return gos_indices; }
+		{ Check_Object(this); return gos_indices; }
 
 		int
 			GetNumGOSIndices()
-				{ Check_Object(this); return numGOSIndices; }
+		{ Check_Object(this); return numGOSIndices; }
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	protected:
-		pcint32_t usedNrOfPoints;
-
-		const unsigned short *index;
+		pcint32_t	usedNrOfPoints;
+		pcuint16_t	index;
 		const Vector2DScalar *texCoords;
 
 		static Stuff::DynamicArrayOf<Vector2DScalar> *clipExtraTexCoords; // , Max_Number_Vertices_Per_Mesh
 
-		static Stuff::DynamicArrayOf<unsigned short> *clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<uint16_t> *clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
 
 		static Stuff::DynamicArrayOf<uint8_t>	*visibleIndexedVertices;
 
-		unsigned short *gos_indices;
-		unsigned short	numGOSIndices;
+		puint16_t gos_indices;
+		uint16_t	numGOSIndices;
 	};
 }
+#endif

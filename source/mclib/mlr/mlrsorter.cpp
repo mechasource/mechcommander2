@@ -76,10 +76,10 @@ void
 	if(dontSeeMe == true)
 #endif
 	{
-		WORD newIndicies[4096];
-		long startIndex = 0;
+		uint16_t newIndicies[4096];
+		int32_t startIndex = 0;
 		GOSVertex *v = (GOSVertex *)vertices;
-		for (long i=0;i<numIndices;i+=3)
+		for (int32_t i=0;i<numIndices;i+=3)
 		{
 			if (((v[indices[i]].z >= 0.0f) &&   (v[indices[i]].z < 1.0f)) &&
 				((v[indices[i+1]].z >= 0.0f) && (v[indices[i+1]].z < 1.0f)) &&
@@ -100,7 +100,7 @@ void
 				void __stdcall gos_RenderIndexedArray(
 					PVOID pVertexArray, 
 					ULONG NumberVertices, 
-					PUSHORT lpwIndices, 
+					puint16_t lpwIndices, 
 					ULONG NumberIndices, 
 					gosVERTEXTYPE VertexType, 
 					gosPRIMITIVETYPE PrimitiveType=PRIMITIVE_TRIANGLELIST );
@@ -486,7 +486,7 @@ void
 SortData *
 	MLRSorter::SetRawData
 		(
-			void *vertices, 
+			PVOIDvertices, 
 			int numVertices, 
 			const MLRState& state,
 			cint32_t& mode,
@@ -522,9 +522,9 @@ SortData *
 SortData *
 	MLRSorter::SetRawIndexedData
 		(
-			void *vertices, 
+			PVOIDvertices, 
 			int numVertices, 
-			USHORT *indices, 
+			puint16_t indices, 
 			int numIndices, 
 			const MLRState& state,
 			cint32_t& mode,
@@ -572,7 +572,7 @@ SortData *
 			MLRIndexedPrimitiveBase *ipt = static_cast<MLRIndexedPrimitiveBase *>(pt);
 
 			int tex2 = 0;
-			void *vertices = ipt->GetGOSVertices(pass);
+			PVOIDvertices = ipt->GetGOSVertices(pass);
 			int vertexCount = ipt->GetNumGOSVertices();
 
 			if(pt->GetCurrentState(pass).GetMultiTextureMode()!=MLRState::MultiTextureOffMode && MLRState::GetMultitextureLightMap())
@@ -741,8 +741,8 @@ bool
 		{
 			if( newer.renderState & MLRState::WireFrameOnlyMode )
 			{
-				DWORD wfColor=0xffffff;
-				gos_SetRenderState(	gos_State_WireframeMode, (DWORD)&wfColor );
+				ULONG wfColor=0xffffff;
+				gos_SetRenderState(	gos_State_WireframeMode, (ULONG)&wfColor );
 			}
 			else
 			{

@@ -9,7 +9,7 @@
 	BitTrace *MLR_I_TMesh_Clip;
 #endif
 
-extern DWORD gEnableLightMaps;
+extern ULONG gEnableLightMaps;
 
 #define UV_TEST 0
 #define SPEW_AWAY 0
@@ -21,7 +21,7 @@ extern DWORD gEnableLightMaps;
 
 MLR_I_TMesh::ClassData*
 	MLR_I_TMesh::DefaultData = NULL;
-extern DynamicArrayOf<Vector2DScalar> *lightMapUVs;
+extern DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs;
 extern DynamicArrayOf<Scalar> *lightMapSqFalloffs;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -146,9 +146,9 @@ bool
 	Verify(gos_GetCurrentHeap() == Heap);
 
 	int len;
-	unsigned short *_index;
+	puint16_t _index;
 	Point3D *_coords;
-	Vector2DScalar *_texCoords;
+	Stuff::Vector2DScalar *_texCoords;
 
 	pMesh->GetCoordData(&_coords, &len);
 	SetCoordData(_coords, len);
@@ -219,7 +219,7 @@ int
 	Check_Object(this);
 
 	int ret = 0;
-	PUCHAR iPtr;
+	puint8_t iPtr;
 	Plane *p;
 
 	if(numOfTriangles <= 0)
@@ -262,7 +262,7 @@ void
 	MLR_I_TMesh::ResetTestList()
 {
 	int i, numPrimitives = GetNumPrimitives();
-	PUCHAR iPtr = &testList[0];
+	puint8_t iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
 	{
@@ -280,7 +280,7 @@ int
 	Verify(index.GetLength() > 0);
 
 	int ret, i, j;
-	DWORD *indices = (DWORD *)index.GetData();
+	ULONG *indices = (ULONG *)index.GetData();
 
 	for(i=0,j=0,ret=0;i<(numOfTriangles>>1);++i)
 	{
@@ -318,7 +318,7 @@ int
 	return ret;
 }
 
-extern DWORD gEnableTextureSort, gEnableAlphaSort;
+extern ULONG gEnableTextureSort, gEnableAlphaSort;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /*
@@ -338,7 +338,7 @@ void
 	Stuff::Vector4D *v4d = transformedCoords.GetData();
 	Stuff::Point3D *p3d = coords.GetData();
 	MLRClippingState *cs = clipPerVertex.GetData();
-	PUCHAR viv = visibleIndexedVertices.GetData();
+	puint8_t viv = visibleIndexedVertices.GetData();
 
 	for(i=0;i<len;i++,p3d++,v4d++,cs++,viv++)
 	{
@@ -433,7 +433,7 @@ void
 
 extern RGBAColor errorColor;
 extern bool
-	CheckForBigTriangles(DynamicArrayOf<Vector2DScalar> *lightMapUVs, int stride);
+	CheckForBigTriangles(DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs, int stride);
 
 //---------------------------------------------------------------------------
 //
@@ -1051,7 +1051,7 @@ MLR_I_TMesh*
 	coords[6] = Point3D( half,  half, -half);
 	coords[7] = Point3D(-half,  half, -half);
 
-	PUCHAR lengths = new uint8_t [6];
+	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
 	int i;
@@ -1065,7 +1065,7 @@ MLR_I_TMesh*
 
 	ret->SetCoordData(coords, 8);
 
-	unsigned short	*index = new unsigned short [6*4];
+	uint16_t	*index = new uint16_t [6*4];
 	Register_Pointer(index);
 
 	index[0] = 0;
@@ -1102,33 +1102,33 @@ MLR_I_TMesh*
 
 	ret->FindFacePlanes();
 
-	Vector2DScalar *texCoords = new Vector2DScalar[8];
+	Stuff::Vector2DScalar *texCoords = new Stuff::Vector2DScalar[8];
 	Register_Object(texCoords);
 
-	texCoords[0] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[1] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[2] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[3] = Vector2DScalar(0.0f, 0.0f);
+	texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[1] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[2] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[3] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
-	texCoords[4] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[5] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[6] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[7] = Vector2DScalar(0.0f, 0.0f);
+	texCoords[4] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[5] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[6] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[7] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
 	if(state != NULL)
 	{
 		ret->SetReferenceState(*state);
 		if(state->GetTextureHandle() > 0)
 		{
-			texCoords[0] = Vector2DScalar(0.0f, 0.0f);
-			texCoords[1] = Vector2DScalar(1.0f, 0.0f);
-			texCoords[2] = Vector2DScalar(0.25f, 0.25f);
-			texCoords[3] = Vector2DScalar(0.75f, 0.25f);
+			texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
+			texCoords[1] = Stuff::Vector2DScalar(1.0f, 0.0f);
+			texCoords[2] = Stuff::Vector2DScalar(0.25f, 0.25f);
+			texCoords[3] = Stuff::Vector2DScalar(0.75f, 0.25f);
 
-			texCoords[4] = Vector2DScalar(1.0f, 1.0f);
-			texCoords[5] = Vector2DScalar(0.0f, 1.0f);
-			texCoords[6] = Vector2DScalar(0.25f, 0.75f);
-			texCoords[7] = Vector2DScalar(0.75f, 0.75f);
+			texCoords[4] = Stuff::Vector2DScalar(1.0f, 1.0f);
+			texCoords[5] = Stuff::Vector2DScalar(0.0f, 1.0f);
+			texCoords[6] = Stuff::Vector2DScalar(0.25f, 0.75f);
+			texCoords[7] = Stuff::Vector2DScalar(0.75f, 0.75f);
 		}
 	}
 	ret->SetTexCoordData(texCoords, 8);
@@ -1165,7 +1165,7 @@ MLRShape*
 	Register_Object(ret);
 
 	int i, j, k;
-	long    nrTri = (long) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
+	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
 	if(3*nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
@@ -1183,9 +1183,9 @@ MLRShape*
 		Register_Pointer(collapsedCoords);
 	}
 
-	unsigned short	*index = new unsigned short [nrTri*3];
+	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
-	Vector2DScalar *texCoords = new Vector2DScalar[nrTri*3];
+	Stuff::Vector2DScalar *texCoords = new Stuff::Vector2DScalar[nrTri*3];
 	Register_Pointer(texCoords);
 
 	int uniquePoints = 0;
@@ -1225,7 +1225,7 @@ MLRShape*
 				{
 					collapsedCoords[uniquePoints++] = coords[i];
 				}
-				index[i] = static_cast<unsigned short>(j);
+				index[i] = static_cast<uint16_t>(j);
 			}
 			mesh->SetCoordData(collapsedCoords, uniquePoints);
 		}
@@ -1234,7 +1234,7 @@ MLRShape*
 			uniquePoints = nrTri*3;
 			for(i=0;i<nrTri*3;i++)
 			{
-				index[i] = static_cast<unsigned short>(i);
+				index[i] = static_cast<uint16_t>(i);
 			}
 			mesh->SetCoordData(coords, nrTri*3);
 		}
@@ -1247,7 +1247,7 @@ MLRShape*
 		{
 			for(i=0;i<uniquePoints;i++)
 			{
-				texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+				texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 			}
 		}
 		else
@@ -1260,7 +1260,7 @@ MLRShape*
 					for(i=0;i<uniquePoints;i++)
 					{
 						texCoords[i] = 
-							Vector2DScalar(
+							Stuff::Vector2DScalar(
 								(1.0f + collapsedCoords[i].x)/2.0f,
 								(1.0f + collapsedCoords[i].y)/2.0f
 							);
@@ -1271,17 +1271,17 @@ MLRShape*
 					for(i=0;i<nrTri;i++)
 					{
 						texCoords[3*i] = 
-							Vector2DScalar(
+							Stuff::Vector2DScalar(
 								(1.0f + coords[3*i].x)/2.0f,
 								(1.0f + coords[3*i].y)/2.0f
 							);
 						texCoords[3*i+1] = 
-							Vector2DScalar(
+							Stuff::Vector2DScalar(
 								(1.0f + coords[3*i+1].x)/2.0f,
 								(1.0f + coords[3*i+1].y)/2.0f
 							);
 						texCoords[3*i+2] = 
-							Vector2DScalar(
+							Stuff::Vector2DScalar(
 								(1.0f + coords[3*i+2].x)/2.0f,
 								(1.0f + coords[3*i+2].y)/2.0f
 							);
@@ -1292,7 +1292,7 @@ MLRShape*
 			{
 				for(i=0;i<uniquePoints;i++)
 				{
-					texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+					texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 				}
 			}
 		}

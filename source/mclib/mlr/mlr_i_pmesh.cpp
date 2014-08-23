@@ -11,7 +11,7 @@
 
 #define UV_TEST 0
 
-extern DWORD gEnableLightMaps;
+extern ULONG gEnableLightMaps;
 
 //#############################################################################
 //###### MLRIndexedPolyMesh with no color no lighting one texture layer  ######
@@ -111,10 +111,10 @@ void
 	Verify(gos_GetCurrentHeap() == Heap);
 
 	int len;
-	unsigned short *_index;
+	puint16_t _index;
 	Point3D *_coords;
 	Vector2DScalar *_texCoords;
-	PUCHAR _lengths;
+	puint8_t _lengths;
 
 	polyMesh->GetCoordData(&_coords, &len);
 	SetCoordData(_coords, len);
@@ -200,7 +200,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_PMesh::SetSubprimitiveLengths (PUCHAR data, int numPrimitives)
+	MLR_I_PMesh::SetSubprimitiveLengths (puint8_t data, int numPrimitives)
 {
 	Check_Object(this); 
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -215,7 +215,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_PMesh::GetSubprimitiveLengths (PUCHAR *data, int *l)
+	MLR_I_PMesh::GetSubprimitiveLengths (puint8_t *data, int *l)
 {
 	Check_Object(this);
 	*l = lengths.GetLength();
@@ -257,7 +257,7 @@ int
 
 	int i, numPrimitives = GetNumPrimitives();
 	int ret = 0, len = lengths.GetLength();
-	PUCHAR iPtr;
+	puint8_t iPtr;
 	Plane *p;
 
 	if(len <= 0)
@@ -296,7 +296,7 @@ void
 	MLR_I_PMesh::ResetTestList()
 {
 	int i, numPrimitives = GetNumPrimitives();
-	PUCHAR iPtr = &testList[0];
+	puint8_t iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
 	{
@@ -342,7 +342,7 @@ int
 	return ret;
 }
 
-extern DWORD gEnableTextureSort, gEnableAlphaSort;
+extern ULONG gEnableTextureSort, gEnableAlphaSort;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -364,7 +364,7 @@ void
 	Stuff::Vector4D *v4d = transformedCoords->GetData();
 	Stuff::Point3D *p3d = coords.GetData();
 	MLRClippingState *cs = clipPerVertex->GetData();
-	PUCHAR viv = visibleIndexedVertices.GetData();
+	puint8_t viv = visibleIndexedVertices.GetData();
 
 	for(i=0;i<len;i++,p3d++,v4d++,cs++,viv++)
 	{
@@ -549,7 +549,7 @@ void
 		return;
 	}
 
-	unsigned short stride;
+	uint16_t stride;
 	int i, j, k, len = lengths.GetLength();
 	LinearMatrix4D matrix = LinearMatrix4D::Identity;
 	Point3D lightPosInShape, hitPoint;
@@ -1060,7 +1060,7 @@ MLR_I_PMesh*
 	coords[6] = Point3D( half,  half, -half);
 	coords[7] = Point3D(-half,  half, -half);
 
-	PUCHAR lengths = new uint8_t [6];
+	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
 	int i;
@@ -1074,7 +1074,7 @@ MLR_I_PMesh*
 
 	ret->SetCoordData(coords, 8);
 
-	unsigned short	*index = new unsigned short [6*4];
+	uint16_t	*index = new uint16_t [6*4];
 	Register_Pointer(index);
 
 	index[0] = 0;
@@ -1158,7 +1158,7 @@ MLR_I_PMesh*
 	return ret;
 }
 
-long MidLevelRenderer::triDrawn = 0;
+int32_t MidLevelRenderer::triDrawn = 0;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -1168,8 +1168,8 @@ void
 		Point3D& v1,
 		Point3D& v2,
 		Point3D& v3,
-		long depth,
-		long tri2draw, 
+		int32_t depth,
+		int32_t tri2draw, 
         float rad
 	)
 {
@@ -1230,7 +1230,7 @@ MLRShape*
 	Register_Object(ret);
 
 	int i, j, k;
-	long    nrTri = (long) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
+	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
 	if(3*nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
@@ -1238,7 +1238,7 @@ MLRShape*
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh/3;
 	}
 
-	PUCHAR lengths = new uint8_t [nrTri];
+	puint8_t lengths = new uint8_t [nrTri];
 	Register_Pointer(lengths);
 
 	for(i=0;i<nrTri;i++)
@@ -1256,7 +1256,7 @@ MLRShape*
 		Register_Pointer(collapsedCoords);
 	}
 
-	unsigned short	*index = new unsigned short [nrTri*3];
+	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
 	Vector2DScalar *texCoords = new Vector2DScalar[nrTri*3];
 	Register_Pointer(texCoords);
@@ -1299,7 +1299,7 @@ MLRShape*
 				{
 					collapsedCoords[uniquePoints++] = coords[i];
 				}
-				index[i] = static_cast<unsigned short>(j);
+				index[i] = static_cast<uint16_t>(j);
 			}
 			mesh->SetCoordData(collapsedCoords, uniquePoints);
 		}
@@ -1308,7 +1308,7 @@ MLRShape*
 			uniquePoints = nrTri*3;
 			for(i=0;i<nrTri*3;i++)
 			{
-				index[i] = static_cast<unsigned short>(i);
+				index[i] = static_cast<uint16_t>(i);
 			}
 			mesh->SetCoordData(coords, nrTri*3);
 		}

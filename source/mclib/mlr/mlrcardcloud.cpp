@@ -9,7 +9,7 @@
 	#include <mlr/mlrcliptrick.hpp>
 #endif
 
-extern DWORD gShowClippedPolys;
+extern ULONG gShowClippedPolys;
 
 //#############################################################################
 //#########################    MLRCardCloud    ################################
@@ -21,7 +21,7 @@ DynamicArrayOf<Vector4D>
 	*MLRCardCloud::clipExtraCoords;
 DynamicArrayOf<RGBAColor>
 	*MLRCardCloud::clipExtraColors;
-DynamicArrayOf<Vector2DScalar>
+DynamicArrayOf<Stuff::Vector2DScalar>
 	*MLRCardCloud::clipExtraTexCoords;
 
 DynamicArrayOf<int>
@@ -51,7 +51,7 @@ void
 	Register_Object(clipExtraCoords);
 	clipExtraColors = new DynamicArrayOf<RGBAColor> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraColors);
-	clipExtraTexCoords = new DynamicArrayOf<Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
+	clipExtraTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraTexCoords);
 	
 	clipExtraLength = new DynamicArrayOf<int> (Limits::Max_Number_Primitives_Per_Frame);
@@ -127,7 +127,7 @@ void
 		pcint32_t count,
 		const Stuff::Point3D *point_data,
 		const Stuff::RGBAColor *color_data,
-		const Vector2DScalar *uv_data
+		const Stuff::Vector2DScalar *uv_data
 	)
 {
 	Check_Pointer(this);
@@ -216,7 +216,7 @@ int
 					true
 				);
 
-				DWORD tmpColor = GOSCopyColor(&colors[i]);
+				ULONG tmpColor = GOSCopyColor(&colors[i]);
 
 				for(k=numGOSVertices;k<numGOSVertices+3;k++)
 				{
@@ -334,7 +334,7 @@ int
 			);
 
 
-			DWORD tmpColor = GOSCopyColor(&colors[i]);
+			ULONG tmpColor = GOSCopyColor(&colors[i]);
 
 			gos_vertices[numGOSVertices].argb = tmpColor;
 			gos_vertices[numGOSVertices + 1].argb = tmpColor;
@@ -542,7 +542,7 @@ int
 
 				srcPolygon.flags |= 2;
 
-				srcPolygon.texCoords = const_cast<Vector2DScalar*>(&texCoords[j]);
+				srcPolygon.texCoords = const_cast<Stuff::Vector2DScalar*>(&texCoords[j]);
 
 				srcPolygon.length = 4;
 

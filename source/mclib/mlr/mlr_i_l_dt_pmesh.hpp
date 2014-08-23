@@ -3,15 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLR_I_L_DT_PMESH_HPP
 #define MLR_MLR_I_L_DT_PMESH_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(MLR_MLR_I_C_DT_PMESH_HPP)
-	#include <mlr/mlr_i_c_dt_pmesh.hpp>
-#endif
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlr_i_c_dt_pmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -23,24 +20,22 @@ namespace MidLevelRenderer {
 	class MLR_I_L_DT_PMesh:
 		public MLR_I_C_DT_PMesh
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLR_I_L_DT_PMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLR_I_L_DT_PMesh();
 
 	public:
@@ -48,8 +43,8 @@ namespace MidLevelRenderer {
 
 		static MLR_I_L_DT_PMesh*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
@@ -58,26 +53,26 @@ namespace MidLevelRenderer {
 	public:
 		virtual void
 			SetNormalData(
-				const Stuff::Vector3D *array,
-				int point_count
+			const Stuff::Vector3D *array,
+			int point_count
 			);
 		virtual void
 			GetNormalData(
-				Stuff::Vector3D **array,
-				int *point_count
+			Stuff::Vector3D **array,
+			int *point_count
 			);
 
 #if COLOR_AS_DWORD
 		virtual void
 			SetColorData(
-				const DWORD *array,
-				int point_count
+			const ULONG *array,
+			int point_count
 			);
 #else
 		virtual void
 			SetColorData(
-				const Stuff::RGBAColor *array,
-				int point_count
+			const Stuff::RGBAColor *array,
+			int point_count
 			);
 #endif
 
@@ -85,7 +80,7 @@ namespace MidLevelRenderer {
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(const DWORD *paintMe);
+			PaintMe(const ULONG *paintMe);
 #else
 			PaintMe(const Stuff::RGBAColor *paintMe);
 #endif
@@ -95,21 +90,19 @@ namespace MidLevelRenderer {
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -124,8 +117,8 @@ namespace MidLevelRenderer {
 		Stuff::DynamicArrayOf<Stuff::Vector3D> normals;		// Base address of normal list 
 
 #if COLOR_AS_DWORD
-		Stuff::DynamicArrayOf<DWORD> litColors;
-		Stuff::DynamicArrayOf<DWORD> *actualColors;
+		Stuff::DynamicArrayOf<ULONG> litColors;
+		Stuff::DynamicArrayOf<ULONG> *actualColors;
 #else
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> litColors;
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> *actualColors;
@@ -133,12 +126,13 @@ namespace MidLevelRenderer {
 
 	};
 
-//	MLR_I_L_DT_PMesh*
-//		CreateIndexedCube(Stuff::Scalar, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
+	//	MLR_I_L_DT_PMesh*
+	//		CreateIndexedCube(float, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
 	MLRShape*
 		CreateIndexedIcosahedron_Color_Lit_2Tex(
-			IcoInfo&,
-			MLRState*,
-			MLRState*
+		IcoInfo&,
+		MLRState*,
+		MLRState*
 		);
 }
+#endif

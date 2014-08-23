@@ -3,15 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLR_TERRAIN2_HPP
 #define MLR_MLR_TERRAIN2_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(MLR_MLR_I_DeT_TMESH_HPP)
-	#include <mlr/mlr_i_det_tmesh.hpp>
-#endif
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlr_i_det_tmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -23,24 +20,22 @@ namespace MidLevelRenderer {
 	class MLR_Terrain2:
 		public MLR_I_DeT_TMesh
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLR_Terrain2(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLR_Terrain2();
 
 	public:
@@ -48,8 +43,8 @@ namespace MidLevelRenderer {
 
 		static MLR_Terrain2*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
@@ -67,27 +62,27 @@ namespace MidLevelRenderer {
 
 		uint8_t
 			GetCurrentDepth()
-				{ Check_Object(this); return currentDepth; }
+		{ Check_Object(this); return currentDepth; }
 
 		void
 			SetDepthData(uint8_t md, uint8_t mad)
-				{ Check_Object(this); maxDepth = md; maxAllDepth = mad; }
+		{ Check_Object(this); maxDepth = md; maxAllDepth = mad; }
 
 		void
 			SetTileData(uint8_t tx, uint8_t tz)
-				{ Check_Object(this); tileX = tx; tileZ = tz; }
+		{ Check_Object(this); tileX = tx; tileZ = tz; }
 
 		void
 			SetFrame(int res, Scalar xMin, Scalar zMin, Scalar xMax, Scalar zMax)
-				{ Check_Object(this); frame[res][0] = xMin; frame[res][1] = zMin; frame[res][2] = xMax; frame[res][3] = zMax; }
+		{ Check_Object(this); frame[res][0] = xMin; frame[res][1] = zMin; frame[res][2] = xMax; frame[res][3] = zMax; }
 
 		Scalar
 			GetFrame(int res, int p)
-				{ Check_Object(this); return frame[res][p]; }
+		{ Check_Object(this); return frame[res][p]; }
 
 		void
-			SetBorderPixel(Stuff::Scalar bp)
-				{ Check_Object(this); borderPixelFun = bp; }
+			SetBorderPixel(float bp)
+		{ Check_Object(this); borderPixelFun = bp; }
 
 		void
 			CalculateUVs();
@@ -97,26 +92,24 @@ namespace MidLevelRenderer {
 
 		int
 			GetLevelTexture(int lev)
-				{ Check_Object(this); Verify(lev>=0 && lev<8); return textures[lev]; }
+		{ Check_Object(this); Verify(lev>=0 && lev<8); return textures[lev]; }
 
 		void
 			LightMapLighting(MLRLight*);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -132,8 +125,9 @@ namespace MidLevelRenderer {
 		uint8_t tileX, tileZ;
 		uint8_t currentDepth, maxDepth, maxAllDepth;
 
-		Stuff::Scalar borderPixelFun;
+		float borderPixelFun;
 
 		static Stuff::DynamicArrayOf<Vector2DScalar> *detailTexCoords;	// Base address of texture coordinate list 
 	};
 }
+#endif

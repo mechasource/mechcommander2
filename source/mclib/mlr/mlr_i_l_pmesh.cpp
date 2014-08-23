@@ -195,7 +195,7 @@ void
 void
 	MLR_I_L_PMesh::SetColorData(
 #if COLOR_AS_DWORD
-		const DWORD *data,
+		const ULONG *data,
 #else
 		const RGBAColor *data,
 #endif
@@ -218,7 +218,7 @@ void
 void
 	MLR_I_L_PMesh::PaintMe(
 #if COLOR_AS_DWORD
-		const DWORD *paintMe
+		const ULONG *paintMe
 #else
 		const RGBAColor *paintMe
 #endif
@@ -240,7 +240,7 @@ void
 	int k, len = litColors.GetLength();
 
 #if COLOR_AS_DWORD
-	DWORD argb = GOSCopyColor(paintMe);
+	ULONG argb = GOSCopyColor(paintMe);
 
 	for(k=0;k<len;k++)
 	{
@@ -303,7 +303,7 @@ MLRShape*
 	Register_Object(ret);
 
 	int i, j, k;
-	long    nrTri = (long) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
+	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
 	if(3*nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
@@ -311,7 +311,7 @@ MLRShape*
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh/3;
 	}
 
-	PUCHAR lengths = new uint8_t [nrTri];
+	puint8_t lengths = new uint8_t [nrTri];
 	Register_Pointer(lengths);
 
 	for(i=0;i<nrTri;i++)
@@ -329,9 +329,9 @@ MLRShape*
 		Register_Pointer(collapsedCoords);
 	}
 
-	unsigned short	*index = new unsigned short [nrTri*3];
+	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
-	Vector2DScalar *texCoords = new Vector2DScalar[nrTri*3];
+	Stuff::Vector2DScalar *texCoords = new Stuff::Vector2DScalar[nrTri*3];
 	Register_Pointer(texCoords);
 	RGBAColor *colors = new RGBAColor[nrTri*3];
 	Register_Pointer(colors);
@@ -376,7 +376,7 @@ MLRShape*
 				{
 					collapsedCoords[uniquePoints++] = coords[i];
 				}
-				index[i] = static_cast<unsigned short>(j);
+				index[i] = static_cast<uint16_t>(j);
 			}
 			mesh->SetCoordData(collapsedCoords, uniquePoints);
 		}
@@ -385,7 +385,7 @@ MLRShape*
 			uniquePoints = nrTri*3;
 			for(i=0;i<nrTri*3;i++)
 			{
-				index[i] = static_cast<unsigned short>(i);
+				index[i] = static_cast<uint16_t>(i);
 			}
 			mesh->SetCoordData(coords, nrTri*3);
 		}
@@ -398,7 +398,7 @@ MLRShape*
 		{
 			for(i=0;i<uniquePoints;i++)
 			{
-				texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+				texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 			}
 		}
 		else
@@ -411,7 +411,7 @@ MLRShape*
 					for(i=0;i<uniquePoints;i++)
 					{
 						texCoords[i] = 
-							Vector2DScalar(
+							Stuff::Vector2DScalar(
 								(1.0f + collapsedCoords[i].x)/2.0f,
 								(1.0f + collapsedCoords[i].y)/2.0f
 							);
@@ -422,17 +422,17 @@ MLRShape*
 					for(i=0;i<nrTri;i++)
 					{
 						texCoords[3*i] = 
-							Vector2DScalar(
+							Stuff::Vector2DScalar(
 								(1.0f + coords[3*i].x)/2.0f,
 								(1.0f + coords[3*i].y)/2.0f
 							);
 						texCoords[3*i+1] = 
-							Vector2DScalar(
+							Stuff::Vector2DScalar(
 								(1.0f + coords[3*i+1].x)/2.0f,
 								(1.0f + coords[3*i+1].y)/2.0f
 							);
 						texCoords[3*i+2] = 
-							Vector2DScalar(
+							Stuff::Vector2DScalar(
 								(1.0f + coords[3*i+2].x)/2.0f,
 								(1.0f + coords[3*i+2].y)/2.0f
 							);
@@ -443,7 +443,7 @@ MLRShape*
 			{
 				for(i=0;i<uniquePoints;i++)
 				{
-					texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+					texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 				}
 			}
 		}
@@ -539,7 +539,7 @@ MLR_I_L_PMesh*
 	coords[6] = Point3D( half,  half, -half);
 	coords[7] = Point3D(-half,  half, -half);
 
-	PUCHAR lengths = new uint8_t [6];
+	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
 	int i;
@@ -553,7 +553,7 @@ MLR_I_L_PMesh*
 
 	ret->SetCoordData(coords, 8);
 
-	unsigned short	*index = new unsigned short [6*4];
+	uint16_t	*index = new uint16_t [6*4];
 	Register_Pointer(index);
 
 	index[0] = 0;
@@ -593,7 +593,7 @@ MLR_I_L_PMesh*
 	if(eightColors!=NULL)
 	{
 #if COLOR_AS_DWORD
-		DWORD *dwColor = new DWORD [8];
+		ULONG *dwColor = new ULONG [8];
 		Register_Pointer(dwColor);
 
 		for(i=0;i<8;i++)
@@ -615,33 +615,33 @@ MLR_I_L_PMesh*
 		ret->SetNormalData(eightNormals, 8);
 	}
 
-	Vector2DScalar *texCoords = new Vector2DScalar[8];
+	Stuff::Vector2DScalar *texCoords = new Stuff::Vector2DScalar[8];
 		Register_Object(texCoords);
 
-	texCoords[0] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[1] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[2] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[3] = Vector2DScalar(0.0f, 0.0f);
+	texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[1] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[2] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[3] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
-	texCoords[4] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[5] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[6] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[7] = Vector2DScalar(0.0f, 0.0f);
+	texCoords[4] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[5] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[6] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[7] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
 	if(state != NULL)
 	{
 		ret->SetReferenceState(*state);
 		if(state->GetTexture() > 0)
 		{
-			texCoords[0] = Vector2DScalar(0.0f, 0.0f);
-			texCoords[1] = Vector2DScalar(1.0f, 0.0f);
-			texCoords[2] = Vector2DScalar(0.25f, 0.25f);
-			texCoords[3] = Vector2DScalar(0.75f, 0.25f);
+			texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
+			texCoords[1] = Stuff::Vector2DScalar(1.0f, 0.0f);
+			texCoords[2] = Stuff::Vector2DScalar(0.25f, 0.25f);
+			texCoords[3] = Stuff::Vector2DScalar(0.75f, 0.25f);
 
-			texCoords[4] = Vector2DScalar(1.0f, 1.0f);
-			texCoords[5] = Vector2DScalar(0.0f, 1.0f);
-			texCoords[6] = Vector2DScalar(0.25f, 0.75f);
-			texCoords[7] = Vector2DScalar(0.75f, 0.75f);
+			texCoords[4] = Stuff::Vector2DScalar(1.0f, 1.0f);
+			texCoords[5] = Stuff::Vector2DScalar(0.0f, 1.0f);
+			texCoords[6] = Stuff::Vector2DScalar(0.25f, 0.75f);
+			texCoords[7] = Stuff::Vector2DScalar(0.75f, 0.75f);
 		}
 	}
 	ret->SetTexCoordData(texCoords, 8);

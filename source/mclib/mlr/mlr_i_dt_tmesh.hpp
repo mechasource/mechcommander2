@@ -3,11 +3,13 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLR_I_DT_TMESH_HPP
 #define MLR_MLR_I_DT_TMESH_HPP
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlr_i_tmesh.hpp>
-#include <mlr/gosvertex2uv.hpp>
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlr_i_tmesh.hpp>
+//#include <mlr/gosvertex2uv.hpp>
 
 namespace MidLevelRenderer {
 
@@ -19,24 +21,22 @@ namespace MidLevelRenderer {
 	class MLR_I_DT_TMesh:
 		public MLR_I_TMesh
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLR_I_DT_TMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLR_I_DT_TMesh();
 
 	public:
@@ -44,8 +44,8 @@ namespace MidLevelRenderer {
 
 		static MLR_I_DT_TMesh*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
@@ -65,93 +65,91 @@ namespace MidLevelRenderer {
 
 		virtual void
 			SetReferenceState(const MLRState& _state, int pass=0)
-				{
-					Check_Object(this);
-					Verify(pass>=0 && pass<2);
-					if(pass==0)
-					{
-						referenceState = _state;
-					}
-					else
-					{
-						passes = 2;
-						referenceState2 = _state;
-					}
-				}
+		{
+			Check_Object(this);
+			Verify(pass>=0 && pass<2);
+			if(pass==0)
+			{
+				referenceState = _state;
+			}
+			else
+			{
+				passes = 2;
+				referenceState2 = _state;
+			}
+		}
 		virtual const MLRState&
 			GetReferenceState(int pass=0) const
-				{
-					Check_Object(this); 
-					if(pass==0)
-						return referenceState;
-					else
-						return referenceState2;
-				}
+		{
+			Check_Object(this); 
+			if(pass==0)
+				return referenceState;
+			else
+				return referenceState2;
+		}
 		virtual const MLRState&
 			GetCurrentState(int pass=0) const
-				{
-					Check_Object(this);
-					if(pass==0)
-						return state;
-					else
-						return state2;
-				}
+		{
+			Check_Object(this);
+			if(pass==0)
+				return state;
+			else
+				return state2;
+		}
 
 		virtual void
 			CombineStates (const MLRState& master)
-				{
-					Check_Object(this);
-					state.Combine(master, referenceState); 
-					state2.Combine(master, referenceState2);
-				};
+		{
+			Check_Object(this);
+			state.Combine(master, referenceState); 
+			state2.Combine(master, referenceState2);
+		};
 
 		virtual GOSVertex*
 			GetGOSVertices(int pass=0)
-				{
-					Check_Object(this); 
-					if(pass==0)
-						return gos_vertices;
-					else
-						return gos_vertices+numGOSVertices;
-				}
+		{
+			Check_Object(this); 
+			if(pass==0)
+				return gos_vertices;
+			else
+				return gos_vertices+numGOSVertices;
+		}
 #if 0
-		virtual unsigned short*
+		virtual puint16_t
 			GetGOSIndices(int pass=0)
-				{
-					Check_Object(this);
-					if(pass==0)
-						return gos_indices;
-					else
-						return gos_indices2;
-				}
+		{
+			Check_Object(this);
+			if(pass==0)
+				return gos_indices;
+			else
+				return gos_indices2;
+		}
 #endif
 		GOSVertex2UV*
 			GetGOSVertices2UV(int=0)
-				{ Check_Object(this); return gos_vertices2uv; }
+		{ Check_Object(this); return gos_vertices2uv; }
 
-//		int
-//			GetNumGOSVertices2UV()
-//				{ Check_Object(this); return numGOSVertices2uv; }
+		//		int
+		//			GetNumGOSVertices2UV()
+		//				{ Check_Object(this); return numGOSVertices2uv; }
 
 
 		int
 			GetNumPasses();
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -167,17 +165,18 @@ namespace MidLevelRenderer {
 		static Stuff::DynamicArrayOf<Vector2DScalar> *clipExtraTexCoords2;	// Max_Number_Vertices_Per_Mesh
 
 		GOSVertex2UV *gos_vertices2uv;
-//		unsigned short	numGOSVertices2uv;
+		//		uint16_t	numGOSVertices2uv;
 	};
 
 	MLR_I_DT_TMesh*
-		CreateIndexedTriCube_NoColor_NoLit_2Tex(Stuff::Scalar, MLRState*, MLRState*);
+		CreateIndexedTriCube_NoColor_NoLit_2Tex(float, MLRState*, MLRState*);
 
 	MLRShape*
 		CreateIndexedTriIcosahedron_NoColor_NoLit_2Tex(
-			IcoInfo&,
-			MLRState*,
-			MLRState*
+		IcoInfo&,
+		MLRState*,
+		MLRState*
 		);
 
 }
+#endif

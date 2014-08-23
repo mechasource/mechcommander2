@@ -6,13 +6,13 @@
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 
-DWORD	gShowClippedPolys=0;
-DWORD	gShowBirdView=0;
-DWORD	gEnableDetailTexture=1;
-DWORD	gEnableTextureSort=1;
-DWORD	gEnableAlphaSort=1;
-DWORD	gEnableMultiTexture=1;
-DWORD	gEnableLightMaps=1;
+ULONG	gShowClippedPolys=0;
+ULONG	gShowBirdView=0;
+ULONG	gEnableDetailTexture=1;
+ULONG	gEnableTextureSort=1;
+ULONG	gEnableAlphaSort=1;
+ULONG	gEnableMultiTexture=1;
+ULONG	gEnableLightMaps=1;
 
 static uint8_t __stdcall CheckDetailTexture(void)
 {
@@ -56,15 +56,15 @@ static void __stdcall EnableLightMaps(void)
 	gEnableLightMaps=!gEnableLightMaps;
 }
 
-extern DWORD gShowClippedPolys;
+extern ULONG gShowClippedPolys;
 static uint8_t __stdcall Check_ShowClippedPolys(void) {return uint8_t((gShowClippedPolys!=0) ? 1 : 0);}
 static void __stdcall Toggle_ShowClippedPolys(void) {gShowClippedPolys=!gShowClippedPolys;}
 
-extern DWORD gShowBirdView;
+extern ULONG gShowBirdView;
 static uint8_t __stdcall Check_ShowBirdView(void) {return uint8_t((gShowBirdView!=0) ? 1 : 0);}
 static void __stdcall Toggle_ShowBirdView(void) {gShowBirdView=!gShowBirdView;}
 
-unsigned
+uint32_t
 	Limits::Max_Number_Vertices_Per_Frame,
 	Limits::Max_Number_Primitives_Per_Frame,
 	Limits::Max_Number_ScreenQuads_Per_Frame,
@@ -85,19 +85,19 @@ DEFINE_TIMER(MidLevelRenderer, Texture_Sorting_Time);
 DEFINE_TIMER(MidLevelRenderer, Alpha_Sorting_Time);
 DEFINE_TIMER(MidLevelRenderer, Unlock_Texture_Time);
 
-DWORD MidLevelRenderer::Number_Of_Primitives;
-DWORD MidLevelRenderer::NumAllIndices;
-DWORD MidLevelRenderer::NumAllVertices;
+ULONG MidLevelRenderer::Number_Of_Primitives;
+ULONG MidLevelRenderer::NumAllIndices;
+ULONG MidLevelRenderer::NumAllVertices;
 float MidLevelRenderer::Index_Over_Vertex_Ratio;
-DWORD MidLevelRenderer::TransformedVertices;
-DWORD MidLevelRenderer::NumberOfAlphaSortedTriangles;
-DWORD MidLevelRenderer::LitVertices;
-DWORD MidLevelRenderer::NonClippedVertices;
-DWORD MidLevelRenderer::ClippedVertices;
-DWORD MidLevelRenderer::PolysClippedButOutside;
-DWORD MidLevelRenderer::PolysClippedButInside;
-DWORD MidLevelRenderer::PolysClippedButOnePlane;
-DWORD MidLevelRenderer::PolysClippedButGOnePlane;
+ULONG MidLevelRenderer::TransformedVertices;
+ULONG MidLevelRenderer::NumberOfAlphaSortedTriangles;
+ULONG MidLevelRenderer::LitVertices;
+ULONG MidLevelRenderer::NonClippedVertices;
+ULONG MidLevelRenderer::ClippedVertices;
+ULONG MidLevelRenderer::PolysClippedButOutside;
+ULONG MidLevelRenderer::PolysClippedButInside;
+ULONG MidLevelRenderer::PolysClippedButOnePlane;
+ULONG MidLevelRenderer::PolysClippedButGOnePlane;
 
 
 bool MidLevelRenderer::ConvertToTriangleMeshes = true;
@@ -107,10 +107,10 @@ bool MidLevelRenderer::PerspectiveMode = true;
 //
 void
 	MidLevelRenderer::InitializeClasses(
-		unsigned Max_Number_Vertices_Per_Frame,
-		unsigned Max_Number_Primitives_Per_Frame,
-		unsigned Max_Number_ScreenQuads_Per_Frame,
-		unsigned Max_Size_Of_LightMap_MemoryStream,
+		uint32_t Max_Number_Vertices_Per_Frame,
+		uint32_t Max_Number_Primitives_Per_Frame,
+		uint32_t Max_Number_ScreenQuads_Per_Frame,
+		uint32_t Max_Size_Of_LightMap_MemoryStream,
 		bool Convert_To_Triangle_Meshes
 	)
 {

@@ -3,6 +3,8 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRHEADERS_HPP
 #define MLR_MLRHEADERS_HPP
 
 #include <mlr/mlr.hpp>
@@ -54,3 +56,5 @@ using namespace Stuff;
 #include <mlr/mlr_i_l_det_tmesh.hpp>
 
 #include <mlr/mlrlookuplight.hpp>
+
+#endif

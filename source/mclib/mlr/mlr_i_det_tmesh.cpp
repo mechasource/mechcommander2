@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 
-extern DWORD gEnableDetailTexture;
+extern ULONG gEnableDetailTexture;
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	BitTrace *MLR_I_DeT_TMesh_Clip;
@@ -114,10 +114,10 @@ void
 	MLR_I_DeT_TMesh::Copy(
 		MLR_I_TMesh *tMesh,
 		MLRState detailState,
-		Stuff::Scalar xOff,
-		Stuff::Scalar yOff,
-		Stuff::Scalar xFac,
-		Stuff::Scalar yFac
+		float xOff,
+		float yOff,
+		float xFac,
+		float yFac
 	)
 {
 	Check_Object(this);
@@ -125,7 +125,7 @@ void
 	Verify(gos_GetCurrentHeap() == Heap);
 
 	int len;
-	unsigned short *_index;
+	puint16_t _index;
 	Point3D *_coords;
 	Vector2DScalar *_texCoords;
 
@@ -203,12 +203,12 @@ void
 //
 void
 	MLR_I_DeT_TMesh::SetDetailData(
-		Stuff::Scalar xOff,
-		Stuff::Scalar yOff,
-		Stuff::Scalar xFac,
-		Stuff::Scalar yFac,
-		Stuff::Scalar detailStart,
-		Stuff::Scalar detailEnd
+		float xOff,
+		float yOff,
+		float xFac,
+		float yFac,
+		float detailStart,
+		float detailEnd
 
 	)
 {
@@ -309,7 +309,7 @@ MLR_I_DeT_TMesh*
 	coords[6] = Point3D( half,  half, -half);
 	coords[7] = Point3D(-half,  half, -half);
 
-	PUCHAR lengths = new uint8_t [6];
+	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
 	int i;
@@ -323,7 +323,7 @@ MLR_I_DeT_TMesh*
 
 	ret->SetCoordData(coords, 8);
 
-	unsigned short	*index = new unsigned short [6*4];
+	uint16_t	*index = new uint16_t [6*4];
 	Register_Pointer(index);
 
 	index[0] = 0;
@@ -423,7 +423,7 @@ MLRShape*
 	Register_Object(ret);
 
 	int i, j, k;
-	long    nrTri = (long) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
+	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
 	if(3*nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
@@ -441,7 +441,7 @@ MLRShape*
 		Register_Pointer(collapsedCoords);
 	}
 
-	unsigned short	*index = new unsigned short [nrTri*3];
+	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
 	Vector2DScalar *texCoords = new Vector2DScalar[nrTri*3];
 	Register_Pointer(texCoords);
@@ -483,7 +483,7 @@ MLRShape*
 				{
 					collapsedCoords[uniquePoints++] = coords[i];
 				}
-				index[i] = static_cast<unsigned short>(j);
+				index[i] = static_cast<uint16_t>(j);
 			}
 			mesh->SetCoordData(collapsedCoords, uniquePoints);
 		}
@@ -492,7 +492,7 @@ MLRShape*
 			uniquePoints = nrTri*3;
 			for(i=0;i<nrTri*3;i++)
 			{
-				index[i] = static_cast<unsigned short>(i);
+				index[i] = static_cast<uint16_t>(i);
 			}
 			mesh->SetCoordData(coords, nrTri*3);
 		}

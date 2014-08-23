@@ -3,9 +3,26 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRLIGHT_HPP
 #define MLR_MLRLIGHT_HPP
 
+#include <stuff/linearmatrix.hpp>
+#include <stuff/color.hpp>
+#include <stuff/mstring.hpp>
 #include <mlr/mlr.hpp>
+#include <mlr/mlrstate.hpp>
+
+namespace Stuff {
+	class Point3D;
+	class Vector3D;
+	//class Vector4D;
+	//class Matrix4D;
+	class RGBAColor;
+	class RGBColor;
+	class MemoryStream;
+	class Page;
+}
 
 namespace MidLevelRenderer {
 
@@ -13,13 +30,13 @@ namespace MidLevelRenderer {
 	class MLRLightMap;
 
 	struct MLRVertexData {
-		Stuff::Point3D *point;
+		Stuff::Point3D*		point;
 #if COLOR_AS_DWORD
-		DWORD *color;
+		ULONG*				color;
 #else
-		Stuff::RGBAColor *color;
+		Stuff::RGBAColor*	color;
 #endif
-		Stuff::Vector3D *normal;
+		Stuff::Vector3D*	normal;
 
 		int index;
 	};
@@ -32,27 +49,25 @@ namespace MidLevelRenderer {
 		public Stuff::RegisteredClass
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		MLRLight(ClassData *class_data);
 		MLRLight(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		MLRLight(
 			ClassData *class_data,
 			Stuff::Page* page
-		);
+			);
 		~MLRLight();
 
 		static MLRLight*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 		static MLRLight*
 			Make(Stuff::Page *page);
@@ -77,86 +92,85 @@ namespace MidLevelRenderer {
 		virtual void
 			LightVertex(const MLRVertexData&) = 0;
 
-		void SetIntensity (Stuff::Scalar _int)
-			{ Check_Object(this); intensity = _int; };
-		Stuff::Scalar GetIntensity ()
-			{ Check_Object(this); return intensity; };
+		void SetIntensity (float _int)
+		{ Check_Object(this); intensity = _int; };
+		float GetIntensity ()
+		{ Check_Object(this); return intensity; };
 
 		void SetColor(Stuff::RGBColor col)
-			{ Check_Object(this); color = col; }
-		void SetColor(Stuff::Scalar, Stuff::Scalar, Stuff::Scalar);
+		{ Check_Object(this); color = col; }
+		void SetColor(float, float, float);
 
 		void GetColor(Stuff::RGBColor& col)
-			{ Check_Object(this); col = color; };
-		void GetColor(Stuff::Scalar&, Stuff::Scalar&, Stuff::Scalar&);
+		{ Check_Object(this); col = color; };
+		void GetColor(float&, float&, float&);
 
 		void GetInWorldPosition(Stuff::Point3D& pos)
-			{ Check_Object(this); pos = lightToWorld; };
+		{ Check_Object(this); pos = lightToWorld; };
 
 		void GetInWorldDirection(Stuff::UnitVector3D& dir)
-			{ Check_Object(this); lightToWorld.GetLocalForwardInWorld(&dir); };
+		{ Check_Object(this); lightToWorld.GetLocalForwardInWorld(&dir); };
 
 		void GetInShapePosition(Stuff::Point3D& pos)
-			{ Check_Object(this); pos = lightToShape; };
+		{ Check_Object(this); pos = lightToShape; };
 
 		void GetInShapePosition(Stuff::LinearMatrix4D& pos)
-			{ Check_Object(this); pos = lightToShape; };
+		{ Check_Object(this); pos = lightToShape; };
 
 		void GetInShapeDirection(Stuff::UnitVector3D& dir)
-			{ Check_Object(this); lightToShape.GetLocalForwardInWorld(&dir); };
+		{ Check_Object(this); lightToShape.GetLocalForwardInWorld(&dir); };
 
 		void SetLightToWorldMatrix(const Stuff::LinearMatrix4D&);
 		const Stuff::LinearMatrix4D&
 			GetLightToWorldMatrix()
-				{ Check_Object(this); return lightToWorld; };
+		{ Check_Object(this); return lightToWorld; };
 
 		virtual
 			void SetLightToShapeMatrix(const Stuff::LinearMatrix4D&);
 		const Stuff::LinearMatrix4D&
 			GetLightToShapeMatrix()
-				{ Check_Object(this); return lightToShape; };
+		{ Check_Object(this); return lightToShape; };
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Light Map Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Light Map Support
+		//
 		virtual MLRLightMap *
 			GetLightMap()
-				{Check_Object(this); return NULL; }
+		{Check_Object(this); return NULL; }
 
 		int
 			GetLightMask()
-				{Check_Object(this); return lightMask;}
+		{Check_Object(this); return lightMask;}
 		void
 			SetDynamicLight()
-				{Check_Object(this); lightMask |= MLRState::TerrainLightingMode;}
+		{Check_Object(this); lightMask |= MLRState::TerrainLightingMode;}
 		void
 			SetStaticLight()
-				{Check_Object(this); lightMask &= ~MLRState::TerrainLightingMode;}
+		{Check_Object(this); lightMask &= ~MLRState::TerrainLightingMode;}
 
 		void
 			SetName(PCSTR name)
-				{Check_Object(this); lightName = name;}
+		{Check_Object(this); lightName = name;}
 
 		PCSTR
 			GetName()
-				{Check_Object(this); return lightName;}
+		{Check_Object(this); return lightName;}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
 		void
 			TestInstance();
 
 	protected:
-		Stuff::Scalar
+		float
 			intensity;
 
 		Stuff::RGBColor
@@ -173,3 +187,4 @@ namespace MidLevelRenderer {
 	};
 
 }
+#endif

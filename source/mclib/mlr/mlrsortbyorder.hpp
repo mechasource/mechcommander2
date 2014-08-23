@@ -3,21 +3,18 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRSORTBYORDER_HPP
 #define MLR_MLRSORTBYORDER_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(MLR_MLRSTATE_HPP)
-	#include <mlr/mlrstate.hpp>
-#endif
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlrstate.hpp>
 
 namespace MidLevelRenderer {
 
 	struct SortAlpha {
-		Stuff::Scalar distance;
- 		MLRState *state;
+		float distance;
+		MLRState *state;
 		GOSVertex triangle[3];
 	};
 
@@ -32,12 +29,9 @@ namespace MidLevelRenderer {
 	// Initialization
 	//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
-		static ClassData
-			*DefaultData;
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
+		static ClassData* DefaultData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
@@ -52,18 +46,17 @@ namespace MidLevelRenderer {
 
 		virtual void AddSortRawData(SortData*);
 
-	//	starts the action
+		//	starts the action
 		void RenderNow ();
 
-	//	resets the sorting
+		//	resets the sorting
 		void Reset ();
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	protected:
 		int
@@ -77,3 +70,4 @@ namespace MidLevelRenderer {
 	};
 
 }
+#endif

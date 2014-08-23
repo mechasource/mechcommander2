@@ -24,7 +24,7 @@ DynamicArrayOf<Stuff::Vector4D>
 	*transformedCoords, *clipExtraCoords;
 DynamicArrayOf<RGBAColor>
 	*clipExtraColors;
-DynamicArrayOf<Vector2DScalar>
+DynamicArrayOf<Stuff::Vector2DScalar>
 	*clipExtraTexCoords;
 DynamicArrayOf<MLRClippingState>
 	*clippingStates;
@@ -46,7 +46,7 @@ void
 		);
 	Register_Object(DefaultData);
 
-	PUCHAR ptr = new uint8_t [Limits::Max_Size_Of_LightMap_MemoryStream];
+	puint8_t ptr = new uint8_t [Limits::Max_Size_Of_LightMap_MemoryStream];
 	Register_Pointer(ptr);
 
 	stream = new MemoryStream(ptr, Limits::Max_Size_Of_LightMap_MemoryStream);
@@ -58,7 +58,7 @@ void
 	Register_Object(clipExtraCoords);
 	clipExtraColors = new DynamicArrayOf<RGBAColor> (2*Limits::Max_Number_Vertices_Per_Polygon);
 	Register_Object(clipExtraColors);
-	clipExtraTexCoords = new DynamicArrayOf<Vector2DScalar> (2*Limits::Max_Number_Vertices_Per_Polygon);
+	clipExtraTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar> (2*Limits::Max_Number_Vertices_Per_Polygon);
 	Register_Object(clipExtraTexCoords);
 	clippingStates = new DynamicArrayOf<MLRClippingState> (Limits::Max_Number_Vertices_Per_Polygon);
 	Register_Object(clippingStates);
@@ -92,7 +92,7 @@ void
 	delete clippingStates;
 
 	stream->Rewind();
-	PUCHAR ptr = (PUCHAR )stream->GetPointer();
+	puint8_t ptr = (puint8_t )stream->GetPointer();
 
 	Unregister_Object(stream);
 	delete stream;
@@ -181,21 +181,21 @@ void
 {
 	Check_Object(stream);
 
-	void *ptr, *end = stream->GetPointer();
+	PVOIDptr, *end = stream->GetPointer();
 
 	Stuff::Matrix4D *currentMatrix=NULL;
 	MLRClippingState currentClippingState;
 	
 	MLRState currentState, masterState;
 
-	unsigned short stride;
+	uint16_t stride;
 
 	int i, pointerValue;
 	Stuff::Point3D *coords = NULL;
 	Stuff::RGBAColor color;
 	Stuff::RGBAColor *colors = NULL;
-	Vector2DScalar *texCoords = NULL;
-	DWORD argb = 0xffffffff;
+	Stuff::Vector2DScalar *texCoords = NULL;
+	ULONG argb = 0xffffffff;
 
 	Check_Object(vertexPool);
 	GOSVertex* gos_vertices = vertexPool->GetActualVertexPool();
@@ -274,8 +274,8 @@ void
 
 				coords = (Stuff::Point3D *)stream->GetPointer();
 				stream->AdvancePointer(stride*sizeof(Stuff::Point3D));
-				texCoords = (Vector2DScalar *)stream->GetPointer();
-				stream->AdvancePointer(stride*sizeof(Vector2DScalar));
+				texCoords = (Stuff::Vector2DScalar *)stream->GetPointer();
+				stream->AdvancePointer(stride*sizeof(Stuff::Vector2DScalar));
 
 				MLRClippingState theAnd(0x3f), theOr(0);
 				MLRClippingState *cs = clippingStates->GetData();
@@ -819,8 +819,8 @@ void
 				colors = (Stuff::RGBAColor *)stream->GetPointer();
 				stream->AdvancePointer(stride*sizeof(Stuff::RGBAColor));
 
-				texCoords = (Vector2DScalar *)stream->GetPointer();
-				stream->AdvancePointer(stride*sizeof(Vector2DScalar));
+				texCoords = (Stuff::Vector2DScalar *)stream->GetPointer();
+				stream->AdvancePointer(stride*sizeof(Stuff::Vector2DScalar));
 
 				MLRClippingState theAnd(0x3f), theOr(0);
 				MLRClippingState *cs = clippingStates->GetData();
@@ -1424,19 +1424,19 @@ MLRShape*
 	Register_Object(ret);
 	MLR_I_C_TMesh *ctmesh = NULL;
 	
-	void *ptr, *end = stream->GetPointer();
+	PVOIDptr, *end = stream->GetPointer();
 
 	MLRClippingState currentClippingState;
 	
 	MLRState currentState, masterState;
 
-	unsigned short stride;
+	uint16_t stride;
 
 	int i;
 	Stuff::Point3D *coords = NULL;
 	Stuff::RGBAColor color;
 	Stuff::RGBAColor *colors = NULL;
-	Vector2DScalar *texCoords = NULL;
+	Stuff::Vector2DScalar *texCoords = NULL;
 
 	int numGOSVertices = 0;
 
@@ -1510,14 +1510,14 @@ MLRShape*
 				*stream >> color;
 
 #if COLOR_AS_DWORD
-				DWORD argb = 0xffffffff;
+				ULONG argb = 0xffffffff;
 				argb = GOSCopyColor(&color);
 #endif
 
 				coords = (Stuff::Point3D *)stream->GetPointer();
 				stream->AdvancePointer(stride*sizeof(Stuff::Point3D));
-				texCoords = (Vector2DScalar *)stream->GetPointer();
-				stream->AdvancePointer(stride*sizeof(Vector2DScalar));
+				texCoords = (Stuff::Vector2DScalar *)stream->GetPointer();
+				stream->AdvancePointer(stride*sizeof(Stuff::Vector2DScalar));
 
 				for(i=0;i<stride;i++,numGOSVertices++)
 				{
@@ -1548,8 +1548,8 @@ MLRShape*
 				colors = (Stuff::RGBAColor *)stream->GetPointer();
 				stream->AdvancePointer(stride*sizeof(Stuff::RGBAColor));
 
-				texCoords = (Vector2DScalar *)stream->GetPointer();
-				stream->AdvancePointer(stride*sizeof(Vector2DScalar));
+				texCoords = (Stuff::Vector2DScalar *)stream->GetPointer();
+				stream->AdvancePointer(stride*sizeof(Stuff::Vector2DScalar));
 
 
 				for(i=0;i<stride;i++,numGOSVertices++)

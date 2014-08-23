@@ -3,15 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRPOINTCLOUD_HPP
 #define MLR_MLRPOINTCLOUD_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(MLR_MLREFFECT_HPP)
-	#include <mlr/mlreffect.hpp>
-#endif
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlreffect.hpp>
 
 namespace MidLevelRenderer {
 
@@ -23,27 +20,25 @@ namespace MidLevelRenderer {
 	class MLRPointCloud:
 		public MLREffect
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	public:
 		MLRPointCloud(int, int=0);
 		~MLRPointCloud();
 
 		void
 			SetData(
-				pcint32_t count,
-				const Stuff::Point3D *point_data,
-				const Stuff::RGBAColor *color_data
+			pcint32_t count,
+			const Stuff::Point3D *point_data,
+			const Stuff::RGBAColor *color_data
 			);
 		virtual int
 			GetType(int) { return type; }
@@ -54,19 +49,17 @@ namespace MidLevelRenderer {
 
 		int	Clip(MLRClippingState, GOSVertexPool*);		
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	protected:
 		int type;
@@ -74,3 +67,4 @@ namespace MidLevelRenderer {
 	};
 
 }
+#endif

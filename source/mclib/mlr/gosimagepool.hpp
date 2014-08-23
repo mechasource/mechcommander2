@@ -4,28 +4,31 @@
 
 #pragma once
 
-#if !defined(MLR_GOSIMAGEPOOL_HPP)
+#ifndef MLR_GOSIMAGEPOOL_HPP
 #define MLR_GOSIMAGEPOOL_HPP
 
-#include <mlr/mlr.hpp>
+#include <stuff/mstring.hpp>
+#include <stuff/hash.hpp>
 
 namespace MidLevelRenderer {
+
+	class GOSImage;
 
 	class GOSImagePool
 #if defined(_ARMOR)
 		: public Stuff::Signature
 #endif
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	public:
 		GOSImagePool(void);
 		virtual ~GOSImagePool(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Image handling
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Image handling
+		//
 	public:
 		GOSImage* GetImage(PCSTR imageName);
 		GOSImage* GetImage(PCSTR imageName, gos_TextureFormat format, int size, gos_TextureHints hints);
@@ -39,9 +42,9 @@ namespace MidLevelRenderer {
 			*pName = texturePath;
 		}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
 		void TestInstance(void) const
 		{
@@ -55,15 +58,15 @@ namespace MidLevelRenderer {
 	class TGAFilePool:
 		public GOSImagePool
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	public:
 		TGAFilePool(PCSTR path);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Image handling
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Image handling
+		//
 	public:
 		bool LoadImage(GOSImage *image, int=0);
 	};

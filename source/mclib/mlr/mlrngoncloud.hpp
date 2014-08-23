@@ -3,15 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRNGONCLOUD_HPP
 #define MLR_MLRNGONCLOUD_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(MLR_MLREFFECT_HPP)
-	#include <mlr/mlreffect.hpp>
-#endif
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlreffect.hpp>
 
 namespace MidLevelRenderer {
 
@@ -23,46 +20,42 @@ namespace MidLevelRenderer {
 	class MLRNGonCloud:
 		public MLREffect
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	public:
 		MLRNGonCloud(int vertices, int number);
 		~MLRNGonCloud();
 
 		void
 			SetData(
-				pcint32_t count,
-				const Stuff::Point3D *point_data,
-				const Stuff::RGBAColor *color_data
+			pcint32_t count,
+			const Stuff::Point3D *point_data,
+			const Stuff::RGBAColor *color_data
 			);
 
 		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
 		int	Clip(MLRClippingState, GOSVertexPool*);		
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	protected:
 		int numOfVertices;
@@ -78,3 +71,4 @@ namespace MidLevelRenderer {
 		static Stuff::DynamicArrayOf<int> *clipExtraLength;
 	};
 }
+#endif

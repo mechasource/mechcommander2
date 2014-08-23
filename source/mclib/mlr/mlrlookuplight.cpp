@@ -78,7 +78,7 @@ MLRLookUpLight::MLRLookUpLight(
 	one_Over_zoneSizeX = 1.0f/zoneSizeX;
 	one_Over_zoneSizeZ = 1.0f/zoneSizeZ;
 
-	maps = new PUCHAR  [mapZoneCountX * mapZoneCountZ];
+	maps = new puint8_t  [mapZoneCountX * mapZoneCountZ];
 	Check_Pointer(maps);
 
 	for(int i=0;i<mapZoneCountX*mapZoneCountZ;i++)
@@ -236,12 +236,12 @@ bool
 
 	Stuff::FileStream element_stream(mapName);
 
-	PUCHAR map = new uint8_t [mapZoneCountX*mapZoneCountZ*256*256];
+	puint8_t map = new uint8_t [mapZoneCountX*mapZoneCountZ*256*256];
 	Check_Pointer(map);
 	element_stream.ReadBytes(map, mapZoneCountX*mapZoneCountZ*256*256);
 
 	Verify(maps==NULL);
-	maps = new PUCHAR  [mapZoneCountX * mapZoneCountZ];
+	maps = new puint8_t  [mapZoneCountX * mapZoneCountZ];
 	Check_Pointer(maps);
 
 	int i, j, k;
@@ -254,7 +254,7 @@ bool
 		}
 	}
 
-	PUCHAR uptr = map;
+	puint8_t uptr = map;
 	for(j=0;j<mapZoneCountZ;j++)
 	{
 		for(k=0;k<256;k++)

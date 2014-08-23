@@ -26,7 +26,7 @@ GOSImage::GOSImage( PCSTR iName ) : Plug (DefaultData)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage( DWORD iHandle ) : Plug (DefaultData)
+GOSImage::GOSImage( ULONG iHandle ) : Plug (DefaultData)
 {
 	char str[20];
 
@@ -105,7 +105,7 @@ void GOSImage::LockImage()
 	if(!(flags & Locked))
 	{
 		flags |= Locked;
-		DWORD imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
+		ULONG imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
 
 		if (imageHandle != 0xffffffff)
 			gos_LockTexture(imageHandle, 0, false, &ptr);
@@ -120,7 +120,7 @@ void GOSImage::UnlockImage()
 	{
 		flags &= ~Locked;
 		Start_Timer(Unlock_Texture_Time);
-		DWORD imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
+		ULONG imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
 
 		if (imageHandle != 0xffffffff)
 			gos_UnLockTexture(imageHandle);
@@ -133,10 +133,10 @@ void GOSImage::UnlockImage()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PUCHAR
+puint8_t
 	GOSImage::GetImagePtr()
 {
-	return (PUCHAR )ptr.pTexture;
+	return (puint8_t )ptr.pTexture;
 }
 
 #endif

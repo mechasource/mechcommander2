@@ -3,11 +3,13 @@
 //===========================================================================//
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	CLASSNAME::Lighting (
-		MLRLight* const* lights,
-		int nrLights
-	)
+
+#pragma once
+
+#ifndef _MLRTRIANGLELIGHTING_HPP_
+#define _MLRTRIANGLELIGHTING_HPP_
+
+void CLASSNAME::Lighting(MLRLight* const* lights, int nrLights)
 {
 	Check_Object(this);
 
@@ -38,11 +40,11 @@ void
 
 		MLRVertexData vertexData;
 
-		#if COLOR_AS_DWORD
-			TO_DO;
-		#else
-			RGBAColor *color = &colors[0];
-		#endif
+#if COLOR_AS_DWORD
+		TO_DO;
+#else
+		RGBAColor *color = &colors[0];
+#endif
 
 		//
 		//--------------------------------
@@ -71,8 +73,8 @@ void
 					{
 						if (
 							GetCurrentState().GetBackFaceMode() != MLRState::BackFaceOffMode
-							 || light->GetLightType() == MLRLight::AmbientLight
-						)
+							|| light->GetLightType() == MLRLight::AmbientLight
+							)
 						{
 							light->LightVertex(vertexData);
 							Set_Statistic(LitVertices, LitVertices+1);
@@ -92,7 +94,7 @@ void
 		actualColors = &litColors;
 		Stop_Timer(Vertex_Light_Time);
 	}
-	
+
 	if (state_mask & MLRState::LightMapLightingMode)
 	{
 		Start_Timer(LightMap_Light_Time);
@@ -110,7 +112,7 @@ void
 				continue;
 			}
 
-//			Verify(state.GetAlphaMode() == MLRState::OneZeroMode);
+			//			Verify(state.GetAlphaMode() == MLRState::OneZeroMode);
 
 			int mask = state_mask & light->GetLightMask();
 
@@ -126,3 +128,4 @@ void
 	}
 }
 
+#endif

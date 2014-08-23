@@ -3,15 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLR_I_PMESH_HPP
 #define MLR_MLR_I_PMESH_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(MLR_MLRINDEXEDPRIMITIVEBASE_HPP)
-	#include <mlr/mlrindexedprimitivebase.hpp>
-#endif
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlrindexedprimitivebase.hpp>
 
 namespace MidLevelRenderer {
 
@@ -23,24 +20,22 @@ namespace MidLevelRenderer {
 	class MLR_I_PMesh:
 		public MLRIndexedPrimitiveBase
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLR_I_PMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLR_I_PMesh();
 
 	public:
@@ -48,32 +43,32 @@ namespace MidLevelRenderer {
 
 		static MLR_I_PMesh*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
 			Save(Stuff::MemoryStream *stream);
 
 	public:
-//		void Copy(MLRIndexedPolyMesh*);
+		//		void Copy(MLRIndexedPolyMesh*);
 
 		virtual	void	InitializeDrawPrimitive(uint8_t, int=0);
 
-		virtual void	SetSubprimitiveLengths(PUCHAR , int);
-		virtual void	GetSubprimitiveLengths(PUCHAR *, int*);
+		virtual void	SetSubprimitiveLengths(puint8_t , int);
+		virtual void	GetSubprimitiveLengths(puint8_t *, int*);
 
 		void	FindFacePlanes();
 
 		virtual int	FindBackFace(const Stuff::Point3D&);
 
 		const Stuff::Plane *GetPolygonPlane(size_t i)
-			{
-				Check_Object(this);
-				Verify(i<facePlanes.GetLength());
+		{
+			Check_Object(this);
+			Verify(i<facePlanes.GetLength());
 
-				return &facePlanes[i];
-			}
+			return &facePlanes[i];
+		}
 
 		virtual void	Lighting(MLRLight* const*, int nrLights);
 
@@ -81,7 +76,7 @@ namespace MidLevelRenderer {
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(const DWORD* paintMe) {(void)paintMe;};
+			PaintMe(const ULONG* paintMe) {(void)paintMe;};
 #else
 			PaintMe(const Stuff::RGBAColor* paintMe) {(void)paintMe;};
 #endif
@@ -90,37 +85,35 @@ namespace MidLevelRenderer {
 
 		bool
 			CastRay(
-				Stuff::Line3D *line,
-				Stuff::Normal3D *normal
+			Stuff::Line3D *line,
+			Stuff::Normal3D *normal
 			);
 
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
-	//	Initializes the visibility test list
+		//	Initializes the visibility test list
 		void
 			ResetTestList();
 
-	//	find which vertices are visible which not - returns nr of visible vertices
-	//	the result is stored in the visibleIndexedVertices array
+		//	find which vertices are visible which not - returns nr of visible vertices
+		//	the result is stored in the visibleIndexedVertices array
 		int
 			FindVisibleVertices();
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -136,36 +129,37 @@ namespace MidLevelRenderer {
 			Transform(Stuff::Matrix4D*);
 
 		Stuff::DynamicArrayOf<uint8_t>	testList;
-		
+
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
-		
+
 	};
 
-	#define ICO_X 0.525731112119133606f
-	#define ICO_Z 0.850650808352039932f
+#define ICO_X 0.525731112119133606f
+#define ICO_Z 0.850650808352039932f
 
 	extern float vdata[12][3];
 	extern uint32_t tindices [20][3];
 
-	extern long triDrawn;
+	extern int32_t triDrawn;
 
 	void
 		subdivide (
-			Stuff::Point3D *coords,
-			Stuff::Point3D& v1,
-			Stuff::Point3D& v2,
-			Stuff::Point3D& v3,
-			long depth,
-			long tri2draw, 
-			float rad = 1.0f
+		Stuff::Point3D *coords,
+		Stuff::Point3D& v1,
+		Stuff::Point3D& v2,
+		Stuff::Point3D& v3,
+		int32_t depth,
+		int32_t tri2draw, 
+		float rad = 1.0f
 		);
 
 	MLR_I_PMesh*
-		CreateIndexedCube_NoColor_NoLit(Stuff::Scalar, MLRState*);
+		CreateIndexedCube_NoColor_NoLit(float, MLRState*);
 	MLRShape*
 		CreateIndexedIcosahedron_NoColor_NoLit(
-			IcoInfo&,
-			MLRState*
+		IcoInfo&,
+		MLRState*
 		);
 
 }
+#endif

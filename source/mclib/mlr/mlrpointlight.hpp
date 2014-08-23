@@ -3,10 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRPOINTLIGHT_HPP
 #define MLR_MLRPOINTLIGHT_HPP
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlrinfinitelightwithfalloff.hpp>
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlrinfinitelightwithfalloff.hpp>
 
 namespace MidLevelRenderer {
 
@@ -19,16 +21,14 @@ namespace MidLevelRenderer {
 		public MLRInfiniteLightWithFalloff
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		MLRPointLight();
 		MLRPointLight(
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		MLRPointLight(Stuff::Page *page);
 		~MLRPointLight();
 
@@ -42,25 +42,24 @@ namespace MidLevelRenderer {
 
 		virtual LightType
 			GetLightType() 
-				{ Check_Object(this); return PointLight; }
+		{ Check_Object(this); return PointLight; }
 
 		void
 			SetLightMap(MLRLightMap *light_map);
 
 		virtual MLRLightMap *
 			GetLightMap()
-				{Check_Object(this); return lightMap; }
+		{Check_Object(this); return lightMap; }
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
 		void
 			TestInstance();
@@ -70,3 +69,4 @@ namespace MidLevelRenderer {
 	};
 
 }
+#endif

@@ -4,24 +4,23 @@
 
 #pragma once
 
-#if !defined(MLR_GOSIMAGE_HPP)
+#ifndef MLR_GOSIMAGE_HPP
 #define MLR_GOSIMAGE_HPP
 
-#include <mlr/mlr.hpp>
-#include <gameos.hpp>
-#include "txmmgr.h"
+#include <stuff/plug.hpp>
+#include <stuff/mstring.hpp>
 
 namespace MidLevelRenderer {
 
 	class GOSImage:
 		public Stuff::Plug
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	public:
 		GOSImage(PCSTR imageName);
-		GOSImage(DWORD imageHandle);
+		GOSImage(ULONG imageHandle);
 		GOSImage(PCSTR, gos_TextureHints);
 		~GOSImage(void);
 
@@ -61,10 +60,10 @@ namespace MidLevelRenderer {
 			return ( (flags & Loaded) != 0);
 		}
 
-		DWORD GetHandle(void)
+		ULONG GetHandle(void)
 		{ 
 			Check_Object(this);
-			DWORD imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
+			ULONG imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
 
 			if (imageHandle == 0xffffffff)
 				imageHandle = 0;
@@ -72,7 +71,7 @@ namespace MidLevelRenderer {
 			return imageHandle; 
 		}
 
-		void SetHandle (DWORD handle)
+		void SetHandle (ULONG handle)
 		{
 			//EVERY call to this must change from gos_load to our load
 			Check_Object(this);  
@@ -86,9 +85,9 @@ namespace MidLevelRenderer {
 
 		void	LockImage(void);
 		void	UnlockImage(void);
-		PUCHAR	GetImagePtr(void)
+		puint8_t	GetImagePtr(void)
 		{
-			return (PUCHAR )ptr.pTexture;
+			return (puint8_t )ptr.pTexture;
 		}
 		int		GetPitch(void)
 		{ 
@@ -97,9 +96,9 @@ namespace MidLevelRenderer {
 
 #endif
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
 		void TestInstance(void) const
 		{
@@ -110,7 +109,7 @@ namespace MidLevelRenderer {
 	protected:
 		gos_TextureHints ipHints;
 		int instance;
-		DWORD mcTextureNodeIndex;
+		ULONG mcTextureNodeIndex;
 		TEXTUREPTR ptr;
 	};
 

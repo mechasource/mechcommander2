@@ -4,9 +4,10 @@
 
 #pragma once
 
-#if !defined(MLR_MLRSTATE_HPP)
+#ifndef MLR_MLRSTATE_HPP
 #define MLR_MLRSTATE_HPP
 
+#include <stuff/iterator.hpp>
 #include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer {class MLRState;}
@@ -32,9 +33,9 @@ namespace MidLevelRenderer {
 	{
 		friend class MLRSorter;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLRState(Stuff::MemoryStream *stream, int version);
 
@@ -56,9 +57,9 @@ namespace MidLevelRenderer {
 			int version
 			);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Render state
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Render state
+		//
 	public:
 		enum {
 			TextureNumberBit = 0,
@@ -168,7 +169,7 @@ namespace MidLevelRenderer {
 
 		// manipulate render state
 		void
-			SetTextureHandle(unsigned texture)
+			SetTextureHandle(uint32_t texture)
 		{
 			Check_Object(this); renderState &= ~TextureMask;
 			renderDeltaMask |= TextureMask;
@@ -317,9 +318,9 @@ namespace MidLevelRenderer {
 			return renderState;
 		}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Process state
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Process state
+		//
 	public:
 		enum {
 			PriorityBit = 0,
@@ -463,9 +464,9 @@ namespace MidLevelRenderer {
 
 		void SetRendererState(MLRTexturePool*);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// System flags set at begin of every frame
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// System flags set at begin of every frame
+		//
 
 		enum {
 			HasAGPAvailable = 1,				//	FALSE when no AGP memory available (assume a low end card)
@@ -514,9 +515,9 @@ namespace MidLevelRenderer {
 			GetMaxUV(void)
 		{ return maxUV; }
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Assignment operators
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Assignment operators
+		//
 		MLRState& operator=(cuint32_t& s)
 		{
 			Check_Pointer(this);
@@ -552,9 +553,9 @@ namespace MidLevelRenderer {
 		friend Stuff::IteratorPosition
 			GetHashFunctions::GetHashValue(const MLRState &value);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
 		void TestInstance(void) const
 		{
@@ -572,9 +573,9 @@ namespace MidLevelRenderer {
 
 #ifdef OLDFOG
 		uint32_t		fogColor;
-		Stuff::Scalar	fogDensity;
-		Stuff::Scalar	nearFog;
-		Stuff::Scalar	farFog;
+		float	fogDensity;
+		float	nearFog;
+		float	farFog;
 #else
 	public:
 		static uint32_t	fogColor;

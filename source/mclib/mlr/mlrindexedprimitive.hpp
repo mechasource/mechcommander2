@@ -3,11 +3,11 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRINDEXEDPRIMITIVE_HPP
 #define MLR_MLRINDEXEDPRIMITIVE_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
+// #include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer {
 
@@ -18,26 +18,23 @@ namespace MidLevelRenderer {
 	class MLRIndexedPrimitive:
 		public MLRPrimitive
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass(void);
-		static void
-			TerminateClass(void);
-		static ClassData
-			*DefaultData;
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLRIndexedPrimitive(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLRIndexedPrimitive(void);
 
 	public:
@@ -45,8 +42,8 @@ namespace MidLevelRenderer {
 
 		static MLRIndexedPrimitive*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		virtual void
@@ -58,29 +55,28 @@ namespace MidLevelRenderer {
 
 		virtual void
 			SetCoordData(
-				const Stuff::Point3D *array,
-				int point_count
+			const Stuff::Point3D *array,
+			int point_count
 			);
 
 		virtual void
 			SetIndexData(
-				USHORT *index_array,
-				int index_count
+			puint16_t index_array,
+			int index_count
 			);
 
 		virtual void
 			GetIndexData(
-				USHORT **index_array,
-				int *index_count
+			puint16_t* index_array,
+			int *index_count
 			);
 
-		USHORT*
-			GetGOSIndices(void)
-				{ Check_Object(this); return gos_indices; }
+		puint16_t GetGOSIndices(void)
+		{ Check_Object(this); return gos_indices; }
 
 		int
 			GetNumGOSIndices(void)
-				{ Check_Object(this); return numGOSIndices; }
+		{ Check_Object(this); return numGOSIndices; }
 
 		virtual void
 			Transform(Stuff::Matrix4D*);
@@ -88,15 +84,13 @@ namespace MidLevelRenderer {
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*) = 0;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance(void) const;
+		void TestInstance(void) const;
 
-	virtual int
-			GetSize(void)
+		virtual int GetSize(void)
 		{ 
 			Check_Object(this);
 			int ret = MLRPrimitive::GetSize(void);
@@ -108,13 +102,11 @@ namespace MidLevelRenderer {
 
 	protected:
 		bool visibleIndexedVerticesKey;
-
-		Stuff::DynamicArrayOf<USHORT>	visibleIndexedVertices;
-
-		Stuff::DynamicArrayOf<USHORT>	index;	// List of color indexes 
-
-		USHORT *gos_indices;
-		USHORT	numGOSIndices;
+		Stuff::DynamicArrayOf<uint16_t>	visibleIndexedVertices;
+		Stuff::DynamicArrayOf<uint16_t>	index;	// List of color indexes 
+		puint16_t	gos_indices;
+		uint16_t	numGOSIndices;
 	};
 
 }
+#endif

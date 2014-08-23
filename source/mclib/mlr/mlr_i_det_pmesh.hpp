@@ -3,10 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLR_I_DeT_PMESH_HPP
 #define MLR_MLR_I_DeT_PMESH_HPP
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlr_i_pmesh.hpp>
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlr_i_pmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -20,9 +22,9 @@ namespace MidLevelRenderer {
 			alphaMode = MLRState::AlphaInvAlphaMode;
 		}
 		PCSTR name;
-		Stuff::Scalar xOff, zOff;
-		Stuff::Scalar xFac, zFac;
-		Stuff::Scalar dStart, dEnd;
+		float xOff, zOff;
+		float xFac, zFac;
+		float dStart, dEnd;
 		MLRState::AlphaMode alphaMode;
 	};
 	//##########################################################################
@@ -33,24 +35,22 @@ namespace MidLevelRenderer {
 	class MLR_I_DeT_PMesh:
 		public MLR_I_PMesh
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLR_I_DeT_PMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLR_I_DeT_PMesh();
 
 	public:
@@ -58,8 +58,8 @@ namespace MidLevelRenderer {
 
 		static MLR_I_DeT_PMesh*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
@@ -68,43 +68,43 @@ namespace MidLevelRenderer {
 	public:
 		void
 			Copy(
-				MLR_I_PMesh*,
-				MLRState detailState,
-				Stuff::Scalar xOff,
-				Stuff::Scalar yOff,
-				Stuff::Scalar xFac,
-				Stuff::Scalar yFac
+			MLR_I_PMesh*,
+			MLRState detailState,
+			float xOff,
+			float yOff,
+			float xFac,
+			float yFac
 			);
 
 		void
 			SetDetailData(
-				Stuff::Scalar xOff,
-				Stuff::Scalar yOff,
-				Stuff::Scalar xFac,
-				Stuff::Scalar yFac
+			float xOff,
+			float yOff,
+			float xFac,
+			float yFac
 			)
-				{
-					Check_Object(this);
-					xOffset = xOff;
-					yOffset = yOff;
-					xScale = xFac;
-					yScale = yFac;
-				}
+		{
+			Check_Object(this);
+			xOffset = xOff;
+			yOffset = yOff;
+			xScale = xFac;
+			yScale = yFac;
+		}
 
 		void
 			GetDetailData(
-				Stuff::Scalar& xOff,
-				Stuff::Scalar& yOff,
-				Stuff::Scalar& xFac,
-				Stuff::Scalar& yFac
+			float& xOff,
+			float& yOff,
+			float& xFac,
+			float& yFac
 			)
-				{
-					Check_Object(this);
-					xOff = xOffset;
-					yOff = yOffset;
-					xFac = xScale;
-					yFac = yScale;
-				}
+		{
+			Check_Object(this);
+			xOff = xOffset;
+			yOff = yOffset;
+			xFac = xScale;
+			yFac = yScale;
+		}
 
 		virtual int	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
 
@@ -113,74 +113,72 @@ namespace MidLevelRenderer {
 
 		virtual void
 			SetReferenceState(const MLRState& _state, int pass=0)
-				{
-					Check_Object(this);
-					Verify(pass>=0 && pass<2);
-					if(pass==0)
-					{
-						referenceState = _state;
-					}
-					else
-					{
-						passes = 2;
-						referenceState2 = _state;
-					}
-				}
+		{
+			Check_Object(this);
+			Verify(pass>=0 && pass<2);
+			if(pass==0)
+			{
+				referenceState = _state;
+			}
+			else
+			{
+				passes = 2;
+				referenceState2 = _state;
+			}
+		}
 		virtual const MLRState&
 			GetReferenceState(int pass=0) const
-				{
-					Check_Object(this); 
-					if(pass==0)
-						return referenceState;
-					else
-						return referenceState2;
-				}
+		{
+			Check_Object(this); 
+			if(pass==0)
+				return referenceState;
+			else
+				return referenceState2;
+		}
 		virtual const MLRState&
 			GetCurrentState(int pass=0) const
-				{
-					Check_Object(this);
-					if(pass==0)
-						return state;
-					else
-						return state2;
-				}
+		{
+			Check_Object(this);
+			if(pass==0)
+				return state;
+			else
+				return state2;
+		}
 
 		virtual void
 			CombineStates (const MLRState& master)
-				{
-					Check_Object(this);
-					state.Combine(master, referenceState); 
-					state2.Combine(master, referenceState2);
-				};
+		{
+			Check_Object(this);
+			state.Combine(master, referenceState); 
+			state2.Combine(master, referenceState2);
+		};
 
 		virtual GOSVertex*
 			GetGOSVertices(int pass=0)
-				{
-					Check_Object(this); 
-					if(pass==0)
-						return gos_vertices;
-					else
-						return gos_vertices+numGOSVertices;
-				}
+		{
+			Check_Object(this); 
+			if(pass==0)
+				return gos_vertices;
+			else
+				return gos_vertices+numGOSVertices;
+		}
 
 		virtual int
 			GetNumPasses();
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -194,25 +192,26 @@ namespace MidLevelRenderer {
 
 		MLRState	state2, referenceState2;
 
-		Stuff::Scalar noDetailDistance;
+		float noDetailDistance;
 
-		Stuff::Scalar xOffset, yOffset, xScale, yScale;
+		float xOffset, yOffset, xScale, yScale;
 	};
 
 	MLR_I_DeT_PMesh*
 		CreateIndexedCube_NoColor_NoLit_DetTex(
-			Stuff::Scalar radius,
-			MLRState*,
-			MLRState*,
-			Stuff::Scalar xOff,
-			Stuff::Scalar yOff,
-			Stuff::Scalar xFac,
-			Stuff::Scalar yFac
-			);
+		float radius,
+		MLRState*,
+		MLRState*,
+		float xOff,
+		float yOff,
+		float xFac,
+		float yFac
+		);
 	MLRShape*
 		CreateIndexedIcosahedron_NoColor_NoLit_DetTex(
-			IcoInfo&,
-			MLRState*,
-			MLRState*
+		IcoInfo&,
+		MLRState*,
+		MLRState*
 		);
 }
+#endif

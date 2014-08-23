@@ -128,7 +128,7 @@ void
 	if (lightMap)
 	{
 		Check_Object(lightMap);
-		unsigned handle = lightMap->GetState().GetTextureHandle();
+		uint32_t handle = lightMap->GetState().GetTextureHandle();
 		MLRTexture *texture = (*MLRTexturePool::Instance)[handle];
 		Check_Object(texture);
 		MString name = texture->GetTextureName();
@@ -151,7 +151,7 @@ void
 	if (lightMap)
 	{
 		Check_Object(lightMap);
-		unsigned handle = lightMap->GetState().GetTextureHandle();
+		uint32_t handle = lightMap->GetState().GetTextureHandle();
 		MLRTexture *texture = (*MLRTexturePool::Instance)[handle];
 		Check_Object(texture);
 		page->SetEntry("LightMap", texture->GetTextureName());

@@ -9,7 +9,7 @@
 	#include <mlr/mlrcliptrick.hpp>
 #endif
 
-extern DWORD gShowClippedPolys;
+extern ULONG gShowClippedPolys;
 
 //#############################################################################
 //#######################    MLRNGonCloud    ##################################
@@ -182,8 +182,8 @@ int
 //					continue;
 //				}
 
-				DWORD inColor = GOSCopyColor(&colors[2*i]);
-				DWORD outColor = GOSCopyColor(&colors[2*i+1]);
+				ULONG inColor = GOSCopyColor(&colors[2*i]);
+				ULONG outColor = GOSCopyColor(&colors[2*i+1]);
 				for(int z=1; z < numOfVertices-1; z++)
 				{
 					GOSCopyTriangleData(
@@ -287,8 +287,8 @@ int
 		{
 			TurnVisible(i);
 
-			DWORD inColor = GOSCopyColor(&colors[2*i]);
-			DWORD outColor = GOSCopyColor(&colors[2*i+1]);
+			ULONG inColor = GOSCopyColor(&colors[2*i]);
+			ULONG outColor = GOSCopyColor(&colors[2*i+1]);
 
 			for(int z=1; z < numOfVertices-1; z++)
 			{

@@ -137,11 +137,11 @@ void
 //
 void
 	MLR_Terrain::SetUVData(
-		Stuff::Scalar bpf,
-		Stuff::Scalar xmin,
-		Stuff::Scalar xmax,
-		Stuff::Scalar zmin,
-		Stuff::Scalar zmax
+		float bpf,
+		float xmin,
+		float xmax,
+		float zmin,
+		float zmax
 	)
 {
 	borderPixelFun = bpf;
@@ -200,7 +200,7 @@ MLRShape*
 	Register_Object(ret);
 
 	int i, j, k;
-	long    nrTri = (long) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
+	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
 	if(3*nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
@@ -218,7 +218,7 @@ MLRShape*
 		Register_Pointer(collapsedCoords);
 	}
 
-	unsigned short	*index = new unsigned short [nrTri*3];
+	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
 
 	int uniquePoints = 0;
@@ -260,7 +260,7 @@ MLRShape*
 				{
 					collapsedCoords[uniquePoints++] = coords[i];
 				}
-				index[i] = static_cast<unsigned short>(j);
+				index[i] = static_cast<uint16_t>(j);
 			}
 			mesh->SetCoordData(collapsedCoords, uniquePoints);
 		}
@@ -269,7 +269,7 @@ MLRShape*
 			uniquePoints = nrTri*3;
 			for(i=0;i<nrTri*3;i++)
 			{
-				index[i] = static_cast<unsigned short>(i);
+				index[i] = static_cast<uint16_t>(i);
 			}
 			mesh->SetCoordData(coords, nrTri*3);
 		}

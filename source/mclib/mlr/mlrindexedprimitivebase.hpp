@@ -3,11 +3,11 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRINDEXEDPRIMITIVEBASE_HPP
 #define MLR_MLRINDEXEDPRIMITIVEBASE_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
+//#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer {
 
@@ -18,26 +18,23 @@ namespace MidLevelRenderer {
 	class MLRIndexedPrimitiveBase:
 		public MLRPrimitiveBase
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
-		static ClassData
-			*DefaultData;
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLRIndexedPrimitiveBase(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLRIndexedPrimitiveBase();
 
 	public:
@@ -45,8 +42,8 @@ namespace MidLevelRenderer {
 
 		static MLRIndexedPrimitiveBase*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		virtual void
@@ -58,29 +55,29 @@ namespace MidLevelRenderer {
 
 		virtual void
 			SetCoordData(
-				const Stuff::Point3D *array,
-				int point_count
+			const Stuff::Point3D *array,
+			int point_count
 			);
 
 		virtual void
 			SetIndexData(
-				unsigned short *index_array,
-				int index_count
+			puint16_t index_array,
+			int index_count
 			);
 
 		virtual void
 			GetIndexData(
-				unsigned short **index_array,
-				int *index_count
+			puint16_t *index_array,
+			int *index_count
 			);
 
-		virtual unsigned short*
+		virtual puint16_t
 			GetGOSIndices(int=0)
-				{ Check_Object(this); return gos_indices; }
+		{ Check_Object(this); return gos_indices; }
 
 		int
 			GetNumGOSIndices()
-				{ Check_Object(this); return numGOSIndices; }
+		{ Check_Object(this); return numGOSIndices; }
 
 		virtual void
 			Transform(Stuff::Matrix4D*);
@@ -90,23 +87,22 @@ namespace MidLevelRenderer {
 
 		void
 			TheIndexer(int num)
-				{
-					Check_Object(this);
-					index.SetLength(num);
-					for(unsigned short i=0;i<num;i++)
-					{
-						index[i] = i;
-					}
-				}
+		{
+			Check_Object(this);
+			index.SetLength(num);
+			for(uint16_t i=0;i<num;i++)
+			{
+				index[i] = i;
+			}
+		}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -125,12 +121,13 @@ namespace MidLevelRenderer {
 
 		Stuff::DynamicArrayOf<uint8_t>	visibleIndexedVertices;
 
-		Stuff::DynamicArrayOf<unsigned short>	index;	// List of color indexes 
+		Stuff::DynamicArrayOf<uint16_t>	index;	// List of color indexes 
 
-		static Stuff::DynamicArrayOf<unsigned short> *clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<uint16_t> *clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
 
-		unsigned short *gos_indices;
-		unsigned short	numGOSIndices;
+		puint16_t gos_indices;
+		uint16_t	numGOSIndices;
 	};
 
 }
+#endif

@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 
-extern DWORD gEnableTextureSort, gEnableAlphaSort, gEnableLightMaps;
+extern ULONG gEnableTextureSort, gEnableAlphaSort, gEnableLightMaps;
 
 
 MLRSortByOrder::ClassData*
@@ -113,7 +113,7 @@ void
 		break;
 	}
 
-	unsigned priority = pt->GetCurrentState(pass).GetPriority();
+	uint32_t priority = pt->GetCurrentState(pass).GetPriority();
 	if(sd != NULL)
 	{
 		priorityBuckets[priority][lastUsedInBucket[priority]++] = sd;
@@ -173,7 +173,7 @@ void
 		break;
 	}
 
-	unsigned priority = state.GetPriority();
+	uint32_t priority = state.GetPriority();
 	if(sd != NULL)
 	{
 		priorityBuckets[priority][lastUsedInBucket[priority]++] = sd;
@@ -199,7 +199,7 @@ void
 			SortData::Quads
 		);
 
-	unsigned priority = dInfo->state.GetPriority();
+	uint32_t priority = dInfo->state.GetPriority();
 	if(sd != NULL)
 	{
 		priorityBuckets[priority][lastUsedInBucket[priority]++] = sd;
@@ -218,7 +218,7 @@ void
 		return;
 	}
 
-	unsigned priority = sd->state.GetPriority();
+	uint32_t priority = sd->state.GetPriority();
 	priorityBuckets[priority][lastUsedInBucket[priority]++] = sd;
 }
 
@@ -229,7 +229,7 @@ void
 {
 	Check_Object(this);
 //
-// So GameOS knows how long the transform and clip and lighting took of update renderers
+// So GameOS knows how int32_t the transform and clip and lighting took of update renderers
 //
 
 	Stuff::DynamicArrayOf<SortData*>
@@ -357,7 +357,7 @@ void
 						if(primitive->IsDerivedFrom(MLRIndexedPrimitiveBase::DefaultData))
 						{
 							Point3D *coords;
-							unsigned short *indices;
+							puint16_t indices;
 							int nr;
 
 							(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))->GetIndexData(&indices, &nr);
@@ -419,7 +419,7 @@ void
 						if(primitive->IsDerivedFrom(MLRIndexedPrimitiveBase::DefaultData))
 						{
 							Point3D *coords;
-							unsigned short *indices;
+							puint16_t indices;
 							int nr;
 
 							(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))->GetIndexData(&indices, &nr);

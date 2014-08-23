@@ -9,13 +9,13 @@
 //#####################    MLRIndexedPrimitiveBase    #########################
 //#############################################################################
 
-DynamicArrayOf<unsigned short>
+DynamicArrayOf<uint16_t>
 	*MLRIndexedPrimitiveBase::clipExtraIndex;
 
 MLRIndexedPrimitiveBase::ClassData*
 	MLRIndexedPrimitiveBase::DefaultData = NULL;
 
-unsigned short
+uint16_t
 	*indexOffset;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -34,10 +34,10 @@ void
 		);
 	Register_Object(DefaultData);
 	
-	clipExtraIndex = new DynamicArrayOf<unsigned short> (Limits::Max_Number_Vertices_Per_Mesh);
+	clipExtraIndex = new DynamicArrayOf<uint16_t> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Pointer(clipExtraIndex);
 
-	indexOffset = new unsigned short [Limits::Max_Number_Vertices_Per_Mesh+1];
+	indexOffset = new uint16_t [Limits::Max_Number_Vertices_Per_Mesh+1];
 	Register_Pointer(indexOffset);
 }
 
@@ -174,7 +174,7 @@ void
 //
 void
 	MLRIndexedPrimitiveBase::SetIndexData(
-		unsigned short *index_array,
+		puint16_t index_array,
 		int index_count
 	)
 {
@@ -202,7 +202,7 @@ void
 //
 void
 	MLRIndexedPrimitiveBase::GetIndexData(
-		unsigned short **index_array,
+		puint16_t *index_array,
 		int *index_count
 	)
 {

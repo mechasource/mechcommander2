@@ -13,16 +13,16 @@
 	#include <mlr/mlrindexedtrianglecloud.hpp>
 #endif
 
-extern DWORD gShowClippedPolys;
-extern unsigned short *indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
+extern ULONG gShowClippedPolys;
+extern puint16_t indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
 
 //#############################################################################
 //####################    MLRIndexedTriangleCloud    ##########################
 //#############################################################################
 
-DynamicArrayOf<unsigned short>
+DynamicArrayOf<uint16_t>
 	*MLRIndexedTriangleCloud::clipExtraIndex;
-DynamicArrayOf<Vector2DScalar>
+DynamicArrayOf<Stuff::Vector2DScalar>
 	*MLRIndexedTriangleCloud::clipExtraTexCoords;
 DynamicArrayOf<uint8_t>
 	*MLRIndexedTriangleCloud::visibleIndexedVertices;
@@ -46,9 +46,9 @@ void
 		);
 	Register_Object(DefaultData);
 	
-	clipExtraIndex = new DynamicArrayOf<unsigned short> (Limits::Max_Number_Vertices_Per_Mesh);
+	clipExtraIndex = new DynamicArrayOf<uint16_t> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Pointer(clipExtraIndex);
-	clipExtraTexCoords = new DynamicArrayOf<Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
+	clipExtraTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Pointer(clipExtraTexCoords);
 	visibleIndexedVertices = new DynamicArrayOf<uint8_t> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Pointer(visibleIndexedVertices);
@@ -97,12 +97,12 @@ MLRIndexedTriangleCloud::~MLRIndexedTriangleCloud()
 void 
 	MLRIndexedTriangleCloud::SetData
 	(
-		pcint32_t tri_count,
-		pcint32_t point_count,
-		const unsigned short *index_data,
-		const Stuff::Point3D *point_data,
-		const Stuff::RGBAColor *color_data,
-		const Vector2DScalar *uv_data
+		pcint32_t	tri_count,
+		pcint32_t	point_count,
+		pcuint16_t	index_data,
+		const Stuff::Point3D* point_data,
+		const Stuff::RGBAColor* color_data,
+		const Stuff::Vector2DScalar* uv_data
 	)
 {
 	Check_Pointer(this);
@@ -175,7 +175,7 @@ int
 	//-----------------------------------------------------------------
 	//
 	int i, j, k, k0, k1, *cs = (int *)clipPerVertex->GetData();
-	unsigned short l;
+	uint16_t l;
 	int index0, index1, index2, ret = 0;
 	int mask;
 	Scalar a = 0.0f;
@@ -236,7 +236,7 @@ int
 		//
 		else
 		{
-			unsigned short numberVerticesPerPolygon = 0;
+			uint16_t numberVerticesPerPolygon = 0;
 
 			//
 			//---------------------------------------------------------------
@@ -864,7 +864,7 @@ int
 	gos_indices = vt->GetActualIndexPool();
 	numGOSIndices = 0;
 
-	unsigned short strideIndex;
+	uint16_t strideIndex;
 	for(j=0,strideIndex=0;j<*usedNrOfPoints;j++)
 	{
 		if((*visibleIndexedVertices)[j] == 0)
@@ -873,7 +873,7 @@ int
 		}
 		else
 		{
-			indexOffset[j] = static_cast<unsigned short>(j-strideIndex);
+			indexOffset[j] = static_cast<uint16_t>(j-strideIndex);
 
 			GOSCopyData(
 				&gos_vertices[numGOSVertices],
@@ -917,15 +917,15 @@ int
 		numGOSIndices += 3;
 	}
 
-	unsigned short stride;
+	uint16_t stride;
 	if(myNumberUsedClipLength > 0)
 	{
 		for(i=0,j=0;i<myNumberUsedClipLength;i++)
 		{
 #ifdef _ARMOR
-			stride = static_cast<unsigned short>((*clipExtraLength)[i] & 0x7fff);
+			stride = static_cast<uint16_t>((*clipExtraLength)[i] & 0x7fff);
 #else
-			stride = static_cast<unsigned short>((*clipExtraLength)[i]);
+			stride = static_cast<uint16_t>((*clipExtraLength)[i]);
 #endif
 			for(k=1;k<stride-1;k++)
 			{
@@ -978,9 +978,9 @@ int
 				Verify((vt->GetLastIndex() + 3 + numGOSIndices) < vt->GetLength());
 				Verify(numGOSIndices%3 == 0);
 
-				gos_indices[numGOSIndices] = (unsigned short)numGOSVertices;
-				gos_indices[numGOSIndices+1] = (unsigned short)(numGOSVertices + 1);
-				gos_indices[numGOSIndices+2] = (unsigned short)(numGOSVertices + 2);
+				gos_indices[numGOSIndices] = (uint16_t)numGOSVertices;
+				gos_indices[numGOSIndices+1] = (uint16_t)(numGOSVertices + 1);
+				gos_indices[numGOSIndices+2] = (uint16_t)(numGOSVertices + 2);
 
 				numGOSVertices += 3;
 				numGOSIndices += 3;

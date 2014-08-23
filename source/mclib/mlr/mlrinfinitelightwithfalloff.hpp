@@ -3,9 +3,11 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRINFINITELIGHTWITHFALLOFF_HPP
 #define MLR_MLRINFINITELIGHTWITHFALLOFF_HPP
 
-#include <mlr/mlr.hpp>
+//#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer {
 
@@ -17,21 +19,19 @@ namespace MidLevelRenderer {
 		public MLRLight
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		MLRInfiniteLightWithFalloff(ClassData *class_data=MLRInfiniteLightWithFalloff::DefaultData);
 		MLRInfiniteLightWithFalloff(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		MLRInfiniteLightWithFalloff(
 			ClassData *class_data,
 			Stuff::Page *page
-		);
+			);
 		~MLRInfiniteLightWithFalloff();
 
 		void
@@ -44,7 +44,7 @@ namespace MidLevelRenderer {
 
 		virtual LightType
 			GetLightType() 
-				{ Check_Object(this); return InfiniteLightWithFallOff; }
+		{ Check_Object(this); return InfiniteLightWithFallOff; }
 
 		//
 		// light falloff.  The light is infinite if the GetFalloffDistance
@@ -53,25 +53,25 @@ namespace MidLevelRenderer {
 		//
 		void
 			SetFalloffDistance(
-				Stuff::Scalar n,
-				Stuff::Scalar f
+			float n,
+			float f
 			);
 		bool
 			GetFalloffDistance(
-				Stuff::Scalar& n,
-				Stuff::Scalar& f
+			float& n,
+			float& f
 			);
 
-		inline Stuff::Scalar
+		inline float
 			GetFalloffNear()
-				{ Check_Object(this); return innerRadius; }
+		{ Check_Object(this); return innerRadius; }
 
-		inline Stuff::Scalar
+		inline float
 			GetFalloffFar()
-				{ Check_Object(this); return outerRadius; }
+		{ Check_Object(this); return outerRadius; }
 
 		bool
-			GetFalloff(const Stuff::Scalar& length, Stuff::Scalar& falloff)
+			GetFalloff(const float& length, float& falloff)
 		{
 			Check_Object(this);
 
@@ -94,23 +94,23 @@ namespace MidLevelRenderer {
 			return true;
 		}
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
 		void
 			TestInstance();
 
 	protected:
-		Stuff::Scalar
+		float
 			innerRadius, outerRadius, oneOverDistance;
 
 	};
 }
+#endif

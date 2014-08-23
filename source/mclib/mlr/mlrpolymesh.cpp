@@ -133,7 +133,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPolyMesh::SetPrimitiveLength (PUCHAR data, int numPrimitives)
+	MLRPolyMesh::SetPrimitiveLength (puint8_t data, int numPrimitives)
 {
 	Check_Object(this); 
 
@@ -147,7 +147,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPolyMesh::GetPrimitiveLength (PUCHAR *data, int *l)
+	MLRPolyMesh::GetPrimitiveLength (puint8_t *data, int *l)
 {
 	Check_Object(this); 
 	*l = lengths.GetLength();
@@ -184,7 +184,7 @@ int
 {
 	Check_Object(this);
 
-	PUCHAR iPtr;
+	puint8_t iPtr;
 	int i, numPrimitives = GetNumPrimitives();
 	int ret = 0, len = lengths.GetLength();
 	Plane *p;
@@ -234,7 +234,7 @@ void
 	MLRPolyMesh::ResetTestList()
 {
 	int i, numPrimitives = GetNumPrimitives();
-	PUCHAR iPtr = &testList[0];
+	puint8_t iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
 	{
@@ -528,7 +528,7 @@ int
 		//
 		else
 		{
-			unsigned short numberVerticesPerPolygon = 0;
+			uint16_t numberVerticesPerPolygon = 0;
 
 			//
 			//---------------------------------------------------------------
@@ -1419,7 +1419,7 @@ MLRPolyMesh*
 		Vector3D(-half,  half, -half)
 	};
 
-	PUCHAR lengths = new uint8_t [6];
+	puint8_t lengths = new uint8_t [6];
 
 	int i;
 
@@ -1469,7 +1469,7 @@ MLRPolyMesh*
 	if(eightColors!=NULL)
 	{
 #if COLOR_AS_DWORD
-		DWORD *colors = new DWORD[6*4];
+		ULONG *colors = new ULONG[6*4];
 
 		colors[0] = GOSCopyColor(&eightColors[0]);
 		colors[1] = GOSCopyColor(&eightColors[2]);
@@ -1576,37 +1576,37 @@ MLRPolyMesh*
 
 	if(state->GetTextureHandle() > 0)
 	{
-		Vector2DScalar *texCoords = new Vector2DScalar[6*4];
+		Stuff::Vector2DScalar *texCoords = new Stuff::Vector2DScalar[6*4];
 
-		texCoords[0] = Vector2DScalar(0.0f, 0.0f);
-		texCoords[1] = Vector2DScalar(0.0f, 1.0f);
-		texCoords[2] = Vector2DScalar(1.0f, 1.0f);
-		texCoords[3] = Vector2DScalar(1.0f, 0.0f);
+		texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
+		texCoords[1] = Stuff::Vector2DScalar(0.0f, 1.0f);
+		texCoords[2] = Stuff::Vector2DScalar(1.0f, 1.0f);
+		texCoords[3] = Stuff::Vector2DScalar(1.0f, 0.0f);
 
-		texCoords[4] = Vector2DScalar(0.0f, 0.0f);
-		texCoords[5] = Vector2DScalar(0.0f, 1.0f);
-		texCoords[6] = Vector2DScalar(1.0f, 1.0f);
-		texCoords[7] = Vector2DScalar(1.0f, 0.0f);
+		texCoords[4] = Stuff::Vector2DScalar(0.0f, 0.0f);
+		texCoords[5] = Stuff::Vector2DScalar(0.0f, 1.0f);
+		texCoords[6] = Stuff::Vector2DScalar(1.0f, 1.0f);
+		texCoords[7] = Stuff::Vector2DScalar(1.0f, 0.0f);
 
-		texCoords[8] = Vector2DScalar(0.0f, 0.0f);
-		texCoords[9] = Vector2DScalar(0.0f, 1.0f);
-		texCoords[10] = Vector2DScalar(1.0f, 1.0f);
-		texCoords[11] = Vector2DScalar(1.0f, 0.0f);
+		texCoords[8] = Stuff::Vector2DScalar(0.0f, 0.0f);
+		texCoords[9] = Stuff::Vector2DScalar(0.0f, 1.0f);
+		texCoords[10] = Stuff::Vector2DScalar(1.0f, 1.0f);
+		texCoords[11] = Stuff::Vector2DScalar(1.0f, 0.0f);
 
-		texCoords[12] = Vector2DScalar(0.0f, 0.0f);
-		texCoords[13] = Vector2DScalar(0.0f, 1.0f);
-		texCoords[14] = Vector2DScalar(1.0f, 1.0f);
-		texCoords[15] = Vector2DScalar(1.0f, 0.0f);
+		texCoords[12] = Stuff::Vector2DScalar(0.0f, 0.0f);
+		texCoords[13] = Stuff::Vector2DScalar(0.0f, 1.0f);
+		texCoords[14] = Stuff::Vector2DScalar(1.0f, 1.0f);
+		texCoords[15] = Stuff::Vector2DScalar(1.0f, 0.0f);
 
-		texCoords[16] = Vector2DScalar(0.0f, 0.0f);
-		texCoords[17] = Vector2DScalar(0.0f, 1.0f);
-		texCoords[18] = Vector2DScalar(1.0f, 1.0f);
-		texCoords[19] = Vector2DScalar(1.0f, 0.0f);
+		texCoords[16] = Stuff::Vector2DScalar(0.0f, 0.0f);
+		texCoords[17] = Stuff::Vector2DScalar(0.0f, 1.0f);
+		texCoords[18] = Stuff::Vector2DScalar(1.0f, 1.0f);
+		texCoords[19] = Stuff::Vector2DScalar(1.0f, 0.0f);
 
-		texCoords[20] = Vector2DScalar(0.0f, 0.0f);
-		texCoords[21] = Vector2DScalar(0.0f, 1.0f);
-		texCoords[22] = Vector2DScalar(1.0f, 1.0f);
-		texCoords[23] = Vector2DScalar(1.0f, 0.0f);
+		texCoords[20] = Stuff::Vector2DScalar(0.0f, 0.0f);
+		texCoords[21] = Stuff::Vector2DScalar(0.0f, 1.0f);
+		texCoords[22] = Stuff::Vector2DScalar(1.0f, 1.0f);
+		texCoords[23] = Stuff::Vector2DScalar(1.0f, 0.0f);
 
 		ret->SetTexCoordData(texCoords, 6*4);
 	}

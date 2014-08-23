@@ -2,12 +2,15 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#if !defined(MLR_MLRCLIPTRICK_HPP)
-#include <mlr/mlrcliptrick.hpp>
-#endif
+#pragma once
 
-extern DWORD gEnableTextureSort, gShowClippedPolys;
-extern USHORT *indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
+#ifndef _MLRPRIMITIVECLIPPING_HPP_
+#define _MLRPRIMITIVECLIPPING_HPP_
+
+//#include <mlr/mlrcliptrick.hpp>
+
+extern ULONG gEnableTextureSort, gShowClippedPolys;
+extern puint16_t indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
 
 #define HUNT_CLIP_ERROR 0
 
@@ -1348,12 +1351,12 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 			int fogEntry = state.GetFogMode();
 			if(fogEntry)
 			{
-				*((BYTE *)&gos_vertices[numGOSVertices].frgb + 3) =
+				*((puint8_t )&gos_vertices[numGOSVertices].frgb + 3) =
 					GOSVertex::fogTable[fogEntry-1][Truncate_Float_To_Word((*transformedCoords)[j].w)];
 			}
 			else
 			{
-				*((BYTE *)&gos_vertices[numGOSVertices].frgb + 3) = 0xff;
+				*((puint8_t )&gos_vertices[numGOSVertices].frgb + 3) = 0xff;
 			}
 #endif
 
@@ -1494,18 +1497,18 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				if(fogEntry)
 				{
 					fogEntry--;
-					*((BYTE *)&gos_vertices[numGOSVertices].frgb + 3) =
+					*((puint8_t )&gos_vertices[numGOSVertices].frgb + 3) =
 						GOSVertex::fogTable[fogEntry][Truncate_Float_To_Word((*clipExtraCoords)[j].w)];
-					*((BYTE *)&gos_vertices[numGOSVertices+1].frgb + 3) =
+					*((puint8_t )&gos_vertices[numGOSVertices+1].frgb + 3) =
 						GOSVertex::fogTable[fogEntry][Truncate_Float_To_Word((*clipExtraCoords)[j+k+1].w)];
-					*((BYTE *)&gos_vertices[numGOSVertices+2].frgb + 3) =
+					*((puint8_t )&gos_vertices[numGOSVertices+2].frgb + 3) =
 						GOSVertex::fogTable[fogEntry][Truncate_Float_To_Word((*clipExtraCoords)[j+k].w)];
 				}
 				else
 				{
-					*((BYTE *)&gos_vertices[numGOSVertices].frgb + 3) = 0xff;
-					*((BYTE *)&gos_vertices[numGOSVertices+1].frgb + 3) = 0xff;
-					*((BYTE *)&gos_vertices[numGOSVertices+2].frgb + 3) = 0xff;
+					*((puint8_t )&gos_vertices[numGOSVertices].frgb + 3) = 0xff;
+					*((puint8_t )&gos_vertices[numGOSVertices+1].frgb + 3) = 0xff;
+					*((puint8_t )&gos_vertices[numGOSVertices+2].frgb + 3) = 0xff;
 				}
 #endif
 
@@ -1718,3 +1721,4 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 
 	return ret;
 }
+#endif

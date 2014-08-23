@@ -144,7 +144,7 @@ void
 //
 void
 	MLRIndexedPrimitive::SetIndexData(
-		unsigned short *index_array,
+		puint16_t index_array,
 		int index_count
 	)
 {
@@ -163,7 +163,7 @@ void
 //
 void
 	MLRIndexedPrimitive::GetIndexData(
-		unsigned short **index_array,
+		puint16_t *index_array,
 		int *index_count
 	)
 {

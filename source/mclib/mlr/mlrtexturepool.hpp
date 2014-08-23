@@ -4,11 +4,11 @@
 
 #pragma once
 
-#if !defined(MLR_MLRTEXTUREPOOL_HPP)
+#ifndef MLR_MLRTEXTUREPOOL_HPP
 #define MLR_MLRTEXTUREPOOL_HPP
 
-#include <mlr/mlr.hpp>
-#include <mlr/gosimagepool.hpp>
+//#include <mlr/mlr.hpp>
+//#include <mlr/gosimagepool.hpp>
 
 namespace MidLevelRenderer {
 
@@ -20,7 +20,7 @@ namespace MidLevelRenderer {
 		// Initialization
 		//
 	public:
-		static void InitializeClass();
+		static void __stdcall InitializeClass(void);
 		static void TerminateClass();
 		static ClassData* DefaultData;
 
@@ -46,7 +46,7 @@ namespace MidLevelRenderer {
 
 		// only removes the texture from the texture pool, it doesnt destroy the texture
 		void Remove(MLRTexture*);
-		unsigned LoadImages();
+		uint32_t LoadImages();
 		MLRTexture* operator() (PCSTR name, int=0);
 		MLRTexture* operator[] (size_t index)
 		{
@@ -73,7 +73,7 @@ namespace MidLevelRenderer {
 			return imagePool;
 		}
 
-		unsigned GetLastHandle()
+		uint32_t GetLastHandle()
 		{
 			Check_Object(this);
 			return lastHandle;
@@ -82,7 +82,7 @@ namespace MidLevelRenderer {
 		void Stop (void);
 		void Restart (void);
 
-		unsigned GetNumStoredTextures()
+		uint32_t GetNumStoredTextures()
 		{
 			Check_Object(this);
 			return storedTextures;

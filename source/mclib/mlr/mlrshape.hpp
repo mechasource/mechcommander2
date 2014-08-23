@@ -3,29 +3,27 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRSHAPE_HPP
 #define MLR_MLRSHAPE_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
+#include <stuff/plug.hpp>
+#include <stuff/matrix.hpp>
+#include <stuff/marray.hpp>
+#include <mlr/mlrstate.hpp>
 
-#if !defined(MLR_MLRPRIMITIVE_HPP)
-	#include <mlr/mlrprimitivebase.hpp>
-#endif
-
-#if !defined(MLR_MLRLIGHT_HPP)
-	#include <mlr/mlrlight.hpp>
-#endif
-
-#if !defined(MLR_GOSVERTEXPOOL_HPP)
-	#include <mlr/gosvertexpool.hpp>
-#endif
+namespace Stuff {
+	class LinearMatrix4D;
+	class Line3D;
+	class Normal3D;
+	class Point3D;
+}
 
 namespace MidLevelRenderer {
 
 	class MLRPrimitiveBase;
-
 	class MLRClipper;
+	class MLRLight;
 
 	//##########################################################################
 	//##########################    MLRShape    ################################
@@ -38,23 +36,21 @@ namespace MidLevelRenderer {
 	{
 		friend class MLRClipper;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLRShape(
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLRShape();
 
 	public:
@@ -62,8 +58,8 @@ namespace MidLevelRenderer {
 
 		static MLRShape*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
@@ -74,7 +70,7 @@ namespace MidLevelRenderer {
 		MLRPrimitiveBase* Find (int);
 		int Find (MLRPrimitiveBase*);
 
-	// use this functions with care --- they are slow
+		// use this functions with care --- they are slow
 		MLRPrimitiveBase *Remove(MLRPrimitiveBase*);
 		MLRPrimitiveBase *Remove(int);
 		int Insert(MLRPrimitiveBase*, int);
@@ -82,109 +78,95 @@ namespace MidLevelRenderer {
 		bool
 			Replace(MLRPrimitiveBase*, MLRPrimitiveBase*);
 
-	// returns the number of primitives in the container
-		int GetNum ()
-			{ Check_Object(this); return numPrimitives; };
+		// returns the number of primitives in the container
+		size_t GetNum(void)
+		{ Check_Object(this); return numPrimitives; };
 
-	// returns the number of faces overall in the shape
+		// returns the number of faces overall in the shape
 		int
 			GetNumPrimitives();
 
-	// returns the number of drawn triangles in the shape
+		// returns the number of drawn triangles in the shape
 		int
 			GetNumDrawnTriangles();
 
-	// is to call at begin of every frame 
+		// is to call at begin of every frame 
 		void	InitializePrimitives(uint8_t, const MLRState& master, int=0);
 
-	// clips the geometry and fills the data into the vertex pool
-	// the clipping states defines the planes against the shape might have be culled
-	//	now done only on primitive level - int	Clip(MLRClippingState, GOSVertexPool*);
+		// clips the geometry and fills the data into the vertex pool
+		// the clipping states defines the planes against the shape might have be culled
+		//	now done only on primitive level - int	Clip(MLRClippingState, GOSVertexPool*);
 
-	// lights the geometry, uses the worldToShape matrix and an array of lights which
-	// affect the shape in this frame and the number of lights in this array
+		// lights the geometry, uses the worldToShape matrix and an array of lights which
+		// affect the shape in this frame and the number of lights in this array
 		void	Lighting(const Stuff::LinearMatrix4D&, MLRLight* const*, int nrLights);
 
-	// casts an ray against the geometry contained in shape
-		bool
-			CastRay(
-				Stuff::Line3D *line,
-				Stuff::Normal3D *normal
-			);
+		// casts an ray against the geometry contained in shape
+		bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
 
-		void
-			HurtMe(const Stuff::LinearMatrix4D&, Stuff::Scalar radius);
+		void HurtMe(const Stuff::LinearMatrix4D&, float radius);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Reference counting
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Reference counting
+		//
 	public:
 		void
 			AttachReference()
-				{Check_Object(this); ++referenceCount;}
+		{Check_Object(this); ++referenceCount;}
 		void
 			DetachReference()
-				{
-					Check_Object(this); Verify(referenceCount > 0);
-					if ((--referenceCount) == 0)
-					{
-						Unregister_Object(this);
-						delete this;
-					}
-				}
+		{
+			Check_Object(this); Verify(referenceCount > 0);
+			if ((--referenceCount) == 0)
+			{
+				Unregister_Object(this);
+				delete this;
+			}
+		}
 
 		int
 			GetReferenceCount()
-				{return referenceCount;}
+		{return referenceCount;}
 
 	protected:
 		int
 			referenceCount;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const
-				{};
-		virtual int
-			GetSize()
+		void TestInstance() const {};
+		virtual size_t GetSize()
 		{
 			Check_Object(this); 
-			int ret = allPrimitives.GetSize();
+			size_t ret = allPrimitives.GetSize();
 
 			return ret;
 		}
 
 	protected:
-		int
-			FindBackFace(const Stuff::Point3D&);
+		int FindBackFace(const Stuff::Point3D&);
 
-//		void
-//			Transform(Stuff::Matrix4D*);
+		//		void
+		//			Transform(Stuff::Matrix4D*);
 
-//		void
-//			Transform();
+		//		void
+		//			Transform();
 
-		Stuff::DynamicArrayOf<MLRPrimitiveBase*>
-			allPrimitives;
-
-		const Stuff::LinearMatrix4D
-			*worldToShape;
-
-		Stuff::Matrix4D
-			shapeToClipMatrix;
+		Stuff::DynamicArrayOf<MLRPrimitiveBase*>	allPrimitives;
+		const Stuff::LinearMatrix4D*				worldToShape;
+		Stuff::Matrix4D								shapeToClipMatrix;
 
 	private:
-		uint32_t	numPrimitives;
+		size_t	numPrimitives;
 	};
 
 }
+#endif

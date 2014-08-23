@@ -3,10 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRSPOTLIGHT_HPP
 #define MLR_MLRSPOTLIGHT_HPP
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlrinfinitelightwithfalloff.hpp>
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlrinfinitelightwithfalloff.hpp>
 
 namespace MidLevelRenderer {
 
@@ -18,16 +20,14 @@ namespace MidLevelRenderer {
 		public MLRInfiniteLightWithFalloff
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		MLRSpotLight();
 		MLRSpotLight(
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		MLRSpotLight(Stuff::Page *page);
 		~MLRSpotLight();
 
@@ -38,12 +38,12 @@ namespace MidLevelRenderer {
 
 		virtual LightType
 			GetLightType() 
-				{ Check_Object(this); return SpotLight; }
+		{ Check_Object(this); return SpotLight; }
 
 
-	//
-	// spotlight spread.  This value is only valid if the light had falloff
-	//
+		//
+		// spotlight spread.  This value is only valid if the light had falloff
+		//
 		bool
 			GetSpreadAngle(Stuff::Radian *angle);
 		void
@@ -52,13 +52,13 @@ namespace MidLevelRenderer {
 		void
 			SetSpreadAngle(const Stuff::Degree &degree);
 
-		Stuff::Scalar
+		float
 			GetTanSpreadAngle()
-				{ Check_Object(this); return tanSpreadAngle; }
+		{ Check_Object(this); return tanSpreadAngle; }
 
-		Stuff::Scalar
+		float
 			GetCosSpreadAngle()
-				{ Check_Object(this); return cosSpreadAngle; }
+		{ Check_Object(this); return cosSpreadAngle; }
 
 		virtual void
 			LightVertex(const MLRVertexData&);
@@ -68,18 +68,17 @@ namespace MidLevelRenderer {
 
 		MLRLightMap *
 			GetLightMap()
-				{Check_Object(this); return lightMap; }
+		{Check_Object(this); return lightMap; }
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
 		void
 			TestInstance();
@@ -89,9 +88,10 @@ namespace MidLevelRenderer {
 
 		Stuff::Radian
 			spreadAngle;
-		Stuff::Scalar
+		float
 			tanSpreadAngle,
 			cosSpreadAngle;
 	};
 
 }
+#endif

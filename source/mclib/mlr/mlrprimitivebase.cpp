@@ -56,13 +56,13 @@ DynamicArrayOf<Vector2DScalar>
 	*MLRPrimitiveBase::clipExtraTexCoords;
 
 #if COLOR_AS_DWORD
-DynamicArrayOf<DWORD>
+DynamicArrayOf<ULONG>
 #else
 DynamicArrayOf<RGBAColor>
 #endif
 	*MLR_I_C_PMesh::clipExtraColors;
 
-DynamicArrayOf<unsigned short>
+DynamicArrayOf<uint16_t>
 	*MLRPrimitiveBase::clipExtraLength;
 
 ClipPolygon2
@@ -96,14 +96,14 @@ void
 
 	clipExtraColors = new DynamicArrayOf<
 #if COLOR_AS_DWORD
-		DWORD
+		ULONG
 #else
 		RGBAColor
 #endif
 	> (Limits::Max_Number_Primitives_Per_Frame);
 	Register_Object(clipExtraColors);
 
-	clipExtraLength = new DynamicArrayOf<unsigned short> (Limits::Max_Number_Primitives_Per_Frame);
+	clipExtraLength = new DynamicArrayOf<uint16_t> (Limits::Max_Number_Primitives_Per_Frame);
 	Register_Object(clipExtraLength);
 
 	clipBuffer = new ClipPolygon2 [2];
@@ -256,7 +256,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::SetSubprimitiveLengths(PUCHAR data, int l)
+	MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int l)
 {
 	Check_Object(this); 
 	lengths.AssignData(data, l);
@@ -265,7 +265,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::GetSubprimitiveLengths(PUCHAR *data, int *len)
+	MLRPrimitiveBase::GetSubprimitiveLengths(puint8_t *data, int *len)
 {
 	Check_Object(this); 
 	*data = lengths.GetData();

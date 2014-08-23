@@ -3,15 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLR_I_MT_PMESH_HPP
 #define MLR_MLR_I_MT_PMESH_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(MLR_MLR_I_PMesh_HPP)
-	#include <mlr/mlr_i_pmesh.hpp>
-#endif
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlr_i_pmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -23,24 +20,22 @@ namespace MidLevelRenderer {
 	class MLR_I_MT_PMesh:
 		public MLR_I_PMesh
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLR_I_MT_PMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLR_I_MT_PMesh();
 
 	public:
@@ -48,8 +43,8 @@ namespace MidLevelRenderer {
 
 		static MLR_I_MT_PMesh*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
@@ -65,80 +60,78 @@ namespace MidLevelRenderer {
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
 		void
-			SetTexCoordData(const Vector2DScalar*,	int, int pass=0);
+			SetTexCoordData(const Stuff::Vector2DScalar*,	int, int pass=0);
 		void
-			GetTexCoordData(const Vector2DScalar **data, int *dataSize,	int pass);
+			GetTexCoordData(const Stuff::Vector2DScalar **data, int *dataSize,	int pass);
 
 		virtual void
 			SetReferenceState(const MLRState& _state, int pass=0)
-				{
-					Check_Object(this);
-					Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
-					if(pass==0)
-					{
-						referenceState = _state;
-					}
+		{
+			Check_Object(this);
+			Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
+			if(pass==0)
+			{
+				referenceState = _state;
+			}
 
-					multiReferenceState[pass] = _state;
-				}
+			multiReferenceState[pass] = _state;
+		}
 
 		virtual const MLRState&
 			GetReferenceState(int pass=0) const
-				{
-					Check_Object(this); 
-					Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
-					return multiReferenceState[pass];
-				}
+		{
+			Check_Object(this); 
+			Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
+			return multiReferenceState[pass];
+		}
 		virtual const MLRState&
 			GetCurrentState(int pass=0) const
-				{
-					Check_Object(this);
-					Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
-					return multiState[pass];
-				}
+		{
+			Check_Object(this);
+			Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
+			return multiState[pass];
+		}
 
 		virtual void
 			CombineStates (const MLRState& master)
-				{
-					Check_Object(this);
+		{
+			Check_Object(this);
 
-					state.Combine(master, referenceState); 
-					for(int i=0;i<currentNrOfPasses;i++)
-					{
-						multiState[i].Combine(master, multiReferenceState[i]); 
-					}
-				};
+			state.Combine(master, referenceState); 
+			for(int i=0;i<currentNrOfPasses;i++)
+			{
+				multiState[i].Combine(master, multiReferenceState[i]); 
+			}
+		};
 
 		virtual GOSVertex*
 			GetGOSVertices(int pass=0)
-				{
-					Check_Object(this); 
-					Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
-					return gos_vertices + pass*numGOSVertices;
-				}
+		{
+			Check_Object(this); 
+			Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
+			return gos_vertices + pass*numGOSVertices;
+		}
 
 		virtual	void
 			InitializeDrawPrimitive(uint8_t, int=0);
 
 		int
 			GetNumPasses()
-				{ Check_Object(this); return currentNrOfPasses; }
+		{ Check_Object(this); return currentNrOfPasses; }
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -149,23 +142,24 @@ namespace MidLevelRenderer {
 
 	protected:
 		void
-			SetTexCoordDataPointer(const Vector2DScalar*);
+			SetTexCoordDataPointer(const Stuff::Vector2DScalar*);
 
 		uint8_t currentNrOfPasses;
 
 		Stuff::DynamicArrayOf<MLRState> multiState, multiReferenceState;
 
-		Stuff::DynamicArrayOf<Stuff::DynamicArrayOf<Vector2DScalar>* > multiTexCoords;	// Max_Number_Vertices_Per_Mesh
+		Stuff::DynamicArrayOf<Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* > multiTexCoords;	// Max_Number_Vertices_Per_Mesh
 
-		Stuff::DynamicArrayOf<const Vector2DScalar*> multiTexCoordsPointers;
+		Stuff::DynamicArrayOf<const Stuff::Vector2DScalar*> multiTexCoordsPointers;
 
-		static Stuff::DynamicArrayOf<Stuff::DynamicArrayOf<Vector2DScalar> > *clipExtraMultiTexCoords;	// Max_Number_Vertices_Per_Mesh
-		static Stuff::DynamicArrayOf<Stuff::DynamicArrayOf<Vector2DScalar> > *extraMultiTexCoords;	// Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::DynamicArrayOf<Stuff::Vector2DScalar> > *clipExtraMultiTexCoords;	// Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::DynamicArrayOf<Stuff::Vector2DScalar> > *extraMultiTexCoords;	// Max_Number_Vertices_Per_Mesh
 	};
 
 	MLRShape*
 		CreateIndexedIcosahedron_NoColor_NoLit_MultiTexture(
-			IcoInfo&,
-			Stuff::DynamicArrayOf<MLRState>*
+		IcoInfo&,
+		Stuff::DynamicArrayOf<MLRState>*
 		);
 }
+#endif

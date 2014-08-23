@@ -3,9 +3,11 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRLIGHTMAP_HPP
 #define MLR_MLRLIGHTMAP_HPP
 
-#include <mlr/mlr.hpp>
+//#include <mlr/mlr.hpp>
 
 namespace MidLevelRenderer {
 
@@ -17,10 +19,8 @@ namespace MidLevelRenderer {
 		public Stuff::RegisteredClass
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		MLRLightMap(MLRTexture*);
 		~MLRLightMap();
@@ -38,76 +38,75 @@ namespace MidLevelRenderer {
 			DrawLightMaps(MLRSorter*);
 
 		static void
-			 SetDrawData 
-				(
-					GOSVertexPool*,
-					Stuff::Matrix4D*,
-					MLRClippingState&,
-					MLRState&
-				);
+			SetDrawData 
+			(
+			GOSVertexPool*,
+			Stuff::Matrix4D*,
+			MLRClippingState&,
+			MLRState&
+			);
 
 		static MLRShape*
 			CreateLightMapShape();
 
 		void
 			SetState(MLRState new_state)
-				{ Check_Object(this); state = new_state; }
+		{ Check_Object(this); state = new_state; }
 		MLRState
 			GetState()
-				{ Check_Object(this); return state; }
+		{ Check_Object(this); return state; }
 
 		inline void
 			SetPolygonMarker (int type)
-				{ Check_Object(this); Check_Object(stream); *stream << (type ? ((int)((MemoryStreamData)PolygonWithColor)) : ((int)((MemoryStreamData)Polygon)) ); }
+		{ Check_Object(this); Check_Object(stream); *stream << (type ? ((int)((MemoryStreamData)PolygonWithColor)) : ((int)((MemoryStreamData)Polygon)) ); }
 
 		inline void
 			AddColor(Stuff::RGBAColor color)
-				{ Check_Object(this); Check_Object(stream); *stream << color; }
+		{ Check_Object(this); Check_Object(stream); *stream << color; }
 
 		inline void
-			AddColor(Stuff::Scalar red, Stuff::Scalar green, Stuff::Scalar blue, Stuff::Scalar alpha)
-				{ Check_Object(this); Check_Object(stream); *stream << red << green << blue << alpha; }
+			AddColor(float red, float green, float blue, float alpha)
+		{ Check_Object(this); Check_Object(stream); *stream << red << green << blue << alpha; }
 
 		inline void
 			AddCoord(Stuff::Point3D coord)
-				{ Check_Object(this); Check_Object(stream); *stream << coord; }
+		{ Check_Object(this); Check_Object(stream); *stream << coord; }
 
 		inline void
-			AddUVs(Stuff::Scalar u, Stuff::Scalar v)
-				{ Check_Object(this); Check_Object(stream); *stream << u << v; }
+			AddUVs(float u, float v)
+		{ Check_Object(this); Check_Object(stream); *stream << u << v; }
 
 		inline void
 			AddInt(int i)
-				{ Check_Object(this); Check_Object(stream); *stream << i; }
+		{ Check_Object(this); Check_Object(stream); *stream << i; }
 
 		inline void
-			AddUShort(unsigned short i)
-				{ Check_Object(this); Check_Object(stream); *stream << i; }
+			AddUShort(uint16_t i)
+		{ Check_Object(this); Check_Object(stream); *stream << i; }
 
 		inline void
 			AddState(int priority)
-				{
-					Check_Object(this);
-					Check_Object(stream);  
-					*stream << (int)LightMapRenderState;
-					state.SetPriority(priority);
-					state.Save(stream);
-				}
+		{
+			Check_Object(this);
+			Check_Object(stream);  
+			*stream << (int)LightMapRenderState;
+			state.SetPriority(priority);
+			state.Save(stream);
+		}
 
 		const Vector2DScalar*
 			GetCurrentUVPointer()
-				{ Check_Object(this); Check_Object(stream); return Cast_Pointer(Vector2DScalar*, stream->GetPointer()); }
+		{ Check_Object(this); Check_Object(stream); return Cast_Pointer(Vector2DScalar*, stream->GetPointer()); }
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
 		void
 			TestInstance();
@@ -126,3 +125,4 @@ namespace MidLevelRenderer {
 	};
 
 }
+#endif

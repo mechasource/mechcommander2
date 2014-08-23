@@ -3,11 +3,13 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLR_I_L_DET_TMESH_HPP
 #define MLR_MLR_I_L_DET_TMESH_HPP
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlr_i_c_det_tmesh.hpp>
-#include <mlr/mlr_i_l_det_pmesh.hpp>
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlr_i_c_det_tmesh.hpp>
+//#include <mlr/mlr_i_l_det_pmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -19,24 +21,22 @@ namespace MidLevelRenderer {
 	class MLR_I_L_DeT_TMesh:
 		public MLR_I_C_DeT_TMesh
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLR_I_L_DeT_TMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLR_I_L_DeT_TMesh();
 
 	public:
@@ -44,8 +44,8 @@ namespace MidLevelRenderer {
 
 		static MLR_I_L_DeT_TMesh*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
@@ -54,26 +54,26 @@ namespace MidLevelRenderer {
 	public:
 		virtual void
 			SetNormalData(
-				const Stuff::Vector3D *array,
-				int point_count
+			const Stuff::Vector3D *array,
+			int point_count
 			);
 		virtual void
 			GetNormalData(
-				Stuff::Vector3D **array,
-				int *point_count
+			Stuff::Vector3D **array,
+			int *point_count
 			);
 
 #if COLOR_AS_DWORD
 		virtual void
 			SetColorData(
-				const DWORD *array,
-				int point_count
+			const ULONG *array,
+			int point_count
 			);
 #else
 		virtual void
 			SetColorData(
-				const Stuff::RGBAColor *array,
-				int point_count
+			const Stuff::RGBAColor *array,
+			int point_count
 			);
 #endif
 
@@ -81,7 +81,7 @@ namespace MidLevelRenderer {
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(const DWORD *paintMe);
+			PaintMe(const ULONG *paintMe);
 #else
 			PaintMe(const Stuff::RGBAColor *paintMe);
 #endif
@@ -94,32 +94,30 @@ namespace MidLevelRenderer {
 
 		void
 			Copy(
-				MLR_I_L_TMesh*,
-				MLRState detailState,
-				Stuff::Scalar xOff,
-				Stuff::Scalar yOff,
-				Stuff::Scalar xFac,
-				Stuff::Scalar yFac
+			MLR_I_L_TMesh*,
+			MLRState detailState,
+			float xOff,
+			float yOff,
+			float xFac,
+			float yFac
 			);
 
 		bool
 			Copy(MLR_I_L_DeT_PMesh*);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -134,19 +132,20 @@ namespace MidLevelRenderer {
 		Stuff::DynamicArrayOf<Stuff::Vector3D> normals;		// Base address of normal list 
 
 #if COLOR_AS_DWORD
-		Stuff::DynamicArrayOf<DWORD> litColors;
+		Stuff::DynamicArrayOf<ULONG> litColors;
 #else
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> litColors;
 #endif
 	};
 
-//	MLR_I_L_DeT_TMesh*
-//		CreateIndexedTriCube_NoColor_NoLit(Stuff::Scalar, MLRState*);
+	//	MLR_I_L_DeT_TMesh*
+	//		CreateIndexedTriCube_NoColor_NoLit(float, MLRState*);
 	MLRShape*
 		CreateIndexedTriIcosahedron_Color_Lit_DetTex(
-			IcoInfo&,
-			MLRState*,
-			MLRState*
+		IcoInfo&,
+		MLRState*,
+		MLRState*
 		);
 
 }
+#endif

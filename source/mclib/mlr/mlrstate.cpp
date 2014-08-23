@@ -222,7 +222,7 @@ MLRState&
 	processState = (master.processState&~processDeltaMask) | (slave.processState&processDeltaMask);
 
 #ifdef OLDFOG
-	unsigned fog_mode = renderDeltaMask & FogMask;
+	uint32_t fog_mode = renderDeltaMask & FogMask;
 	if (fog_mode)
 	{
 		fogDensity = slave.fogDensity;
@@ -256,7 +256,7 @@ MLRState&
 /*
 void
 	MLRState::SetFogData (
-		unsigned fog_color,
+		uint32_t fog_color,
 		Scalar fog_density,
 		Scalar near_fog,
 		Scalar far_fog
@@ -377,8 +377,8 @@ void
 
 	if( renderState & MLRState::WireFrameOnlyMode )
 	{
-		DWORD wfColor=0xffffff;
-		gos_SetRenderState(	gos_State_WireframeMode, (DWORD)&wfColor );
+		ULONG wfColor=0xffffff;
+		gos_SetRenderState(	gos_State_WireframeMode, (ULONG)&wfColor );
 	}
 	else
 	{
@@ -421,7 +421,7 @@ void
 		Stuff::IteratorPosition
 			GetHashFunctions::GetHashValue(const MLRState &value)
 				{
-					Verify(sizeof(Stuff::IteratorPosition) == sizeof(DWORD));
+					Verify(sizeof(Stuff::IteratorPosition) == sizeof(ULONG));
 					return
 						(
 							((value.processState & MidLevelRenderer::MLRState::UsedProcessMask) << MidLevelRenderer::MLRState::UsedRenderBits)

@@ -3,13 +3,15 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRSORTER_HPP
 #define MLR_MLRSORTER_HPP
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlrlight.hpp>
-#include <mlr/gosvertex.hpp>
-#include <mlr/gosvertex2uv.hpp>
-#include <mlr/gosvertexpool.hpp>
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlrlight.hpp>
+//#include <mlr/gosvertex.hpp>
+//#include <mlr/gosvertex2uv.hpp>
+//#include <mlr/gosvertexpool.hpp>
 
 namespace MidLevelRenderer {
 
@@ -23,8 +25,8 @@ namespace MidLevelRenderer {
 	class SortData {
 	public:
 		SortData () 
-			{ vertices = NULL; numVertices = 0; indices = NULL; 
-			  numIndices = 0; type = TriList; texture2 = 0; }
+		{ vertices = NULL; numVertices = 0; indices = NULL; 
+		numIndices = 0; type = TriList; texture2 = 0; }
 
 		void DrawTriList();
 		void DrawTriIndexedList();
@@ -54,9 +56,9 @@ namespace MidLevelRenderer {
 		static LoadSortAlphaFunc LoadSortAlpha[LastMode];
 
 		MLRState state;
-		void *vertices;
+		PVOIDvertices;
 		int	numVertices;
-		unsigned short *indices;
+		puint16_t indices;
 		int numIndices;
 		int type;
 		int texture2;
@@ -96,20 +98,17 @@ namespace MidLevelRenderer {
 	class _declspec(novtable) MLRSorter :
 		public Stuff::RegisteredClass
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
-		static ClassData
-			*DefaultData;
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	public:
 		MLRSorter(ClassData *class_data, MLRTexturePool*);
 		~MLRSorter();
@@ -125,56 +124,56 @@ namespace MidLevelRenderer {
 
 		void
 			SetTexturePool(MLRTexturePool *tp)
-				{ Check_Object(this); Check_Object(tp); texturePool = tp; }
+		{ Check_Object(this); Check_Object(tp); texturePool = tp; }
 
 		bool
 			SetDifferences(const MLRState& original, const MLRState& newer);
 
-	//	starts the action
+		//	starts the action
 		virtual void RenderNow () = 0;
 
-	//	resets the sorting
+		//	resets the sorting
 		virtual void Reset ();
 
-	//	lets begin the dance
+		//	lets begin the dance
 		virtual void StartDraw(const MLRState &default_state);
 
-	//	enter raw data
+		//	enter raw data
 		SortData*
 			SetRawData
-				(	void *vertices, 
-					int numVertices,
-					const MLRState& state,
-					cint32_t& mode,
-					int tex2 = 0
-				);
+			(	PVOIDvertices, 
+			int numVertices,
+			const MLRState& state,
+			cint32_t& mode,
+			int tex2 = 0
+			);
 
 		SortData*
 			SetRawIndexedData
-				(	void* vertices, 
-					int numVertices, 
-					unsigned short *indices,
-					int numIndices,
-					const MLRState& state, 
-					cint32_t& mode,
-					int tex2 = 0
-				);
+			(	PVOID vertices, 
+			int numVertices, 
+			puint16_t indices,
+			int numIndices,
+			const MLRState& state, 
+			cint32_t& mode,
+			int tex2 = 0
+			);
 
 		SortData*
 			SetRawData(MLRPrimitiveBase*, int=0 );
 
-//	Just scaling down a bit to keep z under 1.0f	
+		//	Just scaling down a bit to keep z under 1.0f	
 		void
-			SetFarClipReciprocal(Stuff::Scalar fcr)
-				{ Check_Object(this); farClipReciprocal = fcr*(1.0f-Stuff::SMALL); }
+			SetFarClipReciprocal(float fcr)
+		{ Check_Object(this); farClipReciprocal = fcr*(1.0f-Stuff::SMALL); }
 
 #ifdef CalDraw
 		ToBeDrawnPrimitive*
 			GetCurrentTBDP()
-				{ Check_Object(this); return &drawData[lastUsedDraw]; }
+		{ Check_Object(this); return &drawData[lastUsedDraw]; }
 		ToBeDrawnPrimitive*
 			GetCurrentTBDP(int index)
-				{ Check_Object(this); Verify(index<lastUsedDraw); return &drawData[index]; }
+		{ Check_Object(this); Verify(index<lastUsedDraw); return &drawData[index]; }
 		void
 			IncreaseTBDPCounter();
 #endif
@@ -183,8 +182,7 @@ namespace MidLevelRenderer {
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	protected:
 		MLRState theCurrentState;
@@ -203,8 +201,9 @@ namespace MidLevelRenderer {
 			priorityBucketsNotDrawn[MLRState::PriorityCount];
 #endif
 
-		Stuff::Scalar
+		float
 			farClipReciprocal;
 	};
 
 }
+#endif

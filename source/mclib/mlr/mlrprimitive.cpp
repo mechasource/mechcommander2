@@ -22,19 +22,19 @@ ClipPolygon::ClipPolygon()
 //###############################    MLRPrimitive    ##################################
 //#############################################################################
 
-DWORD Statistics::MLR_TransformedVertices = 0;
-DWORD Statistics::MLR_LitVertices = 0;
-DWORD Statistics::MLR_Primitives = 0;
-DWORD Statistics::MLR_NonClippedVertices = 0;
-DWORD Statistics::MLR_ClippedVertices = 0;
-DWORD Statistics::MLR_PrimitiveKB = 0;
-DWORD Statistics::MLR_PolysClippedButOutside = 0;
-DWORD Statistics::MLR_PolysClippedButInside = 0;
-DWORD Statistics::MLR_PolysClippedButOnePlane = 0;
-DWORD Statistics::MLR_PolysClippedButGOnePlane = 0;
+uint32_t Statistics::MLR_TransformedVertices = 0;
+uint32_t Statistics::MLR_LitVertices = 0;
+uint32_t Statistics::MLR_Primitives = 0;
+uint32_t Statistics::MLR_NonClippedVertices = 0;
+uint32_t Statistics::MLR_ClippedVertices = 0;
+uint32_t Statistics::MLR_PrimitiveKB = 0;
+uint32_t Statistics::MLR_PolysClippedButOutside = 0;
+uint32_t Statistics::MLR_PolysClippedButInside = 0;
+uint32_t Statistics::MLR_PolysClippedButOnePlane = 0;
+uint32_t Statistics::MLR_PolysClippedButGOnePlane = 0;
 gos_CycleData Statistics::MLR_ClipTime;
-DWORD Statistics::MLR_NumAllIndices = 1;
-DWORD Statistics::MLR_NumAllVertices = 1;
+uint32_t Statistics::MLR_NumAllIndices = 1;
+uint32_t Statistics::MLR_NumAllVertices = 1;
 float Statistics::MLR_Index_Over_Vertex_Ratio = 1.0f;
 
 
@@ -48,7 +48,7 @@ DynamicArrayOf<Vector4D>
 	MLRPrimitive::clipExtraCoords;
 
 #if COLOR_AS_DWORD
-DynamicArrayOf<DWORD>
+DynamicArrayOf<ULONG>
 #else
 DynamicArrayOf<RGBAColor>
 #endif
@@ -60,7 +60,7 @@ DynamicArrayOf<Vector2DScalar>
 DynamicArrayOf<int>
 	MLRPrimitive::clipExtraIndex;
 
-DynamicArrayOf<unsigned short>
+DynamicArrayOf<uint16_t>
 	MLRPrimitive::clipExtraLength;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -184,7 +184,7 @@ MLRPrimitive::MLRPrimitive(
 #if COLOR_AS_DWORD
 			MemoryStreamIO_Read(stream, &colors);
 #else
-			Stuff::DynamicArrayOf<DWORD> smallColors;
+			Stuff::DynamicArrayOf<ULONG> smallColors;
 
 			MemoryStreamIO_Read(stream, &smallColors);
 		
@@ -192,7 +192,7 @@ MLRPrimitive::MLRPrimitive(
 
 			colors.SetLength(len);
 
-			DWORD theColor;
+			ULONG theColor;
 
 			for(i=0;i<len;i++)
 			{
@@ -246,7 +246,7 @@ void
 #if COLOR_AS_DWORD
 	MemoryStreamIO_Write(stream, &colors);
 #else
-	Stuff::DynamicArrayOf<DWORD> smallColors;
+	Stuff::DynamicArrayOf<ULONG> smallColors;
 	int i, len = colors.GetLength();
 
 	const Stuff::RGBAColor *data = colors.GetData();
@@ -332,7 +332,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitive::SetSubprimitiveLengths(PUCHAR data, int l)
+	MLRPrimitive::SetSubprimitiveLengths(puint8_t data, int l)
 {
 	Check_Object(this); 
 	lengths.AssignData(data, l);
@@ -341,7 +341,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 int
-	MLRPrimitive::GetSubprimitiveLengths(PUCHAR *data)
+	MLRPrimitive::GetSubprimitiveLengths(puint8_t *data)
 {
 	Check_Object(this); 
 	*data = lengths.GetData();
@@ -399,7 +399,7 @@ void
 void
 	MLRPrimitive::SetColorData(
 #if COLOR_AS_DWORD
-		const DWORD *data,
+		const ULONG *data,
 #else
 		const RGBAColor *data,
 #endif
@@ -422,7 +422,7 @@ void
 void
 	MLRPrimitive::GetColorData(
 #if COLOR_AS_DWORD
-		DWORD **data,
+		ULONG **data,
 #else
 		RGBAColor **data,
 #endif
@@ -751,7 +751,7 @@ void
 	int k, len = litColors.GetLength();
 
 #if COLOR_AS_DWORD
-	DWORD argb = GOSCopyColor(paintMe);
+	ULONG argb = GOSCopyColor(paintMe);
 
 	for(k=0;k<len;k++)
 	{

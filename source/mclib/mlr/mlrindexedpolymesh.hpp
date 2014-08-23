@@ -3,15 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRINDEXEDPOLYMESH_HPP
 #define MLR_MLRINDEXEDPOLYMESH_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(MLR_MLRINDEXEDPRIMITIVE_HPP)
-	#include <mlr/mlrindexedprimitive.hpp>
-#endif
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlrindexedprimitive.hpp>
 
 namespace MidLevelRenderer {
 
@@ -23,23 +20,21 @@ namespace MidLevelRenderer {
 	class MLRIndexedPolyMesh:
 		public MLRIndexedPrimitive
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass(void);
-		static void
-			TerminateClass(void);
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLRIndexedPolyMesh(
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLRIndexedPolyMesh(void);
 
 	public:
@@ -47,22 +42,22 @@ namespace MidLevelRenderer {
 
 		static MLRIndexedPolyMesh*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
 			Save(Stuff::MemoryStream *stream);
 
-		void*
+		PVOID
 			operator new(size_t size)
-				{
-					Verify(size == sizeof(MLRIndexedPolyMesh));
-					return AllocatedMemory->New(void);
-				}
+		{
+			Verify(size == sizeof(MLRIndexedPolyMesh));
+			return AllocatedMemory->New(void);
+		}
 		void
-			operator delete(void *where)
-				{AllocatedMemory->Delete(where);}
+			operator delete(PVOID where)
+		{AllocatedMemory->Delete(where);}
 
 	private:
 		static Stuff::MemoryBlock
@@ -71,20 +66,20 @@ namespace MidLevelRenderer {
 	public:
 		virtual	void	InitializeDrawPrimitive(int, int=0);
 
-		virtual void	SetPrimitiveLength(PUCHAR , int);
-		virtual void	GetPrimitiveLength(PUCHAR *, int*);
+		virtual void	SetPrimitiveLength(puint8_t , int);
+		virtual void	GetPrimitiveLength(puint8_t *, int*);
 
 		void	FindFacePlanes(void);
 
 		virtual int	FindBackFace(const Stuff::Point3D&);
 
 		const Stuff::Plane *GetPolygonPlane(int i)
-			{
-				Check_Object(this);
-				Verify(i<facePlanes.GetLength(void));
+		{
+			Check_Object(this);
+			Verify(i<facePlanes.GetLength(void));
 
-				return &facePlanes[i];
-			}
+			return &facePlanes[i];
+		}
 
 		virtual void	Lighting(MLRLight**, int nrLights);
 
@@ -94,8 +89,8 @@ namespace MidLevelRenderer {
 
 		bool
 			CastRay(
-				Stuff::Line3D *line,
-				Stuff::Normal3D *normal
+			Stuff::Line3D *line,
+			Stuff::Normal3D *normal
 			);
 
 		void
@@ -104,30 +99,28 @@ namespace MidLevelRenderer {
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*);
 
-	//	Initializes the visibility test list
+		//	Initializes the visibility test list
 		void
 			ResetTestList(void);
 
-	//	find which vertices are visible which not - returns nr of visible vertices
-	//	the result is stored in the visibleIndexedVertices array
+		//	find which vertices are visible which not - returns nr of visible vertices
+		//	the result is stored in the visibleIndexedVertices array
 		int
 			FindVisibleVertices(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance(void) const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize(void)
 		{ 
 			Check_Object(this);
@@ -140,12 +133,13 @@ namespace MidLevelRenderer {
 
 	protected:
 		Stuff::DynamicArrayOf<uint8_t>	testList;
-		
+
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
-		
+
 	};
 
 	MLRIndexedPolyMesh*
-		CreateIndexedCube(Stuff::Scalar, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
+		CreateIndexedCube(float, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
 
 }
+#endif

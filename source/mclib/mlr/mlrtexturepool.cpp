@@ -433,7 +433,7 @@ MLRTexture*
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-unsigned
+uint32_t
 	MLRTexturePool::LoadImages()
 {
 	Check_Object(imagePool);
@@ -445,7 +445,7 @@ unsigned
 //
 // Statistic timing function
 //
-	for (unsigned i=0;i<MLRState::TextureMask+1;i++)
+	for (uint32_t i=0;i<MLRState::TextureMask+1;i++)
 	{
 		if(textureArray[i])
 		{

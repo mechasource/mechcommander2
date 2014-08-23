@@ -9,7 +9,7 @@
 	#include <mlr/mlrcliptrick.hpp>
 #endif
 
-extern DWORD gShowClippedPolys;
+extern ULONG gShowClippedPolys;
 
 //#############################################################################
 //#######################    MLRTriangleCloud    ##############################

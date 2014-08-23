@@ -3,9 +3,11 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRAMBIENTLIGHT_HPP
 #define MLR_MLRAMBIENTLIGHT_HPP
 
-#include <mlr/mlr.hpp>
+#include <mlr/mlrlight.hpp>
 
 namespace MidLevelRenderer {
 
@@ -17,16 +19,14 @@ namespace MidLevelRenderer {
 		public MLRLight
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		MLRAmbientLight();
 		MLRAmbientLight(
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		MLRAmbientLight(Stuff::Page *page);
 		~MLRAmbientLight();
 
@@ -35,19 +35,18 @@ namespace MidLevelRenderer {
 
 		virtual LightType
 			GetLightType() 
-				{ Check_Object(this); return AmbientLight; }
+		{ Check_Object(this); return AmbientLight; }
 
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
 		void
 			TestInstance();
@@ -56,3 +55,4 @@ namespace MidLevelRenderer {
 	};
 
 }
+#endif

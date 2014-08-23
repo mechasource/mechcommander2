@@ -155,10 +155,10 @@ void
 	MLR_I_L_DeT_TMesh::Copy(
 		MLR_I_L_TMesh *tMesh,
 		MLRState detailState,
-		Stuff::Scalar xOff,
-		Stuff::Scalar yOff,
-		Stuff::Scalar xFac,
-		Stuff::Scalar yFac
+		float xOff,
+		float yOff,
+		float xFac,
+		float yFac
 	)
 {
 	Check_Object(this);
@@ -210,7 +210,7 @@ void
 void
 	MLR_I_L_DeT_TMesh::SetColorData(
 #if COLOR_AS_DWORD
-		const DWORD *data,
+		const ULONG *data,
 #else
 		const RGBAColor *data,
 #endif
@@ -233,7 +233,7 @@ void
 void
 	MLR_I_L_DeT_TMesh::PaintMe(
 #if COLOR_AS_DWORD
-		const DWORD *paintMe
+		const ULONG *paintMe
 #else
 		const RGBAColor *paintMe
 #endif
@@ -254,7 +254,7 @@ void
 	int k, len = litColors.GetLength();
 
 #if COLOR_AS_DWORD
-	DWORD argb = GOSCopyColor(paintMe);
+	ULONG argb = GOSCopyColor(paintMe);
 
 	for(k=0;k<len;k++)
 	{
@@ -279,7 +279,7 @@ void
 	Verify(IsDerivedFrom(DefaultData));
 }
 
-extern DWORD gEnableTextureSort, gEnableAlphaSort;
+extern ULONG gEnableTextureSort, gEnableAlphaSort;
 
 #define I_SAY_YES_TO_DETAIL_TEXTURES
 #undef I_SAY_YES_TO_DUAL_TEXTURES
@@ -330,7 +330,7 @@ MLRShape*
 	Register_Object(ret);
 
 	int i, j, k;
-	long    nrTri = (long) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
+	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
 	if(3*nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
@@ -348,7 +348,7 @@ MLRShape*
 		Register_Pointer(collapsedCoords);
 	}
 
-	unsigned short	*index = new unsigned short [nrTri*3];
+	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
 	Vector2DScalar *texCoords = new Vector2DScalar[nrTri*3];
 	Register_Pointer(texCoords);
@@ -394,7 +394,7 @@ MLRShape*
 				{
 					collapsedCoords[uniquePoints++] = coords[i];
 				}
-				index[i] = static_cast<unsigned short>(j);
+				index[i] = static_cast<uint16_t>(j);
 			}
 			mesh->SetCoordData(collapsedCoords, uniquePoints);
 		}
@@ -403,7 +403,7 @@ MLRShape*
 			uniquePoints = nrTri*3;
 			for(i=0;i<nrTri*3;i++)
 			{
-				index[i] = static_cast<unsigned short>(i);
+				index[i] = static_cast<uint16_t>(i);
 			}
 			mesh->SetCoordData(coords, nrTri*3);
 		}

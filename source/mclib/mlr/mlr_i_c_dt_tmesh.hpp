@@ -3,11 +3,13 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLR_I_C_DT_TMESH_HPP
 #define MLR_MLR_I_C_DT_TMESH_HPP
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlr_i_tmesh.hpp>
-#include <mlr/mlr_i_c_pmesh.hpp>
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlr_i_tmesh.hpp>
+//#include <mlr/mlr_i_c_pmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -19,24 +21,22 @@ namespace MidLevelRenderer {
 	class MLR_I_C_DT_TMesh:
 		public MLR_I_DT_TMesh
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLR_I_C_DT_TMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLR_I_C_DT_TMesh();
 
 	public:
@@ -44,8 +44,8 @@ namespace MidLevelRenderer {
 
 		static MLR_I_C_DT_TMesh*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
@@ -55,30 +55,30 @@ namespace MidLevelRenderer {
 #if COLOR_AS_DWORD
 		virtual void
 			SetColorData(
-				const DWORD *array,
-				int point_count
+			const ULONG *array,
+			int point_count
 			);
 		virtual void
 			GetColorData(
-				DWORD **array,
-				int *point_count
+			ULONG **array,
+			int *point_count
 			);
 #else
 		virtual void
 			SetColorData(
-				const Stuff::RGBAColor *array,
-				int point_count
+			const Stuff::RGBAColor *array,
+			int point_count
 			);
 		virtual void
 			GetColorData(
-				Stuff::RGBAColor **array,
-				int *point_count
+			Stuff::RGBAColor **array,
+			int *point_count
 			);
 #endif
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(const DWORD *paintMe);
+			PaintMe(const ULONG *paintMe);
 #else
 			PaintMe(const Stuff::RGBAColor *paintMe);
 #endif
@@ -91,21 +91,19 @@ namespace MidLevelRenderer {
 		bool
 			Copy(MLR_I_C_DT_PMesh*);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize()
 		{ 
 			Check_Object(this);
@@ -117,8 +115,8 @@ namespace MidLevelRenderer {
 
 	protected:
 #if COLOR_AS_DWORD
-		Stuff::DynamicArrayOf<DWORD> colors;	// Base address of color list 
-		Stuff::DynamicArrayOf<DWORD> *actualColors;
+		Stuff::DynamicArrayOf<ULONG> colors;	// Base address of color list 
+		Stuff::DynamicArrayOf<ULONG> *actualColors;
 #else
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> colors;	// Base address of color list 
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> *actualColors;
@@ -126,12 +124,13 @@ namespace MidLevelRenderer {
 	};
 
 	MLR_I_C_DT_TMesh*
-		CreateIndexedTriCube_Color_NoLit_2Tex(Stuff::Scalar, MLRState*);
+		CreateIndexedTriCube_Color_NoLit_2Tex(float, MLRState*);
 	MLRShape*
 		CreateIndexedTriIcosahedron_Color_NoLit_2Tex(
-			IcoInfo&,
-			MLRState*,
-			MLRState*
+		IcoInfo&,
+		MLRState*,
+		MLRState*
 		);
 
 }
+#endif

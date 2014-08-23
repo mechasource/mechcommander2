@@ -156,7 +156,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPolyMesh::SetPrimitiveLength (PUCHAR data, int numPrimitives)
+	MLRIndexedPolyMesh::SetPrimitiveLength (puint8_t data, int numPrimitives)
 {
 	Check_Object(this); 
 
@@ -170,7 +170,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPolyMesh::GetPrimitiveLength (PUCHAR *data, int *l)
+	MLRIndexedPolyMesh::GetPrimitiveLength (puint8_t *data, int *l)
 {
 	Check_Object(this);
 	*l = lengths.GetLength();
@@ -212,7 +212,7 @@ int
 
 	int i, numPrimitives = GetNumPrimitives();
 	int ret = 0, len = lengths.GetLength();
-	PUCHAR iPtr;
+	puint8_t iPtr;
 	Plane *p;
 
 	if(len <= 0)
@@ -259,7 +259,7 @@ void
 	MLRIndexedPolyMesh::ResetTestList()
 {
 	int i, numPrimitives = GetNumPrimitives();
-	PUCHAR iPtr = &testList[0];
+	puint8_t iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
 	{
@@ -344,7 +344,7 @@ void
 
 	SET_MLRIndexedPolyMesh_CLIP();
 
-	unsigned short stride;
+	uint16_t stride;
 	int i, j, k, len = lengths.GetLength();
 	gos_vertices = vt->GetActualVertexPool();
 	numGOSVertices = 0;
@@ -419,9 +419,9 @@ void
 		{
 			Verify((vt->GetLastIndex() + 3 + numGOSIndices) < vt->GetLength());
 
-			gos_indices[numGOSIndices] = (unsigned short)(index[j] - visibleIndexedVertices[index[j]]);
-			gos_indices[numGOSIndices+1] = (unsigned short)(index[j+k+1] - visibleIndexedVertices[index[j+k+1]]);
-			gos_indices[numGOSIndices+2] = (unsigned short)(index[j+k] - visibleIndexedVertices[index[j+k]]);
+			gos_indices[numGOSIndices] = (uint16_t)(index[j] - visibleIndexedVertices[index[j]]);
+			gos_indices[numGOSIndices+1] = (uint16_t)(index[j+k+1] - visibleIndexedVertices[index[j+k+1]]);
+			gos_indices[numGOSIndices+2] = (uint16_t)(index[j+k] - visibleIndexedVertices[index[j+k]]);
 
 			numGOSIndices += 3;
 		}
@@ -454,7 +454,7 @@ int
 
 	Check_Object(this);
 
-	unsigned short stride, l;
+	uint16_t stride, l;
 	int i, j, k, ret = 0;
 	int len = lengths.GetLength();
 
@@ -634,7 +634,7 @@ int
 		//
 		else
 		{
-			unsigned short numberVerticesPerPolygon = 0;
+			uint16_t numberVerticesPerPolygon = 0;
 
 			//
 			//---------------------------------------------------------------
@@ -1186,9 +1186,9 @@ int
 		{
 			Verify((vt->GetLastIndex() + 3 + numGOSIndices) < vt->GetLength());
 
-			gos_indices[numGOSIndices] = (unsigned short)(index[j] - visibleIndexedVertices[index[j]]);
-			gos_indices[numGOSIndices+1] = (unsigned short)(index[j+k+1] - visibleIndexedVertices[index[j+k+1]]);
-			gos_indices[numGOSIndices+2] = (unsigned short)(index[j+k] - visibleIndexedVertices[index[j+k]]);
+			gos_indices[numGOSIndices] = (uint16_t)(index[j] - visibleIndexedVertices[index[j]]);
+			gos_indices[numGOSIndices+1] = (uint16_t)(index[j+k+1] - visibleIndexedVertices[index[j+k+1]]);
+			gos_indices[numGOSIndices+2] = (uint16_t)(index[j+k] - visibleIndexedVertices[index[j+k]]);
 
 			numGOSIndices += 3;
 		}
@@ -1216,8 +1216,8 @@ int
 
 				Verify(numGOSIndices%3 == 0);
 				gos_indices[numGOSIndices] = numGOSVertices;
-				gos_indices[numGOSIndices+1] = (unsigned short)(numGOSVertices + 1);
-				gos_indices[numGOSIndices+2] = (unsigned short)(numGOSVertices + 2);
+				gos_indices[numGOSIndices+1] = (uint16_t)(numGOSVertices + 1);
+				gos_indices[numGOSIndices+2] = (uint16_t)(numGOSVertices + 2);
 
 				numGOSVertices += 3;
 				numGOSIndices += 3;
@@ -1743,7 +1743,7 @@ MLRIndexedPolyMesh*
 	coords[6] = Point3D( half,  half, -half);
 	coords[7] = Point3D(-half,  half, -half);
 
-	PUCHAR lengths = new uint8_t [6];
+	puint8_t lengths = new uint8_t [6];
 
 	int i;
 
@@ -1756,7 +1756,7 @@ MLRIndexedPolyMesh*
 
 	ret->SetCoordData(coords, 8);
 
-	unsigned short	*index = new unsigned short [6*4];
+	uint16_t	*index = new uint16_t [6*4];
 
 	index[0] = 0;
 	index[1] = 2;
@@ -1795,7 +1795,7 @@ MLRIndexedPolyMesh*
 	if(eightColors!=NULL)
 	{
 #if COLOR_AS_DWORD
-		DWORD *dwColor = new DWORD [8];
+		ULONG *dwColor = new ULONG [8];
 
 		for(i=0;i<8;i++)
 		{
@@ -1813,32 +1813,32 @@ MLRIndexedPolyMesh*
 		ret->SetNormalData(eightNormals, 8);
 	}
 
-	Vector2DScalar *texCoords = new Vector2DScalar[8];
+	Stuff::Vector2DScalar *texCoords = new Stuff::Vector2DScalar[8];
 
-	texCoords[0] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[1] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[2] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[3] = Vector2DScalar(0.0f, 0.0f);
+	texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[1] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[2] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[3] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
-	texCoords[4] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[5] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[6] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[7] = Vector2DScalar(0.0f, 0.0f);
+	texCoords[4] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[5] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[6] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[7] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
 	if(state != NULL)
 	{
 		ret->SetReferenceState(*state);
 		if(state->GetTextureHandle() > 0)
 		{
-			texCoords[0] = Vector2DScalar(0.0f, 0.0f);
-			texCoords[1] = Vector2DScalar(1.0f, 0.0f);
-			texCoords[2] = Vector2DScalar(0.25f, 0.25f);
-			texCoords[3] = Vector2DScalar(0.75f, 0.25f);
+			texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
+			texCoords[1] = Stuff::Vector2DScalar(1.0f, 0.0f);
+			texCoords[2] = Stuff::Vector2DScalar(0.25f, 0.25f);
+			texCoords[3] = Stuff::Vector2DScalar(0.75f, 0.25f);
 
-			texCoords[4] = Vector2DScalar(1.0f, 1.0f);
-			texCoords[5] = Vector2DScalar(0.0f, 1.0f);
-			texCoords[6] = Vector2DScalar(0.25f, 0.75f);
-			texCoords[7] = Vector2DScalar(0.75f, 0.75f);
+			texCoords[4] = Stuff::Vector2DScalar(1.0f, 1.0f);
+			texCoords[5] = Stuff::Vector2DScalar(0.0f, 1.0f);
+			texCoords[6] = Stuff::Vector2DScalar(0.25f, 0.75f);
+			texCoords[7] = Stuff::Vector2DScalar(0.75f, 0.75f);
 		}
 	}
 	ret->SetTexCoordData(texCoords, 8);

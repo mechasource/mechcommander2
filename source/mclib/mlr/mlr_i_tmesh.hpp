@@ -3,10 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLR_I_TMESH_HPP
 #define MLR_MLR_I_TMESH_HPP
 
-#include <mlr/mlr.hpp>
-#include <mlr/mlr_i_pmesh.hpp>
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlr_i_pmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -18,18 +20,16 @@ namespace MidLevelRenderer {
 	class MLR_I_TMesh:
 		public MLRIndexedPrimitiveBase
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLR_I_TMesh(
 			ClassData *class_data,
@@ -59,7 +59,7 @@ namespace MidLevelRenderer {
 
 		virtual void
 			SetSubprimitiveLengths(
-			PUCHAR length_array,
+			puint8_t length_array,
 			int subprimitive_count
 			)
 		{
@@ -88,7 +88,7 @@ namespace MidLevelRenderer {
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(const DWORD* paintMe) {(void)paintMe;};
+			PaintMe(const ULONG* paintMe) {(void)paintMe;};
 #else
 			PaintMe(const Stuff::RGBAColor* paintMe) {(void)paintMe;};
 #endif
@@ -119,19 +119,17 @@ namespace MidLevelRenderer {
 		bool
 			Copy(MLR_I_PMesh*);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 		virtual int
 			GetSize()
@@ -155,7 +153,8 @@ namespace MidLevelRenderer {
 
 	extern float vdata[12][3];
 	extern uint32_t tindices [20][3];
-	extern long triDrawn;
-	MLR_I_TMesh* CreateIndexedTriCube_NoColor_NoLit(Stuff::Scalar, MLRState*);
+	extern int32_t triDrawn;
+	MLR_I_TMesh* CreateIndexedTriCube_NoColor_NoLit(float, MLRState*);
 	MLRShape* CreateIndexedTriIcosahedron_NoColor_NoLit(IcoInfo&, MLRState*);
 }
+#endif

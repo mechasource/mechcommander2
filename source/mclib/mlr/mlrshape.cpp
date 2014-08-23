@@ -86,7 +86,7 @@ MLRShape::MLRShape(
 				}
 
 #if COLOR_AS_DWORD
-				DWORD* colors;
+				ULONG* colors;
 #else
 				RGBAColor *colors, testColor(1.0f, 1.0f, 1.0f, 1.0f);
 #endif
@@ -150,7 +150,7 @@ MLRShape::MLRShape(
 					)
 				)
 				{
-					PUCHAR length;
+					puint8_t length;
 					int i, num, threes, nonThrees;
 
 					pt->GetSubprimitiveLengths(&length, &num);
@@ -550,7 +550,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // p is the eye point
 void
-	MLRShape::HurtMe(const Stuff::LinearMatrix4D& pain, Stuff::Scalar radius)
+	MLRShape::HurtMe(const Stuff::LinearMatrix4D& pain, float radius)
 {
 	for(int i=0;i<numPrimitives;i++)
 	{

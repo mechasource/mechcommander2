@@ -9,19 +9,19 @@
 	BitTrace *MLR_Terrain2_Clip;
 #endif
 
-extern DWORD gEnableLightMaps;
+extern ULONG gEnableLightMaps;
 
 //#############################################################################
 //## MLRTerrain with no color no lighting w/ detail texture, uv's from xyz  ###
 //#############################################################################
 
-DynamicArrayOf<Vector2DScalar>
+DynamicArrayOf<Stuff::Vector2DScalar>
 	*MLR_Terrain2::detailTexCoords;
 
 MLR_Terrain2::ClassData*
 	MLR_Terrain2::DefaultData = NULL;
 
-extern DynamicArrayOf<Vector2DScalar> *lightMapUVs;
+extern DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs;
 extern DynamicArrayOf<Scalar> *lightMapSqFalloffs;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,7 +40,7 @@ void
 		);
 	Register_Object(DefaultData);
 
-	detailTexCoords = new DynamicArrayOf<Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
+	detailTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(detailTexCoords);
 
 	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
@@ -443,7 +443,7 @@ void
 
 extern RGBAColor errorColor;
 extern bool
-	CheckForBigTriangles(DynamicArrayOf<Vector2DScalar> *lightMapUVs, int stride);
+	CheckForBigTriangles(DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs, int stride);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //

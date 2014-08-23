@@ -16,9 +16,9 @@
 MLR_I_MT_PMesh::ClassData*
 	MLR_I_MT_PMesh::DefaultData = NULL;
 
-DynamicArrayOf<DynamicArrayOf<Vector2DScalar> >
+DynamicArrayOf<DynamicArrayOf<Stuff::Vector2DScalar> >
 	*MLR_I_MT_PMesh::clipExtraMultiTexCoords;
-DynamicArrayOf<DynamicArrayOf<Vector2DScalar> >
+DynamicArrayOf<DynamicArrayOf<Stuff::Vector2DScalar> >
 	*MLR_I_MT_PMesh::extraMultiTexCoords;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -37,11 +37,11 @@ void
 		);
 	Register_Object(DefaultData);
 	
-	clipExtraMultiTexCoords = new DynamicArrayOf<DynamicArrayOf<Vector2DScalar> >;
+	clipExtraMultiTexCoords = new DynamicArrayOf<DynamicArrayOf<Stuff::Vector2DScalar> >;
 	Register_Object(clipExtraMultiTexCoords);
 	clipExtraMultiTexCoords->SetLength(Limits::Max_Number_Of_Multitextures);
 	
-	extraMultiTexCoords = new DynamicArrayOf<DynamicArrayOf<Vector2DScalar> >;
+	extraMultiTexCoords = new DynamicArrayOf<DynamicArrayOf<Stuff::Vector2DScalar> >;
 	Register_Object(extraMultiTexCoords);
 	extraMultiTexCoords->SetLength(Limits::Max_Number_Of_Multitextures);
 
@@ -112,7 +112,7 @@ MLR_I_MT_PMesh::MLR_I_MT_PMesh(
 	{
 		multiReferenceState[i].Save(stream);
 
-		multiTexCoords[i] = new DynamicArrayOf<Vector2DScalar>;
+		multiTexCoords[i] = new DynamicArrayOf<Stuff::Vector2DScalar>;
 		Register_Object(multiTexCoords[i]);
 
 		MemoryStreamIO_Read(stream, multiTexCoords[i]);
@@ -162,20 +162,20 @@ void
 	pMesh->GetCoordData(&points, &num);
 	SetCoordData(points, num);
 
-	Vector2DScalar *tex;
+	Stuff::Vector2DScalar *tex;
 	pMesh->GetTexCoordData(&tex, &num);
 	SetTexCoordData(tex, num);
 
 	multiTexCoords[0] = &texCoords;
 	multiTexCoordsPointers[0] = texCoords.GetData();
 
-	PUCHAR length_array;
+	puint8_t length_array;
 	pMesh->GetSubprimitiveLengths(&length_array, &num);
 	SetSubprimitiveLengths(length_array, num);
 
 	drawMode = pMesh->GetSortDataMode();
 
-	USHORT *index_array;
+	puint16_t index_array;
 	pMesh->GetIndexData(&index_array, &num);
 	SetIndexData(index_array, num);
 
@@ -262,7 +262,7 @@ void
 //
 void
 	MLR_I_MT_PMesh::SetTexCoordData(
-		const Vector2DScalar *data,
+		const Stuff::Vector2DScalar *data,
 		int dataSize,
 		int pass
 	)
@@ -275,7 +275,7 @@ void
 
 	if(pass == 0)
 	{
-		texCoords.AssignData((Vector2DScalar *)data, dataSize);
+		texCoords.AssignData((Stuff::Vector2DScalar *)data, dataSize);
 
 		multiTexCoordsPointers[0] = texCoords.GetData();
 	}
@@ -286,9 +286,9 @@ void
 			Verify(dataSize == multiTexCoords[pass-1]->GetLength());
 
 			gos_PushCurrentHeap(Heap);
-			multiTexCoords[pass] = new DynamicArrayOf<Vector2DScalar>;
+			multiTexCoords[pass] = new DynamicArrayOf<Stuff::Vector2DScalar>;
 			Register_Object(multiTexCoords[pass]);
-			multiTexCoords[pass]->AssignData((Vector2DScalar *)data, dataSize);
+			multiTexCoords[pass]->AssignData((Stuff::Vector2DScalar *)data, dataSize);
 			gos_PopCurrentHeap();
 
 			multiTexCoordsPointers[pass] = multiTexCoords[pass]->GetData();
@@ -307,7 +307,7 @@ void
 //
 void
 	MLR_I_MT_PMesh::GetTexCoordData(
-		const Vector2DScalar **data,
+		const Stuff::Vector2DScalar **data,
 		int *dataSize,
 		int pass
 	)
@@ -324,7 +324,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::SetTexCoordDataPointer(const Vector2DScalar *data)
+	MLR_I_MT_PMesh::SetTexCoordDataPointer(const Stuff::Vector2DScalar *data)
 {
 	Check_Pointer(data);
 
@@ -373,7 +373,7 @@ MLRShape*
 
 	int i, j, k;
 	int nrOfPasses = states->GetLength();
-	long    nrTri = (long) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
+	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
 	if(3*nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
@@ -381,7 +381,7 @@ MLRShape*
 		nrTri = Limits::Max_Number_Vertices_Per_Mesh/3;
 	}
 
-	PUCHAR lengths = new uint8_t [nrTri];
+	puint8_t lengths = new uint8_t [nrTri];
 	Register_Pointer(lengths);
 
 	for(i=0;i<nrTri;i++)
@@ -399,10 +399,10 @@ MLRShape*
 		Register_Pointer(collapsedCoords);
 	}
 
-	DynamicArrayOf<Vector2DScalar *> texCoords(nrOfPasses);
+	DynamicArrayOf<Stuff::Vector2DScalar *> texCoords(nrOfPasses);
 	for(i=0;i<nrOfPasses;i++)
 	{
-		texCoords[i] = new Vector2DScalar[nrTri*3];
+		texCoords[i] = new Stuff::Vector2DScalar[nrTri*3];
 		Register_Pointer(texCoords[i]);
 	}
 
@@ -472,7 +472,7 @@ MLRShape*
 				for(i=0;i<uniquePoints;i++)
 				{
 					texCoords[j][i] = 
-						Vector2DScalar(
+						Stuff::Vector2DScalar(
 							(1.0f + collapsedCoords[i].x)/2.0f,
 							(1.0f + collapsedCoords[i].y)/2.0f
 						);
@@ -483,17 +483,17 @@ MLRShape*
 				for(i=0;i<nrTri;i++)
 				{
 					texCoords[j][3*i] = 
-						Vector2DScalar(
+						Stuff::Vector2DScalar(
 							(1.0f + coords[3*i].x)/2.0f,
 							(1.0f + coords[3*i].y)/2.0f
 						);
 					texCoords[j][3*i+1] = 
-						Vector2DScalar(
+						Stuff::Vector2DScalar(
 							(1.0f + coords[3*i+1].x)/2.0f,
 							(1.0f + coords[3*i+1].y)/2.0f
 						);
 					texCoords[j][3*i+2] = 
-						Vector2DScalar(
+						Stuff::Vector2DScalar(
 							(1.0f + coords[3*i+2].x)/2.0f,
 							(1.0f + coords[3*i+2].y)/2.0f
 						);

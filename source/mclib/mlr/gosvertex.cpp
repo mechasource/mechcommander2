@@ -15,7 +15,7 @@ Scalar
 	ViewportScalars::AddY;
 
 #if FOG_HACK
-	BYTE GOSVertex::fogTable[Limits::Max_Number_Of_FogStates][1024];
+	UCHAR GOSVertex::fogTable[Limits::Max_Number_Of_FogStates][1024];
 #endif
 
 //#############################################################################
@@ -71,7 +71,7 @@ void
 		if( Fog>1.0f )
 			Fog=1.0f;
 
-		GOSVertex::fogTable[entry][t1]=(BYTE)(255.9f*Fog);
+		GOSVertex::fogTable[entry][t1]=(UCHAR)(255.9f*Fog);
 	}
 }
 
@@ -82,7 +82,7 @@ bool
 		(	GOSVertex *gos_vertices,
 			Vector4D *coords,
 			RGBAColor *colors,
-			Vector2DScalar *texCoords,
+			Stuff::Vector2DScalar *texCoords,
 			int offset0,
 			int offset1,
 			int offset2)

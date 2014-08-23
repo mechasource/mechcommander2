@@ -3,15 +3,12 @@
 //===========================================================================//
 
 #pragma once
+
+#ifndef MLR_MLRPOLYMESH_HPP
 #define MLR_MLRPOLYMESH_HPP
 
-#if !defined(MLR_MLR_HPP)
-	#include <mlr/mlr.hpp>
-#endif
-
-#if !defined(MLR_MLRPRIMITIVE_HPP)
-	#include <mlr/mlrprimitive.hpp>
-#endif
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlrprimitive.hpp>
 
 namespace MidLevelRenderer {
 
@@ -23,23 +20,21 @@ namespace MidLevelRenderer {
 	class MLRPolyMesh:
 		public MLRPrimitive
 	{
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Initialization
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Initialization
+		//
 	public:
-		static void
-			InitializeClass(void);
-		static void
-			TerminateClass(void);
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Constructors/Destructors
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Constructors/Destructors
+		//
 	protected:
 		MLRPolyMesh(
 			Stuff::MemoryStream *stream,
 			int version
-		);
+			);
 		~MLRPolyMesh(void);
 
 	public:
@@ -47,27 +42,27 @@ namespace MidLevelRenderer {
 
 		static MLRPolyMesh*
 			Make(
-				Stuff::MemoryStream *stream,
-				int version
+			Stuff::MemoryStream *stream,
+			int version
 			);
 
 		void
 			Save(Stuff::MemoryStream *stream);
 
-		virtual void	SetPrimitiveLength(PUCHAR , int);
-		virtual void	GetPrimitiveLength(PUCHAR *, int*);
+		virtual void	SetPrimitiveLength(puint8_t , int);
+		virtual void	GetPrimitiveLength(puint8_t *, int*);
 
 		void	FindFacePlanes(void);
 
 		virtual int	FindBackFace(const Stuff::Point3D&);
 
 		const Stuff::Plane *GetPolygonPlane(int i)
-			{
-				Check_Object(this);
-				Verify(i<facePlanes.GetLength(void));
+		{
+			Check_Object(this);
+			Verify(i<facePlanes.GetLength(void));
 
-				return &facePlanes[i];
-			}
+			return &facePlanes[i];
+		}
 
 		virtual void	Lighting(MLRLight**, int nrLights);
 
@@ -79,25 +74,23 @@ namespace MidLevelRenderer {
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*);
 
-	//	Initializes the visibility test list
+		//	Initializes the visibility test list
 		void
 			ResetTestList(void);
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Class Data Support
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Class Data Support
+		//
 	public:
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
-	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Testing
-	//
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// Testing
+		//
 	public:
-		void
-			TestInstance(void) const;
+		void TestInstance(void) const;
 
-	virtual int
+		virtual int
 			GetSize(void)
 		{ 
 			Check_Object(this);
@@ -110,12 +103,13 @@ namespace MidLevelRenderer {
 
 	protected:
 		Stuff::DynamicArrayOf<uint8_t>	testList;
-		
+
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
-		
+
 	};
 
 	MLRPolyMesh*
-		CreateCube(Stuff::Scalar, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
+		CreateCube(float, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
 
 }
+#endif

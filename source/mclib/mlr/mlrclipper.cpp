@@ -3,9 +3,31 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+//#include "mlrheaders.hpp"
 
-extern DWORD gShowBirdView, gEnableDetailTexture, gEnableMultiTexture, gEnableLightMaps;
+//#include <gameos.hpp>
+
+#include <stuff/vector4d.hpp>
+
+#include <mlr/mlrclipper.hpp>
+
+//#include <mlr/mlr.hpp>
+//#include <mlr/mlrsorter.hpp>
+//#include <mlr/mlrlight.hpp>
+
+//#include <mlr/gosvertexpool.hpp>
+
+//
+//#include <mlr/mlrprimitivebase.hpp>
+//#include <mlr/mlrlight.hpp>
+//#include <mlr/gosvertexpool.hpp>
+
+
+
+using namespace MidLevelRenderer;
+using namespace Stuff;
+
+extern ULONG gShowBirdView, gEnableDetailTexture, gEnableMultiTexture, gEnableLightMaps;
 
 DrawShapeInformation::DrawShapeInformation()
 {
@@ -155,7 +177,7 @@ void
 //
 	gos_PushCurrentHeap(Heap);
 	Scalar z = 1.0f;
-	DWORD back_color = 0;
+	ULONG back_color = 0;
 	bool
 		fill = false,
 		clear = false;
@@ -226,7 +248,7 @@ void
 		int
 			x_delta,
 			y_delta;
-		DWORD
+		ULONG
 			buttons;
 		gos_GetMouseInfo(NULL, NULL, &x_delta, &y_delta, NULL, &buttons);
 		Scalar
@@ -527,7 +549,7 @@ void
 				if(primitive->IsDerivedFrom(MLRIndexedPrimitiveBase::DefaultData))
 				{
 					Point3D *coords;
-					unsigned short *indices;
+					puint16_t indices;
 					int nr;
 
 					(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))->GetIndexData(&indices, &nr);

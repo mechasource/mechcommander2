@@ -34,7 +34,7 @@ typedef struct _CloudVertex
 	float				pz,pw;				//Depth of vertex.
 	float				pu,pv;				//Scrolling UVs
 	bool				clipInfo;			//Is this vertex visible
-	DWORD				fogRGB;				//Haze DWORD
+	ULONG				fogRGB;				//Haze ULONG
 } CloudVertex;
 
 typedef CloudVertex *CloudVertexPtr;
@@ -45,10 +45,10 @@ class Clouds
 	// Data Members
 	//--------------
 	protected:
-		DWORD			mcTextureNodeIndex;			//Pointer to MCTextureNode which is used to cache handles if necessary
-		DWORD			gosTextureHandle;
+		ULONG			mcTextureNodeIndex;			//Pointer to MCTextureNode which is used to cache handles if necessary
+		ULONG			gosTextureHandle;
 		bool			renderClouds;
-		long			gridSize;
+		int32_t			gridSize;
 		float			scrollU;
 		float			scrollV;
 		
@@ -80,7 +80,7 @@ class Clouds
 			destroy();
 		}
 		
-		void init (PSTR textureName, long gSize);
+		void init (PSTR textureName, int32_t gSize);
 		
 		void update (void);
 		void render (void);

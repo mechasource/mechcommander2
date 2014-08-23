@@ -106,12 +106,12 @@ static int __cdecl wideToInt(
         return ((int)atol(astring));
 }
 
-static long __cdecl atolong(
+static int32_t __cdecl atolong(
         PCSTR nptr
         )
 {
         int c;              /* current PSTR /
-        long total;         /* current total */
+        int32_t total;         /* current total */
         int sign;           /* if '-', then negative, otherwise positive */
 
         /* skip whitespace */
@@ -244,7 +244,7 @@ ECharString::EBuffer*   ECharString::EBuffer::s_p_Empty_Buffer = &ECharString::E
 // if this doesn't want to link properly, this will have to become
 // a macro.
 /////////////////////////////////////////////////////////////////
-inline	unsigned short*	ECharString::ToUnicode( unsigned short* p_Buffer, 
+inline	PWSTR	ECharString::ToUnicode( PWSTR p_Buffer, 
 								   pcuint8_t p_Str, 
 								   int Num_Chars )
 {
@@ -369,7 +369,7 @@ void ECharString::Alloc( int Min_Amount )
 	// we're rouding up to the nearest multiple of 4 for now
 	Min_Amount = (Min_Amount/s_Alloc_Allign + 1) * s_Alloc_Allign;
 
-	m_pBuffer = (ECharString::EBuffer*)new BYTE[sizeof(EBuffer) + 
+	m_pBuffer = (ECharString::EBuffer*)new UCHAR[sizeof(EBuffer) + 
 		(Min_Amount)*sizeof(ECSChar)];
 
 	memset( m_pBuffer, 0, sizeof(EBuffer) + (Min_Amount)*sizeof(ECSChar) );
@@ -608,7 +608,7 @@ void ECharString::Format( const ECSChar* p_Str, ... )
 		{
 			// width indicated by
 			Width = KToI(p_Tmp);
-			unsigned short buffer;
+			uint16_t buffer;
 			for (; *p_Tmp != '\0'; )
 			{
 				GetStringTypeEx(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, p_Tmp, 1, &buffer);
@@ -638,7 +638,7 @@ void ECharString::Format( const ECSChar* p_Str, ... )
 				Precision = KToI(p_Tmp);
 				for (; *p_Tmp != '\0'; )
 				{
-					unsigned short buffer;
+					uint16_t buffer;
 					GetStringTypeEx(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, p_Tmp, 1, &buffer);
 					//if (buffer == C1_DIGIT || buffer == C1_XDIGIT)
 					if (buffer & C1_DIGIT)	//mh
@@ -710,7 +710,7 @@ void ECharString::Format( const ECSChar* p_Str, ... )
 		case 'S':
 		{
 #ifndef K_UNICODE
-			const unsigned short* p_Next_Arg = va_arg(Arg_List, const unsigned short*);
+			PCWSTR p_Next_Arg = va_arg(Arg_List, PCWSTR);
 			if (p_Next_Arg == NULL)
 			   Item_Len = 6;  // "(null)"
 			else
@@ -797,7 +797,7 @@ void ECharString::Format( const ECSChar* p_Str, ... )
 				break;
 
 			case 'p':
-				va_arg(Arg_List, void*);
+				va_arg(Arg_List, PVOID);
 				Item_Len = 32;
 				Item_Len = max(Item_Len, Width + Precision);
 				break;
@@ -812,7 +812,7 @@ void ECharString::Format( const ECSChar* p_Str, ... )
 				p_Tmp = KSInc(p_Tmp);
 				p_Tmp = KSInc(p_Tmp);
 				Item_Len = 64;
-				va_arg(Arg_List, __int64);
+				va_arg(Arg_List, int64_t);
 				break;
 
 
@@ -1059,9 +1059,9 @@ int ECharString::ReverseFind ( ECSChar Char, int End_Index ) const
 
 /////////////////////////////////////////////////////////////////
 #ifndef UNICODE
-int ECharString::Find( unsigned short Char, int Start_Index ) const
+int ECharString::Find( uint16_t Char, int Start_Index ) const
 {
-	unsigned short Tmp[2];
+	uint16_t Tmp[2];
 	*Tmp = Char;
 	Tmp[2] = 0;
 
@@ -1099,15 +1099,15 @@ ECharString ECharString::SubString( int Start_Index, int End_Index ) const
 
 
 /////////////////////////////////////////////////////////////////
-unsigned short* ECharString::CreateUNICODE() const
+PWSTR ECharString::CreateUNICODE() const
 {
 #ifdef UNICODE
-	unsigned short* p_Ret_String = new unsigned short[m_pBuffer->m_Data_Length + 1];
+	PWSTR p_Ret_String = new uint16_t[m_pBuffer->m_Data_Length + 1];
 	memcpy( p_Ret_String, m_pBuffer->Data(), 2*(m_pBuffer->m_Data_Length + 1) );
 	return p_Ret_String;
 #else
-	 unsigned short* p_Ret_String = new unsigned short[lstrlen((PSTR)m_pBuffer->Data()) + 1];
-	 ToUnicode( p_Ret_String, (PUCHAR)m_pBuffer->Data(), m_pBuffer->m_Data_Length + 1 );
+	 PWSTR p_Ret_String = new uint16_t[lstrlen((PSTR)m_pBuffer->Data()) + 1];
+	 ToUnicode( p_Ret_String, (puint8_t)m_pBuffer->Data(), m_pBuffer->m_Data_Length + 1 );
 	 return p_Ret_String;
 #endif
 }
@@ -1381,7 +1381,7 @@ void ECharString::Format( PCSTR p_Str, ... )
 		case 'S':
 		{
 #ifndef K_UNICODE
-			const unsigned short* p_Next_Arg = va_arg(Arg_List, const unsigned short*);
+			PCWSTR p_Next_Arg = va_arg(Arg_List, PCWSTR);
 			if (p_Next_Arg == NULL)
 			   Item_Len = 6;  // "(null)"
 			else
@@ -1468,7 +1468,7 @@ void ECharString::Format( PCSTR p_Str, ... )
 				break;
 
 			case 'p':
-				va_arg(Arg_List, void*);
+				va_arg(Arg_List, PVOID);
 				Item_Len = 32;
 				Item_Len = max(Item_Len, Width + Precision);
 				break;
@@ -1483,7 +1483,7 @@ void ECharString::Format( PCSTR p_Str, ... )
 				p_Tmp = _tcsinc(p_Tmp);
 				p_Tmp = _tcsinc(p_Tmp);
 				Item_Len = 64;
-				va_arg(Arg_List, __int64);
+				va_arg(Arg_List, int64_t);
 				break;
 
 			default:

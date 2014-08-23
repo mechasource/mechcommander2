@@ -43,7 +43,7 @@
 //----------
 // EXTERNALS
 
-extern long				level;
+extern int32_t				level;
 extern PSTR			codeSegmentPtr;
 extern TokenCodeType	codeToken;
 
@@ -84,7 +84,7 @@ TypePtr execSubscripts (TypePtr typePtr) {
 			getCodeToken();
 			execExpression();
 			
-			long subscriptValue = tos->integer;
+			int32_t subscriptValue = tos->integer;
 			pop();
 
 			//-------------------------
@@ -141,7 +141,7 @@ TypePtr execVariable (SymTableNodePtr idPtr, UseType use) {
 	switch (idPtr->defn.info.data.varType) {
 		case VAR_TYPE_NORMAL: {
 			StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
-			long delta = level - idPtr->level;
+			int32_t delta = level - idPtr->level;
 			while (delta-- > 0)
 				headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
 			dataPtr = (StackItemPtr)headerPtr + idPtr->defn.info.data.offset;
@@ -205,7 +205,7 @@ TypePtr execVariable (SymTableNodePtr idPtr, UseType use) {
 	// Otherwise, replace the address with the value it points to.
 	if ((use != USE_TARGET) && (use != USE_REFPARAM) &&	(typePtr->form != FRM_ARRAY)) {
 		if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM)) {
-			tos->integer = *((long*)tos->address);
+			tos->integer = *((int32_t*)tos->address);
 			}
 		else if (typePtr == CharTypePtr)
 			tos->byte = *((PSTR)tos->address);
@@ -260,7 +260,7 @@ TypePtr execFactor (void) {
 			break;
 		case TKN_STRING: {
 			SymTableNodePtr nodePtr = getCodeSymTableNodePtr();
-			long length = strlen(nodePtr->name);
+			int32_t length = strlen(nodePtr->name);
 			if (length > 1) {
 				//-----------------------------------------------------------------------
 				// Remember, the double quotes are on the back and front of the string...

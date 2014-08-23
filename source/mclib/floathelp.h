@@ -29,20 +29,20 @@ class FloatHelp
 	protected:
 		char 				text[2048];				//Last person to set this displays the font.
 		Stuff::Vector4D 	screenPos;				//x,y are left and top.  z,w are width and height.
-		DWORD 				foregroundColor;		//Color in aRGB Format.
-		DWORD 				backgroundColor;		//Color in aRGB Format.
+		ULONG 				foregroundColor;		//Color in aRGB Format.
+		ULONG 				backgroundColor;		//Color in aRGB Format.
 		float 				scale;					//Scale.  1.0f is normal.
 		bool 				proportional;			//if false, spacing is equal for each letter.
 		bool 				bold;					//if true, draws bold.
 		bool 				italic;					//if true, draws italic.
 		bool 				wordWrap;				//if true, wraps word.
 
-		static	DWORD		currentFloatHelp;		//How many of them are we using at present
+		static	ULONG		currentFloatHelp;		//How many of them are we using at present
 		static	FloatHelp*	floatHelps;				//POinters to all of them.
 
 	public:
 
-		FloatHelp (long maxHelps)
+		FloatHelp (int32_t maxHelps)
 		{
 			init(maxHelps);
 			text[0] = 0;
@@ -59,7 +59,7 @@ class FloatHelp
 			destroy();
 		}
 
-		void init (long maxHelps);
+		void init (int32_t maxHelps);
 		
 		void destroy (void);
 		
@@ -69,8 +69,8 @@ class FloatHelp
 
 		static void setFloatHelp(PSTR  txt, 
 								Stuff::Vector4D screenPos, 
-								DWORD fClr, 
-								DWORD bClr, 
+								ULONG fClr, 
+								ULONG bClr, 
 								float scl,
 								bool proportional,
 								bool bold,
@@ -78,13 +78,13 @@ class FloatHelp
 								bool wordWrap);
 
 		static void getTextStringLength (PSTR text,
-										DWORD fColor,
+										ULONG fColor,
 										float scl,
 										bool proportional,
 										bool bold,        
 										bool italic,      
 										bool wordWrap,
-										DWORD &width, DWORD &height);
+										ULONG &width, ULONG &height);
 										
 	protected:
 		
@@ -105,12 +105,12 @@ class FloatHelp
 			screenPos = pos;
 		}
 		
-		void setForegroundColor (DWORD clr)
+		void setForegroundColor (ULONG clr)
 		{
 			foregroundColor = clr;
 		}
 
-		void setBackgroundColor (DWORD clr)
+		void setBackgroundColor (ULONG clr)
 		{
 			backgroundColor = clr;
 		}

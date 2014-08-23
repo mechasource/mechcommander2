@@ -58,16 +58,16 @@ void InitAlphaLookup( VFX_RGB* Palette)
 //
 	IniFile = new File;
 #ifdef _DEBUG
-	long AlphapalOpenResult = 
+	int32_t AlphapalOpenResult = 
 #endif
 		IniFile->open("AlphaPal.ini");
-	gosASSERT(AlphapalOpenResult == NO_ERR);
+	gosASSERT(AlphapalOpenResult == NO_ERROR);
 
 	LineNumber=0;
 
 	while (!IniFile->eof())
 	{
-		IniFile->readLine((MemoryPtr)&Line[0], 256);
+		IniFile->readLine((PUCHAR)&Line[0], 256);
 		LineNumber++;
 	
 		if (Line[0]!='#' && Line[0]!=';' && Line[0]!=0xa && Line[0]!=0)

@@ -48,7 +48,7 @@ extern char				wordString[];
 extern Literal			curLiteral;
 
 extern SymTableNodePtr	SymTableDisplay[];
-extern long				level;
+extern int32_t				level;
 
 extern TypePtr			IntegerTypePtr, CharTypePtr, RealTypePtr, BooleanTypePtr;
 extern Type				DummyType;
@@ -136,7 +136,7 @@ void checkRelationalOpTypes (TypePtr type1, TypePtr type2) {
 
 //***************************************************************************
 
-long isAssignTypeCompatible (TypePtr type1, TypePtr type2) {
+int32_t isAssignTypeCompatible (TypePtr type1, TypePtr type2) {
 
 	if (type1 == type2)
 		return(1);
@@ -276,7 +276,7 @@ TypePtr factor (void) {
 			}
 			break;
 		case TKN_STRING: {
-			long length = strlen(curLiteral.value.string);
+			int32_t length = strlen(curLiteral.value.string);
 			if (EnterStateSymbol) {
 				SymTableNodePtr stateSymbol = searchSymTableForState(curLiteral.value.string, SymTableDisplay[1]);
 				if (!stateSymbol)

@@ -97,7 +97,7 @@ void
 //
 gosFX::PointCloud::PointCloud(
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	ParticleCloud(DefaultData, spec, flags)
 {
@@ -110,7 +110,7 @@ gosFX::PointCloud::PointCloud(
 	Register_Object(m_cloudImplementation);
 	gos_PopCurrentHeap();
 
-	unsigned index = spec->m_maxParticleCount*sizeof(Particle);
+	uint32_t index = spec->m_maxParticleCount*sizeof(Particle);
 	m_P_localTranslation = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index += spec->m_maxParticleCount*sizeof(Stuff::Point3D);
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
@@ -135,7 +135,7 @@ gosFX::PointCloud::~PointCloud()
 gosFX::PointCloud*
 	gosFX::PointCloud::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);
@@ -181,7 +181,7 @@ bool
 	{
 		Stuff::ExtentBox box(Stuff::Point3D::Identity, Stuff::Point3D::Identity);
 		Stuff::Point3D *vertex = &m_P_localTranslation[0];
-		unsigned i=0;
+		uint32_t i=0;
 
 		//
 		//-------------------------------------------------------------------
@@ -276,7 +276,7 @@ bool
 //
 void
 	gosFX::PointCloud::CreateNewParticle(
-		unsigned index,
+		uint32_t index,
 		Stuff::Point3D *translation
 	)
 {
@@ -299,7 +299,7 @@ void
 //
 bool
 	gosFX::PointCloud::AnimateParticle(
-		unsigned index,
+		uint32_t index,
 		const Stuff::LinearMatrix4D *world_to_new_local,
 		Stuff::Time till
 	)
@@ -315,7 +315,7 @@ bool
 	//
 	Particle *particle = GetParticle(index);
 	Check_Object(particle);
-	Stuff::Scalar age = particle->m_age;
+	float age = particle->m_age;
 	if (age >= 1.0f)
 		return false;
 	Set_Statistic(Point_Count, Point_Count+1);
@@ -340,7 +340,7 @@ bool
 	// velocity
 	//------------------------------------------------------------------
 	//
-	Stuff::Scalar seed = particle->m_seed;
+	float seed = particle->m_seed;
 	Specification *spec = GetSpecification();
 	Check_Object(spec);
 	Stuff::Vector3D ether;
@@ -356,7 +356,7 @@ bool
 	// back to local space
 	//-------------------------------------------------------------------
 	//
-	Stuff::Scalar drag = -spec->m_pDrag.ComputeValue(age, seed);
+	float drag = -spec->m_pDrag.ComputeValue(age, seed);
 	Max_Clamp(drag, 0.0f);
 	if (sim_mode == StaticWorldSpaceSimulationMode)
 	{
@@ -408,8 +408,8 @@ bool
 	// Compute the particle's new velocity and position
 	//-------------------------------------------------
 	//
-	Stuff::Scalar time_slice =
-		static_cast<Stuff::Scalar>(till - m_lastRan);
+	float time_slice =
+		static_cast<float>(till - m_lastRan);
 	velocity->AddScaled(*velocity, accel, time_slice);
 	translation->AddScaled(*translation, *velocity, time_slice);
 
@@ -447,7 +447,7 @@ bool
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PointCloud::DestroyParticle(unsigned index)
+void gosFX::PointCloud::DestroyParticle(uint32_t index)
 {
 	Check_Object(this);
 

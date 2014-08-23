@@ -24,11 +24,11 @@
 bool useSound = TRUE;
 bool useMusic = TRUE;
 
-long DigitalMasterVolume = 0;
-long MusicVolume = 0;
-long sfxVolume = 0;
-long RadioVolume = 0;
-long BettyVolume = 0;
+int32_t DigitalMasterVolume = 0;
+int32_t MusicVolume = 0;
+int32_t sfxVolume = 0;
+int32_t RadioVolume = 0;
+int32_t BettyVolume = 0;
 
 #define MAX_SENSOR_UPDATE_TIME		(5.0f)	//Seconds
 
@@ -37,7 +37,7 @@ float		SoundSystem::SFXVolume = 0.6f;
 float		SoundSystem::musicVolume = 0.4f;
 float		SoundSystem::radioVolume = 0.6f;
 float		SoundSystem::bettyVolume = 0.7f;
-long		SoundSystem::largestSensorContact = -1;
+int32_t		SoundSystem::largestSensorContact = -1;
 
 #define FALLOFF_DISTANCE			(1500.0f)
 //---------------------------------------------------------------------------
@@ -55,7 +55,7 @@ void SoundSystem::destroy (void)
 }
 
 //---------------------------------------------------------------------------
-long SoundSystem::init (PSTR soundFileName)
+int32_t SoundSystem::init (PSTR soundFileName)
 {
 	if (useSound)
 	{
@@ -63,23 +63,23 @@ long SoundSystem::init (PSTR soundFileName)
 		soundName.init(soundPath,soundFileName,".snd");
 		
 		FitIniFile soundFile;
-		long result = soundFile.open(soundName);
-		gosASSERT(result == NO_ERR);
+		int32_t result = soundFile.open(soundName);
+		gosASSERT(result == NO_ERROR);
 
 		result = soundFile.seekBlock("SoundSetup");
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = soundFile.readIdULong("soundHeapSize",soundHeapSize);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		
 		result = soundFile.readIdFloat("MaxSoundDistance",maxSoundDistance);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		soundHeap = new UserHeap;
 		gosASSERT(soundHeap != NULL);
 
 		result = soundHeap->init(soundHeapSize,"SOUND");
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		//-----------------------------------------------------------------------
 		// Startup the Sound packet File with the sound Blocks in it.
@@ -94,7 +94,7 @@ long SoundSystem::init (PSTR soundFileName)
 		soundDataPath.init(CDsoundPath,soundFileName,".pak");
 		
 		result = soundDataFile->open(soundDataPath);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		
 		bettyDataFile = new PacketFile;
 		gosASSERT(bettyDataFile != NULL);
@@ -103,7 +103,7 @@ long SoundSystem::init (PSTR soundFileName)
 		bettyDataPath.init(CDsoundPath,"Betty",".pak");
 		
 		result = bettyDataFile->open(bettyDataPath);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		numBettySamples = bettyDataFile->getNumPackets();
 		
@@ -114,63 +114,63 @@ long SoundSystem::init (PSTR soundFileName)
 		supportDataPath.init(CDsoundPath,"support",".pak");
 		
 		result = supportDataFile->open(supportDataPath);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		numSupportSamples = supportDataFile->getNumPackets();
  		//-----------------------------------------------------------------------
 		// Load all of the sound Bite data.  Do not load actual packet unless
 		// preload field is TRUE.
 		result = soundFile.seekBlock("SoundBites");
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = soundFile.readIdULong("numBites",numSoundBites);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		//-----------------------------------------------------------------------
 		// Preallocate SoundBites
 		sounds = (SoundBite *)soundHeap->Malloc(sizeof(SoundBite) * numSoundBites);
 		gosASSERT(sounds != NULL);
 		memset(sounds,0,sizeof(SoundBite) * numSoundBites);
-		long i;
-		for (i=0;i<(long)numSoundBites;i++)
+		int32_t i;
+		for (i=0;i<(int32_t)numSoundBites;i++)
 		{
 			char biteBlock[20];
 			sprintf(biteBlock,"SoundBite%d",i);
 			
 			result = soundFile.seekBlock(biteBlock);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			result = soundFile.readIdULong("priority",sounds[i].priority);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			result = soundFile.readIdULong("cache",sounds[i].cacheStatus);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			result = soundFile.readIdULong("soundId",sounds[i].soundId);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			preloadSoundBite(i);		//ALWAYS Preload!!!!!!!!!!!!!
 
 			result = soundFile.readIdFloat("volume",sounds[i].volume);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 		}		
 
 		//---------------------------------------------------------------
 		// Load the digital Music Data Strings
 		result = soundFile.seekBlock("DigitalMusic");
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 			
 		result = soundFile.readIdLong("NumDMS",numDMS);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = soundFile.readIdFloat("StreamFadeDownTime",streamFadeDownTime);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = soundFile.readIdULong("StreamBitDepth",digitalStreamBitDepth);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 			
 		result = soundFile.readIdULong("StreamChannels",digitalStreamChannels);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		digitalMusicIds = (PSTR *)soundHeap->Malloc(sizeof(PSTR ) * numDMS);
 		gosASSERT(digitalMusicIds != NULL);
@@ -193,13 +193,13 @@ long SoundSystem::init (PSTR soundFileName)
 			
 			digitalMusicIds[i] = (PSTR )soundHeap->Malloc(30);
 			result = soundFile.readIdString(digitalMSId,digitalMusicIds[i],29);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			result = soundFile.readIdBoolean(digitalMSBId,digitalMusicLoopFlags[i]);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 
 			result = soundFile.readIdFloat(digitalMSVId,digitalMusicVolume[i]);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				digitalMusicVolume[i] = 1.0f;
 		}	
 		
@@ -219,7 +219,7 @@ long SoundSystem::init (PSTR soundFileName)
 
 	stream1Id = stream2Id = 0;
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //////////////////////////////////////////////////////////////////
@@ -230,13 +230,13 @@ long SoundSystem::init (PSTR soundFileName)
 //   fields in the memory.
 //
 //////////////////////////////////////////////////////////////////
-bool wave_ParseWaveMemory(MemoryPtr lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader, MemoryPtr* lplpWaveSamples,DWORD *lpcbWaveSize)
+bool wave_ParseWaveMemory(PUCHAR lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader, PUCHAR* lplpWaveSamples,ULONG *lpcbWaveSize)
 {
-    DWORD 	*pdw;
-    DWORD 	*pdwEnd;
-    DWORD   dwRiff;
-    DWORD   dwType;
-    DWORD   dwLength;
+    ULONG 	*pdw;
+    ULONG 	*pdwEnd;
+    ULONG   dwRiff;
+    ULONG   dwType;
+    ULONG   dwLength;
 
     // Set defaults to NULL or zero
     if (*lplpWaveHeader)
@@ -248,9 +248,9 @@ bool wave_ParseWaveMemory(MemoryPtr lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWave
     if (lpcbWaveSize)
         *lpcbWaveSize = 0;
 
-    // Set up DWORD pointers to the start of the chunk
+    // Set up ULONG pointers to the start of the chunk
     // of memory.
-    pdw = (DWORD *)lpChunkOfMemory;
+    pdw = (ULONG *)lpChunkOfMemory;
 
     // Get the type and length of the chunk of memory
     dwRiff = *pdw++;
@@ -266,7 +266,7 @@ bool wave_ParseWaveMemory(MemoryPtr lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWave
       return FALSE;      // not a WAV
 
     // Find the pointer to the end of the chunk of memory
-    pdwEnd = (DWORD *)((BYTE *)pdw + dwLength-4);
+    pdwEnd = (ULONG *)((puint8_t )pdw + dwLength-4);
 
     // Run through the bytes looking for the tags
     while (pdw < pdwEnd)
@@ -309,7 +309,7 @@ bool wave_ParseWaveMemory(MemoryPtr lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWave
             // Point the samples pointer to this part of the
             // chunk of memory.
             if (*lplpWaveSamples == NULL)
-				*lplpWaveSamples = (MemoryPtr)pdw;
+				*lplpWaveSamples = (PUCHAR)pdw;
 
             // Set the size of the wave
             if (lpcbWaveSize)    *lpcbWaveSize = dwLength;
@@ -324,7 +324,7 @@ bool wave_ParseWaveMemory(MemoryPtr lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWave
         } // End case
 
       // Move the pointer through the chunk of memory
-      pdw = (DWORD *)((BYTE *)pdw + ((dwLength+1)&~1));
+      pdw = (ULONG *)((puint8_t )pdw + ((dwLength+1)&~1));
       }
 
   // Failed! If we made it here, we did not get all the peices
@@ -333,10 +333,10 @@ bool wave_ParseWaveMemory(MemoryPtr lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWave
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::preloadSoundBite (long soundId)
+void SoundSystem::preloadSoundBite (int32_t soundId)
 {
-	long result = soundDataFile->seekPacket(soundId);
-	if (result != NO_ERR)
+	int32_t result = soundDataFile->seekPacket(soundId);
+	if (result != NO_ERROR)
 		return;
 		
 	//-------------------------------------------------------------
@@ -352,7 +352,7 @@ void SoundSystem::preloadSoundBite (long soundId)
 		if (thisSoundBite->biteSize == 0 || thisSoundBite->biteData == NULL)
 		{
 			thisSoundBite->biteSize = packetSize;
-			thisSoundBite->biteData = (MemoryPtr)soundHeap->Malloc(packetSize);
+			thisSoundBite->biteData = (PUCHAR)soundHeap->Malloc(packetSize);
 			if (!thisSoundBite->biteData)
 				return;
 		}
@@ -365,9 +365,9 @@ void SoundSystem::preloadSoundBite (long soundId)
 		soundFormat.wFormatTag = 1;				//PCM
 
 		MC2_WAVEFORMATEX *waveFormat = NULL;
-		MemoryPtr dataOffset = NULL;
-		DWORD length = 0;
-		DWORD bitsPerSec = 0;
+		PUCHAR dataOffset = NULL;
+		ULONG length = 0;
+		ULONG bitsPerSec = 0;
 		wave_ParseWaveMemory(thisSoundBite->biteData,&waveFormat,&dataOffset,&length);
 	   
 		if (waveFormat && dataOffset)
@@ -398,7 +398,7 @@ void SoundSystem::update (void)
 		//Play the isRaining SoundEffect at the soundEffect level in a loop.
 		if (isRaining && (isRaining < numSoundBites))
 		{
-			long ourChannel = FIRE_CHANNEL;
+			int32_t ourChannel = FIRE_CHANNEL;
 	
 			gosAudio_SetChannelSlider(ourChannel,gosAudio_Panning, 0.0);
 			float vol = sounds[isRaining].volume;
@@ -625,7 +625,7 @@ void SoundSystem::update (void)
 	{
 		//-----------------------------------------------
 		// Check all samples to see if one should end.
-		for (long i=0;i<MAX_DIGITAL_SAMPLES;i++)
+		for (int32_t i=0;i<MAX_DIGITAL_SAMPLES;i++)
 		{
 			gosAudio_PlayMode sampleStatus = gosAudio_GetChannelPlayMode(i);
 			if (sampleStatus == gosAudio_PlayOnce)
@@ -660,7 +660,7 @@ void SoundSystem::update (void)
 }
 
 //---------------------------------------------------------------------------
-long SoundSystem::playDigitalMusic (long musicId)
+int32_t SoundSystem::playDigitalMusic (int32_t musicId)
 {
 	//-------------------------------------------------------------------
 	// Make sure we have a real music filename.
@@ -762,11 +762,11 @@ long SoundSystem::playDigitalMusic (long musicId)
 		}
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long SoundSystem::playDigitalStream (PCSTR streamName)
+int32_t SoundSystem::playDigitalStream (PCSTR streamName)
 {
 	//-------------------------------------------------------------------
 	// Make sure we have a real music filename.
@@ -809,11 +809,11 @@ long SoundSystem::playDigitalStream (PCSTR streamName)
 		}
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long SoundSystem::playBettySample (ULONG bettySampleId)
+int32_t SoundSystem::playBettySample (ULONG bettySampleId)
 {
 	if (useSound && (bettySoundBite == NULL))	//Playing Betty takes precedence
 	{
@@ -821,7 +821,7 @@ long SoundSystem::playBettySample (ULONG bettySampleId)
 		if (bettySampleId >= numBettySamples)
 			return(-1);
 			
-		long ourChannel = BETTY_CHANNEL;
+		int32_t ourChannel = BETTY_CHANNEL;
 	
 		gosAudio_SetChannelSlider( ourChannel, gosAudio_Panning, 0.0f );
 		float vol = 1.0;
@@ -831,12 +831,12 @@ long SoundSystem::playBettySample (ULONG bettySampleId)
 		channelInUse[ourChannel] = TRUE;
 
 
-		long result = bettyDataFile->seekPacket(bettySampleId);
-		if (result != NO_ERR)
+		int32_t result = bettyDataFile->seekPacket(bettySampleId);
+		if (result != NO_ERROR)
 			return(-1);
 			
-		long bettySize = bettyDataFile->getPacketSize();
-		bettySoundBite = (MemoryPtr)soundHeap->Malloc(bettySize);
+		int32_t bettySize = bettyDataFile->getPacketSize();
+		bettySoundBite = (PUCHAR)soundHeap->Malloc(bettySize);
 		gosASSERT(bettySoundBite != NULL);
 		
 		bettyDataFile->readPacket(bettySampleId,bettySoundBite);
@@ -847,9 +847,9 @@ long SoundSystem::playBettySample (ULONG bettySampleId)
 		soundFormat.wFormatTag = 1;				//PCM
 		
 		MC2_WAVEFORMATEX *waveFormat = NULL;
-		MemoryPtr dataOffset = NULL;
-		DWORD length = 0;
-		DWORD bitsPerSec = 0;
+		PUCHAR dataOffset = NULL;
+		ULONG length = 0;
+		ULONG bitsPerSec = 0;
 		wave_ParseWaveMemory(bettySoundBite,&waveFormat,&dataOffset,&length);
 		
 		bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -872,7 +872,7 @@ long SoundSystem::playBettySample (ULONG bettySampleId)
 }
 
 //---------------------------------------------------------------------------
-long SoundSystem::playSupportSample (ULONG supportSampleId, PSTR fileName)
+int32_t SoundSystem::playSupportSample (ULONG supportSampleId, PSTR fileName)
 {
 	if (useSound && (supportSoundBite == NULL))		//Playing Support takes precedence
 	{
@@ -882,7 +882,7 @@ long SoundSystem::playSupportSample (ULONG supportSampleId, PSTR fileName)
 				return(-1);
 		}
 			
-		long ourChannel = SUPPORT_CHANNEL;
+		int32_t ourChannel = SUPPORT_CHANNEL;
 		
 		if (fileName) 
 		{
@@ -898,13 +898,13 @@ long SoundSystem::playSupportSample (ULONG supportSampleId, PSTR fileName)
 			lastSupportId = supportSampleId;
 			channelInUse[ourChannel] = TRUE;
 
-			long result = supportDataFile->seekPacket(supportSampleId);
-			if (result != NO_ERR)
+			int32_t result = supportDataFile->seekPacket(supportSampleId);
+			if (result != NO_ERROR)
 				return(-1);
-			long supportSize = supportDataFile->getPacketSize();
+			int32_t supportSize = supportDataFile->getPacketSize();
 			if (supportSize > 0)
 			{
-				supportSoundBite = (MemoryPtr)soundHeap->Malloc(supportSize);
+				supportSoundBite = (PUCHAR)soundHeap->Malloc(supportSize);
 				gosASSERT(supportSoundBite != NULL);
 			}
 			else
@@ -921,9 +921,9 @@ long SoundSystem::playSupportSample (ULONG supportSampleId, PSTR fileName)
 		soundFormat.wFormatTag = 1;				//PCM
 		
 		MC2_WAVEFORMATEX *waveFormat = NULL;
-		MemoryPtr dataOffset = NULL;
-		DWORD length = 0;
-		DWORD bitsPerSec = 0;
+		PUCHAR dataOffset = NULL;
+		ULONG length = 0;
+		ULONG bitsPerSec = 0;
 		wave_ParseWaveMemory(supportSoundBite,&waveFormat,&dataOffset,&length);
 		
 		bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -946,9 +946,9 @@ long SoundSystem::playSupportSample (ULONG supportSampleId, PSTR fileName)
 }
 
 //---------------------------------------------------------------------------
-bool SoundSystem::isPlayingSample (long sampleId)
+bool SoundSystem::isPlayingSample (int32_t sampleId)
 {
-	for (long i=0;i<MAX_DIGITAL_SAMPLES;i++)
+	for (int32_t i=0;i<MAX_DIGITAL_SAMPLES;i++)
 	{
 		if ((sampleId == channelSampleId[i]))
 			return TRUE;
@@ -958,7 +958,7 @@ bool SoundSystem::isPlayingSample (long sampleId)
 }
 
 //---------------------------------------------------------------------------
-bool SoundSystem::isChannelPlaying (long channelId)
+bool SoundSystem::isChannelPlaying (int32_t channelId)
 {
 	if ((channelId < 0) || (channelId > MAX_DIGITAL_SAMPLES))
 		return(FALSE);
@@ -989,9 +989,9 @@ bool SoundSystem::isDigitalMusicPlaying (void)
 }
 
 //---------------------------------------------------------------------------
-long SoundSystem::findOpenChannel (long start, long end)
+int32_t SoundSystem::findOpenChannel (int32_t start, int32_t end)
 {
-	long channel = start;
+	int32_t channel = start;
 	
 	while (channelInUse[channel] && (channel < end))
 		channel++;
@@ -1003,14 +1003,14 @@ long SoundSystem::findOpenChannel (long start, long end)
 }	
 
 //---------------------------------------------------------------------------
-long SoundSystem::playDigitalSample (ULONG sampleId, Stuff::Vector3D pos, bool allowDupes)
+int32_t SoundSystem::playDigitalSample (ULONG sampleId, Stuff::Vector3D pos, bool allowDupes)
 {
 	if (useSound && allowDupes || (!isPlayingSample(sampleId) && !allowDupes))
 	{
 		if (sampleId >= numSoundBites)
 			return(-1);
 			
-		long ourChannel = findOpenChannel(1,SUPPORT_CHANNEL);
+		int32_t ourChannel = findOpenChannel(1,SUPPORT_CHANNEL);
 	
 		if (ourChannel != -1)
 		{
@@ -1141,7 +1141,7 @@ void SoundSystem::setDigitalMasterVolume (byte volume)
 }
 
 //---------------------------------------------------------------------------
-long SoundSystem::getDigitalMasterVolume (void)
+int32_t SoundSystem::getDigitalMasterVolume (void)
 {
 	if (useSound)
 	{
@@ -1253,13 +1253,13 @@ void SoundSystem::stopABLMusic (void)
 }	
 
 //---------------------------------------------------------------------------
-void SoundSystem::playABLSFX (long sfxId)
+void SoundSystem::playABLSFX (int32_t sfxId)
 {
 	playDigitalSample(sfxId);
 }	
 
 //---------------------------------------------------------------------------
-void SoundSystem::playABLDigitalMusic (long musicId)
+void SoundSystem::playABLDigitalMusic (int32_t musicId)
 {
 //	PAUSE(("Switching to Tune %d.  Playing Tune %d.",musicId,currentMusicId));
 	playDigitalMusic(musicId);

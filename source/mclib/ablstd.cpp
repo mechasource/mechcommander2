@@ -37,7 +37,7 @@ extern char				wordString[];
 extern TokenCodeType	followParmList[];
 extern TokenCodeType	statementEndList[];
 extern SymTableNodePtr	symTableDisplay[];
-extern long				level;
+extern int32_t				level;
 extern TypePtr			IntegerTypePtr;
 extern TypePtr			CharTypePtr;
 extern TypePtr			RealTypePtr;
@@ -154,8 +154,8 @@ TypePtr stdGetStateHandle (void) {
 
 TypePtr standardRoutineCall (SymTableNodePtr routineIdPtr) {
 
-	long key = routineIdPtr->defn.info.routine.key;
-	long numParams = FunctionInfoTable[key].numParams;
+	int32_t key = routineIdPtr->defn.info.routine.key;
+	int32_t numParams = FunctionInfoTable[key].numParams;
 	switch (key) {
 		case RTN_RETURN:
 			stdReturn();
@@ -179,7 +179,7 @@ TypePtr standardRoutineCall (SymTableNodePtr routineIdPtr) {
 					getToken();
 				else
 					syntaxError(ABL_ERR_SYNTAX_WRONG_NUMBER_OF_PARAMS);
-				for (long i = 0; i < numParams; i++) {
+				for (int32_t i = 0; i < numParams; i++) {
 					TypePtr paramType = expression();
 					switch (FunctionInfoTable[key].params[i]) {
 						case PARAM_TYPE_ANYTHING:

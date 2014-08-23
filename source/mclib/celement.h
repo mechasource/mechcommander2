@@ -29,7 +29,7 @@ public:
 		drawNormal = TRUE;
 	}
 
-	Element (long _depth);
+	Element (int32_t _depth);
 	Element (float _depth);
 
 	virtual void draw (void) = 0;

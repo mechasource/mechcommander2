@@ -17,7 +17,7 @@ class StaticInfo
 {
 public:
 
-	void init( FitIniFile& file, PSTR blockName, long hiResOffsetX = 0, long hiResOffsetY = 0, DWORD neverFlush = 0 );
+	void init( FitIniFile& file, PSTR blockName, int32_t hiResOffsetX = 0, int32_t hiResOffsetY = 0, ULONG neverFlush = 0 );
 	void render();
 	bool isInside( int mouseX, int mouseY );
 
@@ -29,18 +29,18 @@ public:
 	float width(){ return location[2].x - location[0].x; }
 	float height(){ return location[2].y - location[0].y; }
 	
-	void getData(PUCHAR  buffer);
+	void getData(puint8_t  buffer);
 
 	void showGUIWindow( bool bShow );
 
-	void setColor( long newColor );
+	void setColor( int32_t newColor );
 
 	StaticInfo(){}
 	~StaticInfo();
 
 	ULONG textureHandle;
 	gos_VERTEX	location[4];
-	long u, v, uWidth, vHeight;
+	int32_t u, v, uWidth, vHeight;
 
 	ULONG textureWidth; // textures are square
 };
@@ -48,10 +48,10 @@ public:
 #if _CONSIDERED_OBSOLETE
 typedef struct _GUI_RECTd
 {
-	long left;
-	long top;
-	long right;
-	long bottom;
+	int32_t left;
+	int32_t top;
+	int32_t right;
+	int32_t bottom;
 } RECT;
 #endif
 
@@ -61,20 +61,20 @@ void drawEmptyRect( const RECT& rect, ULONG leftBorderColor = 0xffffffff,
 
 void drawRect( const RECT& rect, ULONG color );
 
-void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, 
-					long left, long top, bool proportional, PCSTR text, bool bBold, float scale );
+void drawShadowText( int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, 
+					int32_t left, int32_t top, bool proportional, PCSTR text, bool bBold, float scale );
 
-void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, 
-					long left, long top, bool proportional, PCSTR text, bool bold, float scale,
-					long xOffset, long yOffset);
+void drawShadowText( int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, 
+					int32_t left, int32_t top, bool proportional, PCSTR text, bool bold, float scale,
+					int32_t xOffset, int32_t yOffset);
 
-void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, 
-					long left, long top, long right, long bottom, bool proportional, PCSTR text, bool bold, float scale,
-					long xOffset, long yOffset);
+void drawShadowText( int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, 
+					int32_t left, int32_t top, int32_t right, int32_t bottom, bool proportional, PCSTR text, bool bold, float scale,
+					int32_t xOffset, int32_t yOffset);
 
 
 
-long interpolateColor( long color1, long color2, float percent );
+int32_t interpolateColor( int32_t color1, int32_t color2, float percent );
 
 inline COLORREF reverseRGB(COLORREF oldVal) 
 {
@@ -89,13 +89,13 @@ inline COLORREF reverseRGB(COLORREF oldVal)
 //
 // Replace with GOS String Resource get when available
 // Replaced.  Andy wants us to call everytime.  Will try and see if practical.
-extern DWORD gosResourceHandle;
+extern ULONG gosResourceHandle;
 
 
 
 
 #if 1
-inline int cLoadString(
+inline size_t cLoadString(
   uint32_t uID,             // resource identifier
   PSTR lpBuffer,      // pointer to buffer for resource
   size_t nBufferMax,        // size of buffer
@@ -106,7 +106,7 @@ inline int cLoadString(
 	PSTR  tmpBuffer = gos_GetResourceString(handle, uID);
 	size_t stringLength = strlen(tmpBuffer);
 	if (stringLength >= nBufferMax)
-		STOP(("String too long for buffer.  String Id %d, bufferLen %d, StringLen %d",uID,nBufferMax,stringLength));
+		STOP(("String too int32_t for buffer.  String Id %d, bufferLen %d, StringLen %d",uID,nBufferMax,stringLength));
 	memcpy(lpBuffer,tmpBuffer,stringLength);
 	return stringLength;
 }

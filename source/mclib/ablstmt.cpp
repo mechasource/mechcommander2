@@ -43,7 +43,7 @@ extern Literal			curLiteral;
 extern TokenCodeType	statementStartList[];
 extern TokenCodeType	statementEndList[];
 extern SymTableNodePtr	symTableDisplay[];
-extern long				level;
+extern int32_t				level;
 extern PSTR			codeBuffer;
 extern TypePtr			IntegerTypePtr;
 extern TypePtr			RealTypePtr;
@@ -56,7 +56,7 @@ extern bool				AssertEnabled;
 extern bool				PrintEnabled;
 extern bool				StringFunctionsEnabled;
 extern bool				Crunch;
-extern long				NumOrderCalls;
+extern int32_t				NumOrderCalls;
 
 //--------
 // GLOBALS
@@ -262,7 +262,7 @@ void forStatement (void) {
 
 //***************************************************************************
 
-TypePtr caseLabel (CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, long& caseLabelCount) {
+TypePtr caseLabel (CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, int32_t& caseLabelCount) {
 
 	CaseItemPtr newCaseItem = (CaseItemPtr)ABLStackMallocCallback(sizeof(CaseItem));
 	if (!newCaseItem)
@@ -338,7 +338,7 @@ TypePtr caseLabel (CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, long& c
 
 //---------------------------------------------------------------------------
 
-void caseBranch (CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, long& caseLabelCount, TypePtr expressionType) {
+void caseBranch (CaseItemPtr& caseItemHead, CaseItemPtr& caseItemTail, int32_t& caseLabelCount, TypePtr expressionType) {
 
 	//static CaseItemPtr oldCaseItemTail = NULL;
 	CaseItemPtr oldCaseItemTail = caseItemTail;
@@ -401,7 +401,7 @@ void switchStatement (void) {
 
 CaseItemPtr	caseItemHead = NULL;
 CaseItemPtr	caseItemTail = NULL;
-long caseLabelCount = 0;
+int32_t caseLabelCount = 0;
 	
 //CaseItemHead = CaseItemTail = NULL;
 //CaseLabelCount = 0;

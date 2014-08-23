@@ -32,9 +32,9 @@
 //----------
 // EXTERNALS
 extern PSTR		tokenp;
-extern long			execLineNumber;
-extern long			lineNumber;
-extern long			FileNumber;
+extern int32_t			execLineNumber;
+extern int32_t			lineNumber;
+extern int32_t			FileNumber;
 extern char			SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
 extern ABLModulePtr	CurModule;
 extern char			wordString[];
@@ -138,20 +138,20 @@ PSTR runtimeErrorMessages[] = {
 //--------
 // GLOBALS
 
-long	errorCount = 0;
+int32_t	errorCount = 0;
 
 extern DebuggerPtr debugger;
 
 //***************************************************************************
 
-void ABL_Fatal (long errCode, PSTR s) {
+void ABL_Fatal (int32_t errCode, PSTR s) {
 
 	ABLFatalCallback(errCode, s);
 }
 
 //---------------------------------------------------------------------------
 
-void ABL_Assert (bool test, long errCode, PSTR s) {
+void ABL_Assert (bool test, int32_t errCode, PSTR s) {
 
 	test; errCode; s;
 #ifdef _DEBUG
@@ -162,7 +162,7 @@ void ABL_Assert (bool test, long errCode, PSTR s) {
 
 //***************************************************************************
 
-void syntaxError (long errCode) {
+void syntaxError (int32_t errCode) {
 
 	char errMessage[MAXLEN_ERROR_MESSAGE];
 	sprintf(errMessage, "SYNTAX ERROR %s [line %d] - (type %d) %s \"%s\"\n", SourceFiles[FileNumber], lineNumber, errCode, syntaxErrorMessages[errCode], wordString);
@@ -179,7 +179,7 @@ void syntaxError (long errCode) {
 
 //---------------------------------------------------------------------------
 
-void runtimeError (long errCode) {
+void runtimeError (int32_t errCode) {
 
 	char message[512];
 

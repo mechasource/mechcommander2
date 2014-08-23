@@ -68,7 +68,7 @@ void GetCurrentContext( CONTEXT* Context )
 
 void InitStackWalk(STACKFRAME *sf, CONTEXT *Context);
 int WalkStack(STACKFRAME *sf);
-PSTR DecodeAddress( DWORD Address , bool brief);
+PSTR DecodeAddress( ULONG Address , bool brief);
 
 //---------------------------------------------------------------------------
 // Macro definitions
@@ -96,7 +96,7 @@ PSTR DecodeAddress( DWORD Address , bool brief);
 //---------------------------------------------------------------------------
 void HeapManager::destroy (void)
 {
-	long result = 0;
+	int32_t result = 0;
 	
 	//-----------------------------
 	// Remove this from the UEBER HEAP 
@@ -138,13 +138,13 @@ void HeapManager::init (void)
 }
 		
 //---------------------------------------------------------------------------
-HeapManager::operator MemoryPtr (void)
+HeapManager::operator PUCHAR (void)
 {
 	return getHeapPtr();
 }
 		
 //---------------------------------------------------------------------------
-MemoryPtr HeapManager::getHeapPtr (void)
+PUCHAR HeapManager::getHeapPtr (void)
 {
 	if (memReserved && totalSize && committedSize && heap)
 		return heap;
@@ -153,22 +153,22 @@ MemoryPtr HeapManager::getHeapPtr (void)
 }
 
 //---------------------------------------------------------------------------
-long HeapManager::createHeap (ULONG memSize)
+int32_t HeapManager::createHeap (ULONG memSize)
 {
-	heap = (MemoryPtr)VirtualAlloc(NULL,memSize,MEM_RESERVE,PAGE_READWRITE);
+	heap = (PUCHAR)VirtualAlloc(NULL,memSize,MEM_RESERVE,PAGE_READWRITE);
 
 	if (heap)
 	{
 		memReserved = TRUE;
 		totalSize = memSize;
-		return NO_ERR;
+		return NO_ERROR;
 	}
 
 	return COULDNT_CREATE;
 }
 
 //---------------------------------------------------------------------------
-long HeapManager::commitHeap (ULONG commitSize)
+int32_t HeapManager::commitHeap (ULONG commitSize)
 {
 	if (commitSize == 0)
 		commitSize = totalSize;
@@ -191,11 +191,11 @@ long HeapManager::commitHeap (ULONG commitSize)
 		commitSize = memLeft;
 	}
 
-	MemoryPtr result = (MemoryPtr)VirtualAlloc(heap,commitSize,MEM_COMMIT,PAGE_READWRITE);
+	PUCHAR result = (PUCHAR)VirtualAlloc(heap,commitSize,MEM_COMMIT,PAGE_READWRITE);
 
 	if (result == heap)
 	{
-		long actualSize = commitSize;
+		int32_t actualSize = commitSize;
 		committedSize += actualSize;
 
 		#ifdef CHECK_HEAP		
@@ -222,7 +222,7 @@ long HeapManager::commitHeap (ULONG commitSize)
 		retAddr = *((ULONG *)(currentEbp+4));
 		whoMadeMe = retAddr;
 
-		return NO_ERR;
+		return NO_ERROR;
 	}
 
 	gosASSERT(false);
@@ -230,9 +230,9 @@ long HeapManager::commitHeap (ULONG commitSize)
 }
 		
 //---------------------------------------------------------------------------
-long HeapManager::decommitHeap (ULONG decommitSize)
+int32_t HeapManager::decommitHeap (ULONG decommitSize)
 {
-	long result = 0;
+	int32_t result = 0;
 	
 	if (decommitSize == 0)
 		decommitSize = totalSize;
@@ -246,11 +246,11 @@ long HeapManager::decommitHeap (ULONG decommitSize)
 	ULONG decommitAddress = decommitSize;
 	committedSize -= decommitAddress;
 
-	result = VirtualFree((void *)committedSize,decommitSize,MEM_DECOMMIT);
+	result = VirtualFree((PVOID)committedSize,decommitSize,MEM_DECOMMIT);
 	if (result == FALSE)
 		result = GetLastError();
 	
-	return NO_ERR;
+	return NO_ERROR;
 }
 
 
@@ -271,11 +271,11 @@ UserHeap::UserHeap (void) : HeapManager()
 	mallocFatals = FALSE;
 	#endif	
 		
-	heapState = NO_ERR;
+	heapState = NO_ERROR;
 }
 
 //---------------------------------------------------------------------------
-long UserHeap::init (ULONG memSize, PSTR heapId, bool useGOS)
+int32_t UserHeap::init (ULONG memSize, PSTR heapId, bool useGOS)
 {
 	if (heapId)
 	{
@@ -287,7 +287,7 @@ long UserHeap::init (ULONG memSize, PSTR heapId, bool useGOS)
 
 	if (!useGOS)
 	{
-		long result = createHeap(memSize);
+		int32_t result = createHeap(memSize);
 		
 		if (result)
 			STOP(("Could not create Heap %s.  Error:%x",heapId,result));
@@ -320,7 +320,7 @@ long UserHeap::init (ULONG memSize, PSTR heapId, bool useGOS)
 		ULONG heapTop = (ULONG)heap;
 		heapTop += memSize;
 		heapTop -= 16;				
-		heapTop &= ~3;				//Force top to be DWORD boundary.
+		heapTop &= ~3;				//Force top to be ULONG boundary.
 	
 		ULONG heapBottom = (ULONG)heap;
 	
@@ -337,7 +337,7 @@ long UserHeap::init (ULONG memSize, PSTR heapId, bool useGOS)
 		//--------------------------------
 		//	Set all free memory to -1.
 		// Any access before ready and Exception city.
-		MemoryPtr start = (MemoryPtr)heapBottom;
+		PUCHAR start = (PUCHAR)heapBottom;
 		start += sizeof(HeapBlock);
 	
 		ULONG length = heapTop-heapBottom;
@@ -371,14 +371,14 @@ long UserHeap::init (ULONG memSize, PSTR heapId, bool useGOS)
 		heapSize = 0;
 
 		heapName = NULL;
-		heapState = NO_ERR;
+		heapState = NO_ERROR;
 
 		#ifdef _DEBUG
 		recordArray = NULL;
 		#endif
 	}
 	
-	return NO_ERR;
+	return NO_ERROR;
 }
 	
 #ifdef _DEBUG
@@ -463,7 +463,7 @@ void UserHeap::destroy (void)
 			heapName = NULL;
 		}
 
-		heapState = NO_ERR;
+		heapState = NO_ERROR;
 
 		#ifdef _DEBUG
 		if (recordArray)
@@ -489,11 +489,11 @@ ULONG UserHeap::totalCoreLeft (void)
 		return result;
 
 #ifdef SAFE_HEAP
-	long localHeapState = heapState;
+	int32_t localHeapState = heapState;
 #endif
 
 	HeapBlockPtr localFirst = firstNearBlock;
-	long heapBlockSize = -(long)allocatedBlockSize;
+	int32_t heapBlockSize = -(int32_t)allocatedBlockSize;
 	
 	if (!firstNearBlock)
 	{
@@ -560,11 +560,11 @@ ULONG UserHeap::coreLeft (void)
 		return result;
 
 #ifdef SAFE_HEAP
-	long localHeapState = heapState;
+	int32_t localHeapState = heapState;
 #endif
 
 	HeapBlockPtr localFirst = firstNearBlock;
-	long heapBlockSize = -(long)allocatedBlockSize;
+	int32_t heapBlockSize = -(int32_t)allocatedBlockSize;
 	
 #ifdef USE_BEST_FIT
 
@@ -660,9 +660,9 @@ DoneCL:
 }			
 
 //---------------------------------------------------------------------------
-void * UserHeap::Malloc (ULONG memSize)
+PVOID UserHeap::Malloc (ULONG memSize)
 {
-	void * result = NULL;
+	PVOID result = NULL;
 	if (gosHeap)
 	{
 		gos_PushCurrentHeap( gosHeap );
@@ -674,14 +674,14 @@ void * UserHeap::Malloc (ULONG memSize)
 
 	HeapBlockPtr blockOffs = NULL;
 	HeapBlockPtr localFirst = firstNearBlock;
-	long heapBlockSize = sizeof(HeapBlock);
+	int32_t heapBlockSize = sizeof(HeapBlock);
 	bool mf = mallocFatals;
 	
 	#ifdef _DEBUG
 	heapBlockSize += 4;
 	#endif
 	
-	long errorResult = 0;
+	int32_t errorResult = 0;
 
 	__asm
 	{
@@ -727,7 +727,7 @@ SearchLoop:
 	__asm
 	{
 		mov     ecx,[ebx].blockSize
-		sub     ecx,eax						//unsigned math
+		sub     ecx,eax						//uint32_t math
 		jnb     short FoundBlock
 		mov     ebx,[ebx].next
 		cmp     edx,ebx
@@ -1117,7 +1117,7 @@ NoAllocation:
 		GetCurrentContext(&ourContext);
 		InitStackWalk(&sf,&ourContext);
 		
-		for (long i=0;i<12;i++)
+		for (int32_t i=0;i<12;i++)
 		{
 			recordArray[recordCount].stack[i] = WalkStack(&sf);
 		}
@@ -1128,7 +1128,7 @@ NoAllocation:
 }
 
 //---------------------------------------------------------------------------
-long UserHeap::Free (void *memBlock)
+int32_t UserHeap::Free (PVOIDmemBlock)
 {
 	if (gosHeap)
 	{
@@ -1140,14 +1140,14 @@ long UserHeap::Free (void *memBlock)
 	}
 
 	HeapBlockPtr blockOffs = (HeapBlockPtr)memBlock;
-	long result = 0;
+	int32_t result = 0;
 	HeapBlockPtr sortBlock = NULL;
 
 	//------------------------------------------
 	// If freeing a NULL, we do nothing
 	//------------------------------------------
 	if (memBlock == NULL)
-		return(NO_ERR);
+		return(NO_ERROR);
 
 	//-------------------------------------------------------------------
 	// this is bad.  However, for release, just let it go on the really
@@ -1158,7 +1158,7 @@ long UserHeap::Free (void *memBlock)
 		PAUSE(("Tried to delete a bad pointer."));
 #endif
 
-		return (NO_ERR);
+		return (NO_ERROR);
 	}
 
 	__asm
@@ -1175,7 +1175,7 @@ long UserHeap::Free (void *memBlock)
 	}
 
 	//merge this block with lower one if possible
-	long mergeResult = mergeWithLower(blockOffs);
+	int32_t mergeResult = mergeWithLower(blockOffs);
 
 	__asm
 	{
@@ -1411,7 +1411,7 @@ Dealloc_Done:
 #ifdef _DEBUG
 	if (logMallocs)
 	{
-		long count = 0;
+		int32_t count = 0;
 		while (count<NUMMEMRECORDS && recordArray[count].ptr != memBlock)
 			count++;
 
@@ -1430,9 +1430,9 @@ Dealloc_Done:
 }
 
 //---------------------------------------------------------------------------
-void * UserHeap::calloc (ULONG memSize)
+PVOID UserHeap::calloc (ULONG memSize)
 {
-	void * result = malloc(memSize);
+	PVOID result = malloc(memSize);
 	memset(result,0,memSize);
 
 	return result;
@@ -1451,7 +1451,7 @@ void UserHeap::walkHeap (bool printIt, bool skipAllocated)
 	bool valid, allocated;
 	ULONG bSize;
 
-	if (!walker || (heapState != NO_ERR))
+	if (!walker || (heapState != NO_ERROR))
 		return;
 
 	#ifdef _DEBUG
@@ -1526,8 +1526,8 @@ void UserHeap::walkHeap (bool printIt, bool skipAllocated)
 					
 				//--------------------------------------------------------------------------------------------
 				// A size and/or address check can be put here to inspect the block and determine other info	
-				long magicNumber = 0x6726FB;
-				if ((walker->previous) == (void*)magicNumber)
+				int32_t magicNumber = 0x6726FB;
+				if ((walker->previous) == (PVOID)magicNumber)
 					printf("magicNumber");
 				//--------------------------------------------------------------------------------------------
 			}
@@ -1560,7 +1560,7 @@ void UserHeap::walkHeap (bool printIt, bool skipAllocated)
 }
 
 //---------------------------------------------------------------------------
-long UserHeap::getLastError (void)
+int32_t UserHeap::getLastError (void)
 {
 	return heapState;
 }
@@ -1794,7 +1794,7 @@ DoneML:
 //---------------------------------------------------------------------------
 void HeapList::addHeap (HeapManagerPtr newHeap)
 {
-	for (long i=0;i<MAX_HEAPS;i++)
+	for (int32_t i=0;i<MAX_HEAPS;i++)
 	{
 		if (heapRecords[i].thisHeap == NULL)
 		{
@@ -1808,7 +1808,7 @@ void HeapList::addHeap (HeapManagerPtr newHeap)
 //---------------------------------------------------------------------------
 void HeapList::removeHeap (HeapManagerPtr oldHeap)
 {
-	for (long i=0;i<MAX_HEAPS;i++)
+	for (int32_t i=0;i<MAX_HEAPS;i++)
 	{
 		if (heapRecords[i].thisHeap == oldHeap)
 		{
@@ -1837,7 +1837,7 @@ void HeapList::initializeStatistics()
 			StatisticFormat( "" );
 			StatisticFormat( "" );
 	
-			for (long i=0;i<50;i++)
+			for (int32_t i=0;i<50;i++)
 			{
 				char heapString[255];
 				sprintf(heapString,"Heap %d - HeapSize",i);
@@ -1860,7 +1860,7 @@ void HeapList::initializeStatistics()
 void HeapList::update (void)
 {
 	totalSize = totalCoreLeft = totalLeft = 0;
-	for (long i=0;i<50;i++)
+	for (int32_t i=0;i<50;i++)
 	{
 		if (heapRecords[i].thisHeap && (heapRecords[i].thisHeap->heapType() == USER_HEAP))
 		{
@@ -1887,14 +1887,14 @@ void HeapList::update (void)
 //---------------------------------------------------------------------------
 ULONG textToLong (PSTR num)
 {
-	long result = 0;
+	int32_t result = 0;
 	PSTR hexOffset = num;
 	
 	hexOffset += 2;
-	long numDigits = strlen(hexOffset)-1;
-	long power = 0;
+	int32_t numDigits = strlen(hexOffset)-1;
+	int32_t power = 0;
 	
-	for (long count = numDigits;count >= 0;count--,power++)
+	for (int32_t count = numDigits;count >= 0;count--,power++)
 	{
 		uint8_t currentDigit = toupper(hexOffset[count]);
 		
@@ -1919,7 +1919,7 @@ ULONG textToLong (PSTR num)
 }
 
 //-----------------------------------------------------------
-long longToText (PSTR result, long num, ULONG bufLen)
+int32_t longToText (PSTR result, int32_t num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%08X",num);
@@ -1931,11 +1931,11 @@ long longToText (PSTR result, long num, ULONG bufLen)
 	strncpy(result,temp,numLength);
 	result[numLength] = '\0';
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }	
 
 //--------------------------------------------------------------------------
-long getStringFromMap (File &mapFile, ULONG addr, PSTR result)
+int32_t getStringFromMap (File &mapFile, ULONG addr, PSTR result)
 {
 	//----------------------------------------
 	// Convert function address to raw offset
@@ -1957,14 +1957,14 @@ long getStringFromMap (File &mapFile, ULONG addr, PSTR result)
 	char mapFileLine[512];
 	
 	mapFile.seek(0);
-	mapFile.readLine((MemoryPtr)mapFileLine,511);
+	mapFile.readLine((PUCHAR)mapFileLine,511);
 	while (strstr(mapFileLine,"  Address") == NULL)
 	{
-		mapFile.readLine((MemoryPtr)mapFileLine,511);
+		mapFile.readLine((PUCHAR)mapFileLine,511);
 	}
 	
-	mapFile.readLine((MemoryPtr)mapFileLine,511);
-	mapFile.readLine((MemoryPtr)mapFileLine,511);
+	mapFile.readLine((PUCHAR)mapFileLine,511);
+	mapFile.readLine((PUCHAR)mapFileLine,511);
 	//-------------------------------------------------------------
 	// We've found the first code entry.  Now, scan until
 	// the current address is greater than the address asked for.
@@ -1984,7 +1984,7 @@ long getStringFromMap (File &mapFile, ULONG addr, PSTR result)
 		}
 		
 		strncpy(previousAddress,&(mapFileLine[6]),510);
-		mapFile.readLine((MemoryPtr)mapFileLine,511);
+		mapFile.readLine((PUCHAR)mapFileLine,511);
 	}
 	
 	return(0);
@@ -2001,7 +2001,7 @@ void HeapList::dumpLog (void)
 	
 	File mapFile;
 	
-	long mapResult = 0;
+	int32_t mapResult = 0;
 	#ifdef _DEBUG
 	#ifdef TERRAINEDIT
 	mapResult = mapFile.open("teditor.map");
@@ -2019,7 +2019,7 @@ void HeapList::dumpLog (void)
 	ULONG totalCommit = 0;
 	ULONG totalFree = 0;
 	
-	for (long i=0;i<MAX_HEAPS;i++)
+	for (int32_t i=0;i<MAX_HEAPS;i++)
 	{
 		currentHeap = heapRecords[i].thisHeap;
 		
@@ -2028,7 +2028,7 @@ void HeapList::dumpLog (void)
 			sprintf(msg,"ListNo: %d     Heap: %d     Type: %d     Made by: %08X",i,heapNumber,currentHeap->heapType(),currentHeap->owner());
 			logFile.writeLine(msg);
 
-			if (mapResult == NO_ERR)
+			if (mapResult == NO_ERROR)
 			{
 				mapStringSize = getStringFromMap(mapFile,currentHeap->owner(),mapInfo);
 				if (mapStringSize)
@@ -2076,7 +2076,7 @@ void HeapList::dumpLog (void)
 	logFile.close();
 }
 
-bool UserHeap::pointerOnHeap (void *ptr)
+bool UserHeap::pointerOnHeap (PVOIDptr)
 {
 	if (IsBadReadPtr(getHeapPtr(),totalSize))
 		return false;

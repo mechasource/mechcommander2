@@ -185,7 +185,7 @@ bool
 {
 
 	Check_Object(this);
-	Stuff::Scalar min,max;
+	float min,max;
 	  m_pLifeSpan.ExpensiveComputeRange(&min,&max);
 	  if(min<0.0f) 
 	  {
@@ -306,7 +306,7 @@ void
 gosFX::ParticleCloud::ParticleCloud(
 	ClassData *class_data,
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	Effect(class_data, spec, flags)
 {
@@ -346,7 +346,7 @@ void
 	Effect::Start(info);
 	Specification *spec = GetSpecification();
 	Check_Object(spec);
-	Stuff::Scalar newbies =
+	float newbies =
 		spec->m_startingPopulation.ComputeValue(m_age, m_seed);
 	Min_Clamp(newbies, 0.0f);
 	m_birthAccumulator += newbies;
@@ -385,16 +385,16 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo *info)
 	//
 	Specification *spec = GetSpecification();
 	Check_Object(spec);
-	Stuff::Scalar dT =
-		static_cast<Stuff::Scalar>(info->m_time - m_lastRan);
+	float dT =
+		static_cast<float>(info->m_time - m_lastRan);
 	Verify(dT >= 0.0f);
-	Stuff::Scalar prev_age = m_age;
+	float prev_age = m_age;
 	m_age += dT * m_ageRate;
 	if (m_age >= 1.0f)
 		m_birthAccumulator = 0.0f;
 	else
 	{
-		Stuff::Scalar new_life =
+		float new_life =
 			spec->m_particlesPerSecond.ComputeValue(m_age, m_seed);
 		Min_Clamp(new_life, 0.0f);
 		m_birthAccumulator += dT * new_life;
@@ -473,7 +473,7 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo *info)
 	// Only allow fractional births to carry over to next frame
 	//---------------------------------------------------------
 	//
-	m_birthAccumulator -= static_cast<Stuff::Scalar>(floor(m_birthAccumulator));
+	m_birthAccumulator -= static_cast<float>(floor(m_birthAccumulator));
 
 	//
 	//----------------------------
@@ -520,7 +520,7 @@ void gosFX::ParticleCloud::Kill()
 //
 void
 	gosFX::ParticleCloud::CreateNewParticle(
-		unsigned index,
+		uint32_t index,
 		Stuff::Point3D *translation
 	)
 {
@@ -536,15 +536,15 @@ void
 	Particle *particle = GetParticle(index);
 	Check_Object(particle);
 	particle->m_age = 0.0f;
-	Stuff::Scalar min_seed =
+	float min_seed =
 		spec->m_minimumChildSeed.ComputeValue(m_age, m_seed);
-	Stuff::Scalar seed_range =
+	float seed_range =
 		spec->m_maximumChildSeed.ComputeValue(m_age, m_seed) - min_seed;
-	Stuff::Scalar seed =
+	float seed =
 		Stuff::Random::GetFraction()*seed_range + min_seed;
 	Clamp(seed, 0.0f, 1.0f);
 	particle->m_seed = seed;
-	Stuff::Scalar lifetime =
+	float lifetime =
 		spec->m_pLifeSpan.ComputeValue(m_age, seed);
 	Min_Clamp(lifetime, 0.0333333f);
 	particle->m_ageRate = 1.0f / lifetime;
@@ -573,9 +573,9 @@ void
 	// Figure out the initial velocity
 	//--------------------------------
 	//
-	Stuff::Scalar pitch_min =
+	float pitch_min =
 		spec->m_minimumDeviation.ComputeValue(m_age, seed);
-	Stuff::Scalar pitch_range =
+	float pitch_range =
 		spec->m_maximumDeviation.ComputeValue(m_age, seed) - pitch_min;
 	if (pitch_range < 0.0f)
 		pitch_range = 0.0f;
@@ -592,7 +592,7 @@ void
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ParticleCloud::DestroyParticle(unsigned index)
+void gosFX::ParticleCloud::DestroyParticle(uint32_t index)
 {
 	Particle *particle = GetParticle(index);
 	Check_Object(particle);

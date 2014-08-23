@@ -164,7 +164,7 @@ void
 //
 gosFX::ShardCloud::ShardCloud(
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	SpinningCloud(DefaultData, spec, flags)
 {
@@ -177,7 +177,7 @@ gosFX::ShardCloud::ShardCloud(
 	Register_Object(m_cloudImplementation);
 	gos_PopCurrentHeap();
 
-	unsigned index = spec->m_maxParticleCount*sizeof(Particle);
+	uint32_t index = spec->m_maxParticleCount*sizeof(Particle);
 	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index += 3*spec->m_maxParticleCount*sizeof(Stuff::Point3D);
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
@@ -202,7 +202,7 @@ gosFX::ShardCloud::~ShardCloud()
 gosFX::ShardCloud*
 	gosFX::ShardCloud::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);
@@ -218,7 +218,7 @@ gosFX::ShardCloud*
 //
 bool
 	gosFX::ShardCloud::AnimateParticle(
-		unsigned index,
+		uint32_t index,
 		const Stuff::LinearMatrix4D *world_to_new_local,
 		Stuff::Time till
 	)
@@ -237,8 +237,8 @@ bool
 	Check_Object(spec);
 	Particle *particle = GetParticle(index);
 	Check_Object(particle);
-	Stuff::Scalar seed = particle->m_seed;
-	Stuff::Scalar age = particle->m_age;
+	float seed = particle->m_seed;
+	float age = particle->m_age;
 
 	//
 	//------------------
@@ -259,7 +259,7 @@ bool
 //
 void
 	gosFX::ShardCloud::CreateNewParticle(
-		unsigned index,
+		uint32_t index,
 		Stuff::Point3D *translation
 	)
 {
@@ -290,7 +290,7 @@ void
 
 //------------------------------------------------------------------------------
 //
-void gosFX::ShardCloud::DestroyParticle(unsigned index)
+void gosFX::ShardCloud::DestroyParticle(uint32_t index)
 {
 	Check_Object(this);
 
@@ -328,8 +328,8 @@ void gosFX::ShardCloud::Draw(DrawInfo *info)
 		// Check the orientation mode.  The first case is XY orientation
 		//--------------------------------------------------------------
 		//
-		unsigned i;
-		unsigned vert=0;
+		uint32_t i;
+		uint32_t vert=0;
 		if (spec->m_alignZUsingX)
 		{
 			if (spec->m_alignZUsingY)
@@ -384,7 +384,7 @@ void gosFX::ShardCloud::Draw(DrawInfo *info)
 						// Figure out the scale, then build the three points
 						//--------------------------------------------------
 						//
-						Stuff::Scalar scale = particle->m_scale;
+						float scale = particle->m_scale;
 						m_P_vertices[vert++].Multiply(
 							Stuff::Point3D(
 								0.0f,
@@ -472,7 +472,7 @@ void gosFX::ShardCloud::Draw(DrawInfo *info)
 						// Figure out the scale, then build the three points
 						//--------------------------------------------------
 						//
-						Stuff::Scalar scale = particle->m_scale;
+						float scale = particle->m_scale;
 						m_P_vertices[vert++].Multiply(
 							Stuff::Point3D(
 								0.0f,
@@ -561,7 +561,7 @@ void gosFX::ShardCloud::Draw(DrawInfo *info)
 					// Figure out the scale, then build the three points
 					//--------------------------------------------------
 					//
-					Stuff::Scalar scale = particle->m_scale;
+					float scale = particle->m_scale;
 					m_P_vertices[vert++].Multiply(
 						Stuff::Point3D(
 							0.0f,
@@ -621,7 +621,7 @@ void gosFX::ShardCloud::Draw(DrawInfo *info)
 					// Figure out the scale, then build the three points
 					//--------------------------------------------------
 					//
-					Stuff::Scalar scale = particle->m_scale;
+					float scale = particle->m_scale;
 					m_P_vertices[vert++].Multiply(
 						Stuff::Point3D(
 							0.0f,

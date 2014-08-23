@@ -24,8 +24,8 @@
 
 //---------------------------------------------------------------------------
 // Macro Definitions
-#ifndef NO_ERR
-#define NO_ERR		0
+#ifndef NO_ERROR
+#define NO_ERROR		0
 #endif
 
 #define BLANK_TILE					(-1)
@@ -42,12 +42,12 @@
 #define START_CEMENT_TYPE			13
 #define END_CEMENT_TYPE				20
 
-extern long TERRAIN_TXM_SIZE;
+extern int32_t TERRAIN_TXM_SIZE;
 //---------------------------------------------------------------------------
 // Class Definitions
-extern long tileCacheReqs;
-extern long tileCacheHits;
-extern long tileCacheMiss;
+extern int32_t tileCacheReqs;
+extern int32_t tileCacheHits;
+extern int32_t tileCacheMiss;
 
 #define	MC2_TERRAIN_CEMENT_FLAG		0x00000001
 #define MC2_TERRAIN_ALPHA_FLAG		0x00000002
@@ -55,51 +55,51 @@ extern long tileCacheMiss;
 //----------------------------------------------------
 struct TerrainTXM
 {
-	DWORD			flags;						//Tells me if this texture is a cement texture, has alpha, etc.
-	DWORD			mcTextureNodeIndex;			//Pointer to MCTextureNode which is used to cache handles if necessary
+	ULONG			flags;						//Tells me if this texture is a cement texture, has alpha, etc.
+	ULONG			mcTextureNodeIndex;			//Pointer to MCTextureNode which is used to cache handles if necessary
 };
 
 struct MC_TerrainType
 {
-	long			terrainId;
+	int32_t			terrainId;
 	char			*terrainName;
 	char			*maskName;
-	long			terrainPriority;
-	MemoryPtr		*textureData;
-	MemoryPtr		*maskData;
-	long			baseTXMIndex;				//Index of Highest MIP Level of Texture.
+	int32_t			terrainPriority;
+	PUCHAR		*textureData;
+	PUCHAR		*maskData;
+	int32_t			baseTXMIndex;				//Index of Highest MIP Level of Texture.
 	ULONG	terrainMapRGB;				//Rgb Color used for TacMap.
-	long			nameId;
+	int32_t			nameId;
 };
 
 struct MC_DetailType
 {
-	long			detailId;
+	int32_t			detailId;
 	char			*detailName;
-	MemoryPtr		*detailData;
-	long			numDetails;
+	PUCHAR		*detailData;
+	int32_t			numDetails;
 	float			frameRate;
 	float			tilingFactor;		//How often does texture repeat
-	long			baseTXMIndex;
+	int32_t			baseTXMIndex;
 };
 
 struct MC_OverlayType
 {
-	long			overlayId;
+	int32_t			overlayId;
 	char			*overlayName;
-	long			numTextures;
-	long			oldOverlayId;
+	int32_t			numTextures;
+	int32_t			oldOverlayId;
 	bool			isMLRAppearance;
-	MemoryPtr		*overlayData;				
-	long			baseTXMIndex;
+	PUCHAR		*overlayData;				
+	int32_t			baseTXMIndex;
 	ULONG	terrainMapRGB;
 };
 
 struct TransitionType
 {
-	DWORD 			baseTXMIndex;				//When we build transition, where did we stick it
-	DWORD 			transitionIndex;			//Code/Hash/Whatever to uniquely ID this transition.
-	DWORD			overlayIndex;				//Overlays blended onto texture now.
+	ULONG 			baseTXMIndex;				//When we build transition, where did we stick it
+	ULONG 			transitionIndex;			//Code/Hash/Whatever to uniquely ID this transition.
+	ULONG			overlayIndex;				//Overlays blended onto texture now.
 };
 
 //---------------------------------------------------------------------------
@@ -109,29 +109,29 @@ class TerrainTextures
 	//-------------
 	protected:
 
-		static long			numTxms;
+		static int32_t			numTxms;
 		TerrainTXM			*textures;
-		static long			nextAvailable;
-		long				firstTransition;
+		static int32_t			nextAvailable;
+		int32_t				firstTransition;
 
-		long				numTypes;
+		int32_t				numTypes;
 		MC_TerrainTypePtr	types;
 
-		long				numOverlays;
+		int32_t				numOverlays;
 		MC_OverlayTypePtr	overlays;
 		
-		long				numDetails;
+		int32_t				numDetails;
 		MC_DetailTypePtr	details;
 		
-		long				numTransitions;
+		int32_t				numTransitions;
 		TransitionTypePtr	transitions;
-		long				nextTransition;
+		int32_t				nextTransition;
 
 		UserHeapPtr			tileHeap;
 		UserHeapPtr			tileRAMHeap;
 
-		long				globalMipLevel;
-		long				firstOverlay;
+		int32_t				globalMipLevel;
+		int32_t				firstOverlay;
 
 		bool				quickLoad;				//Checks for list o magic textures and then checks that each magic texture exists.
 		char				*localBaseName;
@@ -145,20 +145,20 @@ class TerrainTextures
 	//-----------------
 	protected:
 
-		long initTexture (long typeNum);
-		void initMask (long typeNum);
-		long initDetail (long typeNum, long detailNum);
-		long initOverlay (long overlayNum, long txmNum, PSTR txmName);
+		int32_t initTexture (int32_t typeNum);
+		void initMask (int32_t typeNum);
+		int32_t initDetail (int32_t typeNum, int32_t detailNum);
+		int32_t initOverlay (int32_t overlayNum, int32_t txmNum, PSTR txmName);
 
-		long loadTextureMemory (PSTR textureName, long mipSize);
-		long loadOverlayMemory (PSTR overlayName);
-		long textureFromMemory (MemoryPtr ourRam, long mipSize);
-		long loadDetailMemory  (PSTR detailName, long mipSize);
-		long textureFromMemoryAlpha (MemoryPtr ourRam, long mipSize);
+		int32_t loadTextureMemory (PSTR textureName, int32_t mipSize);
+		int32_t loadOverlayMemory (PSTR overlayName);
+		int32_t textureFromMemory (PUCHAR ourRam, int32_t mipSize);
+		int32_t loadDetailMemory  (PSTR detailName, int32_t mipSize);
+		int32_t textureFromMemoryAlpha (PUCHAR ourRam, int32_t mipSize);
 
-		long createTransition (DWORD typeInfo, DWORD overlayInfo = 0);
-		void combineTxm (MemoryPtr dest, DWORD binNumber, long type, long mipLevel);
-		void combineOverlayTxm (MemoryPtr dest, long type, long mipLevel);
+		int32_t createTransition (ULONG typeInfo, ULONG overlayInfo = 0);
+		void combineTxm (PUCHAR dest, ULONG binNumber, int32_t type, int32_t mipLevel);
+		void combineOverlayTxm (PUCHAR dest, int32_t type, int32_t mipLevel);
 
 	public:
 	
@@ -216,13 +216,13 @@ class TerrainTextures
 			destroy();
 		}
 
-		long init (PSTR fileName, PSTR baseName);
+		int32_t init (PSTR fileName, PSTR baseName);
 		
-		long setTexture (DWORD typeInfo, DWORD overlayInfo);
+		int32_t setTexture (ULONG typeInfo, ULONG overlayInfo);
 		
-		long setDetail (DWORD typeInfo, DWORD frameNum);
+		int32_t setDetail (ULONG typeInfo, ULONG frameNum);
 		
-		float getDetailTilingFactor (long typeInfo)
+		float getDetailTilingFactor (int32_t typeInfo)
 		{
 			if (typeInfo < numDetails)
 				return details[typeInfo].tilingFactor;
@@ -230,11 +230,11 @@ class TerrainTextures
 			return 64.0f;
 		}
 
-		long getNumTypes() const { return numTypes; }
+		int32_t getNumTypes() const { return numTypes; }
 
-		long getTextureNameID( long id ) const { return types[id].nameId; }
+		int32_t getTextureNameID( int32_t id ) const { return types[id].nameId; }
 		
-		float getDetailFrameRate (long typeInfo)
+		float getDetailFrameRate (int32_t typeInfo)
 		{
 			if ((typeInfo < numDetails) && details[typeInfo].frameRate > Stuff::SMALL)
 				return (1.0f / details[typeInfo].frameRate);
@@ -242,33 +242,33 @@ class TerrainTextures
 			return 0.066666667f;		//15 FPS
 		}
 
-		long setOverlay (DWORD overlayInfo);
-		long getOverlayHandle( Overlays id, int Offset );
-		void getOverlayInfoFromHandle( long handle, Overlays& id, ULONG& Offset );
+		int32_t setOverlay (ULONG overlayInfo);
+		int32_t getOverlayHandle( Overlays id, int Offset );
+		void getOverlayInfoFromHandle( int32_t handle, Overlays& id, ULONG& Offset );
 
 		void purgeTransitions (void);
 		
-		DWORD getTextureTypeRGB (long typeInfo)
+		ULONG getTextureTypeRGB (int32_t typeInfo)
 		{
 			gosASSERT(typeInfo < numTypes);
 			return types[typeInfo].terrainMapRGB;
 		}
 
-		DWORD getOverlayTypeRGB (long overlayNum)
+		ULONG getOverlayTypeRGB (int32_t overlayNum)
 		{
 			gosASSERT(overlayNum < numOverlays);
 			return overlays[overlayNum].terrainMapRGB;
 		}
 
-		long getTexturePriority (long typeInfo)
+		int32_t getTexturePriority (int32_t typeInfo)
 		{
 			gosASSERT(typeInfo < numTypes);
 			return types[typeInfo].terrainPriority;
 		}
 
-		DWORD getTexture (DWORD texture)
+		ULONG getTexture (ULONG texture)
 		{
-			if ((long)texture >= nextAvailable) 
+			if ((int32_t)texture >= nextAvailable) 
 				return NULL;
 
 			if ( textures[texture].mcTextureNodeIndex == 0xffffffff )
@@ -277,18 +277,18 @@ class TerrainTextures
 			return (mcTextureManager->get_gosTextureHandle(textures[texture].mcTextureNodeIndex));
 		}
 
-		DWORD getTextureHandle (DWORD texture)
+		ULONG getTextureHandle (ULONG texture)
 		{
-			if ((long)texture >= nextAvailable) 
+			if ((int32_t)texture >= nextAvailable) 
 				return 0xffffffff;
 
 			mcTextureManager->get_gosTextureHandle(textures[texture].mcTextureNodeIndex);
 			return (textures[texture].mcTextureNodeIndex);
 		}
 
-		DWORD getDetail (DWORD dTexture)
+		ULONG getDetail (ULONG dTexture)
 		{
-			if ((long)dTexture >= nextAvailable) 
+			if ((int32_t)dTexture >= nextAvailable) 
 				return NULL;
 
 			if ( textures[dTexture].mcTextureNodeIndex == 0xffffffff )
@@ -297,32 +297,32 @@ class TerrainTextures
 			return (mcTextureManager->get_gosTextureHandle(textures[dTexture].mcTextureNodeIndex));
 		}
 
-		DWORD getDetailHandle (DWORD dTexture)
+		ULONG getDetailHandle (ULONG dTexture)
 		{
-			if ((long)dTexture >= nextAvailable) 
+			if ((int32_t)dTexture >= nextAvailable) 
 				return NULL;
 
 			mcTextureManager->get_gosTextureHandle(textures[dTexture].mcTextureNodeIndex);
 			return (textures[dTexture].mcTextureNodeIndex);
 		}
 
-		void setMipLevel (long mipLevel)
+		void setMipLevel (int32_t mipLevel)
 		{
 			if ((mipLevel >= 0) && (mipLevel < MC_MAX_MIP_LEVELS))
 				globalMipLevel = mipLevel;
 		}
 		
-		long getFirstOverlay (void)
+		int32_t getFirstOverlay (void)
 		{
 			return firstOverlay;
 		}
 		
-		bool isCement (DWORD typeInfo)
+		bool isCement (ULONG typeInfo)
 		{
 			return (textures[typeInfo].flags & MC2_TERRAIN_CEMENT_FLAG) == MC2_TERRAIN_CEMENT_FLAG;
 		}
 		
-		bool isAlpha (DWORD typeInfo)
+		bool isAlpha (ULONG typeInfo)
 		{
 			return (textures[typeInfo].flags & MC2_TERRAIN_ALPHA_FLAG) == MC2_TERRAIN_ALPHA_FLAG;
 		}

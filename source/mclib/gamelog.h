@@ -38,21 +38,21 @@ class GameLog {
 
 	public:
 
-		long					handle;
+		int32_t					handle;
 		bool					inUse;
 		char					fileName[MAXLEN_GAMELOG_NAME];
 		File*					filePtr;
-		long					numLines;
-		long					totalLines;
+		int32_t					numLines;
+		int32_t					totalLines;
 		char					lines[MAX_GAMELOG_LINES][MAX_GAMELOG_LINELEN];
 
 		static GameLogPtr		files[MAX_GAMELOGS];
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 			
 		void init (void) {
 			handle = -1;
@@ -61,7 +61,7 @@ class GameLog {
 			filePtr = NULL;
 			numLines = 0;
 			totalLines = 0;
-			for (long i = 0; i < MAX_GAMELOG_LINES; i++)
+			for (int32_t i = 0; i < MAX_GAMELOG_LINES; i++)
 				lines[i][0] = NULL;
 		}
 
@@ -79,7 +79,7 @@ class GameLog {
 
 		void close (void);
 
-		long open (PSTR fileName);
+		int32_t open (PSTR fileName);
 
 		void write (PSTR s);
 

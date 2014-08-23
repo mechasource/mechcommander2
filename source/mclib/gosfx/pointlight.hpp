@@ -33,7 +33,7 @@ namespace gosFX
 				m_color;
 			Stuff::LinearMatrix4D
 				m_origin;
-			Stuff::Scalar
+			float
 				m_intensity,
 				m_inner,
 				m_outer;
@@ -105,10 +105,9 @@ namespace gosFX
 			m_innerRadius,
 			m_outerRadius;
 
-		bool
-			m_twoSided;
-		Stuff::MString
-			m_lightMap;
+		bool m_twoSided;
+		Stuff::MString	m_lightMap;
+		//std::wstring m_lightMap;
 	};
 
 	//############################################################################
@@ -119,20 +118,17 @@ namespace gosFX
 		public Effect
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void TerminateClass();
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 		typedef PointLight__Specification Specification;
 
 		static PointLight*
 			Make(
 				Specification *spec,
-				unsigned flags
+				uint32_t flags
 			);
 
 		~PointLight();
@@ -140,7 +136,7 @@ namespace gosFX
 	protected:
 		PointLight(
 			Specification *spec,
-			unsigned flags
+			uint32_t flags
 		);
 
 		Light
@@ -173,7 +169,6 @@ namespace gosFX
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance() const;
 	};
 }

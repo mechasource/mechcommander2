@@ -72,7 +72,7 @@ namespace gosFX
 
 		bool
 			m_animated;
-		BYTE
+		UCHAR
 			m_width;
 
 		void
@@ -89,8 +89,8 @@ namespace gosFX
 	// Class Registration Support
 	//
 	public:
-		static void InitializeClass();
-		static void	TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		typedef Card__Specification Specification;
 
@@ -100,11 +100,11 @@ namespace gosFX
 	protected:
 		Card(
 			Specification *spec,
-			unsigned flags
+			uint32_t flags
 		);
 		~Card();
 
-		Stuff::Scalar
+		float
 			m_halfX,
 			m_halfY;
 		MidLevelRenderer::MLRCardCloud
@@ -113,7 +113,7 @@ namespace gosFX
 			m_vertices[4];
 		Stuff::RGBAColor
 			m_colors[4];
-		Stuff::Vector2DOf<Stuff::Scalar>
+		Stuff::Vector2DOf<float>
 			m_uvs[4];
 		cint32_t
 			m_cardCount;
@@ -122,7 +122,7 @@ namespace gosFX
 		static Card*
 			Make(
 				Specification *spec,
-				unsigned flags
+				uint32_t flags
 			);
 
 		Specification*
@@ -133,15 +133,13 @@ namespace gosFX
 						Cast_Object(Specification*, m_specification);
 				}
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 	//----------------------------------------------------------------------------
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API

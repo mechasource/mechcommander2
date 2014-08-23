@@ -33,14 +33,14 @@
 
 #include <stuff/stuff.hpp>
 
-inline signed short int float2short(float _in)
+inline int16_t float2short(float _in)
 {
 	#if 1
-	return short(floor(_in));
+	return int16_t(floor(_in));
 	#else
 	_in-=0.5f;
 	_in+=12582912.0f;
-	return(*(signed short int*)&_in);
+	return(*(int16_t*)&_in);
 	#endif
 }
 
@@ -105,13 +105,13 @@ class Camera
 		float						wPerPixel;
 		
 		TG_LightPtr					*worldLights;					//Lighting for the entire world.
-		long						numLights;						//Number of lights in the above list.  Always MAX_LIGHTS!
+		int32_t						numLights;						//Number of lights in the above list.  Always MAX_LIGHTS!
 		
 		TG_LightPtr					*activeLights;					//This is the light list to process every frame.
-		long						numActiveLights;				//Number of lights active.  Actually Correct.
+		int32_t						numActiveLights;				//Number of lights active.  Actually Correct.
 		
 		TG_LightPtr					*terrainLights;					//This is the light list to process every frame for TERRAIN ONLY
-		long						numTerrainLights;				//Number of lights active for terrain.  Actually Correct.
+		int32_t						numTerrainLights;				//Number of lights active for terrain.  Actually Correct.
 		
  		//Camera Scripting stuff
 		Stuff::Vector3D				goalPosition;
@@ -128,18 +128,18 @@ class Camera
 		Stuff::Vector3D				goalVelocity;
 		float						goalVelTime;
 		
-		long						lookTargetObject;
+		int32_t						lookTargetObject;
 		
 		float						letterBoxPos;
 		float						letterBoxTime;
-		BYTE						letterBoxAlpha;
+		UCHAR						letterBoxAlpha;
 		
 		bool						startEnding;
 		
 		bool						inFadeMode;
-		DWORD						fadeColor;
-		DWORD						fadeAlpha;
-		DWORD						fadeStart;
+		ULONG						fadeColor;
+		ULONG						fadeAlpha;
+		ULONG						fadeStart;
 		float						timeLeftToFade;
 		float						startFadeTime;
 		
@@ -228,9 +228,9 @@ class Camera
 
 		float					fogStart;				//Altitude at which fog starts
 		float					fogFull;				//Altitude at which fog is Full;
-		DWORD					dayFogColor;				//Color of FOG.
+		ULONG					dayFogColor;				//Color of FOG.
 		float					fogTransparency;				//How much of the sky color will show through
-		DWORD					fogColor;				//Color of FOG.
+		ULONG					fogColor;				//Color of FOG.
 		float            		cameraAltitude;
 		float					cameraAltitudeDesired;	//What would I like the camera to be at!  Maybe smaller due to low angle!
 
@@ -360,7 +360,7 @@ class Camera
 			init();
 		}
 
-		long init (FitIniFile *cameraFile);
+		int32_t init (FitIniFile *cameraFile);
 
 		void destroy (void);
 		
@@ -423,9 +423,9 @@ class Camera
 		
 		void projectCamera (Stuff::Vector3D &point);
 
-		size_t inverseProject (Stuff::Vector2DOf<long> &screenPos, Stuff::Vector3D &point);
+		size_t inverseProject (Stuff::Vector2DOf<int32_t> &screenPos, Stuff::Vector3D &point);
 
-		void getClosestVertex (Stuff::Vector2DOf<long> &screenPos, long &row, long &col);
+		void getClosestVertex (Stuff::Vector2DOf<int32_t> &screenPos, int32_t &row, int32_t &col);
 		
 		void setOrthogonal(void);
 		virtual void setCameraOrigin (void);
@@ -454,10 +454,10 @@ class Camera
 
 		void updateDaylight (bool bInitialize = false);
 		
-		virtual long update (void);
+		virtual int32_t update (void);
 		virtual void render (void);
 
-		virtual long activate (void);
+		virtual int32_t activate (void);
 		virtual void reset (void)
 		{
 		
@@ -465,13 +465,13 @@ class Camera
 		
 		void deactivate (void);
 		
-		void setLightColor (long index, DWORD argb)
+		void setLightColor (int32_t index, ULONG argb)
 		{
 			if ((index >= 0) && (index < numLights) && worldLights[index])
 				worldLights[index]->SetaRGB(argb);
 		}
 		
-		DWORD getLightColor (long index)
+		ULONG getLightColor (int32_t index)
 		{
 			if ((index >= 0) && (index < numLights) && worldLights[index])
 				return worldLights[index]->GetaRGB();
@@ -479,14 +479,14 @@ class Camera
 			return 0x00ffffff;
 		}
 
-		void setLightIntensity (long index, float intensity)
+		void setLightIntensity (int32_t index, float intensity)
 		{
 			if ((index >= 0) && (index < numLights) && worldLights[index])
 				worldLights[index]->intensity = intensity;
 		}
 		
 		//Return the ACTIVE lights.  NOT the total light list!!
-		TG_LightPtr getWorldLight (long index)
+		TG_LightPtr getWorldLight (int32_t index)
 		{
 			if ((index >= 0) && (index < numActiveLights) && activeLights[index])
 				return activeLights[index];
@@ -499,12 +499,12 @@ class Camera
 			return activeLights;
 		}
 		
-		long getNumLights (void)
+		int32_t getNumLights (void)
 		{
 			return numActiveLights;
 		}
 
-		TG_LightPtr getTerrainLight (long index)
+		TG_LightPtr getTerrainLight (int32_t index)
 		{
 			if ((index >= 0) && (index < numTerrainLights) && terrainLights[index])
 				return terrainLights[index];
@@ -517,16 +517,16 @@ class Camera
 			return terrainLights;
 		}
 		
-		long getNumTerrainLights (void)
+		int32_t getNumTerrainLights (void)
 		{
 			return numTerrainLights;
 		}
 
-		long addWorldLight (TG_LightPtr light)
+		int32_t addWorldLight (TG_LightPtr light)
 		{
 			numLights = MAX_LIGHTS_IN_WORLD;
 			bool lightAdded = false;
-			for (long i=0;i<MAX_LIGHTS_IN_WORLD;i++)
+			for (int32_t i=0;i<MAX_LIGHTS_IN_WORLD;i++)
 			{
 				if (!worldLights[i])
 				{
@@ -539,7 +539,7 @@ class Camera
 			return -1;
 		}
 
-		void removeWorldLight (DWORD lightNum, TG_LightPtr light)
+		void removeWorldLight (ULONG lightNum, TG_LightPtr light)
 		{
 			if ((lightNum < MAX_LIGHTS_IN_WORLD) && (worldLights[lightNum] == light))
 			{
@@ -549,7 +549,7 @@ class Camera
 
 			//If we get here, the light we passed in either had an invalid index OR did not match the pointer
 			// at the location we passed in.  Scan all lights for a match and toss any and all that do match
-			for (long i=0;i<MAX_LIGHTS_IN_WORLD;i++)
+			for (int32_t i=0;i<MAX_LIGHTS_IN_WORLD;i++)
 			{
 				if (worldLights[i] == light)
 					worldLights[i] = NULL;
@@ -571,12 +571,12 @@ class Camera
 			return nightFactor;
 		}
 		
- 		long getScreenResX (void)
+ 		int32_t getScreenResX (void)
 		{
 			return float2long(screenResolution.x);
 		}
 		
-		long getScreenResY (void)
+		int32_t getScreenResY (void)
 		{
 			return float2long(screenResolution.y);
 		}
@@ -596,9 +596,9 @@ class Camera
 			return newScaleFactor;
 		}
 
-		long getScaleLOD (void)
+		int32_t getScaleLOD (void)
 		{
-			for (long i=0;i<MAX_LODS;i++)
+			for (int32_t i=0;i<MAX_LODS;i++)
 			{
 				if (newScaleFactor >= zoomLevelLODScale[i])
 					return i;
@@ -633,7 +633,7 @@ class Camera
 		
 		//----------------------------------------------
 		// Camera Positioning Functions
-		void setCameraView (long viewNum);
+		void setCameraView (int32_t viewNum);
 		
 		void allNormal (void)
 		{
@@ -726,7 +726,7 @@ class Camera
 				startEnding = true;			//Start the letterbox shrinking.  When fully shrunk, inMovieMode goes false!
 		}
 
-		void fadeToColor (DWORD color, float timeToFade)
+		void fadeToColor (ULONG color, float timeToFade)
 		{
 			if (!inFadeMode && (timeToFade > Stuff::SMALL))
 			{
@@ -860,12 +860,12 @@ class Camera
 		
 		void updateLetterboxAndFade (void);
 		
-		void setCameraTargetId (long targId)
+		void setCameraTargetId (int32_t targId)
 		{
 			lookTargetObject = targId;
 		}
 		
-		long getCameraTargetId (void)
+		int32_t getCameraTargetId (void)
 		{
 			return lookTargetObject;
 		}

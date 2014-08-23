@@ -38,7 +38,7 @@
 //----------
 // EXTERNALS
 
-extern long				level;		// current nesting/scope level
+extern int32_t				level;		// current nesting/scope level
 
 //--------
 // GLOBALS
@@ -46,7 +46,7 @@ extern long				level;		// current nesting/scope level
 SymTableNodePtr		SymTableDisplay[MAX_NESTING_LEVEL];
 
 ABLModulePtr		LibrariesUsed[MAX_LIBRARIES_USED];
-long				NumLibrariesUsed = 0;
+int32_t				NumLibrariesUsed = 0;
 
 //------------------
 // Pre-defined types
@@ -63,9 +63,9 @@ Type DummyType = {		// for erroneous type definitions
 };
 
 StandardFunctionInfo		FunctionInfoTable[MAX_STANDARD_FUNCTIONS];
-//void*						FunctionCallbackTable[MAX_STANDARD_FUNCTIONS];
+//PVOID						FunctionCallbackTable[MAX_STANDARD_FUNCTIONS];
 void						(*FunctionCallbackTable[MAX_STANDARD_FUNCTIONS])(void);
-long						NumStandardFunctions = NUM_ABL_ROUTINES;
+int32_t						NumStandardFunctions = NUM_ABL_ROUTINES;
 
 void execStdRandom (void);
 
@@ -207,7 +207,7 @@ void recordLibraryUsed (SymTableNodePtr memberNodePtr) {
 	// If the library already on our list, then don't bother. Otherwise,
 	// add it to our list...
 	ABLModulePtr library = memberNodePtr->library;
-	for (long i = 0; i < NumLibrariesUsed; i++)
+	for (int32_t i = 0; i < NumLibrariesUsed; i++)
 		if (LibrariesUsed[i] == library)
 			return;
 
@@ -224,7 +224,7 @@ void recordLibraryUsed (SymTableNodePtr memberNodePtr) {
 SymTableNodePtr searchSymTable (PSTR name, SymTableNodePtr nodePtr) {
 
 	while (nodePtr) {
-		long compareResult = strcmp(name, nodePtr->name);
+		int32_t compareResult = strcmp(name, nodePtr->name);
 		if (compareResult == 0)
 			return(nodePtr);
 		if (compareResult < 0)
@@ -240,7 +240,7 @@ SymTableNodePtr searchSymTable (PSTR name, SymTableNodePtr nodePtr) {
 SymTableNodePtr searchSymTableForFunction (PSTR name, SymTableNodePtr nodePtr) {
 
 	while (nodePtr) {
-		long compareResult = strcmp(name, nodePtr->name);
+		int32_t compareResult = strcmp(name, nodePtr->name);
 		if (compareResult == 0) {
 			if (nodePtr->typePtr == NULL)
 				if (nodePtr->defn.key == DFN_FUNCTION)
@@ -260,7 +260,7 @@ SymTableNodePtr searchSymTableForFunction (PSTR name, SymTableNodePtr nodePtr) {
 SymTableNodePtr searchSymTableForState (PSTR name, SymTableNodePtr nodePtr) {
 
 	while (nodePtr) {
-		long compareResult = strcmp(name, nodePtr->name);
+		int32_t compareResult = strcmp(name, nodePtr->name);
 		if (compareResult == 0) {
 			if (nodePtr->typePtr == NULL)
 				if (nodePtr->defn.key == DFN_FUNCTION)
@@ -281,7 +281,7 @@ SymTableNodePtr searchSymTableForState (PSTR name, SymTableNodePtr nodePtr) {
 SymTableNodePtr searchSymTableForString (PSTR name, SymTableNodePtr nodePtr) {
 
 	while (nodePtr) {
-		long compareResult = strcmp(name, nodePtr->name);
+		int32_t compareResult = strcmp(name, nodePtr->name);
 		if (compareResult == 0) {
 			if (nodePtr->typePtr)
 				if (nodePtr->typePtr->form == FRM_ARRAY)
@@ -314,7 +314,7 @@ SymTableNodePtr searchLibrarySymTable (PSTR name, SymTableNodePtr nodePtr) {
 	// should be shot --gd 9/29/97
 
 	if (nodePtr) {
-		long compareResult = strcmp(name, nodePtr->name);
+		int32_t compareResult = strcmp(name, nodePtr->name);
 		if (compareResult == 0)
 			return(nodePtr);
 		else {
@@ -366,7 +366,7 @@ SymTableNodePtr searchSymTableDisplay (PSTR name) {
 		return(memberNodePtr);
 		}
 	else {	
-		for (long i = level; i >= 0; i--) {
+		for (int32_t i = level; i >= 0; i--) {
 			SymTableNodePtr nodePtr = searchSymTable(name, SymTableDisplay[i]);
 			if (nodePtr)
 				return(nodePtr);
@@ -512,9 +512,9 @@ SymTableNodePtr extractSymTable (SymTableNodePtr* tableRoot, SymTableNodePtr nod
 
 //***************************************************************************
 
-void enterStandardRoutine (PSTR name, long routineKey, bool isOrder, PSTR paramList, PSTR returnType, void (*callback)(void)) {
+void enterStandardRoutine (PSTR name, int32_t routineKey, bool isOrder, PSTR paramList, PSTR returnType, void (*callback)(void)) {
 
-	long tableIndex = routineKey;
+	int32_t tableIndex = routineKey;
 	if (tableIndex == -1) {
 		if (NumStandardFunctions == MAX_STANDARD_FUNCTIONS)
 			ABL_Fatal(0, " ABL.enterStandardRoutine: Too Many Standard Functions ");
@@ -537,7 +537,7 @@ void enterStandardRoutine (PSTR name, long routineKey, bool isOrder, PSTR paramL
 		FunctionInfoTable[tableIndex].numParams = strlen(paramList);
 		if (FunctionInfoTable[tableIndex].numParams > MAX_FUNCTION_PARAMS)
 			ABL_Fatal(0, " ABL.enterStandardRoutine: Too Many Standard Function Params ");
-		for (long i = 0; i < FunctionInfoTable[tableIndex].numParams; i++)
+		for (int32_t i = 0; i < FunctionInfoTable[tableIndex].numParams; i++)
 			switch (paramList[i]) {
 				case '?':
 					FunctionInfoTable[tableIndex].params[i] = PARAM_TYPE_ANYTHING;
@@ -660,7 +660,7 @@ void initSymTable (void) {
 	integerIdPtr->defn.key = DFN_TYPE;
 	integerIdPtr->typePtr = IntegerTypePtr;
 	IntegerTypePtr->form = FRM_SCALAR;
-	IntegerTypePtr->size = sizeof(long);
+	IntegerTypePtr->size = sizeof(int32_t);
 	IntegerTypePtr->typeIdPtr = integerIdPtr;
 
 	charIdPtr->defn.key = DFN_TYPE;
@@ -678,7 +678,7 @@ void initSymTable (void) {
 	booleanIdPtr->defn.key = DFN_TYPE;
 	booleanIdPtr->typePtr = BooleanTypePtr;
 	BooleanTypePtr->form = FRM_ENUM;
-	BooleanTypePtr->size = sizeof(long);
+	BooleanTypePtr->size = sizeof(int32_t);
 	BooleanTypePtr->typeIdPtr = booleanIdPtr;
 
 	//----------------------------------------------------
@@ -698,7 +698,7 @@ void initSymTable (void) {
 
 	//-------------------------------------------
 	// Set up the standard, built-in functions...
-//(PSTR name, long routineKey, bool isOrder, PSTR paramList, PSTR returnType, void* callback);
+//(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList, PSTR returnType, PVOID callback);
 	enterStandardRoutine("return", RTN_RETURN, false, NULL, NULL, NULL);
 	enterStandardRoutine("print", RTN_PRINT, false, NULL, NULL, NULL);
 	enterStandardRoutine("concat", RTN_CONCAT, false, NULL, NULL, NULL);

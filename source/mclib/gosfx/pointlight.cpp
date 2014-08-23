@@ -216,7 +216,7 @@ void
 //
 gosFX::PointLight::PointLight(
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	Effect(DefaultData, spec, flags)
 {
@@ -240,7 +240,7 @@ gosFX::PointLight::~PointLight()
 gosFX::PointLight*
 	gosFX::PointLight::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);

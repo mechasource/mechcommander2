@@ -62,7 +62,7 @@ FitIniFile::~FitIniFile (void)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::findNextBlockStart (PSTR line, ULONG lineLen)
+int32_t FitIniFile::findNextBlockStart (PSTR line, ULONG lineLen)
 {
 	char thisLine[255];
 	PSTR common = NULL;
@@ -71,12 +71,12 @@ long FitIniFile::findNextBlockStart (PSTR line, ULONG lineLen)
 	{
 		if (line)
 		{
-			readLine((MemoryPtr)line,lineLen);
+			readLine((PUCHAR)line,lineLen);
 			common = line;
 		}
 		else
 		{
-			readLine((MemoryPtr)thisLine,254);
+			readLine((PUCHAR)thisLine,254);
 			common = thisLine;
 		}
 	}
@@ -87,14 +87,14 @@ long FitIniFile::findNextBlockStart (PSTR line, ULONG lineLen)
 		return(NO_MORE_BLOCKS);
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::countBlocks (void)
+int32_t FitIniFile::countBlocks (void)
 {
-	long count = 0;
-	long oldPosition = logicalPosition;
+	int32_t count = 0;
+	int32_t oldPosition = logicalPosition;
 	
 	while (findNextBlockStart() != NO_MORE_BLOCKS)
 	{
@@ -109,7 +109,7 @@ long FitIniFile::countBlocks (void)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::getNextWord (PSTR &line, PSTR buffer, ULONG bufLen)
+int32_t FitIniFile::getNextWord (PSTR &line, PSTR buffer, ULONG bufLen)
 {
 	//--------------------------------------------------
 	// Check to see if we are at end of line
@@ -154,11 +154,11 @@ long FitIniFile::getNextWord (PSTR &line, PSTR buffer, ULONG bufLen)
 	strncpy(buffer, startOfWord, wordLength);
 	buffer[wordLength] = '\0';
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::afterOpen (void)
+int32_t FitIniFile::afterOpen (void)
 {
 	char line[255];
 	
@@ -168,7 +168,7 @@ long FitIniFile::afterOpen (void)
 	if (fileMode == CREATE && parent == NULL)
 	{
 		sprintf(line,"%s \r\n",fitIniHeader);
-		write((MemoryPtr)line,strlen(line));
+		write((PUCHAR)line,strlen(line));
 
 		totalBlocks = 0;
 	}
@@ -178,7 +178,7 @@ long FitIniFile::afterOpen (void)
 		// Check if this is a FitIniFile by looking for header.
 		char chkHeader[12];
 	
-		readLine((MemoryPtr)chkHeader,11);
+		readLine((PUCHAR)chkHeader,11);
 		if (strstr(chkHeader,fitIniHeader) == NULL)
 			return(NOT_A_FITINIFILE);
 
@@ -206,7 +206,7 @@ long FitIniFile::afterOpen (void)
 			if (currentBlockNum == totalBlocks)
 				return(TOO_MANY_BLOCKS);
 
-			long count = 1;
+			int32_t count = 1;
 			while (line[count] != ']' && line[count] != '\n')
 			{
 				fileBlocks[currentBlockNum].blockId[count-1] = line[count];
@@ -237,7 +237,7 @@ long FitIniFile::afterOpen (void)
 			return(NOT_ENOUGH_BLOCKS);
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -250,7 +250,7 @@ void FitIniFile::atClose (void)
 	{
 		seek(0,SEEK_END);
 		sprintf(line,"%s \r\n",fitIniFooter);
-		write((MemoryPtr)line,strlen(line));
+		write((PUCHAR)line,strlen(line));
 	}
 
 	//-----------------------------
@@ -274,9 +274,9 @@ double FitIniFile::textToDouble (PCSTR num)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::textToLong (PCSTR num)
+int32_t FitIniFile::textToLong (PCSTR num)
 {
-	long result = 0;
+	int32_t result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
@@ -288,7 +288,7 @@ long FitIniFile::textToLong (PCSTR num)
 	else
 	{
 		hexOffset += 2;
-		long numDigits = strlen(hexOffset)-1;
+		int32_t numDigits = strlen(hexOffset)-1;
 		for (int i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
@@ -298,8 +298,8 @@ long FitIniFile::textToLong (PCSTR num)
 			}
 		}
 		numDigits = strlen(hexOffset)-1;
-		long power = 0;
-		for (long count = numDigits;count >= 0;count--,power++)
+		int32_t power = 0;
+		for (int32_t count = numDigits;count >= 0;count--,power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			
@@ -341,7 +341,7 @@ short FitIniFile::textToShort (PCSTR num)
 	else
 	{
 		hexOffset += 2;
-		long numDigits = strlen(hexOffset)-1;
+		int32_t numDigits = strlen(hexOffset)-1;
 		for (int i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
@@ -351,8 +351,8 @@ short FitIniFile::textToShort (PCSTR num)
 			}
 		}
 		numDigits = strlen(hexOffset)-1;
-		long power = 0;
-		for (long count = numDigits;count >= 0;count--,power++)
+		int32_t power = 0;
+		for (int32_t count = numDigits;count >= 0;count--,power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			
@@ -393,7 +393,7 @@ char FitIniFile::textToChar (PCSTR num)
 	else
 	{
 		hexOffset += 2;
-		long numDigits = strlen(hexOffset)-1;
+		int32_t numDigits = strlen(hexOffset)-1;
 		for (int i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
@@ -403,8 +403,8 @@ char FitIniFile::textToChar (PCSTR num)
 			}
 		}
 		numDigits = strlen(hexOffset)-1;
-		long power = 0;
-		for (long count = numDigits;count >= 0;count--,power++)
+		int32_t power = 0;
+		for (int32_t count = numDigits;count >= 0;count--,power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			
@@ -444,7 +444,7 @@ ULONG FitIniFile::textToULong (PCSTR num)
 	else
 	{
 		hexOffset += 2;
-		long numDigits = strlen(hexOffset)-1;
+		int32_t numDigits = strlen(hexOffset)-1;
 		for (int i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
@@ -454,8 +454,8 @@ ULONG FitIniFile::textToULong (PCSTR num)
 			}
 		}
 		numDigits = strlen(hexOffset)-1;
-		long power = 0;
-		for (long count = numDigits;count >= 0;count--,power++)
+		int32_t power = 0;
+		for (int32_t count = numDigits;count >= 0;count--,power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			
@@ -482,9 +482,9 @@ ULONG FitIniFile::textToULong (PCSTR num)
 
 
 //---------------------------------------------------------------------------
-unsigned short FitIniFile::textToUShort (PCSTR num)
+uint16_t FitIniFile::textToUShort (PCSTR num)
 {
-	unsigned short result = 0;
+	uint16_t result = 0;
 	
 	//------------------------------------
 	// Check if Hex Number
@@ -496,7 +496,7 @@ unsigned short FitIniFile::textToUShort (PCSTR num)
 	else
 	{
 		hexOffset += 2;
-		long numDigits = strlen(hexOffset)-1;
+		int32_t numDigits = strlen(hexOffset)-1;
 		for (int i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
@@ -506,8 +506,8 @@ unsigned short FitIniFile::textToUShort (PCSTR num)
 			}
 		}
 		numDigits = strlen(hexOffset)-1;
-		long power = 0;
-		for (long count = numDigits;count >= 0;count--,power++)
+		int32_t power = 0;
+		for (int32_t count = numDigits;count >= 0;count--,power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			
@@ -548,7 +548,7 @@ uint8_t FitIniFile::textToUChar (PCSTR num)
 	else
 	{
 		hexOffset += 2;
-		long numDigits = strlen(hexOffset)-1;
+		int32_t numDigits = strlen(hexOffset)-1;
 		for (int i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
@@ -558,8 +558,8 @@ uint8_t FitIniFile::textToUChar (PCSTR num)
 			}
 		}
 		numDigits = strlen(hexOffset)-1;
-		long power = 0;
-		for (long count = numDigits;count >= 0;count--,power++)
+		int32_t power = 0;
+		for (int32_t count = numDigits;count >= 0;count--,power++)
 		{
 			uint8_t currentDigit = toupper(hexOffset[count]);
 			
@@ -598,7 +598,7 @@ char testChar = 0;
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::floatToText (PSTR result, float num, ULONG bufLen)
+int32_t FitIniFile::floatToText (PSTR result, float num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%f4",num);
@@ -610,11 +610,11 @@ long FitIniFile::floatToText (PSTR result, float num, ULONG bufLen)
 	strncpy(result,temp,numLength);
 	result[numLength] = '\0';
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }			
 
 //---------------------------------------------------------------------------
-long FitIniFile::longToTextDec (PSTR result, long num, ULONG bufLen)
+int32_t FitIniFile::longToTextDec (PSTR result, int32_t num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%d",num);
@@ -626,11 +626,11 @@ long FitIniFile::longToTextDec (PSTR result, long num, ULONG bufLen)
 	strncpy(result,temp,numLength);
 	result[numLength] = '\0';
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::longToTextHex (PSTR result, long num, ULONG bufLen)
+int32_t FitIniFile::longToTextHex (PSTR result, int32_t num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"0x%x",num);
@@ -642,11 +642,11 @@ long FitIniFile::longToTextHex (PSTR result, long num, ULONG bufLen)
 	strncpy(result,temp,numLength);
 	result[numLength] = '\0';
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::shortToTextDec (PSTR result, short num, ULONG bufLen)
+int32_t FitIniFile::shortToTextDec (PSTR result, short num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%d",num);
@@ -658,11 +658,11 @@ long FitIniFile::shortToTextDec (PSTR result, short num, ULONG bufLen)
 	strncpy(result,temp,numLength);
 	result[numLength] = '\0';
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::shortToTextHex (PSTR result, short num, ULONG bufLen)
+int32_t FitIniFile::shortToTextHex (PSTR result, short num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"0x%x",num);
@@ -674,11 +674,11 @@ long FitIniFile::shortToTextHex (PSTR result, short num, ULONG bufLen)
 	strncpy(result,temp,numLength);
 	result[numLength] = '\0';
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::byteToTextDec (PSTR result, byte num, ULONG bufLen)
+int32_t FitIniFile::byteToTextDec (PSTR result, byte num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"%d",num);
@@ -690,11 +690,11 @@ long FitIniFile::byteToTextDec (PSTR result, byte num, ULONG bufLen)
 	strncpy(result,temp,numLength);
 	result[numLength] = '\0';
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::byteToTextHex (PSTR result, byte num, ULONG bufLen)
+int32_t FitIniFile::byteToTextHex (PSTR result, byte num, ULONG bufLen)
 {
 	char temp[250];
 	sprintf(temp,"0x%x",num);
@@ -706,14 +706,14 @@ long FitIniFile::byteToTextHex (PSTR result, byte num, ULONG bufLen)
 	strncpy(result,temp,numLength);
 	result[numLength] = '\0';
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }	
 
 //---------------------------------------------------------------------------
-long FitIniFile::open (PCSTR fName, FileMode _mode, long numChild)
+int32_t FitIniFile::open (PCSTR fName, FileMode _mode, int32_t numChild)
 {
-	long result = File::open(fName,_mode,numChild);
-	if (result != NO_ERR)
+	int32_t result = File::open(fName,_mode,numChild);
+	if (result != NO_ERROR)
 		return(result);
 		
 	seek(0);
@@ -724,11 +724,11 @@ long FitIniFile::open (PCSTR fName, FileMode _mode, long numChild)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::open (FilePtr _parent, ULONG fileSize, long numChild)
+int32_t FitIniFile::open (FilePtr _parent, ULONG fileSize, int32_t numChild)
 {
 	numChild = -1;		//Force all parented FitINIs to load from RAM.
-	long result = File::open(_parent,fileSize,numChild);
-	if (result != NO_ERR)
+	int32_t result = File::open(_parent,fileSize,numChild);
+	if (result != NO_ERROR)
 		return(result);
 		
 	result = afterOpen();
@@ -737,16 +737,16 @@ long FitIniFile::open (FilePtr _parent, ULONG fileSize, long numChild)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::create (PSTR fName)
+int32_t FitIniFile::create (PSTR fName)
 {
-	long result = File::create(fName);
+	int32_t result = File::create(fName);
 	afterOpen();
 	return(result);
 }
 
-long FitIniFile::createWithCase( PSTR fName )
+int32_t FitIniFile::createWithCase( PSTR fName )
 {
-	long result = File::createWithCase( fName );
+	int32_t result = File::createWithCase( fName );
 	afterOpen();
 	return result;
 }
@@ -762,7 +762,7 @@ void FitIniFile::close (void)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::seekBlock (PCSTR blockId)
+HRESULT FitIniFile::seekBlock(PCSTR blockId)
 {
 	ULONG blockNum = 0;
 	
@@ -795,11 +795,11 @@ long FitIniFile::seekBlock (PCSTR blockId)
 		currentBlockSize = fileBlocks[blockNum].blockOffset - currentBlockOffset;
 	}
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdFloat (PCSTR varName, float &value)
+int32_t FitIniFile::readIdFloat (PCSTR varName, float &value)
 {
 	char line[255];
 	char searchString[255];
@@ -818,7 +818,7 @@ long FitIniFile::readIdFloat (PCSTR varName, float &value)
 	int	testy;
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -848,11 +848,11 @@ long FitIniFile::readIdFloat (PCSTR varName, float &value)
 		return(SYNTAX_ERROR);
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdDouble (PCSTR varName, double &value)
+int32_t FitIniFile::readIdDouble (PCSTR varName, double &value)
 {
 	char line[255];
 	char searchString[255];
@@ -871,7 +871,7 @@ long FitIniFile::readIdDouble (PCSTR varName, double &value)
 	int	testy;
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -901,11 +901,11 @@ long FitIniFile::readIdDouble (PCSTR varName, double &value)
 		return(SYNTAX_ERROR);
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdLong (PCSTR varName, long &value)
+int32_t FitIniFile::readIdLong (PCSTR varName, int32_t &value)
 {
 	char line[255];
 	char searchString[255];
@@ -924,7 +924,7 @@ long FitIniFile::readIdLong (PCSTR varName, long &value)
 	int	testy;
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -954,11 +954,11 @@ long FitIniFile::readIdLong (PCSTR varName, long &value)
 		return(SYNTAX_ERROR);
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdBoolean (PCSTR varName, bool &value)
+int32_t FitIniFile::readIdBoolean (PCSTR varName, bool &value)
 {
 	char line[255];
 	char searchString[255];
@@ -977,7 +977,7 @@ long FitIniFile::readIdBoolean (PCSTR varName, bool &value)
 	int	testy;
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1007,11 +1007,11 @@ long FitIniFile::readIdBoolean (PCSTR varName, bool &value)
 		return(SYNTAX_ERROR);
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdShort (PCSTR varName, short &value)
+int32_t FitIniFile::readIdShort (PCSTR varName, short &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1030,7 +1030,7 @@ long FitIniFile::readIdShort (PCSTR varName, short &value)
 	int	testy;
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1060,11 +1060,11 @@ long FitIniFile::readIdShort (PCSTR varName, short &value)
 		return(SYNTAX_ERROR);
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdChar (PCSTR varName, char &value)
+int32_t FitIniFile::readIdChar (PCSTR varName, char &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1083,7 +1083,7 @@ long FitIniFile::readIdChar (PCSTR varName, char &value)
 	int	testy;
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1113,11 +1113,11 @@ long FitIniFile::readIdChar (PCSTR varName, char &value)
 		return(SYNTAX_ERROR);
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdULong (PCSTR varName, ULONG &value)
+int32_t FitIniFile::readIdULong (PCSTR varName, ULONG &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1136,7 +1136,7 @@ long FitIniFile::readIdULong (PCSTR varName, ULONG &value)
 	int	testy;
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1168,11 +1168,11 @@ long FitIniFile::readIdULong (PCSTR varName, ULONG &value)
 		return(SYNTAX_ERROR);
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdUShort (PCSTR varName, unsigned short &value)
+int32_t FitIniFile::readIdUShort (PCSTR varName, uint16_t &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1191,7 +1191,7 @@ long FitIniFile::readIdUShort (PCSTR varName, unsigned short &value)
 	int	testy;
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1221,11 +1221,11 @@ long FitIniFile::readIdUShort (PCSTR varName, unsigned short &value)
 		return(SYNTAX_ERROR);
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdUChar (PCSTR varName, uint8_t &value)
+int32_t FitIniFile::readIdUChar (PCSTR varName, uint8_t &value)
 {
 	char line[255];
 	char searchString[255];
@@ -1244,7 +1244,7 @@ long FitIniFile::readIdUChar (PCSTR varName, uint8_t &value)
 	int	testy;
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1274,11 +1274,11 @@ long FitIniFile::readIdUChar (PCSTR varName, uint8_t &value)
 		return(SYNTAX_ERROR);
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::copyString (PSTR dest, PSTR src, ULONG bufLen)
+int32_t FitIniFile::copyString (PSTR dest, PSTR src, ULONG bufLen)
 {
 	ULONG offset = 0;
 	//---------------------
@@ -1309,11 +1309,11 @@ long FitIniFile::copyString (PSTR dest, PSTR src, ULONG bufLen)
 	//---------------------------------
 	// otherwise, NULL term and return	
 	dest[offset] = '\0';
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdString (PCSTR varName, PSTR result, ULONG bufferSize)
+int32_t FitIniFile::readIdString (PCSTR varName, PSTR result, ULONG bufferSize)
 {
 	char line[2048];
 	char searchString[255];
@@ -1332,7 +1332,7 @@ long FitIniFile::readIdString (PCSTR varName, PSTR result, ULONG bufferSize)
 	int	testy;
 	do
 	{
-		readLine((MemoryPtr)line,2047);
+		readLine((PUCHAR)line,2047);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1362,14 +1362,14 @@ long FitIniFile::readIdString (PCSTR varName, PSTR result, ULONG bufferSize)
 		// strings can span more than one line, make sure there is another equal sign
 		if ( pFirstEqual && !strstr( pFirstEqual+1, "\"" ) ) 
 		{
-			long curLen = strlen( equalSign );
+			int32_t curLen = strlen( equalSign );
 			char tmpLine[2047];
 			do
 			{
-				readLine((MemoryPtr)tmpLine,2047);
+				readLine((PUCHAR)tmpLine,2047);
 				pFound = strstr( tmpLine, "\"" );
 
-				long addedLen = strlen( tmpLine ) + 1;
+				int32_t addedLen = strlen( tmpLine ) + 1;
 				if ( curLen + addedLen < 2048 )
 				{
 					strcat( equalSign, tmpLine );
@@ -1382,8 +1382,8 @@ long FitIniFile::readIdString (PCSTR varName, PSTR result, ULONG bufferSize)
 			}while( !pFound && (logicalPosition < endOfBlock) );
 		}
 		
-		long errorCode = copyString(result,equalSign,bufferSize);
-		if (errorCode != NO_ERR)
+		int32_t errorCode = copyString(result,equalSign,bufferSize);
+		if (errorCode != NO_ERROR)
 			return(errorCode);
 	}
 	else
@@ -1392,11 +1392,11 @@ long FitIniFile::readIdString (PCSTR varName, PSTR result, ULONG bufferSize)
 	}
 	
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::getIdStringLength (PCSTR varName)
+int32_t FitIniFile::getIdStringLength (PCSTR varName)
 {
 	char line[255];
 	char searchString[255];
@@ -1415,7 +1415,7 @@ long FitIniFile::getIdStringLength (PCSTR varName)
 	int	testy;
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		testy = strnicmp(line, searchString, strlen(searchString));
 		if (testy == 0)
 		{
@@ -1450,7 +1450,7 @@ long FitIniFile::getIdStringLength (PCSTR varName)
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdFloatArray (PCSTR varName, float *result, ULONG numElements)
+int32_t FitIniFile::readIdFloatArray (PCSTR varName, float *result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1473,7 +1473,7 @@ long FitIniFile::readIdFloatArray (PCSTR varName, float *result, ULONG numElemen
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -1491,7 +1491,7 @@ long FitIniFile::readIdFloatArray (PCSTR varName, float *result, ULONG numElemen
 	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -1516,15 +1516,15 @@ long FitIniFile::readIdFloatArray (PCSTR varName, float *result, ULONG numElemen
 		// Now, loop until we reach the end of block or we've read in all of the elements
 		while ((logicalPosition < endOfBlock) && (elementsRead < actualElements))
 		{
-			long errorCode = getNextWord(equalSign,elementString,9);
+			int32_t errorCode = getNextWord(equalSign,elementString,9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((MemoryPtr)line,254);
+				readLine((PUCHAR)line,254);
 				equalSign = line;
 				continue;
 			}
 
-			if (errorCode != NO_ERR)
+			if (errorCode != NO_ERROR)
 			{
 				return(errorCode);
 			}
@@ -1541,11 +1541,11 @@ long FitIniFile::readIdFloatArray (PCSTR varName, float *result, ULONG numElemen
 		return(SYNTAX_ERROR);
 	}
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 		
 //---------------------------------------------------------------------------
-long FitIniFile::readIdLongArray (PCSTR varName, long *result, ULONG numElements)
+int32_t FitIniFile::readIdLongArray (PCSTR varName, int32_t *result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1568,7 +1568,7 @@ long FitIniFile::readIdLongArray (PCSTR varName, long *result, ULONG numElements
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -1586,7 +1586,7 @@ long FitIniFile::readIdLongArray (PCSTR varName, long *result, ULONG numElements
 	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -1611,15 +1611,15 @@ long FitIniFile::readIdLongArray (PCSTR varName, long *result, ULONG numElements
 		// Now, loop until we reach the end of block or we've read in all of the elements
 		while ((logicalPosition < endOfBlock) && (elementsRead < actualElements))
 		{
-			long errorCode = getNextWord(equalSign,elementString,9);
+			int32_t errorCode = getNextWord(equalSign,elementString,9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((MemoryPtr)line,254);
+				readLine((PUCHAR)line,254);
 				equalSign = line;
 				continue;
 			}
 
-			if (errorCode != NO_ERR)
+			if (errorCode != NO_ERROR)
 			{
 				return(errorCode);
 			}
@@ -1636,11 +1636,11 @@ long FitIniFile::readIdLongArray (PCSTR varName, long *result, ULONG numElements
 		return(SYNTAX_ERROR);
 	}
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdULongArray (PCSTR varName, ULONG *result, ULONG numElements)
+int32_t FitIniFile::readIdULongArray (PCSTR varName, ULONG *result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1663,7 +1663,7 @@ long FitIniFile::readIdULongArray (PCSTR varName, ULONG *result, ULONG numElemen
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -1681,7 +1681,7 @@ long FitIniFile::readIdULongArray (PCSTR varName, ULONG *result, ULONG numElemen
 	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -1706,15 +1706,15 @@ long FitIniFile::readIdULongArray (PCSTR varName, ULONG *result, ULONG numElemen
 		// Now, loop until we reach the end of block or we've read in all of the elements
 		while ((logicalPosition < endOfBlock) && (elementsRead < actualElements))
 		{
-			long errorCode = getNextWord(equalSign,elementString,9);
+			int32_t errorCode = getNextWord(equalSign,elementString,9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((MemoryPtr)line,254);
+				readLine((PUCHAR)line,254);
 				equalSign = line;
 				continue;
 			}
 
-			if (errorCode != NO_ERR)
+			if (errorCode != NO_ERROR)
 			{
 				return(errorCode);
 			}
@@ -1731,11 +1731,11 @@ long FitIniFile::readIdULongArray (PCSTR varName, ULONG *result, ULONG numElemen
 		return(SYNTAX_ERROR);
 	}
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 		
 //---------------------------------------------------------------------------
-long FitIniFile::readIdShortArray (PCSTR varName, short *result, ULONG numElements)
+int32_t FitIniFile::readIdShortArray (PCSTR varName, short *result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1758,7 +1758,7 @@ long FitIniFile::readIdShortArray (PCSTR varName, short *result, ULONG numElemen
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -1776,7 +1776,7 @@ long FitIniFile::readIdShortArray (PCSTR varName, short *result, ULONG numElemen
 	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -1801,15 +1801,15 @@ long FitIniFile::readIdShortArray (PCSTR varName, short *result, ULONG numElemen
 		// Now, loop until we reach the end of block or we've read in all of the elements
 		while ((logicalPosition < endOfBlock) && (elementsRead < actualElements))
 		{
-			long errorCode = getNextWord(equalSign,elementString,9);
+			int32_t errorCode = getNextWord(equalSign,elementString,9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((MemoryPtr)line,254);
+				readLine((PUCHAR)line,254);
 				equalSign = line;
 				continue;
 			}
 
-			if (errorCode != NO_ERR)
+			if (errorCode != NO_ERROR)
 			{
 				return(errorCode);
 			}
@@ -1826,11 +1826,11 @@ long FitIniFile::readIdShortArray (PCSTR varName, short *result, ULONG numElemen
 		return(SYNTAX_ERROR);
 	}
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, ULONG numElements)
+int32_t FitIniFile::readIdUShortArray (PCSTR varName, puint16_t result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1853,7 +1853,7 @@ long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, ULONG
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -1871,7 +1871,7 @@ long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, ULONG
 	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -1896,15 +1896,15 @@ long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, ULONG
 		// Now, loop until we reach the end of block or we've read in all of the elements
 		while ((logicalPosition < endOfBlock) && (elementsRead < actualElements))
 		{
-			long errorCode = getNextWord(equalSign,elementString,9);
+			int32_t errorCode = getNextWord(equalSign,elementString,9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((MemoryPtr)line,254);
+				readLine((PUCHAR)line,254);
 				equalSign = line;
 				continue;
 			}
 
-			if (errorCode != NO_ERR)
+			if (errorCode != NO_ERROR)
 			{
 				return(errorCode);
 			}
@@ -1921,11 +1921,11 @@ long FitIniFile::readIdUShortArray (PCSTR varName, unsigned short *result, ULONG
 		return(SYNTAX_ERROR);
 	}
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 		
 //---------------------------------------------------------------------------
-long FitIniFile::readIdCharArray (PCSTR varName, PSTR result, ULONG numElements)
+int32_t FitIniFile::readIdCharArray (PCSTR varName, PSTR result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -1948,7 +1948,7 @@ long FitIniFile::readIdCharArray (PCSTR varName, PSTR result, ULONG numElements)
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -1966,7 +1966,7 @@ long FitIniFile::readIdCharArray (PCSTR varName, PSTR result, ULONG numElements)
 	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -1991,15 +1991,15 @@ long FitIniFile::readIdCharArray (PCSTR varName, PSTR result, ULONG numElements)
 		// Now, loop until we reach the end of block or we've read in all of the elements
 		while ((logicalPosition < endOfBlock) && (elementsRead < actualElements))
 		{
-			long errorCode = getNextWord(equalSign,elementString,9);
+			int32_t errorCode = getNextWord(equalSign,elementString,9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((MemoryPtr)line,254);
+				readLine((PUCHAR)line,254);
 				equalSign = line;
 				continue;
 			}
 
-			if (errorCode != NO_ERR)
+			if (errorCode != NO_ERROR)
 			{
 				return(errorCode);
 			}
@@ -2016,11 +2016,11 @@ long FitIniFile::readIdCharArray (PCSTR varName, PSTR result, ULONG numElements)
 		return(SYNTAX_ERROR);
 	}
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, ULONG numElements)
+int32_t FitIniFile::readIdUCharArray (PCSTR varName, puint8_t result, ULONG numElements)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2043,7 +2043,7 @@ long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, ULONG numElemen
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -2061,7 +2061,7 @@ long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, ULONG numElemen
 	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -2086,15 +2086,15 @@ long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, ULONG numElemen
 		// Now, loop until we reach the end of block or we've read in all of the elements
 		while ((logicalPosition < endOfBlock) && (elementsRead < actualElements))
 		{
-			long errorCode = getNextWord(equalSign,elementString,9);
+			int32_t errorCode = getNextWord(equalSign,elementString,9);
 			if (errorCode == GET_NEXT_LINE)
 			{
-				readLine((MemoryPtr)line,254);
+				readLine((PUCHAR)line,254);
 				equalSign = line;
 				continue;
 			}
 
-			if (errorCode != NO_ERR)
+			if (errorCode != NO_ERROR)
 			{
 				return(errorCode);
 			}
@@ -2111,7 +2111,7 @@ long FitIniFile::readIdUCHARArray (PCSTR varName, PUCHAR result, ULONG numElemen
 		return(SYNTAX_ERROR);
 	}
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 		
 //---------------------------------------------------------------------------
@@ -2138,7 +2138,7 @@ ULONG FitIniFile::getIdFloatArrayElements (PCSTR varName)
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -2156,7 +2156,7 @@ ULONG FitIniFile::getIdFloatArrayElements (PCSTR varName)
 	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -2193,7 +2193,7 @@ ULONG FitIniFile::getIdLongArrayElements (PCSTR varName)
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -2211,7 +2211,7 @@ ULONG FitIniFile::getIdLongArrayElements (PCSTR varName)
 	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -2248,7 +2248,7 @@ ULONG FitIniFile::getIdULongArrayElements (PCSTR varName)
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -2266,7 +2266,7 @@ ULONG FitIniFile::getIdULongArrayElements (PCSTR varName)
 	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -2303,7 +2303,7 @@ ULONG FitIniFile::getIdShortArrayElements (PCSTR varName)
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -2321,7 +2321,7 @@ ULONG FitIniFile::getIdShortArrayElements (PCSTR varName)
 	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -2358,7 +2358,7 @@ ULONG FitIniFile::getIdUShortArrayElements (PCSTR varName)
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -2376,7 +2376,7 @@ ULONG FitIniFile::getIdUShortArrayElements (PCSTR varName)
 	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -2413,7 +2413,7 @@ ULONG FitIniFile::getIdCharArrayElements (PCSTR varName)
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -2431,7 +2431,7 @@ ULONG FitIniFile::getIdCharArrayElements (PCSTR varName)
 	ULONG actualElements;
 	
 	fSearch += 2;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -2445,7 +2445,7 @@ ULONG FitIniFile::getIdCharArrayElements (PCSTR varName)
 }
 
 //---------------------------------------------------------------------------
-ULONG FitIniFile::getIdUCHARArrayElements (PCSTR varName)
+ULONG FitIniFile::getIdUCharArrayElements (PCSTR varName)
 {
 	char line[255];
 	char frontSearch[10];
@@ -2468,7 +2468,7 @@ ULONG FitIniFile::getIdUCHARArrayElements (PCSTR varName)
 	
 	do
 	{
-		readLine((MemoryPtr)line,254);
+		readLine((PUCHAR)line,254);
 		
 		fSearch = strstr(line,frontSearch);
 		bSearch = strstr(line,searchString);
@@ -2486,7 +2486,7 @@ ULONG FitIniFile::getIdUCHARArrayElements (PCSTR varName)
 	ULONG actualElements;
 	
 	fSearch += 3;												//Move pointer to first number in brackets.
-	long numDigits = bSearch - fSearch;
+	int32_t numDigits = bSearch - fSearch;
 
 	if (numDigits > 9)
 		return(TOO_MANY_ELEMENTS);
@@ -2500,27 +2500,27 @@ ULONG FitIniFile::getIdUCHARArrayElements (PCSTR varName)
 }
 	
 //---------------------------------------------------------------------------
-long FitIniFile::writeBlock (PCSTR blockId)
+int32_t FitIniFile::writeBlock (PCSTR blockId)
 {
 	char thisLine[255];
 	sprintf(thisLine,"\r\n[%s]\r\n",blockId);
 	
-	long result = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t result = write((PUCHAR)thisLine,strlen(thisLine));
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdFloat (PCSTR varName, float value)
+int32_t FitIniFile::writeIdFloat (PCSTR varName, float value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"f %s = %f\r\n",varName,value);
 	
-	long result = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t result = write((PUCHAR)thisLine,strlen(thisLine));
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdBoolean (PCSTR varName, bool value)
+int32_t FitIniFile::writeIdBoolean (PCSTR varName, bool value)
 {
 	char thisLine[255];
 	if (value)
@@ -2528,72 +2528,72 @@ long FitIniFile::writeIdBoolean (PCSTR varName, bool value)
 	else
 		sprintf(thisLine,"b %s = %s\r\n",varName,"FALSE");
 	
-	long result = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t result = write((PUCHAR)thisLine,strlen(thisLine));
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdLong (PCSTR varName, long value)
+int32_t FitIniFile::writeIdLong (PCSTR varName, int32_t value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"l %s = %d\r\n",varName,value);
 	
-	long result = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t result = write((PUCHAR)thisLine,strlen(thisLine));
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdShort (PCSTR varName, short value)
+int32_t FitIniFile::writeIdShort (PCSTR varName, short value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"s %s = %d\r\n",varName,value);
 	
-	long result = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t result = write((PUCHAR)thisLine,strlen(thisLine));
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdChar (PCSTR varName, char value)
+int32_t FitIniFile::writeIdChar (PCSTR varName, char value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"c %s = %d\r\n",varName,value);
 	
-	long result = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t result = write((PUCHAR)thisLine,strlen(thisLine));
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdULong (PCSTR varName, ULONG value)
+int32_t FitIniFile::writeIdULong (PCSTR varName, ULONG value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"ul %s = %d\r\n",varName,value);
 	
-	long result = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t result = write((PUCHAR)thisLine,strlen(thisLine));
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdUShort (PCSTR varName, unsigned short value)
+int32_t FitIniFile::writeIdUShort (PCSTR varName, uint16_t value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"us %s = %d\r\n",varName,value);
 	
-	long result = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t result = write((PUCHAR)thisLine,strlen(thisLine));
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdUCHAR (PCSTR varName, uint8_t value)
+int32_t FitIniFile::writeIdUChar (PCSTR varName, uint8_t value)
 {
 	char thisLine[255];
 	sprintf(thisLine,"uc %s = %d\r\n",varName,value);
 	
-	long result = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t result = write((PUCHAR)thisLine,strlen(thisLine));
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdString (PCSTR varName, PCSTR result)
+int32_t FitIniFile::writeIdString (PCSTR varName, PCSTR result)
 {
 	char thisLine[4096];
 	char tmpString[4000];
@@ -2605,82 +2605,82 @@ long FitIniFile::writeIdString (PCSTR varName, PCSTR result)
 
 	sprintf(thisLine,"st %s = \"%s\"\r\n",varName,result);
 	
-	long bytesWritten = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t bytesWritten = write((PUCHAR)thisLine,strlen(thisLine));
 	return(bytesWritten);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdUShortArray (PCSTR varName, unsigned short *array, ULONG numElements)
+int32_t FitIniFile::writeIdUShortArray (PCSTR varName, puint16_t array, ULONG numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"us[%d] %s = %d,",numElements,varName,array[0]);
 	
-	long bytesWritten = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t bytesWritten = write((PUCHAR)thisLine,strlen(thisLine));
 
-	for (long i=1;i<(long)numElements;i++)
+	for (int32_t i=1;i<(int32_t)numElements;i++)
 	{
 		sprintf(thisLine,"%d,",array[i]);
-		bytesWritten += write((MemoryPtr)thisLine,strlen(thisLine));
+		bytesWritten += write((PUCHAR)thisLine,strlen(thisLine));
 	}
 	sprintf(thisLine,"\r\n");
-	bytesWritten += write((MemoryPtr)thisLine,strlen(thisLine));
+	bytesWritten += write((PUCHAR)thisLine,strlen(thisLine));
 
 	return (bytesWritten);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdLongArray (PCSTR varName, long *array, ULONG numElements)
+int32_t FitIniFile::writeIdLongArray (PCSTR varName, int32_t *array, ULONG numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"l[%d] %s = %d,",numElements,varName,array[0]);
 	
-	long bytesWritten = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t bytesWritten = write((PUCHAR)thisLine,strlen(thisLine));
 
-	for (long i=1;i<(long)numElements;i++)
+	for (int32_t i=1;i<(int32_t)numElements;i++)
 	{
 		sprintf(thisLine,"%d,",array[i]);
-		bytesWritten += write((MemoryPtr)thisLine,strlen(thisLine));
+		bytesWritten += write((PUCHAR)thisLine,strlen(thisLine));
 	}
 	sprintf(thisLine,"\r\n");
-	bytesWritten += write((MemoryPtr)thisLine,strlen(thisLine));
+	bytesWritten += write((PUCHAR)thisLine,strlen(thisLine));
 
 	return (bytesWritten);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdFloatArray (PCSTR varName, float *array, ULONG numElements)
+int32_t FitIniFile::writeIdFloatArray (PCSTR varName, float *array, ULONG numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"f[%d] %s = %.2f,",numElements,varName,array[0]);
 	
-	long bytesWritten = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t bytesWritten = write((PUCHAR)thisLine,strlen(thisLine));
 
-	for (long i=1;i<(long)numElements;i++)
+	for (int32_t i=1;i<(int32_t)numElements;i++)
 	{
 		sprintf(thisLine," %.2f,",array[i]);
-		bytesWritten += write((MemoryPtr)thisLine,strlen(thisLine));
+		bytesWritten += write((PUCHAR)thisLine,strlen(thisLine));
 	}
 	sprintf(thisLine,"\r\n");
-	bytesWritten += write((MemoryPtr)thisLine,strlen(thisLine));
+	bytesWritten += write((PUCHAR)thisLine,strlen(thisLine));
 
 	return (bytesWritten);
 }
 
 //---------------------------------------------------------------------------
-long FitIniFile::writeIdUCHARArray (PCSTR varName, PUCHAR array, ULONG numElements)
+int32_t FitIniFile::writeIdUCharArray (PCSTR varName, puint8_t array, ULONG numElements)
 {
 	char thisLine[255];
 	sprintf(thisLine,"uc[%d] %s = %d,",numElements,varName,array[0]);
 	
-	long bytesWritten = write((MemoryPtr)thisLine,strlen(thisLine));
+	int32_t bytesWritten = write((PUCHAR)thisLine,strlen(thisLine));
 
-	for (long i=1;i<(long)numElements;i++)
+	for (int32_t i=1;i<(int32_t)numElements;i++)
 	{
 		sprintf(thisLine," %d,",array[i]);
-		bytesWritten += write((MemoryPtr)thisLine,strlen(thisLine));
+		bytesWritten += write((PUCHAR)thisLine,strlen(thisLine));
 	}
 	sprintf(thisLine,"\r\n");
-	bytesWritten += write((MemoryPtr)thisLine,strlen(thisLine));
+	bytesWritten += write((PUCHAR)thisLine,strlen(thisLine));
 
 	return (bytesWritten);
 }

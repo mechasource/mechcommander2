@@ -43,9 +43,9 @@ AppearanceTypeListPtr appearanceTypeList = NULL;
 
 //---------------------------------------------------------------------------
 // Class AppearanceType
-void* AppearanceType::operator new (size_t memSize)
+PVOID AppearanceType::operator new (size_t memSize)
 {
-	void* result = NULL;
+	PVOID result = NULL;
 	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Malloc(memSize);
@@ -55,9 +55,9 @@ void* AppearanceType::operator new (size_t memSize)
 }
 
 //---------------------------------------------------------------------------
-void AppearanceType::operator delete (void* treePtr)
+void AppearanceType::operator delete (PVOID treePtr)
 {
-	long result;
+	int32_t result;
 	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Free(treePtr);
@@ -75,48 +75,48 @@ void AppearanceType::init (PSTR fileName)
 	iniName.init(tglPath,fileName,".ini");
 
 	FitIniFile iniFile;
-	long result = iniFile.open(iniName);
-	if (result != NO_ERR)
+	int32_t result = iniFile.open(iniName);
+	if (result != NO_ERROR)
 		STOP(("Could not find appearance INI file %s",iniName));
 		
 	result = iniFile.seekBlock("3DBounds");
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		designerTypeBounds = true;
 		
-		long tmpy;
+		int32_t tmpy;
 		result = iniFile.readIdLong("UpperLeftX",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
 		else
 			typeUpperLeft.x = tmpy;
 			
 		result = iniFile.readIdLong("UpperLeftY",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
 		else
 			typeUpperLeft.y = tmpy;
   			
 		result = iniFile.readIdLong("UpperLeftZ",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
 		else
 			typeUpperLeft.z = tmpy;
 			
   		result = iniFile.readIdLong("LowerRightX",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
  		else
 			typeLowerRight.x = tmpy;
     		
 		result = iniFile.readIdLong("LowerRightY",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
  		else
 			typeLowerRight.y = tmpy;
 			
 		result = iniFile.readIdLong("LowerRightZ",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
  		else
 			typeLowerRight.z = tmpy;
@@ -133,48 +133,48 @@ void AppearanceType::reinit (void)
 	iniName.init(tglPath,name,".ini");
 
 	FitIniFile iniFile;
-	long result = iniFile.open(iniName);
-	if (result != NO_ERR)
+	int32_t result = iniFile.open(iniName);
+	if (result != NO_ERROR)
 		STOP(("Could not find appearance INI file %s",iniName));
 		
 	result = iniFile.seekBlock("3DBounds");
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		designerTypeBounds = true;
 		
-		long tmpy;
+		int32_t tmpy;
 		result = iniFile.readIdLong("UpperLeftX",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
 		else
 			typeUpperLeft.x = tmpy;
 			
 		result = iniFile.readIdLong("UpperLeftY",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
 		else
 			typeUpperLeft.y = tmpy;
   			
 		result = iniFile.readIdLong("UpperLeftZ",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
 		else
 			typeUpperLeft.z = tmpy;
 			
   		result = iniFile.readIdLong("LowerRightX",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
  		else
 			typeLowerRight.x = tmpy;
     		
 		result = iniFile.readIdLong("LowerRightY",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
  		else
 			typeLowerRight.y = tmpy;
 			
 		result = iniFile.readIdLong("LowerRightZ",tmpy);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Cant find upperleftX type bounds in %s",iniName));
  		else
 			typeLowerRight.z = tmpy;
@@ -211,7 +211,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (ULONG apprNum, PSTR appearF
 	// apprNum.  To get the correct packet we mask off the top 8 bits
 	// and store the number.  To get the appearance type, we right shift
 	// by 24.
-	long appearanceClass = apprNum >> 24;
+	int32_t appearanceClass = apprNum >> 24;
 	AppearanceTypePtr appearanceType = NULL;
 	
 	//----------------------------------------------------
@@ -388,7 +388,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (ULONG apprNum, PSTR appearF
 }
 		
 //---------------------------------------------------------------------------
-long AppearanceTypeList::removeAppearance (AppearanceTypePtr which)
+int32_t AppearanceTypeList::removeAppearance (AppearanceTypePtr which)
 {
 	AppearanceTypePtr appearanceType = head;
 	AppearanceTypePtr previous = NULL;
@@ -432,7 +432,7 @@ long AppearanceTypeList::removeAppearance (AppearanceTypePtr which)
 	}
 //#endif
 	
-	return NO_ERR;
+	return NO_ERROR;
 }
 
 //---------------------------------------------------------------------------
@@ -477,7 +477,7 @@ void AppearanceTypeList::destroy (void)
 }
 
 //---------------------------------------------------------------------------
-bool AppearanceTypeList::pointerCanBeDeleted (void *ptr)
+bool AppearanceTypeList::pointerCanBeDeleted (PVOIDptr)
 {
 	if (appearanceHeap && appearanceHeap->pointerOnHeap(ptr))
 		return true;

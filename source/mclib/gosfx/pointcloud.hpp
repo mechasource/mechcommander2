@@ -63,11 +63,10 @@ namespace gosFX
 	// Class Registration Support
 	//
 	public:
-		static void InitializeClass();
-		static void	TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 		typedef PointCloud__Specification Specification;
 		typedef PointCloud__Particle Particle;
@@ -90,7 +89,7 @@ namespace gosFX
 	protected:
 		PointCloud(
 			Specification *spec,
-			unsigned flags
+			uint32_t flags
 		);
 
 	public:
@@ -99,7 +98,7 @@ namespace gosFX
 		static PointCloud*
 			Make(
 				Specification *spec,
-				unsigned flags
+				uint32_t flags
 			);
 
 		Specification*
@@ -110,7 +109,7 @@ namespace gosFX
 						Cast_Object(Specification*, m_specification);
 				}
 		Particle*
-			GetParticle(unsigned index)
+			GetParticle(uint32_t index)
 				{
 					Check_Object(this); Check_Object(GetSpecification());
 					return
@@ -124,8 +123,7 @@ namespace gosFX
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
@@ -133,17 +131,17 @@ namespace gosFX
 	protected:
 		bool
 			AnimateParticle(
-				unsigned index,
+				uint32_t index,
 				const Stuff::LinearMatrix4D *world_to_new_local,
 				Stuff::Time till
 			);
 		void
 			CreateNewParticle(
-				unsigned index,
+				uint32_t index,
 				Stuff::Point3D *translation
 			);
 		void
-			DestroyParticle(unsigned index);
+			DestroyParticle(uint32_t index);
 
 	public:
 		bool

@@ -51,20 +51,20 @@
 
 //***************************************************************************
 
-extern long				MaxBreaks;
-extern long				MaxWatches;
+extern int32_t				MaxBreaks;
+extern int32_t				MaxWatches;
 extern DebuggerPtr		debugger;
-extern long				NumModules;
+extern int32_t				NumModules;
 extern ModuleEntryPtr	ModuleRegistry;
 extern ABLModulePtr*	ModuleInstanceRegistry;
-extern long				MaxModules;
+extern int32_t				MaxModules;
 extern ABLModulePtr*	LibraryInstanceRegistry;
-extern long				MaxLibraries;
-extern long				NumModulesRegistered;
-extern long				NumModuleInstances;
-extern long				MaxWatchesPerModule;
-extern long				MaxBreakPointsPerModule;
-extern long				MaxCodeBufferSize;
+extern int32_t				MaxLibraries;
+extern int32_t				NumModulesRegistered;
+extern int32_t				NumModuleInstances;
+extern int32_t				MaxWatchesPerModule;
+extern int32_t				MaxBreakPointsPerModule;
+extern int32_t				MaxCodeBufferSize;
 extern ABLModulePtr		CurModule;
 extern ABLModulePtr		CurLibrary;
 extern PSTR			codeBuffer;
@@ -76,26 +76,26 @@ extern StackItem*		stack;
 extern StackItemPtr		tos;
 extern StackItemPtr		stackFrameBasePtr;
 extern StackItemPtr		StaticDataPtr;
-extern long*			StaticVariablesSizes;
-extern long*			EternalVariablesSizes;
-extern long				MaxEternalVariables;
-extern long				eternalOffset;
-extern long				MaxStaticVariables;
-extern long				NumStaticVariables;
-extern long				NumOrderCalls;
+extern int32_t*			StaticVariablesSizes;
+extern int32_t*			EternalVariablesSizes;
+extern int32_t				MaxEternalVariables;
+extern int32_t				eternalOffset;
+extern int32_t				MaxStaticVariables;
+extern int32_t				NumStaticVariables;
+extern int32_t				NumOrderCalls;
 extern StateHandleInfo	StateHandleList[MAX_STATE_HANDLES_PER_MODULE];
-extern long				NumStateHandles;
-extern long				CurModuleHandle;
+extern int32_t				NumStateHandles;
+extern int32_t				CurModuleHandle;
 extern bool				CallModuleInit;
 extern bool				AutoReturnFromOrders;
-extern long				MaxLoopIterations;
+extern int32_t				MaxLoopIterations;
 extern bool				AssertEnabled;
 extern bool				IncludeDebugInfo;
 extern bool				ProfileABL;
 extern bool				Crunch;
-extern long				level;
-extern long				lineNumber;
-extern long				FileNumber;
+extern int32_t				level;
+extern int32_t				lineNumber;
+extern int32_t				FileNumber;
 extern ABLFile*		sourceFile;
 extern bool				printFlag;
 extern bool				blockFlag;
@@ -103,37 +103,37 @@ extern BlockType		blockType;
 extern SymTableNodePtr	CurModuleIdPtr;
 extern SymTableNodePtr	CurRoutineIdPtr;
 extern bool				DumbGetCharOn;
-extern long				NumOpenFiles;
-extern long				NumSourceFiles;
-extern long				NumLibrariesUsed;
+extern int32_t				NumOpenFiles;
+extern int32_t				NumSourceFiles;
+extern int32_t				NumLibrariesUsed;
 extern ABLModulePtr		LibrariesUsed[MAX_LIBRARIES_USED];
-extern long				bufferOffset;
+extern int32_t				bufferOffset;
 extern PSTR			bufferp;
 extern PSTR			tokenp;
-extern long				digitCount;
+extern int32_t				digitCount;
 extern bool				countError;
-extern long				pageNumber;
-extern long				lineCount;
+extern int32_t				pageNumber;
+extern int32_t				lineCount;
 
-extern long				CurAlarm;
+extern int32_t				CurAlarm;
 
 extern bool				eofFlag;
 extern bool				ExitWithReturn;
 extern bool				ExitFromTacOrder;
 
-extern long				dummyCount;
+extern int32_t				dummyCount;
 
-extern long				lineNumber;
-extern long				FileNumber;
-extern long				errorCount;
-extern long				execStatementCount;
-extern long				NumSourceFiles;
+extern int32_t				lineNumber;
+extern int32_t				FileNumber;
+extern int32_t				errorCount;
+extern int32_t				execStatementCount;
+extern int32_t				NumSourceFiles;
 extern char				SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
  
 extern TokenCodeType	curToken;
 extern char				wordString[];
 extern SymTableNodePtr	symTableDisplay[];
-extern long				level;
+extern int32_t				level;
 extern bool				blockFlag;
 extern BlockType		blockType;
 extern bool				printFlag;
@@ -144,7 +144,7 @@ extern StackItem*		stack;
 //extern StackItem*		eternalStack;
 extern StackItemPtr		tos;
 extern StackItemPtr		stackFrameBasePtr;
-extern long				eternalOffset;
+extern int32_t				eternalOffset;
 
 extern TokenCodeType	statementStartList[];
 extern TokenCodeType	statementEndList[];
@@ -155,15 +155,15 @@ extern char				tokenString[MAXLEN_TOKENSTRING];
 extern CharCodeType		charTable[256];
 
 extern char				sourceBuffer[MAXLEN_SOURCELINE];
-extern long				bufferOffset;
+extern int32_t				bufferOffset;
 extern PSTR			bufferp;
 extern PSTR			tokenp;
 
-extern long				digitCount;
+extern int32_t				digitCount;
 extern bool				countError;
 
 extern bool				eofFlag;
-extern long				pageNumber;
+extern int32_t				pageNumber;
 
 extern SymTableNodePtr	SymTableDisplay[MAX_NESTING_LEVEL];
 extern TypePtr			IntegerTypePtr;
@@ -174,11 +174,11 @@ extern StackItemPtr		StaticDataPtr;
 extern StackItem		returnValue;
 
 extern ModuleEntryPtr	ModuleRegistry;
-extern long				MaxModules;
-extern long				NumModulesRegistered;
-extern long				MaxStaticVariables;
-extern long				NumStaticVariables;
-extern long				NumSourceFiles;
+extern int32_t				MaxModules;
+extern int32_t				NumModulesRegistered;
+extern int32_t				MaxStaticVariables;
+extern int32_t				NumStaticVariables;
+extern int32_t				NumSourceFiles;
 
 extern bool				IncludeDebugInfo;
 extern bool				AssertEnabled;
@@ -190,7 +190,7 @@ extern DebuggerPtr		debugger;
 bool					ABLenabled = false;
 char					buffer[MAXLEN_PRINTLINE];
 
-extern long				CallStackLevel;
+extern int32_t				CallStackLevel;
 extern bool				SkipOrder;
 
 extern ABLModulePtr		CurFSM;
@@ -198,22 +198,22 @@ extern bool				NewStateSet;
 
 extern void transState (SymTableNodePtr newState);
 
-long					numLibrariesLoaded = 0;
-long					NumExecutions = 0;
+int32_t					numLibrariesLoaded = 0;
+int32_t					NumExecutions = 0;
 
-void* (*ABLSystemMallocCallback) (ULONG memSize) = NULL;
-void* (*ABLStackMallocCallback) (ULONG memSize) = NULL;
-void* (*ABLCodeMallocCallback) (ULONG memSize) = NULL;
-void* (*ABLSymbolMallocCallback) (ULONG memSize) = NULL;
-void (*ABLSystemFreeCallback) (void* memBlock) = NULL;
-void (*ABLStackFreeCallback) (void* memBlock) = NULL;
-void (*ABLCodeFreeCallback) (void* memBlock) = NULL;
-void (*ABLSymbolFreeCallback) (void* memBlock) = NULL;
+PVOID (*ABLSystemMallocCallback) (ULONG memSize) = NULL;
+PVOID (*ABLStackMallocCallback) (ULONG memSize) = NULL;
+PVOID (*ABLCodeMallocCallback) (ULONG memSize) = NULL;
+PVOID (*ABLSymbolMallocCallback) (ULONG memSize) = NULL;
+void (*ABLSystemFreeCallback) (PVOID memBlock) = NULL;
+void (*ABLStackFreeCallback) (PVOID memBlock) = NULL;
+void (*ABLCodeFreeCallback) (PVOID memBlock) = NULL;
+void (*ABLSymbolFreeCallback) (PVOID memBlock) = NULL;
 void (*ABLDebugPrintCallback) (PSTR s) = NULL;
-long (*ABLRandomCallback) (long range) = NULL;
+int32_t (*ABLRandomCallback) (int32_t range) = NULL;
 void (*ABLSeedRandomCallback) (ULONG range) = NULL;
 ULONG (*ABLGetTimeCallback) (void) = NULL;
-void (*ABLFatalCallback) (long code, PSTR s) = NULL;
+void (*ABLFatalCallback) (int32_t code, PSTR s) = NULL;
 void (*ABLEndlessStateCallback) (UserFile* log) = NULL;
 
 //***************************************************************************
@@ -281,7 +281,7 @@ void ABL_AddToProfileLog (PSTR profileString);
 // ABL library interface routines
 //***************************************************************************
 
-long DefaultRandom (long /* range */) {
+int32_t DefaultRandom (int32_t /* range */) {
 
 	return(0);
 }
@@ -306,7 +306,7 @@ ULONG DefaultGetTimeCallback (void) {
 //---------------------------------------------------------------------------
 
 void ABLi_setRandomCallbacks (void (*seedRandomCallback) (ULONG seed),
-							  long (*randomCallback) (long range)) {
+							  int32_t (*randomCallback) (int32_t range)) {
 
 	ABLSeedRandomCallback = seedRandomCallback;
 	ABLRandomCallback = randomCallback;
@@ -339,28 +339,28 @@ void ABLi_init (ULONG runtimeStackSize,
 				ULONG maxCodeBufferSize,
 				ULONG maxRegisteredModules,
 				ULONG maxStaticVariables,
-				void* (*systemMallocCallback) (ULONG memSize),
-				void* (*stackMallocCallback) (ULONG memSize),
-				void* (*codeMallocCallback) (ULONG memSize),
-				void* (*symbolMallocCallback) (ULONG memSize),
-				void (*systemFreeCallback) (void* memBlock),
-				void (*stackFreeCallback) (void* memBlock),
-				void (*codeFreeCallback) (void* memBlock),
-				void (*symbolFreeCallback) (void* memBlock),
-				long (*fileCreateCB) (void** file, PSTR fName),
-				long (*fileOpenCB) (void** file, PSTR fName),
-				long (*fileCloseCB) (void** file),
-				bool (*fileEofCB) (void* file),
-				long (*fileReadCB) (void* file, PUCHAR buffer, long length),
-				long (*fileReadLongCB) (void* file),
-				long (*fileReadStringCB) (void* file, PUCHAR buffer),
-				long (*fileReadLineExCB) (void* file, PUCHAR buffer, long maxLength),
-				long (*fileWriteCB) (void* file, PUCHAR buffer, long length),
-				long (*fileWriteByteCB) (void* file, uint8_t byte),
-				long (*fileWriteLongCB) (void* file, long value),
-				long (*fileWriteStringCB) (void* file, PSTR buffer),
+				PVOID (*systemMallocCallback) (ULONG memSize),
+				PVOID (*stackMallocCallback) (ULONG memSize),
+				PVOID (*codeMallocCallback) (ULONG memSize),
+				PVOID (*symbolMallocCallback) (ULONG memSize),
+				void (*systemFreeCallback) (PVOID memBlock),
+				void (*stackFreeCallback) (PVOID memBlock),
+				void (*codeFreeCallback) (PVOID memBlock),
+				void (*symbolFreeCallback) (PVOID memBlock),
+				int32_t (*fileCreateCB) (PVOID* file, PSTR fName),
+				int32_t (*fileOpenCB) (PVOID* file, PSTR fName),
+				int32_t (*fileCloseCB) (PVOID* file),
+				bool (*fileEofCB) (PVOID file),
+				int32_t (*fileReadCB) (PVOID file, puint8_t buffer, int32_t length),
+				int32_t (*fileReadLongCB) (PVOID file),
+				int32_t (*fileReadStringCB) (PVOID file, puint8_t buffer),
+				int32_t (*fileReadLineExCB) (PVOID file, puint8_t buffer, int32_t maxLength),
+				int32_t (*fileWriteCB) (PVOID file, puint8_t buffer, int32_t length),
+				int32_t (*fileWriteByteCB) (PVOID file, uint8_t byte),
+				int32_t (*fileWriteLongCB) (PVOID file, int32_t value),
+				int32_t (*fileWriteStringCB) (PVOID file, PSTR buffer),
 				void (*debuggerPrintCallback) (PSTR s),
-				void (*fatalCallback) (long code, PSTR s),
+				void (*fatalCallback) (int32_t code, PSTR s),
 				bool debugInfo,
 				bool debug,
 				bool profile) {
@@ -478,7 +478,7 @@ profile = true;
 	
 	//----------------------------------
 	// Initialize the character table...
-	long curCh;
+	int32_t curCh;
 	for (curCh = 0; curCh < 256; curCh++)
 		charTable[curCh] = CHR_SPECIAL;
 	for (curCh = '0'; curCh <= '9'; curCh++)
@@ -508,7 +508,7 @@ profile = true;
 	StaticDataPtr = NULL;
 	StaticVariablesSizes = NULL;
 	if (MaxStaticVariables > 0) {
-		StaticVariablesSizes = (long*)ABLStackMallocCallback(sizeof(long) * MaxStaticVariables);
+		StaticVariablesSizes = (int32_t*)ABLStackMallocCallback(sizeof(int32_t) * MaxStaticVariables);
 		if (!StaticVariablesSizes)
 			ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc StaticVariablesSizes ");
 	}
@@ -522,7 +522,7 @@ profile = true;
 	//-----------------------------------
 	// Allocate Eternal Vars Size List...
 	if (MaxEternalVariables > 0) {
-		EternalVariablesSizes = (long*)ABLStackMallocCallback(sizeof(long) * MaxEternalVariables);
+		EternalVariablesSizes = (int32_t*)ABLStackMallocCallback(sizeof(int32_t) * MaxEternalVariables);
 		if (!EternalVariablesSizes)
 			ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc EternalVariablesSizes ");
 	}
@@ -565,7 +565,7 @@ profile = true;
 	ABLFile* bFile = new ABLFile;
 	bFile->open("ablFile.txt");
 	bFile->readString(s);
-	long val = bFile->readLong();
+	int32_t val = bFile->readLong();
 	bFile->close();
 	delete bFile;
 	bFile = NULL;
@@ -574,11 +574,11 @@ profile = true;
 
 //***************************************************************************
 
-long ABLi_preProcess (PSTR sourceFileName, long* numErrors, long* numLinesProcessed, long* numFilesProcessed, bool printLines) {
+int32_t ABLi_preProcess (PSTR sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed, int32_t* numFilesProcessed, bool printLines) {
 
 	//--------------------------------------------------------------------------------
 	// First, check if this module has already been registered into the environment...
-	long i;
+	int32_t i;
 	for (i = 0; i < NumModulesRegistered; i++)
 		if (strcmp(strlwr(sourceFileName), ModuleRegistry[i].fileName) == 0)
 			return(i);
@@ -623,7 +623,7 @@ long ABLi_preProcess (PSTR sourceFileName, long* numErrors, long* numLinesProces
 
 	//---------------------------------------
 	// Now, let's open the ABL source file...	
-	long openErr = ABL_NO_ERR;
+	int32_t openErr = ABL_NO_ERR;
 	if ((openErr = openSourceFile(sourceFileName)) != ABL_NO_ERR)
 		return(openErr);
 
@@ -736,12 +736,12 @@ long ABLi_preProcess (PSTR sourceFileName, long* numErrors, long* numLinesProces
 	ModuleRegistry[NumModulesRegistered].sizeStaticVars	= NULL;
 	ModuleRegistry[NumModulesRegistered].totalSizeStaticVars = 0;
 	if (NumStaticVariables) {
-		ModuleRegistry[NumModulesRegistered].sizeStaticVars = (long*)ABLStackMallocCallback(sizeof(long) * NumStaticVariables);
+		ModuleRegistry[NumModulesRegistered].sizeStaticVars = (int32_t*)ABLStackMallocCallback(sizeof(int32_t) * NumStaticVariables);
 		if (!ModuleRegistry[NumModulesRegistered].sizeStaticVars)
 			ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc module sizeStaticVars ");
-		memcpy(ModuleRegistry[NumModulesRegistered].sizeStaticVars, StaticVariablesSizes, sizeof(long) * NumStaticVariables);
-		ModuleRegistry[NumModulesRegistered].totalSizeStaticVars = sizeof(long) * NumStaticVariables;
-		for (long i = 0; i < ModuleRegistry[NumModulesRegistered].numStaticVars; i++)
+		memcpy(ModuleRegistry[NumModulesRegistered].sizeStaticVars, StaticVariablesSizes, sizeof(int32_t) * NumStaticVariables);
+		ModuleRegistry[NumModulesRegistered].totalSizeStaticVars = sizeof(int32_t) * NumStaticVariables;
+		for (int32_t i = 0; i < ModuleRegistry[NumModulesRegistered].numStaticVars; i++)
 			ModuleRegistry[NumModulesRegistered].totalSizeStaticVars += ModuleRegistry[NumModulesRegistered].sizeStaticVars[i];
 	}
 	ModuleRegistry[NumModulesRegistered].numOrderCalls = NumOrderCalls;
@@ -773,7 +773,7 @@ long ABLi_preProcess (PSTR sourceFileName, long* numErrors, long* numLinesProces
 
 //***************************************************************************
 
-long ABLi_execute (SymTableNodePtr  moduleIdPtr , SymTableNodePtr /* functionIdPtr */, 
+int32_t ABLi_execute (SymTableNodePtr  moduleIdPtr , SymTableNodePtr /* functionIdPtr */, 
 				   ABLParamPtr paramList, StackItemPtr returnVal) 
 {
 
@@ -838,7 +838,7 @@ long ABLi_execute (SymTableNodePtr  moduleIdPtr , SymTableNodePtr /* functionIdP
 		//------------------------------------------------------------------------------
 		// NOTE: Currently, parameter passing of arrays is not functioning. This MUST be
 		// done...
-		long curParam = 0;
+		int32_t curParam = 0;
 		for (SymTableNodePtr formalIdPtr = (SymTableNodePtr)(moduleIdPtr->defn.info.routine.params);
 			 formalIdPtr != NULL;
 			 formalIdPtr = formalIdPtr->next) {
@@ -869,7 +869,7 @@ long ABLi_execute (SymTableNodePtr  moduleIdPtr , SymTableNodePtr /* functionIdP
 					//------------------------------------------------------------------------------
 					// The following is a little inefficient, but is kept this way to keep it clear.
 					// Once it's verified to work, optimize...
-					long size = formalTypePtr->size;
+					int32_t size = formalTypePtr->size;
 					PSTR dest = (PSTR)ABLStackMallocCallback((size_t)size);
 					if (!dest)
 						ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc module formal array param ");
@@ -909,7 +909,7 @@ long ABLi_execute (SymTableNodePtr  moduleIdPtr , SymTableNodePtr /* functionIdP
 
 //***************************************************************************
 
-long ABLi_deleteModule (SymTableNodePtr /* moduleIdPtr */) {
+int32_t ABLi_deleteModule (SymTableNodePtr /* moduleIdPtr */) {
 
 	return(ABL_NO_ERR);
 }
@@ -959,7 +959,7 @@ void ABLi_close (void) {
 
 //***************************************************************************
 
-ABLModulePtr ABLi_loadLibrary (PSTR sourceFileName, long* numErrors, long* numLinesProcessed, long* numFilesProcessed, bool printLines, bool createInstance) {
+ABLModulePtr ABLi_loadLibrary (PSTR sourceFileName, int32_t* numErrors, int32_t* numLinesProcessed, int32_t* numFilesProcessed, bool printLines, bool createInstance) {
 
 	//--------------------------------------------------------------------
 	// Create an instance of it so it may be used from other modules. Note
@@ -974,7 +974,7 @@ ABLModulePtr ABLi_loadLibrary (PSTR sourceFileName, long* numErrors, long* numLi
 	//-------------------------------------------------------------
 	// Preprocess the library. Note that a library should be loaded
 	// just once.
-	long libraryHandle = ABLi_preProcess(sourceFileName, numErrors, numLinesProcessed, numFilesProcessed, printLines);
+	int32_t libraryHandle = ABLi_preProcess(sourceFileName, numErrors, numLinesProcessed, numFilesProcessed, printLines);
 	if (libraryHandle < (NumModulesRegistered - 1)) {
 		//------------------
 		// Already loaded...
@@ -994,7 +994,7 @@ ABLModulePtr ABLi_loadLibrary (PSTR sourceFileName, long* numErrors, long* numLi
 		return(library);
 	}
 
-	long err = library->init(libraryHandle);
+	int32_t err = library->init(libraryHandle);
 	ABL_Assert(err == ABL_NO_ERR, err, " Error Loading ABL Library ");
 
 	library->setName(sourceFileName);
@@ -1004,7 +1004,7 @@ ABLModulePtr ABLi_loadLibrary (PSTR sourceFileName, long* numErrors, long* numLi
 
 //***************************************************************************
 
-ABLParamPtr ABLi_createParamList (long numParameters) {
+ABLParamPtr ABLi_createParamList (int32_t numParameters) {
 
 	if (numParameters) {
 		ABLParamPtr paramList = (ABLParamPtr)ABLStackMallocCallback(sizeof(ABLParam) * (numParameters + 1));
@@ -1018,7 +1018,7 @@ ABLParamPtr ABLi_createParamList (long numParameters) {
 
 //***************************************************************************
 
-void ABLi_setIntegerParam (ABLParamPtr paramList, long index, long value) {
+void ABLi_setIntegerParam (ABLParamPtr paramList, int32_t index, int32_t value) {
 
 	if (paramList) {
 		paramList[index].type = ABL_PARAM_INTEGER;
@@ -1028,7 +1028,7 @@ void ABLi_setIntegerParam (ABLParamPtr paramList, long index, long value) {
 
 //***************************************************************************
 
-void ABLi_setRealParam (ABLParamPtr paramList, long index, float value) {
+void ABLi_setRealParam (ABLParamPtr paramList, int32_t index, float value) {
 
 	if (paramList) {
 		paramList[index].type = ABL_PARAM_REAL;
@@ -1046,7 +1046,7 @@ void ABLi_deleteParamList (ABLParamPtr paramList) {
 
 //***************************************************************************
 
-ABLModulePtr ABLi_getModule (long id) {
+ABLModulePtr ABLi_getModule (int32_t id) {
 
 	if ((id >= 0) && (id < NumModules))
 		return(ModuleInstanceRegistry[id]);
@@ -1073,10 +1073,10 @@ void ABLi_addFunction (PSTR name,
 
 //***************************************************************************
 
-long ABLi_registerInteger (PSTR name, long* address, long numElements) {
+int32_t ABLi_registerInteger (PSTR name, int32_t* address, int32_t numElements) {
 
 	if (strlen(name) >= MAXLEN_TOKENSTRING)
-		ABL_Fatal(0, " ABLi_registerInteger: variable name too long ");
+		ABL_Fatal(0, " ABLi_registerInteger: variable name too int32_t ");
 
 	level = 0;
 	strcpy(wordString, name);
@@ -1096,10 +1096,10 @@ long ABLi_registerInteger (PSTR name, long* address, long numElements) {
 
 //***************************************************************************
 
-long ABLi_registerReal (PSTR name, float* address, long /* numElements */) {
+int32_t ABLi_registerReal (PSTR name, float* address, int32_t /* numElements */) {
 
 	if (strlen(name) >= MAXLEN_TOKENSTRING)
-		ABL_Fatal(0, " ABLi_registerInteger: variable name too long ");
+		ABL_Fatal(0, " ABLi_registerInteger: variable name too int32_t ");
 
 	level = 0;
 	strcpy(wordString, name);
@@ -1131,7 +1131,7 @@ void ABLi_resetOrders (void) {
 
 //***************************************************************************
 
-long ABLi_getCurrentState (void) {
+int32_t ABLi_getCurrentState (void) {
 
 	if (CurFSM)
 		return(CurFSM->getStateHandle());
@@ -1140,7 +1140,7 @@ long ABLi_getCurrentState (void) {
 
 //***************************************************************************
 
-void ABLi_transState (long newStateHandle) {
+void ABLi_transState (int32_t newStateHandle) {
 
 	if (CurFSM && (newStateHandle > 0) && (newStateHandle < ModuleRegistry[CurFSM->getHandle()].numStateHandles))
 		transState(ModuleRegistry[CurFSM->getHandle()].stateHandles[newStateHandle].state);
@@ -1195,8 +1195,8 @@ SymTableNodePtr moduleHeader (void) {
 	enterScope(NULL);
 
 	if (curToken == TKN_LPAREN) {
-		long paramCount;
-		long totalParamSize;
+		int32_t paramCount;
+		int32_t totalParamSize;
 		SymTableNodePtr paramListPtr = formalParamList(&paramCount, &totalParamSize);
 		//if (forwardFlag)
 		//	syntaxError(ABL_ERR_SYNTAX_ALREADY_FORWARDED);
@@ -1283,7 +1283,7 @@ void routine (void) {
 		blockType = BLOCK_ROUTINE;
 		blockFlag = true;
 
-		routineIdPtr->defn.info.routine.orderCallIndex = (unsigned short)NumOrderCalls;
+		routineIdPtr->defn.info.routine.orderCallIndex = (uint16_t)NumOrderCalls;
 
 		//compoundStatement();
 		getToken();
@@ -1309,7 +1309,7 @@ void routine (void) {
 		blockFlag = false;
 
 
-		routineIdPtr->defn.info.routine.numOrderCalls = (unsigned short)NumOrderCalls - routineIdPtr->defn.info.routine.orderCallIndex;
+		routineIdPtr->defn.info.routine.numOrderCalls = (uint16_t)NumOrderCalls - routineIdPtr->defn.info.routine.orderCallIndex;
 		routineIdPtr->defn.info.routine.codeSegment = createCodeSegment(routineIdPtr->defn.info.routine.codeSegmentSize);
 		analyzeBlock(routineIdPtr->defn.info.routine.codeSegment);
 		}
@@ -1418,8 +1418,8 @@ SymTableNodePtr functionHeader (void) {
 	enterScope(NULL);
 
 	if (curToken == TKN_LPAREN) {
-		long paramCount;
-		long totalParamSize;
+		int32_t paramCount;
+		int32_t totalParamSize;
 		SymTableNodePtr paramListPtr = formalParamList(&paramCount, &totalParamSize);
 		if (forwardFlag)
 			syntaxError(ABL_ERR_SYNTAX_ALREADY_FORWARDED);
@@ -1471,7 +1471,7 @@ SymTableNodePtr functionHeader (void) {
 
 //***************************************************************************
 
-SymTableNodePtr formalParamList (long* count, long* totalSize) {
+SymTableNodePtr formalParamList (int32_t* count, int32_t* totalSize) {
 
 	SymTableNodePtr paramIdPtr;
 	SymTableNodePtr firstIdPtr;
@@ -1480,8 +1480,8 @@ SymTableNodePtr formalParamList (long* count, long* totalSize) {
 	SymTableNodePtr typeIdPtr;
 	TypePtr paramTypePtr;
 	DefinitionType paramDefn;
-	long paramCount = 0;
-	long paramOffset = STACK_FRAME_HEADER_SIZE;
+	int32_t paramCount = 0;
+	int32_t paramOffset = STACK_FRAME_HEADER_SIZE;
 
 	getToken();
 
@@ -1580,7 +1580,7 @@ SymTableNodePtr formalParamList (long* count, long* totalSize) {
 
 //***************************************************************************
 
-TypePtr routineCall (SymTableNodePtr routineIdPtr, long paramCheckFlag) {
+TypePtr routineCall (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag) {
 
 	SymTableNodePtr thisRoutineIdPtr = CurRoutineIdPtr;
 	TypePtr resultType = NULL;
@@ -1598,7 +1598,7 @@ TypePtr routineCall (SymTableNodePtr routineIdPtr, long paramCheckFlag) {
 
 //***************************************************************************
 
-TypePtr declaredRoutineCall (SymTableNodePtr routineIdPtr, long paramCheckFlag) {
+TypePtr declaredRoutineCall (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag) {
 
 	actualParamList(routineIdPtr, paramCheckFlag);
 	return(/*routineIdPtr->defn.key == DFN_PROCEDURE ? NULL :*/ (TypePtr)(routineIdPtr->typePtr));
@@ -1606,7 +1606,7 @@ TypePtr declaredRoutineCall (SymTableNodePtr routineIdPtr, long paramCheckFlag) 
 
 //***************************************************************************
 
-void actualParamList (SymTableNodePtr routineIdPtr, long paramCheckFlag) {
+void actualParamList (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag) {
 
 	SymTableNodePtr formalParamIdPtr = NULL;
 	DefinitionType formalParamDefn = (DefinitionType)0;

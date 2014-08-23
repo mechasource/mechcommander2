@@ -9,27 +9,18 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef HEAP_H
 #define HEAP_H
 
-//---------------------------------------------------------------------------
-// Include Files
-#ifndef DSTD_H
-#include "dstd.h"
-#endif
+//#include "dstd.h"
+//#include "dheap.h"
+//#include <memory.h>
+//#include <gameos.hpp>
 
-#ifndef DHEAP_H
-#include "dheap.h"
-#endif
-
-#include <memory.h>
-
-#include <gameos.hpp>
 //---------------------------------------------------------------------------
 // Macro Definitions
-#ifndef NO_ERR
-#define NO_ERR	0
-#endif
 
 #define OUT_OF_MEMORY	0xBADD0001
 #define ALLOC_ZERO		0xBADD0002
@@ -52,7 +43,15 @@
 
 #define MAX_HEAPS		256
 //---------------------------------------------------------------------------
-extern UserHeapPtr systemHeap;
+
+struct HeapBlock;
+typedef HeapBlock*		HeapBlockPtr;
+class HeapManager;
+typedef HeapManager*	HeapManagerPtr;
+class UserHeap;
+typedef UserHeap*		UserHeapPtr;
+
+extern UserHeapPtr		systemHeap;
 
 //---------------------------------------------------------------------------
 // Additional Debug Information
@@ -61,16 +60,16 @@ extern UserHeapPtr systemHeap;
 
 typedef struct _memRecord 
 {
-	void*			ptr;
-	ULONG	size;
-	ULONG	stack[12];
+	PVOID			ptr;
+	size_t			size;
+	ULONG			stack[12];
 } memRecord;
 #endif
 
 typedef struct _GlobalHeapRec
 {
 	HeapManagerPtr 	thisHeap;
-	ULONG	heapSize;
+	size_t	heapSize;
 	ULONG   totalCoreLeft;
 	ULONG	coreLeft;
 } GlobalHeapRec;
@@ -83,15 +82,15 @@ class HeapManager
 	//-------------
 protected:
 
-	MemoryPtr				heap;
-	bool					memReserved;
-	ULONG   		totalSize;
-	ULONG   		committedSize;
+	PUCHAR			heap;
+	bool			memReserved;
+	size_t   		totalSize;
+	size_t   		committedSize;
 	ULONG			whoMadeMe;
 
 	//		BOOL	VMQuery (PVOID pvAddress, PVMQUERY pVMQ);
-	//		LPCTSTR GetMemStorageText (DWORD dwStorage);
-	//		LPTSTR	GetProtectText (DWORD dwProtect, LPTSTR szBuf, BOOL fShowFlags);
+	//		LPCTSTR GetMemStorageText (ULONG dwStorage);
+	//		LPTSTR	GetProtectText (ULONG dwProtect, LPTSTR szBuf, BOOL fShowFlags);
 	//		void	ConstructRgnInfoLine (PVMQUERY pVMQ, LPTSTR szLine, int nMaxLen);
 	//		void	ConstructBlkInfoLine (PVMQUERY pVMQ, LPTSTR szLine, int nMaxLen);
 
@@ -113,12 +112,12 @@ public:
 
 	void destroy (void);
 	void init (void);
-	long createHeap (ULONG memSize);
-	long commitHeap (ULONG commitSize = 0);
-	long decommitHeap (ULONG decommitSize = 0);
+	int32_t createHeap (ULONG memSize);
+	int32_t commitHeap (ULONG commitSize = 0);
+	int32_t decommitHeap (ULONG decommitSize = 0);
 
-	MemoryPtr getHeapPtr (void);
-	operator MemoryPtr (void);
+	PUCHAR getHeapPtr (void);
+	operator PUCHAR (void);
 
 	void HeapManager::MemoryDump();
 
@@ -132,7 +131,7 @@ public:
 		return whoMadeMe;
 	}
 
-	ULONG tSize (void)
+	size_t tSize (void)
 	{
 		return committedSize;
 	}
@@ -140,13 +139,12 @@ public:
 };
 
 //---------------------------------------------------------------------------
-struct HeapBlock
-{
-	ULONG 	blockSize;
+typedef struct HeapBlock {
+	size_t 			blockSize;
 	HeapBlockPtr 	upperBlock;
 	HeapBlockPtr	previous;
 	HeapBlockPtr	next;
-};
+} HeapBlock;
 
 //---------------------------------------------------------------------------
 class UserHeap : public HeapManager
@@ -157,19 +155,16 @@ protected:
 	HeapBlockPtr		heapStart;
 	HeapBlockPtr		heapEnd;
 	HeapBlockPtr		firstNearBlock;
-	ULONG		heapSize;
+	size_t				heapSize;
 	bool				mallocFatals;
-
-	long				heapState;
-
-	char				*heapName;
-
+	int32_t				heapState;
+	PSTR				heapName;
 	bool				useGOSGuardPage;
 	HGOSHEAP			gosHeap;
 
 #ifdef _DEBUG
-	memRecord			*recordArray;
-	long				recordCount;
+	memRecord*			recordArray;
+	int32_t				recordCount;
 	bool				logMallocs;
 #endif
 
@@ -183,23 +178,23 @@ protected:
 public:
 
 	UserHeap (void);
-	long init (ULONG memSize, PSTR heapId = NULL, bool useGOS = false);
+	int32_t init (ULONG memSize, PSTR heapId = NULL, bool useGOS = false);
 
 	~UserHeap (void);
 	void destroy (void);
 
 	ULONG totalCoreLeft (void);
 	ULONG coreLeft (void);
-	ULONG size (void) { return heapSize;}
+	size_t size (void) { return heapSize;}
 
-	void *Malloc (ULONG memSize);
-	long Free (void *memBlock);
+	PVOID Malloc (size_t memSize);
+	int32_t Free (PVOID memBlock);
 
-	void *calloc (ULONG memSize);
+	PVOID calloc (size_t memSize);
 
 	void walkHeap (bool printIt = FALSE, bool skipAllocated = FALSE);
 
-	long getLastError (void);
+	HRESULT getLastError (void);
 
 	bool heapReady (void)
 	{
@@ -221,7 +216,7 @@ public:
 		return heapName;
 	}
 
-	bool pointerOnHeap (void *ptr);
+	bool pointerOnHeap (PVOID ptr);
 
 #ifdef _DEBUG
 	void startHeapMallocLog (void);		//This function will start recoding each malloc and
@@ -296,8 +291,8 @@ public:
 };
 
 //---------------------------------------------------------------------------
-typedef HeapList *HeapListPtr;
-extern HeapListPtr globalHeapList;
+typedef HeapList*	HeapListPtr;
+extern HeapListPtr	globalHeapList;
 
 //---------------------------------------------------------------------------
 #endif

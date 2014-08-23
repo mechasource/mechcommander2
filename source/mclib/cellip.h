@@ -36,7 +36,7 @@ class EllipseElement : public Element
 		memset( &clip, 0, sizeof( clip ) );
 	}
 
-	EllipseElement (Stuff::Vector2DOf<long> &cnt, Stuff::Vector2DOf<long> &ortho, long clr, long depth);
+	EllipseElement (Stuff::Vector2DOf<int32_t> &cnt, Stuff::Vector2DOf<int32_t> &ortho, int32_t clr, int32_t depth);
 
 	virtual void draw (void);
 

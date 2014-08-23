@@ -128,20 +128,20 @@ typedef union {
 		float				heat;			// how much heat does it generate?
 		float				damage;			// amount of damage
 		float				recycleTime;	// in seconds
-		long				ammoAmount;		// amount of ammo per shot
+		int32_t				ammoAmount;		// amount of ammo per shot
 		uint8_t		ammoType;		// 0 = unlimited, 1 = finite amount (e.g. bullets)
 		uint8_t		ammoMasterId;	// ammo used by this weapon
-		uint8_t		range;			// short, med or long
+		uint8_t		range;			// short, med or int32_t
 		uint8_t		flags;
 		short				type;			// which weapon type is this
 		char				specialEffect;	// used to cue whatever visual/sound effects this needs
 	} weapon;
 	struct {
-		long				ammoPerTon;		// ammo per ton
+		int32_t				ammoPerTon;		// ammo per ton
 		float				explosiveDamage;// damage done (per missile) if it explodes
 	} ammo;
 	struct {
-		long				rangeMod;		// range modifier
+		int32_t				rangeMod;		// range modifier
 	} jumpjet;
 } ComponentStats;
 
@@ -154,8 +154,8 @@ class MasterComponent {
 
 	private:
 
-		long							masterID;									// unique ID for component
-		long							resourcePoints;								// resource cost of object
+		int32_t							masterID;									// unique ID for component
+		int32_t							resourcePoints;								// resource cost of object
 		ComponentFormType				form;										// form of component
 		char							name[MAXLEN_COMPONENT_NAME];				// name string/description
 		char							abbreviation[MAXLEN_COMPONENT_ABBREV];		// abbreviated name
@@ -173,17 +173,17 @@ class MasterComponent {
 	public:
 
 		static MasterComponentPtr		masterList;
-		static long						numComponents;
-		static long						armActuatorID;
-		static long						legActuatorID;
-		static long						clanAntiMissileSystemID;
-		static long						innerSphereAntiMissileSystemID;
+		static int32_t						numComponents;
+		static int32_t						armActuatorID;
+		static int32_t						legActuatorID;
+		static int32_t						clanAntiMissileSystemID;
+		static int32_t						innerSphereAntiMissileSystemID;
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 
 		void destroy (void);
 
@@ -201,21 +201,21 @@ class MasterComponent {
 			init();
 		}
 		
-		long init (FitIniFile* componentFile);
+		int32_t init (FitIniFile* componentFile);
 
-		long initEXCEL (PSTR dataLine, float baseSensorRange);
+		int32_t initEXCEL (PSTR dataLine, float baseSensorRange);
 
-		long saveEXCEL (FilePtr file, uint8_t masterId,float baseSensorRange);
+		int32_t saveEXCEL (FilePtr file, uint8_t masterId,float baseSensorRange);
 
 		PSTR getName (void) {
 			return(&name[0]);
 		}
 
-		long getMasterID (void) {
+		int32_t getMasterID (void) {
 			return(masterID);
 		}
 
-		long getResourcePoints (void) {
+		int32_t getResourcePoints (void) {
 			return(resourcePoints);
 		}
 		
@@ -223,20 +223,20 @@ class MasterComponent {
 			return(form);
 		}
 
-		long getSize (void) {
+		int32_t getSize (void) {
 			return(size);
 		}
 
-		void setSize (long sz)
+		void setSize (int32_t sz)
 		{
 			size = sz;
 		}
 		
-		long getHealth (void) {
+		int32_t getHealth (void) {
 			return(health);
 		}
 
-		char getCriticalSpacesReq (long location) 
+		char getCriticalSpacesReq (int32_t location) 
 		{
 			if ((location < 0) && (location > NUM_BODY_LOCATIONS))
 				return -1;
@@ -244,7 +244,7 @@ class MasterComponent {
 			return(criticalSpacesReq[location]);
 		}
 
-		void setCriticalSpacesReq (long location, char value) 
+		void setCriticalSpacesReq (int32_t location, char value) 
 		{
 			if ((location < 0) && (location > NUM_BODY_LOCATIONS))
 				return;
@@ -311,11 +311,11 @@ class MasterComponent {
 			stats.weapon.recycleTime = recycleTime;
 		}
 
-		long getWeaponAmmoAmount (void) {
+		int32_t getWeaponAmmoAmount (void) {
 			return(stats.weapon.ammoAmount);
 		}
 
-		void setWeaponAmmoAmount (long weaponAmmo)
+		void setWeaponAmmoAmount (int32_t weaponAmmo)
 		{
 			stats.weapon.ammoAmount = weaponAmmo;
 		}
@@ -324,7 +324,7 @@ class MasterComponent {
 			return(stats.weapon.ammoType);
 		}
 
-		void setWeaponAmmoType (long ammoType)
+		void setWeaponAmmoType (int32_t ammoType)
 		{
 			stats.weapon.ammoType = ammoType;
 		}
@@ -333,16 +333,16 @@ class MasterComponent {
 			return(stats.weapon.ammoMasterId);
 		}
 
-		void setWeaponAmmoMasterId (long ammoId)
+		void setWeaponAmmoMasterId (int32_t ammoId)
 		{
 			stats.weapon.ammoMasterId = ammoId;
 		}
 
-		long getWeaponRange (void) {
+		int32_t getWeaponRange (void) {
 			return(stats.weapon.range);
 		}
 
-		void setWeaponRange (long weaponRange) {
+		void setWeaponRange (int32_t weaponRange) {
 			stats.weapon.range = weaponRange;
 		}
 
@@ -457,19 +457,19 @@ class MasterComponent {
 			techBase = TECH_BASE_INNERSPHERE + TECH_BASE_CLAN;
 		}
 
-//		long getWeaponType (void) {
+//		int32_t getWeaponType (void) {
 //			return(stats.weapon.type);
 //		}
 
-		long getWeaponSpecialEffect (void) {
+		int32_t getWeaponSpecialEffect (void) {
 			return(stats.weapon.specialEffect);
 		}
 
-		long getAmmoPerTon (void) {
+		int32_t getAmmoPerTon (void) {
 			return(stats.ammo.ammoPerTon);
 		}
 
-		void setAmmoPerTon (long ammoPerTon)
+		void setAmmoPerTon (int32_t ammoPerTon)
 		{
 			stats.ammo.ammoPerTon = ammoPerTon;
 		}
@@ -501,7 +501,7 @@ class MasterComponent {
 			return(techBase);
 		}
 
-		void setResourcePoints (long points) {
+		void setResourcePoints (int32_t points) {
 			resourcePoints = points;
 		}
 		
@@ -552,12 +552,12 @@ class MasterComponent {
 
 		void multiplyWeaponRanges (float factor);
 
-		static long loadMasterList (PSTR fileName, long numComponents, float baseSensorRange);
-		static long saveMasterList (PSTR fileName, long numComponents,float baseSensorRange);
+		static int32_t loadMasterList (PSTR fileName, int32_t numComponents, float baseSensorRange);
+		static int32_t saveMasterList (PSTR fileName, int32_t numComponents,float baseSensorRange);
 
-		static long freeMasterList (void);
+		static int32_t freeMasterList (void);
 
-		static long multiplyMasterListWeaponRanges (float factor);
+		static int32_t multiplyMasterListWeaponRanges (float factor);
 };
 
 #endif

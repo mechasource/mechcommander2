@@ -119,7 +119,7 @@ void
 //
 gosFX::EffectCloud::EffectCloud(
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	SpinningCloud(DefaultData, spec, flags)
 {
@@ -151,7 +151,7 @@ gosFX::EffectCloud::~EffectCloud()
 gosFX::EffectCloud*
 	gosFX::EffectCloud::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);
@@ -167,7 +167,7 @@ gosFX::EffectCloud*
 //
 void
 	gosFX::EffectCloud::CreateNewParticle(
-		unsigned index,
+		uint32_t index,
 		Stuff::Point3D *translation
 	)
 {
@@ -221,7 +221,7 @@ void
 //
 bool
 	gosFX::EffectCloud::AnimateParticle(
-		unsigned index,
+		uint32_t index,
 		const Stuff::LinearMatrix4D *world_to_new_local,
 		Stuff::Time till
 	)
@@ -277,7 +277,7 @@ bool
 
 //------------------------------------------------------------------------------
 //
-void gosFX::EffectCloud::DestroyParticle(unsigned index)
+void gosFX::EffectCloud::DestroyParticle(uint32_t index)
 {
 	Check_Object(this);
 

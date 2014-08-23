@@ -65,7 +65,7 @@ namespace gosFX
 
 		bool
 			m_animated;
-		BYTE
+		UCHAR
 			m_width;
 
 		void
@@ -80,7 +80,7 @@ namespace gosFX
 		public SpinningCloud__Particle
 	{
 	public:
-		Stuff::Scalar
+		float
 			m_halfX,
 			m_halfY;
 	};
@@ -95,8 +95,8 @@ namespace gosFX
 	// Class Registration Support
 	//
 	public:
-		static void InitializeClass();
-		static void	TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		typedef CardCloud__Specification Specification;
 		typedef CardCloud__Particle Particle;
@@ -107,14 +107,14 @@ namespace gosFX
 				sizeof(Particle)
 				 + 4*sizeof(Stuff::Point3D)
 				 + sizeof(Stuff::RGBAColor)
-				 + 4*sizeof(Stuff::Vector2DOf<Stuff::Scalar>)
+				 + 4*sizeof(Stuff::Vector2DOf<float>)
 		};
 
 	protected:
 		MidLevelRenderer::MLRCardCloud * m_cloudImplementation;						// point to an MLR triangle cloud by Michael
 		Stuff::Point3D							*m_P_vertices;
 		Stuff::RGBAColor						*m_P_color;
-		Stuff::Vector2DOf<Stuff::Scalar>	*m_P_uvs;
+		Stuff::Vector2DOf<float>	*m_P_uvs;
 
 	//----------------------------------------------------------------------------
 	// Class Data Support
@@ -122,7 +122,7 @@ namespace gosFX
 	protected:
 		CardCloud(
 			Specification *spec,
-			unsigned flags
+			uint32_t flags
 		);
 
 	public:
@@ -131,7 +131,7 @@ namespace gosFX
 		static CardCloud*
 			Make(
 				Specification *spec,
-				unsigned flags
+				uint32_t flags
 			);
 
 		Specification*
@@ -142,7 +142,7 @@ namespace gosFX
 						Cast_Object(Specification*, m_specification);
 				}
 		Particle*
-			GetParticle(unsigned index)
+			GetParticle(uint32_t index)
 				{
 					Check_Object(this); Check_Object(GetSpecification());
 					return
@@ -152,15 +152,13 @@ namespace gosFX
 						);
 				}
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 	//----------------------------------------------------------------------------
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
@@ -168,17 +166,17 @@ namespace gosFX
 	protected:
 		bool
 			AnimateParticle(
-				unsigned index,
+				uint32_t index,
 				const Stuff::LinearMatrix4D *world_to_new_local,
 				Stuff::Time till
 			);
 		void
 			CreateNewParticle(
-				unsigned index,
+				uint32_t index,
 				Stuff::Point3D *translation
 			);
 		void
-			DestroyParticle(unsigned index);
+			DestroyParticle(uint32_t index);
 
 	public:
 		void

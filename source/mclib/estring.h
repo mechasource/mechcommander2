@@ -11,7 +11,7 @@
 
 //***************************************************************
 #ifdef UNICODE
-#define EChar unsigned short
+#define EChar uint16_t
 #else
 #define EChar char
 #endif
@@ -129,7 +129,7 @@ public:
 
 	inline bool 		IsEmpty() const;
 
-	unsigned short*	CreateUNICODE() const;
+	PWSTR	CreateUNICODE() const;
 	PSTR 	CreateMBCS() const; 
 
 	inline	const EChar* Data() const;
@@ -139,7 +139,7 @@ public:
 
 #ifndef UNICODE
 
-	int Find( unsigned short, int Start_Index = -1 ) const;
+	int Find( uint16_t, int Start_Index = -1 ) const;
 
 #else // K_UNICODE
 
@@ -199,7 +199,7 @@ private:
 	void	Assign( const EChar* p_Str );
 
 
-	static  inline  unsigned short*	ToUnicode( unsigned short* Buffer, pcuint8_t p_Str, int Num_Chars  );
+	static  inline  PWSTR	ToUnicode( puint16_t Buffer, pcuint8_t p_Str, int Num_Chars  );
 	static	inline	int	StrSize( const EChar* p_Str );
 	
 	struct EBuffer

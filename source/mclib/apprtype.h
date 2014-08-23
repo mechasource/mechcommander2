@@ -30,8 +30,8 @@
 
 //---------------------------------------------------------------------------
 // Macro definitions
-#ifndef NO_ERR
-#define NO_ERR					0
+#ifndef NO_ERROR
+#define NO_ERROR					0
 #endif
 
 #define MAX_LODS				3
@@ -64,8 +64,8 @@ class AppearanceType
 	//-----------------
 	public:
 	
-		void* operator new (size_t memSize);
-		void operator delete (void* treePtr);
+		PVOID operator new (size_t memSize);
+		void operator delete (PVOID treePtr);
 
 		void init (void)
 		{
@@ -140,7 +140,7 @@ class AppearanceTypeList
 
 		AppearanceTypePtr getAppearance (size_t apprNum, PSTR  apprFile);
 		
-		long removeAppearance (AppearanceTypePtr which);
+		int32_t removeAppearance (AppearanceTypePtr which);
 		
 		void destroy (void);
 		
@@ -149,7 +149,7 @@ class AppearanceTypeList
 			destroy();
 		}
 
-		bool pointerCanBeDeleted (void *ptr);
+		bool pointerCanBeDeleted (PVOIDptr);
 };
 
 extern AppearanceTypeListPtr appearanceTypeList;

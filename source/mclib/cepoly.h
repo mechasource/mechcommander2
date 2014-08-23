@@ -22,19 +22,19 @@
 //---------------------------------------------------------------------------
 struct PolyElementData
 {
-	long		numVertices;			//Actually num_vertices + extras for clipping
+	int32_t		numVertices;			//Actually num_vertices + extras for clipping
 	SCRNVERTEX	vertices[6]; 			//Draw Vertices
 
 	bool		correctTexture;			//Should we Correctly Texture?
 	bool		isClipped;				//Set by zclip to let me know
 	bool		drawTranslucent;		//Used for FX
 	bool		StatusBar;				//Is this a status bar?
-	long		BarWidth;				//Width of status bar
+	int32_t		BarWidth;				//Width of status bar
 	int			BarColor;				//Color of status bar
 
-	MemoryPtr	textureMap;				//Pointer to Bitmap for Texture
-	long	    width;					//Width of texture
-	long		height;					//Height of texture
+	PUCHAR	textureMap;				//Pointer to Bitmap for Texture
+	int32_t	    width;					//Width of texture
+	int32_t		height;					//Height of texture
 	char		*hazePalette;			//Translucency/haze table
 
 
@@ -73,7 +73,7 @@ class PolygonElement : public Element
 		polyData.init();
 	}
 
-	PolygonElement (PolyElementDataPtr pData, long depth);
+	PolygonElement (PolyElementDataPtr pData, int32_t depth);
 
 	virtual void draw (void);
 };

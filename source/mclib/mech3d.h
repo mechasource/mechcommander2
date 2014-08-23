@@ -36,19 +36,19 @@ typedef struct _GestureData
 {
 	float			startVel;				//Gesture Starts at this speed
 	float			endVel;					//Gesture Ends at this speed
-	long			frameStart;				//Which frame does gesture start at.
+	int32_t			frameStart;				//Which frame does gesture start at.
 	bool			reverse;				//Should we play backwards?
-	long			rightFootDownFrame0;	//When should the right foot make a poof and print?
-	long			rightFootDownFrame1;	//Sometimes the foot's down twice.
-	long			leftFootDownFrame0;		//When should the left foot make a poof and print?
-	long			leftFootDownFrame1;		//Sometimes the foot's down twice.
+	int32_t			rightFootDownFrame0;	//When should the right foot make a poof and print?
+	int32_t			rightFootDownFrame1;	//Sometimes the foot's down twice.
+	int32_t			leftFootDownFrame0;		//When should the left foot make a poof and print?
+	int32_t			leftFootDownFrame1;		//Sometimes the foot's down twice.
 } GestureData;
 
 typedef struct _PaintSchemata
 {
-	DWORD			redColor;				//Replace all Reds in texture with this color scaled by intensity of red!
-	DWORD			greenColor;				//Replace all Greens in texture with this color scaled by intensity of green!
-	DWORD			blueColor;				//Replace all Blues in texture with this color scaled by intensity of blue!
+	ULONG			redColor;				//Replace all Reds in texture with this color scaled by intensity of red!
+	ULONG			greenColor;				//Replace all Greens in texture with this color scaled by intensity of green!
+	ULONG			blueColor;				//Replace all Blues in texture with this color scaled by intensity of blue!
 } PaintSchemata;
 
 typedef PaintSchemata *PaintSchemataPtr;
@@ -117,17 +117,17 @@ class Mech3DAppearanceType: public AppearanceType
  		TG_TypeMultiShapePtr		mechForwardDmgShape;
  		TG_TypeMultiShapePtr		mechBackwardDmgShape;
 
-		long						rightFootprintType;					//Footprint type for this mech.
-		long						leftFootprintType;				//Footprint type for this mech.
-		long						shadowScalar;					//Values to scale shadow for this type of mech
-		long						textureSide;					//Size of texture edge in pixels
+		int32_t						rightFootprintType;					//Footprint type for this mech.
+		int32_t						leftFootprintType;				//Footprint type for this mech.
+		int32_t						shadowScalar;					//Values to scale shadow for this type of mech
+		int32_t						textureSide;					//Size of texture edge in pixels
 
 		GestureData					gestures[MaxGestures];
 		
-		long						numSmokeNodes;
-		long						numJumpNodes;
-		long						numWeaponNodes;
-		long						numFootNodes;
+		int32_t						numSmokeNodes;
+		int32_t						numJumpNodes;
+		int32_t						numWeaponNodes;
+		int32_t						numFootNodes;
 		NodeData					*nodeData;
 
 
@@ -147,7 +147,7 @@ class Mech3DAppearanceType: public AppearanceType
 
 		void init (void) 
 		{
-			long i=0;
+			int32_t i=0;
 			for (i=0;i<MAX_LODS;i++)
 			{
 				mechShape[i] = NULL;
@@ -183,14 +183,14 @@ class Mech3DAppearanceType: public AppearanceType
 		
 		virtual void init (PSTR fileName);
 		
-		long getTotalNodes (void)
+		int32_t getTotalNodes (void)
 		{
 			return numSmokeNodes + numWeaponNodes + numJumpNodes + numFootNodes;
 		}
 
-		void setAnimation (TG_MultiShapePtr shape, DWORD animationNum);
+		void setAnimation (TG_MultiShapePtr shape, ULONG animationNum);
 		
-		float getStartVel (long animationNum)
+		float getStartVel (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MaxGestures))
 				return gestures[animationNum].startVel;
@@ -198,7 +198,7 @@ class Mech3DAppearanceType: public AppearanceType
 			return 0.0f;
 		}
 		
-		float getEndVel (long animationNum)
+		float getEndVel (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MaxGestures))
 				return gestures[animationNum].endVel;
@@ -206,7 +206,7 @@ class Mech3DAppearanceType: public AppearanceType
 			return 0.0f;
 		}
 
-		float getFrameRate (long animationNum)
+		float getFrameRate (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MaxGestures) && (mechAnim[animationNum]))
 				return mechAnim[animationNum]->GetFrameRate();
@@ -214,7 +214,7 @@ class Mech3DAppearanceType: public AppearanceType
 			return 0.0f;
 		}
 
-		long getNumFrames (long animationNum)
+		int32_t getNumFrames (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MaxGestures) && (mechAnim[animationNum]))
 				return mechAnim[animationNum]->GetNumFrames();
@@ -222,12 +222,12 @@ class Mech3DAppearanceType: public AppearanceType
 			return 0.0f;
 		}
 
-		long getJumpLandFrame (void)
+		int32_t getJumpLandFrame (void)
 		{
 			return (gestures[GestureJump].frameStart & 0x0000ffff);
 		}
 		
-		long getJumpTakeoffFrame (void)
+		int32_t getJumpTakeoffFrame (void)
 		{
 			return (gestures[GestureJump].frameStart >> 16);
 		}
@@ -261,19 +261,19 @@ typedef struct _MechAppearanceData
 	bool						prevStep;
 
 	float						velocity;
-	long						status;
-	long						sensorLevel;
+	int32_t						status;
+	int32_t						sensorLevel;
 
-	long						currentStateGoal;
-	long						currentGestureId;
-	long						transitionState;
-	long						oldStateGoal;
-	long						hitGestureId;			//What gesture should I go back to when hit?
+	int32_t						currentStateGoal;
+	int32_t						currentGestureId;
+	int32_t						transitionState;
+	int32_t						oldStateGoal;
+	int32_t						hitGestureId;			//What gesture should I go back to when hit?
 
 	float						currentFrame;			//One for each part.
-	long						currentLOD;
+	int32_t						currentLOD;
 
-	long						nodeUsed[10];				//Used to stagger the weapon nodes for firing.
+	int32_t						nodeUsed[10];				//Used to stagger the weapon nodes for firing.
 	float						nodeRecycle[10];			//Used for ripple fire to find out if the node has fired recently.
 
 	Stuff::Vector3D				jumpDestination;
@@ -281,7 +281,7 @@ typedef struct _MechAppearanceData
 
 	float						baseRootNodeHeight;
 
-	long						isSmoking;
+	int32_t						isSmoking;
 	bool						isWaking;
 	bool						isDusting;
 	bool						fallDust;
@@ -340,20 +340,20 @@ class Mech3DAppearance: public ObjectAppearance
 		bool						prevStep;
 
 		float						velocity;
-		long						status;
-		long						sensorLevel;
+		int32_t						status;
+		int32_t						sensorLevel;
 
-		long						currentStateGoal;
-		long						currentGestureId;
-		long						transitionState;
-		long						oldStateGoal;
-		long						hitGestureId;			//What gesture should I go back to when hit?
+		int32_t						currentStateGoal;
+		int32_t						currentGestureId;
+		int32_t						transitionState;
+		int32_t						oldStateGoal;
+		int32_t						hitGestureId;			//What gesture should I go back to when hit?
 
 		float						currentFrame;			//One for each part.
-		long						currentLOD;
+		int32_t						currentLOD;
 
 		TG_LightPtr					pointLight;
-		DWORD						lightId;
+		ULONG						lightId;
 		
 		float						idleTime;				//Elapsed time since I've done something.
 															//If it gets larger then X, play the idle animation.
@@ -362,7 +362,7 @@ class Mech3DAppearance: public ObjectAppearance
 		Stuff::Vector3D				jumpVelocity;			//Real velocity vector now.  Just plug into mech velocity.
 		float						hazeFactor;
 		
-		long						*nodeUsed;				//Used to stagger the weapon nodes for firing.
+		int32_t						*nodeUsed;				//Used to stagger the weapon nodes for firing.
 		float						*nodeRecycle;			//Used for ripple fire to find out if the node has fired recently.
 		
 		Stuff::Vector3D				footPos[2];				//Used to store previous frame foot positions.
@@ -385,11 +385,11 @@ class Mech3DAppearance: public ObjectAppearance
 		Stuff::Point3D				leftShoulderPos;
 		Stuff::Point3D				rightShoulderPos;
 				
-		long						currentRightPoof;
-		long						currentLeftPoof;
+		int32_t						currentRightPoof;
+		int32_t						currentLeftPoof;
 		
-		long						leftFootPoofDraw[MAX_DUST_POOFS];
-		long						rightFootPoofDraw[MAX_DUST_POOFS];
+		int32_t						leftFootPoofDraw[MAX_DUST_POOFS];
+		int32_t						rightFootPoofDraw[MAX_DUST_POOFS];
 		
 		Stuff::Point3D				lFootPosition[MAX_DUST_POOFS];
 		Stuff::Point3D				rFootPosition[MAX_DUST_POOFS];
@@ -400,7 +400,7 @@ class Mech3DAppearance: public ObjectAppearance
 		
 		bool						inCombatMode;
 		
-		long						isSmoking;
+		int32_t						isSmoking;
 		bool						isWaking;
 		bool						isDusting;
 		bool						fallDust;
@@ -408,12 +408,12 @@ class Mech3DAppearance: public ObjectAppearance
 		
 		float						OBBRadius;
 		
-		DWORD						localTextureHandle;
+		ULONG						localTextureHandle;
 		float						baseRootNodeHeight;
 
-		DWORD						psRed;
-		DWORD						psBlue;
-		DWORD						psGreen;
+		ULONG						psRed;
+		ULONG						psBlue;
+		ULONG						psGreen;
 
 		char						mechName[64];
 
@@ -429,20 +429,20 @@ class Mech3DAppearance: public ObjectAppearance
 		float										duration;
 		float										currentFlash;
 		bool										drawFlash;
-		DWORD										flashColor;
+		ULONG										flashColor;
 
-		long						rotationalNodeIndex;
-		long						hitLeftNodeIndex;
-		long						hitRightNodeIndex;
-		long						rootNodeIndex;
-		long						leftArmNodeIndex;
-		long						rightArmNodeIndex;
-		long						lightCircleNodeIndex;
+		int32_t						rotationalNodeIndex;
+		int32_t						hitLeftNodeIndex;
+		int32_t						hitRightNodeIndex;
+		int32_t						rootNodeIndex;
+		int32_t						leftArmNodeIndex;
+		int32_t						rightArmNodeIndex;
+		int32_t						lightCircleNodeIndex;
 		float						baseRootNodeDifference;
 		
 	public:
 		static PaintSchemataPtr		paintSchemata;
-		static DWORD				numPaintSchemata;
+		static ULONG				numPaintSchemata;
 
 	public:
 		
@@ -467,9 +467,9 @@ class Mech3DAppearance: public ObjectAppearance
 			return mechType;
 		}
 
-		virtual long update (bool animate = true);
-		virtual long render (long depthFixup = 0);
-		virtual long renderShadows (void);
+		virtual int32_t update (bool animate = true);
+		virtual int32_t render (int32_t depthFixup = 0);
+		virtual int32_t renderShadows (void);
 
 		virtual void updateFootprints (void);
 
@@ -477,18 +477,18 @@ class Mech3DAppearance: public ObjectAppearance
 
 		virtual void setPaintScheme (void);
 
-		virtual void setPaintScheme (DWORD red, DWORD green, DWORD blue);
+		virtual void setPaintScheme (ULONG red, ULONG green, ULONG blue);
 
-		virtual void getPaintScheme (DWORD &red, DWORD &green, DWORD &blue);
+		virtual void getPaintScheme (ULONG &red, ULONG &green, ULONG &blue);
 
-		virtual void resetPaintScheme (DWORD red, DWORD green, DWORD blue);
+		virtual void resetPaintScheme (ULONG red, ULONG green, ULONG blue);
 
  		virtual bool isInJump (void)
 		{
 			return inJump;
 		}
 
-		void flashBuilding (float dur, float fDuration, DWORD color);
+		void flashBuilding (float dur, float fDuration, ULONG color);
 
 
 		virtual bool isJumpSetup (void)
@@ -522,7 +522,7 @@ class Mech3DAppearance: public ObjectAppearance
 			return forceStop;
 		}
 
-		virtual long getCurrentGestureId (void)
+		virtual int32_t getCurrentGestureId (void)
 		{
 			return currentGestureId;
 		}
@@ -548,7 +548,7 @@ class Mech3DAppearance: public ObjectAppearance
 			currentFrame = mechType->getNumFrames (currentGestureId)-1;
 		}
 
-		virtual long setGestureGoal (long stateGoal)
+		virtual int32_t setGestureGoal (int32_t stateGoal)
 		{
 			//This will set which gesture we are trying to get to.
 			//-----------------------------------------------------------
@@ -597,7 +597,7 @@ class Mech3DAppearance: public ObjectAppearance
 			return -1;
 		}
 		
-		virtual long getFrameNumber (long partNum)
+		virtual int32_t getFrameNumber (int32_t partNum)
 		{
 			return frameNum;
 		}
@@ -650,17 +650,17 @@ class Mech3DAppearance: public ObjectAppearance
 			inCombatMode = combatMode;
 		}
 
-		virtual void setObjectParameters (Stuff::Vector3D &pos, float legRot, long selected, long alignment, long homeRelations);
+		virtual void setObjectParameters (Stuff::Vector3D &pos, float legRot, int32_t selected, int32_t alignment, int32_t homeRelations);
 
 		virtual void setMoverParameters (float turretRot, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false);
 
-		void debugUpdate (long whichOne);
+		void debugUpdate (int32_t whichOne);
 
 		void setJustDoIt (void);
 		
 		void clearJustDoIt (void);
 
-		virtual void setObjectNameId (long objId)
+		virtual void setObjectNameId (int32_t objId)
 		{
 			objectNameId = objId;
 		}
@@ -679,23 +679,23 @@ class Mech3DAppearance: public ObjectAppearance
 
 		//--------------------------------------------
 		// Once site Objects are in place, go get 'em
-		virtual void setWeaponNodeUsed (long nodeId);
+		virtual void setWeaponNodeUsed (int32_t nodeId);
 		
-		virtual Stuff::Vector3D getWeaponNodePosition (long nodeId);
+		virtual Stuff::Vector3D getWeaponNodePosition (int32_t nodeId);
 		
-		virtual Stuff::Vector3D getNodePosition (long nodeId);
+		virtual Stuff::Vector3D getNodePosition (int32_t nodeId);
 		
 		virtual Stuff::Vector3D getNodeNamePosition (PSTR nodeName);
 		
-		virtual long getWeaponNode (long weapontype);
+		virtual int32_t getWeaponNode (int32_t weapontype);
 		
-		virtual long getLowestWeaponNode (void);
+		virtual int32_t getLowestWeaponNode (void);
 		
-		virtual float getWeaponNodeRecycle (long node);
+		virtual float getWeaponNodeRecycle (int32_t node);
 		
 		virtual void resetWeaponNodes (void);
 		
-		virtual void setWeaponNodeRecycle(long nodeId, float time);
+		virtual void setWeaponNodeRecycle(int32_t nodeId, float time);
 		
  		virtual void setSingleStepMode (void)
 		{
@@ -712,7 +712,7 @@ class Mech3DAppearance: public ObjectAppearance
 			nextStep = true;
 		}
 
-		virtual void setSensorLevel (long lvl)
+		virtual void setSensorLevel (int32_t lvl)
 		{
 			sensorLevel = lvl;
 		}
@@ -732,9 +732,9 @@ class Mech3DAppearance: public ObjectAppearance
 		
 		virtual void blowRightArm (void);
 		
-		virtual void setObjStatus (long oStatus);
+		virtual void setObjStatus (int32_t oStatus);
 
-		virtual bool PerPolySelect (long mouseX, long mouseY);
+		virtual bool PerPolySelect (int32_t mouseX, int32_t mouseY);
 		
 		virtual Stuff::Point3D getRootNodeCenter (void)
 		{
@@ -742,7 +742,7 @@ class Mech3DAppearance: public ObjectAppearance
 			return result;
 		}
 		
-		virtual void setAlphaValue (BYTE aVal)
+		virtual void setAlphaValue (UCHAR aVal)
 		{
 			mechShape->SetAlphaValue(aVal);
 			
@@ -756,7 +756,7 @@ class Mech3DAppearance: public ObjectAppearance
 			strcpy( mechName, pName );
 		}
 		
-		virtual void startSmoking (long smokeLvl);
+		virtual void startSmoking (int32_t smokeLvl);
 		virtual void startWaterWake (void);
 		virtual void stopWaterWake (void);
 		virtual void playEjection (void);
@@ -780,7 +780,7 @@ class Mech3DAppearance: public ObjectAppearance
 		virtual Stuff::Vector3D getHitNodeLeft (void);
 		virtual Stuff::Vector3D getHitNodeRight (void);
 
-		virtual Stuff::Vector3D getNodeIdPosition (long nodeId);
+		virtual Stuff::Vector3D getNodeIdPosition (int32_t nodeId);
 };
 
 

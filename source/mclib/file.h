@@ -12,83 +12,74 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef FILE_H
 #define FILE_H
+
+//#include "dstd.h"
+//#include "dfile.h"
+//#include "dffile.h"
+//#include "heap.h"
+//#include <stdlib.h>
+//#include <stdio.h>
+//#include <fcntl.h>
+
 //---------------------------------------------------------------------------
-// Include files
-
-#ifndef DSTD_H
-#include "dstd.h"
-#endif
-
-#ifndef DFILE_H
-#include "dfile.h"
-#endif
-
-#ifndef DFFILE_H
-#include "dffile.h"
-#endif
-
-#ifndef HEAP_H
-#include "heap.h"
-#endif
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <fcntl.h>
-//---------------------------------------------------------------------------
-// Enums
-enum FileMode
-{
+// enums
+typedef enum FileMode {
 	NOMODE = 0,
 	READ,
 	CREATE,
 	MC2_APPEND,
 	WRITE,
 	RDWRITE
-};
+} FileMode;
 
-enum FileClass
-{
+typedef enum FileClass {
 	BASEFILE = 0,
 	INIFILE,
 	PACKETFILE,
 	CSVFILE
-};
+} FileClass;
 
 //---------------------------------------------------------------------------
 // Function Declarations
 //Returns 1 if file is on HardDrive and 2 if file is in FastFile
-long fileExists(PSTR fName);
-long fileExistsOnCD(PSTR fName);
-bool file1OlderThan2(PSTR file1, PSTR file2);
+int32_t __stdcall fileExists(PSTR fName);
+int32_t __stdcall fileExistsOnCD(PSTR fName);
+bool	__stdcall file1OlderThan2(PSTR file1, PSTR file2);
 
 //---------------------------------------------------------------------------
 // Macro Definitions
-#ifndef	NO_ERR
-#define	NO_ERR					0x00000000
-#endif
 
-#define	DISK_FULL_ERR			0xBADF0001
-#define	SHARE_ERR				0xBADF0002
-#define	FILE_NOT_FOUND_ERR		0xBADF0003
-#define	PACKET_OUT_OF_RANGE		0xBADF0004
-#define	PACKET_WRONG_SIZE		0xBADF0005
-#define	READ_ONLY_ERR			0xBADF0006
-#define	TOO_MANY_FILES_ERR		0xBADF0007
-#define	READ_PAST_EOF_ERR		0xBADF0008
-#define	INVALID_SEEK_ERR		0xBADF0009
-#define	BAD_WRITE_ERR			0xBADF000A
-#define	BAD_PACKET_VERSION		0xBADF000B
-#define	NO_RAM_FOR_SEEK_TABLE	0xBADF000C
-#define	NO_RAM_FOR_FILENAME		0xBADF000D
-#define	PARENT_NULL				0xBADF000E
-#define	TOO_MANY_CHILDREN		0xBADF000F
-#define	FILE_NOT_OPEN			0xBADF0010
-#define	CANT_WRITE_TO_CHILD		0xBADF0011
-#define	NO_RAM_FOR_CHILD_LIST	0xBADF0012
-#define MAPPED_WRITE_NOT_SUPPORTED	0xBADF0013
-#define COULD_NOT_MAP_FILE		0xBADF0014
+typedef enum __file_constants {
+	DISK_FULL_ERR					= 0xBADF0001,
+	SHARE_ERR						= 0xBADF0002,
+	FILE_NOT_FOUND_ERR				= 0xBADF0003,
+	PACKET_OUT_OF_RANGE				= 0xBADF0004,
+	PACKET_WRONG_SIZE				= 0xBADF0005,
+	READ_ONLY_ERR					= 0xBADF0006,
+	TOO_MANY_FILES_ERR				= 0xBADF0007,
+	READ_PAST_EOF_ERR				= 0xBADF0008,
+	INVALID_SEEK_ERR				= 0xBADF0009,
+	BAD_WRITE_ERR					= 0xBADF000A,
+	BAD_PACKET_VERSION				= 0xBADF000B,
+	NO_RAM_FOR_SEEK_TABLE			= 0xBADF000C,
+	NO_RAM_FOR_FILENAME				= 0xBADF000D,
+	PARENT_NULL						= 0xBADF000E,
+	TOO_MANY_CHILDREN				= 0xBADF000F,
+	FILE_NOT_OPEN					= 0xBADF0010,
+	CANT_WRITE_TO_CHILD				= 0xBADF0011,
+	NO_RAM_FOR_CHILD_LIST			= 0xBADF0012,
+	MAPPED_WRITE_NOT_SUPPORTED		= 0xBADF0013,
+	COULD_NOT_MAP_FILE				= 0xBADF0014,
+};
+
+class UserHeap;
+class FastFile;
+class File;
+typedef File*	FilePtr;
 
 //---------------------------------------------------------------------------
 //									File
@@ -97,139 +88,130 @@ class File
 {
 	// Data Members
 	//--------------
-	protected:
-	
-		char 					*fileName;
-		FileMode				fileMode;
-	
-		long					handle;
+protected:
 
-		FastFilePtr				fastFile;
-		long					fastFileHandle;
+	PSTR			fileName;
+	FileMode		fileMode;
+	int32_t			handle;
+	FastFile*		fastFile;
+	int32_t			fastFileHandle;
+	size_t 			length;
+	size_t 			logicalPosition;
+	size_t			bufferResult;
+	FilePtr*		childList;
+	size_t			numChildren;
+	size_t			maxChildren;
+	FilePtr			parent;
+	size_t			parentOffset;
+	size_t			physicalLength;
+	bool			inRAM;
+	PUCHAR			fileImage;
 
-		size_t 			length;
-		size_t 			logicalPosition;
-
-		size_t			bufferResult;
-
-		FilePtr					*childList;
-		size_t			numChildren;
-		size_t			maxChildren;
-				
-		FilePtr					parent;
-		size_t			parentOffset;
-		size_t			physicalLength;
-
-		bool					inRAM;
-		MemoryPtr				fileImage;
-
-	public:
-
-		static bool				logFileTraffic;
-		static size_t	lastError;
+public:
+	static bool		logFileTraffic;
+	static HRESULT	lastError;
 
 	// Member Functions
 	//------------------
-		protected:
+protected:
+	void setup (void);
 
-			void setup (void);
+public:
+	PVOID operator new (size_t mySize);
+	void operator delete (PVOID us);
 
-		public:
+	File(void);
+	virtual ~File(void);
 
-			void *operator new (size_t mySize);
-			void operator delete (void *us);
-			
-			File (void);
-			~File (void);
+	bool eof(void);
 
-			bool eof (void);
+	virtual int32_t open(PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
+	virtual int32_t open(FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
+	/*virtual*/ int32_t open(PCSTR buffer, size_t bufferLength); // for streaming from memory
 
-			virtual long open ( PCSTR fName, FileMode _mode = READ, long numChildren = 50);
-			virtual long open( PCSTR buffer, int bufferLength ); // for streaming from memory
+	virtual int32_t create (PCSTR fName);
+	virtual int32_t createWithCase(PSTR fName); // don't strlwr for me please!
 
-			virtual long create (PCSTR fName);
-			virtual long createWithCase( PSTR fName ); // don't strlwr for me please!
+	virtual void close (void);
 
-			virtual void close (void);
 
-			virtual long open (File *_parent, size_t fileSize, long numChildren = 50);
-			
-			void deleteFile (void);
+	void deleteFile (void);
 
-			long seek (long pos, long from = SEEK_SET);
-			void seekEnd (void);
-			void skip (long bytesToSkip);
+	int32_t seek (int32_t pos, int32_t from = SEEK_SET);
+	void seekEnd (void);
+	void skip (int32_t bytesToSkip);
 
-			long read (size_t pos, MemoryPtr buffer, long length);
-			long read (MemoryPtr buffer, long length);
+	int32_t read (size_t pos, PUCHAR buffer, int32_t length);
+	int32_t read (PUCHAR buffer, int32_t length);
 
-			//Used to dig the LZ data directly out of the fastfiles.
-			// For textures.
-			long readRAW (size_t * &buffer, UserHeapPtr heap);
+	//Used to dig the LZ data directly out of the fastfiles.
+	// For textures.
+	int32_t readRAW (size_t* &buffer, UserHeap* heap);
 
-			uint8_t readByte (void);
-			short readWord (void);
-			short readShort (void);
-			long readLong (void);
-			float readFloat( void );
+	uint8_t readByte (void);
+	short readWord (void);
+	short readShort (void);
+	int32_t readLong (void);
+	float readFloat( void );
 
-			long readString (MemoryPtr buffer);
-			long readLine (MemoryPtr buffer, long maxLength);
-			long readLineEx (MemoryPtr buffer, long maxLength);
+	int32_t readString (PUCHAR buffer);
+	int32_t readLine (PUCHAR buffer, int32_t maxLength);
+	int32_t readLineEx (PUCHAR buffer, int32_t maxLength);
 
-			long write (size_t pos, MemoryPtr buffer, long bytes);
-			long write (MemoryPtr buffer, long bytes);
+	int32_t write (size_t pos, PUCHAR buffer, int32_t bytes);
+	int32_t write (PUCHAR buffer, int32_t bytes);
 
-			long writeByte (uint8_t value);
-			long writeWord (short value);
-			long writeShort (short value);
-			long writeLong (long value);
-			long writeFloat (float value);
+	int32_t writeByte (uint8_t value);
+	int32_t writeWord (short value);
+	int32_t writeShort (short value);
+	int32_t writeLong (int32_t value);
+	int32_t writeFloat (float value);
 
-			long writeString (PSTR buffer);
-			long writeLine (PSTR buffer);
+	int32_t writeString (PSTR buffer);
+	int32_t writeLine (PSTR buffer);
 
-			bool isOpen (void);
+	bool isOpen (void);
 
-			virtual FileClass getFileClass (void)
-			{
-				return BASEFILE;
-			}
+	virtual FileClass getFileClass (void)
+	{
+		return BASEFILE;
+	}
 
-			PSTR getFilename (void);
+	PSTR getFilename (void);
 
-			size_t getLength (void);
-			size_t fileSize (void);
-			size_t getNumLines (void);
+	size_t getLength (void);
+	size_t fileSize (void);
+	size_t getNumLines (void);
 
-			size_t getLastError (void) {
-				return(lastError);
-			}
+	HRESULT getLastError (void)
+	{
+		return(lastError);
+	}
 
-			size_t getLogicalPosition (void)
-			{
-				return logicalPosition;
-			}
-			
-			FilePtr getParent (void)
-			{
-				return parent;
-			}
+	size_t getLogicalPosition (void)
+	{
+		return logicalPosition;
+	}
 
-			FileMode getFileMode (void)
-			{
-				return(fileMode);
-			}
-			
-			long getFileHandle (void)
-			{
-				return(handle);
-			}
+	FilePtr getParent (void)
+	{
+		return parent;
+	}
 
-			time_t getFileMTime (void);
-			
-			long addChild (FilePtr child);
-			void removeChild (FilePtr child);
+	FileMode getFileMode (void)
+	{
+		return(fileMode);
+	}
+
+	int32_t getFileHandle (void)
+	{
+		return(handle);
+	}
+
+	time_t getFileMTime (void);
+
+	int32_t addChild (FilePtr child);
+	void removeChild (FilePtr child);
 
 };
 
@@ -239,10 +221,3 @@ class File
 
 //---------------------------------------------------------------------------
 #endif
-
-//---------------------------------------------------------------------------
-//
-// Edit Log
-//
-//
-//---------------------------------------------------------------------------

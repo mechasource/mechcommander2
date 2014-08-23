@@ -20,6 +20,6 @@ void initColorTables (void);
 
 void destroyColorTables (void);
 
-DWORD *getColorTable (long tableNum);
+ULONG *getColorTable (int32_t tableNum);
 //----------------------------------------------------------------------------------
 #endif

@@ -69,13 +69,10 @@ namespace gosFX
 		public Effect
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 		typedef Singleton__Specification Specification;
 
@@ -86,7 +83,7 @@ namespace gosFX
 		Singleton(
 			ClassData *class_data,
 			Specification *spec,
-			unsigned flags
+			uint32_t flags
 		);
 
 	//----------------------------------------------------------------------------
@@ -111,7 +108,7 @@ namespace gosFX
 	protected:
 		Stuff::RGBAColor
 			m_color;
-		Stuff::Scalar
+		float
 			m_radius,
 			m_scale;
 
@@ -119,7 +116,6 @@ namespace gosFX
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 	};
 }

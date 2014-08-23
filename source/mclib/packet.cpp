@@ -33,7 +33,7 @@
 
 #include <string.h>
 //---------------------------------------------------------------------------
-extern MemoryPtr 	LZPacketBuffer;
+extern PUCHAR 	LZPacketBuffer;
 extern ULONG LZPacketBufferSize;
 //---------------------------------------------------------------------------
 // class PacketFile
@@ -56,12 +56,12 @@ void PacketFile::atClose (void)
 {
 	if (isOpen() && fileMode != READ)								// update filesize
 	{
-		long endPtr = getLength();
+		int32_t endPtr = getLength();
 		
-		//seek(sizeof(long));								//Move Past Version Marker
+		//seek(sizeof(int32_t));								//Move Past Version Marker
 		//writeLong(endPtr);								//Write File length
 	
-		long tableEntry;
+		int32_t tableEntry;
 		currentPacket = numPackets;
 
 		if (!seekTable)
@@ -103,8 +103,8 @@ void PacketFile::atClose (void)
 		// If seekTable was being used, write it back to file
 		if (seekTable)
 		{
-			seek(sizeof(long)*2);							//File Version & File Length
-			write(MemoryPtr(seekTable),(numPackets*sizeof(long)));
+			seek(sizeof(int32_t)*2);							//File Version & File Length
+			write(PUCHAR(seekTable),(numPackets*sizeof(int32_t)));
 		}
 
 		//------------------------------------------------------
@@ -112,7 +112,7 @@ void PacketFile::atClose (void)
 		// the beginning of the file.
 		if (usesCheckSum)
 		{
-			long checkSum = checkSumFile();
+			int32_t checkSum = checkSumFile();
 			seek(0);
 			writeLong(checkSum);
 		}
@@ -122,17 +122,17 @@ void PacketFile::atClose (void)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::checkSumFile (void)
+int32_t PacketFile::checkSumFile (void)
 {
 	//-----------------------------------------
-	long currentPosition  = logicalPosition;
+	int32_t currentPosition  = logicalPosition;
 	seek(4);
 
-	MemoryPtr fileMap = (MemoryPtr)malloc(fileSize());
+	PUCHAR fileMap = (PUCHAR)malloc(fileSize());
 	read(fileMap,fileSize());
 
-	long sum = 0;
-	MemoryPtr curFileByte = fileMap;
+	int32_t sum = 0;
+	PUCHAR curFileByte = fileMap;
 	for (ULONG i=4;i<fileSize();i++,curFileByte++)
 	{
 		sum += *curFileByte;
@@ -146,12 +146,12 @@ long PacketFile::checkSumFile (void)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::afterOpen (void)
+int32_t PacketFile::afterOpen (void)
 {
 	if (!numPackets && getLength() >= 12)
 	{
-		long firstPacketOffset;
-		long firstCheck = readLong();
+		int32_t firstPacketOffset;
+		int32_t firstCheck = readLong();
 
 		if (firstCheck == PACKET_FILE_VERSION && !usesCheckSum)
 		{
@@ -161,14 +161,14 @@ long PacketFile::afterOpen (void)
 		{
 			//---------------------------------------
 			// This is probably a checksum.  Check it
-			long checkSum = checkSumFile();
+			int32_t checkSum = checkSumFile();
 			if (checkSum != firstCheck)
 				return PACKET_OUT_OF_RANGE;
 		}
 
 		firstPacketOffset = readLong();
 		
-		numPackets = (firstPacketOffset/sizeof(long))-2;
+		numPackets = (firstPacketOffset/sizeof(int32_t))-2;
 	}
 
 	currentPacket = -1;
@@ -177,15 +177,15 @@ long PacketFile::afterOpen (void)
 	{
 		if (numPackets && !seekTable)
 		{
-			seekTable = (long *)systemHeap->Malloc(numPackets * sizeof(long));
+			seekTable = (int32_t *)systemHeap->Malloc(numPackets * sizeof(int32_t));
 			gosASSERT(seekTable != NULL);
 				
-			seek(sizeof(long)*2);												//File Version & File Length
-			read(MemoryPtr(seekTable),(numPackets*sizeof(long)));
+			seek(sizeof(int32_t)*2);												//File Version & File Length
+			read(PUCHAR(seekTable),(numPackets*sizeof(int32_t)));
 		}
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -203,11 +203,11 @@ PacketFile::~PacketFile (void)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::open (PSTR fName, FileMode _mode, long numChild)
+int32_t PacketFile::open (PSTR fName, FileMode _mode, int32_t numChild)
 {
-	long openResult = File::open(fName,_mode,numChild);
+	int32_t openResult = File::open(fName,_mode,numChild);
 	
-	if (openResult != NO_ERR)
+	if (openResult != NO_ERROR)
 	{
 		return(openResult);
 	}
@@ -217,11 +217,11 @@ long PacketFile::open (PSTR fName, FileMode _mode, long numChild)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::open (FilePtr _parent, ULONG fileSize, long numChild)
+int32_t PacketFile::open (FilePtr _parent, ULONG fileSize, int32_t numChild)
 {
-	long result = File::open(_parent,fileSize,numChild);
+	int32_t result = File::open(_parent,fileSize,numChild);
 	
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 		
 	result = afterOpen();	
@@ -229,11 +229,11 @@ long PacketFile::open (FilePtr _parent, ULONG fileSize, long numChild)
 }
 		
 //---------------------------------------------------------------------------
-long PacketFile::create (PSTR fName)
+int32_t PacketFile::create (PSTR fName)
 {
-	long openResult = File::create(fName);
+	int32_t openResult = File::create(fName);
 	
-	if (openResult != NO_ERR)
+	if (openResult != NO_ERROR)
 	{
 		return(openResult);
 	}
@@ -242,11 +242,11 @@ long PacketFile::create (PSTR fName)
 	return(openResult);
 }
 
-long PacketFile::createWithCase( PSTR fName )
+int32_t PacketFile::createWithCase( PSTR fName )
 {
-	long openResult = File::createWithCase(fName);
+	int32_t openResult = File::createWithCase(fName);
 	
-	if (openResult != NO_ERR)
+	if (openResult != NO_ERROR)
 	{
 		return(openResult);
 	}
@@ -263,9 +263,9 @@ void PacketFile::close (void)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::readPacketOffset (long packet, long *lastType)
+int32_t PacketFile::readPacketOffset (int32_t packet, int32_t *lastType)
 {
-	long offset = -1;
+	int32_t offset = -1;
 
 	if (packet < numPackets)
 	{
@@ -282,11 +282,11 @@ long PacketFile::readPacketOffset (long packet, long *lastType)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::readPacket (long packet, PUCHAR buffer)
+int32_t PacketFile::readPacket (int32_t packet, puint8_t buffer)
 {
-	long result = 0;
+	int32_t result = 0;
 
-	if ((packet==-1) || (packet == currentPacket) || (seekPacket(packet) == NO_ERR))
+	if ((packet==-1) || (packet == currentPacket) || (seekPacket(packet) == NO_ERROR))
 	{
 		if ((getStorageType() == STORAGE_TYPE_RAW) || (getStorageType() == STORAGE_TYPE_FWF))
 		{
@@ -299,27 +299,27 @@ long PacketFile::readPacket (long packet, PUCHAR buffer)
 			{
 				case STORAGE_TYPE_LZD:
 				{
-					seek(packetBase+sizeof(long));
+					seek(packetBase+sizeof(int32_t));
 
 					if (!LZPacketBuffer)
 					{
-						LZPacketBuffer = (MemoryPtr)malloc(LZPacketBufferSize);
+						LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
 						gosASSERT(LZPacketBuffer);
 					}
 						
-					if ((long)LZPacketBufferSize < packetSize)
+					if ((int32_t)LZPacketBufferSize < packetSize)
 					{
 						LZPacketBufferSize = packetSize;
 						
 						free(LZPacketBuffer);
-						LZPacketBuffer = (MemoryPtr)malloc(LZPacketBufferSize);
+						LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
 						gosASSERT(LZPacketBuffer);
 					}
 					
 					if (LZPacketBuffer)
 					{
-						read(LZPacketBuffer,(packetSize-sizeof(long)));
-						long decompLength = LZDecomp(buffer,LZPacketBuffer,packetSize-sizeof(long));
+						read(LZPacketBuffer,(packetSize-sizeof(int32_t)));
+						int32_t decompLength = LZDecomp(buffer,LZPacketBuffer,packetSize-sizeof(int32_t));
 						if (decompLength != packetUnpackedSize)
 							result = 0;
 						else
@@ -330,29 +330,29 @@ long PacketFile::readPacket (long packet, PUCHAR buffer)
 
 				case STORAGE_TYPE_ZLIB:
 				{
-					seek(packetBase+sizeof(long));
+					seek(packetBase+sizeof(int32_t));
 
 					if (!LZPacketBuffer)
 					{
-						LZPacketBuffer = (MemoryPtr)malloc(LZPacketBufferSize);
+						LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
 						gosASSERT(LZPacketBuffer);
 					}
 						
-					if ((long)LZPacketBufferSize < packetSize)
+					if ((int32_t)LZPacketBufferSize < packetSize)
 					{
 						LZPacketBufferSize = packetSize;
 						
 						free(LZPacketBuffer);
-						LZPacketBuffer = (MemoryPtr)malloc(LZPacketBufferSize);
+						LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
 						gosASSERT(LZPacketBuffer);
 					}
 					
 					if (LZPacketBuffer)
 					{
-						read(LZPacketBuffer,(packetSize-sizeof(long)));
+						read(LZPacketBuffer,(packetSize-sizeof(int32_t)));
 						ULONG decompLength = LZPacketBufferSize;
-						long decompResult = uncompress(buffer,&decompLength,LZPacketBuffer,packetSize-sizeof(long));
-						if ((decompResult != Z_OK) || ((long)decompLength != packetUnpackedSize))
+						int32_t decompResult = uncompress(buffer,&decompLength,LZPacketBuffer,packetSize-sizeof(int32_t));
+						if ((decompResult != Z_OK) || ((int32_t)decompLength != packetUnpackedSize))
 							result = 0;
 						else
 							result = decompLength;
@@ -371,11 +371,11 @@ long PacketFile::readPacket (long packet, PUCHAR buffer)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::readPackedPacket (long packet, PUCHAR buffer)
+int32_t PacketFile::readPackedPacket (int32_t packet, puint8_t buffer)
 {
-	long result = 0;
+	int32_t result = 0;
 
-	if ((packet==-1) || (packet == currentPacket) || (seekPacket(packet) == NO_ERR))
+	if ((packet==-1) || (packet == currentPacket) || (seekPacket(packet) == NO_ERROR))
 	{
 		if ((getStorageType() == STORAGE_TYPE_RAW) || (getStorageType() == STORAGE_TYPE_FWF))
 		{
@@ -388,14 +388,14 @@ long PacketFile::readPackedPacket (long packet, PUCHAR buffer)
 			{
 				case STORAGE_TYPE_LZD:
 				{
-					seek(packetBase+sizeof(long));
+					seek(packetBase+sizeof(int32_t));
 					read(buffer,packetSize);
 				}
 				break;
 
 				case STORAGE_TYPE_ZLIB:
 				{
-					seek(packetBase+sizeof(long));
+					seek(packetBase+sizeof(int32_t));
 					read(buffer,packetSize);
 				}
 				break;
@@ -408,9 +408,9 @@ long PacketFile::readPackedPacket (long packet, PUCHAR buffer)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::seekPacket (long packet)
+int32_t PacketFile::seekPacket (int32_t packet)
 {
-	long offset, next;
+	int32_t offset, next;
 
 	if (packet < 0)
 	{
@@ -434,12 +434,12 @@ long PacketFile::seekPacket (long packet)
 	switch (getStorageType())
 	{
 		case STORAGE_TYPE_LZD:
-			// the first DWORD of a compressed packet is the unpacked length
+			// the first ULONG of a compressed packet is the unpacked length
 			packetUnpackedSize = readLong();
 			break;
 
 		case STORAGE_TYPE_ZLIB:
-			// the first DWORD of a compressed packet is the unpacked length
+			// the first ULONG of a compressed packet is the unpacked length
 			packetUnpackedSize = readLong();
 			break;
 
@@ -456,7 +456,7 @@ long PacketFile::seekPacket (long packet)
 	}
 
 	if (offset > 0)
-		return(NO_ERR);
+		return(NO_ERROR);
 		
 	return (PACKET_OUT_OF_RANGE);
 }
@@ -484,37 +484,37 @@ void PacketFile::operator -- (void)
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::getNumPackets (void) 
+int32_t PacketFile::getNumPackets (void) 
 { 
 	return numPackets;
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::getCurrentPacket (void) 
+int32_t PacketFile::getCurrentPacket (void) 
 { 
 	return currentPacket; 
 }
 
 //---------------------------------------------------------------------------
-inline long PacketFile::getPacketOffset(void) 
+inline int32_t PacketFile::getPacketOffset(void) 
 { 
 	return packetBase;
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::getPackedPacketSize (void)
+int32_t PacketFile::getPackedPacketSize (void)
 {
 	return packetSize;
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::getStorageType (void)
+int32_t PacketFile::getStorageType (void)
 {
 	return packetType;
 }
 
 //---------------------------------------------------------------------------
-void PacketFile::reserve (long count, bool useCheckSum)
+void PacketFile::reserve (int32_t count, bool useCheckSum)
 {
 	//---------------------------------------------------
 	// If we already have packets, reserve does nothing.
@@ -528,7 +528,7 @@ void PacketFile::reserve (long count, bool useCheckSum)
 	usesCheckSum = useCheckSum;
 
 	numPackets = count;
-	long firstPacketOffset = TABLE_ENTRY(numPackets);
+	int32_t firstPacketOffset = TABLE_ENTRY(numPackets);
 	writeLong(PACKET_FILE_VERSION);
 	writeLong(firstPacketOffset);
 
@@ -543,18 +543,18 @@ void PacketFile::reserve (long count, bool useCheckSum)
 	// updated in memory and flushed when the file is closed.
 	if (!seekTable)
 	{
-		seekTable = (long *)systemHeap->Malloc(numPackets * sizeof(long));
+		seekTable = (int32_t *)systemHeap->Malloc(numPackets * sizeof(int32_t));
    			
    		if (seekTable != NULL)
    		{
-   			seek(sizeof(long)*2);							//File Version & File Length
-   			read(MemoryPtr(seekTable),(numPackets*sizeof(long)));
+   			seek(sizeof(int32_t)*2);							//File Version & File Length
+   			read(PUCHAR(seekTable),(numPackets*sizeof(int32_t)));
    		}
 	}
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::writePacket (long packet, MemoryPtr buffer, long nbytes, uint8_t pType)
+int32_t PacketFile::writePacket (int32_t packet, PUCHAR buffer, int32_t nbytes, uint8_t pType)
 {
 	//--------------------------------------------------------
 	// This function writes the packet to the current end
@@ -566,16 +566,16 @@ long PacketFile::writePacket (long packet, MemoryPtr buffer, long nbytes, uint8_
 	// same sized packet each time, if the packet already
 	// exists.  In theory, it could be smaller but the check
 	// right now doesn't allow anything but same size.
-	long result = 0;
+	int32_t result = 0;
 
-	MemoryPtr workBuffer = NULL;
+	PUCHAR workBuffer = NULL;
 
 	if (pType == ANY_PACKET_TYPE || pType == STORAGE_TYPE_LZD || pType == STORAGE_TYPE_ZLIB)
 	{
 		if ((nbytes<<1) < 4096)
-			workBuffer = (MemoryPtr)malloc(4096);
+			workBuffer = (PUCHAR)malloc(4096);
 		else
-			workBuffer = (MemoryPtr)malloc(nbytes<<1);
+			workBuffer = (PUCHAR)malloc(nbytes<<1);
 		
 		gosASSERT(workBuffer != NULL);
 	}
@@ -605,15 +605,15 @@ long PacketFile::writePacket (long packet, MemoryPtr buffer, long nbytes, uint8_
 
 		ULONG workBufferSize = actualSize;
 		ULONG oldBufferSize = nbytes;
-		long compressedResult = compress2(workBuffer,&workBufferSize,buffer,nbytes,Z_DEFAULT_COMPRESSION);
+		int32_t compressedResult = compress2(workBuffer,&workBufferSize,buffer,nbytes,Z_DEFAULT_COMPRESSION);
 		if (compressedResult != Z_OK)
 			STOP(("Unable to write packet %d to file %s.  Error %d",packet,fileName,compressedResult));
 			
 		compressedResult = uncompress(buffer,&oldBufferSize,workBuffer,nbytes);
-		if ((long)oldBufferSize != nbytes)
+		if ((int32_t)oldBufferSize != nbytes)
 			STOP(("Packet size changed after compression.  Was %d is now %d",nbytes,oldBufferSize));
 
-		if ((pType == STORAGE_TYPE_LZD) || (pType == STORAGE_TYPE_ZLIB) || ((long)workBufferSize < nbytes))
+		if ((pType == STORAGE_TYPE_LZD) || (pType == STORAGE_TYPE_ZLIB) || ((int32_t)workBufferSize < nbytes))
 		{
 			pType = STORAGE_TYPE_ZLIB;
 			packetSize = workBufferSize;
@@ -643,14 +643,14 @@ long PacketFile::writePacket (long packet, MemoryPtr buffer, long nbytes, uint8_
 		seekTable[packet] = SetPacketType(packetBase,packetType);
 	}
 
-	long *currentEntry = NULL;
+	int32_t *currentEntry = NULL;
 	if (seekTable)
 	{
 		packet++;
 		currentEntry = &(seekTable[packet]);
 	}
 
-	long tableData = SetPacketType(getLength(),STORAGE_TYPE_NUL);
+	int32_t tableData = SetPacketType(getLength(),STORAGE_TYPE_NUL);
 	while (packet < (numPackets - 1))
 	{
 		if (!seekTable)
@@ -673,7 +673,7 @@ long PacketFile::writePacket (long packet, MemoryPtr buffer, long nbytes, uint8_
 
 #define DEFAULT_MAX_PACKET		65535
 //---------------------------------------------------------------------------
-long PacketFile::insertPacket (long packet, MemoryPtr buffer, long nbytes, uint8_t pType)
+int32_t PacketFile::insertPacket (int32_t packet, PUCHAR buffer, int32_t nbytes, uint8_t pType)
 {
 	//--------------------------------------------------------
 	// This function writes the packet to the current end
@@ -683,7 +683,7 @@ long PacketFile::insertPacket (long packet, MemoryPtr buffer, long nbytes, uint8
 	// packet into a new file and basically spend many timeparts doing it.
 	// Necessary for the teditor.
 	// I Love it.	
-	long result = 0;
+	int32_t result = 0;
 
 	if (packet < 0)
 	{
@@ -692,7 +692,7 @@ long PacketFile::insertPacket (long packet, MemoryPtr buffer, long nbytes, uint8
 
 	//---------------------------------------------------------------
 	// Only used here, so OK if regular WINDOWS(tm) malloc!
-	MemoryPtr workBuffer = (MemoryPtr)malloc(DEFAULT_MAX_PACKET);
+	PUCHAR workBuffer = (PUCHAR)malloc(DEFAULT_MAX_PACKET);
 	
 	//-------------------------------------------------------------
 	// All new code here.  Basically, open a new packet file,
@@ -708,7 +708,7 @@ long PacketFile::insertPacket (long packet, MemoryPtr buffer, long nbytes, uint8
 	
 	tmpFile.reserve(numPackets);
 		
-	for (long i=0;i<numPackets;i++)
+	for (int32_t i=0;i<numPackets;i++)
 	{
 		if (i == packet)
 		{
@@ -717,7 +717,7 @@ long PacketFile::insertPacket (long packet, MemoryPtr buffer, long nbytes, uint8
 				//----------------------------------------------------
 				// Not sure what to do here.  We'll try reallocating
 				::free(workBuffer);
-				workBuffer = (MemoryPtr)malloc(packetSize);
+				workBuffer = (PUCHAR)malloc(packetSize);
 			}
 			
 			tmpFile.writePacket(i,buffer,nbytes,pType);
@@ -725,14 +725,14 @@ long PacketFile::insertPacket (long packet, MemoryPtr buffer, long nbytes, uint8
 		else
 		{
 			seekPacket(i);
-			long storageType = getStorageType();
-			long packetSize = getPacketSize();
+			int32_t storageType = getStorageType();
+			int32_t packetSize = getPacketSize();
 			if (packetSize >= DEFAULT_MAX_PACKET)
 			{
 				//----------------------------------------------------
 				// Not sure what to do here.  We'll try reallocating
 				::free(workBuffer);
-				workBuffer = (MemoryPtr)malloc(packetSize);
+				workBuffer = (PUCHAR)malloc(packetSize);
 			}
 			
 			readPacket(i,workBuffer);
@@ -743,7 +743,7 @@ long PacketFile::insertPacket (long packet, MemoryPtr buffer, long nbytes, uint8
 	//------------------------------------
 	// Now close and reassign everything.
 	char ourFileName[250];
-	long ourFileMode = 0;
+	int32_t ourFileMode = 0;
 	
 	strcpy(ourFileName,fileName);
 	ourFileMode = fileMode;
@@ -763,7 +763,7 @@ long PacketFile::insertPacket (long packet, MemoryPtr buffer, long nbytes, uint8
 }
 
 //---------------------------------------------------------------------------
-long PacketFile::writePacket (long packet, MemoryPtr buffer)
+int32_t PacketFile::writePacket (int32_t packet, PUCHAR buffer)
 {
 	//--------------------------------------------------------
 	// This function replaces the packet with the contents
@@ -772,10 +772,10 @@ long PacketFile::writePacket (long packet, MemoryPtr buffer)
 	// packet.  If not, buffer over/under run will occur.
 	// The second is that the packet cannot be compressed since
 	// there is no gaurantee that the new data will compress
-	// to exactly the same length.  Returns NO_ERR if packet
+	// to exactly the same length.  Returns NO_ERROR if packet
 	// written successfully.  Otherwise returns error.
 	
-	long result = 0;
+	int32_t result = 0;
 
 	if ((packet < 0) || (packet >= numPackets))
 	{
@@ -795,7 +795,7 @@ long PacketFile::writePacket (long packet, MemoryPtr buffer)
 
 	if (result == packetUnpackedSize)
 	{
-		return(NO_ERR);
+		return(NO_ERROR);
 	}
 	
 	return BAD_WRITE_ERR;

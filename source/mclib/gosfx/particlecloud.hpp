@@ -100,7 +100,7 @@ namespace gosFX
 		Stuff::Vector3D
 			m_localLinearVelocity,
 			m_worldLinearVelocity;
-		Stuff::Scalar
+		float
 			m_seed,
 			m_age,
 			m_ageRate;
@@ -118,13 +118,10 @@ namespace gosFX
 		public Effect
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 		typedef ParticleCloud__Specification Specification;
 		typedef ParticleCloud__Particle Particle;
@@ -132,7 +129,7 @@ namespace gosFX
 	protected:
 		int
 			m_activeParticleCount;
-		Stuff::Scalar		
+		float		
 			m_birthAccumulator;
 
 		Stuff::DynamicArrayOf<char>
@@ -141,7 +138,7 @@ namespace gosFX
 		ParticleCloud(
 			ClassData *class_data,
 			Specification *spec,
-			unsigned flags
+			uint32_t flags
 		);
 
 	//----------------------------------------------------------------------------
@@ -156,7 +153,7 @@ namespace gosFX
 						Cast_Object(Specification*, m_specification);
 				}
 		Particle*
-			GetParticle(unsigned index)
+			GetParticle(uint32_t index)
 				{
 					Check_Object(this); Check_Object(GetSpecification());
 					return
@@ -170,8 +167,7 @@ namespace gosFX
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
@@ -181,21 +177,21 @@ namespace gosFX
 			Execute(ExecuteInfo *info);
 		virtual bool
 			AnimateParticle(
-				unsigned index,
+				uint32_t index,
 				const Stuff::LinearMatrix4D *world_to_new_local,
 				Stuff::Time till
 			)=0;
 		virtual void
 			CreateNewParticle(
-				unsigned index,
+				uint32_t index,
 				Stuff::Point3D *translation
 			);
 		virtual void
-			DestroyParticle(unsigned index);
+			DestroyParticle(uint32_t index);
 		void
 			ComputeNewLinearVelocity(
 				Particle *particle,
-				Stuff::Scalar time_slice
+				float time_slice
 			);
 
 	public:

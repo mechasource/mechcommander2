@@ -87,8 +87,8 @@ class TG_TypeMultiShape
 	protected:
 
 	public:
-		void * operator new (size_t mySize);
-		void operator delete (void * us);
+		PVOID operator new (size_t mySize);
+		void operator delete (PVOID us);
 
 		void init (void)
 		{
@@ -128,22 +128,22 @@ class TG_TypeMultiShape
 		//Function runs through each piece of ASE file and creates a separate
 		//TG_Shape for each one.  First pass is count number of GEOMOBJECTS.
 		//Second pass is load each one.
-		long LoadTGMultiShapeFromASE (PSTR fileName, bool forceMakeBinary = false, Microsoft::Xna::Arm::IProviderEngine * armProvider = NULL);
+		int32_t LoadTGMultiShapeFromASE (PSTR fileName, bool forceMakeBinary = false, Microsoft::Xna::Arm::IProviderEngine * armProvider = NULL);
 
 		//Function returns 0 if OK.  -1 if textureName is longer then nameLength-1.
 		//This function digs the texture name(s) out of the ASE file so that the
 		//User can load and manage them anyway they want to.
-		long GetTextureName (ULONG textureNum, PSTR textureName, long nameLength);
+		int32_t GetTextureName (ULONG textureNum, PSTR textureName, int32_t nameLength);
 
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		long SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle);
+		int32_t SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle);
 
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		long SetTextureAlpha (ULONG textureNum, bool alphaFlag);
+		int32_t SetTextureAlpha (ULONG textureNum, bool alphaFlag);
 
 		ULONG GetTextureHandle (ULONG textureNum)
 		{
@@ -217,7 +217,7 @@ class TG_TypeMultiShape
 				listOfTypeShapes[i]->SetLightRGBs(hPink,hGreen,hYellow);
 		}
 
-		long LoadBinaryCopy (PSTR fileName);
+		int32_t LoadBinaryCopy (PSTR fileName);
 		void SaveBinaryCopy (PSTR fileName);
 };
 
@@ -245,12 +245,12 @@ class TG_MultiShape
 	//Data Members
 	protected:
 		TG_TypeMultiShapePtr	myMultiType;			//Pointer to the type
-		long					numTG_Shapes;			//Number of TG_Shapes
+		int32_t					numTG_Shapes;			//Number of TG_Shapes
 		TG_ShapeRecPtr			listOfShapes;			//Memory holding all TG_ShapeRecs
 		float					frameNum;				//Frame number of animation
 		bool					d_useShadows;
 		bool					isHudElement;
-		BYTE					alphaValue;				//To fade shapes in and out
+		UCHAR					alphaValue;				//To fade shapes in and out
 		bool					isClamped;				//So I can force a shape to clamp its textures
 
 	//-----------------
@@ -258,8 +258,8 @@ class TG_MultiShape
 	protected:
 
 	public:
-		void * operator new (size_t mySize);
-		void operator delete (void * us);
+		PVOID operator new (size_t mySize);
+		void operator delete (PVOID us);
 
 		void init (void)
 		{
@@ -293,7 +293,7 @@ class TG_MultiShape
 		//to light the shape.
 		//Function returns 0 if lightList entries are all OK.  -1 otherwise.
 		//
-		long SetLightList (TG_LightPtr *lightList, ULONG nLights);
+		int32_t SetLightList (TG_LightPtr *lightList, ULONG nLights);
 
 		//This function sets the fog values for the shape.  Straight fog right now.
 		void SetFogRGB (ULONG fRGB);
@@ -305,14 +305,14 @@ class TG_MultiShape
 		//Function returns 0 if any one vertex screen position is off screen.
 		//Function returns 1 is all vertex screen positions are on screen.
 		// NOTE:  THIS IS NOT A RIGOROUS CLIP!!!!!!!!!
-		long TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuaternion *rot);
+		int32_t TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuaternion *rot);
 
 		//This function rotates the heirarchy from this node down.  Used for torso twists, arms, etc.
 		// SHould only be called once this way.  This way is DAMNED SLOW!!!  STRICMP!  IT returns the node num
 		// Call that from then on!
-		long SetNodeRotation (PSTR nodeName, Stuff::UnitQuaternion *rot);
+		int32_t SetNodeRotation (PSTR nodeName, Stuff::UnitQuaternion *rot);
 
-		void SetNodeRotation (long nodeNum, Stuff::UnitQuaternion *rot)
+		void SetNodeRotation (int32_t nodeNum, Stuff::UnitQuaternion *rot)
 		{
 			if ((nodeNum >= 0) && (nodeNum < numTG_Shapes))
 				listOfShapes[nodeNum].baseRotation = *rot;
@@ -326,7 +326,7 @@ class TG_MultiShape
 		//gos_DrawTriangle.
 		void RenderShadows (bool refreshTextures = false);
 
-		long GetNumShapes (void)
+		int32_t GetNumShapes (void)
 		{
 			return numTG_Shapes;
 		}
@@ -335,12 +335,12 @@ class TG_MultiShape
 		{
 			if (scaleFactor >= 0.0f)
 			{
-				for (long i=0;i<numTG_Shapes;i++)
+				for (int32_t i=0;i<numTG_Shapes;i++)
 					listOfShapes[i].node->shapeScalar = scaleFactor;
 			}
 		}
 		
-		long GetNumVerticesInShape (long i)
+		int32_t GetNumVerticesInShape (int32_t i)
 		{
 			if ((i >= 0) && (i < numTG_Shapes))
 			{
@@ -350,8 +350,8 @@ class TG_MultiShape
 			return 0;
 		}
 
-		Stuff::Vector3D GetShapeVertexInWorld(long shapeNum, long vertexNum, float rotation);
-		Stuff::Vector3D GetShapeVertexInEditor(long shapeNum, long vertexNum, float rotation);
+		Stuff::Vector3D GetShapeVertexInWorld(int32_t shapeNum, int32_t vertexNum, float rotation);
+		Stuff::Vector3D GetShapeVertexInEditor(int32_t shapeNum, int32_t vertexNum, float rotation);
 		
 		float GetFrameNum (void)
 		{
@@ -371,12 +371,12 @@ class TG_MultiShape
 		//Function returns 0 if OK.  -1 if textureName is longer then nameLength-1.
 		//This function digs the texture name(s) out of the ASE file so that the
 		//User can load and manage them anyway they want to.
-		long GetTextureName (ULONG textureNum, PSTR textureName, long nameLength)
+		int32_t GetTextureName (ULONG textureNum, PSTR textureName, int32_t nameLength)
 		{
 			return myMultiType->GetTextureName(textureNum,textureName,nameLength);
 		}
 
-		long GetNumTextures (void)
+		int32_t GetNumTextures (void)
 		{
 			return myMultiType->GetNumTextures();
 		}
@@ -384,7 +384,7 @@ class TG_MultiShape
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		long SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle)
+		int32_t SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle)
 		{
 			return myMultiType->SetTextureHandle(textureNum,gosTextureHandle);
 		}
@@ -412,7 +412,7 @@ class TG_MultiShape
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		long SetTextureAlpha (ULONG textureNum, bool alphaFlag)
+		int32_t SetTextureAlpha (ULONG textureNum, bool alphaFlag)
 		{
 			return myMultiType->SetTextureAlpha(textureNum,alphaFlag);
 		}
@@ -421,7 +421,7 @@ class TG_MultiShape
 		{
 			Stuff::Point3D result;
 			result.x = result.y = result.z = 0.0f;
-			for (long i=0;i<numTG_Shapes;i++)
+			for (int32_t i=0;i<numTG_Shapes;i++)
 			{
 				if (listOfShapes[i].parentNode == NULL)
 				{
@@ -436,7 +436,7 @@ class TG_MultiShape
 		{
 			Stuff::Point3D result;
 			result.x = result.y = result.z = 0.0f;
-			for (long i=0;i<numTG_Shapes;i++)
+			for (int32_t i=0;i<numTG_Shapes;i++)
 			{
 				if (listOfShapes[i].parentNode == NULL)
 				{
@@ -447,7 +447,7 @@ class TG_MultiShape
 			return result;
 		}
 
-		void SetCurrentAnimation (long shapeNum, TG_AnimationPtr anim)
+		void SetCurrentAnimation (int32_t shapeNum, TG_AnimationPtr anim)
 		{
 			if ((shapeNum >= 0) && (shapeNum < numTG_Shapes))
 				listOfShapes[shapeNum].currentAnimation = anim;
@@ -457,24 +457,24 @@ class TG_MultiShape
 		//As such, the shape will stop animating and return to base pose.
 		void ClearAnimation (void)
 		{
-			for (long i=0;i<numTG_Shapes;i++)
+			for (int32_t i=0;i<numTG_Shapes;i++)
 				listOfShapes[i].currentAnimation = NULL;
 		}
 
 		void SetARGBHighLight (ULONG argb)
 		{
-			for (long i=0;i<numTG_Shapes;i++)
+			for (int32_t i=0;i<numTG_Shapes;i++)
 				listOfShapes[i].node->SetARGBHighLight(argb);
 		}
 		
 		void SetLightsOut (bool lightFlag)
 		{
-			for (long i=0;i<numTG_Shapes;i++)
+			for (int32_t i=0;i<numTG_Shapes;i++)
 				listOfShapes[i].node->SetLightsOut(lightFlag);
 		}
 		
  		Stuff::Vector3D GetTransformedNodePosition (Stuff::Point3D *pos, Stuff::UnitQuaternion *rot, PSTR nodeId);
- 		Stuff::Vector3D GetTransformedNodePosition (Stuff::Point3D *pos, Stuff::UnitQuaternion *rot, long nodeId);
+ 		Stuff::Vector3D GetTransformedNodePosition (Stuff::Point3D *pos, Stuff::UnitQuaternion *rot, int32_t nodeId);
 
 		TG_TypeMultiShapePtr GetMultiType (void)
 		{
@@ -493,7 +493,7 @@ class TG_MultiShape
  		// Tells me if the passed in nodeName is a child of the parentName.
 		bool isChildOf (PSTR nodeName, PSTR parentName);
 		
-		PSTR GetNodeId (long shapeNum)
+		PSTR GetNodeId (int32_t shapeNum)
 		{
 			if ((shapeNum >= 0) && (shapeNum < numTG_Shapes))
 				return (listOfShapes[shapeNum].node->getNodeName());
@@ -501,9 +501,9 @@ class TG_MultiShape
 			return NULL;
 		}
 		
-		long GetNodeNameId (PSTR  nodeId)
+		int32_t GetNodeNameId (PSTR  nodeId)
 		{
-			for (long i=0;i<numTG_Shapes;i++)
+			for (int32_t i=0;i<numTG_Shapes;i++)
 			{
 				//-----------------------------------------------------------------
 				// Scan through the list of shapes and dig out the number needed.
@@ -521,22 +521,22 @@ class TG_MultiShape
 			isHudElement = true;
 		}
 
-		void SetAlphaValue (BYTE aVal)
+		void SetAlphaValue (UCHAR aVal)
 		{
 			alphaValue = aVal;
 		}
 		
-		BYTE GetAlphaValue (void)
+		UCHAR GetAlphaValue (void)
 		{
 			return alphaValue;
 		}
 		
- 		bool PerPolySelect (long mouseX, long mouseY)
+ 		bool PerPolySelect (int32_t mouseX, int32_t mouseY)
 		{
 			float mx = mouseX;
 			float my = mouseY;
 
-			for (long i=0;i<numTG_Shapes;i++)
+			for (int32_t i=0;i<numTG_Shapes;i++)
 			{
 				if (listOfShapes[i].node->numVisibleFaces && listOfShapes[i].node->PerPolySelect(mx,my))
 					return true;
@@ -547,7 +547,7 @@ class TG_MultiShape
 		
 		void SetRecalcShadows (bool flag)
 		{
-			for (long i=0;i<numTG_Shapes;i++)
+			for (int32_t i=0;i<numTG_Shapes;i++)
 			{
 				listOfShapes[i].node->SetRecalcShadows(flag);
 			}
@@ -576,13 +576,13 @@ class TG_AnimateShape
 	//Other then data storage, parsing, and the pointer sets, does zipp!
 	protected:
 		TG_AnimationPtr		listOfAnimation;
-		long				count;
-		long				actualCount;
+		int32_t				count;
+		int32_t				actualCount;
 		bool				shapeIdsSet;
 
 	public:
-		void * operator new (size_t mySize);
-		void operator delete (void * us);
+		PVOID operator new (size_t mySize);
+		void operator delete (PVOID us);
 
 		void init (void)
 		{
@@ -601,7 +601,7 @@ class TG_AnimateShape
 			destroy();
 		}
 
-		long LoadBinaryCopy (PSTR fileName);
+		int32_t LoadBinaryCopy (PSTR fileName);
 		void SaveBinaryCopy (PSTR fileName);
 
 		//This function frees all of the RAM allocated by this class and resets vars to initial state.
@@ -611,7 +611,7 @@ class TG_AnimateShape
 		//It sets up a pointer to the multi-shape so that animation data for each
 		//Node in the Multi-Shape can be loaded.
 		//It mallocs memory.
-		long LoadTGMultiShapeAnimationFromASE (PSTR filename, TG_TypeMultiShapePtr shape, bool skipIfBinary = false, bool forceMakeBinary = false);
+		int32_t LoadTGMultiShapeAnimationFromASE (PSTR filename, TG_TypeMultiShapePtr shape, bool skipIfBinary = false, bool forceMakeBinary = false);
 
 		//This function copies the pointers to the animation data in this class to the
 		//TG_MultiShape being drawn.  Nothing else happens.
@@ -637,7 +637,7 @@ class TG_AnimateShape
 				listOfAnimation[0].frameRate = -listOfAnimation[0].frameRate;
 		}
 
-		long GetNumFrames (void)
+		int32_t GetNumFrames (void)
 		{
 			if (listOfAnimation)
 				return listOfAnimation[0].numFrames;

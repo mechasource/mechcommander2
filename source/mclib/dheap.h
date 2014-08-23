@@ -9,6 +9,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DHEAP_H
 #define DHEAP_H
 

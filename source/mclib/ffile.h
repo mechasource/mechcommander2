@@ -9,23 +9,20 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef FFILE_H
 #define FFILE_H
+
 //---------------------------------------------------------------------------
 // Include files
 
-#ifndef DSTD_H
-#include <dstd.h>
-#endif
+//#include <dstd.h>
+//#include <file.h>
+//#include <sys/types.h>
+//#include <sys/stat.h>
 
-#ifndef FILE_H
-#include <file.h>
-#endif
-
-#include <sys\types.h>
-#include <sys\stat.h>
 //---------------------------------------------------------------------------
-#define MAX_FILENAME_SIZE		250
 
 #define FASTFILE_VERSION		0xCADDECAF
 #define FASTFILE_VERSION_LZ		0xFADDECAF
@@ -33,19 +30,18 @@
 #pragma pack(1)
 typedef struct 
 {
-    long	offset;
-    long	size;						//LZ Compressed Size
-	long	realSize;					//Uncompressed Size
-	DWORD	hash;						//Hash Compare to weed out stinky files faster then StrCmp
-    char	name[MAX_FILENAME_SIZE];
+    ptrdiff_t	offset;
+    size_t		size;						//LZ Compressed Size
+	size_t		realSize;					//Uncompressed Size
+	uint32_t	hash;						//Hash Compare to weed out stinky files faster then StrCmp
+    char		name[MAX_PATH];
 } FILEENTRY;
 #pragma pack()
 
-typedef struct 
-{
-    long		inuse;
-    long		pos;
-    FILEENTRY	*pfe;
+typedef struct FILE_HANDLE {
+    int32_t		inuse;
+    int32_t		pos;
+    FILEENTRY*	pfe;
 } FILE_HANDLE;
 
 //---------------------------------------------------------------------------
@@ -53,25 +49,22 @@ typedef struct
 class FastFile
 {
 	protected:
-		long					numFiles;
-		FILE_HANDLE				*files;
-
-		char 					*fileName;
-		FILE					*handle;
-
+		size_t			numFiles;
+		FILE_HANDLE*	files;
+		char*			fileName;
+		FILE*			handle;
 		size_t 			length;
 		size_t 			logicalPosition;
-
-		bool					useLZCompress;
+		bool			useLZCompress;
 
 	public:
 		FastFile (void);
 		~FastFile (void);
 
-		void *operator new (size_t mySize);
-		void operator delete (void *us);
+		PVOID operator new (size_t mySize);
+		void operator delete (PVOID us);
 
-		long open (PSTR fName);
+		int32_t open (PSTR fName);
 		void close (void);
 
 		bool isOpen (void)
@@ -79,33 +72,32 @@ class FastFile
 			return (handle != NULL);
 		}
 
-		long fileSize (void)
+		size_t fileSize (void)
 		{
 			if (isOpen() && (length == 0))
 			{
 				struct _stat st;
-				_stat(fileName,&st);
-				length = st.st_size;
+				_stat(fileName, &st);
+				length = size_t(st.st_size);
 			}
-
 			return length;			
 		}
 
-		long getNumFiles (void)
+		size_t getNumFiles (void)
 		{
 			return numFiles;
 		}
 
-		long openFast (DWORD hash, PSTR fName);
+		int32_t openFast (uint32_t hash, PSTR fName);
 
-		void closeFast (long localHandle);
+		void closeFast (int32_t localHandle);
 
-		long seekFast (long fastFileHandle, long off, long from = SEEK_SET);
-		long readFast (long fastFileHandle, void *bfr, long size);
-		long readFastRAW (long fastFileHandle, void *bfr, long size);
-		long tellFast (long fastFileHandle);
-		long sizeFast (long fastFileHandle);
-		long lzSizeFast (long fastFileHandle);
+		int32_t seekFast (int32_t fastFileHandle, int32_t off, int32_t from = SEEK_SET);
+		int32_t readFast (int32_t fastFileHandle, PVOID bfr, int32_t size);
+		int32_t readFastRAW (int32_t fastFileHandle, PVOID bfr, int32_t size);
+		int32_t tellFast (int32_t fastFileHandle);
+		int32_t sizeFast (int32_t fastFileHandle);
+		int32_t lzSizeFast (int32_t fastFileHandle);
 
 		bool isLZCompressed (void)
 		{
@@ -114,9 +106,9 @@ class FastFile
 };
 
 //---------------------------------------------------------------------------
-extern FastFile 	**fastFiles;
-extern long 		numFastFiles;
-extern long			maxFastFiles;
+extern FastFile**	fastFiles;
+extern size_t		numFastFiles;
+extern size_t		maxFastFiles;
 //---------------------------------------------------------------------------
 #endif
 

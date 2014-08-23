@@ -9,7 +9,7 @@ HGOSHEAP gosFX::Heap = NULL;
 
 DEFINE_TIMER(gosFX, Animation_Time);
 DEFINE_TIMER(gosFX, Draw_Time);
-DWORD
+ULONG
 	gosFX::Point_Count,
 	gosFX::Shard_Count,
 	gosFX::Pert_Count,

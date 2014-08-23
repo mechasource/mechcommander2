@@ -22,21 +22,21 @@
 extern UserHeapPtr systemHeap;
 
 HGOSFONT3D GameDebugWindow::font = NULL;
-long GameDebugWindow::fontHeight = 0;
+int32_t GameDebugWindow::fontHeight = 0;
 
 //***************************************************************************
 //	GAME DEBUG WINDOW class
 //***************************************************************************
 
-void* GameDebugWindow::operator new (size_t ourSize) {
+PVOID GameDebugWindow::operator new (size_t ourSize) {
 
-	void* result = systemHeap->Malloc(ourSize);
+	PVOID result = systemHeap->Malloc(ourSize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void GameDebugWindow::operator delete (void* us) {
+void GameDebugWindow::operator delete (PVOID us) {
 
 	systemHeap->Free(us);
 }	
@@ -53,7 +53,7 @@ void GameDebugWindow::setFont (PSTR fontFile) {
 		font = gos_LoadFont(fontFile);
 		gos_TextSetAttributes(font, 0xffffffff, 1.0, true, true, false, false);
 	}
-	DWORD height, width;
+	ULONG height, width;
 	gos_TextStringLength(&width, &height, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
 	fontHeight = height;
 }
@@ -79,10 +79,10 @@ void GameDebugWindow::render (void) {
 	if (!display)
 		return;
 
-	long i;
+	int32_t i;
 	gos_TextSetAttributes(font, 0xffffffff, 1.0, true, true, false, false);
 	gos_TextSetRegion( 0, 0, Environment.screenWidth, Environment.screenHeight );
-	long curY = pos[1] + 5;
+	int32_t curY = pos[1] + 5;
 	for (i = linePos; i < MAX_DEBUG_WINDOW_LINES; i++) {
 		gos_TextSetPosition(pos[0] + 5, curY);
 		curY += fontHeight;

@@ -5,20 +5,19 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef TIMING_H
 #define TIMING_H
-//----------------------------------------------------------------------------------
-// Include Files
-#ifndef DSTD_H
-#include "dstd.h"
-#endif
+
+// #include "dstd.h"
 
 //----------------------------------------------------------------------------------
 extern bool		gamePaused;			//Is the game paused?
-extern long 	turn;				//What frame of the scenario is it?
+extern int32_t 	turn;				//What frame of the scenario is it?
 extern float	frameLength;		//Duration of last frame in seconds.
 extern float	scenarioTime;		//Time scenario has been running.
-extern DWORD	LastTimeGetTime;	//Stores Interval since timeGetTime last called.
+extern ULONG	LastTimeGetTime;	//Stores Interval since timeGetTime last called.
 extern bool		dynamicFrameTiming;	//This flag determines if we are using frameLength
 									//To time a frame.  This is FALSE when something
 									//puches a frame length dramatically over 4fps.
@@ -117,7 +116,7 @@ class TimerManager
 		
 		void init (void)
 		{
-			for (long i=0;i<MAX_TIMERS;i++)
+			for (int32_t i=0;i<MAX_TIMERS;i++)
 			{
 				timers[i].init();
 			}
@@ -125,13 +124,13 @@ class TimerManager
 		
 		void destroy (void)
 		{
-			for (long i=0;i<MAX_TIMERS;i++)
+			for (int32_t i=0;i<MAX_TIMERS;i++)
 			{
 				timers[i].init();
 			}
 		}
 		
-		TimerPtr getTimer (long index)
+		TimerPtr getTimer (int32_t index)
 		{
 			if ((index >= 0) && (index < MAX_TIMERS))
 				return &(timers[index]);
@@ -141,7 +140,7 @@ class TimerManager
 		
 		void update (void)
 		{
-			for (long i=0;i<MAX_TIMERS;i++)
+			for (int32_t i=0;i<MAX_TIMERS;i++)
 			{
 				timers[i].update();
 			}
@@ -157,23 +156,23 @@ extern PSTR monthName[];
 // Find out actual system time
 typedef struct _MC_SYSTEMTIME
 {
-    DWORD dwYear; 
-	DWORD dwMonth; 
-	DWORD dwDayOfWeek; 
-	DWORD dwDay; 
-	DWORD dwHour; 
-	DWORD dwMinute; 
-	DWORD dwSecond; 
-	DWORD dwMilliseconds;
+    ULONG dwYear; 
+	ULONG dwMonth; 
+	ULONG dwDayOfWeek; 
+	ULONG dwDay; 
+	ULONG dwHour; 
+	ULONG dwMinute; 
+	ULONG dwSecond; 
+	ULONG dwMilliseconds;
 
-	void copyFromSystemTime (void *systemTime);
+	void copyFromSystemTime (PVOID systemTime);
 
 } MC_SYSTEMTIME;
 
-DWORD MCTiming_GetTimeZoneInforation(void *timeData);
+ULONG MCTiming_GetTimeZoneInforation(PVOID timeData);
 
-DWORD MCTiming_GetTimeZoneInformationSize (void);
+ULONG MCTiming_GetTimeZoneInformationSize (void);
 
-void MCTiming_GetUTCSystemTimeFromInformation(DWORD daylightInfo, void *timeData, MC_SYSTEMTIME *systemTime);
+void MCTiming_GetUTCSystemTimeFromInformation(ULONG daylightInfo, PVOID timeData, MC_SYSTEMTIME *systemTime);
 //----------------------------------------------------------------------------------
 #endif

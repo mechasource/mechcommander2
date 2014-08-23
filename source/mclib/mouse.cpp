@@ -58,7 +58,7 @@ extern volatile bool mc2HasLostFocus;
 volatile bool mc2MouseThreadStarted = false;
 volatile bool mc2UseAsyncMouse = true;
 
-MemoryPtr mouseBuffer = NULL;
+PUCHAR mouseBuffer = NULL;
 MMRESULT HTimer = 0;
 
 RECT mouseWASInRect;
@@ -68,12 +68,12 @@ volatile char mc2MouseHotSpotY = 0;
 volatile char mc2MouseWidth = 32;
 volatile char mc2MouseHeight = 32;
 
-volatile MemoryPtr mc2MouseData = NULL;
+volatile PUCHAR mc2MouseData = NULL;
 
 //Timing in Hz to update mouse
-long MOUSE_REFRESH_RATE = 30;
+int32_t MOUSE_REFRESH_RATE = 30;
 
-void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD dw2);
+void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG dw2);
 void (*AsynFunc)(RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc ) = 0;
 
 
@@ -81,7 +81,7 @@ void (*AsynFunc)(RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc ) = 0;
 extern LPDIRECTDRAWSURFACE7	FrontBufferSurface;
 extern HWND					hWindow;
 extern POINT				clientToScreen;
-extern DWORD 				MouseInWindow;
+extern ULONG 				MouseInWindow;
 
 //
 // Init the Mouse timer
@@ -98,13 +98,13 @@ void MouseTimerInit()
 	// For now, create a 32Bit buffer and convert as needed.  If speed is an
 	// issue on low end stuff, change it out.
 	//
-	mouseBuffer = (MemoryPtr)malloc(sizeof(DWORD) * MOUSE_WIDTH * MOUSE_WIDTH);
-	memset(mouseBuffer,0,sizeof(DWORD) * MOUSE_WIDTH * MOUSE_WIDTH);
+	mouseBuffer = (PUCHAR)malloc(sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
+	memset(mouseBuffer,0,sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
 	
 	if (!mc2MouseData)
 	{
-		mc2MouseData = (MemoryPtr)malloc(sizeof(DWORD) * MOUSE_WIDTH * MOUSE_WIDTH);
-		memset(mc2MouseData,0,sizeof(DWORD) * MOUSE_WIDTH * MOUSE_WIDTH);
+		mc2MouseData = (PUCHAR)malloc(sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
+		memset(mc2MouseData,0,sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
 	}
 	
 	mc2MouseThreadStarted = true;
@@ -147,9 +147,9 @@ void MouseTimerKill()
 
 //
 // Returns the number of bits in a given mask.  Used to determine if we are in 555 mode vs 565 mode.
-WORD GetNumberOfBits( DWORD dwMask )
+uint16_t GetNumberOfBits( ULONG dwMask )
 {
-    WORD wBits = 0;
+    uint16_t wBits = 0;
     while( dwMask )
     {
         dwMask = dwMask & ( dwMask - 1 );  
@@ -161,15 +161,15 @@ WORD GetNumberOfBits( DWORD dwMask )
 //
 // Actual Mouse Callback code here.
 //
-void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD dw2)
+void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG dw2)
 {
 	HRESULT lockResult = -1;
 	HRESULT unlockResult = -1;
 	RECT WinRect;
 	DDSURFACEDESC2 mouseSurfaceDesc = {0};
 	mouseSurfaceDesc.dwSize = sizeof(DDSURFACEDESC2);
-	long screenX = Environment.screenWidth;
-	long screenY = Environment.screenHeight;
+	int32_t screenX = Environment.screenWidth;
+	int32_t screenY = Environment.screenHeight;
 	
 	//Must immediately get out, We are NOT the main app anymore!!
 	if (mc2HasLostFocus)
@@ -234,15 +234,15 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD
 				// to the screen.
 				if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 16)
 				{
-					MemoryPtr mBuffer = mouseBuffer;
+					PUCHAR mBuffer = mouseBuffer;
 
-					for (long y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
+					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						MemoryPtr screenPos = (MemoryPtr)mouseSurfaceDesc.lpSurface +
+						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left << 1) +
 												(y * mouseSurfaceDesc.lPitch));
 
-						for (long x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
+						for (int32_t x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
 						{
 							//Only copy bytes that are on screen.
 							if ((x > WinRect.left) && (y > WinRect.top))
@@ -274,14 +274,14 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD
 				}
 				else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 24) 
 				{
-					MemoryPtr mBuffer = mouseBuffer;
-					for (long y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
+					PUCHAR mBuffer = mouseBuffer;
+					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						MemoryPtr screenPos = (MemoryPtr)mouseSurfaceDesc.lpSurface +
+						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left * 3) +
 												(y * mouseSurfaceDesc.lPitch));
 
-						for (long x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
+						for (int32_t x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
 						{
 							//Only copy bytes that are on screen.
 							if ((x > WinRect.left) && (y > WinRect.top))
@@ -322,14 +322,14 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD
 				}
 				else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32) 
 				{
-					MemoryPtr mBuffer = mouseBuffer;
-					for (long y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
+					PUCHAR mBuffer = mouseBuffer;
+					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						MemoryPtr screenPos = (MemoryPtr)mouseSurfaceDesc.lpSurface +
+						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left << 2) +
 												(y * mouseSurfaceDesc.lPitch));
 
-						for (long x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
+						for (int32_t x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
 						{
 							//Only copy bytes that are on screen.
 							if ((x > WinRect.left) && (y > WinRect.top))
@@ -497,14 +497,14 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD
 			//
 			if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 16)
 			{
-				MemoryPtr mBuffer = mouseBuffer;
-				for (long y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
+				PUCHAR mBuffer = mouseBuffer;
+				for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 				{
-					MemoryPtr screenPos = (MemoryPtr)mouseSurfaceDesc.lpSurface +
+					PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
 											((mouseWASInRect.left << 1) +
 											(y * mouseSurfaceDesc.lPitch));
 											
-					for (long x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
+					for (int32_t x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
 					{
 						//Only copy bytes that are on screen.
 						if ((x > WinRect.left) && (y > WinRect.top))
@@ -536,14 +536,14 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD
 			}
 			else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 24) 
 			{
-				MemoryPtr mBuffer = mouseBuffer;
-				for (long y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
+				PUCHAR mBuffer = mouseBuffer;
+				for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 				{
-					MemoryPtr screenPos = (MemoryPtr)mouseSurfaceDesc.lpSurface +
+					PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
 											((mouseWASInRect.left * 3) +
 											(y * mouseSurfaceDesc.lPitch));
 											
-					for (long x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
+					for (int32_t x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
 					{
 						//Only copy bytes that are on screen.
 						if ((x > WinRect.left) && (y > WinRect.top))
@@ -584,14 +584,14 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD
 			}
 			else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32) 
 			{
-				MemoryPtr mBuffer = mouseBuffer;
-				for (long y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
+				PUCHAR mBuffer = mouseBuffer;
+				for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 				{
-					MemoryPtr screenPos = (MemoryPtr)mouseSurfaceDesc.lpSurface +
+					PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
 											((mouseWASInRect.left << 2) +
 											(y * mouseSurfaceDesc.lPitch));
 											
-					for (long x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
+					for (int32_t x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
 					{
 						//Only copy bytes that are on screen.
 						if ((x > WinRect.left) && (y > WinRect.top))
@@ -667,24 +667,24 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD
 
 				if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 16)
 				{
-					DWORD * mData = (DWORD *)mc2MouseData;
-					for (long y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
+					ULONG * mData = (ULONG *)mc2MouseData;
+					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						MemoryPtr screenPos = (MemoryPtr)mouseSurfaceDesc.lpSurface +
+						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left << 1) +
 												(y * mouseSurfaceDesc.lPitch));
 												
-						for (long x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
+						for (int32_t x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
 						{
 							//We are pointing at the top left corner of where 
 							// the mouse cursor will draw.  mc2MouseData is a 32bit
 							// bitmap with Alpha information.  Go!
 
-							DWORD mColor = *mData;
-							BYTE baseAlpha 		= 0;
-							BYTE baseColorRed	= (mColor & 0x00ff0000)>>16;
-							BYTE baseColorGreen	= (mColor & 0x0000ff00)>>8;
-							BYTE baseColorBlue 	= (mColor & 0x000000ff);
+							ULONG mColor = *mData;
+							UCHAR baseAlpha 		= 0;
+							UCHAR baseColorRed	= (mColor & 0x00ff0000)>>16;
+							UCHAR baseColorGreen	= (mColor & 0x0000ff00)>>8;
+							UCHAR baseColorBlue 	= (mColor & 0x000000ff);
 							
 							//Check for color key instead
 							if ((baseColorRed != 0xff) || (baseColorGreen != 0x0) || (baseColorBlue != 0xff))
@@ -694,7 +694,7 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD
 							if (baseAlpha && (x > WinRect.left) && (y > WinRect.top))
 							{
 								//Create a 16Bit color value to jam into the screen.
-								unsigned short clr = 0;
+								uint16_t clr = 0;
 								if (!in555Mode)
 								{
 									clr = (baseColorRed >> 3) << 11;
@@ -729,23 +729,23 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD
 				}
 				else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 24) 
 				{
-					DWORD * mData = (DWORD *)mc2MouseData;
-					for (long y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
+					ULONG * mData = (ULONG *)mc2MouseData;
+					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						MemoryPtr screenPos = (MemoryPtr)mouseSurfaceDesc.lpSurface +
+						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left * 3) +
 												(y * mouseSurfaceDesc.lPitch));
 												
-						for (long x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
+						for (int32_t x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
 						{
 							//We are pointing at the top left corner of where 
 							// the mouse cursor will draw.  mc2MouseData is a 32bit
 							// bitmap with Alpha information.  Go!
-							DWORD mColor = *mData;
-							BYTE baseAlpha 		= 0;
-							BYTE baseColorRed	= (mColor & 0x00ff0000)>>16;
-							BYTE baseColorGreen	= (mColor & 0x0000ff00)>>8;
-							BYTE baseColorBlue 	= (mColor & 0x000000ff);
+							ULONG mColor = *mData;
+							UCHAR baseAlpha 		= 0;
+							UCHAR baseColorRed	= (mColor & 0x00ff0000)>>16;
+							UCHAR baseColorGreen	= (mColor & 0x0000ff00)>>8;
+							UCHAR baseColorBlue 	= (mColor & 0x000000ff);
 							
 							//Check for color key instead
 							if ((baseColorRed != 0xff) || (baseColorGreen != 0x0) || (baseColorBlue != 0xff))
@@ -780,23 +780,23 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, DWORD dwUser, DWORD dw1, DWORD
 				}
 				else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32) 
 				{
-					DWORD * mData = (DWORD *)mc2MouseData;
-					for (long y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
+					ULONG * mData = (ULONG *)mc2MouseData;
+					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						MemoryPtr screenPos = (MemoryPtr)mouseSurfaceDesc.lpSurface +
+						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left << 2) +
 												(y * mouseSurfaceDesc.lPitch));
 												
-						for (long x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
+						for (int32_t x=mouseWASInRect.left;x<mouseWASInRect.right;x++)
 						{
 							//We are pointing at the top left corner of where 
 							// the mouse cursor will draw.  mc2MouseData is a 32bit
 							// bitmap with Alpha information.  Go!
-							DWORD mColor = *mData;
-							BYTE baseAlpha 		= 0;
-							BYTE baseColorRed	= (mColor & 0x00ff0000)>>16;
-							BYTE baseColorGreen	= (mColor & 0x0000ff00)>>8;
-							BYTE baseColorBlue 	= (mColor & 0x000000ff);
+							ULONG mColor = *mData;
+							UCHAR baseAlpha 		= 0;
+							UCHAR baseColorRed	= (mColor & 0x00ff0000)>>16;
+							UCHAR baseColorGreen	= (mColor & 0x0000ff00)>>8;
+							UCHAR baseColorBlue 	= (mColor & 0x000000ff);
 							
 							//Check for color key instead
 							if ((baseColorRed != 0xff) || (baseColorGreen != 0x0) || (baseColorBlue != 0xff))

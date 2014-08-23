@@ -6,6 +6,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef PACKET_H
 #define PACKET_H
 //---------------------------------------------------------------------------
@@ -45,9 +47,9 @@
 
 #define GetPacketType(offset) 		(((ULONG)offset)>>TYPE_SHIFT)
 #define GetPacketOffset(offset)		(offset&OFFSET_MASK)
-#define SetPacketType(offset,type)	((offset)+(long(type)<<TYPE_SHIFT))
+#define SetPacketType(offset,type)	((offset)+(int32_t(type)<<TYPE_SHIFT))
 
-#define TABLE_ENTRY(p) ((2+p)<<2)	// ((1+p)*sizeof(long))
+#define TABLE_ENTRY(p) ((2+p)<<2)	// ((1+p)*sizeof(int32_t))
 
 //---------------------------------------------------------------------------
 // Structure and Class Definitions
@@ -58,15 +60,15 @@ class PacketFile : public File
 	//Data Members
 	//-------------
 	protected:
-		long numPackets;
-		long currentPacket;
-		long packetSize;
-		long packetBase;
+		int32_t numPackets;
+		int32_t currentPacket;
+		int32_t packetSize;
+		int32_t packetBase;
 
-		long packetType;		
-		long packetUnpackedSize;
+		int32_t packetType;		
+		int32_t packetUnpackedSize;
 
-		long *seekTable;
+		int32_t *seekTable;
 
 		bool usesCheckSum;
 
@@ -75,59 +77,59 @@ class PacketFile : public File
 	protected:
 		void clear (void);
 		void atClose (void);
-		long afterOpen (void);
+		int32_t afterOpen (void);
 
 	public:
 
 		PacketFile (void);
 		~PacketFile (void);
 		
-		virtual long open (PSTR fName, FileMode _mode = READ, long numChildren = 50);
-		virtual long open (FilePtr _parent, ULONG fileSize, long numChildren = 50);
+		virtual int32_t open (PCSTR fName, FileMode _mode = READ, uint32_t numChildren = 50);
+		virtual int32_t open (FilePtr _parent, size_t fileSize, uint32_t numChildren = 50);
 		
-		virtual long create (PSTR fName);
-		virtual long createWithCase( PSTR fName ); // don't strlwr for me please!
+		virtual int32_t create (PCSTR fName);
+		virtual int32_t createWithCase( PSTR fName ); // don't strlwr for me please!
 		virtual void close (void);
 
 		void forceUseCheckSum (void)
 		{
-			usesCheckSum = TRUE;
+			usesCheckSum = true;
 		}
 
-		long readPacketOffset (long packet, long *lastType = 0);
-		long readPacket (long packet, PUCHAR buffer);
-		long readPackedPacket (long packet, PUCHAR buffer);
+		int32_t readPacketOffset (int32_t packet, int32_t *lastType = 0);
+		int32_t readPacket (int32_t packet, puint8_t buffer);
+		int32_t readPackedPacket (int32_t packet, puint8_t buffer);
 
-		long seekPacket (long packet);
+		int32_t seekPacket (int32_t packet);
 
 		void operator ++ (void);
 		void operator -- (void);
 		
-		long getNumPackets (void);
-		long getCurrentPacket (void);
-		long getPacketOffset(void);
+		int32_t getNumPackets (void);
+		int32_t getCurrentPacket (void);
+		int32_t getPacketOffset(void);
 
-		long getPacketSize (void)
+		int32_t getPacketSize (void)
 		{
 			return packetUnpackedSize;
 		}
 
-		long getPackedPacketSize (void);
-		long getStorageType (void);
+		int32_t getPackedPacketSize (void);
+		int32_t getStorageType (void);
 
 		virtual FileClass getFileClass (void)
 		{
 			return PACKETFILE;
 		}
 			
-		long checkSumFile (void);
+		int32_t checkSumFile (void);
 
 		//-------------------------------------------
 		// Functions to Write Packet Files
-		void reserve (long count, bool withCheckSum = FALSE);
-		long writePacket (long packet, MemoryPtr buffer, long nbytes, uint8_t p_type = ANY_PACKET_TYPE);
-		long insertPacket (long packet, MemoryPtr buffer, long nbytes, uint8_t p_type = ANY_PACKET_TYPE);
-		long writePacket (long packet, MemoryPtr buffer);
+		void reserve (int32_t count, bool withCheckSum = FALSE);
+		int32_t writePacket (int32_t packet, PUCHAR buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
+		int32_t insertPacket (int32_t packet, PUCHAR buffer, int32_t nbytes, uint8_t p_type = ANY_PACKET_TYPE);
+		int32_t writePacket (int32_t packet, PUCHAR buffer);
 };
 
 

@@ -22,11 +22,11 @@ class VFXElement : public Element
 {
 	public:
 	
-		MemoryPtr		shapeTable;
-		long			frameNum;
-		long			x,y;
+		PUCHAR		shapeTable;
+		int32_t			frameNum;
+		int32_t			x,y;
 		bool			reverse;
-		MemoryPtr		fadeTable;
+		PUCHAR		fadeTable;
 		bool			noScaleDraw;
 		bool			scaleUp;
 
@@ -43,8 +43,8 @@ class VFXElement : public Element
 		scaleUp = FALSE;
 	}
 
-	VFXElement (MemoryPtr _shape, long _x, long _y, long frame, bool rev, MemoryPtr fTable = NULL, bool noScale = FALSE, bool scaleUp = FALSE);
-	VFXElement (MemoryPtr _shape, float _x, float _y, long frame, bool rev, MemoryPtr fTable = NULL, bool noScale = FALSE, bool scaleUp = FALSE);
+	VFXElement (PUCHAR _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, PUCHAR fTable = NULL, bool noScale = FALSE, bool scaleUp = FALSE);
+	VFXElement (PUCHAR _shape, float _x, float _y, int32_t frame, bool rev, PUCHAR fTable = NULL, bool noScale = FALSE, bool scaleUp = FALSE);
 
 	virtual void draw (void);
 };
@@ -60,16 +60,16 @@ class VFXShapeElement : public Element
 		// the shapes into a single Texture for
 		// rendering.  Can be used for vehicles
 		// and mechs in MechCmdr 2.
-		MemoryPtr		shapeTable[MAX_ELEMENT_SHAPES];
-		long			frameNum[MAX_ELEMENT_SHAPES];
+		PUCHAR		shapeTable[MAX_ELEMENT_SHAPES];
+		int32_t			frameNum[MAX_ELEMENT_SHAPES];
 		bool			reverse[MAX_ELEMENT_SHAPES];
-		long			x,y,xHS,yHS;
+		int32_t			x,y,xHS,yHS;
 		size_t	*fadeTable;
-		DWORD			textureMemoryHandle;
-		long			actualHeight;
+		ULONG			textureMemoryHandle;
+		int32_t			actualHeight;
 		float			textureFactor;
-		DWORD			lightRGB;
-		DWORD			fogRGB;
+		ULONG			lightRGB;
+		ULONG			fogRGB;
 		float			z,topZ;
 
 	VFXShapeElement (void)
@@ -91,17 +91,17 @@ class VFXShapeElement : public Element
 		fogRGB = 0xffffffff;		//NO Fog
 	}
 
-	void init (MemoryPtr _shape, long _x, long _y, long frame, bool rev, size_t *fTable = NULL, float _z = 0.0, float tZ = 0.0);
+	void init (PUCHAR _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, size_t *fTable = NULL, float _z = 0.0, float tZ = 0.0);
 
-	long getTextureHandle (long height = -1);					//Return the block of memory so I store it for this mech/vehicle,etc.
-	void setTextureHandle (DWORD handle, long height = -1);
+	int32_t getTextureHandle (int32_t height = -1);					//Return the block of memory so I store it for this mech/vehicle,etc.
+	void setTextureHandle (ULONG handle, int32_t height = -1);
 
-	void setLight (DWORD light)
+	void setLight (ULONG light)
 	{
 		lightRGB = light;
 	}
 
-	void setFog (DWORD fog)
+	void setFog (ULONG fog)
 	{
 		fogRGB = fog;
 	}
@@ -120,12 +120,12 @@ class TextureElement : public Element
 		// This just draws a textured face.
 		// Texture is passed in when inited.
 		// For use with Cards.  Not real 3D faces!
-		long			x, y, xHS, yHS;
+		int32_t			x, y, xHS, yHS;
 		float			tWidth;
 		float			z,topZ;
-		DWORD			textureMemoryHandle;
-		DWORD			lightRGB;
-		DWORD			fogRGB;
+		ULONG			textureMemoryHandle;
+		ULONG			lightRGB;
+		ULONG			fogRGB;
 
 	TextureElement (void)
 	{
@@ -135,17 +135,17 @@ class TextureElement : public Element
 		lightRGB = 0xffffffff;
 	}
 
-	void setLight (DWORD light)
+	void setLight (ULONG light)
 	{
 		lightRGB = light;
 	}
 
-	void setFog (DWORD fog)
+	void setFog (ULONG fog)
 	{
 		fogRGB = fog;
 	}
 		
-	void init (DWORD textureHandle, long _x, long _y, long hsx, long hsy, float tWidth, float _z, float tZ);
+	void init (ULONG textureHandle, int32_t _x, int32_t _y, int32_t hsx, int32_t hsy, float tWidth, float _z, float tZ);
 	virtual void draw (void);
 };
 
@@ -197,7 +197,7 @@ class TexturedPolygonQuadElement : public PolygonQuadElement
 		//--------------------------------
 		// This draws any untextured face.
 		// Useful everywhere
-		DWORD		textureHandle;
+		ULONG		textureHandle;
 		bool		zWrite;
 		bool		zComp;
 		
@@ -205,7 +205,7 @@ class TexturedPolygonQuadElement : public PolygonQuadElement
 	{
 	}
 	
-	void init (gos_VERTEX *v, DWORD tHandle, bool writeZ = true, bool compZ = true);
+	void init (gos_VERTEX *v, ULONG tHandle, bool writeZ = true, bool compZ = true);
 	
 	virtual void draw (void);
 
@@ -219,13 +219,13 @@ class TexturedPolygonTriElement : public PolygonTriElement
 		//--------------------------------
 		// This draws any textured face.
 		// Useful everywhere.
-		DWORD		textureHandle;
+		ULONG		textureHandle;
 		
 	TexturedPolygonTriElement (void)
 	{
 	}
 	
-	void init (gos_VERTEX *v, DWORD tHandle);
+	void init (gos_VERTEX *v, ULONG tHandle);
 	
 	virtual void draw (void);
 

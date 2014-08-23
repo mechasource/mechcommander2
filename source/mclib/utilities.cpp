@@ -204,11 +204,11 @@ bool StaticInfo::isInside( int mouseX, int mouseY )
 
 //Fills the buffer with the bitmap data.
 // Used by new mouse cursor draw routines.
-void StaticInfo::getData(PUCHAR  buffer)
+void StaticInfo::getData(puint8_t  buffer)
 {
 	if ((vHeight > 32) || (uWidth > 32))
 	{
-		memset(buffer,0,sizeof(DWORD) * 32 * 32);
+		memset(buffer,0,sizeof(ULONG) * 32 * 32);
 		return;
 	}
 	
@@ -218,9 +218,9 @@ void StaticInfo::getData(PUCHAR  buffer)
 		TEXTUREPTR textureData;
 		gos_LockTexture( gosID, 0, 0, &textureData );
 	
-		DWORD *bufMem = (DWORD *)buffer;
-		DWORD localU = location[0].u * textureData.Width;
-		DWORD localV = location[0].v * textureData.Width;
+		ULONG *bufMem = (ULONG *)buffer;
+		ULONG localU = location[0].u * textureData.Width;
+		ULONG localV = location[0].v * textureData.Width;
 
 		//Make sure we don't fall off of the texture!
 		if ((localU > textureData.Width) ||
@@ -228,16 +228,16 @@ void StaticInfo::getData(PUCHAR  buffer)
 			(localV > textureData.Width) ||
 			((localV + vHeight) > textureData.Width))
 		{
-			memset(buffer,0,sizeof(DWORD) * 32 * 32);
+			memset(buffer,0,sizeof(ULONG) * 32 * 32);
 			gos_UnLockTexture( gosID );
 			return;
 		}
 
-		for (long y=0;y<vHeight;y++)
+		for (int32_t y=0;y<vHeight;y++)
 		{
-			DWORD *textureMemory = textureData.pTexture + (localU + ((localV+y) * textureData.Width));
+			ULONG *textureMemory = textureData.pTexture + (localU + ((localV+y) * textureData.Width));
 		
-			for (long x=0;x<uWidth;x++)
+			for (int32_t x=0;x<uWidth;x++)
 			{
 				*bufMem = *textureMemory;
 				bufMem++;
@@ -249,14 +249,14 @@ void StaticInfo::getData(PUCHAR  buffer)
 	}
 }
 
-void StaticInfo::init( FitIniFile& file, PSTR blockName, long hiResOffsetX, long hiResOffsetY, DWORD neverFlush )
+void StaticInfo::init( FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, int32_t hiResOffsetY, ULONG neverFlush )
 {
 	memset( location, 0, sizeof( location ) );
 	char fileName[256];
 	textureHandle = 0;
 	textureWidth = 0; 
 	
-	if ( NO_ERR != file.seekBlock( blockName ) )
+	if ( NO_ERROR != file.seekBlock( blockName ) )
 	{
 		char errBuffer[256];
 		sprintf( errBuffer, "couldn't find static block %s", blockName );
@@ -264,7 +264,7 @@ void StaticInfo::init( FitIniFile& file, PSTR blockName, long hiResOffsetX, long
 		return;
 	}
 
-	long x, y, width, height;
+	int32_t x, y, width, height;
 	file.readIdLong( "XLocation", x );
 	file.readIdLong( "YLocation", y );
 
@@ -352,7 +352,7 @@ void StaticInfo::move( float deltaX, float deltaY )
 	}
 }
 
-void StaticInfo::setColor( long newColor )
+void StaticInfo::setColor( int32_t newColor )
 {
 	for ( int i = 0; i < 4; i++ )
 		location[i].argb = newColor;
@@ -367,15 +367,15 @@ void StaticInfo::setNewUVs( float uLeft, float vTop, float uRight, float vBottom
 	location[1].v = location[2].v = vBottom;
 }
 
-void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, long left, long top,  
+void drawShadowText( int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, int32_t left, int32_t top,  
 					bool proportional, PCSTR text, bool bold, float scale )
 {
 	drawShadowText( colorTop, colorShadow, font, left, top, proportional, text, bold, scale, -1, 1 );
 }
 
-void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, 
-					long left, long top, bool proportional, PCSTR text, bool bold, float scale,
-					long xOffset, long yOffset)
+void drawShadowText( int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, 
+					int32_t left, int32_t top, bool proportional, PCSTR text, bool bold, float scale,
+					int32_t xOffset, int32_t yOffset)
 {
 	gos_TextSetAttributes( font, colorShadow, scale, false, proportional, bold, false, 0 );
 	gos_TextSetRegion( 0, 0, Environment.screenWidth, Environment.screenHeight );
@@ -387,9 +387,9 @@ void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font,
 
 }
 
-void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font, 
-					long left, long top, long right, long bottom, bool proportional, PCSTR text, bool bold, float scale,
-					long xOffset, long yOffset)
+void drawShadowText( int32_t colorTop, int32_t colorShadow, HGOSFONT3D font, 
+					int32_t left, int32_t top, int32_t right, int32_t bottom, bool proportional, PCSTR text, bool bold, float scale,
+					int32_t xOffset, int32_t yOffset)
 {
 	gos_TextSetAttributes( font, colorShadow, scale, true, proportional, bold, false, 2 );
 	gos_TextSetRegion( left + xOffset, top + yOffset, right + xOffset, bottom + yOffset);
@@ -402,31 +402,31 @@ void drawShadowText( long colorTop, long colorShadow, HGOSFONT3D font,
 }
 
 
-long interpolateColor( long color1, long color2, float percent )
+int32_t interpolateColor( int32_t color1, int32_t color2, float percent )
 {
-	long color = 0xffffffff;
+	int32_t color = 0xffffffff;
 	if ( percent > 1.0 )
 		color = color2;
 	else if ( percent < 0.0 )
 		color = color1;
 	else
 	{
-		long alphaMin = (color1 >> 24) & 0xff;
-		long alphaMax = (color2 >> 24)& 0xff;
+		int32_t alphaMin = (color1 >> 24) & 0xff;
+		int32_t alphaMax = (color2 >> 24)& 0xff;
 
-		long newAlpha = (float)alphaMin + ((float)(alphaMax - alphaMin))*percent;
+		int32_t newAlpha = (float)alphaMin + ((float)(alphaMax - alphaMin))*percent;
 		
-		long redMin = (color1 & 0x00ff0000)>>16;
-		long redMax = (color2 & 0x00ff0000)>>16;
-		long newRed = (float)redMin + ((float)(redMax - redMin))*percent;
+		int32_t redMin = (color1 & 0x00ff0000)>>16;
+		int32_t redMax = (color2 & 0x00ff0000)>>16;
+		int32_t newRed = (float)redMin + ((float)(redMax - redMin))*percent;
 		
-		long greenMin = (color1 & 0x0000ff00)>>8;
-		long greenMax = (color2 & 0x0000ff00)>>8;
-		long newGreen = (float)greenMin + ((float)(greenMax - greenMin))*percent;
+		int32_t greenMin = (color1 & 0x0000ff00)>>8;
+		int32_t greenMax = (color2 & 0x0000ff00)>>8;
+		int32_t newGreen = (float)greenMin + ((float)(greenMax - greenMin))*percent;
 		
-		long blueMin = color1 & 0x000000ff;
-		long blueMax = color2 & 0x000000ff;
-		long newBlue = (float)blueMin + ((float)(blueMax - blueMin))*percent;
+		int32_t blueMin = color1 & 0x000000ff;
+		int32_t blueMax = color2 & 0x000000ff;
+		int32_t newBlue = (float)blueMin + ((float)(blueMax - blueMin))*percent;
 
 		color = newBlue + (newGreen << 8) + (newRed << 16) + (newAlpha <<24);
 	}

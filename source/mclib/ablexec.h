@@ -50,7 +50,7 @@ typedef enum {
 
 typedef struct {
 	char		type;
-	long		integer;
+	int32_t		integer;
 	float		real;
 } ABLParam;
 
@@ -60,7 +60,7 @@ typedef ABLParam* ABLParamPtr;
 // RUN-TIME STACK
 
 typedef union {
-	long			integer;
+	int32_t			integer;
 	float			real;
 	uint8_t	byte;
 	Address			address;
@@ -69,13 +69,13 @@ typedef union {
 typedef StackItem* StackItemPtr;
 
 typedef struct {
-	long			type;
+	int32_t			type;
 	union {
-		long		integer;
+		int32_t		integer;
 		float		real;
 		bool		boolean;
 		char		character;
-		long*		integerPtr;
+		int32_t*		integerPtr;
 		float*		realPtr;
 		bool*		booleanPtr;
 		PSTR		characterPtr;
@@ -120,8 +120,8 @@ extern PSTR			codeSegmentLimit;
 extern PSTR			statementStartPtr;
 
 extern TokenCodeType	codeToken;
-extern long				execLineNumber;
-extern long				execStatementCount;
+extern int32_t				execLineNumber;
+extern int32_t				execStatementCount;
 
 extern StackItem*		stack;
 extern StackItemPtr		tos;
@@ -147,14 +147,14 @@ void crunchStatementMarker (void);
 void uncrunchStatementMarker (void);
 PSTR crunchAddressMarker (Address address);
 PSTR fixupAddressMarker (Address address);
-void crunchInteger (long value);
+void crunchInteger (int32_t value);
 void crunchByte (uint8_t value);
 void crunchOffset (Address address);
-PSTR createCodeSegment (long& codeSegmentSize);
+PSTR createCodeSegment (int32_t& codeSegmentSize);
 SymTableNodePtr getCodeSymTableNodePtr (void);
-long getCodeStatementMarker (void);
+int32_t getCodeStatementMarker (void);
 PSTR getCodeAddressMarker (void);
-long getCodeInteger (void);
+int32_t getCodeInteger (void);
 uint8_t getCodeByte (void);
 PSTR getCodeAddress (void);
 
@@ -164,12 +164,12 @@ PSTR getCodeAddress (void);
 
 void pop (void);
 void getCodeToken (void);
-void pushInteger (long value);
+void pushInteger (int32_t value);
 void pushReal (float value);
 void pushByte (char value);
 void pushAddress (Address address);
 void pushBoolean (bool value);
-void pushStackFrameHeader (long oldLevel, long newLevel);
+void pushStackFrameHeader (int32_t oldLevel, int32_t newLevel);
 void allocLocal (TypePtr typePtr);
 void freeData (SymTableNodePtr idPtr);
 

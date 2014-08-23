@@ -34,8 +34,8 @@
 
 #include <gosfx/gosfxheaders.hpp>
 //**************************************************************************************
-#ifndef NO_ERR
-#define NO_ERR						0
+#ifndef NO_ERROR
+#define NO_ERROR						0
 #endif
 
 #define MAX_BD_ANIMATIONS			10
@@ -61,7 +61,7 @@ class BldgAppearanceType : public AppearanceType
 		bool						bdAnimLoop[MAX_BD_ANIMATIONS];
 		bool						bdReverse[MAX_BD_ANIMATIONS];
 		bool						bdRandom[MAX_BD_ANIMATIONS];
-		long						bdStartF[MAX_BD_ANIMATIONS];
+		int32_t						bdStartF[MAX_BD_ANIMATIONS];
 		
 		char						rotationalNodeId[TG_NODE_ID];
 		char						destructEffect[60];
@@ -69,19 +69,19 @@ class BldgAppearanceType : public AppearanceType
 		bool						spinMe;
 		bool						isForestClump;
 		
-		DWORD						terrainLightRGB;
+		ULONG						terrainLightRGB;
 		float						terrainLightIntensity;
 		float						terrainLightInnerRadius;
 		float						terrainLightOuterRadius;
 		
-		long						numWeaponNodes;
+		int32_t						numWeaponNodes;
 		NodeData					*nodeData;
 		
 	public:
 	
 		void init (void)
 		{
-			long i=0;
+			int32_t i=0;
 			for (i=0;i<MAX_LODS;i++)
 			{
 				bldgShape[i] = NULL;
@@ -110,9 +110,9 @@ class BldgAppearanceType : public AppearanceType
 			destroy();
 		}
 
-		void setAnimation (TG_MultiShapePtr shape, DWORD animationNum);
+		void setAnimation (TG_MultiShapePtr shape, ULONG animationNum);
 		
-		long getNumFrames (long animationNum)
+		int32_t getNumFrames (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 				return bdAnimData[animationNum]->GetNumFrames();
@@ -120,7 +120,7 @@ class BldgAppearanceType : public AppearanceType
 			return 0.0f;
 		}
 
-		float getFrameRate (long animationNum)
+		float getFrameRate (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 				return bdAnimData[animationNum]->GetFrameRate();
@@ -128,13 +128,13 @@ class BldgAppearanceType : public AppearanceType
 			return 0.0f;
 		}
 
-		void setFrameRate (long animationNum, float nFrameRate)
+		void setFrameRate (int32_t animationNum, float nFrameRate)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 				bdAnimData[animationNum]->SetFrameRate(nFrameRate);
 		}
 
-		bool isReversed (long animationNum)
+		bool isReversed (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 				return bdReverse[animationNum];
@@ -142,7 +142,7 @@ class BldgAppearanceType : public AppearanceType
 			return false;
 		}
 		
-		bool isLooped (long animationNum)
+		bool isLooped (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 				return bdAnimLoop[animationNum];
@@ -150,7 +150,7 @@ class BldgAppearanceType : public AppearanceType
 			return false;
 		}
 		
-		bool isRandom (long animationNum)
+		bool isRandom (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
 				return bdRandom[animationNum];
@@ -177,7 +177,7 @@ class BldgAppearance : public ObjectAppearance
 		TG_MultiShapePtr							bldgShape;
 		TG_MultiShapePtr							bldgShadowShape;
 		
-		long										bdAnimationState;
+		int32_t										bdAnimationState;
 		float										currentFrame;
 		float										bdFrameRate;
 		bool										isReversed;
@@ -190,7 +190,7 @@ class BldgAppearance : public ObjectAppearance
 		
 		float										hazeFactor;
 		
-		long										status;
+		int32_t										status;
 		
    		gosFX::Effect								*destructFX;
    		gosFX::Effect								*activity;
@@ -206,26 +206,26 @@ class BldgAppearance : public ObjectAppearance
 		float										duration;
 		float										currentFlash;
 		bool										drawFlash;
-		DWORD										flashColor;
+		ULONG										flashColor;
 		
-		long										currentLOD;
+		int32_t										currentLOD;
 		
- 		long										*nodeUsed;				//Used to stagger the weapon nodes for firing.
+ 		int32_t										*nodeUsed;				//Used to stagger the weapon nodes for firing.
 		float										*nodeRecycle;			//Used for ripple fire to find out if the node has fired recently.
 		
 		TG_LightPtr									pointLight;
-		DWORD										lightId;
+		ULONG										lightId;
 		bool										forceLightsOut;
 		bool										beenInView;
 		
 		bool										fogLightSet;
-		DWORD										lightRGB;
-		DWORD										fogRGB;
+		ULONG										lightRGB;
+		ULONG										fogRGB;
 
-		long										rotationalNodeId;
-		long										hitNodeId;
-		long										activityNodeId;
-		long										activityNode1Id;
+		int32_t										rotationalNodeId;
+		int32_t										hitNodeId;
+		int32_t										activityNodeId;
+		int32_t										activityNode1Id;
 
  	public:
 
@@ -241,10 +241,10 @@ class BldgAppearance : public ObjectAppearance
 			init();
 		}
 
-		virtual long update (bool animate = true);
-		virtual long render (long depthFixup = 0);
+		virtual int32_t update (bool animate = true);
+		virtual int32_t render (int32_t depthFixup = 0);
 
-		virtual long renderShadows (void);
+		virtual int32_t renderShadows (void);
 
 		virtual void destroy (void);
 
@@ -260,14 +260,14 @@ class BldgAppearance : public ObjectAppearance
 			return (canTransition == false);
 		}
 
-		void setFadeTable (MemoryPtr fTable)
+		void setFadeTable (PUCHAR fTable)
 		{
 			fadeTable = fTable;
 		}
 
 		virtual void setGesture (size_t gestureId);
 		
-		virtual long getCurrentGestureId (void)
+		virtual int32_t getCurrentGestureId (void)
 		{
 			return bdAnimationState;
 		}
@@ -277,28 +277,28 @@ class BldgAppearance : public ObjectAppearance
 			return BUILDING_APPR_TYPE;
 		}
 			
-		virtual void setObjectNameId (long objId)
+		virtual void setObjectNameId (int32_t objId)
 		{
 			objectNameId = objId;
 		}
 
 		virtual bool isMouseOver (float px, float py);
 		
-		virtual void setObjectParameters (Stuff::Vector3D &pos, float rot, long selected, long alignment, long homeRelations);
+		virtual void setObjectParameters (Stuff::Vector3D &pos, float rot, int32_t selected, int32_t alignment, int32_t homeRelations);
 		
 		virtual void setMoverParameters (float turretRot, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false);
 		
-		virtual void setObjStatus (long oStatus);
+		virtual void setObjStatus (int32_t oStatus);
 		
-		virtual long calcCellsCovered (Stuff::Vector3D& pos, short* cellList);
+		virtual int32_t calcCellsCovered (Stuff::Vector3D& pos, short* cellList);
 
 		virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int type, int counter);
 		
-		virtual long markMoveMap (bool passable, long* lineOfSightRect, bool useheight = false, short* cellList = NULL);
+		virtual int32_t markMoveMap (bool passable, int32_t* lineOfSightRect, bool useheight = false, short* cellList = NULL);
 
 		virtual void markLOS (bool clearIt = false);
 		
- 		void calcAdjCell (long& row, long& col);
+ 		void calcAdjCell (int32_t& row, int32_t& col);
 
 		virtual void scale (float scaleFactor)
 		{
@@ -312,20 +312,20 @@ class BldgAppearance : public ObjectAppearance
 			return OBBRadius;
 		}
 		
-		virtual void flashBuilding (float duration, float flashDuration, DWORD color);
+		virtual void flashBuilding (float duration, float flashDuration, ULONG color);
 
 		virtual float getTopZ (void)
 		{
 			return highZ;
 		}
 		
-		virtual void setWeaponNodeUsed (long nodeId);
+		virtual void setWeaponNodeUsed (int32_t nodeId);
 		
-		virtual long getWeaponNode (long weapontype);
+		virtual int32_t getWeaponNode (int32_t weapontype);
 		
-		virtual float getWeaponNodeRecycle (long node);
+		virtual float getWeaponNodeRecycle (int32_t node);
 		
-		virtual Stuff::Vector3D getWeaponNodePosition (long node);
+		virtual Stuff::Vector3D getWeaponNodePosition (int32_t node);
 
 		virtual bool isSelectable()
 		{
@@ -352,7 +352,7 @@ class BldgAppearance : public ObjectAppearance
 			forceLightsOut = lightFlag;
 		}
 
-		virtual bool PerPolySelect (long mouseX, long mouseY);
+		virtual bool PerPolySelect (int32_t mouseX, int32_t mouseY);
 
 		virtual bool isForestClump (void)
 		{	
@@ -367,17 +367,17 @@ class BldgAppearance : public ObjectAppearance
 		
 		virtual Stuff::Vector3D getNodeNamePosition (PSTR nodeName);
 		
-		virtual void startActivity (long effectId, bool loop);
+		virtual void startActivity (int32_t effectId, bool loop);
 		virtual void stopActivity (void);
 
 		virtual Stuff::Vector3D getHitNode (void);
 
-		virtual bool hasAnimationData (long gestureId)
+		virtual bool hasAnimationData (int32_t gestureId)
 		{
 			return (appearType->bdAnimData[gestureId] != NULL);
 		}
 
-		virtual Stuff::Vector3D getNodeIdPosition (long nodeId);
+		virtual Stuff::Vector3D getNodeIdPosition (int32_t nodeId);
 };
 
 //***************************************************************************
@@ -407,7 +407,7 @@ class TreeAppearanceType : public AppearanceType
 	
 		void init (void)
 		{
-			long i=0;
+			int32_t i=0;
 			for (i=0;i<MAX_LODS;i++)
 			{
 				treeShape[i] = NULL;
@@ -454,18 +454,18 @@ class TreeAppearance : public ObjectAppearance
 		float										hazeFactor;
 		float										pitch;
 		float										yaw;
-		long										status;
+		int32_t										status;
 		
 		float										OBBRadius;
 		
-		long										currentLOD;
+		int32_t										currentLOD;
 		
 		bool										forceLightsOut;
 		bool										beenInView;
 
 		bool										fogLightSet;
-		DWORD										lightRGB;
-		DWORD										fogRGB;
+		ULONG										lightRGB;
+		ULONG										fogRGB;
 
 	public:
 
@@ -481,10 +481,10 @@ class TreeAppearance : public ObjectAppearance
 			init();
 		}
 
-		virtual long update (bool animate = true);
-		virtual long render (long depthFixup = 0);
+		virtual int32_t update (bool animate = true);
+		virtual int32_t render (int32_t depthFixup = 0);
 
-		virtual long renderShadows (void);
+		virtual int32_t renderShadows (void);
 
 		virtual void destroy (void);
 
@@ -500,23 +500,23 @@ class TreeAppearance : public ObjectAppearance
 
 		virtual bool recalcBounds (void);
 		
-		void setFadeTable (MemoryPtr fTable)
+		void setFadeTable (PUCHAR fTable)
 		{
 			fadeTable = fTable;
 		}
 		
-		virtual void setObjectNameId (long objId)
+		virtual void setObjectNameId (int32_t objId)
 		{
 			objectNameId = objId;
 		}
 
 		virtual bool isMouseOver (float px, float py);
 		
-		virtual void setObjectParameters (Stuff::Vector3D &pos, float rot, long selected, long alignment, long homeRelations);
+		virtual void setObjectParameters (Stuff::Vector3D &pos, float rot, int32_t selected, int32_t alignment, int32_t homeRelations);
 		
 		virtual void setMoverParameters (float pitchAngle, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false);
 		
-		virtual void setObjStatus (long oStatus);
+		virtual void setObjStatus (int32_t oStatus);
 
 		virtual void scale (float scaleFactor)
 		{

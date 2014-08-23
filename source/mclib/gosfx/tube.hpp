@@ -107,10 +107,10 @@ namespace gosFX
 
 		Stuff::DynamicArrayOf<Stuff::Point3D>
 			m_vertices;
-		Stuff::DynamicArrayOf<Stuff::Vector2DOf<Stuff::Scalar> >
+		Stuff::DynamicArrayOf<Stuff::Vector2DOf<float> >
 			m_uvs;
 
-		Stuff::Scalar
+		float
 			m_UBias;
 
 		void
@@ -128,7 +128,7 @@ namespace gosFX
 			m_profileToWorld;
 		Stuff::UnitVector3D
 			m_direction;
-		Stuff::Scalar
+		float
 			m_age,
 			m_ageRate,
 			m_seed;
@@ -146,13 +146,10 @@ namespace gosFX
 		public Effect
 	{
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 		typedef Tube__Specification Specification;
 		typedef Tube__Profile Profile;
@@ -164,7 +161,7 @@ namespace gosFX
 			m_activeProfileCount,
 			m_triangleCount,
 			m_vertexCount;
-		Stuff::Scalar
+		float
 			m_birthAccumulator;
 
 		Stuff::DynamicArrayOf<Profile>
@@ -177,15 +174,15 @@ namespace gosFX
 			*m_P_vertices;
 		Stuff::RGBAColor
 			*m_P_colors;
-		Stuff::Vector2DOf<Stuff::Scalar>
+		Stuff::Vector2DOf<float>
 			*m_P_uvs;
 
 		void
-			BuildMesh(unsigned short *indices);
+			BuildMesh(puint16_t indices);
 
 		Tube(
 			Specification *spec,
-			unsigned flags
+			uint32_t flags
 		);
 
 	//----------------------------------------------------------------------------
@@ -197,7 +194,7 @@ namespace gosFX
 		static Tube*
 			Make(
 				Specification *spec,
-				unsigned flags
+				uint32_t flags
 			);
 
 		Specification*
@@ -208,7 +205,7 @@ namespace gosFX
 						Cast_Object(Specification*, m_specification);
 				}
 		Profile*
-			GetProfile(unsigned index)
+			GetProfile(uint32_t index)
 				{
 					Check_Object(this); Check_Object(GetSpecification());
 					return &m_profiles[index];
@@ -218,8 +215,7 @@ namespace gosFX
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
@@ -229,23 +225,23 @@ namespace gosFX
 			Execute(ExecuteInfo *info);
 		bool
 			AnimateProfile(
-				unsigned index,
-				unsigned profile,
+				uint32_t index,
+				uint32_t profile,
 				const Stuff::LinearMatrix4D &world_to_new_local,
 				Stuff::Time till,
 				Stuff::Sphere *sphere
 			);
 		void
 			CreateNewProfile(
-				unsigned index,
+				uint32_t index,
 				const Stuff::LinearMatrix4D &origin
 			);
 		void
-			DestroyProfile(unsigned index);
+			DestroyProfile(uint32_t index);
 		void
 			ComputeNewLinearVelocity(
 				Profile *particle,
-				Stuff::Scalar time_slice
+				float time_slice
 			);
 
 	public:

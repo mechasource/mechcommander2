@@ -26,8 +26,8 @@
 
 //---------------------------------------------------------------------------
 // Macro Definitions
-#ifndef NO_ERR
-#define NO_ERR		0
+#ifndef NO_ERROR
+#define NO_ERROR		0
 #endif
 
 #define MAX_WATER_DETAIL_TEXTURES	256
@@ -37,12 +37,12 @@
 // Class Definitions
 typedef struct _ColorMapTextures
 {
-	DWORD 		mcTextureNodeIndex;
+	ULONG 		mcTextureNodeIndex;
 } ColorMapTextures;
 
 typedef struct _ColorMapRAM
 {
-	MemoryPtr 	ourRAM;
+	PUCHAR 	ourRAM;
 } ColorMapRAM;
 
 class TerrainColorMap
@@ -50,9 +50,9 @@ class TerrainColorMap
 	//Data Members
 	//-------------
 	protected:
-		MemoryPtr				ColorMap;
+		PUCHAR				ColorMap;
 		
-		DWORD					numTextures;
+		ULONG					numTextures;
 		
 		float					numTexturesAcross;
 		float					fractionPerTexture;
@@ -63,20 +63,20 @@ class TerrainColorMap
 		UserHeapPtr				colorMapHeap;
 		UserHeapPtr				colorMapRAMHeap;
 		
-		MemoryPtr				detailTextureRAM;
-		DWORD					detailTextureNodeIndex;
+		PUCHAR				detailTextureRAM;
+		ULONG					detailTextureNodeIndex;
 		float					detailTextureTilingFactor;
 		
-		MemoryPtr				waterTextureRAM;
-		DWORD					waterTextureNodeIndex;
+		PUCHAR				waterTextureRAM;
+		ULONG					waterTextureNodeIndex;
 		float					waterTextureTilingFactor;
 		
-		DWORD					numWaterDetailFrames;
-		DWORD					waterDetailNodeIndex[MAX_WATER_DETAIL_TEXTURES];
+		ULONG					numWaterDetailFrames;
+		ULONG					waterDetailNodeIndex[MAX_WATER_DETAIL_TEXTURES];
 		float					waterDetailFrameRate;
 		float					waterDetailTilingFactor;
 
-		static DWORD			terrainTypeIDs[ TOTAL_COLORMAP_TYPES ];
+		static ULONG			terrainTypeIDs[ TOTAL_COLORMAP_TYPES ];
 		
 	public:
 	
@@ -105,29 +105,29 @@ class TerrainColorMap
 			destroy();
 		}
 
-		long init (PSTR fileName);
+		int32_t init (PSTR fileName);
 
-		void getColorMapData (MemoryPtr ourRAM, long index, long width);
+		void getColorMapData (PUCHAR ourRAM, int32_t index, int32_t width);
 				
-		DWORD getTextureHandle (VertexPtr vMin, VertexPtr vMax, TerrainUVData *uvData);
+		ULONG getTextureHandle (VertexPtr vMin, VertexPtr vMax, TerrainUVData *uvData);
 
-		DWORD getDetailHandle (void)
+		ULONG getDetailHandle (void)
 		{
 			mcTextureManager->get_gosTextureHandle(detailTextureNodeIndex);
 			return (detailTextureNodeIndex);
 		}
-		long saveDetailTexture(PCSTR fileName);
+		int32_t saveDetailTexture(PCSTR fileName);
 
-		DWORD getWaterTextureHandle (void)
+		ULONG getWaterTextureHandle (void)
 		{
 			mcTextureManager->get_gosTextureHandle(waterTextureNodeIndex);
 			return waterTextureNodeIndex;
 		}
-		long saveWaterTexture(PCSTR fileName);
+		int32_t saveWaterTexture(PCSTR fileName);
 
-		DWORD getWaterDetailHandle (long frameNum)
+		ULONG getWaterDetailHandle (int32_t frameNum)
 		{
-			if ((frameNum >= 0) && (frameNum < (long)numWaterDetailFrames))
+			if ((frameNum >= 0) && (frameNum < (int32_t)numWaterDetailFrames))
 			{
 				mcTextureManager->get_gosTextureHandle(waterDetailNodeIndex[frameNum]);
 				return waterDetailNodeIndex[frameNum];
@@ -135,9 +135,9 @@ class TerrainColorMap
 			else
 				return 0xffffffff;
 		}
-		long saveWaterDetail(PCSTR fileName);
+		int32_t saveWaterDetail(PCSTR fileName);
 
-		DWORD getWaterDetailNumFrames (void)
+		ULONG getWaterDetailNumFrames (void)
 		{
 			return numWaterDetailFrames;
 		}
@@ -182,7 +182,7 @@ class TerrainColorMap
 			waterDetailTilingFactor = tf;
 		}
 
-		long saveTilingFactors(FitIniFile *fitFile);
+		int32_t saveTilingFactors(FitIniFile *fitFile);
 		
  		//Mike, these functions will reload these textures from disk.
 		// This allows us to change them in the editor and reload here.
@@ -193,18 +193,18 @@ class TerrainColorMap
 		void resetWaterDetailTextures (PSTR fileName);
 		
 		//Pass in filename of height map to write new data to.
-		void refractalizeBaseMesh (PSTR fileName, long Threshold, long Noise);
+		void refractalizeBaseMesh (PSTR fileName, int32_t Threshold, int32_t Noise);
 		
 		void burnInShadows (bool doBumpPass = true, PSTR  fileName = NULL);
 		
 		void recalcLight(PSTR fileName);
 
-		static long getNumTypes (void)
+		static int32_t getNumTypes (void)
 		{
 			return TOTAL_COLORMAP_TYPES;
 		}
 
-		static long getTextureNameID (long idNum)
+		static int32_t getTextureNameID (int32_t idNum)
 		{
 			if ((idNum >= 0) && (idNum < TOTAL_COLORMAP_TYPES))
 				return terrainTypeIDs[idNum];
@@ -213,7 +213,7 @@ class TerrainColorMap
 		}
 
 		//Used by editor for TacMap
-		void getScaledColorMap (MemoryPtr bfr, long width);
+		void getScaledColorMap (PUCHAR bfr, int32_t width);
 };
 
 typedef TerrainColorMap *TerrainColorMapPtr;

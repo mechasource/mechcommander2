@@ -50,7 +50,7 @@ typedef struct _EffectData
 	char muzzleFlashName[50];
 	char hitEffectName[50];
 	char missEffectName[50];
-	long effectObjNum;
+	int32_t effectObjNum;
 } EffectData;
 
 class WeaponEffects
@@ -59,7 +59,7 @@ class WeaponEffects
 	//-------------
 	protected:
 		EffectData			*effects;
-		long				numEffects;
+		int32_t				numEffects;
 	
 	//Member Functions
 	//----------------	
@@ -85,7 +85,7 @@ class WeaponEffects
 		
 		void init (PSTR effectCSVFileName);
 		
-		PSTR GetEffectName (long effectId)
+		PSTR GetEffectName (int32_t effectId)
 		{
 			if ((effectId >= 0) && (effectId < numEffects))
 			{
@@ -95,7 +95,7 @@ class WeaponEffects
 			return mc2_word_none;
 		}
 		
-		PSTR GetEffectMuzzleFlashName (long effectId)
+		PSTR GetEffectMuzzleFlashName (int32_t effectId)
 		{
 			if ((effectId >= 0) && (effectId < numEffects))
 			{
@@ -105,7 +105,7 @@ class WeaponEffects
 			return mc2_word_none;
 		}
 		
-		PSTR GetEffectHitName (long effectId)
+		PSTR GetEffectHitName (int32_t effectId)
 		{
 			if ((effectId >= 0) && (effectId < numEffects))
 			{
@@ -115,7 +115,7 @@ class WeaponEffects
 			return mc2_word_none;
 		}
 		
-		PSTR GetEffectMissName (long effectId)
+		PSTR GetEffectMissName (int32_t effectId)
 		{
 			if ((effectId >= 0) && (effectId < numEffects))
 			{
@@ -125,7 +125,7 @@ class WeaponEffects
 			return mc2_word_none;
 		}
 		
- 		long GetEffectObjNum (long effectId)
+ 		int32_t GetEffectObjNum (int32_t effectId)
 		{
 			if ((effectId >= 0) && (effectId < numEffects))
 			{

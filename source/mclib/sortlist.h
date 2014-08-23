@@ -8,76 +8,78 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef SORTLIST_H
 #define SORTLIST_H
 
 //***************************************************************************
 
-//--------------
-// Include Files
-#ifndef DSTD_H
-#include "dstd.h"
-#endif
+// #include "dstd.h"
 
 //--------------------------------
 // Structure and Class Definitions
 
 typedef struct _SortListNode {
-	float			value;			// sort value
-	ULONG	id;				// item 
+	float		value;			// sort value
+	uint32_t	id;				// item 
 } SortListNode;
 
 class SortList {
 
-	protected:
+protected:
+	SortListNode*		list;
+	uint32_t			numItems;
 
-		SortListNode*		list;
-		long				numItems;
+public:
 
-	public:
+	void init(void) {
+		list = NULL;
+		numItems = 0;
+	}
 
-		void init (void) {
-			list = NULL;
-			numItems = 0;
-		}
+	SortList(void) {
+		init();
+	}
 
-		SortList (void) {
-			init();
-		}
+	int32_t init(uint32_t numItems);
 
-		long init (long numItems);
+	void setId(uint32_t index, uint32_t id)
+	{
+		if (/*(index >= 0) &&*/ (index < numItems))
+			list[index].id = id;
+	}
 
-		void setId (long index, long id) {
-			if ((index >= 0) && (index < numItems))
-				list[index].id = id;
-		}
+	void setValue(uint32_t index, float value)
+	{
+		if (/*(index >= 0) &&*/ (index < numItems))
+			list[index].value = value;
+	}
 
-		void setValue (long index, float value) {
-			if ((index >= 0) && (index < numItems))
-				list[index].value = value;
-		}
+	uint32_t getId(uint32_t index)
+	{
+		return(list[index].id);
+	}
 
-		long getId (long index) {
-			return(list[index].id);
-		}
+	float getValue(uint32_t index)
+	{
+		return(list[index].value);
+	}
 
-		float getValue (long index) {
-			return(list[index].value);
-		}
+	void clear(bool setToMin = true);
 
-		void clear (bool setToMin = true);
+	uint32_t getNumItems(void)
+	{
+		return(numItems);
+	}
 
-		long getNumItems (void) {
-			return(numItems);
-		}
+	void sort(bool descendingOrder = true);
 
-		void sort (bool descendingOrder = true);
+	void destroy(void);
 
-		void destroy (void);
-
-		~SortList (void) {
-			destroy();
-		}
+	~SortList(void) {
+		destroy();
+	}
 };
 
 typedef SortList* SortListPtr;

@@ -31,9 +31,7 @@ namespace gosFX
 	//
 	protected:
 		DebrisCloud__Specification(
-			Stuff::MemoryStream *stream,
-			int gfx_version
-		);
+			Stuff::MemoryStream *stream, int gfx_version);
 
 	public:
 		DebrisCloud__Specification();
@@ -98,7 +96,7 @@ namespace gosFX
 			debrisPositions;
 		Stuff::DynamicArrayOf<Stuff::Sphere>
 			debrisSpheres;
-		Stuff::DynamicArrayOf<Stuff::Scalar>
+		Stuff::DynamicArrayOf<float>
 			debrisSeed;
 	};
 
@@ -112,7 +110,7 @@ namespace gosFX
 		Stuff::LinearMatrix4D
 			m_localToParent;
 
-		Stuff::Scalar
+		float
 			m_age,
 			m_ageRate,
 			m_seed;
@@ -121,7 +119,7 @@ namespace gosFX
 			m_angularVelocity,
 			m_linearVelocity;
 
-		Stuff::Scalar
+		float
 			m_alpha;
 
 		void
@@ -139,8 +137,8 @@ namespace gosFX
 	// Class Registration Support
 	//
 	public:
-		static void InitializeClass();
-		static void	TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		typedef DebrisCloud__Specification Specification;
 		typedef DebrisCloud__Particle Particle;
@@ -151,14 +149,14 @@ namespace gosFX
 	protected:
 		DebrisCloud(
 			Specification *spec,
-			unsigned flags
+			uint32_t flags
 		);
 
 	public:
 		static DebrisCloud*
 			Make(
 				Specification *spec,
-				unsigned flags
+				uint32_t flags
 			);
 
 		Specification*
@@ -169,7 +167,7 @@ namespace gosFX
 						Cast_Object(Specification*, m_specification);
 				}
 		Particle*
-			GetParticle(unsigned index)
+			GetParticle(uint32_t index)
 				{
 					Check_Object(this); Check_Object(GetSpecification());
 					return
@@ -180,15 +178,13 @@ namespace gosFX
 				}
 
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 	//----------------------------------------------------------------------------
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
@@ -198,16 +194,16 @@ namespace gosFX
 			Execute(ExecuteInfo *info);
 		bool
 			AnimateParticle(
-				unsigned index,
+				uint32_t index,
 				const Stuff::LinearMatrix4D *world_to_new_local,
 				Stuff::Time till
 			);
 		virtual void
-			DestroyParticle(unsigned index);
+			DestroyParticle(uint32_t index);
 		void
 			ComputeNewLinearVelocity(
 				Particle *particle,
-				Stuff::Scalar time_slice
+				float time_slice
 			);
 
 	public:

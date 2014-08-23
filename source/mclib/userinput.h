@@ -107,7 +107,7 @@ extern volatile char mc2MouseHeight;
 extern volatile bool mc2UseAsyncMouse;		//Should mouse draw and update in separate thread?
 extern volatile bool mc2MouseThreadStarted;	//Has the thread starting running yet?
 
-extern volatile MemoryPtr mc2MouseData;
+extern volatile PUCHAR mc2MouseData;
 
 //---------------------------------------------------------------------------
 class MouseCursorData
@@ -119,7 +119,7 @@ class MouseCursorData
 		// have a mouse with four frames of animation it will be stored
 		// on a 64x64.
 		
-		long numCursors;
+		int32_t numCursors;
 		
 		StaticInfo*	cursorInfos;	// gotta be pointer, so destructor is called before texmgr quits
 
@@ -152,7 +152,7 @@ class MouseCursorData
 		}
 		
 		
-		long getNumFrames (long state)
+		int32_t getNumFrames (int32_t state)
 		{
 			if ((state >= 0) && (state < numCursors))
 				return numFrames[state]; // no animating for now
@@ -160,7 +160,7 @@ class MouseCursorData
 			return 0;
 		}
 
-		char getMouseHSX (long state)
+		char getMouseHSX (int32_t state)
 		{
 			if ((state >= 0) && (state < numCursors))
 				return mouseHS[state][0];
@@ -168,7 +168,7 @@ class MouseCursorData
 			return 0;
 		}
 				
-		char getMouseHSY (long state)
+		char getMouseHSY (int32_t state)
 		{
 			if ((state >= 0) && (state < numCursors))
 				return mouseHS[state][1];
@@ -190,14 +190,14 @@ class UserInput
 		float mouseXPosition;					//Current Mouse X Position.
 		float mouseYPosition;					//Current Mouse Y position.
 
-		long mouseXDelta;						//Amount mouse has moved in x since last poll
-		long mouseYDelta;						//Amount mouse has moved in y since last poll
+		int32_t mouseXDelta;						//Amount mouse has moved in x since last poll
+		int32_t mouseYDelta;						//Amount mouse has moved in y since last poll
 
-		long mouseWheelDelta;					//Amount Mouse wheel has moved since last poll
+		int32_t mouseWheelDelta;					//Amount Mouse wheel has moved since last poll
 
-		long leftMouseButtonState;				//Mouse Current Left Button State
-		long rightMouseButtonState;				//Mouse Current Right Button State
-		long middleMouseButtonState;			//Mouse Current Middle Button State
+		int32_t leftMouseButtonState;				//Mouse Current Left Button State
+		int32_t rightMouseButtonState;				//Mouse Current Right Button State
+		int32_t middleMouseButtonState;			//Mouse Current Middle Button State
 
 		bool leftClick;							//Mouse has been left clicked
 		bool rightClick;						//Mouse has been right clicked
@@ -222,15 +222,15 @@ class UserInput
 		float mouseRightUpTime;					//Time since last right mouse up.
 		float mouseMiddleUpTime;				//Time since last right mouse up.
 
-		float mouseLeftHeldTime;					//How long the mouse has been down
-		float mouseRightHeldTime;					//How long the mouse has been down
+		float mouseLeftHeldTime;					//How int32_t the mouse has been down
+		float mouseRightHeldTime;					//How int32_t the mouse has been down
 
 
 
 
-		long lastLeftMouseButtonState;			//Last Left Mouse Button State
-		long lastRightMouseButtonState;			//Last Right Mouse Button State
-		long lastMiddleMouseButtonState;		//Last Middle Mouse Button State
+		int32_t lastLeftMouseButtonState;			//Last Left Mouse Button State
+		int32_t lastRightMouseButtonState;			//Last Right Mouse Button State
+		int32_t lastMiddleMouseButtonState;		//Last Middle Mouse Button State
 
 		float lastMouseXPosition;				//Last Mouse X Position.
 		float lastMouseYPosition;				//Last Mouse Y Position.
@@ -238,9 +238,9 @@ class UserInput
 		MouseCursorData *cursors;				//Stores the actual cursor data and Info
 		
 		bool drawTerrainPointer;				//Draw an inverse project cross
-		long mouseState;						//Which cursor should I draw?
-		long mouseFrame;						//current Mouse Frame
-		DWORD mouseTextureHandle;				//current Mouse Texture handle.
+		int32_t mouseState;						//Which cursor should I draw?
+		int32_t mouseFrame;						//current Mouse Frame
+		ULONG mouseTextureHandle;				//current Mouse Texture handle.
 		float mouseFrameLength;					//Time in Current Mouse Frame
 		float mouseScale;						//Scale factor for cursor for depth cueing.
 
@@ -252,7 +252,7 @@ class UserInput
 		bool leftMouseJustUp;					// leftButtonUp message equivalent
 		bool rightMouseJustUp;					// right up equivalent
 		
-		DWORD	attilaIndex;					// Set to 0xffffffff if no Attila Present.
+		ULONG	attilaIndex;					// Set to 0xffffffff if no Attila Present.
 		
 	public:
 
@@ -396,12 +396,12 @@ class UserInput
 			mouseDragThreshold = distance;
 		}
 
-		long getMouseX (void)
+		int32_t getMouseX (void)
 		{
 			return float2long(mouseXPosition * viewMulX);
 		}
 
-		long getMouseY (void)
+		int32_t getMouseY (void)
 		{
 			return float2long(mouseYPosition * viewMulY);
 		}
@@ -431,27 +431,27 @@ class UserInput
 			gos_SetMousePosition(xRes,yRes);
 		}
 		
-		long getMouseXDelta (void)
+		int32_t getMouseXDelta (void)
 		{
 			return mouseXDelta;
 		}
 
-		long getMouseYDelta (void)
+		int32_t getMouseYDelta (void)
 		{
 			return mouseYDelta;
 		}
 
-		long getMouseWheelDelta (void)
+		int32_t getMouseWheelDelta (void)
 		{
 			return mouseWheelDelta;
 		}
 
-		long getMouseLeftButtonState (void)
+		int32_t getMouseLeftButtonState (void)
 		{
 			return leftMouseButtonState;
 		}
 
-		long getMouseRightButtonState (void)
+		int32_t getMouseRightButtonState (void)
 		{
 			return rightMouseButtonState;
 		}
@@ -518,19 +518,19 @@ class UserInput
 			return middleDoubleClick;
 		}
 		
-		void setMouseCursor (long state);
+		void setMouseCursor (int32_t state);
 
-		long getMouseCursor (void)
+		int32_t getMouseCursor (void)
 		{
 			return (mouseState);
 		}
 
-		void setMouseFrame (long frameNum)
+		void setMouseFrame (int32_t frameNum)
 		{
 			mouseFrame = frameNum;
 		}
 
-		long getMouseFrame (void)
+		int32_t getMouseFrame (void)
 		{
 			return (mouseFrame);
 		}
@@ -564,7 +564,7 @@ class UserInput
 		
 		//----------------------------------------------------------
 		// Attila Functionality.
-		void addAttila (DWORD joyIndex)
+		void addAttila (ULONG joyIndex)
 		{
 			attilaIndex = joyIndex;
 		}

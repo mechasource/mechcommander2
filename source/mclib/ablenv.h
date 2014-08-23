@@ -42,7 +42,7 @@ typedef struct _SourceFile {
 	char					fileName[MAXLEN_FILENAME];
 	uint8_t			fileNumber;
 	ABLFile*				filePtr;
-	long					lineNumber;
+	int32_t					lineNumber;
 } SourceFile;
 
 //---------------------------------------------------------------------------
@@ -55,21 +55,21 @@ class UserFile {
 
 	public:
 
-		long					handle;
+		int32_t					handle;
 		bool					inUse;
 		char					fileName[MAXLEN_FILENAME];
 		ABLFile*				filePtr;
-		long					numLines;
-		long					totalLines;
+		int32_t					numLines;
+		int32_t					totalLines;
 		char					lines[MAX_USER_FILE_LINES][MAX_USER_FILE_LINELEN];
 
 		static UserFilePtr		files[MAX_USER_FILES];
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 			
 		void init (void) {
 			handle = -1;
@@ -78,7 +78,7 @@ class UserFile {
 			filePtr = NULL;
 			numLines = 0;
 			totalLines = 0;
-			for (long i = 0; i < MAX_USER_FILE_LINES; i++)
+			for (int32_t i = 0; i < MAX_USER_FILE_LINES; i++)
 				lines[i][0] = NULL;
 		}
 
@@ -96,7 +96,7 @@ class UserFile {
 
 		void close (void);
 
-		long open (PSTR fileName);
+		int32_t open (PSTR fileName);
 
 		void write (PSTR s);
 
@@ -116,39 +116,39 @@ class UserFile {
 
 typedef struct {
 	char					name[128];
-	long					size;
+	int32_t					size;
 } VariableInfo;
 
 typedef struct {
 	char					name[128];
-	long					codeSegmentSize;
+	int32_t					codeSegmentSize;
 } RoutineInfo;
 
 typedef struct {
 	char					name[128];
 	char					fileName[128];
-	long					numStaticVars;
-	long					totalSizeStaticVars;
+	int32_t					numStaticVars;
+	int32_t					totalSizeStaticVars;
 	VariableInfo			largestStaticVar;
-	long					totalCodeSegmentSize;
-	long					numRoutines;
+	int32_t					totalCodeSegmentSize;
+	int32_t					numRoutines;
 	RoutineInfo				routineInfo[128];
 } ModuleInfo;
 
 typedef struct {
 	PSTR					fileName;
 	SymTableNodePtr			moduleIdPtr;
-	long					numSourceFiles;
+	int32_t					numSourceFiles;
 	PSTR*					sourceFiles;
-	long					numLibrariesUsed;
+	int32_t					numLibrariesUsed;
 	ABLModulePtr*			librariesUsed;
-	long					numStaticVars;
-	long					numOrderCalls;
-	long					numStateHandles;
+	int32_t					numStaticVars;
+	int32_t					numOrderCalls;
+	int32_t					numStateHandles;
 	StateHandleInfoPtr		stateHandles;
-	long*					sizeStaticVars;
-	long					totalSizeStaticVars;
-	long					numInstances;
+	int32_t*					sizeStaticVars;
+	int32_t					totalSizeStaticVars;
+	int32_t					numInstances;
 } ModuleEntry;
 
 typedef ModuleEntry* ModuleEntryPtr;
@@ -157,9 +157,9 @@ class ABLModule {
 
 	private:
 
-		long					id;
+		int32_t					id;
 		char					name[MAX_ABLMODULE_NAME];
-		long					handle;
+		int32_t					handle;
 		StackItemPtr			staticData;
 		size_t*			orderCallFlags;
 		StackItem				returnVal;
@@ -173,12 +173,12 @@ class ABLModule {
 		bool					traceEntry;
 		bool					traceExit;
 
-		//static long				numModules;
+		//static int32_t				numModules;
 
 	public:
 
-		void* operator new (size_t mySize);
-		void operator delete (void* us);
+		PVOID operator new (size_t mySize);
+		void operator delete (PVOID us);
 			
 		void init (void) {
 			id = -1;
@@ -202,19 +202,19 @@ class ABLModule {
 			init();
 		}
 
-		long init (long moduleHandle);
+		int32_t init (int32_t moduleHandle);
 		
 		void write (ABLFile* moduleFile);
 		
 		void read (ABLFile* moduleFile);
 
-		long getId (void) {
+		int32_t getId (void) {
 			return(id);
 		}
 
-		long getRealId (void);
+		int32_t getRealId (void);
 
-		long getHandle (void) {
+		int32_t getHandle (void) {
 			return(handle);
 		}
 
@@ -250,7 +250,7 @@ class ABLModule {
 			return(prevState);
 		}
 
-		long getPrevStateHandle (void);
+		int32_t getPrevStateHandle (void);
 
 		void setState (SymTableNodePtr stateSym) {
 			state = stateSym;
@@ -260,7 +260,7 @@ class ABLModule {
 			return(state);
 		}
 
-		long getStateHandle (void);
+		int32_t getStateHandle (void);
 
 		bool isLibrary (void);
 
@@ -300,8 +300,8 @@ class ABLModule {
 			return(step);
 		}
 
-		long execute (ABLParamPtr paramList = NULL);
-		long execute (ABLParamPtr moduleParamList, SymTableNodePtr functionIdPtr);
+		int32_t execute (ABLParamPtr paramList = NULL);
+		int32_t execute (ABLParamPtr moduleParamList, SymTableNodePtr functionIdPtr);
 
 		SymTableNodePtr findSymbol (PSTR symbolName, SymTableNodePtr curFunction = NULL, bool searchLibraries = false);
 
@@ -309,11 +309,11 @@ class ABLModule {
 
 		SymTableNodePtr findState (PSTR stateName);
 
-		long findStateHandle (PSTR stateName);
+		int32_t findStateHandle (PSTR stateName);
 
-		PSTR getSourceFile (long fileNumber);
+		PSTR getSourceFile (int32_t fileNumber);
 
-		PSTR getSourceDirectory (long fileNumber, PSTR directory);
+		PSTR getSourceDirectory (int32_t fileNumber, PSTR directory);
 
 		void getInfo (ModuleInfo* moduleInfo);
 
@@ -321,25 +321,25 @@ class ABLModule {
 			return(returnVal.real);
 		}
 		
-		long getInteger (void) {
+		int32_t getInteger (void) {
 			return(returnVal.integer);
 		}
 
-		long setStaticInteger (PSTR name, long value);
+		int32_t setStaticInteger (PSTR name, int32_t value);
 
-		long getStaticInteger (PSTR name);
+		int32_t getStaticInteger (PSTR name);
 
-		long setStaticReal (PSTR name, float value);
+		int32_t setStaticReal (PSTR name, float value);
 		
 		float getStaticReal (PSTR name);
 
-		long setStaticIntegerArray (PSTR name, long size, long* values);
+		int32_t setStaticIntegerArray (PSTR name, int32_t size, int32_t* values);
 
-		long getStaticIntegerArray (PSTR name, long size, long* values);
+		int32_t getStaticIntegerArray (PSTR name, int32_t size, int32_t* values);
 		
-		long setStaticRealArray (PSTR name, long size, float* values);
+		int32_t setStaticRealArray (PSTR name, int32_t size, float* values);
 
-		long getStaticRealArray (PSTR name, long size, float* values);
+		int32_t getStaticRealArray (PSTR name, int32_t size, float* values);
 
 		void destroy (void);
 
@@ -352,9 +352,9 @@ class ABLModule {
 
 //*************************************************************************
 
-void initModuleRegistry (long maxModules);
+void initModuleRegistry (int32_t maxModules);
 void destroyModuleRegistry (void);
-void initLibraryRegistry (long maxLibraries);
+void initLibraryRegistry (int32_t maxLibraries);
 void destroyLibraryRegistry (void);
 
 //***************************************************************************

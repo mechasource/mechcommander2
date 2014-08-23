@@ -49,15 +49,15 @@ PSTR ComponentFormString [] = {
 PSTR WeaponRangeString[] = {
 	"short",
 	"medium",
-	"long"
+	"int32_t"
 };
 
 MasterComponentPtr		MasterComponent::masterList = NULL;
-long					MasterComponent::numComponents = 0;
-long					MasterComponent::armActuatorID = 4;
-long					MasterComponent::legActuatorID = 5;
-long					MasterComponent::clanAntiMissileSystemID = 115;
-long					MasterComponent::innerSphereAntiMissileSystemID = 106;
+int32_t					MasterComponent::numComponents = 0;
+int32_t					MasterComponent::armActuatorID = 4;
+int32_t					MasterComponent::legActuatorID = 5;
+int32_t					MasterComponent::clanAntiMissileSystemID = 115;
+int32_t					MasterComponent::innerSphereAntiMissileSystemID = 106;
 
 #define COMPONENT_NAME_START		32000
 #define COMPONENT_ABBR_START		33000
@@ -65,15 +65,15 @@ long					MasterComponent::innerSphereAntiMissileSystemID = 106;
 // MASTER COMPONENT routines
 //******************************************************************************************
 
-void* MasterComponent::operator new (size_t mySize) {
+PVOID MasterComponent::operator new (size_t mySize) {
 
-	void* result = systemHeap->Malloc(mySize);
+	PVOID result = systemHeap->Malloc(mySize);
 	return(result);
 }
 
 //******************************************************************************************
 
-void MasterComponent::operator delete (void* us) {
+void MasterComponent::operator delete (PVOID us) {
 
 	systemHeap->Free(us);
 }
@@ -84,7 +84,7 @@ void MasterComponent::destroy (void) {
 }
 
 //******************************************************************************************
-long MasterComponent::initEXCEL (PSTR dataLine, float baseSensorRange) {
+int32_t MasterComponent::initEXCEL (PSTR dataLine, float baseSensorRange) {
 
 	//----------------------------------------------------------
 	// Component data was read in, so parse it. First, parse the
@@ -103,7 +103,7 @@ long MasterComponent::initEXCEL (PSTR dataLine, float baseSensorRange) {
 	cLoadString(COMPONENT_ABBR_START+masterID,abbreviation,MAXLEN_COMPONENT_ABBREV);
 	
 	field = strtok_s(NULL, ",", &next_token);
-	long formIndex;
+	int32_t formIndex;
 	for (formIndex = 0; ComponentFormString[formIndex] != NULL; formIndex++)
 		if (strcmp(field, ComponentFormString[formIndex]) == 0)
 			break;
@@ -112,7 +112,7 @@ long MasterComponent::initEXCEL (PSTR dataLine, float baseSensorRange) {
 
 	if (strcmp(field, "undefined") == 0) {
 		masterID = -1;
-		return(NO_ERR);
+		return(NO_ERROR);
 	}
 
 	form = (ComponentFormType)formIndex;
@@ -158,7 +158,7 @@ _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) PS
 	}
 
 	field = strtok_s(NULL, ",", &next_token);
-	for (long location = 0; location < NUM_BODY_LOCATIONS; location++) 
+	for (int32_t location = 0; location < NUM_BODY_LOCATIONS; location++) 
 	{
 		if ( field )
 		{
@@ -265,11 +265,11 @@ _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) PS
 			return(-2);
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //******************************************************************************************
-long MasterComponent::saveEXCEL (FilePtr componentFile, uint8_t masterId, float baseSensorRange) 
+int32_t MasterComponent::saveEXCEL (FilePtr componentFile, uint8_t masterId, float baseSensorRange) 
 {
 	char dataLine[512];
 	char piece[512];
@@ -317,7 +317,7 @@ long MasterComponent::saveEXCEL (FilePtr componentFile, uint8_t masterId, float 
 	strcat(dataLine,piece);
 	strcat(dataLine,comma);
 
-	for (long location = 0; location < NUM_BODY_LOCATIONS; location++) 
+	for (int32_t location = 0; location < NUM_BODY_LOCATIONS; location++) 
 	{
 		if (criticalSpacesReq[location] == -1)
 			sprintf_s(piece,_countof(piece),"No");
@@ -603,7 +603,7 @@ long MasterComponent::saveEXCEL (FilePtr componentFile, uint8_t masterId, float 
 			break;
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -632,7 +632,7 @@ bool MasterComponent::isDefensiveWeapon (void) {
 
 //---------------------------------------------------------------------------
 
-long MasterComponent::loadMasterList (PSTR fileName, long listSize, float baseSensorRange) {
+int32_t MasterComponent::loadMasterList (PSTR fileName, int32_t listSize, float baseSensorRange) {
 
 	if (masterList) 
 	{
@@ -643,7 +643,7 @@ long MasterComponent::loadMasterList (PSTR fileName, long listSize, float baseSe
 	numComponents = listSize;
 	masterList = (MasterComponentPtr)systemHeap->Malloc(sizeof(MasterComponent) * numComponents);
 
-	for (long curComponent = 0; curComponent < numComponents; curComponent++)
+	for (int32_t curComponent = 0; curComponent < numComponents; curComponent++)
 		masterList[curComponent].init();
 
 	armActuatorID = -1;
@@ -655,22 +655,22 @@ long MasterComponent::loadMasterList (PSTR fileName, long listSize, float baseSe
 	// All components are in one data file. Open it up, and read in the
 	// comma-delimited data...
 	File componentFile;
-	long result = componentFile.open(fileName);
-	if (result != NO_ERR)
+	int32_t result = componentFile.open(fileName);
+	if (result != NO_ERROR)
 		return(result);
 
 	//-----------------------
 	// Special Component Data
 	char dataLine[512];
-	long lineLength;
+	int32_t lineLength;
 	
 
-	lineLength = componentFile.readLine((MemoryPtr)dataLine, 511);
+	lineLength = componentFile.readLine((PUCHAR)dataLine, 511);
 
-	for (long componentNum = 0; componentNum < numComponents; componentNum++) {
+	for (int32_t componentNum = 0; componentNum < numComponents; componentNum++) {
 		//----------------------------------------
 		// Read in the line from the table file...
-		lineLength = componentFile.readLine((MemoryPtr)dataLine, 511);
+		lineLength = componentFile.readLine((PUCHAR)dataLine, 511);
 		if (!lineLength)
 			return(-1);
 
@@ -679,18 +679,18 @@ long MasterComponent::loadMasterList (PSTR fileName, long listSize, float baseSe
 
 	componentFile.close();
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 
 //---------------------------------------------------------------------------
-long MasterComponent::saveMasterList (PSTR fileName, long listSize, float baseSensorRange) 
+int32_t MasterComponent::saveMasterList (PSTR fileName, int32_t listSize, float baseSensorRange) 
 {
 	//-----------------------------------------------------------------
 	// All components are in one data file. Save it in CSV format!
 	File componentFile;
-	long result = componentFile.create(fileName);
-	if (result != NO_ERR)
+	int32_t result = componentFile.create(fileName);
+	if (result != NO_ERROR)
 		return(result);
 
 	//----------------------------------------------------
@@ -718,22 +718,22 @@ long MasterComponent::saveMasterList (PSTR fileName, long listSize, float baseSe
 	sprintf(dataLine,"//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Weapon,Effect,Ammo,Flag,1 = streak 2 = inferno");
 	componentFile.writeLine(dataLine);
 
-	sprintf(dataLine,"// Component Table,,abbr,type,crits,?,tons,RP,head,CT,LT,RT,LA,RA,LL,RL,Vehicle?,Fit both?,Side,Fit IS?,art,disable,BR,Damage,Recycle,heat,#miss,miss type,min,short,med,long,Type,Field,Master ID,Fields,4 = LBX 8 = artillery");
+	sprintf(dataLine,"// Component Table,,abbr,type,crits,?,tons,RP,head,CT,LT,RT,LA,RA,LL,RL,Vehicle?,Fit both?,Side,Fit IS?,art,disable,BR,Damage,Recycle,heat,#miss,miss type,min,short,med,int32_t,Type,Field,Master ID,Fields,4 = LBX 8 = artillery");
 	componentFile.writeLine(dataLine);
 
-	for (long componentNum = 0; componentNum < listSize; componentNum++) 
+	for (int32_t componentNum = 0; componentNum < listSize; componentNum++) 
 	{
 		masterList[componentNum].saveEXCEL(&componentFile,componentNum, baseSensorRange);
 	}
 
 	componentFile.close();
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
 
-long MasterComponent::freeMasterList (void) {
+int32_t MasterComponent::freeMasterList (void) {
 
 	if (masterList) 
 	{
@@ -742,7 +742,7 @@ long MasterComponent::freeMasterList (void) {
 		numComponents = 0;
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //***************************************************************************

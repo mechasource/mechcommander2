@@ -108,12 +108,12 @@ static int __cdecl wideToInt(
         return ((int)atol(astring));
 }
 
-static long __cdecl atolong(
+static int32_t __cdecl atolong(
         PCSTR nptr
         )
 {
         int c;              /* current PSTR /
-        long total;         /* current total */
+        int32_t total;         /* current total */
         int sign;           /* if '-', then negative, otherwise positive */
 
         /* skip whitespace */
@@ -240,15 +240,14 @@ EWCharString::EBuffer*   EWCharString::EBuffer::s_p_Empty_Buffer = &EWCharString
 // inlines
 #define A2W(p_String) (\
 	((PCSTR)p_String == NULL) ? NULL : (\
-	EWCharString::ToUnicode( (unsigned short*)_alloca((lstrlenA(p_String)+1)*2),\
+	EWCharString::ToUnicode( (PWSTR)_alloca((lstrlenA(p_String)+1)*2),\
 	(pcuint8_t)p_String, (lstrlenA(p_String)+1)*2)))
 
 // if this doesn't want to link properly, this will have to become
 // a macro.
 /////////////////////////////////////////////////////////////////
-inline	unsigned short*	EWCharString::ToUnicode( unsigned short* p_Buffer, 
-								   pcuint8_t p_Str, 
-								   int Num_Chars )
+inline PWSTR EWCharString::ToUnicode(
+	puint16_t p_Buffer, pcuint8_t p_Str, int Num_Chars)
 {
 	gosASSERT( p_Buffer );
 	gosASSERT( p_Str );
@@ -371,7 +370,7 @@ void EWCharString::Alloc( int Min_Amount )
 	// we're rouding up to the nearest multiple of 4 for now
 	Min_Amount = (Min_Amount/s_Alloc_Allign + 1) * s_Alloc_Allign;
 
-	m_pBuffer = (EWCharString::EBuffer*)new BYTE[sizeof(EBuffer) + 
+	m_pBuffer = (EWCharString::EBuffer*)new UCHAR[sizeof(EBuffer) + 
 		(Min_Amount)*sizeof(EWCSChar)];
 
 	memset( m_pBuffer, 0, sizeof(EBuffer) + (Min_Amount)*sizeof(EWCSChar) );
@@ -610,7 +609,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 		{
 			// width indicated by
 			Width = KToI((PWCHAR)p_Tmp);
-			unsigned short buffer;
+			uint16_t buffer;
 			for (; *p_Tmp != '\0'; )
 			{
 				GetStringTypeEx(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, (PWSTR)p_Tmp, 1, &buffer);
@@ -640,7 +639,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 				Precision = KToI((PWCHAR)p_Tmp);
 				for (; *p_Tmp != '\0'; )
 				{
-					unsigned short buffer;
+					uint16_t buffer;
 					GetStringTypeEx(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, (PWSTR)p_Tmp, 1, &buffer);
 					//if (buffer == C1_DIGIT || buffer == C1_XDIGIT)
 					if (buffer & C1_DIGIT)	//mh
@@ -712,7 +711,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 		case 'S':
 		{
 #ifndef K_UNICODE
-			const unsigned short* p_Next_Arg = va_arg(Arg_List, const unsigned short*);
+			PCWSTR p_Next_Arg = va_arg(Arg_List, PCWSTR);
 			if (p_Next_Arg == NULL)
 			   Item_Len = 6;  // "(null)"
 			else
@@ -799,7 +798,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 				break;
 
 			case 'p':
-				va_arg(Arg_List, void*);
+				va_arg(Arg_List, PVOID);
 				Item_Len = 32;
 				Item_Len = max(Item_Len, Width + Precision);
 				break;
@@ -814,7 +813,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 				p_Tmp = KSInc(p_Tmp);
 				p_Tmp = KSInc(p_Tmp);
 				Item_Len = 64;
-				va_arg(Arg_List, __int64);
+				va_arg(Arg_List, int64_t);
 				break;
 
 
@@ -1061,9 +1060,9 @@ int EWCharString::ReverseFind ( EWCSChar Char, int End_Index ) const
 
 /////////////////////////////////////////////////////////////////
 #ifndef UNICODE
-int EWCharString::Find( unsigned short Char, int Start_Index ) const
+int EWCharString::Find( uint16_t Char, int Start_Index ) const
 {
-	unsigned short Tmp[2];
+	uint16_t Tmp[2];
 	*Tmp = Char;
 	Tmp[2] = 0;
 
@@ -1101,15 +1100,15 @@ EWCharString EWCharString::SubString( int Start_Index, int End_Index ) const
 
 
 /////////////////////////////////////////////////////////////////
-unsigned short* EWCharString::CreateUNICODE() const
+PWSTR EWCharString::CreateUNICODE() const
 {
 #ifdef UNICODE
-	unsigned short* p_Ret_String = new unsigned short[m_pBuffer->m_Data_Length + 1];
+	PWSTR p_Ret_String = new wchar_t[m_pBuffer->m_Data_Length + 1];
 	memcpy( p_Ret_String, m_pBuffer->Data(), 2*(m_pBuffer->m_Data_Length + 1) );
 	return p_Ret_String;
 #else
-	 unsigned short* p_Ret_String = new unsigned short[lstrlen((PSTR)m_pBuffer->Data()) + 1];
-	 ToUnicode( p_Ret_String, (PUCHAR)m_pBuffer->Data(), m_pBuffer->m_Data_Length + 1 );
+	 PWSTR p_Ret_String = new wchar_t[lstrlen((PSTR)m_pBuffer->Data()) + 1];
+	 ToUnicode( p_Ret_String, (puint8_t)m_pBuffer->Data(), m_pBuffer->m_Data_Length + 1 );
 	 return p_Ret_String;
 #endif
 }
@@ -1383,7 +1382,7 @@ void EWCharString::Format( PCSTR p_Str, ... )
 		case 'S':
 		{
 #ifndef K_UNICODE
-			const unsigned short* p_Next_Arg = va_arg(Arg_List, const unsigned short*);
+			PCWSTR p_Next_Arg = va_arg(Arg_List, PCWSTR);
 			if (p_Next_Arg == NULL)
 			   Item_Len = 6;  // "(null)"
 			else
@@ -1470,7 +1469,7 @@ void EWCharString::Format( PCSTR p_Str, ... )
 				break;
 
 			case 'p':
-				va_arg(Arg_List, void*);
+				va_arg(Arg_List, PVOID);
 				Item_Len = 32;
 				Item_Len = max(Item_Len, Width + Precision);
 				break;
@@ -1485,7 +1484,7 @@ void EWCharString::Format( PCSTR p_Str, ... )
 				p_Tmp = _tcsinc(p_Tmp);
 				p_Tmp = _tcsinc(p_Tmp);
 				Item_Len = 64;
-				va_arg(Arg_List, __int64);
+				va_arg(Arg_List, int64_t);
 				break;
 
 			default:

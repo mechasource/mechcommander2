@@ -32,9 +32,9 @@ bool isSetup = false;
 
 GameLogPtr GameLog::files[MAX_GAMELOGS] = {NULL, NULL, NULL, NULL, NULL, NULL};
 
-void* GameLog::operator new (size_t mySize) {
+PVOID GameLog::operator new (size_t mySize) {
 
-	void* result = NULL;
+	PVOID result = NULL;
 	
 	result = gos_Malloc(mySize);
 	
@@ -43,7 +43,7 @@ void* GameLog::operator new (size_t mySize) {
 
 //---------------------------------------------------------------------------
 
-void GameLog::operator delete (void* us) {
+void GameLog::operator delete (PVOID us) {
 
 	gos_Free(us);
 }
@@ -54,7 +54,7 @@ void GameLog::dump (void) {
 
 	//----------------
 	// Dump to file...
-	for (long i = 0; i < numLines; i++)
+	for (int32_t i = 0; i < numLines; i++)
 		filePtr->writeString(lines[i]);
 	numLines = 0;
 }
@@ -84,11 +84,11 @@ void GameLog::destroy (void) {
 
 //---------------------------------------------------------------------------
 
-long GameLog::open (PSTR fileName) {
+int32_t GameLog::open (PSTR fileName) {
 
 	numLines = 0;
 	totalLines = 0;
-	if (filePtr->create(fileName) != NO_ERR)
+	if (filePtr->create(fileName) != NO_ERROR)
 		return(-1);
 
 	inUse = true;
@@ -120,8 +120,8 @@ GameLog* GameLog::getNewFile (void) {
 	if (!isSetup)
 		setup();
 
-	long fileHandle = -1;
-	long i;
+	int32_t fileHandle = -1;
+	int32_t i;
 	for (i = 0; i < MAX_GAMELOGS; i++)
 		if (!files[i]->inUse) {
 			fileHandle = i;
@@ -138,7 +138,7 @@ void GameLog::setup (void) {
 		return;
 
 	isSetup = true;
-	for (long i = 0; i < MAX_GAMELOGS; i++) {
+	for (int32_t i = 0; i < MAX_GAMELOGS; i++) {
 		files[i] = new GameLog;
 		files[i]->init();
 		files[i]->handle = i;
@@ -155,7 +155,7 @@ void GameLog::cleanup (void) {
 	if (!isSetup)
 		return;
 
-	for (long i = 0; i < MAX_GAMELOGS; i++) 
+	for (int32_t i = 0; i < MAX_GAMELOGS; i++) 
 	{
 		if (files[i] && files[i]->inUse)
 		{

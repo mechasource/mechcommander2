@@ -50,7 +50,7 @@ enum craterTypes
 // struct CraterData
 typedef struct _CraterData
 {
-	long			craterShapeId;
+	int32_t			craterShapeId;
 	Stuff::Vector3D position[4];
 	Stuff::Vector4D screenPos[4];
 } CraterData;
@@ -75,10 +75,10 @@ class CraterManager
 		ULONG		maxCraters;
 		ULONG		currentCrater;
 		CraterDataPtr		craterList;
-		long				numCraterTextures;
+		int32_t				numCraterTextures;
 
-		DWORD				*craterTextureIndices;
-		DWORD				*craterTextureHandles;
+		ULONG				*craterTextureIndices;
+		ULONG				*craterTextureHandles;
 				
 	//Member Functions
 	//-----------------
@@ -109,7 +109,7 @@ class CraterManager
 			init();
 		}
 		
-		long init (long numCraters, ULONG craterTypeSize, PSTR craterFileName);
+		int32_t init (int32_t numCraters, ULONG craterTypeSize, PSTR craterFileName);
 		
 		~CraterManager (void)
 		{
@@ -118,9 +118,9 @@ class CraterManager
 		
 		void destroy (void);
 		
-		long addCrater (long craterType, Stuff::Vector3D &position, float rotation);
+		int32_t addCrater (int32_t craterType, Stuff::Vector3D &position, float rotation);
 		
-		long update (void);
+		int32_t update (void);
 		void render (void);
 };
 

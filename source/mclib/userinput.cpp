@@ -66,14 +66,14 @@ void MouseCursorData::initCursors (PSTR cursorFileName)
 	cursorName.init(artPath,realHackName,".fit");
 	
 	FitIniFile cursorFile;
-	long result = cursorFile.open(cursorName);
-	gosASSERT(result == NO_ERR);
+	int32_t result = cursorFile.open(cursorName);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cursorFile.seekBlock("Main");
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = cursorFile.readIdLong("NumCursors",numCursors);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	gosASSERT( numCursors < MAX_MOUSE_STATES );
 
@@ -84,7 +84,7 @@ void MouseCursorData::initCursors (PSTR cursorFileName)
 	// and a TGA File Name which we use to create
 	// the texture handle.
 	char blockName[32];
-	for (long i=0;i<numCursors;i++)
+	for (int32_t i=0;i<numCursors;i++)
 	{
 		sprintf( blockName, "Cursor%ld", i );
 		cursorInfos[i].init( cursorFile, blockName,0,0,0x1);
@@ -129,7 +129,7 @@ void UserInput::mouseOff (void)				//Don't Draw Mouse Cursor
 	drawMouse = false;
 }
 
-void UserInput::setMouseCursor (long state)
+void UserInput::setMouseCursor (int32_t state)
 {
 	if ((state < 0) || (state >= mState_NUMMOUSESTATES))
 		return;
@@ -169,8 +169,8 @@ void UserInput::update (void)
 	leftDoubleClick = rightDoubleClick = middleDoubleClick = false;
 
 	
-	DWORD LEFT_MOUSE_CODE = VK_LBUTTON;
-	DWORD RIGHT_MOUSE_CODE = VK_RBUTTON;
+	ULONG LEFT_MOUSE_CODE = VK_LBUTTON;
+	ULONG RIGHT_MOUSE_CODE = VK_RBUTTON;
 	if ( GetSystemMetrics(SM_SWAPBUTTON) )
 	{
 		RIGHT_MOUSE_CODE = VK_LBUTTON;
@@ -179,7 +179,7 @@ void UserInput::update (void)
 
 	//-----------------
 	// Poll the mouse.
-	DWORD buttonStates;
+	ULONG buttonStates;
 	gos_GetMouseInfo(&mouseXPosition,&mouseYPosition,(int *)&mouseXDelta,(int *)&mouseYDelta,(int *)&mouseWheelDelta,&buttonStates);
 //	leftMouseButtonState = buttonStates & 1;
 //	rightMouseButtonState = (buttonStates & 2) >> 1;
@@ -374,8 +374,8 @@ void UserInput::update (void)
 
 		if (!mc2MouseData)
 		{
-			mc2MouseData = (MemoryPtr)malloc(sizeof(DWORD) * MOUSE_WIDTH * MOUSE_WIDTH);
-			memset(mc2MouseData,0,sizeof(DWORD) * MOUSE_WIDTH * MOUSE_WIDTH);
+			mc2MouseData = (PUCHAR)malloc(sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
+			memset(mc2MouseData,0,sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
 		}
 
 		//Need to update the mouse in the mouse thread to inform it that the cursor
@@ -386,10 +386,10 @@ void UserInput::update (void)
 		mc2MouseWidth = cursors->cursorInfos[mouseState].width();
 		mc2MouseHeight = cursors->cursorInfos[mouseState].height();
 
-		DWORD totalMouseFrames = cursors->getNumFrames(mouseState);
+		ULONG totalMouseFrames = cursors->getNumFrames(mouseState);
  		if ( totalMouseFrames > 1 )
 		{
-			long framesPerRow = cursors->cursorInfos[mouseState].textureWidth/cursors->cursorInfos[mouseState].width();
+			int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth/cursors->cursorInfos[mouseState].width();
 			int iIndex = mouseFrame % framesPerRow;
 			int jIndex = mouseFrame / framesPerRow;
 
@@ -837,19 +837,19 @@ void UserInput::render (void)						//Last thing rendered.  Draws Mouse.
 		if (drawMouse && mouseState != -1)
 		{
 			// figure out where to put the thing
-			long mouseX = getMouseX();
-			long mouseY = getMouseY();
+			int32_t mouseX = getMouseX();
+			int32_t mouseY = getMouseY();
 	
 			mouseX -= cursors->getMouseHSX( mouseState );
 			mouseY -= cursors->getMouseHSY( mouseState );
 	
 			cursors->cursorInfos[mouseState].setLocation( mouseX, mouseY );
 	
-			long totalMouseFrames = cursors->getNumFrames(mouseState);
+			int32_t totalMouseFrames = cursors->getNumFrames(mouseState);
 	
 			if ( totalMouseFrames > 1 )
 			{
-				long framesPerRow = cursors->cursorInfos[mouseState].textureWidth/cursors->cursorInfos[mouseState].width();
+				int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth/cursors->cursorInfos[mouseState].width();
 				int iIndex = mouseFrame % framesPerRow;
 				int jIndex = mouseFrame / framesPerRow;
 

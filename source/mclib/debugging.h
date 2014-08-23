@@ -25,19 +25,19 @@ class GameDebugWindow {
 	public:
 
 		bool				display;
-		long				pos[2];
+		int32_t				pos[2];
 		char				textBuffer[MAX_DEBUG_WINDOW_LINES][MAX_DEBUG_WINDOW_LINELEN];
-		long				linePos;
-		long				numLines;
+		int32_t				linePos;
+		int32_t				numLines;
 
 		static HGOSFONT3D	font;
-		static long			fontHeight;
+		static int32_t			fontHeight;
 
 	public:
 
-		void* operator new (size_t ourSize);
+		PVOID operator new (size_t ourSize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 
 		void init (void) {
 			display = false;
@@ -45,7 +45,7 @@ class GameDebugWindow {
 			pos[1] = 0;
 			linePos = 0;
 			numLines = 0;
-			for (long i = 0; i < MAX_DEBUG_WINDOW_LINES; i++)
+			for (int32_t i = 0; i < MAX_DEBUG_WINDOW_LINES; i++)
 				textBuffer[i][0] = NULL;
 		}
 		
@@ -53,12 +53,12 @@ class GameDebugWindow {
 			init();
 		}
 
-		void setPos (long x, long y) {
+		void setPos (int32_t x, int32_t y) {
 			pos[0] = x;
 			pos[1] = y;
 		}
 		
-		void open (long x = -1, long y = -1) {
+		void open (int32_t x = -1, int32_t y = -1) {
 			if ((x > -1) && (y > -1))
 				setPos(x, y);
 			display = true;
@@ -95,7 +95,7 @@ class GameDebugWindow {
 		void clear (void) {
 			numLines = 0;
 			linePos = 0;
-			for (long i = 0; i < MAX_DEBUG_WINDOW_LINES; i++)
+			for (int32_t i = 0; i < MAX_DEBUG_WINDOW_LINES; i++)
 				textBuffer[i][0] = NULL;
 		}
 

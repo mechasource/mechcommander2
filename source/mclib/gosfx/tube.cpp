@@ -213,7 +213,7 @@ bool
 			else
 			return false;
 	
-	Stuff::Scalar min,max;
+	float min,max;
 	m_pScale.ExpensiveComputeRange(&min,&max);
 	if(min<0.0f)
 		if(fix_data)
@@ -227,13 +227,13 @@ bool
 			else
 		return false;
 
-	Stuff::Scalar max_offset, min_offset;
-	Stuff::Scalar max_scale, min_scale;
+	float max_offset, min_offset;
+	float max_scale, min_scale;
 	m_pUSize.ExpensiveComputeRange(&min_scale, &max_scale);
-	Stuff::Scalar lower = min_scale;
+	float lower = min_scale;
 	if (lower > 0.0f)
 		lower = 0.0f;
-	Stuff::Scalar upper = max_scale;
+	float upper = max_scale;
 
 	//
 	//------------------------------------
@@ -350,8 +350,8 @@ void
 		m_vertices[0] = Stuff::Vector3D(1.0f, 0.0f, 0.0f);
 		m_vertices[1] = Stuff::Vector3D(-1.0f, 0.0f, 0.0f);
 		m_uvs.SetLength(2);
-		m_uvs[0] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f);
+		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
 		break;
 
 	case e_VerticalRibbon:
@@ -359,8 +359,8 @@ void
 		m_vertices[0] = Stuff::Vector3D(0.0f, 0.0f, -1.0f);
 		m_vertices[1] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
 		m_uvs.SetLength(2);
-		m_uvs[0] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f);
+		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
 		break;
 
 	case e_Triangle:
@@ -370,10 +370,10 @@ void
 		m_vertices[2] = Stuff::Vector3D(0.8660254f, 0.0f, -0.5f);
 		m_vertices[3] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
 		m_uvs.SetLength(4);
-		m_uvs[0] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f/3.0f);
-		m_uvs[2] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 2.0f/3.0f);
-		m_uvs[3] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f);
+		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f/3.0f);
+		m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 2.0f/3.0f);
+		m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
 		break;
 
 	case e_Square:
@@ -384,11 +384,11 @@ void
 		m_vertices[3] = Stuff::Vector3D(1.0f, 0.0f, 0.0f);
 		m_vertices[4] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
 		m_uvs.SetLength(5);
-		m_uvs[0] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.25f);
-		m_uvs[2] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.5f);
-		m_uvs[3] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.75f);
-		m_uvs[4] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f);
+		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 0.25f);
+		m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 0.5f);
+		m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 0.75f);
+		m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
 		break;
 
 	case e_Cross:
@@ -399,11 +399,11 @@ void
 		m_vertices[3] = Stuff::Vector3D(0.0f, 0.0f, -1.0f);
 		m_vertices[4] = Stuff::Vector3D(1.0f, 0.0f, 0.0f);
 		m_uvs.SetLength(5);
-		m_uvs[0] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f);
-		m_uvs[2] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f);
-		m_uvs[3] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f);
-		m_uvs[4] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f);
+		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+		m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+		m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
+		m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
 		break;
 
 	case e_Pentagon:
@@ -415,12 +415,12 @@ void
 		m_vertices[4] = Stuff::Vector3D(0.9510565f, 0.0f, 0.309017f);
 		m_vertices[5] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
 		m_uvs.SetLength(6);
-		m_uvs[0] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.2f);
-		m_uvs[2] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.4f);
-		m_uvs[3] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.6f);
-		m_uvs[4] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.8f);
-		m_uvs[5] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f);
+		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 0.2f);
+		m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 0.4f);
+		m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 0.6f);
+		m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 0.8f);
+		m_uvs[5] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
 		break;
 
 	case e_Hexagon:
@@ -433,13 +433,13 @@ void
 		m_vertices[5] = Stuff::Vector3D(0.8660254f, 0.0f, 0.5f);
 		m_vertices[6] = Stuff::Vector3D(0.0f, 0.0f, 1.0f);
 		m_uvs.SetLength(7);
-		m_uvs[0] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.0f);
-		m_uvs[1] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f/6.0f);
-		m_uvs[2] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 2.0f/6.0f);
-		m_uvs[3] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 0.5f);
-		m_uvs[4] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 4.0f/6.0f);
-		m_uvs[5] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 5.0f/6.0f);
-		m_uvs[6] = Stuff::Vector2DOf<Stuff::Scalar>(0.0f, 1.0f);
+		m_uvs[0] = Stuff::Vector2DOf<float>(0.0f, 0.0f);
+		m_uvs[1] = Stuff::Vector2DOf<float>(0.0f, 1.0f/6.0f);
+		m_uvs[2] = Stuff::Vector2DOf<float>(0.0f, 2.0f/6.0f);
+		m_uvs[3] = Stuff::Vector2DOf<float>(0.0f, 0.5f);
+		m_uvs[4] = Stuff::Vector2DOf<float>(0.0f, 4.0f/6.0f);
+		m_uvs[5] = Stuff::Vector2DOf<float>(0.0f, 5.0f/6.0f);
+		m_uvs[6] = Stuff::Vector2DOf<float>(0.0f, 1.0f);
 		break;
 	}
 }
@@ -457,20 +457,20 @@ bool
 	//----------------------------------
 	//
 	int max_index = m_maxProfileCount-1;
-	Stuff::Scalar max_scale, min_scale;
+	float max_scale, min_scale;
 Retry:
 	m_pUSize.ExpensiveComputeRange(&min_scale, &max_scale);
-	Stuff::Scalar lower = min_scale * max_index;
+	float lower = min_scale * max_index;
 	if (lower > 0.0f)
 		lower = 0.0f;
-	Stuff::Scalar upper = max_scale * max_index;
+	float upper = max_scale * max_index;
 
 	//
 	//------------------------------------
 	// Calculate the worst case UV offsets
 	//------------------------------------
 	//
-	Stuff::Scalar max_offset, min_offset;
+	float max_offset, min_offset;
 	m_pUOffset.ExpensiveComputeRange(&min_offset, &max_offset);
 	lower += min_offset;
 	upper += max_offset;
@@ -479,7 +479,7 @@ Retry:
 		if (!adjust)
 			return false;
 		lower = max_offset - min_offset;
-		Stuff::Scalar scale = static_cast<Stuff::Scalar>(floor((198.0f-lower)/max_index));
+		float scale = static_cast<float>(floor((198.0f-lower)/max_index));
 		m_pUSize.m_ageCurve.SetCurve(scale);
 		m_pUSize.m_seeded = false;
 		goto Retry;
@@ -487,13 +487,13 @@ Retry:
 	lower += 99.0f;
 	if (lower < 0.0f)
 	{
-		m_UBias = static_cast<Stuff::Scalar>(floor(0.5f-lower));
+		m_UBias = static_cast<float>(floor(0.5f-lower));
 		return true;
 	}
 	upper -= 99.0f;
 	if (upper > 0.0f)
 	{
-		m_UBias = static_cast<Stuff::Scalar>(floor(0.5f-upper));
+		m_UBias = static_cast<float>(floor(0.5f-upper));
 		return true;
 	}
 	m_UBias = 0.0f;
@@ -539,7 +539,7 @@ void
 //
 gosFX::Tube::Tube(
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	Effect(DefaultData, spec, flags)
 {
@@ -553,15 +553,15 @@ gosFX::Tube::Tube(
 	//----------------------------------
 	//
 	m_profiles.SetLength(spec->m_maxProfileCount);
-	unsigned vertex_count = spec->m_vertices.GetLength();
+	uint32_t vertex_count = spec->m_vertices.GetLength();
 	Verify(vertex_count < 8);
-	unsigned index_count = (vertex_count - 1)*6;
-	unsigned size =
+	uint32_t index_count = (vertex_count - 1)*6;
+	uint32_t size =
 		sizeof(Stuff::Point3D)
 		 + sizeof(Stuff::RGBAColor)
-		 + sizeof(Stuff::Vector2DOf<Stuff::Scalar>);
+		 + sizeof(Stuff::Vector2DOf<float>);
 	size *= vertex_count*spec->m_maxProfileCount;
-	size += sizeof(unsigned short)*(spec->m_maxProfileCount-1)*index_count;
+	size += sizeof(uint16_t)*(spec->m_maxProfileCount-1)*index_count;
 
 	//
 	//-----------------------
@@ -588,9 +588,9 @@ gosFX::Tube::Tube(
 	size = spec->m_maxProfileCount*vertex_count*sizeof(Stuff::Point3D);
 	m_P_colors = Cast_Pointer(Stuff::RGBAColor*, &m_data[size]);
 	size += spec->m_maxProfileCount*vertex_count*sizeof(Stuff::RGBAColor);
-	m_P_uvs = Cast_Pointer(Stuff::Vector2DOf<Stuff::Scalar>*, &m_data[size]);
-	size += spec->m_maxProfileCount*vertex_count*sizeof(Stuff::Vector2DOf<Stuff::Scalar>);
-	unsigned short *mesh_indices = Cast_Pointer(unsigned short*, &m_data[size]);
+	m_P_uvs = Cast_Pointer(Stuff::Vector2DOf<float>*, &m_data[size]);
+	size += spec->m_maxProfileCount*vertex_count*sizeof(Stuff::Vector2DOf<float>);
+	puint16_t mesh_indices = Cast_Pointer(puint16_t, &m_data[size]);
 	m_mesh->SetData(
 		&m_triangleCount,
 		&m_vertexCount,
@@ -615,7 +615,7 @@ gosFX::Tube::Tube(
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Tube::BuildMesh(unsigned short *indices)
+	gosFX::Tube::BuildMesh(puint16_t indices)
 {
 	Check_Object(this);
 	Check_Pointer(indices);
@@ -627,7 +627,7 @@ void
 	//
 	Specification *spec = GetSpecification();
 	Check_Object(spec);
-	unsigned vertex_count = spec->m_vertices.GetLength();
+	uint32_t vertex_count = spec->m_vertices.GetLength();
 	Verify(vertex_count < 8);
 
 	//
@@ -637,10 +637,10 @@ void
 	//
 	if (spec->m_profileType != Specification::e_Cross)
 	{
-		for (unsigned short profile=0; profile<spec->m_maxProfileCount-1; ++profile)
+		for (uint16_t profile=0; profile<spec->m_maxProfileCount-1; ++profile)
 		{
-			unsigned short base = static_cast<short>(profile * vertex_count);
-			for (unsigned short panel=0; panel<vertex_count-1; ++panel)
+			uint16_t base = static_cast<short>(profile * vertex_count);
+			for (uint16_t panel=0; panel<vertex_count-1; ++panel)
 			{
 				if (spec->m_insideOut)
 				{
@@ -666,10 +666,10 @@ void
 	else
 	{
 		Verify(vertex_count==5);
-		for (unsigned short profile=0; profile<spec->m_maxProfileCount-1; ++profile)
+		for (uint16_t profile=0; profile<spec->m_maxProfileCount-1; ++profile)
 		{
-			unsigned short base = static_cast<short>(profile * vertex_count);
-			for (unsigned short panel=0; panel<4; ++panel)
+			uint16_t base = static_cast<short>(profile * vertex_count);
+			for (uint16_t panel=0; panel<4; ++panel)
 			{
 				if (spec->m_insideOut)
 				{
@@ -707,7 +707,7 @@ gosFX::Tube::~Tube()
 gosFX::Tube*
 	gosFX::Tube::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);
@@ -776,16 +776,16 @@ bool gosFX::Tube::Execute(ExecuteInfo *info)
 	//
 	Specification *spec = GetSpecification();
 	Check_Object(spec);
-	Stuff::Scalar dT =
-		static_cast<Stuff::Scalar>(info->m_time - m_lastRan);
+	float dT =
+		static_cast<float>(info->m_time - m_lastRan);
 	Verify(dT >= 0.0f);
-	Stuff::Scalar prev_age = m_age;
+	float prev_age = m_age;
 	m_age += dT * m_ageRate;
 	if (m_age >= 1.0f)
 		m_birthAccumulator = 0.0f;
 	else
 	{
-		Stuff::Scalar new_life =
+		float new_life =
 			spec->m_profilesPerSecond.ComputeValue(m_age, m_seed);
 		Min_Clamp(new_life, 0.0f);
 		m_birthAccumulator += dT * new_life;
@@ -813,7 +813,7 @@ bool gosFX::Tube::Execute(ExecuteInfo *info)
 					m_headProfile = 0;
 			}
 			CreateNewProfile(m_headProfile, local_to_world);
-			m_birthAccumulator -= static_cast<Stuff::Scalar>(floor(m_birthAccumulator));
+			m_birthAccumulator -= static_cast<float>(floor(m_birthAccumulator));
 		}
 		else
 			m_profiles[m_headProfile].m_profileToWorld = local_to_world;
@@ -973,7 +973,7 @@ bool gosFX::Tube::HasFinished()
 //
 void
 	gosFX::Tube::CreateNewProfile(
-		unsigned index,
+		uint32_t index,
 		const Stuff::LinearMatrix4D &origin
 	)
 {
@@ -990,15 +990,15 @@ void
 	Profile *profile = GetProfile(index);
 	Check_Object(profile);
 	profile->m_age = 0.0f;
-	Stuff::Scalar min_seed =
+	float min_seed =
 		spec->m_minimumChildSeed.ComputeValue(m_age, m_seed);
-	Stuff::Scalar seed_range =
+	float seed_range =
 		spec->m_maximumChildSeed.ComputeValue(m_age, m_seed) - min_seed;
-	Stuff::Scalar seed =
+	float seed =
 		Stuff::Random::GetFraction()*seed_range + min_seed;
 	Clamp(seed, 0.0f, 1.0f);
 	profile->m_seed = seed;
-	Stuff::Scalar lifetime =
+	float lifetime =
 		spec->m_pLifeSpan.ComputeValue(m_age, seed);
 	Min_Clamp(lifetime, 0.0333333f);
 	profile->m_ageRate = 1.0f / lifetime;
@@ -1009,9 +1009,9 @@ void
 	//------------------------------------------------------------------
 	//
 	profile->m_profileToWorld = origin;
-	Stuff::Scalar pitch_min =
+	float pitch_min =
 		spec->m_minimumDeviation.ComputeValue(m_age, seed);
-	Stuff::Scalar pitch_range =
+	float pitch_range =
 		spec->m_maximumDeviation.ComputeValue(m_age, seed) - pitch_min;
 	if (pitch_range < 0.0f)
 		pitch_range = 0.0f;
@@ -1027,8 +1027,8 @@ void
 //
 bool
 	gosFX::Tube::AnimateProfile(
-		unsigned index,
-		unsigned profile_index,
+		uint32_t index,
+		uint32_t profile_index,
 		const Stuff::LinearMatrix4D &world_to_new_local,
 		Stuff::Time till,
 		Stuff::Sphere *bounds
@@ -1043,7 +1043,7 @@ bool
 	//
 	Profile *profile = GetProfile(index);
 	Check_Object(profile);
-	Stuff::Scalar age = profile->m_age;
+	float age = profile->m_age;
 	if (age >= 1.0f)
 		return false;
 
@@ -1053,12 +1053,12 @@ bool
 	//--------------------------------------------------------------------
 	//
 	Set_Statistic(Profile_Count, Profile_Count+1);
-	Stuff::Scalar seed = profile->m_seed;
+	float seed = profile->m_seed;
 	Specification *spec = GetSpecification();
 	Check_Object(spec);
-	Stuff::Scalar scale = spec->m_pScale.ComputeValue(age, seed);
+	float scale = spec->m_pScale.ComputeValue(age, seed);
 	Verify(scale >= 0.0f);
-	Stuff::Scalar disp = spec->m_pDisplacement.ComputeValue(age, seed);
+	float disp = spec->m_pDisplacement.ComputeValue(age, seed);
 	Stuff::Point3D offset;
 	offset.Multiply(profile->m_direction, disp);
 
@@ -1085,10 +1085,10 @@ bool
 	// doing the aligned ribbon
 	//------------------------------------------------------------------------
 	//
-	unsigned i;
-	unsigned vertex_count = spec->m_vertices.GetLength();
+	uint32_t i;
+	uint32_t vertex_count = spec->m_vertices.GetLength();
 	Verify(vertex_count < 8);
-	unsigned vertex_index = profile_index * vertex_count;
+	uint32_t vertex_index = profile_index * vertex_count;
 	if (spec->m_profileType != Specification::e_AlignedRibbon)
 	{
 		Check_Pointer(m_P_vertices);
@@ -1107,10 +1107,10 @@ bool
 	//------------------------------
 	//
 	Check_Pointer(m_P_uvs);
-	Stuff::Scalar u = spec->m_pUOffset.ComputeValue(age, seed);
-	Stuff::Scalar v = spec->m_pVOffset.ComputeValue(age, seed);
-	Stuff::Scalar u2 = spec->m_pUSize.ComputeValue(age, seed);
-	Stuff::Scalar v2 = spec->m_pVSize.ComputeValue(age, seed);
+	float u = spec->m_pUOffset.ComputeValue(age, seed);
+	float v = spec->m_pVOffset.ComputeValue(age, seed);
+	float u2 = spec->m_pUSize.ComputeValue(age, seed);
+	float v2 = spec->m_pVSize.ComputeValue(age, seed);
 	u += u2*profile_index + spec->m_UBias;
 	for (i=0; i<vertex_count; ++i)
 	{
@@ -1136,7 +1136,7 @@ bool
 
 //------------------------------------------------------------------------------
 //
-void gosFX::Tube::DestroyProfile(unsigned index)
+void gosFX::Tube::DestroyProfile(uint32_t index)
 {
 	Profile *profile = GetProfile(index);
 	Check_Object(profile);
@@ -1166,7 +1166,7 @@ void gosFX::Tube::Draw(DrawInfo *info)
 		Stuff::LinearMatrix4D local_to_world;
 		local_to_world.Multiply(m_localToParent, *info->m_parentToWorld);
 		dInfo.effectToWorld = &local_to_world;
-		unsigned vertex_count = spec->m_vertices.GetLength();
+		uint32_t vertex_count = spec->m_vertices.GetLength();
 		m_vertexCount = m_activeProfileCount * vertex_count;
 		m_triangleCount = 2 * (m_activeProfileCount-1) * (vertex_count-1);
 
@@ -1180,7 +1180,7 @@ void gosFX::Tube::Draw(DrawInfo *info)
 		{
 			int i = m_headProfile;
 			int vertex = 0;
-			unsigned vertex_count = spec->m_vertices.GetLength();
+			uint32_t vertex_count = spec->m_vertices.GetLength();
 			Verify(vertex_count < 8);
 			Stuff::Point3D
 				camera_in_world(info->m_clipper->GetCameraToWorldMatrix());
@@ -1207,10 +1207,10 @@ void gosFX::Tube::Draw(DrawInfo *info)
 				// profile space
 				//---------------------------------------------------------
 				//
-				Stuff::Scalar age = profile->m_age;
-				Stuff::Scalar seed = profile->m_seed;
-				Stuff::Scalar scale = spec->m_pScale.ComputeValue(age, seed);
-				Stuff::Scalar disp = spec->m_pDisplacement.ComputeValue(age, seed);
+				float age = profile->m_age;
+				float seed = profile->m_seed;
+				float scale = spec->m_pScale.ComputeValue(age, seed);
+				float disp = spec->m_pDisplacement.ComputeValue(age, seed);
 				Stuff::Point3D offset_in_profile;
 				offset_in_profile.Multiply(profile->m_direction, disp);
 

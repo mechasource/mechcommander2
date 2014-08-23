@@ -106,20 +106,20 @@ float world_angle_between (Stuff::Vector3D &v1, Stuff::Vector3D &v2);
 
 Stuff::Vector3D relativePositionToPoint (Stuff::Vector3D point, float angle, float distance, ULONG flags);
 
-long RandomNumber (long range);
+int32_t RandomNumber (int32_t range);
 
-long SignedRandomNumber (long range);
+int32_t SignedRandomNumber (int32_t range);
 
-bool RollDice (long percent);
+bool RollDice (int32_t percent);
 
-inline long float2long (float val)
+inline int32_t float2long (float val)
 {
 	//_ftol TRUNCS not rounds.  Processor wants to round.  Surely there is some flag to not have this happen?
 	// There is but BOY is it slow.  We will try Andy's Magical formula instead.
 	// Doesn't work either.  Major bug in Intel's FPU.
-	// Will simply call long here now to insure working ok and address later.
+	// Will simply call int32_t here now to insure working ok and address later.
 	
-	long result = long(val);
+	int32_t result = int32_t(val);
 	return result;
 	
 #if 0
@@ -151,7 +151,7 @@ inline long float2long (float val)
 		val += 0.49999999f;
 
 	val += 3 << 22;
-	return ((*(long*)&val)&0x007fffff) - 0x00400000;
+	return ((*(int32_t*)&val)&0x007fffff) - 0x00400000;
 #endif
 }
 

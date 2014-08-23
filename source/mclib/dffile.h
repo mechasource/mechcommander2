@@ -6,6 +6,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//-
 
+#pragma once
+
 #ifndef DFFILE_H
 #define DFFILE_H
 //---------------------------------------------------------------------------
@@ -14,7 +16,7 @@
 //---------------------------------------------------------------------------
 
 class FastFile;
-typedef FastFile *FastFilePtr;
+typedef FastFile* FastFilePtr;
 
 //---------------------------------------------------------------------------
 #endif // DFFILE_H

@@ -40,9 +40,9 @@
 //----------
 // EXTERNALS
 
-extern long				level;
-extern long				execLineNumber;
-	//extern long				execStatementCount;
+extern int32_t				level;
+extern int32_t				execLineNumber;
+	//extern int32_t				execStatementCount;
 extern TokenCodeType	codeToken;
 
 extern PSTR			codeBuffer;
@@ -55,14 +55,14 @@ extern StackItemPtr		tos;
 extern SymTableNodePtr	CurRoutineIdPtr;
 extern SymTableNodePtr	symTableDisplay[];
 
-extern long				errorCount;
+extern int32_t				errorCount;
 extern char				curChar;
 extern TokenCodeType	curToken;
-extern long				lineNumber;
+extern int32_t				lineNumber;
 extern Literal			curLiteral;
-extern long				bufferOffset;
+extern int32_t				bufferOffset;
 extern char				sourceBuffer[MAXLEN_SOURCELINE];
-	//extern long				bufferOffset;
+	//extern int32_t				bufferOffset;
 extern PSTR			bufferp;
 	//extern PSTR			tokenp;
 extern char				wordString[MAXLEN_TOKENSTRING];
@@ -75,11 +75,11 @@ extern Type				DummyType;
 
 extern ModuleEntryPtr	ModuleRegistry;
 extern ABLModulePtr*	ModuleInstanceRegistry;
-extern long				MaxModules;
-extern long				NumModulesRegistered;
-extern long				NumModuleInstances;
-extern long				MaxWatchesPerModule;
-extern long				MaxBreakPointsPerModule;
+extern int32_t				MaxModules;
+extern int32_t				NumModulesRegistered;
+extern int32_t				NumModuleInstances;
+extern int32_t				MaxWatchesPerModule;
+extern int32_t				MaxBreakPointsPerModule;
 extern PSTR			TokenStrings[NUM_TOKENS];
 
 
@@ -88,14 +88,14 @@ extern PSTR			TokenStrings[NUM_TOKENS];
 extern StackItemPtr		StaticDataPtr;
 //extern SymTableNodePtr	CurRoutineIdPtr;
 
-//extern long				MaxLoopIterations;
+//extern int32_t				MaxLoopIterations;
 
 void CheckMouse(void);
 
 //---------------------------------------------------------------------------
 
-long				MaxBreaks = 50;
-long				MaxWatches = 50;
+int32_t				MaxBreaks = 50;
+int32_t				MaxWatches = 50;
 DebuggerPtr			debugger = NULL;
 
 char Debugger::message[512];
@@ -113,7 +113,7 @@ extern ScrollingTextWindow* ABLDebuggerOut;
 // WATCH MANAGER class
 //***************************************************************************
 
-void* WatchManager::operator new (size_t mySize) {
+PVOID WatchManager::operator new (size_t mySize) {
 
 	void *result = ABLStackMallocCallback(mySize);
 	return(result);
@@ -121,14 +121,14 @@ void* WatchManager::operator new (size_t mySize) {
 
 //---------------------------------------------------------------------------
 
-void WatchManager::operator delete (void* us) {
+void WatchManager::operator delete (PVOID us) {
 
 	ABLStackFreeCallback(us);
 }
 
 //---------------------------------------------------------------------------
 
-long WatchManager::init (long max) {
+int32_t WatchManager::init (int32_t max) {
 
 	maxWatches = max;
 	numWatches = 0;
@@ -184,7 +184,7 @@ WatchPtr WatchManager::add (SymTableNodePtr idPtr) {
 
 //---------------------------------------------------------------------------
 
-long WatchManager::remove (SymTableNodePtr idPtr) {
+int32_t WatchManager::remove (SymTableNodePtr idPtr) {
 
 	if (!idPtr)
 		return(1);
@@ -194,7 +194,7 @@ long WatchManager::remove (SymTableNodePtr idPtr) {
 
 	//------------------------------------------
 	// Find this id's watch in the watch list...
-	long removeIndex;
+	int32_t removeIndex;
 	for (removeIndex = 0; removeIndex < numWatches; removeIndex++)
 		if (&watches[removeIndex] == (WatchPtr)idPtr->info)
 			break;
@@ -206,7 +206,7 @@ long WatchManager::remove (SymTableNodePtr idPtr) {
 
 	//-------------------------------------
 	// Fill in the gap in the watch list...
-	for (long i = removeIndex; removeIndex < numWatches; removeIndex++) {
+	for (int32_t i = removeIndex; removeIndex < numWatches; removeIndex++) {
 		watches[i].idPtr = watches[i + 1].idPtr;
 		watches[i].store = watches[i + 1].store;
 		watches[i].breakOnStore = watches[i + 1].breakOnStore;
@@ -220,9 +220,9 @@ long WatchManager::remove (SymTableNodePtr idPtr) {
 
 //---------------------------------------------------------------------------
 
-long WatchManager::removeAll (void) {
+int32_t WatchManager::removeAll (void) {
 
-	for (long i = 0; i < numWatches; i++) {
+	for (int32_t i = 0; i < numWatches; i++) {
 		watches[i].idPtr->info = NULL;
 		watches[i].idPtr = NULL;
 		watches[i].store = false;
@@ -231,14 +231,14 @@ long WatchManager::removeAll (void) {
 		watches[i].breakOnFetch = false;
 	}
 
-	long numRemoved = numWatches;
+	int32_t numRemoved = numWatches;
 	numWatches = 0;
 	return(numRemoved);
 }
 
 //---------------------------------------------------------------------------
 		
-long WatchManager::setStore (SymTableNodePtr idPtr, bool state, bool breakToDebug) {
+int32_t WatchManager::setStore (SymTableNodePtr idPtr, bool state, bool breakToDebug) {
 
 	if (!idPtr)
 		return(1);
@@ -267,7 +267,7 @@ long WatchManager::setStore (SymTableNodePtr idPtr, bool state, bool breakToDebu
 
 //---------------------------------------------------------------------------
 		
-long WatchManager::setFetch (SymTableNodePtr idPtr, bool state, bool breakToDebug) {
+int32_t WatchManager::setFetch (SymTableNodePtr idPtr, bool state, bool breakToDebug) {
 
 	if (!idPtr)
 		return(1);
@@ -317,7 +317,7 @@ bool WatchManager::getFetch (SymTableNodePtr idPtr) {
 
 void WatchManager::print (void) {
 
-	for (long i = 0; i < numWatches; i++) {
+	for (int32_t i = 0; i < numWatches; i++) {
 		//SymTableNodePtr idPtr = watches[i].idPtr;
 		// Display info here...
 	}
@@ -327,7 +327,7 @@ void WatchManager::print (void) {
 // BREAK POINT MANAGER class
 //***************************************************************************
 
-void* BreakPointManager::operator new (size_t mySize) {
+PVOID BreakPointManager::operator new (size_t mySize) {
 
 	void *result = ABLStackMallocCallback(mySize);
 	return(result);
@@ -335,19 +335,19 @@ void* BreakPointManager::operator new (size_t mySize) {
 
 //---------------------------------------------------------------------------
 
-void BreakPointManager::operator delete (void* us) {
+void BreakPointManager::operator delete (PVOID us) {
 
 	ABLStackFreeCallback(us);
 }
 
 //---------------------------------------------------------------------------
 
-long BreakPointManager::init (long max) {
+int32_t BreakPointManager::init (int32_t max) {
 
 	maxBreakPoints = max;
 	numBreakPoints = 0;
 
-	breakPoints = (long*)ABLStackMallocCallback(max * sizeof(long));
+	breakPoints = (int32_t*)ABLStackMallocCallback(max * sizeof(int32_t));
 	if (!breakPoints)
 		return(-1);
 
@@ -369,7 +369,7 @@ void BreakPointManager::destroy (void) {
 
 //---------------------------------------------------------------------------
 
-long BreakPointManager::add (long lineNumber) {
+int32_t BreakPointManager::add (int32_t lineNumber) {
 
 	//----------------------------------------------------------------
 	// This does not check to make sure the line number is within
@@ -383,14 +383,14 @@ long BreakPointManager::add (long lineNumber) {
 	else {
 		//------------------------------------------------
 		// Insert it into the list (in ascending order)...
-		long insertPoint = 0;
+		int32_t insertPoint = 0;
 		for (insertPoint = 0; insertPoint < numBreakPoints; insertPoint++) {
 			if (lineNumber == breakPoints[insertPoint])
 				return(ABL_NO_ERR);
 			else if (lineNumber < breakPoints[insertPoint])
 				break;
 		}
-		for (long i = insertPoint; i < numBreakPoints; i++)
+		for (int32_t i = insertPoint; i < numBreakPoints; i++)
 			breakPoints[i + 1] = breakPoints[i];
 		breakPoints[insertPoint] = lineNumber;
 		numBreakPoints++;
@@ -401,9 +401,9 @@ long BreakPointManager::add (long lineNumber) {
 
 //---------------------------------------------------------------------------
 
-long BreakPointManager::remove (long lineNumber) {
+int32_t BreakPointManager::remove (int32_t lineNumber) {
 
-	long index;
+	int32_t index;
 	for (index = 0; index < numBreakPoints; index++)
 		if (lineNumber == breakPoints[index])
 			break;
@@ -412,7 +412,7 @@ long BreakPointManager::remove (long lineNumber) {
 	
 	//------------------
 	// Shift 'em down...
-	for (long i = index; i < numBreakPoints; i++)
+	for (int32_t i = index; i < numBreakPoints; i++)
 		breakPoints[i] = breakPoints[i + 1];
 
 	return(ABL_NO_ERR);
@@ -420,19 +420,19 @@ long BreakPointManager::remove (long lineNumber) {
 
 //---------------------------------------------------------------------------
 
-long BreakPointManager::removeAll (void) {
+int32_t BreakPointManager::removeAll (void) {
 
-	long numRemoved = numBreakPoints;
+	int32_t numRemoved = numBreakPoints;
 	numBreakPoints = 0;
 	return(numRemoved);
 }
 
 //---------------------------------------------------------------------------
 
-bool BreakPointManager::isBreakPoint (long lineNumber) {
+bool BreakPointManager::isBreakPoint (int32_t lineNumber) {
 
 	if (numBreakPoints > 0) {
-		for (long i = 0; i < numBreakPoints; i++)
+		for (int32_t i = 0; i < numBreakPoints; i++)
 			if (lineNumber == breakPoints[i])
 				return(true);
 	}
@@ -445,7 +445,7 @@ void BreakPointManager::print (void) {
 
 	//--------------------------------------------------------------
 	// If no line number, do default action--list all breakpoints...
-	for (long i = 0; i < numBreakPoints; i++) {
+	for (int32_t i = 0; i < numBreakPoints; i++) {
 		// print info...
 	}
 }
@@ -454,7 +454,7 @@ void BreakPointManager::print (void) {
 // DEBUGGER class
 //***************************************************************************
 
-void* Debugger::operator new (size_t mySize) {
+PVOID Debugger::operator new (size_t mySize) {
 
 	void *result = ABLStackMallocCallback(mySize);
 	return(result);
@@ -462,14 +462,14 @@ void* Debugger::operator new (size_t mySize) {
 
 //---------------------------------------------------------------------------
 
-void Debugger::operator delete (void* us) {
+void Debugger::operator delete (PVOID us) {
 
 	ABLStackFreeCallback(us);
 }
 
 //---------------------------------------------------------------------------
 
-long Debugger::init (void (*callback)(PSTR s), ABLModulePtr _module) {
+int32_t Debugger::init (void (*callback)(PSTR s), ABLModulePtr _module) {
 
 	printCallback = callback;
 	module = _module;
@@ -490,7 +490,7 @@ void Debugger::destroy (void) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::print (PSTR s) {
+int32_t Debugger::print (PSTR s) {
 
 	if (printCallback)
 		(*printCallback)(s);
@@ -510,7 +510,7 @@ void Debugger::setModule (ABLModulePtr _module) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::setWatch (long states) {
+int32_t Debugger::setWatch (int32_t states) {
 
 	getToken();
 
@@ -546,7 +546,7 @@ long Debugger::setWatch (long states) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::addBreakPoint (void) {
+int32_t Debugger::addBreakPoint (void) {
 
 	getToken();
 
@@ -567,7 +567,7 @@ long Debugger::addBreakPoint (void) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::removeBreakPoint (void) {
+int32_t Debugger::removeBreakPoint (void) {
 
 	getToken();
 
@@ -682,7 +682,7 @@ void Debugger::sprintDataValue (PSTR dest, StackItemPtr data, TypePtr dataType) 
 
 //---------------------------------------------------------------------------
 
-long Debugger::sprintSimpleValue (PSTR dest, SymTableNodePtr symbol) {
+int32_t Debugger::sprintSimpleValue (PSTR dest, SymTableNodePtr symbol) {
 
 	//--------------------------------------------------------------------
 	// This code is adapted from execVariable(). If that function changes,
@@ -706,7 +706,7 @@ long Debugger::sprintSimpleValue (PSTR dest, SymTableNodePtr symbol) {
 		switch (symbol->defn.info.data.varType) {
 			case VAR_TYPE_NORMAL: {
 				StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
-				long delta = level - symbol->level;
+				int32_t delta = level - symbol->level;
 				while (delta-- > 0)
 					headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
 				dataPtr = (StackItemPtr)headerPtr + symbol->defn.info.data.offset;
@@ -729,7 +729,7 @@ long Debugger::sprintSimpleValue (PSTR dest, SymTableNodePtr symbol) {
 		if ((typePtr->form != FRM_ARRAY) /*&& (typePtr->form != FRM_RECORD)*/) {
 			ABL_Assert(dataPtr != NULL, 0, " Debugger.sprintSimpleValue(): dataPtr is NULL ");
 			if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
-				sprintf(dest, "%d", *((long*)dataPtr));
+				sprintf(dest, "%d", *((int32_t*)dataPtr));
 			else if (typePtr == CharTypePtr)
 				sprintf(dest, "\"%c\"", *((PSTR)dataPtr));
 			else
@@ -744,7 +744,7 @@ long Debugger::sprintSimpleValue (PSTR dest, SymTableNodePtr symbol) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subscriptString) {
+int32_t Debugger::sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subscriptString) {
 
 	//--------------------------------------------------------------------
 	// This code is adapted from execVariable(). If that function changes,
@@ -761,7 +761,7 @@ long Debugger::sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subscri
 		switch (symbol->defn.info.data.varType) {
 			case VAR_TYPE_NORMAL: {
 				StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
-				long delta = level - symbol->level;
+				int32_t delta = level - symbol->level;
 				while (delta-- > 0)
 					headerPtr = (StackFrameHeaderPtr)headerPtr->staticLink.address;
 				dataPtr = (StackItemPtr)headerPtr + symbol->defn.info.data.offset;
@@ -791,7 +791,7 @@ long Debugger::sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subscri
 			while (token) {
 				//----------------
 				// Read integer...
-				long index = atoi(token);
+				int32_t index = atoi(token);
 				//-------------------------
 				// Range check the index...
 				if ((index < 0) || (index >= typePtr->info.array.elementCount))
@@ -806,7 +806,7 @@ long Debugger::sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subscri
 
 		if ((typePtr->form != FRM_ARRAY)) {
 			if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
-				sprintf(dest, "%d", *((long*)elementAddress));
+				sprintf(dest, "%d", *((int32_t*)elementAddress));
 			else if (typePtr == CharTypePtr)
 				sprintf(dest, "\"%c\"", *((PSTR)elementAddress));
 			else
@@ -823,7 +823,7 @@ long Debugger::sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subscri
 
 //---------------------------------------------------------------------------
 
-long Debugger::sprintValue (PSTR dest, PSTR exprString) {
+int32_t Debugger::sprintValue (PSTR dest, PSTR exprString) {
 
 	PSTR subscript = strchr(exprString, '[');
 	if (!subscript) {
@@ -869,7 +869,7 @@ long Debugger::sprintValue (PSTR dest, PSTR exprString) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::traceStatementExecution (void) {
+int32_t Debugger::traceStatementExecution (void) {
 
 	bool halt = step;
 	//--------------------------------------
@@ -899,7 +899,7 @@ long Debugger::traceStatementExecution (void) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::traceRoutineEntry (SymTableNodePtr idPtr) {
+int32_t Debugger::traceRoutineEntry (SymTableNodePtr idPtr) {
 
 	if (traceEntry) {
 		sprintf(message, "ENTER (%d) %s:%s", module->getId(), module->getName(), idPtr->name);
@@ -911,7 +911,7 @@ long Debugger::traceRoutineEntry (SymTableNodePtr idPtr) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::traceRoutineExit (SymTableNodePtr idPtr) {
+int32_t Debugger::traceRoutineExit (SymTableNodePtr idPtr) {
 
 	if (traceExit) {
 		sprintf(message, "EXIT (%d) %s:%s", module->getId(), module->getName(), idPtr->name);
@@ -923,7 +923,7 @@ long Debugger::traceRoutineExit (SymTableNodePtr idPtr) {
 
 //---------------------------------------------------------------------------
 
-long Debugger::traceDataStore (SymTableNodePtr id, TypePtr idType, StackItemPtr target, TypePtr targetType) {
+int32_t Debugger::traceDataStore (SymTableNodePtr id, TypePtr idType, StackItemPtr target, TypePtr targetType) {
 
 	//SymTableNodePtr idPtr = debugModule->findSymbol(strParam1);
 	//if (!idPtr) {
@@ -954,7 +954,7 @@ long Debugger::traceDataStore (SymTableNodePtr id, TypePtr idType, StackItemPtr 
 
 //---------------------------------------------------------------------------
 
-long Debugger::traceDataFetch (SymTableNodePtr id, TypePtr idType, StackItemPtr data) {
+int32_t Debugger::traceDataFetch (SymTableNodePtr id, TypePtr idType, StackItemPtr data) {
 
 	TypePtr idTypePtr = id->typePtr;
 	if (id->info && ((WatchPtr)id->info)->fetch) {
@@ -1037,7 +1037,7 @@ void Debugger::assignVariable (void) {
 		//-------------------
 		// Now, execute it...
 		PSTR savedCodeSegmentPtr = codeSegmentPtr;
-		long savedCodeToken = codeToken;
+		int32_t savedCodeToken = codeToken;
 		codeSegmentPtr = codeBuffer + 1;
 		getCodeToken();
 		idPtr = getSymTableCodePtr();
@@ -1056,7 +1056,7 @@ void Debugger::assignVariable (void) {
 void Debugger::displayModuleInstanceRegistry (void) {
 
 	char buffer1[200], buffer2[40];
-	for (long i = 0; i < ((NumModuleInstances + 1) / 2); i++) {
+	for (int32_t i = 0; i < ((NumModuleInstances + 1) / 2); i++) {
 		sprintf(buffer1, "(%02d) %-20s ", ModuleInstanceRegistry[i * 2]->getId(), ModuleInstanceRegistry[i * 2]->getName());
 		if ((i * 2 + 1) < NumModuleInstances) {
 			sprintf(buffer2, "(%02d) %-20s ", ModuleInstanceRegistry[i * 2 + 1]->getId(), ModuleInstanceRegistry[i * 2 + 1]->getName());
@@ -1069,7 +1069,7 @@ void Debugger::displayModuleInstanceRegistry (void) {
 
 //---------------------------------------------------------------------------
 
-void Debugger::processCommand (long commandId, PSTR strParam1, long numParam1, ABLModulePtr moduleParam1) {
+void Debugger::processCommand (int32_t commandId, PSTR strParam1, int32_t numParam1, ABLModulePtr moduleParam1) {
 
 	switch (commandId) {
 		case DEBUG_COMMAND_SET_MODULE:
@@ -1144,14 +1144,14 @@ void Debugger::processCommand (long commandId, PSTR strParam1, long numParam1, A
 			}
 			bool breakToDebug = ((numParam1 & WATCH_BREAK) != 0);
 			if (numParam1 & WATCH_STORE_ON) {
-				long result = debugModule->getWatchManager()->setStore(idPtr, true, breakToDebug);
+				int32_t result = debugModule->getWatchManager()->setStore(idPtr, true, breakToDebug);
 				if (result == 2) {
 					print("Reached max watch limit--unable to set watch.\n");
 					return;
 				}
 			}
 			if (numParam1 & WATCH_FETCH_ON) {
-				long result = debugModule->getWatchManager()->setFetch(idPtr, true, breakToDebug);
+				int32_t result = debugModule->getWatchManager()->setFetch(idPtr, true, breakToDebug);
 				if (result == 2) {
 					print("Reached max watch limit--unable to set watch.\n");
 					return;
@@ -1181,7 +1181,7 @@ void Debugger::processCommand (long commandId, PSTR strParam1, long numParam1, A
 			break;
 		case DEBUG_COMMAND_PRINT: {
 			print(" ");
-			long err = sprintValue(message, strParam1);
+			int32_t err = sprintValue(message, strParam1);
 			switch (err) {
 				case ABL_NO_ERR:
 					print(message);

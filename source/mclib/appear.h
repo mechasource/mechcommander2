@@ -31,8 +31,8 @@
 #define MAX_ULONG		0x70000000		//Must be able to square this and still get big number!!
 #endif
 
-#ifndef NO_ERR
-#define NO_ERR			0
+#ifndef NO_ERROR
+#define NO_ERROR			0
 #endif
 
 #define HUD_DEPTH		0.0001f			//HUD Objects draw over everything else.
@@ -81,8 +81,8 @@ class Appearance
 	//-----------------
 	public:
 
-		void * operator new (size_t mySize);
-		void operator delete (void * us);
+		PVOID operator new (size_t mySize);
+		void operator delete (PVOID us);
 			
 		Appearance (void)
 		{
@@ -123,23 +123,23 @@ class Appearance
 			destroy();
 		}
 		
-		virtual long update (bool animate = true)
+		virtual int32_t update (bool animate = true)
 		{
 			//Perform any frame by frame tasks.  Animations, etc.
 			(void)animate;
-			return NO_ERR;
+			return NO_ERROR;
 		}
 		
-		virtual long render (long depthFixup = 0)
+		virtual int32_t render (int32_t depthFixup = 0)
 		{
 			//Decide whether or not I can be seen and add me to render list.
 			(void)depthFixup;
-			return NO_ERR;
+			return NO_ERROR;
 		}
 
-		virtual long renderShadows (void)
+		virtual int32_t renderShadows (void)
 		{
-			return NO_ERR;
+			return NO_ERROR;
 		}
 
 		virtual AppearanceTypePtr getAppearanceType (void)
@@ -192,7 +192,7 @@ class Appearance
 		{
 		}
 
-		virtual long setGestureGoal (long /*gestureId*/)
+		virtual int32_t setGestureGoal (int32_t /*gestureId*/)
 		{
 			return 0;
 		}
@@ -201,7 +201,7 @@ class Appearance
 		{
 		}
 		
-		virtual long getFrameNumber (void)
+		virtual int32_t getFrameNumber (void)
 		{
 			return 0;
 		}
@@ -228,22 +228,22 @@ class Appearance
 			return false;
 		}
 
-		virtual long getNumFramesInGesture (long /*gestureId*/)
+		virtual int32_t getNumFramesInGesture (int32_t /*gestureId*/)
 		{
 			return 0;
 		}
 
-		virtual long getOldGestureGoal (void)
+		virtual int32_t getOldGestureGoal (void)
 		{
 			return -1;
 		}
 		
-		virtual long getCurrentGestureGoal (void)
+		virtual int32_t getCurrentGestureGoal (void)
 		{
 			return -1;
 		}
 
-		virtual long getCurrentGestureId (void)
+		virtual int32_t getCurrentGestureId (void)
 		{
 			return 0;
 		}
@@ -268,7 +268,7 @@ class Appearance
 			return false;
 		}
 
-		virtual void setObjectNameId (long /*objId*/)
+		virtual void setObjectNameId (int32_t /*objId*/)
 		{
 		}
 
@@ -277,21 +277,21 @@ class Appearance
 			return false;
 		}
 
-		virtual void setWeaponNodeUsed (long /*nodeId*/)
+		virtual void setWeaponNodeUsed (int32_t /*nodeId*/)
 		{
 		}
 
-		virtual long getLowestWeaponNode (void)
+		virtual int32_t getLowestWeaponNode (void)
 		{
 			return 0;
 		}
 		
-		virtual long getWeaponNode (long /*weapontype*/)
+		virtual int32_t getWeaponNode (int32_t /*weapontype*/)
 		{
 			return 0;
 		}
 		
-		virtual float getWeaponNodeRecycle (long /*node*/)
+		virtual float getWeaponNodeRecycle (int32_t /*node*/)
 		{
 			return 0.0f;
 		}
@@ -300,11 +300,11 @@ class Appearance
 		{
 		}
 
-		virtual void setWeaponNodeRecycle(long /*nodeId*/, float /*time*/)
+		virtual void setWeaponNodeRecycle(int32_t /*nodeId*/, float /*time*/)
 		{
 		}
 		
-		virtual Stuff::Vector3D getSmokeNodePosition (long /*nodeId*/)
+		virtual Stuff::Vector3D getSmokeNodePosition (int32_t /*nodeId*/)
 		{
 			Stuff::Vector3D position;
 			position.x = position.y = position.z = 0.0f;
@@ -312,7 +312,7 @@ class Appearance
 			return position;
 		}
 		
-		virtual Stuff::Vector3D getDustNodePosition (long /*nodeId*/)
+		virtual Stuff::Vector3D getDustNodePosition (int32_t /*nodeId*/)
 		{
 			Stuff::Vector3D position;
 			position.x = position.y = position.z = 0.0f;
@@ -320,7 +320,7 @@ class Appearance
 			return position;
 		}
 		
- 		virtual Stuff::Vector3D getWeaponNodePosition (long /*node*/)
+ 		virtual Stuff::Vector3D getWeaponNodePosition (int32_t /*node*/)
 		{
 			Stuff::Vector3D position;
 			position.x = position.y = position.z = 0.0f;
@@ -328,7 +328,7 @@ class Appearance
 			return position;
 		}
 
-		virtual Stuff::Vector3D getNodePosition (long /*nodeId*/)
+		virtual Stuff::Vector3D getNodePosition (int32_t /*nodeId*/)
 		{
 			Stuff::Vector3D position;
 			position.x = position.y = position.z = 0.0f;
@@ -344,7 +344,7 @@ class Appearance
 			return position;
 		}
 		
-		virtual Stuff::Vector3D getNodeIdPosition (long /*nodeId*/)
+		virtual Stuff::Vector3D getNodeIdPosition (int32_t /*nodeId*/)
 		{
 			Stuff::Vector3D position;
 			position.x = position.y = position.z = 0.0f;
@@ -361,7 +361,7 @@ class Appearance
 			return 0.0f;
 		}
 
-		virtual float getVelocityOfGesture (long /*gestureId*/)
+		virtual float getVelocityOfGesture (int32_t /*gestureId*/)
 		{
 			return 0.0f;
 		}
@@ -371,7 +371,7 @@ class Appearance
 		{
 		}
 
-		virtual void setObjectParameters (Stuff::Vector3D& /*pos*/, float /*rot*/, long /*selected*/, long /*team*/, long /*homeRelations*/)
+		virtual void setObjectParameters (Stuff::Vector3D& /*pos*/, float /*rot*/, int32_t /*selected*/, int32_t /*team*/, int32_t /*homeRelations*/)
 		{
 		}
 
@@ -422,7 +422,7 @@ class Appearance
 			seen = sen;
 		}
 
-		virtual void setSensorLevel (long /*lvl*/)
+		virtual void setSensorLevel (int32_t /*lvl*/)
 		{
 		}
 		
@@ -442,11 +442,11 @@ class Appearance
 		{
 		}
 		
-		virtual void setObjStatus (long /*oStatus*/)
+		virtual void setObjStatus (int32_t /*oStatus*/)
 		{
 		}
 		
-		virtual long calcCellsCovered (Stuff::Vector3D& /*pos*/, short* /*cellList*/)
+		virtual int32_t calcCellsCovered (Stuff::Vector3D& /*pos*/, short* /*cellList*/)
 		{
 			return(0);
 		}
@@ -455,7 +455,7 @@ class Appearance
 		{
 		}
 		
-		virtual long markMoveMap (bool /*passable*/, long* /*lineOfSightRect*/, bool useheight = false, short* cellList = NULL)
+		virtual int32_t markMoveMap (bool /*passable*/, int32_t* /*lineOfSightRect*/, bool useheight = false, short* cellList = NULL)
 		{
 			useheight;cellList;
 			return(0);
@@ -485,7 +485,7 @@ class Appearance
 		{
 		}
 		
-		virtual void setHighlightColor( long /*argb*/ )
+		virtual void setHighlightColor( int32_t /*argb*/ )
 		{
 		}
 	
@@ -522,7 +522,7 @@ class Appearance
 		{
 		}
 
-		virtual long getObjectNameId (void)
+		virtual int32_t getObjectNameId (void)
 		{
 			return -1;
 		}
@@ -537,7 +537,7 @@ class Appearance
 		
 		}
 
-		virtual bool PerPolySelect (long /*mouseX*/, long /*mouseY*/)
+		virtual bool PerPolySelect (int32_t /*mouseX*/, int32_t /*mouseY*/)
 		{
 			return true;
 		}
@@ -554,7 +554,7 @@ class Appearance
 			return result;
 		}
 		
-		virtual void setAlphaValue (BYTE /*aVal*/)
+		virtual void setAlphaValue (UCHAR /*aVal*/)
 		{
 		}
 
@@ -562,13 +562,13 @@ class Appearance
 						  size_t bmpHeight, size_t color, 
 						  size_t where = 0 );
 						  
-		virtual void setSkyNumber (long /*skyNum*/)
+		virtual void setSkyNumber (int32_t /*skyNum*/)
 		{
 		}
 
 		virtual void setMechName( PCSTR /*pName*/ ){}
 		
-		virtual void startSmoking (long /*smokeLvl*/)
+		virtual void startSmoking (int32_t /*smokeLvl*/)
 		{
 		}
 		
@@ -584,7 +584,7 @@ class Appearance
 		{
 		}
 		
-		virtual void startActivity (long /*effectId*/, bool /*loop*/)
+		virtual void startActivity (int32_t /*effectId*/, bool /*loop*/)
 		{
 		}
 		
@@ -623,7 +623,7 @@ class Appearance
 			return false;
 		}
 
-		virtual bool hasAnimationData (long /*gestureId*/)
+		virtual bool hasAnimationData (int32_t /*gestureId*/)
 		{
 			return false;
 		}

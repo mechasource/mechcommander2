@@ -10,9 +10,9 @@
 #include "fastfile.h"
 //#include <ctype.h>
 
-long ffLastError = 0;
+int32_t ffLastError = 0;
 
-#define NO_ERR		0
+#define NO_ERROR		0
 //-----------------------------------------------------------------------------------
 bool FastFileInit (PSTR fname)
 {
@@ -25,7 +25,7 @@ bool FastFileInit (PSTR fname)
 	//-----------------------------------------------------------------------------
 	//-- Open this fast file, add it to the list O pointers and return TRUE if OK!
 	fastFiles[numFastFiles] = new FastFile;
-	long result = fastFiles[numFastFiles]->open(fname);
+	int32_t result = fastFiles[numFastFiles]->open(fname);
 	if (result == FASTFILE_VERSION)
 	{
 		ffLastError = result;
@@ -42,7 +42,7 @@ void FastFileFini (void)
 {
 	if (fastFiles)
 	{
-		long currentFastFile = 0;
+		int32_t currentFastFile = 0;
 		while (currentFastFile < maxFastFiles)
 		{
 			if (fastFiles[currentFastFile])
@@ -63,13 +63,13 @@ void FastFileFini (void)
 }
 
 //-----------------------------------------------------------------------------------
-FastFile *FastFileFind (PSTR fname, long &fastFileHandle)
+FastFile *FastFileFind (PSTR fname, int32_t &fastFileHandle)
 {
 	if (fastFiles)
 	{
-		DWORD thisHash = elfHash(fname);
-		long currentFastFile = 0;
-		long tempHandle = -1;
+		ULONG thisHash = elfHash(fname);
+		int32_t currentFastFile = 0;
+		int32_t tempHandle = -1;
 		while (currentFastFile < numFastFiles)
 		{
 			tempHandle = fastFiles[currentFastFile]->openFast(thisHash,fname);
@@ -87,7 +87,7 @@ FastFile *FastFileFind (PSTR fname, long &fastFileHandle)
 }
 
 //------------------------------------------------------------------
-DWORD elfHash (PSTR name)
+ULONG elfHash (PSTR name)
 {
     ULONG   h = 0, g;
     while ( *name )

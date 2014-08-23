@@ -36,7 +36,7 @@ gosFX::CardCloud__Specification::CardCloud__Specification(
 
 		SeededCurveOf<ComplexCurve, LinearCurve,Curve::e_ComplexLinearType> temp;
 		temp.Load(stream, gfx_version);
-		Stuff::Scalar v = temp.ComputeValue(0.0f, 0.0f);
+		float v = temp.ComputeValue(0.0f, 0.0f);
 		m_UOffset.SetCurve(v);
 
 		temp.Load(stream, gfx_version);
@@ -158,13 +158,13 @@ bool
 
 	Check_Object(this);
 
-		Stuff::Scalar max_offset, min_offset;
-	Stuff::Scalar max_scale, min_scale;
+		float max_offset, min_offset;
+	float max_scale, min_scale;
 	m_USize.ExpensiveComputeRange(&min_scale, &max_scale);
-	Stuff::Scalar lower = min_scale;
+	float lower = min_scale;
 	if (lower > 0.0f)
 		lower = 0.0f;
-	Stuff::Scalar upper = max_scale;
+	float upper = max_scale;
 
 	//
 	//------------------------------------
@@ -250,7 +250,7 @@ void
 	gosFX::CardCloud__Specification::SetWidth()
 {
 	m_width =
-		static_cast<BYTE>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
+		static_cast<UCHAR>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
 }
 
 //############################################################################
@@ -292,7 +292,7 @@ void
 //
 gosFX::CardCloud::CardCloud(
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	SpinningCloud(DefaultData, spec, flags)
 {
@@ -305,12 +305,12 @@ gosFX::CardCloud::CardCloud(
 	Register_Object(m_cloudImplementation);
 	gos_PopCurrentHeap();
 
-	unsigned index = spec->m_maxParticleCount*sizeof(Particle);
+	uint32_t index = spec->m_maxParticleCount*sizeof(Particle);
 	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index += 4*spec->m_maxParticleCount*sizeof(Stuff::Point3D);
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
 	index += spec->m_maxParticleCount * sizeof(Stuff::RGBAColor);
-	m_P_uvs = Cast_Pointer(Stuff::Vector2DOf<Stuff::Scalar>*, &m_data[index]);
+	m_P_uvs = Cast_Pointer(Stuff::Vector2DOf<float>*, &m_data[index]);
 
 	m_cloudImplementation->SetData(
 		Cast_Pointer(pcint32_t, &m_activeParticleCount),
@@ -333,7 +333,7 @@ gosFX::CardCloud::~CardCloud()
 gosFX::CardCloud*
 	gosFX::CardCloud::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);
@@ -349,7 +349,7 @@ gosFX::CardCloud*
 //
 void
 	gosFX::CardCloud::CreateNewParticle(
-		unsigned index,
+		uint32_t index,
 		Stuff::Point3D *translation
 	)
 {
@@ -388,7 +388,7 @@ void
 //
 bool
 	gosFX::CardCloud::AnimateParticle(
-		unsigned index,
+		uint32_t index,
 		const Stuff::LinearMatrix4D *world_to_new_local,
 		Stuff::Time till
 	)
@@ -407,8 +407,8 @@ bool
 	Check_Object(spec);
 	Particle *particle = GetParticle(index);
 	Check_Object(particle);
-	Stuff::Scalar seed = particle->m_seed;
-	Stuff::Scalar age = particle->m_age;
+	float seed = particle->m_seed;
+	float age = particle->m_age;
 
 	//
 	//------------------
@@ -426,10 +426,10 @@ bool
 	// Animate the uvs
 	//----------------
 	//
-	Stuff::Scalar u = spec->m_UOffset.ComputeValue(age, seed);
-	Stuff::Scalar v = spec->m_VOffset.ComputeValue(age, seed);
-	Stuff::Scalar u2 = spec->m_USize.ComputeValue(age, seed);
-	Stuff::Scalar v2 = spec->m_VSize.ComputeValue(age, seed);
+	float u = spec->m_UOffset.ComputeValue(age, seed);
+	float v = spec->m_VOffset.ComputeValue(age, seed);
+	float u2 = spec->m_USize.ComputeValue(age, seed);
+	float v2 = spec->m_VSize.ComputeValue(age, seed);
 
 	//
 	//--------------------------------------------------------------
@@ -438,12 +438,12 @@ bool
 	//
 	if (spec->m_animated)
 	{
-		BYTE columns =
+		UCHAR columns =
 			Stuff::Truncate_Float_To_Byte(
 				spec->m_pIndex.ComputeValue(age, seed)
 			);
-		BYTE rows = static_cast<BYTE>(columns / spec->m_width);
-		columns = static_cast<BYTE>(columns - rows*spec->m_width);
+		UCHAR rows = static_cast<UCHAR>(columns / spec->m_width);
+		columns = static_cast<UCHAR>(columns - rows*spec->m_width);
 
 		//
 		//---------------------------
@@ -470,7 +470,7 @@ bool
 
 //------------------------------------------------------------------------------
 //
-void gosFX::CardCloud::DestroyParticle(unsigned index)
+void gosFX::CardCloud::DestroyParticle(uint32_t index)
 {
 	Check_Object(this);
 
@@ -508,8 +508,8 @@ void gosFX::CardCloud::Draw(DrawInfo *info)
 		// Check the orientation mode.  The first case is XY orientation
 		//--------------------------------------------------------------
 		//
-		unsigned i;
-		unsigned vert=0;
+		uint32_t i;
+		uint32_t vert=0;
 		if (spec->m_alignZUsingX)
 		{
 			if (spec->m_alignZUsingY)
@@ -566,7 +566,7 @@ void gosFX::CardCloud::Draw(DrawInfo *info)
 						// Figure out the scale, then build the four points
 						//-------------------------------------------------
 						//
-						Stuff::Scalar scale = particle->m_scale;
+						float scale = particle->m_scale;
 						m_P_vertices[vert++].Multiply(
 							Stuff::Point3D(
 								scale*particle->m_halfX,
@@ -662,7 +662,7 @@ void gosFX::CardCloud::Draw(DrawInfo *info)
 						// Figure out the scale, then build the four points
 						//-------------------------------------------------
 						//
-						Stuff::Scalar scale = particle->m_scale;
+						float scale = particle->m_scale;
 						m_P_vertices[vert++].Multiply(
 							Stuff::Point3D(
 								scale*particle->m_halfX,
@@ -759,7 +759,7 @@ void gosFX::CardCloud::Draw(DrawInfo *info)
 					// Figure out the scale, then build the four points
 					//-------------------------------------------------
 					//
-					Stuff::Scalar scale = particle->m_scale;
+					float scale = particle->m_scale;
 					m_P_vertices[vert++].Multiply(
 						Stuff::Point3D(
 							scale*particle->m_halfX,
@@ -827,7 +827,7 @@ void gosFX::CardCloud::Draw(DrawInfo *info)
 					// Figure out the scale, then build the four points
 					//-------------------------------------------------
 					//
-					Stuff::Scalar scale = particle->m_scale;
+					float scale = particle->m_scale;
 					m_P_vertices[vert++].Multiply(
 						Stuff::Point3D(
 							scale*particle->m_halfX,

@@ -191,7 +191,7 @@ void
 	debrisSpheres.SetLength(nrOfParticles);
 	debrisSeed.SetLength(nrOfParticles);
 
-	Stuff::Scalar minRadius = 100000000000.0f, maxRadius = 0.0f;
+	float minRadius = 100000000000.0f, maxRadius = 0.0f;
 
 	for(i=0;i<nrOfParticles;i++)
 	{
@@ -363,7 +363,7 @@ void
 //
 gosFX::DebrisCloud::DebrisCloud(
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	Effect(DefaultData, spec, flags)
 {
@@ -377,7 +377,7 @@ gosFX::DebrisCloud::DebrisCloud(
 gosFX::DebrisCloud*
 	gosFX::DebrisCloud::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);
@@ -421,7 +421,7 @@ void
 		particle->m_age = 0.0f;
 		particle->m_seed = spec->debrisSeed[i];
 
-		Stuff::Scalar lifetime =
+		float lifetime =
 			spec->m_pLifeSpan.ComputeValue(0.0f, particle->m_seed);
 
 		Min_Clamp(lifetime, 0.0333333f);
@@ -432,7 +432,7 @@ void
 		v.Subtract(spec->debrisPositions[i], spec->centerOfForce);
 //		v.y = 0.0f;
 
-		Stuff::Scalar lerpFactor =
+		float lerpFactor =
 			Stuff::Lerp(
 				spec->m_minimumDeviation.ComputeValue(0.0f, particle->m_seed),
 				spec->m_maximumDeviation.ComputeValue(0.0f, particle->m_seed),
@@ -444,7 +444,7 @@ void
 
 		particle->m_linearVelocity *= spec->m_startingSpeed.ComputeValue(0.0f, particle->m_seed);
 
-		Stuff::Scalar temp = spec->m_pSpin.ComputeValue(0.0f, particle->m_seed);
+		float temp = spec->m_pSpin.ComputeValue(0.0f, particle->m_seed);
 
 		particle->m_angularVelocity.x = temp*(2*Stuff::Random::GetFraction() - 1.0f);
 		particle->m_angularVelocity.y = temp*(2*Stuff::Random::GetFraction() - 1.0f);
@@ -475,10 +475,10 @@ bool
 	//
 	Specification *spec = GetSpecification();
 	Check_Object(spec);
-	Stuff::Scalar dT =
-		static_cast<Stuff::Scalar>(info->m_time - m_lastRan);
+	float dT =
+		static_cast<float>(info->m_time - m_lastRan);
 	Verify(dT >= 0.0f);
-	Stuff::Scalar prev_age = m_age;
+	float prev_age = m_age;
 	
 	m_age += dT * m_ageRate;
 
@@ -544,7 +544,7 @@ bool
 		if (particle->m_age < 1.0f)
 		{
 			Stuff::Point3D point;
-			Stuff::Scalar radius = spec->debrisSpheres[i].radius;
+			float radius = spec->debrisSpheres[i].radius;
 
 			point.Multiply(spec->debrisSpheres[i].center, particle->m_localToParent);
 
@@ -576,7 +576,7 @@ bool
 		{
 			Stuff::ExtentBox local_box;
 			Stuff::Point3D point;
-			Stuff::Scalar radius = spec->debrisSpheres[i].radius;
+			float radius = spec->debrisSpheres[i].radius;
 
 			point.Multiply(spec->debrisSpheres[i].center, particle->m_localToParent);
 
@@ -662,7 +662,7 @@ void
 //
 bool
 	gosFX::DebrisCloud::AnimateParticle(
-		unsigned index,
+		uint32_t index,
 		const Stuff::LinearMatrix4D *world_to_new_local,
 		Stuff::Time till
 	)
@@ -678,8 +678,8 @@ bool
 	Check_Object(spec);
 	Particle *particle = GetParticle(index);
 	Check_Object(particle);
-	Stuff::Scalar seed = particle->m_seed;
-	Stuff::Scalar age = particle->m_age;
+	float seed = particle->m_seed;
+	float age = particle->m_age;
 	if (age >= 1.0f)
 		return false;
 
@@ -711,7 +711,7 @@ bool
 	// velocity
 	//------------------------------------------------------------------
 	//
-	Stuff::Scalar drag = -spec->m_pDrag.ComputeValue(age, seed);
+	float drag = -spec->m_pDrag.ComputeValue(age, seed);
 	Max_Clamp(drag, 0.0f);
 	Stuff::Vector3D ether;
 	ether.x = 0.0f;
@@ -752,8 +752,8 @@ bool
 	// Compute the particle's new velocity and position
 	//-------------------------------------------------
 	//
-	Stuff::Scalar time_slice =
-		static_cast<Stuff::Scalar>(till - m_lastRan);
+	float time_slice =
+		static_cast<float>(till - m_lastRan);
 	
 	particle->m_linearVelocity.AddScaled(particle->m_linearVelocity, accel, time_slice);
 	

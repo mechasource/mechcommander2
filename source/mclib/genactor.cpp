@@ -67,10 +67,10 @@ extern float	worldUnitsPerMeter;
 extern bool 	drawTerrainGrid;
 extern bool		useFog;
 
-extern long 	mechRGBLookup[];
-extern long 	mechRGBLookup2[];
+extern int32_t 	mechRGBLookup[];
+extern int32_t 	mechRGBLookup2[];
 
-extern long		ObjectTextureSize;
+extern int32_t		ObjectTextureSize;
 
 extern bool reloadBounds;
 //-----------------------------------------------------------------------------
@@ -88,7 +88,7 @@ void GenericAppearanceType::init (PSTR  fileName)
 	iniName.init(tglPath,fileName,".ini");
 
 	FitIniFile iniFile;
-	long result = iniFile.open(iniName);
+	int32_t result = iniFile.open(iniName);
 	if (result != NO_ERR)
 		Fatal(result,"Could not find building appearance INI file");
 
@@ -143,7 +143,7 @@ void GenericAppearanceType::init (PSTR  fileName)
 	//--------------------------------------------------------------------
 	// Load Animation Information.
 	// We can load up to 10 Animation States.
-	for (long i=0;i<MAX_BD_ANIMATIONS;i++)
+	for (int32_t i=0;i<MAX_BD_ANIMATIONS;i++)
 	{
 		char blockId[512];
 		sprintf(blockId,"Animation:%d",i);
@@ -229,7 +229,7 @@ void GenericAppearanceType::destroy (void)
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearanceType::setAnimation (TG_MultiShapePtr shape, DWORD animationNum)
+void GenericAppearanceType::setAnimation (TG_MultiShapePtr shape, ULONG animationNum)
 {
 	gosASSERT(shape != NULL);
 	gosASSERT(animationNum != 0xffffffff);
@@ -278,7 +278,7 @@ void GenericAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	if (appearType)
 	{
 		genShape = appearType->genShape->CreateFrom();
-		long i;
+		int32_t i;
 
 		//-------------------------------------------------
 		// Load the texture and store its handle.
@@ -300,13 +300,13 @@ void GenericAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					genShape->SetTextureHandle(i,gosTextureHandle);
 					genShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					genShape->SetTextureHandle(i,gosTextureHandle);
 					genShape->SetTextureAlpha(i,false);
 				}
@@ -377,7 +377,7 @@ void GenericAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::setObjStatus (long oStatus)
+void GenericAppearance::setObjStatus (int32_t oStatus)
 {
 	if (status != oStatus)
 	{
@@ -393,7 +393,7 @@ void GenericAppearance::setObjStatus (long oStatus)
 				
 				//-------------------------------------------------
 				// Load the texture and store its handle.
-				for (long i=0;i<genShape->GetNumTextures();i++)
+				for (int32_t i=0;i<genShape->GetNumTextures();i++)
 				{
 					char txmName[1024];
 					genShape->GetTextureName(i,txmName,256);
@@ -406,7 +406,7 @@ void GenericAppearance::setObjStatus (long oStatus)
 					
 					if (fileExists(textureName))
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						genShape->SetTextureHandle(i,gosTextureHandle);
 					}
 					else
@@ -472,7 +472,7 @@ void GenericAppearance::setMoverParameters (float turretRot, float lArmRot, floa
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::setObjectParameters (Stuff::Vector3D &pos, float Rot, long sel, long team, long homeRelations)
+void GenericAppearance::setObjectParameters (Stuff::Vector3D &pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	rotation = Rot;
 
@@ -503,11 +503,11 @@ void GenericAppearance::changeSkyToSkyNum (PSTR txmName, PSTR newName)
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::setSkyNumber (long skyNum)
+void GenericAppearance::setSkyNumber (int32_t skyNum)
 {
 	//-------------------------------------------------
 	// Load the texture and store its handle.
-	for (long i=0;i<genShape->GetNumTextures();i++)
+	for (int32_t i=0;i<genShape->GetNumTextures();i++)
 	{
 		char txmName[1024];
 		char newName[1024];
@@ -531,13 +531,13 @@ void GenericAppearance::setSkyNumber (long skyNum)
 		{
 			if (strnicmp(newName,"a_",2) == 0)
 			{
-				DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+				ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 				genShape->SetTextureHandle(i,gosTextureHandle);
 				genShape->SetTextureAlpha(i,true);
 			}
 			else
 			{
-				DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+				ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 				genShape->SetTextureHandle(i,gosTextureHandle);
 				genShape->SetTextureAlpha(i,false);
 			}
@@ -706,7 +706,7 @@ bool GenericAppearance::recalcBounds (void)
 				float maxX = 0.0f, maxY = 0.0f;
 				float minX = 0.0f, minY = 0.0f;
 
-				for (long i=0;i<8;i++)
+				for (int32_t i=0;i<8;i++)
 				{
 					eye->projectZ(boxCoords[i],bcsp[i]);
 					if (!i)
@@ -759,15 +759,15 @@ bool GenericAppearance::recalcBounds (void)
 }
 
 //-----------------------------------------------------------------------------
-long GenericAppearance::render (long depthFixup)
+int32_t GenericAppearance::render (int32_t depthFixup)
 {
 	if (inView)
 	{
-		long color = SD_BLUE;
+		int32_t color = SD_BLUE;
 		ULONG highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8)) {
 			static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
-			static long colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
+			static int32_t colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
 			color = colorTable[homeTeamRelationship];
 			highLight = highLightTable[homeTeamRelationship];
 		}
@@ -922,7 +922,7 @@ long GenericAppearance::render (long depthFixup)
 		boxCoords[7].Add(position,addCoords);
 		
 		Stuff::Vector4D screenPos[8];
-		for (long i=0;i<8;i++)
+		for (int32_t i=0;i<8;i++)
 		{
 			eye->projectZ(boxCoords[i],screenPos[i]);
 		}
@@ -993,7 +993,7 @@ long GenericAppearance::render (long depthFixup)
 }
 
 //-----------------------------------------------------------------------------
-long GenericAppearance::renderShadows (void)
+int32_t GenericAppearance::renderShadows (void)
 {
 	if (inView && visible)
 	{
@@ -1005,7 +1005,7 @@ long GenericAppearance::renderShadows (void)
 }
 
 //-----------------------------------------------------------------------------
-long GenericAppearance::update (bool animate) 
+int32_t GenericAppearance::update (bool animate) 
 {
 	Stuff::Point3D xlatPosition;
 	Stuff::UnitQuaternion rot;
@@ -1038,12 +1038,12 @@ long GenericAppearance::update (bool animate)
 		lightg = eye->getLightGreen(lightIntensity);
 		lightb = eye->getLightBlue(lightIntensity);
 	
-		DWORD lightRGB = (lightr<<16) + (lightg<<8) + lightb;
+		ULONG lightRGB = (lightr<<16) + (lightg<<8) + lightb;
 		
 		eye->setLightColor(0,lightRGB);
 		eye->setLightIntensity(0,1.0);
 	
-		DWORD fogRGB = 0xff<<24;
+		ULONG fogRGB = 0xff<<24;
 		float fogStart = eye->fogStart;
 		float fogFull = eye->fogFull;
 	

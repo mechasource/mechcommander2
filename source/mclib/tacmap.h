@@ -22,7 +22,7 @@ class TacMap
 	TacMap();
 
 	static void worldToTacMap( Stuff::Vector3D& world, int xOffset, int yOffset, int xSize, int ySize, gos_VERTEX& tac );
-	static void tacMapToWorld( const Stuff::Vector2DOf<long>& screen, int xSize, int ySize,  Stuff::Vector3D& world );
+	static void tacMapToWorld( const Stuff::Vector2DOf<int32_t>& screen, int xSize, int ySize,  Stuff::Vector3D& world );
 
 };
 

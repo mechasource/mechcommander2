@@ -22,7 +22,7 @@
 // Static Data Members
 //---------------------------------------------------------------------------
 // Class Element
-Element::Element (long _depth)
+Element::Element (int32_t _depth)
 {
 	depth = _depth;
 	drawNormal = TRUE;

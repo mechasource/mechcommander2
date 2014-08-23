@@ -56,7 +56,7 @@ extern bool hasGuardBand;
 
 //---------------------------------------------------------------------------
 // Class Clouds
-void Clouds::init (PSTR textureName, long gSize)
+void Clouds::init (PSTR textureName, int32_t gSize)
 {
 	FullPathFileName cloudName;
 	cloudName.init(texturePath,textureName,".tga");
@@ -68,7 +68,7 @@ void Clouds::init (PSTR textureName, long gSize)
 	//-------------------------------------
 	// Create the CloudVertices here.
 	gridSize = gSize;
-	long gridTotal = gridSize * gridSize;
+	int32_t gridTotal = gridSize * gridSize;
 	cloudVertices = (CloudVertexPtr)systemHeap->Malloc(sizeof(CloudVertex)*gridTotal);
 	gosASSERT(cloudVertices != NULL);
 	
@@ -113,12 +113,12 @@ void Clouds::update (void)
 		
 		//-------------------------------------------------------
 		// Create the grid.
-		long cloudInc = float2long(MAX_CLOUDS_SIZE * 2.0f / gridSize);
+		int32_t cloudInc = float2long(MAX_CLOUDS_SIZE * 2.0f / gridSize);
 		float uvInc = MAX_UV_REPEAT / float(gridSize);
-		long y;
+		int32_t y;
 		for (y=0;y<gridSize;y++)
 		{
-			for (long x=0;x<gridSize;x++)
+			for (int32_t x=0;x<gridSize;x++)
 			{
 				cloudVertices[x + (y*gridSize)].vx = tLeftX - (cloudInc * x);
 				cloudVertices[x + (y*gridSize)].vy = tLeftY - (cloudInc * y);
@@ -130,8 +130,8 @@ void Clouds::update (void)
 		
 		//-------------------------------------------------------
 		// Transform Grid
-		long gridTotal = gridSize * gridSize;
-		for (long i=0;i<gridTotal;i++)
+		int32_t gridTotal = gridSize * gridSize;
+		for (int32_t i=0;i<gridTotal;i++)
 		{
 			//----------------------------------------------------------------------------------------
 			// Figure out if we are in front of camera or not.  Should be faster then actual project!
@@ -173,7 +173,7 @@ void Clouds::update (void)
 			if (hazeFactor != 0.0f)
 			{
 				float fogFactor = 1.0 - hazeFactor;
-				DWORD distFog = float2long(fogFactor * 255.0f);
+				ULONG distFog = float2long(fogFactor * 255.0f);
 				
 				cloudVertices[i].fogRGB = (distFog<<24) + (0xffffff);
 			}
@@ -227,7 +227,7 @@ void Clouds::update (void)
 		
 		for (y=0;y<(gridSize-1);y++)
 		{
-			for (long x=0;x<(gridSize-1);x++)
+			for (int32_t x=0;x<(gridSize-1);x++)
 			{
 				CloudVertexPtr cloudVertex0 = &(cloudVertices[x     + (y    *gridSize)]);
 				CloudVertexPtr cloudVertex1 = &(cloudVertices[(x+1) + (y    *gridSize)]); 
@@ -261,9 +261,9 @@ void Clouds::render (void)
 	if (!renderClouds)
 		return;
 		
-	for (long y=0;y<(gridSize-1);y++)
+	for (int32_t y=0;y<(gridSize-1);y++)
 	{
-		for (long x=0;x<(gridSize-1);x++)
+		for (int32_t x=0;x<(gridSize-1);x++)
 		{
 			CloudVertexPtr cloudVertex0 = &(cloudVertices[x     + (y    *gridSize)]);
 			CloudVertexPtr cloudVertex1 = &(cloudVertices[(x+1) + (y    *gridSize)]); 

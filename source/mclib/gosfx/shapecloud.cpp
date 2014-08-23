@@ -168,7 +168,7 @@ void
 			primitive->GetCoordData(&points, &vertex_count);
 			for (int v=0; v<vertex_count; ++v)
 			{
-				Stuff::Scalar len = points[v].GetLengthSquared();
+				float len = points[v].GetLengthSquared();
 				if (len > m_radius)
 					m_radius = len;
 			}
@@ -216,7 +216,7 @@ void
 //
 gosFX::ShapeCloud::ShapeCloud(
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	SpinningCloud(DefaultData, spec, flags)
 {
@@ -228,7 +228,7 @@ gosFX::ShapeCloud::ShapeCloud(
 gosFX::ShapeCloud*
 	gosFX::ShapeCloud::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);
@@ -244,7 +244,7 @@ gosFX::ShapeCloud*
 //
 void
 	gosFX::ShapeCloud::CreateNewParticle(
-		unsigned index,
+		uint32_t index,
 		Stuff::Point3D *translation
 	)
 {
@@ -267,7 +267,7 @@ void
 //
 bool
 	gosFX::ShapeCloud::AnimateParticle(
-		unsigned index,
+		uint32_t index,
 		const Stuff::LinearMatrix4D *world_to_new_local,
 		Stuff::Time till
 	)
@@ -286,8 +286,8 @@ bool
 	Check_Object(spec);
 	Particle *particle = GetParticle(index);
 	Check_Object(particle);
-	Stuff::Scalar seed = particle->m_seed;
-	Stuff::Scalar age = particle->m_age;
+	float seed = particle->m_seed;
+	float age = particle->m_age;
 
 	//
 	//------------------
@@ -334,7 +334,7 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 		// Check the orientation mode.  The first case is XY orientation
 		//--------------------------------------------------------------
 		//
-		unsigned i;
+		uint32_t i;
 		if (spec->m_alignZUsingX)
 		{
 			if (spec->m_alignZUsingY)
@@ -351,7 +351,7 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 					camera_in_world,
 					local_to_world
 				);
-				for (unsigned i = 0; i < m_activeParticleCount; i++)
+				for (uint32_t i = 0; i < m_activeParticleCount; i++)
 				{
 					Particle *particle = GetParticle(i);
 					Check_Object(particle);
@@ -416,7 +416,7 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 					camera_in_world,
 					local_to_world
 				);
-				for (unsigned i = 0; i < m_activeParticleCount; i++)
+				for (uint32_t i = 0; i < m_activeParticleCount; i++)
 				{
 					Particle *particle = GetParticle(i);
 					Check_Object(particle);
@@ -482,7 +482,7 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 				camera_in_world,
 				local_to_world
 			);
-			for (unsigned i = 0; i < m_activeParticleCount; i++)
+			for (uint32_t i = 0; i < m_activeParticleCount; i++)
 			{
 				Particle *particle = GetParticle(i);
 				Check_Object(particle);

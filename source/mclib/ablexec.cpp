@@ -43,27 +43,27 @@ PSTR					codeSegmentLimit = NULL;
 PSTR					statementStartPtr = NULL;
 
 TokenCodeType			codeToken;
-long					execLineNumber;
-long					execStatementCount = 0;
+int32_t					execLineNumber;
+int32_t					execStatementCount = 0;
 
 StackItem*				stack = NULL;
 StackItemPtr			tos = NULL;
 StackItemPtr			stackFrameBasePtr = NULL;
 StackItemPtr			StaticDataPtr = NULL;
-long*					StaticVariablesSizes = NULL;
-long*					EternalVariablesSizes = NULL;
-long					eternalOffset = 0;
-long					MaxStaticVariables = 0;
-long					MaxEternalVariables = 0;
-long					NumStaticVariables = 0;
-long					NumOrderCalls = 1;
-long					NumStateHandles = 0;
+int32_t*					StaticVariablesSizes = NULL;
+int32_t*					EternalVariablesSizes = NULL;
+int32_t					eternalOffset = 0;
+int32_t					MaxStaticVariables = 0;
+int32_t					MaxEternalVariables = 0;
+int32_t					NumStaticVariables = 0;
+int32_t					NumOrderCalls = 1;
+int32_t					NumStateHandles = 0;
 StateHandleInfo			StateHandleList[MAX_STATE_HANDLES_PER_MODULE];
-long					CurModuleHandle = 0;
-long					MaxCodeBufferSize = 0;
+int32_t					CurModuleHandle = 0;
+int32_t					MaxCodeBufferSize = 0;
 bool					CallModuleInit = false;
 bool					AutoReturnFromOrders = false;
-long					MaxLoopIterations = 100001;
+int32_t					MaxLoopIterations = 100001;
 bool					AssertEnabled = false;
 bool					PrintEnabled = true;
 bool					StringFunctionsEnabled = true;
@@ -83,12 +83,12 @@ extern ModuleEntryPtr	ModuleRegistry;
 extern ABLModulePtr*	ModuleInstanceRegistry;
 extern ABLModulePtr		CurModule;
 extern ABLModulePtr		CurLibrary;
-extern long				NumStateTransitions;
+extern int32_t				NumStateTransitions;
 
 extern TokenCodeType	curToken;
-extern long				lineNumber;
-extern long				FileNumber;
-extern long				level;
+extern int32_t				lineNumber;
+extern int32_t				FileNumber;
+extern int32_t				level;
 extern TypePtr			IntegerTypePtr;
 extern TypePtr			CharTypePtr;
 extern TypePtr			RealTypePtr;
@@ -151,10 +151,10 @@ void crunchStatementMarker (void) {
 		*codeBufferPtr = (char)TKN_STATEMENT_MARKER;
 		codeBufferPtr++;
 		if (IncludeDebugInfo) {
-			*((PUCHAR)codeBufferPtr) = (uint8_t)FileNumber;
+			*((puint8_t)codeBufferPtr) = (uint8_t)FileNumber;
 			codeBufferPtr += sizeof(uint8_t);
-			*((long*)codeBufferPtr) = lineNumber;
-			codeBufferPtr += sizeof(long);
+			*((int32_t*)codeBufferPtr) = lineNumber;
+			codeBufferPtr += sizeof(int32_t);
 		}
 		*codeBufferPtr = saveCode;
 		codeBufferPtr++;
@@ -171,7 +171,7 @@ void uncrunchStatementMarker (void) {
 	//-------------------------------
 	// Pull debug info off the buffer
 	if (IncludeDebugInfo)
-		codeBufferPtr -= (sizeof(uint8_t) + sizeof(long));
+		codeBufferPtr -= (sizeof(uint8_t) + sizeof(int32_t));
 	//-------------------------------------
 	// Pull statement marker off the buffer
 	codeBufferPtr--;
@@ -211,13 +211,13 @@ PSTR fixupAddressMarker (Address address) {
 
 	PSTR oldAddress = *((Address*)address);
 
-	*((long*)address) = codeBufferPtr - address;
+	*((int32_t*)address) = codeBufferPtr - address;
 	return(oldAddress);
 }
 
 //***************************************************************************
 
-void crunchInteger (long value) {
+void crunchInteger (int32_t value) {
 
 	if (!Crunch)
 		return;
@@ -225,8 +225,8 @@ void crunchInteger (long value) {
 	if (codeBufferPtr >= (codeBuffer + MaxCodeBufferSize - 100))
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else {
-		*((long*)codeBufferPtr) = value;
-		codeBufferPtr += sizeof(long);
+		*((int32_t*)codeBufferPtr) = value;
+		codeBufferPtr += sizeof(int32_t);
 	}
 }
 
@@ -240,7 +240,7 @@ void crunchByte (uint8_t value) {
 	if (codeBufferPtr >= (codeBuffer + MaxCodeBufferSize - 100))
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else {
-		*((PUCHAR)codeBufferPtr) = value;
+		*((puint8_t)codeBufferPtr) = value;
 		codeBufferPtr += sizeof(uint8_t);
 	}
 }
@@ -255,21 +255,21 @@ void crunchOffset (Address address) {
 	if (codeBufferPtr >= (codeBuffer + MaxCodeBufferSize - 100))
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
 	else {
-		*((long*)codeBufferPtr) = address - codeBufferPtr;
-		codeBufferPtr += sizeof(long);
+		*((int32_t*)codeBufferPtr) = address - codeBufferPtr;
+		codeBufferPtr += sizeof(int32_t);
 	}
 }
 
 //***************************************************************************
 
-PSTR createCodeSegment (long& codeSegmentSize) {
+PSTR createCodeSegment (int32_t& codeSegmentSize) {
 
 	codeSegmentSize = codeBufferPtr - codeBuffer + 1;
 	PSTR codeSegment = (PSTR)ABLCodeMallocCallback(codeSegmentSize);
 	if (!codeSegment)
 		ABL_Fatal(0, " ABL: Unable to AblCodeHeap->malloc code segment ");
 
-	for (long i = 0; i < codeSegmentSize; i++)
+	for (int32_t i = 0; i < codeSegmentSize; i++)
 		codeSegment[i] = codeBuffer[i];
 
 	codeBufferPtr = codeBuffer;
@@ -289,18 +289,18 @@ SymTableNodePtr getCodeSymTableNodePtr (void) {
 
 //***************************************************************************
 
-long getCodeStatementMarker (void) {
+int32_t getCodeStatementMarker (void) {
 
 	//------------------------------------------
 	// NOTE: If there's a problem, we return -1.
 
-	long lineNum = -1;
+	int32_t lineNum = -1;
 	if (codeToken == TKN_STATEMENT_MARKER) {
 		if (IncludeDebugInfo) {
-			FileNumber = *((PUCHAR)codeSegmentPtr);
+			FileNumber = *((puint8_t)codeSegmentPtr);
 			codeSegmentPtr += sizeof(uint8_t);
-			lineNum = *((long*)codeSegmentPtr);
-			codeSegmentPtr += sizeof(long);
+			lineNum = *((int32_t*)codeSegmentPtr);
+			codeSegmentPtr += sizeof(int32_t);
 		}
 	}
 	return(lineNum);
@@ -313,7 +313,7 @@ PSTR getCodeAddressMarker (void) {
 	Address address = NULL;
 
 	if (codeToken == TKN_ADDRESS_MARKER) {
-		address = *((long*)codeSegmentPtr) + codeSegmentPtr - 1;
+		address = *((int32_t*)codeSegmentPtr) + codeSegmentPtr - 1;
 		codeSegmentPtr += sizeof(Address);
 	}
 	return(address);
@@ -321,10 +321,10 @@ PSTR getCodeAddressMarker (void) {
 
 //***************************************************************************
 
-long getCodeInteger (void) {
+int32_t getCodeInteger (void) {
 
-	long value = *((long*)codeSegmentPtr);
-	codeSegmentPtr += sizeof(long);
+	int32_t value = *((int32_t*)codeSegmentPtr);
+	codeSegmentPtr += sizeof(int32_t);
 	return(value);
 }
 
@@ -332,7 +332,7 @@ long getCodeInteger (void) {
 
 uint8_t getCodeByte (void) {
 
-	uint8_t value = *((PUCHAR)codeSegmentPtr);
+	uint8_t value = *((puint8_t)codeSegmentPtr);
 	codeSegmentPtr += sizeof(uint8_t);
 	return(value);
 }
@@ -341,8 +341,8 @@ uint8_t getCodeByte (void) {
 
 PSTR getCodeAddress (void) {
 
-	Address address = *((long*)codeSegmentPtr) + codeSegmentPtr - 1;
-	codeSegmentPtr += sizeof(long);
+	Address address = *((int32_t*)codeSegmentPtr) + codeSegmentPtr - 1;
+	codeSegmentPtr += sizeof(int32_t);
 	return(address);
 }
 
@@ -365,7 +365,7 @@ void getCodeToken (void) {
 
 //***************************************************************************
 
-void pushInteger (long value) {
+void pushInteger (int32_t value) {
 
 	StackItemPtr valuePtr = ++tos;
 
@@ -419,7 +419,7 @@ void pushBoolean (bool value) {
 }
 
 //***************************************************************************
-void pushStackFrameHeader (long oldLevel, long newLevel) {
+void pushStackFrameHeader (int32_t oldLevel, int32_t newLevel) {
 
 	//-----------------------------------
 	// Make space for the return value...
@@ -619,13 +619,13 @@ void execute (SymTableNodePtr routineIdPtr) {
 				UserFile* userFile = UserFile::getNewFile();
 				char errStr[512];
 				if (userFile) {
-					long err = userFile->open("endless.log");
+					int32_t err = userFile->open("endless.log");
 					if (!err) {
 						//char s[1024];
 						//sprintf(s, "Current Date: %s\n", GetTime());
 						//userFile->write(s);
 						userFile->write(ModuleRegistry[CurModule->getHandle()].fileName);
-						for (long i = 1; i < 51; i++)
+						for (int32_t i = 1; i < 51; i++)
 							userFile->write(stateList[i]);
 						userFile->write(" ");
 						if (ABLEndlessStateCallback)

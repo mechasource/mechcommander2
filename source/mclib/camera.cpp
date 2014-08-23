@@ -47,9 +47,9 @@
 extern void AG_ellipse_draw(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color);
 extern void AG_ellipse_fill(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color);
 extern void AG_StatusBar( PANE *pane, int X0, int Y0, int X1, int Y1, int Color, int Width );
-extern void AG_shape_draw (PANE *pane, void *shape_table,LONG shape_number, LONG hotX, LONG hotY);
-extern void AG_shape_translate_draw (PANE *pane, void *shape_table,LONG shape_number, LONG hotX, LONG hotY);
-extern void AG_shape_lookaside(MemoryPtr palette);
+extern void AG_shape_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY);
+extern void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY);
+extern void AG_shape_lookaside(PUCHAR palette);
 
 //#pragma warning(disable:4305/*double to float truncation*/)
 
@@ -63,9 +63,9 @@ inline float agsqrt( float _a, float _b )
 
 char WindowTitle[1024];		// Global window title (GetWindowText is VERY slow)
 
-long topCtrlUpd = 0;
+int32_t topCtrlUpd = 0;
 
-extern long scenarioEndTurn;
+extern int32_t scenarioEndTurn;
 extern float actualTime;
 
 
@@ -80,26 +80,26 @@ extern float actualTime;
 #define TERRAIN_LIGHTS_ON		(40.0f)
 
 #ifdef _DEBUG
-extern long currentHotSpot;
+extern int32_t currentHotSpot;
 #endif
 
 // RNA - moved this out of the #ifdef PROFILE so it's available in release
-extern long displayProfileData;
+extern int32_t displayProfileData;
 
 extern bool drawTerrainGrid;
-extern long mechElements;
+extern int32_t mechElements;
 
-long leaveSwoopyOff = 0;
+int32_t leaveSwoopyOff = 0;
 
-extern long tileCacheReqs;
-extern long tileCacheHits;
-extern long tileCacheMiss;
+extern int32_t tileCacheReqs;
+extern int32_t tileCacheHits;
+extern int32_t tileCacheMiss;
 
 bool drawCameraCircle = FALSE;
 extern bool gamePaused;
 extern bool gameAsked;
-MemoryPtr pauseShape = NULL;
-MemoryPtr askedShape = NULL;
+PUCHAR pauseShape = NULL;
+PUCHAR askedShape = NULL;
 extern bool gRestartRender;
 bool MaxObjectsDrawn = FALSE;
 
@@ -173,48 +173,48 @@ const float CAM_THRESHOLD = 150.0f;
 
 	
 //---------------------------------------------------------------------------
-long Camera::init (FitIniFilePtr cameraFile )
+int32_t Camera::init (FitIniFilePtr cameraFile )
 {
-	long result = cameraFile->seekBlock("Cameras");
-	gosASSERT(result == NO_ERR);
+	int32_t result = cameraFile->seekBlock("Cameras");
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdFloat("ProjectionAngle",projectionAngle);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = cameraFile->readIdFloat("PositionX",position.x);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdFloat("PositionY",position.y);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 		
 	result = cameraFile->readIdFloat("PositionZ",position.z);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	cameraShiftZ = position.z;
 	
 	result = cameraFile->readIdBoolean("Ready",ready);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdUChar("LightRed",lightRed);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdUChar("LightGreen",lightGreen);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdUChar("LightBlue",lightBlue);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdUChar("AmbientRed",ambientRed);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdUChar("AmbientGreen",ambientGreen);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdUChar("AmbientBlue",ambientBlue);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	uint8_t tmpUCHAR;
 	result = cameraFile->readIdUChar("TerrainShadowColorEnabled",tmpUCHAR);
-	if ((result != NO_ERR) || (0 == tmpUCHAR)) {
+	if ((result != NO_ERROR) || (0 == tmpUCHAR)) {
 		terrainShadowColorEnabled = false;
 	}
 	else
@@ -223,40 +223,40 @@ long Camera::init (FitIniFilePtr cameraFile )
 	}
 	
 	result = cameraFile->readIdUChar("TerrainShadowRed",terrainShadowRed);
-	if (result != NO_ERR) { terrainShadowRed = ambientRed; }
+	if (result != NO_ERROR) { terrainShadowRed = ambientRed; }
 	
 	result = cameraFile->readIdUChar("TerrainShadowGreen",terrainShadowGreen);
-	if (result != NO_ERR) { terrainShadowGreen = ambientGreen; }
+	if (result != NO_ERROR) { terrainShadowGreen = ambientGreen; }
 	
 	result = cameraFile->readIdUChar("TerrainShadowBlue",terrainShadowBlue);
-	if (result != NO_ERR) { terrainShadowBlue = ambientBlue; }
+	if (result != NO_ERROR) { terrainShadowBlue = ambientBlue; }
 
 	result = cameraFile->readIdUChar("SeenRed",seenRed);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdUChar("SeenGreen",seenGreen);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdUChar("SeenBlue",seenBlue);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdUChar("BaseRed",baseRed);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdUChar("BaseGreen",baseGreen);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdUChar("BaseBlue",baseBlue);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 			
 	result = cameraFile->readIdFloat("LightDirYaw",lightYaw);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdFloat("LightDirPitch",lightPitch);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdFloat("DayToNightTime",day2NightTransitionTime);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 	{
 		day2NightTransitionTime = -1.0f;
 		dayLightTime = 0.0f;
@@ -293,24 +293,24 @@ long Camera::init (FitIniFilePtr cameraFile )
 	else		//They want the time of day to change!
 	{
 		result = cameraFile->readIdFloat("DayLightPitch",dayLightPitch);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		
 		result = cameraFile->readIdUChar("DayLightRed",dayLightRed);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		result = cameraFile->readIdUChar("DayLightGreen",dayLightGreen);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		result = cameraFile->readIdUChar("DayLightBlue",dayLightBlue);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 	
 		result = cameraFile->readIdUChar("DayAmbientRed",dayAmbientRed);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		result = cameraFile->readIdUChar("DayAmbientGreen",dayAmbientGreen);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		result = cameraFile->readIdUChar("DayAmbientBlue",dayAmbientBlue);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		
 		result = cameraFile->readIdUChar("SunsetLightRed",sunsetLightRed);
-		if (NO_ERR != result)
+		if (NO_ERROR != result)
 		{
 			sunsetLightRed = 254/*arbitrary default*/;
 			sunsetLightGreen = 68/*arbitrary default*/;
@@ -319,24 +319,24 @@ long Camera::init (FitIniFilePtr cameraFile )
 		else
 		{
 			result = cameraFile->readIdUChar("SunsetLightGreen",sunsetLightGreen);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			result = cameraFile->readIdUChar("SunsetLightBlue",sunsetLightBlue);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 		}
 		
 		result = cameraFile->readIdUChar("NightLightRed",nightLightRed);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		result = cameraFile->readIdUChar("NightLightGreen",nightLightGreen);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		result = cameraFile->readIdUChar("NightLightBlue",nightLightBlue);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = cameraFile->readIdUChar("NightAmbientRed",nightAmbientRed);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		result = cameraFile->readIdUChar("NightAmbientGreen",nightAmbientGreen);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		result = cameraFile->readIdUChar("NightAmbientBlue",nightAmbientBlue);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		
 		dayLightTime = 0.0f;
 		lightPitch = dayLightPitch;
@@ -357,33 +357,33 @@ long Camera::init (FitIniFilePtr cameraFile )
 
 	
 	result = cameraFile->readIdFloat("NewScale",newScaleFactor);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	float startRotation = 0.0;
 	result = cameraFile->readIdFloat("StartRotation",startRotation);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	setCameraRotation(startRotation,startRotation);
 
 	result = cameraFile->readIdFloatArray("LODScales",zoomLevelLODScale,MAX_LODS);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdFloat("ElevationAdjustFactor",elevationAdjustFactor);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdFloat("ZoomMax",zoomMax);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 	
 	result = cameraFile->readIdFloat("ZoomMin",zoomMin);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	FOVMax = 90.0f;
 	result = cameraFile->readIdFloat("FOVMax",FOVMax);
-//	gosASSERT(result == NO_ERR);
+//	gosASSERT(result == NO_ERROR);
 	
 	FOVMin = 20.0f;
 	result = cameraFile->readIdFloat("FOVMin",FOVMin);
-//	gosASSERT(result == NO_ERR);
+//	gosASSERT(result == NO_ERROR);
 	
  	setClass(BASE_CAMERA);
 	
@@ -429,18 +429,18 @@ long Camera::init (FitIniFilePtr cameraFile )
 	//---------------------
 	// Read in Fog Values.
 	result = cameraFile->readIdFloat("FogStart",fogStart);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = cameraFile->readIdFloat("FogFull",fogFull);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = cameraFile->readIdULong("FogColor",fogColor);
 	dayFogColor = fogColor;
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = cameraFile->readIdFloat("FogTransparency",fogTransparency);
 #if 0
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 	{
 		/* This is an old file where FogColor includes the color of the sky showing through. */
 
@@ -484,10 +484,10 @@ long Camera::init (FitIniFilePtr cameraFile )
 		dayFogColor = (opaqueDayFogRed << 16) + (opaqueDayFogGreen << 8) + opaqueDayFogBlue;
 		fogTransparency = fFogTransparency;
 	}
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 #endif
 
-	long userMin, userMax, baseTerrain;
+	int32_t userMin, userMax, baseTerrain;
 	cameraFile->readIdLong( "UserMin", userMin );
 	cameraFile->readIdLong( "UserMax", userMax );
 	cameraFile->readIdLong( "BaseTerrain", baseTerrain );
@@ -513,7 +513,7 @@ long Camera::init (FitIniFilePtr cameraFile )
 //		update();
 //	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------------
@@ -545,7 +545,7 @@ void Camera::destroy (void)
 }
 
 //---------------------------------------------------------------------------
-void Camera::getClosestVertex (Stuff::Vector2DOf<long> &screenPos, long &row, long &col)
+void Camera::getClosestVertex (Stuff::Vector2DOf<int32_t> &screenPos, int32_t &row, int32_t &col)
 {
 	//--------------------------------------------------------
 	// New method.  Use the terrain window to figure out
@@ -554,14 +554,14 @@ void Camera::getClosestVertex (Stuff::Vector2DOf<long> &screenPos, long &row, lo
 	VertexPtr topVertex = land->getVertexList();
 	ULONG numVertices = land->getNumVertices();
 	VertexPtr closestVertex = NULL;
-	long whichVertex = 0;
+	int32_t whichVertex = 0;
 
 //
 // Redone all using integers and no square root.
 //
-	long i=0,tvx=screenPos.x,tvy=screenPos.y;
+	int32_t i=0,tvx=screenPos.x,tvy=screenPos.y;
 	float dx,dy,cd=1e38f,dist;
-	for (i=0;i<(long)numVertices;i++)
+	for (i=0;i<(int32_t)numVertices;i++)
 	{
 		dx = ( tvx - topVertex->px);
 		dy = ( tvy - topVertex->py);
@@ -575,14 +575,14 @@ void Camera::getClosestVertex (Stuff::Vector2DOf<long> &screenPos, long &row, lo
 		topVertex++;
 	}
 
-	long block = closestVertex->blockVertex >> 16;
-	long vertex = closestVertex->blockVertex & 0x0000ffff;
+	int32_t block = closestVertex->blockVertex >> 16;
+	int32_t vertex = closestVertex->blockVertex & 0x0000ffff;
 
-	long blockX = block % Terrain::blocksMapSide;
-	long blockY = block / Terrain::blocksMapSide;
+	int32_t blockX = block % Terrain::blocksMapSide;
+	int32_t blockY = block / Terrain::blocksMapSide;
 
-	long vertexX = vertex % Terrain::verticesBlockSide;
-	long vertexY = vertex / Terrain::verticesBlockSide;
+	int32_t vertexX = vertex % Terrain::verticesBlockSide;
+	int32_t vertexY = vertex / Terrain::verticesBlockSide;
 
 	col = blockX * Terrain::verticesBlockSide + vertexX;
 	row = blockY * Terrain::verticesBlockSide + vertexY;
@@ -590,7 +590,7 @@ void Camera::getClosestVertex (Stuff::Vector2DOf<long> &screenPos, long &row, lo
 
 //---------------------------------------------------------------------------
 
-inline void mapTileCellToWorldPos (long tileR, long tileC, long cellR, long cellC, Stuff::Vector3D& worldPos) {
+inline void mapTileCellToWorldPos (int32_t tileR, int32_t tileC, int32_t cellR, int32_t cellC, Stuff::Vector3D& worldPos) {
 
 	worldPos.x = Terrain::tileColToWorldCoord[tileC] + Terrain::cellToWorldCoord[cellC] + Terrain::halfWorldUnitsPerCell;
 	worldPos.y = Terrain::tileRowToWorldCoord[tileR] - Terrain::cellToWorldCoord[cellR] - Terrain::halfWorldUnitsPerCell;
@@ -599,7 +599,7 @@ inline void mapTileCellToWorldPos (long tileR, long tileC, long cellR, long cell
 
 //---------------------------------------------------------------------------
 
-inline void mapCellToWorldPos (long cellR, long cellC, Stuff::Vector3D& worldPos) {
+inline void mapCellToWorldPos (int32_t cellR, int32_t cellC, Stuff::Vector3D& worldPos) {
 
 	worldPos.x = Terrain::cellColToWorldCoord[cellC] + Terrain::halfWorldUnitsPerCell;
 	worldPos.y = Terrain::cellRowToWorldCoord[cellR] - Terrain::halfWorldUnitsPerCell;
@@ -607,7 +607,7 @@ inline void mapCellToWorldPos (long cellR, long cellC, Stuff::Vector3D& worldPos
 }
 
 //---------------------------------------------------------------------------
-inline bool overThisTile (TerrainQuadPtr tile, long mouseX, long mouseY)
+inline bool overThisTile (TerrainQuadPtr tile, int32_t mouseX, int32_t mouseY)
 {
 	if (tile)
 	{
@@ -728,7 +728,7 @@ inline bool overThisTile (TerrainQuadPtr tile, long mouseX, long mouseY)
 }
 		
 //---------------------------------------------------------------------------
-ULONG Camera::inverseProject (Stuff::Vector2DOf<long> &screenPos, Stuff::Vector3D &point)
+ULONG Camera::inverseProject (Stuff::Vector2DOf<int32_t> &screenPos, Stuff::Vector3D &point)
 {
 	if (turn < 4)
 	{
@@ -744,10 +744,10 @@ ULONG Camera::inverseProject (Stuff::Vector2DOf<long> &screenPos, Stuff::Vector3
 	memset(closestTiles,0,sizeof(TerrainQuadPtr)*100);
 
 	TerrainQuadPtr closestTile = NULL;
-	long currentClosest = 0;
+	int32_t currentClosest = 0;
 	VertexPtr closestVertex = NULL;
 		
-	for (long i=0;i<(long)numTiles;i++)
+	for (int32_t i=0;i<(int32_t)numTiles;i++)
 	{
 		if ((currentTile->vertices[0]->clipInfo) ||
 			(currentTile->vertices[1]->clipInfo) || 
@@ -773,7 +773,7 @@ ULONG Camera::inverseProject (Stuff::Vector2DOf<long> &screenPos, Stuff::Vector3
 	if (currentClosest > 1)
 	{
 		float leastZ = 1.0f;
-		for (long i=0;i<currentClosest;i++)
+		for (int32_t i=0;i<currentClosest;i++)
 		{
 			//Find the least Z tile.
 			if ((closestTiles[i]->vertices[0]->pz > 0.0f) &&
@@ -829,18 +829,18 @@ ULONG Camera::inverseProject (Stuff::Vector2DOf<long> &screenPos, Stuff::Vector3
 		// cell resolution in the Editor!
 		Stuff::Vector4D cellCenter;
 
-		long cellCenterC = -1;
-		long cellCenterR = -1;
+		int32_t cellCenterC = -1;
+		int32_t cellCenterR = -1;
 		float cellWidth = Terrain::worldUnitsPerCell;
 		float halfCellWidth = cellWidth / 2.0f;
-		long tileC = -1, tileR = -1;
-		long VerticesMapSideDivTwo = Terrain::realVerticesMapSide / 2;
-		long MetersMapSideDivTwo = VerticesMapSideDivTwo * float2long(Terrain::worldUnitsPerVertex);
+		int32_t tileC = -1, tileR = -1;
+		int32_t VerticesMapSideDivTwo = Terrain::realVerticesMapSide / 2;
+		int32_t MetersMapSideDivTwo = VerticesMapSideDivTwo * float2long(Terrain::worldUnitsPerVertex);
 		
-		long dx,dy,cd=1<<30,dist,tvx=screenPos.x,tvy=screenPos.y;
-		for (long cellC=0;cellC<3;cellC++)
+		int32_t dx,dy,cd=1<<30,dist,tvx=screenPos.x,tvy=screenPos.y;
+		for (int32_t cellC=0;cellC<3;cellC++)
 		{
-			for (long cellR=0;cellR<3;cellR++)
+			for (int32_t cellR=0;cellR<3;cellR++)
 			{
 				point.x = closestVertex->vx;
 				point.y = closestVertex->vy;
@@ -1482,7 +1482,7 @@ void Camera::updateLetterboxAndFade (void)
 }
 
 //---------------------------------------------------------------------------
-long Camera::update (void)
+int32_t Camera::update (void)
 {
 	//---------------------------------------------------------
 	// This is the guts.  This routine will be used to
@@ -1632,7 +1632,7 @@ long Camera::update (void)
 	
 	//-----------------------------------------------
 	// Set Ambient for this pass of rendering	
-	DWORD lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
+	ULONG lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
 		
 	setLightColor(1,lightRGB);
 	setLightIntensity(1,1.0);
@@ -1640,7 +1640,7 @@ long Camera::update (void)
 	//---------------------------------------------------------------------------------
 	// Check which lights are on screen and deactivate those which are NOT on screen!
 	numActiveLights = numTerrainLights = 0;
-	for (long i=0;i<MAX_LIGHTS_IN_WORLD;i++)
+	for (int32_t i=0;i<MAX_LIGHTS_IN_WORLD;i++)
 	{
 		if (worldLights[i])
 		{
@@ -1691,7 +1691,7 @@ long Camera::update (void)
 	
 	terrainLightCalc = false;
 
-	return NO_ERR;
+	return NO_ERROR;
 }
 
 float currentScaleFactor = 0.0;
@@ -1737,7 +1737,7 @@ void Camera::render (void)
 	
 	//-----------------------------------------------
 	// Set Ambient for this pass of rendering	
-	DWORD lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
+	ULONG lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
 		
 	eye->setLightColor(1,lightRGB);
 	eye->setLightIntensity(1,1.0);
@@ -1757,17 +1757,17 @@ void Camera::render (void)
 }
 
 //---------------------------------------------------------------------------
-long Camera::activate (void)
+int32_t Camera::activate (void)
 {
 	//------------------------------------------
 	// If camera is already active, just return
 	if (ready && active)
 	{
 		updateDaylight(true);
-		return(NO_ERR);
+		return(NO_ERROR);
 	}
 	
- 	return NO_ERR;
+ 	return NO_ERROR;
 }
 
 float zero = 0.0f;
@@ -1783,7 +1783,7 @@ void Camera::inverseProjectZ (Stuff::Vector4D &screen, Stuff::Vector3D &point)
 {
 	if (!usePerspective)
 	{
-		Stuff::Vector2DOf<long> screenPos;
+		Stuff::Vector2DOf<int32_t> screenPos;
 		screenPos.x = screen.x;
 		screenPos.y = screen.y;
 
@@ -1945,8 +1945,8 @@ Stuff::Vector3D actualPosition;
 //-----------------------------------------------------------------------------------------------
 bool CameraLineOfSight (Stuff::Vector3D position, Stuff::Vector3D targetPosition) 
 {
-	long posCellR, posCellC;
-	long tarCellR, tarCellC;
+	int32_t posCellR, posCellC;
+	int32_t tarCellR, tarCellC;
 	land->worldToCell(position, posCellR, posCellC);
 	land->worldToCell(targetPosition, tarCellR, tarCellC);
 	
@@ -1963,8 +1963,8 @@ bool CameraLineOfSight (Stuff::Vector3D position, Stuff::Vector3D targetPosition
 	startPos.Zero();
 	endPos.Zero();
 	
-	long tCellRow = tarCellR, tCellCol = tarCellC;
-	long mCellRow = posCellR, mCellCol = posCellC;
+	int32_t tCellRow = tarCellR, tCellCol = tarCellC;
+	int32_t mCellRow = posCellR, mCellCol = posCellC;
 	
 	land->getCellPos(tCellRow,tCellCol,endPos);
 	startPos = position;
@@ -2022,8 +2022,8 @@ bool CameraLineOfSight (Stuff::Vector3D position, Stuff::Vector3D targetPosition
 
 			startHeight += heightLen;
 			
-			long startCellC = startCellCol;
-			long startCellR = startCellRow;
+			int32_t startCellC = startCellCol;
+			int32_t startCellR = startCellRow;
 
 			land->getCellPos(startCellR,startCellC,currentPos);
 			//float localElev = (worldUnitsPerMeter * 4.0f * (float)GameMap->getLocalHeight(startCellR,startCellC));
@@ -2416,7 +2416,7 @@ void Camera::setPosition(Stuff::Vector3D newPosition, bool swoopy)
 }
 
 //---------------------------------------------------------------------------
-void Camera::setCameraView (long viewNum)
+void Camera::setCameraView (int32_t viewNum)
 {
 	if ((viewNum >= 0) && (viewNum < MAX_VIEWS))
 	{
@@ -2967,7 +2967,7 @@ uint8_t Camera::getLightRed (float intensity)
 	//ASM and Inline
 	if (intensity > 0.0)
 	{
-		long fResult = float2long(lightRed * intensity + ambientRed);
+		int32_t fResult = float2long(lightRed * intensity + ambientRed);
 		if (fResult < 0xff)
 			return fResult;
 		else
@@ -2983,7 +2983,7 @@ uint8_t Camera::getLightGreen (float intensity)
 	//ASM and Inline
 	if (intensity > 0.0)
 	{
-		long fResult = float2long(lightGreen * intensity + ambientGreen);
+		int32_t fResult = float2long(lightGreen * intensity + ambientGreen);
 		if (fResult < 0xff)
 			return fResult;
 		else
@@ -2999,7 +2999,7 @@ uint8_t Camera::getLightBlue (float intensity)
 	//ASM and Inline
 	if (intensity > 0.0)
 	{
-		long fResult = float2long(lightBlue * intensity + ambientBlue);
+		int32_t fResult = float2long(lightBlue * intensity + ambientBlue);
 		if (fResult < 0xff)
 			return fResult;
 		else
@@ -3018,47 +3018,47 @@ bool Camera::save( FitIniFile* file )
 	file->writeIdFloat( "PositionZ", 0.0 );
 	file->writeIdBoolean( "Ready", true );
 
-	file->writeIdUCHAR( "LightRed", lightRed );
-	file->writeIdUCHAR( "LightGreen", lightGreen );
-	file->writeIdUCHAR( "LightBlue", lightBlue );
-	file->writeIdUCHAR( "AmbientBlue", ambientBlue );
-	file->writeIdUCHAR( "AmbientGreen", ambientGreen );
-	file->writeIdUCHAR( "AmbientRed", ambientRed );
+	file->writeIdUChar( "LightRed", lightRed );
+	file->writeIdUChar( "LightGreen", lightGreen );
+	file->writeIdUChar( "LightBlue", lightBlue );
+	file->writeIdUChar( "AmbientBlue", ambientBlue );
+	file->writeIdUChar( "AmbientGreen", ambientGreen );
+	file->writeIdUChar( "AmbientRed", ambientRed );
 	if (terrainShadowColorEnabled)
 	{
-		file->writeIdUCHAR( "TerrainShadowColorEnabled", 1 );
+		file->writeIdUChar( "TerrainShadowColorEnabled", 1 );
 	}
 	else
 	{
-		file->writeIdUCHAR( "TerrainShadowColorEnabled", 0 );
+		file->writeIdUChar( "TerrainShadowColorEnabled", 0 );
 	}
-	file->writeIdUCHAR( "TerrainShadowBlue", terrainShadowBlue );
-	file->writeIdUCHAR( "TerrainShadowGreen", terrainShadowGreen );
-	file->writeIdUCHAR( "TerrainShadowRed", terrainShadowRed );
+	file->writeIdUChar( "TerrainShadowBlue", terrainShadowBlue );
+	file->writeIdUChar( "TerrainShadowGreen", terrainShadowGreen );
+	file->writeIdUChar( "TerrainShadowRed", terrainShadowRed );
 
 	
-	file->writeIdUCHAR( "DayLightRed", dayLightRed );
-	file->writeIdUCHAR( "DayLightGreen", dayLightGreen );
-	file->writeIdUCHAR( "DayLightBlue", dayLightBlue );
-	file->writeIdUCHAR( "DayAmbientBlue", dayAmbientBlue );
-	file->writeIdUCHAR( "DayAmbientGreen", dayAmbientGreen );
-	file->writeIdUCHAR( "DayAmbientRed", dayAmbientRed );
-	file->writeIdUCHAR( "SunsetLightRed", sunsetLightRed );
-	file->writeIdUCHAR( "SunsetLightGreen", sunsetLightGreen );
-	file->writeIdUCHAR( "SunsetLightBlue", sunsetLightBlue );
-	file->writeIdUCHAR( "NightLightRed", nightLightRed );
-	file->writeIdUCHAR( "NightLightGreen", nightLightGreen );
-	file->writeIdUCHAR( "NightLightBlue", nightLightBlue );
-	file->writeIdUCHAR( "NightAmbientBlue", nightAmbientBlue );
-	file->writeIdUCHAR( "NightAmbientGreen", nightAmbientGreen );
-	file->writeIdUCHAR( "NightAmbientRed", nightAmbientRed );
+	file->writeIdUChar( "DayLightRed", dayLightRed );
+	file->writeIdUChar( "DayLightGreen", dayLightGreen );
+	file->writeIdUChar( "DayLightBlue", dayLightBlue );
+	file->writeIdUChar( "DayAmbientBlue", dayAmbientBlue );
+	file->writeIdUChar( "DayAmbientGreen", dayAmbientGreen );
+	file->writeIdUChar( "DayAmbientRed", dayAmbientRed );
+	file->writeIdUChar( "SunsetLightRed", sunsetLightRed );
+	file->writeIdUChar( "SunsetLightGreen", sunsetLightGreen );
+	file->writeIdUChar( "SunsetLightBlue", sunsetLightBlue );
+	file->writeIdUChar( "NightLightRed", nightLightRed );
+	file->writeIdUChar( "NightLightGreen", nightLightGreen );
+	file->writeIdUChar( "NightLightBlue", nightLightBlue );
+	file->writeIdUChar( "NightAmbientBlue", nightAmbientBlue );
+	file->writeIdUChar( "NightAmbientGreen", nightAmbientGreen );
+	file->writeIdUChar( "NightAmbientRed", nightAmbientRed );
 
-	file->writeIdUCHAR( "SeenBlue", seenBlue );
-	file->writeIdUCHAR( "SeenGreen", seenGreen );
-	file->writeIdUCHAR( "SeenRed", seenRed );
-	file->writeIdUCHAR( "BaseBlue", baseBlue );
-	file->writeIdUCHAR( "BaseGreen", baseGreen );
-	file->writeIdUCHAR( "BaseRed", baseRed );
+	file->writeIdUChar( "SeenBlue", seenBlue );
+	file->writeIdUChar( "SeenGreen", seenGreen );
+	file->writeIdUChar( "SeenRed", seenRed );
+	file->writeIdUChar( "BaseBlue", baseBlue );
+	file->writeIdUChar( "BaseGreen", baseGreen );
+	file->writeIdUChar( "BaseRed", baseRed );
 	
 	file->writeIdFloat( "LightDirPitch", lightPitch );
 	file->writeIdFloat("DayLightPitch",dayLightPitch);
@@ -3078,7 +3078,7 @@ bool Camera::save( FitIniFile* file )
 	file->writeIdFloat( "FogFull", fogFull );
 	file->writeIdULong( "FogColor", dayFogColor );
 	file->writeIdFloat( "FogTransparency", fogTransparency );
-	long userMin, userMax;
+	int32_t userMin, userMax;
 	int baseTerrain;
 	land->getUserSettings( userMin, userMax, baseTerrain );
 	file->writeIdLong( "UserMin", userMin );

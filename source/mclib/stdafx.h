@@ -70,6 +70,7 @@ extern ATL::CComModule& _Module;
 ATL_ADD_LIBRARY("atlthunk.lib")
 #endif
 
+#include <stdint.h>
 #include <limits.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -87,6 +88,7 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 #pragma warning(pop)
 
 #include <mechtypes.h>
+#include <mechclassids.h>
 
 // MClib
 #ifdef _DEBUG
@@ -137,7 +139,7 @@ inline HINSTANCE SetResourceInstance(_In_ HINSTANCE hInstance)
 #endif
 }
 
-inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData,_In_ void* pObject)
+inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData,_In_ PVOID pObject)
 {
 #if (_ATL_VER >= 0x0700)
 	ATL::_AtlWinModule.AddCreateWndData(pData, pObject);
@@ -146,7 +148,7 @@ inline void AddCreateWndData(_Inout_ ATL::_AtlCreateWndData* pData,_In_ void* pO
 #endif
 }
 
-inline void* ExtractCreateWndData(void)
+inline PVOID ExtractCreateWndData(void)
 {
 #if (_ATL_VER >= 0x0700)
 	return ATL::_AtlWinModule.ExtractCreateWndData();

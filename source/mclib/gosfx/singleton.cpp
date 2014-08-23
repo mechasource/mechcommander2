@@ -109,7 +109,7 @@ bool
 {
 
 	Check_Object(this);
-	Stuff::Scalar min,max;
+	float min,max;
 	m_scale.ExpensiveComputeRange(&min,&max);
 	if( min<0.0f) 
 		if(fix_data)
@@ -190,7 +190,7 @@ void
 gosFX::Singleton::Singleton(
 	ClassData *class_data,
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	Effect(class_data, spec, flags)
 {

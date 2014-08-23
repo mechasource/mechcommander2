@@ -31,7 +31,7 @@
 // Class SortList
 //***************************************************************************
 
-long SortList::init (long _numItems) {
+int32_t SortList::init (int32_t _numItems) {
 
 	//-------------------------
 	// Create the sort list...
@@ -46,7 +46,7 @@ long SortList::init (long _numItems) {
 
 void SortList::clear (bool setToMin) {
 
-	long i;
+	int32_t i;
 	for (i = 0; i < numItems; i++)
 		list[i].id = i;
 	if (setToMin)
@@ -59,7 +59,7 @@ void SortList::clear (bool setToMin) {
 
 //---------------------------------------------------------------------------
 
-int cdecl descendingCompare (const void* arg1, const void* arg2 ) {
+int cdecl descendingCompare (PCVOID arg1, PCVOID arg2 ) {
 
 	float value1 = ((SortListNode*)arg1)->value;
 	float value2 = ((SortListNode*)arg2)->value;
@@ -73,7 +73,7 @@ int cdecl descendingCompare (const void* arg1, const void* arg2 ) {
 
 //---------------------------------------------------------------------------
 
-int cdecl ascendingCompare (const void* arg1, const void* arg2 ) {
+int cdecl ascendingCompare (PCVOID arg1, PCVOID arg2 ) {
 
 	float value1 = ((SortListNode*)arg1)->value;
 	float value2 = ((SortListNode*)arg2)->value;
@@ -92,9 +92,9 @@ void SortList::sort (bool descendingOrder) {
 	//------------------------------------------------------------------
 	// For now, just use ANSI C's built-in qsort (ugly, but functional).
 	if (descendingOrder)
-		qsort((void*)list, (size_t)numItems, sizeof(SortListNode), descendingCompare);
+		qsort((PVOID)list, (size_t)numItems, sizeof(SortListNode), descendingCompare);
 	else
-		qsort((void*)list, (size_t)numItems, sizeof(SortListNode), ascendingCompare);
+		qsort((PVOID)list, (size_t)numItems, sizeof(SortListNode), ascendingCompare);
 }
 
 //---------------------------------------------------------------------------

@@ -35,7 +35,7 @@ bool TG_Shape::PerPolySelect (float mouseX, float mouseY)
 	}
 
 	TG_TypeShapePtr theShape = (TG_TypeShapePtr)myType;
- 	for (long j=0;j<numVisibleFaces;j++)
+ 	for (int32_t j=0;j<numVisibleFaces;j++)
 	{
 		if (listOfVisibleFaces[j] != 0xffffffff)
 		{

@@ -31,10 +31,10 @@ extern void AG_ellipse_draw(PANE *pane, LONG xc, LONG yc, LONG width, LONG heigh
 extern void AG_ellipse_fill(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color);
 extern void AG_ellipse_fillXor(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color);
 extern void AG_ellipse_fillOr(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color);
-extern void memclear(void *Dest,int Length);
+//extern void memclear(PVOID Dest,size_t Length);
 //------------------------------------------------------------------------
 // Class BitFlag
-long BitFlag::init (ULONG numRows, ULONG numColumns, ULONG initialValue)
+int32_t BitFlag::init (ULONG numRows, ULONG numColumns, ULONG initialValue)
 {
 	rows = numRows;
 	columns = numColumns;
@@ -49,17 +49,17 @@ long BitFlag::init (ULONG numRows, ULONG numColumns, ULONG initialValue)
 	if (!flagHeap)
 		return(NO_RAM_FOR_FLAG_HEAP);
 		
-	long result = flagHeap->createHeap(totalRAM);
-	if (result != NO_ERR)
+	int32_t result = flagHeap->createHeap(totalRAM);
+	if (result != NO_ERROR)
 		return(result);
 		
 	result = flagHeap->commitHeap();
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		return(result);
 
 	resetAll(initialValue);
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }	
 
 //------------------------------------------------------------------------
@@ -69,7 +69,8 @@ void BitFlag::resetAll (ULONG initialValue)
 	// Set memory to initial Flag Value
 	if (initialValue == 0)
 	{
-		memclear(flagHeap->getHeapPtr(),totalRAM);
+		// memclear(flagHeap->getHeapPtr(),totalRAM);
+		memset(flagHeap->getHeapPtr(), 0, totalRAM);
 		maskValue = 1;
 	}
 	else
@@ -77,7 +78,7 @@ void BitFlag::resetAll (ULONG initialValue)
 		//-----------------------------------------
 		// Not zero, must jump through hoops.
 		maskValue = 1;
-		memset(flagHeap->getHeapPtr(),0xff,totalRAM);
+		memset(flagHeap->getHeapPtr(), 0xff, totalRAM);
 	}
 }
 
@@ -104,7 +105,7 @@ void BitFlag::setFlag (ULONG r, ULONG c)
 
 	//----------------------------------------
 	// find the location we care about.
-	PUCHAR bitResult = flagHeap->getHeapPtr();
+	puint8_t bitResult = flagHeap->getHeapPtr();
 	bitResult += location;
 
 	//----------------------------------------
@@ -129,16 +130,16 @@ void BitFlag::setGroup (ULONG r, ULONG c, ULONG length)
 	
 		//----------------------------------------
 		// find the location we care about.
-		PUCHAR bitResult = flagHeap->getHeapPtr();
+		puint8_t bitResult = flagHeap->getHeapPtr();
 		bitResult += location;
 	
 		//--------------------------------------------------
 		// We are only setting bits in the current location
-		if ((8 - shiftValue) >= (long)length)
+		if ((8 - shiftValue) >= (int32_t)length)
 		{
 			uint8_t startVal = 1;
 			ULONG repeatVal = length;
-			for (long i=0;i<long(repeatVal-1);i++)
+			for (int32_t i=0;i<int32_t(repeatVal-1);i++)
 			{
 				startVal<<=1;
 				startVal++;
@@ -160,7 +161,7 @@ void BitFlag::setGroup (ULONG r, ULONG c, ULONG length)
 			{
 				uint8_t startVal = 1;
 				ULONG repeatVal = (8-shiftValue);
-				for (long i=0;i<long(repeatVal-1);i++)
+				for (int32_t i=0;i<int32_t(repeatVal-1);i++)
 				{
 					startVal<<=1;
 					startVal++;
@@ -185,7 +186,7 @@ void BitFlag::setGroup (ULONG r, ULONG c, ULONG length)
 			{
 				bitResult++;
 				uint8_t startVal = 1;
-				for (long i=0;i<long(length-1);i++)
+				for (int32_t i=0;i<int32_t(length-1);i++)
 				{
 					startVal<<=1;
 					startVal++;
@@ -232,7 +233,7 @@ uint8_t BitFlag::getFlag (ULONG r, ULONG c)
 
 //------------------------------------------------------------------------
 // Class ByteFlag
-long ByteFlag::init (ULONG numRows, ULONG numColumns, ULONG initialValue)
+int32_t ByteFlag::init (ULONG numRows, ULONG numColumns, ULONG initialValue)
 {
 	rows = numRows;
 	columns = numColumns;
@@ -244,11 +245,11 @@ long ByteFlag::init (ULONG numRows, ULONG numColumns, ULONG initialValue)
 	
 	gosASSERT(flagHeap != NULL);
 		
-	long result = flagHeap->createHeap(totalRAM);
-	gosASSERT(result == NO_ERR);
+	int32_t result = flagHeap->createHeap(totalRAM);
+	gosASSERT(result == NO_ERROR);
 		
 	result = flagHeap->commitHeap();
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	resetAll(initialValue);
 
@@ -267,7 +268,7 @@ long ByteFlag::init (ULONG numRows, ULONG numColumns, ULONG initialValue)
 	flagWindow->stencil = NULL;
 	flagWindow->shadow = NULL;
 		
-	return(NO_ERR);
+	return(NO_ERROR);
 }	
 
 //------------------------------------------------------------------------
@@ -275,13 +276,13 @@ void ByteFlag::initTGA (PSTR tgaFileName)
 {
 	File tgaFile;
 #ifdef _DEBUG
-	long result = 
+	int32_t result = 
 #endif
 		tgaFile.open(tgaFileName);
 
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
-	MemoryPtr tgaBuffer = (MemoryPtr)malloc(tgaFile.fileSize());
+	PUCHAR tgaBuffer = (PUCHAR)malloc(tgaFile.fileSize());
 	if(tgaBuffer == NULL)
 		return;
 
@@ -291,8 +292,8 @@ void ByteFlag::initTGA (PSTR tgaFileName)
 	// Parse out TGAHeader.
 	TGAFileHeader *header = (TGAFileHeader *)tgaBuffer;
 
-	long height = header->height;
-	long width = header->width;
+	int32_t height = header->height;
+	int32_t width = header->width;
 
 	init(width,height,0);
 
@@ -306,11 +307,11 @@ void ByteFlag::initTGA (PSTR tgaFileName)
 		{
 			//------------------------------------------------
 			// This is just a bitmap.  Copy it into ourRAM.
-			MemoryPtr image = tgaBuffer + sizeof(TGAFileHeader);
+			PUCHAR image = tgaBuffer + sizeof(TGAFileHeader);
 			if (header->color_map)
 				image += header->cm_length * (header->cm_entry_size>>3);
 
-			MemoryPtr ourRAM = memDump();
+			PUCHAR ourRAM = memDump();
 			memcpy(ourRAM,image,tgaFile.fileSize() - sizeof(TGAFileHeader) - (header->cm_length * (header->cm_entry_size>>3)));
 
 			//------------------------------------------------------------------------
@@ -361,7 +362,8 @@ void ByteFlag::resetAll (ULONG initialValue)
 	// Set memory to initial Flag Value
 	if (initialValue == 0)
 	{
-		memclear(flagHeap->getHeapPtr(),totalRAM);
+		//memclear(flagHeap->getHeapPtr(),totalRAM);
+		memset(flagHeap->getHeapPtr(), 0, totalRAM);
 	}
 	else
 	{
@@ -383,7 +385,12 @@ void ByteFlag::destroy (void)
 	
 	init();
 }	
-		
+
+PUCHAR ByteFlag::memDump (void)
+{
+	return (flagHeap->getHeapPtr());
+}
+
 //------------------------------------------------------------------------
 // This sets location to bits
 void ByteFlag::setFlag (ULONG r, ULONG c)
@@ -397,7 +404,7 @@ void ByteFlag::setFlag (ULONG r, ULONG c)
 
 	//----------------------------------------
 	// find the location we care about.
-	PUCHAR bitResult = flagHeap->getHeapPtr();
+	puint8_t bitResult = flagHeap->getHeapPtr();
 	bitResult += location;
 
 	//--------------------------------------------
@@ -419,7 +426,7 @@ void ByteFlag::setGroup (ULONG r, ULONG c, ULONG length)
 	
 		//----------------------------------------
 		// find the location we care about.
-		PUCHAR bitResult = flagHeap->getHeapPtr();
+		puint8_t bitResult = flagHeap->getHeapPtr();
 		bitResult += location;
 	
 		//--------------------------------------------------

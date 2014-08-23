@@ -25,7 +25,7 @@ ULONG EllipseElement::s_textureHandle = 0;
 // Static Globals
 
 //---------------------------------------------------------------------------
-EllipseElement::EllipseElement (Stuff::Vector2DOf<long> &cntr, Stuff::Vector2DOf<long> &ortho, long clr, long depth) : Element(depth)
+EllipseElement::EllipseElement (Stuff::Vector2DOf<int32_t> &cntr, Stuff::Vector2DOf<int32_t> &ortho, int32_t clr, int32_t depth) : Element(depth)
 {
 	for ( int i = 0; i < 5; ++i )
 	{
@@ -58,7 +58,7 @@ void EllipseElement::draw (void)
 
 	gos_SetRenderState( gos_State_AlphaTest, true );
 			
-	DWORD gosTextureHandle = mcTextureManager->get_gosTextureHandle (s_textureHandle);
+	ULONG gosTextureHandle = mcTextureManager->get_gosTextureHandle (s_textureHandle);
 	gos_SetRenderState( gos_State_Texture, gosTextureHandle );
 	gos_SetRenderState( gos_State_Clipping, 2);
 	gos_SetRenderState( gos_State_Specular, 0);

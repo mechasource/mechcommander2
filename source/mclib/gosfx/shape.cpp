@@ -159,7 +159,7 @@ void
 			primitive->GetCoordData(&points, &vertex_count);
 			for (int v=0; v<vertex_count; ++v)
 			{
-				Stuff::Scalar len = points[v].GetLengthSquared();
+				float len = points[v].GetLengthSquared();
 				if (len > m_radius)
 					m_radius = len;
 			}
@@ -207,7 +207,7 @@ void
 //
 gosFX::Shape::Shape(
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	Singleton(DefaultData, spec, flags)
 {
@@ -220,7 +220,7 @@ gosFX::Shape::Shape(
 gosFX::Shape*
 	gosFX::Shape::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);

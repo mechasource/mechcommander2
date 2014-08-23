@@ -85,12 +85,12 @@ static int __cdecl wideToInt(
         return ((int)atol(astring));
 }
 
-static long __cdecl atolong(
+static int32_t __cdecl atolong(
         PCSTR nptr
         )
 {
         int c;              /* current PSTR /
-        long total;         /* current total */
+        int32_t total;         /* current total */
         int sign;           /* if '-', then negative, otherwise positive */
 
         /* skip whitespace */
@@ -223,7 +223,7 @@ EString::EBuffer*   EString::EBuffer::s_p_Empty_Buffer = &EString::EBuffer::s_Em
 // if this doesn't want to link properly, this will have to become
 // a macro.
 /////////////////////////////////////////////////////////////////
-inline	unsigned short*	EString::ToUnicode( unsigned short* p_Buffer, 
+inline	PWSTR	EString::ToUnicode( puint16_t p_Buffer, 
 								   pcuint8_t p_Str, 
 								   int Num_Chars )
 {
@@ -596,7 +596,7 @@ void EString::Format( const EChar* p_Str, ... )
 		{
 			// width indicated by
 			Width = KToI(p_Tmp);
-			unsigned short buffer;
+			uint16_t buffer;
 			for (; *p_Tmp != '\0'; )
 			{
 				GetStringTypeEx(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, p_Tmp, 1, &buffer);
@@ -626,7 +626,7 @@ void EString::Format( const EChar* p_Str, ... )
 				Precision = KToI(p_Tmp);
 				for (; *p_Tmp != '\0'; )
 				{
-					unsigned short buffer;
+					uint16_t buffer;
 					GetStringTypeEx(LOCALE_SYSTEM_DEFAULT, CT_CTYPE1, p_Tmp, 1, &buffer);
 					//if (buffer == C1_DIGIT || buffer == C1_XDIGIT)
 					if (buffer & C1_DIGIT)	//mh
@@ -698,7 +698,7 @@ void EString::Format( const EChar* p_Str, ... )
 		case 'S':
 		{
 #ifndef K_UNICODE
-			const unsigned short* p_Next_Arg = va_arg(Arg_List, const unsigned short*);
+			PCWSTR p_Next_Arg = va_arg(Arg_List, PCWSTR);
 			if (p_Next_Arg == NULL)
 			   Item_Len = 6;  // "(null)"
 			else
@@ -785,7 +785,7 @@ void EString::Format( const EChar* p_Str, ... )
 				break;
 
 			case 'p':
-				va_arg(Arg_List, void*);
+				va_arg(Arg_List, PVOID);
 				Item_Len = 32;
 				Item_Len = max(Item_Len, Width + Precision);
 				break;
@@ -800,7 +800,7 @@ void EString::Format( const EChar* p_Str, ... )
 				p_Tmp = KSInc(p_Tmp);
 				p_Tmp = KSInc(p_Tmp);
 				Item_Len = 64;
-				va_arg(Arg_List, __int64);
+				va_arg(Arg_List, int64_t);
 				break;
 
 
@@ -1061,9 +1061,9 @@ int EString::ReverseFind ( EChar Char, int End_Index ) const
 
 /////////////////////////////////////////////////////////////////
 #ifndef UNICODE
-int EString::Find( unsigned short Char, int Start_Index ) const
+int EString::Find( uint16_t Char, int Start_Index ) const
 {
-	unsigned short Tmp[2];
+	uint16_t Tmp[2];
 	*Tmp = Char;
 	Tmp[2] = 0;
 
@@ -1101,15 +1101,15 @@ EString EString::SubString( int Start_Index, int End_Index ) const
 
 
 /////////////////////////////////////////////////////////////////
-unsigned short* EString::CreateUNICODE() const
+PWSTR EString::CreateUNICODE() const
 {
 #ifdef UNICODE
-	unsigned short* p_Ret_String = new unsigned short[m_pBuffer->m_Data_Length + 1];
+	PWSTR p_Ret_String = new uint16_t[m_pBuffer->m_Data_Length + 1];
 	memcpy( p_Ret_String, m_pBuffer->Data(), 2*(m_pBuffer->m_Data_Length + 1) );
 	return p_Ret_String;
 #else
-	 unsigned short* p_Ret_String = new unsigned short[lstrlen((PSTR)m_pBuffer->Data()) + 1];
-	 ToUnicode( p_Ret_String, (PUCHAR)m_pBuffer->Data(), m_pBuffer->m_Data_Length + 1 );
+	 PWSTR p_Ret_String = new wchar_t[strlen((PSTR)m_pBuffer->Data()) + 1];
+	 ToUnicode( p_Ret_String, (puint8_t)m_pBuffer->Data(), m_pBuffer->m_Data_Length + 1 );
 	 return p_Ret_String;
 #endif
 }
@@ -1383,7 +1383,7 @@ void EString::Format( PCSTR p_Str, ... )
 		case 'S':
 		{
 #ifndef K_UNICODE
-			const unsigned short* p_Next_Arg = va_arg(Arg_List, const unsigned short*);
+			PCWSTR p_Next_Arg = va_arg(Arg_List, PCWSTR);
 			if (p_Next_Arg == NULL)
 			   Item_Len = 6;  // "(null)"
 			else
@@ -1470,7 +1470,7 @@ void EString::Format( PCSTR p_Str, ... )
 				break;
 
 			case 'p':
-				va_arg(Arg_List, void*);
+				va_arg(Arg_List, PVOID);
 				Item_Len = 32;
 				Item_Len = max(Item_Len, Width + Precision);
 				break;
@@ -1485,7 +1485,7 @@ void EString::Format( PCSTR p_Str, ... )
 				p_Tmp = _tcsinc(p_Tmp);
 				p_Tmp = _tcsinc(p_Tmp);
 				Item_Len = 64;
-				va_arg(Arg_List, __int64);
+				va_arg(Arg_List, int64_t);
 				break;
 
 			default:

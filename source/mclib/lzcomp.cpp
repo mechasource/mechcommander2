@@ -30,16 +30,16 @@
 #define NULL			0
 #endif
 
-typedef uint8_t* MemoryPtr;
+typedef uint8_t* PUCHAR;
 
 //-----------------------------
 //Used by Compressor Routine
-MemoryPtr		LZCHashBuf = NULL;
+PUCHAR		LZCHashBuf = NULL;
 size_t			InBufferUpperLimit = 0;
 size_t			InBufferPos = 0;	
-MemoryPtr		InBuffer = NULL;
+PUCHAR		InBuffer = NULL;
 size_t			OutBufferPos = 0;
-MemoryPtr		OutBuffer = NULL;
+PUCHAR		OutBuffer = NULL;
 ULONG	PrefixCode = 0;
 ULONG	FreeCode = 0;
 ULONG	MaxCode = 0;
@@ -68,7 +68,7 @@ static uint8_t		tag_LZCHashBuf[sizeof(Hash) * MaxMax + 1024];
 // LZ Compress Routine
 // Takes a pointer to dest buffer, a pointer to source buffer and len of source.
 // returns length of compressed image.
-size_t __stdcall LZCompress (MemoryPtr dest, MemoryPtr src, size_t srcLen)
+size_t __stdcall LZCompress (PUCHAR dest, PUCHAR src, size_t srcLen)
 {
 	size_t result = 0;
 
@@ -76,7 +76,7 @@ size_t __stdcall LZCompress (MemoryPtr dest, MemoryPtr src, size_t srcLen)
 	{
 		/* allocating LZCHashBuf off a gos heap causes problems for applications that need
 		to reset gos or its heaps*/
-		LZCHashBuf = (MemoryPtr)&(tag_LZCHashBuf[0]);
+		LZCHashBuf = (PUCHAR)&(tag_LZCHashBuf[0]);
 	}
 	
 //Initialize:

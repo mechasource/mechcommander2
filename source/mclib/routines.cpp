@@ -8,27 +8,22 @@
 //===========================================================================//
 
 #include "stdafx.h"
-// #include <stdlib.h>
 
+// #include <stdlib.h>
 #include <gameos.hpp>
 
-void memclear(void *Dest,int Length);
-void memfill(void *Dest,int Length);
-
-
-
-
-
-
+// void memclear(PVOID Dest,size_t Length);
+// void memfill(PVOID Dest,size_t Length);
 
 extern enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor;
-static _int64 fillnum=-1;
 
+static int64_t fillnum=-1;
 
+#if _CONSIDERED_OBSOLETE
 //
 // Instead of using memset(x,0,x) - use this function
 //
-void memclear(void *Dest,int Len)
+void memclear(PVOID Dest,size_t Len)
 {
 	_asm{
 
@@ -73,7 +68,7 @@ mmx0d:	emms
 		jmp done
 
 mem1:
-		mov ebx,ecx				; DWORD align edi when possible
+		mov ebx,ecx				; ULONG align edi when possible
 		sub ecx,edi
 		xor eax,eax
 		sub ecx,ebx
@@ -91,15 +86,14 @@ doalign1:
 done:
 		}
 };
+#endif
 
 
-
-
-
+#if _CONSIDERED_OBSOLETE
 //
 // Instead of using memset(x,0xff,x) - use this function
 //
-void memfill(void *Dest,int Len)
+void memfill(PVOID Dest, size_t Len)
 {
 	_asm{
 
@@ -144,7 +138,7 @@ mmx0fb:
 		jmp done
 
 memf1:
-		mov ebx,ecx				; DWORD align edi when possible
+		mov ebx,ecx				; ULONG align edi when possible
 		sub ecx,edi
 		mov eax,-1
 		sub ecx,ebx
@@ -162,10 +156,11 @@ doalign1:
 done:
 		}
 };
+#endif
 
 //---------------------------------------------------------------------------
 // Random Number Functions
-long RandomNumber (long range)
+int32_t RandomNumber (int32_t range)
 {
 	gosASSERT( RAND_MAX==(1<<15)-1 );		// This is always TRUE in VC
 
@@ -173,7 +168,7 @@ long RandomNumber (long range)
 }
 
 //---------------------------------------------------------------------------
-bool RollDice (long percent)
+bool RollDice (int32_t percent)
 {
 	return (((rand()*100)>>15) < percent);			// Optimized the % out
 }

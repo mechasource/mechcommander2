@@ -42,9 +42,9 @@ extern bool useFog;
 
 //---------------------------------------------------------------------------
 // class Appearance
-void * Appearance::operator new (size_t mySize)
+PVOID Appearance::operator new (size_t mySize)
 {
-	void* result = NULL;
+	PVOID result = NULL;
 	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Malloc(mySize);
@@ -54,9 +54,9 @@ void * Appearance::operator new (size_t mySize)
 }
 
 //---------------------------------------------------------------------------
-void Appearance::operator delete (void * us)
+void Appearance::operator delete (PVOID us)
 {
-	long result;
+	int32_t result;
 	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Free(us);
@@ -66,7 +66,7 @@ void Appearance::operator delete (void * us)
 //---------------------------------------------------------------------------
 void Appearance::drawTextHelp (PSTR text, ULONG color)
 {
-	DWORD width, height;
+	ULONG width, height;
 	Stuff::Vector4D moveHere;
 	moveHere = screenPos;
 
@@ -88,7 +88,7 @@ void Appearance::drawTextHelp( PSTR text )
 }
 void Appearance::drawPilotName(PSTR text, ULONG color )
 {
-	DWORD width, height;
+	ULONG width, height;
 	Stuff::Vector4D moveHere;
 	moveHere = screenPos;
 
@@ -105,7 +105,7 @@ void Appearance::drawPilotName(PSTR text, ULONG color )
 }
 
 //---------------------------------------------------------------------------
-void Appearance::drawSelectBox (DWORD color)
+void Appearance::drawSelectBox (ULONG color)
 {
 	Stuff::Vector4D				ul, br, pos1, pos2;
 	float						offsets;
@@ -248,7 +248,7 @@ void Appearance::drawSelectBox (DWORD color)
 }
 	
 //---------------------------------------------------------------------------
-void Appearance::drawSelectBrackets (DWORD color)
+void Appearance::drawSelectBrackets (ULONG color)
 {
 	float					offsets = 5.0 * eye->getScaleFactor();
 	Stuff::Vector4D			pos1;
@@ -479,7 +479,7 @@ void Appearance::drawBars (void)
 	float			topY = upperLeft.y - offset - trueHeight;
 	float			leftX = floor((upperLeft.x + lowerRight.x)/2.f - trueWidth / 2);
 	
-	DWORD					color;
+	ULONG					color;
 	
 	if (barStatus > 1.0f)
 		barStatus = 1.0f;
@@ -547,7 +547,7 @@ void Appearance::drawBars (void)
 	
 	DrawBox(vertices[0].x,vertices[0].y,(leftX + trueWidth + 1.0),vertices[2].y);
 
-	DWORD fogColor = eye->fogColor;
+	ULONG fogColor = eye->fogColor;
 
 	//-----------------------------------------------------
 	// FOG time.  Set Render state to FOG on!

@@ -80,7 +80,7 @@ namespace gosFX
 		Stuff::UnitQuaternion
 			m_localRotation,
 			m_worldRotation;
-		Stuff::Scalar
+		float
 			m_radius,
 			m_scale;
 	};
@@ -96,11 +96,10 @@ namespace gosFX
 	// Class Registration Support
 	//
 	public:
-		static void InitializeClass();
-		static void	TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 	//----------------------------------------------------------------------------
 	// Class Data Support
@@ -113,7 +112,7 @@ namespace gosFX
 		SpinningCloud(
 			ClassData *class_data,
 			Specification *spec,
-			unsigned flags
+			uint32_t flags
 		);
 
 	public:
@@ -125,7 +124,7 @@ namespace gosFX
 						Cast_Object(Specification*, m_specification);
 				}
 		Particle*
-			GetParticle(unsigned index)
+			GetParticle(uint32_t index)
 				{
 					Check_Object(this); Check_Object(GetSpecification());
 					return
@@ -139,8 +138,7 @@ namespace gosFX
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
@@ -148,13 +146,13 @@ namespace gosFX
 	protected:
 		bool
 			AnimateParticle(
-				unsigned index,
+				uint32_t index,
 				const Stuff::LinearMatrix4D *world_to_new_local,
 				Stuff::Time till
 			);
 		void
 			CreateNewParticle(
-				unsigned index,
+				uint32_t index,
 				Stuff::Point3D *translation
 			);
 

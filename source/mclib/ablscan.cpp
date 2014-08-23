@@ -38,7 +38,7 @@
 //#pragma warning(disable:4244)
 
 //---------------------
-// RESERVED WORD tables
+// RESERVED uint16_t tables
 
 #define	MINLEN_RESERVED_WORD	2
 #define	MAXLEN_RESERVED_WORD	11
@@ -263,9 +263,9 @@ PSTR TokenStrings[NUM_TOKENS] = {
 char			curChar;
 TokenCodeType	curToken;
 Literal			curLiteral;
-long			level = 0;
-long			lineNumber = 0;
-long			FileNumber = 0;
+int32_t			level = 0;
+int32_t			lineNumber = 0;
+int32_t			FileNumber = 0;
 ABLFile*		sourceFile = NULL;
 bool			printFlag = true;
 bool			blockFlag = false;
@@ -274,22 +274,22 @@ SymTableNodePtr	CurModuleIdPtr = NULL;
 SymTableNodePtr	CurRoutineIdPtr = NULL;
 bool			DumbGetCharOn = false;
 
-long			NumOpenFiles = 0;
-long			NumSourceFiles = 0;
+int32_t			NumOpenFiles = 0;
+int32_t			NumSourceFiles = 0;
 char			SourceFiles[MAX_SOURCE_FILES][MAXLEN_FILENAME];
 SourceFile		openFiles[MAX_INCLUDE_DEPTH];
 char			sourceBuffer[MAXLEN_SOURCELINE];
 char			tokenString[MAXLEN_TOKENSTRING];
 char			wordString[MAXLEN_TOKENSTRING];
-long			bufferOffset = 0;
+int32_t			bufferOffset = 0;
 PSTR			bufferp = sourceBuffer;
 PSTR			tokenp = tokenString;
 
-long			digitCount = 0;
+int32_t			digitCount = 0;
 bool			countError = false;
 
-long			pageNumber = 0;
-long			lineCount = MAX_LINES_PER_PAGE;
+int32_t			pageNumber = 0;
+int32_t			lineCount = MAX_LINES_PER_PAGE;
 
 char			sourceName[MAXLEN_FILENAME];
 char			date[LEN_DATESTRING];
@@ -303,32 +303,32 @@ extern bool		DebugCodeEnabled;
 
 extern ABLModulePtr	CurLibrary;
 
-long (*ABLFile::createCB) (void** file, PSTR fName) = NULL;
-long (*ABLFile::openCB) (void** file, PSTR fName) = NULL;
-long (*ABLFile::closeCB) (void** file) = NULL;
-bool (*ABLFile::eofCB) (void* file) = NULL;
-long (*ABLFile::readCB) (void* file, PUCHAR buffer, long length) = NULL;
-long (*ABLFile::readLongCB) (void* file) = NULL;
-long (*ABLFile::readStringCB) (void* file, PUCHAR buffer) = NULL;
-long (*ABLFile::readLineExCB) (void* file, PUCHAR buffer, long maxLength) = NULL;
-long (*ABLFile::writeCB) (void* file, PUCHAR buffer, long length) = NULL;
-long (*ABLFile::writeByteCB) (void* file, uint8_t byte) = NULL;
-long (*ABLFile::writeLongCB) (void* file, long value) = NULL;
-long (*ABLFile::writeStringCB) (void* file, PSTR buffer) = NULL;
+int32_t (*ABLFile::createCB) (PVOID* file, PSTR fName) = NULL;
+int32_t (*ABLFile::openCB) (PVOID* file, PSTR fName) = NULL;
+int32_t (*ABLFile::closeCB) (PVOID* file) = NULL;
+bool (*ABLFile::eofCB) (PVOID file) = NULL;
+int32_t (*ABLFile::readCB) (PVOID file, puint8_t buffer, int32_t length) = NULL;
+int32_t (*ABLFile::readLongCB) (PVOID file) = NULL;
+int32_t (*ABLFile::readStringCB) (PVOID file, puint8_t buffer) = NULL;
+int32_t (*ABLFile::readLineExCB) (PVOID file, puint8_t buffer, int32_t maxLength) = NULL;
+int32_t (*ABLFile::writeCB) (PVOID file, puint8_t buffer, int32_t length) = NULL;
+int32_t (*ABLFile::writeByteCB) (PVOID file, uint8_t byte) = NULL;
+int32_t (*ABLFile::writeLongCB) (PVOID file, int32_t value) = NULL;
+int32_t (*ABLFile::writeStringCB) (PVOID file, PSTR buffer) = NULL;
 
 //***************************************************************************
 // ABL FILE routines
 //***************************************************************************
 
-void* ABLFile::operator new (size_t ourSize) {
+PVOID ABLFile::operator new (size_t ourSize) {
 
-	void* result = ABLSystemMallocCallback(ourSize);
+	PVOID result = ABLSystemMallocCallback(ourSize);
 	return(result);
 }
 
 //---------------------------------------------------------------------------
 
-void ABLFile::operator delete (void* us) {
+void ABLFile::operator delete (PVOID us) {
 
 	ABLSystemFreeCallback(us);
 }	
@@ -354,7 +354,7 @@ void ABLFile::destroy (void) {
 
 //---------------------------------------------------------------------------
 
-long ABLFile::create (PSTR fName) {
+int32_t ABLFile::create (PSTR fName) {
 
 	if (fName) {
 		fileName = (PSTR)ABLSystemMallocCallback(strlen(fName)+1);
@@ -366,7 +366,7 @@ long ABLFile::create (PSTR fName) {
 
 //---------------------------------------------------------------------------
 
-long ABLFile::open (PSTR fName) {
+int32_t ABLFile::open (PSTR fName) {
 
 	if (fName) {
 		fileName = (PSTR)ABLSystemMallocCallback(strlen(fName)+1);
@@ -378,7 +378,7 @@ long ABLFile::open (PSTR fName) {
 
 //---------------------------------------------------------------------------
 
-long ABLFile::close (void) {
+int32_t ABLFile::close (void) {
 
 	if (file)
 		return(closeCB(&file));
@@ -396,7 +396,7 @@ bool ABLFile::eof (void) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::read (PUCHAR buffer, long length) {
+int32_t ABLFile::read (puint8_t buffer, int32_t length) {
 
 	if (file)
 		return(readCB(file, buffer, length));
@@ -405,7 +405,7 @@ long ABLFile::read (PUCHAR buffer, long length) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::readLong (void) {
+int32_t ABLFile::readLong (void) {
 
 	if (file)
 		return(readLongCB(file));
@@ -414,7 +414,7 @@ long ABLFile::readLong (void) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::readString (PUCHAR buffer) {
+int32_t ABLFile::readString (puint8_t buffer) {
 
 	if (file)
 		return(readStringCB(file, buffer));
@@ -423,7 +423,7 @@ long ABLFile::readString (PUCHAR buffer) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::readLineEx (PUCHAR buffer, long maxLength) {
+int32_t ABLFile::readLineEx (puint8_t buffer, int32_t maxLength) {
 
 	if (file)
 		return(readLineExCB(file, buffer, maxLength));
@@ -432,7 +432,7 @@ long ABLFile::readLineEx (PUCHAR buffer, long maxLength) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::write (PUCHAR buffer, long length) {
+int32_t ABLFile::write (puint8_t buffer, int32_t length) {
 
 	if (file)
 		return(writeCB(file, buffer, length));
@@ -441,7 +441,7 @@ long ABLFile::write (PUCHAR buffer, long length) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::writeByte (uint8_t val) {
+int32_t ABLFile::writeByte (uint8_t val) {
 
 	if (file)
 		return(writeByteCB(file, val));
@@ -450,7 +450,7 @@ long ABLFile::writeByte (uint8_t val) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::writeLong (long val) {
+int32_t ABLFile::writeLong (int32_t val) {
 
 	if (file)
 		return(writeLongCB(file, val));
@@ -459,7 +459,7 @@ long ABLFile::writeLong (long val) {
 
 //-----------------------------------------------------------------------------
 
-long ABLFile::writeString (PSTR buffer) {
+int32_t ABLFile::writeString (PSTR buffer) {
 
 	if (file)
 		return(writeStringCB(file, buffer));
@@ -470,16 +470,16 @@ long ABLFile::writeString (PSTR buffer) {
 // MISC routines
 //***************************************************************************
 
-inline CharCodeType calcCharCode (long ch) {
+inline CharCodeType calcCharCode (int32_t ch) {
 
 	return(charTable[ch]);
 }
 
 //***************************************************************************
 
-long isReservedWord (void) 
+int32_t isReservedWord (void) 
 {
-	long wordLength = strlen(wordString);
+	int32_t wordLength = strlen(wordString);
 	if ((wordLength >= MINLEN_RESERVED_WORD) && (wordLength <= MAXLEN_RESERVED_WORD) && reservedWordTable[wordLength])
 	{
 		for (ReservedWord* rwPtr = reservedWordTable[wordLength]; rwPtr->string != NULL; rwPtr++)
@@ -502,7 +502,7 @@ void getChar();
 
 void initScanner (PSTR fileName) {
 
-	long curCh;
+	int32_t curCh;
 	//----------------------------------
 	// Initialize the character table...
 	for (curCh = 0; curCh < 256; curCh++)
@@ -594,7 +594,7 @@ void languageDirective (void) {
 	getChar();
 
 	char directive[32];
-	long directiveLength = 0;
+	int32_t directiveLength = 0;
 	while ((curChar != ' ') && (curChar != '\n')  && (curChar != '\r') && (directiveLength < 31)) {
 		directive[directiveLength++] = curChar;
 		getChar();
@@ -609,7 +609,7 @@ void languageDirective (void) {
 		if (curChar == '"') {
 			getChar();
 			char fileName[128];
-			long fileNameLength = 0;
+			int32_t fileNameLength = 0;
 			while ((curChar != '"') && (fileNameLength < 127)) {
 				fileName[fileNameLength++] = curChar;
 				getChar();
@@ -621,7 +621,7 @@ void languageDirective (void) {
 			DumbGetCharOn = false;
 			//----------------------------------------------------
 			// Now that we have the file name, let's include it...
-			long openErr = ABL_NO_ERR;
+			int32_t openErr = ABL_NO_ERR;
 			if ((openErr = openSourceFile(fileName)) != ABL_NO_ERR) {
 				syntaxError(ABL_ERR_SYNTAX_SOURCE_FILE_OPEN);
 				curToken = TKN_ERROR;
@@ -639,7 +639,7 @@ void languageDirective (void) {
 		if (curChar == '"') {
 			getChar();
 			char fileName[128];
-			long fileNameLength = 0;
+			int32_t fileNameLength = 0;
 			while ((curChar != '"') && (fileNameLength < 127)) {
 				fileName[fileNameLength++] = curChar;
 				getChar();
@@ -651,12 +651,12 @@ void languageDirective (void) {
 			DumbGetCharOn = false;
 			//----------------------------------------------------
 			// Now that we have the file name, let's include it...
-			long openErr = ABL_NO_ERR;
+			int32_t openErr = ABL_NO_ERR;
 
 			//---------------------------------------
 			// What's the current module's directory?
 			char fullPath[255];
-			long curChar = strlen(SourceFiles[0]);
+			int32_t curChar = strlen(SourceFiles[0]);
 			while ((curChar > -1) && (SourceFiles[0][curChar] != '\\'))
 				curChar--;
 			if (curChar == -1)
@@ -719,7 +719,7 @@ void languageDirective (void) {
 	else if (strcmp(directive, "debug_start") == 0) {
 		bool stillCutting = true;
 		if (!DebugCodeEnabled) {
-			long nestedLevel = 1;
+			int32_t nestedLevel = 1;
 			getChar();
 //			getChar();
 			do {
@@ -727,7 +727,7 @@ void languageDirective (void) {
 					getChar();
 				if (curChar == '#') {
 					char directive2[32];
-					long directiveLength = 0;
+					int32_t directiveLength = 0;
 					while ((curChar != ' ') && (curChar != '\n')  && (curChar != '\r') && (directiveLength < 31)) {
 						directive2[directiveLength++] = curChar;
 						getChar();
@@ -826,12 +826,12 @@ void getChar (void) {
 
 void downShiftWord (void) {
 
-	long offset = 'a' - 'A';
+	int32_t offset = 'a' - 'A';
 	PSTR wp = wordString;
 	PSTR tp = tokenString;
 
-	long checkLengthWord = strlen(wordString);
-	long checkLengthToken = strlen(tokenString);
+	int32_t checkLengthWord = strlen(wordString);
+	int32_t checkLengthToken = strlen(tokenString);
 
 	if ((checkLengthWord >= MAXLEN_TOKENSTRING) || (checkLengthToken >= MAXLEN_TOKENSTRING))
 		ABL_Fatal(-1," Boy did Glenn screw the pooch here!! ");
@@ -945,10 +945,10 @@ void accumulateValue (float* valuePtr, SyntaxErrorType errCode) {
 
 void getNumber (void) {
 
-	long wholeCount = 0;
-	long decimalOffset = 0;
+	int32_t wholeCount = 0;
+	int32_t decimalOffset = 0;
 	char exponentSign = '+';
-	long exponent = 0;
+	int32_t exponent = 0;
 	float numberValue = (float)0.0;
 	float exponentValue = (float)0.0;
 	digitCount = 0;
@@ -1021,14 +1021,14 @@ void getNumber (void) {
 	if (curLiteral.type == LIT_INTEGER) 
 	{
 		// This line can never be true, right?  
-		// If I cast to long it can't be outside that range!!
-//		if (((long)numberValue < -MAX_INTEGER) || ((long)numberValue > MAX_INTEGER)) 
+		// If I cast to int32_t it can't be outside that range!!
+//		if (((int32_t)numberValue < -MAX_INTEGER) || ((int32_t)numberValue > MAX_INTEGER)) 
 //		{
 //			syntaxError(ABL_ERR_SYNTAX_INTEGER_OUT_OF_RANGE);
 //			curToken = TKN_ERROR;
 //			return;
 //		}
-		curLiteral.value.integer = (long)numberValue;
+		curLiteral.value.integer = (int32_t)numberValue;
 		}
 	else
 		curLiteral.value.real = numberValue;
@@ -1239,7 +1239,7 @@ bool getSourceLine (void) {
 
 	if (!sourceFile->eof())
 	{
-		long numChars = sourceFile->readLineEx((PUCHAR)sourceBuffer, MAXLEN_SOURCELINE);
+		int32_t numChars = sourceFile->readLineEx((puint8_t)sourceBuffer, MAXLEN_SOURCELINE);
 		if (numChars == 0)
 			return(false);
 		lineNumber++;
@@ -1257,7 +1257,7 @@ bool getSourceLine (void) {
 
 //---------------------------------------------------------------------------
 
-long openSourceFile (PSTR sourceFileName) {
+int32_t openSourceFile (PSTR sourceFileName) {
 
 	//---------------------------------------
 	// Now, let's open the ABL source file...
@@ -1298,7 +1298,7 @@ long openSourceFile (PSTR sourceFileName) {
 
 //---------------------------------------------------------------------------
 
-long closeSourceFile (void) {
+int32_t closeSourceFile (void) {
 
 	if (NumOpenFiles == 0)
 		return(-1);

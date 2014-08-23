@@ -48,10 +48,10 @@ typedef  TG_TypeVertex* TG_TypeVertexPtr;
 // Its used to store UNCHANGING or rarely changing Light/Fog data so I don't have to calc every frame!
 typedef struct _TG_Vertex
 {
-	BYTE			fog;
-	BYTE			redSpec;
-	BYTE			greenSpec;
-	BYTE			blueSpec;
+	UCHAR			fog;
+	UCHAR			redSpec;
+	UCHAR			greenSpec;
+	UCHAR			blueSpec;
 } TG_Vertex;
 
 typedef  TG_Vertex* TG_VertexPtr;
@@ -313,7 +313,7 @@ typedef struct _TG_ShapeRec
 	Stuff::LinearMatrix4D		localShapeToWorld;		//Matrix to transform this TG_Shape.
 	Stuff::LinearMatrix4D		shapeToWorld;			//Matrix to transform this TG_Shape.
 	Stuff::LinearMatrix4D		worldToShape;			//Inverse of above Matrix.
-	long						calcedThisFrame;		//Turn number this matrix is current for.
+	int32_t						calcedThisFrame;		//Turn number this matrix is current for.
 	bool						processMe;				//Flag indicating if I should transform/draw this.  Used for arms off.
 	TG_AnimationPtr				currentAnimation;		//Animation data being applied to this shape.  OK if NULL
 	_TG_ShapeRec				*parentNode;			//Parent Node.  OK if NULL but only for ROOT node!
@@ -353,8 +353,8 @@ class TG_TypeNode
 	protected:
 
 	public:
-		void *operator new (size_t mySize);
-		void operator delete (void *us);
+		PVOIDoperator new (size_t mySize);
+		void operator delete (PVOID us);
 			
  		virtual void init (void)
 		{
@@ -395,12 +395,12 @@ class TG_TypeNode
 		{
 		}
 
-		virtual long GetNumTypeVertices (void)
+		virtual int32_t GetNumTypeVertices (void)
 		{
 			return 0;
 		}
 
-		virtual long GetNodeType (void)
+		virtual int32_t GetNodeType (void)
 		{
 			return TYPE_NODE;
 		}
@@ -412,7 +412,7 @@ class TG_TypeNode
 		//
 		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long ParseASEFile (PUCHAR /*aseBuffer*/, PSTR /*filename*/)
+		virtual int32_t ParseASEFile (puint8_t /*aseBuffer*/, PSTR /*filename*/)
 		{
 			return 0;
 		}
@@ -424,7 +424,7 @@ class TG_TypeNode
 		//
 		// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long MakeFromHelper (PUCHAR aseBuffer, PSTR filename);
+		virtual int32_t MakeFromHelper (puint8_t aseBuffer, PSTR filename);
 
 		//Function returns 0 if OK.  -1 if file not found or file not ASE Format.		
 		//This function loads the ASE file into the TG_Triangle and TG_Vertex lists.
@@ -432,7 +432,7 @@ class TG_TypeNode
 		//
 		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long LoadTGShapeFromASE (PSTR /*fileName*/)
+		virtual int32_t LoadTGShapeFromASE (PSTR /*fileName*/)
 		{
 			return 0;
 		}
@@ -440,7 +440,7 @@ class TG_TypeNode
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual long SetTextureHandle (ULONG /*textureNum*/, ULONG /*gosTextureHandle*/)
+		virtual int32_t SetTextureHandle (ULONG /*textureNum*/, ULONG /*gosTextureHandle*/)
 		{
 			return 0;
 		}
@@ -448,7 +448,7 @@ class TG_TypeNode
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual long SetTextureAlpha (ULONG /*textureNum*/, bool /*alphaFlag*/)
+		virtual int32_t SetTextureAlpha (ULONG /*textureNum*/, bool /*alphaFlag*/)
 		{
 			return 0;
 		}
@@ -554,7 +554,7 @@ class TG_TypeShape : public TG_TypeNode
 			destroy();
 		}
 
-		virtual long GetNumTypeVertices (void)
+		virtual int32_t GetNumTypeVertices (void)
 		{
 			return numTypeVertices;
 		}
@@ -566,7 +566,7 @@ class TG_TypeShape : public TG_TypeNode
 		//
 		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long ParseASEFile (PUCHAR aseBuffer, PSTR filename);	//filename for error reporting ONLY
+		virtual int32_t ParseASEFile (puint8_t aseBuffer, PSTR filename);	//filename for error reporting ONLY
 
 		//Function return 0 is OK.  -1 if file is not ASE Format or missing data.
 		//This function simply parses the ASE buffers handed to it.  This allows
@@ -575,7 +575,7 @@ class TG_TypeShape : public TG_TypeNode
 		//
 		// NOTE: Only takes the first HELPEROBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long MakeFromHelper (PUCHAR aseBuffer, PSTR filename);
+		virtual int32_t MakeFromHelper (puint8_t aseBuffer, PSTR filename);
 
 		//Function returns 0 if OK.  -1 if file not found or file not ASE Format.		
 		//This function loads the ASE file into the TG_Triangle and TG_Vertex lists.
@@ -583,17 +583,17 @@ class TG_TypeShape : public TG_TypeNode
 		//
 		// NOTE: Only takes the first GEOMOBJECT from the ASE file.  Multi-object
 		// Files will require user intervention to parse!!
-		virtual long LoadTGShapeFromASE (PSTR fileName);
+		virtual int32_t LoadTGShapeFromASE (PSTR fileName);
 
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual long SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle);
+		virtual int32_t SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle);
 
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 		//This function takes the gosTextureHandle passed in and assigns it to the
 		//textureNum entry of the listOfTextures;
-		virtual long SetTextureAlpha (ULONG textureNum, bool alphaFlag);
+		virtual int32_t SetTextureAlpha (ULONG textureNum, bool alphaFlag);
 
 		//Need this so that Multi-Shapes can let each shape know texture info.
 		virtual void CreateListOfTextures (TG_TexturePtr list, ULONG numTxms);
@@ -621,7 +621,7 @@ class TG_TypeShape : public TG_TypeNode
 			hotYellowRGB = hYellow;
 		}
 		
-		virtual long GetNodeType (void)
+		virtual int32_t GetNodeType (void)
 		{
 			return SHAPE_NODE;
 		}
@@ -718,8 +718,8 @@ class TG_Shape
 	protected:
 
 	public:
-		void * operator new (size_t mySize);
-		void operator delete (void * us);
+		PVOID operator new (size_t mySize);
+		void operator delete (PVOID us);
 
 		void init (void)
 		{
@@ -745,7 +745,7 @@ class TG_Shape
 
 			isWindow = isSpotlight = false;
 
-			for (long i=0;i<MAX_SHADOWS;i++)
+			for (int32_t i=0;i<MAX_SHADOWS;i++)
 				shadowsVisible[i] = false;
 		}
 		
@@ -774,7 +774,7 @@ class TG_Shape
 		//to light the shape.
 		//Function returns 0 if lightList entries are all OK.  -1 otherwise.
 		//
-		long SetLightList (TG_LightPtr *lightList, ULONG nLights);
+		int32_t SetLightList (TG_LightPtr *lightList, ULONG nLights);
 		
 		//This function sets the fog values for the shape.  Straight fog right now.
 		void SetFogRGB (ULONG fRGB);
@@ -787,7 +787,7 @@ class TG_Shape
 		//Function returns 0 if any one vertex screen position is off screen.
 		//Function returns 1 is all vertex screen positions are on screen.
 		// NOTE:  THIS IS NOT A RIGOROUS CLIP!!!!!!!!!
-		long MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Point3D *backFacePoint, TG_ShapeRecPtr parentNode, bool isHudElement, BYTE alphaValue, bool isClamped);
+		int32_t MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Point3D *backFacePoint, TG_ShapeRecPtr parentNode, bool isHudElement, UCHAR alphaValue, bool isClamped);
 
 		//This function creates the list of shadows and transforms them in preparation to drawing.
 		//
@@ -795,11 +795,11 @@ class TG_Shape
 
 		//This function takes the current listOfVisibleFaces and draws them using
 		//gos_DrawTriangle.  Does clipping, too!
-		void Render (float forceZ = -1.0f, bool isHudElement = false, BYTE alphaValue = 0xff, bool isClamped = false);
+		void Render (float forceZ = -1.0f, bool isHudElement = false, UCHAR alphaValue = 0xff, bool isClamped = false);
 
 		//This function takes the current listOfShadowTriangles and draws them using
 		//gos_DrawTriangle.  Does clipping, too!
-		long RenderShadows (long startFace);
+		int32_t RenderShadows (int32_t startFace);
 
 		void SetARGBHighLight (ULONG argb)
 		{

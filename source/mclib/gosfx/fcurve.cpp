@@ -317,8 +317,8 @@ gosFX::Curve::GetSeedFlagIfComplex()
 
 
 
-Stuff::Scalar 
-gosFX::Curve::ExpensiveCompute(Stuff::Scalar tme,int curvenum)
+float 
+gosFX::Curve::ExpensiveCompute(float tme,int curvenum)
 {
 	
 	Check_Object(this);
@@ -442,8 +442,8 @@ gosFX::Curve::ExpensiveCompute(Stuff::Scalar tme,int curvenum)
 
 void 
 gosFX::Curve::ExpensiveComputeRange(
-									Stuff::Scalar *low,
-									Stuff::Scalar *hi,
+									float *low,
+									float *hi,
 									int curvenum
 									)
 {
@@ -569,8 +569,8 @@ gosFX::Curve::ExpensiveComputeRange(
 
 void 
 gosFX::Curve::ExpensiveComputeRange(
-									Stuff::Scalar *low,
-									Stuff::Scalar *hi
+									float *low,
+									float *hi
 									)
 {
 	Check_Object(this);
@@ -670,16 +670,16 @@ gosFX::Curve::ExpensiveComputeRange(
 }
 
 
-Stuff::Scalar 
+float 
 gosFX::Curve::Mid(int curvenum)
 {
-	Stuff::Scalar min,max;
+	float min,max;
 	ExpensiveComputeRange(&min,&max,curvenum);
 	return min+(max-min)*0.5f;
 }
 
 void 
-gosFX::Curve::TranslateTo(Stuff::Scalar pos,int curvenum)
+gosFX::Curve::TranslateTo(float pos,int curvenum)
 {
 	Check_Object(this);
 	
@@ -695,7 +695,7 @@ gosFX::Curve::TranslateTo(Stuff::Scalar pos,int curvenum)
 	case e_LinearType:
 		{
 			LinearCurve *SCurve=(LinearCurve *)this;
-			Stuff::Scalar s;
+			float s;
 			s=SCurve->ComputeSlope(0.0f);
 			SCurve->SetCurve(pos,pos+s);
 		}
@@ -704,7 +704,7 @@ gosFX::Curve::TranslateTo(Stuff::Scalar pos,int curvenum)
 	case e_SplineType:
 		{
 			SplineCurve *SCurve=(SplineCurve *)this;
-			Stuff::Scalar v0,v1,s0,s1;
+			float v0,v1,s0,s1;
 			v0=SCurve->ComputeValue(0.0f,0.0f);
 			v1=SCurve->ComputeValue(1.0f,0.0f);
 			s0=SCurve->ComputeSlope(0.0f);
@@ -720,7 +720,7 @@ gosFX::Curve::TranslateTo(Stuff::Scalar pos,int curvenum)
 	case e_ComplexType:
 		{
 			ComplexCurve *SCurve=(ComplexCurve *)this;
-			Stuff::Scalar delta,x1,x2,y1,y2,slp;
+			float delta,x1,x2,y1,y2,slp;
 			
 			delta=pos-SCurve->ComputeValue(0.0f,0.0f);
 			int key;
@@ -831,7 +831,7 @@ gosFX::Curve::TranslateTo(Stuff::Scalar pos,int curvenum)
 }
 
 void 
-gosFX::Curve::TranslateBy(Stuff::Scalar delta,int curvenum)
+gosFX::Curve::TranslateBy(float delta,int curvenum)
 {
 	Check_Object(this);
 	
@@ -847,7 +847,7 @@ gosFX::Curve::TranslateBy(Stuff::Scalar delta,int curvenum)
 	case e_LinearType:
 		{
 			LinearCurve *SCurve=(LinearCurve *)this;
-			Stuff::Scalar s,v;
+			float s,v;
 			s=SCurve->ComputeSlope(0.0f);
 			v=SCurve->ComputeValue(0.0f,0.0f);
 			SCurve->SetCurve(v+delta,v+delta+s);
@@ -857,7 +857,7 @@ gosFX::Curve::TranslateBy(Stuff::Scalar delta,int curvenum)
 	case e_SplineType:
 		{
 			SplineCurve *SCurve=(SplineCurve *)this;
-			Stuff::Scalar v0,v1,s0,s1;
+			float v0,v1,s0,s1;
 			v0=SCurve->ComputeValue(0.0f,0.0f);
 			v1=SCurve->ComputeValue(1.0f,0.0f);
 			s0=SCurve->ComputeSlope(0.0f);
@@ -873,7 +873,7 @@ gosFX::Curve::TranslateBy(Stuff::Scalar delta,int curvenum)
 	case e_ComplexType:
 		{
 			ComplexCurve *SCurve=(ComplexCurve *)this;
-			Stuff::Scalar x1,x2,y1,y2;
+			float x1,x2,y1,y2;
 			
 			int key;
 			for(key=0;key<SCurve->GetKeyCount()-1;key++)
@@ -982,14 +982,14 @@ gosFX::Curve::TranslateBy(Stuff::Scalar delta,int curvenum)
 }
 
 void 
-gosFX::Curve::LocalScale(Stuff::Scalar sfactor,int curvenum)
+gosFX::Curve::LocalScale(float sfactor,int curvenum)
 {
 	Check_Object(this);
 	AxisScale(sfactor,Mid(curvenum),curvenum);
 }
 
 void 
-gosFX::Curve::AxisScale(Stuff::Scalar sfactor,Stuff::Scalar axis,int curvenum)
+gosFX::Curve::AxisScale(float sfactor,float axis,int curvenum)
 {
 	Check_Object(this);
 	switch(m_type)
@@ -1004,7 +1004,7 @@ gosFX::Curve::AxisScale(Stuff::Scalar sfactor,Stuff::Scalar axis,int curvenum)
 	case e_LinearType:
 		{
 			LinearCurve *SCurve=(LinearCurve *)this;
-			Stuff::Scalar v0,v1;
+			float v0,v1;
 			v0=SCurve->ComputeValue(0.0f,0.0f);
 			v1=SCurve->ComputeValue(1.0f,0.0f);
 			v0=axis+(v0-axis)*sfactor;
@@ -1016,7 +1016,7 @@ gosFX::Curve::AxisScale(Stuff::Scalar sfactor,Stuff::Scalar axis,int curvenum)
 	case e_SplineType:
 		{
 			SplineCurve *SCurve=(SplineCurve *)this;
-			Stuff::Scalar v0,v1,s0,s1;
+			float v0,v1,s0,s1;
 			v0=SCurve->ComputeValue(0.0f,0.0f);
 			v1=SCurve->ComputeValue(1.0f,0.0f);
 			s0=SCurve->ComputeSlope(0.0f);
@@ -1034,7 +1034,7 @@ gosFX::Curve::AxisScale(Stuff::Scalar sfactor,Stuff::Scalar axis,int curvenum)
 	case e_ComplexType:
 		{
 			ComplexCurve *SCurve=(ComplexCurve *)this;
-			Stuff::Scalar x1,x2,y1,y2;
+			float x1,x2,y1,y2;
 			
 			int key;
 			for(key=0;key<SCurve->GetKeyCount()-1;key++)
@@ -1314,7 +1314,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // return:  true=math good, false=math unstable
 bool
-gosFX::LinearCurve::SetCurve(Stuff::Scalar v)
+gosFX::LinearCurve::SetCurve(float v)
 {
 	Check_Object(this);
 	
@@ -1327,8 +1327,8 @@ gosFX::LinearCurve::SetCurve(Stuff::Scalar v)
 // return:  true=math good, false=math unstable
 bool
 gosFX::LinearCurve::SetCurve(
-							 Stuff::Scalar v0,
-							 Stuff::Scalar v1
+							 float v0,
+							 float v1
 							 )
 {
 	Check_Object(this);
@@ -1342,8 +1342,8 @@ gosFX::LinearCurve::SetCurve(
 //
 void
 gosFX::LinearCurve::ComputeRange(
-								 Stuff::Scalar *low,
-								 Stuff::Scalar *hi
+								 float *low,
+								 float *hi
 								 )
 {
 	Check_Object(this);
@@ -1357,7 +1357,7 @@ gosFX::LinearCurve::ComputeRange(
 	//------------------------------------------------------------------------
 	//
 	*hi = *low = m_value;
-	Stuff::Scalar t = m_slope+m_value;
+	float t = m_slope+m_value;
 	if (t>*hi)
 		*hi = t;
 	else if (t<*low)
@@ -1410,7 +1410,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // return:  true=math good, false=math unstable
 bool
-gosFX::SplineCurve::SetCurve(Stuff::Scalar v)
+gosFX::SplineCurve::SetCurve(float v)
 {
 	Check_Object(this);
 	
@@ -1423,8 +1423,8 @@ gosFX::SplineCurve::SetCurve(Stuff::Scalar v)
 // return:  true=math good, false=math unstable
 bool
 gosFX::SplineCurve::SetCurve(
-							 Stuff::Scalar v0,
-							 Stuff::Scalar v1
+							 float v0,
+							 float v1
 							 )
 {
 	Check_Object(this);
@@ -1440,10 +1440,10 @@ gosFX::SplineCurve::SetCurve(
 // return:  true=math good, false=math unstable
 bool
 gosFX::SplineCurve::SetCurve(
-							 Stuff::Scalar v0,
-							 Stuff::Scalar s0,
-							 Stuff::Scalar v1,
-							 Stuff::Scalar s1
+							 float v0,
+							 float s0,
+							 float v1,
+							 float s1
 							 )
 {
 	Check_Object(this);
@@ -1462,8 +1462,8 @@ gosFX::SplineCurve::SetCurve(
 //
 void
 gosFX::SplineCurve::ComputeRange(
-								 Stuff::Scalar *low,
-								 Stuff::Scalar *hi
+								 float *low,
+								 float *hi
 								 )
 {
 	Check_Object(this);
@@ -1477,7 +1477,7 @@ gosFX::SplineCurve::ComputeRange(
 	//------------------------------------------------------------------------
 	//
 	*hi = *low = m_value;
-	Stuff::Scalar t = ComputeValue(1.0f, 0.0f);
+	float t = ComputeValue(1.0f, 0.0f);
 	if (t>*hi)
 		*hi = t;
 	else if (t<*low)
@@ -1513,9 +1513,9 @@ gosFX::SplineCurve::ComputeRange(
 	// the two roots of the equation 3*m_a*t*t + 2*m_b*t + m_slope == 0
 	//----------------------------------------------------------------------
 	//
-	Stuff::Scalar da = 3.0f*m_a;
-	Stuff::Scalar db = 2.0f*m_b;
-	Stuff::Scalar range = db*db - 4.0f*da*m_slope;
+	float da = 3.0f*m_a;
+	float db = 2.0f*m_b;
+	float range = db*db - 4.0f*da*m_slope;
 	if (range < 0.0f)
 		return;
 	da = 0.5f / da;
@@ -1556,8 +1556,8 @@ gosFX::SplineCurve::ComputeRange(
 // return:  true=math good, false=math unstable
 bool
 gosFX::CurveKey::SetConstantKey(
-								Stuff::Scalar key_time,
-								Stuff::Scalar v
+								float key_time,
+								float v
 								)
 {
 	Check_Object(this);
@@ -1572,10 +1572,10 @@ gosFX::CurveKey::SetConstantKey(
 // return:  true=math good, false=math unstable
 bool
 gosFX::CurveKey::SetLinearKey(
-							  Stuff::Scalar key_time,
-							  Stuff::Scalar v0,
-							  Stuff::Scalar v1,
-							  Stuff::Scalar dt
+							  float key_time,
+							  float v0,
+							  float v1,
+							  float dt
 							  )
 {
 	Check_Object(this);
@@ -1591,9 +1591,9 @@ gosFX::CurveKey::SetLinearKey(
 //
 void
 gosFX::CurveKey::ComputeRange(
-							  Stuff::Scalar *low,
-							  Stuff::Scalar *hi,
-							  Stuff::Scalar dt
+							  float *low,
+							  float *hi,
+							  float dt
 							  )
 {
 	Check_Object(this);
@@ -1609,7 +1609,7 @@ gosFX::CurveKey::ComputeRange(
 	*hi = *low = m_value;
 	if (dt < Stuff::SMALL)
 		return;
-	Stuff::Scalar t = ComputeValue(dt);
+	float t = ComputeValue(dt);
 	if (t>*hi)
 		*hi = t;
 	else if (t<*low)
@@ -1683,7 +1683,7 @@ gosFX::ComplexCurve::Load(
 
 	if (gfx_version < 15)
 	{
-		Stuff::Scalar duration;
+		float duration;
 		*stream >> duration;
 	}
 	Stuff::MemoryStreamIO_Read(stream, &m_keys);
@@ -1695,9 +1695,9 @@ gosFX::ComplexCurve::Load(
 	//--------------------------------------------------------------------------
 	//
 	CurveKey *key = &m_keys[m_keys.GetLength()-1];
-	Stuff::Scalar dt = 1.0f - key->m_time;
+	float dt = 1.0f - key->m_time;
 	Min_Clamp(dt, 0.0f);
-	Stuff::Scalar low, hi;
+	float low, hi;
 	key->ComputeRange(&low, &hi, dt);
 	if (low < 0.0f)
 	{
@@ -1713,7 +1713,7 @@ gosFX::ComplexCurve::Load(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 int
-gosFX::ComplexCurve::InsertKey(Stuff::Scalar m_time)
+gosFX::ComplexCurve::InsertKey(float m_time)
 {
 	Check_Object(this);
 	gos_PushCurrentHeap(Heap);
@@ -1745,10 +1745,10 @@ gosFX::ComplexCurve::InsertKey(Stuff::Scalar m_time)
 	//
 	if (before < key_count)
 	{
-		Stuff::Scalar t = m_time - key->m_time;
-		Stuff::Scalar v0 = key->ComputeValue(t);
+		float t = m_time - key->m_time;
+		float v0 = key->ComputeValue(t);
 		t = key[1].m_time - key->m_time;
-		Stuff::Scalar v1 = key->ComputeValue(t);
+		float v1 = key->ComputeValue(t);
 		key->SetLinearKey(m_time, v0, v1, key[1].m_time - m_time);
 	}
 	
@@ -1761,10 +1761,10 @@ gosFX::ComplexCurve::InsertKey(Stuff::Scalar m_time)
 	else if (key_count > 0)
 	{
 		Verify(before == key_count);
-		Stuff::Scalar t = m_time - key->m_time;
-		Stuff::Scalar v0 = key->ComputeValue(t);
+		float t = m_time - key->m_time;
+		float v0 = key->ComputeValue(t);
 		t += 1.0f;
-		Stuff::Scalar v1 = key->ComputeValue(t);
+		float v1 = key->ComputeValue(t);
 		key->SetLinearKey(m_time, v0, v1, 1.0f);
 	}
 	
@@ -1814,8 +1814,8 @@ gosFX::ComplexCurve::DeleteKey(int index)
 	//
 	CurveKey* key = &(*this)[index];
 	Check_Object(key);
-	Stuff::Scalar t = key[1].m_time - key->m_time;
-	Stuff::Scalar v1 = key->ComputeValue(t);
+	float t = key[1].m_time - key->m_time;
+	float v1 = key->ComputeValue(t);
 	for (int i=index+1; i<key_count; ++i)
 		m_keys[i-1] = m_keys[i];
 	
@@ -1839,7 +1839,7 @@ gosFX::ComplexCurve::DeleteKey(int index)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-gosFX::ComplexCurve::SetCurve(Stuff::Scalar m_value)
+gosFX::ComplexCurve::SetCurve(float m_value)
 {
 	Check_Object(this);
 	gos_PushCurrentHeap(Heap);
@@ -1852,8 +1852,8 @@ gosFX::ComplexCurve::SetCurve(Stuff::Scalar m_value)
 //
 void
 gosFX::ComplexCurve::SetCurve(
-							  Stuff::Scalar starting_value,
-							  Stuff::Scalar ending_value
+							  float starting_value,
+							  float ending_value
 							  )
 {
 	Check_Object(this);
@@ -1873,8 +1873,8 @@ gosFX::ComplexCurve::SetCurve(
 //
 void
 gosFX::ComplexCurve::ComputeRange(
-								  Stuff::Scalar *low,
-								  Stuff::Scalar *hi
+								  float *low,
+								  float *hi
 								  )
 {
 	Check_Object(this);
@@ -1899,7 +1899,7 @@ gosFX::ComplexCurve::ComputeRange(
 	//----------------------------
 	//
 	CurveKey *key = &m_keys[--key_count];
-	Stuff::Scalar dt = 1.0f - key->m_time;
+	float dt = 1.0f - key->m_time;
 	Min_Clamp(dt, 0.0f);
 	key->ComputeRange(low, hi, dt);
 
@@ -1914,7 +1914,7 @@ gosFX::ComplexCurve::ComputeRange(
 	while (--key_count >= 0)
 	{
 		--key;
-		Stuff::Scalar h,l;
+		float h,l;
 		key->ComputeRange(&l, &h, key[1].m_time - key->m_time);
 		if (h > *hi)
 			*hi = h;

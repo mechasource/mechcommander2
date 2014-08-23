@@ -13,7 +13,7 @@
 #endif
 
 //---------------------------------------------------------------------------
-long txmToTileLookup[DEFINED_TXMS] = 
+int32_t txmToTileLookup[DEFINED_TXMS] = 
 {
 	48,49,50,51,52,
 	48,49,50,51,52,

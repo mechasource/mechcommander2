@@ -76,14 +76,14 @@ class MapData : public HeapManager
 		static float				shallowDepth;
 		static float				waterDepth;
 		static float				alphaDepth;
-		static DWORD				WaterTXMData;
+		static ULONG				WaterTXMData;
 
 	//Member Functions
 	//-----------------
 	public:
 
-		void *operator new (size_t mySize);
-		void operator delete (void *us);
+		PVOIDoperator new (size_t mySize);
+		void operator delete (PVOID us);
 		
 		void init (void)
 		{
@@ -116,13 +116,13 @@ class MapData : public HeapManager
 			destroy();
 		}
 
-		long init (PSTR fileName, long numBlocks, long blockSize);
+		int32_t init (PSTR fileName, int32_t numBlocks, int32_t blockSize);
 
-		void newInit (PacketFile* file, long numVertices);
-		void newInit (long numVertices);
+		void newInit (PacketFile* file, int32_t numVertices);
+		void newInit (int32_t numVertices);
 
-		long update (void);
-		void makeLists (VertexPtr vertexList, long &numVerts, TerrainQuadPtr quadList, long &numTiles);
+		int32_t update (void);
+		void makeLists (VertexPtr vertexList, int32_t &numVerts, TerrainQuadPtr quadList, int32_t &numTiles);
 		
 		Stuff::Vector2DOf<float> getTopLeftVertex (void) 
 		{
@@ -133,7 +133,7 @@ class MapData : public HeapManager
 		void clearShadows();
 		
 		float terrainElevation (Stuff::Vector3D &position);
-		float terrainElevation ( long tileR, long tileC );
+		float terrainElevation ( int32_t tileR, int32_t tileC );
 
 		float terrainAngle (Stuff::Vector3D &position, Stuff::Vector3D* normal = NULL);
 		Stuff::Vector3D terrainNormal (Stuff::Vector3D& position);
@@ -142,14 +142,14 @@ class MapData : public HeapManager
 		float getTopLeftElevation (void);
 		
 		// old overlay stuff
-		void setOverlayTile (long block, long vertex, long offset);
-		long getOverlayTile (long block, long vertex);
+		void setOverlayTile (int32_t block, int32_t vertex, int32_t offset);
+		int32_t getOverlayTile (int32_t block, int32_t vertex);
 
 		// new overlay stuff
-		void setOverlay( long tileR, long tileC, Overlays type, ULONG Offset );
-		void getOverlay( long tileR, long tileC, Overlays& type, ULONG& Offset );
-		void setTerrain( long tileR, long tileC, int terrainType );
-		long getTerrain( long tileR, long tileC );
+		void setOverlay( int32_t tileR, int32_t tileC, Overlays type, ULONG Offset );
+		void getOverlay( int32_t tileR, int32_t tileC, Overlays& type, ULONG& Offset );
+		void setTerrain( int32_t tileR, int32_t tileC, int terrainType );
+		int32_t getTerrain( int32_t tileR, int32_t tileC );
 
 		void  setVertexHeight( int vertexIndex, float value ); 
 		float getVertexHeight( int vertexIndex );
@@ -159,9 +159,9 @@ class MapData : public HeapManager
 			return blocks;
 		}
 
-		ULONG getTexture( long tileR, long tileC );
+		ULONG getTexture( int32_t tileR, int32_t tileC );
 
-		long save( PacketFile* file, int whichPacket);
+		int32_t save( PacketFile* file, int whichPacket);
 
 		void calcWater (float waterDepth, float waterShallowDepth, float waterAlphaDepth);
 		void recalcWater (void);									//Uses above values already passed in to just recalc the water

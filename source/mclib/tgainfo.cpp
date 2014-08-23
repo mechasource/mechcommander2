@@ -26,16 +26,16 @@ typedef struct _RGB
 } RGB;
 
 //---------------------------------------------------------------------------
-void tgaDecomp(MemoryPtr dest, MemoryPtr source, TGAFileHeader *tga_header)
+void tgaDecomp(PUCHAR dest, PUCHAR source, TGAFileHeader *tga_header)
 {
 	//---------------------------------------------------------------------
 	// Display Image based on Format 10 (0x0a).  RLE true color.
 
 	//----------------------------------------------
 	// Parse RLE data -- Check for RLE/RAW byte
-	MemoryPtr data_offset = source;
-	long currentHeight = 0;
-	long currentWidth = 0;
+	PUCHAR data_offset = source;
+	int32_t currentHeight = 0;
+	int32_t currentWidth = 0;
 	while (currentHeight != tga_header->height)
 	{
 		while (currentWidth != tga_header->width)
@@ -67,7 +67,7 @@ void tgaDecomp(MemoryPtr dest, MemoryPtr source, TGAFileHeader *tga_header)
 					data_offset++;
 				}
 						
-				for (long i=0;i<rep_count+1;i++)
+				for (int32_t i=0;i<rep_count+1;i++)
 				{
 					*dest = rgb.b;
 					dest++;
@@ -156,19 +156,19 @@ void tgaDecomp(MemoryPtr dest, MemoryPtr source, TGAFileHeader *tga_header)
 }	
 
 //---------------------------------------------------------------------------
-void flipTopToBottom (MemoryPtr buffer, BYTE depth, long width, long height)
+void flipTopToBottom (PUCHAR buffer, UCHAR depth, int32_t width, int32_t height)
 {
 	//-----------------------------------------------------------
 	// ScanLine by Scanline
-	MemoryPtr tmpBuffer = (MemoryPtr)malloc(width * height * (depth>>3));
-	MemoryPtr tmpPointer = tmpBuffer;
+	PUCHAR tmpBuffer = (PUCHAR)malloc(width * height * (depth>>3));
+	PUCHAR tmpPointer = tmpBuffer;
 
 	//----------------------------------
 	// Point to last scanline.
-	long pixelWidth = width * (depth >> 3);
-	MemoryPtr workBuffer = buffer + ((height - 1) * pixelWidth);
+	int32_t pixelWidth = width * (depth >> 3);
+	PUCHAR workBuffer = buffer + ((height - 1) * pixelWidth);
 	
-	for (long i=0;i<height;i++)
+	for (int32_t i=0;i<height;i++)
 	{
 		memcpy(tmpBuffer,workBuffer,pixelWidth);
 
@@ -182,9 +182,9 @@ void flipTopToBottom (MemoryPtr buffer, BYTE depth, long width, long height)
 }
 	
 //---------------------------------------------------------------------------
-void tgaCopy (MemoryPtr dest, MemoryPtr src, long size)
+void tgaCopy (PUCHAR dest, PUCHAR src, int32_t size)
 {
-	long numCopied = 0;
+	int32_t numCopied = 0;
 	while (numCopied != size)
 	{
 		*dest = *src;
@@ -206,20 +206,20 @@ void tgaCopy (MemoryPtr dest, MemoryPtr src, long size)
 }
 
 //---------------------------------------------------------------------------
-static cint32_t g_textureCache_BufferSize = 16384/*64*64*sizeof(DWORD)*/;
-static BYTE g_textureCache_Buffer[g_textureCache_BufferSize];
+static cint32_t g_textureCache_BufferSize = 16384/*64*64*sizeof(ULONG)*/;
+static UCHAR g_textureCache_Buffer[g_textureCache_BufferSize];
 EString *g_textureCache_FilenameOfLastLoadedTexture = NULL;/*This is an (EString *) instead of an EString because apparently gos memory management has a problem with global static allocation of EStrings.*/
 static int g_textureCache_WidthOfLastLoadedTexture = 0;/*just to be sure*/
 static int g_textureCache_HeightOfLastLoadedTexture = 0;/*just to be sure*/
 static int g_textureCache_NumberOfConsecutiveLoads = 0;
 static bool g_textureCache_LastTextureIsCached = false;
 
-void loadTGATexture (FilePtr tgaFile, MemoryPtr ourRAM, long width, long height)
+void loadTGATexture (FilePtr tgaFile, PUCHAR ourRAM, int32_t width, int32_t height)
 {
 	if (!g_textureCache_FilenameOfLastLoadedTexture)
 		g_textureCache_FilenameOfLastLoadedTexture = new EString;
 
-	if (width * height * sizeof(DWORD) <= g_textureCache_BufferSize)
+	if (width * height * sizeof(ULONG) <= g_textureCache_BufferSize)
 	{
 		if ((g_textureCache_FilenameOfLastLoadedTexture->Data())
 			&& (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data()))
@@ -230,13 +230,13 @@ void loadTGATexture (FilePtr tgaFile, MemoryPtr ourRAM, long width, long height)
 			if (g_textureCache_LastTextureIsCached)
 			{
 				g_textureCache_NumberOfConsecutiveLoads += 1;
-				memcpy(ourRAM, g_textureCache_Buffer, width*height*sizeof(DWORD));
+				memcpy(ourRAM, g_textureCache_Buffer, width*height*sizeof(ULONG));
 				return;
 			}
 		}
 	}
 
-	MemoryPtr tgaBuffer = (MemoryPtr)malloc(tgaFile->fileSize());
+	PUCHAR tgaBuffer = (PUCHAR)malloc(tgaFile->fileSize());
 
 	tgaFile->read(tgaBuffer,tgaFile->fileSize());
 
@@ -260,7 +260,7 @@ void loadTGATexture (FilePtr tgaFile, MemoryPtr ourRAM, long width, long height)
 		{
 			//------------------------------------------------
 			// This is just a bitmap.  Copy it into ourRAM.
-			MemoryPtr image = tgaBuffer + sizeof(TGAFileHeader);
+			PUCHAR image = tgaBuffer + sizeof(TGAFileHeader);
 
 			if (header->pixel_depth == 32)
 				memcpy(ourRAM,image,width * height * 4);
@@ -299,7 +299,7 @@ void loadTGATexture (FilePtr tgaFile, MemoryPtr ourRAM, long width, long height)
 
 		case RLE_TRUE:
 		{
-			MemoryPtr image = tgaBuffer + sizeof(TGAFileHeader);
+			PUCHAR image = tgaBuffer + sizeof(TGAFileHeader);
 			tgaDecomp(ourRAM,image,header);
 
 			//------------------------------------------------------------------------
@@ -328,7 +328,7 @@ void loadTGATexture (FilePtr tgaFile, MemoryPtr ourRAM, long width, long height)
 
 	free(tgaBuffer);
 
-	if (width * height * sizeof(DWORD) <= g_textureCache_BufferSize)
+	if (width * height * sizeof(ULONG) <= g_textureCache_BufferSize)
 	{
 		if ((g_textureCache_FilenameOfLastLoadedTexture->Data())
 			&& (0 == strcmp(tgaFile->getFilename(), g_textureCache_FilenameOfLastLoadedTexture->Data()))
@@ -339,7 +339,7 @@ void loadTGATexture (FilePtr tgaFile, MemoryPtr ourRAM, long width, long height)
 			g_textureCache_NumberOfConsecutiveLoads += 1;
 			if (2 == g_textureCache_NumberOfConsecutiveLoads )
 			{
-				memcpy(g_textureCache_Buffer, ourRAM, width*height*sizeof(DWORD));
+				memcpy(g_textureCache_Buffer, ourRAM, width*height*sizeof(ULONG));
 				(*g_textureCache_FilenameOfLastLoadedTexture) = tgaFile->getFilename();
 				g_textureCache_WidthOfLastLoadedTexture = width;
 				g_textureCache_HeightOfLastLoadedTexture = height;
@@ -357,9 +357,9 @@ void loadTGATexture (FilePtr tgaFile, MemoryPtr ourRAM, long width, long height)
 	}
 }	
 
-void loadTGAMask (FilePtr tgaFile, MemoryPtr ourRAM, long width, long height)
+void loadTGAMask (FilePtr tgaFile, PUCHAR ourRAM, int32_t width, int32_t height)
 {
-	MemoryPtr tgaBuffer = (MemoryPtr)malloc(tgaFile->fileSize());
+	PUCHAR tgaBuffer = (PUCHAR)malloc(tgaFile->fileSize());
 
 	tgaFile->read(tgaBuffer,tgaFile->fileSize());
 
@@ -380,7 +380,7 @@ void loadTGAMask (FilePtr tgaFile, MemoryPtr ourRAM, long width, long height)
 		{
 			//------------------------------------------------
 			// This is just a bitmap.  Copy it into ourRAM.
-			MemoryPtr image = tgaBuffer + sizeof(TGAFileHeader);
+			PUCHAR image = tgaBuffer + sizeof(TGAFileHeader);
 			if (header->color_map)
 				image += header->cm_length * (header->cm_entry_size>>3);
 

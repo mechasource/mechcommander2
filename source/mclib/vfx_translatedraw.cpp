@@ -5,12 +5,12 @@
 extern char AlphaTable[256*256];
 
 typedef struct SHAPEHEADER {
-	DWORD	bounds;
-	DWORD	origin;
-	DWORD	xmin;
-	DWORD	ymin;
-	DWORD	xmax;
-	DWORD	ymax;
+	ULONG	bounds;
+	ULONG	origin;
+	ULONG	xmin;
+	ULONG	ymin;
+	ULONG	xmax;
+	ULONG	ymax;
 } SHAPEHEADER;
 
 //
@@ -34,8 +34,8 @@ static uint32_t lines,DestWidth,paneX0,paneX1,paneY0,paneY1;
 
 /*
 ;
-; int cdecl VFX_shape_draw (PANE *panep, void *shape_table,
-;                           long shape_number,int hotX, int hotY)
+; int cdecl VFX_shape_draw (PANE *panep, PVOIDshape_table,
+;                           int32_t shape_number,int hotX, int hotY)
 ;
 ; This function clips and draws a shape to a pane.
 ; 
@@ -47,7 +47,7 @@ static uint32_t lines,DestWidth,paneX0,paneX1,paneY0,paneY1;
 ; drawn.  The shape's hot spot will end up at the specified location.
 ;
 */
-void AG_shape_draw (PANE *pane, void *shape_table,LONG shape_number, LONG hotX, LONG hotY)
+void AG_shape_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY)
 {
 	_asm{
 	mov esi,shape_table
@@ -825,7 +825,7 @@ Exit:
 /*
 ;----------------------------------------------------------------------------
 ;
-; void cdecl VFX_shape_lookaside (PUCHAR table)
+; void cdecl VFX_shape_lookaside (puint8_t table)
 ;
 ; Establishes a color translation lookaside table for use by future calls
 ; to VFX_shape_translate_draw().
@@ -836,7 +836,7 @@ Exit:
 ;
 ;----------------------------------------------------------------------------
 */
-void AG_shape_lookaside( UBYTE *table )
+void AG_shape_lookaside( puint8_t table )
 {
 	_asm{
 		mov eax,table
@@ -847,8 +847,8 @@ void AG_shape_lookaside( UBYTE *table )
 /*
 ;----------------------------------------------------------------------------
 ;
-; int cdecl VFX_shape_translate_draw (PANE *panep, void *shape_table,
-;                           long shape_number,int hotX, int hotY)
+; int cdecl VFX_shape_translate_draw (PANE *panep, PVOIDshape_table,
+;                           int32_t shape_number,int hotX, int hotY)
 ;
 ; This function clips and draws a shape to a pane.  It is identical to 
 ; VFX_shape_draw(), except that each pixel written is translated through a
@@ -873,7 +873,7 @@ void AG_shape_lookaside( UBYTE *table )
 ;
 ;----------------------------------------------------------------------------
 */
-void AG_shape_translate_draw (PANE *pane, void *shape_table,LONG shape_number, LONG hotX, LONG hotY)
+void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY)
 {
 	_asm{
 	mov esi,shape_table
@@ -1692,7 +1692,7 @@ assertError:
 	mov saveEdi,edi
 	}
 
-	//void *shape_table,LONG shape_number, LONG hotX, LONG hotY
+	//PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY
 	
 	char msg[1024];
 	
@@ -1700,17 +1700,17 @@ assertError:
 	// Save off the shape data table start
 	PSTR shapeTable = (PSTR )shape_table;
 	char version[5];
-	for (long i=0;i<4;i++)
+	for (int32_t i=0;i<4;i++)
 	{
 		version[i] = *shapeTable;
 		shapeTable++;
 	}
 	version[4] = 0;
 	
-	long numShapes = (long)*shapeTable;
+	int32_t numShapes = (int32_t)*shapeTable;
 	shapeTable += 4;
 	shapeTable += (shape_number * 8);
-	long shapeNumOffset = (long) *shapeTable;
+	int32_t shapeNumOffset = (int32_t) *shapeTable;
 	
 	sprintf(msg,"SP: %08x  SF: %d  X: %d  Y:%d  V: %s  SN: %d  SOf: %d",shape_table,shape_number,hotX,hotY,version,numShapes,shapeNumOffset);
 	Fatal(saveEdi,msg);

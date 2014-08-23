@@ -39,7 +39,7 @@ gosFX::Card__Specification::Card__Specification(
 
 		SeededCurveOf<ComplexCurve, LinearCurve,Curve::e_ComplexLinearType> temp;
 		temp.Load(stream, gfx_version);
-		Stuff::Scalar v = temp.ComputeValue(0.0f, 0.0f);
+		float v = temp.ComputeValue(0.0f, 0.0f);
 		m_UOffset.SetCurve(v);
 
 		temp.Load(stream, gfx_version);
@@ -159,13 +159,13 @@ bool
 
 	Check_Object(this);
 
-	Stuff::Scalar max_offset, min_offset;
-	Stuff::Scalar max_scale, min_scale;
+	float max_offset, min_offset;
+	float max_scale, min_scale;
 	m_USize.ExpensiveComputeRange(&min_scale, &max_scale);
-	Stuff::Scalar lower = min_scale;
+	float lower = min_scale;
 	if (lower > 0.0f)
 		lower = 0.0f;
-	Stuff::Scalar upper = max_scale;
+	float upper = max_scale;
 
 	//
 	//------------------------------------
@@ -248,7 +248,7 @@ void
 	gosFX::Card__Specification::SetWidth()
 {
 	m_width =
-		static_cast<BYTE>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
+		static_cast<UCHAR>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
 }
 
 //############################################################################
@@ -290,7 +290,7 @@ void
 //
 gosFX::Card::Card(
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	Singleton(DefaultData, spec, flags),
 	m_cardCount(1)
@@ -324,7 +324,7 @@ gosFX::Card::~Card()
 gosFX::Card*
 	gosFX::Card::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);
@@ -386,10 +386,10 @@ bool
 	// Animate the uvs
 	//----------------
 	//
-	Stuff::Scalar u = spec->m_UOffset.ComputeValue(m_age, m_seed);
-	Stuff::Scalar v = spec->m_VOffset.ComputeValue(m_age, m_seed);
-	Stuff::Scalar u2 = spec->m_USize.ComputeValue(m_age, m_seed);
-	Stuff::Scalar v2 = spec->m_VSize.ComputeValue(m_age, m_seed);
+	float u = spec->m_UOffset.ComputeValue(m_age, m_seed);
+	float v = spec->m_VOffset.ComputeValue(m_age, m_seed);
+	float u2 = spec->m_USize.ComputeValue(m_age, m_seed);
+	float v2 = spec->m_VSize.ComputeValue(m_age, m_seed);
 
 	//
 	//--------------------------------------------------------------
@@ -398,12 +398,12 @@ bool
 	//
 	if (spec->m_animated)
 	{
-		BYTE columns =
+		UCHAR columns =
 			Stuff::Truncate_Float_To_Byte(
 				spec->m_index.ComputeValue(m_age, m_seed)
 			);
-		BYTE rows = static_cast<BYTE>(columns / spec->m_width);
-		columns = static_cast<BYTE>(columns - rows*spec->m_width);
+		UCHAR rows = static_cast<UCHAR>(columns / spec->m_width);
+		columns = static_cast<UCHAR>(columns - rows*spec->m_width);
 
 		//
 		//---------------------------

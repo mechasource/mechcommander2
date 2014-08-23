@@ -19,8 +19,8 @@ TacMap::TacMap()
 
 void TacMap::worldToTacMap( Stuff::Vector3D& world, int xOffset, int yOffset, int xSize, int ySize, gos_VERTEX& tac )
 {
-	long tacX;
-	long tacY;
+	int32_t tacX;
+	int32_t tacY;
 
 	land->worldToCell( world, tacY, tacX );	
 	if ( tacX < 0 )
@@ -40,11 +40,11 @@ void TacMap::worldToTacMap( Stuff::Vector3D& world, int xOffset, int yOffset, in
 
 }
 
-void TacMap::tacMapToWorld( const Stuff::Vector2DOf<long>& screen, int xSize, int ySize,  Stuff::Vector3D& world )
+void TacMap::tacMapToWorld( const Stuff::Vector2DOf<int32_t>& screen, int xSize, int ySize,  Stuff::Vector3D& world )
 {
 	// turn screen into cells
-	long cellX = screen.x /(float)xSize * ((float)land->realVerticesMapSide * MAPCELL_DIM);
-	long cellY = screen.y /(float)ySize * ((float)land->realVerticesMapSide * MAPCELL_DIM);
+	int32_t cellX = screen.x /(float)xSize * ((float)land->realVerticesMapSide * MAPCELL_DIM);
+	int32_t cellY = screen.y /(float)ySize * ((float)land->realVerticesMapSide * MAPCELL_DIM);
 
 	if ((cellX < 0) || (cellX >= land->realVerticesMapSide * MAPCELL_DIM) ||
 		(cellY < 0) || (cellY >= land->realVerticesMapSide * MAPCELL_DIM))

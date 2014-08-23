@@ -108,7 +108,7 @@ bool
 {
 
 	Check_Object(this);
-	Stuff::Scalar min,max;
+	float min,max;
 	m_pScale.ExpensiveComputeRange(&min,&max);
 	if(min<0.0f) 
 	if(fix_data)
@@ -186,7 +186,7 @@ void
 gosFX::SpinningCloud::SpinningCloud(
 	ClassData *class_data,
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	ParticleCloud(class_data, spec, flags)
 {
@@ -226,7 +226,7 @@ bool
 	if (m_activeParticleCount > 0)
 	{
 		Stuff::ExtentBox box(Stuff::Point3D::Identity, Stuff::Point3D::Identity);
-		unsigned i=0;
+		uint32_t i=0;
 
 		//
 		//-------------------------------------------------------------------
@@ -337,7 +337,7 @@ bool
 //
 void
 	gosFX::SpinningCloud::CreateNewParticle(
-		unsigned index,
+		uint32_t index,
 		Stuff::Point3D *translation
 	)
 {
@@ -357,8 +357,8 @@ void
 	Check_Object(spec);
 	Particle *particle = GetParticle(index);
 	Check_Object(particle);
-	Stuff::Scalar seed = particle->m_seed;
-	Stuff::Scalar age = m_age;
+	float seed = particle->m_seed;
+	float age = m_age;
 	particle->m_localTranslation = *translation;
 
 	//
@@ -404,7 +404,7 @@ void
 //
 bool
 	gosFX::SpinningCloud::AnimateParticle(
-		unsigned index,
+		uint32_t index,
 		const Stuff::LinearMatrix4D *world_to_new_local,
 		Stuff::Time till
 	)
@@ -420,7 +420,7 @@ bool
 	//
 	Particle *particle = GetParticle(index);
 	Check_Object(particle);
-	Stuff::Scalar age = particle->m_age;
+	float age = particle->m_age;
 	if (age >= 1.0f)
 		return false;
 	Stuff::Point3D *translation = &particle->m_localTranslation;
@@ -449,10 +449,10 @@ bool
 	// velocity
 	//------------------------------------------------------------------
 	//
-	Stuff::Scalar seed = particle->m_seed;
+	float seed = particle->m_seed;
 	Specification *spec = GetSpecification();
 	Check_Object(spec);
-	Stuff::Scalar drag = -spec->m_pDrag.ComputeValue(age, seed);
+	float drag = -spec->m_pDrag.ComputeValue(age, seed);
 	Max_Clamp(drag, 0.0f);
 	Stuff::Vector3D ether;
 	ether.x = spec->m_pEtherVelocityX.ComputeValue(age, seed);
@@ -517,8 +517,8 @@ bool
 	// Compute the particle's new velocity and position
 	//-------------------------------------------------
 	//
-	Stuff::Scalar time_slice =
-		static_cast<Stuff::Scalar>(till - m_lastRan);
+	float time_slice =
+		static_cast<float>(till - m_lastRan);
 	velocity->AddScaled(*velocity, accel, time_slice);
 	translation->AddScaled(*translation, *velocity, time_slice);
 

@@ -6,6 +6,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef DFILE_H
 #define DFILE_H
 //---------------------------------------------------------------------------
@@ -13,12 +15,10 @@
 
 //---------------------------------------------------------------------------
 
-typedef long FileHandle;
-typedef long FilePos;
+typedef int32_t FileHandle;
+typedef int32_t FilePos;
 //---------------------------------------------------------------------------
 
-class File;
-typedef File *FilePtr;
 
 //---------------------------------------------------------------------------
 #endif // DFILE_H

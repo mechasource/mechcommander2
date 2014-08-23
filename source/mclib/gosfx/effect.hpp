@@ -43,9 +43,9 @@ namespace gosFX
 		void
 			Save(Stuff::MemoryStream *stream);
 
-		Stuff::Scalar
+		float
 			m_time;
-		unsigned
+		uint32_t
 			m_flags,
 			m_effectID;
 		Stuff::LinearMatrix4D
@@ -115,10 +115,9 @@ namespace gosFX
 		virtual void
 			Copy(Effect__Specification *spec);
 
-		Stuff::MString
-			m_name;
-		unsigned
-			m_effectID;
+		Stuff::MString m_name;
+		//std::wstring  m_name;
+		uint32_t m_effectID;
 
 	protected:
 		Stuff::RegisteredClass::ClassID
@@ -177,7 +176,7 @@ namespace gosFX
 		{
 			Stuff::Time
 				m_time;
-			Stuff::Scalar
+			float
 				m_seed,					// 0 <= m_seed <= 1
 				m_age,
 				m_ageRate;
@@ -190,7 +189,7 @@ namespace gosFX
 				Stuff::Time time,
 				const Stuff::LinearMatrix4D *parent_to_world,
 				Stuff::OBB *bounds,
-				Stuff::Scalar seed = -1.0f
+				float seed = -1.0f
 			)
 				{
 					m_time = time; m_seed = seed;
@@ -203,10 +202,10 @@ namespace gosFX
 
 		private:
 			ExecuteInfo(
-				Stuff::Scalar time,
+				float time,
 				const Stuff::LinearMatrix4D *parent_to_world,
 				Stuff::OBB *bounds,
-				Stuff::Scalar seed = -1.0f
+				float seed = -1.0f
 			);
 		};
 
@@ -228,10 +227,9 @@ namespace gosFX
 	// Initialization
 	//
 	public:
-		static void InitializeClass();
-		static void	TerminateClass();
-		static ClassData
-			*DefaultData;
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
+		static ClassData* DefaultData;
 
 	//----------------------------------------------------------------------------
 	// Constructors/Destructors
@@ -240,7 +238,7 @@ namespace gosFX
 		Effect(
 			ClassData *class_data,
 			Specification *spec,
-			unsigned flags
+			uint32_t flags
 		);
 
 	public:
@@ -249,13 +247,13 @@ namespace gosFX
 		typedef Effect*
 			(*Factory)(
 				Specification *spec,
-				unsigned flags
+				uint32_t flags
 			);
 
 		static Effect*
 			Make(
 				Specification *spec,
-				unsigned flags
+				uint32_t flags
 			);
 
 		Specification*
@@ -279,8 +277,7 @@ namespace gosFX
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API
@@ -360,11 +357,11 @@ namespace gosFX
 			m_localToParent;
 		Stuff::Time
 			m_lastRan;
-		Stuff::Scalar
+		float
 			m_age,
 			m_ageRate,
 			m_seed;
-		unsigned
+		uint32_t
 			m_flags;
 	};
 

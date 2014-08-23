@@ -5,25 +5,15 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef BITFLAG_H
 #define BITFLAG_H
-//----------------------------------------------------------------------------------
-// Include Files
-#ifndef DBITFLAG_H
-#include "dbitflag.h"
-#endif
 
-#ifndef HEAP_H
-#include "heap.h"
-#endif
-
-#ifndef DSTD_H
-#include "dstd.h"
-#endif
-
-#ifndef VFX_H
-#include "vfx.h"
-#endif
+//#include "dbitflag.h"
+//#include "heap.h"
+//#include "dstd.h"
+//#include "vfx.h"
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
@@ -34,27 +24,40 @@
 
 //----------------------------------------------------------------------------------
 // Class Definitions
+
+// vfx.h
+struct PANE;
+struct WINDOW;
+// heap.h
+class HeapManager;
+
 class BitFlag
 {
 	//Data Members
 	//-------------
 	protected:
-	
-		HeapManagerPtr		flagHeap;
-		uint8_t		numBitsPerFlag;
-		ULONG		rows;
-		ULONG		columns;
-		uint8_t		maskValue;
-		ULONG		divValue;
-		ULONG		colWidth;
-		ULONG		totalFlags;
-		ULONG		totalRAM;
+		HeapManager*	flagHeap;
+		uint8_t			numBitsPerFlag;
+		uint32_t		rows;
+		uint32_t		columns;
+		uint8_t			maskValue;
+		uint32_t		divValue;
+		uint32_t		colWidth;
+		uint32_t		totalFlags;
+		uint32_t		totalRAM;
 		
 	//Member Functions
 	//-----------------
 	public:
-	
-		void init (void)
+		BitFlag(void)
+		{
+			init();
+		}
+		~BitFlag(void)
+		{
+			destroy();
+		}
+		void init(void)
 		{
 			flagHeap = NULL;
 			numBitsPerFlag = 0;
@@ -63,29 +66,18 @@ class BitFlag
 			divValue = 1;
 			colWidth = 1;
 		}
-		
-		BitFlag (void)
-		{
-			init();
-		}
-		
-		long init (ULONG numRows, ULONG numColumns, ULONG initialValue = 0);
-		void destroy (void);
-		
-		~BitFlag (void)
-		{
-			destroy();
-		}
+		int32_t init(ULONG numRows, ULONG numColumns, ULONG initialValue = 0);
+		void destroy(void);
 	
-		void resetAll (ULONG bits);
+		void resetAll(ULONG bits);
 			
-		void setFlag (ULONG r, ULONG c);
-		void clearFlag (ULONG r, ULONG c);
+		void setFlag(ULONG r, ULONG c);
+		void clearFlag(ULONG r, ULONG c);
 		
-		void setGroup (ULONG r, ULONG c, ULONG length);
-		void clearGroup (ULONG r, ULONG c, ULONG length);
+		void setGroup(ULONG r, ULONG c, ULONG length);
+		void clearGroup(ULONG r, ULONG c, ULONG length);
 		
-		uint8_t getFlag (ULONG r, ULONG c);
+		uint8_t getFlag(ULONG r, ULONG c);
 };
 
 //----------------------------------------------------------------------------------
@@ -94,71 +86,67 @@ class ByteFlag
 	//Data Members
 	//-------------
 	protected:
+
+		HeapManager*	flagHeap;
+		uint32_t		rows;
+		uint32_t		columns;
+		uint32_t		totalFlags;
+		uint32_t		totalRAM;
 	
-		HeapManagerPtr		flagHeap;
-		ULONG		rows;
-		ULONG		columns;
-		ULONG		totalFlags;
-		ULONG		totalRAM;
-		
-		PANE				*flagPane;
-		WINDOW				*flagWindow;
+		PANE*			flagPane;
+		WINDOW*			flagWindow;
 		
 	//Member Functions
 	//-----------------
 	public:
 	
-		void init (void)
+		void init(void)
 		{
 			flagHeap = NULL;
 			rows = columns = 0;
-			
 			flagPane = NULL;
 			flagWindow = NULL;
 		}
 		
-		ByteFlag (void)
+		ByteFlag(void)
 		{
 			init();
 		}
 		
-		long init (ULONG numRows, ULONG numColumns, ULONG initialValue = 0);
-		void initTGA (PSTR tgaFileName);
+		int32_t init(ULONG numRows, ULONG numColumns, ULONG initialValue = 0);
+		void initTGA(PSTR tgaFileName);
 
-		void destroy (void);
+		void destroy(void);
 		
-		~ByteFlag (void)
+		~ByteFlag(void)
 		{
 			destroy();
 		}
 	
-		MemoryPtr memDump (void)
-		{
-			return (flagHeap->getHeapPtr());
-		}
+		PUCHAR memDump(void);
 	
-		long getWidth (void)
+		uint32_t getWidth(void)
 		{
 			return rows;
 		}
 
-		long getHeight (void)
+		uint32_t getHeight(void)
 		{
 			return columns;
 		}
 
-		void resetAll (ULONG byte);
+		void resetAll(ULONG byte);
 			
-		void setFlag (ULONG r, ULONG c);
-		void clearFlag (ULONG r, ULONG c);
+		void setFlag(ULONG r, ULONG c);
+		void clearFlag(ULONG r, ULONG c);
 		
-		void setGroup (ULONG r, ULONG c, ULONG length);
-		void clearGroup (ULONG r, ULONG c, ULONG length);
+		void setGroup(ULONG r, ULONG c, ULONG length);
+		void clearGroup(ULONG r, ULONG c, ULONG length);
 		
-		uint8_t getFlag (ULONG r, ULONG c);
+		uint8_t getFlag(ULONG r, ULONG c);
 		
-		void setCircle (ULONG x, ULONG y, ULONG radius, uint8_t value);
-		void clearCircle (ULONG x, ULONG y, ULONG radius, uint8_t value);
+		void setCircle(ULONG x, ULONG y, ULONG radius, uint8_t value);
+		void clearCircle(ULONG x, ULONG y, ULONG radius, uint8_t value);
 };
 
 //----------------------------------------------------------------------------------

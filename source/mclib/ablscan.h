@@ -141,7 +141,7 @@ typedef enum LiteralType {
 typedef struct Literal {
 	LiteralType		type;
 	struct {
-		long		integer;
+		int32_t		integer;
 		float		real;
 		char		string[MAXLEN_TOKENSTRING];
 	} value;
@@ -163,25 +163,25 @@ class ABLFile {
     public:
 
 		PSTR		fileName;
-		void*		file;
+		PVOID		file;
 
-		static long (__stdcall *createCB)(void** file, PSTR fName);
-		static long (__stdcall *openCB)(void** file, PSTR fName);
-		static long (__stdcall *closeCB)(void** file);
-		static bool (__stdcall *eofCB)(void* file);
-		static long (__stdcall *readCB)(void* file, PUCHAR buffer, long length);
-		static long (__stdcall *readLongCB)(void* file);
-		static long (__stdcall *readStringCB)(void* file, PUCHAR buffer);
-		static long (__stdcall *readLineExCB)(void* file, PUCHAR buffer, long maxLength);
-		static long (__stdcall *writeCB)(void* file, PUCHAR buffer, long length);
-		static long (__stdcall *writeByteCB)(void* file, uint8_t byte);
-		static long (__stdcall *writeLongCB)(void* file, long value);
-		static long (__stdcall *writeStringCB)(void* file, PSTR buffer);
+		static int32_t (__stdcall *createCB)(PVOID* file, PSTR fName);
+		static int32_t (__stdcall *openCB)(PVOID* file, PSTR fName);
+		static int32_t (__stdcall *closeCB)(PVOID* file);
+		static bool (__stdcall *eofCB)(PVOID file);
+		static int32_t (__stdcall *readCB)(PVOID file, puint8_t buffer, int32_t length);
+		static int32_t (__stdcall *readLongCB)(PVOID file);
+		static int32_t (__stdcall *readStringCB)(PVOID file, puint8_t buffer);
+		static int32_t (__stdcall *readLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength);
+		static int32_t (__stdcall *writeCB)(PVOID file, puint8_t buffer, int32_t length);
+		static int32_t (__stdcall *writeByteCB)(PVOID file, uint8_t byte);
+		static int32_t (__stdcall *writeLongCB)(PVOID file, int32_t value);
+		static int32_t (__stdcall *writeStringCB)(PVOID file, PSTR buffer);
 
 	public:
 
-		void* operator new (size_t ourSize);
-		void operator delete (void *us);
+		PVOID operator new (size_t ourSize);
+		void operator delete (PVOID us);
 
 		void init(void);
 	
@@ -197,28 +197,28 @@ class ABLFile {
 			destroy();
 		}
 		
-		long set (void* fPtr)
+		int32_t set (PVOID fPtr)
 		{
 			file = fPtr;
 		}
 
-		void* get (void)
+		PVOID get (void)
 		{
 			return(file);
 		}
 
-		long create (PSTR fileName);
-		long open (PSTR fileName);
-		long close (void);
+		int32_t create (PSTR fileName);
+		int32_t open (PSTR fileName);
+		int32_t close (void);
 		bool eof (void);
-		long read (PUCHAR buffer, long length);
-		long readLong (void);
-		long readString (PUCHAR buffer);
-		long readLineEx (PUCHAR buffer, long maxLength);
-		long write (PUCHAR buffer, long length);
-		long writeByte (uint8_t val);
-		long writeLong (long val);
-		long writeString (PSTR buffer);
+		int32_t read (puint8_t buffer, int32_t length);
+		int32_t readLong (void);
+		int32_t readString (puint8_t buffer);
+		int32_t readLineEx (puint8_t buffer, int32_t maxLength);
+		int32_t write (puint8_t buffer, int32_t length);
+		int32_t writeByte (uint8_t val);
+		int32_t writeLong (int32_t val);
+		int32_t writeString (PSTR buffer);
 };
 
 //***************************************************************************
@@ -226,8 +226,8 @@ class ABLFile {
 //----------
 // FUNCTIONS
 
-inline CharCodeType __stdcall calcCharCode(long ch);
-long __stdcall isReservedWord(void);
+inline CharCodeType __stdcall calcCharCode(int32_t ch);
+int32_t __stdcall isReservedWord(void);
 void __stdcall initScanner(PSTR fileName);
 void __stdcall quitScanner(void);
 void __stdcall skipComment(void);
@@ -252,19 +252,19 @@ void __stdcall printPageHeader(void);
 // VARIABLES
 
 extern char		wordString[MAXLEN_TOKENSTRING];
-extern void*	(__stdcall *ABLSystemMallocCallback) (size_t memSize);
-extern void*	(__stdcall *ABLStackMallocCallback) (size_t memSize);
-extern void*	(__stdcall *ABLCodeMallocCallback) (size_t memSize);
-extern void*	(__stdcall *ABLSymbolMallocCallback) (size_t memSize);
-extern void		(__stdcall *ABLSystemFreeCallback) (void* memBlock);
-extern void		(__stdcall *ABLStackFreeCallback) (void* memBlock);
-extern void		(__stdcall *ABLCodeFreeCallback) (void* memBlock);
-extern void		(__stdcall *ABLSymbolFreeCallback) (void* memBlock);
+extern PVOID	(__stdcall *ABLSystemMallocCallback) (size_t memSize);
+extern PVOID	(__stdcall *ABLStackMallocCallback) (size_t memSize);
+extern PVOID	(__stdcall *ABLCodeMallocCallback) (size_t memSize);
+extern PVOID	(__stdcall *ABLSymbolMallocCallback) (size_t memSize);
+extern void		(__stdcall *ABLSystemFreeCallback) (PVOID memBlock);
+extern void		(__stdcall *ABLStackFreeCallback) (PVOID memBlock);
+extern void		(__stdcall *ABLCodeFreeCallback) (PVOID memBlock);
+extern void		(__stdcall *ABLSymbolFreeCallback) (PVOID memBlock);
 extern void		(__stdcall *ABLDebugPrintCallback) (PSTR s);
-extern long		(__stdcall *ABLRandomCallback) (long range);
+extern int32_t		(__stdcall *ABLRandomCallback) (int32_t range);
 extern void		(__stdcall *ABLSeedRandomCallback) (size_t range);
 extern size_t	(__stdcall *ABLGetTimeCallback) (void);
-extern void		(__stdcall *ABLFatalCallback) (long code, PSTR s);
+extern void		(__stdcall *ABLFatalCallback) (int32_t code, PSTR s);
 
 //***************************************************************************
 	

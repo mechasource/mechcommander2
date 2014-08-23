@@ -12,9 +12,9 @@
 
 //***************************************************************************
 
-void Fatal (long errCode, PSTR errMessage);
+void Fatal (int32_t errCode, PSTR errMessage);
 
-void Assert (bool test, long errCode, PSTR errMessage);
+void Assert (bool test, int32_t errCode, PSTR errMessage);
 
 //***************************************************************************
 

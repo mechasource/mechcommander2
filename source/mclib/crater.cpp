@@ -113,7 +113,7 @@ float craterUVTable [136] =
 
 //---------------------------------------------------------------------
 // class CraterManager
-long CraterManager::init (long numCraters, ULONG craterTypeSize, PSTR craterFileName)
+int32_t CraterManager::init (int32_t numCraters, ULONG craterTypeSize, PSTR craterFileName)
 {
 	init();
 	
@@ -127,26 +127,26 @@ long CraterManager::init (long numCraters, ULONG craterTypeSize, PSTR craterFile
 	craterPosHeap = new HeapManager;
 	gosASSERT(craterPosHeap != NULL);
 	
-	long result = craterPosHeap->createHeap(craterPosHeapSize);
-	gosASSERT(result == NO_ERR);
+	int32_t result = craterPosHeap->createHeap(craterPosHeapSize);
+	gosASSERT(result == NO_ERROR);
 		
 	result = craterPosHeap->commitHeap(craterPosHeapSize);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	numCraterTextures = MAX_CRATER_TEXTURES;
 	//---------------------------------------------------------
 	// Setup Crater Texture handles
-	craterTextureHandles = (DWORD *)malloc(sizeof(DWORD) * numCraterTextures);
-	memset((MemoryPtr)craterTextureHandles,0xff,sizeof(DWORD) * numCraterTextures);
+	craterTextureHandles = (ULONG *)malloc(sizeof(ULONG) * numCraterTextures);
+	memset((PUCHAR)craterTextureHandles,0xff,sizeof(ULONG) * numCraterTextures);
 
-	craterTextureIndices = (DWORD *)malloc(sizeof(DWORD) * numCraterTextures);
-	memset((MemoryPtr)craterTextureIndices,0xff,sizeof(DWORD) * numCraterTextures);
+	craterTextureIndices = (ULONG *)malloc(sizeof(ULONG) * numCraterTextures);
+	memset((PUCHAR)craterTextureIndices,0xff,sizeof(ULONG) * numCraterTextures);
 
 	//-----------------------------------------------------
 	// Preload all of the craters for the mission.
 	// This should just be one texture with all of the craters on it
 	// and a generic set of UVs to mark each one.
-	for (long i=0;i<numCraterTextures;i++)
+	for (int32_t i=0;i<numCraterTextures;i++)
 	{
 		char craterName[1024];
 		sprintf(craterName,"defaults\\feet%04d",i);
@@ -165,7 +165,7 @@ long CraterManager::init (long numCraters, ULONG craterTypeSize, PSTR craterFile
 	craterList = (CraterDataPtr)craterPosHeap->getHeapPtr();
 	memset(craterPosHeap->getHeapPtr(),-1,craterPosHeapSize);
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }	
 
 //---------------------------------------------------------------------
@@ -199,10 +199,10 @@ void CraterManager::destroy (void)
 }			
 
 //---------------------------------------------------------------------
-long CraterManager::addCrater (long craterType, Stuff::Vector3D &position, float rotation)
+int32_t CraterManager::addCrater (int32_t craterType, Stuff::Vector3D &position, float rotation)
 {
 	if (!useNonWeaponEffects)
-		return NO_ERR;
+		return NO_ERROR;
 
 	//----------------------------------------------------------------
 	bool drawMe = TRUE;
@@ -263,19 +263,19 @@ long CraterManager::addCrater (long craterType, Stuff::Vector3D &position, float
 		}
 	}
 	
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 //---------------------------------------------------------------------
-long CraterManager::update (void)
+int32_t CraterManager::update (void)
 {
 	if (!useNonWeaponEffects)
-		return NO_ERR;
+		return NO_ERROR;
 
 	//---------------------------------------------------------------
 	// Run through all craters in list and do geometry during update
 	CraterDataPtr currentCrater = craterList;
-	for (long i=0;i<(long)maxCraters;i++,currentCrater++)
+	for (int32_t i=0;i<(int32_t)maxCraters;i++,currentCrater++)
 	{
 		if (currentCrater->craterShapeId != -1)
 		{
@@ -308,11 +308,11 @@ void CraterManager::render (void)
 	// which not clipped or an invalid_crater
 	CraterDataPtr currCrater = craterList;
 
-	for (long i=0;i<(long)maxCraters;i++,currCrater++)
+	for (int32_t i=0;i<(int32_t)maxCraters;i++,currCrater++)
 	{
 		if (currCrater->craterShapeId != -1)
 		{
-			long handleOffset = 1;
+			int32_t handleOffset = 1;
 			float uvAdd = 0.125;
 			if (currCrater->craterShapeId >= MAX_FOOTPRINTS)
 			{
@@ -361,8 +361,8 @@ void CraterManager::render (void)
 			// Check clipping
 			if (onScreen1 || onScreen2 || onScreen3 || onScreen4)
 			{
-				DWORD lightRGB = 0xffffffff;
-				DWORD specR = 0, specB = 0, specG = 0;
+				ULONG lightRGB = 0xffffffff;
+				ULONG specR = 0, specB = 0, specG = 0;
 				
 				uint8_t lightr = 0xff,lightg = 0xff,lightb = 0xff;
 				lightr = eye->ambientRed;
@@ -388,11 +388,11 @@ void CraterManager::render (void)
 					lightRGB = lightb + (lightr<<16) + (lightg << 8) + (0xff << 24);
 				}
 
-				DWORD fogRGB = (0xff<<24) + (specR<<16) + (specG<<8) + specB;
+				ULONG fogRGB = (0xff<<24) + (specR<<16) + (specG<<8) + specB;
 				
 				if (useFog)
 				{
-					DWORD fogValue = 0xff;
+					ULONG fogValue = 0xff;
 					float fogStart = eye->fogStart;
 					float fogFull = eye->fogFull;
 
@@ -428,7 +428,7 @@ void CraterManager::render (void)
 					if (hazeFactor != 0.0f)
 					{
 						float fogFactor = 1.0 - hazeFactor;
-						DWORD distFog = float2long(fogFactor * 255.0f);
+						ULONG distFog = float2long(fogFactor * 255.0f);
 						
 						if (distFog < fogValue)
 							fogValue = distFog;
@@ -486,7 +486,7 @@ void CraterManager::render (void)
 					// FOG time.  Set Render state to FOG on!
 					if (useFog)
 					{
-						DWORD fogColor = eye->fogColor;
+						ULONG fogColor = eye->fogColor;
 						gos_SetRenderState( gos_State_Fog, (int)&fogColor);
 					}
 					else

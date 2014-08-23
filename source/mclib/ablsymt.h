@@ -28,7 +28,7 @@
 // DEFINITION structure
 
 typedef union {
-	long		integer;
+	int32_t		integer;
 	char		character;
 	float		real;
 	PSTR		stringPtr;
@@ -87,22 +87,22 @@ typedef StateHandleInfo* StateHandleInfoPtr;
 typedef struct _Routine {
 	RoutineKey				key;
 	uint8_t			flags;
-	unsigned short			orderCallIndex;
-	unsigned short			numOrderCalls;
+	uint16_t			orderCallIndex;
+	uint16_t			numOrderCalls;
 	uint8_t			paramCount;
 	uint8_t			totalParamSize;
-	unsigned short			totalLocalSize;
+	uint16_t			totalLocalSize;
 	SymTableNodePtr			params;
 	SymTableNodePtr			locals;
 	SymTableNodePtr			localSymTable;
 	PSTR					codeSegment;
-	long					codeSegmentSize;
+	int32_t					codeSegmentSize;
 } Routine;
 
 typedef struct {
 	VariableType			varType;
-	long					offset;
-	void*					registeredData;
+	int32_t					offset;
+	PVOID					registeredData;
 	//SymTableNodePtr			recordIdPtr;		// Currently not implementing record structures...
 } Data;
 
@@ -133,7 +133,7 @@ typedef struct _SymTableNode {
 	TypePtr				typePtr;
 	ABLModulePtr		library;
 	uint8_t		level;
-	long				labelIndex;		// really for compiling only...
+	int32_t				labelIndex;		// really for compiling only...
 } SymTableNode;
 
 typedef enum {
@@ -163,7 +163,7 @@ typedef enum {
 
 typedef struct {
 	SymTableNodePtr			symbol;
-	long					numParams;
+	int32_t					numParams;
 	FunctionParamType		params[MAX_FUNCTION_PARAMS];
 	FunctionReturnType		returnType;
 } StandardFunctionInfo;
@@ -186,19 +186,19 @@ typedef enum {
 // variables.
 
 typedef struct _Type {
-	long							numInstances;
+	int32_t							numInstances;
 	FormType						form;
-	long							size;
+	int32_t							size;
 	SymTableNodePtr					typeIdPtr;
 	union {
 		struct {
 			SymTableNodePtr			constIdPtr;
-			long					max;
+			int32_t					max;
 		} enumeration;
 		struct {
 			TypePtr					indexTypePtr;		// should be Integer
 			TypePtr					elementTypePtr;		// should be Real, Integer, Char or array
-			long					elementCount;
+			int32_t					elementCount;
 		} array;
 		// Not currently implementing record structures...
 		//struct {
@@ -229,7 +229,7 @@ SymTableNodePtr searchSymTableDisplay (PSTR name);
 SymTableNodePtr enterSymTable (PSTR name, SymTableNodePtr* ptrToNodePtr);
 SymTableNodePtr insertSymTable (SymTableNodePtr* tableRoot, SymTableNodePtr newNode);
 SymTableNodePtr extractSymTable (SymTableNodePtr* tableRoot, SymTableNodePtr nodeKill);
-void enterStandardRoutine (PSTR name, long routineKey, bool isOrder, PSTR paramList, PSTR returnType, void (*callback)(void));
+void enterStandardRoutine (PSTR name, int32_t routineKey, bool isOrder, PSTR paramList, PSTR returnType, void (*callback)(void));
 void enterScope (SymTableNodePtr symTableRoot);
 SymTableNodePtr exitScope (void);
 void initSymTable (void);
@@ -241,9 +241,9 @@ void clearType (TypePtr& type);
 //***************************************************************************
 
 extern StandardFunctionInfo		FunctionInfoTable[MAX_STANDARD_FUNCTIONS];
-//extern void*					FunctionCallbackTable[MAX_STANDARD_FUNCTIONS];
+//extern PVOID					FunctionCallbackTable[MAX_STANDARD_FUNCTIONS];
 extern void						(*FunctionCallbackTable[MAX_STANDARD_FUNCTIONS])(void);
-extern long						NumStandardFunctions;
+extern int32_t						NumStandardFunctions;
 
 #endif
 

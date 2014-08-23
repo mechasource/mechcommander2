@@ -174,11 +174,11 @@ PSTR MechAnimationNames[MaxGestures+2] =
 };																
 
 PaintSchemataPtr	Mech3DAppearance::paintSchemata = NULL;
-DWORD				Mech3DAppearance::numPaintSchemata = 0;
+ULONG				Mech3DAppearance::numPaintSchemata = 0;
 
 TG_TypeMultiShapePtr Mech3DAppearanceType::SensorSquareShape = NULL;
 
-extern long			ObjectTextureSize;
+extern int32_t			ObjectTextureSize;
 
 #define FOOTPRINT_SLOP			2
 
@@ -199,54 +199,54 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 
 	FitIniFile mechFile;
 
-	long result = mechFile.open(mechIniName);
-	gosASSERT(result == NO_ERR);
+	int32_t result = mechFile.open(mechIniName);
+	gosASSERT(result == NO_ERROR);
 	
-	for (long i=0;i<MaxGestures;i++)
+	for (int32_t i=0;i<MaxGestures;i++)
 	{
 		char blockId[256];
 		sprintf(blockId,"Gestures%d",i);
 
 		result = mechFile.seekBlock(blockId);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = mechFile.readIdFloat("StartVel",gestures[i].startVel);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = mechFile.readIdFloat("EndVel",gestures[i].endVel);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = mechFile.readIdLong("StartFrame",gestures[i].frameStart);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = mechFile.readIdBoolean("Reverse",gestures[i].reverse);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 		
 		result = mechFile.readIdLong("RightFootDown0",gestures[i].rightFootDownFrame0);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			gestures[i].rightFootDownFrame0 = 99999;
 			
 		result = mechFile.readIdLong("RightFootDown1",gestures[i].rightFootDownFrame1);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			gestures[i].rightFootDownFrame1 = 99999;
 			
 		result = mechFile.readIdLong("LeftFootDown0",gestures[i].leftFootDownFrame0);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			gestures[i].leftFootDownFrame0 = 99999;
 			
 		result = mechFile.readIdLong("LeftFootDown1",gestures[i].leftFootDownFrame1);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			gestures[i].leftFootDownFrame1 = 99999;
  	} 
 
 	result = mechFile.seekBlock("TGLData");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		STOP(("Mech %s has no TGL Data",fileName));
 
 	char aseFileName[512];
 	result = mechFile.readIdString("FileName",aseFileName,511);
-	long i;
-	if (result != NO_ERR)
+	int32_t i;
+	if (result != NO_ERROR)
 	{
 		//Check for LOD filenames
 		char aseFileName[512];
@@ -258,10 +258,10 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 			sprintf(baseLODDist,"Distance%d",i);
 			
 			result = mechFile.readIdString(baseName,aseFileName,511);
-			if (result == NO_ERR)
+			if (result == NO_ERROR)
 			{
 				result = mechFile.readIdFloat(baseLODDist,lodDistance[i]);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					STOP(("LOD %d has no distance value in file %s",i,fileName));
 					
 				//----------------------------------------------
@@ -294,7 +294,7 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 	}
 
 	result = mechFile.readIdString("ShadowName",aseFileName,511);
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		//----------------------------------------------
 		// Base Shadow shape.
@@ -418,24 +418,24 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 	//------------------------------
 	// Load up the foot print type.
 	result = mechFile.seekBlock("FootPrint");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 	{
 		leftFootprintType = 0;
 		rightFootprintType = 0;
 	}
 		
 	result = mechFile.readIdLong("FootprintType",rightFootprintType);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 	{
 		result = mechFile.readIdLong("RightFootprintType",rightFootprintType);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 		{
 			leftFootprintType = 0;
 			rightFootprintType = 0;
 		}
 		
 		result = mechFile.readIdLong("LeftFootprintType",leftFootprintType);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			leftFootprintType = rightFootprintType;
 	}
 	else
@@ -446,23 +446,23 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 	//-----------------------------------------------
 	// Load up the Node Data.
 	result = mechFile.seekBlock("Nodes");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		numSmokeNodes = numWeaponNodes = numJumpNodes = 0;
 		
 	result = mechFile.readIdLong("NumSmoke",numSmokeNodes);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		numSmokeNodes = 0;
 		
 	result = mechFile.readIdLong("NumWeapon",numWeaponNodes);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		numWeaponNodes = 0;
 
 	result = mechFile.readIdLong("NumJumpjet",numJumpNodes);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		numJumpNodes = 0;
 
 	result = mechFile.readIdLong("NumFeet",numFootNodes);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		numFootNodes = 0;
 
 	if (numJumpNodes+numWeaponNodes+numSmokeNodes+numFootNodes)
@@ -475,11 +475,11 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 			char blockId[512];
 			sprintf(blockId,"SmokeNode%d",i);
 			result = mechFile.seekBlock(blockId);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			char smokeName[512];
 			result = mechFile.readIdString("SmokeNodeName",smokeName,511);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			nodeData[i].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(smokeName)+1); 
 			gosASSERT(nodeData[i].nodeId != NULL);
@@ -493,15 +493,15 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 			char blockId[512];
 			sprintf(blockId,"WeaponNode%d",i);
 			result = mechFile.seekBlock(blockId);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			char weaponName[512];
 			result = mechFile.readIdString("WeaponNodeName",weaponName,511);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
-			long weaponType;
+			int32_t weaponType;
 			result = mechFile.readIdLong("WeaponType",weaponType);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			nodeData[i+numSmokeNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName)+1); 
 			gosASSERT(nodeData[i+numSmokeNodes].nodeId != NULL);
@@ -516,11 +516,11 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 			char blockId[512];
 			sprintf(blockId,"JumpJetNode%d",i);
 			result = mechFile.seekBlock(blockId);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			char jumpName[512];
 			result = mechFile.readIdString("JumpNodeName",jumpName,511);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			nodeData[i+numSmokeNodes+numWeaponNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(jumpName)+1); 
 			gosASSERT(nodeData[i+numSmokeNodes+numWeaponNodes].nodeId != NULL);
@@ -534,11 +534,11 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 			char blockId[512];
 			sprintf(blockId,"FootNode%d",i);
 			result = mechFile.seekBlock(blockId);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			char footName[512];
 			result = mechFile.readIdString("FootNodeName",footName,511);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			nodeData[i+numSmokeNodes+numWeaponNodes+numJumpNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(footName)+1); 
 			gosASSERT(nodeData[i+numSmokeNodes+numWeaponNodes+numJumpNodes].nodeId != NULL);
@@ -591,7 +591,7 @@ void Mech3DAppearanceType::destroy (void)
 {
 	AppearanceType::destroy();
 
-	long i=0;
+	int32_t i=0;
 	for (i=0;i<MAX_LODS;i++)
 	{
 		if (mechShape[i])
@@ -650,7 +650,7 @@ void Mech3DAppearanceType::destroy (void)
 }
 
 //----------------------------------------------------------------------------
-void Mech3DAppearanceType::setAnimation (TG_MultiShapePtr shape, DWORD animationNum)
+void Mech3DAppearanceType::setAnimation (TG_MultiShapePtr shape, ULONG animationNum)
 {
 	gosASSERT(shape != NULL);
 	gosASSERT(animationNum != 0xffffffff);
@@ -673,7 +673,7 @@ float torsoDebugAngle[MAX_MECHS];
 void Mech3DAppearance::resetWeaponNodes (void)
 {
 	//THis should never be called after the game inits!!
-	for (long i=0;i<mechType->numWeaponNodes;i++)
+	for (int32_t i=0;i<mechType->numWeaponNodes;i++)
 	{
 		nodeUsed[i] = 0;
 		nodeRecycle[i] = BASE_NODE_RECYCLE_TIME;
@@ -681,7 +681,7 @@ void Mech3DAppearance::resetWeaponNodes (void)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setWeaponNodeUsed (long weaponNode)
+void Mech3DAppearance::setWeaponNodeUsed (int32_t weaponNode)
 {
 	//THis should never be called after the game inits!!
 	weaponNode -= mechType->numSmokeNodes;
@@ -693,7 +693,7 @@ void Mech3DAppearance::setWeaponNodeUsed (long weaponNode)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setWeaponNodeRecycle(long nodeId, float time)
+void Mech3DAppearance::setWeaponNodeRecycle(int32_t nodeId, float time)
 {
 	nodeId -= mechType->numSmokeNodes;
    	if ((nodeId >= 0) && (nodeId < mechType->numWeaponNodes))
@@ -701,7 +701,7 @@ void Mech3DAppearance::setWeaponNodeRecycle(long nodeId, float time)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D Mech3DAppearance::getWeaponNodePosition (long nodeId)
+Stuff::Vector3D Mech3DAppearance::getWeaponNodePosition (int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	if ((nodeId < mechType->numSmokeNodes) || (nodeId >= (mechType->numSmokeNodes+mechType->numWeaponNodes)))
@@ -777,7 +777,7 @@ Stuff::Vector3D Mech3DAppearance::getNodeNamePosition (PSTR nodeName)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D Mech3DAppearance::getNodeIdPosition (long nodeId)
+Stuff::Vector3D Mech3DAppearance::getNodeIdPosition (int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	
@@ -813,7 +813,7 @@ Stuff::Vector3D Mech3DAppearance::getNodeIdPosition (long nodeId)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D Mech3DAppearance::getNodePosition (long nodeId)
+Stuff::Vector3D Mech3DAppearance::getNodePosition (int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	if ((nodeId < 0) || (nodeId >= mechType->getTotalNodes()))
@@ -846,15 +846,15 @@ Stuff::Vector3D Mech3DAppearance::getNodePosition (long nodeId)
 }
 
 //-----------------------------------------------------------------------------
-long Mech3DAppearance::getLowestWeaponNode (void)
+int32_t Mech3DAppearance::getLowestWeaponNode (void)
 {
 	//------------------------------------------------
 	// Scan all weapon nodes and find least used one.
-	long bestNode = -1;
+	int32_t bestNode = -1;
 	float lowestPosZ;
-	long numSmokeNodes = mechType->numSmokeNodes;
+	int32_t numSmokeNodes = mechType->numSmokeNodes;
 	lowestPosZ = 9999999999999.0f;
-	for (long i=0;i<mechType->numWeaponNodes;i++)
+	for (int32_t i=0;i<mechType->numWeaponNodes;i++)
 	{
 		Stuff::Vector3D nodePosition = getNodePosition(i+numSmokeNodes);
 		if (nodePosition.z < lowestPosZ)
@@ -871,17 +871,17 @@ long Mech3DAppearance::getLowestWeaponNode (void)
 }
 
 //-----------------------------------------------------------------------------
-long Mech3DAppearance::getWeaponNode (long weaponType)
+int32_t Mech3DAppearance::getWeaponNode (int32_t weaponType)
 {
 	//------------------------------------------------
 	// Scan all weapon nodes and find least used one.
 	// BIG change here.  This is ONLY called at load time.
 	// NEVER during actual game execution.  In this way,
 	// Weapons always fire from the same nodes!!
-	long leastUsed = 999999999;
-	long bestNode = -1;
-	long numSmokeNodes = mechType->numSmokeNodes;
-	for (long i=0;i<mechType->numWeaponNodes;i++)
+	int32_t leastUsed = 999999999;
+	int32_t bestNode = -1;
+	int32_t numSmokeNodes = mechType->numSmokeNodes;
+	for (int32_t i=0;i<mechType->numWeaponNodes;i++)
 	{
 		switch (weaponType)
 		{
@@ -980,7 +980,7 @@ long Mech3DAppearance::getWeaponNode (long weaponType)
 }
 		
 //-----------------------------------------------------------------------------
-float Mech3DAppearance::getWeaponNodeRecycle (long node)
+float Mech3DAppearance::getWeaponNodeRecycle (int32_t node)
 {
 	node -= mechType->numSmokeNodes;
 	
@@ -1091,7 +1091,7 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 		
 		//-------------------------------------------------
 		// Load the texture and store its handle.
-		long i;
+		int32_t i;
 		for (i=0;i<sensorTriangleShape->GetNumTextures();i++)
 		{
 			char txmName[1024];
@@ -1107,13 +1107,13 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorTriangleShape->SetTextureHandle(i,gosTextureHandle);
 					sensorTriangleShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorTriangleShape->SetTextureHandle(i,gosTextureHandle);
 					sensorTriangleShape->SetTextureAlpha(i,false);
 				}
@@ -1145,13 +1145,13 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						sensorSquareShape->SetTextureHandle(i,gosTextureHandle);
 						sensorSquareShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						sensorSquareShape->SetTextureHandle(i,gosTextureHandle);
 						sensorSquareShape->SetTextureAlpha(i,false);
 					}
@@ -1183,13 +1183,13 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						sensorSquareShape->SetTextureHandle(i,gosTextureHandle);
 						sensorSquareShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						sensorSquareShape->SetTextureHandle(i,gosTextureHandle);
 						sensorSquareShape->SetTextureAlpha(i,false);
 					}
@@ -1204,14 +1204,14 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 		
  		if (mechType->numWeaponNodes)
 		{
-			nodeUsed = (long *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(long) * mechType->numWeaponNodes);
+			nodeUsed = (int32_t *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(int32_t) * mechType->numWeaponNodes);
 			gosASSERT(nodeUsed != NULL);
-			memset(nodeUsed,0,sizeof(long) * mechType->numWeaponNodes);
+			memset(nodeUsed,0,sizeof(int32_t) * mechType->numWeaponNodes);
 			
 			nodeRecycle = (float *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(float) * mechType->numWeaponNodes);
 			gosASSERT(nodeRecycle != NULL);
 			
-			for (long i=0;i<mechType->numWeaponNodes;i++)
+			for (int32_t i=0;i<mechType->numWeaponNodes;i++)
 				nodeRecycle[i] = 0.0f;
 		}
 		
@@ -1324,7 +1324,7 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	footPos[0].x = footPos[0].y = footPos[0].z = 1000.0f;
 	footPos[1].x = footPos[1].y = footPos[1].z = 1000.0f;
 	
-	for (long i=0;i<MAX_DUST_POOFS;i++)
+	for (int32_t i=0;i<MAX_DUST_POOFS;i++)
 	{
 		rightDustPoofEffect[i] = NULL;
 		leftDustPoofEffect[i] = NULL;
@@ -1345,7 +1345,7 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 
 		//-------------------------------------------------
 		// Load the texture and store its handle.
-		for (long i=0;i<mechShadowShape->GetNumTextures();i++)
+		for (int32_t i=0;i<mechShadowShape->GetNumTextures();i++)
 		{
 			char txmName[1024];
 			mechShadowShape->GetTextureName(i,txmName,256);
@@ -1360,14 +1360,14 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					mechShadowShape->SetTextureHandle(i,gosTextureHandle);
 					mechShadowShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					mechShadowShape->SetTextureHandle(i,gosTextureHandle);
 					mechShadowShape->SetTextureAlpha(i,false);
@@ -1395,14 +1395,14 @@ void Mech3DAppearance::initFX (void)
    		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(FX_POOF_ID));
 			
 			if (gosEffectSpec)
 			{
-				for (long i=0;i<MAX_DUST_POOFS;i++)
+				for (int32_t i=0;i<MAX_DUST_POOFS;i++)
 				{
 					rightDustPoofEffect[i] = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 					gosASSERT(rightDustPoofEffect[i] != NULL);
@@ -1416,14 +1416,14 @@ void Mech3DAppearance::initFX (void)
    		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(FX_POOF_ID));
 			
 			if (gosEffectSpec)
 			{
-				for (long i=0;i<MAX_DUST_POOFS;i++)
+				for (int32_t i=0;i<MAX_DUST_POOFS;i++)
 				{
 					leftDustPoofEffect[i] = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
 					gosASSERT(leftDustPoofEffect[i] != NULL);
@@ -1437,7 +1437,7 @@ void Mech3DAppearance::initFX (void)
    		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
 
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(FX_SMOKE_ID));
@@ -1455,7 +1455,7 @@ void Mech3DAppearance::initFX (void)
    		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
 
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(FX_JUMP_ID));
@@ -1486,7 +1486,7 @@ void Mech3DAppearance::hitFront (void)
 		hitGestureId = currentGestureId;
 		currentGestureId = GestureHitFront;
 		
-		long firstFrame = mechType->gestures[currentGestureId].frameStart;
+		int32_t firstFrame = mechType->gestures[currentGestureId].frameStart;
 
 		atTransitionToNextGesture = false;
 		
@@ -1509,7 +1509,7 @@ void Mech3DAppearance::hitBack (void)
 		hitGestureId = currentGestureId;
 		currentGestureId = GestureHitBack;
 		
-		long firstFrame = mechType->gestures[currentGestureId].frameStart;
+		int32_t firstFrame = mechType->gestures[currentGestureId].frameStart;
 
 		atTransitionToNextGesture = false;
 
@@ -1532,7 +1532,7 @@ void Mech3DAppearance::hitLeft (void)
 		hitGestureId = currentGestureId;
 		currentGestureId = GestureHitLeft;
 		
-		long firstFrame = mechType->gestures[currentGestureId].frameStart;
+		int32_t firstFrame = mechType->gestures[currentGestureId].frameStart;
 
 		atTransitionToNextGesture = false;
 			
@@ -1555,7 +1555,7 @@ void Mech3DAppearance::hitRight (void)
 		hitGestureId = currentGestureId;
 		currentGestureId = GestureHitRight;
 		
-		long firstFrame = mechType->gestures[currentGestureId].frameStart;
+		int32_t firstFrame = mechType->gestures[currentGestureId].frameStart;
 
 		atTransitionToNextGesture = false;
 		
@@ -1567,7 +1567,7 @@ void Mech3DAppearance::hitRight (void)
 }
 
 //-----------------------------------------------------------------------------
-bool Mech3DAppearance::PerPolySelect (long mouseX, long mouseY)
+bool Mech3DAppearance::PerPolySelect (int32_t mouseX, int32_t mouseY)
 {
 	return mechShape->PerPolySelect(mouseX,mouseY);
 }
@@ -1579,35 +1579,35 @@ void Mech3DAppearance::LoadPaintSchemata (void)
 	paintName.init(tglPath,"paintSchemata",".fit");
 
 	FitIniFile paintFile;
-	long result = paintFile.open(paintName);
-	gosASSERT(result == NO_ERR);
+	int32_t result = paintFile.open(paintName);
+	gosASSERT(result == NO_ERROR);
 
 	result = paintFile.seekBlock("Main");
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	result = paintFile.readIdULong("NumPaintSchemes",numPaintSchemata);
-	gosASSERT(result == NO_ERR);
+	gosASSERT(result == NO_ERROR);
 
 	paintSchemata = (PaintSchemataPtr)AppearanceTypeList::appearanceHeap->Malloc(numPaintSchemata * sizeof(PaintSchemata));
 	gosASSERT(paintSchemata != NULL);
 
 	memset(paintSchemata,0xff,numPaintSchemata * sizeof(PaintSchemata));
 
-	for (long i=0;i<numPaintSchemata;i++)
+	for (int32_t i=0;i<numPaintSchemata;i++)
 	{
 		char blockId[512];
 		sprintf(blockId,"Scheme%d",i);
 		result = paintFile.seekBlock(blockId);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = paintFile.readIdULong("RedColor",paintSchemata[i].redColor);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = paintFile.readIdULong("GreenColor",paintSchemata[i].greenColor);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 
 		result = paintFile.readIdULong("BlueColor",paintSchemata[i].blueColor);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 	}
 
 	paintFile.close();
@@ -1618,7 +1618,7 @@ void Mech3DAppearance::setPaintScheme (void)
 {
 	//----------------------------------------------------------------------------
 	// Simple really.  Get the texture memory, apply the paint scheme, let it go!
-	DWORD gosHandle = mcTextureManager->get_gosTextureHandle(mechShape->GetTextureHandle(0));
+	ULONG gosHandle = mcTextureManager->get_gosTextureHandle(mechShape->GetTextureHandle(0));
 
 	if (gosHandle && gosHandle != 0xffffffff)
 	{
@@ -1628,19 +1628,19 @@ void Mech3DAppearance::setPaintScheme (void)
 		gos_LockTexture(gosHandle, 0, 0, &textureData);
 
 		//-------------------------------------------------------
-		DWORD *textureMemory = textureData.pTexture;
-		for (long i=0;i<textureData.Height;i++)
+		ULONG *textureMemory = textureData.pTexture;
+		for (int32_t i=0;i<textureData.Height;i++)
 		{
-			for (long j=0;j<textureData.Height;j++)
+			for (int32_t j=0;j<textureData.Height;j++)
 			{
 				//---------------------------------------------
 				// Make Color from PaintScheme.
-				DWORD baseColor = *textureMemory;
+				ULONG baseColor = *textureMemory;
 				float baseColorRed = float((baseColor & 0x00ff0000)>>16);
 				float baseColorGreen = float((baseColor & 0x0000ff00)>>8);
 				float baseColorBlue = float(baseColor & 0x000000ff);
 
-				DWORD newColor = *textureMemory;	//Black by default.
+				ULONG newColor = *textureMemory;	//Black by default.
 				if ((!baseColorGreen) && (!baseColorBlue))
 				{
 					baseColorRed *= 0.00390625f;		//Divide by 256;
@@ -1717,16 +1717,16 @@ void Mech3DAppearance::setPaintScheme (void)
 }	
 
 //---------------------------------------------------------------------------
-DWORD bgrTorgb (DWORD frontRGB)
+ULONG bgrTorgb (ULONG frontRGB)
 {
-	DWORD tmp;
+	ULONG tmp;
 	tmp = (((0x00ff0000) & frontRGB)>>16) + ((0x0000ff00) & frontRGB) + (((0x000000ff) & frontRGB)<<16);
 	
 	return(tmp);
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setPaintScheme (DWORD mcRed, DWORD mcGreen, DWORD mcBlue)
+void Mech3DAppearance::setPaintScheme (ULONG mcRed, ULONG mcGreen, ULONG mcBlue)
 {
 #ifdef BGR
 	// These come into here bgr instead of RGB.  CONVERT!
@@ -1743,7 +1743,7 @@ void Mech3DAppearance::setPaintScheme (DWORD mcRed, DWORD mcGreen, DWORD mcBlue)
 }	
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::getPaintScheme( DWORD& red, DWORD& green, DWORD& blue )
+void Mech3DAppearance::getPaintScheme( ULONG& red, ULONG& green, ULONG& blue )
 {
 #ifdef BGR
 	red = bgrTorgb(psRed);
@@ -1757,12 +1757,12 @@ void Mech3DAppearance::getPaintScheme( DWORD& red, DWORD& green, DWORD& blue )
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::resetPaintScheme (DWORD red, DWORD green, DWORD blue)
+void Mech3DAppearance::resetPaintScheme (ULONG red, ULONG green, ULONG blue)
 {
 	//---------------------------------------------------------------------------------
 	// Simple really.  Toss the current texture, reload the RGB and reapply the colors
 	
-	DWORD gosHandle = mcTextureManager->get_gosTextureHandle(localTextureHandle);
+	ULONG gosHandle = mcTextureManager->get_gosTextureHandle(localTextureHandle);
 	mcTextureManager->removeTexture(gosHandle);
 	
 	//-------------------------------------------------
@@ -1776,7 +1776,7 @@ void Mech3DAppearance::resetPaintScheme (DWORD red, DWORD green, DWORD blue)
    	FullPathFileName textureName;
    	textureName.init(texturePath,txmName,"");
 
-	//DWORD paintInstance = (red << 16) + (green << 8) + (blue);
+	//ULONG paintInstance = (red << 16) + (green << 8) + (blue);
 	/* The texture manager asks for a unique 32bit identifier for every texture instance.
 	However, it requires 72 bits to fully describe a mech texture (the base color (stored in
 	the variable "red"), highlight color1 (blue), and highlight color2 (green), each of which
@@ -1787,14 +1787,14 @@ void Mech3DAppearance::resetPaintScheme (DWORD red, DWORD green, DWORD blue)
 	that are close in color (i.e. all of the 3 most significant bits of the 9 rgb components are
 	the same) will be treated as the same texture, which is not necessarily a bad thing in
 	our case.  LOD is never needed because if the texture is different, its NAME will be different!!*/
-	DWORD ccbase = ((red >> 5) & 7) + (((red >> 13) & 7) << 3) + (((red >> 21) & 7) << 6);
-	DWORD cchighlight1 = ((green >> 5) & 7) + (((green >> 13) & 7) << 3) + (((green >> 21) & 7) << 6);
-	DWORD cchighlight2 = ((blue >> 5) & 7) + (((blue >> 13) & 7) << 3) + (((blue >> 21) & 7) << 6);
-	DWORD paintInstance = (ccbase << 18) + (cchighlight1 << 9) + (cchighlight2);
+	ULONG ccbase = ((red >> 5) & 7) + (((red >> 13) & 7) << 3) + (((red >> 21) & 7) << 6);
+	ULONG cchighlight1 = ((green >> 5) & 7) + (((green >> 13) & 7) << 3) + (((green >> 21) & 7) << 6);
+	ULONG cchighlight2 = ((blue >> 5) & 7) + (((blue >> 13) & 7) << 3) + (((blue >> 21) & 7) << 6);
+	ULONG paintInstance = (ccbase << 18) + (cchighlight1 << 9) + (cchighlight2);
 	
 	if (fileExists(textureName))
 	{
-		DWORD textureInstanceAlreadyExists = mcTextureManager->textureInstanceExists(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
+		ULONG textureInstanceAlreadyExists = mcTextureManager->textureInstanceExists(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
 		if (!textureInstanceAlreadyExists)
 			localTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
 		else
@@ -1842,7 +1842,7 @@ void Mech3DAppearance::resetPaintScheme (DWORD red, DWORD green, DWORD blue)
 }	
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setObjectParameters (Stuff::Vector3D &pos, float Rot, long sel, long team, long homeRelations)
+void Mech3DAppearance::setObjectParameters (Stuff::Vector3D &pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	movedThisFrame = false;
 	if ((rotation != Rot) || (pos != position))
@@ -1900,7 +1900,7 @@ void Mech3DAppearance::updateFootprints (void)
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::debugUpdate (long whichOne)
+void Mech3DAppearance::debugUpdate (int32_t whichOne)
 {
 	if (!inDebugMoveMode)
 		return;
@@ -2203,7 +2203,7 @@ bool Mech3DAppearance::recalcBounds (void)
 				float maxX = 0.0f, maxY = 0.0f;
 				float minX = 0.0f, minY = 0.0f;
 
-				for (long i=0;i<8;i++)
+				for (int32_t i=0;i<8;i++)
 				{
 					eye->projectZ(boxCoords[i],bcsp[i]);
 					if (!i)
@@ -2242,12 +2242,12 @@ bool Mech3DAppearance::recalcBounds (void)
 					if (status != OBJECT_STATUS_DESTROYED)
 					{
 						bool baseLOD = true;
-						DWORD selectLOD = 0;
+						ULONG selectLOD = 0;
 						if (useHighObjectDetail)
 						{
 							//-------------------------------------------------------------------------------
 							//Set LOD of Model here because we have the distance and we KNOW we can see it!
-							for (long i=1;i<MAX_LODS;i++)
+							for (int32_t i=1;i<MAX_LODS;i++)
 							{
 								if (mechType->mechShape[i] && mechType->mechShape[i]->GetNumShapes() && (eyeDistance > mechType->lodDistance[i]))
 								{
@@ -2266,11 +2266,11 @@ bool Mech3DAppearance::recalcBounds (void)
 						}
 
 						// we are at this LOD level.
-						if (selectLOD != (DWORD)currentLOD)
+						if (selectLOD != (ULONG)currentLOD)
 						{
 							currentLOD = selectLOD;
 
-							BYTE alphaValue = mechShape->GetAlphaValue();
+							UCHAR alphaValue = mechShape->GetAlphaValue();
 							//mechShape->ClearAnimation();	//DO NOT do this with animating things!!
 							delete mechShape;
 							mechShape = NULL;
@@ -2292,7 +2292,7 @@ bool Mech3DAppearance::recalcBounds (void)
 						// we are at the Base LOD level.
 							currentLOD = 0;
 
-							BYTE alphaValue = mechShape->GetAlphaValue();
+							UCHAR alphaValue = mechShape->GetAlphaValue();
 							//treeShape->ClearAnimation();
 							delete mechShape;
 							mechShape = NULL;
@@ -2329,7 +2329,7 @@ bool Mech3DAppearance::recalcBounds (void)
 }
 
 //-----------------------------------------------------------------------------
-long Mech3DAppearance::render (long depthFixup)
+int32_t Mech3DAppearance::render (int32_t depthFixup)
 {
 	// Force textures to reload due to unique instance.
 	mechShape->SetTextureHandle(0,localTextureHandle);
@@ -2344,11 +2344,11 @@ long Mech3DAppearance::render (long depthFixup)
 	{
 		if (visible)
 		{
-			long color = SD_BLUE;
+			int32_t color = SD_BLUE;
 			ULONG highLight = 0x007f7f7f;
 			if ((teamId > -1) && (teamId < 8)) {
 				static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
-				static long colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
+				static int32_t colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
 				color = colorTable[homeTeamRelationship];
 				highLight = highLightTable[homeTeamRelationship];
 			}
@@ -2425,7 +2425,7 @@ long Mech3DAppearance::render (long depthFixup)
 				
 				if (!isWaking && useNonWeaponEffects)
 				{
-					for (long i=0;i<MAX_DUST_POOFS;i++)
+					for (int32_t i=0;i<MAX_DUST_POOFS;i++)
 					{
 						if (rightFootPoofDraw[i] && rightDustPoofEffect[i] && rightDustPoofEffect[i]->IsExecuted())
 						{
@@ -2459,7 +2459,7 @@ long Mech3DAppearance::render (long depthFixup)
 				
 				if ((currentGestureId == GestureJump) && inJump && jumpJetEffect && jumpJetEffect->IsExecuted())
 				{
-					long jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
+					int32_t jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
 					Stuff::Vector3D jumpNodePos = getNodePosition(jumpNodeId);
 					
 					Stuff::Point3D			actualPosition;
@@ -2665,7 +2665,7 @@ long Mech3DAppearance::render (long depthFixup)
 			boxCoords[7].z = position.z + mechType->typeLowerRight.z;
 			
  			Stuff::Vector4D screenPos[8];
-			for (long i=0;i<8;i++)
+			for (int32_t i=0;i<8;i++)
 			{
 				eye->projectZ(boxCoords[i],screenPos[i]);
 			}
@@ -2831,11 +2831,11 @@ long Mech3DAppearance::render (long depthFixup)
 		}
 	}
 	
- 	return NO_ERR;
+ 	return NO_ERROR;
 }
 
 //-----------------------------------------------------------------------------
-long Mech3DAppearance::renderShadows (void)
+int32_t Mech3DAppearance::renderShadows (void)
 {
 	mechShape->SetTextureHandle(0,localTextureHandle);
 
@@ -2852,17 +2852,17 @@ long Mech3DAppearance::renderShadows (void)
 			mechShape->RenderShadows(true);
 	}
 
-	return(NO_ERR);
+	return(NO_ERROR);
 }
 
 bool oneMechPlease = false;
 #ifdef LAB_ONLY
-__int64 MCTimeAnimationCalc = 0;
-__int64 x;
+int64_t MCTimeAnimationCalc = 0;
+int64_t x;
 #endif
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setObjStatus (long oStatus)
+void Mech3DAppearance::setObjStatus (int32_t oStatus)
 {
 	if ( (status != oStatus) && (!InEditor))
 	{
@@ -2895,7 +2895,7 @@ void Mech3DAppearance::setObjStatus (long oStatus)
 
 			//-------------------------------------------------
 			// Load the texture and store its handle.
-			for (long i=0;i<mechShape->GetNumTextures();i++)
+			for (int32_t i=0;i<mechShape->GetNumTextures();i++)
 			{
 				char txmName[1024];
 				mechShape->GetTextureName(i,txmName,256);
@@ -2910,7 +2910,7 @@ void Mech3DAppearance::setObjStatus (long oStatus)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						DWORD gosTextureHandle = 0;
+						ULONG gosTextureHandle = 0;
 						
 						if (!i)
 						{
@@ -2928,7 +2928,7 @@ void Mech3DAppearance::setObjStatus (long oStatus)
 					}
 					else
 					{
-						DWORD gosTextureHandle = 0;
+						ULONG gosTextureHandle = 0;
 						
 						if (!i)
 						{
@@ -3026,12 +3026,12 @@ void Mech3DAppearance::updateGeometry (void)
 		lightg = eye->getLightGreen(lightIntensity);
 		lightb = eye->getLightBlue(lightIntensity);
 	
-		DWORD lightRGB = (lightr<<16) + (lightg<<8) + lightb;
+		ULONG lightRGB = (lightr<<16) + (lightg<<8) + lightb;
 		
 		eye->setLightColor(0,lightRGB);
 		eye->setLightIntensity(0,1.0);
 	
-		DWORD fogRGB = 0xff<<24;
+		ULONG fogRGB = 0xff<<24;
 		float fogStart = eye->fogStart;
 		float fogFull = eye->fogFull;
 	
@@ -3171,8 +3171,8 @@ void Mech3DAppearance::updateGeometry (void)
 		//--------------------------------------------------------------
 		// Having already transformed the mech, the foot poofs go here.
 		Stuff::Vector3D rFootPos, lFootPos;
-		long footId1 = mechType->getTotalNodes() - 2;
-		long footId0 = mechType->getTotalNodes() - 1;
+		int32_t footId1 = mechType->getTotalNodes() - 2;
+		int32_t footId0 = mechType->getTotalNodes() - 1;
 		
 		rFootPos = getNodePosition(footId1);
 		lFootPos = getNodePosition(footId0);
@@ -3373,7 +3373,7 @@ void Mech3DAppearance::updateGeometry (void)
 	// Create Jump FX Here.
 	if (!jumpFXSetup && (currentGestureId == GestureJump) && inJump && jumpJetEffect)
 	{
-		long jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
+		int32_t jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
 		Stuff::Vector3D jumpNodePos = getNodePosition(jumpNodeId);
 		
 		Stuff::Point3D			actualPosition;
@@ -3401,7 +3401,7 @@ void Mech3DAppearance::updateGeometry (void)
 	
 	//------------------------------------------------
 	// Update GOSFX
-	for (long i=0;i<MAX_DUST_POOFS;i++)
+	for (int32_t i=0;i<MAX_DUST_POOFS;i++)
 	{
 		if (rightFootPoofDraw[i] && rightDustPoofEffect[i] && rightDustPoofEffect[i]->IsExecuted())
 		{
@@ -3442,7 +3442,7 @@ void Mech3DAppearance::updateGeometry (void)
 	
 	if ((currentGestureId == GestureJump) && inJump && jumpJetEffect && jumpJetEffect->IsExecuted())
 	{
-		long jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
+		int32_t jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
 		Stuff::Vector3D jumpNodePos = getNodePosition(jumpNodeId);
 		
 		Stuff::Point3D			actualPosition;
@@ -3781,15 +3781,15 @@ bool Mech3DAppearance::rightArmRecalc (void)
 }
 
 //-----------------------------------------------------------------------------
-long Mech3DAppearance::update (bool animate) 
+int32_t Mech3DAppearance::update (bool animate) 
 {
 
 #ifdef _DEBUG
 	if (!logFile)
 	{
 		logFile = new File;
-		long result = logFile->create("gesture.log");
-		if (result != NO_ERR)
+		int32_t result = logFile->create("gesture.log");
+		if (result != NO_ERROR)
 		{
 			delete logFile;
 			logFile = NULL;
@@ -3801,7 +3801,7 @@ long Mech3DAppearance::update (bool animate)
 	// Recycle the weapon Nodes
 	if (nodeRecycle)
 	{
-		for (long i=0;i<mechType->numWeaponNodes;i++)
+		for (int32_t i=0;i<mechType->numWeaponNodes;i++)
 		{
 			if (nodeRecycle[i] > 0.0f)
 			{
@@ -3825,7 +3825,7 @@ long Mech3DAppearance::update (bool animate)
 			currentGestureId = hitGestureId;
 			hitGestureId = -1;
 			setFirstFrame = true;
-			long firstFrame = mechType->gestures[currentGestureId].frameStart;
+			int32_t firstFrame = mechType->gestures[currentGestureId].frameStart;
 
 			if (firstFrame < 0)			//Start at end of animation.  Probably to reverse.  Like StandToPark
 				firstFrame = mechType->getNumFrames(currentGestureId)-1;
@@ -3877,7 +3877,7 @@ long Mech3DAppearance::update (bool animate)
 		currentFrame = 0;			//In the "how did this ever work file"  Duh, need to reset the frame!
 	}
 	
-	long newGestureId = -1;			//Assume we do not need to transition.
+	int32_t newGestureId = -1;			//Assume we do not need to transition.
 	
 	//--------------------------------------------------------------
 	// Check if currentStateGoal is -1.
@@ -3889,14 +3889,14 @@ long Mech3DAppearance::update (bool animate)
 		//--------------------------------------------
 		// Find out how we get to Goal.  If result is
 		// -1, we are already at goal.
-		long arrayIdx = (oldStateGoal * GESTURE_OFFSET_SIZE) + (currentStateGoal *  MAX_TRANSITION_GESTURES) + transitionState;
+		int32_t arrayIdx = (oldStateGoal * GESTURE_OFFSET_SIZE) + (currentStateGoal *  MAX_TRANSITION_GESTURES) + transitionState;
 		newGestureId = transitionArray[arrayIdx];
 
 		if (atTransitionToNextGesture)	//This is only set when we are ready for the next gesture if these is one!
 		{
 			transitionState++;		//Ready to go to next state.  Increment the transition counter for next frame!
 
-			long firstFrame = currentFrame;
+			int32_t firstFrame = currentFrame;
 			if (newGestureId == -1)		//We have reached our goal.
 			{
 				//--------------------------------
@@ -4343,7 +4343,7 @@ void Mech3DAppearance::blowLeftArm (void)
 	{
 		//--------------------------------------------
 		// Yes, load it on up.
-		unsigned flags = gosFX::Effect::ExecuteFlag;
+		uint32_t flags = gosFX::Effect::ExecuteFlag;
 
 		Check_Object(gosFX::EffectLibrary::Instance);
 		gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(SHOULDER_POP_ID));
@@ -4361,7 +4361,7 @@ void Mech3DAppearance::blowLeftArm (void)
 	{
 		//--------------------------------------------
 		// Yes, load it on up.
-		unsigned flags = gosFX::Effect::ExecuteFlag;
+		uint32_t flags = gosFX::Effect::ExecuteFlag;
 
 		Check_Object(gosFX::EffectLibrary::Instance);
 		gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(ARM_FLYING_ID));
@@ -4428,9 +4428,9 @@ void Mech3DAppearance::blowLeftArm (void)
 	leftArmOff = true;
 	
 	//Calc initial Velocity, rotation and set Acceleration to down in World.
-	long xlatBase = 12.0f + 50.0 / 2.0f;
-	long upBase = 25.0f + 100.0;
-	long rotBase = 25.0f + 100.0;
+	int32_t xlatBase = 12.0f + 50.0 / 2.0f;
+	int32_t upBase = 25.0f + 100.0;
+	int32_t rotBase = 25.0f + 100.0;
 	dVel[1].x = RandomNumber(xlatBase * 2.0) - xlatBase;
 	dVel[1].y = RandomNumber(xlatBase * 2.0) - xlatBase;
 	dVel[1].z = RandomNumber(upBase) + upBase;
@@ -4469,7 +4469,7 @@ void Mech3DAppearance::blowRightArm (void)
 	{
 		//--------------------------------------------
 		// Yes, load it on up.
-		unsigned flags = gosFX::Effect::ExecuteFlag;
+		uint32_t flags = gosFX::Effect::ExecuteFlag;
 
 		Check_Object(gosFX::EffectLibrary::Instance);
 		gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(SHOULDER_POP_ID));
@@ -4487,7 +4487,7 @@ void Mech3DAppearance::blowRightArm (void)
 	{
 		//--------------------------------------------
 		// Yes, load it on up.
-		unsigned flags = gosFX::Effect::ExecuteFlag;
+		uint32_t flags = gosFX::Effect::ExecuteFlag;
 
 		Check_Object(gosFX::EffectLibrary::Instance);
 		gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(ARM_FLYING_ID));
@@ -4554,9 +4554,9 @@ void Mech3DAppearance::blowRightArm (void)
 	rightArmOff = true;
 
 	//Calc initial Velocity, rotation and set Acceleration to down in World.
-	long xlatBase = 12.0f + 50.0 / 2.0f;
-	long upBase = 25.0f + 100.0;
-	long rotBase = 25.0f + 100.0;
+	int32_t xlatBase = 12.0f + 50.0 / 2.0f;
+	int32_t upBase = 25.0f + 100.0;
+	int32_t rotBase = 25.0f + 100.0;
 	dVel[0].x = RandomNumber(xlatBase * 2.0) - xlatBase;
 	dVel[0].y = RandomNumber(xlatBase * 2.0) - xlatBase;
 	dVel[0].z = RandomNumber(upBase) + upBase;
@@ -4583,7 +4583,7 @@ void Mech3DAppearance::blowRightArm (void)
 }
 		
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::startSmoking (long smokeLvl)
+void Mech3DAppearance::startSmoking (int32_t smokeLvl)
 {
 	//Check if we are already playing one.  If not, smoke away
 	
@@ -4599,7 +4599,7 @@ void Mech3DAppearance::startSmoking (long smokeLvl)
    		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
 
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(CRITICAL_SMOKE_ID));
@@ -4620,7 +4620,7 @@ void Mech3DAppearance::startSmoking (long smokeLvl)
    		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
 
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(MECH_SMOKE_ID));
@@ -4691,7 +4691,7 @@ void Mech3DAppearance::startWaterWake (void)
    		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
 
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(MECH_WATER_WAKE));
@@ -4760,7 +4760,7 @@ void Mech3DAppearance::playEjection (void)
    		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(HELICOPTER_DUST_CLOUD));
@@ -4836,7 +4836,7 @@ void Mech3DAppearance::destroy (void)
 
 #endif
 
-	for (long i=0;i<MAX_DUST_POOFS;i++)
+	for (int32_t i=0;i<MAX_DUST_POOFS;i++)
 	{
 		if (rightDustPoofEffect[i])
 		{
@@ -5007,7 +5007,7 @@ void Mech3DAppearance::copyFrom (MechAppearanceData *data)
 
 	if (data->inJump)
 	{
-		long jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
+		int32_t jumpNodeId = mechType->numSmokeNodes + mechType->numWeaponNodes;
 		Stuff::Vector3D jumpNodePos = getNodePosition(jumpNodeId);
 		
 		Stuff::Point3D			actualPosition;
@@ -5037,7 +5037,7 @@ void Mech3DAppearance::copyFrom (MechAppearanceData *data)
 	jumpVelocity = 		data->jumpVelocity;
 }
 
-void Mech3DAppearance::flashBuilding (float dur, float fDuration, DWORD color)
+void Mech3DAppearance::flashBuilding (float dur, float fDuration, ULONG color)
 {
 	duration = dur;
 	flashDuration = fDuration;

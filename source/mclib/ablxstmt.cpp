@@ -44,14 +44,14 @@
 //----------
 // EXTERNALS
 
-extern long				level;
-extern long				CallStackLevel;
-extern long				execLineNumber;
-extern long				execStatementCount;
+extern int32_t				level;
+extern int32_t				CallStackLevel;
+extern int32_t				execLineNumber;
+extern int32_t				execStatementCount;
 extern PSTR			codeSegmentPtr;
 extern PSTR			statementStartPtr;
 extern TokenCodeType	codeToken;
-extern long				NumExecutions;
+extern int32_t				NumExecutions;
 
 extern StackItem*		stack;
 extern StackItemPtr		tos;
@@ -67,13 +67,13 @@ extern bool				ExitWithReturn;
 extern bool				ExitFromTacOrder;
 extern bool				AutoReturnFromOrders;
 
-extern long				MaxLoopIterations;
+extern int32_t				MaxLoopIterations;
 
 extern DebuggerPtr		debugger;
 extern ABLModulePtr		CurModule;
 extern ABLModulePtr		CurFSM;
 extern SymTableNodePtr	CurModuleIdPtr;
-extern long				CurModuleHandle;
+extern int32_t				CurModuleHandle;
 extern bool				CallModuleInit;
 extern StackItemPtr		StaticDataPtr;
 ULONG*	OrderCompletionFlags = NULL;
@@ -81,13 +81,13 @@ extern ModuleEntryPtr	ModuleRegistry;
 extern ABLModulePtr*	ModuleInstanceRegistry;
 extern ABLModulePtr		CurModule;
 extern ABLModulePtr		CurLibrary;
-extern long				ProfileLogFunctionTimeLimit;
+extern int32_t				ProfileLogFunctionTimeLimit;
 extern ABLFile*			ProfileLog;
 extern bool				NewStateSet;
 
-long	dummyCount = 0;
+int32_t	dummyCount = 0;
 
-void execOrderReturn (long returnVal);
+void execOrderReturn (int32_t returnVal);
 void ABL_AddToProfileLog (PSTR profileString);
 void transState (SymTableNodePtr newState);
 
@@ -128,7 +128,7 @@ void execStatement (void) {
 						//-----------------------------------------------------------------
 						// We called an Order function, and we're in an Orders/State block,
 						// so do we continue the flow of orders or stop here?
-						long returnVal = tos->integer;
+						int32_t returnVal = tos->integer;
 						pop();
 						if (returnVal == 0)
 							execOrderReturn(returnVal);
@@ -243,7 +243,7 @@ void execAssignmentStatement (SymTableNodePtr idPtr) {
 		// Copy the array/record...
 		PSTR dest = (PSTR)targetPtr;
 		PSTR src = tos->address;
-		long size = targetTypePtr->size;
+		int32_t size = targetTypePtr->size;
 		memcpy(dest, src, size);
 		}
 	else if ((targetTypePtr == IntegerTypePtr) || (targetTypePtr->form == FRM_ENUM)) {
@@ -296,8 +296,8 @@ TypePtr execDeclaredRoutineCall (SymTableNodePtr routineIdPtr, bool skipOrder) {
 		return((TypePtr)(routineIdPtr->typePtr));
 	}
 
-	long oldLevel = level;						// level of caller
-	long newLevel = routineIdPtr->level + 1;	// level of callee
+	int32_t oldLevel = level;						// level of caller
+	int32_t newLevel = routineIdPtr->level + 1;	// level of callee
 	CallStackLevel++;
 
 	//-------------------------------------------
@@ -341,14 +341,14 @@ TypePtr execDeclaredRoutineCall (SymTableNodePtr routineIdPtr, bool skipOrder) {
 	}
 
 	if (ProfileLog) {
-		long functionStartTime = ABLGetTimeCallback();
+		int32_t functionStartTime = ABLGetTimeCallback();
 		execute(routineIdPtr);
-		long functionExecTime = ABLGetTimeCallback() - functionStartTime;
+		int32_t functionExecTime = ABLGetTimeCallback() - functionStartTime;
 
 		if (functionExecTime > ProfileLogFunctionTimeLimit) {
 			char s[512];
 			sprintf_s(s, _countof(s), "[%08d] ", NumExecutions);
-			for (long i = 0; i < CallStackLevel; i++)
+			for (int32_t i = 0; i < CallStackLevel; i++)
 				strcat(s, " ");
 			char s1[512];
 			sprintf_s(s1, _countof(s1), "%s (%d)\n", routineIdPtr->name, functionExecTime);
@@ -383,9 +383,9 @@ TypePtr execDeclaredRoutineCall (SymTableNodePtr routineIdPtr, bool skipOrder) {
 
 //***************************************************************************
 
-void setOpenArray (TypePtr arrayTypePtr, long size) {
+void setOpenArray (TypePtr arrayTypePtr, int32_t size) {
 
-	long numElements = size / arrayTypePtr->size;
+	int32_t numElements = size / arrayTypePtr->size;
 	arrayTypePtr->size = size;
 	while (arrayTypePtr->info.array.elementTypePtr->form == FRM_ARRAY)
 		arrayTypePtr = arrayTypePtr->info.array.elementTypePtr;
@@ -424,7 +424,7 @@ void execActualParams (SymTableNodePtr routineIdPtr) {
 				// The following is a little inefficient, but is kept this way to keep it clear.
 				// Once it's verified to work, optimize...
 
-				long size = formalTypePtr->size;
+				int32_t size = formalTypePtr->size;
 				PSTR src = tos->address;
 				PSTR dest = (PSTR)ABLStackMallocCallback((size_t)size);
 				if (!dest) {
@@ -457,7 +457,7 @@ void execSwitchStatement (void) {
 	getCodeToken();
 	TypePtr switchExpressionTypePtr = execExpression();
 
-	long switchExpressionValue;
+	int32_t switchExpressionValue;
 	if ((switchExpressionTypePtr == IntegerTypePtr) || (switchExpressionTypePtr->form == FRM_ENUM))
 		switchExpressionValue = tos->integer;
 	else
@@ -468,11 +468,11 @@ void execSwitchStatement (void) {
 	// Now, search the branch table for the expression value...
 	codeSegmentPtr = branchTableLocation;
 	getCodeToken();
-	long caseLabelCount = getCodeInteger();
+	int32_t caseLabelCount = getCodeInteger();
 	bool done = false;
 	PSTR caseBranchLocation = NULL;
 	while (!done && caseLabelCount--) {
-		long caseLabelValue = getCodeInteger();
+		int32_t caseLabelValue = getCodeInteger();
 		caseBranchLocation = getCodeAddress();
 		done = (caseLabelValue == switchExpressionValue);
 	}
@@ -534,7 +534,7 @@ void execForStatement (void) {
 	// Eval the initial expression...
 	getCodeToken();
 	execExpression();
-	long initialValue;
+	int32_t initialValue;
 	if (controlTypePtr == IntegerTypePtr)
 		initialValue = tos->integer;
 	else
@@ -543,7 +543,7 @@ void execForStatement (void) {
 	// The initial value...
 	pop();
 
-	long deltaValue;
+	int32_t deltaValue;
 	if (codeToken == TKN_TO)
 		deltaValue = 1;
 	else
@@ -553,7 +553,7 @@ void execForStatement (void) {
 	// Now, eval the final expression...
 	getCodeToken();
 	execExpression();
-	long finalValue;
+	int32_t finalValue;
 	if (controlTypePtr == IntegerTypePtr)
 		finalValue = tos->integer;
 	else
@@ -566,11 +566,11 @@ void execForStatement (void) {
 	// Address of start of loop...
 	PSTR loopStartLocation = codeSegmentPtr;
 
-	long controlValue = initialValue;
+	int32_t controlValue = initialValue;
 
 	//-----------------------------
 	// Now, execute the FOR loop...
-	long iterations = 0;
+	int32_t iterations = 0;
 	if (deltaValue == 1)
 		while (controlValue <= finalValue) {
 			if (controlTypePtr == IntegerTypePtr)
@@ -711,7 +711,7 @@ void execRepeatStatement (void) {
 
 	PSTR loopStartLocation = codeSegmentPtr;
 
-	long iterations = 0;
+	int32_t iterations = 0;
 	do {
 		getCodeToken();
 
@@ -750,7 +750,7 @@ void execWhileStatement (void) {
 	PSTR testLocation = codeSegmentPtr;
 
 	bool loopDone = false;
-	long iterations = 0;
+	int32_t iterations = 0;
 	do {
 		//-------------------------------
 		// Eval the boolean expression...

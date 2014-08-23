@@ -37,12 +37,12 @@ float CLAMP (float x, float min, float max)
 }
 
 typedef struct {
-	long 	xSize;
-	long 	ySize;
+	int32_t 	xSize;
+	int32_t 	ySize;
 	float 	*data;
 } Image;
 
-float getPixel (Image *image, long x, long y)
+float getPixel (Image *image, int32_t x, int32_t y)
 {
 	if ((x < 0) || (x >= image->xSize) || (y < 0) || (y > image->ySize))
 		return 0.0f;
@@ -51,7 +51,7 @@ float getPixel (Image *image, long x, long y)
 	return p[x];
 }
 
-void getRow (float *row, Image *image, long y)
+void getRow (float *row, Image *image, int32_t y)
 {
 	if ((y < 0) || (y >= image->ySize))
 		return;
@@ -59,19 +59,19 @@ void getRow (float *row, Image *image, long y)
 	memcpy(row,image->data + (y * image->xSize), image->ySize * sizeof(float));
 }
 
-void getCol (float *col, Image *image, long x)
+void getCol (float *col, Image *image, int32_t x)
 {
 	if ((x < 0) || (x >= image->xSize))
 		return;
 
-	for (long i=0;i<image->ySize;i++)
+	for (int32_t i=0;i<image->ySize;i++)
 	{
 		*col = image->data[x + (i * image->xSize)];
 		col++;
 	}
 }
 
-float putPixel (Image *image, long x, long y, float data)
+float putPixel (Image *image, int32_t x, int32_t y, float data)
 {
 	if ((x < 0) || (x >= image->xSize) || (y < 0) || (y >= image->ySize))
 		return 0.0f;
@@ -211,18 +211,18 @@ double mitchellFilter (double t)
 }
 
 typedef struct {
-	long pixel;
+	int32_t pixel;
 	double weight;
 } CONTRIB;
 
 typedef struct {
-	long n;
+	int32_t n;
 	CONTRIB *p;
 } CLIST;
 
 CLIST *contrib;
 
-Image *newImage(long xSize, long ySize)
+Image *newImage(int32_t xSize, int32_t ySize)
 {
 	Image *image = (Image *)malloc(sizeof(Image));
 	if (image)
@@ -247,8 +247,8 @@ void zoom (Image *dst, Image *src, double (*filter)(double t), double fwidth)
 {
 	Image *tmp;
 	double xscale, yscale;
-	long i,j,k;
-	long n;
+	int32_t i,j,k;
+	int32_t n;
 	double center, left, right;
 	double width, fscale, weight;
 	float *raster;
@@ -472,7 +472,7 @@ void zoom (Image *dst, Image *src, double (*filter)(double t), double fwidth)
 	freeImage(tmp);
 }
 
-void rescaleMap (float *dst, float *src, long dstSize, long srcSize);
+void rescaleMap (float *dst, float *src, int32_t dstSize, int32_t srcSize);
 
 //----------------------------------------------------------------------------
 #endif

@@ -33,8 +33,8 @@ void WeaponEffects::init (PSTR effectCSVFileName)
 	effectsName.init(objectPath,effectCSVFileName,".csv");
 	
 	CSVFile effectFile;
-	long result = effectFile.open(effectsName);
-	if (result != NO_ERR)
+	int32_t result = effectFile.open(effectsName);
+	if (result != NO_ERROR)
 		STOP(("Unable to open Effects File %s",effectsName));
 		
 	numEffects = effectFile.getNumLines() - 1;	//Always subtract one for the column headers
@@ -42,7 +42,7 @@ void WeaponEffects::init (PSTR effectCSVFileName)
 	effects = (EffectData *)systemHeap->Malloc(sizeof(EffectData) * numEffects);
 	gosASSERT(effects != NULL);
 	
-	for (long i=0;i<numEffects;i++)
+	for (int32_t i=0;i<numEffects;i++)
 	{
 		effectFile.readString(i+2,2,effects[i].effectName,49);
 		effectFile.readString(i+2,3,effects[i].muzzleFlashName,49);

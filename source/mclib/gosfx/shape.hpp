@@ -57,7 +57,7 @@ namespace gosFX
 	protected:
 		MidLevelRenderer::MLRShape
 			*m_shape;
-		Stuff::Scalar
+		float
 			m_radius;
 	};
 
@@ -71,8 +71,8 @@ namespace gosFX
 	// Class Registration Support
 	//
 	public:
-		static void InitializeClass();
-		static void	TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 		typedef Shape__Specification Specification;
 
@@ -82,14 +82,14 @@ namespace gosFX
 	protected:
 		Shape(
 			Specification *spec,
-			unsigned flags
+			uint32_t flags
 		);
 
 	public:
 		static Shape*
 			Make(
 				Specification *spec,
-				unsigned flags
+				uint32_t flags
 			);
 
 		Specification*
@@ -100,15 +100,13 @@ namespace gosFX
 						Cast_Object(Specification*, m_specification);
 				}
 
-		static ClassData
-			*DefaultData;
+		static ClassData* DefaultData;
 
 	//----------------------------------------------------------------------------
 	// Testing
 	//
 	public:
-		void
-			TestInstance() const;
+		void TestInstance(void) const;
 
 	//----------------------------------------------------------------------------
 	// API

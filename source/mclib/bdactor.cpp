@@ -68,10 +68,10 @@ extern float	worldUnitsPerMeter;
 extern bool 	drawTerrainGrid;
 extern bool		useFog;
 
-extern long 	mechRGBLookup[];
-extern long 	mechRGBLookup2[];
+extern int32_t 	mechRGBLookup[];
+extern int32_t 	mechRGBLookup2[];
 
-extern long		ObjectTextureSize;
+extern int32_t		ObjectTextureSize;
 
 extern bool		reloadBounds;
 extern float	metersPerWorldUnit;
@@ -97,64 +97,64 @@ void BldgAppearanceType::init (PSTR  fileName)
 	iniName.init(tglPath,fileName,".ini");
 
 	FitIniFile iniFile;
-	long result = iniFile.open(iniName);
-	if (result != NO_ERR)
+	int32_t result = iniFile.open(iniName);
+	if (result != NO_ERROR)
 		STOP(("Could not find building appearance INI file %s",iniName));
 
 	result = iniFile.seekBlock("TGLData");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		Fatal(result,"Could not find block in building appearance INI file");
 
 	result = iniFile.readIdBoolean("SpinMe",spinMe);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		spinMe = false;
 		
 	float nFrameRate = 0.0f;
 	result = iniFile.readIdFloat("FrameRate",nFrameRate);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		nFrameRate = 0.0f;
 
 	result = iniFile.readIdBoolean("ForestClump",isForestClump);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		isForestClump = false;
 	   
-	DWORD hotPinkRGB, hotGreenRGB, hotYellowRGB;
+	ULONG hotPinkRGB, hotGreenRGB, hotYellowRGB;
 	result = iniFile.readIdULong("HotPinkRGB",hotPinkRGB);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		hotPinkRGB = 0xffff00ff;
 		
 	result = iniFile.readIdULong("HotGreenRGB",hotGreenRGB);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		hotGreenRGB = 0xff00ff00;
 		
 	result = iniFile.readIdULong("HotYellowRGB",hotYellowRGB);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		hotYellowRGB = 0xffffff00;
 
 	result = iniFile.readIdULong("TerrainLightRGB",terrainLightRGB);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 	{
 		terrainLightRGB = 0xffffffff;
 	}
 	else
 	{
 		result = iniFile.readIdFloat("TerrainLightIntensity",terrainLightIntensity);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			terrainLightIntensity = 0.5f;
 			
 		result = iniFile.readIdFloat("TerrainLightInnerRadius",terrainLightInnerRadius);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			terrainLightInnerRadius = 100.0f;
 			
 		result = iniFile.readIdFloat("TerrainLightOuterRadius",terrainLightOuterRadius);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			terrainLightOuterRadius = 250.0f;
 	}
 	
 	char aseFileName[512];
 	result = iniFile.readIdString("FileName",aseFileName,511);
-	long i;
-	if (result != NO_ERR)
+	int32_t i;
+	if (result != NO_ERROR)
 	{
 		//Check for LOD filenames instead
 		for (i=0;i<MAX_LODS;i++)
@@ -165,10 +165,10 @@ void BldgAppearanceType::init (PSTR  fileName)
 			sprintf(baseLODDist,"Distance%d",i);
 			
 			result = iniFile.readIdString(baseName,aseFileName,511);
-			if (result == NO_ERR)
+			if (result == NO_ERROR)
 			{
 				result = iniFile.readIdFloat(baseLODDist,lodDistance[i]);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					STOP(("LOD %d has no distance value in file %s",i,fileName));
 					
 				//----------------------------------------------
@@ -201,7 +201,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 	}
 
 	result = iniFile.readIdString("ShadowName",aseFileName,511);
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		//----------------------------------------------
 		// Base Shadow shape.
@@ -216,10 +216,10 @@ void BldgAppearanceType::init (PSTR  fileName)
  
 	//destroyed state.
 	result = iniFile.seekBlock("TGLDamage");
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		result = iniFile.readIdString("FileName",aseFileName,511);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"Could not find ASE FileName in building appearance INI file");
 	
 		FullPathFileName dmgName;
@@ -237,7 +237,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 		
 		//Shadow for destroyed state.
 		result = iniFile.readIdString("ShadowName",aseFileName,511);
-		if (result == NO_ERR)
+		if (result == NO_ERROR)
 		{
 			//----------------------------------------------
 			// Base Shadow shape.
@@ -262,10 +262,10 @@ void BldgAppearanceType::init (PSTR  fileName)
 	}
 
 	result = iniFile.seekBlock("TGLDestructEffect");
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		result = iniFile.readIdString("FileName",destructEffect,59);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			STOP(("Could not Find DestructEffectName in building appearance INI file"));
 	
 	}
@@ -277,29 +277,29 @@ void BldgAppearanceType::init (PSTR  fileName)
 	//--------------------------------------------------------------------
 	// Load Animation Information.
 	// We can load up to 10 Animation States.
-	for (long i=0;i<MAX_BD_ANIMATIONS;i++)
+	for (int32_t i=0;i<MAX_BD_ANIMATIONS;i++)
 	{
 		char blockId[512];
 		sprintf(blockId,"Animation:%d",i);
 		
 		result = iniFile.seekBlock(blockId);
-		if (result == NO_ERR)
+		if (result == NO_ERROR)
 		{
 			char animName[512];
 			result = iniFile.readIdString("AnimationName",animName,511);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			result = iniFile.readIdBoolean("LoopAnimation",bdAnimLoop[i]);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			result = iniFile.readIdBoolean("Reverse",bdReverse[i]);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			result = iniFile.readIdBoolean("Random",bdRandom[i]);
-			gosASSERT(result == NO_ERR);
+			gosASSERT(result == NO_ERROR);
 			
 			result = iniFile.readIdLong("StartFrame",bdStartF[i]);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 				bdStartF[i] = 0;
 				
  			//-------------------------------
@@ -332,10 +332,10 @@ void BldgAppearanceType::init (PSTR  fileName)
 	//--------------------------------------------------------------------
 	// We can also load the node to pitch and yaw for spotlights/turrets.
 	result = iniFile.seekBlock("AnimationNode");
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		result = iniFile.readIdString("AnimationNodeId",rotationalNodeId,24);
-		gosASSERT(result == NO_ERR);
+		gosASSERT(result == NO_ERROR);
 	}
 	else
 	{
@@ -344,7 +344,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 	
 	if (nFrameRate != 0.0f)
 	{
-		for (long i=0;i<MAX_BD_ANIMATIONS;i++)
+		for (int32_t i=0;i<MAX_BD_ANIMATIONS;i++)
 			setFrameRate(i,nFrameRate);
 	}
 
@@ -353,7 +353,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 	numWeaponNodes = 0;
 	nodeData = NULL;
 	result = iniFile.seekBlock("WeaponNode");
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		nodeData = (NodeData *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(NodeData)*(MAX_WEAPON_NODES));
 		gosASSERT(nodeData != NULL);
@@ -365,7 +365,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 			
 			char weaponName[512];
 			result = iniFile.readIdString(blockId,weaponName,511);
-			if (result != NO_ERR)
+			if (result != NO_ERROR)
 			{
 				strcpy(weaponName,"NONE");
 			}
@@ -391,7 +391,7 @@ void BldgAppearanceType::destroy (void)
 {
 	AppearanceType::destroy();
 
-	long i;
+	int32_t i;
 	for (i=0;i<MAX_LODS;i++)
 	{
 		if (bldgShape[i])
@@ -430,7 +430,7 @@ void BldgAppearanceType::destroy (void)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearanceType::setAnimation (TG_MultiShapePtr shape, DWORD animationNum)
+void BldgAppearanceType::setAnimation (TG_MultiShapePtr shape, ULONG animationNum)
 {
 	gosASSERT(shape != NULL);
 	gosASSERT(animationNum != 0xffffffff);
@@ -444,7 +444,7 @@ void BldgAppearanceType::setAnimation (TG_MultiShapePtr shape, DWORD animationNu
 
 //-----------------------------------------------------------------------------
 // class BldgAppearance
-void BldgAppearance::setWeaponNodeUsed (long weaponNode)
+void BldgAppearance::setWeaponNodeUsed (int32_t weaponNode)
 {
 	weaponNode -= appearType->numWeaponNodes;
    	if ((weaponNode >= 0) && (weaponNode < appearType->numWeaponNodes))
@@ -455,7 +455,7 @@ void BldgAppearance::setWeaponNodeUsed (long weaponNode)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D BldgAppearance::getWeaponNodePosition (long nodeId)
+Stuff::Vector3D BldgAppearance::getWeaponNodePosition (int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	if ((nodeId < 0) || (nodeId >= appearType->numWeaponNodes))
@@ -508,13 +508,13 @@ Stuff::Vector3D BldgAppearance::getHitNode (void)
 }
 
 //-----------------------------------------------------------------------------
-long BldgAppearance::getWeaponNode (long weaponType)
+int32_t BldgAppearance::getWeaponNode (int32_t weaponType)
 {
 	//------------------------------------------------
 	// Scan all weapon nodes and find least used one.
-	long leastUsed = 999999999;
-	long bestNode = -1;
-	for (long i=0;i<appearType->numWeaponNodes;i++)
+	int32_t leastUsed = 999999999;
+	int32_t bestNode = -1;
+	for (int32_t i=0;i<appearType->numWeaponNodes;i++)
 	{
 		if (nodeUsed[i] < leastUsed)
 		{
@@ -530,7 +530,7 @@ long BldgAppearance::getWeaponNode (long weaponType)
 }
 		
 //-----------------------------------------------------------------------------
-float BldgAppearance::getWeaponNodeRecycle (long node)
+float BldgAppearance::getWeaponNodeRecycle (int32_t node)
 {
 	if ((node >= 0) && (node < appearType->numWeaponNodes))
 		return nodeRecycle[node];
@@ -599,7 +599,7 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	if (appearType)
 	{
 		bldgShape = appearType->bldgShape[0]->CreateFrom();
-		long i;
+		int32_t i;
 
 		//-------------------------------------------------
 		// Load the texture and store its handle.
@@ -618,14 +618,14 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					bldgShape->SetTextureHandle(i,gosTextureHandle);
 					bldgShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					bldgShape->SetTextureHandle(i,gosTextureHandle);
 					bldgShape->SetTextureAlpha(i,false);
@@ -644,7 +644,7 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	
 			//-------------------------------------------------
 			// Load the texture and store its handle.
-			for (long i=0;i<bldgShadowShape->GetNumTextures();i++)
+			for (int32_t i=0;i<bldgShadowShape->GetNumTextures();i++)
 			{
 				char txmName[1024];
 				bldgShadowShape->GetTextureName(i,txmName,256);
@@ -659,14 +659,14 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShadowShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShadowShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShadowShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShadowShape->SetTextureAlpha(i,false);
@@ -745,21 +745,21 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 		
  		if (appearType->numWeaponNodes)
 		{
-			nodeUsed = (long *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(long) * appearType->numWeaponNodes);
+			nodeUsed = (int32_t *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(int32_t) * appearType->numWeaponNodes);
 			gosASSERT(nodeUsed != NULL);
-			memset(nodeUsed,0,sizeof(long) * appearType->numWeaponNodes);
+			memset(nodeUsed,0,sizeof(int32_t) * appearType->numWeaponNodes);
 			
 			nodeRecycle = (float *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(float) * appearType->numWeaponNodes);
 			gosASSERT(nodeRecycle != NULL);
 			
-			for (long i=0;i<appearType->numWeaponNodes;i++)
+			for (int32_t i=0;i<appearType->numWeaponNodes;i++)
 				nodeRecycle[i] = 0.0f;
 		}
 	}
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::setObjStatus (long oStatus)
+void BldgAppearance::setObjStatus (int32_t oStatus)
 {
 	if (status != oStatus)
 	{
@@ -844,7 +844,7 @@ void BldgAppearance::setObjStatus (long oStatus)
 		{
 			//-------------------------------------------------
 			// Load the texture and store its handle.
-			for (long i=0;i<bldgShape->GetNumTextures();i++)
+			for (int32_t i=0;i<bldgShape->GetNumTextures();i++)
 			{
 				char txmName[1024];
 				bldgShape->GetTextureName(i,txmName,256);
@@ -859,14 +859,14 @@ void BldgAppearance::setObjStatus (long oStatus)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShape->SetTextureAlpha(i,false);
@@ -884,7 +884,7 @@ void BldgAppearance::setObjStatus (long oStatus)
 		{
 			//-------------------------------------------------
 			// Load the texture for the shadow and store its handle.
-			for (long i=0;i<bldgShadowShape->GetNumTextures();i++)
+			for (int32_t i=0;i<bldgShadowShape->GetNumTextures();i++)
 			{
 				char txmName[1024];
 				bldgShadowShape->GetTextureName(i,txmName,256);
@@ -899,14 +899,14 @@ void BldgAppearance::setObjStatus (long oStatus)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShadowShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShadowShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShadowShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShadowShape->SetTextureAlpha(i,false);
@@ -950,7 +950,7 @@ Stuff::Vector3D BldgAppearance::getNodeNamePosition (PSTR nodeName)
 }
 
 //-----------------------------------------------------------------------------
-Stuff::Vector3D BldgAppearance::getNodeIdPosition (long nodeId)
+Stuff::Vector3D BldgAppearance::getNodeIdPosition (int32_t nodeId)
 {
 	Stuff::Vector3D result = position;
 	
@@ -976,7 +976,7 @@ Stuff::Vector3D BldgAppearance::getNodeIdPosition (long nodeId)
 }
 
 //-----------------------------------------------------------------------------
-bool BldgAppearance::PerPolySelect (long mouseX, long mouseY)
+bool BldgAppearance::PerPolySelect (int32_t mouseX, int32_t mouseY)
 {
 	return bldgShape->PerPolySelect(mouseX,mouseY);
 }
@@ -1038,7 +1038,7 @@ void BldgAppearance::setMoverParameters (float turretRot, float lArmRot, float r
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::setObjectParameters (Stuff::Vector3D &pos, float Rot, long sel, long team, long homeRelations)
+void BldgAppearance::setObjectParameters (Stuff::Vector3D &pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	rotation = Rot;
 
@@ -1266,7 +1266,7 @@ bool BldgAppearance::recalcBounds (void)
 				float maxX = 0.0f, maxY = 0.0f;
 				float minX = 0.0f, minY = 0.0f;
 
-				for (long i=0;i<8;i++)
+				for (int32_t i=0;i<8;i++)
 				{
 					eye->projectZ(boxCoords[i],bcsp[i]);
 					if (!i)
@@ -1307,10 +1307,10 @@ bool BldgAppearance::recalcBounds (void)
 						//-------------------------------------------------------------------------------
 						//Set LOD of Model here because we have the distance and we KNOW we can see it!
 						bool baseLOD = true;
-						DWORD selectLOD = 0;
+						ULONG selectLOD = 0;
 						if (useHighObjectDetail)
 						{
-							for (long i=1;i<MAX_LODS;i++)
+							for (int32_t i=1;i<MAX_LODS;i++)
 							{
 								if (appearType->bldgShape[i] && (distanceToEye > appearType->lodDistance[i]))
 								{
@@ -1329,7 +1329,7 @@ bool BldgAppearance::recalcBounds (void)
 						}
 						
 						// we are at this LOD level.
-						if (selectLOD != (DWORD)currentLOD)
+						if (selectLOD != (ULONG)currentLOD)
 						{
 							currentLOD = selectLOD;
 
@@ -1343,7 +1343,7 @@ bool BldgAppearance::recalcBounds (void)
 
 							//-------------------------------------------------
 							// Load the texture and store its handle.
-							for (long j=0;j<bldgShape->GetNumTextures();j++)
+							for (int32_t j=0;j<bldgShape->GetNumTextures();j++)
 							{
 								char txmName[1024];
 								bldgShape->GetTextureName(j,txmName,256);
@@ -1358,14 +1358,14 @@ bool BldgAppearance::recalcBounds (void)
 								{
 									if (strnicmp(txmName,"a_",2) == 0)
 									{
-										DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+										ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 										gosASSERT(gosTextureHandle != 0xffffffff);
 										bldgShape->SetTextureHandle(j,gosTextureHandle);
 										bldgShape->SetTextureAlpha(j,true);
 									}
 									else
 									{
-										DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+										ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 										gosASSERT(gosTextureHandle != 0xffffffff);
 										bldgShape->SetTextureHandle(j,gosTextureHandle);
 										bldgShape->SetTextureAlpha(j,false);
@@ -1395,7 +1395,7 @@ bool BldgAppearance::recalcBounds (void)
 							
 							//-------------------------------------------------
 							// Load the texture and store its handle.
-							for (long i=0;i<bldgShape->GetNumTextures();i++)
+							for (int32_t i=0;i<bldgShape->GetNumTextures();i++)
 							{
 								char txmName[1024];
 								bldgShape->GetTextureName(i,txmName,256);
@@ -1410,14 +1410,14 @@ bool BldgAppearance::recalcBounds (void)
 								{
 									if (strnicmp(txmName,"a_",2) == 0)
 									{
-										DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+										ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 										gosASSERT(gosTextureHandle != 0xffffffff);
 										bldgShape->SetTextureHandle(i,gosTextureHandle);
 										bldgShape->SetTextureAlpha(i,true);
 									}
 									else
 									{
-										DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+										ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 										gosASSERT(gosTextureHandle != 0xffffffff);
 										bldgShape->SetTextureHandle(i,gosTextureHandle);
 										bldgShape->SetTextureAlpha(i,false);
@@ -1456,7 +1456,7 @@ bool BldgAppearance::playDestruction (void)
 	{
 		//--------------------------------------------
 		// Yes, load it on up.
-		unsigned flags = gosFX::Effect::ExecuteFlag;
+		uint32_t flags = gosFX::Effect::ExecuteFlag;
 
 		Check_Object(gosFX::EffectLibrary::Instance);
 		gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(appearType->destructEffect);
@@ -1506,15 +1506,15 @@ bool BldgAppearance::playDestruction (void)
 }
 
 //-----------------------------------------------------------------------------
-long BldgAppearance::render (long depthFixup)
+int32_t BldgAppearance::render (int32_t depthFixup)
 {
 	if (inView)
 	{
-		long color = SD_BLUE;
+		int32_t color = SD_BLUE;
 		ULONG highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8)) {
 			static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
-			static long colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED| 0xff000000};
+			static int32_t colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED| 0xff000000};
 			color = colorTable[homeTeamRelationship];
 			highLight = highLightTable[homeTeamRelationship];
 		}
@@ -1786,7 +1786,7 @@ long BldgAppearance::render (long depthFixup)
 		boxCoords[7].Add(position,addCoords);
 		
 		Stuff::Vector4D screenPos[8];
-		for (long i=0;i<8;i++)
+		for (int32_t i=0;i<8;i++)
 		{
 			eye->projectZ(boxCoords[i],screenPos[i]);
 		}
@@ -1853,11 +1853,11 @@ long BldgAppearance::render (long depthFixup)
 #endif
 #undef DRAW_BOX
 	}
-	return NO_ERR;
+	return NO_ERROR;
 }
 
 //-----------------------------------------------------------------------------
-long BldgAppearance::renderShadows (void)
+int32_t BldgAppearance::renderShadows (void)
 {
 	if (inView && visible && !appearType->spinMe)
 	{
@@ -1868,11 +1868,11 @@ long BldgAppearance::renderShadows (void)
 		else
 			bldgShape->RenderShadows();
 	}
-	return NO_ERR;
+	return NO_ERROR;
 }
 
 //-----------------------------------------------------------------------------
-long BldgAppearance::update (bool animate) 
+int32_t BldgAppearance::update (bool animate) 
 {
 	Stuff::Point3D xlatPosition;
 	Stuff::UnitQuaternion rot;
@@ -1881,7 +1881,7 @@ long BldgAppearance::update (bool animate)
 	// Recycle the weapon Nodes
 	if (nodeRecycle)
 	{
-		for (long i=0;i<appearType->numWeaponNodes;i++)
+		for (int32_t i=0;i<appearType->numWeaponNodes;i++)
 		{
 			if (nodeRecycle[i] > 0.0f)
 			{
@@ -2242,7 +2242,7 @@ long BldgAppearance::update (bool animate)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::startActivity (long effectId, bool loop)
+void BldgAppearance::startActivity (int32_t effectId, bool loop)
 {
 	//Check if we are already playing one.  If not, be active!
 	
@@ -2254,7 +2254,7 @@ void BldgAppearance::startActivity (long effectId, bool loop)
    		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
 			if (!loop)
 				flags = gosFX::Effect::ExecuteFlag;
 
@@ -2373,7 +2373,7 @@ void BldgAppearance::stopActivity (void)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::flashBuilding (float dur, float fDuration, DWORD color)
+void BldgAppearance::flashBuilding (float dur, float fDuration, ULONG color)
 {
 	duration = dur;
 	flashDuration = fDuration;
@@ -2422,11 +2422,11 @@ void BldgAppearance::destroy (void)
 
 //-----------------------------------------------------------------------------
 
-long BldgAppearance::calcCellsCovered (Stuff::Vector3D& pos, short* cellList) {
+int32_t BldgAppearance::calcCellsCovered (Stuff::Vector3D& pos, short* cellList) {
 
 	gosASSERT((Terrain::realVerticesMapSide * MAPCELL_DIM) == GameMap->width);
-	long numCoords = 0;
-	long maxCoords = cellList[0];
+	int32_t numCoords = 0;
+	int32_t maxCoords = cellList[0];
 
 	//MUST force building to HIGHEST LOD!!!  IMpassability data is only valid at this LOD!!
 	// Building will reset its LOD on next draw!!
@@ -2445,12 +2445,12 @@ long BldgAppearance::calcCellsCovered (Stuff::Vector3D& pos, short* cellList) {
 
 	//-------------------------------------------------------------
 	// New way.  For each vertex in each shape, translate to world
-	for (long i=0;i<bldgShape->GetNumShapes();i++)
+	for (int32_t i=0;i<bldgShape->GetNumShapes();i++)
 	{
 		//Check if the artists meant for this piece to NOT block passability!!
 		if (strnicmp(bldgShape->GetNodeId(i),"_PAB",4) != 0)
 		{
-			for (long j=0;j<bldgShape->GetNumVerticesInShape(i);j++) 
+			for (int32_t j=0;j<bldgShape->GetNumVerticesInShape(i);j++) 
 			{
 				Stuff::Vector3D vertexPos, worldPos;
 				vertexPos = bldgShape->GetShapeVertexInEditor(i,j,-rotation);
@@ -2463,7 +2463,7 @@ long BldgAppearance::calcCellsCovered (Stuff::Vector3D& pos, short* cellList) {
 					recordCell = (vertexPos.z >= 1.0f);
 				if (recordCell) 
 				{
-					long cellR, cellC;
+					int32_t cellR, cellC;
 					land->worldToCell(worldPos,cellR,cellC);
 					if ((0 > cellR) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR)
 						|| (0 > cellC) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
@@ -2510,24 +2510,24 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int cou
 			appearType->setAnimation(bldgShape,bdAnimationState);
 	}
 
-	long cellR, cellC;
+	int32_t cellR, cellC;
 	land->worldToCell(position, cellR, cellC);
 	if (appearType->isForestClump)
 	{
 		//-------------------------------------------------------------
 		// New way.  For each vertex in each shape, translate to world
-		for (long i=0;i<bldgShape->GetNumShapes();i++)
+		for (int32_t i=0;i<bldgShape->GetNumShapes();i++)
 		{
 			//Check if the artists meant for this piece to NOT block passability!!
 			if (strnicmp(bldgShape->GetNodeId(i),"_PAB",4) != 0)
 			{
-				for (long j=0;j<bldgShape->GetNumVerticesInShape(i);j++)
+				for (int32_t j=0;j<bldgShape->GetNumVerticesInShape(i);j++)
 				{
 					Stuff::Vector3D vertexPos, worldPos;
 					vertexPos = bldgShape->GetShapeVertexInEditor(i,j,-rotation);
 					worldPos.Add(position,vertexPos);
 		
-					long cellR, cellC;
+					int32_t cellR, cellC;
 					land->worldToCell(worldPos,cellR,cellC);
 					if ((0 > cellR) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) || 
 						(0 > cellC) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
@@ -2587,7 +2587,7 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int cou
 			}
 		}
 
-		long i, j;
+		int32_t i, j;
 		//-------------------------------------------------------------
 		// New way.  For each vertex in each shape, translate to world
 		for (i=0;i<bldgShape->GetNumShapes();i++)
@@ -2601,7 +2601,7 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int cou
 					vertexPos = bldgShape->GetShapeVertexInEditor(i,j,-rotation);
 					worldPos.Add(position,vertexPos);
 		
-					long cellR, cellC;
+					int32_t cellR, cellC;
 					land->worldToCell(worldPos,cellR,cellC);
 					if ((0 > cellR) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) || 
 						(0 > cellC) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
@@ -2656,7 +2656,7 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int cou
 		
  		//Switch to destroyed state to mark impassable.  The destroyed impassability will NEVER change!!
 		// When a gate opens or a wall or gate is destroyed, we only want to mark stuff that is going 
-		// away passable and long range capable.
+		// away passable and int32_t range capable.
 		if ((type == SPECIAL_GATE) || (type == SPECIAL_WALL))
 		{
 			if (appearType->bldgDmgShape)
@@ -2693,13 +2693,13 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int cou
 			//Check if the artists meant for this piece to NOT block passability!!
 			if (strnicmp(bldgShape->GetNodeId(i),"_PAB",4) != 0)
 			{
-				for (long j=0;j<bldgShape->GetNumVerticesInShape(i);j++)
+				for (int32_t j=0;j<bldgShape->GetNumVerticesInShape(i);j++)
 				{
 					Stuff::Vector3D vertexPos, worldPos;
 					vertexPos = bldgShape->GetShapeVertexInEditor(i,j,-rotation);
 					worldPos.Add(position,vertexPos);
 		
-					long cellR, cellC;
+					int32_t cellR, cellC;
 					land->worldToCell(worldPos,cellR,cellC);
 					if ((0 > cellR) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) || 
 						(0 > cellC) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
@@ -2753,12 +2753,12 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int cou
 
 //-----------------------------------------------------------------------------
 
-long BldgAppearance::markMoveMap (bool passable, long* lineOfSightRect, bool useHeight, short* cellList)
+int32_t BldgAppearance::markMoveMap (bool passable, int32_t* lineOfSightRect, bool useHeight, short* cellList)
 {
-	long minRow = 9999;
-	long maxRow = 0;
-	long minCol = 9999;
-	long maxCol = 0;
+	int32_t minRow = 9999;
+	int32_t maxRow = 0;
+	int32_t minCol = 9999;
+	int32_t maxCol = 0;
 
 	//MUST force building to HIGHEST LOD!!!  IMpassability data is only valid at this LOD!!
 	// Building will reset its LOD on next draw!!
@@ -2771,26 +2771,26 @@ long BldgAppearance::markMoveMap (bool passable, long* lineOfSightRect, bool use
 			appearType->setAnimation(tempBldgShape,bdAnimationState);
 	}
 
-	long numCoords = 0;
+	int32_t numCoords = 0;
 	if (cellList) {
 		gosASSERT(!useHeight);
 		//----------------------------------------------------------------------------------
 		// Store the max number of coords allowed in the first cell. Can overwrite it now...
-		long maxCoords = cellList[0];
+		int32_t maxCoords = cellList[0];
 		//-------------------------------------------------------------
 		// New way.  For each vertex in each shape, translate to world
-		for (long i = 0; i < tempBldgShape->GetNumShapes(); i++) 
+		for (int32_t i = 0; i < tempBldgShape->GetNumShapes(); i++) 
 		{
 			//Check if the artists meant for this piece to NOT block passability!!
 			if (strnicmp(tempBldgShape->GetNodeId(i),"_PAB",4) != 0)
 			{
-				for (long j=0;j<tempBldgShape->GetNumVerticesInShape(i);j++) 
+				for (int32_t j=0;j<tempBldgShape->GetNumVerticesInShape(i);j++) 
 				{
 					Stuff::Vector3D vertexPos, worldPos;
 					vertexPos = tempBldgShape->GetShapeVertexInWorld(i,j,-rotation);
 					worldPos.Add(position,vertexPos);
 	
-					long cellR, cellC;
+					int32_t cellR, cellC;
 					land->worldToCell(worldPos,cellR,cellC);
 					if ((0 > cellR) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) || 
 						(0 > cellC) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
@@ -2823,18 +2823,18 @@ long BldgAppearance::markMoveMap (bool passable, long* lineOfSightRect, bool use
 	{
 		//-------------------------------------------------------------
 		// New way.  For each vertex in each shape, translate to world
-		for (long i=0;i<tempBldgShape->GetNumShapes();i++)
+		for (int32_t i=0;i<tempBldgShape->GetNumShapes();i++)
 		{
 			//Check if the artists meant for this piece to NOT block passability!!
 			if (strnicmp(tempBldgShape->GetNodeId(i),"_PAB",4) != 0)
 			{
-				for (long j=0;j<tempBldgShape->GetNumVerticesInShape(i);j++)
+				for (int32_t j=0;j<tempBldgShape->GetNumVerticesInShape(i);j++)
 				{
 					Stuff::Vector3D vertexPos, worldPos;
 					vertexPos = tempBldgShape->GetShapeVertexInWorld(i,j,-rotation);
 					worldPos.Add(position,vertexPos);
 	
-					long cellR, cellC;
+					int32_t cellR, cellC;
 					land->worldToCell(worldPos,cellR,cellC);
 					if ((0 > cellR) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) || 
 						(0 > cellC) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
@@ -2902,7 +2902,7 @@ void BldgAppearance::markLOS (bool clearIt)
 
 	//-------------------------------------------------------------
 	// New way.  For each vertex in each shape, translate to world
-	for (long i=0;i<tempBldgShape->GetNumShapes();i++)
+	for (int32_t i=0;i<tempBldgShape->GetNumShapes();i++)
 	{
 		//Check if the artists meant for this piece to NOT block LOS!!
 		// Probably should check for light cones,too!
@@ -2910,14 +2910,14 @@ void BldgAppearance::markLOS (bool clearIt)
 		if ((strnicmp(tempBldgShape->GetNodeId(i),"LOS_",4) != 0) &&
 			(strnicmp(tempBldgShape->GetNodeId(i),"SpotLight_",10) != 0))
 		{
-			for (long j=0;j<tempBldgShape->GetNumVerticesInShape(i);j++)
+			for (int32_t j=0;j<tempBldgShape->GetNumVerticesInShape(i);j++)
 			{
 				Stuff::Vector3D vertexPos, worldPos;
 				vertexPos = tempBldgShape->GetShapeVertexInEditor(i,j,-rotation);
 //				vertexPos = tempBldgShape->GetShapeVertexInWorld(i,j,-rotation);
 				worldPos.Add(position,vertexPos);
 	
-				long cellR, cellC;
+				int32_t cellR, cellC;
 				land->worldToCell(worldPos,cellR,cellC);
 				if ((0 > cellR) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) || 
 					(0 > cellC) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
@@ -2958,7 +2958,7 @@ void BldgAppearance::markLOS (bool clearIt)
 
 //-----------------------------------------------------------------------------
 
-void BldgAppearance::calcAdjCell (long& row, long& col)
+void BldgAppearance::calcAdjCell (int32_t& row, int32_t& col)
 {
 	//MUST force building to HIGHEST LOD!!!  IMpassability data is only valid at this LOD!!
 	// Building will reset its LOD on next draw!!
@@ -2977,10 +2977,10 @@ void BldgAppearance::calcAdjCell (long& row, long& col)
 
 	//-------------------------------------------------------------
 	// New way.  For each vertex in each shape, translate to world
-	long numVert = 0;
-	for (long i=0;i<bldgShape->GetNumShapes();i++)
+	int32_t numVert = 0;
+	for (int32_t i=0;i<bldgShape->GetNumShapes();i++)
 	{
-		for (long j=0;j<bldgShape->GetNumVerticesInShape(i);j++)
+		for (int32_t j=0;j<bldgShape->GetNumVerticesInShape(i);j++)
 		{
 			Stuff::Vector3D vertexPos, worldPos;
 			vertexPos = bldgShape->GetShapeVertexInWorld(i,j,-rotation);
@@ -2988,7 +2988,7 @@ void BldgAppearance::calcAdjCell (long& row, long& col)
 
 			{
 				numVert++;
-				long cellR, cellC;
+				int32_t cellR, cellC;
 				land->worldToCell(worldPos,cellR,cellC);
 				
 				//MapCellPtr curCell = GameMap->getCell(cellR, cellC);
@@ -3009,24 +3009,24 @@ void TreeAppearanceType::init (PSTR  fileName)
 
 	FitIniFile iniFile;
 	
-	long result = iniFile.open(iniName);
-	if (result != NO_ERR)
+	int32_t result = iniFile.open(iniName);
+	if (result != NO_ERROR)
 		Fatal(result,"Could not find building appearance INI file");
 
 	result = iniFile.seekBlock("TGLData");
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		Fatal(result,"Could not find block in building appearance INI file");
 
 	result = iniFile.readIdBoolean("ForestClump",isForestClump);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 		isForestClump = false;
 		
  	char aseFileName[512];
 	result = iniFile.readIdString("FileName",aseFileName,511);
-	if (result != NO_ERR)
+	if (result != NO_ERROR)
 	{
 		//Check for LOD filenames instead
-		for (long i=0;i<MAX_LODS;i++)
+		for (int32_t i=0;i<MAX_LODS;i++)
 		{
 			char baseName[256];
 			char baseLODDist[256];
@@ -3034,10 +3034,10 @@ void TreeAppearanceType::init (PSTR  fileName)
 			sprintf(baseLODDist,"Distance%d",i);
 			
 			result = iniFile.readIdString(baseName,aseFileName,511);
-			if (result == NO_ERR)
+			if (result == NO_ERROR)
 			{
 				result = iniFile.readIdFloat(baseLODDist,lodDistance[i]);
-				if (result != NO_ERR)
+				if (result != NO_ERROR)
 					STOP(("LOD %d has no distance value in file %s",i,fileName));
 					
 				//----------------------------------------------
@@ -3080,7 +3080,7 @@ void TreeAppearanceType::init (PSTR  fileName)
 	}
 
 	result = iniFile.readIdString("ShadowName",aseFileName,511);
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		//----------------------------------------------
 		// Base Shadow shape.
@@ -3099,10 +3099,10 @@ void TreeAppearanceType::init (PSTR  fileName)
 	}
 	
 	result = iniFile.seekBlock("TGLDamage");
-	if (result == NO_ERR)
+	if (result == NO_ERROR)
 	{
 		result = iniFile.readIdString("FileName",aseFileName,511);
-		if (result != NO_ERR)
+		if (result != NO_ERROR)
 			Fatal(result,"Could not find ASE FileName in building appearance INI file");
 	
 		FullPathFileName dmgName;
@@ -3120,7 +3120,7 @@ void TreeAppearanceType::init (PSTR  fileName)
 		
 		//Shadow for destroyed state.
 		result = iniFile.readIdString("ShadowName",aseFileName,511);
-		if (result == NO_ERR)
+		if (result == NO_ERROR)
 		{
 			//----------------------------------------------
 			// Base Shadow shape.
@@ -3152,7 +3152,7 @@ void TreeAppearanceType::destroy (void)
 {
 	AppearanceType::destroy();
 
-	for (long i=0;i<MAX_LODS;i++)
+	for (int32_t i=0;i<MAX_LODS;i++)
 	{
 		if (treeShape[i])
 		{
@@ -3217,7 +3217,7 @@ void TreeAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	if (appearType)
 	{
 		treeShape = appearType->treeShape[0]->CreateFrom();
-		long i;
+		int32_t i;
 
 		//-------------------------------------------------
 		// Load the texture and store its handle.
@@ -3236,14 +3236,14 @@ void TreeAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					treeShape->SetTextureHandle(i,gosTextureHandle);
 					treeShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					treeShape->SetTextureHandle(i,gosTextureHandle);
 					treeShape->SetTextureAlpha(i,false);
@@ -3262,7 +3262,7 @@ void TreeAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	
 			//-------------------------------------------------
 			// Load the texture and store its handle.
-			for (long i=0;i<treeShadowShape->GetNumTextures();i++)
+			for (int32_t i=0;i<treeShadowShape->GetNumTextures();i++)
 			{
 				char txmName[1024];
 				treeShadowShape->GetTextureName(i,txmName,256);
@@ -3277,14 +3277,14 @@ void TreeAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShadowShape->SetTextureHandle(i,gosTextureHandle);
 						treeShadowShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShadowShape->SetTextureHandle(i,gosTextureHandle);
 						treeShadowShape->SetTextureAlpha(i,false);
@@ -3363,7 +3363,7 @@ void TreeAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 }
 
 //-----------------------------------------------------------------------------
-void TreeAppearance::setObjStatus (long oStatus)
+void TreeAppearance::setObjStatus (int32_t oStatus)
 {
 	if (status != oStatus)
 	{
@@ -3431,7 +3431,7 @@ void TreeAppearance::setObjStatus (long oStatus)
 		// Load the texture and store its handle.
 		if (treeShape)
 		{
-			for (long i=0;i<treeShape->GetNumTextures();i++)
+			for (int32_t i=0;i<treeShape->GetNumTextures();i++)
 			{
 				char txmName[1024];
 				treeShape->GetTextureName(i,txmName,256);
@@ -3446,14 +3446,14 @@ void TreeAppearance::setObjStatus (long oStatus)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShape->SetTextureHandle(i,gosTextureHandle);
 						treeShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShape->SetTextureHandle(i,gosTextureHandle);
 						treeShape->SetTextureAlpha(i,false);
@@ -3471,7 +3471,7 @@ void TreeAppearance::setObjStatus (long oStatus)
 		{
 			//-------------------------------------------------
 			// Load the texture and store its handle.
-			for (long i=0;i<treeShadowShape->GetNumTextures();i++)
+			for (int32_t i=0;i<treeShadowShape->GetNumTextures();i++)
 			{
 				char txmName[1024];
 				treeShadowShape->GetTextureName(i,txmName,256);
@@ -3486,14 +3486,14 @@ void TreeAppearance::setObjStatus (long oStatus)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShadowShape->SetTextureHandle(i,gosTextureHandle);
 						treeShadowShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShadowShape->SetTextureHandle(i,gosTextureHandle);
 						treeShadowShape->SetTextureAlpha(i,false);
@@ -3512,7 +3512,7 @@ void TreeAppearance::setObjStatus (long oStatus)
 }
 
 //-----------------------------------------------------------------------------
-void TreeAppearance::setObjectParameters (Stuff::Vector3D &pos, float Rot, long sel, long team, long homeRelations)
+void TreeAppearance::setObjectParameters (Stuff::Vector3D &pos, float Rot, int32_t sel, int32_t team, int32_t homeRelations)
 {
 	rotation = Rot;
 
@@ -3692,7 +3692,7 @@ bool TreeAppearance::recalcBounds (void)
 			float maxX = 0.0f, maxY = 0.0f;
 			float minX = 0.0f, minY = 0.0f;
 
-			for (long i=0;i<8;i++)
+			for (int32_t i=0;i<8;i++)
 			{
 				eye->projectZ(boxCoords[i],bcsp[i]);
 				if (!i)
@@ -3733,10 +3733,10 @@ bool TreeAppearance::recalcBounds (void)
 					//-------------------------------------------------------------------------------
 					//Set LOD of Model here because we have the distance and we KNOW we can see it!
 					bool baseLOD = true;
-					DWORD selectLOD = 0;
+					ULONG selectLOD = 0;
 					if (useHighObjectDetail)
 					{
-						for (long i=1;i<MAX_LODS;i++)
+						for (int32_t i=1;i<MAX_LODS;i++)
 						{
 							if (appearType->treeShape[i] && (distanceToEye > appearType->lodDistance[i]))
 							{
@@ -3755,7 +3755,7 @@ bool TreeAppearance::recalcBounds (void)
 					}
 					
 					// we are at this LOD level.
-					if (selectLOD != (DWORD)currentLOD)
+					if (selectLOD != (ULONG)currentLOD)
 					{
 						currentLOD = selectLOD;
 
@@ -3766,7 +3766,7 @@ bool TreeAppearance::recalcBounds (void)
 						treeShape = appearType->treeShape[currentLOD]->CreateFrom();
 						//-------------------------------------------------
 						// Load the texture and store its handle.
-						for (long j=0;j<treeShape->GetNumTextures();j++)
+						for (int32_t j=0;j<treeShape->GetNumTextures();j++)
 						{
 							char txmName[1024];
 							treeShape->GetTextureName(j,txmName,256);
@@ -3781,14 +3781,14 @@ bool TreeAppearance::recalcBounds (void)
 							{
 								if (strnicmp(txmName,"a_",2) == 0)
 								{
-									DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+									ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 									gosASSERT(gosTextureHandle != 0xffffffff);
 									treeShape->SetTextureHandle(j,gosTextureHandle);
 									treeShape->SetTextureAlpha(j,true);
 								}
 								else
 								{
-									DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+									ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 									gosASSERT(gosTextureHandle != 0xffffffff);
 									treeShape->SetTextureHandle(j,gosTextureHandle);
 									treeShape->SetTextureAlpha(j,false);
@@ -3816,7 +3816,7 @@ bool TreeAppearance::recalcBounds (void)
 						
 						//-------------------------------------------------
 						// Load the texture and store its handle.
-						for (long i=0;i<treeShape->GetNumTextures();i++)
+						for (int32_t i=0;i<treeShape->GetNumTextures();i++)
 						{
 							char txmName[1024];
 							treeShape->GetTextureName(i,txmName,256);
@@ -3831,14 +3831,14 @@ bool TreeAppearance::recalcBounds (void)
 							{
 								if (strnicmp(txmName,"a_",2) == 0)
 								{
-									DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+									ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 									gosASSERT(gosTextureHandle != 0xffffffff);
 									treeShape->SetTextureHandle(i,gosTextureHandle);
 									treeShape->SetTextureAlpha(i,true);
 								}
 								else
 								{
-									DWORD gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+									ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 									gosASSERT(gosTextureHandle != 0xffffffff);
 									treeShape->SetTextureHandle(i,gosTextureHandle);
 									treeShape->SetTextureAlpha(i,false);
@@ -3864,15 +3864,15 @@ bool TreeAppearance::recalcBounds (void)
 }
 
 //-----------------------------------------------------------------------------
-long TreeAppearance::render (long depthFixup)
+int32_t TreeAppearance::render (int32_t depthFixup)
 {
 	if (inView)
 	{
-		long color = SD_BLUE;
+		int32_t color = SD_BLUE;
 		//ULONG highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8)) {
 			//static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
-			static long colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
+			static int32_t colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
 			color = colorTable[homeTeamRelationship];
 			//highLight = highLightTable[homeTeamRelationship];
 		}
@@ -3943,7 +3943,7 @@ long TreeAppearance::render (long depthFixup)
 		boxCoords[7].z = position.z + treeShape->minBox.y + nodeCenter.y;
 		
 		Stuff::Vector4D screenPos[8];
-		for (long i=0;i<8;i++)
+		for (int32_t i=0;i<8;i++)
 		{
 			eye->projectZ(boxCoords[i],screenPos[i]);
 		}
@@ -4010,11 +4010,11 @@ long TreeAppearance::render (long depthFixup)
 
 #endif
 	}
-	return NO_ERR;
+	return NO_ERROR;
 }
 
 //-----------------------------------------------------------------------------
-long TreeAppearance::renderShadows (void)
+int32_t TreeAppearance::renderShadows (void)
 {
 	if (inView && visible)
 	{
@@ -4026,11 +4026,11 @@ long TreeAppearance::renderShadows (void)
 			treeShape->RenderShadows();
 	}
 	
-	return NO_ERR;
+	return NO_ERROR;
 }
 
 //-----------------------------------------------------------------------------
-long TreeAppearance::update (bool animate) 
+int32_t TreeAppearance::update (bool animate) 
 {
 	if (rotation > 180)
 		rotation -= 360;
@@ -4103,7 +4103,7 @@ long TreeAppearance::update (bool animate)
 	else
 		treeShape->SetFogRGB(0xffffffff);
 
-	DWORD oldRGB = eye->getLightColor(1);
+	ULONG oldRGB = eye->getLightColor(1);
 
 	eye->setLightColor(1,lightRGB);
 	eye->setLightIntensity(1,1.0);
@@ -4164,18 +4164,18 @@ void TreeAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int cou
 
 	//-------------------------------------------------------------
 	// New way.  For each vertex in each shape, translate to world
-	for (long i=0;i<treeShape->GetNumShapes();i++)
+	for (int32_t i=0;i<treeShape->GetNumShapes();i++)
 	{
 		//Check if the artists meant for this piece to NOT block passability!!
 		if (strnicmp(treeShape->GetNodeId(i),"_PAB",4) != 0)
 		{
-			for (long j=0;j<treeShape->GetNumVerticesInShape(i);j++)
+			for (int32_t j=0;j<treeShape->GetNumVerticesInShape(i);j++)
 			{
 				Stuff::Vector3D vertexPos, worldPos;
 				vertexPos = treeShape->GetShapeVertexInEditor(i,j,-rotation);
 				worldPos.Add(position,vertexPos);
 	
-				long cellR, cellC;
+				int32_t cellR, cellC;
 				land->worldToCell(worldPos,cellR,cellC);
 				if ((0 > cellR) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) || 
 					(0 > cellC) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))
@@ -4218,7 +4218,7 @@ void TreeAppearance::markLOS (bool clearIt)
 
 	//-------------------------------------------------------------
 	// New way.  For each vertex in each shape, translate to world
-	for (long i=0;i<treeShape->GetNumShapes();i++)
+	for (int32_t i=0;i<treeShape->GetNumShapes();i++)
 	{
 		//Check if the artists meant for this piece to NOT block LOS!!
 		// Probably should check for light cones,too!
@@ -4226,14 +4226,14 @@ void TreeAppearance::markLOS (bool clearIt)
 		if ((strnicmp(treeShape->GetNodeId(i),"LOS_",4) != 0) &&
 			(strnicmp(treeShape->GetNodeId(i),"SpotLight_",10) != 0))
 		{
-			for (long j=0;j<treeShape->GetNumVerticesInShape(i);j++)
+			for (int32_t j=0;j<treeShape->GetNumVerticesInShape(i);j++)
 			{
 				Stuff::Vector3D vertexPos, worldPos;
 				vertexPos = treeShape->GetShapeVertexInEditor(i,j,-rotation);
 //				vertexPos = treeShape->GetShapeVertexInWorld(i,j,-rotation);
 				worldPos.Add(position,vertexPos);
 	
-				long cellR, cellC;
+				int32_t cellR, cellC;
 				land->worldToCell(worldPos,cellR,cellC);
 				if ((0 > cellR) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellR) || 
 					(0 > cellC) || (Terrain::realVerticesMapSide * MAPCELL_DIM <= cellC))

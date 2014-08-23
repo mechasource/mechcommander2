@@ -31,20 +31,20 @@
 
 #include <gameos.hpp>
 
-extern void AG_shape_translate_transform(PANE *globalPane, void *shapeTable,LONG frameNum, LONG hotX, LONG hotY,void *tempBuffer,LONG reverse, LONG scaleUp);
-extern void AG_shape_transform(PANE *globalPane, void *shapeTable,LONG frameNum, LONG hotX, LONG hotY, void *tempBuffer,LONG reverse, LONG scaleUp);
-extern void AG_shape_lookaside( UBYTE *table );
-extern void AG_shape_draw (PANE *pane, void *shape_table,LONG shape_number, LONG hotX, LONG hotY);
-extern void AG_shape_translate_draw (PANE *pane, void *shape_table,LONG shape_number, LONG hotX, LONG hotY);
+extern void AG_shape_translate_transform(PANE *globalPane, PVOIDshapeTable,LONG frameNum, LONG hotX, LONG hotY,PVOIDtempBuffer,LONG reverse, LONG scaleUp);
+extern void AG_shape_transform(PANE *globalPane, PVOIDshapeTable,LONG frameNum, LONG hotX, LONG hotY, PVOIDtempBuffer,LONG reverse, LONG scaleUp);
+extern void AG_shape_lookaside( puint8_t table );
+extern void AG_shape_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY);
+extern void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY);
 
 //---------------------------------------------------------------------------
 #define MAX_X		360
 #define MAX_Y		360
 
-MemoryPtr tempBuffer = NULL;
+PUCHAR tempBuffer = NULL;
 //---------------------------------------------------------------------------
 //
-long scaleDraw (MemoryPtr shapeTable, ULONG frameNum, long sx, long sy, bool reverse, MemoryPtr fadeTable, bool scaleUp)
+int32_t scaleDraw (PUCHAR shapeTable, ULONG frameNum, int32_t sx, int32_t sy, bool reverse, PUCHAR fadeTable, bool scaleUp)
 {
 	//--------------------------------------------------------------
 	// Check GlobalPane and GlobalWindow for validity.
@@ -58,15 +58,15 @@ long scaleDraw (MemoryPtr shapeTable, ULONG frameNum, long sx, long sy, bool rev
 	if ((*(int*)shapeTable!=*(int*)"1.10"))
 		return(TRUE);
 		
-	long result = VFX_shape_count(shapeTable);
-	if (result <= (long)frameNum)
+	int32_t result = VFX_shape_count(shapeTable);
+	if (result <= (int32_t)frameNum)
 	{
 		frameNum = result-1;
 	}
 	
 	result = VFX_shape_bounds(shapeTable,frameNum);
-	long xMax = result>>16;
-	long yMax = result & 0x0000ffff;
+	int32_t xMax = result>>16;
+	int32_t yMax = result & 0x0000ffff;
 
 	if ((xMax == 0) || (yMax == 0))
 		return -1;
@@ -82,7 +82,7 @@ long scaleDraw (MemoryPtr shapeTable, ULONG frameNum, long sx, long sy, bool rev
 	}
 
 	if (!tempBuffer)
-		tempBuffer = (MemoryPtr)systemHeap->Malloc(MAX_X * MAX_Y);
+		tempBuffer = (PUCHAR)systemHeap->Malloc(MAX_X * MAX_Y);
 	
 	gosASSERT((yMax * xMax) < (MAX_Y * MAX_X));
 	

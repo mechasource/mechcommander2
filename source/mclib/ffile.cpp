@@ -22,7 +22,7 @@
 // #include <string.h>
 #include <gameos.hpp>
 
-MemoryPtr 		LZPacketBuffer = NULL;
+PUCHAR 		LZPacketBuffer = NULL;
 size_t			LZPacketBufferSize = 512000;
 
 extern char CDInstallPath[];
@@ -36,16 +36,16 @@ char MissingTitleString[256];
 //---------------------------------------------------------------------------
 //	class FastFile member functions
 //---------------------------------------------------------------------------
-void *FastFile::operator new (size_t mySize)
+PVOIDFastFile::operator new (size_t mySize)
 {
-	void *result = NULL;
+	PVOID result = NULL;
 	result = malloc(mySize);
 	
 	return(result);
 }
 
 //---------------------------------------------------------------------------
-void FastFile::operator delete (void *us)
+void FastFile::operator delete (PVOID us)
 {
 	::free(us);
 }
@@ -77,10 +77,10 @@ FastFile::~FastFile (void)
 }
 
 //---------------------------------------------------------------------------
-long FastFile::open (PSTR fName)
+int32_t FastFile::open (PSTR fName)
 {
 	//-------------------------------------------------------------
-	long fNameLength = strlen(fName);
+	int32_t fNameLength = strlen(fName);
 	fileName = new char [fNameLength+1];
 
 	if (!fileName)
@@ -113,7 +113,7 @@ long FastFile::open (PSTR fName)
 
 				char data[2048];
 				sprintf(data,FileMissingString,fileName,CDMissingString);
-				DWORD result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
+				ULONG result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
 				if (result1 == IDCANCEL)
 				{
 					ExitGameOS();
@@ -141,13 +141,13 @@ long FastFile::open (PSTR fName)
 	//-- First Long is Version Number of FastFile
 	ULONG result = 0;
 	ULONG version = 0;
-	result = fread((&version),1,sizeof(long),handle);
+	result = fread((&version),1,sizeof(int32_t),handle);
 
-	logicalPosition += sizeof(long);
+	logicalPosition += sizeof(int32_t);
 
-	if (result != sizeof(long))
+	if (result != sizeof(int32_t))
 	{
-		long lastError = errno;
+		int32_t lastError = errno;
 		return lastError;
 	}
 
@@ -159,19 +159,19 @@ long FastFile::open (PSTR fName)
 
 	//---------------------------------------------
 	//-- Second Long is number of filenames present.
-	result = fread((&numFiles),1,sizeof(long),handle);
+	result = fread((&numFiles),1,sizeof(int32_t),handle);
 
-	logicalPosition += sizeof(long);
+	logicalPosition += sizeof(int32_t);
 
-	if (result != sizeof(long))
+	if (result != sizeof(int32_t))
 	{
-		long lastError = errno;
+		int32_t lastError = errno;
 		return lastError;
 	}
 
 	files = (FILE_HANDLE*)malloc(sizeof(FILE_HANDLE) * numFiles);
 
-	for (long i=0;i<numFiles;i++)
+	for (int32_t i=0;i<numFiles;i++)
 	{
 		files[i].pfe = (FILEENTRY *)malloc(sizeof(FILEENTRY));
 		memset(files[i].pfe,0,sizeof(FILEENTRY));
@@ -206,7 +206,7 @@ void FastFile::close (void)
 
 	//---------------------------------------------
 	//-- First Long is number of filenames present.
-	for (long i=0;i<numFiles;i++)
+	for (int32_t i=0;i<numFiles;i++)
 	{
 		free(files[i].pfe);
 	}
@@ -218,11 +218,11 @@ void FastFile::close (void)
 }
 
 //---------------------------------------------------------------------------
-long FastFile::openFast (DWORD hash, PSTR fName)
+int32_t FastFile::openFast (ULONG hash, PSTR fName)
 {
 	//------------------------------------------------------------------
 	//-- In order to use this, the file name must be part of the index.
-	for (long i=0;i<numFiles;i++)
+	for (int32_t i=0;i<numFiles;i++)
 	{
 		if ((hash == files[i].pfe->hash) && (_stricmp(files[i].pfe->name,fName) == 0))
 		{
@@ -236,7 +236,7 @@ long FastFile::openFast (DWORD hash, PSTR fName)
 }
 
 //---------------------------------------------------------------------------
-void FastFile::closeFast (long fastFileHandle)
+void FastFile::closeFast (int32_t fastFileHandle)
 {
 	if ((fastFileHandle >= 0) && (fastFileHandle < numFiles) && files[fastFileHandle].inuse)
 	{
@@ -246,7 +246,7 @@ void FastFile::closeFast (long fastFileHandle)
 }
 
 //---------------------------------------------------------------------------
-long FastFile::seekFast (long fastFileHandle, long off, long how)
+int32_t FastFile::seekFast (int32_t fastFileHandle, int32_t off, int32_t how)
 {
 	if ((fastFileHandle >= 0) && (fastFileHandle < numFiles) && files[fastFileHandle].inuse)
 	{
@@ -274,7 +274,7 @@ long FastFile::seekFast (long fastFileHandle, long off, long how)
 				break;
 		}
 
-		long newPosition = 0;
+		int32_t newPosition = 0;
 		switch (how)
 		{
 			case SEEK_SET:
@@ -310,11 +310,11 @@ long FastFile::seekFast (long fastFileHandle, long off, long how)
 }
 
 //---------------------------------------------------------------------------
-long FastFile::readFast (long fastFileHandle, void *bfr, long size)
+int32_t FastFile::readFast (int32_t fastFileHandle, PVOIDbfr, int32_t size)
 {
 	size;
 
-	long result = 0;
+	int32_t result = 0;
 
 	if ((fastFileHandle >= 0) && (fastFileHandle < numFiles) && files[fastFileHandle].inuse)
 	{
@@ -332,7 +332,7 @@ long FastFile::readFast (long fastFileHandle, void *bfr, long size)
 
 			if (result != size)
 			{
-				long lastError = errno;
+				int32_t lastError = errno;
 				return lastError;
 			}
 		}
@@ -341,17 +341,17 @@ long FastFile::readFast (long fastFileHandle, void *bfr, long size)
 		{
 			if (!LZPacketBuffer)
 			{
-				LZPacketBuffer = (MemoryPtr)malloc(LZPacketBufferSize);
+				LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
 				if (!LZPacketBuffer)
 					return 0;
 			}
 				
-			if ((long)LZPacketBufferSize < files[fastFileHandle].pfe->size)
+			if ((int32_t)LZPacketBufferSize < files[fastFileHandle].pfe->size)
 			{
 				LZPacketBufferSize = files[fastFileHandle].pfe->size;
 				
 				free(LZPacketBuffer);
-				LZPacketBuffer = (MemoryPtr)malloc(LZPacketBufferSize);
+				LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
 				if (!LZPacketBuffer)
 					return 0;
 			}
@@ -373,7 +373,7 @@ long FastFile::readFast (long fastFileHandle, void *bfr, long size)
 		
 						char data[2048];
 						sprintf(data,FileMissingString,fileName,CDMissingString);
-						DWORD result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
+						ULONG result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
 						if (result1 == IDCANCEL)
 						{
 							ExitGameOS();
@@ -395,17 +395,17 @@ long FastFile::readFast (long fastFileHandle, void *bfr, long size)
 				size_t decompLength = 0;
 				if (useLZCompress)
 				{
-					decompLength = LZDecomp((MemoryPtr)bfr,LZPacketBuffer,files[fastFileHandle].pfe->size);
+					decompLength = LZDecomp((PUCHAR)bfr,LZPacketBuffer,files[fastFileHandle].pfe->size);
 				}
 				else
 				{
 					decompLength = files[fastFileHandle].pfe->realSize;
-					long error = uncompress((MemoryPtr)bfr,&decompLength,LZPacketBuffer,files[fastFileHandle].pfe->size);
+					int32_t error = uncompress((PUCHAR)bfr,&decompLength,LZPacketBuffer,files[fastFileHandle].pfe->size);
 					if (error != Z_OK)
 						STOP(("Error %d UnCompressing File %s from FastFile %s",error,files[fastFileHandle].pfe->name,fileName));
 				}
 
-				if ((long)decompLength != files[fastFileHandle].pfe->realSize)
+				if ((int32_t)decompLength != files[fastFileHandle].pfe->realSize)
 					result = 0;
 				else
 					result = decompLength;
@@ -422,11 +422,11 @@ long FastFile::readFast (long fastFileHandle, void *bfr, long size)
 // This function pulls the raw compressed data out of the file and sticks it in the buffer
 // passed in.  This way, we can load the textures directly from file to RAM and not
 // have to decompress them!!
-long FastFile::readFastRAW (long fastFileHandle, void *bfr, long size)
+int32_t FastFile::readFastRAW (int32_t fastFileHandle, PVOIDbfr, int32_t size)
 {
 	size;
 
-	long result = 0;
+	int32_t result = 0;
 
 	if ((fastFileHandle >= 0) && (fastFileHandle < numFiles) && files[fastFileHandle].inuse)
 	{
@@ -450,7 +450,7 @@ long FastFile::readFastRAW (long fastFileHandle, void *bfr, long size)
 
 				char data[2048];
 				sprintf(data,FileMissingString,fileName,CDMissingString);
-				DWORD result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
+				ULONG result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
 				if (result1 == IDCANCEL)
 				{
 					ExitGameOS();
@@ -473,7 +473,7 @@ long FastFile::readFastRAW (long fastFileHandle, void *bfr, long size)
 }
 
 //---------------------------------------------------------------------------
-long FastFile::tellFast (long fastFileHandle)
+int32_t FastFile::tellFast (int32_t fastFileHandle)
 {
 	if ((fastFileHandle >= 0) && (fastFileHandle < numFiles) && files[fastFileHandle].inuse)
 		return files[fastFileHandle].pos;
@@ -482,7 +482,7 @@ long FastFile::tellFast (long fastFileHandle)
 }
 
 //---------------------------------------------------------------------------
-long FastFile::sizeFast (long fastFileHandle)
+int32_t FastFile::sizeFast (int32_t fastFileHandle)
 {
 	if ((fastFileHandle >= 0) && (fastFileHandle < numFiles) && files[fastFileHandle].inuse)
 		return files[fastFileHandle].pfe->realSize;
@@ -491,7 +491,7 @@ long FastFile::sizeFast (long fastFileHandle)
 }
 
 //---------------------------------------------------------------------------
-long FastFile::lzSizeFast (long fastFileHandle)
+int32_t FastFile::lzSizeFast (int32_t fastFileHandle)
 {
 	if ((fastFileHandle >= 0) && (fastFileHandle < numFiles) && files[fastFileHandle].inuse)
 		return files[fastFileHandle].pfe->size;

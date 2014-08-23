@@ -52,15 +52,15 @@ class WatchManager {
 
 	protected:
 
-		long			maxWatches;
-		long			numWatches;
+		int32_t			maxWatches;
+		int32_t			numWatches;
 		WatchPtr		watches;
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 
 		void init (void) {
 			maxWatches = 0;
@@ -68,7 +68,7 @@ class WatchManager {
 			watches = NULL;
 		}
 
-		long init (long max);
+		int32_t init (int32_t max);
 
 		void destroy (void);
 
@@ -82,13 +82,13 @@ class WatchManager {
 
 		WatchPtr add (SymTableNodePtr idPtr);
 
-		long remove (SymTableNodePtr idPtr);
+		int32_t remove (SymTableNodePtr idPtr);
 
-		long removeAll (void);
+		int32_t removeAll (void);
 		
-		long setStore (SymTableNodePtr idPtr, bool state, bool breakToDebug = false);
+		int32_t setStore (SymTableNodePtr idPtr, bool state, bool breakToDebug = false);
 		
-		long setFetch (SymTableNodePtr idPtr, bool state, bool breakToDebug = false);
+		int32_t setFetch (SymTableNodePtr idPtr, bool state, bool breakToDebug = false);
 
 		bool getStore (SymTableNodePtr idPtr);
 
@@ -103,15 +103,15 @@ class BreakPointManager {
 
 	protected:
 
-		long			maxBreakPoints;
-		long			numBreakPoints;
-		long*			breakPoints;
+		int32_t			maxBreakPoints;
+		int32_t			numBreakPoints;
+		int32_t*			breakPoints;
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 
 		void init (void) {
 			maxBreakPoints = 0;
@@ -119,7 +119,7 @@ class BreakPointManager {
 			breakPoints = NULL;
 		}
 
-		long init (long max);
+		int32_t init (int32_t max);
 
 		void destroy (void);
 
@@ -131,13 +131,13 @@ class BreakPointManager {
 			destroy();
 		}
 
-		long add (long lineNumber);
+		int32_t add (int32_t lineNumber);
 
-		long remove (long lineNumber);
+		int32_t remove (int32_t lineNumber);
 
-		long removeAll (void);
+		int32_t removeAll (void);
 
-		bool isBreakPoint (long lineNumber);
+		bool isBreakPoint (int32_t lineNumber);
 
 		void print (void);
 };
@@ -174,9 +174,9 @@ class Debugger {
 
 	public:
 
-		void* operator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 
-		void operator delete (void* us);
+		void operator delete (PVOID us);
 
 		void init (void) {
 			module = NULL;
@@ -193,7 +193,7 @@ class Debugger {
 			printCallback = NULL;
 		}
 
-		long init (void (*callback)(PSTR s), ABLModulePtr _module);
+		int32_t init (void (*callback)(PSTR s), ABLModulePtr _module);
 
 		void destroy (void);
 
@@ -217,15 +217,15 @@ class Debugger {
 			return(enabled);
 		}
 
-		long print (PSTR s);
+		int32_t print (PSTR s);
 
 		void setModule (ABLModulePtr _module);
 
-		long setWatch (long states);
+		int32_t setWatch (int32_t states);
 
-		long addBreakPoint (void);
+		int32_t addBreakPoint (void);
 
-		long removeBreakPoint (void);
+		int32_t removeBreakPoint (void);
 
 		void sprintStatement (PSTR dest);
 
@@ -233,21 +233,21 @@ class Debugger {
 
 		void sprintDataValue (PSTR dest, StackItemPtr data, TypePtr dataType);
 
-		long sprintSimpleValue (PSTR dest, SymTableNodePtr symbol);
+		int32_t sprintSimpleValue (PSTR dest, SymTableNodePtr symbol);
 
-		long sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subscriptString);
+		int32_t sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subscriptString);
 
-		long sprintValue (PSTR dest, PSTR exprString);
+		int32_t sprintValue (PSTR dest, PSTR exprString);
 
-		long traceStatementExecution (void);
+		int32_t traceStatementExecution (void);
 
-		long traceRoutineEntry (SymTableNodePtr idPtr);
+		int32_t traceRoutineEntry (SymTableNodePtr idPtr);
 
-		long traceRoutineExit (SymTableNodePtr idPtr);
+		int32_t traceRoutineExit (SymTableNodePtr idPtr);
 
-		long traceDataStore (SymTableNodePtr id, TypePtr idType, StackItemPtr target, TypePtr targetType);
+		int32_t traceDataStore (SymTableNodePtr id, TypePtr idType, StackItemPtr target, TypePtr targetType);
 
-		long traceDataFetch (SymTableNodePtr id, TypePtr idType, StackItemPtr data);
+		int32_t traceDataFetch (SymTableNodePtr id, TypePtr idType, StackItemPtr data);
 
 		void showValue (void);
 
@@ -255,7 +255,7 @@ class Debugger {
 
 		void displayModuleInstanceRegistry (void);
 
-		void processCommand (long commandId, PSTR strParam1, long numParam1, ABLModulePtr moduleParam1);
+		void processCommand (int32_t commandId, PSTR strParam1, int32_t numParam1, ABLModulePtr moduleParam1);
 
 		void debugMode (void);
 

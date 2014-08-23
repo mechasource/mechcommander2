@@ -35,20 +35,20 @@ namespace gosFX {
 			m_type(type)
 				{}
 
-		Stuff::Scalar 
-			ExpensiveCompute(Stuff::Scalar tme,int curvenum=0);
+		float 
+			ExpensiveCompute(float tme,int curvenum=0);
 
 		void 
 			ExpensiveComputeRange(
-				Stuff::Scalar *low,
-				Stuff::Scalar *hi,
+				float *low,
+				float *hi,
 				int curvenum
 				);
 
 		void 
 			ExpensiveComputeRange(
-				Stuff::Scalar *low,
-				Stuff::Scalar *hi
+				float *low,
+				float *hi
 				);
 
 		void
@@ -59,7 +59,7 @@ namespace gosFX {
 				int gfx_version
 			);
 
-		Stuff::Scalar 
+		float 
 			Mid(int curvenum=0);
 
 		bool
@@ -72,16 +72,16 @@ namespace gosFX {
 			GetSeedFlagIfComplex();
 
 		void 
-			TranslateTo(Stuff::Scalar pos,int curvenum=0);
+			TranslateTo(float pos,int curvenum=0);
 
 		void 
-			TranslateBy(Stuff::Scalar delta,int curvenum=0);
+			TranslateBy(float delta,int curvenum=0);
 
 		void 
-			LocalScale(Stuff::Scalar sfactor,int curvenum=0);
+			LocalScale(float sfactor,int curvenum=0);
 
 		void 
-			AxisScale(Stuff::Scalar sfactor,Stuff::Scalar axis=0.0f,int curvenum=0);
+			AxisScale(float sfactor,float axis=0.0f,int curvenum=0);
 
 		Curve * 
 			GetSubCurve(int curvenum);
@@ -99,7 +99,7 @@ namespace gosFX {
 		public Curve
 	{
 	public:
-		Stuff::Scalar
+		float
 			m_value;
 
 		ConstantCurve(CurveType type=e_ConstantType):
@@ -122,20 +122,20 @@ namespace gosFX {
 		// for Set...Key(), true=math good, false=math unstable
 		//------------------------------------------------------
 		bool
-			SetCurve(Stuff::Scalar v)
+			SetCurve(float v)
 				{Check_Object(this); m_value = v; return true;}
 
-		Stuff::Scalar
-			ComputeValue(Stuff::Scalar, Stuff::Scalar)
+		float
+			ComputeValue(float, float)
 				{Check_Object(this); return m_value;}
-		Stuff::Scalar
-			ComputeSlope(Stuff::Scalar)
+		float
+			ComputeSlope(float)
 				{Check_Object(this); return 0.0f;}
 
 		void
 			ComputeRange(
-				Stuff::Scalar *low,
-				Stuff::Scalar *hi
+				float *low,
+				float *hi
 			)
 				{
 					Check_Object(this); Check_Pointer(low); Check_Pointer(hi);
@@ -151,7 +151,7 @@ namespace gosFX {
 		public ConstantCurve
 	{
 	public:
-		Stuff::Scalar
+		float
 			m_slope;
 
 		LinearCurve(CurveType type=e_LinearType):
@@ -174,24 +174,24 @@ namespace gosFX {
 		// for Set...Key(), true=math good, false=math unstable
 		//------------------------------------------------------
 		bool
-			SetCurve(Stuff::Scalar v);
+			SetCurve(float v);
 		bool
 			SetCurve(
-				Stuff::Scalar v0,
-				Stuff::Scalar v1
+				float v0,
+				float v1
 			);
 
-		Stuff::Scalar
-			ComputeValue(Stuff::Scalar t, Stuff::Scalar)
+		float
+			ComputeValue(float t, float)
 				{Check_Object(this); return m_slope*t + m_value;}
-		Stuff::Scalar
-			ComputeSlope(Stuff::Scalar)
+		float
+			ComputeSlope(float)
 				{Check_Object(this); return m_slope;}
 
 		void
 			ComputeRange(
-				Stuff::Scalar *low,
-				Stuff::Scalar *hi
+				float *low,
+				float *hi
 			);
 	};
 
@@ -203,7 +203,7 @@ namespace gosFX {
 		public LinearCurve
 	{
 	public:
-		Stuff::Scalar
+		float
 			m_a,
 			m_b;
 
@@ -226,31 +226,31 @@ namespace gosFX {
 		// for Set...Key(), true=math good, false=math unstable
 		//------------------------------------------------------
 		bool
-			SetCurve(Stuff::Scalar v);
+			SetCurve(float v);
 		bool
 			SetCurve(
-				Stuff::Scalar v0,
-				Stuff::Scalar v1
+				float v0,
+				float v1
 			);
 		bool
 			SetCurve(
-				Stuff::Scalar v0,
-				Stuff::Scalar s0,
-				Stuff::Scalar v1,
-				Stuff::Scalar s1
+				float v0,
+				float s0,
+				float v1,
+				float s1
 			);
 
-		Stuff::Scalar
-			ComputeValue(Stuff::Scalar t, Stuff::Scalar)
+		float
+			ComputeValue(float t, float)
 				{Check_Object(this); return ((m_a*t + m_b)*t + m_slope)*t + m_value;}
-		Stuff::Scalar
-			ComputeSlope(Stuff::Scalar t)
+		float
+			ComputeSlope(float t)
 				{Check_Object(this); return (3.0f*m_a*t + 2.0f*m_b)*t + m_slope;}
 
 		void
 			ComputeRange(
-				Stuff::Scalar *low,
-				Stuff::Scalar *hi
+				float *low,
+				float *hi
 			);
 	};
 
@@ -261,7 +261,7 @@ namespace gosFX {
 	class CurveKey
 	{
 	public:
-		Stuff::Scalar
+		float
 			m_time,
 			m_slope,
 			m_value;
@@ -271,29 +271,29 @@ namespace gosFX {
 		//------------------------------------------------------
 		bool
 			SetConstantKey(
-				Stuff::Scalar key_time,
-				Stuff::Scalar v
+				float key_time,
+				float v
 			);
 		bool
 			SetLinearKey(
-				Stuff::Scalar key_time,
-				Stuff::Scalar v0,
-				Stuff::Scalar v1,
-				Stuff::Scalar dt
+				float key_time,
+				float v0,
+				float v1,
+				float dt
 			);
 
-		Stuff::Scalar
-			ComputeValue(Stuff::Scalar t)
+		float
+			ComputeValue(float t)
 				{Check_Object(this); return m_slope*t + m_value;}
-		Stuff::Scalar
-			ComputeSlope(Stuff::Scalar)
+		float
+			ComputeSlope(float)
 				{Check_Object(this); return m_slope;}
 
 		void
 			ComputeRange(
-				Stuff::Scalar *low,
-				Stuff::Scalar *hi,
-				Stuff::Scalar dt
+				float *low,
+				float *hi,
+				float dt
 			);
 
 		void
@@ -343,7 +343,7 @@ namespace gosFX {
 			GetKeyCount()
 				{ Check_Object(this); return m_keys.GetLength(); }
 		int
-			GetKeyIndex(Stuff::Scalar time)
+			GetKeyIndex(float time)
 				{
 					Check_Object(this);
 					int i;
@@ -354,27 +354,27 @@ namespace gosFX {
 				}
 
 		int
-			InsertKey(Stuff::Scalar time);
+			InsertKey(float time);
 		void
 			DeleteKey(int index);
 
 		void
-			SetCurve(Stuff::Scalar v);
+			SetCurve(float v);
 		void
 			SetCurve(
-				Stuff::Scalar starting_value,
-				Stuff::Scalar ending_value
+				float starting_value,
+				float ending_value
 			);
 
-		Stuff::Scalar
-			ComputeValue(Stuff::Scalar time, Stuff::Scalar)
+		float
+			ComputeValue(float time, float)
 				{
 					Check_Object(this);
 					CurveKey &key = (*this)[GetKeyIndex(time)];
 					return key.ComputeValue(time - key.m_time);
 				}
-		Stuff::Scalar
-			ComputeSlope(Stuff::Scalar time)
+		float
+			ComputeSlope(float time)
 				{
 					Check_Object(this);
 					CurveKey &key = (*this)[GetKeyIndex(time)];
@@ -383,8 +383,8 @@ namespace gosFX {
 
 		void
 			ComputeRange(
-				Stuff::Scalar *low,
-				Stuff::Scalar *hi
+				float *low,
+				float *hi
 			);
 	};
 
@@ -417,22 +417,22 @@ namespace gosFX {
 				int gfx_version
 			);
 
-		Stuff::Scalar
+		float
 			ComputeValue(
-				Stuff::Scalar age,
-				Stuff::Scalar seed
+				float age,
+				float seed
 			)
 				{
 					Check_Object(this);
-					Stuff::Scalar result = m_ageCurve.ComputeValue(age, 0.0f);
+					float result = m_ageCurve.ComputeValue(age, 0.0f);
 					if (m_seeded)
 						result *= m_seedCurve.ComputeValue(seed, 0.0f);
 					return result;
 				}
 		void
 			ComputeRange(
-				Stuff::Scalar *low,
-				Stuff::Scalar *hi
+				float *low,
+				float *hi
 			);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -482,16 +482,16 @@ namespace gosFX {
 
 	template <class C, class S,Curve::CurveType type> void
 		SeededCurveOf<C,S,type>::ComputeRange(
-			Stuff::Scalar *low,
-			Stuff::Scalar *hi
+			float *low,
+			float *hi
 		)
 	{
-		Stuff::Scalar low_age, hi_age;
+		float low_age, hi_age;
 		m_ageCurve.ComputeRange(&low_age, &hi_age);
-		Stuff::Scalar low_seed, hi_seed;
+		float low_seed, hi_seed;
 		m_seedCurve.ComputeRange(&low_seed, &hi_seed);
 		*low = *hi = low_age*low_seed;
-		Stuff::Scalar temp = low_age*hi_seed;
+		float temp = low_age*hi_seed;
 		if (temp<*low)
 			*low = temp;
 		else if (temp>*hi)

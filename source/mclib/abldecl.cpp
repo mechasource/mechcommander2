@@ -43,7 +43,7 @@ extern char					wordString[];
 extern Literal				curLiteral;
 
 extern SymTableNodePtr		SymTableDisplay[];
-extern long					level;
+extern int32_t					level;
 
 extern TypePtr				IntegerTypePtr;
 extern TypePtr				CharTypePtr;
@@ -53,11 +53,11 @@ extern TypePtr				BooleanTypePtr;
 extern TokenCodeType		declarationStartList[];
 extern TokenCodeType		statementStartList[];
 
-extern long					eternalOffset;
-extern long					NumStaticVariables;
-extern long					MaxStaticVariables;
-extern long*				StaticVariablesSizes;
-extern long*				EternalVariablesSizes;
+extern int32_t					eternalOffset;
+extern int32_t					NumStaticVariables;
+extern int32_t					MaxStaticVariables;
+extern int32_t*				StaticVariablesSizes;
+extern int32_t*				EternalVariablesSizes;
 extern ABLModulePtr			CurLibrary;
 
 //***************************************************************************
@@ -208,7 +208,7 @@ void constDefinitions (void) {
 
 //***************************************************************************
 
-TypePtr makeStringType (long length) {
+TypePtr makeStringType (int32_t length) {
 
 	TypePtr stringTypePtr = createType();
 	if (!stringTypePtr)
@@ -302,7 +302,7 @@ void doConst (SymTableNodePtr constantIdPtr) {
 			constantIdPtr->typePtr = setType(CharTypePtr);
 			}
 		else {
-			long length = strlen(curLiteral.value.string);
+			int32_t length = strlen(curLiteral.value.string);
 			constantIdPtr->defn.info.constant.value.stringPtr = (PSTR)ABLSymbolMallocCallback(length + 1);
 			if (!constantIdPtr->defn.info.constant.value.stringPtr)
 				ABL_Fatal(0, " ABL: Unable to AblSymbolHeap->malloc array string constant ");
@@ -505,10 +505,10 @@ TypePtr enumerationType (void) {
 	TypePtr typePtr = createType();
 	if (!typePtr)
 		ABL_Fatal(0, " ABL: Unable to AblStackHeap->malloc enumeration type ");
-	long constantValue = -1;
+	int32_t constantValue = -1;
 
 	typePtr->form = FRM_ENUM;
-	typePtr->size = sizeof(long);
+	typePtr->size = sizeof(int32_t);
 	typePtr->typeIdPtr = NULL;
 
 	getToken();
@@ -541,7 +541,7 @@ TypePtr enumerationType (void) {
 
 //***************************************************************************
 
-long arraySize (TypePtr typePtr) {
+int32_t arraySize (TypePtr typePtr) {
 
 	if (typePtr->info.array.elementTypePtr->size == 0)
 		typePtr->info.array.elementTypePtr->size = arraySize(typePtr->info.array.elementTypePtr);
@@ -568,7 +568,7 @@ void varDeclarations (SymTableNodePtr routineIdPtr) {
 
 //***************************************************************************
 
-void varOrFieldDeclarations (SymTableNodePtr routineIdPtr, long offset) {
+void varOrFieldDeclarations (SymTableNodePtr routineIdPtr, int32_t offset) {
 
 	bool varFlag = (routineIdPtr != NULL);
 	SymTableNodePtr idPtr = NULL;
@@ -576,7 +576,7 @@ void varOrFieldDeclarations (SymTableNodePtr routineIdPtr, long offset) {
 	SymTableNodePtr lastIdPtr = NULL;
 	SymTableNodePtr prevLastIdPtr = NULL;
 	
-	long totalSize = 0;
+	int32_t totalSize = 0;
 	while ((curToken == TKN_IDENTIFIER) || (curToken == TKN_ETERNAL) || (curToken == TKN_STATIC)) {
 
 		VariableType varType = VAR_TYPE_NORMAL;
@@ -600,7 +600,7 @@ void varOrFieldDeclarations (SymTableNodePtr routineIdPtr, long offset) {
 		// numInstances. Every variable in this list will set it properly...
 		typePtr->numInstances--;
 
-		long size = typePtr->size;
+		int32_t size = typePtr->size;
 
 		//-------------------------------------------------------
 		// Now that we've read the type, read in the variable (or
@@ -612,7 +612,7 @@ void varOrFieldDeclarations (SymTableNodePtr routineIdPtr, long offset) {
 				//---------------------------------------------
 				// We're working with a variable declaration...
 				if (varType == VAR_TYPE_ETERNAL) {
-					long curLevel = level;
+					int32_t curLevel = level;
 					level = 0;
 					searchAndEnterThisTable (idPtr, SymTableDisplay[0]);
 					level = curLevel;
@@ -723,7 +723,7 @@ void varOrFieldDeclarations (SymTableNodePtr routineIdPtr, long offset) {
 		// increase the totalSize limit here...
 		if (totalSize > 32000)
 			syntaxError(ABL_ERR_SYNTAX_TOO_MANY_LOCAL_VARIABLES);
-		routineIdPtr->defn.info.routine.totalLocalSize = (unsigned short)totalSize;
+		routineIdPtr->defn.info.routine.totalLocalSize = (uint16_t)totalSize;
 	}
 }
 

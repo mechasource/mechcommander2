@@ -17,10 +17,10 @@
 
 
 //----------------------------------------------------------------------------------
-long	turn = 0;
+int32_t	turn = 0;
 float	frameLength = 0.05f;
 float	scenarioTime = 0.0;
-DWORD	LastTimeGetTime = 0;
+ULONG	LastTimeGetTime = 0;
 bool dynamicFrameTiming = TRUE;
 
 PSTR monthName[12] = 
@@ -40,22 +40,22 @@ PSTR monthName[12] =
 };
 
 //----------------------------------------------------------------------------------
-DWORD MCTiming_GetTimeZoneInforation(void *timeData)
+ULONG MCTiming_GetTimeZoneInforation(PVOIDtimeData)
 {
 	// Get Time Zone information for this machine to calculate
 	// Astronomy correctly.
-	DWORD daylightSavingsInfo = GetTimeZoneInformation((TIME_ZONE_INFORMATION *)timeData);
+	ULONG daylightSavingsInfo = GetTimeZoneInformation((TIME_ZONE_INFORMATION *)timeData);
 	return daylightSavingsInfo;
 }
 
 //----------------------------------------------------------------------------------
-DWORD MCTiming_GetTimeZoneInformationSize (void)
+ULONG MCTiming_GetTimeZoneInformationSize (void)
 {
 	return sizeof(TIME_ZONE_INFORMATION);
 }
 
 //----------------------------------------------------------------------------------
-void MC_SYSTEMTIME::copyFromSystemTime (void *systemTime)
+void MC_SYSTEMTIME::copyFromSystemTime (PVOIDsystemTime)
 {
 	SYSTEMTIME *sysTime = (SYSTEMTIME *)systemTime;
 	
@@ -70,14 +70,14 @@ void MC_SYSTEMTIME::copyFromSystemTime (void *systemTime)
 }
 
 //----------------------------------------------------------------------------------
-void MCTiming_GetUTCSystemTimeFromInformation(DWORD daylightInfo, void *timeData, MC_SYSTEMTIME *systemTime)
+void MCTiming_GetUTCSystemTimeFromInformation(ULONG daylightInfo, PVOIDtimeData, MC_SYSTEMTIME *systemTime)
 {
 	TIME_ZONE_INFORMATION *tzInfo = (TIME_ZONE_INFORMATION *)timeData;
 
 	SYSTEMTIME sysTime;
 	GetSystemTime(&sysTime);
 
-	long bias = tzInfo->Bias;
+	int32_t bias = tzInfo->Bias;
 	if (daylightInfo == TIME_ZONE_ID_STANDARD)
 	{
 		bias += tzInfo->StandardBias;

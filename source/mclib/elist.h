@@ -53,7 +53,7 @@ not sufficient).
 **************************************************************************************************/
 #ifndef __PLACEMENT_NEW_INLINE
 #define __PLACEMENT_NEW_INLINE
-	inline void *__cdecl operator new(size_t, void *_P)
+	inline PVOID__cdecl operator new(size_t, PVOID_P)
 	{return (_P); } // placement new
 #endif
 

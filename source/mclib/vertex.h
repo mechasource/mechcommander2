@@ -23,8 +23,8 @@
 #define BOTTOMRIGHT			0
 #define BOTTOMLEFT			1
 
-#ifndef NO_ERR
-#define NO_ERR				0
+#ifndef NO_ERROR
+#define NO_ERROR				0
 #endif
 
 //---------------------------------------------------------------------------
@@ -42,15 +42,15 @@ struct PostcompVertex
 
 	float				elevation;			//Stored here so terrain can be locally deformed
 
-	DWORD				textureData;		//Top word is Overlay TXM, Bottom Word is Base TXM
+	ULONG				textureData;		//Top word is Overlay TXM, Bottom Word is Base TXM
 
-	DWORD				localRGBLight;		//aRGB format
+	ULONG				localRGBLight;		//aRGB format
 
-	DWORD				terrainType;		//terrainTypeNumber.
-	BYTE				selected;			// selection
-	BYTE				water;				//Additional Storage to pull into 16 Byte Alignment
-	BYTE				shadow;
-	BYTE				highlighted;		//Used to highlight WHOLE FACES!!!
+	ULONG				terrainType;		//terrainTypeNumber.
+	UCHAR				selected;			// selection
+	UCHAR				water;				//Additional Storage to pull into 16 Byte Alignment
+	UCHAR				shadow;
+	UCHAR				highlighted;		//Used to highlight WHOLE FACES!!!
 
 		float getElevation (void)
 		{
@@ -76,25 +76,25 @@ class Vertex
 		float				px,py;				//Screen Coordinates of vertex.
 		float				pz,pw;				//Depth of vertex.
 		
-		long				vertexNum;			//Physical Vertex Position in mapData
+		int32_t				vertexNum;			//Physical Vertex Position in mapData
 
 												//Used by new Object positioning system.
-		long				blockVertex;		//What terrain block is this vertex part of.vertexNumber;		
+		int32_t				blockVertex;		//What terrain block is this vertex part of.vertexNumber;		
 												//What vertex number in the block
 
-		long				posTile;			//Where are we on the tile!  Saves 24 divides per tile if overlay on tile!!!
+		int32_t				posTile;			//Where are we on the tile!  Saves 24 divides per tile if overlay on tile!!!
 												//Saves a mere 8 if no overlay!
 
-		DWORD				clipInfo;			//Stores data on vertex clip information.
+		ULONG				clipInfo;			//Stores data on vertex clip information.
 
-		DWORD				lightRGB;			//Light at this vertex.
-		DWORD				fogRGB;				//Fog at this vertex.
+		ULONG				lightRGB;			//Light at this vertex.
+		ULONG				fogRGB;				//Fog at this vertex.
 
 		float				wx,wy;				//Screen Coordinates of water face if there is one!
 		float				wz,ww;				//Depth of vertex for water if there is one!
 		float				wAlpha;				//Used to environment Map Sky onto water.
 
-		DWORD				calcThisFrame;		//Calced this vertex this frame?
+		ULONG				calcThisFrame;		//Calced this vertex this frame?
 
 		float				hazeFactor;			//Used to distance fog the terrain.
 		
@@ -138,27 +138,27 @@ class Vertex
 			destroy();
 		}
 
-		long init (PostcompVertexPtr preVertex)
+		int32_t init (PostcompVertexPtr preVertex)
 		{
 			init();
 			pVertex = preVertex;
 			
-			return(NO_ERR);
+			return(NO_ERROR);
 		}
 		
-		long getBlockNumber (void)
+		int32_t getBlockNumber (void)
 		{
 			return (blockVertex>>16);
 		}
 		
-		long getVertexNumber (void)
+		int32_t getVertexNumber (void)
 		{
 			return (blockVertex & 0x0000ffff);
 		}
 };
 
 //---------------------------------------------------------------------------
-extern long numTerrainFaces;
+extern int32_t numTerrainFaces;
 
 //---------------------------------------------------------------------------
 #endif

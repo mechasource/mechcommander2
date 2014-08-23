@@ -52,12 +52,12 @@ namespace gosFX
 
 	DECLARE_TIMER(extern, Animation_Time);
 	DECLARE_TIMER(extern, Draw_Time);
-	extern DWORD Point_Count;
-	extern DWORD Shard_Count;
-	extern DWORD Pert_Count;
-	extern DWORD Card_Count;
-	extern DWORD Shape_Count;
-	extern DWORD Profile_Count;
+	extern ULONG Point_Count;
+	extern ULONG Shard_Count;
+	extern ULONG Pert_Count;
+	extern ULONG Card_Count;
+	extern ULONG Shape_Count;
+	extern ULONG Profile_Count;
 }
 
 #include <gosfx/fcurve.hpp>

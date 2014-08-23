@@ -21,10 +21,8 @@ namespace gosFX
 	// Initialization
 	//
 	public:
-		static void
-			InitializeClass();
-		static void
-			TerminateClass();
+		static void __stdcall InitializeClass(void);
+		static void __stdcall TerminateClass(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructors/Destructors
@@ -68,8 +66,8 @@ namespace gosFX
 			Find(PCSTR name);
 		Effect*
 			MakeEffect(
-				unsigned index,
-				unsigned flags
+				uint32_t index,
+				uint32_t flags
 			);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -39,7 +39,7 @@ gosFX::PertCloud__Specification::PertCloud__Specification(
 
 //------------------------------------------------------------------------------
 //
-gosFX::PertCloud__Specification::PertCloud__Specification(unsigned sides):
+gosFX::PertCloud__Specification::PertCloud__Specification(uint32_t sides):
 	SpinningCloud__Specification(gosFX::PertCloudClassID)
 {
 	Check_Pointer(this);
@@ -220,7 +220,7 @@ void
 //
 gosFX::PertCloud::PertCloud(
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	SpinningCloud(DefaultData, spec, flags)
 {
@@ -236,7 +236,7 @@ gosFX::PertCloud::PertCloud(
 	Register_Object(m_cloudImplementation);
 	gos_PopCurrentHeap();
 
-	unsigned index = spec->m_maxParticleCount*sizeof(Particle);
+	uint32_t index = spec->m_maxParticleCount*sizeof(Particle);
 	m_P_vertices = Cast_Pointer(Stuff::Point3D*, &m_data[index]);
 	index +=
 		spec->m_vertices * spec->m_maxParticleCount * sizeof(Stuff::Point3D);
@@ -262,7 +262,7 @@ gosFX::PertCloud::~PertCloud()
 gosFX::PertCloud*
 	gosFX::PertCloud::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);
@@ -278,7 +278,7 @@ gosFX::PertCloud*
 //
 bool
 	gosFX::PertCloud::AnimateParticle(
-		unsigned index,
+		uint32_t index,
 		const Stuff::LinearMatrix4D *world_to_new_local,
 		Stuff::Time till
 	)
@@ -297,8 +297,8 @@ bool
 	Check_Object(spec);
 	Particle *particle = GetParticle(index);
 	Check_Object(particle);
-	Stuff::Scalar seed = particle->m_seed;
-	Stuff::Scalar age = particle->m_age;
+	float seed = particle->m_seed;
+	float age = particle->m_age;
 
 	//
 	//------------------
@@ -324,7 +324,7 @@ bool
 //
 void
 	gosFX::PertCloud::CreateNewParticle(
-		unsigned index,
+		uint32_t index,
 		Stuff::Point3D *translation
 	)
 {
@@ -355,17 +355,17 @@ void
 	//----------------------------------------
 	//
 	Verify(spec->m_vertices > 4);
-	Stuff::Scalar angle_between = Stuff::Two_Pi/(spec->m_vertices-2);
-	Stuff::Scalar radius = spec->m_size.ComputeValue(m_age, particle->m_seed);
+	float angle_between = Stuff::Two_Pi/(spec->m_vertices-2);
+	float radius = spec->m_size.ComputeValue(m_age, particle->m_seed);
 	int even = 1;
 	particle->m_vertices[0] = Stuff::Point3D::Identity;
-	Stuff::Scalar bound = 0.0f;
+	float bound = 0.0f;
 	int j;
 	for (j=1; j<spec->m_vertices-1; j++)
 	{
-		Stuff::Scalar perturbance =
+		float perturbance =
 			even * spec->m_perturbation.ComputeValue(m_age, particle->m_seed);
-		Stuff::Scalar temp = perturbance + radius;
+		float temp = perturbance + radius;
 		particle->m_vertices[j] =
 			Stuff::Point3D(
 				Stuff::Sin(j*angle_between)*temp,
@@ -383,7 +383,7 @@ void
 
 //------------------------------------------------------------------------------
 //
-void gosFX::PertCloud::DestroyParticle(unsigned index)
+void gosFX::PertCloud::DestroyParticle(uint32_t index)
 {
 	SpinningCloud::DestroyParticle(index);
 	m_cloudImplementation->TurnOff(index);
@@ -419,8 +419,8 @@ void gosFX::PertCloud::Draw(DrawInfo *info)
 		// Check the orientation mode.  The first case is XY orientation
 		//--------------------------------------------------------------
 		//
-		unsigned i;
-		unsigned vert=0;
+		uint32_t i;
+		uint32_t vert=0;
 		if (spec->m_alignZUsingX)
 		{
 			if (spec->m_alignZUsingY)
@@ -475,8 +475,8 @@ void gosFX::PertCloud::Draw(DrawInfo *info)
 						// Figure out the scale, then transform all the points
 						//----------------------------------------------------
 						//
-						Stuff::Scalar scale = particle->m_scale;
-						for (unsigned v=0; v<spec->m_vertices; ++v)
+						float scale = particle->m_scale;
+						for (uint32_t v=0; v<spec->m_vertices; ++v)
 						{
 							Stuff::Point3D scaled;
 							scaled.Multiply(particle->m_vertices[v], scale);
@@ -545,8 +545,8 @@ void gosFX::PertCloud::Draw(DrawInfo *info)
 						// Figure out the scale, then transform all the points
 						//----------------------------------------------------
 						//
-						Stuff::Scalar scale = particle->m_scale;
-						for (unsigned v=0; v<spec->m_vertices; ++v)
+						float scale = particle->m_scale;
+						for (uint32_t v=0; v<spec->m_vertices; ++v)
 						{
 							Stuff::Point3D scaled;
 							scaled.Multiply(particle->m_vertices[v], scale);
@@ -616,8 +616,8 @@ void gosFX::PertCloud::Draw(DrawInfo *info)
 					// Figure out the scale, then transform all the points
 					//----------------------------------------------------
 					//
-					Stuff::Scalar scale = particle->m_scale;
-					for (unsigned v=0; v<spec->m_vertices; ++v)
+					float scale = particle->m_scale;
+					for (uint32_t v=0; v<spec->m_vertices; ++v)
 					{
 						Stuff::Point3D scaled;
 						scaled.Multiply(particle->m_vertices[v], scale);
@@ -658,8 +658,8 @@ void gosFX::PertCloud::Draw(DrawInfo *info)
 					// Figure out the scale, then transform all the points
 					//----------------------------------------------------
 					//
-					Stuff::Scalar scale = particle->m_scale;
-					for (unsigned v=0; v<spec->m_vertices; ++v)
+					float scale = particle->m_scale;
+					for (uint32_t v=0; v<spec->m_vertices; ++v)
 					{
 						Stuff::Point3D scaled;
 						scaled.Multiply(particle->m_vertices[v], scale);

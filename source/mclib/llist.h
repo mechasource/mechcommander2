@@ -9,10 +9,8 @@
 #ifndef LLIST_H
 #define LLIST_H
 //---------------------------------------------------------------------------
-// Include Files
-#ifndef DSTD_H
-#include "dstd.h"
-#endif
+
+// #include "dstd.h"
 
 //---------------------------------------------------------------------------
 // Macro Definitions

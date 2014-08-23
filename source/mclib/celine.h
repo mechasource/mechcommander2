@@ -27,9 +27,9 @@ class LineElement : public Element
 
 		Stuff::Vector4D			startPos;
 		Stuff::Vector4D			endPos;
-		long					color;
-		long					endColor;
-		MemoryPtr				fadeTable;
+		int32_t					color;
+		int32_t					endColor;
+		PUCHAR				fadeTable;
 		
 	LineElement (void) : Element()
 	{
@@ -40,7 +40,7 @@ class LineElement : public Element
 		fadeTable = NULL;
 	}
 
-	LineElement (Stuff::Vector4D &pos1, Stuff::Vector4D &pos2, long clr, MemoryPtr fTable, long endClr = -1);
+	LineElement (Stuff::Vector4D &pos1, Stuff::Vector4D &pos2, int32_t clr, PUCHAR fTable, int32_t endClr = -1);
 
 	virtual void draw (void);
 };

@@ -44,7 +44,7 @@ TypePtr variable (SymTableNodePtr variableIdPtr);
 TypePtr arraySubscriptList (TypePtr typePtr);
 //TypePtr routineCall (SymTableNodePtr routineIdPtr, BOOL parmCheckFlag);
 void checkRelationalOpTypes (TypePtr type1, TypePtr type2);
-long isAssignTypeCompatible (TypePtr type1, TypePtr type2);
+int32_t isAssignTypeCompatible (TypePtr type1, TypePtr type2);
 void ifTokenGet (TokenCodeType tokenCode);
 void ifTokenGetElseError (TokenCodeType tokenCode, SyntaxErrorType errCode);
 
@@ -53,25 +53,25 @@ void declarations (SymTableNodePtr routineIdPtr, bool allowFunctions);
 void constDefinitions (void);
 void doConst (SymTableNodePtr constantIdPtr);
 void varDeclarations (SymTableNodePtr routineIdPtr);
-void varOrFieldDeclarations (SymTableNodePtr routineIdPtr, long offset);
+void varOrFieldDeclarations (SymTableNodePtr routineIdPtr, int32_t offset);
 void typeDefinitions (void);
 TypePtr doType (void);
 TypePtr identifierType (SymTableNodePtr idPtr);
 TypePtr enumerationType (void);
 TypePtr subrangeType (void);
 TypePtr arrayType (void);
-long arraySize (TypePtr typePtr);
-TypePtr makeStringType (long length);
+int32_t arraySize (TypePtr typePtr);
+TypePtr makeStringType (int32_t length);
 
 // ROUTINE functions
 void module (void);
 SymTableNodePtr moduleHeader (void);
 void routine (void);
 SymTableNodePtr functionHeader (void);
-SymTableNodePtr formalParamList (long* count, long* totalSize);
-TypePtr routineCall (SymTableNodePtr routineIdPtr, long paramCheckFlag);
-TypePtr declaredRoutineCall (SymTableNodePtr routineIdPtr, long paramCheckFlag);
-void actualParamList (SymTableNodePtr routineIdPtr, long paramCheckFlag);
+SymTableNodePtr formalParamList (int32_t* count, int32_t* totalSize);
+TypePtr routineCall (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
+TypePtr declaredRoutineCall (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
+void actualParamList (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag);
 void block (SymTableNodePtr routineIdPtr);
 
 // STATEMNT routines
@@ -95,8 +95,8 @@ TypePtr stdRandom (void);
 TypePtr standardRoutineCall (SymTableNodePtr routineIdPtr);
 
 // FILE routines
-long openSourceFile (PSTR sourceFileName);
-long closeSourceFile (void);
+int32_t openSourceFile (PSTR sourceFileName);
+int32_t closeSourceFile (void);
 
 #if !ANALYZE_ON
 #define	analyzeConstDefn(idPtr)

@@ -103,7 +103,7 @@ gosFX::Effect__Specification::Effect__Specification(
 	// Read the events.  If we are using an array, no events will be saved
 	//--------------------------------------------------------------------
 	//
-	unsigned event_count;
+	uint32_t event_count;
 	*stream >> event_count;
 	while (event_count-- > 0)
 	{
@@ -196,7 +196,7 @@ bool
 	gosFX::Effect__Specification::IsDataValid(bool fix_data)
 {
 	Check_Object(this);
-	Stuff::Scalar minv,maxv;
+	float minv,maxv;
 m_lifeSpan.ExpensiveComputeRange(&minv,&maxv);
 if(minv<0.0f) 
 	if(fix_data)
@@ -243,7 +243,7 @@ void
 	Check_Object(this);
 	*stream << m_class << m_name;
 	Stuff::ChainIteratorOf<Event*> events(&m_events);
-	unsigned count = events.GetSize();
+	uint32_t count = events.GetSize();
 	*stream << count;
 	Event *event;
 	while ((event = events.ReadAndNext()) != NULL)
@@ -370,7 +370,7 @@ void
 gosFX::Effect::Effect(
 	ClassData *class_data,
 	Specification *spec,
-	unsigned flags
+	uint32_t flags
 ):
 	Node(class_data),
 	m_children(NULL),
@@ -401,7 +401,7 @@ gosFX::Effect::~Effect()
 gosFX::Effect*
 	gosFX::Effect::Make(
 		Specification *spec,
-		unsigned flags
+		uint32_t flags
 	)
 {
 	Check_Object(spec);
@@ -450,14 +450,14 @@ void
 
 	//
 	//--------------------------------------------------------------------
-	// Figure out how long the emitter will live and its initial age based
+	// Figure out how int32_t the emitter will live and its initial age based
 	// upon the effect seed
 	//--------------------------------------------------------------------
 	//
 	Check_Object(m_specification);
 	if (info->m_age == -1.0f)
 	{
-		Stuff::Scalar lifetime =
+		float lifetime =
 			m_specification->m_lifeSpan.ComputeValue(m_seed, 0.0f);
 		Min_Clamp(lifetime, 0.033333f);
 		m_ageRate = 1.0f / lifetime;
@@ -512,8 +512,8 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 	// Figure out the new age and clear the bounds
 	//--------------------------------------------
 	//
-	Stuff::Scalar age =
-		m_age + static_cast<Stuff::Scalar>(info->m_time - m_lastRan) * m_ageRate;
+	float age =
+		m_age + static_cast<float>(info->m_time - m_lastRan) * m_ageRate;
 	Verify(age >= 0.0f && age >= m_age);
 	*info->m_bounds = Stuff::OBB::Identity;
 
@@ -543,7 +543,7 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 		// This event needs to go, so spawn and bump the effect pointer
 		//-------------------------------------------------------------
 		//
-		unsigned flags = ExecuteFlag;
+		uint32_t flags = ExecuteFlag;
 		if ((event->m_flags&SimulationModeMask) == ParentSimulationMode)
 		{
 			Verify((m_flags&SimulationModeMask) != ParentSimulationMode);
@@ -567,11 +567,11 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 		//---------------------------------------------
 		//
 		effect->m_localToParent = event->m_localToParent;
-		Stuff::Scalar min_seed =
+		float min_seed =
 			m_specification->m_minimumChildSeed.ComputeValue(m_age, m_seed);
-		Stuff::Scalar seed_range =
+		float seed_range =
 			m_specification->m_maximumChildSeed.ComputeValue(m_age, m_seed) - min_seed;
-		Stuff::Scalar seed =
+		float seed =
 			Stuff::Random::GetFraction()*seed_range + min_seed;
 		Clamp(seed, 0.0f, 1.0f);
 		ExecuteInfo

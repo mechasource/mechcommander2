@@ -31,8 +31,8 @@
 
 #include <gosfx/gosfxheaders.hpp>
 //**************************************************************************************
-#ifndef NO_ERR
-#define NO_ERR						0
+#ifndef NO_ERROR
+#define NO_ERROR						0
 #endif
 
 #define	GV_PART_BODY				0
@@ -62,13 +62,13 @@ class GVAppearanceType : public AppearanceType
 		bool						gvAnimLoop[MAX_GV_ANIMATIONS];
 		bool						gvReverse[MAX_GV_ANIMATIONS];
 		bool						gvRandom[MAX_GV_ANIMATIONS];
-		long						gvStartF[MAX_GV_ANIMATIONS];
+		int32_t						gvStartF[MAX_GV_ANIMATIONS];
  		
 		char						rotationalNodeId[TG_NODE_ID];
 		
-		long						numSmokeNodes;		//Where damage smoke comes from.
-		long						numWeaponNodes;		//Where weapons fire from.
-		long						numFootNodes;		//Where dust trail, contrail comes out of.
+		int32_t						numSmokeNodes;		//Where damage smoke comes from.
+		int32_t						numWeaponNodes;		//Where weapons fire from.
+		int32_t						numFootNodes;		//Where dust trail, contrail comes out of.
 		NodeData					*nodeData;
 		
 		static TG_TypeMultiShapePtr	SensorTriangleShape;
@@ -78,7 +78,7 @@ class GVAppearanceType : public AppearanceType
 	
 		void init (void)
 		{
-			long i=0;
+			int32_t i=0;
 			for (i=0;i<MAX_LODS;i++)
 			{
 				gvShape[i] = NULL;
@@ -115,9 +115,9 @@ class GVAppearanceType : public AppearanceType
 		
 		virtual void destroy (void);
 		
-		void setAnimation (TG_MultiShapePtr shape, DWORD animationNum);
+		void setAnimation (TG_MultiShapePtr shape, ULONG animationNum);
 		
-		long getNumFrames (long animationNum)
+		int32_t getNumFrames (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
 				return gvAnimData[animationNum]->GetNumFrames();
@@ -125,7 +125,7 @@ class GVAppearanceType : public AppearanceType
 			return 0.0f;
 		}
 
-		float getFrameRate (long animationNum)
+		float getFrameRate (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
 				return gvAnimData[animationNum]->GetFrameRate();
@@ -133,7 +133,7 @@ class GVAppearanceType : public AppearanceType
 			return 0.0f;
 		}
 
-		bool isReversed (long animationNum)
+		bool isReversed (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
 				return gvReverse[animationNum];
@@ -141,7 +141,7 @@ class GVAppearanceType : public AppearanceType
 			return false;
 		}
 		
-		bool isLooped (long animationNum)
+		bool isLooped (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
 				return gvAnimLoop[animationNum];
@@ -149,7 +149,7 @@ class GVAppearanceType : public AppearanceType
 			return false;
 		}
 		
-		bool isRandom (long animationNum)
+		bool isRandom (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
 				return gvRandom[animationNum];
@@ -157,7 +157,7 @@ class GVAppearanceType : public AppearanceType
 			return false;
 		}
 		
-		long getTotalNodes (void)
+		int32_t getTotalNodes (void)
 		{
 			return numSmokeNodes + numWeaponNodes + numFootNodes;
 		}
@@ -182,7 +182,7 @@ class GVAppearance : public ObjectAppearance
 		TG_MultiShapePtr							sensorTriangleShape;
 		float										sensorSpin;
 									
-		long										objectNameId;
+		int32_t										objectNameId;
 	
 		float										turretRotation;
 		float										pitch;
@@ -190,9 +190,9 @@ class GVAppearance : public ObjectAppearance
 		float										actualTurretRotation;
 		float										velocityMagnitude;
 		bool										inDebugMoveMode;
-		long										sensorLevel;
+		int32_t										sensorLevel;
 		float										hazeFactor;
-		long										status;
+		int32_t										status;
 			
    		gosFX::Effect								*destructFX;
    		gosFX::Effect								*waterWake;
@@ -205,7 +205,7 @@ class GVAppearance : public ObjectAppearance
 		
 		float										OBBRadius;
 		
-		long										gvAnimationState;
+		int32_t										gvAnimationState;
 		float										currentFrame;
 		float										gvFrameRate;
 		bool										isReversed;
@@ -214,28 +214,28 @@ class GVAppearance : public ObjectAppearance
 		bool										canTransition;
 		bool										isInfantry;
 		
-		long										currentLOD;
+		int32_t										currentLOD;
 		
- 		long										*nodeUsed;				//Used to stagger the weapon nodes for firing.
+ 		int32_t										*nodeUsed;				//Used to stagger the weapon nodes for firing.
 		float										*nodeRecycle;			//Used for ripple fire to find out if the node has fired recently.
 		
-		DWORD										localTextureHandle;
+		ULONG										localTextureHandle;
 		
-		DWORD										psRed;
-		DWORD										psBlue;
-		DWORD										psGreen;
+		ULONG										psRed;
+		ULONG										psBlue;
+		ULONG										psGreen;
 
 		float										flashDuration;
 		float										duration;
 		float										currentFlash;
 		bool										drawFlash;
-		DWORD										flashColor;
+		ULONG										flashColor;
 		
-		long										rotationalNodeIndex;
-		long										dustNodeIndex;
-		long										activityNodeIndex;
-		long										hitNodeId;
-		long										weaponNodeId[4];
+		int32_t										rotationalNodeIndex;
+		int32_t										dustNodeIndex;
+		int32_t										activityNodeIndex;
+		int32_t										hitNodeId;
+		int32_t										weaponNodeId[4];
 
  	public:
 
@@ -251,12 +251,12 @@ class GVAppearance : public ObjectAppearance
 			init();
 		}
 
-		virtual long update (bool animate = true);
+		virtual int32_t update (bool animate = true);
 		void updateGeometry (void);
 		
-		virtual long render (long depthFixup = 0);
+		virtual int32_t render (int32_t depthFixup = 0);
 
-		virtual long renderShadows (void);
+		virtual int32_t renderShadows (void);
 		
 		virtual void destroy (void);
 
@@ -272,41 +272,41 @@ class GVAppearance : public ObjectAppearance
 
 		virtual void setPaintScheme (void);
 
-		virtual void setPaintScheme (DWORD red, DWORD green, DWORD blue);
+		virtual void setPaintScheme (ULONG red, ULONG green, ULONG blue);
 
-		virtual void getPaintScheme (DWORD &red, DWORD &green, DWORD &blue);
+		virtual void getPaintScheme (ULONG &red, ULONG &green, ULONG &blue);
 
-		virtual void resetPaintScheme (DWORD red, DWORD green, DWORD blue);
+		virtual void resetPaintScheme (ULONG red, ULONG green, ULONG blue);
 		
  		virtual bool recalcBounds (void);
 
-		virtual void flashBuilding (float duration, float flashDuration, DWORD color);
+		virtual void flashBuilding (float duration, float flashDuration, ULONG color);
 
 		
-		void setFadeTable (MemoryPtr fTable)
+		void setFadeTable (PUCHAR fTable)
 		{
 			fadeTable = fTable;
 		}
 		
-		virtual void setObjectNameId (long objId)
+		virtual void setObjectNameId (int32_t objId)
 		{
 			objectNameId = objId;
 		}
 
 		virtual bool isMouseOver (float px, float py);
 		
-		virtual void setObjectParameters (Stuff::Vector3D &pos, float rot, long selected, long team, long homeRelations);
+		virtual void setObjectParameters (Stuff::Vector3D &pos, float rot, int32_t selected, int32_t team, int32_t homeRelations);
 
 		virtual void setMoverParameters (float turretRot, float lArmRot = 0.0f, float rArmRot = 0.0f, bool isAirborne = false);
 
 		void debugUpdate (void);
 
-		virtual void setSensorLevel (long lvl)
+		virtual void setSensorLevel (int32_t lvl)
 		{
 			sensorLevel = lvl;
 		}
 		
-		virtual void setObjStatus (long oStatus);
+		virtual void setObjStatus (int32_t oStatus);
 		
 		virtual bool playDestruction (void);
 		
@@ -317,30 +317,30 @@ class GVAppearance : public ObjectAppearance
 
 		virtual void setGesture (size_t gestureId);
 		
-		virtual long getCurrentGestureId (void)
+		virtual int32_t getCurrentGestureId (void)
 		{
 			return gvAnimationState;
 		}
 
 		//--------------------------------------------
 		// Once site Objects are in place, go get 'em
-		virtual void setWeaponNodeUsed (long nodeId);
+		virtual void setWeaponNodeUsed (int32_t nodeId);
 		
-		virtual Stuff::Vector3D getWeaponNodePosition (long nodeId);
+		virtual Stuff::Vector3D getWeaponNodePosition (int32_t nodeId);
 		
-		virtual Stuff::Vector3D getSmokeNodePosition (long nodeId);
+		virtual Stuff::Vector3D getSmokeNodePosition (int32_t nodeId);
 		
-		virtual Stuff::Vector3D getDustNodePosition (long nodeId);
+		virtual Stuff::Vector3D getDustNodePosition (int32_t nodeId);
 		
-		virtual long getWeaponNode (long weapontype);
+		virtual int32_t getWeaponNode (int32_t weapontype);
 		
-		virtual float getWeaponNodeRecycle (long node);
+		virtual float getWeaponNodeRecycle (int32_t node);
 
-		virtual long getLowestWeaponNode (void);
+		virtual int32_t getLowestWeaponNode (void);
 		
 		virtual Stuff::Vector3D getNodeNamePosition (PSTR nodeName);
 		
- 		virtual bool PerPolySelect (long mouseX, long mouseY);
+ 		virtual bool PerPolySelect (int32_t mouseX, int32_t mouseY);
 		
 		virtual Stuff::Point3D getRootNodeCenter (void)
 		{
@@ -348,7 +348,7 @@ class GVAppearance : public ObjectAppearance
 			return result;
 		}
 		
-		virtual void setAlphaValue (BYTE aVal)
+		virtual void setAlphaValue (UCHAR aVal)
 		{
 			gvShape->SetAlphaValue(aVal);
 			
@@ -365,10 +365,10 @@ class GVAppearance : public ObjectAppearance
 		virtual void startWaterWake (void);
 		virtual void stopWaterWake (void);
 		
-		virtual void startActivity (long effectId, bool loop);
+		virtual void startActivity (int32_t effectId, bool loop);
 		virtual void stopActivity (void);
 
-		virtual Stuff::Vector3D getNodeIdPosition (long nodeId);
+		virtual Stuff::Vector3D getNodeIdPosition (int32_t nodeId);
 
 		virtual Stuff::Vector3D getHitNode (void);
 };

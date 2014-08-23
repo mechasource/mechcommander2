@@ -10,6 +10,6 @@
 //---------------------------------------------------------------------------
 // Include files
 
-long scaleDraw (MemoryPtr shapeTable, ULONG frameNum, long sx, long sy, bool reverse, MemoryPtr fadeTable = NULL, bool scaleUp = 0);
+int32_t scaleDraw (PUCHAR shapeTable, ULONG frameNum, int32_t sx, int32_t sy, bool reverse, PUCHAR fadeTable = NULL, bool scaleUp = 0);
 //---------------------------------------------------------------------------
 #endif

@@ -70,9 +70,9 @@ typedef struct _MC_VertexArrayNode
 	friend MC_TextureManager;
 
 	public:
-		DWORD				textureIndex;
-		DWORD				flags;						//Marks texture render state and terrain or not, etc.
-		long				numVertices;				//Number of vertices this texture will be used to draw this frame.
+		ULONG				textureIndex;
+		ULONG				flags;						//Marks texture render state and terrain or not, etc.
+		int32_t				numVertices;				//Number of vertices this texture will be used to draw this frame.
 		gos_VERTEX			*currentVertex;				//CurrentVertex data being added.
 		gos_VERTEX			*vertices;					//Pointer into the vertex Pool for this texture to draw.
 
@@ -95,20 +95,20 @@ typedef struct _MC_TextureNode
 	friend MC_TextureManager;
 
 	protected:
-		DWORD				gosTextureHandle;			//Handle returned by GOS
+		ULONG				gosTextureHandle;			//Handle returned by GOS
 		
 	public:
 		char 				*nodeName;					//Used for Unique nodes so I can just return the handle!
-		DWORD				uniqueInstance;				//Texture is modifiable.  DO NOT CACHE OUT!!!!!!
-		DWORD				neverFLUSH;					//Textures used by Userinput, etc.  DO NOT CACHE OUT!!!!!! 
-		DWORD				numUsers;					//Pushed up for each user using.
+		ULONG				uniqueInstance;				//Texture is modifiable.  DO NOT CACHE OUT!!!!!!
+		ULONG				neverFLUSH;					//Textures used by Userinput, etc.  DO NOT CACHE OUT!!!!!! 
+		ULONG				numUsers;					//Pushed up for each user using.
 														//Users can "free" a texture which will decrement the number and actually free it if number is 0
 		gos_TextureFormat 	key;						//Used to recreate texture if cached out.
-		DWORD 				hints;						//Used to recreate texture if cached out.
-		DWORD				width;						//Used to recreate texture if cached out.
-		DWORD				lzCompSize;					//Size of Compressed version.
-		long				lastUsed;					//Last Game turn texture was used.  Used to cache textures.
-		DWORD 				*textureData;				//Raw texture data.  Texture is stored here in system RAM 
+		ULONG 				hints;						//Used to recreate texture if cached out.
+		ULONG				width;						//Used to recreate texture if cached out.
+		ULONG				lzCompSize;					//Size of Compressed version.
+		int32_t				lastUsed;					//Last Game turn texture was used.  Used to cache textures.
+		ULONG 				*textureData;				//Raw texture data.  Texture is stored here in system RAM 
 														//if we overrun the max number of GOS HAndles.
 														//When the texture is needed, another least used GOS handle is
 														//cached out and this one is copied in.
@@ -141,15 +141,15 @@ typedef struct _MC_TextureNode
 		lzCompSize = 0xffffffff;
 	}
 
-	DWORD findFirstAvailableBlock (void);
+	ULONG findFirstAvailableBlock (void);
 
 	void destroy (void);							//Frees all blocks, free GOS_TextureHandle, blank all data.
 
-	void removeBlock (DWORD blockNum);				//Just free one block.  DO NOT FREE GOS_TextureHandle.
+	void removeBlock (ULONG blockNum);				//Just free one block.  DO NOT FREE GOS_TextureHandle.
 
-	void markBlock (DWORD blockNum);
+	void markBlock (ULONG blockNum);
 	
-	DWORD get_gosTextureHandle (void);				//If texture is not in VidRAM, cache a texture out and cache this one in.
+	ULONG get_gosTextureHandle (void);				//If texture is not in VidRAM, cache a texture out and cache this one in.
 
 } MC_TextureNode;
 
@@ -160,8 +160,8 @@ class gos_VERTEXManager : public HeapManager
 	//-------------
 	protected:
 	
-		long						totalVertices;		//Total number of vertices in pool.
-		long						currentVertex;		//Pointer to next available vertex in pool.
+		int32_t						totalVertices;		//Total number of vertices in pool.
+		int32_t						currentVertex;		//Pointer to next available vertex in pool.
 
 	//Member Functions
 	//-----------------
@@ -192,16 +192,16 @@ class gos_VERTEXManager : public HeapManager
 			destroy();
 		}
 
-		void init (long maxVertices)
+		void init (int32_t maxVertices)
 		{
 			totalVertices = maxVertices;
-			DWORD heapSize = totalVertices * sizeof(gos_VERTEX);
+			ULONG heapSize = totalVertices * sizeof(gos_VERTEX);
 			createHeap(heapSize);
 			commitHeap();
 			reset();
 		}
 		
-		gos_VERTEX *getVertexBlock(long numVertices)
+		gos_VERTEX *getVertexBlock(int32_t numVertices)
 		{
 			gos_VERTEX *start = (gos_VERTEX *)getHeapPtr();
 			start = &(start[currentVertex]);
@@ -226,24 +226,24 @@ class MC_TextureManager
 	protected:
 
 		MC_TextureNode					*masterTextureNodes;		//Dynamically allocated from an MC Heap.
-		long							currentUsedTextures;		//Number of textures on video card.
+		int32_t							currentUsedTextures;		//Number of textures on video card.
 													
 		MC_VertexArrayNode 				*masterVertexNodes;			//Dynamically allocated from an MC Heap.
-		long							nextAvailableVertexNode;	//index to next available vertex Node
+		int32_t							nextAvailableVertexNode;	//index to next available vertex Node
 													
 		UserHeapPtr						textureCacheHeap;			//Heap used to cache textures from vidCard to system RAM.
 		UserHeapPtr						textureStringHeap;			//Heap used to store filenames of textures so no dupes.
 		bool 							textureManagerInstrumented;	//Texture Manager Instrumented.
-		long							totalCacheMisses;			//NUmber of times flush has been called.\
+		int32_t							totalCacheMisses;			//NUmber of times flush has been called.\
 		
 		static gos_VERTEXManager		*gvManager;					//Stores arrays of vertices for draw.
-		static MemoryPtr				lzBuffer1;					//Used to compress/decompress textures from cache.
-		static MemoryPtr				lzBuffer2;					//Used to compress/decompress textures from cache.
+		static PUCHAR				lzBuffer1;					//Used to compress/decompress textures from cache.
+		static PUCHAR				lzBuffer2;					//Used to compress/decompress textures from cache.
 		/* iBufferRefCount is used to help determine if lzBuffer1&2 are valid. The assumption
 		is that if there are no valid MC_TextureManagers then lzBuffer1&2 are not valid. */
 		static int				iBufferRefCount;
 		
-		WORD							*indexArray;				//Master Vertex Index array.
+		uint16_t							*indexArray;				//Master Vertex Index array.
 
 																	//Upto four different kinds of untextured triangle!
 		MC_VertexArrayNode 				*vertexData;				//This holds the vertex draw data for UNTEXTURED triangles!
@@ -290,7 +290,7 @@ class MC_TextureManager
 		// that was already loaded in memory. This function was motivated by the fact that
 		// that an existing texture instance can been modified in memory after it's loaded, and
 		// thus be different the from an instance that would be loaded from disk.
-		DWORD textureInstanceExists (PCSTR textureFullPathName, gos_TextureFormat key, DWORD hints, DWORD uniqueInstance = 0x0, DWORD nFlush = 0x0);
+		ULONG textureInstanceExists (PCSTR textureFullPathName, gos_TextureFormat key, ULONG hints, ULONG uniqueInstance = 0x0, ULONG nFlush = 0x0);
 
 		//-----------------------------------------------------------------------------
 		// Returns the TextureNode Id based on what you asked for.
@@ -298,16 +298,16 @@ class MC_TextureManager
 		// uniqueInstance is an ID for the instance of the texture. If its value matches that of
 		// an already existing instance of the texture, the handle of the existing instance will
 		// be returned. Used for Mech Coloration possibly, damage states, etc.
-		DWORD loadTexture (PCSTR textureFullPathName, gos_TextureFormat key, DWORD hints, DWORD uniqueInstance = 0x0, DWORD nFlush = 0x0);
+		ULONG loadTexture (PCSTR textureFullPathName, gos_TextureFormat key, ULONG hints, ULONG uniqueInstance = 0x0, ULONG nFlush = 0x0);
 
-		long saveTexture (DWORD textureIndex, PCSTR textureFullPathName);
+		int32_t saveTexture (ULONG textureIndex, PCSTR textureFullPathName);
 
 		//-----------------------------------------------------------------------------
 		// Returns the TextureNode Id based on what you asked for.
-		DWORD textureFromMemory (DWORD *data, gos_TextureFormat key, DWORD hints, DWORD width, DWORD bitDepth = 4);
+		ULONG textureFromMemory (ULONG *data, gos_TextureFormat key, ULONG hints, ULONG width, ULONG bitDepth = 4);
 
 		// increments the ref count
-		DWORD copyTexture( DWORD texNodeID );
+		ULONG copyTexture( ULONG texNodeID );
 
 		//------------------------------------------------------
 		// Tosses ALL of the textureNodes and frees GOS Handles
@@ -319,19 +319,19 @@ class MC_TextureManager
 		
 		//------------------------------------------------------
 		// Creates gos_VERTEX Manager and allocates RAM.  Will not allocate if already done!
-		void startVertices (long maxVertices = 30000);
+		void startVertices (int32_t maxVertices = 30000);
 		
 		//------------------------------------------------------
 		// Frees a specific texture. 
-		void removeTexture (DWORD gosTextureHandle);
+		void removeTexture (ULONG gosTextureHandle);
 		
 		//------------------------------------------------------
 		// Frees a specific textureNode. 
-		void removeTextureNode (DWORD textureNode);
+		void removeTextureNode (ULONG textureNode);
 		
  		//-----------------------------------------------------------------
 		// Gets gosTextureHandle for Node ID.  Does all caching necessary.
-		DWORD get_gosTextureHandle (DWORD nodeId)
+		ULONG get_gosTextureHandle (ULONG nodeId)
 		{
 			if (nodeId != 0xffffffff)
 				return masterTextureNodes[nodeId].get_gosTextureHandle();
@@ -339,7 +339,7 @@ class MC_TextureManager
 				return nodeId;
 		}
 
-		void addTriangle (DWORD nodeId, DWORD flags)
+		void addTriangle (ULONG nodeId, ULONG flags)
 		{
 			if ((nodeId < MC_MAXTEXTURES) && (nextAvailableVertexNode < MC_MAXTEXTURES))
 			{
@@ -458,7 +458,7 @@ class MC_TextureManager
 			}
 		}
 
-		void addVertices (DWORD nodeId, gos_VERTEX *data, DWORD flags)
+		void addVertices (ULONG nodeId, gos_VERTEX *data, ULONG flags)
 		{
 			//This function adds the actual vertex data to the texture Node.
 			if (nodeId < MC_MAXTEXTURES)
@@ -701,7 +701,7 @@ class MC_TextureManager
 
 		void clearArrays (void)
 		{
-			for (long i=0;i<MC_MAXTEXTURES;i++)
+			for (int32_t i=0;i<MC_MAXTEXTURES;i++)
 			{
 				masterTextureNodes[i].vertexData = NULL;
 				masterTextureNodes[i].vertexData2 = NULL;
@@ -720,7 +720,7 @@ class MC_TextureManager
 		//Sends down the triangle lists
 		void renderLists (void);
 
-		DWORD getWidth( DWORD nodeId )
+		ULONG getWidth( ULONG nodeId )
 		{
 			if (nodeId != 0xffffffff)
 				return masterTextureNodes[nodeId].width;
@@ -739,7 +739,7 @@ class MC_TextureManager
 		// This routine will run through the TXM Cache on a regular basis and free
 		// up GOS Handles which haven't been used in some time.  Some Time TBD 
 		// more accurately with time.
-		DWORD update (void);
+		ULONG update (void);
 		
 		bool checkCacheHeap (void)
 		{

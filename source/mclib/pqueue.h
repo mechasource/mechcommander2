@@ -18,10 +18,10 @@
 // Structure and Class Definitions
 
 typedef struct _PQNode {
-	long			key;			// sort value
+	int32_t			key;			// sort value
 	ULONG	id;				// hash value for this map position
-	long			row;			// HB-specific
-	long			col;			// HB-specific
+	int32_t			row;			// HB-specific
+	int32_t			col;			// HB-specific
 } PQNode;
 
 class PriorityQueue {
@@ -29,13 +29,13 @@ class PriorityQueue {
 	protected:
 
 		PQNode*		pqList;
-		long		maxItems;
-		long		numItems;
-		long		keyMin;
+		int32_t		maxItems;
+		int32_t		numItems;
+		int32_t		keyMin;
 
-		void downHeap (long curIndex);
+		void downHeap (int32_t curIndex);
 
-		void upHeap (long curIndex);
+		void upHeap (int32_t curIndex);
 
 	public:
 
@@ -48,27 +48,27 @@ class PriorityQueue {
 			init();
 		}
 
-		long init (long maxItems, long keyMinValue = -2000000);
+		int32_t init (int32_t maxItems, int32_t keyMinValue = -2000000);
 
-		long insert (PQNode& item);
+		int32_t insert (PQNode& item);
 
 		void remove (PQNode& item);
 
-		void change (long itemIndex, long newValue);
+		void change (int32_t itemIndex, int32_t newValue);
 
-		long find (long id);
+		int32_t find (int32_t id);
 		
 		void clear (void) {
 			numItems = 0;
 		}
 
-		long getNumItems (void) { return(numItems); }
+		int32_t getNumItems (void) { return(numItems); }
 		
 		bool isEmpty (void) {
 			return(numItems == 0);
 		}
 		
-		PQNode* getItem (long itemIndex) {
+		PQNode* getItem (int32_t itemIndex) {
 			return(&pqList[itemIndex]);
 		}
 

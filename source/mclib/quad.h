@@ -35,22 +35,22 @@ typedef struct _TerrainUVData
 
 typedef struct _MineResult
 {
-	DWORD mineData;
+	ULONG mineData;
 	
 	void init (void)
 	{
 		mineData = 0;
 	}
 	
-	void setMine (DWORD pos, uint8_t data)
+	void setMine (ULONG pos, uint8_t data)
 	{
-		DWORD result = (data << (pos << 1));
+		ULONG result = (data << (pos << 1));
 		mineData |= result;
 	}
 	
-	DWORD getMine(DWORD pos)
+	ULONG getMine(ULONG pos)
 	{
-		DWORD result = (mineData >> (pos << 1)) & (0x3);
+		ULONG result = (mineData >> (pos << 1)) & (0x3);
 		return result;
 	}
 	
@@ -64,13 +64,13 @@ class TerrainQuad
 
 		VertexPtr			vertices[4];			//Pointers to vertices defining this tile.
 
-		DWORD				terrainHandle;			//Handle to texture to draw.
-		DWORD				terrainDetailHandle;	//Handle to detail texture to draw.
-		DWORD				waterHandle;			//Handle to water texture to draw.
-		DWORD				waterDetailHandle;		//Handle to Water Detail texture to draw.
-		DWORD				overlayHandle;			//Handle to overlay texture to draw.
+		ULONG				terrainHandle;			//Handle to texture to draw.
+		ULONG				terrainDetailHandle;	//Handle to detail texture to draw.
+		ULONG				waterHandle;			//Handle to water texture to draw.
+		ULONG				waterDetailHandle;		//Handle to Water Detail texture to draw.
+		ULONG				overlayHandle;			//Handle to overlay texture to draw.
 
-		DWORD				uvMode;					//Is this a top or bottom triangle?
+		ULONG				uvMode;					//Is this a top or bottom triangle?
 		MineResult			mineResult;				//Is there a mine or exploded mine in this cell on this tile?
 			
 		TerrainUVData		uvData;					//Stores the min and max UVs for this face.
@@ -78,9 +78,9 @@ class TerrainQuad
 		bool				isCement;				//Need to know if this tile is cement for a number of reasons
 	
 		static float		rainLightLevel;			//How much to darken terrain based on rain
-		static DWORD		lighteningLevel;		//How much to lighten terrain based on lightening.
-		static DWORD 		mineTextureHandle;		//Handle to the mine textures.
-		static DWORD 		blownTextureHandle;
+		static ULONG		lighteningLevel;		//How much to lighten terrain based on lightening.
+		static ULONG 		mineTextureHandle;		//Handle to the mine textures.
+		static ULONG 		blownTextureHandle;
 
 		
 #ifdef _DEBUG
@@ -124,7 +124,7 @@ class TerrainQuad
 			destroy();
 		}
 
-		long init (VertexPtr v0, VertexPtr v1, VertexPtr v2, VertexPtr v3);
+		int32_t init (VertexPtr v0, VertexPtr v1, VertexPtr v2, VertexPtr v3);
 
 		void setupTextures (void);
 

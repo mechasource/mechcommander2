@@ -43,7 +43,7 @@ gosFX::EffectLibrary::EffectLibrary()
 //
 gosFX::EffectLibrary::~EffectLibrary()
 {
-	for (unsigned i=0; i<m_effects.GetLength(); ++i)
+	for (uint32_t i=0; i<m_effects.GetLength(); ++i)
 	{
 		if (m_effects[i])
 		{
@@ -61,10 +61,10 @@ void
 	Verify(gos_GetCurrentHeap() == Heap);
 	Verify(!m_effects.GetLength());
 	int version = ReadGFXVersion(stream);
-	unsigned len;
+	uint32_t len;
 	*stream >> len;
 	m_effects.SetLength(len);
-	for (unsigned i=0; i<len; ++i)
+	for (uint32_t i=0; i<len; ++i)
 	{
 		m_effects[i] = gosFX::Effect::Specification::Create(stream, version);
 		Check_Object(m_effects[i]);
@@ -79,7 +79,7 @@ void
 {
 	WriteGFXVersion(stream);
 	*stream << m_effects.GetLength();
-	for (unsigned i=0; i<m_effects.GetLength(); ++i)
+	for (uint32_t i=0; i<m_effects.GetLength(); ++i)
 	{
 		Check_Object(m_effects[i]);
 		m_effects[i]->Save(stream);
@@ -91,7 +91,7 @@ void
 gosFX::Effect::Specification*
 	gosFX::EffectLibrary::Find(PCSTR name)
 {
-	for (unsigned i=0; i<m_effects.GetLength(); ++i)
+	for (uint32_t i=0; i<m_effects.GetLength(); ++i)
 	{
 		gosFX::Effect::Specification *spec = m_effects[i];
 		if (spec)
@@ -111,8 +111,8 @@ gosFX::Effect::Specification*
 //
 gosFX::Effect*
 	gosFX::EffectLibrary::MakeEffect(
-		unsigned index,
-		unsigned flags
+		uint32_t index,
+		uint32_t flags
 	)
 {
 	gosFX::Effect::Specification *spec = m_effects[index];

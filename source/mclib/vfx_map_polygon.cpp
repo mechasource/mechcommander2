@@ -4,7 +4,7 @@ extern enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor;
 
 extern char AlphaTable[];
 static uint32_t SourceWidth,tWidth,tHeight,DestWidth;			// Used for code optimizing
-static _int64 xmask=-1;
+static int64_t xmask=-1;
 
 
 
@@ -15,14 +15,14 @@ static _int64 xmask=-1;
 //
 void AG_StatusBar( PANE *pane, int X0, int Y0, int X1, int Y1, int Color, int Width )
 {
-	static long TopY,BottomY;
+	static int32_t TopY,BottomY;
 
 	DestWidth = pane->window->x_max+1;
 
-	long paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
-	long paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	long paneX1 = (pane->x1 >= (long)DestWidth) ? pane->window->x_max : pane->x1;
-	long paneY1 = (pane->y1 >= (pane->window->y_max+1)) ? pane->window->y_max : pane->y1;
+	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
+	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
+	int32_t paneX1 = (pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneY1 = (pane->y1 >= (pane->window->y_max+1)) ? pane->window->y_max : pane->y1;
 
 	if (X0>X1)
 	{
@@ -71,7 +71,7 @@ void AG_StatusBar( PANE *pane, int X0, int Y0, int X1, int Y1, int Color, int Wi
 	if( X1-X0 < 3)
 		return;
 
-	UBYTE* DestPointer = pane->window->buffer + X0 + Y0*DestWidth;
+	puint8_t DestPointer = pane->window->buffer + X0 + Y0*DestWidth;
 
 	_asm{
 
@@ -190,14 +190,14 @@ void AG_pixel_write (PANE *pane, LONG x, LONG y, ULONG color)
 //
 //
 //
-long DrawTransparent( PANE *pane, WINDOW *texture, int X, int Y, int Width, int Height )
+int32_t DrawTransparent( PANE *pane, WINDOW *texture, int X, int Y, int Width, int Height )
 {
 	DestWidth = pane->window->x_max+1;
 
-	long paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
-	long paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
-	long paneX1 = (pane->x1 >= (long)DestWidth) ? pane->window->x_max : pane->x1;
-	long paneY1 = (pane->y1 >= (pane->window->y_max+1)) ? pane->window->y_max : pane->y1;
+	int32_t paneX0 = (pane->x0 < 0) ? 0 : pane->x0;
+	int32_t paneY0 = (pane->y0 < 0) ? 0 : pane->y0;
+	int32_t paneX1 = (pane->x1 >= (int32_t)DestWidth) ? pane->window->x_max : pane->x1;
+	int32_t paneY1 = (pane->y1 >= (pane->window->y_max+1)) ? pane->window->y_max : pane->y1;
 
 	X+=paneX0;
 	Y+=paneY0;
@@ -208,7 +208,7 @@ long DrawTransparent( PANE *pane, WINDOW *texture, int X, int Y, int Width, int 
 		 ( Y <= (paneY0 - Height)))
 		return(1);
 
-	UBYTE* SourcePointer = texture->buffer;
+	puint8_t SourcePointer = texture->buffer;
 	
 	if( X<paneX0 )
 	{
@@ -230,7 +230,7 @@ long DrawTransparent( PANE *pane, WINDOW *texture, int X, int Y, int Width, int 
 	if( Y+Height > (paneY1+1) )
 		Height= paneY1+1-Y;
 
-	UBYTE* DestPointer = pane->window->buffer + X + Y*DestWidth;
+	puint8_t DestPointer = pane->window->buffer + X + Y*DestWidth;
 
 	SourceWidth=texture->x_max+1;
 	tWidth=Width;
@@ -414,7 +414,7 @@ dt1:	mov ecx,[esi]
 dt2:	cmp ch,255
 		jz dt3
 		mov ah,ch
-dt3:	rol eax,16			; Transfer data in DWORD chunks
+dt3:	rol eax,16			; Transfer data in ULONG chunks
 		shr ecx,16
 		cmp cl,255
 		jz dt4

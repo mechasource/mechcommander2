@@ -43,56 +43,56 @@ class CSVFile : public File
 	// Data Members
 	//--------------
 	protected:
-		DWORD totalRows;			//Number of ROWS CSV file has.
-		DWORD totalCols;			//NUmber of COLS CSV file has.
+		ULONG totalRows;			//Number of ROWS CSV file has.
+		ULONG totalCols;			//NUmber of COLS CSV file has.
 		
 		char dataBuffer[2048];
 
 	// Member Functions
 	//------------------
 	protected:
-		long afterOpen (void);
+		int32_t afterOpen (void);
 		void atClose (void);
 		
-		long countRows (void);
-		long countCols (void);
+		int32_t countRows (void);
+		int32_t countCols (void);
 		
-		long getNextWord (PSTR &line, PSTR buffer, size_t bufLen);
+		int32_t getNextWord (PSTR &line, PSTR buffer, size_t bufLen);
 
 		float textToFloat (PSTR num);
 		
-		long textToLong (PSTR num);
+		int32_t textToLong (PSTR num);
 		size_t textToULong (PSTR num);
 		
 		short textToShort (PSTR num);
-		unsigned short textToUShort (PSTR num);
+		uint16_t textToUShort (PSTR num);
 		
 		char textToChar (PSTR num);
 		uint8_t textToUCHAR (PSTR num);
 
 		bool booleanToLong (PSTR num);
 
-		long floatToText (PSTR result, float num, size_t bufLen);
+		int32_t floatToText (PSTR result, float num, size_t bufLen);
 		
-		long longToTextDec (PSTR result, long num, size_t bufLen);
-		long longToTextHex (PSTR result, long num, size_t bufLen);
+		int32_t longToTextDec (PSTR result, int32_t num, size_t bufLen);
+		int32_t longToTextHex (PSTR result, int32_t num, size_t bufLen);
 
-		long shortToTextDec (PSTR result, short num, size_t bufLen);
-		long shortToTextHex (PSTR result, short num, size_t bufLen);
+		int32_t shortToTextDec (PSTR result, short num, size_t bufLen);
+		int32_t shortToTextHex (PSTR result, short num, size_t bufLen);
 
-		long byteToTextDec (PSTR result, byte num, size_t bufLen);	
-		long byteToTextHex (PSTR result, byte num, size_t bufLen);
+		int32_t byteToTextDec (PSTR result, byte num, size_t bufLen);	
+		int32_t byteToTextHex (PSTR result, byte num, size_t bufLen);
 		
-		long copyString (PSTR dest, PSTR src, size_t bufLen);
+		int32_t copyString (PSTR dest, PSTR src, size_t bufLen);
 
 	public:
 		CSVFile (void);
 		~CSVFile (void);
 
-		virtual long open (PCSTR fName, FileMode _mode = READ, long numChildren = 50);
-		virtual long open (FilePtr _parent, size_t fileSize, long numChildren = 50);
+		virtual int32_t open (PCSTR fName, FileMode _mode = READ, int32_t numChildren = 50);
+		virtual int32_t open (FilePtr _parent, size_t fileSize, int32_t numChildren = 50);
 		
-		virtual long create (PSTR fName);
+		virtual int32_t create (PSTR fName);
 
 		virtual void close (void);
 
@@ -101,21 +101,21 @@ class CSVFile : public File
 			return CSVFILE;
 		}
 
-		long seekRowCol (DWORD row, DWORD col);
+		int32_t seekRowCol (ULONG row, ULONG col);
 		
-		long readFloat (DWORD row, DWORD col, float &value);
+		int32_t readFloat (ULONG row, ULONG col, float &value);
 		
-		long readBoolean (DWORD row, DWORD col, bool &value);
-		long readLong (DWORD row, DWORD col, long &value);
-		long readULong (DWORD row, DWORD col, size_t &value);
+		int32_t readBoolean (ULONG row, ULONG col, bool &value);
+		int32_t readLong (ULONG row, ULONG col, int32_t &value);
+		int32_t readULong (ULONG row, ULONG col, size_t &value);
 		
-		long readShort (DWORD row, DWORD col, short &value);
-		long readUShort (DWORD row, DWORD col, unsigned short &value);
+		int32_t readShort (ULONG row, ULONG col, short &value);
+		int32_t readUShort (ULONG row, ULONG col, uint16_t &value);
 		
-		long readChar (DWORD row, DWORD col, char &value);
-		long readUCHAR (DWORD row, DWORD col, uint8_t &value);
+		int32_t readChar (ULONG row, ULONG col, char &value);
+		int32_t readUCHAR (ULONG row, ULONG col, uint8_t &value);
 		
-		long readString (DWORD row, DWORD col, PSTR result, size_t bufferSize);
+		int32_t readString (ULONG row, ULONG col, PSTR result, size_t bufferSize);
 };
 
 //---------------------------------------------------------------------------

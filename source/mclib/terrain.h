@@ -50,8 +50,8 @@
 
 //---------------------------------------------------------------------------
 // Macro Definitions
-#ifndef NO_ERR
-#define NO_ERR		0
+#ifndef NO_ERROR
+#define NO_ERROR		0
 #endif
 
 #define	MAPCELL_DIM				3
@@ -89,9 +89,9 @@
 typedef struct _ObjBlockInfo 
 {
 	bool		active;
-	long		numCollidableObjects;
-	long		numObjects;					// includes collidable objects
-	long		firstHandle;				// collidables, followed by non
+	int32_t		numCollidableObjects;
+	int32_t		numObjects;					// includes collidable objects
+	int32_t		firstHandle;				// collidables, followed by non
 } ObjBlockInfo;
 
 //---------------------------------------------------------------------------
@@ -105,28 +105,28 @@ class Terrain
 
 		ULONG							terrainHeapSize;
 		
-		long									numberVertices;
-		long									numberQuads;
+		int32_t									numberVertices;
+		int32_t									numberQuads;
 		VertexPtr								vertexList;
 		TerrainQuadPtr							quadList;
 		
 	public:
 		//For editor
-		static long								userMin;
-		static long								userMax;
+		static int32_t								userMin;
+		static int32_t								userMax;
 		static ULONG					baseTerrain;
 		static uint8_t					fractalThreshold;
 		static uint8_t					fractalNoise;
 
-		static long								halfVerticesMapSide;		//Half of the below value.
-		static long								realVerticesMapSide;		//Number of vertices on each side of map.
+		static int32_t								halfVerticesMapSide;		//Half of the below value.
+		static int32_t								realVerticesMapSide;		//Number of vertices on each side of map.
 		
-		static const long						verticesBlockSide;			//Always 20.
-		static long								blocksMapSide;				//Calced from above and 
+		static const int32_t						verticesBlockSide;			//Always 20.
+		static int32_t								blocksMapSide;				//Calced from above and 
 		static float							worldUnitsMapSide;			//Total world units map is across.
 		static float							oneOverWorldUnitsMapSide;	//Inverse of the above.
 
-		static long								visibleVerticesPerSide;		//How many should I process to be sure I got all I could see.
+		static int32_t								visibleVerticesPerSide;		//How many should I process to be sure I got all I could see.
 
 		static const float						worldUnitsPerVertex;		//How many world Units between each vertex.  128.0f in current universe.
 		static const float						worldUnitsPerCell;			//How many world units between cells.  42.66666667f ALWAYS!!!!
@@ -156,13 +156,13 @@ class Terrain
 		static float							frameAngle;					//Used to animate the waves
 		static float							frameCos;
 		static float							frameCosAlpha;
-		static DWORD 							alphaMiddle;				//Used to alpha the water into the shore.
-		static DWORD 							alphaEdge;
-		static DWORD 							alphaDeep;
+		static ULONG 							alphaMiddle;				//Used to alpha the water into the shore.
+		static ULONG 							alphaEdge;
+		static ULONG 							alphaDeep;
 		static float							waterFreq;					//Used to animate waves.
 		static float							waterAmplitude;
 
-		static long		   						numObjBlocks;				//Stores terrain object info.
+		static int32_t		   						numObjBlocks;				//Stores terrain object info.
 		static ObjBlockInfo						*objBlockInfo;				//Dynamically allocate this please!!
 		
 		static bool								*objVertexActive;			//Stores whether or not this vertices objects need to be updated
@@ -196,9 +196,9 @@ class Terrain
 			destroy();
 		}
 
-		long init (PacketFile* file, int whichPacket, ULONG visibleVertices, 
+		int32_t init (PacketFile* file, int whichPacket, ULONG visibleVertices, 
 			volatile float& progress, float progressRange); // open an existing file
-		long init( ULONG verticesPerMapSide, PacketFile* file, ULONG visibleVertices,
+		int32_t init( ULONG verticesPerMapSide, PacketFile* file, ULONG visibleVertices,
 				volatile float& percent,
 					float percentRange); // pass in null for a blank new map
 
@@ -217,7 +217,7 @@ class Terrain
 		void markSeen (Stuff::Vector3D &looker, byte who, float specialUnitExpand);
 		void markRadiusSeen (Stuff::Vector3D &looker, float dist, byte who);
 
-		long update (void);
+		int32_t update (void);
 		void render (void);
 		void renderWater (void);
 		
@@ -229,21 +229,21 @@ class Terrain
 		static bool IsEditorSelectTerrainPosition (Stuff::Vector3D pos);
 		static bool IsGameSelectTerrainPosition (Stuff::Vector3D pos);
 
-		long save( PacketFile* fileName, int whichPacket, bool QuickSave = false);
+		int32_t save( PacketFile* fileName, int whichPacket, bool QuickSave = false);
 		bool save( FitIniFile* fitFile ); // save stuff like water info
 		bool load( FitIniFile* fitFile );
 
 		// old overlay stuff
-		void setOverlayTile (long block, long vertex, long offset);
-		long getOverlayTile (long block, long vertex);
+		void setOverlayTile (int32_t block, int32_t vertex, int32_t offset);
+		int32_t getOverlayTile (int32_t block, int32_t vertex);
 	
 		// new overlay stuff
-		void setOverlay( long tileR, long tileC, Overlays type, ULONG Offset );
-		void getOverlay( long tileR, long tileC, Overlays& type, ULONG& Offset );
-		void setTerrain( long tileR, long tileC, int terrainType );
-		int	 getTerrain( long tileR, long tileC );
-		ULONG getTexture( long tileR, long tileC ); 
-		float getTerrainElevation( long tileR, long tileC );
+		void setOverlay( int32_t tileR, int32_t tileC, Overlays type, ULONG Offset );
+		void getOverlay( int32_t tileR, int32_t tileC, Overlays& type, ULONG& Offset );
+		void setTerrain( int32_t tileR, int32_t tileC, int terrainType );
+		int	 getTerrain( int32_t tileR, int32_t tileC );
+		ULONG getTexture( int32_t tileR, int32_t tileC ); 
+		float getTerrainElevation( int32_t tileR, int32_t tileC );
 
 		void  setVertexHeight( int vertexIndex, float value ); 
 		float getVertexHeight( int vertexIndex );
@@ -252,36 +252,36 @@ class Terrain
 
 		void updateAllObjects (void);
 
-		void setObjBlockActive (long blockNum, bool active);
+		void setObjBlockActive (int32_t blockNum, bool active);
 		void clearObjBlocksActive (void);
 
-		inline void worldToTile( const Stuff::Vector3D& pos, long& tileR, long& tileC );
-		inline void worldToCell( const Stuff::Vector3D& pos, long& cellR, long& cellC );
-		inline void worldToTileCell (const Stuff::Vector3D& pos, long& tileR, long& tileC, long& cellR, long& cellC);
-		inline void tileCellToWorld (long tileR, long tileC, long cellR, long cellC, Stuff::Vector3D& worldPos);
-		inline void cellToWorld (long cellR, long cellC, Stuff::Vector3D& worldPos);
+		inline void worldToTile( const Stuff::Vector3D& pos, int32_t& tileR, int32_t& tileC );
+		inline void worldToCell( const Stuff::Vector3D& pos, int32_t& cellR, int32_t& cellC );
+		inline void worldToTileCell (const Stuff::Vector3D& pos, int32_t& tileR, int32_t& tileC, int32_t& cellR, int32_t& cellC);
+		inline void tileCellToWorld (int32_t tileR, int32_t tileC, int32_t cellR, int32_t cellC, Stuff::Vector3D& worldPos);
+		inline void cellToWorld (int32_t cellR, int32_t cellC, Stuff::Vector3D& worldPos);
 
-		inline void getCellPos( long cellR, long cellC,  Stuff::Vector3D& cellPos );
+		inline void getCellPos( int32_t cellR, int32_t cellC,  Stuff::Vector3D& cellPos );
 		
 		void initMapCellArrays(void);
 
 		void unselectAll();
 		void selectVerticesInRect( const Stuff::Vector4D& topLeft, const Stuff::Vector4D& bottomRight, bool bToggle );
 		bool hasSelection();
-		bool isVertexSelected( long tileR, long tileC );
-		bool selectVertex( long tileR, long tileC, bool bSelect = true );
+		bool isVertexSelected( int32_t tileR, int32_t tileC );
+		bool selectVertex( int32_t tileR, int32_t tileC, bool bSelect = true );
 
-		float getHighestVertex( long& tileR, long& tileC );
-		float getLowestVertex(  long& tileR, long& tileC );
+		float getHighestVertex( int32_t& tileR, int32_t& tileC );
+		float getLowestVertex(  int32_t& tileR, int32_t& tileC );
 
-		static void setUserSettings( long min, long max, int terrainType );
-		static void getUserSettings( long& min, long& max, int& terrainType );
+		static void setUserSettings( int32_t min, int32_t max, int terrainType );
+		static void getUserSettings( int32_t& min, int32_t& max, int& terrainType );
 
 		void recalcWater();
 		void reCalcLight(bool doShadows = false);
 		void clearShadows();
 
-		long getWater (Stuff::Vector3D& worldPos);
+		int32_t getWater (Stuff::Vector3D& worldPos);
 
 		float getClipRange()
 		{
@@ -305,21 +305,21 @@ class Terrain
 			return(vertexList);
 		}
 		
-		long getNumVertices (void)
+		int32_t getNumVertices (void)
 		{
 			return(numberVertices);
 		}
 		
-		long getNumQuads (void)
+		int32_t getNumQuads (void)
 		{
 			return(numberQuads);
 		}
 		
-		void setObjVertexActive (long vertexNum, bool active);
+		void setObjVertexActive (int32_t vertexNum, bool active);
 		
 		void clearObjVerticesActive (void);
 
-		void resetVisibleVertices(long maxVisibleVertices);
+		void resetVisibleVertices(int32_t maxVisibleVertices);
 
 		void getColorMapName (FitIniFile *file);
 		void setColorMapName (PSTR mapName);
@@ -332,7 +332,7 @@ extern TerrainPtr land;
 
 //---------------------------------------------------------------------------
 
-inline void Terrain::worldToTile( const Stuff::Vector3D& pos, long& tileR, long& tileC )
+inline void Terrain::worldToTile( const Stuff::Vector3D& pos, int32_t& tileR, int32_t& tileC )
 {
 	float tmpX = pos.x - land->mapTopLeft3d.x;
 	float tmpY = land->mapTopLeft3d.y - pos.y;
@@ -343,7 +343,7 @@ inline void Terrain::worldToTile( const Stuff::Vector3D& pos, long& tileR, long&
 
 //---------------------------------------------------------------------------
 
-inline void Terrain::worldToCell( const Stuff::Vector3D& pos, long& cellR, long& cellC )
+inline void Terrain::worldToCell( const Stuff::Vector3D& pos, int32_t& cellR, int32_t& cellC )
 {
 	cellC = float2long(( pos.x - land->mapTopLeft3d.x ) * (oneOverWorldUnitsPerVertex*3.0f));
 	cellR = float2long(( land->mapTopLeft3d.y - pos.y ) * (oneOverWorldUnitsPerVertex*3.0f));
@@ -351,7 +351,7 @@ inline void Terrain::worldToCell( const Stuff::Vector3D& pos, long& cellR, long&
 
 //---------------------------------------------------------------------------
 
-inline void Terrain::worldToTileCell( const Stuff::Vector3D& pos, long& tileR, long& tileC, long& cellR, long& cellC )
+inline void Terrain::worldToTileCell( const Stuff::Vector3D& pos, int32_t& tileR, int32_t& tileC, int32_t& cellR, int32_t& cellC )
 {
 	float tmpX = pos.x - land->mapTopLeft3d.x;
 	float tmpY = land->mapTopLeft3d.y - pos.y;
@@ -376,7 +376,7 @@ inline void Terrain::worldToTileCell( const Stuff::Vector3D& pos, long& tileR, l
 
 //---------------------------------------------------------------------------
 
-inline void Terrain::tileCellToWorld (long tileR, long tileC, long cellR, long cellC, Stuff::Vector3D& worldPos) 
+inline void Terrain::tileCellToWorld (int32_t tileR, int32_t tileC, int32_t cellR, int32_t cellC, Stuff::Vector3D& worldPos) 
 {
 	if ((tileC < 0) ||
 		(tileR < 0) ||
@@ -402,7 +402,7 @@ inline void Terrain::tileCellToWorld (long tileR, long tileC, long cellR, long c
 
 //---------------------------------------------------------------------------
 
-inline void Terrain::cellToWorld (long cellR, long cellC, Stuff::Vector3D& worldPos) 
+inline void Terrain::cellToWorld (int32_t cellR, int32_t cellC, Stuff::Vector3D& worldPos) 
 {
 	if ((cellR < 0) || 
 		(cellC < 0) || 
@@ -424,7 +424,7 @@ inline void Terrain::cellToWorld (long cellR, long cellC, Stuff::Vector3D& world
 
 //---------------------------------------------------------------------------
 
-inline void Terrain::getCellPos( long cellR, long cellC,  Stuff::Vector3D& cellPos )
+inline void Terrain::getCellPos( int32_t cellR, int32_t cellC,  Stuff::Vector3D& cellPos )
 {
 	cellPos.x = (cellC * (worldUnitsPerVertex/3.)) + (worldUnitsPerVertex/6.);
 	cellPos.y = (cellR * (worldUnitsPerVertex/3.)) + (worldUnitsPerVertex/6.);

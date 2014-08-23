@@ -23,13 +23,13 @@ namespace MidLevelRenderer {
 	class MLRClippingState
 	{
 	protected:
-		int
+		int32_t
 			clippingState;
 
 	public:
 		MLRClippingState()
 		{ clippingState = 0; };
-		MLRClippingState(int i)
+		MLRClippingState(int32_t i)
 		{ clippingState = i; };
 		MLRClippingState(const MLRClippingState& state)
 		{ clippingState = state.clippingState;}
@@ -122,7 +122,7 @@ namespace MidLevelRenderer {
 		{Check_Pointer(this); clippingState &= ~RightClipFlag;}
 
 		void
-			SetClip(int mask, int flag)
+			SetClip(int32_t mask, int32_t flag)
 		{
 			Check_Pointer(this); 
 #if USE_ASSEMBLER_CODE
@@ -150,17 +150,17 @@ namespace MidLevelRenderer {
 		}
 
 		bool
-			IsClipped(int mask)
+			IsClipped(int32_t mask)
 		{Check_Pointer(this); return (clippingState & mask) != 0;}
 
-		int
+		int32_t
 			GetClippingState()
 		{Check_Pointer(this); return (clippingState & ClipMask);}
 		void
-			SetClippingState(int state)
+			SetClippingState(int32_t state)
 		{Check_Pointer(this); clippingState = state & ClipMask;}
 
-		int
+		int32_t
 			GetNumberOfSetBits()
 		{Check_Pointer(this); Verify(clippingState<=ClipMask);
 		return numberBitsLookUpTable[clippingState]; }
@@ -234,7 +234,7 @@ namespace MidLevelRenderer {
 			TestInstance()
 		{}
 	private:
-		static int numberBitsLookUpTable[ClipMask+1];
+		static int32_t numberBitsLookUpTable[ClipMask+1];
 	};
 
 	inline void
@@ -242,7 +242,7 @@ namespace MidLevelRenderer {
 	{
 #if USE_ASSEMBLER_CODE
 
-		int _ret = 0;
+		int32_t _ret = 0;
 
 		_asm {
 			mov		edi, v4d

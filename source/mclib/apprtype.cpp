@@ -192,7 +192,7 @@ void AppearanceType::destroy (void)
 
 //---------------------------------------------------------------------------
 // class AppearanceTypeList
-void AppearanceTypeList::init (ULONG heapSize)
+void AppearanceTypeList::init (uint32_t heapSize)
 {
 	appearanceHeap = new UserHeap;
 	gosASSERT(appearanceHeap != NULL);
@@ -204,7 +204,7 @@ void AppearanceTypeList::init (ULONG heapSize)
 }
 
 //---------------------------------------------------------------------------
-AppearanceTypePtr AppearanceTypeList::getAppearance (ULONG apprNum, PSTR appearFile)
+AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appearFile)
 {
 	//----------------------------------------------------------------
 	// The type of appearance is stored in the upper 8 bits of the

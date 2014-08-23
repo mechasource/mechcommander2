@@ -9,7 +9,7 @@
 	#include <mlr/mlrcliptrick.hpp>
 #endif
 
-extern ULONG gShowClippedPolys;
+extern uint32_t gShowClippedPolys;
 
 //#############################################################################
 //#######################    MLRTriangleCloud    ##############################
@@ -22,7 +22,7 @@ DynamicArrayOf<Vector4D>
 DynamicArrayOf<RGBAColor>
 	*MLRTriangleCloud::clipExtraColors;
 
-DynamicArrayOf<int>
+DynamicArrayOf<int32_t>
 	*MLRTriangleCloud::clipExtraLength;
 
 MLRTriangleCloud::ClassData*
@@ -50,7 +50,7 @@ void
 	clipExtraColors = new DynamicArrayOf<RGBAColor> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Pointer(clipExtraColors);
 	
-	clipExtraLength = new DynamicArrayOf<int> (Limits::Max_Number_Primitives_Per_Frame);
+	clipExtraLength = new DynamicArrayOf<int32_t> (Limits::Max_Number_Primitives_Per_Frame);
 	Register_Pointer(clipExtraLength);
 }
 
@@ -76,7 +76,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRTriangleCloud::MLRTriangleCloud(int nr) :
+MLRTriangleCloud::MLRTriangleCloud(int32_t nr) :
 	MLREffect(nr, DefaultData)
 {
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -137,17 +137,17 @@ static MLRClippingState theAnd, theOr, theTest;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int 
+int32_t 
 	MLRTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool *vt)
 {
 	Check_Object(this);
 
-	int i, j, k;
-	int end, len = *usedNrOfTriangles;
+	int32_t i, j, k;
+	int32_t end, len = *usedNrOfTriangles;
 
-	int ret = 0;
+	int32_t ret = 0;
 #if	EFECT_CLIPPED				// this effect gets not clipped
-	int l, mask, k1, ct=0, 
+	int32_t l, mask, k1, ct=0, 
 	Scalar a=0.0f, bc0, bc1;
 #endif
 	
@@ -201,7 +201,7 @@ int
 		return visible;
 	}
 
-	int	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
+	int32_t	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 
 	myNumberUsedClipVertex = 0;
 	myNumberUsedClipIndex = 0;
@@ -323,7 +323,7 @@ int
 		{
 #if EFECT_CLIPPED		// this effect gets not clipped
 
-			int numberVerticesPerPolygon = 0;
+			int32_t numberVerticesPerPolygon = 0;
 
 			//
 			//---------------------------------------------------------------
@@ -343,7 +343,7 @@ int
 					// directly to the clipping buffer
 					//----------------------------------------------------
 					//
-					int clipped_index =
+					int32_t clipped_index =
 						myNumberUsedClipVertex + numberVerticesPerPolygon;
 					theTest = clipPerVertex[k];
 					if(theTest == 0)
@@ -461,7 +461,7 @@ int
 			else
 			{
 				EffectClipData srcPolygon, dstPolygon;
-				int dstBuffer = 0;
+				int32_t dstBuffer = 0;
 
 				//
 				//-----------------------------------------------------
@@ -501,7 +501,7 @@ int
 				//
 				mask = 1;
 				MLRClippingState theNewOr(0);
-				int loop = 4;
+				int32_t loop = 4;
 
 				do
 				{
@@ -695,7 +695,7 @@ int
 				//
 				for(k=0;k<srcPolygon.length;k++)
 				{
-					int clipped_index = myNumberUsedClipVertex + k;
+					int32_t clipped_index = myNumberUsedClipVertex + k;
 					if(srcPolygon.coords[k].z == srcPolygon.coords[k].w)
 					{
 						srcPolygon.coords[k].z -= SMALL;
@@ -728,7 +728,7 @@ int
 	{
 		for(i=0,j=0;i<myNumberUsedClipLength;i++)
 		{
-			int stride = clipExtraLength[i];
+			int32_t stride = clipExtraLength[i];
 
 			for(k=1;k<stride-1;k++)
 			{

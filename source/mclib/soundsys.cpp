@@ -230,13 +230,13 @@ int32_t SoundSystem::init (PSTR soundFileName)
 //   fields in the memory.
 //
 //////////////////////////////////////////////////////////////////
-bool wave_ParseWaveMemory(PUCHAR lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader, PUCHAR* lplpWaveSamples,ULONG *lpcbWaveSize)
+bool wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader, puint8_t* lplpWaveSamples,uint32_t *lpcbWaveSize)
 {
-    ULONG 	*pdw;
-    ULONG 	*pdwEnd;
-    ULONG   dwRiff;
-    ULONG   dwType;
-    ULONG   dwLength;
+    uint32_t 	*pdw;
+    uint32_t 	*pdwEnd;
+    uint32_t   dwRiff;
+    uint32_t   dwType;
+    uint32_t   dwLength;
 
     // Set defaults to NULL or zero
     if (*lplpWaveHeader)
@@ -248,9 +248,9 @@ bool wave_ParseWaveMemory(PUCHAR lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHea
     if (lpcbWaveSize)
         *lpcbWaveSize = 0;
 
-    // Set up ULONG pointers to the start of the chunk
+    // Set up uint32_t pointers to the start of the chunk
     // of memory.
-    pdw = (ULONG *)lpChunkOfMemory;
+    pdw = (uint32_t *)lpChunkOfMemory;
 
     // Get the type and length of the chunk of memory
     dwRiff = *pdw++;
@@ -266,7 +266,7 @@ bool wave_ParseWaveMemory(PUCHAR lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHea
       return FALSE;      // not a WAV
 
     // Find the pointer to the end of the chunk of memory
-    pdwEnd = (ULONG *)((puint8_t )pdw + dwLength-4);
+    pdwEnd = (uint32_t *)((puint8_t )pdw + dwLength-4);
 
     // Run through the bytes looking for the tags
     while (pdw < pdwEnd)
@@ -309,7 +309,7 @@ bool wave_ParseWaveMemory(PUCHAR lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHea
             // Point the samples pointer to this part of the
             // chunk of memory.
             if (*lplpWaveSamples == NULL)
-				*lplpWaveSamples = (PUCHAR)pdw;
+				*lplpWaveSamples = (puint8_t)pdw;
 
             // Set the size of the wave
             if (lpcbWaveSize)    *lpcbWaveSize = dwLength;
@@ -324,7 +324,7 @@ bool wave_ParseWaveMemory(PUCHAR lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHea
         } // End case
 
       // Move the pointer through the chunk of memory
-      pdw = (ULONG *)((puint8_t )pdw + ((dwLength+1)&~1));
+      pdw = (uint32_t *)((puint8_t )pdw + ((dwLength+1)&~1));
       }
 
   // Failed! If we made it here, we did not get all the peices
@@ -343,7 +343,7 @@ void SoundSystem::preloadSoundBite (int32_t soundId)
 	// If there is a packet in this spot, load it.
 	// First, check if there is enough room in the sound heap
 	// and if not, free up any samples whose cache status says dump.
-	ULONG packetSize = soundDataFile->getPacketSize();
+	uint32_t packetSize = soundDataFile->getPacketSize();
 	if (packetSize > 0)
 	{
 		SoundBite *thisSoundBite = (SoundBite *)(&(sounds[soundId]));
@@ -352,7 +352,7 @@ void SoundSystem::preloadSoundBite (int32_t soundId)
 		if (thisSoundBite->biteSize == 0 || thisSoundBite->biteData == NULL)
 		{
 			thisSoundBite->biteSize = packetSize;
-			thisSoundBite->biteData = (PUCHAR)soundHeap->Malloc(packetSize);
+			thisSoundBite->biteData = (puint8_t)soundHeap->Malloc(packetSize);
 			if (!thisSoundBite->biteData)
 				return;
 		}
@@ -365,9 +365,9 @@ void SoundSystem::preloadSoundBite (int32_t soundId)
 		soundFormat.wFormatTag = 1;				//PCM
 
 		MC2_WAVEFORMATEX *waveFormat = NULL;
-		PUCHAR dataOffset = NULL;
-		ULONG length = 0;
-		ULONG bitsPerSec = 0;
+		puint8_t dataOffset = NULL;
+		uint32_t length = 0;
+		uint32_t bitsPerSec = 0;
 		wave_ParseWaveMemory(thisSoundBite->biteData,&waveFormat,&dataOffset,&length);
 	   
 		if (waveFormat && dataOffset)
@@ -813,7 +813,7 @@ int32_t SoundSystem::playDigitalStream (PCSTR streamName)
 }
 
 //---------------------------------------------------------------------------
-int32_t SoundSystem::playBettySample (ULONG bettySampleId)
+int32_t SoundSystem::playBettySample (uint32_t bettySampleId)
 {
 	if (useSound && (bettySoundBite == NULL))	//Playing Betty takes precedence
 	{
@@ -836,7 +836,7 @@ int32_t SoundSystem::playBettySample (ULONG bettySampleId)
 			return(-1);
 			
 		int32_t bettySize = bettyDataFile->getPacketSize();
-		bettySoundBite = (PUCHAR)soundHeap->Malloc(bettySize);
+		bettySoundBite = (puint8_t)soundHeap->Malloc(bettySize);
 		gosASSERT(bettySoundBite != NULL);
 		
 		bettyDataFile->readPacket(bettySampleId,bettySoundBite);
@@ -847,9 +847,9 @@ int32_t SoundSystem::playBettySample (ULONG bettySampleId)
 		soundFormat.wFormatTag = 1;				//PCM
 		
 		MC2_WAVEFORMATEX *waveFormat = NULL;
-		PUCHAR dataOffset = NULL;
-		ULONG length = 0;
-		ULONG bitsPerSec = 0;
+		puint8_t dataOffset = NULL;
+		uint32_t length = 0;
+		uint32_t bitsPerSec = 0;
 		wave_ParseWaveMemory(bettySoundBite,&waveFormat,&dataOffset,&length);
 		
 		bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -872,7 +872,7 @@ int32_t SoundSystem::playBettySample (ULONG bettySampleId)
 }
 
 //---------------------------------------------------------------------------
-int32_t SoundSystem::playSupportSample (ULONG supportSampleId, PSTR fileName)
+int32_t SoundSystem::playSupportSample (uint32_t supportSampleId, PSTR fileName)
 {
 	if (useSound && (supportSoundBite == NULL))		//Playing Support takes precedence
 	{
@@ -904,7 +904,7 @@ int32_t SoundSystem::playSupportSample (ULONG supportSampleId, PSTR fileName)
 			int32_t supportSize = supportDataFile->getPacketSize();
 			if (supportSize > 0)
 			{
-				supportSoundBite = (PUCHAR)soundHeap->Malloc(supportSize);
+				supportSoundBite = (puint8_t)soundHeap->Malloc(supportSize);
 				gosASSERT(supportSoundBite != NULL);
 			}
 			else
@@ -921,9 +921,9 @@ int32_t SoundSystem::playSupportSample (ULONG supportSampleId, PSTR fileName)
 		soundFormat.wFormatTag = 1;				//PCM
 		
 		MC2_WAVEFORMATEX *waveFormat = NULL;
-		PUCHAR dataOffset = NULL;
-		ULONG length = 0;
-		ULONG bitsPerSec = 0;
+		puint8_t dataOffset = NULL;
+		uint32_t length = 0;
+		uint32_t bitsPerSec = 0;
 		wave_ParseWaveMemory(supportSoundBite,&waveFormat,&dataOffset,&length);
 		
 		bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -1003,7 +1003,7 @@ int32_t SoundSystem::findOpenChannel (int32_t start, int32_t end)
 }	
 
 //---------------------------------------------------------------------------
-int32_t SoundSystem::playDigitalSample (ULONG sampleId, Stuff::Vector3D pos, bool allowDupes)
+int32_t SoundSystem::playDigitalSample (uint32_t sampleId, Stuff::Vector3D pos, bool allowDupes)
 {
 	if (useSound && allowDupes || (!isPlayingSample(sampleId) && !allowDupes))
 	{
@@ -1061,7 +1061,7 @@ int32_t SoundSystem::playDigitalSample (ULONG sampleId, Stuff::Vector3D pos, boo
 }
 
 //---------------------------------------------------------------------------
-void SoundSystem::stopDigitalSample (ULONG sampleHandleNumber)
+void SoundSystem::stopDigitalSample (uint32_t sampleHandleNumber)
 {
 	if (useSound)
 	{

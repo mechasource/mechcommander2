@@ -25,9 +25,9 @@ MLRTexture::MLRTexture(MemoryStream *stream)
 MLRTexture::MLRTexture(
 	MLRTexturePool *tp,
 	PCSTR texName,
-	int _instance,
-	int handle,
-	int _hint
+	int32_t _instance,
+	int32_t handle,
+	int32_t _hint
 )
 {
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -53,8 +53,8 @@ MLRTexture::MLRTexture(
 MLRTexture::MLRTexture(
 	MLRTexturePool *tp,
 	GOSImage *_image,
-	int handle,
-	int _hint
+	int32_t handle,
+	int32_t _hint
 )
 {
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -126,7 +126,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLRTexture::GetImageNumber()
 {
 	Check_Object(this);
@@ -135,7 +135,7 @@ int
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLRTexture::GetInstanceNumber()
 {
 	Check_Object(this);

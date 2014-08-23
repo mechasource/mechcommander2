@@ -408,7 +408,7 @@ void GVAppearanceType::destroy (void)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearanceType::setAnimation (TG_MultiShapePtr shape, ULONG animationNum)
+void GVAppearanceType::setAnimation (TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != NULL);
 	gosASSERT(animationNum != 0xffffffff);
@@ -763,7 +763,7 @@ void GVAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					ULONG gosTextureHandle = 0;
+					uint32_t gosTextureHandle = 0;
 					
 					if (!i)
 					{
@@ -781,7 +781,7 @@ void GVAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 				}
 				else
 				{
-					ULONG gosTextureHandle = 0;
+					uint32_t gosTextureHandle = 0;
 					
 					if (!i)
 					{
@@ -825,14 +825,14 @@ void GVAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						gvShadowShape->SetTextureHandle(i,gosTextureHandle);
 						gvShadowShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						gvShadowShape->SetTextureHandle(i,gosTextureHandle);
 						gvShadowShape->SetTextureAlpha(i,false);
@@ -867,13 +867,13 @@ void GVAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorTriangleShape->SetTextureHandle(i,gosTextureHandle);
 					sensorTriangleShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorTriangleShape->SetTextureHandle(i,gosTextureHandle);
 					sensorTriangleShape->SetTextureAlpha(i,false);
 				}
@@ -903,13 +903,13 @@ void GVAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorCircleShape->SetTextureHandle(i,gosTextureHandle);
 					sensorCircleShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorCircleShape->SetTextureHandle(i,gosTextureHandle);
 					sensorCircleShape->SetTextureAlpha(i,false);
 				}
@@ -1073,7 +1073,7 @@ void GVAppearance::setObjStatus (int32_t oStatus)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					ULONG gosTextureHandle = 0;
+					uint32_t gosTextureHandle = 0;
 					
 					if (!i)
 					{
@@ -1091,7 +1091,7 @@ void GVAppearance::setObjStatus (int32_t oStatus)
 				}
 				else
 				{
-					ULONG gosTextureHandle = 0;
+					uint32_t gosTextureHandle = 0;
 					
 					if (!i)
 					{
@@ -1125,7 +1125,7 @@ void GVAppearance::setPaintScheme (void)
 {
 	//----------------------------------------------------------------------------
 	// Simple really.  Get the texture memory, apply the paint scheme, let it go!
-	ULONG gosHandle = mcTextureManager->get_gosTextureHandle(gvShape->GetTextureHandle(0));
+	uint32_t gosHandle = mcTextureManager->get_gosTextureHandle(gvShape->GetTextureHandle(0));
 
 	if (gosHandle && gosHandle != 0xffffffff)
 	{
@@ -1135,20 +1135,20 @@ void GVAppearance::setPaintScheme (void)
 		gos_LockTexture(gosHandle, 0, 0, &textureData);
 
 		//-------------------------------------------------------
-		ULONG *textureMemory = textureData.pTexture;
+		uint32_t *textureMemory = textureData.pTexture;
 		for (int32_t i=0;i<textureData.Height;i++)
 		{
 			for (int32_t j=0;j<textureData.Height;j++)
 			{
 				//---------------------------------------------
 				// Make Color from PaintScheme.
-				ULONG baseColor = *textureMemory;
-				UCHAR baseColorAlpha = ((baseColor & 0xff000000)>>24);
+				uint32_t baseColor = *textureMemory;
+				uint8_t baseColorAlpha = ((baseColor & 0xff000000)>>24);
 				float baseColorRed = float((baseColor & 0x00ff0000)>>16);
 				float baseColorGreen = float((baseColor & 0x0000ff00)>>8);
 				float baseColorBlue = float(baseColor & 0x000000ff);
 
-				ULONG newColor = *textureMemory;	//Black by default.
+				uint32_t newColor = *textureMemory;	//Black by default.
 				if ((!baseColorGreen) && (!baseColorBlue))
 				{
 					baseColorRed *= 0.00390625f;		//Divide by 256;
@@ -1225,10 +1225,10 @@ void GVAppearance::setPaintScheme (void)
 }	
 
 //---------------------------------------------------------------------------
-ULONG bgrTorgb (ULONG frontRGB);
+uint32_t bgrTorgb (uint32_t frontRGB);
 
 //-----------------------------------------------------------------------------
-void GVAppearance::setPaintScheme (ULONG mcRed, ULONG mcGreen, ULONG mcBlue)
+void GVAppearance::setPaintScheme (uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
 {
 #ifdef BGR
 	// These come into here bgr instead of RGB.  CONVERT!
@@ -1245,7 +1245,7 @@ void GVAppearance::setPaintScheme (ULONG mcRed, ULONG mcGreen, ULONG mcBlue)
 }	
 
 //-----------------------------------------------------------------------------
-void GVAppearance::getPaintScheme( ULONG& red, ULONG& green, ULONG& blue )
+void GVAppearance::getPaintScheme( uint32_t& red, uint32_t& green, uint32_t& blue )
 {
 #ifdef BGR
 	red = bgrTorgb(psRed);
@@ -1259,12 +1259,12 @@ void GVAppearance::getPaintScheme( ULONG& red, ULONG& green, ULONG& blue )
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::resetPaintScheme (ULONG red, ULONG green, ULONG blue)
+void GVAppearance::resetPaintScheme (uint32_t red, uint32_t green, uint32_t blue)
 {
 	//---------------------------------------------------------------------------------
 	// Simple really.  Toss the current texture, reload the RGB and reapply the colors
 	
-	ULONG gosHandle = mcTextureManager->get_gosTextureHandle(localTextureHandle);
+	uint32_t gosHandle = mcTextureManager->get_gosTextureHandle(localTextureHandle);
 	mcTextureManager->removeTexture(gosHandle);
 	
 	//-------------------------------------------------
@@ -1278,7 +1278,7 @@ void GVAppearance::resetPaintScheme (ULONG red, ULONG green, ULONG blue)
    	FullPathFileName textureName;
    	textureName.init(texturePath,txmName,"");
 
-	//ULONG paintInstance = (red << 16) + (green << 8) + (blue);
+	//uint32_t paintInstance = (red << 16) + (green << 8) + (blue);
 	/* The texture manager asks for a unique 32bit identifier for every texture instance.
 	However, it requires 72 bits to fully describe a mech texture (the base color (stored in
 	the variable "red"), highlight color1 (blue), and highlight color2 (green), each of which
@@ -1289,16 +1289,16 @@ void GVAppearance::resetPaintScheme (ULONG red, ULONG green, ULONG blue)
 	that are close in color (i.e. all of the 3 most significant bits of the 9 rgb components are
 	the same) will be treated as the same texture, which is not necessarily a bad thing in
 	our case.  */
-	ULONG ccbase = ((red >> 5) & 7) + (((red >> 13) & 7) << 3) + (((red >> 21) & 7) << 6);
-	ULONG cchighlight1 = ((green >> 5) & 7) + (((green >> 13) & 7) << 3) + (((green >> 21) & 7) << 6);
-	ULONG cchighlight2 = ((blue >> 5) & 7) + (((blue >> 13) & 7) << 3) + (((blue >> 21) & 7) << 6);
-	ULONG paintInstance = (ccbase << 18) + (cchighlight1 << 9) + (cchighlight2);
+	uint32_t ccbase = ((red >> 5) & 7) + (((red >> 13) & 7) << 3) + (((red >> 21) & 7) << 6);
+	uint32_t cchighlight1 = ((green >> 5) & 7) + (((green >> 13) & 7) << 3) + (((green >> 21) & 7) << 6);
+	uint32_t cchighlight2 = ((blue >> 5) & 7) + (((blue >> 13) & 7) << 3) + (((blue >> 21) & 7) << 6);
+	uint32_t paintInstance = (ccbase << 18) + (cchighlight1 << 9) + (cchighlight2);
 	
 	if (fileExists(textureName))
 	{
 		if (strnicmp(txmName,"a_",2) == 0)
 		{
-			ULONG textureInstanceAlreadyExists = mcTextureManager->textureInstanceExists(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
+			uint32_t textureInstanceAlreadyExists = mcTextureManager->textureInstanceExists(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
 			if (!textureInstanceAlreadyExists)
 				localTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
 			else
@@ -1321,7 +1321,7 @@ void GVAppearance::resetPaintScheme (ULONG red, ULONG green, ULONG blue)
 		}
 		else
 		{
-			ULONG textureInstanceAlreadyExists = mcTextureManager->textureInstanceExists(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
+			uint32_t textureInstanceAlreadyExists = mcTextureManager->textureInstanceExists(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
 			if (!textureInstanceAlreadyExists)
 				localTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
 			else
@@ -1352,7 +1352,7 @@ void GVAppearance::resetPaintScheme (ULONG red, ULONG green, ULONG blue)
 }	
 
 //-----------------------------------------------------------------------------
-void GVAppearance::setGesture (ULONG gestureId)
+void GVAppearance::setGesture (uint32_t gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -1737,7 +1737,7 @@ bool GVAppearance::recalcBounds (void)
 						//-------------------------------------------------------------------------------
 						//Set LOD of Model here because we have the distance and we KNOW we can see it!
 						bool baseLOD = true;
-						ULONG selectLOD = 0;
+						uint32_t selectLOD = 0;
 						if (useHighObjectDetail)
 						{
 							for (int32_t i=1;i<MAX_LODS;i++)
@@ -1759,11 +1759,11 @@ bool GVAppearance::recalcBounds (void)
 						}
 						
 						// we are at this LOD level.
-						if (selectLOD != (ULONG)currentLOD)
+						if (selectLOD != (uint32_t)currentLOD)
 						{
 							currentLOD = selectLOD;
 
-							UCHAR alphaValue = gvShape->GetAlphaValue();
+							uint8_t alphaValue = gvShape->GetAlphaValue();
 							gvShape->ClearAnimation();
 							delete gvShape;
 							gvShape = NULL;
@@ -1791,14 +1791,14 @@ bool GVAppearance::recalcBounds (void)
 								{
 									if (strnicmp(txmName,"a_",2) == 0)
 									{
-										ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+										uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 										gosASSERT(gosTextureHandle != 0xffffffff);
 										gvShape->SetTextureHandle(j,gosTextureHandle);
 										gvShape->SetTextureAlpha(j,true);
 									}
 									else
 									{
-										ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+										uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 										gosASSERT(gosTextureHandle != 0xffffffff);
 										gvShape->SetTextureHandle(j,gosTextureHandle);
 										gvShape->SetTextureAlpha(j,false);
@@ -1819,7 +1819,7 @@ bool GVAppearance::recalcBounds (void)
 						// we are at the Base LOD level.
 							currentLOD = 0;
 							
-							UCHAR alphaValue = gvShape->GetAlphaValue();
+							uint8_t alphaValue = gvShape->GetAlphaValue();
 							gvShape->ClearAnimation();
 							delete gvShape;
 							gvShape = NULL;
@@ -2022,9 +2022,9 @@ int32_t GVAppearance::render (int32_t depthFixup)
 	if (inView)
 	{
 		int32_t color = SD_BLUE;
-		ULONG highLight = 0x007f7f7f;
+		uint32_t highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8)) {
-			static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+			static uint32_t highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
 			static int32_t colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE| 0xff000000, SB_RED | 0xff000000};
 			color = colorTable[homeTeamRelationship];
 			highLight = highLightTable[homeTeamRelationship];
@@ -2349,12 +2349,12 @@ void GVAppearance::updateGeometry (void)
 		lightg = eye->getLightGreen(lightIntensity);
 		lightb = eye->getLightBlue(lightIntensity);
 	
-		ULONG lightRGB = (lightr<<16) + (lightg<<8) + lightb;
+		uint32_t lightRGB = (lightr<<16) + (lightg<<8) + lightb;
 		
 		eye->setLightColor(0,lightRGB);
 		eye->setLightIntensity(0,1.0);
 	
-		ULONG fogRGB = 0xff<<24;
+		uint32_t fogRGB = 0xff<<24;
 		float fogStart = eye->fogStart;
 		float fogFull = eye->fogFull;
 	
@@ -2897,7 +2897,7 @@ bool GVAppearance::PerPolySelect (int32_t mouseX, int32_t mouseY)
 }
 
 //-----------------------------------------------------------------------------
-void GVAppearance::flashBuilding (float dur, float fDuration, ULONG color)
+void GVAppearance::flashBuilding (float dur, float fDuration, uint32_t color)
 {
 	duration = dur;
 	flashDuration = fDuration;

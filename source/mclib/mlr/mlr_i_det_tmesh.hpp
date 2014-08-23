@@ -11,7 +11,7 @@
 //#include <mlr/mlr_i_tmesh.hpp>
 //#include <mlr/mlr_i_det_pmesh.hpp>
 
-extern ULONG gEnableDetailTexture;
+extern uint32_t gEnableDetailTexture;
 
 namespace MidLevelRenderer {
 
@@ -37,7 +37,7 @@ namespace MidLevelRenderer {
 		MLR_I_DeT_TMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		~MLR_I_DeT_TMesh();
 
@@ -47,7 +47,7 @@ namespace MidLevelRenderer {
 		static MLR_I_DeT_TMesh*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		void
@@ -97,13 +97,13 @@ namespace MidLevelRenderer {
 			dEnd = fadeDetailEnd;
 		}
 
-		virtual int	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual int32_t	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
 
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
 		virtual void
-			SetReferenceState(const MLRState& _state, int pass=0)
+			SetReferenceState(const MLRState& _state, int32_t pass=0)
 		{
 			Check_Object(this);
 			Verify(pass>=0 && pass<2);
@@ -118,7 +118,7 @@ namespace MidLevelRenderer {
 			}
 		}
 		virtual const MLRState&
-			GetReferenceState(int pass=0) const
+			GetReferenceState(int32_t pass=0) const
 		{
 			Check_Object(this); 
 			if(pass==0)
@@ -127,7 +127,7 @@ namespace MidLevelRenderer {
 				return referenceState2;
 		}
 		virtual const MLRState&
-			GetCurrentState(int pass=0) const
+			GetCurrentState(int32_t pass=0) const
 		{
 			Check_Object(this);
 			if(pass==0)
@@ -149,7 +149,7 @@ namespace MidLevelRenderer {
 		};
 
 		virtual GOSVertex*
-			GetGOSVertices(int pass=0)
+			GetGOSVertices(int32_t pass=0)
 		{
 			Check_Object(this); 
 			if(pass==0)
@@ -158,11 +158,11 @@ namespace MidLevelRenderer {
 				return gos_vertices+numGOSVertices;
 		}
 
-		virtual int
+		virtual int32_t
 			GetNumPasses();
 
 		GOSVertex2UV*
-			GetGOSVertices2UV(int=0)
+			GetGOSVertices2UV(int32_t=0)
 		{ Check_Object(this); return gos_vertices2uv; }
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -177,11 +177,11 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int
+		virtual int32_t
 			GetSize()
 		{ 
 			Check_Object(this);
-			int ret = MLR_I_TMesh::GetSize();
+			int32_t ret = MLR_I_TMesh::GetSize();
 
 			return ret;
 		}

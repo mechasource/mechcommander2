@@ -21,7 +21,7 @@ public:
 
 private:
 	MString name;
-	int on, count;
+	int32_t on, count;
 	double sum;
 
 	double start, end;

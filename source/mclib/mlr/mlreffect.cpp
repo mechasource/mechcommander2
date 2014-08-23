@@ -86,7 +86,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLREffect::MLREffect(int nr, ClassData *class_data):
+MLREffect::MLREffect(int32_t nr, ClassData *class_data):
 	RegisteredClass(class_data)
 {
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -94,7 +94,7 @@ MLREffect::MLREffect(int nr, ClassData *class_data):
 	maxNrOf = nr;
 
 	testList.SetLength(maxNrOf);
-	for(int i=0; i < maxNrOf; i++)
+	for(int32_t i=0; i < maxNrOf; i++)
 	{
 		testList[i] = 0;
 	}
@@ -117,12 +117,12 @@ MLREffect::~MLREffect()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void 
-	MLREffect::Transform(int nrOfUsedEffects, int nrOfVertices)
+	MLREffect::Transform(int32_t nrOfUsedEffects, int32_t nrOfVertices)
 {
 	Check_Object(this);
 
 	Start_Timer(Transform_Time);
-	int i, j, k;
+	int32_t i, j, k;
 
 	for(i=0,j=0;i<nrOfUsedEffects;i++,j+=nrOfVertices)
 	{
@@ -146,7 +146,7 @@ void
 	MLREffect::TurnAllOn()
 {
 	Check_Object(this);
-	int i;
+	int32_t i;
 
 	for(i=0;i<maxNrOf;i++)
 	{
@@ -160,7 +160,7 @@ void
 	MLREffect::TurnAllOff()
 {
 	Check_Object(this);
-	int i;
+	int32_t i;
 
 	for(i=0;i<maxNrOf;i++)
 	{
@@ -174,7 +174,7 @@ void
 	MLREffect::TurnAllVisible()
 {
 	Check_Object(this);
-	int i;
+	int32_t i;
 
 	for(i=0;i<maxNrOf;i++)
 	{
@@ -188,7 +188,7 @@ void
 	MLREffect::TurnAllInVisible()
 {
 	Check_Object(this);
-	int i;
+	int32_t i;
 
 	for(i=0;i<maxNrOf;i++)
 	{

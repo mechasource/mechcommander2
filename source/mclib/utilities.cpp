@@ -13,7 +13,7 @@ Utilities.cpp			: Implementation of the Utilities component.
 
 //#pragma warning(disable:4514)
 
-void drawRect( const RECT& area, ULONG color )
+void drawRect( const RECT& area, uint32_t color )
 {
 	if ( color & 0xff000000 )
 	{
@@ -72,8 +72,8 @@ void drawRect( const RECT& area, ULONG color )
 }
 
 	
-void drawEmptyRect( const RECT& area, ULONG leftTopBorderColor, 
-							ULONG rightBottomBorderColor )
+void drawEmptyRect( const RECT& area, uint32_t leftTopBorderColor, 
+							uint32_t rightBottomBorderColor )
 {
 	gos_VERTEX v[4];
 
@@ -162,14 +162,14 @@ StaticInfo::~StaticInfo()
 {
 	if (mcTextureManager)
 	{
-		ULONG gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
+		uint32_t gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
 		mcTextureManager->removeTexture( gosID );
 	}
 }
 
 void StaticInfo::render()
 {
-	ULONG gosID = mcTextureManager->get_gosTextureHandle( textureHandle );	
+	uint32_t gosID = mcTextureManager->get_gosTextureHandle( textureHandle );	
 	gos_SetRenderState( gos_State_Texture, gosID );
 	gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 	gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha );
@@ -180,8 +180,8 @@ void StaticInfo::render()
 
 void StaticInfo::showGUIWindow( bool bShow )
 {
-	int mask = bShow ? 0xff000000 : 0x00ffffff;
-	for ( int i = 0; i < 4; i++ )
+	int32_t mask = bShow ? 0xff000000 : 0x00ffffff;
+	for ( int32_t i = 0; i < 4; i++ )
 	{
 		if ( bShow )
 			location[i].argb |= mask;
@@ -190,7 +190,7 @@ void StaticInfo::showGUIWindow( bool bShow )
 	}
 }
 
-bool StaticInfo::isInside( int mouseX, int mouseY )
+bool StaticInfo::isInside( int32_t mouseX, int32_t mouseY )
 {
 	if ( (location[0].x)  <= mouseX && 
 		 location[3].x >= mouseX && 
@@ -208,19 +208,19 @@ void StaticInfo::getData(puint8_t  buffer)
 {
 	if ((vHeight > 32) || (uWidth > 32))
 	{
-		memset(buffer,0,sizeof(ULONG) * 32 * 32);
+		memset(buffer,0,sizeof(uint32_t) * 32 * 32);
 		return;
 	}
 	
-	ULONG gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
+	uint32_t gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
 	if (gosID)
 	{
 		TEXTUREPTR textureData;
 		gos_LockTexture( gosID, 0, 0, &textureData );
 	
-		ULONG *bufMem = (ULONG *)buffer;
-		ULONG localU = location[0].u * textureData.Width;
-		ULONG localV = location[0].v * textureData.Width;
+		uint32_t *bufMem = (uint32_t *)buffer;
+		uint32_t localU = location[0].u * textureData.Width;
+		uint32_t localV = location[0].v * textureData.Width;
 
 		//Make sure we don't fall off of the texture!
 		if ((localU > textureData.Width) ||
@@ -228,14 +228,14 @@ void StaticInfo::getData(puint8_t  buffer)
 			(localV > textureData.Width) ||
 			((localV + vHeight) > textureData.Width))
 		{
-			memset(buffer,0,sizeof(ULONG) * 32 * 32);
+			memset(buffer,0,sizeof(uint32_t) * 32 * 32);
 			gos_UnLockTexture( gosID );
 			return;
 		}
 
 		for (int32_t y=0;y<vHeight;y++)
 		{
-			ULONG *textureMemory = textureData.pTexture + (localU + ((localV+y) * textureData.Width));
+			uint32_t *textureMemory = textureData.pTexture + (localU + ((localV+y) * textureData.Width));
 		
 			for (int32_t x=0;x<uWidth;x++)
 			{
@@ -249,7 +249,7 @@ void StaticInfo::getData(puint8_t  buffer)
 	}
 }
 
-void StaticInfo::init( FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, int32_t hiResOffsetY, ULONG neverFlush )
+void StaticInfo::init( FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, int32_t hiResOffsetY, uint32_t neverFlush )
 {
 	memset( location, 0, sizeof( location ) );
 	char fileName[256];
@@ -281,9 +281,9 @@ void StaticInfo::init( FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, i
 		FullPathFileName fullPath;
 		_strlwr( fileName );
 		fullPath.init( artPath, fileName, ".tga" );
-		int ID = mcTextureManager->loadTexture( fullPath, gos_Texture_Alpha, 0, 0, 0x2 );
+		int32_t ID = mcTextureManager->loadTexture( fullPath, gos_Texture_Alpha, 0, 0, 0x2 );
 		textureHandle = ID;
-		ULONG gosID = mcTextureManager->get_gosTextureHandle( ID );
+		uint32_t gosID = mcTextureManager->get_gosTextureHandle( ID );
 		TEXTUREPTR textureData;
 		gos_LockTexture( gosID, 0, 0, 	&textureData );
 		textureWidth = textureData.Width;
@@ -298,7 +298,7 @@ void StaticInfo::init( FitIniFile& file, PSTR blockName, int32_t hiResOffsetX, i
 	file.readIdLong( "VHeight", vHeight );
 	file.readIdBoolean( "texturesRotated", bRotated );
 
-	for ( int k = 0; k < 4; k++ )
+	for ( int32_t k = 0; k < 4; k++ )
 	{
 		location[k].argb = 0xffffffff;
 		location[k].frgb = 0;
@@ -345,7 +345,7 @@ void StaticInfo::setLocation( float  newX, float newY )
 
 void StaticInfo::move( float deltaX, float deltaY )
 {
-	for ( int i = 0; i < 4; i++ )
+	for ( int32_t i = 0; i < 4; i++ )
 	{
 		location[i].x += deltaX;
 		location[i].y += deltaY;
@@ -354,7 +354,7 @@ void StaticInfo::move( float deltaX, float deltaY )
 
 void StaticInfo::setColor( int32_t newColor )
 {
-	for ( int i = 0; i < 4; i++ )
+	for ( int32_t i = 0; i < 4; i++ )
 		location[i].argb = newColor;
 
 }

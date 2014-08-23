@@ -31,7 +31,7 @@ namespace MidLevelRenderer {
 		// Constructors/Destructors
 		//
 	public:
-		MLRLineCloud(int, int=0);
+		MLRLineCloud(int32_t, int32_t=0);
 		~MLRLineCloud();
 
 		void
@@ -40,14 +40,14 @@ namespace MidLevelRenderer {
 			const Stuff::Point3D *point_data,
 			const Stuff::RGBAColor *color_data
 			);
-		virtual int
-			GetType(int) { return type; }
+		virtual int32_t
+			GetType(int32_t) { return type; }
 
 		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
-		void Transform(int, int);
+		void Transform(int32_t, int32_t);
 
-		int	Clip(MLRClippingState, GOSVertexPool*);		
+		int32_t	Clip(MLRClippingState, GOSVertexPool*);		
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -62,7 +62,7 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 	protected:
-		int type;
+		int32_t type;
 		pcint32_t usedNrOfVertices;
 	};
 

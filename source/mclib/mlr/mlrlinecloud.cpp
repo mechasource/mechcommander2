@@ -44,7 +44,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLineCloud::MLRLineCloud(int nr, int _type) :
+MLRLineCloud::MLRLineCloud(int32_t nr, int32_t _type) :
 	MLREffect(2*nr, DefaultData), type(_type)
 {
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -103,12 +103,12 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void 
-	MLRLineCloud::Transform(int, int)
+	MLRLineCloud::Transform(int32_t, int32_t)
 {
 	Check_Object(this);
 
 	Start_Timer(Transform_Time);
-	int i;
+	int32_t i;
 
 	for(i=0;i<*usedNrOfVertices;i++)
 	{
@@ -124,14 +124,14 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int 
+int32_t 
 	MLRLineCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool *vt)
 {
 	//--------------------------------------
 	// See if we don't have to draw anything
 	//--------------------------------------
 	//
-	int i;
+	int32_t i;
 	numGOSVertices = 0;
 
 	if(clippingFlags.GetClippingState() == 0 || usedNrOfVertices <= 0)
@@ -187,8 +187,8 @@ int
 		startClip.Clip4dVertex(v4d+i);
 		endClip.Clip4dVertex(v4d+i+1);
 
-		theAnd = *(int *)&startClip & *(int *)&endClip;
-		theOr = *(int *)&startClip | *(int *)&endClip;
+		theAnd = *(pint32_t )&startClip & *(pint32_t )&endClip;
+		theOr = *(pint32_t )&startClip | *(pint32_t )&endClip;
 
 		theAnd = theOr = 0;		//ASSUME NO CLIPPING NEEDED FOR MC2.  Its just not done here!
 
@@ -219,7 +219,7 @@ int
 		}
 
 		Scalar a=0.0f;
-		int l, ct=0, mask;
+		int32_t l, ct=0, mask;
 
 		if(theOr.GetNumberOfSetBits()==1)
 		{
@@ -370,7 +370,7 @@ int
 					}
 				}
 
-				if(*(int *)&startClip & *(int *)&endClip)
+				if(*(pint32_t )&startClip & *(pint32_t )&endClip)
 				{
 					break;
 				}

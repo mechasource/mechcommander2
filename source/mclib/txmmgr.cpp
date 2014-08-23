@@ -53,15 +53,15 @@
 // static globals
 MC_TextureManager *mcTextureManager = NULL;
 gos_VERTEXManager *MC_TextureManager::gvManager = NULL;
-PUCHAR			MC_TextureManager::lzBuffer1 = NULL;
-PUCHAR			MC_TextureManager::lzBuffer2 = NULL;
-int				MC_TextureManager::iBufferRefCount = 0;
+puint8_t			MC_TextureManager::lzBuffer1 = NULL;
+puint8_t			MC_TextureManager::lzBuffer2 = NULL;
+int32_t				MC_TextureManager::iBufferRefCount = 0;
 
 bool MLRVertexLimitReached = false;
 extern bool useFog;
 
-ULONG actualTextureSize = 0;
-ULONG compressedTextureSize = 0;
+uint32_t actualTextureSize = 0;
+uint32_t compressedTextureSize = 0;
 
 #define MAX_SENDDOWN		10002
 
@@ -306,7 +306,7 @@ void MC_TextureManager::flush (bool justTextures)
 		STOP(("Could not find MC2.fx"));
 		
 	int32_t effectsSize = effectFile.fileSize();
-	PUCHAR effectsData = (PUCHAR)systemHeap->Malloc(effectsSize);
+	puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
 	effectFile.read(effectsData,effectsSize);
 	effectFile.close();
 	
@@ -321,7 +321,7 @@ void MC_TextureManager::flush (bool justTextures)
 }
 
 //----------------------------------------------------------------------
-void MC_TextureManager::removeTextureNode (ULONG textureNode)
+void MC_TextureManager::removeTextureNode (uint32_t textureNode)
 {
 	if (textureNode != 0xffffffff)
 	{
@@ -342,7 +342,7 @@ void MC_TextureManager::removeTextureNode (ULONG textureNode)
 }
 
 //----------------------------------------------------------------------
-void MC_TextureManager::removeTexture (ULONG gosHandle)
+void MC_TextureManager::removeTexture (uint32_t gosHandle)
 {
 	int32_t i;
 	//-----------------------------------------------------------
@@ -505,12 +505,12 @@ void MC_TextureManager::renderLists (void)
 		gos_SetRenderState(	gos_State_ZWrite, 1);
 	}
 		
-	ULONG fogColor = eye->fogColor;
+	uint32_t fogColor = eye->fogColor;
 	//-----------------------------------------------------
 	// FOG time.  Set Render state to FOG on!
 	if (useFog)
 	{
-		gos_SetRenderState( gos_State_Fog, (int)&fogColor);
+		gos_SetRenderState( gos_State_Fog, (int32_t)&fogColor);
 	}
 	else
 	{
@@ -528,7 +528,7 @@ void MC_TextureManager::renderLists (void)
 			else
 				gos_SetRenderState( gos_State_TextureAddress, gos_TextureWrap );
 
-			ULONG totalVertices = masterVertexNodes[i].numVertices;
+			uint32_t totalVertices = masterVertexNodes[i].numVertices;
 			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -584,7 +584,7 @@ void MC_TextureManager::renderLists (void)
 			!(masterVertexNodes[i].flags & MC2_ISCRATERS) &&
 			(masterVertexNodes[i].vertices))
 		{
-			ULONG totalVertices = masterVertexNodes[i].numVertices;
+			uint32_t totalVertices = masterVertexNodes[i].numVertices;
 			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -643,7 +643,7 @@ void MC_TextureManager::renderLists (void)
 				(masterVertexNodes[i].flags & MC2_ISCRATERS) && 
 				(masterVertexNodes[i].vertices))
 			{
-				ULONG totalVertices = masterVertexNodes[i].numVertices;
+				uint32_t totalVertices = masterVertexNodes[i].numVertices;
 				if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 				{
 					totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -695,7 +695,7 @@ void MC_TextureManager::renderLists (void)
 			(masterVertexNodes[i].flags & MC2_ISCRATERS) && 
 			(masterVertexNodes[i].vertices))
 		{
-			ULONG totalVertices = masterVertexNodes[i].numVertices;
+			uint32_t totalVertices = masterVertexNodes[i].numVertices;
 			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -759,7 +759,7 @@ void MC_TextureManager::renderLists (void)
 				(masterVertexNodes[i].flags & MC2_DRAWALPHA) &&
 				(masterVertexNodes[i].vertices))
 			{
-				ULONG totalVertices = masterVertexNodes[i].numVertices;
+				uint32_t totalVertices = masterVertexNodes[i].numVertices;
 				if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 				{
 					totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -814,7 +814,7 @@ void MC_TextureManager::renderLists (void)
 			(masterVertexNodes[i].flags & MC2_DRAWALPHA) &&
 			(masterVertexNodes[i].vertices))
 		{
-			ULONG totalVertices = masterVertexNodes[i].numVertices;
+			uint32_t totalVertices = masterVertexNodes[i].numVertices;
 			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -879,7 +879,7 @@ void MC_TextureManager::renderLists (void)
 		if ((masterVertexNodes[i].flags & MC2_ISEFFECTS) &&
 			(masterVertexNodes[i].vertices))
 		{
-			ULONG totalVertices = masterVertexNodes[i].numVertices;
+			uint32_t totalVertices = masterVertexNodes[i].numVertices;
 			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -923,7 +923,7 @@ void MC_TextureManager::renderLists (void)
 		if ((masterVertexNodes[i].flags & MC2_ISSPOTLGT) &&
 			(masterVertexNodes[i].vertices))
 		{
-			ULONG totalVertices = masterVertexNodes[i].numVertices;
+			uint32_t totalVertices = masterVertexNodes[i].numVertices;
 			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -971,7 +971,7 @@ void MC_TextureManager::renderLists (void)
 		if ((masterVertexNodes[i].flags & MC2_ISCOMPASS) &&
 			(masterVertexNodes[i].vertices))
 		{
-			ULONG totalVertices = masterVertexNodes[i].numVertices;
+			uint32_t totalVertices = masterVertexNodes[i].numVertices;
 			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -1015,7 +1015,7 @@ void MC_TextureManager::renderLists (void)
 		if ((masterVertexNodes[i].flags & MC2_ISHUDLMNT) &&
 			(masterVertexNodes[i].vertices))
 		{
-			ULONG totalVertices = masterVertexNodes[i].numVertices;
+			uint32_t totalVertices = masterVertexNodes[i].numVertices;
 			if (masterVertexNodes[i].currentVertex != (masterVertexNodes[i].vertices + masterVertexNodes[i].numVertices))
 			{
 				totalVertices = masterVertexNodes[i].currentVertex - masterVertexNodes[i].vertices;
@@ -1057,9 +1057,9 @@ void MC_TextureManager::renderLists (void)
 }
 
 //----------------------------------------------------------------------
-ULONG MC_TextureManager::update (void)
+uint32_t MC_TextureManager::update (void)
 {
-	ULONG numTexturesFreed = 0;
+	uint32_t numTexturesFreed = 0;
 	currentUsedTextures = 0;
 	
 	for (int32_t i=0;i<MC_MAXTEXTURES;i++)
@@ -1093,7 +1093,7 @@ ULONG MC_TextureManager::update (void)
 }
 
 //----------------------------------------------------------------------
-ULONG MC_TextureManager::textureFromMemory (ULONG *data, gos_TextureFormat key, ULONG hints, ULONG width, ULONG bitDepth)
+uint32_t MC_TextureManager::textureFromMemory (uint32_t *data, gos_TextureFormat key, uint32_t hints, uint32_t width, uint32_t bitDepth)
 {
 	int32_t i=0;
 
@@ -1129,21 +1129,21 @@ ULONG MC_TextureManager::textureFromMemory (ULONG *data, gos_TextureFormat key, 
 	
 	if (!lzBuffer1)
 	{
-		lzBuffer1 = (PUCHAR)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
+		lzBuffer1 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
 		gosASSERT(lzBuffer1 != NULL);
 		
-		lzBuffer2 = (PUCHAR)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
+		lzBuffer2 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
 		gosASSERT(lzBuffer2 != NULL);
 	}
 	
 	actualTextureSize += txmSize;
-	ULONG txmCompressSize = LZCompress(lzBuffer2,(PUCHAR)data,txmSize);
+	uint32_t txmCompressSize = LZCompress(lzBuffer2,(puint8_t)data,txmSize);
 	compressedTextureSize += txmCompressSize;
 	
  	//-------------------------------------------------------
 	// Create a block of cache memory to hold this texture.
 	if (!masterTextureNodes[i].textureData )
-		masterTextureNodes[i].textureData = (ULONG *)textureCacheHeap->Malloc(txmCompressSize);
+		masterTextureNodes[i].textureData = (uint32_t *)textureCacheHeap->Malloc(txmCompressSize);
 	
 	//No More RAM.  Do not display this texture anymore.
 	if (masterTextureNodes[i].textureData == NULL)
@@ -1159,7 +1159,7 @@ ULONG MC_TextureManager::textureFromMemory (ULONG *data, gos_TextureFormat key, 
 }
 
 //----------------------------------------------------------------------
-ULONG MC_TextureManager::textureInstanceExists (PCSTR textureFullPathName, gos_TextureFormat key, ULONG hints, ULONG uniqueInstance, ULONG nFlush)
+uint32_t MC_TextureManager::textureInstanceExists (PCSTR textureFullPathName, gos_TextureFormat key, uint32_t hints, uint32_t uniqueInstance, uint32_t nFlush)
 {
 	int32_t i=0;
 
@@ -1191,7 +1191,7 @@ ULONG MC_TextureManager::textureInstanceExists (PCSTR textureFullPathName, gos_T
 }
 
 //----------------------------------------------------------------------
-ULONG MC_TextureManager::loadTexture (PCSTR textureFullPathName, gos_TextureFormat key, ULONG hints, ULONG uniqueInstance, ULONG nFlush)
+uint32_t MC_TextureManager::loadTexture (PCSTR textureFullPathName, gos_TextureFormat key, uint32_t hints, uint32_t uniqueInstance, uint32_t nFlush)
 {
 	int32_t i=0;
 
@@ -1267,10 +1267,10 @@ ULONG MC_TextureManager::loadTexture (PCSTR textureFullPathName, gos_TextureForm
 	
 	if (!lzBuffer1)
 	{
-		lzBuffer1 = (PUCHAR)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
+		lzBuffer1 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
 		gosASSERT(lzBuffer1 != NULL);
 		
-		lzBuffer2 = (PUCHAR)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
+		lzBuffer2 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
 		gosASSERT(lzBuffer2 != NULL);
 	}
 	
@@ -1285,10 +1285,10 @@ ULONG MC_TextureManager::loadTexture (PCSTR textureFullPathName, gos_TextureForm
 		textureFile.close();
 
 		actualTextureSize += txmSize;
-		ULONG txmCompressSize = LZCompress(lzBuffer2,lzBuffer1,txmSize);
+		uint32_t txmCompressSize = LZCompress(lzBuffer2,lzBuffer1,txmSize);
 		compressedTextureSize += txmCompressSize;
 
-		masterTextureNodes[i].textureData = (ULONG *)textureCacheHeap->Malloc(txmCompressSize);
+		masterTextureNodes[i].textureData = (uint32_t *)textureCacheHeap->Malloc(txmCompressSize);
 		if (masterTextureNodes[i].textureData == NULL)
 			masterTextureNodes[i].gosTextureHandle = 0;
 		else
@@ -1308,7 +1308,7 @@ ULONG MC_TextureManager::loadTexture (PCSTR textureFullPathName, gos_TextureForm
 }
 
 //----------------------------------------------------------------------
-int32_t MC_TextureManager::saveTexture (ULONG textureIndex, PCSTR textureFullPathName)
+int32_t MC_TextureManager::saveTexture (uint32_t textureIndex, PCSTR textureFullPathName)
 {
 	if ((MC_MAXTEXTURES <= textureIndex) || (NULL == masterTextureNodes[textureIndex].textureData))
 	{
@@ -1333,7 +1333,7 @@ int32_t MC_TextureManager::saveTexture (ULONG textureIndex, PCSTR textureFullPat
 			//------------------------------------------
 			// Badboys are now LZ Compressed in texture cache.
 			size_t origSize = LZDecomp(MC_TextureManager::lzBuffer2,
-				(PUCHAR)masterTextureNodes[textureIndex].textureData,
+				(puint8_t)masterTextureNodes[textureIndex].textureData,
 				masterTextureNodes[textureIndex].lzCompSize);
 			if (origSize != (masterTextureNodes[textureIndex].width & 0x0fffffff))
 				STOP(("Decompressed to different size from original!  Txm:%s  Width:%d  DecompSize:%d",
@@ -1351,7 +1351,7 @@ int32_t MC_TextureManager::saveTexture (ULONG textureIndex, PCSTR textureFullPat
 	return NO_ERROR;
 }
 
-ULONG MC_TextureManager::copyTexture( ULONG texNodeID )
+uint32_t MC_TextureManager::copyTexture( uint32_t texNodeID )
 {
 	gosASSERT( texNodeID < MC_MAXTEXTURES );
 	if ( masterTextureNodes[texNodeID].gosTextureHandle != -1 )
@@ -1369,7 +1369,7 @@ ULONG MC_TextureManager::copyTexture( ULONG texNodeID )
 }
 //----------------------------------------------------------------------
 // MC_TextureNode
-ULONG MC_TextureNode::get_gosTextureHandle (void)	//If texture is not in VidRAM, cache a texture out and cache this one in.
+uint32_t MC_TextureNode::get_gosTextureHandle (void)	//If texture is not in VidRAM, cache a texture out and cache this one in.
 {
 	if (gosTextureHandle == 0xffffffff)
 	{
@@ -1400,7 +1400,7 @@ ULONG MC_TextureNode::get_gosTextureHandle (void)	//If texture is not in VidRAM,
 			// Cache this badboy IN.
 			// Badboys are now LZ Compressed in texture cache.
 			// Uncompress, then memcpy.
-			size_t origSize = LZDecomp(MC_TextureManager::lzBuffer2,(PUCHAR)textureData,lzCompSize);
+			size_t origSize = LZDecomp(MC_TextureManager::lzBuffer2,(puint8_t)textureData,lzCompSize);
 			if (origSize != (width & 0x0fffffff))
 				STOP(("Decompressed to different size from original!  Txm:%s  Width:%d  DecompSize:%d",
 				nodeName,(width & 0x0fffffff),origSize));
@@ -1426,10 +1426,10 @@ ULONG MC_TextureNode::get_gosTextureHandle (void)	//If texture is not in VidRAM,
 		 
 			//-------------------------------------------------------
 			// Create a block of cache memory to hold this texture.
-			ULONG txmSize = pTextureData.Height * pTextureData.Height * sizeof(ULONG);
+			uint32_t txmSize = pTextureData.Height * pTextureData.Height * sizeof(uint32_t);
 			gosASSERT(textureData);
 			
-			LZDecomp(MC_TextureManager::lzBuffer2,(PUCHAR)textureData,lzCompSize);
+			LZDecomp(MC_TextureManager::lzBuffer2,(puint8_t)textureData,lzCompSize);
 			memcpy(pTextureData.pTexture,MC_TextureManager::lzBuffer2,txmSize);
 			 
 			//------------------------

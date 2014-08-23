@@ -58,7 +58,7 @@ extern volatile bool mc2HasLostFocus;
 volatile bool mc2MouseThreadStarted = false;
 volatile bool mc2UseAsyncMouse = true;
 
-PUCHAR mouseBuffer = NULL;
+puint8_t mouseBuffer = NULL;
 MMRESULT HTimer = 0;
 
 RECT mouseWASInRect;
@@ -68,12 +68,12 @@ volatile char mc2MouseHotSpotY = 0;
 volatile char mc2MouseWidth = 32;
 volatile char mc2MouseHeight = 32;
 
-volatile PUCHAR mc2MouseData = NULL;
+volatile puint8_t mc2MouseData = NULL;
 
 //Timing in Hz to update mouse
 int32_t MOUSE_REFRESH_RATE = 30;
 
-void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG dw2);
+void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint32_t dw1, uint32_t dw2);
 void (*AsynFunc)(RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc ) = 0;
 
 
@@ -81,7 +81,7 @@ void (*AsynFunc)(RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc ) = 0;
 extern LPDIRECTDRAWSURFACE7	FrontBufferSurface;
 extern HWND					hWindow;
 extern POINT				clientToScreen;
-extern ULONG 				MouseInWindow;
+extern uint32_t 				MouseInWindow;
 
 //
 // Init the Mouse timer
@@ -98,13 +98,13 @@ void MouseTimerInit()
 	// For now, create a 32Bit buffer and convert as needed.  If speed is an
 	// issue on low end stuff, change it out.
 	//
-	mouseBuffer = (PUCHAR)malloc(sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
-	memset(mouseBuffer,0,sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
+	mouseBuffer = (puint8_t)malloc(sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
+	memset(mouseBuffer,0,sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
 	
 	if (!mc2MouseData)
 	{
-		mc2MouseData = (PUCHAR)malloc(sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
-		memset(mc2MouseData,0,sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
+		mc2MouseData = (puint8_t)malloc(sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
+		memset(mc2MouseData,0,sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
 	}
 	
 	mc2MouseThreadStarted = true;
@@ -147,7 +147,7 @@ void MouseTimerKill()
 
 //
 // Returns the number of bits in a given mask.  Used to determine if we are in 555 mode vs 565 mode.
-uint16_t GetNumberOfBits( ULONG dwMask )
+uint16_t GetNumberOfBits( uint32_t dwMask )
 {
     uint16_t wBits = 0;
     while( dwMask )
@@ -161,7 +161,7 @@ uint16_t GetNumberOfBits( ULONG dwMask )
 //
 // Actual Mouse Callback code here.
 //
-void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG dw2)
+void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint32_t dw1, uint32_t dw2)
 {
 	HRESULT lockResult = -1;
 	HRESULT unlockResult = -1;
@@ -234,11 +234,11 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 				// to the screen.
 				if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 16)
 				{
-					PUCHAR mBuffer = mouseBuffer;
+					puint8_t mBuffer = mouseBuffer;
 
 					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
+						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left << 1) +
 												(y * mouseSurfaceDesc.lPitch));
 
@@ -274,10 +274,10 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 				}
 				else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 24) 
 				{
-					PUCHAR mBuffer = mouseBuffer;
+					puint8_t mBuffer = mouseBuffer;
 					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
+						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left * 3) +
 												(y * mouseSurfaceDesc.lPitch));
 
@@ -322,10 +322,10 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 				}
 				else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32) 
 				{
-					PUCHAR mBuffer = mouseBuffer;
+					puint8_t mBuffer = mouseBuffer;
 					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
+						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left << 2) +
 												(y * mouseSurfaceDesc.lPitch));
 
@@ -497,10 +497,10 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 			//
 			if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 16)
 			{
-				PUCHAR mBuffer = mouseBuffer;
+				puint8_t mBuffer = mouseBuffer;
 				for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 				{
-					PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
+					puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 											((mouseWASInRect.left << 1) +
 											(y * mouseSurfaceDesc.lPitch));
 											
@@ -536,10 +536,10 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 			}
 			else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 24) 
 			{
-				PUCHAR mBuffer = mouseBuffer;
+				puint8_t mBuffer = mouseBuffer;
 				for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 				{
-					PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
+					puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 											((mouseWASInRect.left * 3) +
 											(y * mouseSurfaceDesc.lPitch));
 											
@@ -584,10 +584,10 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 			}
 			else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32) 
 			{
-				PUCHAR mBuffer = mouseBuffer;
+				puint8_t mBuffer = mouseBuffer;
 				for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 				{
-					PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
+					puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 											((mouseWASInRect.left << 2) +
 											(y * mouseSurfaceDesc.lPitch));
 											
@@ -667,10 +667,10 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 
 				if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 16)
 				{
-					ULONG * mData = (ULONG *)mc2MouseData;
+					uint32_t * mData = (uint32_t *)mc2MouseData;
 					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
+						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left << 1) +
 												(y * mouseSurfaceDesc.lPitch));
 												
@@ -680,11 +680,11 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 							// the mouse cursor will draw.  mc2MouseData is a 32bit
 							// bitmap with Alpha information.  Go!
 
-							ULONG mColor = *mData;
-							UCHAR baseAlpha 		= 0;
-							UCHAR baseColorRed	= (mColor & 0x00ff0000)>>16;
-							UCHAR baseColorGreen	= (mColor & 0x0000ff00)>>8;
-							UCHAR baseColorBlue 	= (mColor & 0x000000ff);
+							uint32_t mColor = *mData;
+							uint8_t baseAlpha 		= 0;
+							uint8_t baseColorRed	= (mColor & 0x00ff0000)>>16;
+							uint8_t baseColorGreen	= (mColor & 0x0000ff00)>>8;
+							uint8_t baseColorBlue 	= (mColor & 0x000000ff);
 							
 							//Check for color key instead
 							if ((baseColorRed != 0xff) || (baseColorGreen != 0x0) || (baseColorBlue != 0xff))
@@ -729,10 +729,10 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 				}
 				else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 24) 
 				{
-					ULONG * mData = (ULONG *)mc2MouseData;
+					uint32_t * mData = (uint32_t *)mc2MouseData;
 					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
+						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left * 3) +
 												(y * mouseSurfaceDesc.lPitch));
 												
@@ -741,11 +741,11 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 							//We are pointing at the top left corner of where 
 							// the mouse cursor will draw.  mc2MouseData is a 32bit
 							// bitmap with Alpha information.  Go!
-							ULONG mColor = *mData;
-							UCHAR baseAlpha 		= 0;
-							UCHAR baseColorRed	= (mColor & 0x00ff0000)>>16;
-							UCHAR baseColorGreen	= (mColor & 0x0000ff00)>>8;
-							UCHAR baseColorBlue 	= (mColor & 0x000000ff);
+							uint32_t mColor = *mData;
+							uint8_t baseAlpha 		= 0;
+							uint8_t baseColorRed	= (mColor & 0x00ff0000)>>16;
+							uint8_t baseColorGreen	= (mColor & 0x0000ff00)>>8;
+							uint8_t baseColorBlue 	= (mColor & 0x000000ff);
 							
 							//Check for color key instead
 							if ((baseColorRed != 0xff) || (baseColorGreen != 0x0) || (baseColorBlue != 0xff))
@@ -780,10 +780,10 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 				}
 				else if (mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32) 
 				{
-					ULONG * mData = (ULONG *)mc2MouseData;
+					uint32_t * mData = (uint32_t *)mc2MouseData;
 					for (int32_t y=mouseWASInRect.top;y<mouseWASInRect.bottom;y++)
 					{
-						PUCHAR screenPos = (PUCHAR)mouseSurfaceDesc.lpSurface +
+						puint8_t screenPos = (puint8_t)mouseSurfaceDesc.lpSurface +
 												((mouseWASInRect.left << 2) +
 												(y * mouseSurfaceDesc.lPitch));
 												
@@ -792,11 +792,11 @@ void CALLBACK MouseTimer(UINT wTimerID, UINT msg, ULONG dwUser, ULONG dw1, ULONG
 							//We are pointing at the top left corner of where 
 							// the mouse cursor will draw.  mc2MouseData is a 32bit
 							// bitmap with Alpha information.  Go!
-							ULONG mColor = *mData;
-							UCHAR baseAlpha 		= 0;
-							UCHAR baseColorRed	= (mColor & 0x00ff0000)>>16;
-							UCHAR baseColorGreen	= (mColor & 0x0000ff00)>>8;
-							UCHAR baseColorBlue 	= (mColor & 0x000000ff);
+							uint32_t mColor = *mData;
+							uint8_t baseAlpha 		= 0;
+							uint8_t baseColorRed	= (mColor & 0x00ff0000)>>16;
+							uint8_t baseColorGreen	= (mColor & 0x0000ff00)>>8;
+							uint8_t baseColorBlue 	= (mColor & 0x000000ff);
 							
 							//Check for color key instead
 							if ((baseColorRed != 0xff) || (baseColorGreen != 0x0) || (baseColorBlue != 0xff))

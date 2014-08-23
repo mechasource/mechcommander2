@@ -173,7 +173,7 @@ void Clouds::update (void)
 			if (hazeFactor != 0.0f)
 			{
 				float fogFactor = 1.0 - hazeFactor;
-				ULONG distFog = float2long(fogFactor * 255.0f);
+				uint32_t distFog = float2long(fogFactor * 255.0f);
 				
 				cloudVertices[i].fogRGB = (distFog<<24) + (0xffffff);
 			}

@@ -5,12 +5,12 @@
 extern char AlphaTable[256*256];
 
 typedef struct SHAPEHEADER {
-	ULONG	bounds;
-	ULONG	origin;
-	ULONG	xmin;
-	ULONG	ymin;
-	ULONG	xmax;
-	ULONG	ymax;
+	uint32_t	bounds;
+	uint32_t	origin;
+	uint32_t	xmin;
+	uint32_t	ymin;
+	uint32_t	xmax;
+	uint32_t	ymax;
 } SHAPEHEADER;
 
 //
@@ -34,8 +34,8 @@ static uint32_t lines,DestWidth,paneX0,paneX1,paneY0,paneY1;
 
 /*
 ;
-; int cdecl VFX_shape_draw (PANE *panep, PVOIDshape_table,
-;                           int32_t shape_number,int hotX, int hotY)
+; int32_t cdecl VFX_shape_draw (PANE *panep, PVOIDshape_table,
+;                           int32_t shape_number,int32_t hotX, int32_t hotY)
 ;
 ; This function clips and draws a shape to a pane.
 ; 
@@ -47,7 +47,7 @@ static uint32_t lines,DestWidth,paneX0,paneX1,paneY0,paneY1;
 ; drawn.  The shape's hot spot will end up at the specified location.
 ;
 */
-void AG_shape_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY)
+void AG_shape_draw (PANE *pane, PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm{
 	mov esi,shape_table
@@ -847,8 +847,8 @@ void AG_shape_lookaside( puint8_t table )
 /*
 ;----------------------------------------------------------------------------
 ;
-; int cdecl VFX_shape_translate_draw (PANE *panep, PVOIDshape_table,
-;                           int32_t shape_number,int hotX, int hotY)
+; int32_t cdecl VFX_shape_translate_draw (PANE *panep, PVOIDshape_table,
+;                           int32_t shape_number,int32_t hotX, int32_t hotY)
 ;
 ; This function clips and draws a shape to a pane.  It is identical to 
 ; VFX_shape_draw(), except that each pixel written is translated through a
@@ -873,7 +873,7 @@ void AG_shape_lookaside( puint8_t table )
 ;
 ;----------------------------------------------------------------------------
 */
-void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY)
+void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm{
 	mov esi,shape_table
@@ -1692,7 +1692,7 @@ assertError:
 	mov saveEdi,edi
 	}
 
-	//PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY
+	//PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY
 	
 	char msg[1024];
 	

@@ -34,7 +34,7 @@ namespace MidLevelRenderer {
 		MLR_Terrain(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		~MLR_Terrain();
 
@@ -44,14 +44,14 @@ namespace MidLevelRenderer {
 		static MLR_Terrain*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		void
 			Save(Stuff::MemoryStream *stream);
 
 	public:
-		virtual int
+		virtual int32_t
 			TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
 
 		virtual void
@@ -72,11 +72,11 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int
+		virtual int32_t
 			GetSize()
 		{ 
 			Check_Object(this);
-			int ret = MLR_I_DeT_TMesh::GetSize();
+			int32_t ret = MLR_I_DeT_TMesh::GetSize();
 
 			return ret;
 		}

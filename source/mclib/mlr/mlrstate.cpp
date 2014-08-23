@@ -9,7 +9,7 @@
 //###############################    MLRState    ##################################
 //#############################################################################
 
-int MLRState::systemFlags;
+int32_t MLRState::systemFlags;
 float MLRState::maxUV;
 
 #ifndef OLDFOG
@@ -21,7 +21,7 @@ float MLRState::maxUV;
 //
 MLRState::MLRState(
 	MemoryStream *stream,
-	int version
+	int32_t version
 )
 {
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -73,7 +73,7 @@ MLRState::MLRState(const MLRState& mState)
 MLRState*
 	MLRState::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	Check_Object(stream);
@@ -111,7 +111,7 @@ void
 		Check_Object(texture);
 		MString name = texture->GetTextureName();
 
-		int hint = texture->GetHint();
+		int32_t hint = texture->GetHint();
 		hint <<= 4;
 		hint |= texture->GetTextureInstance();
 
@@ -124,7 +124,7 @@ void
 void
 	MLRState::Load(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	Check_Object(this);
@@ -156,7 +156,7 @@ void
 #else
 		if(version < 6)
 		{
-			int dummy1;
+			int32_t dummy1;
 			Scalar dummy2;
 
 			*stream >> dummy2 >> dummy1;
@@ -179,7 +179,7 @@ void
 	if (renderState & TextureMask)
 	{
 		MString name;
-		int instance;
+		int32_t instance;
 
 		*stream >> name;
 		*stream >> instance;
@@ -377,8 +377,8 @@ void
 
 	if( renderState & MLRState::WireFrameOnlyMode )
 	{
-		ULONG wfColor=0xffffff;
-		gos_SetRenderState(	gos_State_WireframeMode, (ULONG)&wfColor );
+		uint32_t wfColor=0xffffff;
+		gos_SetRenderState(	gos_State_WireframeMode, (uint32_t)&wfColor );
 	}
 	else
 	{
@@ -389,7 +389,7 @@ void
 
 	if (renderState & MLRState::FogMask)
 	{
-		gos_SetRenderState(	gos_State_Fog, (int)&fogColor);
+		gos_SetRenderState(	gos_State_Fog, (int32_t)&fogColor);
 	}
 	else
 	{
@@ -421,7 +421,7 @@ void
 		Stuff::IteratorPosition
 			GetHashFunctions::GetHashValue(const MLRState &value)
 				{
-					Verify(sizeof(Stuff::IteratorPosition) == sizeof(ULONG));
+					Verify(sizeof(Stuff::IteratorPosition) == sizeof(uint32_t));
 					return
 						(
 							((value.processState & MidLevelRenderer::MLRState::UsedProcessMask) << MidLevelRenderer::MLRState::UsedRenderBits)

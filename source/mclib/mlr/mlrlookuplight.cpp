@@ -63,7 +63,7 @@ MLRLookUpLight::MLRLookUpLight() :
 //
 MLRLookUpLight::MLRLookUpLight(
 	Stuff::MemoryStream *stream,
-	int version
+	int32_t version
 ) :
 	MLRInfiniteLight(DefaultData, stream, version)
 {
@@ -81,7 +81,7 @@ MLRLookUpLight::MLRLookUpLight(
 	maps = new puint8_t  [mapZoneCountX * mapZoneCountZ];
 	Check_Pointer(maps);
 
-	for(int i=0;i<mapZoneCountX*mapZoneCountZ;i++)
+	for(int32_t i=0;i<mapZoneCountX*mapZoneCountZ;i++)
 	{
 		maps[i] = new uint8_t [256*256];
 		Check_Pointer(maps[i]);
@@ -140,7 +140,7 @@ MLRLookUpLight::~MLRLookUpLight()
 {
 	if(maps!=NULL)
 	{
-		for(int i=0;i<mapZoneCountX*mapZoneCountZ;i++)
+		for(int32_t i=0;i<mapZoneCountX*mapZoneCountZ;i++)
 		{
 			Check_Pointer(maps[i]);
 			delete [] maps[i];
@@ -167,7 +167,7 @@ void
 	*stream << zoneSizeX << zoneSizeZ;
 	*stream << mapName;
 
-	for(int i=0;i<mapZoneCountX*mapZoneCountZ;i++)
+	for(int32_t i=0;i<mapZoneCountX*mapZoneCountZ;i++)
 	{
 		stream->WriteBytes(maps[i], 256*256);
 	}
@@ -203,13 +203,13 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRLookUpLight::SetMapSizeAndName(int x, int z, PCSTR name)
+	MLRLookUpLight::SetMapSizeAndName(int32_t x, int32_t z, PCSTR name)
 {
 	Check_Object(this);
 
 	if(maps!=NULL)
 	{
-		for(int i=0;i<mapZoneCountX*mapZoneCountZ;i++)
+		for(int32_t i=0;i<mapZoneCountX*mapZoneCountZ;i++)
 		{
 			Check_Pointer(maps[i]);
 			delete [] maps[i];
@@ -244,7 +244,7 @@ bool
 	maps = new puint8_t  [mapZoneCountX * mapZoneCountZ];
 	Check_Pointer(maps);
 
-	int i, j, k;
+	int32_t i, j, k;
 	for(j=0;j<mapZoneCountZ;j++)
 	{
 		for(i=0;i<mapZoneCountX;i++)
@@ -314,13 +314,13 @@ void
 	Scalar prep_x = mapZoneCountX*zoneSizeX - worldPoint.x + mapOrigin.x;
 	Scalar prep_z = mapZoneCountZ*zoneSizeZ - worldPoint.z + mapOrigin.z;
 
-	int map_x = Truncate_Float_To_Word(prep_x*one_Over_zoneSizeX);
-	int map_z = Truncate_Float_To_Word(prep_z*one_Over_zoneSizeZ);
+	int32_t map_x = Truncate_Float_To_Word(prep_x*one_Over_zoneSizeX);
+	int32_t map_z = Truncate_Float_To_Word(prep_z*one_Over_zoneSizeZ);
 	Verify(map_x>=0 && map_x<mapZoneCountX);
 	Verify(map_z>=0 && map_z<mapZoneCountZ);
 
-	int off_x = Truncate_Float_To_Word((prep_x - map_x*zoneSizeX)*256.0f*one_Over_zoneSizeX);
-	int off_z = Truncate_Float_To_Word((prep_z - map_z*zoneSizeZ)*256.0f*one_Over_zoneSizeZ);
+	int32_t off_x = Truncate_Float_To_Word((prep_x - map_x*zoneSizeX)*256.0f*one_Over_zoneSizeX);
+	int32_t off_z = Truncate_Float_To_Word((prep_z - map_z*zoneSizeZ)*256.0f*one_Over_zoneSizeZ);
 	Verify(off_x>=0 && off_x < 256);
 	Verify(off_z>=0 && off_z < 256);
 

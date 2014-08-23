@@ -20,7 +20,7 @@
 int32_t	turn = 0;
 float	frameLength = 0.05f;
 float	scenarioTime = 0.0;
-ULONG	LastTimeGetTime = 0;
+uint32_t	LastTimeGetTime = 0;
 bool dynamicFrameTiming = TRUE;
 
 PSTR monthName[12] = 
@@ -40,16 +40,16 @@ PSTR monthName[12] =
 };
 
 //----------------------------------------------------------------------------------
-ULONG MCTiming_GetTimeZoneInforation(PVOIDtimeData)
+uint32_t MCTiming_GetTimeZoneInforation(PVOIDtimeData)
 {
 	// Get Time Zone information for this machine to calculate
 	// Astronomy correctly.
-	ULONG daylightSavingsInfo = GetTimeZoneInformation((TIME_ZONE_INFORMATION *)timeData);
+	uint32_t daylightSavingsInfo = GetTimeZoneInformation((TIME_ZONE_INFORMATION *)timeData);
 	return daylightSavingsInfo;
 }
 
 //----------------------------------------------------------------------------------
-ULONG MCTiming_GetTimeZoneInformationSize (void)
+uint32_t MCTiming_GetTimeZoneInformationSize (void)
 {
 	return sizeof(TIME_ZONE_INFORMATION);
 }
@@ -70,7 +70,7 @@ void MC_SYSTEMTIME::copyFromSystemTime (PVOIDsystemTime)
 }
 
 //----------------------------------------------------------------------------------
-void MCTiming_GetUTCSystemTimeFromInformation(ULONG daylightInfo, PVOIDtimeData, MC_SYSTEMTIME *systemTime)
+void MCTiming_GetUTCSystemTimeFromInformation(uint32_t daylightInfo, PVOIDtimeData, MC_SYSTEMTIME *systemTime)
 {
 	TIME_ZONE_INFORMATION *tzInfo = (TIME_ZONE_INFORMATION *)timeData;
 

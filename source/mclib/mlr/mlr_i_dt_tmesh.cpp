@@ -77,7 +77,7 @@ void
 MLR_I_DT_TMesh::MLR_I_DT_TMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLR_I_TMesh(class_data, stream, version)
 {
@@ -125,7 +125,7 @@ MLR_I_DT_TMesh::~MLR_I_DT_TMesh()
 MLR_I_DT_TMesh*
 	MLR_I_DT_TMesh::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	Check_Object(stream);
@@ -178,7 +178,7 @@ void
 void
 	MLR_I_DT_TMesh::SetTexCoordData(
 		const Vector2DScalar *data,
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -191,7 +191,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLR_I_DT_TMesh::GetNumPasses()
 {
 	Check_Object(this);
@@ -221,7 +221,7 @@ int
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //	This include contains follwing functions:
 //	void MLR_I_DT_TMesh::TransformNoClip(Matrix4D*, GOSVertexPool*);
-//	int MLR_I_DT_TMesh::Clip(MLRClippingState, GOSVertexPool*);
+//	int32_t MLR_I_DT_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <MLR\MLRTriangleClipping.hpp>
@@ -258,7 +258,7 @@ MLR_I_DT_TMesh*
 	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
-	int i;
+	int32_t i;
 
 	for(i=0;i<6;i++)
 	{
@@ -397,7 +397,7 @@ MLRShape*
 	MLRShape *ret = new MLRShape(20);
 	Register_Object(ret);
 
-	int i, j, k;
+	int32_t i, j, k;
 	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
@@ -421,7 +421,7 @@ MLRShape*
 	Vector2DScalar *texCoords = new Vector2DScalar[2*nrTri*3];
 	Register_Pointer(texCoords);
 
-	int uniquePoints = 0;
+	int32_t uniquePoints = 0;
 	for (k=0;k<20;k++)
 	{
 		triDrawn = 0;

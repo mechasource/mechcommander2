@@ -48,7 +48,7 @@ DynamicArrayOf<Vector4D>
 	MLRPrimitive::clipExtraCoords;
 
 #if COLOR_AS_DWORD
-DynamicArrayOf<ULONG>
+DynamicArrayOf<uint32_t>
 #else
 DynamicArrayOf<RGBAColor>
 #endif
@@ -57,7 +57,7 @@ DynamicArrayOf<RGBAColor>
 DynamicArrayOf<Vector2DScalar>
 	MLRPrimitive::clipExtraTexCoords;
 
-DynamicArrayOf<int>
+DynamicArrayOf<int32_t>
 	MLRPrimitive::clipExtraIndex;
 
 DynamicArrayOf<uint16_t>
@@ -109,7 +109,7 @@ void
 MLRPrimitive::MLRPrimitive(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	Plug(class_data)
 {
@@ -129,7 +129,7 @@ MLRPrimitive::MLRPrimitive(
 			transformedCoords.SetLength(numVertices);
 			litColors.SetLength(numVertices);
 
-			int i, len;
+			int32_t i, len;
 #if COLOR_AS_DWORD
 			Stuff::DynamicArrayOf<Stuff::RGBAColor> rgbaColors;
 			MemoryStreamIO_Read(stream, &rgbaColors);
@@ -152,7 +152,7 @@ MLRPrimitive::MLRPrimitive(
 
 			*stream >> visible;
 
-			Stuff::DynamicArrayOf<int>	tempLengths;
+			Stuff::DynamicArrayOf<int32_t>	tempLengths;
 
 			MemoryStreamIO_Read(stream, &tempLengths);
 
@@ -184,15 +184,15 @@ MLRPrimitive::MLRPrimitive(
 #if COLOR_AS_DWORD
 			MemoryStreamIO_Read(stream, &colors);
 #else
-			Stuff::DynamicArrayOf<ULONG> smallColors;
+			Stuff::DynamicArrayOf<uint32_t> smallColors;
 
 			MemoryStreamIO_Read(stream, &smallColors);
 		
-			int i, len = smallColors.GetLength();
+			int32_t i, len = smallColors.GetLength();
 
 			colors.SetLength(len);
 
-			ULONG theColor;
+			uint32_t theColor;
 
 			for(i=0;i<len;i++)
 			{
@@ -246,8 +246,8 @@ void
 #if COLOR_AS_DWORD
 	MemoryStreamIO_Write(stream, &colors);
 #else
-	Stuff::DynamicArrayOf<ULONG> smallColors;
-	int i, len = colors.GetLength();
+	Stuff::DynamicArrayOf<uint32_t> smallColors;
+	int32_t i, len = colors.GetLength();
 
 	const Stuff::RGBAColor *data = colors.GetData();
 
@@ -270,7 +270,7 @@ void
 
 //	*stream << visible; // changed from version 1 to 2
 
-	*stream << static_cast<int>(drawMode);
+	*stream << static_cast<int32_t>(drawMode);
 
 	referenceState.Save(stream);
 }
@@ -321,7 +321,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitive::InitializeDrawPrimitive(int vis, int)
+	MLRPrimitive::InitializeDrawPrimitive(int32_t vis, int32_t)
 {
 	gos_vertices = NULL;
 	numGOSVertices = -1;
@@ -332,7 +332,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitive::SetSubprimitiveLengths(puint8_t data, int l)
+	MLRPrimitive::SetSubprimitiveLengths(puint8_t data, int32_t l)
 {
 	Check_Object(this); 
 	lengths.AssignData(data, l);
@@ -340,7 +340,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLRPrimitive::GetSubprimitiveLengths(puint8_t *data)
 {
 	Check_Object(this); 
@@ -350,8 +350,8 @@ int
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
-	MLRPrimitive::GetSubprimitiveLength (int i) const
+int32_t
+	MLRPrimitive::GetSubprimitiveLength (int32_t i) const
 { 
 	Check_Object(this); 
 	return (lengths.GetLength() > 0 ? abs(lengths[i]) : 1);
@@ -362,7 +362,7 @@ int
 void
 	MLRPrimitive::SetCoordData(
 		const Point3D *data,
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -385,7 +385,7 @@ void
 void
 	MLRPrimitive::GetCoordData(
 		Point3D **data,
-		int *dataSize
+		pint32_t dataSize
 	)
 {
 	Check_Object(this);
@@ -399,11 +399,11 @@ void
 void
 	MLRPrimitive::SetColorData(
 #if COLOR_AS_DWORD
-		const ULONG *data,
+		pcuint32_t data,
 #else
 		const RGBAColor *data,
 #endif
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -422,11 +422,11 @@ void
 void
 	MLRPrimitive::GetColorData(
 #if COLOR_AS_DWORD
-		ULONG **data,
+		uint32_t **data,
 #else
 		RGBAColor **data,
 #endif
-		int *dataSize
+		pint32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -439,7 +439,7 @@ void
 void
 	MLRPrimitive::SetNormalData(
 		const Vector3D *data,
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -457,7 +457,7 @@ void
 void
 	MLRPrimitive::GetNormalData(
 		Vector3D **data,
-		int *dataSize
+		pint32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -470,7 +470,7 @@ void
 void
 	MLRPrimitive::SetTexCoordData(
 		const Vector2DScalar *data,
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -488,7 +488,7 @@ void
 void
 	MLRPrimitive::GetTexCoordData(
 		Vector2DScalar **data,
-		int *dataSize
+		pint32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -503,7 +503,7 @@ void
 {
 	Check_Object(this);
 
-	int i, len = coords.GetLength();
+	int32_t i, len = coords.GetLength();
 
 	for(i=0;i<len;i++)
 	{
@@ -520,7 +520,7 @@ void
 void
 	MLRPrimitive::Lighting (
 		MLRLight **lights,
-		int nrLights
+		int32_t nrLights
 	)
 {
 	Check_Object(this);
@@ -554,7 +554,7 @@ void
 			Verify(normals.GetLength() == colors.GetLength());
 			Verify(coords.GetLength() == colors.GetLength());
 
-			int i, k, len = colors.GetLength();
+			int32_t i, k, len = colors.GetLength();
 
 			MLRVertexData vertexData;
 
@@ -651,7 +651,7 @@ void
 			Verify(normals.GetLength() == colors.GetLength());
 			Verify(coords.GetLength() == colors.GetLength());
 
-			int i, k, len = colors.GetLength();
+			int32_t i, k, len = colors.GetLength();
 
 			MLRVertexData vertexData;
 
@@ -748,10 +748,10 @@ void
 
 	Verify(colors.GetLength() == litColors.GetLength());
 
-	int k, len = litColors.GetLength();
+	int32_t k, len = litColors.GetLength();
 
 #if COLOR_AS_DWORD
-	ULONG argb = GOSCopyColor(paintMe);
+	uint32_t argb = GOSCopyColor(paintMe);
 
 	for(k=0;k<len;k++)
 	{

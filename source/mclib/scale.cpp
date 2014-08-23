@@ -31,20 +31,20 @@
 
 #include <gameos.hpp>
 
-extern void AG_shape_translate_transform(PANE *globalPane, PVOIDshapeTable,LONG frameNum, LONG hotX, LONG hotY,PVOIDtempBuffer,LONG reverse, LONG scaleUp);
-extern void AG_shape_transform(PANE *globalPane, PVOIDshapeTable,LONG frameNum, LONG hotX, LONG hotY, PVOIDtempBuffer,LONG reverse, LONG scaleUp);
+extern void AG_shape_translate_transform(PANE *globalPane, PVOIDshapeTable,int32_t frameNum, int32_t hotX, int32_t hotY,PVOIDtempBuffer,int32_t reverse, int32_t scaleUp);
+extern void AG_shape_transform(PANE *globalPane, PVOIDshapeTable,int32_t frameNum, int32_t hotX, int32_t hotY, PVOIDtempBuffer,int32_t reverse, int32_t scaleUp);
 extern void AG_shape_lookaside( puint8_t table );
-extern void AG_shape_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY);
-extern void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY);
+extern void AG_shape_draw (PANE *pane, PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY);
+extern void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY);
 
 //---------------------------------------------------------------------------
 #define MAX_X		360
 #define MAX_Y		360
 
-PUCHAR tempBuffer = NULL;
+puint8_t tempBuffer = NULL;
 //---------------------------------------------------------------------------
 //
-int32_t scaleDraw (PUCHAR shapeTable, ULONG frameNum, int32_t sx, int32_t sy, bool reverse, PUCHAR fadeTable, bool scaleUp)
+int32_t scaleDraw (puint8_t shapeTable, uint32_t frameNum, int32_t sx, int32_t sy, bool reverse, puint8_t fadeTable, bool scaleUp)
 {
 	//--------------------------------------------------------------
 	// Check GlobalPane and GlobalWindow for validity.
@@ -55,7 +55,7 @@ int32_t scaleDraw (PUCHAR shapeTable, ULONG frameNum, int32_t sx, int32_t sy, bo
 
 	//----------------------------------------------------------------
 	// Check if shape is actually valid.
-	if ((*(int*)shapeTable!=*(int*)"1.10"))
+	if ((*(pint32_t)shapeTable!=*(pint32_t)"1.10"))
 		return(TRUE);
 		
 	int32_t result = VFX_shape_count(shapeTable);
@@ -82,7 +82,7 @@ int32_t scaleDraw (PUCHAR shapeTable, ULONG frameNum, int32_t sx, int32_t sy, bo
 	}
 
 	if (!tempBuffer)
-		tempBuffer = (PUCHAR)systemHeap->Malloc(MAX_X * MAX_Y);
+		tempBuffer = (puint8_t)systemHeap->Malloc(MAX_X * MAX_Y);
 	
 	gosASSERT((yMax * xMax) < (MAX_Y * MAX_X));
 	

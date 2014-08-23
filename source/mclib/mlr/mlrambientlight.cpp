@@ -51,7 +51,7 @@ MLRAmbientLight::MLRAmbientLight() :
 //
 MLRAmbientLight::MLRAmbientLight(
 	Stuff::MemoryStream *stream,
-	int version
+	int32_t version
 ) :
 	MLRLight(DefaultData, stream, version)
 {

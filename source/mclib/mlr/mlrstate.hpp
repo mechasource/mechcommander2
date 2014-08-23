@@ -37,7 +37,7 @@ namespace MidLevelRenderer {
 		// Constructors/Destructors
 		//
 	protected:
-		MLRState(Stuff::MemoryStream *stream, int version);
+		MLRState(Stuff::MemoryStream *stream, int32_t version);
 
 	public:
 		MLRState(void);
@@ -47,14 +47,14 @@ namespace MidLevelRenderer {
 
 		};
 
-		static MLRState* Make(Stuff::MemoryStream *stream, int version);
+		static MLRState* Make(Stuff::MemoryStream *stream, int32_t version);
 
 		void
 			Save(Stuff::MemoryStream *stream);
 		void
 			Load(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -199,7 +199,7 @@ namespace MidLevelRenderer {
 			Check_Object(this);
 			return static_cast<FilterMode>(renderState & FilterMask);
 		}
-		void SetFogMode(int fog)
+		void SetFogMode(int32_t fog)
 		{
 			Check_Object(this); 
 			renderState &= ~FogMask; 
@@ -404,10 +404,10 @@ namespace MidLevelRenderer {
 		{Check_Object(this); return processState & PriorityMask;}
 
 		void
-			SetLightingMode(int lighting)
+			SetLightingMode(int32_t lighting)
 		{Check_Object(this); processState &= ~LightingMask; processState |= lighting; processDeltaMask |= LightingMask;}
 
-		int
+		int32_t
 			GetLightingMode(void) const
 		{
 			Check_Object(this);

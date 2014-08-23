@@ -24,7 +24,7 @@ typedef enum __lzdecomp_const {
 #define NULL			0
 #endif
 
-typedef uint8_t* PUCHAR;
+typedef uint8_t* puint8_t;
 
 typedef struct HashStruct {
 	uint16_t Chain;
@@ -34,11 +34,11 @@ typedef HashStruct*	HashStructPtr;
 	
 HashStructPtr	LZOldChain = NULL;			//Old Chain Value Found
 HashStructPtr	LZChain = NULL;				//Current Chain Value Found 
-ULONG	LZMaxIndex = 0;				//Max index value in Hash Table
-ULONG	LZCodeMask = 0;
-ULONG	LZFreeIndex = 0;			//Current Free index into Hash Table
-PUCHAR		LZSrcBufEnd = NULL;			//ptr to 3rd from last byte in src buffer
-PUCHAR		LZOrigDOSBuf = NULL;		//original offset to start of src buffer
+uint32_t	LZMaxIndex = 0;				//Max index value in Hash Table
+uint32_t	LZCodeMask = 0;
+uint32_t	LZFreeIndex = 0;			//Current Free index into Hash Table
+puint8_t		LZSrcBufEnd = NULL;			//ptr to 3rd from last byte in src buffer
+puint8_t		LZOrigDOSBuf = NULL;		//original offset to start of src buffer
 char			LZHashBuffer[16384];
 char			LZOldSuffix = 0;			//Current Suffix Value found
 
@@ -49,7 +49,7 @@ char			LZOldSuffix = 0;			//Current Suffix Value found
 // LZ DeCompress Routine
 // Takes a pointer to dest buffer, a pointer to source buffer and len of source.
 // returns length of decompressed image.
-size_t LZDecomp (PUCHAR dest, PUCHAR src, size_t srcLen)
+size_t LZDecomp (puint8_t dest, puint8_t src, size_t srcLen)
 {
 	size_t result = 0;
 	

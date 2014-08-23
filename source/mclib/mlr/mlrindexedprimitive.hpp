@@ -33,7 +33,7 @@ namespace MidLevelRenderer {
 		MLRIndexedPrimitive(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		~MLRIndexedPrimitive(void);
 
@@ -43,38 +43,38 @@ namespace MidLevelRenderer {
 		static MLRIndexedPrimitive*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		virtual void
 			Save(Stuff::MemoryStream *stream);
 
-		virtual	void	InitializeDrawPrimitive(int, int=0);
+		virtual	void	InitializeDrawPrimitive(int32_t, int32_t=0);
 
-		virtual void	Lighting(MLRLight**, int nrLights);
+		virtual void	Lighting(MLRLight**, int32_t nrLights);
 
 		virtual void
 			SetCoordData(
 			const Stuff::Point3D *array,
-			int point_count
+			int32_t point_count
 			);
 
 		virtual void
 			SetIndexData(
 			puint16_t index_array,
-			int index_count
+			int32_t index_count
 			);
 
 		virtual void
 			GetIndexData(
 			puint16_t* index_array,
-			int *index_count
+			pint32_t index_count
 			);
 
 		puint16_t GetGOSIndices(void)
 		{ Check_Object(this); return gos_indices; }
 
-		int
+		int32_t
 			GetNumGOSIndices(void)
 		{ Check_Object(this); return numGOSIndices; }
 
@@ -90,10 +90,10 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int GetSize(void)
+		virtual int32_t GetSize(void)
 		{ 
 			Check_Object(this);
-			int ret = MLRPrimitive::GetSize(void);
+			int32_t ret = MLRPrimitive::GetSize(void);
 			ret += visibleIndexedVertices.GetSize(void);
 			ret += index.GetSize(void);
 

@@ -36,13 +36,13 @@ namespace gosFX {
 				{}
 
 		float 
-			ExpensiveCompute(float tme,int curvenum=0);
+			ExpensiveCompute(float tme,int32_t curvenum=0);
 
 		void 
 			ExpensiveComputeRange(
 				float *low,
 				float *hi,
-				int curvenum
+				int32_t curvenum
 				);
 
 		void 
@@ -56,11 +56,11 @@ namespace gosFX {
 		void
 			Load(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		float 
-			Mid(int curvenum=0);
+			Mid(int32_t curvenum=0);
 
 		bool
 			IsComplex();
@@ -68,23 +68,23 @@ namespace gosFX {
 		void 
 			SetSeedFlagIfComplex(bool vflag);
 
-		int 
+		int32_t 
 			GetSeedFlagIfComplex();
 
 		void 
-			TranslateTo(float pos,int curvenum=0);
+			TranslateTo(float pos,int32_t curvenum=0);
 
 		void 
-			TranslateBy(float delta,int curvenum=0);
+			TranslateBy(float delta,int32_t curvenum=0);
 
 		void 
-			LocalScale(float sfactor,int curvenum=0);
+			LocalScale(float sfactor,int32_t curvenum=0);
 
 		void 
-			AxisScale(float sfactor,float axis=0.0f,int curvenum=0);
+			AxisScale(float sfactor,float axis=0.0f,int32_t curvenum=0);
 
 		Curve * 
-			GetSubCurve(int curvenum);
+			GetSubCurve(int32_t curvenum);
 		
 		void
 			TestInstance() const
@@ -115,7 +115,7 @@ namespace gosFX {
 		void
 			Load(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		//------------------------------------------------------
@@ -167,7 +167,7 @@ namespace gosFX {
 		void
 			Load(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		//------------------------------------------------------
@@ -219,7 +219,7 @@ namespace gosFX {
 		void
 			Load(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		//------------------------------------------------------
@@ -317,7 +317,7 @@ namespace gosFX {
 		ComplexCurve(const ComplexCurve &fcurve);
 		ComplexCurve(
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		);
 
 		ComplexCurve&
@@ -328,7 +328,7 @@ namespace gosFX {
 		void
 			Load(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		//-----------------------------------------------------------------
@@ -337,26 +337,26 @@ namespace gosFX {
 		//-----------------------------------------------------------------
 
 		CurveKey&
-			operator[](int index)
+			operator[](int32_t index)
 				{Check_Object(this); return m_keys[index];}
 		size_t
 			GetKeyCount()
 				{ Check_Object(this); return m_keys.GetLength(); }
-		int
+		int32_t
 			GetKeyIndex(float time)
 				{
 					Check_Object(this);
-					int i;
-					for (i=0; i<(int)m_keys.GetLength(); ++i)
+					int32_t i;
+					for (i=0; i<(int32_t)m_keys.GetLength(); ++i)
 						if (m_keys[i].m_time > time)
 							break;
 					return --i;
 				}
 
-		int
+		int32_t
 			InsertKey(float time);
 		void
-			DeleteKey(int index);
+			DeleteKey(int32_t index);
 
 		void
 			SetCurve(float v);
@@ -414,7 +414,7 @@ namespace gosFX {
 		void
 			Load(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		float
@@ -470,7 +470,7 @@ namespace gosFX {
 	template <class C, class S,Curve::CurveType type> void
 		SeededCurveOf<C,S,type>::Load(
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		)
 	{
 		m_ageCurve.Load(stream, gfx_version);

@@ -13,7 +13,7 @@
 #include "vfx.h"
 #include <gameos.hpp>
 
-uint8_t FindClosest( VFX_RGB* Palette, int r, int g, int b );
+uint8_t FindClosest( VFX_RGB* Palette, int32_t r, int32_t g, int32_t b );
 
 
 //
@@ -43,11 +43,11 @@ PSTR g_logistic_dlgfade = &AlphaTable[268*256];
 void InitAlphaLookup( VFX_RGB* Palette)
 {
 	PSTR pAlphaTable = AlphaTable;
-	int r,g,b,i;
+	int32_t r,g,b,i;
 	File *IniFile;
 	char Line[256];
 	float AlphaIni[NUM_ALPHACOLORS][5];
-	int LineNumber;
+	int32_t LineNumber;
 //
 // Clear the AlphaPal.ini array
 //
@@ -67,7 +67,7 @@ void InitAlphaLookup( VFX_RGB* Palette)
 
 	while (!IniFile->eof())
 	{
-		IniFile->readLine((PUCHAR)&Line[0], 256);
+		IniFile->readLine((puint8_t)&Line[0], 256);
 		LineNumber++;
 	
 		if (Line[0]!='#' && Line[0]!=';' && Line[0]!=0xa && Line[0]!=0)
@@ -97,9 +97,9 @@ void InitAlphaLookup( VFX_RGB* Palette)
 //
 // Now generate the 64K alpha value lookup table
 //
-	for( int source=0; source<NUM_ALPHACOLORS; source++ )
+	for( int32_t source=0; source<NUM_ALPHACOLORS; source++ )
 	{
-		for( int dest=0; dest<256; dest++ )
+		for( int32_t dest=0; dest<256; dest++ )
 		{
 			if( source==255 || source==0 )		// Color 255 and 0 - dest color remains the same (totally transparent)
 			{
@@ -117,15 +117,15 @@ void InitAlphaLookup( VFX_RGB* Palette)
 			{
 				if( AlphaIni[source][SourceAlpha]==0.0 && AlphaIni[source][DestAlpha]==0.0 )
 				{
-					r = (int) (((float)(Palette[dest].r<<2) * 255 ) / ( 255 - AlphaIni[source][R] ) );
-					g = (int) (((float)(Palette[dest].g<<2) * 255 ) / ( 255 - AlphaIni[source][G] ) );
-					b = (int) (((float)(Palette[dest].b<<2) * 255 ) / ( 255 - AlphaIni[source][B] ) );
+					r = (int32_t) (((float)(Palette[dest].r<<2) * 255 ) / ( 255 - AlphaIni[source][R] ) );
+					g = (int32_t) (((float)(Palette[dest].g<<2) * 255 ) / ( 255 - AlphaIni[source][G] ) );
+					b = (int32_t) (((float)(Palette[dest].b<<2) * 255 ) / ( 255 - AlphaIni[source][B] ) );
 				}
 				else
 				{
-					r = (int)(AlphaIni[source][SourceAlpha] * AlphaIni[source][R] + AlphaIni[source][DestAlpha] * (float)(Palette[dest].r<<2));
-					g = (int)(AlphaIni[source][SourceAlpha] * AlphaIni[source][G] + AlphaIni[source][DestAlpha] * (float)(Palette[dest].g<<2));
-					b = (int)(AlphaIni[source][SourceAlpha] * AlphaIni[source][B] + AlphaIni[source][DestAlpha] * (float)(Palette[dest].b<<2));
+					r = (int32_t)(AlphaIni[source][SourceAlpha] * AlphaIni[source][R] + AlphaIni[source][DestAlpha] * (float)(Palette[dest].r<<2));
+					g = (int32_t)(AlphaIni[source][SourceAlpha] * AlphaIni[source][G] + AlphaIni[source][DestAlpha] * (float)(Palette[dest].g<<2));
+					b = (int32_t)(AlphaIni[source][SourceAlpha] * AlphaIni[source][B] + AlphaIni[source][DestAlpha] * (float)(Palette[dest].b<<2));
 				}
 
 				if( r<0 )
@@ -158,13 +158,13 @@ void InitAlphaLookup( VFX_RGB* Palette)
 //
 // Returns the closest matching color in a palette, dose not check windows colors
 //
-uint8_t FindClosest( VFX_RGB* Palette, int r, int g, int b )
+uint8_t FindClosest( VFX_RGB* Palette, int32_t r, int32_t g, int32_t b )
 {
 	uint8_t Closest = 10;
-	int Distance = 255*255*255;
-	int tempR,tempG,tempB,tdist;
+	int32_t Distance = 255*255*255;
+	int32_t tempR,tempG,tempB,tdist;
 
-	for( int t1=10; t1<246; t1++ )
+	for( int32_t t1=10; t1<246; t1++ )
 	{
 		tempR = r-Palette[t1].r;
 		tempG = g-Palette[t1].g;

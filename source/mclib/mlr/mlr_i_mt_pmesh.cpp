@@ -45,7 +45,7 @@ void
 	Register_Object(extraMultiTexCoords);
 	extraMultiTexCoords->SetLength(Limits::Max_Number_Of_Multitextures);
 
-	for(int i=0;i<clipExtraMultiTexCoords->GetLength();i++)
+	for(int32_t i=0;i<clipExtraMultiTexCoords->GetLength();i++)
 	{
 		(*clipExtraMultiTexCoords)[i].SetLength(Limits::Max_Number_Vertices_Per_Mesh);
 		(*extraMultiTexCoords)[i].SetLength(Limits::Max_Number_Vertices_Per_Mesh);
@@ -62,7 +62,7 @@ void
 void
 	MLR_I_MT_PMesh::TerminateClass()
 {
-	for(int i=0;i<clipExtraMultiTexCoords->GetLength();i++)
+	for(int32_t i=0;i<clipExtraMultiTexCoords->GetLength();i++)
 	{
 		(*clipExtraMultiTexCoords)[i].SetLength(0);
 		(*extraMultiTexCoords)[i].SetLength(0);
@@ -88,7 +88,7 @@ void
 MLR_I_MT_PMesh::MLR_I_MT_PMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLR_I_PMesh(class_data, stream, version)
 {
@@ -108,7 +108,7 @@ MLR_I_MT_PMesh::MLR_I_MT_PMesh(
 
 	*stream >> passes;
 
-	for(int i=1;i<passes;i++)
+	for(int32_t i=1;i<passes;i++)
 	{
 		multiReferenceState[i].Save(stream);
 
@@ -153,7 +153,7 @@ void
 	Check_Pointer(this);
 	Verify(gos_GetCurrentHeap() == Heap);
 
-	int num;
+	int32_t num;
 	Point3D *points;
 
 	referenceState = pMesh->GetReferenceState();
@@ -195,7 +195,7 @@ MLR_I_MT_PMesh::~MLR_I_MT_PMesh()
 {
 	Check_Object(this);
 
-	for(int i=1;i<passes;i++)
+	for(int32_t i=1;i<passes;i++)
 	{
 		Unregister_Object(multiTexCoords[i]);
 		delete multiTexCoords[i];
@@ -207,7 +207,7 @@ MLR_I_MT_PMesh::~MLR_I_MT_PMesh()
 MLR_I_MT_PMesh*
 	MLR_I_MT_PMesh::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	Check_Object(stream);
@@ -232,7 +232,7 @@ void
 
 	*stream << passes;
 
-	for(int i=1;i<passes;i++)
+	for(int32_t i=1;i<passes;i++)
 	{
 		multiReferenceState[i].Save(stream);
 
@@ -251,7 +251,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_MT_PMesh::InitializeDrawPrimitive(uint8_t vis, int parameter)
+	MLR_I_MT_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 {
 	MLR_I_PMesh::InitializeDrawPrimitive(vis, parameter);
 
@@ -263,8 +263,8 @@ void
 void
 	MLR_I_MT_PMesh::SetTexCoordData(
 		const Stuff::Vector2DScalar *data,
-		int dataSize,
-		int pass
+		int32_t dataSize,
+		int32_t pass
 	)
 {
 	Check_Object(this); 
@@ -308,8 +308,8 @@ void
 void
 	MLR_I_MT_PMesh::GetTexCoordData(
 		const Stuff::Vector2DScalar **data,
-		int *dataSize,
-		int pass
+		pint32_t dataSize,
+		int32_t pass
 	)
 {
 	Check_Object(this); 
@@ -351,7 +351,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //	This include contains follwing functions:
 //	void MLR_I_MT_PMesh::TransformNoClip(Matrix4D*, GOSVertexPool*);
-//	int MLR_I_MT_PMesh::Clip(MLRClippingState, GOSVertexPool*);
+//	int32_t MLR_I_MT_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <MLR\MLRPrimitiveClipping.hpp>
@@ -371,8 +371,8 @@ MLRShape*
 	MLRShape *ret = new MLRShape(20);
 	Register_Object(ret);
 
-	int i, j, k;
-	int nrOfPasses = states->GetLength();
+	int32_t i, j, k;
+	int32_t nrOfPasses = states->GetLength();
 	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
@@ -406,10 +406,10 @@ MLRShape*
 		Register_Pointer(texCoords[i]);
 	}
 
-	USHORT	*index = new USHORT [nrTri*3];
+	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
 
-	int uniquePoints = 0;
+	int32_t uniquePoints = 0;
 	for (k=0;k<20;k++)
 	{
 		triDrawn = 0;
@@ -447,7 +447,7 @@ MLRShape*
 				{
 					collapsedCoords[uniquePoints++] = coords[i];
 				}
-				index[i] = static_cast<USHORT>(j);
+				index[i] = static_cast<uint16_t>(j);
 			}
 			mesh->SetCoordData(collapsedCoords, uniquePoints);
 		}
@@ -456,7 +456,7 @@ MLRShape*
 			uniquePoints = nrTri*3;
 			for(i=0;i<nrTri*3;i++)
 			{
-				index[i] = static_cast<USHORT>(i);
+				index[i] = static_cast<uint16_t>(i);
 			}
 			mesh->SetCoordData(coords, nrTri*3);
 		}

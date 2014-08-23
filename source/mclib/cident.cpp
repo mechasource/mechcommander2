@@ -85,7 +85,7 @@ void FullPathFileName::changeExt (PSTR from, PSTR to)
 	PSTR ext = strstr(fullName,from);
 	if (ext)
 	{
-		for (ULONG i=0;i<strlen(to);i++)
+		for (uint32_t i=0;i<strlen(to);i++)
 			ext[i] = to[i];
 	}
 }

@@ -62,7 +62,7 @@ void
 MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLRPrimitiveBase(class_data, stream, version)
 {
@@ -127,7 +127,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int parameter)
+	MLRIndexedPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 {
 	MLRPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
 
@@ -135,7 +135,7 @@ void
 	numGOSIndices = -1;
 
 	visibleIndexedVerticesKey = false;
-	int i, len = visibleIndexedVertices.GetLength();
+	int32_t i, len = visibleIndexedVertices.GetLength();
 
 	for(i=0;i<len;i++)
 	{
@@ -148,7 +148,7 @@ void
 void
 	MLRIndexedPrimitiveBase::SetCoordData(
 		const Point3D *data,
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -175,7 +175,7 @@ void
 void
 	MLRIndexedPrimitiveBase::SetIndexData(
 		puint16_t index_array,
-		int index_count
+		int32_t index_count
 	)
 {
 	Check_Object(this); 
@@ -188,8 +188,8 @@ void
 	}
 
 #ifdef _ARMOR
-	int len = coords.GetLength();
-	for(int i=0;i<index_count;i++)
+	int32_t len = coords.GetLength();
+	for(int32_t i=0;i<index_count;i++)
 	{
 		Verify(index_array[i] < len);
 	}
@@ -203,7 +203,7 @@ void
 void
 	MLRIndexedPrimitiveBase::GetIndexData(
 		puint16_t *index_array,
-		int *index_count
+		pint32_t index_count
 	)
 {
 	Check_Object(this); 
@@ -219,7 +219,7 @@ void
 {
 	Check_Object(this);
 
-	int i, len = coords.GetLength();
+	int32_t i, len = coords.GetLength();
 
 	for(i=0;i<len;i++)
 	{
@@ -236,7 +236,7 @@ void
 bool
 	MLRIndexedPrimitiveBase::CheckIndicies()
 {
-	for(int i=0;i<numGOSIndices;i++)
+	for(int32_t i=0;i<numGOSIndices;i++)
 	{
 		if(gos_indices[i] >= numGOSVertices)
 		{

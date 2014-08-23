@@ -40,7 +40,7 @@ PaneElement::PaneElement (PANE *_shapePane, int32_t _x, int32_t _y, int32_t _mid
 	SizeY = _SizeY;
 }
 	
-extern int32_t DrawTransparent( PANE *pane, WINDOW *texture, int X, int Y, int Width, int Height );
+extern int32_t DrawTransparent( PANE *pane, WINDOW *texture, int32_t X, int32_t Y, int32_t Width, int32_t Height );
 
 //---------------------------------------------------------------------------
 void PaneElement::draw (void)
@@ -50,14 +50,14 @@ void PaneElement::draw (void)
 
 //---------------------------------------------------------------------------
 
-extern void AG_shape_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY);
-extern void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY);
+extern void AG_shape_draw (PANE *pane, PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY);
+extern void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY);
 extern void AG_shape_lookaside( puint8_t table );
 //---------------------------------------------------------------------------
 // Static Globals
 
 //---------------------------------------------------------------------------
-DeltaElement::DeltaElement (PUCHAR _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, PUCHAR fTable, bool noScale, bool upScale) : Element(-_y)
+DeltaElement::DeltaElement (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, puint8_t fTable, bool noScale, bool upScale) : Element(-_y)
 {
 	shapeTable = _shape;
 	x = _x;
@@ -100,7 +100,7 @@ void DeltaElement::draw (void)
 	{
 		//----------------------------------------------------------------
 		// Check if shape is actually valid.
-		if ((*(int*)shapeTable!=*(int*)"1.10"))
+		if ((*(pint32_t)shapeTable!=*(pint32_t)"1.10"))
 			return;
 
 		//----------------------------------------------------

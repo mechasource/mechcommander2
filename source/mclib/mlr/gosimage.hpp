@@ -20,14 +20,14 @@ namespace MidLevelRenderer {
 		//
 	public:
 		GOSImage(PCSTR imageName);
-		GOSImage(ULONG imageHandle);
+		GOSImage(uint32_t imageHandle);
 		GOSImage(PCSTR, gos_TextureHints);
 		~GOSImage(void);
 
 #if _CONSIDERED_OBSOLETE
 
-		int		GetWidth(void);
-		int		GetHeight(void);
+		int32_t		GetWidth(void);
+		int32_t		GetHeight(void);
 
 		PCSTR	GetName(void)
 		{ 
@@ -35,21 +35,21 @@ namespace MidLevelRenderer {
 			return imageName;
 		}
 
-		int Ref(void)
+		int32_t Ref(void)
 		{
 			Check_Object(this);
 			instance++;
 			return instance;
 		}
 
-		int DeRef(void)
+		int32_t DeRef(void)
 		{
 			Check_Object(this);
 			instance--;
 			return instance;
 		}
 
-		int GetRef(void)
+		int32_t GetRef(void)
 		{ 
 			Check_Object(this); return instance; 
 		}
@@ -60,10 +60,10 @@ namespace MidLevelRenderer {
 			return ( (flags & Loaded) != 0);
 		}
 
-		ULONG GetHandle(void)
+		uint32_t GetHandle(void)
 		{ 
 			Check_Object(this);
-			ULONG imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
+			uint32_t imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
 
 			if (imageHandle == 0xffffffff)
 				imageHandle = 0;
@@ -71,7 +71,7 @@ namespace MidLevelRenderer {
 			return imageHandle; 
 		}
 
-		void SetHandle (ULONG handle)
+		void SetHandle (uint32_t handle)
 		{
 			//EVERY call to this must change from gos_load to our load
 			Check_Object(this);  
@@ -89,7 +89,7 @@ namespace MidLevelRenderer {
 		{
 			return (puint8_t )ptr.pTexture;
 		}
-		int		GetPitch(void)
+		int32_t		GetPitch(void)
 		{ 
 			return ptr.Pitch;
 		}
@@ -105,11 +105,11 @@ namespace MidLevelRenderer {
 		}
 
 		Stuff::MString imageName;
-		int flags;
+		int32_t flags;
 	protected:
 		gos_TextureHints ipHints;
-		int instance;
-		ULONG mcTextureNodeIndex;
+		int32_t instance;
+		uint32_t mcTextureNodeIndex;
 		TEXTUREPTR ptr;
 	};
 

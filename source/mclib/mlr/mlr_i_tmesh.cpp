@@ -9,7 +9,7 @@
 	BitTrace *MLR_I_TMesh_Clip;
 #endif
 
-extern ULONG gEnableLightMaps;
+extern uint32_t gEnableLightMaps;
 
 #define UV_TEST 0
 #define SPEW_AWAY 0
@@ -66,7 +66,7 @@ void
 MLR_I_TMesh::MLR_I_TMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLRIndexedPrimitiveBase(class_data, stream, version)
 {
@@ -105,7 +105,7 @@ MLR_I_TMesh::~MLR_I_TMesh()
 MLR_I_TMesh*
 	MLR_I_TMesh::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	Check_Object(stream);
@@ -145,7 +145,7 @@ bool
 	Check_Object(pMesh);
 	Verify(gos_GetCurrentHeap() == Heap);
 
-	int len;
+	int32_t len;
 	puint16_t _index;
 	Point3D *_coords;
 	Stuff::Vector2DScalar *_texCoords;
@@ -177,7 +177,7 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_TMesh::InitializeDrawPrimitive(uint8_t vis, int parameter)
+	MLR_I_TMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 {
 	MLRIndexedPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
 
@@ -194,7 +194,7 @@ void
 {
 	Check_Object(this); 
 
-	int i, j, numPrimitives = GetNumPrimitives();
+	int32_t i, j, numPrimitives = GetNumPrimitives();
 	Vector3D v;
 
 	Verify(index.GetLength() > 0);
@@ -213,12 +213,12 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLR_I_TMesh::FindBackFace(const Point3D& u)
 {
 	Check_Object(this);
 
-	int ret = 0;
+	int32_t ret = 0;
 	puint8_t iPtr;
 	Plane *p;
 
@@ -240,7 +240,7 @@ int
 	else
 	{
 		memset(iPtr, 0, numOfTriangles);
-		for(int i=numOfTriangles-1;i>=0;p--,i--)
+		for(int32_t i=numOfTriangles-1;i>=0;p--,i--)
 		{
 			if(p->GetDistanceTo(u)>= 0.0f)
 			{
@@ -261,7 +261,7 @@ int
 void
 	MLR_I_TMesh::ResetTestList()
 {
-	int i, numPrimitives = GetNumPrimitives();
+	int32_t i, numPrimitives = GetNumPrimitives();
 	puint8_t iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
@@ -273,14 +273,14 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLR_I_TMesh::FindVisibleVertices()
 {
 	Check_Object(this);
 	Verify(index.GetLength() > 0);
 
-	int ret, i, j;
-	ULONG *indices = (ULONG *)index.GetData();
+	int32_t ret, i, j;
+	uint32_t *indices = (uint32_t *)index.GetData();
 
 	for(i=0,j=0,ret=0;i<(numOfTriangles>>1);++i)
 	{
@@ -318,7 +318,7 @@ int
 	return ret;
 }
 
-extern ULONG gEnableTextureSort, gEnableAlphaSort;
+extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 /*
@@ -328,7 +328,7 @@ void
 	Check_Object(this);
 
 	Verify(index.GetLength() > 0);
-	int i, len = coords.GetLength();
+	int32_t i, len = coords.GetLength();
 
 	if(visibleIndexedVerticesKey == false)
 	{
@@ -402,7 +402,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //	This include contains follwing functions:
 //	void MLR_I_TMesh::TransformNoClip(Matrix4D*, GOSVertexPool*);
-//	int MLR_I_TMesh::Clip(MLRClippingState, GOSVertexPool*);
+//	int32_t MLR_I_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <MLR\MLRTriangleClipping.hpp>
@@ -412,9 +412,9 @@ void
 //---------------------------------------------------------------------------
 //
 void
-	MLR_I_TMesh::Lighting(MLRLight* const* lights, int nrLights)
+	MLR_I_TMesh::Lighting(MLRLight* const* lights, int32_t nrLights)
 {
-	int i;
+	int32_t i;
 	MLRLightMap *lightMap;
 
 	for(i=0;i<nrLights;i++)
@@ -433,14 +433,14 @@ void
 
 extern RGBAColor errorColor;
 extern bool
-	CheckForBigTriangles(DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs, int stride);
+	CheckForBigTriangles(DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs, int32_t stride);
 
 //---------------------------------------------------------------------------
 //
 void
 	MLR_I_TMesh::LightMapLighting(MLRLight *light)
 {
-	int i, j, k, len = numOfTriangles;
+	int32_t i, j, k, len = numOfTriangles;
 	LinearMatrix4D matrix = LinearMatrix4D::Identity;
 	Point3D lightPosInShape, hitPoint;
 	UnitVector3D up, left, forward;
@@ -455,7 +455,7 @@ void
 	}
 
 	Scalar bigUV = MLRState::GetMaxUV();
-	int tooBig = 0;
+	int32_t tooBig = 0;
 
 	switch(light->GetLightType())
 	{
@@ -573,7 +573,7 @@ void
 		break;
 		case MLRLight::SpotLight:
 		{
-			int behindCount = 0, falloffCount = 0;
+			int32_t behindCount = 0, falloffCount = 0;
 
 			Check_Object(lightMap);
 
@@ -872,9 +872,9 @@ bool
 	// collide the ray against each
 	//---------------------------------------------------------------------
 	//
-	int poly_start = 0;
+	int32_t poly_start = 0;
 	bool hit = false;
-	for (int polygon=0; polygon<numOfTriangles; poly_start += 3,++polygon)
+	for (int32_t polygon=0; polygon<numOfTriangles; poly_start += 3,++polygon)
 	{
 		//
 		//---------------------------------
@@ -913,7 +913,7 @@ bool
 		// triangle onto
 		//-------------------------------------------------------------------
 		//
-		int s,t;
+		int32_t s,t;
 		Scalar nx = Abs(plane->normal.x);
 		Scalar ny = Abs(plane->normal.y);
 		Scalar nz = Abs(plane->normal.z);
@@ -1054,7 +1054,7 @@ MLR_I_TMesh*
 	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
-	int i;
+	int32_t i;
 
 	for(i=0;i<6;i++)
 	{
@@ -1164,7 +1164,7 @@ MLRShape*
 	MLRShape *ret = new MLRShape(20);
 	Register_Object(ret);
 
-	int i, j, k;
+	int32_t i, j, k;
 	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
@@ -1188,7 +1188,7 @@ MLRShape*
 	Stuff::Vector2DScalar *texCoords = new Stuff::Vector2DScalar[nrTri*3];
 	Register_Pointer(texCoords);
 
-	int uniquePoints = 0;
+	int32_t uniquePoints = 0;
 	for (k=0;k<20;k++)
 	{
 		triDrawn = 0;

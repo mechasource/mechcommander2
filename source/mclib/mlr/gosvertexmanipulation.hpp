@@ -46,7 +46,7 @@ inline bool GOSCopyData (
 #endif
 	size_t _index
 #if FOG_HACK
-	, int foggy = 1
+	, int32_t foggy = 1
 #endif	//	FOG_HACK
 	)
 {
@@ -127,7 +127,7 @@ inline bool GOSCopyTriangleData(
 	const Stuff::Vector4D *coords, 
 #ifdef I_SAY_YES_TO_COLOR
 #ifdef I_SAY_YES_TO_DWORD_COLOR
-	const ULONG* colors,
+	pcuint32_t  colors,
 #else
 	const Stuff::RGBAColor *colors,
 #endif
@@ -140,9 +140,9 @@ inline bool GOSCopyTriangleData(
 	const Stuff::Vector2DScalar *texCoords,
 #endif
 #endif
-	int offset0, int offset1, int offset2
+	int32_t offset0, int32_t offset1, int32_t offset2
 #if FOG_HACK
- , int foggy = 1
+ , int32_t foggy = 1
 #endif	//	FOG_HACK
 	)
 {

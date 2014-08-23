@@ -9,7 +9,7 @@
 
 #include <mlr/mlrcliptrick.hpp>
 
-extern ULONG gEnableTextureSort, gShowClippedPolys, gEnableDetailTexture;
+extern uint32_t gEnableTextureSort, gShowClippedPolys, gEnableDetailTexture;
 extern puint16_t indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
 
 #define HUNT_CLIP_ERROR 0
@@ -26,7 +26,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt, bool db)
 	Start_Timer(Transform_Time);
 
 	//	uint16_t stride;
-	int stride;
+	int32_t stride;
 
 	bool textureAnimation = false;
 	Scalar deltaU=0.0f, deltaV=0.0f;
@@ -45,16 +45,16 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt, bool db)
 		}
 	}
 
-	int i, j;
+	int32_t i, j;
 
 #ifdef I_SAY_YES_TO_TERRAIN
 	Scalar terrainUV[2];
 #endif	//	I_SAY_YES_TO_TERRAIN
 
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
-	int m;
+	int32_t m;
 	gos_PushCurrentHeap(StaticHeap);
-	int tex2count[Limits::Max_Number_Of_Multitextures];
+	int32_t tex2count[Limits::Max_Number_Of_Multitextures];
 	gos_PopCurrentHeap();
 
 	for(m=0;m<currentNrOfPasses;m++)
@@ -63,11 +63,11 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt, bool db)
 	}
 #endif	//	I_SAY_YES_TO_MULTI_TEXTURES
 
-	int numVertices = GetNumVertices();
+	int32_t numVertices = GetNumVertices();
 	gos_vertices = vt->GetActualVertexPool(db);
 
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-	int tex2count = 0;
+	int32_t tex2count = 0;
 #endif	//	I_SAY_YES_TO_DUAL_TEXTURES
 
 #ifdef I_SAY_YES_TO_DETAIL_TEXTURES
@@ -113,7 +113,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt, bool db)
 			}
 #endif	//	LAB_ONLY
 
-			*(int *)(&indexOffset[j]) = (j - stride);
+			*(pint32_t )(&indexOffset[j]) = (j - stride);
 
 #ifdef I_SAY_YES_TO_TERRAIN
 			terrainUV[0] = borderPixelFun + (coords[j].x - minX)*xUVFac;
@@ -426,7 +426,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt, bool db)
 	gos_indices = vt->GetActualIndexPool(db);
 	numGOSIndices = 0;
 
-	int ngi = 0;
+	int32_t ngi = 0;
 	for(i=0,j=0;i<numOfTriangles;j+=3,++i)
 	{
 		if(testList[i] == 0)
@@ -465,12 +465,12 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt, bool db)
 
 static MLRClippingState theAnd, theOr, theTest;
 
-//	extern void _stdcall CheckVertices( gos_VERTEX* pVertexArray, ULONG NumberVertices, bool PointsLines );
-//	extern void _stdcall CheckVertices1( gos_VERTEX_2UV* pVertexArray, ULONG NumberVertices );
+//	extern void _stdcall CheckVertices( gos_VERTEX* pVertexArray, uint32_t NumberVertices, bool PointsLines );
+//	extern void _stdcall CheckVertices1( gos_VERTEX_2UV* pVertexArray, uint32_t NumberVertices );
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Now it gets serious
-int
+int32_t
 CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVertexPool *vt, bool db)
 {
 	Check_Object(this);
@@ -497,9 +497,9 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 	Verify(index.GetLength() > 0);
 	uint16_t l;
 
-	int i, j, k, ret = 0;
+	int32_t i, j, k, ret = 0;
 
-	int len = coords.GetLength();
+	int32_t len = coords.GetLength();
 
 	if(visibleIndexedVerticesKey == false)
 	{
@@ -508,7 +508,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 
 	Stuff::Vector4D *v4d = transformedCoords->GetData();
 	Stuff::Point3D *p3d = coords.GetData();
-	int *cs = (int *)clipPerVertex->GetData();
+	pint32_t cs = (pint32_t )clipPerVertex->GetData();
 	puint8_t viv = visibleIndexedVertices.GetData();
 
 	for(i=0;i<len;i++,p3d++,v4d++,cs++,viv++)
@@ -557,7 +557,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 	Stop_Timer(Transform_Time);
 	Start_Timer(Clipping_Time);
 
-	int mask, k0, k1, ct=0;
+	int32_t mask, k0, k1, ct=0;
 	Scalar a=0.0f;
 
 	bool textureAnimation = false;
@@ -599,14 +599,14 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 #endif	//	I_SAY_YES_TO_DUAL_TEXTURES || I_SAY_YES_TO_DETAIL_TEXTURES
 
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-	int tex2count = 0;
-	int numVertices = GetNumVertices();
+	int32_t tex2count = 0;
+	int32_t numVertices = GetNumVertices();
 #endif	//	I_SAY_YES_TO_DUAL_TEXTURES
 
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
-	int m;
+	int32_t m;
 	gos_PushCurrentHeap(StaticHeap);
-	int tex2count[Limits::Max_Number_Of_Multitextures];
+	int32_t tex2count[Limits::Max_Number_Of_Multitextures];
 	gos_PopCurrentHeap();
 
 	for(m=0;m<currentNrOfPasses;m++)
@@ -615,7 +615,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 	}
 #endif	//	I_SAY_YES_TO_MULTI_TEXTURES
 
-	int	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
+	int32_t	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 
 	myNumberUsedClipVertex = 0;
 	myNumberUsedClipIndex = 0;
@@ -635,8 +635,8 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 	// backfaced polygons
 	//-----------------------------------------------------------------
 	//
-	cs = (int *)clipPerVertex->GetData();
-	int index0, index1, index2;
+	cs = (pint32_t )clipPerVertex->GetData();
+	int32_t index0, index1, index2;
 
 	for(i=0,j=0;i<numOfTriangles;j+=3,++i)
 	{
@@ -745,7 +745,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 					// directly to the clipping buffer
 					//----------------------------------------------------
 					//
-					int clipped_index =
+					int32_t clipped_index =
 						myNumberUsedClipVertex + numberVerticesPerPolygon;
 					theTest = cs[k0];
 
@@ -1040,7 +1040,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				Set_Statistic(PolysClippedButGOnePlane, PolysClippedButGOnePlane+1);
 #endif	//	LAB_ONLY
 				ClipData2 srcPolygon, dstPolygon;
-				int dstBuffer = 1;
+				int32_t dstBuffer = 1;
 
 #ifndef I_SAY_YES_TO_TERRAIN
 				Verify(texCoords.GetLength() > 0);
@@ -1061,7 +1061,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				//
 				for(k=j,l=0;k<j+3;k++,l++)
 				{
-					int indexK = index[k];
+					int32_t indexK = index[k];
 
 					srcPolygon.coords[l] = (*transformedCoords)[indexK];
 
@@ -1116,7 +1116,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				//
 				mask = 1;
 				MLRClippingState theNewOr(0);
-				int loop = 4;
+				int32_t loop = 4;
 
 #if HUNT_CLIP_ERROR
 				for(k=0;k<srcPolygon.length;k++)
@@ -1500,7 +1500,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 #endif	//	HUNT_CLIP_ERROR
 				for(k=0;k<srcPolygon.length;k++)
 				{
-					int clipped_index = myNumberUsedClipVertex + k;
+					int32_t clipped_index = myNumberUsedClipVertex + k;
 #if HUNT_CLIP_ERROR
 					DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20) 
 						<< srcPolygon.coords[k].x << " "

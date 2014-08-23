@@ -31,7 +31,7 @@ namespace gosFX
 	//
 	protected:
 		DebrisCloud__Specification(
-			Stuff::MemoryStream *stream, int gfx_version);
+			Stuff::MemoryStream *stream, int32_t gfx_version);
 
 	public:
 		DebrisCloud__Specification();
@@ -43,7 +43,7 @@ namespace gosFX
 		static DebrisCloud__Specification*
 			Make(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		void

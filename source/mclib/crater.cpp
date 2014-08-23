@@ -113,7 +113,7 @@ float craterUVTable [136] =
 
 //---------------------------------------------------------------------
 // class CraterManager
-int32_t CraterManager::init (int32_t numCraters, ULONG craterTypeSize, PSTR craterFileName)
+int32_t CraterManager::init (int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName)
 {
 	init();
 	
@@ -136,11 +136,11 @@ int32_t CraterManager::init (int32_t numCraters, ULONG craterTypeSize, PSTR crat
 	numCraterTextures = MAX_CRATER_TEXTURES;
 	//---------------------------------------------------------
 	// Setup Crater Texture handles
-	craterTextureHandles = (ULONG *)malloc(sizeof(ULONG) * numCraterTextures);
-	memset((PUCHAR)craterTextureHandles,0xff,sizeof(ULONG) * numCraterTextures);
+	craterTextureHandles = (uint32_t *)malloc(sizeof(uint32_t) * numCraterTextures);
+	memset((puint8_t)craterTextureHandles,0xff,sizeof(uint32_t) * numCraterTextures);
 
-	craterTextureIndices = (ULONG *)malloc(sizeof(ULONG) * numCraterTextures);
-	memset((PUCHAR)craterTextureIndices,0xff,sizeof(ULONG) * numCraterTextures);
+	craterTextureIndices = (uint32_t *)malloc(sizeof(uint32_t) * numCraterTextures);
+	memset((puint8_t)craterTextureIndices,0xff,sizeof(uint32_t) * numCraterTextures);
 
 	//-----------------------------------------------------
 	// Preload all of the craters for the mission.
@@ -361,8 +361,8 @@ void CraterManager::render (void)
 			// Check clipping
 			if (onScreen1 || onScreen2 || onScreen3 || onScreen4)
 			{
-				ULONG lightRGB = 0xffffffff;
-				ULONG specR = 0, specB = 0, specG = 0;
+				uint32_t lightRGB = 0xffffffff;
+				uint32_t specR = 0, specB = 0, specG = 0;
 				
 				uint8_t lightr = 0xff,lightg = 0xff,lightb = 0xff;
 				lightr = eye->ambientRed;
@@ -388,11 +388,11 @@ void CraterManager::render (void)
 					lightRGB = lightb + (lightr<<16) + (lightg << 8) + (0xff << 24);
 				}
 
-				ULONG fogRGB = (0xff<<24) + (specR<<16) + (specG<<8) + specB;
+				uint32_t fogRGB = (0xff<<24) + (specR<<16) + (specG<<8) + specB;
 				
 				if (useFog)
 				{
-					ULONG fogValue = 0xff;
+					uint32_t fogValue = 0xff;
 					float fogStart = eye->fogStart;
 					float fogFull = eye->fogFull;
 
@@ -428,7 +428,7 @@ void CraterManager::render (void)
 					if (hazeFactor != 0.0f)
 					{
 						float fogFactor = 1.0 - hazeFactor;
-						ULONG distFog = float2long(fogFactor * 255.0f);
+						uint32_t distFog = float2long(fogFactor * 255.0f);
 						
 						if (distFog < fogValue)
 							fogValue = distFog;
@@ -486,8 +486,8 @@ void CraterManager::render (void)
 					// FOG time.  Set Render state to FOG on!
 					if (useFog)
 					{
-						ULONG fogColor = eye->fogColor;
-						gos_SetRenderState( gos_State_Fog, (int)&fogColor);
+						uint32_t fogColor = eye->fogColor;
+						gos_SetRenderState( gos_State_Fog, (int32_t)&fogColor);
 					}
 					else
 					{

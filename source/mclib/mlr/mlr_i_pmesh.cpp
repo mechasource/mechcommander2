@@ -11,7 +11,7 @@
 
 #define UV_TEST 0
 
-extern ULONG gEnableLightMaps;
+extern uint32_t gEnableLightMaps;
 
 //#############################################################################
 //###### MLRIndexedPolyMesh with no color no lighting one texture layer  ######
@@ -77,7 +77,7 @@ void
 MLR_I_PMesh::MLR_I_PMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLRIndexedPrimitiveBase(class_data, stream, version)
 {
@@ -110,7 +110,7 @@ void
 	Check_Pointer(this);
 	Verify(gos_GetCurrentHeap() == Heap);
 
-	int len;
+	int32_t len;
 	puint16_t _index;
 	Point3D *_coords;
 	Vector2DScalar *_texCoords;
@@ -152,7 +152,7 @@ MLR_I_PMesh::~MLR_I_PMesh()
 MLR_I_PMesh*
 	MLR_I_PMesh::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	Check_Object(stream);
@@ -187,7 +187,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_PMesh::InitializeDrawPrimitive(uint8_t vis, int parameter)
+	MLR_I_PMesh::InitializeDrawPrimitive(uint8_t vis, int32_t parameter)
 {
 	MLRIndexedPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
 
@@ -200,7 +200,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_PMesh::SetSubprimitiveLengths (puint8_t data, int numPrimitives)
+	MLR_I_PMesh::SetSubprimitiveLengths (puint8_t data, int32_t numPrimitives)
 {
 	Check_Object(this); 
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -215,7 +215,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_PMesh::GetSubprimitiveLengths (puint8_t *data, int *l)
+	MLR_I_PMesh::GetSubprimitiveLengths (puint8_t *data, pint32_t l)
 {
 	Check_Object(this);
 	*l = lengths.GetLength();
@@ -229,7 +229,7 @@ void
 {
 	Check_Object(this); 
 
-	int i, j, stride, numPrimitives = GetNumPrimitives();
+	int32_t i, j, stride, numPrimitives = GetNumPrimitives();
 	Vector3D v;
 
 	Verify(index.GetLength() > 0);
@@ -250,13 +250,13 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLR_I_PMesh::FindBackFace(const Point3D& u)
 {
 	Check_Object(this);
 
-	int i, numPrimitives = GetNumPrimitives();
-	int ret = 0, len = lengths.GetLength();
+	int32_t i, numPrimitives = GetNumPrimitives();
+	int32_t ret = 0, len = lengths.GetLength();
 	puint8_t iPtr;
 	Plane *p;
 
@@ -295,7 +295,7 @@ int
 void
 	MLR_I_PMesh::ResetTestList()
 {
-	int i, numPrimitives = GetNumPrimitives();
+	int32_t i, numPrimitives = GetNumPrimitives();
 	puint8_t iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
@@ -307,13 +307,13 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLR_I_PMesh::FindVisibleVertices()
 {
 	Check_Object(this);
 	Verify(index.GetLength() > 0);
 
-	int ret, i, j, k, stride, len = lengths.GetLength();
+	int32_t ret, i, j, k, stride, len = lengths.GetLength();
 
 	Verify(index.GetLength() > 0);
 	
@@ -342,7 +342,7 @@ int
 	return ret;
 }
 
-extern ULONG gEnableTextureSort, gEnableAlphaSort;
+extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -354,7 +354,7 @@ void
 	Start_Timer(Transform_Time);
 
 	Verify(index.GetLength() > 0);
-	int i, len = coords.GetLength();
+	int32_t i, len = coords.GetLength();
 
 	if(visibleIndexedVerticesKey == false)
 	{
@@ -428,7 +428,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //	This include contains follwing functions:
 //	void MLR_I_PMesh::TransformNoClip(Matrix4D*, GOSVertexPool*);
-//	int MLR_I_PMesh::Clip(MLRClippingState, GOSVertexPool*);
+//	int32_t MLR_I_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <MLR\MLRPrimitiveClipping.hpp>
@@ -438,9 +438,9 @@ void
 //---------------------------------------------------------------------------
 //
 void
-	MLR_I_PMesh::Lighting(MLRLight* const* lights, int nrLights)
+	MLR_I_PMesh::Lighting(MLRLight* const* lights, int32_t nrLights)
 {
-	int i;
+	int32_t i;
 	MLRLightMap *lightMap;
 
 	for(i=0;i<nrLights;i++)
@@ -460,12 +460,12 @@ RGBAColor errorColor;
 //---------------------------------------------------------------------------
 //
 bool
-	CheckForBigTriangles(DynamicArrayOf<Vector2DScalar> *lightMapUVs, int stride)
+	CheckForBigTriangles(DynamicArrayOf<Vector2DScalar> *lightMapUVs, int32_t stride)
 {
-	int k1, k0;
+	int32_t k1, k0;
 	Scalar u1v0, u0v1;
 
-	int up=0, down=0, right=0, left=0;
+	int32_t up=0, down=0, right=0, left=0;
 
 	for(k0=0;k0<stride;k0++)
 	{
@@ -526,7 +526,7 @@ bool
 		{
 #if UV_TEST
 			DEBUG_STREAM << k0 << endl;
-			for(int i=0;i<stride;i++)
+			for(int32_t i=0;i<stride;i++)
 			{
 				DEBUG_STREAM << (*lightMapUVs)[i][0] << " " << (*lightMapUVs)[i][1] << endl;
 			}
@@ -550,7 +550,7 @@ void
 	}
 
 	uint16_t stride;
-	int i, j, k, len = lengths.GetLength();
+	int32_t i, j, k, len = lengths.GetLength();
 	LinearMatrix4D matrix = LinearMatrix4D::Identity;
 	Point3D lightPosInShape, hitPoint;
 	UnitVector3D up, left, forward;
@@ -655,7 +655,7 @@ void
 		break;
 		case MLRLight::SpotLight:
 		{
-			int behindCount = 0, falloffCount = 0;
+			int32_t behindCount = 0, falloffCount = 0;
 
 			lightMap->AddState(referenceState.GetPriority()+1);
 			
@@ -688,7 +688,7 @@ void
 					continue;
 				}
 
-				int tooBig = 0;
+				int32_t tooBig = 0;
 				for(k=0;k<stride;k++)
 				{
 					Vector3D vec;
@@ -862,11 +862,11 @@ bool
 	// collide the ray against each
 	//---------------------------------------------------------------------
 	//
-	int poly_start = 0, numPrimitives = GetNumPrimitives();
+	int32_t poly_start = 0, numPrimitives = GetNumPrimitives();
 	bool hit = false;
-	for (int polygon=0; polygon<numPrimitives; ++polygon)
+	for (int32_t polygon=0; polygon<numPrimitives; ++polygon)
 	{
-		int stride = lengths[polygon];
+		int32_t stride = lengths[polygon];
 		Verify(stride>2);
 
 		//
@@ -908,7 +908,7 @@ bool
 		// triangle onto
 		//-------------------------------------------------------------------
 		//
-		int s,t;
+		int32_t s,t;
 		Scalar nx = Abs(plane->normal.x);
 		Scalar ny = Abs(plane->normal.y);
 		Scalar nz = Abs(plane->normal.z);
@@ -962,7 +962,7 @@ bool
 		//------------------------------------------------------------
 		//
 		bool local_hit = false;
-		int next_v = 3;
+		int32_t next_v = 3;
 Test_Triangle:
 		Check_Pointer(v3);
 		Scalar s2 = (*v3)[s] - (*v1)[s];
@@ -1063,7 +1063,7 @@ MLR_I_PMesh*
 	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
-	int i;
+	int32_t i;
 
 	for(i=0;i<6;i++)
 	{
@@ -1174,7 +1174,7 @@ void
 	)
 {
 	Point3D v12(0.0f, 0.0f, 0.0f), v23(0.0f, 0.0f, 0.0f), v31(0.0f, 0.0f, 0.0f);
-	int i;
+	int32_t i;
 
 	if (depth == 0)
 	{
@@ -1229,7 +1229,7 @@ MLRShape*
 	MLRShape *ret = new MLRShape(20);
 	Register_Object(ret);
 
-	int i, j, k;
+	int32_t i, j, k;
 	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
@@ -1261,7 +1261,7 @@ MLRShape*
 	Vector2DScalar *texCoords = new Vector2DScalar[nrTri*3];
 	Register_Pointer(texCoords);
 
-	int uniquePoints = 0;
+	int32_t uniquePoints = 0;
 	for (k=0;k<20;k++)
 	{
 		triDrawn = 0;

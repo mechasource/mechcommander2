@@ -22,7 +22,7 @@
 // #include <string.h>
 #include <gameos.hpp>
 
-PUCHAR 		LZPacketBuffer = NULL;
+puint8_t 		LZPacketBuffer = NULL;
 size_t			LZPacketBufferSize = 512000;
 
 extern char CDInstallPath[];
@@ -113,7 +113,7 @@ int32_t FastFile::open (PSTR fName)
 
 				char data[2048];
 				sprintf(data,FileMissingString,fileName,CDMissingString);
-				ULONG result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
+				uint32_t result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
 				if (result1 == IDCANCEL)
 				{
 					ExitGameOS();
@@ -139,8 +139,8 @@ int32_t FastFile::open (PSTR fName)
 
 	//---------------------------------------------
 	//-- First Long is Version Number of FastFile
-	ULONG result = 0;
-	ULONG version = 0;
+	uint32_t result = 0;
+	uint32_t version = 0;
 	result = fread((&version),1,sizeof(int32_t),handle);
 
 	logicalPosition += sizeof(int32_t);
@@ -176,7 +176,7 @@ int32_t FastFile::open (PSTR fName)
 		files[i].pfe = (FILEENTRY *)malloc(sizeof(FILEENTRY));
 		memset(files[i].pfe,0,sizeof(FILEENTRY));
 
-		ULONG result = 0;
+		uint32_t result = 0;
 		result = fread(files[i].pfe,1,sizeof(FILEENTRY),handle);
 
 		files[i].inuse = FALSE;
@@ -218,7 +218,7 @@ void FastFile::close (void)
 }
 
 //---------------------------------------------------------------------------
-int32_t FastFile::openFast (ULONG hash, PSTR fName)
+int32_t FastFile::openFast (uint32_t hash, PSTR fName)
 {
 	//------------------------------------------------------------------
 	//-- In order to use this, the file name must be part of the index.
@@ -341,7 +341,7 @@ int32_t FastFile::readFast (int32_t fastFileHandle, PVOIDbfr, int32_t size)
 		{
 			if (!LZPacketBuffer)
 			{
-				LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
+				LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
 				if (!LZPacketBuffer)
 					return 0;
 			}
@@ -351,7 +351,7 @@ int32_t FastFile::readFast (int32_t fastFileHandle, PVOIDbfr, int32_t size)
 				LZPacketBufferSize = files[fastFileHandle].pfe->size;
 				
 				free(LZPacketBuffer);
-				LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
+				LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
 				if (!LZPacketBuffer)
 					return 0;
 			}
@@ -373,7 +373,7 @@ int32_t FastFile::readFast (int32_t fastFileHandle, PVOIDbfr, int32_t size)
 		
 						char data[2048];
 						sprintf(data,FileMissingString,fileName,CDMissingString);
-						ULONG result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
+						uint32_t result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
 						if (result1 == IDCANCEL)
 						{
 							ExitGameOS();
@@ -395,12 +395,12 @@ int32_t FastFile::readFast (int32_t fastFileHandle, PVOIDbfr, int32_t size)
 				size_t decompLength = 0;
 				if (useLZCompress)
 				{
-					decompLength = LZDecomp((PUCHAR)bfr,LZPacketBuffer,files[fastFileHandle].pfe->size);
+					decompLength = LZDecomp((puint8_t)bfr,LZPacketBuffer,files[fastFileHandle].pfe->size);
 				}
 				else
 				{
 					decompLength = files[fastFileHandle].pfe->realSize;
-					int32_t error = uncompress((PUCHAR)bfr,&decompLength,LZPacketBuffer,files[fastFileHandle].pfe->size);
+					int32_t error = uncompress((puint8_t)bfr,&decompLength,LZPacketBuffer,files[fastFileHandle].pfe->size);
 					if (error != Z_OK)
 						STOP(("Error %d UnCompressing File %s from FastFile %s",error,files[fastFileHandle].pfe->name,fileName));
 				}
@@ -450,7 +450,7 @@ int32_t FastFile::readFastRAW (int32_t fastFileHandle, PVOIDbfr, int32_t size)
 
 				char data[2048];
 				sprintf(data,FileMissingString,fileName,CDMissingString);
-				ULONG result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
+				uint32_t result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
 				if (result1 == IDCANCEL)
 				{
 					ExitGameOS();

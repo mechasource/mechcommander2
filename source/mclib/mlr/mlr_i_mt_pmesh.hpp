@@ -34,7 +34,7 @@ namespace MidLevelRenderer {
 		MLR_I_MT_PMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		~MLR_I_MT_PMesh();
 
@@ -44,7 +44,7 @@ namespace MidLevelRenderer {
 		static MLR_I_MT_PMesh*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		void
@@ -53,19 +53,19 @@ namespace MidLevelRenderer {
 	public:
 		void Copy(MLR_I_PMesh*);
 
-		virtual int	
+		virtual int32_t	
 			TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
 
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
 		void
-			SetTexCoordData(const Stuff::Vector2DScalar*,	int, int pass=0);
+			SetTexCoordData(const Stuff::Vector2DScalar*,	int32_t, int32_t pass=0);
 		void
-			GetTexCoordData(const Stuff::Vector2DScalar **data, int *dataSize,	int pass);
+			GetTexCoordData(const Stuff::Vector2DScalar **data, pint32_t dataSize,	int32_t pass);
 
 		virtual void
-			SetReferenceState(const MLRState& _state, int pass=0)
+			SetReferenceState(const MLRState& _state, int32_t pass=0)
 		{
 			Check_Object(this);
 			Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
@@ -78,14 +78,14 @@ namespace MidLevelRenderer {
 		}
 
 		virtual const MLRState&
-			GetReferenceState(int pass=0) const
+			GetReferenceState(int32_t pass=0) const
 		{
 			Check_Object(this); 
 			Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
 			return multiReferenceState[pass];
 		}
 		virtual const MLRState&
-			GetCurrentState(int pass=0) const
+			GetCurrentState(int32_t pass=0) const
 		{
 			Check_Object(this);
 			Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
@@ -98,14 +98,14 @@ namespace MidLevelRenderer {
 			Check_Object(this);
 
 			state.Combine(master, referenceState); 
-			for(int i=0;i<currentNrOfPasses;i++)
+			for(int32_t i=0;i<currentNrOfPasses;i++)
 			{
 				multiState[i].Combine(master, multiReferenceState[i]); 
 			}
 		};
 
 		virtual GOSVertex*
-			GetGOSVertices(int pass=0)
+			GetGOSVertices(int32_t pass=0)
 		{
 			Check_Object(this); 
 			Verify(pass>=0 && pass<Limits::Max_Number_Of_Multitextures);
@@ -113,9 +113,9 @@ namespace MidLevelRenderer {
 		}
 
 		virtual	void
-			InitializeDrawPrimitive(uint8_t, int=0);
+			InitializeDrawPrimitive(uint8_t, int32_t=0);
 
-		int
+		int32_t
 			GetNumPasses()
 		{ Check_Object(this); return currentNrOfPasses; }
 
@@ -131,11 +131,11 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int
+		virtual int32_t
 			GetSize()
 		{ 
 			Check_Object(this);
-			int ret = MLR_I_PMesh::GetSize();
+			int32_t ret = MLR_I_PMesh::GetSize();
 
 			return ret;
 		}

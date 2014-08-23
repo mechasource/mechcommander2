@@ -57,7 +57,7 @@ MLRLight::MLRLight(ClassData *class_data) :
 MLRLight::MLRLight(
 	ClassData *class_data,
 	Stuff::MemoryStream *stream,
-	int version
+	int32_t version
 ) :
 	RegisteredClass(class_data)
 {
@@ -121,11 +121,11 @@ MLRLight::~MLRLight()
 MLRLight*
 	MLRLight::Make(
 		Stuff::MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	gos_PushCurrentHeap(Heap);
-	int type;
+	int32_t type;
 	MLRLight *light = NULL;
 	*stream >> type;
 	switch (type)
@@ -186,7 +186,7 @@ void
 	Check_Object(this);
 	Check_Object(stream);
 
-	*stream << static_cast<int>(GetLightType());
+	*stream << static_cast<int32_t>(GetLightType());
 	*stream << intensity << color << lightToWorld;
 	*stream << lightName;
 }

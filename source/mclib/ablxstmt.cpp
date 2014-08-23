@@ -76,7 +76,7 @@ extern SymTableNodePtr	CurModuleIdPtr;
 extern int32_t				CurModuleHandle;
 extern bool				CallModuleInit;
 extern StackItemPtr		StaticDataPtr;
-ULONG*	OrderCompletionFlags = NULL;
+uint32_t*	OrderCompletionFlags = NULL;
 extern ModuleEntryPtr	ModuleRegistry;
 extern ABLModulePtr*	ModuleInstanceRegistry;
 extern ABLModulePtr		CurModule;

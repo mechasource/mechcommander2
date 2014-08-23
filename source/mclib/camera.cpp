@@ -44,12 +44,12 @@
 #include "userinput.h"
 #endif
 
-extern void AG_ellipse_draw(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color);
-extern void AG_ellipse_fill(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color);
-extern void AG_StatusBar( PANE *pane, int X0, int Y0, int X1, int Y1, int Color, int Width );
-extern void AG_shape_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY);
-extern void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY);
-extern void AG_shape_lookaside(PUCHAR palette);
+extern void AG_ellipse_draw(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
+extern void AG_ellipse_fill(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
+extern void AG_StatusBar( PANE *pane, int32_t X0, int32_t Y0, int32_t X1, int32_t Y1, int32_t Color, int32_t Width );
+extern void AG_shape_draw (PANE *pane, PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY);
+extern void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY);
+extern void AG_shape_lookaside(puint8_t palette);
 
 //#pragma warning(disable:4305/*double to float truncation*/)
 
@@ -98,8 +98,8 @@ extern int32_t tileCacheMiss;
 bool drawCameraCircle = FALSE;
 extern bool gamePaused;
 extern bool gameAsked;
-PUCHAR pauseShape = NULL;
-PUCHAR askedShape = NULL;
+puint8_t pauseShape = NULL;
+puint8_t askedShape = NULL;
 extern bool gRestartRender;
 bool MaxObjectsDrawn = FALSE;
 
@@ -474,9 +474,9 @@ int32_t Camera::init (FitIniFilePtr cameraFile )
 		}
 
 		/* Here we subtract out the sky color component to get the actual color of the fog. */
-		int opaqueDayFogRed = fDayFogRed - fFogTransparency * fDaySkyRed;
-		int opaqueDayFogGreen = fDayFogGreen - fFogTransparency * fDaySkyGreen;
-		int opaqueDayFogBlue = fDayFogBlue - fFogTransparency * fDaySkyBlue;
+		int32_t opaqueDayFogRed = fDayFogRed - fFogTransparency * fDaySkyRed;
+		int32_t opaqueDayFogGreen = fDayFogGreen - fFogTransparency * fDaySkyGreen;
+		int32_t opaqueDayFogBlue = fDayFogBlue - fFogTransparency * fDaySkyBlue;
 		gosASSERT(0 == ((~0xff) & opaqueDayFogRed));
 		gosASSERT(0 == ((~0xff) & opaqueDayFogGreen));
 		gosASSERT(0 == ((~0xff) & opaqueDayFogBlue));
@@ -552,7 +552,7 @@ void Camera::getClosestVertex (Stuff::Vector2DOf<int32_t> &screenPos, int32_t &r
 	// where we are by finding the vertex closest to the clicked 
 	// position and returning its 3d pos.
 	VertexPtr topVertex = land->getVertexList();
-	ULONG numVertices = land->getNumVertices();
+	uint32_t numVertices = land->getNumVertices();
 	VertexPtr closestVertex = NULL;
 	int32_t whichVertex = 0;
 
@@ -728,7 +728,7 @@ inline bool overThisTile (TerrainQuadPtr tile, int32_t mouseX, int32_t mouseY)
 }
 		
 //---------------------------------------------------------------------------
-ULONG Camera::inverseProject (Stuff::Vector2DOf<int32_t> &screenPos, Stuff::Vector3D &point)
+uint32_t Camera::inverseProject (Stuff::Vector2DOf<int32_t> &screenPos, Stuff::Vector3D &point)
 {
 	if (turn < 4)
 	{
@@ -739,7 +739,7 @@ ULONG Camera::inverseProject (Stuff::Vector2DOf<int32_t> &screenPos, Stuff::Vect
 	//-----------------------------------------------------------
 	// Pick the tile that has the vertex with the LEAST Z value.
 	TerrainQuadPtr currentTile = land->getQuadList();
-	ULONG numTiles = land->getNumQuads();
+	uint32_t numTiles = land->getNumQuads();
 	TerrainQuadPtr closestTiles[100];
 	memset(closestTiles,0,sizeof(TerrainQuadPtr)*100);
 
@@ -887,13 +887,13 @@ ULONG Camera::inverseProject (Stuff::Vector2DOf<int32_t> &screenPos, Stuff::Vect
 		// not in any tile, must be off map.  We're going to return the coord of the
 		// closest vertex
 		float dis = 999999999.f;
-		int closeRow = 0, closeCol = 0;
+		int32_t closeRow = 0, closeCol = 0;
 		Stuff::Vector3D tmpWorld;
 		Stuff::Vector4D tmpScreen;
 		
-		/*for ( int column = 0; column < land->realVerticesMapSide; column += land->realVerticesMapSide - 1 )
+		/*for ( int32_t column = 0; column < land->realVerticesMapSide; column += land->realVerticesMapSide - 1 )
 		{
-			for ( int row = 0; row < land->realVerticesMapSide; ++row )
+			for ( int32_t row = 0; row < land->realVerticesMapSide; ++row )
 			{
 				tmpWorld.x = land->tileColToWorldCoord[column];
 				tmpWorld.y = land->tileRowToWorldCoord[row];
@@ -911,9 +911,9 @@ ULONG Camera::inverseProject (Stuff::Vector2DOf<int32_t> &screenPos, Stuff::Vect
 			}
 		}*/
 
-		for ( int column = 0; column < land->realVerticesMapSide; column ++ )
+		for ( int32_t column = 0; column < land->realVerticesMapSide; column ++ )
 		{
-			for ( int row = 0; row < land->realVerticesMapSide; row++/*row += land->realVerticesMapSide - 1*/ )
+			for ( int32_t row = 0; row < land->realVerticesMapSide; row++/*row += land->realVerticesMapSide - 1*/ )
 			{
 				tmpWorld.x = land->tileColToWorldCoord[column];
 				tmpWorld.y = land->tileRowToWorldCoord[row];
@@ -1632,7 +1632,7 @@ int32_t Camera::update (void)
 	
 	//-----------------------------------------------
 	// Set Ambient for this pass of rendering	
-	ULONG lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
+	uint32_t lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
 		
 	setLightColor(1,lightRGB);
 	setLightIntensity(1,1.0);
@@ -1737,7 +1737,7 @@ void Camera::render (void)
 	
 	//-----------------------------------------------
 	// Set Ambient for this pass of rendering	
-	ULONG lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
+	uint32_t lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
 		
 	eye->setLightColor(1,lightRGB);
 	eye->setLightIntensity(1,1.0);
@@ -3079,7 +3079,7 @@ bool Camera::save( FitIniFile* file )
 	file->writeIdULong( "FogColor", dayFogColor );
 	file->writeIdFloat( "FogTransparency", fogTransparency );
 	int32_t userMin, userMax;
-	int baseTerrain;
+	int32_t baseTerrain;
 	land->getUserSettings( userMin, userMax, baseTerrain );
 	file->writeIdLong( "UserMin", userMin );
 	file->writeIdLong( "UserMax", userMax );

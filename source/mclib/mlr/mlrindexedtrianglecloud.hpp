@@ -31,7 +31,7 @@ namespace MidLevelRenderer {
 		// Constructors/Destructors
 		//
 	public:
-		MLRIndexedTriangleCloud(int);
+		MLRIndexedTriangleCloud(int32_t);
 		~MLRIndexedTriangleCloud();
 
 		void
@@ -46,13 +46,13 @@ namespace MidLevelRenderer {
 
 		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
-		int	Clip(MLRClippingState, GOSVertexPool*);		
+		int32_t	Clip(MLRClippingState, GOSVertexPool*);		
 
 		virtual puint16_t
-			GetGOSIndices(int=0)
+			GetGOSIndices(int32_t=0)
 		{ Check_Object(this); return gos_indices; }
 
-		int
+		int32_t
 			GetNumGOSIndices()
 		{ Check_Object(this); return numGOSIndices; }
 

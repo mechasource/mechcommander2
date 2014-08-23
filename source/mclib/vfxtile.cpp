@@ -19,7 +19,7 @@
 #include "vfx.h"
 #endif
 
-static ULONG pwXMax,count;		// Must be static for assembly optimizations
+static uint32_t pwXMax,count;		// Must be static for assembly optimizations
 static puint8_t FadeTable;		// Must be static for assembly optimizations
 
 //-----------------------------------------------------------
@@ -35,10 +35,10 @@ struct tileStruct
 struct newShapeStruct
 {
 	int32_t header;
-	short tileHotSpotX;
-	short tileHotSpotY;
-	short numScanLines;
-	short numScanColumns;
+	int16_t tileHotSpotX;
+	int16_t tileHotSpotY;
+	int16_t numScanLines;
+	int16_t numScanColumns;
 };
 
 #define FULLY_CLIPPED		0xCDCF0001
@@ -49,7 +49,7 @@ struct newShapeStruct
 //-----------------------------------------------------------
 // This one is called if the cameraScale is 100.  No drop
 // of any pixels.  Straight BLT to screen.
-int32_t VFX_nTile_draw (PANE* pane, PVOIDtile, LONG hotX, LONG hotY, PUCHAR fadeTable)
+int32_t VFX_nTile_draw (PANE* pane, PVOIDtile, int32_t hotX, int32_t hotY, puint8_t fadeTable)
 {
 	//-----------------------------------------
 	// Format of tile shape data is NEW!!
@@ -66,10 +66,10 @@ int32_t VFX_nTile_draw (PANE* pane, PVOIDtile, LONG hotX, LONG hotY, PUCHAR fade
 
 	//-------------------------------------------------------
 	// Create Important Data from tile data.
-	PUCHAR tileData = (PUCHAR)tile + sizeof(tileStruct);
+	puint8_t tileData = (puint8_t)tile + sizeof(tileStruct);
 	tileStruct *tileInfo = (tileStruct *)tile;
 	
-	ULONG *yOffsetTable = (ULONG *)(tileData);
+	uint32_t *yOffsetTable = (uint32_t *)(tileData);
 
 	pwXMax = pane->window->x_max+1;
 
@@ -90,7 +90,7 @@ int32_t VFX_nTile_draw (PANE* pane, PVOIDtile, LONG hotX, LONG hotY, PUCHAR fade
 		 (topLeftY <= (paneY0 - scanLines)))
 		return(FULLY_CLIPPED);
 
-	PUCHAR screenBuffer = pane->window->buffer + ((topLeftY > paneY0) ? topLeftY*pwXMax : paneY0*pwXMax);
+	puint8_t screenBuffer = pane->window->buffer + ((topLeftY > paneY0) ? topLeftY*pwXMax : paneY0*pwXMax);
 
 	int32_t firstScanOffset = (topLeftY < paneY0) ? paneY0 - topLeftY : 0;
 	
@@ -284,8 +284,8 @@ done:
 // This tile needs to be clipped
 //
 	{
-		ULONG currentOffset = *yOffsetTable++;
-		ULONG nextOffset=*yOffsetTable++;
+		uint32_t currentOffset = *yOffsetTable++;
+		uint32_t nextOffset=*yOffsetTable++;
 
 		for (int32_t scanLine = firstScanOffset; scanLine<lastScanOffset; scanLine++)
 		{
@@ -315,7 +315,7 @@ done:
 				add edx, ecx
 				cmp eax, paneX0
 
-				jge SHORT LINE207
+				jge int16_t  LINE207
 				
 				mov ebx, paneX0
 				sub ebx, eax
@@ -324,11 +324,11 @@ done:
 				add edi, ebx
 LINE207:
 				cmp edx, paneX1
-				jle SHORT LINE214
+				jle int16_t  LINE214
 				
 				sub edx, paneX1
 				dec edx
-				jmp SHORT LEAVE_EDX
+				jmp int16_t  LEAVE_EDX
 			
 LINE214:
 				xor edx, edx
@@ -338,11 +338,11 @@ LEAVE_EDX:
 				sub ecx, edx
 				
 				cmp ecx, 0
-				jle SHORT NO_DRAW
+				jle int16_t  NO_DRAW
 			
 				mov eax,fadeTable
 				cmp eax,-1
-				jz SHORT BLT_BLACK
+				jz int16_t  BLT_BLACK
 				
 				test eax,eax
 				jz BLT_FAST
@@ -364,10 +364,10 @@ Blt_fade1:
 				lea esi,[esi+1]
 					
 				jnz Blt_fade1
-				jmp short NO_DRAW
+				jmp int16_t NO_DRAW
 
 BLT_BLACK:
-				mov ebx,ecx				; ULONG align edi when possible
+				mov ebx,ecx				; uint32_t align edi when possible
 				sub ecx,edi
 				mov eax,BLACK
 				sub ecx,ebx
@@ -381,10 +381,10 @@ BLT_BLACK:
 				rep stosd
 blt_black1:		add ecx,ebx
 				rep stosb
-				jmp SHORT NO_DRAW
+				jmp int16_t  NO_DRAW
 
 BLT_FAST:
-				mov eax,ecx				; ULONG align edi when possible
+				mov eax,ecx				; uint32_t align edi when possible
 				sub ecx,edi
 				sub ecx,eax
 				and ecx,3
@@ -412,14 +412,14 @@ NO_DRAW:
 
 //----------------------------------------------------------------------------
 //
-// int32_t VFX_shape_origin(PVOIDshape_table, LONG shape_number);
+// int32_t VFX_shape_origin(PVOIDshape_table, int32_t shape_number);
 //
 // Returns hotspot of the shape (in pixels) relative to the upper left bounds).
 // (E)AX=x E(AX)=y.
 //
 //----------------------------------------------------------------------------
 
-int32_t VFX_shape_origin(PVOIDshape_table, LONG shape_number)
+int32_t VFX_shape_origin(PVOIDshape_table, int32_t shape_number)
 {
 	int32_t result = -1;
 
@@ -445,13 +445,13 @@ int32_t VFX_shape_origin(PVOIDshape_table, LONG shape_number)
 
 //----------------------------------------------------------------------------
 //
-// int32_t VFX_shape_resolution(PVOIDshape_table, LONG shape_number);
+// int32_t VFX_shape_resolution(PVOIDshape_table, int32_t shape_number);
 //
 // Returns x,y resolution (image size) in pixels.  (E)AX=x E(AX)=y.
 //
 //----------------------------------------------------------------------------
 
-int32_t VFX_shape_resolution(PVOIDshape_table, LONG shape_number)
+int32_t VFX_shape_resolution(PVOIDshape_table, int32_t shape_number)
 {
 	int32_t result = 0;
 
@@ -488,13 +488,13 @@ int32_t VFX_shape_resolution(PVOIDshape_table, LONG shape_number)
 
 //----------------------------------------------------------------------------
 //
-// int32_t VFX_shape_minxy(PVOIDshape_table, LONG shape_number);
+// int32_t VFX_shape_minxy(PVOIDshape_table, int32_t shape_number);
 //
 // Returns min x,min y in pixels.  (E)AX=x E(AX)=y.
 //
 //---------------------------------------------------------------------------
 
-int32_t VFX_shape_minxy(PVOIDshape_table, LONG shape_number)
+int32_t VFX_shape_minxy(PVOIDshape_table, int32_t shape_number)
 {
 	int32_t result = 0;
 
@@ -525,7 +525,7 @@ int32_t VFX_shape_minxy(PVOIDshape_table, LONG shape_number)
 
 //;----------------------------------------------------------------------------
 //;
-//; int32_t VFX_shape_bounds(PVOIDshape_table, LONG shape_number);
+//; int32_t VFX_shape_bounds(PVOIDshape_table, int32_t shape_number);
 //;
 //; Returns width,height of the shape (including transparent areas) in pixels.  (E)AX=x E(AX)=y.
 //; (E)AX=x E(AX)=y.
@@ -581,8 +581,8 @@ int32_t VFX_shape_count (PVOIDshape_table)
 
 //;----------------------------------------------------------------------------
 //;
-//; int cdecl VFX_line_draw (PANE *panep, int x0, int y0, int x1, int y1,
-//;                                                   int mode, int parm);
+//; int32_t cdecl VFX_line_draw (PANE *panep, int32_t x0, int32_t y0, int32_t x1, int32_t y1,
+//;                                                   int32_t mode, int32_t parm);
 //;
 //; This function clips and draws a line to a pane.
 //;
@@ -612,7 +612,7 @@ int32_t VFX_shape_count (PVOIDshape_table)
 //; executes the callback function, passing it the coordinates of the point.
 //;
 //; The callback function must use cdecl parameter passing, and its para-
-//; meter list must be (int x, int y).  The function's return type is not
+//; meter list must be (int32_t x, int32_t y).  The function's return type is not
 //; important; VFX_line_draw() ignores the return value (if any).  
 //;
 //; VFX_line_draw() clips the line to the pane.  The locus of the clipped 
@@ -641,17 +641,17 @@ int32_t VFX_shape_count (PVOIDshape_table)
 //; Examples:
 //;
 //;    #define HELIOTROPE 147
-//;    UCHAR color_negative[256];
-//;    void cdecl DrawDiamond (int x, int y);
+//;    uint8_t color_negative[256];
+//;    void cdecl DrawDiamond (int32_t x, int32_t y);
 //;
 //;    VFX_line_draw (pane, Px, Py, Qx, Qy, DRAW, HELIOTROPE);
 //;       draws a line from (Px,Py) to (Qx,Qy) using the color HELIOTROPE.
 //;
-//;    VFX_line_draw (pane, Px, Py, Qx, Qy, TRANSLATE, (int) color_negative);
+//;    VFX_line_draw (pane, Px, Py, Qx, Qy, TRANSLATE, (int32_t) color_negative);
 //;       draws a line from (Px,Py) to (Qx,Qy) replacing each pixel with its
 //;       color negative (as specified by the table color_negative).
 //;
-//;    VFX_line_draw (pane, Px, Py, Qx, Qy, EXECUTE, (int) DrawDiamond);
+//;    VFX_line_draw (pane, Px, Py, Qx, Qy, EXECUTE, (int32_t) DrawDiamond);
 //;       draws a line of diamonds from (Px,Py) to (Qx,Qy) using the
 //;       caller-provided function DrawDiamond().
 //;
@@ -665,8 +665,8 @@ int32_t VFX_shape_count (PVOIDshape_table)
 //;
 //;----------------------------------------------------------------------------
 
-LONG VFX_line_draw (PANE *panep, LONG x0, LONG y0, 
-                                 LONG x1, LONG y1, LONG mode, LONG parm)
+int32_t VFX_line_draw (PANE *panep, int32_t x0, int32_t y0, 
+                                 int32_t x1, int32_t y1, int32_t mode, int32_t parm)
 
 {
 	int32_t _dx, absdx, sgndx;
@@ -680,7 +680,7 @@ LONG VFX_line_draw (PANE *panep, LONG x0, LONG y0,
 	int32_t		_R;	//Right
 	int32_t		_B;	//Bottom
 	              
-	PUCHAR	_A;	//Base address of Clipped Pane
+	puint8_t	_A;	//Base address of Clipped Pane
 	int32_t		_W;	//Width of underlying window (bytes)
 	
 	int32_t		_CX;	//Window x coord. = Pane x coord. + CP_CX
@@ -2599,7 +2599,7 @@ exit:
 
 //----------------------------------------------------------------------------
 //
-// int cdecl VFX_pixel_write (PANE *panep, int x, int y, UCHAR color)
+// int32_t cdecl VFX_pixel_write (PANE *panep, int32_t x, int32_t y, uint8_t color)
 //
 //     This function writes a single pixel.
 //
@@ -2623,20 +2623,20 @@ exit:
 //                                          
 //----------------------------------------------------------------------------
 
-LONG VFX_pixel_write (PANE *panep, LONG x, LONG y, ULONG color)
+int32_t VFX_pixel_write (PANE *panep, int32_t x, int32_t y, uint32_t color)
 {
 		int32_t		_L;	//Leftmost pixel in Window coord.
 		int32_t		_T;	//Top
 		int32_t		_R;	//Right
 		int32_t		_B;	//Bottom
 	              
-		PUCHAR	_A;	//Base address of Clipped Pane
+		puint8_t	_A;	//Base address of Clipped Pane
 		int32_t		_W;	//Width of underlying window (bytes)
 	
 		int32_t		_CX;	//Window x coord. = Pane x coord. + CP_CX
 		int32_t		_CY;	//Window y coord. = Pane x coord. + CP_CY
 
-		int result = 0;
+		int32_t result = 0;
 		
 		__asm
 			{
@@ -2806,7 +2806,7 @@ ReturnOffPane:
 
 //----------------------------------------------------------------------------
 //
-// int cdecl VFX_pixel_read (PANE *panep, int x, int y)
+// int32_t cdecl VFX_pixel_read (PANE *panep, int32_t x, int32_t y)
 //
 //     This function reads a single pixel.
 //
@@ -2829,20 +2829,20 @@ ReturnOffPane:
 //                                         
 //---------------------------------------------------------------------------
 
-LONG VFX_pixel_read (PANE *panep, LONG x, LONG y)
+int32_t VFX_pixel_read (PANE *panep, int32_t x, int32_t y)
 {
 		int32_t		_L;	//Leftmost pixel in Window coord.
 		int32_t		_T;	//Top
 		int32_t		_R;	//Right
 		int32_t		_B;	//Bottom
 	              
-		PUCHAR	_A;	//Base address of Clipped Pane
+		puint8_t	_A;	//Base address of Clipped Pane
 		int32_t		_W;	//Width of underlying window (bytes)
 	
 		int32_t		_CX;	//Window x coord. = Pane x coord. + CP_CX
 		int32_t		_CY;	//Window y coord. = Pane x coord. + CP_CY
 
-		int result = 0;
+		int32_t result = 0;
 		
 		__asm
 			{

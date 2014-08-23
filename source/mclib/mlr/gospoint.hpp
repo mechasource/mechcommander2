@@ -88,7 +88,7 @@ namespace MidLevelRenderer {
 	inline bool
 		GOSCopyData
 		(GOSPoint *gos_points, Stuff::Vector4D *coords, 
-		Stuff::RGBAColor *colors, int _offset)
+		Stuff::RGBAColor *colors, int32_t _offset)
 	{
 		Verify(coords[_offset].w > Stuff::SMALL);
 
@@ -138,7 +138,7 @@ namespace MidLevelRenderer {
 
 		float f;
 #if USE_ASSEMBLER_CODE
-		int argb;
+		int32_t argb;
 
 		_asm {
 			fld		float_cheat
@@ -298,7 +298,7 @@ namespace MidLevelRenderer {
 		GOSCopyTriangleData
 		(GOSPoint *gos_points, Stuff::Vector4D *coords, 
 		Stuff::RGBAColor *colors,
-		int offset0, int offset1, int offset2)
+		int32_t offset0, int32_t offset1, int32_t offset2)
 	{
 #if USE_ASSEMBLER_CODE
 
@@ -413,7 +413,7 @@ namespace MidLevelRenderer {
 
 		float f;
 #if USE_ASSEMBLER_CODE
-		int argb;
+		int32_t argb;
 
 		_asm {
 			fld		float_cheat

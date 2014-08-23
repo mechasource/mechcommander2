@@ -37,7 +37,7 @@ namespace gosFX
 
 	enum {CurrentGFXVersion = 17};
 
-	int
+	int32_t
 		ReadGFXVersion(Stuff::MemoryStream *erf_stream);
 	void
 		WriteGFXVersion(Stuff::MemoryStream *erf_stream);
@@ -52,12 +52,12 @@ namespace gosFX
 
 	DECLARE_TIMER(extern, Animation_Time);
 	DECLARE_TIMER(extern, Draw_Time);
-	extern ULONG Point_Count;
-	extern ULONG Shard_Count;
-	extern ULONG Pert_Count;
-	extern ULONG Card_Count;
-	extern ULONG Shape_Count;
-	extern ULONG Profile_Count;
+	extern uint32_t Point_Count;
+	extern uint32_t Shard_Count;
+	extern uint32_t Pert_Count;
+	extern uint32_t Card_Count;
+	extern uint32_t Shape_Count;
+	extern uint32_t Profile_Count;
 }
 
 #include <gosfx/fcurve.hpp>

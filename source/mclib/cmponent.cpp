@@ -47,7 +47,7 @@ PSTR ComponentFormString [] = {
 };
 
 PSTR WeaponRangeString[] = {
-	"short",
+	"int16_t",
 	"medium",
 	"int32_t"
 };
@@ -93,7 +93,7 @@ int32_t MasterComponent::initEXCEL (PSTR dataLine, float baseSensorRange) {
 	PSTR next_token = NULL;
 	PSTR field = strtok_s(dataLine, ",", &next_token);
 
-	int ammoAmount = 1;
+	int32_t ammoAmount = 1;
 
 	health = 1;
 
@@ -126,7 +126,7 @@ int32_t MasterComponent::initEXCEL (PSTR dataLine, float baseSensorRange) {
 	float recycleTime = atof(field);
 	
 	field = strtok_s(NULL, ",", &next_token);
-	float heat = (ULONG)atof(field);
+	float heat = (uint32_t)atof(field);
 
 	field = strtok_s(NULL, ",", &next_token); 
 	tonnage = atof( field );
@@ -173,7 +173,7 @@ _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) PS
 
 	}
 
-	int ammoType = WEAPON_AMMO_NONE;
+	int32_t ammoType = WEAPON_AMMO_NONE;
 	if ( field )
 	{
 		if (strcmp(field, "1") == 0)
@@ -187,17 +187,17 @@ _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) PS
 	}
 
 	field = strtok( NULL, "," );
-	int flags = 0;
+	int32_t flags = 0;
 	if ( field )
 		flags = atoi(field);
 	
 	field = strtok_s(NULL, ",", &next_token);
-	int specialEffect = 0;
+	int32_t specialEffect = 0;
 	if ( field )
 		specialEffect = (char)atoi(field);
 	
 	field = strtok_s(NULL, ",", &next_token);
-	int ammoMasterId = 0;
+	int32_t ammoMasterId = 0;
 	if ( field )
 		ammoMasterId = (char)atoi(field);
 	
@@ -665,12 +665,12 @@ int32_t MasterComponent::loadMasterList (PSTR fileName, int32_t listSize, float 
 	int32_t lineLength;
 	
 
-	lineLength = componentFile.readLine((PUCHAR)dataLine, 511);
+	lineLength = componentFile.readLine((puint8_t)dataLine, 511);
 
 	for (int32_t componentNum = 0; componentNum < numComponents; componentNum++) {
 		//----------------------------------------
 		// Read in the line from the table file...
-		lineLength = componentFile.readLine((PUCHAR)dataLine, 511);
+		lineLength = componentFile.readLine((puint8_t)dataLine, 511);
 		if (!lineLength)
 			return(-1);
 
@@ -718,7 +718,7 @@ int32_t MasterComponent::saveMasterList (PSTR fileName, int32_t listSize, float 
 	sprintf(dataLine,"//,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Weapon,Effect,Ammo,Flag,1 = streak 2 = inferno");
 	componentFile.writeLine(dataLine);
 
-	sprintf(dataLine,"// Component Table,,abbr,type,crits,?,tons,RP,head,CT,LT,RT,LA,RA,LL,RL,Vehicle?,Fit both?,Side,Fit IS?,art,disable,BR,Damage,Recycle,heat,#miss,miss type,min,short,med,int32_t,Type,Field,Master ID,Fields,4 = LBX 8 = artillery");
+	sprintf(dataLine,"// Component Table,,abbr,type,crits,?,tons,RP,head,CT,LT,RT,LA,RA,LL,RL,Vehicle?,Fit both?,Side,Fit IS?,art,disable,BR,Damage,Recycle,heat,#miss,miss type,min,int16_t,med,int32_t,Type,Field,Master ID,Fields,4 = LBX 8 = artillery");
 	componentFile.writeLine(dataLine);
 
 	for (int32_t componentNum = 0; componentNum < listSize; componentNum++) 

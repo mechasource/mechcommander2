@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 
-extern ULONG gEnableTextureSort, gEnableAlphaSort, gEnableLightMaps;
+extern uint32_t gEnableTextureSort, gEnableAlphaSort, gEnableLightMaps;
 
 
 MLRSortByOrder::ClassData*
@@ -47,7 +47,7 @@ MLRSortByOrder::MLRSortByOrder(MLRTexturePool *tp) :
 	MLRSorter(DefaultData, tp)
 {
 	Verify(gos_GetCurrentHeap() == Heap);
-	int i;
+	int32_t i;
 
 	gos_PushCurrentHeap(StaticHeap);
 	for(i=0;i<MLRState::PriorityCount;i++)
@@ -67,7 +67,7 @@ MLRSortByOrder::MLRSortByOrder(MLRTexturePool *tp) :
 //
 MLRSortByOrder::~MLRSortByOrder()
 {
-	int i;
+	int32_t i;
 
 	gos_PushCurrentHeap(StaticHeap);
 	for(i=0;i<alphaSort.GetLength();i++)
@@ -85,7 +85,7 @@ void
 {
 	Check_Object(this);
 
-	int i;
+	int32_t i;
 
 	for(i=0;i<MLRState::PriorityCount;i++)
 	{
@@ -98,7 +98,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSortByOrder::AddPrimitive(MLRPrimitiveBase *pt, int pass)
+	MLRSortByOrder::AddPrimitive(MLRPrimitiveBase *pt, int32_t pass)
 {
 	Check_Object(this); 
 	Check_Object(pt);
@@ -239,7 +239,7 @@ void
 
 	GOSVertex::farClipReciprocal = farClipReciprocal;
 
-	int i, j, k;
+	int32_t i, j, k;
 //	Limits::Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame
 
 	MLRPrimitiveBase *primitive;
@@ -247,7 +247,7 @@ void
 	{
 #ifdef CalDraw
 		ToBeDrawnPrimitive *tbdp;
-		int alphaToSort = 0;
+		int32_t alphaToSort = 0;
 
 		if(lastUsedInBucketNotDrawn[i])
 		{
@@ -258,7 +258,7 @@ void
 				Start_Timer(Texture_Sorting_Time);
 				// do a shell sort
 
-				int ii, jj, hh;
+				int32_t ii, jj, hh;
 
 				ToBeDrawnPrimitive *tempSortData;
 				priorityBucketNotDrawn = &priorityBucketsNotDrawn[i];
@@ -292,7 +292,7 @@ void
 					primitive = tbdp->primitive;
 					Check_Object(primitive);
 
-					int	nrOfLightMaps = 0;
+					int32_t	nrOfLightMaps = 0;
 
 					for(k=0;k<tbdp->nrOfActiveLights;k++)
 					{
@@ -358,7 +358,7 @@ void
 						{
 							Point3D *coords;
 							puint16_t indices;
-							int nr;
+							int32_t nr;
 
 							(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))->GetIndexData(&indices, &nr);
 							Set_Statistic(NumAllIndices, NumAllIndices+nr);
@@ -420,7 +420,7 @@ void
 						{
 							Point3D *coords;
 							puint16_t indices;
-							int nr;
+							int32_t nr;
 
 							(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))->GetIndexData(&indices, &nr);
 							Set_Statistic(NumAllIndices, NumAllIndices+nr);
@@ -478,7 +478,7 @@ void
 				Start_Timer(Texture_Sorting_Time);
 				// do a shell sort
 
-				int ii, jj, hh;
+				int32_t ii, jj, hh;
 
 				SortData *tempSortData;
 				priorityBucket = &priorityBuckets[i];
@@ -557,7 +557,7 @@ void
 			Start_Timer(Alpha_Sorting_Time);
 			// do a shell sort
 
-			int ii, jj, hh;
+			int32_t ii, jj, hh;
 
 			SortAlpha *tempSortAlpha;
 			Stuff::DynamicArrayOf<SortAlpha*>

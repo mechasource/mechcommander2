@@ -13,7 +13,7 @@
 //
 gosFX::ShardCloud__Specification::ShardCloud__Specification(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	SpinningCloud__Specification(gosFX::ShardCloudClassID, stream, gfx_version)
 {
@@ -45,7 +45,7 @@ gosFX::ShardCloud__Specification::ShardCloud__Specification():
 gosFX::ShardCloud__Specification*
 	gosFX::ShardCloud__Specification::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);

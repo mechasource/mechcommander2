@@ -17,7 +17,7 @@ TacMap::TacMap()
 }
 
 
-void TacMap::worldToTacMap( Stuff::Vector3D& world, int xOffset, int yOffset, int xSize, int ySize, gos_VERTEX& tac )
+void TacMap::worldToTacMap( Stuff::Vector3D& world, int32_t xOffset, int32_t yOffset, int32_t xSize, int32_t ySize, gos_VERTEX& tac )
 {
 	int32_t tacX;
 	int32_t tacY;
@@ -40,7 +40,7 @@ void TacMap::worldToTacMap( Stuff::Vector3D& world, int xOffset, int yOffset, in
 
 }
 
-void TacMap::tacMapToWorld( const Stuff::Vector2DOf<int32_t>& screen, int xSize, int ySize,  Stuff::Vector3D& world )
+void TacMap::tacMapToWorld( const Stuff::Vector2DOf<int32_t>& screen, int32_t xSize, int32_t ySize,  Stuff::Vector3D& world )
 {
 	// turn screen into cells
 	int32_t cellX = screen.x /(float)xSize * ((float)land->realVerticesMapSide * MAPCELL_DIM);

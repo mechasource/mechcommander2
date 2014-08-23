@@ -31,9 +31,9 @@ namespace MidLevelRenderer {
 		//
 	public:
 		GOSImage* GetImage(PCSTR imageName);
-		GOSImage* GetImage(PCSTR imageName, gos_TextureFormat format, int size, gos_TextureHints hints);
+		GOSImage* GetImage(PCSTR imageName, gos_TextureFormat format, int32_t size, gos_TextureHints hints);
 
-		virtual bool LoadImage(GOSImage *image, int=0)=0;
+		virtual bool LoadImage(GOSImage *image, int32_t=0)=0;
 		void RemoveImage(GOSImage *image);
 		void UnLoadImages(void);
 		void GetTexturePath(Stuff::MString* pName) const
@@ -68,7 +68,7 @@ namespace MidLevelRenderer {
 		// Image handling
 		//
 	public:
-		bool LoadImage(GOSImage *image, int=0);
+		bool LoadImage(GOSImage *image, int32_t=0);
 	};
 }
 #endif

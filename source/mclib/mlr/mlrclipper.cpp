@@ -27,7 +27,7 @@
 using namespace MidLevelRenderer;
 using namespace Stuff;
 
-extern ULONG gShowBirdView, gEnableDetailTexture, gEnableMultiTexture, gEnableLightMaps;
+extern uint32_t gShowBirdView, gEnableDetailTexture, gEnableMultiTexture, gEnableLightMaps;
 
 DrawShapeInformation::DrawShapeInformation()
 {
@@ -177,7 +177,7 @@ void
 //
 	gos_PushCurrentHeap(Heap);
 	Scalar z = 1.0f;
-	ULONG back_color = 0;
+	uint32_t back_color = 0;
 	bool
 		fill = false,
 		clear = false;
@@ -245,10 +245,10 @@ void
 		// Read the mouse
 		//---------------
 		//
-		int
+		int32_t
 			x_delta,
 			y_delta;
-		ULONG
+		uint32_t
 			buttons;
 		gos_GetMouseInfo(NULL, NULL, &x_delta, &y_delta, NULL, &buttons);
 		Scalar
@@ -439,9 +439,9 @@ void
 
 	shape->InitializePrimitives(true, dInfo->state);
 
-	int i, j;
+	int32_t i, j;
 	Point3D sp;
-	int	nrOfLightMaps = 0;
+	int32_t	nrOfLightMaps = 0;
 	sp.Multiply(cameraPosition, *shape->worldToShape);
 
 	for(i=0;i<dInfo->nrOfActiveLights;i++)
@@ -550,7 +550,7 @@ void
 				{
 					Point3D *coords;
 					puint16_t indices;
-					int nr;
+					int32_t nr;
 
 					(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))->GetIndexData(&indices, &nr);
 					NumAllIndices += nr;
@@ -721,7 +721,7 @@ void
 
 	GOSVertex *vertices	= allVerticesToDraw.GetActualVertexPool();
 
-	int i, j;
+	int32_t i, j;
 
 	dInfo->currentNrOfQuads = 0;
 
@@ -732,7 +732,7 @@ void
 			dInfo->currentNrOfQuads += 4;
 			for(;j<dInfo->currentNrOfQuads;j++)
 			{
-				int offset = (i<<2) + (j&3);
+				int32_t offset = (i<<2) + (j&3);
 
 				Verify(dInfo->coords[offset].x >= 0.0f && dInfo->coords[offset].x <= dInfo->coords[offset].w );
 				Verify(dInfo->coords[offset].y >= 0.0f && dInfo->coords[offset].y <= dInfo->coords[offset].w );

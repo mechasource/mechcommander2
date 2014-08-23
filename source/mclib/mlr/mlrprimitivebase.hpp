@@ -14,12 +14,12 @@ namespace MidLevelRenderer {
 
 	struct ClipPolygon2
 	{
-		void Init(int);
+		void Init(int32_t);
 		void Destroy();
 
 		Stuff::DynamicArrayOf<Stuff::Vector4D> coords; // [Max_Number_Vertices_Per_Polygon]
 #if COLOR_AS_DWORD
-		Stuff::DynamicArrayOf<ULONG> colors; //[Max_Number_Vertices_Per_Polygon];
+		Stuff::DynamicArrayOf<uint32_t> colors; //[Max_Number_Vertices_Per_Polygon];
 #else
 		Stuff::DynamicArrayOf<Stuff::RGBAColor>  colors; //[Max_Number_Vertices_Per_Polygon];
 #endif
@@ -59,7 +59,7 @@ namespace MidLevelRenderer {
 		MLRPrimitiveBase(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		~MLRPrimitiveBase();
@@ -70,13 +70,13 @@ namespace MidLevelRenderer {
 		typedef MLRPrimitiveBase*
 			(*Factory)(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		static MLRPrimitiveBase*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		virtual void
@@ -90,89 +90,89 @@ namespace MidLevelRenderer {
 		// a tristrip
 		// the data for the coord/color/texcoord/normal or index
 		// ARE IN THIS ORDER
-		virtual int
+		virtual int32_t
 			GetNumPrimitives()
 		{ Check_Object(this); return lengths.GetLength(); }
 
 		virtual void
 			SetSubprimitiveLengths(
 			puint8_t length_array,
-			int subprimitive_count
+			int32_t subprimitive_count
 			) = 0;
 
 		// returns the number of subprimitives
 		void
-			GetSubprimitiveLengths(puint8_t *length_array, int*);
+			GetSubprimitiveLengths(puint8_t *length_array, pint32_t);
 
-		int
-			GetSubprimitiveLength(int i) const;
+		int32_t
+			GetSubprimitiveLength(int32_t i) const;
 
 		// ==============================================================
 
-		virtual void	SetReferenceState(const MLRState& _state, int=0)
+		virtual void	SetReferenceState(const MLRState& _state, int32_t=0)
 		{ Check_Object(this); referenceState = _state; };
 		virtual const MLRState&
-			GetReferenceState(int=0) const
+			GetReferenceState(int32_t=0) const
 		{ Check_Object(this); return referenceState; }; 
 		virtual const MLRState&
-			GetCurrentState(int=0) const
+			GetCurrentState(int32_t=0) const
 		{ Check_Object(this); return state; }; 
 
 		virtual void
 			CombineStates (const MLRState& master)
 		{ Check_Object(this); state.Combine(master, referenceState); }; 
 
-		int
+		int32_t
 			GetNumVertices()
 		{ Check_Object(this); return coords.GetLength(); }
 
 		virtual void
 			SetCoordData(
 			const Stuff::Point3D *array,
-			int point_count
+			int32_t point_count
 			);
 		virtual void
 			GetCoordData(
 			Stuff::Point3D **array,
-			int *point_count
+			pint32_t point_count
 			);
 
 		virtual void
 			SetTexCoordData(
 			const Stuff::Vector2DScalar *array,
-			int point_count
+			int32_t point_count
 			);
 		virtual void
 			GetTexCoordData(
 			Stuff::Vector2DScalar **array,
-			int *point_count
+			pint32_t point_count
 			);
 
 		//	is to call befor clipping, parameter: camera point
-		virtual int	FindBackFace(const Stuff::Point3D&) = 0;
+		virtual int32_t	FindBackFace(const Stuff::Point3D&) = 0;
 
-		virtual void	Lighting(MLRLight* const*, int nrLights) = 0;
+		virtual void	Lighting(MLRLight* const*, int32_t nrLights) = 0;
 
 		static	void	InitializeDraw();
 
-		virtual	void	InitializeDrawPrimitive(uint8_t, int=0);
+		virtual	void	InitializeDrawPrimitive(uint8_t, int32_t=0);
 
-		int	GetVisible () 
+		int32_t	GetVisible () 
 		{ Check_Object(this); return visible; }
 
 		virtual GOSVertex*
-			GetGOSVertices(int=0)
+			GetGOSVertices(int32_t=0)
 		{ Check_Object(this); return gos_vertices; }
 
-		int
+		int32_t
 			GetNumGOSVertices()
 		{ Check_Object(this); return numGOSVertices; }
 
 		virtual GOSVertex2UV*
-			GetGOSVertices2UV(int=0)
+			GetGOSVertices2UV(int32_t=0)
 		{ Check_Object(this); return NULL; }
 
-		int
+		int32_t
 			GetSortDataMode()
 		{ Check_Object(this); return drawMode; }
 
@@ -185,13 +185,13 @@ namespace MidLevelRenderer {
 		virtual void
 			PaintMe(const Stuff::RGBAColor *paintMe) = 0;
 
-		virtual int
+		virtual int32_t
 			TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*,bool=false) = 0;
 
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false) = 0;
 
-		virtual int
+		virtual int32_t
 			GetNumPasses()
 		{ Check_Object(this); return passes; }
 
@@ -257,12 +257,12 @@ namespace MidLevelRenderer {
 			}
 		}
 
-		int
+		int32_t
 			GetReferenceCount()
 		{return referenceCount;}
 
 	protected:
-		int
+		int32_t
 			referenceCount;
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -271,11 +271,11 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int
+		virtual int32_t
 			GetSize()
 		{ 
 			Check_Object(this);
-			int ret = 0;
+			int32_t ret = 0;
 			ret += coords.GetSize();
 			ret += texCoords.GetSize();
 			ret += lengths.GetSize();
@@ -295,10 +295,10 @@ namespace MidLevelRenderer {
 		uint8_t	visible;	//	primitive visibilty per frame
 		uint8_t	passes;
 
-		//		int		numPrimitives;	// Number of primitives, e.g. - num quads 
+		//		int32_t		numPrimitives;	// Number of primitives, e.g. - num quads 
 		//		Replaced by GetNumPrimitives
 
-		//		int		numVertices;	// number of verts for stats and vert arrays
+		//		int32_t		numVertices;	// number of verts for stats and vert arrays
 		//		Replaced by GetNumVertices
 
 		Stuff::DynamicArrayOf<Stuff::Point3D> coords;	// Base address of coordinate list 
@@ -309,7 +309,7 @@ namespace MidLevelRenderer {
 		Stuff::DynamicArrayOf<uint8_t>	lengths;	// List of strip lengths 
 
 #if COLOR_AS_DWORD	// clipExtraColors for the future generations !!!
-		static Stuff::DynamicArrayOf<ULONG> *clipExtraColors; // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<uint32_t> *clipExtraColors; // , Max_Number_Vertices_Per_Mesh
 #else
 		static Stuff::DynamicArrayOf<Stuff::RGBAColor> *clipExtraColors;  // , Max_Number_Vertices_Per_Mesh
 #endif
@@ -323,15 +323,15 @@ namespace MidLevelRenderer {
 
 		MLRState	state, referenceState;
 
-		int drawMode;
+		int32_t drawMode;
 
 		GOSVertex *gos_vertices;
 		uint16_t	numGOSVertices;
 	};
 
 	struct IcoInfo {
-		int type;
-		int depth;
+		int32_t type;
+		int32_t depth;
 		bool indexed;
 		float radius;
 		float all;
@@ -379,7 +379,7 @@ namespace MidLevelRenderer {
 	{
 		Stuff::Vector4D *coords;
 #if COLOR_AS_DWORD
-		ULONG *colors;
+		uint32_t *colors;
 #else
 		Stuff::RGBAColor *colors;
 #endif
@@ -391,7 +391,7 @@ namespace MidLevelRenderer {
 
 #if 0	// still defined in "MLRPrimitive.hpp"
 	inline float
-		GetBC(int nr, const Stuff::Vector4D& v4d) 
+		GetBC(int32_t nr, const Stuff::Vector4D& v4d) 
 	{
 		switch(nr)
 		{
@@ -414,7 +414,7 @@ namespace MidLevelRenderer {
 	inline void
 		GetDoubleBC
 		(
-		int nr, 
+		int32_t nr, 
 		float& result1,
 		float& result2,
 		const Stuff::Vector4D& v4d1, 
@@ -453,7 +453,7 @@ namespace MidLevelRenderer {
 	inline float
 		GetLerpFactor
 		(
-		int nr, 
+		int32_t nr, 
 		const Stuff::Vector4D& v4d1, 
 		const Stuff::Vector4D& v4d2
 		)
@@ -499,7 +499,7 @@ namespace MidLevelRenderer {
 #endif
 
 	inline float
-		GetBC(int nr, const Stuff::Vector4D& v4d) 
+		GetBC(int32_t nr, const Stuff::Vector4D& v4d) 
 	{
 		switch(nr)
 		{
@@ -522,7 +522,7 @@ namespace MidLevelRenderer {
 	inline void
 		GetDoubleBC
 		(
-		int nr, 
+		int32_t nr, 
 		float& result1,
 		float& result2,
 		const Stuff::Vector4D& v4d1, 
@@ -561,7 +561,7 @@ namespace MidLevelRenderer {
 	inline float
 		GetLerpFactor
 		(
-		int nr, 
+		int32_t nr, 
 		const Stuff::Vector4D& v4d1, 
 		const Stuff::Vector4D& v4d2
 		)

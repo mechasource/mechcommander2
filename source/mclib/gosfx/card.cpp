@@ -14,7 +14,7 @@
 //
 gosFX::Card__Specification::Card__Specification(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	Singleton__Specification(gosFX::CardClassID, stream, gfx_version)
 {
@@ -85,7 +85,7 @@ gosFX::Card__Specification::Card__Specification():
 gosFX::Card__Specification*
 	gosFX::Card__Specification::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);
@@ -248,7 +248,7 @@ void
 	gosFX::Card__Specification::SetWidth()
 {
 	m_width =
-		static_cast<UCHAR>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
+		static_cast<uint8_t>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
 }
 
 //############################################################################
@@ -398,12 +398,12 @@ bool
 	//
 	if (spec->m_animated)
 	{
-		UCHAR columns =
+		uint8_t columns =
 			Stuff::Truncate_Float_To_Byte(
 				spec->m_index.ComputeValue(m_age, m_seed)
 			);
-		UCHAR rows = static_cast<UCHAR>(columns / spec->m_width);
-		columns = static_cast<UCHAR>(columns - rows*spec->m_width);
+		uint8_t rows = static_cast<uint8_t>(columns / spec->m_width);
+		columns = static_cast<uint8_t>(columns - rows*spec->m_width);
 
 		//
 		//---------------------------

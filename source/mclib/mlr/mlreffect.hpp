@@ -46,7 +46,7 @@ namespace MidLevelRenderer {
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 
-		MLREffect(int, ClassData *class_data);
+		MLREffect(int32_t, ClassData *class_data);
 		~MLREffect(void);
 
 		virtual void SetData(
@@ -54,11 +54,11 @@ namespace MidLevelRenderer {
 			const Stuff::Point3D* point_data,
 			const Stuff::RGBAColor* color_data) = 0;
 
-		virtual int GetType(int) { return 0; }
+		virtual int32_t GetType(int32_t) { return 0; }
 
 		//	add another effect
 		virtual void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*) = 0;
-		virtual void Transform(int, int);
+		virtual void Transform(int32_t, int32_t);
 
 		// switches single/all effects on or off
 		void TurnAllOn(void);
@@ -76,7 +76,7 @@ namespace MidLevelRenderer {
 			Check_Object(this); Verify(nr<maxNrOf); return (testList[nr] & 2)? true : false;
 		}
 
-		virtual int	Clip(MLRClippingState, GOSVertexPool*) = 0;		
+		virtual int32_t	Clip(MLRClippingState, GOSVertexPool*) = 0;		
 
 		void SetEffectToClipMatrix(
 			const Stuff::LinearMatrix4D *effectToWorld,
@@ -92,7 +92,7 @@ namespace MidLevelRenderer {
 		size_t GetNumGOSVertices(void)
 		{ Check_Object(this); return numGOSVertices; }
 
-		int GetSortDataMode(void)
+		int32_t GetSortDataMode(void)
 		{ Check_Object(this); return drawMode; }
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,7 +120,7 @@ namespace MidLevelRenderer {
 		{
 			Check_Object(this); Verify(nr<maxNrOf); testList[nr] &= ~1;
 		}
-		int visible;
+		int32_t visible;
 		uint32_t maxNrOf;
 
 		const Stuff::Point3D *points;
@@ -129,9 +129,9 @@ namespace MidLevelRenderer {
 
 		static Stuff::DynamicArrayOf<Stuff::Vector4D> *transformedCoords;
 
-		Stuff::DynamicArrayOf<int>	testList;
+		Stuff::DynamicArrayOf<int32_t>	testList;
 
-		int drawMode;
+		int32_t drawMode;
 
 		Stuff::LinearMatrix4D worldToEffect;
 		Stuff::Matrix4D effectToClipMatrix;

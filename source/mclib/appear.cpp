@@ -64,9 +64,9 @@ void Appearance::operator delete (PVOID us)
 }		
 
 //---------------------------------------------------------------------------
-void Appearance::drawTextHelp (PSTR text, ULONG color)
+void Appearance::drawTextHelp (PSTR text, uint32_t color)
 {
-	ULONG width, height;
+	uint32_t width, height;
 	Stuff::Vector4D moveHere;
 	moveHere = screenPos;
 
@@ -86,9 +86,9 @@ void Appearance::drawTextHelp( PSTR text )
 {
 	drawTextHelp( text, SD_GREEN );
 }
-void Appearance::drawPilotName(PSTR text, ULONG color )
+void Appearance::drawPilotName(PSTR text, uint32_t color )
 {
-	ULONG width, height;
+	uint32_t width, height;
 	Stuff::Vector4D moveHere;
 	moveHere = screenPos;
 
@@ -105,7 +105,7 @@ void Appearance::drawPilotName(PSTR text, ULONG color )
 }
 
 //---------------------------------------------------------------------------
-void Appearance::drawSelectBox (ULONG color)
+void Appearance::drawSelectBox (uint32_t color)
 {
 	Stuff::Vector4D				ul, br, pos1, pos2;
 	float						offsets;
@@ -248,7 +248,7 @@ void Appearance::drawSelectBox (ULONG color)
 }
 	
 //---------------------------------------------------------------------------
-void Appearance::drawSelectBrackets (ULONG color)
+void Appearance::drawSelectBrackets (uint32_t color)
 {
 	float					offsets = 5.0 * eye->getScaleFactor();
 	Stuff::Vector4D			pos1;
@@ -431,9 +431,9 @@ void DrawBox(float l, float t, float r, float b)
 	}
 }
 
-void Appearance::drawIcon( ULONG bmpHandle, ULONG bmpWidth,
-						  ULONG bmpHeight, ULONG color, 
-						  ULONG where )
+void Appearance::drawIcon( uint32_t bmpHandle, uint32_t bmpWidth,
+						  uint32_t bmpHeight, uint32_t color, 
+						  uint32_t where )
 {
 	// ignoring where for now
 	float			offset = 8.0 * eye->getScaleFactor();
@@ -443,7 +443,7 @@ void Appearance::drawIcon( ULONG bmpHandle, ULONG bmpWidth,
 
 	gos_VERTEX v[4]; 
 
-	for ( int i = 0; i < 4; i ++ )
+	for ( int32_t i = 0; i < 4; i ++ )
 	{
 		v[i].argb = color;
 		v[i].frgb = 0;
@@ -479,7 +479,7 @@ void Appearance::drawBars (void)
 	float			topY = upperLeft.y - offset - trueHeight;
 	float			leftX = floor((upperLeft.x + lowerRight.x)/2.f - trueWidth / 2);
 	
-	ULONG					color;
+	uint32_t					color;
 	
 	if (barStatus > 1.0f)
 		barStatus = 1.0f;
@@ -547,13 +547,13 @@ void Appearance::drawBars (void)
 	
 	DrawBox(vertices[0].x,vertices[0].y,(leftX + trueWidth + 1.0),vertices[2].y);
 
-	ULONG fogColor = eye->fogColor;
+	uint32_t fogColor = eye->fogColor;
 
 	//-----------------------------------------------------
 	// FOG time.  Set Render state to FOG on!
 	if (useFog)
 	{
-		gos_SetRenderState( gos_State_Fog, (int)&fogColor);
+		gos_SetRenderState( gos_State_Fog, (int32_t)&fogColor);
 	}
 }
 

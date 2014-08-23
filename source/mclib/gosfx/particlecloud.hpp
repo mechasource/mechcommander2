@@ -26,7 +26,7 @@ namespace gosFX
 		ParticleCloud__Specification(
 			Stuff::RegisteredClass::ClassID class_id,
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		);
 
 	public:
@@ -84,7 +84,7 @@ namespace gosFX
 	// Data
 	//
 	public:
-		int
+		int32_t
 			m_maxParticleCount,
 			m_totalParticleSize,
 			m_particleClassSize;
@@ -127,7 +127,7 @@ namespace gosFX
 		typedef ParticleCloud__Particle Particle;
 
 	protected:
-		int
+		int32_t
 			m_activeParticleCount;
 		float		
 			m_birthAccumulator;

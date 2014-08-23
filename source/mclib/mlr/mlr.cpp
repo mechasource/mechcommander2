@@ -6,13 +6,13 @@
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 
-ULONG	gShowClippedPolys=0;
-ULONG	gShowBirdView=0;
-ULONG	gEnableDetailTexture=1;
-ULONG	gEnableTextureSort=1;
-ULONG	gEnableAlphaSort=1;
-ULONG	gEnableMultiTexture=1;
-ULONG	gEnableLightMaps=1;
+uint32_t	gShowClippedPolys=0;
+uint32_t	gShowBirdView=0;
+uint32_t	gEnableDetailTexture=1;
+uint32_t	gEnableTextureSort=1;
+uint32_t	gEnableAlphaSort=1;
+uint32_t	gEnableMultiTexture=1;
+uint32_t	gEnableLightMaps=1;
 
 static uint8_t __stdcall CheckDetailTexture(void)
 {
@@ -56,11 +56,11 @@ static void __stdcall EnableLightMaps(void)
 	gEnableLightMaps=!gEnableLightMaps;
 }
 
-extern ULONG gShowClippedPolys;
+extern uint32_t gShowClippedPolys;
 static uint8_t __stdcall Check_ShowClippedPolys(void) {return uint8_t((gShowClippedPolys!=0) ? 1 : 0);}
 static void __stdcall Toggle_ShowClippedPolys(void) {gShowClippedPolys=!gShowClippedPolys;}
 
-extern ULONG gShowBirdView;
+extern uint32_t gShowBirdView;
 static uint8_t __stdcall Check_ShowBirdView(void) {return uint8_t((gShowBirdView!=0) ? 1 : 0);}
 static void __stdcall Toggle_ShowBirdView(void) {gShowBirdView=!gShowBirdView;}
 
@@ -85,19 +85,19 @@ DEFINE_TIMER(MidLevelRenderer, Texture_Sorting_Time);
 DEFINE_TIMER(MidLevelRenderer, Alpha_Sorting_Time);
 DEFINE_TIMER(MidLevelRenderer, Unlock_Texture_Time);
 
-ULONG MidLevelRenderer::Number_Of_Primitives;
-ULONG MidLevelRenderer::NumAllIndices;
-ULONG MidLevelRenderer::NumAllVertices;
+uint32_t MidLevelRenderer::Number_Of_Primitives;
+uint32_t MidLevelRenderer::NumAllIndices;
+uint32_t MidLevelRenderer::NumAllVertices;
 float MidLevelRenderer::Index_Over_Vertex_Ratio;
-ULONG MidLevelRenderer::TransformedVertices;
-ULONG MidLevelRenderer::NumberOfAlphaSortedTriangles;
-ULONG MidLevelRenderer::LitVertices;
-ULONG MidLevelRenderer::NonClippedVertices;
-ULONG MidLevelRenderer::ClippedVertices;
-ULONG MidLevelRenderer::PolysClippedButOutside;
-ULONG MidLevelRenderer::PolysClippedButInside;
-ULONG MidLevelRenderer::PolysClippedButOnePlane;
-ULONG MidLevelRenderer::PolysClippedButGOnePlane;
+uint32_t MidLevelRenderer::TransformedVertices;
+uint32_t MidLevelRenderer::NumberOfAlphaSortedTriangles;
+uint32_t MidLevelRenderer::LitVertices;
+uint32_t MidLevelRenderer::NonClippedVertices;
+uint32_t MidLevelRenderer::ClippedVertices;
+uint32_t MidLevelRenderer::PolysClippedButOutside;
+uint32_t MidLevelRenderer::PolysClippedButInside;
+uint32_t MidLevelRenderer::PolysClippedButOnePlane;
+uint32_t MidLevelRenderer::PolysClippedButGOnePlane;
 
 
 bool MidLevelRenderer::ConvertToTriangleMeshes = true;
@@ -186,7 +186,7 @@ void
 	MLRLookUpLight::InitializeClass();
 
 #if FOG_HACK
-//	for(int i=0;i<Limits::Max_Number_Of_FogStates;i++)
+//	for(int32_t i=0;i<Limits::Max_Number_Of_FogStates;i++)
 //	{
 //		GOSVertex::SetFogTableEntry(i+1, 700.0f, 1000.0f, 0.0f);
 //	}
@@ -327,19 +327,19 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MidLevelRenderer::ReadMLRVersion(MemoryStream *erf_stream)
 {
 	Check_Object(erf_stream);
 
 	//
 	//------------------------------------------------------------------------
-	// See if this file has an erf signature.  If so, the next int will be the
+	// See if this file has an erf signature.  If so, the next int32_t will be the
 	// version number.  If not, assume it is version 1 and rewind the file
 	//------------------------------------------------------------------------
 	//
-	int version = -1;
-	int erf_signature;
+	int32_t version = -1;
+	int32_t erf_signature;
 	*erf_stream >> erf_signature;
 	if (erf_signature == 'MLR#')
 		*erf_stream >> version;
@@ -356,5 +356,5 @@ void
 	MidLevelRenderer::WriteMLRVersion(MemoryStream *erf_stream)
 {
 	Check_Object(erf_stream);
-	*erf_stream << 'MLR#' << static_cast<int>(Current_MLR_Version);
+	*erf_stream << 'MLR#' << static_cast<int32_t>(Current_MLR_Version);
 }

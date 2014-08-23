@@ -103,7 +103,7 @@ extern TypePtr			IntegerTypePtr;
 extern TypePtr			RealTypePtr;
 extern TypePtr			BooleanTypePtr;
 
-extern ULONG*	OrderCompletionFlags;
+extern uint32_t*	OrderCompletionFlags;
 extern StackItemPtr		StaticDataPtr;
 extern StackItem		returnValue;
 
@@ -506,7 +506,7 @@ int32_t ABLModule::init (int32_t moduleHandle) {
 
 	if (ModuleRegistry[handle].numOrderCalls) {
 		int32_t numLongs = 1 + ModuleRegistry[handle].numOrderCalls / 32;
-		orderCallFlags = (ULONG*)ABLStackMallocCallback(sizeof(ULONG) * numLongs);
+		orderCallFlags = (uint32_t*)ABLStackMallocCallback(sizeof(uint32_t) * numLongs);
 		if (!orderCallFlags) {
 			char err[255];
 			sprintf(err, "ABL: Unable to AblStackHeap->malloc orderCallFlags [Module %d]", id);
@@ -661,7 +661,7 @@ void ABLModule::read (ABLFile* moduleFile) {
 
 	if (ModuleRegistry[handle].numOrderCalls) {
 		int32_t numLongs = 1 + ModuleRegistry[handle].numOrderCalls / 32;
-		orderCallFlags = (ULONG*)ABLStackMallocCallback(sizeof(ULONG) * numLongs);
+		orderCallFlags = (uint32_t*)ABLStackMallocCallback(sizeof(uint32_t) * numLongs);
 		if (!orderCallFlags) {
 			char err[255];
 			sprintf(err, "ABLModule.read: Unable to AblStackHeap->malloc orderCallFlags [Module %d]", id);

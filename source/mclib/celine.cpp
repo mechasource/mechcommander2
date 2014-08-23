@@ -31,7 +31,7 @@
 
 extern bool hasGuardBand;
 //---------------------------------------------------------------------------
-LineElement::LineElement (Stuff::Vector4D &pos1, Stuff::Vector4D &pos2, int32_t clr, PUCHAR fTable, int32_t endClr) : Element(0L)
+LineElement::LineElement (Stuff::Vector4D &pos1, Stuff::Vector4D &pos2, int32_t clr, puint8_t fTable, int32_t endClr) : Element(0L)
 {
 	startPos = pos1;;
 	endPos = pos2;

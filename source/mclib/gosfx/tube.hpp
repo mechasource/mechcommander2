@@ -27,7 +27,7 @@ namespace gosFX
 	protected:
 		Tube__Specification(
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		);
 
 	public:
@@ -36,7 +36,7 @@ namespace gosFX
 		static Tube__Specification*
 			Make(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		void
@@ -88,7 +88,7 @@ namespace gosFX
 	// Data
 	//
 	public:
-		int
+		int32_t
 			m_maxProfileCount;
 
 		enum ProfileType {
@@ -155,7 +155,7 @@ namespace gosFX
 		typedef Tube__Profile Profile;
 
 	protected:
-		int
+		int32_t
 			m_headProfile,
 			m_tailProfile,
 			m_activeProfileCount,

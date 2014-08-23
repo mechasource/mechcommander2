@@ -58,7 +58,7 @@ void
 MLR_I_L_DeT_TMesh::MLR_I_L_DeT_TMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLR_I_C_DeT_TMesh(class_data, stream, version)
 {
@@ -105,7 +105,7 @@ MLR_I_L_DeT_TMesh::~MLR_I_L_DeT_TMesh()
 MLR_I_L_DeT_TMesh*
 	MLR_I_L_DeT_TMesh::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	Check_Object(stream);
@@ -138,7 +138,7 @@ bool
 	Check_Pointer(this);
 	Check_Object(pMesh);
 
-	int len;
+	int32_t len;
 	Vector3D *_normals;
 
 	MLR_I_C_DeT_TMesh::Copy(pMesh);
@@ -165,7 +165,7 @@ void
 	Check_Object(tMesh);
 	Verify(gos_GetCurrentHeap() == Heap);
 
-	int len;
+	int32_t len;
 	Vector3D *_normals;
 
 	MLR_I_C_DeT_TMesh::Copy(tMesh, detailState, xOff, yOff, xFac, yFac);
@@ -179,7 +179,7 @@ void
 void
 	MLR_I_L_DeT_TMesh::SetNormalData(
 		const Vector3D *data,
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -197,7 +197,7 @@ void
 void
 	MLR_I_L_DeT_TMesh::GetNormalData(
 		Vector3D **data,
-		int *dataSize
+		pint32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -210,11 +210,11 @@ void
 void
 	MLR_I_L_DeT_TMesh::SetColorData(
 #if COLOR_AS_DWORD
-		const ULONG *data,
+		pcuint32_t data,
 #else
 		const RGBAColor *data,
 #endif
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -233,7 +233,7 @@ void
 void
 	MLR_I_L_DeT_TMesh::PaintMe(
 #if COLOR_AS_DWORD
-		const ULONG *paintMe
+		pcuint32_t paintMe
 #else
 		const RGBAColor *paintMe
 #endif
@@ -251,10 +251,10 @@ void
 	}
 #endif
 
-	int k, len = litColors.GetLength();
+	int32_t k, len = litColors.GetLength();
 
 #if COLOR_AS_DWORD
-	ULONG argb = GOSCopyColor(paintMe);
+	uint32_t argb = GOSCopyColor(paintMe);
 
 	for(k=0;k<len;k++)
 	{
@@ -279,7 +279,7 @@ void
 	Verify(IsDerivedFrom(DefaultData));
 }
 
-extern ULONG gEnableTextureSort, gEnableAlphaSort;
+extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 
 #define I_SAY_YES_TO_DETAIL_TEXTURES
 #undef I_SAY_YES_TO_DUAL_TEXTURES
@@ -299,7 +299,7 @@ extern ULONG gEnableTextureSort, gEnableAlphaSort;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //	This include contains follwing functions:
 //	void MLR_I_L_DeT_TMesh::TransformNoClip(Matrix4D*, GOSVertexPool*);
-//	int MLR_I_L_DeT_TMesh::Clip(MLRClippingState, GOSVertexPool*);
+//	int32_t MLR_I_L_DeT_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <MLR\MLRTriangleClipping.hpp>
@@ -310,7 +310,7 @@ extern ULONG gEnableTextureSort, gEnableAlphaSort;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //	This include contains follwing functions:
-//	void	Lighting (MLRLight**, int nrLights);
+//	void	Lighting (MLRLight**, int32_t nrLights);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <MLR\MLRTriangleLighting.hpp>
@@ -329,7 +329,7 @@ MLRShape*
 	MLRShape *ret = new MLRShape(20);
 	Register_Object(ret);
 
-	int i, j, k;
+	int32_t i, j, k;
 	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
@@ -357,7 +357,7 @@ MLRShape*
 	Vector3D *normals = new Vector3D[nrTri*3];
 	Register_Pointer(normals);
 
-	int uniquePoints = 0;
+	int32_t uniquePoints = 0;
 	for (k=0;k<20;k++)
 	{
 		triDrawn = 0;

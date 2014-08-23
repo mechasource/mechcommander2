@@ -16,7 +16,7 @@
 //
 gosFX::Shape__Specification::Shape__Specification(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	Singleton__Specification(gosFX::ShapeClassID, stream, gfx_version)
 {
@@ -68,7 +68,7 @@ gosFX::Shape__Specification::~Shape__Specification()
 gosFX::Shape__Specification*
 	gosFX::Shape__Specification::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);
@@ -149,15 +149,15 @@ void
 		//-----------------------------------------------------------------
 		//
 		m_radius = 0.0f;
-		int count = m_shape->GetNum();
-		for (int i=0; i<count; ++i)
+		int32_t count = m_shape->GetNum();
+		for (int32_t i=0; i<count; ++i)
 		{
 			MidLevelRenderer::MLRPrimitiveBase *primitive = m_shape->Find(i);
 			Check_Object(primitive);
 			Stuff::Point3D *points;
-			int vertex_count;
+			int32_t vertex_count;
 			primitive->GetCoordData(&points, &vertex_count);
-			for (int v=0; v<vertex_count; ++v)
+			for (int32_t v=0; v<vertex_count; ++v)
 			{
 				float len = points[v].GetLengthSquared();
 				if (len > m_radius)

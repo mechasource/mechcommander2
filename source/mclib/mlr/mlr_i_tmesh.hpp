@@ -34,7 +34,7 @@ namespace MidLevelRenderer {
 		MLR_I_TMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		~MLR_I_TMesh(void);
 
@@ -44,23 +44,23 @@ namespace MidLevelRenderer {
 		static MLR_I_TMesh*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		void
 			Save(Stuff::MemoryStream *stream);
 
 	public:
-		virtual	void	InitializeDrawPrimitive(uint8_t, int=0);
+		virtual	void	InitializeDrawPrimitive(uint8_t, int32_t=0);
 
-		virtual int
+		virtual int32_t
 			GetNumPrimitives()
 		{ Check_Object(this); return numOfTriangles; }
 
 		virtual void
 			SetSubprimitiveLengths(
 			puint8_t length_array,
-			int subprimitive_count
+			int32_t subprimitive_count
 			)
 		{
 			Check_Object(this);(void)length_array;
@@ -72,7 +72,7 @@ namespace MidLevelRenderer {
 
 		void	FindFacePlanes();
 
-		virtual int	FindBackFace(const Stuff::Point3D&);
+		virtual int32_t	FindBackFace(const Stuff::Point3D&);
 
 		const Stuff::Plane *GetTrianglePlane(size_t i)
 		{
@@ -82,18 +82,18 @@ namespace MidLevelRenderer {
 			return &facePlanes[i];
 		}
 
-		virtual void	Lighting(MLRLight* const*, int nrLights);
+		virtual void	Lighting(MLRLight* const*, int32_t nrLights);
 
 		virtual void LightMapLighting(MLRLight*);
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(const ULONG* paintMe) {(void)paintMe;};
+			PaintMe(pcuint32_t  paintMe) {(void)paintMe;};
 #else
 			PaintMe(const Stuff::RGBAColor* paintMe) {(void)paintMe;};
 #endif
 
-		virtual int	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual int32_t	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
 
 		bool
 			CastRay(
@@ -113,7 +113,7 @@ namespace MidLevelRenderer {
 
 		//	find which vertices are visible which not - returns nr of visible vertices
 		//	the result is stored in the visibleIndexedVertices array
-		int
+		int32_t
 			FindVisibleVertices();
 
 		bool
@@ -131,11 +131,11 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int
+		virtual int32_t
 			GetSize()
 		{ 
 			Check_Object(this);
-			int ret = MLRIndexedPrimitiveBase::GetSize();
+			int32_t ret = MLRIndexedPrimitiveBase::GetSize();
 			ret += testList.GetSize();
 			ret += facePlanes.GetSize();
 
@@ -143,7 +143,7 @@ namespace MidLevelRenderer {
 		}
 
 	protected:
-		int numOfTriangles;
+		int32_t numOfTriangles;
 		Stuff::DynamicArrayOf<uint8_t>	testList;
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
 	};

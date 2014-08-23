@@ -33,7 +33,7 @@ namespace MidLevelRenderer {
 	protected:
 		MLRIndexedPolyMesh(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		~MLRIndexedPolyMesh(void);
 
@@ -43,7 +43,7 @@ namespace MidLevelRenderer {
 		static MLRIndexedPolyMesh*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		void
@@ -64,16 +64,16 @@ namespace MidLevelRenderer {
 			*AllocatedMemory;
 
 	public:
-		virtual	void	InitializeDrawPrimitive(int, int=0);
+		virtual	void	InitializeDrawPrimitive(int32_t, int32_t=0);
 
-		virtual void	SetPrimitiveLength(puint8_t , int);
-		virtual void	GetPrimitiveLength(puint8_t *, int*);
+		virtual void	SetPrimitiveLength(puint8_t , int32_t);
+		virtual void	GetPrimitiveLength(puint8_t *, pint32_t);
 
 		void	FindFacePlanes(void);
 
-		virtual int	FindBackFace(const Stuff::Point3D&);
+		virtual int32_t	FindBackFace(const Stuff::Point3D&);
 
-		const Stuff::Plane *GetPolygonPlane(int i)
+		const Stuff::Plane *GetPolygonPlane(int32_t i)
 		{
 			Check_Object(this);
 			Verify(i<facePlanes.GetLength(void));
@@ -81,11 +81,11 @@ namespace MidLevelRenderer {
 			return &facePlanes[i];
 		}
 
-		virtual void	Lighting(MLRLight**, int nrLights);
+		virtual void	Lighting(MLRLight**, int32_t nrLights);
 
 		MLRPrimitive *LightMapLighting(MLRLight*);
 
-		virtual int	Clip(MLRClippingState, GOSVertexPool*);
+		virtual int32_t	Clip(MLRClippingState, GOSVertexPool*);
 
 		bool
 			CastRay(
@@ -105,7 +105,7 @@ namespace MidLevelRenderer {
 
 		//	find which vertices are visible which not - returns nr of visible vertices
 		//	the result is stored in the visibleIndexedVertices array
-		int
+		int32_t
 			FindVisibleVertices(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,11 +120,11 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int
+		virtual int32_t
 			GetSize(void)
 		{ 
 			Check_Object(this);
-			int ret = MLRIndexedPrimitive::GetSize(void);
+			int32_t ret = MLRIndexedPrimitive::GetSize(void);
 			ret += testList.GetSize(void);
 			ret += facePlanes.GetSize(void);
 

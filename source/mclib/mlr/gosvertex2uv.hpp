@@ -105,7 +105,7 @@ namespace MidLevelRenderer {
 		}
 
 		inline GOSVertex2UV&
-			operator=(const ULONG c)
+			operator=(cuint32_t c)
 		{
 			Check_Pointer(this);
 
@@ -121,7 +121,7 @@ namespace MidLevelRenderer {
 			float *uv1,
 			float *uv2
 #if FOG_HACK
-			, int foggy
+			, int32_t foggy
 #endif
 			);
 	protected:
@@ -136,7 +136,7 @@ namespace MidLevelRenderer {
 		float *uv1,
 		float *uv2
 #if FOG_HACK
-		, int foggy
+		, int32_t foggy
 #endif
 		)
 	{
@@ -328,13 +328,13 @@ namespace MidLevelRenderer {
 //######################################################################################################################
 //	the lines below will produce following functions:
 //
-//	bool GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const Vector2DScalar*, const Vector2DScalar*, int);
-//	bool GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const ULONG*, const Vector2DScalar*, const Vector2DScalar*, int);
-//	bool GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAColor*, const Vector2DScalar*, const Vector2DScalar*, int);
+//	bool GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const Vector2DScalar*, const Vector2DScalar*, int32_t);
+//	bool GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, pcuint32_t , const Vector2DScalar*, const Vector2DScalar*, int32_t);
+//	bool GOSCopyData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAColor*, const Vector2DScalar*, const Vector2DScalar*, int32_t);
 //
-//	bool GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const Vector2DScalar*, const Vector2DScalar*, int, int, int);
-//	bool GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const ULONG*, const Vector2DScalar*, const Vector2DScalar*, int, int, int);
-//	bool GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAColor*, const Vector2DScalar*, const Vector2DScalar*, int, int, int);
+//	bool GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t);
+//	bool GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, pcuint32_t , const Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t);
+//	bool GOSCopyTriangleData(GOSVertex2UV*, const Stuff::Vector4D*, const RGBAColor*, const Vector2DScalar*, const Vector2DScalar*, int32_t, int32_t, int32_t);
 //#######################################################################################################################
 
 #define I_SAY_YES_TO_COLOR

@@ -25,7 +25,7 @@ namespace gosFX
 	protected:
 		EffectCloud__Specification(
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		);
 
 	public:
@@ -34,7 +34,7 @@ namespace gosFX
 		static EffectCloud__Specification*
 			Make(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		void

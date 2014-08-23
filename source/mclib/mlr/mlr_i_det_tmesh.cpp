@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 
-extern ULONG gEnableDetailTexture;
+extern uint32_t gEnableDetailTexture;
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	BitTrace *MLR_I_DeT_TMesh_Clip;
@@ -60,7 +60,7 @@ void
 MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLR_I_TMesh(class_data, stream, version)
 {
@@ -124,7 +124,7 @@ void
 	Check_Object(tMesh);
 	Verify(gos_GetCurrentHeap() == Heap);
 
-	int len;
+	int32_t len;
 	puint16_t _index;
 	Point3D *_coords;
 	Vector2DScalar *_texCoords;
@@ -170,7 +170,7 @@ MLR_I_DeT_TMesh::~MLR_I_DeT_TMesh()
 MLR_I_DeT_TMesh*
 	MLR_I_DeT_TMesh::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	Check_Object(stream);
@@ -229,7 +229,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLR_I_DeT_TMesh::GetNumPasses()
 {
 	Check_Object(this);
@@ -275,7 +275,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //	This include contains follwing functions:
 //	void MLR_I_DeT_TMesh::TransformNoClip(Matrix4D*, GOSVertexPool*);
-//	int MLR_I_DeT_TMesh::Clip(MLRClippingState, GOSVertexPool*);
+//	int32_t MLR_I_DeT_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <MLR\MLRTriangleClipping.hpp>
@@ -312,7 +312,7 @@ MLR_I_DeT_TMesh*
 	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
-	int i;
+	int32_t i;
 
 	for(i=0;i<6;i++)
 	{
@@ -422,7 +422,7 @@ MLRShape*
 	MLRShape *ret = new MLRShape(20);
 	Register_Object(ret);
 
-	int i, j, k;
+	int32_t i, j, k;
 	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
@@ -446,7 +446,7 @@ MLRShape*
 	Vector2DScalar *texCoords = new Vector2DScalar[nrTri*3];
 	Register_Pointer(texCoords);
 
-	int uniquePoints = 0;
+	int32_t uniquePoints = 0;
 	for (k=0;k<20;k++)
 	{
 		triDrawn = 0;

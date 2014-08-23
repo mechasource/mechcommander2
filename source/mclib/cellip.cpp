@@ -20,14 +20,14 @@
 #include "txmmgr.h"
 #endif
 
-ULONG EllipseElement::s_textureHandle = 0;
+uint32_t EllipseElement::s_textureHandle = 0;
 //---------------------------------------------------------------------------
 // Static Globals
 
 //---------------------------------------------------------------------------
 EllipseElement::EllipseElement (Stuff::Vector2DOf<int32_t> &cntr, Stuff::Vector2DOf<int32_t> &ortho, int32_t clr, int32_t depth) : Element(depth)
 {
-	for ( int i = 0; i < 5; ++i )
+	for ( int32_t i = 0; i < 5; ++i )
 	{
 		location[i].argb = clr;
 		location[i].frgb = 0;
@@ -58,7 +58,7 @@ void EllipseElement::draw (void)
 
 	gos_SetRenderState( gos_State_AlphaTest, true );
 			
-	ULONG gosTextureHandle = mcTextureManager->get_gosTextureHandle (s_textureHandle);
+	uint32_t gosTextureHandle = mcTextureManager->get_gosTextureHandle (s_textureHandle);
 	gos_SetRenderState( gos_State_Texture, gosTextureHandle );
 	gos_SetRenderState( gos_State_Clipping, 2);
 	gos_SetRenderState( gos_State_Specular, 0);
@@ -68,7 +68,7 @@ void EllipseElement::draw (void)
 	if ( clip.left != 0 || clip.right != 0 || clip.top != 0 || clip.bottom != 0 )
 	{
 		gos_VERTEX newLocation[4];
-		for ( int i = 0; i < 4; ++i )
+		for ( int32_t i = 0; i < 4; ++i )
 		{
 			newLocation[i] = location[i];
 		}

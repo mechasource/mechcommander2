@@ -67,7 +67,7 @@ FastFile *FastFileFind (PSTR fname, int32_t &fastFileHandle)
 {
 	if (fastFiles)
 	{
-		ULONG thisHash = elfHash(fname);
+		uint32_t thisHash = elfHash(fname);
 		int32_t currentFastFile = 0;
 		int32_t tempHandle = -1;
 		while (currentFastFile < numFastFiles)
@@ -87,9 +87,9 @@ FastFile *FastFileFind (PSTR fname, int32_t &fastFileHandle)
 }
 
 //------------------------------------------------------------------
-ULONG elfHash (PSTR name)
+uint32_t elfHash (PSTR name)
 {
-    ULONG   h = 0, g;
+    uint32_t   h = 0, g;
     while ( *name )
     {
         h = ( h << 4 ) + *name++;

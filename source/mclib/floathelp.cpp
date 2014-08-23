@@ -19,7 +19,7 @@
 #endif
 
 //-----------------------------------------------------------------------------------------
-ULONG		FloatHelp::currentFloatHelp = 0;		//How many of them are we using at present
+uint32_t		FloatHelp::currentFloatHelp = 0;		//How many of them are we using at present
 FloatHelp*	FloatHelp::floatHelps = NULL;			//POinters to all of them.
 
 //-----------------------------------------------------------------------------------------
@@ -71,8 +71,8 @@ void FloatHelp::renderAll (void)
 //-----------------------------------------------------------------------------------------
 void FloatHelp::setFloatHelp(PSTR  txt, 
 								Stuff::Vector4D screenPos, 
-								ULONG fClr, 
-								ULONG bClr, 
+								uint32_t fClr, 
+								uint32_t bClr, 
 								float scl,
 								bool proportional,
 								bool bold,
@@ -97,18 +97,18 @@ void FloatHelp::setFloatHelp(PSTR  txt,
 
 //-----------------------------------------------------------------------------------------
 void FloatHelp::getTextStringLength (PSTR  txt,                  
-										ULONG fColor,
+										uint32_t fColor,
 										float scl,                
 										bool proportional,        
 										bool bold,                
 										bool italic,              
 										bool wordWrap,
-										ULONG &width, ULONG &height)
+										uint32_t &width, uint32_t &height)
 {
 	// must use globalFloat Scale because of true type fonts
 	gos_TextSetAttributes (gosFontHandle, fColor, gosFontScale, wordWrap, proportional, bold, italic);
 
-	ULONG gHeight = 0, gWidth = 0;
+	uint32_t gHeight = 0, gWidth = 0;
 	if (txt[0])
 	{
 		gos_TextStringLength(&gWidth,&gHeight,txt);

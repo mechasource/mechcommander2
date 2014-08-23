@@ -229,7 +229,7 @@ void GenericAppearanceType::destroy (void)
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearanceType::setAnimation (TG_MultiShapePtr shape, ULONG animationNum)
+void GenericAppearanceType::setAnimation (TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != NULL);
 	gosASSERT(animationNum != 0xffffffff);
@@ -300,13 +300,13 @@ void GenericAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					genShape->SetTextureHandle(i,gosTextureHandle);
 					genShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					genShape->SetTextureHandle(i,gosTextureHandle);
 					genShape->SetTextureAlpha(i,false);
 				}
@@ -406,7 +406,7 @@ void GenericAppearance::setObjStatus (int32_t oStatus)
 					
 					if (fileExists(textureName))
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						genShape->SetTextureHandle(i,gosTextureHandle);
 					}
 					else
@@ -423,7 +423,7 @@ void GenericAppearance::setObjStatus (int32_t oStatus)
 }
 
 //-----------------------------------------------------------------------------
-void GenericAppearance::setGesture (ULONG gestureId)
+void GenericAppearance::setGesture (uint32_t gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -531,13 +531,13 @@ void GenericAppearance::setSkyNumber (int32_t skyNum)
 		{
 			if (strnicmp(newName,"a_",2) == 0)
 			{
-				ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+				uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 				genShape->SetTextureHandle(i,gosTextureHandle);
 				genShape->SetTextureAlpha(i,true);
 			}
 			else
 			{
-				ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+				uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 				genShape->SetTextureHandle(i,gosTextureHandle);
 				genShape->SetTextureAlpha(i,false);
 			}
@@ -764,9 +764,9 @@ int32_t GenericAppearance::render (int32_t depthFixup)
 	if (inView)
 	{
 		int32_t color = SD_BLUE;
-		ULONG highLight = 0x007f7f7f;
+		uint32_t highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8)) {
-			static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+			static uint32_t highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
 			static int32_t colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
 			color = colorTable[homeTeamRelationship];
 			highLight = highLightTable[homeTeamRelationship];
@@ -1038,12 +1038,12 @@ int32_t GenericAppearance::update (bool animate)
 		lightg = eye->getLightGreen(lightIntensity);
 		lightb = eye->getLightBlue(lightIntensity);
 	
-		ULONG lightRGB = (lightr<<16) + (lightg<<8) + lightb;
+		uint32_t lightRGB = (lightr<<16) + (lightg<<8) + lightb;
 		
 		eye->setLightColor(0,lightRGB);
 		eye->setLightIntensity(0,1.0);
 	
-		ULONG fogRGB = 0xff<<24;
+		uint32_t fogRGB = 0xff<<24;
 		float fogStart = eye->fogStart;
 		float fogFull = eye->fogFull;
 	
@@ -1160,7 +1160,7 @@ void GenericAppearance::destroy (void)
 
 #define HEIGHT_THRESHOLD 10.0f
 //-----------------------------------------------------------------------------
-void GenericAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int counter)
+void GenericAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
 {
 }
 

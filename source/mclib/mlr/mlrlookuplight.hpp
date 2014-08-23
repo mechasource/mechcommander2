@@ -26,7 +26,7 @@ namespace MidLevelRenderer {
 		MLRLookUpLight();
 		MLRLookUpLight(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		MLRLookUpLight(Stuff::Page *page);
 		~MLRLookUpLight();
@@ -56,12 +56,12 @@ namespace MidLevelRenderer {
 		{ Check_Object(this); return mapOrigin; }
 
 		void
-			SetMapSizeAndName(int x, int z, PCSTR name);
+			SetMapSizeAndName(int32_t x, int32_t z, PCSTR name);
 
-		int
+		int32_t
 			GetMapZoneCountX()
 		{ Check_Object(this); return mapZoneCountX; }
-		int
+		int32_t
 			GetMapZoneCountZ()
 		{ Check_Object(this); return mapZoneCountZ; }
 
@@ -106,7 +106,7 @@ namespace MidLevelRenderer {
 		Scalar zoneSizeX, zoneSizeZ;
 		Scalar one_Over_zoneSizeX, one_Over_zoneSizeZ;
 
-		int mapZoneCountX, mapZoneCountZ;
+		int32_t mapZoneCountX, mapZoneCountZ;
 		MString mapName;
 
 		puint8_t *maps;

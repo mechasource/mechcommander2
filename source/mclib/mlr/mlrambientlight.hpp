@@ -25,7 +25,7 @@ namespace MidLevelRenderer {
 		MLRAmbientLight();
 		MLRAmbientLight(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		MLRAmbientLight(Stuff::Page *page);
 		~MLRAmbientLight();

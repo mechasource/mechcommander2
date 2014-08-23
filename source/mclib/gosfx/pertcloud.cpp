@@ -13,7 +13,7 @@
 //
 gosFX::PertCloud__Specification::PertCloud__Specification(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	SpinningCloud__Specification(gosFX::PertCloudClassID, stream, gfx_version)
 {
@@ -57,7 +57,7 @@ gosFX::PertCloud__Specification::PertCloud__Specification(uint32_t sides):
 gosFX::PertCloud__Specification*
 	gosFX::PertCloud__Specification::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);
@@ -357,10 +357,10 @@ void
 	Verify(spec->m_vertices > 4);
 	float angle_between = Stuff::Two_Pi/(spec->m_vertices-2);
 	float radius = spec->m_size.ComputeValue(m_age, particle->m_seed);
-	int even = 1;
+	int32_t even = 1;
 	particle->m_vertices[0] = Stuff::Point3D::Identity;
 	float bound = 0.0f;
-	int j;
+	int32_t j;
 	for (j=1; j<spec->m_vertices-1; j++)
 	{
 		float perturbance =

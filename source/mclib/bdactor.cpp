@@ -118,7 +118,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 	if (result != NO_ERROR)
 		isForestClump = false;
 	   
-	ULONG hotPinkRGB, hotGreenRGB, hotYellowRGB;
+	uint32_t hotPinkRGB, hotGreenRGB, hotYellowRGB;
 	result = iniFile.readIdULong("HotPinkRGB",hotPinkRGB);
 	if (result != NO_ERROR)
 		hotPinkRGB = 0xffff00ff;
@@ -430,7 +430,7 @@ void BldgAppearanceType::destroy (void)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearanceType::setAnimation (TG_MultiShapePtr shape, ULONG animationNum)
+void BldgAppearanceType::setAnimation (TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != NULL);
 	gosASSERT(animationNum != 0xffffffff);
@@ -618,14 +618,14 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					bldgShape->SetTextureHandle(i,gosTextureHandle);
 					bldgShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					bldgShape->SetTextureHandle(i,gosTextureHandle);
 					bldgShape->SetTextureAlpha(i,false);
@@ -659,14 +659,14 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShadowShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShadowShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShadowShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShadowShape->SetTextureAlpha(i,false);
@@ -859,14 +859,14 @@ void BldgAppearance::setObjStatus (int32_t oStatus)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShape->SetTextureAlpha(i,false);
@@ -899,14 +899,14 @@ void BldgAppearance::setObjStatus (int32_t oStatus)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShadowShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShadowShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						bldgShadowShape->SetTextureHandle(i,gosTextureHandle);
 						bldgShadowShape->SetTextureAlpha(i,false);
@@ -982,7 +982,7 @@ bool BldgAppearance::PerPolySelect (int32_t mouseX, int32_t mouseY)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::setGesture (ULONG gestureId)
+void BldgAppearance::setGesture (uint32_t gestureId)
 {
 	//------------------------------------------------------------
 	// Check if state is possible.
@@ -994,7 +994,7 @@ void BldgAppearance::setGesture (ULONG gestureId)
 	if ((status == OBJECT_STATUS_DESTROYED) || (status == OBJECT_STATUS_DISABLED))
 		return;
 		
-	if (gestureId == (ULONG)bdAnimationState)
+	if (gestureId == (uint32_t)bdAnimationState)
 		return;
 
 	//----------------------------------------------------------------------
@@ -1307,7 +1307,7 @@ bool BldgAppearance::recalcBounds (void)
 						//-------------------------------------------------------------------------------
 						//Set LOD of Model here because we have the distance and we KNOW we can see it!
 						bool baseLOD = true;
-						ULONG selectLOD = 0;
+						uint32_t selectLOD = 0;
 						if (useHighObjectDetail)
 						{
 							for (int32_t i=1;i<MAX_LODS;i++)
@@ -1329,7 +1329,7 @@ bool BldgAppearance::recalcBounds (void)
 						}
 						
 						// we are at this LOD level.
-						if (selectLOD != (ULONG)currentLOD)
+						if (selectLOD != (uint32_t)currentLOD)
 						{
 							currentLOD = selectLOD;
 
@@ -1358,14 +1358,14 @@ bool BldgAppearance::recalcBounds (void)
 								{
 									if (strnicmp(txmName,"a_",2) == 0)
 									{
-										ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+										uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 										gosASSERT(gosTextureHandle != 0xffffffff);
 										bldgShape->SetTextureHandle(j,gosTextureHandle);
 										bldgShape->SetTextureAlpha(j,true);
 									}
 									else
 									{
-										ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+										uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 										gosASSERT(gosTextureHandle != 0xffffffff);
 										bldgShape->SetTextureHandle(j,gosTextureHandle);
 										bldgShape->SetTextureAlpha(j,false);
@@ -1410,14 +1410,14 @@ bool BldgAppearance::recalcBounds (void)
 								{
 									if (strnicmp(txmName,"a_",2) == 0)
 									{
-										ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+										uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 										gosASSERT(gosTextureHandle != 0xffffffff);
 										bldgShape->SetTextureHandle(i,gosTextureHandle);
 										bldgShape->SetTextureAlpha(i,true);
 									}
 									else
 									{
-										ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+										uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 										gosASSERT(gosTextureHandle != 0xffffffff);
 										bldgShape->SetTextureHandle(i,gosTextureHandle);
 										bldgShape->SetTextureAlpha(i,false);
@@ -1511,9 +1511,9 @@ int32_t BldgAppearance::render (int32_t depthFixup)
 	if (inView)
 	{
 		int32_t color = SD_BLUE;
-		ULONG highLight = 0x007f7f7f;
+		uint32_t highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8)) {
-			static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+			static uint32_t highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
 			static int32_t colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED| 0xff000000};
 			color = colorTable[homeTeamRelationship];
 			highLight = highLightTable[homeTeamRelationship];
@@ -2373,7 +2373,7 @@ void BldgAppearance::stopActivity (void)
 }
 
 //-----------------------------------------------------------------------------
-void BldgAppearance::flashBuilding (float dur, float fDuration, ULONG color)
+void BldgAppearance::flashBuilding (float dur, float fDuration, uint32_t color)
 {
 	duration = dur;
 	flashDuration = fDuration;
@@ -2422,7 +2422,7 @@ void BldgAppearance::destroy (void)
 
 //-----------------------------------------------------------------------------
 
-int32_t BldgAppearance::calcCellsCovered (Stuff::Vector3D& pos, short* cellList) {
+int32_t BldgAppearance::calcCellsCovered (Stuff::Vector3D& pos, pint16_t cellList) {
 
 	gosASSERT((Terrain::realVerticesMapSide * MAPCELL_DIM) == GameMap->width);
 	int32_t numCoords = 0;
@@ -2477,8 +2477,8 @@ int32_t BldgAppearance::calcCellsCovered (Stuff::Vector3D& pos, short* cellList)
 						if (numCoords > (maxCoords - 2))
 							Fatal(numCoords, "BldgAppearance.markMoveMap: too many coords for cellList ");
 							
-						cellList[numCoords++] = (short)cellR;
-						cellList[numCoords++] = (short)cellC;
+						cellList[numCoords++] = (int16_t)cellR;
+						cellList[numCoords++] = (int16_t)cellC;
 	//				}
 				}
 			}
@@ -2490,7 +2490,7 @@ int32_t BldgAppearance::calcCellsCovered (Stuff::Vector3D& pos, short* cellList)
 
 //-----------------------------------------------------------------------------
 
-void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int counter)
+void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
 {
 	if (appearType->spinMe)			//We are a marker
 		return;						//Do not mark impassable
@@ -2753,7 +2753,7 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int cou
 
 //-----------------------------------------------------------------------------
 
-int32_t BldgAppearance::markMoveMap (bool passable, int32_t* lineOfSightRect, bool useHeight, short* cellList)
+int32_t BldgAppearance::markMoveMap (bool passable, int32_t* lineOfSightRect, bool useHeight, pint16_t cellList)
 {
 	int32_t minRow = 9999;
 	int32_t maxRow = 0;
@@ -2813,8 +2813,8 @@ int32_t BldgAppearance::markMoveMap (bool passable, int32_t* lineOfSightRect, bo
 					// Record the cell...
 					if (numCoords > (maxCoords - 2))
 						Fatal(numCoords, "BldgAppearance.markMoveMap: too many coords for cellList ");
-					cellList[numCoords++] = (short)cellR;
-					cellList[numCoords++] = (short)cellC;
+					cellList[numCoords++] = (int16_t)cellR;
+					cellList[numCoords++] = (int16_t)cellC;
 				}
 			}
 		}
@@ -3236,14 +3236,14 @@ void TreeAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					treeShape->SetTextureHandle(i,gosTextureHandle);
 					treeShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					treeShape->SetTextureHandle(i,gosTextureHandle);
 					treeShape->SetTextureAlpha(i,false);
@@ -3277,14 +3277,14 @@ void TreeAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShadowShape->SetTextureHandle(i,gosTextureHandle);
 						treeShadowShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShadowShape->SetTextureHandle(i,gosTextureHandle);
 						treeShadowShape->SetTextureAlpha(i,false);
@@ -3446,14 +3446,14 @@ void TreeAppearance::setObjStatus (int32_t oStatus)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShape->SetTextureHandle(i,gosTextureHandle);
 						treeShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShape->SetTextureHandle(i,gosTextureHandle);
 						treeShape->SetTextureAlpha(i,false);
@@ -3486,14 +3486,14 @@ void TreeAppearance::setObjStatus (int32_t oStatus)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShadowShape->SetTextureHandle(i,gosTextureHandle);
 						treeShadowShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						gosASSERT(gosTextureHandle != 0xffffffff);
 						treeShadowShape->SetTextureHandle(i,gosTextureHandle);
 						treeShadowShape->SetTextureAlpha(i,false);
@@ -3733,7 +3733,7 @@ bool TreeAppearance::recalcBounds (void)
 					//-------------------------------------------------------------------------------
 					//Set LOD of Model here because we have the distance and we KNOW we can see it!
 					bool baseLOD = true;
-					ULONG selectLOD = 0;
+					uint32_t selectLOD = 0;
 					if (useHighObjectDetail)
 					{
 						for (int32_t i=1;i<MAX_LODS;i++)
@@ -3755,7 +3755,7 @@ bool TreeAppearance::recalcBounds (void)
 					}
 					
 					// we are at this LOD level.
-					if (selectLOD != (ULONG)currentLOD)
+					if (selectLOD != (uint32_t)currentLOD)
 					{
 						currentLOD = selectLOD;
 
@@ -3781,14 +3781,14 @@ bool TreeAppearance::recalcBounds (void)
 							{
 								if (strnicmp(txmName,"a_",2) == 0)
 								{
-									ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+									uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 									gosASSERT(gosTextureHandle != 0xffffffff);
 									treeShape->SetTextureHandle(j,gosTextureHandle);
 									treeShape->SetTextureAlpha(j,true);
 								}
 								else
 								{
-									ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+									uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 									gosASSERT(gosTextureHandle != 0xffffffff);
 									treeShape->SetTextureHandle(j,gosTextureHandle);
 									treeShape->SetTextureAlpha(j,false);
@@ -3831,14 +3831,14 @@ bool TreeAppearance::recalcBounds (void)
 							{
 								if (strnicmp(txmName,"a_",2) == 0)
 								{
-									ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+									uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 									gosASSERT(gosTextureHandle != 0xffffffff);
 									treeShape->SetTextureHandle(i,gosTextureHandle);
 									treeShape->SetTextureAlpha(i,true);
 								}
 								else
 								{
-									ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+									uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 									gosASSERT(gosTextureHandle != 0xffffffff);
 									treeShape->SetTextureHandle(i,gosTextureHandle);
 									treeShape->SetTextureAlpha(i,false);
@@ -3869,9 +3869,9 @@ int32_t TreeAppearance::render (int32_t depthFixup)
 	if (inView)
 	{
 		int32_t color = SD_BLUE;
-		//ULONG highLight = 0x007f7f7f;
+		//uint32_t highLight = 0x007f7f7f;
 		if ((teamId > -1) && (teamId < 8)) {
-			//static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+			//static uint32_t highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
 			static int32_t colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
 			color = colorTable[homeTeamRelationship];
 			//highLight = highLightTable[homeTeamRelationship];
@@ -4103,7 +4103,7 @@ int32_t TreeAppearance::update (bool animate)
 	else
 		treeShape->SetFogRGB(0xffffffff);
 
-	ULONG oldRGB = eye->getLightColor(1);
+	uint32_t oldRGB = eye->getLightColor(1);
 
 	eye->setLightColor(1,lightRGB);
 	eye->setLightIntensity(1,1.0);
@@ -4147,7 +4147,7 @@ int32_t TreeAppearance::update (bool animate)
 
 //-----------------------------------------------------------------------------
 
-void TreeAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int type, int counter)
+void TreeAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter)
 {
 	//MUST force tree to HIGHEST LOD!!!  Impassability data is only valid at this LOD!!
 	// Tree will reset its LOD on next draw!!

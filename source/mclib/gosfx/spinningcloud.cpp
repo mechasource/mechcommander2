@@ -17,7 +17,7 @@
 gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
 	Stuff::RegisteredClass::ClassID class_id,
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	ParticleCloud__Specification(class_id, stream, gfx_version)
 {
@@ -426,7 +426,7 @@ bool
 	Stuff::Point3D *translation = &particle->m_localTranslation;
 	Stuff::UnitQuaternion *rotation = &particle->m_localRotation;
 	Stuff::Vector3D *velocity = &particle->m_localLinearVelocity;
-	int sim_mode = GetSimulationMode();
+	int32_t sim_mode = GetSimulationMode();
 	if (sim_mode == DynamicWorldSpaceSimulationMode)
 	{
 		particle->m_worldTranslation.Multiply(*translation, m_localToWorld);

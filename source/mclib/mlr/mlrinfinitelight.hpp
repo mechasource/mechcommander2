@@ -26,7 +26,7 @@ namespace MidLevelRenderer {
 		MLRInfiniteLight(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		MLRInfiniteLight(
 			ClassData *class_data,

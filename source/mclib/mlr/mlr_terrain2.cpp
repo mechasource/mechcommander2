@@ -9,7 +9,7 @@
 	BitTrace *MLR_Terrain2_Clip;
 #endif
 
-extern ULONG gEnableLightMaps;
+extern uint32_t gEnableLightMaps;
 
 //#############################################################################
 //## MLRTerrain with no color no lighting w/ detail texture, uv's from xyz  ###
@@ -72,7 +72,7 @@ void
 MLR_Terrain2::MLR_Terrain2(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLR_I_DeT_TMesh(class_data, stream, version)
 {
@@ -87,7 +87,7 @@ MLR_Terrain2::MLR_Terrain2(
 	{
 		Scalar *fptr = &frame[0][0];
 
-		for(int i=0;i<32;i++)
+		for(int32_t i=0;i<32;i++)
 		{
 			*stream >> *fptr++;
 		}
@@ -109,7 +109,7 @@ MLR_Terrain2::MLR_Terrain2(
 		frame[1][2] = frame[1][0] + 4*xGrid;
 		frame[1][3] = frame[1][1] + 4*zGrid;
 
-		int i;
+		int32_t i;
 		for(i=2;i<8;i++)
 		{
 			frame[i][0] = xOffset + tileX*xGrid;
@@ -125,7 +125,7 @@ MLR_Terrain2::MLR_Terrain2(
 
 	*stream >> textureFlags;
 
-	for(int i=0;i<8;i++)
+	for(int32_t i=0;i<8;i++)
 	{
 		if(textureFlags | mask)
 		{
@@ -144,11 +144,11 @@ MLR_Terrain2::MLR_Terrain2(
 	PCSTR texName = orgTexture->GetTextureName();
 	char texRoot[1024], name[1024];
 
-	int len;
+	int32_t len;
 	if((len = strlen(texName)) > 0)
 	{
 		Verify(len>8);
-		int i, d = texName[len-6] - '0';
+		int32_t i, d = texName[len-6] - '0';
 
 		strncpy(texRoot, texName, len-7);
 		texRoot[len-7] = '\0';
@@ -189,7 +189,7 @@ MLR_Terrain2::MLR_Terrain2(
 	}
 	else
 	{
-		for(int i=0;i<8;i++)
+		for(int32_t i=0;i<8;i++)
 		{
 			textures[i] = 0;
 		}
@@ -221,7 +221,7 @@ MLR_Terrain2::MLR_Terrain2(ClassData *class_data):
 
 	Scalar *fptr = &frame[0][0];
 
-	int i;
+	int32_t i;
 	for(i=0;i<32;i++)
 	{
 		*fptr++ = 0.0f;
@@ -245,7 +245,7 @@ MLR_Terrain2::~MLR_Terrain2()
 MLR_Terrain2*
 	MLR_Terrain2::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	Check_Object(stream);
@@ -275,7 +275,7 @@ void
 
 	Scalar *fptr = &frame[0][0];
 
-	for(int i=0;i<32;i++)
+	for(int32_t i=0;i<32;i++)
 	{
 		*stream << *fptr++;
 	}
@@ -291,11 +291,11 @@ void
 	PCSTR texName = orgTexture->GetTextureName();
 	char texRoot[1024], name[1024];
 
-	int len;
+	int32_t len;
 	if((len = strlen(texName)) > 0)
 	{
 		Verify(len>8);
-		int i, d = texName[len-6] - '0';
+		int32_t i, d = texName[len-6] - '0';
 		Verify(d==maxDepth);
 		strncpy(texRoot, texName, len-7);
 		texRoot[len-7] = '\0';
@@ -368,7 +368,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_Terrain2::SetLevelTexture(int lev, int handle)
+	MLR_Terrain2::SetLevelTexture(int32_t lev, int32_t handle)
 {
 	Check_Object(this);
 	Verify(lev>=0 && lev<8);
@@ -398,7 +398,7 @@ void
 	Scalar OneOverX = 1.0f/(frame[currentDepth][2] - frame[currentDepth][0]);
 	Scalar OneOverZ = 1.0f/(frame[currentDepth][3] - frame[currentDepth][1]);
 
-	for(int i=0;i<texCoords.GetLength();i++)
+	for(int32_t i=0;i<texCoords.GetLength();i++)
 	{
 		texCoords[i][0] = borderPixelFun + (1.0f-2*borderPixelFun)*(maxX - coords[i].x)*OneOverX;
 		texCoords[i][1] = borderPixelFun + (1.0f-2*borderPixelFun)*(maxZ - coords[i].z)*OneOverZ;
@@ -431,7 +431,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //	This include contains follwing functions:
 //	void MLR_Terrain2::TransformNoClip(Matrix4D*, GOSVertexPool*);
-//	int MLR_Terrain2::Clip(MLRClippingState, GOSVertexPool*);
+//	int32_t MLR_Terrain2::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <MLR\MLRTriangleClipping.hpp>
@@ -443,7 +443,7 @@ void
 
 extern RGBAColor errorColor;
 extern bool
-	CheckForBigTriangles(DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs, int stride);
+	CheckForBigTriangles(DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs, int32_t stride);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -455,7 +455,7 @@ void
 		return;
 	}
 
-	int i, j, k, len = numOfTriangles;
+	int32_t i, j, k, len = numOfTriangles;
 	LinearMatrix4D matrix = LinearMatrix4D::Identity;
 	Point3D lightPosInShape, hitPoint;
 	UnitVector3D up, left, forward;
@@ -469,7 +469,7 @@ void
 		return;
 	}
 
-	int tooBig = 0;
+	int32_t tooBig = 0;
 	Scalar bigUV = MLRState::GetMaxUV();
 
 	switch(light->GetLightType())
@@ -574,7 +574,7 @@ void
 		break;
 		case MLRLight::SpotLight:
 		{
-			int behindCount = 0, falloffCount = 0;
+			int32_t behindCount = 0, falloffCount = 0;
 
 			Check_Object(lightMap);
 

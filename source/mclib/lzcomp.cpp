@@ -30,22 +30,22 @@
 #define NULL			0
 #endif
 
-typedef uint8_t* PUCHAR;
+typedef uint8_t* puint8_t;
 
 //-----------------------------
 //Used by Compressor Routine
-PUCHAR		LZCHashBuf = NULL;
+puint8_t		LZCHashBuf = NULL;
 size_t			InBufferUpperLimit = 0;
 size_t			InBufferPos = 0;	
-PUCHAR		InBuffer = NULL;
+puint8_t		InBuffer = NULL;
 size_t			OutBufferPos = 0;
-PUCHAR		OutBuffer = NULL;
-ULONG	PrefixCode = 0;
-ULONG	FreeCode = 0;
-ULONG	MaxCode = 0;
-ULONG	NBits = 0;
-ULONG	BitOffset = 0;
-ULONG	codeToWrite = 0;
+puint8_t		OutBuffer = NULL;
+uint32_t	PrefixCode = 0;
+uint32_t	FreeCode = 0;
+uint32_t	MaxCode = 0;
+uint32_t	NBits = 0;
+uint32_t	BitOffset = 0;
+uint32_t	codeToWrite = 0;
 uint8_t 	K = 0;
 
 typedef enum __lzcomp_const {
@@ -56,8 +56,8 @@ typedef enum __lzcomp_const {
 };
 
 typedef struct Hash {
-	ULONG hashFirst;
-	ULONG hashNext;
+	uint32_t hashFirst;
+	uint32_t hashNext;
 	uint8_t hashChar;
 } Hash;
 
@@ -68,7 +68,7 @@ static uint8_t		tag_LZCHashBuf[sizeof(Hash) * MaxMax + 1024];
 // LZ Compress Routine
 // Takes a pointer to dest buffer, a pointer to source buffer and len of source.
 // returns length of compressed image.
-size_t __stdcall LZCompress (PUCHAR dest, PUCHAR src, size_t srcLen)
+size_t __stdcall LZCompress (puint8_t dest, puint8_t src, size_t srcLen)
 {
 	size_t result = 0;
 
@@ -76,12 +76,12 @@ size_t __stdcall LZCompress (PUCHAR dest, PUCHAR src, size_t srcLen)
 	{
 		/* allocating LZCHashBuf off a gos heap causes problems for applications that need
 		to reset gos or its heaps*/
-		LZCHashBuf = (PUCHAR)&(tag_LZCHashBuf[0]);
+		LZCHashBuf = (puint8_t)&(tag_LZCHashBuf[0]);
 	}
 	
 //Initialize:
 	
-	ULONG clearSize = sizeof(Hash) * 256;
+	uint32_t clearSize = sizeof(Hash) * 256;
 
 	__asm
 	{
@@ -202,7 +202,7 @@ doneRC2:
 		
 		xor		edi,edi                     //flag destination
 		cmp		[esi].hashFirst,-1 			//see if code is used
-		je		short exit1            		//if == then CARRY = CLEAR, set it    
+		je		int16_t exit1            		//if == then CARRY = CLEAR, set it    
 		inc		edi                        	//flag as used
 		mov		ebx,[esi].hashFirst			//get prefix code
 	}
@@ -220,7 +220,7 @@ lookloop:
 		jne		notSame          			//then we can compress this a
 		clc                              	//little more by taking this prefix
 		mov		eax,ebx                     //code and getting a new suffix
-		jmp		short exit2               	//in a moment
+		jmp		int16_t exit2               	//in a moment
 	}
 
 notSame:
@@ -230,7 +230,7 @@ notSame:
 		cmp		[esi].hashNext,-1 			//found a new pattern so exit
 		je		exit1                    	//if == then CARRY = CLEAR, set it
 		mov		ebx,[esi].hashNext 			//continue through chain to get to
-		jmp		short lookloop             	//end of chain
+		jmp		int16_t lookloop             	//end of chain
 	}
 	
 exit1:
@@ -251,9 +251,9 @@ exit2:
 		mov		ebx,[FreeCode]         		//get the next available hash table code
 		push	ebx
 		or		edi,edi                 	//is this first use of prefix?
-		je		short newprefix
+		je		int16_t newprefix
 		mov		[esi].hashNext,ebx 			//if not, then set next code dest
-		jmp		short addcode
+		jmp		int16_t addcode
 	}
 		
 newprefix:

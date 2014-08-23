@@ -29,7 +29,7 @@ namespace gosFX
 	protected:
 		Card__Specification(
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		);
 
 	public:
@@ -49,7 +49,7 @@ namespace gosFX
 		static Card__Specification*
 			Make(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		void
@@ -72,7 +72,7 @@ namespace gosFX
 
 		bool
 			m_animated;
-		UCHAR
+		uint8_t
 			m_width;
 
 		void

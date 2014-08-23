@@ -49,17 +49,17 @@ namespace MidLevelRenderer {
 	protected:
 		MLRShape(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		~MLRShape();
 
 	public:
-		MLRShape(int);
+		MLRShape(int32_t);
 
 		static MLRShape*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		void
@@ -67,13 +67,13 @@ namespace MidLevelRenderer {
 
 	public:
 		void Add (MLRPrimitiveBase*);
-		MLRPrimitiveBase* Find (int);
-		int Find (MLRPrimitiveBase*);
+		MLRPrimitiveBase* Find (int32_t);
+		int32_t Find (MLRPrimitiveBase*);
 
 		// use this functions with care --- they are slow
 		MLRPrimitiveBase *Remove(MLRPrimitiveBase*);
-		MLRPrimitiveBase *Remove(int);
-		int Insert(MLRPrimitiveBase*, int);
+		MLRPrimitiveBase *Remove(int32_t);
+		int32_t Insert(MLRPrimitiveBase*, int32_t);
 
 		bool
 			Replace(MLRPrimitiveBase*, MLRPrimitiveBase*);
@@ -83,23 +83,23 @@ namespace MidLevelRenderer {
 		{ Check_Object(this); return numPrimitives; };
 
 		// returns the number of faces overall in the shape
-		int
+		int32_t
 			GetNumPrimitives();
 
 		// returns the number of drawn triangles in the shape
-		int
+		int32_t
 			GetNumDrawnTriangles();
 
 		// is to call at begin of every frame 
-		void	InitializePrimitives(uint8_t, const MLRState& master, int=0);
+		void	InitializePrimitives(uint8_t, const MLRState& master, int32_t=0);
 
 		// clips the geometry and fills the data into the vertex pool
 		// the clipping states defines the planes against the shape might have be culled
-		//	now done only on primitive level - int	Clip(MLRClippingState, GOSVertexPool*);
+		//	now done only on primitive level - int32_t	Clip(MLRClippingState, GOSVertexPool*);
 
 		// lights the geometry, uses the worldToShape matrix and an array of lights which
 		// affect the shape in this frame and the number of lights in this array
-		void	Lighting(const Stuff::LinearMatrix4D&, MLRLight* const*, int nrLights);
+		void	Lighting(const Stuff::LinearMatrix4D&, MLRLight* const*, int32_t nrLights);
 
 		// casts an ray against the geometry contained in shape
 		bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
@@ -130,12 +130,12 @@ namespace MidLevelRenderer {
 			}
 		}
 
-		int
+		int32_t
 			GetReferenceCount()
 		{return referenceCount;}
 
 	protected:
-		int
+		int32_t
 			referenceCount;
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -152,7 +152,7 @@ namespace MidLevelRenderer {
 		}
 
 	protected:
-		int FindBackFace(const Stuff::Point3D&);
+		int32_t FindBackFace(const Stuff::Point3D&);
 
 		//		void
 		//			Transform(Stuff::Matrix4D*);

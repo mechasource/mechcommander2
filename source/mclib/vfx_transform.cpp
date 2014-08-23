@@ -2,27 +2,27 @@
 
 extern char AlphaTable[256*256];
 extern enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX } Processor;
-//extern void memfill(PVOID Dest,int Length);
-//extern void memclear(PVOID Dest,int Length);
+//extern void memfill(PVOID Dest,int32_t Length);
+//extern void memclear(PVOID Dest,int32_t Length);
 
-void CopySprite( PANE *pane, PVOID texture, int X, int Y, int Width, int Height, int Flip, int Shrink );
-void AG_shape_fill (PANE *pane, PVOID shape_table,LONG shape_number, LONG hotX, LONG hotY);
-void AG_shape_draw (PANE *pane, PVOID shape_table,LONG shape_number, LONG hotX, LONG hotY);
-void AG_shape_translate_fill (PANE *pane, PVOID shape_table,LONG shape_number, LONG hotX, LONG hotY);
+void CopySprite( PANE *pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32_t Height, int32_t Flip, int32_t Shrink );
+void AG_shape_fill (PANE *pane, PVOID shape_table,int32_t shape_number, int32_t hotX, int32_t hotY);
+void AG_shape_draw (PANE *pane, PVOID shape_table,int32_t shape_number, int32_t hotX, int32_t hotY);
+void AG_shape_translate_fill (PANE *pane, PVOID shape_table,int32_t shape_number, int32_t hotX, int32_t hotY);
 extern uint32_t lookaside;
 
 
-int SqrtCount=0;
+int32_t SqrtCount=0;
 
 
-//typedef uint32_t ULONG;
+//typedef uint32_t uint32_t;
 typedef struct SHAPEHEADER {
-	ULONG	bounds;
-	ULONG	origin;
-	ULONG	xmin;
-	ULONG	ymin;
-	ULONG	xmax;
-	ULONG	ymax;
+	uint32_t	bounds;
+	uint32_t	origin;
+	uint32_t	xmin;
+	uint32_t	ymin;
+	uint32_t	xmax;
+	uint32_t	ymax;
 } SHAPEHEADER;
 
 //
@@ -50,7 +50,7 @@ static WINDOW tempWINDOW;
 
 
 
-void AG_shape_transform( PANE *globalPane, PVOID shapeTable, LONG frameNum, LONG hotX, LONG hotY, PVOID tempBuffer, LONG reverse, LONG scaleUp )
+void AG_shape_transform( PANE *globalPane, PVOID shapeTable, int32_t frameNum, int32_t hotX, int32_t hotY, PVOID tempBuffer, int32_t reverse, int32_t scaleUp )
 {
 
 	_asm{
@@ -123,7 +123,7 @@ void AG_shape_transform( PANE *globalPane, PVOID shapeTable, LONG frameNum, LONG
 
 
 
-void AG_shape_translate_transform( PANE *globalPane, PVOIDshapeTable, LONG frameNum, LONG hotX, LONG hotY,PVOIDtempBuffer, LONG reverse, LONG scaleUp )
+void AG_shape_translate_transform( PANE *globalPane, PVOIDshapeTable, int32_t frameNum, int32_t hotX, int32_t hotY,PVOIDtempBuffer, int32_t reverse, int32_t scaleUp )
 {
 
 	_asm{
@@ -193,7 +193,7 @@ void AG_shape_translate_transform( PANE *globalPane, PVOIDshapeTable, LONG frame
 	}
 }
 
-void CopySprite( PANE *pane, PVOID texture, int X, int Y, int Width, int Height, int Flip, int ScaleUp )
+void CopySprite( PANE *pane, PVOID texture, int32_t X, int32_t Y, int32_t Width, int32_t Height, int32_t Flip, int32_t ScaleUp )
 {
 	DestWidth = pane->window->x_max+1;
 
@@ -508,8 +508,8 @@ done:
 
 /*
 ;
-; int cdecl VFX_shape_draw (PANE *panep, PVOIDshape_table,
-;                           int32_t shape_number,int hotX, int hotY)
+; int32_t cdecl VFX_shape_draw (PANE *panep, PVOIDshape_table,
+;                           int32_t shape_number,int32_t hotX, int32_t hotY)
 ;
 ; This function clips and draws a shape to a pane.
 ; 
@@ -521,7 +521,7 @@ done:
 ; drawn.  The shape's hot spot will end up at the specified location.
 ;
 */
-void AG_shape_fill (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY)
+void AG_shape_fill (PANE *pane, PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm{
 		mov edi,pane
@@ -927,8 +927,8 @@ Exit:
 /*
 ;----------------------------------------------------------------------------
 ;
-; int cdecl VFX_shape_translate_draw (PANE *panep, PVOIDshape_table,
-;                           int32_t shape_number,int hotX, int hotY)
+; int32_t cdecl VFX_shape_translate_draw (PANE *panep, PVOIDshape_table,
+;                           int32_t shape_number,int32_t hotX, int32_t hotY)
 ;
 ; This function clips and draws a shape to a pane.  It is identical to 
 ; VFX_shape_draw(), except that each pixel written is translated through a
@@ -953,7 +953,7 @@ Exit:
 ;
 ;----------------------------------------------------------------------------
 */
-void AG_shape_translate_fill (PANE *pane, PVOIDshape_table,LONG shape_number, LONG hotX, LONG hotY)
+void AG_shape_translate_fill (PANE *pane, PVOIDshape_table,int32_t shape_number, int32_t hotX, int32_t hotY)
 {
 	_asm{
 		mov edi,pane

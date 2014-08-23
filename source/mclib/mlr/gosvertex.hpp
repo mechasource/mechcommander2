@@ -106,7 +106,7 @@ namespace MidLevelRenderer {
 		}
 
 		inline GOSVertex&
-			operator=(const ULONG c)
+			operator=(cuint32_t c)
 		{
 			Check_Pointer(this);
 
@@ -132,13 +132,13 @@ namespace MidLevelRenderer {
 			const Stuff::Matrix4D& m,
 			float *uv
 #if FOG_HACK
-			, int foggy
+			, int32_t foggy
 #endif
 			);
 
 #if FOG_HACK
-		static UCHAR	GOSVertex::fogTable[Limits::Max_Number_Of_FogStates][1024];
-		static void		SetFogTableEntry(int entry, float fogNearClip, float fogFarClip, float fogDensity);
+		static uint8_t	GOSVertex::fogTable[Limits::Max_Number_Of_FogStates][1024];
+		static void		SetFogTableEntry(int32_t entry, float fogNearClip, float fogFarClip, float fogDensity);
 #endif
 
 	protected:
@@ -165,7 +165,7 @@ namespace MidLevelRenderer {
 		const Stuff::Matrix4D &m,
 		float *uv
 #if FOG_HACK
-		, int foggy
+		, int32_t foggy
 #endif
 		)
 
@@ -351,11 +351,11 @@ namespace MidLevelRenderer {
 	}
 
 	//	create a dword color out of 4 rgba floats
-	inline ULONG
+	inline uint32_t
 		GOSCopyColor( const Stuff::RGBAColor *color )
 	{
 		float f;
-		ULONG argb;
+		uint32_t argb;
 
 #if USE_ASSEMBLER_CODE
 
@@ -507,10 +507,10 @@ namespace MidLevelRenderer {
 		return argb;
 	}
 
-	inline ULONG
+	inline uint32_t
 		Color_DWORD_Lerp (
-		ULONG _from,
-		ULONG _to,
+		uint32_t _from,
+		uint32_t _to,
 		float _lerp
 		)
 	{
@@ -539,19 +539,19 @@ namespace MidLevelRenderer {
 //######################################################################################################################
 //	the lines below will produce following functions:
 //
-//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, int);
-//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const ULONG*, int);
-//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, int);
-//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const Vector2DScalar*, int);
-//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const ULONG*, const Vector2DScalar*, int);
-//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, const Vector2DScalar*, int);
+//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, int32_t);
+//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, pcuint32_t , int32_t);
+//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, int32_t);
+//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const Vector2DScalar*, int32_t);
+//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, pcuint32_t , const Vector2DScalar*, int32_t);
+//	bool GOSCopyData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, const Vector2DScalar*, int32_t);
 //
-//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, int, int, int);
-//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const ULONG*, int, int, int);
-//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, int, int, int);
-//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const Vector2DScalar*, int, int, int);
-//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const ULONG*, const Vector2DScalar*, int, int, int);
-//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, const Vector2DScalar*, int, int, int);
+//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, int32_t, int32_t, int32_t);
+//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, pcuint32_t , int32_t, int32_t, int32_t);
+//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, int32_t, int32_t, int32_t);
+//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const Vector2DScalar*, int32_t, int32_t, int32_t);
+//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, pcuint32_t , const Vector2DScalar*, int32_t, int32_t, int32_t);
+//	bool GOSCopyTriangleData(GOSVertex*, const Stuff::Vector4D*, const RGBAColor*, const Vector2DScalar*, int32_t, int32_t, int32_t);
 //#######################################################################################################################
 
 //aaargh => create template?

@@ -33,8 +33,8 @@
 
 #include <string.h>
 //---------------------------------------------------------------------------
-extern PUCHAR 	LZPacketBuffer;
-extern ULONG LZPacketBufferSize;
+extern puint8_t 	LZPacketBuffer;
+extern uint32_t LZPacketBufferSize;
 //---------------------------------------------------------------------------
 // class PacketFile
 void PacketFile::clear (void)
@@ -104,7 +104,7 @@ void PacketFile::atClose (void)
 		if (seekTable)
 		{
 			seek(sizeof(int32_t)*2);							//File Version & File Length
-			write(PUCHAR(seekTable),(numPackets*sizeof(int32_t)));
+			write(puint8_t(seekTable),(numPackets*sizeof(int32_t)));
 		}
 
 		//------------------------------------------------------
@@ -128,12 +128,12 @@ int32_t PacketFile::checkSumFile (void)
 	int32_t currentPosition  = logicalPosition;
 	seek(4);
 
-	PUCHAR fileMap = (PUCHAR)malloc(fileSize());
+	puint8_t fileMap = (puint8_t)malloc(fileSize());
 	read(fileMap,fileSize());
 
 	int32_t sum = 0;
-	PUCHAR curFileByte = fileMap;
-	for (ULONG i=4;i<fileSize();i++,curFileByte++)
+	puint8_t curFileByte = fileMap;
+	for (uint32_t i=4;i<fileSize();i++,curFileByte++)
 	{
 		sum += *curFileByte;
 	}
@@ -181,7 +181,7 @@ int32_t PacketFile::afterOpen (void)
 			gosASSERT(seekTable != NULL);
 				
 			seek(sizeof(int32_t)*2);												//File Version & File Length
-			read(PUCHAR(seekTable),(numPackets*sizeof(int32_t)));
+			read(puint8_t(seekTable),(numPackets*sizeof(int32_t)));
 		}
 	}
 	
@@ -217,7 +217,7 @@ int32_t PacketFile::open (PSTR fName, FileMode _mode, int32_t numChild)
 }
 
 //---------------------------------------------------------------------------
-int32_t PacketFile::open (FilePtr _parent, ULONG fileSize, int32_t numChild)
+int32_t PacketFile::open (FilePtr _parent, uint32_t fileSize, int32_t numChild)
 {
 	int32_t result = File::open(_parent,fileSize,numChild);
 	
@@ -303,7 +303,7 @@ int32_t PacketFile::readPacket (int32_t packet, puint8_t buffer)
 
 					if (!LZPacketBuffer)
 					{
-						LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
+						LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
 						gosASSERT(LZPacketBuffer);
 					}
 						
@@ -312,7 +312,7 @@ int32_t PacketFile::readPacket (int32_t packet, puint8_t buffer)
 						LZPacketBufferSize = packetSize;
 						
 						free(LZPacketBuffer);
-						LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
+						LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
 						gosASSERT(LZPacketBuffer);
 					}
 					
@@ -334,7 +334,7 @@ int32_t PacketFile::readPacket (int32_t packet, puint8_t buffer)
 
 					if (!LZPacketBuffer)
 					{
-						LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
+						LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
 						gosASSERT(LZPacketBuffer);
 					}
 						
@@ -343,14 +343,14 @@ int32_t PacketFile::readPacket (int32_t packet, puint8_t buffer)
 						LZPacketBufferSize = packetSize;
 						
 						free(LZPacketBuffer);
-						LZPacketBuffer = (PUCHAR)malloc(LZPacketBufferSize);
+						LZPacketBuffer = (puint8_t)malloc(LZPacketBufferSize);
 						gosASSERT(LZPacketBuffer);
 					}
 					
 					if (LZPacketBuffer)
 					{
 						read(LZPacketBuffer,(packetSize-sizeof(int32_t)));
-						ULONG decompLength = LZPacketBufferSize;
+						uint32_t decompLength = LZPacketBufferSize;
 						int32_t decompResult = uncompress(buffer,&decompLength,LZPacketBuffer,packetSize-sizeof(int32_t));
 						if ((decompResult != Z_OK) || ((int32_t)decompLength != packetUnpackedSize))
 							result = 0;
@@ -434,12 +434,12 @@ int32_t PacketFile::seekPacket (int32_t packet)
 	switch (getStorageType())
 	{
 		case STORAGE_TYPE_LZD:
-			// the first ULONG of a compressed packet is the unpacked length
+			// the first uint32_t of a compressed packet is the unpacked length
 			packetUnpackedSize = readLong();
 			break;
 
 		case STORAGE_TYPE_ZLIB:
-			// the first ULONG of a compressed packet is the unpacked length
+			// the first uint32_t of a compressed packet is the unpacked length
 			packetUnpackedSize = readLong();
 			break;
 
@@ -548,13 +548,13 @@ void PacketFile::reserve (int32_t count, bool useCheckSum)
    		if (seekTable != NULL)
    		{
    			seek(sizeof(int32_t)*2);							//File Version & File Length
-   			read(PUCHAR(seekTable),(numPackets*sizeof(int32_t)));
+   			read(puint8_t(seekTable),(numPackets*sizeof(int32_t)));
    		}
 	}
 }
 
 //---------------------------------------------------------------------------
-int32_t PacketFile::writePacket (int32_t packet, PUCHAR buffer, int32_t nbytes, uint8_t pType)
+int32_t PacketFile::writePacket (int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t pType)
 {
 	//--------------------------------------------------------
 	// This function writes the packet to the current end
@@ -568,14 +568,14 @@ int32_t PacketFile::writePacket (int32_t packet, PUCHAR buffer, int32_t nbytes, 
 	// right now doesn't allow anything but same size.
 	int32_t result = 0;
 
-	PUCHAR workBuffer = NULL;
+	puint8_t workBuffer = NULL;
 
 	if (pType == ANY_PACKET_TYPE || pType == STORAGE_TYPE_LZD || pType == STORAGE_TYPE_ZLIB)
 	{
 		if ((nbytes<<1) < 4096)
-			workBuffer = (PUCHAR)malloc(4096);
+			workBuffer = (puint8_t)malloc(4096);
 		else
-			workBuffer = (PUCHAR)malloc(nbytes<<1);
+			workBuffer = (puint8_t)malloc(nbytes<<1);
 		
 		gosASSERT(workBuffer != NULL);
 	}
@@ -599,12 +599,12 @@ int32_t PacketFile::writePacket (int32_t packet, PUCHAR buffer, int32_t nbytes, 
 		// Find best compression here.
 		// This USED to use LZ.  Use ZLib from now on.
 		// Game will ALWAYS be able to READ LZ Packets!!
-		ULONG actualSize = nbytes << 1;
+		uint32_t actualSize = nbytes << 1;
 		if (actualSize < 4096)
 			actualSize = 4096;
 
-		ULONG workBufferSize = actualSize;
-		ULONG oldBufferSize = nbytes;
+		uint32_t workBufferSize = actualSize;
+		uint32_t oldBufferSize = nbytes;
 		int32_t compressedResult = compress2(workBuffer,&workBufferSize,buffer,nbytes,Z_DEFAULT_COMPRESSION);
 		if (compressedResult != Z_OK)
 			STOP(("Unable to write packet %d to file %s.  Error %d",packet,fileName,compressedResult));
@@ -673,7 +673,7 @@ int32_t PacketFile::writePacket (int32_t packet, PUCHAR buffer, int32_t nbytes, 
 
 #define DEFAULT_MAX_PACKET		65535
 //---------------------------------------------------------------------------
-int32_t PacketFile::insertPacket (int32_t packet, PUCHAR buffer, int32_t nbytes, uint8_t pType)
+int32_t PacketFile::insertPacket (int32_t packet, puint8_t buffer, int32_t nbytes, uint8_t pType)
 {
 	//--------------------------------------------------------
 	// This function writes the packet to the current end
@@ -692,7 +692,7 @@ int32_t PacketFile::insertPacket (int32_t packet, PUCHAR buffer, int32_t nbytes,
 
 	//---------------------------------------------------------------
 	// Only used here, so OK if regular WINDOWS(tm) malloc!
-	PUCHAR workBuffer = (PUCHAR)malloc(DEFAULT_MAX_PACKET);
+	puint8_t workBuffer = (puint8_t)malloc(DEFAULT_MAX_PACKET);
 	
 	//-------------------------------------------------------------
 	// All new code here.  Basically, open a new packet file,
@@ -717,7 +717,7 @@ int32_t PacketFile::insertPacket (int32_t packet, PUCHAR buffer, int32_t nbytes,
 				//----------------------------------------------------
 				// Not sure what to do here.  We'll try reallocating
 				::free(workBuffer);
-				workBuffer = (PUCHAR)malloc(packetSize);
+				workBuffer = (puint8_t)malloc(packetSize);
 			}
 			
 			tmpFile.writePacket(i,buffer,nbytes,pType);
@@ -732,7 +732,7 @@ int32_t PacketFile::insertPacket (int32_t packet, PUCHAR buffer, int32_t nbytes,
 				//----------------------------------------------------
 				// Not sure what to do here.  We'll try reallocating
 				::free(workBuffer);
-				workBuffer = (PUCHAR)malloc(packetSize);
+				workBuffer = (puint8_t)malloc(packetSize);
 			}
 			
 			readPacket(i,workBuffer);
@@ -763,7 +763,7 @@ int32_t PacketFile::insertPacket (int32_t packet, PUCHAR buffer, int32_t nbytes,
 }
 
 //---------------------------------------------------------------------------
-int32_t PacketFile::writePacket (int32_t packet, PUCHAR buffer)
+int32_t PacketFile::writePacket (int32_t packet, puint8_t buffer)
 {
 	//--------------------------------------------------------
 	// This function replaces the packet with the contents

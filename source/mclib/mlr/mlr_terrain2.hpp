@@ -34,7 +34,7 @@ namespace MidLevelRenderer {
 		MLR_Terrain2(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		~MLR_Terrain2();
 
@@ -44,14 +44,14 @@ namespace MidLevelRenderer {
 		static MLR_Terrain2*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		void
 			Save(Stuff::MemoryStream *stream);
 
 	public:
-		virtual int
+		virtual int32_t
 			TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
 
 		virtual void
@@ -73,11 +73,11 @@ namespace MidLevelRenderer {
 		{ Check_Object(this); tileX = tx; tileZ = tz; }
 
 		void
-			SetFrame(int res, Scalar xMin, Scalar zMin, Scalar xMax, Scalar zMax)
+			SetFrame(int32_t res, Scalar xMin, Scalar zMin, Scalar xMax, Scalar zMax)
 		{ Check_Object(this); frame[res][0] = xMin; frame[res][1] = zMin; frame[res][2] = xMax; frame[res][3] = zMax; }
 
 		Scalar
-			GetFrame(int res, int p)
+			GetFrame(int32_t res, int32_t p)
 		{ Check_Object(this); return frame[res][p]; }
 
 		void
@@ -88,10 +88,10 @@ namespace MidLevelRenderer {
 			CalculateUVs();
 
 		void
-			SetLevelTexture(int lev, int handle);
+			SetLevelTexture(int32_t lev, int32_t handle);
 
-		int
-			GetLevelTexture(int lev)
+		int32_t
+			GetLevelTexture(int32_t lev)
 		{ Check_Object(this); Verify(lev>=0 && lev<8); return textures[lev]; }
 
 		void
@@ -109,17 +109,17 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int
+		virtual int32_t
 			GetSize()
 		{ 
 			Check_Object(this);
-			int ret = MLR_I_DeT_TMesh::GetSize();
+			int32_t ret = MLR_I_DeT_TMesh::GetSize();
 
 			return ret;
 		}
 
 	protected:
-		int textures[8];
+		int32_t textures[8];
 		Scalar frame[8][4];
 
 		uint8_t tileX, tileZ;

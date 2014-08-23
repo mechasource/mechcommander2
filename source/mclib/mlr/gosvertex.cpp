@@ -15,7 +15,7 @@ Scalar
 	ViewportScalars::AddY;
 
 #if FOG_HACK
-	UCHAR GOSVertex::fogTable[Limits::Max_Number_Of_FogStates][1024];
+	uint8_t GOSVertex::fogTable[Limits::Max_Number_Of_FogStates][1024];
 #endif
 
 //#############################################################################
@@ -38,7 +38,7 @@ GOSVertex::GOSVertex()
 }
 
 void
-	GOSVertex::SetFogTableEntry(int entry, Scalar nearFog, Scalar farFog, Scalar fogDensity)
+	GOSVertex::SetFogTableEntry(int32_t entry, Scalar nearFog, Scalar farFog, Scalar fogDensity)
 {
 	float Fog;
 
@@ -48,7 +48,7 @@ void
 
 	GOSVertex::fogTable[entry][0] = 0;
 
-	for( int t1=0; t1<1024; t1++ )
+	for( int32_t t1=0; t1<1024; t1++ )
 	{
 		if( 0.0f == fogDensity )
 		{
@@ -71,7 +71,7 @@ void
 		if( Fog>1.0f )
 			Fog=1.0f;
 
-		GOSVertex::fogTable[entry][t1]=(UCHAR)(255.9f*Fog);
+		GOSVertex::fogTable[entry][t1]=(uint8_t)(255.9f*Fog);
 	}
 }
 
@@ -83,9 +83,9 @@ bool
 			Vector4D *coords,
 			RGBAColor *colors,
 			Stuff::Vector2DScalar *texCoords,
-			int offset0,
-			int offset1,
-			int offset2)
+			int32_t offset0,
+			int32_t offset1,
+			int32_t offset2)
 {
 #if USE_ASSEMBLER_CODE
 
@@ -191,7 +191,7 @@ bool
 
 		Scalar f;
 #if USE_ASSEMBLER_CODE
-		int argb;
+		int32_t argb;
 
 		_asm {
 			fld		float_cheat

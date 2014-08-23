@@ -33,7 +33,7 @@ namespace MidLevelRenderer {
 		MLRIndexedPrimitiveBase(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		~MLRIndexedPrimitiveBase();
 
@@ -43,39 +43,39 @@ namespace MidLevelRenderer {
 		static MLRIndexedPrimitiveBase*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		virtual void
 			Save(Stuff::MemoryStream *stream);
 
-		virtual	void	InitializeDrawPrimitive(uint8_t, int=0);
+		virtual	void	InitializeDrawPrimitive(uint8_t, int32_t=0);
 
-		virtual void	Lighting(MLRLight* const*, int nrLights) = 0;
+		virtual void	Lighting(MLRLight* const*, int32_t nrLights) = 0;
 
 		virtual void
 			SetCoordData(
 			const Stuff::Point3D *array,
-			int point_count
+			int32_t point_count
 			);
 
 		virtual void
 			SetIndexData(
 			puint16_t index_array,
-			int index_count
+			int32_t index_count
 			);
 
 		virtual void
 			GetIndexData(
 			puint16_t *index_array,
-			int *index_count
+			pint32_t index_count
 			);
 
 		virtual puint16_t
-			GetGOSIndices(int=0)
+			GetGOSIndices(int32_t=0)
 		{ Check_Object(this); return gos_indices; }
 
-		int
+		int32_t
 			GetNumGOSIndices()
 		{ Check_Object(this); return numGOSIndices; }
 
@@ -86,7 +86,7 @@ namespace MidLevelRenderer {
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false) = 0;
 
 		void
-			TheIndexer(int num)
+			TheIndexer(int32_t num)
 		{
 			Check_Object(this);
 			index.SetLength(num);
@@ -102,11 +102,11 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int
+		virtual int32_t
 			GetSize()
 		{ 
 			Check_Object(this);
-			int ret = MLRPrimitiveBase::GetSize();
+			int32_t ret = MLRPrimitiveBase::GetSize();
 			ret += visibleIndexedVertices.GetSize();
 			ret += index.GetSize();
 

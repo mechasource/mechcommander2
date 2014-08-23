@@ -50,12 +50,12 @@ float					TG_Shape::viewAddX = 0.0;
 float					TG_Shape::viewMulY = 0.0;
 float					TG_Shape::viewAddY = 0.0;
 
-ULONG					TG_Shape::fogColor = 0xffffffff;
+uint32_t					TG_Shape::fogColor = 0xffffffff;
 float					TG_Shape::fogStart = 0.0f;
 float					TG_Shape::fogFull = 0.0f;
 
 TG_LightPtr				*TG_Shape::listOfLights = NULL;
-ULONG					TG_Shape::numLights = 0;
+uint32_t					TG_Shape::numLights = 0;
 
 Stuff::LinearMatrix4D 	TG_Shape::lightToShape[MAX_LIGHTS_IN_WORLD];
 Stuff::Vector3D			TG_Shape::lightDir[MAX_LIGHTS_IN_WORLD];
@@ -64,7 +64,7 @@ Stuff::Vector3D			TG_Shape::spotDir[MAX_LIGHTS_IN_WORLD];
 
 UserHeapPtr 			TG_Shape::tglHeap = NULL;
 
-ULONG					TG_Shape::lighteningLevel = 0;
+uint32_t					TG_Shape::lighteningLevel = 0;
 
 TG_VertexPool 			*colorPool = NULL;
 TG_GOSVertexPool 		*vertexPool = NULL;
@@ -77,7 +77,7 @@ extern bool useVertexLighting;
 extern bool useFaceLighting;
 extern bool hasGuardBand;
 extern bool useFog;
-extern ULONG BaseVertexColor;
+extern uint32_t BaseVertexColor;
 bool drawOldWay = false;
 extern bool useShadows;
 bool useLocalShadows = false;
@@ -313,8 +313,8 @@ void TG_TypeNode::LoadBinaryCopy (File &binFile)
 	relativeNodeCenter.y = binFile.readFloat();
 	relativeNodeCenter.z = binFile.readFloat();
 	
-	binFile.read((PUCHAR)nodeId,TG_NODE_ID);
-	binFile.read((PUCHAR)parentId,TG_NODE_ID);
+	binFile.read((puint8_t)nodeId,TG_NODE_ID);
+	binFile.read((puint8_t)parentId,TG_NODE_ID);
 }
 
 //-------------------------------------------------------------------------------
@@ -332,8 +332,8 @@ void TG_TypeNode::SaveBinaryCopy (File &binFile)
 	binFile.writeFloat(relativeNodeCenter.y);
 	binFile.writeFloat(relativeNodeCenter.z);
 	
-	binFile.write((PUCHAR)nodeId,TG_NODE_ID);
-	binFile.write((PUCHAR)parentId,TG_NODE_ID);
+	binFile.write((puint8_t)nodeId,TG_NODE_ID);
+	binFile.write((puint8_t)parentId,TG_NODE_ID);
 }
 
 //-------------------------------------------------------------------------------
@@ -456,7 +456,7 @@ void TG_TypeShape::LoadBinaryCopy (File &binFile)
 		listOfTypeVertices = (TG_TypeVertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TypeVertex) * numTypeVertices);
 		gosASSERT(listOfTypeVertices != NULL);
 
-		binFile.read((PUCHAR)listOfTypeVertices,sizeof(TG_TypeVertex) * numTypeVertices);
+		binFile.read((puint8_t)listOfTypeVertices,sizeof(TG_TypeVertex) * numTypeVertices);
 	}
 	else
 	{
@@ -470,7 +470,7 @@ void TG_TypeShape::LoadBinaryCopy (File &binFile)
 		listOfTypeTriangles = (TG_TypeTrianglePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TypeTriangle) * numTypeTriangles);
 		gosASSERT(listOfTypeTriangles != NULL);
 
-		binFile.read((PUCHAR)listOfTypeTriangles,sizeof(TG_TypeTriangle) * numTypeTriangles);
+		binFile.read((puint8_t)listOfTypeTriangles,sizeof(TG_TypeTriangle) * numTypeTriangles);
 	}
 	else
 	{
@@ -484,7 +484,7 @@ void TG_TypeShape::LoadBinaryCopy (File &binFile)
 		listOfTextures = (TG_TinyTexturePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TinyTexture) * numTextures);
 		gosASSERT(listOfTextures != NULL);
 
-		binFile.read((PUCHAR)listOfTextures,sizeof(TG_TinyTexture) * numTextures);
+		binFile.read((puint8_t)listOfTextures,sizeof(TG_TinyTexture) * numTextures);
 	}
 	else
 	{
@@ -503,8 +503,8 @@ void TG_TypeShape::LoadBinaryCopy (File &binFile)
 	alphaTestOn = false;
 	filterOn = true;
 
-	binFile.read((PUCHAR)nodeId,TG_NODE_ID);
-	binFile.read((PUCHAR)parentId,TG_NODE_ID);
+	binFile.read((puint8_t)nodeId,TG_NODE_ID);
+	binFile.read((puint8_t)parentId,TG_NODE_ID);
 }
 
 //-------------------------------------------------------------------------------
@@ -517,21 +517,21 @@ void TG_TypeShape::SaveBinaryCopy (File &binFile)
 	binFile.writeLong(numTypeVertices);
 	if (numTypeVertices)
 	{
-		binFile.write((PUCHAR)listOfTypeVertices,sizeof(TG_TypeVertex) * numTypeVertices);
+		binFile.write((puint8_t)listOfTypeVertices,sizeof(TG_TypeVertex) * numTypeVertices);
 	}
 
 	//listOfTypeTriangles
 	binFile.writeLong(numTypeTriangles);
 	if (numTypeTriangles)
 	{
-		binFile.write((PUCHAR)listOfTypeTriangles,sizeof(TG_TypeTriangle) * numTypeTriangles);
+		binFile.write((puint8_t)listOfTypeTriangles,sizeof(TG_TypeTriangle) * numTypeTriangles);
 	}
 
 	//listOfTextures
 	binFile.writeLong(numTextures);
 	if (numTextures)
 	{
-		binFile.write((PUCHAR)listOfTextures,sizeof(TG_TinyTexture) * numTextures);
+		binFile.write((puint8_t)listOfTextures,sizeof(TG_TinyTexture) * numTextures);
 	}
 
 	//Other Data
@@ -543,8 +543,8 @@ void TG_TypeShape::SaveBinaryCopy (File &binFile)
 	binFile.writeFloat(relativeNodeCenter.y);
 	binFile.writeFloat(relativeNodeCenter.z);
 	
-	binFile.write((PUCHAR)nodeId,TG_NODE_ID);
-	binFile.write((PUCHAR)parentId,TG_NODE_ID);
+	binFile.write((puint8_t)nodeId,TG_NODE_ID);
+	binFile.write((puint8_t)parentId,TG_NODE_ID);
 }
 
 //-------------------------------------------------------------------------------
@@ -1092,9 +1092,9 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 			GetNumberData(faceData,numberData);
 			float blue = (float)atof(numberData);
 
-			ULONG redC = red * 0xff;
-			ULONG greenC = green * 0xff;
-			ULONG blueC = blue * 0xff;
+			uint32_t redC = red * 0xff;
+			uint32_t greenC = green * 0xff;
+			uint32_t blueC = blue * 0xff;
 
 			listOfTypeVertices[listOfTypeTriangles[i].Vertices[0]].aRGBLight = (0xff << 24) + (redC << 16) + (greenC << 8) + blueC;
 
@@ -1391,7 +1391,7 @@ int32_t TG_TypeShape::LoadTGShapeFromASE (PSTR fileName)
 
 //-------------------------------------------------------------------------------
 //Need this so that Multi-Shapes can let each shape know texture info.
-void TG_TypeShape::CreateListOfTextures (TG_TexturePtr list, ULONG numTxms)
+void TG_TypeShape::CreateListOfTextures (TG_TexturePtr list, uint32_t numTxms)
 {
 	numTextures = numTxms;
 	if (numTextures)
@@ -1418,7 +1418,7 @@ void TG_TypeShape::CreateListOfTextures (TG_TexturePtr list, ULONG numTxms)
 //Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 //This function takes the gosTextureHandle passed in and assigns it to the
 //textureNum entry of the listOfTextures;
-int32_t TG_TypeShape::SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle)
+int32_t TG_TypeShape::SetTextureHandle (uint32_t textureNum, uint32_t gosTextureHandle)
 {
 	if (textureNum >= numTextures)
 		return(-1);
@@ -1433,7 +1433,7 @@ int32_t TG_TypeShape::SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle
 //Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 //This function takes the gosTextureHandle passed in and assigns it to the
 //textureNum entry of the listOfTextures;
-int32_t TG_TypeShape::SetTextureAlpha (ULONG textureNum, bool alphaFlag)
+int32_t TG_TypeShape::SetTextureAlpha (uint32_t textureNum, bool alphaFlag)
 {
 	if (textureNum >= numTextures)
 		return(-1);
@@ -1472,7 +1472,7 @@ void TG_Shape::SetCameraMatrices (Stuff::LinearMatrix4D *camOrigin, Stuff::Matri
 }	
 
 //-------------------------------------------------------------------------------
-void TG_Shape::SetFog (ULONG fRGB, float fStart, float fFull)
+void TG_Shape::SetFog (uint32_t fRGB, float fStart, float fFull)
 {
 	fogColor = fRGB;
 	fogStart = fStart;
@@ -1499,7 +1499,7 @@ void TG_Shape::SetViewport (float mulX, float mulY, float addX, float addY)
 //to light the shape.
 //Function returns 0 if lightList entries are all OK.  -1 otherwise.
 //
-int32_t TG_Shape::SetLightList (TG_LightPtr *lightList, ULONG nLights)
+int32_t TG_Shape::SetLightList (TG_LightPtr *lightList, uint32_t nLights)
 {
 	if (lightList)
 	{
@@ -1517,7 +1517,7 @@ int32_t TG_Shape::SetLightList (TG_LightPtr *lightList, ULONG nLights)
 
 //-------------------------------------------------------------------------------
 //This function sets the fog values for the shape.  Straight fog right now.
-void TG_Shape::SetFogRGB (ULONG fRGB)
+void TG_Shape::SetFogRGB (uint32_t fRGB)
 {
 	fogRGB = fRGB;
 }	
@@ -1545,7 +1545,7 @@ extern float yawRotation;
 #define MAX_FOG_ELEVATION_INV		.01f
 #define TGL_WINDOW_THRESHOLD		0.75f
 
-int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Point3D *backFacePoint, TG_ShapeRecPtr parentNode, bool isHudElement, UCHAR alphaValue, bool isClamped)
+int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Point3D *backFacePoint, TG_ShapeRecPtr parentNode, bool isHudElement, uint8_t alphaValue, bool isClamped)
 {
 	if (!numVertices)		//WE are the root Shape which may have no shape or a helper shape which defintely has no shape!
 		return(1);
@@ -1646,16 +1646,16 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 
 		//----------------------------------------------------
 		// Lighting goes here.
-		ULONG redFinal=0, greenFinal=0, blueFinal=0;
-		ULONG redAmb = 0, greenAmb = 0, blueAmb = 0;
-		ULONG redSpec=0, greenSpec=0, blueSpec=0;
+		uint32_t redFinal=0, greenFinal=0, blueFinal=0;
+		uint32_t redAmb = 0, greenAmb = 0, blueAmb = 0;
+		uint32_t redSpec=0, greenSpec=0, blueSpec=0;
 		
 		if (lighteningLevel > 0)
 		{
 			redSpec = blueSpec = greenSpec = lighteningLevel;
 		}
 
-		ULONG startVLight = theShape->listOfTypeVertices[j].aRGBLight;
+		uint32_t startVLight = theShape->listOfTypeVertices[j].aRGBLight;
    		if (startVLight == 0xffff00ff)			//Hot Pink -- Lit Windows -- ONLY at NIGHT
    		{
    			if (isNight)
@@ -1767,7 +1767,7 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 				{
 					if ((listOfLights[i] != NULL) && (listOfLights[i]->active))
 					{
-						ULONG startLight = listOfLights[i]->GetaRGB();
+						uint32_t startLight = listOfLights[i]->GetaRGB();
 						switch (listOfLights[i]->lightType)
 						{
 							case TG_LIGHT_AMBIENT:
@@ -1831,9 +1831,9 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 										float green = float((startLight>>8) & 0x000000ff) * specular;
 										float blue = float((startLight) & 0x000000ff) * specular;
 
-										redSpec += (ULONG)red;
-										greenSpec += (ULONG)green;
-										blueSpec += (ULONG)blue;
+										redSpec += (uint32_t)red;
+										greenSpec += (uint32_t)green;
+										blueSpec += (uint32_t)blue;
 									}
 									*/
 								}
@@ -1864,9 +1864,9 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 									green *= cosine;
 									blue *= cosine;
 	
-									redFinal += (ULONG)red;
-									greenFinal += (ULONG)green;
-									blueFinal += (ULONG)blue;
+									redFinal += (uint32_t)red;
+									greenFinal += (uint32_t)green;
+									blueFinal += (uint32_t)blue;
 								}
 							}
 							break;
@@ -1900,9 +1900,9 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 											green *= cosine;
 											blue *= cosine;
 		
-											redSpec += (ULONG)red;
-											greenSpec += (ULONG)green;
-											blueSpec += (ULONG)blue;
+											redSpec += (uint32_t)red;
+											greenSpec += (uint32_t)green;
+											blueSpec += (uint32_t)blue;
 										}
 									}
 								}
@@ -1924,9 +1924,9 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 										green *= cosine;
 										blue *= cosine;
 	
-										redSpec += (ULONG)red;
-										greenSpec += (ULONG)green;
-										blueSpec += (ULONG)blue;
+										redSpec += (uint32_t)red;
+										greenSpec += (uint32_t)green;
+										blueSpec += (uint32_t)blue;
 									}
 								}
 							}
@@ -1953,9 +1953,9 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 											green = float((startLight>>8) & 0x000000ff) * falloff;
 											blue = float((startLight) & 0x000000ff) * falloff;
 			
-											listOfColors[j].redSpec = (ULONG)red;
-											listOfColors[j].greenSpec = (ULONG)green;
-											listOfColors[j].blueSpec = (ULONG)blue;
+											listOfColors[j].redSpec = (uint32_t)red;
+											listOfColors[j].greenSpec = (uint32_t)green;
+											listOfColors[j].blueSpec = (uint32_t)blue;
 										}
 									}
 									else
@@ -2003,9 +2003,9 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 										green *= cosine;
 										blue *= cosine;
 	
-										redSpec += (ULONG)red;
-										greenSpec += (ULONG)green;
-										blueSpec += (ULONG)blue;
+										redSpec += (uint32_t)red;
+										greenSpec += (uint32_t)green;
+										blueSpec += (uint32_t)blue;
 									}
 								}
 							}
@@ -2052,7 +2052,7 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 			listOfVertices[j].argb = (0xff << 24) + (redAmb << 16) + (greenAmb << 8) + (blueAmb);
 		}
 
-		ULONG fogValue = (listOfVertices[j].frgb >> 24) & 0x000000ff;
+		uint32_t fogValue = (listOfVertices[j].frgb >> 24) & 0x000000ff;
 		if (Environment.Renderer != 3)
 		{
 			if (useFog)
@@ -2108,7 +2108,7 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 		if (useFog && Camera::HazeFactor != 0.0f)
 		{
 			float fogFactor = 1.0 - Camera::HazeFactor;
-			ULONG distFog = float2long(fogFactor * 255.0f);
+			uint32_t distFog = float2long(fogFactor * 255.0f);
 			
 			if (distFog < fogValue)
 				fogValue = distFog;
@@ -2118,12 +2118,12 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 		
 		if (aRGBHighlight)
 		{
-			ULONG frgb = listOfVertices[j].frgb;
+			uint32_t frgb = listOfVertices[j].frgb;
 
-			ULONG fFinal = (frgb>>24) & 0x000000ff;
-			ULONG rFinal = (frgb>>16) & 0x000000ff;
-			ULONG gFinal = (frgb>>8) & 0x000000ff;
-			ULONG bFinal = (frgb) & 0x000000ff;
+			uint32_t fFinal = (frgb>>24) & 0x000000ff;
+			uint32_t rFinal = (frgb>>16) & 0x000000ff;
+			uint32_t gFinal = (frgb>>8) & 0x000000ff;
+			uint32_t bFinal = (frgb) & 0x000000ff;
 
 			rFinal += (aRGBHighlight>>16) & 0x000000ff;
 			if (rFinal > 255)
@@ -2156,9 +2156,9 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 			listOfVisibleFaces[numVisibleFaces] = j;
 			numVisibleFaces++;
 
-			ULONG redFinal = 0, greenFinal = 0, blueFinal = 0;
-			ULONG redSpec=0, greenSpec=0, blueSpec=0;
-			ULONG redAmb=0, greenAmb=0, blueAmb=0;
+			uint32_t redFinal = 0, greenFinal = 0, blueFinal = 0;
+			uint32_t redSpec=0, greenSpec=0, blueSpec=0;
+			uint32_t redAmb=0, greenAmb=0, blueAmb=0;
 	
 			if (useFaceLighting)
 			{
@@ -2168,7 +2168,7 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 				{
 					if (listOfLights[i] != NULL)
 					{
-						ULONG startVLight = listOfLights[i]->GetaRGB();
+						uint32_t startVLight = listOfLights[i]->GetaRGB();
 						switch (listOfLights[i]->lightType)
 						{
 							case TG_LIGHT_INFINITE:
@@ -2218,9 +2218,9 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 									green *= cosine;
 									blue *= cosine;
 		
-									redFinal += (ULONG)red;
-									greenFinal += (ULONG)green;
-									blueFinal += (ULONG)blue;
+									redFinal += (uint32_t)red;
+									greenFinal += (uint32_t)green;
+									blueFinal += (uint32_t)blue;
 								}
 							}
 							break;
@@ -2252,9 +2252,9 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 										green *= cosine;
 										blue *= cosine;
 		
-										redSpec += (ULONG)red;
-										greenSpec += (ULONG)green;
-										blueSpec += (ULONG)blue;
+										redSpec += (uint32_t)red;
+										greenSpec += (uint32_t)green;
+										blueSpec += (uint32_t)blue;
 									}
 								}
 							}
@@ -2296,10 +2296,10 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 	
 			for (int32_t i=0;i<3;i++ )
 			{
-				ULONG argb = listOfVertices[theShape->listOfTypeTriangles[j].Vertices[i]].argb;
-				ULONG rFinal = (argb>>16) & 0x000000ff;
-				ULONG gFinal = (argb>>8) & 0x000000ff; 
-				ULONG bFinal = (argb) & 0x000000ff;    
+				uint32_t argb = listOfVertices[theShape->listOfTypeTriangles[j].Vertices[i]].argb;
+				uint32_t rFinal = (argb>>16) & 0x000000ff;
+				uint32_t gFinal = (argb>>8) & 0x000000ff; 
+				uint32_t bFinal = (argb) & 0x000000ff;    
 	
 				rFinal += redFinal;
 				if (rFinal > 255)
@@ -2315,9 +2315,9 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 	
 				listOfTriangles[j].aRGBLight[i] = (alphaValue << 24) + (rFinal << 16) + (gFinal << 8) + (bFinal);
 	
-				ULONG frgb = listOfVertices[theShape->listOfTypeTriangles[j].Vertices[i]].frgb;
+				uint32_t frgb = listOfVertices[theShape->listOfTypeTriangles[j].Vertices[i]].frgb;
 	
-				ULONG fFinal = (frgb>>24) & 0x000000ff;
+				uint32_t fFinal = (frgb>>24) & 0x000000ff;
 				rFinal = (frgb>>16) & 0x000000ff;
 				gFinal = (frgb>>8) & 0x000000ff;
 				bFinal = (frgb) & 0x000000ff;
@@ -2337,7 +2337,7 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 				listOfTriangles[j].fRGBLight[i] = (fFinal << 24) + (rFinal << 16) + (gFinal << 8) + (bFinal);
 			}
 			
-			ULONG addFlags = 0;
+			uint32_t addFlags = 0;
 			if (isHudElement)
 			{
 				addFlags = MC2_ISCOMPASS;
@@ -2395,7 +2395,7 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 //-------------------------------------------------------------------------------
 //This function takes the current listOfVisibleFaces and draws them using
 //gos_DrawTriangle.
-void TG_Shape::Render (float forceZ, bool isHudElement, UCHAR alphaValue, bool isClamped)
+void TG_Shape::Render (float forceZ, bool isHudElement, uint8_t alphaValue, bool isClamped)
 {
 	if (!renderTGLShapes)
 		return;
@@ -2409,12 +2409,12 @@ void TG_Shape::Render (float forceZ, bool isHudElement, UCHAR alphaValue, bool i
 		!listOfTriangles ||
 		!listOfVisibleFaces ||
 		!listOfVisibleShadows ||
-		(/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != (ULONG)turn)))
+		(/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != (uint32_t)turn)))
 		return;
 
 	if (fogColor != 0xffffffff)
 	{
-		gos_SetRenderState( gos_State_Fog, (int)&(fogColor));
+		gos_SetRenderState( gos_State_Fog, (int32_t)&(fogColor));
 	}
 	else
 	{
@@ -2426,7 +2426,7 @@ void TG_Shape::Render (float forceZ, bool isHudElement, UCHAR alphaValue, bool i
 	gos_SetRenderState( gos_State_AlphaTest, theShape->alphaTestOn);
 	gos_SetRenderState( gos_State_Filter, theShape->filterOn ? gos_FilterBiLinear : gos_FilterNone);
 
-	ULONG lastTextureUsed = 0xffffffff;
+	uint32_t lastTextureUsed = 0xffffffff;
 	
 	bool isNight = eye->getIsNight();
 	float nightFactor = eye->getNightFactor();
@@ -2468,7 +2468,7 @@ void TG_Shape::Render (float forceZ, bool isHudElement, UCHAR alphaValue, bool i
 
 			gVertex[2].argb		= tri.aRGBLight[2];
 
-			ULONG addFlags = 0;
+			uint32_t addFlags = 0;
 			if (isHudElement)		//We are a HUD Element like the compass.  Mark us as such.
 			{
 				addFlags = MC2_ISCOMPASS;
@@ -2573,7 +2573,7 @@ bool TG_Shape::PerPolySelect (float mouseX, float mouseY)
 			!listOfTriangles ||
 			!listOfVisibleFaces ||
 			!listOfVisibleShadows ||
-			((lastTurnTransformed != (ULONG)(turn-1)) /*&& (lastTurnTransformed != turn)*/))
+			((lastTurnTransformed != (uint32_t)(turn-1)) /*&& (lastTurnTransformed != turn)*/))
 			return false;
 	}
 	else
@@ -2584,7 +2584,7 @@ bool TG_Shape::PerPolySelect (float mouseX, float mouseY)
 			!listOfTriangles ||
 			!listOfVisibleFaces ||
 			!listOfVisibleShadows ||
-			((lastTurnTransformed != (ULONG)(turn-1)) && (lastTurnTransformed != (ULONG)turn)))
+			((lastTurnTransformed != (uint32_t)(turn-1)) && (lastTurnTransformed != (uint32_t)turn)))
 			return false;
 	}
 
@@ -2787,7 +2787,7 @@ void TG_Shape::MultiTransformShadows (Stuff::Point3D *pos, Stuff::LinearMatrix4D
 								
 								//eye->projectZ(listOfShadowVertices[index].position,listOfShadowTVertices[index].transformedPosition);
 		
-								ULONG fogRGB = 0xff000000;
+								uint32_t fogRGB = 0xff000000;
 								if (useFog)
 								{
 									if (pos->y < fogStart)
@@ -2824,7 +2824,7 @@ void TG_Shape::MultiTransformShadows (Stuff::Point3D *pos, Stuff::LinearMatrix4D
 								if (useFog && Camera::HazeFactor != 0.0f)
 								{
 									float fogFactor = 1.0 - Camera::HazeFactor;
-									ULONG distFog = float2long(fogFactor * 255.0f);
+									uint32_t distFog = float2long(fogFactor * 255.0f);
 									distFog <<= 24;
 									
 									if (distFog < fogRGB)
@@ -2924,7 +2924,7 @@ void TG_Shape::MultiTransformShadows (Stuff::Point3D *pos, Stuff::LinearMatrix4D
 									eye->projectZ(listOfShadowVertices[index].position,listOfShadowTVertices[index].transformedPosition);
 									shadowsVisible[shadowNum] = true;
 	
-									ULONG fogRGB = 0xff000000;
+									uint32_t fogRGB = 0xff000000;
 									if (useFog)
 									{
 										if (pos->y < fogStart)
@@ -2961,7 +2961,7 @@ void TG_Shape::MultiTransformShadows (Stuff::Point3D *pos, Stuff::LinearMatrix4D
 									if (useFog && Camera::HazeFactor != 0.0f)
 									{
 										float fogFactor = 1.0 - Camera::HazeFactor;
-										ULONG distFog = float2long(fogFactor * 255.0f);
+										uint32_t distFog = float2long(fogFactor * 255.0f);
 										distFog <<= 24;
 										
 										if (distFog < fogRGB)
@@ -3042,12 +3042,12 @@ int32_t TG_Shape::RenderShadows (int32_t startFace)
 		!listOfTriangles ||
 		!listOfVisibleFaces ||
 		!listOfVisibleShadows ||
-		(/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != (ULONG)turn)))
+		(/*(lastTurnTransformed != (turn-1)) &&*/ (lastTurnTransformed != (uint32_t)turn)))
 		return startFace;
 
  	if (fogColor != 0xffffffff)
 	{
-		gos_SetRenderState( gos_State_Fog, (int)&(fogColor));
+		gos_SetRenderState( gos_State_Fog, (int32_t)&(fogColor));
 	}
 	else
 	{
@@ -3061,7 +3061,7 @@ int32_t TG_Shape::RenderShadows (int32_t startFace)
 		{
 			for (int32_t j=0;j<numVisibleShadows && listOfShadowTVertices;j++)
 			{
-				ULONG realStart = (j + startFace) % 64;
+				uint32_t realStart = (j + startFace) % 64;
 				if (listOfVisibleShadows[j] < numTriangles)
 				{
 

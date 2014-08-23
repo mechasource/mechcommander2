@@ -28,7 +28,7 @@ namespace gosFX
 	protected:
 		PointCloud__Specification(
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		);
 
 	public:
@@ -37,7 +37,7 @@ namespace gosFX
 		static PointCloud__Specification*
 			Make(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 	};
 

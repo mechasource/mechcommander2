@@ -30,7 +30,7 @@ namespace gosFX
 		SpinningCloud__Specification(
 			Stuff::RegisteredClass::ClassID class_id,
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		);
 
 	public:

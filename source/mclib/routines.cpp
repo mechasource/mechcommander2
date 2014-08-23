@@ -68,7 +68,7 @@ mmx0d:	emms
 		jmp done
 
 mem1:
-		mov ebx,ecx				; ULONG align edi when possible
+		mov ebx,ecx				; uint32_t align edi when possible
 		sub ecx,edi
 		xor eax,eax
 		sub ecx,ebx
@@ -138,7 +138,7 @@ mmx0fb:
 		jmp done
 
 memf1:
-		mov ebx,ecx				; ULONG align edi when possible
+		mov ebx,ecx				; uint32_t align edi when possible
 		sub ecx,edi
 		mov eax,-1
 		sub ecx,ebx

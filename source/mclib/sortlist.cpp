@@ -59,7 +59,7 @@ void SortList::clear (bool setToMin) {
 
 //---------------------------------------------------------------------------
 
-int cdecl descendingCompare (PCVOID arg1, PCVOID arg2 ) {
+int32_t cdecl descendingCompare (PCVOID arg1, PCVOID arg2 ) {
 
 	float value1 = ((SortListNode*)arg1)->value;
 	float value2 = ((SortListNode*)arg2)->value;
@@ -73,7 +73,7 @@ int cdecl descendingCompare (PCVOID arg1, PCVOID arg2 ) {
 
 //---------------------------------------------------------------------------
 
-int cdecl ascendingCompare (PCVOID arg1, PCVOID arg2 ) {
+int32_t cdecl ascendingCompare (PCVOID arg1, PCVOID arg2 ) {
 
 	float value1 = ((SortListNode*)arg1)->value;
 	float value2 = ((SortListNode*)arg2)->value;

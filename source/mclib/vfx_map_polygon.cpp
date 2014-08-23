@@ -13,7 +13,7 @@ static int64_t xmask=-1;
 // Draws a status bar
 //
 //
-void AG_StatusBar( PANE *pane, int X0, int Y0, int X1, int Y1, int Color, int Width )
+void AG_StatusBar( PANE *pane, int32_t X0, int32_t Y0, int32_t X1, int32_t Y1, int32_t Color, int32_t Width )
 {
 	static int32_t TopY,BottomY;
 
@@ -173,10 +173,10 @@ lp3:
 // Writes a single pixel
 //
 //
-void AG_pixel_write (PANE *pane, LONG x, LONG y, ULONG color)
+void AG_pixel_write (PANE *pane, int32_t x, int32_t y, uint32_t color)
 {
-	int X=x+pane->x0;
-	int Y=y+pane->y0;
+	int32_t X=x+pane->x0;
+	int32_t Y=y+pane->y0;
 
 	if( X>pane->x0 && X<pane->x1 && Y>pane->y0 && Y<pane->y1 )
 		*(pane->window->buffer + X + Y*(pane->window->x_max+1))=(uint8_t)color;
@@ -190,7 +190,7 @@ void AG_pixel_write (PANE *pane, LONG x, LONG y, ULONG color)
 //
 //
 //
-int32_t DrawTransparent( PANE *pane, WINDOW *texture, int X, int Y, int Width, int Height )
+int32_t DrawTransparent( PANE *pane, WINDOW *texture, int32_t X, int32_t Y, int32_t Width, int32_t Height )
 {
 	DestWidth = pane->window->x_max+1;
 
@@ -414,7 +414,7 @@ dt1:	mov ecx,[esi]
 dt2:	cmp ch,255
 		jz dt3
 		mov ah,ch
-dt3:	rol eax,16			; Transfer data in ULONG chunks
+dt3:	rol eax,16			; Transfer data in uint32_t chunks
 		shr ecx,16
 		cmp cl,255
 		jz dt4

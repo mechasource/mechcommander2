@@ -27,7 +27,7 @@ namespace MidLevelRenderer {
 		MLRPointLight();
 		MLRPointLight(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		MLRPointLight(Stuff::Page *page);
 		~MLRPointLight();

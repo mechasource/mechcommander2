@@ -28,7 +28,7 @@ namespace gosFX
 	protected:
 		ShardCloud__Specification(
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		);
 
 	public:
@@ -37,7 +37,7 @@ namespace gosFX
 		static ShardCloud__Specification*
 			Make(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 		void
 			Copy(ShardCloud__Specification *spec);

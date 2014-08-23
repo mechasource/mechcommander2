@@ -35,7 +35,7 @@ namespace MidLevelRenderer {
 		MLR_I_C_TMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		~MLR_I_C_TMesh();
 
@@ -45,7 +45,7 @@ namespace MidLevelRenderer {
 		static MLR_I_C_TMesh*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		void
@@ -55,35 +55,35 @@ namespace MidLevelRenderer {
 #if COLOR_AS_DWORD
 		virtual void
 			SetColorData(
-			const ULONG *array,
-			int point_count
+			pcuint32_t array,
+			int32_t point_count
 			);
 		virtual void
 			GetColorData(
-			ULONG **array,
-			int *point_count
+			uint32_t **array,
+			pint32_t point_count
 			);
 #else
 		virtual void
 			SetColorData(
 			const Stuff::RGBAColor *array,
-			int point_count
+			int32_t point_count
 			);
 		virtual void
 			GetColorData(
 			Stuff::RGBAColor **array,
-			int *point_count
+			pint32_t point_count
 			);
 #endif
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(const ULONG *paintMe);
+			PaintMe(pcuint32_t paintMe);
 #else
 			PaintMe(const Stuff::RGBAColor *paintMe);
 #endif
 
-		virtual int	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual int32_t	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
 
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
@@ -99,7 +99,7 @@ namespace MidLevelRenderer {
 		//
 		void
 #if COLOR_AS_DWORD
-			SetClipColor(ULONG &color, size_t index)
+			SetClipColor(uint32_t &color, size_t index)
 #else
 			SetClipColor(Stuff::RGBAColor &color, size_t index)
 #endif
@@ -116,7 +116,7 @@ namespace MidLevelRenderer {
 			visibleIndexedVertices.SetLength(num);
 #if COLOR_AS_DWORD
 			Mem_Copy(colors.GetData(), clipExtraColors->GetData(), 
-				sizeof(ULONG)*num, sizeof(ULONG)*num);
+				sizeof(uint32_t)*num, sizeof(uint32_t)*num);
 #else
 			Mem_Copy(colors.GetData(), clipExtraColors->GetData(), 
 				sizeof(Stuff::RGBAColor)*num, sizeof(Stuff::RGBAColor)*num);
@@ -134,11 +134,11 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int
+		virtual int32_t
 			GetSize()
 		{ 
 			Check_Object(this);
-			int ret = MLR_I_TMesh::GetSize();
+			int32_t ret = MLR_I_TMesh::GetSize();
 			ret += colors.GetSize();
 
 			return ret;
@@ -146,8 +146,8 @@ namespace MidLevelRenderer {
 
 	protected:
 #if COLOR_AS_DWORD
-		Stuff::DynamicArrayOf<ULONG> colors;	// Base address of color list 
-		Stuff::DynamicArrayOf<ULONG> *actualColors;
+		Stuff::DynamicArrayOf<uint32_t> colors;	// Base address of color list 
+		Stuff::DynamicArrayOf<uint32_t> *actualColors;
 #else
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> colors;	// Base address of color list 
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> *actualColors;

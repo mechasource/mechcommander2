@@ -201,18 +201,18 @@ extern void transState (SymTableNodePtr newState);
 int32_t					numLibrariesLoaded = 0;
 int32_t					NumExecutions = 0;
 
-PVOID (*ABLSystemMallocCallback) (ULONG memSize) = NULL;
-PVOID (*ABLStackMallocCallback) (ULONG memSize) = NULL;
-PVOID (*ABLCodeMallocCallback) (ULONG memSize) = NULL;
-PVOID (*ABLSymbolMallocCallback) (ULONG memSize) = NULL;
+PVOID (*ABLSystemMallocCallback) (uint32_t memSize) = NULL;
+PVOID (*ABLStackMallocCallback) (uint32_t memSize) = NULL;
+PVOID (*ABLCodeMallocCallback) (uint32_t memSize) = NULL;
+PVOID (*ABLSymbolMallocCallback) (uint32_t memSize) = NULL;
 void (*ABLSystemFreeCallback) (PVOID memBlock) = NULL;
 void (*ABLStackFreeCallback) (PVOID memBlock) = NULL;
 void (*ABLCodeFreeCallback) (PVOID memBlock) = NULL;
 void (*ABLSymbolFreeCallback) (PVOID memBlock) = NULL;
 void (*ABLDebugPrintCallback) (PSTR s) = NULL;
 int32_t (*ABLRandomCallback) (int32_t range) = NULL;
-void (*ABLSeedRandomCallback) (ULONG range) = NULL;
-ULONG (*ABLGetTimeCallback) (void) = NULL;
+void (*ABLSeedRandomCallback) (uint32_t range) = NULL;
+uint32_t (*ABLGetTimeCallback) (void) = NULL;
 void (*ABLFatalCallback) (int32_t code, PSTR s) = NULL;
 void (*ABLEndlessStateCallback) (UserFile* log) = NULL;
 
@@ -288,7 +288,7 @@ int32_t DefaultRandom (int32_t /* range */) {
 
 //---------------------------------------------------------------------------
 
-void DefaultSeedRandom (ULONG /* seed */) {
+void DefaultSeedRandom (uint32_t /* seed */) {
 }
 
 //---------------------------------------------------------------------------
@@ -298,14 +298,14 @@ void DefaultDebugPrintCallback (PSTR /* s */) {
 
 //---------------------------------------------------------------------------
 
-ULONG DefaultGetTimeCallback (void) {
+uint32_t DefaultGetTimeCallback (void) {
 
 	return(0);
 }
 
 //---------------------------------------------------------------------------
 
-void ABLi_setRandomCallbacks (void (*seedRandomCallback) (ULONG seed),
+void ABLi_setRandomCallbacks (void (*seedRandomCallback) (uint32_t seed),
 							  int32_t (*randomCallback) (int32_t range)) {
 
 	ABLSeedRandomCallback = seedRandomCallback;
@@ -321,7 +321,7 @@ void ABLi_setDebugPrintCallback (void (*debugPrintCallback) (PSTR s)) {
 
 //---------------------------------------------------------------------------
 
-void ABLi_setGetTimeCallback (ULONG (*getTimeCallback) (void)) {
+void ABLi_setGetTimeCallback (uint32_t (*getTimeCallback) (void)) {
 
 	ABLGetTimeCallback = getTimeCallback;
 }
@@ -335,14 +335,14 @@ void ABLi_setEndlessStateCallback (void (*endlessStateCallback) (UserFile* log))
 
 //---------------------------------------------------------------------------
 
-void ABLi_init (ULONG runtimeStackSize,
-				ULONG maxCodeBufferSize,
-				ULONG maxRegisteredModules,
-				ULONG maxStaticVariables,
-				PVOID (*systemMallocCallback) (ULONG memSize),
-				PVOID (*stackMallocCallback) (ULONG memSize),
-				PVOID (*codeMallocCallback) (ULONG memSize),
-				PVOID (*symbolMallocCallback) (ULONG memSize),
+void ABLi_init (uint32_t runtimeStackSize,
+				uint32_t maxCodeBufferSize,
+				uint32_t maxRegisteredModules,
+				uint32_t maxStaticVariables,
+				PVOID (*systemMallocCallback) (uint32_t memSize),
+				PVOID (*stackMallocCallback) (uint32_t memSize),
+				PVOID (*codeMallocCallback) (uint32_t memSize),
+				PVOID (*symbolMallocCallback) (uint32_t memSize),
 				void (*systemFreeCallback) (PVOID memBlock),
 				void (*stackFreeCallback) (PVOID memBlock),
 				void (*codeFreeCallback) (PVOID memBlock),

@@ -26,7 +26,7 @@ GOSImage::GOSImage( PCSTR iName ) : Plug (DefaultData)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-GOSImage::GOSImage( ULONG iHandle ) : Plug (DefaultData)
+GOSImage::GOSImage( uint32_t iHandle ) : Plug (DefaultData)
 {
 	char str[20];
 
@@ -86,14 +86,14 @@ GOSImage::~GOSImage(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int GOSImage::GetWidth()
+int32_t GOSImage::GetWidth()
 {
 	return 0;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int GOSImage::GetHeight()
+int32_t GOSImage::GetHeight()
 {
 	return 0;
 }
@@ -105,7 +105,7 @@ void GOSImage::LockImage()
 	if(!(flags & Locked))
 	{
 		flags |= Locked;
-		ULONG imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
+		uint32_t imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
 
 		if (imageHandle != 0xffffffff)
 			gos_LockTexture(imageHandle, 0, false, &ptr);
@@ -120,7 +120,7 @@ void GOSImage::UnlockImage()
 	{
 		flags &= ~Locked;
 		Start_Timer(Unlock_Texture_Time);
-		ULONG imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
+		uint32_t imageHandle = mcTextureManager->get_gosTextureHandle(mcTextureNodeIndex);
 
 		if (imageHandle != 0xffffffff)
 			gos_UnLockTexture(imageHandle);

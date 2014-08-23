@@ -43,9 +43,9 @@
 
 //---------------------------------------------------------------------------
 float TerrainQuad::rainLightLevel = 1.0f;
-ULONG TerrainQuad::lighteningLevel = 0;
-ULONG TerrainQuad::mineTextureHandle = 0xffffffff;
-ULONG TerrainQuad::blownTextureHandle = 0xffffffff;
+uint32_t TerrainQuad::lighteningLevel = 0;
+uint32_t TerrainQuad::mineTextureHandle = 0xffffffff;
+uint32_t TerrainQuad::blownTextureHandle = 0xffffffff;
 
 extern bool drawTerrainGrid;
 extern bool drawLOSGrid;
@@ -65,7 +65,7 @@ int32_t TerrainQuad::init (VertexPtr v0, VertexPtr v1, VertexPtr v2, VertexPtr v
 float twoFiveFive = 255.0;
 #define HUD_DEPTH		0.0001f			//HUD Objects draw over everything else.
 extern float cosineEyeHalfFOV; 
-extern ULONG BaseVertexColor;
+extern uint32_t BaseVertexColor;
 extern bool useShadows;
 extern bool useFog;
 extern int32_t sprayFrame;
@@ -109,7 +109,7 @@ void TerrainQuad::setupTextures (void)
 			{
 				{
 					terrainHandle = Terrain::terrainTextures->getTextureHandle((vertices[0]->pVertex->textureData & 0x0000ffff)); 
-					ULONG terrainDetailData = Terrain::terrainTextures->setDetail(1,0);
+					uint32_t terrainDetailData = Terrain::terrainTextures->setDetail(1,0);
 					if (terrainDetailData != 0xfffffff)
 						terrainDetailHandle = Terrain::terrainTextures->getTextureHandle(terrainDetailData);
 					else
@@ -139,7 +139,7 @@ void TerrainQuad::setupTextures (void)
 							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
 							
-							ULONG localResult = 0;
+							uint32_t localResult = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
 								localResult = GameMap->getMine(actualCellRow, actualCellCol);
 								
@@ -181,7 +181,7 @@ void TerrainQuad::setupTextures (void)
 			{
 				{
 					terrainHandle = Terrain::terrainTextures->getTextureHandle((vertices[0]->pVertex->textureData & 0x0000ffff)); 
-					ULONG terrainDetailData = Terrain::terrainTextures->setDetail(1,0);
+					uint32_t terrainDetailData = Terrain::terrainTextures->setDetail(1,0);
 					if (terrainDetailData != 0xfffffff)
 						terrainDetailHandle = Terrain::terrainTextures->getTextureHandle(terrainDetailData);
 					else
@@ -211,7 +211,7 @@ void TerrainQuad::setupTextures (void)
 							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
 							
-							ULONG localResult = 0;
+							uint32_t localResult = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
 								localResult = GameMap->getMine(actualCellRow, actualCellCol);
 								
@@ -318,7 +318,7 @@ void TerrainQuad::setupTextures (void)
 							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
 							
-							ULONG localResult = 0;
+							uint32_t localResult = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
 								localResult = GameMap->getMine(actualCellRow, actualCellCol);
 								
@@ -414,7 +414,7 @@ void TerrainQuad::setupTextures (void)
 							int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 							int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
 							
-							ULONG localResult = 0;
+							uint32_t localResult = 0;
 							if (GameMap->inBounds(actualCellRow, actualCellCol))
 								localResult = GameMap->getMine(actualCellRow, actualCellCol);
 								
@@ -740,7 +740,7 @@ void TerrainQuad::setupTextures (void)
 		{
 			if (!Terrain::terrainTextures2)
 			{
-				ULONG waterDetailData = Terrain::terrainTextures->setDetail(0,sprayFrame);
+				uint32_t waterDetailData = Terrain::terrainTextures->setDetail(0,sprayFrame);
 				waterHandle = Terrain::terrainTextures->getTextureHandle(MapData::WaterTXMData & 0x0000ffff);
 				waterDetailHandle = Terrain::terrainTextures->getDetailHandle(waterDetailData & 0x0000ffff); 
 			}
@@ -778,8 +778,8 @@ void TerrainQuad::setupTextures (void)
 		// Process Vertex 0 if not already done
 		if (!(vertices[0]->calcThisFrame & 1)) 
 		{
-			ULONG specR=0, specG=0, specB=0;
-			ULONG lightr=0xff,lightg=0xff,lightb=0xff;
+			uint32_t specR=0, specG=0, specB=0;
+			uint32_t lightr=0xff,lightg=0xff,lightb=0xff;
 			if (Environment.Renderer != 3)
 			{
 				//------------------------------------------------------------
@@ -854,9 +854,9 @@ void TerrainQuad::setupTextures (void)
 									green = float((thisLight->GetaRGB()>>8) & 0x000000ff) * falloff;
 									blue = float((thisLight->GetaRGB()) & 0x000000ff) * falloff;
 
-									specR += (ULONG)red;
-									specG += (ULONG)green;
-									specB += (ULONG)blue;
+									specR += (uint32_t)red;
+									specG += (uint32_t)green;
+									specB += (uint32_t)blue;
 
 									if (specR > 255)
 										specR = 255;
@@ -877,7 +877,7 @@ void TerrainQuad::setupTextures (void)
 			vertices[0]->fogRGB = (0xff<<24) + (specR<<16) + (specG << 8) + (specB);
 				
 			//Fog
-			ULONG fogResult = 0xff;
+			uint32_t fogResult = 0xff;
 			if (!(vertices[0]->calcThisFrame & 1)) 
 			{
 				if (useFog)
@@ -920,7 +920,7 @@ void TerrainQuad::setupTextures (void)
 			if (vertices[0]->hazeFactor != 0.0f)
 			{
 				float fogFactor = 1.0 - vertices[0]->hazeFactor;
-				ULONG distFog = float2long(fogFactor * 255.0f);
+				uint32_t distFog = float2long(fogFactor * 255.0f);
 				
 				if (distFog < fogResult)
 				   fogResult = distFog;
@@ -935,8 +935,8 @@ void TerrainQuad::setupTextures (void)
 		// Process Vertex 1 if not already done
 		if (!(vertices[1]->calcThisFrame & 1))
 		{
-			ULONG specR=0, specG=0, specB=0;
-			ULONG lightr=0xff,lightg=0xff,lightb=0xff;
+			uint32_t specR=0, specG=0, specB=0;
+			uint32_t lightr=0xff,lightg=0xff,lightb=0xff;
 			if (Environment.Renderer != 3)
 			{
 				float lightIntensity = vertices[1]->pVertex->vertexNormal * eye->lightDirection;
@@ -1008,9 +1008,9 @@ void TerrainQuad::setupTextures (void)
 									green = float((thisLight->GetaRGB()>>8) & 0x000000ff) * falloff;
 									blue = float((thisLight->GetaRGB()) & 0x000000ff) * falloff;
 
-									specR += (ULONG)red;
-									specG += (ULONG)green;
-									specB += (ULONG)blue;
+									specR += (uint32_t)red;
+									specG += (uint32_t)green;
+									specB += (uint32_t)blue;
 
 									if (specR > 255)
 										specR = 255;
@@ -1031,7 +1031,7 @@ void TerrainQuad::setupTextures (void)
 			vertices[1]->fogRGB = (0xff<<24) + (specR<<16) + (specG << 8) + (specB);
 
 			//Fog
-			ULONG fogResult = 0xff;
+			uint32_t fogResult = 0xff;
 			if (Environment.Renderer != 3)
 			{
 				if (useFog)
@@ -1074,7 +1074,7 @@ void TerrainQuad::setupTextures (void)
 			if (vertices[1]->hazeFactor != 0.0f)
 			{
 				float fogFactor = 1.0 - vertices[1]->hazeFactor;
-				ULONG distFog = float2long(fogFactor * 255.0);
+				uint32_t distFog = float2long(fogFactor * 255.0);
 				
 				if (distFog < fogResult)
 				   fogResult = distFog;
@@ -1089,8 +1089,8 @@ void TerrainQuad::setupTextures (void)
 		// Process Vertex 2 if not already done
 		if (!(vertices[2]->calcThisFrame & 1))
 		{
-			ULONG specR=0, specG=0, specB=0;
-			ULONG lightr=0xff,lightg=0xff,lightb=0xff;
+			uint32_t specR=0, specG=0, specB=0;
+			uint32_t lightr=0xff,lightg=0xff,lightb=0xff;
 			if (Environment.Renderer != 3)
 			{
 				float lightIntensity = vertices[2]->pVertex->vertexNormal * eye->lightDirection;
@@ -1162,9 +1162,9 @@ void TerrainQuad::setupTextures (void)
 									green = float((thisLight->GetaRGB()>>8) & 0x000000ff) * falloff;
 									blue = float((thisLight->GetaRGB()) & 0x000000ff) * falloff;
 
-									specR += (ULONG)red;
-									specG += (ULONG)green;
-									specB += (ULONG)blue;
+									specR += (uint32_t)red;
+									specG += (uint32_t)green;
+									specB += (uint32_t)blue;
 
 									if (specR > 255)
 										specR = 255;
@@ -1185,7 +1185,7 @@ void TerrainQuad::setupTextures (void)
 			vertices[2]->fogRGB = (0xff<<24) + (specR<<16) + (specG << 8) + (specB);
 
 			//Fog
-			ULONG fogResult = 0xff;
+			uint32_t fogResult = 0xff;
 			if (Environment.Renderer != 3)
 			{
 				if (useFog)
@@ -1228,7 +1228,7 @@ void TerrainQuad::setupTextures (void)
 			if (vertices[2]->hazeFactor != 0.0f)
 			{
 				float fogFactor = 1.0 - vertices[2]->hazeFactor;
-				ULONG distFog = float2long(fogFactor * 255.0f);
+				uint32_t distFog = float2long(fogFactor * 255.0f);
 				
 				if (distFog < fogResult)
 				   fogResult = distFog;
@@ -1243,8 +1243,8 @@ void TerrainQuad::setupTextures (void)
 		// Process Vertex 3 if not already done
 		if (!(vertices[3]->calcThisFrame & 1))
 		{
-			ULONG specR=0, specG=0, specB=0;
-			ULONG lightr=0xff,lightg=0xff,lightb=0xff;
+			uint32_t specR=0, specG=0, specB=0;
+			uint32_t lightr=0xff,lightg=0xff,lightb=0xff;
 			if (Environment.Renderer != 3)
 			{
 				float lightIntensity = vertices[3]->pVertex->vertexNormal * eye->lightDirection;
@@ -1316,9 +1316,9 @@ void TerrainQuad::setupTextures (void)
 									green = float((thisLight->GetaRGB()>>8) & 0x000000ff) * falloff;
 									blue = float((thisLight->GetaRGB()) & 0x000000ff) * falloff;
 
-									specR += (ULONG)red;
-									specG += (ULONG)green;
-									specB += (ULONG)blue;
+									specR += (uint32_t)red;
+									specG += (uint32_t)green;
+									specB += (uint32_t)blue;
 
 									if (specR > 255)
 										specR = 255;
@@ -1339,7 +1339,7 @@ void TerrainQuad::setupTextures (void)
 			vertices[3]->fogRGB = (0xff<<24) + (specR<<16) + (specG << 8) + (specB);
 			
 			//Fog
-			ULONG fogResult = 0xff;
+			uint32_t fogResult = 0xff;
 			if (Environment.Renderer != 3)
 			{
 				if (useFog)
@@ -1380,7 +1380,7 @@ void TerrainQuad::setupTextures (void)
 			if (vertices[3]->hazeFactor != 0.0f)
 			{
 				float fogFactor = 1.0 - vertices[3]->hazeFactor;
-				ULONG distFog = float2long(fogFactor * 255.0f);
+				uint32_t distFog = float2long(fogFactor * 255.0f);
 				
 				if (distFog < fogResult)
 				   fogResult = distFog;
@@ -1433,9 +1433,9 @@ void TerrainQuad::draw (void)
 		{
 			//--------------------------
 			// Top Triangle
-			ULONG lightRGB0 = vertices[0]->lightRGB; 
-			ULONG lightRGB1 = vertices[1]->lightRGB; 
-			ULONG lightRGB2 = vertices[2]->lightRGB; 
+			uint32_t lightRGB0 = vertices[0]->lightRGB; 
+			uint32_t lightRGB1 = vertices[1]->lightRGB; 
+			uint32_t lightRGB2 = vertices[2]->lightRGB; 
 			if (Terrain::terrainTextures2 && (!Terrain::terrainTextures->isCement(vertices[0]->pVertex->textureData & 0x0000ffff)
 											|| Terrain::terrainTextures->isAlpha(vertices[0]->pVertex->textureData & 0x0000ffff)))
 				lightRGB0 = lightRGB1 = lightRGB2 = 0xffffffff;
@@ -1571,7 +1571,7 @@ void TerrainQuad::draw (void)
 			// gVertex[0] same as above gVertex[0].
 			// gVertex[1] is same as above gVertex[2].
 			// gVertex[2] is calced from vertex[3].
-			ULONG lightRGB3 = vertices[3]->lightRGB;
+			uint32_t lightRGB3 = vertices[3]->lightRGB;
 			if (Terrain::terrainTextures2 && (!Terrain::terrainTextures->isCement(vertices[0]->pVertex->textureData & 0x0000ffff)
 											|| Terrain::terrainTextures->isAlpha(vertices[0]->pVertex->textureData & 0x0000ffff)))
 				lightRGB3 = 0xffffffff;
@@ -1696,9 +1696,9 @@ void TerrainQuad::draw (void)
 		{
 			//------------------------------
 			// Top Triangle.
-			ULONG lightRGB0 = vertices[0]->lightRGB;
-			ULONG lightRGB1 = vertices[1]->lightRGB;
-			ULONG lightRGB3 = vertices[3]->lightRGB;
+			uint32_t lightRGB0 = vertices[0]->lightRGB;
+			uint32_t lightRGB1 = vertices[1]->lightRGB;
+			uint32_t lightRGB3 = vertices[3]->lightRGB;
 			if (Terrain::terrainTextures2 && (!Terrain::terrainTextures->isCement(vertices[0]->pVertex->textureData & 0x0000ffff)
 											|| Terrain::terrainTextures->isAlpha(vertices[0]->pVertex->textureData & 0x0000ffff)))
 				lightRGB0 = lightRGB1 = lightRGB3 = 0xffffffff;
@@ -1832,7 +1832,7 @@ void TerrainQuad::draw (void)
 			// gVertex[0] is same as above gVertex[1]
 			// gVertex[1] is new and calced from vertex[2].
 			// gVertex[2] is same as above.
-			ULONG lightRGB2 = vertices[2]->lightRGB;
+			uint32_t lightRGB2 = vertices[2]->lightRGB;
 			if (Terrain::terrainTextures2 && (!Terrain::terrainTextures->isCement(vertices[0]->pVertex->textureData & 0x0000ffff)
 											|| Terrain::terrainTextures->isAlpha(vertices[0]->pVertex->textureData & 0x0000ffff)))
 				lightRGB2 = 0xffffffff;
@@ -2004,8 +2004,8 @@ void TerrainQuad::drawWater (void)
 		// FOG time.  Set Render state to FOG on!
 		if (useFog)
 		{
-			ULONG fogColor = eye->fogColor;
-			gos_SetRenderState( gos_State_Fog, (int)&fogColor);
+			uint32_t fogColor = eye->fogColor;
+			gos_SetRenderState( gos_State_Fog, (int32_t)&fogColor);
 		}
 		else
 		{
@@ -2066,9 +2066,9 @@ void TerrainQuad::drawWater (void)
 					// Do real cliping in geometry layer for software and hardware that needs it!
 					if (waterHandle != 0xffffffff)
 					{
-						ULONG alphaMode0 = Terrain::alphaMiddle;
-						ULONG alphaMode1 = Terrain::alphaMiddle;
-						ULONG alphaMode2 = Terrain::alphaMiddle;
+						uint32_t alphaMode0 = Terrain::alphaMiddle;
+						uint32_t alphaMode1 = Terrain::alphaMiddle;
+						uint32_t alphaMode2 = Terrain::alphaMiddle;
 		
 						if (vertices[0]->pVertex->elevation >= (Terrain::waterElevation - MapData::alphaDepth) )
 						{
@@ -2205,9 +2205,9 @@ void TerrainQuad::drawWater (void)
 					if (waterHandle != 0xffffffff)
 					{
 	
-						ULONG alphaMode0 = Terrain::alphaMiddle;
-						ULONG alphaMode1 = Terrain::alphaMiddle;
-						ULONG alphaMode2 = Terrain::alphaMiddle;
+						uint32_t alphaMode0 = Terrain::alphaMiddle;
+						uint32_t alphaMode1 = Terrain::alphaMiddle;
+						uint32_t alphaMode2 = Terrain::alphaMiddle;
 		
 						if (vertices[0]->pVertex->elevation >= (Terrain::waterElevation - MapData::alphaDepth) )
 						{
@@ -2351,9 +2351,9 @@ void TerrainQuad::drawWater (void)
 					if (waterHandle != 0xffffffff)
 					{
 
-						ULONG alphaMode0 = Terrain::alphaMiddle;
-						ULONG alphaMode1 = Terrain::alphaMiddle;
-						ULONG alphaMode2 = Terrain::alphaMiddle;
+						uint32_t alphaMode0 = Terrain::alphaMiddle;
+						uint32_t alphaMode1 = Terrain::alphaMiddle;
+						uint32_t alphaMode2 = Terrain::alphaMiddle;
 		
 						if (vertices[0]->pVertex->elevation >= (Terrain::waterElevation - MapData::alphaDepth) )
 						{
@@ -2489,9 +2489,9 @@ void TerrainQuad::drawWater (void)
 					if (waterHandle != 0xffffffff)
 					{
 	
-						ULONG alphaMode0 = Terrain::alphaMiddle;
-						ULONG alphaMode1 = Terrain::alphaMiddle;
-						ULONG alphaMode2 = Terrain::alphaMiddle;
+						uint32_t alphaMode0 = Terrain::alphaMiddle;
+						uint32_t alphaMode1 = Terrain::alphaMiddle;
+						uint32_t alphaMode2 = Terrain::alphaMiddle;
 						
 						if (vertices[1]->pVertex->elevation >= (Terrain::waterElevation - MapData::alphaDepth) )
 						{
@@ -2819,7 +2819,7 @@ void TerrainQuad::drawLine (void)
 						pos3.z -= 0.002f;
 						pos4.z -= 0.002f;
 
-						ULONG color = XP_RED;
+						uint32_t color = XP_RED;
 						
 						if (!curCell)
 						{
@@ -3033,7 +3033,7 @@ void TerrainQuad::drawLOSLine (void)
 						pos3.z -= 0.002f;
 						pos4.z -= 0.002f;
 
-						ULONG color = XP_BLACK;
+						uint32_t color = XP_BLACK;
 						
 						if (curCell->getLocalHeight() < 2)
 						{
@@ -3303,14 +3303,14 @@ void TerrainQuad::drawDebugCellLine (void)
 						
 						pos1.z = pos2.z = pos3.z = pos4.z = HUD_DEPTH;
 
-						ULONG color = XP_RED;
+						uint32_t color = XP_RED;
 						if (!curCell)
 						{
 							color = XP_GREEN;
 						}
 						else {
-							static ULONG debugColors[4] = {0, XP_RED, XP_WHITE, XP_BLUE};
-							ULONG cellDebugValue = curCell->getDebug();
+							static uint32_t debugColors[4] = {0, XP_RED, XP_WHITE, XP_BLUE};
+							uint32_t cellDebugValue = curCell->getDebug();
 							if (cellDebugValue)
 								color = debugColors[cellDebugValue];
 						}

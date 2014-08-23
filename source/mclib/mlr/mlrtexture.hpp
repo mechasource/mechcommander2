@@ -28,8 +28,8 @@ namespace MidLevelRenderer {
 		MLRTexture(Stuff::MemoryStream *stream);
 
 	public:
-		MLRTexture(MLRTexturePool* pool, PCSTR name, int instance, int handle, int hint=0);
-		MLRTexture(MLRTexturePool* pool, GOSImage* image, int handle, int hint=0);
+		MLRTexture(MLRTexturePool* pool, PCSTR name, int32_t instance, int32_t handle, int32_t hint=0);
+		MLRTexture(MLRTexturePool* pool, GOSImage* image, int32_t handle, int32_t hint=0);
 		MLRTexture(const MLRTexture&);
 		~MLRTexture(void);
 
@@ -37,7 +37,7 @@ namespace MidLevelRenderer {
 
 		void Save(Stuff::MemoryStream *stream);
 
-		GOSImage* GetImage(int* h=NULL)
+		GOSImage* GetImage(pint32_t h=NULL)
 		{ 
 			Check_Object(this); if(h) { *h = hint; } return image;
 		}
@@ -47,15 +47,15 @@ namespace MidLevelRenderer {
 			Check_Object(this); return textureName;
 		}
 
-		int GetTextureHandle(void)
+		int32_t GetTextureHandle(void)
 		{
 			Check_Object(this); return textureHandle;
 		}
 
-		int GetImageNumber(void);
-		int	GetInstanceNumber(void);
+		int32_t GetImageNumber(void);
+		int32_t	GetInstanceNumber(void);
 
-		int GetTextureInstance()
+		int32_t GetTextureInstance()
 		{
 			Check_Object(this); return instance;
 		}
@@ -83,10 +83,10 @@ namespace MidLevelRenderer {
 			GetTextureMatrix()
 		{ Check_Object(this); return textureMatrix; }
 
-		void SetHint(int h)
+		void SetHint(int32_t h)
 		{ Check_Object(this); hint = h; }
 
-		int GetHint()
+		int32_t GetHint()
 		{ Check_Object(this); return hint; }
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -97,10 +97,10 @@ namespace MidLevelRenderer {
 
 	protected:
 		Stuff::MString textureName;
-		int textureNameHashValue;
-		int instance;
-		int textureHandle;
-		int hint;
+		int32_t textureNameHashValue;
+		int32_t instance;
+		int32_t textureHandle;
+		int32_t hint;
 		bool textureMatrixIsIdentity;
 		Stuff::AffineMatrix4D textureMatrix;
 		GOSImage*	image;

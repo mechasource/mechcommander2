@@ -45,7 +45,7 @@
 //#pragma warning( disable:4100 )
 
 #define INT_SIZE_LENGTH 20
-extern int __ismbcodepage;
+extern int32_t __ismbcodepage;
 #define _ISNOTMBCP  (__ismbcodepage == 0)
 
 
@@ -96,7 +96,7 @@ static wchar_t * __cdecl wideStrStr (
         return(NULL);
 }
 
-static int __cdecl wideToInt(
+static int32_t __cdecl wideToInt(
         const wchar_t *nptr
         )
 {
@@ -105,31 +105,31 @@ static int __cdecl wideToInt(
         WideCharToMultiByte (CP_ACP, 0, nptr, -1,
                             astring, INT_SIZE_LENGTH, NULL, NULL);
 
-        return ((int)atol(astring));
+        return ((int32_t)atol(astring));
 }
 
 static int32_t __cdecl atolong(
         PCSTR nptr
         )
 {
-        int c;              /* current PSTR /
+        int32_t c;              /* current PSTR /
         int32_t total;         /* current total */
-        int sign;           /* if '-', then negative, otherwise positive */
+        int32_t sign;           /* if '-', then negative, otherwise positive */
 
         /* skip whitespace */
-        while ( isspace((int)(uint8_t)*nptr) )
+        while ( isspace((int32_t)(uint8_t)*nptr) )
             ++nptr;
 
-        c = (int)(uint8_t)*nptr++;
+        c = (int32_t)(uint8_t)*nptr++;
         sign = c;           /* save sign indication */
         if (c == '-' || c == '+')
-            c = (int)(uint8_t)*nptr++;    /* skip sign */
+            c = (int32_t)(uint8_t)*nptr++;    /* skip sign */
 
         total = 0;
 
         while (isdigit(c)) {
             total = 10 * total + (c - '0');     /* accumulate digit */
-            c = (int)(uint8_t)*nptr++;    /* get next PSTR /
+            c = (int32_t)(uint8_t)*nptr++;    /* get next PSTR /
         }
 
         if (sign == '-')
@@ -220,7 +220,7 @@ static PSTR  __cdecl StrRev (
 	#define KReverse		StrRev
 	#define KStrStr			StrStr
 	__inline PSTR  __cdecl KSInc(PCSTR  _pc) { return (PSTR )(_pc+1); }
-	inline 	int EWCSCharLen(PCSTR x){ return 1; }	
+	inline 	int32_t EWCSCharLen(PCSTR x){ return 1; }	
 #endif
 #endif
 
@@ -247,7 +247,7 @@ EWCharString::EBuffer*   EWCharString::EBuffer::s_p_Empty_Buffer = &EWCharString
 // a macro.
 /////////////////////////////////////////////////////////////////
 inline PWSTR EWCharString::ToUnicode(
-	puint16_t p_Buffer, pcuint8_t p_Str, int Num_Chars)
+	puint16_t p_Buffer, pcuint8_t p_Str, int32_t Num_Chars)
 {
 	gosASSERT( p_Buffer );
 	gosASSERT( p_Str );
@@ -260,7 +260,7 @@ inline PWSTR EWCharString::ToUnicode(
 }
 
 /////////////////////////////////////////////////////////////////
-inline int EWCharString::StrSize( const EWCSChar* p_Str )
+inline int32_t EWCharString::StrSize( const EWCSChar* p_Str )
 {
 	return ( p_Str == NULL  ? 0 : 
 #ifdef UNICODE 
@@ -278,7 +278,7 @@ void	EWCharString::ChecEBufferDoRealloc()
 	{
 		m_pBuffer->m_Ref_Count --;
 
-		int Cur_Length = m_pBuffer->m_Data_Length;
+		int32_t Cur_Length = m_pBuffer->m_Data_Length;
 		EWCSChar* p_Data = m_pBuffer->Data();
 
 		Alloc( Cur_Length );
@@ -347,7 +347,7 @@ void EWCharString::Assign( const EWCSChar* p_String )
 		m_pBuffer = EBuffer::s_p_Empty_Buffer;
 	}
 	
-	int Len = StrSize( p_String ) + 1;
+	int32_t Len = StrSize( p_String ) + 1;
 		
 	// buffer big enough, we can recycle
 	if ( m_pBuffer->m_Alloc_Length >= Len )
@@ -365,12 +365,12 @@ void EWCharString::Assign( const EWCSChar* p_String )
 }
 
 ///////////////////////////////////////////////////////////////
-void EWCharString::Alloc( int Min_Amount )
+void EWCharString::Alloc( int32_t Min_Amount )
 {
 	// we're rouding up to the nearest multiple of 4 for now
 	Min_Amount = (Min_Amount/s_Alloc_Allign + 1) * s_Alloc_Allign;
 
-	m_pBuffer = (EWCharString::EBuffer*)new UCHAR[sizeof(EBuffer) + 
+	m_pBuffer = (EWCharString::EBuffer*)new uint8_t[sizeof(EBuffer) + 
 		(Min_Amount)*sizeof(EWCSChar)];
 
 	memset( m_pBuffer, 0, sizeof(EBuffer) + (Min_Amount)*sizeof(EWCSChar) );
@@ -379,11 +379,11 @@ void EWCharString::Alloc( int Min_Amount )
 }
 
 ///////////////////////////////////////////////////////////////
-void EWCharString::Replace( int Start_Index, const EWCSChar* p_String )
+void EWCharString::Replace( int32_t Start_Index, const EWCSChar* p_String )
 {
 	// keep the buffer
 	EBuffer* p_Tmp = m_pBuffer;
-	int Cur_Len = m_pBuffer->m_Data_Length;
+	int32_t Cur_Len = m_pBuffer->m_Data_Length;
 
 	// unshare any shared buffers
 	ChecEBuffer(); 
@@ -395,9 +395,9 @@ void EWCharString::Replace( int Start_Index, const EWCSChar* p_String )
 	if ( Start_Index <= Cur_Len )
 	{
 			
-		int Length = StrSize( p_String );
+		int32_t Length = StrSize( p_String );
 
-		int Alloc_Length = Start_Index + Length + 1;
+		int32_t Alloc_Length = Start_Index + Length + 1;
 		if (  Alloc_Length <= m_pBuffer->m_Alloc_Length )
 		{
 			memcpy( m_pBuffer->Data() + Start_Index, 
@@ -448,14 +448,14 @@ void EWCharString::Replace( int Start_Index, const EWCSChar* p_String )
 }
 
 ///////////////////////////////////////////////////////////////
-void EWCharString::Replace( int Start_Index, const EWCharString& String )
+void EWCharString::Replace( int32_t Start_Index, const EWCharString& String )
 {
 	Replace( Start_Index, String.m_pBuffer->Data() );
 }
 
 
 ///////////////////////////////////////////////////////////////
-void EWCharString::Insert( int Start_Index, const EWCSChar* p_String )
+void EWCharString::Insert( int32_t Start_Index, const EWCSChar* p_String )
 {
 	if ( Start_Index != INVALID_INDEX && Start_Index <= StrSize( Data() ) )
 	{
@@ -465,7 +465,7 @@ void EWCharString::Insert( int Start_Index, const EWCSChar* p_String )
 
 		ChecEBuffer();
 
-		int Length = StrSize( p_String ); 
+		int32_t Length = StrSize( p_String ); 
 
 		// add on 2 for the 'nulls'
 		if ( Length + p_Tmp->m_Data_Length + 1 > m_pBuffer->m_Alloc_Length )
@@ -499,7 +499,7 @@ void EWCharString::Insert( int Start_Index, const EWCSChar* p_String )
 }
 
 ///////////////////////////////////////////////////////////////
-bool EWCharString::Remove( int Start_Index, int End_Index )
+bool EWCharString::Remove( int32_t Start_Index, int32_t End_Index )
 {
 	// Bill changed - this function could not handle removing a single character 
 	// - also this didn't remove the character pointed to by End_Index
@@ -525,7 +525,7 @@ bool EWCharString::Remove( int Start_Index, int End_Index )
 /////////////////////////////////////////////////////////////////
 bool EWCharString::Remove( EWCharString& Sub_String )
 {
-	int Index = Find( Sub_String );
+	int32_t Index = Find( Sub_String );
 
 	if ( Index != -1 )
 	{
@@ -577,7 +577,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 	va_list Arg_List_Save = Arg_List;
 
 	// make a guess at the maximum length of the resulting string
-	int Max_Len = 0;
+	int32_t Max_Len = 0;
 	for (const EWCSChar* p_Tmp = p_Str; *p_Tmp != '\0'; p_Tmp = KSInc(p_Tmp))
 	{
 		// handle '%' character, but watch out for '%%'
@@ -587,17 +587,17 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 			continue;
 		}
 
-		int Item_Len = 0;
+		int32_t Item_Len = 0;
 
 		// handle '%' character with format
-		int Width = 0;
+		int32_t Width = 0;
 		for (; *p_Tmp != '\0'; p_Tmp = KSInc(p_Tmp))
 		{
 			// check for valid flags
 			if (*p_Tmp == '#')
 				Max_Len += 2;   // for '0x'
 			else if (*p_Tmp == '*')
-				Width = va_arg(Arg_List, int);
+				Width = va_arg(Arg_List, int32_t);
 			else if (*p_Tmp == '-' || *p_Tmp == '+' || *p_Tmp == '0' ||
 				*p_Tmp == ' ')
 				;
@@ -622,7 +622,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 		
 		gosASSERT( Width >= 0);
 
-		int Precision = 0;	
+		int32_t Precision = 0;	
 		if (*p_Tmp == '.')
 		{
 			// skip past '.' separator (width.precision)
@@ -631,7 +631,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 			// get precision and skip it
 			if (*p_Tmp == '*')
 			{
-				Precision = va_arg(Arg_List, int);
+				Precision = va_arg(Arg_List, int32_t);
 				p_Tmp = KSInc(p_Tmp);
 			}
 			else
@@ -653,7 +653,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 		}
 
 		// should be on type modifier or specifier
-		int	Modifier = 0;
+		int32_t	Modifier = 0;
 		switch (*p_Tmp)
 		{
 		// modifiers that affect size
@@ -691,7 +691,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 		case 'c'|s_Force_Unicode:
 		case 'C'|s_Force_Unicode:
 			Item_Len = 2;
-			va_arg(Arg_List, short);
+			va_arg(Arg_List, int16_t);
 			break;
 
 		// strings
@@ -783,7 +783,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 			case 'x':
 			case 'X':
 			case 'o':
-				va_arg(Arg_List, int);
+				va_arg(Arg_List, int32_t);
 				Item_Len = 32;
 				Item_Len = max(Item_Len, Width + Precision);
 				break;
@@ -805,7 +805,7 @@ void EWCharString::Format( const EWCSChar* p_Str, ... )
 
 			// no output
 			case 'n':
-				va_arg(Arg_List, int*);
+				va_arg(Arg_List, pint32_t);
 				break;
 			
 			case 'I': // assume INT64 skip next two chars
@@ -862,7 +862,7 @@ EWCharString operator+( const EWCSChar* p_Begin_String,
 {
 	EWCharString Ret_String;
 
-	int Length = EWCharString::StrSize( p_Begin_String );
+	int32_t Length = EWCharString::StrSize( p_Begin_String );
 	
 	Ret_String.Alloc( End_String.m_pBuffer->m_Data_Length + Length + 1 );
 
@@ -883,7 +883,7 @@ EWCharString operator+( const EWCharString& Begin_String, const EWCSChar* p_End_
 {
 	EWCharString Ret_String;
 
-	int Length = EWCharString::StrSize( p_End_String );
+	int32_t Length = EWCharString::StrSize( p_End_String );
 	
 	Ret_String.Alloc( Begin_String.m_pBuffer->m_Data_Length + Length + 1 );
 
@@ -922,16 +922,16 @@ EWCharString operator+( const EWCSChar Char,  const  EWCharString& Begin_String 
 
 
 /////////////////////////////////////////////////////////////////
-int EWCharString::Compare( const EWCharString& Str_To_Compare, bool Case_Sensitive ) const
+int32_t EWCharString::Compare( const EWCharString& Str_To_Compare, bool Case_Sensitive ) const
 {
 	return Compare( Str_To_Compare.m_pBuffer->Data(), Case_Sensitive );
 }
 
 /////////////////////////////////////////////////////////////////
-int EWCharString::Compare( const EWCSChar* p_String, bool Case_Sensitive ) const
+int32_t EWCharString::Compare( const EWCSChar* p_String, bool Case_Sensitive ) const
 {
 	
-	int Length = StrSize( p_String );
+	int32_t Length = StrSize( p_String );
 
 	if ( 0 == StrSize(m_pBuffer->Data()) )
 	{
@@ -958,14 +958,14 @@ int EWCharString::Compare( const EWCSChar* p_String, bool Case_Sensitive ) const
 }
  	
 /////////////////////////////////////////////////////////////////
-int EWCharString::Size() const 	// number of bytes
+int32_t EWCharString::Size() const 	// number of bytes
 {
 	return m_pBuffer->m_Data_Length * sizeof(EWCSChar);
 }
 
 
 /////////////////////////////////////////////////////////////////
-int EWCharString::Length() const	// number of characters
+int32_t EWCharString::Length() const	// number of characters
 {
 
 #ifdef UNICODE
@@ -976,7 +976,7 @@ int EWCharString::Length() const	// number of characters
 }
 
 /////////////////////////////////////////////////////////////////
-int EWCharString::Find( EWCSChar Char, int Start_Index ) const
+int32_t EWCharString::Find( EWCSChar Char, int32_t Start_Index ) const
 {
 	if ( Start_Index == -1 )
 	{
@@ -1004,7 +1004,7 @@ int EWCharString::Find( EWCSChar Char, int Start_Index ) const
 }
 
 /////////////////////////////////////////////////////////////////
-int EWCharString::Find( const EWCharString& Str_To_Find, int Start_Index ) const
+int32_t EWCharString::Find( const EWCharString& Str_To_Find, int32_t Start_Index ) const
 {
 	if ( -1 == Start_Index )
 	{
@@ -1018,7 +1018,7 @@ int EWCharString::Find( const EWCharString& Str_To_Find, int Start_Index ) const
 }
 
 /////////////////////////////////////////////////////////////////
-int EWCharString::Find( const EWCSChar* p_Str_To_Find, int Start_Index ) const
+int32_t EWCharString::Find( const EWCSChar* p_Str_To_Find, int32_t Start_Index ) const
 {
 	if ( -1 == Start_Index )
 	{
@@ -1034,7 +1034,7 @@ int EWCharString::Find( const EWCSChar* p_Str_To_Find, int Start_Index ) const
 }
 
 /////////////////////////////////////////////////////////////////
-int EWCharString::ReverseFind ( EWCSChar Char, int End_Index ) const
+int32_t EWCharString::ReverseFind ( EWCSChar Char, int32_t End_Index ) const
 {
 	if ( -1 == End_Index )
 	{
@@ -1060,7 +1060,7 @@ int EWCharString::ReverseFind ( EWCSChar Char, int End_Index ) const
 
 /////////////////////////////////////////////////////////////////
 #ifndef UNICODE
-int EWCharString::Find( uint16_t Char, int Start_Index ) const
+int32_t EWCharString::Find( uint16_t Char, int32_t Start_Index ) const
 {
 	uint16_t Tmp[2];
 	*Tmp = Char;
@@ -1071,7 +1071,7 @@ int EWCharString::Find( uint16_t Char, int Start_Index ) const
 #endif // !K_UNICODE
 	
 /////////////////////////////////////////////////////////////////
-EWCharString EWCharString::SubString( int Start_Index, int End_Index ) const
+EWCharString EWCharString::SubString( int32_t Start_Index, int32_t End_Index ) const
 {
 	EWCharString Ret_String;
 
@@ -1263,7 +1263,7 @@ void EWCharString::Format( PCSTR p_Str, ... )
 	va_list Arg_List_Save = Arg_List;
 
 	// make a guess at the maximum length of the resulting string
-	int Max_Len = 0;
+	int32_t Max_Len = 0;
 	for (PCSTR p_Tmp = p_Str; *p_Tmp != '\0'; p_Tmp = _tcsinc(p_Tmp))
 	{
 		// handle '%' character, but watch out for '%%'
@@ -1273,17 +1273,17 @@ void EWCharString::Format( PCSTR p_Str, ... )
 			continue;
 		}
 
-		int Item_Len = 0;
+		int32_t Item_Len = 0;
 
 		// handle '%' character with format
-		int Width = 0;
+		int32_t Width = 0;
 		for (; *p_Tmp != '\0'; p_Tmp = _tcsinc(p_Tmp))
 		{
 			// check for valid flags
 			if (*p_Tmp == '#')
 				Max_Len += 2;   // for '0x'
 			else if (*p_Tmp == '*')
-				Width = va_arg(Arg_List, int);
+				Width = va_arg(Arg_List, int32_t);
 			else if (*p_Tmp == '-' || *p_Tmp == '+' || *p_Tmp == '0' ||
 				*p_Tmp == ' ')
 				;
@@ -1301,7 +1301,7 @@ void EWCharString::Format( PCSTR p_Str, ... )
 		
 		gosASSERT( Width >= 0);
 
-		int Precision = 0;
+		int32_t Precision = 0;
 		if (*p_Tmp == '.')
 		{
 			// skip past '.' separator (width.precision)
@@ -1310,7 +1310,7 @@ void EWCharString::Format( PCSTR p_Str, ... )
 			// get precision and skip it
 			if (*p_Tmp == '*')
 			{
-				Precision = va_arg(Arg_List, int);
+				Precision = va_arg(Arg_List, int32_t);
 				p_Tmp = _tcsinc(p_Tmp);
 			}
 			else
@@ -1323,7 +1323,7 @@ void EWCharString::Format( PCSTR p_Str, ... )
 		}
 
 		// should be on type modifier or specifier
-		int	Modifier = 0;
+		int32_t	Modifier = 0;
 		switch (*p_Tmp)
 		{
 		// modifiers that affect size
@@ -1362,7 +1362,7 @@ void EWCharString::Format( PCSTR p_Str, ... )
 		case 'c'|s_Force_Unicode:
 		case 'C'|s_Force_Unicode:
 			Item_Len = 2;
-			va_arg(Arg_List, short);
+			va_arg(Arg_List, int16_t);
 			break;
 
 		// strings
@@ -1454,7 +1454,7 @@ void EWCharString::Format( PCSTR p_Str, ... )
 			case 'x':
 			case 'X':
 			case 'o':
-				va_arg(Arg_List, int);
+				va_arg(Arg_List, int32_t);
 				Item_Len = 32;
 				Item_Len = max(Item_Len, Width + Precision);
 				break;
@@ -1476,7 +1476,7 @@ void EWCharString::Format( PCSTR p_Str, ... )
 
 			// no output
 			case 'n':
-				va_arg(Arg_List, int*);
+				va_arg(Arg_List, pint32_t);
 				break;
 
 			case 'I': // assume INT64 skip next two chars
@@ -1545,7 +1545,7 @@ bool operator!=( PCSTR p_String, const EWCharString& String )
 }
 
 /////////////////////////////////////////////////////////////////
-int EWCharString::Find( char Char, int Start_Index ) const
+int32_t EWCharString::Find( char Char, int32_t Start_Index ) const
 {
 	EWCSChar Tmp; 
 

@@ -10,16 +10,16 @@
 #include <stuff/vector4d.hpp>
 
 //	defined in MLRPrimitiveBase.cpp
-extern int clipTrick[6][2];
+extern int32_t clipTrick[6][2];
 
 inline void
-DoClipTrick(Vector4D& v, int ct)
+DoClipTrick(Vector4D& v, int32_t ct)
 {
 	v[clipTrick[ct][0]] = clipTrick[ct][1] ? v.w-SMALL : SMALL;
 }
 
 inline void
-DoCleanClipTrick(Vector4D& v, int ct)
+DoCleanClipTrick(Vector4D& v, int32_t ct)
 {
 	v[clipTrick[ct][0]] = clipTrick[ct][1] ? v.w : 0.0f;
 }

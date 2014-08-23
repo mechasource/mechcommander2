@@ -41,7 +41,7 @@ typedef enum {
 //------------
 // EXTERN vars
 
-//extern void memclear(PVOID Dest,int Length);
+//extern void memclear(PVOID Dest,int32_t Length);
 extern UserHeapPtr systemHeap;
 extern float metersPerWorldUnit;
 
@@ -350,7 +350,7 @@ inline bool inMapBounds (int32_t r, int32_t c, int32_t mapHeight, int32_t mapWid
 
 //---------------------------------------------------------------------------
 
-Stuff::Vector3D relativePositionToPoint (Stuff::Vector3D point, float angle, float distance, ULONG flags) {
+Stuff::Vector3D relativePositionToPoint (Stuff::Vector3D point, float angle, float distance, uint32_t flags) {
 
 	//--------------------------------------------------------
 	// Note that the angle should be -180 <= angle <= 180, and
@@ -413,7 +413,7 @@ Stuff::Vector3D relativePositionToPoint (Stuff::Vector3D point, float angle, flo
 	int32_t cellR, cellC;
 	Stuff::Vector3D curPoint3d(curPoint.x, curPoint.y, 0.0);
 	land->worldToCell(curPoint3d, cellR, cellC);
-	ULONG cellClear = GameMap->getPassable(cellR, cellC);
+	uint32_t cellClear = GameMap->getPassable(cellR, cellC);
 
 	Stuff::Vector3D lastGoodPoint = curPoint;
 	if (flags & RELPOS_FLAG_PASSABLE_START)
@@ -1457,7 +1457,7 @@ void GlobalMap::init (int32_t w, int32_t h) {
 
 	width = w;
 	height = h;
-	areaMap = (short*)systemHeap->Malloc(sizeof(short) * w * h);
+	areaMap = (pint16_t)systemHeap->Malloc(sizeof(int16_t) * w * h);
 	gosASSERT(areaMap != NULL);
 	for (int32_t r = 0; r < height; r++)
 		for (int32_t c = 0; c < width; c++)
@@ -1487,7 +1487,7 @@ int32_t GlobalMap::init (PacketFilePtr packetFile, int32_t whichPacket) {
 
 	int32_t startPacket = whichPacket;
 
-	ULONG version = 0;
+	uint32_t version = 0;
 	int32_t result = packetFile->readPacket(whichPacket++, (puint8_t)&version);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read version packet ");
@@ -1536,7 +1536,7 @@ int32_t GlobalMap::init (PacketFilePtr packetFile, int32_t whichPacket) {
 #endif
 	}
 
-	areaMap = (short*)systemHeap->Malloc(sizeof(short) * height * width);
+	areaMap = (pint16_t)systemHeap->Malloc(sizeof(int16_t) * height * width);
 	gosASSERT(areaMap != NULL);
 	result = packetFile->readPacket(whichPacket++, (puint8_t)areaMap);
 	if (result == 0)
@@ -1685,7 +1685,7 @@ int32_t GlobalMap::write (PacketFilePtr packetFile, int32_t whichPacket) {
 	if (!packetFile)
 		return(numPackets);
 
-	ULONG version = GLOBALMAP_VERSION_NUMBER;
+	uint32_t version = GLOBALMAP_VERSION_NUMBER;
 	int32_t result = packetFile->writePacket(whichPacket++, (puint8_t)&version, sizeof(int32_t));
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write version packet ");
@@ -1718,7 +1718,7 @@ int32_t GlobalMap::write (PacketFilePtr packetFile, int32_t whichPacket) {
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write numDoorLinks packet ");
 
-	result = packetFile->writePacket(whichPacket++, (puint8_t)areaMap, sizeof(short) * height * width);
+	result = packetFile->writePacket(whichPacket++, (puint8_t)areaMap, sizeof(int16_t) * height * width);
 	if (result <= 0)
 		Fatal(result, " GlobalMap.write: Unable to write areaMap packet ");
 
@@ -2274,7 +2274,7 @@ int32_t maxNumDoors = 0;
 
 void GlobalMap::calcGlobalDoors (void) {
 
-	short doorMap[SECTOR_DIM][SECTOR_DIM];
+	int16_t doorMap[SECTOR_DIM][SECTOR_DIM];
 
 
 	beginDoorProcessing();
@@ -2538,7 +2538,7 @@ int32_t GlobalMap::calcLinkCost (int32_t startDoor, int32_t thruArea, int32_t go
 		*/
 		//--------------------------------------------------------------------------
 		// If the cost is 1, then our start and goal cells are the same. Thus, there
-		// is a path, it's just REALLY short :)
+		// is a path, it's just REALLY int16_t :)
 		if (newPath.cost == 1)
 			return(1);
 		else
@@ -4338,7 +4338,7 @@ int32_t MoveMap::setUp (int32_t mapULr,
 					 int32_t clearCellCost,
 					 int32_t jumpCellCost,
 					 int32_t offsets,
-					 ULONG params) {
+					 uint32_t params) {
 
 	//-----------------------------------------------------------------------------
 	// If the map has not been allocated yet, then the tile height and width passed
@@ -4515,7 +4515,7 @@ int32_t MoveMap::setUp (int32_t level,
 					 int32_t clearCellCost,
 					 int32_t jumpCellCost,
 					 int32_t offsets,
-					 ULONG params) {
+					 uint32_t params) {
 
 #ifdef LAB_ONLY
 	int64_t startTime = GetCycles();

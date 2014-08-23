@@ -58,7 +58,7 @@ void
 MLR_I_C_DeT_PMesh::MLR_I_C_DeT_PMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLR_I_DeT_PMesh(class_data, stream, version)
 {
@@ -79,15 +79,15 @@ MLR_I_C_DeT_PMesh::MLR_I_C_DeT_PMesh(
 #if COLOR_AS_DWORD
 			MemoryStreamIO_Read(stream, &colors);
 #else
-			Stuff::DynamicArrayOf<ULONG> smallColors;
+			Stuff::DynamicArrayOf<uint32_t> smallColors;
 
 			MemoryStreamIO_Read(stream, &smallColors);
 		
-			int i, len = smallColors.GetLength();
+			int32_t i, len = smallColors.GetLength();
 
 			colors.SetLength(len);
 
-			ULONG theColor;
+			uint32_t theColor;
 
 			for(i=0;i<len;i++)
 			{
@@ -134,7 +134,7 @@ MLR_I_C_DeT_PMesh::~MLR_I_C_DeT_PMesh()
 MLR_I_C_DeT_PMesh*
 	MLR_I_C_DeT_PMesh::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	Check_Object(stream);
@@ -161,8 +161,8 @@ void
 #if COLOR_AS_DWORD
 	MemoryStreamIO_Write(stream, &colors);
 #else
-	Stuff::DynamicArrayOf<ULONG> smallColors;
-	int i, len = colors.GetLength();
+	Stuff::DynamicArrayOf<uint32_t> smallColors;
+	int32_t i, len = colors.GetLength();
 
 	const Stuff::RGBAColor *data = colors.GetData();
 
@@ -207,11 +207,11 @@ void
 void
 	MLR_I_C_DeT_PMesh::SetColorData(
 #if COLOR_AS_DWORD
-		const ULONG *data,
+		pcuint32_t data,
 #else
 		const RGBAColor *data,
 #endif
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -228,11 +228,11 @@ void
 void
 	MLR_I_C_DeT_PMesh::GetColorData(
 #if COLOR_AS_DWORD
-		ULONG **data,
+		uint32_t **data,
 #else
 		RGBAColor **data,
 #endif
-		int *dataSize
+		pint32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -244,7 +244,7 @@ void
 void
 	MLR_I_C_DeT_PMesh::PaintMe(
 #if COLOR_AS_DWORD
-		const ULONG *paintMe
+		pcuint32_t paintMe
 #else
 		const RGBAColor *paintMe
 #endif
@@ -254,10 +254,10 @@ void
 	Check_Object(this);
 	// original color is lost !!!;
 
-	int k, len = colors.GetLength();
+	int32_t k, len = colors.GetLength();
 
 #if COLOR_AS_DWORD
-	ULONG argb = GOSCopyColor(paintMe);
+	uint32_t argb = GOSCopyColor(paintMe);
 
 	for(k=0;k<len;k++)
 	{
@@ -289,7 +289,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //	This include contains follwing functions:
 //	void MLR_I_C_DeT_PMesh::TransformNoClip(Matrix4D*, GOSVertexPool*);
-//	int MLR_I_C_DeT_PMesh::Clip(MLRClippingState, GOSVertexPool*);
+//	int32_t MLR_I_C_DeT_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <MLR\MLRPrimitiveClipping.hpp>
@@ -333,7 +333,7 @@ MLR_I_C_DeT_PMesh*
 	puint8_t lengths = new uint8_t [6];
 	Register_Pointer(lengths);
 
-	int i;
+	int32_t i;
 
 	for(i=0;i<6;i++)
 	{
@@ -384,7 +384,7 @@ MLR_I_C_DeT_PMesh*
 	if(eightColors!=NULL)
 	{
 #if COLOR_AS_DWORD
-		ULONG *dwColor = new ULONG [8];
+		uint32_t *dwColor = new uint32_t [8];
 		Register_Pointer(dwColor);
 
 		for(i=0;i<8;i++)
@@ -457,7 +457,7 @@ MLRShape*
 	MLRShape *ret = new MLRShape(20);
 	Register_Object(ret);
 
-	int i, j, k;
+	int32_t i, j, k;
 	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
@@ -491,7 +491,7 @@ MLRShape*
 	RGBAColor *colors = new RGBAColor[nrTri*3];
 	Register_Pointer(colors);
 
-	int uniquePoints = 0;
+	int32_t uniquePoints = 0;
 	for (k=0;k<20;k++)
 	{
 		MidLevelRenderer::triDrawn = 0;

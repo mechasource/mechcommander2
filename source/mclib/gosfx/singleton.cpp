@@ -17,7 +17,7 @@
 gosFX::Singleton__Specification::Singleton__Specification(
 	Stuff::RegisteredClass::ClassID class_id,
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	Effect__Specification(class_id, stream, gfx_version)
 {

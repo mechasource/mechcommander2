@@ -32,14 +32,14 @@ namespace MidLevelRenderer {
 
 	public:
 		//	insDep == nr of lower bits used for image instancing
-		MLRTexturePool(GOSImagePool *image_pool, int insDep=3);
+		MLRTexturePool(GOSImagePool *image_pool, int32_t insDep=3);
 		~MLRTexturePool();
 
 		static MLRTexturePool* Make(Stuff::MemoryStream *stream);
 		void Save(Stuff::MemoryStream *stream);
-		MLRTexture* Add(PCSTR textureName, int instance=0);
+		MLRTexture* Add(PCSTR textureName, int32_t instance=0);
 		MLRTexture*	Add(GOSImage*);
-		MLRTexture* Add(PCSTR imageName, gos_TextureFormat format, int size, gos_TextureHints hints)
+		MLRTexture* Add(PCSTR imageName, gos_TextureFormat format, int32_t size, gos_TextureHints hints)
 		{
 			return Add(imagePool->GetImage(imageName, format, size, hints) );
 		}
@@ -47,7 +47,7 @@ namespace MidLevelRenderer {
 		// only removes the texture from the texture pool, it doesnt destroy the texture
 		void Remove(MLRTexture*);
 		uint32_t LoadImages();
-		MLRTexture* operator() (PCSTR name, int=0);
+		MLRTexture* operator() (PCSTR name, int32_t=0);
 		MLRTexture* operator[] (size_t index)
 		{
 			Check_Object(this);
@@ -88,7 +88,7 @@ namespace MidLevelRenderer {
 			return storedTextures;
 		}
 
-		int GetInstanceDepth() const
+		int32_t GetInstanceDepth() const
 		{
 			Check_Object(this);
 			return instanceDepth;
@@ -104,18 +104,18 @@ namespace MidLevelRenderer {
 
 	protected:
 		bool	unLoadedImages;
-		int		instanceDepth;		// bits used for image instancing
-		int		instanceMax;		// max for image instancing
-		int		handleDepth;		// bits used for image instancing
-		int		handleMax;			// max for image instancing
-		int		lastHandle;
-		int		storedTextures;
+		int32_t		instanceDepth;		// bits used for image instancing
+		int32_t		instanceMax;		// max for image instancing
+		int32_t		handleDepth;		// bits used for image instancing
+		int32_t		handleMax;			// max for image instancing
+		int32_t		lastHandle;
+		int32_t		storedTextures;
 
 		Stuff::StaticArrayOf<MLRTexture*, MLRState::TextureMask+1> textureArray;
 
-		int*	freeHandle;
-		int		firstFreeHandle;
-		int		lastFreeHandle;
+		pint32_t	freeHandle;
+		int32_t		firstFreeHandle;
+		int32_t		lastFreeHandle;
 
 		GOSImagePool*	imagePool;
 	};

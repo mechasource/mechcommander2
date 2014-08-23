@@ -99,9 +99,9 @@ bool
 		(	GOSPoint *gos_points,
 			Vector4D *coords,
 			RGBAColor *colors,
-			int offset0,
-			int offset1,
-			int offset2)
+			int32_t offset0,
+			int32_t offset1,
+			int32_t offset2)
 {
 #if USE_ASSEMBLER_CODE
 
@@ -207,7 +207,7 @@ bool
 
 		Scalar f;
 #if USE_ASSEMBLER_CODE
-		int argb;
+		int32_t argb;
 
 		_asm {
 			fld		float_cheat

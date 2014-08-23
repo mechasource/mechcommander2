@@ -74,7 +74,7 @@ PostcompVertex::PostcompVertex()
 float					MapData::waterDepth = 0.0f;
 float					MapData::shallowDepth = 0.0f;
 float					MapData::alphaDepth = 0.0f;
-ULONG					MapData::WaterTXMData = 0xffffffff;
+uint32_t					MapData::WaterTXMData = 0xffffffff;
 
 float					cloudScrollSpeedX = 0.002f;
 float					cloudScrollSpeedY = 0.002f;
@@ -122,13 +122,13 @@ void MapData::newInit (int32_t numVertices)
 	// There is one (1) block of memory for the ENTIRE terrain now.
 	// Since we no longer cache any aspect of the terrain, this is
 	// FAR more efficient and easier to understand.
-	PUCHAR start = getHeapPtr();
+	puint8_t start = getHeapPtr();
 	blocks = (PostcompVertexPtr)start;
 
 	PostcompVertex* pTmp = blocks;
 
 	// gotta set all of the z's to 1
-	for ( int i = 0; i < numVertices; ++i )
+	for ( int32_t i = 0; i < numVertices; ++i )
 	{
 		pTmp->vertexNormal.z = 1.0;
 		pTmp->terrainType = MC_MUD_TYPE;
@@ -147,13 +147,13 @@ void MapData::newInit (PacketFile* newFile, int32_t numVertices)
 {
 	newInit( numVertices );
 
-	newFile->readPacket(newFile->getCurrentPacket(), (PUCHAR)blocks );
+	newFile->readPacket(newFile->getCurrentPacket(), (puint8_t)blocks );
 
 	calcTransitions();
 }
 
 //---------------------------------------------------------------------------
-int32_t MapData::save( PacketFile* file, int whichPacket )
+int32_t MapData::save( PacketFile* file, int32_t whichPacket )
 {
 	return file->writePacket( whichPacket, (puint8_t)blocks, 
 		Terrain::realVerticesMapSide * Terrain::realVerticesMapSide *sizeof(PostcompVertex ) );
@@ -225,12 +225,12 @@ void MapData::calcTransitions()
 				
 			//-------------------------------------------------------------------------------
 			// Store texture in bottom part from TxmIndex provided by TerrainTextureManager
-			ULONG terrainType = pVertex1->terrainType + 
+			uint32_t terrainType = pVertex1->terrainType + 
 								(pVertex2->terrainType << 8) +
 								(pVertex3->terrainType << 16) +
 								(pVertex4->terrainType << 24);
 
-			ULONG overlayType = (pVertex1->textureData >> 16);
+			uint32_t overlayType = (pVertex1->textureData >> 16);
    			if (overlayType < Terrain::terrainTextures->getFirstOverlay())
    			{
    				pVertex1->textureData = 0xffff0000;		//Erase the overlay, the numbers changed!
@@ -239,7 +239,7 @@ void MapData::calcTransitions()
  			
 			//Insure Base Texture is zero.
 			pVertex1->textureData &= (pVertex1->textureData & 0xffff0000);
-			ULONG txmResult = Terrain::terrainTextures->setTexture(terrainType,overlayType);
+			uint32_t txmResult = Terrain::terrainTextures->setTexture(terrainType,overlayType);
 
 			pVertex1->textureData += txmResult;
 
@@ -251,7 +251,7 @@ void MapData::calcTransitions()
 		currentVertex++;
 	}
 
-	ULONG terrainType =  MC_BLUEWATER_TYPE + 
+	uint32_t terrainType =  MC_BLUEWATER_TYPE + 
 						(MC_BLUEWATER_TYPE << 8) +
 						(MC_BLUEWATER_TYPE << 16) +
 						(MC_BLUEWATER_TYPE << 24);
@@ -273,7 +273,7 @@ void MapData::calcWater (float wDepth, float sDepth, float aDepth)
 	// Try random.  May look way cool!
 	bool odd1 = false;
 	bool odd2 = false;
-	UCHAR marker = 0;
+	uint8_t marker = 0;
 	for (int32_t y=0;y<(Terrain::realVerticesMapSide-1);y++)
 	{
 		for (int32_t x=0;x<(Terrain::realVerticesMapSide-1);x++)
@@ -314,7 +314,7 @@ void MapData::recalcWater (void)
 	bool odd1 = false;
 	bool odd2 = false;
 
-	UCHAR marker = 0;
+	uint8_t marker = 0;
 	for (int32_t y=0;y<(Terrain::realVerticesMapSide-1);y++)
 	{
 		for (int32_t x=0;x<(Terrain::realVerticesMapSide-1);x++)
@@ -364,14 +364,14 @@ float ScrollUV2 = MAX_UV;
 
 float SCROLL_RATE =	0.005f;
 //---------------------------------------------------------------------------
-void MapData::setVertexHeight( int VertexIndex, float Val )
+void MapData::setVertexHeight( int32_t VertexIndex, float Val )
 {
 	blocks[VertexIndex].elevation = Val;
 }
 
 
 //---------------------------------------------------------------------------
-float MapData::getVertexHeight( int VertexIndex )
+float MapData::getVertexHeight( int32_t VertexIndex )
 {
 	return blocks[VertexIndex].elevation;
 }
@@ -734,7 +734,7 @@ int32_t MapData::update (void)
 			{
 				sprayFrame += sprayAdd;
 				SprayTextureNum = 0.0f;
-				if (((int)(sprayFrame + sprayAdd)) >= (int)Terrain::terrainTextures2->getWaterDetailNumFrames())/*carefull of the signed/uint32_t mismatch*/
+				if (((int32_t)(sprayFrame + sprayAdd)) >= (int32_t)Terrain::terrainTextures2->getWaterDetailNumFrames())/*carefull of the signed/uint32_t mismatch*/
 				{
 					sprayAdd = -1;
 	  			}
@@ -763,10 +763,10 @@ void MapData::makeLists (VertexPtr vertexList, int32_t &numVerts, TerrainQuadPtr
 	VertexPtr currentVertex = vertexList;
 	numVerts = 0;
 
-	int y;
+	int32_t y;
 	for (y=0;y<Terrain::visibleVerticesPerSide;y++)
 	{
-		for (int x=0;x<Terrain::visibleVerticesPerSide;x++)
+		for (int32_t x=0;x<Terrain::visibleVerticesPerSide;x++)
 		{
 			if ((topLeftX < 0) || (topLeftX >= Terrain::realVerticesMapSide) ||
 				(topLeftY < 0) || (topLeftY >= Terrain::realVerticesMapSide))
@@ -838,7 +838,7 @@ void MapData::makeLists (VertexPtr vertexList, int32_t &numVerts, TerrainQuadPtr
 
 	for (y=0;y<maxY;y++)
 	{
-		for (int x=0;x<maxX;x++)
+		for (int32_t x=0;x<maxX;x++)
 		{
 			VertexPtr v0, v1, v2 ,v3;
 
@@ -927,7 +927,7 @@ void MapData::setOverlayTile (int32_t block, int32_t vertex, int32_t offset)
 }	
 
 //---------------------------------------------------------------------------
-void MapData::setOverlay( int32_t indexY, int32_t indexX, Overlays type, ULONG offset )
+void MapData::setOverlay( int32_t indexY, int32_t indexX, Overlays type, uint32_t offset )
 {
 	int32_t index = indexX + indexY * Terrain::realVerticesMapSide;
 
@@ -939,7 +939,7 @@ void MapData::setOverlay( int32_t indexY, int32_t indexX, Overlays type, ULONG o
 }
 
 //---------------------------------------------------------------------------
-ULONG MapData::getTexture( int32_t indexY, int32_t indexX )
+uint32_t MapData::getTexture( int32_t indexY, int32_t indexX )
 {
 	gosASSERT( indexX > -1 && indexX < Terrain::realVerticesMapSide );
 	gosASSERT( indexY > -1 && indexY < Terrain::realVerticesMapSide );
@@ -961,12 +961,12 @@ float MapData::terrainElevation( int32_t indexY, int32_t indexX )
 }
 
 //---------------------------------------------------------------------------
-void MapData::setTerrain( int32_t indexY, int32_t indexX, int Type )
+void MapData::setTerrain( int32_t indexY, int32_t indexX, int32_t Type )
 {
 	int32_t Vertices[4][2];
 
-	int x = 0;
-	int y = 1;
+	int32_t x = 0;
+	int32_t y = 1;
 
 	Vertices[0][x] = indexX;
 	Vertices[0][y] = indexY;
@@ -977,7 +977,7 @@ void MapData::setTerrain( int32_t indexY, int32_t indexX, int Type )
 	Vertices[3][x] = indexX;
 	Vertices[3][y] = indexY > 0 ? indexY - 1 : 0;
 
-	for ( int i = 0; i < 4; ++i )
+	for ( int32_t i = 0; i < 4; ++i )
 	{
 	
 		if ( ( indexX > -1 && indexX < Terrain::realVerticesMapSide - 1 ) &&
@@ -1002,12 +1002,12 @@ void MapData::setTerrain( int32_t indexY, int32_t indexX, int Type )
 				
 			//-------------------------------------------------------------------------------
 			// Store texture in bottom part from TxmIndex provided by TerrainTextureManager
-			ULONG terrainType = pVertex1->terrainType + 
+			uint32_t terrainType = pVertex1->terrainType + 
 								(pVertex2->terrainType << 8) +
 								(pVertex3->terrainType << 16) +
 								(pVertex4->terrainType << 24);
 
-			ULONG overlayType = (pVertex1->textureData >> 16);
+			uint32_t overlayType = (pVertex1->textureData >> 16);
 			if (overlayType < Terrain::terrainTextures->getFirstOverlay())
 			{
 				pVertex1->textureData = 0xffff0000;		//Erase the overlay, the numbers changed!
@@ -1016,7 +1016,7 @@ void MapData::setTerrain( int32_t indexY, int32_t indexX, int Type )
 			
 			//Insure Base Texture is zero.
 			pVertex1->textureData &= (pVertex1->textureData & 0xffff0000);
-			ULONG txmResult = Terrain::terrainTextures->setTexture(terrainType,overlayType);
+			uint32_t txmResult = Terrain::terrainTextures->setTexture(terrainType,overlayType);
 
 			pVertex1->textureData += txmResult;
 		}
@@ -1039,7 +1039,7 @@ int32_t MapData::getTerrain( int32_t tileR, int32_t tileC )
 }
 
 //---------------------------------------------------------------------------
-void MapData::getOverlay( int32_t tileR, int32_t tileC, Overlays& type, ULONG& Offset )
+void MapData::getOverlay( int32_t tileR, int32_t tileC, Overlays& type, uint32_t& Offset )
 {
 	gosASSERT( tileR < Terrain::realVerticesMapSide && tileR > -1 );
 	gosASSERT( tileC < Terrain::realVerticesMapSide && tileC > -1 );
@@ -1809,7 +1809,7 @@ float MapData::terrainElevation (Stuff::Vector3D &position)
 //---------------------------------------------------------------------------
 void MapData::unselectAll()
 {
-	for ( int i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i )
+	for ( int32_t i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i )
 	{
 		blocks[i].selected = false;
 	}
@@ -1820,14 +1820,14 @@ void MapData::unselectAll()
 //---------------------------------------------------------------------------
 void MapData::unhighlightAll()
 {
-	for ( int i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i )
+	for ( int32_t i = 0; i < Terrain::realVerticesMapSide * Terrain::realVerticesMapSide; ++i )
 	{
 		blocks[i].highlighted = false;
 	}
 }
 
 //---------------------------------------------------------------------------
-void MapData::selectVertex( ULONG tileRow, ULONG tileCol, bool bSelect, bool bToggle)
+void MapData::selectVertex( uint32_t tileRow, uint32_t tileCol, bool bSelect, bool bToggle)
 {
 	//Just return.  Don't select anything!
 	if ( tileRow >= Terrain::realVerticesMapSide )
@@ -1836,7 +1836,7 @@ void MapData::selectVertex( ULONG tileRow, ULONG tileCol, bool bSelect, bool bTo
 	if ( tileCol >= Terrain::realVerticesMapSide )
 		return;
 
-	ULONG index = tileRow * Terrain::realVerticesMapSide + tileCol;
+	uint32_t index = tileRow * Terrain::realVerticesMapSide + tileCol;
 	blocks[index].selected = bToggle ? !blocks[index].selected : bSelect;
 	if ( blocks[index].selected )
 		hasSelection ++;
@@ -1849,12 +1849,12 @@ void MapData::selectVertex( ULONG tileRow, ULONG tileCol, bool bSelect, bool bTo
 }
 
 //---------------------------------------------------------------------------
-bool MapData::isVertexSelected( ULONG tileRow, ULONG tileCol )
+bool MapData::isVertexSelected( uint32_t tileRow, uint32_t tileCol )
 {
 	gosASSERT( tileRow < Terrain::realVerticesMapSide );
 	gosASSERT( tileCol < Terrain::realVerticesMapSide );
 
-	ULONG index = tileRow * Terrain::realVerticesMapSide + tileCol;
+	uint32_t index = tileRow * Terrain::realVerticesMapSide + tileCol;
 	return blocks[index].selected ? true : false;
 
 }

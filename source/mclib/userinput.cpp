@@ -169,8 +169,8 @@ void UserInput::update (void)
 	leftDoubleClick = rightDoubleClick = middleDoubleClick = false;
 
 	
-	ULONG LEFT_MOUSE_CODE = VK_LBUTTON;
-	ULONG RIGHT_MOUSE_CODE = VK_RBUTTON;
+	uint32_t LEFT_MOUSE_CODE = VK_LBUTTON;
+	uint32_t RIGHT_MOUSE_CODE = VK_RBUTTON;
 	if ( GetSystemMetrics(SM_SWAPBUTTON) )
 	{
 		RIGHT_MOUSE_CODE = VK_LBUTTON;
@@ -179,15 +179,15 @@ void UserInput::update (void)
 
 	//-----------------
 	// Poll the mouse.
-	ULONG buttonStates;
-	gos_GetMouseInfo(&mouseXPosition,&mouseYPosition,(int *)&mouseXDelta,(int *)&mouseYDelta,(int *)&mouseWheelDelta,&buttonStates);
+	uint32_t buttonStates;
+	gos_GetMouseInfo(&mouseXPosition,&mouseYPosition,(pint32_t )&mouseXDelta,(pint32_t )&mouseYDelta,(pint32_t )&mouseWheelDelta,&buttonStates);
 //	leftMouseButtonState = buttonStates & 1;
 //	rightMouseButtonState = (buttonStates & 2) >> 1;
 //	middleMouseButtonState = (buttonStates & 4) >> 2;
 
-	SHORT code = GetAsyncKeyState(LEFT_MOUSE_CODE);
-	SHORT rCode = GetAsyncKeyState( RIGHT_MOUSE_CODE );
-	SHORT mCode = GetAsyncKeyState( VK_MBUTTON );
+	int16_t  code = GetAsyncKeyState(LEFT_MOUSE_CODE);
+	int16_t  rCode = GetAsyncKeyState( RIGHT_MOUSE_CODE );
+	int16_t  mCode = GetAsyncKeyState( VK_MBUTTON );
 	leftMouseButtonState = code ? MC2_MOUSE_DOWN : MC2_MOUSE_UP;
 	rightMouseButtonState = rCode ? MC2_MOUSE_DOWN : MC2_MOUSE_UP;
 	middleMouseButtonState = mCode ? MC2_MOUSE_DOWN : MC2_MOUSE_UP;
@@ -374,8 +374,8 @@ void UserInput::update (void)
 
 		if (!mc2MouseData)
 		{
-			mc2MouseData = (PUCHAR)malloc(sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
-			memset(mc2MouseData,0,sizeof(ULONG) * MOUSE_WIDTH * MOUSE_WIDTH);
+			mc2MouseData = (puint8_t)malloc(sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
+			memset(mc2MouseData,0,sizeof(uint32_t) * MOUSE_WIDTH * MOUSE_WIDTH);
 		}
 
 		//Need to update the mouse in the mouse thread to inform it that the cursor
@@ -386,12 +386,12 @@ void UserInput::update (void)
 		mc2MouseWidth = cursors->cursorInfos[mouseState].width();
 		mc2MouseHeight = cursors->cursorInfos[mouseState].height();
 
-		ULONG totalMouseFrames = cursors->getNumFrames(mouseState);
+		uint32_t totalMouseFrames = cursors->getNumFrames(mouseState);
  		if ( totalMouseFrames > 1 )
 		{
 			int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth/cursors->cursorInfos[mouseState].width();
-			int iIndex = mouseFrame % framesPerRow;
-			int jIndex = mouseFrame / framesPerRow;
+			int32_t iIndex = mouseFrame % framesPerRow;
+			int32_t jIndex = mouseFrame / framesPerRow;
 
 			float oldU = cursors->cursorInfos[mouseState].u;
 			float oldV = cursors->cursorInfos[mouseState].v;
@@ -850,8 +850,8 @@ void UserInput::render (void)						//Last thing rendered.  Draws Mouse.
 			if ( totalMouseFrames > 1 )
 			{
 				int32_t framesPerRow = cursors->cursorInfos[mouseState].textureWidth/cursors->cursorInfos[mouseState].width();
-				int iIndex = mouseFrame % framesPerRow;
-				int jIndex = mouseFrame / framesPerRow;
+				int32_t iIndex = mouseFrame % framesPerRow;
+				int32_t jIndex = mouseFrame / framesPerRow;
 
 				float oldU = cursors->cursorInfos[mouseState].u;
 				float oldV = cursors->cursorInfos[mouseState].v;

@@ -40,7 +40,7 @@ namespace MidLevelRenderer {
 		MLRSortByOrder(MLRTexturePool*);
 		~MLRSortByOrder();
 
-		void AddPrimitive(MLRPrimitiveBase*, int=0);
+		void AddPrimitive(MLRPrimitiveBase*, int32_t=0);
 		void AddEffect(MLREffect*, const MLRState&);
 		void AddScreenQuads(GOSVertex*, const DrawScreenQuadsInformation*);
 
@@ -59,7 +59,7 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 	protected:
-		int
+		int32_t
 			lastUsedInBucket[MLRState::PriorityCount];
 
 		Stuff::DynamicArrayOf<SortData*>  //, Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame

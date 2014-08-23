@@ -67,7 +67,7 @@ void
 MLR_Terrain::MLR_Terrain(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLR_I_DeT_TMesh(class_data, stream, version)
 {
@@ -101,7 +101,7 @@ MLR_Terrain::~MLR_Terrain()
 MLR_Terrain*
 	MLR_Terrain::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	Check_Object(stream);
@@ -175,7 +175,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //	This include contains follwing functions:
 //	void MLR_Terrain::TransformNoClip(Matrix4D*, GOSVertexPool*);
-//	int MLR_Terrain::Clip(MLRClippingState, GOSVertexPool*);
+//	int32_t MLR_Terrain::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <MLR\MLRTriangleClipping.hpp>
@@ -199,7 +199,7 @@ MLRShape*
 	MLRShape *ret = new MLRShape(20);
 	Register_Object(ret);
 
-	int i, j, k;
+	int32_t i, j, k;
 	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
@@ -221,7 +221,7 @@ MLRShape*
 	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
 
-	int uniquePoints = 0;
+	int32_t uniquePoints = 0;
 	for (k=0;k<20;k++)
 	{
 		triDrawn = 0;

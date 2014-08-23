@@ -16,7 +16,7 @@
 //
 gosFX::DebrisCloud__Specification::DebrisCloud__Specification(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	Effect__Specification(gosFX::DebrisCloudClassID, stream, gfx_version)
 {
@@ -59,7 +59,7 @@ gosFX::DebrisCloud__Specification::~DebrisCloud__Specification()
 {
 	Check_Object(this);
 
-	int i, nrOfParticles = debrisPieces.GetLength();
+	int32_t i, nrOfParticles = debrisPieces.GetLength();
 
 	for(i=0;i<nrOfParticles;i++)
 	{
@@ -78,7 +78,7 @@ gosFX::DebrisCloud__Specification::~DebrisCloud__Specification()
 gosFX::DebrisCloud__Specification*
 	gosFX::DebrisCloud__Specification::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);
@@ -114,7 +114,7 @@ void
 
 	MidLevelRenderer::WriteMLRVersion(stream);
 
-	int i, nrOfParticles = debrisPieces.GetLength();
+	int32_t i, nrOfParticles = debrisPieces.GetLength();
 	*stream << nrOfParticles;
 
 	for(i=0;i<nrOfParticles;i++)
@@ -153,7 +153,7 @@ void
 
 	centerOfForce = spec->centerOfForce;			//	Stuff::Point3D
 
-	int i, nrOfParticles = spec->debrisPieces.GetLength();
+	int32_t i, nrOfParticles = spec->debrisPieces.GetLength();
 
 	debrisPieces.SetLength(nrOfParticles);
 	debrisPositions.SetLength(nrOfParticles);
@@ -181,7 +181,7 @@ void
 void
 	gosFX::DebrisCloud__Specification::LoadGeometry(Stuff::MemoryStream *stream)
 {
-	int i, mlrVersion, nrOfParticles;
+	int32_t i, mlrVersion, nrOfParticles;
 
 	mlrVersion = MidLevelRenderer::ReadMLRVersion(stream);
 	*stream >> nrOfParticles;
@@ -409,7 +409,7 @@ void
 	
 	Verify(debrisPieces.GetLength() == spec->debrisPieces.GetLength());
 
-	int i, numOfParticles = debrisPieces.GetLength();
+	int32_t i, numOfParticles = debrisPieces.GetLength();
 	
 	for(i=0;i<numOfParticles;i++)
 	{
@@ -487,7 +487,7 @@ bool
 	// Deal with all the active particles
 	//-----------------------------------
 	//
-	int i;
+	int32_t i;
 	Stuff::LinearMatrix4D local_to_world;
 
 	local_to_world.Multiply(m_localToParent, *info->m_parentToWorld);
@@ -645,7 +645,7 @@ void
 	// Destroy all the particles and set up an empty particle cloud
 	//-------------------------------------------------------------
 	//
-	for(int i=0; i < debrisPieces.GetLength(); i++)
+	for(int32_t i=0; i < debrisPieces.GetLength(); i++)
 	{
 		DestroyParticle(i);
 	}
@@ -806,7 +806,7 @@ void gosFX::DebrisCloud::Draw(DrawInfo *info)
 	Specification *spec = GetSpecification();
 	Check_Object(spec);
 
-	int i, nrOfParticle = debrisPieces.GetLength();
+	int32_t i, nrOfParticle = debrisPieces.GetLength();
 
 	for(i=0;i<nrOfParticle;i++)
 	{

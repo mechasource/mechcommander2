@@ -20,7 +20,7 @@ namespace Stuff {
 
 namespace MidLevelRenderer {
 
-	typedef int AndyDisplay;
+	typedef int32_t AndyDisplay;
 	class MLRSorter;
 	//typedef Stuff::Vector2DOf<float> Vector2DScalar;
 
@@ -39,7 +39,7 @@ namespace MidLevelRenderer {
 		const Stuff::LinearMatrix4D*	worldToShape;
 
 		MLRLight* const *activeLights;
-		int	nrOfActiveLights;
+		int32_t	nrOfActiveLights;
 
 		void TestInstance() const {}
 	};
@@ -71,7 +71,7 @@ namespace MidLevelRenderer {
 
 #if 0 // for the time being no lights on the effects
 		MLRLight *const *activeLights;
-		int	nrOfActiveLights;
+		int32_t	nrOfActiveLights;
 #endif
 		void TestInstance(void) const {}
 	};

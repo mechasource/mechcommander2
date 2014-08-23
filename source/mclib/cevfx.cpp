@@ -17,22 +17,22 @@
 #include "camera.h"
 #include "clip.h"
 
-extern void AG_shape_translate_transform(PANE *globalPane, PVOID shapeTable,LONG frameNum, LONG hotX, LONG hotY,PVOID tempBuffer,LONG reverse, LONG scaleUp);
-extern void AG_shape_transform(PANE *globalPane, PVOID shapeTable,LONG frameNum, LONG hotX, LONG hotY, PVOID tempBuffer,LONG reverse, LONG scaleUp);
+extern void AG_shape_translate_transform(PANE *globalPane, PVOID shapeTable,int32_t frameNum, int32_t hotX, int32_t hotY,PVOID tempBuffer,int32_t reverse, int32_t scaleUp);
+extern void AG_shape_transform(PANE *globalPane, PVOID shapeTable,int32_t frameNum, int32_t hotX, int32_t hotY, PVOID tempBuffer,int32_t reverse, int32_t scaleUp);
 extern void AG_shape_lookaside( puint8_t table );
-extern void AG_shape_draw (PANE *pane, PVOID shape_table,LONG shape_number, LONG hotX, LONG hotY);
-extern void AG_shape_translate_draw (PANE *pane, PVOID shape_table,LONG shape_number, LONG hotX, LONG hotY);
+extern void AG_shape_draw (PANE *pane, PVOID shape_table,int32_t shape_number, int32_t hotX, int32_t hotY);
+extern void AG_shape_translate_draw (PANE *pane, PVOID shape_table,int32_t shape_number, int32_t hotX, int32_t hotY);
 //void memclear(PVOID Dest,size_t Length);
 //---------------------------------------------------------------------------
 // Static Globals
-PUCHAR shapeBuffer16 = NULL;
-PUCHAR shapeBuffer32 = NULL;
-PUCHAR shapeBuffer64 = NULL;
-PUCHAR shapeBuffer128 = NULL;
-PUCHAR shapeBuffer256 = NULL;
+puint8_t shapeBuffer16 = NULL;
+puint8_t shapeBuffer32 = NULL;
+puint8_t shapeBuffer64 = NULL;
+puint8_t shapeBuffer128 = NULL;
+puint8_t shapeBuffer256 = NULL;
 
 //---------------------------------------------------------------------------
-VFXElement::VFXElement (PUCHAR _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, PUCHAR fTable, bool noScale, bool upScale) : Element(-_y)
+VFXElement::VFXElement (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, puint8_t fTable, bool noScale, bool upScale) : Element(-_y)
 {
 	shapeTable = _shape;
 	x = _x;
@@ -70,7 +70,7 @@ VFXElement::VFXElement (PUCHAR _shape, int32_t _x, int32_t _y, int32_t frame, bo
 
 
 //---------------------------------------------------------------------------
-VFXElement::VFXElement (PUCHAR _shape, float _x, float _y, int32_t frame, bool rev, PUCHAR fTable, bool noScale, bool upScale) : Element(-_y)
+VFXElement::VFXElement (puint8_t _shape, float _x, float _y, int32_t frame, bool rev, puint8_t fTable, bool noScale, bool upScale) : Element(-_y)
 {
 	shapeTable = _shape;
 	x = _x;
@@ -106,7 +106,7 @@ VFXElement::VFXElement (PUCHAR _shape, float _x, float _y, int32_t frame, bool r
 #endif
 }
 	
-extern PUCHAR tempBuffer;
+extern puint8_t tempBuffer;
 //---------------------------------------------------------------------------
 void VFXElement::draw (void)
 {
@@ -117,7 +117,7 @@ void VFXElement::draw (void)
 	{
 		//----------------------------------------------------------------
 		// Check if shape is actually valid.
-		if ((*(int*)shapeTable!=*(int*)"1.10"))
+		if ((*(pint32_t)shapeTable!=*(pint32_t)"1.10"))
 			return;
 			
 		if (!reverse)
@@ -133,7 +133,7 @@ void VFXElement::draw (void)
 		else		//45Pixel mechs dealt with here.
 		{
 			if (!tempBuffer)
-				tempBuffer = (PUCHAR)systemHeap->Malloc(MAX_X * MAX_Y);
+				tempBuffer = (puint8_t)systemHeap->Malloc(MAX_X * MAX_Y);
 
 			if (fadeTable)
 			{
@@ -280,7 +280,7 @@ int32_t mechRGBLookup2[56] =
 int32_t mechCmdr1PaletteLookup[256];
 
 //---------------------------------------------------------------------------
-void VFXShapeElement::init (PUCHAR _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, ULONG *fTable, float _z, float tZ)
+void VFXShapeElement::init (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, uint32_t *fTable, float _z, float tZ)
 {
 	gosASSERT(_shape != NULL);
 
@@ -307,7 +307,7 @@ void VFXShapeElement::init (PUCHAR _shape, int32_t _x, int32_t _y, int32_t frame
 //---------------------------------------------------------------------------
 int32_t VFXShapeElement::getTextureHandle (int32_t height)
 {
-	ULONG textureResult = 0;
+	uint32_t textureResult = 0;
 
 	if (height == -1)
 	{
@@ -390,7 +390,7 @@ void VFXShapeElement::drawShape (void)
 		if ((xRes < 16) && (yRes < 16))
 		{
 			if (!shapeBuffer16)
-				shapeBuffer16 = (PUCHAR)systemHeap->Malloc(16*16);
+				shapeBuffer16 = (puint8_t)systemHeap->Malloc(16*16);
 				
 			gWindow.buffer = shapeBuffer16;
 			memset(gWindow.buffer,0,16*16);
@@ -401,7 +401,7 @@ void VFXShapeElement::drawShape (void)
 		else if ((xRes < 32) && (yRes < 32))
 		{
 			if (!shapeBuffer32)
-				shapeBuffer32 = (PUCHAR)systemHeap->Malloc(32*32);
+				shapeBuffer32 = (puint8_t)systemHeap->Malloc(32*32);
 				
 			gWindow.buffer = shapeBuffer32;
 			memset(gWindow.buffer,0,32*32);
@@ -412,7 +412,7 @@ void VFXShapeElement::drawShape (void)
 		else if ((xRes < 64) && (yRes < 64))
 		{
 			if (!shapeBuffer64)
-				shapeBuffer64 = (PUCHAR)systemHeap->Malloc(64*64);
+				shapeBuffer64 = (puint8_t)systemHeap->Malloc(64*64);
 				
 			gWindow.buffer = shapeBuffer64;
 			memset(gWindow.buffer,0,64*64);
@@ -423,7 +423,7 @@ void VFXShapeElement::drawShape (void)
 		else if ((xRes < 128) && (yRes < 128))
 		{
 			if (!shapeBuffer128)
-				shapeBuffer128 = (PUCHAR)systemHeap->Malloc(128*128);
+				shapeBuffer128 = (puint8_t)systemHeap->Malloc(128*128);
 				
 			gWindow.buffer = shapeBuffer128;
 			memset(gWindow.buffer,0,128*128);
@@ -434,7 +434,7 @@ void VFXShapeElement::drawShape (void)
 		else if ((xRes < 256) && (yRes < 256))
 		{
 			if (!shapeBuffer256)
-				shapeBuffer256 = (PUCHAR)systemHeap->Malloc(256*256);
+				shapeBuffer256 = (puint8_t)systemHeap->Malloc(256*256);
 				
 			gWindow.buffer = shapeBuffer256;
 			memset(gWindow.buffer,0,256*256);
@@ -450,35 +450,35 @@ void VFXShapeElement::drawShape (void)
 		{
 			case 16:
 				if (!shapeBuffer16)
-					shapeBuffer16 = (PUCHAR)systemHeap->Malloc(16*16);
+					shapeBuffer16 = (puint8_t)systemHeap->Malloc(16*16);
 					
 				gWindow.buffer = shapeBuffer16;
 				break;
 				
 			case 32:
 				if (!shapeBuffer32)
-					shapeBuffer32 = (PUCHAR)systemHeap->Malloc(32*32);
+					shapeBuffer32 = (puint8_t)systemHeap->Malloc(32*32);
 				
 				gWindow.buffer = shapeBuffer32;
 				break;
 				
 			case 64:
 				if (!shapeBuffer64)
-					shapeBuffer64 = (PUCHAR)systemHeap->Malloc(64*64);
+					shapeBuffer64 = (puint8_t)systemHeap->Malloc(64*64);
 					
 				gWindow.buffer = shapeBuffer64;
 				break;
 				
 			case 128:
 				if (!shapeBuffer128)
-					shapeBuffer128 = (PUCHAR)systemHeap->Malloc(128*128);
+					shapeBuffer128 = (puint8_t)systemHeap->Malloc(128*128);
 					
 				gWindow.buffer = shapeBuffer128;
 				break;
 				
 			case 256:
 				if (!shapeBuffer256)
-					shapeBuffer256 = (PUCHAR)systemHeap->Malloc(256*256);
+					shapeBuffer256 = (puint8_t)systemHeap->Malloc(256*256);
 					
 				gWindow.buffer = shapeBuffer256;
 				break;
@@ -501,7 +501,7 @@ void VFXShapeElement::drawShape (void)
 	textureFactor = float(textureWidth) * Camera::globalScaleFactor;
 
 	if (!tempBuffer)
-		tempBuffer = (PUCHAR)systemHeap->Malloc(MAX_X * MAX_Y);
+		tempBuffer = (puint8_t)systemHeap->Malloc(MAX_X * MAX_Y);
 
 	while (shapeTable[i] && (i < MAX_ELEMENT_SHAPES))
 	{
@@ -529,8 +529,8 @@ void VFXShapeElement::drawShape (void)
 	//-------------------------------------------------------
 	// Copy 8 bit data to 32 bit texture surface using table
 	// Could easily assemblify and much improve speed!
-	ULONG *textureMemory = textureData.pTexture;
-	PUCHAR bufferMemory = gWindow.buffer;
+	uint32_t *textureMemory = textureData.pTexture;
+	puint8_t bufferMemory = gWindow.buffer;
 	if (fadeTable)
 	{
 		for (i=0;i<textureWidth;i++)
@@ -555,7 +555,7 @@ void VFXShapeElement::drawShape (void)
 }	
 
 //---------------------------------------------------------------------------
-void VFXShapeElement::setTextureHandle (ULONG handle, int32_t height)
+void VFXShapeElement::setTextureHandle (uint32_t handle, int32_t height)
 {
 	textureMemoryHandle = handle;
 	actualHeight = height;
@@ -666,7 +666,7 @@ void VFXShapeElement::draw (void)
 
 //---------------------------------------------------------------------------
 // class TextureElement
-void TextureElement::init (ULONG textureHandle, int32_t _x, int32_t _y, int32_t hsx, int32_t hsy, float tW, float _z, float tZ)
+void TextureElement::init (uint32_t textureHandle, int32_t _x, int32_t _y, int32_t hsx, int32_t hsy, float tW, float _z, float tZ)
 {
 	x = _x;
 	y = _y;
@@ -994,7 +994,7 @@ void PolygonTriElement::draw (void)
 
 //---------------------------------------------------------------------------
 //class TexturedPolygonQuadElement : public PolygonQuadElement
-void TexturedPolygonQuadElement::init (gos_VERTEX *v, ULONG tHandle, bool writez, bool compz)
+void TexturedPolygonQuadElement::init (gos_VERTEX *v, uint32_t tHandle, bool writez, bool compz)
 {
 	PolygonQuadElement::init(v);
 	textureHandle = tHandle;
@@ -1112,7 +1112,7 @@ void TexturedPolygonQuadElement::draw (void)
 
 //---------------------------------------------------------------------------
 //class TexturedPolygonTriElement : public PolygonTriElement
-void TexturedPolygonTriElement::init (gos_VERTEX *v, ULONG tHandle)
+void TexturedPolygonTriElement::init (gos_VERTEX *v, uint32_t tHandle)
 {
 	PolygonTriElement::init(v);
 	textureHandle = tHandle;

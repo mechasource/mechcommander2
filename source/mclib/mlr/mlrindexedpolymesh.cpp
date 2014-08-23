@@ -79,7 +79,7 @@ void
 //
 MLRIndexedPolyMesh::MLRIndexedPolyMesh(
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLRIndexedPrimitive(DefaultData, stream, version)
 {
@@ -114,7 +114,7 @@ MLRIndexedPolyMesh::~MLRIndexedPolyMesh()
 MLRIndexedPolyMesh*
 	MLRIndexedPolyMesh::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	return new MLRIndexedPolyMesh(stream, version);
@@ -143,7 +143,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPolyMesh::InitializeDrawPrimitive(int vis, int parameter)
+	MLRIndexedPolyMesh::InitializeDrawPrimitive(int32_t vis, int32_t parameter)
 {
 	MLRIndexedPrimitive::InitializeDrawPrimitive(vis, parameter);
 
@@ -156,7 +156,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPolyMesh::SetPrimitiveLength (puint8_t data, int numPrimitives)
+	MLRIndexedPolyMesh::SetPrimitiveLength (puint8_t data, int32_t numPrimitives)
 {
 	Check_Object(this); 
 
@@ -170,7 +170,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPolyMesh::GetPrimitiveLength (puint8_t *data, int *l)
+	MLRIndexedPolyMesh::GetPrimitiveLength (puint8_t *data, pint32_t l)
 {
 	Check_Object(this);
 	*l = lengths.GetLength();
@@ -184,7 +184,7 @@ void
 {
 	Check_Object(this); 
 
-	int i, j, stride, numPrimitives = GetNumPrimitives();
+	int32_t i, j, stride, numPrimitives = GetNumPrimitives();
 	Vector3D v;
 
 	Verify(index.GetLength() > 0);
@@ -205,13 +205,13 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLRIndexedPolyMesh::FindBackFace(const Point3D& u)
 {
 	Check_Object(this);
 
-	int i, numPrimitives = GetNumPrimitives();
-	int ret = 0, len = lengths.GetLength();
+	int32_t i, numPrimitives = GetNumPrimitives();
+	int32_t ret = 0, len = lengths.GetLength();
 	puint8_t iPtr;
 	Plane *p;
 
@@ -258,7 +258,7 @@ int
 void
 	MLRIndexedPolyMesh::ResetTestList()
 {
-	int i, numPrimitives = GetNumPrimitives();
+	int32_t i, numPrimitives = GetNumPrimitives();
 	puint8_t iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
@@ -270,13 +270,13 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLRIndexedPolyMesh::FindVisibleVertices()
 {
 	Check_Object(this);
 	Verify(index.GetLength() > 0);
 
-	int ret, i, j, k, stride, len = lengths.GetLength();
+	int32_t ret, i, j, k, stride, len = lengths.GetLength();
 
 	Verify(index.GetLength() > 0);
 	
@@ -313,7 +313,7 @@ void
 	Check_Object(this);
 
 	Verify(index.GetLength() > 0);
-	int i, len = coords.GetLength();
+	int32_t i, len = coords.GetLength();
 
 	if(visibleIndexedVerticesKey == false)
 	{
@@ -345,7 +345,7 @@ void
 	SET_MLRIndexedPolyMesh_CLIP();
 
 	uint16_t stride;
-	int i, j, k, len = lengths.GetLength();
+	int32_t i, j, k, len = lengths.GetLength();
 	gos_vertices = vt->GetActualVertexPool();
 	numGOSVertices = 0;
 
@@ -435,7 +435,7 @@ void
 }
 
 static MLRClippingState theAnd, theOr, theTest;
-static int clipTrick[6][2] = {
+static int32_t clipTrick[6][2] = {
 	{ 1, 1},
 	{ 1, 0},
 	{ 0, 1},
@@ -446,7 +446,7 @@ static int clipTrick[6][2] = {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Now it gets serious
-int
+int32_t
 	MLRIndexedPolyMesh::Clip(MLRClippingState clippingFlags, GOSVertexPool *vt)
 {
 	StartCycleTiming( &Statistics::MLR_ClipTime );
@@ -455,8 +455,8 @@ int
 	Check_Object(this);
 
 	uint16_t stride, l;
-	int i, j, k, ret = 0;
-	int len = lengths.GetLength();
+	int32_t i, j, k, ret = 0;
+	int32_t len = lengths.GetLength();
 
 	Verify(len == testList.GetLength());
 	Verify(clippingFlags.GetClippingState() != 0);
@@ -476,11 +476,11 @@ int
 		return visible;
 	}
 
-	int mask, end, k0, k1, ct=0;
+	int32_t mask, end, k0, k1, ct=0;
 	Scalar a=0.0f;
 //	Scalar bc0=0.0f, bc1=0.0f;
 
-	int	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
+	int32_t	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 
 	myNumberUsedClipVertex = 0;
 	myNumberUsedClipIndex = 0;
@@ -658,7 +658,7 @@ int
 					// directly to the clipping buffer
 					//----------------------------------------------------
 					//
-					int clipped_index =
+					int32_t clipped_index =
 						myNumberUsedClipVertex + numberVerticesPerPolygon;
 					theTest = clipPerVertex[k0];
 					if(theTest == 0)
@@ -810,7 +810,7 @@ int
 #endif
 				ClipPolygon clipBuffer[2];
 				ClipData srcPolygon, dstPolygon;
-				int dstBuffer = 1;
+				int32_t dstBuffer = 1;
 
 				Verify((*actualColors).GetLength() > 0);
 				Verify(texCoords.GetLength() > 0);
@@ -827,7 +827,7 @@ int
 				//
 				for(k=j,l=0;k<end;k++,l++)
 				{
-					int indexK = index[k];
+					int32_t indexK = index[k];
 
 					srcPolygon.coords[l] = transformedCoords[indexK];
 					srcPolygon.colors[l] = (*actualColors)[indexK];
@@ -1100,7 +1100,7 @@ int
 				//
 				for(k=0;k<srcPolygon.length;k++)
 				{
-					int clipped_index = myNumberUsedClipVertex + k;
+					int32_t clipped_index = myNumberUsedClipVertex + k;
 					clipExtraCoords[clipped_index] = srcPolygon.coords[k];
 
 					if(srcPolygon.flags & 0x1)
@@ -1250,7 +1250,7 @@ int
 void
 	MLRIndexedPolyMesh::Lighting (
 		MLRLight **lights,
-		int nrLights
+		int32_t nrLights
 	)
 {
 	Check_Object(this);
@@ -1284,7 +1284,7 @@ void
 			Verify(normals.GetLength() == colors.GetLength());
 			Verify(coords.GetLength() == colors.GetLength());
 
-			int i, k, len = colors.GetLength();
+			int32_t i, k, len = colors.GetLength();
 
 			MLRVertexData vertexData;
 
@@ -1373,7 +1373,7 @@ void
 		{
 			Verify(state.GetAlphaMode() == MLRState::OneZeroMode);
 
-			int i;
+			int32_t i;
 
 			for (i=0;i<nrLights;i++)
 			{
@@ -1389,7 +1389,7 @@ void
 			Verify(normals.GetLength() == colors.GetLength());
 			Verify(coords.GetLength() == colors.GetLength());
 
-			int i, k, len = colors.GetLength();
+			int32_t i, k, len = colors.GetLength();
 
 			MLRVertexData vertexData;
 
@@ -1481,7 +1481,7 @@ void
 MLRPrimitive *
 	MLRIndexedPolyMesh::LightMapLighting(MLRLight *light)
 {
-	int i, j, k, stride, len = lengths.GetLength();
+	int32_t i, j, k, stride, len = lengths.GetLength();
 	LinearMatrix4D matrix = LinearMatrix4D::Identity;
 	Point3D lightPos, hitPoint;
 
@@ -1545,11 +1545,11 @@ bool
 	// collide the ray against each
 	//---------------------------------------------------------------------
 	//
-	int poly_start = 0, numPrimitives = GetNumPrimitives();
+	int32_t poly_start = 0, numPrimitives = GetNumPrimitives();
 	bool hit = false;
-	for (int polygon=0; polygon<numPrimitives; ++polygon)
+	for (int32_t polygon=0; polygon<numPrimitives; ++polygon)
 	{
-		int stride = lengths[polygon];
+		int32_t stride = lengths[polygon];
 		Verify(stride>2);
 
 		//
@@ -1591,7 +1591,7 @@ bool
 		// triangle onto
 		//-------------------------------------------------------------------
 		//
-		int s,t;
+		int32_t s,t;
 		Scalar nx = Abs(plane->normal.x);
 		Scalar ny = Abs(plane->normal.y);
 		Scalar nz = Abs(plane->normal.z);
@@ -1645,7 +1645,7 @@ bool
 		//------------------------------------------------------------
 		//
 		bool local_hit = false;
-		int next_v = 3;
+		int32_t next_v = 3;
 Test_Triangle:
 		Check_Pointer(v3);
 		Scalar s2 = (*v3)[s] - (*v1)[s];
@@ -1745,7 +1745,7 @@ MLRIndexedPolyMesh*
 
 	puint8_t lengths = new uint8_t [6];
 
-	int i;
+	int32_t i;
 
 	for(i=0;i<6;i++)
 	{
@@ -1795,7 +1795,7 @@ MLRIndexedPolyMesh*
 	if(eightColors!=NULL)
 	{
 #if COLOR_AS_DWORD
-		ULONG *dwColor = new ULONG [8];
+		uint32_t *dwColor = new uint32_t [8];
 
 		for(i=0;i<8;i++)
 		{

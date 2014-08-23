@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 
-int clipTrick[6][2] = 
+int32_t clipTrick[6][2] = 
 {
 	{ 1, 1},
 	{ 1, 0},
@@ -20,7 +20,7 @@ int clipTrick[6][2] =
 //#########################    ClipPolygon2    ############################
 //#############################################################################
 
-void ClipPolygon2::Init(int passes)
+void ClipPolygon2::Init(int32_t passes)
 {
 	Verify(gos_GetCurrentHeap() == StaticHeap);
 	coords.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
@@ -56,7 +56,7 @@ DynamicArrayOf<Vector2DScalar>
 	*MLRPrimitiveBase::clipExtraTexCoords;
 
 #if COLOR_AS_DWORD
-DynamicArrayOf<ULONG>
+DynamicArrayOf<uint32_t>
 #else
 DynamicArrayOf<RGBAColor>
 #endif
@@ -96,7 +96,7 @@ void
 
 	clipExtraColors = new DynamicArrayOf<
 #if COLOR_AS_DWORD
-		ULONG
+		uint32_t
 #else
 		RGBAColor
 #endif
@@ -148,7 +148,7 @@ void
 MLRPrimitiveBase::MLRPrimitiveBase(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	RegisteredClass(class_data)
 {
@@ -199,7 +199,7 @@ void
 
 	MemoryStreamIO_Write(stream, &lengths);
 
-	*stream << static_cast<int>(drawMode);
+	*stream << static_cast<int32_t>(drawMode);
 
 	referenceState.Save(stream);
 }
@@ -245,7 +245,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int)
+	MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t)
 {
 	gos_vertices = NULL;
 	numGOSVertices = -1;
@@ -256,7 +256,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int l)
+	MLRPrimitiveBase::SetSubprimitiveLengths(puint8_t data, int32_t l)
 {
 	Check_Object(this); 
 	lengths.AssignData(data, l);
@@ -265,7 +265,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::GetSubprimitiveLengths(puint8_t *data, int *len)
+	MLRPrimitiveBase::GetSubprimitiveLengths(puint8_t *data, pint32_t len)
 {
 	Check_Object(this); 
 	*data = lengths.GetData();
@@ -274,8 +274,8 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
-	MLRPrimitiveBase::GetSubprimitiveLength (int i) const
+int32_t
+	MLRPrimitiveBase::GetSubprimitiveLength (int32_t i) const
 { 
 	Check_Object(this); 
 	return (lengths.GetLength() > 0 ? abs(lengths[i]) : 1);
@@ -286,7 +286,7 @@ int
 void
 	MLRPrimitiveBase::SetCoordData(
 		const Point3D *data,
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -305,7 +305,7 @@ void
 void
 	MLRPrimitiveBase::GetCoordData(
 		Point3D **data,
-		int *dataSize
+		pint32_t dataSize
 	)
 {
 	Check_Object(this);
@@ -319,7 +319,7 @@ void
 void
 	MLRPrimitiveBase::SetTexCoordData(
 		const Vector2DScalar *data,
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -335,7 +335,7 @@ void
 void
 	MLRPrimitiveBase::GetTexCoordData(
 		Vector2DScalar **data,
-		int *dataSize
+		pint32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -350,7 +350,7 @@ void
 {
 	Check_Object(this);
 
-	int i, len = coords.GetLength();
+	int32_t i, len = coords.GetLength();
 
 	for(i=0;i<len;i++)
 	{
@@ -379,7 +379,7 @@ void
 	box->minY = box->maxY = coords[0].y;
 	box->minZ = box->maxZ = coords[0].z;
 
-	for(int i=0;i<coords.GetLength();i++)
+	for(int32_t i=0;i<coords.GetLength();i++)
 	{
 		if(coords[i].x < box->minX)
 		{

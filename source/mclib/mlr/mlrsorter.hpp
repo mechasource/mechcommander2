@@ -34,11 +34,11 @@ namespace MidLevelRenderer {
 		void DrawLineCloud();
 		void DrawQuads();
 
-		int LoadAlphaFromTriList(SortAlpha**);
-		int LoadAlphaFromTriIndexedList(SortAlpha**);
-		int LoadAlphaFromPointCloud(SortAlpha**);
-		int LoadAlphaFromLineCloud(SortAlpha**);
-		int LoadAlphaFromQuads(SortAlpha**);
+		int32_t LoadAlphaFromTriList(SortAlpha**);
+		int32_t LoadAlphaFromTriIndexedList(SortAlpha**);
+		int32_t LoadAlphaFromPointCloud(SortAlpha**);
+		int32_t LoadAlphaFromLineCloud(SortAlpha**);
+		int32_t LoadAlphaFromQuads(SortAlpha**);
 
 		enum {
 			TriList = 0,
@@ -50,18 +50,18 @@ namespace MidLevelRenderer {
 		};
 
 		typedef void (SortData::* DrawFunc)();
-		typedef int (SortData::* LoadSortAlphaFunc)(SortAlpha**);
+		typedef int32_t (SortData::* LoadSortAlphaFunc)(SortAlpha**);
 
 		static DrawFunc Draw[LastMode];
 		static LoadSortAlphaFunc LoadSortAlpha[LastMode];
 
 		MLRState state;
 		PVOIDvertices;
-		int	numVertices;
+		int32_t	numVertices;
 		puint16_t indices;
-		int numIndices;
-		int type;
-		int texture2;
+		int32_t numIndices;
+		int32_t type;
+		int32_t texture2;
 	};
 
 
@@ -87,7 +87,7 @@ namespace MidLevelRenderer {
 
 		MLRLight* activeLights[Limits::Max_Number_Of_Lights_Per_Primitive];
 
-		int	nrOfActiveLights;
+		int32_t	nrOfActiveLights;
 	};
 #endif
 
@@ -113,14 +113,14 @@ namespace MidLevelRenderer {
 		MLRSorter(ClassData *class_data, MLRTexturePool*);
 		~MLRSorter();
 
-		virtual void AddPrimitive(MLRPrimitiveBase*, int=0) = 0;
+		virtual void AddPrimitive(MLRPrimitiveBase*, int32_t=0) = 0;
 		virtual void AddEffect(MLREffect*, const MLRState&) = 0;
 		virtual void AddScreenQuads(GOSVertex*, const DrawScreenQuadsInformation*) = 0;
 
 		virtual void AddSortRawData(SortData*) = 0;
 
 		virtual void
-			DrawPrimitive(MLRPrimitiveBase*, int=0);
+			DrawPrimitive(MLRPrimitiveBase*, int32_t=0);
 
 		void
 			SetTexturePool(MLRTexturePool *tp)
@@ -142,25 +142,25 @@ namespace MidLevelRenderer {
 		SortData*
 			SetRawData
 			(	PVOIDvertices, 
-			int numVertices,
+			int32_t numVertices,
 			const MLRState& state,
 			cint32_t& mode,
-			int tex2 = 0
+			int32_t tex2 = 0
 			);
 
 		SortData*
 			SetRawIndexedData
 			(	PVOID vertices, 
-			int numVertices, 
+			int32_t numVertices, 
 			puint16_t indices,
-			int numIndices,
+			int32_t numIndices,
 			const MLRState& state, 
 			cint32_t& mode,
-			int tex2 = 0
+			int32_t tex2 = 0
 			);
 
 		SortData*
-			SetRawData(MLRPrimitiveBase*, int=0 );
+			SetRawData(MLRPrimitiveBase*, int32_t=0 );
 
 		//	Just scaling down a bit to keep z under 1.0f	
 		void
@@ -172,7 +172,7 @@ namespace MidLevelRenderer {
 			GetCurrentTBDP()
 		{ Check_Object(this); return &drawData[lastUsedDraw]; }
 		ToBeDrawnPrimitive*
-			GetCurrentTBDP(int index)
+			GetCurrentTBDP(int32_t index)
 		{ Check_Object(this); Verify(index<lastUsedDraw); return &drawData[index]; }
 		void
 			IncreaseTBDPCounter();
@@ -188,14 +188,14 @@ namespace MidLevelRenderer {
 		MLRState theCurrentState;
 		MLRTexturePool *texturePool;
 
-		int lastUsedRaw;
+		int32_t lastUsedRaw;
 		Stuff::DynamicArrayOf<SortData> rawDrawData; // Max_Number_Primitives_Per_Frame
 
-		int
+		int32_t
 			lastUsedInBucketNotDrawn[MLRState::PriorityCount];
 
 #ifdef CalDraw
-		int lastUsedDraw;
+		int32_t lastUsedDraw;
 		Stuff::DynamicArrayOf<ToBeDrawnPrimitive> drawData; // Max_Number_Primitives_Per_Frame
 		Stuff::DynamicArrayOf<ToBeDrawnPrimitive*>  //, Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame
 			priorityBucketsNotDrawn[MLRState::PriorityCount];

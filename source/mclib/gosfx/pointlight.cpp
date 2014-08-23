@@ -36,7 +36,7 @@ void
 //
 gosFX::PointLight__Specification::PointLight__Specification(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	Effect__Specification(PointLightClassID, stream, gfx_version)
 {
@@ -79,7 +79,7 @@ gosFX::PointLight__Specification::PointLight__Specification():
 gosFX::PointLight__Specification*
 	gosFX::PointLight__Specification::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);

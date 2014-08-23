@@ -31,7 +31,7 @@ namespace MidLevelRenderer {
 		// Constructors/Destructors
 		//
 	public:
-		MLRNGonCloud(int vertices, int number);
+		MLRNGonCloud(int32_t vertices, int32_t number);
 		~MLRNGonCloud();
 
 		void
@@ -43,7 +43,7 @@ namespace MidLevelRenderer {
 
 		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
-		int	Clip(MLRClippingState, GOSVertexPool*);		
+		int32_t	Clip(MLRClippingState, GOSVertexPool*);		
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -58,7 +58,7 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 	protected:
-		int numOfVertices;
+		int32_t numOfVertices;
 		pcint32_t usedNrOfNGons;
 
 		static Stuff::DynamicArrayOf<Stuff::RGBAColor> *clipExtraColors;
@@ -68,7 +68,7 @@ namespace MidLevelRenderer {
 
 		static Stuff::DynamicArrayOf<Stuff::Vector4D> *clipExtraCoords;
 
-		static Stuff::DynamicArrayOf<int> *clipExtraLength;
+		static Stuff::DynamicArrayOf<int32_t> *clipExtraLength;
 	};
 }
 #endif

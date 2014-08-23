@@ -52,7 +52,7 @@ MLRInfiniteLight::MLRInfiniteLight(ClassData *class_data) :
 MLRInfiniteLight::MLRInfiniteLight(
 	ClassData *class_data,
 	Stuff::MemoryStream *stream,
-	int version
+	int32_t version
 ) :
 	MLRLight(class_data, stream, version)
 {

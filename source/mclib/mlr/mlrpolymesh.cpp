@@ -70,7 +70,7 @@ void
 //
 MLRPolyMesh::MLRPolyMesh(
 	MemoryStream *stream,
-	int version
+	int32_t version
 ) :
 	MLRPrimitive(DefaultData, stream, version)
 {
@@ -105,7 +105,7 @@ MLRPolyMesh::~MLRPolyMesh()
 MLRPolyMesh*
 	MLRPolyMesh::Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 	)
 {
 	return new MLRPolyMesh(stream, version);
@@ -133,7 +133,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPolyMesh::SetPrimitiveLength (puint8_t data, int numPrimitives)
+	MLRPolyMesh::SetPrimitiveLength (puint8_t data, int32_t numPrimitives)
 {
 	Check_Object(this); 
 
@@ -147,7 +147,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPolyMesh::GetPrimitiveLength (puint8_t *data, int *l)
+	MLRPolyMesh::GetPrimitiveLength (puint8_t *data, pint32_t l)
 {
 	Check_Object(this); 
 	*l = lengths.GetLength();
@@ -161,7 +161,7 @@ void
 {
 	Check_Object(this); 
 
-	int i, j, stride, numPrimitives = GetNumPrimitives();
+	int32_t i, j, stride, numPrimitives = GetNumPrimitives();
 	Vector3D v;
 
 	for(i=0,j=0;i<numPrimitives;i++)
@@ -179,14 +179,14 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	MLRPolyMesh::FindBackFace(const Point3D& u)
 {
 	Check_Object(this);
 
 	puint8_t iPtr;
-	int i, numPrimitives = GetNumPrimitives();
-	int ret = 0, len = lengths.GetLength();
+	int32_t i, numPrimitives = GetNumPrimitives();
+	int32_t ret = 0, len = lengths.GetLength();
 	Plane *p;
 
 	if(len <= 0)
@@ -233,7 +233,7 @@ int
 void
 	MLRPolyMesh::ResetTestList()
 {
-	int i, numPrimitives = GetNumPrimitives();
+	int32_t i, numPrimitives = GetNumPrimitives();
 	puint8_t iPtr = &testList[0];
 
 	for(i=0;i<numPrimitives;i++,iPtr++)
@@ -250,8 +250,8 @@ void
 {
 	Check_Object(this);
 
-	int i, j, k;
-	int pLen, len = lengths.GetLength();
+	int32_t i, j, k;
+	int32_t pLen, len = lengths.GetLength();
 
 	for(i=0,j=0;i<len;i++)
 	{
@@ -282,8 +282,8 @@ void
 
 	SET_MLRPOLYMESH_CLIP();
 
-	int i, j, k, stride;
-	int len = lengths.GetLength();
+	int32_t i, j, k, stride;
+	int32_t len = lengths.GetLength();
 
 	if(len <= 0)
 	{
@@ -372,7 +372,7 @@ static MLRClippingState theAnd, theOr, theTest;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Now it gets serious
-int
+int32_t
 	MLRPolyMesh::Clip(MLRClippingState clippingFlags, GOSVertexPool *vt)
 {
 	clipTrace->Start();
@@ -380,7 +380,7 @@ int
 
 	Check_Object(this);
 
-	static int clipTrick[6][2] = {
+	static int32_t clipTrick[6][2] = {
 		{ 1, 1},
 		{ 1, 0},
 		{ 0, 1},
@@ -389,10 +389,10 @@ int
 		{ 2, 1}
 	};
 
-	int i, j, k, l;
-	int stride, end, len = lengths.GetLength();
+	int32_t i, j, k, l;
+	int32_t stride, end, len = lengths.GetLength();
 
-	int mask, k1, ct=0, ret = 0;
+	int32_t mask, k1, ct=0, ret = 0;
 	Scalar a=0.0f, bc0, bc1;
 	
 	Verify(len == testList.GetLength());
@@ -413,7 +413,7 @@ int
 		return visible;
 	}
 
-	int	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
+	int32_t	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 
 	myNumberUsedClipVertex = 0;
 	myNumberUsedClipIndex = 0;
@@ -548,7 +548,7 @@ int
 					// directly to the clipping buffer
 					//----------------------------------------------------
 					//
-					int clipped_index =
+					int32_t clipped_index =
 						myNumberUsedClipVertex + numberVerticesPerPolygon;
 					theTest = clipPerVertex[k];
 					if(theTest == 0)
@@ -701,7 +701,7 @@ int
 			{
 				ClipPolygon clipBuffer[2];
 				ClipData srcPolygon, dstPolygon;
-				int dstBuffer = 0;
+				int32_t dstBuffer = 0;
 
 				//
 				//-----------------------------------------------------
@@ -992,7 +992,7 @@ int
 				//
 				for(k=0;k<srcPolygon.length;k++)
 				{
-					int clipped_index = myNumberUsedClipVertex + k;
+					int32_t clipped_index = myNumberUsedClipVertex + k;
 					clipExtraCoords[clipped_index] = srcPolygon.coords[k];
 
 					if(srcPolygon.flags & 0x1)
@@ -1146,7 +1146,7 @@ int
 void
 	MLRPolyMesh::Lighting (
 		MLRLight **lights,
-		int nrLights
+		int32_t nrLights
 	)
 {
 	Check_Object(this);
@@ -1180,7 +1180,7 @@ void
 			Verify(normals.GetLength() == colors.GetLength());
 			Verify(coords.GetLength() == colors.GetLength());
 
-			int i, j, k, l, stride, len = colors.GetLength();
+			int32_t i, j, k, l, stride, len = colors.GetLength();
 
 			MLRVertexData vertexData;
 
@@ -1291,7 +1291,7 @@ void
 			Verify(normals.GetLength() == colors.GetLength());
 			Verify(coords.GetLength() == colors.GetLength());
 
-			int i, j, k, l, stride, len = colors.GetLength();
+			int32_t i, j, k, l, stride, len = colors.GetLength();
 
 			MLRVertexData vertexData;
 
@@ -1421,7 +1421,7 @@ MLRPolyMesh*
 
 	puint8_t lengths = new uint8_t [6];
 
-	int i;
+	int32_t i;
 
 	for(i=0;i<6;i++)
 	{
@@ -1469,7 +1469,7 @@ MLRPolyMesh*
 	if(eightColors!=NULL)
 	{
 #if COLOR_AS_DWORD
-		ULONG *colors = new ULONG[6*4];
+		uint32_t *colors = new uint32_t[6*4];
 
 		colors[0] = GOSCopyColor(&eightColors[0]);
 		colors[1] = GOSCopyColor(&eightColors[2]);

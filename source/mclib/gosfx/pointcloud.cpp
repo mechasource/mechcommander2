@@ -18,7 +18,7 @@
 //
 gosFX::PointCloud__Specification::PointCloud__Specification(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	ParticleCloud__Specification(gosFX::PointCloudClassID, stream, gfx_version)
 {
@@ -45,7 +45,7 @@ gosFX::PointCloud__Specification::PointCloud__Specification():
 gosFX::PointCloud__Specification*
 	gosFX::PointCloud__Specification::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);
@@ -321,7 +321,7 @@ bool
 	Set_Statistic(Point_Count, Point_Count+1);
 	Stuff::Vector3D *velocity = &particle->m_localLinearVelocity;
 	Stuff::Point3D *translation = &m_P_localTranslation[index];
-	int sim_mode = GetSimulationMode();
+	int32_t sim_mode = GetSimulationMode();
 	if (sim_mode == DynamicWorldSpaceSimulationMode)
 	{
 		Check_Object(translation);

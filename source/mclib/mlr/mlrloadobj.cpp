@@ -57,7 +57,7 @@ typedef struct TEX
 	MLRState	*state;
 //	pfMaterial      *material;
 //	pfTexture       *texture;
-//	int              refl_mapped;
+//	int32_t              refl_mapped;
 } MTL;
 */
 
@@ -65,18 +65,18 @@ typedef struct Polygon
 {
 
 	Polygon() {nr = 0; };
-	int nr;
-	int *vIndex;
-	int *cIndex;
-	int *nIndex;
-	int *tIndex;
+	int32_t nr;
+	pint32_t vIndex;
+	pint32_t cIndex;
+	pint32_t nIndex;
+	pint32_t tIndex;
 } Poly;
 
 // number of input lines skipped (recognized but not processed) or unknown 
-static int	numSkip			= 0;
-static int	numOther		= 0;
+static int32_t	numSkip			= 0;
+static int32_t	numOther		= 0;
 
-int	numPrimitives	= 0;		
+int32_t	numPrimitives	= 0;		
 MLRState	currentState;
 
 // function type and argument declarations 
@@ -113,13 +113,13 @@ MLRPolyMesh*
 
 	MLRPolyMesh *pm = new MLRPolyMesh;
 
-	int *length = new int [pCount];
+	pint32_t length = new int32_t [pCount];
 
 	pm->SetPrimitiveLength (length, pCount);
 
-	int i, j, k, count[4] = {0, 0, 0, 0}, indexCount = 0;
-	static int list[10000];
-	memset(&list, 0, 10000*sizeof(int));
+	int32_t i, j, k, count[4] = {0, 0, 0, 0}, indexCount = 0;
+	static int32_t list[10000];
+	memset(&list, 0, 10000*sizeof(int32_t));
 
 	for(i=0;i<pCount;i++)
 	{
@@ -181,7 +181,7 @@ MLRPolyMesh*
 		}
 	}
 
-	int *vIndex = new int [indexCount];
+	pint32_t vIndex = new int32_t [indexCount];
 
 	for(i=0,k=0;i<pCount;i++)
 	{
@@ -209,7 +209,7 @@ MLRPolyMesh*
 			}
 		}
 
-		int *nIndex = new int [indexCount];
+		pint32_t nIndex = new int32_t [indexCount];
 
 		for(i=0,k=0;i<pCount;i++)
 		{
@@ -238,7 +238,7 @@ MLRPolyMesh*
 			}
 		}
 
-		int *cIndex = new int [indexCount];
+		pint32_t cIndex = new int32_t [indexCount];
 
 		for(i=0,k=0;i<pCount;i++)
 		{
@@ -267,7 +267,7 @@ MLRPolyMesh*
 			}
 		}
 
-		int *tIndex = new int [indexCount];
+		pint32_t tIndex = new int32_t [indexCount];
 
 		for(i=0,k=0;i<pCount;i++)
 		{
@@ -320,13 +320,13 @@ MLRShape*
 
 	MLRShape	*shape       = new MLRShape;
 
-	int           width      = 0;
+	int32_t           width      = 0;
 
-	int           numTris    = 0;
-	int           numPolys   = 0;
-	int           numGroups  = 0;
+	int32_t           numTris    = 0;
+	int32_t           numPolys   = 0;
+	int32_t           numGroups  = 0;
 
-//	int			  colorsDefined = 0;
+//	int32_t			  colorsDefined = 0;
 
 // growable vertex coordinate list (X, Y, Z) 
 	Point3D       *v          = 0;
@@ -354,7 +354,7 @@ MLRShape*
 	uint32_t  pAvailable = 0;
 
 // tmp count vars 
-	int                 i;
+	int32_t                 i;
 
 	if ((objFile = fopen(fileName, "rt")) == 0)
 		return 0;
@@ -372,7 +372,7 @@ MLRShape*
 			*backslash   = '\0';
 
 // keep reading 
-			if (fgets(backslash, (int)(BUFFER_SIZE - strlen(buffer)), objFile) == 0)
+			if (fgets(backslash, (int32_t)(BUFFER_SIZE - strlen(buffer)), objFile) == 0)
 				break;
 		}
 
@@ -469,14 +469,14 @@ MLRShape*
 
 		} else if (SAME(token, "f") || SAME(token, "fo"))
 		{
-			int          count;
-			int          textureValid = 1;
-			int          normalsValid = 1;
-			int          colorsValid = 1;
-			int          vi[FACE_SIZE];
-			int          ti[FACE_SIZE];
-			int          ni[FACE_SIZE];
-			int          ci[FACE_SIZE];
+			int32_t          count;
+			int32_t          textureValid = 1;
+			int32_t          normalsValid = 1;
+			int32_t          colorsValid = 1;
+			int32_t          vi[FACE_SIZE];
+			int32_t          ti[FACE_SIZE];
+			int32_t          ni[FACE_SIZE];
+			int32_t          ci[FACE_SIZE];
 
 			char        *slash;
 			char         vertexData[256];
@@ -492,24 +492,24 @@ MLRShape*
 				next += width;
 
 // get vertex coordinate index 
-				vi[count] = (int)strtol(vertexData, 0, 10);
+				vi[count] = (int32_t)strtol(vertexData, 0, 10);
 
 // get texture coordinate index 
 				ti[count] = 0;
 				if ((slash = strchr(vertexData, '/')) == 0 ||
-					  (ti[count] = (int)strtol(slash+1, 0, 10)) == 0)
+					  (ti[count] = (int32_t)strtol(slash+1, 0, 10)) == 0)
 					textureValid = 0;
 
 // get vertex normal index 
 				ni[count] = 0;
 				if (slash == 0 || (slash = strchr(slash+1, '/')) == 0 ||
-					  (ni[count] = (int)strtol(slash+1, 0, 10)) == 0)
+					  (ni[count] = (int32_t)strtol(slash+1, 0, 10)) == 0)
 					normalsValid = 0;
 
 // get color index 
 				ci[count] = 0;
 				if (slash == 0 || (slash = strchr(slash+1, '/')) == 0 ||
-					  (ci[count] = (int)strtol(slash+1, 0, 10)) == 0)
+					  (ci[count] = (int32_t)strtol(slash+1, 0, 10)) == 0)
 					colorsValid = 0;
 
 // form cannonical indices:
@@ -543,7 +543,7 @@ MLRShape*
 				GROW(p, Poly);
 
 				p[pCount].nr = count;
-				p[pCount].vIndex = new int [p[pCount].nr];
+				p[pCount].vIndex = new int32_t [p[pCount].nr];
 
 // Setup vertex position  information
 				for (i = 0; i < count; i++)
@@ -563,7 +563,7 @@ MLRShape*
 // Setup color information 
 				if (colorsValid)
 				{
-					p[pCount].cIndex = new int [p[pCount].nr];
+					p[pCount].cIndex = new int32_t [p[pCount].nr];
 					for (i = 0; i < count; i++)
 					{
 						p[pCount].cIndex[i] = ci[i];
@@ -573,7 +573,7 @@ MLRShape*
 // Setup texture coordinates information 
 				if (textureValid)
 				{
-					p[pCount].tIndex = new int [p[pCount].nr];
+					p[pCount].tIndex = new int32_t [p[pCount].nr];
 					for (i = 0; i < count; i++)
 					{
 						p[pCount].tIndex[i] = ti[i];
@@ -720,7 +720,7 @@ typedef struct objMaterial
 {
 	char	library[1024]; // library name
 	char	name[1024];    // material name 
-	int		defined;               // defined fields 
+	int32_t		defined;               // defined fields 
 	RGBColor	ambient;               // Ka field 
 	RGBColor diffuse;               // Kd field 
 	RGBColor specular;              // Ks field 
@@ -733,8 +733,8 @@ typedef struct objMaterial
 } objMaterial;
 
 static objMaterial        *mtlList      = 0;
-static int                 mtlListCount = 0;
-static int                 mtlListSize  = 0;
+static int32_t                 mtlListCount = 0;
+static int32_t                 mtlListSize  = 0;
 
 static void
 reSetMaterial (objMaterial *m)
@@ -786,7 +786,7 @@ static void
 static void
 rememberMaterial (objMaterial *m)
 {
-	int                i;
+	int32_t                i;
 
 	if (m == 0)
 		return;
@@ -880,11 +880,11 @@ static void
 		".sgi", 
 		".rgb", 
 		".rgba", 
-		".int", 
+		".int32_t", 
 		".inta", 
 		".bw"
 	};
-	static int numSuffix = sizeof(suffix)/sizeof(suffix[0]);
+	static int32_t numSuffix = sizeof(suffix)/sizeof(suffix[0]);
 
 	pfMaterial *material   = new pfMaterial;
 	pfTexture  *texture    = new pfTexture;
@@ -938,8 +938,8 @@ static void
 
 	if (m->defined & (MTL_HAS_TEXTURE | MTL_HAS_REFLECTION))
 	{
-		int                  j, foo;
-		static int				comp;
+		int32_t                  j, foo;
+		static int32_t				comp;
 		uint32_t        *image;
 		char                *sp;
 
@@ -949,7 +949,7 @@ static void
 			char         texPath[PF_MAXSTRING];
 
 // remove ".rla" or whatever suffix from file name 
-			if ((sp = strrchr(m->texture, (int)'.')) != 0)
+			if ((sp = strrchr(m->texture, (int32_t)'.')) != 0)
 				*sp = '\0';
 
 // append one of the known image file extensions 
@@ -994,7 +994,7 @@ static void
 			}
 		} else {
 // file not found -- Set name to 0 string 
-			if ((sp = strrchr(m->texture, (int)'.')) != 0)
+			if ((sp = strrchr(m->texture, (int32_t)'.')) != 0)
 				*sp = '\0';
 			pfNotify(PFNFY_WARN, PFNFY_RESOURCE,
 					      "can't find texture \"%s\" for material \"%s\"", 
@@ -1045,7 +1045,7 @@ static void
 static void
 	useMtl (PSTR name)
 {
-	int i;
+	int32_t i;
 
 // reSet to default state 
 //	pfdReSetBldrState();
@@ -1092,7 +1092,7 @@ static void
 static void
 	parSetexture (PSTR next, objMaterial *m)
 {
-	int                 width = 0;
+	int32_t                 width = 0;
 
 // Set default texture scale factors 
 	m->su = 1.0f;
@@ -1129,13 +1129,13 @@ static void
 }
 
 static char        *mtlFileList[MAX_MTL_FILES];
-static int         mtlCount = 0;
+static int32_t         mtlCount = 0;
 
 #ifdef        FORGETFUL
 static void
 	forgetMaterialFiles (void)
 {
-	int                i;
+	int32_t                i;
 
 	for (i = 0; i < mtlCount; i++)
 	if (mtlFileList[i] != 0)
@@ -1155,9 +1155,9 @@ static void
 	char         token[BUFFER_SIZE];
 	char        *next;
 	char        *backslash;
-	int          width        = 0;
-	int          i;
-	int          inProgress = 0;
+	int32_t          width        = 0;
+	int32_t          i;
+	int32_t          inProgress = 0;
 	objMaterial  current;
 
 // have we already loaded this file ? 

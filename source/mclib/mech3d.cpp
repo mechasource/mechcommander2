@@ -174,7 +174,7 @@ PSTR MechAnimationNames[MaxGestures+2] =
 };																
 
 PaintSchemataPtr	Mech3DAppearance::paintSchemata = NULL;
-ULONG				Mech3DAppearance::numPaintSchemata = 0;
+uint32_t				Mech3DAppearance::numPaintSchemata = 0;
 
 TG_TypeMultiShapePtr Mech3DAppearanceType::SensorSquareShape = NULL;
 
@@ -650,7 +650,7 @@ void Mech3DAppearanceType::destroy (void)
 }
 
 //----------------------------------------------------------------------------
-void Mech3DAppearanceType::setAnimation (TG_MultiShapePtr shape, ULONG animationNum)
+void Mech3DAppearanceType::setAnimation (TG_MultiShapePtr shape, uint32_t animationNum)
 {
 	gosASSERT(shape != NULL);
 	gosASSERT(animationNum != 0xffffffff);
@@ -1107,13 +1107,13 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorTriangleShape->SetTextureHandle(i,gosTextureHandle);
 					sensorTriangleShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					sensorTriangleShape->SetTextureHandle(i,gosTextureHandle);
 					sensorTriangleShape->SetTextureAlpha(i,false);
 				}
@@ -1145,13 +1145,13 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						sensorSquareShape->SetTextureHandle(i,gosTextureHandle);
 						sensorSquareShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						sensorSquareShape->SetTextureHandle(i,gosTextureHandle);
 						sensorSquareShape->SetTextureAlpha(i,false);
 					}
@@ -1183,13 +1183,13 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 						sensorSquareShape->SetTextureHandle(i,gosTextureHandle);
 						sensorSquareShape->SetTextureAlpha(i,true);
 					}
 					else
 					{
-						ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+						uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 						sensorSquareShape->SetTextureHandle(i,gosTextureHandle);
 						sensorSquareShape->SetTextureAlpha(i,false);
 					}
@@ -1360,14 +1360,14 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 			{
 				if (strnicmp(txmName,"a_",2) == 0)
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Alpha,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					mechShadowShape->SetTextureHandle(i,gosTextureHandle);
 					mechShadowShape->SetTextureAlpha(i,true);
 				}
 				else
 				{
-					ULONG gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
+					uint32_t gosTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink);
 					gosASSERT(gosTextureHandle != 0xffffffff);
 					mechShadowShape->SetTextureHandle(i,gosTextureHandle);
 					mechShadowShape->SetTextureAlpha(i,false);
@@ -1618,7 +1618,7 @@ void Mech3DAppearance::setPaintScheme (void)
 {
 	//----------------------------------------------------------------------------
 	// Simple really.  Get the texture memory, apply the paint scheme, let it go!
-	ULONG gosHandle = mcTextureManager->get_gosTextureHandle(mechShape->GetTextureHandle(0));
+	uint32_t gosHandle = mcTextureManager->get_gosTextureHandle(mechShape->GetTextureHandle(0));
 
 	if (gosHandle && gosHandle != 0xffffffff)
 	{
@@ -1628,19 +1628,19 @@ void Mech3DAppearance::setPaintScheme (void)
 		gos_LockTexture(gosHandle, 0, 0, &textureData);
 
 		//-------------------------------------------------------
-		ULONG *textureMemory = textureData.pTexture;
+		uint32_t *textureMemory = textureData.pTexture;
 		for (int32_t i=0;i<textureData.Height;i++)
 		{
 			for (int32_t j=0;j<textureData.Height;j++)
 			{
 				//---------------------------------------------
 				// Make Color from PaintScheme.
-				ULONG baseColor = *textureMemory;
+				uint32_t baseColor = *textureMemory;
 				float baseColorRed = float((baseColor & 0x00ff0000)>>16);
 				float baseColorGreen = float((baseColor & 0x0000ff00)>>8);
 				float baseColorBlue = float(baseColor & 0x000000ff);
 
-				ULONG newColor = *textureMemory;	//Black by default.
+				uint32_t newColor = *textureMemory;	//Black by default.
 				if ((!baseColorGreen) && (!baseColorBlue))
 				{
 					baseColorRed *= 0.00390625f;		//Divide by 256;
@@ -1717,16 +1717,16 @@ void Mech3DAppearance::setPaintScheme (void)
 }	
 
 //---------------------------------------------------------------------------
-ULONG bgrTorgb (ULONG frontRGB)
+uint32_t bgrTorgb (uint32_t frontRGB)
 {
-	ULONG tmp;
+	uint32_t tmp;
 	tmp = (((0x00ff0000) & frontRGB)>>16) + ((0x0000ff00) & frontRGB) + (((0x000000ff) & frontRGB)<<16);
 	
 	return(tmp);
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::setPaintScheme (ULONG mcRed, ULONG mcGreen, ULONG mcBlue)
+void Mech3DAppearance::setPaintScheme (uint32_t mcRed, uint32_t mcGreen, uint32_t mcBlue)
 {
 #ifdef BGR
 	// These come into here bgr instead of RGB.  CONVERT!
@@ -1743,7 +1743,7 @@ void Mech3DAppearance::setPaintScheme (ULONG mcRed, ULONG mcGreen, ULONG mcBlue)
 }	
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::getPaintScheme( ULONG& red, ULONG& green, ULONG& blue )
+void Mech3DAppearance::getPaintScheme( uint32_t& red, uint32_t& green, uint32_t& blue )
 {
 #ifdef BGR
 	red = bgrTorgb(psRed);
@@ -1757,12 +1757,12 @@ void Mech3DAppearance::getPaintScheme( ULONG& red, ULONG& green, ULONG& blue )
 }
 
 //-----------------------------------------------------------------------------
-void Mech3DAppearance::resetPaintScheme (ULONG red, ULONG green, ULONG blue)
+void Mech3DAppearance::resetPaintScheme (uint32_t red, uint32_t green, uint32_t blue)
 {
 	//---------------------------------------------------------------------------------
 	// Simple really.  Toss the current texture, reload the RGB and reapply the colors
 	
-	ULONG gosHandle = mcTextureManager->get_gosTextureHandle(localTextureHandle);
+	uint32_t gosHandle = mcTextureManager->get_gosTextureHandle(localTextureHandle);
 	mcTextureManager->removeTexture(gosHandle);
 	
 	//-------------------------------------------------
@@ -1776,7 +1776,7 @@ void Mech3DAppearance::resetPaintScheme (ULONG red, ULONG green, ULONG blue)
    	FullPathFileName textureName;
    	textureName.init(texturePath,txmName,"");
 
-	//ULONG paintInstance = (red << 16) + (green << 8) + (blue);
+	//uint32_t paintInstance = (red << 16) + (green << 8) + (blue);
 	/* The texture manager asks for a unique 32bit identifier for every texture instance.
 	However, it requires 72 bits to fully describe a mech texture (the base color (stored in
 	the variable "red"), highlight color1 (blue), and highlight color2 (green), each of which
@@ -1787,14 +1787,14 @@ void Mech3DAppearance::resetPaintScheme (ULONG red, ULONG green, ULONG blue)
 	that are close in color (i.e. all of the 3 most significant bits of the 9 rgb components are
 	the same) will be treated as the same texture, which is not necessarily a bad thing in
 	our case.  LOD is never needed because if the texture is different, its NAME will be different!!*/
-	ULONG ccbase = ((red >> 5) & 7) + (((red >> 13) & 7) << 3) + (((red >> 21) & 7) << 6);
-	ULONG cchighlight1 = ((green >> 5) & 7) + (((green >> 13) & 7) << 3) + (((green >> 21) & 7) << 6);
-	ULONG cchighlight2 = ((blue >> 5) & 7) + (((blue >> 13) & 7) << 3) + (((blue >> 21) & 7) << 6);
-	ULONG paintInstance = (ccbase << 18) + (cchighlight1 << 9) + (cchighlight2);
+	uint32_t ccbase = ((red >> 5) & 7) + (((red >> 13) & 7) << 3) + (((red >> 21) & 7) << 6);
+	uint32_t cchighlight1 = ((green >> 5) & 7) + (((green >> 13) & 7) << 3) + (((green >> 21) & 7) << 6);
+	uint32_t cchighlight2 = ((blue >> 5) & 7) + (((blue >> 13) & 7) << 3) + (((blue >> 21) & 7) << 6);
+	uint32_t paintInstance = (ccbase << 18) + (cchighlight1 << 9) + (cchighlight2);
 	
 	if (fileExists(textureName))
 	{
-		ULONG textureInstanceAlreadyExists = mcTextureManager->textureInstanceExists(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
+		uint32_t textureInstanceAlreadyExists = mcTextureManager->textureInstanceExists(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
 		if (!textureInstanceAlreadyExists)
 			localTextureHandle = mcTextureManager->loadTexture(textureName,gos_Texture_Solid,gosHint_DisableMipmap | gosHint_DontShrink,paintInstance);
 		else
@@ -2242,7 +2242,7 @@ bool Mech3DAppearance::recalcBounds (void)
 					if (status != OBJECT_STATUS_DESTROYED)
 					{
 						bool baseLOD = true;
-						ULONG selectLOD = 0;
+						uint32_t selectLOD = 0;
 						if (useHighObjectDetail)
 						{
 							//-------------------------------------------------------------------------------
@@ -2266,11 +2266,11 @@ bool Mech3DAppearance::recalcBounds (void)
 						}
 
 						// we are at this LOD level.
-						if (selectLOD != (ULONG)currentLOD)
+						if (selectLOD != (uint32_t)currentLOD)
 						{
 							currentLOD = selectLOD;
 
-							UCHAR alphaValue = mechShape->GetAlphaValue();
+							uint8_t alphaValue = mechShape->GetAlphaValue();
 							//mechShape->ClearAnimation();	//DO NOT do this with animating things!!
 							delete mechShape;
 							mechShape = NULL;
@@ -2292,7 +2292,7 @@ bool Mech3DAppearance::recalcBounds (void)
 						// we are at the Base LOD level.
 							currentLOD = 0;
 
-							UCHAR alphaValue = mechShape->GetAlphaValue();
+							uint8_t alphaValue = mechShape->GetAlphaValue();
 							//treeShape->ClearAnimation();
 							delete mechShape;
 							mechShape = NULL;
@@ -2345,9 +2345,9 @@ int32_t Mech3DAppearance::render (int32_t depthFixup)
 		if (visible)
 		{
 			int32_t color = SD_BLUE;
-			ULONG highLight = 0x007f7f7f;
+			uint32_t highLight = 0x007f7f7f;
 			if ((teamId > -1) && (teamId < 8)) {
-				static ULONG highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
+				static uint32_t highLightTable[3] = {0x00007f00, 0x0000007f, 0x007f0000};
 				static int32_t colorTable[3] = {SB_GREEN | 0xff000000, SB_BLUE | 0xff000000, SB_RED | 0xff000000};
 				color = colorTable[homeTeamRelationship];
 				highLight = highLightTable[homeTeamRelationship];
@@ -2910,7 +2910,7 @@ void Mech3DAppearance::setObjStatus (int32_t oStatus)
 				{
 					if (strnicmp(txmName,"a_",2) == 0)
 					{
-						ULONG gosTextureHandle = 0;
+						uint32_t gosTextureHandle = 0;
 						
 						if (!i)
 						{
@@ -2928,7 +2928,7 @@ void Mech3DAppearance::setObjStatus (int32_t oStatus)
 					}
 					else
 					{
-						ULONG gosTextureHandle = 0;
+						uint32_t gosTextureHandle = 0;
 						
 						if (!i)
 						{
@@ -3026,12 +3026,12 @@ void Mech3DAppearance::updateGeometry (void)
 		lightg = eye->getLightGreen(lightIntensity);
 		lightb = eye->getLightBlue(lightIntensity);
 	
-		ULONG lightRGB = (lightr<<16) + (lightg<<8) + lightb;
+		uint32_t lightRGB = (lightr<<16) + (lightg<<8) + lightb;
 		
 		eye->setLightColor(0,lightRGB);
 		eye->setLightIntensity(0,1.0);
 	
-		ULONG fogRGB = 0xff<<24;
+		uint32_t fogRGB = 0xff<<24;
 		float fogStart = eye->fogStart;
 		float fogFull = eye->fogFull;
 	
@@ -5037,7 +5037,7 @@ void Mech3DAppearance::copyFrom (MechAppearanceData *data)
 	jumpVelocity = 		data->jumpVelocity;
 }
 
-void Mech3DAppearance::flashBuilding (float dur, float fDuration, ULONG color)
+void Mech3DAppearance::flashBuilding (float dur, float fDuration, uint32_t color)
 {
 	duration = dur;
 	flashDuration = fDuration;

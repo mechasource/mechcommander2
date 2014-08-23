@@ -17,7 +17,7 @@
 //
 gosFX::Tube__Specification::Tube__Specification(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	Effect__Specification(TubeClassID, stream, gfx_version)
 {
@@ -55,7 +55,7 @@ gosFX::Tube__Specification::Tube__Specification(
 	m_pUSize.Load(stream, gfx_version);
 	m_pVSize.Load(stream, gfx_version);
 
-	int type;
+	int32_t type;
 	*stream >> m_maxProfileCount >> type >> m_insideOut;
 	m_profileType = static_cast<ProfileType>(type);
 	CalculateUBias(true);
@@ -80,7 +80,7 @@ gosFX::Tube__Specification::Tube__Specification():
 gosFX::Tube__Specification*
 	gosFX::Tube__Specification::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);
@@ -125,7 +125,7 @@ void
 	m_pUSize.Save(stream);
 	m_pVSize.Save(stream);
 
-	*stream << m_maxProfileCount << static_cast<int>(m_profileType);
+	*stream << m_maxProfileCount << static_cast<int32_t>(m_profileType);
 	*stream << m_insideOut;
 }
 
@@ -456,7 +456,7 @@ bool
 	// Calculate the worst case UV scale
 	//----------------------------------
 	//
-	int max_index = m_maxProfileCount-1;
+	int32_t max_index = m_maxProfileCount-1;
 	float max_scale, min_scale;
 Retry:
 	m_pUSize.ExpensiveComputeRange(&min_scale, &max_scale);
@@ -639,26 +639,26 @@ void
 	{
 		for (uint16_t profile=0; profile<spec->m_maxProfileCount-1; ++profile)
 		{
-			uint16_t base = static_cast<short>(profile * vertex_count);
+			uint16_t base = static_cast<int16_t>(profile * vertex_count);
 			for (uint16_t panel=0; panel<vertex_count-1; ++panel)
 			{
 				if (spec->m_insideOut)
 				{
-					*indices++ = static_cast<short>(base+panel+1);
-					*indices++ = static_cast<short>(base+panel);
-					*indices++ = static_cast<short>(base+panel+vertex_count+1);
-					*indices++ = static_cast<short>(base+panel+vertex_count);
-					*indices++ = static_cast<short>(base+panel+vertex_count+1);
-					*indices++ = static_cast<short>(base+panel);
+					*indices++ = static_cast<int16_t>(base+panel+1);
+					*indices++ = static_cast<int16_t>(base+panel);
+					*indices++ = static_cast<int16_t>(base+panel+vertex_count+1);
+					*indices++ = static_cast<int16_t>(base+panel+vertex_count);
+					*indices++ = static_cast<int16_t>(base+panel+vertex_count+1);
+					*indices++ = static_cast<int16_t>(base+panel);
 				}
 				else
 				{
-					*indices++ = static_cast<short>(base+panel);
-					*indices++ = static_cast<short>(base+panel+1);
-					*indices++ = static_cast<short>(base+panel+vertex_count+1);
-					*indices++ = static_cast<short>(base+panel+vertex_count+1);
-					*indices++ = static_cast<short>(base+panel+vertex_count);
-					*indices++ = static_cast<short>(base+panel);
+					*indices++ = static_cast<int16_t>(base+panel);
+					*indices++ = static_cast<int16_t>(base+panel+1);
+					*indices++ = static_cast<int16_t>(base+panel+vertex_count+1);
+					*indices++ = static_cast<int16_t>(base+panel+vertex_count+1);
+					*indices++ = static_cast<int16_t>(base+panel+vertex_count);
+					*indices++ = static_cast<int16_t>(base+panel);
 				}
 			}
 		}
@@ -668,25 +668,25 @@ void
 		Verify(vertex_count==5);
 		for (uint16_t profile=0; profile<spec->m_maxProfileCount-1; ++profile)
 		{
-			uint16_t base = static_cast<short>(profile * vertex_count);
+			uint16_t base = static_cast<int16_t>(profile * vertex_count);
 			for (uint16_t panel=0; panel<4; ++panel)
 			{
 				if (spec->m_insideOut)
 				{
-					*indices++ = static_cast<short>(base+panel+1);
+					*indices++ = static_cast<int16_t>(base+panel+1);
 					*indices++ = base;
-					*indices++ = static_cast<short>(base+panel+6);
-					*indices++ = static_cast<short>(base+5);
-					*indices++ = static_cast<short>(base+panel+6);
+					*indices++ = static_cast<int16_t>(base+panel+6);
+					*indices++ = static_cast<int16_t>(base+5);
+					*indices++ = static_cast<int16_t>(base+panel+6);
 					*indices++ = base;
 				}
 				else
 				{
 					*indices++ = base;
-					*indices++ = static_cast<short>(base+panel+1);
-					*indices++ = static_cast<short>(base+panel+6);
-					*indices++ = static_cast<short>(base+panel+6);
-					*indices++ = static_cast<short>(base+5);
+					*indices++ = static_cast<int16_t>(base+panel+1);
+					*indices++ = static_cast<int16_t>(base+panel+6);
+					*indices++ = static_cast<int16_t>(base+panel+6);
+					*indices++ = static_cast<int16_t>(base+5);
 					*indices++ = base;
 				}
 			}
@@ -836,8 +836,8 @@ bool gosFX::Tube::Execute(ExecuteInfo *info)
 	//----------------------------------
 	//
 	Stuff::ExtentBox box(Stuff::Point3D::Identity, Stuff::Point3D::Identity);
-	int i = m_headProfile;
-	int profile_count = 0;
+	int32_t i = m_headProfile;
+	int32_t profile_count = 0;
 	Verify(i >= 0);
 	do
 	{
@@ -1178,8 +1178,8 @@ void gosFX::Tube::Draw(DrawInfo *info)
 		//
 		if (spec->m_profileType == Specification::e_AlignedRibbon)
 		{
-			int i = m_headProfile;
-			int vertex = 0;
+			int32_t i = m_headProfile;
+			int32_t vertex = 0;
 			uint32_t vertex_count = spec->m_vertices.GetLength();
 			Verify(vertex_count < 8);
 			Stuff::Point3D
@@ -1256,7 +1256,7 @@ void gosFX::Tube::Draw(DrawInfo *info)
 				// Multiply the points thru the matrix
 				//------------------------------------
 				//
-				for (int v=0; v<vertex_count; ++v)
+				for (int32_t v=0; v<vertex_count; ++v)
 				{
 					m_P_vertices[vertex++].Multiply(
 						spec->m_vertices[v],

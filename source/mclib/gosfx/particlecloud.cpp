@@ -17,7 +17,7 @@
 gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 	Stuff::RegisteredClass::ClassID class_id,
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	Effect__Specification(class_id, stream, gfx_version)
 {
@@ -369,7 +369,7 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo *info)
 	//
 	Stuff::LinearMatrix4D new_world_to_local;
 	Stuff::LinearMatrix4D *matrix = NULL;
-	int sim_mode = GetSimulationMode();
+	int32_t sim_mode = GetSimulationMode();
 	if (sim_mode == DynamicWorldSpaceSimulationMode)
 	{
 		Stuff::LinearMatrix4D local_to_world;
@@ -405,8 +405,8 @@ bool gosFX::ParticleCloud::Execute(ExecuteInfo *info)
 	// Deal with all the active particles
 	//-----------------------------------
 	//
-	int i;
-	int last_real = -1;
+	int32_t i;
+	int32_t last_real = -1;
 	for (i = 0; i < m_activeParticleCount; i++)
 	{
 		//
@@ -503,7 +503,7 @@ void gosFX::ParticleCloud::Kill()
 	// Destroy all the particles and set up an empty particle cloud
 	//-------------------------------------------------------------
 	//
-	for(int i=0; i < m_activeParticleCount; i++)
+	for(int32_t i=0; i < m_activeParticleCount; i++)
 		DestroyParticle(i);
 	m_activeParticleCount = 0;
 	m_birthAccumulator = 0.0f;

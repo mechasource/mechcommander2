@@ -9,7 +9,7 @@
 
 //#include <mlr/mlrcliptrick.hpp>
 
-extern ULONG gEnableTextureSort, gShowClippedPolys;
+extern uint32_t gEnableTextureSort, gShowClippedPolys;
 extern puint16_t indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
 
 #define HUNT_CLIP_ERROR 0
@@ -26,7 +26,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 
 	Verify(index.GetLength() > 0);
 
-	USHORT stride;
+	uint16_t stride;
 	bool textureAnimation = false;
 	Scalar deltaU=0.0f, deltaV=0.0f;
 
@@ -42,16 +42,16 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 		}
 	}
 
-	int i, j, k, len = lengths.GetLength();
+	int32_t i, j, k, len = lengths.GetLength();
 
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-	int tex2count = 0;
+	int32_t tex2count = 0;
 #endif
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
-	int m;
+	int32_t m;
 	//	gos_PushCurrentHeap(StaticHeap);
-	//	static DynamicArrayOf<int> *tex2count = new DynamicArrayOf<int>(Limits::Max_Number_Of_Multitextures);
-	int tex2count[Limits::Max_Number_Of_Multitextures];
+	//	static DynamicArrayOf<int32_t> *tex2count = new DynamicArrayOf<int32_t>(Limits::Max_Number_Of_Multitextures);
+	int32_t tex2count[Limits::Max_Number_Of_Multitextures];
 	//	SPEW(("micgaert", "Michael!!! The new() on line 42 can cause memory leaks!"));
 	//	gos_PopCurrentHeap();
 	for(m=0;m<currentNrOfPasses;m++)
@@ -60,7 +60,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 	}
 #endif
 
-	int numVertices = GetNumVertices();
+	int32_t numVertices = GetNumVertices();
 	gos_vertices = vt->GetActualVertexPool(db);
 	numGOSVertices = 0;
 
@@ -93,7 +93,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 				Verify (numGOSVertices < 2*Limits::Max_Number_Vertices_Per_Mesh);
 			}
 
-			indexOffset[j] = (USHORT)(j - stride);
+			indexOffset[j] = (uint16_t)(j - stride);
 
 			gos_vertices[numGOSVertices].GOSTransformNoClip(
 				coords[j],
@@ -258,7 +258,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 	gos_indices = vt->GetActualIndexPool(db);
 	numGOSIndices = 0;
 
-	int ngi = 0;
+	int32_t ngi = 0;
 	for(i=0,j=0;i<len;j+=stride,i++)
 	{
 		stride = lengths[i];
@@ -286,7 +286,7 @@ CLASSNAME::TransformNoClip(Matrix4D *mat, GOSVertexPool *vt,bool db)
 			gos_indices[ngi++] = indexOffset[index[j+k]];
 		}
 	}
-	numGOSIndices = (USHORT)ngi;
+	numGOSIndices = (uint16_t)ngi;
 
 	Check_Object(vt);
 	if(db==false)
@@ -303,7 +303,7 @@ static MLRClippingState theAnd, theOr, theTest;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Now it gets serious
-int
+int32_t
 CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVertexPool *vt, bool db)
 {
 	Transform(mat);
@@ -312,9 +312,9 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 
 	Check_Object(this);
 
-	USHORT l, stride;
-	int i, j, k, ret = 0;
-	int len = lengths.GetLength();
+	uint16_t l, stride;
+	int32_t i, j, k, ret = 0;
+	int32_t len = lengths.GetLength();
 
 	Verify(len == testList.GetLength());
 	Verify(clippingFlags.GetClippingState() != 0);
@@ -333,7 +333,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 		return visible;
 	}
 
-	int mask, end, k0, k1, ct=0;
+	int32_t mask, end, k0, k1, ct=0;
 	Scalar a=0.0f;
 	//	Scalar bc0=0.0f, bc1=0.0f;
 
@@ -370,14 +370,14 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 #endif
 
 #ifdef I_SAY_YES_TO_DUAL_TEXTURES
-	int tex2count = 0;
-	int numVertices = GetNumVertices();
+	int32_t tex2count = 0;
+	int32_t numVertices = GetNumVertices();
 #endif
 
 #ifdef I_SAY_YES_TO_MULTI_TEXTURES
-	int m;
+	int32_t m;
 	gos_PushCurrentHeap(StaticHeap);
-	static DynamicArrayOf<int> *tex2count = new DynamicArrayOf<int>(Limits::Max_Number_Of_Multitextures);
+	static DynamicArrayOf<int32_t> *tex2count = new DynamicArrayOf<int32_t>(Limits::Max_Number_Of_Multitextures);
 	SPEW(("micgaert", "Michael!!! The new() on line 316 can cause memory leaks!"));
 	gos_PopCurrentHeap();
 	for(m=0;m<currentNrOfPasses;m++)
@@ -387,7 +387,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 
 #endif
 
-	int	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
+	int32_t	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 
 	myNumberUsedClipVertex = 0;
 	myNumberUsedClipIndex = 0;
@@ -478,7 +478,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 		//
 		else
 		{
-			USHORT numberVerticesPerPolygon = 0;
+			uint16_t numberVerticesPerPolygon = 0;
 
 			//
 			//---------------------------------------------------------------
@@ -503,7 +503,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 					// directly to the clipping buffer
 					//----------------------------------------------------
 					//
-					int clipped_index =
+					int32_t clipped_index =
 						myNumberUsedClipVertex + numberVerticesPerPolygon;
 					theTest = (*clipPerVertex)[k0];
 
@@ -815,7 +815,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				Set_Statistic(PolysClippedButGOnePlane, PolysClippedButGOnePlane+1);
 #endif
 				ClipData2 srcPolygon, dstPolygon;
-				int dstBuffer = 1;
+				int32_t dstBuffer = 1;
 
 				Verify(texCoords.GetLength() > 0);
 
@@ -838,7 +838,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				//
 				for(k=j,l=0;k<end;k++,l++)
 				{
-					int indexK = index[k];
+					int32_t indexK = index[k];
 
 					srcPolygon.coords[l] = (*transformedCoords)[indexK];
 
@@ -891,7 +891,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				//
 				mask = 1;
 				MLRClippingState theNewOr(0);
-				int loop = 4;
+				int32_t loop = 4;
 
 #if HUNT_CLIP_ERROR
 				for(k=0;k<srcPolygon.length;k++)
@@ -1275,7 +1275,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 #endif
 				for(k=0;k<srcPolygon.length;k++)
 				{
-					int clipped_index = myNumberUsedClipVertex + k;
+					int32_t clipped_index = myNumberUsedClipVertex + k;
 #if HUNT_CLIP_ERROR
 					DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20) 
 						<< srcPolygon.coords[k].x << " "
@@ -1348,7 +1348,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 			indexOffset[j] = stride;
 
 #if FOG_HACK
-			int fogEntry = state.GetFogMode();
+			int32_t fogEntry = state.GetFogMode();
 			if(fogEntry)
 			{
 				*((puint8_t )&gos_vertices[numGOSVertices].frgb + 3) =
@@ -1425,9 +1425,9 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				Verify(3 + numGOSIndices < 2*Limits::Max_Number_Vertices_Per_Mesh);
 			}
 
-			gos_indices[numGOSIndices] = (USHORT)(index[j] - indexOffset[index[j]]);
-			gos_indices[numGOSIndices+1] = (USHORT)(index[j+k+1] - indexOffset[index[j+k+1]]);
-			gos_indices[numGOSIndices+2] = (USHORT)(index[j+k] - indexOffset[index[j+k]]);
+			gos_indices[numGOSIndices] = (uint16_t)(index[j] - indexOffset[index[j]]);
+			gos_indices[numGOSIndices+1] = (uint16_t)(index[j+k+1] - indexOffset[index[j+k+1]]);
+			gos_indices[numGOSIndices+2] = (uint16_t)(index[j+k] - indexOffset[index[j+k]]);
 
 			numGOSIndices += 3;
 		}
@@ -1439,7 +1439,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 		for(i=0,j=0;i<myNumberUsedClipLength;i++)
 		{
 #ifdef _ARMOR
-			stride = static_cast<USHORT>((*clipExtraLength)[i] & 0x7fff);
+			stride = static_cast<uint16_t>((*clipExtraLength)[i] & 0x7fff);
 #else
 			stride = (*clipExtraLength)[i];
 #endif
@@ -1493,7 +1493,7 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				}
 
 #if FOG_HACK
-				int fogEntry = state.GetFogMode();
+				int32_t fogEntry = state.GetFogMode();
 				if(fogEntry)
 				{
 					fogEntry--;
@@ -1593,8 +1593,8 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 				Verify(numGOSIndices%3 == 0);
 
 				gos_indices[numGOSIndices] = numGOSVertices;
-				gos_indices[numGOSIndices+1] = (USHORT)(numGOSVertices + 1);
-				gos_indices[numGOSIndices+2] = (USHORT)(numGOSVertices + 2);
+				gos_indices[numGOSIndices+1] = (uint16_t)(numGOSVertices + 1);
+				gos_indices[numGOSIndices+2] = (uint16_t)(numGOSVertices + 2);
 
 				numGOSVertices += 3;
 				numGOSIndices += 3;

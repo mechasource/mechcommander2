@@ -99,9 +99,9 @@ void
 			{
 				void __stdcall gos_RenderIndexedArray(
 					PVOID pVertexArray, 
-					ULONG NumberVertices, 
+					uint32_t NumberVertices, 
 					puint16_t lpwIndices, 
-					ULONG NumberIndices, 
+					uint32_t NumberIndices, 
 					gosVERTEXTYPE VertexType, 
 					gosPRIMITIVETYPE PrimitiveType=PRIMITIVE_TRIANGLELIST );
 
@@ -142,11 +142,11 @@ void
 			size *= 2.4f;
 		}
 
-		int Triangle = 0, Vertex = 0;
+		int32_t Triangle = 0, Vertex = 0;
 	//
 	// Warning! - These points need clipping!
 	//
-		for( int i=numVertices; i; i-- )
+		for( int32_t i=numVertices; i; i-- )
 		{
 			pArray[Triangle+0] = *((GOSVertex *)vertices + Vertex);
 			pArray[Triangle+1] = *((GOSVertex *)vertices + Vertex);
@@ -211,7 +211,7 @@ void
 	Verify(texture2==0);
 	Start_Timer(GOS_Draw_Time);
 
-	for(int i=0;i<numVertices;i++)
+	for(int32_t i=0;i<numVertices;i++)
 	{
 		if(((GOSVertex *)vertices)[i].x > Environment.screenWidth-1)
 		{
@@ -234,11 +234,11 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	SortData::LoadAlphaFromTriList(SortAlpha **alpha)
 {
 	Start_Timer(Alpha_Sorting_Time);
-	int i, index = 0, end = (int)(numVertices*0.333333333333333333333333);
+	int32_t i, index = 0, end = (int32_t)(numVertices*0.333333333333333333333333);
 	Verify(texture2==0);
 
 	for(i=0;i<end;i++)
@@ -260,11 +260,11 @@ int
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	SortData::LoadAlphaFromTriIndexedList(SortAlpha **alpha)
 {
 	Start_Timer(Alpha_Sorting_Time);
-	int i, index = 0, end = numIndices/3;
+	int32_t i, index = 0, end = numIndices/3;
 	Verify(texture2==0);
 
 	for(i=0;i<end;i++)
@@ -286,7 +286,7 @@ int
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	SortData::LoadAlphaFromPointCloud(SortAlpha**)
 {
 	Start_Timer(Alpha_Sorting_Time);
@@ -298,7 +298,7 @@ int
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	SortData::LoadAlphaFromQuads(SortAlpha**)
 {
 	Start_Timer(Alpha_Sorting_Time);
@@ -310,7 +310,7 @@ int
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	SortData::LoadAlphaFromLineCloud(SortAlpha**)
 {
 	Start_Timer(Alpha_Sorting_Time);
@@ -331,7 +331,7 @@ ToBeDrawnPrimitive::ToBeDrawnPrimitive()
 	cameraPosition = Stuff::LinearMatrix4D::Identity;
 	shapeToClipMatrix = Stuff::LinearMatrix4D::Identity;
 
-	for(int i=0;i<Limits::Max_Number_Of_Lights_Per_Primitive;i++)
+	for(int32_t i=0;i<Limits::Max_Number_Of_Lights_Per_Primitive;i++)
 	{
 		activeLights[i] = NULL;
 	}
@@ -381,7 +381,7 @@ MLRSorter::MLRSorter(ClassData *class_data, MLRTexturePool *tp):
 	rawDrawData.SetLength(Limits::Max_Number_Primitives_Per_Frame);
 
 #ifdef CalDraw
-	for(int i=0;i<MLRState::PriorityCount;i++)
+	for(int32_t i=0;i<MLRState::PriorityCount;i++)
 	{
 		lastUsedInBucketNotDrawn[i] = 0;
 		priorityBucketsNotDrawn[i].SetLength(Limits::Max_Number_Primitives_Per_Frame + Limits::Max_Number_ScreenQuads_Per_Frame);
@@ -415,7 +415,7 @@ void
 	lastUsedRaw = 0;
 
 #ifdef CalDraw
-	for(int i=0;i<MLRState::PriorityCount;i++)
+	for(int32_t i=0;i<MLRState::PriorityCount;i++)
 	{
 		lastUsedInBucketNotDrawn[i] = 0;
 	}
@@ -427,7 +427,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSorter::DrawPrimitive(MLRPrimitiveBase *pt, int pass)
+	MLRSorter::DrawPrimitive(MLRPrimitiveBase *pt, int32_t pass)
 {
 	Check_Object(this); 
 	Check_Object(pt);
@@ -487,10 +487,10 @@ SortData *
 	MLRSorter::SetRawData
 		(
 			PVOIDvertices, 
-			int numVertices, 
+			int32_t numVertices, 
 			const MLRState& state,
 			cint32_t& mode,
-			int tex2
+			int32_t tex2
 		)
 {
 	Check_Object(this);
@@ -523,12 +523,12 @@ SortData *
 	MLRSorter::SetRawIndexedData
 		(
 			PVOIDvertices, 
-			int numVertices, 
+			int32_t numVertices, 
 			puint16_t indices, 
-			int numIndices, 
+			int32_t numIndices, 
 			const MLRState& state,
 			cint32_t& mode,
-			int tex2
+			int32_t tex2
 		)
 {
 	Check_Object(this);
@@ -558,12 +558,12 @@ SortData *
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 SortData *
-	MLRSorter::SetRawData ( MLRPrimitiveBase *pt, int pass)
+	MLRSorter::SetRawData ( MLRPrimitiveBase *pt, int32_t pass)
 {
 	Check_Object(this);
 	Check_Object(pt);
 	
-	int drawMode = pt->GetSortDataMode();
+	int32_t drawMode = pt->GetSortDataMode();
 	
 	switch(drawMode)
 	{
@@ -571,9 +571,9 @@ SortData *
 		{
 			MLRIndexedPrimitiveBase *ipt = static_cast<MLRIndexedPrimitiveBase *>(pt);
 
-			int tex2 = 0;
+			int32_t tex2 = 0;
 			PVOIDvertices = ipt->GetGOSVertices(pass);
-			int vertexCount = ipt->GetNumGOSVertices();
+			int32_t vertexCount = ipt->GetNumGOSVertices();
 
 			if(pt->GetCurrentState(pass).GetMultiTextureMode()!=MLRState::MultiTextureOffMode && MLRState::GetMultitextureLightMap())
 			{
@@ -611,7 +611,7 @@ void
 	MLRSorter::IncreaseTBDPCounter()
 {
 	Check_Object(this);
-	int priority = drawData[lastUsedDraw].primitive->GetReferenceState().GetPriority();
+	int32_t priority = drawData[lastUsedDraw].primitive->GetReferenceState().GetPriority();
 	priorityBucketsNotDrawn[priority][lastUsedInBucketNotDrawn[priority]++] = &drawData[lastUsedDraw];
 	lastUsedDraw++;
 }
@@ -624,7 +624,7 @@ bool
 {
 	Verify(original != newer);
 
-	int changed = (original.renderState ^ newer.renderState);
+	int32_t changed = (original.renderState ^ newer.renderState);
 
 	if(changed)
 	{
@@ -706,7 +706,7 @@ bool
 		{
 			if(newer.renderState & MLRState::FogMask)
 			{
-				gos_SetRenderState(	gos_State_Fog, (int)&newer.fogColor);
+				gos_SetRenderState(	gos_State_Fog, (int32_t)&newer.fogColor);
 			}
 			else
 			{
@@ -741,8 +741,8 @@ bool
 		{
 			if( newer.renderState & MLRState::WireFrameOnlyMode )
 			{
-				ULONG wfColor=0xffffff;
-				gos_SetRenderState(	gos_State_WireframeMode, (ULONG)&wfColor );
+				uint32_t wfColor=0xffffff;
+				gos_SetRenderState(	gos_State_WireframeMode, (uint32_t)&wfColor );
 			}
 			else
 			{

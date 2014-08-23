@@ -40,7 +40,7 @@ namespace MidLevelRenderer
 		};
 	};
 
-	int __stdcall ReadMLRVersion(Stuff::MemoryStream *erf_stream);
+	int32_t __stdcall ReadMLRVersion(Stuff::MemoryStream *erf_stream);
 	void __stdcall WriteMLRVersion(Stuff::MemoryStream *erf_stream);
 
 	void __stdcall InitializeClasses(
@@ -67,19 +67,19 @@ namespace MidLevelRenderer
 	DECLARE_TIMER(extern, Alpha_Sorting_Time);
 	DECLARE_TIMER(extern, Unlock_Texture_Time);
 
-	extern ULONG Number_Of_Primitives;
-	extern ULONG NumAllIndices;
-	extern ULONG NumAllVertices;
+	extern uint32_t Number_Of_Primitives;
+	extern uint32_t NumAllIndices;
+	extern uint32_t NumAllVertices;
 	extern float Index_Over_Vertex_Ratio;
-	extern ULONG TransformedVertices;
-	extern ULONG NumberOfAlphaSortedTriangles;
-	extern ULONG LitVertices;
-	extern ULONG NonClippedVertices;
-	extern ULONG ClippedVertices;
-	extern ULONG PolysClippedButOutside;
-	extern ULONG PolysClippedButInside;
-	extern ULONG PolysClippedButOnePlane;
-	extern ULONG PolysClippedButGOnePlane;
+	extern uint32_t TransformedVertices;
+	extern uint32_t NumberOfAlphaSortedTriangles;
+	extern uint32_t LitVertices;
+	extern uint32_t NonClippedVertices;
+	extern uint32_t ClippedVertices;
+	extern uint32_t PolysClippedButOutside;
+	extern uint32_t PolysClippedButInside;
+	extern uint32_t PolysClippedButOnePlane;
+	extern uint32_t PolysClippedButGOnePlane;
 	extern bool PerspectiveMode;
 }
 

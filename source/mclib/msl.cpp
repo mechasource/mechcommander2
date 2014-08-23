@@ -184,7 +184,7 @@ int32_t TG_TypeMultiShape::LoadBinaryCopy (PSTR fileName)
 	if (result != NO_ERROR)
 		return -1;
 	
-	ULONG version = binFile.readLong();
+	uint32_t version = binFile.readLong();
 	if (version == CURRENT_SHAPE_VERSION)
 	{
 		numTG_TypeShapes = binFile.readLong();
@@ -196,7 +196,7 @@ int32_t TG_TypeMultiShape::LoadBinaryCopy (PSTR fileName)
 			listOfTextures = (TG_TexturePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Texture) * numTextures);
 			gosASSERT(listOfTextures != NULL);
 		
-			binFile.read((PUCHAR)listOfTextures,sizeof(TG_Texture) * numTextures);
+			binFile.read((puint8_t)listOfTextures,sizeof(TG_Texture) * numTextures);
 		}
 		else
 		{
@@ -299,7 +299,7 @@ void TG_TypeMultiShape::SaveBinaryCopy (PSTR fileName)
 	//ListOfTextures
 	if (numTextures)
 	{
-		binFile.write((PUCHAR)listOfTextures,sizeof(TG_Texture) * numTextures);
+		binFile.write((puint8_t)listOfTextures,sizeof(TG_Texture) * numTextures);
 	}
 	
 	//listOfShapes
@@ -908,7 +908,7 @@ PVOID TG_MultiShape::operator new (size_t mySize)
 //Returns -1 if texture requested is out of range.
 //This function digs the texture name(s) out of the ASE file so that the
 //User can load and manage them anyway they want to.
-int32_t TG_TypeMultiShape::GetTextureName (ULONG textureNum, PSTR tName, int32_t nameLength)
+int32_t TG_TypeMultiShape::GetTextureName (uint32_t textureNum, PSTR tName, int32_t nameLength)
 {
 	if (textureNum >= numTextures)
 		return(-1);
@@ -931,7 +931,7 @@ int32_t TG_TypeMultiShape::GetTextureName (ULONG textureNum, PSTR tName, int32_t
 //Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 // Assigns a MCTextureNodeIndex to this NOT a GOS handle anymore.  Must go through
 // cache in case of too many handles.
-int32_t TG_TypeMultiShape::SetTextureHandle (ULONG textureNum, ULONG gosTextureHandle)
+int32_t TG_TypeMultiShape::SetTextureHandle (uint32_t textureNum, uint32_t gosTextureHandle)
 {
 	if (textureNum >= numTextures)
 		return(-1);
@@ -946,7 +946,7 @@ int32_t TG_TypeMultiShape::SetTextureHandle (ULONG textureNum, ULONG gosTextureH
 //Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
 //This function takes the gosTextureHandle passed in and assigns it to the
 //textureNum entry of the listOfTextures;
-int32_t TG_TypeMultiShape::SetTextureAlpha (ULONG textureNum, bool alphaFlag)
+int32_t TG_TypeMultiShape::SetTextureAlpha (uint32_t textureNum, bool alphaFlag)
 {
 	if (textureNum >= numTextures)
 		return(-1);
@@ -1041,7 +1041,7 @@ Stuff::Vector3D TG_MultiShape::GetShapeVertexInWorld(int32_t shapeNum, int32_t v
 
 //-------------------------------------------------------------------------------
 //This function sets the fog values for the shape.  Straight fog right now.
-void TG_MultiShape::SetFogRGB (ULONG fRGB)
+void TG_MultiShape::SetFogRGB (uint32_t fRGB)
 {
 	for (int32_t i=0;i<numTG_Shapes;i++)
 	{
@@ -1054,7 +1054,7 @@ void TG_MultiShape::SetFogRGB (ULONG fRGB)
 //to light the shape.
 //Function returns 0 if lightList entries are all OK.  -1 otherwise.
 //
-int32_t TG_MultiShape::SetLightList (TG_LightPtr *lightList, ULONG nLights)
+int32_t TG_MultiShape::SetLightList (TG_LightPtr *lightList, uint32_t nLights)
 {
 	//-----------------------------------------------------
 	// Static member of TG_Shape.  Only need to call once.
@@ -1825,7 +1825,7 @@ void _TG_Animation::SaveBinaryCopy (File *binFile)
 {
 	if (_stricmp(nodeId,"NONE") != 0)
 	{
-		binFile->write((PUCHAR)nodeId,TG_NODE_ID);	
+		binFile->write((puint8_t)nodeId,TG_NODE_ID);	
 		binFile->writeLong(-1);			//ShapeIds ALWAYS start with -1.  We will scan on frame 1 please!
 		binFile->writeLong(numFrames);
 		binFile->writeFloat(frameRate);
@@ -1842,17 +1842,17 @@ void _TG_Animation::SaveBinaryCopy (File *binFile)
 			binFile->writeLong(0);
 		
 		if (quat)
-			binFile->write((PUCHAR)quat,sizeof(Stuff::UnitQuaternion) * numFrames);
+			binFile->write((puint8_t)quat,sizeof(Stuff::UnitQuaternion) * numFrames);
 			
 		if (pos)
-			binFile->write((PUCHAR)pos,sizeof(Stuff::Point3D) * numFrames);
+			binFile->write((puint8_t)pos,sizeof(Stuff::Point3D) * numFrames);
 	}
 }
 
 //-------------------------------------------------------------------------------
 void _TG_Animation::LoadBinaryCopy (File *binFile)
 {
-	binFile->read((PUCHAR)nodeId,TG_NODE_ID);	
+	binFile->read((puint8_t)nodeId,TG_NODE_ID);	
 	shapeId = binFile->readLong();
 	numFrames = binFile->readLong();
 	frameRate = binFile->readFloat();
@@ -1864,7 +1864,7 @@ void _TG_Animation::LoadBinaryCopy (File *binFile)
 	if (quatRAM)
 	{
 		quat = (Stuff::UnitQuaternion *)TG_Shape::tglHeap->Malloc(sizeof(Stuff::UnitQuaternion) * numFrames); 
-		binFile->read((PUCHAR)quat,quatRAM);	
+		binFile->read((puint8_t)quat,quatRAM);	
 	}
 	else
 		quat = NULL;
@@ -1872,7 +1872,7 @@ void _TG_Animation::LoadBinaryCopy (File *binFile)
 	if (posRAM)
 	{
 		pos = (Stuff::Point3D *)TG_Shape::tglHeap->Malloc(sizeof(Stuff::Point3D) * numFrames); 
-		binFile->read((PUCHAR)pos,posRAM);	
+		binFile->read((puint8_t)pos,posRAM);	
 	}
 	else
 		pos = NULL;
@@ -1945,7 +1945,7 @@ void TG_AnimateShape::destroy (void)
 {
 	if (listOfAnimation)
 	{
-		for ( int i = 0; i < count; ++i )
+		for ( int32_t i = 0; i < count; ++i )
 		{
 			TG_Shape::tglHeap->Free( listOfAnimation[i].pos );
 			listOfAnimation[i].pos = NULL;

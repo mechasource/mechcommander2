@@ -72,7 +72,7 @@ GOSImage*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 GOSImage*
-	GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format, int size, gos_TextureHints hints)
+	GOSImagePool::GetImage(PCSTR image_name, gos_TextureFormat format, int32_t size, gos_TextureHints hints)
 {
 	Check_Object(this);
 
@@ -125,7 +125,7 @@ TGAFilePool::TGAFilePool(PCSTR path)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	TGAFilePool::LoadImage(GOSImage *image, int hint)
+	TGAFilePool::LoadImage(GOSImage *image, int32_t hint)
 {
 	if( (image->flags & GOSImage::Loaded) != 0)
 		return true;
@@ -139,7 +139,7 @@ bool
 		((fFileName[1] != 'X') || (fFileName[1] != 'x')))
 		hint |= gosHint_DisableMipmap;
 
-	ULONG nodeIndex = mcTextureManager->loadTexture(file_name,gos_Texture_Detect, hint);
+	uint32_t nodeIndex = mcTextureManager->loadTexture(file_name,gos_Texture_Detect, hint);
 
 	image->SetHandle(nodeIndex);
 	

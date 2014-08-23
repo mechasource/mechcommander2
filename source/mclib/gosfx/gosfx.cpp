@@ -9,7 +9,7 @@ HGOSHEAP gosFX::Heap = NULL;
 
 DEFINE_TIMER(gosFX, Animation_Time);
 DEFINE_TIMER(gosFX, Draw_Time);
-ULONG
+uint32_t
 	gosFX::Point_Count,
 	gosFX::Shard_Count,
 	gosFX::Pert_Count,
@@ -117,15 +117,15 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 	gosFX::ReadGFXVersion(Stuff::MemoryStream *erf_stream)
 {
 	Check_Object(erf_stream);
 
-	int erf_signature;
+	int32_t erf_signature;
 	*erf_stream >> erf_signature;
 	Verify(erf_signature == 'GFX#');
-	int version;
+	int32_t version;
 	*erf_stream >> version;
 	if (version > CurrentGFXVersion)
 		STOP(("Application must be rebuilt to use this version of GFX data"));
@@ -138,5 +138,5 @@ void
 	gosFX::WriteGFXVersion(Stuff::MemoryStream *erf_stream)
 {
 	Check_Object(erf_stream);
-	*erf_stream << 'GFX#' << static_cast<int>(CurrentGFXVersion);
+	*erf_stream << 'GFX#' << static_cast<int32_t>(CurrentGFXVersion);
 }

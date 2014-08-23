@@ -27,14 +27,14 @@
 
 #include <gameos.hpp>
 
-extern void AG_ellipse_draw(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color);
-extern void AG_ellipse_fill(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color);
-extern void AG_ellipse_fillXor(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color);
-extern void AG_ellipse_fillOr(PANE *pane, LONG xc, LONG yc, LONG width, LONG height, LONG color);
+extern void AG_ellipse_draw(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
+extern void AG_ellipse_fill(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
+extern void AG_ellipse_fillXor(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
+extern void AG_ellipse_fillOr(PANE *pane, int32_t xc, int32_t yc, int32_t width, int32_t height, int32_t color);
 //extern void memclear(PVOID Dest,size_t Length);
 //------------------------------------------------------------------------
 // Class BitFlag
-int32_t BitFlag::init (ULONG numRows, ULONG numColumns, ULONG initialValue)
+int32_t BitFlag::init (uint32_t numRows, uint32_t numColumns, uint32_t initialValue)
 {
 	rows = numRows;
 	columns = numColumns;
@@ -63,7 +63,7 @@ int32_t BitFlag::init (ULONG numRows, ULONG numColumns, ULONG initialValue)
 }	
 
 //------------------------------------------------------------------------
-void BitFlag::resetAll (ULONG initialValue)
+void BitFlag::resetAll (uint32_t initialValue)
 {
 	//------------------------------------------
 	// Set memory to initial Flag Value
@@ -93,14 +93,14 @@ void BitFlag::destroy (void)
 		
 //------------------------------------------------------------------------
 // This sets location to bits
-void BitFlag::setFlag (ULONG r, ULONG c)
+void BitFlag::setFlag (uint32_t r, uint32_t c)
 {
 	if ((r < 0) || (r >= rows) || (c < 0) || (c > columns))
 		return;
 		
 	//-------------------------------
 	// find out where we are setting.
-	ULONG location = (c>>3) + (r*colWidth);
+	uint32_t location = (c>>3) + (r*colWidth);
 	uint8_t shiftValue = (c % divValue);
 
 	//----------------------------------------
@@ -116,7 +116,7 @@ void BitFlag::setFlag (ULONG r, ULONG c)
 }	
 		
 //------------------------------------------------------------------------
-void BitFlag::setGroup (ULONG r, ULONG c, ULONG length)
+void BitFlag::setGroup (uint32_t r, uint32_t c, uint32_t length)
 {
 	if (length)
 	{
@@ -125,7 +125,7 @@ void BitFlag::setGroup (ULONG r, ULONG c, ULONG length)
 		
 		//-------------------------------
 		// find out where we are setting.
-		ULONG location = (c>>3) + (r*colWidth);
+		uint32_t location = (c>>3) + (r*colWidth);
 		uint8_t shiftValue = (c % divValue);
 	
 		//----------------------------------------
@@ -138,7 +138,7 @@ void BitFlag::setGroup (ULONG r, ULONG c, ULONG length)
 		if ((8 - shiftValue) >= (int32_t)length)
 		{
 			uint8_t startVal = 1;
-			ULONG repeatVal = length;
+			uint32_t repeatVal = length;
 			for (int32_t i=0;i<int32_t(repeatVal-1);i++)
 			{
 				startVal<<=1;
@@ -160,7 +160,7 @@ void BitFlag::setGroup (ULONG r, ULONG c, ULONG length)
 			if (shiftValue)
 			{
 				uint8_t startVal = 1;
-				ULONG repeatVal = (8-shiftValue);
+				uint32_t repeatVal = (8-shiftValue);
 				for (int32_t i=0;i<int32_t(repeatVal-1);i++)
 				{
 					startVal<<=1;
@@ -202,14 +202,14 @@ void BitFlag::setGroup (ULONG r, ULONG c, ULONG length)
 }
 
 //------------------------------------------------------------------------
-uint8_t BitFlag::getFlag (ULONG r, ULONG c)
+uint8_t BitFlag::getFlag (uint32_t r, uint32_t c)
 {
 	if ((r < 0) || (r >= rows) || (c < 0) || (c > columns))
 		return 0;
 		
 	//------------------------------------
 	// Find out where we are getting from
-	ULONG location = (c>>3) + (r*colWidth);
+	uint32_t location = (c>>3) + (r*colWidth);
 	uint8_t shiftValue = (c % divValue);
 
 	//-------------------------------------
@@ -233,7 +233,7 @@ uint8_t BitFlag::getFlag (ULONG r, ULONG c)
 
 //------------------------------------------------------------------------
 // Class ByteFlag
-int32_t ByteFlag::init (ULONG numRows, ULONG numColumns, ULONG initialValue)
+int32_t ByteFlag::init (uint32_t numRows, uint32_t numColumns, uint32_t initialValue)
 {
 	rows = numRows;
 	columns = numColumns;
@@ -282,7 +282,7 @@ void ByteFlag::initTGA (PSTR tgaFileName)
 
 	gosASSERT(result == NO_ERROR);
 
-	PUCHAR tgaBuffer = (PUCHAR)malloc(tgaFile.fileSize());
+	puint8_t tgaBuffer = (puint8_t)malloc(tgaFile.fileSize());
 	if(tgaBuffer == NULL)
 		return;
 
@@ -307,11 +307,11 @@ void ByteFlag::initTGA (PSTR tgaFileName)
 		{
 			//------------------------------------------------
 			// This is just a bitmap.  Copy it into ourRAM.
-			PUCHAR image = tgaBuffer + sizeof(TGAFileHeader);
+			puint8_t image = tgaBuffer + sizeof(TGAFileHeader);
 			if (header->color_map)
 				image += header->cm_length * (header->cm_entry_size>>3);
 
-			PUCHAR ourRAM = memDump();
+			puint8_t ourRAM = memDump();
 			memcpy(ourRAM,image,tgaFile.fileSize() - sizeof(TGAFileHeader) - (header->cm_length * (header->cm_entry_size>>3)));
 
 			//------------------------------------------------------------------------
@@ -342,21 +342,21 @@ void ByteFlag::initTGA (PSTR tgaFileName)
 }	
 
 //------------------------------------------------------------------------
-void ByteFlag::setCircle (ULONG x, ULONG y, ULONG radius, uint8_t value)
+void ByteFlag::setCircle (uint32_t x, uint32_t y, uint32_t radius, uint8_t value)
 {
 	if (radius)
 		AG_ellipse_fillOr(flagPane,x,y,radius,radius,value);
 }	
 
 //------------------------------------------------------------------------
-void ByteFlag::clearCircle (ULONG x, ULONG y, ULONG radius, uint8_t value)
+void ByteFlag::clearCircle (uint32_t x, uint32_t y, uint32_t radius, uint8_t value)
 {
 	if (radius)
 		AG_ellipse_fillXor(flagPane,x,y,radius,radius,value);
 }	
 
 //------------------------------------------------------------------------
-void ByteFlag::resetAll (ULONG initialValue)
+void ByteFlag::resetAll (uint32_t initialValue)
 {
 	//------------------------------------------
 	// Set memory to initial Flag Value
@@ -386,21 +386,21 @@ void ByteFlag::destroy (void)
 	init();
 }	
 
-PUCHAR ByteFlag::memDump (void)
+puint8_t ByteFlag::memDump (void)
 {
 	return (flagHeap->getHeapPtr());
 }
 
 //------------------------------------------------------------------------
 // This sets location to bits
-void ByteFlag::setFlag (ULONG r, ULONG c)
+void ByteFlag::setFlag (uint32_t r, uint32_t c)
 {
 	if ((r < 0) || (r >= rows) || (c < 0) || (c > columns))
 		return;
 		
 	//-------------------------------
 	// find out where we are setting.
-	ULONG location = c + (r*columns);
+	uint32_t location = c + (r*columns);
 
 	//----------------------------------------
 	// find the location we care about.
@@ -413,7 +413,7 @@ void ByteFlag::setFlag (ULONG r, ULONG c)
 }	
 		
 //------------------------------------------------------------------------
-void ByteFlag::setGroup (ULONG r, ULONG c, ULONG length)
+void ByteFlag::setGroup (uint32_t r, uint32_t c, uint32_t length)
 {
 	if (length)
 	{
@@ -422,7 +422,7 @@ void ByteFlag::setGroup (ULONG r, ULONG c, ULONG length)
 		
 		//-------------------------------
 		// find out where we are setting.
-		ULONG location = c + (r*columns);
+		uint32_t location = c + (r*columns);
 	
 		//----------------------------------------
 		// find the location we care about.
@@ -436,14 +436,14 @@ void ByteFlag::setGroup (ULONG r, ULONG c, ULONG length)
 }
 
 //------------------------------------------------------------------------
-uint8_t ByteFlag::getFlag (ULONG r, ULONG c)
+uint8_t ByteFlag::getFlag (uint32_t r, uint32_t c)
 {
 	if ((r < 0) || (r >= rows) || (c < 0) || (c > columns))
 		return 0;
 		
 	//------------------------------------
 	// Find out where we are getting from
-	ULONG location = c + (r*columns);
+	uint32_t location = c + (r*columns);
 
 	//-------------------------------------
 	// get Location value

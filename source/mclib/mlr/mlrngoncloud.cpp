@@ -9,7 +9,7 @@
 	#include <mlr/mlrcliptrick.hpp>
 #endif
 
-extern ULONG gShowClippedPolys;
+extern uint32_t gShowClippedPolys;
 
 //#############################################################################
 //#######################    MLRNGonCloud    ##################################
@@ -22,7 +22,7 @@ DynamicArrayOf<Vector4D>
 DynamicArrayOf<RGBAColor>
 	*MLRNGonCloud::clipExtraColors;
 
-DynamicArrayOf<int>
+DynamicArrayOf<int32_t>
 	*MLRNGonCloud::clipExtraLength;
 
 
@@ -51,7 +51,7 @@ void
 	clipExtraColors = new DynamicArrayOf<RGBAColor> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraColors);
 	
-	clipExtraLength = new DynamicArrayOf<int> (Limits::Max_Number_Primitives_Per_Frame);
+	clipExtraLength = new DynamicArrayOf<int32_t> (Limits::Max_Number_Primitives_Per_Frame);
 	Register_Object(clipExtraLength);
 }
 
@@ -77,7 +77,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRNGonCloud::MLRNGonCloud(int vertices, int nr) :
+MLRNGonCloud::MLRNGonCloud(int32_t vertices, int32_t nr) :
 	MLREffect(nr, DefaultData)
 {
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -138,16 +138,16 @@ static MLRClippingState theAnd, theOr, theTest;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int 
+int32_t 
 	MLRNGonCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool *vt)
 {
 	Check_Object(this);
 
-	int i, j, k;
-	int end, len = *usedNrOfNGons, ret = 0;
+	int32_t i, j, k;
+	int32_t end, len = *usedNrOfNGons, ret = 0;
 
 #if	EFECT_CLIPPED				// this effect gets not clipped
-	int l, mask, k1, ct=0;
+	int32_t l, mask, k1, ct=0;
 	Scalar a=0.0f, bc0, bc1;
 #endif
 
@@ -182,9 +182,9 @@ int
 //					continue;
 //				}
 
-				ULONG inColor = GOSCopyColor(&colors[2*i]);
-				ULONG outColor = GOSCopyColor(&colors[2*i+1]);
-				for(int z=1; z < numOfVertices-1; z++)
+				uint32_t inColor = GOSCopyColor(&colors[2*i]);
+				uint32_t outColor = GOSCopyColor(&colors[2*i+1]);
+				for(int32_t z=1; z < numOfVertices-1; z++)
 				{
 					GOSCopyTriangleData(
 						&gos_vertices[numGOSVertices],
@@ -209,7 +209,7 @@ int
 		return visible;
 	}
 
-	int	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
+	int32_t	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 
 	myNumberUsedClipVertex = 0;
 	myNumberUsedClipIndex = 0;
@@ -287,10 +287,10 @@ int
 		{
 			TurnVisible(i);
 
-			ULONG inColor = GOSCopyColor(&colors[2*i]);
-			ULONG outColor = GOSCopyColor(&colors[2*i+1]);
+			uint32_t inColor = GOSCopyColor(&colors[2*i]);
+			uint32_t outColor = GOSCopyColor(&colors[2*i+1]);
 
-			for(int z=1; z < numOfVertices-1; z++)
+			for(int32_t z=1; z < numOfVertices-1; z++)
 			{
 				GOSCopyTriangleData(
 					&gos_vertices[numGOSVertices],
@@ -335,7 +335,7 @@ int
 		{
 #if	EFECT_CLIPPED				// this effect gets not clipped
 
-			int numberVerticesPerPolygon = 0;
+			int32_t numberVerticesPerPolygon = 0;
 
 			//
 			//---------------------------------------------------------------
@@ -355,7 +355,7 @@ int
 					// directly to the clipping buffer
 					//----------------------------------------------------
 					//
-					int clipped_index =
+					int32_t clipped_index =
 						myNumberUsedClipVertex + numberVerticesPerPolygon;
 					theTest = clipPerVertex[k];
 					if(theTest == 0)
@@ -480,7 +480,7 @@ int
 			else
 			{
 				EffectClipData srcPolygon, dstPolygon;
-				int dstBuffer = 0;
+				int32_t dstBuffer = 0;
 
 				specialClipColors[0] = colors[2*i];
 
@@ -523,7 +523,7 @@ int
 				//
 				mask = 1;
 				MLRClippingState theNewOr(0);
-				int loop = 4;
+				int32_t loop = 4;
 
 				do
 				{
@@ -689,7 +689,7 @@ int
 				//
 				for(k=0;k<srcPolygon.length;k++)
 				{
-					int clipped_index = myNumberUsedClipVertex + k;
+					int32_t clipped_index = myNumberUsedClipVertex + k;
 
 					if(srcPolygon.coords[k].z == srcPolygon.coords[k].w)
 					{
@@ -723,7 +723,7 @@ int
 	{
 		for(i=0,j=0;i<myNumberUsedClipLength;i++)
 		{
-			int stride = clipExtraLength[i];
+			int32_t stride = clipExtraLength[i];
 
 			for(k=1;k<stride-1;k++)
 			{

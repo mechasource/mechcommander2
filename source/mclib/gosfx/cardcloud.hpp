@@ -25,7 +25,7 @@ namespace gosFX
 	protected:
 		CardCloud__Specification(
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		);
 
 	public:
@@ -34,7 +34,7 @@ namespace gosFX
 		static CardCloud__Specification*
 			Make(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 		void
 			Copy(CardCloud__Specification *spec);
@@ -65,7 +65,7 @@ namespace gosFX
 
 		bool
 			m_animated;
-		UCHAR
+		uint8_t
 			m_width;
 
 		void

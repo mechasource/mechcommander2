@@ -31,7 +31,7 @@
 
 #include <gameos.hpp>
 //----------------------------------------------------------------------------------
-ULONG **colorRGBLookup = NULL;
+uint32_t **colorRGBLookup = NULL;
 int32_t numColorRGBTables = 0;
 
 #define MAX_COLOR_ENTRIES		56
@@ -51,10 +51,10 @@ void initColorTables (void)
 	result = colorFile.readIdLong("NumTables",numColorRGBTables);
 	gosASSERT(result == NO_ERROR);
 
-	colorRGBLookup = (ULONG **)systemHeap->Malloc(sizeof(ULONG *) * numColorRGBTables);
+	colorRGBLookup = (uint32_t **)systemHeap->Malloc(sizeof(uint32_t *) * numColorRGBTables);
 	gosASSERT(colorRGBLookup != NULL);
 
-	memset(colorRGBLookup,0,sizeof(ULONG *) * numColorRGBTables);
+	memset(colorRGBLookup,0,sizeof(uint32_t *) * numColorRGBTables);
 
 	for (int32_t i=0;i<numColorRGBTables;i++)
 	{
@@ -64,10 +64,10 @@ void initColorTables (void)
 		result = colorFile.seekBlock(tableBlock);
 		gosASSERT(result == NO_ERROR);
 
-		colorRGBLookup[i] = (ULONG *)systemHeap->Malloc(sizeof(ULONG) * MAX_COLOR_ENTRIES);
+		colorRGBLookup[i] = (uint32_t *)systemHeap->Malloc(sizeof(uint32_t) * MAX_COLOR_ENTRIES);
 		gosASSERT(colorRGBLookup[i] != NULL);
 
-		ULONG *table = colorRGBLookup[i];
+		uint32_t *table = colorRGBLookup[i];
 
 		for (int32_t j=0;j<MAX_COLOR_ENTRIES;j++)
 		{
@@ -97,7 +97,7 @@ void destroyColorTables (void)
 }	
 
 //----------------------------------------------------------------------------------
-ULONG *getColorTable (int32_t tableNum)
+uint32_t *getColorTable (int32_t tableNum)
 {
 	if ((tableNum >= 0) && (tableNum < numColorRGBTables))
 	{

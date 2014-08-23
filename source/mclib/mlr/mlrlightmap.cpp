@@ -155,13 +155,13 @@ void
 
 	stream->Rewind();
 
-	*stream << (int)Matrix4D;
-	*stream << reinterpret_cast<int>(mat);
+	*stream << (int32_t)Matrix4D;
+	*stream << reinterpret_cast<int32_t>(mat);
 
-	*stream << (int)ClippingState;
+	*stream << (int32_t)ClippingState;
 	clippingState.Save(stream);
 
-	*stream << (int)MasterRenderState;
+	*stream << (int32_t)MasterRenderState;
 	_state.Save(stream);
 }
 
@@ -190,18 +190,18 @@ void
 
 	uint16_t stride;
 
-	int i, pointerValue;
+	int32_t i, pointerValue;
 	Stuff::Point3D *coords = NULL;
 	Stuff::RGBAColor color;
 	Stuff::RGBAColor *colors = NULL;
 	Stuff::Vector2DScalar *texCoords = NULL;
-	ULONG argb = 0xffffffff;
+	uint32_t argb = 0xffffffff;
 
 	Check_Object(vertexPool);
 	GOSVertex* gos_vertices = vertexPool->GetActualVertexPool();
-	int numGOSVertices = 0;
+	int32_t numGOSVertices = 0;
 
-	int msd;
+	int32_t msd;
 	MemoryStreamData type;
 
 	stream->Rewind();
@@ -330,10 +330,10 @@ void
 					}
 					else
 					{
-						int k, k0, k1, l, mask, ct = 0;
+						int32_t k, k0, k1, l, mask, ct = 0;
 						Scalar a = 0.0f;
 
-						int numberVerticesPerPolygon = 0;
+						int32_t numberVerticesPerPolygon = 0;
 
 						//
 						//---------------------------------------------------------------
@@ -351,7 +351,7 @@ void
 #endif
 							for(k=0;k<stride;k++)
 							{
-								int clipped_index = numberVerticesPerPolygon;
+								int32_t clipped_index = numberVerticesPerPolygon;
 
 								k0 = k;
 								k1 = (k+1) < stride ? k+1 : 0;
@@ -532,7 +532,7 @@ void
 
 
 							ClipData2 srcPolygon, dstPolygon;
-							int dstBuffer = 1;
+							int32_t dstBuffer = 1;
 
 							srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 
@@ -573,7 +573,7 @@ void
 							//
 							mask = 1;
 							MLRClippingState theNewOr(0);
-							int loop = 4;
+							int32_t loop = 4;
 
 							do
 							{
@@ -872,10 +872,10 @@ void
 					}
 					else
 					{
-						int k, k0, k1, l, mask, ct = 0;
+						int32_t k, k0, k1, l, mask, ct = 0;
 						Scalar a = 0.0f;
 
-						int numberVerticesPerPolygon = 0;
+						int32_t numberVerticesPerPolygon = 0;
 
 						//
 						//---------------------------------------------------------------
@@ -893,7 +893,7 @@ void
 #endif
 							for(k=0;k<stride;k++)
 							{
-								int clipped_index = numberVerticesPerPolygon;
+								int32_t clipped_index = numberVerticesPerPolygon;
 
 								k0 = k;
 								k1 = (k+1) < stride ? k+1 : 0;
@@ -1089,7 +1089,7 @@ void
 
 
 							ClipData2 srcPolygon, dstPolygon;
-							int dstBuffer = 1;
+							int32_t dstBuffer = 1;
 
 							srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 							srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
@@ -1132,7 +1132,7 @@ void
 							//
 							mask = 1;
 							MLRClippingState theNewOr(0);
-							int loop = 4;
+							int32_t loop = 4;
 
 							do
 							{
@@ -1432,15 +1432,15 @@ MLRShape*
 
 	uint16_t stride;
 
-	int i;
+	int32_t i;
 	Stuff::Point3D *coords = NULL;
 	Stuff::RGBAColor color;
 	Stuff::RGBAColor *colors = NULL;
 	Stuff::Vector2DScalar *texCoords = NULL;
 
-	int numGOSVertices = 0;
+	int32_t numGOSVertices = 0;
 
-	int msd;
+	int32_t msd;
 	MemoryStreamData type;
 
 	stream->Rewind();
@@ -1510,7 +1510,7 @@ MLRShape*
 				*stream >> color;
 
 #if COLOR_AS_DWORD
-				ULONG argb = 0xffffffff;
+				uint32_t argb = 0xffffffff;
 				argb = GOSCopyColor(&color);
 #endif
 

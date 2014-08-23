@@ -868,7 +868,7 @@ extern char	SetStateDebugStr[256];
 
 void execStdSetState (void) {
 
-	ULONG stateHandle = ABLi_popInteger();
+	uint32_t stateHandle = ABLi_popInteger();
 
 	if (stateHandle > 0) {
 		SymTableNodePtr stateFunction = ModuleRegistry[CurFSM->getHandle()].stateHandles[stateHandle].state;
@@ -887,7 +887,7 @@ void execStdGetFunctionHandle (void) {
 
 	SymTableNodePtr function = CurModule->findFunction(name, false);
 	if (function)
-		ABLi_pushInteger((ULONG)function);
+		ABLi_pushInteger((uint32_t)function);
 	else
 		ABLi_pushInteger(0);
 }
@@ -896,8 +896,8 @@ void execStdGetFunctionHandle (void) {
 
 void execStdSetFlag (void) {
 
-	ULONG bits = (ULONG)ABLi_popInteger();
-	ULONG flag = (ULONG)ABLi_popInteger();
+	uint32_t bits = (uint32_t)ABLi_popInteger();
+	uint32_t flag = (uint32_t)ABLi_popInteger();
 	bool set = ABLi_popBoolean();
 
 	bits &= (flag ^ 0xFFFFFFFF);
@@ -911,8 +911,8 @@ void execStdSetFlag (void) {
 
 void execStdGetFlag (void) {
 
-	ULONG bits = (ULONG)ABLi_popInteger();
-	ULONG flag = (ULONG)ABLi_popInteger();
+	uint32_t bits = (uint32_t)ABLi_popInteger();
+	uint32_t flag = (uint32_t)ABLi_popInteger();
 
 	bool set = ((bits & flag) != 0);
 
@@ -923,7 +923,7 @@ void execStdGetFlag (void) {
 
 void execStdCallFunction (void) {
 
-	ULONG address = ABLi_popInteger();
+	uint32_t address = ABLi_popInteger();
 
 	if (address) {
 //GLENN: Not functional, yet...

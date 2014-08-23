@@ -37,7 +37,7 @@ namespace gosFX
 		static Event*
 			Make(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		void
@@ -54,7 +54,7 @@ namespace gosFX
 	protected:
 		Event(
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		);
 	};
 
@@ -74,7 +74,7 @@ namespace gosFX
 		Effect__Specification(
 			Stuff::RegisteredClass::ClassID class_id,
 			Stuff::MemoryStream *stream,
-			int gfx_version
+			int32_t gfx_version
 		);
 
 	public:
@@ -84,19 +84,19 @@ namespace gosFX
 		static Effect__Specification*
 			Create(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		typedef Effect__Specification*
 			(*Factory)(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		static Effect__Specification*
 			Make(
 				Stuff::MemoryStream *stream,
-				int gfx_version
+				int32_t gfx_version
 			);
 
 		virtual void
@@ -341,11 +341,11 @@ namespace gosFX
 					Check_Object(this); m_flags &= ~SimulationModeMask;
 					m_flags |= DynamicWorldSpaceSimulationMode;
 				}
-		int
+		int32_t
 			GetSimulationMode()
 				{Check_Object(this); return m_flags & SimulationModeMask;}
 
-		int
+		int32_t
 			GetSimulationFlags()
 				{Check_Object(this); return m_flags;}
 

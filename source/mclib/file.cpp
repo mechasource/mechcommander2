@@ -36,7 +36,7 @@
 
 //-----------------
 // Static Variables
-ULONG File::lastError = NO_ERROR;
+uint32_t File::lastError = NO_ERROR;
 bool		  File::logFileTraffic = FALSE;
 
 FilePtr fileTrafficLog = NULL;
@@ -248,7 +248,7 @@ int32_t File::open (PCSTR fName, FileMode _mode, int32_t numChild)
 						strcpy(testCDPath,CDInstallPath);
 						strcat(testCDPath,"tgl.fst");
 
-						ULONG findCD = fileExists(testCDPath);
+						uint32_t findCD = fileExists(testCDPath);
 						if (findCD == 1)	//File exists. CD is in drive.  Return 2 to indicate file not found.
 							return 2;
 
@@ -256,7 +256,7 @@ int32_t File::open (PCSTR fName, FileMode _mode, int32_t numChild)
 		
 						char data[2048];
 						sprintf(data,FileMissingString,fileName,CDMissingString);
-						ULONG result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
+						uint32_t result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
 						if (result1 == IDCANCEL)
 						{
 							ExitGameOS();
@@ -399,7 +399,7 @@ int32_t File::open (PCSTR fName, FileMode _mode, int32_t numChild)
 }
 		
 //---------------------------------------------------------------------------
-int32_t File::open (FilePtr _parent, ULONG fileSize, int32_t numChild)
+int32_t File::open (FilePtr _parent, uint32_t fileSize, int32_t numChild)
 {
 	if (_parent && (_parent->fastFile == NULL))
 	{
@@ -467,9 +467,9 @@ int32_t File::open (FilePtr _parent, ULONG fileSize, int32_t numChild)
 		{
 			maxChildren = 0;
 			inRAM = TRUE;
-			ULONG result = 0;
+			uint32_t result = 0;
 
-			fileImage = (PUCHAR)malloc(fileSize);
+			fileImage = (puint8_t)malloc(fileSize);
 			if (!fileImage)
 				inRAM = FALSE;
 
@@ -493,7 +493,7 @@ int32_t File::open (FilePtr _parent, ULONG fileSize, int32_t numChild)
 	return(NO_ERROR);
 }
 
-int32_t File::open(PCSTR buffer, int bufferLength )
+int32_t File::open(PCSTR buffer, int32_t bufferLength )
 {
 	if ( buffer && bufferLength > 0 )
 	{	
@@ -778,7 +778,7 @@ int32_t File::seek (int32_t pos, int32_t from)
 }
 
 //---------------------------------------------------------------------------
-int32_t File::read (ULONG pos, PUCHAR buffer, int32_t length)
+int32_t File::read (uint32_t pos, puint8_t buffer, int32_t length)
 {
 	int32_t result = 0;
 
@@ -852,9 +852,9 @@ uint8_t File::readByte (void)
 }
 
 //---------------------------------------------------------------------------
-short File::readWord (void)
+int16_t File::readWord (void)
 {
-	short value = 0;
+	int16_t value = 0;
 	int32_t result =0;
 
 	if (inRAM && fileImage)
@@ -888,7 +888,7 @@ short File::readWord (void)
 }
 
 //---------------------------------------------------------------------------
-short File::readShort (void)
+int16_t File::readShort (void)
 {
 	return (readWord());
 }
@@ -897,7 +897,7 @@ short File::readShort (void)
 int32_t File::readLong (void)
 {
 	int32_t value = 0;
-	ULONG result = 0;
+	uint32_t result = 0;
 
 	if (inRAM && fileImage)	
 	{
@@ -948,7 +948,7 @@ bool isNAN(float *pFloat)
 float File::readFloat( void )
 {
 	float value = 0;
-	ULONG result = 0;
+	uint32_t result = 0;
 
 	if (inRAM && fileImage)	
 	{
@@ -985,7 +985,7 @@ float File::readFloat( void )
 }
 
 //---------------------------------------------------------------------------
-int32_t File::readString (PUCHAR buffer)
+int32_t File::readString (puint8_t buffer)
 {
 	int32_t last = 0;
 
@@ -1012,7 +1012,7 @@ int32_t File::readString (PUCHAR buffer)
 }
 
 //---------------------------------------------------------------------------
-int32_t File::read (PUCHAR buffer, int32_t length)
+int32_t File::read (puint8_t buffer, int32_t length)
 {
 	int32_t result = 0;
 	
@@ -1048,14 +1048,14 @@ int32_t File::read (PUCHAR buffer, int32_t length)
 }
 
 //---------------------------------------------------------------------------
-int32_t File::readRAW (ULONG * &buffer, UserHeapPtr heap)
+int32_t File::readRAW (uint32_t * &buffer, UserHeapPtr heap)
 {
 	int32_t result = 0;
 	
 	if (fastFile && heap && fastFile->isLZCompressed())
 	{
 		int32_t lzSizeNeeded = fastFile->lzSizeFast(fastFileHandle);
-		buffer = (ULONG *)heap->Malloc(lzSizeNeeded);
+		buffer = (uint32_t *)heap->Malloc(lzSizeNeeded);
 
 		result = fastFile->readFastRAW(fastFileHandle,buffer,lzSizeNeeded);
 		logicalPosition += result;
@@ -1065,7 +1065,7 @@ int32_t File::readRAW (ULONG * &buffer, UserHeapPtr heap)
 }
 
 //---------------------------------------------------------------------------
-int32_t File::readLine (PUCHAR buffer, int32_t maxLength)
+int32_t File::readLine (puint8_t buffer, int32_t maxLength)
 {
 	int32_t i = 0;
 	
@@ -1144,7 +1144,7 @@ int32_t File::readLine (PUCHAR buffer, int32_t maxLength)
 }
 
 //---------------------------------------------------------------------------
-int32_t File::readLineEx (PUCHAR buffer, int32_t maxLength)
+int32_t File::readLineEx (puint8_t buffer, int32_t maxLength)
 {
 	int32_t i = 0;
 	
@@ -1213,9 +1213,9 @@ int32_t File::readLineEx (PUCHAR buffer, int32_t maxLength)
 }
 
 //---------------------------------------------------------------------------
-int32_t File::write (ULONG pos, PUCHAR buffer, int32_t bytes)
+int32_t File::write (uint32_t pos, puint8_t buffer, int32_t bytes)
 {
-	ULONG result = 0;
+	uint32_t result = 0;
 
 	if (parent == NULL)	
 	{
@@ -1294,9 +1294,9 @@ int32_t File::writeByte (byte value)
 }
 
 //---------------------------------------------------------------------------
-int32_t File::writeWord (short value)
+int32_t File::writeWord (int16_t value)
 {
-	ULONG result = 0;
+	uint32_t result = 0;
 	
 	if (parent == NULL)
 	{
@@ -1304,9 +1304,9 @@ int32_t File::writeWord (short value)
 		{
 			if ( inRAM )
 			{
-				if ( logicalPosition + sizeof( short ) > physicalLength )
+				if ( logicalPosition + sizeof( int16_t ) > physicalLength )
 					return BAD_WRITE_ERR;
-				memcpy( fileImage + logicalPosition, &value, sizeof( short ) );
+				memcpy( fileImage + logicalPosition, &value, sizeof( int16_t ) );
 				result = sizeof( value );				
 			}
 			else
@@ -1336,7 +1336,7 @@ int32_t File::writeWord (short value)
 }
 
 //---------------------------------------------------------------------------
-int32_t File::writeShort (short value)
+int32_t File::writeShort (int16_t value)
 {
 	int32_t result = writeWord(value);
 	return(result);
@@ -1345,7 +1345,7 @@ int32_t File::writeShort (short value)
 //---------------------------------------------------------------------------
 int32_t File::writeLong (int32_t value)
 {
-	ULONG result = 0;
+	uint32_t result = 0;
 	
 	if (parent == NULL)
 	{
@@ -1387,7 +1387,7 @@ int32_t File::writeLong (int32_t value)
 //---------------------------------------------------------------------------
 int32_t File::writeFloat (float value)
 {
-	ULONG result = 0;
+	uint32_t result = 0;
 
 	gosASSERT(!isNAN(&value));
 	if (parent == NULL)
@@ -1490,7 +1490,7 @@ int32_t File::writeLine (PSTR buffer)
 }
 
 //---------------------------------------------------------------------------
-int32_t File::write (PUCHAR buffer, int32_t bytes)
+int32_t File::write (puint8_t buffer, int32_t bytes)
 {
 	int32_t result = 0;
 	
@@ -1563,7 +1563,7 @@ time_t File::getFileMTime (void)
 }
 
 //---------------------------------------------------------------------------
-ULONG File::getLength (void)
+uint32_t File::getLength (void)
 {
 	if (fastFile && (length == 0))
 	{
@@ -1584,19 +1584,19 @@ ULONG File::getLength (void)
 }
 
 //---------------------------------------------------------------------------
-ULONG File::fileSize (void)
+uint32_t File::fileSize (void)
 {
 	return getLength();
 }
 
 //---------------------------------------------------------------------------
-ULONG File::getNumLines (void)
+uint32_t File::getNumLines (void)
 {
-	ULONG currentPos = logicalPosition;
-	ULONG numLines = 0;
+	uint32_t currentPos = logicalPosition;
+	uint32_t numLines = 0;
 
 	seek(0);
-	for (ULONG i=0;i<getLength();i++)
+	for (uint32_t i=0;i<getLength();i++)
 	{
 		uint8_t check1 = readByte();
 		if (check1 == '\n')

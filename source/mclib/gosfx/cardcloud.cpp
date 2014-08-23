@@ -10,7 +10,7 @@
 //
 gosFX::CardCloud__Specification::CardCloud__Specification(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	SpinningCloud__Specification(gosFX::CardCloudClassID, stream, gfx_version)
 {
@@ -87,7 +87,7 @@ gosFX::CardCloud__Specification::CardCloud__Specification():
 gosFX::CardCloud__Specification*
 	gosFX::CardCloud__Specification::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);
@@ -250,7 +250,7 @@ void
 	gosFX::CardCloud__Specification::SetWidth()
 {
 	m_width =
-		static_cast<UCHAR>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
+		static_cast<uint8_t>(1.0f / m_USize.ComputeValue(0.0f, 0.0f));
 }
 
 //############################################################################
@@ -438,12 +438,12 @@ bool
 	//
 	if (spec->m_animated)
 	{
-		UCHAR columns =
+		uint8_t columns =
 			Stuff::Truncate_Float_To_Byte(
 				spec->m_pIndex.ComputeValue(age, seed)
 			);
-		UCHAR rows = static_cast<UCHAR>(columns / spec->m_width);
-		columns = static_cast<UCHAR>(columns - rows*spec->m_width);
+		uint8_t rows = static_cast<uint8_t>(columns / spec->m_width);
+		columns = static_cast<uint8_t>(columns - rows*spec->m_width);
 
 		//
 		//---------------------------

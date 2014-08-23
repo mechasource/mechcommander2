@@ -33,7 +33,7 @@ namespace MidLevelRenderer {
 	protected:
 		MLRPolyMesh(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		~MLRPolyMesh(void);
 
@@ -43,20 +43,20 @@ namespace MidLevelRenderer {
 		static MLRPolyMesh*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 
 		void
 			Save(Stuff::MemoryStream *stream);
 
-		virtual void	SetPrimitiveLength(puint8_t , int);
-		virtual void	GetPrimitiveLength(puint8_t *, int*);
+		virtual void	SetPrimitiveLength(puint8_t , int32_t);
+		virtual void	GetPrimitiveLength(puint8_t *, pint32_t);
 
 		void	FindFacePlanes(void);
 
-		virtual int	FindBackFace(const Stuff::Point3D&);
+		virtual int32_t	FindBackFace(const Stuff::Point3D&);
 
-		const Stuff::Plane *GetPolygonPlane(int i)
+		const Stuff::Plane *GetPolygonPlane(int32_t i)
 		{
 			Check_Object(this);
 			Verify(i<facePlanes.GetLength(void));
@@ -64,9 +64,9 @@ namespace MidLevelRenderer {
 			return &facePlanes[i];
 		}
 
-		virtual void	Lighting(MLRLight**, int nrLights);
+		virtual void	Lighting(MLRLight**, int32_t nrLights);
 
-		virtual int	Clip(MLRClippingState, GOSVertexPool*);
+		virtual int32_t	Clip(MLRClippingState, GOSVertexPool*);
 
 		void
 			Transform(Stuff::Matrix4D*);
@@ -90,11 +90,11 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int
+		virtual int32_t
 			GetSize(void)
 		{ 
 			Check_Object(this);
-			int ret = MLRPrimitive::GetSize(void);
+			int32_t ret = MLRPrimitive::GetSize(void);
 			ret += testList.GetSize(void);
 			ret += facePlanes.GetSize(void);
 

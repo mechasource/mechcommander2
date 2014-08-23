@@ -103,7 +103,7 @@ gosFX::Curve::Save(Stuff::MemoryStream *stream)
 void
 	gosFX::Curve::Load(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	
@@ -244,7 +244,7 @@ gosFX::Curve::SetSeedFlagIfComplex(bool vflag)
 	
 }
 
-int 
+int32_t 
 gosFX::Curve::GetSeedFlagIfComplex()
 {
 	Check_Object(this);
@@ -318,7 +318,7 @@ gosFX::Curve::GetSeedFlagIfComplex()
 
 
 float 
-gosFX::Curve::ExpensiveCompute(float tme,int curvenum)
+gosFX::Curve::ExpensiveCompute(float tme,int32_t curvenum)
 {
 	
 	Check_Object(this);
@@ -444,7 +444,7 @@ void
 gosFX::Curve::ExpensiveComputeRange(
 									float *low,
 									float *hi,
-									int curvenum
+									int32_t curvenum
 									)
 {
 	Check_Object(this);
@@ -671,7 +671,7 @@ gosFX::Curve::ExpensiveComputeRange(
 
 
 float 
-gosFX::Curve::Mid(int curvenum)
+gosFX::Curve::Mid(int32_t curvenum)
 {
 	float min,max;
 	ExpensiveComputeRange(&min,&max,curvenum);
@@ -679,7 +679,7 @@ gosFX::Curve::Mid(int curvenum)
 }
 
 void 
-gosFX::Curve::TranslateTo(float pos,int curvenum)
+gosFX::Curve::TranslateTo(float pos,int32_t curvenum)
 {
 	Check_Object(this);
 	
@@ -723,7 +723,7 @@ gosFX::Curve::TranslateTo(float pos,int curvenum)
 			float delta,x1,x2,y1,y2,slp;
 			
 			delta=pos-SCurve->ComputeValue(0.0f,0.0f);
-			int key;
+			int32_t key;
 			for(key=0;key<SCurve->GetKeyCount()-1;key++)
 			{
 				x1=(*SCurve)[key].m_time;
@@ -831,7 +831,7 @@ gosFX::Curve::TranslateTo(float pos,int curvenum)
 }
 
 void 
-gosFX::Curve::TranslateBy(float delta,int curvenum)
+gosFX::Curve::TranslateBy(float delta,int32_t curvenum)
 {
 	Check_Object(this);
 	
@@ -875,7 +875,7 @@ gosFX::Curve::TranslateBy(float delta,int curvenum)
 			ComplexCurve *SCurve=(ComplexCurve *)this;
 			float x1,x2,y1,y2;
 			
-			int key;
+			int32_t key;
 			for(key=0;key<SCurve->GetKeyCount()-1;key++)
 			{
 				x1=(*SCurve)[key].m_time;
@@ -982,14 +982,14 @@ gosFX::Curve::TranslateBy(float delta,int curvenum)
 }
 
 void 
-gosFX::Curve::LocalScale(float sfactor,int curvenum)
+gosFX::Curve::LocalScale(float sfactor,int32_t curvenum)
 {
 	Check_Object(this);
 	AxisScale(sfactor,Mid(curvenum),curvenum);
 }
 
 void 
-gosFX::Curve::AxisScale(float sfactor,float axis,int curvenum)
+gosFX::Curve::AxisScale(float sfactor,float axis,int32_t curvenum)
 {
 	Check_Object(this);
 	switch(m_type)
@@ -1036,7 +1036,7 @@ gosFX::Curve::AxisScale(float sfactor,float axis,int curvenum)
 			ComplexCurve *SCurve=(ComplexCurve *)this;
 			float x1,x2,y1,y2;
 			
-			int key;
+			int32_t key;
 			for(key=0;key<SCurve->GetKeyCount()-1;key++)
 			{
 				x1=(*SCurve)[key].m_time;
@@ -1144,7 +1144,7 @@ gosFX::Curve::AxisScale(float sfactor,float axis,int curvenum)
 
 
 gosFX::Curve * 
-gosFX::Curve::GetSubCurve(int curvenum)
+gosFX::Curve::GetSubCurve(int32_t curvenum)
 {
 	Check_Object(this);
 	
@@ -1271,7 +1271,7 @@ gosFX::ConstantCurve::Save(Stuff::MemoryStream *stream)
 void 
 	gosFX::ConstantCurve::Load(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Pointer(this);
@@ -1301,7 +1301,7 @@ gosFX::LinearCurve::Save(Stuff::MemoryStream *stream)
 void 
 	gosFX::LinearCurve::Load(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Pointer(this);
@@ -1397,7 +1397,7 @@ gosFX::SplineCurve::Save(Stuff::MemoryStream *stream)
 void 
 	gosFX::SplineCurve::Load(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Pointer(this);
@@ -1638,7 +1638,7 @@ Curve(e_ComplexType)
 //
 gosFX::ComplexCurve::ComplexCurve(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 Curve(e_ComplexType)
 {
@@ -1675,7 +1675,7 @@ gosFX::ComplexCurve::Save(Stuff::MemoryStream *stream)
 void 
 gosFX::ComplexCurve::Load(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 )
 {
 	Check_Pointer(this);
@@ -1712,7 +1712,7 @@ gosFX::ComplexCurve::Load(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int
+int32_t
 gosFX::ComplexCurve::InsertKey(float m_time)
 {
 	Check_Object(this);
@@ -1724,10 +1724,10 @@ gosFX::ComplexCurve::InsertKey(float m_time)
 	// key array and shift the m_keys after the insert point up one slot
 	//-----------------------------------------------------------------------
 	//
-	int before = GetKeyIndex(m_time);
-	int key_count = m_keys.GetLength();
+	int32_t before = GetKeyIndex(m_time);
+	int32_t key_count = m_keys.GetLength();
 	m_keys.SetLength(key_count+1);
-	for (int i=key_count-1; i>=before; --i)
+	for (int32_t i=key_count-1; i>=before; --i)
 		m_keys[i+1] = m_keys[i];
 	CurveKey* key;
 	if (key_count > 0)
@@ -1788,7 +1788,7 @@ gosFX::ComplexCurve::InsertKey(float m_time)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-gosFX::ComplexCurve::DeleteKey(int index)
+gosFX::ComplexCurve::DeleteKey(int32_t index)
 {
 	Check_Object(this);
 	Verify(index>0 && index<m_keys.GetLength());
@@ -1799,7 +1799,7 @@ gosFX::ComplexCurve::DeleteKey(int index)
 	// If this is the last key, we just resize and return
 	//---------------------------------------------------
 	//
-	int key_count = m_keys.GetLength();
+	int32_t key_count = m_keys.GetLength();
 	if (index == key_count-1)
 	{
 		m_keys.SetLength(index);
@@ -1816,7 +1816,7 @@ gosFX::ComplexCurve::DeleteKey(int index)
 	Check_Object(key);
 	float t = key[1].m_time - key->m_time;
 	float v1 = key->ComputeValue(t);
-	for (int i=index+1; i<key_count; ++i)
+	for (int32_t i=index+1; i<key_count; ++i)
 		m_keys[i-1] = m_keys[i];
 	
 	//
@@ -1886,7 +1886,7 @@ gosFX::ComplexCurve::ComputeRange(
 	// If the key is empty, set everything to zero
 	//--------------------------------------------
 	//
-	int key_count = m_keys.GetLength();
+	int32_t key_count = m_keys.GetLength();
 	if (!key_count)
 	{
 		*low = *hi = 0.0f;

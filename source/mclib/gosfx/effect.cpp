@@ -30,7 +30,7 @@ gosFX::Event::Event(const Event& event):
 //
 gosFX::Event::Event(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	Plug(DefaultData)
 {
@@ -46,7 +46,7 @@ gosFX::Event::Event(
 gosFX::Event*
 	gosFX::Event::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);
@@ -76,7 +76,7 @@ void
 gosFX::Effect__Specification::Effect__Specification(
 	Stuff::RegisteredClass::ClassID class_id,
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	m_events(NULL)
 {
@@ -161,7 +161,7 @@ gosFX::Effect__Specification::~Effect__Specification()
 gosFX::Effect__Specification*
 	gosFX::Effect__Specification::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);
@@ -216,7 +216,7 @@ return true;
 gosFX::Effect__Specification*
 	gosFX::Effect__Specification::Create(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);

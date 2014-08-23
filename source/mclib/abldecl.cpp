@@ -719,7 +719,7 @@ void varOrFieldDeclarations (SymTableNodePtr routineIdPtr, int32_t offset) {
 	if (varFlag) {
 		//----------------------------------------------------------------
 		// If the following error occurs too frequently, simply make the
-		// totalLocalSize field an ULONG instead, and dramatically
+		// totalLocalSize field an uint32_t instead, and dramatically
 		// increase the totalSize limit here...
 		if (totalSize > 32000)
 			syntaxError(ABL_ERR_SYNTAX_TOO_MANY_LOCAL_VARIABLES);

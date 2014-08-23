@@ -29,7 +29,7 @@ public:
 protected:
 	MLRVertex(
 		MemoryStream *stream,
-		int version
+		int32_t version
 		);
 
 public:
@@ -41,7 +41,7 @@ public:
 	static MLRVertex*
 		Make(
 		MemoryStream *stream,
-		int version
+		int32_t version
 		);
 
 	void
@@ -111,7 +111,7 @@ public:
 	{};
 
 protected:
-	int used;
+	int32_t used;
 
 	Point3D		coord;
 	RGBAColor	color;

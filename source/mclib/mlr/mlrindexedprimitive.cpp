@@ -44,7 +44,7 @@ void
 MLRIndexedPrimitive::MLRIndexedPrimitive(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int version
+	int32_t version
 ):
 	MLRPrimitive(class_data, stream, version)
 {
@@ -94,7 +94,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPrimitive::InitializeDrawPrimitive(int vis, int parameter)
+	MLRIndexedPrimitive::InitializeDrawPrimitive(int32_t vis, int32_t parameter)
 {
 	MLRPrimitive::InitializeDrawPrimitive(vis, parameter);
 
@@ -102,7 +102,7 @@ void
 	numGOSIndices = -1;
 
 	visibleIndexedVerticesKey = false;
-	int i, len = visibleIndexedVertices.GetLength();
+	int32_t i, len = visibleIndexedVertices.GetLength();
 
 	for(i=0;i<len;i++)
 	{
@@ -115,7 +115,7 @@ void
 void
 	MLRIndexedPrimitive::SetCoordData(
 		const Point3D *data,
-		int dataSize
+		int32_t dataSize
 	)
 {
 	Check_Object(this); 
@@ -145,7 +145,7 @@ void
 void
 	MLRIndexedPrimitive::SetIndexData(
 		puint16_t index_array,
-		int index_count
+		int32_t index_count
 	)
 {
 	Check_Object(this); 
@@ -164,7 +164,7 @@ void
 void
 	MLRIndexedPrimitive::GetIndexData(
 		puint16_t *index_array,
-		int *index_count
+		pint32_t index_count
 	)
 {
 	Check_Object(this); 
@@ -180,7 +180,7 @@ void
 {
 	Check_Object(this);
 
-	int i, len = coords.GetLength();
+	int32_t i, len = coords.GetLength();
 
 	for(i=0;i<len;i++)
 	{
@@ -197,7 +197,7 @@ void
 void
 	MLRIndexedPrimitive::Lighting (
 		MLRLight **lights,
-		int nrLights
+		int32_t nrLights
 	)
 {
 	Check_Object(this);
@@ -231,7 +231,7 @@ void
 			Verify(normals.GetLength() == colors.GetLength());
 			Verify(coords.GetLength() == colors.GetLength());
 
-			int i, k, len = colors.GetLength();
+			int32_t i, k, len = colors.GetLength();
 
 			MLRVertexData vertexData;
 
@@ -329,7 +329,7 @@ void
 			Verify(normals.GetLength() == colors.GetLength());
 			Verify(coords.GetLength() == colors.GetLength());
 
-			int i, k, len = colors.GetLength();
+			int32_t i, k, len = colors.GetLength();
 
 			MLRVertexData vertexData;
 

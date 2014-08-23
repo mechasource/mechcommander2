@@ -12,7 +12,7 @@
 //
 gosFX::EffectCloud__Specification::EffectCloud__Specification(
 	Stuff::MemoryStream *stream,
-	int gfx_version
+	int32_t gfx_version
 ):
 	SpinningCloud__Specification(gosFX::EffectCloudClassID, stream, gfx_version)
 {
@@ -42,7 +42,7 @@ gosFX::EffectCloud__Specification::EffectCloud__Specification():
 gosFX::EffectCloud__Specification*
 	gosFX::EffectCloud__Specification::Make(
 		Stuff::MemoryStream *stream,
-		int gfx_version
+		int32_t gfx_version
 	)
 {
 	Check_Object(stream);
@@ -133,7 +133,7 @@ gosFX::EffectCloud::~EffectCloud()
 {
 	if (m_activeParticleCount)
 	{
-		for (int i=0; i < m_activeParticleCount; i++)
+		for (int32_t i=0; i < m_activeParticleCount; i++)
 		{
 			Particle *particle = GetParticle(i);
 			Check_Object(particle);
@@ -306,7 +306,7 @@ void gosFX::EffectCloud::Draw(DrawInfo *info)
 	//
 	if (m_activeParticleCount)
 	{
-		for (int i=0; i < m_activeParticleCount; i++)
+		for (int32_t i=0; i < m_activeParticleCount; i++)
 		{
 			Particle *particle = GetParticle(i);
 			Check_Object(particle);

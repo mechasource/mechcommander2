@@ -32,13 +32,13 @@ namespace MidLevelRenderer {
 	struct MLRVertexData {
 		Stuff::Point3D*		point;
 #if COLOR_AS_DWORD
-		ULONG*				color;
+		uint32_t*				color;
 #else
 		Stuff::RGBAColor*	color;
 #endif
 		Stuff::Vector3D*	normal;
 
-		int index;
+		int32_t index;
 	};
 
 	//##########################################################################
@@ -56,7 +56,7 @@ namespace MidLevelRenderer {
 		MLRLight(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		MLRLight(
 			ClassData *class_data,
@@ -67,7 +67,7 @@ namespace MidLevelRenderer {
 		static MLRLight*
 			Make(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		static MLRLight*
 			Make(Stuff::Page *page);
@@ -138,7 +138,7 @@ namespace MidLevelRenderer {
 			GetLightMap()
 		{Check_Object(this); return NULL; }
 
-		int
+		int32_t
 			GetLightMask()
 		{Check_Object(this); return lightMask;}
 		void
@@ -179,7 +179,7 @@ namespace MidLevelRenderer {
 		Stuff::LinearMatrix4D
 			lightToWorld, lightToShape;
 
-		int
+		int32_t
 			lightMask;
 
 		Stuff::MString

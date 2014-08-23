@@ -26,7 +26,7 @@ namespace MidLevelRenderer {
 		MLRSpotLight();
 		MLRSpotLight(
 			Stuff::MemoryStream *stream,
-			int version
+			int32_t version
 			);
 		MLRSpotLight(Stuff::Page *page);
 		~MLRSpotLight();

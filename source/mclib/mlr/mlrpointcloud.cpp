@@ -40,7 +40,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRPointCloud::MLRPointCloud(int nr, int _type) :
+MLRPointCloud::MLRPointCloud(int32_t nr, int32_t _type) :
 	MLREffect(nr, DefaultData), type(_type)
 {
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -99,12 +99,12 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void 
-	MLRPointCloud::Transform(int, int)
+	MLRPointCloud::Transform(int32_t, int32_t)
 {
 	Check_Object(this);
 
 	Start_Timer(Transform_Time);
-	int i;
+	int32_t i;
 
 	for(i=0;i<*usedNrOfVertices;i++)
 	{
@@ -120,14 +120,14 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int 
+int32_t 
 	MLRPointCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool *vt)
 {
 	//--------------------------------------
 	// See if we don't have to draw anything
 	//--------------------------------------
 	//
-	int i;
+	int32_t i;
 	numGOSVertices = 0;
 
 	if(clippingFlags.GetClippingState() == 0 || usedNrOfVertices <= 0)

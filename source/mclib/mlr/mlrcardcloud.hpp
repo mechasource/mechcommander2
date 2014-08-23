@@ -30,7 +30,7 @@ namespace MidLevelRenderer {
 		// Constructors/Destructors
 		//
 	public:
-		MLRCardCloud(int);
+		MLRCardCloud(int32_t);
 		~MLRCardCloud(void);
 
 		void SetData(
@@ -46,7 +46,7 @@ namespace MidLevelRenderer {
 
 		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
-		int	Clip(MLRClippingState, GOSVertexPool*);		
+		int32_t	Clip(MLRClippingState, GOSVertexPool*);		
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -69,7 +69,7 @@ namespace MidLevelRenderer {
 		static Stuff::DynamicArrayOf<Stuff::Vector4D>* clipExtraCoords;			// , Max_Number_Vertices_Per_Mesh
 		static Stuff::DynamicArrayOf<Stuff::RGBAColor>* clipExtraColors;		// , Max_Number_Vertices_Per_Mesh
 		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* clipExtraTexCoords;// , Max_Number_Vertices_Per_Mesh
-		static Stuff::DynamicArrayOf<int>* clipExtraLength;						// , Max_Number_Primitives_Per_Frame
+		static Stuff::DynamicArrayOf<int32_t>* clipExtraLength;						// , Max_Number_Primitives_Per_Frame
 	};
 }
 #endif

@@ -13,7 +13,7 @@
 	#include <mlr/mlrindexedtrianglecloud.hpp>
 #endif
 
-extern ULONG gShowClippedPolys;
+extern uint32_t gShowClippedPolys;
 extern puint16_t indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
 
 //#############################################################################
@@ -74,7 +74,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(int nr) :
+MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(int32_t nr) :
 	MLRTriangleCloud(nr)
 {
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -128,7 +128,7 @@ void
 	worldToEffect.Invert(*dInfo->effectToWorld);
 
 	Vector4D *v4 = transformedCoords->GetData();
-	for(int k=0;k<*usedNrOfPoints;k++, v4++)
+	for(int32_t k=0;k<*usedNrOfPoints;k++, v4++)
 	{
 		v4->Multiply(points[k], effectToClipMatrix);
 		(*clipPerVertex)[k].Clip4dVertex(v4);
@@ -149,10 +149,10 @@ static MLRClippingState theAnd, theOr, theTest;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int 
+int32_t 
 	MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool *vt)
 {
-	int	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
+	int32_t	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
 
 	myNumberUsedClipVertex = 0;
 	myNumberUsedClipIndex = 0;
@@ -174,10 +174,10 @@ int
 	// backfaced polygons
 	//-----------------------------------------------------------------
 	//
-	int i, j, k, k0, k1, *cs = (int *)clipPerVertex->GetData();
+	int32_t i, j, k, k0, k1, *cs = (pint32_t )clipPerVertex->GetData();
 	uint16_t l;
-	int index0, index1, index2, ret = 0;
-	int mask;
+	int32_t index0, index1, index2, ret = 0;
+	int32_t mask;
 	Scalar a = 0.0f;
 
 	for(i=0,j=0;i<*usedNrOfTriangles;j+=3,++i)
@@ -261,7 +261,7 @@ int
 					// directly to the clipping buffer
 					//----------------------------------------------------
 					//
-					int clipped_index =
+					int32_t clipped_index =
 						myNumberUsedClipVertex + numberVerticesPerPolygon;
 					theTest = cs[k0];
 
@@ -315,7 +315,7 @@ int
 					// clipping plane will intersect
 					//--------------------------------------------------
 					//
-					int ct = 0;
+					int32_t ct = 0;
 					mask = 1;
 					theTest |= cs[k1];
 
@@ -469,7 +469,7 @@ int
 				Set_Statistic(PolysClippedButGOnePlane, PolysClippedButGOnePlane+1);
 #endif
 				ClipData2 srcPolygon, dstPolygon;
-				int dstBuffer = 1;
+				int32_t dstBuffer = 1;
 
 				srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 
@@ -484,7 +484,7 @@ int
 				//
 				for(k=j,l=0;k<j+3;k++,l++)
 				{
-					int indexK = index[k];
+					int32_t indexK = index[k];
 
 					srcPolygon.coords[l] = (*transformedCoords)[indexK];
 
@@ -518,7 +518,7 @@ int
 				//
 				mask = 1;
 				MLRClippingState theNewOr(0);
-				int loop = 4;
+				int32_t loop = 4;
 
 #if HUNT_CLIP_ERROR
 				for(k=0;k<srcPolygon.length;k++)
@@ -821,7 +821,7 @@ int
 #endif
 				for(k=0;k<srcPolygon.length;k++)
 				{
-					int clipped_index = myNumberUsedClipVertex + k;
+					int32_t clipped_index = myNumberUsedClipVertex + k;
 #if HUNT_CLIP_ERROR
 					DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20) 
 						<< srcPolygon.coords[k].x << " "

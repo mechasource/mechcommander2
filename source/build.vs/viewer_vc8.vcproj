@@ -434,7 +434,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="extra"
+				Name="external dependencies"
 				>
 				<File
 					RelativePath="..\mechcmd2\mechgui\aanimobject.cpp"

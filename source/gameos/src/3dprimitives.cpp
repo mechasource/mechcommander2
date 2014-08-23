@@ -63,12 +63,12 @@ typedef enum __3dprimitives_const {
 
 #if _JUST_SOME_INFO
 // implemented function declarations
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawPoints(pgos_VERTEX Vertices, int NumVertices);
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawLines(pgos_VERTEX Vertices, int NumVertices);
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawTriangles(pgos_VERTEX Vertices, int NumVertices);
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawQuads(pgos_VERTEX Vertices, int NumVertices);
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawStrips(pgos_VERTEX Vertices, int NumVertices);
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawFans(pgos_VERTEX Vertices, int NumVertices);
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumVertices);
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawLines(pgos_VERTEX Vertices, uint32_t NumVertices);
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices);
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices);
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices);
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices);
 MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices);
 MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices);
 MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices);
@@ -87,7 +87,7 @@ MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArr
 /// <param name="NumVertices"></param>
 /// <returns>MECH_IMPEXP void MECH_CALL</returns>
 MECH_IMPEXP HRESULT MECH_CALL 
-gos_DrawPoints(pgos_VERTEX Vertices, int NumVertices)
+gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	gos_VERTEX	vVertices;
 	int			i;
@@ -135,7 +135,7 @@ gos_DrawPoints(pgos_VERTEX Vertices, int NumVertices)
 /// <param name="NumVertices"></param>
 /// <returns>MECH_IMPEXP void MECH_CALL</returns>
 MECH_IMPEXP HRESULT MECH_CALL
-gos_DrawLines(pgos_VERTEX Vertices, int NumVertices)
+gos_DrawLines(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	gos_VERTEX	vVertices1;
 	gos_VERTEX	vVertices2;
@@ -187,7 +187,7 @@ gos_DrawLines(pgos_VERTEX Vertices, int NumVertices)
 /// <param name="NumVertices"></param>
 /// <returns>MECH_IMPEXP void MECH_CALL</returns>
 MECH_IMPEXP HRESULT MECH_CALL 
-gos_DrawTriangles(pgos_VERTEX Vertices, int NumVertices)
+gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	int i;
 
@@ -242,7 +242,7 @@ gos_DrawTriangles(pgos_VERTEX Vertices, int NumVertices)
 /// <param name="NumVertices"></param>
 /// <returns>MECH_IMPEXP void MECH_CALL</returns>
 MECH_IMPEXP HRESULT MECH_CALL
-gos_DrawQuads(pgos_VERTEX Vertices, int NumVertices)
+gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	int i;
 
@@ -333,7 +333,7 @@ gos_DrawQuads(pgos_VERTEX Vertices, int NumVertices)
 /// <param name="NumVertices"></param>
 /// <returns>MECH_IMPEXP HRESULT MECH_CALL</returns>
 MECH_IMPEXP HRESULT MECH_CALL 
-gos_DrawStrips(pgos_VERTEX Vertices, int NumVertices)
+gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	int i;
 
@@ -376,7 +376,7 @@ gos_DrawStrips(pgos_VERTEX Vertices, int NumVertices)
 /// <param name="NumVertices"></param>
 /// <returns>MECH_IMPEXP HRESULT MECH_CALL</returns>
 MECH_IMPEXP HRESULT MECH_CALL 
-gos_DrawFans(pgos_VERTEX Vertices, int NumVertices)
+gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	int i;
 

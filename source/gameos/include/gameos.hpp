@@ -126,16 +126,16 @@ typedef struct gosEnvironment {
 //
 // Application title and version number
 //
-	PSTR	applicationName;		// "TestApp" or "Pong"
-	PSTR	version;				// Default is "00.00.00.0000"
-	PSTR	registryVersion;		// If present, will be used to create a sub folder in the registry (ie: v1.1, v1.2)
-	PSTR	directoryPath;			// If program path end in this directory, move up levels (ie: "\\Code\\AssassinEditor" or "\\Tools\\PixelWhIP"). "!" will force GameOS NOT to change directory at all (Including DEBUG/RELEASE/PROFILE....)
-	PSTR	defaultPlayerName;		// used in lobby launch
-	uint8_t	allowMultipleApps;		// Allows the game to be run more than once on a single system (network testing)
-	uint8_t	_unused0[3];
-	ULONG	MegMemoryRequired;		// Megabytes of virtual memory required to run game (default is 64Meg)
-	uint8_t	dontClearRegistry;		// When true, the registry is not cleared when the .exe is changed
-	uint8_t	_unused1[3];
+	PSTR		applicationName;		// "TestApp" or "Pong"
+	PSTR		version;				// Default is "00.00.00.0000"
+	PSTR		registryVersion;		// If present, will be used to create a sub folder in the registry (ie: v1.1, v1.2)
+	PSTR		directoryPath;			// If program path end in this directory, move up levels (ie: "\\Code\\AssassinEditor" or "\\Tools\\PixelWhIP"). "!" will force GameOS NOT to change directory at all (Including DEBUG/RELEASE/PROFILE....)
+	PSTR		defaultPlayerName;		// used in lobby launch
+	uint8_t		allowMultipleApps;		// Allows the game to be run more than once on a single system (network testing)
+	uint8_t		_unused0[3];
+	uint32_t	MegMemoryRequired;		// Megabytes of virtual memory required to run game (default is 64Meg)
+	uint8_t		dontClearRegistry;		// When true, the registry is not cleared when the .exe is changed
+	uint8_t		_unused1[3];
 //
 // Current screen mode (application can check, but may change from frame to frame)
 //
@@ -154,13 +154,13 @@ typedef struct gosEnvironment {
 	uint8_t	_unused2;
 	int		DirtyRectangle;			// Bit 0=Enabled, Bit 1=Save Z buffer rectangles too, Bit 2=Save directly in system memory (don't try video memory).
 	int		DisableLowEndCard;		// When set to 1 and video cards in VideoCard.cpp with the LowEndCard flag set will have hardware acceleration disabled
-	ULONG	MinimumTextureMemory;	// If this value is !=0 it specifies the minimum TEXTURE memory required otherwise hardware acceleration is disabled
+	uint32_t	MinimumTextureMemory;	// If this value is !=0 it specifies the minimum TEXTURE memory required otherwise hardware acceleration is disabled
 //
 // Keys used by GameOS (Use 0 to disable them, or see keycodes later in this header)
 //
-	ULONG	Key_FullScreen;			// Default is KEY_F4	(Enter/exit full screen mode)
-	ULONG	Key_SwitchMonitors;		// Default is KEY_F5	(Change video cards - nvidia/voodoo etc...)
-	ULONG	Key_Exit;				// Default is KEY_ESC	(Exit full screen mode or exit game)
+	uint32_t	Key_FullScreen;			// Default is KEY_F4	(Enter/exit full screen mode)
+	uint32_t	Key_SwitchMonitors;		// Default is KEY_F5	(Change video cards - nvidia/voodoo etc...)
+	uint32_t	Key_Exit;				// Default is KEY_ESC	(Exit full screen mode or exit game)
 //
 // Debugging settings
 //
@@ -168,8 +168,8 @@ typedef struct gosEnvironment {
 	PSTR	spew;					// List of groups to dump to debuglog - eg: GameOS_Texture, GameOS_DirectDraw
 	uint8_t	TimeStampSpew;			// adds the current time stamp to all spews
 	uint8_t	_unused3[3];
-	ULONG	MemoryManager;			// 0=custom memory manager, 1=windows memory manager, 2=
-	ULONG	memoryTraceLevel;		// How many levels of stack to walk when tracing memory allocations
+	uint32_t	MemoryManager;			// 0=custom memory manager, 1=windows memory manager, 2=
+	uint32_t	memoryTraceLevel;		// How many levels of stack to walk when tracing memory allocations
 //
 // Game related functions
 //
@@ -195,7 +195,7 @@ typedef struct gosEnvironment {
 	uint8_t	NetworkGUID[16];		// This is the DirectPlay GUID that must be unique for the game
 	GUID	GameGUID;				// Note that this union allows access as GUID but byte order will changing depending on initialization
 	};								// All initialization of this code should use GameGUID from now on
-	ULONG	NetworkMaxPlayers;		// The maximum number of players allowed in this game.
+	uint32_t	NetworkMaxPlayers;		// The maximum number of players allowed in this game.
 	uint8_t	NetGameInfo[16];		// Information about the current network game (this can be enumerated from other network games before you join them)
 	PSTR (__stdcall *DecodeGameInfo)(PVOID Data);	// GameOS will call this routine if present to decode the 16 bytes of network game information.
 	PSTR	ZoneMatchServerIP;      // Typical value is ZoneMatch.zone.com
@@ -223,23 +223,23 @@ typedef struct gosEnvironment {
 //
 // These are legacy and will be deleted
 //
-	ULONG	NetworkMinPlayers;		// The minimum number of player required to start a game
-	ULONG	AllowJoinInProgress;	// When true 'join in progress' is enabled for this network game
-	ULONG	Texture_S_256;			// Number of 256*256 Solid texture heap pages
-	ULONG	Texture_S_128;			// Number of 128*128 Solid texture heap pages
-	ULONG	Texture_S_64;			// Number of   64*64 Solid texture heap pages
-	ULONG	Texture_S_32;			// Number of   32*32 Solid texture heap pages
-	ULONG	Texture_S_16;			// Number of   16*16 Solid texture heap pages
-	ULONG	Texture_K_256;			// Number of 256*256 Keyed texture heap pages
-	ULONG	Texture_K_128;			// Number of 128*128 Keyed texture heap pages
-	ULONG	Texture_K_64;			// Number of   64*64 Keyed texture heap pages
-	ULONG	Texture_K_32;			// Number of   32*32 Keyed texture heap pages
-	ULONG	Texture_K_16;			// Number of   16*16 Keyed texture heap pages
-	ULONG	Texture_A_256;			// Number of 256*256 Alpha texture heap pages
-	ULONG	Texture_A_128;			// Number of 128*128 Alpha texture heap pages
-	ULONG	Texture_A_64;			// Number of   64*64 Alpha texture heap pages
-	ULONG	Texture_A_32;			// Number of   32*32 Alpha texture heap pages
-	ULONG	Texture_A_16;			// Number of   16*16 Alpha texture heap pages
+	uint32_t	NetworkMinPlayers;		// The minimum number of player required to start a game
+	uint32_t	AllowJoinInProgress;	// When true 'join in progress' is enabled for this network game
+	uint32_t	Texture_S_256;			// Number of 256*256 Solid texture heap pages
+	uint32_t	Texture_S_128;			// Number of 128*128 Solid texture heap pages
+	uint32_t	Texture_S_64;			// Number of   64*64 Solid texture heap pages
+	uint32_t	Texture_S_32;			// Number of   32*32 Solid texture heap pages
+	uint32_t	Texture_S_16;			// Number of   16*16 Solid texture heap pages
+	uint32_t	Texture_K_256;			// Number of 256*256 Keyed texture heap pages
+	uint32_t	Texture_K_128;			// Number of 128*128 Keyed texture heap pages
+	uint32_t	Texture_K_64;			// Number of   64*64 Keyed texture heap pages
+	uint32_t	Texture_K_32;			// Number of   32*32 Keyed texture heap pages
+	uint32_t	Texture_K_16;			// Number of   16*16 Keyed texture heap pages
+	uint32_t	Texture_A_256;			// Number of 256*256 Alpha texture heap pages
+	uint32_t	Texture_A_128;			// Number of 128*128 Alpha texture heap pages
+	uint32_t	Texture_A_64;			// Number of   64*64 Alpha texture heap pages
+	uint32_t	Texture_A_32;			// Number of   32*32 Alpha texture heap pages
+	uint32_t	Texture_A_16;			// Number of   16*16 Alpha texture heap pages
 
 //
 // This flag suppresses the "No 3D Acceleration" message when not full screen.
@@ -386,18 +386,18 @@ typedef struct _gosVideo_Info
 	PSTR					lpstrPath;		// string specified path to data
 	gosVideo_PlayMode		ePlayMode;		// the play mode (see above)
 	gosVideo_PlayMode		ePlayStatus;	// the play mode (see above)
-	ULONG					dwOriginX;		// x coord on dest. surf for video
-	ULONG					dwOriginY;		// y coord on dest. surf for video
+	uint32_t					dwOriginX;		// x coord on dest. surf for video
+	uint32_t					dwOriginY;		// y coord on dest. surf for video
 	float					fScaleOfX;		// ratio of displayed to orgininal width
 	float					fScaleOfY;		// ratio of displayed to orgininal height
 	float					fDurationSec;	// read-only duration of video (hundredth of a second)
 	float					fSoFarSec;		// current play position (hundredth of a second)
 	puint8_t					lpData;			// RGB data
-	ULONG					dwSurfaceWidth;	// read-only width of video surface
-	ULONG					dwSurfaceHeight;// read-only height of vidoe surface
-	ULONG					dwPitch;		// read-only pitch of video surface
-	ULONG					dwWidth;		// read-only width of video
-	ULONG					dwHeight;		// read-only height of vidoe
+	uint32_t					dwSurfaceWidth;	// read-only width of video surface
+	uint32_t					dwSurfaceHeight;// read-only height of vidoe surface
+	uint32_t					dwPitch;		// read-only pitch of video surface
+	uint32_t					dwWidth;		// read-only width of video
+	uint32_t					dwHeight;		// read-only height of vidoe
 } gosVideo_ResourceInfo;
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -514,8 +514,8 @@ typedef struct _gosAudio_Format
 {
 	USHORT	wFormatTag;				// Waveform-audio format type. 1=PCM, 2=Microsoft ADPCM.
 	USHORT  nChannels; 				// 1=Mono, 2=Stereo.
-    ULONG	nSamplesPerSec;			// Sample rate, 11025Hz, 22050Hz or 44100Hz.
-	ULONG	nAvgBytesPerSec;        // Normally, nBlockAlign * nSamplesPerSec
+    uint32_t	nSamplesPerSec;			// Sample rate, 11025Hz, 22050Hz or 44100Hz.
+	uint32_t	nAvgBytesPerSec;        // Normally, nBlockAlign * nSamplesPerSec
 	USHORT  nBlockAlign; 			// Normally, wBitsPerSample / 8 * nChannels
     USHORT  wBitsPerSample;			// Bits per sample for the wFormatTag format type. If wFormatTag is 1 (PCM), then wBitsPerSample should be equal to 8 or 16.
 	SIZE_T	cbSize;					// Size, in bytes, of extra format information appended to the end of the WAVEFORMATEX structure. For PCM's, this should be set to 0. For ADPCM, this should be set to 32.
@@ -541,7 +541,7 @@ typedef struct _gosAudio_ResourceInfo
 	PSTR					lpstrPath;		// the path or name of the resource queried
 	gosAudio_ResourceType	eType;			// see above
 	gosAudio_Format			sFormat;		// 1 = PCM, 2 = ADPCM
-	ULONG					dwSizeInBytes;	// size of the data portion of the WAV
+	uint32_t					dwSizeInBytes;	// size of the data portion of the WAV
 	float					fDuration;		// in seconds
 } gosAudio_ResourceInfo;
 
@@ -552,7 +552,7 @@ typedef struct _gosAudio_ResourceInfo
 typedef struct _gosAudio_ChannelInfo
 {
 	HGOSAUDIO			hAudio;
-	ULONG				dwProperties;				// A bitwise flag field specifying which sliders have been allocated to it.
+	uint32_t				dwProperties;				// A bitwise flag field specifying which sliders have been allocated to it.
 	gosAudio_PlayMode	ePlayMode;					// The current playmode of the channel
 	float				fVolume;					// The current volume (0.0 - 1.0) of the channel
 	float				fPanning;					// The current panning (-1.0 - +1.0) of the channel
@@ -567,7 +567,7 @@ typedef struct _gosAudio_ChannelInfo
 //////////////////////////////////////////////////////////////////////////////////
 //	Mixer (channel -1) related
 //
-	ULONG				dwSpeakerConfig;			// The speaker setup of the mixer
+	uint32_t				dwSpeakerConfig;			// The speaker setup of the mixer
 	float				fFrontX, fFrontY, fFrontZ;	// The forward-facing vector of the user's "ears"
 	float				fTopX, fTopY, fTopZ;		// The top-pointing vector of the listener
 	float				fDoppler;					// Typically 1.0, this can be manipulated for a desired effect
@@ -581,7 +581,7 @@ typedef struct _gosAudio_ChannelInfo
 // Creates a resource to be played later
 //
 void __stdcall gosAudio_CreateResource( HGOSAUDIO* hgosaudio, gosAudio_ResourceType,  PCSTR file_name, gosAudio_Format* ga_wf = 0, PVOID data = 0, int size = 0, uint8_t only2D = 0);
-void __stdcall gosAudio_CreateResource( HGOSAUDIO * hgosaudio, PCSTR identifier_name, HGOSFILE file, ULONG offset, uint8_t only2D = 0);
+void __stdcall gosAudio_CreateResource( HGOSAUDIO * hgosaudio, PCSTR identifier_name, HGOSFILE file, size_t offset, uint8_t only2D = 0);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Destroy a resource; any sounds currently playing using the ResourceID will be
@@ -595,7 +595,7 @@ void __stdcall gosAudio_DestroyResource( HGOSAUDIO* hgosaudio );
 // allocate only the properties that will need modification. Use a bitwise'd group
 // of gosAudio_Properties to set what is needed.
 //
-void __stdcall gosAudio_AllocateChannelSliders( int Channel, ULONG properties);
+void __stdcall gosAudio_AllocateChannelSliders( int Channel, uint32_t properties);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Prepare a channel to play a resource of any type.
@@ -612,7 +612,7 @@ void __stdcall gosAudio_GetChannelSlider( int Channel, gosAudio_Properties, floa
 //////////////////////////////////////////////////////////////////////////////////
 // Set the speaker configuration. See enum above.
 //
-void __stdcall gosAudio_SetSpeakerConfig( ULONG config );
+void __stdcall gosAudio_SetSpeakerConfig( uint32_t config );
 
 //////////////////////////////////////////////////////////////////////////////////
 // Play, Loop, Stop, Pause, or Continue a particular channel
@@ -698,45 +698,45 @@ void __stdcall gosAudio_DeviceOptions( char names[8][128], int* available );
 typedef struct _gosIME_Appearance
 {
 	// symbol (Henkan-kyu)
-	ULONG			symbolColor;
-	ULONG			symbolColorText;
+	uint32_t			symbolColor;
+	uint32_t			symbolColorText;
 	uint8_t			symbolHeight;
 	uint8_t			symbolTranslucence;
 	uint8_t			symbolPlacement;
 	uint8_t			_padding1;
 
 	// candidate list
-	ULONG			candColorBase;
-	ULONG			candColorBorder;
-	ULONG			candColorText;
+	uint32_t			candColorBase;
+	uint32_t			candColorBorder;
+	uint32_t			candColorText;
 
 	// composition string
-	ULONG			compColorInput;
-	ULONG			compColorTargetConv;
-	ULONG			compColorConverted;
-	ULONG			compColorTargetNotConv;
-	ULONG			compColorInputErr;
+	uint32_t			compColorInput;
+	uint32_t			compColorTargetConv;
+	uint32_t			compColorConverted;
+	uint32_t			compColorTargetNotConv;
+	uint32_t			compColorInputErr;
 	uint8_t			compTranslucence;
 	uint8_t			_padding2[3];
-	ULONG			compColorText;
+	uint32_t			compColorText;
 } gosIME_Appearance;
 
 //
 // Opens a DLL and returns a handle
 //
-ULONG __stdcall gos_OpenResourceDLL( PCSTR FileName );
+uint32_t __stdcall gos_OpenResourceDLL( PCSTR FileName );
 
 //
 // Use to close a resource DLL
 //
-void __stdcall gos_CloseResourceDLL( ULONG Handle );
+void __stdcall gos_CloseResourceDLL( uint32_t Handle );
 
 //
 // Returns a string from a resource (or a place holder if string not defined)
 //
 // This returns a pointer to an internal GameOS 4K buffer. It is only valid until the next call to gos_GetResourceString
 //
-PSTR __stdcall gos_GetResourceString( ULONG Handle, ULONG Id );
+PSTR __stdcall gos_GetResourceString( uint32_t Handle, uint32_t Id );
 
 //
 // Returns a PVOID to block of memory stored in the resource .dll. Resources
@@ -750,7 +750,7 @@ PSTR __stdcall gos_GetResourceString( ULONG Handle, ULONG Id );
 // currently designated heap. It is the responsibility of the client application to
 // release this memory when it is no longer needed.
 //
-PVOID __stdcall gos_GetResourceData( ULONG Handle, PCSTR type, ULONG id, size_t * size );
+PVOID __stdcall gos_GetResourceData( uint32_t Handle, PCSTR type, uint32_t id, size_t * size );
 
 //
 // If the user's OS supports IME, this function will Enable/Disable the user's ability to interface with the IME for
@@ -770,7 +770,7 @@ void _stdcall gos_ToggleIME( uint8_t activeInactive );
 // If the user's OS supports IME, set text entry caret screen position (Used to enable the localization IME pop-up
 // at the correct place):
 //
-void _stdcall gos_PositionIME( ULONG x, ULONG y );
+void _stdcall gos_PositionIME( uint32_t x, uint32_t y );
 
 //
 // Finalize current composition string. An application should call this function when focused edit box is clicked
@@ -782,7 +782,7 @@ void _stdcall gos_FinalizeStringIME(void);
 // 2 - Composition string is drawn by IME UI library. GOS application receives characters when composition string is finalized.
 // 3 - Composition string is drawn by GOS application (default). GOS application receives characters and control keys whenever composition string changes.
 //
-void _stdcall gos_SetIMELevel( ULONG dwImeLevel );
+void _stdcall gos_SetIMELevel( uint32_t dwImeLevel );
 
 //
 // Sets appearance of IME UI
@@ -866,7 +866,7 @@ PSTR __stdcall gos_GetFormattedTime( USHORT Hour=-1, USHORT Minute=-1, USHORT Se
 //  CharCount is the ASCII value of the last character in the font
 //  texture plus one.
 //
-HGOSFONT3D __stdcall gos_LoadFont( PCSTR FontFile, ULONG StartLine = 0, int CharCount = 256, ULONG TextureHandle=0 );
+HGOSFONT3D __stdcall gos_LoadFont( PCSTR FontFile, uint32_t StartLine = 0, int CharCount = 256, uint32_t TextureHandle=0 );
 
 //
 // This routine should be called to release storage and textures used by fonts.
@@ -885,7 +885,7 @@ void __stdcall gos_DeleteFont( HGOSFONT3D Fonthandle );
 //
 // This API just updates internal variables, it's very fast to change any of these parameters
 //
-void __stdcall gos_TextSetAttributes( HGOSFONT3D FontHandle, ULONG Foreground, float Size, uint8_t WordWrap, uint8_t Proportional, uint8_t Bold, uint8_t Italic, ULONG WrapType=0, uint8_t DisableEmbeddedCodes=0 );
+void __stdcall gos_TextSetAttributes( HGOSFONT3D FontHandle, uint32_t Foreground, float Size, uint8_t WordWrap, uint8_t Proportional, uint8_t Bold, uint8_t Italic, uint32_t WrapType=0, uint8_t DisableEmbeddedCodes=0 );
 
 //
 // Set the current position of the cursor. (Screen pixels)
@@ -910,7 +910,7 @@ void __stdcall gos_TextSetRegion( int Left, int Top, int Right, int Bottom );
 //  This can be used to draw the 'background' of any text.
 //  Remember! - To set the alpha component of the color to FF if you want a solid background
 //
-void __stdcall gos_TextDrawBackground( int Left, int Top, int Right, int Bottom, ULONG Color );
+void __stdcall gos_TextDrawBackground( int Left, int Top, int Right, int Bottom, uint32_t Color );
 
 //
 // Returns pixel height and width of string (Height=Height of charcters * number of /n found)
@@ -979,12 +979,12 @@ void __stdcall gos_CloseMemoryMappedFile( HANDLE Handle );
 // Opens and reads in the whole file in a background thread. The MemoryImage pointer will be NULL until the file is read in completly.
 //    When you are finished with the file, the Close function below must be called.
 //
-ULONG __stdcall gos_ReadFileInBackground( PCSTR FileName, puint8_t* MemoryImage, PULONG Size, ULONG Offset=0, ULONG MaxSize=0xffffffff );
+uint32_t __stdcall gos_ReadFileInBackground( PCSTR FileName, puint8_t* MemoryImage, PULONG Size, uint32_t Offset=0, uint32_t MaxSize=0xffffffff );
 
 //
 // Closes and releases the memory used by a file read in the background.
 //
-void __stdcall gos_CloseBackgroundFile( ULONG Handle );
+void __stdcall gos_CloseBackgroundFile( uint32_t Handle );
 
 
 
@@ -1045,13 +1045,13 @@ PVOID __cdecl operator new (size_t size, HGOSHEAP Heap);
 //
 // Allows an application to create a named memory heap.
 //
-// The ULONG returned is a heap number that can be the second parameter passed to new or gos_Malloc.
+// The uint32_t returned is a heap number that can be the second parameter passed to new or gos_Malloc.
 //
 // If MaximumSize is specified, GameOS will assert when more than that number of bytes is allocated.
 //
 // The memory heaps and current sizes are visible in the GameOS debugger.
 //
-HGOSHEAP __stdcall gos_CreateMemoryHeap( PSTR HeapName, ULONG MaximumSize=0, HGOSHEAP parentHeap = ParentClientHeap);
+HGOSHEAP __stdcall gos_CreateMemoryHeap( PSTR HeapName, uint32_t MaximumSize=0, HGOSHEAP parentHeap = ParentClientHeap);
 
 //
 // Allows the application to destroy a previously created memory heap.
@@ -1281,13 +1281,13 @@ gosEnum_KeyStatus __stdcall gos_GetKeyStatus( gosEnum_KeyIndex index );
 // byte will always be zero (since these buttons never map to ASCII).  For example, a return value of
 // 0x01020300 is button 3 on joystick #2.
 //
-ULONG __stdcall gos_GetKey(void);
+uint32_t __stdcall gos_GetKey(void);
 
 
 //
 // Returns the displayable name of a key press returned from gos_GetKey() eg: "A", "Cursor Left" or "Enter"
 //
-PSTR __stdcall gos_DescribeKey( ULONG Key );
+PSTR __stdcall gos_DescribeKey( uint32_t Key );
 
 //////////////////////////////////////////////////////////////////////////////////
 // Clear the client keyboard buffer
@@ -1341,13 +1341,13 @@ typedef enum GOSJoystickAxis {
 typedef struct gosJoystick_Info
 {
 	PCSTR	lpstrName;				// the brand and model name
-	ULONG		bAxisValid:JOY_MAX;		// yes/no bitflags.
-	ULONG  		nAxes:4;				// number of availab axes
-	ULONG  		nButtons:5;				// number of available buttons
-	ULONG  		nSliders:4;				// number of slidesr
-	ULONG  		nPOVs:4;				// number of point of view hats
-	ULONG  		bIsPolled:1;			// whether or not this stick is polled
-	ULONG 		bIsForceFeedback:1;
+	uint32_t		bAxisValid:JOY_MAX;		// yes/no bitflags.
+	uint32_t  		nAxes:4;				// number of availab axes
+	uint32_t  		nButtons:5;				// number of available buttons
+	uint32_t  		nSliders:4;				// number of slidesr
+	uint32_t  		nPOVs:4;				// number of point of view hats
+	uint32_t  		bIsPolled:1;			// whether or not this stick is polled
+	uint32_t 		bIsForceFeedback:1;
 											// 1 spare bit
 } gosJoystick_Info;
 
@@ -1406,36 +1406,36 @@ typedef struct _gosJoystick_ForceEffect
 //
 // If ReDetect is 0, the joysticks are not re-init'ed this can take up to two seconds on some hardware
 //
-ULONG __stdcall gosJoystick_CountJoysticks( uint8_t ReDetect=1 );
+uint32_t __stdcall gosJoystick_CountJoysticks( uint8_t ReDetect=1 );
 
 //
 // Return joystick <index>'s details in structure <gji>
 //
-void __stdcall gosJoystick_GetInfo( ULONG index, gosJoystick_Info* gji );
+void __stdcall gosJoystick_GetInfo( uint32_t index, gosJoystick_Info* gji );
 
 //
 // Turn the polling of joystick <index> on or off. howOften variable details the
 // frequency of polling. A 'howOften' of .5 will poll twice per second, for
 // example.	By default, it polls at 30Hz.
 //
-void __stdcall gosJoystick_SetPolling( ULONG index, uint8_t yesNo, float howOften=0.03333f );
+void __stdcall gosJoystick_SetPolling( uint32_t index, uint8_t yesNo, float howOften=0.03333f );
 
 //
 // Return the current value of a particular joystick's particular axis. The
 // value is mapped internally to range between -1.0f and 1.0f.
 // except for POV which are at -1 when at rest, a %clockwise when engaged
 //
-float __stdcall gosJoystick_GetAxis( ULONG index, GOSJoystickAxis axis );
+float __stdcall gosJoystick_GetAxis( uint32_t index, GOSJoystickAxis axis );
 
 //
 // Return a value (FALSE unpressed, TRUE pressed) for the button <button> on joystick <index>.
 //
-uint8_t __stdcall gosJoystick_ButtonStatus( ULONG index, ULONG button );
+uint8_t __stdcall gosJoystick_ButtonStatus( uint32_t index, uint32_t button );
 
 //
 // Play the precreated effect <ff>, iterating it <time> times.
 //
-void __stdcall gosJoystick_PlayEffect( HGOSFORCEEFFECT ff, ULONG times = 1 );
+void __stdcall gosJoystick_PlayEffect( HGOSFORCEEFFECT ff, uint32_t times = 1 );
 
 //
 // Stop playing <ff>
@@ -1445,12 +1445,12 @@ void __stdcall gosJoystick_StopEffect( HGOSFORCEEFFECT ff );
 //
 // Create a force feedback effect <ff> on joystick <joy>, given the parameters specified in <fe>
 //
-void __stdcall gosJoystick_CreateEffect( HGOSFORCEEFFECT* ff, ULONG joystick, gosJoystick_ForceEffect* fe );
+void __stdcall gosJoystick_CreateEffect( HGOSFORCEEFFECT* ff, uint32_t joystick, gosJoystick_ForceEffect* fe );
 
 //
 // Load a feedback effect from an FFE file onto joystick <joy>
 //
-void __stdcall gosJoystick_LoadEffect(HGOSFORCEEFFECT * ff, ULONG joystick, PCSTR  file);
+void __stdcall gosJoystick_LoadEffect(HGOSFORCEEFFECT * ff, uint32_t joystick, PCSTR  file);
 
 //
 // Update the force feedback effect <ff>, given the parameters specified in <fe>
@@ -1562,7 +1562,7 @@ double __stdcall gos_GetElapsedTime( int RealTime=0 );
 
 //
 // Loads *szData bytes into *pData from the registry key specified.
-// The data can be a ULONG, Binary value or string
+// The data can be a uint32_t, Binary value or string
 // If the key does not exist szData will be set to 0 and pData will not be altered
 // If the *szData will be set to the actual number of bytes read
 // Normally all registry data is saved and read from HKEY_CURRENT_USER\Software\Microsoft\Microsoft Games\App Name
@@ -1574,16 +1574,16 @@ void __stdcall gos_LoadDataFromRegistry( PSTR keyName, PVOID pData, PULONG szDat
 //
 // Saves szData bytes starting at pData into the registry key specified.
 //
-// If szData is 4 the data will be saved as a ULONG, otherwise just binary data
+// If szData is 4 the data will be saved as a uint32_t, otherwise just binary data
 //
-void __stdcall gos_SaveDataToRegistry( PSTR keyName,  PVOID pData,  ULONG szData );
+void __stdcall gos_SaveDataToRegistry( PSTR keyName,  PVOID pData,  uint32_t szData );
 
 //
 // Saves a string starting at pData, length szData into the registry key specified.
 //
 // This is the same as the gos_SaveDataToRegistry API, except it's saved as a readable string
 //
-void __stdcall gos_SaveStringToRegistry( PSTR keyName,  PSTR pData,  ULONG szData );
+void __stdcall gos_SaveStringToRegistry( PSTR keyName,  PSTR pData,  uint32_t szData );
 
 
 
@@ -1644,54 +1644,54 @@ void __stdcall gos_NetEndGame(void);
 // Returns networking information
 //
 typedef enum gosNetInfo {
-	gos_Networking,				// (ULONG)  Returns TRUE if in a networked game
-	gos_AmITheServer,			// (ULONG)  Returns TRUE if you created the game (FALSE=Joined)
-	gos_NumberOfPlayers,		// (ULONG)  Returns the number of players in the game
+	gos_Networking,				// (uint32_t)  Returns TRUE if in a networked game
+	gos_AmITheServer,			// (uint32_t)  Returns TRUE if you created the game (FALSE=Joined)
+	gos_NumberOfPlayers,		// (uint32_t)  Returns the number of players in the game
 	gos_MyIPAddress,			// (PSTR)  Returns string of IP address.  Can be 0.0.0.0 in non-tcpip games
-	gos_MyID,					// (ULONG)  Returns a PlayerID for this machines player NUMBER
-	gos_ServerID,				// (ULONG)  Returns a PlayerID that represents the current server
-	gos_AllID,					// (ULONG)  Returns a PlayerID that represents 'All Players'
+	gos_MyID,					// (uint32_t)  Returns a PlayerID for this machines player NUMBER
+	gos_ServerID,				// (uint32_t)  Returns a PlayerID that represents the current server
+	gos_AllID,					// (uint32_t)  Returns a PlayerID that represents 'All Players'
 	gos_PlayerName,				// (PSTR)  Returns a PSTR for the player NUMBER passed in the parameter
-	gos_PlayerID,				// (ULONG)  Returns a PlayerID for the player NUMBER passed in the parameter
-	gos_PlayerNumber,			// (ULONG)  Returns a NUMBER for the PlayerID passed in the parameter (or 0xffffffff if not found)
-	gos_LockedStatus,			// (ULONG)  Returns TRUE if the game is currently locked
-	gos_GameSecure,				// (ULONG)	Returns TRUE if the host created the game as a secure game
+	gos_PlayerID,				// (uint32_t)  Returns a PlayerID for the player NUMBER passed in the parameter
+	gos_PlayerNumber,			// (uint32_t)  Returns a NUMBER for the PlayerID passed in the parameter (or 0xffffffff if not found)
+	gos_LockedStatus,			// (uint32_t)  Returns TRUE if the game is currently locked
+	gos_GameSecure,				// (uint32_t)	Returns TRUE if the host created the game as a secure game
 	gos_GamePassword,			// (PSTR)	Returns NULL or a pointer to the ASCII password used to create or join the game
 //
 // Networking status information
 //
-	gos_PacketsSentLastFrame,	// (ULONG)  Returns number of packets sent in the past frame to the player NUMBER passed
-	gos_PacketsFromLastFrame,	// (ULONG)  Returns number of packets recieved in the past Frame from the player NUMBER passed
-	gos_BytesSentLastFrame,		// (ULONG)  Returns number of bytes sent in the past Frame to the player NUMBER passed
-	gos_BytesFromLastFrame,		// (ULONG)  Returns number of bytes recieved in the past Frame from the player NUMBER passed
-	gos_BandwithSentLastFrame,	// (ULONG)  Returns total number of bytes sent in the past Frame to the player NUMBER passed (including packet overhead)
-	gos_BandwithFromLastFrame,	// (ULONG)  Returns total number of bytes recieved in the past Frame from the player NUMBER passed (including packet overhead)
-	gos_PacketsLostLastFrame,	// (ULONG)  Returns number of packets lost from the player NUMBER passed (based on packet numbers and retries)
-	gos_LatencyLastFrame,		// (ULONG)  Returns the average response time for any guaranteed packets sent in the last frame to the player NUMBER
-	gos_GetMessageSendQueue,	// (ULONG)  Returns the number of messages still in this machines send queue to the player NUMBER passed
-	gos_GetNumOutboudWindows,	// (ULONG)  Returns the number of outbound window objects that exist
-	gos_GetOutboundWindowSize,	// (ULONG)	Returns the current number of outstanding packets sent to a given outbound message window object
-	gos_GetOB_NxtPkt2Send,		// (ULONG) Returns the next packet number to send for a specified outbound window index
-	gos_GetOB_LstPktRcvd,		// (ULONG) Returns the last packet received from a specified outbound window index
-	gos_GetOB_LstPktTheyRcvd,	// (ULONG) Returns the last packet that the specified outbound window index received
+	gos_PacketsSentLastFrame,	// (uint32_t)  Returns number of packets sent in the past frame to the player NUMBER passed
+	gos_PacketsFromLastFrame,	// (uint32_t)  Returns number of packets recieved in the past Frame from the player NUMBER passed
+	gos_BytesSentLastFrame,		// (uint32_t)  Returns number of bytes sent in the past Frame to the player NUMBER passed
+	gos_BytesFromLastFrame,		// (uint32_t)  Returns number of bytes recieved in the past Frame from the player NUMBER passed
+	gos_BandwithSentLastFrame,	// (uint32_t)  Returns total number of bytes sent in the past Frame to the player NUMBER passed (including packet overhead)
+	gos_BandwithFromLastFrame,	// (uint32_t)  Returns total number of bytes recieved in the past Frame from the player NUMBER passed (including packet overhead)
+	gos_PacketsLostLastFrame,	// (uint32_t)  Returns number of packets lost from the player NUMBER passed (based on packet numbers and retries)
+	gos_LatencyLastFrame,		// (uint32_t)  Returns the average response time for any guaranteed packets sent in the last frame to the player NUMBER
+	gos_GetMessageSendQueue,	// (uint32_t)  Returns the number of messages still in this machines send queue to the player NUMBER passed
+	gos_GetNumOutboudWindows,	// (uint32_t)  Returns the number of outbound window objects that exist
+	gos_GetOutboundWindowSize,	// (uint32_t)	Returns the current number of outstanding packets sent to a given outbound message window object
+	gos_GetOB_NxtPkt2Send,		// (uint32_t) Returns the next packet number to send for a specified outbound window index
+	gos_GetOB_LstPktRcvd,		// (uint32_t) Returns the last packet received from a specified outbound window index
+	gos_GetOB_LstPktTheyRcvd,	// (uint32_t) Returns the last packet that the specified outbound window index received
 
 // Internal functions used for browsing, creating and joining games
 	gos_InformationAboutGame,	// (puint8_t)  Returns a pointer to 16 bytes of information from the game, Name=Game Name  (Games set this in Environment.NetGameInfo)
-	gos_NumberOfGames,			// (ULONG)  Returns the number of Games found on network
+	gos_NumberOfGames,			// (uint32_t)  Returns the number of Games found on network
 	gos_NameOfGame,				// (PSTR)  Returns the name of the Game with the parameter passed
-	gos_IsGamePassworded,		// (ULONG)	Returns true if the game name passed is passworded, Name=Game Name
-	gos_IsGameSecure,			// (ULONG)	Returns true if the game name passed is secure, Name=Game Name
-	gos_IsGameLocked,			// (ULONG)	Returns true if the game name passed is locked so no more players can enter, Name=Game Name
-	gos_NumberOfPlayersInGame,	// (ULONG)  Returns number of players in a game, Name=Game Name
-	gos_MaxPlayersInGame,		// (ULONG)  Returns maximum number of players in a game, Name=Game Name
+	gos_IsGamePassworded,		// (uint32_t)	Returns true if the game name passed is passworded, Name=Game Name
+	gos_IsGameSecure,			// (uint32_t)	Returns true if the game name passed is secure, Name=Game Name
+	gos_IsGameLocked,			// (uint32_t)	Returns true if the game name passed is locked so no more players can enter, Name=Game Name
+	gos_NumberOfPlayersInGame,	// (uint32_t)  Returns number of players in a game, Name=Game Name
+	gos_MaxPlayersInGame,		// (uint32_t)  Returns maximum number of players in a game, Name=Game Name
 	gos_NameOfPlayersInGame,	// (PSTR)  Return players name - Parameter=Player #, Name=Game Name.
-	gos_NumberOfModems,			// (ULONG)  Returns the number of modems installed
+	gos_NumberOfModems,			// (uint32_t)  Returns the number of modems installed
 	gos_NameOfModem,			// (PSTR)  Returns the name of the modem number passed
-	gos_NumberOfSerialPorts,	// (ULONG)  Returns the number of serial ports installed
+	gos_NumberOfSerialPorts,	// (uint32_t)  Returns the number of serial ports installed
 	gos_NameOfSerialPort,		// (PSTR)  Returns the name of the serial port number passed
 } gosNetInfo;
 
-PVOID __stdcall gos_NetInformation( gosNetInfo Info, ULONG Parameter=0, PSTR Name=0 );
+PVOID __stdcall gos_NetInformation( gosNetInfo Info, uint32_t Parameter=0, PSTR Name=0 );
 
 
 
@@ -1708,15 +1708,15 @@ typedef enum gosNetFlags {
 cuint8_t gosNet_PlayerAdded=240;		// FromID will contain the new PlayerID of the player. gos_NetInformation(gos_NumberOfPlayers) will be greater than last game logic.
 cuint8_t gosNet_PlayerDeleted=241;	// FromID will contain the old PlayerID of the player. gos_NetInformation will work with this ID only for the remainder of the current GameLogic. (Packets sent to the player will be ignored)
 cuint8_t gosNet_GameEnded=242;		// The server has ended the network game. This is the last packet the game will see.
-cuint8_t gosNet_Ping=243;				// Used to send a ping packet. You will eventually receive back a ping packet containing four ULONG containing the milliseconds time at each end of a 'double ping'.
+cuint8_t gosNet_Ping=243;				// Used to send a ping packet. You will eventually receive back a ping packet containing four uint32_t containing the milliseconds time at each end of a 'double ping'.
 cuint8_t gosNet_Heartbeat=244;		// Used to send a heartbeat packet to keep the outbound window up to date.
 
 // This is a network packet header for sent and recieved packets. This is not sent 
 // with each packet, it just contains packet information
 #pragma pack(push,1)
 typedef struct _NetPacket {
-	ULONG	FromID;					// Filled in by when packets are recieved
-	ULONG	ToID;					// Must be filled in to send a packet
+	uint32_t	FromID;					// Filled in by when packets are recieved
+	uint32_t	ToID;					// Must be filled in to send a packet
 	USHORT	Flags;					// Information flags (see gosNetFlag_*) - only valid on sending messages
 	double	TimeStamp;				// Timestamp set by GameOS when the packet was recieved
 	USHORT	Length;					// Number of bytes of data.
@@ -1739,7 +1739,7 @@ typedef enum gos_NetCommands {
 	gos_Commend_UpdateMaxPlayers,	// Updates the number of maximum players allowed in a game from Environment.NetworkMaxPlayers
 } gos_NetCommands;
 
-void __stdcall gos_NetServerCommands( gos_NetCommands Command, ULONG Data1 );
+void __stdcall gos_NetServerCommands( gos_NetCommands Command, uint32_t Data1 );
 
 
 
@@ -1990,7 +1990,7 @@ typedef gos_VERTEX_3UV *pgos_VERTEX_3UV;
 //
 // Normal applications will fill the Z buffer with 1.0
 //
-void __stdcall gos_SetupViewport( uint8_t FillZ, float ZBuffer, uint8_t FillBG, ULONG BGColor, float top, float left, float bottom, float right, uint8_t ClearStencil=0, ULONG StencilValue=0 );
+void __stdcall gos_SetupViewport( uint8_t FillZ, float ZBuffer, uint8_t FillBG, uint32_t BGColor, float top, float left, float bottom, float right, uint8_t ClearStencil=0, uint32_t StencilValue=0 );
 
 //
 // The values returned must be used to transform the x,y coords into the current
@@ -2009,33 +2009,33 @@ void __stdcall gos_GetViewport( float* pViewportMulX, float* pViewportMulY, floa
 // Draw points, pass a pointer to an array of gos_VERTEX's - every vertex is a new point
 //  (you must set the texture to 0 if you want to disable texture mapping on the points)
 //
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawPoints( pgos_VERTEX Vertices, int NumVertices );
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawPoints( pgos_VERTEX Vertices, uint32_t NumVertices );
 
 //
 // Draw lines, pass a pointer to an array of gos_VERTEX's - every two vertices is a new line
 //  (you must set the texture to 0 if you want to disable texture mapping on the points)
 //
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawLines( pgos_VERTEX Vertices, int NumVertices );
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawLines( pgos_VERTEX Vertices, uint32_t NumVertices );
 
 //
 // Draw triangles, pass a pointer to an array of gos_VERTEX's - every three vertices is a new triangle
 //
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawTriangles( pgos_VERTEX Vertices, int NumVertices );
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawTriangles( pgos_VERTEX Vertices, uint32_t NumVertices );
 
 //
 // Draws a strip, pass a pointer to an array of gos_VERTEX's - every vertex after the 2nd is a new triangle
 //
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawStrips( pgos_VERTEX Vertices, int NumVertices );
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawStrips( pgos_VERTEX Vertices, uint32_t NumVertices );
 
 //
 // Draws a fan, pass a pointer to an array of gos_VERTEX's - every vertex after the 2nd is a new triangle
 //
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawFans(pgos_VERTEX Vertices, int NumVertices);
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices);
 
 //
 // Draw quads, pass a pointer to an array of gos_VERTEX's - every four vertices is a new quad
 //
-MECH_IMPEXP HRESULT MECH_CALL gos_DrawQuads(pgos_VERTEX Vertices, int NumVertices);
+MECH_IMPEXP HRESULT MECH_CALL gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices);
 
 //
 // This API allows you to pass an array of indices and an array of vertices to be rendered.
@@ -2046,9 +2046,9 @@ MECH_IMPEXP HRESULT MECH_CALL gos_DrawQuads(pgos_VERTEX Vertices, int NumVertice
 // The vertex colors in the array may be changed in some wireframe modes. Otherwise the data is
 // not altered.
 //
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices );
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices );
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices );
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices );
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices );
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices );
 
 //
 // Set a renderstate
@@ -2104,9 +2104,9 @@ typedef struct
 typedef struct
 {
 	float x,y,z;
-	ULONG unused;			// This ULONG is unused and is here to match the D3DLVETEX type
-	ULONG argb;
-	ULONG frgb;
+	uint32_t unused;			// This uint32_t is unused and is here to match the D3DLVETEX type
+	uint32_t argb;
+	uint32_t frgb;
 	float u,v;
 
 } gosD3DLVERTEX;
@@ -2117,8 +2117,8 @@ typedef struct
 typedef struct
 {
 	float x,y,z;
-	ULONG argb;
-	ULONG frgb;
+	uint32_t argb;
+	uint32_t frgb;
 	float u1,v1, u2,v2;
 
 } gosD3DLVERTEX_2UV;
@@ -2276,7 +2276,7 @@ typedef enum gosPRIMITIVETYPE {
 //
 // Sets the region of screen that will be rendered to. (The default values set at the start of each frame are 0, 0, Environment.screenWidth, Environment.screenHeight)
 //
-void __stdcall gos_SetViewport( ULONG LeftX, ULONG RightX, ULONG Width, ULONG height, float MinZ=0.0f, float MaxZ=1.0f );
+void __stdcall gos_SetViewport( uint32_t LeftX, uint32_t RightX, uint32_t Width, uint32_t height, float MinZ=0.0f, float MaxZ=1.0f );
 
 //
 // Sets the WORLD/VIEW or PROJECTION matrix
@@ -2291,12 +2291,12 @@ void __stdcall gos_MultiplyTransform( D3DTRANSFORMSTATETYPE TransformType, LPD3D
 //
 // Sets the parameters of a light (LightNumber can be any number)
 //
-void __stdcall gos_SetLight( ULONG LightNumber, LPD3DLIGHT7 pLightData );
+void __stdcall gos_SetLight( uint32_t LightNumber, LPD3DLIGHT7 pLightData );
 
 //
 // Enables / Disables a light (Maximum of gos_GetMachineInformation( gos_Info_GetMaximumActiveLights ) lights enabled at once)
 //
-void __stdcall gos_LightEnable( ULONG LightNumber, uint8_t Enable );
+void __stdcall gos_LightEnable( uint32_t LightNumber, uint8_t Enable );
 
 //
 // Sets the parameters of the current material
@@ -2308,7 +2308,7 @@ void __stdcall gos_SetMaterial( LPD3DMATERIAL7 pMaterialData );
 //
 // NOTE: When PrimitiveType is a POINTLIST the lpwIndices and NumberIndices are ignored, it is treated as a list of points
 //
-void __stdcall gos_RenderIndexedArray( PVOID pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices, gosVERTEXTYPE VertexType, gosPRIMITIVETYPE PrimitiveType=PRIMITIVE_TRIANGLELIST );
+void __stdcall gos_RenderIndexedArray( PVOID pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices, gosVERTEXTYPE VertexType, gosPRIMITIVETYPE PrimitiveType=PRIMITIVE_TRIANGLELIST );
 
 
 
@@ -2322,14 +2322,14 @@ void __stdcall gos_RenderIndexedArray( PVOID pVertexArray, ULONG NumberVertices,
 // If the Optimized flag is set, when the Vertex Buffer is locked and unlocked the first time it will be optimized. It cannot be locked again after this.
 // Only valid in game logic - not valid in update renderer.
 //
-ULONG __stdcall gos_CreateVertexBuffer( ULONG NumberVertices, uint8_t Optimized, gosVERTEXTYPE VertexType );
+uint32_t __stdcall gos_CreateVertexBuffer( uint32_t NumberVertices, uint8_t Optimized, gosVERTEXTYPE VertexType );
 
 //
 // Deletes the vertex buffer
 //
 // Only valid in game logic - not valid in update renderer.
 //
-void __stdcall gos_DeleteVertexBuffer( ULONG VertexBufferHandle );
+void __stdcall gos_DeleteVertexBuffer( uint32_t VertexBufferHandle );
 
 //
 // Locks a vertex buffer and returns a pointer to the base address
@@ -2338,14 +2338,14 @@ void __stdcall gos_DeleteVertexBuffer( ULONG VertexBufferHandle );
 // If the NoOverwrite flag is true, D3D will assume you are only ADDING new vertices, D3D may still be rendering old vertices in the buffer.
 // Valid in game logic or the update renderer
 //
-PVOID __stdcall gos_LockVertexBuffer( ULONG VertexBufferHandle, uint8_t DiscardContents, uint8_t NoOverwrite );
+PVOID __stdcall gos_LockVertexBuffer( uint32_t VertexBufferHandle, uint8_t DiscardContents, uint8_t NoOverwrite );
 
 //
 // Unlocks a vertex buffer
 //
 // Valid in game logic or the update renderer
 //
-void __stdcall gos_UnLockVertexBuffer( ULONG VertexBufferHandle );
+void __stdcall gos_UnLockVertexBuffer( uint32_t VertexBufferHandle );
 
 //
 // Application should check this at the start of a frame. If the user has changed modes or video cards, this will be true.
@@ -2354,14 +2354,14 @@ void __stdcall gos_UnLockVertexBuffer( ULONG VertexBufferHandle );
 // If you pass no parameter, or 0 it will tell you if ALL vertex buffers have been lost since the last frame.
 // If you pass a specific handle to a vertex buffer it will tell you if that vertex buffer is currently lost (so you only have to restore vertex buffers when you need them)
 //
-uint8_t __stdcall gos_VertexBuffersLost( ULONG VertexBufferHandle=0 );
+uint8_t __stdcall gos_VertexBuffersLost( uint32_t VertexBufferHandle=0 );
 
 //
 // Renders a vertex buffer of untransformed vertices
 //
 // NOTE: When PrimitiveType is a POINTLIST the lpwIndices and NumberIndices are ignored, it is treated as a list of points
 //
-void __stdcall gos_RenderVertexBuffer( ULONG VertexBufferHandle, ULONG StartVertex, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices, gosPRIMITIVETYPE PrimitiveType=PRIMITIVE_TRIANGLELIST );
+void __stdcall gos_RenderVertexBuffer( uint32_t VertexBufferHandle, uint32_t StartVertex, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices, gosPRIMITIVETYPE PrimitiveType=PRIMITIVE_TRIANGLELIST );
 
 
 
@@ -2402,14 +2402,14 @@ void __stdcall gos_RenderVertexBuffer( ULONG VertexBufferHandle, ULONG StartVert
 //
 // Renderer is 0 for hardware or 3 for Blade
 //
-void __stdcall gos_SetScreenMode( ULONG Width, ULONG Height, ULONG bitDepth=16, ULONG Device=0, uint8_t disableZBuffer=0, uint8_t AntiAlias=0, uint8_t RenderToVram=0, uint8_t GotoFullScreen=0, int DirtyRectangle=0, uint8_t GotoWindowMode=0, uint8_t EnableStencil=0, ULONG Renderer=0 );
+void __stdcall gos_SetScreenMode( uint32_t Width, uint32_t Height, uint32_t bitDepth=16, uint32_t Device=0, uint8_t disableZBuffer=0, uint8_t AntiAlias=0, uint8_t RenderToVram=0, uint8_t GotoFullScreen=0, int DirtyRectangle=0, uint8_t GotoWindowMode=0, uint8_t EnableStencil=0, uint32_t Renderer=0 );
 
 //
 // This API sets the current gamma correction value. The default value is 1.0 (no correction applied). All color values are effected by (value/255 ^ (1.0/gamma)).
 //
 void __stdcall gos_SetGammaValue( float Gamma );					// Default 1.0
-void __stdcall gos_SetBrightnessValue( ULONG Brightness );		// Value range 0-10,000, default 750 (See DirectX docs)
-void __stdcall gos_SetContrastValue( ULONG Contrast );			// Value range 0-20,000, default 10,000 (See DirectX docs)
+void __stdcall gos_SetBrightnessValue( uint32_t Brightness );		// Value range 0-10,000, default 750 (See DirectX docs)
+void __stdcall gos_SetContrastValue( uint32_t Contrast );			// Value range 0-20,000, default 10,000 (See DirectX docs)
 
 
 //
@@ -2428,7 +2428,7 @@ void __stdcall gosDirtyRectangleSaveTarget(void);
 //  will be completly restored from the copy of the back buffer. This may be slower if the
 //  copy is in system memory, but at least all the debugger functions should still operate as normal.
 //
-void __stdcall gosDirtyRectangeRestoreArea( ULONG Left, ULONG Top, ULONG Right, ULONG Bottom );
+void __stdcall gosDirtyRectangeRestoreArea( uint32_t Left, uint32_t Top, uint32_t Right, uint32_t Bottom );
 
 //
 // The application should call this API at the start of UpdateRenderers.
@@ -2472,7 +2472,7 @@ typedef enum gos_TextureHints
 	gosHint_DisableMipmap=1,		// Do not mipmap this texture (HUD textures, fonts, animating textures maybe? etc...)
 	gosHint_AGPMemory=2,			// Store in AGP memory if possible (allows processor and video card fast access, not as fast rendering as VideoMemory though)
 	gosHint_VideoMemory=4,			// Store in "Local" memory on the video card, this is the fastest for the card to texture, but very slow for the processor to page or animate
-	gosHint_ReloadFromDisk=8,		// GameOS will not store a ULONG copy of the texture, it will reload it from disk on mode changes. (You cannot lock these textures)
+	gosHint_ReloadFromDisk=8,		// GameOS will not store a uint32_t copy of the texture, it will reload it from disk on mode changes. (You cannot lock these textures)
 	gosHint_PageLast=16,			// Frequently used textures should have this set. These textures will be paged ONLY if there are no other HighPriority texture that could be paged
 	gosHint_PageFirst=32,			// Rarely used textures should have this set. These will be the first textures paged if paging needs to occur.
 	gosHint_DontShrink=64,			// GOS may shrink textures on a low memory card - this flag will prevent it. (ie: for fonts or HUD textures)
@@ -2498,7 +2498,7 @@ typedef struct TEXTUREPTR {
 	gos_TextureFormat	Type;				// Internal format of texture (Solid, Keyed or Alpha) - Useful when you have used DETECT
 } TEXTUREPTR;
 
-typedef void (__stdcall *gos_RebuildFunction)( ULONG, PVOID);
+typedef void (__stdcall *gos_RebuildFunction)( uint32_t, PVOID);
 
 //
 // Load a texture, returns a texture handle that can be passed as a renderstate
@@ -2513,7 +2513,7 @@ typedef void (__stdcall *gos_RebuildFunction)( ULONG, PVOID);
 // Hints should be set to any combination of gos_TextureHints or 0 is a good default.
 //
 
-ULONG __stdcall gos_NewTextureFromFile( gos_TextureFormat Format, PCSTR FileName, ULONG Hints=0, gos_RebuildFunction pFunc=0, PVOID pInstance=0 );
+uint32_t __stdcall gos_NewTextureFromFile( gos_TextureFormat Format, PCSTR FileName, uint32_t Hints=0, gos_RebuildFunction pFunc=0, PVOID pInstance=0 );
 
 //
 // Loads a texture from a memory image, returns a texture handle
@@ -2529,7 +2529,7 @@ ULONG __stdcall gos_NewTextureFromFile( gos_TextureFormat Format, PCSTR FileName
 //
 // Hints should be set to any combination of gos_TextureHints or 0 is a good default.
 //
-ULONG __stdcall gos_NewTextureFromMemory( gos_TextureFormat Format, PCSTR FileName, puint8_t pBitmap, ULONG Size, ULONG Hints=0, gos_RebuildFunction pFunc=0, PVOID pInstance=0 );
+uint32_t __stdcall gos_NewTextureFromMemory( gos_TextureFormat Format, PCSTR FileName, puint8_t pBitmap, uint32_t Size, uint32_t Hints=0, gos_RebuildFunction pFunc=0, PVOID pInstance=0 );
 
 #define RECT_TEX(width,height) (((height)<<16)|(width))
 
@@ -2553,12 +2553,12 @@ ULONG __stdcall gos_NewTextureFromMemory( gos_TextureFormat Format, PCSTR FileNa
 // For square textures, place the width in HeightWidth
 // For Rectangular textures, use RECT_TEX(width,height) to pack the width and height values
 //
-ULONG __stdcall gos_NewEmptyTexture( gos_TextureFormat Format, PCSTR Name, ULONG HeightWidth, ULONG Hints=0, gos_RebuildFunction pFunc=0, PVOID pInstance=0 );
+uint32_t __stdcall gos_NewEmptyTexture( gos_TextureFormat Format, PCSTR Name, uint32_t HeightWidth, uint32_t Hints=0, gos_RebuildFunction pFunc=0, PVOID pInstance=0 );
 
 //
 // Destroy a texture handle (unload from memory)
 //
-void __stdcall gos_DestroyTexture( ULONG Handle );
+void __stdcall gos_DestroyTexture( uint32_t Handle );
 
 //
 // Locks a texture so you can modify it
@@ -2569,17 +2569,17 @@ void __stdcall gos_DestroyTexture( ULONG Handle );
 //
 // Note that GameOS returns a pointer to an 8888 version of every texture. When you unlock it, it will be format converted and reuploaded in the current pixel format (555/4444 etc...)
 //
-void __stdcall gos_LockTexture( ULONG Handle, ULONG MipMapSize, uint8_t ReadOnly, TEXTUREPTR* TextureInfo );
+void __stdcall gos_LockTexture( uint32_t Handle, uint32_t MipMapSize, uint8_t ReadOnly, TEXTUREPTR* TextureInfo );
 
 //
 // Unlocks and updates a texture (may have to build and upload mipmaps)
 //
-void __stdcall gos_UnLockTexture( ULONG Handle );
+void __stdcall gos_UnLockTexture( uint32_t Handle );
 
 //
 // Converts from 32bpp source to subrect of n-bpp dest, bypassing intermediate 32bpp buffer
 //
-void __stdcall gos_ConvertTextureRect( ULONG Handle, ULONG DestLeft, ULONG DestTop, PULONG Source, ULONG SourcePitch, ULONG Width, ULONG Height );
+void __stdcall gos_ConvertTextureRect( uint32_t Handle, uint32_t DestLeft, uint32_t DestTop, PULONG Source, uint32_t SourcePitch, uint32_t Width, uint32_t Height );
 
 
 //
@@ -2592,10 +2592,10 @@ uint8_t __stdcall gos_RecreateTextureHeaps(void);
 //
 // Preloads a texture into texture memory - this occurs after the endscene/blit. So may occur in parallel with the next game logic loop.
 //
-void __stdcall gos_PreloadTexture( ULONG Handle );
+void __stdcall gos_PreloadTexture( uint32_t Handle );
 
-void __stdcall gos_SetTextureName( ULONG Handle, PCSTR name );
-PCSTR __stdcall gos_GetTextureName( ULONG Handle );
+void __stdcall gos_SetTextureName( uint32_t Handle, PCSTR name );
+PCSTR __stdcall gos_GetTextureName( uint32_t Handle );
 
 //
 // Render to a texture using blade.
@@ -2611,7 +2611,7 @@ PCSTR __stdcall gos_GetTextureName( ULONG Handle );
 //   . A texture that has been already used in the current frame cannot be rendered too.
 //   . No renderstates are allowed between these two calls.
 //
-void __stdcall gos_StartRenderToTexture( ULONG Handle );
+void __stdcall gos_StartRenderToTexture( uint32_t Handle );
 //
 // When rendering to a texture is complete, this API must be called to process it.
 //
@@ -2622,7 +2622,7 @@ void __stdcall gos_EndRenderToTexture( uint8_t ClearBorder=0 );
 //
 // Returns true if the TGA has a valid header.
 //
-uint8_t __stdcall gos_CheckValidTGA( puint8_t Data, ULONG DataSize );
+uint8_t __stdcall gos_CheckValidTGA( puint8_t Data, uint32_t DataSize );
 
 
 
@@ -2681,7 +2681,7 @@ typedef enum StatFlags {
 //					It will be displayed as processor information. Eventually cycles, cache, bus etc..
 //
 //
-void __stdcall AddStatistic( PSTR Name, PSTR TypeName, gosType Type, PVOID Value, ULONG Flags );
+void __stdcall AddStatistic( PSTR Name, PSTR TypeName, gosType Type, PVOID Value, uint32_t Flags );
 //
 // This command adds text to the statistic display and can be used for blank lines (eg: " ") or titles (eg: "Ai Logic variables")
 //
@@ -2727,7 +2727,7 @@ int64_t __stdcall GetCycles(void);
 // Note, these enums may be expanded in the future, the application should return 0 to any other unknown Menu requests.
 //
 typedef enum _gosMenuDebugger_const {
-	gosMenu_Name,			// The name of the menu should be returned ie: return (ULONG)"Tank Alpha";  (If 0 is returned the default name the menu was created with will be printed)
+	gosMenu_Name,			// The name of the menu should be returned ie: return (uint32_t)"Tank Alpha";  (If 0 is returned the default name the menu was created with will be printed)
 	gosMenu_CheckMark,		// True or False should be returned if the menu has a check mark next to it
 	gosMenu_Greyed,			// True or False should be returned if the menu is greyed out
 	gosMenu_Activated,		// This will be called when the menu is activated. If it returns true, the menu will stay open.
@@ -2735,7 +2735,7 @@ typedef enum _gosMenuDebugger_const {
 //
 //
 //
-void __stdcall AddDebuggerMenuItem( PSTR Name, uint8_t(__stdcall *CheckMark)(), void(__stdcall *Activated)(), uint8_t(__stdcall *Greyed)()=0, ULONG(__stdcall *Callback)( PSTR Name, ULONG MenuFunction)=0 );
+void __stdcall AddDebuggerMenuItem( PSTR Name, uint8_t(__stdcall *CheckMark)(), void(__stdcall *Activated)(), uint8_t(__stdcall *Greyed)()=0, uint32_t(__stdcall *Callback)( PSTR Name, uint32_t MenuFunction)=0 );
 
 //
 // Deletes a debugger menu item
@@ -2749,7 +2749,7 @@ void __stdcall DelDebuggerMenuItem( PSTR Name );
 //  if called with gosMenu_Name as the function it will return true or false if the menu exists. Other functions will be ignored if the menu does not exist.
 //  Note Debugger\\, Rasterizer\\ and Libraries\\ must appear at the start of the name, but for application menu items, no app name is needed.
 //
-ULONG __stdcall CallDebuggerMenuItem( PCSTR Name, ULONG MenuFunction );
+uint32_t __stdcall CallDebuggerMenuItem( PCSTR Name, uint32_t MenuFunction );
 
 //
 // This function enables or disables the math exception handler
@@ -2789,89 +2789,89 @@ typedef enum gosSetting
 //
 //
 //
-ULONG __stdcall gos_EnableSetting( gosSetting Setting, ULONG Value );
+uint32_t __stdcall gos_EnableSetting( gosSetting Setting, uint32_t Value );
 
 
 
 
 
 typedef enum MachineInfo {
-	gos_Info_HasAGPAvailable,				// (ULONG)  FALSE when no AGP memory available (assume a low end card)
-	gos_Info_HasGuardBandClipping,			// (ULONG)  TRUE when card be passed vertices from at least -2047,-2047 to 2047,2047 without errors
-	gos_Info_TextureOffset,					// (ULONG)  TRUE when a -0.625 texel offset is being applied to u,v coords to make text readable - Only the Riva128 requires this. (Normally 0.4375 is subtracted from the PIXEL x,y coords)
-	gos_Info_TextureSize,					// (ULONG)  Returns currently selected texture width/height in pixels (or 1 for no texture)
+	gos_Info_HasAGPAvailable,				// (uint32_t)  FALSE when no AGP memory available (assume a low end card)
+	gos_Info_HasGuardBandClipping,			// (uint32_t)  TRUE when card be passed vertices from at least -2047,-2047 to 2047,2047 without errors
+	gos_Info_TextureOffset,					// (uint32_t)  TRUE when a -0.625 texel offset is being applied to u,v coords to make text readable - Only the Riva128 requires this. (Normally 0.4375 is subtracted from the PIXEL x,y coords)
+	gos_Info_TextureSize,					// (uint32_t)  Returns currently selected texture width/height in pixels (or 1 for no texture)
 
 	gos_Info_GetProcessorInfo,				// (PSTR)  Returns a user readable string that shows the processor (ie: Intel Pentium III)
-	gos_Info_GetNumberProcessors,			// (ULONG)	Returns the number of processors in the system
-	gos_Info_GetProcessorSpeed,				// (ULONG)	Returns the processor speed in MHz, ie: 400  (This is approximate, never check for ==400 or >200 - or anything similar. use >180 for 200Mhz or above for example)
+	gos_Info_GetNumberProcessors,			// (uint32_t)	Returns the number of processors in the system
+	gos_Info_GetProcessorSpeed,				// (uint32_t)	Returns the processor speed in MHz, ie: 400  (This is approximate, never check for ==400 or >200 - or anything similar. use >180 for 200Mhz or above for example)
 
 	gos_Info_GetOSInfo,						// (PSTR)	Returns a user readable string that shows the operating system (ie: Windows 98 GOLD)
-	gos_Info_GetMemorySize,					// (ULONG)  Returns the amount of memory the machine has in bytes
-	gos_Info_GetVirtualMemorySize,			// (ULONG)  Returns the amount of virutal memory the machine has in bytes
-	gos_Info_NumberDevices,					// (ULONG)  Number of devices GameOS can render to (always at least 1)
+	gos_Info_GetMemorySize,					// (uint32_t)  Returns the amount of memory the machine has in bytes
+	gos_Info_GetVirtualMemorySize,			// (uint32_t)  Returns the amount of virutal memory the machine has in bytes
+	gos_Info_NumberDevices,					// (uint32_t)  Number of devices GameOS can render to (always at least 1)
 	gos_Info_GetDeviceName,					// (PSTR)  Returns the name of the device specified in Param1 (Riva TNT, Voodoo 1 etc...)
-	gos_Info_GetDeviceVendorID,				// (ULONG)  Returns the vendor of the device specified in Param1 (0x121a=3Dfx for example - See Videocard.cpp for complete list)
-	gos_Info_GetDeviceDeviceID,				// (ULONG)  Returns the DeviceID of the device specified in Param1 (2=Voodoo2 for example - See Videocard.cpp for complete list)
-	gos_Info_GetDeviceVideoMemory,			// (ULONG)	Returns the amount of video memory available (for front/back/z buffers etc..) for device specified in Param1
-	gos_Info_GetDeviceLocalMemory,			// (ULONG)	Returns the amount of local video memory available (may be the same as above) for device specified in Param1
-	gos_Info_GetDeviceAGPMemory,			// (ULONG)	Returns the amount of AGP video memory available (may be 0 on non-agp cards) for device specified in Param1
-	gos_Info_GetDeviceDriverVersionHi,		// (ULONG)  Returns the Hi ULONG version number of the Device specified in param 0
-	gos_Info_GetDeviceDriverVersionLo,		// (ULONG)  Returns the Lo ULONG version number of the Device specified in param 0
-	gos_Info_NumberValidModes,				// (ULONG)	Returns the number of valid modes for device Param1, bitdepth Param2 (16 or 32 only)
-	gos_Info_GetValidMode,					// (ULONG)	Returns a ULONG containing HIWORD=Width, LOWORD=Height of device 'Param1' for bitdepth 'Param2', mode number Param3
-	gos_Info_ValidMode,						// (ULONG)  Param1=Device, Param2=Width, Param3=Height. Returns true if card supports mode (ie: 1024*768)
-	gos_Info_CanDeviceHardwareGamma,		// (ULONG)	Returns true if the gamma of the display will be adjusted using HARDWARE or SOFTWARE (software is much slower)
-	gos_Info_CanDeviceAntiAlias,			// (ULONG)  Returns true if the device specified in Param1 can render antialiased
-	gos_Info_CanDeviceRender32Bit,			// (ULONG)  Returns true if the device specified in Param1 can render in 32 bit mode
-	gos_Info_CanDeviceRenderStencil,		// (ULONG)  Returns 1 if the device specified in Param1 can render with a stencil buffer, 2 if the device requires 32 bit mode before stencils work
+	gos_Info_GetDeviceVendorID,				// (uint32_t)  Returns the vendor of the device specified in Param1 (0x121a=3Dfx for example - See Videocard.cpp for complete list)
+	gos_Info_GetDeviceDeviceID,				// (uint32_t)  Returns the DeviceID of the device specified in Param1 (2=Voodoo2 for example - See Videocard.cpp for complete list)
+	gos_Info_GetDeviceVideoMemory,			// (uint32_t)	Returns the amount of video memory available (for front/back/z buffers etc..) for device specified in Param1
+	gos_Info_GetDeviceLocalMemory,			// (uint32_t)	Returns the amount of local video memory available (may be the same as above) for device specified in Param1
+	gos_Info_GetDeviceAGPMemory,			// (uint32_t)	Returns the amount of AGP video memory available (may be 0 on non-agp cards) for device specified in Param1
+	gos_Info_GetDeviceDriverVersionHi,		// (uint32_t)  Returns the Hi uint32_t version number of the Device specified in param 0
+	gos_Info_GetDeviceDriverVersionLo,		// (uint32_t)  Returns the Lo uint32_t version number of the Device specified in param 0
+	gos_Info_NumberValidModes,				// (uint32_t)	Returns the number of valid modes for device Param1, bitdepth Param2 (16 or 32 only)
+	gos_Info_GetValidMode,					// (uint32_t)	Returns a uint32_t containing HIWORD=Width, LOWORD=Height of device 'Param1' for bitdepth 'Param2', mode number Param3
+	gos_Info_ValidMode,						// (uint32_t)  Param1=Device, Param2=Width, Param3=Height. Returns true if card supports mode (ie: 1024*768)
+	gos_Info_CanDeviceHardwareGamma,		// (uint32_t)	Returns true if the gamma of the display will be adjusted using HARDWARE or SOFTWARE (software is much slower)
+	gos_Info_CanDeviceAntiAlias,			// (uint32_t)  Returns true if the device specified in Param1 can render antialiased
+	gos_Info_CanDeviceRender32Bit,			// (uint32_t)  Returns true if the device specified in Param1 can render in 32 bit mode
+	gos_Info_CanDeviceRenderStencil,		// (uint32_t)  Returns 1 if the device specified in Param1 can render with a stencil buffer, 2 if the device requires 32 bit mode before stencils work
 
-	gos_Info_CanMultitextureLightMap,		// (ULONG)  TRUE when single pass light mapping is available
-	gos_Info_CanMultitextureSpecularMap,	// (ULONG)  TRUE when single pass specular mapping is available
-	gos_Info_CanMultitextureDetail,			// (ULONG)  TRUE when single pass detail texturing is available
+	gos_Info_CanMultitextureLightMap,		// (uint32_t)  TRUE when single pass light mapping is available
+	gos_Info_CanMultitextureSpecularMap,	// (uint32_t)  TRUE when single pass specular mapping is available
+	gos_Info_CanMultitextureDetail,			// (uint32_t)  TRUE when single pass detail texturing is available
 
-	gos_Info_CanAlphaOneOne,				// (ULONG)	TRUE when the card can support Alpha ONE:ONE blending
-	gos_Info_CanAlphaTest,					// (ULONG)	TRUE when the card can support Alpha testing (GameOS will enable AlphaInvAlpha blending)
-	gos_Info_CanClampTextures,				// (ULONG)	TRUE when texture address mode CLAMP is available (GameOS will default to wrap)
-	gos_Info_CanModulateAlpha,				// (ULONG)	TRUE when ModulateAlpha is a supported mode (GameOS will default to Modulate)
-	gos_Info_CanSpecular,					// (ULONG)	TRUE when specular is supported (GameOS will ignore all specular otherwise)
+	gos_Info_CanAlphaOneOne,				// (uint32_t)	TRUE when the card can support Alpha ONE:ONE blending
+	gos_Info_CanAlphaTest,					// (uint32_t)	TRUE when the card can support Alpha testing (GameOS will enable AlphaInvAlpha blending)
+	gos_Info_CanClampTextures,				// (uint32_t)	TRUE when texture address mode CLAMP is available (GameOS will default to wrap)
+	gos_Info_CanModulateAlpha,				// (uint32_t)	TRUE when ModulateAlpha is a supported mode (GameOS will default to Modulate)
+	gos_Info_CanSpecular,					// (uint32_t)	TRUE when specular is supported (GameOS will ignore all specular otherwise)
 
-	gos_Info_GetDoubleClickTime,			// (ULONG)  Number of milliseconds between mouse clicks
+	gos_Info_GetDoubleClickTime,			// (uint32_t)  Number of milliseconds between mouse clicks
 
-	gos_Info_GetMaximumUVSize,				// (ULONG)  Returns the maximum U,V size for the texture size passed as Param1 (if 0 is returned, there is no maximum)
-	gos_Info_IsMouseInSideWindow,			// (ULONG)  Returns 0 when the windows mouse is OVER the game window, or in full screen mode. Otherwise returns the absolute number of pixels away from the window the mouse is.
+	gos_Info_GetMaximumUVSize,				// (uint32_t)  Returns the maximum U,V size for the texture size passed as Param1 (if 0 is returned, there is no maximum)
+	gos_Info_IsMouseInSideWindow,			// (uint32_t)  Returns 0 when the windows mouse is OVER the game window, or in full screen mode. Otherwise returns the absolute number of pixels away from the window the mouse is.
 
-	gos_Info_GetPixelColor,					// (ULONG)	Returns a 32 bit ARGB value for the pixel at screen location Param1=x, Param2=y. Param3=0 for back buffer, 1 for CopyBuffer (Dirty Rectangle mode). This API only valid during GameLogic or before SetupViewPort.
+	gos_Info_GetPixelColor,					// (uint32_t)	Returns a 32 bit ARGB value for the pixel at screen location Param1=x, Param2=y. Param3=0 for back buffer, 1 for CopyBuffer (Dirty Rectangle mode). This API only valid during GameLogic or before SetupViewPort.
 
-	gos_Info_CanHardwareTandL,				// (ULONG)	TRUE when current mode is using hardware T&L
-	gos_Info_GetMaximumActiveLights,		// (ULONG)	Maximum number of active lights allowed in current mode (Can be -1 for infinite)
-	gos_Info_GetVertexBlendMatrices,		// (ULONG)  Returns 0 or 1 currently. The is the maximum number of vertex blend weights the hardware can blend.
+	gos_Info_CanHardwareTandL,				// (uint32_t)	TRUE when current mode is using hardware T&L
+	gos_Info_GetMaximumActiveLights,		// (uint32_t)	Maximum number of active lights allowed in current mode (Can be -1 for infinite)
+	gos_Info_GetVertexBlendMatrices,		// (uint32_t)  Returns 0 or 1 currently. The is the maximum number of vertex blend weights the hardware can blend.
 
-	gos_Info_GetApplicationStatus,			// (ULONG)  Bit 0 is true when the app is active, Bit 1 is true when the app has keyboard focus, Bit 2 is true when no rendering can occur (ie: Control Alt Delete Pressed)
-	gos_Info_GetDesktopResolution,			// (ULONG)	Get the resolution of the desktop (high word is vertical, low word is horizontal)
-	gos_Info_GetDesktopBitDepth,			// (ULONG)	Get the bitdepth of the desktop
+	gos_Info_GetApplicationStatus,			// (uint32_t)  Bit 0 is true when the app is active, Bit 1 is true when the app has keyboard focus, Bit 2 is true when no rendering can occur (ie: Control Alt Delete Pressed)
+	gos_Info_GetDesktopResolution,			// (uint32_t)	Get the resolution of the desktop (high word is vertical, low word is horizontal)
+	gos_Info_GetDesktopBitDepth,			// (uint32_t)	Get the bitdepth of the desktop
 
-	gos_Info_GetIMEStatus,					// (ULONG)  Bit 0 is true when the IME is open.
-	gos_Info_GetKeyboardLayout,				// (ULONG)	Returns the current users keyboard layout from windows
+	gos_Info_GetIMEStatus,					// (uint32_t)  Bit 0 is true when the IME is open.
+	gos_Info_GetKeyboardLayout,				// (uint32_t)	Returns the current users keyboard layout from windows
 
-	gos_Info_GetMaximumTextureWidth,		// (ULONG)  Maximum width in texels of a texture or mipmap level.
-	gos_Info_GetMaximumTextureHeight,		// (ULONG)  Maximum height in texels of a texture or mipmap level.
+	gos_Info_GetMaximumTextureWidth,		// (uint32_t)  Maximum width in texels of a texture or mipmap level.
+	gos_Info_GetMaximumTextureHeight,		// (uint32_t)  Maximum height in texels of a texture or mipmap level.
 
-	gos_Info_CanBumpEnvMap,					// (ULONG)	TRUE when current mode supports bump environment maps
-	gos_Info_CanBumpDotMap,					// (ULONG)  Returns 1 if the current mode supports normal maps (dotproduct3)
+	gos_Info_CanBumpEnvMap,					// (uint32_t)	TRUE when current mode supports bump environment maps
+	gos_Info_CanBumpDotMap,					// (uint32_t)  Returns 1 if the current mode supports normal maps (dotproduct3)
 
-	gos_Info_HardwareGammaControl,			// (ULONG)	TRUE if full screen and hardware gamma control possible. Otherwise slower software gamma emulation is used
-	gos_Info_HardwareBrightnessControl,		// (ULONG)	TRUE if full screen and hardware brightness control possible. Otherwise invalid
-	gos_Info_HardwareContrastControl,		// (ULONG)	TRUE if full screen and hardware brightness control possible. Otherwise invalid
+	gos_Info_HardwareGammaControl,			// (uint32_t)	TRUE if full screen and hardware gamma control possible. Otherwise slower software gamma emulation is used
+	gos_Info_HardwareBrightnessControl,		// (uint32_t)	TRUE if full screen and hardware brightness control possible. Otherwise invalid
+	gos_Info_HardwareContrastControl,		// (uint32_t)	TRUE if full screen and hardware brightness control possible. Otherwise invalid
 
-	gos_Info_UsingHardwareRenderer,			// (ULONG)	TRUE when using a hardware renderer, 0=Blade. (Environment.renderer may have not been able to support hardware)
+	gos_Info_UsingHardwareRenderer,			// (uint32_t)	TRUE when using a hardware renderer, 0=Blade. (Environment.renderer may have not been able to support hardware)
 
-	gos_Info_GetIMECaretStatus,				// (ULONG)  TRUE if an edit box should show its caret. When it's FALSE, an edit box shouldn't display caret.
+	gos_Info_GetIMECaretStatus,				// (uint32_t)  TRUE if an edit box should show its caret. When it's FALSE, an edit box shouldn't display caret.
 } MachineInfo;
 
 //
 // Returns machine information, valid for THE CURRENT FRAME ONLY
 //
-ULONG __stdcall gos_GetMachineInformation( MachineInfo mi, int Param1=0, int Param2=0, int Param3=0, int Param4=0 );
+uint32_t __stdcall gos_GetMachineInformation( MachineInfo mi, int Param1=0, int Param2=0, int Param3=0, int Param4=0 );
 
 
 
@@ -2901,24 +2901,24 @@ ULONG __stdcall gos_GetMachineInformation( MachineInfo mi, int Param1=0, int Par
 #define Stat_Format				(0x40000000)// Used for formatting in statistics
 #define gos_SpewNoAddCR			1	// Don't add "\n" to spew output
 extern PSTR gosErrorFile;
-extern ULONG gosErrorLine;
+extern uint32_t gosErrorLine;
 extern void __cdecl InternalFunctionSpew( PCSTR Group, PCSTR Message, ... );
 extern void __cdecl InternalFunctionSpewV( int Flags, PCSTR Group, PCSTR Message, PSTR arglist );
 extern int __cdecl InternalFunctionStop( PCSTR Message, ... );
 extern int __cdecl InternalFunctionPause( PCSTR Message, ... );
-extern void __stdcall gosLabRatStart( ULONG Handle );
-extern void __stdcall gosLabRatEnd( ULONG Handle );
-extern void __stdcall gosLabRatSet( ULONG Handle, ULONG Value );
-extern void __stdcall gosLabRatSet( ULONG Handle, float Value );
+extern void __stdcall gosLabRatStart( uint32_t Handle );
+extern void __stdcall gosLabRatEnd( uint32_t Handle );
+extern void __stdcall gosLabRatSet( uint32_t Handle, uint32_t Value );
+extern void __stdcall gosLabRatSet( uint32_t Handle, float Value );
 extern "C" int __stdcall ErrorHandler( int Flags, PSTR Text );
 extern gosEnvironment Environment;
 
 typedef struct gos_CycleData {
-	ULONG	Count;
+	uint32_t	Count;
 	uint8_t	InsideStartEnd;
 	uint8_t	_padding1[3];
-	ULONG	Cycles;
-	ULONG	StartProcessorCycles;
+	uint32_t	Cycles;
+	uint32_t	StartProcessorCycles;
 	int64_t	TotalCounter[2];
 	int64_t	StartCounter[2];
 } gos_CycleData;
@@ -2974,10 +2974,10 @@ GosEventLog::LogStartPoint(void);
 
 class GosLogRef
 {
-	ULONG	m_Count;
+	uint32_t	m_Count;
 	///void			(*m_pFunc)(GosLogRef &);
 	///void			*m_pObj;
-	ULONG			m_id;
+	uint32_t			m_id;
 public:
 
 	enum EventType {
@@ -2992,34 +2992,34 @@ public:
 		log,
 	};
 	GosLogRef( EventType type, PSTR name, PSTR filename, int lineno );
-	operator ULONG() { return m_id; }
+	operator uint32_t() { return m_id; }
 	uint8_t ShouldLog() {  m_Count++; return 1; }	// change to return (m_pFunc != NULL);
 };
 
 class GosEventLog
 {
 	static PULONG       pLogBase;
-	static ULONG		LogOffset;		// Offset into log in ULONGS
-	static ULONG		LogMod;			// Mod in ULONGS
-	static ULONG		NullLog[16];
+	static uint32_t		LogOffset;		// Offset into log in ULONGS
+	static uint32_t		LogMod;			// Mod in ULONGS
+	static uint32_t		NullLog[16];
 	static uint8_t		WaitingToStart;
 	static uint8_t		LoggingInProgress;
 
 	// after stopping, the following members point to the frozen log
 	static PSTR 		m_pLogStart1;
-	static ULONG		m_nLogSize1;	// size of first part in bytes
+	static uint32_t		m_nLogSize1;	// size of first part in bytes
 	static PSTR 		m_pLogStart2;
-	static ULONG		m_nLogSize2;	// size of second part in bytes
+	static uint32_t		m_nLogSize2;	// size of second part in bytes
 
 public:
-	static void Log( ULONG id )
+	static void Log( uint32_t id )
 	{
-		ULONG time;
+		uint32_t time;
 		LogOffset &= LogMod;
 		pLogBase[LogOffset++] = id;
 		// _asm rdtsc
 		// _asm mov time,eax
-		time = (ULONG)__rdtsc();
+		time = (uint32_t)__rdtsc();
 		pLogBase[LogOffset++] = time;
 	}
 	static void LogStart(void);
@@ -3028,7 +3028,7 @@ public:
 	static void PushStop(void);
 	static void PopStop(void);
 	static PSTR LogAddr( int part ) { return part?m_pLogStart2:m_pLogStart1; }
-	static ULONG LogBytes( int part ) { return part?m_nLogSize2:m_nLogSize1; }
+	static uint32_t LogBytes( int part ) { return part?m_nLogSize2:m_nLogSize1; }
 	static uint8_t Logging() { return LoggingInProgress; }
 	static void Cleanup(void);
 };
@@ -3036,10 +3036,10 @@ public:
 class GosLogFuncScope
 {
 private:
-	ULONG		 m_Caller;
-	static ULONG Current;
+	uint32_t		 m_Caller;
+	static uint32_t Current;
 public:
-	GosLogFuncScope( ULONG newId )
+	GosLogFuncScope( uint32_t newId )
 	{
 		m_Caller = Current;
 		GosEventLog::Log(newId);

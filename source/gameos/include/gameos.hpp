@@ -18,9 +18,8 @@
 
 #pragma once
 
-#ifdef _ICECAP
-#include "icecap.h"
-#endif
+#ifndef _GAMEOS_HPP_
+#define _GAMEOS_HPP_
 
 #ifndef MECH_IMPEXP
 #define MECH_IMPEXP extern
@@ -90,9 +89,9 @@
 //
 // Types used by GameOS
 //
-typedef ULONG DWORD;
+typedef unsigned long DWORD;
 typedef unsigned short WORD;
-typedef uint8_t BYTE;
+typedef unsigned char BYTE;
 #define FALSE 0
 #define TRUE  1
 
@@ -100,10 +99,10 @@ typedef uint8_t BYTE;
 #define GUID_DEFINED
 typedef struct _GUID
 {
-    ULONG Data1;
+    unsigned long Data1;
     unsigned short Data2;
     unsigned short Data3;
-    uint8_t Data4[8];
+    unsigned char Data4[8];
 } GUID;
 #endif
 #endif
@@ -252,7 +251,7 @@ typedef struct gosEnvironment {
 // Now functions GameOS can call in the application
 
 // Returns custom data used in special places by GameOS
-	void * (__cdecl *GetSpecialGameData)(int data_type, ...);
+	PVOID (__cdecl *GetSpecialGameData)(int data_type, ...);
 //
 // Returns a string containing game data
 //  This is called during error routines, so NO errors must be able to occur in this routine.
@@ -294,7 +293,7 @@ typedef struct gosEnvironment {
 // function there, GameOS will jump to that function. GameOS will check for gos_GetFIle being called
 // again during this function and allow it to read from the disk normally.
 //
-	void (__stdcall *HookGetFile)( PCSTR FileName, PUCHAR* MemoryImage, PULONG Size );
+	void (__stdcall *HookGetFile)( PCSTR FileName, puint8_t* MemoryImage, PULONG Size );
 
 // Other file API calls available to hook
 
@@ -393,7 +392,7 @@ typedef struct _gosVideo_Info
 	float					fScaleOfY;		// ratio of displayed to orgininal height
 	float					fDurationSec;	// read-only duration of video (hundredth of a second)
 	float					fSoFarSec;		// current play position (hundredth of a second)
-	PUCHAR					lpData;			// RGB data
+	puint8_t					lpData;			// RGB data
 	ULONG					dwSurfaceWidth;	// read-only width of video surface
 	ULONG					dwSurfaceHeight;// read-only height of vidoe surface
 	ULONG					dwPitch;		// read-only pitch of video surface
@@ -812,7 +811,7 @@ PSTR __stdcall gos_GetFormattedDate( uint8_t Verbose, USHORT Year=-1, USHORT Mon
 //
 // Returns the year month and day
 //
-void  __stdcall gos_GetUnformattedDate(PUSHORT Year, PUSHORT Month, PUSHORT Day);
+void  __stdcall gos_GetUnformattedDate(puint16_t Year, puint16_t Month, puint16_t Day);
 
 
 //
@@ -962,13 +961,13 @@ void __stdcall gos_TextDrawV( PCSTR Message, PSTR arglist );
 // The whole file in read into memory, MemoryImage will point to the start of the file,
 // Size will be the size of the file.
 //
-void __stdcall gos_GetFile( PCSTR FileName, PUCHAR* MemoryImage, size_t* pSize );
+void __stdcall gos_GetFile( PCSTR FileName, puint8_t* MemoryImage, size_t* pSize );
 
 
 //
 // Opens a memory mapped file - returns a handle that must be passed to the Close function below.
 //
-HANDLE __stdcall gos_OpenMemoryMappedFile( PCSTR FileName, PUCHAR* MemoryImage, size_t* pSize );
+HANDLE __stdcall gos_OpenMemoryMappedFile( PCSTR FileName, puint8_t* MemoryImage, size_t* pSize );
 
 //
 // Closes a memory mapped file
@@ -980,7 +979,7 @@ void __stdcall gos_CloseMemoryMappedFile( HANDLE Handle );
 // Opens and reads in the whole file in a background thread. The MemoryImage pointer will be NULL until the file is read in completly.
 //    When you are finished with the file, the Close function below must be called.
 //
-ULONG __stdcall gos_ReadFileInBackground( PCSTR FileName, PUCHAR* MemoryImage, PULONG Size, ULONG Offset=0, ULONG MaxSize=0xffffffff );
+ULONG __stdcall gos_ReadFileInBackground( PCSTR FileName, puint8_t* MemoryImage, PULONG Size, ULONG Offset=0, ULONG MaxSize=0xffffffff );
 
 //
 // Closes and releases the memory used by a file read in the background.
@@ -1387,7 +1386,7 @@ typedef struct _gosJoystick_ForceEffect
 
 	union
 	{
-		long	lPhase;
+		int32_t	lPhase;
 		float	fStart;
 	};
 	union
@@ -1677,7 +1676,7 @@ typedef enum gosNetInfo {
 	gos_GetOB_LstPktTheyRcvd,	// (ULONG) Returns the last packet that the specified outbound window index received
 
 // Internal functions used for browsing, creating and joining games
-	gos_InformationAboutGame,	// (PUCHAR)  Returns a pointer to 16 bytes of information from the game, Name=Game Name  (Games set this in Environment.NetGameInfo)
+	gos_InformationAboutGame,	// (puint8_t)  Returns a pointer to 16 bytes of information from the game, Name=Game Name  (Games set this in Environment.NetGameInfo)
 	gos_NumberOfGames,			// (ULONG)  Returns the number of Games found on network
 	gos_NameOfGame,				// (PSTR)  Returns the name of the Game with the parameter passed
 	gos_IsGamePassworded,		// (ULONG)	Returns true if the game name passed is passworded, Name=Game Name
@@ -1774,27 +1773,6 @@ void __stdcall gos_srand( uint32_t seed );
 // Return a random number between 0 and 32767
 //
 int __stdcall gos_rand(void);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -1960,12 +1938,12 @@ typedef enum gos_RenderState {
 // y = y*ViewportMulY + ViewportAddY
 //
 typedef struct _gos_VERTEX {
-	float x,y;					// Screen coords	- must be 0.0 to Environment.screenWidth/Height (no clipping occurs unless gos_State_Clipping is true)
-	float z;					// 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is not valid)
-	float rhw;					// 0.0 to 1.0		- reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
-	COLORREF argb;					// Vertex color and alpha (alpha of 255 means solid, 0=transparent)
-	COLORREF frgb;					// Specular color and fog
-	float u,v;					// Texture coordinates
+	float		x,y;				// Screen coords	- must be 0.0 to Environment.screenWidth/Height (no clipping occurs unless gos_State_Clipping is true)
+	float		z;					// 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is not valid)
+	float		rhw;				// 0.0 to 1.0		- reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
+	uint32_t	argb;				// Vertex color and alpha (alpha of 255 means solid, 0=transparent)
+	uint32_t	frgb;				// Specular color and fog
+	float		u,v;				// Texture coordinates
 } gos_VERTEX;
 typedef gos_VERTEX *pgos_VERTEX;
 
@@ -1973,13 +1951,13 @@ typedef gos_VERTEX *pgos_VERTEX;
 // This vertex type is used for rendering with 2 textures at once, it is identical to the normal vertex structure, but with 2 u,v's
 //
 typedef struct _gos_VERTEX_2UV {
-	float x,y;					// Screen coords	- must be 0.0 to Environment.screenWidth/Height (no clipping occurs unless gos_State_Clipping is true)
-	float z;					// 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is not valid)
-	float rhw;					// 0.0 to 1.0		- reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
-	ULONG argb;					// Vertex color and alpha (alpha of 255 means solid, 0=transparent)
-	ULONG frgb;					// Specular color and fog
-	float u1,v1;				// Texture coordinates
-	float u2,v2;				// Texture coordinates
+	float		x,y;				// Screen coords	- must be 0.0 to Environment.screenWidth/Height (no clipping occurs unless gos_State_Clipping is true)
+	float		z;					// 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is not valid)
+	float		rhw;				// 0.0 to 1.0		- reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
+	uint32_t	argb;				// Vertex color and alpha (alpha of 255 means solid, 0=transparent)
+	uint32_t	frgb;				// Specular color and fog
+	float		u1,v1;				// Texture coordinates
+	float		u2,v2;				// Texture coordinates
 } gos_VERTEX_2UV;
 typedef gos_VERTEX_2UV *pgos_VERTEX_2UV;
 
@@ -1988,15 +1966,14 @@ typedef gos_VERTEX_2UV *pgos_VERTEX_2UV;
 // Expected use:  u1,v1 = base texture  u2,v2 = bump map  u3,v3 = environment map
 //
 typedef struct _gos_VERTEX_3UV {
-	float x,y;					// Screen coords	- must be 0.0 to Environment.screenWidth/Height (no clipping occurs unless gos_State_Clipping is true)
-	float z;					// 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is not valid)
-	float rhw;					// 0.0 to 1.0		- reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
-	ULONG argb;					// Vertex color and alpha (alpha of 255 means solid, 0=transparent)
-	ULONG frgb;					// Specular color and fog
-	float u1,v1;				// Texture coordinates
-	float u2,v2;				// Texture coordinates
-	float u3,v3;				// Texture coordinates
-
+	float		x,y;				// Screen coords	- must be 0.0 to Environment.screenWidth/Height (no clipping occurs unless gos_State_Clipping is true)
+	float		z;					// 0.0 to 0.99999	- Used for visiblity check in ZBuffer (1.0 is not valid)
+	float		rhw;				// 0.0 to 1.0		- reciprocal of homogeneous w - Used for perspective correct textures, fog and clipping
+	uint32_t	argb;				// Vertex color and alpha (alpha of 255 means solid, 0=transparent)
+	uint32_t	frgb;				// Specular color and fog
+	float		u1,v1;				// Texture coordinates
+	float		u2,v2;				// Texture coordinates
+	float		u3,v3;				// Texture coordinates
 } gos_VERTEX_3UV;
 typedef gos_VERTEX_3UV *pgos_VERTEX_3UV;
 
@@ -2069,9 +2046,9 @@ MECH_IMPEXP HRESULT MECH_CALL gos_DrawQuads(pgos_VERTEX Vertices, int NumVertice
 // The vertex colors in the array may be changed in some wireframe modes. Otherwise the data is
 // not altered.
 //
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices );
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices );
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices );
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices );
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices );
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices );
 
 //
 // Set a renderstate
@@ -2331,7 +2308,7 @@ void __stdcall gos_SetMaterial( LPD3DMATERIAL7 pMaterialData );
 //
 // NOTE: When PrimitiveType is a POINTLIST the lpwIndices and NumberIndices are ignored, it is treated as a list of points
 //
-void __stdcall gos_RenderIndexedArray( PVOID pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices, gosVERTEXTYPE VertexType, gosPRIMITIVETYPE PrimitiveType=PRIMITIVE_TRIANGLELIST );
+void __stdcall gos_RenderIndexedArray( PVOID pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices, gosVERTEXTYPE VertexType, gosPRIMITIVETYPE PrimitiveType=PRIMITIVE_TRIANGLELIST );
 
 
 
@@ -2384,7 +2361,7 @@ uint8_t __stdcall gos_VertexBuffersLost( ULONG VertexBufferHandle=0 );
 //
 // NOTE: When PrimitiveType is a POINTLIST the lpwIndices and NumberIndices are ignored, it is treated as a list of points
 //
-void __stdcall gos_RenderVertexBuffer( ULONG VertexBufferHandle, ULONG StartVertex, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices, gosPRIMITIVETYPE PrimitiveType=PRIMITIVE_TRIANGLELIST );
+void __stdcall gos_RenderVertexBuffer( ULONG VertexBufferHandle, ULONG StartVertex, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices, gosPRIMITIVETYPE PrimitiveType=PRIMITIVE_TRIANGLELIST );
 
 
 
@@ -2463,13 +2440,6 @@ void __stdcall gosDirtyRectangeRestoreArea( ULONG Left, ULONG Top, ULONG Right, 
 //
 uint8_t __stdcall gosDirtyRectangeLostTarget(void);
 
-
-
-
-
-
-
-
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 // *************************    Texture Manager API	  ************************* //
@@ -2528,13 +2498,13 @@ typedef struct TEXTUREPTR {
 	gos_TextureFormat	Type;				// Internal format of texture (Solid, Keyed or Alpha) - Useful when you have used DETECT
 } TEXTUREPTR;
 
-typedef void (__stdcall *gos_RebuildFunction)( ULONG, void *);
+typedef void (__stdcall *gos_RebuildFunction)( ULONG, PVOID);
 
 //
 // Load a texture, returns a texture handle that can be passed as a renderstate
 //
-// Detect		- will look at the file's alpha channel, if no alpha found, 'Solid', within 10% varience of 0 and 255 'keyed', varied alpha means 'alpha'
-// Solid		- will load into a 555 or 565 texture (no transparentcy or translucency)
+// Detect		- will look at the file's alpha channel, if no alpha found, 'Solid', within 10% variance of 0 and 255 'keyed', varied alpha means 'alpha'
+// Solid		- will load into a 555 or 565 texture (no transparency or translucency)
 // Keyed		- will load into the smallest alpha surface ie: 1555
 // Alpha		- will load into the largest alpha + at least 15 bit RGB surface ie: 4444 or 8888
 //
@@ -2543,13 +2513,13 @@ typedef void (__stdcall *gos_RebuildFunction)( ULONG, void *);
 // Hints should be set to any combination of gos_TextureHints or 0 is a good default.
 //
 
-ULONG __stdcall gos_NewTextureFromFile( gos_TextureFormat Format, PCSTR FileName, ULONG Hints=0, gos_RebuildFunction pFunc=0, void *pInstance=0 );
+ULONG __stdcall gos_NewTextureFromFile( gos_TextureFormat Format, PCSTR FileName, ULONG Hints=0, gos_RebuildFunction pFunc=0, PVOID pInstance=0 );
 
 //
 // Loads a texture from a memory image, returns a texture handle
 //
-// Detect		- will look at the file alpha channel, if no alpha found, 'Solid', within 10% varience of 0 and 255 'keyed', varied alpha means 'alpha'
-// Solid		- will load into a 555 or 565 texture (no transparentcy or translucency)
+// Detect		- will look at the file alpha channel, if no alpha found, 'Solid', within 10% variance of 0 and 255 'keyed', varied alpha means 'alpha'
+// Solid		- will load into a 555 or 565 texture (no transparency or translucency)
 // Keyed		- will load into the smallest alpha surface ie: 1555
 // Alpha		- will load into the largest alpha + at least 15 bit RGB surface ie: 4444 or 8888
 //
@@ -2559,7 +2529,7 @@ ULONG __stdcall gos_NewTextureFromFile( gos_TextureFormat Format, PCSTR FileName
 //
 // Hints should be set to any combination of gos_TextureHints or 0 is a good default.
 //
-ULONG __stdcall gos_NewTextureFromMemory( gos_TextureFormat Format, PCSTR FileName, PUCHAR pBitmap, ULONG Size, ULONG Hints=0, gos_RebuildFunction pFunc=0, void *pInstance=0 );
+ULONG __stdcall gos_NewTextureFromMemory( gos_TextureFormat Format, PCSTR FileName, puint8_t pBitmap, ULONG Size, ULONG Hints=0, gos_RebuildFunction pFunc=0, PVOID pInstance=0 );
 
 #define RECT_TEX(width,height) (((height)<<16)|(width))
 
@@ -2583,7 +2553,7 @@ ULONG __stdcall gos_NewTextureFromMemory( gos_TextureFormat Format, PCSTR FileNa
 // For square textures, place the width in HeightWidth
 // For Rectangular textures, use RECT_TEX(width,height) to pack the width and height values
 //
-ULONG __stdcall gos_NewEmptyTexture( gos_TextureFormat Format, PCSTR Name, ULONG HeightWidth, ULONG Hints=0, gos_RebuildFunction pFunc=0, void *pInstance=0 );
+ULONG __stdcall gos_NewEmptyTexture( gos_TextureFormat Format, PCSTR Name, ULONG HeightWidth, ULONG Hints=0, gos_RebuildFunction pFunc=0, PVOID pInstance=0 );
 
 //
 // Destroy a texture handle (unload from memory)
@@ -2652,7 +2622,7 @@ void __stdcall gos_EndRenderToTexture( uint8_t ClearBorder=0 );
 //
 // Returns true if the TGA has a valid header.
 //
-uint8_t __stdcall gos_CheckValidTGA( PUCHAR Data, ULONG DataSize );
+uint8_t __stdcall gos_CheckValidTGA( puint8_t Data, ULONG DataSize );
 
 
 
@@ -2705,7 +2675,7 @@ typedef enum StatFlags {
 //
 // Each statistic added requires about 4K of space allocated (for graphing values)
 //
-// gos_timedata  - Value should point to an __int64, filled with the time a function takes using the GetCycles().
+// gos_timedata  - Value should point to an int64_t, filled with the time a function takes using the GetCycles().
 //					It will be displayed as a percentage of total frame time
 // gos_cycledata - Values should point to an gos_CycleData structure, filled with the StartCycleTiming and EndCycleTiming apis.
 //					It will be displayed as processor information. Eventually cycles, cache, bus etc..
@@ -2734,7 +2704,7 @@ void __stdcall EndCycleTiming( struct gos_CycleData* Time );
 //
 // This API is only to be used with a 'gos_timedata' AddStatistic. When called will return the current time in cycles.
 //
-__int64 __stdcall GetCycles(void);
+int64_t __stdcall GetCycles(void);
 
 //
 // Adds a menu item to the ^Break debugger.
@@ -2793,19 +2763,6 @@ ULONG __stdcall CallDebuggerMenuItem( PCSTR Name, ULONG MenuFunction );
 //
 void __stdcall gos_MathExceptions( uint8_t EnableExceptions, uint8_t SinglePrecision );
 void __stdcall gos_GetMathExceptions( uint8_t* Exceptions, uint8_t* SinglePrecision );
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -2962,8 +2919,8 @@ typedef struct gos_CycleData {
 	uint8_t	_padding1[3];
 	ULONG	Cycles;
 	ULONG	StartProcessorCycles;
-	__int64	TotalCounter[2];
-	__int64	StartCounter[2];
+	int64_t	TotalCounter[2];
+	int64_t	StartCounter[2];
 } gos_CycleData;
 #define SPEWALWAYS(x)	InternalFunctionSpew x
 //#pragma pack(pop)
@@ -3099,4 +3056,4 @@ public:
 };
 
 #endif // __cplusplus
-
+#endif

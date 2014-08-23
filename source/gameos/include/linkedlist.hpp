@@ -11,7 +11,7 @@
 		public:
 			gosLink * Next;
 			gosLink * Prev;
-			void * linkData;
+			PVOID linkData;
 		public:
 			gosLink()
 			{
@@ -19,7 +19,7 @@
 				Next = 0;
 				Prev = 0;
 			}
-			gosLink(void * ptr)
+			gosLink(PVOID ptr)
 			{
 				linkData = ptr;
 				Next = 0;
@@ -87,7 +87,7 @@
 				if( !m_Head )						//YIK - Why does it need this! (Delete All surfaces used to crash)
 					return;
 				gosLink * tmp = m_Head;
-				if (tmp->linkData == (void *) ptr)
+				if (tmp->linkData == (PVOID) ptr)
 				{
 					m_Head = tmp->Next;
 					tmp->Prev = 0;
@@ -100,7 +100,7 @@
 					gosLink * target;
 					while(tmp->Next != 0)
 					{
-						if (tmp->Next->linkData == (void *) ptr)
+						if (tmp->Next->linkData == (PVOID) ptr)
 						{
 							target = tmp->Next;
 							tmp->Next = target->Next;

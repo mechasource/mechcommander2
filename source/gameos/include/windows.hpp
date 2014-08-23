@@ -61,12 +61,12 @@ extern BOOL (__stdcall* _GetWsChanges)(HANDLE hProcess,PPSAPI_WS_WATCH_INFORMATI
 extern ULONG (__stdcall* _GetMappedFileName)(HANDLE hProcess,PVOID pv,LPTSTR pFilename,ULONG nSize);
 
 
-extern HRESULT (__stdcall* _DirectDrawCreateEx)( GUID* lpGUID, void** lplpDD, const IID* iid, LPUNKNOWN pUnkOuter ); 
+extern HRESULT (__stdcall* _DirectDrawCreateEx)( GUID* lpGUID, PVOID* lplpDD, const IID* iid, LPUNKNOWN pUnkOuter ); 
 extern HRESULT (__stdcall* _DirectDrawEnumerate)( LPDDENUMCALLBACK pCallback, PVOID lpContext );
 extern HRESULT (__stdcall* _DirectDrawEnumerateEx)( LPDDENUMCALLBACKEX lpCallback, PVOID lpContext, ULONG Flags );
 extern HRESULT (__stdcall* _DirectInputCreate)( HINSTANCE hinst, ULONG dwVersion, LPDIRECTINPUT * lplpDirectInput, LPUNKNOWN punkOuter );
 extern HRESULT (__stdcall* _DirectSoundCreate)( LPGUID lpGuid, LPDIRECTSOUND * ppDS, LPUNKNOWN  pUnkOuter );
-extern HRESULT (__stdcall* _DirectInputCreateEx)( HINSTANCE hinst, ULONG dwVersion, const IID* refID, void** lplpDirectInput, LPUNKNOWN punkOuter );
+extern HRESULT (__stdcall* _DirectInputCreateEx)( HINSTANCE hinst, ULONG dwVersion, const IID* refID, PVOID* lplpDirectInput, LPUNKNOWN punkOuter );
 extern HRESULT (__stdcall* _DirectSoundEnumerate)( LPDSENUMCALLBACK lpDSEnumCallback, PVOID lpContext );
 extern HWND (__stdcall* _CallmyHelp)( HWND hWindow, HINSTANCE hInst, bool Window, ULONG HelpItem );
 extern void (__stdcall* _FreeHlpLib)(void);

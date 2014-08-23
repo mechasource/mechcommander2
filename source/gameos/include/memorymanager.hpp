@@ -101,7 +101,7 @@ typedef struct _MEMORYPOOL
 	_MEMORYPOOL*		pLast;					// Points to the last heap of the SAME block size
 	_MEMORYPOOL*		pNext;					// Points to the next heap of the SAME block size
 	POOLBLOCK*			pInfoBlocks;			// an array of blocks which describe particular memory blocks (may point to a SMALLPOOLBLOCK header for >256 bytes)
-	PUCHAR				pMemoryPool;			// Pointer to the base of the memory blocks (pointer to header byte before allocation)
+	puint8_t				pMemoryPool;			// Pointer to the base of the memory blocks (pointer to header byte before allocation)
 	USHORT				wBlockSize;				// what is the size of the individual blocks?
 	USHORT				wTotalBlocks;			// Total blocks available
 	#if defined(LAB_ONLY)

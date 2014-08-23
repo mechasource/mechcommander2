@@ -69,9 +69,9 @@ MECH_IMPEXP HRESULT MECH_CALL gos_DrawTriangles(pgos_VERTEX Vertices, int NumVer
 MECH_IMPEXP HRESULT MECH_CALL gos_DrawQuads(pgos_VERTEX Vertices, int NumVertices);
 MECH_IMPEXP HRESULT MECH_CALL gos_DrawStrips(pgos_VERTEX Vertices, int NumVertices);
 MECH_IMPEXP HRESULT MECH_CALL gos_DrawFans(pgos_VERTEX Vertices, int NumVertices);
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices);
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices);
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, PUSHORT lpwIndices, ULONG NumberIndices);
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices);
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices);
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices);
 #endif
 
 #pragma region gos_DrawPoints
@@ -426,7 +426,7 @@ gos_DrawFans(pgos_VERTEX Vertices, int NumVertices)
 /// <param name="NumberIndices"></param>
 /// <returns>MECH_IMPEXP HRESULT MECH_CALL</returns>
 MECH_IMPEXP HRESULT MECH_CALL 
-gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, ULONG NumberVertices, PUSHORT pwIndices, ULONG NumberIndices)
+gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, ULONG NumberVertices, puint16_t pwIndices, ULONG NumberIndices)
 {
 	ULONG k;
 	ULONG j;
@@ -514,7 +514,7 @@ gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, ULONG NumberVertices, PUSHORT 
 /// <param name="NumberIndices"></param>
 /// <returns>MECH_IMPEXP HRESULT MECH_CALL</returns>
 MECH_IMPEXP HRESULT MECH_CALL 
-gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, PUSHORT pwIndices, ULONG NumberIndices)
+gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, puint16_t pwIndices, ULONG NumberIndices)
 {
 	ULONG j;
 	ULONG i;
@@ -562,7 +562,7 @@ gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, PUSH
 }
 
 MECH_IMPEXP HRESULT MECH_CALL 
-gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, PUSHORT pwIndices, ULONG NumberIndices)
+gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, puint16_t pwIndices, ULONG NumberIndices)
 {
 	ULONG j;
 	ULONG i;

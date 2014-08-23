@@ -12,7 +12,7 @@
 extern GUID thisAppGUID;
 
 // The number of ticks per millisecond.  Used in determining time.
-extern DWORD	TicksPerMS;
+extern ULONG	TicksPerMS;
 
 
 

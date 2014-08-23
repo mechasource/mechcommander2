@@ -13,7 +13,7 @@ extern gos_VERTEX* LineBuffer;
 
 
 
-extern BYTE	ProfileFlags[32];			// Remember graphs activated 
+extern UCHAR	ProfileFlags[32];			// Remember graphs activated 
 extern ULONG DebuggerTextures;
 extern float PercentHistory[512];		// Used to remember cycles per frame
 extern bool NewPerformanceRegister;

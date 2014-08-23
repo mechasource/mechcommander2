@@ -130,7 +130,7 @@ extern bool IAmTheServer;
 //
 // Current players ID
 //
-extern DWORD MyDirectPlayID;
+extern ULONG MyDirectPlayID;
 
 //
 // String containing my address (when TCPIP)
@@ -172,8 +172,8 @@ extern ListOfNames* CurrentPlayers;
 //
 // Buffer used while receiving messages
 //
-extern PUCHAR MessageBuffer;
-extern DWORD MessageBufferSize;
+extern puint8_t MessageBuffer;
+extern ULONG MessageBufferSize;
 
 //
 // Points to a list of messages that the Application will pull message from
@@ -194,13 +194,13 @@ typedef struct _PacketLogging
 {
 	_PacketLogging* pNext;
 	double			TimeStamp;							// When packet was added to list
-	DWORD			FrameNumber;						// Frame number added
+	ULONG			FrameNumber;						// Frame number added
 	char			Type[11];							// Type of packet
 	char			Player[11];							// From or To player name
-	DWORD			FromID;								// ID of FROM player
-	DWORD			ToID;								// ID of TO player
-	DWORD			Size;								// Size of packet
-	BYTE			Data[8];							// 1st 8 bytes
+	ULONG			FromID;								// ID of FROM player
+	ULONG			ToID;								// ID of TO player
+	ULONG			Size;								// Size of packet
+	UCHAR			Data[8];							// 1st 8 bytes
 
 } PacketLogging;
 //
@@ -227,15 +227,15 @@ extern PacketLogging*	pDebugPacketLog;
 #ifdef OUTBOUND_WINDOW
 typedef struct _PacketHeader
 {
-	BYTE	Type;										// User defined type (224-> system messages)
-	WORD	ThisPacketNumber;
-	WORD	LastPacketReceived;
+	UCHAR	Type;										// User defined type (224-> system messages)
+	uint16_t	ThisPacketNumber;
+	uint16_t	LastPacketReceived;
 
 } PacketHeader;
 #else
 typedef struct _PacketHeader
 {
-	BYTE	Type;										// User defined type (224-> system messages)
+	UCHAR	Type;										// User defined type (224-> system messages)
 
 } PacketHeader;
 #endif
@@ -249,30 +249,30 @@ void __stdcall CheckProtocols(void);
 void __stdcall ReceivePackets(void);
 void __stdcall GetCurrentPlayers(void);
 void __stdcall AddGOSMessage( Messages* pMessage );
-BOOL __stdcall EnumSessionsCallback( LPCDPSESSIONDESC2 lpSessionDesc, PULONG lpdwTimeOut, DWORD dwFlags, void* lpContext );
-BOOL __stdcall EnumJoinSessionCallback( LPCDPSESSIONDESC2 lpSessionDesc, PULONG lpdwTimeOut, DWORD dwFlags, void* lpContext );
-BOOL __stdcall EnumPlayersCallback( DPID dpId, DWORD dwPlayerType, LPCDPNAME lpName, DWORD dwFlags, LPVOID lpContext );
-BOOL __stdcall ModemCallback( REFGUID guidDataType, DWORD dwDataSize, LPCVOID lpData, void* lpContext );
-BOOL __stdcall TCPIPCallback( REFGUID guidDataType, DWORD dwDataSize, LPCVOID lpData, void* lpContext );
+BOOL __stdcall EnumSessionsCallback( LPCDPSESSIONDESC2 lpSessionDesc, PULONG lpdwTimeOut, ULONG dwFlags, PVOID lpContext );
+BOOL __stdcall EnumJoinSessionCallback( LPCDPSESSIONDESC2 lpSessionDesc, PULONG lpdwTimeOut, ULONG dwFlags, PVOID lpContext );
+BOOL __stdcall EnumPlayersCallback( DPID dpId, ULONG dwPlayerType, LPCDPNAME lpName, ULONG dwFlags, LPVOID lpContext );
+BOOL __stdcall ModemCallback( REFGUID guidDataType, ULONG dwDataSize, LPCVOID lpData, PVOID lpContext );
+BOOL __stdcall TCPIPCallback( REFGUID guidDataType, ULONG dwDataSize, LPCVOID lpData, PVOID lpContext );
 void __stdcall WaitTillQueueEmpty(void);
 void __stdcall AddPlayerToGame( ListOfNames** pListOfPlayers, PSTR Name, DPID dpId );
 void __stdcall RemovePlayerFromGame( ListOfNames** pListOfPlayers, PSTR Name, DPID dpId );
-PSTR __stdcall GetName10( DWORD Id );
+PSTR __stdcall GetName10( ULONG Id );
 void __stdcall UpdateNetworkDebugInfo(void);
 PSTR __stdcall DecodeIPAddress( DPLCONNECTION* pConnection );
-WORD __stdcall DecodePORTAddress( DPLCONNECTION* pConnection );
+uint16_t __stdcall DecodePORTAddress( DPLCONNECTION* pConnection );
 
 
 //
 // Receive packet thread variables
 //
-extern uint32_t __stdcall NetworkThread(void*);
+extern uint32_t __stdcall NetworkThread(PVOID);
 extern uint32_t NetworkThreadID;
 extern HANDLE HandleNetworkThread;
 extern CRITICAL_SECTION NetworkCriticalSection;
 extern HANDLE NetworkEvent;
 extern HANDLE KillNetworkEvent;
-extern uint32_t __stdcall NetworkThread(void*);
+extern uint32_t __stdcall NetworkThread(PVOID);
 
 //
 // Enumeration thread variables
@@ -282,7 +282,7 @@ extern HANDLE HandleEnumThread;
 extern CRITICAL_SECTION EnumCriticalSection;
 extern HANDLE EnumEvent;
 extern HANDLE KillEnumEvent;
-extern uint32_t __stdcall EnumThread(void*);
+extern uint32_t __stdcall EnumThread(PVOID);
 
 //
 // Used to hold list of packets to pass data between threads
@@ -353,15 +353,15 @@ public:
 	static OutboundWindow *Find(DPID dpid);
 	bool __stdcall Add(void);
 	bool __stdcall Remove(void);
-	void * operator new(size_t size)
+	PVOID operator new(size_t size)
 	{
 		return gos_Malloc(size, Heap_Network);
 	}
-	void operator delete( void* ptr )
+	void operator delete( PVOID ptr )
 	{
 		gos_Free(ptr);
 	}
-	void operator delete[] ( void* ptr )
+	void operator delete[] ( PVOID ptr )
 	{
 		gos_Free(ptr);
 	}
@@ -369,9 +369,9 @@ public:
 
 public:
 	double					m_TimeLastPacketSent;
-	WORD					m_NextPacketNumberToSend;
-	WORD					m_LastPacketWeReceived;
-	WORD					m_LastPacketTheyReceived;
+	uint16_t					m_NextPacketNumberToSend;
+	uint16_t					m_LastPacketWeReceived;
+	uint16_t					m_LastPacketTheyReceived;
 	PACKETQUEUE *			m_PacketQueue;
 	DPID					m_dpid;			// the dpid of the associated remote machine
 	OutboundWindow *		m_pNext;

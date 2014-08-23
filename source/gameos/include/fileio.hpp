@@ -30,13 +30,13 @@ extern ULONG CurrentFileInfo;
 typedef struct _MemoryMappedFiles
 {
 
-	ULONG Magic;						// Identify this structure
+	size_t Magic;						// Identify this structure
 	_MemoryMappedFiles*	pNext;			// Pointer to next structure
 	HANDLE hFile;						// File handle
 	HANDLE hFileMapping;				// Mapping handle
-	PUCHAR  pFile;						// Pointer to start of data
-	ULONG  Size;						// Size of data
-	ULONG  RefCount;					// Reference count (number of times a file is opened)
+	puint8_t  pFile;						// Pointer to start of data
+	size_t Size;						// Size of data
+	size_t RefCount;					// Reference count (number of times a file is opened)
 	char   Name[MAX_PATH];				// Copy of the file name
 
 } MemoryMappedFiles;
@@ -52,8 +52,8 @@ typedef struct gosFileStream
 	~gosFileStream(void);
 
 	ULONG Seek( int where, gosEnum_FileSeekType from_end );
-	ULONG Read( void *buffer, ULONG length );
-	ULONG Write( const void *buffer, ULONG length );
+	ULONG Read( PVOIDbuffer, ULONG length );
+	ULONG Write( PCVOID buffer, ULONG length );
 
 	ULONG BytesTransfered;
 } gosFileStream;

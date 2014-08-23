@@ -83,7 +83,7 @@ public:
 	FIDPPlayer();
 	FIDPPlayer(DPID& id,
 		LPCDPNAME name,
-		DWORD flags);
+		ULONG flags);
 	virtual ~FIDPPlayer();
 
 

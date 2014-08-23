@@ -15,18 +15,18 @@ struct hResource
 	
 	HINSTANCE	hInstance;
 	char		Name[256];
-	DWORD		ReferenceCount;
+	ULONG		ReferenceCount;
 
 } ;
 
 struct gos_CaretInfo
 {
-	DWORD		fontX;
-	DWORD		fontY;
+	ULONG		fontX;
+	ULONG		fontY;
 	float		fontSize;
 	HGOSFONT3D	fontHandle;
-	DWORD		fontColorComp;
-	DWORD		fontColorCand;
+	ULONG		fontColorComp;
+	ULONG		fontColorCand;
 	bool		fontBold;
 	bool		fontItalic;
 	bool		fontProportional;
@@ -43,4 +43,4 @@ void LocalizationPurge();
 void LocalizationShutdown();
 void RenderIME();
 
-extern DWORD gEnableLoc;
+extern ULONG gEnableLoc;

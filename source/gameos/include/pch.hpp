@@ -64,13 +64,13 @@
 //
 // Disable stupid warnings (So warning 4 can be used)
 //
-//#pragma warning( disable: 4018 )	// signed/unsigned mismatches
+//#pragma warning( disable: 4018 )	// signed/uint32_t mismatches
 //#pragma warning( disable: 4097 )	// typedef synonyms
 //#pragma warning( disable: 4100 )	// unreferenced formal parameter
 //#pragma warning( disable: 4102 )	// unreferenced labels
 //#pragma warning( disable: 4127 )	// conditional expression is constant eg: While(1)
 //#pragma warning( disable: 4201 )	// nameless struct/union
-//#pragma warning( disable: 4245 )	// conversion from 'cint32_t' to 'ULONG', signed/unsigned mismatch
+//#pragma warning( disable: 4245 )	// conversion from 'cint32_t' to 'ULONG', signed/uint32_t mismatch
 //#pragma warning( disable: 4355 )	// this used in base initializers
 //#pragma warning( disable: 4511 )	// no copy constructor
 //#pragma warning( disable: 4512 )	// no assignment operator
@@ -83,9 +83,9 @@
 //
 typedef	uint8_t	U8;
 typedef signed char		S8;
-typedef unsigned short	U16;
+typedef uint16_t	U16;
 typedef signed short	S16;
-typedef unsigned int	U32;
+typedef uint32_t	U32;
 typedef signed int		S32;
 typedef float			real;
 //
@@ -102,7 +102,7 @@ typedef float			real;
 // We have modified imagehlp.h so that it does not require a lot more platformsdk files.
 //
 //#define WINTRUST_H
-//#define ULONG_PTR DWORD
+//#define ULONG_PTR ULONG
 #include "imagehlp.h"
 //
 // Debugging library (Win2K only - from the platform SDK)
@@ -142,17 +142,17 @@ typedef float			real;
 #include "eax.h"
 #include "language.h"
 //
-// Reads time stamp into an __int64, End finds difference
+// Reads time stamp into an int64_t, End finds difference
 //
 //#define GetTimeStampStart(x) { _asm push eax  _asm push edx _asm rdtsc __asm mov dword ptr x,eax __asm mov dword ptr x+4,edx _asm pop edx _asm pop eax}
 //#define GetTimeStampEnd(x) {  _asm push eax _asm push edx _asm rdtsc __asm sub eax,dword ptr x __asm sbb edx,dword ptr x+4 __asm mov dword ptr x,eax __asm mov dword ptr x+4,edx _asm pop edx _asm pop eax}
 //
-// Faster float to long  (Always rounds to nearest)  ie: -2.7 goes to 3
+// Faster float to int32_t  (Always rounds to nearest)  ie: -2.7 goes to 3
 //
-inline long float2long( float fval )
+inline int32_t float2long( float fval )
 {
 	fval += 3 << 22;
-	return ((*(long*)&fval)&0x007fffff) - 0x00400000;
+	return ((*(int32_t*)&fval)&0x007fffff) - 0x00400000;
 }
 
 #include <winsock.h>

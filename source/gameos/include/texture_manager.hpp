@@ -40,17 +40,17 @@ ULONG GetPixelColor( ULONG In );
 ULONG GetBackBufferColor( USHORT In );
 void UpdateBackBufferFormat(void);
 
-void __stdcall DecodeBMPDimensions( PCSTR FileName, PUCHAR Data, ULONG DataSize, PULONG pTextureWidth, PULONG pTextureHeight );
-void __stdcall DecodeJPGDimensions( PCSTR FileName, PUCHAR Data, ULONG DataSize, PULONG pTextureWidth, PULONG pTextureHeight );
+void __stdcall DecodeBMPDimensions( PCSTR FileName, puint8_t Data, ULONG DataSize, PULONG pTextureWidth, PULONG pTextureHeight );
+void __stdcall DecodeJPGDimensions( PCSTR FileName, puint8_t Data, ULONG DataSize, PULONG pTextureWidth, PULONG pTextureHeight );
 #ifdef USEPNG
-PVOID __stdcall DecodePNG( PCSTR FileName, PUCHAR Data, ULONG DataSize, PULONG TextureWidth, PULONG TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
-void __stdcall DecodePNGDimensions( PCSTR FileName, PUCHAR Data, ULONG DataSize, PULONG pTextureWidth, PULONG pTextureHeight );
+PVOID __stdcall DecodePNG( PCSTR FileName, puint8_t Data, ULONG DataSize, PULONG TextureWidth, PULONG TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
+void __stdcall DecodePNGDimensions( PCSTR FileName, puint8_t Data, ULONG DataSize, PULONG pTextureWidth, PULONG pTextureHeight );
 #endif
-void DecodeTGADimensions( PCSTR FileName, PUCHAR Data, ULONG DataSize, PULONG pTextureWidth, PULONG pTextureHeight );
+void DecodeTGADimensions( PCSTR FileName, puint8_t Data, ULONG DataSize, PULONG pTextureWidth, PULONG pTextureHeight );
 
-PVOID DecodeBMP( PCSTR FileName, PUCHAR Data, ULONG DataSize, PULONG TextureWidth, PULONG TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
-PVOID DecodeJPG( PCSTR FileName, PUCHAR Data, ULONG DataSize, PULONG TextureWidth, PULONG TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
-PVOID DecodeTGA( PCSTR FileName, PUCHAR Data, ULONG DataSize, PULONG TextureWidth, PULONG TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
+PVOID DecodeBMP( PCSTR FileName, puint8_t Data, ULONG DataSize, PULONG TextureWidth, PULONG TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
+PVOID DecodeJPG( PCSTR FileName, puint8_t Data, ULONG DataSize, PULONG TextureWidth, PULONG TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
+PVOID DecodeTGA( PCSTR FileName, puint8_t Data, ULONG DataSize, PULONG TextureWidth, PULONG TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
 
 int MipLevelsRequired( USHORT Width, USHORT Height );
 
@@ -69,19 +69,19 @@ extern ULONG				MaximumVidTextures;	// limit the number simultaneously loaded
 
 const ULONG					MaximumTextureLogs=32;
 // Texture flags
-const USHORT					tFlag_InVidMem=1;	// Currently loaded in Video Memory or AGP
-const USHORT					tFlag_InAGP=2;		// Allocation is in AGP ( tFlag_InVidMem set separately )
-const USHORT					tFlag_Valid=4;		// This CTexInfo has been allocated
-const USHORT					tFlag_Alpha=8;		// Texture format has ALPHA (either keyed or full channel)
-const USHORT					tFlag_InSysMem=16;	// Texture has been converted into system memory format
-const USHORT					tFlag_LockRW=32;	// Set when a texture is locked for writing
-const USHORT					tFlag_Preload=64;	// Preload this texture at the end of the current frame
-const USHORT					tFlag_Locked=128;	// Set when texture locked
-const USHORT					tFlag_Filler=256;	// Indicates a debug texture used to fill vidmem
-const USHORT					tFlag_Detect=512;	// GameOS detected the format
+cuint16_t					tFlag_InVidMem=1;	// Currently loaded in Video Memory or AGP
+cuint16_t					tFlag_InAGP=2;		// Allocation is in AGP ( tFlag_InVidMem set separately )
+cuint16_t					tFlag_Valid=4;		// This CTexInfo has been allocated
+cuint16_t					tFlag_Alpha=8;		// Texture format has ALPHA (either keyed or full channel)
+cuint16_t					tFlag_InSysMem=16;	// Texture has been converted into system memory format
+cuint16_t					tFlag_LockRW=32;	// Set when a texture is locked for writing
+cuint16_t					tFlag_Preload=64;	// Preload this texture at the end of the current frame
+cuint16_t					tFlag_Locked=128;	// Set when texture locked
+cuint16_t					tFlag_Filler=256;	// Indicates a debug texture used to fill vidmem
+cuint16_t					tFlag_Detect=512;	// GameOS detected the format
 cint32_t					tFlag_FormatShift = 10;	// Bits 10,11,12 used for format
-const USHORT					FormatMask = (7<<tFlag_FormatShift);
-const USHORT					tFlag_Special=8192;	// Special texture (font, chess, or color mipmap)
+cuint16_t					FormatMask = (7<<tFlag_FormatShift);
+cuint16_t					tFlag_Special=8192;	// Special texture (font, chess, or color mipmap)
 
 
 
@@ -181,7 +181,7 @@ static bool					ManagerInitialized(void) { return Initialized; }
 // Texture Create.cpp
 	// Fundamental new/init/delete of a CtexInfo
 	static CTexInfo *		Allocate(void);
-	void					Initialize( gos_TextureFormat Format, PCSTR FileName, PUCHAR pBitmap, ULONG Size,
+	void					Initialize( gos_TextureFormat Format, PCSTR FileName, puint8_t pBitmap, ULONG Size,
 								USHORT Width, USHORT Height, ULONG Hints, gos_RebuildFunction pFunc, PVOID pInstance );
 	void					Free(void);
 
@@ -225,10 +225,10 @@ public:
 private:
 	void					AllocateOriginal(void);	// Allocates original 32bpp surface
 	void					PopulateOriginal(void);	// Rebuilds or Reloads (assumes surface exists but is not valid)
-	void					Reload( PUCHAR pData, ULONG Size, bool Detect ); // reloads 32bpp surface from file or pData
+	void					Reload( puint8_t pData, ULONG Size, bool Detect ); // reloads 32bpp surface from file or pData
 	void					Rebuild(void);			// Calls rebuild function of app to re-populate the surface
 	void					FreeOriginal(void);		// Frees the original surface (assumes it exists and is ok to free)
-	void					DecodeImageLevel( PCSTR FileName, PUCHAR pSourceData, ULONG Size, LPDIRECTDRAWSURFACE7 pSurface );
+	void					DecodeImageLevel( PCSTR FileName, puint8_t pSourceData, ULONG Size, LPDIRECTDRAWSURFACE7 pSurface );
 // Texture SysMem.cpp
 	// System Memory Surface
 public:

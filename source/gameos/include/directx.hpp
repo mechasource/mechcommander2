@@ -59,13 +59,13 @@ void wDirectXSetupGetVersion( PULONG dwVersion,PULONG dwRevision );
 // IDirect3DDevice7
 //#ifdef LAB_ONLY
 HRESULT __stdcall wDrawPrimitive(LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE dptPrimitiveType, ULONG dvtVertexType, PVOID lpvVertices, ULONG dwVertexCount, ULONG dwFlags );
-HRESULT __stdcall wDrawIndexedPrimitive(LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE d3dptPrimitiveType, ULONG dwVertexTypeDesc, PVOID pvVertices, ULONG dwVertexCount, PUSHORT pwIndices, ULONG dwIndexCount, ULONG dwFlags );
+HRESULT __stdcall wDrawIndexedPrimitive(LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE d3dptPrimitiveType, ULONG dwVertexTypeDesc, PVOID pvVertices, ULONG dwVertexCount, puint16_t pwIndices, ULONG dwIndexCount, ULONG dwFlags );
 //#else
 //#define wDrawPrimitive(d3dDevice7,dptPrimitiveType,dvtVertexType,lpvVertices,dwVertexCount,dwFlags ) d3dDevice7->DrawPrimitive( dptPrimitiveType,dvtVertexType,lpvVertices,dwVertexCount,dwFlags )
 //#define wDrawIndexedPrimitive(d3dDevice7,d3dptPrimitiveType,dwVertexTypeDesc,lpvVertices,dwVertexCount,lpwIndices,dwIndexCount,dwFlags ) d3dDevice7->DrawIndexedPrimitive(d3dptPrimitiveType,dwVertexTypeDesc,lpvVertices,dwVertexCount,lpwIndices,dwIndexCount,dwFlags )
 //#endif
 HRESULT __stdcall wDrawPrimitiveVB(LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE d3dptPrimitiveType, LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer, ULONG dwStartVertex, ULONG dwNumVertices, ULONG dwFlags );
-HRESULT __stdcall wDrawIndexedPrimitiveVB(LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE d3dptPrimitiveType, LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer, ULONG dwStartVertex, ULONG dwNumVertices, PUSHORT lpwIndices, ULONG dwIndexCount, ULONG dwFlags );
+HRESULT __stdcall wDrawIndexedPrimitiveVB(LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE d3dptPrimitiveType, LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer, ULONG dwStartVertex, ULONG dwNumVertices, puint16_t lpwIndices, ULONG dwIndexCount, ULONG dwFlags );
 HRESULT __stdcall wSetMaterial(LPDIRECT3DDEVICE7 d3dDevice7, LPD3DMATERIAL7 lpMaterial );
 HRESULT __stdcall wSetLight(LPDIRECT3DDEVICE7 d3dDevice7, ULONG dwLightIndex, LPD3DLIGHT7 lpLight );
 HRESULT __stdcall wLightEnable(LPDIRECT3DDEVICE7 d3dDevice7, ULONG dwLightIndex, uint8_t Enable );

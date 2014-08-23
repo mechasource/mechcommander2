@@ -36,5 +36,6 @@
  RcsID = $Id$ */
 
 #include "stdafx.h"
+#include <texture_manager.hpp>
 
 

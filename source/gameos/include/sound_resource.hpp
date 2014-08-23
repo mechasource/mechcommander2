@@ -15,11 +15,11 @@ struct SoundResource
 			m_Type;			// Specifies which other structure members are valid
 		PSTR 	
 			m_FileName;	// SOUNDTYPE_FILE and SOUNDTYPE_STREAMINGFILE
-		PUCHAR	
+		puint8_t	
 			m_FileDataPointer;	// SOUNDTYPE_MEMORY
-		PUCHAR	
+		puint8_t	
 			m_DataPointer;		// SOUNDTYPE_MEMORY
-		DWORD		
+		ULONG		
 			m_FileLength,		// SOUNDTYPE_MEMORY only
 			m_DataLength,		// SOUNDTYPE_MEMORY only
 			m_Frequency,		// SOUNDTYPE_MEMORY only
@@ -40,7 +40,7 @@ struct SoundResource
 		LPDIRECTSOUNDBUFFER lpMasterBuffer;
 		LPDIRECTSOUNDBUFFER lpDuplicateBuffers[16];
 		bool				duplicateInUse[16];
-		DWORD 				duplicateCount;
+		ULONG 				duplicateCount;
 
 		bool m_only2D;
 
@@ -54,7 +54,7 @@ struct SoundResource
 		DSBUFFERDESC 	masterDesc;
 
 		HGOSMUSIC m_hMusic;
-		DWORD			m_cueSeekDistance;
+		ULONG			m_cueSeekDistance;
 
 	public:
 		SoundResource
@@ -65,7 +65,7 @@ struct SoundResource
 		);
 		SoundResource
 		(
-			void * data,
+			PVOID data,
 			gosAudio_Format * wf,
 			PCSTR  caching_nametag,
 			int size,
@@ -81,7 +81,7 @@ struct SoundResource
 		(
 			PCSTR  identifier_name,
 			HGOSFILE file,
-			DWORD offset,
+			ULONG offset,
 			bool only2D
 		);
 
@@ -89,14 +89,14 @@ struct SoundResource
 		~SoundResource();
 		void GetWaveInfo
 			( 
-				PUCHAR lpBuffer,
+				puint8_t lpBuffer,
 				WAVEFORMATEX *lplpWaveFormatEX,
-				PUCHAR* lplpWaveData,
-				DWORD *lpWaveSize 
+				puint8_t* lplpWaveData,
+				ULONG *lpWaveSize 
 			);
 		void LoadFile();
-		int SoundResource::ReadPCM (BYTE * pbDest, UINT bytestofill, bool loopMe, bool prevFailed=false );
-		int ReadACM (BYTE * pbDest, UINT bytestoFill, bool loopflag, bool prevFailed=false );
+		int SoundResource::ReadPCM (puint8_t  pbDest, UINT bytestofill, bool loopMe, bool prevFailed=false );
+		int ReadACM (puint8_t  pbDest, UINT bytestoFill, bool loopflag, bool prevFailed=false );
 		void CloseStream();
 		void PauseStream();
 		void PlayStream();
@@ -104,7 +104,7 @@ struct SoundResource
 		void RestartStream();
 		void Cue();
 		void OpenFromMemory();
-		DWORD ConvertACM(DWORD numBytes);
+		ULONG ConvertACM(ULONG numBytes);
 
 		void GetDuplicateBuffer( LPDIRECTSOUNDBUFFER* );
 		void RelinquishDuplicate(LPDIRECTSOUNDBUFFER lpBuf);

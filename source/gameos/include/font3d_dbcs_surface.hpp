@@ -15,7 +15,7 @@ class DBCSSurface
 		int m_width;
 		int m_offsety;
 		LPDIRECTDRAWSURFACE7 m_lpdds7;
-		PUCHAR m_lpDynData;
+		puint8_t m_lpDynData;
 
 		DBCSSurface(ULONG width, ULONG height);
 		~DBCSSurface();

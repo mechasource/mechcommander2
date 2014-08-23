@@ -161,7 +161,7 @@ public:
 	BOOL CallerIDChanged[6];
 
 
-	long enterGameTime;
+	int32_t enterGameTime;
 
 
 	// nextSessionID is the ID of the next session added.  When enumerating all
@@ -381,10 +381,10 @@ public:
 
 	// InitializeConnection is called by one of the following functions
 	// to allow the user to bypass the crappy windows dialogs.
-	long InitializeConnection(
+	int32_t InitializeConnection(
 		DPCOMPOUNDADDRESSELEMENT *compound_address, int n_items);
 
-	long Dial(void);
+	int32_t Dial(void);
 	void CancelDialing(void);
 
 
@@ -399,7 +399,7 @@ public:
 
 	// returns the name of the modem at index or NULL if index
 	// is greater than the # of modems.
-	PSTR GetModemName(long index);
+	PSTR GetModemName(int32_t index);
 
 	// Host or join a session
 	//
@@ -519,7 +519,7 @@ public:
 	// If the session_id is -1, it returns the status of the current session.
 	BOOL IsLocked(int session_id = -1);
 
-	FIDPPlayer *GetPlayerNumber(long i);
+	FIDPPlayer *GetPlayerNumber(int32_t i);
 
 	FIDPPlayer *GetPlayer(ULONG id);
 

@@ -13,14 +13,14 @@ typedef struct _quad
 {
 	gos_VERTEX v[4];
 	_quad * pNext;
-	DWORD texture;
+	ULONG texture;
 } quad;
 
 typedef struct _paneTextures
 {
 	_paneTextures*	pNext;
-	DWORD			Handle;
-	DWORD			Size;
+	ULONG			Handle;
+	ULONG			Size;
 } paneTextures;
 
 
@@ -59,7 +59,7 @@ class gos_DBCS
 		bool embeddedColorChange;
 		float m_FontSize;
 		bool m_FontBold;
-		DWORD m_FontColor;
+		ULONG m_FontColor;
 
 	public:
 		gos_DBCS(PCSTR  msg, int w, int h, bool cc);
@@ -72,15 +72,15 @@ class gos_DBCS
 		void PrepareTextures();
 		void Texture(DBCSSurface* surf);
 		void Translate(float x, float y, float z);
-		void Color(DWORD c);
+		void Color(ULONG c);
 		void AlphaMode( enum gos_AlphaMode mode);
 		void MakeQuads();
 		bool NeedClip(float x, float y);
 		void ShiftCoordinates(float x, float y);
 		void Fill(float r, float g, float b, float a);
 
-		DWORD AddTexture( DWORD Size );
-		void AddQuad( DWORD X, DWORD Y, DWORD Width, DWORD Height, DWORD Texture, DWORD U, DWORD V, DWORD TextureSize );
+		ULONG AddTexture( ULONG Size );
+		void AddQuad( ULONG X, ULONG Y, ULONG Width, ULONG Height, ULONG Texture, ULONG U, ULONG V, ULONG TextureSize );
 
 		void AddRef (void)
 		{ m_RefCount++; }

@@ -45,7 +45,7 @@ bool __stdcall gos_CheckConnectionAvailable( int Connection );
 // You can pass the address of the server or NULL for the sub net.
 //
 //
-bool __stdcall gos_ConnectTCP( PSTR IPAddress, WORD port );
+bool __stdcall gos_ConnectTCP( PSTR IPAddress, uint16_t port );
 
 
 //
@@ -54,7 +54,7 @@ bool __stdcall gos_ConnectTCP( PSTR IPAddress, WORD port );
 // You can pass the address of the server or NULL for the sub net.
 //
 //
-bool __stdcall gos_ConnectZoneMatch( PSTR IPAddress, WORD port );
+bool __stdcall gos_ConnectZoneMatch( PSTR IPAddress, uint16_t port );
 
 
 //
@@ -67,14 +67,14 @@ bool __stdcall gos_ConnectZoneMatch( PSTR IPAddress, WORD port );
 //
 // You pass the number of the COM port to use
 //
-//bool __stdcall gos_ConnectSerialPort( DWORD SerialPort );
+//bool __stdcall gos_ConnectSerialPort( ULONG SerialPort );
 
 //
 // Open a Modem connection
 //
 // You pass a phone number and number of modem to use. If 0 is passed for the phone number Answer mode will be entered
 //
-//bool __stdcall gos_ConnectModem( PSTR PhoneNumber, DWORD Modem );
+//bool __stdcall gos_ConnectModem( PSTR PhoneNumber, ULONG Modem );
 
 
 //
@@ -86,7 +86,7 @@ bool __stdcall gos_ConnectZoneMatch( PSTR IPAddress, WORD port );
 // 3=Failed
 // 4=Waiting for answer
 //
-int __stdcall gos_CreateGame( PSTR GameName, PSTR PlayerName, int MaxPlayers, PSTR GamePassword=0, bool Secure=0, PSTR UserPassword=0, DWORD dwFlags=0);
+int __stdcall gos_CreateGame( PSTR GameName, PSTR PlayerName, int MaxPlayers, PSTR GamePassword=0, bool Secure=0, PSTR UserPassword=0, ULONG dwFlags=0);
 
 
 //
@@ -115,7 +115,7 @@ void __stdcall gos_Disconnect();
 //
 // Functionality: If browser services are available, advertise the indicated key/value pair
 //
-bool __stdcall gos_NetSetAdvertItem( DWORD player, PCSTR Name , PCSTR  Value);
+bool __stdcall gos_NetSetAdvertItem( ULONG player, PCSTR Name , PCSTR  Value);
 
 
 void NGStatsSetPlayerId(PSTR name, PSTR passwd);
@@ -148,7 +148,7 @@ void __stdcall GetGUNDownloadStats( int * tableSize, int * progress );
 // assumes only 4.  The original line is commented in case
 // something is terribly terribly wrong with the fix.
 //typedef ULONG int UINT4;
-typedef unsigned int UINT4;
+typedef uint32_t UINT4;
 
 typedef struct {
   UINT4 state[4];                                   /* state (ABCD) */
@@ -165,7 +165,7 @@ void __stdcall MD5SecurityCheckStop();
 
 
 void __stdcall MD5Init (MD5_CTX *);
-void __stdcall MD5Update  (MD5_CTX *, PUCHAR, uint32_t);
+void __stdcall MD5Update  (MD5_CTX *, puint8_t, uint32_t);
 void __stdcall MD5Final (uint8_t [16], MD5_CTX *);
 
 
@@ -193,7 +193,7 @@ public:
 	static bool __stdcall SynchronizeAll(void);
 	static bool __stdcall DisconnectAll(void);
 	static bool __stdcall ReleaseAll(void);
-	static bool __stdcall JoinGame(PCSTR szGameName, void **ppDplay );
+	static bool __stdcall JoinGame(PCSTR szGameName, PVOID*ppDplay );
 	static bool __stdcall Update(int browserHandle = -1 );
 	static bool __stdcall RefreshList(void);
     static bool __stdcall CancelAllActivity(void);
@@ -246,7 +246,7 @@ protected:
 
 
 	// for browsers
-    virtual bool __stdcall PrepareJoinGame(PCSTR  szGameName, void **ppDPlay ) = 0;
+    virtual bool __stdcall PrepareJoinGame(PCSTR  szGameName, PVOID*ppDPlay ) = 0;
 
 	//
 	// server browsers can call these members
@@ -296,14 +296,14 @@ public:
 	//
 	static bool __stdcall InitializeAll(void);
 	static bool __stdcall SynchronizeAll(void);
-	static bool __stdcall CreateGameAll(PCSTR szGameName, PCSTR szPlayerName, int MaxPlayers, PCSTR szPassword, const GUID &guidInstance, DWORD dwFlags);
-	static bool __stdcall AddPlayerAll(DWORD dwItemID, PCSTR  szPlayerName, bool bBot=false);
+	static bool __stdcall CreateGameAll(PCSTR szGameName, PCSTR szPlayerName, int MaxPlayers, PCSTR szPassword, const GUID &guidInstance, ULONG dwFlags);
+	static bool __stdcall AddPlayerAll(ULONG dwItemID, PCSTR  szPlayerName, bool bBot=false);
 	static bool __stdcall DisconnectAll(void);
-	static bool __stdcall RemovePlayerAll(DWORD dwItemID, PCSTR  szPlayerName, bool bBot );
+	static bool __stdcall RemovePlayerAll(ULONG dwItemID, PCSTR  szPlayerName, bool bBot );
 	static bool __stdcall ReleaseAll(void);
-	static bool __stdcall AdvertiseItem(DWORD dwPlayer, PCSTR  szName , PCSTR  szValue);
-	static DWORD __stdcall GetFlagsAllAdvertisers(void);
-	static bool __stdcall SetFlagsAllAdvertisers(DWORD dwFlags);
+	static bool __stdcall AdvertiseItem(ULONG dwPlayer, PCSTR  szName , PCSTR  szValue);
+	static ULONG __stdcall GetFlagsAllAdvertisers(void);
+	static bool __stdcall SetFlagsAllAdvertisers(ULONG dwFlags);
     
     static bool __stdcall GetAdvertiseOK(void);
 
@@ -322,11 +322,11 @@ protected:
 
 
 	// for servers
-	virtual bool __stdcall CreateGame(PCSTR szGameName, PCSTR szPlayerName, int MaxPlayers, PCSTR szPassword, const GUID &guidInstance, DWORD dwFlags) = 0;
-	virtual bool __stdcall CreatePlayer(DWORD dwItemID, PCSTR szPlayerName, bool bBot=false) = 0;
-	virtual bool __stdcall RemovePlayer(DWORD dwItemID, PCSTR szPlayerName, bool bBot=false) = 0;
-	virtual bool __stdcall SetItemValue(DWORD dwPlayer, PCSTR  szName , PCSTR  szValue) = 0;
-	virtual bool __stdcall SetFlags(DWORD dwFlags)=0;
+	virtual bool __stdcall CreateGame(PCSTR szGameName, PCSTR szPlayerName, int MaxPlayers, PCSTR szPassword, const GUID &guidInstance, ULONG dwFlags) = 0;
+	virtual bool __stdcall CreatePlayer(ULONG dwItemID, PCSTR szPlayerName, bool bBot=false) = 0;
+	virtual bool __stdcall RemovePlayer(ULONG dwItemID, PCSTR szPlayerName, bool bBot=false) = 0;
+	virtual bool __stdcall SetItemValue(ULONG dwPlayer, PCSTR  szName , PCSTR  szValue) = 0;
+	virtual bool __stdcall SetFlags(ULONG dwFlags)=0;
 
 	//
 	// server browsers can call these members
@@ -339,7 +339,7 @@ protected:
 private:
 	static ServerAdvertiser *	m_pHead;
 	static bool					s_bAdvertiseOK;
-	static DWORD				m_dwFlags;
+	static ULONG				m_dwFlags;
 	ServerAdvertiser *			m_pNext;
 	ServerAdvertiser *			m_pPrev;
 };

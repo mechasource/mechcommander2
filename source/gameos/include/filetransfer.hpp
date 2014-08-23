@@ -21,7 +21,7 @@
 class FileTransferInfo:public ListItem  
 {
 private:
-	void *			dataForMessages;
+	PVOID			dataForMessages;
 	
 public:
 	// static data that must be initialized before this class
@@ -50,8 +50,8 @@ public:
 
 	// functions
 
-	//void *operator new(size_t class_size);
-	//void operator delete(void *us);
+	//PVOIDoperator new(size_t class_size);
+	//void operator delete(PVOID us);
 
 	
 	FileTransferInfo(
@@ -74,7 +74,7 @@ public:
 	// bytes from a new message to the file.  
 	// Returns 0 if there are still more bytes to receive.
 	// Returns 1 if the file is completely received.
-	int AddBytes(void *bytes,int size); 
+	int AddBytes(PVOIDbytes,int size); 
 
 
 	void SetID(int id)

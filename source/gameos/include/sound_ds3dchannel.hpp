@@ -18,15 +18,15 @@ class DS3DSoundChannel
 		DS3DBUFFER m_Attributes3D;
 
 		float m_fVolume, m_fPanning, m_fFrequency;
-		DWORD m_currentProperties;
-		DWORD m_oldProperties;
+		ULONG m_currentProperties;
+		ULONG m_oldProperties;
 		SoundResource * m_currentSoundResource;
 		bool m_true3D;
 		bool m_changed;
 		bool m_sysPause;
 
-		DWORD m_previousPlayPosition;
-		DWORD m_playPosition;
+		ULONG m_previousPlayPosition;
+		ULONG m_playPosition;
 
 		bool m_bLoopFlag;
 	    bool m_fCued;                  // semaphore (stream cued)
@@ -36,7 +36,7 @@ class DS3DSoundChannel
 	    UINT m_nBufLength;             // length of sound buffer in msec
 	    UINT m_cbBufSize;              // size of sound buffer in bytes
 	    float m_fDuration;              // duration of wave file
-		DWORD m_myEnum;
+		ULONG m_myEnum;
 		bool playPending;
 
 		bool bIsDuplicate;
@@ -48,7 +48,7 @@ class DS3DSoundChannel
 	public:
 		DS3DSoundChannel();
 		~DS3DSoundChannel();
-		void Reset(DWORD chan);
+		void Reset(ULONG chan);
 		void CreateAndLoadBuffer( SoundResource * );
 		void CreateStreamBuffer( SoundResource * );
 		void CreateBuffer();
@@ -61,7 +61,7 @@ class DS3DSoundChannel
 		void StopStream();
 		void Cue();
 		void WriteWaveData(UINT size);
-		DWORD GetMaxWriteSize();
+		ULONG GetMaxWriteSize();
 		BOOL ServicePlayList();
 		void SetVolume(float f);
 		void SetPan(float f);
@@ -70,10 +70,10 @@ class DS3DSoundChannel
 		void SetVelocity(float x, float y, float z);
 		void SetDistanceMinMax(float min, float max);
 		bool IsPlaying();
-		DWORD GetBytesPlayed();
+		ULONG GetBytesPlayed();
 		void SpewCaps();
-		void ReturnFormattedDebugData( PSTR  dst, DWORD maxlen );
-		void SetConeAngles( DWORD min, DWORD max );
+		void ReturnFormattedDebugData( PSTR  dst, ULONG maxlen );
+		void SetConeAngles( ULONG min, ULONG max );
 		void SetConeOrientation( float x, float y, float z );
 		void SetAllParameters();
 		void ReleaseCurrent();

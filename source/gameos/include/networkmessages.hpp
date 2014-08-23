@@ -17,12 +17,12 @@
 class FIMessageHeader
 {
 	protected: 
-		unsigned short	flags;
+		uint16_t	flags;
 
 #ifdef _ARMOR
 	public:
 	
-	unsigned short packetNumber;
+	uint16_t packetNumber;
 #endif
 
 		enum 
@@ -196,7 +196,7 @@ class FIPlayerIDMessage:public FIGuaranteedMessageHeader
 {
 public:
 	ULONG playerID[MAXPLAYERS];
-	BYTE serverIndex;
+	UCHAR serverIndex;
 
 	FIPlayerIDMessage():FIGuaranteedMessageHeader()
 	{
@@ -216,7 +216,7 @@ public:
 		return -1;
 	}
 
-	DWORD GetServerID()
+	ULONG GetServerID()
 	{
 		return playerID[serverIndex];
 	}
@@ -229,8 +229,8 @@ public:
 class FIPlayersInGroupMessage:public FIGuaranteedMessageHeader
 {
 public:
-	DWORD groupID;
-	DWORD playerID[MAXPLAYERS];
+	ULONG groupID;
+	ULONG playerID[MAXPLAYERS];
 
 	FIPlayersInGroupMessage():FIGuaranteedMessageHeader()
 	{
@@ -243,9 +243,9 @@ public:
 class FIServerIDMessage:public FIGuaranteedMessageHeader
 {
 public:
-	DWORD serverID;
+	ULONG serverID;
 
-	FIServerIDMessage(DWORD server_id):FIGuaranteedMessageHeader()
+	FIServerIDMessage(ULONG server_id):FIGuaranteedMessageHeader()
 	{
 		serverID = server_id;
 		SetType(FIDP_MSG_SERVERID);
@@ -280,10 +280,10 @@ public:
 	BOOL			isResend;
 
 	// numTimesSent is the number of times this message has been sent.
-	long			numTimesSent;
+	int32_t			numTimesSent;
 
 	// Constructor and destructor
-	FIDPMessage(DPID player_id, DWORD buf_size=MAXMESSAGESIZE);
+	FIDPMessage(DPID player_id, ULONG buf_size=MAXMESSAGESIZE);
 
 	virtual ~FIDPMessage();
 
@@ -303,22 +303,22 @@ public:
 		return receiverId;
 	}
 
-	inline DWORD MessageSize()
+	inline ULONG MessageSize()
 	{
 		return messageSize;
 	}
 
-	inline const void *GetBuffer()
+	inline PCVOID GetBuffer()
 	{
 		return buffer;
 	}
 
-	inline DWORD Time()
+	inline ULONG Time()
 	{
 		return time;
 	}
 
-	inline void SetTime(DWORD new_time)
+	inline void SetTime(ULONG new_time)
 	{
 		time = new_time;
 		if (!isResend)
@@ -336,7 +336,7 @@ public:
 		receiverId = id;
 	}
 
-	DWORD SetMessageBuffer(LPVOID data, DWORD nbytes);
+	ULONG SetMessageBuffer(LPVOID data, ULONG nbytes);
 
 
 	HRESULT	ReceiveMessage();

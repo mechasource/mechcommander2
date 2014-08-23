@@ -15,8 +15,8 @@ class SoundChannel
 {
 	public:
 		float m_fVolume, m_fPanning, m_fFrequency;
-		DWORD m_currentProperties;
-		DWORD m_oldProperties;
+		ULONG m_currentProperties;
+		ULONG m_oldProperties;
 		SoundResource * m_currentSoundResource;
 		bool m_true3D;
 		bool m_emulatedByGameOS;
@@ -43,7 +43,7 @@ class SoundChannel
 	    UINT m_nDuration;              // duration of wave file
 	    UINT m_nTimeStarted;           // time (in system time) playback started
 	    UINT m_nTimeElapsed;           // elapsed time in msec since playback started
-		DWORD m_myEnum;
+		ULONG m_myEnum;
 
 		gosAudio_ResourceType m_resourceType;
 		char m_resourceName[128];
@@ -51,7 +51,7 @@ class SoundChannel
 	public:
 		SoundChannel();
 		virtual ~SoundChannel();
-		virtual void Reset(DWORD chan);
+		virtual void Reset(ULONG chan);
 		virtual void CreateAndLoadBuffer( SoundResource * ) = 0;
 		virtual void CreateStreamBuffer( SoundResource * ) = 0;
 		virtual void CreateBuffer() = 0;
@@ -64,7 +64,7 @@ class SoundChannel
 		virtual void StopStream() = 0;
 		virtual void Cue() = 0;
 		virtual void WriteWaveData(UINT size) = 0;
-		virtual DWORD GetMaxWriteSize() = 0;
+		virtual ULONG GetMaxWriteSize() = 0;
 		virtual BOOL ServiceBuffer() = 0;
 
 		virtual void SetVolume(float f);
@@ -77,7 +77,7 @@ class SoundChannel
 		virtual void SetConeOrientation( float x, float y, float z );
 		virtual bool IsPlaying() = 0;
 		virtual void Fake3D() = 0;
-		virtual DWORD GetBytesPlayed() = 0;
+		virtual ULONG GetBytesPlayed() = 0;
 };
 
  

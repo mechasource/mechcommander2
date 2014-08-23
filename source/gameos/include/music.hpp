@@ -73,11 +73,11 @@ struct gos_Music
 		gosMusic_PlayMode m_musicStatus, m_musicPlayMode;
 
 		PSTR  	m_lpPath;
-		_int64	m_lastKnownTime;
+		int64_t	m_lastKnownTime;
 		float m_fVolume, m_fPanning;
 
-		_int64 m_fDurationSec;
-		_int64 m_fSoFarSec;
+		int64_t m_fDurationSec;
+		int64_t m_fSoFarSec;
 		gos_Music * m_pNext;
 		HANDLE phEOS;
 

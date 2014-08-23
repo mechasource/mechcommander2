@@ -115,7 +115,7 @@ void __stdcall gos_SetLight(ULONG LightNumber, LPD3DLIGHT7 pLightData)
 /// <param name="LightNumber"></param>
 /// <param name="Enable"></param>
 /// <returns></returns>
-void __stdcall gos_LightEnable(ULONG LightNumber, UCHAR Enable)
+void __stdcall gos_LightEnable(ULONG LightNumber, uint8_t Enable)
 {
 	gosASSERT(InsideBeginScene);
 

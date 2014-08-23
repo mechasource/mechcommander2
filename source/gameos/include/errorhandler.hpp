@@ -71,8 +71,8 @@ PSTR __stdcall gosGetUserName(void);
 void __stdcall LogRun( PSTR Message );
 void __stdcall InitRunLog(void);
 void __stdcall GetInstalledAudioVideoCodecs( FixedLengthString& Buffer );
-void __stdcall ReadLogData( PUCHAR pData, ULONG Length );
-void __stdcall WriteLogData( PUCHAR pData, ULONG Length );
+void __stdcall ReadLogData( puint8_t pData, ULONG Length );
+void __stdcall WriteLogData( puint8_t pData, ULONG Length );
 
 typedef struct _pFTOL
 {
@@ -148,7 +148,7 @@ extern PSTR ErrorMessage;
 extern PSTR ErrorMessageTitle;
 extern volatile int ProcessingError;				// Renentrancy test flag for assert error routine
 extern PSTR ErrorExceptionText;
-extern PUCHAR GotScreenImage;					// Pointer to buffer containing screen image (always 24 bit bmp)
+extern puint8_t GotScreenImage;					// Pointer to buffer containing screen image (always 24 bit bmp)
 extern int AllowDebugButton;
 extern int ErrorFlags,ErrorReturn;
 
@@ -158,7 +158,7 @@ extern PSTR __stdcall Hex8Number( int Number );
 extern void __stdcall GetProcessorDetails(LPSTACKFRAME sf, FixedLengthString& Buffer );
 extern void __stdcall GetMachineDetails( FixedLengthString& Buffer );
 extern PSTR __stdcall GetLineFromFile( PSTR tempLine, PSTR FileName, int LineNumber );
-extern PUCHAR __stdcall GrabScreenImage(void);
+extern puint8_t __stdcall GrabScreenImage(void);
 extern void __stdcall GetDirectXDetails( FixedLengthString& Buffer );
 extern void __stdcall GetGameDetails( FixedLengthString& Buffer, ULONG ErrorFlags );
 extern void __stdcall DoDetailedDialog(void);
@@ -230,7 +230,7 @@ typedef struct _LogHeader {
 	char			ExeDate[64];					// Date/Time exe file used to create log
 	ULONG			Frames;							// Number of frames of data
 	ULONG			Length;							// Size of logging information
-	long			StartSeed;						// Random Number seed
+	int32_t			StartSeed;						// Random Number seed
 	LogStructure*	First;							// Pointer to first frame
 	LogStructure*	Current;						// Pointer to current frame
 	LogStructure*	Last;							// Pointer to last frame

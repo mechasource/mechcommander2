@@ -49,7 +49,7 @@ typedef enum
 //
 // Routine typedef used to return game and player information
 //
-typedef void(__stdcall *NETCALLBACK)(PCSTR string, DWORD value);
+typedef void(__stdcall *NETCALLBACK)(PCSTR string, ULONG value);
 
 
 
@@ -91,7 +91,7 @@ bool __stdcall CheckConnectionAvailable( int Connection );
 // You can pass the address of the server or NULL for the sub net.
 //
 //
-bool __stdcall gos_ConnectTCP( PSTR ip_address, WORD port );
+bool __stdcall gos_ConnectTCP( PSTR ip_address, uint16_t port );
 
 //
 // Open an IPX connection
@@ -103,7 +103,7 @@ bool __stdcall gos_ConnectIPX();
 //
 // You pass the number of the COM port to use
 //
-bool __stdcall gos_ConnectComPort( DWORD com_port );
+bool __stdcall gos_ConnectComPort( ULONG com_port );
 
 //
 // Open a Modem connection
@@ -137,7 +137,7 @@ void __stdcall gos_EnumerateSessions( NETCALLBACK callback );
 // Return value: If successful, return value is GOS_OK.  If no session matching <session_name>
 //					is found, returns GOS_ERR_SESSIONNOTFOUND.
 //
-void __stdcall gos_EnumeratePlayers( DWORD session_id, NETCALLBACK callback );
+void __stdcall gos_EnumeratePlayers( ULONG session_id, NETCALLBACK callback );
 
 
 // Functionality: Creates a new game using the given game name, player name and maximum players.
@@ -153,7 +153,7 @@ GOSERRORCODE __stdcall gos_CreateGame( PSTR game_name, PSTR player_name, int max
 // Return value: If successful, return value is GOS_OK.  If no session matching <session_id>
 //					is found, returns GOS_ERR_SESSIONNOTFOUND.
 //
-GOSERRORCODE __stdcall gos_JoinGame(DWORD session_id, PSTR player_name);
+GOSERRORCODE __stdcall gos_JoinGame(ULONG session_id, PSTR player_name);
 
 
 // Functionality: Calls the callback once for each modem installed on this
@@ -201,7 +201,7 @@ GOSERRORCODE gos_LeaveSession();
 
 
 
-GOSERRORCODE gos_RemovePlayer(DWORD player_id);
+GOSERRORCODE gos_RemovePlayer(ULONG player_id);
 
 
 

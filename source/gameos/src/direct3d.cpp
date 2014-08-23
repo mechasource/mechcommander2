@@ -1023,7 +1023,7 @@ HRESULT __stdcall wDrawPrimitive(
 /// <returns></returns>
 HRESULT __stdcall wDrawIndexedPrimitive(
 	LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE d3dptPrimitiveType, 
-	ULONG dwVertexTypeDesc, PVOID pvVertices, ULONG dwVertexCount, PUSHORT pwIndices, 
+	ULONG dwVertexTypeDesc, PVOID pvVertices, ULONG dwVertexCount, puint16_t pwIndices, 
 	ULONG dwIndexCount, ULONG dwFlags)
 {
 	PSTR		pszPrimitiveData;
@@ -1091,7 +1091,7 @@ HRESULT __stdcall wDrawIndexedPrimitive(
 HRESULT __stdcall wDrawIndexedPrimitiveVB(
 	LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE d3dptPrimitiveType, 
 	LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer, ULONG dwStartVertex, 
-	ULONG dwNumVertices, PUSHORT lpwIndices, ULONG dwIndexCount, ULONG dwFlags)
+	ULONG dwNumVertices, puint16_t lpwIndices, ULONG dwIndexCount, ULONG dwFlags)
 {
 	LPDIRECT3DVERTEXBUFFER7		pd3dVertexBufferUsed;
 	PSTR						pszErrorMessage;

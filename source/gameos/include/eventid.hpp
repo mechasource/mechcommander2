@@ -13,7 +13,7 @@ class GosEventIdMgr
 		PSTR 					m_pName;
 		PSTR 					m_pFileName;
 		int						m_nLineNo;
-		DWORD					m_id;
+		ULONG					m_id;
 	};
 
 
@@ -24,9 +24,9 @@ class GosEventIdMgr
 
 	public:
 	static void					Resize();
-	static DWORD				IdToEntry( DWORD id ) { return id & 0x000FFFFF; }
-	static DWORD				EntryToId( DWORD entry, int type ) { return entry|(type<<20); }
-	static DWORD				AssignId( GosLogRef::EventType type, PSTR name, PSTR filename, int lineno )
+	static ULONG				IdToEntry( ULONG id ) { return id & 0x000FFFFF; }
+	static ULONG				EntryToId( ULONG entry, int type ) { return entry|(type<<20); }
+	static ULONG				AssignId( GosLogRef::EventType type, PSTR name, PSTR filename, int lineno )
 								{
 									if( !ListSpace )
 										Resize();
@@ -40,6 +40,6 @@ class GosEventIdMgr
 									NextEntry++;
 									return pInfo->m_id;
 								}
-	static PSTR 				EventName( DWORD id ) { return pEventInfo[IdToEntry(id)].m_pName; }
+	static PSTR 				EventName( ULONG id ) { return pEventInfo[IdToEntry(id)].m_pName; }
 	static void					Cleanup();
 };

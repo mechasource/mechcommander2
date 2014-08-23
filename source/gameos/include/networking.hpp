@@ -59,18 +59,18 @@ public:
 	// When sending a message, {receiverId} is the GOSNETWORKID of the intended recipient.  
 	// If this message is for all players, the {receiverId} should be GOSALLPLAYERS.  If 
 	// this message is for the server, {server} should be true and {receiverId} will be ignored. 
-	DWORD	receiverId;
+	ULONG	receiverId;
 
 	// {senderId} is the GOSNETWORKID of the sender if this message is being received,
 	// When sending a message, {senderId} is ignored.
-	DWORD	senderId;
+	ULONG	senderId;
 
 	// {type} is the messsage type.  This value should be between GOSFIRSTAPPMESSAGETYPE
 	// and GOSLASTAPPMESSAGETYPE.  If not, the send will result in an error.
 	uint32_t	type;
 
 	// {data} is the information sent across the network.
-	PUCHAR			buffer;
+	puint8_t			buffer;
 
 	// Number of bytes to be sent or number of bytes received.
 	uint32_t	messageSize;

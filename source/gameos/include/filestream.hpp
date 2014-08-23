@@ -41,15 +41,15 @@ public:
 	inline  DebugFileStream& operator<<(uint8_t){return *this;}
 	inline  DebugFileStream& operator<<(signed char){return *this;}
 	inline  DebugFileStream& operator<<(short){return *this;}
-	inline  DebugFileStream& operator<<(unsigned short){return *this;}
+	inline  DebugFileStream& operator<<(uint16_t){return *this;}
 	inline  DebugFileStream& operator<<(int){return *this;}
-	inline  DebugFileStream& operator<<(unsigned int){return *this;}
-	inline  DebugFileStream& operator<<(long){return *this;}
+	inline  DebugFileStream& operator<<(uint32_t){return *this;}
+	inline  DebugFileStream& operator<<(int32_t){return *this;}
 	inline  DebugFileStream& operator<<(ULONG){return *this;}
 	inline  DebugFileStream& operator<<(float){return *this;}
 	inline	DebugFileStream& operator<<(double){return *this;}
-	inline  DebugFileStream& operator<<(long double){return *this;}
-	inline  DebugFileStream& operator<<(const void *){return *this;}
+	inline  DebugFileStream& operator<<(int32_t double){return *this;}
+	inline  DebugFileStream& operator<<(PCVOID ){return *this;}
 	inline  DebugFileStream& operator<<(streambuf*){return *this;}
 
 };

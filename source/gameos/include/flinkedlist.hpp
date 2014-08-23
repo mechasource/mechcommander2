@@ -106,7 +106,7 @@ template <class T> class FLinkedList
 			m_Size += 1;
 		};	
 		
-		void Add(T *ptr, void *link_memory)
+		void Add(T *ptr, PVOIDlink_memory)
 		{
 			gosASSERT (link_memory != NULL);
 			FLink<T> *link = (FLink<T> *)link_memory;

@@ -9,7 +9,7 @@
 //========================================================================
 // types
 //========================================================================
-typedef HRESULT (__stdcall * PERFMONCALLBACK)(PSTR szDescription, DWORD dwFlags, DWORD dwId);
+typedef HRESULT (__stdcall * PERFMONCALLBACK)(PSTR szDescription, ULONG dwFlags, ULONG dwId);
 
 //========================================================================
 // external functions
@@ -18,9 +18,9 @@ extern HRESULT __stdcall InitPerformanceMonitorLibrary(void);
 extern HRESULT __stdcall TermPerformanceMonitorLibrary(void);
 
 extern HRESULT __stdcall EnumeratePerformanceMonitors(PERFMONCALLBACK lpfCallback);
-extern HRESULT __stdcall SetPerformanceMonitor(DWORD dwId);
-extern double __stdcall DecodePerformanceMonitors( __int64 *Registers );
-extern BOOL __stdcall ReadPerformanceMonitorRegisters(__int64 *result);
+extern HRESULT __stdcall SetPerformanceMonitor(ULONG dwId);
+extern double __stdcall DecodePerformanceMonitors( int64_t *Registers );
+extern BOOL __stdcall ReadPerformanceMonitorRegisters(int64_t *result);
 
 
 //========================================================================

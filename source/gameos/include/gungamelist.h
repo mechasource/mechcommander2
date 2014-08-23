@@ -106,9 +106,9 @@ namespace Browse
 {
 
     // control functions for pings
-    extern void PingCallback( DWORD inet, DWORD latency, void * context);
+    extern void PingCallback( ULONG inet, ULONG latency, PVOID context);
 
-    typedef void * POSITION; // for use by CList
+    typedef PVOID POSITION; // for use by CList
     /*
         This non-MFC version of CList pulled from web site at:
     
@@ -123,14 +123,14 @@ namespace Browse
             CListNode* m_pPrev;
             CListNode() {m_pNext = NULL; m_pPrev = NULL;}
 
-            void * operator new(size_t size) {
+            PVOID operator new(size_t size) {
                 return malloc(size);
             }
-            void operator delete( void* ptr )
+            void operator delete( PVOID ptr )
             {
                 free(ptr);
             }
-            void operator delete[] ( void* ptr )
+            void operator delete[] ( PVOID ptr )
             {
                 free(ptr);
             }
@@ -157,9 +157,9 @@ namespace Browse
         CItem* GetHead(void);
         uint32_t GetSize(void);
 
-        void * operator new(size_t size);
-        void operator delete( void* ptr );
-        void operator delete[] ( void* ptr );
+        PVOID operator new(size_t size);
+        void operator delete( PVOID ptr );
+        void operator delete[] ( PVOID ptr );
     };
 
 
@@ -196,9 +196,9 @@ public:
     public:
         virtual ~ExtraData() {}
 
-        void * operator new(size_t size);
-        void operator delete( void* ptr );
-        void operator delete[] ( void* ptr );
+        PVOID operator new(size_t size);
+        void operator delete( PVOID ptr );
+        void operator delete[] ( PVOID ptr );
     };
 
     // This is the generic struct which defines the
@@ -210,9 +210,9 @@ public:
         int             iValue; // atoi() applied to 'value'
 
         // these are needed to override GameOS memory management
-        void * operator new(size_t size);
-        void operator delete( void* ptr );
-        void operator delete[] ( void* ptr );
+        PVOID operator new(size_t size);
+        void operator delete( PVOID ptr );
+        void operator delete[] ( PVOID ptr );
     };
 
     typedef CList<FieldItem *> FieldList;
@@ -229,9 +229,9 @@ public:
         ExtraData * extraData;
 
         // these are needed to override GameOS memory management
-        void * operator new(size_t size);
-        void operator delete( void* ptr );
-        void operator delete[] ( void* ptr );
+        PVOID operator new(size_t size);
+        void operator delete( PVOID ptr );
+        void operator delete[] ( PVOID ptr );
     };
 
     TableList();
@@ -259,7 +259,7 @@ public:
     int  GetTotalCount( void ); // total number of table items 
     bool Exists( PCSTR  id );
     void EnumerateAll( CHash<TableItem, PCSTR >::PFITERCALLBACK pfnCB,
-                       void * cookie );
+                       PVOID cookie );
     PCSTR  GetIDFromField( PCSTR  key,
                            PCSTR  val );
     PCSTR  GetIDFromField( PCSTR  key,
@@ -269,9 +269,9 @@ public:
 
     // these are implemented to override the
     // behavior of GUNOS memory management
-    void * operator new(size_t size);
-    void operator delete( void* ptr );
-    void operator delete[] ( void* ptr );
+    PVOID operator new(size_t size);
+    void operator delete( PVOID ptr );
+    void operator delete[] ( PVOID ptr );
 
     static FieldItem * FindField( FieldList & pList,
                                   PCSTR  key );
@@ -280,7 +280,7 @@ protected:
     
 
     // hash table stuff
-    static DWORD HashLPSTR( PCSTR  Key );
+    static ULONG HashLPSTR( PCSTR  Key );
     static bool  HashCompare(TableItem *obj,PCSTR  key);
     typedef CHash<TableItem, PCSTR > ItemHash;
     
@@ -297,11 +297,11 @@ protected:
                                PCSTR  key );
     static bool ForEachFindField( TableItem * tableItem,
                            MTListNodeHandle handle, 
-                           void * pThis );
+                           PVOID pThis );
 
     // this is the callback required for the m_Items.RemoveAll() call in
     // the RemoveAll function.
-    static void FreeTableItemCallback( TableItem * pItem, void * pThis );
+    static void FreeTableItemCallback( TableItem * pItem, PVOID pThis );
 
 
     //////////////////////////
@@ -346,7 +346,7 @@ public:
 
     // ping management
     static bool _stdcall StartPingServer( void );
-    static bool _stdcall StartPingClient( DWORD ping_interval_sec );
+    static bool _stdcall StartPingClient( ULONG ping_interval_sec );
     static void _stdcall ShutdownPing( void );
     int  GetPing( PCSTR  id );
     int  GetPing( int index );
@@ -354,10 +354,10 @@ public:
 
 
 
-    void * operator new(size_t size);
-    void * operator new[](size_t size);
-    void operator delete( void* ptr );
-    void operator delete[] ( void* ptr );
+    PVOID operator new(size_t size);
+    PVOID operator new[](size_t size);
+    void operator delete( PVOID ptr );
+    void operator delete[] ( PVOID ptr );
 
 public:
 
@@ -372,9 +372,9 @@ public:
         GUID         gameGUID;
         PlayerList   players;
 
-        void * operator new(size_t size);
-        void operator delete( void* ptr );
-        void operator delete[] ( void* ptr );
+        PVOID operator new(size_t size);
+        void operator delete( PVOID ptr );
+        void operator delete[] ( PVOID ptr );
     };
 
 protected:
@@ -603,10 +603,10 @@ public:
     PCSTR  GetSelection( void ) const;
 
     // to override gos memory allocation
-    void * operator new(size_t size);
-    void * operator new[](size_t size);
-    void operator delete( void* ptr );
-    void operator delete[] ( void* ptr );
+    PVOID operator new(size_t size);
+    PVOID operator new[](size_t size);
+    void operator delete( PVOID ptr );
+    void operator delete[] ( PVOID ptr );
 
 private:
     // Types
@@ -629,7 +629,7 @@ protected:
     
     static bool HashForEachCB( TableList::TableItem * item,
                                MTListNodeHandle h, 
-                               void * context );
+                               PVOID context );
 
 private:
     // Data

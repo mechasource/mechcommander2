@@ -430,7 +430,7 @@ void GoalManager::calcRegions (void) {
 void GoalManager::build (void) {
 	
 	//For temps, pull 'em off the windows heap.  IT can resize.  OURS cannot!!!!
-	fillStack = (short*)malloc(FILL_STACK_SIZE * sizeof(short));
+	fillStack = (pint16_t)malloc(FILL_STACK_SIZE * sizeof(int16_t));
 	gosASSERT(fillStack != NULL);
 	fillStackIndex = 0;
 
@@ -438,7 +438,7 @@ void GoalManager::build (void) {
 	// First, get the list of walls...
 	GameObjectPtr wallObjects[MAX_WALL_OBJECTS];
 	int32_t numWalls = ObjectManager->getSpecificObjects(BUILDING, BUILDING_SUBTYPE_WALL, wallObjects, MAX_WALL_OBJECTS);
-/*	short cellList[MAX_CELL_COORDS];
+/*	int16_t cellList[MAX_CELL_COORDS];
 	for (int32_t i = 0; i < numWalls; i++) {
 		cellList[0] = MAX_CELL_COORDS;
 		int32_t numCells = wallObjects[i]->appearance->markMoveMap(true, NULL, false, cellList);

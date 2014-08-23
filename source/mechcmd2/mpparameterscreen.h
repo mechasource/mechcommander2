@@ -36,7 +36,7 @@ public:
 protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
-	int normalColor;
+	int32_t normalColor;
 	
 
 };
@@ -54,7 +54,7 @@ public:
 	virtual void		destroy();
 	virtual void		render();
 	virtual void		update();
-	virtual int			handleMessage( ULONG message, ULONG who );
+	virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 	virtual void		move( float offsetX, float offsetY );
 
 	void				setData(const _MC2Player* data);
@@ -63,7 +63,7 @@ public:
 
 	bool				isSelected() { return bHasFocus; }
 
-	int					getCommanderID( ) const { return commanderID; }
+	int32_t					getCommanderID( ) const { return commanderID; }
 
 	void				disableReadyButton();
 
@@ -132,10 +132,10 @@ public:
 	void				init(FitIniFile* file);
 	virtual void		begin();
 	virtual void		end();
- 	virtual void		render( int xOffset, int yOffset );
+ 	virtual void		render( int32_t xOffset, int32_t yOffset );
 	virtual void		render();
 	virtual void		update();
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 	
 	static void			resetCheckBoxes();
 
@@ -149,9 +149,9 @@ public:
 
 
 private:
-	int indexOfButtonWithID(int id);
+	int32_t indexOfButtonWithID(int32_t id);
 	
-	int					chatToSend;
+	int32_t					chatToSend;
 
 	void				setMission( PCSTR fileName, bool resetData = 1 );
 	void				setMissionClientOnly( PCSTR pNewMapName );

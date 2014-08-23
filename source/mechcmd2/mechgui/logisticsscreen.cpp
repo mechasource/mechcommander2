@@ -92,7 +92,7 @@ void	LogisticsScreen::clear()
 //-------------------------------------------------------------------------------------------------
 
 void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, PCSTR rectName,
-					  PCSTR buttonName, PCSTR editName, PCSTR animObjectName, ULONG neverFlush )
+					  PCSTR buttonName, PCSTR editName, PCSTR animObjectName, uint32_t neverFlush )
 {
 	clear();
 	
@@ -111,7 +111,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 				statics = new aObject[staticCount];
 
 				char blockName[128];
-				for ( int i = 0; i < staticCount; i++ )
+				for ( int32_t i = 0; i < staticCount; i++ )
 				{
 					sprintf( blockName, "%s%ld", staticName, i );
 					statics[i].init( &file, blockName );			
@@ -133,7 +133,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 				rects = new aRect[rectCount];
 
 				char blockName[128];
-				for ( int i = 0; i < rectCount; i++ )
+				for ( int32_t i = 0; i < rectCount; i++ )
 				{
 					sprintf( blockName, "%s%ld", rectName, i );
 					rects[i].init( &file, blockName );
@@ -155,7 +155,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 			{
 				char blockName[128];
 				buttons = new aAnimButton[buttonCount];
-				for ( int i = 0; i < buttonCount; i++ )
+				for ( int32_t i = 0; i < buttonCount; i++ )
 				{
 					sprintf( blockName,"%s%ld", buttonName, i );
 					buttons[i].init( file, blockName );
@@ -179,7 +179,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 			{
 				textObjects = new aText[textCount];
 				char blockName[64];
-				for ( int i = 0; i < textCount; i++ )
+				for ( int32_t i = 0; i < textCount; i++ )
 				{
 					sprintf( blockName, "%s%ld", textName, i );
 					textObjects[i].init( &file, blockName );
@@ -201,7 +201,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 			{
 				edits = new aEdit[editCount];
 				char blockName[64];
-				for ( int i = 0; i < editCount; i++ )
+				for ( int32_t i = 0; i < editCount; i++ )
 				{
 					sprintf( blockName, "%s%ld", editName, i );
 					edits[i].init( &file, blockName );
@@ -222,7 +222,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 			{
 				animObjects = new aAnimObject[animObjectsCount];
 				char blockName[64];
-				for ( int i = 0; i < animObjectsCount; i++ )
+				for ( int32_t i = 0; i < animObjectsCount; i++ )
 				{
 					sprintf( blockName, "%s%ld", animObjectName, i );
 					animObjects[i].init( &file, blockName, neverFlush );
@@ -235,7 +235,7 @@ void LogisticsScreen::init( FitIniFile& file, PCSTR staticName, PCSTR textName, 
 
 aButton* LogisticsScreen::getButton( int32_t who )
 {
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		if ( buttons[i].getID() == who )
 		{
@@ -259,7 +259,7 @@ aRect* LogisticsScreen::getRect( int32_t who )
 //-------------------------------------------------------------------------------------------------
 void LogisticsScreen::update()
 {
-	int i;
+	int32_t i;
 	for ( i = 0; i < staticCount; i++ )
 	{
 		statics[i].update();
@@ -337,7 +337,7 @@ void LogisticsScreen::render()
 {
 	if ( !isShowing() )
 		return;
-	int i;
+	int32_t i;
 	for ( i = 0; i < rectCount; i++ )
 	{
 		if ( !rects[i].bOutline && 
@@ -412,11 +412,11 @@ int32_t LogisticsScreen::getStatus()
 	return status;
 }
 
-void LogisticsScreen::render( int xOffset, int yOffset )
+void LogisticsScreen::render( int32_t xOffset, int32_t yOffset )
 {
 	if ( !isShowing() )
 		return;
-	int i;
+	int32_t i;
 	for ( i = 0; i < rectCount; i++ )
 	{
 		if ( !rects[i].bOutline&& 
@@ -525,7 +525,7 @@ void LogisticsScreen::copyData( const LogisticsScreen& src )
 		if ( rectCount )
 		{
 			rects = new aRect[rectCount];
-			for (int i = 0; i < src.rectCount; i++ )
+			for (int32_t i = 0; i < src.rectCount; i++ )
 			{
 				rects[i] = (src.rects[i]);
 			}
@@ -535,7 +535,7 @@ void LogisticsScreen::copyData( const LogisticsScreen& src )
 		if ( staticCount )
 		{
 			statics = new aObject[staticCount];
-			for ( int i = 0; i < staticCount; i++ )
+			for ( int32_t i = 0; i < staticCount; i++ )
 			{  
 				statics[i] = src.statics[i];
 			}
@@ -545,7 +545,7 @@ void LogisticsScreen::copyData( const LogisticsScreen& src )
 		if ( buttonCount )
 		{
 			buttons = new aAnimButton[buttonCount];
-			for ( int i = 0; i < buttonCount; i++ )
+			for ( int32_t i = 0; i < buttonCount; i++ )
 			{
 				buttons[i] = src.buttons[i];
 			}
@@ -555,7 +555,7 @@ void LogisticsScreen::copyData( const LogisticsScreen& src )
 		if ( textCount )
 		{
 			textObjects = new aText[textCount];
-			for ( int i = 0; i < textCount; i++ )
+			for ( int32_t i = 0; i < textCount; i++ )
 			{
 				textObjects[i] = src.textObjects[i];
 			}
@@ -565,7 +565,7 @@ void LogisticsScreen::copyData( const LogisticsScreen& src )
 		if ( animObjectsCount )
 		{
 			animObjects = new aAnimObject[animObjectsCount];
-			for ( int i = 0; i < animObjectsCount; i++ )
+			for ( int32_t i = 0; i < animObjectsCount; i++ )
 				animObjects[i] = src.animObjects[i];
 		}
 
@@ -573,7 +573,7 @@ void LogisticsScreen::copyData( const LogisticsScreen& src )
 		if ( editCount )
 		{
 			edits = new aEdit[editCount];
-			for ( int i = 0; i < editCount; i++ )
+			for ( int32_t i = 0; i < editCount; i++ )
 				edits[i] = src.edits[i];
 		}
 
@@ -593,7 +593,7 @@ void  LogisticsScreen::moveTo( int32_t xPos, int32_t yPos )
 
 void  LogisticsScreen::move( int32_t xOffset, int32_t yOffset )
 {
-	int i;
+	int32_t i;
 	for ( i = 0; i < rectCount; i++ )
 	{
 		rects[i].move( xOffset, yOffset );
@@ -626,7 +626,7 @@ void  LogisticsScreen::move( int32_t xOffset, int32_t yOffset )
 
 bool	LogisticsScreen::inside( int32_t x, int32_t y)
 {
-	int i;
+	int32_t i;
 	for ( i = 0; i < staticCount; i++ )
 	{
 		if ( statics[i].pointInside( x, y ) )
@@ -663,7 +663,7 @@ bool	LogisticsScreen::inside( int32_t x, int32_t y)
 void LogisticsScreen::begin()
 {
 
-	for ( int i = 0; i < animObjectsCount; i++ )
+	for ( int32_t i = 0; i < animObjectsCount; i++ )
 		animObjects[i].begin();
 
 	status = RUNNING; 

@@ -32,7 +32,7 @@
 #define	GOALFLAG_MOVER_HERE		16
 
 typedef struct _GoalMapNode {
-	short				cost;								// normal cost to travel here, based upon terrain
+	int16_t				cost;								// normal cost to travel here, based upon terrain
 	//int32_t				parent;								// where we came from (parent cell)
 	uint8_t		flags;								// CLOSED, OPEN, STEP flags
 	int32_t				g;									// known cost from START to this node
@@ -157,11 +157,11 @@ class MoverGroup {
 
 		virtual int32_t handleTacticalOrder (TacticalOrder tacOrder, int32_t priority, Stuff::Vector3D* jumpGoalList = NULL, bool queueGroupOrder = false);
 
-		int32_t orderMoveToPoint (bool setTacOrder, int32_t origin, Stuff::Vector3D location, ULONG params);
+		int32_t orderMoveToPoint (bool setTacOrder, int32_t origin, Stuff::Vector3D location, uint32_t params);
 
-		int32_t orderMoveToObject (bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, ULONG params);
+		int32_t orderMoveToObject (bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, uint32_t params);
 
-		int32_t orderTraversePath (int32_t origin, WayPathPtr wayPath, ULONG params);
+		int32_t orderTraversePath (int32_t origin, WayPathPtr wayPath, uint32_t params);
 
 		int32_t orderPatrolPath (int32_t origin, WayPathPtr wayPath);
 
@@ -169,7 +169,7 @@ class MoverGroup {
 
 		int32_t orderPowerUp (int32_t origin);
 
-		int32_t orderAttackObject (int32_t origin, GameObjectPtr target, int32_t attackType, int32_t attackMethod, int32_t attackRange, int32_t aimLocation, int32_t fromArea, ULONG params);
+		int32_t orderAttackObject (int32_t origin, GameObjectPtr target, int32_t attackType, int32_t attackMethod, int32_t attackRange, int32_t aimLocation, int32_t fromArea, uint32_t params);
 
 		int32_t orderWithdraw (int32_t origin, Stuff::Vector3D location);
 
@@ -177,17 +177,17 @@ class MoverGroup {
 
 		//--------------
 		// Combat Events
-		void triggerAlarm (int32_t alarmCode, ULONG triggerId);
+		void triggerAlarm (int32_t alarmCode, uint32_t triggerId);
 
-		int32_t handleMateCrippled (ULONG mateWID);
+		int32_t handleMateCrippled (uint32_t mateWID);
 
-		int32_t handleMateDisabled (ULONG mateWID);
+		int32_t handleMateDisabled (uint32_t mateWID);
 
-		int32_t handleMateDestroyed (ULONG mateWID);
+		int32_t handleMateDestroyed (uint32_t mateWID);
 
-		int32_t handleMateEjected (ULONG mateWID);
+		int32_t handleMateEjected (uint32_t mateWID);
 
-		void handleMateFiredWeapon (ULONG mateWID);
+		void handleMateFiredWeapon (uint32_t mateWID);
 
 		static void sortMovers (int32_t numMoversInGroup, MoverPtr* moverList, Stuff::Vector3D dest);
 

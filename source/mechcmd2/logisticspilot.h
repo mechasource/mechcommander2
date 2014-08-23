@@ -51,7 +51,7 @@ class LogisticsPilot
 {
 	public:
 
-		int init( PSTR fileName );
+		int32_t init( PSTR fileName );
 		LogisticsPilot();
 		~LogisticsPilot();
 
@@ -59,16 +59,16 @@ class LogisticsPilot
 		const EString&  getName() const { return name; }
 		const EString&	 getAudio() const { return audio; }
 		const EString& getVideo() const { return video; }
-		int			getRank() const { return rank; }
+		int32_t			getRank() const { return rank; }
 		const EString& getIconFile() const { return iconFile; }
 		float			getGunnery() const { return gunnery; }
 		float			getPiloting() const { return piloting; }
-		int			getMechKills() const { return mechKills; }
-		int			getVehicleKills() const { return vehicleKills; }
-		int			getInfantryKills() const { return infantryKills; }
-		int			getID() const { return id; }
-		int			getFlavorTextID() const { return flavorTextID; }
-		int			getNumberMissions() const;
+		int32_t			getMechKills() const { return mechKills; }
+		int32_t			getVehicleKills() const { return vehicleKills; }
+		int32_t			getInfantryKills() const { return infantryKills; }
+		int32_t			getID() const { return id; }
+		int32_t			getFlavorTextID() const { return flavorTextID; }
+		int32_t			getNumberMissions() const;
 		bool		getMissionPlayed (int32_t missionNum)
 		{
 			if ((missionNum >= 0) && (missionNum < MAX_MISSIONS))
@@ -79,8 +79,8 @@ class LogisticsPilot
 
 		bool		isUsed() const{ return bIsUsed; }
 		void		setUsed( bool bUsed ){ bIsUsed = bUsed; }
-		int			getNewGunnery() const { return newGunnery; }
-		int			getNewPiloting() const { return newPiloting; }
+		int32_t			getNewGunnery() const { return newGunnery; }
+		int32_t			getNewPiloting() const { return newPiloting; }
 		
 		void		setDead();
 		bool		isAvailable(){ return (bAvailable&&!bDead); } // depends on purchasing file .... maybe should put dead checks and stuff
@@ -91,11 +91,11 @@ class LogisticsPilot
 		int32_t		getPhotoIndex() const { return photoIndex; }
 
 		bool		promotePilot();
-		int			turnAverageIntoRank( float avg);
+		int32_t			turnAverageIntoRank( float avg);
 
 
 
-		static		PCSTR getSkillText( int skillID );
+		static		PCSTR getSkillText( int32_t skillID );
 		const EString&	getFileName(){ return fileName; }
 
 		int32_t		save( FitIniFile& file, int32_t count );
@@ -103,11 +103,11 @@ class LogisticsPilot
 
 		int32_t		update( MechWarrior* pWarrior );
 
-		int			getSpecialtySkillCount() const;
-		int			getSpecialtySkills( PCSTR* array, int& count );
-		int			getSpecialtySkills( int* array, int& count );
+		int32_t			getSpecialtySkillCount() const;
+		int32_t			getSpecialtySkills( PCSTR* array, int32_t& count );
+		int32_t			getSpecialtySkills( pint32_t array, int32_t& count );
 		bool		*getSpecialtySkills() { return specialtySkills;}
-		void		setSpecialtySkill( int skill, bool set );
+		void		setSpecialtySkill( int32_t skill, bool set );
 
 		const bool*			getNewMedalArray() const{ return medalsLastMission;}
 		const bool*			getMedalArray() const{ return medals;}
@@ -116,7 +116,7 @@ class LogisticsPilot
 		void		clearIcons();
 
 		
-		ULONG	id;
+		uint32_t	id;
 		EList< ForceGroupIcon*, ForceGroupIcon* >	killedIcons;
 
 

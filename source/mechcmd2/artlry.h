@@ -47,7 +47,7 @@ class ArtilleryChunk {
 		int32_t				cellRC[2];
 		char				secondsToImpact;
 
-		ULONG		data;
+		uint32_t		data;
 
 	public:
 
@@ -93,9 +93,9 @@ class ArtilleryType : public ObjectType {
 
 	public:
 
-		PUCHAR			frameList;				//Pointer to JMiles shape file binary 
-		ULONG		frameCount;				//Number of frames in shape file
-		ULONG		startFrame;				//Frame in List to start with.
+		puint8_t			frameList;				//Pointer to JMiles shape file binary 
+		uint32_t		frameCount;				//Number of frames in shape file
+		uint32_t		startFrame;				//Frame in List to start with.
 		float				frameRate;				//Speed at which frames playback
 		
 		float				nominalTimeToImpact;
@@ -113,7 +113,7 @@ class ArtilleryType : public ObjectType {
 		float				fontScale;
 		float				fontXOffset;
 		float				fontYOffset;
-		ULONG		fontColor;
+		uint32_t		fontColor;
 
 		int32_t				numExplosions;
 		float*				explosionOffsetX;
@@ -134,7 +134,7 @@ class ArtilleryType : public ObjectType {
 			init();
 		}
 		
-		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
 		
 		int32_t init (FitIniFilePtr objFile);
 		
@@ -159,10 +159,10 @@ typedef union _ArtilleryInfo {
 		float				timeToLaunch;		//Time until strike is launched (and unmoveable).
 		float				sensorRange;		//If I am a sensor round, how big a range.
 		float				timeToBlind;		//How int32_t do I return sensor data.
-		short				sensorSystemIndex;
+		int16_t				sensorSystemIndex;
 		float				contactUpdate;
 		char				timeString[5];
-		ULONG		explosionOffFlags;
+		uint32_t		explosionOffFlags;
 	} strike;
 } ArtilleryInfo;
 

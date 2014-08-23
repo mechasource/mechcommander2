@@ -32,7 +32,7 @@ public:
 
 	bool				isDone() { return bDone; }
 
-	void	setFont( int newFontResID );
+	void	setFont( int32_t newFontResID );
 
 	LogisticsDialog();
 
@@ -44,7 +44,7 @@ protected:
 	aAnimation	enterAnim;
 	aAnimation	exitAnim;
 	bool		bDone;
-	int								oldFont;
+	int32_t								oldFont;
 
 };
 
@@ -58,11 +58,11 @@ public:
 	LogisticsOKDialog();
 
 
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
-	static int init( FitIniFile& file );
+	static int32_t init( FitIniFile& file );
 
-	void				setText( int textID, int CancelButton, int OKButton );
+	void				setText( int32_t textID, int32_t CancelButton, int32_t OKButton );
 	void				setText( PCSTR mainText );
 
 
@@ -89,11 +89,11 @@ public:
 	LogisticsOneButtonDialog();
 
 
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
-	static int init( FitIniFile& file );
+	static int32_t init( FitIniFile& file );
 
-	void				setText( int textID, int CancelButton, int OKButton );
+	void				setText( int32_t textID, int32_t CancelButton, int32_t OKButton );
 	void				setText( PCSTR mainText );
 
 
@@ -115,7 +115,7 @@ class LogisticsLegalDialog : public LogisticsOneButtonDialog
 public:
 
 	static LogisticsLegalDialog* instance(){ return s_instance; }
-	static int init( FitIniFile& file );
+	static int32_t init( FitIniFile& file );
 
 	LogisticsLegalDialog(){}
 
@@ -150,8 +150,8 @@ public:
 	virtual void update();
 	virtual void render();
 
-	static int init( FitIniFile& file );
-	virtual int			handleMessage( ULONG, ULONG );
+	static int32_t init( FitIniFile& file );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 	const EString& getFileName( ){ return selectedName; }
 
@@ -204,8 +204,8 @@ public:
 	virtual void update();
 	virtual void render();
 
-	int init( FitIniFile& file );
-	virtual int			handleMessage( ULONG, ULONG );
+	int32_t init( FitIniFile& file );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 	const EString& getFileName( ){ return selectedName; }
 
@@ -241,8 +241,8 @@ public:
 	virtual void update();
 	virtual void render();
 
-	int init( FitIniFile& file );
-	virtual int			handleMessage( ULONG, ULONG );
+	int32_t init( FitIniFile& file );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 private:
 
@@ -260,8 +260,8 @@ public:
 
 	void setMap( PCSTR pFileName );
 
-	int init( );
-	virtual int			handleMessage( ULONG, ULONG );
+	int32_t init( );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 private:
 

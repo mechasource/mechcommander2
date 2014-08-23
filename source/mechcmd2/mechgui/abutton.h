@@ -50,13 +50,13 @@ namespace mechgui {
 
 		void hide( bool );
 
-		int getID();
-		void setID( int ID );
-		void setText( int newID ) { data.textID = newID; }
+		int32_t getID();
+		void setID( int32_t ID );
+		void setText( int32_t newID ) { data.textID = newID; }
 
-		void setPressFX( int newFX ){ clickSFX = newFX; }
-		void setHighlightFX( int newFX ){ highlightSFX = newFX; }
-		void setDisabledFX( int newFX ){ disabledSFX = newFX; }
+		void setPressFX( int32_t newFX ){ clickSFX = newFX; }
+		void setHighlightFX( int32_t newFX ){ highlightSFX = newFX; }
+		void setDisabledFX( int32_t newFX ){ disabledSFX = newFX; }
 
 		enum States
 		{
@@ -85,8 +85,8 @@ namespace mechgui {
 			int32_t			stateCoords[5][2];	
 			int32_t			textureWidth;
 			int32_t			textureHeight;
-			int				fileWidth;
-			int				fileHeight;
+			int32_t				fileWidth;
+			int32_t				fileHeight;
 			bool			textureRotated;
 			RECT		textRect; // center text in here
 			bool			outlineText; // draw empty square around text rect
@@ -95,7 +95,7 @@ namespace mechgui {
 		};
 
 		aButtonData		data;
-		int				state;
+		int32_t				state;
 		bool			toggleButton;
 		bool			singlePress;
 		bool			messageOnRelease;
@@ -106,7 +106,7 @@ namespace mechgui {
 		int32_t			disabledSFX;
 
 
-		static void makeUVs( gos_VERTEX* vertices, int State, aButtonData& data );
+		static void makeUVs( gos_VERTEX* vertices, int32_t State, aButtonData& data );
 
 	private:
 		void	copyData( const aButton& src );

@@ -134,7 +134,7 @@ class GroundVehicleType : public ObjectType {
 			init();
 		}
 		
-		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
 		
 		int32_t loadHotSpots (FitIniFilePtr vehicleFile);
 	
@@ -323,11 +323,11 @@ class GroundVehicle : public Mover {
 
 		virtual int32_t buildStatusChunk (void);
 
-		virtual int32_t handleStatusChunk (int32_t updateAge, ULONG chunk);
+		virtual int32_t handleStatusChunk (int32_t updateAge, uint32_t chunk);
 
 		virtual int32_t buildMoveChunk (void);
 
-		virtual int32_t handleMoveChunk (ULONG chunk);
+		virtual int32_t handleMoveChunk (uint32_t chunk);
 
 		void calcThrottleLimits (int32_t& minThrottle, int32_t& maxThrottle);
 
@@ -357,7 +357,7 @@ class GroundVehicle : public Mover {
 
 		virtual int32_t getSpeedState (void);
 
-		virtual void disable (ULONG cause);
+		virtual void disable (uint32_t cause);
 		
 		virtual float getDestructLevel (void)
 		{

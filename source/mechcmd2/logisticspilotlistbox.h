@@ -28,7 +28,7 @@ LogisticsPilotListBox:
 class LogisticsPilotListBoxItem : public aListItem
 {
 public:
-	static int LogisticsPilotListBoxItem::init( FitIniFile* file);
+	static int32_t LogisticsPilotListBoxItem::init( FitIniFile* file);
 	LogisticsPilotListBoxItem( LogisticsPilot* pPilot );
 
 	virtual ~LogisticsPilotListBoxItem();
@@ -54,7 +54,7 @@ private:
 	LogisticsPilot* pPilot;
 	static LogisticsPilotListBoxItem* s_templateItem;
 
-	static void setAnimation( FitIniFile& file, int whichOne );
+	static void setAnimation( FitIniFile& file, int32_t whichOne );
 
 
 	friend class LogisticsPilotListBox;

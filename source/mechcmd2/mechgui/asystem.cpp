@@ -26,7 +26,7 @@ void aObject::update()
 		helpTextID = helpID;
 	}
 	// call update for the children
-	for ( int i = 0; i < pNumberOfChildren; i++ )
+	for ( int32_t i = 0; i < pNumberOfChildren; i++ )
 		pChildren[i]->update();
 }
 
@@ -39,7 +39,7 @@ aObject::aObject()
 	pParent = NULL;
 	textureHandle = 0;
 	memset( location, 0, sizeof ( gos_VERTEX ) * 4 );
-	for ( int i = 0; i < 4;i++ )
+	for ( int32_t i = 0; i < 4;i++ )
 		location[i].rhw = .5;
 	showWindow = 1;
 	helpID = 0;
@@ -64,7 +64,7 @@ int32_t aObject::init(int32_t xPos, int32_t yPos,int32_t w, int32_t h)
 	location[3].x = xPos + w;
 	location[3].y = yPos;
 
-	for ( int i = 0; i < 4; i++ )
+	for ( int32_t i = 0; i < 4; i++ )
 	{
 		location[i].u = 0.f;
 		location[i].v = 0.f;
@@ -81,7 +81,7 @@ int32_t aObject::init(int32_t xPos, int32_t yPos,int32_t w, int32_t h)
 	return (NO_ERROR);
 }
 
-void aObject::init(FitIniFile* file, PCSTR blockName, ULONG neverFlush)
+void aObject::init(FitIniFile* file, PCSTR blockName, uint32_t neverFlush)
 {
 	memset( location, 0, sizeof( location ) );
 	char fileName[256];
@@ -122,9 +122,9 @@ void aObject::init(FitIniFile* file, PCSTR blockName, ULONG neverFlush)
 			_strlwr( buffer );
 			if ( !strstr( buffer, ".tga" ) )
 				strcat( buffer, ".tga" );
-			int ID = mcTextureManager->loadTexture( buffer, bAlpha ? gos_Texture_Alpha : gos_Texture_Keyed, 0, 0, 0x2);
+			int32_t ID = mcTextureManager->loadTexture( buffer, bAlpha ? gos_Texture_Alpha : gos_Texture_Keyed, 0, 0, 0x2);
 			textureHandle = ID;
-			ULONG gosID = mcTextureManager->get_gosTextureHandle( ID );
+			uint32_t gosID = mcTextureManager->get_gosTextureHandle( ID );
 			TEXTUREPTR textureData;
 			gos_LockTexture( gosID, 0, 0, 	&textureData );
 			fileWidth = textureData.Width;
@@ -141,7 +141,7 @@ void aObject::init(FitIniFile* file, PCSTR blockName, ULONG neverFlush)
 	file->readIdLong( "VHeight", vHeight );
 	file->readIdBoolean( "texturesRotated", bRotated );
 
-	for ( int k = 0; k < 4; k++ )
+	for ( int32_t k = 0; k < 4; k++ )
 	{
 		location[k].argb = 0xffffffff;
 		location[k].frgb = 0;
@@ -186,7 +186,7 @@ void aObject::destroy()
 
 	if ( textureHandle )
 	{
-		int gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
+		int32_t gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
 		if ( gosID && gosID != -1 )
 			mcTextureManager->removeTexture( gosID );
 	}
@@ -385,7 +385,7 @@ void aObject::moveToNoRecurse(int32_t xPos, int32_t yPos )
 
 void aObject::move( float offsetX, float offsetY )
 {
-	int i;
+	int32_t i;
 	for ( i = 0; i < 4; i++ )
 	{
 		location[i].x += offsetX;
@@ -400,7 +400,7 @@ void aObject::move( float offsetX, float offsetY )
 
 void aObject::moveNoRecurse( float offsetX, float offsetY )
 {
-	for ( int i = 0; i < 4; i++ )
+	for ( int32_t i = 0; i < 4; i++ )
 	{
 		location[i].x += offsetX;
 		location[i].y += offsetY;
@@ -418,7 +418,7 @@ void aObject::render()
 {
 	if ( showWindow )
 	{
-		ULONG gosID = mcTextureManager->get_gosTextureHandle( textureHandle );	
+		uint32_t gosID = mcTextureManager->get_gosTextureHandle( textureHandle );	
 		gos_SetRenderState( gos_State_Texture, gosID );
 		gos_SetRenderState(gos_State_Filter, gos_FilterNone);
 		gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha );
@@ -428,7 +428,7 @@ void aObject::render()
 
 		gos_DrawQuads( location, 4 );
 
-		for ( int i = 0; i < pNumberOfChildren; i++ )
+		for ( int32_t i = 0; i < pNumberOfChildren; i++ )
 		{
 			pChildren[i]->render();
 		}
@@ -447,12 +447,12 @@ void	aObject::setTexture( PCSTR fileName )
 	
 	if ( textureHandle )
 	{
-		int gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
+		int32_t gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
 		if ( gosID > 0 )	
 			mcTextureManager->removeTexture( gosID );
 	}
 	textureHandle = mcTextureManager->loadTexture( fileName, gos_Texture_Keyed, 0, 0, 0x2);
-	int gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
+	int32_t gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
 	if ( gosID )
 	{
 		TEXTUREPTR textureData;
@@ -465,13 +465,13 @@ void	aObject::setTexture( PCSTR fileName )
 
 }
 
-void	aObject::setTexture(ULONG newHandle )
+void	aObject::setTexture(uint32_t newHandle )
 {
 	//Gotta check handle.  If its the same as the new one,
 	// We don't gotta delete the old one.  The texture manager already did!!
 	if ( textureHandle && textureHandle != newHandle)
 	{
-		int gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
+		int32_t gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
 		if ( gosID > 0 )
 			mcTextureManager->removeTexture( gosID );
 	}
@@ -480,7 +480,7 @@ void	aObject::setTexture(ULONG newHandle )
 	
 	if ( newHandle )
 	{
-		int gosID = mcTextureManager->get_gosTextureHandle( newHandle );
+		int32_t gosID = mcTextureManager->get_gosTextureHandle( newHandle );
 		TEXTUREPTR textureData;
 		gos_LockTexture( gosID, 0, 0, 	&textureData );
 		fileWidth = textureData.Width;
@@ -492,9 +492,9 @@ void	aObject::setTexture(ULONG newHandle )
 }
 
 
-void aObject::setColor( ULONG newColor, bool bRecurse )
+void aObject::setColor( uint32_t newColor, bool bRecurse )
 {
-	for ( int i = 0; i < 4; i++ )
+	for ( int32_t i = 0; i < 4; i++ )
 	{
 		location[i].argb = newColor;
 	}
@@ -502,7 +502,7 @@ void aObject::setColor( ULONG newColor, bool bRecurse )
 	//set the kids?
 	if ( bRecurse )
 	{
-		for ( int i = 0; i < this->pNumberOfChildren; i++ )
+		for ( int32_t i = 0; i < this->pNumberOfChildren; i++ )
 		{
 			pChildren[i]->setColor( newColor, 1 );
 		}
@@ -521,7 +521,7 @@ void	aObject::setUVs( float u1, float v1, float u2, float v2 )
 
 void aObject::removeAllChildren( bool bDelete)
 {
-	for ( int i = 0; i < pNumberOfChildren; i++ )
+	for ( int32_t i = 0; i < pNumberOfChildren; i++ )
 	{
 		pChildren[i]->setParent( 0 );
 		if ( bDelete )
@@ -539,7 +539,7 @@ void aObject::copyData( const aObject& src )
 		if ( src.textureHandle )
 			textureHandle = mcTextureManager->copyTexture( src.textureHandle );
 
-		for ( int i = 0; i < 4;i++ )
+		for ( int32_t i = 0; i < 4;i++ )
 			location[i] = src.location[i];
 		
 		fileWidth = src.fileWidth;
@@ -679,7 +679,7 @@ aText::~aText()
 
 void aText::init( FitIniFile* file, PCSTR header )
 {
-	int result = file->seekBlock( header );
+	int32_t result = file->seekBlock( header );
 	
 	if ( result != NO_ERROR )
 	{
@@ -704,7 +704,7 @@ void aText::init( FitIniFile* file, PCSTR header )
 	
 	int32_t color;
 	file->readIdLong( "Color", color );
-	for ( int i = 0; i < 4; i++ )
+	for ( int32_t i = 0; i < 4; i++ )
 		location[i].argb = color;
 
 	

@@ -38,7 +38,7 @@ public:
 		compass = NULL;
 		lastShadowLightPitch = 0.0f;
 
-		ULONG szData = sizeof(drawCompass);
+		uint32_t szData = sizeof(drawCompass);
 		gos_LoadDataFromRegistry("CompassStatus", &drawCompass, &szData);
 
 		//Check if data not in registry yet.  Goober!
@@ -119,7 +119,7 @@ public:
 
 		//Save current Compass state to registry.
 		// Saves us having to put it into the prefs files.
-		ULONG szData = sizeof(drawCompass);
+		uint32_t szData = sizeof(drawCompass);
 		gos_SaveDataToRegistry( "CompassStatus",  &drawCompass,  szData );
 	}
 };		

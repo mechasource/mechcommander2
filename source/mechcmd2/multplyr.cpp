@@ -126,7 +126,7 @@ void CancelBool(int32_t value);
 
 #ifdef USE_STRING_RESOURCES
 extern HINSTANCE thisInstance;
-int32_t cLoadString (HINSTANCE hInstance,  UINT uID, LPTSTR lpBuffer, int nBufferMax );
+int32_t cLoadString (HINSTANCE hInstance,  uint32_t uID, PSTR lpBuffer, int32_t nBufferMax );
 #endif
 
 #include "gamesound.h"
@@ -141,7 +141,7 @@ extern bool aborted;
 
 //***************************************************************************
 
-ULONG ServerPlayerNum = 1; //commanderId (or checkInId) of server
+uint32_t ServerPlayerNum = 1; //commanderId (or checkInId) of server
 bool MultiPlayer::launchedFromLobby = false;
 bool MultiPlayer::registerZone = false;
 
@@ -564,7 +564,7 @@ void MultiPlayer::logMessage (NETMESSAGE* message, bool sent) {
 
 void MultiPlayer::sendMessage (NETPLAYER player,
 							   PVOID data,
-							   int dataSize,
+							   int32_t dataSize,
 							   bool guaranteed,
 							   bool toSelf) {
 
@@ -713,7 +713,7 @@ int32_t MultiPlayer::addCaptureBuildingChunk (BuildingPtr building, int32_t prev
 
 //---------------------------------------------------------------------------
 
-int32_t MultiPlayer::grabWorldChunks (ULONG* packedChunkBuffer) {
+int32_t MultiPlayer::grabWorldChunks (uint32_t* packedChunkBuffer) {
 
 	return(0);
 }
@@ -736,7 +736,7 @@ int32_t MultiPlayer::addWeaponHitChunk (GameObjectPtr target, WeaponShotInfoPtr 
 
 //---------------------------------------------------------------------------
 
-void MultiPlayer::grabWeaponHitChunks (ULONG* packedChunkBuffer, int32_t numChunks) {
+void MultiPlayer::grabWeaponHitChunks (uint32_t* packedChunkBuffer, int32_t numChunks) {
 
 }
 
@@ -772,7 +772,7 @@ void MultiPlayer::sendChat (NETPLAYER receiver, char team, PSTR chatMessage) {
 
 }
 
-void MultiPlayer::sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, ULONG resID )
+void MultiPlayer::sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, uint32_t resID )
 {
 }
 
@@ -1124,7 +1124,7 @@ bool MultiPlayer::calcMissionStatus (void) {
 
 //-----------------------------------------------------------------------------
 
-int __cdecl sortPlayerRanks (PCVOID player1, PCVOID player2) {
+int32_t __cdecl sortPlayerRanks (PCVOID player1, PCVOID player2) {
 
 	return(0);
 }

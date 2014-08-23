@@ -63,16 +63,16 @@ void AttributeMeter::render()
 
 void AttributeMeter::render( int32_t xOffset, int32_t yOffset )
 {
-	int i;
+	int32_t i;
 
 	if ( !bShow )
 		return; 
 
 	float barCount = percent * numBars;
-	int  nBarCount = (int)barCount;
+	int32_t  nBarCount = (int32_t)barCount;
 
 	float remainder = addedPercent * numBars + (barCount - float(nBarCount));
-	int nAddedCount = (int)remainder;
+	int32_t nAddedCount = (int32_t)remainder;
 
 	RECT tmpOutside = outsideRect;
 	tmpOutside.left += xOffset;

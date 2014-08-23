@@ -43,7 +43,7 @@ void LogisticsMissionInfo::clear()
 {
 	if ( groups )
 	{
-		for ( int i = 0; i < groupCount; i++ )
+		for ( int32_t i = 0; i < groupCount; i++ )
 		{
 			for ( MISSION_LIST::EIterator iter = groups[i].infos.Begin(); 
 			!iter.IsDone(); iter++ )
@@ -126,7 +126,7 @@ int32_t LogisticsMissionInfo::init( FitIniFile& file )
 
 	char blockName[32];
 
-	for ( int i = 0; i < groupCount; i++ )
+	for ( int32_t i = 0; i < groupCount; i++ )
 	{
 		groups[i].numberToBeCompleted = -1; // initialize
 
@@ -177,7 +177,7 @@ int32_t LogisticsMissionInfo::init( FitIniFile& file )
 		// read the number of missions in the group
 		file.readIdLong( "MissionCount", missionCount );
 
-		for ( int j = 0; j < missionCount; j++ )
+		for ( int32_t j = 0; j < missionCount; j++ )
 		{
 			MissionInfo* pInfo = new MissionInfo;
 
@@ -275,7 +275,7 @@ void LogisticsMissionInfo::readMissionInfo( FitIniFile& file, LogisticsMissionIn
 	//Assert( result == NO_ERROR, 0, "couldn't find the MissionNameUseResourceString" );
 	if ( bRes )
 	{
-		ULONG lRes;
+		uint32_t lRes;
 		result = file.readIdULong( "MissionNameResourceStringID", lRes );
 		Assert( result == NO_ERROR, 0, "couldn't find the MissionNameResourceStringID" );
 		cLoadString( lRes, missionName, 255 );
@@ -297,7 +297,7 @@ void LogisticsMissionInfo::readMissionInfo( FitIniFile& file, LogisticsMissionIn
 	result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
 	if (NO_ERROR == result && tmpBool )
 	{
-		ULONG tmpInt = 0;
+		uint32_t tmpInt = 0;
 		result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
 		if (NO_ERROR == result)
 		{
@@ -390,14 +390,14 @@ int32_t LogisticsMissionInfo::load( FitIniFile& file )
 
 	int32_t numberCompleted = 0;
 
-	int i;
+	int32_t i;
 	for ( i = 0; i < count; i++ )
 	{
 		int32_t cnt = 0;
 		sprintf( header, "Mission%ld", i );
 		file.readIdLong( header, cnt );
 
-		MissionInfo* pInfo = pGroup->infos[(ULONG)cnt];
+		MissionInfo* pInfo = pGroup->infos[(uint32_t)cnt];
 
 		pInfo->completed = 1;
 		numberCompleted ++;
@@ -474,7 +474,7 @@ void LogisticsMissionInfo::save( FitIniFile& file )
 
 	// save the current mission group
 	file.writeIdLong( "Group", currentStage );
-	int count = 0;
+	int32_t count = 0;
 	char header[32];
 
 	if ( currentStage < groupCount )
@@ -490,7 +490,7 @@ void LogisticsMissionInfo::save( FitIniFile& file )
 		file.writeIdString( "MissionName", pInfo->missionDescriptiveName );
 		file.writeIdString( "MissionFileName", pInfo->fileName );
 
-		int curMission = 0;
+		int32_t curMission = 0;
 		for ( MISSION_LIST::EIterator iter = pGroup->infos.Begin(); !iter.IsDone(); iter++, curMission++ )
 		{
 			if ( (*iter)->completed )
@@ -506,7 +506,7 @@ void LogisticsMissionInfo::save( FitIniFile& file )
 
 
 	file.writeBlock( "AdditionalPurchaseFiles" );
-	int i = 0;
+	int32_t i = 0;
 	for ( FILE_LIST::EIterator fIter = additionalPurchaseFiles.Begin(); !fIter.IsDone(); fIter++ )
 	{
 		sprintf( header, "File%ld", i );
@@ -520,12 +520,12 @@ void LogisticsMissionInfo::save( FitIniFile& file )
 
 }
 
-int32_t LogisticsMissionInfo::getAvailableMissions( PCSTR* missions, int& numberOfEm )
+int32_t LogisticsMissionInfo::getAvailableMissions( PCSTR* missions, int32_t& numberOfEm )
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
-	int count = 0;
-	int maxOut = numberOfEm;
+	int32_t count = 0;
+	int32_t maxOut = numberOfEm;
 
 	MISSION_LIST::EIterator iter = pGroup->infos.Begin();
 	while( !iter.IsDone() )
@@ -553,12 +553,12 @@ int32_t LogisticsMissionInfo::getAvailableMissions( PCSTR* missions, int& number
 	return 0;
 }
 
-int32_t LogisticsMissionInfo::getCurrentMissions( PCSTR* missions, int& numberOfEm )
+int32_t LogisticsMissionInfo::getCurrentMissions( PCSTR* missions, int32_t& numberOfEm )
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
-	int count = 0;
-	int maxOut = numberOfEm;
+	int32_t count = 0;
+	int32_t maxOut = numberOfEm;
 
 	MISSION_LIST::EIterator iter = pGroup->infos.Begin();
 	while( !iter.IsDone() )
@@ -647,7 +647,7 @@ int32_t LogisticsMissionInfo::setNextMission( PCSTR missionName )
 	{
 		MissionGroup* pGroup = &groups[currentStage];
 
-		int count = 0;
+		int32_t count = 0;
 		bool bFound = 0;
 
 		MISSION_LIST::EIterator iter = pGroup->infos.Begin();
@@ -801,10 +801,10 @@ void LogisticsMissionInfo::setMissionComplete( )
 	{
 		CBills += pGroup->infos[currentMission]->additionalCBills;
 	}
-	int count = 0;
-	int numberCompleted = 0;
+	int32_t count = 0;
+	int32_t numberCompleted = 0;
 	bool bAllMandatoryCompleted = 1;
-	int nextAvailableMission = -1;
+	int32_t nextAvailableMission = -1;
 
 	// figure out whether to go to the next stage orn not
 	MISSION_LIST::EIterator iter = pGroup->infos.Begin();
@@ -943,7 +943,7 @@ bool LogisticsMissionInfo::getMissionAvailable( PCSTR missionName )
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
-	for ( int i = 0; i < pGroup->infos.Count(); i++ )
+	for ( int32_t i = 0; i < pGroup->infos.Count(); i++ )
 	{
 		if ( pGroup->infos[i]->fileName.Compare( missionName ) == 0 )
 		{
@@ -985,7 +985,7 @@ PCSTR LogisticsMissionInfo::getMissionFriendlyName( PCSTR missionName ) const
 		return NULL;
 	MissionGroup* pGroup = &groups[currentStage];
 
-	for ( int i = 0; i < pGroup->infos.Count(); i++ )
+	for ( int32_t i = 0; i < pGroup->infos.Count(); i++ )
 	{
 		if ( pGroup->infos[i]->fileName.Compare( missionName ) == 0 )
 		{
@@ -995,7 +995,7 @@ PCSTR LogisticsMissionInfo::getMissionFriendlyName( PCSTR missionName ) const
 	return NULL;
 }
 
-int		LogisticsMissionInfo::getCurrentRP() const
+int32_t		LogisticsMissionInfo::getCurrentRP() const
 {
 	if ( currentMission == -1 )
 		return 0;
@@ -1059,7 +1059,7 @@ void		LogisticsMissionInfo::setPurchaseFile( PCSTR fileName )
 	pInfo->purchaseFileName += ".fit";
 }
 
-int			LogisticsMissionInfo::getAdditionalPurachaseFiles( PCSTR* list, int32_t& maxCount )
+int32_t			LogisticsMissionInfo::getAdditionalPurachaseFiles( PCSTR* list, int32_t& maxCount )
 {
 	if ( maxCount >=  additionalPurchaseFiles.Count() )
 	{
@@ -1139,7 +1139,7 @@ LogisticsMissionInfo::MissionInfo* LogisticsMissionInfo::getPreviousMission()
 	else if ( currentStage > 0 )
 	{
 		MissionGroup* pGroup = &groups[currentStage]-1; 
-		int Count  = pGroup->infos.Count();
+		int32_t Count  = pGroup->infos.Count();
 		if ( Count )
 			return pGroup->infos[Count-1];
 		else
@@ -1148,7 +1148,7 @@ LogisticsMissionInfo::MissionInfo* LogisticsMissionInfo::getPreviousMission()
 	else if ( currentStage == 0 )	//There may be only one stage.  I.e. Tutorials!
 	{
 		MissionGroup* pGroup = &groups[currentStage]; 
-		int Count  = pGroup->infos.Count();
+		int32_t Count  = pGroup->infos.Count();
 		if ( Count )
 			return pGroup->infos[Count-1];
 		else

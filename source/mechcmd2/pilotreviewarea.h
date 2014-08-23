@@ -42,7 +42,7 @@ public:
 private:
  
 	float		timeSinceStart;
-	int			curItem;
+	int32_t			curItem;
 	int32_t		oldScroll;
 	int32_t		newScroll;
 	float		scrollTime;
@@ -61,7 +61,7 @@ public:
 	bool isDone();
 	virtual void render();
 	virtual void update();
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 	void				updatePilots(); // put into inventory, save??
 
@@ -223,7 +223,7 @@ public:
 	virtual void render();
 	virtual void update();
 	void setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon);
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 	virtual ~PilotPromotionArea();
 
 	aListBox*	getSkillListBox() { return &skillListBox; }
@@ -260,12 +260,12 @@ public:
 	virtual ~SpecialtyListItem();
 
 	static void			init( FitIniFile* file );
-	virtual int			handleMessage( ULONG message, ULONG who );
+	virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 
 	virtual bool		isChecked();
 	virtual void		setCheck( bool );
-	int					getID();
-	SpecialtyListItem( int ID );
+	int32_t					getID();
+	SpecialtyListItem( int32_t ID );
 
 private:
 	static aButton*	s_radioButton;
@@ -288,7 +288,7 @@ private:
 	aButton			radioButton;
 	aRect				outline;
 
-	int					ID;
+	int32_t					ID;
 
 	friend class PilotPromotionArea;
 

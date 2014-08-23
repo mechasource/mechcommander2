@@ -29,9 +29,9 @@ public:
 	virtual ~PilotReadyScreen();
 
 	void init(FitIniFile* file);
-	virtual void render(int xOffset, int yOffset);
+	virtual void render(int32_t xOffset, int32_t yOffset);
 	virtual void update();
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 	
 	void beginDrag( LogisticsPilot* pPilot );
 

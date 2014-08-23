@@ -18,9 +18,9 @@ namespace mechgui {
 	public:
 		virtual void render();
 
-		ULONG lightEdge;
-		ULONG darkEdge;
-		ULONG regularColor;
+		uint32_t lightEdge;
+		uint32_t darkEdge;
+		uint32_t regularColor;
 	};
 
 	class aScrollBar : public aObject
@@ -34,7 +34,7 @@ namespace mechgui {
 		virtual void	update();
 		virtual void	render();
 
-		virtual int		handleMessage( ULONG message, ULONG fromWho );
+		virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
 
 		void			SetScrollMax(float newMax);
 		void			SetScrollPos(float newPos);
@@ -60,7 +60,7 @@ namespace mechgui {
 		int32_t			lastY;
 		int32_t			scrollInc;
 		int32_t			pageInc;
-		ULONG   color;
+		uint32_t   color;
 		void			ResizeAreas(void);
 	};
 

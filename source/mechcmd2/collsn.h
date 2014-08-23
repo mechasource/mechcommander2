@@ -48,8 +48,8 @@ class GlobalCollisionAlert
 	//-------------
 	protected:
 		CollisionAlertRecordPtr		collisionAlerts;
-		ULONG				maxAlerts;
-		ULONG				nextRecord;
+		uint32_t				maxAlerts;
+		uint32_t				nextRecord;
 		
 	public:
 		GlobalCollisionAlert (void)
@@ -58,7 +58,7 @@ class GlobalCollisionAlert
 			maxAlerts = 0;
 		}
 
-		int32_t init (ULONG maxCollisionAlerts);
+		int32_t init (uint32_t maxCollisionAlerts);
 		
 		void destroy (void);
 		
@@ -82,25 +82,25 @@ class CollisionGrid
 	//Data Members
 	//-------------
 	protected:
-		ULONG			xGridWidth;			//Number of gridNodes in x direction
-		ULONG			yGridWidth;			//Number of gridNodes in y direction
+		uint32_t			xGridWidth;			//Number of gridNodes in x direction
+		uint32_t			yGridWidth;			//Number of gridNodes in y direction
 													//In theory we would need a z but not for a mech game!!
 		
-		ULONG			maxGridRadius;		//Max radius in (m) of each grid node.
+		uint32_t			maxGridRadius;		//Max radius in (m) of each grid node.
 		
-		ULONG			maxObjects;			//Max number of objects in world.
+		uint32_t			maxObjects;			//Max number of objects in world.
 		
 		CollisionGridNodePtr	giantObjects;		//Collection of objects larger than maxGridRadius
 		CollisionGridNodePtr	*grid;				//Pointer to array of gridNodes layed out in space
 		CollisionGridNodePtr	nodes;				//Actual grid nodes available to layout in space.
 		
-		ULONG			nextAvailableNode;	//next node in nodes which can be used.
+		uint32_t			nextAvailableNode;	//next node in nodes which can be used.
 		Stuff::Vector3D			gridOrigin;			//Center point of the grid.
 		
 		bool					gridIsGo;			//Have we already allocated everything?
 		
-		ULONG			gridSize;
-		ULONG			nodeSize;
+		uint32_t			gridSize;
+		uint32_t			nodeSize;
 		
 		float					gridXOffset;
 		float 					gridYOffset;
@@ -146,7 +146,7 @@ class CollisionGrid
 			destroy();
 		}
 		
-		int32_t add (ULONG gridIndex, GameObjectPtr object);
+		int32_t add (uint32_t gridIndex, GameObjectPtr object);
 		int32_t add (GameObjectPtr object);
 		
 		void createGrid (void);		//Put all objects in world into grids
@@ -173,15 +173,15 @@ class CollisionSystem
 		
 	public:
 	
-		static ULONG	xGridSize;
-		static ULONG	yGridSize;
-		static ULONG	gridRadius;
-		static ULONG	maxObjects;
-		static ULONG	maxCollisions;
-		static ULONG	numCollisions;
+		static uint32_t	xGridSize;
+		static uint32_t	yGridSize;
+		static uint32_t	gridRadius;
+		static uint32_t	maxObjects;
+		static uint32_t	maxCollisions;
+		static uint32_t	numCollisions;
 		
-		float					warningDist;		//Distance to worry about short term collision avoidance (in World Units!!)
-		float					alertTime;			//Time to worry about short term collision avoidance.
+		float					warningDist;		//Distance to worry about int16_t term collision avoidance (in World Units!!)
+		float					alertTime;			//Time to worry about int16_t term collision avoidance.
 		
 		static UserHeapPtr		collisionHeap;
 	

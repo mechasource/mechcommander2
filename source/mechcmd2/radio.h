@@ -24,16 +24,16 @@
 
 struct RadioData
 {
-	ULONG	msgId;
-	ULONG	msgType;
-	ULONG	noiseId;
+	uint32_t	msgId;
+	uint32_t	msgType;
+	uint32_t	noiseId;
 	int32_t			numFragments;
-	PUCHAR		data[MAX_FRAGMENTS];
+	puint8_t		data[MAX_FRAGMENTS];
 	int32_t			dataSize[MAX_FRAGMENTS];
-	PUCHAR		noise[MAX_FRAGMENTS];
+	puint8_t		noise[MAX_FRAGMENTS];
 	int32_t			noiseSize[MAX_FRAGMENTS];
 	UserHeapPtr		msgHeap;
-	ULONG	turnQueued;
+	uint32_t	turnQueued;
 	byte			priority;
 	byte			movieCode;
 	float			expirationDate;
@@ -47,7 +47,7 @@ struct RadioMessageInfo
 	char			movieCode;
 	byte			styleCount;
 	byte			styleChance[3];
-	ULONG			messageMapping;
+	uint32_t			messageMapping;
 	bool			pilotIdentifiesSelf;
 	bool			kludgeStyle;
 };
@@ -104,7 +104,7 @@ class Radio
 			destroy();
 		}
 	
-		int32_t init (PSTR fileName, ULONG heapSize, PSTR movie);
+		int32_t init (PSTR fileName, uint32_t heapSize, PSTR movie);
 
 		void setOwner (MechWarriorPtr _owner)
 		{

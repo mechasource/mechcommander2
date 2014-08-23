@@ -120,7 +120,7 @@ class SensorSystem {
 		int32_t					masterIndex;
 		GameObjectPtr			owner;
 		float					range;
-		ULONG					skill;
+		uint32_t					skill;
 		bool					broken;
 		bool					notShutdown;
 		bool					hasLOSCapability;
@@ -176,7 +176,7 @@ class SensorSystem {
 
 		float getEffectiveRange (void);
 
-		void setSkill (ULONG newSkill)
+		void setSkill (uint32_t newSkill)
 		{
 			skill = newSkill;
 		}

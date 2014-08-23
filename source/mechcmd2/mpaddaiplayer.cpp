@@ -36,9 +36,9 @@ MPAddAIPlayer::~MPAddAIPlayer()
 	g_focusManager = NULL;
 }
 
-int MPAddAIPlayer::indexOfButtonWithID(int id)
+int32_t MPAddAIPlayer::indexOfButtonWithID(int32_t id)
 {
-	int i;
+	int32_t i;
 	for (i = 0; i < buttonCount; i++)
 	{
 		if (buttons[i].getID() == id)
@@ -55,10 +55,10 @@ void MPAddAIPlayer::init(FitIniFile* file)
 	{
 		g_focusManager->registerDropList(experienceDropList);
 		g_focusManager->registerDropList(factionDropList);
-		int row;
+		int32_t row;
 		for (row = 0; row < 4; row += 1)
 		{
-			int column;
+			int32_t column;
 			for (column = 0; column < 3; column += 1)
 			{
 				g_focusManager->registerDropList(mechSelectionDropLists[row][column]);
@@ -70,7 +70,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 
 	if ( buttonCount )
 	{
-		for ( int i = 0; i < buttonCount; i++ )
+		for ( int32_t i = 0; i < buttonCount; i++ )
 		{
 			buttons[i].setMessageOnRelease();
 			if (buttons[i].getID() == 0)
@@ -103,7 +103,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 		PNfile.readIdLong( "Textcount", listItemCount );
 
 		aStyle4TextListItem *pTmp2;
-		int i;
+		int32_t i;
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aStyle4TextListItem;
@@ -135,7 +135,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 		PNfile.readIdLong( "Textcount", listItemCount );
 
 		aStyle4TextListItem *pTmp2;
-		int i;
+		int32_t i;
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aStyle4TextListItem;
@@ -147,10 +147,10 @@ void MPAddAIPlayer::init(FitIniFile* file)
 		factionDropList.SelectItem(0);
 	}
 
-	int row;
+	int32_t row;
 	for (row = 0; row < 4; row += 1)
 	{
-		int column;
+		int32_t column;
 		for (column = 0; column < 3; column += 1)
 		{
 			{
@@ -173,7 +173,7 @@ void MPAddAIPlayer::init(FitIniFile* file)
 				PNfile.readIdLong( "Textcount", listItemCount );
 
 				aStyle4TextListItem *pTmp2;
-				int i;
+				int32_t i;
 				for (i = 0; i < listItemCount; i += 1)
 				{
 					pTmp2 = new aStyle4TextListItem;
@@ -200,7 +200,7 @@ void MPAddAIPlayer::end()
 {
 }
 
-void MPAddAIPlayer::render(int xOffset, int yOffset )
+void MPAddAIPlayer::render(int32_t xOffset, int32_t yOffset )
 {
 	LogisticsScreen::render(xOffset, yOffset);
 
@@ -211,10 +211,10 @@ void MPAddAIPlayer::render(int xOffset, int yOffset )
 		experienceDropList.render();
 		factionDropList.render();
 
-		int row;
+		int32_t row;
 		for (row = 0; row < 4; row += 1)
 		{
-			int column;
+			int32_t column;
 			for (column = 0; column < 3; column += 1)
 			{
 				mechSelectionDropLists[row][column].render();
@@ -235,7 +235,7 @@ void MPAddAIPlayer::render()
 	render(0, 0);
 }
 
-int	MPAddAIPlayer::handleMessage( ULONG message, ULONG who)
+int32_t	MPAddAIPlayer::handleMessage( uint32_t message, uint32_t who)
 {
 	if ( RUNNING == status )
 	{
@@ -283,10 +283,10 @@ void MPAddAIPlayer::update()
 		experienceDropList.update();
 		factionDropList.update();
 
-		int row;
+		int32_t row;
 		for (row = 0; row < 4; row += 1)
 		{
-			int column;
+			int32_t column;
 			for (column = 0; column < 3; column += 1)
 			{
 				mechSelectionDropLists[row][column].update();
@@ -298,7 +298,7 @@ void MPAddAIPlayer::update()
 	helpTextHeaderID = 0;
 
 	/*
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].update();
 		if ( buttons[i].pointInside( userInput->getMouseX(), userInput->getMouseY() )
@@ -349,17 +349,17 @@ void aStyle4TextListItem::render()
 	float color;
 	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((ULONG)normalColor) + 0.67 * ((ULONG)0xffffffff);
+		color = 0.33 * ((uint32_t)normalColor) + 0.67 * ((uint32_t)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((ULONG)normalColor) + 0.33 * ((ULONG)0xffffffff);
+		color = 0.67 * ((uint32_t)normalColor) + 0.33 * ((uint32_t)0xffffffff);
 	}
 	else
 	{
 		color = normalColor;
 	}
-	aTextListItem::setColor((ULONG)color);
+	aTextListItem::setColor((uint32_t)color);
 
 	aTextListItem::render();
 }

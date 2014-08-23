@@ -58,12 +58,12 @@ class PacketFile;
 #pragma pack(1)
 
 struct ObjData {
-	short				objTypeNum;		//Type number of object
+	int16_t				objTypeNum;		//Type number of object
 	uint16_t		vertexNumber;	//Vertex Number in Block.
 	uint16_t		blockNumber;	//Which terrain Block.
 	uint8_t		damage;			//Damage
 	int32_t				teamId;
-	ULONG		parentId;		//hOW AM i LINKED.
+	uint32_t		parentId;		//hOW AM i LINKED.
 };
 
 struct MiscObjectData {
@@ -106,12 +106,12 @@ typedef ObjData *ObjDataPtr;
 #pragma pack(1)
 
 typedef struct _TeamObjectInfo {
-	short		numMechs;
-	short		numVehicles;
-	short		numElementals;
-	short		mechHandleIndex;
-	short		vehicleHandleIndex;
-	short		elementalHandleIndex;
+	int16_t		numMechs;
+	int16_t		numVehicles;
+	int16_t		numElementals;
+	int16_t		mechHandleIndex;
+	int16_t		vehicleHandleIndex;
+	int16_t		elementalHandleIndex;
 } TeamObjectInfo;
 
 #pragma pack()
@@ -122,7 +122,7 @@ typedef struct _TeamObjectInfo {
 #define	MAX_CAPTURES_PER_TEAM	30
 
 typedef struct _RemovedMoverRec {
-	ULONG	turn;
+	uint32_t	turn;
 	int32_t			partID;
 } RemovedMoverRec;
 
@@ -202,7 +202,7 @@ class GameObjectManager {
 		int32_t					nextReinforcementPartId;
 		int32_t					numRemoved;
 		RemovedMoverRec			moversRemoved[MAX_REMOVED];
-		ULONG			nextWatchID;
+		uint32_t			nextWatchID;
 		GameObjectPtr			*watchList;
 
 		int32_t					currentWeaponsIndex;			//points to next entry in rotating weapon array.
@@ -441,7 +441,7 @@ class GameObjectManager {
 
 		GameObjectPtr get (int32_t handle);
 
-		GameObjectPtr getByWatchID (ULONG watchID) {
+		GameObjectPtr getByWatchID (uint32_t watchID) {
 			if ((watchID > 0) && (watchID < nextWatchID))
 				return(watchList[watchID]);
 			return(NULL);

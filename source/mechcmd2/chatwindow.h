@@ -27,7 +27,7 @@ public:
 	void		 setPlayerColor(int32_t color);
 	void		 setTextColor( int32_t color );
 	void		 setPlayerName( PCSTR name );
-	int			 setText( PCSTR text ); // returns number of lines
+	int32_t			 setText( PCSTR text ); // returns number of lines
 	int32_t		 getLineCount() { return lineCount; }
 
 private:
@@ -68,11 +68,11 @@ class ChatWindow: public LogisticsScreen
 		static void destroy();
 		static ChatWindow* instance() { return s_instance; }
 
-		int initInstance();
+		int32_t initInstance();
 
 		virtual void update();
-		virtual void render( int xOffset, int yOffset );
-		int handleMessage( ULONG, ULONG );
+		virtual void render( int32_t xOffset, int32_t yOffset );
+		int32_t handleMessage( uint32_t, uint32_t );
 
 		virtual bool pointInside( int32_t xPos, int32_t yPos );
 		bool		 isExpanded();

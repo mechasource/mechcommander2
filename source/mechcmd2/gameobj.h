@@ -96,7 +96,7 @@ class WeaponFireChunk {
 		char				numMissiles;
 		char				hitLocation;
 
-		ULONG		data;
+		uint32_t		data;
 
 	public:
 
@@ -177,7 +177,7 @@ class WeaponHitChunk {
 		char				entryAngle;
 		bool				refit;
 
-		ULONG		data;
+		uint32_t		data;
 
 	public:
 
@@ -243,14 +243,14 @@ typedef struct _GameObjectData
 	ObjectClass					objectClass;		
 	GameObjectHandle			handle;				
 	int32_t						partId;				
-	ULONG				watchID;			
+	uint32_t				watchID;			
 
 	GameObjectTypeHandle		typeHandle;
 	Stuff::Vector3D				position;			
 	uint16_t				cellPositionRow;	
 	uint16_t				cellPositionCol;
 	int32_t						d_vertexNum;		
-	ULONG				flags;				
+	uint32_t				flags;				
 	uint16_t				debugFlags;			
 	uint8_t				status;				
 
@@ -263,9 +263,9 @@ typedef struct _GameObjectData
 	int32_t						windowsVisible;		
 	float						explRadius;			
 	float						explDamage;			
-	short						maxCV;
-	short						curCV;
-	short						threatRating;
+	int16_t						maxCV;
+	int16_t						curCV;
+	int16_t						threatRating;
 	float						lastFrameTime;		
 	uint8_t				blipFrame;
 	uint8_t				numAttackers;
@@ -280,14 +280,14 @@ class GameObject {
 		ObjectClass					objectClass;		//What kind of object is this.
 		GameObjectHandle			handle;				//Used to reference into master obj table
 		int32_t						partId;				//What is my unique part number.
-		ULONG				watchID;			//Used to reference in the game engine
+		uint32_t				watchID;			//Used to reference in the game engine
 
 		GameObjectTypeHandle		typeHandle;			//Who made me?
 		Stuff::Vector3D				position;			//Where am I?
 		uint16_t				cellPositionRow;	//Cell RC position
 		uint16_t				cellPositionCol;
 		int32_t						d_vertexNum;		//Physical Vertex in mapData array that I'm lower right from
-		ULONG				flags;				//See GAMEOBJECT_FLAGS_ defines
+		uint32_t				flags;				//See GAMEOBJECT_FLAGS_ defines
 		uint16_t				debugFlags;			// use ONLY for debugging purposes...
 		uint8_t				status;				//Am I normal, disabled, destroyed, etc..?
 	
@@ -300,16 +300,16 @@ class GameObject {
 		int32_t						windowsVisible;		//Which Windows can see me.
 		float						explRadius;			//How big is my explosion.
 		float						explDamage;			//How much damage does it do?
-		short						maxCV;
-		short						curCV;
-		short						threatRating;
+		int16_t						maxCV;
+		int16_t						curCV;
+		int16_t						threatRating;
 		float						lastFrameTime;		//Time elapsed since last frame was drawn.  (Replaces HEAT.  No net gain in size!)
 		uint8_t				blipFrame;
 		uint8_t				numAttackers;
 
 		int32_t						drawFlags;			// bars, text, brackets, and highlight colors
 
-		static ULONG		spanMask;			//Used to preserve tile's LOS
+		static uint32_t		spanMask;			//Used to preserve tile's LOS
 		static float				blockCaptureRange;
 		static bool					initialize;
 
@@ -376,7 +376,7 @@ class GameObject {
 			return(handle);
 		}
 
-		ULONG getWatchID (bool assign = true);
+		uint32_t getWatchID (bool assign = true);
 
 		virtual PSTR getName (void) {
 			return(NULL);
@@ -495,7 +495,7 @@ class GameObject {
 			return(position);
 		}
 
-		virtual Stuff::Vector3D relativePosition (float angle, float distance, ULONG flags);
+		virtual Stuff::Vector3D relativePosition (float angle, float distance, uint32_t flags);
 		
 		virtual Stuff::Vector3D getPositionFromHS (int32_t /*weaponType*/) 
 		{
@@ -768,14 +768,14 @@ class GameObject {
 		//---------------
 		// FLAG functions
 
-		virtual void setFlag (ULONG flag, bool set) {
+		virtual void setFlag (uint32_t flag, bool set) {
 			if (set)
 				flags |= flag;
 			else
 				flags &= (flag ^ 0xFFFFFFFF);
 		}
 
-		virtual bool getFlag (ULONG flag) {
+		virtual bool getFlag (uint32_t flag) {
 			return((flags & flag) != 0);
 		}
 
@@ -1081,14 +1081,14 @@ class GameObject {
 		
 		virtual void setCurCV (int32_t newCV)
 		{
-			curCV = (short)newCV;
+			curCV = (int16_t)newCV;
 		}
 
 		virtual int32_t getThreatRating (void) {
 			return(threatRating);
 		}
 
-		virtual void setThreatRating (short rating) {
+		virtual void setThreatRating (int16_t rating) {
 			threatRating = rating;
 		}
 
@@ -1138,7 +1138,7 @@ class GameObject {
 			return NULL;
 		}
 
-		virtual void setParentId (ULONG /*pId*/)
+		virtual void setParentId (uint32_t /*pId*/)
 		{
 			//Do Nothing.  Most of the time, this is OK!
 		}

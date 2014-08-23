@@ -127,7 +127,7 @@ PathQueueRecPtr MovePathManager::remove (MechWarriorPtr pilot) {
 
 #define	DEBUG_MOVEPATH_QUEUE	0
 
-void MovePathManager::request (MechWarriorPtr pilot, int32_t selectionIndex, ULONG moveParams, int32_t source) {
+void MovePathManager::request (MechWarriorPtr pilot, int32_t selectionIndex, uint32_t moveParams, int32_t source) {
 
 	//-----------------------------------------------------
 	// If the pilot is already awaiting a calc, purge it...

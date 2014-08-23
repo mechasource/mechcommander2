@@ -44,7 +44,7 @@ extern CPrefs prefs;
 
 //
 // Returns the number of bits in a given mask.  Used to determine if we are in 555 mode vs 565 mode.
-uint16_t GetNumberOfBits( ULONG dwMask );
+uint16_t GetNumberOfBits( uint32_t dwMask );
 
 void MouseTimerInit();
 void MouseTimerKill();
@@ -280,7 +280,7 @@ void LoadScreenWrapper::update()
 	}
 }
 
-void LoadScreenWrapper::render( int xOffset, int yOffset )
+void LoadScreenWrapper::render( int32_t xOffset, int32_t yOffset )
 {
 	if ( Environment.screenWidth == 800 )
 	{
@@ -327,7 +327,7 @@ LoadScreen::~LoadScreen()
 
 void LoadScreen::begin()
 {
-	for ( int i = 0; i < animObjectsCount; i++ )
+	for ( int32_t i = 0; i < animObjectsCount; i++ )
 	{
 		//The assign below will overwrite the assign in defaultConstructor, leaking the memory
 		animObjects[i].animInfo.destroy();
@@ -344,7 +344,7 @@ void LoadScreen::begin()
 	// This will be keep ghost images from occuring.
 	userInput->mouseOff();	
 }
-void LoadScreen::init(FitIniFile& file, ULONG neverFlush)
+void LoadScreen::init(FitIniFile& file, uint32_t neverFlush)
 {
 	LogisticsScreen::init( file, "Static", "Text", "Rect", "Button", "Edit", "AnimObject", neverFlush );
 
@@ -385,8 +385,8 @@ void LoadScreen::init(FitIniFile& file, ULONG neverFlush)
 	if ( animObjectsCount )
 	{
 		char blockName[256];
-		animIndices = new int[animObjectsCount];
-		for ( int i= 0; i < animObjectsCount; i++ )
+		animIndices = new int32_t[animObjectsCount];
+		for ( int32_t i= 0; i < animObjectsCount; i++ )
 		{
 			sprintf( blockName, "AnimObject%ld", i );
 			file.seekBlock( blockName );
@@ -412,7 +412,7 @@ void LoadScreen::update()
 	LogisticsScreen::update();
 
 	bool bDone = true;
-	for ( int i = 0; i < animObjectsCount; i++ )
+	for ( int32_t i = 0; i < animObjectsCount; i++ )
 	{
 		bDone &= animObjects[i].isDone();
 	}
@@ -422,7 +422,7 @@ void LoadScreen::update()
 		if ( loadProgress < 99.f )
 		{
 
-			for ( int i = 0; i < animObjectsCount; i++ )
+			for ( int32_t i = 0; i < animObjectsCount; i++ )
 			{
 				//The assign below will overwrite the assign in begin, leaking the memory
 				animObjects[i].animInfo.destroy();
@@ -474,13 +474,13 @@ void LoadScreen::update()
 	}
 }
 
-void LoadScreen::render( int x, int y )
+void LoadScreen::render( int32_t x, int32_t y )
 {
 	//ignoring animation information...
 	LogisticsScreen::render();
 
-	int curX = animObjects[0].animInfo.getXDelta();
-	int curY = animObjects[0].animInfo.getYDelta();
+	int32_t curX = animObjects[0].animInfo.getXDelta();
+	int32_t curY = animObjects[0].animInfo.getYDelta();
 	text.move( x + curX, y + curY );
 	text.render( );
 	text.move( -x - curX, -y - curY);
@@ -517,9 +517,9 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 		int32_t* pLDest = (int32_t*)(LoadScreen::mergedTexture+1);
 
 		// merge background and current progress together...
-		for ( int i = 0; i < 2; i++ )
+		for ( int32_t i = 0; i < 2; i++ )
 		{
-			for ( int y = 0; y < destHeight; y++ )
+			for ( int32_t y = 0; y < destHeight; y++ )
 			{
 
 				for ( int32_t x = 0; x < LoadScreen::progressBackground->width; x++ )
@@ -574,20 +574,20 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 		int32_t destHeight = destBottom - destY;
 
 
-		for ( int y = 0; y < destHeight; y++ )
+		for ( int32_t y = 0; y < destHeight; y++ )
 		{
 			puint8_t pSrc = pMem + y * srcWidth * srcDepth;
-			puint8_t pDest = (PUCHAR)mouseSurfaceDesc.lpSurface + destX * mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount/8 + 										
+			puint8_t pDest = (puint8_t)mouseSurfaceDesc.lpSurface + destX * mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount/8 + 										
 										((destY + y) * mouseSurfaceDesc.lPitch);
 
 			for ( int32_t x = 0; x < destWidth; x++ )
 			{
 
-					ULONG mColor = *(int32_t*)pSrc;
-					UCHAR baseAlpha 		= 0;
-					UCHAR baseColorRed	= (mColor & 0x00ff0000)>>16;
-					UCHAR baseColorGreen	= (mColor & 0x0000ff00)>>8;
-					UCHAR baseColorBlue 	= (mColor & 0x000000ff);
+					uint32_t mColor = *(int32_t*)pSrc;
+					uint8_t baseAlpha 		= 0;
+					uint8_t baseColorRed	= (mColor & 0x00ff0000)>>16;
+					uint8_t baseColorGreen	= (mColor & 0x0000ff00)>>8;
+					uint8_t baseColorBlue 	= (mColor & 0x000000ff);
 					pSrc += 4;
 
 					if ( mouseSurfaceDesc.ddpfPixelFormat.dwRGBBitCount == 32 )
@@ -650,7 +650,7 @@ void ProgressTimer(	RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc )
 
 void LoadScreen::setupOutAnims()
 {
-	for ( int i = 0; i < animObjectsCount; i++ )
+	for ( int32_t i = 0; i < animObjectsCount; i++ )
 	{
 		//The assign below will overwrite the assign in begin, leaking the memory
 		animObjects[i].animInfo.destroy();

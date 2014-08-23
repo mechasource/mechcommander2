@@ -36,7 +36,7 @@ public:
 	void init( FitIniFile& file );
 
 	virtual void update();
-	virtual void render( int xOffset, int yOffset );
+	virtual void render( int32_t xOffset, int32_t yOffset );
 
 	virtual void begin();
 
@@ -55,9 +55,9 @@ public:
 	LoadScreen();
 	virtual ~LoadScreen();
 
-	void init( FitIniFile& file, ULONG neverFlush = 0 );
+	void init( FitIniFile& file, uint32_t neverFlush = 0 );
 	virtual void update();
-	virtual void render( int xOffset, int yOffset );
+	virtual void render( int32_t xOffset, int32_t yOffset );
 
 	virtual void begin();
 
@@ -94,7 +94,7 @@ private:
 	aAnimation	outAnims[5];
 	aAnimation	inAnims[5];
 	aText		text;
-	int*		animIndices;
+	pint32_t		animIndices;
 
 
 };

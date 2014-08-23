@@ -30,7 +30,7 @@ class aAnimObject: public aObject
 		aAnimObject& operator=( const aAnimObject& AnimObject );
 
 
-		int init( FitIniFile* file, PCSTR blockName, ULONG neverFlush = 0);
+		int32_t init( FitIniFile* file, PCSTR blockName, uint32_t neverFlush = 0);
 
 		virtual void update();
 		virtual void render();

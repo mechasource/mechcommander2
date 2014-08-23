@@ -138,7 +138,7 @@ extern float WeaponRanges[NUM_WEAPON_RANGE_TYPES][2];
 extern float OptimalRangePoints[NUM_WEAPON_RANGE_TYPES];
 extern bool OptimalRangePointInRange[NUM_WEAPON_RANGE_TYPES][3];
 
-extern ULONG missionHeapSize;
+extern uint32_t missionHeapSize;
 
 //--------------------------------------------------
 // Game System Constants -- Declarations here.
@@ -203,7 +203,7 @@ extern GameLog* CombatLog;
 bool IsGateDisabled (int32_t objectWID);
 bool IsGateOpen (int32_t objectWID);
 
-ULONG elfHash (PSTR name);
+uint32_t elfHash (PSTR name);
 
 extern char versionStamp[];
 //----------------------------------------------------------------------------------------------------
@@ -256,8 +256,8 @@ void Mission::save (PCSTR saveFileName)
 
 	userInput->mouseOff();
 
-	ULONG oldXLoc = LoadScreen::xProgressLoc;
-	ULONG oldYLoc = LoadScreen::yProgressLoc;
+	uint32_t oldXLoc = LoadScreen::xProgressLoc;
+	uint32_t oldYLoc = LoadScreen::yProgressLoc;
 
 	LoadScreen::xProgressLoc = 0;
 	LoadScreen::yProgressLoc = 0;
@@ -281,12 +281,12 @@ void Mission::save (PCSTR saveFileName)
 
 	//A thousand packets ought to get it!!
 	saveFile.reserve(20000);
-	ULONG currentPacket = 0;
+	uint32_t currentPacket = 0;
 
-	saveFile.writePacket(currentPacket,(PUCHAR)versionStamp,strlen(versionStamp)+1,STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket,(puint8_t)versionStamp,strlen(versionStamp)+1,STORAGE_TYPE_RAW);
 	currentPacket++;
 
-	saveFile.writePacket(currentPacket,(PUCHAR)cmpName,strlen(cmpName)+1, STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket,(puint8_t)cmpName,strlen(cmpName)+1, STORAGE_TYPE_RAW);
 	currentPacket++;
 
 	loadProgress = 3.0f;
@@ -365,8 +365,8 @@ void Mission::save (PCSTR saveFileName)
 
 	File dmyFile;
 	result = dmyFile.open(tmpName);
-	ULONG fileSz = dmyFile.fileSize();
-	PUCHAR tmpRAM = (PUCHAR)malloc(fileSz);
+	uint32_t fileSz = dmyFile.fileSize();
+	puint8_t tmpRAM = (puint8_t)malloc(fileSz);
 	dmyFile.read(tmpRAM,fileSz);
 
 	saveFile.writePacket(currentPacket,tmpRAM,fileSz,STORAGE_TYPE_ZLIB);
@@ -403,7 +403,7 @@ void Mission::save (PCSTR saveFileName)
 	//Create a dummy file to stick in the packet file
 	result = dmyFile.open(tmpName);
 	fileSz = dmyFile.fileSize();
-	tmpRAM = (PUCHAR)malloc(fileSz);
+	tmpRAM = (puint8_t)malloc(fileSz);
 	dmyFile.read(tmpRAM,fileSz);
 
 	saveFile.writePacket(currentPacket,tmpRAM,fileSz,STORAGE_TYPE_ZLIB);
@@ -461,7 +461,7 @@ void Mission::save (PCSTR saveFileName)
 	//Create a dummy file to stick in the packet file
 	result = dmyFile.open(tmpName);
 	fileSz = dmyFile.fileSize();
-	tmpRAM = (PUCHAR)malloc(fileSz);
+	tmpRAM = (puint8_t)malloc(fileSz);
 	dmyFile.read(tmpRAM,fileSz);
 
 	saveFile.writePacket(currentPacket,tmpRAM,fileSz,STORAGE_TYPE_ZLIB);
@@ -476,11 +476,11 @@ void Mission::save (PCSTR saveFileName)
 	//-------------------------------------------------------------------------------------------
 	// Save the CurrentMission number in logistics cause Heidi don't save it with logisticsData.
 	int32_t currentMissionNum = LogisticsData::instance->getCurrentMissionNum();
-	saveFile.writePacket(currentPacket,(PUCHAR)&currentMissionNum,4,STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket,(puint8_t)&currentMissionNum,4,STORAGE_TYPE_RAW);
 	currentPacket++;
 
 	//-------------------------------------------------------------------------------------------
-	saveFile.writePacket(currentPacket,(PUCHAR)"END",4,STORAGE_TYPE_RAW);
+	saveFile.writePacket(currentPacket,(puint8_t)"END",4,STORAGE_TYPE_RAW);
 	currentPacket++;
 
 	saveFile.close();
@@ -625,8 +625,8 @@ void Mission::load (PCSTR loadFileName)
 	userInput->mouseOff();
 	loadProgress = 0.0f;
 
-	ULONG oldXLoc = LoadScreen::xProgressLoc;
-	ULONG oldYLoc = LoadScreen::yProgressLoc;
+	uint32_t oldXLoc = LoadScreen::xProgressLoc;
+	uint32_t oldYLoc = LoadScreen::yProgressLoc;
 
 	LoadScreen::xProgressLoc = 0;
 	LoadScreen::yProgressLoc = 0;
@@ -643,10 +643,10 @@ void Mission::load (PCSTR loadFileName)
 	if (result != NO_ERROR)
 		return;		//Can't load.  No File.  Dialog?  Probably not.
 
-	ULONG currentPacket = 0;
+	uint32_t currentPacket = 0;
 
 	char versionCheck[1024];
-	loadFile.readPacket(currentPacket,(PUCHAR)versionCheck);
+	loadFile.readPacket(currentPacket,(puint8_t)versionCheck);
 	currentPacket++;
 
 	if (strcmp(versionCheck,versionStamp) != 0)
@@ -659,7 +659,7 @@ void Mission::load (PCSTR loadFileName)
 
 	loadFile.seekPacket(currentPacket);
 	PSTR campName = new char [loadFile.getPacketSize()+1];
-	loadFile.readPacket(currentPacket,(PUCHAR)(campName));
+	loadFile.readPacket(currentPacket,(puint8_t)(campName));
 	currentPacket++;
 
 	//Get the campaign name for the campaign we are currently playing.
@@ -896,8 +896,8 @@ void Mission::load (PCSTR loadFileName)
 		//Create a dummy file to read the packet into.
 		File dmyFile;
 		result = dmyFile.create(tmpName);
-		ULONG fileSz = loadFile.getPacketSize();
-		PUCHAR tmpRAM = (PUCHAR)malloc(fileSz);
+		uint32_t fileSz = loadFile.getPacketSize();
+		puint8_t tmpRAM = (puint8_t)malloc(fileSz);
 		loadFile.readPacket(currentPacket,tmpRAM);
 		dmyFile.write(tmpRAM,fileSz);
 	
@@ -1142,8 +1142,8 @@ void Mission::load (PCSTR loadFileName)
 		//Create a dummy file to read the packet into.
 		File dmyFile;
 		result = dmyFile.create(dmpName);
-		ULONG fileSz = loadFile.getPacketSize();
-		PUCHAR tmpRAM = (PUCHAR)malloc(fileSz);
+		uint32_t fileSz = loadFile.getPacketSize();
+		puint8_t tmpRAM = (puint8_t)malloc(fileSz);
 		loadFile.readPacket(currentPacket,tmpRAM);
 		dmyFile.write(tmpRAM,fileSz);
 	
@@ -1472,8 +1472,8 @@ void Mission::load (PCSTR loadFileName)
 		//Create a dummy file to read the packet into.
 		File dmyFile;
 		result = dmyFile.create(tmpName);
-		ULONG fileSz = loadFile.getPacketSize();
-		PUCHAR tmpRAM = (PUCHAR)malloc(fileSz);
+		uint32_t fileSz = loadFile.getPacketSize();
+		puint8_t tmpRAM = (puint8_t)malloc(fileSz);
 		loadFile.readPacket(currentPacket,tmpRAM);
 		dmyFile.write(tmpRAM,fileSz);
 	
@@ -1499,7 +1499,7 @@ void Mission::load (PCSTR loadFileName)
 	//-------------------------------------------------------------------------------------------
 	// Load the CurrentMission number in logistics cause Heidi don't save it with logisticsData.
 	int32_t currentMissionNum = 0;
-	loadFile.readPacket(currentPacket,(PUCHAR)&currentMissionNum);
+	loadFile.readPacket(currentPacket,(puint8_t)&currentMissionNum);
 
 	LogisticsData::instance->setCurrentMissionNum(currentMissionNum);
 	currentPacket++;
@@ -1535,7 +1535,7 @@ void Mission::load (PCSTR loadFileName)
 
 	//Reset so the LastTimeGetTime is RIGHT NOW!!!
 	//  So quickLoad works!!
-	ULONG currentTimeGetTime = timeGetTime();
+	uint32_t currentTimeGetTime = timeGetTime();
 	LastTimeGetTime = currentTimeGetTime;
 }
 

@@ -62,7 +62,7 @@ class BuildingType : public ObjectType {
 		float			perimeterAlarmTimer;
 		float			lookoutTowerRange;
 		
-		ULONG	activityEffectId;
+		uint32_t	activityEffectId;
 		
 	public:
 
@@ -73,7 +73,7 @@ class BuildingType : public ObjectType {
 			init();
 		}
 		
-		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
 
 		int32_t init (FitIniFilePtr objFile);
 		
@@ -102,7 +102,7 @@ typedef struct _BuildingData : public TerrainObjectData
 	uint8_t			baseTileId;
 	char					commanderId;
 	GameObjectWatchID		refitBuddyWID;
-	ULONG					parentId;
+	uint32_t					parentId;
 	GameObjectWatchID		parent;
 	uint8_t			listID;
 	float					captureTime;
@@ -122,7 +122,7 @@ class Building : public TerrainObject
 		SensorSystemPtr			sensorSystem;
 		char					commanderId;									//If capturable, who last captured it...
 		GameObjectWatchID		refitBuddyWID;
-		ULONG					parentId;
+		uint32_t					parentId;
 		GameObjectWatchID		parent;
 		uint8_t			listID;
 		float					captureTime;
@@ -295,7 +295,7 @@ class Building : public TerrainObject
 
 		virtual GameObjectPtr getParent (void);
 
-		virtual void setParentId (ULONG pId);
+		virtual void setParentId (uint32_t pId);
 
 		virtual SensorSystem* getSensorSystem(){ return sensorSystem; }
 		

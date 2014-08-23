@@ -24,8 +24,8 @@ OptionsArea.cpp			: Implementation of the OptionsArea component.
 
 static bool bShadows = true;
 static bool bDetailTexture = true;
-static int objectDetail = 0;
-static int difficulty = 0;
+static int32_t objectDetail = 0;
+static int32_t difficulty = 0;
 static bool bUnLimitedAmmo = false;
 static int32_t DigitalMasterVolume = 255;
 static int32_t MusicVolume = 64;
@@ -93,13 +93,13 @@ OptionsXScreen::OptionsXScreen()
 
 OptionsXScreen::~OptionsXScreen()
 {
-	for ( int i = 0; i < 4; i++ )
+	for ( int32_t i = 0; i < 4; i++ )
 		delete tabAreas[i];
 }
 
-int OptionsXScreen::indexOfButtonWithID(int id)
+int32_t OptionsXScreen::indexOfButtonWithID(int32_t id)
 {
-	int i;
+	int32_t i;
 	for (i = 0; i < buttonCount; i++)
 	{
 		if (buttons[i].getID() == id)
@@ -133,7 +133,7 @@ void OptionsXScreen::init(FitIniFile* file)
 	tabAreas[3] = pKeys;
 
 	FullPathFileName path;
-	for ( int i = 0; i < 4;i++ )
+	for ( int32_t i = 0; i < 4;i++ )
 	{
 		path.init( artPath, fileNames[i], ".fit" );
 		FitIniFile tmpFile;
@@ -241,7 +241,7 @@ void OptionsXScreen::render()
 	}
 }
 
-int	OptionsXScreen::handleMessage( ULONG message, ULONG who)
+int32_t	OptionsXScreen::handleMessage( uint32_t message, uint32_t who)
 {
 	if ( aMSG_LEFTMOUSEDOWN == message )
 	{
@@ -253,7 +253,7 @@ int	OptionsXScreen::handleMessage( ULONG message, ULONG who)
 		case MSB_TAB2:
 		case MSB_TAB3:
 		{
-			for ( int i = MSB_TAB0; i < MSB_TAB3+1; i++ )
+			for ( int32_t i = MSB_TAB0; i < MSB_TAB3+1; i++ )
 				getButton( i )->press( 0 );
 			getButton( who )->press( true );
 			curTab = who - MSB_TAB0;
@@ -262,17 +262,17 @@ int	OptionsXScreen::handleMessage( ULONG message, ULONG who)
 
 		case YES:
 			{
-				int oldRes = prefs.resolution;
-				int oldDepth = prefs.bitDepth;
-				for ( int i = 0; i < 4; i++ )
+				int32_t oldRes = prefs.resolution;
+				int32_t oldDepth = prefs.bitDepth;
+				for ( int32_t i = 0; i < 4; i++ )
 					tabAreas[i]->end();
 
 				prefs.save();
 				prefs.applyPrefs(0);
 				LoadScreenWrapper::changeRes();
 
-				int newRes = prefs.resolution;
-				int newDepth = prefs.bitDepth;
+				int32_t newRes = prefs.resolution;
+				int32_t newDepth = prefs.bitDepth;
 
 				if ( newRes != oldRes || newDepth != oldDepth )
 				{
@@ -382,7 +382,7 @@ void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	resolutionList.move( xOffset, yOffset );
 	resolutionList.ListBox().setOrange( true );
 
-	for ( int i = IDS_RESOLUTION0; i < IDS_RESOLUTION9 + 1; i++ )
+	for ( int32_t i = IDS_RESOLUTION0; i < IDS_RESOLUTION9 + 1; i++ )
 	{
 		if ( 1!=gos_GetMachineInformation( gos_Info_ValidMode, 
 			Environment.FullScreenDevice, 
@@ -418,7 +418,7 @@ void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	cardList.move( xOffset, yOffset );
 	cardList.ListBox().setOrange( true );
 
-	ULONG numDevices = 0;
+	uint32_t numDevices = 0;
 	numDevices = gos_GetMachineInformation( gos_Info_NumberDevices );
 
 	//Theoretically impossible but config would probably like to know if it happens!
@@ -428,7 +428,7 @@ void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	int32_t usableCardCount = 0;
 	for (i=0;i<numDevices;i++)
 	{
-		ULONG minTextureRam = 6291456;
+		uint32_t minTextureRam = 6291456;
 
 		//If we are a Voodoo 2, we may be a 4/8 or a 4/4.  Try allowing a 4/4 to run
 		// and see what happens!!  NO good has come of this!
@@ -483,7 +483,7 @@ void OptionsGraphics::init(int32_t xOffset, int32_t yOffset)
 	
 }
 
-int		OptionsGraphics::handleMessage( ULONG message, ULONG fromWho )
+int32_t		OptionsGraphics::handleMessage( uint32_t message, uint32_t fromWho )
 {
 	if ( fromWho == MSG_RESET )
 		reset(originalSettings);
@@ -562,11 +562,11 @@ void OptionsGraphics::end()
 	prefs.asyncMouse = getButton( MSG_ASYNC_MOUSE )->isPressed();
 	prefs.renderer = getButton( MSG_HARDWARE_RASTERIZER )->isPressed() ? 0 : 3;
 
-	int sel = resolutionList.GetSelectedItem();
+	int32_t sel = resolutionList.GetSelectedItem();
 	if ( sel > -1 )
 	{
 		int32_t actualSel = -1;
-		for ( int i = IDS_RESOLUTION0; i < IDS_RESOLUTION9 + 1; i++ )
+		for ( int32_t i = IDS_RESOLUTION0; i < IDS_RESOLUTION9 + 1; i++ )
 		{
 			if (availableMode[i-IDS_RESOLUTION0])
 				actualSel++;
@@ -612,7 +612,7 @@ void OptionsGraphics::end()
 		}
 	}
 
-	int index = cardList.GetSelectedItem( );
+	int32_t index = cardList.GetSelectedItem( );
 	if ( (index != -1) && (prefs.renderer != 3))
 		prefs.renderer = index;
 
@@ -647,7 +647,7 @@ void OptionsAudio::init(int32_t xOffset, int32_t yOffset)
 {
 	getButton( MSG_RESET )->setMessageOnRelease();
 
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		if ( buttons[i].getID() != MSG_RESET )
 		{
@@ -676,7 +676,7 @@ void OptionsAudio::init(int32_t xOffset, int32_t yOffset)
 	
 }
 
-int		OptionsAudio::handleMessage( ULONG message, ULONG fromWho )
+int32_t		OptionsAudio::handleMessage( uint32_t message, uint32_t fromWho )
 {
 	if ( fromWho == MSG_RESET )
 		reset(originalSettings);
@@ -688,7 +688,7 @@ void OptionsAudio::render()
 {
 	LogisticsScreen::render();
 
-	for ( int i = 0; i < 5; i++ )
+	for ( int32_t i = 0; i < 5; i++ )
 	{
 		scrollBars[i].render();
 	}
@@ -697,7 +697,7 @@ void OptionsAudio::render()
 void OptionsAudio::update()
 {
 	LogisticsScreen::update();
-	for ( int i = 0; i < 5; i++ )
+	for ( int32_t i = 0; i < 5; i++ )
 	{
 		scrollBars[i].update();
 	}
@@ -774,7 +774,7 @@ void OptionsGamePlay::init(int32_t xOffset, int32_t yOffset)
 	getButton( MSG_BASE )->press( true );
 	getButton( MSG_ACCENT )->press( 0 );
 
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].setPressFX( LOG_VIDEOBUTTONS );
 		buttons[i].setHighlightFX( LOG_DIGITALHIGHLIGHT );
@@ -788,11 +788,11 @@ void OptionsGamePlay::init(int32_t xOffset, int32_t yOffset)
 	
 }
 
-int		OptionsGamePlay::handleMessage( ULONG message, ULONG fromWho )
+int32_t		OptionsGamePlay::handleMessage( uint32_t message, uint32_t fromWho )
 {
 	if ( fromWho >= MSG_GREEN && fromWho < MSG_ELITE+1 )
 	{
-		for ( int i = MSG_GREEN; i < MSG_ELITE+1; i++ )
+		for ( int32_t i = MSG_GREEN; i < MSG_ELITE+1; i++ )
 		{
 			getButton( i )->press( 0 );
 		}
@@ -826,7 +826,7 @@ void OptionsGamePlay::render()
 
 	int32_t colorToMatch = getButton( MSG_BASE )->isPressed() ? 
 		rects[36].getColor() : rects[37].getColor();
-	for ( int i = 4; i < 36; i++ )
+	for ( int32_t i = 4; i < 36; i++ )
 	{
 		if ( rects[i].getColor() == colorToMatch )
 		{
@@ -860,7 +860,7 @@ void OptionsGamePlay::update()
 	bool bChanged = 0;
 	if ( userInput->isLeftClick() )
 	{
-		for ( int i = 4; i < 36; i++ )
+		for ( int32_t i = 4; i < 36; i++ )
 		{
 			if ( rects[i].pointInside( userInput->getMouseX(),
 										userInput->getMouseY() ) )
@@ -898,7 +898,7 @@ void OptionsGamePlay::begin()
 
 void OptionsGamePlay::end()
 {
-	for ( int i  = MSG_GREEN; i < MSG_ELITE + 1; i++ )
+	for ( int32_t i  = MSG_GREEN; i < MSG_ELITE + 1; i++ )
 	{
 		if ( getButton( i )->isPressed() )
 			prefs.GameDifficulty = i - MSG_GREEN;
@@ -927,7 +927,7 @@ void OptionsGamePlay::end()
 }
 void OptionsGamePlay::reset(const CPrefs& newPrefs)
 {
-	for ( int i  = MSG_GREEN; i < MSG_ELITE + 1; i++ )
+	for ( int32_t i  = MSG_GREEN; i < MSG_ELITE + 1; i++ )
 	{
 		getButton( i )->press( 0 );
 	}
@@ -961,7 +961,7 @@ void OptionsHotKeys::init(int32_t xOffset, int32_t yOffset)
 	helpTextArrayID = 2;
 }
 
-int		OptionsHotKeys::handleMessage( ULONG message, ULONG fromWho )
+int32_t		OptionsHotKeys::handleMessage( uint32_t message, uint32_t fromWho )
 {
 	switch( fromWho )
 	{
@@ -1009,7 +1009,7 @@ void OptionsHotKeys::update()
 				{
 					HotKeyListItem* pItemToSet = (HotKeyListItem*)hotKeyList.GetItem( index );
 					// now I've got to find the other one with th new key and set it to the old key
-					for ( int i = 0; i < hotKeyList.GetItemCount(); i++ )
+					for ( int32_t i = 0; i < hotKeyList.GetItemCount(); i++ )
 					{
 						HotKeyListItem* pTmpItem = (HotKeyListItem*)hotKeyList.GetItem( i );
 						if ( pTmpItem->getHotKey() == curHotKey  && pTmpItem != pItemToSet )
@@ -1017,8 +1017,8 @@ void OptionsHotKeys::update()
 
 							// first we've got to see if we can set to the default
 							int32_t*	defaultKeys = MissionInterfaceManager::getOldKeys();
-							int defaultKey = defaultKeys[pTmpItem->getCommand()];
-							for ( int j = 0; j < hotKeyList.GetItemCount(); j++ )
+							int32_t defaultKey = defaultKeys[pTmpItem->getCommand()];
+							for ( int32_t j = 0; j < hotKeyList.GetItemCount(); j++ )
 							{
 								HotKeyListItem* pCheckItem = (HotKeyListItem*)hotKeyList.GetItem( j );
 								if ( pCheckItem->getHotKey() == defaultKey )
@@ -1060,7 +1060,7 @@ void OptionsHotKeys::update()
 
 	while( tmpKey ) // empty out keyboard buffers...
 	{
-		int index = hotKeyList.GetSelectedItem( );
+		int32_t index = hotKeyList.GetSelectedItem( );
 		tmpKey = 0;
 
 		if ( index > -1 )
@@ -1078,7 +1078,7 @@ void OptionsHotKeys::update()
 
 				curHotKey = tmpKey;
 				// check and see if anyone else is using this one...
-				for ( int i = 0; i < hotKeyList.GetItemCount(); i++ )
+				for ( int32_t i = 0; i < hotKeyList.GetItemCount(); i++ )
 				{
 					HotKeyListItem* pTmpItem = (HotKeyListItem*)hotKeyList.GetItem( i );
 					if ( pTmpItem->getHotKey() == curHotKey  && pTmpItem != pItem )
@@ -1138,7 +1138,7 @@ void OptionsHotKeys::makeKeyString( int32_t newKey, PSTR keysString )
 }
 
 
-int OptionsHotKeys::makeInputKeyString( int32_t& tmpKey, PSTR hotKeyString )
+int32_t OptionsHotKeys::makeInputKeyString( int32_t& tmpKey, PSTR hotKeyString )
 {
 		PCSTR pText = gos_DescribeKey( tmpKey & 0x0001ff00 );
 
@@ -1194,13 +1194,13 @@ void OptionsHotKeys::begin()
 }
 void OptionsHotKeys::end()
 {
-	for ( int i= 0; i < hotKeyList.GetItemCount(); i++ )
+	for ( int32_t i= 0; i < hotKeyList.GetItemCount(); i++ )
 	{
 		HotKeyListItem* pItem = (HotKeyListItem*)hotKeyList.GetItem( i );
 		if ( pItem )
 		{
-			int Command = pItem->getCommand();
-			int Key = pItem->getHotKey();
+			int32_t Command = pItem->getCommand();
+			int32_t Key = pItem->getHotKey();
 
 			MissionInterfaceManager::setHotKey( Command, (gosEnum_KeyIndex)(Key & 0x000ffff), 
 				Key & SHIFT,Key & CTRL, Key & ALT );
@@ -1228,7 +1228,7 @@ void OptionsHotKeys::reset( bool useOld )
 
 	MissionInterfaceManager::Command* commands = MissionInterfaceManager::getCommands();
 	int32_t*	oldKeys = MissionInterfaceManager::getOldKeys();
-	for ( int i = 0; i < MAX_COMMAND; i++ )
+	for ( int32_t i = 0; i < MAX_COMMAND; i++ )
 	{
 		if ( commands[i].hotKeyDescriptionText != -1 )
 		{
@@ -1276,7 +1276,7 @@ int32_t ScrollX::init(aButton* pLeft, aButton* pRight, aButton* pTab)
 	pLeft->setHighlightFX( -1 );
 	pLeft->setDisabledFX( -1 );
 
-	for ( int i = 0; i < 3; i++ )
+	for ( int32_t i = 0; i < 3; i++ )
 		buttons[i]->setHoldTime( .01f );
 
 	pLeft->moveTo( 0, 0 );
@@ -1410,7 +1410,7 @@ void ScrollX::update()
 	aObject::update();
 }
 
-int ScrollX::handleMessage( ULONG message, ULONG who )
+int32_t ScrollX::handleMessage( uint32_t message, uint32_t who )
 {
 	switch (who )
 	{
@@ -1481,7 +1481,7 @@ void HotKeyListItem::render()
 
 	aAnimGroup::STATE curState = (aAnimGroup::STATE)getState();
 
-	for ( int i = 0; i < 3; i++ )
+	for ( int32_t i = 0; i < 3; i++ )
 	{
 		animations[i].setState( curState );
 		animations[i].update();
@@ -1515,7 +1515,7 @@ HotKeyListItem::HotKeyListItem( )
 	{
 		description = s_item->description;
 		text = s_item->text;
-		for ( int i = 0; i < 3; i++ )
+		for ( int32_t i = 0; i < 3; i++ )
 			animations[i] = s_item->animations[i];
 
 		rects[0] = s_item->rects[0];

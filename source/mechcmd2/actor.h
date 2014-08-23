@@ -42,8 +42,8 @@ struct ActorData
 	ActorState			state;
 	uint8_t 		symmetrical;					// are second-half rotations flip versions of first half?
 	uint8_t		numRotations;					// number of rotations (including flips)
-	ULONG		numFrames;						// number of frames for this gesture (if -1, does not exist)
-	ULONG		basePacketNumber;				// Where in packet file does this gesture start.
+	uint32_t		numFrames;						// number of frames for this gesture (if -1, does not exist)
+	uint32_t		basePacketNumber;				// Where in packet file does this gesture start.
 	float				frameRate;						// intended frame rate of playback
 	int32_t				textureSize;					// Length of one edge of texture.
 	int32_t				textureHS;						// Where the screen coord should go for texture.
@@ -63,7 +63,7 @@ class VFXAppearanceType : public AppearanceType
 		ActorData			*actorStateData;
 		TGATexturePtr		*textureList;				//These go NULL when a texture is cached out.
 		int32_t				numPackets;
-		ULONG				textureMemoryHandle;
+		uint32_t				textureMemoryHandle;
 		uint8_t		numStates;
 
 	public:
@@ -89,13 +89,13 @@ class VFXAppearanceType : public AppearanceType
 			destroy();
 		}
 
-		void init (FilePtr appearFile, ULONG fileSize);
+		void init (FilePtr appearFile, uint32_t fileSize);
 		
 		//----------------------------------------------
 		// This routine is where the magic happens.
 		TGATexturePtr getTexture (ActorState shapeId, int32_t rot, int32_t currFrame, float &frameRate, bool &mirror);
 
-		int32_t loadIniFile (FilePtr appearFile, ULONG fileSize);
+		int32_t loadIniFile (FilePtr appearFile, uint32_t fileSize);
 
 		void destroy (void);
 
@@ -123,7 +123,7 @@ class VFXAppearance : public Appearance
 
 		VFXAppearanceType*			appearType;
 		TGATexturePtr				currentTexture;		//OK because we make sure each frame before we draw it.
-		ULONG				currentFrame;
+		uint32_t				currentFrame;
 		float						currentRotation;
 		
 		float						lastInView;						//Time since last in view (s)
@@ -131,11 +131,11 @@ class VFXAppearance : public Appearance
 		float						frameInc;
 		int32_t						lastWholeFrame;
 		
-		ULONG				startFrame;
-		ULONG				endFrame;
+		uint32_t				startFrame;
+		uint32_t				endFrame;
 			
 		ActorState					currentShapeTypeId;
-		PUCHAR 					fadeTable;
+		puint8_t 					fadeTable;
 		bool 						realBuildingDamage;
 		bool						changedTypeId;
 		
@@ -195,9 +195,9 @@ class VFXAppearance : public Appearance
 			endFrame = eFrame;
 		}
 		
-		virtual void setDamageLvl (ULONG damage);
+		virtual void setDamageLvl (uint32_t damage);
 		
-		void setFadeTable (PUCHAR fTable)
+		void setFadeTable (puint8_t fTable)
 		{
 			fadeTable = fTable;
 		}

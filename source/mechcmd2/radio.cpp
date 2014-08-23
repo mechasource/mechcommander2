@@ -73,7 +73,7 @@ void Radio::operator delete (PVOID us)
 }
 
 //-------------------------------------------------------------------------------
-int32_t Radio::init (PSTR fileName, ULONG heapSize, PSTR movie)
+int32_t Radio::init (PSTR fileName, uint32_t heapSize, PSTR movie)
 {
 	FullPathFileName pilotAudioPath;
 	pilotAudioPath.init(CDsoundPath,fileName,".pak");
@@ -211,8 +211,8 @@ int32_t i, roll, callsign, fragmentNum, dropOut = 0;
 		if (messagesFile[radioID]->seekPacket(callsign) == NO_ERROR)
 		{
 
-			ULONG messageSize = messagesFile[radioID]->getPacketSize();
-			msgData->data[fragmentNum] = (PUCHAR)radioHeap->Malloc(messageSize);
+			uint32_t messageSize = messagesFile[radioID]->getPacketSize();
+			msgData->data[fragmentNum] = (puint8_t)radioHeap->Malloc(messageSize);
 			if (!msgData->data[fragmentNum]) 
 			{
 				radioHeap->Free(msgData);
@@ -226,8 +226,8 @@ int32_t i, roll, callsign, fragmentNum, dropOut = 0;
 
 	if (messagesFile[radioID]->seekPacket(msgData->msgId) == NO_ERROR)
 	{
-		ULONG messageSize = messagesFile[radioID]->getPacketSize();
-		msgData->data[fragmentNum] = (PUCHAR)radioHeap->Malloc(messageSize);
+		uint32_t messageSize = messagesFile[radioID]->getPacketSize();
+		msgData->data[fragmentNum] = (puint8_t)radioHeap->Malloc(messageSize);
 		if (!msgData->data[fragmentNum]) 
 		{
 			while (fragmentNum >= 0)
@@ -244,8 +244,8 @@ int32_t i, roll, callsign, fragmentNum, dropOut = 0;
 		
 		if (noiseFile->seekPacket(msgData->noiseId) == NO_ERROR)
 		{
-			ULONG messageSize = noiseFile->getPacketSize();
-			msgData->noise[0] = (PUCHAR)radioHeap->Malloc(messageSize);
+			uint32_t messageSize = noiseFile->getPacketSize();
+			msgData->noise[0] = (puint8_t)radioHeap->Malloc(messageSize);
 			if (!msgData->noise[0])
 			{
 				radioHeap->Free(msgData);
@@ -310,11 +310,11 @@ PSTR				field;
 		return result;
 	}
 
-	messageInfoFile->readLine((PUCHAR)dataLine, 511);	// skip title line
+	messageInfoFile->readLine((puint8_t)dataLine, 511);	// skip title line
 
 	for (int32_t i=0; i<RADIO_MESSAGE_COUNT; i++)
 	{
-		result = messageInfoFile->readLine((PUCHAR)dataLine, 511);
+		result = messageInfoFile->readLine((puint8_t)dataLine, 511);
 		if (!result)
 			Fatal(0, "Bad Message Info File");
 

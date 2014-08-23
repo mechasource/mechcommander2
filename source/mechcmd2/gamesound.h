@@ -26,10 +26,10 @@ class GameSoundSystem : public SoundSystem
 	//-------------
 	protected:
 		RadioData			*currentMessage;						//Radio message playing.
-		ULONG		messagesInQueue;						//Radio messages waiting to play.
+		uint32_t		messagesInQueue;						//Radio messages waiting to play.
 		RadioData			*queue[MAX_QUEUED_MESSAGES];			//Radio message queue.
-		ULONG		currentFragment;						//Which piece are we playing.
-		ULONG		playingNoise;							//are we playing noise right now?
+		uint32_t		currentFragment;						//Which piece are we playing.
+		uint32_t		playingNoise;							//are we playing noise right now?
 		bool 				wholeMsgDone;							//Are all fragments played?
 		HGOSAUDIO			radioHandle;
 
@@ -74,7 +74,7 @@ class GameSoundSystem : public SoundSystem
 
 		void purgeSoundSystem (void);					//This will shutdown all active sound.
 		void removeQueuedMessage (int32_t msgNumber);
-		bool checkMessage (MechWarriorPtr pilot, byte priority, ULONG messageType);
+		bool checkMessage (MechWarriorPtr pilot, byte priority, uint32_t messageType);
 		int32_t queueRadioMessage (RadioData *msgData);
 		void moveFromQueueToPlaying (void);
 		void removeCurrentMessage (void);

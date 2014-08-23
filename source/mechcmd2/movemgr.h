@@ -26,7 +26,7 @@ typedef struct _PathQueueRec {
 	int32_t				num;
 	MechWarriorPtr		pilot;
 	int32_t				selectionIndex;
-	ULONG		moveParams;
+	uint32_t		moveParams;
 	bool				initPath;
 	bool				faceObject;
 	PathQueueRecPtr		prev;
@@ -69,7 +69,7 @@ class MovePathManager {
 
 		PathQueueRecPtr remove (MechWarriorPtr pilot);
 
-		void request (MechWarriorPtr pilot, int32_t selectionIndex, ULONG moveParams, int32_t source);
+		void request (MechWarriorPtr pilot, int32_t selectionIndex, uint32_t moveParams, int32_t source);
 
 		void calcPath (void);
 

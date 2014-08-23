@@ -46,7 +46,7 @@ GameTacMap::GameTacMap()
 	objectiveNumFlashes = 0;
 }
 
-void GameTacMap::init( puint8_t bitmapData, int dataSize )
+void GameTacMap::init( puint8_t bitmapData, int32_t dataSize )
 {
 
 	EllipseElement::init();
@@ -144,7 +144,7 @@ void GameTacMap::render()
 	gos_SetRenderState( gos_State_Texture, textureHandle );
 
 
-	for ( int i = 0; i < 4; ++i )
+	for ( int32_t i = 0; i < 4; ++i )
 	{
 		corners[i].rhw = 1.0f;
 		corners[i].argb = 0xffffffff;
@@ -266,16 +266,16 @@ void GameTacMap::render()
 	gos_SetRenderState( gos_State_TextureAddress, gos_TextureWrap );
 	gos_SetRenderState( gos_State_ZCompare, 0);
 	gos_SetRenderState(	gos_State_ZWrite, 0);
-	ULONG gosTextureHandle = mcTextureManager->get_gosTextureHandle(viewRectHandle);
+	uint32_t gosTextureHandle = mcTextureManager->get_gosTextureHandle(viewRectHandle);
 
 	gos_SetRenderState( gos_State_Texture, gosTextureHandle );
 
 	gos_DrawQuads( &corners[0], 4 );
 
-	ULONG colors[MAX_MOVERS];
-	ULONG ringColors[MAX_MOVERS];
+	uint32_t colors[MAX_MOVERS];
+	uint32_t ringColors[MAX_MOVERS];
 	Stuff::Vector3D positions[MAX_MOVERS];
-	ULONG ranges[MAX_MOVERS];
+	uint32_t ranges[MAX_MOVERS];
 	bool		  selected[MAX_MOVERS];
 
 	count = 0;
@@ -289,7 +289,7 @@ void GameTacMap::render()
 		
 		if ( pSys )
 		{
-			for ( int j = 0; j < pSys->numSensors; ++j )
+			for ( int32_t j = 0; j < pSys->numSensors; ++j )
 			{
 				SensorSystem* pSensor = pSys->sensors[j];
 
@@ -307,8 +307,8 @@ void GameTacMap::render()
 
 				ObjectClass objClass = pSensor->owner->getObjectClass();
 
-				ULONG colorBlip = pSensor->owner->getSelected() ? 0xff4bff4b : 0xff00cc00;
-				ULONG colorRing = 0xff00cc00;
+				uint32_t colorBlip = pSensor->owner->getSelected() ? 0xff4bff4b : 0xff00cc00;
+				uint32_t colorRing = 0xff00cc00;
 
 			
 				if ( pSensor->owner->getTeam()->isNeutral( Team::home ) )
@@ -352,7 +352,7 @@ void GameTacMap::render()
 		}
 	}
 
-	ULONG colorBlip, colorRing;
+	uint32_t colorBlip, colorRing;
 
 	//-----------------------------------------------------	
 	// draw the movers
@@ -416,9 +416,9 @@ void GameTacMap::render()
 		drawSensor( positions[i], ranges[i], ringColors[i] );
 	}
 	bool bSel = 0; // draw unselected first
-	for ( int j = 0; j < 2; j++ )
+	for ( int32_t j = 0; j < 2; j++ )
 	{
-		for ( int i = 0; i < count; i++ )
+		for ( int32_t i = 0; i < count; i++ )
 		{
 			if ( selected[i] == bSel )
 			{
@@ -436,7 +436,7 @@ void GameTacMap::worldToTacMap( Stuff::Vector3D& world, gos_VERTEX& tac )
 {
 	TacMap::worldToTacMap( world, left, top, right - left, bottom - top, tac );
 }	
-void GameTacMap::initBuildings( puint8_t data, int size )
+void GameTacMap::initBuildings( puint8_t data, int32_t size )
 {
 	if ( data )
 	{
@@ -448,7 +448,7 @@ void GameTacMap::initBuildings( puint8_t data, int size )
 			buildingPoints = new gos_VERTEX[buildingCount];
 			gos_VERTEX* pTmp = buildingPoints;
 
-			for ( int i = 0; i < buildingCount; ++i, pTmp++)
+			for ( int32_t i = 0; i < buildingCount; ++i, pTmp++)
 			{
 				pTmp->x = *pData++ + left;
 				pTmp->y = *pData++ + top;
@@ -474,7 +474,7 @@ void GameTacMap::drawSensor( const Stuff::Vector3D& pos, float radius, int32_t c
 
 	radius *= ((float)(right - left))/(land->metersPerCell * land->realVerticesMapSide * 3.f);
 
-	for ( int i = 0; i < 4; ++i )
+	for ( int32_t i = 0; i < 4; ++i )
 	{
 		sqare[i].z = 0;
 		sqare[i].rhw = .5;
@@ -511,7 +511,7 @@ void GameTacMap::drawSensor( const Stuff::Vector3D& pos, float radius, int32_t c
 
 }
 
-void GameTacMap::drawBlip( const Stuff::Vector3D& pos, int32_t color, int type )
+void GameTacMap::drawBlip( const Stuff::Vector3D& pos, int32_t color, int32_t type )
 {
 	if ( color == 0 )
 		return;
@@ -523,10 +523,10 @@ void GameTacMap::drawBlip( const Stuff::Vector3D& pos, int32_t color, int type )
 	gos_SetRenderState( gos_State_Filter, gos_FilterBiLinear);
 	gos_SetRenderState( gos_State_ZCompare, 0);
 	gos_SetRenderState(	gos_State_ZWrite, 0);
-	ULONG gosID = mcTextureManager->get_gosTextureHandle( blipHandle );
+	uint32_t gosID = mcTextureManager->get_gosTextureHandle( blipHandle );
 	gos_SetRenderState( gos_State_Texture, gosID );
 
-	for ( int i = 0; i < 4; ++i )
+	for ( int32_t i = 0; i < 4; ++i )
 	{
 		triangle[i].z = 0;
 		triangle[i].rhw = .5;

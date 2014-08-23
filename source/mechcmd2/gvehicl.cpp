@@ -114,7 +114,7 @@
 
 #include "..\resource.h"
 
-extern ULONG		NextIdNumber;
+extern uint32_t		NextIdNumber;
 
 #define TURN_THRESHOLD		20.0
 #define BLIP_FRAME_RATE		0.067
@@ -290,7 +290,7 @@ void GroundVehicleType::destroy (void)
 
 //----------------------------------------------------------------------------------
 
-int32_t GroundVehicleType::init (FilePtr objFile, ULONG fileSize) {
+int32_t GroundVehicleType::init (FilePtr objFile, uint32_t fileSize) {
 
 	PSTR bodyLocationString[NUM_GROUNDVEHICLE_LOCATIONS] = {
 		"Front",
@@ -1134,7 +1134,7 @@ int32_t GroundVehicle::init (FitIniFile* vehicleFile)
 		inventory[curItem].ammoIndex = -1;
 		inventory[curItem].readyTime = 0.0;
 		inventory[curItem].bodyLocation = 255;
-		inventory[curItem].effectiveness = (short)(MasterComponent::masterList[inventory[curItem].masterID].getWeaponDamage() * 10.0 /	// damage over 10 seconds
+		inventory[curItem].effectiveness = (int16_t)(MasterComponent::masterList[inventory[curItem].masterID].getWeaponDamage() * 10.0 /	// damage over 10 seconds
 										   MasterComponent::masterList[inventory[curItem].masterID].getWeaponRecycleTime());
 		inventory[curItem].effectiveness *= WeaponRanges[MasterComponent::masterList[inventory[curItem].masterID].getWeaponRange()][1] / 24;
 
@@ -1352,7 +1352,7 @@ void GroundVehicle::mineCheck (void) {
 	if (MPlayer && !MPlayer->isServer())
 		return;
 
-	ULONG mine = 0;
+	uint32_t mine = 0;
 	mine = GameMap->getMine(cellPositionRow, cellPositionCol);
 
 	if (mine == 1)
@@ -2058,9 +2058,9 @@ bool GroundVehicle::updateMovePath (float& newRotate, char& newThrottleSetting, 
 			if (pilot->getMovePathGlobalStep() < (pilot->getMoveNumGlobalSteps() - 1)) 
 			{
 				//-----------------------------------------------------------
-				// We've reached the end of our current short-range path, but
+				// We've reached the end of our current int16_t-range path, but
 				// we have more to go before we've reached our int32_t-range
-				// goal, so calc our next short-range path...
+				// goal, so calc our next int16_t-range path...
 				goalReached = false;
 			}
 		}
@@ -2540,7 +2540,7 @@ extern int32_t srObjtUpd;
 //extern L_INTEGER endCk;
 
 //----------------------------------------------------------------------------------
-void GroundVehicle::disable (ULONG cause)
+void GroundVehicle::disable (uint32_t cause)
 {
 	Mover::disable(cause);
 	timeLeft = 0.0;
@@ -3883,7 +3883,7 @@ void GroundVehicle::render (void)
 			{
 				float barStatus = getTotalEffectiveness();
 				
-				ULONG color = 0xff7f7f7f;
+				uint32_t color = 0xff7f7f7f;
 				if ((teamId > -1) && (teamId < 8)) {
 					if (getTeam()->isFriendly(Team::home))
 						color = SB_GREEN;
@@ -3946,7 +3946,7 @@ void GroundVehicle::render (void)
 		{
 			float barStatus = getTotalEffectiveness();
 			
-			ULONG color = 0xff7f7f7f;
+			uint32_t color = 0xff7f7f7f;
 			if (getTeamId() == Team::home->getId())
 			{
 				//Two Possibilities.  Either we have the same commander or we don't.
@@ -4158,7 +4158,7 @@ int32_t GroundVehicle::buildStatusChunk (void) {
 
 //---------------------------------------------------------------------------
 
-int32_t GroundVehicle::handleStatusChunk (int32_t updateAge, ULONG chunk) {
+int32_t GroundVehicle::handleStatusChunk (int32_t updateAge, uint32_t chunk) {
 
 	statusChunk.init();
 	statusChunk.data = chunk;
@@ -4243,7 +4243,7 @@ int32_t GroundVehicle::buildMoveChunk (void) {
 //---------------------------------------------------------------------------
 #pragma optimize("",off)
 
-int32_t GroundVehicle::handleMoveChunk (ULONG chunk) {
+int32_t GroundVehicle::handleMoveChunk (uint32_t chunk) {
 
 	moveChunk.init();
 	moveChunk.data = chunk;
@@ -5433,7 +5433,7 @@ void GroundVehicle::Save (PacketFilePtr file, int32_t packetNum)
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(PUCHAR)&data,sizeof(GroundVehicleData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(puint8_t)&data,sizeof(GroundVehicleData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

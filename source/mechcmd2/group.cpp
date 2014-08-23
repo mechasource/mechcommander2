@@ -882,7 +882,7 @@ Fatal(0, "Need to support jumpGoalList (and goalList) for MOVETO as well in mc2 
 // TAC ORDERS
 //---------------------------------------------------------------------------
 
-int32_t MoverGroup::orderMoveToPoint (bool setTacOrder, int32_t origin, Stuff::Vector3D location, ULONG params) {
+int32_t MoverGroup::orderMoveToPoint (bool setTacOrder, int32_t origin, Stuff::Vector3D location, uint32_t params) {
 
 	int32_t result = TACORDER_FAILURE;
 
@@ -898,7 +898,7 @@ int32_t MoverGroup::orderMoveToPoint (bool setTacOrder, int32_t origin, Stuff::V
 
 //---------------------------------------------------------------------------
 
-int32_t MoverGroup::orderMoveToObject (bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, ULONG params) {
+int32_t MoverGroup::orderMoveToObject (bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, uint32_t params) {
 
 	int32_t result = TACORDER_FAILURE;
 
@@ -914,7 +914,7 @@ int32_t MoverGroup::orderMoveToObject (bool setTacOrder, int32_t origin, GameObj
 
 //---------------------------------------------------------------------------
 
-int32_t MoverGroup::orderTraversePath (int32_t origin, WayPathPtr wayPath, ULONG params) {
+int32_t MoverGroup::orderTraversePath (int32_t origin, WayPathPtr wayPath, uint32_t params) {
 
 	int32_t result = TACORDER_FAILURE;
 
@@ -978,7 +978,7 @@ int32_t MoverGroup::orderPowerUp (int32_t origin) {
 
 //---------------------------------------------------------------------------
 
-int32_t MoverGroup::orderAttackObject (int32_t origin, GameObjectPtr target, int32_t attackType, int32_t attackMethod, int32_t attackRange, int32_t aimLocation, int32_t fromArea, ULONG params) {
+int32_t MoverGroup::orderAttackObject (int32_t origin, GameObjectPtr target, int32_t attackType, int32_t attackMethod, int32_t attackRange, int32_t aimLocation, int32_t fromArea, uint32_t params) {
 
 	int32_t result = TACORDER_FAILURE;
 
@@ -1028,7 +1028,7 @@ int32_t MoverGroup::orderEject (int32_t origin) {
 // COMBAT EVENTS
 //---------------------------------------------------------------------------
 
-void MoverGroup::triggerAlarm (int32_t alarmCode, ULONG triggerId) {
+void MoverGroup::triggerAlarm (int32_t alarmCode, uint32_t triggerId) {
 
 	for (int32_t i = 0; i < numMovers; i++) {
 		MechWarriorPtr pilot = getMover(i)->getPilot();
@@ -1039,7 +1039,7 @@ void MoverGroup::triggerAlarm (int32_t alarmCode, ULONG triggerId) {
 
 //---------------------------------------------------------------------------
 
-int32_t MoverGroup::handleMateCrippled (ULONG mateWID) {
+int32_t MoverGroup::handleMateCrippled (uint32_t mateWID) {
 
 	triggerAlarm(PILOT_ALARM_FRIENDLY_VEHICLE_CRIPPLED, mateWID);
 	return(NO_ERROR);
@@ -1047,7 +1047,7 @@ int32_t MoverGroup::handleMateCrippled (ULONG mateWID) {
 
 //---------------------------------------------------------------------------
 
-int32_t MoverGroup::handleMateDisabled (ULONG mateWID) {
+int32_t MoverGroup::handleMateDisabled (uint32_t mateWID) {
 
 	//triggerAlarm(PILOT_ALARM_DEATH_OF_MATE, mateId);
 	return(NO_ERROR);
@@ -1055,7 +1055,7 @@ int32_t MoverGroup::handleMateDisabled (ULONG mateWID) {
 
 //---------------------------------------------------------------------------
 
-int32_t MoverGroup::handleMateDestroyed (ULONG mateWID) {
+int32_t MoverGroup::handleMateDestroyed (uint32_t mateWID) {
 
 	triggerAlarm(PILOT_ALARM_DEATH_OF_MATE, mateWID);
 	return(NO_ERROR);
@@ -1063,7 +1063,7 @@ int32_t MoverGroup::handleMateDestroyed (ULONG mateWID) {
 
 //---------------------------------------------------------------------------
 
-int32_t MoverGroup::handleMateEjected (ULONG mateWID) {
+int32_t MoverGroup::handleMateEjected (uint32_t mateWID) {
 
 	//triggerAlarm(PILOT_ALARM_DEATH_OF_MATE, mateId);
 	return(NO_ERROR);
@@ -1071,7 +1071,7 @@ int32_t MoverGroup::handleMateEjected (ULONG mateWID) {
 
 //---------------------------------------------------------------------------
 
-void MoverGroup::handleMateFiredWeapon (ULONG mateWID) {
+void MoverGroup::handleMateFiredWeapon (uint32_t mateWID) {
 
 	triggerAlarm(PILOT_ALARM_MATE_FIRED_WEAPON, mateWID);
 }

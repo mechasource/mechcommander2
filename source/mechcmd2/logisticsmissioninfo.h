@@ -34,8 +34,8 @@ class LogisticsMissionInfo
 		int32_t load( FitIniFile& file );// init previously saved stuff
 
 
-		int32_t getAvailableMissions( PCSTR* missions, int& numberOfEm );
-		int32_t getCurrentMissions( PCSTR* missions, int& numberOfEm );
+		int32_t getAvailableMissions( PCSTR* missions, int32_t& numberOfEm );
+		int32_t getCurrentMissions( PCSTR* missions, int32_t& numberOfEm );
 
 		bool getMissionAvailable( PCSTR missionName );
 
@@ -61,10 +61,10 @@ class LogisticsMissionInfo
 		PCSTR			getMissionFriendlyName( PCSTR missionName ) const;
 		PCSTR			getCurrentABLScriptName() const;
 
-		int					getCurrentRP() const;
-		int					getCBills() const { return CBills; }
-		void				incrementCBills(int amount) { CBills += amount; }
-		void				decrementCBills(int amount) { CBills -= amount; }
+		int32_t					getCurrentRP() const;
+		int32_t					getCBills() const { return CBills; }
+		void				incrementCBills(int32_t amount) { CBills += amount; }
+		void				decrementCBills(int32_t amount) { CBills -= amount; }
 
 		const EString& 		getCampaignName( ) const { return campaignName; }
 		const EString&		getCampaignDisplayName() const { return campaignDisplayName; }
@@ -80,7 +80,7 @@ class LogisticsMissionInfo
 //		int32_t				getMaxTeams() const { return maxTeams; }
 //		int32_t				getMaxPlayers() const { return maxPlayers; }
 
-		int					getAdditionalPurachaseFiles( PCSTR* list, int32_t& maxCount );
+		int32_t					getAdditionalPurachaseFiles( PCSTR* list, int32_t& maxCount );
 		void				addBonusPurchaseFile( PCSTR fileName ); // extra bonus
 
 		bool				skipLogistics();

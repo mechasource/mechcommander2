@@ -1,7 +1,7 @@
 //***************************************************************************
 //
 //	Carnage.h -- Base class for any and all damage-related effects that
-//				 dynamically appear and disappear with short lifetimes.
+//				 dynamically appear and disappear with int16_t lifetimes.
 //				 Things such as fires, explosions and debris.
 //
 //	MechCommander 2
@@ -67,7 +67,7 @@ class Carnage : public GameObject
 			
 			//Lighting Data
 			TG_LightPtr			pointLight;
-			ULONG				lightId;
+			uint32_t				lightId;
 
 			float				intensity;
 			float				inRadius;
@@ -167,12 +167,12 @@ class FireType : public ObjectType
 	public:
 	
 		float			damageLevel;
-		ULONG	soundEffectId;
-		ULONG	lightObjectId;
+		uint32_t	soundEffectId;
+		uint32_t	lightObjectId;
 		
-		ULONG 	startLoopFrame;
-		ULONG	endLoopFrame;
-		ULONG	numLoops;
+		uint32_t 	startLoopFrame;
+		uint32_t	endLoopFrame;
+		uint32_t	numLoops;
 		
 		float			maxExtent;		//How Good am I at setting off other fires
 		float			timeToMax;		//How int32_t before I grow to MaxExtent size
@@ -221,7 +221,7 @@ class FireType : public ObjectType
 			init();
 		}
 		
-		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
 
 		int32_t init (FitIniFilePtr objFile);
 		
@@ -246,8 +246,8 @@ class ExplosionType : public ObjectType
 	public:
 
 		float				damageLevel;
-		ULONG		soundEffectId;
-		ULONG		lightObjectId;
+		uint32_t		soundEffectId;
+		uint32_t		lightObjectId;
 		int32_t				explRadius;
 		float				chunkSize;
 
@@ -255,7 +255,7 @@ class ExplosionType : public ObjectType
 		float				lightMaxMaxRadius;
 		float 				lightOutMinRadius;
 		float 				lightOutMaxRadius;
-		ULONG 				lightRGB;
+		uint32_t 				lightRGB;
 		float 				maxIntensity;
 		float 				minIntensity;
 		float				duration;
@@ -289,7 +289,7 @@ class ExplosionType : public ObjectType
 			init();
 		}
 
-		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
 
 		int32_t init (FitIniFilePtr objFile);
 

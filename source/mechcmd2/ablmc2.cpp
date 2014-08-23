@@ -1075,7 +1075,7 @@ void execGetFireRanges (void) {
 	//
 	//	GET FIRE RANGES function:
 	//
-	//		Retrieves the current settings for SHORT, MEDIUM and LONG range,
+	//		Retrieves the current settings for int16_t , MEDIUM and int32_t range,
 	//		as well as MAX WEAPON range
 	//
 	//		PARAMS:	@real[4]			sets the game's current ranges (meters)				
@@ -1117,7 +1117,7 @@ void execGetAttackers (void) {
 
 	int32_t numAttackers = 0;
 	if (CurWarrior)
-		numAttackers = CurWarrior->getAttackers((ULONG*)attackers, seconds);
+		numAttackers = CurWarrior->getAttackers((uint32_t*)attackers, seconds);
 	ABLi_pushInteger(numAttackers);
 }
 
@@ -1140,7 +1140,7 @@ void execGetAttackerInfo (void) {
 	//
 	//-----------------------------------------------------
 
-	ULONG attackerId = ABLi_popInteger();
+	uint32_t attackerId = ABLi_popInteger();
 
 	float timeSince = 1000000.0;
 	if ((attackerId >= MIN_UNIT_PART_ID) && (attackerId <= MAX_UNIT_PART_ID)) {
@@ -1625,7 +1625,7 @@ void execOrderMoveTo (void) {
 	location.y = coordList[1];
 	location.z = coordList[2];
 	
-	ULONG params = TACORDER_PARAM_NONE;
+	uint32_t params = TACORDER_PARAM_NONE;
 	if (run)
 		params |= TACORDER_PARAM_RUN;
 
@@ -1653,7 +1653,7 @@ void execOrderMoveToObject (void) {
 	//
 	//-----------------------------------------------------
 
-	ULONG objectId = ABLi_popInteger();
+	uint32_t objectId = ABLi_popInteger();
 	bool run = ABLi_popBoolean();
 
 	if (ABLi_getSkipOrder()) {
@@ -1782,7 +1782,7 @@ void execOrderAttackObject (void) {
 	//
 	//				integer		method (0 = ranged, 1 = dfa, 2 = ramming)
 	//
-	//				integer		range (0 = short, 1 = medium, 2 = int32_t)
+	//				integer		range (0 = int16_t, 1 = medium, 2 = int32_t)
 	//
 	//				integer		pursue (0 = False, 1 = True)
 	//
@@ -1790,7 +1790,7 @@ void execOrderAttackObject (void) {
 	//
 	//-----------------------------------------------------
 
-	ULONG objectId = ABLi_popInteger();
+	uint32_t objectId = ABLi_popInteger();
 	int32_t attackType = ABLi_popInteger();
 	int32_t attackMethod = ABLi_popInteger();
 	int32_t attackRange = ABLi_popInteger();
@@ -1798,7 +1798,7 @@ void execOrderAttackObject (void) {
 
 	int32_t result = 1;
 	if (!ABLi_getSkipOrder()) {
-		ULONG params = TACORDER_PARAM_NONE;
+		uint32_t params = TACORDER_PARAM_NONE;
 		if (pursue)
 			params |= TACORDER_PARAM_PURSUE;
 
@@ -1831,7 +1831,7 @@ void execOrderAttackContact (void) {
 	//
 	//		PARAMS:	integer		attack type (0 = none, 1 = destroy, 2 = disable)
 	//
-	//				integer		range (0 = short, 1 = medium, 2 = int32_t)
+	//				integer		range (0 = int16_t, 1 = medium, 2 = int32_t)
 	//
 	//				integer		method (0 = ranged, 1 = dfa, 2 = ramming)
 	//
@@ -1848,7 +1848,7 @@ void execOrderAttackContact (void) {
 
 	int32_t result = 1;
 	if (!ABLi_getSkipOrder()) {
-		ULONG params = TACORDER_PARAM_NONE;
+		uint32_t params = TACORDER_PARAM_NONE;
 		if (pursue)
 			params |= TACORDER_PARAM_PURSUE;
 		result = -2;
@@ -2445,7 +2445,7 @@ void execSetTimer (void) {
 	//
 	//		Returns: integer (ID of timer created)
 	
-	short timerNumber = ABLi_popInteger();
+	int16_t timerNumber = ABLi_popInteger();
 	float duration = ABLi_popReal();
 
 	if (timerNumber < SCENARIO_TIMER_1 || timerNumber > SCENARIO_TIMER_8)
@@ -2469,7 +2469,7 @@ void execCheckTimer (void) {
 	//
 	//		Returns: real (time left)
 	
-	short timerNumber = ABLi_popInteger();
+	int16_t timerNumber = ABLi_popInteger();
 
 	float timeLeft = 0.0;
 	if ((timerNumber >= 0) && (timerNumber < MAX_TIMERS)) {
@@ -4689,7 +4689,7 @@ void execIsTeamCapturing (void) {
 
 	bool targeting = false;
 	GameObjectPtr target = getObject(targetId);
-	ULONG targetWID = target ? target->getWatchID(false) : 0;
+	uint32_t targetWID = target ? target->getWatchID(false) : 0;
 	if (targetWID) {
 		if ((teamId >= OBJ_ID_FIRST_TEAM) && (teamId <= OBJ_ID_LAST_TEAM)) {
 			TeamPtr team = Team::teams[teamId - OBJ_ID_FIRST_TEAM];
@@ -4896,7 +4896,7 @@ void execConvertCoords (void) {
 void execCoreMoveTo (void) {
 
 	float* location = ABLi_popRealPtr();
-	ULONG params = (ULONG)ABLi_popInteger();
+	uint32_t params = (uint32_t)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -4923,7 +4923,7 @@ void execCoreMoveTo (void) {
 void execCoreMoveToObject (void) {
 
 	int32_t objectID = ABLi_popInteger();
-	ULONG params = (ULONG)ABLi_popInteger();
+	uint32_t params = (uint32_t)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -4961,7 +4961,7 @@ void execCorePower (void) {
 void execCoreAttack (void) {
 
 	int32_t objectID = ABLi_popInteger();
-	ULONG params = (ULONG)ABLi_popInteger();
+	uint32_t params = (uint32_t)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -4981,7 +4981,7 @@ void execCoreAttack (void) {
 void execCoreCapture (void) {
 
 	int32_t objectID = ABLi_popInteger();
-	ULONG params = (ULONG)ABLi_popInteger();
+	uint32_t params = (uint32_t)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -5001,7 +5001,7 @@ void execCoreCapture (void) {
 void execCoreScan (void) {
 
 	int32_t objectID = ABLi_popInteger();
-	ULONG params = (ULONG)ABLi_popInteger();
+	uint32_t params = (uint32_t)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -5021,7 +5021,7 @@ void execCoreScan (void) {
 void execCoreControl (void) {
 
 	int32_t objectID = ABLi_popInteger();
-	ULONG params = (ULONG)ABLi_popInteger();
+	uint32_t params = (uint32_t)ABLi_popInteger();
 
 	if (ABLi_getSkipOrder()) {
 		ABLi_pushInteger(1);
@@ -5066,7 +5066,7 @@ void execSetPilotState (void) {
 	//
 	//-----------------------------------------------------
 
-	ULONG newStateHandle = ABLi_popInteger();
+	uint32_t newStateHandle = ABLi_popInteger();
 	
 	int32_t curStateHandle = ABLi_getCurrentState();
 	if (curStateHandle > 0) {
@@ -5276,8 +5276,8 @@ void execFadeToColor (void)
 	//
 	//-----------------------------------------------------
 
-	ULONG fadeColor = ABLi_popInteger();
-	ULONG fadeTime = ABLi_popReal();
+	uint32_t fadeColor = ABLi_popInteger();
+	uint32_t fadeTime = ABLi_popReal();
 	
 	if (eye)
 		eye->fadeToColor(fadeColor,fadeTime);
@@ -5298,7 +5298,7 @@ void execForceMovieEnd (void)
 	//		RETURN: 1 if user asked movie to end.  Zero otherwise
 	//
 	//-----------------------------------------------------
-	ULONG result = 0;
+	uint32_t result = 0;
 	if (eye && eye->forceMovieEnd)
 		result = 1;
 		
@@ -6099,7 +6099,7 @@ void execMCPrint (void) {
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_INTEGER:
-			sprintf(s, "int=%d", value.data.integer);
+			sprintf(s, "int32_t=%d", value.data.integer);
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_REAL:
@@ -6115,7 +6115,7 @@ void execMCPrint (void) {
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_INTEGER_PTR:
-			sprintf(s, "int*=%d,%d,%d", value.data.integerPtr[0], value.data.integerPtr[1], value.data.integerPtr[2]);
+			sprintf(s, "pint32_t=%d,%d,%d", value.data.integerPtr[0], value.data.integerPtr[1], value.data.integerPtr[2]);
 			DEBUGWINS_print(s, 0);
 			break;
 		case ABL_STACKITEM_REAL_PTR:
@@ -6366,14 +6366,14 @@ void execSetKeepMoving (void) {
 
 //*****************************************************************************
 
-PVOID ablSystemMallocCallback (ULONG memSize) {
+PVOID ablSystemMallocCallback (uint32_t memSize) {
 
 	return(systemHeap->Malloc(memSize));
 }
 
 //-----------------------------------------------------------------------------
 
-PVOID ablStackMallocCallback (ULONG memSize) {
+PVOID ablStackMallocCallback (uint32_t memSize) {
 
 	if (!AblSymbolHeap)
 		Fatal(0, " ablSymbolMallocCallback: NULL heap ");
@@ -6382,7 +6382,7 @@ PVOID ablStackMallocCallback (ULONG memSize) {
 
 //-----------------------------------------------------------------------------
 
-PVOID ablCodeMallocCallback (ULONG memSize) {
+PVOID ablCodeMallocCallback (uint32_t memSize) {
 
 	if (!AblCodeHeap)
 		Fatal(0, " ablCodeFreeCallback: NULL heap ");
@@ -6391,7 +6391,7 @@ PVOID ablCodeMallocCallback (ULONG memSize) {
 
 //-----------------------------------------------------------------------------
 
-PVOID ablSymbolMallocCallback (ULONG memSize) {
+PVOID ablSymbolMallocCallback (uint32_t memSize) {
 
 	if (!AblSymbolHeap)
 		Fatal(0, " ablSymbolMallocCallback: NULL heap ");
@@ -6558,7 +6558,7 @@ void ablDebugPrintCallback (PSTR s) {
 
 //*****************************************************************************
 
-void ablSeedRandom (ULONG seed) {
+void ablSeedRandom (uint32_t seed) {
 
 	gos_srand(seed);
 }

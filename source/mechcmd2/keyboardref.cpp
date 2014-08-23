@@ -32,7 +32,7 @@ KeyboardRef::~KeyboardRef()
 
 //-------------------------------------------------------------------------------------------------
 
-int KeyboardRef::init()
+int32_t KeyboardRef::init()
 {
 	// clear out old stuff first
 	clear();
@@ -119,7 +119,7 @@ void KeyboardRef::reseed( MissionInterfaceManager::Command* commands )
 
 	// first count the number of hotTexts
 	int32_t count = 0;
-	for ( int i = 0; i < MAX_COMMAND; i++ )
+	for ( int32_t i = 0; i < MAX_COMMAND; i++ )
 	{
 		if ( commands[i].hotKeyDescriptionText != -1 )
 		{
@@ -181,7 +181,7 @@ void KeyboardRef::reseed( MissionInterfaceManager::Command* commands )
 	}
 }
 
-int	KeyboardRef::handleMessage( ULONG who, ULONG )
+int32_t	KeyboardRef::handleMessage( uint32_t who, uint32_t )
 {
 	return MissionInterfaceManager::instance()->toggleHotKeys();
 }

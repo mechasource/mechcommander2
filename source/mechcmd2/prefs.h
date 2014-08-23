@@ -12,9 +12,9 @@
 class CPrefs {
 public:
 	CPrefs();
-	int load( PCSTR pFileName = "options");
-	int save();
-	int applyPrefs(bool bApplyResolution = 1);
+	int32_t load( PCSTR pFileName = "options");
+	int32_t save();
+	int32_t applyPrefs(bool bApplyResolution = 1);
 
 	void setNewName( PCSTR pNewName );
 	void setNewUnit( PCSTR pNewUnit );
@@ -64,7 +64,7 @@ public:
 	bool	useRealLOS;
 	float doubleClickThreshold;
 	int32_t dragThreshold;
-	ULONG BaseVertexColor;		//This color is applied to all vertices in game as Brightness correction.
+	uint32_t BaseVertexColor;		//This color is applied to all vertices in game as Brightness correction.
 #endif
 };
 

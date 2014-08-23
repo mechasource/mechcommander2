@@ -67,7 +67,7 @@ namespace mechgui {
 	protected: 
 		void init(FitIniFile& file, PCSTR staticName, PCSTR textName, 
 			PCSTR rectName, PCSTR buttonName, PCSTR editName = "Edit", 
-			PCSTR animObjectName = "AnimObject", ULONG neverFlush = 0);
+			PCSTR animObjectName = "AnimObject", uint32_t neverFlush = 0);
 
 		virtual void update(void);
 		virtual void render(void);
@@ -75,7 +75,7 @@ namespace mechgui {
 		virtual void begin(void);
 		virtual void end(void){}
 
-		virtual void render( int xOffset, int yOffset );
+		virtual void render( int32_t xOffset, int32_t yOffset );
 
 		int32_t getStatus(void);
 

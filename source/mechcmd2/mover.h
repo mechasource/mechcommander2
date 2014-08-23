@@ -126,7 +126,7 @@ class MoveChunk {
 		int32_t				numSteps;
 		bool				run;
 		bool				moving;
-		ULONG		data;
+		uint32_t		data;
 		static int32_t			err;
 
 	public:
@@ -367,12 +367,12 @@ typedef struct _InventoryItem {
 	//----------------
 	// weapon specific
 	uint8_t		facing;			// weapon facing in torso: 0 = forward, 1 = rear -- NO WEAPONS fire rear.  This is the weapon Node ID now!!!!
-	short				startAmount;	// ammo's mission-start level
-	short				amount;			// generally for ammo, and weapon's total ammo
-	short				ammoIndex;		// used by ammo to reference ammo pools
+	int16_t				startAmount;	// ammo's mission-start level
+	int16_t				amount;			// generally for ammo, and weapon's total ammo
+	int16_t				ammoIndex;		// used by ammo to reference ammo pools
 	float				readyTime;		// next time weapon will be ready
 	uint8_t		bodyLocation;	// where is the weapon located
-	short				effectiveness;	// weapon max effectiveness
+	int16_t				effectiveness;	// weapon max effectiveness
 } InventoryItem;
 
 //------------------------------------------------------------------------------------------
@@ -490,17 +490,17 @@ class StatusChunk {
 
 	public:
 
-		ULONG		bodyState;
+		uint32_t		bodyState;
 		char				targetType;
 		int32_t				targetId;
 		int32_t				targetBlockOrTrainNumber;
 		int32_t				targetVertexOrCarNumber;
 		char				targetItemNumber;
-		short				targetCellRC[2];
+		int16_t				targetCellRC[2];
 		bool				ejectOrderGiven;
 		bool				jumpOrder;
 
-		ULONG		data;
+		uint32_t		data;
 
 	public:
 
@@ -693,14 +693,14 @@ typedef struct _MoverData : public GameObjectData
 
 	int32_t				conStat;						
 	float				fadeTime;						
-	UCHAR				alphaValue;						
+	uint8_t				alphaValue;						
 	int32_t				causeOfDeath;
 
 	int32_t				lowestWeaponNodeID;
 
-	ULONG				psRed;
-	ULONG				psBlue;
-	ULONG				psGreen;
+	uint32_t				psRed;
+	uint32_t				psBlue;
+	uint32_t				psGreen;
 
 } MoverData;
 
@@ -826,7 +826,7 @@ class Mover : public GameObject {
 		MoverDynamics		dynamics;						// dynamics settings for this mover
 		
 		// Network
-		//ULONG				netPlayerId;
+		//uint32_t				netPlayerId;
 		char				netPlayerName[MAXLEN_NET_PLAYER_NAME];	// netPlayerName is the player who owns this mover
 		int32_t				localMoverId;					// if >= 0, is locally controlled
 		int32_t				netRosterIndex;					// used for mover id in net packets
@@ -834,7 +834,7 @@ class Mover : public GameObject {
 		bool				newMoveChunk;					// set if last movechunk not yet processed
 		MoveChunk			moveChunk;						// last move chunk built/received
 		int32_t				numWeaponFireChunks[2];
-		ULONG		weaponFireChunks[2][MAX_WEAPONFIRE_CHUNKS];
+		uint32_t		weaponFireChunks[2][MAX_WEAPONFIRE_CHUNKS];
 		int32_t				numCriticalHitChunks[2];
 		uint8_t		criticalHitChunks[2][MAX_CRITICALHIT_CHUNKS];
 		int32_t				numRadioChunks[2];
@@ -900,11 +900,11 @@ class Mover : public GameObject {
 		static bool			inRecoverUpdate;
 		static char			optimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
 		static int32_t			numOptimalIncrements;
-		static short		rangedCellsIndices[MAX_ATTACK_CELLRANGE][2];
+		static int16_t		rangedCellsIndices[MAX_ATTACK_CELLRANGE][2];
 		static char			rangedCells[RANGED_CELLS_DIM][2];
 		static int32_t			IndirectFireWeapons[20];
 		static int32_t			AreaEffectWeapons[20];
-		static ULONG holdFireIconHandle;
+		static uint32_t holdFireIconHandle;
 		
 		static TriggerAreaManager* triggerAreaMgr;
 
@@ -914,7 +914,7 @@ class Mover : public GameObject {
 
 		int32_t				conStat;						//Contact status stored for this frame, for this machine
 		float				fadeTime;						//Time between fade from LOS to non-LOS
-		UCHAR				alphaValue;						//Current Fade value;
+		uint8_t				alphaValue;						//Current Fade value;
 		int32_t				causeOfDeath;
 
 		int32_t				lowestWeaponNodeID;
@@ -943,7 +943,7 @@ class Mover : public GameObject {
 			return(NO_ERROR);
 		}
 
-		virtual int32_t init (ULONG variantNum) {
+		virtual int32_t init (uint32_t variantNum) {
 			return(NO_ERROR);
 		}
 
@@ -1061,7 +1061,7 @@ class Mover : public GameObject {
 //			frame = newFrame;
 //		}
 		
-		virtual Stuff::Vector3D relativePosition (float angle, float radius, ULONG flags);
+		virtual Stuff::Vector3D relativePosition (float angle, float radius, uint32_t flags);
 
 		int32_t calcLineOfSightView (int32_t range);
 		
@@ -1101,7 +1101,7 @@ class Mover : public GameObject {
 
 		virtual void reduceAntiMissileAmmo (int32_t numAntiMissiles);
 
-		virtual void pilotingCheck (ULONG situation = 0, float modifier = 0.0);
+		virtual void pilotingCheck (uint32_t situation = 0, float modifier = 0.0);
 
 		virtual void forcePilotingCheck (void) {
 			if (pilotCheckModifier < 0)
@@ -1162,7 +1162,7 @@ class Mover : public GameObject {
 		virtual int32_t bounceToAdjCell (void);
 
 #ifdef USE_MOVERCONTROLS
-		ULONG getControlClass (void) {
+		uint32_t getControlClass (void) {
 			return(control->getControlClass());
 		}
 #endif
@@ -1227,11 +1227,11 @@ class Mover : public GameObject {
 
 		int32_t getContactStatus (int32_t scanningTeamID, bool includingAllies);
 
-//		void setNetPlayerId (ULONG playerId) {
+//		void setNetPlayerId (uint32_t playerId) {
 //			netPlayerId = playerId;
 //		}
 
-//		ULONG getNetPlayerId (void) {
+//		uint32_t getNetPlayerId (void) {
 //			return(netPlayerId);
 //		}
 
@@ -1272,9 +1272,9 @@ class Mover : public GameObject {
 
 		int32_t addWeaponFireChunk (int32_t which, WeaponFireChunkPtr chunk);
 
-		int32_t addWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer, int32_t numChunks);
+		int32_t addWeaponFireChunks (int32_t which, uint32_t* packedChunkBuffer, int32_t numChunks);
 
-		int32_t grabWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer, int32_t maxChunks);
+		int32_t grabWeaponFireChunks (int32_t which, uint32_t* packedChunkBuffer, int32_t maxChunks);
 
 		virtual int32_t updateWeaponFireChunks (int32_t which);
 
@@ -1314,7 +1314,7 @@ class Mover : public GameObject {
 			return(NO_ERROR);
 		}
 
-		virtual int32_t handleStatusChunk (int32_t updateAge, ULONG chunk) {
+		virtual int32_t handleStatusChunk (int32_t updateAge, uint32_t chunk) {
 			return(NO_ERROR);
 		}
 
@@ -1326,7 +1326,7 @@ class Mover : public GameObject {
 			return(NO_ERROR);
 		}
 
-		virtual int32_t handleMoveChunk (ULONG chunk) {
+		virtual int32_t handleMoveChunk (uint32_t chunk) {
 			return(NO_ERROR);
 		}
 
@@ -1342,11 +1342,11 @@ class Mover : public GameObject {
 			fieldedCV = CV;
 		}
 
-		ULONG getFieldedCV (void) {
+		uint32_t getFieldedCV (void) {
 			return(fieldedCV);
 		}
 
-		virtual void setThreatRating (short rating);
+		virtual void setThreatRating (int16_t rating);
 
 		virtual int32_t getThreatRating (void);
 
@@ -1413,9 +1413,9 @@ class Mover : public GameObject {
 			sensorSystem.addContact(contact);
 		}
 */
-		int32_t scanContact (int32_t contactType, ULONG contactHandle);
+		int32_t scanContact (int32_t contactType, uint32_t contactHandle);
 
-		int32_t analyzeContact (int32_t contactType, ULONG contactHandle);
+		int32_t analyzeContact (int32_t contactType, uint32_t contactHandle);
 
 		int32_t scanBattlefield (int32_t quadrant, int32_t contactType, int32_t potentialContactType);
 
@@ -1430,8 +1430,8 @@ class Mover : public GameObject {
 						  int32_t selectionIndex,
 						  Stuff::Vector3D& newGoal,
 						  int32_t numValidAreas,
-						  short* validAreas,
-						  ULONG moveParams);
+						  pint16_t validAreas,
+						  uint32_t moveParams);
 								   
 
 		virtual int32_t calcMovePath (MovePathPtr path,
@@ -1439,13 +1439,13 @@ class Mover : public GameObject {
 								   Stuff::Vector3D start,
 								   Stuff::Vector3D goal,
 								   int32_t* goalCell,
-								   ULONG moveParams = MOVEPARAM_NONE);
+								   uint32_t moveParams = MOVEPARAM_NONE);
 
 		virtual int32_t calcEscapePath (MovePathPtr path,
 									 Stuff::Vector3D start,
 									 Stuff::Vector3D goal,
 									 int32_t* goalCell,
-									 ULONG moveParams,
+									 uint32_t moveParams,
 									 Stuff::Vector3D& escapeGoal);
 
 		virtual int32_t calcMovePath (MovePathPtr path,
@@ -1455,7 +1455,7 @@ class Mover : public GameObject {
 								   Stuff::Vector3D finalGoal,
 								   Stuff::Vector3D* goalWorldPos,
 								   int32_t* goalCell,
-								   ULONG moveParams = MOVEPARAM_NONE);
+								   uint32_t moveParams = MOVEPARAM_NONE);
 
 		virtual float weaponLocked (int32_t weaponIndex, Stuff::Vector3D targetPosition);
 
@@ -1549,7 +1549,7 @@ class Mover : public GameObject {
 			return(inventory[itemIndex].disabled);
 		}
 
-		virtual void disable (ULONG cause);
+		virtual void disable (uint32_t cause);
 
 		virtual void shutDown (void);
 		
@@ -1651,7 +1651,7 @@ class Mover : public GameObject {
 			return(0.0);
 		}
 
-		virtual int32_t calcSpriteSpeed (float speed, ULONG flags, int32_t& state, int32_t& throttle) {
+		virtual int32_t calcSpriteSpeed (float speed, uint32_t flags, int32_t& state, int32_t& throttle) {
 			state = 0;
 			throttle = 100;
 			return(-1);
@@ -1686,7 +1686,7 @@ class Mover : public GameObject {
 			return ("No Name");
 		}
 
-		void drawSensorTextHelp (float screenX, float screenY, int32_t resID, ULONG color, bool drawBOLD);
+		void drawSensorTextHelp (float screenX, float screenY, int32_t resID, uint32_t color, bool drawBOLD);
 
 		virtual SensorSystem* getSensorSystem(){ return sensorSystem; }
 
@@ -1695,13 +1695,13 @@ class Mover : public GameObject {
 
 		bool isCloseToFirstTacOrder( Stuff::Vector3D& pos );
 
-		void removeFromUnitGroup( int id );
-		void addToUnitGroup( int id );
-		bool isInUnitGroup( int id );
+		void removeFromUnitGroup( int32_t id );
+		void addToUnitGroup( int32_t id );
+		bool isInUnitGroup( int32_t id );
 		virtual bool isRefit(){ return 0; }
 		virtual bool isRecover() { return 0; }
 
-		int getIconPictureIndex(){ return iconPictureIndex; }
+		int32_t getIconPictureIndex(){ return iconPictureIndex; }
 
 		bool isWeaponWorking(int32_t index );
 
@@ -1756,16 +1756,16 @@ typedef struct _MoverInitData {
 	char			csvFileName[50];
 	int32_t			objNumber;
 	int32_t			rosterIndex;
-	ULONG	controlType;
-	ULONG	controlDataType;
-	ULONG	variant;
+	uint32_t	controlType;
+	uint32_t	controlDataType;
+	uint32_t	variant;
 	Stuff::Vector3D	position;
 	int32_t			rotation;
 	char			teamID;
 	char			commanderID;
-	ULONG			baseColor;
-	ULONG			highlightColor1;
-	ULONG			highlightColor2;
+	uint32_t			baseColor;
+	uint32_t			highlightColor1;
+	uint32_t			highlightColor2;
 	char			gestureID;
 	bool			active;
 	bool			exists;

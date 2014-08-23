@@ -45,11 +45,11 @@ class ForceGroupBar
 
 		void removeAll();
 
-		bool inRegion( int x, int y );
+		bool inRegion( int32_t x, int32_t y );
 
 		void init( FitIniFile& file, StaticInfo* pCoverIcon );
 		void swapResolutions();
-		int  getIconCount(){ return iconCount; }
+		int32_t  getIconCount(){ return iconCount; }
 
 		bool setPilotVideo( PCSTR pVideo, MechWarrior* pPilot );
 		bool isPlayingVideo();
@@ -60,7 +60,7 @@ class ForceGroupBar
 
 		static float iconWidth;
 		static float iconHeight;
-		static int	 iconsPerRow;
+		static int32_t	 iconsPerRow;
 
 		static StaticInfo* s_coverIcon;
 
@@ -69,7 +69,7 @@ class ForceGroupBar
 		float forceFlashTime;
 
 
-		int iconCount;
+		int32_t iconCount;
 		ForceGroupIcon*	icons[MAX_ICONS];
 
 		friend class ControlGui;

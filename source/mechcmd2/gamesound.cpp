@@ -27,7 +27,7 @@
 //---------------------------------------------------------------------------
 GameSoundSystem *soundSystem = NULL;
 
-extern bool wave_ParseWaveMemory(PUCHAR lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader, PUCHAR* lplpWaveSamples,ULONG *lpcbWaveSize);
+extern bool wave_ParseWaveMemory(puint8_t lpChunkOfMemory, MC2_WAVEFORMATEX** lplpWaveHeader, puint8_t* lplpWaveSamples,uint32_t *lpcbWaveSize);
 
 bool friendlyDestroyed = false;
 bool enemyDestroyed = false;
@@ -146,7 +146,7 @@ int32_t i;
 }
 
 //---------------------------------------------------------------------------
-bool GameSoundSystem::checkMessage (MechWarriorPtr pilot, byte priority, ULONG messageType)
+bool GameSoundSystem::checkMessage (MechWarriorPtr pilot, byte priority, uint32_t messageType)
 {
 	for (int32_t i=0;i<MAX_QUEUED_MESSAGES;i++)
 	{
@@ -328,9 +328,9 @@ void GameSoundSystem::update (void)
 					soundFormat.wFormatTag = 1;				//PCM
 		
 					MC2_WAVEFORMATEX *waveFormat = NULL;
-					PUCHAR dataOffset = NULL;
-					ULONG length = 0;
-					ULONG bitsPerSec = 0;
+					puint8_t dataOffset = NULL;
+					uint32_t length = 0;
+					uint32_t bitsPerSec = 0;
 					wave_ParseWaveMemory(currentMessage->data[currentFragment],&waveFormat,&dataOffset,&length);
 					
 					bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -370,9 +370,9 @@ void GameSoundSystem::update (void)
 					soundFormat.wFormatTag = 1;				//PCM
 		
 					MC2_WAVEFORMATEX *waveFormat = NULL;
-					PUCHAR dataOffset = NULL;
-					ULONG length = 0;
-					ULONG bitsPerSec = 0;
+					puint8_t dataOffset = NULL;
+					uint32_t length = 0;
+					uint32_t bitsPerSec = 0;
 					wave_ParseWaveMemory(currentMessage->noise[currentFragment],&waveFormat,&dataOffset,&length);
 					
 					bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -409,9 +409,9 @@ void GameSoundSystem::update (void)
 						soundFormat.wFormatTag = 1;				//PCM
 			
 						MC2_WAVEFORMATEX *waveFormat = NULL;
-						PUCHAR dataOffset = NULL;
-						ULONG length = 0;
-						ULONG bitsPerSec = 0;
+						puint8_t dataOffset = NULL;
+						uint32_t length = 0;
+						uint32_t bitsPerSec = 0;
 						wave_ParseWaveMemory(currentMessage->data[currentFragment],&waveFormat,&dataOffset,&length);
 						
 						bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -492,9 +492,9 @@ void GameSoundSystem::update (void)
 			soundFormat.wFormatTag = 1;				//PCM
 
 			MC2_WAVEFORMATEX *waveFormat = NULL;
-			PUCHAR dataOffset = NULL;
-			ULONG length = 0;
-			ULONG bitsPerSec = 0;
+			puint8_t dataOffset = NULL;
+			uint32_t length = 0;
+			uint32_t bitsPerSec = 0;
 			wave_ParseWaveMemory(currentMessage->noise[currentFragment],&waveFormat,&dataOffset,&length);
 			
 			bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;
@@ -531,9 +531,9 @@ void GameSoundSystem::update (void)
 				soundFormat.wFormatTag = 1;				//PCM
 	
 				MC2_WAVEFORMATEX *waveFormat = NULL;
-				PUCHAR dataOffset = NULL;
-				ULONG length = 0;
-				ULONG bitsPerSec = 0;
+				puint8_t dataOffset = NULL;
+				uint32_t length = 0;
+				uint32_t bitsPerSec = 0;
 				wave_ParseWaveMemory(currentMessage->data[currentFragment],&waveFormat,&dataOffset,&length);
 				
 				bitsPerSec = waveFormat->nBlockAlign / waveFormat->nChannels * 8;

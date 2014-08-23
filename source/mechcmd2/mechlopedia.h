@@ -47,8 +47,8 @@ class Mechlopedia : public LogisticsScreen
 		Mechlopedia();
 		virtual ~Mechlopedia();
 
-		int init();
-		virtual int			handleMessage( ULONG, ULONG );
+		int32_t init();
+		virtual int32_t			handleMessage( uint32_t, uint32_t );
 		virtual void		update();
 		virtual void		render();
 		virtual void		begin();
@@ -56,7 +56,7 @@ class Mechlopedia : public LogisticsScreen
 	private:
 
 		LogisticsScreen*	subScreens[6];
-		int					currentScreen;
+		int32_t					currentScreen;
 		aListBox			listBox;
 
 		class SubScreen : public LogisticsScreen
@@ -64,7 +64,7 @@ class Mechlopedia : public LogisticsScreen
 			public:
 
 				void setListBox( aListBox* pLB ) {groupListBox = pLB; }
-				int init( FitIniFile& file );
+				int32_t init( FitIniFile& file );
 				virtual void update();
 				virtual void select( aTextListItem* pEntry ){}
 				virtual void end();

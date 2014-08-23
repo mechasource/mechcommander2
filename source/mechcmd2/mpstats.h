@@ -28,7 +28,7 @@ class MPStatsEntry : public LogisticsScreen
 
 		void init( );
 		void setData( const _MC2Player*, bool bShowScore );
-		virtual void render( int x, int y );
+		virtual void render( int32_t x, int32_t y );
 
 		int32_t	getPlayerHeadingX();
 		int32_t	getRankingX();
@@ -45,10 +45,10 @@ class MPStatsResultsEntry : public LogisticsScreen
 	public:
 		MPStatsResultsEntry();
 		virtual ~MPStatsResultsEntry();
-		virtual void render( int x, int y );
+		virtual void render( int32_t x, int32_t y );
 
 		void init( );
-		void setData( const _MC2Player*, ULONG laurelColor, bool bShowScore );
+		void setData( const _MC2Player*, uint32_t laurelColor, bool bShowScore );
 		int32_t	overlayColor;
 
 };
@@ -63,15 +63,15 @@ class MPStats: public LogisticsScreen
 		MPStats();
 		virtual ~MPStats();
 
-		virtual void render(int xOffset, int yOffset);
+		virtual void render(int32_t xOffset, int32_t yOffset);
 		virtual void update();
 
 		virtual void begin();
 		virtual void end();
 
-		virtual int handleMessage( ULONG what, ULONG who );
+		virtual int32_t handleMessage( uint32_t what, uint32_t who );
 
-		int init();
+		int32_t init();
 
 		void		setHostLeftDlg( PCSTR hostName );
 

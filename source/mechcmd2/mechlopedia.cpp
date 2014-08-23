@@ -35,7 +35,7 @@ Mechlopedia::Mechlopedia(  )
 {
 	helpTextArrayID = 1;
 
-	for ( int i = 0; i < 6; i++ )
+	for ( int32_t i = 0; i < 6; i++ )
 	{
 		subScreens[i] = 0;
 	}
@@ -51,7 +51,7 @@ Mechlopedia::~Mechlopedia()
 
 
 
-int Mechlopedia::init()
+int32_t Mechlopedia::init()
 {
 	FullPathFileName path;
 	path.init( artPath, "mcl_en", ".fit" );
@@ -109,7 +109,7 @@ int Mechlopedia::init()
 	
 	MechlopediaListItem::init();
 
-	for ( int i = ENCYCLO_MECHS; i < ENCYCLO_MM; i++ )
+	for ( int32_t i = ENCYCLO_MECHS; i < ENCYCLO_MM; i++ )
 	{
 		getButton( i )->setPressFX( LOG_VIDEOBUTTONS );
 		getButton( i )->setHighlightFX( LOG_DIGITALHIGHLIGHT );
@@ -119,10 +119,10 @@ int Mechlopedia::init()
 	return true;
 }
 
-int			Mechlopedia::handleMessage( ULONG, ULONG who)
+int32_t			Mechlopedia::handleMessage( uint32_t, uint32_t who)
 {
 	// unpress all the others
-	for ( int i = ENCYCLO_MECHS; i < ENCYCLO_MM; i++ )
+	for ( int32_t i = ENCYCLO_MECHS; i < ENCYCLO_MM; i++ )
 		getButton( i )->press( 0 );
 
 	if ( getButton( who ) )
@@ -141,7 +141,7 @@ int			Mechlopedia::handleMessage( ULONG, ULONG who)
 
 	else 
 	{
-		for ( int i= 0;i < 6; i++ )
+		for ( int32_t i= 0;i < 6; i++ )
 		{
 			subScreens[i]->end();
 		}
@@ -175,11 +175,11 @@ void Mechlopedia::render()
 //////////////////////////////////////////////////////////
 
 
-int Mechlopedia::SubScreen::init( FitIniFile& file )
+int32_t Mechlopedia::SubScreen::init( FitIniFile& file )
 {
 	LogisticsScreen::init( file, "Static", "Text", "Rect", "Button" );
 
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 		buttons[i].setMessageOnRelease();
 
 	descriptionListBox.init( rects[0].left(), rects[0].top(), rects[0].width(), rects[0].height() );
@@ -200,17 +200,17 @@ void Mechlopedia::SubScreen::end(  )
 
 void Mechlopedia::SubScreen::update()
 {
-	int mouseX = userInput->getMouseX();
-	int mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 	// check for new selection....
 	groupListBox->update();
 	if ( groupListBox->pointInside( mouseX, mouseY) && userInput->isLeftClick() )
 	{
-		int index = groupListBox->GetSelectedItem();
+		int32_t index = groupListBox->GetSelectedItem();
 		if ( index != -1 )
 		{
-		//	for ( int i = 0; i < groupListBox->GetItemCount(); i++ )
+		//	for ( int32_t i = 0; i < groupListBox->GetItemCount(); i++ )
 		//	{
 		//		groupListBox->GetItem( i )->setColor( 0xff43311C );
 		//	}
@@ -277,16 +277,16 @@ void Mechlopedia::MechScreen::init()
 void Mechlopedia::MechScreen::begin()
 {
 	// need to fill that list box
-	int i, j;
+	int32_t i, j;
 	if ( bIsVehicle )
 	{
 		textObjects[1].setText( IDS_VEHICLE_STATS );
-		int count = 256;
+		int32_t count = 256;
 		const LogisticsVehicle* pVehicles[256];
 		LogisticsData::instance->getVehicles( pVehicles, count );
 		
 		const LogisticsVariant* pCopters[256];
-		int copterCount = 256;
+		int32_t copterCount = 256;
 		LogisticsData::instance->getHelicopters( pCopters, copterCount );
 
 		for ( i = 1; i < count; ++i )
@@ -356,7 +356,7 @@ void Mechlopedia::MechScreen::begin()
 	else
 	{
 		textObjects[1].setText( IDS_MECH_STATS );
-		int count = 256;
+		int32_t count = 256;
 		const LogisticsVariant* pChassis[256];
 		LogisticsData::instance->getEncyclopediaMechs( pChassis, count );
 
@@ -367,7 +367,7 @@ void Mechlopedia::MechScreen::begin()
 			{
 				if ( _stricmp( cur->getName(), pChassis[j]->getName() ) < 0  )
 				{
-					for ( int l = i-1; l >= j; l-- )
+					for ( int32_t l = i-1; l >= j; l-- )
 					{
 						pChassis[l+1] = pChassis[l];
 					}
@@ -451,7 +451,7 @@ void Mechlopedia::MechScreen::setVehicle( LogisticsVehicle* pVehicle )
 	if ( !pVehicle )
 		return;
 
-	int descID = pVehicle->getEncyclopediaID();
+	int32_t descID = pVehicle->getEncyclopediaID();
 	char text[256];
 	cLoadString( pVehicle->getNameID(), text, 255 );
 	EString tmpStr = text;
@@ -541,7 +541,7 @@ void Mechlopedia::MechScreen::setMech( LogisticsVariant* pChassis, bool bShowJum
 	if ( !pChassis )
 		return;
 
-	int descID = pChassis->getEncyclopediaID();
+	int32_t descID = pChassis->getEncyclopediaID();
 	descriptionListBox.removeAllItems( true );
 
 	aTextListItem* pItem = new aTextListItem( IDS_EN_LISTBOX_FONT );
@@ -694,7 +694,7 @@ void Mechlopedia::WeaponScreen::select( aTextListItem* pEntry )
 	
 }
 
-int __cdecl sortWeapon( PCVOID pW1, PCVOID pW2 )
+int32_t __cdecl sortWeapon( PCVOID pW1, PCVOID pW2 )
 {
 	LogisticsComponent* p1 = *(LogisticsComponent**)pW1;
 	LogisticsComponent* p2 = *(LogisticsComponent**)pW2;
@@ -708,12 +708,12 @@ void Mechlopedia::WeaponScreen::begin()
 	groupListBox->removeAllItems( true );
 
 	LogisticsComponent* comps[256];
-	int count = 256;
+	int32_t count = 256;
 	LogisticsData::instance->getAllComponents( comps, count );
 
 	qsort( comps, count, sizeof( LogisticsComponent* ), sortWeapon );
 
-	for ( int i = 0; i < count; i++ )
+	for ( int32_t i = 0; i < count; i++ )
 	{
 		MechlopediaListItem* pItem = new MechlopediaListItem();
 		EString text = comps[i]->getName();
@@ -862,8 +862,8 @@ void Mechlopedia::WeaponScreen::setWeapon ( LogisticsComponent* pComponent )
 	FullPathFileName path;
 	path.init( artPath, pComponent->getIconFileName(), ".tga" );
 
-	int sizeX = pComponent->getComponentWidth();
-	int sizeY = pComponent->getComponentHeight();
+	int32_t sizeX = pComponent->getComponentWidth();
+	int32_t sizeY = pComponent->getComponentHeight();
 	float oldMidX = (rects[1].right() + rects[1].left())/2.f;
 	float oldMidY = (rects[1].bottom() + rects[1].top())/2.f;
 	statics[9].setTexture( path);
@@ -912,11 +912,11 @@ void Mechlopedia::PersonalityScreen::begin()
 {
 	groupListBox->removeAllItems(true);
 
-	int FirstID = bIsHistory ? IDS_HISTORY_0 : IDS_PERSONALITY_0;
+	int32_t FirstID = bIsHistory ? IDS_HISTORY_0 : IDS_PERSONALITY_0;
 
-	int count = bIsHistory ? 5 : PERSONALITY_COUNT;
+	int32_t count = bIsHistory ? 5 : PERSONALITY_COUNT;
 
-	for ( int i = 0; i < count; i++ )
+	for ( int32_t i = 0; i < count; i++ )
 	{
 		MechlopediaListItem* pItem = new MechlopediaListItem();
 		char text[256];
@@ -931,7 +931,7 @@ void Mechlopedia::PersonalityScreen::begin()
 		bool bAdded = 0;
 		if ( !bIsHistory ) // turns out we need to sort 'em
 		{
-			for ( int j = 0; j < groupListBox->GetItemCount(); j++ )
+			for ( int32_t j = 0; j < groupListBox->GetItemCount(); j++ )
 			{
 				MechlopediaListItem* pTmpItem = (MechlopediaListItem*)groupListBox->GetItem( j );
 				if ( upper.Compare( pTmpItem->getText(), 1 ) < 0 )
@@ -962,13 +962,13 @@ void Mechlopedia::PersonalityScreen::begin()
 
 void Mechlopedia::PersonalityScreen::select( aTextListItem* pEntry )
 {
-	int ID = pEntry->getID();
+	int32_t ID = pEntry->getID();
 
 	descriptionListBox.removeAllItems( true );
 
 	
-	int PictureID = bIsHistory ? IDS_HISTORY_PICTURE0 : IDS_PERSONALITY_PICTURE0;
-	int DescriptionID = bIsHistory ? IDS_HISTORY_DESCRIPTION_0 : IDS_PERONSALITY_DESCRIPTION0;
+	int32_t PictureID = bIsHistory ? IDS_HISTORY_PICTURE0 : IDS_PERSONALITY_PICTURE0;
+	int32_t DescriptionID = bIsHistory ? IDS_HISTORY_DESCRIPTION_0 : IDS_PERONSALITY_DESCRIPTION0;
 
 
 	aTextListItem* pItem = new aTextListItem( IDS_EN_WEAPON_FONT );
@@ -1094,9 +1094,9 @@ void Mechlopedia::BuildingScreen::begin()
 	groupListBox->removeAllItems( true );
 
 	LogisticsData::Building* pBldgs[256];
-	int count = 255;
+	int32_t count = 255;
 	LogisticsData::instance->getBuildings( pBldgs, count );
-	for (  int i = 0; i < count; i++ )
+	for (  int32_t i = 0; i < count; i++ )
 	{
 		char tmp[256];
 		cLoadString( pBldgs[i]->nameID, tmp, 255 );
@@ -1108,7 +1108,7 @@ void Mechlopedia::BuildingScreen::begin()
 		str.Remove( liao );
 
 		bool bFound = 0;
-		for ( int j = 0; j < groupListBox->GetItemCount(); j++ )
+		for ( int32_t j = 0; j < groupListBox->GetItemCount(); j++ )
 		{
 			if ( _stricmp(  str, ((aTextListItem*)groupListBox->GetItem( j ))->getText() ) < 0 )
 			{
@@ -1179,10 +1179,10 @@ void Mechlopedia::BuildingScreen::select( aTextListItem* pEntry )
 
 		compListBox.removeAllItems( true );
 
-		int count= 0;
-		for ( int i = 0; i < 4; i++ )
+		int32_t count= 0;
+		for ( int32_t i = 0; i < 4; i++ )
 		{
-			int ID = pBldg->componentIDs[i];
+			int32_t ID = pBldg->componentIDs[i];
 			if ( ID )
 			{
 				LogisticsComponent* pComp = LogisticsData::instance->getComponent( ID );

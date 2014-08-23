@@ -50,7 +50,7 @@ int32_t aScrollBar::init(int32_t xPos, int32_t yPos, int32_t w, int32_t h)
 	bottomButton.setDisabledFX( -1 );
 	scrollTab.setDisabledFX( -1 );
 
-	scrollTab.setTexture( (ULONG)0 );
+	scrollTab.setTexture( (uint32_t)0 );
 
 	moveTo(xPos,yPos);
 
@@ -124,7 +124,7 @@ void aScrollBar::update()
 
 		if ( userInput->isLeftDrag() && lastY ) // dragging the little tab
 		{
-			int tmpLastY = mouseY; 
+			int32_t tmpLastY = mouseY; 
 			tmpLastY -= userInput->getMouseDragY();
 			tmpLastY += lastY;
 
@@ -211,7 +211,7 @@ void aScrollBar::update()
 	aObject::update();
 }
 
-int aScrollBar::handleMessage( ULONG message, ULONG who )
+int32_t aScrollBar::handleMessage( uint32_t message, uint32_t who )
 {
 	switch (who )
 	{
@@ -303,7 +303,7 @@ int32_t mcScrollBar::init ( int32_t xPos, int32_t yPos, int32_t w, int32_t h  )
 	
 	aScrollBar::init( xPos, yPos, w, h );
 
-	scrollTab.setTexture( (ULONG)0 );
+	scrollTab.setTexture( (uint32_t)0 );
 
 	return 0;
 

@@ -27,7 +27,7 @@ class aZonePanel : public aObject
 {
 public:
 	void init(FitIniFile* pFile, LogisticsScreen* pParent);
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 	virtual void		update();
 	virtual void		render();
 
@@ -48,7 +48,7 @@ public:
 		pParentScreen = &refParentScreenParam;
 	}
 	void init(FitIniFile* pFile);
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 	virtual void update();
 private:
 	LogisticsScreen *pParentScreen;
@@ -69,7 +69,7 @@ public:
 	}
 	void init(FitIniFile* pFile);
 	virtual void destroy();
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 	virtual void		update();
 	virtual void		render();
 	virtual void		begin();
@@ -102,10 +102,10 @@ public:
 	bool isDone();
 	virtual void		begin();
 	virtual void		end();
- 	virtual void render( int xOffset, int yOffset );
+ 	virtual void render( int32_t xOffset, int32_t yOffset );
 	virtual void render();
 	virtual void update();
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 	bool				bDone;
 
@@ -116,7 +116,7 @@ public:
 	PVOID	pMPHostGame;
 
 private:
-	int indexOfButtonWithID(int id);
+	int32_t indexOfButtonWithID(int32_t id);
 
 	aZonePanel zonePanel;
 	aLanPanel lanPanel;
@@ -137,9 +137,9 @@ public:
 	
 	virtual void		begin() { status = RUNNING; }
 	//virtual void		end();
- 	virtual void render( int xOffset, int yOffset ) {
-		static int lastXOffset = 0;
-		static int lastYOffset = 0;
+ 	virtual void render( int32_t xOffset, int32_t yOffset ) {
+		static int32_t lastXOffset = 0;
+		static int32_t lastYOffset = 0;
 		if ((0 == xOffset) && (0 == yOffset)) {
 			if (xOffset < lastXOffset) {
 				status = NEXT;

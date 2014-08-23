@@ -158,7 +158,7 @@ extern void DebugWeaponFireChunk (WeaponFireChunkPtr chunk1, WeaponFireChunkPtr 
 // EXTERNS
 
 //extern ObjectMapPtr			GameObjectMap;
-extern ULONG		NextIdNumber;
+extern uint32_t		NextIdNumber;
 
 #ifdef USE_SOUNDS
 extern bool					friendlyDestroyed;
@@ -436,11 +436,11 @@ float MaxTimeRevealed = 0.0f;
 extern float worldUnitsPerMeter;
 char Mover::optimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
 int32_t Mover::numOptimalIncrements = 0;
-short Mover::rangedCellsIndices[MAX_ATTACK_CELLRANGE][2];
+int16_t Mover::rangedCellsIndices[MAX_ATTACK_CELLRANGE][2];
 char Mover::rangedCells[RANGED_CELLS_DIM][2];
 TriggerAreaManager* Mover::triggerAreaMgr = NULL;
 
-ULONG Mover::holdFireIconHandle = 0;
+uint32_t Mover::holdFireIconHandle = 0;
 
 float HeadShotModifier = 0.0f;
 float ArmShotModifier = 0.0f;
@@ -1363,7 +1363,7 @@ void StatusChunk::unpack (MoverPtr mover) {
 
 	StatusChunkUnpackErr = 0;
 
-	ULONG tempData = data;
+	uint32_t tempData = data;
 
 	bodyState = (tempData & STATUSCHUNK_BODYSTATE_MASK);
 	tempData >>= STATUSCHUNK_BODYSTATE_BITS;
@@ -3014,7 +3014,7 @@ void Mover::destroy (void)
 
 //----------------------------------------------------------------------------------
 
-Stuff::Vector3D Mover::relativePosition (float angle, float distance, ULONG flags) {
+Stuff::Vector3D Mover::relativePosition (float angle, float distance, uint32_t flags) {
 
 	//--------------------------------------------------------
 	// Note that the angle should be -180 <= angle <= 180, and
@@ -3306,7 +3306,7 @@ void Mover::reduceAntiMissileAmmo (int32_t numAntiMissiles) {
 
 //----------------------------------------------------------------------------------
 
-void Mover::pilotingCheck (ULONG situation, float modifier) {
+void Mover::pilotingCheck (uint32_t situation, float modifier) {
 
 	failedPilotingCheck = false;
 }
@@ -3682,7 +3682,7 @@ int32_t Mover::addWeaponFireChunk (int32_t which, WeaponFireChunkPtr chunk) {
 
 //---------------------------------------------------------------------------
 
-int32_t Mover::addWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer, int32_t numChunks) {
+int32_t Mover::addWeaponFireChunks (int32_t which, uint32_t* packedChunkBuffer, int32_t numChunks) {
 
 	if ((numWeaponFireChunks[which] + numChunks) >= MAX_WEAPONFIRE_CHUNKS)
 		Fatal(0, " Mover::addWeaponFireChunks--Too many weaponfire chunks ");
@@ -3706,7 +3706,7 @@ int32_t Mover::addWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer, int
 
 //---------------------------------------------------------------------------
 
-int32_t Mover::grabWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer, int32_t maxChunks) {
+int32_t Mover::grabWeaponFireChunks (int32_t which, uint32_t* packedChunkBuffer, int32_t maxChunks) {
 
 	int32_t numChunks = numWeaponFireChunks[which];
 	if (numChunks > maxChunks)
@@ -3919,7 +3919,7 @@ void Mover::playMessage (RadioMessageType messageId, bool propogateIfMultiplayer
 
 //---------------------------------------------------------------------------
 
-void Mover::setThreatRating (short rating) {
+void Mover::setThreatRating (int16_t rating) {
 
 	threatRating = rating;
 	if (threatRating == -1) {
@@ -4369,8 +4369,8 @@ int32_t Mover::calcMoveGoal (GameObjectPtr target,
 						  int32_t selectionIndex,
 						  Stuff::Vector3D& newGoal,
 						  int32_t numValidAreas,
-						  short* validAreas,
-						  ULONG moveParams) {
+						  pint16_t validAreas,
+						  uint32_t moveParams) {
 
 	int64_t startTime = 0;
 
@@ -4948,7 +4948,7 @@ int32_t Mover::calcMovePath (MovePathPtr path,
 						  Stuff::Vector3D start,
 						  Stuff::Vector3D goal,
 						  int32_t* goalCell,
-						  ULONG moveParams) {
+						  uint32_t moveParams) {
 
 	//-------------------------------------------------------------------------
 	// This assumes the goal is already the "optimum" goal (it should have been
@@ -5127,7 +5127,7 @@ int32_t Mover::calcEscapePath (MovePathPtr path,
 							Stuff::Vector3D start,
 							Stuff::Vector3D goal,
 							int32_t* goalCell,
-							ULONG moveParams,
+							uint32_t moveParams,
 							Stuff::Vector3D& escapeGoal) {
 
 	//------------------------------------------
@@ -5398,7 +5398,7 @@ int32_t Mover::calcMovePath (MovePathPtr path,
 						  Stuff::Vector3D finalGoal,
 						  Stuff::Vector3D* goal,
 						  int32_t* goalCell,
-						  ULONG moveParams) {
+						  uint32_t moveParams) {
 
 	//-------------------------------------------------------------------------
 	// This assumes the goal is already the "optimum" goal (it should have been
@@ -6473,7 +6473,7 @@ void Mover::ammoExplosion (int32_t ammoIndex) {
 }
 
 //---------------------------------------------------------------------------
-void Mover::disable (ULONG cause) 
+void Mover::disable (uint32_t cause) 
 {
 	//-------------------------------------------------
 	// Immediately begin shutting down, then disable...
@@ -6891,9 +6891,9 @@ bool Mover::recover (void) {
  
 //---------------------------------------------------------------------------
 
-void Mover::drawSensorTextHelp (float screenX, float screenY, int32_t resID, ULONG color, bool drawBOLD)
+void Mover::drawSensorTextHelp (float screenX, float screenY, int32_t resID, uint32_t color, bool drawBOLD)
 {
-	ULONG width, height;
+	uint32_t width, height;
 	Stuff::Vector4D moveHere;
 	moveHere.x = screenX;
 	moveHere.y = screenY;
@@ -7108,16 +7108,16 @@ bool Mover::isCloseToFirstTacOrder( Stuff::Vector3D& pos )
 	return getPilot()->isCloseToFirstTacOrder( pos );
 }
 
-void Mover::removeFromUnitGroup( int id )
+void Mover::removeFromUnitGroup( int32_t id )
 {
 	unitGroup = -1;
 	//unitGroup &= (~(1<<id));
 }
-void Mover::addToUnitGroup( int id )
+void Mover::addToUnitGroup( int32_t id )
 {
 	unitGroup = (1 << id); // now you only get to be in one at a time
 }
-bool Mover::isInUnitGroup( int id )
+bool Mover::isInUnitGroup( int32_t id )
 {
 	if ( unitGroup == -1 )
 		return false;
@@ -7181,7 +7181,7 @@ void Mover::Save (PacketFilePtr file, int32_t packetNum)
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(PUCHAR)&data,sizeof(MoverData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(puint8_t)&data,sizeof(MoverData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

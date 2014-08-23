@@ -19,7 +19,7 @@ MPDirectTcpip.cpp			: Implementation of the MPDirectTcpip component.
 
 #define CHECK_BUTTON 200
 
-static int connectionType = 0;
+static int32_t connectionType = 0;
 
 static cint32_t FIRST_BUTTON_ID = 1000010;
 static cint32_t OK_BUTTON_ID = 1000001;
@@ -36,9 +36,9 @@ MPDirectTcpip::~MPDirectTcpip()
 {
 }
 
-int MPDirectTcpip::indexOfButtonWithID(int id)
+int32_t MPDirectTcpip::indexOfButtonWithID(int32_t id)
 {
-	int i;
+	int32_t i;
 	for (i = 0; i < buttonCount; i++)
 	{
 		buttons[i].setMessageOnRelease();
@@ -56,7 +56,7 @@ void MPDirectTcpip::init(FitIniFile* file)
 
 	if ( buttonCount )
 	{
-		for ( int i = 0; i < buttonCount; i++ )
+		for ( int32_t i = 0; i < buttonCount; i++ )
 		{
 			if (buttons[i].getID() == 0)
 			{
@@ -82,7 +82,7 @@ void MPDirectTcpip::init(FitIniFile* file)
 		ipAddressComboBox.init(&PNfile, "TCIPNumberComboBox");
 
 		aStyle7TextListItem *pTmp2;
-		int i;
+		int32_t i;
 		for (i = 0; i < 15; i += 1)
 		{
 			pTmp2 = new aStyle7TextListItem;
@@ -105,7 +105,7 @@ void MPDirectTcpip::end()
 {
 }
 
-void MPDirectTcpip::render(int xOffset, int yOffset )
+void MPDirectTcpip::render(int32_t xOffset, int32_t yOffset )
 {
 	if ((0 == xOffset) && (0 == yOffset))
 	{
@@ -120,7 +120,7 @@ void MPDirectTcpip::render()
 	render(0, 0);
 }
 
-int	MPDirectTcpip::handleMessage( ULONG message, ULONG who)
+int32_t	MPDirectTcpip::handleMessage( uint32_t message, uint32_t who)
 {
 	if ( RUNNING == status )
 	{
@@ -181,7 +181,7 @@ void MPDirectTcpip::update()
 	helpTextHeaderID = 0;
 
 	/*
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].update();
 		if ( buttons[i].pointInside( userInput->getMouseX(), userInput->getMouseY() )
@@ -238,17 +238,17 @@ void aStyle7TextListItem::render()
 	float color;
 	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((ULONG)normalColor) + 0.67 * ((ULONG)0xffffffff);
+		color = 0.33 * ((uint32_t)normalColor) + 0.67 * ((uint32_t)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((ULONG)normalColor) + 0.33 * ((ULONG)0xffffffff);
+		color = 0.67 * ((uint32_t)normalColor) + 0.33 * ((uint32_t)0xffffffff);
 	}
 	else
 	{
 		color = normalColor;
 	}
-	aTextListItem::setColor((ULONG)color);
+	aTextListItem::setColor((uint32_t)color);
 
 	aTextListItem::render();
 }

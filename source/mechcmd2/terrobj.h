@@ -52,7 +52,7 @@ class TerrainObjectType : public ObjectType {
 		int32_t			yImpasse;
 		float			explDmg;
 		float			explRad;
-		ULONG	fireTypeHandle;
+		uint32_t	fireTypeHandle;
 		
 	public:
 
@@ -65,7 +65,7 @@ class TerrainObjectType : public ObjectType {
 		
 		virtual void initMiscTerrObj (int32_t objTypeNum);
 
-		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
 
 		int32_t init (FitIniFilePtr objFile);
 		
@@ -103,16 +103,16 @@ typedef struct _TerrainObjectData : public GameObjectData
 	float						pitchAngle;
 	float						fallRate;
 	GameObjectWatchID			powerSupply;
-	short						cellFootprint[4];
+	int16_t						cellFootprint[4];
 	Stuff::Vector3D				vectorFootprint[4];
-	short						numSubAreas0;
-	short						numSubAreas1;
-	short						subAreas0[MAX_SPECIAL_SUB_AREAS];
-	short						subAreas1[MAX_SPECIAL_SUB_AREAS];
+	int16_t						numSubAreas0;
+	int16_t						numSubAreas1;
+	int16_t						subAreas0[MAX_SPECIAL_SUB_AREAS];
+	int16_t						subAreas1[MAX_SPECIAL_SUB_AREAS];
 	uint8_t				listID;
 
 	uint8_t				numCellsCovered;
-	short						cellsCovered[81];
+	int16_t						cellsCovered[81];
 } TerrainObjectData;
 
 #define	MAXLEN_TERRAINOBJECT_NAME		35
@@ -127,16 +127,16 @@ class TerrainObject : public GameObject {
 		float						pitchAngle;
 		float						fallRate;
 		GameObjectWatchID			powerSupply;
-		short						cellFootprint[4];
+		int16_t						cellFootprint[4];
 		Stuff::Vector3D				vectorFootprint[4];
-		short						numSubAreas0;
-		short						numSubAreas1;
-		short						*subAreas0;
-		short						*subAreas1;
+		int16_t						numSubAreas0;
+		int16_t						numSubAreas1;
+		int16_t						*subAreas0;
+		int16_t						*subAreas1;
 		uint8_t				listID;
 		
 		uint8_t				numCellsCovered;
-		short*						cellsCovered;
+		pint16_t						cellsCovered;
 		gosFX::Effect				*bldgDustPoofEffect;
 			
 		static int32_t					cellArray[9];
@@ -257,7 +257,7 @@ class TerrainObject : public GameObject {
 
 		virtual bool calcAdjacentAreaCell (int32_t moveLevel, int32_t areaID, int32_t& adjRow, int32_t& adjCol);
 
-		void calcSubAreas (int32_t numCells, short cells[MAX_GAME_OBJECT_CELLS][2]);
+		void calcSubAreas (int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELLS][2]);
 
 		void markMoveMap (bool passable);
 

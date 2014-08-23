@@ -127,18 +127,18 @@ void aEdit::update()
 
 void aEdit::handleMouse()
 {
-	int mouseX = userInput->getMouseX();
-	int mouseY = userInput->getMouseY();
+	int32_t mouseX = userInput->getMouseX();
+	int32_t mouseY = userInput->getMouseY();
 
 	bool bLeftClick = userInput->isLeftClick();
 	bool bRightClick = userInput->isRightClick();
 	
 	
-	int nOffset = mouseX - (globalX() + ENTRY_MARGIN);
+	int32_t nOffset = mouseX - (globalX() + ENTRY_MARGIN);
 	nOffset += nLeftOffset;
 	
 	// find char position of nOffset and set insertion point there
-	int nChar = findChar(nOffset);
+	int32_t nChar = findChar(nOffset);
 
 
 	if ( bMouseDown && userInput->isLeftDrag() && bFocus )
@@ -180,7 +180,7 @@ void aEdit::handleKeyboard()
 
 	while( true ) // keep getting keys until buffer is empty
 	{
-		ULONG key = gos_GetKey();
+		uint32_t key = gos_GetKey();
 
 		if ( !key )
 			return;
@@ -196,7 +196,7 @@ void aEdit::handleKeyboard()
 			// this does happen when IME is enabled.
 			if (key == 0)
 				return;
-			ULONG key2 = 0;
+			uint32_t key2 = 0;
 			if ( isleadbyte( key ) )
 			{
 				key2 = gos_GetKey( );	
@@ -265,7 +265,7 @@ void aEdit::handleKeyboard()
 				clearSelection();
 				char str[3];
 				str[0] = key;
-				int amountToAdd = 1;
+				int32_t amountToAdd = 1;
 				if ( key2 )
 				{
 					str[1] = key2;
@@ -326,8 +326,8 @@ void aEdit::render()
 	// draw selection range
 	if (nInsertion1 != nInsertion2) 
 	{
-		int nMin = nInsertion1<nInsertion2?nInsertion1:nInsertion2;
-		int nMax = nInsertion1<nInsertion2?nInsertion2:nInsertion1;
+		int32_t nMin = nInsertion1<nInsertion2?nInsertion1:nInsertion2;
+		int32_t nMax = nInsertion1<nInsertion2?nInsertion2:nInsertion1;
 		if ( nMax > text.Length() )
 			nMax = text.Length();
 		if ( nMax > 1 )
@@ -335,19 +335,19 @@ void aEdit::render()
 			if (isleadbyte( nMax -2 ) )
 				nMax -= 2;
 		}
-		int nXSelStart = (int)(globalX() + charXPos(nMin) - nLeftOffset + ENTRY_MARGIN);
-		int nXSelEnd = (int)(globalX() + charXPos(nMax) - nLeftOffset + ENTRY_MARGIN);
+		int32_t nXSelStart = (int32_t)(globalX() + charXPos(nMin) - nLeftOffset + ENTRY_MARGIN);
+		int32_t nXSelEnd = (int32_t)(globalX() + charXPos(nMax) - nLeftOffset + ENTRY_MARGIN);
 		if (nXSelStart < globalX())
 			nXSelStart = globalX();
 		if (nXSelEnd > globalX() + width())
 			nXSelEnd = globalX() + width();
 	
-		RECT rect = { (int)nXSelStart, 
-						 (int)globalY(), 
-						 (int)nXSelEnd,
-						 (int)(globalY() + height()) };
+		RECT rect = { (int32_t)nXSelStart, 
+						 (int32_t)globalY(), 
+						 (int32_t)nXSelEnd,
+						 (int32_t)(globalY() + height()) };
 
-		int startChar = 0;
+		int32_t startChar = 0;
 		if ( nLeftOffset )
 		{
 			// need to find character where this position is
@@ -358,8 +358,8 @@ void aEdit::render()
 		if ( text.Length() )
 		{
 			font.render( &textToDraw[startChar], 
-				(int)(globalX() + ENTRY_MARGIN), 
-				(int)globalY(), (int)width(), (int)height(), 
+				(int32_t)(globalX() + ENTRY_MARGIN), 
+				(int32_t)globalY(), (int32_t)width(), (int32_t)height(), 
 				textColor, 0, 0 );
 		}
 		drawRect( rect, highlightColor);
@@ -368,14 +368,14 @@ void aEdit::render()
 		{
 			char tmp = textToDraw[nMax];
 			textToDraw[nMax] = NULL;
-			font.render( &textToDraw[nMin], (int)nXSelStart, (int)globalY(),
-				nXSelEnd, (int)height(), selectedColor, 0, 0 );
+			font.render( &textToDraw[nMin], (int32_t)nXSelStart, (int32_t)globalY(),
+				nXSelEnd, (int32_t)height(), selectedColor, 0, 0 );
 			textToDraw[nMax] = tmp;
 		}
 	}
 	else
 	{
-		int startChar = 0;
+		int32_t startChar = 0;
 		if ( nLeftOffset )
 		{
 			// need to find character where this position is
@@ -386,15 +386,15 @@ void aEdit::render()
 		if ( textToDraw.Length() )
 		{
 			font.render( &textToDraw[startChar], 
-				(int)(globalX() + ENTRY_MARGIN), 
-				(int)globalY(), (int)width(), (int)height(), 
+				(int32_t)(globalX() + ENTRY_MARGIN), 
+				(int32_t)globalY(), (int32_t)width(), (int32_t)height(), 
 				textColor, 0, 0 );
 		}
 		else
 		{
 			font.render( "", 
-				(int)(globalX() + ENTRY_MARGIN), 
-				(int)globalY(), (int)width(), (int)height(), 
+				(int32_t)(globalX() + ENTRY_MARGIN), 
+				(int32_t)globalY(), (int32_t)width(), (int32_t)height(), 
 				textColor, 0, 0 );
 		}
 	}
@@ -416,7 +416,7 @@ void aEdit::getEntry(EString& str)
 {
 	str = text;
 }
-void aEdit::setEntry(const EString& str, UCHAR byHighlight)
+void aEdit::setEntry(const EString& str, uint8_t byHighlight)
 {
 	text = str;
 
@@ -487,9 +487,9 @@ bool aEdit::clearSelection()
 {
 	if (nInsertion1 != nInsertion2)
 	{ // delete selection range
-		int nMin = nInsertion1<nInsertion2?nInsertion1:nInsertion2;
-		int nMax = nInsertion1<nInsertion2?nInsertion2:nInsertion1;
-		int len = 1;
+		int32_t nMin = nInsertion1<nInsertion2?nInsertion1:nInsertion2;
+		int32_t nMax = nInsertion1<nInsertion2?nInsertion2:nInsertion1;
+		int32_t len = 1;
 
 		text.Remove( nMin, nMax-len );
 		nInsertion1 = nMin;
@@ -500,9 +500,9 @@ bool aEdit::clearSelection()
 
 	return false;
 }
-void aEdit:: backSpace(int nPosition)
+void aEdit:: backSpace(int32_t nPosition)
 {
-	int nCharCount = text.Length();
+	int32_t nCharCount = text.Length();
 	if (nPosition>nCharCount)
 		return;
 	if (nPosition<=0)
@@ -536,7 +536,7 @@ void aEdit:: drawCursor()
 		v[0].rhw = v[1].rhw = .5;
 		v[0].argb = v[1].argb = cursorColor;
 
-		int nCursorX = charXPos(nInsertion1);
+		int32_t nCursorX = charXPos(nInsertion1);
 		nCursorX -= nLeftOffset;
 
 		v[0].y  = globalY();
@@ -554,9 +554,9 @@ void aEdit:: hideCursor()
 {
 	bCursorVisible=FALSE;
 }
-bool aEdit::handleFormattingKeys(int keycode)
+bool aEdit::handleFormattingKeys(int32_t keycode)
 {
-	int key = (keycode & 0xFF00)>>8;
+	int32_t key = (keycode & 0xFF00)>>8;
 	bool bExtendedKey = true;
 
 	switch (key)
@@ -604,7 +604,7 @@ bool aEdit::handleFormattingKeys(int keycode)
 			{
 				if (nInsertion2)
 				{
-					int decrementCount = 1;
+					int32_t decrementCount = 1;
 					if ( nInsertion2 > 1  )
 					{
 						puint8_t pPrev = _mbsdec( (pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2 );
@@ -619,7 +619,7 @@ bool aEdit::handleFormattingKeys(int keycode)
 					nInsertion1 = nInsertion1<nInsertion2?nInsertion1:nInsertion2;
 				else if (nInsertion1)
 				{
-					int decrementCount = 1;
+					int32_t decrementCount = 1;
 					if ( nInsertion1 > 1 )
 					{
 						puint8_t pPrev = _mbsdec( (pcuint8_t)(PCSTR)text, (pcuint8_t)(PCSTR)text + nInsertion2 );
@@ -684,14 +684,14 @@ bool aEdit::handleFormattingKeys(int keycode)
 
 }
 
-int		aEdit::charXPos(int nCharIndex)
+int32_t		aEdit::charXPos(int32_t nCharIndex)
 {
 	if (nCharIndex > text.Length() || !text.Length())
 		return 0;
-	int nXPos = 0;
+	int32_t nXPos = 0;
 	if ( nCharIndex != text.Length() )
 	{
-		int oldChar = text[nCharIndex];
+		int32_t oldChar = text[nCharIndex];
 		text[nCharIndex] = 0;
 		nXPos = font.width( text );
 		text[nCharIndex] = oldChar;
@@ -704,23 +704,23 @@ int		aEdit::charXPos(int nCharIndex)
 }
 void	aEdit::makeCursorVisible()
 {
-	int nXPos = charXPos(nInsertion2);
+	int32_t nXPos = charXPos(nInsertion2);
 	if (nXPos < nLeftOffset)
 		nLeftOffset = nXPos;
 	if (nXPos > nLeftOffset + width() - (ENTRY_MARGIN*2.f))
-		nLeftOffset = nXPos - (int)(width() - (ENTRY_MARGIN*2.f));
+		nLeftOffset = nXPos - (int32_t)(width() - (ENTRY_MARGIN*2.f));
 }
 void	aEdit::flushCursorRight()
 {
-	int nXPos = charXPos(nInsertion2);
+	int32_t nXPos = charXPos(nInsertion2);
 	if (nXPos < width() - ENTRY_MARGIN*2)
 		nLeftOffset = 0;
 	else
-		nLeftOffset = nXPos - (int)(width()- ENTRY_MARGIN*2.f);
+		nLeftOffset = nXPos - (int32_t)(width()- ENTRY_MARGIN*2.f);
 }
-int		aEdit::findChar(int nXPos)
+int32_t		aEdit::findChar(int32_t nXPos)
 {
-	int nLastPos,nNextPos,n;
+	int32_t nLastPos,nNextPos,n;
 	nNextPos = nLastPos = 0;
 	n=0;
 
@@ -755,7 +755,7 @@ int		aEdit::findChar(int nXPos)
 
 void aEdit::init( FitIniFile* file, PCSTR header )
 {
-	int result = file->seekBlock( header );
+	int32_t result = file->seekBlock( header );
 	
 	if ( result != NO_ERROR )
 	{
@@ -789,7 +789,7 @@ void aEdit::init( FitIniFile* file, PCSTR header )
 
 }
 
-int aEdit::charLength( int index )
+int32_t aEdit::charLength( int32_t index )
 {
 	if ( index < 0 )
 		return 0;

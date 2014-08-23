@@ -23,7 +23,7 @@ extern float frameLength;
 extern bool bInvokeOptionsScreenFlag;
 extern int32_t helpTextHeaderID;
 extern int32_t helpTextID;
-extern ULONG scenarioResult;
+extern uint32_t scenarioResult;
 		
 extern bool loadInMissionSave;
 extern bool saveInMissionSave;
@@ -122,7 +122,7 @@ void PauseWindow::update()
 		float t0 = 0.f;
 		float t1 = 0.f;
 		// figure out position based on time
-		for ( int j = 0; j < 7; j++ )
+		for ( int32_t j = 0; j < 7; j++ )
 		{
 			if ( moveInfo[j].time <= currentTime && moveInfo[j+1].time > currentTime )
 			{
@@ -140,7 +140,7 @@ void PauseWindow::update()
 			float delta = currentPosition - currentPos;
 			currentPos += delta;
 
-			for ( int i = 0; i < buttonCount; i++ )
+			for ( int32_t i = 0; i < buttonCount; i++ )
 			{
 				buttons[i].move( delta, 0 );
 			}
@@ -162,7 +162,7 @@ void PauseWindow::update()
 
 
 
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		if ( buttons[i].location[0].x <= mouseX && mouseX <= buttons[i].location[2].x
 				&& mouseY >= buttons[i].location[0].y && mouseY <= buttons[i].location[1].y  )
@@ -208,9 +208,9 @@ void PauseWindow::update()
 		currentPos = -(800 - PauseWindow::moveInfo[0].position) + ((float)Environment.screenWidth);
 		float delta = backgrounds[0].left - currentPos;
 
-		for ( int i = 0; i < buttonCount; i++ )
+		for ( int32_t i = 0; i < buttonCount; i++ )
 		{
-			for ( int j = 0; j < 4; j++ )
+			for ( int32_t j = 0; j < 4; j++ )
 			{
 				buttons[i].location[j].x -= delta;
 			}
@@ -218,7 +218,7 @@ void PauseWindow::update()
 
 		for ( i = 0; i < staticCount; i++ )
 		{
-			for ( int j = 0; j < 4; j++ )
+			for ( int32_t j = 0; j < 4; j++ )
 			{
 				statics[i].location[j].x -= delta;
 			}
@@ -261,7 +261,7 @@ void PauseWindow::render()
 	drawRect( backgrounds[0], 0xff000000 );
 	drawRect( backgrounds[1], 0xff000000 );
 
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].render();
 	}
@@ -317,7 +317,7 @@ void PauseWindow::init( FitIniFile& file )
 		
 		ControlButton::initButtons( file, buttonCount, buttons, buttonData, "PauseButton", &font );
 
-		for ( int i = 0; i < buttonCount; i++ )
+		for ( int32_t i = 0; i < buttonCount; i++ )
 		{
 			buttons[i].move( 0, -ControlGui::hiResOffsetY );
 		}
@@ -327,7 +327,7 @@ void PauseWindow::init( FitIniFile& file )
 	{
 		statics = new StaticInfo[staticCount];
 		char buffer[256];
-		for ( int i = 0; i < staticCount; i++ )
+		for ( int32_t i = 0; i < staticCount; i++ )
 		{
 			sprintf( buffer, "PauseStatic%ld", i );
 			statics[i].init( file, buffer, ControlGui::hiResOffsetX, 0);
@@ -363,9 +363,9 @@ void PauseWindow::init( FitIniFile& file )
 
 }
 
-void PauseWindow::handleClick( int id )
+void PauseWindow::handleClick( int32_t id )
 {
-	int sound = LOG_SELECT;
+	int32_t sound = LOG_SELECT;
 	switch ( id )
 	{
 	case OBJECTIVES:
@@ -434,7 +434,7 @@ void PauseWindow::handleClick( int id )
 	soundSystem->playDigitalSample( sound );
 }
 
-bool PauseWindow::inRect( int mouseX, int mouseY )
+bool PauseWindow::inRect( int32_t mouseX, int32_t mouseY )
 {
 	return ( mouseX >= backgrounds[0].left && mouseX <= backgrounds[0].right &&
 		 mouseY >= backgrounds[0].top && mouseY <= backgrounds[0].bottom );

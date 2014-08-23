@@ -28,14 +28,14 @@ class KeyboardRef: public LogisticsScreen
 		virtual ~KeyboardRef();
 
 		KeyboardRef& operator=( const KeyboardRef& eyboardRef );
-		int init();
+		int32_t init();
 
 		virtual void update();
 		virtual void render();
 
 		void reseed(MissionInterfaceManager::Command* );
 
-		virtual int			handleMessage( ULONG, ULONG );
+		virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 
 	private:

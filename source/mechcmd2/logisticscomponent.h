@@ -28,26 +28,26 @@ public:
 
 	LogisticsComponent( );
 	~LogisticsComponent();
-	int init( PSTR dataLine );
+	int32_t init( PSTR dataLine );
 
-	inline int getID() const { return ID; }
-	inline int getType() const { return Type; }
-	inline int getRange() const{ return range; }
+	inline int32_t getID() const { return ID; }
+	inline int32_t getType() const { return Type; }
+	inline int32_t getRange() const{ return range; }
 	inline float getDamage() const { return damage; }
 	inline float getRecycleTime() const { return recycleTime; }
-	inline int getAmmo() const { return Ammo; }
-	void		setAmmo(int newAmmo) { Ammo = newAmmo; }
+	inline int32_t getAmmo() const { return Ammo; }
+	void		setAmmo(int32_t newAmmo) { Ammo = newAmmo; }
 	inline float getWeight() const { return weight; }
-	inline int getCost() const { return cost; }
+	inline int32_t getCost() const { return cost; }
 	inline float getHeat() const { return heat; }
 	inline PCSTR getName() const { return name; }
 	inline PCSTR getFlavorText() const { return flavorText; }
-	inline int	getHelpID() const { return helpStringID; }
+	inline int32_t	getHelpID() const { return helpStringID; }
 	inline PCSTR getIconFileName() const { return iconFileName; }
 	inline PCSTR getPictureFileName() const { return pictureFileName; }
-	inline int		getComponentWidth() const { return iconX; }
-	inline int		getComponentHeight() const { return iconY; }
-	bool			compare( LogisticsComponent* second, int type );
+	inline int32_t		getComponentWidth() const { return iconX; }
+	inline int32_t		getComponentHeight() const { return iconY; }
+	bool			compare( LogisticsComponent* second, int32_t type );
 	bool			isAvailable(){ return bAvailable; }
 	void			setAvailable(bool avail){ bAvailable = avail; }
 	bool			isWeapon();
@@ -63,9 +63,9 @@ public:
 
 	enum WEAPON_RANGE
 	{
-		SHORT = 0,
+		int16_t  = 0,
 		MEDIUM = 1,
-		LONG = 2,
+		int32_t = 2,
 		NO_RANGE = 3 // not a weapon
 	};
 
@@ -74,24 +74,24 @@ public:
 
 private:
 
-	int ID; // index into csv
-	int Type; // defined in csv
-	int	stringID;
-	int helpStringID;
+	int32_t ID; // index into csv
+	int32_t Type; // defined in csv
+	int32_t	stringID;
+	int32_t helpStringID;
 
-	int iconX;
-	int iconY;
+	int32_t iconX;
+	int32_t iconY;
 
 	PSTR iconFileName;
 	PSTR pictureFileName;
-	int range;
+	int32_t range;
 	WEAPON_RANGE rangeType;
 
 	float damage;
 	float recycleTime;
-	int Ammo;
+	int32_t Ammo;
 	float weight;
-	int cost;
+	int32_t cost;
 	float heat;
 	PSTR name;
 	PSTR flavorText;
@@ -104,8 +104,8 @@ private:
 	static	PSTR s_typeString[];
 
 	// HELPERS
-	int extractString( PSTR& pFileLine, PSTR pBuffer, int bufferLength );
-	int extractInt( PSTR& pFileLine );
+	int32_t extractString( PSTR& pFileLine, PSTR pBuffer, int32_t bufferLength );
+	int32_t extractInt( PSTR& pFileLine );
 	float extractFloat( PSTR& pFileLine );
 
 };

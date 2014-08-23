@@ -37,7 +37,7 @@ namespace mechgui {
 		virtual void update(){ aObject::update(); }
 		virtual void render(){ aObject::render(); }
 
-		void setState( int newState ){ state = (State)newState; }
+		void setState( int32_t newState ){ state = (State)newState; }
 		State getState( ) { return state; }
 
 		void select(){ state = SELECTED; }
@@ -145,13 +145,13 @@ namespace mechgui {
 		virtual void		destroy();
 		virtual void		render();
 		virtual void		update();
-		virtual int			handleMessage( ULONG message, ULONG who );
+		virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 		virtual void	resize(int32_t w, int32_t h);
 
 		virtual int32_t		AddItem(aListItem* itemString);
 		virtual int32_t		InsertItem(aListItem* itemString, int32_t where);
 		virtual int32_t		RemoveItem( aListItem* itemString, bool bDelete );
-		int32_t 				ChangeItemString(short itemNumber, PSTR newString);
+		int32_t 				ChangeItemString(int16_t itemNumber, PSTR newString);
 		int32_t				GetSelectedItem(void) {return itemSelected;};
 		int32_t				GetCheckedItem() const;
 		int32_t				SelectItem(int32_t itemNumber);
@@ -170,16 +170,16 @@ namespace mechgui {
 		void				setSingleCheck(bool checkOnlyOne){ singleCheck = checkOnlyOne; }
 
 		virtual void		move( float offsetX, float offsetY );
-		void				setScrollPos( int pos );
+		void				setScrollPos( int32_t pos );
 
 		int32_t				getScrollBarWidth();
 
 		void				setOrange( bool bOrange );
 		void				enableAllItems();
 
-		void setPressFX( int newFX ){ clickSFX = newFX; }
-		void setHighlightFX( int newFX ){ highlightSFX = newFX; }
-		void setDisabledFX( int newFX ){ disabledSFX = newFX; }
+		void setPressFX( int32_t newFX ){ clickSFX = newFX; }
+		void setHighlightFX( int32_t newFX ){ highlightSFX = newFX; }
+		void setDisabledFX( int32_t newFX ){ disabledSFX = newFX; }
 
 		void setTopSkip( int32_t newSkip ){ topSkip = newSkip; }
 
@@ -197,13 +197,13 @@ namespace mechgui {
 		bool		scrollActive;
 		bool		singleCheck;
 
-		int			clickSFX;
-		int			highlightSFX;
-		int			disabledSFX;
-		int			topSkip;
+		int32_t			clickSFX;
+		int32_t			highlightSFX;
+		int32_t			disabledSFX;
+		int32_t			topSkip;
 
 
-		void		scroll( int amount );
+		void		scroll( int32_t amount );
 	};
 
 
@@ -220,7 +220,7 @@ namespace mechgui {
 		void specialDestroy();
 		virtual void		render();
 		virtual void		update();
-		virtual int			handleMessage( ULONG message, ULONG who );
+		virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 		virtual bool		pointInside(int32_t xPos, int32_t yPos) const;
 		//virtual void	resize(int32_t w, int32_t h);
 
@@ -237,8 +237,8 @@ namespace mechgui {
 			rects[0].showGUIWindow( !bDisable );  rects[1].showGUIWindow( !bDisable );
 		}
 
-		int32_t				AddItem( ULONG textID, ULONG color );
-		int32_t				AddItem( PCSTR text, ULONG color );
+		int32_t				AddItem( uint32_t textID, uint32_t color );
+		int32_t				AddItem( PCSTR text, uint32_t color );
 		int32_t				GetSelectedItem() const { return selectionIndex; }
 
 		aDropList& operator=( const aDropList& );
@@ -250,7 +250,7 @@ namespace mechgui {
 		aAnimButton		expandButton;
 		aListBox		listBox;
 		float			listBoxMaxHeight;
-		int				selectionIndex;
+		int32_t				selectionIndex;
 		aAnimTextListItem	templateItem;
 		aDropList( const aDropList& );
 
@@ -271,7 +271,7 @@ namespace mechgui {
 		virtual void	destroy();
 		virtual void		render();
 		virtual void		update();
-		virtual int			handleMessage( ULONG message, ULONG who );
+		virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 		virtual bool		pointInside(int32_t xPos, int32_t yPos) const;
 		//virtual void	resize(int32_t w, int32_t h);
 
@@ -279,8 +279,8 @@ namespace mechgui {
 		int32_t				SelectItem(int32_t item);
 
 		void				setReadOnly( bool bReadOnly ){ entry.setReadOnly( bReadOnly ); }
-		int32_t				AddItem( ULONG textID, ULONG color );
-		int32_t				AddItem( PCSTR text, ULONG color );
+		int32_t				AddItem( uint32_t textID, uint32_t color );
+		int32_t				AddItem( PCSTR text, uint32_t color );
 		int32_t				GetSelectedItem() const { return selectionIndex; }
 
 
@@ -298,7 +298,7 @@ namespace mechgui {
 		aAnimButton		expandButton;
 		aListBox		listBox;
 		float		listBoxMaxHeight;
-		int				selectionIndex;
+		int32_t				selectionIndex;
 
 
 		aComboBox( const aComboBox& );

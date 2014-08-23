@@ -21,7 +21,7 @@ MPLoadMap.cpp			: Implementation of the MPLoadMap component.
 
 #define CHECK_BUTTON 200
 
-static int connectionType = 0;
+static int32_t connectionType = 0;
 
 static cint32_t FIRST_BUTTON_ID = 1000010;
 static cint32_t OK_BUTTON_ID = 1000001;
@@ -40,9 +40,9 @@ MPLoadMap::~MPLoadMap()
 	mapList.destroy();
 }
 
-int MPLoadMap::indexOfButtonWithID(int id)
+int32_t MPLoadMap::indexOfButtonWithID(int32_t id)
 {
-	int i;
+	int32_t i;
 	for (i = 0; i < buttonCount; i++)
 	{
 		if (buttons[i].getID() == id)
@@ -59,7 +59,7 @@ void MPLoadMap::init(FitIniFile* file)
 
 	if ( buttonCount )
 	{
-		for ( int i = 0; i < buttonCount; i++ )
+		for ( int32_t i = 0; i < buttonCount; i++ )
 		{
 			buttons[i].setMessageOnRelease();
 			if (buttons[i].getID() == 0)
@@ -159,7 +159,7 @@ void MPLoadMap::seedDialog( bool bSeedSingle )
 		seedFromFile( "Multi" );
 	}
 
-	statics[18].setTexture( (ULONG)NULL );
+	statics[18].setTexture( (uint32_t)NULL );
 	if ( bSeedSingle )
 		mapList.SelectItem( 0);
 	else
@@ -177,7 +177,7 @@ void MPLoadMap::addFile( PCSTR pFileName, bool bSeedSingle )
 	{
 		if ( NO_ERROR == tmp.seekBlock( "MissionSettings" ) )
 		{
-			ULONG bSingle;
+			uint32_t bSingle;
 			int32_t result = tmp.readIdULong( "IsSinglePlayer", bSingle );
 			bool bSingleResult = (bSingle != 0);
 			if ( (result == NO_ERROR) && (bSingleResult == bSeedSingle) )
@@ -209,12 +209,12 @@ void MPLoadMap::addFile( PCSTR pFileName, bool bSeedSingle )
 
 				if ( !bSingle )
 				{
-					ULONG type = 0;
+					uint32_t type = 0;
 					tmp.readIdULong( "MissionType", type );
 
 					bool bFound = 0;
 					// now go looking for the appropriate header
-					for ( int i = 0; i < mapList.GetItemCount(); i++ )
+					for ( int32_t i = 0; i < mapList.GetItemCount(); i++ )
 					{
 						if ( mapList.GetItem( i )->getID()  - IDS_MP_LM_TYPE0 == type )
 						{
@@ -259,7 +259,7 @@ void MPLoadMap::seedFromFile( PCSTR pFileName )
 		return;
 	}
 
-	int i = 1; 
+	int32_t i = 1; 
 	char fileName[255];
 	while( true )
 	{
@@ -355,7 +355,7 @@ void MPLoadMap::seedFromCampaign()
 				FitIniFile campaignFile;
 				if ( NO_ERROR == campaignFile.open( campaignFileName ) )
 				{
-					for ( int i = 0; i < group+1; i++ )
+					for ( int32_t i = 0; i < group+1; i++ )
 					{
 						char blockName[64];
 						sprintf( blockName,  "Group%ld", i );
@@ -367,7 +367,7 @@ void MPLoadMap::seedFromCampaign()
 								campaignFile.readIdLong( "MissionCount", count );
 							}
 
-							for ( int j = 0; j < count; j++ )
+							for ( int32_t j = 0; j < count; j++ )
 							{
 								sprintf( blockName, "Group%ldMission%ld", i, j );
 								if ( NO_ERROR == campaignFile.seekBlock( blockName ) )
@@ -397,11 +397,11 @@ void MPLoadMap::seedFromCampaign()
 void MPLoadMap::end()
 {
 	LogisticsDialog::end();
-	statics[18].setTexture( ( ULONG)NULL );
+	statics[18].setTexture( ( uint32_t)NULL );
 	statics[18].setColor( 0 );
 }
 
-void MPLoadMap::render(int, int )
+void MPLoadMap::render(int32_t, int32_t )
 {
 	float color = 0x7f000000;
 
@@ -450,7 +450,7 @@ void MPLoadMap::render(int, int )
 		yOffset = exitAnim.getYDelta();
 	}
 
-	LogisticsScreen::render( (int)xOffset, (int)yOffset );
+	LogisticsScreen::render( (int32_t)xOffset, (int32_t)yOffset );
 
 
 
@@ -461,7 +461,7 @@ void MPLoadMap::render()
 	render(0, 0);
 }
 
-int	MPLoadMap::handleMessage( ULONG message, ULONG who)
+int32_t	MPLoadMap::handleMessage( uint32_t message, uint32_t who)
 {
 
 	status = who;
@@ -503,9 +503,9 @@ bool MPLoadMap::isDone()
 void MPLoadMap::update()
 {
 	LogisticsDialog::update();
-	int oldSel = mapList.GetSelectedItem();
+	int32_t oldSel = mapList.GetSelectedItem();
 	mapList.update();
-	int newSel = mapList.GetSelectedItem();
+	int32_t newSel = mapList.GetSelectedItem();
 	if ( oldSel != newSel )
 		updateMapInfo();
 
@@ -513,7 +513,7 @@ void MPLoadMap::update()
 	helpTextHeaderID = 0;
 
 	/*
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].update();
 		if ( buttons[i].pointInside( userInput->getMouseX(), userInput->getMouseY() )
@@ -528,7 +528,7 @@ void MPLoadMap::update()
 
 void MPLoadMap::updateMapInfo()
 {
-	int sel = mapList.GetSelectedItem();
+	int32_t sel = mapList.GetSelectedItem();
 	if ( sel != -1 )
 	{
 
@@ -552,7 +552,7 @@ void MPLoadMap::updateMapInfo()
 			file.readIdBoolean( "MissionNameUseResourceString", bRes );
 			if ( bRes )
 			{
-				ULONG lRes;
+				uint32_t lRes;
 				file.readIdULong( "MissionNameResourceStringID", lRes );
 				cLoadString( lRes, missionName, 255 );
 			}
@@ -572,7 +572,7 @@ void MPLoadMap::updateMapInfo()
 
 			if ( !bIsSingle )
 			{
-				ULONG type = 0;
+				uint32_t type = 0;
 				file.readIdULong( "MissionType", type );
 				cLoadString( IDS_MP_LM_MAP_LIST_TYPE, text, 255 );
 				char mType[128];
@@ -582,7 +582,7 @@ void MPLoadMap::updateMapInfo()
 				textObjects[4].setText( text2 );
 			
 	
-				ULONG numPlayers = 0;
+				uint32_t numPlayers = 0;
 				file.readIdULong( "MaximumNumberOfPlayers", numPlayers );
 
 				cLoadString( IDS_MP_LM_MAP_LIST_MAX_PLAYERS, text, 255 );
@@ -603,7 +603,7 @@ void MPLoadMap::updateMapInfo()
 			result = file.readIdBoolean("Blurb2UseResourceString", tmpBool);
 			if (NO_ERROR == result && tmpBool )
 			{
-				ULONG tmpInt = 0;
+				uint32_t tmpInt = 0;
 				result = file.readIdULong("Blurb2ResourceStringID", tmpInt);
 				if (NO_ERROR == result)
 				{
@@ -655,7 +655,7 @@ void MPLoadMap::getMapNameFromFile( PCSTR pFileName, PSTR missionName, int32_t b
 	//Assert( result == NO_ERROR, 0, "couldn't find the MissionNameUseResourceString" );
 	if ( bRes )
 	{
-		ULONG lRes;
+		uint32_t lRes;
 		result = file.readIdULong( "MissionNameResourceStringID", lRes );
 		Assert( result == NO_ERROR, 0, "couldn't find the MissionNameResourceStringID" );
 		cLoadString( lRes, missionName, bufferLength );

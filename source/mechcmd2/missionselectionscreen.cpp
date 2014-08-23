@@ -56,7 +56,7 @@ MissionSelectionScreen::~MissionSelectionScreen()
 void MissionSelectionScreen::init( FitIniFile* file )
 {
 	LogisticsScreen::init( *file, "CMStatic", "CMTextEntry", "CMRect", "CMButton" );
-	for ( int i= 0; i < buttonCount; i++ )
+	for ( int32_t i= 0; i < buttonCount; i++ )
 		buttons[i].setMessageOnRelease();
 
 	missionCount = 0;
@@ -76,7 +76,7 @@ void MissionSelectionScreen::init( FitIniFile* file )
 
 }
 
-void MissionSelectionScreen::render(int xOffset, int yOffset )
+void MissionSelectionScreen::render(int32_t xOffset, int32_t yOffset )
 {
 	if ( xOffset == 0 && yOffset == 0 )
 		missionDescriptionListBox.render();
@@ -89,7 +89,7 @@ void MissionSelectionScreen::render(int xOffset, int yOffset )
 		/*
 		gos_VERTEX v[4];
 
-		for( int i = 0; i < 4; i++ )
+		for( int32_t i = 0; i < 4; i++ )
 		{
 			v[i].argb = 0xffffffff;
 			v[i].frgb = 0;
@@ -144,14 +144,14 @@ void MissionSelectionScreen::update()
 	operationScreen.update();
 
 	int32_t oldButton = -1;
-	int highlightButton = -1;
+	int32_t highlightButton = -1;
 
 	int32_t mouseX = userInput->getMouseX();
 	int32_t mouseY = userInput->getMouseY();
 
-	ULONG highlightColor = 0;
+	uint32_t highlightColor = 0;
 
-	for ( int i = 0; i < operationScreen.buttonCount; i++ )
+	for ( int32_t i = 0; i < operationScreen.buttonCount; i++ )
 	{
 		if ( operationScreen.buttons[i].isShowing() )
 		{
@@ -270,13 +270,13 @@ void MissionSelectionScreen::begin()
 	}
 
 	missionCount = MAX_MISSIONS_IN_GROUP;
-	int result = LogisticsData::instance->getCurrentMissions( missionNames, missionCount );
+	int32_t result = LogisticsData::instance->getCurrentMissions( missionNames, missionCount );
 
 	EString selMissionName = LogisticsData::instance->getCurrentMission();
 	gosASSERT( result == NO_ERROR );
 
 	bool bPressed = 0;
-	for ( int i = 0; i < missionCount; i++ )
+	for ( int32_t i = 0; i < missionCount; i++ )
 	{
 		if ( i > operationScreen.buttonCount )
 		{
@@ -334,7 +334,7 @@ void MissionSelectionScreen::end()
 	beginFadeOut( 0 );
 }
 
-int MissionSelectionScreen::handleMessage( ULONG msg, ULONG who )
+int32_t MissionSelectionScreen::handleMessage( uint32_t msg, uint32_t who )
 {
 	if ( who >= MSG_FIRST_MISSION && who < MSG_FIRST_MISSION + MAX_MISSIONS_IN_GROUP )
 	{
@@ -389,7 +389,7 @@ int MissionSelectionScreen::handleMessage( ULONG msg, ULONG who )
 
 }
 
-void MissionSelectionScreen::setMission( int whichOne )
+void MissionSelectionScreen::setMission( int32_t whichOne )
 {
 	LogisticsData::instance->setCurrentMission( missionNames[whichOne] );
 

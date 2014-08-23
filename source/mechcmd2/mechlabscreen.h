@@ -45,21 +45,21 @@ class MechLabScreen: public LogisticsScreen
 		MechLabScreen();
 		virtual ~MechLabScreen();
 
-		int init( FitIniFile& );
+		int32_t init( FitIniFile& );
 
 		virtual void begin();
 		virtual void end();
 		virtual void update();
-		virtual void render(int xOffset, int yOffset);
+		virtual void render(int32_t xOffset, int32_t yOffset);
 
-		virtual int	handleMessage( ULONG, ULONG );
+		virtual int32_t	handleMessage( uint32_t, uint32_t );
 
 		void	setComponent( LogisticsComponent* pComponent, bool bMessageFromLB = 0 );
-		int		addComponent( LogisticsComponent* pComponent, int32_t& x, int32_t& y );
+		int32_t		addComponent( LogisticsComponent* pComponent, int32_t& x, int32_t& y );
 		void	beginDrag( LogisticsComponent* pComponent );
 		void	endDrag( );
 
-		int		canAddComponent( LogisticsComponent* pComponent );
+		int32_t		canAddComponent( LogisticsComponent* pComponent );
 
 		static MechLabScreen* instance() { return s_instance;}
 
@@ -138,8 +138,8 @@ class MechLabScreen: public LogisticsScreen
 		void getMouseDiagramCoords( int32_t screenX, int32_t screenY, int32_t& x, int32_t& y );
 
 		void	diagramToScreen( int32_t i, int32_t j, int32_t& x, int32_t& y  );
-		int		selectFirstDiagramComponent();
-		int		selectFirstLBComponent(); 
+		int32_t		selectFirstDiagramComponent();
+		int32_t		selectFirstLBComponent(); 
 		void	updateDiagramInput();
 		void	swapVariant();
 		void	updateHeatMeter();

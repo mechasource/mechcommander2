@@ -219,8 +219,8 @@ class TacticalOrder {
 
 		// for network use only
 		char					pointLocalMoverId;
-		ULONG			groupFlags;
-		ULONG			data[2];
+		uint32_t			groupFlags;
+		uint32_t			data[2];
 
 	public:
 

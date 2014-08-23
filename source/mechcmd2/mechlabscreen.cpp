@@ -88,7 +88,7 @@ MechLabScreen::~MechLabScreen()
 	componentListBox.destroy();
 }
 
-int MechLabScreen::init( FitIniFile& file )
+int32_t MechLabScreen::init( FitIniFile& file )
 {
 	if ( saveDlg )// already initialized
 		return -1;
@@ -132,7 +132,7 @@ int MechLabScreen::init( FitIniFile& file )
 	payloadIcon.init( &file, "PayloadUnit" );	  
 
 	char blockName[64];
-	for ( int i = 0; i < MECH_LAB_ATTRIBUTE_METER_COUNT; i++ )
+	for ( int32_t i = 0; i < MECH_LAB_ATTRIBUTE_METER_COUNT; i++ )
 	{
 		sprintf( blockName, "AttributeMeter%ld", i );
 		attributeMeters[i].init( &file, blockName );
@@ -200,7 +200,7 @@ int MechLabScreen::init( FitIniFile& file )
 	// initialize the selection rectangles
 	for ( i = 0; i < 5; i++ )
 	{
-		for ( int j = 0; j < 2; j++ )
+		for ( int32_t j = 0; j < 2; j++ )
 		{
 			sprintf( fileName, "mcl_mc_%ldby%ld_selection.tga", j+1, i+1 );
 			path.init( artPath, fileName, ".tga" );
@@ -239,9 +239,9 @@ void MechLabScreen::begin()
 
 		variantList.ListBox().removeAllItems(true);
 
-		int maxCount = 0;
+		int32_t maxCount = 0;
 		LogisticsVariant** pVar = NULL;
-		int addedCount = 0;
+		int32_t addedCount = 0;
 
 		LogisticsData::instance->getChassisVariants( pVariant->getChassis(),pVar, maxCount );
 		if ( maxCount )
@@ -250,7 +250,7 @@ void MechLabScreen::begin()
 			pVar = (LogisticsVariant**)_alloca( maxCount* sizeof (LogisticsVariant*) );
 			LogisticsData::instance->getChassisVariants( pVariant->getChassis(),pVar, maxCount );
 
-			for ( int i = 0; i < maxCount; i++ )
+			for ( int32_t i = 0; i < maxCount; i++ )
 			{
 				if ( pVar[i]->allComponentsAvailable() )
 				{
@@ -299,7 +299,7 @@ void MechLabScreen::begin()
 		strcat( path, "_B.tga" );
 		CharLower( path );
 
-		for ( int i = 51; i < 54; i++ )
+		for ( int32_t i = 51; i < 54; i++ )
 			statics[i].setTexture( path );
 
 		strcpy( path, artPath );
@@ -395,9 +395,9 @@ void MechLabScreen::update()
 	
 	camera.update();
 
-	int oldSel = componentListBox.GetSelectedItem(); // need to check this before we update the list box
+	int32_t oldSel = componentListBox.GetSelectedItem(); // need to check this before we update the list box
 
-	for ( int i = 0; i < MECH_LAB_ATTRIBUTE_METER_COUNT; i++ )
+	for ( int32_t i = 0; i < MECH_LAB_ATTRIBUTE_METER_COUNT; i++ )
 		attributeMeters[i].update();
 
 
@@ -412,8 +412,8 @@ void MechLabScreen::update()
 	bool vals[4];
 	if ( pVariant && status == RUNNING ) // sensor help texts
 	{
-		int sensorID = pVariant->getSensorID();
-		for ( int i = 0; i < 3; i++ )
+		int32_t sensorID = pVariant->getSensorID();
+		for ( int32_t i = 0; i < 3; i++ )
 		{
 			if ( sensorID == sensorHelpIDs[i] - IDS_HELP_COMP0 )
 				vals[i] = true;
@@ -460,7 +460,7 @@ void MechLabScreen::update()
 
 	// update the list box
 	componentListBox.update();
-	int newSel = componentListBox.GetSelectedItem();
+	int32_t newSel = componentListBox.GetSelectedItem();
 
 	if ( oldSel != newSel  )
 	{
@@ -472,7 +472,7 @@ void MechLabScreen::update()
 		else
 		{
 			bool bFound = 0;
-			for ( int i = 0; i < componentListBox.GetItemCount(); i++ )
+			for ( int32_t i = 0; i < componentListBox.GetItemCount(); i++ )
 			{
 				if ( componentListBox.GetItem( i )->getState() != aListItem::DISABLED
 					&& !canAddComponent( ((ComponentListItem*)componentListBox.GetItem( i ))->getComponent() ) )
@@ -748,7 +748,7 @@ void MechLabScreen::updateDiagramInput()
 
 
 }
-void MechLabScreen::render(int xOffset, int yOffset)
+void MechLabScreen::render(int32_t xOffset, int32_t yOffset)
 {
 
 	if ( !xOffset && !yOffset )
@@ -769,7 +769,7 @@ void MechLabScreen::render(int xOffset, int yOffset)
 
 
 
-	for ( int i = 0; i < MECH_LAB_ATTRIBUTE_METER_COUNT; i++ )
+	for ( int32_t i = 0; i < MECH_LAB_ATTRIBUTE_METER_COUNT; i++ )
 		attributeMeters[i].render(xOffset, yOffset);
 
 	if ( !xOffset && !yOffset )
@@ -784,7 +784,7 @@ void MechLabScreen::render(int xOffset, int yOffset)
 	// figure where components go
 	if ( pVariant )
 	{
-		int width = pVariant->getComponentAreaWidth();
+		int32_t width = pVariant->getComponentAreaWidth();
 		int32_t minX = rects[7 + 6-width].left();
 		int32_t maxY = rects[7].bottom();
 		int32_t minY = maxY - pVariant->getComponentAreaHeight() * LogisticsComponent::YICON_FACTOR;
@@ -792,10 +792,10 @@ void MechLabScreen::render(int xOffset, int yOffset)
 		
 		int32_t x = minX;
 		int32_t y = minY;
-		for ( int j = 0; j < pVariant->getComponentAreaHeight(); j++ )
+		for ( int32_t j = 0; j < pVariant->getComponentAreaHeight(); j++ )
 		{
 			x = minX;
-			for ( int i = 0; i < pVariant->getComponentAreaWidth(); i++ )
+			for ( int32_t i = 0; i < pVariant->getComponentAreaWidth(); i++ )
 			{
 				payloadIcon.render( x + xOffset, y + yOffset );
 				x += payloadIcon.width();	
@@ -1015,9 +1015,9 @@ void MechLabScreen::swapVariant()
 	selectFirstDiagramComponent();
 }
 
-int	MechLabScreen::handleMessage( ULONG msg, ULONG who)
+int32_t	MechLabScreen::handleMessage( uint32_t msg, uint32_t who)
 {
-	int i;
+	int32_t i;
 
 	if ( msg == aMSG_SELCHANGED )
 	{
@@ -1263,7 +1263,7 @@ void	MechLabScreen::setComponent( LogisticsComponent* pComponent, bool bMessageF
 			textObjects[13].setText( "" );
 			attributeMeters[7].showGUIWindow( false );
 
-			for( int i = 0; i < 4; i++ )
+			for( int32_t i = 0; i < 4; i++ )
 			{
 				attributeMeters[i].showGUIWindow( 0 );
 			}
@@ -1333,7 +1333,7 @@ void	MechLabScreen::setComponent( LogisticsComponent* pComponent, bool bMessageF
 	}
 	else
 	{
-		for ( int i = 7; i < 11; i++ )
+		for ( int32_t i = 7; i < 11; i++ )
 		{
 			textObjects[i].setText( "" );
 		}
@@ -1366,7 +1366,7 @@ void MechLabScreen::showJumpJetItems( bool bShow )
 		statics[55].showGUIWindow( 0 );
 		
 		// turn off weapon stuff
-		for ( int i = 31; i < 35; i++ )
+		for ( int32_t i = 31; i < 35; i++ )
 		{
 			statics[i].showGUIWindow( !bShow );
 		}
@@ -1393,25 +1393,25 @@ void MechLabScreen::showJumpJetItems( bool bShow )
 		}
 }
 
-int MechLabScreen::canAddComponent( LogisticsComponent* pComponent )
+int32_t MechLabScreen::canAddComponent( LogisticsComponent* pComponent )
 {
 	if ( !pVariant )
 		return 0;
 
 	int32_t i = -1;
 	int32_t j = -1;
-	int retVal = pVariant->canAddComponent( pComponent, i, j );
+	int32_t retVal = pVariant->canAddComponent( pComponent, i, j );
 
 	return retVal;
 }
 
 
-int MechLabScreen::addComponent( LogisticsComponent* pComponent, int32_t& x, int32_t& y )
+int32_t MechLabScreen::addComponent( LogisticsComponent* pComponent, int32_t& x, int32_t& y )
 {
 	if ( !pComponent )
 		return -1;
 
-	int retVal = -1;
+	int32_t retVal = -1;
 
 	if ( pComponent->getHeat() || pComponent->getType() == COMPONENT_FORM_HEATSINK )
 	{
@@ -1449,8 +1449,8 @@ void MechLabScreen::beginDrag( LogisticsComponent* pComponent )
 		if ( pDragComponent )
 		{
 			//initialize the drag object
-			int sizeX = pComponent->getComponentWidth();
-			int sizeY = pComponent->getComponentHeight();
+			int32_t sizeX = pComponent->getComponentWidth();
+			int32_t sizeY = pComponent->getComponentHeight();
 			
 			PCSTR pFile = pComponent->getIconFileName();
 
@@ -1544,8 +1544,8 @@ void MechLabScreen::getMouseDiagramCoords( int32_t screenX, int32_t screenY, int
 	y = -1;
 	
 	// get position under cursor
-	int width = pVariant->getComponentAreaWidth();
-	int height = pVariant->getComponentAreaHeight();
+	int32_t width = pVariant->getComponentAreaWidth();
+	int32_t height = pVariant->getComponentAreaHeight();
 	
 	int32_t minX = rects[7 + 6-width].left();
 	int32_t maxY = rects[7].bottom();
@@ -1592,8 +1592,8 @@ void MechLabScreen::diagramToScreen( int32_t i, int32_t j, int32_t& x, int32_t& 
 		return;
 	}
 
-	int height = pVariant->getComponentAreaHeight();
-	int width = pVariant->getComponentAreaWidth();
+	int32_t height = pVariant->getComponentAreaHeight();
+	int32_t width = pVariant->getComponentAreaWidth();
 	
 	int32_t minX = rects[7 + 6-width].left();
 	int32_t maxY = rects[7].bottom();
@@ -1611,7 +1611,7 @@ void MechLabScreen::updateDiagram()
 	if ( !pVariant || status != RUNNING )
 		return;
 
-	int width = pVariant->getComponentAreaWidth();
+	int32_t width = pVariant->getComponentAreaWidth();
 	int32_t minX = rects[7 + 6-width].left();
 	int32_t maxY = rects[7].bottom();
 
@@ -1624,7 +1624,7 @@ void MechLabScreen::updateDiagram()
 
 
 	pVariant->getComponentsWithLocation(  componentCount, IDArray, xLocs, yLocs );
-	for ( int i = 0; i < componentCount; i++ )
+	for ( int32_t i = 0; i < componentCount; i++ )
 	{
 		LogisticsComponent* pComponent = LogisticsData::instance->getComponent( IDArray[i] );
 
@@ -1638,8 +1638,8 @@ void MechLabScreen::updateDiagram()
 			 
 		}
 
-		int sizeX = pComponent->getComponentWidth();
-		int sizeY = pComponent->getComponentHeight();
+		int32_t sizeX = pComponent->getComponentWidth();
+		int32_t sizeY = pComponent->getComponentHeight();
 	
 
 		PCSTR pFile = pComponent->getIconFileName();
@@ -1680,16 +1680,16 @@ void MechLabScreen::updateDiagram()
 
 }
 
-int MechLabScreen::selectFirstDiagramComponent()
+int32_t MechLabScreen::selectFirstDiagramComponent()
 {
 	if ( !pVariant )
 		return -1;
-	int count = 0;
+	int32_t count = 0;
 	bool bFound = 0;
 	componentListBox.SelectItem( -1 );
-	for ( int j = 0; j < pVariant->getComponentAreaHeight(); j++ )
+	for ( int32_t j = 0; j < pVariant->getComponentAreaHeight(); j++ )
 	{
-		for ( int i = 0; i < pVariant->getComponentAreaWidth(); i++ )
+		for ( int32_t i = 0; i < pVariant->getComponentAreaWidth(); i++ )
 		{
 			LogisticsComponent* pComp = pVariant->getCompAtLocation(i, j, selI, selJ );
 			if ( pComp )
@@ -1714,11 +1714,11 @@ int MechLabScreen::selectFirstDiagramComponent()
 
 	return count;
 }
-int MechLabScreen::selectFirstLBComponent()
+int32_t MechLabScreen::selectFirstLBComponent()
 {
 	selI = selJ = -1;
 	pSelectedComponent = NULL;
-	int index =  componentListBox.selectFirstAvailableComponent();
+	int32_t index =  componentListBox.selectFirstAvailableComponent();
 	if ( index != -1 )
 	{
 		LogisticsComponent* pComp = componentListBox.getComponent( );

@@ -41,8 +41,8 @@ void ComponentListBox::setMech( LogisticsVariant* pMech )
 
 		setComponents( componentCount, components );
 		
-		int sensor = pMech->getSensorID();
-		int ECM = pMech->getECM();
+		int32_t sensor = pMech->getSensorID();
+		int32_t ECM = pMech->getECM();
 
 		if ( sensor > 0 )
 		{
@@ -92,14 +92,14 @@ void ComponentListBox::setComponents( int32_t componentCount, LogisticsComponent
 		int32_t colors[4] = { 0xff6E7C00, 0xff005392, 0xffA21600, 0xffc29b00};
 //		int32_t headerColors[4] = { 0xFFC8E100, 0xff0091FF, 0xFFFF0000, 0xffFF8A00 };
 
-		int i, j , k;
-		for ( i = 0; i < 4; i++ ) // do short, medium int32_t
+		int32_t i, j , k;
+		for ( i = 0; i < 4; i++ ) // do int16_t, medium int32_t
 		{
 			memset( finalList, 0, sizeof( int32_t ) * 64 );
 			memset( finalListCount, 0, sizeof( int32_t ) * 64 );
 			for ( j = 0; j < componentCount; j++ )
 			{
-				if ( components[j]->getRangeType() == (LogisticsComponent::WEAPON_RANGE)i ) // short, med, int32_t
+				if ( components[j]->getRangeType() == (LogisticsComponent::WEAPON_RANGE)i ) // int16_t, med, int32_t
 				{
 					bool bFound = 0;
 					for ( k = 0; k < 64; k++ )

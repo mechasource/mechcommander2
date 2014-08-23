@@ -58,7 +58,7 @@
 #define	EXPLOSION_TIME			0.5
 #define	EXPLOSION_DEPTH_FIXUP	-150
 
-extern ULONG	NextIdNumber;
+extern uint32_t	NextIdNumber;
 extern TeamPtr homeTeam;
 extern bool useSound;
 extern bool somethingOnFire;
@@ -127,7 +127,7 @@ void FireType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-int32_t FireType::init (FilePtr objFile, ULONG fileSize) {
+int32_t FireType::init (FilePtr objFile, uint32_t fileSize) {
 
 	int32_t result = 0;
 	
@@ -140,7 +140,7 @@ int32_t FireType::init (FilePtr objFile, ULONG fileSize) {
 	if (result != NO_ERROR)
 		return(result);
 
-	ULONG dmgLevel;
+	uint32_t dmgLevel;
 	result = explFile.readIdULong("DmgLevel",dmgLevel);
 	if (result != NO_ERROR)
 		return(result);
@@ -254,7 +254,7 @@ void ExplosionType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-int32_t ExplosionType::init (FilePtr objFile, ULONG fileSize) {
+int32_t ExplosionType::init (FilePtr objFile, uint32_t fileSize) {
 
 	int32_t result = 0;
 	
@@ -269,7 +269,7 @@ int32_t ExplosionType::init (FilePtr objFile, ULONG fileSize) {
 	if (result != NO_ERROR)
 		return(result);
 
-	ULONG dmgLevel;
+	uint32_t dmgLevel;
 	result = explFile.readIdULong("DmgLevel",dmgLevel);
 	if (result != NO_ERROR)
 		return(result);
@@ -931,7 +931,7 @@ void Carnage::Save (PacketFilePtr file, int32_t packetNum)
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(PUCHAR)&data,sizeof(CarnageData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(puint8_t)&data,sizeof(CarnageData),STORAGE_TYPE_ZLIB);
 }
 
 //---------------------------------------------------------------------------

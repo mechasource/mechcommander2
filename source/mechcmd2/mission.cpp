@@ -131,7 +131,7 @@ float minFrameLength = 1.0/4.0;
 int32_t MissionStartTime =	0;			//No Idea
 
 Mission *mission = NULL;
-ULONG scenarioResult = mis_PLAYING;
+uint32_t scenarioResult = mis_PLAYING;
 int32_t scenarioEndTurn = -1;
 
 extern int32_t GameDifficulty;
@@ -156,17 +156,17 @@ extern Stuff::Vector3D debugGVActorPosition;
 
 extern GameObjectFootPrint* tempSpecialAreaFootPrints;
 extern int32_t tempNumSpecialAreas;
-extern ULONG ServerPlayerNum;
+extern uint32_t ServerPlayerNum;
 
 extern bool useNonWeaponEffects;
 
-extern ULONG elementHeapSize;
-extern ULONG maxElements;
-extern ULONG maxGroups;
-extern ULONG missionHeapSize;
-extern ULONG polyHeapSize;
-extern ULONG spriteDataHeapSize;
-extern ULONG spriteHeapSize;
+extern uint32_t elementHeapSize;
+extern uint32_t maxElements;
+extern uint32_t maxGroups;
+extern uint32_t missionHeapSize;
+extern uint32_t polyHeapSize;
+extern uint32_t spriteDataHeapSize;
+extern uint32_t spriteHeapSize;
 
 extern int32_t	CurMultiplayCode;
 extern int32_t	CurMultiplayParam;
@@ -177,7 +177,7 @@ extern float MaxExtractUnitDistance;
 extern bool useFog;
 extern bool useShadows;
 extern bool inViewMode;
-extern ULONG viewObject;
+extern uint32_t viewObject;
 extern float loadProgress;
 
 extern char TeamRelations[MAX_TEAMS][MAX_TEAMS];
@@ -187,8 +187,8 @@ ByteFlag *SeenBits = NULL;			//What HAS been seen
 
 UserHeapPtr missionHeap = NULL;
 
-ULONG MultiPlayTeamId = 0xFFFFFFFF;
-ULONG MultiPlayCommanderId = 0xFFFFFFFF;
+uint32_t MultiPlayTeamId = 0xFFFFFFFF;
+uint32_t MultiPlayCommanderId = 0xFFFFFFFF;
 
 bool useSensors = true;
 bool useCollisions = true;
@@ -218,7 +218,7 @@ bool showFrameRate = false;
 
 bool Mission::terminationCounterStarted = false;
 double Mission::missionTerminationTime = -1.0;
-ULONG Mission::terminationResult = mis_PLAYING;
+uint32_t Mission::terminationResult = mis_PLAYING;
 
 extern float OneOverProcessorSpeed;
 extern PriorityQueuePtr	openList;
@@ -412,7 +412,7 @@ int32_t Mission::update (void)
 			//First Frame we just set LastTimeGetTime.
 			// After that, it increments based on System Time.
 			// NOT the crazy GameOS frameRate.
-			ULONG currentTimeGetTime = timeGetTime();
+			uint32_t currentTimeGetTime = timeGetTime();
 			if (LastTimeGetTime != 0xffffffff)
 			{
 				float milliseconds = currentTimeGetTime - LastTimeGetTime;
@@ -425,7 +425,7 @@ int32_t Mission::update (void)
 		else
 		{
 			//Keep track of system time.  Just don't add it to scenarioTime!!
-			ULONG currentTimeGetTime = timeGetTime();
+			uint32_t currentTimeGetTime = timeGetTime();
 			LastTimeGetTime = currentTimeGetTime;
 
 			soundSystem->setIsPaused();
@@ -563,7 +563,7 @@ int32_t Mission::update (void)
 					{
 						// mission brain frequently trashes the termination result
 						if (!MPlayer) {
-							int status = Team::home->objectives.Status();
+							int32_t status = Team::home->objectives.Status();
 							if (OS_SUCCESSFUL == status) 
 								scenarioResult = mis_PLAYER_WIN_BIG;
 							else
@@ -615,7 +615,7 @@ int32_t Mission::update (void)
 				}
 				else if (1 <= Team::home->objectives.Count()) 
 				{
-					int status = Team::home->objectives.Status();
+					int32_t status = Team::home->objectives.Status();
 					if (0 < Team::home->numPrimaryObjectives) 
 					{
 						if (OS_UNDETERMINED != status) 
@@ -682,7 +682,7 @@ int32_t Mission::update (void)
 			char text[1024];
 			sprintf(text,"FrameRate: %f",1.0f/frameLength);
 		
-			ULONG width, height;
+			uint32_t width, height;
 			Stuff::Vector4D moveHere;
 			moveHere.x = 0.0f;
 			moveHere.y = 0.0f;
@@ -767,10 +767,10 @@ int32_t Mission::render (void)
 	
 		//-----------------------------------------------------
 		// FOG time.  Set Render state to FOG on!
-		ULONG fogColor = eye->fogColor;
+		uint32_t fogColor = eye->fogColor;
 		if (useFog)
 		{
-			gos_SetRenderState( gos_State_Fog, (int)&fogColor);
+			gos_SetRenderState( gos_State_Fog, (int32_t)&fogColor);
 		}
 		else
 		{
@@ -915,7 +915,7 @@ void InitDifficultySettings (FitIniFile *gameSystemFile)
 //--------------------------------------------------
 // Game System Constants -- Definitions here.
 float maxVisualRange = 0.0;
-ULONG MaxTreeLOSCellBlock = 0;
+uint32_t MaxTreeLOSCellBlock = 0;
 float MaxVisualRadius = 0.0;
 float fireVisualRange = 0.0;
 extern float WeaponRange[];						//MOVER
@@ -1189,9 +1189,9 @@ typedef struct _MoverInitData {
 	char			brainFileName[50];
 	char			profileName[50];
 	int32_t			objNumber;
-	ULONG	controlType;
-	ULONG	controlDataType;
-	ULONG	variant;
+	uint32_t	controlType;
+	uint32_t	controlDataType;
+	uint32_t	variant;
 	float			position[2];
 	int32_t			rotation;
 	char			teamID;
@@ -1915,7 +1915,7 @@ void Mission::init (PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuf
 			bool isServer = false;
 			result = missionFile->readIdBoolean("Server", isServer);
 			gosASSERT(result == NO_ERROR);
-			ULONG numPlayers;
+			uint32_t numPlayers;
 			result = missionFile->readIdULong("NumPlayers", numPlayers);
 			gosASSERT(result == NO_ERROR);
 			gosASSERT(MPlayer == NULL);
@@ -2291,7 +2291,7 @@ void Mission::init (PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuf
 	result = missionFile->seekBlock("Warriors");
 	gosASSERT(result == NO_ERROR);
 
-	ULONG numWarriors;
+	uint32_t numWarriors;
 	result = missionFile->readIdULong("NumWarriors",numWarriors);
 	gosASSERT(result == NO_ERROR);
 
@@ -2367,7 +2367,7 @@ void Mission::init (PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuf
 	if (loadBrainParameters) {
 		//---------------------------------------------------------------
 		// Load the brain parameter file and load 'em for each warrior...
-		for (ULONG i = 1; i <= numWarriors; i++) {
+		for (uint32_t i = 1; i <= numWarriors; i++) {
 			result = MechWarrior::warriorList[i]->loadBrainParameters(missionFile, i);
 			//Assert(result == NO_ERROR, result, " Could not load Warrior Brain Parameters ");
 		}
@@ -2438,7 +2438,7 @@ void Mission::init (PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuf
 
 			result = missionFile->seekBlock(partName);
 			gosASSERT(result == NO_ERROR);
-			ULONG squadNum;
+			uint32_t squadNum;
 			result = missionFile->readIdULong("squadNum", squadNum);
 			int32_t squadIndex = 0;
 			for (squadIndex = 0; squadIndex < numSquads; squadIndex++)
@@ -2484,7 +2484,7 @@ void Mission::init (PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuf
 			for (int32_t i = 0; i < numSquads; i++) {
 				char s[128];
 				sprintf(s, "Squad%d", i);
-				ULONG alternate = -1;
+				uint32_t alternate = -1;
 				result = missionFile->readIdULong(s, alternate);
 				if (result == NO_ERROR)
 					randomAlternative[i] = alternate;
@@ -2508,8 +2508,8 @@ void Mission::init (PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuf
 			// If we have alternatives, choose which one we're taking before we read
 			// anything else in...
 			bool usingAlternate = false;
-			ULONG realPilot = 0;
-			ULONG squadNum;
+			uint32_t realPilot = 0;
+			uint32_t squadNum;
 			result = missionFile->readIdULong("squadNum", squadNum);
 			parts[i].squadId = squadNum;
 			int32_t squadIndex = 0;
@@ -3066,7 +3066,7 @@ void Mission::initTGLForMission()
 	if ( !TG_Shape::tglHeap )
 	{
 		//---------------------------------------------------------
-		ULONG tglHeapSize = 40 * 1024 * 1024;
+		uint32_t tglHeapSize = 40 * 1024 * 1024;
 
 		TG_Shape::tglHeap = new UserHeap;
 		TG_Shape::tglHeap->init(tglHeapSize,"TinyGeom");
@@ -3415,7 +3415,7 @@ float Mission::checkObjectiveTimer (int32_t objectiveNum)
 	gosASSERT((objectiveNum >= 0) || objectiveNum < (int32_t)numObjectives);
 
 	int32_t timerNumber = OBJECTIVE_1_TIMER + objectiveNum;
-	ULONG timeLeft = 0;
+	uint32_t timeLeft = 0;
 
 	TimerPtr timer = timerManager->getTimer(timerNumber);
 	gosASSERT(timer != NULL);

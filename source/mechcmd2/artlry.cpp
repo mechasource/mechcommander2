@@ -292,7 +292,7 @@ void ArtilleryChunk::pack (void) {
 		
 void ArtilleryChunk::unpack (void) {
 
-	ULONG tempData = data;
+	uint32_t tempData = data;
 
 	commanderId = (tempData & ARTILLERYCHUNK_COMMANDERID_MASK);
 	tempData >>= ARTILLERYCHUNK_COMMANDERID_BITS;
@@ -382,7 +382,7 @@ void ArtilleryType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-int32_t ArtilleryType::init (FilePtr objFile, ULONG fileSize) {
+int32_t ArtilleryType::init (FilePtr objFile, uint32_t fileSize) {
 
 	int32_t result = 0;
 	
@@ -1382,7 +1382,7 @@ void Artillery::render (void)
 				break;
 			}
 			
-			ULONG width, height;
+			uint32_t width, height;
 			Stuff::Vector4D moveHere;
 			eye->projectZ( iFacePosition, moveHere );
 
@@ -1722,7 +1722,7 @@ void Artillery::Save (PacketFilePtr file, int32_t packetNum)
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(PUCHAR)&data,sizeof(ArtilleryData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(puint8_t)&data,sizeof(ArtilleryData),STORAGE_TYPE_ZLIB);
 }
 
 //---------------------------------------------------------------------------

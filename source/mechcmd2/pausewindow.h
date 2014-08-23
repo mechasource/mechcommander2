@@ -44,9 +44,9 @@ class PauseWindow
 
 		void init( FitIniFile& file );
 
-		void handleClick( int ID );
+		void handleClick( int32_t ID );
 
-		bool inRect( int mouseX, int mouseY );
+		bool inRect( int32_t mouseX, int32_t mouseY );
 
 		void begin(){ currentTime = 0.f; }
 		void end();

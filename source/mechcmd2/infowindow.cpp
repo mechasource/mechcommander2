@@ -107,7 +107,7 @@ void InfoWindow::init( FitIniFile& file )
 	if ( NO_ERROR != file.seekBlock( "Fonts" ) )
 		Assert( 0, 0, "couldn't find the font block" );
 
-	for ( int i = 0; i < 7; i++ )
+	for ( int32_t i = 0; i < 7; i++ )
 	{
 		if ( skillInfos[i].textureHandle )
 		{
@@ -359,7 +359,7 @@ void InfoWindow::render()
 	RECT tmpRect = { SCROLLBOXLEFT, SCROLLBOXBOTTOM, SCROLLBOXRIGHT, INFOTOP + INFOHEIGHT };
 	drawRect( tmpRect, 0xff000000 );
 
-	for ( int i = 0; i < 2; i++ )
+	for ( int32_t i = 0; i < 2; i++ )
 	{
 		if ( buttons[i].isEnabled() )
 			buttons[i].render();
@@ -427,7 +427,7 @@ void InfoWindow::render()
 		gos_SetRenderState( gos_State_Texture, 0 );
 
 		// draw the health bar
-		ULONG					color;
+		uint32_t					color;
 		
 		float barStatus = pUnit->getAppearance()->barStatus;
 			
@@ -446,8 +446,8 @@ void InfoWindow::render()
 		v[0].y = v[3].y = HEALTHTOP;
 		v[1].y = v[2].y = HEALTHBOTTOM;
 
-		ULONG dimColor = ( color & 0xff7f7f7f );
-		for ( int i = 0; i < 4; i++ )
+		uint32_t dimColor = ( color & 0xff7f7f7f );
+		for ( int32_t i = 0; i < 4; i++ )
 			v[i].argb = dimColor;
 
 		gos_DrawQuads( v, 4 );
@@ -493,7 +493,7 @@ void InfoWindow::update()
 	if ( icon )
 		icon->update();
 
-	for ( int i = 0; i < 2; i++ )
+	for ( int32_t i = 0; i < 2; i++ )
 	{	
 		if ( buttons[i].location[0].x <= mouseX && mouseX <= buttons[i].location[2].x
 				&& mouseY >= buttons[i].location[0].y && mouseY <= buttons[i].location[1].y  )
@@ -512,7 +512,7 @@ void InfoWindow::update()
 	{
 		if ( lastYClick != -1.f )
 		{
-			int tmpLastY = mouseY; 
+			int32_t tmpLastY = mouseY; 
 			tmpLastY -= userInput->getMouseDragY();
 			setScrollPos( lastYClick + tmpLastY );
 			return;
@@ -628,15 +628,15 @@ void InfoWindow::drawScrollingStuff()
 	bool bDraw[4];
 	memset( bDraw, 0, sizeof( bool ) * 4 );
 	
-	int curComponentCount = 60;
+	int32_t curComponentCount = 60;
 
-	int i = 0;
+	int32_t i = 0;
 
 	for (int32_t curWeapon = pUnit->numOther; curWeapon < (pUnit->numOther + pUnit->numWeapons); curWeapon++) 
 	{
 			int32_t nName = pUnit->inventory[curWeapon].masterID;
 			bool bFound = 0;
-			for ( int j = 0; j < i; j++ )
+			for ( int32_t j = 0; j < i; j++ )
 			{
 				if ( nName == names[j] )
 				{
@@ -664,7 +664,7 @@ void InfoWindow::drawScrollingStuff()
 			else
 				ammo[i] += pUnit->getWeaponShots( curWeapon );
 
-			int  range = MasterComponent::masterList[pUnit->inventory[curWeapon].masterID].getWeaponRange();
+			int32_t  range = MasterComponent::masterList[pUnit->inventory[curWeapon].masterID].getWeaponRange();
 			ranges[i] = range;
 			bDraw[range] = true;
 
@@ -680,7 +680,7 @@ void InfoWindow::drawScrollingStuff()
 	curY += SECTIONSKIP;
 
 
-	ULONG height = componentFont.height();
+	uint32_t height = componentFont.height();
 	
 
 	// removing headers for now
@@ -690,7 +690,7 @@ void InfoWindow::drawScrollingStuff()
 
 
 
-	for ( int j = 0; j < 3; j++ )
+	for ( int32_t j = 0; j < 3; j++ )
 	{
 		if ( !bDraw[j] ) // make sure we have one
 			continue;
@@ -826,8 +826,8 @@ void InfoWindow::drawScrollingStuff()
 
 		curY += SECTIONSKIP;
 
-		int rank = pWarrior->getRank();
-		int skills[2] = { MWS_GUNNERY, MWS_PILOTING };
+		int32_t rank = pWarrior->getRank();
+		int32_t skills[2] = { MWS_GUNNERY, MWS_PILOTING };
 
 		char buffer[256];
 		//ACE not continguous with other ranks.  Added too late!
@@ -841,7 +841,7 @@ void InfoWindow::drawScrollingStuff()
 			componentFont.render( buffer, SKILLLEFT, curY, SCROLLLEFT - SKILLLEFT, height, 0xff005392, 0, 0 );
 		}
 
-		int currentSkill = rank;
+		int32_t currentSkill = rank;
 		for ( j = 0; j < 3; j ++ )
 		{
 			gos_VERTEX v[4];
@@ -862,13 +862,13 @@ void InfoWindow::drawScrollingStuff()
 				drawEmptyRect( tmpRect, 0xff002f55, 0xff002f55  );
 
 
-				ULONG gosID = mcTextureManager->get_gosTextureHandle( skillInfos[currentSkill].textureHandle );
+				uint32_t gosID = mcTextureManager->get_gosTextureHandle( skillInfos[currentSkill].textureHandle );
 				gos_SetRenderState( gos_State_Texture, gosID );
 				gos_DrawQuads( v, 4 );
 
 				if ( j != 0 )
 				{
-					int skill = pWarrior->getSkill( skills[j-1] );
+					int32_t skill = pWarrior->getSkill( skills[j-1] );
 					drawSkillBar( skill, curY, height );
 				}
 			}
@@ -902,7 +902,7 @@ void InfoWindow::drawScrollingStuff()
 		infoLength = curY - SCROLLTOP - ( SCROLLBOTTOM - SCROLLTOP );
 }
 
-void InfoWindow::handleClick( int ID )
+void InfoWindow::handleClick( int32_t ID )
 {
 	switch( ID )
 	{
@@ -933,7 +933,7 @@ void InfoWindow::drawDivider( float yVal )
 
 
 	memset( v, 0, sizeof( gos_VERTEX ) * 2 );
-	for ( int i = 0; i < 2; i++ )
+	for ( int32_t i = 0; i < 2; i++ )
 		v[i].rhw = .5f;
 
 	v[0].x = DIVIDERLEFT;
@@ -945,16 +945,16 @@ void InfoWindow::drawDivider( float yVal )
 
 }
 
-void InfoWindow::drawSkillBar( int skill, float yVal, float height )
+void InfoWindow::drawSkillBar( int32_t skill, float yVal, float height )
 {
 	float left = InfoWindow::SKILLLEFT;
 	float right = InfoWindow::SKILLRIGHT;
 
-	int barCount = skill/InfoWindow::NUMBERSKILLBARS;
+	int32_t barCount = skill/InfoWindow::NUMBERSKILLBARS;
 
-	int redIncrement = 0;
-	int greenIncrement = 0;
-	int blueIncrement = 0;
+	int32_t redIncrement = 0;
+	int32_t greenIncrement = 0;
+	int32_t blueIncrement = 0;
 	if ( barCount )
 	{
 		redIncrement =  (205/barCount) << 16;
@@ -962,7 +962,7 @@ void InfoWindow::drawSkillBar( int skill, float yVal, float height )
 		blueIncrement = (255 - 146)/barCount;
 	}
 
-	ULONG color = 0xff005392;
+	uint32_t color = 0xff005392;
 
 	RECT outSideRect = { left - SKILLSKIP + .5, yVal - .5, right + SKILLSKIP + .5, yVal + height + 1.5};
 	drawRect( outSideRect, 0xff000000 );
@@ -971,7 +971,7 @@ void InfoWindow::drawSkillBar( int skill, float yVal, float height )
 
 	drawEmptyRect( outSideRect, 0xff002f55, 0xff002f55 );
 
-	for ( int i = 0; i < barCount; i++ )
+	for ( int32_t i = 0; i < barCount; i++ )
 	{
 		drawRect( rect, color );
 		color += redIncrement;
@@ -987,7 +987,7 @@ void InfoWindow::drawSkillBar( int skill, float yVal, float height )
 	componentFont.render( buffer, SKILLRIGHT+2, yVal, SCROLLLEFT - SKILLRIGHT - 2, SKILLHEIGHT, 0xff005392, 0, 0 );
 }
 
-void InfoWindow::setScrollPos( int where )
+void InfoWindow::setScrollPos( int32_t where )
 {
 	if ( where < 0 )
 		scrollPos = 0;

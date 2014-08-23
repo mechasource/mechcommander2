@@ -64,7 +64,7 @@ void MechListBox::update()
 
 	if ( bDeleteIfNoInventory )
 	{
-		for ( int i = 0; i < itemCount; i++ )
+		for ( int32_t i = 0; i < itemCount; i++ )
 		{
 			if ( ((MechListBoxItem*)items[i])->mechCount == 0 )
 			{
@@ -81,7 +81,7 @@ void MechListBox::update()
 				{
 					if ( itemCount )
 					{
-						for ( int j = 0; j < itemCount; j++ )
+						for ( int32_t j = 0; j < itemCount; j++ )
 							if ( items[j]->getState() != aListItem::DISABLED )
 							{
 								SelectItem( j );
@@ -110,7 +110,7 @@ LogisticsMech* MechListBox::getCurrentMech()
 
 
 
-int MechListBox::init()
+int32_t MechListBox::init()
 {
 	if ( MechListBoxItem::s_templateItem )
 		return 0;
@@ -137,10 +137,10 @@ int MechListBox::init()
 bool	MechListBoxItem::pointInside(int32_t xPos, int32_t yPos) const
 {
 
-	int minX = location[0].x + outline.globalX();
-	int minY = location[0].y + outline.globalY();
-	int maxX = location[0].x + outline.globalX() + outline.width();
-	int maxY = location[0].y + outline.globalY() + outline.height();
+	int32_t minX = location[0].x + outline.globalX();
+	int32_t minY = location[0].y + outline.globalY();
+	int32_t maxX = location[0].x + outline.globalX() + outline.width();
+	int32_t maxY = location[0].y + outline.globalY() + outline.height();
 
 	if ( minX < xPos && xPos < maxX
 		&& minY < yPos && yPos < maxY )
@@ -251,7 +251,7 @@ void MechListBoxItem::init( FitIniFile& file )
 		assignAnimation( file, curAnim );
 
 		char blockName[64];
-		for ( int i = 0; i < 4; i++ )
+		for ( int32_t i = 0; i < 4; i++ )
 		{
 			sprintf( blockName, "OrangeAnimation%ld", i );
 			s_templateItem->animations[1][i].init( &file, blockName );
@@ -270,7 +270,7 @@ void MechListBoxItem::assignAnimation( FitIniFile& file, int32_t& curAnim )
 	s_templateItem->animationIDs[curAnim] = -1;
 	if ( NO_ERROR == file.readIdString( "Animation", tmpStr, 63 ) )
 	{
-		for ( int j = 0; j < strlen( tmpStr ); j++ )
+		for ( int32_t j = 0; j < strlen( tmpStr ); j++ )
 		{
 			if ( isdigit( tmpStr[j] ) )
 			{
@@ -295,7 +295,7 @@ MechListBoxItem& MechListBoxItem::operator=( const MechListBoxItem& src )
 		weightIcon = src.weightIcon;
 		weightText = src.weightText;
 		countText = src.countText;
-		for ( int i = 0; i < ANIMATION_COUNT; i++ )
+		for ( int32_t i = 0; i < ANIMATION_COUNT; i++ )
 		{
 			animations[0][i] = src.animations[0][i];
 			animations[1][i] = src.animations[1][i];
@@ -313,7 +313,7 @@ MechListBoxItem& MechListBoxItem::operator=( const MechListBoxItem& src )
 void MechListBoxItem::update()
 {
 	char text[32];
-	int oldMechCount = mechCount;
+	int32_t oldMechCount = mechCount;
 	if ( !pMech )
 	{
 		mechCount = 0;
@@ -346,12 +346,12 @@ void MechListBoxItem::update()
 	bool isInside = pointInside( userInput->getMouseX(), userInput->getMouseY() );
 
 
-	for ( int i = 0; i < ANIMATION_COUNT; i++ )
+	for ( int32_t i = 0; i < ANIMATION_COUNT; i++ )
 		animations[bOrange][i].update();
 
 	if ( state == aListItem::SELECTED ) 
 	{
-		for ( int i = 0; i < ANIMATION_COUNT; i++ )
+		for ( int32_t i = 0; i < ANIMATION_COUNT; i++ )
 			animations[bOrange][i].setState( aAnimGroup::PRESSED );
 
 	//	if ( userInput->isLeftClick() && isInside )
@@ -364,7 +364,7 @@ void MechListBoxItem::update()
 	}
 	else if ( state == aListItem::HIGHLITE )
 	{
-		for ( int i = 0; i < ANIMATION_COUNT; i++ )
+		for ( int32_t i = 0; i < ANIMATION_COUNT; i++ )
 			animations[bOrange][i].setState( aAnimGroup::HIGHLIGHT );
 
 	}
@@ -376,12 +376,12 @@ void MechListBoxItem::update()
 			setMech(); // need to call explicitly
 		}
 
-		for ( int i = 0; i < ANIMATION_COUNT; i++ )
+		for ( int32_t i = 0; i < ANIMATION_COUNT; i++ )
 			animations[bOrange][i].setState( aAnimGroup::DISABLED );
 	}
 	else
 	{
-		for ( int i = 0; i < ANIMATION_COUNT; i++ )
+		for ( int32_t i = 0; i < ANIMATION_COUNT; i++ )
 			animations[bOrange][i].setState( aAnimGroup::NORMAL );
 	}
 
@@ -408,7 +408,7 @@ void MechListBoxItem::render()
 	}
 
 
-	for ( int i = 0; i < this->pNumberOfChildren; i++ )
+	for ( int32_t i = 0; i < this->pNumberOfChildren; i++ )
 	{
 		int32_t index = animationIDs[i];
 		if ( index != -1 )
@@ -517,7 +517,7 @@ int32_t MechListBox::AddItem(aListItem* itemString)
 		}
 	
 		EString chassisName;
-		for ( int i = 0; i < itemCount; i++ )
+		for ( int32_t i = 0; i < itemCount; i++ )
 		{
 
 			int32_t ID = ((MechListBoxItem*)items[i])->pMech->getChassisName();
@@ -557,7 +557,7 @@ int32_t MechListBox::AddItem(aListItem* itemString)
 
 void	MechListBox::dimItem( LogisticsMech* pMech, bool bDim )
 {
-		for ( int i = 0; i < itemCount; i++ )
+		for ( int32_t i = 0; i < itemCount; i++ )
 		{
 			if ( ((MechListBoxItem*)items[i])->pMech == pMech )
 			{
@@ -570,7 +570,7 @@ void	MechListBox::dimItem( LogisticsMech* pMech, bool bDim )
 
 void MechListBox::undimAll()
 {
-	for ( int i = 0; i < itemCount; i++ )
+	for ( int32_t i = 0; i < itemCount; i++ )
 	{
 			
 			((MechListBoxItem*)items[i])->bDim = 0;	
@@ -581,7 +581,7 @@ void MechListBox::undimAll()
 void MechListBox::disableItemsThatCostMoreThanRP()
 {
 	bool bDisabledSel = 0;
-	for ( int i = 0; i < itemCount; i++ )
+	for ( int32_t i = 0; i < itemCount; i++ )
 	{
 		if ( ((MechListBoxItem*)items[i])->pMech->getCost() > LogisticsData::instance->getCBills() )
 		{
@@ -616,7 +616,7 @@ void MechListBox::disableItemsThatCostMoreThanRP()
 void MechListBox::disableItemsThatCanNotGoInFG()
 {
 	bool bDisabledSel = 0;
-	for ( int i = 0; i < itemCount; i++ )
+	for ( int32_t i = 0; i < itemCount; i++ )
 	{
 		if ( !LogisticsData::instance->canAddMechToForceGroup( ((MechListBoxItem*)items[i])->pMech ) )
 		{
@@ -652,7 +652,7 @@ void MechListBox::setOrange( bool bNewOrange )
 {
 	bOrange = bNewOrange ? 1 : 0;
 
-	for ( int i= 0; i < itemCount; i++ )
+	for ( int32_t i= 0; i < itemCount; i++ )
 	{
 		((MechListBoxItem*)items[i])->bOrange = bOrange;
 	}

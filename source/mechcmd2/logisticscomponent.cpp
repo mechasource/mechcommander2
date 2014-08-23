@@ -76,7 +76,7 @@ LogisticsComponent::~LogisticsComponent()
 		delete pictureFileName;
 }
 
-int LogisticsComponent::init( PSTR dataLine )
+int32_t LogisticsComponent::init( PSTR dataLine )
 {
 	PSTR line = dataLine;
 
@@ -88,7 +88,7 @@ int LogisticsComponent::init( PSTR dataLine )
 
 	// the type
 	extractString( pLine, pBuffer, 1024 );
-	int i;
+	int32_t i;
 	for ( i = 0; i < NUM_COMPONENT_FORMS; ++i )
 	{
 		if ( 0 == _stricmp( ComponentFormString[i], pBuffer ) )
@@ -122,11 +122,11 @@ int LogisticsComponent::init( PSTR dataLine )
 	if ( !isWeapon() )
 		rangeType = NO_RANGE;
 	else if ( !strcmp( pBuffer, "int32_t" ) )
-		rangeType = LONG;
+		rangeType = int32_t;
 	else if ( !strcmp( pBuffer, "medium" ) )
 		rangeType = MEDIUM;
 	else
-		rangeType = SHORT;
+		rangeType = int16_t ;
 
 	// we need to figure out where things can go
 	extractString( pLine, pBuffer, 1024 );
@@ -179,11 +179,11 @@ int LogisticsComponent::init( PSTR dataLine )
 	return ID;
 }
 
-int LogisticsComponent::extractString( PSTR& pFileLine, PSTR pBuffer, int bufferLength )
+int32_t LogisticsComponent::extractString( PSTR& pFileLine, PSTR pBuffer, int32_t bufferLength )
 {
 	*pBuffer = 0;
 
-	int i;
+	int32_t i;
 	for ( i = 0; i < 512; ++i )
 	{
 		if ( pFileLine[i] == '\n' )
@@ -207,11 +207,11 @@ int LogisticsComponent::extractString( PSTR& pFileLine, PSTR pBuffer, int buffer
 
 }
 
-int LogisticsComponent::extractInt( PSTR& pFileLine )
+int32_t LogisticsComponent::extractInt( PSTR& pFileLine )
 {
 	char buffer[1024];
 
-	int count = extractString( pFileLine, buffer, 1024 );
+	int32_t count = extractString( pFileLine, buffer, 1024 );
 
 	if ( count > 0 )
 	{
@@ -225,7 +225,7 @@ float LogisticsComponent::extractFloat( PSTR& pFileLine )
 {
 	char buffer[1024];
 
-	int count = extractString( pFileLine, buffer, 1024 );
+	int32_t count = extractString( pFileLine, buffer, 1024 );
 
 	if ( count > 0 )
 	{
@@ -235,7 +235,7 @@ float LogisticsComponent::extractFloat( PSTR& pFileLine )
 	return -1;
 }
 
-bool LogisticsComponent::compare( LogisticsComponent* second, int type )
+bool LogisticsComponent::compare( LogisticsComponent* second, int32_t type )
 {
 	switch( type )
 	{

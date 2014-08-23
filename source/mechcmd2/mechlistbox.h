@@ -108,7 +108,7 @@ public:
 
 	virtual ~MechListBox();
 	
-	static int		init();
+	static int32_t		init();
 	void	drawCBills( bool bDraw );
 
 	virtual void update();

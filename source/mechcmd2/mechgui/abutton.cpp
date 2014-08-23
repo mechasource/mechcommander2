@@ -142,7 +142,7 @@ void aButton::render()
 	{
 		if ( textureHandle )
 		{
-			ULONG gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
+			uint32_t gosID = mcTextureManager->get_gosTextureHandle( textureHandle );
 			gos_SetRenderState( gos_State_Texture, gosID ); 
 		}
 		else
@@ -161,7 +161,7 @@ void aButton::render()
 		{
 			char buffer[256];
 			cLoadString( data.textID, buffer, 256 );
-			ULONG width, height;
+			uint32_t width, height;
 			gos_TextSetAttributes(data.textFont, data.textColors[state], data.textSize, true, true, false, false, data.textAlign);			
 			gos_TextSetRegion( data.textRect.left, data.textRect.top, data.textRect.right, data.textRect.bottom );
 			gos_TextStringLength( &width, &height, buffer );
@@ -184,7 +184,7 @@ void aButton::render()
 			drawEmptyRect( tmp, location[0].argb, location[0].argb );
 		}
 
-		for ( int i = 0; i < numberOfChildren(); i++ )
+		for ( int32_t i = 0; i < numberOfChildren(); i++ )
 		{
 			pChildren[i]->render();
 		}
@@ -235,17 +235,17 @@ bool aButton::isEnabled()
 	return state == ENABLED || state == PRESSED || state == AMBIGUOUS || state == HIGHLIGHT;
 }
 
-int aButton::getID()
+int32_t aButton::getID()
 {
 	return data.ID;
 }
 
-void aButton::setID( int newID )
+void aButton::setID( int32_t newID )
 {
 	data.ID = newID;
 }
 
-void aButton::makeUVs( gos_VERTEX* vertices, int State, aButton::aButtonData& data )
+void aButton::makeUVs( gos_VERTEX* vertices, int32_t State, aButton::aButtonData& data )
 {
 		float left = data.stateCoords[State][0];
 		float top = data.stateCoords[State][1];
@@ -344,7 +344,7 @@ void aButton::init( FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font )
 	location[2].x = location[3].x = x + width;
 	location[1].y = location[2].y = y + height;
 
-	for ( int j = 0; j < 4; j++ )
+	for ( int32_t j = 0; j < 4; j++ )
 	{
 		location[j].argb = 0xffffffff;
 		location[j].frgb = 0;
@@ -364,8 +364,8 @@ void aButton::init( FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font )
 		if ( !strstr( data.fileName, ".tga" ) )
 			strcat( file, ".tga" );
 		
-		int ID = mcTextureManager->loadTexture( file, gos_Texture_Alpha, 0, 0, 0x2 );
-		int gosID = mcTextureManager->get_gosTextureHandle( ID );
+		int32_t ID = mcTextureManager->loadTexture( file, gos_Texture_Alpha, 0, 0, 0x2 );
+		int32_t gosID = mcTextureManager->get_gosTextureHandle( ID );
 		TEXTUREPTR textureData;
 		gos_LockTexture( gosID, 0, 0, 	&textureData );
 		gos_UnLockTexture( gosID );
@@ -438,7 +438,7 @@ void aButton::init( FitIniFile& buttonFile, PCSTR str, HGOSFONT3D font )
 	strcpy( bmpName, str );
 	strcat( bmpName, "Bmp" );
 	char finalName[256];
-	int counter = 0;
+	int32_t counter = 0;
 	while(true)
 	{
 		sprintf( finalName, "%s%ld", bmpName, counter );
@@ -713,7 +713,7 @@ void aAnimButton::update( const aAnimation& animData )
 
 	if ( bAnimateChildren )
 	{
-		for ( int i = 0; i < numberOfChildren(); i++ )
+		for ( int32_t i = 0; i < numberOfChildren(); i++ )
 			pChildren[i]->setColor( color );
 	}
 	

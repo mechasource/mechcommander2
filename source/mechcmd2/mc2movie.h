@@ -18,7 +18,7 @@
 //#include <windows.h>
 
 //--------------------------------------------------------------------------
-const ULONG MAX_TEXTURES_NEEDED = 6;
+cuint32_t MAX_TEXTURES_NEEDED = 6;
 
 //--------------------------------------------------------------------------
 class MC2Movie
@@ -119,17 +119,17 @@ class MC2Movie
 		
 	protected:
 	
-		ULONG*		MC2Surface;									//Extra surface used if MC2 Movie is larger then 256x256
-		ULONG		mc2TextureNodeIndex[MAX_TEXTURES_NEEDED];		//Handles to textures for MC2 movie data.
+		uint32_t*		MC2Surface;									//Extra surface used if MC2 Movie is larger then 256x256
+		uint32_t		mc2TextureNodeIndex[MAX_TEXTURES_NEEDED];		//Handles to textures for MC2 movie data.
 		RECT		MC2Rect;										//Physical Location on screen for MC2 movie.
 					
-		ULONG 		numWide;										//Number of textures wide display is
-		ULONG		numHigh;										//Number of textures high the display is
-		ULONG		totalTexturesUsed;                              //total Number of texture used to display 
+		uint32_t 		numWide;										//Number of textures wide display is
+		uint32_t		numHigh;										//Number of textures high the display is
+		uint32_t		totalTexturesUsed;                              //total Number of texture used to display 
 					
 		bool		forceStop;										//Should MC2 movie end now?
 					
-		ULONG		singleTextureSize;								//Size of the single texture.  Fit it to smallest texture we can use.
+		uint32_t		singleTextureSize;								//Size of the single texture.  Fit it to smallest texture we can use.
 		bool		stillPlaying;									//Is MC2 movie over?
 
 		bool		separateWAVE;									//Tells us if this MC2 movie has a separate soundtrack.

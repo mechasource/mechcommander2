@@ -33,7 +33,7 @@ public:
 	bool isDone();
 	virtual void render();
 	virtual void update();
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 	void updateOptions(); // put into inventory
 
@@ -42,10 +42,10 @@ public:
 
 private:
 
-	int indexOfButtonWithID(int id);
+	int32_t indexOfButtonWithID(int32_t id);
 
 	LogisticsScreen*		tabAreas[4];
-	int						curTab;
+	int32_t						curTab;
 	bool			bShowWarning;
 
 
@@ -59,7 +59,7 @@ public:
 	int32_t	init(aButton* pLeft, aButton* pRight, aButton* pTab );
 	virtual void	update();
 
-	virtual int		handleMessage( ULONG message, ULONG fromWho );
+	virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
 
 	void			SetScrollMax(float newMax);
 	void			SetScrollPos(float newPos);
@@ -100,7 +100,7 @@ public:
 	virtual void end();
 	void reset( const CPrefs& newPrefs);
 
-	virtual int		handleMessage( ULONG message, ULONG fromWho );
+	virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
 
 private:
 	aDropList		resolutionList;
@@ -119,7 +119,7 @@ class OptionsAudio : public LogisticsScreen
 		virtual void end();
 		void reset(const CPrefs& newPrefs);
 
-		virtual int		handleMessage( ULONG message, ULONG fromWho );
+		virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
 
 	private:
 
@@ -138,12 +138,12 @@ public:
 		virtual void end();
 		void reset(bool bUseOld);
 
-		virtual int		handleMessage( ULONG message, ULONG fromWho );
+		virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
 
 private:
 
 	static void makeKeyString( int32_t hotKey, PSTR buffer );
-	static int makeInputKeyString( int32_t& hotKey, PSTR buffer );
+	static int32_t makeInputKeyString( int32_t& hotKey, PSTR buffer );
 
 
 	aListBox		hotKeyList;
@@ -161,7 +161,7 @@ public:
 	virtual void end();
 	void reset(const CPrefs& newPrefs);
 
-	virtual int		handleMessage( ULONG message, ULONG fromWho );
+	virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
 
 	void resetCamera();
 

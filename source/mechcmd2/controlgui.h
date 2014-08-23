@@ -43,9 +43,9 @@ struct	ButtonData {
 	int32_t			stateCoords[4][2];	
 	int32_t			textureWidth;
 	int32_t			textureHeight;
-	int				fileWidth;
-	int				fileHeight;
-	ULONG	textureHandle;
+	int32_t				fileWidth;
+	int32_t				fileHeight;
+	uint32_t	textureHandle;
 	bool			textureRotated;
 };
 
@@ -56,7 +56,7 @@ public:
 	int32_t ID;
 
 	ButtonData*			data;
-	int					state;
+	int32_t					state;
 
 	void render();
 	void press( bool );
@@ -66,8 +66,8 @@ public:
 	void makeAmbiguous( bool bAmbiguous );
 	void hide( bool );
 	void move( float deltaX, float deltaY );
-	void setColor( ULONG newColor );
-	static void makeUVs( gos_VERTEX* vertices, int State, ButtonData& data );
+	void setColor( uint32_t newColor );
+	static void makeUVs( gos_VERTEX* vertices, int32_t State, ButtonData& data );
 
 	static void initButtons( FitIniFile& file, int32_t buttonCount, 
 		ControlButton* buttons, ButtonData* buttonData, PCSTR str, aFont* font = 0 );
@@ -94,17 +94,17 @@ public:
 
 	ControlGui();
 	~ControlGui();
-	bool inRegion( int mouseX, int mouseY, bool bPaused );
+	bool inRegion( int32_t mouseX, int32_t mouseY, bool bPaused );
 	void render( bool bPaused );
 	void update( bool bPaused, bool bLOS );
-	void initTacMapBuildings( puint8_t data, int size ){ tacMap.initBuildings( data, size ); }
-	void initTacMap( puint8_t data, int size ){ tacMap.init( data, size ); }
+	void initTacMapBuildings( puint8_t data, int32_t size ){ tacMap.initBuildings( data, size ); }
+	void initTacMap( puint8_t data, int32_t size ){ tacMap.init( data, size ); }
 	void initMechs();
 	void unPressAllVehicleButtons();
 	void disableAllVehicleButtons();
 	void addMover (MoverPtr mover);
 	void removeMover (MoverPtr mover);
-	int  updateChat();
+	int32_t  updateChat();
 
 	void beginPause();
 	void endPause();
@@ -136,7 +136,7 @@ public:
 
 	PCSTR getVehicleName( int32_t& ID );
 	PCSTR getVehicleNameFromID (int32_t ID);
-	void swapResolutions( int newResolution );
+	void swapResolutions( int32_t newResolution );
 
 	GameTacMap						tacMap;
 	ForceGroupBar					forceGroupBar;
@@ -202,7 +202,7 @@ public:
 	void	setDefaultSpeed();
 	void	toggleHoldPosition();
 
-	void	setRange( int Range );
+	void	setRange( int32_t Range );
 	void	doStop();
 	void	toggleFireFromCurrentPos();
 	bool	getFireFromCurrentPos(){ return fireFromCurrentPos; }
@@ -210,16 +210,16 @@ public:
 	bool	isAddingVehicle(){ return addingVehicle; }
 	bool	isAddingAirstrike() { return addingArtillery; }
 	bool	isAddingSalvage() { return addingSalvage; }
-	bool	isButtonPressed( int ID ) { return getButton( ID )->state & ControlButton::PRESSED; }
+	bool	isButtonPressed( int32_t ID ) { return getButton( ID )->state & ControlButton::PRESSED; }
 	bool	getMines();
 	bool	getSalvage();
 	bool	getRepair();
 	bool	getGuardTower();
-	void	switchTabs( int direction );
+	void	switchTabs( int32_t direction );
 	void	renderObjective( CObjective* pObjective, int32_t xPos, int32_t yPos, bool bDrawTotal );
 	void	renderMissionStatus( bool bRender){ renderStatusInfo = bRender; }		
 
-	int		getCurrentRange();
+	int32_t		getCurrentRange();
 	void	pressInfoButton( ){ handleClick( INFO_COMMAND ); }
 	bool	infoButtonPressed() { return getButton( INFO_COMMAND )->state & ControlButton::PRESSED; }
 
@@ -227,7 +227,7 @@ public:
 
 	void	pressAirstrikeButton() 
 	{ 
-		for ( int i = 0; i < LAST_VEHICLE; i++ )
+		for ( int32_t i = 0; i < LAST_VEHICLE; i++ )
 		{
 			if (( vehicleButtons[i].ID == LARGE_AIRSTRIKE) &&
 				!( vehicleButtons[i].state & ControlButton::PRESSED ))
@@ -239,7 +239,7 @@ public:
 	void	pressLargeAirstrikeButton() { handleVehicleClick( LARGE_AIRSTRIKE ); }		
 	void	pressSensorStrikeButton() 
 	{ 
-		for ( int i = 0; i < LAST_VEHICLE; i++ )
+		for ( int32_t i = 0; i < LAST_VEHICLE; i++ )
 		{
 			if (( vehicleButtons[i].ID == SENSOR_PROBE) &&
 				!( vehicleButtons[i].state & ControlButton::PRESSED ))
@@ -249,16 +249,16 @@ public:
 		}
 	}		
 
-	void	setRolloverHelpText( ULONG textID );
+	void	setRolloverHelpText( uint32_t textID );
 
 
-	void	setChatText( PCSTR playerName, PCSTR message, ULONG backgroundColor, 
-		ULONG textColor );
+	void	setChatText( PCSTR playerName, PCSTR message, uint32_t backgroundColor, 
+		uint32_t textColor );
 	void	toggleChat( bool setTeamOnly );
 	void eatChatKey();
 	void	cancelInfo();
 
-	ControlButton*		getButton( int ID );
+	ControlButton*		getButton( int32_t ID );
 
 	struct RectInfo
 	{
@@ -272,10 +272,10 @@ private:
 	{
 		char playerName[32];
 		char message[128];
-		ULONG backgroundColor;
-		ULONG time;
-		ULONG messageLength; // number of lines
-		ULONG chatTextColor;
+		uint32_t backgroundColor;
+		uint32_t time;
+		uint32_t messageLength; // number of lines
+		uint32_t chatTextColor;
 	};
 
 	ChatInfo		chatInfos[MAX_CHAT_COUNT]; // max five lines -- could change
@@ -284,10 +284,10 @@ private:
 	int32_t			rectCount;
 
 	//static	ButtonFile		vehicleFileData[LAST_VEHICLE];
-	static ULONG RUN;
-	static ULONG WALK;
-	static ULONG GUARD;
-	static ULONG JUMP;
+	static uint32_t RUN;
+	static uint32_t WALK;
+	static uint32_t GUARD;
+	static uint32_t JUMP;
 
 	ControlButton*		buttons;
 	ControlButton*		vehicleButtons;
@@ -353,7 +353,7 @@ private:
 	float				rpFlashTime;
 	int32_t				buttonToPress;
 
-	ULONG		curOrder;
+	uint32_t		curOrder;
 	bool				fireFromCurrentPos;
 	bool				addingVehicle;
 	bool				addingArtillery;
@@ -376,12 +376,12 @@ private:
 	aEdit					playerNameEdit;
 	aEdit					personalEdit;
 
-	void handleClick( int ID );
-	void updateVehicleTab( int mouseX, int mouseY, bool bLOS );
+	void handleClick( int32_t ID );
+	void updateVehicleTab( int32_t mouseX, int32_t mouseY, bool bLOS );
 	void renderVehicleTab();
 	void RenderObjectives();
 	void renderResults();
-	void handleVehicleClick( int ID );
+	void handleVehicleClick( int32_t ID );
 	void renderHelpText();
 	void renderInfoTab();
 	void renderChatText();

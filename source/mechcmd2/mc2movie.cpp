@@ -27,10 +27,10 @@
 #include <gameos.hpp>
 
 //-----------------------------------------------------------------------
-const ULONG MAX_TEXTURE_WIDTH 	= 256;
-const ULONG MAX_TEXTURE_HEIGHT 	= 256;
-const ULONG MAX_MOVIE_WIDTH 	= 640;
-const ULONG MAX_MOVIE_HEIGHT 	= 480;
+cuint32_t MAX_TEXTURE_WIDTH 	= 256;
+cuint32_t MAX_TEXTURE_HEIGHT 	= 256;
+cuint32_t MAX_MOVIE_WIDTH 	= 640;
+cuint32_t MAX_MOVIE_HEIGHT 	= 480;
 const float TEXTURE_ADJUST_MIN	= (0.4f / MAX_TEXTURE_WIDTH);
 const float TEXTURE_ADJUST_MAX	= (1.0f - TEXTURE_ADJUST_MIN);
 

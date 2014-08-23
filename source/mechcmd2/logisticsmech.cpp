@@ -11,7 +11,7 @@ LogisticsMech.cpp			: Implementation of the LogisticsMech component.
 #include "LogisticsData.h"
 #include "IniFile.h"
 
-LogisticsMech::LogisticsMech( LogisticsVariant* pVar, int Count ) : pVariant( pVar )
+LogisticsMech::LogisticsMech( LogisticsVariant* pVar, int32_t Count ) : pVariant( pVar )
 {
 	ID = (Count << 24 | pVar->getID() );
 	pilot = 0;
@@ -60,14 +60,14 @@ int32_t LogisticsMech::save( FitIniFile& file, int32_t counter )
 	return 0;
 }
 
-void	LogisticsMech::setColors( ULONG base, ULONG high1, ULONG high2 )
+void	LogisticsMech::setColors( uint32_t base, uint32_t high1, uint32_t high2 )
 {
 	baseColor = base;
 	highlightColor1 = high1;
 	highlightColor2 = high2;
 }
 
-void	LogisticsMech::getColors( ULONG& base, ULONG& high1, ULONG& high2 ) const
+void	LogisticsMech::getColors( uint32_t& base, uint32_t& high1, uint32_t& high2 ) const
 {
 	base = baseColor;
 	high1 = highlightColor1;

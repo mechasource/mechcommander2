@@ -40,7 +40,7 @@ LogisticsPilot::LogisticsPilot()
 	if ( !strlen( skillTexts[0] ) )
 	{
 		char tmp[256];
-		for ( int i = 0; i < NUM_SPECIALTY_SKILLS; i++ )
+		for ( int32_t i = 0; i < NUM_SPECIALTY_SKILLS; i++ )
 		{
 			cLoadString( IDS_SPECIALTY + i, tmp, 255 );
 			strcpy( skillTexts[i], tmp );
@@ -59,7 +59,7 @@ LogisticsPilot::~LogisticsPilot()
 	
 }
 
-int LogisticsPilot::init( PSTR pilotFileName )
+int32_t LogisticsPilot::init( PSTR pilotFileName )
 {
 	fileName = pilotFileName;
 	
@@ -78,7 +78,7 @@ int LogisticsPilot::init( PSTR pilotFileName )
 	}
 
 	// if we got this far we have a file, make a pilot
-	int result = pilotFile.seekBlock( "General" );
+	int32_t result = pilotFile.seekBlock( "General" );
 	gosASSERT( result == 0 );
 
 	int32_t tmp;
@@ -125,7 +125,7 @@ int LogisticsPilot::init( PSTR pilotFileName )
 	result = pilotFile.seekBlock("SpecialtySkills");
 	if (result == NO_ERROR)
 	{
-		for (int i = 0; i < NUM_SPECIALTY_SKILLS; i++) 
+		for (int32_t i = 0; i < NUM_SPECIALTY_SKILLS; i++) 
 		{
 			char tmpChar;
 			result = pilotFile.readIdChar(SpecialtySkillsTable[i], tmpChar);
@@ -140,7 +140,7 @@ int LogisticsPilot::init( PSTR pilotFileName )
 
 }
 
-PCSTR LogisticsPilot::getSkillText( int skillID )
+PCSTR LogisticsPilot::getSkillText( int32_t skillID )
 {
 	gosASSERT( skillID <= NUM_SKILLS );
 	
@@ -160,7 +160,7 @@ PCSTR LogisticsPilot::getSkillText( int skillID )
 	
 }
 
-int	LogisticsPilot::getNumberMissions() const
+int32_t	LogisticsPilot::getNumberMissions() const
 {
 	return missionsCompleted;
 
@@ -185,7 +185,7 @@ int32_t LogisticsPilot::save( FitIniFile& file, int32_t which )
 	file.writeIdBoolean( "Dead", bDead );
 
 	char buffer[64];
-	int i;
+	int32_t i;
 	for ( i = 0; i < MAX_MEDAL; i++ )
 	{
 		sprintf( buffer, "Medal%ld", i );
@@ -223,7 +223,7 @@ int32_t LogisticsPilot::load( FitIniFile& file )
 	file.readIdBoolean( "Dead", bDead );
 
 	char buffer[64];
-	int i;
+	int32_t i;
 	for ( i = 0; i < MAX_MEDAL; i++ )
 	{
 		sprintf( buffer, "Medal%ld", i );
@@ -318,7 +318,7 @@ int32_t LogisticsPilot::update( MechWarrior* pWarrior )
 	rank = pWarrior->getRank();
 
 	int32_t deadMechCount = 0;
-	for ( int i = 0; i < pWarrior->numKilled; i++ )
+	for ( int32_t i = 0; i < pWarrior->numKilled; i++ )
 	{
 		GameObject* pDead = ObjectManager->getByWatchID(pWarrior->killed[i]);
 
@@ -494,8 +494,8 @@ bool	LogisticsPilot::promotePilot()
 	float newAvg = (gunnery + piloting)/2.f;
 
 	
-	int oldRank = turnAverageIntoRank( oldAvg );
-	int newRank = turnAverageIntoRank( newAvg );
+	int32_t oldRank = turnAverageIntoRank( oldAvg );
+	int32_t newRank = turnAverageIntoRank( newAvg );
 
 	if ( rank != newRank )
 	{
@@ -516,7 +516,7 @@ bool	LogisticsPilot::promotePilot()
 	return false;
 }
 
-int LogisticsPilot::turnAverageIntoRank( float avg)
+int32_t LogisticsPilot::turnAverageIntoRank( float avg)
 {
 	if ( avg > 79 )
 		return WARRIOR_RANK_ACE;
@@ -530,10 +530,10 @@ int LogisticsPilot::turnAverageIntoRank( float avg)
 	return WARRIOR_RANK_GREEN;
 }
 
-int			LogisticsPilot::getSpecialtySkillCount() const
+int32_t			LogisticsPilot::getSpecialtySkillCount() const
 {
-	int count = 0;
-	for ( int i = 0; i < NUM_SPECIALTY_SKILLS; i++ )
+	int32_t count = 0;
+	for ( int32_t i = 0; i < NUM_SPECIALTY_SKILLS; i++ )
 	{
 		if ( specialtySkills[i] )
 		count++;
@@ -541,11 +541,11 @@ int			LogisticsPilot::getSpecialtySkillCount() const
 
 	return count;
 }
-int	LogisticsPilot::getSpecialtySkills( PCSTR* array, int& count )
+int32_t	LogisticsPilot::getSpecialtySkills( PCSTR* array, int32_t& count )
 {
-	int max = count;
+	int32_t max = count;
 	count = 0;
-	for ( int i = 0; i < NUM_SPECIALTY_SKILLS; i++ )
+	for ( int32_t i = 0; i < NUM_SPECIALTY_SKILLS; i++ )
 	{
 		if ( count >= max )
 		{
@@ -562,11 +562,11 @@ int	LogisticsPilot::getSpecialtySkills( PCSTR* array, int& count )
 
 }
 
-int		LogisticsPilot::getSpecialtySkills( int* array, int& count )
+int32_t		LogisticsPilot::getSpecialtySkills( pint32_t array, int32_t& count )
 {
-	int max = count;
+	int32_t max = count;
 	count = 0;
-	for ( int i = 0; i < NUM_SPECIALTY_SKILLS; i++ )
+	for ( int32_t i = 0; i < NUM_SPECIALTY_SKILLS; i++ )
 	{
 		if ( i >= max )
 		{
@@ -584,7 +584,7 @@ int		LogisticsPilot::getSpecialtySkills( int* array, int& count )
 }
 		
 
-void	LogisticsPilot::setSpecialtySkill( int skill, bool set )
+void	LogisticsPilot::setSpecialtySkill( int32_t skill, bool set )
 {
 	if ( skill >= NUM_SPECIALTY_SKILLS )
 	{

@@ -124,32 +124,32 @@ bool KillAmbientLight = false;
 
 void InitDW (void);
 
-extern ULONG					NumDevices;
+extern uint32_t					NumDevices;
 
-ULONG elementHeapSize = 1024000;
-ULONG maxElements = 2048;
-ULONG maxGroups = 1024;
+uint32_t elementHeapSize = 1024000;
+uint32_t maxElements = 2048;
+uint32_t maxGroups = 1024;
 
-ULONG systemHeapSize = 8192000;
-ULONG guiHeapSize = 1023999;
-ULONG logisticsHeapSize = 4095999;
-ULONG missionHeapSize = 3072000;
-ULONG spriteDataHeapSize = 2048000;
-ULONG spriteHeapSize = 8192000;
-ULONG polyHeapSize = 1024000;
+uint32_t systemHeapSize = 8192000;
+uint32_t guiHeapSize = 1023999;
+uint32_t logisticsHeapSize = 4095999;
+uint32_t missionHeapSize = 3072000;
+uint32_t spriteDataHeapSize = 2048000;
+uint32_t spriteHeapSize = 8192000;
+uint32_t polyHeapSize = 1024000;
 
 extern float ProcessorSpeed;
 void __stdcall ExitGameOS();
 
-ULONG gosResourceHandle = 0;
+uint32_t gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
 float		gosFontScale = 1.0;
 extern HGOSFONT3D	FontHandle;
 FloatHelpPtr globalFloatHelp = NULL;
-ULONG currentFloatHelp = 0;
+uint32_t currentFloatHelp = 0;
 float MaxMinUV = 8.0f;
 
-ULONG BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
+uint32_t BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
 
 enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor = CPU_PENTIUM;		//Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
 extern float frameRate;
@@ -163,7 +163,7 @@ bool ShowMovers = false;
 bool EnemiesGoalPlan = false;
 bool inViewMode = false;
 extern bool CullPathAreas;
-ULONG viewObject = 0x0;
+uint32_t viewObject = 0x0;
 char missionName[1024];
 
 extern char FileMissingString[];
@@ -177,7 +177,7 @@ char buildNumber[80];
 extern int32_t TERRAIN_TXM_SIZE;
 int32_t ObjectTextureSize = 128;
 
-extern ULONG MultiPlayCommanderId;
+extern uint32_t MultiPlayCommanderId;
 extern bool	useRealLOS;
 bool reloadBounds = false;
 
@@ -256,11 +256,11 @@ bool bInvokeOptionsScreenFlag = false;
 bool SnifferMode = false;
 gos_VERTEX *testVertex = NULL;
 puint16_t indexArray = NULL;
-ULONG testTextureHandle = 0xffffffff;
+uint32_t testTextureHandle = 0xffffffff;
 float totalTime = 0;
-ULONG numIterations = 4;
-ULONG curIteration = 0;
-ULONG curDevice = 0;
+uint32_t numIterations = 4;
+uint32_t curIteration = 0;
+uint32_t curDevice = 0;
 bool isUsingSoftware = false;
 #define MAX_HARDWARE_CARDS		5
 float trisPerSecond[MAX_HARDWARE_CARDS] = 
@@ -657,11 +657,11 @@ PSTR GetGameInformation()
 	return(ExceptionGameMsg);
 }
 
-//int32_t cLoadString (HINSTANCE hInstance,  UINT uID, LPTSTR lpBuffer, int nBufferMax );
+//int32_t cLoadString (HINSTANCE hInstance,  uint32_t uID, PSTR lpBuffer, int32_t nBufferMax );
 
 #define SnifferTime(x,y)	
-ULONG startTime;
-ULONG endTime;
+uint32_t startTime;
+uint32_t endTime;
 
 //---------------------------------------------------------------------------
 void UpdateRenderers()
@@ -677,7 +677,7 @@ void UpdateRenderers()
 		//Assume worst case is +/- 8.0 for now.
 		//MaxMinUV = gos_GetMachineInformation(gos_Info_GetMaximumUVSize);
 
-		ULONG bColor = 0x0;
+		uint32_t bColor = 0x0;
 		if (eye && mission->isActive())
 			bColor = eye->fogColor;
 
@@ -757,8 +757,8 @@ void UpdateRenderers()
 				gos_SetRenderState( gos_State_TextureAddress, gos_TextureWrap);
 				gos_SetRenderState( gos_State_ZCompare, 1);
 				gos_SetRenderState(	gos_State_ZWrite, 1);
-				//ULONG fogColor = 0x009f9f9f;
-				//gos_SetRenderState( gos_State_Fog, (int)&fogColor);
+				//uint32_t fogColor = 0x009f9f9f;
+				//gos_SetRenderState( gos_State_Fog, (int32_t)&fogColor);
 			}
 			else
 			{
@@ -775,8 +775,8 @@ void UpdateRenderers()
 				gos_SetRenderState( gos_State_TextureAddress, gos_TextureWrap);
 				gos_SetRenderState( gos_State_ZCompare, 1);
 				gos_SetRenderState(	gos_State_ZWrite, 1);
-				ULONG fogColor = 0x009f9f9f;
-				gos_SetRenderState( gos_State_Fog, (int)&fogColor);
+				uint32_t fogColor = 0x009f9f9f;
+				gos_SetRenderState( gos_State_Fog, (int32_t)&fogColor);
 			}
 
 			//Send down 5000 triangles
@@ -784,7 +784,7 @@ void UpdateRenderers()
 			for (int32_t i=0;i<nIterations;i++)
 			{
 
-				ULONG totalVertices = 3000;
+				uint32_t totalVertices = 3000;
 				gos_SetRenderState( gos_State_Texture, testTextureHandle);
 				gos_RenderIndexedArray( testVertex, totalVertices, indexArray, totalVertices );
 			}
@@ -798,7 +798,7 @@ void UpdateRenderers()
 
 //---------------------------------------------------------------------------
 #define GAME_REG_KEY	 	"Software\\Microsoft\\Microsoft Games\\MechCommander2\\1.0"
-typedef ULONG (*EBUPROC) (LPCTSTR lpRegKeyLocation, LPCTSTR lpEULAFileName, LPCSTR lpWarrantyFileName, BOOL fCheckForFirstRun);
+typedef uint32_t (__stdcall *EBUPROC) (PCSTR lpRegKeyLocation, PCSTR lpEULAFileName, PCSTR lpWarrantyFileName, BOOL fCheckForFirstRun);
 
 bool FirstRunEula(void)
 {
@@ -869,7 +869,7 @@ void InitializeGameEngine()
 		char msg[2048];
 		cLoadString(IDS_GAME_HDSPACE_ERROR,title,255);
 		cLoadString(IDS_GAME_HDSPACE_MSG,msg,2047);
-		ULONG result = MessageBox(NULL,msg,title,MB_OKCANCEL | MB_ICONWARNING);
+		uint32_t result = MessageBox(NULL,msg,title,MB_OKCANCEL | MB_ICONWARNING);
 		if (result == IDCANCEL)
 			ExitGameOS();
 	}
@@ -938,7 +938,7 @@ void InitializeGameEngine()
 		// look in CD Install Path for files.
 		
 		//Changed for the shared source release, just set to current directory
-		//ULONG maxPathLength = 1023;
+		//uint32_t maxPathLength = 1023;
 		//gos_LoadDataFromRegistry("CDPath", CDInstallPath, &maxPathLength);
 		//if (!maxPathLength)
 		//	strcpy(CDInstallPath,"..\\");
@@ -1402,7 +1402,7 @@ void InitializeGameEngine()
 		optsFile = NULL;
 		
 		//---------------------------------------------------------------------
-		//void __stdcall gos_SetScreenMode( ULONG Width, ULONG Height, ULONG bitDepth=16, ULONG Device=0, bool disableZBuffer=0, bool AntiAlias=0, bool RenderToVram=0, bool GotoFullScreen=0, int DirtyRectangle=0, bool GotoWindowMode=0, bool EnableStencil=0, ULONG Renderer=0 );
+		//void __stdcall gos_SetScreenMode( uint32_t Width, uint32_t Height, uint32_t bitDepth=16, uint32_t Device=0, bool disableZBuffer=0, bool AntiAlias=0, bool RenderToVram=0, bool GotoFullScreen=0, int32_t DirtyRectangle=0, bool GotoWindowMode=0, bool EnableStencil=0, uint32_t Renderer=0 );
 	
 		/*The following commented out code is now handled by CPrefs::applyPrefs()
 		(in "prefs.cpp").*/
@@ -1519,7 +1519,7 @@ void InitializeGameEngine()
 			STOP(("Could not find MC2.fx"));
 			
 		int32_t effectsSize = effectFile.fileSize();
-		PUCHAR effectsData = (PUCHAR)systemHeap->Malloc(effectsSize);
+		puint8_t effectsData = (puint8_t)systemHeap->Malloc(effectsSize);
 		effectFile.read(effectsData,effectsSize);
 		effectFile.close();
 		
@@ -1610,7 +1610,7 @@ void InitializeGameEngine()
 		}
 		else
 		{
-			int param = log_SPLASH;
+			int32_t param = log_SPLASH;
 			if ( MPlayer && MPlayer->launchedFromLobby )
 				param = log_ZONE;
 			logistics->start( param);				//Always start with logistics in Splash Screen Mode
@@ -1621,7 +1621,7 @@ void InitializeGameEngine()
 	
 		gos_EnableSetting(gos_Set_LoseFocusBehavior, 2 );
 	
-		ULONG numJoysticks = gosJoystick_CountJoysticks();
+		uint32_t numJoysticks = gosJoystick_CountJoysticks();
 	
 		for (int32_t i=0;i<numJoysticks;i++)
 		{
@@ -1643,7 +1643,7 @@ void InitializeGameEngine()
 		// Set Date and write Binary data to registry under key
 		// GraphicsData!!
 		SYSTEMTIME bombDate;
-		ULONG dataSize = sizeof(SYSTEMTIME);
+		uint32_t dataSize = sizeof(SYSTEMTIME);
 		gos_LoadDataFromRegistry("GraphicsDataInit2", &bombDate, &dataSize);
 		if (dataSize == 0)
 		{
@@ -1678,7 +1678,7 @@ void InitializeGameEngine()
 		
 		//Changed for the shared source release, just set to current directory
 
-		//ULONG maxPathLength = 1023;
+		//uint32_t maxPathLength = 1023;
 		//gos_LoadDataFromRegistry("CDPath", CDInstallPath, &maxPathLength);
 		//if (!maxPathLength)
 		//	memset(CDInstallPath,0,1024);
@@ -2126,7 +2126,7 @@ void DoGameLogic()
 		{
 			SYSTEMTIME checkTime;
 			SYSTEMTIME bombTime;
-			ULONG dataSize = sizeof(SYSTEMTIME);
+			uint32_t dataSize = sizeof(SYSTEMTIME);
 			GetSystemTime(&checkTime);
 		
 			if (!gotBombData)
@@ -2309,7 +2309,7 @@ int32_t textToLong (PSTR num)
 	{
 		hexOffset += 2;
 		int32_t numDigits = strlen(hexOffset)-1;
-		for (int i=0; i<=numDigits; i++)
+		for (int32_t i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
@@ -2349,9 +2349,9 @@ int32_t textToLong (PSTR num)
 // Same command line Parser as MechCommander
 void ParseCommandLine(PSTR command_line)
 {
-	int i;
-	int n_args = 0;
-	int index = 0;
+	int32_t i;
+	int32_t n_args = 0;
+	int32_t index = 0;
 	PSTR argv[30];
 	
 	char tempCommandLine[4096];
@@ -2627,9 +2627,9 @@ void GetGameOSEnvironment( PSTR CommandLine )
 	Environment.fullScreen				= 0;
 
 	HKEY hKey;
-	LONG result;
+	int32_t result;
 	char pData[1024];
-	ULONG szData = 1023;
+	uint32_t szData = 1023;
 
 	result=RegOpenKey(HKEY_CURRENT_USER,GAME_REG_KEY,&hKey);
 	if( ERROR_SUCCESS==result )

@@ -62,7 +62,7 @@
 #include "..\resource.h"
 #include <stdio.h>
 
-extern ULONG NextIdNumber;
+extern uint32_t NextIdNumber;
 extern float worldUnitsPerMeter;
 extern bool useSound;
 extern bool useOldProject;
@@ -89,7 +89,7 @@ void GateType::destroy (void)
 }
 		
 //---------------------------------------------------------------------------
-int32_t GateType::init (FilePtr objFile, ULONG fileSize)
+int32_t GateType::init (FilePtr objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	
@@ -569,7 +569,7 @@ int32_t Gate::setTeamId (int32_t _teamId, bool setup)
 			teamId = _teamId;	//Otherwise we were set to either -1, 0 or 1.
 	}
 
-	static ULONG highLight[8] = {0x00007f00, 0x007f0000,
+	static uint32_t highLight[8] = {0x00007f00, 0x007f0000,
 										  0x0000007f, 0x0000007f,
 										  0x0000007f, 0x0000007f,
 										  0x0000007f, 0x0000007f};
@@ -605,7 +605,7 @@ void Gate::render (void)
 			if (barStatus < 0.0)
 				barStatus = 0.0;
 
-			ULONG color = 0xff7f7f7f;
+			uint32_t color = 0xff7f7f7f;
 			if ((teamId > -1) && (teamId < 8) && getTeam()) {
 				if (getTeam()->isFriendly(Team::home))
 					color = SB_GREEN;
@@ -762,7 +762,7 @@ void Gate::destroyGate(void)
 		GlobalMoveMap[1]->clearPathExistsTable();
 		//----------------------------------------------------------
 		// Unmark these cells as gate cells, so it'll be passable...
-		short* curCoord = cellsCovered;
+		pint16_t curCoord = cellsCovered;
 		for (int32_t i = 0; i < numCellsCovered; i++) {
 			int32_t r = *curCoord++;
 			int32_t c = *curCoord++;
@@ -825,7 +825,7 @@ GameObjectPtr Gate::getParent (void)
 }
 
 //---------------------------------------------------------------------------
-void Gate::setParentId (ULONG pId)
+void Gate::setParentId (uint32_t pId)
 {
 	parentId = pId;
 }
@@ -845,7 +845,7 @@ void Gate::Save (PacketFilePtr file, int32_t packetNum)
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(PUCHAR)&data,sizeof(GateData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(puint8_t)&data,sizeof(GateData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

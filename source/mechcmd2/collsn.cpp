@@ -38,17 +38,17 @@
 //CollisionSystem *collisionSystem = NULL;
 GlobalCollisionAlert *globalCollisionAlert = NULL;
 UserHeapPtr CollisionSystem::collisionHeap = NULL;
-ULONG CollisionSystem::maxObjects = 0;
-ULONG CollisionSystem::gridRadius = 0;
-ULONG CollisionSystem::xGridSize = 0;
-ULONG CollisionSystem::yGridSize = 0;
-ULONG CollisionSystem::maxCollisions = 0;
+uint32_t CollisionSystem::maxObjects = 0;
+uint32_t CollisionSystem::gridRadius = 0;
+uint32_t CollisionSystem::xGridSize = 0;
+uint32_t CollisionSystem::yGridSize = 0;
+uint32_t CollisionSystem::maxCollisions = 0;
 
 
 //------------------------------------------------------------------------------
 // class CollisionGrid 
 //------------------------------------------------------------------------------
-int32_t GlobalCollisionAlert::init (ULONG maxCollisionAlerts)
+int32_t GlobalCollisionAlert::init (uint32_t maxCollisionAlerts)
 {
 	maxAlerts = maxCollisionAlerts;
 	
@@ -89,7 +89,7 @@ int32_t GlobalCollisionAlert::addRecord (GameObjectPtr obj1, GameObjectPtr obj2,
 //------------------------------------------------------------------------------
 CollisionAlertRecordPtr GlobalCollisionAlert::findAlert (GameObjectPtr object, CollisionAlertRecordPtr startRecord)
 {
-	ULONG startIndex = 0;
+	uint32_t startIndex = 0;
 	if (startRecord)
 	{
 		for (int32_t i=startIndex;i<(int32_t)nextRecord;i++)
@@ -222,7 +222,7 @@ void CollisionGrid::destroy (void)
 }	
 		
 //------------------------------------------------------------------------------
-int32_t CollisionGrid::add (ULONG gridIndex, GameObjectPtr object)
+int32_t CollisionGrid::add (uint32_t gridIndex, GameObjectPtr object)
 {
 	gosASSERT(nextAvailableNode < maxObjects);
 	gosASSERT((gridIndex >= 0) && (gridIndex < (xGridWidth * yGridWidth)));
@@ -277,7 +277,7 @@ int32_t CollisionGrid::add (GameObjectPtr object)
 		
 		gy /= maxGridRadius;	
 
-		ULONG gridIndex = float2long(gx-0.5f) + float2long(gy-0.5f) * xGridWidth;
+		uint32_t gridIndex = float2long(gx-0.5f) + float2long(gy-0.5f) * xGridWidth;
 		
 		int32_t result = add(gridIndex,object);
 		return result;
@@ -293,7 +293,7 @@ void CollisionGrid::createGrid (void)
 	// This block of code is only necessary if
 	// we collide a giantObject against a giantObject.
 	CollisionGridNodePtr g = giantObjects;
-	ULONG totalGiantObjects = 0;
+	uint32_t totalGiantObjects = 0;
 	while (g)
 	{
 		if (g->next)
@@ -308,7 +308,7 @@ void CollisionGrid::createGrid (void)
 	{
 		for (int32_t x=0;x<(int32_t)xGridWidth;x++)
 		{
-			ULONG gridIndex = x + y*xGridWidth;
+			uint32_t gridIndex = x + y*xGridWidth;
 			CollisionGridNodePtr g = grid[gridIndex];
 			
 			while (g)
@@ -474,7 +474,7 @@ void CollisionSystem::checkObjects (void)
 	// Convert to Glenn's Magical New Object System!
 	ObjectQueueNodePtr objList = objectList->getHeadList(); 		//Start with the default list.
 	ObjectNodePtr objNode = NULL;
-	ULONG objectsPerList[MAX_LISTS_TO_CHECK] = 
+	uint32_t objectsPerList[MAX_LISTS_TO_CHECK] = 
 	{
 		0,0,0
 	};

@@ -31,12 +31,12 @@ class MissionBriefingScreen: public LogisticsScreen
 	MissionBriefingScreen();
 	virtual ~MissionBriefingScreen();
 
-	virtual void render( int xOffset, int yOffset );
+	virtual void render( int32_t xOffset, int32_t yOffset );
 	virtual void begin();
 	virtual void end();
 	virtual void update();
 	void	init( FitIniFile* file );
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 
 	static int32_t	getMissionTGA( PCSTR missionName );
@@ -53,9 +53,9 @@ class MissionBriefingScreen: public LogisticsScreen
 	int32_t			modelColors[MAX_OBJECTIVES][3];
 	aListBox		missionListBox; 
 
-	int			addLBItem( PCSTR itemName, ULONG color, int ID);
-	int			addItem( int ID, ULONG color, int LBid );
-	void		addObjectiveButton( float fMakerX, float fMarkerY, int count, int priority,
+	int32_t			addLBItem( PCSTR itemName, uint32_t color, int32_t ID);
+	int32_t			addItem( int32_t ID, uint32_t color, int32_t LBid );
+	void		addObjectiveButton( float fMakerX, float fMarkerY, int32_t count, int32_t priority,
 											   float mapWidth, float mapHeight, bool display );
 	void		setupDropZone( float fX, float fY, float mapWidth, float mapHeight );
 

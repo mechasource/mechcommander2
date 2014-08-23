@@ -191,16 +191,16 @@ class BattleMechType : public ObjectType {
 		PSTR				anim;
 		uint8_t		moveAnimSpeed[3];
 
-		//ULONG		controlType;								// Who controls us, Player, AI or NET?
-		//ULONG		controlDataType;							// which data set do we use.
+		//uint32_t		controlType;								// Who controls us, Player, AI or NET?
+		//uint32_t		controlDataType;							// which data set do we use.
 		MoverDynamics		dynamics;									// what dynamics do we use.
 
 //----------------------------------------------------------------------------------------
 // NO MORE HOTSPOT DATA HERE.  ALL RESIDES IN APPEARANCE NOW!  Including footprint type!
 
-		ULONG		rightArmDebrisId;							//Id of the shot off right arm.
-		ULONG		leftArmDebrisId;							//Id of the shot off left arm.
-		ULONG		destroyedDebrisId;							//Id of the destroyed mech piece.
+		uint32_t		rightArmDebrisId;							//Id of the shot off right arm.
+		uint32_t		leftArmDebrisId;							//Id of the shot off left arm.
+		uint32_t		destroyedDebrisId;							//Id of the destroyed mech piece.
 		int32_t				moveType;
 
 		int32_t				crashAvoidSelf;
@@ -228,7 +228,7 @@ class BattleMechType : public ObjectType {
 			init();
 		}
 		
-		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
 		
 		virtual GameObjectPtr createInstance (void);
 		
@@ -402,7 +402,7 @@ class BattleMech : public Mover {
 
 		virtual int32_t init (FitIniFile* mechFile);
 
-		virtual int32_t init (ULONG variantNum);
+		virtual int32_t init (uint32_t variantNum);
 
 		virtual int32_t init (FilePtr mechFile);
 
@@ -446,7 +446,7 @@ class BattleMech : public Mover {
 			return(MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponHeat());
 		}
 
-		virtual void pilotingCheck (ULONG situation = 0, float modifier = 0.0);
+		virtual void pilotingCheck (uint32_t situation = 0, float modifier = 0.0);
 
 		virtual void mineCheck (void);
 
@@ -494,11 +494,11 @@ class BattleMech : public Mover {
 
 		virtual int32_t buildStatusChunk (void);
 
-		virtual int32_t handleStatusChunk (int32_t updateAge, ULONG chunk);
+		virtual int32_t handleStatusChunk (int32_t updateAge, uint32_t chunk);
 
 		virtual int32_t buildMoveChunk (void);
 
-		virtual int32_t handleMoveChunk (ULONG chunk);
+		virtual int32_t handleMoveChunk (uint32_t chunk);
 
 		virtual void calcCriticalHit (int32_t hitLocation);
 
@@ -640,7 +640,7 @@ class BattleMech : public Mover {
 
 		float calcModerateSpeed (void);
 
-		int32_t calcSpriteSpeed (float speed, ULONG flags, int32_t& state, int32_t& throttle);
+		int32_t calcSpriteSpeed (float speed, uint32_t flags, int32_t& state, int32_t& throttle);
 
 		void forceTorsoAlign (void) {
 			torsoRotation = rightArmRotation = leftArmRotation = 0.0;

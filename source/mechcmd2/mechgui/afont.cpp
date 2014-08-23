@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -63,15 +63,15 @@ aFont::~aFont()
 
 
 
-ULONG aFont::height( ) const
+uint32_t aFont::height( ) const
 {
-	ULONG width, height;
+	uint32_t width, height;
 	gos_TextSetAttributes (gosFont, 0, size, false, true, false, false);
 	gos_TextStringLength(&width,&height,"ABCDE");
 	return height;
 }
 
-void	aFont::getSize( ULONG& width, ULONG& height, PCSTR pText )
+void aFont::getSize( uint32_t& width, uint32_t& height, PCSTR pText )
 {
 	gos_TextSetAttributes (gosFont, 0, size, false, true, false, false);
 	gos_TextStringLength(&width,&height,pText);
@@ -79,33 +79,33 @@ void	aFont::getSize( ULONG& width, ULONG& height, PCSTR pText )
 }
 
 
-ULONG aFont::height( PCSTR st, int areaWidth ) const
+uint32_t aFont::height( PCSTR st, int32_t areaWidth ) const
 {
-	ULONG width, height;
+	uint32_t width, height;
 	gos_TextSetAttributes (gosFont, 0, size, false, true, false, false);
 	gos_TextSetRegion( 0, 0, areaWidth, Environment.screenHeight );
 	gos_TextStringLength(&width,&height,st);
 
-	ULONG lineCount = 1;
+	uint32_t lineCount = 1;
 
 	if ( width > areaWidth - 1 )
 	{
-		ULONG curLineWidth = 0;
+		uint32_t curLineWidth = 0;
 
 		gosASSERT( strlen( st) < 2048 );
 
-		
+
 		char pLine[2048]; // should be more than adequate
 
 		PSTR pLastWord = (PSTR)st;
 		PSTR pTmp = (PSTR)st;
 		PSTR pTmpLine = (PSTR)pLine;
 
-		int numberOfWordsPerLine = 0;
+		int32_t numberOfWordsPerLine = 0;
 
 
 		bool bHasSpaces = true;
-		if (  !strstr( st, " " ) )
+		if ( !strstr( st, " " ) )
 		{
 			if ( !strstr( st, "\n" ) )
 				bHasSpaces = false;
@@ -117,7 +117,7 @@ ULONG aFont::height( PCSTR st, int areaWidth ) const
 			{
 				lineCount++;
 				numberOfWordsPerLine = 0;
-				curLineWidth = 0;	
+				curLineWidth = 0;
 				pTmpLine = pLine;
 				pLastWord = pTmp+1;
 			}
@@ -141,8 +141,8 @@ ULONG aFont::height( PCSTR st, int areaWidth ) const
 						}
 
 					}
-					
-				
+
+
 				}
 			}
 
@@ -159,7 +159,7 @@ ULONG aFont::height( PCSTR st, int areaWidth ) const
 						if (firstTime)
 						{
 							Assert( true, 0, "this list box item contains a word of greater "
-									" area than the list box, giving up" );
+								" area than the list box, giving up" );
 							firstTime = false;
 						}
 						/*There are times when you just can't guarantee that this won't occur,
@@ -175,7 +175,7 @@ ULONG aFont::height( PCSTR st, int areaWidth ) const
 					numberOfWordsPerLine = 0;
 
 				}
-		
+
 				pLastWord = pTmp;
 				numberOfWordsPerLine++;
 			}
@@ -200,7 +200,7 @@ ULONG aFont::height( PCSTR st, int areaWidth ) const
 		}
 
 		if ( *pTmp == NULL )
-			lineCount++;	
+			lineCount++;
 	}
 
 	gos_TextStringLength( &width, &height, "A" );
@@ -208,9 +208,9 @@ ULONG aFont::height( PCSTR st, int areaWidth ) const
 	return (height) * lineCount ;
 }
 
-ULONG aFont::width( PCSTR st ) const
+uint32_t aFont::width( PCSTR st ) const
 {
-	ULONG width, height;
+	uint32_t width, height;
 	gos_TextSetAttributes (gosFont, 0, size, false, true, false, false);
 	gos_TextStringLength(&width,&height,st);
 	return width;
@@ -234,16 +234,16 @@ void aFont::destroy()
 
 }
 
-void aFont::render( PCSTR text, int xPos, int yPos, int areaWidth, int areaHeight, 
-				   ULONG color, bool bBold, int alignment )
+void aFont::render( PCSTR text, int32_t xPos, int32_t yPos, int32_t areaWidth, int32_t areaHeight,
+				   uint32_t color, bool bBold, int32_t alignment )
 {
 	gos_TextSetAttributes( gosFont, color, size, true, true, bBold, false, alignment );
-	
+
 	if ( areaWidth < 1 )
 	{
 		if ( alignment == 1 )
 		{
-			ULONG width, height;
+			uint32_t width, height;
 			gos_TextStringLength( &width, &height, text );
 			xPos -= width;
 			areaWidth = width + 1;
@@ -254,22 +254,22 @@ void aFont::render( PCSTR text, int xPos, int yPos, int areaWidth, int areaHeigh
 
 	if ( areaHeight < 1 )
 	{
-		if ( alignment == 3  ) // bottom
+		if ( alignment == 3 ) // bottom
 		{
-			ULONG width, height;
+			uint32_t width, height;
 			gos_TextStringLength( &width, &height, text );
 			yPos -= height;
 			areaHeight = height + 1;
 		}
-		
+
 		else
 			areaHeight = Environment.screenHeight;
 	}
 
 	gos_TextSetRegion( xPos, yPos, xPos + areaWidth, yPos + areaHeight );
-	
+
 	gos_TextSetPosition( xPos, yPos );
-	gos_TextDraw( text );	
+	gos_TextDraw( text );
 
 }
 

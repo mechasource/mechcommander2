@@ -49,11 +49,11 @@ class NETMESSAGE
 public:
 	NETMESSAGETYPE	m_Type;			// 0==network message
 	NETPLAYER		m_pPlayer;		// player message is to, or who it's from
-	ULONG			m_dwFlags;		// priority, guaranteed, etc.
-	ULONG			m_dwInfo;		// additional message info
-	ULONG			m_dwTimeStamp;
+	uint32_t			m_dwFlags;		// priority, guaranteed, etc.
+	uint32_t			m_dwInfo;		// additional message info
+	uint32_t			m_dwTimeStamp;
 	PVOID			m_pData;
-	int				m_size;
+	int32_t				m_size;
 };
 
 #define	SERVER_HANDLES_ALL_WEAPONHITS	TRUE
@@ -196,8 +196,8 @@ typedef struct _MC2SessionData {
 #pragma pack()
 
 typedef struct _TeamInfo {
-	ULONG id;
-	ULONG team;
+	uint32_t id;
+	uint32_t team;
 } TeamInfo;
 
 typedef struct _MC2PlayerSlot {
@@ -219,7 +219,7 @@ typedef struct _MC2Player {
 	char			stripeColor;
 	char			teamSelected;
 	char			team;
-	ULONG	teamSeniority;
+	uint32_t	teamSeniority;
 	char			faction;
 	int32_t			cBills;
 	int32_t			resourcePointsAtStart;
@@ -269,9 +269,9 @@ typedef struct _CompressedMech {
 	bool			lastMech;
 	int32_t			objNumber;
 	char			commanderID;
-	ULONG	baseColor;
-	ULONG	highlightColor1;
-	ULONG	highlightColor2;
+	uint32_t	baseColor;
+	uint32_t	highlightColor1;
+	uint32_t	highlightColor2;
 	char			pilotFile[50];
 	char			mechFile[50];
 	char			variantName[64];
@@ -294,7 +294,7 @@ class WorldChunk {
 	public:
 
 		char				type;
-		short				tileRC[2];
+		int16_t				tileRC[2];
 		int32_t				objectId;
 		int32_t				objectBlockOrTrainNumber;
 		int32_t				objectVertexOrCarNumber;
@@ -302,7 +302,7 @@ class WorldChunk {
 		int32_t				param1;
 		int32_t				param2;
 
-		ULONG		data;
+		uint32_t		data;
 
 	public:
 
@@ -448,7 +448,7 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 		}
 
 		
-		void SetVariant(int variant)
+		void SetVariant(int32_t variant)
 		{
 			if (variant > 3)
 				return;
@@ -456,7 +456,7 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 			dataFlags |= (variant << VariantBits1); // set new
 		}
 
-		void SetLance(int lance)
+		void SetLance(int32_t lance)
 		{
 			if (lance > (LanceMask >> LanceBits1))
 				return;
@@ -465,7 +465,7 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 			dataFlags |= (lance << LanceBits1);
 		}
 
-		void SetSlot(int slot)
+		void SetSlot(int32_t slot)
 		{
 			if (slot > (SlotMask >> SlotBits1))
 				return;
@@ -475,17 +475,17 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 		}
 
 
-		int GetVariant()
+		int32_t GetVariant()
 		{
 			return (dataFlags & VariantMask) >> VariantBits1;
 		}
 
-		int GetLance()
+		int32_t GetLance()
 		{
 			return (dataFlags & LanceMask) >> LanceBits1;
 		}
 
-		int GetSlot()
+		int32_t GetSlot()
 		{
 			return (dataFlags & SlotMask) >> SlotBits1;
 		}
@@ -861,7 +861,7 @@ class MCMSG_PlayerOrder {
 		char			commanderID;
 		uint8_t	flags;
 		float			location[2];
-		ULONG	tacOrderChunk[2];
+		uint32_t	tacOrderChunk[2];
 
 	public:
 
@@ -946,7 +946,7 @@ class MCMSG_PlayerArtillery {
 
 		uint8_t		type;
 		float				location[2];
-		ULONG		chunk;
+		uint32_t		chunk;
 
 		MCMSG_PlayerArtillery (void) {
 			init();
@@ -1097,7 +1097,7 @@ class MCMSG_WeaponHitUpdate {
 
 		uint8_t		type;
 		uint8_t		numWeaponHits;
-		ULONG		weaponHitChunk[];
+		uint32_t		weaponHitChunk[];
 
 	public:
 
@@ -1122,7 +1122,7 @@ class MCMSG_WorldUpdate {
 		uint8_t		type;
 		uint8_t		numWorldChanges;
 		uint8_t		numArtilleryStrikes;
-		ULONG		worldChunk[];
+		uint32_t		worldChunk[];
 
 	public:
 
@@ -1200,7 +1200,7 @@ class MCMSG_FileReport {
 	public:
 
 		uint8_t		type;
-		ULONG		checkSum;
+		uint32_t		checkSum;
 		GUID				fileGuid;
 		char				fileName[];
 
@@ -1261,7 +1261,7 @@ class MultiPlayer {
 		int32_t				numSessions;
 		bool				availableCIDs[MAX_MC_PLAYERS];
 		MC2Session			sessionList[MAX_SESSIONS];
-		ULONG		teamSeniority[MAX_TEAMS];
+		uint32_t		teamSeniority[MAX_TEAMS];
 		static int32_t			colors[MAX_COLORS];
 		char				colorsCID[MAX_COLORS];
 		char				sessionIPAddress[16];
@@ -1302,7 +1302,7 @@ class MultiPlayer {
 		BuildingPtr*		hqBuildings;
 		int32_t				numResourceBuildings;
 		BuildingPtr*		resourceBuildings;
-		ULONG		numRandomResourceBuildings;
+		uint32_t		numRandomResourceBuildings;
 
 		int32_t				mode;
 		int32_t				sessionEntry;
@@ -1366,10 +1366,10 @@ class MultiPlayer {
 		float				worldUpdateFrequency;
 		float				lastServerUpdateTime;
 		int32_t				numWeaponHitChunks;
-		ULONG		weaponHitChunks[MAX_WEAPONHIT_CHUNKS];
+		uint32_t		weaponHitChunks[MAX_WEAPONHIT_CHUNKS];
 		int32_t				numWorldChunks;
-		ULONG		worldChunks[MAX_WORLD_CHUNKS];
-		ULONG		serverOrder[MAX_MC_PLAYERS];
+		uint32_t		worldChunks[MAX_WORLD_CHUNKS];
+		uint32_t		serverOrder[MAX_MC_PLAYERS];
 		int32_t				reinforcements[MAX_MC_PLAYERS][2];	// index 0 = current reinforcement, index 1 = current recoverery
 		char				reinforcementPilot[MAX_MC_PLAYERS][32];
 		
@@ -1512,7 +1512,7 @@ class MultiPlayer {
 
 		void sendMessage (NETPLAYER player,
 						  PVOID data,
-						  int dataSize,
+						  int32_t dataSize,
 						  bool guaranteed,
 						  bool toSelf = true);
 
@@ -1609,7 +1609,7 @@ class MultiPlayer {
 
 		int32_t addEndMissionChunk (void);
 
-		int32_t grabWorldChunks (ULONG* packedChunkBuffer);
+		int32_t grabWorldChunks (uint32_t* packedChunkBuffer);
 
 		int32_t updateWorldChunks (void);
 
@@ -1625,13 +1625,13 @@ class MultiPlayer {
 
 		int32_t addWeaponHitChunk (GameObjectPtr target, WeaponShotInfoPtr shotInfo, bool isRefit = false);
 
-		void grabWeaponHitChunks (ULONG* packedChunkBuffer, int32_t numChunks);
+		void grabWeaponHitChunks (uint32_t* packedChunkBuffer, int32_t numChunks);
 
 		int32_t updateWeaponHitChunks (void);
 
-		int32_t getHomeTeamPlayers (ULONG* playerIdList);
+		int32_t getHomeTeamPlayers (uint32_t* playerIdList);
 
-		int32_t getEnemyTeamPlayers (ULONG* playerIdList);
+		int32_t getEnemyTeamPlayers (uint32_t* playerIdList);
 
 		bool processGameMessage (NETMESSAGE* msg);
 
@@ -1698,7 +1698,7 @@ class MultiPlayer {
 		void handleWorldUpdate (NETPLAYER sender, MCMSG_WorldUpdate* msg);
 
 		void sendChat (NETPLAYER receiver, char team, PSTR chatString);
-		void sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, ULONG resID );
+		void sendPlayerActionChat(NETPLAYER receiver, PCSTR playerName, uint32_t resID );
 
 		void sendPlayerCID (NETPLAYER receiver, uint8_t subType, char CID);
 
@@ -1775,7 +1775,7 @@ class MultiPlayer {
 
 		int32_t updateClients (bool forceIt = false);
 
-		bool isMyTeammate (ULONG playerId);
+		bool isMyTeammate (uint32_t playerId);
 
 		bool allPlayersCheckedIn (void);
 
@@ -1787,7 +1787,7 @@ class MultiPlayer {
 
 		int32_t saveTranscript (PCSTR fileName, bool debugging = false);
 
-		void playerLeftGame (ULONG playerId);
+		void playerLeftGame (uint32_t playerId);
 
 		// call this to exit the current session.
 		void leaveSession (void);

@@ -48,7 +48,7 @@ LogisticsMechDisplay::~LogisticsMechDisplay()
 
 //-------------------------------------------------------------------------------------------------
 
-void LogisticsMechDisplay::render(int xOffset, int yOffset)
+void LogisticsMechDisplay::render(int32_t xOffset, int32_t yOffset)
 {
 
 	componentListBox.move(xOffset, yOffset);
@@ -58,7 +58,7 @@ void LogisticsMechDisplay::render(int xOffset, int yOffset)
 	if ( xOffset == 0 && yOffset == 0 ) // don't draw until we're done animating in or out
 		mechCamera.render();
 
-	for ( int i = 0; i < 3; i++ )
+	for ( int32_t i = 0; i < 3; i++ )
 	{
 		attributeMeters[i].render( xOffset, yOffset );
 	}
@@ -73,7 +73,7 @@ void LogisticsMechDisplay::render(int xOffset, int yOffset)
 //-------------------------------------------------------------------------------------------------
 
 
-int	LogisticsMechDisplay::init( )
+int32_t	LogisticsMechDisplay::init( )
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -90,7 +90,7 @@ int	LogisticsMechDisplay::init( )
 			rects[2].left(), rects[2].bottom() );
 
 	char blockName[64];
-	for ( int i = 0; i < 3; i++ )
+	for ( int32_t i = 0; i < 3; i++ )
 	{
 		sprintf( blockName, "AttributeMeter%ld", i );
 		attributeMeters[i].init( &file, blockName );
@@ -143,7 +143,7 @@ void LogisticsMechDisplay::setMech( LogisticsMech* pMech, bool bFromLB )
 
 				
 				EString fileName = pMech->getFileName();
-				int index = fileName.Find( '.' );
+				int32_t index = fileName.Find( '.' );
 				fileName = fileName.Left( index );
 				index = fileName.ReverseFind( '\\' );
 				fileName = fileName.Right( fileName.Length() - index - 1 );
@@ -155,7 +155,7 @@ void LogisticsMechDisplay::setMech( LogisticsMech* pMech, bool bFromLB )
 			}
 			else
 			{
-				for ( int i = 0; i < 6; i++ )
+				for ( int32_t i = 0; i < 6; i++ )
 					textObjects[i].setText( "" );
 
 				attributeMeters[0].setValue( 0 );

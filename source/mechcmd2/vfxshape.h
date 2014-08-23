@@ -26,9 +26,9 @@ class Shape
 {
 	public:
 
-		PUCHAR			frameList;		//This is binary image of VFX file
-		PUCHAR			stupidHeader;
-		ULONG		lastTurnUsed;
+		puint8_t			frameList;		//This is binary image of VFX file
+		puint8_t			stupidHeader;
+		uint32_t		lastTurnUsed;
 		Shape				*next;
 		AppearanceTypePtr	owner;
 
@@ -47,7 +47,7 @@ class Shape
 			init();
 		}
 
-		int32_t init (PUCHAR fileBlock, AppearanceTypePtr, int32_t shapeSize);
+		int32_t init (puint8_t fileBlock, AppearanceTypePtr, int32_t shapeSize);
 
 		void destroy (void);
 

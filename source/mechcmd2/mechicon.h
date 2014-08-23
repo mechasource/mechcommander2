@@ -35,19 +35,19 @@ public:
 	static void swapResolutions(bool bForce = 0);
 
 	void setPilot( MechWarrior* pWarrior );
-	void setTextureIndex(  int newIndex ) { pilotTextureIndex = newIndex; }
+	void setTextureIndex(  int32_t newIndex ) { pilotTextureIndex = newIndex; }
 	void render( float left, float top, float right, float bottom );
 
 
 private:
 
-	ULONG pilotTextureIndex;
+	uint32_t pilotTextureIndex;
 	
 	static float			pilotIconX;
 	static float			pilotIconY;
 
-	static ULONG	s_pilotTextureHandle;
-	static ULONG	s_pilotTextureWidth;
+	static uint32_t	s_pilotTextureHandle;
+	static uint32_t	s_pilotTextureWidth;
 
 	friend class ForceGroupIcon;
 	friend class MechIcon;
@@ -73,22 +73,22 @@ public:
 		
 
 
-		bool inRegion( int x, int y );
+		bool inRegion( int32_t x, int32_t y );
 
 		void click( bool shiftDn );
 		void rightClick();
 
 		virtual void setDrawBack( bool bSet) { };
 
-		static int __cdecl sort( PCVOID p1, PCVOID p2 );
+		static int32_t __cdecl sort( PCVOID p1, PCVOID p2 );
 
 		PCSTR getPilotName();
 
-		static void init( FitIniFile& file, int which );
+		static void init( FitIniFile& file, int32_t which );
 		void swapResolutions(bool bForce);
 		static void resetResolution(bool bForce);
 
-		void setLocationIndex( int i );
+		void setLocationIndex( int32_t i );
 		void beginDeathAnimation( ){ deathAnimationTime = .0001f; } 
 		bool deathAnimationOver(){ return deathAnimationTime > animationInfos[NUM_DEATH_INFOS-1].time; }
 		bool isAnimatingDeath() { return deathAnimationTime ? 1 : 0; }
@@ -97,13 +97,13 @@ protected:
 
 		static int32_t		damageColors[4][3];
 
-		static ULONG	s_textureHandle[5];
+		static uint32_t	s_textureHandle[5];
 		static bool				s_slotUsed[240];
 		static TGAFileHeader*	s_textureMemory;
 
 		static float			unitIconX;
 		static float		 	unitIconY;
-		static int				curScreenWidth;
+		static int32_t				curScreenWidth;
 
 		static StaticInfo*		jumpJetIcon;
 
@@ -131,9 +131,9 @@ protected:
 
 		bool	bDrawBack;
 
-		int		damageIconIndex;
-		int		backDamageIndex;
-		int		locationIndex;
+		int32_t		damageIconIndex;
+		int32_t		backDamageIndex;
+		int32_t		locationIndex;
 
 		float	deathAnimationTime;
 
@@ -152,7 +152,7 @@ protected:
 		float		msgPlayTime;
 
 		static		MC2MoviePtr 	bMovie;
-		static		ULONG			pilotVideoTexture;
+		static		uint32_t			pilotVideoTexture;
 		static		MechWarrior*	pilotVideoPilot;
 		
 };
@@ -169,7 +169,7 @@ class MechIcon : public ForceGroupIcon
 
 		static TGAFileHeader* s_MechTextures;
 
-		void doDraw( PSTR newDamage, PSTR oldDamage, ULONG handle, ULONG where);
+		void doDraw( PSTR newDamage, PSTR oldDamage, uint32_t handle, uint32_t where);
 		virtual void setDrawBack( bool bSet);
 
 		

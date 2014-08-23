@@ -30,11 +30,11 @@
 #endif
 
 //-----------------------------------------------------------------------------
-// void memclear(PVOID Dest,int Length);
+// void memclear(PVOID Dest,int32_t Length);
 
 //-----------------------------------------------------------------------------
 // class VFXAppearanceType
-void VFXAppearanceType::init (FilePtr apprFile, ULONG fileSize)
+void VFXAppearanceType::init (FilePtr apprFile, uint32_t fileSize)
 {
 	loadIniFile(apprFile,fileSize);
 
@@ -75,7 +75,7 @@ void VFXAppearanceType::removeTexture (TGATexturePtr texture)		//Cache texture o
 }
 
 //---------------------------------------------------------------------------
-int32_t VFXAppearanceType::loadIniFile (FilePtr apprFile, ULONG fileSize)
+int32_t VFXAppearanceType::loadIniFile (FilePtr apprFile, uint32_t fileSize)
 {
 	FitIniFile VFXAppearanceFile;
 	int32_t result = VFXAppearanceFile.open(apprFile,fileSize);
@@ -383,7 +383,7 @@ int32_t VFXAppearance::render (int32_t depthFixup)
 		lightg = eye->getLightGreen(lightIntensity,visible,seen);
 		lightb = eye->getLightBlue(lightIntensity,visible,seen);
 					
-		ULONG lightRGB = lightb + (lightr<<16) + (lightg << 8) + (0xff << 24);
+		uint32_t lightRGB = lightb + (lightr<<16) + (lightg << 8) + (0xff << 24);
 			
 		newElement.setLight(lightRGB);
 	
@@ -408,14 +408,14 @@ int32_t VFXAppearance::render (int32_t depthFixup)
 }
 
 //-----------------------------------------------------------------------------
-void VFXAppearance::setDamageLvl (ULONG dmg)
+void VFXAppearance::setDamageLvl (uint32_t dmg)
 {
 	realBuildingDamage = TRUE;
 	
 	if (dmg)
 	{
-		ULONG totalFrames1 = appearType->actorStateData[ACTOR_STATE_BLOWING_UP1].numFrames;
-		ULONG totalFrames2 = appearType->actorStateData[ACTOR_STATE_BLOWING_UP2].numFrames;
+		uint32_t totalFrames1 = appearType->actorStateData[ACTOR_STATE_BLOWING_UP1].numFrames;
+		uint32_t totalFrames2 = appearType->actorStateData[ACTOR_STATE_BLOWING_UP2].numFrames;
 		
 		if ((dmg >= (totalFrames1 + totalFrames2)))
 		{
@@ -462,7 +462,7 @@ int32_t VFXAppearance::update (void)
 	// Must update animation frame numbers, even if not visible!!
   	// Make sure animation runs no faster than frameRate fps.
 	// Moved to here to make game work.
-	ULONG anyFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
+	uint32_t anyFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
 
 	if (anyFrames > 1)
 	{
@@ -483,7 +483,7 @@ int32_t VFXAppearance::update (void)
 		{
   			currentFrame += frameInc;
 				
-			ULONG totalFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
+			uint32_t totalFrames = appearType->actorStateData[currentShapeTypeId].numFrames;
 			uint8_t loop = 1;
 			
 			if ((currentFrame >= totalFrames) && (loop) && (endFrame == -1))

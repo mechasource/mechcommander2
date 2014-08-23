@@ -67,12 +67,12 @@ class Weather
 													
 		float			lighteningLevel;			// Brightness of lightening this frame.  Effects Ambient/sun lighting.
 		float			thunderTime;				// Time until crack of thunder is heard.
-		ULONG			thunderSFX;					// Sound Effect of thunder to play
+		uint32_t			thunderSFX;					// Sound Effect of thunder to play
 		float			lighteningCheck;			// Interval between checks of lightening.
 		float			baseLighteningChance;		// Base chance lightening will flash at each check.
 		
-		ULONG			totalRainDrops;				// Total number of drops I can draw.
-		ULONG			currentRainDrops;			// Current number of drops in use.
+		uint32_t			totalRainDrops;				// Total number of drops I can draw.
+		uint32_t			currentRainDrops;			// Current number of drops in use.
 		
 		RainDrops*		rainDrops;					// Pointer to data for the drops.
 		
@@ -120,7 +120,7 @@ class Weather
 			destroy();
 		}
 		
-		void init (ULONG maxDrops, float startingRain, float baseRainChance, float baseLighteningChance = BASE_LIGHTENING_CHANCE);
+		void init (uint32_t maxDrops, float startingRain, float baseRainChance, float baseLighteningChance = BASE_LIGHTENING_CHANCE);
 		
 		void init (FitIniFilePtr missionFile);
 		

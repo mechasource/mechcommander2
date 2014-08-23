@@ -80,10 +80,10 @@ void WeaponBoltType::destroy (void)
 }
 
 //---------------------------------------------------------------------------
-ULONG bgrTorgb (ULONG frontRGB);
+uint32_t bgrTorgb (uint32_t frontRGB);
 	
 //---------------------------------------------------------------------------
-int32_t WeaponBoltType::init (FilePtr objFile, ULONG fileSize)
+int32_t WeaponBoltType::init (FilePtr objFile, uint32_t fileSize)
 {
 	int32_t result = 0;
 	
@@ -1624,10 +1624,10 @@ void WeaponBolt::render (void)
 			gos_VERTEX	lq1Vertices[3], lq2Vertices[3], lq3Vertices[3], lq4Vertices[3];
 			Stuff::Vector4D screenPos;
 			
-			ULONG alphaMode = ((WeaponBoltTypePtr)getObjectType())->boltAlpha;
+			uint32_t alphaMode = ((WeaponBoltTypePtr)getObjectType())->boltAlpha;
 			alphaMode <<= 24;
 			
-			ULONG edgeMode = ((WeaponBoltTypePtr)getObjectType())->edgeAlpha;
+			uint32_t edgeMode = ((WeaponBoltTypePtr)getObjectType())->edgeAlpha;
 			edgeMode <<= 24;
 			
 			eye->projectZ(laserPosition,screenPos);
@@ -1879,10 +1879,10 @@ void WeaponBolt::render (void)
 			gos_VERTEX	lq1Vertices[3], lq2Vertices[3], lq3Vertices[3], lq4Vertices[3];
 			Stuff::Vector4D screenPos;
 			
-			ULONG alphaMode = ((WeaponBoltTypePtr)getObjectType())->boltAlpha;
+			uint32_t alphaMode = ((WeaponBoltTypePtr)getObjectType())->boltAlpha;
 			alphaMode <<= 24;
 			
-			ULONG edgeMode = ((WeaponBoltTypePtr)getObjectType())->edgeAlpha;
+			uint32_t edgeMode = ((WeaponBoltTypePtr)getObjectType())->edgeAlpha;
 			edgeMode <<= 24;
 			
 			Stuff::Point3D actualPosition;
@@ -2523,7 +2523,7 @@ void WeaponBolt::Save (PacketFilePtr file, int32_t packetNum)
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(PUCHAR)&data,sizeof(WeaponBoltData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(puint8_t)&data,sizeof(WeaponBoltData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

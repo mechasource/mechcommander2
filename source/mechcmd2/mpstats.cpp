@@ -32,7 +32,7 @@ MPStats::~MPStats()
 
 
 
-int MPStats::init()
+int32_t MPStats::init()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -52,7 +52,7 @@ int MPStats::init()
 	entries[0].moveTo( rects[1].globalX(), rects[1].globalY() );
 	entries[0].resize( rects[1].width(), rects[1].height() );
 
-	for ( int i = 0; i < MAX_MC_PLAYERS-1; i++ )
+	for ( int32_t i = 0; i < MAX_MC_PLAYERS-1; i++ )
 	{
 		entries[i+1] = entries[0];
 		entries[i+1].move( 0, (i+1) * (entries[0].height()+1) );
@@ -68,7 +68,7 @@ int MPStats::init()
 	return true;
 }
 
-int __cdecl sortStats( PCVOID pPlayer1, PCVOID pPlayer2 )
+int32_t __cdecl sortStats( PCVOID pPlayer1, PCVOID pPlayer2 )
 {
 	MC2Player* player1 = *(MC2Player**)pPlayer1;
 	MC2Player* player2 = *(MC2Player**)pPlayer2;
@@ -104,7 +104,7 @@ void MPStats::begin()
 	beginFadeIn( .5 );
 
 
-	for ( int i = 0; i < MAX_MC_PLAYERS; i++ )
+	for ( int32_t i = 0; i < MAX_MC_PLAYERS; i++ )
 		entries[i].showGUIWindow( 0 );
 
 
@@ -120,7 +120,7 @@ void MPStats::begin()
 	sprintf( text2, text, MPlayer->missionSettings.name );
 	textObjects[1].setText( text2 );
 
-	ULONG type = MPlayer->missionSettings.missionType ;
+	uint32_t type = MPlayer->missionSettings.missionType ;
 	cLoadString( IDS_MP_LM_MAP_LIST_TYPE, text, 255 );
 	char mType[128];
 	cLoadString( IDS_MP_LM_TYPE0 + type, mType, 127 );
@@ -128,7 +128,7 @@ void MPStats::begin()
 	sprintf( text2, text, mType );
 	textObjects[6].setText( text2 );
 
-	ULONG numPlayers = MPlayer->missionSettings.maxPlayers;
+	uint32_t numPlayers = MPlayer->missionSettings.maxPlayers;
 
 	cLoadString( IDS_MP_LM_MAP_LIST_MAX_PLAYERS, text, 255 );
 	sprintf( text2, text, numPlayers );
@@ -138,7 +138,7 @@ void MPStats::begin()
 
 }
 
-int MPStats::handleMessage( ULONG what, ULONG who )
+int32_t MPStats::handleMessage( uint32_t what, uint32_t who )
 {
 	if ( who == MP_STATS_SAVE )
 	{
@@ -153,7 +153,7 @@ int MPStats::handleMessage( ULONG what, ULONG who )
 		status = NEXT;
 		end();
 		beginFadeOut(.5f);
-		statics[15].setTexture( (ULONG)0 );
+		statics[15].setTexture( (uint32_t)0 );
 		statics[15].setColor( 0 );
 	}
 
@@ -161,12 +161,12 @@ int MPStats::handleMessage( ULONG what, ULONG who )
 }
 
 
-void MPStats::render( int xOffset, int yOffset )
+void MPStats::render( int32_t xOffset, int32_t yOffset )
 {
 
 	LogisticsScreen::render( xOffset, yOffset );
 
-	for ( int i = 0; i < MAX_MC_PLAYERS; i++ )
+	for ( int32_t i = 0; i < MAX_MC_PLAYERS; i++ )
 	{
 		entries[i].render( 0, 0 );
 	}
@@ -199,8 +199,8 @@ void MPStats::update()
 		int32_t playerCount = 0;
 		const MC2Player* players = MPlayer->getPlayers(playerCount);
 		const MC2Player* sorted[MAX_MC_PLAYERS];
-		int winnerCount = 0;
-		for ( int j = 0; j < playerCount; j++ )
+		int32_t winnerCount = 0;
+		for ( int32_t j = 0; j < playerCount; j++ )
 		{
 			sorted[j] = &players[j];
 			if ( sorted[j]->rank == 1 )
@@ -211,7 +211,7 @@ void MPStats::update()
 		memset( scoreShown, 0, sizeof( bool ) * MAX_MC_PLAYERS );
 
 
-		ULONG winnerColor = 0xffFFCC00; // gold
+		uint32_t winnerColor = 0xffFFCC00; // gold
 		if ( winnerCount > 1 )
 			winnerColor = 0xffA6A6A6;
 
@@ -219,7 +219,7 @@ void MPStats::update()
 
 	
 
-		for ( int i = 0; i < MAX_MC_PLAYERS; i++ )
+		for ( int32_t i = 0; i < MAX_MC_PLAYERS; i++ )
 		{
 			if ( i < playerCount )
 			{
@@ -296,7 +296,7 @@ MPStatsEntry::MPStatsEntry()
 	overlayColor = 0;
 }
 
-void MPStatsEntry::render( int x, int y )
+void MPStatsEntry::render( int32_t x, int32_t y )
 {
 
 	LogisticsScreen::render( x, y );
@@ -422,7 +422,7 @@ MPStatsResultsEntry::~MPStatsResultsEntry()
 {
 }
 
-void MPStatsResultsEntry::render( int x, int y )
+void MPStatsResultsEntry::render( int32_t x, int32_t y )
 {
 	LogisticsScreen::render( x, y );
 	//if ( overlayColor )
@@ -453,7 +453,7 @@ void MPStatsResultsEntry::init()
 
 }
 
-void MPStatsResultsEntry::setData(const MC2Player* data, ULONG laurelColor, bool bShowScore )
+void MPStatsResultsEntry::setData(const MC2Player* data, uint32_t laurelColor, bool bShowScore )
 {
 	rects[4].setColor( MPlayer->colors[data->baseColor[BASECOLOR_TEAM]] );
 	rects[2].setColor( MPlayer->colors[data->stripeColor] );
@@ -522,8 +522,8 @@ void MPStatsResultsEntry::setData(const MC2Player* data, ULONG laurelColor, bool
 		TGAFileHeader*  pData = (TGAFileHeader*)MPlayer->insigniaList[data->commanderID];
 		if ( pData )
 		{
-			int size = pData->pixel_depth/8;
-			int ID = mcTextureManager->textureFromMemory( (ULONG*)(pData+1), gos_Texture_Solid, 0, pData->width, size  );
+			int32_t size = pData->pixel_depth/8;
+			int32_t ID = mcTextureManager->textureFromMemory( (uint32_t*)(pData+1), gos_Texture_Solid, 0, pData->width, size  );
 			statics[0].setTexture( ID );
 			statics[0].setUVs( 0, 32, 32, 0 );
 		}

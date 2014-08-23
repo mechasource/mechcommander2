@@ -76,7 +76,7 @@ int32_t					ObjectTypeManager::wallHeavyTypeHandle = 0xFFFFFFFF;
 int32_t					ObjectTypeManager::wallMediumTypeHandle = 0xFFFFFFFF;
 int32_t					ObjectTypeManager::wallLightTypeHandle = 0xFFFFFFFF;
 
-ULONG			NextIdNumber = 0x30000001;		//Big number to indicate
+uint32_t			NextIdNumber = 0x30000001;		//Big number to indicate
 														//This object is NOT a mission
 														//part.  Trust Me. -ffs
 
@@ -121,7 +121,7 @@ void ObjectType::destroy (void) {
 		
 //---------------------------------------------------------------------------
 
-int32_t ObjectType::init (FilePtr objFile, ULONG fileSize) {
+int32_t ObjectType::init (FilePtr objFile, uint32_t fileSize) {
 
 	return(NO_ERROR);
 }

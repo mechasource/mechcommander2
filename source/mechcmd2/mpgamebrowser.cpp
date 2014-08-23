@@ -21,7 +21,7 @@ MPGameBrowser.cpp			: Implementation of the MPGameBrowser component.
 
 #define CHECK_BUTTON 200
 
-static int connectionType = 0;
+static int32_t connectionType = 0;
 
 static cint32_t FIRST_BUTTON_ID = 1000010;
 static cint32_t OK_BUTTON_ID = 1000001;
@@ -54,9 +54,9 @@ MPGameBrowser::~MPGameBrowser()
 //	gameList.destroy();
 }
 
-int MPGameBrowser::indexOfButtonWithID(int id)
+int32_t MPGameBrowser::indexOfButtonWithID(int32_t id)
 {
-	int i;
+	int32_t i;
 	for (i = 0; i < buttonCount; i++)
 	{
 		if (buttons[i].getID() == id)
@@ -73,7 +73,7 @@ void MPGameBrowser::init(FitIniFile* file)
 
 	if ( buttonCount )
 	{
-		for ( int i = 0; i < buttonCount; i++ )
+		for ( int32_t i = 0; i < buttonCount; i++ )
 		{
 			buttons[i].setMessageOnRelease();
 			if (buttons[i].getID() == 0)
@@ -110,7 +110,7 @@ void MPGameBrowser::init(FitIniFile* file)
 
 		templateItem.init(&PNfile, "GameListItem");
 
-		for ( int i = 0; i < 256; i++ )
+		for ( int32_t i = 0; i < 256; i++ )
 		{
 			items[i] = templateItem;
 		}
@@ -147,7 +147,7 @@ void MPGameBrowser::end()
 	bHosting = 0;
 }
 
-void MPGameBrowser::render(int xOffset, int yOffset )
+void MPGameBrowser::render(int32_t xOffset, int32_t yOffset )
 {
 	if ((0 == xOffset) && (0 == yOffset))
 	{
@@ -174,7 +174,7 @@ void MPGameBrowser::render()
 	render(0, 0);
 }
 
-int	MPGameBrowser::handleMessage( ULONG message, ULONG who)
+int32_t	MPGameBrowser::handleMessage( uint32_t message, uint32_t who)
 {
 	if ( RUNNING == status )
 	{
@@ -207,7 +207,7 @@ int	MPGameBrowser::handleMessage( ULONG message, ULONG who)
 		case 50/*MB_MSG_NEXT*/:
 			{
 				getButton( 50/*MB_MSG_NEXT*/ )->press( 0 );
-				int index = gameList.GetSelectedItem();
+				int32_t index = gameList.GetSelectedItem();
 				if ( index != -1 )
 				{
 					aGameListItem* pItem = (aGameListItem*)gameList.GetItem( index );
@@ -222,8 +222,8 @@ int	MPGameBrowser::handleMessage( ULONG message, ULONG who)
 							}
 							else
 							{
-								int errorID =  IDS_MP_CONNECT_NO_SESSION;
-								int fontID = IDS_MP_CONNECT_ERROR_NO_SESSION_FONT;
+								int32_t errorID =  IDS_MP_CONNECT_NO_SESSION;
+								int32_t fontID = IDS_MP_CONNECT_ERROR_NO_SESSION_FONT;
 								// display a dialog about why this can't happen....
 								switch ( retVal )
 								{
@@ -330,7 +330,7 @@ void MPGameBrowser::update()
 
 	if ( userInput->isLeftDoubleClick() )
 	{
-		int index = gameList.GetSelectedItem();
+		int32_t index = gameList.GetSelectedItem();
 		if ( index != -1 )
 		{
 			handleMessage( MB_MSG_NEXT, MB_MSG_NEXT );
@@ -338,9 +338,9 @@ void MPGameBrowser::update()
 		}
 	}
 
-	int oldSel = gameList.GetSelectedItem();
-	int oldHighlight = -1;
-	for ( int i = 0; i < gameList.GetItemCount(); i++ )
+	int32_t oldSel = gameList.GetSelectedItem();
+	int32_t oldHighlight = -1;
+	for ( int32_t i = 0; i < gameList.GetItemCount(); i++ )
 	{
 		if ( gameList.GetItem( i )->getState() == aListItem::HIGHLITE )
 			oldHighlight = i;
@@ -359,18 +359,18 @@ void MPGameBrowser::update()
 		// could easily do sort here.
 
 		
-		for ( int i = 0; i < sessionCount; i++ )
+		for ( int32_t i = 0; i < sessionCount; i++ )
 		{
 			if (pSessions[i].cancelled)
 				continue;
 			items[i].setSessionInfo( &pSessions[i] );
 			items[i].moveTo( templateItem.globalX(), templateItem.globalY() );
 			bool bAdded = 0;
-			for ( int j = 0; j < gameList.GetItemCount(); j++ )
+			for ( int32_t j = 0; j < gameList.GetItemCount(); j++ )
 			{
 
 				aGameListItem* pItem = (aGameListItem*)gameList.GetItem( j );
-				int res = _stricmp( pItem->getText( sortOrder ), items[i].getText( sortOrder ) );
+				int32_t res = _stricmp( pItem->getText( sortOrder ), items[i].getText( sortOrder ) );
 				if ( (bSortUpward && res > 0) || (!bSortUpward && res < 0) )
 				{
 					gameList.InsertItem( &items[i], j );
@@ -442,7 +442,7 @@ int32_t aStyle3TextListItem::init( FitIniFile* file, PCSTR blockName )
 
 void aStyle3TextListItem::render()
 {
-	ULONG color;
+	uint32_t color;
 	animGroup.update();
 	if (aListItem::SELECTED == getState())
 	{
@@ -464,7 +464,7 @@ void aStyle3TextListItem::render()
 		animGroup.setState( aAnimGroup::NORMAL );
 		color = animGroup.getCurrentColor( aAnimGroup::NORMAL );
 	}
-	aTextListItem::setColor((ULONG)color);
+	aTextListItem::setColor((uint32_t)color);
 
 	aTextListItem::render();
 }
@@ -693,7 +693,7 @@ void aGameListItem::setSessionInfo( MC2Session* pSession )
 
 }
 
-PCSTR aGameListItem::getText( int which )
+PCSTR aGameListItem::getText( int32_t which )
 {
 	if ( which == SORT_ORDER_NAME )
 		return gameName.getText();

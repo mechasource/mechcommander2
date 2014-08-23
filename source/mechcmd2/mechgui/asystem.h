@@ -112,11 +112,11 @@ namespace mechgui {
 		void setParent(aObject* p);
 
 		void setTexture( PCSTR fileName );
-		void setTexture(ULONG newHandle );
+		void setTexture(uint32_t newHandle );
 		void setUVs( float u1, float v1, float u2, float v2 );
-		void setColor(ULONG color, bool bRecurse = 0); // color the vertices
+		void setColor(uint32_t color, bool bRecurse = 0); // color the vertices
 
-		void init( FitIniFile* file, PCSTR block, ULONG neverFlush = 0 ); // for statics
+		void init( FitIniFile* file, PCSTR block, uint32_t neverFlush = 0 ); // for statics
 
 		aObject* getParent(void)
 		{
@@ -132,7 +132,7 @@ namespace mechgui {
 		int32_t globalBottom(void) const;
 
 		virtual aObject* findObject(int32_t xPos, int32_t yPos);
-		virtual int handleMessage( ULONG, ULONG ){ return 0; }
+		virtual int32_t handleMessage( uint32_t, uint32_t ){ return 0; }
 		virtual bool pointInside(int32_t xPos, int32_t yPos) const;
 		bool rectIntersect(int32_t top, int32_t left, int32_t bottom, int32_t right) const;
 		bool rectIntersect(const RECT& testRect) const;
@@ -151,18 +151,18 @@ namespace mechgui {
 		void showGUIWindow(bool show) {showWindow = show;}
 		bool isShowing(void) const{return showWindow;}
 
-		void FillBox(short left, short top, short bottom, short right, char color);
+		void FillBox(int16_t left, int16_t top, int16_t bottom, int16_t right, char color);
 		void SetBit(int32_t xpos, int32_t ypos, char value);
 		void removeAllChildren( bool bDelete = 0);
 		virtual void move( float offsetX, float offsetY );
 		virtual void moveNoRecurse( float offsetX, float offsetY );
 
 		void setFileWidth( float newWidth ){ fileWidth = newWidth; }
-		int getID(void) const { return ID; }
-		void setID(int newID){ ID = newID; }
+		int32_t getID(void) const { return ID; }
+		void setID(int32_t newID){ ID = newID; }
 
-		void setHelpID( int newID ) { helpID = newID; }
-		int getHelpID(void) const{ return helpID; }
+		void setHelpID( int32_t newID ) { helpID = newID; }
+		int32_t getHelpID(void) const{ return helpID; }
 
 
 		float left(void)
@@ -189,7 +189,7 @@ namespace mechgui {
 
 		gos_VERTEX location[4];
 
-		ULONG textureHandle;
+		uint32_t textureHandle;
 		float fileWidth;
 		bool showWindow;
 
@@ -198,7 +198,7 @@ namespace mechgui {
 		int32_t pNumberOfChildren;
 		aObject* pParent;
 
-		int ID;
+		int32_t ID;
 
 		void copyData( const aObject& src );
 

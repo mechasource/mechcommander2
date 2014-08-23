@@ -106,7 +106,7 @@ void LogisticsData::init()
 	missionInfo->init( file );
 
 	// temporary, just so we can test
-	int count = 32;
+	int32_t count = 32;
 	PCSTR missionNames[32];
 	missionInfo->getAvailableMissions( missionNames, count );
 
@@ -123,12 +123,12 @@ void LogisticsData::initComponents()
 	
 	File componentFile;
 #ifdef _DEBUG
-	int result = 
+	int32_t result = 
 #endif
 		componentFile.open( componentPath );
 	gosASSERT( result == NO_ERROR );
 
-	puint8_t data = new UCHAR[componentFile.getLength()];
+	puint8_t data = new uint8_t[componentFile.getLength()];
 
 	componentFile.read( data, componentFile.getLength() );
 
@@ -138,21 +138,21 @@ void LogisticsData::initComponents()
 
 	componentFile.close();
 	
-	UCHAR line[1024];
+	uint8_t line[1024];
 	PSTR pLine = (PSTR)line;
 
 	// skip the first line
 	dataFile.readLine(line, 1024);
 
-	int		Ammo[512];
-	memset( Ammo, 0, sizeof ( int ) * 512 );
+	int32_t		Ammo[512];
+	memset( Ammo, 0, sizeof ( int32_t ) * 512 );
 
 
 	LogisticsComponent tmpComp;
-	int counter = 0;
+	int32_t counter = 0;
 	while(true)
 	{
-		int result = dataFile.readLine( line, 1023 );
+		int32_t result = dataFile.readLine( line, 1023 );
 
 		if ( result < 2 || result == 0xBADF0008 || result > 1024  )
 			break;
@@ -197,13 +197,13 @@ void LogisticsData::initPilots()
 	File pilotFile;
 	pilotFile.open( pilotPath );
 
-	UCHAR pilotFileName[256];
+	uint8_t pilotFileName[256];
 
-	int id = 1;
+	int32_t id = 1;
 
 	while( true )
 	{
-		int bytesRead = pilotFile.readLine( pilotFileName, 256 );
+		int32_t bytesRead = pilotFile.readLine( pilotFileName, 256 );
 		
 		if ( bytesRead < 2 )
 			break;
@@ -247,16 +247,16 @@ void LogisticsData::initVariants()
 	char variantFileName[256];
 	char variantFullPath[1024];
 
-	int chassisID = 0;
+	int32_t chassisID = 0;
 
 	char tmpStr[256];
 
-	int i = 1;
+	int32_t i = 1;
 	while( true )
 	{
 		int32_t fitID;
 
-		int retVal = variantFile.readString( i, 4, tmpStr, 256 );
+		int32_t retVal = variantFile.readString( i, 4, tmpStr, 256 );
 		
 		if ( retVal != 0 )
 			break;
@@ -315,9 +315,9 @@ void LogisticsData::initVariants()
 		chassis->setFitID(fitID);
 		chassis->setScale( scale );
 
-		int row = 23;
+		int32_t row = 23;
 		char buffer[256];
-		int varCount = 0;
+		int32_t varCount = 0;
 		while( NO_ERROR == mechFile.readString( row, 2, buffer, 256 ) )
 		{
 			LogisticsVariant* pVariant = new LogisticsVariant;
@@ -340,7 +340,7 @@ void LogisticsData::addVehicle( int32_t fitID, PacketFile& objectFile, float sca
 	if ( NO_ERROR != objectFile.seekPacket(fitID) )
 		return;
 
-	int fileSize = objectFile.getPacketSize();
+	int32_t fileSize = objectFile.getPacketSize();
 
 	if ( fileSize )
 	{
@@ -370,11 +370,11 @@ void LogisticsData::UnRegisterFunctions()
 }
 
 
-int LogisticsData::getAvailableComponents( LogisticsComponent** pComps, int& maxCount )
+int32_t LogisticsData::getAvailableComponents( LogisticsComponent** pComps, int32_t& maxCount )
 {
-	int retVal = 0;
+	int32_t retVal = 0;
 	
-	int i = 0;
+	int32_t i = 0;
 	for ( COMPONENT_LIST::EIterator iter = components.Begin(); 
 		!iter.IsDone(); iter++ )
 		{
@@ -395,11 +395,11 @@ int LogisticsData::getAvailableComponents( LogisticsComponent** pComps, int& max
 	return retVal; 
 
 }
-int	LogisticsData::getAllComponents( LogisticsComponent** pComps, int& maxCount )
+int32_t	LogisticsData::getAllComponents( LogisticsComponent** pComps, int32_t& maxCount )
 {
-	int retVal = 0;
+	int32_t retVal = 0;
 	
-	int i = 0;
+	int32_t i = 0;
 	for ( COMPONENT_LIST::EIterator iter = components.Begin(); 
 		!iter.IsDone(); iter++ )
 		{
@@ -418,7 +418,7 @@ int	LogisticsData::getAllComponents( LogisticsComponent** pComps, int& maxCount 
 
 
 
-int LogisticsData::getPurchasableMechs( LogisticsVariant** array, int& count )
+int32_t LogisticsData::getPurchasableMechs( LogisticsVariant** array, int32_t& count )
 {
 	int32_t retVal = 0;
 	int32_t arraySize = count;
@@ -448,16 +448,16 @@ int LogisticsData::getPurchasableMechs( LogisticsVariant** array, int& count )
 
 
 
-int LogisticsData::purchaseMech( LogisticsVariant* pVariant )
+int32_t LogisticsData::purchaseMech( LogisticsVariant* pVariant )
 {
 	if ( !pVariant )
 		return -1;
 
-	int RP = pVariant->getCost();
+	int32_t RP = pVariant->getCost();
 
 	if ( missionInfo->getCBills() - RP >= 0 )
 	{
-		int count = instance->createInstanceID( pVariant );
+		int32_t count = instance->createInstanceID( pVariant );
 		LogisticsMech* pMech = new LogisticsMech( pVariant, count );
 		instance->inventory.Append( pMech );
 		missionInfo->decrementCBills( pVariant->getCost() );
@@ -467,12 +467,12 @@ int LogisticsData::purchaseMech( LogisticsVariant* pVariant )
 	return NOT_ENOUGH_RESOURCE_POINTS;
 }
 
-int LogisticsData::canPurchaseMech( LogisticsVariant* pVar )
+int32_t LogisticsData::canPurchaseMech( LogisticsVariant* pVar )
 {
 	if ( !pVar )
 		return INVALID_ID;
 
-	int RP = pVar->getCost();
+	int32_t RP = pVar->getCost();
 
 	if ( missionInfo->getCBills() - RP >= 0 )
 	{
@@ -485,7 +485,7 @@ int LogisticsData::canPurchaseMech( LogisticsVariant* pVar )
 
 
 
-int LogisticsData::sellMech( LogisticsMech* pVar )
+int32_t LogisticsData::sellMech( LogisticsMech* pVar )
 {
 	if ( !pVar )
 		return -1;
@@ -496,7 +496,7 @@ int LogisticsData::sellMech( LogisticsMech* pVar )
 			continue;
 		if ( (*iter)->getVariant() == pVar->getVariant() )
 		{
-			int cost = ((*iter))->getCost();
+			int32_t cost = ((*iter))->getCost();
 			(*iter)->setPilot( NULL );
 			delete *iter;
 			instance->inventory.Delete( iter );
@@ -509,7 +509,7 @@ int LogisticsData::sellMech( LogisticsMech* pVar )
 	return -1;
 }
 
-int LogisticsData::removeVariant( PCSTR varName )
+int32_t LogisticsData::removeVariant( PCSTR varName )
 {
 	if ( !varName )
 		return -1;
@@ -550,14 +550,14 @@ int LogisticsData::removeVariant( PCSTR varName )
 
 
 
-int LogisticsData::createInstanceID( LogisticsVariant* pVar )
+int32_t LogisticsData::createInstanceID( LogisticsVariant* pVar )
 {
-	int count = -1;
+	int32_t count = -1;
 	for ( MECH_LIST::EIterator iter = inventory.Begin(); !iter.IsDone(); iter++ )
 	{
 		if ( pVar->getVariantID() == (*iter)->getVariantID() ) 
 		{
-			int tmp = (*iter)->getInstanceID();
+			int32_t tmp = (*iter)->getInstanceID();
 			if ( tmp > count )
 				count = tmp;
 		}
@@ -565,11 +565,11 @@ int LogisticsData::createInstanceID( LogisticsVariant* pVar )
 	return count + 1;
 }
 
-LogisticsVariant* LogisticsData::getVariant( int ID )
+LogisticsVariant* LogisticsData::getVariant( int32_t ID )
 {
 	for ( VARIANT_LIST::EIterator iter = variants.Begin(); !iter.IsDone(); iter++ )
 	{
-		if ( (*iter)->getID() == (ULONG)(ID & 0x00ffffff) )
+		if ( (*iter)->getID() == (uint32_t)(ID & 0x00ffffff) )
 		{
 			return *iter;
 		}
@@ -581,7 +581,7 @@ LogisticsVariant* LogisticsData::getVariant( int ID )
 	return NULL;
 }
 
-LogisticsMech*	LogisticsData::getMech( int ID )
+LogisticsMech*	LogisticsData::getMech( int32_t ID )
 {
 	for ( MECH_LIST::EIterator iter = inventory.Begin(); !iter.IsDone(); iter++ )
 	{
@@ -595,7 +595,7 @@ LogisticsMech*	LogisticsData::getMech( int ID )
 
 
 
-int LogisticsData::addMechToForceGroup( LogisticsMech* pMech, int slot )
+int32_t LogisticsData::addMechToForceGroup( LogisticsMech* pMech, int32_t slot )
 {
 	if ( !pMech )
 		return -1;
@@ -621,7 +621,7 @@ int LogisticsData::addMechToForceGroup( LogisticsMech* pMech, int slot )
 	return -1;
 }
 
-int		LogisticsData::removeMechFromForceGroup( int slot )
+int32_t		LogisticsData::removeMechFromForceGroup( int32_t slot )
 {
 	for ( MECH_LIST::EIterator iter = inventory.Begin(); !iter.IsDone(); iter++ )
 	{
@@ -653,7 +653,7 @@ LogisticsMech*		LogisticsData::getMechWithoutForceGroup( LogisticsMech* pMech )
 	
 	return NULL;
 }
-int LogisticsData::removeMechFromForceGroup( LogisticsMech* pMech, bool bRemovePilot )
+int32_t LogisticsData::removeMechFromForceGroup( LogisticsMech* pMech, bool bRemovePilot )
 {
 	if ( !pMech )
 		return -1;
@@ -710,9 +710,9 @@ LogisticsPilot* LogisticsData::getFirstAvailablePilot()
 
 
 // GetAvailableMissions( PSTR* missionNames, int32_t& count )
-int LogisticsData::getAvailableMissions( PCSTR* missionNames, int32_t& count )
+int32_t LogisticsData::getAvailableMissions( PCSTR* missionNames, int32_t& count )
 {
-	int numberOfEm = 0;
+	int32_t numberOfEm = 0;
 
 	// first figure out how many there are
 	missionInfo->getAvailableMissions( 0, numberOfEm );
@@ -730,9 +730,9 @@ int LogisticsData::getAvailableMissions( PCSTR* missionNames, int32_t& count )
 
 }
 
-int LogisticsData::getCurrentMissions( PCSTR* missionNames, int32_t& count )
+int32_t LogisticsData::getCurrentMissions( PCSTR* missionNames, int32_t& count )
 {
-	int numberOfEm = 0;
+	int32_t numberOfEm = 0;
 
 	// first figure out how many there are
 	missionInfo->getCurrentMissions( 0, numberOfEm );
@@ -759,7 +759,7 @@ bool LogisticsData::getMissionAvailable( PCSTR missionName )
 
 
 // SetCurrentMission( PSTR missionName )
-int LogisticsData::setCurrentMission( PCSTR missionName )
+int32_t LogisticsData::setCurrentMission( PCSTR missionName )
 {
 	int32_t result = missionInfo->setNextMission( missionName );
 
@@ -781,10 +781,10 @@ int LogisticsData::setCurrentMission( PCSTR missionName )
 
 void LogisticsData::removeDeadWeight()
 {
-	int maxDropWeight = getMaxDropWeight();
-	int curDropWeight = getCurrentDropWeight();
+	int32_t maxDropWeight = getMaxDropWeight();
+	int32_t curDropWeight = getCurrentDropWeight();
 
-	int i = 12;
+	int32_t i = 12;
 	while ( curDropWeight > maxDropWeight )
 	{
 		LogisticsData::removeMechFromForceGroup( i );
@@ -797,7 +797,7 @@ void LogisticsData::removeDeadWeight()
 	}
 }
 
-int		LogisticsData::setCurrentMission( const EString& missionName )
+int32_t		LogisticsData::setCurrentMission( const EString& missionName )
 {
 	return setCurrentMission( (PCSTR)missionName );
 }
@@ -805,7 +805,7 @@ int		LogisticsData::setCurrentMission( const EString& missionName )
 
 void	LogisticsData::getForceGroup( EList<LogisticsMech*, LogisticsMech*>& newList )
 {
-	int count = 0;
+	int32_t count = 0;
 
 	for ( MECH_LIST::EIterator iter = inventory.Begin(); !iter.IsDone(); iter++ )
 	{
@@ -830,12 +830,12 @@ void	LogisticsData::getInventory( EList<LogisticsMech*, LogisticsMech*>& newList
 }
 
 
-void	LogisticsData::addMechToInventory( LogisticsVariant* pVar, LogisticsPilot* pPilot, int ForceGroup,
+void	LogisticsData::addMechToInventory( LogisticsVariant* pVar, LogisticsPilot* pPilot, int32_t ForceGroup,
 										  bool bSubtractPts)
 {
 	if ( pVar )
 	{
-		int count = instance->createInstanceID( pVar );
+		int32_t count = instance->createInstanceID( pVar );
 		LogisticsMech* pMech = new LogisticsMech( pVar, count );
 		inventory.Append( pMech );
 		pMech->setForceGroup( ForceGroup );
@@ -847,15 +847,15 @@ void	LogisticsData::addMechToInventory( LogisticsVariant* pVar, LogisticsPilot* 
 			missionInfo->decrementCBills( pMech->getCost() );
 	}
 }
-void	LogisticsData::addMechToInventory( LogisticsVariant* pVar, int addToForceGroup, 
+void	LogisticsData::addMechToInventory( LogisticsVariant* pVar, int32_t addToForceGroup, 
 										  LogisticsPilot* pPilot,
-										  ULONG baseColor,
-										  ULONG highlight1,
-										  ULONG highlight2 )
+										  uint32_t baseColor,
+										  uint32_t highlight1,
+										  uint32_t highlight2 )
 {
 	if ( pVar )
 	{
-		int count = instance->createInstanceID( pVar );
+		int32_t count = instance->createInstanceID( pVar );
 		LogisticsMech* pMech = new LogisticsMech( pVar, count );
 		inventory.Append( pMech );
 		if ( addToForceGroup > -1 && addToForceGroup < 13 )
@@ -871,7 +871,7 @@ void	LogisticsData::addMechToInventory( LogisticsVariant* pVar, int addToForceGr
 	}
 }
 
-LogisticsVariant* LogisticsData::getVariant( PCSTR pCSVFileName, int VariantNum )
+LogisticsVariant* LogisticsData::getVariant( PCSTR pCSVFileName, int32_t VariantNum )
 {
 	EString lowerCase = pCSVFileName;
 	lowerCase.MakeLower();
@@ -913,7 +913,7 @@ PCSTR	LogisticsData::getBestPilot( int32_t mechWeight )
 	LogisticsPilot** pPilots = (LogisticsPilot**)_alloca( pilots.Count() * sizeof( LogisticsPilot*) );
 	memset( pPilots, 0, pilots.Count() * sizeof( LogisticsPilot*) );
 
-	int counter = 0;
+	int32_t counter = 0;
 #ifndef VIEWER
 	for ( PILOT_LIST::EIterator iter = pilots.Begin();
 		!iter.IsDone(); iter++ )
@@ -925,12 +925,12 @@ PCSTR	LogisticsData::getBestPilot( int32_t mechWeight )
 #endif
 
 	int32_t count = counter;
-	int i;
+	int32_t i;
 
 	for ( i = 1; i < count; ++i )
 	{
 		LogisticsPilot* cur = pPilots[i];
-		for ( int j = 0; j < i; ++j )
+		for ( int32_t j = 0; j < i; ++j )
 		{
 			if ( comparePilots( cur, pPilots[j], mechWeight ) > 0 && j != i )
 			{
@@ -966,7 +966,7 @@ bool		LogisticsData::gotPilotsLeft()
 	LogisticsPilot** pPilots = (LogisticsPilot**)_alloca( pilots.Count() * sizeof( LogisticsPilot*) );
 	memset( pPilots, 0, pilots.Count() * sizeof( LogisticsPilot*) );
 
-	int counter = 0;
+	int32_t counter = 0;
 
 	#ifndef VIEWER
 
@@ -981,7 +981,7 @@ bool		LogisticsData::gotPilotsLeft()
 	#endif
 	int32_t count = counter;
 
-	for ( int i = 0; i < count; i++ )
+	for ( int32_t i = 0; i < count; i++ )
 	{
 		if ( pPilots[i]->isAvailable() && !pPilots[i]->isUsed() )
 		{
@@ -993,7 +993,7 @@ bool		LogisticsData::gotPilotsLeft()
 
 }
 
-int LogisticsData::comparePilots( LogisticsPilot* p1, LogisticsPilot* p2, int32_t weight )
+int32_t LogisticsData::comparePilots( LogisticsPilot* p1, LogisticsPilot* p2, int32_t weight )
 {
 	if ( p1->isUsed() )
 		return -1;
@@ -1042,7 +1042,7 @@ int LogisticsData::comparePilots( LogisticsPilot* p1, LogisticsPilot* p2, int32_
 int32_t	LogisticsData::save( FitIniFile& file )
 {
 		
-	int variantCount = 0;
+	int32_t variantCount = 0;
 	// save the player created variants
 	for ( VARIANT_LIST::EIterator vIter = variants.Begin();
 		!vIter.IsDone();  vIter++ )
@@ -1067,7 +1067,7 @@ int32_t	LogisticsData::save( FitIniFile& file )
 	// save the campaign info
 	missionInfo->save( file );
 
-	int pilotCount = 0;
+	int32_t pilotCount = 0;
 	// save the pilots
 	for ( PILOT_LIST::EIterator pIter = pilots.Begin();
 		!pIter.IsDone(); pIter++ )
@@ -1075,7 +1075,7 @@ int32_t	LogisticsData::save( FitIniFile& file )
 			(*pIter).save( file, pilotCount++ );
 		}
 
-	int mechCount = 0;
+	int32_t mechCount = 0;
 	// save the inventory
 	for ( MECH_LIST::EIterator mIter = inventory.Begin();
 		!mIter.IsDone(); mIter++ )
@@ -1151,7 +1151,7 @@ int32_t	LogisticsData::load( FitIniFile& file )
 	char tmp[64];
 
 	// load variants
-	int i;
+	int32_t i;
 	for ( i = 0; i < variantCount; i++ )
 	{
 		sprintf( tmp, "Variant%ld", i );
@@ -1188,7 +1188,7 @@ int32_t	LogisticsData::load( FitIniFile& file )
 	}
 
 	// load inventory
-	int count = 0;
+	int32_t count = 0;
 	for ( i = 0; i < inventoryCount; i++ )
 	{
 		sprintf( tmp, "Inventory%ld", i ) ;
@@ -1251,7 +1251,7 @@ int32_t LogisticsData::loadVariant( FitIniFile& file )
 	file.readIdLong( "ComponentCount", componentCount );
 
 	// add those components
-	for ( int i = 0; i < componentCount; i++ )
+	for ( int32_t i = 0; i < componentCount; i++ )
 	{
 		sprintf( tmp, "Component%ld", i );
 		file.readIdLong(tmp, id );
@@ -1274,7 +1274,7 @@ int32_t LogisticsData::loadVariant( FitIniFile& file )
 	return 0;
 }
 
-int32_t LogisticsData::loadMech( FitIniFile& file, int& count )
+int32_t LogisticsData::loadMech( FitIniFile& file, int32_t& count )
 {
 	char tmp[256];
 	file.readIdString( "Variant", tmp, 255 );
@@ -1336,11 +1336,11 @@ void	LogisticsData::setMissionCompleted( )
 	// need to go find out which pilots died.
 	Team* pTeam = Team::home;
 
-	int ForceGroupCount = 1;
+	int32_t ForceGroupCount = 1;
 
 	if ( pTeam )
 	{
-		for ( int i = pTeam->getRosterSize() - 1; i > -1; i-- )
+		for ( int32_t i = pTeam->getRosterSize() - 1; i > -1; i-- )
 		{
 			Mover* pMover = (Mover*)pTeam->getMover( i );
 			
@@ -1352,7 +1352,7 @@ void	LogisticsData::setMissionCompleted( )
 			{
 				LogisticsMech* pMech = getMech( pMover->getName(), pMover->getPilot()->getName() );
 
-				ULONG base, highlight1, highlight2;
+				uint32_t base, highlight1, highlight2;
 				((Mech3DAppearance*)pMover->getAppearance())->getPaintScheme( base, highlight1, highlight2 );
 				LogisticsPilot* pPilot = getPilot( pMover->getPilot()->getName() );
 				if ( pMech )
@@ -1490,10 +1490,10 @@ int32_t LogisticsData::updateAvailability()
 		purchaseFileName += "purchase.fit";
 	}
 
-	int oldMechAvailableCount= 0;
-	int newMechAvailableCount = 0;
-	int oldPilotAvailableCount = 0;
-	int newPilotAvailableCount= 0;
+	int32_t oldMechAvailableCount= 0;
+	int32_t newMechAvailableCount = 0;
+	int32_t oldPilotAvailableCount = 0;
+	int32_t newPilotAvailableCount= 0;
 	PILOT_LIST::EIterator pIter;
 	for ( pIter = pilots.Begin(); !pIter.IsDone(); pIter++ )
 	{
@@ -1528,7 +1528,7 @@ int32_t LogisticsData::updateAvailability()
 
 	bool bAll = 0;
 	file.readIdBoolean( "AllComponents", bAll );
-	int i;
+	int32_t i;
 	for ( i = 0; i < 255; i++ )
 	{
 		if ( bAll )
@@ -1610,7 +1610,7 @@ int32_t LogisticsData::updateAvailability()
 				componentCount = 255;
 				bool bRight = true;
 				(*vIter)->getComponents( componentCount, componentArray );
-				for ( int i = 0; i < componentCount; i++ )
+				for ( int32_t i = 0; i < componentCount; i++ )
 				{
 					if ( !available[componentArray[i]] ) // unavailable componets
 					{
@@ -1693,7 +1693,7 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 
 		bool bAll = 0;
 		file.readIdBoolean( "AllComponents", bAll );
-		for ( int i = 0; i < 255; i++ )
+		for ( int32_t i = 0; i < 255; i++ )
 		{
 			{
 				sprintf( tmp, "Component%ld", i );
@@ -1714,7 +1714,7 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 	char pilotName[255];
 	char tmp[256];
 	file.seekBlock( "Pilots" );
-	int i;
+	int32_t i;
 	for ( i = 0; i < 255; i++ )
 	{
 		sprintf( tmp, "Pilot%ld", i );
@@ -1734,7 +1734,7 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 	}
 
 	file.seekBlock( "Mechs" );
-	int newAvailableCount = 0;
+	int32_t newAvailableCount = 0;
 	char chassisFileName[256];
 	for ( i = 0; i < 255; i++ )
 	{
@@ -1754,7 +1754,7 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 				int32_t componentArray[256];
 				bool bRight = true;
 				(*vIter)->getComponents( componentCount, componentArray );
-				for ( int i = 0; i < componentCount; i++ )
+				for ( int32_t i = 0; i < componentCount; i++ )
 				{
 					LogisticsComponent* pComp = getComponent(componentArray[i]);
 					if ( !pComp->isAvailable() ) // unavailable componets
@@ -1816,11 +1816,11 @@ void LogisticsData::clearInventory()
 	inventory.Clear();
 }
 
-int	LogisticsData::getPilotCount()
+int32_t	LogisticsData::getPilotCount()
 {
 	return pilots.Count();
 }
-int	LogisticsData::getPilots( LogisticsPilot** pArray, int32_t& count )
+int32_t	LogisticsData::getPilots( LogisticsPilot** pArray, int32_t& count )
 {
 	if ( count < pilots.Count() )
 	 {
@@ -1837,12 +1837,12 @@ int	LogisticsData::getPilots( LogisticsPilot** pArray, int32_t& count )
 	 return 0;
 }
 
-int LogisticsData::getMaxDropWeight() const
+int32_t LogisticsData::getMaxDropWeight() const
 {
 	return  missionInfo->getCurrentDropWeight();
 }
 
-int LogisticsData::getCurrentDropWeight() const
+int32_t LogisticsData::getCurrentDropWeight() const
 {
 	int32_t retVal = 0;
 	for ( MECH_LIST::EIterator iter = instance->inventory.Begin(); !iter.IsDone(); iter++ )
@@ -1863,7 +1863,7 @@ bool	LogisticsData::canAddMechToForceGroup( LogisticsMech* pMech )
 	if ( !pMech )
 		return 0;
 
-	int maxUnits = 12;
+	int32_t maxUnits = 12;
 
 #ifndef VIEWER
 	if ( MPlayer )
@@ -1877,7 +1877,7 @@ bool	LogisticsData::canAddMechToForceGroup( LogisticsMech* pMech )
 	}
 #endif
 
-	int fgCount = 0;
+	int32_t fgCount = 0;
 	
 	for ( MECH_LIST::EIterator iter = instance->inventory.Begin(); !iter.IsDone(); iter++ )
 	{
@@ -1897,7 +1897,7 @@ bool	LogisticsData::canAddMechToForceGroup( LogisticsMech* pMech )
 }
 
 
-int LogisticsData::getVariantsInInventory( LogisticsVariant* pVar, bool bIncludeForceGroup )
+int32_t LogisticsData::getVariantsInInventory( LogisticsVariant* pVar, bool bIncludeForceGroup )
 {
 	int32_t retVal = 0;
 	for ( MECH_LIST::EIterator iter = instance->inventory.Begin(); !iter.IsDone(); iter++ )
@@ -1916,13 +1916,13 @@ int LogisticsData::getVariantsInInventory( LogisticsVariant* pVar, bool bInclude
 
 }
 
-int		LogisticsData::getChassisVariants( const LogisticsChassis* pChassis, 
+int32_t		LogisticsData::getChassisVariants( const LogisticsChassis* pChassis, 
 										  LogisticsVariant** pVar, 
-										  int& maxCount )
+										  int32_t& maxCount )
 {
-	int retVal = 0;
+	int32_t retVal = 0;
 	
-	int i = 0;
+	int32_t i = 0;
 	for ( VARIANT_LIST::EIterator iter = variants.Begin(); 
 		!iter.IsDone(); iter++ )
 		{
@@ -1944,7 +1944,7 @@ int		LogisticsData::getChassisVariants( const LogisticsChassis* pChassis,
 }
 
 
-int LogisticsData::setMechToModify( LogisticsMech* pMech )
+int32_t LogisticsData::setMechToModify( LogisticsMech* pMech )
 {
 	if ( !pMech )
 		return -1;
@@ -1963,22 +1963,22 @@ void encryptFile (PSTR inputFile, PSTR outputFile)
 	//Now we encrypt this by zlib Compressing the file passed in.
 	// Then LZ Compressing the resulting zlib data.
 	// Since our LZ compression is pretty much non-standard, that should be enough.
-	PUCHAR rawData = NULL;
-	PUCHAR zlibData = NULL;
-	PUCHAR LZData = NULL;
+	puint8_t rawData = NULL;
+	puint8_t zlibData = NULL;
+	puint8_t LZData = NULL;
 
 	File dataFile;
 	dataFile.open(inputFile);
-	ULONG fileSize = dataFile.fileSize();
-	rawData = (PUCHAR)malloc(fileSize);
-	zlibData = (PUCHAR)malloc(fileSize*2);
-	LZData = (PUCHAR)malloc(fileSize*2);
+	uint32_t fileSize = dataFile.fileSize();
+	rawData = (puint8_t)malloc(fileSize);
+	zlibData = (puint8_t)malloc(fileSize*2);
+	LZData = (puint8_t)malloc(fileSize*2);
 
 	dataFile.read(rawData,fileSize);
 
-	ULONG zlibSize = fileSize * 2;
+	uint32_t zlibSize = fileSize * 2;
 	compress2(zlibData,&zlibSize,rawData,fileSize,0);
-	ULONG lzSize = LZCompress (LZData, zlibData, zlibSize);
+	uint32_t lzSize = LZCompress (LZData, zlibData, zlibSize);
 
 	dataFile.close();
 
@@ -2000,30 +2000,30 @@ void decryptFile (PSTR inputFile, PSTR outputFile)
 	//Now we decrypt this by lz deCompressing the zlib file created.
 	// Then zlib deCompressing the resulting zlib data into the raw File again.
 	// Since our LZ compression is pretty much non-standard, that should be enough.
-	PUCHAR rawData = NULL;
-	PUCHAR zlibData = NULL;
-	PUCHAR LZData = NULL;
+	puint8_t rawData = NULL;
+	puint8_t zlibData = NULL;
+	puint8_t LZData = NULL;
 
 	File dataFile;
 	int32_t result = dataFile.open(inputFile);
 	if (result == NO_ERROR) 
 	{
-		ULONG lzSize = dataFile.readLong();
-		ULONG zlibSize = dataFile.readLong();
-		ULONG fileSize = dataFile.readLong();
+		uint32_t lzSize = dataFile.readLong();
+		uint32_t zlibSize = dataFile.readLong();
+		uint32_t fileSize = dataFile.readLong();
 	
-		rawData = (PUCHAR)malloc(fileSize);
-		zlibData = (PUCHAR)malloc(zlibSize);
-		LZData = (PUCHAR)malloc(lzSize);
+		rawData = (puint8_t)malloc(fileSize);
+		zlibData = (puint8_t)malloc(zlibSize);
+		LZData = (puint8_t)malloc(lzSize);
 	
 		dataFile.read(LZData,lzSize);
 	
-		ULONG testSize = fileSize;
-		ULONG test2Size = LZDecomp(zlibData, LZData, lzSize);
+		uint32_t testSize = fileSize;
+		uint32_t test2Size = LZDecomp(zlibData, LZData, lzSize);
 		if (test2Size != zlibSize) 
 			STOP(("Didn't Decompress to same size as started with!!"));
 	
-		uncompress((PUCHAR)rawData,&testSize,zlibData,zlibSize);
+		uncompress((puint8_t)rawData,&testSize,zlibData,zlibSize);
 		if (testSize != fileSize) 
 			STOP(("Didn't Decompress to correct format"));
 	
@@ -2040,7 +2040,7 @@ void decryptFile (PSTR inputFile, PSTR outputFile)
 	}
 }
 
-int LogisticsData::acceptMechModifications( PCSTR name )
+int32_t LogisticsData::acceptMechModifications( PCSTR name )
 {
 	if ( !currentlyModifiedMech )
 		return -1;
@@ -2147,7 +2147,7 @@ int LogisticsData::acceptMechModifications( PCSTR name )
 
 	return 0;
 }
-int LogisticsData::acceptMechModificationsUseOldVariant( PCSTR name )
+int32_t LogisticsData::acceptMechModificationsUseOldVariant( PCSTR name )
 {
 	if ( !currentlyModifiedMech )
 		return -1;
@@ -2176,7 +2176,7 @@ int LogisticsData::acceptMechModificationsUseOldVariant( PCSTR name )
 
 bool LogisticsData::canReplaceVariant( PCSTR name )
 {
-	int nameCount = 0;
+	int32_t nameCount = 0;
 	for ( MECH_LIST::EIterator iter = inventory.Begin();
 		!iter.IsDone(); iter++ )
 		{
@@ -2219,7 +2219,7 @@ bool	LogisticsData::canDeleteVariant( PCSTR name )
 
 }
 
-int LogisticsData::cancelMechModfications()
+int32_t LogisticsData::cancelMechModfications()
 {
 	if ( !currentlyModifiedMech )
 		return -1;
@@ -2293,7 +2293,7 @@ void				LogisticsData::startNewCampaign( PCSTR fileName )
 	missionInfo->init( file );
 
 	// temporary, just so we can test
-	int count = 32;
+	int32_t count = 32;
 	PCSTR missionNames[32];
 	missionInfo->getAvailableMissions( missionNames, count );
 
@@ -2371,25 +2371,25 @@ void				LogisticsData::setPurchaseFile( PCSTR fileName )
 }
 
 
-int					LogisticsData::getCBills() 
+int32_t					LogisticsData::getCBills() 
 { 
 	return missionInfo->getCBills(); 
 }
-void				LogisticsData::addCBills( int amount )
+void				LogisticsData::addCBills( int32_t amount )
 { 
 	missionInfo->incrementCBills(amount); 
 }
-void				LogisticsData::decrementCBills( int amount ) 
+void				LogisticsData::decrementCBills( int32_t amount ) 
 { 
 	missionInfo->decrementCBills(amount); 
 }
 
-int					LogisticsData::getPlayerVariantNames( PCSTR* array, int& count )
+int32_t					LogisticsData::getPlayerVariantNames( PCSTR* array, int32_t& count )
 {
-	int maxCount = count;
+	int32_t maxCount = count;
 	count = 0;
 
-	int retVal = 0;
+	int32_t retVal = 0;
 	for ( VARIANT_LIST::EIterator iter = variants.Begin(); 
 		!iter.IsDone(); iter++ )
 		{
@@ -2410,10 +2410,10 @@ int					LogisticsData::getPlayerVariantNames( PCSTR* array, int& count )
 		return retVal;
 }
 
-int		LogisticsData::getEncyclopediaMechs( const LogisticsVariant** pChassis, int& count )
+int32_t		LogisticsData::getEncyclopediaMechs( const LogisticsVariant** pChassis, int32_t& count )
 {
-	int retVal = 0;
-	int maxCount = count;
+	int32_t retVal = 0;
+	int32_t maxCount = count;
 	count = 0;
 	for ( VARIANT_LIST::EIterator vIter = variants.Begin(); !vIter.IsDone(); vIter++ )
 	{
@@ -2433,10 +2433,10 @@ int		LogisticsData::getEncyclopediaMechs( const LogisticsVariant** pChassis, int
 	return retVal;
 }
 
-int	LogisticsData::getHelicopters( const LogisticsVariant** pChassis, int& count )
+int32_t	LogisticsData::getHelicopters( const LogisticsVariant** pChassis, int32_t& count )
 {
-	int retVal = 0;
-	int maxCount = count;
+	int32_t retVal = 0;
+	int32_t maxCount = count;
 	count = 0;
 	for ( VARIANT_LIST::EIterator vIter = variants.Begin(); !vIter.IsDone(); vIter++ )
 	{
@@ -2458,10 +2458,10 @@ int	LogisticsData::getHelicopters( const LogisticsVariant** pChassis, int& count
 }
 
 
-int		LogisticsData::getVehicles( const LogisticsVehicle** pChassis, int& count )
+int32_t		LogisticsData::getVehicles( const LogisticsVehicle** pChassis, int32_t& count )
 {
-	int retVal = 0;
-	int maxCount = count;
+	int32_t retVal = 0;
+	int32_t maxCount = count;
 	count = 0;
 	for ( VEHICLE_LIST::EIterator vIter = vehicles.Begin(); !vIter.IsDone(); vIter++ )
 	{
@@ -2495,12 +2495,12 @@ LogisticsVehicle*	LogisticsData::getVehicle( PCSTR pName )
 	return NULL;
 }
 
-int LogisticsData::addBuilding( int32_t fitID, PacketFile& objectFile, float scale )
+int32_t LogisticsData::addBuilding( int32_t fitID, PacketFile& objectFile, float scale )
 {
 	if ( NO_ERROR != objectFile.seekPacket(fitID) )
 		return -1;
 
-	int fileSize = objectFile.getPacketSize();
+	int32_t fileSize = objectFile.getPacketSize();
 
 	if ( fileSize )
 	{
@@ -2534,7 +2534,7 @@ int LogisticsData::addBuilding( int32_t fitID, PacketFile& objectFile, float sca
 					bIsTurret = true;
 			}
 		}
-		ULONG tmp;
+		uint32_t tmp;
 		file.readIdLong( "BuildingName", bldg.nameID );
 		file.readIdULong( "DmgLevel", tmp );
 		bldg.weight = tmp;
@@ -2542,7 +2542,7 @@ int LogisticsData::addBuilding( int32_t fitID, PacketFile& objectFile, float sca
 		{
 			char weaponNameStr[64];
 			strcpy( weaponNameStr, "WeaponType" );
-			for ( int i = 0; i < 4; i++ )
+			for ( int32_t i = 0; i < 4; i++ )
 			{
 				
 				file.readIdLong( weaponNameStr, bldg.componentIDs[i] );
@@ -2552,7 +2552,7 @@ int LogisticsData::addBuilding( int32_t fitID, PacketFile& objectFile, float sca
 		}
 		else
 		{
-			for ( int i = 0; i < 4; i++ )
+			for ( int32_t i = 0; i < 4; i++ )
 			{
 				bldg.componentIDs[i] = 0;
 			}
@@ -2568,7 +2568,7 @@ int LogisticsData::addBuilding( int32_t fitID, PacketFile& objectFile, float sca
 }
 
 //*************************************************************************************************
-LogisticsComponent* LogisticsData::getComponent( int componentID )
+LogisticsComponent* LogisticsData::getComponent( int32_t componentID )
 {
 	for ( COMPONENT_LIST::EIterator iter = components.Begin();
 		!iter.IsDone(); iter++ )
@@ -2581,7 +2581,7 @@ LogisticsComponent* LogisticsData::getComponent( int componentID )
 }
 
 //*************************************************************************************************
-LogisticsData::Building*			LogisticsData::getBuilding( int nameID )
+LogisticsData::Building*			LogisticsData::getBuilding( int32_t nameID )
 {
 	for ( BUILDING_LIST::EIterator iter = buildings.Begin();
 		!iter.IsDone(); iter++ )
@@ -2595,11 +2595,11 @@ LogisticsData::Building*			LogisticsData::getBuilding( int nameID )
 
 
 //*************************************************************************************************
-int					LogisticsData::getBuildings( Building** bdgs, int& count )
+int32_t					LogisticsData::getBuildings( Building** bdgs, int32_t& count )
 {
-	int maxCount = count;
+	int32_t maxCount = count;
 	count = 0;
-	int retVal = 0;
+	int32_t retVal = 0;
 
 	for ( BUILDING_LIST::EIterator iter = buildings.Begin();
 		!iter.IsDone(); iter++ )

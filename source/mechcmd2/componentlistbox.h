@@ -36,7 +36,7 @@ public:
 	ComponentListItem( LogisticsComponent* pComp );
 	virtual ~ComponentListItem();
 
-	static int init( FitIniFile& file );
+	static int32_t init( FitIniFile& file );
 
 	LogisticsComponent* getComponent() { return pComponent; }
 
@@ -67,7 +67,7 @@ private:
 	LogisticsComponent* pComponent;
 
 	static void assignAnimation( FitIniFile& file,
-		int whichChild, char animNames[COMP_ANIMATION_COUNT][32], aObject* pObject );
+		int32_t whichChild, char animNames[COMP_ANIMATION_COUNT][32], aObject* pObject );
 
 	void doAdd();
 	void setComponent();
@@ -83,11 +83,11 @@ class ComponentIconListBox : public aListBox
 public:
 	ComponentIconListBox();
 	virtual ~ComponentIconListBox();
-	void setType( int Type, int orThisType, int orThis);
+	void setType( int32_t Type, int32_t orThisType, int32_t orThis);
 	virtual void update();
 
 	LogisticsComponent* getComponent();
-	int selectFirstAvailableComponent();
+	int32_t selectFirstAvailableComponent();
 
 	static ComponentIconListBox* s_instance;
 
@@ -98,7 +98,7 @@ private:
 
 	EList<ComponentListItem*, ComponentListItem*>	masterComponentList;
 
-	int type;
+	int32_t type;
 
 	void addSortedItem( ComponentListItem* pItem );
 

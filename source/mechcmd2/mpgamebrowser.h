@@ -35,7 +35,7 @@ public:
 protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
-	int normalColor;
+	int32_t normalColor;
 };
 
 class aGameListItem : public aListItem
@@ -48,7 +48,7 @@ public:
 
 	PCSTR		getSessionName();
 
-	PCSTR		getText( int which );
+	PCSTR		getText( int32_t which );
 
 	const MC2Session* getSession (void) { return(&session); }
 
@@ -81,14 +81,14 @@ public:
 	bool isDone();
 	virtual void		begin();
 	virtual void		end();
- 	virtual void render( int xOffset, int yOffset );
+ 	virtual void render( int32_t xOffset, int32_t yOffset );
 	virtual void render();
 	virtual void update();
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 
 private:
-	int indexOfButtonWithID(int id);
+	int32_t indexOfButtonWithID(int32_t id);
 
 	aListBox				gameList;
 	aGameListItem			items[256];
@@ -99,9 +99,9 @@ private:
 	bool					bHosting;
 	bool					bShowErrorDlg;
 
-	int						sortOrder;
+	int32_t						sortOrder;
 
-	int						bSortUpward;
+	int32_t						bSortUpward;
 	int32_t					oldScrollPos;
 };
 

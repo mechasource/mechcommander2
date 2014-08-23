@@ -20,7 +20,7 @@ MPHostGame.cpp			: Implementation of the MPHostGame component.
 
 #define CHECK_BUTTON 200
 
-static int connectionType = 0;
+static int32_t connectionType = 0;
 
 static cint32_t FIRST_BUTTON_ID = 1000010;
 static cint32_t OK_BUTTON_ID = 1000001;
@@ -40,9 +40,9 @@ MPHostGame::~MPHostGame()
 {
 }
 
-int MPHostGame::indexOfButtonWithID(int id)
+int32_t MPHostGame::indexOfButtonWithID(int32_t id)
 {
-	int i;
+	int32_t i;
 	for (i = 0; i < buttonCount; i++)
 	{
 		if (buttons[i].getID() == id)
@@ -77,7 +77,7 @@ void MPHostGame::init()
 
 	if ( buttonCount )
 	{
-		for ( int i = 0; i < buttonCount; i++ )
+		for ( int32_t i = 0; i < buttonCount; i++ )
 		{
 			buttons[i].setMessageOnRelease();
 			if (buttons[i].getID() == 0)
@@ -115,7 +115,7 @@ void MPHostGame::init()
 		numPlayersDropList.init( &PNfile, "ComboBox0");
 
 		aStyle5TextListItem *pTmp2;
-		int i;
+		int32_t i;
 		for (i = 2; i < MAX_MC_PLAYERS+1; i += 1)
 		{
 			pTmp2 = new aStyle5TextListItem;
@@ -154,7 +154,7 @@ void MPHostGame::end()
 	LogisticsDialog::end();
 }
 
-void MPHostGame::render(int xOffset, int yOffset )
+void MPHostGame::render(int32_t xOffset, int32_t yOffset )
 {
 	LogisticsDialog::render();
 
@@ -162,7 +162,7 @@ void MPHostGame::render(int xOffset, int yOffset )
 	{
 //		numPlayersDropList.render();
 
-		for ( int i = 0; i < staticCount; i++ )
+		for ( int32_t i = 0; i < staticCount; i++ )
 		{
 			statics[i].render(); // need to cover up droplist overflow...
 		}
@@ -181,7 +181,7 @@ void MPHostGame::render()
 	render(0, 0);
 }
 
-int	MPHostGame::handleMessage( ULONG message, ULONG who)
+int32_t	MPHostGame::handleMessage( uint32_t message, uint32_t who)
 {
 	status = who;
 	exitAnim.begin();
@@ -289,17 +289,17 @@ void aStyle5TextListItem::render()
 	float color;
 	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((ULONG)normalColor) + 0.67 * ((ULONG)0xffffffff);
+		color = 0.33 * ((uint32_t)normalColor) + 0.67 * ((uint32_t)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((ULONG)normalColor) + 0.33 * ((ULONG)0xffffffff);
+		color = 0.67 * ((uint32_t)normalColor) + 0.33 * ((uint32_t)0xffffffff);
 	}
 	else
 	{
 		color = normalColor;
 	}
-	aTextListItem::setColor((ULONG)color);
+	aTextListItem::setColor((uint32_t)color);
 
 	aTextListItem::render();
 }

@@ -93,7 +93,7 @@ MainMenu::~MainMenu()
 		delete optionsScreenWrapper;
 }
 
-int MainMenu::init( FitIniFile& file )
+int32_t MainMenu::init( FitIniFile& file )
 {
 	file.seekBlock("Tunes");
 	file.readIdLong("TuneId",tuneId);
@@ -112,7 +112,7 @@ int MainMenu::init( FitIniFile& file )
 
 	background.init( file2, "Static", "Text", "Rect", "Button" );
 
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].setMessageOnRelease();
 		buttons[i].setPressFX(LOG_VIDEOBUTTONS);
@@ -194,7 +194,7 @@ void MainMenu::begin()
 			userInput->mouseOn();
 			userInput->setMouseCursor( mState_LOGISTICS );
 
-			ULONG localRenderer = prefs.renderer;
+			uint32_t localRenderer = prefs.renderer;
 			if (prefs.renderer != 0 && prefs.renderer != 3)
 				localRenderer = 0;
 
@@ -234,7 +234,7 @@ void MainMenu::setDrawBackground( bool bNewDrawBackground )
 	}
 }
 
-int	MainMenu::handleMessage( ULONG what, ULONG who )
+int32_t	MainMenu::handleMessage( uint32_t what, uint32_t who )
 {
 	switch ( who )
 	{
@@ -396,7 +396,7 @@ int	MainMenu::handleMessage( ULONG what, ULONG who )
 				char realText[2048];
 				cLoadString(IDS_LAWYER_BABBLE, realText, 2047 );
 				char lawyerBabble[2048];
-				ULONG pIDLen = 64;
+				uint32_t pIDLen = 64;
 				char pID[64];
 				sprintf( pID, "INVALID ID" );
 				gos_LoadDataFromRegistry("PID", pID, &pIDLen);
@@ -507,7 +507,7 @@ void MainMenu::update()
 			char name[1024];
 			strcpy( name, savePath );
 			strcat( name, LogisticsSaveDialog::instance()->getFileName() );
-			int index = strlen( name ) - 4;
+			int32_t index = strlen( name ) - 4;
 			if ( _stricmp( &name[index], ".fit" ) !=0 ) 
 				strcat( name, ".fit" );
 

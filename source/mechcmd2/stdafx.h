@@ -111,7 +111,7 @@ ATL_ADD_LIBRARY("atlthunk.lib")
 namespace Utilities {
 
 //HRESULT WINAPI FormatCLSID(_Out_writes_(nCharacters) PWCHAR pszCLSID,_In_ size_t nCharacters,_In_ REFGUID clsid);
-//HRESULT WINAPI PrivateUpdateRegistry(_In_ BOOL bRegister,_In_ UINT nID,_In_ REFGUID clsid,_In_ REFGUID libid,_In_opt_ ULONG dwOleMisc,_In_opt_ ATL::_ATL_REGMAP_ENTRY* pregMap);
+//HRESULT WINAPI PrivateUpdateRegistry(_In_ BOOL bRegister,_In_ uint32_t nID,_In_ REFGUID clsid,_In_ REFGUID libid,_In_opt_ uint32_t dwOleMisc,_In_opt_ ATL::_ATL_REGMAP_ENTRY* pregMap);
 
 // ModuleHelper - helper functions for ATL3 and ATL7 module classes (modified from WTL)
 namespace ModuleHelper
@@ -191,7 +191,7 @@ inline bool AtlInitFailed(void)
 #endif
 }
 
-inline void AtlSetTraceLevel(_In_ UINT nLevel)
+inline void AtlSetTraceLevel(_In_ uint32_t nLevel)
 {
 #if defined _DEBUG && (_ATL_VER >= 0x0700)
 	ATL::CTrace::SetLevel(nLevel);

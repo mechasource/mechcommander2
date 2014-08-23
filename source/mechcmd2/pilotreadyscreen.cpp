@@ -71,15 +71,15 @@ void PilotReadyScreen::init(FitIniFile* file)
 	LogisticsMechIcon::init(iconFile);
 	pIcons = new LogisticsMechIcon[ICON_COUNT];
 
-	int count = 0;
+	int32_t count = 0;
 
 	
 	int32_t x = 0;
 	int32_t y = 0;
 
-	for ( int j = 0; j < ICON_COUNT_Y; j++ )
+	for ( int32_t j = 0; j < ICON_COUNT_Y; j++ )
 	{
-		for ( int i = 0; i < ICON_COUNT_X; i++ )
+		for ( int32_t i = 0; i < ICON_COUNT_X; i++ )
 		{
 			pIcons[count].setHelpID( IDS_HELP_DEPLOYTEAMMW );
 			pIcons[count].setMech( 0 );
@@ -95,15 +95,15 @@ void PilotReadyScreen::init(FitIniFile* file)
 		x = 0;
 	}
 	
-	int mechCount[256];
-	memset( mechCount, 0, sizeof ( int ) * 256 );
+	int32_t mechCount[256];
+	memset( mechCount, 0, sizeof ( int32_t ) * 256 );
 
 
 	// initialize the attribute meeters
 	attributeMeters[0].init( file, "AttributeMeter0" );
 	attributeMeters[1].init( file, "AttributeMeter1" );
 
-	for ( int i= 0; i < buttonCount; i++ )
+	for ( int32_t i= 0; i < buttonCount; i++ )
 		buttons[i].setMessageOnRelease();
 
 	pilotListBox.init( rects[0].left(), rects[0].top(),
@@ -173,7 +173,7 @@ void PilotReadyScreen::begin()
 	// reset force group
 	forceGroupCount = 0;
 	
-	int maxUnits = 12;
+	int32_t maxUnits = 12;
 
 	if ( MPlayer )
 	{
@@ -186,7 +186,7 @@ void PilotReadyScreen::begin()
 			maxUnits = 12;
 	}
 
-	for ( int i = 0; i < 12; i++ )
+	for ( int32_t i = 0; i < 12; i++ )
 	{
 		pIcons[i].setMech( 0 );
 		pIcons[i].select( 0 );
@@ -201,7 +201,7 @@ void PilotReadyScreen::begin()
 	if ( getButton( MB_MSG_MAINMENU ) )
 		getButton( MB_MSG_MAINMENU )->setPressFX( -1 );
 
-	int bHasPilot = -1;
+	int32_t bHasPilot = -1;
 	
 
 		// update pilot use here... things can get screwed up.
@@ -274,7 +274,7 @@ void PilotReadyScreen::end()
 	mechDisplay.setMech( NULL );
 }
 
-void PilotReadyScreen::render(int xOffset, int yOffset )
+void PilotReadyScreen::render(int32_t xOffset, int32_t yOffset )
 {
 	pilotListBox.move( xOffset, yOffset );
 	pilotListBox.render();
@@ -290,7 +290,7 @@ void PilotReadyScreen::render(int xOffset, int yOffset )
 		}
 	}
 
-	for ( int i = 0; i < 2; i++ )
+	for ( int32_t i = 0; i < 2; i++ )
 	{
 		attributeMeters[i].render( xOffset, yOffset );
 	}
@@ -359,16 +359,16 @@ void PilotReadyScreen::update()
 		sprintf( str, "%ld ", LogisticsData::instance->getCBills() );
 		textObjects[1].setText( str );
 
-		for ( int i = 0; i < 4; i++ )
+		for ( int32_t i = 0; i < 4; i++ )
 			skillIcons[i].update();
 		
 
 		// desel icons if necessary
 		bool bAllFull = 1;
-		int newSel = -1;
-		int oldSel = -1;
+		int32_t newSel = -1;
+		int32_t oldSel = -1;
 		bool bHasMech = 0;
-		int newRightSel = -1;
+		int32_t newRightSel = -1;
 		for ( i = 0; i < ICON_COUNT; i++ )
 		{
 			pIcons[i].update();
@@ -482,7 +482,7 @@ void PilotReadyScreen::update()
 
 			LogisticsMechIcon* pSelIcon = 0;
 			
-			for ( int i = 0; i < ICON_COUNT; i++ )
+			for ( int32_t i = 0; i < ICON_COUNT; i++ )
 			{
 				if ( pIcons[i].pointInside( userInput->getMouseX(), userInput->getMouseY() )
 					&& pIcons[i].getMech() )
@@ -512,7 +512,7 @@ void PilotReadyScreen::update()
 
 }
 
-int	PilotReadyScreen::handleMessage( ULONG message, ULONG who )
+int32_t	PilotReadyScreen::handleMessage( uint32_t message, uint32_t who )
 {
 
 	switch( who )
@@ -567,7 +567,7 @@ void PilotReadyScreen::addSelectedPilot()
 	aListItem* pItem = NULL;
 	bool bFound = 0;
 
-	int index = pilotListBox.GetSelectedItem();
+	int32_t index = pilotListBox.GetSelectedItem();
 	if ( index != -1 )
 		pItem = pilotListBox.GetItem( index );
 	if ( pItem )
@@ -575,7 +575,7 @@ void PilotReadyScreen::addSelectedPilot()
 		LogisticsPilot* pPilot = ((LogisticsPilotListBoxItem*)pItem)->getPilot();
 		if ( pPilot )
 		{
-			for ( int i = 0; i < ICON_COUNT; i++ )
+			for ( int32_t i = 0; i < ICON_COUNT; i++ )
 			{
 				if ( pIcons[i].isSelected() )
 				{
@@ -630,16 +630,16 @@ void PilotReadyScreen::addSelectedPilot()
 
 void PilotReadyScreen::removeSelectedPilot()
 {
-	for ( int i = 0; i < ICON_COUNT; i++ )
+	for ( int32_t i = 0; i < ICON_COUNT; i++ )
 	{
 		if ( pIcons[i].isSelected() )
 		{
 			if ( pIcons[i].getPilot() )
 			{
 				// add the pilot back into the list
-				int oldSel = pilotListBox.GetSelectedItem();
+				int32_t oldSel = pilotListBox.GetSelectedItem();
 				LogisticsPilotListBoxItem* pNewItem = new LogisticsPilotListBoxItem( pIcons[i].getPilot() );
-				int newIndex = pilotListBox.AddItem( pNewItem );
+				int32_t newIndex = pilotListBox.AddItem( pNewItem );
 				pIcons[i].setPilot( NULL );
 				pIcons[i].select( 0 );
 				i++;
@@ -658,7 +658,7 @@ void PilotReadyScreen::removeSelectedPilot()
 				else
 				{
 					pilotListBox.SelectItem( newIndex );
-					int index = pilotListBox.GetSelectedItem();
+					int32_t index = pilotListBox.GetSelectedItem();
 					if ( index != -1 )
 					{
 						LogisticsPilotListBoxItem* pItem = (LogisticsPilotListBoxItem*)pilotListBox.GetItem( index );
@@ -720,7 +720,7 @@ void PilotReadyScreen::endDrag( LogisticsMechIcon* pIcon  )
 
 void PilotReadyScreen::putBackPilot( LogisticsPilot* pPilot )
 {
-	for ( int i = 0; i < ICON_COUNT; i++ )
+	for ( int32_t i = 0; i < ICON_COUNT; i++ )
 	{
 		if ( pIcons[i].getPilot() == pPilot )
 		{
@@ -785,13 +785,13 @@ void PilotReadyScreen::setPilot( LogisticsPilot* pPilot )
 		name.MakeUpper();
 		textObjects[8].setText( name  );
 
-		int count = 32;
+		int32_t count = 32;
 		PCSTR specialtySkills[32];
-		int skillIDs[32];
+		int32_t skillIDs[32];
  		pCurPilot->getSpecialtySkills( specialtySkills, count );
 		count = 32;
 		pCurPilot->getSpecialtySkills( skillIDs, count );
-		for ( int i = 0; i < 4; i++ )
+		for ( int32_t i = 0; i < 4; i++ )
 		{
 			if ( i < count )
 			{
@@ -845,7 +845,7 @@ void PilotReadyScreen::setPilot( LogisticsPilot* pPilot )
 	}
 	else
 	{
-		for ( int i = 4; i < 13; i++ )
+		for ( int32_t i = 4; i < 13; i++ )
 			textObjects[i].setText( "" );
 
 		statics[staticCount-1].setColor( 0 );

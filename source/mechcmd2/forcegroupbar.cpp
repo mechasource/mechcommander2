@@ -22,7 +22,7 @@ ForceGroupBar.cpp			: Implementation of the ForceGroupBar component.
 
 float ForceGroupBar::iconWidth = 48;
 float ForceGroupBar::iconHeight = 42;
-int	  ForceGroupBar::iconsPerRow = 8;
+int32_t	  ForceGroupBar::iconsPerRow = 8;
 
 StaticInfo*  ForceGroupBar::s_coverIcon = NULL;
 
@@ -42,7 +42,7 @@ extern float frameRate;
  
 ForceGroupBar::ForceGroupBar()
 {
-	for ( int i = 0; i < MAX_ICONS; ++i )
+	for ( int32_t i = 0; i < MAX_ICONS; ++i )
 	{
 		icons[i] = 0;
 	}
@@ -157,7 +157,7 @@ void ForceGroupBar::update( )
 		|| useLeftRightMouseProfile) )
 	{
 		Team* pTeam = Team::home;
-		for ( int i = 0; i < pTeam->rosterSize; ++i )
+		for ( int32_t i = 0; i < pTeam->rosterSize; ++i )
 		{
 			Mover* pMover = (Mover*)pTeam->getMover( i );
 			if (pMover->getCommander()->getId() == Commander::home->getId())
@@ -169,7 +169,7 @@ void ForceGroupBar::update( )
 
 	
 	// remove dead mechs
-	for ( int t = 0; t < iconCount; ++t )
+	for ( int32_t t = 0; t < iconCount; ++t )
 	{
 		if ( (icons[t]->unit->isDestroyed() || icons[t]->unit->isDisabled()) && !icons[t]->unit->recoverBuddyWID )
 		{
@@ -187,7 +187,7 @@ void ForceGroupBar::update( )
 
 	qsort( icons, iconCount, sizeof( ForceGroupIcon* ), ForceGroupIcon::sort );
 
-	for ( int i = 0; i < iconCount; i++ )
+	for ( int32_t i = 0; i < iconCount; i++ )
 	{
 		icons[i]->setLocationIndex( i );
 	}
@@ -210,7 +210,7 @@ void ForceGroupBar::update( )
 						if ( !shiftDn )
 						{
 							Team* pTeam = Team::home;
-							for ( int j = 0; j < pTeam->rosterSize; ++j )
+							for ( int32_t j = 0; j < pTeam->rosterSize; ++j )
 							{
 								Mover* pMover = (Mover*)pTeam->getMover( j );
 								if (pMover->getCommander()->getId() == Commander::home->getId())
@@ -271,7 +271,7 @@ void ForceGroupBar::update( )
 
 			if ( bForceGroup )
 			{
-				for( int j = 0; j < 10; ++j )
+				for( int32_t j = 0; j < 10; ++j )
 				{
 					if ( icons[i]->unit->isInUnitGroup( j ) )
 					{
@@ -292,9 +292,9 @@ void ForceGroupBar::update( )
 
 }
 
-bool ForceGroupBar::inRegion( int x, int y )
+bool ForceGroupBar::inRegion( int32_t x, int32_t y )
 {
-	for ( int i = 0; i < iconCount; ++i )
+	for ( int32_t i = 0; i < iconCount; ++i )
 	{
 		if ( icons[i]->inRegion( x, y ) )
 			return true;
@@ -308,7 +308,7 @@ void ForceGroupBar::render()
 {	
 	s_coverIcon->setColor( 0 );
 		
-	int maxUnits = 16;
+	int32_t maxUnits = 16;
 
 	if ( MPlayer )
 	{
@@ -325,7 +325,7 @@ void ForceGroupBar::render()
 	}
 
 
-	for ( int i = 0; i < MAX_ICONS; i++ )
+	for ( int32_t i = 0; i < MAX_ICONS; i++ )
 	{
 		if (forceNumFlashes && icons[i] && icons[i]->unit->canJump())
 		{
@@ -366,7 +366,7 @@ void ForceGroupBar::render()
 
 void ForceGroupBar::removeAll()
 {
-	for ( int i = 0; i < iconCount; i++ )
+	for ( int32_t i = 0; i < iconCount; i++ )
 	{
 		if ( icons[i] )
 			delete icons[i];
@@ -393,7 +393,7 @@ void ForceGroupBar::init( FitIniFile& file, StaticInfo* pCoverIcon )
 	
 	swapResolutions();
 
-	for ( int i = 0; i < 16; i++ )
+	for ( int32_t i = 0; i < 16; i++ )
 		ForceGroupIcon::init( file, i );
 
 	s_coverIcon = pCoverIcon;
@@ -403,7 +403,7 @@ void ForceGroupBar::swapResolutions()
 {
 	ForceGroupIcon::resetResolution(0);
 	
-	for ( int i = 0; i < iconCount; i++ )
+	for ( int32_t i = 0; i < iconCount; i++ )
 		icons[i]->swapResolutions(0);
 
 	
@@ -436,7 +436,7 @@ bool ForceGroupBar::setPilotVideo( PCSTR pVideo, MechWarrior* pPilot )
 
 	else
 	{
-		for ( int i = 0; i < iconCount; i++ )
+		for ( int32_t i = 0; i < iconCount; i++ )
 		{
 			if ( icons[i] && icons[i]->unit->getPilot() == pPilot )
 			{
@@ -500,7 +500,7 @@ bool ForceGroupBar::setPilotVideo( PCSTR pVideo, MechWarrior* pPilot )
 							cLoadString(IDS_MC2_CDMISSING,msg,1023);
 							cLoadString(IDS_MC2_MISSING_TITLE,title,255);
 							sprintf(data,msg1,path,msg);
-							ULONG result = MessageBox(NULL,data,title,MB_OKCANCEL | MB_ICONWARNING);
+							uint32_t result = MessageBox(NULL,data,title,MB_OKCANCEL | MB_ICONWARNING);
 							if (result == IDCANCEL)
 							{
 								ExitGameOS();

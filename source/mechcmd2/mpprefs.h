@@ -31,10 +31,10 @@ class MPPrefs: public LogisticsScreen
 		virtual ~MPPrefs();
 		
 		static MPPrefs* instance(){ return s_instance; }
-		int init( FitIniFile& file );
+		int32_t init( FitIniFile& file );
 		virtual void update();
-		virtual void render( int OffsetX, int OffsetY );
-		virtual int	handleMessage( ULONG message, ULONG who );
+		virtual void render( int32_t OffsetX, int32_t OffsetY );
+		virtual int32_t	handleMessage( uint32_t message, uint32_t who );
 		virtual void begin();
 		virtual void end();
 		void			initColors();
@@ -42,7 +42,7 @@ class MPPrefs: public LogisticsScreen
 		void	saveSettings();
 		void	cancelSettings();
 
-		void setMechColors( ULONG base, ULONG highlight ); // called by MPlayer when it resets a color
+		void setMechColors( uint32_t base, uint32_t highlight ); // called by MPlayer when it resets a color
 
 	private:
 		MPPrefs( const MPPrefs& src );
@@ -55,9 +55,9 @@ class MPPrefs: public LogisticsScreen
 		// HELPERS
 		void	updateStripeColors(const _MC2Player* players, int32_t playerCount, bool bDrawRect );
 		void	updateBaseColors( const _MC2Player* players, int32_t playerCount, bool bDrawRect);
-		char	getColorIndex( ULONG color );
-		void	setColor( ULONG color );
-		void	setHighlightColor( ULONG color );
+		char	getColorIndex( uint32_t color );
+		void	setColor( uint32_t color );
+		void	setHighlightColor( uint32_t color );
 
 		static MPPrefs* s_instance;
 
@@ -68,7 +68,7 @@ class aBmpListItem : public aListItem
 {
 public:
 
-	int setBmp( PCSTR pFileName );
+	int32_t setBmp( PCSTR pFileName );
 	PCSTR getBmp(){ return fileName; }
 	
 private:

@@ -34,12 +34,12 @@ public:
 	virtual void		destroy();
 	virtual void		render();
 	virtual void		update();
-	virtual int			handleMessage( ULONG message, ULONG who );
+	virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 	virtual void		move( float offsetX, float offsetY );
-	void				setColor0(int color);
-	int				getColor0() const { return color0; }
-	void				setColor1(int color);
-	int				getColor1() const { return color1; }
+	void				setColor0(int32_t color);
+	int32_t				getColor0() const { return color0; }
+	void				setColor1(int32_t color);
+	int32_t				getColor1() const { return color1; }
 
 protected:
 	aRect		mainRect;
@@ -58,9 +58,9 @@ protected:
 	aRect		intensityGradientRect;
 	mcScrollBar		intesitySliderScrollBar;
 	aObject		colorPlaneCursorStatic;
-	int		color0;
-	int		color1;
-	int		activeTab;
+	int32_t		color0;
+	int32_t		color1;
+	int32_t		activeTab;
 };
 
 class aStyle1TextListItem : public aTextListItem
@@ -73,7 +73,7 @@ public:
 protected:
 	bool hasAnimation;
 	aAnimGroup animGroup;
-	int normalColor;
+	int32_t normalColor;
 };
 
 class aInsigniaListItem : public aListItem
@@ -99,10 +99,10 @@ public:
 	bool isDone();
 	virtual void		begin();
 	virtual void		end();
- 	virtual void render( int xOffset, int yOffset );
+ 	virtual void render( int32_t xOffset, int32_t yOffset );
 	virtual void render();
 	virtual void update();
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 	void updateMPSetup(); // put into inventory
 
@@ -115,15 +115,15 @@ public:
 
 private:
 
-	int indexOfButtonWithID(int id);
+	int32_t indexOfButtonWithID(int32_t id);
 
 	aComboBox				playerNameComboBox;
 	aComboBox				unitNameComboBox;
 	aDropList				insigniaDropList;
 
 	aColorPicker		colorPicker;
-	int		baseColor;
-	int		stripeColor;
+	int32_t		baseColor;
+	int32_t		stripeColor;
 
 	SimpleCamera		mechCamera;
 	bool bPaintSchemeInitialized;

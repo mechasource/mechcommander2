@@ -86,7 +86,7 @@ extern float MechClassWeights[NUM_MECH_CLASSES];
 extern PSTR ExceptionGameMsg;
 char ChunkDebugMsg[5120];
 
-ULONG GameObject::spanMask = 0;
+uint32_t GameObject::spanMask = 0;
 float GameObject::blockCaptureRange = 0.0;
 bool GameObject::initialize = false;
 
@@ -173,7 +173,7 @@ void WeaponShotInfo::init (GameObjectWatchID _attackerWID, int32_t _masterId, fl
 
 	Assert((damage >= 0.0) && (damage <= 255.0), (int32_t)damage, " WeaponShotInfo.init: damage out of range ");
 	if (MPlayer && MPlayer->isServer()) {
-		damage = (float)((ULONG)(damage * 4.0)) * 0.25;
+		damage = (float)((uint32_t)(damage * 4.0)) * 0.25;
 		if ((entryAngle >= -45.0) && (entryAngle <= 45.0))
 			entryAngle = 0.0; //MECH_HIT_ARC_FRONT;
 		else if ((entryAngle  > -135.0) && (entryAngle < -45.0))
@@ -191,7 +191,7 @@ void WeaponShotInfo::setDamage (float _damage) {
 
 	damage = _damage;
 	if (MPlayer && MPlayer->isServer())
-		damage = (float)((ULONG)(damage * 4.0)) * 0.25;
+		damage = (float)((uint32_t)(damage * 4.0)) * 0.25;
 }
 
 //---------------------------------------------------------------------------
@@ -413,7 +413,7 @@ int32_t NumWeaponFiresInLog = 0;
 int32_t NumWeaponFiresInLogQueue = 0;
 GameObjectPtr WeaponFireAttackerLog[WEAPONFIRELOG_SIZE];
 GameObjectPtr WeaponFireTargetLog[WEAPONFIRELOG_SIZE];
-ULONG WeaponFireDataLog[WEAPONFIRELOG_SIZE];
+uint32_t WeaponFireDataLog[WEAPONFIRELOG_SIZE];
 File* WeaponFireLog = NULL;
 #endif
 
@@ -427,7 +427,7 @@ void DumpWeaponFireLog (void) {
 	for (int32_t i = 0; i < NumWeaponFiresInLogQueue; i++) {
 		GameObjectPtr attacker = WeaponFireAttackerLog[i];
 		GameObjectPtr target = WeaponFireTargetLog[i];
-		ULONG data = WeaponFireDataLog[i];
+		uint32_t data = WeaponFireDataLog[i];
 
 		WeaponFireChunk chunk;
 		chunk.init();
@@ -725,7 +725,7 @@ void WeaponFireChunk::pack (GameObjectPtr attacker) {
 
 void WeaponFireChunk::unpack (GameObjectPtr attacker) {
 
-	ULONG tempData = data;
+	uint32_t tempData = data;
 
 	targetType = (tempData & WEAPONFIRECHUNK_TARGETTYPE_MASK);
 	tempData >>= WEAPONFIRECHUNK_TARGETTYPE_BITS;
@@ -1182,7 +1182,7 @@ void WeaponHitChunk::build (GameObjectPtr target, WeaponShotInfoPtr shotInfo, bo
 
 	if (!target)
 		Fatal(0, " WeaponHitChunk.build: NULL target ");
-	Assert(((float)((ULONG)(shotInfo->damage * 4.0)) * 0.25) == shotInfo->damage, 0, " WeaponHitChunk.build: damage round error ");
+	Assert(((float)((uint32_t)(shotInfo->damage * 4.0)) * 0.25) == shotInfo->damage, 0, " WeaponHitChunk.build: damage round error ");
 	if (target->isMover()) {
 		//---------------------------------------------------------------
 		// HACK fix for ammoExplosions without needing to save the weapon
@@ -1266,7 +1266,7 @@ void WeaponHitChunk::pack (void) {
 			Fatal(0, " Bad WeaponHitChunk Target Type ");
 	}
 
-	data |= (ULONG)(damage * 4.0);
+	data |= (uint32_t)(damage * 4.0);
 	data <<= WEAPONHITCHUNK_TARGETTYPE_BITS;
 
 	data |= targetType;
@@ -1276,7 +1276,7 @@ void WeaponHitChunk::pack (void) {
 		
 void WeaponHitChunk::unpack (void) {
 
-	ULONG tempData = data;
+	uint32_t tempData = data;
 
 	targetType = (tempData & WEAPONHITCHUNK_TARGETTYPE_MASK);
 	tempData >>= WEAPONHITCHUNK_TARGETTYPE_BITS;
@@ -1561,7 +1561,7 @@ void GameObject::init (bool create, ObjectTypePtr _type) {
 
 //---------------------------------------------------------------------------
 
-ULONG GameObject::getWatchID (bool assign) {
+uint32_t GameObject::getWatchID (bool assign) {
 
 	if ((watchID == 0) && assign)
 		ObjectManager->setWatchID(this);
@@ -1623,7 +1623,7 @@ float GameObject::relFacingTo (Stuff::Vector3D goal, int32_t bodyLocation) {
 
 //---------------------------------------------------------------------------
 
-Stuff::Vector3D GameObject::relativePosition (float angle, float distance, ULONG flags) {
+Stuff::Vector3D GameObject::relativePosition (float angle, float distance, uint32_t flags) {
 
 	//--------------------------------------------------------
 	// Note that the angle should be -180 <= angle <= 180, and

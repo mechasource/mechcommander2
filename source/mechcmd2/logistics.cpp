@@ -108,7 +108,7 @@ void Logistics::start (int32_t startMode)
 	userInput->setMouseCursor( mState_LOGISTICS );
 //	userInput->mouseOn();
 
-	ULONG localRenderer = prefs.renderer;
+	uint32_t localRenderer = prefs.renderer;
 	if (prefs.renderer != 0 && prefs.renderer != 3)
 		localRenderer = 0;
 
@@ -445,10 +445,10 @@ void Logistics::render (void)
 
 //-----------------------------------------------------------------------------
 
-extern ULONG MultiPlayTeamId;
-extern ULONG MultiPlayCommanderId;
+extern uint32_t MultiPlayTeamId;
+extern uint32_t MultiPlayCommanderId;
 
-int _stdcall Logistics::beginMission(PVOID, int, PVOID[])
+int32_t _stdcall Logistics::beginMission(PVOID, int32_t, PVOID[])
 {
 
 	if (MPlayer)
@@ -685,7 +685,7 @@ int _stdcall Logistics::beginMission(PVOID, int, PVOID[])
 			LogisticsPilot* pilots[256];
 			LogisticsData::instance->getPilots( pilots, count );
 
-			for ( int i = 0; i < count; i++ )
+			for ( int32_t i = 0; i < count; i++ )
 			{
 				pilots[i]->setUsed(0);
 			}
@@ -818,7 +818,7 @@ int _stdcall Logistics::beginMission(PVOID, int, PVOID[])
 	return(1);
 }
 
-int Logistics::DoBeginMission()
+int32_t Logistics::DoBeginMission()
 {
 
 #ifndef TEST_SHELL
@@ -855,12 +855,12 @@ void Logistics::initializeLogData()
 
 	if ( pTeam )
 	{
-		for ( int i = pTeam->getRosterSize() - 1; i > -1; i-- )
+		for ( int32_t i = pTeam->getRosterSize() - 1; i > -1; i-- )
 		{
 			Mover* pMover = (Mover*)pTeam->getMover( i );
 			LogisticsPilot* pPilot = LogisticsData::instance->getPilot(pMover->getPilot()->getName());
 
-			ULONG base, highlight1, highlight2;
+			uint32_t base, highlight1, highlight2;
 			((Mech3DAppearance*)pMover->getAppearance())->getPaintScheme( highlight1, 
 				highlight2, base );
 			

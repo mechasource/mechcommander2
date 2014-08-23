@@ -25,12 +25,12 @@ public:
 
 	MissionSelectionScreen();
 	virtual ~MissionSelectionScreen();
-	virtual void render( int xOffset, int yOffset );
+	virtual void render( int32_t xOffset, int32_t yOffset );
 	virtual void begin();
 	virtual void end();
 	virtual void update();
 	void	init( FitIniFile* file );
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 
 private:
@@ -41,12 +41,12 @@ private:
 	bool				playedLogisticsTune;
 
 	//HGOSVIDEO			video;
-	//ULONG		videoTexture;
+	//uint32_t		videoTexture;
 
 	PCSTR			missionNames[MAX_MISSIONS_IN_GROUP];
 	int32_t				missionCount;
 
-	void				setMission( int whichOne );
+	void				setMission( int32_t whichOne );
 
 	aListBox			missionDescriptionListBox;
 

@@ -80,11 +80,11 @@
 struct OldObjData
 {
 	ObjectTypeNumber	objTypeNum;		//Type number of object
-	short				pixelOffsetX;	//Distance from vertex 0 of tile.
-	short				pixelOffsetY;	//Distance from vertex 0 of tile.
-	short				vertexNumber;	//Vertex Number in Block.
-	short				blockNumber;	//Which terrain Block.
-	ULONG		damage;			//Damage
+	int16_t				pixelOffsetX;	//Distance from vertex 0 of tile.
+	int16_t				pixelOffsetY;	//Distance from vertex 0 of tile.
+	int16_t				vertexNumber;	//Vertex Number in Block.
+	int16_t				blockNumber;	//Which terrain Block.
+	uint32_t		damage;			//Damage
 	float				positionX;		//Where, physically is object.  TOO DAMNED HARD TO CALCULATE!!!!!!!!
 	float 				positionY;
 };
@@ -92,7 +92,7 @@ struct OldObjData
 
 struct ObjData
 {
-	short				objTypeNum;		//Type number of object
+	int16_t				objTypeNum;		//Type number of object
 	uint16_t		vertexNumber;	//Vertex Number in Block.
 	uint16_t		blockNumber;	//Which terrain Block.
 	uint8_t		damage;			//Damage
@@ -116,13 +116,13 @@ class ObjectBlockManager
 	//-------------
 	protected:
 	
-		ULONG		terrainObjectHeapSize;	//Size of TerrainObject Heap
+		uint32_t		terrainObjectHeapSize;	//Size of TerrainObject Heap
 		UserHeapPtr			terrainObjectHeap;		//Pointer to Heap.
 
 		ObjectQueueNodePtr	*objectQueues;			//Array of QueueNode Ptrs for each
 													//Active block of terrain.
 
-		ULONG		numObjectsInDataBlock;	//Number of objects to be read/written
+		uint32_t		numObjectsInDataBlock;	//Number of objects to be read/written
 		ObjDataPtr			objDataBlock;			//Block of object data to read/write
 		
 		PacketFilePtr		objectDataFile;			//Packet file with blocks in it.
@@ -131,7 +131,7 @@ class ObjectBlockManager
 	//-----------------
 	protected:
 	
-		int32_t setupObjectQueue (ULONG blockNum, ULONG blockSize);
+		int32_t setupObjectQueue (uint32_t blockNum, uint32_t blockSize);
 
 	public:
 	

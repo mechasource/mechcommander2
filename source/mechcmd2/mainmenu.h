@@ -55,7 +55,7 @@ class MainMenu: public LogisticsScreen
 		virtual ~MainMenu();
 
 
-		int init( FitIniFile& file );
+		int32_t init( FitIniFile& file );
 
 		virtual void begin();
 		virtual void end();
@@ -67,7 +67,7 @@ class MainMenu: public LogisticsScreen
 		void setDrawBackground( bool bDrawBackground );
 		void skipIntro();
 
-		virtual int	handleMessage( ULONG, ULONG );
+		virtual int32_t	handleMessage( uint32_t, uint32_t );
 		
 
 		static	bool	bDrawMechlopedia;

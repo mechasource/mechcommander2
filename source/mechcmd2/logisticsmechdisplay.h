@@ -32,8 +32,8 @@ class LogisticsMechDisplay : public LogisticsScreen
 		virtual ~LogisticsMechDisplay();
 
 		virtual void		update();
-		virtual void		render(int xOffset, int yOffset);
-		int					init( );
+		virtual void		render(int32_t xOffset, int32_t yOffset);
+		int32_t					init( );
 		void				setMech( LogisticsMech* pMech, bool bFromLB = 0 );
 
 private:

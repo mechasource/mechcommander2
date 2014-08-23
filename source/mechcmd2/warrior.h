@@ -272,7 +272,7 @@ typedef struct {
 	bool				weaponsOut;				// true if already informed player
 	float				lastContact;			// time of last contact message
 	RadioMessageType	lastMessageType;		// e.g. RADIO_WEAPONS_OUT
-	ULONG				lastMessage;			// PacketNumber of message
+	uint32_t				lastMessage;			// PacketNumber of message
 	float				lastMessageTime;		// time of last message (of any type)
 } RadioLog;
 
@@ -360,7 +360,7 @@ typedef enum {
 } OrderStateType;
 
 typedef struct _AttackerRec {
-	ULONG				WID;
+	uint32_t				WID;
 	float						lastTime;
 } AttackerRec;
 
@@ -383,7 +383,7 @@ typedef struct _MoveOrders {
 	float						speedVelocity;			// based upon speedType (m/s)
 	char						speedState;				// based upon speedVelocity (walk, etc.)
 	char						speedThrottle;			// if speedState is walk, else ignored
-	ULONG				goalType;				// is there no goal, a location or object?
+	uint32_t				goalType;				// is there no goal, a location or object?
 	GameObjectWatchID			goalObjectWID;			// if our goal is an object...
 	Stuff::Vector3D				goalObjectPosition;		// object's position at time of path calc
 	Stuff::Vector3D				goalLocation;			// goal location, if any
@@ -424,7 +424,7 @@ typedef struct _SaveableMoveOrders {
 	float						speedVelocity;			// based upon speedType (m/s)
 	char						speedState;				// based upon speedVelocity (walk, etc.)
 	char						speedThrottle;			// if speedState is walk, else ignored
-	ULONG				goalType;				// is there no goal, a location or object?
+	uint32_t				goalType;				// is there no goal, a location or object?
 	GameObjectWatchID			goalObjectWID;			// if our goal is an object...
 	Stuff::Vector3D				goalObjectPosition;		// object's position at time of path calc
 	Stuff::Vector3D				goalLocation;			// goal location, if any
@@ -591,7 +591,7 @@ typedef struct _QueuedTacOrder
 {
 	int32_t						id;
 	Stuff::Vector3D				point;
-	ULONG				packedData[2];
+	uint32_t				packedData[2];
 	uint8_t				tactic;
 	BldgAppearance*				marker;
 	uint8_t 				moveMode;			//So save/load can recreate this lovely pointer!
@@ -686,8 +686,8 @@ typedef struct _MechWarriorData
 	GameObjectWatchID		mainGoalObjectWID;
 	Stuff::Vector3D			mainGoalLocation;
 	float					mainGoalControlRadius;
-	short					lastGoalPathSize;
-	short					lastGoalPath[MAX_GLOBAL_PATH];
+	int16_t					lastGoalPathSize;
+	int16_t					lastGoalPath[MAX_GLOBAL_PATH];
 
 	bool					newTacOrderReceived[NUM_ORDERSTATES];
 	TacticalOrder			tacOrder[NUM_ORDERSTATES];
@@ -725,7 +725,7 @@ typedef struct _MechWarriorData
 
 	char					orderState;
 
-	ULONG			debugFlags;
+	uint32_t			debugFlags;
 
 	uint8_t			oldPilot;
 
@@ -828,8 +828,8 @@ class MechWarrior {
 		GameObjectWatchID		mainGoalObjectWID;
 		Stuff::Vector3D			mainGoalLocation;
 		float					mainGoalControlRadius;
-		short					lastGoalPathSize;
-		short					lastGoalPath[MAX_GLOBAL_PATH];
+		int16_t					lastGoalPathSize;
+		int16_t					lastGoalPath[MAX_GLOBAL_PATH];
 
 		bool					newTacOrderReceived[NUM_ORDERSTATES];
 		TacticalOrder			tacOrder[NUM_ORDERSTATES];
@@ -870,7 +870,7 @@ class MechWarrior {
 
 		PathQueueRecPtr			movePathRequest;
 
-		ULONG			debugFlags;
+		uint32_t			debugFlags;
 
 		RadioPtr				radio;
 		bool					isPlayingMsg;		//Always false unless I'm playing a message!
@@ -971,7 +971,7 @@ class MechWarrior {
 
 		void cancelRadioMessage (int32_t message, bool propogateIfMultiplayer = false);
 		
-		ULONG getLastMessage(void)
+		uint32_t getLastMessage(void)
 		{
 			return radioLog.lastMessage;
 		}
@@ -980,12 +980,12 @@ class MechWarrior {
 			return(rank);
 		}
 
-		ULONG getSkill (ULONG skillId)
+		uint32_t getSkill (uint32_t skillId)
 		{
 			return(skills[skillId]);
 		}
 
-		void setSkill (ULONG skillId, int32_t skillValue)
+		void setSkill (uint32_t skillId, int32_t skillValue)
 		{
 			if (skillId > 0 && skillId < NUM_SKILLS)
 				skills[skillId] = skillValue;
@@ -1399,11 +1399,11 @@ class MechWarrior {
 			return(memory[index].real);
 		}
 
-		void updateAttackerStatus (ULONG attackerWID, float time);
+		void updateAttackerStatus (uint32_t attackerWID, float time);
 
-		AttackerRecPtr getAttackerInfo (ULONG attackerWID);
+		AttackerRecPtr getAttackerInfo (uint32_t attackerWID);
 
-		int32_t getAttackers (ULONG* attackerList, float seconds);
+		int32_t getAttackers (uint32_t* attackerList, float seconds);
 
 		int32_t scanOwnVehicle (void);
 
@@ -1467,9 +1467,9 @@ class MechWarrior {
 			return(moveOrders.speedThrottle);
 		}
 
-		int32_t setMoveGoal (ULONG type, Stuff::Vector3D* location, GameObjectPtr obj = NULL);
+		int32_t setMoveGoal (uint32_t type, Stuff::Vector3D* location, GameObjectPtr obj = NULL);
 
-		ULONG getMoveGoal (Stuff::Vector3D* location = NULL, GameObjectPtr* obj = NULL);
+		uint32_t getMoveGoal (Stuff::Vector3D* location = NULL, GameObjectPtr* obj = NULL);
 
 		bool getMoveGlobalGoal (Stuff::Vector3D& location) {
 			if (moveOrders.pathType != MOVEPATH_UNDEFINED) {
@@ -1539,7 +1539,7 @@ class MechWarrior {
 
 		void resumePath (void);
 
-		void rethinkPath (ULONG strategy);
+		void rethinkPath (uint32_t strategy);
 
 		void setMoveState (int32_t state) {
 			moveOrders.moveState = state;
@@ -1639,9 +1639,9 @@ class MechWarrior {
 			return(moveOrders.path[0]->globalStep);
 		}
 
-		void requestMovePath (int32_t selectionIndex, ULONG moveParams, int32_t source);
+		void requestMovePath (int32_t selectionIndex, uint32_t moveParams, int32_t source);
 
-		int32_t calcMovePath (int32_t selectionIndex, ULONG moveParams = MOVEPARAM_NONE);
+		int32_t calcMovePath (int32_t selectionIndex, uint32_t moveParams = MOVEPARAM_NONE);
 
 		int32_t calcMoveSpeedState (void) {
 			//-------------------------------------------------
@@ -1785,7 +1785,7 @@ class MechWarrior {
 
 		void setSituationGuardObject (GameObjectWatchID objWID);
 
-		ULONG getSituationGuardObjectPartId (void);
+		uint32_t getSituationGuardObjectPartId (void);
 		
 		void setMessagePlaying()
 		{
@@ -1833,13 +1833,13 @@ class MechWarrior {
 
 		void collisionAlert (GameObjectPtr obstacle, float distance, float timeToImpact);
 
-		int32_t triggerAlarm (int32_t alarmCode, ULONG triggerId = 0);
+		int32_t triggerAlarm (int32_t alarmCode, uint32_t triggerId = 0);
 
-		int32_t handleAlarm (int32_t alarmCode, ULONG triggerId = 0);
+		int32_t handleAlarm (int32_t alarmCode, uint32_t triggerId = 0);
 
-		int32_t getAlarmTriggers (int32_t alarmCode, ULONG* triggerList);
+		int32_t getAlarmTriggers (int32_t alarmCode, uint32_t* triggerList);
 
-		int32_t getAlarmTriggersHistory (int32_t alarmCode, ULONG* triggerList);
+		int32_t getAlarmTriggersHistory (int32_t alarmCode, uint32_t* triggerList);
 
 		void clearAlarm (int32_t alarmCode);
 
@@ -1867,13 +1867,13 @@ class MechWarrior {
 
 		int32_t mainDecisionTree (void);
 
-		void setDebugFlags (ULONG flags) {
+		void setDebugFlags (uint32_t flags) {
 			debugFlags = flags;
 		}
 
-		void setDebugFlag (ULONG flag, bool on);
+		void setDebugFlag (uint32_t flag, bool on);
 
-		bool getDebugFlag (ULONG flag);
+		bool getDebugFlag (uint32_t flag);
 
 		void debugPrint (PSTR s, bool debugMode = false);
 
@@ -1900,23 +1900,23 @@ class MechWarrior {
 			return(coreScanTargetWID);
 		}
 
-		int32_t coreMoveTo (Stuff::Vector3D location, ULONG params);
+		int32_t coreMoveTo (Stuff::Vector3D location, uint32_t params);
 
-		int32_t coreMoveToObject (GameObjectPtr object, ULONG params);
+		int32_t coreMoveToObject (GameObjectPtr object, uint32_t params);
 
 		int32_t coreEject (void);
 
 		int32_t corePower (bool powerUp);
 
-		int32_t coreAttack (GameObjectPtr target, ULONG params);
+		int32_t coreAttack (GameObjectPtr target, uint32_t params);
 
-		int32_t coreCapture (GameObjectPtr object, ULONG params);
+		int32_t coreCapture (GameObjectPtr object, uint32_t params);
 
-		int32_t coreScan (GameObjectPtr object, ULONG params);
+		int32_t coreScan (GameObjectPtr object, uint32_t params);
 
-		int32_t coreControl (GameObjectPtr object, ULONG params);
+		int32_t coreControl (GameObjectPtr object, uint32_t params);
 
-		//int32_t coreWithdraw (Stuff::Vector3D location, ULONG params);
+		//int32_t coreWithdraw (Stuff::Vector3D location, uint32_t params);
 
 		int32_t coreSetState (int32_t stateID, bool thinkAgain);
 
@@ -1927,17 +1927,17 @@ class MechWarrior {
 
 		int32_t orderStop (bool unitOrder, bool setTacOrder);
 
-		int32_t orderMoveToPoint (bool unitOrder, bool setTacOrder, int32_t origin, Stuff::Vector3D location, int32_t selectionIndex = -1, ULONG params = TACORDER_PARAM_NONE);
+		int32_t orderMoveToPoint (bool unitOrder, bool setTacOrder, int32_t origin, Stuff::Vector3D location, int32_t selectionIndex = -1, uint32_t params = TACORDER_PARAM_NONE);
 
 		int32_t orderFormation (bool unitOrder, bool setTacOrder, int32_t origin);
 
-		int32_t orderMoveToObject (bool unitOrder, bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, int32_t selectionIndex = -1, ULONG params = TACORDER_PARAM_FACE_OBJECT);
+		int32_t orderMoveToObject (bool unitOrder, bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, int32_t selectionIndex = -1, uint32_t params = TACORDER_PARAM_FACE_OBJECT);
 
 		int32_t orderJumpToPoint (bool unitOrder, bool setTacOrder, int32_t origin, Stuff::Vector3D location, int32_t selectionIndex = -1);
 
 		int32_t orderJumpToObject (bool unitOrder, bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t selectionIndex = -1);
 
-		int32_t orderTraversePath (bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath, ULONG params = TACORDER_PARAM_NONE);
+		int32_t orderTraversePath (bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath, uint32_t params = TACORDER_PARAM_NONE);
 		
 		int32_t orderPatrolPath (bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath);
 
@@ -1955,9 +1955,9 @@ class MechWarrior {
 
 		int32_t orderUseOrbitRange (int32_t type, float range);
 
-		int32_t orderAttackObject (bool unitOrder, int32_t origin, GameObjectPtr target, int32_t type, int32_t method, int32_t range, int32_t aimLocation = -1, int32_t fromArea = -1, ULONG params = TACORDER_PARAM_NONE);
+		int32_t orderAttackObject (bool unitOrder, int32_t origin, GameObjectPtr target, int32_t type, int32_t method, int32_t range, int32_t aimLocation = -1, int32_t fromArea = -1, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderAttackPoint (bool unitOrder, int32_t origin, Stuff::Vector3D location, int32_t type, int32_t method, int32_t range, ULONG params = TACORDER_PARAM_NONE);
+		int32_t orderAttackPoint (bool unitOrder, int32_t origin, Stuff::Vector3D location, int32_t type, int32_t method, int32_t range, uint32_t params = TACORDER_PARAM_NONE);
 
 		int32_t orderWithdraw (bool unitOrder, int32_t origin, Stuff::Vector3D location);
 
@@ -1965,17 +1965,17 @@ class MechWarrior {
 
 		//int32_t orderUseFireOdds (int32_t odds);
 
-		int32_t orderRefit (int32_t origin, GameObjectPtr target, ULONG params = TACORDER_PARAM_NONE);
+		int32_t orderRefit (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderRecover (int32_t origin, GameObjectPtr target, ULONG params = TACORDER_PARAM_NONE);
+		int32_t orderRecover (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderGetFixed (int32_t origin, GameObjectPtr target, ULONG params = TACORDER_PARAM_NONE);
+		int32_t orderGetFixed (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderLoadIntoCarrier (int32_t origin, GameObjectPtr target, ULONG params = TACORDER_PARAM_NONE);
+		int32_t orderLoadIntoCarrier (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderDeployElementals (int32_t origin, ULONG params = TACORDER_PARAM_NONE);
+		int32_t orderDeployElementals (int32_t origin, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderCapture (int32_t origin, GameObjectPtr target, int32_t fromArea = -1, ULONG params = TACORDER_PARAM_NONE);
+		int32_t orderCapture (int32_t origin, GameObjectPtr target, int32_t fromArea = -1, uint32_t params = TACORDER_PARAM_NONE);
 
 		//--------------
 		// Combat Events
@@ -1990,9 +1990,9 @@ class MechWarrior {
 
 		int32_t handleFriendlyVehicleDestruction (void);
 
-		int32_t handleOwnVehicleIncapacitation (ULONG cause);
+		int32_t handleOwnVehicleIncapacitation (uint32_t cause);
 
-		int32_t handleOwnVehicleDestruction (ULONG cause);
+		int32_t handleOwnVehicleDestruction (uint32_t cause);
 
 		int32_t handleOwnVehicleWithdrawn (void);
 

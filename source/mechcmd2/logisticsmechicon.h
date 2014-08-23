@@ -28,7 +28,7 @@ public:
 	LogisticsMechIcon();
 	~LogisticsMechIcon();
 	
-	static int init( FitIniFile& file );
+	static int32_t init( FitIniFile& file );
 
 	void update();
 	void render( int32_t offsetX, int32_t offsetY );
@@ -54,7 +54,7 @@ public:
 	bool pointInside(int32_t x, int32_t y) const { return outline.pointInside( x, y ); }
 
 	void dimPilot( bool bDim );
-	void setHelpID( int newID ) { helpID = newID; }
+	void setHelpID( int32_t newID ) { helpID = newID; }
 
 	void disable( bool bdo) { bDisabled = bdo; }
 

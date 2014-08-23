@@ -30,7 +30,7 @@ MPConnectionType.cpp			: Implementation of the MPConnectionType component.
 
 
 extern bool quitGame;
-static int connectionType = 0;
+static int32_t connectionType = 0;
 
 typedef enum __mpconnectiontype_constants {
 	CHECK_BUTTON			= 200,
@@ -63,9 +63,9 @@ MPConnectionType::~MPConnectionType()
 	tcpipPanel.destroy();
 }
 
-int MPConnectionType::indexOfButtonWithID(int id)
+int32_t MPConnectionType::indexOfButtonWithID(int32_t id)
 {
-	int i;
+	int32_t i;
 	for (i = 0; i < buttonCount; i++)
 	{
 		if (buttons[i].getID() == id)
@@ -82,7 +82,7 @@ void MPConnectionType::init(FitIniFile* file)
 
 	if ( buttonCount )
 	{
-		for ( int i = 0; i < buttonCount; i++ )
+		for ( int32_t i = 0; i < buttonCount; i++ )
 		{
 			buttons[i].setMessageOnRelease();
 			if (buttons[i].getID() == 0)
@@ -201,7 +201,7 @@ void MPConnectionType::end()
 {
 }
 
-void MPConnectionType::render(int xOffset, int yOffset )
+void MPConnectionType::render(int32_t xOffset, int32_t yOffset )
 {
 	LogisticsScreen::render(xOffset, yOffset);
 
@@ -224,7 +224,7 @@ void MPConnectionType::render()
 	render(0, 0);
 }
 
-int	MPConnectionType::handleMessage( ULONG message, ULONG who)
+int32_t	MPConnectionType::handleMessage( uint32_t message, uint32_t who)
 {
 	if ( RUNNING == status )
 	{
@@ -383,7 +383,7 @@ void MPConnectionType::update()
 	//helpTextHeaderID = 0;
 
 	/*
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].update();
 		if ( buttons[i].pointInside( userInput->getMouseX(), userInput->getMouseY() )
@@ -455,7 +455,7 @@ void aZonePanel::render()
 
 }
 
-int aZonePanel::handleMessage( ULONG, ULONG )
+int32_t aZonePanel::handleMessage( uint32_t, uint32_t )
 {
 	bShowWarning = true;
 	
@@ -506,7 +506,7 @@ void aLanPanel::init(FitIniFile* pFile)
 	addChild(&text);
 }
 
-int	aLanPanel::handleMessage( ULONG message, ULONG who)
+int32_t	aLanPanel::handleMessage( uint32_t message, uint32_t who)
 {
 	switch ( who )
 	{
@@ -526,7 +526,7 @@ void aTcpipPanel::begin()
 
 	comboBox.ListBox().removeAllItems(true);
 
-	for ( int i = 0; i < 10; i++ )
+	for ( int32_t i = 0; i < 10; i++ )
 	{
 		if ( !strlen( prefs.ipAddresses[i] ) )
 			break;
@@ -608,7 +608,7 @@ void aTcpipPanel::init(FitIniFile* pFile)
 	
 	addChild( &comboBox );
 
-	for ( int i = 0; i < 10; i++ )
+	for ( int32_t i = 0; i < 10; i++ )
 	{
 		if ( !strlen( prefs.ipAddresses[i] ) )
 			break;
@@ -697,8 +697,8 @@ void aTcpipPanel::update()
 
 		if ( retVal )
 		{
-			int errorID =  IDS_MP_CONNECT_NO_SESSION;
-			int fontID = IDS_MP_CONNECT_ERROR_NO_SESSION_FONT;
+			int32_t errorID =  IDS_MP_CONNECT_NO_SESSION;
+			int32_t fontID = IDS_MP_CONNECT_ERROR_NO_SESSION_FONT;
 			// display a dialog about why this can't happen....
 			switch ( retVal )
 			{
@@ -765,13 +765,13 @@ void aTcpipPanel::update()
 	if ( str.Length() )
 	{
 		// now look for 3 periods
-		int dotIndex[5];
-		for ( int i = 0; i < 5; i++ )
+		int32_t dotIndex[5];
+		for ( int32_t i = 0; i < 5; i++ )
 			dotIndex[i] = -1;
 
 		dotIndex[4] = str.Length();
 
-		int tmp = -1;
+		int32_t tmp = -1;
 		while ( tmp )
 		{
 			tmp = str.Find( '.', tmp+1 );
@@ -803,7 +803,7 @@ void aTcpipPanel::update()
 			bValid = 1;
 			char tmp[256];
 			strcpy( tmp, str );
-			for ( int i = 0; i < 4; i++ )
+			for ( int32_t i = 0; i < 4; i++ )
 			{
 				int32_t num = getNum( tmp, dotIndex[i]+1, dotIndex[i+1] );
 				if ( num < 0 || num > 255 )
@@ -854,7 +854,7 @@ int32_t aTcpipPanel::getNum( PSTR pStr, int32_t index1, int32_t index2 )
 	return atoi( &pStr[index1] );
 
 }
-int	aTcpipPanel::handleMessage( ULONG message, ULONG who)
+int32_t	aTcpipPanel::handleMessage( uint32_t message, uint32_t who)
 {
 	switch ( who )
 	{

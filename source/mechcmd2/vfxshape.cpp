@@ -60,7 +60,7 @@ void Shape::destroy (void)
 
 #define STUPID_OFFSET	6
 //----------------------------------------------------------------------------
-int32_t Shape::init (PUCHAR fileBlock, AppearanceTypePtr myOwner, int32_t shapeSize)
+int32_t Shape::init (puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shapeSize)
 {
 	//-----------------------------------------------------------------
 	// Everything in the below comment is a LIE!!!
@@ -72,7 +72,7 @@ int32_t Shape::init (PUCHAR fileBlock, AppearanceTypePtr myOwner, int32_t shapeS
 	//
 	// Truth begins here.
 	// This is simply the data holder for ALL shape types in the game EXCEPT mechs.
-	if ((*(int*)fileBlock!=*(int*)"1.10"))
+	if ((*(pint32_t)fileBlock!=*(pint32_t)"1.10"))
 	{
 		stupidHeader = fileBlock;
 		frameList = fileBlock + STUPID_OFFSET;		//You can talk to GDoren about this one!!!

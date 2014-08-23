@@ -113,7 +113,7 @@ PilotReviewScreen::~PilotReviewScreen()
 	bool bDeadTextAdded = 0;
 
 	bool bFirst = 0;
-	for ( int i = 0; i < count; i++ )
+	for ( int32_t i = 0; i < count; i++ )
 	{
 		pPilots[i]->clearIcons();
 		pPilots[i]->setJustDied( 0 );
@@ -153,7 +153,7 @@ void PilotReviewScreen::init(FitIniFile* file)
 	bool bDeadTextAdded = 0;
 
 	bool bFirst = 0;
-	for ( int i = 0; i < count; i++ )
+	for ( int32_t i = 0; i < count; i++ )
 	{
 		if ( pPilots[i]->justDied() && pPilots[i]->isUsed() )
 		{
@@ -257,7 +257,7 @@ void PilotReviewScreen::render()
 		s_curPromotion->render();
 }
 
-int	PilotReviewScreen::handleMessage( ULONG message, ULONG who)
+int32_t	PilotReviewScreen::handleMessage( uint32_t message, uint32_t who)
 {
 	if ( who == aMSG_DONE && entryAnim.isDone() )
 	{
@@ -289,7 +289,7 @@ void PilotReviewScreen::update()
 	if ( entryAnim.isDone() )
 		pilotListBox.update();
 
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].update();
 		if ( buttons[i].pointInside( userInput->getMouseX(), userInput->getMouseY() )
@@ -396,13 +396,13 @@ DeadPilotListItem::DeadPilotListItem( LogisticsPilot* pPilot )
 	rankText = *s_rankText;
 	missionText = *s_missionText;
 
-	int missions = pPilot->getNumberMissions();
+	int32_t missions = pPilot->getNumberMissions();
 	cLoadString( IDS_PILOT_MISSIONS, tmpText, 255 );
 	sprintf( realText, tmpText, missions );	
 	missionText.setText( realText);
 
 
-	int numberOfKills = pPilot->getInfantryKills() + pPilot->getMechKills() + pPilot->getVehicleKills();
+	int32_t numberOfKills = pPilot->getInfantryKills() + pPilot->getMechKills() + pPilot->getVehicleKills();
 	cLoadString( IDS_PILOT_KILLS, tmpText, 255 );
 	sprintf( realText, tmpText, numberOfKills );	
 	killsText.setText( realText);
@@ -532,7 +532,7 @@ int32_t PilotListBox::AddItem( aListItem* add )
 
 		if ( scrollBar  && !(itemCount % 2))
 		{
-			int itemsTotalHeight = 0;
+			int32_t itemsTotalHeight = 0;
 			if ( items )
 				itemsTotalHeight = items[itemCount-1]->bottom() - items[0]->top();
 
@@ -562,7 +562,7 @@ void PilotListBox::update()
 
 	if ( this->curItem >= itemCount )
 	{
-		for ( int i = 0; i < itemCount; i++ )
+		for ( int32_t i = 0; i < itemCount; i++ )
 		{
 			GetItem( i )->showGUIWindow( true );
 			GetItem( i )->update();
@@ -572,7 +572,7 @@ void PilotListBox::update()
 		return;	
 	}// done
 
-	for ( int i = 0; i < itemCount; i++ )
+	for ( int32_t i = 0; i < itemCount; i++ )
 	{
 		bDone = 0;
 		aListItem* item = GetItem( i );
@@ -694,7 +694,7 @@ void	ActivePilotListItem::render()
 		if ( currentTime - timeOffset > 1.5 )
 		{
 			float tmpTime = currentTime - timeOffset - 1.5;
-			for ( int i = 0; i < medalCount; i++ )
+			for ( int32_t i = 0; i < medalCount; i++ )
 			{
 				if ( tmpTime > 0.f )
 				{
@@ -712,7 +712,7 @@ void	ActivePilotListItem::render()
 	else
 	{
 		medalAwardedText.setColor( 0 );
-		for ( int i = 0; i < medalCount; i++ )
+		for ( int32_t i = 0; i < medalCount; i++ )
 		{
 			medalIcons[i]->showGUIWindow( 0 );
 			medalTexts[i]->showGUIWindow( 0 );
@@ -765,7 +765,7 @@ void	ActivePilotListItem::render()
 	int32_t color = s_skillAnim->getColor( currentTime );
 	
 
-	for ( int i = 0; i < 2; i++ )
+	for ( int32_t i = 0; i < 2; i++ )
 	{
 		attributeMeters[i].setAddedColorMax( color );
 		attributeMeters[i].setAddedColorMin( color );
@@ -785,9 +785,9 @@ void	ActivePilotListItem::render()
 	int32_t x = globalX() + s_killIconRect->left();
 	int32_t y = globalY() + s_killIconRect->top();
 
-	int counter = 0;
-	int oldPossible = 2.0 * (currentTime - frameLength - 1.5);
-	int numPossible = 2.0 * (currentTime - 1.5);
+	int32_t counter = 0;
+	int32_t oldPossible = 2.0 * (currentTime - frameLength - 1.5);
+	int32_t numPossible = 2.0 * (currentTime - 1.5);
 	if ( currentTime - 1.5 < 0 )
 		numPossible = -1;
 	if (currentTime - 1.5 - frameLength < 0 )
@@ -871,7 +871,7 @@ ActivePilotListItem::~ActivePilotListItem()
 	delete pilotIcon;
 	pilotIcon = NULL;
 
-	for ( int i = 0; i < MAX_MEDAL; i++ )
+	for ( int32_t i = 0; i < MAX_MEDAL; i++ )
 	{
 		if ( medalIcons[i] )
 		{
@@ -1011,7 +1011,7 @@ void	ActivePilotListItem::init( FitIniFile* file )
 	s_killIconRect = new aRect;
 	
 	s_pilotPromotionArea = new PilotPromotionArea;
-	for ( int i = 0; i < MAX_MEDAL; i++ )
+	for ( int32_t i = 0; i < MAX_MEDAL; i++ )
 		s_medals[i] = new aObject;
 
 	s_promotionText = new aText;
@@ -1105,14 +1105,14 @@ ActivePilotListItem::ActivePilotListItem( LogisticsPilot* pPilot )
 	const bool* pMedals = pPilot->getNewMedalArray();
 	medalCount = 0;
 
-	int offset = 0;
-	int killCount = pPilot->killedIcons.Count();
+	int32_t offset = 0;
+	int32_t killCount = pPilot->killedIcons.Count();
 	if ( killCount > 32 )
 		offset = (killCount - 32)/8 + 1;
 
 	offset *= s_killIconRect->height();
 
-	for( int i = 0; i < MAX_MEDAL; i++ )
+	for( int32_t i = 0; i < MAX_MEDAL; i++ )
 	{
 		if ( pMedals[i] )
 		{
@@ -1130,7 +1130,7 @@ ActivePilotListItem::ActivePilotListItem( LogisticsPilot* pPilot )
 	pilot = pPilot;
 	showingPromotion = 0;
 
-	int top = s_area->top();
+	int32_t top = s_area->top();
 	
 
 	killsText = *s_killsText;
@@ -1179,7 +1179,7 @@ ActivePilotListItem::ActivePilotListItem( LogisticsPilot* pPilot )
 
 	aObject::init( 30, top, s_area->width(), bottom );
 
-	int missions = pPilot->getNumberMissions();
+	int32_t missions = pPilot->getNumberMissions();
 	cLoadString( IDS_PILOT_MISSIONS, tmpText, 255 );
 	sprintf( realText, tmpText, missions );	
 	missionText.setText( realText);
@@ -1236,7 +1236,7 @@ ActivePilotListItem::ActivePilotListItem( LogisticsPilot* pPilot )
 	if ( medalCount )
 	{
 		addChild( &medalAwardedText );
-		for ( int i = 0; i < medalCount; i++ )
+		for ( int32_t i = 0; i < medalCount; i++ )
 		{
 			addChild( medalIcons[i] );
 			addChild( medalTexts[i] );
@@ -1292,7 +1292,7 @@ void PilotPromotionArea::init( FitIniFile& file )
 	SpecialtyListItem::init( &file );
 
 	char buffer[32];
-	for ( int i = 0; i < 2; i++ )
+	for ( int32_t i = 0; i < 2; i++ )
 	{
 		sprintf( buffer, "PromoteGadgetLeftSkillMeter%ld", i );
 		attributeMeters[i].init( &file, buffer );
@@ -1308,8 +1308,8 @@ void PilotPromotionArea::init( FitIniFile& file )
 
 void PilotPromotionArea::render()
 {
-	int xOffset = leftInfo.getXDelta();
-	int yOffset = leftInfo.getYDelta();
+	int32_t xOffset = leftInfo.getXDelta();
+	int32_t yOffset = leftInfo.getYDelta();
 
 	if ( bDone )
 	{
@@ -1323,7 +1323,7 @@ void PilotPromotionArea::render()
 	pilotIcon->render( areaLeft.rects[3].left() + xOffset + 1, areaLeft.rects[3].top() + yOffset + 1,
 		areaLeft.rects[3].right() + xOffset - 1, areaLeft.rects[3].bottom() + yOffset - 1);
 
-	for ( int i = 0; i < 2; i++ )
+	for ( int32_t i = 0; i < 2; i++ )
 		attributeMeters[i].render( xOffset, yOffset );
 
 	xOffset = rightInfo.getXDelta();
@@ -1355,7 +1355,7 @@ void PilotPromotionArea::update()
 	
 	areaLeft.update();
 	areaRight.update();
-	for ( int i = 0; i < areaRight.buttonCount; i++ )
+	for ( int32_t i = 0; i < areaRight.buttonCount; i++ )
 	{
 		if ( areaRight.buttons[i].isPressed() )
 		{
@@ -1367,21 +1367,21 @@ void PilotPromotionArea::update()
 
 	if ( !bDone )
 		skillListBox.update();
-	int index = skillListBox.GetCheckedItem();
+	int32_t index = skillListBox.GetCheckedItem();
 	if ( index != -1 && (index != lastCheck || bDone ) )
 	{
 		aListItem* pItem = skillListBox.GetItem( index);
 		SpecialtyListItem* pTmp = dynamic_cast<SpecialtyListItem*>(pItem );
 		if ( pTmp )
 		{
-			int skillID = pTmp->getID();
+			int32_t skillID = pTmp->getID();
 			if ( bDone )
 			{
 				pilot->setSpecialtySkill( skillID, 1 );
 				pTmp->setCheck(0);
 			}
 
-			int specSkills = pilot->getSpecialtySkillCount();
+			int32_t specSkills = pilot->getSpecialtySkillCount();
 			if ( !bDone )
 			{
 				if ( 8 + specSkills < areaLeft.textCount )
@@ -1399,7 +1399,7 @@ void PilotPromotionArea::update()
 	}
 
 	selSkillAnim.update();
-	int specSkills = pilot->getSpecialtySkillCount();
+	int32_t specSkills = pilot->getSpecialtySkillCount();
 
 	if ( 8 + specSkills < areaLeft.textCount )
 		areaLeft.textObjects[8+specSkills].setColor( selSkillAnim.getColor() );
@@ -1418,7 +1418,7 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 	char tmpText[255];
 	char realText[255];
 
-	int missions = pPilot->getNumberMissions();
+	int32_t missions = pPilot->getNumberMissions();
 	cLoadString( IDS_PILOT_MISSIONS, tmpText, 255 );
 	sprintf( realText, tmpText, missions );	
 	areaLeft.textObjects[2].setText( realText );
@@ -1431,7 +1431,7 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 
 
 	int32_t rank = pPilot->getRank();
-	for ( int i = 12; i < 17; i++  )
+	for ( int32_t i = 12; i < 17; i++  )
 	{
 		if ( i - 12 == rank )
 			areaLeft.statics[i].showGUIWindow( true );
@@ -1456,26 +1456,26 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 	sprintf( buffer, "%ld", (int32_t)pPilot->getPiloting() );
 	areaLeft.textObjects[5].setText( buffer );
 
-	int specSkills = pPilot->getSpecialtySkillCount();
+	int32_t specSkills = pPilot->getSpecialtySkillCount();
 	if ( specSkills )
 	{
 		PCSTR tmp[NUM_SPECIALTY_SKILLS];
 		specSkills = 10;
 		pPilot->getSpecialtySkills( tmp, specSkills );
-		for ( int i = 0; i < specSkills; i++ )
+		for ( int32_t i = 0; i < specSkills; i++ )
 		{
 			if ( 8 + i < 12 )
 				areaLeft.textObjects[8+i].setText(tmp[i]);
 		}
 	}
 
-	for ( int j = specSkills; j < 4; j++ )
+	for ( int32_t j = specSkills; j < 4; j++ )
 	{
 		if ( 8 + j < 12 )
 			areaLeft.textObjects[8+j].setText( "" );
 	}
 
-	int skillArray[NUM_SPECIALTY_SKILLS];
+	int32_t skillArray[NUM_SPECIALTY_SKILLS];
 	specSkills = NUM_SPECIALTY_SKILLS;
 	pPilot->getSpecialtySkills( skillArray, specSkills );
 
@@ -1495,7 +1495,7 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 	skillListBox.setScrollPos( 0 );
 	skillListBox.removeAllItems( true );
 
-	int maxSkill = 0;
+	int32_t maxSkill = 0;
 	if ( rank > WARRIOR_RANK_ELITE )
 	{
 		maxSkill = NUM_SPECIALTY_SKILLS;
@@ -1553,7 +1553,7 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 		}
 
 		bool bAdd = 1;
-		for ( int j = 0; j < specSkills; j++ )
+		for ( int32_t j = 0; j < specSkills; j++ )
 		{
 			if ( skillArray[j] == i )
 			{
@@ -1571,7 +1571,7 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 
 }
 
-int	PilotPromotionArea::handleMessage( ULONG msg, ULONG who )
+int32_t	PilotPromotionArea::handleMessage( uint32_t msg, uint32_t who )
 {
 	if ( who == aMSG_DONE )
 	{
@@ -1606,7 +1606,7 @@ void		SpecialtyListItem::update()
 {
 
 	normalAnim.update();
-	ULONG color = normalAnim.getColor();
+	uint32_t color = normalAnim.getColor();
 	if ( PilotReviewScreen::s_curPromotion )
 	{
 		aListBox* skillListBox = PilotReviewScreen::s_curPromotion->getSkillListBox();
@@ -1682,7 +1682,7 @@ void SpecialtyListItem::deleteStatics()
 			delete s_outline;
 		s_outline = 0;
 		
-		for ( int i = 0; i < 4; i++ )
+		for ( int32_t i = 0; i < 4; i++ )
 		{
 			if ( s_skillIcons[i] )
 				delete s_skillIcons[i];
@@ -1712,7 +1712,7 @@ void			SpecialtyListItem::init( FitIniFile* file )
 	s_radioButton->init( *file, "PromoteGadgetRightRadioButton" );
 	
 	char buffer[64];
-	for ( int i =0; i < 4; i++ )
+	for ( int32_t i =0; i < 4; i++ )
 	{
 		s_skillIcons[i] = new aObject;
 		sprintf( buffer, "SkillTypeIcon%ld", i );
@@ -1729,7 +1729,7 @@ void			SpecialtyListItem::init( FitIniFile* file )
 
 }
  
-int			SpecialtyListItem::handleMessage( ULONG message, ULONG who )
+int32_t			SpecialtyListItem::handleMessage( uint32_t message, uint32_t who )
 {
 	return 0;
 }
@@ -1739,12 +1739,12 @@ bool				SpecialtyListItem::isChecked()
 	return radioButton.isPressed();
 }
 
-int					SpecialtyListItem::getID()
+int32_t					SpecialtyListItem::getID()
 {
 	return ID;
 }
 
-SpecialtyListItem::SpecialtyListItem( int newID )
+SpecialtyListItem::SpecialtyListItem( int32_t newID )
 {
 	s_itemCount++;
 	ID = newID;
@@ -1754,7 +1754,7 @@ SpecialtyListItem::SpecialtyListItem( int newID )
 	pressedAnim = *s_pressedAnim;
 	highlightAnim = *s_highlightAnim;
 	description = *s_description;
-	int iconType = MechWarrior::skillTypes[newID];
+	int32_t iconType = MechWarrior::skillTypes[newID];
 	icon = *s_skillIcons[iconType];
 	radioButton  = *s_radioButton;
 	outline = *s_outline;

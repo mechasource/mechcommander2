@@ -55,26 +55,26 @@ bool useUnlimitedAmmo = true;
 
 TimerManagerPtr timerManager = NULL;
 
-ULONG elementHeapSize = 1024000;
-ULONG maxElements = 2048;
-ULONG maxGroups = 1024;
+uint32_t elementHeapSize = 1024000;
+uint32_t maxElements = 2048;
+uint32_t maxGroups = 1024;
 
-ULONG systemHeapSize = 3071999;
-ULONG guiHeapSize = 1023999;
-ULONG logisticsHeapSize = 4095999;
-ULONG missionHeapSize = 1023999;
-ULONG spriteDataHeapSize = 2048000;
-ULONG spriteHeapSize = 8192000;
-ULONG polyHeapSize = 1024000;
-ULONG tglHeapSize = 32767000;
+uint32_t systemHeapSize = 3071999;
+uint32_t guiHeapSize = 1023999;
+uint32_t logisticsHeapSize = 4095999;
+uint32_t missionHeapSize = 1023999;
+uint32_t spriteDataHeapSize = 2048000;
+uint32_t spriteHeapSize = 8192000;
+uint32_t polyHeapSize = 1024000;
+uint32_t tglHeapSize = 32767000;
 
-ULONG gosResourceHandle = 0;
+uint32_t gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
 FloatHelpPtr globalFloatHelp = NULL;
-ULONG currentFloatHelp = 0;
+uint32_t currentFloatHelp = 0;
 float MaxMinUV = 8.0f;
 
-ULONG BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
+uint32_t BaseVertexColor = 0x00000000;		//This color is applied to all vertices in game as Brightness correction.
 
 enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor = CPU_PENTIUM;		//Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
 extern float frameRate;
@@ -84,7 +84,7 @@ extern bool useSound;
 extern bool useMusic;
 
 bool inViewMode = false;
-ULONG viewObject = 0x0;
+uint32_t viewObject = 0x0;
 char missionName[1024];
 
 PSTR ExceptionGameMsg = NULL;
@@ -94,7 +94,7 @@ char buildNumber[80];
 extern int32_t TERRAIN_TXM_SIZE;
 int32_t ObjectTextureSize = 128;
 
-extern ULONG MultiPlayCommanderId;
+extern uint32_t MultiPlayCommanderId;
 extern bool	useRealLOS;
 bool reloadBounds = false;
 
@@ -110,7 +110,7 @@ PSTR GetGameInformation()
 	return(ExceptionGameMsg);
 }
 
-//int32_t cLoadString (HINSTANCE hInstance,  UINT uID, LPTSTR lpBuffer, int nBufferMax );
+//int32_t cLoadString (HINSTANCE hInstance,  uint32_t uID, PSTR lpBuffer, int32_t nBufferMax );
 
 //---------------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ void UpdateRenderers()
 	//Assume worst case is +/- 8.0 for now.
 	//MaxMinUV = gos_GetMachineInformation(gos_Info_GetMaximumUVSize);
 
-	ULONG bColor = 0x0;
+	uint32_t bColor = 0x0;
 	if (eye)
 		bColor = eye->fogColor;
 		
@@ -643,7 +643,7 @@ int32_t textToLong (PSTR num)
 	{
 		hexOffset += 2;
 		int32_t numDigits = strlen(hexOffset)-1;
-		for (int i=0; i<=numDigits; i++)
+		for (int32_t i=0; i<=numDigits; i++)
 		{
 			if (!isalnum(hexOffset[i]) || (isalpha(hexOffset[i]) && toupper(hexOffset[i]) > 'F'))
 			{
@@ -683,9 +683,9 @@ int32_t textToLong (PSTR num)
 // Same command line Parser as MechCommander
 void ParseCommandLine(PSTR command_line)
 {
-	int i;
-	int n_args = 0;
-	int index = 0;
+	int32_t i;
+	int32_t n_args = 0;
+	int32_t index = 0;
 	PSTR argv[30];
 	
 	char tempCommandLine[4096];

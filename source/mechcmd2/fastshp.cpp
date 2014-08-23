@@ -47,7 +47,7 @@ static int32_t 		leftClipX, rightClipX;
 
 
 
-int32_t fastShapeDraw (PANE* pane, PVOID shp, LONG frameNum, LONG hotX, LONG hotY, PUCHAR fadeTable)
+int32_t fastShapeDraw (PANE* pane, PVOID shp, int32_t frameNum, int32_t hotX, int32_t hotY, puint8_t fadeTable)
 {
 	//---------------------------------------------------------------------------------
 	// Format of tile shape header is.
@@ -57,11 +57,11 @@ int32_t fastShapeDraw (PANE* pane, PVOID shp, LONG frameNum, LONG hotX, LONG hot
 	//
 	// Format of tile shape data is.
 	//		int32_t 	-- ShapeId			Always 0x48414e44 'HAND'
-	//		short	-- HotSpot X
-	//		short	-- HotSpot Y
-	//		short	-- shapeWidth
-	//		short	-- shapeHeight
-	//		short[x]-- Offset table to each shape in block of memory
+	//		int16_t	-- HotSpot X
+	//		int16_t	-- HotSpot Y
+	//		int16_t	-- shapeWidth
+	//		int16_t	-- shapeHeight
+	//		int16_t[x]-- Offset table to each shape in block of memory
 	//		shape0	-- Data for shape
 	//
 	//		REGS:
@@ -152,7 +152,7 @@ int32_t fastShapeDraw (PANE* pane, PVOID shp, LONG frameNum, LONG hotX, LONG hot
 	//int32_t topLeftX = (hotX + paneX0) - shapeInfo->HSX;
 	//int32_t topLeftY = (hotY + paneY0) - shapeInfo->HSY;
 	//
-	//PUCHAR screenBuffer = pane->window->buffer;
+	//puint8_t screenBuffer = pane->window->buffer;
 	//-----------------------------------------------------------
 
 		mov		ebx,hotX
@@ -232,7 +232,7 @@ int32_t fastShapeDraw (PANE* pane, PVOID shp, LONG frameNum, LONG hotX, LONG hot
 	//	yOffset = topLeftY;
 	//	
 	//screenBuffer += (yOffset * DestWidth);
-	//PUCHAR scanStart = screenBuffer;
+	//puint8_t scanStart = screenBuffer;
 	//-----------------------------------------------------------
 
 		cmp		eax, paneX0			//eax is still topLeftX
@@ -486,7 +486,7 @@ NEXT_SCANLINE:
 
 		movzx	ecx, word ptr [ebx]		//Get next yOffset
 
-		add		ebx, 2					//Move the yOffsetTable Up by one short
+		add		ebx, 2					//Move the yOffsetTable Up by one int16_t
 		mov		currentOffset, ecx
 
 		mov		yOffsetTable, ebx
@@ -710,7 +710,7 @@ fNEXT_SCANLINE:
 
 		movzx	ecx, word ptr [ebx]		//Get next yOffset
 
-		add		ebx, 2					//Move the yOffsetTable Up by one short
+		add		ebx, 2					//Move the yOffsetTable Up by one int16_t
 		mov		currentOffset, ecx
 
 		mov		yOffsetTable, ebx
@@ -934,7 +934,7 @@ aNEXT_SCANLINE:
 
 		movzx	ecx, word ptr [ebx]		//Get next yOffset
 
-		add		ebx, 2					//Move the yOffsetTable Up by one short
+		add		ebx, 2					//Move the yOffsetTable Up by one int16_t
 		mov		currentOffset, ecx
 
 		mov		yOffsetTable, ebx
@@ -1166,7 +1166,7 @@ afNEXT_SCANLINE:
 
 		movzx	ecx, word ptr [ebx]		//Get next yOffset
 
-		add		ebx, 2					//Move the yOffsetTable Up by one short
+		add		ebx, 2					//Move the yOffsetTable Up by one int16_t
 		mov		currentOffset, ecx
 
 		mov		yOffsetTable, ebx

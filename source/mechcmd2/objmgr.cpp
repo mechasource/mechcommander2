@@ -781,12 +781,12 @@ ArtilleryPtr GameObjectManager::getArtillery (void)
 
 void GameObjectManager::countTerrainObjects (PacketFile* terrainFile, int32_t firstHandle) 
 {
-	int packet = terrainFile->getCurrentPacket();
-	int size = terrainFile->getPacketSize();
-	PUCHAR pBuffer = new uint8_t[size];
+	int32_t packet = terrainFile->getCurrentPacket();
+	int32_t size = terrainFile->getPacketSize();
+	puint8_t pBuffer = new uint8_t[size];
 
 #ifdef _DEBUG	
-	int bytesRead = 
+	int32_t bytesRead = 
 #endif
 		terrainFile->readPacket( packet, pBuffer );
 	gosASSERT( bytesRead == size );
@@ -807,7 +807,7 @@ void GameObjectManager::countTerrainObjects (PacketFile* terrainFile, int32_t fi
 	}
 	
 	ObjDataLoader *data = objData;
-	for ( int i = 0; i < totalObjCount; ++i )
+	for ( int32_t i = 0; i < totalObjCount; ++i )
 	{
 		data->objTypeNum = terrainObjectFile->readLong();
 		data->vector.x = terrainObjectFile->readFloat();
@@ -830,8 +830,8 @@ void GameObjectManager::countTerrainObjects (PacketFile* terrainFile, int32_t fi
 
 		land->worldToTile( data->vector, tileRow, tileCol );
 
-		int blockI = tileCol/20;
-		int blockJ = tileRow/20;
+		int32_t blockI = tileCol/20;
+		int32_t blockJ = tileRow/20;
 		
 		data->blockNumber = blockJ * land->blocksMapSide + blockI;
 		tileCol -= blockI * 20;
@@ -936,7 +936,7 @@ void GameObjectManager::loadTerrainObjects (PacketFile* terrainFile,
 	//------------------------------------------------------------------
 	int32_t* handles = new int32_t[2 * Terrain::numObjBlocks];
 
-	for ( int i = 0; i < Terrain::numObjBlocks; ++i )
+	for ( int32_t i = 0; i < Terrain::numObjBlocks; ++i )
 	{
 		handles[2 * i] = Terrain::objBlockInfo[i].firstHandle;
 		handles[(2 * i) + 1] = Terrain::objBlockInfo[i].firstHandle + Terrain::objBlockInfo[i].numCollidableObjects;
@@ -1253,7 +1253,7 @@ void GameObjectManager::addObject (ObjDataLoader *objData, int32_t& curTerrainOb
 						}
 					}
 					((GatePtr)obj)->setTeamId(obj->getTeamId(), true);
-					short* curCoord = ((GatePtr)obj)->cellsCovered;
+					pint16_t curCoord = ((GatePtr)obj)->cellsCovered;
 					for (i = 0; i < ((GatePtr)obj)->numCellsCovered; i++) {
 						int32_t r = *curCoord++;
 						int32_t c = *curCoord++;
@@ -1647,7 +1647,7 @@ extern int64_t MCTimeTransformandLight;
 extern int64_t MCTimeAnimationandMatrix;
 extern int64_t MCTimePerShapeTransform;
 
-ULONG bldgCount = 0;
+uint32_t bldgCount = 0;
 #endif
 
 void GameObjectManager::update (bool terrain, bool movers, bool other) 
@@ -2797,7 +2797,7 @@ void GameObjectManager::updateAppearancesOnly( bool terrain, bool movers, bool o
 							float rot = objList[objIndex]->getRotation();
 							pos.z = land->getTerrainElevation(pos);
 							int32_t drawFlags = objList[objIndex]->drawFlags;
-							int teamID = objList[objIndex]->getTeamId();
+							int32_t teamID = objList[objIndex]->getTeamId();
 							objList[objIndex]->getAppearance()->setObjectParameters(pos,rot,drawFlags,teamID,Team::getRelation(teamID, Team::home->getId()));
 
 							objList[objIndex]->getAppearance()->update( false );
@@ -2825,7 +2825,7 @@ void GameObjectManager::updateAppearancesOnly( bool terrain, bool movers, bool o
 					float rot = mechs[i]->getRotation();
 					pos.z = land->getTerrainElevation(pos);
 					bool selected = mechs[i]->isSelected();
-					int teamID = mechs[i]->getTeamId();
+					int32_t teamID = mechs[i]->getTeamId();
 					mechs[i]->getAppearance()->setObjectParameters(pos,rot,mechs[i]->drawFlags,teamID,Team::getRelation(teamID, Team::home->getId()));
 
 					mechs[i]->getAppearance()->update( false );
@@ -2848,7 +2848,7 @@ void GameObjectManager::updateAppearancesOnly( bool terrain, bool movers, bool o
 					if ((pos.z < MapData::waterDepth))
 						pos.z = MapData::waterDepth;
 					bool selected = vehicles[i]->isSelected();
-					int teamID = vehicles[i]->getTeamId();
+					int32_t teamID = vehicles[i]->getTeamId();
 					vehicles[i]->getAppearance()->setObjectParameters(pos, rot, vehicles[i]->drawFlags, teamID, Team::getRelation(teamID, Team::home->getId()));
 					vehicles[i]->getAppearance()->update( false );
 					vehicles[i]->getAppearance()->setInView( inView );
@@ -2873,7 +2873,7 @@ void GameObjectManager::updateAppearancesOnly( bool terrain, bool movers, bool o
 						float rot = turrets[i]->getRotation();
 						pos.z = land->getTerrainElevation(pos);
 						bool selected = turrets[i]->isSelected();
-						int teamID = turrets[i]->getTeamId();
+						int32_t teamID = turrets[i]->getTeamId();
 						turrets[i]->getAppearance()->setObjectParameters(pos,rot,selected,teamID,Team::getRelation(teamID, Team::home->getId()));
 
 						turrets[i]->getAppearance()->update( false );
@@ -2987,7 +2987,7 @@ int32_t GameObjectManager::Save (PacketFilePtr file, int32_t packetNum)
 	ObjectManagerData data;
 	CopyTo(&data);
 
-	file->writePacket(packetNum,(PUCHAR)&data,sizeof(ObjectManagerData),STORAGE_TYPE_RAW);
+	file->writePacket(packetNum,(puint8_t)&data,sizeof(ObjectManagerData),STORAGE_TYPE_RAW);
 	packetNum++;
 
 	for (int32_t i=0;i<=getMaxObjects();i++)
@@ -3015,7 +3015,7 @@ int32_t GameObjectManager::Save (PacketFilePtr file, int32_t packetNum)
 		}
 	}
 
-	file->writePacket(packetNum,(PUCHAR)watchSave,sizeof(int32_t) * (getMaxObjects() + 1),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(puint8_t)watchSave,sizeof(int32_t) * (getMaxObjects() + 1),STORAGE_TYPE_ZLIB);
 	packetNum++;
 
 	free(watchSave);
@@ -3028,7 +3028,7 @@ int32_t GameObjectManager::Save (PacketFilePtr file, int32_t packetNum)
 int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 {
 	ObjectManagerData data;
-	file->readPacket(packetNum,(PUCHAR)&data);
+	file->readPacket(packetNum,(puint8_t)&data);
 	packetNum++;
 
 	CopyFrom(&data);
@@ -3153,7 +3153,7 @@ int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 		//First, get the size of the packet saved.
 		// This will tell me what kind of object it was!
 		file->seekPacket(packetNum);
-		ULONG packetSize = file->getPacketSize();
+		uint32_t packetSize = file->getPacketSize();
 		if (packetSize == 0)
 		{
 			//NO Object stored here.
@@ -3171,7 +3171,7 @@ int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 			//We have a TerrainObject.
 			// Get its data.
 			TerrainObjectData data;
-			file->readPacket(packetNum,(PUCHAR)(&data));
+			file->readPacket(packetNum,(puint8_t)(&data));
 			packetNum++;
 
 			TerrainObjectPtr obj = new TerrainObject; 
@@ -3210,7 +3210,7 @@ int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 		{
 			//We have a Building.
 			BuildingData data;
-			file->readPacket(packetNum,(PUCHAR)(&data));
+			file->readPacket(packetNum,(puint8_t)(&data));
 			packetNum++;
 
 			BuildingPtr obj = new Building; 
@@ -3255,7 +3255,7 @@ int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 		{
 			//We have a Turret.
 			TurretData data;
-			file->readPacket(packetNum,(PUCHAR)(&data));
+			file->readPacket(packetNum,(puint8_t)(&data));
 			packetNum++;
 
 			TurretPtr obj = new Turret; 
@@ -3293,7 +3293,7 @@ int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 		{
 			//We have a Gate.
 			GateData data;
-			file->readPacket(packetNum,(PUCHAR)(&data));
+			file->readPacket(packetNum,(puint8_t)(&data));
 			packetNum++;
 
 			GatePtr obj = new Gate; 
@@ -3331,7 +3331,7 @@ int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 		{
 			//We have an Artillery.
 			ArtilleryData data;
-			file->readPacket(packetNum,(PUCHAR)(&data));
+			file->readPacket(packetNum,(puint8_t)(&data));
 			packetNum++;
 
 			ArtilleryPtr obj = new Artillery; 
@@ -3358,7 +3358,7 @@ int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 		{
 			//We have a Carnage.
 			CarnageData data;
-			file->readPacket(packetNum,(PUCHAR)(&data));
+			file->readPacket(packetNum,(puint8_t)(&data));
 			packetNum++;
 
 			CarnagePtr obj = new Carnage; 
@@ -3385,7 +3385,7 @@ int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 		{
 			//We have a BattleMech.
 			MechData data;
-			file->readPacket(packetNum,(PUCHAR)(&data));
+			file->readPacket(packetNum,(puint8_t)(&data));
 			packetNum++;
 
 			BattleMechPtr obj = new BattleMech; 
@@ -3412,7 +3412,7 @@ int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 		{
 			//We have a groundVehicle.
 			GroundVehicleData data;
-			file->readPacket(packetNum,(PUCHAR)(&data));
+			file->readPacket(packetNum,(puint8_t)(&data));
 			packetNum++;
 
 			GroundVehiclePtr obj = new GroundVehicle; 
@@ -3439,7 +3439,7 @@ int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 		{
 			//We have a WeaponBolt.
 			WeaponBoltData data;
-			file->readPacket(packetNum,(PUCHAR)(&data));
+			file->readPacket(packetNum,(puint8_t)(&data));
 			packetNum++;
 
 			WeaponBoltPtr obj = new WeaponBolt; 
@@ -3613,7 +3613,7 @@ int32_t GameObjectManager::Load (PacketFilePtr file, int32_t packetNum)
 	int32_t *watchSave = (int32_t *)malloc(sizeof(int32_t) * (getMaxObjects() + 1));
 	memset(watchSave,0,sizeof(int32_t) * (getMaxObjects() + 1));
 
-	file->readPacket(packetNum,(PUCHAR)watchSave);
+	file->readPacket(packetNum,(puint8_t)watchSave);
 	packetNum++;
 
 	//Find the watchID from the watchlist for this object.

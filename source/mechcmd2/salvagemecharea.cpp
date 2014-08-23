@@ -103,7 +103,7 @@ SalvageMechScreen::~SalvageMechScreen()
 
 }
 	
-int __cdecl sortMechs( PCVOID pW1, PCVOID pW2 )
+int32_t __cdecl sortMechs( PCVOID pW1, PCVOID pW2 )
 {
 	BattleMech* p1 = *(BattleMech**)pW1;
 	BattleMech* p2 = *(BattleMech**)pW2;
@@ -134,7 +134,7 @@ void SalvageMechScreen::init(FitIniFile* file)
 	
 	SalvageListItem::init( file );
 
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].setMessageOnRelease();
 	}
@@ -150,7 +150,7 @@ void SalvageMechScreen::init(FitIniFile* file)
 	salvageListBox.init( left, top, right - left, bottom - top );
 
 	BattleMech** pSortedMechs = (BattleMech**)_alloca( ObjectManager->numMechs * sizeof( BattleMech* ) );
-	int count = 0;
+	int32_t count = 0;
 	for ( i = 0; i < ObjectManager->numMechs; i++ )
 	{
 		BattleMech* pMech = ObjectManager->getMech( i );
@@ -205,7 +205,7 @@ void SalvageMechScreen::render()
 // this animation draw a big white square and looks like crap
 //	if ( !entryAnim.isDone() )
 //	{
-//		ULONG color = entryAnim.getColor();
+//		uint32_t color = entryAnim.getColor();
 //		RECT rect = { 0, 0, Environment.screenWidth, Environment.screenHeight };
 //		drawRect( rect, color );
 //	}
@@ -213,7 +213,7 @@ void SalvageMechScreen::render()
 	
 }
 
-int	SalvageMechScreen::handleMessage( ULONG message, ULONG who)
+int32_t	SalvageMechScreen::handleMessage( uint32_t message, uint32_t who)
 {
 	if ( who == 101 )
 	{
@@ -246,7 +246,7 @@ bool SalvageMechScreen::isDone()
 }
 void SalvageMechScreen::update()
 {
-	int amount = LogisticsData::instance->getCBills();
+	int32_t amount = LogisticsData::instance->getCBills();
 	int32_t color = 0xff005392;
 
 	if ( amount != oldCBillsAmount )
@@ -278,7 +278,7 @@ void SalvageMechScreen::update()
 
 	salvageListBox.update();
 
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].update();
 /*		if ( buttons[i].pointInside( userInput->getMouseX(), userInput->getMouseY() )
@@ -303,7 +303,7 @@ void SalvageMechScreen::update()
 
 void SalvageMechScreen::updateSalvage()
 {
-	for ( int i = 0; i < salvageListBox.GetItemCount(); i++ )
+	for ( int32_t i = 0; i < salvageListBox.GetItemCount(); i++ )
 	{
 		SalvageListItem* item = (SalvageListItem*)salvageListBox.GetItem( i );
 		if ( item && item->isChecked() )
@@ -402,7 +402,7 @@ SalvageListItem::SalvageListItem( BattleMech* pMech )
 	// add the chassis
 	aText* pText = new aText();
 	*pText = *mechNameText;
-	int nameID = pVariant->getChassisName();
+	int32_t nameID = pVariant->getChassisName();
 	char tmp[64];
 	cLoadString( nameID, tmp, 63 );
 	pText->setText( tmp );
@@ -540,7 +540,7 @@ void SalvageListItem::render()
 	if ( state == DISABLED )
 		color = 0xff373737;
 
-	for ( int i = 0; i < this->pNumberOfChildren; i++ )
+	for ( int32_t i = 0; i < this->pNumberOfChildren; i++ )
 	{
 		pChildren[i]->setColor( color, 1 );
 	}
@@ -561,7 +561,7 @@ bool SalvageListItem::isChecked()
 	return checkButton->isPressed();
 }
 
-int SalvageListItem::handleMessage( ULONG message, ULONG who )
+int32_t SalvageListItem::handleMessage( uint32_t message, uint32_t who )
 {
 	if ( message == aMSG_LEFTMOUSEDOWN )
 	{
@@ -621,7 +621,7 @@ void SalvageMechArea::init( FitIniFile* file )
 	LogisticsScreen::init(*file, 0, "SalvageAreaMechText", 0, 0 );
 
 	char blockName[64];
-	for ( int i = 0; i < 3; i++ )
+	for ( int32_t i = 0; i < 3; i++ )
 	{
 		sprintf( blockName, "AttributeMeter%ld", i );
 		attributeMeters[i].init( file, blockName );
@@ -644,7 +644,7 @@ void SalvageMechArea::setMech( LogisticsVariant* pMech, int32_t red, int32_t gre
 	if ( pMech )
 	{
 		EString fileName = pMech->getFileName();
-		int index = fileName.Find( '.' );
+		int32_t index = fileName.Find( '.' );
 		fileName = fileName.Left( index );
 		index = fileName.ReverseFind( '\\' );
 		fileName = fileName.Right( fileName.Length() - index - 1 );
@@ -696,7 +696,7 @@ void SalvageMechArea::render(int32_t xOffset, int32_t yOffset)
 	
 	if ( this->unit )
 	{
-		for ( int i = 0; i < textCount; i++ )
+		for ( int32_t i = 0; i < textCount; i++ )
 		{
 			textObjects[i].move( xOffset, yOffset );
 			textObjects[i].render();

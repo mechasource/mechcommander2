@@ -19,7 +19,7 @@ MPSetupArea.cpp			: Implementation of the MPSetupArea component.
 
 #define CHECK_BUTTON 200
 
-static int connectionType = 0;
+static int32_t connectionType = 0;
 
 static cint32_t FIRST_BUTTON_ID = 1000010;
 static cint32_t OK_BUTTON_ID = 1000001;
@@ -44,9 +44,9 @@ MPSetupXScreen::~MPSetupXScreen()
 {
 }
 
-int MPSetupXScreen::indexOfButtonWithID(int id)
+int32_t MPSetupXScreen::indexOfButtonWithID(int32_t id)
 {
-	int i;
+	int32_t i;
 	for (i = 0; i < buttonCount; i++)
 	{
 		if (buttons[i].getID() == id)
@@ -63,7 +63,7 @@ void MPSetupXScreen::init(FitIniFile* file)
 
 	if ( buttonCount )
 	{
-		for ( int i = 0; i < buttonCount; i++ )
+		for ( int32_t i = 0; i < buttonCount; i++ )
 		{
 			buttons[i].setMessageOnRelease();
 			if (buttons[i].getID() == 0)
@@ -133,7 +133,7 @@ void MPSetupXScreen::init(FitIniFile* file)
 		PNfile.readIdLong( "ListItemCount", listItemCount );
 
 		aInsigniaListItem *pTmp2;
-		int i;
+		int32_t i;
 		for (i = 0; i < listItemCount; i += 1)
 		{
 			pTmp2 = new aInsigniaListItem;
@@ -219,10 +219,10 @@ void MPSetupXScreen::begin()
 	connectionType = 0;
 
 	/* set button states */
-	int buttonIndex;
-	int buttonIndex2;
-	int buttonIndex3;
-	int buttonIndex4;
+	int32_t buttonIndex;
+	int32_t buttonIndex2;
+	int32_t buttonIndex3;
+	int32_t buttonIndex4;
 	buttonIndex = indexOfButtonWithID(FIRST_BUTTON_ID + 2);
 	buttonIndex2 = indexOfButtonWithID(FIRST_BUTTON_ID + 3);
 	buttonIndex3 = indexOfButtonWithID(FIRST_BUTTON_ID + 4);
@@ -249,7 +249,7 @@ void MPSetupXScreen::end()
 	mechCamera.setMech(NULL);
 }
 
-void MPSetupXScreen::render(int xOffset, int yOffset )
+void MPSetupXScreen::render(int32_t xOffset, int32_t yOffset )
 {
 	LogisticsScreen::render(xOffset, yOffset);
 
@@ -276,7 +276,7 @@ void MPSetupXScreen::render()
 	render(0, 0);
 }
 
-int	MPSetupXScreen::handleMessage( ULONG message, ULONG who)
+int32_t	MPSetupXScreen::handleMessage( uint32_t message, uint32_t who)
 {
 	if ( RUNNING == status )
 	{
@@ -378,7 +378,7 @@ void MPSetupXScreen::update()
 	helpTextHeaderID = 0;
 
 	/*
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].update();
 		if ( buttons[i].pointInside( userInput->getMouseX(), userInput->getMouseY() )
@@ -619,27 +619,27 @@ void aColorPicker::update()
 
 	if (userInput->isLeftClick() || userInput->isLeftDrag())
 	{
-		int cx = userInput->getMouseX();
-		int cy = userInput->getMouseY();
+		int32_t cx = userInput->getMouseX();
+		int32_t cy = userInput->getMouseY();
 
 		if (userInput->isLeftClick()) {
 			if (tab0Button.pointInside(cx, cy)) {
-				handleMessage(aMSG_BUTTONCLICKED, (ULONG)(&tab0Button));
+				handleMessage(aMSG_BUTTONCLICKED, (uint32_t)(&tab0Button));
 			} else if (tab1Button.pointInside(cx, cy)) {
-				handleMessage(aMSG_BUTTONCLICKED, (ULONG)(&tab1Button));
+				handleMessage(aMSG_BUTTONCLICKED, (uint32_t)(&tab1Button));
 			}
 		}
 
 		if (colorPlaneStatic.pointInside(cx, cy)) {
-			handleMessage(aMSG_LEFTMOUSEDOWN, (ULONG)(&colorPlaneStatic));
+			handleMessage(aMSG_LEFTMOUSEDOWN, (uint32_t)(&colorPlaneStatic));
 		}
 	}
 }
 
-int aColorPicker::handleMessage( ULONG message, ULONG who )
+int32_t aColorPicker::handleMessage( uint32_t message, uint32_t who )
 {
 	{
-		if ((ULONG)(&tab0Button) == who) 
+		if ((uint32_t)(&tab0Button) == who) 
 		{
 			if (aMSG_BUTTONCLICKED == message)
 			{
@@ -649,7 +649,7 @@ int aColorPicker::handleMessage( ULONG message, ULONG who )
 				return 1;
 			}
 		}
-		else if ((ULONG)(&tab1Button) == who) 
+		else if ((uint32_t)(&tab1Button) == who) 
 		{
 			if (aMSG_BUTTONCLICKED == message)
 			{
@@ -659,19 +659,19 @@ int aColorPicker::handleMessage( ULONG message, ULONG who )
 				return 1;
 			}
 		}
-		else if ((ULONG)(&colorPlaneStatic) == who) 
+		else if ((uint32_t)(&colorPlaneStatic) == who) 
 		{
 			if ((aMSG_LEFTMOUSEDOWN == message)
 				|| ((aMSG_MOUSEMOVE == message) && (userInput->isLeftDrag())))
 			{
-				int cx = userInput->getMouseX();
-				int cy = userInput->getMouseY();
-				int colorPlaneRadius = 0.5 * colorPlaneStatic.width();
-				int colorPlaneCenterX = colorPlaneStatic.x() + colorPlaneRadius;
-				int colorPlaneCenterY = colorPlaneStatic.y() + colorPlaneRadius;
+				int32_t cx = userInput->getMouseX();
+				int32_t cy = userInput->getMouseY();
+				int32_t colorPlaneRadius = 0.5 * colorPlaneStatic.width();
+				int32_t colorPlaneCenterX = colorPlaneStatic.x() + colorPlaneRadius;
+				int32_t colorPlaneCenterY = colorPlaneStatic.y() + colorPlaneRadius;
 				float dx = cx - colorPlaneCenterX;
 				float dy = cy - colorPlaneCenterY;
-				int d2 = dx*dx + dy*dy;
+				int32_t d2 = dx*dx + dy*dy;
 				if ((colorPlaneRadius * colorPlaneRadius) > d2) {
 					float saturation = sqrt((float)d2) / (float)colorPlaneRadius;
 					float hue = (atan2(-dy, dx) / two_pi) + 0.5;
@@ -684,8 +684,8 @@ int aColorPicker::handleMessage( ULONG message, ULONG who )
 					if (R < 0.0f) { R = 0.0f; }
 					if (G < 0.0f) { G = 0.0f; }
 					if (B < 0.0f) { B = 0.0f; }
-					int newColor = 0xff000000 | (((int)(R * 255.0)) << 16) | (((int)(G * 255.0)) << 8)
-						| (((int)(B * 255.0)) << 0);
+					int32_t newColor = 0xff000000 | (((int32_t)(R * 255.0)) << 16) | (((int32_t)(G * 255.0)) << 8)
+						| (((int32_t)(B * 255.0)) << 0);
 					//if (tab0Button.isPressed()) {
 					if (0 == activeTab) {
 						setColor0(newColor);
@@ -711,13 +711,13 @@ void aColorPicker::move( float offsetX, float offsetY )
 	aObject::move( offsetX, offsetY );
 }
 
-void aColorPicker::setColor0(int color)
+void aColorPicker::setColor0(int32_t color)
 {
 	color0 = color;
 	tab0ColorRect.setColor(color);
 }
 
-void aColorPicker::setColor1(int color)
+void aColorPicker::setColor1(int32_t color)
 {
 	color1 = color;
 	tab1ColorRect.setColor(color);
@@ -760,17 +760,17 @@ void aStyle1TextListItem::render()
 	float color;
 	if (aListItem::SELECTED == getState())
 	{
-		color = 0.33 * ((ULONG)normalColor) + 0.67 * ((ULONG)0xffffffff);
+		color = 0.33 * ((uint32_t)normalColor) + 0.67 * ((uint32_t)0xffffffff);
 	}
 	else if (aListItem::HIGHLITE == getState())
 	{
-		color = 0.67 * ((ULONG)normalColor) + 0.33 * ((ULONG)0xffffffff);
+		color = 0.67 * ((uint32_t)normalColor) + 0.33 * ((uint32_t)0xffffffff);
 	}
 	else
 	{
 		color = normalColor;
 	}
-	aTextListItem::setColor((ULONG)color);
+	aTextListItem::setColor((uint32_t)color);
 
 	aTextListItem::render();
 }

@@ -32,7 +32,7 @@ class GameTacMap: public TacMap
 		}
 	}
 
-	void init( puint8_t bitmapData, int dataSize );
+	void init( puint8_t bitmapData, int32_t dataSize );
 	void update(); // do not call these two functions from editor
 	void render();
 	
@@ -42,32 +42,32 @@ class GameTacMap: public TacMap
 	void worldToTacMap( Stuff::Vector3D& world, gos_VERTEX& tac );	
 
 
-	bool inRegion( int x, int y ){ return x > left && x < right && y > top && y < bottom; }
+	bool inRegion( int32_t x, int32_t y ){ return x > left && x < right && y > top && y < bottom; }
 	
-	void initBuildings( puint8_t data, int size );
+	void initBuildings( puint8_t data, int32_t size );
 	void setPos( const RECT& newPos );
 	
 	protected:
 
-	int		top;	// position
-	int		left;
-	int		right;
-	int		bottom;
-	int		bmpWidth;
-	int		bmpHeight;
-	int		buildingCount;
+	int32_t		top;	// position
+	int32_t		left;
+	int32_t		right;
+	int32_t		bottom;
+	int32_t		bmpWidth;
+	int32_t		bmpHeight;
+	int32_t		buildingCount;
 	gos_VERTEX* buildingPoints;
 
-	ULONG textureHandle;
-	ULONG viewRectHandle;
-	ULONG blipHandle;
+	uint32_t textureHandle;
+	uint32_t viewRectHandle;
+	uint32_t blipHandle;
 
 	Stuff::Vector3D navMarkers[6];
-	ULONG navMarkerCount;
-	ULONG curNavMarker;
+	uint32_t navMarkerCount;
+	uint32_t curNavMarker;
 
 	void drawSensor( const Stuff::Vector3D& pos, float radius, int32_t color);
-	void drawBlip( const Stuff::Vector3D& pos, int32_t color, int shape  );
+	void drawBlip( const Stuff::Vector3D& pos, int32_t color, int32_t shape  );
 
 	const static float s_blinkLength;
 	static float		s_lastBlinkTime;

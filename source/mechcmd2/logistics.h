@@ -91,9 +91,9 @@ class Logistics
 			return missionBegin;
 		}
 
-		static int _stdcall beginMission( PVOID, int, PVOID[] );
+		static int32_t _stdcall beginMission( PVOID, int32_t, PVOID[] );
 
-		int DoBeginMission();
+		int32_t DoBeginMission();
 		void playFullScreenVideo( PCSTR fileName );
 
 		MC2MoviePtr	bMovie;

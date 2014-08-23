@@ -85,7 +85,7 @@
 #include "..\resource.h"
 
 #define BLIP_FRAME_RATE		0.067
-//extern ULONG NextIdNumber;
+//extern uint32_t NextIdNumber;
 extern float worldUnitsPerMeter;
 bool drawExtents = false;
 extern bool somethingOnFire;
@@ -114,7 +114,7 @@ inline float agsqrt( float _a, float _b )
 	return sqrt(_a*_a + _b*_b);
 }
 
-ULONG WallType[18] = 
+uint32_t WallType[18] = 
 {
 	26,125,152,154,156,158,160,161,162,202,204,206,231,232,233,286,287,288
 };
@@ -165,7 +165,7 @@ void BuildingType::destroy (void)
 		
 //---------------------------------------------------------------------------
 
-int32_t BuildingType::init (FilePtr objFile, ULONG fileSize) {
+int32_t BuildingType::init (FilePtr objFile, uint32_t fileSize) {
 
 	int32_t result = 0;
 	
@@ -187,7 +187,7 @@ int32_t BuildingType::init (FilePtr objFile, ULONG fileSize) {
 			return(result);
 	}
 
-	ULONG dmgLevel;
+	uint32_t dmgLevel;
 	result = bldgFile.readIdULong("DmgLevel",dmgLevel);
 	if (result != NO_ERROR)
 		return(result);
@@ -840,7 +840,7 @@ int32_t Building::update (void)
 				int32_t my = Terrain::halfVerticesMapSide - ((float2long(position.y) >> 7) + 1);
 
 				Overlays oType;
-				ULONG offset;
+				uint32_t offset;
 				Terrain::mapData->getOverlay(my,mx,oType,offset);
 				if (oType == OBRIDGE)
 					Terrain::mapData->setOverlay(my,mx,DAMAGED_BRIDGE,offset);
@@ -954,7 +954,7 @@ int32_t Building::setTeamId (int32_t _teamId, bool setup)
 			soundSystem->playBettySample( BETTY_SENSOR_CAPTURED );
 	}
 
-	static ULONG highLight[8] = {0x00007f00, 0x0000007f, 0x007f0000};
+	static uint32_t highLight[8] = {0x00007f00, 0x0000007f, 0x007f0000};
 	if (turn > 10)
 		appearance->flashBuilding(5.0,0.5,highLight[Team::relations[teamId][Team::home->getId()]]);
 		
@@ -1086,7 +1086,7 @@ void Building::render (void) {
 				barStatus = 0.0f;
 			}
 
-			ULONG color = 0xff7f7f7f;
+			uint32_t color = 0xff7f7f7f;
 			if ((teamId > -1) && (teamId < 8)) 
 			{
 				if (getTeam()->isFriendly(Team::home))
@@ -1531,7 +1531,7 @@ int32_t Building::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplay
 					// BLOW the mech to completely destroyed.  Don't want to be able to salvage it either!!
 					// UNFORTUNATELY, the move code does not store the landBridge stuff.
 					// ALL I can do is blow a guy for standing on impassable terrain now.
-					short* curCoord = cellsCovered;
+					pint16_t curCoord = cellsCovered;
 					for (int32_t i = 0; i < numCellsCovered; i++) 
 					{
 						int32_t r = *curCoord++;
@@ -1594,7 +1594,7 @@ GameObjectPtr Building::getParent (void)
 }
 
 //---------------------------------------------------------------------------
-void Building::setParentId (ULONG pId)
+void Building::setParentId (uint32_t pId)
 {
 	parentId = pId;
 }
@@ -1606,7 +1606,7 @@ void Building::Save (PacketFilePtr file, int32_t packetNum)
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(PUCHAR)&data,sizeof(BuildingData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(puint8_t)&data,sizeof(BuildingData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

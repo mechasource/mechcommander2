@@ -34,13 +34,13 @@ typedef enum {
 
 typedef union {
 	struct {
-		ULONG		WID;
+		uint32_t		WID;
 	} object;
 	struct {
-		short				minRow;
-		short				minCol;
-		short				maxRow;
-		short				maxCol;
+		int16_t				minRow;
+		int16_t				minCol;
+		int16_t				maxRow;
+		int16_t				maxCol;
 	} region;
 } GoalInfo;
 
@@ -55,7 +55,7 @@ typedef struct _GoalPathFindInfo {
 	int32_t					cost;
 	int32_t					parent;
 	int32_t					fromIndex;
-	ULONG			flags;
+	uint32_t			flags;
 	int32_t					g;
 	int32_t					hPrime;
 	int32_t					fPrime;
@@ -113,9 +113,9 @@ public:
 	GoalObjectPtr	goalObjects;
 	int32_t			goalObjectPoolSize;
 	GoalObjectPtr	goalObjectPool;
-	short			regionMap[2/*MAX_MAP_CELL_WIDTH*/][2/*MAX_MAP_CELL_WIDTH*/];
+	int16_t			regionMap[2/*MAX_MAP_CELL_WIDTH*/][2/*MAX_MAP_CELL_WIDTH*/];
 	int32_t			numRegions;
-	short*			fillStack;
+	pint16_t			fillStack;
 	int32_t			fillStackIndex;
 
 public:

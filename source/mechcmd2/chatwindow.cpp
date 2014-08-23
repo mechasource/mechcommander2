@@ -51,7 +51,7 @@ void ChatWindow::init()
 
 //-------------------------------------------------------------------------------------------------
 
-int ChatWindow::initInstance()
+int32_t ChatWindow::initInstance()
 {
 	FitIniFile file;
 	FullPathFileName path;
@@ -72,7 +72,7 @@ int ChatWindow::initInstance()
 
 	chatWidget.init();
 
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		buttons[i].setMessageOnRelease();
 		buttons[i].setPressFX( LOG_VIDEOBUTTONS );
@@ -104,7 +104,7 @@ bool ChatWindow::isExpanded()
 {
 	return getButton( MP_CHAT_EXPAND )->isPressed();
 }
-int ChatWindow::handleMessage( ULONG, ULONG who )
+int32_t ChatWindow::handleMessage( uint32_t, uint32_t who )
 {
 	if ( who == MP_CHAT_HELPTOGGLE )
 	{
@@ -129,7 +129,7 @@ int ChatWindow::handleMessage( ULONG, ULONG who )
 }
 
 
-void ChatWindow::render( int xOffset, int yOffset )
+void ChatWindow::render( int32_t xOffset, int32_t yOffset )
 {
 	if ( getButton( MP_CHAT_EXPAND )->isPressed() )
 	{
@@ -219,7 +219,7 @@ void ChatWindow::update()
 		{
 			EString text;
 			edits[0].getEntry( text );
-			int team = getButton( MP_CHAT_TEAMONLY )->isPressed() ? 
+			int32_t team = getButton( MP_CHAT_TEAMONLY )->isPressed() ? 
 				MPlayer->getPlayerInfo( MPlayer->commanderID )->team : -1;
 			if ( text.Length() )
 			{
@@ -243,12 +243,12 @@ void ChatWindow::update()
 void ChatWindow::refillListBox( aListBox& listBox, PSTR* chatTexts, int32_t* playerIDs, ChatMessageItem* pItems, int32_t& curItem, int32_t itemCount, int32_t maxCount )
 {
 	int32_t linesToAdd = 0;
-	for ( int i = 0; i < itemCount && i < maxCount; i++ )
+	for ( int32_t i = 0; i < itemCount && i < maxCount; i++ )
 	{
-		int item = (curItem+i)%maxCount;
-		int playerID = playerIDs[i] & 0x00ffffff;
+		int32_t item = (curItem+i)%maxCount;
+		int32_t playerID = playerIDs[i] & 0x00ffffff;
 		MC2Player* player = &MPlayer->playerInfo[0];
-		for ( int j = 0; j < MAX_MC_PLAYERS; j++ )
+		for ( int32_t j = 0; j < MAX_MC_PLAYERS; j++ )
 		{
 			if ( MPlayer->playerInfo[j].commanderID == playerID )
 			{
@@ -261,14 +261,14 @@ void ChatWindow::refillListBox( aListBox& listBox, PSTR* chatTexts, int32_t* pla
 			pItems[item].setPlayerName( "" );
 		else
 			pItems[item].setPlayerName( player->name );
-		int lineCount = pItems[item].setText( chatTexts[i] );
+		int32_t lineCount = pItems[item].setText( chatTexts[i] );
 		linesToAdd += lineCount;
 		pItems[item].setTextColor( (playerIDs[i] & 0x10000000)  ? 0xff41c700 : 0xffffffff );
 		pItems[item].moveTo( 0, 0 );
 
 	}
 
-	int curLinesInListBox = 0;
+	int32_t curLinesInListBox = 0;
 	for ( i = 0; i < listBox.GetItemCount(); i++ )
 	{
 		ChatMessageItem* pItem = (ChatMessageItem*)listBox.GetItem( i );
@@ -276,7 +276,7 @@ void ChatWindow::refillListBox( aListBox& listBox, PSTR* chatTexts, int32_t* pla
 	}
 	if ( curLinesInListBox + linesToAdd > maxCount )
 	{
-		for ( int i = 0; i < maxCount; i++ )
+		for ( int32_t i = 0; i < maxCount; i++ )
 		{
 			ChatMessageItem* pItem = (ChatMessageItem*)listBox.GetItem( 0 );
 			if ( pItem )
@@ -292,7 +292,7 @@ void ChatWindow::refillListBox( aListBox& listBox, PSTR* chatTexts, int32_t* pla
 
 	for ( i = 0; i < itemCount && i < maxCount; i++ )
 	{
-		int item = (curItem)%maxCount;
+		int32_t item = (curItem)%maxCount;
 		listBox.AddItem( &pItems[item] );
 		if ( maxCount > 2 )
 			listBox.SelectItem( listBox.GetItemCount() - 1 );
@@ -370,13 +370,13 @@ void ChatMessageItem::setPlayerName( PCSTR pName )
 
 }
 
-int ChatMessageItem::setText( PCSTR pText )
+int32_t ChatMessageItem::setText( PCSTR pText )
 {
 	playerText.setText( pText );
 	lineCount = 1;
 
-	ULONG height = playerText.font.height( pText, playerText.width() );
-	int retVal = 1;
+	uint32_t height = playerText.font.height( pText, playerText.width() );
+	int32_t retVal = 1;
 	if ( height > playerText.font.height() * 2 )
 	{
 		height = playerText.font.height() * 2;

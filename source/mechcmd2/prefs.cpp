@@ -38,7 +38,7 @@ extern int32_t GameVisibleVertices;
 extern volatile bool mc2UseAsyncMouse;		//Should mouse draw and update in separate thread?
 
 
-extern ULONG gEnableDetailTexture;
+extern uint32_t gEnableDetailTexture;
 
 CPrefs::CPrefs() {
 	DigitalMasterVolume = 255;
@@ -59,7 +59,7 @@ CPrefs::CPrefs() {
 	fullScreen = false;
 	gammaLevel = 0;
 	useLeftRightMouseProfile = true; // if false, use old style commands
-	int i;
+	int32_t i;
 	for ( i = 0; i < 10; i++ )
 		playerName[i][0] = 0;
 
@@ -85,7 +85,7 @@ CPrefs::CPrefs() {
 #endif
 }
 
-int CPrefs::load( PCSTR pFileName ) {
+int32_t CPrefs::load( PCSTR pFileName ) {
 	int32_t result = 0;
 
 	FullPathFileName prefsPathname;
@@ -194,7 +194,7 @@ int CPrefs::load( PCSTR pFileName ) {
 				useLeftRightMouseProfile = true;
 
 			char blockName[64];
-			for ( int i = 0; i < 10; i++ )
+			for ( int32_t i = 0; i < 10; i++ )
 			{	
 				sprintf( blockName, "PlayerName%ld", i );
 				result = prefsFile->readIdString( blockName, &playerName[i][0], 255 );
@@ -276,7 +276,7 @@ int CPrefs::load( PCSTR pFileName ) {
 	return 0;
 }
 
-int CPrefs::save() {
+int32_t CPrefs::save() {
 	char backupPath[256];
 	char originalPath[256];
 	
@@ -290,7 +290,7 @@ int CPrefs::save() {
 	//MoveFileEx(originalPath, backupPath, MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH);
 
 	FitIniFilePtr prefsFile = new FitIniFile;
-	int result = prefsFile->create( (PSTR)originalPath );
+	int32_t result = prefsFile->create( (PSTR)originalPath );
 	if (result != NO_ERROR)
 	{
 		gosASSERT( false );
@@ -323,7 +323,7 @@ int CPrefs::save() {
 			result = prefsFile->writeIdLong("Brightness",gammaLevel);
 			result = prefsFile->writeIdBoolean( "useLeftRightMouseProfile", useLeftRightMouseProfile );
 			char blockName[64];
-			for ( int i = 0; i < 10; i++ )
+			for ( int32_t i = 0; i < 10; i++ )
 			{	
 				
 				sprintf( blockName, "PlayerName%ld", i );
@@ -366,7 +366,7 @@ int CPrefs::save() {
 	return 0;
 }
 
-int CPrefs::applyPrefs(bool applyRes) {
+int32_t CPrefs::applyPrefs(bool applyRes) {
 	if (soundSystem) {
 		/*soundSystem doesn't seem to do anything*/
 		soundSystem->setDigitalMasterVolume(this->DigitalMasterVolume);
@@ -399,7 +399,7 @@ int CPrefs::applyPrefs(bool applyRes) {
 	::useNonWeaponEffects = this->useNonWeaponEffects;
 	::useHighObjectDetail = this->useHighObjectDetail;
 
-	int bitDepth = this->bitDepth ? 32 : 16;
+	int32_t bitDepth = this->bitDepth ? 32 : 16;
 
 	//Play with the fog distance.
 	float fogPercent = float(fogPos) / 100.0f;
@@ -487,7 +487,7 @@ void CPrefs::setNewName( PCSTR pNewName )
 	if ( !pNewName )
 		return;
 	// check and see if this name is already in here
-	int i, j;
+	int32_t i, j;
 	for ( i = 0; i < 10; i++ )
 	{
 		if ( !_stricmp( pNewName, playerName[i] ) )
@@ -526,7 +526,7 @@ void CPrefs::setNewIP( PCSTR pNewIP )
 	if ( !pNewIP )
 		return;
 	// check and see if this name is already in here
-	int i, j;
+	int32_t i, j;
 	for ( i = 0; i < 10; i++ )
 	{
 		if ( !_stricmp( pNewIP, ipAddresses[i] ) )
@@ -559,7 +559,7 @@ void CPrefs::setNewUnit( PCSTR pNewUnit )
 	if ( !pNewUnit )
 		return;
 // check and see if this name is already in here
-	int i, j;
+	int32_t i, j;
 	for ( i = 0; i < 10; i++ )
 	{
 		if ( !_stricmp( pNewUnit, unitName[i] ) )

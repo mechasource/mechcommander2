@@ -51,7 +51,7 @@ class InfoWindow
 		static ButtonData	buttonData[2];
 		static StaticInfo*	skillInfos;
 
-		ULONG		backgroundTexture;
+		uint32_t		backgroundTexture;
 		aFont				nameFont;
 		aFont				componentFont;
 
@@ -63,10 +63,10 @@ class InfoWindow
 
 		// HELPER FUNCTIONS
 		void drawScrollingStuff();
-		void handleClick( int ID );
+		void handleClick( int32_t ID );
 		void drawDivider( float yVal );
-		void drawSkillBar( int skill, float yVal, float height );
-		void setScrollPos( int where );
+		void drawSkillBar( int32_t skill, float yVal, float height );
+		void setScrollPos( int32_t where );
 		void drawName( PCSTR name );
 
 		ForceGroupIcon* icon;

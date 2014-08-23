@@ -65,7 +65,7 @@ public:
 	bool donePressed() { return bDone; }
 	virtual void render();
 	virtual void update();
-	virtual int			handleMessage( ULONG, ULONG );
+	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 	void updateSalvage(); // put into inventory
 
@@ -95,7 +95,7 @@ public:
 	virtual ~SalvageListItem();
 
 	static void			init( FitIniFile* file );
-	virtual int			handleMessage( ULONG message, ULONG who );
+	virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 
 	bool				isChecked();
 	LogisticsVariant*	getMech(){ return pVariant; }
@@ -120,15 +120,15 @@ private:
 	aAnimation			highlightAnim;
 	aAnimation			normalAnim;
 
-	int					salvageAmount;
+	int32_t					salvageAmount;
 	float				costToSalvage;
 	MechIcon*			icon;
 	LogisticsVariant*	pVariant;
 	aAnimButton*		checkButton;
 
-	ULONG				psRed;
-	ULONG				psGreen;
-	ULONG				psBlue;
+	uint32_t				psRed;
+	uint32_t				psGreen;
+	uint32_t				psBlue;
 
 	friend class SalvageMechScreen;
 

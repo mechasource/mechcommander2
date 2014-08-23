@@ -58,7 +58,7 @@
 
 //#include "ObjectAppearance.h"
 
-extern ULONG NextIdNumber;
+extern uint32_t NextIdNumber;
 extern float worldUnitsPerMeter;
 extern bool drawExtents;
 extern bool somethingOnFire;
@@ -163,7 +163,7 @@ void TerrainObjectType::initMiscTerrObj (int32_t objTypeNum) {
 
 //---------------------------------------------------------------------------
 
-int32_t TerrainObjectType::init (FilePtr objFile, ULONG fileSize) {
+int32_t TerrainObjectType::init (FilePtr objFile, uint32_t fileSize) {
 
 	int32_t result = 0;
 	
@@ -184,7 +184,7 @@ int32_t TerrainObjectType::init (FilePtr objFile, ULONG fileSize) {
 		objectClass = TREE;
 	}
 
-	ULONG dmgLevel;
+	uint32_t dmgLevel;
 	result = bldgFile.readIdULong("DmgLevel",dmgLevel);
 	if (result != NO_ERROR)
 		return(result);
@@ -566,7 +566,7 @@ void TerrainObject::render (void) {
 			if (barStatus < 0.0)
 				barStatus = 0.0;
 
-			ULONG color = 0xff7f7f7f;
+			uint32_t color = 0xff7f7f7f;
 			
 			appearance->setBarColor(color);
 			appearance->setBarStatus(barStatus);
@@ -946,7 +946,7 @@ void TerrainObject::setRotation( float rot )
 
 void TerrainObject::calcCellFootprint (Stuff::Vector3D& pos) {
 
-	short cellList[MAX_CELL_COORDS];
+	int16_t cellList[MAX_CELL_COORDS];
 	cellList[0] = MAX_CELL_COORDS;
 	int32_t numCoords = appearance->calcCellsCovered(pos, cellList);
 	int32_t minRow = 10000;
@@ -1013,13 +1013,13 @@ int32_t TerrainObject::getLineOfSightNodes (int32_t eyeCellRow, int32_t eyeCellC
 
 //---------------------------------------------------------------------------
 
-void TerrainObject::calcSubAreas (int32_t numCells, short cells[MAX_GAME_OBJECT_CELLS][2]) {
+void TerrainObject::calcSubAreas (int32_t numCells, int16_t cells[MAX_GAME_OBJECT_CELLS][2]) {
 
 	numCellsCovered = numCells;
 	if (numCellsCovered) {
-		cellsCovered = (short*)systemHeap->Malloc(4 * numCellsCovered);
+		cellsCovered = (pint16_t)systemHeap->Malloc(4 * numCellsCovered);
 		if (cellsCovered) {
-			short* curCoord = cellsCovered;
+			pint16_t curCoord = cellsCovered;
 			for (int32_t j = 0; j < numCellsCovered; j++) {
 				*curCoord++ = cells[j][0];
 				*curCoord++ = cells[j][1];
@@ -1027,7 +1027,7 @@ void TerrainObject::calcSubAreas (int32_t numCells, short cells[MAX_GAME_OBJECT_
 		}
 	
 		numSubAreas0 = 0;
-		short* curCoord = cellsCovered;
+		pint16_t curCoord = cellsCovered;
 		for (int32_t i = 0; i < numCellsCovered; i++) 
 		{
 			int32_t r = *curCoord++;
@@ -1045,8 +1045,8 @@ void TerrainObject::calcSubAreas (int32_t numCells, short cells[MAX_GAME_OBJECT_
 			{
 				if (!subAreas0)
 				{
-					subAreas0 = (short *)ObjectTypeManager::objectCache->Malloc(sizeof(short) * MAX_SPECIAL_SUB_AREAS);
-					memset(subAreas0,0,sizeof(short) * MAX_SPECIAL_SUB_AREAS);
+					subAreas0 = (pint16_t )ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+					memset(subAreas0,0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 				}
 
 				subAreas0[numSubAreas0++] = area;
@@ -1072,8 +1072,8 @@ void TerrainObject::calcSubAreas (int32_t numCells, short cells[MAX_GAME_OBJECT_
 			{
 				if (!subAreas1)
 				{
-					subAreas1 = (short *)ObjectTypeManager::objectCache->Malloc(sizeof(short) * MAX_SPECIAL_SUB_AREAS);
-					memset(subAreas1,0,sizeof(short) * MAX_SPECIAL_SUB_AREAS);
+					subAreas1 = (pint16_t )ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+					memset(subAreas1,0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 				}
 
 				subAreas1[numSubAreas1++] = area;
@@ -1092,7 +1092,7 @@ void TerrainObject::calcSubAreas (int32_t numCells, short cells[MAX_GAME_OBJECT_
 
 void TerrainObject::markMoveMap (bool passable) {
 	
-	short* curCoord = cellsCovered;
+	pint16_t curCoord = cellsCovered;
 	for (int32_t i = 0; i < numCellsCovered; i++) {
 		int32_t r = *curCoord++;
 		int32_t c = *curCoord++;
@@ -1139,7 +1139,7 @@ void TerrainObject::setSubAreasTeamId (int32_t id) {
 bool TerrainObject::calcAdjacentAreaCell (int32_t moveLevel, int32_t areaID, int32_t& adjRow, int32_t& adjCol) {
 
 	if (areaID == -1) {
-		short* curCoord = cellsCovered;
+		pint16_t curCoord = cellsCovered;
 		for (int32_t i = 0; i < numCellsCovered; i++) {
 			int32_t cellRow = *curCoord++;
 			int32_t cellCol = *curCoord++;
@@ -1170,7 +1170,7 @@ bool TerrainObject::calcAdjacentAreaCell (int32_t moveLevel, int32_t areaID, int
 		}
 		}
 	else {
-		short* curCoord = cellsCovered;
+		pint16_t curCoord = cellsCovered;
 		for (int32_t i = 0; i < numCellsCovered; i++) {
 			int32_t cellRow = *curCoord++;
 			int32_t cellCol = *curCoord++;
@@ -1210,7 +1210,7 @@ void TerrainObject::Save (PacketFilePtr file, int32_t packetNum)
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(PUCHAR)&data,sizeof(TerrainObjectData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(puint8_t)&data,sizeof(TerrainObjectData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************
@@ -1222,20 +1222,20 @@ void TerrainObject::CopyTo (TerrainObjectData *data)
 	data->pitchAngle = pitchAngle;
 	data->fallRate = fallRate;
 	data->powerSupply = powerSupply;
-	memcpy(data->cellFootprint,cellFootprint,sizeof(short) * 4);
+	memcpy(data->cellFootprint,cellFootprint,sizeof(int16_t) * 4);
 	memcpy(data->vectorFootprint,vectorFootprint,sizeof(Stuff::Vector3D) * 4);
 	data->numSubAreas0 = numSubAreas0;
 	data->numSubAreas1 = numSubAreas1;
 
 	if (subAreas0)
-		memcpy(data->subAreas0,subAreas0,sizeof(short) * MAX_SPECIAL_SUB_AREAS);
+		memcpy(data->subAreas0,subAreas0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	else
-		memset(data->subAreas0,0,sizeof(short) * MAX_SPECIAL_SUB_AREAS);
+		memset(data->subAreas0,0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 
 	if (subAreas1)
-		memcpy(data->subAreas1,subAreas1,sizeof(short) * MAX_SPECIAL_SUB_AREAS);
+		memcpy(data->subAreas1,subAreas1,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	else
-		memset(data->subAreas1,0,sizeof(short) * MAX_SPECIAL_SUB_AREAS);
+		memset(data->subAreas1,0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 
 	data->listID = listID;
 
@@ -1243,7 +1243,7 @@ void TerrainObject::CopyTo (TerrainObjectData *data)
 	if (numCellsCovered >= 162)
 		STOP(("Object %d covers too many cells in Save/Load!!",getObjectType()->getObjTypeNum()));
 
-	memcpy(data->cellsCovered,cellsCovered, sizeof(short) * numCellsCovered * 2);
+	memcpy(data->cellsCovered,cellsCovered, sizeof(int16_t) * numCellsCovered * 2);
 
 	GameObject::CopyTo(dynamic_cast<GameObjectData *>(data));
 }
@@ -1259,21 +1259,21 @@ void TerrainObject::Load (TerrainObjectData *data)
 	pitchAngle = data->pitchAngle;
 	fallRate = data->fallRate;
 	powerSupply = data->powerSupply;
-	memcpy(cellFootprint,data->cellFootprint,sizeof(short) * 4);
+	memcpy(cellFootprint,data->cellFootprint,sizeof(int16_t) * 4);
 	memcpy(vectorFootprint,data->vectorFootprint,sizeof(Stuff::Vector3D) * 4);
 	numSubAreas0 = data->numSubAreas0;
 	numSubAreas1 = data->numSubAreas1;
 
 	if (numSubAreas0)
 	{
-		subAreas0 = (short *)ObjectTypeManager::objectCache->Malloc(sizeof(short) * MAX_SPECIAL_SUB_AREAS);
-		memcpy(subAreas0,data->subAreas0,sizeof(short) * MAX_SPECIAL_SUB_AREAS);
+		subAreas0 = (pint16_t )ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+		memcpy(subAreas0,data->subAreas0,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	}
 
 	if (numSubAreas1)
 	{
-		subAreas1 = (short *)ObjectTypeManager::objectCache->Malloc(sizeof(short) * MAX_SPECIAL_SUB_AREAS);
-		memcpy(subAreas1,data->subAreas1,sizeof(short) * MAX_SPECIAL_SUB_AREAS);
+		subAreas1 = (pint16_t )ObjectTypeManager::objectCache->Malloc(sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
+		memcpy(subAreas1,data->subAreas1,sizeof(int16_t) * MAX_SPECIAL_SUB_AREAS);
 	}
 
 	listID = data->listID;
@@ -1281,8 +1281,8 @@ void TerrainObject::Load (TerrainObjectData *data)
 	numCellsCovered = data->numCellsCovered;
 	if (numCellsCovered)
 	{
-		cellsCovered = (short*)systemHeap->Malloc(sizeof(short) * numCellsCovered * 2);
-		memcpy(cellsCovered, data->cellsCovered,sizeof(short) * numCellsCovered * 2);
+		cellsCovered = (pint16_t)systemHeap->Malloc(sizeof(int16_t) * numCellsCovered * 2);
+		memcpy(cellsCovered, data->cellsCovered,sizeof(int16_t) * numCellsCovered * 2);
 	}
 }
 

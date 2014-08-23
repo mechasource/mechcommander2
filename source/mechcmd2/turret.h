@@ -36,13 +36,13 @@ class TurretType : public ObjectType {
 	protected:
 
 		float			damageLevel;
-		//ULONG	dmgLevelClosed;
+		//uint32_t	dmgLevelClosed;
 
 	public:
 		
-		ULONG	blownEffectId;
-		ULONG	normalEffectId;
-		ULONG	damageEffectId;
+		uint32_t	blownEffectId;
+		uint32_t	normalEffectId;
+		uint32_t	damageEffectId;
 		
 		float			baseTonnage;
 		
@@ -85,7 +85,7 @@ class TurretType : public ObjectType {
 			init();
 		}
 		
-		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
 
 		int32_t init (FitIniFilePtr objFile);
 		
@@ -122,7 +122,7 @@ typedef struct _TurretData : public TerrainObjectData
 	float					idleWait;
 	Stuff::Vector3D			idlePosition;
 	Stuff::Vector3D			oldPosition;
-	ULONG					parentId;
+	uint32_t					parentId;
 	GameObjectWatchID		parent;
 	int32_t					currentWeaponNode;
 } TurretData;
@@ -143,14 +143,14 @@ class Turret : public TerrainObject {
 		
 		int32_t					netRosterIndex;
 		int32_t					numWeaponFireChunks[2];
-		ULONG			weaponFireChunks[2][MAX_TURRET_WEAPONFIRE_CHUNKS];
+		uint32_t			weaponFireChunks[2][MAX_TURRET_WEAPONFIRE_CHUNKS];
 
 		TG_LightPtr				pointLight;
-		ULONG					lightId;
+		uint32_t					lightId;
 		float					idleWait;
 		Stuff::Vector3D			idlePosition;
 		Stuff::Vector3D			oldPosition;
-		ULONG					parentId;
+		uint32_t					parentId;
 		GameObjectWatchID		parent;
 		int32_t					currentWeaponNode;
 
@@ -241,9 +241,9 @@ class Turret : public TerrainObject {
 
 		int32_t addWeaponFireChunk (int32_t which, WeaponFireChunkPtr chunk);
 
-		int32_t addWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer, int32_t numChunks);
+		int32_t addWeaponFireChunks (int32_t which, uint32_t* packedChunkBuffer, int32_t numChunks);
 
-		int32_t grabWeaponFireChunks (int32_t which, ULONG* packedChunkBuffer);
+		int32_t grabWeaponFireChunks (int32_t which, uint32_t* packedChunkBuffer);
 
 		virtual int32_t updateWeaponFireChunks (int32_t which);
 
@@ -274,7 +274,7 @@ class Turret : public TerrainObject {
 
 		virtual GameObjectPtr getParent (void);
 
-		virtual void setParentId (ULONG pId);
+		virtual void setParentId (uint32_t pId);
 
 		virtual int32_t getDescription(){ return ((TurretType*)getObjectType())->buildingDescriptionID; }
 

@@ -162,8 +162,8 @@ float MissionInterfaceManager::pauseWndVelocity = -50.f;
 #define ATTILA_ROTATION_FACTOR	4.1f
 #define ATTILA_THRESHOLD		0.01f
 
-int MissionInterfaceManager::mouseX = 0;
-int MissionInterfaceManager::mouseY = 0;
+int32_t MissionInterfaceManager::mouseX = 0;
+int32_t MissionInterfaceManager::mouseY = 0;
 GameObject* MissionInterfaceManager::target = NULL;
 MissionInterfaceManager* MissionInterfaceManager::s_instance = NULL;
 gosEnum_KeyIndex MissionInterfaceManager::WAYPOINT_KEY = (gosEnum_KeyIndex)-1;
@@ -608,7 +608,7 @@ void MissionInterfaceManager::update (void)
 	#define MC2_DAMAGE_RRTORSO		9	
 	#define MC2_DAMAGE_RCTORSO		10	
 			
-	ULONG CheatCommand = -1;
+	uint32_t CheatCommand = -1;
 	if (userInput->getKeyDown(KEY_1) && shiftDn && ctrlDn && altDn)
 		CheatCommand = MC2_DAMAGE_HEAD;
 	if (userInput->getKeyDown(KEY_2) && shiftDn && ctrlDn && altDn)
@@ -801,8 +801,8 @@ void MissionInterfaceManager::update (void)
 
 	if ( bLeftDouble && target && target->isMover() && target->getTeam() == Team::home )
 	{
-		int forceGroup = -1;
-		for ( int i = 0; i < 10; i++ )
+		int32_t forceGroup = -1;
+		for ( int32_t i = 0; i < 10; i++ )
 		{
 			if ( ((Mover*)target)->isInUnitGroup( i ) )
 			{
@@ -820,8 +820,8 @@ void MissionInterfaceManager::update (void)
 
 	Team* pTeam = Team::home;
 
-	int moverCount = 0;
-	int nonMoverCount = 0;
+	int32_t moverCount = 0;
+	int32_t nonMoverCount = 0;
 	for (int32_t i=0;i<pTeam->getRosterSize();i++)
 	{
 		Mover* pMover = (Mover*)pTeam->getMover( i );
@@ -1188,7 +1188,7 @@ void MissionInterfaceManager::updateTarget( bool bGui)
 {
 	
 	// unset anything that isn't targeted
-	for ( int i = 0; i < MAX_ICONS; i++ )
+	for ( int32_t i = 0; i < MAX_ICONS; i++ )
 	{
 		if ( oldTargets[i] )
 		{
@@ -1220,10 +1220,10 @@ void MissionInterfaceManager::updateTarget( bool bGui)
 		
 		if ( target )
 		{
-			int descID = target->getDescription();
+			int32_t descID = target->getDescription();
 			if ( descID != -1 )
 			{
-				int nameID = target->getAppearance()->getObjectNameId();
+				int32_t nameID = target->getAppearance()->getObjectNameId();
 
 				helpTextHeaderID = nameID;
 				helpTextID = descID;
@@ -1276,7 +1276,7 @@ void MissionInterfaceManager::updateOldStyle( bool shiftDn, bool altDn, bool ctr
 //			return;
    	}
 
-	int mState = userInput->getMouseCursor();
+	int32_t mState = userInput->getMouseCursor();
 
 	bool leftClicked = (!userInput->isLeftDrag() && !userInput->isRightDrag() && userInput->isLeftClick() && !lastUpdateDoubleClick);
 	bool rightClicked = (!userInput->isLeftDrag() && !userInput->isRightDrag() && userInput->isRightClick());
@@ -1286,7 +1286,7 @@ void MissionInterfaceManager::updateOldStyle( bool shiftDn, bool altDn, bool ctr
 		return;
 
 	// special case for bottom of screen
-	if ( bGui ) // don't target or anything if we are int the control panel
+	if ( bGui ) // don't target or anything if we are int32_t the control panel
 	{
 		// now check the selection versus the commands
 		if ( !canJump() && controlGui.getJump() )
@@ -1470,7 +1470,7 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrl
 //			return;
    	}
 
-	int mState = userInput->getMouseCursor();
+	int32_t mState = userInput->getMouseCursor();
 
 	bool leftClicked = (!userInput->isLeftDrag() && !userInput->isRightDrag() && userInput->isLeftClick());
 	bool rightClicked = (!userInput->isLeftDrag() && !userInput->wasRightDrag() && userInput->rightMouseReleased());
@@ -1480,7 +1480,7 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrl
 		return;
 
 	// special case for bottom of screen
-	if ( bGui ) // don't target or anything if we are int the control panel
+	if ( bGui ) // don't target or anything if we are int32_t the control panel
 	{
 		// now check the selection versus the commands
 		if ( !canJump() && controlGui.getJump() )
@@ -1680,7 +1680,7 @@ void MissionInterfaceManager::updateWaypoints (void)
    	}
 }
 
-int MissionInterfaceManager::update( bool leftClickedClick, bool rightClickedClick, int MouseX, int MouseY, GameObject* pTarget, bool bLOS )
+int32_t MissionInterfaceManager::update( bool leftClickedClick, bool rightClickedClick, int32_t MouseX, int32_t MouseY, GameObject* pTarget, bool bLOS )
 {
 	bool shiftDn = userInput->shift();
 	bool ctrlDn = userInput->ctrl();
@@ -1689,8 +1689,8 @@ int MissionInterfaceManager::update( bool leftClickedClick, bool rightClickedCli
 
 	bool bRetVal = 0;
 
-	int i = 0;
-	int last = MAX_COMMAND;
+	int32_t i = 0;
+	int32_t last = MAX_COMMAND;
 
 	// if chatting, ignore keyboard input
 	if ( controlGui.updateChat() )
@@ -1731,7 +1731,7 @@ int MissionInterfaceManager::update( bool leftClickedClick, bool rightClickedCli
 
 	if ( !bRetVal )
 	{
-		for ( int j = KEY_0; j < KEY_9 + 1; j++ )
+		for ( int32_t j = KEY_0; j < KEY_9 + 1; j++ )
 		{
 			if ( userInput->getKeyDown( (gosEnum_KeyIndex)j )
 				&& gos_GetKeyStatus( (gosEnum_KeyIndex)j ) != KEY_HELD )
@@ -1748,7 +1748,7 @@ int MissionInterfaceManager::update( bool leftClickedClick, bool rightClickedCli
 
 	for ( ; i < last; i++ )
 	{
-		int key = commands[i].key;
+		int32_t key = commands[i].key;
 		if ( userInput->getKeyDown( gosEnum_KeyIndex(key & 0x0000000ff) ) )
 		{
 			// check for shifts and stuff
@@ -1894,7 +1894,7 @@ void MissionInterfaceManager::doAttack()
 	controlGui.setFireFromCurrentPos( 0 );
 }
 
-int MissionInterfaceManager::attackShort()
+int32_t MissionInterfaceManager::attackShort()
 {
 	controlGui.setRange( FIRERANGE_SHORT );
 	if ( commandClicked && target )
@@ -1905,7 +1905,7 @@ int MissionInterfaceManager::attackShort()
 	return 0;
 }
 
-int MissionInterfaceManager::attackMedium()
+int32_t MissionInterfaceManager::attackMedium()
 {
 	controlGui.setRange( FIRERANGE_MEDIUM );
 	if ( commandClicked && target )
@@ -1916,7 +1916,7 @@ int MissionInterfaceManager::attackMedium()
 	return 0;
 }
 
-int MissionInterfaceManager::attackLong()
+int32_t MissionInterfaceManager::attackLong()
 {
 	controlGui.setRange( FIRERANGE_LONG );
 	if ( commandClicked && target )
@@ -1927,11 +1927,11 @@ int MissionInterfaceManager::attackLong()
 	return 0;
 }
 
-int MissionInterfaceManager::alphaStrike()
+int32_t MissionInterfaceManager::alphaStrike()
 {
 	return 0;
 }
-int MissionInterfaceManager::defaultAttack()
+int32_t MissionInterfaceManager::defaultAttack()
 {
 	
 	controlGui.setRange( FIRERANGE_OPTIMAL );
@@ -1939,7 +1939,7 @@ int MissionInterfaceManager::defaultAttack()
 	return 0;
 }
 
-int  MissionInterfaceManager::jump()
+int32_t  MissionInterfaceManager::jump()
 {
 	if ( !canJump() )
 	{
@@ -1952,7 +1952,7 @@ int  MissionInterfaceManager::jump()
 	return 0;
 }
 
-int MissionInterfaceManager::stopJump()
+int32_t MissionInterfaceManager::stopJump()
 {
 	if ( controlGui.getJump() )
 		controlGui.toggleJump();
@@ -2006,14 +2006,14 @@ void MissionInterfaceManager::doJump()
 	
 }
 		
-int MissionInterfaceManager::fireFromCurrentPos()
+int32_t MissionInterfaceManager::fireFromCurrentPos()
 {
 	if ( !controlGui.getFireFromCurrentPos() )
 		controlGui.toggleFireFromCurrentPos( );
 
 	return forceShot();
 }
-int MissionInterfaceManager::stopFireFromCurrentPos()
+int32_t MissionInterfaceManager::stopFireFromCurrentPos()
 {
 	if ( controlGui.getFireFromCurrentPos() )
 		controlGui.toggleFireFromCurrentPos();
@@ -2051,23 +2051,23 @@ void MissionInterfaceManager::doGuard(GameObject* who)
 
 	soundSystem->playDigitalSample(BUTTON5);
 }
-int MissionInterfaceManager::guard()
+int32_t MissionInterfaceManager::guard()
 {
 	if ( !controlGui.getGuard() )
 		controlGui.toggleGuard();
 	return 0;
 }
-int MissionInterfaceManager::stopGuard()
+int32_t MissionInterfaceManager::stopGuard()
 {
 	if ( controlGui.getGuard() )
 		controlGui.toggleGuard();
 	return 0;
 }
-int MissionInterfaceManager::conserveAmmo()
+int32_t MissionInterfaceManager::conserveAmmo()
 {
 	return 0;
 }
-int MissionInterfaceManager::selectVisible()
+int32_t MissionInterfaceManager::selectVisible()
 {
 	Team* pTeam = Team::home;
 	for (int32_t i=0;i<pTeam->getRosterSize();i++)
@@ -2083,14 +2083,14 @@ int MissionInterfaceManager::selectVisible()
 
 }
 
-int MissionInterfaceManager::addVisibleToSelection()
+int32_t MissionInterfaceManager::addVisibleToSelection()
 {
 	//----------------------------------------------------------------
 	// Grab each member of the homeTeam and see if they are onScreen
 	dragStart.Zero();		
 	dragEnd = eye->getScreenRes();
 	
-	for (int i=0;i<ObjectManager->getNumMovers();i++)
+	for (int32_t i=0;i<ObjectManager->getNumMovers();i++)
 	{
 		if (ObjectManager->moverInRect(i,dragStart,dragEnd))
 		{
@@ -2107,7 +2107,7 @@ int MissionInterfaceManager::addVisibleToSelection()
 
 	return 1;
 }
-int MissionInterfaceManager::aimLeg()
+int32_t MissionInterfaceManager::aimLeg()
 {
 	if ( target )
 	{
@@ -2162,7 +2162,7 @@ int MissionInterfaceManager::aimLeg()
 	return 0;
 }
 
-int MissionInterfaceManager::aimArm()
+int32_t MissionInterfaceManager::aimArm()
 {
 	BattleMech* pMech = dynamic_cast<BattleMech*>(target);
 		
@@ -2211,7 +2211,7 @@ int MissionInterfaceManager::aimArm()
 	}
 }
 
-int MissionInterfaceManager::aimHead()
+int32_t MissionInterfaceManager::aimHead()
 {
 	if ( target )
 	{
@@ -2266,12 +2266,12 @@ int MissionInterfaceManager::aimHead()
 	return 0;
 }
 
-int MissionInterfaceManager::removeCommand()
+int32_t MissionInterfaceManager::removeCommand()
 {
 	controlGui.doStop();
 	return 1;
 }
-int MissionInterfaceManager::powerUp()
+int32_t MissionInterfaceManager::powerUp()
 {
 	TacticalOrder tacOrder;
 	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_POWERUP, true);
@@ -2279,7 +2279,7 @@ int MissionInterfaceManager::powerUp()
 	handleOrders( tacOrder );
 	return 1;
 }
-int MissionInterfaceManager::powerDown()
+int32_t MissionInterfaceManager::powerDown()
 {
 	TacticalOrder tacOrder;
 	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_POWERDOWN, true);
@@ -2288,20 +2288,20 @@ int MissionInterfaceManager::powerDown()
 	return 1;
 					
 }
-int MissionInterfaceManager::changeSpeed()
+int32_t MissionInterfaceManager::changeSpeed()
 {
  	if ( controlGui.isDefaultSpeed() )
 		controlGui.toggleDefaultSpeed();
 	return 0;
 }
 
-int MissionInterfaceManager::stopChangeSpeed()
+int32_t MissionInterfaceManager::stopChangeSpeed()
 {
 	if ( !controlGui.isDefaultSpeed() )
 		controlGui.toggleDefaultSpeed();
 	return 1;
 }
-int MissionInterfaceManager::eject()
+int32_t MissionInterfaceManager::eject()
 {
 	if ( target && target->isMover() && target->getCommanderId() == Commander::home->getId() && !invulnerableON)
 	{
@@ -2318,7 +2318,7 @@ int MissionInterfaceManager::eject()
 	return 1;
 }
 
-int MissionInterfaceManager::bigAirStrike()
+int32_t MissionInterfaceManager::bigAirStrike()
 {
 	Stuff::Vector3D v = makeAirStrikeTarget( wPos );
 
@@ -2327,7 +2327,7 @@ int MissionInterfaceManager::bigAirStrike()
 		soundSystem->playSupportSample(SUPPORT_AIRSTRIKE);
 	return 1;
 }
-int MissionInterfaceManager::smlAirStrike()
+int32_t MissionInterfaceManager::smlAirStrike()
 {
 	Stuff::Vector3D v = makeAirStrikeTarget( wPos );
 
@@ -2336,7 +2336,7 @@ int MissionInterfaceManager::smlAirStrike()
 		soundSystem->playSupportSample(SUPPORT_AIRSTRIKE);
 	return 1;
 }
-int MissionInterfaceManager::snsAirStrike()
+int32_t MissionInterfaceManager::snsAirStrike()
 {
 	Stuff::Vector3D v = makeAirStrikeTarget( wPos );
 
@@ -2369,7 +2369,7 @@ Stuff::Vector3D MissionInterfaceManager::makeAirStrikeTarget( const Stuff::Vecto
 	return newPos;
 }
 
-int MissionInterfaceManager::cameraAssign0()
+int32_t MissionInterfaceManager::cameraAssign0()
 {
 	Camera::cameraZoom[0] = eye->cameraAltitude;
 	Camera::cameraTilt[0] = eye->getProjectionAngle();
@@ -2377,7 +2377,7 @@ int MissionInterfaceManager::cameraAssign0()
 	return 1;
 }
 
-int MissionInterfaceManager::cameraAssign1()
+int32_t MissionInterfaceManager::cameraAssign1()
 {
 	Camera::cameraZoom[1] = eye->cameraAltitude;
 	Camera::cameraTilt[1] = eye->getProjectionAngle();
@@ -2385,7 +2385,7 @@ int MissionInterfaceManager::cameraAssign1()
 	return 1;
 }
 
-int MissionInterfaceManager::cameraAssign2()
+int32_t MissionInterfaceManager::cameraAssign2()
 {
 	Camera::cameraZoom[2] = eye->cameraAltitude;
 	Camera::cameraTilt[2] = eye->getProjectionAngle();
@@ -2393,7 +2393,7 @@ int MissionInterfaceManager::cameraAssign2()
 	return 1;
 }
 
-int MissionInterfaceManager::cameraAssign3()
+int32_t MissionInterfaceManager::cameraAssign3()
 {
 	Camera::cameraZoom[3] = eye->cameraAltitude;
 	Camera::cameraTilt[3] = eye->getProjectionAngle();
@@ -2401,35 +2401,35 @@ int MissionInterfaceManager::cameraAssign3()
 	return 1;
 }
 
-int MissionInterfaceManager::cameraNormal()
+int32_t MissionInterfaceManager::cameraNormal()
 {
 	if (eye)
 		eye->allNormal();
 		
 	return 1;
 }
-int MissionInterfaceManager::cameraDefault()
+int32_t MissionInterfaceManager::cameraDefault()
 {
 	if (eye)
 		eye->setCameraView(0);
  		
 	return 1;
 }
-int MissionInterfaceManager::cameraMaxIn()
+int32_t MissionInterfaceManager::cameraMaxIn()
 {
 	if (eye)
 		eye->setCameraView(1);
  		
 	return 1;
 }
-int MissionInterfaceManager::cameraTight()
+int32_t MissionInterfaceManager::cameraTight()
 {
 	if (eye)
 		eye->setCameraView(2);
 		
  	return 1;
 }
-int MissionInterfaceManager::cameraFour()
+int32_t MissionInterfaceManager::cameraFour()
 {
 	if (eye)
 		eye->setCameraView(3);
@@ -2452,7 +2452,7 @@ bool MissionInterfaceManager::anySelectedWithoutAreaEffect (void)
 	return false;
 }
 
-int MissionInterfaceManager::handleOrders( TacticalOrder& order)
+int32_t MissionInterfaceManager::handleOrders( TacticalOrder& order)
 {
 	Team* pTeam = Team::home;
 
@@ -2523,7 +2523,7 @@ int MissionInterfaceManager::handleOrders( TacticalOrder& order)
 	return 1;
 }
 
-int MissionInterfaceManager::scrollUp()
+int32_t MissionInterfaceManager::scrollUp()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	float scrollFactor = scrollInc / eye->getScaleFactor() * frameFactor;
@@ -2531,53 +2531,53 @@ int MissionInterfaceManager::scrollUp()
 	return 1;
 }
 
-int MissionInterfaceManager::scrollDown()
+int32_t MissionInterfaceManager::scrollDown()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	float scrollFactor = scrollInc / eye->getScaleFactor() * frameFactor;
 	eye->moveDown(scrollFactor);
 	return 1;
 }
-int MissionInterfaceManager::scrollLeft()
+int32_t MissionInterfaceManager::scrollLeft()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	float scrollFactor = scrollInc / eye->getScaleFactor() * frameFactor;
 	eye->moveLeft(scrollFactor);
 	return 1;
 }
-int MissionInterfaceManager::scrollRight()
+int32_t MissionInterfaceManager::scrollRight()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	float scrollFactor = scrollInc / eye->getScaleFactor() * frameFactor;
 	eye->moveRight(scrollFactor);
 	return 1;
 }
-int MissionInterfaceManager::zoomOut()
+int32_t MissionInterfaceManager::zoomOut()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	eye->ZoomOut(zoomInc * frameFactor * eye->getScaleFactor());
 	return 1;
 }
-int MissionInterfaceManager::zoomIn()
+int32_t MissionInterfaceManager::zoomIn()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	eye->ZoomIn(zoomInc * frameFactor * eye->getScaleFactor());
 	return 1;
 }
-int MissionInterfaceManager::zoomChoiceOut()
+int32_t MissionInterfaceManager::zoomChoiceOut()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	eye->ZoomOut(zoomInc * frameFactor * 5.0f * eye->getScaleFactor());
 
 	return 1;
 }
-int MissionInterfaceManager::zoomChoiceIn()
+int32_t MissionInterfaceManager::zoomChoiceIn()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	eye->ZoomIn(zoomInc * frameFactor * 5.0f * eye->getScaleFactor());
  	return 1;
 }
-int MissionInterfaceManager::rotateLeft()
+int32_t MissionInterfaceManager::rotateLeft()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	realRotation += degPerSecRot * frameFactor;
@@ -2589,7 +2589,7 @@ int MissionInterfaceManager::rotateLeft()
 
 	return 1;
 }
-int MissionInterfaceManager::rotateRight()
+int32_t MissionInterfaceManager::rotateRight()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	realRotation -= degPerSecRot * frameFactor;
@@ -2601,14 +2601,14 @@ int MissionInterfaceManager::rotateRight()
 
 	return 1;
 }
-int MissionInterfaceManager::tiltUp()
+int32_t MissionInterfaceManager::tiltUp()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	float scrollFactor = scrollInc / eye->getScaleFactor() * frameFactor;
 	eye->tiltDown(scrollFactor * frameFactor * 30.0f);
 	return 1;
 }
-int MissionInterfaceManager::tiltDown()
+int32_t MissionInterfaceManager::tiltDown()
 {
 	float frameFactor = frameLength / baseFrameLength;
 	float scrollFactor = scrollInc / eye->getScaleFactor() * frameFactor;
@@ -2616,32 +2616,32 @@ int MissionInterfaceManager::tiltDown()
 	return 1;
 	
 }
-int MissionInterfaceManager::centerCamera()
+int32_t MissionInterfaceManager::centerCamera()
 {
 	return 0;
 }
-int MissionInterfaceManager::rotateLightLeft()
+int32_t MissionInterfaceManager::rotateLightLeft()
 {
 	#ifndef FINAL
 	eye->rotateLightLeft(rotationInc);
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::rotateLightRight()
+int32_t MissionInterfaceManager::rotateLightRight()
 {
 	#ifndef FINAL
 	eye->rotateLightRight(rotationInc);
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::rotateLightUp()
+int32_t MissionInterfaceManager::rotateLightUp()
 {
 	#ifndef FINAL
 	eye->rotateLightUp(rotationInc);
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::rotateLightDown()
+int32_t MissionInterfaceManager::rotateLightDown()
 {
 	#ifndef FINAL
 	eye->rotateLightDown(rotationInc);
@@ -2649,35 +2649,35 @@ int MissionInterfaceManager::rotateLightDown()
 	return 1;
 }
 
-int MissionInterfaceManager::drawTerrain()
+int32_t MissionInterfaceManager::drawTerrain()
 {
 	#ifndef FINAL
 	drawTerrainTiles ^= TRUE;
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::drawOverlays()
+int32_t MissionInterfaceManager::drawOverlays()
 {
 	#ifndef FINAL
 	drawTerrainOverlays ^= TRUE;
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::drawBuildings()
+int32_t MissionInterfaceManager::drawBuildings()
 {
 	#ifndef FINAL
 	renderObjects ^= TRUE;
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::showGrid()
+int32_t MissionInterfaceManager::showGrid()
 {
 	#ifndef FINAL
 	drawTerrainGrid = !drawTerrainGrid;
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::recalcLights()
+int32_t MissionInterfaceManager::recalcLights()
 {
 	#ifndef FINAL
 	Terrain::recalcLight ^= TRUE;
@@ -2685,28 +2685,28 @@ int MissionInterfaceManager::recalcLights()
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::drawClouds()
+int32_t MissionInterfaceManager::drawClouds()
 {
 	#ifndef FINAL
 	useClouds ^= TRUE;
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::drawFog()
+int32_t MissionInterfaceManager::drawFog()
 {
 	#ifndef FINAL
 	useFog ^= TRUE;
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::usePerspective()
+int32_t MissionInterfaceManager::usePerspective()
 {
 	#ifndef FINAL
 	eye->usePerspective ^= true;
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::toggleGUI()
+int32_t MissionInterfaceManager::toggleGUI()
 {
 	#ifndef FINAL
 	drawGUIOn ^= true;
@@ -2714,7 +2714,7 @@ int MissionInterfaceManager::toggleGUI()
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::drawTGLShapes()
+int32_t MissionInterfaceManager::drawTGLShapes()
 {
 	#ifndef FINAL
 	renderTGLShapes ^= true;
@@ -2722,7 +2722,7 @@ int MissionInterfaceManager::drawTGLShapes()
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::drawWaterEffects()
+int32_t MissionInterfaceManager::drawWaterEffects()
 {
 	#ifndef FINAL
 	useWaterInterestTexture ^= true;
@@ -2730,21 +2730,21 @@ int MissionInterfaceManager::drawWaterEffects()
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::recalcWater()
+int32_t MissionInterfaceManager::recalcWater()
 {
 	#ifndef FINAL
 	Terrain::mapData->recalcWater();
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::drawShadows()
+int32_t MissionInterfaceManager::drawShadows()
 {
 	#ifndef FINAL
 	useShadows ^= TRUE;
 	#endif
 	return 1;
 }
-int MissionInterfaceManager::changeLighting()
+int32_t MissionInterfaceManager::changeLighting()
 {
 	#ifndef FINAL
 	drawLOSGrid ^= true;
@@ -2899,7 +2899,7 @@ void MissionInterfaceManager::render (void)
 		if (isDragging)
 		{
 			gos_VERTEX vertices[5];
-			ULONG color = SB_WHITE;
+			uint32_t color = SB_WHITE;
 			
 			gos_SetRenderState( gos_State_AlphaMode, gos_Alpha_AlphaInvAlpha );
 		
@@ -2995,7 +2995,7 @@ void MissionInterfaceManager::render (void)
 			Stuff::Vector4D cursorPos;
 			eye->projectZ(wPos,cursorPos);
 
-			ULONG color = SB_WHITE;
+			uint32_t color = SB_WHITE;
 			
 			gos_SetRenderState( gos_State_Texture, 0 );
 
@@ -3075,11 +3075,11 @@ void MissionInterfaceManager::render (void)
 	}*/
 }	
 
-void MissionInterfaceManager::initTacMap( PacketFile* file, int packet )
+void MissionInterfaceManager::initTacMap( PacketFile* file, int32_t packet )
 {
 	file->seekPacket(packet);
-	int size = file->getPacketSize( );
-	puint8_t mem = new UCHAR[size];
+	int32_t size = file->getPacketSize( );
+	puint8_t mem = new uint8_t[size];
 
 	file->readPacket( packet, mem );
 
@@ -3088,7 +3088,7 @@ void MissionInterfaceManager::initTacMap( PacketFile* file, int packet )
 
 	file->seekPacket(packet + 1);
 	size = file->getPacketSize( );
-	mem = new UCHAR[size];
+	mem = new uint8_t[size];
 
 	file->readPacket( packet + 1, mem );
 
@@ -3097,7 +3097,7 @@ void MissionInterfaceManager::initTacMap( PacketFile* file, int packet )
 
 	swapTime = 0.f;
 
-	for ( int i = 0; i < MAX_ICONS; i++ )
+	for ( int32_t i = 0; i < MAX_ICONS; i++ )
 	{
 		oldTargets[i] = NULL;
 	}
@@ -3206,7 +3206,7 @@ bool MissionInterfaceManager::makePatrolPath()
 	return 0;
 }
 
-int MissionInterfaceManager::forceShot()
+int32_t MissionInterfaceManager::forceShot()
 {
 	bForcedShot = true;
 
@@ -3239,7 +3239,7 @@ int MissionInterfaceManager::forceShot()
 
 }
 
-void MissionInterfaceManager::selectForceGroup( int forceGroup, bool deselect )
+void MissionInterfaceManager::selectForceGroup( int32_t forceGroup, bool deselect )
 {
 	Team* pTeam = Team::home;
 	bool bAllSelected = deselect ? false : true;
@@ -3274,7 +3274,7 @@ void MissionInterfaceManager::selectForceGroup( int forceGroup, bool deselect )
 			pMover->setSelected( !bAllSelected );
 	}
 }
-void MissionInterfaceManager::makeForceGroup( int forceGroup )
+void MissionInterfaceManager::makeForceGroup( int32_t forceGroup )
 {
 	Team* pTeam = Team::home;
 
@@ -3583,7 +3583,7 @@ void MissionInterfaceManager::doDrag(bool bGui)
 			// AND deselect anything outside of it.
 
 			GameObject*	objsInRect[MAX_ICONS];
-			int count = 0;
+			int32_t count = 0;
 			memset( objsInRect, 0, sizeof( GameObject* ) * 16 );
 			for (int32_t i=0;i<ObjectManager->getNumMovers();i++)
 			{
@@ -3784,7 +3784,7 @@ int32_t MissionInterfaceManager::makeTargetCursor( bool lineOfSight, int32_t mov
 	}
 	else if ( target->isCaptureable(Team::home->getId() ) && moverCount )
 	{
-		for ( int i = 0; i < Team::home->getRosterSize(); i++ )
+		for ( int32_t i = 0; i < Team::home->getRosterSize(); i++ )
 		{
 			Mover* pMvr = Team::home->getMover( i );
 			if ( pMvr->isSelected() && pMvr->getCommander()->getId() == Commander::home->getId() )
@@ -3977,7 +3977,7 @@ int32_t MissionInterfaceManager::makeNoTargetCursor( bool passable, bool lineOfS
 
 	//We're probably going to use this alot!
 	int32_t commanderID = Commander::home->getId();
- 	int cursorType = makeMoveCursor( lineOfSight );
+ 	int32_t cursorType = makeMoveCursor( lineOfSight );
 	if ( !moverCount )
 		cursorType = mState_NORMAL;
 
@@ -4493,7 +4493,7 @@ bool MissionInterfaceManager::canRepair( GameObject* pMover )
 		return 0;
 
 	// find the selected guy
-	int watchID = 0;
+	int32_t watchID = 0;
 	Team* pTeam = Team::home;
 	for (int32_t i = 0; i < pTeam->getRosterSize(); i++)
 	{
@@ -4564,7 +4564,7 @@ void MissionInterfaceManager::doRepairBay(GameObject* who)
 	controlGui.setDefaultSpeed();
 }
 
-int MissionInterfaceManager::vehicleCommand()
+int32_t MissionInterfaceManager::vehicleCommand()
 {
 	if ( controlGui.getVehicleCommand() )
 		controlGui.setVehicleCommand( false );
@@ -4574,19 +4574,19 @@ int MissionInterfaceManager::vehicleCommand()
 	return 0;
 }
 
-int MissionInterfaceManager::showObjectives()
+int32_t MissionInterfaceManager::showObjectives()
 {
 	controlGui.startObjectives( !controlGui.objectivesStarted( ) );
 	return 0;
 }
 
-int MissionInterfaceManager::showObjectives(bool on)
+int32_t MissionInterfaceManager::showObjectives(bool on)
 {
 	controlGui.startObjectives( on );
 	return 0;
 }
 
-int MissionInterfaceManager::togglePause()
+int32_t MissionInterfaceManager::togglePause()
 {
 	if ( !bPausedWithoutMenu )
 	{
@@ -4610,7 +4610,7 @@ int MissionInterfaceManager::togglePause()
 	return 1;
 }
 
-int MissionInterfaceManager::togglePauseWithoutMenu()
+int32_t MissionInterfaceManager::togglePauseWithoutMenu()
 {
 	bPausedWithoutMenu;
 
@@ -4653,34 +4653,34 @@ void	MissionInterfaceManager::swapResolutions()
 	keyboardRef->init();
 }
 
-int MissionInterfaceManager::switchTab()
+int32_t MissionInterfaceManager::switchTab()
 {
 	controlGui.switchTabs(1);		
 	return 1;
 }
 
-int MissionInterfaceManager::reverseSwitchTab()
+int32_t MissionInterfaceManager::reverseSwitchTab()
 {
 	controlGui.switchTabs(-1);		
 	return 1;
 }
 
 
-int MissionInterfaceManager::infoCommand()
+int32_t MissionInterfaceManager::infoCommand()
 {
 	if ( !controlGui.infoButtonPressed() )
 		controlGui.pressInfoButton();
 	return 1;
 }
 
-int MissionInterfaceManager::infoButtonReleased()
+int32_t MissionInterfaceManager::infoButtonReleased()
 {
 	if ( controlGui.infoButtonPressed() )
 		controlGui.pressInfoButton();
 
 	return 1;
 }
-int MissionInterfaceManager::energyWeapons()
+int32_t MissionInterfaceManager::energyWeapons()
 {
 	if ( gos_GetKeyStatus( (gosEnum_KeyIndex)(commands[ENERGY_WEAPON_INDEX].key & 0x0000ffff) ) == KEY_HELD )
 		bEnergyWeapons = 1;	
@@ -4688,17 +4688,17 @@ int MissionInterfaceManager::energyWeapons()
 		bEnergyWeapons = 0;
 	return 0;
 }
-int MissionInterfaceManager::sendAirstrike()
+int32_t MissionInterfaceManager::sendAirstrike()
 {
 	controlGui.pressAirstrikeButton();
 	return 1;
 }
-int MissionInterfaceManager::sendLargeAirstrike()
+int32_t MissionInterfaceManager::sendLargeAirstrike()
 {
 	controlGui.pressLargeAirstrikeButton();
 	return 1;
 }
-int MissionInterfaceManager::gotoNextNavMarker()
+int32_t MissionInterfaceManager::gotoNextNavMarker()
 {
 	// need to find the next nav marker....
 	for ( CObjectives::EIterator iter = Team::home->objectives.Begin();
@@ -4740,13 +4740,13 @@ int MissionInterfaceManager::gotoNextNavMarker()
 	return 0;
 
 }
-int MissionInterfaceManager::sendSensorStrike()
+int32_t MissionInterfaceManager::sendSensorStrike()
 {
 	controlGui.pressSensorStrikeButton();
 	return 1;
 }
 
-int MissionInterfaceManager::quickDebugInfo() {
+int32_t MissionInterfaceManager::quickDebugInfo() {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -4788,7 +4788,7 @@ int MissionInterfaceManager::quickDebugInfo() {
 	return(1);
 }
 
-int MissionInterfaceManager::setGameObjectWindow() {
+int32_t MissionInterfaceManager::setGameObjectWindow() {
 	
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -4800,7 +4800,7 @@ int MissionInterfaceManager::setGameObjectWindow() {
 	return(1);
 }
 
-int MissionInterfaceManager::pageGameObjectWindow1() {
+int32_t MissionInterfaceManager::pageGameObjectWindow1() {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -4813,7 +4813,7 @@ int MissionInterfaceManager::pageGameObjectWindow1() {
 	return(1);
 }
 
-int MissionInterfaceManager::pageGameObjectWindow2() {
+int32_t MissionInterfaceManager::pageGameObjectWindow2() {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -4826,7 +4826,7 @@ int MissionInterfaceManager::pageGameObjectWindow2() {
 	return(1);
 }
 
-int MissionInterfaceManager::pageGameObjectWindow3() {
+int32_t MissionInterfaceManager::pageGameObjectWindow3() {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -4839,7 +4839,7 @@ int MissionInterfaceManager::pageGameObjectWindow3() {
 	return(1);
 }
 
-int MissionInterfaceManager::rotateObjectLeft () {
+int32_t MissionInterfaceManager::rotateObjectLeft () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -4852,7 +4852,7 @@ int MissionInterfaceManager::rotateObjectLeft () {
 	return(1);
 }
 
-int MissionInterfaceManager::rotateObjectRight () {
+int32_t MissionInterfaceManager::rotateObjectRight () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -4865,7 +4865,7 @@ int MissionInterfaceManager::rotateObjectRight () {
 	return(1);
 }
 
-int MissionInterfaceManager::jumpToDebugGameObject1() {
+int32_t MissionInterfaceManager::jumpToDebugGameObject1() {
 
 	#ifndef FINAL
 	DEBUGWINS_viewGameObject(0);
@@ -4873,7 +4873,7 @@ int MissionInterfaceManager::jumpToDebugGameObject1() {
 	return(1);
 }
 
-int MissionInterfaceManager::jumpToDebugGameObject2() {
+int32_t MissionInterfaceManager::jumpToDebugGameObject2() {
 
 	#ifndef FINAL
 	DEBUGWINS_viewGameObject(1);
@@ -4881,7 +4881,7 @@ int MissionInterfaceManager::jumpToDebugGameObject2() {
 	return(1);
 }
 
-int MissionInterfaceManager::jumpToDebugGameObject3() {
+int32_t MissionInterfaceManager::jumpToDebugGameObject3() {
 
 	#ifndef FINAL
 	DEBUGWINS_viewGameObject(2);
@@ -4889,7 +4889,7 @@ int MissionInterfaceManager::jumpToDebugGameObject3() {
 	return(1);
 }
 
-int MissionInterfaceManager::toggleDebugWins() {
+int32_t MissionInterfaceManager::toggleDebugWins() {
 
 	#ifndef FINAL
 	static int32_t debugWinsState = 0;
@@ -4912,7 +4912,7 @@ int MissionInterfaceManager::toggleDebugWins() {
 }
 
 extern bool ShowMovers;
-int MissionInterfaceManager::showMovers() {
+int32_t MissionInterfaceManager::showMovers() {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -4924,7 +4924,7 @@ int MissionInterfaceManager::showMovers() {
 	return(1);
 }
 
-int MissionInterfaceManager::cullPathAreas () {
+int32_t MissionInterfaceManager::cullPathAreas () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -4936,7 +4936,7 @@ int MissionInterfaceManager::cullPathAreas () {
 	return(1);
 }
 
-int MissionInterfaceManager::zeroHPrime() {
+int32_t MissionInterfaceManager::zeroHPrime() {
 
 	static double lastTime = 0.0;
 	if ((lastTime + 0.5) < gos_GetElapsedTime()) {
@@ -4946,7 +4946,7 @@ int MissionInterfaceManager::zeroHPrime() {
 	return(1);
 }
 
-int MissionInterfaceManager::calcValidAreaTable() {
+int32_t MissionInterfaceManager::calcValidAreaTable() {
 
 	static double lastTime = 0.0;
 	if ((lastTime + 0.5) < gos_GetElapsedTime()) {
@@ -4956,7 +4956,7 @@ int MissionInterfaceManager::calcValidAreaTable() {
 	return(1);
 }
 
-int MissionInterfaceManager::teleport() {
+int32_t MissionInterfaceManager::teleport() {
 	
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -4986,7 +4986,7 @@ extern GameLog*	LRMoveLog;
 
 extern bool quitGame;
 
-int MissionInterfaceManager::globalMapLog () {
+int32_t MissionInterfaceManager::globalMapLog () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5004,7 +5004,7 @@ int MissionInterfaceManager::globalMapLog () {
 	return(1);
 }
 
-int MissionInterfaceManager::brainDead () {
+int32_t MissionInterfaceManager::brainDead () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5017,7 +5017,7 @@ int MissionInterfaceManager::brainDead () {
 	return(1);
 }
 
-int MissionInterfaceManager::goalPlan() {
+int32_t MissionInterfaceManager::goalPlan() {
 	
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5042,7 +5042,7 @@ int MissionInterfaceManager::goalPlan() {
 	return(1);
 }
 
-int MissionInterfaceManager::enemyGoalPlan() {
+int32_t MissionInterfaceManager::enemyGoalPlan() {
 	
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5061,7 +5061,7 @@ int MissionInterfaceManager::enemyGoalPlan() {
 	return(1);
 }
 
-int MissionInterfaceManager::showVictim () {
+int32_t MissionInterfaceManager::showVictim () {
 	
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5095,7 +5095,7 @@ void damageObject (GameObjectPtr victim, float damage) {
 	}
 }
 
-int MissionInterfaceManager::damageObject1 () 
+int32_t MissionInterfaceManager::damageObject1 () 
 {
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5110,7 +5110,7 @@ int MissionInterfaceManager::damageObject1 ()
 	return(1);
 }
 
-int MissionInterfaceManager::damageObject2 () {
+int32_t MissionInterfaceManager::damageObject2 () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5123,7 +5123,7 @@ int MissionInterfaceManager::damageObject2 () {
 	return(1);
 }
 
-int MissionInterfaceManager::damageObject3 () {
+int32_t MissionInterfaceManager::damageObject3 () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5136,7 +5136,7 @@ int MissionInterfaceManager::damageObject3 () {
 	return(1);
 }
 
-int MissionInterfaceManager::damageObject4 () {
+int32_t MissionInterfaceManager::damageObject4 () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5149,7 +5149,7 @@ int MissionInterfaceManager::damageObject4 () {
 	return(1);
 }
 
-int MissionInterfaceManager::damageObject5 () {
+int32_t MissionInterfaceManager::damageObject5 () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5162,7 +5162,7 @@ int MissionInterfaceManager::damageObject5 () {
 	return(1);
 }
 
-int MissionInterfaceManager::damageObject6 () {
+int32_t MissionInterfaceManager::damageObject6 () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5175,7 +5175,7 @@ int MissionInterfaceManager::damageObject6 () {
 	return(1);
 }
 
-int MissionInterfaceManager::damageObject7 () {
+int32_t MissionInterfaceManager::damageObject7 () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5188,7 +5188,7 @@ int MissionInterfaceManager::damageObject7 () {
 	return(1);
 }
 
-int MissionInterfaceManager::damageObject8 () {
+int32_t MissionInterfaceManager::damageObject8 () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5201,7 +5201,7 @@ int MissionInterfaceManager::damageObject8 () {
 	return(1);
 }
 
-int MissionInterfaceManager::damageObject9 () {
+int32_t MissionInterfaceManager::damageObject9 () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5214,7 +5214,7 @@ int MissionInterfaceManager::damageObject9 () {
 	return(1);
 }
 
-int MissionInterfaceManager::damageObject0 () {
+int32_t MissionInterfaceManager::damageObject0 () {
 
 	#ifndef FINAL
 	static double lastTime = 0.0;
@@ -5234,7 +5234,7 @@ int MissionInterfaceManager::damageObject0 () {
 	return(1);
 }
 
-int MissionInterfaceManager::toggleCompass()
+int32_t MissionInterfaceManager::toggleCompass()
 {
 	((GameCamera*)eye)->toggleCompass();
 	return 0;
@@ -5258,10 +5258,10 @@ bool MissionInterfaceManager::selectionIsHelicopters( )
 	return true;
 }
 
-int MissionInterfaceManager::saveHotKeys( FitIniFile& file )
+int32_t MissionInterfaceManager::saveHotKeys( FitIniFile& file )
 {
 	file.writeBlock( "Keyboard" );
-	for ( int i = 0; i < MAX_COMMAND; i++ )
+	for ( int32_t i = 0; i < MAX_COMMAND; i++ )
 	{
 		char header[256];
 		sprintf( header, "Key%ld", i );
@@ -5274,11 +5274,11 @@ int MissionInterfaceManager::saveHotKeys( FitIniFile& file )
 	return 0;
 
 }
-int MissionInterfaceManager::loadHotKeys( FitIniFile& file )
+int32_t MissionInterfaceManager::loadHotKeys( FitIniFile& file )
 {
 	if ( OldKeys[0] == -1 )
 	{
-		for ( int i = 0; i < MAX_COMMAND; i++ )
+		for ( int32_t i = 0; i < MAX_COMMAND; i++ )
 		{
 			OldKeys[i] = commands[i].key;		
 		}
@@ -5286,7 +5286,7 @@ int MissionInterfaceManager::loadHotKeys( FitIniFile& file )
 
 	if ( NO_ERROR == file.seekBlock( "Keyboard" ) )
 	{
-		for ( int i = 0; i < MAX_COMMAND; i++ )
+		for ( int32_t i = 0; i < MAX_COMMAND; i++ )
 		{
 			char header[256];
 			sprintf( header, "Key%ld", i );
@@ -5305,7 +5305,7 @@ int MissionInterfaceManager::loadHotKeys( FitIniFile& file )
 	return -1;
 }
 
-int MissionInterfaceManager::setHotKey( int whichCommand, gosEnum_KeyIndex newKey, bool bShift, bool bControl, bool bAlt )
+int32_t MissionInterfaceManager::setHotKey( int32_t whichCommand, gosEnum_KeyIndex newKey, bool bShift, bool bControl, bool bAlt )
 {
 	gosASSERT( whichCommand < MAX_COMMAND );
 	int32_t oldKey = commands[whichCommand].key;
@@ -5322,7 +5322,7 @@ int MissionInterfaceManager::setHotKey( int whichCommand, gosEnum_KeyIndex newKe
 	else
 	{
 		// change corresponding waypoint keys
-		for ( int i = 0; i < MAX_COMMAND; i++ )
+		for ( int32_t i = 0; i < MAX_COMMAND; i++ )
 		{
 			if ( ((commands[i].key & 0x0000ffff) == oldKey)  && (commands[i].key & WAYPT) )
 			{
@@ -5336,7 +5336,7 @@ int MissionInterfaceManager::setHotKey( int whichCommand, gosEnum_KeyIndex newKe
 	return 0;
 }
 
-int MissionInterfaceManager::getHotKey( int whichCommand, gosEnum_KeyIndex& newKey, bool& bShift, bool& bControl, bool& bAlt )
+int32_t MissionInterfaceManager::getHotKey( int32_t whichCommand, gosEnum_KeyIndex& newKey, bool& bShift, bool& bControl, bool& bAlt )
 {
 	gosASSERT( whichCommand < MAX_COMMAND );
 	
@@ -5357,7 +5357,7 @@ int MissionInterfaceManager::getHotKey( int whichCommand, gosEnum_KeyIndex& newK
 	return 0;
 }
 
-int MissionInterfaceManager::setWayPointKey( gosEnum_KeyIndex key )
+int32_t MissionInterfaceManager::setWayPointKey( gosEnum_KeyIndex key )
 {
 	WAYPOINT_KEY = key;
 
@@ -5394,7 +5394,7 @@ void MissionInterfaceManager::doEject( GameObject* who )
 		pMover->handleTacticalOrder(tacOrder);
 }
 
-bool MissionInterfaceManager::hotKeyIsPressed( int whichCommand )
+bool MissionInterfaceManager::hotKeyIsPressed( int32_t whichCommand )
 {
 	int32_t key = commands[whichCommand].key;
 	bool bShift = 0;
@@ -5446,7 +5446,7 @@ void testKeyStuff()
 
 }
 
-int MissionInterfaceManager::toggleHotKeys()
+int32_t MissionInterfaceManager::toggleHotKeys()
 {
 	bDrawHotKeys ^= 1;
 	if ( bDrawHotKeys )
@@ -5510,20 +5510,20 @@ void MissionInterfaceManager::doGuardTower()
 	controlGui.setDefaultSpeed();
 }
 
-int		MissionInterfaceManager::toggleHoldPosition()
+int32_t		MissionInterfaceManager::toggleHoldPosition()
 {
 	controlGui.toggleHoldPosition();
 
 	return 1;
 }
 
-int MissionInterfaceManager::handleChatKey()
+int32_t MissionInterfaceManager::handleChatKey()
 {
 	controlGui.toggleChat(0);
 	return 1;
 }
 
-int	MissionInterfaceManager::handleTeamChatKey()
+int32_t	MissionInterfaceManager::handleTeamChatKey()
 {
 	controlGui.toggleChat(1);
 	return 1;
@@ -5899,7 +5899,7 @@ void MissionInterfaceManager::updateRollovers()
 	For all the standard attack cursors, use strings 45161/45162
 	For all the ammo conservation cursors, use strings 45163/45164
 	For all the fire from current position cursors, use strings 45165/45166
-	For all the short-range attack cursors, use strings 45167/45168
+	For all the int16_t-range attack cursors, use strings 45167/45168
 	For all the medium-range attack cursors, use strings 45169/45170
 	For all the int32_t-range attack cursors, use strings 45171/45172
 	For all the force-fire attack cursors, use strings 45173/45174

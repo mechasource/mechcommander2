@@ -57,7 +57,7 @@ void aAnimation::copyData( const aAnimation& src )
 		if ( src.infoCount )
 		{
 			infos = new MoveInfo[infoCount];
-			for ( int i = 0; i < infoCount; i++ )
+			for ( int32_t i = 0; i < infoCount; i++ )
 			{
 				infos[i] = src.infos[i];
 			}
@@ -92,7 +92,7 @@ int32_t	aAnimation::init(FitIniFile* file, PCSTR headerName)
 	if ( infoCount )
 	{
 		infos = new MoveInfo[infoCount];
-		for ( int i = 0; i < infoCount; i++ )
+		for ( int32_t i = 0; i < infoCount; i++ )
 		{
 			strToCheck.Format( "%s%s%ld", headerName, "Time", i );
 			file->readIdFloat( strToCheck, infos[i].time );
@@ -195,7 +195,7 @@ float	aAnimation::getXDelta() const
 	float delta = 0.f;
 	
 	// figure out where we are in animation
-	for ( int j = 0; j < infoCount - 1; j++ )
+	for ( int32_t j = 0; j < infoCount - 1; j++ )
 	{
 		if ( infos[j].time <= currentTime && infos[j+1].time > currentTime )
 		{
@@ -232,7 +232,7 @@ float	aAnimation::getYDelta() const
 	float delta = 0.f;
 	
 	// figure out where we are in animation
-	for ( int j = 0; j < infoCount - 1; j++ )
+	for ( int32_t j = 0; j < infoCount - 1; j++ )
 	{
 		if ( infos[j].time <= currentTime && infos[j+1].time > currentTime )
 		{
@@ -270,7 +270,7 @@ float	aAnimation::getScaleX() const
 	float curScale = 1.0;
 	
 	// figure out where we are in animation
-	for ( int j = 0; j < infoCount - 1; j++ )
+	for ( int32_t j = 0; j < infoCount - 1; j++ )
 	{
 		if ( infos[j].time <= currentTime && infos[j+1].time > currentTime )
 		{
@@ -306,7 +306,7 @@ float	aAnimation::getScaleY() const
 	float curScale = 1.0;
 	
 	// figure out where we are in animation
-	for ( int j = 0; j < infoCount - 1; j++ )
+	for ( int32_t j = 0; j < infoCount - 1; j++ )
 	{
 		if ( infos[j].time <= currentTime && infos[j+1].time > currentTime )
 		{
@@ -334,12 +334,12 @@ float	aAnimation::getScaleY() const
 }
 
 
-ULONG aAnimation::getColor(  ) const
+uint32_t aAnimation::getColor(  ) const
 {
 	return getColor( currentTime );
 }
 
-ULONG aAnimation::getColor( float time ) const
+uint32_t aAnimation::getColor( float time ) const
 {
 	float t0, t1;
 
@@ -347,17 +347,17 @@ ULONG aAnimation::getColor( float time ) const
 	{
 
 		float numCycles = infos[infoCount-1].time ?  time/infos[infoCount-1].time : 0;
-		int numCyc = (int32_t)numCycles;
+		int32_t numCyc = (int32_t)numCycles;
 		time -= ((float)numCyc * infos[infoCount-1].time);
 	}
 
 	t1 = t0 = 0.f;
-	ULONG color = 0xffffffff;
-	ULONG color1, color2;
+	uint32_t color = 0xffffffff;
+	uint32_t color1, color2;
 	color1 = color2 = 0;
 	
 	// figure out where we are in animation
-	for ( int j = 0; j < infoCount - 1; j++ )
+	for ( int32_t j = 0; j < infoCount - 1; j++ )
 	{
 		if ( infos[j].time <= time && infos[j+1].time > time )
 		{

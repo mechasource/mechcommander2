@@ -141,7 +141,7 @@ extern float				MaxVisualRadius;
 //--------
 // EXTERNS
 
-extern ULONG		NextIdNumber;
+extern uint32_t		NextIdNumber;
 extern float				MetersPerCell;
 extern int32_t					AttitudeEffectOnMovePath[NUM_ATTITUDES][3];
 extern bool					useSound;
@@ -655,7 +655,7 @@ void BattleMechType::init (void) {
 
 //--------------------------------------------------------------------------
 
-int32_t BattleMechType::init (FilePtr objFile, ULONG fileSize) 
+int32_t BattleMechType::init (FilePtr objFile, uint32_t fileSize) 
 {
 	int32_t result = 0;
 
@@ -1371,7 +1371,7 @@ void BattleMech::setControl (ControlType ctrlType) {
 }
 
 //----------------------------------------------------------------------------------
-int32_t BattleMech::init (ULONG variantNum)
+int32_t BattleMech::init (uint32_t variantNum)
 {
 	//----------------------------------------------
 	// Open the mech's CSV file.
@@ -1606,7 +1606,7 @@ int32_t BattleMech::init (ULONG variantNum)
 					inventory[realItemNum].facing = appearance->getWeaponNode(sourceWeaponType);
 					inventory[realItemNum].readyTime = 0.0;
 					inventory[realItemNum].bodyLocation = 255;
-					inventory[realItemNum].effectiveness = (short)(MasterComponent::masterList[inventory[realItemNum].masterID].getWeaponDamage() * 10.0 /	// damage over 10 seconds
+					inventory[realItemNum].effectiveness = (int16_t)(MasterComponent::masterList[inventory[realItemNum].masterID].getWeaponDamage() * 10.0 /	// damage over 10 seconds
 													 MasterComponent::masterList[inventory[realItemNum].masterID].getWeaponRecycleTime());
 					inventory[realItemNum].effectiveness *= WeaponRanges[MasterComponent::masterList[inventory[realItemNum].masterID].getWeaponRange()][1] / 24;
 					ItemLocationToInvLocation[curItem] = realItemNum;
@@ -2323,7 +2323,7 @@ void BattleMech::resetComponents (int32_t totalComponents, int32_t *componentLis
 					inventory[realItemNum].facing = appearance->getWeaponNode(sourceWeaponType);
 					inventory[realItemNum].readyTime = 0.0;
 					inventory[realItemNum].bodyLocation = 255;
-					inventory[realItemNum].effectiveness = (short)(MasterComponent::masterList[inventory[realItemNum].masterID].getWeaponDamage() * 10.0 /	// damage over 10 seconds
+					inventory[realItemNum].effectiveness = (int16_t)(MasterComponent::masterList[inventory[realItemNum].masterID].getWeaponDamage() * 10.0 /	// damage over 10 seconds
 													 MasterComponent::masterList[inventory[realItemNum].masterID].getWeaponRecycleTime());
 					inventory[realItemNum].effectiveness *= WeaponRanges[MasterComponent::masterList[inventory[realItemNum].masterID].getWeaponRange()][1] / 24;
 					ItemLocationToInvLocation[curItem] = realItemNum;
@@ -2998,7 +2998,7 @@ int32_t BattleMech::init (FitIniFile* mechFile) {
 		inventory[curItem].ammoIndex = -1;
 		inventory[curItem].readyTime = 0.0;
 		inventory[curItem].bodyLocation = 255;
-		inventory[curItem].effectiveness = (short)(MasterComponent::masterList[inventory[curItem].masterID].getWeaponDamage() * 10.0 /	// damage over 10 seconds
+		inventory[curItem].effectiveness = (int16_t)(MasterComponent::masterList[inventory[curItem].masterID].getWeaponDamage() * 10.0 /	// damage over 10 seconds
 										   MasterComponent::masterList[inventory[curItem].masterID].getWeaponRecycleTime());
 		inventory[curItem].effectiveness *= WeaponRanges[MasterComponent::masterList[inventory[curItem].masterID].getWeaponRange()][1] / 24;
 
@@ -3312,7 +3312,7 @@ int32_t BattleMech::write (FilePtr mechFile) {
 	//mechFile->writeByte(NUM_MECH_BODY_LOCATIONS); //obviously we know this...
 	for (int32_t i = 0; i < NUM_MECH_BODY_LOCATIONS; i++) {
 		mechFile->writeLong((int32_t)body[i].CASE);
-		mechFile->write((PUCHAR)body[i].criticalSpaces, sizeof(CriticalSpace) * NumLocationCriticalSpaces[i]);
+		mechFile->write((puint8_t)body[i].criticalSpaces, sizeof(CriticalSpace) * NumLocationCriticalSpaces[i]);
 		mechFile->writeFloat(body[i].curInternalStructure);
 		mechFile->writeByte((byte)body[i].maxInternalStructure);
 		mechFile->writeByte((byte)body[i].hotSpotNumber);
@@ -3325,7 +3325,7 @@ int32_t BattleMech::write (FilePtr mechFile) {
 	mechFile->writeByte((byte)armorType);
 	mechFile->writeFloat(armorTonnage);
 	//mechFile->writeByte(NUM_MECH_ARMOR_LOCATIONS); //again, we know this for mechs...
-	mechFile->write((PUCHAR)armor, sizeof(ArmorLocation) * NUM_MECH_ARMOR_LOCATIONS);
+	mechFile->write((puint8_t)armor, sizeof(ArmorLocation) * NUM_MECH_ARMOR_LOCATIONS);
 
 	//--------------------------------------------------------------------------
 	// NOTE: The following line will be needed once we have the Team Data Files.
@@ -3370,7 +3370,7 @@ int32_t BattleMech::write (FilePtr mechFile) {
 	mechFile->writeByte((byte)probe);
 	mechFile->writeByte((byte)jammer);
 	mechFile->writeByte((byte)numAntiMissileSystems);
-	mechFile->write((PUCHAR)antiMissileSystem, MAX_ANTI_MISSILE_SYSTEMS);
+	mechFile->write((puint8_t)antiMissileSystem, MAX_ANTI_MISSILE_SYSTEMS);
 
 	mechFile->writeFloat(maxMoveSpeed);
 
@@ -3472,7 +3472,7 @@ int32_t BattleMech::calcTorsoStatus (void)
 
 //-------------------------------------------------------------------------------------------
 
-void BattleMech::pilotingCheck (ULONG situation, float modifier) {
+void BattleMech::pilotingCheck (uint32_t situation, float modifier) {
 
 	if (MPlayer && !MPlayer->isServer())
 		return;
@@ -3744,7 +3744,7 @@ void BattleMech::mineCheck (void)
 	//------------------------------------------------------------
 	// Must mark the end of the path as desirable or much badness
 	// NOT NEEDED ANYMORE.  Everyone can see mines all of the time.
-	ULONG mine = 0;
+	uint32_t mine = 0;
    	mine = GameMap->getMine(cellPositionRow, cellPositionCol);
 		
 	if (mine == 1)
@@ -4535,9 +4535,9 @@ bool BattleMech::updateMovePath (float& newRotate, char& newThrottleSetting, int
 			if (pilot->getMovePathGlobalStep() < (pilot->getMoveNumGlobalSteps() - 1)) 
 			{
 				//-----------------------------------------------------------
-				// We've reached the end of our current short-range path, but
+				// We've reached the end of our current int16_t-range path, but
 				// we have more to go before we've reached our int32_t-range
-				// goal, so calc our next short-range path...
+				// goal, so calc our next int16_t-range path...
 				goalReached = false;
 			}
 		}
@@ -6323,7 +6323,7 @@ int32_t BattleMech::update (void)
 	float barStatus = getTotalEffectiveness();
 	
 	
-	ULONG color = 0xff7f7f7f;
+	uint32_t color = 0xff7f7f7f;
 	if ((teamId > -1) && (teamId < 8)) {
 		if (getTeam()->isFriendly(Team::home))
 			color = SB_GREEN;
@@ -6363,7 +6363,7 @@ void BattleMech::render (void)
 			{
 				float barStatus = getTotalEffectiveness();
 				
-				ULONG color = 0xff7f7f7f;
+				uint32_t color = 0xff7f7f7f;
 				if ((teamId > -1) && (teamId < 8)) {
 					if (getTeam()->isFriendly(Team::home))
 						color = SB_GREEN;
@@ -6429,7 +6429,7 @@ void BattleMech::render (void)
 			{
 				float barStatus = getTotalEffectiveness();
 				
-				ULONG color = 0x0000ff00;
+				uint32_t color = 0x0000ff00;
 				if (getTeamId() == Team::home->getId())
 				{
 					//Two Possibilities.  Either we have the same commander or we don't.
@@ -7180,7 +7180,7 @@ int32_t BattleMech::buildStatusChunk (void) {
 
 //---------------------------------------------------------------------------
 
-int32_t BattleMech::handleStatusChunk (int32_t updateAge, ULONG chunk) {
+int32_t BattleMech::handleStatusChunk (int32_t updateAge, uint32_t chunk) {
 
 	statusChunk.init();
 	statusChunk.data = chunk;
@@ -7269,7 +7269,7 @@ int32_t BattleMech::buildMoveChunk (void) {
 
 //---------------------------------------------------------------------------
 
-int32_t BattleMech::handleMoveChunk (ULONG chunk) {
+int32_t BattleMech::handleMoveChunk (uint32_t chunk) {
 
 	moveChunk.init();
 	moveChunk.data = chunk;
@@ -8811,7 +8811,7 @@ float BattleMech::calcModerateSpeed (void) {
 
 //---------------------------------------------------------------------------
 
-int32_t BattleMech::calcSpriteSpeed (float speed, ULONG flags, int32_t& state, int32_t& throttle) {
+int32_t BattleMech::calcSpriteSpeed (float speed, uint32_t flags, int32_t& state, int32_t& throttle) {
 
 	state = MECH_STATE_RUNNING;
 	throttle = 100;
@@ -8996,7 +8996,7 @@ float curTorso, maxTorso, armorTorso, pilotEffect;
 		1.0,0.95f,0.85f,0.75f,0.50f,0.30f,0.00
 	};
 	
-	ULONG pilotWounds = float2long(getPilot()->getWounds());
+	uint32_t pilotWounds = float2long(getPilot()->getWounds());
 	if (pilotWounds > 6)
 		pilotWounds = 6;
 		
@@ -9028,7 +9028,7 @@ void BattleMech::Save (PacketFilePtr file, int32_t packetNum)
 	CopyTo(&data);
 
 	//PacketNum incremented in ObjectManager!!
-	file->writePacket(packetNum,(PUCHAR)&data,sizeof(MechData),STORAGE_TYPE_ZLIB);
+	file->writePacket(packetNum,(puint8_t)&data,sizeof(MechData),STORAGE_TYPE_ZLIB);
 }
 
 //***************************************************************************

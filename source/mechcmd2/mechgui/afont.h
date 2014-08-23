@@ -27,23 +27,23 @@ public:
 	int32_t init( PCSTR fontName);
 	int32_t init( int32_t resourceID );
 	void destroy();
-	void render( PCSTR text, int XPos, int YPos, int areaWidth, 
-		int areaHeight, ULONG color, bool bBold, int alignment );
+	void render( PCSTR text, int32_t XPos, int32_t YPos, int32_t areaWidth, 
+		int32_t areaHeight, uint32_t color, bool bBold, int32_t alignment );
 
 	int32_t load( PCSTR fontName);
-	ULONG height() const;
-	ULONG width( PCSTR st) const;
-	ULONG height( PCSTR st, int areaWidth ) const;
-	void		  getSize( ULONG& width, ULONG& height, PCSTR pText );
+	uint32_t height() const;
+	uint32_t width( PCSTR st) const;
+	uint32_t height( PCSTR st, int32_t areaWidth ) const;
+	void		  getSize( uint32_t& width, uint32_t& height, PCSTR pText );
 
 	static HGOSFONT3D loadFont( int32_t resourceID, int32_t& size );
 	int32_t	getSize() { return size; }
 
 	HGOSFONT3D getTempHandle() { return gosFont; } // don't you dare hang on to this
-	int			getFontID() { return resID; }
+	int32_t			getFontID() { return resID; }
 private:
 	HGOSFONT3D		gosFont;
-	int				resID;
+	int32_t				resID;
 	char			fontName[64]; // so we can copy fonts
 	int32_t			size;
 	void copyData( const aFont& src );

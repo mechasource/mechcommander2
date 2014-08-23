@@ -69,7 +69,7 @@ class ObjectType {
 			init();
 		}
 		
-		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
 
 		int32_t init (FitIniFilePtr objFile);
 		

@@ -98,7 +98,7 @@ extern LineElement *debugLines[];
 
 extern float maxVisualRange;
 extern int32_t	visualRangeTable[];
-extern ULONG MaxTreeLOSCellBlock;
+extern uint32_t MaxTreeLOSCellBlock;
 
 //***************************************************************************
 // TEAM class
@@ -1305,7 +1305,7 @@ int32_t Team::Save (PacketFilePtr file, int32_t packetNum)
 	memcpy(staticData.relations,relations,sizeof(char) * MAX_TEAMS * MAX_TEAMS);
 	memcpy(staticData.noPain,noPain,sizeof(bool) * MAX_TEAMS);
 
-	file->writePacket(packetNum,(PUCHAR)&staticData,sizeof(TeamStaticData),STORAGE_TYPE_RAW);
+	file->writePacket(packetNum,(puint8_t)&staticData,sizeof(TeamStaticData),STORAGE_TYPE_RAW);
 	packetNum++;
 
 	for (int32_t i=0;i<numTeams;i++)
@@ -1315,7 +1315,7 @@ int32_t Team::Save (PacketFilePtr file, int32_t packetNum)
 		data.rosterSize = teams[i]->rosterSize;
 		memcpy(data.roster,teams[i]->roster,sizeof(GameObjectWatchID) * MAX_MOVERS_PER_TEAM);
 
-		file->writePacket(packetNum,(PUCHAR)&data,sizeof(TeamData),STORAGE_TYPE_RAW);
+		file->writePacket(packetNum,(puint8_t)&data,sizeof(TeamData),STORAGE_TYPE_RAW);
 		packetNum++;
 	}
 
@@ -1327,7 +1327,7 @@ int32_t Team::Load (PacketFilePtr file, int32_t packetNum)
 {
 	TeamStaticData staticData;
 
-	file->readPacket(packetNum,(PUCHAR)&staticData);
+	file->readPacket(packetNum,(puint8_t)&staticData);
 	packetNum++;
 
 	numTeams = staticData.numTeams;
@@ -1337,7 +1337,7 @@ int32_t Team::Load (PacketFilePtr file, int32_t packetNum)
 	for (int32_t i=0;i<numTeams;i++)
 	{
 		TeamData data;
-		file->readPacket(packetNum,(PUCHAR)&data);
+		file->readPacket(packetNum,(puint8_t)&data);
 		packetNum++;
 
 		teams[i] = new Team;

@@ -72,7 +72,7 @@ class MissionInterfaceManager
 
 public:
 
-	typedef int (MissionInterfaceManager::*COMMAND)( void );
+	typedef int32_t (MissionInterfaceManager::*COMMAND)( void );
 
 	struct Command
 		{
@@ -91,8 +91,8 @@ public:
 	protected:
 
 
-	   static int mouseX;
-	   static int mouseY;
+	   static int32_t mouseX;
+	   static int32_t mouseY;
 	   static gosEnum_KeyIndex WAYPOINT_KEY;
 
 	   static float pauseWndVelocity;
@@ -193,7 +193,7 @@ public:
 		void init (void);
 		
 		void init (FitIniFilePtr loader);
-		void initTacMap( PacketFile* file, int packet );
+		void initTacMap( PacketFile* file, int32_t packet );
 	
 		virtual void destroy (void);
 		
@@ -208,7 +208,7 @@ public:
 		void	addMover (MoverPtr mover){ controlGui.addMover(mover); }	
 		void	removeMover (MoverPtr mover){ controlGui.removeMover(mover); }	
 
-		int update( bool bLeftClick, bool bRightClick, int mouseX, int mouseY, GameObject* pTarget, bool bLOS ); // check for each key in the list
+		int32_t update( bool bLeftClick, bool bRightClick, int32_t mouseX, int32_t mouseY, GameObject* pTarget, bool bLOS ); // check for each key in the list
 		
 		void	updateVTol();
 		
@@ -222,12 +222,12 @@ public:
 			controlGui.playMovie(filename);
 		}
 
-		int handleOrders( TacticalOrder& order );
+		int32_t handleOrders( TacticalOrder& order );
 		bool anySelectedWithoutAreaEffect (void);
 		void updateWaypoints (void);
 		
 		void setTarget( GameObject* pTarget ){ target = pTarget; }
-		static void selectForceGroup( int forceGroup, bool deselectOthers );
+		static void selectForceGroup( int32_t forceGroup, bool deselectOthers );
 		void doRepair( GameObject* who);
 		void doRepairBay( GameObject* who);
 		void doEject( GameObject* who );
@@ -243,14 +243,14 @@ public:
 		void updateAOEStyle(bool shiftDn, bool altDn, bool ctrlDn, bool bGui, 
 			bool lineOfSight, bool passable, int32_t moverCount, int32_t nonMoverCount );
 
-		static int saveHotKeys( FitIniFile& file );
-		static int loadHotKeys( FitIniFile& file );
+		static int32_t saveHotKeys( FitIniFile& file );
+		static int32_t loadHotKeys( FitIniFile& file );
 
-		static int setHotKey( int whichCommand, gosEnum_KeyIndex key, bool bShift, bool bControl, bool bAlt );
-		int getHotKey( int whichCommand, gosEnum_KeyIndex& newKey, bool& bShift, bool& bControl, bool& bAlt );
-		bool hotKeyIsPressed( int whichCommand );
+		static int32_t setHotKey( int32_t whichCommand, gosEnum_KeyIndex key, bool bShift, bool bControl, bool bAlt );
+		int32_t getHotKey( int32_t whichCommand, gosEnum_KeyIndex& newKey, bool& bShift, bool& bControl, bool& bAlt );
+		bool hotKeyIsPressed( int32_t whichCommand );
 
-		int setWayPointKey( gosEnum_KeyIndex key );
+		int32_t setWayPointKey( gosEnum_KeyIndex key );
 
 		void setAOEStyle();
 		void setMCStyle();
@@ -260,14 +260,14 @@ public:
 
 		bool	isPaused();
 		bool	isPausedWithoutMenu();
-		int		togglePause();
-		int		togglePauseWithoutMenu();
-		int		toggleHoldPosition();
-		int		showObjectives();
-		int		showObjectives(bool on);
+		int32_t		togglePause();
+		int32_t		togglePauseWithoutMenu();
+		int32_t		toggleHoldPosition();
+		int32_t		showObjectives();
+		int32_t		showObjectives(bool on);
 		void	doMove(const Stuff::Vector3D& pos);
 		void	doGuard(GameObject* pObj);
-		int toggleHotKeys();
+		int32_t toggleHotKeys();
 		void	beginVtol(int32_t supportID, int32_t commanderID = 0, Stuff::Vector3D* reinforcePos = NULL, MoverPtr salvageTarget = NULL);
 
 		//Tutorial Stuff goes here.
@@ -290,102 +290,102 @@ public:
 
 	private:
 
-		void makeForceGroup( int forceGroup );
+		void makeForceGroup( int32_t forceGroup );
 		bool moveCameraAround( bool lineOfSight, bool passable, bool ctrl, bool bGui, int32_t moverCount, int32_t nonMoverCount );
 		bool canJump(); // selected units can jump
 		bool canJumpToWPos();
 		void doDrag(bool bGui);
 
 
-		int attackShort();
-		int attackMedium();
-		int attackLong();
-		int alphaStrike();
-		int defaultAttack();
-		int jump();
-		int stopJump();
-		int fireFromCurrentPos();
-		int stopFireFromCurrentPos();
-		int guard();
-		int stopGuard();
-		int conserveAmmo();
-		int selectVisible();
-		int addVisibleToSelection();
-		int aimLeg();
-		int aimArm();
-		int aimHead();
-		int removeCommand();
-		int powerUp();
-		int powerDown();
-		int changeSpeed();
-		int stopChangeSpeed();
-		int eject();
-		int forceShot();
+		int32_t attackShort();
+		int32_t attackMedium();
+		int32_t attackLong();
+		int32_t alphaStrike();
+		int32_t defaultAttack();
+		int32_t jump();
+		int32_t stopJump();
+		int32_t fireFromCurrentPos();
+		int32_t stopFireFromCurrentPos();
+		int32_t guard();
+		int32_t stopGuard();
+		int32_t conserveAmmo();
+		int32_t selectVisible();
+		int32_t addVisibleToSelection();
+		int32_t aimLeg();
+		int32_t aimArm();
+		int32_t aimHead();
+		int32_t removeCommand();
+		int32_t powerUp();
+		int32_t powerDown();
+		int32_t changeSpeed();
+		int32_t stopChangeSpeed();
+		int32_t eject();
+		int32_t forceShot();
 
-		int scrollUp();
-		int scrollDown();
-		int scrollLeft();
-		int scrollRight();
-		int zoomOut();
-		int zoomIn();
-		int zoomChoiceOut();
-		int zoomChoiceIn();
-		int rotateLeft();
-		int rotateRight();
-		int tiltUp();
-		int tiltDown();
-		int centerCamera();
-		int rotateLightLeft();
-		int rotateLightRight();
-		int rotateLightUp();
-		int rotateLightDown();
-		int switchTab();
-		int reverseSwitchTab();
+		int32_t scrollUp();
+		int32_t scrollDown();
+		int32_t scrollLeft();
+		int32_t scrollRight();
+		int32_t zoomOut();
+		int32_t zoomIn();
+		int32_t zoomChoiceOut();
+		int32_t zoomChoiceIn();
+		int32_t rotateLeft();
+		int32_t rotateRight();
+		int32_t tiltUp();
+		int32_t tiltDown();
+		int32_t centerCamera();
+		int32_t rotateLightLeft();
+		int32_t rotateLightRight();
+		int32_t rotateLightUp();
+		int32_t rotateLightDown();
+		int32_t switchTab();
+		int32_t reverseSwitchTab();
 
-		int drawTerrain();
-		int drawOverlays();
-		int drawBuildings();
-		int showGrid();
-		int recalcLights();
-		int drawClouds();
-		int drawFog();
-		int usePerspective();
-		int drawWaterEffects();
-		int recalcWater();
-		int drawShadows();
-		int changeLighting();
-		int vehicleCommand();
-		int toggleGUI();
-		int	drawTGLShapes();
-		int infoCommand();
-		int infoButtonReleased();
-		int energyWeapons();
-		int sendAirstrike();
-		int sendLargeAirstrike();
-		int gotoNextNavMarker();
-		int sendSensorStrike();
+		int32_t drawTerrain();
+		int32_t drawOverlays();
+		int32_t drawBuildings();
+		int32_t showGrid();
+		int32_t recalcLights();
+		int32_t drawClouds();
+		int32_t drawFog();
+		int32_t usePerspective();
+		int32_t drawWaterEffects();
+		int32_t recalcWater();
+		int32_t drawShadows();
+		int32_t changeLighting();
+		int32_t vehicleCommand();
+		int32_t toggleGUI();
+		int32_t	drawTGLShapes();
+		int32_t infoCommand();
+		int32_t infoButtonReleased();
+		int32_t energyWeapons();
+		int32_t sendAirstrike();
+		int32_t sendLargeAirstrike();
+		int32_t gotoNextNavMarker();
+		int32_t sendSensorStrike();
 		
-		int	handleChatKey();
-		int	handleTeamChatKey();
+		int32_t	handleChatKey();
+		int32_t	handleTeamChatKey();
 
 
 		bool makePatrolPath();
 		
-		int bigAirStrike();
-		int smlAirStrike();
-		int snsAirStrike();
+		int32_t bigAirStrike();
+		int32_t smlAirStrike();
+		int32_t snsAirStrike();
 		
-		int cameraNormal();
-		int cameraDefault();
-		int cameraMaxIn();
-		int cameraTight();
-		int cameraFour();
-		int toggleCompass();
+		int32_t cameraNormal();
+		int32_t cameraDefault();
+		int32_t cameraMaxIn();
+		int32_t cameraTight();
+		int32_t cameraFour();
+		int32_t toggleCompass();
 		
-		int cameraAssign0();
-		int cameraAssign1();
-		int cameraAssign2();
-		int cameraAssign3();
+		int32_t cameraAssign0();
+		int32_t cameraAssign1();
+		int32_t cameraAssign2();
+		int32_t cameraAssign3();
 
 		static GameObject*	target;
 
@@ -397,37 +397,37 @@ public:
 		
 		void doSalvage();
 
-		int quickDebugInfo ();
-		int setGameObjectWindow ();
-		int pageGameObjectWindow1 ();
-		int pageGameObjectWindow2 ();
-		int pageGameObjectWindow3 ();
-		int jumpToDebugGameObject1 ();
-		int jumpToDebugGameObject2 ();
-		int jumpToDebugGameObject3 ();
-		int toggleDebugWins ();
-		int teleport ();
-		int showMovers ();
-		int cullPathAreas ();
-		int zeroHPrime ();
-		int calcValidAreaTable ();
-		int globalMapLog ();
-		int brainDead ();
-		int goalPlan ();
-		int enemyGoalPlan ();
-		int showVictim ();
-		int damageObject1 ();
-		int damageObject2 ();
-		int damageObject3 ();
-		int damageObject4 ();
-		int damageObject5 ();
-		int damageObject6 ();
-		int damageObject7 ();
-		int damageObject8 ();
-		int damageObject9 ();
-		int damageObject0 ();
-		int rotateObjectLeft ();
-		int rotateObjectRight ();
+		int32_t quickDebugInfo ();
+		int32_t setGameObjectWindow ();
+		int32_t pageGameObjectWindow1 ();
+		int32_t pageGameObjectWindow2 ();
+		int32_t pageGameObjectWindow3 ();
+		int32_t jumpToDebugGameObject1 ();
+		int32_t jumpToDebugGameObject2 ();
+		int32_t jumpToDebugGameObject3 ();
+		int32_t toggleDebugWins ();
+		int32_t teleport ();
+		int32_t showMovers ();
+		int32_t cullPathAreas ();
+		int32_t zeroHPrime ();
+		int32_t calcValidAreaTable ();
+		int32_t globalMapLog ();
+		int32_t brainDead ();
+		int32_t goalPlan ();
+		int32_t enemyGoalPlan ();
+		int32_t showVictim ();
+		int32_t damageObject1 ();
+		int32_t damageObject2 ();
+		int32_t damageObject3 ();
+		int32_t damageObject4 ();
+		int32_t damageObject5 ();
+		int32_t damageObject6 ();
+		int32_t damageObject7 ();
+		int32_t damageObject8 ();
+		int32_t damageObject9 ();
+		int32_t damageObject0 ();
+		int32_t rotateObjectLeft ();
+		int32_t rotateObjectRight ();
 
 		bool	canAddVehicle( const Stuff::Vector3D& pos );
 		bool	canRecover( const Stuff::Vector3D& pos );

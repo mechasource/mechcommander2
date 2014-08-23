@@ -49,8 +49,8 @@ class aEdit: public aObject
 
 	
 		void getEntry(EString& str);
-		void setEntry(const EString& str, UCHAR byHighlight = 0);
-		void limitEntry(int nNewLimit) { nLimit = nNewLimit; }
+		void setEntry(const EString& str, uint8_t byHighlight = 0);
+		void limitEntry(int32_t nNewLimit) { nLimit = nNewLimit; }
 		void setFocus(bool bHasFocus);
 		void setFont( int32_t fontID );
 		void setTextColor( int32_t color ){ textColor = color; }
@@ -92,10 +92,10 @@ class aEdit: public aObject
 				dwStyleFlags ^= ES_EDITNUM;
 		}
 
-		int getFont() { return font.getFontID(); }
+		int32_t getFont() { return font.getFontID(); }
 
-		void initBufferSize( ULONG newSize );
-		void setBufferSize( int newSize ) { text.SetBufferSize( newSize ); }
+		void initBufferSize( uint32_t newSize );
+		void setBufferSize( int32_t newSize ) { text.SetBufferSize( newSize ); }
 
 		void	allowIME( bool bAllow ){ bAllowIME = bAllow; }
 
@@ -106,19 +106,19 @@ class aEdit: public aObject
 
 		// HELPER FUNCTIONS
 		bool	clearSelection();
-		void	backSpace(int nPosition);
+		void	backSpace(int32_t nPosition);
 		void	drawCursor();
 		void	hideCursor();
-		bool	handleFormattingKeys(int key);
-		int		charXPos(int nOffset);
+		bool	handleFormattingKeys(int32_t key);
+		int32_t		charXPos(int32_t nOffset);
 		void	makeCursorVisible();
 		void	flushCursorRight();
-		int		findChar(int nXPos);
+		int32_t		findChar(int32_t nXPos);
 
 		void	handleMouse();
 		void	handleKeyboard();
 
-		int charLength( int index );
+		int32_t charLength( int32_t index );
 		
 
 		int32_t cursorColor;
@@ -126,16 +126,16 @@ class aEdit: public aObject
 		int32_t textColor;
 		int32_t selectedColor; // selected text
 		int32_t outlineColor;
-		int		nLimit;
-		int		nInsertion1,nInsertion2; // beginning and ending highlight positions (when equal there is no highlight)
+		int32_t		nLimit;
+		int32_t		nInsertion1,nInsertion2; // beginning and ending highlight positions (when equal there is no highlight)
 		bool	bCursorVisible;
-		int		nLeftOffset;
+		int32_t		nLeftOffset;
 		float	cursorTime;
 		bool	bMouseDown;
 		EString	text;
 		aFont	font;
 		bool	bFocus;
-		ULONG dwStyleFlags;
+		uint32_t dwStyleFlags;
 		bool	bAllowIME;
 		bool	bWierdChars;
 

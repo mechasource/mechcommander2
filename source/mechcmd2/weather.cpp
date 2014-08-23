@@ -153,7 +153,7 @@ void Weather::init (FitIniFilePtr missionFile)
 }
 
 //----------------------------------------------------------------------------------
-void Weather::init (ULONG maxDrops, float startingRain, float brChance, float ltChance)
+void Weather::init (uint32_t maxDrops, float startingRain, float brChance, float ltChance)
 {
 	totalRainDrops = maxDrops;
 	currentRainDrops = 0;
@@ -391,7 +391,7 @@ void Weather::update (void)
 		{
 			//---------------------------------------------
 			// Calculate how many raindrops are in service
-			ULONG newRainDrops = (rainLevel - 1.0f) * totalRainDrops;
+			uint32_t newRainDrops = (rainLevel - 1.0f) * totalRainDrops;
 			if (newRainDrops > totalRainDrops)
 				newRainDrops = totalRainDrops;
 				
@@ -495,7 +495,7 @@ void Weather::render (void)
 				if (onScreen)
 				{
 					uint8_t amb = ambientFactor * (1.0f - screen1.z);
-					ULONG rainColor = (amb << 24) + (0xff << 16) + (0xff << 8) + (0xff);
+					uint32_t rainColor = (amb << 24) + (0xff << 16) + (0xff << 8) + (0xff);
 					
 					//Gotta draw this one!
 					gos_VERTEX sVertices[2];

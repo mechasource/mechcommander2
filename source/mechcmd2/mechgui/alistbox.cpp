@@ -98,7 +98,7 @@ void aListBox::removeAllItems( bool bDelete )
 
 	if (items)
 	{
-		for ( int i = 0; i < itemCount; i++ )
+		for ( int32_t i = 0; i < itemCount; i++ )
 		{
 			if ( items[i] && bDelete )
 				delete items[i];
@@ -123,12 +123,12 @@ void aListBox::update()
 			scrollBar->update();
 
 
-		int prevCheck = GetCheckedItem();
-		int newCheck = -1;
+		int32_t prevCheck = GetCheckedItem();
+		int32_t newCheck = -1;
 
 
-		int iSel = -1;
-		int iHighlight = -1;
+		int32_t iSel = -1;
+		int32_t iHighlight = -1;
 		int32_t mouseX = userInput->getMouseX();
 		int32_t mouseY = userInput->getMouseY();
 
@@ -138,7 +138,7 @@ void aListBox::update()
 			::helpTextID = helpID;
 		}
 
-		int i;
+		int32_t i;
 		for ( i = 0; i < itemCount; i++ )
 		{
 			if ( bInside &&
@@ -205,7 +205,7 @@ void aListBox::update()
 }
 
 	
-int aListBox::handleMessage( ULONG message, ULONG who )
+int32_t aListBox::handleMessage( uint32_t message, uint32_t who )
 {
 	switch ( message )
 	{
@@ -242,7 +242,7 @@ void aListBox::resize(int32_t w, int32_t h)
 	scrollBar->resize(scrollBar->width(), h - 4);
 }
 
-void aListBox::setScrollPos( int pos )
+void aListBox::setScrollPos( int32_t pos )
 {
 	scroll( pos - scrollBar->GetScrollPos() );
 	scrollBar->SetScroll( pos );
@@ -270,7 +270,7 @@ void aListBox::render()
 
 
 		bool bItemOutOfRange = 0;
-		for ( int i = 0; i < itemCount; i++ )
+		for ( int32_t i = 0; i < itemCount; i++ )
 		{
 			if ( items[i]->globalBottom() > globalTop()
 				&& items[i]->globalTop() < globalBottom() )
@@ -329,7 +329,7 @@ void aListBox::render()
 void aListBox::move( float offsetX, float offsetY )
 {
 	aObject::move( offsetX, offsetY );
-	for ( int i = 0; i < itemCount; i++ )
+	for ( int32_t i = 0; i < itemCount; i++ )
 	{
 		items[i]->move( offsetX, offsetY );
 	}
@@ -362,7 +362,7 @@ int32_t aListBox::AddItem(aListItem* add)
 
 	if ( scrollBar )
 	{
-		int itemsTotalHeight = 0;
+		int32_t itemsTotalHeight = 0;
 		if ( items )
 			itemsTotalHeight = items[itemCount-1]->bottom() - items[0]->top() + skipAmount;
 
@@ -386,7 +386,7 @@ int32_t	aListBox::InsertItem(aListItem* itemString, int32_t where)
 	gosASSERT( itemString );
 	if ( where >= itemCount )
 		where = itemCount;
-	for ( int i = itemCount - 1; i > where - 1; i-- )
+	for ( int32_t i = itemCount - 1; i > where - 1; i-- )
 	{
 		items[i+1] = items[i];
 		items[i+1]->move( 0, itemString->height() + skipAmount );
@@ -419,7 +419,7 @@ int32_t	aListBox::InsertItem(aListItem* itemString, int32_t where)
 
 	if ( scrollBar )
 	{
-		int itemsTotalHeight = 0;
+		int32_t itemsTotalHeight = 0;
 		if ( items )
 			itemsTotalHeight = items[itemCount-1]->bottom() - items[0]->top();
 
@@ -442,7 +442,7 @@ int32_t	aListBox::RemoveItem( aListItem* item, bool bDelete )
 	float height = item->height();
 
 	bool bFound = false;
-	for ( int i = 0; i < itemCount; i++ )
+	for ( int32_t i = 0; i < itemCount; i++ )
 	{
 		if ( items[i] == item )
 		{
@@ -491,7 +491,7 @@ int32_t aListBox::SelectItem(int32_t itemNumber)
 	if (itemNumber >= itemCount)
 		return ITEM_OUT_OF_RANGE;
 	
-	for ( int i = 0; i < itemCount; i++ )
+	for ( int32_t i = 0; i < itemCount; i++ )
 	{
 		items[i]->deselect();
 	}
@@ -508,7 +508,7 @@ int32_t aListBox::SelectItem(int32_t itemNumber)
 			if ( !pItem->isShowing() || pItem->globalY() + pItem->height() > globalY() + height() 
 				|| pItem->globalY() + pItem->height() < globalY() )
 			{
-				int newPos = (pItem->globalY() + pItem->height() - globalY()) - scrollBar->height() + scrollBar->GetScrollPos();
+				int32_t newPos = (pItem->globalY() + pItem->height() - globalY()) - scrollBar->height() + scrollBar->GetScrollPos();
 
 				scrollBar->SetScroll( newPos  );//				float itemY = pItem->globalY() + pItem->height();
 			}
@@ -521,7 +521,7 @@ int32_t aListBox::SelectItem(int32_t itemNumber)
 
 void	aListBox::enableAllItems()
 {
-	for ( int i = 0; i < itemCount; i++ )
+	for ( int32_t i = 0; i < itemCount; i++ )
 	{
 		if ( items[i]->getState() == aListItem::DISABLED )
 			items[i]->setState( aListItem::ENABLED );
@@ -538,7 +538,7 @@ aListItem* aListBox::GetItem(int32_t itemNumber)
 	
 }	
 
-void aListBox::scroll( int amount )
+void aListBox::scroll( int32_t amount )
 {
 	if ( !items || !itemCount )
 		return;
@@ -549,7 +549,7 @@ void aListBox::scroll( int amount )
 	else if ( amount > 0 && (items[itemCount-1]->globalY() + items[itemCount-1]->height()) < (globalY() + height() ) )
 		return;
 
-	for ( int i = 0; i < itemCount; i++ )
+	for ( int32_t i = 0; i < itemCount; i++ )
 	{
 		items[i]->move( 0, -amount );
 	}
@@ -557,10 +557,10 @@ void aListBox::scroll( int amount )
 
 int32_t aListBox::GetCheckedItem() const
 {
-	int ret = -1;
+	int32_t ret = -1;
 	if ( items )
 	{
-		for ( int i = 0; i < itemCount; i++ )
+		for ( int32_t i = 0; i < itemCount; i++ )
 		{
 			if ( items[i] && items[i]->isChecked() )
 				return i;
@@ -632,7 +632,7 @@ aDropList& aDropList::operator=( const aDropList& src)
 	if ( rectCount )
 	{
 		rects = new aRect[rectCount];
-		for ( int i = 0; i < rectCount; i++  )
+		for ( int32_t i = 0; i < rectCount; i++  )
 		{
 			addChild( &rects[i] );
 			rects[i] = src.rects[i];
@@ -677,7 +677,7 @@ int32_t aDropList::init( FitIniFile* file, PCSTR blockName )
 	if ( rectCount )
 	{
 		rects = new aRect[rectCount];
-		for ( int i = 0; i < rectCount; i++ )
+		for ( int32_t i = 0; i < rectCount; i++ )
 		{
 			sprintf( tmpBlockName, "Rect%ld", i );
 			rects[i].init( file, tmpBlockName );
@@ -760,7 +760,7 @@ void aDropList::render()
 {
 	if ( showWindow )
 	{
-		for ( int i = 0; i < pNumberOfChildren; i++ )
+		for ( int32_t i = 0; i < pNumberOfChildren; i++ )
 		{
 			pChildren[i]->render();
 		}
@@ -816,11 +816,11 @@ void aDropList::update()
 		aObject::update();
 		if (userInput->isLeftClick())
 		{
-			int cx = userInput->getMouseX();
-			int cy = userInput->getMouseY();
+			int32_t cx = userInput->getMouseX();
+			int32_t cy = userInput->getMouseY();
 
 			if (expandButton.pointInside(cx, cy)) {
-				handleMessage(aMSG_BUTTONCLICKED, (ULONG)(&expandButton));
+				handleMessage(aMSG_BUTTONCLICKED, (uint32_t)(&expandButton));
 			}
 
 			// lose focus if appropriate
@@ -858,10 +858,10 @@ void aDropList::update()
 }
 
 
-int aDropList::handleMessage( ULONG message, ULONG who )
+int32_t aDropList::handleMessage( uint32_t message, uint32_t who )
 {
 	{
-		if ((ULONG)(&expandButton) == who) 
+		if ((uint32_t)(&expandButton) == who) 
 		{
 			if (aMSG_BUTTONCLICKED == message)
 			{
@@ -904,7 +904,7 @@ int32_t aDropList::AddItem(aListItem* itemString)
 	return retval;
 }
 
-int32_t				aDropList::AddItem( PCSTR text, ULONG color )
+int32_t				aDropList::AddItem( PCSTR text, uint32_t color )
 {
 	aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 	*pItem = templateItem;
@@ -913,7 +913,7 @@ int32_t				aDropList::AddItem( PCSTR text, ULONG color )
 	return AddItem( pItem );
 }
 
-int32_t aDropList::AddItem( ULONG textID, ULONG color )
+int32_t aDropList::AddItem( uint32_t textID, uint32_t color )
 {
 		aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 		*pItem = templateItem;
@@ -972,7 +972,7 @@ aComboBox& aComboBox::operator=(const aComboBox& src )
 	if ( rectCount )
 	{
 		rects = new aRect[rectCount];
-		for ( int i = 0; i < rectCount; i++  )
+		for ( int32_t i = 0; i < rectCount; i++  )
 		{
 			addChild( &rects[i] );
 			rects[i] = src.rects[i];
@@ -1015,7 +1015,7 @@ int32_t aComboBox::init( FitIniFile* file, PCSTR blockName )
 		if ( rectCount )
 		{
 			rects = new aRect[rectCount];
-			for ( int i = 0; i < rectCount; i++ )
+			for ( int32_t i = 0; i < rectCount; i++ )
 			{
 				sprintf( blockName, "Rect%ld", i );
 				rects[i].init( file, blockName );
@@ -1053,7 +1053,7 @@ int32_t aComboBox::init( FitIniFile* file, PCSTR blockName )
 	addChild( &entry );
 	addChild( &expandButton );
 
-	for ( int i = 0; i < rectCount; i++ )
+	for ( int32_t i = 0; i < rectCount; i++ )
 		addChild( &rects[i] );
 
 	templateItem.init( *file );
@@ -1091,7 +1091,7 @@ void aComboBox::render()
 {
 	if ( showWindow )
 	{
-		for ( int i = 0; i < pNumberOfChildren; i++ )
+		for ( int32_t i = 0; i < pNumberOfChildren; i++ )
 		{
 			pChildren[i]->render();
 		}
@@ -1106,11 +1106,11 @@ void aComboBox::update()
 		
 		if (userInput->isLeftClick())
 		{
-			int cx = userInput->getMouseX();
-			int cy = userInput->getMouseY();
+			int32_t cx = userInput->getMouseX();
+			int32_t cy = userInput->getMouseY();
 
 			if (expandButton.pointInside(cx, cy)) {
-				handleMessage(aMSG_BUTTONCLICKED, (ULONG)(&expandButton));
+				handleMessage(aMSG_BUTTONCLICKED, (uint32_t)(&expandButton));
 			}
 
 			// lose focus if appropriate
@@ -1161,10 +1161,10 @@ void aComboBox::update()
 }
 
 
-int aComboBox::handleMessage( ULONG message, ULONG who )
+int32_t aComboBox::handleMessage( uint32_t message, uint32_t who )
 {
 	{
-		if ((ULONG)(&expandButton) == who) 
+		if ((uint32_t)(&expandButton) == who) 
 		{
 			if (aMSG_BUTTONCLICKED == message)
 			{
@@ -1209,7 +1209,7 @@ int32_t aComboBox::AddItem(aListItem* itemString)
 	return retval;
 }
 
-int32_t aComboBox::AddItem( ULONG textID, ULONG color )
+int32_t aComboBox::AddItem( uint32_t textID, uint32_t color )
 {
 		aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 		*pItem = templateItem;
@@ -1218,7 +1218,7 @@ int32_t aComboBox::AddItem( ULONG textID, ULONG color )
 		return AddItem( pItem );
 }
 
-int32_t				aComboBox::AddItem( PCSTR text, ULONG color )
+int32_t				aComboBox::AddItem( PCSTR text, uint32_t color )
 {
 	aAnimTextListItem* pItem = new aAnimTextListItem( 27333 );
 	*pItem = templateItem;
@@ -1235,8 +1235,8 @@ int32_t				aComboBox::AddItem( PCSTR text, ULONG color )
 aTextListItem::aTextListItem( const aFont& newFont )
 {
 	font = newFont;
-	ULONG height;
-	ULONG  width;
+	uint32_t height;
+	uint32_t  width;
 	font.getSize( width, height, "> ");
 	aListItem::init( width, 0, Environment.screenWidth, ((float)height*1.25) );
 	state = ENABLED;
@@ -1246,8 +1246,8 @@ aTextListItem::aTextListItem( const aFont& newFont )
 aTextListItem::aTextListItem(int32_t newFontResID)
 {
 	font.init( newFontResID );
-	ULONG height;
-	ULONG  width;
+	uint32_t height;
+	uint32_t  width;
 	font.getSize( width, height, "> ");
 	aListItem::init( width, 0, Environment.screenWidth, ((float)height*1.25) );
 	state = ENABLED;
@@ -1257,8 +1257,8 @@ aTextListItem::aTextListItem(int32_t newFontResID)
 void aTextListItem::init(int32_t newFontResID)
 {
 	font.init( newFontResID );
-	ULONG height;
-	ULONG  width;
+	uint32_t height;
+	uint32_t  width;
 	font.getSize( width, height, "> ");
 	aListItem::init( width, 0, Environment.screenWidth, ((float)height*1.25) );
 	state = ENABLED;
@@ -1309,7 +1309,7 @@ void aTextListItem::setText( int32_t resID )
 void aTextListItem::sizeToText()
 {
 	// assume the width is right and we need to make the height different
-	ULONG height = font.height( text, width() );
+	uint32_t height = font.height( text, width() );
 	resize( width(), height );
 
 	
@@ -1441,7 +1441,7 @@ void aLocalizedListItem::render()
 	if ( animInfo.getState() != getState() )
 		animInfo.setState( (aAnimGroup::STATE)(int32_t)getState() );
 	color = animInfo.getCurrentColor( animInfo.getState() );
-	aTextListItem::setColor((ULONG)color);
+	aTextListItem::setColor((uint32_t)color);
 	aTextListItem::render();
 }
 

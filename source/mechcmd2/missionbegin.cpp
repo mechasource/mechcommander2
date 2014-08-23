@@ -66,9 +66,9 @@ MissionBegin::MissionBegin()
 
 MissionBegin::~MissionBegin()
 {
-	for ( int i = 0; i < 5; i++ )
+	for ( int32_t i = 0; i < 5; i++ )
 	{
-		for ( int j = 0; j < 3; j++ )
+		for ( int32_t j = 0; j < 3; j++ )
 		{
 			if ( singlePlayerScreens[i][j] )
 			{
@@ -158,7 +158,7 @@ void MissionBegin::begin()
 	}
 
 	//---------------------------------------------
-	ULONG localRenderer = prefs.renderer;
+	uint32_t localRenderer = prefs.renderer;
 	if (prefs.renderer != 0 && prefs.renderer != 3)
 		localRenderer = 0;
 
@@ -375,9 +375,9 @@ void MissionBegin::begin()
 	singlePlayerScreens[2][2] = pMechLabScreen;
 	singlePlayerScreens[4][1] = pLoadScreen;
 
-	for ( int i = 0; i < 4; i++ )
+	for ( int32_t i = 0; i < 4; i++ )
 	{
-		for ( int j = 0; j < 4; j++ )
+		for ( int32_t j = 0; j < 4; j++ )
 		{
 			if ( singlePlayerScreens[i][j] )
 			{
@@ -398,7 +398,7 @@ void MissionBegin::begin()
 
 	for (i = 0; i < 5/*dim screen X*/; i+=1)
 	{
-		int j;
+		int32_t j;
 		for (j = 0; j < 3/*dim screen Y*/; j += 1)
 		{
 			screens[i][j] = singlePlayerScreens[i][j];
@@ -467,10 +467,10 @@ PCSTR MissionBegin::update()
 				LogisticsScreen*		pCurScreen = screens[curScreenX][curScreenY];
 				if ( pCurScreen )
 					pCurScreen->end();
-				int i;
+				int32_t i;
 				for (i = 0; i < 5/*dim screen X*/; i+=1)
 				{
-					int j;
+					int32_t j;
 					for (j = 0; j < 3/*dim screen Y*/; j += 1)
 					{
 						screens[i][j] = singlePlayerScreens[i][j];
@@ -509,10 +509,10 @@ PCSTR MissionBegin::update()
 					pCurScreen->end();
 
 				beginMPlayer();
-				int i;
+				int32_t i;
 				for (i = 0; i < 5/*dim screen X*/; i+=1)
 				{
-					int j;
+					int32_t j;
 					for (j = 0; j < 3/*dim screen Y*/; j += 1)
 					{
 						screens[i][j] = multiplayerScreens[i][j];
@@ -528,10 +528,10 @@ PCSTR MissionBegin::update()
 				if ( pCurScreen )
 					pCurScreen->end();
 
-				int i;
+				int32_t i;
 				for (i = 0; i < 5/*dim screen X*/; i+=1)
 				{
-					int j;
+					int32_t j;
 					for (j = 0; j < 3/*dim screen Y*/; j += 1)
 					{
 						screens[i][j] = singlePlayerScreens[i][j];
@@ -882,7 +882,7 @@ void MissionBegin::render()
 		if ( leftAnim.isAnimating() && !leftAnim.isDone() )
 		{
 			if ( animJustBegun )
-				leftAnim.begin(); // restart to compensate for LONG begins
+				leftAnim.begin(); // restart to compensate for int32_t begins
 
 			xOffset = leftAnim.getXDelta() + 800;			
 			yOffset = leftAnim.getYDelta();
@@ -895,7 +895,7 @@ void MissionBegin::render()
 		else if ( downAnim.isAnimating() && !downAnim.isDone() )
 		{
 			if ( animJustBegun )
-				downAnim.begin(); // restart to compensate for LONG begins
+				downAnim.begin(); // restart to compensate for int32_t begins
 
 			xOffset = downAnim.getXDelta();
 			yOffset = downAnim.getYDelta();
@@ -906,7 +906,7 @@ void MissionBegin::render()
 		else if ( upAnim.isAnimating() && !upAnim.isDone() )
 		{
 			if ( animJustBegun )
-				upAnim.begin(); // restart to compensate for LONG begins
+				upAnim.begin(); // restart to compensate for int32_t begins
 
 			xOffset = upAnim.getXDelta();
 			yOffset = upAnim.getYDelta();
@@ -917,7 +917,7 @@ void MissionBegin::render()
 		else if ( rightAnim.isAnimating() && !rightAnim.isDone() )
 		{
 			if ( animJustBegun )
-				rightAnim.begin(); // restart to compensate for LONG begins
+				rightAnim.begin(); // restart to compensate for int32_t begins
 
 			xOffset = rightAnim.getXDelta() - 800;
 			yOffset = rightAnim.getYDelta();
@@ -1100,9 +1100,9 @@ void MissionBegin::beginMPlayer()
 	
 
 	{
-		for ( int i = 0; i < 4; i++ )
+		for ( int32_t i = 0; i < 4; i++ )
 		{
-			for ( int j = 0; j < 4; j++ )
+			for ( int32_t j = 0; j < 4; j++ )
 			{
 				if ( multiplayerScreens[i][j] )
 				{
@@ -1124,9 +1124,9 @@ void MissionBegin::setUpMultiplayerLogisticsScreens()
 {
 
 
-	for (int i = 0; i < 5/*dim screen X*/; i+=1)
+	for (int32_t i = 0; i < 5/*dim screen X*/; i+=1)
 	{
-		int j;
+		int32_t j;
 		for (j = 0; j < 3/*dim screen Y*/; j += 1)
 		{
 			screens[i][j] = singlePlayerScreens[i][j];
@@ -1160,9 +1160,9 @@ void MissionBegin::restartMPlayer( PCSTR playerName )
 	if ( screens[curScreenX][curScreenY] )
 		screens[curScreenX][curScreenY]->end();
 
-	for (int i = 0; i < 5/*dim screen X*/; i+=1)
+	for (int32_t i = 0; i < 5/*dim screen X*/; i+=1)
 	{
-		int j;
+		int32_t j;
 		for (j = 0; j < 3/*dim screen Y*/; j += 1)
 		{
 			screens[i][j] = this->multiplayerScreens[i][j];
@@ -1204,10 +1204,10 @@ void MissionBegin::beginAtConnectionScreen()
 {
 
 	beginMPlayer();
-	int i;
+	int32_t i;
 	for (i = 0; i < 5/*dim screen X*/; i+=1)
 	{
-		int j;
+		int32_t j;
 		for (j = 0; j < 3/*dim screen Y*/; j += 1)
 		{
 			screens[i][j] = multiplayerScreens[i][j];

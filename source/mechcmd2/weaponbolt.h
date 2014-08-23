@@ -40,10 +40,10 @@ class WeaponBoltType : public ObjectType
 		int32_t			fireEffect;
 		int32_t			trailEffect;
 		
-		ULONG           frontRGB;
-		ULONG           backRGB;
-		ULONG           middleRGB;
-		ULONG           midEdgeRGB;
+		uint32_t           frontRGB;
+		uint32_t           backRGB;
+		uint32_t           middleRGB;
+		uint32_t           midEdgeRGB;
 		
 		float			projLength;
 		float			bulgeLength;
@@ -56,7 +56,7 @@ class WeaponBoltType : public ObjectType
 		bool			lightSource;
 		float			maxRadius;
 		float			outRadius;
-		ULONG			lightRGB;
+		uint32_t			lightRGB;
 		float			intensity;
 		
 		bool			isBeam;
@@ -117,7 +117,7 @@ class WeaponBoltType : public ObjectType
 			init();
 		}
 		
-		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
 		int32_t init (FitIniFilePtr objFile);
 		
 		~WeaponBoltType (void)
@@ -162,8 +162,8 @@ typedef struct _WeaponBoltData : public GameObjectData
 	Stuff::Vector3D		hsPos;
 
 	float				hitLeft;
-	ULONG				mcTextureHandle;
-	ULONG				gosTextureHandle;
+	uint32_t				mcTextureHandle;
+	uint32_t				gosTextureHandle;
 	float				startUV;
 	float				goalHeight;
 } WeaponBoltData;
@@ -190,7 +190,7 @@ class WeaponBolt : public GameObject
 			Stuff::Vector3D		laserSide[4];
 
 			TG_LightPtr			pointLight;
-			ULONG				lightId;
+			uint32_t				lightId;
 			
 			int32_t				effectId;
 			bool 				hitTarget;
@@ -206,8 +206,8 @@ class WeaponBolt : public GameObject
 			Stuff::Vector3D		hsPos;
 			
 			float				hitLeft;
-			ULONG				mcTextureHandle;
-			ULONG				gosTextureHandle;
+			uint32_t				mcTextureHandle;
+			uint32_t				gosTextureHandle;
 			float				startUV;
 			float				goalHeight;
 			

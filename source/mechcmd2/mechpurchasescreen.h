@@ -36,16 +36,16 @@ class MechPurchaseScreen: public LogisticsScreen
 		MechPurchaseScreen();
 		virtual				~MechPurchaseScreen();
 
-		int					init( FitIniFile& file );
+		int32_t					init( FitIniFile& file );
 
 		virtual void		begin();
 		virtual void		end();
 		virtual void		update();
-		virtual void		render(int xOffset, int yOffset);
+		virtual void		render(int32_t xOffset, int32_t yOffset);
 
 		void				setMech( LogisticsMech* pMech, bool bFromLB = 0 );
 		void				beginDrag( LogisticsMech* pMech );
-		virtual int			handleMessage( ULONG, ULONG );
+		virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 	private:
 	

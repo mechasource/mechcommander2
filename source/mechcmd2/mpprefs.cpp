@@ -41,17 +41,17 @@ MPPrefs::~MPPrefs()
 	comboBox[2].destroy();
 }
 
-int MPPrefs::init( FitIniFile& file )
+int32_t MPPrefs::init( FitIniFile& file )
 {
 	LogisticsScreen::init( file, "Static", "Text", "Rect", "Button" );
 
-	for ( int i = 0; i < buttonCount; i++ )
+	for ( int32_t i = 0; i < buttonCount; i++ )
 	{
 		if ( buttons[i].getID() != MP_PREFS_BASE &&
 			buttons[i].getID() != MP_PREFS_STRIPE )
 			buttons[i].setMessageOnRelease( );
 
-		int id = buttons[i].getID();
+		int32_t id = buttons[i].getID();
 		if ( id != MB_MSG_NEXT && id != MB_MSG_PREV && id != MB_MSG_MAINMENU )
 		{
 			buttons[i].setPressFX( LOG_VIDEOBUTTONS );
@@ -126,7 +126,7 @@ void MPPrefs::begin()
 	comboBox[0].ListBox().removeAllItems( true );
 	comboBox[0].SelectItem( -1 );
 
-	for ( int i = 0; i < 10; i++ )
+	for ( int32_t i = 0; i < 10; i++ )
 	{
 		if ( strlen( prefs.playerName[i] ) )
 		{
@@ -254,7 +254,7 @@ void MPPrefs::update()
 	
 	int32_t playerCount;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
-	for( int i = 0; i < playerCount; i++ )
+	for( int32_t i = 0; i < playerCount; i++ )
 	{
 		if ( players[i].teamSeniority > mySeniority && players[i].team == player->team )
 		{
@@ -275,7 +275,7 @@ void MPPrefs::update()
 
 	camera.update();
 
-	int oldSel = comboBox[2].GetSelectedItem();
+	int32_t oldSel = comboBox[2].GetSelectedItem();
 	bool bExpanded = 0;
 	for ( i = 0; i < 3; i++ )
 	{
@@ -287,7 +287,7 @@ void MPPrefs::update()
 
 		
 	}
-	int newSel = comboBox[2].GetSelectedItem();
+	int32_t newSel = comboBox[2].GetSelectedItem();
 
 	if ( newSel != oldSel && newSel != -1 )
 	{
@@ -323,7 +323,7 @@ void MPPrefs::update()
 
 	if ( userInput->isLeftClick() && !bExpanded )
 	{
-		for ( int j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT+1; j++ )
+		for ( int32_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT+1; j++ )
 		{
 			if ( rects[j].pointInside( userInput->getMouseX(), userInput->getMouseY() ) )
 			{
@@ -353,11 +353,11 @@ void MPPrefs::update()
 
 }
 
-void MPPrefs::setColor( ULONG color )
+void MPPrefs::setColor( uint32_t color )
 {
 	int32_t playerCount;
 	const MC2Player* players = MPlayer->getPlayers(playerCount);
-	for( int i = 0; i < playerCount; i++ )
+	for( int32_t i = 0; i < playerCount; i++ )
 	{
 		if ( MPlayer->colors[players[i].baseColor[BASECOLOR_SELF]] == color && i != MPlayer->commanderID )
 		{
@@ -377,7 +377,7 @@ void MPPrefs::setColor( ULONG color )
 
 }
 
-void MPPrefs::setHighlightColor( ULONG color )
+void MPPrefs::setHighlightColor( uint32_t color )
 {
 	MC2Player* player = MPlayer->getPlayerInfo( MPlayer->commanderID );
 	player->stripeColor = getColorIndex( color );
@@ -389,9 +389,9 @@ void MPPrefs::setHighlightColor( ULONG color )
 
 }
 
-char MPPrefs::getColorIndex( ULONG color )
+char MPPrefs::getColorIndex( uint32_t color )
 {
-	for ( int i = 0; i < MAX_COLORS; i++ )
+	for ( int32_t i = 0; i < MAX_COLORS; i++ )
 	{
 		if ( MPlayer->colors[i] == color )
 			return i;
@@ -405,11 +405,11 @@ void MPPrefs::updateBaseColors( const MC2Player* players, int32_t playerCount, b
 
 	if ( getButton(MP_PREFS_BASE )->isPressed() )
 	{
-		for( int i = 0; i < playerCount; i++ )
+		for( int32_t i = 0; i < playerCount; i++ )
 		{
 			if ( players[i].commanderID == MPlayer->commanderID )
 			{
-				for ( int j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT+1; j++ )
+				for ( int32_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT+1; j++ )
 				{
 					if ( MPlayer->colors[players[i].baseColor[BASECOLOR_PREFERENCE]] == rects[j].getColor() )
 					{
@@ -424,7 +424,7 @@ void MPPrefs::updateBaseColors( const MC2Player* players, int32_t playerCount, b
 			}
 			else
 			{
-				for ( int j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT+1; j++ )
+				for ( int32_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT+1; j++ )
 				{
 					if ( MPlayer->colors[players[i].baseColor[BASECOLOR_SELF]] == rects[j].getColor() && bDrawRect )
 					{
@@ -449,11 +449,11 @@ void MPPrefs::updateStripeColors(const MC2Player* players, int32_t playerCount, 
 {
 	if ( getButton(MP_PREFS_STRIPE )->isPressed() )
 	{
-		for( int i = 0; i < playerCount; i++ )
+		for( int32_t i = 0; i < playerCount; i++ )
 		{
 			if ( players[i].commanderID == MPlayer->commanderID )
 			{
-				for ( int j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT+1; j++ )
+				for ( int32_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT+1; j++ )
 				{
 					if ( MPlayer->colors[players[i].stripeColor] == rects[j].getColor() )
 					{
@@ -473,7 +473,7 @@ void MPPrefs::updateStripeColors(const MC2Player* players, int32_t playerCount, 
 	rects[STRIPE_RECT].setColor(  MPlayer->colors[pInfo->stripeColor] );
 }
 
-void MPPrefs ::render(int OffsetX, int OffsetY )
+void MPPrefs ::render(int32_t OffsetX, int32_t OffsetY )
 {
 	statics[21].showGUIWindow( 0 );
 	LogisticsScreen::render( OffsetX, OffsetY );
@@ -485,7 +485,7 @@ void MPPrefs ::render(int OffsetX, int OffsetY )
 
 		camera.render();
 
-		for ( int i = 0; i < 3; i++ )
+		for ( int32_t i = 0; i < 3; i++ )
 		{
 			if ( !comboBox[i].ListBox().isShowing() )			
 				comboBox[i].render();
@@ -527,7 +527,7 @@ void MPPrefs ::render(int OffsetX, int OffsetY )
 
 }
 
-int			MPPrefs::handleMessage( ULONG message, ULONG who )
+int32_t			MPPrefs::handleMessage( uint32_t message, uint32_t who )
 {
 	switch ( who )
 	{
@@ -590,7 +590,7 @@ void MPPrefs::saveSettings()
 
 	// colors should already be updated by now
 	// update insignia
-	int index = comboBox[2].GetSelectedItem();
+	int32_t index = comboBox[2].GetSelectedItem();
 	if ( index != -1 )
 	{
 		aBmpListItem* pItem = (aBmpListItem*)(comboBox[2].ListBox().GetItem( index ));
@@ -632,7 +632,7 @@ void MPPrefs::cancelSettings()
 
 void MPPrefs::initColors()
 {
-	for ( int j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT+1; j++ )
+	for ( int32_t j = FIRST_COLOR_RECT; j < LAST_COLOR_RECT+1; j++ )
 	{
 		if ( MPlayer )
 			MPlayer->colors[j - FIRST_COLOR_RECT] = rects[j].getColor();
@@ -640,7 +640,7 @@ void MPPrefs::initColors()
 
 }
 
-int aBmpListItem::setBmp( PCSTR pFileName )
+int32_t aBmpListItem::setBmp( PCSTR pFileName )
 {
 	if ( strlen( pFileName ) >= MAXLEN_INSIGNIA_FILE )
 		return 0;
@@ -675,7 +675,7 @@ int aBmpListItem::setBmp( PCSTR pFileName )
 	return true;
 }
 
-void MPPrefs::setMechColors( ULONG base, ULONG highlight )
+void MPPrefs::setMechColors( uint32_t base, uint32_t highlight )
 {
 	if ( status == RUNNING )
 	{

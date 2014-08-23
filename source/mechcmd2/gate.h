@@ -29,12 +29,12 @@ class GateType : public ObjectType
 	//Data Members
 	//-------------
 	protected:
-		ULONG	dmgLevel;
+		uint32_t	dmgLevel;
 
 	public:
-		ULONG	blownEffectId;
-		ULONG	normalEffectId;
-		ULONG	damageEffectId;
+		uint32_t	blownEffectId;
+		uint32_t	normalEffectId;
+		uint32_t	damageEffectId;
 	
 		float			baseTonnage;
 		
@@ -81,7 +81,7 @@ class GateType : public ObjectType
 			init();
 		}
 		
-		virtual int32_t init (FilePtr objFile, ULONG fileSize);
+		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
 		int32_t init (FitIniFilePtr objFile);
 		
 		~GateType (void)
@@ -120,7 +120,7 @@ typedef struct _GateData : public TerrainObjectData
 
 	MoverPtr				closestObject;
 
-	ULONG					parentId;
+	uint32_t					parentId;
 	GameObjectWatchID		parent;
 	int32_t					buildingDescriptionID;
 
@@ -147,7 +147,7 @@ class Gate : public TerrainObject
 
 			MoverPtr				closestObject;
 			
-			ULONG					parentId;
+			uint32_t					parentId;
 			GameObjectWatchID		parent;
 			int32_t					buildingDescriptionID;
 
@@ -259,7 +259,7 @@ class Gate : public TerrainObject
 
 		virtual GameObjectPtr getParent (void);
 
-		virtual void setParentId (ULONG pId);
+		virtual void setParentId (uint32_t pId);
 
 		virtual int32_t getDescription(){ return ((GateType*)getObjectType())->buildingDescriptionID; }
 		

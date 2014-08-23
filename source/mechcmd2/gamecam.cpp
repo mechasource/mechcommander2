@@ -131,7 +131,7 @@ void GameCamera::render (void)
 	
 	//-----------------------------------------------
 	// Set Ambient for this pass of rendering	
-	ULONG lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
+	uint32_t lightRGB = (ambientRed<<16)+(ambientGreen<<8)+ambientBlue;
 		
 	eye->setLightColor(1,lightRGB);
 	eye->setLightIntensity(1,1.0);
@@ -510,7 +510,7 @@ int32_t GameCamera::update (void)
 	char text[1024];
 	sprintf(text,"Near Plane: %f     Far Plane: %f",Camera::NearPlaneDistance,Camera::FarPlaneDistance);
 
-	ULONG width, height;
+	uint32_t width, height;
 	Stuff::Vector4D moveHere;
 	moveHere.x = 10.0f;
 	moveHere.y = 10.0f;
@@ -541,7 +541,7 @@ int32_t GameCamera::update (void)
 		char text[1024];
 		sprintf(text,"Camera Angle: %f degrees    Camera Altitude: %f    CameraPosition: X=%f Y=%f Z=%f   CameraRotation: %f",projectionAngle,cameraAltitude,position.x,position.y,position.z,cameraRotation);
 		
-		ULONG width, height;
+		uint32_t width, height;
 		Stuff::Vector4D moveHere;
 		moveHere.x = 10.0f;
 		moveHere.y = 10.0f;

@@ -31,7 +31,7 @@ void LogisticsPilotListBox::update()
 {
 	aListBox::update();
 
-	for ( int i = 0; i < itemCount; i++ )
+	for ( int32_t i = 0; i < itemCount; i++ )
 	{
 		if ( ((LogisticsPilotListBoxItem*)items[i])->getPilot() && 
 			((LogisticsPilotListBoxItem*)items[i])->getPilot()->isUsed() )
@@ -70,7 +70,7 @@ LogisticsPilotListBoxItem::LogisticsPilotListBoxItem( LogisticsPilot* pNewPilot 
 	rankIcon = s_templateItem->rankIcon;
 	icon = s_templateItem->icon;
 
-	for ( int i= 0; i < PILOT_LIST_BOX_CHILD_COUNT; i++ )
+	for ( int32_t i= 0; i < PILOT_LIST_BOX_CHILD_COUNT; i++ )
 	{
 		pChildAnimations[i] = s_templateItem->pChildAnimations[i];
 	}
@@ -96,7 +96,7 @@ LogisticsPilotListBoxItem::LogisticsPilotListBoxItem( LogisticsPilot* pNewPilot 
 	else
 		rankText.setText( IDS_ACE );
 
-	int rank = pPilot->getRank();
+	int32_t rank = pPilot->getRank();
 	rankIcon.setUVs( rank * 15, 96, rank * 15 + 15, 96 + 15 );
 	
 	LogisticsPilotListBox::makeUVs( pPilot, icon );
@@ -105,7 +105,7 @@ LogisticsPilotListBoxItem::LogisticsPilotListBoxItem( LogisticsPilot* pNewPilot 
 	
 	
 }
-int LogisticsPilotListBoxItem::init( FitIniFile* file )
+int32_t LogisticsPilotListBoxItem::init( FitIniFile* file )
 {
 	if ( !s_templateItem )
 		s_templateItem = new LogisticsPilotListBoxItem( NULL );
@@ -143,12 +143,12 @@ int LogisticsPilotListBoxItem::init( FitIniFile* file )
 	return 0;
 }
 
-void LogisticsPilotListBoxItem::setAnimation( FitIniFile& file, int whichOne )
+void LogisticsPilotListBoxItem::setAnimation( FitIniFile& file, int32_t whichOne )
 {
 	char animationText[64];
 	if ( NO_ERROR == file.readIdString( "Animation", animationText, 63 ) )
 	{
-		for ( int i = 0; i < strlen( animationText ); i++ )
+		for ( int32_t i = 0; i < strlen( animationText ); i++ )
 		{
 			if ( isdigit( animationText[i] ) )
 			{
@@ -168,7 +168,7 @@ void LogisticsPilotListBoxItem::setAnimation( FitIniFile& file, int whichOne )
 void LogisticsPilotListBoxItem::render()
 {
 
-	for ( int i = 0; i < this->pNumberOfChildren; i++ )
+	for ( int32_t i = 0; i < this->pNumberOfChildren; i++ )
 	{
 		int32_t newColor = 0xffffffff;
 		if ( pChildAnimations[i] != -1 )
@@ -194,14 +194,14 @@ void LogisticsPilotListBoxItem::update()
 {
 	bool isInside = pointInside( userInput->getMouseX(), userInput->getMouseY() );
 
-	for ( int i = 0; i < 3; i++ )
+	for ( int32_t i = 0; i < 3; i++ )
 		animations[i].update();
 
 	if ( state == aListItem::SELECTED ) 
 	{
 		if ( animations[0].getState() != aAnimGroup::PRESSED )
 		{
-			for ( int i = 0; i < 3; i++ )
+			for ( int32_t i = 0; i < 3; i++ )
 				animations[i].setState( aAnimGroup::PRESSED );
 		}
 
@@ -228,7 +228,7 @@ void LogisticsPilotListBoxItem::update()
 	{
 		if ( animations[0].getState() != aAnimGroup::HIGHLIGHT )
 		{
-			for ( int i = 0; i < 3; i++ )
+			for ( int32_t i = 0; i < 3; i++ )
 				animations[i].setState( aAnimGroup::HIGHLIGHT );
 		}
 	}
@@ -236,7 +236,7 @@ void LogisticsPilotListBoxItem::update()
 	{
 		if ( animations[0].getState() != aAnimGroup::NORMAL )
 		{
-			for ( int i = 0; i < 3; i++ )
+			for ( int32_t i = 0; i < 3; i++ )
 				animations[i].setState( aAnimGroup::NORMAL );
 		}
 	}
@@ -249,7 +249,7 @@ void LogisticsPilotListBox::makeUVs( LogisticsPilot* pPilot, aObject& icon )
 {
 	icon = LogisticsPilotListBoxItem::s_templateItem->icon;
 	// need to set the UV's
-	int index = pPilot->getPhotoIndex();
+	int32_t index = pPilot->getPhotoIndex();
 
 	int32_t xIndex = index % 12;
 	int32_t yIndex = index / 12;
@@ -283,7 +283,7 @@ int32_t LogisticsPilotListBox::AddItem( aListItem* pNewItem )
 	if ( pItem )
 	{
 		LogisticsPilot* pPilot = pItem->getPilot();
-		for ( int i = 0; i < itemCount; i++ )
+		for ( int32_t i = 0; i < itemCount; i++ )
 		{
 				
 			LogisticsPilotListBoxItem* pTmpItem = dynamic_cast<LogisticsPilotListBoxItem*>(items[i]);
@@ -326,7 +326,7 @@ int32_t LogisticsPilotListBox::AddItem( aListItem* pNewItem )
 void LogisticsPilotListBox::removePilot( LogisticsPilot* pPilot )
 {
 
-	for ( int i = 0; i < itemCount;i++ )
+	for ( int32_t i = 0; i < itemCount;i++ )
 	{
 		LogisticsPilotListBoxItem* pItem = dynamic_cast<LogisticsPilotListBoxItem*>(items[i]);
 		if ( pItem && pItem->getPilot() == pPilot )

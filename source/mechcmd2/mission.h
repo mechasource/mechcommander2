@@ -29,7 +29,7 @@
 #define mis_PLAYER_WIN_SMALL 			4
 #define mis_PLAYER_WIN_BIG	 			5
 
-extern ULONG scenarioResult;
+extern uint32_t scenarioResult;
 
 //----------------------------------------------------------------------------------
 // These are placeholders for the scenario specific objects.  This allows us to
@@ -41,28 +41,28 @@ extern ULONG scenarioResult;
 struct Part
 {
 	GameObjectWatchID	objectWID;			//Pointer to my physical incarnation
-	ULONG		objNumber;			//What kind of object am I?
-	ULONG				baseColor;			//Base color of mech -- Overrides the RED in RGB
-	ULONG				highlightColor1;	//First Highlight Color -- Overrides the GREEN in RGB
-	ULONG				highlightColor2;	//Second Highlight Color -- Overrides the BLUE in RGB
+	uint32_t		objNumber;			//What kind of object am I?
+	uint32_t				baseColor;			//Base color of mech -- Overrides the RED in RGB
+	uint32_t				highlightColor1;	//First Highlight Color -- Overrides the GREEN in RGB
+	uint32_t				highlightColor2;	//Second Highlight Color -- Overrides the BLUE in RGB
 	int32_t				active;				//Am I currently awake?
 	int32_t				exists;				//Am I currently in Existance?
 	bool				destroyed;			//Have I been destroyed for this scenario?
 	Stuff::Vector3D		position;			//Where do I start?  (relative to area)
 	float				velocity;			//How fast am I going?
 	float				rotation;			//Which direction am I facing?
-	ULONG		gestureId;			//What gesture do I start in?
+	uint32_t		gestureId;			//What gesture do I start in?
 	char				alignment;			//Who do I fight for?
 	char				teamId;				//Which team am I on?
 	int32_t				commanderID;		//Used when setting up multiplayer
 	char				squadId;				//Which team am I on?
 	char				myIcon;				//If set, start with Icon on Screen for this part.
-	ULONG		controlType;		//How am I controlled?
-	ULONG		controlDataType;	//What data do you need to control me?
+	uint32_t		controlType;		//How am I controlled?
+	uint32_t		controlDataType;	//What data do you need to control me?
 	char				profileName[9];		//Name of Object Profile file.
-	ULONG		pilot;				//Name of Pilot File.
+	uint32_t		pilot;				//Name of Pilot File.
 	bool				captureable;		//Is this a capturable "enemy" mech?
-	ULONG				variantNum;			//Variant number of the Part.
+	uint32_t				variantNum;			//Variant number of the Part.
 
 	void Save (FitIniFilePtr file, int32_t partNum);
 	void Load (FitIniFilePtr file, int32_t partNum);
@@ -74,7 +74,7 @@ typedef Part *PartPtr;
 // This is the struct definition for the Scenario Objectives.
 // These can be displayed in a window.  For now they are drawn with just text.
 // There are a whole series of ABL commands to address these objectives.
-typedef ULONG	ObjectiveType;
+typedef uint32_t	ObjectiveType;
 #define					InvisibleGoal	-1
 #define					PrimaryGoal		0
 #define					SecondaryGoal	1
@@ -82,7 +82,7 @@ typedef ULONG	ObjectiveType;
 #define					BonusGoal		3
 #define 				InvalidGoal		9999
 
-typedef ULONG	ObjectiveStatus;
+typedef uint32_t	ObjectiveStatus;
 #define					Incomplete		0
 #define					Success			1
 #define					Failed			2
@@ -149,7 +149,7 @@ class Mission
 		ABLParamPtr						missionParams;
 		SymTableNodePtr					missionBrainCallback;
 										
-		ULONG					numParts;
+		uint32_t					numParts;
 		PartPtr							parts;
 										
 		bool							active;
@@ -160,14 +160,14 @@ class Mission
 	public:								
 
 		static bool						terminationCounterStarted;
-		static ULONG			terminationResult;
+		static uint32_t			terminationResult;
 
-		ULONG					numObjectives;
+		uint32_t					numObjectives;
 		ObjectivePtr					objectives;
 		float						m_timeLimit;
 		//CObjectives						missionObjectives;
-		//int						numPrimaryObjectives;
-		ULONG					duration;
+		//int32_t						numPrimaryObjectives;
+		uint32_t					duration;
 		bool							warning1;
 		bool							warning2;
 										
@@ -281,7 +281,7 @@ class Mission
 
 		GameObjectPtr getPartObject (int32_t partNumber)
 		{
-			if ((partNumber <= 0) || ((ULONG)partNumber > numParts))
+			if ((partNumber <= 0) || ((uint32_t)partNumber > numParts))
 				return NULL;
 			if (!ObjectManager)
 				return(NULL);
@@ -383,7 +383,7 @@ extern float globalMissionValues [];
 extern uint8_t godMode;
 
 extern Mission *mission;
-extern ULONG scenarioResult;
+extern uint32_t scenarioResult;
 
 extern UserHeapPtr missionHeap;
 //----------------------------------------------------------------------------------

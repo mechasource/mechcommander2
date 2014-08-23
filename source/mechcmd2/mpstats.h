@@ -10,7 +10,7 @@ MPStats.h			: Interface for the MPStats component.
 #ifndef MPSTATS_H
 #define MPSTATS_H
 
-//#include "logisticsscreen.h"
+//#include <mechgui/logisticsscreen.h>
 //#include "Multplyr.h"
 
 //*************************************************************************************************

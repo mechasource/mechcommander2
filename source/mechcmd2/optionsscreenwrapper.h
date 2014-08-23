@@ -12,8 +12,8 @@ OptionsScreenWrapper.h			: Interface for the OptionsScreenWrapper component.
 #ifndef OPTIONSSCREENWRAPPER_H
 #define OPTIONSSCREENWRAPPER_H
 
-//#include "asystem.h"
-//#include "alistbox.h"
+//#include <mechgui/asystem.h>
+//#include <mechgui/alistbox.h>
 
 
 /**************************************************************************************************

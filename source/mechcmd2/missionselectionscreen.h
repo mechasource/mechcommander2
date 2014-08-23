@@ -10,8 +10,8 @@ MissionSelectionScreen.h : Header file for mission selection
 #ifndef MISSIONSELECTION_H
 #define MISSIONSELECTION_H
 
-//#include "logisticsscreen.h"
-//#include "alistbox.h"
+//#include <mechgui/logisticsscreen.h>
+//#include <mechgui/alistbox.h>
 //#include "mc2movie.h"
 
 class FitIniFile;

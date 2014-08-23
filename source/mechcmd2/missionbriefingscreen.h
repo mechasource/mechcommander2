@@ -1,31 +1,17 @@
+//===========================================================================//
+// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+//===========================================================================//
 
 #pragma once
 
 #ifndef MISSIONBRIEFINGSCREEN_H
 #define MISSIONBRIEFINGSCREEN_H
-//===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
-//===========================================================================//
 
-#ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
-#endif
-
-#ifndef ALISTBOX_H
-#include "alistbox.h"
-#endif
-
-#ifndef ABUTTON_H
-#include "aButton.h"
-#endif
-
-#ifndef MISSION_H
+#include <mechgui/logisticsscreen.h>
+#include <mechgui/alistbox.h>
+#include <mechgui/abutton.h>
 #include "Mission.h"
-#endif
-
-#ifndef SIMPLECAMERA_H
 #include "simplecamera.h"
-#endif
 
 #define MN_MSG_PLAY 80
 #define MN_MSG_STOP 82

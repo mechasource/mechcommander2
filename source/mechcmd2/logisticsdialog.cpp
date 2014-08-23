@@ -9,12 +9,12 @@ LogisticsDialog.cpp			: Implementation of the LogisticsDialog component.
 
 #include "stdafx.h"
 #include "logisticsdialog.h"
-#include "abutton.h"
+#include <mechgui/abutton.h>
 #include "inifile.h"
 #include <mclib.h>
 #include "windows.h"
 #include "..\resource.h"
-#include "aedit.h"
+#include <mechgui/aedit.h>
 #include "logisticsdata.h"
 #include <malloc.h>
 #include "missionbriefingscreen.h"

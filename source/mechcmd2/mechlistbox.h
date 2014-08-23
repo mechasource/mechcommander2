@@ -11,11 +11,11 @@ MechListBox.h			: Interface for the MechListBox component.
 \*************************************************************************************************/
 
 #ifndef ALISTBOX_H
-#include "alistbox.h"
+#include <mechgui/alistbox.h>
 #endif
 
 #ifndef AANIM_H
-#include "aanim.h"
+#include <mechgui/aanim.h>
 #endif
 
 class FitIniFile;

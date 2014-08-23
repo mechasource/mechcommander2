@@ -10,8 +10,8 @@ MPPrefs.h			: Interface for the MPPrefs component.
 #ifndef MPPREFS_H
 #define MPPREFS_H
 
-//#include "logisticsscreen.h"
-//#include "alistbox.h"
+//#include <mechgui/logisticsscreen.h>
+//#include <mechgui/alistbox.h>
 //#include "simplecamera.h"
 
 class FitIniFile;

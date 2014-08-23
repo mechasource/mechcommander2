@@ -13,7 +13,7 @@ PauseWindow.h			: Interface for the PauseWindow component.
 #define PAUSEWINDOW_H
 
 //#include "utilities.h"
-//#include "afont.h"
+//#include <mechgui/afont.h>
 
 /**************************************************************************************************
 CLASS DESCRIPTION

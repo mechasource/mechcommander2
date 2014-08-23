@@ -9,8 +9,8 @@
 #ifndef LOGISTICSMECHICON_H
 #define LOGISTICSMECHICON_H
 
-//#include "asystem.h"
-//#include "aanim.h"
+//#include <mechgui/asystem.h>
+//#include <mechgui/aanim.h>
 
 class LogisticsMech;
 class LogisticsPilot;

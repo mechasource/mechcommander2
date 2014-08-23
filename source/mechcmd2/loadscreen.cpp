@@ -11,7 +11,7 @@ LoadScreen.cpp			: Implementation of the LoadScreen component.
 //#include <windows.h>
 //#include <ddraw.h>
 #include "loadscreen.h"
-#include "aanimobject.h"
+#include <mechgui/aanimobject.h>
 #include "tgainfo.h"
 #include <mclib.h>
 #include "prefs.h"
@@ -44,7 +44,7 @@ extern CPrefs prefs;
 
 //
 // Returns the number of bits in a given mask.  Used to determine if we are in 555 mode vs 565 mode.
-WORD GetNumberOfBits( ULONG dwMask );
+uint16_t GetNumberOfBits( ULONG dwMask );
 
 void MouseTimerInit();
 void MouseTimerKill();

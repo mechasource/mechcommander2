@@ -11,7 +11,7 @@ mechlopedia.h			: Interface for the mechlopedia component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
+#include <mechgui/logisticsscreen.h>
 #endif
 
 #ifndef SIMPLECAMERA_H
@@ -19,7 +19,7 @@ mechlopedia.h			: Interface for the mechlopedia component.
 #endif
 
 #ifndef ALISTBOX_H
-#include "alistbox.h"
+#include <mechgui/alistbox.h>
 #endif
 
 #ifndef COMPONENTLISTBOX_H

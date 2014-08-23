@@ -12,13 +12,13 @@ MPGameBrowser.h			: Interface for the MPGameBrowser component.
 #ifndef MPGAMEBROWSER_H
 #define MPGAMEBROWSER_H
 
-//#include "logisticsscreen.h"
-//#include "asystem.h"
-//#include "alistbox.h"
+//#include <mechgui/logisticsscreen.h>
+//#include <mechgui/asystem.h>
+//#include <mechgui/alistbox.h>
 //#include "attributemeter.h"
 //#include "simplecamera.h"
 //#include "multplyr.h"
-//#include "aanim.h"
+//#include <mechgui/aanim.h>
 //#include "mphostgame.h"
 
 class aButton;

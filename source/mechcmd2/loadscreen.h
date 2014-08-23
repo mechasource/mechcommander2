@@ -10,8 +10,8 @@ LoadScreen.h			: Interface for the LoadScreen component.
 #ifndef LOADSCREEN_H
 #define LOADSCREEN_H
 
-//#include "logisticsscreen.h"
-//#include "aanim.h"
+//#include <mechgui/logisticsscreen.h>
+//#include <mechgui/aanim.h>
 
 struct TGAFileHeader;
 class FitIniFile;

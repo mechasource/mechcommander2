@@ -12,12 +12,12 @@ MPSetupArea.h			: Interface for the MPSetupArea component.
 #ifndef MPSETUP_H
 #define MPSETUP_H
 
-//#include "logisticsscreen.h"
-//#include "asystem.h"
-//#include "alistbox.h"
+//#include <mechgui/logisticsscreen.h>
+//#include <mechgui/asystem.h>
+//#include <mechgui/alistbox.h>
 //#include "attributemeter.h"
 //#include "simplecamera.h"
-//#include "aanim.h"
+//#include <mechgui/aanim.h>
 
 class aButton;
 

@@ -10,8 +10,8 @@ ComponentListBox.h			: Interface for the ComponentListBox component.
 #ifndef COMPONENTLISTBOX_H
 #define COMPONENTLISTBOX_H
 
-//#include "alistbox.h"
-//#include "aanim.h"
+//#include <mechgui/alistbox.h>
+//#include <mechgui/aanim.h>
 //#include "elist.h"
 
 class LogisticsVariant;

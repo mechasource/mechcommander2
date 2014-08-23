@@ -17,8 +17,8 @@ CLASS DESCRIPTION
 MissionResults:
 **************************************************************************************************/
 
-#include "asystem.h"
-#include "alistbox.h"
+#include <mechgui/asystem.h>
+#include <mechgui/alistbox.h>
 #include "mpstats.h"
 
 

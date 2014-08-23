@@ -10,7 +10,7 @@ SimpleComponentListBox.h			: Interface for the SimpleComponentListBox component.
 #ifndef SIMPLECOMPONENTLISTBOX_H
 #define SIMPLECOMPONENTLISTBOX_H
 
-//#include "alistbox.h"
+//#include <mechgui/alistbox.h>
 
 class LogisticsVariant;
 class LogisticsVehicle;

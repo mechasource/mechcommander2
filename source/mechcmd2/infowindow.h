@@ -12,7 +12,7 @@ InfoWindow.h			: Interface for the InfoWindow component.
 
 #include <mclib.h>
 #include "controlgui.h"
-#include "afont.h"
+#include <mechgui/afont.h>
 
 class Mover;
 class ForceGroupIcon;

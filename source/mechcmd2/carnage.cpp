@@ -909,7 +909,7 @@ void Carnage::init (bool create, ObjectTypePtr _type)
 			// We need to create the GOSFX we need for this explosion here.
 			// The name of the GOSFX is stored as the appearanceName in the Type.
 			// ONLY Execute.  Explosions just run once!
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 	
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));

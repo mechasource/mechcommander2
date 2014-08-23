@@ -8,12 +8,12 @@ MPConnectionType.cpp			: Implementation of the MPConnectionType component.
 #include "stdafx.h"
 
 #include <gameos.hpp>
-#include <gui/asystem.h>
+#include <mechgui/asystem.h>
 
-//#include "logisticsscreen.h"
-//#include "abutton.h"
-//#include "alistbox.h"
-//#include "aanim.h"
+//#include <mechgui/logisticsscreen.h>
+//#include <mechgui/abutton.h>
+//#include <mechgui/alistbox.h>
+//#include <mechgui/aanim.h>
 //#include "mphostgame.h"
 
 #include "mpconnectiontype.h"

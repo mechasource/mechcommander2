@@ -10,11 +10,11 @@ MPConnectionType.h			: Interface for the MPConnectionType component.
 #ifndef MPCONNECTIONTYPE_H
 #define MPCONNECTIONTYPE_H
 
-//#include "logisticsscreen.h"
-//#include "asystem.h"
-//#include "aButton.h"
-//#include "alistbox.h"
-//#include "aanim.h"
+//#include <mechgui/logisticsscreen.h>
+//#include <mechgui/asystem.h>
+//#include <mechgui/abutton.h>
+//#include <mechgui/alistbox.h>
+//#include <mechgui/aanim.h>
 //#include "mphostgame.h"
 
 typedef enum __mpconnectiontype_const {

@@ -842,7 +842,7 @@ void ControlGui::renderObjective( CObjective* pObjective, int32_t xPos, int32_t 
 		guiFont.getSize() );
 	if ( bDrawTotal )
 	{
-		/*these used to be declared as unsigned, but mixing signed and unsigned values
+		/*these used to be declared as uint32_t, but mixing signed and uint32_t values
 		in arithmetic expressions can be bad news if any intermediate result is negative */
 		int32_t width, height;
 		int32_t descWidth;

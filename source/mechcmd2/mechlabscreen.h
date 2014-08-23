@@ -11,7 +11,7 @@ MechLabScreen.h			: Interface for the MechLabScreen component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
+#include <mechgui/logisticsscreen.h>
 #endif
 
 #ifndef ATTRIBUTEMETER_H

@@ -12,10 +12,10 @@ PilotReviewARea.h			: Interface for the PilotReviewARea component.
 #ifndef PILOTREVIEWAREA_H
 #define PILOTREVIEWAREA_H
 
-//#include "logisticsscreen.h"
-//#include "alistbox.h"
+//#include <mechgui/logisticsscreen.h>
+//#include <mechgui/alistbox.h>
 //#include "attributemeter.h"
-//#include "aanim.h"
+//#include <mechgui/aanim.h>
 //#include "logisticspilot.h"
 
 class aButton;

@@ -10,9 +10,9 @@ PilotReadyScreen.h : Header file for pilot selection
 #ifndef PILOTREADYSCREEN_H
 #define PILOTREADYSCREEN_H
 
-//#include "logisticsscreen.h"
+//#include <mechgui/logisticsscreen.h>
 //#include "attributemeter.h"
-//#include "aanim.h"
+//#include <mechgui/aanim.h>
 //#include "logisticspilotlistbox.h"
 //#include "logisticsmechdisplay.h"
 

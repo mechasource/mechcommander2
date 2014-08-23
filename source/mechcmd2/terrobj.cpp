@@ -842,7 +842,7 @@ int32_t TerrainObject::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMult
 						//Play a Dust Poof.
 						if (useNonWeaponEffects)
 						{
-							unsigned flags = gosFX::Effect::ExecuteFlag;
+							uint32_t flags = gosFX::Effect::ExecuteFlag;
 					
 							Check_Object(gosFX::EffectLibrary::Instance);
 							gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(DUST_POOF_ID));

@@ -13,17 +13,17 @@ MPAddAIPlayer.h			: Interface for the MPAddAIPlayer component.
 #define MPADDAIPLAYER_H
 
 #ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
+#include <mechgui/logisticsscreen.h>
 #endif
 
-#include "asystem.h"
-#include "alistbox.h"
+#include <mechgui/asystem.h>
+#include <mechgui/alistbox.h>
 #include "attributemeter.h"
 #include "simplecamera.h"
 #include "MPParameterScreen.h"/*only for the definition of CFocusManager*/
 
 #ifndef AANIM_H
-#include "aanim.h"
+#include <mechgui/aanim.h>
 #endif
 
 

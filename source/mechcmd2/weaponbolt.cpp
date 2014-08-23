@@ -2364,7 +2364,7 @@ void WeaponBolt::init (bool create, ObjectTypePtr _type)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag|gosFX::Effect::LoopFlag;
 	
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));
@@ -2384,7 +2384,7 @@ void WeaponBolt::init (bool create, ObjectTypePtr _type)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 	
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectMuzzleFlashName(effectId));
@@ -2404,7 +2404,7 @@ void WeaponBolt::init (bool create, ObjectTypePtr _type)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 	
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectHitName(effectId));
@@ -2424,7 +2424,7 @@ void WeaponBolt::init (bool create, ObjectTypePtr _type)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 	
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectMissName(effectId));
@@ -2445,7 +2445,7 @@ void WeaponBolt::init (bool create, ObjectTypePtr _type)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 	
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(WATER_MISS_FX));

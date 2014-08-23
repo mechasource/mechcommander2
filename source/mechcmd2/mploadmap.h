@@ -13,11 +13,11 @@ MPLoadMap.h			: Interface for the MPLoadMap component.
 #define MPLOADMAP_H
 
 //#include "logisticsdialog.h"
-//#include "asystem.h"
-//#include "alistbox.h"
+//#include <mechgui/asystem.h>
+//#include <mechgui/alistbox.h>
 //#include "attributemeter.h"
 //#include "simplecamera.h"
-//#include "aanim.h"
+//#include <mechgui/aanim.h>
 
 class aButton;
 

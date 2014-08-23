@@ -10,7 +10,7 @@ LogisticsMechDisplay.h			: Interface for the LogisticsMechDisplay component.
 #ifndef LOGISTICSMECHDISPLAY_H
 #define LOGISTICSMECHDISPLAY_H
 
-//#include "logisticsscreen.h"
+//#include <mechgui/logisticsscreen.h>
 //#include "simplecamera.h"
 //#include "attributemeter.h"
 //#include "simplecomponentlistbox.h"

@@ -15,13 +15,13 @@ MainMenu.cpp			: Implementation of the MainMenu component.
 #include "inifile.h"
 #include "logisticsdata.h"
 #include "logisticsdialog.h"
-#include "abutton.h"
+#include <mechgui/abutton.h>
 #include "optionsscreenwrapper.h"
 //#include <windows.h>
 #include "..\resource.h"
 #include "mechlopedia.h"
 #include "gamesound.h"
-#include "aanimobject.h"
+#include <mechgui/aanimobject.h>
 #include "multplyr.h"
 #include "prefs.h"
 

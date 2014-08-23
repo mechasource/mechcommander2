@@ -9,8 +9,8 @@
 #ifndef CHATWINDOW_H
 #define CHATWINDOW_H
 
-//#include "logisticsscreen.h"
-// #include "alistbox.h"
+//#include <mechgui/logisticsscreen.h>
+// #include <mechgui/alistbox.h>
 
 //*************************************************************************************************
 

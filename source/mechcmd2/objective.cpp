@@ -39,7 +39,7 @@ Objective.cpp			: Implementation of the Objective component.
 #endif
 
 #ifndef AFONT_H
-#include "afont.h"
+#include <mechgui/afont.h>
 #endif
 
 #include "Logisticsdata.h"

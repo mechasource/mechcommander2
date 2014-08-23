@@ -11,7 +11,7 @@ MechIcon.h			: Interface for the MechIcon component.
 #define MECHICON_H
 
 #include <mclib.h>
-#include "afont.h"
+#include <mechgui/afont.h>
 #include "mc2movie.h"
 
 //*************************************************************************************************

@@ -786,7 +786,7 @@ void Artillery::setJustCreated (void)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 	
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));
@@ -804,7 +804,7 @@ void Artillery::setJustCreated (void)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 	
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(JET_CONTRAIL_ID));
@@ -1771,7 +1771,7 @@ void Artillery::Load (ArtilleryData *data)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 	
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));
@@ -1809,7 +1809,7 @@ void Artillery::Load (ArtilleryData *data)
 		{
 			//--------------------------------------------
 			// Yes, load it on up.
-			unsigned flags = gosFX::Effect::ExecuteFlag;
+			uint32_t flags = gosFX::Effect::ExecuteFlag;
 	
 			Check_Object(gosFX::EffectLibrary::Instance);
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));

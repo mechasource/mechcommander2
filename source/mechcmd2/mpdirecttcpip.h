@@ -13,16 +13,16 @@ MPDirectTcpip.h			: Interface for the MPDirectTcpip component.
 #define MPDIRECTTCPIP_H
 
 #ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
+#include <mechgui/logisticsscreen.h>
 #endif
 
-#include "asystem.h"
-#include "alistbox.h"
+#include <mechgui/asystem.h>
+#include <mechgui/alistbox.h>
 #include "attributemeter.h"
 #include "simplecamera.h"
 
 #ifndef AANIM_H
-#include "aanim.h"
+#include <mechgui/aanim.h>
 #endif
 
 class aButton;

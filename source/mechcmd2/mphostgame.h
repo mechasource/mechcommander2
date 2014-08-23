@@ -13,11 +13,11 @@ MPHostGame.h			: Interface for the MPHostGame component.
 #define MPHOSTGAME_H
 
 //#include "logisticsdialog.h"
-//#include "asystem.h"
-//#include "alistbox.h"
+//#include <mechgui/asystem.h>
+//#include <mechgui/alistbox.h>
 //#include "attributemeter.h"
 //#include "simplecamera.h"
-//#include "aanim.h"
+//#include <mechgui/aanim.h>
 
 class aStyle5TextListItem : public aTextListItem
 {

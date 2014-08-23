@@ -16,8 +16,8 @@ and everything else on the left hand side of the screen.
 #include "mover.h"
 #include "utilities.h"
 #include "pausewindow.h"
-#include "afont.h"
-#include "aedit.h"
+#include <mechgui/afont.h>
+#include <mechgui/aedit.h>
 #include "mc2movie.h"
 #include "mpstats.h"
 

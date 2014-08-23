@@ -255,7 +255,7 @@ bool bInvokeOptionsScreenFlag = false;
 
 bool SnifferMode = false;
 gos_VERTEX *testVertex = NULL;
-WORD *indexArray = NULL;
+puint16_t indexArray = NULL;
 ULONG testTextureHandle = 0xffffffff;
 float totalTime = 0;
 ULONG numIterations = 4;
@@ -1702,7 +1702,7 @@ void InitializeGameEngine()
 
 		//Create about a thousand textured random triangles.
 		testVertex = (gos_VERTEX *)malloc(sizeof(gos_VERTEX) * 3000);
-		indexArray = (WORD *)malloc(sizeof(WORD) * 3000);
+		indexArray = (puint16_t )malloc(sizeof(uint16_t) * 3000);
 		for (int32_t i=0;i<3000;i++)
 		{
 			testVertex[i].x = RandomNumber(1000) - 100;

@@ -12,10 +12,10 @@ SalvageMechArea.h			: Interface for the SalvageMechArea component.
 #ifndef SALVAGEMECHAREA_H
 #define SALVAGEMECHAREA_H
 
-//#include "asystem.h"
+//#include <mechgui/asystem.h>
 //#include "simplecomponentlistbox.h"
 //#include "attributemeter.h"
-//#include "logisticsscreen.h"
+//#include <mechgui/logisticsscreen.h>
 //#include "simplecamera.h"
 
 class aButton;

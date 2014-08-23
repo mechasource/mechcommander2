@@ -11,7 +11,7 @@ MechPurchaseScreen.h			: Interface for the MechPurchaseScreen component.
 \*************************************************************************************************/
 
 #ifndef LOGISTICSSCREEN_H
-#include "logisticsscreen.h"
+#include <mechgui/logisticsscreen.h>
 #endif
 
 #include "MechListBox.h"

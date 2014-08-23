@@ -11,7 +11,7 @@ MechBayScreen.h : Header file for mech selection
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "logisticsscreen.h"
+#include <mechgui/logisticsscreen.h>
 #include "attributemeter.h"
 #include "MechListBox.h"
 #include "simplecomponentlistbox.h"

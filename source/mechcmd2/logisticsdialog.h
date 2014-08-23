@@ -10,9 +10,9 @@ LogisticsDialog.h			: Interface for the LogisticsDialog component.
 #ifndef LOGISTICSDIALOG_H
 #define LOGISTICSDIALOG_H
 
-//#include "logisticsscreen.h"
-//#include "aanim.h"
-//#include "alistbox.h"
+//#include <mechgui/logisticsscreen.h>
+//#include <mechgui/aanim.h>
+//#include <mechgui/alistbox.h>
 
 //*************************************************************************************************
 

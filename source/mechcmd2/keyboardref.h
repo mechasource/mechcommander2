@@ -10,8 +10,8 @@ KeyboardRef.h			: Interface for the KeyboardRef component.
 #ifndef KEYBOARDREF_H
 #define KEYBOARDREF_H
 
-#include "logisticsscreen.h"
-#include "alistbox.h"
+#include <mechgui/logisticsscreen.h>
+#include <mechgui/alistbox.h>
 #include "missiongui.h"
 
 //*************************************************************************************************

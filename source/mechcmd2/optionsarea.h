@@ -12,9 +12,9 @@ OptionsArea.h			: Interface for the OptionsArea component.
 #ifndef OPTIONSAREA_H
 #define OPTIONSAREA_H
 
-//#include "logisticsscreen.h"
+//#include <mechgui/logisticsscreen.h>
 //#include "simplecamera.h"
-//#include "alistbox.h"
+//#include <mechgui/alistbox.h>
 //#include "attributemeter.h"
 
 class aButton;

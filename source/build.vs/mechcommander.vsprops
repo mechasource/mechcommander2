@@ -6,7 +6,7 @@
 	>
 	<Tool
 		Name="VCCLCompilerTool"
-		AdditionalIncludeDirectories="../include;$(gameos_dir)/include;$(mclib_dir)"
+		AdditionalIncludeDirectories="$(mech_inc);$(mclib_dir);$(gameos_dir)/include"
 	/>
 	<Tool
 		Name="VCLinkerTool"
@@ -19,27 +19,32 @@
 	/>
 	<UserMacro
 		Name="gameos_dir"
-		Value="..\gameos"
+		Value="../gameos"
 		PerformEnvironmentSet="true"
 	/>
 	<UserMacro
 		Name="mclib_dir"
-		Value="..\mclib"
+		Value="../mclib"
 		PerformEnvironmentSet="true"
 	/>
 	<UserMacro
 		Name="mechcmd2_dir"
-		Value="..\mechcmd2"
+		Value="../mechcmd2"
 		PerformEnvironmentSet="true"
 	/>
 	<UserMacro
-		Name="gui_dir"
-		Value="..\gui"
+		Name="mechgui_dir"
+		Value="../mechcmd2/mechgui"
 		PerformEnvironmentSet="true"
 	/>
 	<UserMacro
 		Name="mc2res_dir"
-		Value="..\mc2res"
+		Value="../mc2res"
+		PerformEnvironmentSet="true"
+	/>
+  <UserMacro
+		Name="mech_inc"
+		Value="../include"
 		PerformEnvironmentSet="true"
 	/>
 </VisualStudioPropertySheet>

@@ -18,11 +18,11 @@ class FIDPSession: public ListItem
 		char Password[MAXNAMELEN];
 
 	public:
-		int ID;
+		int32_t ID;
 			
 	public:
-		FIDPSession(int id=0);
-		FIDPSession(DPSESSIONDESC2 sdesc, int id);
+		FIDPSession(int32_t id=0);
+		FIDPSession(DPSESSIONDESC2 sdesc, int32_t id);
 		FIDPSession(FIDPSession& session);
 
 		virtual ~FIDPSession();
@@ -35,12 +35,12 @@ class FIDPSession: public ListItem
 			return &SessionDescriptor;
 		}
 
-		inline void SetNumPlayers(int nplayers)
+		inline void SetNumPlayers(int32_t nplayers)
 		{
 			SessionDescriptor.dwCurrentPlayers = nplayers;
 		}
 
-		inline void SetMaxPlayers(int maxplayers)
+		inline void SetMaxPlayers(int32_t maxplayers)
 		{
 			SessionDescriptor.dwMaxPlayers = maxplayers;
 		}
@@ -49,12 +49,12 @@ class FIDPSession: public ListItem
 		
 		void SetPassword(PSTR password);
 
-		inline int GetNumPlayers()
+		inline int32_t GetNumPlayers()
 		{
 			return SessionDescriptor.dwCurrentPlayers;
 		}
 
-		inline int GetMaxPlayers()
+		inline int32_t GetMaxPlayers()
 		{
 			return SessionDescriptor.dwMaxPlayers;
 		}

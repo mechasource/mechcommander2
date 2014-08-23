@@ -42,8 +42,8 @@ public:
 	FILE *			fileToTransfer;
 	PSTR 			fileName;
 	PSTR 			relativeFilePath;
-	ULONG	fileSize;
-	int				percentDone;
+	uint32_t	fileSize;
+	int32_t				percentDone;
 	
 	
 	LPFILESENT_CALLBACK callbackFunction;
@@ -59,7 +59,7 @@ public:
 		DPID receiver_id,
 		PSTR file_name,
 		PSTR file_path,
-		ULONG size = 0,
+		uint32_t size = 0,
 		TransferType transfer_direction = FTSend);
 	
 	virtual ~FileTransferInfo();
@@ -68,16 +68,16 @@ public:
 	// file and places them into messageInfo.  
 	// Returns 0 if there are still more bytes to send.
 	// Returns 1 if this is the last of the file to send 
-	int PrepareNextMessage();
+	int32_t PrepareNextMessage();
 
 	// The addition operator allows the caller to add 
 	// bytes from a new message to the file.  
 	// Returns 0 if there are still more bytes to receive.
 	// Returns 1 if the file is completely received.
-	int AddBytes(PVOIDbytes,int size); 
+	int32_t AddBytes(PVOIDbytes,int32_t size); 
 
 
-	void SetID(int id)
+	void SetID(int32_t id)
 	{
 		fileID = id;
 	}
@@ -89,7 +89,7 @@ public:
 
 	// AllocateBeginTransferMessage creates a new message with information
 	// that tells the receiver that a message is on its way.
-	FIBeginFileTransferMessage *CreateBeginTransferMessage(int& size);
+	FIBeginFileTransferMessage *CreateBeginTransferMessage(int32_t& size);
 
 };
 

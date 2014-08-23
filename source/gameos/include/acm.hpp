@@ -14,10 +14,10 @@ This header is not used outside gameos and the implementation is wrappers of
 the ACM functions supplied with logging and error handling.
 */
 
-HRESULT __stdcall wACMStreamPrepareHeader(HACMSTREAM hACMStream, LPACMSTREAMHEADER pACMHeader, ULONG fdwPrepare);
-HRESULT __stdcall wACMStreamConvert(HACMSTREAM hACMStream, LPACMSTREAMHEADER pACMHeader, ULONG flags);
-HRESULT __stdcall wACMStreamUnprepareHeader(HACMSTREAM hACMStream, LPACMSTREAMHEADER pACMHeader, ULONG fdwPrepare);
-HRESULT __stdcall wACMStreamClose(HACMSTREAM hACMStream, ULONG flags);
-HRESULT __stdcall wACMStreamOpen(LPHACMSTREAM phas, HACMDRIVER had, LPWAVEFORMATEX pwfxSrc, LPWAVEFORMATEX pwfxDst, LPWAVEFILTER pwfltr, ULONG dwCallback, ULONG dwInstance, ULONG fdwOpen);
-HRESULT __stdcall wACMStreamSize(HACMSTREAM has, ULONG cbInput, PULONG pdwOutputBytes, ULONG fdwSize);
-HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, LPWAVEFORMATEX pwfxSrc, LPWAVEFORMATEX pwfxDst, ULONG cbwfxDst, ULONG fdwSuggest);
+HRESULT __stdcall wACMStreamPrepareHeader(HACMSTREAM hACMStream, LPACMSTREAMHEADER pACMHeader, uint32_t fdwPrepare);
+HRESULT __stdcall wACMStreamConvert(HACMSTREAM hACMStream, LPACMSTREAMHEADER pACMHeader, uint32_t flags);
+HRESULT __stdcall wACMStreamUnprepareHeader(HACMSTREAM hACMStream, LPACMSTREAMHEADER pACMHeader, uint32_t fdwPrepare);
+HRESULT __stdcall wACMStreamClose(HACMSTREAM hACMStream, uint32_t flags);
+HRESULT __stdcall wACMStreamOpen(LPHACMSTREAM phas, HACMDRIVER had, LPWAVEFORMATEX pwfxSrc, LPWAVEFORMATEX pwfxDst, LPWAVEFILTER pwfltr, uint32_t dwCallback, uint32_t dwInstance, uint32_t fdwOpen);
+HRESULT __stdcall wACMStreamSize(HACMSTREAM has, uint32_t cbInput, puint32_t pdwOutputBytes, uint32_t fdwSize);
+HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, LPWAVEFORMATEX pwfxSrc, LPWAVEFORMATEX pwfxDst, uint32_t cbwfxDst, uint32_t fdwSuggest);

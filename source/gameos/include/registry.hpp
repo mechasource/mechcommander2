@@ -13,5 +13,5 @@ void __stdcall RegistryManagerUninstall(void);
 PSTR __stdcall ReadRegistry( PSTR KeyName, PSTR ValueName, bool LocalMachine );
 PSTR __stdcall ReadRegistryHKCU( PSTR KeyName, PSTR ValueName, bool LocalMachine );
 
-extern ULONG UpdatedExe;					// Has the exe been updated since last run?
+extern uint32_t UpdatedExe;					// Has the exe been updated since last run?
 

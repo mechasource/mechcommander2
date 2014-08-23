@@ -145,7 +145,7 @@ class FixedLengthString
 //
 // Strings can be appended with integers
 //
-	inline FixedLengthString& operator << (int Value)
+	inline FixedLengthString& operator << (int32_t Value)
 	{
 		char Source[30];
 		
@@ -165,9 +165,9 @@ class FixedLengthString
 		return *this;
 	}
 //
-// Strings can be appended with short integers
+// Strings can be appended with int16_t integers
 //
-	inline FixedLengthString& operator << (short int Value)
+	inline FixedLengthString& operator << (int16_t int32_t Value)
 	{
 		char Source[30];
 		

@@ -22,12 +22,12 @@ int64_t __stdcall gos_GetHiResTime(void);
 //
 // You must pass the address of the worker thread routine to this function.
 //
-ULONG __stdcall gos_CreateThread( void (__stdcall *ThreadRoutine)(PVOID) );
+uint32_t __stdcall gos_CreateThread( void (__stdcall *ThreadRoutine)(PVOID) );
 
 //
 // Waits until the thread is not executing anymore and then deletes the thread
 //
-void __stdcall gos_DeleteThread( ULONG ThreadHandle );
+void __stdcall gos_DeleteThread( uint32_t ThreadHandle );
 
 typedef enum gosThreadPriority { 
 	ThreadPri_Lowest=1,
@@ -40,7 +40,7 @@ typedef enum gosThreadPriority {
 //
 // Set the thread priority
 //
-void __stdcall gos_SetThreadPriority( ULONG ThreadHandle, gosThreadPriority Priority );
+void __stdcall gos_SetThreadPriority( uint32_t ThreadHandle, gosThreadPriority Priority );
 
 //
 // Starts the created thread executing
@@ -48,7 +48,7 @@ void __stdcall gos_SetThreadPriority( ULONG ThreadHandle, gosThreadPriority Prio
 // 'ThreadFinished' will be set when the thread has finished executing
 // 'Context' will be passed to the thread function
 //
-void __stdcall gos_TriggerThread( ULONG ThreadHandle, bool* ThreadFinished, PVOID Context ); 
+void __stdcall gos_TriggerThread( uint32_t ThreadHandle, bool* ThreadFinished, PVOID Context ); 
 
 
 
@@ -57,20 +57,20 @@ void __stdcall gos_TriggerThread( ULONG ThreadHandle, bool* ThreadFinished, PVOI
 // LZ Compression - returns length of compressed destination buffer
 //
 //
-ULONG __stdcall gos_LZCompress( puint8_t dest, puint8_t src, size_t srcLen, size_t destLen=0 );
+uint32_t __stdcall gos_LZCompress( puint8_t dest, puint8_t src, size_t srcLen, size_t destLen=0 );
 //
 //
 // LZ Decompression routine, returns length to decompressed output in dest buffer
 //
 //
-ULONG __stdcall gos_LZDecompress( puint8_t dest, puint8_t src, size_t srcLen );
+uint32_t __stdcall gos_LZDecompress( puint8_t dest, puint8_t src, size_t srcLen );
 
 
 
 //
 // Gets a pointer to text data in the windows clip board (NULL=No text)
 //
-ULONG __stdcall gos_GetClipboardText( PSTR Buffer, size_t BufferSize );
+uint32_t __stdcall gos_GetClipboardText( PSTR Buffer, size_t BufferSize );
 
 //
 // Sets the windows clipboard to the current text string
@@ -86,7 +86,7 @@ void __stdcall gos_SetClipboardText( PSTR Text );
 //
 // Returns the length of the string
 //
-ULONG __stdcall gos_GetValidDrives( PSTR Buffer, size_t buf_len );
+uint32_t __stdcall gos_GetValidDrives( PSTR Buffer, size_t buf_len );
 
 //
 // Returns the drive label for a root directory specified. eg:  "c:\" might return "DriveC"
@@ -157,7 +157,7 @@ void __stdcall gos_GetFullPathName( PSTR FullPath, PCSTR FileName );
 //
 // Get file size information (-1 if error)
 //
-ULONG __stdcall gos_FileSize( PCSTR FileName );
+uint32_t __stdcall gos_FileSize( PCSTR FileName );
 //
 // Get file date/time information (-1 if error) - this can be compared directly, and decoded using gos_FileTimeString
 //
@@ -218,16 +218,16 @@ void __stdcall gos_CloseFile( HGOSFILE hfile );
 //////////////////////////////////////////////////////////////////////////////////
 // Read <size> bytes from the file specified by handle <hfile> into the buffer
 // pointed to by <buf>.
-ULONG __stdcall gos_ReadFile( HGOSFILE hfile, PVOID buf, size_t size );
+uint32_t __stdcall gos_ReadFile( HGOSFILE hfile, PVOID buf, size_t size );
 
 //////////////////////////////////////////////////////////////////////////////////
 // Write <size> bytes to the file specified by handle <hfile> from the buffer
 // pointed to by <buf>.
-ULONG __stdcall gos_WriteFile( HGOSFILE hfile, PCVOID buf, size_t size );
+uint32_t __stdcall gos_WriteFile( HGOSFILE hfile, PCVOID buf, size_t size );
 
 //////////////////////////////////////////////////////////////////////////////////
 // Move the current file position in filestream <hfile> to offset <offset> using
 // the seek type specified by <type>.
-ULONG __stdcall gos_SeekFile( HGOSFILE hfile, gosEnum_FileSeekType type, ptrdiff_t offset );
+uint32_t __stdcall gos_SeekFile( HGOSFILE hfile, gosEnum_FileSeekType type, ptrdiff_t offset );
 
 #endif

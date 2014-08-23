@@ -52,7 +52,7 @@ template <class T> class FLinkedList
 	protected:
 		FLink<T> * m_Tail;
 		FLink<T> * m_Iterator;
-		int m_Size;
+		int32_t m_Size;
 					
 	public:
 
@@ -225,7 +225,7 @@ template <class T> class FLinkedList
 			return m_Tail->linkData;
 		}
 
-		int Size() 
+		int32_t Size() 
 		{
 			return m_Size;
 		}
@@ -255,7 +255,7 @@ template <class T> class FLinkedList
 			m_Iterator = m_Iterator->Next;
 			return m_Iterator->linkData;
 		}
-		T *Get(int index) 
+		T *Get(int32_t index) 
 		{
 			FLink<T> * tmp = m_Head;
 			if (tmp == NULL)

@@ -19,7 +19,7 @@ void __stdcall Destory_FileSystem( bool NoErrors );
 // Debugging information
 //
 extern char FileInfo[32][MAX_PATH+32];
-extern ULONG CurrentFileInfo;
+extern uint32_t CurrentFileInfo;
 #endif
 
 
@@ -51,16 +51,16 @@ typedef struct gosFileStream
 	gosFileStream( PCSTR FileName, gosEnum_FileWriteStatus fwstatus );
 	~gosFileStream(void);
 
-	ULONG Seek( int where, gosEnum_FileSeekType from_end );
-	ULONG Read( PVOIDbuffer, ULONG length );
-	ULONG Write( PCVOID buffer, ULONG length );
+	uint32_t Seek( int32_t where, gosEnum_FileSeekType from_end );
+	uint32_t Read( PVOIDbuffer, uint32_t length );
+	uint32_t Write( PCVOID buffer, uint32_t length );
 
-	ULONG BytesTransfered;
+	uint32_t BytesTransfered;
 } gosFileStream;
 
 
 
 extern MemoryMappedFiles*	ListofMemoryMappedFiles;
 extern gosFileStream* ListOfFiles;
-extern ULONG NumberMemoryMappedFilesOpen;
-extern ULONG NumberFilesOpen;
+extern uint32_t NumberMemoryMappedFilesOpen;
+extern uint32_t NumberFilesOpen;

@@ -7,7 +7,7 @@
 struct enumDevice
 {
 	GUID deviceGUID;
-	ULONG iter;
+	uint32_t iter;
 };
 
 class DS3DSoundMixer
@@ -25,7 +25,7 @@ class DS3DSoundMixer
 
 		float m_fVolume;
 		float m_reverbFactor, m_decayFactor;
-		ULONG m_properties;
+		uint32_t m_properties;
 		bool m_changed;
 
 
@@ -46,9 +46,9 @@ class DS3DSoundMixer
 		void SetReverbFactor( float rf );
 		void SetDecayFactor( float df );
 		void GetCaps();
-		void SetSpeakerConfig( ULONG );
-		void GetSpeakerConfig( ULONG* );
-		void ReturnFormattedDebugData( PSTR  dst, ULONG maxlen );
+		void SetSpeakerConfig( uint32_t );
+		void GetSpeakerConfig( uint32_t* );
+		void ReturnFormattedDebugData( PSTR  dst, uint32_t maxlen );
 		void SetAllParameters();
 
 };

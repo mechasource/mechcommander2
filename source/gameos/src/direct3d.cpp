@@ -42,7 +42,7 @@
 #include <directxdebugging.hpp>
 #include <errorhandler.hpp>
 
-extern ULONG TotalRenderStateChanges;
+extern uint32_t TotalRenderStateChanges;
 
 #pragma region wLock
 /*
@@ -60,7 +60,7 @@ extern ULONG TotalRenderStateChanges;
 /// <param name="lpdwSize"></param>
 /// <returns></returns>
 HRESULT __stdcall wLock(
-	LPDIRECT3DVERTEXBUFFER7 D3Dvb7, ULONG dwFlags, PVOID *lplpData, PULONG lpdwSize)
+	LPDIRECT3DVERTEXBUFFER7 D3Dvb7, uint32_t dwFlags, PVOID *lplpData, puint32_t lpdwSize)
 {
 	PSTR		pszErrorMessage;
 	HRESULT		hResult;
@@ -125,7 +125,7 @@ HRESULT __stdcall wUnlock(
 /// <param name="dwFlags"></param>
 /// <returns></returns>
 HRESULT __stdcall wOptimize(
-	LPDIRECT3DVERTEXBUFFER7 D3Dvb7, LPDIRECT3DDEVICE7 lpD3DDevice, ULONG dwFlags)
+	LPDIRECT3DVERTEXBUFFER7 D3Dvb7, LPDIRECT3DDEVICE7 lpD3DDevice, uint32_t dwFlags)
 {
 	PSTR		pszErrorMessage;
 	HRESULT		hResult;
@@ -164,8 +164,8 @@ HRESULT __stdcall wOptimize(
 /// <param name="dwFlags"></param>
 /// <returns></returns>
 HRESULT __stdcall wProcessVertices(
-	LPDIRECT3DVERTEXBUFFER7 D3Dvb7, ULONG dwVertexOp, ULONG dwDestIndex, ULONG dwCount, 
-	LPDIRECT3DVERTEXBUFFER7 lpSrcBuffer, ULONG dwSrcIndex, LPDIRECT3DDEVICE7 lpD3DDevice, ULONG dwFlags)
+	LPDIRECT3DVERTEXBUFFER7 D3Dvb7, uint32_t dwVertexOp, uint32_t dwDestIndex, uint32_t dwCount, 
+	LPDIRECT3DVERTEXBUFFER7 lpSrcBuffer, uint32_t dwSrcIndex, LPDIRECT3DDEVICE7 lpD3DDevice, uint32_t dwFlags)
 {
 	PSTR		pszErrorMessage;
 	HRESULT		hResult;
@@ -326,9 +326,9 @@ HRESULT __stdcall wEnumZBufferFormats(
 /// <returns></returns>
 HRESULT __stdcall wCreateVertexBuffer(
 	LPDIRECT3D7 d3d7, LPD3DVERTEXBUFFERDESC lpVBDesc, 
-	LPDIRECT3DVERTEXBUFFER7 *lplpD3DVertexBuffer, ULONG dwFlags)
+	LPDIRECT3DVERTEXBUFFER7 *lplpD3DVertexBuffer, uint32_t dwFlags)
 {
-	ULONG		dwNumVertices;
+	uint32_t		dwNumVertices;
 	PSTR		pszErrorMessage;
 	HRESULT		hResult;
 
@@ -507,7 +507,7 @@ HRESULT __stdcall wMultiplyTransform(
 /// <param name="lpLight"></param>
 /// <returns></returns>
 HRESULT __stdcall wSetLight(
-	LPDIRECT3DDEVICE7 d3dDevice7, ULONG dwLightIndex, LPD3DLIGHT7 lpLight)
+	LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwLightIndex, LPD3DLIGHT7 lpLight)
 {
 	PSTR		pszLightInfo;
 	PSTR		pszErrorMessage;
@@ -544,7 +544,7 @@ HRESULT __stdcall wSetLight(
 /// <param name="Enable"></param>
 /// <returns></returns>
 HRESULT __stdcall wLightEnable(
-	LPDIRECT3DDEVICE7 d3dDevice7, ULONG dwLightIndex, bool Enable)
+	LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwLightIndex, bool Enable)
 {
 	PSTR		pszEnable;
 	PSTR		pszErrorMessage;
@@ -658,8 +658,8 @@ HRESULT __stdcall wSetViewport(
 /// <param name="dwStencil"></param>
 /// <returns></returns>
 HRESULT __stdcall wClear(
-	LPDIRECT3DDEVICE7 d3dDevice7, ULONG dwCount, LPD3DRECT lpRects, ULONG dwFlags, 
-	ULONG dwColor, D3DVALUE dvZ, ULONG dwStencil)
+	LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwCount, LPD3DRECT lpRects, uint32_t dwFlags, 
+	uint32_t dwColor, D3DVALUE dvZ, uint32_t dwStencil)
 {
 	PSTR		pszClearArea;
 	PSTR		pszErrorMessage;
@@ -735,7 +735,7 @@ HRESULT __stdcall wGetCaps(
 /// <param name="dwRenderState"></param>
 /// <returns></returns>
 HRESULT __stdcall wSetRenderState(
-	LPDIRECT3DDEVICE7 d3dDevice7, D3DRENDERSTATETYPE dwRenderStateType, ULONG dwRenderState)
+	LPDIRECT3DDEVICE7 d3dDevice7, D3DRENDERSTATETYPE dwRenderStateType, uint32_t dwRenderState)
 {
 	PSTR		pszRenderState;
 	PSTR		pszErrorMessage;
@@ -806,7 +806,7 @@ HRESULT __stdcall wEnumTextureFormats(
 /// <param name="lpTexture"></param>
 /// <returns></returns>
 HRESULT __stdcall wSetTexture(
-	LPDIRECT3DDEVICE7 d3dDevice7, ULONG dwStage, LPDIRECTDRAWSURFACE7 lpTexture)
+	LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwStage, LPDIRECTDRAWSURFACE7 lpTexture)
 {
 	PSTR		pszErrorMessage;
 	HRESULT		hResult;
@@ -844,7 +844,7 @@ HRESULT __stdcall wSetTexture(
 /// <param name="dwValue"></param>
 /// <returns></returns>
 HRESULT __stdcall wSetTextureStageState(
-	LPDIRECT3DDEVICE7 d3dDevice7, ULONG dwStage, D3DTEXTURESTAGESTATETYPE dwState, ULONG dwValue)
+	LPDIRECT3DDEVICE7 d3dDevice7, uint32_t dwStage, D3DTEXTURESTAGESTATETYPE dwState, uint32_t dwValue)
 {
 	PSTR		pszStageSet;
 	PSTR		pszErrorMessage;
@@ -884,7 +884,7 @@ HRESULT __stdcall wSetTextureStageState(
 /// <param name="pExtraPasses"></param>
 /// <returns></returns>
 HRESULT __stdcall wValidateDevice(
-	LPDIRECT3DDEVICE7 d3dDevice7, PULONG pExtraPasses)
+	LPDIRECT3DDEVICE7 d3dDevice7, puint32_t pExtraPasses)
 {
 	PSTR		pszErrorMessage;
 	HRESULT		hResult;
@@ -924,7 +924,7 @@ HRESULT __stdcall wValidateDevice(
 /// <returns></returns>
 HRESULT __stdcall wLoad(
 	LPDIRECT3DDEVICE7 d3dDevice7, LPDIRECTDRAWSURFACE7 lpDestTex, LPPOINT lpDestPoint, 
-	LPDIRECTDRAWSURFACE7 lpSrcTex, LPRECT lprcSrcRect, ULONG dwFlags)
+	LPDIRECTDRAWSURFACE7 lpSrcTex, LPRECT lprcSrcRect, uint32_t dwFlags)
 {
 	PSTR		pszErrorMessage;
 	HRESULT		hResult;
@@ -970,7 +970,7 @@ HRESULT __stdcall wLoad(
 /// <returns></returns>
 HRESULT __stdcall wDrawPrimitive(
 	LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE dptPrimitiveType, 
-	ULONG dvtVertexType, PVOID lpvVertices, ULONG dwVertexCount, ULONG dwFlags)
+	uint32_t dvtVertexType, PVOID lpvVertices, uint32_t dwVertexCount, uint32_t dwFlags)
 {
 	PSTR		pszPrimitiveData;
 	PSTR		pszErrorMessage;
@@ -1023,8 +1023,8 @@ HRESULT __stdcall wDrawPrimitive(
 /// <returns></returns>
 HRESULT __stdcall wDrawIndexedPrimitive(
 	LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE d3dptPrimitiveType, 
-	ULONG dwVertexTypeDesc, PVOID pvVertices, ULONG dwVertexCount, puint16_t pwIndices, 
-	ULONG dwIndexCount, ULONG dwFlags)
+	uint32_t dwVertexTypeDesc, PVOID pvVertices, uint32_t dwVertexCount, puint16_t pwIndices, 
+	uint32_t dwIndexCount, uint32_t dwFlags)
 {
 	PSTR		pszPrimitiveData;
 	PSTR		pszErrorMessage;
@@ -1090,8 +1090,8 @@ HRESULT __stdcall wDrawIndexedPrimitive(
 /// <returns></returns>
 HRESULT __stdcall wDrawIndexedPrimitiveVB(
 	LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE d3dptPrimitiveType, 
-	LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer, ULONG dwStartVertex, 
-	ULONG dwNumVertices, puint16_t lpwIndices, ULONG dwIndexCount, ULONG dwFlags)
+	LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer, uint32_t dwStartVertex, 
+	uint32_t dwNumVertices, puint16_t lpwIndices, uint32_t dwIndexCount, uint32_t dwFlags)
 {
 	LPDIRECT3DVERTEXBUFFER7		pd3dVertexBufferUsed;
 	PSTR						pszErrorMessage;
@@ -1152,8 +1152,8 @@ HRESULT __stdcall wDrawIndexedPrimitiveVB(
 /// <returns></returns>
 HRESULT __stdcall wDrawPrimitiveVB(
 	LPDIRECT3DDEVICE7 d3dDevice7, D3DPRIMITIVETYPE d3dptPrimitiveType, 
-	LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer, ULONG dwStartVertex, 
-	ULONG dwNumVertices, ULONG dwFlags)
+	LPDIRECT3DVERTEXBUFFER7 lpd3dVertexBuffer, uint32_t dwStartVertex, 
+	uint32_t dwNumVertices, uint32_t dwFlags)
 {
 	LPDIRECT3DVERTEXBUFFER7		pd3dVertexBufferUsed;
 	PSTR						pszErrorMessage;

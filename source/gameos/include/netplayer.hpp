@@ -26,8 +26,8 @@ class FIDPPlayer:public ListItem
 protected:	
 	char				shortName[128];
 	char				longName[256];
-	ULONG		playerID;
-	ULONG		playerFlags;
+	uint32_t		playerID;
+	uint32_t		playerFlags;
 
 	// The awaitingVerificationList holds a list of messages
 	// that were sent to this player and are awaiting 
@@ -57,11 +57,11 @@ public:
 
 	uint8_t nextIncomingSendCount;
 
-	int nItemsInHoldBuffer;
+	int32_t nItemsInHoldBuffer;
 
 	// player_number is used for guaranteed messages.  It represents
 	// which 4 bits to use for this player's messages.
-	int					playerNumber;
+	int32_t					playerNumber;
 
 	// isActive is set to true when the player is created, and is set
 	// to FALSE when the player is kicked out.
@@ -71,10 +71,10 @@ public:
 	// messageResendTime is the time to wait before re-sending a message.  If
 	// a message is re-sent, this value is bumped up a bit.  If the average 
 	// latency is well below the resend time, it is dropped.
-	ULONG		messageResendTime;
+	uint32_t		messageResendTime;
 
 	// physicalMemory is the amount of RAM on this player's machine.
-	ULONG		physicalMemory;
+	uint32_t		physicalMemory;
 
 
 
@@ -83,7 +83,7 @@ public:
 	FIDPPlayer();
 	FIDPPlayer(DPID& id,
 		LPCDPNAME name,
-		ULONG flags);
+		uint32_t flags);
 	virtual ~FIDPPlayer();
 
 
@@ -151,15 +151,15 @@ public:
 
 	// HandleIncomingMessage places the message into the incomingHoldBuffer.
 	// if its new and returns TRUE.  If the message is old, it returns FALSE.
-	BOOL HandleIncomingMessage(FIDPMessage *message_info, int send_count);
+	BOOL HandleIncomingMessage(FIDPMessage *message_info, int32_t send_count);
 
 	void SetNextIncomingSendCount();
 
-	FIDPMessage *RemoveFromVerifyList(int send_count);
+	FIDPMessage *RemoveFromVerifyList(int32_t send_count);
 
 	BOOL IsVerifyListFull();
 
-	int VerifyCountDifference();
+	int32_t VerifyCountDifference();
 
 	FIDPMessage *NextMessageToProcess();
 

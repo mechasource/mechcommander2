@@ -61,7 +61,7 @@ extern PCSTR INVALID_PING_STR;
 #define INVALID_PING_VAL -1
 
 
-extern "C" int __stdcall GetDirectPlayPort(void);
+extern "C" int32_t __stdcall GetDirectPlayPort(void);
 
 cint32_t ZONE_PING_INTERVAL = 20;
 
@@ -106,7 +106,7 @@ namespace Browse
 {
 
     // control functions for pings
-    extern void PingCallback( ULONG inet, ULONG latency, PVOID context);
+    extern void PingCallback( uint32_t inet, uint32_t latency, PVOID context);
 
     typedef PVOID POSITION; // for use by CList
     /*
@@ -207,7 +207,7 @@ public:
     {
         PSTR           key; // header name
         PSTR           value; // value of field
-        int             iValue; // atoi() applied to 'value'
+        int32_t             iValue; // atoi() applied to 'value'
 
         // these are needed to override GameOS memory management
         PVOID operator new(size_t size);
@@ -256,14 +256,14 @@ public:
 
 
     // misc operations
-    int  GetTotalCount( void ); // total number of table items 
+    int32_t  GetTotalCount( void ); // total number of table items 
     bool Exists( PCSTR  id );
     void EnumerateAll( CHash<TableItem, PCSTR >::PFITERCALLBACK pfnCB,
                        PVOID cookie );
     PCSTR  GetIDFromField( PCSTR  key,
                            PCSTR  val );
     PCSTR  GetIDFromField( PCSTR  key,
-                            int val ); // compares iVal
+                            int32_t val ); // compares iVal
     static void __cdecl Lock( void );
     static void __cdecl Unlock( void ); 
 
@@ -280,7 +280,7 @@ protected:
     
 
     // hash table stuff
-    static ULONG HashLPSTR( PCSTR  Key );
+    static uint32_t HashLPSTR( PCSTR  Key );
     static bool  HashCompare(TableItem *obj,PCSTR  key);
     typedef CHash<TableItem, PCSTR > ItemHash;
     
@@ -346,10 +346,10 @@ public:
 
     // ping management
     static bool _stdcall StartPingServer( void );
-    static bool _stdcall StartPingClient( ULONG ping_interval_sec );
+    static bool _stdcall StartPingClient( uint32_t ping_interval_sec );
     static void _stdcall ShutdownPing( void );
-    int  GetPing( PCSTR  id );
-    int  GetPing( int index );
+    int32_t  GetPing( PCSTR  id );
+    int32_t  GetPing( int32_t index );
 
 
 
@@ -424,7 +424,7 @@ public:
     FilterType GetFilterType( void ) const;
 
     // general field-based filtering
-    void AddNumericFilter( PCSTR  key, int minVal, int maxVal );
+    void AddNumericFilter( PCSTR  key, int32_t minVal, int32_t maxVal );
     void AddStringFilter( PCSTR  key, PCSTR  val );
     virtual bool ClearFilter(PCSTR  key );
 
@@ -444,7 +444,7 @@ protected:
     {
         PSTR           key;
         FilterItemType  type;
-        int             min,max; // min and max integer values 
+        int32_t             min,max; // min and max integer values 
         PSTR           strVal; // string value
     };
 
@@ -577,8 +577,8 @@ public:
     void SetDynamicFiltering( bool val );
     bool GetDynamicFiltering( void ) const;
 
-    bool GetIndex( int index, PSTR * id );
-    int  GetCount( void ) const;
+    bool GetIndex( int32_t index, PSTR * id );
+    int32_t  GetCount( void ) const;
 
     // filtering operations
     void SetFilter( TableItemFilter & filter );
@@ -598,7 +598,7 @@ public:
 
 
     // misc operations
-    int GetIndexFromID( PCSTR  id );
+    int32_t GetIndexFromID( PCSTR  id );
     bool SetSelection( PCSTR  id );
     PCSTR  GetSelection( void ) const;
 
@@ -623,9 +623,9 @@ protected:
     // Methods
     void Add( TableList::TableItem & item );
     void GrowSorted( void );
-    void DeleteSorted( int index );
-    int  GetSortedIndex( TableList::TableItem * item );
-    void QSort( SortVec & sortVec, int first, int last );
+    void DeleteSorted( int32_t index );
+    int32_t  GetSortedIndex( TableList::TableItem * item );
+    void QSort( SortVec & sortVec, int32_t first, int32_t last );
     
     static bool HashForEachCB( TableList::TableItem * item,
                                MTListNodeHandle h, 
@@ -641,8 +641,8 @@ private:
 
     // m_SortVec is for full list sorts for speed reasons.
     SortVec m_SortVec;  // for full sorts
-    int     m_SortVecSize;
-    int     m_SortVecCapacity;
+    int32_t     m_SortVecSize;
+    int32_t     m_SortVecCapacity;
 
     CList<SortStruct *> m_SortList; // for dynamic inserts
 

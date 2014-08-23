@@ -14,8 +14,8 @@ void __stdcall TimeManagerUninstall();
 void __stdcall StartPauseTime();
 void __stdcall EndPauseTime();
 
-extern ULONG WatchDogFrame;
-extern ULONG CurrentFrameNumber;
+extern uint32_t WatchDogFrame;
+extern uint32_t CurrentFrameNumber;
 extern int64_t StartCount;
 extern int64_t frequency;
 extern int64_t StartOfRenderTime;

@@ -95,7 +95,7 @@ void __stdcall gos_MultiplyTransform(
 /// <param name="LightNumber"></param>
 /// <param name="pLightData"></param>
 /// <returns></returns>
-void __stdcall gos_SetLight(ULONG LightNumber, LPD3DLIGHT7 pLightData)
+void __stdcall gos_SetLight(uint32_t LightNumber, LPD3DLIGHT7 pLightData)
 {
 	gosASSERT(InsideBeginScene);
 
@@ -115,7 +115,7 @@ void __stdcall gos_SetLight(ULONG LightNumber, LPD3DLIGHT7 pLightData)
 /// <param name="LightNumber"></param>
 /// <param name="Enable"></param>
 /// <returns></returns>
-void __stdcall gos_LightEnable(ULONG LightNumber, uint8_t Enable)
+void __stdcall gos_LightEnable(uint32_t LightNumber, uint8_t Enable)
 {
 	gosASSERT(InsideBeginScene);
 

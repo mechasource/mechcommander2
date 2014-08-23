@@ -10,18 +10,18 @@
 void __stdcall UpdateDebugMouse(void);
 void __stdcall UpdateDebugWindow(void);
 void __stdcall InitTextDisplay(void);
-void __stdcall DrawText( ULONG Color, PSTR String );
-void __stdcall DrawSquare( int TopX, int TopY, int Width, int Height, ULONG Color );
+void __stdcall DrawText( uint32_t Color, PSTR String );
+void __stdcall DrawSquare( int32_t TopX, int32_t TopY, int32_t Width, int32_t Height, uint32_t Color );
 void __stdcall DrawChr( char Chr );
 
 
 //
 // Debugger window variables
 //
-extern int DbTopX,DbTopY;
-extern int DbMaxX,DbMaxY,DbMinX;
-extern ULONG DebugDisplay;
-extern ULONG TopStatistics;
+extern int32_t DbTopX,DbTopY;
+extern int32_t DbMaxX,DbMaxY,DbMinX;
+extern uint32_t DebugDisplay;
+extern uint32_t TopStatistics;
 
 //
 // Debugger window constants
@@ -30,9 +30,9 @@ extern ULONG TopStatistics;
 #define DbSizeY 342
 
 
-extern int CurrentX,CurrentY;		// Current pixel position
-extern int DbChrX,DbChrY;			// Current character x,y
-extern int StartX,StartY;			// Current start of line
+extern int32_t CurrentX,CurrentY;		// Current pixel position
+extern int32_t DbChrX,DbChrY;			// Current character x,y
+extern int32_t StartX,StartY;			// Current start of line
 
 
 

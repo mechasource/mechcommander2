@@ -18,25 +18,25 @@ class DS3DSoundChannel
 		DS3DBUFFER m_Attributes3D;
 
 		float m_fVolume, m_fPanning, m_fFrequency;
-		ULONG m_currentProperties;
-		ULONG m_oldProperties;
+		uint32_t m_currentProperties;
+		uint32_t m_oldProperties;
 		SoundResource * m_currentSoundResource;
 		bool m_true3D;
 		bool m_changed;
 		bool m_sysPause;
 
-		ULONG m_previousPlayPosition;
-		ULONG m_playPosition;
+		uint32_t m_previousPlayPosition;
+		uint32_t m_playPosition;
 
 		bool m_bLoopFlag;
 	    bool m_fCued;                  // semaphore (stream cued)
 		bool m_fPlaying;               // semaphore (stream playing)
 		bool m_fPaused;               // semaphore (stream playing)
-	    UINT m_cbBufOffset;            // last write position
-	    UINT m_nBufLength;             // length of sound buffer in msec
-	    UINT m_cbBufSize;              // size of sound buffer in bytes
+	    uint32_t m_cbBufOffset;            // last write position
+	    uint32_t m_nBufLength;             // length of sound buffer in msec
+	    uint32_t m_cbBufSize;              // size of sound buffer in bytes
 	    float m_fDuration;              // duration of wave file
-		ULONG m_myEnum;
+		uint32_t m_myEnum;
 		bool playPending;
 
 		bool bIsDuplicate;
@@ -48,7 +48,7 @@ class DS3DSoundChannel
 	public:
 		DS3DSoundChannel();
 		~DS3DSoundChannel();
-		void Reset(ULONG chan);
+		void Reset(uint32_t chan);
 		void CreateAndLoadBuffer( SoundResource * );
 		void CreateStreamBuffer( SoundResource * );
 		void CreateBuffer();
@@ -60,8 +60,8 @@ class DS3DSoundChannel
 		void PauseStream();
 		void StopStream();
 		void Cue();
-		void WriteWaveData(UINT size);
-		ULONG GetMaxWriteSize();
+		void WriteWaveData(uint32_t size);
+		uint32_t GetMaxWriteSize();
 		BOOL ServicePlayList();
 		void SetVolume(float f);
 		void SetPan(float f);
@@ -70,10 +70,10 @@ class DS3DSoundChannel
 		void SetVelocity(float x, float y, float z);
 		void SetDistanceMinMax(float min, float max);
 		bool IsPlaying();
-		ULONG GetBytesPlayed();
+		uint32_t GetBytesPlayed();
 		void SpewCaps();
-		void ReturnFormattedDebugData( PSTR  dst, ULONG maxlen );
-		void SetConeAngles( ULONG min, ULONG max );
+		void ReturnFormattedDebugData( PSTR  dst, uint32_t maxlen );
+		void SetConeAngles( uint32_t min, uint32_t max );
 		void SetConeOrientation( float x, float y, float z );
 		void SetAllParameters();
 		void ReleaseCurrent();

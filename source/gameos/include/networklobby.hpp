@@ -12,7 +12,7 @@
 #include "networking.hpp"
 
 
-typedef void(__stdcall *LPSTRINGCALLBACK)(PCSTR string, ULONG value);
+typedef void(__stdcall *LPSTRINGCALLBACK)(PCSTR string, uint32_t value);
 
 
 
@@ -37,14 +37,14 @@ GOSERRORCODE __stdcall gos_EnumerateSessions(LPSTRINGCALLBACK callback);
 // Return value: If successful, return value is GOS_OK.  If no session matching <session_name>
 //					is found, returns GOS_ERR_SESSIONNOTFOUND.
 //
-GOSERRORCODE __stdcall gos_EnumeratePlayers(ULONG session_id, LPSTRINGCALLBACK callback);
+GOSERRORCODE __stdcall gos_EnumeratePlayers(uint32_t session_id, LPSTRINGCALLBACK callback);
 
 
 // Functionality: Creates a new game using the given game name, player name and maximum players.
 //				  
 // Return value: If successful, return value is GOS_OK.  
 //
-GOSERRORCODE __stdcall gos_CreateGame(PSTR game_name, PSTR player_name, int max_players);
+GOSERRORCODE __stdcall gos_CreateGame(PSTR game_name, PSTR player_name, int32_t max_players);
 
 
 // Functionality: Joins the game with the given session ID.  The session ids are returned in the
@@ -53,7 +53,7 @@ GOSERRORCODE __stdcall gos_CreateGame(PSTR game_name, PSTR player_name, int max_
 // Return value: If successful, return value is GOS_OK.  If no session matching <session_id>
 //					is found, returns GOS_ERR_SESSIONNOTFOUND.
 //
-GOSERRORCODE __stdcall gos_JoinGame(ULONG session_id, PSTR player_name);
+GOSERRORCODE __stdcall gos_JoinGame(uint32_t session_id, PSTR player_name);
 
 
 // Functionality: Calls the callback once for each modem installed on this

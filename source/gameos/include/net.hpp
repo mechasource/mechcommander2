@@ -49,7 +49,7 @@ typedef enum
 //
 // Routine typedef used to return game and player information
 //
-typedef void(__stdcall *NETCALLBACK)(PCSTR string, ULONG value);
+typedef void(__stdcall *NETCALLBACK)(PCSTR string, uint32_t value);
 
 
 
@@ -83,7 +83,7 @@ void __stdcall gos_ShutdownNetwork();
 // 3: Modem
 // 4: Serial
 //
-bool __stdcall CheckConnectionAvailable( int Connection );
+bool __stdcall CheckConnectionAvailable( int32_t Connection );
 
 //
 // Open a TCPIP connection
@@ -103,7 +103,7 @@ bool __stdcall gos_ConnectIPX();
 //
 // You pass the number of the COM port to use
 //
-bool __stdcall gos_ConnectComPort( ULONG com_port );
+bool __stdcall gos_ConnectComPort( uint32_t com_port );
 
 //
 // Open a Modem connection
@@ -137,14 +137,14 @@ void __stdcall gos_EnumerateSessions( NETCALLBACK callback );
 // Return value: If successful, return value is GOS_OK.  If no session matching <session_name>
 //					is found, returns GOS_ERR_SESSIONNOTFOUND.
 //
-void __stdcall gos_EnumeratePlayers( ULONG session_id, NETCALLBACK callback );
+void __stdcall gos_EnumeratePlayers( uint32_t session_id, NETCALLBACK callback );
 
 
 // Functionality: Creates a new game using the given game name, player name and maximum players.
 //				  
 // Return value: If successful, return value is GOS_OK.  
 //
-GOSERRORCODE __stdcall gos_CreateGame( PSTR game_name, PSTR player_name, int max_players );
+GOSERRORCODE __stdcall gos_CreateGame( PSTR game_name, PSTR player_name, int32_t max_players );
 
 
 // Functionality: Joins the game with the given session ID.  The session ids are returned in the
@@ -153,7 +153,7 @@ GOSERRORCODE __stdcall gos_CreateGame( PSTR game_name, PSTR player_name, int max
 // Return value: If successful, return value is GOS_OK.  If no session matching <session_id>
 //					is found, returns GOS_ERR_SESSIONNOTFOUND.
 //
-GOSERRORCODE __stdcall gos_JoinGame(ULONG session_id, PSTR player_name);
+GOSERRORCODE __stdcall gos_JoinGame(uint32_t session_id, PSTR player_name);
 
 
 // Functionality: Calls the callback once for each modem installed on this
@@ -201,7 +201,7 @@ GOSERRORCODE gos_LeaveSession();
 
 
 
-GOSERRORCODE gos_RemovePlayer(ULONG player_id);
+GOSERRORCODE gos_RemovePlayer(uint32_t player_id);
 
 
 

@@ -40,7 +40,7 @@
 //
 // Enter the visual C debugger
 //
-#define ENTER_DEBUGGER __debugbreak();	// _asm int 3
+#define ENTER_DEBUGGER __debugbreak();	// _asm int32_t 3
 //
 // Check !=0 only in debug builds (can be continued)
 //
@@ -139,11 +139,11 @@ typedef struct gosEnvironment {
 //
 // Current screen mode (application can check, but may change from frame to frame)
 //
-	int		screenWidth;			// 640
-	int		screenHeight;			// 480
-	int		bitDepth;				// 16 or 32
-	int		FullScreenDevice;		// 0=Primary, 1=2nd video card (ie: 3Dfx) etc...
-	int		Renderer;				// 0=Try hardware, fallback to software, 1=RGB, 2=Refrast, 3=Blade
+	int32_t		screenWidth;			// 640
+	int32_t		screenHeight;			// 480
+	int32_t		bitDepth;				// 16 or 32
+	int32_t		FullScreenDevice;		// 0=Primary, 1=2nd video card (ie: 3Dfx) etc...
+	int32_t		Renderer;				// 0=Try hardware, fallback to software, 1=RGB, 2=Refrast, 3=Blade
 	uint8_t	fullScreen;				// Application start running full screen or in a window?
 	uint8_t	disableZBuffer;			// When true no Z buffer surface will be created
 	uint8_t	AntiAlias;				// When true full screen antialiasing will be enabled if possible
@@ -152,8 +152,8 @@ typedef struct gosEnvironment {
 	uint8_t	TripleBuffer;			// When true, full screen modes will be triple buffered, else double buffered
 	uint8_t	MaxRefreshRate;			// When true, full screen modes will use the maximum card refresh rate, else 60hz.
 	uint8_t	_unused2;
-	int		DirtyRectangle;			// Bit 0=Enabled, Bit 1=Save Z buffer rectangles too, Bit 2=Save directly in system memory (don't try video memory).
-	int		DisableLowEndCard;		// When set to 1 and video cards in VideoCard.cpp with the LowEndCard flag set will have hardware acceleration disabled
+	int32_t		DirtyRectangle;			// Bit 0=Enabled, Bit 1=Save Z buffer rectangles too, Bit 2=Save directly in system memory (don't try video memory).
+	int32_t		DisableLowEndCard;		// When set to 1 and video cards in VideoCard.cpp with the LowEndCard flag set will have hardware acceleration disabled
 	uint32_t	MinimumTextureMemory;	// If this value is !=0 it specifies the minimum TEXTURE memory required otherwise hardware acceleration is disabled
 //
 // Keys used by GameOS (Use 0 to disable them, or see keycodes later in this header)
@@ -181,9 +181,9 @@ typedef struct gosEnvironment {
 	uint8_t	soundDisable;			// false = disable all sound, true = enable all sound
 	uint8_t	soundHiFi;				// true = 44Khz sound, false = 22KHz
 	uint8_t	_unused4[2];
-	int		soundDevice;			// 0 = primary/default, # = device enum
-	int		soundChannels;			// Default number of sound channels, for example 8
-	int		soundForceCache;		// 0 = never force a stream resource into cached resource else # bytes under which to force resource to cached if streamed
+	int32_t		soundDevice;			// 0 = primary/default, # = device enum
+	int32_t		soundChannels;			// Default number of sound channels, for example 8
+	int32_t		soundForceCache;		// 0 = never force a stream resource into cached resource else # bytes under which to force resource to cached if streamed
 	uint8_t	soundMixInHardware;		// 0=no mixing sound in hardware (default), 1=mix sound in hardware, if available.
 //
 // Network settings
@@ -199,7 +199,7 @@ typedef struct gosEnvironment {
 	uint8_t	NetGameInfo[16];		// Information about the current network game (this can be enumerated from other network games before you join them)
 	PSTR (__stdcall *DecodeGameInfo)(PVOID Data);	// GameOS will call this routine if present to decode the 16 bytes of network game information.
 	PSTR	ZoneMatchServerIP;      // Typical value is ZoneMatch.zone.com
-    int     ZoneAdvertisePort;      // Port games will be advertised on.  This is the port ZoneMatch connects to to receive updates to a game's state.  Don't
+    int32_t     ZoneAdvertisePort;      // Port games will be advertised on.  This is the port ZoneMatch connects to to receive updates to a game's state.  Don't
                                     // confuse this with the game's port, which would be the port that actual clients who want to play the game would connect
                                     // to.  Typical value is APP_QUERY_PORT (27999)
 
@@ -251,7 +251,7 @@ typedef struct gosEnvironment {
 // Now functions GameOS can call in the application
 
 // Returns custom data used in special places by GameOS
-	PVOID (__cdecl *GetSpecialGameData)(int data_type, ...);
+	PVOID (__cdecl *GetSpecialGameData)(int32_t data_type, ...);
 //
 // Returns a string containing game data
 //  This is called during error routines, so NO errors must be able to occur in this routine.
@@ -293,7 +293,7 @@ typedef struct gosEnvironment {
 // function there, GameOS will jump to that function. GameOS will check for gos_GetFIle being called
 // again during this function and allow it to read from the disk normally.
 //
-	void (__stdcall *HookGetFile)( PCSTR FileName, puint8_t* MemoryImage, PULONG Size );
+	void (__stdcall *HookGetFile)( PCSTR FileName, puint8_t* MemoryImage, puint32_t Size );
 
 // Other file API calls available to hook
 
@@ -338,16 +338,6 @@ void __stdcall gos_AbortTermination(void);
 // Returns true if the game was terminated
 //
 uint8_t __stdcall gos_RunMainLoop( void(__stdcall *DoGameLogic)(void)=0 );
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -405,29 +395,12 @@ typedef struct _gosVideo_Info
 // Consult the structures/enums listed above for more information.
 //
 void __stdcall gosVideo_CreateResource( HGOSVIDEO* Handle, PSTR filename );
-void __stdcall gosVideo_CreateResourceAsTexture( HGOSVIDEO* Handle, PULONG hTex, PSTR filename );
+void __stdcall gosVideo_CreateResourceAsTexture( HGOSVIDEO* Handle, puint32_t hTex, PSTR filename );
 void __stdcall gosVideo_DestroyResource( HGOSVIDEO* Handle );
 void __stdcall gosVideo_GetResourceInfo( HGOSVIDEO Handle, gosVideo_ResourceInfo* gvi );
 
 void __stdcall gosVideo_SetPlayMode( HGOSVIDEO Handle, gosVideo_PlayMode gvpm );
 void __stdcall gosVideo_Command( HGOSVIDEO Handle, gosVideo_Command vc, float x, float y = 0.0f );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -512,13 +485,13 @@ typedef enum gosAudio_ResourceType {
 //
 typedef struct _gosAudio_Format
 {
-	USHORT	wFormatTag;				// Waveform-audio format type. 1=PCM, 2=Microsoft ADPCM.
-	USHORT  nChannels; 				// 1=Mono, 2=Stereo.
+	uint16_t	wFormatTag;				// Waveform-audio format type. 1=PCM, 2=Microsoft ADPCM.
+	uint16_t  nChannels; 				// 1=Mono, 2=Stereo.
     uint32_t	nSamplesPerSec;			// Sample rate, 11025Hz, 22050Hz or 44100Hz.
 	uint32_t	nAvgBytesPerSec;        // Normally, nBlockAlign * nSamplesPerSec
-	USHORT  nBlockAlign; 			// Normally, wBitsPerSample / 8 * nChannels
-    USHORT  wBitsPerSample;			// Bits per sample for the wFormatTag format type. If wFormatTag is 1 (PCM), then wBitsPerSample should be equal to 8 or 16.
-	SIZE_T	cbSize;					// Size, in bytes, of extra format information appended to the end of the WAVEFORMATEX structure. For PCM's, this should be set to 0. For ADPCM, this should be set to 32.
+	uint16_t  nBlockAlign; 			// Normally, wBitsPerSample / 8 * nChannels
+    uint16_t  wBitsPerSample;			// Bits per sample for the wFormatTag format type. If wFormatTag is 1 (PCM), then wBitsPerSample should be equal to 8 or 16.
+	size_t	cbSize;					// Size, in bytes, of extra format information appended to the end of the WAVEFORMATEX structure. For PCM's, this should be set to 0. For ADPCM, this should be set to 32.
 } gosAudio_Format;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -528,9 +501,9 @@ typedef struct _gosAudio_Format
 //
 typedef struct _gosAudio_PlayList
 {
-	SIZE_T		m_dwListLength;		// Number of sample in the playlist
-	PUINT_PTR	m_lpSoundData;		// A array of pointers pointing to the start of each memory-mapped WAV file.
-	PSIZE_T		m_lpDataLength;		// The size of each corresponding sample in the playlist
+	size_t		m_dwListLength;		// Number of sample in the playlist
+	psize_t		m_lpSoundData;		// A array of pointers pointing to the start of each memory-mapped WAV file.
+	psize_t		m_lpDataLength;		// The size of each corresponding sample in the playlist
 } gosAudio_PlayList;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -541,7 +514,7 @@ typedef struct _gosAudio_ResourceInfo
 	PSTR					lpstrPath;		// the path or name of the resource queried
 	gosAudio_ResourceType	eType;			// see above
 	gosAudio_Format			sFormat;		// 1 = PCM, 2 = ADPCM
-	uint32_t					dwSizeInBytes;	// size of the data portion of the WAV
+	uint32_t				dwSizeInBytes;	// size of the data portion of the WAV
 	float					fDuration;		// in seconds
 } gosAudio_ResourceInfo;
 
@@ -580,7 +553,7 @@ typedef struct _gosAudio_ChannelInfo
 //////////////////////////////////////////////////////////////////////////////////
 // Creates a resource to be played later
 //
-void __stdcall gosAudio_CreateResource( HGOSAUDIO* hgosaudio, gosAudio_ResourceType,  PCSTR file_name, gosAudio_Format* ga_wf = 0, PVOID data = 0, int size = 0, uint8_t only2D = 0);
+void __stdcall gosAudio_CreateResource( HGOSAUDIO* hgosaudio, gosAudio_ResourceType,  PCSTR file_name, gosAudio_Format* ga_wf = 0, PVOID data = 0, int32_t size = 0, uint8_t only2D = 0);
 void __stdcall gosAudio_CreateResource( HGOSAUDIO * hgosaudio, PCSTR identifier_name, HGOSFILE file, size_t offset, uint8_t only2D = 0);
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -595,19 +568,19 @@ void __stdcall gosAudio_DestroyResource( HGOSAUDIO* hgosaudio );
 // allocate only the properties that will need modification. Use a bitwise'd group
 // of gosAudio_Properties to set what is needed.
 //
-void __stdcall gosAudio_AllocateChannelSliders( int Channel, uint32_t properties);
+void __stdcall gosAudio_AllocateChannelSliders( int32_t Channel, uint32_t properties);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Prepare a channel to play a resource of any type.
 //
-void __stdcall gosAudio_AssignResourceToChannel( int Channel, HGOSAUDIO hgosaudio);
+void __stdcall gosAudio_AssignResourceToChannel( int32_t Channel, HGOSAUDIO hgosaudio);
 
 //////////////////////////////////////////////////////////////////////////////////
 // Get and Set functions only operate if a channel has the property enabled
 //  Channel number -1 used in SetVolume and SetPanning will alter the windows master
 //  volume and balance
-void __stdcall gosAudio_SetChannelSlider( int Channel, gosAudio_Properties, float value1, float value2 = 0.0f, float value3 = 0.0f );
-void __stdcall gosAudio_GetChannelSlider( int Channel, gosAudio_Properties, float* value1, float* value2 = 0, float* value3 = 0 );
+void __stdcall gosAudio_SetChannelSlider( int32_t Channel, gosAudio_Properties, float value1, float value2 = 0.0f, float value3 = 0.0f );
+void __stdcall gosAudio_GetChannelSlider( int32_t Channel, gosAudio_Properties, float* value1, float* value2 = 0, float* value3 = 0 );
 
 //////////////////////////////////////////////////////////////////////////////////
 // Set the speaker configuration. See enum above.
@@ -617,17 +590,17 @@ void __stdcall gosAudio_SetSpeakerConfig( uint32_t config );
 //////////////////////////////////////////////////////////////////////////////////
 // Play, Loop, Stop, Pause, or Continue a particular channel
 //
-void __stdcall gosAudio_SetChannelPlayMode( int Channel, gosAudio_PlayMode ga_pm );
+void __stdcall gosAudio_SetChannelPlayMode( int32_t Channel, gosAudio_PlayMode ga_pm );
 //////////////////////////////////////////////////////////////////////////////////
 // Determine the current play mode of a channel
 //
-gosAudio_PlayMode __stdcall gosAudio_GetChannelPlayMode( int Channel );
+gosAudio_PlayMode __stdcall gosAudio_GetChannelPlayMode( int32_t Channel );
 
 //////////////////////////////////////////////////////////////////////////////////
 // Get the filename, type, frequency and number of channels for a sound resource
 //
 void __stdcall gosAudio_GetResourceInfo( HGOSAUDIO hSound, gosAudio_ResourceInfo* sri );
-void __stdcall gosAudio_GetChannelInfo( int Channel, gosAudio_ChannelInfo* sri );
+void __stdcall gosAudio_GetChannelInfo( int32_t Channel, gosAudio_ChannelInfo* sri );
 
 //////////////////////////////////////////////////////////////////////////////////
 // Reset the sound system if you wanna change the original sound device,
@@ -638,7 +611,7 @@ void __stdcall gosAudio_Reset(void);
 //////////////////////////////////////////////////////////////////////////////////
 // Get a list of available sound devices. Returns <available> possibilities as strings in <name>
 //
-void __stdcall gosAudio_DeviceOptions( char names[8][128], int* available );
+void __stdcall gosAudio_DeviceOptions( char names[8][128], pint32_t available );
 
 
 
@@ -801,11 +774,11 @@ void _stdcall gos_GetIMEAppearance( gosIME_Appearance* pia );
 void _stdcall gos_SetIMEInsertMode(uint8_t bInsert);
 
 //
-// Returns a localized string describing a date as either short form "02/03/2000" or Verbose form "Wednesday, May 3rd, 1999"
+// Returns a localized string describing a date as either int16_t form "02/03/2000" or Verbose form "Wednesday, May 3rd, 1999"
 //
 // If the Year, Month and Day are -1 the current time is used
 //
-PSTR __stdcall gos_GetFormattedDate( uint8_t Verbose, USHORT Year=-1, USHORT Month=-1, USHORT Day=-1 );
+PSTR __stdcall gos_GetFormattedDate( uint8_t Verbose, uint16_t Year=-1, uint16_t Month=-1, uint16_t Day=-1 );
 
 
 //
@@ -819,7 +792,7 @@ void  __stdcall gos_GetUnformattedDate(puint16_t Year, puint16_t Month, puint16_
 //
 // If the Hours, Minutes and Seconds are -1 the current time is used
 //
-PSTR __stdcall gos_GetFormattedTime( USHORT Hour=-1, USHORT Minute=-1, USHORT Second=-1 );
+PSTR __stdcall gos_GetFormattedTime( uint16_t Hour=-1, uint16_t Minute=-1, uint16_t Second=-1 );
 
 
 
@@ -866,7 +839,7 @@ PSTR __stdcall gos_GetFormattedTime( USHORT Hour=-1, USHORT Minute=-1, USHORT Se
 //  CharCount is the ASCII value of the last character in the font
 //  texture plus one.
 //
-HGOSFONT3D __stdcall gos_LoadFont( PCSTR FontFile, uint32_t StartLine = 0, int CharCount = 256, uint32_t TextureHandle=0 );
+HGOSFONT3D __stdcall gos_LoadFont( PCSTR FontFile, uint32_t StartLine = 0, int32_t CharCount = 256, uint32_t TextureHandle=0 );
 
 //
 // This routine should be called to release storage and textures used by fonts.
@@ -892,31 +865,31 @@ void __stdcall gos_TextSetAttributes( HGOSFONT3D FontHandle, uint32_t Foreground
 //
 // This API just updates internal variables, it's very fast to change any of these parameters
 //
-void __stdcall gos_TextSetPosition( int XPosition, int YPosition );
+void __stdcall gos_TextSetPosition( int32_t XPosition, int32_t YPosition );
 //
 // Returns the current print position
 //
-void __stdcall gos_TextGetPrintPosition( int* XPosition, int* YPosition );
+void __stdcall gos_TextGetPrintPosition( pint32_t XPosition, pint32_t YPosition );
 //
 // Set the region that the cursor will be clipped to (in screen pixels)
 // The text will be clipped or wrap when the right edge is reached
 //
 // This API just updates internal variables, it's very fast to change any of these parameters
 //
-void __stdcall gos_TextSetRegion( int Left, int Top, int Right, int Bottom );
+void __stdcall gos_TextSetRegion( int32_t Left, int32_t Top, int32_t Right, int32_t Bottom );
 
 //
 // Draws a solid rectangle in the region specified (will be clipped to the TextSetRegion)
 //  This can be used to draw the 'background' of any text.
 //  Remember! - To set the alpha component of the color to FF if you want a solid background
 //
-void __stdcall gos_TextDrawBackground( int Left, int Top, int Right, int Bottom, uint32_t Color );
+void __stdcall gos_TextDrawBackground( int32_t Left, int32_t Top, int32_t Right, int32_t Bottom, uint32_t Color );
 
 //
 // Returns pixel height and width of string (Height=Height of charcters * number of /n found)
 //  Make sure you have setup the Text attributes before calling this.
 //
-void __stdcall gos_TextStringLength( PULONG Width, PULONG Height, PCSTR Message, ... );
+void __stdcall gos_TextStringLength( puint32_t Width, puint32_t Height, PCSTR Message, ... );
 
 //
 // Draws string using current attributes and position
@@ -979,7 +952,7 @@ void __stdcall gos_CloseMemoryMappedFile( HANDLE Handle );
 // Opens and reads in the whole file in a background thread. The MemoryImage pointer will be NULL until the file is read in completly.
 //    When you are finished with the file, the Close function below must be called.
 //
-uint32_t __stdcall gos_ReadFileInBackground( PCSTR FileName, puint8_t* MemoryImage, PULONG Size, uint32_t Offset=0, uint32_t MaxSize=0xffffffff );
+uint32_t __stdcall gos_ReadFileInBackground( PCSTR FileName, puint8_t* MemoryImage, puint32_t Size, uint32_t Offset=0, uint32_t MaxSize=0xffffffff );
 
 //
 // Closes and releases the memory used by a file read in the background.
@@ -1505,7 +1478,7 @@ uint8_t __stdcall gosJoystick_IsEffectPlaying(HGOSFORCEEFFECT fe);
 //
 // You may pass zero as any parameter you do not wish to query
 //
-void __stdcall gos_GetMouseInfo( float* pXPosition, float* pYPosition, int* pXDelta, int* pYDelta, int* pWheelDelta, PULONG pButtonsPressed );
+void __stdcall gos_GetMouseInfo( float* pXPosition, float* pYPosition, pint32_t pXDelta, pint32_t pYDelta, pint32_t pWheelDelta, puint32_t pButtonsPressed );
 
 //
 // This function allows the application to move the windows mouse cursor.
@@ -1540,7 +1513,7 @@ void __stdcall gos_SetMousePosition( float XPosition, float YPosition );
 //
 // If 'RealTime' is set to 1 the time returned will NOT pause during ModalScripts. (And may be very different from normal gos_GetElapsedTime)
 //
-double __stdcall gos_GetElapsedTime( int RealTime=0 );
+double __stdcall gos_GetElapsedTime( int32_t RealTime=0 );
 
 
 
@@ -1569,7 +1542,7 @@ double __stdcall gos_GetElapsedTime( int RealTime=0 );
 // Data can be read from HKEY_LOCAL_MACHINE\Software\Microsoft\Microsoft Games\App Name, but not written (this would require a machine administrator)
 // When 'uint8_t HKLM' on the read function is true it will read from LOCAL_MACHINE, otherwise CURRENT_USER. The write functions ONLY work to CURRENT_USER
 
-void __stdcall gos_LoadDataFromRegistry( PSTR keyName, PVOID pData, PULONG szData, uint8_t HKLM=0 );
+void __stdcall gos_LoadDataFromRegistry( PSTR keyName, PVOID pData, puint32_t szData, uint8_t HKLM=0 );
 
 //
 // Saves szData bytes starting at pData into the registry key specified.
@@ -1717,9 +1690,9 @@ cuint8_t gosNet_Heartbeat=244;		// Used to send a heartbeat packet to keep the o
 typedef struct _NetPacket {
 	uint32_t	FromID;					// Filled in by when packets are recieved
 	uint32_t	ToID;					// Must be filled in to send a packet
-	USHORT	Flags;					// Information flags (see gosNetFlag_*) - only valid on sending messages
+	uint16_t	Flags;					// Information flags (see gosNetFlag_*) - only valid on sending messages
 	double	TimeStamp;				// Timestamp set by GameOS when the packet was recieved
-	USHORT	Length;					// Number of bytes of data.
+	uint16_t	Length;					// Number of bytes of data.
 	uint8_t	Type;					// Type of message (224-> System messages)
 	PVOID   pData;					// Pointer to message data
 } NetPacket;
@@ -1772,7 +1745,7 @@ void __stdcall gos_srand( uint32_t seed );
 //
 // Return a random number between 0 and 32767
 //
-int __stdcall gos_rand(void);
+int32_t __stdcall gos_rand(void);
 
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -2055,7 +2028,7 @@ MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray( pgos_VERTEX_3UV pVertexArr
 //
 // All renderstates have defaults, they stay set over multiple frames until changed.
 //
-void __stdcall gos_SetRenderState( gos_RenderState RenderState, int Value );
+void __stdcall gos_SetRenderState( gos_RenderState RenderState, int32_t Value );
 
 //
 // Save and restore all the current renderstate settings. These are saved on a linked list, so can be nested. If they are not all pop'ed by the end of update renderers, an error will be generated
@@ -2402,7 +2375,7 @@ void __stdcall gos_RenderVertexBuffer( uint32_t VertexBufferHandle, uint32_t Sta
 //
 // Renderer is 0 for hardware or 3 for Blade
 //
-void __stdcall gos_SetScreenMode( uint32_t Width, uint32_t Height, uint32_t bitDepth=16, uint32_t Device=0, uint8_t disableZBuffer=0, uint8_t AntiAlias=0, uint8_t RenderToVram=0, uint8_t GotoFullScreen=0, int DirtyRectangle=0, uint8_t GotoWindowMode=0, uint8_t EnableStencil=0, uint32_t Renderer=0 );
+void __stdcall gos_SetScreenMode( uint32_t Width, uint32_t Height, uint32_t bitDepth=16, uint32_t Device=0, uint8_t disableZBuffer=0, uint8_t AntiAlias=0, uint8_t RenderToVram=0, uint8_t GotoFullScreen=0, int32_t DirtyRectangle=0, uint8_t GotoWindowMode=0, uint8_t EnableStencil=0, uint32_t Renderer=0 );
 
 //
 // This API sets the current gamma correction value. The default value is 1.0 (no correction applied). All color values are effected by (value/255 ^ (1.0/gamma)).
@@ -2579,7 +2552,7 @@ void __stdcall gos_UnLockTexture( uint32_t Handle );
 //
 // Converts from 32bpp source to subrect of n-bpp dest, bypassing intermediate 32bpp buffer
 //
-void __stdcall gos_ConvertTextureRect( uint32_t Handle, uint32_t DestLeft, uint32_t DestTop, PULONG Source, uint32_t SourcePitch, uint32_t Width, uint32_t Height );
+void __stdcall gos_ConvertTextureRect( uint32_t Handle, uint32_t DestLeft, uint32_t DestTop, puint32_t Source, uint32_t SourcePitch, uint32_t Width, uint32_t Height );
 
 
 //
@@ -2691,7 +2664,7 @@ void __stdcall StatisticFormat( PSTR String );
 // This API will return the value for a statistic. If the statistic is a timer the value returned will always be in milliseconds, never percentage.
 // The 'Frame' parameter can be used to return old data from previous frames. The values 0 to -511 are valid.
 //
-float __stdcall gos_ReturnStatistic( PCSTR Name, int Frame=0 );
+float __stdcall gos_ReturnStatistic( PCSTR Name, int32_t Frame=0 );
 
 
 
@@ -2871,7 +2844,7 @@ typedef enum MachineInfo {
 //
 // Returns machine information, valid for THE CURRENT FRAME ONLY
 //
-uint32_t __stdcall gos_GetMachineInformation( MachineInfo mi, int Param1=0, int Param2=0, int Param3=0, int Param4=0 );
+uint32_t __stdcall gos_GetMachineInformation( MachineInfo mi, int32_t Param1=0, int32_t Param2=0, int32_t Param3=0, int32_t Param4=0 );
 
 
 
@@ -2903,14 +2876,14 @@ uint32_t __stdcall gos_GetMachineInformation( MachineInfo mi, int Param1=0, int 
 extern PSTR gosErrorFile;
 extern uint32_t gosErrorLine;
 extern void __cdecl InternalFunctionSpew( PCSTR Group, PCSTR Message, ... );
-extern void __cdecl InternalFunctionSpewV( int Flags, PCSTR Group, PCSTR Message, PSTR arglist );
-extern int __cdecl InternalFunctionStop( PCSTR Message, ... );
-extern int __cdecl InternalFunctionPause( PCSTR Message, ... );
+extern void __cdecl InternalFunctionSpewV( int32_t Flags, PCSTR Group, PCSTR Message, PSTR arglist );
+extern int32_t __cdecl InternalFunctionStop( PCSTR Message, ... );
+extern int32_t __cdecl InternalFunctionPause( PCSTR Message, ... );
 extern void __stdcall gosLabRatStart( uint32_t Handle );
 extern void __stdcall gosLabRatEnd( uint32_t Handle );
 extern void __stdcall gosLabRatSet( uint32_t Handle, uint32_t Value );
 extern void __stdcall gosLabRatSet( uint32_t Handle, float Value );
-extern "C" int __stdcall ErrorHandler( int Flags, PSTR Text );
+extern "C" int32_t __stdcall ErrorHandler( int32_t Flags, PSTR Text );
 extern gosEnvironment Environment;
 
 typedef struct gos_CycleData {
@@ -2991,14 +2964,14 @@ public:
 		logDelete,
 		log,
 	};
-	GosLogRef( EventType type, PSTR name, PSTR filename, int lineno );
+	GosLogRef( EventType type, PSTR name, PSTR filename, int32_t lineno );
 	operator uint32_t() { return m_id; }
 	uint8_t ShouldLog() {  m_Count++; return 1; }	// change to return (m_pFunc != NULL);
 };
 
 class GosEventLog
 {
-	static PULONG       pLogBase;
+	static puint32_t       pLogBase;
 	static uint32_t		LogOffset;		// Offset into log in ULONGS
 	static uint32_t		LogMod;			// Mod in ULONGS
 	static uint32_t		NullLog[16];
@@ -3027,8 +3000,8 @@ public:
 	static void LogStop(void);
 	static void PushStop(void);
 	static void PopStop(void);
-	static PSTR LogAddr( int part ) { return part?m_pLogStart2:m_pLogStart1; }
-	static uint32_t LogBytes( int part ) { return part?m_nLogSize2:m_nLogSize1; }
+	static PSTR LogAddr( int32_t part ) { return part?m_pLogStart2:m_pLogStart1; }
+	static uint32_t LogBytes( int32_t part ) { return part?m_nLogSize2:m_nLogSize1; }
 	static uint8_t Logging() { return LoggingInProgress; }
 	static void Cleanup(void);
 };

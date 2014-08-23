@@ -30,12 +30,12 @@ public:
 	gosVideo_PlayMode			m_videoStatus, m_videoPlayMode;
 	RECT						m_videoSrcRect, m_videoRect;
 
-	int							m_videoLocX, m_videoLocY;
+	int32_t							m_videoLocX, m_videoLocY;
 
 	float						m_scaleX, m_scaleY;
 	float						m_volume, m_panning;
 
-	ULONG						m_texture;
+	uint32_t						m_texture;
 
 	STREAM_TIME					m_duration;
 	STREAM_TIME					m_lastKnownTime;
@@ -59,7 +59,7 @@ public:
 	void
 		Release(void);
 	void 
-		SetLocation(ULONG, ULONG);
+		SetLocation(uint32_t, uint32_t);
 	void
 		OpenMMStream(PCSTR pszFileName, IDirectDraw* pDD, IMultiMediaStream** ppMMStream);
 } gos_Video;			

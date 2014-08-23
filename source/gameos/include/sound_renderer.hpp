@@ -14,7 +14,7 @@
 
 // This structure is used to initialize sound channels
 //
-// When GameOS is started, the init structure passed to GameOS by the application will contain a master frequency (11025,22050 or 44100), a number of channels (int) and a pointer to an array, a byte per channel containing flags listed above.
+// When GameOS is started, the init structure passed to GameOS by the application will contain a master frequency (11025,22050 or 44100), a number of channels (int32_t) and a pointer to an array, a byte per channel containing flags listed above.
 //
 // Place to hold information about the sound renderer itself
 //
@@ -36,43 +36,43 @@ typedef struct SoundDeviceInfo {
 
 typedef struct _srdata
 {
-	int m_numChannels;
+	int32_t m_numChannels;
 	DS3DSoundChannel *
 		m_Channel[MAX_SOUNDCHANNELS];
 	DS3DSoundMixer *
 		m_Mixer;
-	LONG 
+	int32_t 
 		m_RendererTimer;
-	int
+	int32_t
 		m_isInitialized;
-    UINT 
+    uint32_t 
 		m_Timer;
-	UINT
+	uint32_t
 		m_TimerRefCount;
-	LONG 
+	int32_t 
 		m_TimerServicing;             // reentrancy semaphore
 	PSTR 
 		m_workBuffer;
 
 	SoundDeviceInfo m_DeviceArray[8];
-	ULONG m_numDevices;
-	ULONG m_PreferredDevice;
+	uint32_t m_numDevices;
+	uint32_t m_PreferredDevice;
 	bool m_reset;
 	bool m_allPaused;
 #if defined(LAB_ONLY)
 	char m_playHistory[32][128];
 	bool m_verboseDebugger;
-	ULONG m_playHistoryItr;
+	uint32_t m_playHistoryItr;
 #endif
 
 } SoundRendererData;
 
 extern HGOSHEAP SoundHeap;
 
-void __stdcall SoundRendererInstall(int);
+void __stdcall SoundRendererInstall(int32_t);
 void __stdcall SoundRendererStartFrame();
 void __stdcall SoundRendererEndFrame();
-ULONG __stdcall SoundRendererUpdate( PVOID ThreadParam );
+uint32_t __stdcall SoundRendererUpdate( PVOID ThreadParam );
 void __stdcall SoundRendererUninstall();
 void __stdcall SoundRendererCreateTimer();
 void __stdcall SoundRendererDestroyTimer();
@@ -82,11 +82,11 @@ void __stdcall SoundRendererFF(double sec);
 bool __stdcall IsValidSoundResource(HGOSAUDIO gosAudio);
 
 void __stdcall TimeFunc( 
-	UINT uTimerID, 
-	UINT uMsg, 
-	ULONG dwUser,
-	ULONG dw1, 
-	ULONG dw2 
+	uint32_t uTimerID, 
+	uint32_t uMsg, 
+	uint32_t dwUser,
+	uint32_t dw1, 
+	uint32_t dw2 
 );
 
 void __stdcall SoundRendererNotify();

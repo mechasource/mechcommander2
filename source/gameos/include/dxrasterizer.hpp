@@ -16,22 +16,22 @@ void __stdcall InvalidateVertexBuffers(void);
 void __stdcall ReCreateVertexBuffers(void);
 
 // IME displays directly to backbuffer, that's why it's in DXRasterizer.hpp
-void __stdcall RenderIMEToBackBuffer(int POS_X, int POS_Y, float FONTHEIGHT);
+void __stdcall RenderIMEToBackBuffer(int32_t POS_X, int32_t POS_Y, float FONTHEIGHT);
 
 // Variables for gamma correction
 extern uint8_t GammaTable[256];
 extern float GammaSetting;
 extern uint8_t UseGammaCorrection;
-extern ULONG GlobalWidth;
-extern ULONG GlobalHeight;
+extern uint32_t GlobalWidth;
+extern uint32_t GlobalHeight;
 extern uint8_t GlobalZBuffer;
 extern uint8_t GlobalFullScreen;
-extern ULONG ValidTextures;
+extern uint32_t ValidTextures;
 extern uint8_t ModeChanged;
 extern uint8_t DebuggerUsed;
 extern DDSURFACEDESC2 BackBufferddsd;
-extern ULONG AllowBrightness;
-extern ULONG AllowContrast;
+extern uint32_t AllowBrightness;
+extern uint32_t AllowContrast;
 
 HRESULT __stdcall CheckEnumProc(DDPIXELFORMAT* ddpfPixelFormat, PVOID lpContext);
 extern void __stdcall CopyBackBuffer(LPDIRECTDRAWSURFACE7 Dest, LPDIRECTDRAWSURFACE7 Source);
@@ -73,21 +73,21 @@ typedef enum __compatibilityconst {
 //
 // This is the current cards compatiblity flags
 //
-extern ULONG Compatibility3D;
+extern uint32_t Compatibility3D;
 
 //
 // Used to store all known video cards
 //
 typedef struct CardInfo {
-	ULONG VendorID;						// Vendor ID, ie: S3=0x5333
-	ULONG DeviceID;						// Device ID, ie: ATI Rage=0x4750
-	ULONG DriverH;						// High and Low dword of driver version number (Windows 9x)
-	ULONG DriverL;
-	ULONG NTDriverH;					// High and Low dword of driver version number (Windows 2000)
-	ULONG NTDriverL;
+	uint32_t VendorID;						// Vendor ID, ie: S3=0x5333
+	uint32_t DeviceID;						// Device ID, ie: ATI Rage=0x4750
+	uint32_t DriverH;						// High and Low dword of driver version number (Windows 9x)
+	uint32_t DriverL;
+	uint32_t NTDriverH;					// High and Low dword of driver version number (Windows 2000)
+	uint32_t NTDriverL;
 	PSTR VendorName;					// Friendly name for Vendor
 	PSTR CardName;						// Friendly name for card type
-	ULONG CompatibilityFlags;			// Flags that may alter how GameOS behaves
+	uint32_t CompatibilityFlags;			// Flags that may alter how GameOS behaves
 } CardInfo;
 
 extern CardInfo*	KnownCards;
@@ -98,39 +98,39 @@ extern CardInfo*	KnownCards;
 typedef struct DeviceInfo {
 	GUID				DeviceGUID;
 	DDDEVICEIDENTIFIER2	DDid;					// Use DDid.szDescription for the readable name
-	ULONG				Empty;					// Bug in GetDeviceIdentifier - it overwrites the next 4 bytes!
+	uint32_t				Empty;					// Bug in GetDeviceIdentifier - it overwrites the next 4 bytes!
 	DDCAPS				DDCaps;
 	D3DDEVICEDESC7		D3DCaps;
 	char				FourCC[16*4];			// First 16 FourCC codes
 	DDPIXELFORMAT		TextureFormats[16];		// First 16 texture formats (ends in 0)
-	USHORT				Modes16[16*2];			// First 16, 16 bit screen modes above 640*480
-	USHORT				Refresh16[16];			// Refresh rates for above modes
-	USHORT				Modes32[16*2];			// First 16, 32 bit screen modes above 640*480
-	USHORT				Refresh32[16];			// Refresh rates for above modes
+	uint16_t				Modes16[16*2];			// First 16, 16 bit screen modes above 640*480
+	uint16_t				Refresh16[16];			// Refresh rates for above modes
+	uint16_t				Modes32[16*2];			// First 16, 32 bit screen modes above 640*480
+	uint16_t				Refresh32[16];			// Refresh rates for above modes
 	DDPIXELFORMAT		ZFormats[16];			// First 16 Z Buffer formats
-	ULONG				TotalVid;
-	ULONG				TotalLocalTex;
-	ULONG				TotalTex;
-	ULONG				MultitextureLightMap;			// Lightmap support
-	ULONG				MultitextureSpecularMap;		// Specular support
-	ULONG				MultitextureDetail;				// Detail support
-	ULONG				MultitextureLightMapFilter;		// Lightmap support (1=Disable trilinear)
-	ULONG				MultitextureSpecularMapFilter;	// Specular support (1=Disable trilinear)
-	ULONG				MultitextureDetailFilter;		// Detail support (1=Disable trilinear)
-	ULONG				CurrentCard;			// Which entry in the KnownCard array. (-1=Unknown)
+	uint32_t				TotalVid;
+	uint32_t				TotalLocalTex;
+	uint32_t				TotalTex;
+	uint32_t				MultitextureLightMap;			// Lightmap support
+	uint32_t				MultitextureSpecularMap;		// Specular support
+	uint32_t				MultitextureDetail;				// Detail support
+	uint32_t				MultitextureLightMapFilter;		// Lightmap support (1=Disable trilinear)
+	uint32_t				MultitextureSpecularMapFilter;	// Specular support (1=Disable trilinear)
+	uint32_t				MultitextureDetailFilter;		// Detail support (1=Disable trilinear)
+	uint32_t				CurrentCard;			// Which entry in the KnownCard array. (-1=Unknown)
 	uint8_t				Failed60Hz;				// Set to only try full screen 60Hz once
 	uint8_t				LinearMemory;			// Set if linear memory, not rectangular
 	uint8_t				_padding1[2];
-	int					MaxRefreshRate;			// Maximum refresh rate
+	int32_t					MaxRefreshRate;			// Maximum refresh rate
 	PSTR				CurrentVendor;			// If vendor known, point to name, else 0
 } DeviceInfo;
 
 extern DeviceInfo	DeviceArray[8];
-extern int			HardwareRenderer;			// Set when using a hardware renderer
+extern int32_t			HardwareRenderer;			// Set when using a hardware renderer
 extern char DisplayInfoText[128];
 
-extern ULONG TripleBuffer;						// Copied from Environment for current card (so can be disabled on 3Dfx)
-extern ULONG StencilActive;
+extern uint32_t TripleBuffer;						// Copied from Environment for current card (so can be disabled on 3Dfx)
+extern uint32_t StencilActive;
 extern DDSURFACEDESC2 BBddsd;
 extern DDSURFACEDESC2 ZBddsd;
 
@@ -153,18 +153,18 @@ extern LPDIRECT3DDEVICE7		Maind3dDevice7;			// Selected D3D Device
 extern LPDIRECT3DDEVICE7		RenderDevice;
 extern uint8_t					InsideBeginScene;
 extern uint8_t					NeedToInitRenderStates;
-extern int						HardwareRenderer;
-extern ULONG					BGColor;
+extern int32_t						HardwareRenderer;
+extern uint32_t					BGColor;
 extern D3DDEVICEDESC7			CapsDirect3D;
 
 extern D3DVIEWPORT7				viewData;
 extern float					gosViewportMulX,gosViewportAddX,gosViewportMulY,gosViewportAddY;
-extern ULONG					NumDevices;
-extern ULONG					NumHWDevices;
-extern ULONG					NumMonitors;
-extern ULONG gosColorTable[];
-extern ULONG DepthResults[8];
-extern ULONG DepthPixels;
+extern uint32_t					NumDevices;
+extern uint32_t					NumHWDevices;
+extern uint32_t					NumMonitors;
+extern uint32_t gosColorTable[];
+extern uint32_t DepthResults[8];
+extern uint32_t DepthPixels;
 
 extern void __stdcall InitRenderer(void);
 extern PSTR __stdcall GetDirectXVersion(void);
@@ -172,28 +172,28 @@ extern PSTR __stdcall GetDirectXVersion(void);
 //
 // MipMapping flags
 //
-extern ULONG HasBiLinear;
-extern ULONG HasTriLinear;
-extern int HasTLHAL;
+extern uint32_t HasBiLinear;
+extern uint32_t HasTriLinear;
+extern int32_t HasTLHAL;
 //
 // Card specific changes triggered by these values
 //
-extern ULONG HasVertexBlending;
-extern ULONG HasClamp;
-extern ULONG HasFog;
-extern ULONG HasAlphaTest;
-extern ULONG HasAlphaModes;
-extern ULONG HasMultitextureLightmap;
-extern ULONG HasMultitextureSpecularmap;
-extern ULONG HasMultitextureDetailTexture;
-extern ULONG HasMultitextureLightmapFilter;
-extern ULONG HasMultitextureSpecularmapFilter;
-extern ULONG HasMultitextureDetailTextureFilter;
+extern uint32_t HasVertexBlending;
+extern uint32_t HasClamp;
+extern uint32_t HasFog;
+extern uint32_t HasAlphaTest;
+extern uint32_t HasAlphaModes;
+extern uint32_t HasMultitextureLightmap;
+extern uint32_t HasMultitextureSpecularmap;
+extern uint32_t HasMultitextureDetailTexture;
+extern uint32_t HasMultitextureLightmapFilter;
+extern uint32_t HasMultitextureSpecularmapFilter;
+extern uint32_t HasMultitextureDetailTextureFilter;
 
 void __stdcall DisplayBackBuffer(void);
 void __stdcall End3DScene(void);
 
-void __stdcall RenderWithReferenceRasterizer(ULONG Type);
+void __stdcall RenderWithReferenceRasterizer(uint32_t Type);
 void __stdcall DirectDrawInstall(void);
 void __stdcall ShowFrameGraphs(void);
 void __stdcall DirectDrawUninstall(void);

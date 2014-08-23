@@ -47,17 +47,17 @@ InitGameOS(HINSTANCE hInstance, HWND hWindow, PSTR CommandLine)
 }
 
 #if _CONSIDERED_OBSOLETE
-void* __cdecl operator new(size_t nSize, HGOSHEAP HeapBlock)
+PVOID __cdecl operator new(size_t nSize, HGOSHEAP HeapBlock)
 {
 	return gos_Malloc(nSize, HeapBlock);
 }
 
-void* __cdecl operator new(size_t nSize)
+PVOID __cdecl operator new(size_t nSize)
 {
 	return gos_Malloc(nSize, (HGOSHEAP)-1);
 }
 
-void __cdecl operator delete(void* block)
+void __cdecl operator delete(PVOID block)
 {
 	gos_Free(block);
 }

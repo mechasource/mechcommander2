@@ -59,11 +59,11 @@ public:
 	// When sending a message, {receiverId} is the GOSNETWORKID of the intended recipient.  
 	// If this message is for all players, the {receiverId} should be GOSALLPLAYERS.  If 
 	// this message is for the server, {server} should be true and {receiverId} will be ignored. 
-	ULONG	receiverId;
+	uint32_t	receiverId;
 
 	// {senderId} is the GOSNETWORKID of the sender if this message is being received,
 	// When sending a message, {senderId} is ignored.
-	ULONG	senderId;
+	uint32_t	senderId;
 
 	// {type} is the messsage type.  This value should be between GOSFIRSTAPPMESSAGETYPE
 	// and GOSLASTAPPMESSAGETYPE.  If not, the send will result in an error.

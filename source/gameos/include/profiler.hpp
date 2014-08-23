@@ -6,15 +6,15 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-extern ULONG* TraceBuffer;
+extern uint32_t* TraceBuffer;
 extern gos_VERTEX* LineBuffer;
 
 
 
 
 
-extern UCHAR	ProfileFlags[32];			// Remember graphs activated 
-extern ULONG DebuggerTextures;
+extern uint8_t	ProfileFlags[32];			// Remember graphs activated 
+extern uint32_t DebuggerTextures;
 extern float PercentHistory[512];		// Used to remember cycles per frame
 extern bool NewPerformanceRegister;
 
@@ -24,10 +24,10 @@ extern bool NewPerformanceRegister;
 typedef struct _Stat
 {
 	_Stat*			pNext;				// Pointer to Next
-	ULONG			Flags;				// flags
+	uint32_t			Flags;				// flags
 	PSTR			TypeName;			// Pointer to type name
 	gosType			Type;				// Type of variable
-	ULONG			Count;				// Count for average
+	uint32_t			Count;				// Count for average
 	PVOID			pVariable;			// Pointer to the variable in question
 		
 	float			MaxPercentage;		// Max percentage
@@ -48,21 +48,21 @@ typedef struct _Stat
 
 cint32_t StatsInBlock=32;				// Number of stats in a single block
 
-__inline float __stdcall GetHistory( Stat* pStat, int GraphHead )
+__inline float __stdcall GetHistory( Stat* pStat, int32_t GraphHead )
 {
 	return pStat->History[GraphHead*StatsInBlock];
 }
-__inline void __stdcall SetHistory( Stat* pStat, int GraphHead, float Value )
+__inline void __stdcall SetHistory( Stat* pStat, int32_t GraphHead, float Value )
 {
 	pStat->History[GraphHead*StatsInBlock]=Value;
 }
 
 
 extern Stat*	pStatistics;		// Pointer to chain of statistics
-extern ULONG	GraphHead;			// Pointer to current element in statistics History
-extern ULONG	NumberStatistics;	// Entries in statistic list
+extern uint32_t	GraphHead;			// Pointer to current element in statistics History
+extern uint32_t	NumberStatistics;	// Entries in statistic list
 extern Stat* GraphsActive[20];		// Number of frame graphs active
-extern ULONG NumberGraphsActive;
+extern uint32_t NumberGraphsActive;
 
 void __stdcall UpdateGraphs(void);
 void __stdcall InitStatistics(void);

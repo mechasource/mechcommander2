@@ -11,15 +11,15 @@ class DBCSSurface
 {
 	public:
 
-		int m_height;
-		int m_width;
-		int m_offsety;
+		int32_t m_height;
+		int32_t m_width;
+		int32_t m_offsety;
 		LPDIRECTDRAWSURFACE7 m_lpdds7;
 		puint8_t m_lpDynData;
 
-		DBCSSurface(ULONG width, ULONG height);
+		DBCSSurface(uint32_t width, uint32_t height);
 		~DBCSSurface();
 		PVOID GetDataPointer(void);
-		void Clear(ULONG color);
+		void Clear(uint32_t color);
 };
 

@@ -8,7 +8,7 @@
 
 #include "Globals.hpp"
 
-PSTR __stdcall GetWindowsMessage( ULONG uMsg,WPARAM wParam,LPARAM lParam );
+PSTR __stdcall GetWindowsMessage( uint32_t uMsg,WPARAM wParam,LPARAM lParam );
 void __stdcall InitializeWindows(void);
 void __stdcall DestroyWindows(void);
 bool __stdcall AlreadyRunning(void);
@@ -28,15 +28,15 @@ extern MSG			msg;
 extern Status		status;
 extern BOOL			fullScreen;
 extern POINT		clientToScreen;
-extern int			widthX;
-extern int			heightY;
-extern int			WindowStartX;
-extern int			WindowStartY;
+extern int32_t			widthX;
+extern int32_t			heightY;
+extern int32_t			WindowStartX;
+extern int32_t			WindowStartY;
 extern bool			WindowsNT;
-extern ULONG		HitScrollLock;
-extern ULONG		ForceReStart;
-extern ULONG		DesktopBpp;
-extern ULONG		DesktopRes;
+extern uint32_t		HitScrollLock;
+extern uint32_t		ForceReStart;
+extern uint32_t		DesktopBpp;
+extern uint32_t		DesktopRes;
 extern bool			PerfCounters;
 extern bool			WindowClosed;
 
@@ -57,20 +57,20 @@ extern T_GetDiskFreeSpaceEx _GetDiskFreeSpaceEx;
 
 extern BOOL (__stdcall* _EmptyWorkingSet)(HANDLE hProcess);
 extern BOOL (__stdcall* _InitializeProcessForWsWatch)(HANDLE hProcess);
-extern BOOL (__stdcall* _GetWsChanges)(HANDLE hProcess,PPSAPI_WS_WATCH_INFORMATION pWatchInfo,ULONG cb);
-extern ULONG (__stdcall* _GetMappedFileName)(HANDLE hProcess,PVOID pv,LPTSTR pFilename,ULONG nSize);
+extern BOOL (__stdcall* _GetWsChanges)(HANDLE hProcess,PPSAPI_WS_WATCH_INFORMATION pWatchInfo,uint32_t cb);
+extern uint32_t (__stdcall* _GetMappedFileName)(HANDLE hProcess,PVOID pv,PSTR pFilename,uint32_t nSize);
 
 
 extern HRESULT (__stdcall* _DirectDrawCreateEx)( GUID* lpGUID, PVOID* lplpDD, const IID* iid, LPUNKNOWN pUnkOuter ); 
 extern HRESULT (__stdcall* _DirectDrawEnumerate)( LPDDENUMCALLBACK pCallback, PVOID lpContext );
-extern HRESULT (__stdcall* _DirectDrawEnumerateEx)( LPDDENUMCALLBACKEX lpCallback, PVOID lpContext, ULONG Flags );
-extern HRESULT (__stdcall* _DirectInputCreate)( HINSTANCE hinst, ULONG dwVersion, LPDIRECTINPUT * lplpDirectInput, LPUNKNOWN punkOuter );
+extern HRESULT (__stdcall* _DirectDrawEnumerateEx)( LPDDENUMCALLBACKEX lpCallback, PVOID lpContext, uint32_t Flags );
+extern HRESULT (__stdcall* _DirectInputCreate)( HINSTANCE hinst, uint32_t dwVersion, LPDIRECTINPUT * lplpDirectInput, LPUNKNOWN punkOuter );
 extern HRESULT (__stdcall* _DirectSoundCreate)( LPGUID lpGuid, LPDIRECTSOUND * ppDS, LPUNKNOWN  pUnkOuter );
-extern HRESULT (__stdcall* _DirectInputCreateEx)( HINSTANCE hinst, ULONG dwVersion, const IID* refID, PVOID* lplpDirectInput, LPUNKNOWN punkOuter );
+extern HRESULT (__stdcall* _DirectInputCreateEx)( HINSTANCE hinst, uint32_t dwVersion, const IID* refID, PVOID* lplpDirectInput, LPUNKNOWN punkOuter );
 extern HRESULT (__stdcall* _DirectSoundEnumerate)( LPDSENUMCALLBACK lpDSEnumCallback, PVOID lpContext );
-extern HWND (__stdcall* _CallmyHelp)( HWND hWindow, HINSTANCE hInst, bool Window, ULONG HelpItem );
+extern HWND (__stdcall* _CallmyHelp)( HWND hWindow, HINSTANCE hInst, bool Window, uint32_t HelpItem );
 extern void (__stdcall* _FreeHlpLib)(void);
-extern ULONG (__stdcall* _AMGetErrorText)( HRESULT hr, TCHAR *pBuffer, ULONG MaxLen );
+extern uint32_t (__stdcall* _AMGetErrorText)( HRESULT hr, TCHAR *pBuffer, uint32_t MaxLen );
 
 // WinMain.cpp
 extern float frameRate;
@@ -79,8 +79,8 @@ extern char AssetsDirectory2[MAX_PATH];
 extern char ImageHelpPath[MAX_PATH];
 extern char ApplicationName[256];
 extern char RegistryKey[256];
-extern ULONG ThreadId;
-extern ULONG SkipRendering;
+extern uint32_t ThreadId;
+extern uint32_t SkipRendering;
 extern bool gNoBlade;
 extern void __stdcall RestartGameOS(void);
 extern void __stdcall DoGame(void);

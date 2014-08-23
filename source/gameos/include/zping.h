@@ -17,25 +17,25 @@ public:
 
 // IZonePing
 public:
-    typedef void PingCallbackFunc( ULONG inet, ULONG latency, PVOID context );
+    typedef void PingCallbackFunc( uint32_t inet, uint32_t latency, PVOID context );
 
 
-    int __stdcall StartupServer();
-    virtual HRESULT __stdcall StartupClient( ULONG ping_interval_sec );
+    int32_t __stdcall StartupServer();
+    virtual HRESULT __stdcall StartupClient( uint32_t ping_interval_sec );
     virtual HRESULT __stdcall Shutdown();
-    virtual HRESULT __stdcall Add( ULONG inet );
-    virtual HRESULT __stdcall Ping( ULONG inet );
-    virtual HRESULT __stdcall Remove( ULONG inet );
+    virtual HRESULT __stdcall Add( uint32_t inet );
+    virtual HRESULT __stdcall Ping( uint32_t inet );
+    virtual HRESULT __stdcall Remove( uint32_t inet );
     virtual HRESULT __stdcall RemoveAll();
-    virtual HRESULT __stdcall Lookup( ULONG inet, ULONG *pLatency );
-    virtual HRESULT __stdcall RegisterCallback( ULONG inet, PingCallbackFunc * pfn, PVOID context);
+    virtual HRESULT __stdcall Lookup( uint32_t inet, uint32_t *pLatency );
+    virtual HRESULT __stdcall RegisterCallback( uint32_t inet, PingCallbackFunc * pfn, PVOID context);
 
 
 private:
     class ZonePing
     {
     public: 
-        ZonePing(ULONG inet = 0);
+        ZonePing(uint32_t inet = 0);
 
 	    enum PINGSTATE { UNKNOWN, PINGER, PINGEE };
 
@@ -44,10 +44,10 @@ private:
         void operator delete( PVOID ptr );
         void operator delete[] ( PVOID ptr );
 
-        ULONG     m_inet;
-        ULONG     m_latency;
-        ULONG     m_samples;
-        ULONG     m_tick;
+        uint32_t     m_inet;
+        uint32_t     m_latency;
+        uint32_t     m_samples;
+        uint32_t     m_tick;
 
         // mdm - for use with callbacks
         PingCallbackFunc * m_pCallback;
@@ -61,14 +61,14 @@ private:
 
 protected:
     ZonePing * FindNextItem( ZonePing * pPing, bool * bWrapped );
-    inline ULONG GetListIndex(ULONG inet)
+    inline uint32_t GetListIndex(uint32_t inet)
 	{
 		return ( inet & 0x000000FF ) % m_PingIntervalSec;
 	}
 
     void ScanForMissed( void );
 
-    inline ULONG GetTickDelta( ULONG now, ULONG then )
+    inline uint32_t GetTickDelta( uint32_t now, uint32_t then )
     {
         if ( now >= then )
         {
@@ -80,7 +80,7 @@ protected:
         }
     }
 
-    inline ULONG Get13BitTickDelta( ULONG now, ULONG then )
+    inline uint32_t Get13BitTickDelta( uint32_t now, uint32_t then )
     {
         if ( now >= then )
         {
@@ -95,14 +95,14 @@ protected:
     BOOL    CreateSocket();
 
     ZonePing* m_PingArray;
-    ULONG     m_PingEntries;
+    uint32_t     m_PingEntries;
     ZonePing * m_pCurrentItem;
 
-    ULONG*    m_inetArray;
-    ULONG     m_inetAlloc;
+    uint32_t*    m_inetArray;
+    uint32_t     m_inetAlloc;
 
-    ULONG  m_PingIntervalSec;
-    ULONG  m_CurInterval;
+    uint32_t  m_PingIntervalSec;
+    uint32_t  m_CurInterval;
 
     SOCKET m_Socket;
     BOOL   m_bWellKnownPort;
@@ -114,8 +114,8 @@ protected:
     HANDLE m_hPingerThread;
     HANDLE m_hPingeeThread;
 
-    static ULONG WINAPI PingerThreadProc( LPVOID p );
-    static ULONG WINAPI PingeeThreadProc( LPVOID p );
+    static uint32_t WINAPI PingerThreadProc( LPVOID p );
+    static uint32_t WINAPI PingeeThreadProc( LPVOID p );
 
     void PingerThread();
     void PingeeThread();
@@ -123,5 +123,5 @@ protected:
     HANDLE m_hStartupMutex;
     int32_t   m_refCountStartup;
 
-    ULONG  m_inetLocal[4];  // allow up to 4 ip address
+    uint32_t  m_inetLocal[4];  // allow up to 4 ip address
 };

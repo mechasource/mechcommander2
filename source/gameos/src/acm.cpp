@@ -43,13 +43,13 @@
 
 #if _JUST_SOME_INFO
 // implemented function declarations
-HRESULT __stdcall wACMStreamPrepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, ULONG fdwPrepare);
-HRESULT __stdcall wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, ULONG fdwConvert);
-HRESULT __stdcall wACMStreamUnprepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, ULONG fdwUnprepare);
-HRESULT __stdcall wACMStreamClose(HACMSTREAM has, ULONG fdwClose);
-HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc, const PWAVEFORMATEX pwfxDst, PWAVEFILTER pwfltr, ULONG_PTR dwCallback, ULONG_PTR dwInstance, ULONG fdwOpen);
-HRESULT __stdcall wACMStreamSize(HACMSTREAM has, ULONG cbInput, PULONG pdwOutputBytes, ULONG fdwSize);
-HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const struct tWAVEFORMATEX *pwfxSrc, const struct tWAVEFORMATEX *pwfxDst, ULONG cbwfxDst, ULONG fdwSuggest);
+HRESULT __stdcall wACMStreamPrepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwPrepare);
+HRESULT __stdcall wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwConvert);
+HRESULT __stdcall wACMStreamUnprepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwUnprepare);
+HRESULT __stdcall wACMStreamClose(HACMSTREAM has, uint32_t fdwClose);
+HRESULT __stdcall wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc, const PWAVEFORMATEX pwfxDst, PWAVEFILTER pwfltr, ULONG_PTR dwCallback, ULONG_PTR dwInstance, uint32_t fdwOpen);
+HRESULT __stdcall wACMStreamSize(HACMSTREAM has, uint32_t cbInput, puint32_t pdwOutputBytes, uint32_t fdwSize);
+HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const struct tWAVEFORMATEX *pwfxSrc, const struct tWAVEFORMATEX *pwfxDst, uint32_t cbwfxDst, uint32_t fdwSuggest);
 #endif
 
 #pragma region wACMStreamPrepareHeader
@@ -67,7 +67,7 @@ HRESULT __stdcall wACMFormatSuggest(HACMDRIVER had, const struct tWAVEFORMATEX *
 /// <param name="fdwPrepare"></param>
 /// <returns>HRESULT __stdcall</returns>
 HRESULT __stdcall 
-wACMStreamPrepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, ULONG fdwPrepare)
+wACMStreamPrepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwPrepare)
 {
 	PSTR		pszErrorMessage;
 	MMRESULT	hResult;
@@ -105,7 +105,7 @@ wACMStreamPrepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, ULONG fdwPrepare)
 /// <param name="fdwConvert"></param>
 /// <returns>HRESULT __stdcall</returns>
 HRESULT __stdcall 
-wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, ULONG fdwConvert)
+wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwConvert)
 {
 	PSTR		pszErrorMessage;
 	MMRESULT	hResult;
@@ -143,7 +143,7 @@ wACMStreamConvert(HACMSTREAM has, PACMSTREAMHEADER pash, ULONG fdwConvert)
 /// <param name="fdwUnprepare"></param>
 /// <returns>HRESULT __stdcall</returns>
 HRESULT __stdcall 
-wACMStreamUnprepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, ULONG fdwUnprepare)
+wACMStreamUnprepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, uint32_t fdwUnprepare)
 {
 	PSTR		pszErrorMessage;
 	MMRESULT	hResult;
@@ -180,7 +180,7 @@ wACMStreamUnprepareHeader(HACMSTREAM has, PACMSTREAMHEADER pash, ULONG fdwUnprep
 /// <param name="fdwClose"></param>
 /// <returns>HRESULT __stdcall</returns>
 HRESULT __stdcall 
-wACMStreamClose(HACMSTREAM has, ULONG fdwClose)
+wACMStreamClose(HACMSTREAM has, uint32_t fdwClose)
 {
 	PSTR		pszErrorMessage;
 	MMRESULT	hResult;
@@ -223,7 +223,7 @@ wACMStreamClose(HACMSTREAM has, ULONG fdwClose)
 HRESULT __stdcall 
 wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc, 
 			   const PWAVEFORMATEX pwfxDst, PWAVEFILTER pwfltr, ULONG_PTR dwCallback, 
-			   ULONG_PTR dwInstance, ULONG fdwOpen)
+			   ULONG_PTR dwInstance, uint32_t fdwOpen)
 {
 	PSTR		pszwfDst;
 	PSTR		pszwfSrc;
@@ -306,7 +306,7 @@ wACMStreamOpen(PHACMSTREAM phas, HACMDRIVER had, const PWAVEFORMATEX pwfxSrc,
 /// <param name="fdwSize"></param>
 /// <returns>HRESULT __stdcall</returns>
 HRESULT __stdcall 
-wACMStreamSize(HACMSTREAM has, ULONG cbInput, PULONG pdwOutputBytes, ULONG fdwSize)
+wACMStreamSize(HACMSTREAM has, uint32_t cbInput, puint32_t pdwOutputBytes, uint32_t fdwSize)
 {
 	PSTR		pszErrorMessage;
 	MMRESULT	hResult;
@@ -354,7 +354,7 @@ wACMStreamSize(HACMSTREAM has, ULONG cbInput, PULONG pdwOutputBytes, ULONG fdwSi
 /// <returns>HRESULT __stdcall</returns>
 HRESULT __stdcall 
 wACMFormatSuggest(HACMDRIVER had, const PWAVEFORMATEX pwfxSrc, const PWAVEFORMATEX pwfxDst, 
-				  ULONG cbwfxDst, ULONG fdwSuggest)
+				  uint32_t cbwfxDst, uint32_t fdwSuggest)
 {
 	PSTR		pszwfDst;
 	PSTR		pszwfSrc;

@@ -15,8 +15,8 @@ struct FFEffectData
 	LPDIRECTINPUTEFFECT diEffect;
 	uint8_t diTypeSpecific[64];
 	DIENVELOPE diEnvelope;
-	ULONG rgdwAxes[12];
-	LONG rglDirection[12];
+	uint32_t rgdwAxes[12];
+	int32_t rglDirection[12];
 	FFEffectData * pNextEffect;
 };
 
@@ -26,17 +26,17 @@ public:
 	FFEffectData * ffEffectData;
 	gosForce m_eType;
 	gosForceEffect * pNext;
-	ULONG dwStick;
+	uint32_t dwStick;
 	double longestDuration;
 	double startTime;
 	bool bStatus;
 	bool fromFile;
 public:
-	gosForceEffect(gosJoystick_ForceEffect * fe, ULONG joy);
-	gosForceEffect(PCSTR  fe, ULONG joy);
+	gosForceEffect(gosJoystick_ForceEffect * fe, uint32_t joy);
+	gosForceEffect(PCSTR  fe, uint32_t joy);
 	void ReCreate();
 	~gosForceEffect();
-	void Play(ULONG times);
+	void Play(uint32_t times);
 	void Stop();
 	void Update(gosJoystick_ForceEffect * fe);
 };

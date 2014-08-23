@@ -110,7 +110,7 @@ extern bool hasZoneMatch;
 //
 // True when connection exists
 //
-extern int Connected;
+extern int32_t Connected;
 
 //
 // Result from last enumeration on a thread
@@ -130,7 +130,7 @@ extern bool IAmTheServer;
 //
 // Current players ID
 //
-extern ULONG MyDirectPlayID;
+extern uint32_t MyDirectPlayID;
 
 //
 // String containing my address (when TCPIP)
@@ -173,7 +173,7 @@ extern ListOfNames* CurrentPlayers;
 // Buffer used while receiving messages
 //
 extern puint8_t MessageBuffer;
-extern ULONG MessageBufferSize;
+extern uint32_t MessageBufferSize;
 
 //
 // Points to a list of messages that the Application will pull message from
@@ -194,13 +194,13 @@ typedef struct _PacketLogging
 {
 	_PacketLogging* pNext;
 	double			TimeStamp;							// When packet was added to list
-	ULONG			FrameNumber;						// Frame number added
+	uint32_t			FrameNumber;						// Frame number added
 	char			Type[11];							// Type of packet
 	char			Player[11];							// From or To player name
-	ULONG			FromID;								// ID of FROM player
-	ULONG			ToID;								// ID of TO player
-	ULONG			Size;								// Size of packet
-	UCHAR			Data[8];							// 1st 8 bytes
+	uint32_t			FromID;								// ID of FROM player
+	uint32_t			ToID;								// ID of TO player
+	uint32_t			Size;								// Size of packet
+	uint8_t			Data[8];							// 1st 8 bytes
 
 } PacketLogging;
 //
@@ -227,7 +227,7 @@ extern PacketLogging*	pDebugPacketLog;
 #ifdef OUTBOUND_WINDOW
 typedef struct _PacketHeader
 {
-	UCHAR	Type;										// User defined type (224-> system messages)
+	uint8_t	Type;										// User defined type (224-> system messages)
 	uint16_t	ThisPacketNumber;
 	uint16_t	LastPacketReceived;
 
@@ -235,7 +235,7 @@ typedef struct _PacketHeader
 #else
 typedef struct _PacketHeader
 {
-	UCHAR	Type;										// User defined type (224-> system messages)
+	uint8_t	Type;										// User defined type (224-> system messages)
 
 } PacketHeader;
 #endif
@@ -249,15 +249,15 @@ void __stdcall CheckProtocols(void);
 void __stdcall ReceivePackets(void);
 void __stdcall GetCurrentPlayers(void);
 void __stdcall AddGOSMessage( Messages* pMessage );
-BOOL __stdcall EnumSessionsCallback( LPCDPSESSIONDESC2 lpSessionDesc, PULONG lpdwTimeOut, ULONG dwFlags, PVOID lpContext );
-BOOL __stdcall EnumJoinSessionCallback( LPCDPSESSIONDESC2 lpSessionDesc, PULONG lpdwTimeOut, ULONG dwFlags, PVOID lpContext );
-BOOL __stdcall EnumPlayersCallback( DPID dpId, ULONG dwPlayerType, LPCDPNAME lpName, ULONG dwFlags, LPVOID lpContext );
-BOOL __stdcall ModemCallback( REFGUID guidDataType, ULONG dwDataSize, LPCVOID lpData, PVOID lpContext );
-BOOL __stdcall TCPIPCallback( REFGUID guidDataType, ULONG dwDataSize, LPCVOID lpData, PVOID lpContext );
+BOOL __stdcall EnumSessionsCallback( LPCDPSESSIONDESC2 lpSessionDesc, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext );
+BOOL __stdcall EnumJoinSessionCallback( LPCDPSESSIONDESC2 lpSessionDesc, puint32_t lpdwTimeOut, uint32_t dwFlags, PVOID lpContext );
+BOOL __stdcall EnumPlayersCallback( DPID dpId, uint32_t dwPlayerType, LPCDPNAME lpName, uint32_t dwFlags, LPVOID lpContext );
+BOOL __stdcall ModemCallback( REFGUID guidDataType, uint32_t dwDataSize, LPCVOID lpData, PVOID lpContext );
+BOOL __stdcall TCPIPCallback( REFGUID guidDataType, uint32_t dwDataSize, LPCVOID lpData, PVOID lpContext );
 void __stdcall WaitTillQueueEmpty(void);
 void __stdcall AddPlayerToGame( ListOfNames** pListOfPlayers, PSTR Name, DPID dpId );
 void __stdcall RemovePlayerFromGame( ListOfNames** pListOfPlayers, PSTR Name, DPID dpId );
-PSTR __stdcall GetName10( ULONG Id );
+PSTR __stdcall GetName10( uint32_t Id );
 void __stdcall UpdateNetworkDebugInfo(void);
 PSTR __stdcall DecodeIPAddress( DPLCONNECTION* pConnection );
 uint16_t __stdcall DecodePORTAddress( DPLCONNECTION* pConnection );
@@ -297,8 +297,8 @@ extern PacketBuffer* pLastPacket;		// End of list of received packets
 // Functions used initialize game list drivers
 //
 
-int InitLanGames(void);
-int InitGUNGames(void);
+int32_t InitLanGames(void);
+int32_t InitGUNGames(void);
 void GUNDestroyNetworking(void);
 void CheckForInternet(void);
 

@@ -71,7 +71,7 @@ class FIMessageHeader
 
 		// This message construct limits the application to
 		// 1024 unique types of messages.  
-		inline int GetType()
+		inline int32_t GetType()
 		{
 			return flags & TypeMask;
 		}
@@ -115,7 +115,7 @@ class MessageTagger
 	
 		inline void Clear()
 		{
-			int i;
+			int32_t i;
 			for (i=0; i<MAXPLAYERS; i++)
 			{
 				sendCounts[i] = 255;
@@ -195,17 +195,17 @@ public:
 class FIPlayerIDMessage:public FIGuaranteedMessageHeader
 {
 public:
-	ULONG playerID[MAXPLAYERS];
-	UCHAR serverIndex;
+	uint32_t playerID[MAXPLAYERS];
+	uint8_t serverIndex;
 
 	FIPlayerIDMessage():FIGuaranteedMessageHeader()
 	{
 		SetType(FIDP_MSG_PLAYERID);
 	}
 
-	int GetPlayerNumber(ULONG player_id)
+	int32_t GetPlayerNumber(uint32_t player_id)
 	{
-		int i;
+		int32_t i;
 		for(i=0;i<MAXPLAYERS;i++)
 		{
 			if (playerID[i] == player_id)
@@ -216,7 +216,7 @@ public:
 		return -1;
 	}
 
-	ULONG GetServerID()
+	uint32_t GetServerID()
 	{
 		return playerID[serverIndex];
 	}
@@ -229,8 +229,8 @@ public:
 class FIPlayersInGroupMessage:public FIGuaranteedMessageHeader
 {
 public:
-	ULONG groupID;
-	ULONG playerID[MAXPLAYERS];
+	uint32_t groupID;
+	uint32_t playerID[MAXPLAYERS];
 
 	FIPlayersInGroupMessage():FIGuaranteedMessageHeader()
 	{
@@ -243,9 +243,9 @@ public:
 class FIServerIDMessage:public FIGuaranteedMessageHeader
 {
 public:
-	ULONG serverID;
+	uint32_t serverID;
 
-	FIServerIDMessage(ULONG server_id):FIGuaranteedMessageHeader()
+	FIServerIDMessage(uint32_t server_id):FIGuaranteedMessageHeader()
 	{
 		serverID = server_id;
 		SetType(FIDP_MSG_SERVERID);
@@ -268,13 +268,13 @@ public:
 class FIDPMessage:public NetworkMessageContainer, public ListItem
 {
 public:
-	ULONG	time;
-	ULONG	bufferSize;
+	uint32_t	time;
+	uint32_t	bufferSize;
 
 	// originalTime is the time at which this message was originally
 	// sent.  It differs from "time" which is the time which this message
 	// was last resent.
-	ULONG	originalTime;
+	uint32_t	originalTime;
 
 	// isResend is set to true when this message is sent for the second time.
 	BOOL			isResend;
@@ -283,7 +283,7 @@ public:
 	int32_t			numTimesSent;
 
 	// Constructor and destructor
-	FIDPMessage(DPID player_id, ULONG buf_size=MAXMESSAGESIZE);
+	FIDPMessage(DPID player_id, uint32_t buf_size=MAXMESSAGESIZE);
 
 	virtual ~FIDPMessage();
 
@@ -303,7 +303,7 @@ public:
 		return receiverId;
 	}
 
-	inline ULONG MessageSize()
+	inline uint32_t MessageSize()
 	{
 		return messageSize;
 	}
@@ -313,12 +313,12 @@ public:
 		return buffer;
 	}
 
-	inline ULONG Time()
+	inline uint32_t Time()
 	{
 		return time;
 	}
 
-	inline void SetTime(ULONG new_time)
+	inline void SetTime(uint32_t new_time)
 	{
 		time = new_time;
 		if (!isResend)
@@ -336,7 +336,7 @@ public:
 		receiverId = id;
 	}
 
-	ULONG SetMessageBuffer(LPVOID data, ULONG nbytes);
+	uint32_t SetMessageBuffer(LPVOID data, uint32_t nbytes);
 
 
 	HRESULT	ReceiveMessage();

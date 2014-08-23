@@ -41,7 +41,7 @@
 	{
 		public:
 			gosLink * m_Head;
-			int m_Size;
+			int32_t m_Size;
 			
 		public:
 			LinkedList()
@@ -120,11 +120,11 @@
 
 			}
 
-			int Size()
+			int32_t Size()
 			{
 				return m_Size;
 			}
-			T Get(int index)
+			T Get(int32_t index)
 			{
 				gosLink * tmp = m_Head;
 				if (tmp == 0)

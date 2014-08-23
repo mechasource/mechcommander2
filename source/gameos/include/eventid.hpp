@@ -12,21 +12,21 @@ class GosEventIdMgr
 		GosLogRef::EventType	m_type;
 		PSTR 					m_pName;
 		PSTR 					m_pFileName;
-		int						m_nLineNo;
-		ULONG					m_id;
+		int32_t						m_nLineNo;
+		uint32_t					m_id;
 	};
 
 
 	static EventInfo			*pEventInfo;
-	static ULONG				NextEntry;
-	static int					ListSize;
-	static int					ListSpace;
+	static uint32_t				NextEntry;
+	static int32_t					ListSize;
+	static int32_t					ListSpace;
 
 	public:
 	static void					Resize();
-	static ULONG				IdToEntry( ULONG id ) { return id & 0x000FFFFF; }
-	static ULONG				EntryToId( ULONG entry, int type ) { return entry|(type<<20); }
-	static ULONG				AssignId( GosLogRef::EventType type, PSTR name, PSTR filename, int lineno )
+	static uint32_t				IdToEntry( uint32_t id ) { return id & 0x000FFFFF; }
+	static uint32_t				EntryToId( uint32_t entry, int32_t type ) { return entry|(type<<20); }
+	static uint32_t				AssignId( GosLogRef::EventType type, PSTR name, PSTR filename, int32_t lineno )
 								{
 									if( !ListSpace )
 										Resize();
@@ -36,10 +36,10 @@ class GosEventIdMgr
 									pInfo->m_pName = name;
 									pInfo->m_pFileName = filename;
 									pInfo->m_nLineNo = lineno;
-									pInfo->m_id = EntryToId( NextEntry, (int)type );
+									pInfo->m_id = EntryToId( NextEntry, (int32_t)type );
 									NextEntry++;
 									return pInfo->m_id;
 								}
-	static PSTR 				EventName( ULONG id ) { return pEventInfo[IdToEntry(id)].m_pName; }
+	static PSTR 				EventName( uint32_t id ) { return pEventInfo[IdToEntry(id)].m_pName; }
 	static void					Cleanup();
 };

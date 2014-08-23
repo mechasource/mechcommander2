@@ -19,7 +19,7 @@ struct SoundResource
 			m_FileDataPointer;	// SOUNDTYPE_MEMORY
 		puint8_t	
 			m_DataPointer;		// SOUNDTYPE_MEMORY
-		ULONG		
+		uint32_t		
 			m_FileLength,		// SOUNDTYPE_MEMORY only
 			m_DataLength,		// SOUNDTYPE_MEMORY only
 			m_Frequency,		// SOUNDTYPE_MEMORY only
@@ -27,34 +27,34 @@ struct SoundResource
 
 		WAVEFORMATEX *		m_WaveFormatEx;
 		float				m_fDuration;           // duration of sound in msec
-		UINT				m_nDataSize;           // size of data chunk
-		UINT				m_nBytesPlayed;        // offset into data chunk
-		UINT				m_nBytesUncompressed;
-		UINT				m_totalBytesRead;
+		uint32_t				m_nDataSize;           // size of data chunk
+		uint32_t				m_nBytesPlayed;        // offset into data chunk
+		uint32_t				m_nBytesUncompressed;
+		uint32_t				m_totalBytesRead;
 		bool				m_microsoftPCM;
 		WAVEFORMATEX 		m_suggFormat;
 		HACMSTREAM 			m_hACMStream;
 		PSTR 				m_uncompressedData;
-		UINT				m_uncompressedDataSize;
+		uint32_t				m_uncompressedDataSize;
 
 		LPDIRECTSOUNDBUFFER lpMasterBuffer;
 		LPDIRECTSOUNDBUFFER lpDuplicateBuffers[16];
 		bool				duplicateInUse[16];
-		ULONG 				duplicateCount;
+		uint32_t 				duplicateCount;
 
 		bool m_only2D;
 
 		HGOSFILE m_FILE;
 
 		// for playlist type
-		int m_placeInList;
-		int m_playListDataLength;
-		int m_playListOffsetWithin;
+		int32_t m_placeInList;
+		int32_t m_playListDataLength;
+		int32_t m_playListOffsetWithin;
 		gosAudio_PlayList * m_playList;
 		DSBUFFERDESC 	masterDesc;
 
 		HGOSMUSIC m_hMusic;
-		ULONG			m_cueSeekDistance;
+		uint32_t			m_cueSeekDistance;
 
 	public:
 		SoundResource
@@ -68,7 +68,7 @@ struct SoundResource
 			PVOID data,
 			gosAudio_Format * wf,
 			PCSTR  caching_nametag,
-			int size,
+			int32_t size,
 			bool only2D
 		);
 		SoundResource
@@ -81,7 +81,7 @@ struct SoundResource
 		(
 			PCSTR  identifier_name,
 			HGOSFILE file,
-			ULONG offset,
+			uint32_t offset,
 			bool only2D
 		);
 
@@ -92,11 +92,11 @@ struct SoundResource
 				puint8_t lpBuffer,
 				WAVEFORMATEX *lplpWaveFormatEX,
 				puint8_t* lplpWaveData,
-				ULONG *lpWaveSize 
+				uint32_t *lpWaveSize 
 			);
 		void LoadFile();
-		int SoundResource::ReadPCM (puint8_t  pbDest, UINT bytestofill, bool loopMe, bool prevFailed=false );
-		int ReadACM (puint8_t  pbDest, UINT bytestoFill, bool loopflag, bool prevFailed=false );
+		int32_t SoundResource::ReadPCM (puint8_t  pbDest, uint32_t bytestofill, bool loopMe, bool prevFailed=false );
+		int32_t ReadACM (puint8_t  pbDest, uint32_t bytestoFill, bool loopflag, bool prevFailed=false );
 		void CloseStream();
 		void PauseStream();
 		void PlayStream();
@@ -104,7 +104,7 @@ struct SoundResource
 		void RestartStream();
 		void Cue();
 		void OpenFromMemory();
-		ULONG ConvertACM(ULONG numBytes);
+		uint32_t ConvertACM(uint32_t numBytes);
 
 		void GetDuplicateBuffer( LPDIRECTSOUNDBUFFER* );
 		void RelinquishDuplicate(LPDIRECTSOUNDBUFFER lpBuf);

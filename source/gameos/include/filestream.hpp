@@ -40,12 +40,12 @@ public:
 	inline  DebugFileStream& operator<<(char){return *this;}
 	inline  DebugFileStream& operator<<(uint8_t){return *this;}
 	inline  DebugFileStream& operator<<(signed char){return *this;}
-	inline  DebugFileStream& operator<<(short){return *this;}
+	inline  DebugFileStream& operator<<(int16_t){return *this;}
 	inline  DebugFileStream& operator<<(uint16_t){return *this;}
-	inline  DebugFileStream& operator<<(int){return *this;}
+	inline  DebugFileStream& operator<<(int32_t){return *this;}
 	inline  DebugFileStream& operator<<(uint32_t){return *this;}
 	inline  DebugFileStream& operator<<(int32_t){return *this;}
-	inline  DebugFileStream& operator<<(ULONG){return *this;}
+	inline  DebugFileStream& operator<<(uint32_t){return *this;}
 	inline  DebugFileStream& operator<<(float){return *this;}
 	inline	DebugFileStream& operator<<(double){return *this;}
 	inline  DebugFileStream& operator<<(int32_t double){return *this;}

@@ -14,12 +14,12 @@ class SoundMixer
 		float m_dopplerFactor, m_rolloffFactor, m_distanceFactor;
 		float m_fVolume;
 		float m_reverbFactor, m_decayFactor;
-		ULONG m_properties;
+		uint32_t m_properties;
 		bool m_isCertified;
-		ULONG m_freeHW3DChannels;
-		ULONG m_totalHW3DChannels;
-		ULONG m_freeHWMemory;
-		ULONG m_totalHWMemory;
+		uint32_t m_freeHW3DChannels;
+		uint32_t m_totalHW3DChannels;
+		uint32_t m_freeHWMemory;
+		uint32_t m_totalHWMemory;
 
 		EZVector m_position3D;
 		EZVector m_velocity3D;
@@ -48,8 +48,8 @@ class SoundMixer
 		virtual void SetDistanceFactor( float df );
 		virtual void SetReverbFactor( float rf );
 		virtual void SetDecayFactor( float df );
-		virtual void SetSpeakerConfig( ULONG ) = 0;
-		virtual void GetSpeakerConfig( ULONG* ) = 0;
+		virtual void SetSpeakerConfig( uint32_t ) = 0;
+		virtual void GetSpeakerConfig( uint32_t* ) = 0;
 };
 
  

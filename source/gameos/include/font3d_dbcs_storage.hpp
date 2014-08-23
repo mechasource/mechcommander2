@@ -13,24 +13,24 @@ typedef struct _quad
 {
 	gos_VERTEX v[4];
 	_quad * pNext;
-	ULONG texture;
+	uint32_t texture;
 } quad;
 
 typedef struct _paneTextures
 {
 	_paneTextures*	pNext;
-	ULONG			Handle;
-	ULONG			Size;
+	uint32_t			Handle;
+	uint32_t			Size;
 } paneTextures;
 
 
 class gos_DBCS
 {
 	protected:
-		int m_RefCount;				// used for whether to always cache
+		int32_t m_RefCount;				// used for whether to always cache
 
 	public:
-		ULONG
+		uint32_t
 			m_height,
 			m_width,
 			m_latticeX,
@@ -48,8 +48,8 @@ class gos_DBCS
 		gos_DBCS * m_pPrev;
 		float m_FontX;
 		float m_FontY;
-		int m_beginFontX;
-		int m_beginFontY;
+		int32_t m_beginFontX;
+		int32_t m_beginFontY;
 		float m_doneFontX;
 		float m_doneFontY;
 		float m_LastFontX;
@@ -59,34 +59,34 @@ class gos_DBCS
 		bool embeddedColorChange;
 		float m_FontSize;
 		bool m_FontBold;
-		ULONG m_FontColor;
+		uint32_t m_FontColor;
 
 	public:
-		gos_DBCS(PCSTR  msg, int w, int h, bool cc);
+		gos_DBCS(PCSTR  msg, int32_t w, int32_t h, bool cc);
 		~gos_DBCS();
 		void Render();
 		void Update();
 		DBCSSurface* GetSurface(){return m_surf;}
-		int GetWidth(){return m_width;}
-		int GetHeight(){return m_height;}
+		int32_t GetWidth(){return m_width;}
+		int32_t GetHeight(){return m_height;}
 		void PrepareTextures();
 		void Texture(DBCSSurface* surf);
 		void Translate(float x, float y, float z);
-		void Color(ULONG c);
+		void Color(uint32_t c);
 		void AlphaMode( enum gos_AlphaMode mode);
 		void MakeQuads();
 		bool NeedClip(float x, float y);
 		void ShiftCoordinates(float x, float y);
 		void Fill(float r, float g, float b, float a);
 
-		ULONG AddTexture( ULONG Size );
-		void AddQuad( ULONG X, ULONG Y, ULONG Width, ULONG Height, ULONG Texture, ULONG U, ULONG V, ULONG TextureSize );
+		uint32_t AddTexture( uint32_t Size );
+		void AddQuad( uint32_t X, uint32_t Y, uint32_t Width, uint32_t Height, uint32_t Texture, uint32_t U, uint32_t V, uint32_t TextureSize );
 
 		void AddRef (void)
 		{ m_RefCount++; }
 		void Release (void)
 		{ m_RefCount--; if (m_RefCount < 0) m_RefCount = 0;}
-		int RefCount (void)
+		int32_t RefCount (void)
 		{ return m_RefCount; }
 };
 

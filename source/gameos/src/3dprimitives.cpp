@@ -48,11 +48,11 @@
 //-------------------------------------------------------------------------
 // Data declarations
 
-static USHORT		SingleQuadIndexArray[] = {1,0,2,3};
+static uint16_t		SingleQuadIndexArray[] = {1,0,2,3};
 static float		FanLength;
-static ULONG		FanCalls;
+static uint32_t		FanCalls;
 static float		StripLength;
-static ULONG		StripCalls;
+static uint32_t		StripCalls;
 
 // unrecognized DirectX vertex type
 typedef enum __3dprimitives_const {
@@ -69,9 +69,9 @@ MECH_IMPEXP HRESULT MECH_CALL gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t N
 MECH_IMPEXP HRESULT MECH_CALL gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices);
 MECH_IMPEXP HRESULT MECH_CALL gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices);
 MECH_IMPEXP HRESULT MECH_CALL gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices);
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices);
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices);
-MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, puint16_t lpwIndices, ULONG NumberIndices);
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
+MECH_IMPEXP HRESULT MECH_CALL gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices, puint16_t lpwIndices, uint32_t NumberIndices);
 #endif
 
 #pragma region gos_DrawPoints
@@ -90,7 +90,7 @@ MECH_IMPEXP HRESULT MECH_CALL
 gos_DrawPoints(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	gos_VERTEX	vVertices;
-	int			i;
+	int32_t			i;
 
 	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices);
 
@@ -139,7 +139,7 @@ gos_DrawLines(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
 	gos_VERTEX	vVertices1;
 	gos_VERTEX	vVertices2;
-	int			i;
+	int32_t			i;
 
 	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices && (NumVertices&1)==0);
 
@@ -189,7 +189,7 @@ gos_DrawLines(pgos_VERTEX Vertices, uint32_t NumVertices)
 MECH_IMPEXP HRESULT MECH_CALL 
 gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
-	int i;
+	int32_t i;
 
 	gosASSERT(InsideBeginScene && Vertices && NumVertices && (NumVertices%3)==0);
 
@@ -244,7 +244,7 @@ gos_DrawTriangles(pgos_VERTEX Vertices, uint32_t NumVertices)
 MECH_IMPEXP HRESULT MECH_CALL
 gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
-	int i;
+	int32_t i;
 
 	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices && (NumVertices&3)==0);
 	gosASSERT((NumVertices+(NumVertices>>1))<128*6);
@@ -335,7 +335,7 @@ gos_DrawQuads(pgos_VERTEX Vertices, uint32_t NumVertices)
 MECH_IMPEXP HRESULT MECH_CALL 
 gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
-	int i;
+	int32_t i;
 
 	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices>=3);
 
@@ -378,7 +378,7 @@ gos_DrawStrips(pgos_VERTEX Vertices, uint32_t NumVertices)
 MECH_IMPEXP HRESULT MECH_CALL 
 gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices)
 {
-	int i;
+	int32_t i;
 
 	gosASSERT(!RenderDevice && InsideBeginScene && Vertices && NumVertices>=3);
 
@@ -426,11 +426,11 @@ gos_DrawFans(pgos_VERTEX Vertices, uint32_t NumVertices)
 /// <param name="NumberIndices"></param>
 /// <returns>MECH_IMPEXP HRESULT MECH_CALL</returns>
 MECH_IMPEXP HRESULT MECH_CALL 
-gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, ULONG NumberVertices, puint16_t pwIndices, ULONG NumberIndices)
+gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, uint32_t NumberVertices, puint16_t pwIndices, uint32_t NumberIndices)
 {
-	ULONG k;
-	ULONG j;
-	ULONG i;
+	uint32_t k;
+	uint32_t j;
+	uint32_t i;
 
 	gosASSERT(InsideBeginScene && NumberVertices>0 && NumberIndices>0 && (NumberIndices%3)==0);
 
@@ -514,10 +514,10 @@ gos_RenderIndexedArray1(pgos_VERTEX pVertexArray, ULONG NumberVertices, puint16_
 /// <param name="NumberIndices"></param>
 /// <returns>MECH_IMPEXP HRESULT MECH_CALL</returns>
 MECH_IMPEXP HRESULT MECH_CALL 
-gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, puint16_t pwIndices, ULONG NumberIndices)
+gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, uint32_t NumberVertices, puint16_t pwIndices, uint32_t NumberIndices)
 {
-	ULONG j;
-	ULONG i;
+	uint32_t j;
+	uint32_t i;
 
 	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices>0 && NumberIndices>0 && (NumberIndices%3)==0);
 
@@ -562,10 +562,10 @@ gos_RenderIndexedArray2(pgos_VERTEX_2UV pVertexArray, ULONG NumberVertices, puin
 }
 
 MECH_IMPEXP HRESULT MECH_CALL 
-gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray, ULONG NumberVertices, puint16_t pwIndices, ULONG NumberIndices)
+gos_RenderIndexedArray3(pgos_VERTEX_3UV pVertexArray, uint32_t NumberVertices, puint16_t pwIndices, uint32_t NumberIndices)
 {
-	ULONG j;
-	ULONG i;
+	uint32_t j;
+	uint32_t i;
 
 	gosASSERT(!RenderDevice && InsideBeginScene && NumberVertices>0 && NumberIndices>0 && (NumberIndices%3)==0);
 

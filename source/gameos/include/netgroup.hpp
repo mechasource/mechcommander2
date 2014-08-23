@@ -47,10 +47,10 @@ protected:
 	DPID				parentGroupID;
 	char				shortName[64];
 	char				longName[256];
-	ULONG		groupFlags;
+	uint32_t		groupFlags;
 	
 	LPVOID		groupData;
-	ULONG		dataSize;	
+	uint32_t		dataSize;	
 	FLinkedList<ListFriendlyDPID> playerIDList;
 
 
@@ -63,7 +63,7 @@ public:
 	FIDPGroup(DPID id,
 		DPID parent_id,
 		LPCDPNAME name,
-		ULONG flags);
+		uint32_t flags);
 
 	virtual ~FIDPGroup();
 
@@ -112,7 +112,7 @@ public:
 	}
 
 
-	void SetGroupData(LPVOID data, ULONG size);
+	void SetGroupData(LPVOID data, uint32_t size);
 
 	inline LPVOID GetGroupData()
 	{

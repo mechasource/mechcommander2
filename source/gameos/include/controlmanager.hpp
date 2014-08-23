@@ -16,17 +16,17 @@ void __stdcall ReInitControlManager(void);
 gosEnum_KeyStatus __stdcall GetStatus( gosEnum_KeyIndex index );
 
 
-extern ULONG KeyBoardBuffer[256];
-extern ULONG KeyCurrent;				// Where the next key to be read is
-extern ULONG KeyPressed;				// Where the next key pressed will go
-extern ULONG dbKeyBoardBuffer[256];
-extern ULONG dbKeyCurrent;				// Where the next key to be read is
-extern ULONG dbKeyPressed;				// Where the next key pressed will go
-extern ULONG LastWMDown;				// Last WM_KEYDOWN message scan code
+extern uint32_t KeyBoardBuffer[256];
+extern uint32_t KeyCurrent;				// Where the next key to be read is
+extern uint32_t KeyPressed;				// Where the next key pressed will go
+extern uint32_t dbKeyBoardBuffer[256];
+extern uint32_t dbKeyCurrent;				// Where the next key to be read is
+extern uint32_t dbKeyPressed;				// Where the next key pressed will go
+extern uint32_t LastWMDown;				// Last WM_KEYDOWN message scan code
 extern void __stdcall SaveOldKeyState(void);
-extern void __stdcall DoKeyReleased( ULONG KeyCode );
-extern void __stdcall DealWithKey( ULONG wParam, ULONG lParam );
-extern void __stdcall AddKeyEvent(ULONG KeyEvent);
+extern void __stdcall DoKeyReleased( uint32_t KeyCode );
+extern void __stdcall DealWithKey( uint32_t wParam, uint32_t lParam );
+extern void __stdcall AddKeyEvent(uint32_t KeyEvent);
 
 #define MAX_DI_DEVICES 16
 
@@ -49,9 +49,9 @@ typedef struct _cmd {
 	uint8_t 	m_numPOVs[MAX_DI_DEVICES];
 	uint8_t 	m_numSliders[MAX_DI_DEVICES];
 	uint8_t 	m_numButtons[MAX_DI_DEVICES];
-	LONG	m_mousePos[3];
-	LONG	m_mouseAxis[3];
-	LONG	m_joyAxis[MAX_DI_DEVICES][12];
+	int32_t	m_mousePos[3];
+	int32_t	m_mouseAxis[3];
+	int32_t	m_joyAxis[MAX_DI_DEVICES][12];
 
 	uint8_t	m_joyButton[MAX_DI_DEVICES][64];
 	char	m_joyName[MAX_DI_DEVICES][64];
@@ -63,7 +63,7 @@ typedef struct _cmd {
 void __stdcall CMInstall(void);
 void __stdcall CMUninstall(void);
 void __stdcall CMCreateKeyboard(void);
-void __stdcall CMReadJoystick(ULONG index);
+void __stdcall CMReadJoystick(uint32_t index);
 void __stdcall CMReadKeyboard(void);
 void __stdcall CMGetKeyState(void);
 void __stdcall CMRestore(void);

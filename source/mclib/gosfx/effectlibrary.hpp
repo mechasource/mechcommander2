@@ -28,8 +28,8 @@ namespace gosFX
 	// Constructors/Destructors
 	//
 	public:
-		EffectLibrary();
-		~EffectLibrary();
+		EffectLibrary(void);
+		~EffectLibrary(void);
 
 		void
 			Load(Stuff::MemoryStream* stream);
@@ -75,7 +75,7 @@ namespace gosFX
 	//
 	public:
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 	};
 }

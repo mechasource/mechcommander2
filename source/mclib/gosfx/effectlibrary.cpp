@@ -60,7 +60,7 @@ void
 {
 	Verify(gos_GetCurrentHeap() == Heap);
 	Verify(!m_effects.GetLength());
-	int32_t version = ReadGFXVersion(stream);
+	uint32_t version = ReadGFXVersion(stream);
 	uint32_t len;
 	*stream >> len;
 	m_effects.SetLength(len);

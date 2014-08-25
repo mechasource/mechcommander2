@@ -37,7 +37,7 @@ namespace gosFX
 
 	public:
 		ShapeCloud__Specification(MidLevelRenderer::MLRShape *shape);
-		~ShapeCloud__Specification();
+		~ShapeCloud__Specification(void);
 
 		void
 			Save(Stuff::MemoryStream *stream);

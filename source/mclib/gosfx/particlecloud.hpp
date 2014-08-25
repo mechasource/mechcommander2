@@ -39,7 +39,7 @@ namespace gosFX
 			Save(Stuff::MemoryStream *stream);
 		
 		void 
-			BuildDefaults();
+			BuildDefaults(void);
 	
 		bool 
 			IsDataValid(bool fix_data=false);
@@ -106,7 +106,7 @@ namespace gosFX
 			m_ageRate;
 
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 	};
 
@@ -198,8 +198,8 @@ namespace gosFX
 		void
 			Start(ExecuteInfo *info);
 		void
-			Kill();
+			Kill(void);
 		bool
-			HasFinished();
+			HasFinished(void);
 	};
 }

@@ -33,13 +33,13 @@ namespace gosFX
 		);
 
 	public:
-		Card__Specification();
+		Card__Specification(void);
 
 		void
 			Save(Stuff::MemoryStream *stream);
 
 		void 
-			BuildDefaults();
+			BuildDefaults(void);
 	
 
 		bool 
@@ -76,7 +76,7 @@ namespace gosFX
 			m_width;
 
 		void
-			SetWidth();
+			SetWidth(void);
 	};
 
 	//############################################################################
@@ -102,7 +102,7 @@ namespace gosFX
 			Specification *spec,
 			uint32_t flags
 		);
-		~Card();
+		~Card(void);
 
 		float
 			m_halfX,
@@ -115,8 +115,7 @@ namespace gosFX
 			m_colors[4];
 		Stuff::Vector2DOf<float>
 			m_uvs[4];
-		cint32_t
-			m_cardCount;
+		pcsize_t m_cardCount;
 
 	public:
 		static Card*
@@ -152,6 +151,6 @@ namespace gosFX
 		void
 			Draw(DrawInfo *info);
 		void
-			Kill();
+			Kill(void);
 	};
 }

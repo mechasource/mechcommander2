@@ -583,7 +583,7 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ShapeCloud::TestInstance() const
+	gosFX::ShapeCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

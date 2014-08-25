@@ -864,7 +864,7 @@ void gosFX::DebrisCloud::Draw(DrawInfo *info)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::DebrisCloud::TestInstance() const
+	gosFX::DebrisCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

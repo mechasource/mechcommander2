@@ -116,7 +116,7 @@ gosFX::PointCloud::PointCloud(
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
 
 	m_cloudImplementation->SetData(
-		Cast_Pointer(pcint32_t, &m_activeParticleCount),
+		Cast_Pointer(pcsize_t, &m_activeParticleCount),
 		m_P_localTranslation,
 		m_P_color
 	);
@@ -483,7 +483,7 @@ void gosFX::PointCloud::Draw(DrawInfo *info)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointCloud::TestInstance() const
+	gosFX::PointCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

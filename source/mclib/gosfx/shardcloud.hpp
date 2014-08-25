@@ -32,7 +32,7 @@ namespace gosFX
 		);
 
 	public:
-		ShardCloud__Specification();
+		ShardCloud__Specification(void);
 
 		static ShardCloud__Specification*
 			Make(
@@ -46,7 +46,7 @@ namespace gosFX
 			Save(Stuff::MemoryStream *stream);
 
 		void 
-			BuildDefaults();
+			BuildDefaults(void);
 
 		bool 
 			IsDataValid(bool fix_data=false);
@@ -111,7 +111,7 @@ namespace gosFX
 		);
 
 	public:
-		~ShardCloud();
+		~ShardCloud(void);
 
 		static ShardCloud*
 			Make(

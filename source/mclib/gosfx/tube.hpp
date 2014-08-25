@@ -31,7 +31,7 @@ namespace gosFX
 		);
 
 	public:
-		Tube__Specification();
+		Tube__Specification(void);
 
 		static Tube__Specification*
 			Make(
@@ -46,7 +46,7 @@ namespace gosFX
 			Save(Stuff::MemoryStream *stream);
 		
 		void 
-			BuildDefaults();
+			BuildDefaults(void);
 
 		bool 
 			IsDataValid(bool fix_data=false);
@@ -114,7 +114,7 @@ namespace gosFX
 			m_UBias;
 
 		void
-			BuildTemplate();
+			BuildTemplate(void);
 	};
 
 	//############################################################################
@@ -134,7 +134,7 @@ namespace gosFX
 			m_seed;
 
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 	};
 
@@ -155,41 +155,29 @@ namespace gosFX
 		typedef Tube__Profile Profile;
 
 	protected:
-		int32_t
-			m_headProfile,
-			m_tailProfile,
-			m_activeProfileCount,
-			m_triangleCount,
-			m_vertexCount;
-		float
-			m_birthAccumulator;
+		int32_t		m_headProfile;
+		int32_t		m_tailProfile;
+		size_t		m_activeProfileCount;
+		size_t		m_triangleCount;
+		size_t		m_vertexCount;
+		float		m_birthAccumulator;
 
-		Stuff::DynamicArrayOf<Profile>
-			m_profiles;
-		Stuff::DynamicArrayOf<char>
-			m_data;
-		MidLevelRenderer::MLRIndexedTriangleCloud
-			*m_mesh;
-		Stuff::Point3D
-			*m_P_vertices;
-		Stuff::RGBAColor
-			*m_P_colors;
-		Stuff::Vector2DOf<float>
-			*m_P_uvs;
+		Stuff::DynamicArrayOf<Profile>				m_profiles;
+		Stuff::DynamicArrayOf<char>					m_data;
+		MidLevelRenderer::MLRIndexedTriangleCloud*	m_mesh;
+		Stuff::Point3D*								m_P_vertices;
+		Stuff::RGBAColor*							m_P_colors;
+		Stuff::Vector2DOf<float>*					m_P_uvs;
 
-		void
-			BuildMesh(puint16_t indices);
+		void BuildMesh(puint16_t indices);
 
-		Tube(
-			Specification *spec,
-			uint32_t flags
-		);
+		Tube(Specification *spec, uint32_t flags);
 
 	//----------------------------------------------------------------------------
 	// Class Data Support
 	//
 	public:
-		~Tube();
+		~Tube(void);
 
 		static Tube*
 			Make(
@@ -248,9 +236,9 @@ namespace gosFX
 		void
 			Start(ExecuteInfo *info);
 		void
-			Kill();
+			Kill(void);
 		bool
-			HasFinished();
+			HasFinished(void);
 		void
 			Draw(DrawInfo *info);
 	};

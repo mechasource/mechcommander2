@@ -602,7 +602,7 @@ void gosFX::ParticleCloud::DestroyParticle(uint32_t index)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ParticleCloud::TestInstance() const
+	gosFX::ParticleCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

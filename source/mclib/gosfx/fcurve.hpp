@@ -63,13 +63,13 @@ namespace gosFX {
 			Mid(int32_t curvenum=0);
 
 		bool
-			IsComplex();
+			IsComplex(void);
 		
 		void 
 			SetSeedFlagIfComplex(bool vflag);
 
 		int32_t 
-			GetSeedFlagIfComplex();
+			GetSeedFlagIfComplex(void);
 
 		void 
 			TranslateTo(float pos,int32_t curvenum=0);
@@ -87,7 +87,7 @@ namespace gosFX {
 			GetSubCurve(int32_t curvenum);
 		
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 	};
 
@@ -297,7 +297,7 @@ namespace gosFX {
 			);
 
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 	};
 
@@ -313,7 +313,7 @@ namespace gosFX {
 			m_keys;
 
 	public:
-		ComplexCurve();
+		ComplexCurve(void);
 		ComplexCurve(const ComplexCurve &fcurve);
 		ComplexCurve(
 			Stuff::MemoryStream *stream,
@@ -341,13 +341,13 @@ namespace gosFX {
 				{Check_Object(this); return m_keys[index];}
 		size_t
 			GetKeyCount()
-				{ Check_Object(this); return m_keys.GetLength(); }
+				{ Check_Object(this); return m_keys.GetLength(void); }
 		int32_t
 			GetKeyIndex(float time)
 				{
 					Check_Object(this);
 					int32_t i;
-					for (i=0; i<(int32_t)m_keys.GetLength(); ++i)
+					for (i=0; i<(int32_t)m_keys.GetLength(void); ++i)
 						if (m_keys[i].m_time > time)
 							break;
 					return --i;
@@ -440,7 +440,7 @@ namespace gosFX {
 	//
 	public:
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 	};
 

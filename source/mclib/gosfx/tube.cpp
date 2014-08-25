@@ -1288,7 +1288,7 @@ void gosFX::Tube::Draw(DrawInfo *info)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Tube::TestInstance() const
+	gosFX::Tube::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

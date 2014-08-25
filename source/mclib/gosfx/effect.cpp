@@ -416,7 +416,7 @@ gosFX::Effect*
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Effect::TestInstance() const
+	gosFX::Effect::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

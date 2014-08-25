@@ -337,7 +337,7 @@ void
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::PointLight::TestInstance() const
+	gosFX::PointLight::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

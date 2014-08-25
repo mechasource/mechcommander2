@@ -322,7 +322,7 @@ void gosFX::Shape::Draw(DrawInfo *info)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Shape::TestInstance() const
+	gosFX::Shape::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

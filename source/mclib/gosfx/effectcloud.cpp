@@ -334,7 +334,7 @@ void gosFX::EffectCloud::Draw(DrawInfo *info)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::EffectCloud::TestInstance() const
+	gosFX::EffectCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

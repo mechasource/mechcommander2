@@ -34,8 +34,8 @@ namespace gosFX
 			Stuff::MemoryStream *stream, int32_t gfx_version);
 
 	public:
-		DebrisCloud__Specification();
-		~DebrisCloud__Specification();
+		DebrisCloud__Specification(void);
+		~DebrisCloud__Specification(void);
 
 		void
 			Save(Stuff::MemoryStream *stream);
@@ -56,7 +56,7 @@ namespace gosFX
 			LoadGeometry(Stuff::MemoryStream *stream);
 
 		void 
-			BuildDefaults();
+			BuildDefaults(void);
 	
 		virtual bool 
 			IsDataValid(bool fix_data=false);
@@ -123,7 +123,7 @@ namespace gosFX
 			m_alpha;
 
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 	};
 
@@ -210,9 +210,9 @@ namespace gosFX
 		void
 			Start(ExecuteInfo *info);
 		void
-			Kill();
+			Kill(void);
 		bool
-			HasFinished();
+			HasFinished(void);
 		void
 			Draw(DrawInfo *info);
 

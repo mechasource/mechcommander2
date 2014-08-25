@@ -37,7 +37,7 @@ namespace gosFX
 
 	public:
 		Shape__Specification(MidLevelRenderer::MLRShape *shape);
-		~Shape__Specification();
+		~Shape__Specification(void);
 
 		void
 			Save(Stuff::MemoryStream *stream);

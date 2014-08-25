@@ -313,7 +313,7 @@ gosFX::CardCloud::CardCloud(
 	m_P_uvs = Cast_Pointer(Stuff::Vector2DOf<float>*, &m_data[index]);
 
 	m_cloudImplementation->SetData(
-		Cast_Pointer(pcint32_t, &m_activeParticleCount),
+		Cast_Pointer(pcsize_t, &m_activeParticleCount),
 		m_P_vertices,
 		m_P_color,
 		m_P_uvs
@@ -880,7 +880,7 @@ void gosFX::CardCloud::Draw(DrawInfo *info)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::CardCloud::TestInstance() const
+	gosFX::CardCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

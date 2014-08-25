@@ -583,7 +583,7 @@ bool
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::SpinningCloud::TestInstance() const
+	gosFX::SpinningCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

@@ -552,7 +552,7 @@ void gosFX::Card::Draw(DrawInfo *info)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Card::TestInstance() const
+	gosFX::Card::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

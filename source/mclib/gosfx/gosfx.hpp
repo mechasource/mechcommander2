@@ -37,13 +37,11 @@ namespace gosFX
 
 	enum {CurrentGFXVersion = 17};
 
-	int32_t
-		ReadGFXVersion(Stuff::MemoryStream *erf_stream);
-	void
-		WriteGFXVersion(Stuff::MemoryStream *erf_stream);
+	int32_t __stdcall ReadGFXVersion(Stuff::MemoryStream *erf_stream);
+	void 	__stdcall WriteGFXVersion(Stuff::MemoryStream *erf_stream);
 
-	void InitializeClasses();
-	void TerminateClasses();
+	void __stdcall InitializeClasses(void);
+	void __stdcall TerminateClasses(void);
 
 	extern HGOSHEAP Heap;
 

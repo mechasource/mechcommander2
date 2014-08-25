@@ -29,7 +29,7 @@ namespace gosFX
 		);
 
 	public:
-		CardCloud__Specification();
+		CardCloud__Specification(void);
 
 		static CardCloud__Specification*
 			Make(
@@ -43,7 +43,7 @@ namespace gosFX
 			Save(Stuff::MemoryStream *stream);
 
 		void 
-			BuildDefaults();
+			BuildDefaults(void);
 	
 		virtual bool 
 			IsDataValid(bool fix_data=false);
@@ -69,7 +69,7 @@ namespace gosFX
 			m_width;
 
 		void
-			SetWidth();
+			SetWidth(void);
 	};
 
 	//############################################################################
@@ -126,7 +126,7 @@ namespace gosFX
 		);
 
 	public:
-		~CardCloud();
+		~CardCloud(void);
 
 		static CardCloud*
 			Make(

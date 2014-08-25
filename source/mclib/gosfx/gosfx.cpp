@@ -27,8 +27,8 @@ const Stuff::LinearMatrix4D&
 
 //-----------------------------------------------------------------------------
 //
-void
-	gosFX::InitializeClasses()
+
+void __stdcall gosFX::InitializeClasses(void)
 {
 	Verify(FirstFreegosFXClassID <= Stuff::LastgosFXClassID);
 
@@ -85,8 +85,7 @@ void
 
 //-----------------------------------------------------------------------------
 //
-void
-	gosFX::TerminateClasses()
+void __stdcall gosFX::TerminateClasses(void)
 {
 	// make sure these were actually initialized
 	if ( !DebrisCloud::DefaultData )
@@ -125,7 +124,7 @@ int32_t
 	int32_t erf_signature;
 	*erf_stream >> erf_signature;
 	Verify(erf_signature == 'GFX#');
-	int32_t version;
+	uint32_t version;
 	*erf_stream >> version;
 	if (version > CurrentGFXVersion)
 		STOP(("Application must be rebuilt to use this version of GFX data"));

@@ -79,7 +79,7 @@ namespace gosFX
 
 	public:
 		Effect__Specification(Stuff::RegisteredClass::ClassID class_id=gosFX::EffectClassID);
-		virtual ~Effect__Specification();
+		virtual ~Effect__Specification(void);
 
 		static Effect__Specification*
 			Create(
@@ -103,7 +103,7 @@ namespace gosFX
 			Save(Stuff::MemoryStream *stream);
 
 		virtual void 
-			BuildDefaults();
+			BuildDefaults(void);
 	
 		virtual bool 
 			IsDataValid(bool fix_data=false);
@@ -155,7 +155,7 @@ namespace gosFX
 	//
 	public:
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 	};
 
@@ -197,7 +197,7 @@ namespace gosFX
 					m_bounds = bounds; m_age = -1.0f; m_ageRate = -1.0f;
 				}
 
-			void TestInstance() const
+			void TestInstance(void) const
 				{}
 
 		private:
@@ -216,7 +216,7 @@ namespace gosFX
 			MidLevelRenderer::MLRState m_state;
 			MidLevelRenderer::MLRClipper *m_clipper;
 
-			void TestInstance() const
+			void TestInstance(void) const
 				{}
 		};
 
@@ -242,7 +242,7 @@ namespace gosFX
 		);
 
 	public:
-		~Effect();
+		~Effect(void);
 
 		typedef Effect*
 			(*Factory)(
@@ -284,11 +284,11 @@ namespace gosFX
 	//
 	public:
 		virtual void Start(ExecuteInfo *info);
-		void Stop();
+		void Stop(void);
 		virtual bool Execute(ExecuteInfo *info);
-		virtual void Kill();
+		virtual void Kill(void);
 		virtual void Draw(DrawInfo *info);
-		virtual bool HasFinished();
+		virtual bool HasFinished(void);
 
 		enum {
 			ExecuteFlag = 1,
@@ -396,7 +396,7 @@ namespace gosFX
 	//----------------------------------------------------------------------------
 	//
 	public:
-		void TestInstance();
+		void TestInstance(void);
 	};
 
 }

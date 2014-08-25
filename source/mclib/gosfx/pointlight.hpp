@@ -51,7 +51,7 @@ namespace gosFX
 			DeleteLight(Light *light);
 
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 	};
 
@@ -72,7 +72,7 @@ namespace gosFX
 		);
 
 	public:
-		PointLight__Specification();
+		PointLight__Specification(void);
 
 		void
 			Copy(PointLight__Specification *spec);
@@ -81,7 +81,7 @@ namespace gosFX
 			Save(Stuff::MemoryStream *stream);
 
 		void 
-			BuildDefaults();
+			BuildDefaults(void);
 
 		bool 
 			IsDataValid(bool fix_data=false);
@@ -119,7 +119,7 @@ namespace gosFX
 	{
 	public:
 		static void __stdcall InitializeClass(void);
-		static void TerminateClass();
+		static void TerminateClass(void);
 
 		static ClassData* DefaultData;
 
@@ -131,7 +131,7 @@ namespace gosFX
 				uint32_t flags
 			);
 
-		~PointLight();
+		~PointLight(void);
 
 	protected:
 		PointLight(
@@ -163,12 +163,12 @@ namespace gosFX
 		bool
 			Execute(ExecuteInfo *info);
 		void
-			Kill();
+			Kill(void);
 
 	//----------------------------------------------------------------------------
 	// Testing
 	//
 	public:
-		void TestInstance() const;
+		void TestInstance(void) const;
 	};
 }

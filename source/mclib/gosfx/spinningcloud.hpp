@@ -43,7 +43,7 @@ namespace gosFX
 			Save(Stuff::MemoryStream *stream);
 
 		void 
-			BuildDefaults();
+			BuildDefaults(void);
 
 		bool 
 			IsDataValid(bool fix_data=false);

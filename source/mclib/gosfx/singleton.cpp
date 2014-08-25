@@ -202,7 +202,7 @@ gosFX::Singleton::Singleton(
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::Singleton::TestInstance() const
+	gosFX::Singleton::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

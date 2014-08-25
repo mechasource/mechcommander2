@@ -32,7 +32,7 @@ namespace gosFX
 		);
 
 	public:
-		PointCloud__Specification();
+		PointCloud__Specification(void);
 
 		static PointCloud__Specification*
 			Make(
@@ -93,7 +93,7 @@ namespace gosFX
 		);
 
 	public:
-		~PointCloud();
+		~PointCloud(void);
 
 		static PointCloud*
 			Make(

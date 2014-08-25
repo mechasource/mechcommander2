@@ -29,7 +29,7 @@ namespace gosFX
 		);
 
 	public:
-		EffectCloud__Specification();
+		EffectCloud__Specification(void);
 
 		static EffectCloud__Specification*
 			Make(
@@ -90,7 +90,7 @@ namespace gosFX
 		);
 
 	public:
-		~EffectCloud();
+		~EffectCloud(void);
 
 		static EffectCloud*
 			Make(

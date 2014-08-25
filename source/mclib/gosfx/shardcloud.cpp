@@ -183,7 +183,7 @@ gosFX::ShardCloud::ShardCloud(
 	m_P_color = Cast_Pointer(Stuff::RGBAColor*, &m_data[index]);
 
 	m_cloudImplementation->SetData(
-		Cast_Pointer(pcint32_t, &m_activeParticleCount),
+		Cast_Pointer(pcsize_t, &m_activeParticleCount),
 		m_P_vertices,
 		m_P_color
 	);
@@ -666,7 +666,7 @@ void gosFX::ShardCloud::Draw(DrawInfo *info)
 //------------------------------------------------------------------------------
 //
 void
-	gosFX::ShardCloud::TestInstance() const
+	gosFX::ShardCloud::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

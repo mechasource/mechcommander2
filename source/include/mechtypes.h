@@ -48,6 +48,12 @@
 extern "C" {
 #endif
 
+#ifndef _LONG_TYPES_DEFINED
+#define _LONG_TYPES_DEFINED
+typedef signed long					long32_t;
+typedef unsigned long				ulong32_t;
+#endif
+
 // addition to C standard types
 #ifndef _CONST_TYPES_DEFINED
 #define _CONST_TYPES_DEFINED
@@ -62,6 +68,10 @@ typedef const signed int			cint32_t;
 typedef const signed int*			pcint32_t;
 typedef const unsigned int			cuint32_t;
 typedef const unsigned int*			pcuint32_t;
+typedef const signed long			clong32_t;
+typedef const signed long*			pclong32_t;
+typedef const unsigned long			culong32_t;
+typedef const unsigned long*		pculong32_t;
 typedef const signed long long		cint64_t;
 typedef const signed long long*		pcint64_t;
 typedef const unsigned long long	cuint64_t;
@@ -78,6 +88,8 @@ typedef signed short*				pint16_t;
 typedef unsigned short*				puint16_t;
 typedef signed int*					pint32_t;
 typedef unsigned int*				puint32_t;
+typedef signed long*				plong32_t;
+typedef unsigned long*				pulong32_t;
 typedef signed long long*			pint64_t;
 typedef unsigned long long*			puint64_t;
 typedef size_t*						psize_t;

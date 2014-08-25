@@ -8,8 +8,8 @@
 #include "stdafx.h"
 //#include "string.h"
 
-void initABL (void);
-void closeABL (void);
+void initABL(void);
+void closeABL(void);
  
 extern "C" int32_t __cdecl 
 main(int32_t argc, PSTR argv[])

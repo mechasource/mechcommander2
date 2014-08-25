@@ -231,12 +231,6 @@
     <ClCompile Include="..\mclib\stuff\page.cpp">
       <Filter>Sources\stuff\Stream Functions</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\stuff\extentpoly.cpp">
-      <Filter>Sources\extra</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\stuff\filestreammanager_test.cpp">
-      <Filter>Sources\extra</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\stdafx.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
@@ -499,15 +493,6 @@
     </ClInclude>
     <ClInclude Include="..\mclib\stuff\page.hpp">
       <Filter>Headers\stuff\Stream Functions</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\armorheap.hpp">
-      <Filter>Headers\extra</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\extentpoly.hpp">
-      <Filter>Headers\extra</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\stuff\memoryheap.hpp">
-      <Filter>Headers\extra</Filter>
     </ClInclude>
     <ClInclude Include="..\mclib\stdafx.h">
       <Filter>build\precompiled</Filter>

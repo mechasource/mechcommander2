@@ -324,20 +324,8 @@
     <ClCompile Include="..\mclib\stuff\color.cpp" />
     <ClCompile Include="..\mclib\stuff\database.cpp" />
     <ClCompile Include="..\mclib\stuff\extentbox.cpp" />
-    <ClCompile Include="..\mclib\stuff\extentpoly.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\filestream.cpp" />
     <ClCompile Include="..\mclib\stuff\filestreammanager.cpp" />
-    <ClCompile Include="..\mclib\stuff\filestreammanager_test.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\mclib\stuff\filestream_test.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -526,7 +514,6 @@
     <ClInclude Include="..\mclib\stdafx.h" />
     <ClInclude Include="..\mclib\stuff\affinematrix.hpp" />
     <ClInclude Include="..\mclib\stuff\angle.hpp" />
-    <ClInclude Include="..\mclib\stuff\armorheap.hpp" />
     <ClInclude Include="..\mclib\stuff\armoroff.hpp" />
     <ClInclude Include="..\mclib\stuff\armoron.hpp" />
     <ClInclude Include="..\mclib\stuff\auto_container.hpp" />
@@ -536,7 +523,6 @@
     <ClInclude Include="..\mclib\stuff\color.hpp" />
     <ClInclude Include="..\mclib\stuff\database.hpp" />
     <ClInclude Include="..\mclib\stuff\extentbox.hpp" />
-    <ClInclude Include="..\mclib\stuff\extentpoly.hpp" />
     <ClInclude Include="..\mclib\stuff\filestream.hpp" />
     <ClInclude Include="..\mclib\stuff\filestreammanager.hpp" />
     <ClInclude Include="..\mclib\stuff\hash.hpp" />
@@ -549,7 +535,6 @@
     <ClInclude Include="..\mclib\stuff\matrix.hpp" />
     <ClInclude Include="..\mclib\stuff\matrixstack.hpp" />
     <ClInclude Include="..\mclib\stuff\memoryblock.hpp" />
-    <ClInclude Include="..\mclib\stuff\memoryheap.hpp" />
     <ClInclude Include="..\mclib\stuff\memorystream.hpp" />
     <ClInclude Include="..\mclib\stuff\motion.hpp" />
     <ClInclude Include="..\mclib\stuff\mstring.hpp" />

@@ -34,9 +34,9 @@ namespace MidLevelRenderer {
 		MLR_Terrain(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
-		~MLR_Terrain();
+		~MLR_Terrain(void);
 
 	public:
 		MLR_Terrain(ClassData *class_data=MLR_Terrain::DefaultData);
@@ -44,7 +44,7 @@ namespace MidLevelRenderer {
 		static MLR_Terrain*
 			Make(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 
 		void
@@ -76,7 +76,7 @@ namespace MidLevelRenderer {
 			GetSize()
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_DeT_TMesh::GetSize();
+			int32_t ret = MLR_I_DeT_TMesh::GetSize(void);
 
 			return ret;
 		}
@@ -85,7 +85,7 @@ namespace MidLevelRenderer {
 		float borderPixelFun;
 		float xUVFac, zUVFac, minX, minZ;
 
-		static Stuff::DynamicArrayOf<Vector2DScalar> *clipTexCoords;  // , Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *clipTexCoords;  // , Max_Number_Vertices_Per_Mesh
 	};
 
 	MLRShape*

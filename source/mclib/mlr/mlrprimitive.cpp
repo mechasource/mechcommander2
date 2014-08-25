@@ -2,6 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+/* this source is not used */
+
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 #include "mlrprimitive.hpp"
@@ -54,7 +56,7 @@ DynamicArrayOf<RGBAColor>
 #endif
 	MLRPrimitive::clipExtraColors;
 
-DynamicArrayOf<Vector2DScalar>
+DynamicArrayOf<Stuff::Vector2DScalar>
 	MLRPrimitive::clipExtraTexCoords;
 
 DynamicArrayOf<int32_t>
@@ -109,7 +111,7 @@ void
 MLRPrimitive::MLRPrimitive(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	Plug(class_data)
 {
@@ -302,7 +304,7 @@ MLRPrimitive::~MLRPrimitive()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitive::TestInstance() const
+	MLRPrimitive::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -469,7 +471,7 @@ void
 //
 void
 	MLRPrimitive::SetTexCoordData(
-		const Vector2DScalar *data,
+		const Stuff::Vector2DScalar *data,
 		int32_t dataSize
 	)
 {
@@ -520,7 +522,7 @@ void
 void
 	MLRPrimitive::Lighting (
 		MLRLight **lights,
-		int32_t nrLights
+		uint32_t nrLights
 	)
 {
 	Check_Object(this);

@@ -78,7 +78,7 @@ MLRTexture::MLRTexture(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRTexture::TestInstance() const
+	MLRTexture::TestInstance(void) const
 {
 	Verify((*thePool)[textureHandle]);
 	Check_Object(image);

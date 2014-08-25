@@ -42,7 +42,7 @@ void
 //
 MLRShape::MLRShape(
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	Plug(DefaultData)
 { 
@@ -281,7 +281,7 @@ MLRShape::~MLRShape()
 MLRShape*
 	MLRShape::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	Check_Object(stream);

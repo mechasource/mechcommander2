@@ -7,8 +7,7 @@
 #ifndef MLR_MLRNGONCLOUD_HPP
 #define MLR_MLRNGONCLOUD_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlreffect.hpp>
+#include <mlr/mlreffect.hpp>
 
 namespace MidLevelRenderer {
 
@@ -32,11 +31,11 @@ namespace MidLevelRenderer {
 		//
 	public:
 		MLRNGonCloud(int32_t vertices, int32_t number);
-		~MLRNGonCloud();
+		~MLRNGonCloud(void);
 
 		void
 			SetData(
-			pcint32_t count,
+			pcsize_t count,
 			const Stuff::Point3D *point_data,
 			const Stuff::RGBAColor *color_data
 			);

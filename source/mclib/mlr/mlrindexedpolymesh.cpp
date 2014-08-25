@@ -2,6 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+/* this source is not used */
+
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 #include "owntrace.hpp"
@@ -79,7 +81,7 @@ void
 //
 MLRIndexedPolyMesh::MLRIndexedPolyMesh(
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	MLRIndexedPrimitive(DefaultData, stream, version)
 {
@@ -114,7 +116,7 @@ MLRIndexedPolyMesh::~MLRIndexedPolyMesh()
 MLRIndexedPolyMesh*
 	MLRIndexedPolyMesh::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	return new MLRIndexedPolyMesh(stream, version);
@@ -135,7 +137,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPolyMesh::TestInstance() const
+	MLRIndexedPolyMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

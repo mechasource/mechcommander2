@@ -105,7 +105,7 @@ MLRCardCloud::~MLRCardCloud()
 void 
 	MLRCardCloud::SetData
 	(
-		pcint32_t count,
+		pcsize_t count,
 		const Stuff::Point3D *point_data,
 		const Stuff::RGBAColor *color_data
 	)
@@ -124,7 +124,7 @@ void
 void 
 	MLRCardCloud::SetData
 	(
-		pcint32_t count,
+		pcsize_t count,
 		const Stuff::Point3D *point_data,
 		const Stuff::RGBAColor *color_data,
 		const Stuff::Vector2DScalar *uv_data
@@ -824,7 +824,7 @@ int32_t
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void 
-	MLRCardCloud::TestInstance() const
+	MLRCardCloud::TestInstance(void) const
 {
 	if (usedNrOfCards)
 	{

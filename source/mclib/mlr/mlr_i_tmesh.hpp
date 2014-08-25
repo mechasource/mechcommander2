@@ -34,7 +34,7 @@ namespace MidLevelRenderer {
 		MLR_I_TMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 		~MLR_I_TMesh(void);
 
@@ -44,7 +44,7 @@ namespace MidLevelRenderer {
 		static MLR_I_TMesh*
 			Make(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 
 		void
@@ -70,7 +70,7 @@ namespace MidLevelRenderer {
 			facePlanes.SetLength(numOfTriangles);
 		}
 
-		void	FindFacePlanes();
+		void	FindFacePlanes(void);
 
 		virtual int32_t	FindBackFace(const Stuff::Point3D&);
 
@@ -109,12 +109,12 @@ namespace MidLevelRenderer {
 
 		//	Initializes the visibility test list
 		void
-			ResetTestList();
+			ResetTestList(void);
 
 		//	find which vertices are visible which not - returns nr of visible vertices
 		//	the result is stored in the visibleIndexedVertices array
 		int32_t
-			FindVisibleVertices();
+			FindVisibleVertices(void);
 
 		bool
 			Copy(MLR_I_PMesh*);
@@ -135,9 +135,9 @@ namespace MidLevelRenderer {
 			GetSize()
 		{ 
 			Check_Object(this);
-			int32_t ret = MLRIndexedPrimitiveBase::GetSize();
-			ret += testList.GetSize();
-			ret += facePlanes.GetSize();
+			int32_t ret = MLRIndexedPrimitiveBase::GetSize(void);
+			ret += testList.GetSize(void);
+			ret += facePlanes.GetSize(void);
 
 			return ret;
 		}

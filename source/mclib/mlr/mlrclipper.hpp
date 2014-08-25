@@ -7,10 +7,12 @@
 #ifndef MLR_MLRCLIPPER_HPP
 #define MLR_MLRCLIPPER_HPP
 
-#include <stuff/style.hpp>
+#include <stuff/vector2d.hpp>
 #include <stuff/linearmatrix.hpp>
 #include <mlr/mlrshape.hpp>
 #include <mlr/mlrclippingstate.hpp>
+#include <mlr/gosvertexpool.hpp>
+#include <mlr/mlrsorter.hpp>
 
 namespace Stuff {
 	class LinearMatrix4D;
@@ -22,7 +24,6 @@ namespace MidLevelRenderer {
 
 	typedef int32_t AndyDisplay;
 	class MLRSorter;
-	//typedef Stuff::Vector2DOf<float> Vector2DScalar;
 
 	class DrawShapeInformation
 #if defined(_ARMOR)
@@ -30,7 +31,7 @@ namespace MidLevelRenderer {
 #endif
 	{
 	public:
-		DrawShapeInformation();
+		DrawShapeInformation(void);
 
 		MLRShape*	shape;
 		MLRState	state;
@@ -41,7 +42,7 @@ namespace MidLevelRenderer {
 		MLRLight* const *activeLights;
 		int32_t	nrOfActiveLights;
 
-		void TestInstance() const {}
+		void TestInstance(void) const {}
 	};
 
 	class DrawScalableShapeInformation : public DrawShapeInformation
@@ -51,7 +52,7 @@ namespace MidLevelRenderer {
 		const Stuff::Vector3D*	scaling;
 		const Stuff::RGBAColor*	paintMe;
 
-		void TestInstance() const {}
+		void TestInstance(void) const {}
 	};
 
 	class MLREffect;
@@ -62,7 +63,7 @@ namespace MidLevelRenderer {
 #endif
 	{
 	public:
-		DrawEffectInformation();
+		DrawEffectInformation(void);
 
 		MLREffect*						effect;
 		MLRState						state;
@@ -86,7 +87,7 @@ namespace MidLevelRenderer {
 
 		const Stuff::Vector4D*	coords;
 		const Stuff::RGBAColor*	colors;
-		const Vector2DScalar*	texCoords;
+		const Stuff::Vector2DScalar*	texCoords;
 		const bool*				onOrOff;
 
 		size_t	nrOfQuads;
@@ -109,7 +110,7 @@ namespace MidLevelRenderer {
 
 		//	Camera gets attached to a film
 		MLRClipper(AndyDisplay*, MLRSorter*);
-		~MLRClipper();
+		~MLRClipper(void);
 
 		//	lets begin the dance
 		void StartDraw(
@@ -140,29 +141,29 @@ namespace MidLevelRenderer {
 		//	clear the film
 		void Clear (uint32_t flags);
 
-		AndyDisplay* GetDisplay () const
+		AndyDisplay* GetDisplay (void) const
 		{ Check_Object(this); return display; };
 
 		// statistics and time
-		uint32_t GetFrameRate () const
+		uint32_t GetFrameRate (void) const
 		{ Check_Object(this); return frameRate; }
 		void SetTime (float t) 
 		{ Check_Object(this); nowTime = t; }
-		float GetTime () const
+		float GetTime (void) const
 		{ Check_Object(this); return nowTime; }
 
 		const Stuff::LinearMatrix4D&
-			GetCameraToWorldMatrix()
+			GetCameraToWorldMatrix(void)
 		{Check_Object(this); return cameraToWorldMatrix;}
 		const Stuff::LinearMatrix4D&
-			GetWorldToCameraMatrix()
+			GetWorldToCameraMatrix(void)
 		{Check_Object(this); return worldToCameraMatrix;}
 		const Stuff::Matrix4D&
-			GetCameraToClipMatrix()
+			GetCameraToClipMatrix(void)
 		{Check_Object(this); return cameraToClipMatrix;}
 
 		void
-			ResetSorter()
+			ResetSorter(void)
 		{Check_Object(this); sorter->Reset();}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

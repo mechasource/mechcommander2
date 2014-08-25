@@ -19,7 +19,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
 	//----------------------------------------------------------------------
 	//
 	actualColors = &colors;
-	int32_t state_mask = GetCurrentState().GetLightingMode();
+	int32_t state_mask = GetCurrentState().GetLightingMode(void);
 	if (nrLights == 0 || normals.GetLength() == 0 || state_mask == MLRState::LightingOffMode)
 		return;
 	Check_Pointer(lights);
@@ -36,7 +36,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
 		Verify(normals.GetLength() == colors.GetLength());
 		Verify(coords.GetLength() == colors.GetLength());
 
-		int32_t i, k, len = colors.GetLength();
+		int32_t i, k, len = colors.GetLength(void);
 
 		MLRVertexData vertexData;
 
@@ -66,7 +66,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
 				{
 					MLRLight *light = lights[i];
 					Check_Object(light);
-					int32_t mask = state_mask & light->GetLightMask();
+					int32_t mask = state_mask & light->GetLightMask(void);
 					if (!mask)
 						continue;
 					if (mask&MLRState::VertexLightingMode)
@@ -105,7 +105,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
 			MLRLight *light = lights[i];
 			Check_Object(light);
 
-			MLRLightMap *lm = light->GetLightMap();
+			MLRLightMap *lm = light->GetLightMap(void);
 
 			if(lm==NULL)
 			{
@@ -114,7 +114,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
 
 			//			Verify(state.GetAlphaMode() == MLRState::OneZeroMode);
 
-			int32_t mask = state_mask & light->GetLightMask();
+			int32_t mask = state_mask & light->GetLightMask(void);
 
 			if (!mask)
 				continue;

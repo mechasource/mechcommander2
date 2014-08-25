@@ -2,6 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+/* this source is not used */
+
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 // #include "mlrstuff.hpp"
@@ -84,8 +86,8 @@ static void loadMtl (PSTR fileName);
 static void useMtl (PSTR name);
 
 #ifdef        FORGETFUL
-	static void forgetMaterials (void);
-	static void forgetMaterialFiles (void);
+	static void forgetMaterials ();
+	static void forgetMaterialFiles ();
 #endif
 
 #define        GROW(_v, _t) \

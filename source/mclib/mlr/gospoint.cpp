@@ -2,6 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+/* this source is not used */
+
 #include "stdafx.h"
 //#include "mlrheaders.hpp"
 
@@ -19,7 +21,7 @@
 //#include <mlr/gosvertexpool.hpp>
 //#include <mlr/mlr.hpp>
 //#include <mlr/mlrambientlight.hpp>
-#include <mlr/mlrcardcloud.hpp>
+//#include <mlr/mlrcardcloud.hpp>
 //#include <mlr/mlrclipper.hpp>
 //#include <mlr/mlrclippingstate.hpp>
 //#include <mlr/mlrcliptrick.hpp>
@@ -41,8 +43,8 @@
 //#include <mlr/mlrpolymesh.hpp>
 //#include <mlr/mlrprimitive.hpp>
 //#include <mlr/mlrprimitivebase.hpp>
-//#include <mlr/mlrprimitiveclipping.hpp>
-//#include <mlr/mlrprimitivelighting.hpp>
+#include <mlr/mlrprimitiveclipping.inl>
+#include <mlr/mlrprimitivelighting.hpp>
 //#include <mlr/mlrshape.hpp>
 //#include <mlr/mlrsortbyorder.hpp>
 //#include <mlr/mlrsorter.hpp>

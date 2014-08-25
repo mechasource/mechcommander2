@@ -34,9 +34,9 @@ namespace MidLevelRenderer {
 		MLR_I_C_DT_PMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
-		~MLR_I_C_DT_PMesh();
+		~MLR_I_C_DT_PMesh(void);
 
 	public:
 		MLR_I_C_DT_PMesh(ClassData *class_data=MLR_I_C_DT_PMesh::DefaultData);
@@ -44,7 +44,7 @@ namespace MidLevelRenderer {
 		static MLR_I_C_DT_PMesh*
 			Make(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 
 		void
@@ -103,8 +103,8 @@ namespace MidLevelRenderer {
 			GetSize()
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_DT_PMesh::GetSize();
-			ret += colors.GetSize();
+			int32_t ret = MLR_I_DT_PMesh::GetSize(void);
+			ret += colors.GetSize(void);
 
 			return ret;
 		}

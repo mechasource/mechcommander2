@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 
-int32_t clipTrick[6][2] = 
+size_t clipTrick[6][2] = 
 {
 	{ 1, 1},
 	{ 1, 0},
@@ -52,7 +52,7 @@ DynamicArrayOf<MLRClippingState>
 DynamicArrayOf<Vector4D>
 	*MLRPrimitiveBase::clipExtraCoords;
 
-DynamicArrayOf<Vector2DScalar>
+DynamicArrayOf<Stuff::Vector2DScalar>
 	*MLRPrimitiveBase::clipExtraTexCoords;
 
 #if COLOR_AS_DWORD
@@ -91,7 +91,7 @@ void
 	Register_Object(clipPerVertex);
 	clipExtraCoords = new DynamicArrayOf<Vector4D> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraCoords);
-	clipExtraTexCoords = new DynamicArrayOf<Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
+	clipExtraTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipExtraTexCoords);
 
 	clipExtraColors = new DynamicArrayOf<
@@ -148,7 +148,7 @@ void
 MLRPrimitiveBase::MLRPrimitiveBase(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	RegisteredClass(class_data)
 {
@@ -230,7 +230,7 @@ MLRPrimitiveBase::~MLRPrimitiveBase()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPrimitiveBase::TestInstance() const
+	MLRPrimitiveBase::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -318,7 +318,7 @@ void
 //
 void
 	MLRPrimitiveBase::SetTexCoordData(
-		const Vector2DScalar *data,
+		const Stuff::Vector2DScalar *data,
 		int32_t dataSize
 	)
 {

@@ -21,7 +21,7 @@ float MLRState::maxUV;
 //
 MLRState::MLRState(
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 )
 {
 	Verify(gos_GetCurrentHeap() == Heap);
@@ -73,7 +73,7 @@ MLRState::MLRState(const MLRState& mState)
 MLRState*
 	MLRState::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	Check_Object(stream);
@@ -124,7 +124,7 @@ void
 void
 	MLRState::Load(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	Check_Object(this);

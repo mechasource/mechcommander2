@@ -16,7 +16,7 @@
 MLR_Terrain::ClassData*
 	MLR_Terrain::DefaultData = NULL;
 
-DynamicArrayOf<Vector2DScalar>
+DynamicArrayOf<Stuff::Vector2DScalar>
 	*MLR_Terrain::clipTexCoords;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,7 +35,7 @@ void
 		);
 	Register_Object(DefaultData);
 	
-	clipTexCoords = new DynamicArrayOf<Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
+	clipTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipTexCoords);
 
 	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
@@ -67,7 +67,7 @@ void
 MLR_Terrain::MLR_Terrain(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	MLR_I_DeT_TMesh(class_data, stream, version)
 {
@@ -101,7 +101,7 @@ MLR_Terrain::~MLR_Terrain()
 MLR_Terrain*
 	MLR_Terrain::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	Check_Object(stream);
@@ -128,7 +128,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_Terrain::TestInstance() const
+	MLR_Terrain::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

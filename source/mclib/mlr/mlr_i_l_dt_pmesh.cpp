@@ -58,7 +58,7 @@ void
 MLR_I_L_DT_PMesh::MLR_I_L_DT_PMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	MLR_I_C_DT_PMesh(DefaultData, stream, version)
 {
@@ -108,7 +108,7 @@ MLR_I_L_DT_PMesh::~MLR_I_L_DT_PMesh()
 MLR_I_L_DT_PMesh*
 	MLR_I_L_DT_PMesh::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	Check_Object(stream);
@@ -137,7 +137,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_L_DT_PMesh::TestInstance() const
+	MLR_I_L_DT_PMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -251,7 +251,7 @@ void
 //	int32_t MLR_I_L_DT_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <MLR\MLRPrimitiveClipping.hpp>
+#include <mlr/mlrprimitiveclipping.inl>
 
 #undef I_SAY_YES_TO_DUAL_TEXTURES
 #undef I_SAY_YES_TO_COLOR
@@ -308,7 +308,7 @@ MLRShape*
 
 	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
-	Vector2DScalar *texCoords = new Vector2DScalar[2*nrTri*3];
+	Vector2DScalar *texCoords = new Stuff::Vector2DScalar[2*nrTri*3];
 	Register_Pointer(texCoords);
 	RGBAColor *colors = new RGBAColor[nrTri*3];
 	Register_Pointer(colors);
@@ -375,7 +375,7 @@ MLRShape*
 		{
 			for(i=0;i<uniquePoints;i++)
 			{
-				texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+				texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 			}
 		}
 		else
@@ -440,7 +440,7 @@ MLRShape*
 			{
 				for(i=0;i<2*uniquePoints;i++)
 				{
-					texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+					texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 				}
 			}
 		}

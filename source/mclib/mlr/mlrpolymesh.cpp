@@ -2,6 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+/* this source is not used */
+
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 #include "owntrace.hpp"
@@ -70,7 +72,7 @@ void
 //
 MLRPolyMesh::MLRPolyMesh(
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ) :
 	MLRPrimitive(DefaultData, stream, version)
 {
@@ -105,7 +107,7 @@ MLRPolyMesh::~MLRPolyMesh()
 MLRPolyMesh*
 	MLRPolyMesh::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	return new MLRPolyMesh(stream, version);
@@ -125,7 +127,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRPolyMesh::TestInstance() const
+	MLRPolyMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -1143,11 +1145,7 @@ int32_t
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLRPolyMesh::Lighting (
-		MLRLight **lights,
-		int32_t nrLights
-	)
+void MLRPolyMesh::Lighting(MLRLight **lights, uint32_t nrLights)
 {
 	Check_Object(this);
 

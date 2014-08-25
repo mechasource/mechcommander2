@@ -41,7 +41,7 @@ inline bool GOSCopyData (
 	const Stuff::Vector2DScalar*		texCoords1,
 	const Stuff::Vector2DScalar*		texCoords2,
 #else
-	const Vector2DScalar*		texCoords,
+	const Stuff::Vector2DScalar*		texCoords,
 #endif
 #endif
 	size_t _index

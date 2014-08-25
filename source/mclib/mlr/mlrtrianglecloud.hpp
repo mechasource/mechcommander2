@@ -7,8 +7,7 @@
 #ifndef MLR_MLRTRIANGLECLOUD_HPP
 #define MLR_MLRTRIANGLECLOUD_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlreffect.hpp>
+#include <mlr/mlreffect.hpp>
 
 namespace MidLevelRenderer {
 
@@ -32,14 +31,22 @@ namespace MidLevelRenderer {
 		//
 	public:
 		MLRTriangleCloud(int32_t);
-		~MLRTriangleCloud();
+		~MLRTriangleCloud(void);
 
-		void
-			SetData(
-			pcint32_t count,
+		void SetData(
+			pcsize_t count,
 			const Stuff::Point3D *point_data,
 			const Stuff::RGBAColor *color_data
 			);
+
+		// added due to warning C4263 in MLRIndexedTriangleCloud
+		virtual void SetData(
+			pcsize_t tri_count,
+			pcsize_t point_count,
+			pcuint16_t index_data,
+			const Stuff::Point3D* point_data,
+			const Stuff::RGBAColor* color_data,
+			const Stuff::Vector2DScalar* uv_data);
 
 		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 

@@ -23,13 +23,13 @@ namespace MidLevelRenderer {
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 
-		MLRSpotLight();
+		MLRSpotLight(void);
 		MLRSpotLight(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 		MLRSpotLight(Stuff::Page *page);
-		~MLRSpotLight();
+		~MLRSpotLight(void);
 
 		void
 			Save(Stuff::MemoryStream *stream);
@@ -80,8 +80,7 @@ namespace MidLevelRenderer {
 		// Testing
 		//
 	public:
-		void
-			TestInstance();
+		void TestInstance(void);
 
 	protected:
 		MLRLightMap *lightMap;

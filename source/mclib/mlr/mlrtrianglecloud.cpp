@@ -99,7 +99,7 @@ MLRTriangleCloud::~MLRTriangleCloud()
 void 
 	MLRTriangleCloud::SetData
 	(
-		pcint32_t count,
+		pcsize_t count,
 		const Stuff::Point3D *point_data,
 		const Stuff::RGBAColor *color_data
 	)
@@ -781,7 +781,7 @@ int32_t
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void 
-	MLRTriangleCloud::TestInstance() const
+	MLRTriangleCloud::TestInstance(void) const
 {
 	if (usedNrOfTriangles)
 	{

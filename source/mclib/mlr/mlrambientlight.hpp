@@ -22,13 +22,13 @@ namespace MidLevelRenderer {
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 
-		MLRAmbientLight();
+		MLRAmbientLight(void);
 		MLRAmbientLight(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 		MLRAmbientLight(Stuff::Page *page);
-		~MLRAmbientLight();
+		~MLRAmbientLight(void);
 
 		virtual void
 			LightVertex(const MLRVertexData&);
@@ -48,8 +48,7 @@ namespace MidLevelRenderer {
 		// Testing
 		//
 	public:
-		void
-			TestInstance();
+		void TestInstance(void);
 
 	protected:
 	};

@@ -2,6 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+/* this header is not used */
+
 #pragma once
 
 #ifndef OWNTRACE_HPP
@@ -14,10 +16,10 @@ class OwnTrace
 public:
 	OwnTrace(PCSTR );
 
-	void Start();
-	void Stop();
+	void Start(void);
+	void Stop(void);
 
-	void Print();
+	void Print(void);
 
 private:
 	MString name;
@@ -43,7 +45,7 @@ inline void OwnTrace::Start()
 	{
 		count++;
 		on = 1;
-		start = System_Clock->Now();
+		start = System_Clock->Now(void);
 	}
 #endif
 }
@@ -54,7 +56,7 @@ inline void OwnTrace::Stop()
 	if(on==1)
 	{
 		on = 0;
-		end = System_Clock->Now();
+		end = System_Clock->Now(void);
 
 		sum += end - start;
 	}

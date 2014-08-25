@@ -1,19 +1,18 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #pragma once
 
-#ifndef MLR_MLRPOINTCLOUD_HPP
-#define MLR_MLRPOINTCLOUD_HPP
+#ifndef MLR_MLRLINECLOUD_HPP
+#define MLR_MLRLINECLOUD_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlreffect.hpp>
+#include <mlr/mlreffect.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer{
 
 	//##########################################################################
-	//#######################    MLRLineCloud    ##############################
+	//####################### MLRLineCloud ##############################
 	//##########################################################################
 
 
@@ -32,22 +31,18 @@ namespace MidLevelRenderer {
 		//
 	public:
 		MLRLineCloud(int32_t, int32_t=0);
-		~MLRLineCloud();
+		~MLRLineCloud(void);
 
-		void
-			SetData(
-			pcint32_t count,
-			const Stuff::Point3D *point_data,
-			const Stuff::RGBAColor *color_data
-			);
-		virtual int32_t
-			GetType(int32_t) { return type; }
 
+		void SetData(
+			pcsize_t count, 
+			const Stuff::Point3D* point_data, 
+			const Stuff::RGBAColor *color_data);
+
+		virtual int32_t GetType(int32_t){ return type; }
 		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
-
 		void Transform(int32_t, int32_t);
-
-		int32_t	Clip(MLRClippingState, GOSVertexPool*);		
+		int32_t Clip(MLRClippingState, GOSVertexPool*);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support

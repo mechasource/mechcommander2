@@ -616,7 +616,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSortByOrder::TestInstance() const
+	MLRSortByOrder::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

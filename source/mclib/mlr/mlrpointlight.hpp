@@ -7,8 +7,7 @@
 #ifndef MLR_MLRPOINTLIGHT_HPP
 #define MLR_MLRPOINTLIGHT_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlrinfinitelightwithfalloff.hpp>
+#include <mlr/mlrinfinitelightwithfalloff.hpp>
 
 namespace MidLevelRenderer {
 
@@ -24,13 +23,13 @@ namespace MidLevelRenderer {
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 
-		MLRPointLight();
+		MLRPointLight(void);
 		MLRPointLight(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 		MLRPointLight(Stuff::Page *page);
-		~MLRPointLight();
+		~MLRPointLight(void);
 
 		void
 			Save(Stuff::MemoryStream *stream);
@@ -61,8 +60,7 @@ namespace MidLevelRenderer {
 		// Testing
 		//
 	public:
-		void
-			TestInstance();
+		void TestInstance(void);
 
 	protected:
 		MLRLightMap *lightMap;

@@ -34,9 +34,9 @@ namespace MidLevelRenderer {
 		MLR_I_PMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
-		~MLR_I_PMesh();
+		~MLR_I_PMesh(void);
 
 	public:
 		MLR_I_PMesh(ClassData *class_data=MLR_I_PMesh::DefaultData);
@@ -44,7 +44,7 @@ namespace MidLevelRenderer {
 		static MLR_I_PMesh*
 			Make(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 
 		void
@@ -58,7 +58,7 @@ namespace MidLevelRenderer {
 		virtual void	SetSubprimitiveLengths(puint8_t , int32_t);
 		virtual void	GetSubprimitiveLengths(puint8_t *, pint32_t);
 
-		void	FindFacePlanes();
+		void	FindFacePlanes(void);
 
 		virtual int32_t	FindBackFace(const Stuff::Point3D&);
 
@@ -94,12 +94,12 @@ namespace MidLevelRenderer {
 
 		//	Initializes the visibility test list
 		void
-			ResetTestList();
+			ResetTestList(void);
 
 		//	find which vertices are visible which not - returns nr of visible vertices
 		//	the result is stored in the visibleIndexedVertices array
 		int32_t
-			FindVisibleVertices();
+			FindVisibleVertices(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -117,9 +117,9 @@ namespace MidLevelRenderer {
 			GetSize()
 		{ 
 			Check_Object(this);
-			int32_t ret = MLRIndexedPrimitiveBase::GetSize();
-			ret += testList.GetSize();
-			ret += facePlanes.GetSize();
+			int32_t ret = MLRIndexedPrimitiveBase::GetSize(void);
+			ret += testList.GetSize(void);
+			ret += facePlanes.GetSize(void);
 
 			return ret;
 		}

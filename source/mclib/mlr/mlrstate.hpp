@@ -37,7 +37,7 @@ namespace MidLevelRenderer {
 		// Constructors/Destructors
 		//
 	protected:
-		MLRState(Stuff::MemoryStream *stream, int32_t version);
+		MLRState(Stuff::MemoryStream *stream, uint32_t version);
 
 	public:
 		MLRState(void);
@@ -47,14 +47,14 @@ namespace MidLevelRenderer {
 
 		};
 
-		static MLRState* Make(Stuff::MemoryStream *stream, int32_t version);
+		static MLRState* Make(Stuff::MemoryStream *stream, uint32_t version);
 
 		void
 			Save(Stuff::MemoryStream *stream);
 		void
 			Load(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

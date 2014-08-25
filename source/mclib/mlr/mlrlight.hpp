@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #pragma once
@@ -10,39 +10,37 @@
 #include <stuff/linearmatrix.hpp>
 #include <stuff/color.hpp>
 #include <stuff/mstring.hpp>
-#include <mlr/mlr.hpp>
 #include <mlr/mlrstate.hpp>
+#include <mlr/mlr.hpp>
 
-namespace Stuff {
+namespace Stuff{
 	class Point3D;
 	class Vector3D;
-	//class Vector4D;
-	//class Matrix4D;
 	class RGBAColor;
 	class RGBColor;
 	class MemoryStream;
 	class Page;
 }
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer{
 
 	class GOSVertexPool;
 	class MLRLightMap;
 
-	struct MLRVertexData {
-		Stuff::Point3D*		point;
+	struct MLRVertexData{
+		Stuff::Point3D* point;
 #if COLOR_AS_DWORD
-		uint32_t*				color;
+		uint32_t* color;
 #else
-		Stuff::RGBAColor*	color;
+		Stuff::RGBAColor* color;
 #endif
-		Stuff::Vector3D*	normal;
+		Stuff::Vector3D* normal;
 
 		int32_t index;
 	};
 
 	//##########################################################################
-	//#########################    MLRLight    #################################
+	//######################### MLRLight #################################
 	//##########################################################################
 
 	class MLRLight:
@@ -56,18 +54,18 @@ namespace MidLevelRenderer {
 		MLRLight(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 		MLRLight(
 			ClassData *class_data,
 			Stuff::Page* page
 			);
-		~MLRLight();
+		~MLRLight(void);
 
 		static MLRLight*
 			Make(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 		static MLRLight*
 			Make(Stuff::Page *page);
@@ -77,7 +75,7 @@ namespace MidLevelRenderer {
 		virtual void
 			Write(Stuff::Page *page);
 
-		enum LightType {
+		enum LightType{
 			AmbientLight = 0,
 			InfiniteLight,
 			InfiniteLightWithFallOff,
@@ -166,8 +164,7 @@ namespace MidLevelRenderer {
 		// Testing
 		//
 	public:
-		void
-			TestInstance();
+		void TestInstance(void);
 
 	protected:
 		float

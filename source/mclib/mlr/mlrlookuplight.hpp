@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #pragma once
@@ -7,13 +7,13 @@
 #ifndef MLR_MLRLOOKUPLIGHT_HPP
 #define MLR_MLRLOOKUPLIGHT_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlrinfinitelight.hpp>
+#include <stuff/point3d.hpp>
+#include <mlr/mlrinfinitelight.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer{
 
 	//##########################################################################
-	//########################    MLRLookUpLight    ############################
+	//######################## MLRLookUpLight ############################
 	//##########################################################################
 
 	class MLRLookUpLight:
@@ -23,13 +23,13 @@ namespace MidLevelRenderer {
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 
-		MLRLookUpLight();
+		MLRLookUpLight(void);
 		MLRLookUpLight(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 		MLRLookUpLight(Stuff::Page *page);
-		~MLRLookUpLight();
+		~MLRLookUpLight(void);
 
 		void
 			Save(Stuff::MemoryStream *stream);
@@ -37,7 +37,7 @@ namespace MidLevelRenderer {
 			Write(Stuff::Page *page);
 
 		virtual LightType
-			GetLightType() 
+			GetLightType(void)
 		{ Check_Object(this); return LookUpLight; }
 
 
@@ -47,40 +47,38 @@ namespace MidLevelRenderer {
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// LookUp Light Specific
 		//
-		void
-			SetMapOrigin(Scalar x, Scalar y, Scalar z)
+		void SetMapOrigin(float x, float y, float z)
 		{ Check_Object(this); mapOrigin.x = x; mapOrigin.y = y; mapOrigin.z = z; }
 
-		Point3D
-			GetMapOrigin()
+		Stuff::Point3D GetMapOrigin(void)
 		{ Check_Object(this); return mapOrigin; }
 
 		void
 			SetMapSizeAndName(int32_t x, int32_t z, PCSTR name);
 
 		int32_t
-			GetMapZoneCountX()
+			GetMapZoneCountX(void)
 		{ Check_Object(this); return mapZoneCountX; }
 		int32_t
-			GetMapZoneCountZ()
+			GetMapZoneCountZ(void)
 		{ Check_Object(this); return mapZoneCountZ; }
 
 		PCSTR
-			GetMapName()
+			GetMapName(void)
 		{ Check_Object(this); return mapName; }
 
 		void
-			SetMapZoneSizeX(Scalar x)
-		{ Check_Object(this); zoneSizeX = x; Verify(x>SMALL); one_Over_zoneSizeX = 1.0f/x; }
+			SetMapZoneSizeX(float x)
+		{ Check_Object(this); zoneSizeX = x; Verify(x>Stuff::SMALL); one_Over_zoneSizeX = 1.0f/x; }
 		void
-			SetMapZoneSizeZ(Scalar z)
-		{ Check_Object(this); zoneSizeZ = z; Verify(z>SMALL); one_Over_zoneSizeZ = 1.0f/z;  }
+			SetMapZoneSizeZ(float z)
+		{ Check_Object(this); zoneSizeZ = z; Verify(z>Stuff::SMALL); one_Over_zoneSizeZ = 1.0f/z; }
 
-		Scalar
-			GetMapZoneSizeX()
+		float
+			GetMapZoneSizeX(void)
 		{ Check_Object(this); return zoneSizeX; }
-		Scalar
-			GetMapZoneSizeZ()
+		float
+			GetMapZoneSizeZ(void)
 		{ Check_Object(this); return zoneSizeZ; }
 
 		void SetLightToShapeMatrix(const Stuff::LinearMatrix4D&);
@@ -95,19 +93,18 @@ namespace MidLevelRenderer {
 		// Testing
 		//
 	public:
-		void
-			TestInstance();
+		void TestInstance(void);
 
 	protected:
 		bool
-			LoadMap();
+			LoadMap(void);
 
-		Point3D mapOrigin;
-		Scalar zoneSizeX, zoneSizeZ;
-		Scalar one_Over_zoneSizeX, one_Over_zoneSizeZ;
+		Stuff::Point3D mapOrigin;
+		float zoneSizeX, zoneSizeZ;
+		float one_Over_zoneSizeX, one_Over_zoneSizeZ;
 
 		int32_t mapZoneCountX, mapZoneCountZ;
-		MString mapName;
+		Stuff::MString mapName;
 
 		puint8_t *maps;
 

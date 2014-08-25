@@ -57,7 +57,7 @@ MLRLight::MLRLight(ClassData *class_data) :
 MLRLight::MLRLight(
 	ClassData *class_data,
 	Stuff::MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ) :
 	RegisteredClass(class_data)
 {
@@ -121,7 +121,7 @@ MLRLight::~MLRLight()
 MLRLight*
 	MLRLight::Make(
 		Stuff::MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	gos_PushCurrentHeap(Heap);

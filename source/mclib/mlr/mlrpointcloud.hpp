@@ -7,8 +7,7 @@
 #ifndef MLR_MLRPOINTCLOUD_HPP
 #define MLR_MLRPOINTCLOUD_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlreffect.hpp>
+#include <mlr/mlreffect.hpp>
 
 namespace MidLevelRenderer {
 
@@ -32,11 +31,11 @@ namespace MidLevelRenderer {
 		//
 	public:
 		MLRPointCloud(int32_t, int32_t=0);
-		~MLRPointCloud();
+		~MLRPointCloud(void);
 
 		void
 			SetData(
-			pcint32_t count,
+			pcsize_t count,
 			const Stuff::Point3D *point_data,
 			const Stuff::RGBAColor *color_data
 			);

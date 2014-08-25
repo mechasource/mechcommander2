@@ -58,7 +58,7 @@ void
 MLR_I_L_DT_TMesh::MLR_I_L_DT_TMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	MLR_I_C_DT_TMesh(class_data, stream, version)
 {
@@ -105,7 +105,7 @@ MLR_I_L_DT_TMesh::~MLR_I_L_DT_TMesh()
 MLR_I_L_DT_TMesh*
 	MLR_I_L_DT_TMesh::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	Check_Object(stream);
@@ -255,7 +255,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_L_DT_TMesh::TestInstance() const
+	MLR_I_L_DT_TMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -330,7 +330,7 @@ MLRShape*
 
 	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
-	Vector2DScalar *texCoords = new Vector2DScalar[2*nrTri*3];
+	Vector2DScalar *texCoords = new Stuff::Vector2DScalar[2*nrTri*3];
 	Register_Pointer(texCoords);
 	RGBAColor *colors = new RGBAColor[nrTri*3];
 	Register_Pointer(colors);
@@ -396,7 +396,7 @@ MLRShape*
 		{
 			for(i=0;i<2*uniquePoints;i++)
 			{
-				texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+				texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 			}
 		}
 		else
@@ -464,7 +464,7 @@ MLRShape*
 			{
 				for(i=0;i<2*uniquePoints;i++)
 				{
-					texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+					texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 				}
 			}
 		}

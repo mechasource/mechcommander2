@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #pragma once
@@ -7,32 +7,35 @@
 #ifndef MLR_MLRSORTER_HPP
 #define MLR_MLRSORTER_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlrlight.hpp>
-//#include <mlr/gosvertex.hpp>
-//#include <mlr/gosvertex2uv.hpp>
-//#include <mlr/gosvertexpool.hpp>
+#include <stuff/point3d.hpp>
+#include <stuff/linearmatrix.hpp>
+#include <stuff/marray.hpp>
+#include <mlr/mlrstate.hpp>
+#include <mlr/mlrclippingstate.hpp>
+#include <mlr/mlrtexturepool.hpp>
 
-namespace MidLevelRenderer {
+namespace MidLevelRenderer{
 
 	class MLRPrimitive;
 	class MLREffect;
+	class MLRLight;
 	class GOSVertex;
+	class GOSVertexPool;
 	class DrawScreenQuadsInformation;
 
 	struct SortAlpha;
 
-	class SortData {
+	class SortData{
 	public:
-		SortData () 
-		{ vertices = NULL; numVertices = 0; indices = NULL; 
+		SortData (void)
+		{ vertices = NULL; numVertices = 0; indices = NULL;
 		numIndices = 0; type = TriList; texture2 = 0; }
 
-		void DrawTriList();
-		void DrawTriIndexedList();
-		void DrawPointCloud();
-		void DrawLineCloud();
-		void DrawQuads();
+		void DrawTriList(void);
+		void DrawTriIndexedList(void);
+		void DrawPointCloud(void);
+		void DrawLineCloud(void);
+		void DrawQuads(void);
 
 		int32_t LoadAlphaFromTriList(SortAlpha**);
 		int32_t LoadAlphaFromTriIndexedList(SortAlpha**);
@@ -40,7 +43,7 @@ namespace MidLevelRenderer {
 		int32_t LoadAlphaFromLineCloud(SortAlpha**);
 		int32_t LoadAlphaFromQuads(SortAlpha**);
 
-		enum {
+		enum{
 			TriList = 0,
 			TriIndexedList,
 			PointCloud,
@@ -49,15 +52,15 @@ namespace MidLevelRenderer {
 			LastMode
 		};
 
-		typedef void (SortData::* DrawFunc)();
+		typedef void (SortData::* DrawFunc)(void);
 		typedef int32_t (SortData::* LoadSortAlphaFunc)(SortAlpha**);
 
 		static DrawFunc Draw[LastMode];
 		static LoadSortAlphaFunc LoadSortAlpha[LastMode];
 
 		MLRState state;
-		PVOIDvertices;
-		int32_t	numVertices;
+		PVOID vertices;
+		uint32_t numVertices;
 		puint16_t indices;
 		int32_t numIndices;
 		int32_t type;
@@ -68,14 +71,14 @@ namespace MidLevelRenderer {
 	class MLRPrimitiveBase;
 
 
-#define CalDraw	
+#define CalDraw
 
 
 #ifdef CalDraw
-	struct ToBeDrawnPrimitive {
-		ToBeDrawnPrimitive();
+	struct ToBeDrawnPrimitive{
+		ToBeDrawnPrimitive(void);
 
-		MLRPrimitiveBase *primitive;
+		MLRPrimitiveBase* primitive;
 
 		MLRState state;
 		Stuff::Point3D cameraPosition;
@@ -83,35 +86,35 @@ namespace MidLevelRenderer {
 		Stuff::Matrix4D shapeToClipMatrix;
 		Stuff::LinearMatrix4D worldToShape;
 
-		static GOSVertexPool *allVerticesToDraw;
+		static GOSVertexPool* allVerticesToDraw;
 
 		MLRLight* activeLights[Limits::Max_Number_Of_Lights_Per_Primitive];
 
-		int32_t	nrOfActiveLights;
+		int32_t nrOfActiveLights;
 	};
 #endif
 
 	//##########################################################################
-	//#########################    MLRSorter    ################################
+	//######################### MLRSorter ################################
 	//##########################################################################
 
-	class _declspec(novtable) MLRSorter :
+	class _declspec(novtable) MLRSorter:
 		public Stuff::RegisteredClass
 	{
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Initialization
-		//
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Initialization
+	//
 	public:
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 		static ClassData* DefaultData;
 
-		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// Constructors/Destructors
-		//
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Constructors/Destructors
+	//
 	public:
 		MLRSorter(ClassData *class_data, MLRTexturePool*);
-		~MLRSorter();
+		~MLRSorter(void);
 
 		virtual void AddPrimitive(MLRPrimitiveBase*, int32_t=0) = 0;
 		virtual void AddEffect(MLREffect*, const MLRState&) = 0;
@@ -119,63 +122,50 @@ namespace MidLevelRenderer {
 
 		virtual void AddSortRawData(SortData*) = 0;
 
-		virtual void
-			DrawPrimitive(MLRPrimitiveBase*, int32_t=0);
+		virtual void DrawPrimitive(MLRPrimitiveBase*, int32_t=0);
 
-		void
-			SetTexturePool(MLRTexturePool *tp)
-		{ Check_Object(this); Check_Object(tp); texturePool = tp; }
+		void SetTexturePool(MLRTexturePool *tp)
+		{ 
+			Check_Object(this); Check_Object(tp); texturePool = tp;
+		}
 
-		bool
-			SetDifferences(const MLRState& original, const MLRState& newer);
+		bool SetDifferences(const MLRState& original, const MLRState& newer);
 
-		//	starts the action
-		virtual void RenderNow () = 0;
+		// starts the action
+		virtual void RenderNow (void) = 0;
 
-		//	resets the sorting
-		virtual void Reset ();
+		// resets the sorting
+		virtual void Reset (void);
 
-		//	lets begin the dance
+		// lets begin the dance
 		virtual void StartDraw(const MLRState &default_state);
 
-		//	enter raw data
-		SortData*
-			SetRawData
-			(	PVOIDvertices, 
-			int32_t numVertices,
-			const MLRState& state,
-			cint32_t& mode,
-			int32_t tex2 = 0
-			);
+		// enter raw data
+		SortData* SetRawData(
+			PVOID vertices, uint32_t numVertices, const MLRState& state, cint32_t& mode, 
+			int32_t tex2 = 0);
 
-		SortData*
-			SetRawIndexedData
-			(	PVOID vertices, 
-			int32_t numVertices, 
-			puint16_t indices,
-			int32_t numIndices,
-			const MLRState& state, 
-			cint32_t& mode,
-			int32_t tex2 = 0
-			);
+		SortData* SetRawIndexedData(
+			PVOID vertices, uint32_t numVertices, puint16_t indices, int32_t numIndices, 
+			const MLRState& state, cint32_t& mode, int32_t tex2 = 0);
 
-		SortData*
-			SetRawData(MLRPrimitiveBase*, int32_t=0 );
+		SortData* SetRawData(MLRPrimitiveBase*, int32_t=0 );
 
-		//	Just scaling down a bit to keep z under 1.0f	
+		// Just scaling down a bit to keep z under 1.0f
 		void
 			SetFarClipReciprocal(float fcr)
 		{ Check_Object(this); farClipReciprocal = fcr*(1.0f-Stuff::SMALL); }
 
 #ifdef CalDraw
-		ToBeDrawnPrimitive*
-			GetCurrentTBDP()
-		{ Check_Object(this); return &drawData[lastUsedDraw]; }
-		ToBeDrawnPrimitive*
-			GetCurrentTBDP(int32_t index)
-		{ Check_Object(this); Verify(index<lastUsedDraw); return &drawData[index]; }
-		void
-			IncreaseTBDPCounter();
+		ToBeDrawnPrimitive* GetCurrentTBDP(void)
+		{
+			Check_Object(this); return &drawData[lastUsedDraw];
+		}
+		ToBeDrawnPrimitive* GetCurrentTBDP(size_t index)
+		{
+			Check_Object(this); Verify(index<lastUsedDraw); return &drawData[index]; 
+		}
+		void IncreaseTBDPCounter(void);
 #endif
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -191,18 +181,14 @@ namespace MidLevelRenderer {
 		int32_t lastUsedRaw;
 		Stuff::DynamicArrayOf<SortData> rawDrawData; // Max_Number_Primitives_Per_Frame
 
-		int32_t
-			lastUsedInBucketNotDrawn[MLRState::PriorityCount];
+		int32_t lastUsedInBucketNotDrawn[MLRState::PriorityCount];
 
 #ifdef CalDraw
-		int32_t lastUsedDraw;
-		Stuff::DynamicArrayOf<ToBeDrawnPrimitive> drawData; // Max_Number_Primitives_Per_Frame
-		Stuff::DynamicArrayOf<ToBeDrawnPrimitive*>  //, Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame
-			priorityBucketsNotDrawn[MLRState::PriorityCount];
+		size_t lastUsedDraw;
+		Stuff::DynamicArrayOf<ToBeDrawnPrimitive>	drawData; // Max_Number_Primitives_Per_Frame
+		Stuff::DynamicArrayOf<ToBeDrawnPrimitive*>	priorityBucketsNotDrawn[MLRState::PriorityCount]; //, Max_Number_Primitives_Per_Frame + Max_Number_ScreenQuads_Per_Frame
 #endif
-
-		float
-			farClipReciprocal;
+		float farClipReciprocal;
 	};
 
 }

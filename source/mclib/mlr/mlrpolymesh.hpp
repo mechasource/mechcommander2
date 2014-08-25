@@ -2,13 +2,19 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+/* this header is not used */
+
 #pragma once
 
 #ifndef MLR_MLRPOLYMESH_HPP
 #define MLR_MLRPOLYMESH_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlrprimitive.hpp>
+#include <stuff/plane.hpp>
+#include <mlr/mlrprimitive.hpp>
+
+namespace Stuff{
+	class Plane;
+}
 
 namespace MidLevelRenderer {
 
@@ -33,38 +39,33 @@ namespace MidLevelRenderer {
 	protected:
 		MLRPolyMesh(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 		~MLRPolyMesh(void);
 
 	public:
 		MLRPolyMesh(void);
 
-		static MLRPolyMesh*
-			Make(
-			Stuff::MemoryStream *stream,
-			int32_t version
-			);
+		static MLRPolyMesh* Make(Stuff::MemoryStream *stream, uint32_t version);
 
-		void
-			Save(Stuff::MemoryStream *stream);
+		void Save(Stuff::MemoryStream *stream);
 
-		virtual void	SetPrimitiveLength(puint8_t , int32_t);
-		virtual void	GetPrimitiveLength(puint8_t *, pint32_t);
+		virtual void	SetPrimitiveLength(puint8_t , size_t);
+		virtual void	GetPrimitiveLength(puint8_t *, psize_t);
 
 		void	FindFacePlanes(void);
 
 		virtual int32_t	FindBackFace(const Stuff::Point3D&);
 
-		const Stuff::Plane *GetPolygonPlane(int32_t i)
+		const Stuff::Plane* GetPolygonPlane(size_t index)
 		{
 			Check_Object(this);
-			Verify(i<facePlanes.GetLength(void));
+			Verify(index < facePlanes.GetLength());
 
-			return &facePlanes[i];
+			return &facePlanes[index];
 		}
 
-		virtual void	Lighting(MLRLight**, int32_t nrLights);
+		virtual void Lighting(MLRLight**, uint32_t nrLights);
 
 		virtual int32_t	Clip(MLRClippingState, GOSVertexPool*);
 
@@ -90,26 +91,22 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t
-			GetSize(void)
+		virtual size_t GetSize(void)
 		{ 
 			Check_Object(this);
-			int32_t ret = MLRPrimitive::GetSize(void);
-			ret += testList.GetSize(void);
-			ret += facePlanes.GetSize(void);
+			size_t ret = MLRPrimitive::GetSize();
+			ret += testList.GetSize();
+			ret += facePlanes.GetSize();
 
 			return ret;
 		}
 
 	protected:
 		Stuff::DynamicArrayOf<uint8_t>	testList;
-
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
 
 	};
-
-	MLRPolyMesh*
-		CreateCube(float, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
+	MLRPolyMesh* CreateCube(float, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
 
 }
 #endif

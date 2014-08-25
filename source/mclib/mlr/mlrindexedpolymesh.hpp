@@ -1,19 +1,30 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
+
+/* this header is not used */
 
 #pragma once
 
 #ifndef MLR_MLRINDEXEDPOLYMESH_HPP
 #define MLR_MLRINDEXEDPOLYMESH_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlrindexedprimitive.hpp>
+#include <stuff/memoryblock.hpp>
+#include <stuff/plane.hpp>
+#include <mlr/mlrindexedprimitive.hpp>
 
-namespace MidLevelRenderer {
+namespace Stuff{
+	class MemoryBlock;
+	class MemoryStream;
+	class Plane;
+	class Line3D;
+	class Normal3D;
+}
+
+namespace MidLevelRenderer{
 
 	//##########################################################################
-	//####################    MLRIndexedPolyMesh    ############################
+	//#################### MLRIndexedPolyMesh ############################
 	//##########################################################################
 
 
@@ -31,82 +42,64 @@ namespace MidLevelRenderer {
 		// Constructors/Destructors
 		//
 	protected:
-		MLRIndexedPolyMesh(
-			Stuff::MemoryStream *stream,
-			int32_t version
-			);
+		MLRIndexedPolyMesh(Stuff::MemoryStream *stream, uint32_t version);
 		~MLRIndexedPolyMesh(void);
 
 	public:
 		MLRIndexedPolyMesh(void);
 
-		static MLRIndexedPolyMesh*
-			Make(
-			Stuff::MemoryStream *stream,
-			int32_t version
-			);
+		static MLRIndexedPolyMesh* Make(Stuff::MemoryStream *stream, uint32_t version);
+		void Save(Stuff::MemoryStream *stream);
 
-		void
-			Save(Stuff::MemoryStream *stream);
-
-		PVOID
-			operator new(size_t size)
+		PVOID operator new(size_t size)
 		{
 			Verify(size == sizeof(MLRIndexedPolyMesh));
-			return AllocatedMemory->New(void);
+			return AllocatedMemory->New();
 		}
-		void
-			operator delete(PVOID where)
-		{AllocatedMemory->Delete(where);}
+		void operator delete(PVOID where)
+		{
+			AllocatedMemory->Delete(where);
+		}
 
 	private:
-		static Stuff::MemoryBlock
-			*AllocatedMemory;
+		static Stuff::MemoryBlock* AllocatedMemory;
 
 	public:
-		virtual	void	InitializeDrawPrimitive(int32_t, int32_t=0);
+		virtual void InitializeDrawPrimitive(int32_t, int32_t=0);
 
-		virtual void	SetPrimitiveLength(puint8_t , int32_t);
-		virtual void	GetPrimitiveLength(puint8_t *, pint32_t);
+		virtual void SetPrimitiveLength(puint8_t , int32_t);
+		virtual void GetPrimitiveLength(puint8_t *, pint32_t);
 
-		void	FindFacePlanes(void);
+		void FindFacePlanes(void);
 
-		virtual int32_t	FindBackFace(const Stuff::Point3D&);
+		virtual int32_t FindBackFace(const Stuff::Point3D&);
 
-		const Stuff::Plane *GetPolygonPlane(int32_t i)
+		const Stuff::Plane* GetPolygonPlane(uint32_t i)
 		{
 			Check_Object(this);
-			Verify(i<facePlanes.GetLength(void));
+			Verify(i<facePlanes.GetLength());
 
 			return &facePlanes[i];
 		}
 
-		virtual void	Lighting(MLRLight**, int32_t nrLights);
+		virtual void Lighting(MLRLight**, uint32_t nrLights);
 
-		MLRPrimitive *LightMapLighting(MLRLight*);
+		MLRPrimitive* LightMapLighting(MLRLight*);
 
-		virtual int32_t	Clip(MLRClippingState, GOSVertexPool*);
+		virtual int32_t Clip(MLRClippingState, GOSVertexPool*);
 
-		bool
-			CastRay(
-			Stuff::Line3D *line,
-			Stuff::Normal3D *normal
-			);
+		bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);
 
-		void
-			Transform(Stuff::Matrix4D*);
+		void Transform(Stuff::Matrix4D*);
 
-		virtual void
-			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*);
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*);
 
-		//	Initializes the visibility test list
-		void
-			ResetTestList(void);
+		// Initializes the visibility test list
+		void ResetTestList(void);
 
-		//	find which vertices are visible which not - returns nr of visible vertices
-		//	the result is stored in the visibleIndexedVertices array
-		int32_t
-			FindVisibleVertices(void);
+		// find which vertices are visible which not - returns nr of visible vertices
+		// the result is stored in the visibleIndexedVertices array
+		int32_t FindVisibleVertices(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -120,26 +113,23 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t
-			GetSize(void)
-		{ 
+		virtual size_t GetSize(void)
+		{
 			Check_Object(this);
-			int32_t ret = MLRIndexedPrimitive::GetSize(void);
-			ret += testList.GetSize(void);
-			ret += facePlanes.GetSize(void);
+			size_t ret = MLRIndexedPrimitive::GetSize();
+			ret += testList.GetSize();
+			ret += facePlanes.GetSize();
 
 			return ret;
 		}
 
 	protected:
-		Stuff::DynamicArrayOf<uint8_t>	testList;
-
+		Stuff::DynamicArrayOf<uint8_t> testList;
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
 
 	};
 
-	MLRIndexedPolyMesh*
-		CreateIndexedCube(float, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
-
+	MLRIndexedPolyMesh* CreateIndexedCube(
+		float, Stuff::RGBAColor*, Stuff::Vector3D*, MLRState*);
 }
 #endif

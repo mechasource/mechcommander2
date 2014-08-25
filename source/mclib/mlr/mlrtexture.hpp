@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #pragma once
@@ -7,12 +7,18 @@
 #ifndef MLR_MLRTEXTURE_HPP
 #define MLR_MLRTEXTURE_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/gosimage.hpp>
+#include <stuff/memorystream.hpp>
+#include <stuff/mstring.hpp>
+#include <stuff/affinematrix.hpp>
 
-namespace MidLevelRenderer {
+namespace Stuff {
+	class AffineMatrix4D;
+}
+
+namespace MidLevelRenderer{
 
 	class MLRTexturePool;
+	class GOSImage;
 
 	class MLRTexture
 #if defined(_ARMOR)
@@ -25,7 +31,7 @@ namespace MidLevelRenderer {
 	// Constructors/Destructors
 	//
 	protected:
-		MLRTexture(Stuff::MemoryStream *stream);
+		MLRTexture(Stuff::MemoryStream* stream);
 
 	public:
 		MLRTexture(MLRTexturePool* pool, PCSTR name, int32_t instance, int32_t handle, int32_t hint=0);
@@ -38,7 +44,7 @@ namespace MidLevelRenderer {
 		void Save(Stuff::MemoryStream *stream);
 
 		GOSImage* GetImage(pint32_t h=NULL)
-		{ 
+		{
 			Check_Object(this); if(h) { *h = hint; } return image;
 		}
 
@@ -53,7 +59,7 @@ namespace MidLevelRenderer {
 		}
 
 		int32_t GetImageNumber(void);
-		int32_t	GetInstanceNumber(void);
+		int32_t GetInstanceNumber(void);
 
 		int32_t GetTextureInstance()
 		{
@@ -79,9 +85,10 @@ namespace MidLevelRenderer {
 			}
 		}
 
-		Stuff::AffineMatrix4D&
-			GetTextureMatrix()
-		{ Check_Object(this); return textureMatrix; }
+		Stuff::AffineMatrix4D& GetTextureMatrix()
+		{
+			Check_Object(this); return textureMatrix;
+		}
 
 		void SetHint(int32_t h)
 		{ Check_Object(this); hint = h; }
@@ -93,7 +100,7 @@ namespace MidLevelRenderer {
 	// Testing
 	//
 	public:
-		void TestInstance() const;
+		void TestInstance(void) const;
 
 	protected:
 		Stuff::MString textureName;
@@ -103,7 +110,7 @@ namespace MidLevelRenderer {
 		int32_t hint;
 		bool textureMatrixIsIdentity;
 		Stuff::AffineMatrix4D textureMatrix;
-		GOSImage*	image;
+		GOSImage* image;
 		MLRTexturePool *thePool;
 	};
 

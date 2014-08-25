@@ -51,7 +51,7 @@ MLRSpotLight::MLRSpotLight() :
 //
 MLRSpotLight::MLRSpotLight(
 	Stuff::MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ) :
 	MLRInfiniteLightWithFalloff(DefaultData, stream, version)
 {

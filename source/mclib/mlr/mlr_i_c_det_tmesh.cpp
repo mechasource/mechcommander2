@@ -58,7 +58,7 @@ void
 MLR_I_C_DeT_TMesh::MLR_I_C_DeT_TMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	MLR_I_DeT_TMesh(class_data, stream, version)
 {
@@ -138,7 +138,7 @@ MLR_I_C_DeT_TMesh::~MLR_I_C_DeT_TMesh()
 MLR_I_C_DeT_TMesh*
 	MLR_I_C_DeT_TMesh::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	Check_Object(stream);
@@ -304,7 +304,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_C_DeT_TMesh::TestInstance() const
+	MLR_I_C_DeT_TMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

@@ -97,8 +97,8 @@ MLRIndexedTriangleCloud::~MLRIndexedTriangleCloud()
 void 
 	MLRIndexedTriangleCloud::SetData
 	(
-		pcint32_t	tri_count,
-		pcint32_t	point_count,
+		pcsize_t	tri_count,
+		pcsize_t	point_count,
 		pcuint16_t	index_data,
 		const Stuff::Point3D* point_data,
 		const Stuff::RGBAColor* color_data,
@@ -1002,7 +1002,7 @@ int32_t
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void 
-	MLRIndexedTriangleCloud::TestInstance() const
+	MLRIndexedTriangleCloud::TestInstance(void) const
 {
 	if (usedNrOfTriangles)
 	{

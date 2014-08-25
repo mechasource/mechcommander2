@@ -49,9 +49,9 @@ namespace MidLevelRenderer {
 	protected:
 		MLRShape(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
-		~MLRShape();
+		~MLRShape(void);
 
 	public:
 		MLRShape(int32_t);
@@ -59,7 +59,7 @@ namespace MidLevelRenderer {
 		static MLRShape*
 			Make(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 
 		void
@@ -84,11 +84,11 @@ namespace MidLevelRenderer {
 
 		// returns the number of faces overall in the shape
 		int32_t
-			GetNumPrimitives();
+			GetNumPrimitives(void);
 
 		// returns the number of drawn triangles in the shape
 		int32_t
-			GetNumDrawnTriangles();
+			GetNumDrawnTriangles(void);
 
 		// is to call at begin of every frame 
 		void	InitializePrimitives(uint8_t, const MLRState& master, int32_t=0);
@@ -142,7 +142,7 @@ namespace MidLevelRenderer {
 		// Testing
 		//
 	public:
-		void TestInstance() const {};
+		void TestInstance(void) const {};
 		virtual size_t GetSize()
 		{
 			Check_Object(this); 
@@ -158,7 +158,7 @@ namespace MidLevelRenderer {
 		//			Transform(Stuff::Matrix4D*);
 
 		//		void
-		//			Transform();
+		//			Transform(void);
 
 		Stuff::DynamicArrayOf<MLRPrimitiveBase*>	allPrimitives;
 		const Stuff::LinearMatrix4D*				worldToShape;

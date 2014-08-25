@@ -2,6 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+/* this header is not used */
+
 #pragma once
 
 #ifndef MLR_GOSIMAGE_HPP

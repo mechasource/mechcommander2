@@ -7,14 +7,16 @@
 #ifndef MLR_MLRSORTBYORDER_HPP
 #define MLR_MLRSORTBYORDER_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlrstate.hpp>
+#include <mlr/gosvertex.hpp>
+#include <mlr/mlrsorter.hpp>
 
 namespace MidLevelRenderer {
 
+	class MLRState;
+
 	struct SortAlpha {
 		float distance;
-		MLRState *state;
+		MLRState* state;
 		GOSVertex triangle[3];
 	};
 
@@ -38,7 +40,7 @@ namespace MidLevelRenderer {
 	//
 	public:
 		MLRSortByOrder(MLRTexturePool*);
-		~MLRSortByOrder();
+		~MLRSortByOrder(void);
 
 		void AddPrimitive(MLRPrimitiveBase*, int32_t=0);
 		void AddEffect(MLREffect*, const MLRState&);
@@ -47,10 +49,10 @@ namespace MidLevelRenderer {
 		virtual void AddSortRawData(SortData*);
 
 		//	starts the action
-		void RenderNow ();
+		void RenderNow (void);
 
 		//	resets the sorting
-		void Reset ();
+		void Reset (void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Testing

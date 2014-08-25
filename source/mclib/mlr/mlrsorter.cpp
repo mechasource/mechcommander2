@@ -486,8 +486,8 @@ void
 SortData *
 	MLRSorter::SetRawData
 		(
-			PVOIDvertices, 
-			int32_t numVertices, 
+			PVOID vertices, 
+			uint32_t numVertices, 
 			const MLRState& state,
 			cint32_t& mode,
 			int32_t tex2
@@ -522,8 +522,8 @@ SortData *
 SortData *
 	MLRSorter::SetRawIndexedData
 		(
-			PVOIDvertices, 
-			int32_t numVertices, 
+			PVOID vertices, 
+			uint32_t numVertices, 
 			puint16_t indices, 
 			int32_t numIndices, 
 			const MLRState& state,
@@ -572,7 +572,7 @@ SortData *
 			MLRIndexedPrimitiveBase *ipt = static_cast<MLRIndexedPrimitiveBase *>(pt);
 
 			int32_t tex2 = 0;
-			PVOIDvertices = ipt->GetGOSVertices(pass);
+			PVOID vertices = ipt->GetGOSVertices(pass);
 			int32_t vertexCount = ipt->GetNumGOSVertices();
 
 			if(pt->GetCurrentState(pass).GetMultiTextureMode()!=MLRState::MultiTextureOffMode && MLRState::GetMultitextureLightMap())
@@ -774,7 +774,7 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRSorter::TestInstance() const
+	MLRSorter::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

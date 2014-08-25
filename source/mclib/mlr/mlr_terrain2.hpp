@@ -34,9 +34,9 @@ namespace MidLevelRenderer {
 		MLR_Terrain2(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
-		~MLR_Terrain2();
+		~MLR_Terrain2(void);
 
 	public:
 		MLR_Terrain2(ClassData *class_data=MLR_Terrain2::DefaultData);
@@ -44,7 +44,7 @@ namespace MidLevelRenderer {
 		static MLR_Terrain2*
 			Make(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 
 		void
@@ -85,7 +85,7 @@ namespace MidLevelRenderer {
 		{ Check_Object(this); borderPixelFun = bp; }
 
 		void
-			CalculateUVs();
+			CalculateUVs(void);
 
 		void
 			SetLevelTexture(int32_t lev, int32_t handle);
@@ -113,7 +113,7 @@ namespace MidLevelRenderer {
 			GetSize()
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_DeT_TMesh::GetSize();
+			int32_t ret = MLR_I_DeT_TMesh::GetSize(void);
 
 			return ret;
 		}
@@ -127,7 +127,7 @@ namespace MidLevelRenderer {
 
 		float borderPixelFun;
 
-		static Stuff::DynamicArrayOf<Vector2DScalar> *detailTexCoords;	// Base address of texture coordinate list 
+		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *detailTexCoords;	// Base address of texture coordinate list 
 	};
 }
 #endif

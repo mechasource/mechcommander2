@@ -49,9 +49,9 @@ namespace MidLevelRenderer {
 		MLR_I_DeT_PMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
-		~MLR_I_DeT_PMesh();
+		~MLR_I_DeT_PMesh(void);
 
 	public:
 		MLR_I_DeT_PMesh(ClassData *class_data=MLR_I_DeT_PMesh::DefaultData);
@@ -59,7 +59,7 @@ namespace MidLevelRenderer {
 		static MLR_I_DeT_PMesh*
 			Make(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 
 		void
@@ -164,7 +164,7 @@ namespace MidLevelRenderer {
 		}
 
 		virtual int32_t
-			GetNumPasses();
+			GetNumPasses(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -182,7 +182,7 @@ namespace MidLevelRenderer {
 			GetSize()
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_PMesh::GetSize();
+			int32_t ret = MLR_I_PMesh::GetSize(void);
 
 			return ret;
 		}

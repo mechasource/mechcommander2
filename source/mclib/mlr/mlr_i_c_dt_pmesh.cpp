@@ -58,7 +58,7 @@ void
 MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	MLR_I_DT_PMesh(class_data, stream, version)
 {
@@ -134,7 +134,7 @@ MLR_I_C_DT_PMesh::~MLR_I_C_DT_PMesh()
 MLR_I_C_DT_PMesh*
 	MLR_I_C_DT_PMesh::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	Check_Object(stream);
@@ -179,7 +179,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_C_DT_PMesh::TestInstance() const
+	MLR_I_C_DT_PMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -273,7 +273,7 @@ void
 //	int32_t MLR_I_C_DT_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <MLR\MLRPrimitiveClipping.hpp>
+#include <mlr/mlrprimitiveclipping.inl>
 
 #undef I_SAY_YES_TO_DUAL_TEXTURES
 #undef I_SAY_YES_TO_COLOR

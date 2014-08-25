@@ -60,7 +60,7 @@ void
 MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	MLR_I_TMesh(class_data, stream, version)
 {
@@ -170,7 +170,7 @@ MLR_I_DeT_TMesh::~MLR_I_DeT_TMesh()
 MLR_I_DeT_TMesh*
 	MLR_I_DeT_TMesh::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	Check_Object(stream);
@@ -252,7 +252,7 @@ int32_t
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_DeT_TMesh::TestInstance() const
+	MLR_I_DeT_TMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -360,33 +360,33 @@ MLR_I_DeT_TMesh*
 
 	ret->FindFacePlanes();
 
-	Vector2DScalar *texCoords = new Vector2DScalar[8];
+	Vector2DScalar *texCoords = new Stuff::Vector2DScalar[8];
 	Register_Object(texCoords);
 
-	texCoords[0] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[1] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[2] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[3] = Vector2DScalar(0.0f, 0.0f);
+	texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[1] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[2] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[3] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
-	texCoords[4] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[5] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[6] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[7] = Vector2DScalar(0.0f, 0.0f);
+	texCoords[4] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[5] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[6] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[7] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
 	if(state != NULL)
 	{
 		ret->SetReferenceState(*state);
 		if(state->GetTextureHandle() > 0)
 		{
-			texCoords[0] = Vector2DScalar(0.0f, 0.0f);
-			texCoords[1] = Vector2DScalar(1.0f, 0.0f);
-			texCoords[2] = Vector2DScalar(0.25f, 0.25f);
-			texCoords[3] = Vector2DScalar(0.75f, 0.25f);
+			texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
+			texCoords[1] = Stuff::Vector2DScalar(1.0f, 0.0f);
+			texCoords[2] = Stuff::Vector2DScalar(0.25f, 0.25f);
+			texCoords[3] = Stuff::Vector2DScalar(0.75f, 0.25f);
 
-			texCoords[4] = Vector2DScalar(1.0f, 1.0f);
-			texCoords[5] = Vector2DScalar(0.0f, 1.0f);
-			texCoords[6] = Vector2DScalar(0.25f, 0.75f);
-			texCoords[7] = Vector2DScalar(0.75f, 0.75f);
+			texCoords[4] = Stuff::Vector2DScalar(1.0f, 1.0f);
+			texCoords[5] = Stuff::Vector2DScalar(0.0f, 1.0f);
+			texCoords[6] = Stuff::Vector2DScalar(0.25f, 0.75f);
+			texCoords[7] = Stuff::Vector2DScalar(0.75f, 0.75f);
 		}
 	}
 	ret->SetTexCoordData(texCoords, 8);
@@ -443,7 +443,7 @@ MLRShape*
 
 	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
-	Vector2DScalar *texCoords = new Vector2DScalar[nrTri*3];
+	Vector2DScalar *texCoords = new Stuff::Vector2DScalar[nrTri*3];
 	Register_Pointer(texCoords);
 
 	int32_t uniquePoints = 0;
@@ -505,7 +505,7 @@ MLRShape*
 		{
 			for(i=0;i<uniquePoints;i++)
 			{
-				texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+				texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 			}
 		}
 		else
@@ -553,7 +553,7 @@ MLRShape*
 			{
 				for(i=0;i<uniquePoints;i++)
 				{
-					texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+					texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 				}
 			}
 		}

@@ -62,7 +62,7 @@ void
 MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	MLRPrimitiveBase(class_data, stream, version)
 {
@@ -119,7 +119,7 @@ MLRIndexedPrimitiveBase::~MLRIndexedPrimitiveBase()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPrimitiveBase::TestInstance() const
+	MLRIndexedPrimitiveBase::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

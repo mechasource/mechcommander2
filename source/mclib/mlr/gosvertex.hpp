@@ -30,7 +30,7 @@ namespace MidLevelRenderer {
 		public gos_VERTEX
 	{
 	public:
-		GOSVertex();
+		GOSVertex(void);
 
 		static float
 			farClipReciprocal;

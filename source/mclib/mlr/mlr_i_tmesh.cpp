@@ -66,7 +66,7 @@ void
 MLR_I_TMesh::MLR_I_TMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	MLRIndexedPrimitiveBase(class_data, stream, version)
 {
@@ -105,7 +105,7 @@ MLR_I_TMesh::~MLR_I_TMesh()
 MLR_I_TMesh*
 	MLR_I_TMesh::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	Check_Object(stream);
@@ -131,7 +131,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_TMesh::TestInstance() const
+	MLR_I_TMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

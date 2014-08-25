@@ -66,7 +66,7 @@ MLRLineCloud::~MLRLineCloud()
 //
 void 
 	MLRLineCloud::SetData(
-		pcint32_t count,
+		pcsize_t count,
 		const Stuff::Point3D *point_data,
 		const Stuff::RGBAColor *color_data
 	)
@@ -407,7 +407,7 @@ int32_t
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void 
-	MLRLineCloud::TestInstance() const
+	MLRLineCloud::TestInstance(void) const
 {
 	if (usedNrOfVertices)
 	{

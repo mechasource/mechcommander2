@@ -2,12 +2,14 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+/* this header is not used */
+
 #pragma once
 
 #ifndef MLR_MLRINDEXEDPRIMITIVE_HPP
 #define MLR_MLRINDEXEDPRIMITIVE_HPP
 
-// #include <mlr/mlr.hpp>
+#include <mlr/mlrprimitive.hpp>
 
 namespace MidLevelRenderer {
 
@@ -33,7 +35,7 @@ namespace MidLevelRenderer {
 		MLRIndexedPrimitive(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 		~MLRIndexedPrimitive(void);
 
@@ -43,7 +45,7 @@ namespace MidLevelRenderer {
 		static MLRIndexedPrimitive*
 			Make(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 
 		virtual void
@@ -51,25 +53,11 @@ namespace MidLevelRenderer {
 
 		virtual	void	InitializeDrawPrimitive(int32_t, int32_t=0);
 
-		virtual void	Lighting(MLRLight**, int32_t nrLights);
+		virtual void	Lighting(MLRLight**, uint32_t nrLights);
 
-		virtual void
-			SetCoordData(
-			const Stuff::Point3D *array,
-			int32_t point_count
-			);
-
-		virtual void
-			SetIndexData(
-			puint16_t index_array,
-			int32_t index_count
-			);
-
-		virtual void
-			GetIndexData(
-			puint16_t* index_array,
-			pint32_t index_count
-			);
+		virtual void SetCoordData(const Stuff::Point3D *array, size_t point_count);
+		virtual void SetIndexData(puint16_t index_array, size_t index_count);
+		virtual void GetIndexData(puint16_t* index_array, psize_t index_count);
 
 		puint16_t GetGOSIndices(void)
 		{ Check_Object(this); return gos_indices; }
@@ -90,12 +78,12 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t GetSize(void)
+		virtual size_t GetSize(void)
 		{ 
 			Check_Object(this);
-			int32_t ret = MLRPrimitive::GetSize(void);
-			ret += visibleIndexedVertices.GetSize(void);
-			ret += index.GetSize(void);
+			size_t ret = MLRPrimitive::GetSize();
+			ret += visibleIndexedVertices.GetSize();
+			ret += index.GetSize();
 
 			return ret;
 		}

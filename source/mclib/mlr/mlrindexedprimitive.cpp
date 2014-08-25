@@ -2,6 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+/* this source is not used */
+
 #include "stdafx.h"
 #include "mlrheaders.hpp"
 #include "mlrindexedprimitive.hpp"
@@ -44,7 +46,7 @@ void
 MLRIndexedPrimitive::MLRIndexedPrimitive(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	MLRPrimitive(class_data, stream, version)
 {
@@ -86,7 +88,7 @@ MLRIndexedPrimitive::~MLRIndexedPrimitive()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedPrimitive::TestInstance() const
+	MLRIndexedPrimitive::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }

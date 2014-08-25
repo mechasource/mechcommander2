@@ -7,7 +7,7 @@
 #ifndef MLR_MLRINFINITELIGHTWITHFALLOFF_HPP
 #define MLR_MLRINFINITELIGHTWITHFALLOFF_HPP
 
-//#include <mlr/mlr.hpp>
+#include <mlr/mlrlight.hpp>
 
 namespace MidLevelRenderer {
 
@@ -26,13 +26,13 @@ namespace MidLevelRenderer {
 		MLRInfiniteLightWithFalloff(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 		MLRInfiniteLightWithFalloff(
 			ClassData *class_data,
 			Stuff::Page *page
 			);
-		~MLRInfiniteLightWithFalloff();
+		~MLRInfiniteLightWithFalloff(void);
 
 		void
 			Save(Stuff::MemoryStream *stream);
@@ -104,8 +104,7 @@ namespace MidLevelRenderer {
 		// Testing
 		//
 	public:
-		void
-			TestInstance();
+		void TestInstance(void);
 
 	protected:
 		float

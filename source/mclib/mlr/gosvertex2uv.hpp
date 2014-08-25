@@ -30,7 +30,7 @@ namespace MidLevelRenderer {
 		public gos_VERTEX_2UV
 	{
 	public:
-		GOSVertex2UV();
+		GOSVertex2UV(void);
 
 		inline GOSVertex2UV&
 			operator=(const GOSVertex2UV& V)

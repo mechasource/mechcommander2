@@ -20,7 +20,7 @@ extern uint32_t gEnableLightMaps;
 MLR_I_PMesh::ClassData*
 	MLR_I_PMesh::DefaultData = NULL;
 
-DynamicArrayOf<Vector2DScalar> *lightMapUVs;
+DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs;
 DynamicArrayOf<Scalar> *lightMapSqFalloffs;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,7 +44,7 @@ void
 		Register_Object(MLR_I_PMesh_Clip);
 	#endif
 
-	lightMapUVs = new DynamicArrayOf<Vector2DScalar>(Limits::Max_Number_Vertices_Per_Polygon);
+	lightMapUVs = new DynamicArrayOf<Stuff::Vector2DScalar>(Limits::Max_Number_Vertices_Per_Polygon);
 	Register_Object(lightMapUVs);
 
 	lightMapSqFalloffs = new DynamicArrayOf<Scalar> (Limits::Max_Number_Vertices_Per_Polygon);
@@ -77,7 +77,7 @@ void
 MLR_I_PMesh::MLR_I_PMesh(
 	ClassData *class_data,
 	MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ):
 	MLRIndexedPrimitiveBase(class_data, stream, version)
 {
@@ -152,7 +152,7 @@ MLR_I_PMesh::~MLR_I_PMesh()
 MLR_I_PMesh*
 	MLR_I_PMesh::Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 	)
 {
 	Check_Object(stream);
@@ -179,7 +179,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_I_PMesh::TestInstance() const
+	MLR_I_PMesh::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -431,7 +431,7 @@ void
 //	int32_t MLR_I_PMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <MLR\MLRPrimitiveClipping.hpp>
+#include <mlr/mlrprimitiveclipping.inl>
 
 #undef CLASSNAME
 
@@ -460,7 +460,7 @@ RGBAColor errorColor;
 //---------------------------------------------------------------------------
 //
 bool
-	CheckForBigTriangles(DynamicArrayOf<Vector2DScalar> *lightMapUVs, int32_t stride)
+	CheckForBigTriangles(DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs, int32_t stride)
 {
 	int32_t k1, k0;
 	Scalar u1v0, u0v1;
@@ -1111,33 +1111,33 @@ MLR_I_PMesh*
 
 	ret->FindFacePlanes();
 
-	Vector2DScalar *texCoords = new Vector2DScalar[8];
+	Vector2DScalar *texCoords = new Stuff::Vector2DScalar[8];
 	Register_Pointer(texCoords);
 
-	texCoords[0] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[1] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[2] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[3] = Vector2DScalar(0.0f, 0.0f);
+	texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[1] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[2] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[3] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
-	texCoords[4] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[5] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[6] = Vector2DScalar(0.0f, 0.0f);
-	texCoords[7] = Vector2DScalar(0.0f, 0.0f);
+	texCoords[4] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[5] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[6] = Stuff::Vector2DScalar(0.0f, 0.0f);
+	texCoords[7] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
 	if(state != NULL)
 	{
 		ret->SetReferenceState(*state);
 		if(state->GetTextureHandle() > 0)
 		{
-			texCoords[0] = Vector2DScalar(0.0f, 0.0f);
-			texCoords[1] = Vector2DScalar(1.0f, 0.0f);
-			texCoords[2] = Vector2DScalar(0.25f, 0.25f);
-			texCoords[3] = Vector2DScalar(0.75f, 0.25f);
+			texCoords[0] = Stuff::Vector2DScalar(0.0f, 0.0f);
+			texCoords[1] = Stuff::Vector2DScalar(1.0f, 0.0f);
+			texCoords[2] = Stuff::Vector2DScalar(0.25f, 0.25f);
+			texCoords[3] = Stuff::Vector2DScalar(0.75f, 0.25f);
 
-			texCoords[4] = Vector2DScalar(1.0f, 1.0f);
-			texCoords[5] = Vector2DScalar(0.0f, 1.0f);
-			texCoords[6] = Vector2DScalar(0.25f, 0.75f);
-			texCoords[7] = Vector2DScalar(0.75f, 0.75f);
+			texCoords[4] = Stuff::Vector2DScalar(1.0f, 1.0f);
+			texCoords[5] = Stuff::Vector2DScalar(0.0f, 1.0f);
+			texCoords[6] = Stuff::Vector2DScalar(0.25f, 0.75f);
+			texCoords[7] = Stuff::Vector2DScalar(0.75f, 0.75f);
 		}
 	}
 	ret->SetTexCoordData(texCoords, 8);
@@ -1258,7 +1258,7 @@ MLRShape*
 
 	uint16_t	*index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
-	Vector2DScalar *texCoords = new Vector2DScalar[nrTri*3];
+	Vector2DScalar *texCoords = new Stuff::Vector2DScalar[nrTri*3];
 	Register_Pointer(texCoords);
 
 	int32_t uniquePoints = 0;
@@ -1321,7 +1321,7 @@ MLRShape*
 		{
 			for(i=0;i<uniquePoints;i++)
 			{
-				texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+				texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 			}
 		}
 		else
@@ -1366,7 +1366,7 @@ MLRShape*
 			{
 				for(i=0;i<uniquePoints;i++)
 				{
-					texCoords[i] = Vector2DScalar(0.0f, 0.0f);
+					texCoords[i] = Stuff::Vector2DScalar(0.0f, 0.0f);
 				}
 			}
 		}

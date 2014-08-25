@@ -35,9 +35,9 @@ namespace MidLevelRenderer {
 		MLR_I_DT_TMesh(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
-		~MLR_I_DT_TMesh();
+		~MLR_I_DT_TMesh(void);
 
 	public:
 		MLR_I_DT_TMesh(ClassData *class_data=MLR_I_DT_TMesh::DefaultData);
@@ -45,7 +45,7 @@ namespace MidLevelRenderer {
 		static MLR_I_DT_TMesh*
 			Make(
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 
 		void
@@ -61,7 +61,7 @@ namespace MidLevelRenderer {
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
 		void
-			SetTexCoordData(const Vector2DScalar*,	int32_t);
+			SetTexCoordData(const Stuff::Vector2DScalar*,	int32_t);
 
 		virtual void
 			SetReferenceState(const MLRState& _state, int32_t pass=0)
@@ -135,7 +135,7 @@ namespace MidLevelRenderer {
 
 
 		int32_t
-			GetNumPasses();
+			GetNumPasses(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -153,7 +153,7 @@ namespace MidLevelRenderer {
 			GetSize()
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_TMesh::GetSize();
+			int32_t ret = MLR_I_TMesh::GetSize(void);
 
 			return ret;
 		}
@@ -161,8 +161,8 @@ namespace MidLevelRenderer {
 	protected:
 		MLRState	state2, referenceState2;
 
-		static Stuff::DynamicArrayOf<Vector2DScalar> *texCoords2;	// Max_Number_Vertices_Per_Mesh
-		static Stuff::DynamicArrayOf<Vector2DScalar> *clipExtraTexCoords2;	// Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *texCoords2;	// Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *clipExtraTexCoords2;	// Max_Number_Vertices_Per_Mesh
 
 		GOSVertex2UV *gos_vertices2uv;
 		//		uint16_t	numGOSVertices2uv;

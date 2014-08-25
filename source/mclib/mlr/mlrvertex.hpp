@@ -2,6 +2,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+/* this header is not used */
+
 #pragma once
 
 #ifndef MLR_MLRVERTEX_HPP
@@ -29,7 +31,7 @@ public:
 protected:
 	MLRVertex(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 		);
 
 public:
@@ -41,7 +43,7 @@ public:
 	static MLRVertex*
 		Make(
 		MemoryStream *stream,
-		int32_t version
+		uint32_t version
 		);
 
 	void

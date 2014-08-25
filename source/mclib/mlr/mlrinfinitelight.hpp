@@ -7,7 +7,7 @@
 #ifndef MLR_MLRINFINITELIGHT_HPP
 #define MLR_MLRINFINITELIGHT_HPP
 
-//#include <mlr/mlr.hpp>
+#include <mlr/mlrlight.hpp>
 
 namespace MidLevelRenderer {
 
@@ -26,13 +26,13 @@ namespace MidLevelRenderer {
 		MLRInfiniteLight(
 			ClassData *class_data,
 			Stuff::MemoryStream *stream,
-			int32_t version
+			uint32_t version
 			);
 		MLRInfiniteLight(
 			ClassData *class_data,
 			Stuff::Page *page
 			);
-		~MLRInfiniteLight();
+		~MLRInfiniteLight(void);
 
 		virtual void
 			LightVertex(const MLRVertexData&);
@@ -51,8 +51,7 @@ namespace MidLevelRenderer {
 		// Testing
 		//
 	public:
-		void
-			TestInstance();
+		void TestInstance(void);
 
 	protected:
 	};

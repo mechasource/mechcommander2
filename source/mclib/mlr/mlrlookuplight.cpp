@@ -63,7 +63,7 @@ MLRLookUpLight::MLRLookUpLight() :
 //
 MLRLookUpLight::MLRLookUpLight(
 	Stuff::MemoryStream *stream,
-	int32_t version
+	uint32_t version
 ) :
 	MLRInfiniteLight(DefaultData, stream, version)
 {

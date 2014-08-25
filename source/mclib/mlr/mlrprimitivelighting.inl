@@ -4,10 +4,10 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 
-#pragma once
+//#pragma once
 
-#ifndef _MLRTRIANGLELIGHTING_HPP_
-#define _MLRTRIANGLELIGHTING_HPP_
+//#ifndef _MLRTRIANGLELIGHTING_HPP_
+//#define _MLRTRIANGLELIGHTING_HPP_
 
 void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
 {
@@ -90,4 +90,4 @@ void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
 	}
 }
 
-#endif
+//#endif

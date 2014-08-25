@@ -434,7 +434,7 @@ void
 //	int32_t MLR_Terrain2::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <MLR\MLRTriangleClipping.hpp>
+#include <mlr/mlrtriangleclipping.inl>
 
 #undef I_SAY_YES_TO_DETAIL_TEXTURES
 #undef I_SAY_YES_TO_TERRAIN2

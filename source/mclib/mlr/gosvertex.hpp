@@ -559,23 +559,23 @@ namespace MidLevelRenderer {
 #define I_SAY_YES_TO_COLOR
 #define I_SAY_YES_TO_TEXTURE
 #define I_SAY_YES_TO_DWORD_COLOR
-#include <mlr/gosvertexmanipulation.hpp>
+#include <mlr/gosvertexmanipulation.inl>
 
 #undef I_SAY_YES_TO_DWORD_COLOR
-#include <mlr/gosvertexmanipulation.hpp>
+#include <mlr/gosvertexmanipulation.inl>
 
 #undef I_SAY_YES_TO_COLOR
-#include <mlr/gosvertexmanipulation.hpp>
+#include <mlr/gosvertexmanipulation.inl>
 
 #define I_SAY_YES_TO_COLOR
 #undef I_SAY_YES_TO_TEXTURE
-#include <mlr/gosvertexmanipulation.hpp>
+#include <mlr/gosvertexmanipulation.inl>
 
 #define I_SAY_YES_TO_DWORD_COLOR
-#include <mlr/gosvertexmanipulation.hpp>
+#include <mlr/gosvertexmanipulation.inl>
 
 #undef I_SAY_YES_TO_COLOR
-#include <mlr/gosvertexmanipulation.hpp>
+#include <mlr/gosvertexmanipulation.inl>
 
 // #define MLR_GOSVERTEXMANIPULATION_HPP
 

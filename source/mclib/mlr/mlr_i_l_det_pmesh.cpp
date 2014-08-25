@@ -264,7 +264,7 @@ void
 //	void	Lighting (MLRLight**, int32_t nrLights);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <MLR\MLRPrimitiveLighting.hpp>
+#include <mlr/mlrprimitivelighting.inl>
 
 #undef CLASSNAME
 

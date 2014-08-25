@@ -302,7 +302,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 //	int32_t MLR_I_L_DeT_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <MLR\MLRTriangleClipping.hpp>
+#include <mlr/mlrtriangleclipping.inl>
 
 #undef I_SAY_YES_TO_DETAIL_TEXTURES
 #undef I_SAY_YES_TO_COLOR

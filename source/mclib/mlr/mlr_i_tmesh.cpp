@@ -405,7 +405,7 @@ void
 //	int32_t MLR_I_TMesh::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <MLR\MLRTriangleClipping.hpp>
+#include <mlr/mlrtriangleclipping.inl>
 
 #undef CLASSNAME
 

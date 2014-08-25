@@ -11,13 +11,18 @@
 //#include "gospoint.hpp"
 
 /* ----------------------------------------------------------------------------*/
+#if 0
+#include <mlr/gosvertexmanipulation.inl>
+#include <mlr/mlrprimitiveclipping.inl>
+#include <mlr/mlrprimitivelighting.inl>
+#include <mlr/mlrtriangleclipping.inl>
+#endif
 
 //#include <mlr/gosimage.hpp>
 //#include <mlr/gosimagepool.hpp>
 //#include <mlr/gospoint.hpp>
 //#include <mlr/gosvertex.hpp>
 //#include <mlr/gosvertex2uv.hpp>
-//#include <mlr/gosvertexmanipulation.hpp>
 //#include <mlr/gosvertexpool.hpp>
 //#include <mlr/mlr.hpp>
 //#include <mlr/mlrambientlight.hpp>
@@ -43,8 +48,6 @@
 //#include <mlr/mlrpolymesh.hpp>
 //#include <mlr/mlrprimitive.hpp>
 //#include <mlr/mlrprimitivebase.hpp>
-#include <mlr/mlrprimitiveclipping.inl>
-#include <mlr/mlrprimitivelighting.hpp>
 //#include <mlr/mlrshape.hpp>
 //#include <mlr/mlrsortbyorder.hpp>
 //#include <mlr/mlrsorter.hpp>
@@ -52,7 +55,6 @@
 //#include <mlr/mlrstate.hpp>
 //#include <mlr/mlrtexture.hpp>
 //#include <mlr/mlrtexturepool.hpp>
-//#include <mlr/mlrtriangleclipping.hpp>
 //#include <mlr/mlrtrianglecloud.hpp>
 //#include <mlr/mlrtrianglelighting.hpp>
 //#include <mlr/mlrvertex.hpp>

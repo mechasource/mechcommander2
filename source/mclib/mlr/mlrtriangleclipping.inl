@@ -2,12 +2,12 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#pragma once
+//#pragma once
 
-#ifndef MLRTRIANGLECLIPPING_HPP
-#define MLRTRIANGLECLIPPING_HPP
+//#ifndef MLRTRIANGLECLIPPING_HPP
+//#define MLRTRIANGLECLIPPING_HPP
 
-#include <mlr/mlrcliptrick.hpp>
+//#include <mlr/mlrcliptrick.hpp>
 
 extern uint32_t gEnableTextureSort, gShowClippedPolys, gEnableDetailTexture;
 extern puint16_t indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
@@ -2113,4 +2113,4 @@ CLASSNAME::TransformAndClip(Matrix4D *mat, MLRClippingState clippingFlags, GOSVe
 
 	return ret;
 }
-#endif
+//#endif

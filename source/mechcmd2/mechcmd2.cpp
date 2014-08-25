@@ -122,7 +122,7 @@ bool initLRMoveLog = false;
 
 bool KillAmbientLight = false;
 
-void InitDW (void);
+void InitDW ();
 
 extern uint32_t					NumDevices;
 

@@ -259,7 +259,7 @@ void aObject::setParent(aObject* p)
 
 
 
-int32_t aObject::numberOfChildren() const
+int32_t aObject::numberOfChildren(void) const
 {
 	return pNumberOfChildren;
 }
@@ -315,18 +315,18 @@ aObject* aObject::child(int32_t w)
 	return pChildren[w];
 }
 
-float aObject::width() const
+float aObject::width(void) const
 {
 	return location[2].x - location[0].x;
 }
 
-float aObject::height() const
+float aObject::height(void) const
 {
 	return location[2].y - location[0].y;
 }
 
 
-float aObject::x() const
+float aObject::x(void) const
 {
 	if ( pParent )
 		return location[0].x - pParent->globalX();
@@ -334,7 +334,7 @@ float aObject::x() const
 		return location[0].x;
 }
 
-float aObject::y() const
+float aObject::y(void) const
 {
 	if ( pParent )
 		return location[0].y - pParent->y();
@@ -342,22 +342,22 @@ float aObject::y() const
 		return location[0].y;
 }
 
-int32_t aObject::globalX() const
+int32_t aObject::globalX(void) const
 {
 	return location[0].x;
 }
 
-int32_t aObject::globalY() const
+int32_t aObject::globalY(void) const
 {
 	return location[0].y;
 }
 
-int32_t aObject::globalRight() const
+int32_t aObject::globalRight(void) const
 {
 	return globalX() + (int32_t)width();
 }
 
-int32_t aObject::globalBottom() const
+int32_t aObject::globalBottom(void) const
 {
 	return globalY() + (int32_t)height();
 }

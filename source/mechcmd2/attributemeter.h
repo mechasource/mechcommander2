@@ -26,10 +26,10 @@ class AttributeMeter
 {
 	public:
 
-	AttributeMeter();
+	AttributeMeter(void);
 
-	void update();
-	void render();
+	void update(void);
+	void render(void);
 	void render( int32_t xOffset, int32_t yOffset );
 
 	void init( FitIniFile* file, PCSTR headerName );

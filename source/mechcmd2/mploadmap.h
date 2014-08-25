@@ -25,19 +25,19 @@ class MPLoadMap : public LogisticsDialog
 {
 public:
 	
-	MPLoadMap();
-	virtual ~MPLoadMap();
+	MPLoadMap(void);
+	virtual ~MPLoadMap(void);
 	
 	void init(FitIniFile* file);
-	bool isDone();
-	virtual void		begin();
-	virtual void		end();
+	bool isDone(void);
+	virtual void		begin(void);
+	virtual void		end(void);
  	virtual void		render( int32_t xOffset, int32_t yOffset );
-	virtual void		render();
-	virtual void		update();
+	virtual void		render(void);
+	virtual void		update(void);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
-	void				beginSingleMission();
+	void				beginSingleMission(void);
 
 	PCSTR getMapFileName(){ return selMapName; }
 
@@ -49,7 +49,7 @@ public:
 private:
 	int32_t indexOfButtonWithID(int32_t id);
 	void seedDialog( bool bSeedSingle );
-	void seedFromCampaign();
+	void seedFromCampaign(void);
 
 
 
@@ -62,7 +62,7 @@ private:
 
 
 
-	void	updateMapInfo();
+	void	updateMapInfo(void);
 	void	seedFromFile( PCSTR pFileName );
 	void	addFile( PCSTR pFileName, bool bSeedSingle );
 

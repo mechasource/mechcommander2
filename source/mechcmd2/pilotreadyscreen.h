@@ -25,22 +25,22 @@ class PilotReadyScreen : public LogisticsScreen
 public:
 
 	static PilotReadyScreen* instance(){ return s_instance; }
-	PilotReadyScreen();
-	virtual ~PilotReadyScreen();
+	PilotReadyScreen(void);
+	virtual ~PilotReadyScreen(void);
 
 	void init(FitIniFile* file);
 	virtual void render(int32_t xOffset, int32_t yOffset);
-	virtual void update();
+	virtual void update(void);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
 	
 	void beginDrag( LogisticsPilot* pPilot );
 
-	virtual void begin();
-	virtual void end();
+	virtual void begin(void);
+	virtual void end(void);
 
 	void setPilot( LogisticsPilot* pPilot );
 	void setMech( LogisticsMech* pMech );
-	void addSelectedPilot();
+	void addSelectedPilot(void);
 	
 
 private:
@@ -68,7 +68,7 @@ private:
 	static	PilotReadyScreen*	s_instance;
 
 
-	void removeSelectedPilot();
+	void removeSelectedPilot(void);
 	
 	void putBackPilot( LogisticsPilot* pPilot );
 	void endDrag( LogisticsMechIcon* pIcon  );

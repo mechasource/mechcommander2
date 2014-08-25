@@ -27,30 +27,30 @@ public:
 	static float MAX_RANGE;
 
 	LogisticsComponent( );
-	~LogisticsComponent();
+	~LogisticsComponent(void);
 	int32_t init( PSTR dataLine );
 
-	inline int32_t getID() const { return ID; }
-	inline int32_t getType() const { return Type; }
-	inline int32_t getRange() const{ return range; }
-	inline float getDamage() const { return damage; }
-	inline float getRecycleTime() const { return recycleTime; }
-	inline int32_t getAmmo() const { return Ammo; }
+	inline int32_t getID(void) const { return ID; }
+	inline int32_t getType(void) const { return Type; }
+	inline int32_t getRange(void) const{ return range; }
+	inline float getDamage(void) const { return damage; }
+	inline float getRecycleTime(void) const { return recycleTime; }
+	inline int32_t getAmmo(void) const { return Ammo; }
 	void		setAmmo(int32_t newAmmo) { Ammo = newAmmo; }
-	inline float getWeight() const { return weight; }
-	inline int32_t getCost() const { return cost; }
-	inline float getHeat() const { return heat; }
-	inline PCSTR getName() const { return name; }
-	inline PCSTR getFlavorText() const { return flavorText; }
-	inline int32_t	getHelpID() const { return helpStringID; }
-	inline PCSTR getIconFileName() const { return iconFileName; }
-	inline PCSTR getPictureFileName() const { return pictureFileName; }
-	inline int32_t		getComponentWidth() const { return iconX; }
-	inline int32_t		getComponentHeight() const { return iconY; }
+	inline float getWeight(void) const { return weight; }
+	inline int32_t getCost(void) const { return cost; }
+	inline float getHeat(void) const { return heat; }
+	inline PCSTR getName(void) const { return name; }
+	inline PCSTR getFlavorText(void) const { return flavorText; }
+	inline int32_t	getHelpID(void) const { return helpStringID; }
+	inline PCSTR getIconFileName(void) const { return iconFileName; }
+	inline PCSTR getPictureFileName(void) const { return pictureFileName; }
+	inline int32_t		getComponentWidth(void) const { return iconX; }
+	inline int32_t		getComponentHeight(void) const { return iconY; }
 	bool			compare( LogisticsComponent* second, int32_t type );
 	bool			isAvailable(){ return bAvailable; }
 	void			setAvailable(bool avail){ bAvailable = avail; }
-	bool			isWeapon();
+	bool			isWeapon(void);
 
 	enum SORT_ORDERS
 	{
@@ -69,7 +69,7 @@ public:
 		NO_RANGE = 3 // not a weapon
 	};
 
-	WEAPON_RANGE getRangeType() const { return rangeType; }
+	WEAPON_RANGE getRangeType(void) const { return rangeType; }
 
 
 private:

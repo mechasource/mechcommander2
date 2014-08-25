@@ -17,7 +17,7 @@ MPParameterScreen.h			: Interface for the MPParameterScreen component.
 //#include <mechgui/alistbox.h>
 //#include "attributemeter.h"
 //#include "simplecamera.h"
-//#include "elist.h"
+//#include <elist.h>
 //#include "multplyr.h"
 //#include "mploadmap.h"
 //#include <mechgui/aanim.h>
@@ -31,7 +31,7 @@ class aStyle2TextListItem : public aTextListItem
 public:
 	aStyle2TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
 	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
-	virtual void		render();
+	virtual void		render(void);
 
 protected:
 	bool hasAnimation;
@@ -44,16 +44,16 @@ protected:
 class aPlayerParams : public aObject
 {
 public:
-	aPlayerParams();
-	~aPlayerParams();
+	aPlayerParams(void);
+	~aPlayerParams(void);
 	aPlayerParams& operator=( const aPlayerParams& src );
 
 	virtual int32_t		init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
 	void				init( FitIniFile* file, PCSTR blockName );
 
-	virtual void		destroy();
-	virtual void		render();
-	virtual void		update();
+	virtual void		destroy(void);
+	virtual void		render(void);
+	virtual void		update(void);
 	virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 	virtual void		move( float offsetX, float offsetY );
 
@@ -65,7 +65,7 @@ public:
 
 	int32_t					getCommanderID( ) const { return commanderID; }
 
-	void				disableReadyButton();
+	void				disableReadyButton(void);
 
 
 
@@ -107,13 +107,13 @@ public:
 		CS_DROPLIST
 	};
 
-	CFocusManager();
-	void clear();
+	CFocusManager(void);
+	void clear(void);
 	PVOID registerDropList(aDropList &DropList);
 	void unregisterDropList(aDropList &DropList);
-	void update();
-	bool somebodyHasTheFocus(); /*this is distinct from the keyboard input focus*/
-	aObject* pControlThatHasTheFocus();
+	void update(void);
+	bool somebodyHasTheFocus(void); /*this is distinct from the keyboard input focus*/
+	aObject* pControlThatHasTheFocus(void);
 
 private:
 	control_species_data_type speciesOfTheControlWhichHasTheFocus;
@@ -126,18 +126,18 @@ class MPParameterScreen : public LogisticsScreen
 {
 public:
 	
-	MPParameterScreen();
-	virtual ~MPParameterScreen();
+	MPParameterScreen(void);
+	virtual ~MPParameterScreen(void);
 	
 	void				init(FitIniFile* file);
-	virtual void		begin();
-	virtual void		end();
+	virtual void		begin(void);
+	virtual void		end(void);
  	virtual void		render( int32_t xOffset, int32_t yOffset );
-	virtual void		render();
-	virtual void		update();
+	virtual void		render(void);
+	virtual void		update(void);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
 	
-	static void			resetCheckBoxes();
+	static void			resetCheckBoxes(void);
 
 	void				setHostLeftDlg( PCSTR playerName);
 

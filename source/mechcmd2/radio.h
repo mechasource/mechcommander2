@@ -96,12 +96,12 @@ class Radio
 
 		Radio (void)
 		{
-			init();
+			init(void);
 		}
 	
 		~Radio (void)
 		{
-			destroy();
+			destroy(void);
 		}
 	
 		int32_t init (PSTR fileName, uint32_t heapSize, PSTR movie);

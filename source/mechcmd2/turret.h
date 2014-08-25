@@ -64,7 +64,7 @@ class TurretType : public ObjectType {
 	public:
 
 		void init (void) {
-			ObjectType::init();
+			ObjectType::init(void);
 			objectTypeClass = TURRET_TYPE;
 			objectClass = TURRET;
 			damageLevel = 0.0;
@@ -82,7 +82,7 @@ class TurretType : public ObjectType {
 		}
 		
 		TurretType (void) {
-			init();
+			init(void);
 		}
 		
 		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
@@ -90,7 +90,7 @@ class TurretType : public ObjectType {
 		int32_t init (FitIniFilePtr objFile);
 		
 		~TurretType (void) {
-			destroy();
+			destroy(void);
 		}
 		
 		float getDamageLevel (void) {
@@ -165,7 +165,7 @@ class Turret : public TerrainObject {
 		}
 
 		~Turret (void) {
-			destroy();
+			destroy(void);
 		}
 
 		virtual void updateDebugWindow (GameDebugWindow* debugWindow);

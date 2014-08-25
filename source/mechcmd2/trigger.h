@@ -11,7 +11,7 @@
 #ifndef TRIGGER_H
 #define TRIGGER_H
 
-//#include "terrain.h"
+//#include <terrain.h>
 //#include "dmover.h"
 //#include "dstd.h"
 
@@ -57,13 +57,13 @@ class TriggerAreaManager {
 		}
 
 		TriggerAreaManager (void) {
-			init();
+			init(void);
 		}
 
 		void destroy (void);
 
 		~TriggerAreaManager (void) {
-			destroy();
+			destroy(void);
 		}
 
 		int32_t add (int32_t ULrow, int32_t ULcol, int32_t LRrow, int32_t LRcol, int32_t type, int32_t param);

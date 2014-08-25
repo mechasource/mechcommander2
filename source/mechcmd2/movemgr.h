@@ -54,11 +54,11 @@ class MovePathManager {
 		void operator delete (PVOID us);
 		
 		MovePathManager (void) {
-			init();
+			init(void);
 		}
 		
 		~MovePathManager (void) {
-			destroy();
+			destroy(void);
 		}
 		
 		void destroy (void);

@@ -251,13 +251,13 @@ class GameObjectManager {
 		void init (void);
 		
 		GameObjectManager (void) {
-			init();
+			init(void);
 		}
 
 		void destroy (void);
 
 		~GameObjectManager (void) {
-			destroy();
+			destroy(void);
 		}
 		
 		void init (PSTR objTypeDataFile, int32_t objTypeCacheSize, int32_t objCacheSize);

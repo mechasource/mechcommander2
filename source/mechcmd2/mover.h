@@ -148,11 +148,11 @@ class MoveChunk {
 		}
 
 		MoveChunk (void) {
-			init();
+			init(void);
 		}
 
 		~MoveChunk (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void build (MoverPtr mover, MovePath* path1, MovePath* path2 = NULL);
@@ -212,14 +212,14 @@ class MoverDynamics {
 		virtual void init (void);
 
 		MoverDynamics (void) {
-			init();
+			init(void);
 		}
 			
 		virtual void destroy (void) {
 		}
 
 		~MoverDynamics (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void init (DynamicsType newType);
@@ -303,14 +303,14 @@ class MoverControl {
 		}
 
 		MoverControl (void) {
-			init();
+			init(void);
 		}
 			
 		virtual void destroy (void) {
 		}
 
 		~MoverControl (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void init (ControlType newType, ControlDataType newDataType) {
@@ -330,7 +330,7 @@ class MoverControl {
 
 		void setDataType (ControlDataType newDataType) {
 			dataType = newDataType;
-			reset();
+			reset(void);
 		}
 
 		ControlDataType getDataType (void) {
@@ -527,11 +527,11 @@ class StatusChunk {
 		}
 
 		StatusChunk (void) {
-			init ();
+			init (void);
 		}
 
 		~StatusChunk (void) {
-			destroy();
+			destroy(void);
 		}
 
 		virtual void build (MoverPtr mover);
@@ -1039,9 +1039,9 @@ class Mover : public GameObject {
 			return(pathLocks == false);
 		}
 
-		void drawWaypointPath();
+		void drawWaypointPath(void);
 
-		void updateDrawWaypointPath();
+		void updateDrawWaypointPath(void);
 		
 //		virtual frame_of_ref getFrame (void)
 //		{
@@ -1096,7 +1096,7 @@ class Mover : public GameObject {
 
 //		virtual float getAppearRadius (void)
 //		{
-//			return appearance->getRadius();
+//			return appearance->getRadius(void);
 //		}
 
 		virtual void reduceAntiMissileAmmo (int32_t numAntiMissiles);
@@ -1660,7 +1660,7 @@ class Mover : public GameObject {
 		virtual Stuff::Vector3D getPositionFromHS (int32_t weaponType) 
 		{
 			Stuff::Vector3D pos;
-			pos.Zero();
+			pos.Zero(void);
 			return(pos);
 		}
 
@@ -1677,7 +1677,7 @@ class Mover : public GameObject {
 		}
 		
 		~Mover (void) {
-			destroy();
+			destroy(void);
 		}
 
 		bool enemyRevealed (void);

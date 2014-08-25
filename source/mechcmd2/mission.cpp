@@ -206,10 +206,10 @@ bool neverEndingStory = false;
 
 void GetBlockedDoorCells (int32_t moveLevel, int32_t door, PSTR openCells);
 void PlaceStationaryMovers (MoveMap* map);
-void PlaceMovers (void);
+void PlaceMovers ();
 //---------------------------------------------------------------------------
-void initABL (void);
-void closeABL (void);
+void initABL ();
+void closeABL ();
 
 #define	MAX_DISABLE_AT_START	100
 extern int32_t NumDisableAtStart;

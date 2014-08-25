@@ -30,7 +30,7 @@ public:
 
 	static const int32_t DEAD_PILOT_INDEX;
 
-	PilotIcon();
+	PilotIcon(void);
 
 	static void swapResolutions(bool bForce = 0);
 
@@ -59,16 +59,16 @@ class ForceGroupIcon
 {
 public:
 
-		ForceGroupIcon();
-		virtual ~ForceGroupIcon();
+		ForceGroupIcon(void);
+		virtual ~ForceGroupIcon(void);
 
 		virtual void update() = 0;
-		virtual void render();
+		virtual void render(void);
 		void renderUnitIcon( float left, float top, float right, float bottom );
 		virtual void renderUnitIconBack( float left, float top, float right, float bottom );
 		void renderPilotIcon( float left, float top, float right, float bottom );
 		virtual bool			init( Mover* pMover ){ return false; }
-		void init();
+		void init(void);
 
 		
 
@@ -76,13 +76,13 @@ public:
 		bool inRegion( int32_t x, int32_t y );
 
 		void click( bool shiftDn );
-		void rightClick();
+		void rightClick(void);
 
 		virtual void setDrawBack( bool bSet) { };
 
 		static int32_t __cdecl sort( PCVOID p1, PCVOID p2 );
 
-		PCSTR getPilotName();
+		PCSTR getPilotName(void);
 
 		static void init( FitIniFile& file, int32_t which );
 		void swapResolutions(bool bForce);
@@ -123,7 +123,7 @@ protected:
 		static int32_t		ForceGroupColors[11];
 
 		void drawBar( float barStatus );
-		static void setIconVariables();
+		static void setIconVariables(void);
 
 
 		friend class ForceGroupBar;
@@ -145,7 +145,7 @@ protected:
 
 		static AnimationInfo animationInfos[NUM_DEATH_INFOS];
 
-		void drawDeathEffect();
+		void drawDeathEffect(void);
 
 		PilotIcon	pilotIcon;
 
@@ -165,7 +165,7 @@ class MechIcon : public ForceGroupIcon
 		~MechIcon(){}
 
 		virtual bool			init( Mover* pMover );
-		virtual void			update();
+		virtual void			update(void);
 
 		static TGAFileHeader* s_MechTextures;
 
@@ -181,7 +181,7 @@ class MechIcon : public ForceGroupIcon
 		char	damage[8];
 		char	backDamage[8];
 		bool init( int32_t whichIndex );
-		bool initTextures();
+		bool initTextures(void);
 
 		
 };
@@ -194,7 +194,7 @@ public:
 	~VehicleIcon(){}
 
 	virtual void renderUnitIconBack( float left, float top, float right, float bottom ){}
-	virtual void	update();
+	virtual void	update(void);
 	virtual bool			init( Mover* pMover );
 
 	static TGAFileHeader* s_VehicleTextures;

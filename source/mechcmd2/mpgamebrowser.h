@@ -30,7 +30,7 @@ class aStyle3TextListItem : public aTextListItem
 public:
 	aStyle3TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
 	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
-	virtual void		render();
+	virtual void		render(void);
 
 protected:
 	bool hasAnimation;
@@ -41,12 +41,12 @@ protected:
 class aGameListItem : public aListItem
 {
 public:
-	aGameListItem();
+	aGameListItem(void);
 	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
-	virtual void update();
+	virtual void update(void);
 	void setSessionInfo( _MC2Session* pSessions );
 
-	PCSTR		getSessionName();
+	PCSTR		getSessionName(void);
 
 	PCSTR		getText( int32_t which );
 
@@ -74,16 +74,16 @@ class MPGameBrowser : public LogisticsScreen
 {
 public:
 	
-	MPGameBrowser();
-	virtual ~MPGameBrowser();
+	MPGameBrowser(void);
+	virtual ~MPGameBrowser(void);
 	
 	void init(FitIniFile* file);
-	bool isDone();
-	virtual void		begin();
-	virtual void		end();
+	bool isDone(void);
+	virtual void		begin(void);
+	virtual void		end(void);
  	virtual void render( int32_t xOffset, int32_t yOffset );
-	virtual void render();
-	virtual void update();
+	virtual void render(void);
+	virtual void update(void);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 

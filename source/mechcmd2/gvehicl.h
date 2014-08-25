@@ -130,8 +130,8 @@ class GroundVehicleType : public ObjectType {
 
 		GroundVehicleType (void)
 		{
-			ObjectType::init();
-			init();
+			ObjectType::init(void);
+			init(void);
 		}
 		
 		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
@@ -143,7 +143,7 @@ class GroundVehicleType : public ObjectType {
 		virtual void destroy (void);
 
 		~GroundVehicleType (void) {
-			destroy();
+			destroy(void);
 		}
 
 		virtual bool handleCollision (GameObjectPtr collidee, GameObjectPtr collider);
@@ -406,7 +406,7 @@ class GroundVehicle : public Mover {
 
 		~GroundVehicle (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 #ifdef USE_SALVAGE

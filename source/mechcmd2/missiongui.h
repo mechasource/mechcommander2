@@ -180,12 +180,12 @@ public:
 	
 		MissionInterfaceManager (void)
 		{
-			init();
+			init(void);
 		}
 		
 		~MissionInterfaceManager (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		static MissionInterfaceManager* instance(){ return s_instance; }
@@ -201,7 +201,7 @@ public:
 		virtual void drawVTOL (void);
 		virtual void render (void);
 						
-		void	initMechs(){ controlGui.initMechs(); }	
+		void	initMechs(){ controlGui.initMechs(void); }	
 
 		PCSTR getSupportVehicleNameFromID (int32_t ID) { return controlGui.getVehicleNameFromID(ID); }
 
@@ -210,7 +210,7 @@ public:
 
 		int32_t update( bool bLeftClick, bool bRightClick, int32_t mouseX, int32_t mouseY, GameObject* pTarget, bool bLOS ); // check for each key in the list
 		
-		void	updateVTol();
+		void	updateVTol(void);
 		
 		ControlGui *getControlGui (void)
 		{
@@ -252,22 +252,22 @@ public:
 
 		int32_t setWayPointKey( gosEnum_KeyIndex key );
 
-		void setAOEStyle();
-		void setMCStyle();
+		void setAOEStyle(void);
+		void setMCStyle(void);
 
-		bool isAOEStyle();
-		bool isMCStyle();
+		bool isAOEStyle(void);
+		bool isMCStyle(void);
 
-		bool	isPaused();
-		bool	isPausedWithoutMenu();
-		int32_t		togglePause();
-		int32_t		togglePauseWithoutMenu();
-		int32_t		toggleHoldPosition();
-		int32_t		showObjectives();
+		bool	isPaused(void);
+		bool	isPausedWithoutMenu(void);
+		int32_t		togglePause(void);
+		int32_t		togglePauseWithoutMenu(void);
+		int32_t		toggleHoldPosition(void);
+		int32_t		showObjectives(void);
 		int32_t		showObjectives(bool on);
 		void	doMove(const Stuff::Vector3D& pos);
 		void	doGuard(GameObject* pObj);
-		int32_t toggleHotKeys();
+		int32_t toggleHotKeys(void);
 		void	beginVtol(int32_t supportID, int32_t commanderID = 0, Stuff::Vector3D* reinforcePos = NULL, MoverPtr salvageTarget = NULL);
 
 		//Tutorial Stuff goes here.
@@ -292,142 +292,142 @@ public:
 
 		void makeForceGroup( int32_t forceGroup );
 		bool moveCameraAround( bool lineOfSight, bool passable, bool ctrl, bool bGui, int32_t moverCount, int32_t nonMoverCount );
-		bool canJump(); // selected units can jump
-		bool canJumpToWPos();
+		bool canJump(void); // selected units can jump
+		bool canJumpToWPos(void);
 		void doDrag(bool bGui);
 
 
-		int32_t attackShort();
-		int32_t attackMedium();
-		int32_t attackLong();
-		int32_t alphaStrike();
-		int32_t defaultAttack();
-		int32_t jump();
-		int32_t stopJump();
-		int32_t fireFromCurrentPos();
-		int32_t stopFireFromCurrentPos();
-		int32_t guard();
-		int32_t stopGuard();
-		int32_t conserveAmmo();
-		int32_t selectVisible();
-		int32_t addVisibleToSelection();
-		int32_t aimLeg();
-		int32_t aimArm();
-		int32_t aimHead();
-		int32_t removeCommand();
-		int32_t powerUp();
-		int32_t powerDown();
-		int32_t changeSpeed();
-		int32_t stopChangeSpeed();
-		int32_t eject();
-		int32_t forceShot();
+		int32_t attackShort(void);
+		int32_t attackMedium(void);
+		int32_t attackLong(void);
+		int32_t alphaStrike(void);
+		int32_t defaultAttack(void);
+		int32_t jump(void);
+		int32_t stopJump(void);
+		int32_t fireFromCurrentPos(void);
+		int32_t stopFireFromCurrentPos(void);
+		int32_t guard(void);
+		int32_t stopGuard(void);
+		int32_t conserveAmmo(void);
+		int32_t selectVisible(void);
+		int32_t addVisibleToSelection(void);
+		int32_t aimLeg(void);
+		int32_t aimArm(void);
+		int32_t aimHead(void);
+		int32_t removeCommand(void);
+		int32_t powerUp(void);
+		int32_t powerDown(void);
+		int32_t changeSpeed(void);
+		int32_t stopChangeSpeed(void);
+		int32_t eject(void);
+		int32_t forceShot(void);
 
-		int32_t scrollUp();
-		int32_t scrollDown();
-		int32_t scrollLeft();
-		int32_t scrollRight();
-		int32_t zoomOut();
-		int32_t zoomIn();
-		int32_t zoomChoiceOut();
-		int32_t zoomChoiceIn();
-		int32_t rotateLeft();
-		int32_t rotateRight();
-		int32_t tiltUp();
-		int32_t tiltDown();
-		int32_t centerCamera();
-		int32_t rotateLightLeft();
-		int32_t rotateLightRight();
-		int32_t rotateLightUp();
-		int32_t rotateLightDown();
-		int32_t switchTab();
-		int32_t reverseSwitchTab();
+		int32_t scrollUp(void);
+		int32_t scrollDown(void);
+		int32_t scrollLeft(void);
+		int32_t scrollRight(void);
+		int32_t zoomOut(void);
+		int32_t zoomIn(void);
+		int32_t zoomChoiceOut(void);
+		int32_t zoomChoiceIn(void);
+		int32_t rotateLeft(void);
+		int32_t rotateRight(void);
+		int32_t tiltUp(void);
+		int32_t tiltDown(void);
+		int32_t centerCamera(void);
+		int32_t rotateLightLeft(void);
+		int32_t rotateLightRight(void);
+		int32_t rotateLightUp(void);
+		int32_t rotateLightDown(void);
+		int32_t switchTab(void);
+		int32_t reverseSwitchTab(void);
 
-		int32_t drawTerrain();
-		int32_t drawOverlays();
-		int32_t drawBuildings();
-		int32_t showGrid();
-		int32_t recalcLights();
-		int32_t drawClouds();
-		int32_t drawFog();
-		int32_t usePerspective();
-		int32_t drawWaterEffects();
-		int32_t recalcWater();
-		int32_t drawShadows();
-		int32_t changeLighting();
-		int32_t vehicleCommand();
-		int32_t toggleGUI();
-		int32_t	drawTGLShapes();
-		int32_t infoCommand();
-		int32_t infoButtonReleased();
-		int32_t energyWeapons();
-		int32_t sendAirstrike();
-		int32_t sendLargeAirstrike();
-		int32_t gotoNextNavMarker();
-		int32_t sendSensorStrike();
+		int32_t drawTerrain(void);
+		int32_t drawOverlays(void);
+		int32_t drawBuildings(void);
+		int32_t showGrid(void);
+		int32_t recalcLights(void);
+		int32_t drawClouds(void);
+		int32_t drawFog(void);
+		int32_t usePerspective(void);
+		int32_t drawWaterEffects(void);
+		int32_t recalcWater(void);
+		int32_t drawShadows(void);
+		int32_t changeLighting(void);
+		int32_t vehicleCommand(void);
+		int32_t toggleGUI(void);
+		int32_t	drawTGLShapes(void);
+		int32_t infoCommand(void);
+		int32_t infoButtonReleased(void);
+		int32_t energyWeapons(void);
+		int32_t sendAirstrike(void);
+		int32_t sendLargeAirstrike(void);
+		int32_t gotoNextNavMarker(void);
+		int32_t sendSensorStrike(void);
 		
-		int32_t	handleChatKey();
-		int32_t	handleTeamChatKey();
+		int32_t	handleChatKey(void);
+		int32_t	handleTeamChatKey(void);
 
 
-		bool makePatrolPath();
+		bool makePatrolPath(void);
 		
-		int32_t bigAirStrike();
-		int32_t smlAirStrike();
-		int32_t snsAirStrike();
+		int32_t bigAirStrike(void);
+		int32_t smlAirStrike(void);
+		int32_t snsAirStrike(void);
 		
-		int32_t cameraNormal();
-		int32_t cameraDefault();
-		int32_t cameraMaxIn();
-		int32_t cameraTight();
-		int32_t cameraFour();
-		int32_t toggleCompass();
+		int32_t cameraNormal(void);
+		int32_t cameraDefault(void);
+		int32_t cameraMaxIn(void);
+		int32_t cameraTight(void);
+		int32_t cameraFour(void);
+		int32_t toggleCompass(void);
 		
-		int32_t cameraAssign0();
-		int32_t cameraAssign1();
-		int32_t cameraAssign2();
-		int32_t cameraAssign3();
+		int32_t cameraAssign0(void);
+		int32_t cameraAssign1(void);
+		int32_t cameraAssign2(void);
+		int32_t cameraAssign3(void);
 
 		static GameObject*	target;
 
-		void printDebugInfo();
+		void printDebugInfo(void);
 
-		void doAttack();
-		void doJump();
-		void doGuardTower();
+		void doAttack(void);
+		void doJump(void);
+		void doGuardTower(void);
 		
-		void doSalvage();
+		void doSalvage(void);
 
-		int32_t quickDebugInfo ();
-		int32_t setGameObjectWindow ();
-		int32_t pageGameObjectWindow1 ();
-		int32_t pageGameObjectWindow2 ();
-		int32_t pageGameObjectWindow3 ();
-		int32_t jumpToDebugGameObject1 ();
-		int32_t jumpToDebugGameObject2 ();
-		int32_t jumpToDebugGameObject3 ();
-		int32_t toggleDebugWins ();
-		int32_t teleport ();
-		int32_t showMovers ();
-		int32_t cullPathAreas ();
-		int32_t zeroHPrime ();
-		int32_t calcValidAreaTable ();
-		int32_t globalMapLog ();
-		int32_t brainDead ();
-		int32_t goalPlan ();
-		int32_t enemyGoalPlan ();
-		int32_t showVictim ();
-		int32_t damageObject1 ();
-		int32_t damageObject2 ();
-		int32_t damageObject3 ();
-		int32_t damageObject4 ();
-		int32_t damageObject5 ();
-		int32_t damageObject6 ();
-		int32_t damageObject7 ();
-		int32_t damageObject8 ();
-		int32_t damageObject9 ();
-		int32_t damageObject0 ();
-		int32_t rotateObjectLeft ();
-		int32_t rotateObjectRight ();
+		int32_t quickDebugInfo (void);
+		int32_t setGameObjectWindow (void);
+		int32_t pageGameObjectWindow1 (void);
+		int32_t pageGameObjectWindow2 (void);
+		int32_t pageGameObjectWindow3 (void);
+		int32_t jumpToDebugGameObject1 (void);
+		int32_t jumpToDebugGameObject2 (void);
+		int32_t jumpToDebugGameObject3 (void);
+		int32_t toggleDebugWins (void);
+		int32_t teleport (void);
+		int32_t showMovers (void);
+		int32_t cullPathAreas (void);
+		int32_t zeroHPrime (void);
+		int32_t calcValidAreaTable (void);
+		int32_t globalMapLog (void);
+		int32_t brainDead (void);
+		int32_t goalPlan (void);
+		int32_t enemyGoalPlan (void);
+		int32_t showVictim (void);
+		int32_t damageObject1 (void);
+		int32_t damageObject2 (void);
+		int32_t damageObject3 (void);
+		int32_t damageObject4 (void);
+		int32_t damageObject5 (void);
+		int32_t damageObject6 (void);
+		int32_t damageObject7 (void);
+		int32_t damageObject8 (void);
+		int32_t damageObject9 (void);
+		int32_t damageObject0 (void);
+		int32_t rotateObjectLeft (void);
+		int32_t rotateObjectRight (void);
 
 		bool	canAddVehicle( const Stuff::Vector3D& pos );
 		bool	canRecover( const Stuff::Vector3D& pos );
@@ -438,26 +438,26 @@ public:
 		int32_t	makeMoveCursor( bool bLineOfSite );
 		int32_t	makeJumpCursor( bool bLineOfSite );
 		int32_t	makeRunCursor( bool bLineOfSite );
-		void	updateRollovers();
+		void	updateRollovers(void);
 
 
 
-		void	addAirstrike();
+		void	addAirstrike(void);
 		void	addVehicle( const Stuff::Vector3D& pos );
 		void	updateTarget(bool bCursorIsInGui);
-		void	drawWayPointPaths();
+		void	drawWayPointPaths(void);
 
-		int32_t	calcRotation();
+		int32_t	calcRotation(void);
 
 
 
-		void	swapResolutions();
+		void	swapResolutions(void);
 		
 
 		bool	canSalvage( GameObject* pMover );
 		bool	selectionIsHelicopters( );
 		void	drawHotKey( PCSTR string, PCSTR descStr, int32_t x, int32_t y );
-		void	drawHotKeys();
+		void	drawHotKeys(void);
 
 
 

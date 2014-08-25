@@ -38,8 +38,8 @@ class MechLabScreen;
 
 extern int32_t renderer;
 
-void initABL (void);
-void closeABL (void);
+void initABL ();
+void closeABL ();
 
 //Tutorial
 // Please save these two flags with the saveGames!!

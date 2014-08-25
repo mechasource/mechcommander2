@@ -26,16 +26,16 @@ class OptionsXScreen : public LogisticsScreen
 {
 public:
 	
-	OptionsXScreen();
-	virtual ~OptionsXScreen();
+	OptionsXScreen(void);
+	virtual ~OptionsXScreen(void);
 	
 	void init(FitIniFile* file);
-	bool isDone();
-	virtual void render();
-	virtual void update();
+	bool isDone(void);
+	virtual void render(void);
+	virtual void update(void);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
-	void updateOptions(); // put into inventory
+	void updateOptions(void); // put into inventory
 
 	bool				bDone;
 
@@ -55,9 +55,9 @@ class ScrollX : public aObject
 {
 public:
 
-	ScrollX();
+	ScrollX(void);
 	int32_t	init(aButton* pLeft, aButton* pRight, aButton* pTab );
-	virtual void	update();
+	virtual void	update(void);
 
 	virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
 
@@ -76,7 +76,7 @@ public:
 
 private:
 
-	void ResizeAreas();
+	void ResizeAreas(void);
 
 	 
 	aButton*		buttons[3];
@@ -94,10 +94,10 @@ class OptionsGraphics : public LogisticsScreen
 
 public:
 	void init(int32_t xOffset, int32_t yOffset);
-	virtual void render();
-	virtual void update();
-	virtual void begin();
-	virtual void end();
+	virtual void render(void);
+	virtual void update(void);
+	virtual void begin(void);
+	virtual void end(void);
 	void reset( const CPrefs& newPrefs);
 
 	virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
@@ -113,10 +113,10 @@ class OptionsAudio : public LogisticsScreen
 {
 	public:
 		void init(int32_t xOffset, int32_t yOffset);
-		virtual void render();
-		virtual void update();
-		virtual void begin();
-		virtual void end();
+		virtual void render(void);
+		virtual void update(void);
+		virtual void begin(void);
+		virtual void end(void);
 		void reset(const CPrefs& newPrefs);
 
 		virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
@@ -132,10 +132,10 @@ class OptionsHotKeys : public LogisticsScreen
 
 public:
 		void init(int32_t xOffset, int32_t yOffset);
-		virtual void render();
-		virtual void update();
-		virtual void begin();
-		virtual void end();
+		virtual void render(void);
+		virtual void update(void);
+		virtual void begin(void);
+		virtual void end(void);
 		void reset(bool bUseOld);
 
 		virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
@@ -155,15 +155,15 @@ class OptionsGamePlay : public LogisticsScreen
 {
 public:
 	void init(int32_t xOffset, int32_t yOffset);
-	virtual void render();
-	virtual void update();
-	virtual void begin();
-	virtual void end();
+	virtual void render(void);
+	virtual void update(void);
+	virtual void begin(void);
+	virtual void end(void);
 	void reset(const CPrefs& newPrefs);
 
 	virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
 
-	void resetCamera();
+	void resetCamera(void);
 
 	private:
 
@@ -174,21 +174,21 @@ class HotKeyListItem : public aListItem
 {
 public:
 
-	static void init();
-	virtual void render();
-	virtual void update();
+	static void init(void);
+	virtual void render(void);
+	virtual void update(void);
 	
 	void setDescription( PCSTR pText );
 	void setKey( PCSTR pText );
 
 	HotKeyListItem( );
-	~HotKeyListItem();
+	~HotKeyListItem(void);
 
 	void	setHotKey( int32_t lNew ){ hotKey = lNew; }
 	void	setCommand( int32_t lCommand ) { command = lCommand; }
 
-	int32_t	getCommand() const { return command; }
-	int32_t	getHotKey() const { return hotKey; }
+	int32_t	getCommand(void) const { return command; }
+	int32_t	getHotKey(void) const { return hotKey; }
 
 private:
 

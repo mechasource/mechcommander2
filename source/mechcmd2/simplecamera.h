@@ -19,22 +19,22 @@ class ObjectAppearance;
 class SimpleCamera : public Camera
 {
 public:
-	SimpleCamera();
-	~SimpleCamera();
+	SimpleCamera(void);
+	~SimpleCamera(void);
 
 	void setMech( PCSTR fileName, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc );
 	void setComponent( PCSTR fileName );
 	void setBuilding( PCSTR fileName );
 	void setVehicle( PCSTR vehicle, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc );
-	ObjectAppearance* getObjectAppearance() const { return pObject; }
+	ObjectAppearance* getObjectAppearance(void) const { return pObject; }
 
 	void init( float left, float right, float top, float bottom );
 
 	void setObject( PCSTR fileName, int32_t type, int32_t base = 0xffff7e00, int32_t highlight = 0xffff7e00, int32_t h2 = 0xffbcbcbc );
 
-	virtual void render();
+	virtual void render(void);
 	virtual void render(int32_t xOffset, int32_t yOffset);
-	virtual int32_t update();
+	virtual int32_t update(void);
 
 	void setScale( float newScale );
 	void setRotation( float rotation );

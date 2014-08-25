@@ -44,14 +44,14 @@ class Mechlopedia : public LogisticsScreen
 {
 	public:
 
-		Mechlopedia();
-		virtual ~Mechlopedia();
+		Mechlopedia(void);
+		virtual ~Mechlopedia(void);
 
-		int32_t init();
+		int32_t init(void);
 		virtual int32_t			handleMessage( uint32_t, uint32_t );
-		virtual void		update();
-		virtual void		render();
-		virtual void		begin();
+		virtual void		update(void);
+		virtual void		render(void);
+		virtual void		begin(void);
 
 	private:
 
@@ -65,9 +65,9 @@ class Mechlopedia : public LogisticsScreen
 
 				void setListBox( aListBox* pLB ) {groupListBox = pLB; }
 				int32_t init( FitIniFile& file );
-				virtual void update();
+				virtual void update(void);
 				virtual void select( aTextListItem* pEntry ){}
-				virtual void end();
+				virtual void end(void);
 
 				virtual void setVehicle( bool bVehicle ){ }
 
@@ -84,10 +84,10 @@ class Mechlopedia : public LogisticsScreen
 		{
 		
 			public:
-				void init();
-				virtual void update();
-				virtual void render();
-				virtual void begin();
+				void init(void);
+				virtual void update(void);
+				virtual void render(void);
+				virtual void begin(void);
 
 				virtual void select( aTextListItem* pEntry );
 				void setMech( LogisticsVariant* pChassis, bool bShowJump );
@@ -105,10 +105,10 @@ class Mechlopedia : public LogisticsScreen
 		{
 
 			public:
-				void init();
-				virtual void update();
-				virtual void render();
-				virtual void begin();
+				void init(void);
+				virtual void update(void);
+				virtual void render(void);
+				virtual void begin(void);
 
 				virtual void select( aTextListItem* pEntry );
 				void setWeapon ( LogisticsComponent* pWeapon );
@@ -121,10 +121,10 @@ class Mechlopedia : public LogisticsScreen
 		class PersonalityScreen : public SubScreen
 		{
 		public:
-				void init();
-				virtual void update();
-				virtual void render();
-				virtual void begin();
+				void init(void);
+				virtual void update(void);
+				virtual void render(void);
+				virtual void begin(void);
 
 				virtual void select( aTextListItem* pEntry );
 
@@ -139,10 +139,10 @@ class Mechlopedia : public LogisticsScreen
 		{
 		public:
 
-			void init();
-			virtual void update();
-			virtual void render();
-			virtual void begin();
+			void init(void);
+			virtual void update(void);
+			virtual void render(void);
+			virtual void begin(void);
 
 			virtual void select( aTextListItem* pEntry );
 
@@ -161,8 +161,8 @@ class MechlopediaListItem: public aAnimTextListItem
 {
 	public:
 		
-		MechlopediaListItem();
-		virtual void render();
+		MechlopediaListItem(void);
+		virtual void render(void);
 
 		static void init( );
 

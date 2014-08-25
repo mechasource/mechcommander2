@@ -15,7 +15,7 @@ aEdit.h			: Interface for the aEdit component of the GUI library.
 #endif
 
 #ifndef ESTRING_H
-#include "estring.h"
+#include <estring.h>
 #endif
 
 namespace mechgui {
@@ -38,14 +38,14 @@ class aEdit: public aObject
 	public:
 
 		aEdit( int32_t fontID );
-		virtual ~aEdit();
-		aEdit(); // really need a font for this to work
+		virtual ~aEdit(void);
+		aEdit(void); // really need a font for this to work
 		aEdit& operator=( const aEdit& );
 
-		virtual void update();
-		virtual void render();
+		virtual void update(void);
+		virtual void render(void);
 
-		void	renderWithDropShadow();
+		void	renderWithDropShadow(void);
 
 	
 		void getEntry(EString& str);
@@ -60,9 +60,9 @@ class aEdit: public aObject
 
 		void init( FitIniFile* file, PCSTR header );
 		int32_t getHighlightColor( ) const { return highlightColor; }
-		int32_t getColor() const { return textColor; }
-		int32_t getCursorColor() const { return cursorColor; }
-		int32_t getSelectedColor() const { return selectedColor; }
+		int32_t getColor(void) const { return textColor; }
+		int32_t getCursorColor(void) const { return cursorColor; }
+		int32_t getSelectedColor(void) const { return selectedColor; }
 
 		void allowWierdChars( bool bAllow ){ bWierdChars = bAllow; }
 
@@ -92,7 +92,7 @@ class aEdit: public aObject
 				dwStyleFlags ^= ES_EDITNUM;
 		}
 
-		int32_t getFont() { return font.getFontID(); }
+		int32_t getFont() { return font.getFontID(void); }
 
 		void initBufferSize( uint32_t newSize );
 		void setBufferSize( int32_t newSize ) { text.SetBufferSize( newSize ); }
@@ -105,18 +105,18 @@ class aEdit: public aObject
 		aEdit( const aEdit& );
 
 		// HELPER FUNCTIONS
-		bool	clearSelection();
+		bool	clearSelection(void);
 		void	backSpace(int32_t nPosition);
-		void	drawCursor();
-		void	hideCursor();
+		void	drawCursor(void);
+		void	hideCursor(void);
 		bool	handleFormattingKeys(int32_t key);
 		int32_t		charXPos(int32_t nOffset);
-		void	makeCursorVisible();
-		void	flushCursorRight();
+		void	makeCursorVisible(void);
+		void	flushCursorRight(void);
 		int32_t		findChar(int32_t nXPos);
 
-		void	handleMouse();
-		void	handleKeyboard();
+		void	handleMouse(void);
+		void	handleKeyboard(void);
 
 		int32_t charLength( int32_t index );
 		

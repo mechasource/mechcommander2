@@ -10,8 +10,8 @@ Objective.h			: Interface for the Objective component.
 #ifndef OBJECTIVE_H
 #define OBJECTIVE_H
 
-//#include "elist.h"
-//#include "estring.h"
+//#include <elist.h>
+//#include <estring.h>
 //#include "tchar.h"
 //#include "mover.h"
 //#include "bldng.h"
@@ -119,14 +119,14 @@ public:
 	CBooleanArray() {}
 	~CBooleanArray() {}
 	void Clear() {
-		m_FlagIDList.Clear();
-		m_valueList.Clear();
+		m_FlagIDList.Clear(void);
+		m_valueList.Clear(void);
 	}
 	int32_t elementPos(EString element) {
 		bool elementFound = false;
 		int32_t pos = 0;
 		CEStringList::EIterator flagIDListIter;
-		for (flagIDListIter = m_FlagIDList.Begin(); !flagIDListIter.IsDone(); flagIDListIter++) {
+		for (flagIDListIter = m_FlagIDList.Begin(void); !flagIDListIter.IsDone(void); flagIDListIter++) {
 			if ((*flagIDListIter) == element) {
 				elementFound = true;
 				break;
@@ -189,7 +189,7 @@ class CDestroyAllEnemyUnits: public CObjectiveCondition {
 public:
 	CDestroyAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DESTROY_ALL_ENEMY_UNITS; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "DestroyAllEnemyUnits"; /* needs to be put somewhere localizable */
 		return retval;
@@ -203,7 +203,7 @@ public:
 	CNumberOfUnitsObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment) { m_num = 0; }
 	virtual bool Read( FitIniFile* missionFile );
 	virtual bool Save( FitIniFile* file );
-	virtual EString InstanceDescription();
+	virtual EString InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition *pMaster) { (*this) = (*(dynamic_cast<const CNumberOfUnitsObjectiveCondition *>(pMaster))); }
 };
 
@@ -211,7 +211,7 @@ class CDestroyNumberOfEnemyUnits: public CNumberOfUnitsObjectiveCondition {
 public:
 	CDestroyNumberOfEnemyUnits(int32_t alignment) : CNumberOfUnitsObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DESTROY_NUMBER_OF_ENEMY_UNITS; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "DestroyNumberOfEnemyUnits"; /* needs to be put somewhere localizable */
 		return retval;
@@ -224,7 +224,7 @@ protected:
 
 public:
 	CSpecificUnitObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment) { m_pUnitWID = 0; }
-	virtual EString InstanceDescription();
+	virtual EString InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition *pMaster) { (*this) = (*(dynamic_cast<const CSpecificUnitObjectiveCondition *>(pMaster))); }
 	virtual bool Save( FitIniFile* file );
 };
@@ -239,7 +239,7 @@ class CDestroySpecificEnemyUnit: public CSpecificEnemyUnitObjectiveCondition {
 public:
 	CDestroySpecificEnemyUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DESTROY_SPECIFIC_ENEMY_UNIT; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "DestroySpecificEnemyUnit"; /* needs to be put somewhere localizable */
 		return retval;
@@ -253,14 +253,14 @@ public:
 	CSpecificStructureObjectiveCondition(int32_t alignment) : CObjectiveCondition(alignment) { m_pBuildingWID = 0; }
 	virtual bool Read( FitIniFile* missionFile );
 	virtual bool Save( FitIniFile* file );
-	virtual EString InstanceDescription();
+	virtual EString InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition *pMaster) { (*this) = (*(dynamic_cast<const CSpecificStructureObjectiveCondition *>(pMaster))); }
 	
 	virtual Stuff::Vector3D GetObjectivePosition()		//Used to draw on tacmap
 	{
 		Building *m_pBuilding = (Building *)ObjectManager->getByWatchID(m_pBuildingWID);
 		if (m_pBuilding)
-			return m_pBuilding->getPosition();
+			return m_pBuilding->getPosition(void);
 			
 		return Stuff::Vector3D(-999999.0f,-999999.0f,-999999.0f);
 	}
@@ -270,7 +270,7 @@ class CDestroySpecificStructure: public CSpecificStructureObjectiveCondition {
 public:
 	CDestroySpecificStructure(int32_t alignment) : CSpecificStructureObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DESTROY_SPECIFIC_STRUCTURE; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "DestroySpecificStructure"; /* needs to be put somewhere localizable */
 		return retval;
@@ -281,7 +281,7 @@ class CCaptureOrDestroyAllEnemyUnits: public CObjectiveCondition {
 public:
 	CCaptureOrDestroyAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_ALL_ENEMY_UNITS; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "CaptureOrDestroyAllEnemyUnits"; /* needs to be put somewhere localizable */
 		return retval;
@@ -292,7 +292,7 @@ class CCaptureOrDestroyNumberOfEnemyUnits: public CNumberOfUnitsObjectiveConditi
 public:
 	CCaptureOrDestroyNumberOfEnemyUnits(int32_t alignment) : CNumberOfUnitsObjectiveCondition(alignment) {}
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_NUMBER_OF_ENEMY_UNITS; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "CaptureOrDestroyNumberOfEnemyUnits"; /* needs to be put somewhere localizable */
 		return retval;
@@ -304,7 +304,7 @@ public:
 	CCaptureOrDestroySpecificEnemyUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_SPECIFIC_ENEMY_UNIT; }
 	bool Read( FitIniFile* missionFile );
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "CaptureOrDestroySpecificEnemyUnit"; /* needs to be put somewhere localizable */
 		return retval;
@@ -316,7 +316,7 @@ public:
 	CCaptureOrDestroySpecificStructure(int32_t alignment) : CSpecificStructureObjectiveCondition(alignment) {}
 	condition_species_type Species() { return CAPTURE_OR_DESTROY_SPECIFIC_STRUCTURE; }
 	bool Read( FitIniFile* missionFile );
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "CaptureOrDestroySpecificStructure"; /* needs to be put somewhere localizable */
 		return retval;
@@ -327,7 +327,7 @@ class CDeadOrFledAllEnemyUnits: public CObjectiveCondition {
 public:
 	CDeadOrFledAllEnemyUnits(int32_t alignment) : CObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DEAD_OR_FLED_ALL_ENEMY_UNITS; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "DeadOrFledAllEnemyUnits"; /* needs to be put somewhere localizable */
 		return retval;
@@ -338,7 +338,7 @@ class CDeadOrFledNumberOfEnemyUnits: public CNumberOfUnitsObjectiveCondition {
 public:
 	CDeadOrFledNumberOfEnemyUnits(int32_t alignment) : CNumberOfUnitsObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DEAD_OR_FLED_NUMBER_OF_ENEMY_UNITS; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "DeadOrFledNumberOfEnemyUnits"; /* needs to be put somewhere localizable */
 		return retval;
@@ -349,7 +349,7 @@ class CDeadOrFledSpecificEnemyUnit: public CSpecificEnemyUnitObjectiveCondition 
 public:
 	CDeadOrFledSpecificEnemyUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() { return DEAD_OR_FLED_SPECIFIC_ENEMY_UNIT; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "DeadOrFledSpecificEnemyUnit"; /* needs to be put somewhere localizable */
 		return retval;
@@ -361,7 +361,7 @@ public:
 	CCaptureUnit(int32_t alignment) : CSpecificEnemyUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() { return CAPTURE_UNIT; }
 	bool Read( FitIniFile* missionFile );
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "CaptureSpecificUnit"; /* needs to be put somewhere localizable */
 		return retval;
@@ -373,7 +373,7 @@ public:
 	CCaptureStructure(int32_t alignment) : CSpecificStructureObjectiveCondition(alignment) {}
 	condition_species_type Species() { return CAPTURE_STRUCTURE; }
 	bool Read( FitIniFile* missionFile );
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "CaptureStructure"; /* needs to be put somewhere localizable */
 		return retval;
@@ -385,7 +385,7 @@ public:
 	CGuardSpecificUnit(int32_t alignment) : CSpecificUnitObjectiveCondition(alignment) {}
 	condition_species_type Species() { return GUARD_SPECIFIC_UNIT; }
 	bool Read( FitIniFile* missionFile );
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "GuardSpecificUnit"; /* needs to be put somewhere localizable */
 		return retval;
@@ -396,7 +396,7 @@ class CGuardSpecificStructure: public CSpecificStructureObjectiveCondition {
 public:
 	CGuardSpecificStructure(int32_t alignment) : CSpecificStructureObjectiveCondition(alignment) {}
 	condition_species_type Species() { return GUARD_SPECIFIC_STRUCTURE; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "GuardSpecificStructure"; /* needs to be put somewhere localizable */
 		return retval;
@@ -415,7 +415,7 @@ public:
 	}
 	virtual bool Read( FitIniFile* missionFile );
 	virtual bool Save( FitIniFile* file );
-	virtual EString InstanceDescription();
+	virtual EString InstanceDescription(void);
 	virtual void CastAndCopy(const CObjectiveCondition *pMaster) { (*this) = (*(dynamic_cast<const CAreaObjectiveCondition *>(pMaster))); }
 	
 	virtual Stuff::Vector3D GetObjectivePosition()		//Used to draw on tacmap
@@ -428,7 +428,7 @@ class CMoveAnyUnitToArea: public CAreaObjectiveCondition {
 public:
 	CMoveAnyUnitToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ANY_UNIT_TO_AREA; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "MoveAnyUnitToArea"; /* needs to be put somewhere localizable */
 		return retval;
@@ -439,7 +439,7 @@ class CMoveAllUnitsToArea: public CAreaObjectiveCondition {
 public:
 	CMoveAllUnitsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ALL_UNITS_TO_AREA; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "MoveAllUnitsToArea"; /* needs to be put somewhere localizable */
 		return retval;
@@ -450,7 +450,7 @@ class CMoveAllSurvivingUnitsToArea: public CAreaObjectiveCondition {
 public:
 	CMoveAllSurvivingUnitsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ALL_SURVIVING_UNITS_TO_AREA; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "MoveAllSurvivingUnitsToArea"; /* needs to be put somewhere localizable */
 		return retval;
@@ -461,7 +461,7 @@ class CMoveAllSurvivingMechsToArea: public CAreaObjectiveCondition {
 public:
 	CMoveAllSurvivingMechsToArea(int32_t alignment) : CAreaObjectiveCondition(alignment) {}
 	condition_species_type Species() { return MOVE_ALL_SURVIVING_MECHS_TO_AREA; }
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "MoveAllSurvivingMechsToArea"; /* needs to be put somewhere localizable */
 		return retval;
@@ -477,12 +477,12 @@ public:
 	condition_species_type Species() { return BOOLEAN_FLAG_IS_SET; }
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "BooleanFlagIsSet"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	EString InstanceDescription();
+	EString InstanceDescription(void);
 	void CastAndCopy(const CObjectiveCondition *pMaster) { (*this) = (*(dynamic_cast<const CBooleanFlagIsSet *>(pMaster))); }
 };
 
@@ -494,12 +494,12 @@ public:
 	condition_species_type Species() { return ELAPSED_MISSION_TIME; }
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
-	objective_status_type Status();
+	objective_status_type Status(void);
 	EString Description() {
 		EString retval = "ElapsedMissionTime"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	EString InstanceDescription();
+	EString InstanceDescription(void);
 	void CastAndCopy(const CObjectiveCondition *pMaster) { (*this) = (*(dynamic_cast<const CElapsedMissionTime *>(pMaster))); }
 };
 
@@ -553,12 +553,12 @@ public:
 	bool Init() { return true; }
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
-	int32_t Execute();
+	int32_t Execute(void);
 	EString Description() {
 		EString retval = "PlayBIK"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	EString InstanceDescription();
+	EString InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction *pMaster) { (*this) = (*(dynamic_cast<const CPlayBIK *>(pMaster))); }
 };
 
@@ -571,12 +571,12 @@ public:
 	bool Init() { return true; }
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
-	int32_t Execute();
+	int32_t Execute(void);
 	EString Description() {
 		EString retval = "PlayWAV"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	EString InstanceDescription();
+	EString InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction *pMaster) { (*this) = (*(dynamic_cast<const CPlayWAV *>(pMaster))); }
 };
 
@@ -589,12 +589,12 @@ public:
 	bool Init() { return true; }
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
-	int32_t Execute();
+	int32_t Execute(void);
 	EString Description() {
 		EString retval = "DisplayTextMessage"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	EString InstanceDescription();
+	EString InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction *pMaster) { (*this) = (*(dynamic_cast<const CDisplayTextMessage *>(pMaster))); }
 };
 
@@ -607,12 +607,12 @@ public:
 	bool Init() { return true; }
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
-	int32_t Execute();
+	int32_t Execute(void);
 	EString Description() {
 		EString retval = "DisplayResourceTextMessage"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	EString InstanceDescription();
+	EString InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction *pMaster) { (*this) = (*(dynamic_cast<const CDisplayResourceTextMessage *>(pMaster))); }
 };
 
@@ -626,12 +626,12 @@ public:
 	bool Init() { return true; }
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
-	int32_t Execute();
+	int32_t Execute(void);
 	EString Description() {
 		EString retval = "SetBooleanFlag"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	EString InstanceDescription();
+	EString InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction *pMaster) { (*this) = (*(dynamic_cast<const CSetBooleanFlag *>(pMaster))); }
 };
 
@@ -644,12 +644,12 @@ public:
 	bool Init() { return true; }
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
-	int32_t Execute();
+	int32_t Execute(void);
 	EString Description() {
 		EString retval = "MakeNewTechnologyAvailable"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	EString InstanceDescription();
+	EString InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction *pMaster) { (*this) = (*(dynamic_cast<const CMakeNewTechnologyAvailable *>(pMaster))); }
 };
 
@@ -663,12 +663,12 @@ public:
 	bool Init() { return true; }
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
-	int32_t Execute();
+	int32_t Execute(void);
 	EString Description() {
 		EString retval = "_RemoveStructure"; /* needs to be put somewhere localizable */
 		return retval;
 	}
-	EString InstanceDescription();
+	EString InstanceDescription(void);
 	void CastAndCopy(const CObjectiveAction *pMaster) { (*this) = (*(dynamic_cast<const C_RemoveStructure *>(pMaster))); }
 };
 
@@ -728,17 +728,17 @@ public:
 
 	CObjective(int32_t alignment);
 	CObjective(const CObjective &master) { (*this) = master; }
-	~CObjective() { Clear(); }
+	~CObjective() { Clear(void); }
 	CObjective &operator=(const CObjective &master);
 	void Init() {}
-	void Clear();
+	void Clear(void);
 	int32_t Alignment() { return m_alignment; }
 	void Alignment(int32_t alignment);
-	bool Read( FitIniFile* missionFile, int32_t objectiveNum, int32_t version, int32_t markerNum, char secondaryMarkerNum );
+	bool Read( FitIniFile* missionFile, int32_t objectiveNum, uint32_t version, int32_t markerNum, char secondaryMarkerNum );
 	bool Save( FitIniFile* file, int32_t objectiveNum );
 	/* The following function evaluates the status of the objective irrespective of the other
 	objectives (i.e. it disregards qualifiers like "PreviousPrimaryObjectiveMustbeComplete"). */
-	objective_status_type Status();
+	objective_status_type Status(void);
 	/* The following function evaluates the status of the objective in the context of the given
 	objectives. */
 	objective_status_type Status(CObjectives &objectives);
@@ -747,20 +747,20 @@ public:
 	objectives. It returns a bool telling me if the objective has failed or been completed since I last checked!*/
 	bool StatusChangedSuccess (void);
 	bool StatusChangedFailed (void);
-	EString Title() const { return m_title; }
+	EString Title(void) const { return m_title; }
 	void Title(EString title) { m_title = title; }
-	bool TitleUseResourceString() const { return m_titleUseResourceString; }
+	bool TitleUseResourceString(void) const { return m_titleUseResourceString; }
 	void TitleUseResourceString(bool titleUseResourceString) { m_titleUseResourceString = titleUseResourceString; }
-	int32_t TitleResourceStringID() const { return m_titleResourceStringID; }
+	int32_t TitleResourceStringID(void) const { return m_titleResourceStringID; }
 	void TitleResourceStringID(int32_t titleResourceStringID) { m_titleResourceStringID = titleResourceStringID; }
-	EString LocalizedTitle() const;
-	EString Description() const { return m_description; }
+	EString LocalizedTitle(void) const;
+	EString Description(void) const { return m_description; }
 	void Description(EString description) { m_description = description; }
-	bool DescriptionUseResourceString() const { return m_descriptionUseResourceString; }
+	bool DescriptionUseResourceString(void) const { return m_descriptionUseResourceString; }
 	void DescriptionUseResourceString(bool descriptionUseResourceString) { m_descriptionUseResourceString = descriptionUseResourceString; }
-	int32_t DescriptionResourceStringID() const { return m_descriptionResourceStringID; }
+	int32_t DescriptionResourceStringID(void) const { return m_descriptionResourceStringID; }
 	void DescriptionResourceStringID(int32_t descriptionResourceStringID) { m_descriptionResourceStringID = descriptionResourceStringID; }
-	EString LocalizedDescription() const;
+	EString LocalizedDescription(void) const;
 	int32_t Priority() { return m_priority; }
 	void Priority(int32_t priority) { m_priority = priority; }
 	int32_t ResourcePoints() { return m_resourcePoints; }
@@ -811,15 +811,15 @@ class CObjectives : public/*maybe protected*/ EList <CObjective *, CObjective *>
 public:
 	CObjectives(int32_t alignment = 0) { m_alignment = alignment; }
 	CObjectives(const CObjectives &master) { (*this) = master; }
-	~CObjectives() { Clear(); }
+	~CObjectives() { Clear(void); }
 	CObjectives &operator=(const CObjectives &master);
-	void Init();
-	void Clear();
+	void Init(void);
+	void Clear(void);
 	int32_t Alignment() { return m_alignment; }
 	void Alignment(int32_t alignment);
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* file );
-	objective_status_type Status();
+	objective_status_type Status(void);
 	CBooleanArray boolFlags;
 private:
 	typedef EList <CObjective *, CObjective *> inherited;

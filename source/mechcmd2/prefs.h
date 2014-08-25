@@ -11,9 +11,9 @@
 
 class CPrefs {
 public:
-	CPrefs();
+	CPrefs(void);
 	int32_t load( PCSTR pFileName = "options");
-	int32_t save();
+	int32_t save(void);
 	int32_t applyPrefs(bool bApplyResolution = 1);
 
 	void setNewName( PCSTR pNewName );

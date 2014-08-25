@@ -42,7 +42,7 @@ public:
 	SplashIntro(){}
 	virtual ~SplashIntro(){}
 
-	void init();
+	void init(void);
 
 };
 
@@ -51,21 +51,21 @@ class MainMenu: public LogisticsScreen
 {
 	public:
 
-		MainMenu();
-		virtual ~MainMenu();
+		MainMenu(void);
+		virtual ~MainMenu(void);
 
 
 		int32_t init( FitIniFile& file );
 
-		virtual void begin();
-		virtual void end();
-		virtual void update();
-		virtual void render();
+		virtual void begin(void);
+		virtual void end(void);
+		virtual void update(void);
+		virtual void render(void);
 
 		void setHostLeftDlg( PCSTR playerName );
 
 		void setDrawBackground( bool bDrawBackground );
-		void skipIntro();
+		void skipIntro(void);
 
 		virtual int32_t	handleMessage( uint32_t, uint32_t );
 		

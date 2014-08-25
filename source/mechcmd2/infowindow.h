@@ -30,12 +30,12 @@ class InfoWindow
 {
 	public:
 
-		InfoWindow();
-		~InfoWindow();
+		InfoWindow(void);
+		~InfoWindow(void);
 
 		void setUnit( Mover* pNewUnit );
-		void update();
-		void render();
+		void update(void);
+		void render(void);
 
 	private:
 
@@ -62,7 +62,7 @@ class InfoWindow
 		friend class ControlGui;
 
 		// HELPER FUNCTIONS
-		void drawScrollingStuff();
+		void drawScrollingStuff(void);
 		void handleClick( int32_t ID );
 		void drawDivider( float yVal );
 		void drawSkillBar( int32_t skill, float yVal, float height );

@@ -327,11 +327,11 @@ class WorldChunk {
 		}
 
 		WorldChunk (void) {
-			init();
+			init(void);
 		}
 
 		~WorldChunk (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void buildMissionScriptMessage (int32_t messageCode,
@@ -382,7 +382,7 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 	// Keep the constructor private because we don't want 
 	// anyone to call it when there is an undefined size 
 	// for the class.
-	MCMSG_DeployForce();
+	MCMSG_DeployForce(void);
 	
 	uint8_t dataFlags;
 
@@ -417,7 +417,7 @@ class MCMSG_DeployForce: public FIGuaranteedMessageHeader
 		// member functions
 		void Init()
 		{
-			FIGuaranteedMessageHeader::Init();
+			FIGuaranteedMessageHeader::Init(void);
 			SetType(MCMSG_DEPLOY_FORCE);
 			dataFlags = 0;
 			partNameIndex = 0;
@@ -512,7 +512,7 @@ class MCMSG_JoinTeam:public FIGuaranteedMessageHeader
 	public:
 		void Init()
 		{
-			FIGuaranteedMessageHeader::Init();
+			FIGuaranteedMessageHeader::Init(void);
 			SetType(MCMSG_JOIN_TEAM);
 			player = -1;
 			team = -99;
@@ -533,7 +533,7 @@ class MCMSG_RemoveForce:public FIGuaranteedMessageHeader
 	public:	
 		void Init()
 		{
-			FIGuaranteedMessageHeader::Init();
+			FIGuaranteedMessageHeader::Init(void);
 			SetType(MCMSG_REMOVE_FORCE);
 			slotNumber = 0;
 			lanceNumber = 0;
@@ -555,7 +555,7 @@ class MCMSG_Generic {
 	public:
 
 		MCMSG_Generic (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -576,7 +576,7 @@ class MCMSG_PlayerCID {
 	public:
 
 		MCMSG_PlayerCID (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -603,7 +603,7 @@ class MCMSG_PlayerUpdate {
 	public:
 
 		MCMSG_PlayerUpdate (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -625,7 +625,7 @@ class MCMSG_MissionSettingsUpdate {
 	public:
 
 		MCMSG_MissionSettingsUpdate (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -648,7 +648,7 @@ class MCMSG_MissionSetup {
 	public:
 
 		MCMSG_MissionSetup (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -669,7 +669,7 @@ class MCMSG_PlayerInfo {
 	public:
 
 		MCMSG_PlayerInfo (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -695,7 +695,7 @@ class MCMSG_Chat {
 	public:
 
 		MCMSG_Chat (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -721,7 +721,7 @@ class MCMSG_PlayerCheckIn {
 	public:
 
 		MCMSG_PlayerCheckIn (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -744,7 +744,7 @@ class MCMSG_PlayerSetup {
 	public:
 
 		MCMSG_PlayerSetup (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -769,7 +769,7 @@ class MCMSG_PlayerInsignia {
 	public:
 
 		MCMSG_PlayerInsignia (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -792,7 +792,7 @@ class MCMSG_StartMission {
 	public:
 
 		MCMSG_StartMission (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -817,7 +817,7 @@ class MCMSG_EndMission {
 	public:
 
 		MCMSG_EndMission (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -839,7 +839,7 @@ class MCMSG_LeaveSession {
 	public:
 
 		MCMSG_LeaveSession (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -866,7 +866,7 @@ class MCMSG_PlayerOrder {
 	public:
 
 		MCMSG_PlayerOrder (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -893,7 +893,7 @@ class MCMSG_HoldPosition {
 	public:
 
 		MCMSG_HoldPosition (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -924,7 +924,7 @@ class MCMSG_PlayerMoverGroup {
 	public:
 
 		MCMSG_PlayerMoverGroup (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -949,7 +949,7 @@ class MCMSG_PlayerArtillery {
 		uint32_t		chunk;
 
 		MCMSG_PlayerArtillery (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -977,7 +977,7 @@ class MCMSG_MoverUpdate {
 	public:
 
 		MCMSG_MoverUpdate (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -1000,7 +1000,7 @@ class MCMSG_TurretUpdate {
 	public:
 
 		MCMSG_TurretUpdate (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -1026,7 +1026,7 @@ class MCMSG_MoverWeaponFireUpdate {
 	public:
 
 		MCMSG_MoverWeaponFireUpdate (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -1050,7 +1050,7 @@ class MCMSG_TurretWeaponFireUpdate {
 	public:
 
 		MCMSG_TurretWeaponFireUpdate (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -1075,7 +1075,7 @@ class MCMSG_MoverCriticalUpdate {
 	public:
 
 		MCMSG_MoverCriticalUpdate (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -1102,7 +1102,7 @@ class MCMSG_WeaponHitUpdate {
 	public:
 
 		MCMSG_WeaponHitUpdate (void) {
-			init();
+			init(void);
 		}
 
 		void init() {
@@ -1127,7 +1127,7 @@ class MCMSG_WorldUpdate {
 	public:
 
 		MCMSG_WorldUpdate (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -1154,7 +1154,7 @@ class MCMSG_Reinforcement {
 	public:
 
 		MCMSG_Reinforcement (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -1181,7 +1181,7 @@ class MCMSG_NewServer {
 	public:
 
 		MCMSG_NewServer (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -1205,7 +1205,7 @@ class MCMSG_FileReport {
 		char				fileName[];
 
 		MCMSG_FileReport (void) {
-			init();
+			init(void);
 		}
 
 		void init() {
@@ -1228,7 +1228,7 @@ class MCMSG_PassValue {
 	public:
 
 		MCMSG_PassValue (void) {
-			init();
+			init(void);
 		}
 
 		void init (void) {
@@ -1424,13 +1424,13 @@ class MultiPlayer {
 
 
 		MultiPlayer (void) {
-			init();
+			init(void);
 		}
 		
 		void destroy (void);
 
 		~MultiPlayer (void) {
-			destroy();
+			destroy(void);
 		}
 
 		bool isServer (void) {
@@ -1794,7 +1794,7 @@ class MultiPlayer {
 
 		void getChatMessages( PSTR* buffer, int32_t* playerIDs, int32_t& count );
 
-		void redistributeRP();
+		void redistributeRP(void);
 };
 
 bool StartupNetworking (void);

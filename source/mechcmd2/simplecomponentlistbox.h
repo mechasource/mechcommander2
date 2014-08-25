@@ -25,8 +25,8 @@ class ComponentListBox: public aListBox
 {
 	public:
 
-		ComponentListBox();
-		~ComponentListBox();
+		ComponentListBox(void);
+		~ComponentListBox(void);
 		void setMech( LogisticsVariant* pMech );
 		void setVehicle( LogisticsVehicle* pVehicle );
 		void setComponents( int32_t componentCount, LogisticsComponent** components );

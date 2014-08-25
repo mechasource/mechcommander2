@@ -11,7 +11,7 @@
 #include <mechgui/aedit.h>
 #include <mechgui/afont.h>
 
-#include "estring.h"
+#include <estring.h>
 
 namespace mechgui {
 
@@ -34,8 +34,8 @@ namespace mechgui {
 
 		};
 
-		virtual void update(){ aObject::update(); }
-		virtual void render(){ aObject::render(); }
+		virtual void update(){ aObject::update(void); }
+		virtual void render(){ aObject::render(void); }
 
 		void setState( int32_t newState ){ state = (State)newState; }
 		State getState( ) { return state; }
@@ -63,16 +63,16 @@ namespace mechgui {
 		aTextListItem( const aFont& newFont );
 		aTextListItem( int32_t fontResID );
 
-		virtual ~aTextListItem();
+		virtual ~aTextListItem(void);
 
 		void		setText( PCSTR text );
 		void		setText( int32_t resID );
-		PCSTR getText() const;
-		void		sizeToText();
+		PCSTR getText(void) const;
+		void		sizeToText(void);
 
 		void init( FitIniFile& file, PCSTR blockName = "Text0" );
 
-		virtual void render();
+		virtual void render(void);
 		void		setAlignment( int32_t newA ){ alignment = newA; }
 
 		void		forceToTop( bool bForce ) { bForceToTop = bForce; }
@@ -104,8 +104,8 @@ namespace mechgui {
 		aAnimTextListItem& operator=( const aAnimTextListItem& src ); 
 
 		void init( FitIniFile& file, PCSTR blockName = "Text0" );
-		virtual void render();
-		virtual void update();
+		virtual void render(void);
+		virtual void update(void);
 
 	protected:
 
@@ -117,9 +117,9 @@ namespace mechgui {
 	class aLocalizedListItem : public aAnimTextListItem
 	{
 	public:
-		aLocalizedListItem();
+		aLocalizedListItem(void);
 		virtual int32_t	init( FitIniFile* file, PCSTR blockName );
-		virtual void		render();
+		virtual void		render(void);
 
 		void			setHiddenText( PCSTR pText ){ hiddenText = pText; }
 		PCSTR		getHiddenText( ) const { return hiddenText;}
@@ -137,14 +137,14 @@ namespace mechgui {
 	{
 	public:
 
-		aListBox();
+		aListBox(void);
 
 		virtual int32_t		init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
 		void				init( FitIniFile* file, PCSTR blockName );
 
-		virtual void		destroy();
-		virtual void		render();
-		virtual void		update();
+		virtual void		destroy(void);
+		virtual void		render(void);
+		virtual void		update(void);
 		virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 		virtual void	resize(int32_t w, int32_t h);
 
@@ -153,7 +153,7 @@ namespace mechgui {
 		virtual int32_t		RemoveItem( aListItem* itemString, bool bDelete );
 		int32_t 				ChangeItemString(int16_t itemNumber, PSTR newString);
 		int32_t				GetSelectedItem(void) {return itemSelected;};
-		int32_t				GetCheckedItem() const;
+		int32_t				GetCheckedItem(void) const;
 		int32_t				SelectItem(int32_t itemNumber);
 		bool				IsScrollActive(void) {return scrollActive;};
 		int32_t				ActivateScrollbar(void);
@@ -172,10 +172,10 @@ namespace mechgui {
 		virtual void		move( float offsetX, float offsetY );
 		void				setScrollPos( int32_t pos );
 
-		int32_t				getScrollBarWidth();
+		int32_t				getScrollBarWidth(void);
 
 		void				setOrange( bool bOrange );
-		void				enableAllItems();
+		void				enableAllItems(void);
 
 		void setPressFX( int32_t newFX ){ clickSFX = newFX; }
 		void setHighlightFX( int32_t newFX ){ highlightSFX = newFX; }
@@ -213,13 +213,13 @@ namespace mechgui {
 	{
 	public:
 
-		aDropList();
+		aDropList(void);
 
 		virtual int32_t	init( FitIniFile* file, PCSTR blockName );
-		virtual void	destroy();
-		void specialDestroy();
-		virtual void		render();
-		virtual void		update();
+		virtual void	destroy(void);
+		void specialDestroy(void);
+		virtual void		render(void);
+		virtual void		update(void);
 		virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 		virtual bool		pointInside(int32_t xPos, int32_t yPos) const;
 		//virtual void	resize(int32_t w, int32_t h);
@@ -228,7 +228,7 @@ namespace mechgui {
 		int32_t				SelectItem(int32_t item);
 
 		aListBox &ListBox() { return listBox; }
-		bool IsExpanded() { return listBox.isShowing(); }
+		bool IsExpanded() { return listBox.isShowing(void); }
 		void IsExpanded(bool isExpanded);
 		void disable( bool bDisable ){ 
 			if ( bDisable )
@@ -239,7 +239,7 @@ namespace mechgui {
 
 		int32_t				AddItem( uint32_t textID, uint32_t color );
 		int32_t				AddItem( PCSTR text, uint32_t color );
-		int32_t				GetSelectedItem() const { return selectionIndex; }
+		int32_t				GetSelectedItem(void) const { return selectionIndex; }
 
 		aDropList& operator=( const aDropList& );
 
@@ -264,13 +264,13 @@ namespace mechgui {
 	{
 	public:
 
-		aComboBox();
+		aComboBox(void);
 		~aComboBox() {};
 
 		virtual int32_t	init( FitIniFile* file, PCSTR blockName );
-		virtual void	destroy();
-		virtual void		render();
-		virtual void		update();
+		virtual void	destroy(void);
+		virtual void		render(void);
+		virtual void		update(void);
 		virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 		virtual bool		pointInside(int32_t xPos, int32_t yPos) const;
 		//virtual void	resize(int32_t w, int32_t h);
@@ -281,7 +281,7 @@ namespace mechgui {
 		void				setReadOnly( bool bReadOnly ){ entry.setReadOnly( bReadOnly ); }
 		int32_t				AddItem( uint32_t textID, uint32_t color );
 		int32_t				AddItem( PCSTR text, uint32_t color );
-		int32_t				GetSelectedItem() const { return selectionIndex; }
+		int32_t				GetSelectedItem(void) const { return selectionIndex; }
 
 
 		aComboBox& operator=( const aComboBox& );

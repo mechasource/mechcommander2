@@ -328,13 +328,13 @@ class TargetPriorityList {
 		void init (void);
 
 		TargetPriorityList (void) {
-			init ();
+			init (void);
 		}
 
 		void destroy (void);
 
 		~TargetPriorityList (void)	{
-			destroy();
+			destroy(void);
 		}
 
 		int32_t insert (int32_t index, TargetPriorityPtr priority);
@@ -921,7 +921,7 @@ class MechWarrior {
 		void destroy (void);
 
 		~MechWarrior (void)	{
-			destroy();
+			destroy(void);
 		}
 
 		int32_t init (FitIniFile* warriorFile);
@@ -930,7 +930,7 @@ class MechWarrior {
 
 		void update (void);
 
-		void updateMissionSkills();
+		void updateMissionSkills(void);
 
 
 		PSTR getName (void) {
@@ -1246,8 +1246,8 @@ class MechWarrior {
 			return(numTacOrdersQueued);
 		}
 
-		void drawWaypointPath();
-		void updateDrawWaypointPath();
+		void drawWaypointPath(void);
+		void updateDrawWaypointPath(void);
 
 		void executeTacOrderQueue (void);
 
@@ -1490,7 +1490,7 @@ class MechWarrior {
 
 		void clearMovePath (int32_t pathNum); /* {
 			if (moveOrders.path[pathNum])
-				moveOrders.path[pathNum]->clear();
+				moveOrders.path[pathNum]->clear(void);
 		}*/
 
 		bool hasMoveGoal (void) {

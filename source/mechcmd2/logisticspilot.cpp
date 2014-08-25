@@ -160,7 +160,7 @@ PCSTR LogisticsPilot::getSkillText( int32_t skillID )
 	
 }
 
-int32_t	LogisticsPilot::getNumberMissions() const
+int32_t	LogisticsPilot::getNumberMissions(void) const
 {
 	return missionsCompleted;
 
@@ -530,7 +530,7 @@ int32_t LogisticsPilot::turnAverageIntoRank( float avg)
 	return WARRIOR_RANK_GREEN;
 }
 
-int32_t			LogisticsPilot::getSpecialtySkillCount() const
+int32_t			LogisticsPilot::getSpecialtySkillCount(void) const
 {
 	int32_t count = 0;
 	for ( int32_t i = 0; i < NUM_SPECIALTY_SKILLS; i++ )

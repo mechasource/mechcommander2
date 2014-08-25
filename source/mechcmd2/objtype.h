@@ -66,7 +66,7 @@ class ObjectType {
 		}
 		
 		ObjectType (void) {
-			init();
+			init(void);
 		}
 		
 		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
@@ -74,7 +74,7 @@ class ObjectType {
 		int32_t init (FitIniFilePtr objFile);
 		
 		virtual ~ObjectType (void) {
-			destroy();
+			destroy(void);
 		}
 		
 		virtual void destroy (void);
@@ -208,7 +208,7 @@ class ObjectTypeManager {
 		}
 			
 		ObjectTypeManager (void) {
-			init();
+			init(void);
 		}
 
 		int32_t init (PSTR objectFileName, int32_t objectTypeCacheSize, int32_t objectCacheSize, int32_t maxObjectTypes = 1024);
@@ -216,7 +216,7 @@ class ObjectTypeManager {
 		void destroy (void);
 							
 		~ObjectTypeManager (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void remove (int32_t objTypeNum);

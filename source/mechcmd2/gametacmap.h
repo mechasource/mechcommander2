@@ -10,7 +10,7 @@ gameTacMap.h			: Interface for the gameTacMap component.
 #ifndef GAMETACMAP_H
 #define GAMETACMAP_H
 
-#include "tacmap.h"
+#include <tacmap.h>
 
 //*************************************************************************************************
 
@@ -22,7 +22,7 @@ class GameTacMap: public TacMap
 {
 	public:
 
-	GameTacMap();
+	GameTacMap(void);
 	~GameTacMap()
 	{
 		if (buildingPoints)
@@ -33,8 +33,8 @@ class GameTacMap: public TacMap
 	}
 
 	void init( puint8_t bitmapData, int32_t dataSize );
-	void update(); // do not call these two functions from editor
-	void render();
+	void update(void); // do not call these two functions from editor
+	void render(void);
 	
 	bool animate (int32_t objectiveId, int32_t nFlashes);
 

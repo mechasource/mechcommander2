@@ -123,11 +123,11 @@ class WeaponFireChunk {
 		}
 
 		WeaponFireChunk (void) {
-			init();
+			init(void);
 		}
 
 		~WeaponFireChunk (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void buildMoverTarget (GameObjectPtr target,
@@ -204,11 +204,11 @@ class WeaponHitChunk {
 		}
 
 		WeaponHitChunk (void) {
-			init();
+			init(void);
 		}
 
 		~WeaponHitChunk (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void buildMoverTarget (GameObjectPtr target,
@@ -325,7 +325,7 @@ class GameObject {
 		}
 		virtual ~GameObject (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		virtual void init (bool create);
 		virtual void destroy(void);
@@ -515,7 +515,7 @@ class GameObject {
 		virtual Stuff::Vector3D getVelocity (void) 
 		{
 			Stuff::Vector3D result;
-			result.Zero();
+			result.Zero(void);
 			return(result);
 		}
 		

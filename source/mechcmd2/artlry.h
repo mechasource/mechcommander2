@@ -68,11 +68,11 @@ class ArtilleryChunk {
 		}
 
 		ArtilleryChunk (void) {
-			init();
+			init(void);
 		}
 
 		~ArtilleryChunk (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void build (int32_t commanderId,
@@ -131,7 +131,7 @@ class ArtilleryType : public ObjectType {
 		void init (void);
 		
 		ArtilleryType (void) {
-			init();
+			init(void);
 		}
 		
 		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
@@ -139,7 +139,7 @@ class ArtilleryType : public ObjectType {
 		int32_t init (FitIniFilePtr objFile);
 		
 		~ArtilleryType (void) {
-			destroy();
+			destroy(void);
 		}
 		
 		virtual void destroy (void);
@@ -220,7 +220,7 @@ class Artillery : public GameObject
 
 		~Artillery (void) 
 		{
-			destroy();
+			destroy(void);
 		}
 
 		bool recalcBounds (CameraPtr myEye);

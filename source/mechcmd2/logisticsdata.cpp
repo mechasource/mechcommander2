@@ -1780,17 +1780,17 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 	}
 }
 
-const EString& LogisticsData::getCurrentMission() const
+const EString& LogisticsData::getCurrentMission(void) const
 {
 	return missionInfo->getCurrentMission(); 
 }
 
-const EString& LogisticsData::getLastMission() const
+const EString& LogisticsData::getLastMission(void) const
 {
 	return missionInfo->getLastMission(); 
 }
 
-PCSTR  LogisticsData::getCurrentABLScript() const
+PCSTR  LogisticsData::getCurrentABLScript(void) const
 {
 	return missionInfo->getCurrentABLScriptName();
 }
@@ -1837,12 +1837,12 @@ int32_t	LogisticsData::getPilots( LogisticsPilot** pArray, int32_t& count )
 	 return 0;
 }
 
-int32_t LogisticsData::getMaxDropWeight() const
+int32_t LogisticsData::getMaxDropWeight(void) const
 {
 	return  missionInfo->getCurrentDropWeight();
 }
 
-int32_t LogisticsData::getCurrentDropWeight() const
+int32_t LogisticsData::getCurrentDropWeight(void) const
 {
 	int32_t retVal = 0;
 	for ( MECH_LIST::EIterator iter = instance->inventory.Begin(); !iter.IsDone(); iter++ )
@@ -2261,7 +2261,7 @@ PCSTR				LogisticsData::getMissionFriendlyName( PCSTR missionName )
 	return missionInfo->getMissionFriendlyName( missionName );
 }
 
-/*int32_t				LogisticsData::getMaxTeams() const
+/*int32_t				LogisticsData::getMaxTeams(void) const
 {
 /	return missionInfo->getMaxTeams( );
 }*/
@@ -2619,7 +2619,7 @@ int32_t					LogisticsData::getBuildings( Building** bdgs, int32_t& count )
 	
 }
 
-const EString&	LogisticsData::getCampaignName() const
+const EString&	LogisticsData::getCampaignName(void) const
 { 
 	return missionInfo->getCampaignName();
 }
@@ -2630,11 +2630,11 @@ bool				LogisticsData::campaignOver()
 { 
 	return missionInfo->campaignOver();
 }
-PCSTR			LogisticsData::getCurrentBigVideo() const 
+PCSTR			LogisticsData::getCurrentBigVideo(void) const 
 { 
 	return missionInfo->getCurrentBigVideo(); 
 }
-PCSTR			LogisticsData::getFinalVideo() const
+PCSTR			LogisticsData::getFinalVideo(void) const
 { 
 	return missionInfo->getFinalVideo();
 }

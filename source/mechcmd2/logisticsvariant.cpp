@@ -140,7 +140,7 @@ int32_t LogisticsChassis::init( CSVFile* file, int32_t chassisID )
 	
 }
 
-int32_t LogisticsChassis::getArmorClass() const
+int32_t LogisticsChassis::getArmorClass(void) const
 {
 	if (baseArmor < 96)
 		return IDS_ARMOR0;
@@ -155,7 +155,7 @@ int32_t LogisticsChassis::getArmorClass() const
 }
 
 
-int32_t LogisticsChassis::getDisplaySpeed() const
+int32_t LogisticsChassis::getDisplaySpeed(void) const
 {
 	switch( (int32_t)speed )
 	{
@@ -187,7 +187,7 @@ int32_t LogisticsChassis::getDisplaySpeed() const
 	return -1;
 }
 
-int32_t	LogisticsChassis::getSensorID() const
+int32_t	LogisticsChassis::getSensorID(void) const
 {
 	if ( canHaveAdvSensor )
 		return 15;
@@ -201,7 +201,7 @@ int32_t	LogisticsChassis::getSensorID() const
 	return -1;
 }
 
-int32_t LogisticsChassis::getECM() const
+int32_t LogisticsChassis::getECM(void) const
 {
 	if ( canHaveECM )
 		return 38;
@@ -500,7 +500,7 @@ int32_t LogisticsVariant::getCost( ) const
 	return cost;
 }
 
-int32_t LogisticsVariant::getWeight() const
+int32_t LogisticsVariant::getWeight(void) const
 {
 	//Yup.  20% of base weight Plus 7 tons is used by armor and misc components which we do not explicitly track.
 
@@ -514,18 +514,18 @@ int32_t LogisticsVariant::getWeight() const
 	return baseWeight;
 }
 
-const EString& LogisticsVariant::getMechClass() const
+const EString& LogisticsVariant::getMechClass(void) const
 {
 	return chassis->mechClass;   
 }
 
-int32_t			LogisticsVariant::getMaxJumpRange() const
+int32_t			LogisticsVariant::getMaxJumpRange(void) const
 {
 	return 5;
 }
 
 // BOGUS, this is entirely made up.  There is no real spec for jumpranges yet
-int32_t LogisticsVariant::getJumpRange() const
+int32_t LogisticsVariant::getJumpRange(void) const
 {
 	int32_t jumpJetCount = 0;
 
@@ -541,7 +541,7 @@ int32_t LogisticsVariant::getJumpRange() const
 	return 0;
 }
 
-int32_t LogisticsVariant::getHeat() const
+int32_t LogisticsVariant::getHeat(void) const
 {
 	int32_t retVal = 0;
 	for ( int32_t i = 0; i < componentCount; ++i )
@@ -568,16 +568,16 @@ int32_t LogisticsVariant::getArmor( ) const
 	return retArmor;
 }
 
-int32_t LogisticsVariant::getSpeed() const
+int32_t LogisticsVariant::getSpeed(void) const
 {
 	return chassis->speed;
 }
 
-int32_t LogisticsVariant::getDisplaySpeed() const
+int32_t LogisticsVariant::getDisplaySpeed(void) const
 {
 	return chassis->getDisplaySpeed();
 }
-int32_t		LogisticsVariant::getMaxHeat() const
+int32_t		LogisticsVariant::getMaxHeat(void) const
 {
 	int32_t heat = 0;
 	for ( int32_t i = 0; i < componentCount; i++ )
@@ -726,7 +726,7 @@ const LogisticsChassis::ComponentInfo* LogisticsVariant::getComponentAtLocation(
 	return NULL;
 }
 
-bool LogisticsVariant::hasJumpJets() const
+bool LogisticsVariant::hasJumpJets(void) const
 {
 	for ( int32_t i = 0; i < componentCount; i++ )
 	{
@@ -736,7 +736,7 @@ bool LogisticsVariant::hasJumpJets() const
 
 	return false;
 }
-bool LogisticsVariant::hasECM() const
+bool LogisticsVariant::hasECM(void) const
 {
 	for ( int32_t i = 0; i < componentCount; i++ )
 	{
@@ -747,7 +747,7 @@ bool LogisticsVariant::hasECM() const
 	return false;
 
 }
-bool LogisticsVariant::hasSensor() const
+bool LogisticsVariant::hasSensor(void) const
 {
 	for ( int32_t i = 0; i < componentCount; i++ )
 	{
@@ -975,7 +975,7 @@ int32_t			LogisticsVariant::getOptimalRangeString( int32_t& color ) const
 	
 }
 
-bool		LogisticsVariant::allComponentsAvailable() const
+bool		LogisticsVariant::allComponentsAvailable(void) const
 {
 
 	// 06/05/01 hack, we wan't to hide this atlas for the whole game.

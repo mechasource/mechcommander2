@@ -38,11 +38,11 @@ class LightType : public ObjectType {
 	public:
 
 		void init (void) {
-			ObjectType::init();
+			ObjectType::init(void);
 		}
 		
 		LightType (void) {
-			init();
+			init(void);
 		}
 		
 		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
@@ -50,7 +50,7 @@ class LightType : public ObjectType {
 		int32_t init (FitIniFilePtr objFile);
 		
 		~LightType (void) {
-			destroy();
+			destroy(void);
 		}
 		
 		virtual void destroy (void);
@@ -75,7 +75,7 @@ class Light : public GameObject {
 		}
 
 		~Light (void) {
-			destroy();
+			destroy(void);
 		}
 
 		virtual void destroy (void);

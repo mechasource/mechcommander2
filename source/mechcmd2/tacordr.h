@@ -260,11 +260,11 @@ class TacticalOrder {
 		void destroy (void);
 
 		TacticalOrder (void) {
-			init();
+			init(void);
 		}
 
 		~TacticalOrder (void)	{
-			destroy();
+			destroy(void);
 		}
 
 		void setId (int32_t newId) {

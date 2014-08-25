@@ -16,8 +16,8 @@ class aAnimation
 {
 
 public:
-	aAnimation();
-	~aAnimation();
+	aAnimation(void);
+	~aAnimation(void);
 	aAnimation( const aAnimation& );
 
 	
@@ -26,31 +26,31 @@ public:
 
 	int32_t	init(FitIniFile* file, PCSTR prependName);
 	int32_t	initWithBlockName( FitIniFile* file, PCSTR blockName );
-	void	destroy();
+	void	destroy(void);
 
-	void	begin();
-	void	reverseBegin();
-	void	end();
+	void	begin(void);
+	void	reverseBegin(void);
+	void	end(void);
 
-	void	update();
+	void	update(void);
 
-	bool	isAnimating() const { return currentTime != -1.f; }
-	bool	isDone() const;
+	bool	isAnimating(void) const { return currentTime != -1.f; }
+	bool	isDone(void) const;
 
-	float	getXDelta() const;
-	float	getYDelta() const;
+	float	getXDelta(void) const;
+	float	getYDelta(void) const;
 
-	float	getScaleX() const;
-	float	getScaleY() const;
+	float	getScaleX(void) const;
+	float	getScaleY(void) const;
 
-	uint32_t getColor() const;
+	uint32_t getColor(void) const;
 	uint32_t getColor( float time ) const;
 
 	void setReferencePoints( float X, float Y );
 
 	float	getDirection(){ return direction; }
 	float	getCurrentTime() { return currentTime; }
-	float	getMaxTime();
+	float	getMaxTime(void);
 
 	
 
@@ -107,14 +107,14 @@ public:
 	int32_t init( FitIniFile* file, PCSTR blockName );
 
 	void setState( STATE );
-	STATE getState() const;
+	STATE getState(void) const;
 
 	int32_t getCurrentColor( STATE ) const;
 	int32_t getXDelta( STATE ) const;
 	int32_t getYDelta( STATE ) const;
 	float getCurrnetScale( STATE ) const;
 
-	void update();
+	void update(void);
 
 
 

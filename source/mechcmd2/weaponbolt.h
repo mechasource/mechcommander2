@@ -79,7 +79,7 @@ class WeaponBoltType : public ObjectType
 
 		void init (void)
 		{
-			ObjectType::init();
+			ObjectType::init(void);
 		
 			objectTypeClass = WEAPONBOLT_TYPE;
 			objectClass = WEAPONBOLT;
@@ -114,7 +114,7 @@ class WeaponBoltType : public ObjectType
 		
 		WeaponBoltType (void)
 		{
-			init();
+			init(void);
 		}
 		
 		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
@@ -122,7 +122,7 @@ class WeaponBoltType : public ObjectType
 		
 		~WeaponBoltType (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		virtual void destroy (void);
@@ -244,7 +244,7 @@ class WeaponBolt : public GameObject
 			hitTarget = false;
 			
 			timeLeft = 0.0;
-			hsPos.Zero();
+			hsPos.Zero(void);
 			
 			hitLeft = 0.0f;
 			
@@ -259,7 +259,7 @@ class WeaponBolt : public GameObject
 
 		~WeaponBolt (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual void destroy (void);
@@ -281,7 +281,7 @@ class WeaponBolt : public GameObject
 			//If we are setting this effect to not existing, clean up its RAM!!
 			if (!set)
 			{
-				destroy();
+				destroy(void);
 			}
 		}
 
@@ -293,8 +293,8 @@ class WeaponBolt : public GameObject
 
 		void connect (GameObjectPtr source, GameObjectPtr dest, WeaponShotInfo* shotInfo = NULL, int32_t sourceHS = 0, int32_t targetHS = 0)
 		{
-			ownerWID = source->getWatchID();
-			targetWID = dest->getWatchID();
+			ownerWID = source->getWatchID(void);
+			targetWID = dest->getWatchID(void);
 			
 			hotSpotNumber = sourceHS;
 			targetHotSpot = targetHS;
@@ -319,7 +319,7 @@ class WeaponBolt : public GameObject
 				(((WeaponBoltTypePtr)getObjectType())->areaEffectRad > 0.0f))
 			{
 				Stuff::Vector3D targetLoc;
-				targetLoc = ObjectManager->getByWatchID(targetWID)->getPosition();
+				targetLoc = ObjectManager->getByWatchID(targetWID)->getPosition(void);
 				setTargetPosition(targetLoc);
 				targetWID = 0;
 			}
@@ -334,7 +334,7 @@ class WeaponBolt : public GameObject
 		
 		void connect (GameObjectPtr source, Stuff::Vector3D targetLoc, WeaponShotInfo* shotInfo = NULL, int32_t sourceHS = 0)
 		{
-			ownerWID = source->getWatchID();
+			ownerWID = source->getWatchID(void);
 			targetWID = 0;
 			hotSpotNumber = sourceHS;
 			

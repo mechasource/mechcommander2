@@ -76,7 +76,7 @@ class Team {
 		virtual void init (void);
 		
 		Team (void) {
-			init();
+			init(void);
 		}
 			
 		virtual int32_t init (int32_t _id, FitIniFile *pMissionFile = 0);
@@ -131,7 +131,7 @@ class Team {
 		virtual void destroy (void);
 
 		~Team (void) {
-			destroy();
+			destroy(void);
 		}
 
 		static bool lineOfSight (float startLocal, int32_t mCellRow, int32_t mCellCol, float endLocal, int32_t tCellRow, int32_t tCellCol, int32_t teamId, float targetRadius, float startRadius = 0.0f, bool checkVisibleBits = true);

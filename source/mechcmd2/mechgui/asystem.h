@@ -8,7 +8,7 @@
 #define ASYSTEM_H
 
 //#include <gameos.hpp>
-//#include "estring.h"
+//#include <estring.h>
 //#include <mechgui/afont.h>
 //#include "utilities.h"
 
@@ -126,8 +126,8 @@ namespace mechgui {
 		int32_t numberOfChildren(void) const;
 		int32_t globalX(void) const;
 		int32_t globalY(void) const;
-		int32_t globalLeft(void) const { return globalX(); }
-		int32_t globalTop(void) const { return globalY(); }
+		int32_t globalLeft(void) const { return globalX(void); }
+		int32_t globalTop(void) const { return globalY(void); }
 		int32_t globalRight(void) const;
 		int32_t globalBottom(void) const;
 
@@ -167,20 +167,20 @@ namespace mechgui {
 
 		float left(void)
 		{
-			return x();
+			return x(void);
 		}
 		float top(void)
 		{
-			return y();
+			return y(void);
 		}
 		float right(void)
 		{
-			return x() + width();
+			return x() + width(void);
 		}
 
 		float bottom(void)
 		{
-			return y() + height();
+			return y() + height(void);
 		}
 
 

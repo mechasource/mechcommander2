@@ -25,21 +25,21 @@ class aAnimObject: public aObject
 {
 	public:
 
-		aAnimObject();
-		virtual ~aAnimObject();
+		aAnimObject(void);
+		virtual ~aAnimObject(void);
 		aAnimObject& operator=( const aAnimObject& AnimObject );
 
 
 		int32_t init( FitIniFile* file, PCSTR blockName, uint32_t neverFlush = 0);
 
-		virtual void update();
-		virtual void render();
+		virtual void update(void);
+		virtual void render(void);
 
-		void begin() { animInfo.begin(); }
-		void end();
-		void reverseBegin() { animInfo.reverseBegin(); }
+		void begin() { animInfo.begin(void); }
+		void end(void);
+		void reverseBegin() { animInfo.reverseBegin(void); }
 
-		bool isDone() { return animInfo.isDone(); }
+		bool isDone() { return animInfo.isDone(void); }
 
 		aAnimation		animInfo;
 

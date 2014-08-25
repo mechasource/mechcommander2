@@ -236,17 +236,17 @@ class Mission
 		
 		Mission (void)
 		{
-			init();
+			init(void);
 		}
 
 		bool calcComplexDropZones (PSTR missionName, char dropZoneList[MAX_MC_PLAYERS]);
 
 		void init (PSTR missionName, int32_t loadType, int32_t dropZoneID, Stuff::Vector3D* dropZoneList, char commandersToLoad[8][3], int32_t numMoversPerCommander);
 
-		static void initBareMinimum();
+		static void initBareMinimum(void);
 		
-		static void initTGLForMission();
-		static void initTGLForLogistics();
+		static void initTGLForMission(void);
+		static void initTGLForLogistics(void);
 		
 		void start (void);
 
@@ -351,7 +351,7 @@ class Mission
 
 		PCSTR getMissionFileName(){ return missionFileName; }
 		
-		static void initializeStatistics();
+		static void initializeStatistics(void);
 
 		void load (PCSTR filename);
 		void save (PCSTR filename);

@@ -59,13 +59,13 @@ class Commander {
 		virtual void init (void);
 		
 		Commander (void) {
-			init();
+			init(void);
 		}
 			
 		virtual void destroy (void);
 
 		~Commander (void) {
-			destroy();
+			destroy(void);
 		}
 
 		virtual int32_t getId (void) {

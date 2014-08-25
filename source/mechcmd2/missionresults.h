@@ -31,16 +31,16 @@ class MissionResults
 {
 	public:
 
-		MissionResults();
-		~MissionResults();
+		MissionResults(void);
+		~MissionResults(void);
 
-		void init();
+		void init(void);
 
-		void update();
-		void render();
+		void update(void);
+		void render(void);
 
-		void begin();
-		void end();
+		void begin(void);
+		void end(void);
 		bool isDone(){ return bDone; }
 
 		void setHostLeftDlg( PCSTR pName );

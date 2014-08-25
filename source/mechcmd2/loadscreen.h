@@ -29,20 +29,20 @@ class LoadScreenWrapper : public LogisticsScreen
 {
 public:
 
-	LoadScreenWrapper();
+	LoadScreenWrapper(void);
 
-	virtual ~LoadScreenWrapper();
+	virtual ~LoadScreenWrapper(void);
 
 	void init( FitIniFile& file );
 
-	virtual void update();
+	virtual void update(void);
 	virtual void render( int32_t xOffset, int32_t yOffset );
 
-	virtual void begin();
+	virtual void begin(void);
 
 	static LoadScreen*	enterScreen;
 	static LoadScreen*	exitScreen;
-	static void			changeRes();
+	static void			changeRes(void);
 	bool				waitForResChange;
 	bool				bFirstTime;
 };
@@ -52,17 +52,17 @@ class LoadScreen: public LogisticsScreen
 {
 public:
 
-	LoadScreen();
-	virtual ~LoadScreen();
+	LoadScreen(void);
+	virtual ~LoadScreen(void);
 
 	void init( FitIniFile& file, uint32_t neverFlush = 0 );
-	virtual void update();
+	virtual void update(void);
 	virtual void render( int32_t xOffset, int32_t yOffset );
 
-	virtual void begin();
+	virtual void begin(void);
 
-	void resetExitAnims();
-	void setupOutAnims();
+	void resetExitAnims(void);
+	void setupOutAnims(void);
 
 	static void changeRes(FitIniFile& file);
 

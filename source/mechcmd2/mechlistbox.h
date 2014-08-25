@@ -34,13 +34,13 @@ class MechListBoxItem : public aListItem
 {
 public:
 	
-	virtual ~MechListBoxItem();
+	virtual ~MechListBoxItem(void);
 	MechListBoxItem( LogisticsMech* pMech, int32_t count );
 
 	static void init( FitIniFile& file );
 
-	virtual void update();
-	virtual void render();
+	virtual void update(void);
+	virtual void render(void);
 
 	LogisticsMech* getMech( ){ return pMech; }
 	void	resetMech( ) {pMech = NULL; }
@@ -82,9 +82,9 @@ private:
 
 	friend class MechListBox;
 
-	void setMech();
-	void doAdd();
-	void startDrag();
+	void setMech(void);
+	void doAdd(void);
+	void startDrag(void);
 	static void assignAnimation( FitIniFile& file, int32_t& curAnimation );
 
 
@@ -103,26 +103,26 @@ public:
 	MechListBox(bool deleteIfNoInventory, bool bIncludeForceGroup);
 
 	
-	void	setScrollBarOrange();
-	void	setScrollBarGreen();
+	void	setScrollBarOrange(void);
+	void	setScrollBarGreen(void);
 
-	virtual ~MechListBox();
+	virtual ~MechListBox(void);
 	
-	static int32_t		init();
+	static int32_t		init(void);
 	void	drawCBills( bool bDraw );
 
-	virtual void update();
+	virtual void update(void);
 
-	LogisticsMech* getCurrentMech();
+	LogisticsMech* getCurrentMech(void);
 
 	static void initIcon( LogisticsMech* pMec, aObject& icon );
 
 	virtual int32_t		AddItem(aListItem* itemString);
 
 	void	dimItem( LogisticsMech* pMech, bool bDim );
-	void	undimAll();
-	void	disableItemsThatCostMoreThanRP();
-	void	disableItemsThatCanNotGoInFG();
+	void	undimAll(void);
+	void	disableItemsThatCostMoreThanRP(void);
+	void	disableItemsThatCanNotGoInFG(void);
 
 	void	setOrange( bool bOrange );
 

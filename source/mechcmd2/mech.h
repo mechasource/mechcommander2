@@ -224,8 +224,8 @@ class BattleMechType : public ObjectType {
 
 		BattleMechType (void)
 		{
-			ObjectType::init();
-			init();
+			ObjectType::init(void);
+			init(void);
 		}
 		
 		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
@@ -235,7 +235,7 @@ class BattleMechType : public ObjectType {
 		virtual void destroy (void);
 
 		~BattleMechType (void) {
-			destroy();
+			destroy(void);
 		}
 
 		virtual bool handleCollision (GameObjectPtr collidee, GameObjectPtr collider);
@@ -647,7 +647,7 @@ class BattleMech : public Mover {
 		}
 
 		~BattleMech (void) {
-			destroy();
+			destroy(void);
 		}
 
 		virtual bool isCaptureable(int32_t capturingTeamID);

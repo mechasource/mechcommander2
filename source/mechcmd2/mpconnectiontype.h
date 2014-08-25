@@ -28,8 +28,8 @@ class aZonePanel : public aObject
 public:
 	void init(FitIniFile* pFile, LogisticsScreen* pParent);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
-	virtual void		update();
-	virtual void		render();
+	virtual void		update(void);
+	virtual void		render(void);
 
 private:
 	LogisticsScreen *pParentScreen;
@@ -49,7 +49,7 @@ public:
 	}
 	void init(FitIniFile* pFile);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
-	virtual void update();
+	virtual void update(void);
 private:
 	LogisticsScreen *pParentScreen;
 	aAnimButton button0;
@@ -68,11 +68,11 @@ public:
 		connectingTime = 0.f;
 	}
 	void init(FitIniFile* pFile);
-	virtual void destroy();
+	virtual void destroy(void);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
-	virtual void		update();
-	virtual void		render();
-	virtual void		begin();
+	virtual void		update(void);
+	virtual void		render(void);
+	virtual void		begin(void);
 private:
 
 	int32_t		getNum( PSTR pStr, int32_t index1, int32_t index2 );
@@ -95,16 +95,16 @@ class MPConnectionType : public LogisticsScreen
 {
 public:
 	
-	MPConnectionType();
-	virtual ~MPConnectionType();
+	MPConnectionType(void);
+	virtual ~MPConnectionType(void);
 	
 	void init(FitIniFile* file);
-	bool isDone();
-	virtual void		begin();
-	virtual void		end();
+	bool isDone(void);
+	virtual void		begin(void);
+	virtual void		end(void);
  	virtual void render( int32_t xOffset, int32_t yOffset );
-	virtual void render();
-	virtual void update();
+	virtual void render(void);
+	virtual void update(void);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 	bool				bDone;
@@ -132,11 +132,11 @@ class MPPlaceHolderScreen : public LogisticsScreen
 {
 public:
 	
-	//MPPlaceHolderScreen();
-	//virtual ~MPPlaceHolderScreen();
+	//MPPlaceHolderScreen(void);
+	//virtual ~MPPlaceHolderScreen(void);
 	
 	virtual void		begin() { status = RUNNING; }
-	//virtual void		end();
+	//virtual void		end(void);
  	virtual void render( int32_t xOffset, int32_t yOffset ) {
 		static int32_t lastXOffset = 0;
 		static int32_t lastYOffset = 0;
@@ -158,7 +158,7 @@ public:
 		lastYOffset = yOffset;
 	}
 	virtual void render() { render(0, 0); }
-	//virtual void update();
+	//virtual void update(void);
 
 private:
 };

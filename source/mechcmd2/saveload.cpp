@@ -131,8 +131,8 @@ extern void (*AsynFunc)(RECT& WinRect,DDSURFACEDESC2& mouseSurfaceDesc );
 
 #define USE_ABL_LOAD
 
-void initABL (void);
-void closeABL (void);
+void initABL ();
+void closeABL ();
 
 extern float WeaponRanges[NUM_WEAPON_RANGE_TYPES][2];
 extern float OptimalRangePoints[NUM_WEAPON_RANGE_TYPES];
@@ -194,7 +194,7 @@ extern int32_t GameVisibleVertices;
 
 void GetBlockedDoorCells (int32_t moveLevel, int32_t door, PSTR openCells);
 void PlaceStationaryMovers (MoveMap* map);
-void PlaceMovers (void);
+void PlaceMovers ();
 
 extern GameObjectFootPrint* tempSpecialAreaFootPrints;
 extern int32_t tempNumSpecialAreas;

@@ -33,17 +33,17 @@ class OptionsScreenWrapper
 			opt_DONE
 		};
 
-		OptionsScreenWrapper();
-		~OptionsScreenWrapper();
+		OptionsScreenWrapper(void);
+		~OptionsScreenWrapper(void);
 
-		void init();
-		void destroy();
+		void init(void);
+		void destroy(void);
 
-		status_type update();
-		void render();
+		status_type update(void);
+		void render(void);
 
-		void begin();
-		void end();
+		void begin(void);
+		void end(void);
 		bool isDone() { return (!isActive); }
 
 	private:

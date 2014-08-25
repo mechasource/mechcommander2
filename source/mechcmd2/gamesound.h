@@ -41,17 +41,17 @@ class GameSoundSystem : public SoundSystem
 	
 		GameSoundSystem (void)
 		{
-			init();
+			init(void);
 		}
 		
 		~GameSoundSystem (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void init (void)
 		{
-			SoundSystem::init();
+			SoundSystem::init(void);
 
 			wholeMsgDone = true;
 			currentMessage = NULL;

@@ -49,12 +49,12 @@ class Logistics
 	
 		Logistics (void)
 		{
-			init();
+			init(void);
 		}
 		
 		~Logistics (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void init (void)
@@ -93,7 +93,7 @@ class Logistics
 
 		static int32_t _stdcall beginMission( PVOID, int32_t, PVOID[] );
 
-		int32_t DoBeginMission();
+		int32_t DoBeginMission(void);
 		void playFullScreenVideo( PCSTR fileName );
 
 		MC2MoviePtr	bMovie;
@@ -103,7 +103,7 @@ class Logistics
 
 		
 
-		void initializeLogData();
+		void initializeLogData(void);
 		bool		bMissionLoaded;
 		int32_t		lastMissionResult;
 };

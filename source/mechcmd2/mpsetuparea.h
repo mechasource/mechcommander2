@@ -26,20 +26,20 @@ class aColorPicker : public aObject
 {
 public:
 
-	aColorPicker();
+	aColorPicker(void);
 
 	virtual int32_t		init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
 	void				init( FitIniFile* file, PCSTR blockName );
 
-	virtual void		destroy();
-	virtual void		render();
-	virtual void		update();
+	virtual void		destroy(void);
+	virtual void		render(void);
+	virtual void		update(void);
 	virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 	virtual void		move( float offsetX, float offsetY );
 	void				setColor0(int32_t color);
-	int32_t				getColor0() const { return color0; }
+	int32_t				getColor0(void) const { return color0; }
 	void				setColor1(int32_t color);
-	int32_t				getColor1() const { return color1; }
+	int32_t				getColor1(void) const { return color1; }
 
 protected:
 	aRect		mainRect;
@@ -68,7 +68,7 @@ class aStyle1TextListItem : public aTextListItem
 public:
 	aStyle1TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
 	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
-	virtual void		render();
+	virtual void		render(void);
 
 protected:
 	bool hasAnimation;
@@ -81,7 +81,7 @@ class aInsigniaListItem : public aListItem
 public:
 	aInsigniaListItem() { ; }
 	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
-	virtual void update();
+	virtual void update(void);
 
 protected:
 	aObject graphic;
@@ -92,19 +92,19 @@ class MPSetupXScreen : public LogisticsScreen
 {
 public:
 	
-	MPSetupXScreen();
-	virtual ~MPSetupXScreen();
+	MPSetupXScreen(void);
+	virtual ~MPSetupXScreen(void);
 	
 	void init(FitIniFile* file);
-	bool isDone();
-	virtual void		begin();
-	virtual void		end();
+	bool isDone(void);
+	virtual void		begin(void);
+	virtual void		end(void);
  	virtual void render( int32_t xOffset, int32_t yOffset );
-	virtual void render();
-	virtual void update();
+	virtual void render(void);
+	virtual void update(void);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
-	void updateMPSetup(); // put into inventory
+	void updateMPSetup(void); // put into inventory
 
 	bool				bDone;
 

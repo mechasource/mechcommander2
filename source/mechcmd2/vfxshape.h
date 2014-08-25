@@ -18,7 +18,7 @@
 #endif
 
 #ifndef DAPRTYPE_H
-#include "daprtype.h"
+#include <daprtype.h>
 #endif
 
 //---------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ class Shape
 
 		Shape (void) 
 		{
-			init();
+			init(void);
 		}
 
 		int32_t init (puint8_t fileBlock, AppearanceTypePtr, int32_t shapeSize);
@@ -53,7 +53,7 @@ class Shape
 
 		~Shape (void) 
 		{
-			destroy();
+			destroy(void);
 		}
 };
 

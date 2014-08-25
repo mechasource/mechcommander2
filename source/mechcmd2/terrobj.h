@@ -59,8 +59,8 @@ class TerrainObjectType : public ObjectType {
 		void init (void);
 		
 		TerrainObjectType (void) {
-			ObjectType::init();
-			init();
+			ObjectType::init(void);
+			init(void);
 		}
 		
 		virtual void initMiscTerrObj (int32_t objTypeNum);
@@ -70,7 +70,7 @@ class TerrainObjectType : public ObjectType {
 		int32_t init (FitIniFilePtr objFile);
 		
 		~TerrainObjectType (void) {
-			destroy();
+			destroy(void);
 		}
 
 		float getDamageLevel (void) {
@@ -173,7 +173,7 @@ class TerrainObject : public GameObject {
 		}
 
 		~TerrainObject (void) {
-			destroy();
+			destroy(void);
 		}
 
 		virtual void updateDebugWindow (GameDebugWindow* debugWindow);
@@ -209,7 +209,7 @@ class TerrainObject : public GameObject {
 
 		virtual float getDamageLevel (void) 
 		{
-			return ((TerrainObjectTypePtr)getObjectType())->getDamageLevel();
+			return ((TerrainObjectTypePtr)getObjectType())->getDamageLevel(void);
 		}
 
 		virtual float getDestructLevel (void)
@@ -245,12 +245,12 @@ class TerrainObject : public GameObject {
 		
 		virtual float getAppearRadius (void)
 		{
-			return appearance->getRadius();
+			return appearance->getRadius(void);
 		}
 		
 		virtual void setPowerSupply (GameObjectPtr power)
 		{
-			powerSupply = power->getWatchID();
+			powerSupply = power->getWatchID(void);
 		}
 
 		virtual void calcCellFootprint (Stuff::Vector3D& pos);

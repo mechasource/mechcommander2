@@ -180,7 +180,7 @@ extern PSTR startupPakFile;
 
 extern void SortMoverList (int32_t numMovers, MoverPtr* moverList, Stuff::Vector3D dest);
 
-extern void killTheGame(void);
+extern void killTheGame();
 
 #ifndef TERRAINEDIT
 extern DebuggerPtr debugger;

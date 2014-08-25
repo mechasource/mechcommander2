@@ -32,7 +32,7 @@ class aStyle4TextListItem : public aTextListItem
 public:
 	aStyle4TextListItem() { hasAnimation = false; normalColor = 0xff808080; }
 	virtual int32_t	init( FitIniFile* file, PCSTR blockName );
-	virtual void		render();
+	virtual void		render(void);
 
 protected:
 	bool hasAnimation;
@@ -44,16 +44,16 @@ class MPAddAIPlayer : public LogisticsScreen
 {
 public:
 	
-	MPAddAIPlayer();
-	virtual ~MPAddAIPlayer();
+	MPAddAIPlayer(void);
+	virtual ~MPAddAIPlayer(void);
 	
 	void init(FitIniFile* file);
-	bool isDone();
-	virtual void		begin();
-	virtual void		end();
+	bool isDone(void);
+	virtual void		begin(void);
+	virtual void		end(void);
  	virtual void render( int32_t xOffset, int32_t yOffset );
-	virtual void render();
-	virtual void update();
+	virtual void render(void);
+	virtual void update(void);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
 private:

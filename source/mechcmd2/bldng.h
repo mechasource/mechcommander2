@@ -69,8 +69,8 @@ class BuildingType : public ObjectType {
 		void init (void);
 		
 		BuildingType (void) {
-			ObjectType::init();
-			init();
+			ObjectType::init(void);
+			init(void);
 		}
 		
 		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
@@ -78,7 +78,7 @@ class BuildingType : public ObjectType {
 		int32_t init (FitIniFilePtr objFile);
 		
 		~BuildingType (void) {
-			destroy();
+			destroy(void);
 		}
 
 		float getDamageLevel (void) {
@@ -165,7 +165,7 @@ class Building : public TerrainObject
 		}
 
 		~Building (void) {
-			destroy();
+			destroy(void);
 		}
 		
 		virtual void destroy (void);
@@ -219,7 +219,7 @@ class Building : public TerrainObject
 			Stuff::Vector3D hsPos = position;
 			if (appearance)
 			{
-				hsPos = appearance->getHitNode();
+				hsPos = appearance->getHitNode(void);
 				if (hsPos == position)
 				{
 					hsPos.z += appearance->getTopZ() * 0.5f;
@@ -301,7 +301,7 @@ class Building : public TerrainObject
 		
 		virtual float getAppearRadius (void)
 		{
-			return appearance->getRadius();
+			return appearance->getRadius(void);
 		}
 
 		virtual bool canBeCaptured (void)
@@ -311,7 +311,7 @@ class Building : public TerrainObject
 
 		virtual bool isSelectable()
 		{
-			return appearance->isSelectable();
+			return appearance->isSelectable(void);
 		}
 
 		virtual bool isPowerSource(void)
@@ -322,7 +322,7 @@ class Building : public TerrainObject
 		virtual bool isLit (void)
 		{
 			if (appearance)
-				return appearance->getIsLit();
+				return appearance->getIsLit(void);
 				
 			return false;
 		}
@@ -359,7 +359,7 @@ class Building : public TerrainObject
 		
 		virtual float getRefitPoints(void) 
 		{
-			return getDamageLevel() - getDamage();
+			return getDamageLevel() - getDamage(void);
 		}
 
 		virtual bool burnRefitPoints(float pointsToBurn);

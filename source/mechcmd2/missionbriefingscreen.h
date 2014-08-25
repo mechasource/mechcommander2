@@ -28,13 +28,13 @@ class MissionBriefingScreen: public LogisticsScreen
 {
 	public:
 
-	MissionBriefingScreen();
-	virtual ~MissionBriefingScreen();
+	MissionBriefingScreen(void);
+	virtual ~MissionBriefingScreen(void);
 
 	virtual void render( int32_t xOffset, int32_t yOffset );
-	virtual void begin();
-	virtual void end();
-	virtual void update();
+	virtual void begin(void);
+	virtual void end(void);
+	virtual void update(void);
 	void	init( FitIniFile* file );
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
 

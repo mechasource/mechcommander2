@@ -87,13 +87,13 @@ public:
 	void init (void);
 
 	GoalObject (void) {
-		init ();
+		init (void);
 	}
 
 	void destroy (void);
 
 	~GoalObject (void)	{
-		destroy();
+		destroy(void);
 	}
 
 	void initObject (PSTR name, GameObjectPtr obj);
@@ -127,13 +127,13 @@ public:
 	void init (void);
 
 	GoalManager (void) {
-		init ();
+		init (void);
 	}
 
 	void destroy (void);
 
 	~GoalManager (void)	{
-		destroy();
+		destroy(void);
 	}
 
 	void setup (int32_t poolSize);

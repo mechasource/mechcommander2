@@ -19,11 +19,11 @@ namespace mechgui {
 	class aButton : public aObject
 	{
 	public:
-		aButton();
+		aButton(void);
 		int32_t	init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
-		void	destroy();
-		virtual void	update();
-		virtual void	render();
+		void	destroy(void);
+		virtual void	update(void);
+		virtual void	render(void);
 
 		void	init( FitIniFile& file, PCSTR headerName, HGOSFONT3D font = 0 );
 
@@ -39,10 +39,10 @@ namespace mechgui {
 
 
 		void press( bool );
-		void toggle();
+		void toggle(void);
 
 		void disable( bool );
-		bool isEnabled();
+		bool isEnabled(void);
 		bool isPressed() { return state == PRESSED; }
 		void makeAmbiguous( bool bAmbiguous );
 		void setSinglePress(){ singlePress = true; }
@@ -50,7 +50,7 @@ namespace mechgui {
 
 		void hide( bool );
 
-		int32_t getID();
+		int32_t getID(void);
 		void setID( int32_t ID );
 		void setText( int32_t newID ) { data.textID = newID; }
 
@@ -118,12 +118,12 @@ namespace mechgui {
 	{
 	public:
 
-		aAnimButton();
+		aAnimButton(void);
 		void	init( FitIniFile& file, PCSTR headerName, HGOSFONT3D font = 0 );
-		virtual void update();
-		virtual void render();
+		virtual void update(void);
+		virtual void render(void);
 
-		void destroy();
+		void destroy(void);
 
 		aAnimButton& operator=( const aAnimButton& src);
 		aAnimButton( const aAnimButton& src );

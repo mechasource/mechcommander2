@@ -150,7 +150,7 @@ class ObjectBlockManager
 		
 		ObjectBlockManager (void)
 		{
-			init();
+			init(void);
 		}
 		
 		void destroy (void);
@@ -159,7 +159,7 @@ class ObjectBlockManager
 		
 		~ObjectBlockManager (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		PacketFilePtr getObjectDataFile (void) {

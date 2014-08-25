@@ -33,7 +33,7 @@ public:
 
 	virtual void init (void)
 	{
-		Camera::init();
+		Camera::init(void);
 		targetObject = NULL;
 		compass = NULL;
 		lastShadowLightPitch = 0.0f;
@@ -48,7 +48,7 @@ public:
 
 	~GameCamera (void)
 	{
-		destroy();
+		destroy(void);
 	}
 
 	void destroy (void);
@@ -86,7 +86,7 @@ public:
 		targetObject = target;
 		if( target )
 		{
-			//float newRotation = targetObject->getRotation();
+			//float newRotation = targetObject->getRotation(void);
 			//setCameraRotation(newRotation,newRotation);
 		}
 	}
@@ -108,9 +108,9 @@ public:
 			i++;
 		}
 
-		tiltNormal();
+		tiltNormal(void);
 		setTarget(mvt);
-		ZoomTight();
+		ZoomTight(void);
 	}
 
 	void toggleCompass()

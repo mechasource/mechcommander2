@@ -12,7 +12,7 @@ ComponentListBox.h			: Interface for the ComponentListBox component.
 
 //#include <mechgui/alistbox.h>
 //#include <mechgui/aanim.h>
-//#include "elist.h"
+//#include <elist.h>
 
 class LogisticsVariant;
 class LogisticsComponent;
@@ -34,15 +34,15 @@ class ComponentListItem : public aListItem
 public:
 
 	ComponentListItem( LogisticsComponent* pComp );
-	virtual ~ComponentListItem();
+	virtual ~ComponentListItem(void);
 
 	static int32_t init( FitIniFile& file );
 
 	LogisticsComponent* getComponent() { return pComponent; }
 
-	virtual void render();
+	virtual void render(void);
 
-	void	update();
+	void	update(void);
 
 private:
 
@@ -69,9 +69,9 @@ private:
 	static void assignAnimation( FitIniFile& file,
 		int32_t whichChild, char animNames[COMP_ANIMATION_COUNT][32], aObject* pObject );
 
-	void doAdd();
-	void setComponent();
-	void startDrag();
+	void doAdd(void);
+	void setComponent(void);
+	void startDrag(void);
 
 
 
@@ -81,13 +81,13 @@ class ComponentIconListBox : public aListBox
 {
 
 public:
-	ComponentIconListBox();
-	virtual ~ComponentIconListBox();
+	ComponentIconListBox(void);
+	virtual ~ComponentIconListBox(void);
 	void setType( int32_t Type, int32_t orThisType, int32_t orThis);
-	virtual void update();
+	virtual void update(void);
 
-	LogisticsComponent* getComponent();
-	int32_t selectFirstAvailableComponent();
+	LogisticsComponent* getComponent(void);
+	int32_t selectFirstAvailableComponent(void);
 
 	static ComponentIconListBox* s_instance;
 

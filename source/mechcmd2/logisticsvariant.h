@@ -17,7 +17,7 @@ class LogisticsComponent;
 class CSVFile;
 class FitIniFile;
 
-#include "estring.h"
+#include <estring.h>
 
 //#pragma warning (disable:4514)
 
@@ -37,22 +37,22 @@ public:
 	LogisticsChassis( );
 	int32_t				init( CSVFile* fileName, int32_t chassisID );
 	void			setFitID( int32_t id ){ fitID = id; }
-	int32_t				getNameID() const { return chassisNameID; }
-	int32_t				getEncyclopediaID() const { return encyclopediaID; }
-	const EString& getFileName() const { return fileName; }
-	int32_t				getHouseID() const{ return houseID; }
-	float			getMaxWeight() const{ return maxWeight; }
-	const EString&	getMechClass() const  { return mechClass; }
-	int32_t			getArmor() const { return baseArmor; }
-	int32_t				getArmorClass() const;
-	float			getSpeed() const { return speed; }
-	int32_t				getDisplaySpeed() const;
+	int32_t				getNameID(void) const { return chassisNameID; }
+	int32_t				getEncyclopediaID(void) const { return encyclopediaID; }
+	const EString& getFileName(void) const { return fileName; }
+	int32_t				getHouseID(void) const{ return houseID; }
+	float			getMaxWeight(void) const{ return maxWeight; }
+	const EString&	getMechClass(void) const  { return mechClass; }
+	int32_t			getArmor(void) const { return baseArmor; }
+	int32_t				getArmorClass(void) const;
+	float			getSpeed(void) const { return speed; }
+	int32_t				getDisplaySpeed(void) const;
 	void			setScale( float newScale ) { scale = newScale; }
-	float			getScale() const { return scale; }
-	int32_t			getMaxArmor() const { return maxArmor; }
-	int32_t				getSensorID() const;
-	int32_t				getECM() const;
-	bool			jumpJetsAllowed() const { return canHaveJumpJets; }
+	float			getScale(void) const { return scale; }
+	int32_t			getMaxArmor(void) const { return maxArmor; }
+	int32_t				getSensorID(void) const;
+	int32_t				getECM(void) const;
+	bool			jumpJetsAllowed(void) const { return canHaveJumpJets; }
 
 protected:
 
@@ -118,50 +118,50 @@ protected:
 
 	public:
 
-		LogisticsVariant();
+		LogisticsVariant(void);
 		LogisticsVariant( const LogisticsChassis* pChassis, bool isDesignerMech );
 		LogisticsVariant( const LogisticsVariant&  ); // going to need copy c'tor
-		virtual ~LogisticsVariant();
+		virtual ~LogisticsVariant(void);
 		
 		int32_t init( CSVFile* fileName, LogisticsChassis*, int32_t blockID );
 
 		int32_t		compareWeight( LogisticsVariant* );
 		
-		inline bool			isAvailable() const { return (availableToUser && !bHidden); }
-		uint32_t	getID() const { return ID; }
-		float			getMaxWeight() const { return chassis->maxWeight; }
-		int32_t			getChassisName() const { return chassis->chassisNameID; }
-		const EString&		getName() const { return variantName; }
-		int32_t			getEncyclopediaID() const { return chassis->encyclopediaID; }
-		int32_t			getHelpID() const { return chassis->helpID; }
-		int32_t			getBaseCost() const { return chassis->baseCost; }
-		int32_t			getComponentCount() const { return componentCount; }
+		inline bool			isAvailable(void) const { return (availableToUser && !bHidden); }
+		uint32_t	getID(void) const { return ID; }
+		float			getMaxWeight(void) const { return chassis->maxWeight; }
+		int32_t			getChassisName(void) const { return chassis->chassisNameID; }
+		const EString&		getName(void) const { return variantName; }
+		int32_t			getEncyclopediaID(void) const { return chassis->encyclopediaID; }
+		int32_t			getHelpID(void) const { return chassis->helpID; }
+		int32_t			getBaseCost(void) const { return chassis->baseCost; }
+		int32_t			getComponentCount(void) const { return componentCount; }
 		int32_t				canAddComponent( LogisticsComponent* pComponent, int32_t& x, int32_t& y ) const;
-		int32_t				getCost() const;
-		int32_t				getWeight() const;
-		const EString&		getMechClass() const;
-		int32_t				getChassisID() const { return chassis->ID; }
-		int32_t				getArmor() const;
-		int32_t				getArmorClass() { return chassis->getArmorClass(); }
-		int32_t				getJumpRange() const;
-		int32_t				getMaxJumpRange() const;
-		int32_t				getSpeed() const;
-		int32_t				getDisplaySpeed() const;
+		int32_t				getCost(void) const;
+		int32_t				getWeight(void) const;
+		const EString&		getMechClass(void) const;
+		int32_t				getChassisID(void) const { return chassis->ID; }
+		int32_t				getArmor(void) const;
+		int32_t				getArmorClass() { return chassis->getArmorClass(void); }
+		int32_t				getJumpRange(void) const;
+		int32_t				getMaxJumpRange(void) const;
+		int32_t				getSpeed(void) const;
+		int32_t				getDisplaySpeed(void) const;
 
-		int32_t				getVariantID() const { return ID & 0x00ffffff; }
-		const EString&		getSmallIconFileName() const { return chassis->iconFileNames[0]; }
-		const EString&	getMediumIconFileName() const { return chassis->iconFileNames[1]; }
-		const EString&		getLargeIconFileName() const { return chassis->iconFileNames[2]; }
+		int32_t				getVariantID(void) const { return ID & 0x00ffffff; }
+		const EString&		getSmallIconFileName(void) const { return chassis->iconFileNames[0]; }
+		const EString&	getMediumIconFileName(void) const { return chassis->iconFileNames[1]; }
+		const EString&		getLargeIconFileName(void) const { return chassis->iconFileNames[2]; }
 		int32_t				getComponentsWithLocation( int32_t& count, int32_t* IDArray, int32_t* xLocationArray, int32_t* yLocationArray );
 		int32_t				removeComponent( int32_t xCoord, int32_t yCoord );
 		int32_t				addComponent( LogisticsComponent*, int32_t& xCoord, int32_t& yCoord );
-		inline			bool canDelete( ) const { return !isDesignerMech(); }
-		inline			bool isDesignerMech() const { return bDesignerMech; }
+		inline			bool canDelete( ) const { return !isDesignerMech(void); }
+		inline			bool isDesignerMech(void) const { return bDesignerMech; }
 		int32_t				getComponents( int32_t& count, int32_t* array );
 		int32_t				getComponents( int32_t& count, LogisticsComponent** array );
 
-		int32_t				getHeat() const;
-		int32_t				getMaxHeat() const;
+		int32_t				getHeat(void) const;
+		int32_t				getMaxHeat(void) const;
 		LogisticsVariant& operator=( const LogisticsVariant&  );
 
 		bool			operator==( const LogisticsVariant& src );
@@ -169,29 +169,29 @@ protected:
 
 		int32_t			save( FitIniFile& file, int32_t counter );
 
-		const LogisticsChassis* getChassis() const { return chassis; }
+		const LogisticsChassis* getChassis(void) const { return chassis; }
 		bool			addComponent( int32_t idFromFitFile, int32_t& x, int32_t& y );
 		void			setName( PCSTR name ); // will allocate for you
 
 		void		setAvailable( bool available );
 
-		int32_t			getIconIndex() const { return chassis->iconPictureIndex; }
+		int32_t			getIconIndex(void) const { return chassis->iconPictureIndex; }
 
-		int32_t			getComponentAreaWidth() const{ return chassis->componentAreaWidth; } 
-		int32_t			getComponentAreaHeight() const { return chassis->componentAreaHeight; } 
+		int32_t			getComponentAreaWidth(void) const{ return chassis->componentAreaWidth; } 
+		int32_t			getComponentAreaHeight(void) const { return chassis->componentAreaHeight; } 
 
 		LogisticsComponent*	getCompAtLocation( int32_t i, int32_t j, int32_t& realI, int32_t& realJ );
 		int32_t			getComponentLocation( LogisticsComponent* pComp, int32_t& i, int32_t& j );
 
 		int32_t			getOptimalRangeString( int32_t& color ) const;
 		int32_t		getHouseID(){ return chassis->houseID; }
-		int32_t		getMaxArmor() const { return chassis->maxArmor; }
-		int32_t			getSensorID() const { return chassis->getSensorID(); }
-		int32_t			getECM() const { return chassis->getECM(); }
+		int32_t		getMaxArmor(void) const { return chassis->maxArmor; }
+		int32_t			getSensorID(void) const { return chassis->getSensorID(void); }
+		int32_t			getECM(void) const { return chassis->getECM(void); }
 
-		bool		allComponentsAvailable() const;
+		bool		allComponentsAvailable(void) const;
 
-		int32_t			getFileID() const { return fileID; }
+		int32_t			getFileID(void) const { return fileID; }
 
 
 
@@ -217,9 +217,9 @@ protected:
 
 
 		// HELPERS
-		bool				hasJumpJets() const;
-		bool				hasECM() const;
-		bool				hasSensor() const;
+		bool				hasJumpJets(void) const;
+		bool				hasECM(void) const;
+		bool				hasSensor(void) const;
 
 		// SUPPRESSED
 		

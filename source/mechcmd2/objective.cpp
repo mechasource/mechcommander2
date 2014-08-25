@@ -7,11 +7,11 @@ Objective.cpp			: Implementation of the Objective component.
 \*************************************************************************************************/
 #include "stdafx.h"
 
-#include "terrain.h"
+#include <terrain.h>
 
 #include "Objective.h"
 
-#include "estring.h"
+#include <estring.h>
 #include "ECharString.h"
 
 #ifndef INIFILE_H
@@ -35,7 +35,7 @@ Objective.cpp			: Implementation of the Objective component.
 #endif
 
 #ifndef TACMAP_H
-#include "tacmap.h"
+#include <tacmap.h>
 #endif
 
 #ifndef AFONT_H
@@ -1625,7 +1625,7 @@ static action_species_type ActionSpeciesMap(PCSTR speciesString) {
 	return retval;
 }
 
-bool CObjective::Read( FitIniFile* missionFile, int32_t objectiveNum, int32_t version, int32_t MarkerNum, char secondary )
+bool CObjective::Read( FitIniFile* missionFile, int32_t objectiveNum, uint32_t version, int32_t MarkerNum, char secondary )
 {
 	//Load this up here to make assert at program start go away!
 
@@ -1986,7 +1986,7 @@ bool CObjective::StatusChangedFailed (void)
 	return false;
 }
 
-EString CObjective::LocalizedTitle() const {
+EString CObjective::LocalizedTitle(void) const {
 	EString retval;
 	if (TitleUseResourceString()) {
 		EString EStr;
@@ -1998,7 +1998,7 @@ EString CObjective::LocalizedTitle() const {
 	return retval;
 }
 
-EString CObjective::LocalizedDescription() const {
+EString CObjective::LocalizedDescription(void) const {
 	EString retval;
 	if (DescriptionUseResourceString()) {
 		EString EStr;

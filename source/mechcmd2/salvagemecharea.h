@@ -32,14 +32,14 @@ class SalvageMechArea : public LogisticsScreen
 	public:
 
 	static SalvageMechArea* instance;
-	SalvageMechArea();
-	virtual ~SalvageMechArea();
+	SalvageMechArea(void);
+	virtual ~SalvageMechArea(void);
 
 	void init( FitIniFile* file );
 	void setMech( LogisticsVariant* pMech, int32_t red, int32_t green, int32_t blue );
 
 	virtual void render(int32_t xOffset, int32_t yOffset);
-	virtual void update();
+	virtual void update(void);
 
 	
 	protected:
@@ -57,17 +57,17 @@ class SalvageMechScreen : public LogisticsScreen
 {
 public:
 	
-	SalvageMechScreen();
-	virtual ~SalvageMechScreen();
+	SalvageMechScreen(void);
+	virtual ~SalvageMechScreen(void);
 	
 	void init(FitIniFile* file);
-	bool isDone();
+	bool isDone(void);
 	bool donePressed() { return bDone; }
-	virtual void render();
-	virtual void update();
+	virtual void render(void);
+	virtual void update(void);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
-	void updateSalvage(); // put into inventory
+	void updateSalvage(void); // put into inventory
 
 	bool				bDone;
 
@@ -89,15 +89,15 @@ private:
 class SalvageListItem : public aListItem
 {
 public:
-	virtual void		render();
-	virtual void		update();
+	virtual void		render(void);
+	virtual void		update(void);
 
-	virtual ~SalvageListItem();
+	virtual ~SalvageListItem(void);
 
 	static void			init( FitIniFile* file );
 	virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 
-	bool				isChecked();
+	bool				isChecked(void);
 	LogisticsVariant*	getMech(){ return pVariant; }
 
 	SalvageListItem( BattleMech* pUnit );

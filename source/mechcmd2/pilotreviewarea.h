@@ -33,9 +33,9 @@ class PilotListBox : public aListBox
 {
 public:
 
-	PilotListBox();
+	PilotListBox(void);
 	virtual int32_t AddItem( aListItem* item );
-	virtual void update();
+	virtual void update(void);
 
 	bool isDone( ){ return bDone; }
 
@@ -54,16 +54,16 @@ class PilotReviewScreen : public LogisticsScreen
 {
 public:
 	
-	PilotReviewScreen();
-	virtual ~PilotReviewScreen();
+	PilotReviewScreen(void);
+	virtual ~PilotReviewScreen(void);
 	
 	void init(FitIniFile* file);
-	bool isDone();
-	virtual void render();
-	virtual void update();
+	bool isDone(void);
+	virtual void render(void);
+	virtual void update(void);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
 
-	void				updatePilots(); // put into inventory, save??
+	void				updatePilots(void); // put into inventory, save??
 
 	bool				bDone;
 
@@ -89,9 +89,9 @@ public:
 		bDone = 0;
 	}
 
-	virtual void begin();	// for animation purposes...
+	virtual void begin(void);	// for animation purposes...
 	virtual bool isDone() = 0; // implement this yourself
-	virtual void update();
+	virtual void update(void);
 
 protected:
 	float	currentTime;
@@ -104,11 +104,11 @@ protected:
 class DeadPilotListItem : public PilotListItem
 {
 public:
-	virtual void		render();
-	virtual void		update();
-	virtual bool		isDone();
+	virtual void		render(void);
+	virtual void		update(void);
+	virtual bool		isDone(void);
 
-	virtual ~DeadPilotListItem();
+	virtual ~DeadPilotListItem(void);
 
 	static void			init( FitIniFile* file );
 
@@ -147,17 +147,17 @@ class ActivePilotListItem : public PilotListItem
 {
 public:
 
-	virtual void		render();
-	virtual void		update();
-	virtual bool		isDone();
+	virtual void		render(void);
+	virtual void		update(void);
+	virtual bool		isDone(void);
 
-	virtual ~ActivePilotListItem();
+	virtual ~ActivePilotListItem(void);
 
 	static void			init( FitIniFile* file );
 	ActivePilotListItem( LogisticsPilot* pUnit );
 	static int32_t			s_totalWidth;
 
-	float				flashTime();
+	float				flashTime(void);
 
 
 protected:
@@ -218,13 +218,13 @@ class PilotPromotionArea : public LogisticsScreen
 {
 public:
 
-	bool isDone();
+	bool isDone(void);
 	void init( FitIniFile& file );
-	virtual void render();
-	virtual void update();
+	virtual void render(void);
+	virtual void update(void);
 	void setPilot(LogisticsPilot* pPilot, PilotIcon* pIcon);
 	virtual int32_t			handleMessage( uint32_t, uint32_t );
-	virtual ~PilotPromotionArea();
+	virtual ~PilotPromotionArea(void);
 
 	aListBox*	getSkillListBox() { return &skillListBox; }
 
@@ -254,17 +254,17 @@ private:
 class SpecialtyListItem : public aListItem
 {
 public:
-	virtual void		render();
-	virtual void		update();
+	virtual void		render(void);
+	virtual void		update(void);
 
-	virtual ~SpecialtyListItem();
+	virtual ~SpecialtyListItem(void);
 
 	static void			init( FitIniFile* file );
 	virtual int32_t			handleMessage( uint32_t message, uint32_t who );
 
-	virtual bool		isChecked();
+	virtual bool		isChecked(void);
 	virtual void		setCheck( bool );
-	int32_t					getID();
+	int32_t					getID(void);
 	SpecialtyListItem( int32_t ID );
 
 private:
@@ -278,7 +278,7 @@ private:
 	static aRect*		s_outline;
 	static int32_t			s_itemCount;
 
-	static void			deleteStatics();
+	static void			deleteStatics(void);
 
 	aAnimation			pressedAnim;
 	aAnimation			highlightAnim;

@@ -873,14 +873,14 @@ LogisticsMissionInfo::MissionInfo::~MissionInfo()
 {
 }
 
-const EString& LogisticsMissionInfo::getCurrentPurchaseFile() const
+const EString& LogisticsMissionInfo::getCurrentPurchaseFile(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
 	return pGroup->infos[currentMission]->purchaseFileName;
 }
 
-int32_t LogisticsMissionInfo::getCurrentDropWeight() const
+int32_t LogisticsMissionInfo::getCurrentDropWeight(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -890,7 +890,7 @@ int32_t LogisticsMissionInfo::getCurrentDropWeight() const
 		return 10000;
 }
 
-PCSTR LogisticsMissionInfo::getCurrentOperationFile() const
+PCSTR LogisticsMissionInfo::getCurrentOperationFile(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -901,7 +901,7 @@ PCSTR LogisticsMissionInfo::getCurrentOperationFile() const
 	
 }
 
-PCSTR LogisticsMissionInfo::getCurrentVideo() const
+PCSTR LogisticsMissionInfo::getCurrentVideo(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -929,7 +929,7 @@ int32_t LogisticsMissionInfo::getCurrentLogisticsTuneId()
 	return -1;
 }
 
-PCSTR	LogisticsMissionInfo::getCurrentMissionDescription() const
+PCSTR	LogisticsMissionInfo::getCurrentMissionDescription(void) const
 {
 	MissionGroup* pGroup = &groups[currentStage];
 
@@ -953,7 +953,7 @@ bool LogisticsMissionInfo::getMissionAvailable( PCSTR missionName )
 	return NULL;
 }
 
-PCSTR			LogisticsMissionInfo::getCurrentMissionFriendlyName() const
+PCSTR			LogisticsMissionInfo::getCurrentMissionFriendlyName(void) const
 {
 	if ( currentStage >= groupCount )
 		return NULL;
@@ -966,7 +966,7 @@ PCSTR			LogisticsMissionInfo::getCurrentMissionFriendlyName() const
 
 }
 
-PCSTR			LogisticsMissionInfo::getCurrentABLScriptName() const
+PCSTR			LogisticsMissionInfo::getCurrentABLScriptName(void) const
 {
 	if ( currentStage >= groupCount )
 		return NULL;
@@ -995,7 +995,7 @@ PCSTR LogisticsMissionInfo::getMissionFriendlyName( PCSTR missionName ) const
 	return NULL;
 }
 
-int32_t		LogisticsMissionInfo::getCurrentRP() const
+int32_t		LogisticsMissionInfo::getCurrentRP(void) const
 {
 	if ( currentMission == -1 )
 		return 0;
@@ -1006,7 +1006,7 @@ int32_t		LogisticsMissionInfo::getCurrentRP() const
 
 }
 
-PCSTR			LogisticsMissionInfo::getCurrentBigVideo() const
+PCSTR			LogisticsMissionInfo::getCurrentBigVideo(void) const
 {
 	if ( currentStage == -1 )
 		return NULL;
@@ -1020,12 +1020,12 @@ PCSTR			LogisticsMissionInfo::getCurrentBigVideo() const
 	return pGroup->bigVideoName;
 		
 }
-PCSTR			LogisticsMissionInfo::getFinalVideo() const
+PCSTR			LogisticsMissionInfo::getFinalVideo(void) const
 {
 	return finalVideoName;
 }
 
-bool LogisticsMissionInfo::campaignOver() const
+bool LogisticsMissionInfo::campaignOver(void) const
 {
 	return currentStage == groupCount;
 }
@@ -1158,7 +1158,7 @@ LogisticsMissionInfo::MissionInfo* LogisticsMissionInfo::getPreviousMission()
 	return NULL;
 }
 
-bool LogisticsMissionInfo::isSingleMission() const
+bool LogisticsMissionInfo::isSingleMission(void) const
 {
 	if ( groupCount == 1 )
 	{

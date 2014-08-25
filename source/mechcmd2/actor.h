@@ -81,12 +81,12 @@ class VFXAppearanceType : public AppearanceType
 	
 		VFXAppearanceType (void)
 		{
-			init();
+			init(void);
 		}
 
 		~VFXAppearanceType (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		void init (FilePtr appearFile, uint32_t fileSize);
@@ -156,7 +156,7 @@ class VFXAppearance : public Appearance
 
 		VFXAppearance (void)
 		{
-			init();
+			init(void);
 		}
 
 		virtual int32_t update (void);
@@ -166,7 +166,7 @@ class VFXAppearance : public Appearance
 
 		~VFXAppearance (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual AppearanceTypePtr getAppearanceType (void)

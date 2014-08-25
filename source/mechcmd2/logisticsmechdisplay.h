@@ -27,11 +27,11 @@ class LogisticsMechDisplay : public LogisticsScreen
 {
 	public:
 
-		LogisticsMechDisplay();
+		LogisticsMechDisplay(void);
 
-		virtual ~LogisticsMechDisplay();
+		virtual ~LogisticsMechDisplay(void);
 
-		virtual void		update();
+		virtual void		update(void);
 		virtual void		render(int32_t xOffset, int32_t yOffset);
 		int32_t					init( );
 		void				setMech( LogisticsMech* pMech, bool bFromLB = 0 );

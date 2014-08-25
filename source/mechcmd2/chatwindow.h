@@ -23,7 +23,7 @@ class ChatMessageItem : public aListItem
 {
 public:
 
-	ChatMessageItem();
+	ChatMessageItem(void);
 	void		 setPlayerColor(int32_t color);
 	void		 setTextColor( int32_t color );
 	void		 setPlayerName( PCSTR name );
@@ -41,10 +41,10 @@ class ChatWidget : public LogisticsScreen  // the one that obscures....
 {
 public:
 
-	ChatWidget();
-	virtual ~ChatWidget();
+	ChatWidget(void);
+	virtual ~ChatWidget(void);
 
-	void init();
+	void init(void);
 
 private:
 
@@ -61,21 +61,21 @@ class ChatWindow: public LogisticsScreen
 {
 	public:
 
-		ChatWindow();
-		virtual ~ChatWindow();
+		ChatWindow(void);
+		virtual ~ChatWindow(void);
 
-		static void init();
-		static void destroy();
+		static void init(void);
+		static void destroy(void);
 		static ChatWindow* instance() { return s_instance; }
 
-		int32_t initInstance();
+		int32_t initInstance(void);
 
-		virtual void update();
+		virtual void update(void);
 		virtual void render( int32_t xOffset, int32_t yOffset );
 		int32_t handleMessage( uint32_t, uint32_t );
 
 		virtual bool pointInside( int32_t xPos, int32_t yPos );
-		bool		 isExpanded();
+		bool		 isExpanded(void);
 
 
 	private:

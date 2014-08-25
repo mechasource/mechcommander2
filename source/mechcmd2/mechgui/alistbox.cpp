@@ -555,7 +555,7 @@ void aListBox::scroll( int32_t amount )
 	}
 }
 
-int32_t aListBox::GetCheckedItem() const
+int32_t aListBox::GetCheckedItem(void) const
 {
 	int32_t ret = -1;
 	if ( items )
@@ -1273,7 +1273,7 @@ void		aTextListItem::setText( PCSTR newText )
 {
 	text = newText;
 }
-PCSTR aTextListItem::getText() const
+PCSTR aTextListItem::getText(void) const
 {
 	return text;
 }

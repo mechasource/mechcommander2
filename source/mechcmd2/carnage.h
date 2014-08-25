@@ -88,7 +88,7 @@ class Carnage : public GameObject
 
 			~Carnage (void) 
 			{
-				destroy();
+				destroy(void);
 			}
 
 			virtual void init (bool create, ObjectTypePtr _type);
@@ -116,7 +116,7 @@ class Carnage : public GameObject
 			virtual void setOwner (GameObjectPtr myOwner) 
 			{
 				if (myOwner) {
-					ownerWID = myOwner->getWatchID();
+					ownerWID = myOwner->getWatchID(void);
 					if (carnageType == CARNAGE_FIRE)
 						myOwner->setFireHandle(getHandle());
 					}
@@ -194,7 +194,7 @@ class FireType : public ObjectType
 
 		void init (void) 
 		{
-			ObjectType::init();
+			ObjectType::init(void);
 			
 			objectTypeClass = FIRE_TYPE;
 			objectClass = FIRE;
@@ -218,7 +218,7 @@ class FireType : public ObjectType
 		
 		FireType (void) 
 		{
-			init();
+			init(void);
 		}
 		
 		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
@@ -227,7 +227,7 @@ class FireType : public ObjectType
 		
 		~FireType (void) 
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		virtual void destroy (void);
@@ -265,7 +265,7 @@ class ExplosionType : public ObjectType
 
 		void init (void) 
 		{
-			ObjectType::init();
+			ObjectType::init(void);
 			objectTypeClass = EXPLOSION_TYPE;
 			objectClass = EXPLOSION;
 			damageLevel = 0.0;
@@ -286,7 +286,7 @@ class ExplosionType : public ObjectType
 
 		ExplosionType (void) 
 		{
-			init();
+			init(void);
 		}
 
 		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
@@ -295,7 +295,7 @@ class ExplosionType : public ObjectType
 
 		~ExplosionType (void) 
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual void destroy (void);

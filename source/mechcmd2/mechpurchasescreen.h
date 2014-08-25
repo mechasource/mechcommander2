@@ -16,7 +16,7 @@ MechPurchaseScreen.h			: Interface for the MechPurchaseScreen component.
 
 #include "MechListBox.h"
 #include "LogisticsMech.h"
-#include "elist.h"
+#include <elist.h>
 #include "LogisticsMechDisplay.h"
 
 class LogisticsMech;
@@ -33,14 +33,14 @@ class MechPurchaseScreen: public LogisticsScreen
 
 		static MechPurchaseScreen* instance() { return s_instance; }
 
-		MechPurchaseScreen();
-		virtual				~MechPurchaseScreen();
+		MechPurchaseScreen(void);
+		virtual				~MechPurchaseScreen(void);
 
 		int32_t					init( FitIniFile& file );
 
-		virtual void		begin();
-		virtual void		end();
-		virtual void		update();
+		virtual void		begin(void);
+		virtual void		end(void);
+		virtual void		update(void);
 		virtual void		render(int32_t xOffset, int32_t yOffset);
 
 		void				setMech( LogisticsMech* pMech, bool bFromLB = 0 );
@@ -81,12 +81,12 @@ class MechPurchaseScreen: public LogisticsScreen
 
 	// HELPER FUNCTIONS
 
-		void addSelectedMech();
-		void removeSelectedMech();
+		void addSelectedMech(void);
+		void removeSelectedMech(void);
 		void addMech( LogisticsMech* pMech );
 		void removeMech( LogisticsMech* pMech );
-		void endDrag();
-		bool selectFirstBuyableMech();
+		void endDrag(void);
+		bool selectFirstBuyableMech(void);
 
 
 

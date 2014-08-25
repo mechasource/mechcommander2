@@ -36,11 +36,11 @@ class PauseWindow
 {
 	public:
 		
-		PauseWindow();
-		~PauseWindow();
+		PauseWindow(void);
+		~PauseWindow(void);
 
-		void update();
-		void render();
+		void update(void);
+		void render(void);
 
 		void init( FitIniFile& file );
 
@@ -49,7 +49,7 @@ class PauseWindow
 		bool inRect( int32_t mouseX, int32_t mouseY );
 
 		void begin(){ currentTime = 0.f; }
-		void end();
+		void end(void);
 		void begin(bool objectivesOn);
 
 		enum PAUSEBUTTONS

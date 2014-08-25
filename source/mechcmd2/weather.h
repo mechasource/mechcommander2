@@ -41,7 +41,7 @@ typedef struct _RainDrops
 	
 	void init (void)
 	{
-		position.Zero();
+		position.Zero(void);
 		length = 0.0f;
 	}
 	
@@ -88,7 +88,7 @@ class Weather
 	
 		Weather (void)
 		{
-			init();
+			init(void);
 		}
 		
 		void init (void)
@@ -117,7 +117,7 @@ class Weather
 		
 		~Weather (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void init (uint32_t maxDrops, float startingRain, float baseRainChance, float baseLighteningChance = BASE_LIGHTENING_CHANCE);

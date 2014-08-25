@@ -87,13 +87,13 @@ class MoverGroup {
 		void init (MoverGroupData &data);
 
 		MoverGroup (void) {
-			init();
+			init(void);
 		}
 			
 		virtual void destroy (void);
 
 		~MoverGroup (void) {
-			destroy();
+			destroy(void);
 		}
 
 		virtual int32_t getId (void) {

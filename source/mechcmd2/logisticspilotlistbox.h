@@ -31,10 +31,10 @@ public:
 	static int32_t LogisticsPilotListBoxItem::init( FitIniFile* file);
 	LogisticsPilotListBoxItem( LogisticsPilot* pPilot );
 
-	virtual ~LogisticsPilotListBoxItem();
+	virtual ~LogisticsPilotListBoxItem(void);
 
-	virtual void  render();
-	virtual void update();
+	virtual void  render(void);
+	virtual void update(void);
 
 	LogisticsPilot* getPilot(){ return pPilot; }
 
@@ -65,13 +65,13 @@ class LogisticsPilotListBox: public aListBox
 {
 	public:
 
-	LogisticsPilotListBox();
-	virtual ~LogisticsPilotListBox();
+	LogisticsPilotListBox(void);
+	virtual ~LogisticsPilotListBox(void);
 
 	static void  makeUVs( LogisticsPilot* pPilot, aObject& pObject );
 
 	virtual int32_t AddItem( aListItem* pItem );
-	virtual void update();
+	virtual void update(void);
 
 	void removePilot(LogisticsPilot* pPilot);
 	private:

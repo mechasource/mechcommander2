@@ -19,19 +19,19 @@ typedef enum __afont_constants {
 class aFont
 {
 public:
-	aFont();
-	~aFont();
+	aFont(void);
+	~aFont(void);
 	aFont( const aFont& src );
 	aFont& operator=( const aFont& src );
 
 	int32_t init( PCSTR fontName);
 	int32_t init( int32_t resourceID );
-	void destroy();
+	void destroy(void);
 	void render( PCSTR text, int32_t XPos, int32_t YPos, int32_t areaWidth, 
 		int32_t areaHeight, uint32_t color, bool bBold, int32_t alignment );
 
 	int32_t load( PCSTR fontName);
-	uint32_t height() const;
+	uint32_t height(void) const;
 	uint32_t width( PCSTR st) const;
 	uint32_t height( PCSTR st, int32_t areaWidth ) const;
 	void		  getSize( uint32_t& width, uint32_t& height, PCSTR pText );

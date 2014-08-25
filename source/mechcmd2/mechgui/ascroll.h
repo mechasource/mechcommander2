@@ -16,7 +16,7 @@ namespace mechgui {
 		public aAnimButton
 	{
 	public:
-		virtual void render();
+		virtual void render(void);
 
 		uint32_t lightEdge;
 		uint32_t darkEdge;
@@ -27,12 +27,12 @@ namespace mechgui {
 	{
 	public:
 
-		aScrollBar();
+		aScrollBar(void);
 
 		virtual int32_t	init(int32_t xPos, int32_t yPos, int32_t w, int32_t h);
-		virtual void	destroy();
-		virtual void	update();
-		virtual void	render();
+		virtual void	destroy(void);
+		virtual void	update(void);
+		virtual void	render(void);
 
 		virtual int32_t		handleMessage( uint32_t message, uint32_t fromWho );
 
@@ -70,8 +70,8 @@ namespace mechgui {
 		int32_t init ( int32_t xPos, int32_t yPos, int32_t w, int32_t h  );
 		virtual void	resize(int32_t w, int32_t h);
 
-		void setOrange();
-		void setGreen();
+		void setOrange(void);
+		void setGreen(void);
 
 	private:
 

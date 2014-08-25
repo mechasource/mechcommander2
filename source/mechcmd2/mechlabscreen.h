@@ -42,14 +42,14 @@ class MechLabScreen: public LogisticsScreen
 {
 	public:
 
-		MechLabScreen();
-		virtual ~MechLabScreen();
+		MechLabScreen(void);
+		virtual ~MechLabScreen(void);
 
 		int32_t init( FitIniFile& );
 
-		virtual void begin();
-		virtual void end();
-		virtual void update();
+		virtual void begin(void);
+		virtual void end(void);
+		virtual void update(void);
 		virtual void render(int32_t xOffset, int32_t yOffset);
 
 		virtual int32_t	handleMessage( uint32_t, uint32_t );
@@ -99,7 +99,7 @@ class MechLabScreen: public LogisticsScreen
 
 		void showJumpJetItems( bool bShow );
 
-		void updateDiagram();
+		void updateDiagram(void);
 
 		float originalCost;
 
@@ -138,12 +138,12 @@ class MechLabScreen: public LogisticsScreen
 		void getMouseDiagramCoords( int32_t screenX, int32_t screenY, int32_t& x, int32_t& y );
 
 		void	diagramToScreen( int32_t i, int32_t j, int32_t& x, int32_t& y  );
-		int32_t		selectFirstDiagramComponent();
-		int32_t		selectFirstLBComponent(); 
-		void	updateDiagramInput();
-		void	swapVariant();
-		void	updateHeatMeter();
-		void	updateArmorMeter();
+		int32_t		selectFirstDiagramComponent(void);
+		int32_t		selectFirstLBComponent(void); 
+		void	updateDiagramInput(void);
+		void	swapVariant(void);
+		void	updateHeatMeter(void);
+		void	updateArmorMeter(void);
 		void	removeComponent( int32_t i, int32_t j );
 
 

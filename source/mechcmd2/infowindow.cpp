@@ -15,7 +15,7 @@ InfoWindow.cpp			: Implementation of the InfoWindow component.
 #include "mechicon.h"
 #include "team.h"
 #include "txmmgr.h"
-#include "estring.h"
+#include <estring.h>
 
 int32_t InfoWindow::SCROLLLEFT = 0;
 int32_t InfoWindow::SCROLLRIGHT = 0;

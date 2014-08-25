@@ -34,25 +34,25 @@ class ForceGroupBar
 {
 	public:
 
-		ForceGroupBar();
-		~ForceGroupBar();
+		ForceGroupBar(void);
+		~ForceGroupBar(void);
 
 		bool addMech( Mover* pMover );
 		bool addVehicle( Mover* pMover );
 		void removeMover (Mover* mover);
-		void update();
-		void render();
+		void update(void);
+		void render(void);
 
-		void removeAll();
+		void removeAll(void);
 
 		bool inRegion( int32_t x, int32_t y );
 
 		void init( FitIniFile& file, StaticInfo* pCoverIcon );
-		void swapResolutions();
+		void swapResolutions(void);
 		int32_t  getIconCount(){ return iconCount; }
 
 		bool setPilotVideo( PCSTR pVideo, MechWarrior* pPilot );
-		bool isPlayingVideo();
+		bool isPlayingVideo(void);
 
 		bool flashJumpers (int32_t numFlashes);
 		

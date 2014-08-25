@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include <mechgui/aanim.h>
 #include <mclib.h>
-#include "estring.h"
+#include <estring.h>
 
 extern float frameRate;
 
@@ -187,7 +187,7 @@ void	aAnimation::update()
 	}
 }
 
-float	aAnimation::getXDelta() const
+float	aAnimation::getXDelta(void) const
 {
 	float t0, t1, p0, p1;
 
@@ -224,7 +224,7 @@ float	aAnimation::getXDelta() const
 
 }
 
-float	aAnimation::getYDelta() const
+float	aAnimation::getYDelta(void) const
 {
 	float t0, t1, p0, p1;
 
@@ -261,7 +261,7 @@ float	aAnimation::getYDelta() const
 
 }
 
-float	aAnimation::getScaleX() const
+float	aAnimation::getScaleX(void) const
 {
 	float t0, t1, p0, p1;
 
@@ -297,7 +297,7 @@ float	aAnimation::getScaleX() const
 
 }
 
-float	aAnimation::getScaleY() const
+float	aAnimation::getScaleY(void) const
 {
 	float t0, t1, p0, p1;
 
@@ -397,7 +397,7 @@ void aAnimation::setReferencePoints( float X, float Y )
 	refY = Y;
 }
 
-bool aAnimation::isDone() const
+bool aAnimation::isDone(void) const
 {
 	if ( bLoops )
 		return 0;
@@ -476,7 +476,7 @@ void aAnimGroup::setState( aAnimGroup::STATE newState )
 
 }
 
-aAnimGroup::STATE aAnimGroup::getState() const
+aAnimGroup::STATE aAnimGroup::getState(void) const
 {
 	return curState;
 }

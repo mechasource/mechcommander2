@@ -58,11 +58,11 @@ public:
 	ButtonData*			data;
 	int32_t					state;
 
-	void render();
+	void render(void);
 	void press( bool );
-	void toggle();
+	void toggle(void);
 	void disable( bool );
-	bool isEnabled();
+	bool isEnabled(void);
 	void makeAmbiguous( bool bAmbiguous );
 	void hide( bool );
 	void move( float deltaX, float deltaY );
@@ -92,24 +92,24 @@ public:
 	static int32_t			hiResOffsetX;
 	static int32_t			hiResOffsetY;
 
-	ControlGui();
-	~ControlGui();
+	ControlGui(void);
+	~ControlGui(void);
 	bool inRegion( int32_t mouseX, int32_t mouseY, bool bPaused );
 	void render( bool bPaused );
 	void update( bool bPaused, bool bLOS );
 	void initTacMapBuildings( puint8_t data, int32_t size ){ tacMap.initBuildings( data, size ); }
 	void initTacMap( puint8_t data, int32_t size ){ tacMap.init( data, size ); }
-	void initMechs();
-	void unPressAllVehicleButtons();
-	void disableAllVehicleButtons();
+	void initMechs(void);
+	void unPressAllVehicleButtons(void);
+	void disableAllVehicleButtons(void);
 	void addMover (MoverPtr mover);
 	void removeMover (MoverPtr mover);
-	int32_t  updateChat();
+	int32_t  updateChat(void);
 
-	void beginPause();
-	void endPause();
+	void beginPause(void);
+	void endPause(void);
 
-	bool resultsDone();
+	bool resultsDone(void);
 
 	void startObjectives( bool bStart );
 	bool objectivesStarted() { return renderObjectives; }
@@ -119,13 +119,13 @@ public:
 	bool getVehicleCommand( );
 
 	void playMovie( PCSTR fileName );
-	bool isMoviePlaying();
+	bool isMoviePlaying(void);
 
 	bool playPilotVideo( MechWarrior* pPilot, char movieCode );
-	void endPilotVideo();
-	bool isSelectingInfoObject();
+	void endPilotVideo(void);
+	bool isSelectingInfoObject(void);
 
-	bool isOverTacMap();
+	bool isOverTacMap(void);
 
 	bool isChatting() { return bChatting; }
 
@@ -191,7 +191,7 @@ public:
 		MAX_VEHICLE
 	};
 
-	bool	isDefaultSpeed();
+	bool	isDefaultSpeed(void);
 	void	toggleDefaultSpeed( );
 	void	toggleJump( );
 	bool	getJump( );
@@ -199,31 +199,31 @@ public:
 	bool	getRun( );
 	void	toggleGuard( );
 	bool	getGuard( );
-	void	setDefaultSpeed();
-	void	toggleHoldPosition();
+	void	setDefaultSpeed(void);
+	void	toggleHoldPosition(void);
 
 	void	setRange( int32_t Range );
-	void	doStop();
-	void	toggleFireFromCurrentPos();
+	void	doStop(void);
+	void	toggleFireFromCurrentPos(void);
 	bool	getFireFromCurrentPos(){ return fireFromCurrentPos; }
 	void    setFireFromCurrentPos( bool bset ) { fireFromCurrentPos = bset; }
 	bool	isAddingVehicle(){ return addingVehicle; }
 	bool	isAddingAirstrike() { return addingArtillery; }
 	bool	isAddingSalvage() { return addingSalvage; }
 	bool	isButtonPressed( int32_t ID ) { return getButton( ID )->state & ControlButton::PRESSED; }
-	bool	getMines();
-	bool	getSalvage();
-	bool	getRepair();
-	bool	getGuardTower();
+	bool	getMines(void);
+	bool	getSalvage(void);
+	bool	getRepair(void);
+	bool	getGuardTower(void);
 	void	switchTabs( int32_t direction );
 	void	renderObjective( CObjective* pObjective, int32_t xPos, int32_t yPos, bool bDrawTotal );
 	void	renderMissionStatus( bool bRender){ renderStatusInfo = bRender; }		
 
-	int32_t		getCurrentRange();
+	int32_t		getCurrentRange(void);
 	void	pressInfoButton( ){ handleClick( INFO_COMMAND ); }
 	bool	infoButtonPressed() { return getButton( INFO_COMMAND )->state & ControlButton::PRESSED; }
 
-	void	showServerMissing();
+	void	showServerMissing(void);
 
 	void	pressAirstrikeButton() 
 	{ 
@@ -255,8 +255,8 @@ public:
 	void	setChatText( PCSTR playerName, PCSTR message, uint32_t backgroundColor, 
 		uint32_t textColor );
 	void	toggleChat( bool setTeamOnly );
-	void eatChatKey();
-	void	cancelInfo();
+	void eatChatKey(void);
+	void	cancelInfo(void);
 
 	ControlButton*		getButton( int32_t ID );
 
@@ -378,13 +378,13 @@ private:
 
 	void handleClick( int32_t ID );
 	void updateVehicleTab( int32_t mouseX, int32_t mouseY, bool bLOS );
-	void renderVehicleTab();
-	void RenderObjectives();
-	void renderResults();
+	void renderVehicleTab(void);
+	void RenderObjectives(void);
+	void renderResults(void);
 	void handleVehicleClick( int32_t ID );
-	void renderHelpText();
-	void renderInfoTab();
-	void renderChatText();
+	void renderHelpText(void);
+	void renderInfoTab(void);
+	void renderChatText(void);
 
 	void initStatics( FitIniFile& file );
 	void initRects( FitIniFile& file );

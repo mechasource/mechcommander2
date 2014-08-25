@@ -64,7 +64,7 @@ class GlobalCollisionAlert
 		
 		~GlobalCollisionAlert (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		int32_t addRecord (GameObjectPtr obj1, GameObjectPtr obj2, float distance, float time);
@@ -127,14 +127,14 @@ class CollisionGrid
 			
 			nextAvailableNode = 0;
 			
-			gridOrigin.Zero();
+			gridOrigin.Zero(void);
 			
 			gridIsGo = FALSE;
 		}
 		
 		CollisionGrid (void)
 		{
-			init();
+			init(void);
 		}
 		
 		int32_t init (Stuff::Vector3D &newOrigin);
@@ -143,7 +143,7 @@ class CollisionGrid
 		
 		~CollisionGrid (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		int32_t add (uint32_t gridIndex, GameObjectPtr object);
@@ -203,7 +203,7 @@ class CollisionSystem
 		
 		CollisionSystem (void)
 		{
-			init();
+			init(void);
 		}
 
 		int32_t init (FitIniFile *scenarioFile);
@@ -212,7 +212,7 @@ class CollisionSystem
 		
 		~CollisionSystem (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void checkObjects (void);

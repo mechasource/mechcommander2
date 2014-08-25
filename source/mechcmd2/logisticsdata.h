@@ -28,9 +28,9 @@ public:
 
 	struct Building;
 
-	LogisticsData();
-	~LogisticsData();
-	void			init();
+	LogisticsData(void);
+	~LogisticsData(void);
+	void			init(void);
 
 	bool			rpJustAdded;
 
@@ -39,10 +39,10 @@ public:
 	LogisticsComponent* getComponent( int32_t componentID );
 	LogisticsPilot*		getPilot( int32_t pilotID );
 	LogisticsPilot*		getPilot( PCSTR pilotName );
-	int32_t					getPilotCount();
+	int32_t					getPilotCount(void);
 	int32_t					getPilots( LogisticsPilot**, int32_t& count );
 	PCSTR			getBestPilot( int32_t mechWeight );
-	bool				gotPilotsLeft();
+	bool				gotPilotsLeft(void);
 
 	void				setPilotUnused( PCSTR pPilot );
 
@@ -67,12 +67,12 @@ public:
 
 
 	int32_t createInstanceID( LogisticsVariant* pVar );
-	LogisticsPilot*		getFirstAvailablePilot();
+	LogisticsPilot*		getFirstAvailablePilot(void);
 	void				getForceGroup( EList<LogisticsMech*, LogisticsMech*>& newList );
 	void				getInventory( EList<LogisticsMech*, LogisticsMech*>& newList );
 
 
-	void				removeMechsInForceGroup(); // takes mechs that are in the force group out of the inventory
+	void				removeMechsInForceGroup(void); // takes mechs that are in the force group out of the inventory
 	void				addMechToInventory( LogisticsVariant* pVar,
 		int32_t addToForceGroup, LogisticsPilot*,
 		uint32_t color1 = 0xffffffff, 
@@ -95,29 +95,29 @@ public:
 	void				addResourcePoints( int32_t amount ){ resourcePoints+= amount; rpJustAdded = true;}
 	void				decrementResourcePoints( int32_t amount ){ resourcePoints -= amount; }
 
-	int32_t					getCBills();
+	int32_t					getCBills(void);
 	void				addCBills( int32_t amount );
 	void				decrementCBills( int32_t amount );
 
 	int32_t					comparePilots( LogisticsPilot* p1, LogisticsPilot* p2, int32_t weight );
-	int32_t					getCurrentDropWeight() const;
-	int32_t					getMaxDropWeight() const;
+	int32_t					getCurrentDropWeight(void) const;
+	int32_t					getMaxDropWeight(void) const;
 
 	int32_t				loadMech( FitIniFile& file, int32_t& count );
 
-	void				setMissionCompleted();
-	int32_t				updateAvailability();
+	void				setMissionCompleted(void);
+	int32_t				updateAvailability(void);
 
-	const EString&		getCurrentMission() const;
-	const EString&		getLastMission() const;
+	const EString&		getCurrentMission(void) const;
+	const EString&		getLastMission(void) const;
 	int32_t					setCurrentMission( const EString& missionName );
 	void				setSingleMission( PCSTR pName );
-	bool				isSingleMission();
-	int32_t				getCurrentMissionTune();
-	PCSTR 		getCurrentABLScript() const;
-	int32_t 				getCurrentMissionId();
+	bool				isSingleMission(void);
+	int32_t				getCurrentMissionTune(void);
+	PCSTR 		getCurrentABLScript(void) const;
+	int32_t 				getCurrentMissionId(void);
 
-	void				clearInventory();
+	void				clearInventory(void);
 
 	int32_t					getPurchasableMechs( LogisticsVariant**, int32_t& count );
 	int32_t					canPurchaseMech( LogisticsVariant* pVar );
@@ -133,7 +133,7 @@ public:
 	int32_t					setMechToModify( LogisticsMech* pVariant );
 	LogisticsMech*		getMechToModify( ){ return currentlyModifiedMech; }
 	int32_t					acceptMechModifications( PCSTR pNewVariantName );
-	int32_t					cancelMechModfications();
+	int32_t					cancelMechModfications(void);
 	bool				canReplaceVariant( PCSTR name );
 	bool				canDeleteVariant( PCSTR name );
 
@@ -142,20 +142,20 @@ public:
 
 	int32_t					getAvailableComponents( LogisticsComponent** pComps, int32_t& maxCount );
 	int32_t					getAllComponents( LogisticsComponent** pComps, int32_t& maxCount );
-	PCSTR			getCurrentOperationFileName();
-	PCSTR			getCurrentVideoFileName();
-	PCSTR			getCurrentMissionDescription();
+	PCSTR			getCurrentOperationFileName(void);
+	PCSTR			getCurrentVideoFileName(void);
+	PCSTR			getCurrentMissionDescription(void);
 	int32_t					getAvailableMissions( PCSTR* missionNames, int32_t& count );
 	int32_t					getCurrentMissions( PCSTR* missionNames, int32_t& count );
 	bool				getMissionAvailable( PCSTR missionName );
 	PCSTR			getCurrentMissionFriendlyName( );
 	PCSTR			getMissionFriendlyName( PCSTR missionName );
-	int32_t				getMaxTeams() const;
-	int32_t				getMaxPlayers() const;
+	int32_t				getMaxTeams(void) const;
+	int32_t				getMaxPlayers(void) const;
 
 	int32_t					acceptMechModificationsUseOldVariant( PCSTR name );
 
-	const EString&		getCampaignName() const;
+	const EString&		getCampaignName(void) const;
 
 
 
@@ -163,15 +163,15 @@ public:
 	int32_t					setCurrentMission( PCSTR missionName );
 
 	void				startNewCampaign( PCSTR fileName = "campaign");
-	void				startMultiPlayer();
+	void				startMultiPlayer(void);
 	void				setPurchaseFile( PCSTR fileName );
 
 	Building*			getBuilding( int32_t nameID );
 	int32_t					getBuildings( Building** bdgs, int32_t& count );
 
-	bool				campaignOver();
-	PCSTR			getCurrentBigVideo() const;
-	PCSTR			getFinalVideo() const;
+	bool				campaignOver(void);
+	PCSTR			getCurrentBigVideo(void) const;
+	PCSTR			getFinalVideo(void) const;
 
 	bool				newMechsAvailable() { return bNewMechs; }
 	bool				newPilotsAvailable() { return bNewPilots; }
@@ -184,22 +184,22 @@ public:
 	void				addNewBonusPurchaseFile( PCSTR pFileName ); 
 	void				appendAvailability(PCSTR pFileName, bool* availableArray );
 
-	bool				skipLogistics();
-	bool				showChooseMission();
-	bool				skipPilotReview();
-	bool				skipSalvageScreen();
-	bool				skipPurchasing();
+	bool				skipLogistics(void);
+	bool				showChooseMission(void);
+	bool				skipPilotReview(void);
+	bool				skipSalvageScreen(void);
+	bool				skipPurchasing(void);
 
-	bool				canHaveSalavageCraft();
-	bool				canHaveRepairTruck();
-	bool				canHaveScoutCopter();
-	bool				canHaveArtilleryPiece();
-	bool				canHaveAirStrike();
-	bool				canHaveSensorStrike();
-	bool				canHaveMineLayer();
+	bool				canHaveSalavageCraft(void);
+	bool				canHaveRepairTruck(void);
+	bool				canHaveScoutCopter(void);
+	bool				canHaveArtilleryPiece(void);
+	bool				canHaveAirStrike(void);
+	bool				canHaveSensorStrike(void);
+	bool				canHaveMineLayer(void);
 
-	bool				getVideoShown();
-	void				setVideoShown();
+	bool				getVideoShown(void);
+	void				setVideoShown(void);
 
 
 
@@ -249,17 +249,17 @@ private:
 	int32_t	loadVariant( FitIniFile& file );
 
 	// HELPERS
-	void RegisterFunctions();
-	void UnRegisterFunctions();
+	void RegisterFunctions(void);
+	void UnRegisterFunctions(void);
 
-	void initComponents();
-	void initPilots();
-	void initVariants();
+	void initComponents(void);
+	void initPilots(void);
+	void initVariants(void);
 
 	void addVehicle( int32_t fitID, PacketFile& objectFile, float scale );
 	int32_t  addBuilding( int32_t fitID, PacketFile& objectFile, float scale );
-	void removeDeadWeight();
-	void clearVariants();
+	void removeDeadWeight(void);
+	void clearVariants(void);
 };
 
 

@@ -27,20 +27,20 @@ class MPPrefs: public LogisticsScreen
 {
 	public:
 
-		MPPrefs();
-		virtual ~MPPrefs();
+		MPPrefs(void);
+		virtual ~MPPrefs(void);
 		
 		static MPPrefs* instance(){ return s_instance; }
 		int32_t init( FitIniFile& file );
-		virtual void update();
+		virtual void update(void);
 		virtual void render( int32_t OffsetX, int32_t OffsetY );
 		virtual int32_t	handleMessage( uint32_t message, uint32_t who );
-		virtual void begin();
-		virtual void end();
-		void			initColors();
+		virtual void begin(void);
+		virtual void end(void);
+		void			initColors(void);
 
-		void	saveSettings();
-		void	cancelSettings();
+		void	saveSettings(void);
+		void	cancelSettings(void);
 
 		void setMechColors( uint32_t base, uint32_t highlight ); // called by MPlayer when it resets a color
 

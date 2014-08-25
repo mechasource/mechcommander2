@@ -60,7 +60,7 @@ class GateType : public ObjectType
 
 		void init (void)
 		{
-			ObjectType::init();
+			ObjectType::init(void);
 			
 			dmgLevel = 0;
 
@@ -78,7 +78,7 @@ class GateType : public ObjectType
 		
 		GateType (void)
 		{
-			init();
+			init(void);
 		}
 		
 		virtual int32_t init (FilePtr objFile, uint32_t fileSize);
@@ -86,7 +86,7 @@ class GateType : public ObjectType
 		
 		~GateType (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		int32_t getDamageLvl (void)
@@ -183,7 +183,7 @@ class Gate : public TerrainObject
 
 		~Gate (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual void destroy (void);

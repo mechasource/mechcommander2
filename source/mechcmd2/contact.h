@@ -60,11 +60,11 @@ class ContactInfo {
 		}
 
 		ContactInfo (void) {
-			init ();
+			init (void);
 		}
 
 		~ContactInfo (void) {
-			destroy();
+			destroy(void);
 		}
 
 		int32_t getContactStatus (int32_t teamId, bool includingAllies) {
@@ -198,11 +198,11 @@ class SensorSystem {
 		}
 
 		SensorSystem (void) {
-			init();
+			init(void);
 		}
 
 		~SensorSystem (void) {
-			destroy();
+			destroy(void);
 		}
 
 		int32_t getSensorQuality (void);
@@ -275,11 +275,11 @@ class TeamSensorSystem {
 		void destroy (void);
 
 		TeamSensorSystem (void) {
-			init();
+			init(void);
 		}
 		
 		~TeamSensorSystem (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void update (void);
@@ -355,11 +355,11 @@ class SensorSystemManager {
 		void operator delete (PVOID us);
 		
 		SensorSystemManager (void) {
-			init();
+			init(void);
 		}
 		
 		~SensorSystemManager (void) {
-			destroy();
+			destroy(void);
 		}
 		
 		void destroy (void);

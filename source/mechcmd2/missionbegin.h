@@ -33,27 +33,27 @@ class MissionBegin
 		static bool 				FirstTimePurchase;
 		static bool					FirstTimeMechLab;
 
-		MissionBegin();
-		~MissionBegin();
+		MissionBegin(void);
+		~MissionBegin(void);
 
-		void init();
+		void init(void);
 
-		PCSTR update();
-		void render();
+		PCSTR update(void);
+		void render(void);
 
-		void begin();
-		void end();
+		void begin(void);
+		void end(void);
 		bool isDone(){ return bDone; }
 		bool readyToLoad() { return bReadyToLoad; }
 
 		void beginSplash( PCSTR playerName = 0 );
 
-		void beginMPlayer();
-		void beginSPlayer();
-		void beginZone();
-		void setToMissionBriefing();
+		void beginMPlayer(void);
+		void beginSPlayer(void);
+		void beginZone(void);
+		void setToMissionBriefing(void);
 
-		int32_t getCurrentScreenId();	//Returns screen ID as a function of curScreenX and curScreenY
+		int32_t getCurrentScreenId(void);	//Returns screen ID as a function of curScreenX and curScreenY
 		bool startAnimation (int32_t bId, bool isButton, float scrollTime, int32_t nFlashes);
 
 		bool isInCalloutAnimation()
@@ -61,7 +61,7 @@ class MissionBegin
 			return animationRunning;
 		}
 
-		void beginAtConnectionScreen();
+		void beginAtConnectionScreen(void);
 
 		void restartMPlayer( PCSTR playerName);
 
@@ -93,7 +93,7 @@ class MissionBegin
 
 		bool						animJustBegun;
 
-		void						setUpMultiplayerLogisticsScreens();
+		void						setUpMultiplayerLogisticsScreens(void);
 
 		//-----------------------------------------------
 		// Tutorial Data

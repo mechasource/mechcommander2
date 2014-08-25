@@ -465,7 +465,7 @@
 				Name="icons"
 				>
 				<File
-					RelativePath="..\mc2res\icon.ico"
+					RelativePath="..\mc2res\mechcmd2.ico"
 					>
 				</File>
 				<File

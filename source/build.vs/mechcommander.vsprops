@@ -42,9 +42,18 @@
 		Value="../mc2res"
 		PerformEnvironmentSet="true"
 	/>
-  <UserMacro
+	<UserMacro
 		Name="mech_inc"
 		Value="../include"
 		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="mfc42_include"
+		Value="H:\WinSDK\7600.16385.1\inc\mfc42"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="mfc42_lib"
+		Value="H:\WinSDK\7600.16385.1\lib\mfc\$(PlatformName)"
 	/>
 </VisualStudioPropertySheet>

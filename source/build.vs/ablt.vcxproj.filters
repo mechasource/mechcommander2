@@ -42,12 +42,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\ABLT\ablmc2.cpp">
-      <Filter>Sources\ablt</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ABLT\ablt.cpp">
-      <Filter>Sources\ablt</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\abldbug.cpp">
       <Filter>Sources\abl</Filter>
     </ClCompile>
@@ -92,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="..\ABLT\stdafx.cpp">
       <Filter>build\precompiled</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tools\ablt\ablmc2.cpp">
+      <Filter>Sources\ablt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tools\ablt\ablt.cpp">
+      <Filter>Sources\ablt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

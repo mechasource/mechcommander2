@@ -282,8 +282,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\ABLT\ablmc2.cpp" />
-    <ClCompile Include="..\ABLT\ablt.cpp" />
+    <ClCompile Include="..\tools\ablt\ablmc2.cpp" />
+    <ClCompile Include="..\tools\ablt\ablt.cpp" />
     <ClCompile Include="..\ABLT\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

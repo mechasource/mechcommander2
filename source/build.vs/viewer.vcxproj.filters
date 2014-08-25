@@ -8,9 +8,6 @@
     <Filter Include="Sources\viewer">
       <UniqueIdentifier>{7116f105-d674-4f89-bf06-649c486ee6e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\extra">
-      <UniqueIdentifier>{22184169-b59d-42d6-8fd3-f6bd38ffbfac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\gameplatform">
       <UniqueIdentifier>{8b632901-4cb6-4ade-9cf3-06fc25e73072}</UniqueIdentifier>
     </Filter>
@@ -43,52 +40,55 @@
     <Filter Include="Headers\common">
       <UniqueIdentifier>{3cff28c4-b85e-4fd3-b21b-9669e805a870}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\external dependencies">
+      <UniqueIdentifier>{22184169-b59d-42d6-8fd3-f6bd38ffbfac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tools\viewer\view.cpp">
       <Filter>Sources\viewer</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\mechgui\aanimobject.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\gamesound.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\logisticscomponent.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\logisticsdata.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\logisticsmech.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\logisticsmissioninfo.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\logisticspilot.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\logisticsvariant.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\mechlopedia.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\mission2.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\prefs.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\radio.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\simplecamera.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\mechcmd2\simplecomponentlistbox.cpp">
-      <Filter>Sources\extra</Filter>
+      <Filter>Sources\external dependencies</Filter>
     </ClCompile>
     <ClCompile Include="..\gameos\src\startup\gameplatform.cpp">
       <Filter>Sources\gameplatform</Filter>

@@ -1964,10 +1964,6 @@
 			<Filter
 				Name="DLL"
 				>
-				<File
-					RelativePath="..\adblockie\$(TargetName).def"
-					>
-				</File>
 			</Filter>
 		</Filter>
 	</Files>

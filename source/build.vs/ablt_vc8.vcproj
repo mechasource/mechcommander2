@@ -429,11 +429,11 @@
 				Name="ablt"
 				>
 				<File
-					RelativePath="..\ABLT\ablmc2.cpp"
+					RelativePath="..\tools\ablt\ablmc2.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\ABLT\ablt.cpp"
+					RelativePath="..\tools\ablt\ablt.cpp"
 					>
 				</File>
 			</Filter>

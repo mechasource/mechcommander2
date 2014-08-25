@@ -7,10 +7,11 @@
 #ifndef MLR_MLR_I_C_DeT_PMESH_HPP
 #define MLR_MLR_I_C_DeT_PMESH_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlr_i_det_pmesh.hpp>
+#include <mlr/mlr_i_det_pmesh.hpp>
 
 namespace MidLevelRenderer {
+
+	class MLR_I_C_PMesh;
 
 	//##########################################################################
 	//#### MLRIndexedPolyMesh with color but no lighting two texture layers ####
@@ -109,12 +110,11 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t
-			GetSize()
+		virtual size_t GetSize(void)
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_DeT_PMesh::GetSize(void);
-			ret += colors.GetSize(void);
+			size_t ret = MLR_I_DeT_PMesh::GetSize();
+			ret += colors.GetSize();
 
 			return ret;
 		}

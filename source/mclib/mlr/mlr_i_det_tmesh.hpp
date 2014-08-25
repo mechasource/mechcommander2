@@ -7,18 +7,19 @@
 #ifndef MLR_MLR_I_DeT_TMESH_HPP
 #define MLR_MLR_I_DeT_TMESH_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlr_i_tmesh.hpp>
-//#include <mlr/mlr_i_det_pmesh.hpp>
+#include <mlr/gosvertex.hpp>
+#include <mlr/mlr_i_tmesh.hpp>
+#include <mlr/mlr_i_det_pmesh.hpp>
 
 extern uint32_t gEnableDetailTexture;
 
 namespace MidLevelRenderer {
 
+	class MLR_I_DeT_PMesh;
+
 	//##########################################################################
 	//#### MLRIndexedPolyMesh with no color no lighting w/ detail texture  #####
 	//##########################################################################
-
 
 	class MLR_I_DeT_TMesh:
 		public MLR_I_TMesh
@@ -102,11 +103,10 @@ namespace MidLevelRenderer {
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
-		virtual void
-			SetReferenceState(const MLRState& _state, int32_t pass=0)
+		virtual void SetReferenceState(const MLRState& _state, size_t pass=0)
 		{
 			Check_Object(this);
-			Verify(pass>=0 && pass<2);
+			Verify((intptr_t(pass) >= 0) && pass<2);
 			if(pass==0)
 			{
 				referenceState = _state;
@@ -118,7 +118,7 @@ namespace MidLevelRenderer {
 			}
 		}
 		virtual const MLRState&
-			GetReferenceState(int32_t pass=0) const
+			GetReferenceState(size_t pass=0) const
 		{
 			Check_Object(this); 
 			if(pass==0)
@@ -127,7 +127,7 @@ namespace MidLevelRenderer {
 				return referenceState2;
 		}
 		virtual const MLRState&
-			GetCurrentState(int32_t pass=0) const
+			GetCurrentState(size_t pass=0) const
 		{
 			Check_Object(this);
 			if(pass==0)
@@ -148,21 +148,18 @@ namespace MidLevelRenderer {
 			state2.Combine(master, referenceState2);
 		};
 
-		virtual GOSVertex*
-			GetGOSVertices(int32_t pass=0)
+		virtual GOSVertex* GetGOSVertices(uint32_t pass=0)
 		{
 			Check_Object(this); 
 			if(pass==0)
 				return gos_vertices;
 			else
-				return gos_vertices+numGOSVertices;
+				return gos_vertices + numGOSVertices;
 		}
 
-		virtual int32_t
-			GetNumPasses(void);
+		virtual uint32_t GetNumPasses(void);
 
-		GOSVertex2UV*
-			GetGOSVertices2UV(int32_t=0)
+		GOSVertex2UV* GetGOSVertices2UV(uint32_t=0)
 		{ Check_Object(this); return gos_vertices2uv; }
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -177,11 +174,10 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t
-			GetSize()
+		virtual size_t GetSize(void)
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_TMesh::GetSize(void);
+			size_t ret = MLR_I_TMesh::GetSize();
 
 			return ret;
 		}

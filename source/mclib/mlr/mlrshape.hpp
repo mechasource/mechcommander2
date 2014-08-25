@@ -83,12 +83,10 @@ namespace MidLevelRenderer {
 		{ Check_Object(this); return numPrimitives; };
 
 		// returns the number of faces overall in the shape
-		int32_t
-			GetNumPrimitives(void);
+		size_t GetNumPrimitives(void);
 
 		// returns the number of drawn triangles in the shape
-		int32_t
-			GetNumDrawnTriangles(void);
+		int32_t GetNumDrawnTriangles(void);
 
 		// is to call at begin of every frame 
 		void	InitializePrimitives(uint8_t, const MLRState& master, int32_t=0);
@@ -99,7 +97,7 @@ namespace MidLevelRenderer {
 
 		// lights the geometry, uses the worldToShape matrix and an array of lights which
 		// affect the shape in this frame and the number of lights in this array
-		void	Lighting(const Stuff::LinearMatrix4D&, MLRLight* const*, int32_t nrLights);
+		void	Lighting(const Stuff::LinearMatrix4D&, MLRLight* const*, uint32_t nrLights);
 
 		// casts an ray against the geometry contained in shape
 		bool CastRay(Stuff::Line3D* line, Stuff::Normal3D* normal);

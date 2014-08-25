@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #pragma once
@@ -7,13 +7,21 @@
 #ifndef MLR_MLR_I_TMESH_HPP
 #define MLR_MLR_I_TMESH_HPP
 
-//#include <mlr/mlr.hpp>
+#include <stuff/plane.hpp>
+#include <mlr/mlrindexedprimitivebase.hpp>
+
 //#include <mlr/mlr_i_pmesh.hpp>
 
-namespace MidLevelRenderer {
+namespace Stuff{
+	class Plane;
+}
+
+namespace MidLevelRenderer{
+
+	class MLR_I_PMesh;
 
 	//##########################################################################
-	//#### MLRIndexedTriMesh with no color no lighting one texture layer  #####
+	//#### MLRIndexedTriMesh with no color no lighting one texture layer #####
 	//##########################################################################
 
 
@@ -51,17 +59,12 @@ namespace MidLevelRenderer {
 			Save(Stuff::MemoryStream *stream);
 
 	public:
-		virtual	void	InitializeDrawPrimitive(uint8_t, int32_t=0);
+		virtual void InitializeDrawPrimitive(uint8_t, int32_t=0);
 
-		virtual int32_t
-			GetNumPrimitives()
+		virtual size_t GetNumPrimitives(void)
 		{ Check_Object(this); return numOfTriangles; }
 
-		virtual void
-			SetSubprimitiveLengths(
-			puint8_t length_array,
-			int32_t subprimitive_count
-			)
+		virtual void SetSubprimitiveLengths(puint8_t length_array, size_t subprimitive_count)
 		{
 			Check_Object(this);(void)length_array;
 			Verify(gos_GetCurrentHeap() == Heap);
@@ -70,54 +73,46 @@ namespace MidLevelRenderer {
 			facePlanes.SetLength(numOfTriangles);
 		}
 
-		void	FindFacePlanes(void);
+		void FindFacePlanes(void);
 
-		virtual int32_t	FindBackFace(const Stuff::Point3D&);
+		virtual int32_t FindBackFace(const Stuff::Point3D&);
 
-		const Stuff::Plane *GetTrianglePlane(size_t i)
+		const Stuff::Plane* GetTrianglePlane(size_t index)
 		{
 			Check_Object(this);
-			Verify(i<facePlanes.GetLength());
+			Verify(index < facePlanes.GetLength());
 
-			return &facePlanes[i];
+			return &facePlanes[index];
 		}
 
-		virtual void	Lighting(MLRLight* const*, int32_t nrLights);
+		virtual void Lighting(MLRLight* const*, uint32_t nrLights);
 
 		virtual void LightMapLighting(MLRLight*);
 
-		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(pcuint32_t  paintMe) {(void)paintMe;};
+		virtual void PaintMe(pcuint32_t paintMe) {(void)paintMe;};
 #else
-			PaintMe(const Stuff::RGBAColor* paintMe) {(void)paintMe;};
+		virtual void PaintMe(const Stuff::RGBAColor* paintMe) {(void)paintMe;};
 #endif
 
-		virtual int32_t	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual int32_t TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
 
-		bool
-			CastRay(
-			Stuff::Line3D *line,
-			Stuff::Normal3D *normal
-			);
+		bool CastRay(Stuff::Line3D *line, Stuff::Normal3D *normal);
 
-		//		void
-		//			Transform(Stuff::Matrix4D*);
+		// void
+		// Transform(Stuff::Matrix4D*);
 
-		virtual void
-			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
-		//	Initializes the visibility test list
-		void
-			ResetTestList(void);
+		// Initializes the visibility test list
+		void ResetTestList(void);
 
-		//	find which vertices are visible which not - returns nr of visible vertices
-		//	the result is stored in the visibleIndexedVertices array
+		// find which vertices are visible which not - returns nr of visible vertices
+		// the result is stored in the visibleIndexedVertices array
 		int32_t
 			FindVisibleVertices(void);
 
-		bool
-			Copy(MLR_I_PMesh*);
+		bool Copy(MLR_I_PMesh*);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -131,20 +126,19 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t
-			GetSize()
-		{ 
+		virtual size_t GetSize(void)
+		{
 			Check_Object(this);
-			int32_t ret = MLRIndexedPrimitiveBase::GetSize(void);
-			ret += testList.GetSize(void);
-			ret += facePlanes.GetSize(void);
+			size_t ret = MLRIndexedPrimitiveBase::GetSize();
+			ret += testList.GetSize();
+			ret += facePlanes.GetSize();
 
 			return ret;
 		}
 
 	protected:
-		int32_t numOfTriangles;
-		Stuff::DynamicArrayOf<uint8_t>	testList;
+		size_t numOfTriangles;
+		Stuff::DynamicArrayOf<uint8_t> testList;
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
 	};
 

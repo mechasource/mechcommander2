@@ -7,8 +7,8 @@
 #ifndef MLR_MLR_I_DT_PMESH_HPP
 #define MLR_MLR_I_DT_PMESH_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlr_i_pmesh.hpp>
+#include <mlr/gosvertex.hpp>
+#include <mlr/mlr_i_pmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -58,11 +58,9 @@ namespace MidLevelRenderer {
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
-		void
-			SetTexCoordData(const Stuff::Vector2DScalar*,	int32_t);
+		void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count);
 
-		virtual void
-			SetReferenceState(const MLRState& _state, int32_t pass=0)
+		virtual void SetReferenceState(const MLRState& _state, size_t pass=0)
 		{
 			Check_Object(this);
 			Verify(pass>=0 && pass<2);
@@ -77,7 +75,7 @@ namespace MidLevelRenderer {
 			}
 		}
 		virtual const MLRState&
-			GetReferenceState(int32_t pass=0) const
+			GetReferenceState(size_t pass=0) const
 		{
 			Check_Object(this); 
 			if(pass==0)
@@ -86,7 +84,7 @@ namespace MidLevelRenderer {
 				return referenceState2;
 		}
 		virtual const MLRState&
-			GetCurrentState(int32_t pass=0) const
+			GetCurrentState(size_t pass=0) const
 		{
 			Check_Object(this);
 			if(pass==0)
@@ -103,8 +101,7 @@ namespace MidLevelRenderer {
 			state2.Combine(master, referenceState2);
 		};
 
-		virtual GOSVertex*
-			GetGOSVertices(int32_t pass=0)
+		virtual GOSVertex* GetGOSVertices(uint32_t pass=0)
 		{
 			Check_Object(this); 
 			if(pass==0)
@@ -114,7 +111,7 @@ namespace MidLevelRenderer {
 		}
 #if 0
 		virtual puint16_t
-			GetGOSIndices(int32_t pass=0)
+			GetGOSIndices(size_t pass=0)
 		{
 			Check_Object(this);
 			if(pass==0)
@@ -135,11 +132,10 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t
-			GetSize()
+		virtual size_t GetSize(void)
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_PMesh::GetSize(void);
+			size_t ret = MLR_I_PMesh::GetSize();
 
 			return ret;
 		}
@@ -147,19 +143,12 @@ namespace MidLevelRenderer {
 	protected:
 		MLRState	state2, referenceState2;
 
-		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *texCoords2;	// Max_Number_Vertices_Per_Mesh
-		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *clipExtraTexCoords2;	// Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* texCoords2;	// Max_Number_Vertices_Per_Mesh
+		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* clipExtraTexCoords2;	// Max_Number_Vertices_Per_Mesh
 	};
 
-	MLR_I_DT_PMesh*
-		CreateIndexedCube_NoColor_NoLit_2Tex(float, MLRState*, MLRState*);
-
-	MLRShape*
-		CreateIndexedIcosahedron_NoColor_NoLit_2Tex(
-		IcoInfo&,
-		MLRState*,
-		MLRState*
-		);
+	MLR_I_DT_PMesh* CreateIndexedCube_NoColor_NoLit_2Tex(float, MLRState*, MLRState*);
+	MLRShape* CreateIndexedIcosahedron_NoColor_NoLit_2Tex(IcoInfo&, MLRState*, MLRState*);
 
 }
 #endif

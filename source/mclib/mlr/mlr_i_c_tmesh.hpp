@@ -7,11 +7,11 @@
 #ifndef MLR_MLR_I_C_TMESH_HPP
 #define MLR_MLR_I_C_TMESH_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlr_i_tmesh.hpp>
-//#include <mlr/mlr_i_c_pmesh.hpp>
+#include <mlr/mlr_i_tmesh.hpp>
 
 namespace MidLevelRenderer {
+
+	class MLR_I_C_PMesh;
 
 	//##########################################################################
 	//#### MLRIndexedTriMesh with no color no lighting one texture layer  #####
@@ -134,12 +134,11 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t
-			GetSize()
+		virtual size_t GetSize(void)
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_TMesh::GetSize(void);
-			ret += colors.GetSize(void);
+			size_t ret = MLR_I_TMesh::GetSize();
+			ret += colors.GetSize();
 
 			return ret;
 		}

@@ -7,8 +7,7 @@
 #ifndef MLR_MLR_TERRAIN2_HPP
 #define MLR_MLR_TERRAIN2_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlr_i_det_tmesh.hpp>
+#include <mlr/mlr_i_det_tmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -73,10 +72,10 @@ namespace MidLevelRenderer {
 		{ Check_Object(this); tileX = tx; tileZ = tz; }
 
 		void
-			SetFrame(int32_t res, Scalar xMin, Scalar zMin, Scalar xMax, Scalar zMax)
+			SetFrame(int32_t res, float xMin, float zMin, float xMax, float zMax)
 		{ Check_Object(this); frame[res][0] = xMin; frame[res][1] = zMin; frame[res][2] = xMax; frame[res][3] = zMax; }
 
-		Scalar
+		float
 			GetFrame(int32_t res, int32_t p)
 		{ Check_Object(this); return frame[res][p]; }
 
@@ -109,18 +108,17 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t
-			GetSize()
+		virtual size_t GetSize(void)
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_DeT_TMesh::GetSize(void);
+			size_t ret = MLR_I_DeT_TMesh::GetSize();
 
 			return ret;
 		}
 
 	protected:
 		int32_t textures[8];
-		Scalar frame[8][4];
+		float frame[8][4];
 
 		uint8_t tileX, tileZ;
 		uint8_t currentDepth, maxDepth, maxAllDepth;

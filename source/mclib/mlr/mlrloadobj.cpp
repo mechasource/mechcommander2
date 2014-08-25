@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 /* this source is not used */
@@ -11,55 +11,55 @@
 #include "ctype.h"
 
 #if !defined(MSTRING_HPP)
-	#include <stuff/mstring.hpp>
+#include <stuff/mstring.hpp>
 #endif
 
 #if !defined(MLRSTATE_HPP)
-	#include "mlrstate.hpp"
+#include "mlrstate.hpp"
 #endif
 
 #if !defined(MLRPOLYMESH_HPP)
-	#include "mlrpolymesh.hpp"
+#include "mlrpolymesh.hpp"
 #endif
 
 #if !defined(MLRSHAPE_HPP)
-	#include "mlrshape.hpp"
+#include "mlrshape.hpp"
 #endif
 
-// #define	FORGETFUL	1
+// #define FORGETFUL 1
 
-// length of longest input line in ".obj" file (including continuations) 
+// length of longest input line in ".obj" file (including continuations)
 cint32_t BUFFER_SIZE = 8192;
 
-// maximum number of vertices in a single polygon 
+// maximum number of vertices in a single polygon
 cint32_t FACE_SIZE = 4096;
 
-// initial allocation size for growable arrays 
+// initial allocation size for growable arrays
 cint32_t CHUNK = 4096;
 
-// how many different material library files 
+// how many different material library files
 cint32_t MAX_MTL_FILES = 512;
 
-// case insensitive string equality test 
-#define        SAME(_a, _b)        (_stricmp(_a,_b) == 0)
+// case insensitive string equality test
+#define SAME(_a, _b) (_stricmp(_a,_b) == 0)
 
-// list of textures defined by Wavefront material files 
+// list of textures defined by Wavefront material files
 typedef struct TEX
 {
-	char        *name;
+	char *name;
 
-//	pfTexture   *texture;
-//	float        su;                // u-axis texture scale factor 
-//	float        sv;                // v-axis texture scale factor 
-} TEX;
+	// pfTexture *texture;
+	// float su; // u-axis texture scale factor
+	// float sv; // v-axis texture scale factor
+}TEX;
 
 /* list of materials defined by Wavefront material files typedef struct MTL
 {
-	char		*name;
-	MLRState	*state;
-//	pfMaterial      *material;
-//	pfTexture       *texture;
-//	int32_t              refl_mapped;
+char *name;
+MLRState *state;
+// pfMaterial *material;
+// pfTexture *texture;
+// int32_t refl_mapped;
 } MTL;
 */
 
@@ -74,39 +74,39 @@ typedef struct Polygon
 	pint32_t tIndex;
 } Poly;
 
-// number of input lines skipped (recognized but not processed) or unknown 
-static int32_t	numSkip			= 0;
-static int32_t	numOther		= 0;
+// number of input lines skipped (recognized but not processed) or unknown
+static int32_t numSkip = 0;
+static int32_t numOther = 0;
 
-int32_t	numPrimitives	= 0;		
-MLRState	currentState;
+int32_t numPrimitives = 0;
+MLRState currentState;
 
-// function type and argument declarations 
-static void loadMtl (PSTR fileName);
-static void useMtl (PSTR name);
+// function type and argument declarations
+static void loadMtl(PSTR fileName);
+static void useMtl(PSTR name);
 
-#ifdef        FORGETFUL
-	static void forgetMaterials ();
-	static void forgetMaterialFiles ();
+#ifdef FORGETFUL
+static void forgetMaterials ();
+static void forgetMaterialFiles ();
 #endif
 
-#define        GROW(_v, _t) \
-		if (_v == 0) \
-		{ \
-				_v ## Available = CHUNK; \
-				_v = (_t *)malloc(sizeof(_t)*_v ## Available); \
-		} \
-		else \
-		if (_v ## Count >= _v ## Available) \
-		{ \
-				_v ## Available *= 2; \
-				_v = (_t *)realloc(_v, sizeof(_t)*_v ## Available); \
-		}
+#define GROW(_v, _t) \
+	if (_v == 0) \
+{ \
+	_v ## Available = CHUNK; \
+	_v = (_t *)malloc(sizeof(_t)*_v ## Available); \
+} \
+else \
+	if (_v ## Count >= _v ## Available) \
+{ \
+	_v ## Available *= 2; \
+	_v = (_t *)realloc(_v, sizeof(_t)*_v ## Available); \
+}
 
 MLRPolyMesh*
-	BuildPolyMesh(Poly *p, uint32_t& pCount,
-				  Point3D *v, Vector3D *n,
-				  Vector2DOf<Scalar> *t, RGBAColor *c)
+BuildPolyMesh(Poly *p, uint32_t& pCount,
+			  Point3D *v, Vector3D *n,
+			  Vector2DOf<Scalar> *t, RGBAColor *c)
 {
 	if(pCount <= 0)
 	{
@@ -170,7 +170,7 @@ MLRPolyMesh*
 			count[3]++;
 		}
 	}
-	
+
 	Point3D *coords = new Point3D [count[0]];
 
 	for(i=0,j=0;i<10000;i++)
@@ -310,250 +310,250 @@ MLRPolyMesh*
 // pfdLoadFile_obj -- Load Wavefront ".obj" files into IRIS Performer
 //
 MLRShape*
-	MLRLoadObj (PCSTR fileName)
+MLRLoadObj (PCSTR fileName)
 {
-	
-	FILE         *objFile;
 
-	char          buffer[BUFFER_SIZE];
-	char          token[BUFFER_SIZE];
-	char         *next       = 0;
-	char         *backslash  = 0;
+	FILE *objFile;
 
-	MLRShape	*shape       = new MLRShape;
+	char buffer[BUFFER_SIZE];
+	char token[BUFFER_SIZE];
+	char *next = 0;
+	char *backslash = 0;
 
-	int32_t           width      = 0;
+	MLRShape *shape = new MLRShape;
 
-	int32_t           numTris    = 0;
-	int32_t           numPolys   = 0;
-	int32_t           numGroups  = 0;
+	int32_t width = 0;
 
-//	int32_t			  colorsDefined = 0;
+	int32_t numTris = 0;
+	int32_t numPolys = 0;
+	int32_t numGroups = 0;
 
-// growable vertex coordinate list (X, Y, Z) 
-	Point3D       *v          = 0;
-	uint32_t  vCount     = 0;
-	uint32_t  vAvailable = 0;
+	// int32_t colorsDefined = 0;
 
-// growable vertex normal list (Nx, Ny, Nz) 
-	Vector3D	*n          = 0;
-	uint32_t  nCount     = 0;
-	uint32_t  nAvailable = 0;
+	// growable vertex coordinate list (X, Y, Z)
+	Point3D *v = 0;
+	uint32_t vCount = 0;
+	uint32_t vAvailable = 0;
 
-// growable texture coordinate list (S, T )
-	Vector2DOf<Scalar> *t          = 0;
-	uint32_t  tCount     = 0;
-	uint32_t  tAvailable = 0;
+	// growable vertex normal list (Nx, Ny, Nz)
+	Vector3D *n = 0;
+	uint32_t nCount = 0;
+	uint32_t nAvailable = 0;
 
-// growable color list (Cr, Cg, Cb, Ca) 
-	RGBAColor	*c          = 0;
-	uint32_t  cCount     = 0;
-	uint32_t  cAvailable = 0;
+	// growable texture coordinate list (S, T )
+	Vector2DOf<Scalar> *t = 0;
+	uint32_t tCount = 0;
+	uint32_t tAvailable = 0;
 
-// growable polygon list
-	Poly		*p			= 0;
-	uint32_t  pCount     = 0;
-	uint32_t  pAvailable = 0;
+	// growable color list (Cr, Cg, Cb, Ca)
+	RGBAColor *c = 0;
+	uint32_t cCount = 0;
+	uint32_t cAvailable = 0;
 
-// tmp count vars 
-	int32_t                 i;
+	// growable polygon list
+	Poly *p = 0;
+	uint32_t pCount = 0;
+	uint32_t pAvailable = 0;
+
+	// tmp count vars
+	int32_t i;
 
 	if ((objFile = fopen(fileName, "rt")) == 0)
 		return 0;
 
 	Logical backface_following_polygons = False;
 
-// read Wavefront ".obj" file 
+	// read Wavefront ".obj" file
 	while (fgets(buffer, BUFFER_SIZE, objFile) != 0)
 	{
-// concatenate continuation lines 
+		// concatenate continuation lines
 		while ((backslash = strchr(buffer, '\\')) != 0)
 		{
-// replace backslash with space (thanks to Ken Sakai) 
+			// replace backslash with space (thanks to Ken Sakai)
 			*backslash++ = ' ';
-			*backslash   = '\0';
+			*backslash = '\0';
 
-// keep reading 
+			// keep reading
 			if (fgets(backslash, (int32_t)(BUFFER_SIZE - strlen(buffer)), objFile) == 0)
 				break;
 		}
 
-// find first non-"space" character in line 
+		// find first non-"space" character in line
 		for (next = buffer; *next != '\0' && isspace(*next); next++) {};
 
-// skip blank lines and comments ('$' is comment in "cow.obj") 
+		// skip blank lines and comments ('$' is comment in "cow.obj")
 		if (*next == '\0' || *next == '#' || *next == '!' || *next == '$')
 			continue;
 
-// extract token 
+		// extract token
 		sscanf(next, "%s%n", token, &width);
-			next += width;
+		next += width;
 
-// identify token 
+		// identify token
 		if (SAME(token, "v"))
 		{
-// enlarge vertex coordinate list 
+			// enlarge vertex coordinate list
 			GROW(v, Point3D);
 
-// Set default values for vertex coordinate 
+			// Set default values for vertex coordinate
 			v[vCount][0] = v[vCount][1] = v[vCount][2] = 0.0f;
 
-// read vertex coordinate into list 
+			// read vertex coordinate into list
 			sscanf(next, "%f %f %f",
-					         &v[vCount][0], &v[vCount][1], &v[vCount][2]);
-					  
-/* Added to correct our OWN obj format
+				&v[vCount][0], &v[vCount][1], &v[vCount][2]);
+
+			/* Added to correct our OWN obj format
 			float f = v[vCount][PF_Y];
 			v[vCount][PF_Y] = -v[vCount][PF_Z];
 			v[vCount][PF_Z] = f;
-*/
+			*/
 
-// advance vertex count 
+			// advance vertex count
 			++vCount;
 		} else if (SAME(token, "vn"))
 		{
-// enlarge vertex normal list 
+			// enlarge vertex normal list
 			GROW(n, Vector3D);
 
-// Set default values for vertex normal 
+			// Set default values for vertex normal
 			n[nCount][0] = n[nCount][1] = n[nCount][2] = 0.0f;
 
-// read vertex normal into list 
+			// read vertex normal into list
 			sscanf(next, "%f %f %f",
-					      &n[nCount][0], &n[nCount][1], &n[nCount][2]);
+				&n[nCount][0], &n[nCount][1], &n[nCount][2]);
 
-/*
+			/*
 			float f = n[nCount][PF_Y];
 			n[nCount][PF_Y] = -n[nCount][PF_Z];
 			n[nCount][PF_Z] = f;
-*/
+			*/
 
-// advance normal count 
+			// advance normal count
 			++nCount;
 		} else if (SAME(token, "vt"))
 		{
-// enlarge texture coordinate list 
+			// enlarge texture coordinate list
 			GROW(t, Vector2DOf<Scalar>);
 
-// Set default values for vertex normal 
+			// Set default values for vertex normal
 			t[tCount][0] = t[tCount][1] = 0.0f;
 
-// read texture coordinate into list 
+			// read texture coordinate into list
 			sscanf(next, "%f %f", &t[tCount][0], &t[tCount][1]);
 
-// advance texture coordinate count 
+			// advance texture coordinate count
 			++tCount;
 		} else if (SAME(token, "vc"))
 		{
 			static Scalar r, g, b, a;
-// enlarge color list
+			// enlarge color list
 			GROW(c, RGBAColor);
 
-// Set default values for color
+			// Set default values for color
 			r = g = b = 0.0f;
 			a = 1.0f;
 
-// read color into list
+			// read color into list
 			sscanf(next, "%f %f %f %f", &r, &g, &b, &a);
 
 			c[cCount] = RGBAColor(r, g, b, a);
 
-// advance color count
+			// advance color count
 			++cCount;
 		} else if (SAME(token, "g"))
 		{
 			++numGroups;
 
 			backface_following_polygons = (strstr(next, " bf_") != 0);
-			
-			//DEBUG_STREAM << "'g " << next << "' bf=" << 
-			//	backface_following_polygons << endl;
+
+			//DEBUG_STREAM << "'g " << next << "' bf=" <<
+			// backface_following_polygons << endl;
 
 		} else if (SAME(token, "f") || SAME(token, "fo"))
 		{
-			int32_t          count;
-			int32_t          textureValid = 1;
-			int32_t          normalsValid = 1;
-			int32_t          colorsValid = 1;
-			int32_t          vi[FACE_SIZE];
-			int32_t          ti[FACE_SIZE];
-			int32_t          ni[FACE_SIZE];
-			int32_t          ci[FACE_SIZE];
+			int32_t count;
+			int32_t textureValid = 1;
+			int32_t normalsValid = 1;
+			int32_t colorsValid = 1;
+			int32_t vi[FACE_SIZE];
+			int32_t ti[FACE_SIZE];
+			int32_t ni[FACE_SIZE];
+			int32_t ci[FACE_SIZE];
 
-			char        *slash;
-			char         vertexData[256];
+			char *slash;
+			char vertexData[256];
 
-// parse vertex data from input buffer 
+			// parse vertex data from input buffer
 			for (count = 0; count < FACE_SIZE; count++)
 			{
-// read the next vertices' data packet 
+				// read the next vertices' data packet
 				if (sscanf(next, "%s%n", vertexData, &width) != 1)
 					break;
 
-// advance next pointer past data packet ("n/n/n") 
+				// advance next pointer past data packet ("n/n/n")
 				next += width;
 
-// get vertex coordinate index 
+				// get vertex coordinate index
 				vi[count] = (int32_t)strtol(vertexData, 0, 10);
 
-// get texture coordinate index 
+				// get texture coordinate index
 				ti[count] = 0;
 				if ((slash = strchr(vertexData, '/')) == 0 ||
-					  (ti[count] = (int32_t)strtol(slash+1, 0, 10)) == 0)
+					(ti[count] = (int32_t)strtol(slash+1, 0, 10)) == 0)
 					textureValid = 0;
 
-// get vertex normal index 
+				// get vertex normal index
 				ni[count] = 0;
 				if (slash == 0 || (slash = strchr(slash+1, '/')) == 0 ||
-					  (ni[count] = (int32_t)strtol(slash+1, 0, 10)) == 0)
+					(ni[count] = (int32_t)strtol(slash+1, 0, 10)) == 0)
 					normalsValid = 0;
 
-// get color index 
+				// get color index
 				ci[count] = 0;
 				if (slash == 0 || (slash = strchr(slash+1, '/')) == 0 ||
-					  (ci[count] = (int32_t)strtol(slash+1, 0, 10)) == 0)
+					(ci[count] = (int32_t)strtol(slash+1, 0, 10)) == 0)
 					colorsValid = 0;
 
-// form cannonical indices:
-// convert ".obj" 1-based indices to 0-based (subtract 1)
-// convert negative indices to positive (count from 0)
-					       
+				// form cannonical indices:
+				// convert ".obj" 1-based indices to 0-based (subtract 1)
+				// convert negative indices to positive (count from 0)
+
 				if (vi[count] >= 0)
 					vi[count] -= 1;
 				else
-					vi[count]  += vCount;
+					vi[count] += vCount;
 
 				if (ti[count] >= 0)
 					ti[count] -= 1;
 				else
-					ti[count]  += tCount;
+					ti[count] += tCount;
 
 				if (ni[count] >= 0)
 					ni[count] -= 1;
 				else
-					ni[count]  += nCount;
+					ni[count] += nCount;
 
 				if (ci[count] >= 0)
 					ci[count] -= 1;
 				else
-					ci[count]  += cCount;
+					ci[count] += cCount;
 			}
 
 			if(count > 2)
 			{
-// enlarge polygon list 
+				// enlarge polygon list
 				GROW(p, Poly);
 
 				p[pCount].nr = count;
 				p[pCount].vIndex = new int32_t [p[pCount].nr];
 
-// Setup vertex position  information
+				// Setup vertex position information
 				for (i = 0; i < count; i++)
 				{
 					p[pCount].vIndex[i] = vi[i];
 				}
 
-// Setup normal vector information 
+				// Setup normal vector information
 				if (normalsValid)
 				{
 					for (i = 0; i < count; i++)
@@ -562,7 +562,7 @@ MLRShape*
 					}
 				}
 
-// Setup color information 
+				// Setup color information
 				if (colorsValid)
 				{
 					p[pCount].cIndex = new int32_t [p[pCount].nr];
@@ -572,7 +572,7 @@ MLRShape*
 					}
 				}
 
-// Setup texture coordinates information 
+				// Setup texture coordinates information
 				if (textureValid)
 				{
 					p[pCount].tIndex = new int32_t [p[pCount].nr];
@@ -596,51 +596,51 @@ MLRShape*
 			}
 			numPrimitives++;
 
-			char        mtlName[1024];
+			char mtlName[1024];
 			sscanf(next, "%s", mtlName);
 			useMtl(mtlName);
 		} else if (SAME(token, "mtllib"))
 		{
-			char        libName[1024];
+			char libName[1024];
 			sscanf(next, "%s", libName);
 
 			loadMtl(libName);
 		} else if (
-					  SAME(token, "bevel")      ||
-					  SAME(token, "bmat")       ||
-					  SAME(token, "bsp")        ||
-					  SAME(token, "bzp")        ||
-					  SAME(token, "c_interp")   ||
-					  SAME(token, "cdc")        ||
-					  SAME(token, "con")        ||
-					  SAME(token, "cstype")     ||
-					  SAME(token, "ctech")      ||
-					  SAME(token, "curv")       ||
-					  SAME(token, "curv2")      ||
-					  SAME(token, "d_interp")   ||
-					  SAME(token, "deg")        ||
-					  SAME(token, "end")        ||
-					  SAME(token, "hole")       ||
-					  SAME(token, "l")          ||
-					  SAME(token, "lod")        ||
-					  SAME(token, "maplib")     ||
-					  SAME(token, "mg")         ||
-					  SAME(token, "o")          ||
-					  SAME(token, "p")          ||
-					  SAME(token, "param")      ||
-					  SAME(token, "parm")       ||
-					  SAME(token, "res")        ||
-					  SAME(token, "s")          ||
-					  SAME(token, "scrv")       ||
-					  SAME(token, "shadow_obj") ||
-					  SAME(token, "sp")         ||
-					  SAME(token, "stech")      ||
-					  SAME(token, "step")       ||
-					  SAME(token, "surf")       ||
-					  SAME(token, "trace_obj")  ||
-					  SAME(token, "trim")       ||
-					  SAME(token, "usemap")     ||
-					  SAME(token, "vp"))
+			SAME(token, "bevel") ||
+			SAME(token, "bmat") ||
+			SAME(token, "bsp") ||
+			SAME(token, "bzp") ||
+			SAME(token, "c_interp") ||
+			SAME(token, "cdc") ||
+			SAME(token, "con") ||
+			SAME(token, "cstype") ||
+			SAME(token, "ctech") ||
+			SAME(token, "curv") ||
+			SAME(token, "curv2") ||
+			SAME(token, "d_interp") ||
+			SAME(token, "deg") ||
+			SAME(token, "end") ||
+			SAME(token, "hole") ||
+			SAME(token, "l") ||
+			SAME(token, "lod") ||
+			SAME(token, "maplib") ||
+			SAME(token, "mg") ||
+			SAME(token, "o") ||
+			SAME(token, "p") ||
+			SAME(token, "param") ||
+			SAME(token, "parm") ||
+			SAME(token, "res") ||
+			SAME(token, "s") ||
+			SAME(token, "scrv") ||
+			SAME(token, "shadow_obj") ||
+			SAME(token, "sp") ||
+			SAME(token, "stech") ||
+			SAME(token, "step") ||
+			SAME(token, "surf") ||
+			SAME(token, "trace_obj") ||
+			SAME(token, "trim") ||
+			SAME(token, "usemap") ||
+			SAME(token, "vp"))
 		{
 			++numSkip;
 		}
@@ -651,92 +651,92 @@ MLRShape*
 		}
 	}
 
-// close Wavefront ".obj" file 
+	// close Wavefront ".obj" file
 	fclose(objFile);
 
 	MLRPolyMesh *pm = BuildPolyMesh(p, pCount, v, n, t, c);
 	shape->Add(pm);
 
-// release dynamically allocated vertex, normal, and texture data 
+	// release dynamically allocated vertex, normal, and texture data
 	if (v != 0) free(v);
 	if (n != 0) free(n);
 	if (t != 0) free(t);
 	if (c != 0) free(c);
 	if (p != 0) free(p);
 
-//  note -- if you define this, then material files will be read anew
-//         for every file that references them. could be slow for big
-//         material files and many models. on the other hand, if you
-//         don't define it then the lists will linger after the files
-//         have all been loaded -- wasting space.
-		 
-#ifdef        FORGETFUL
-// discard material info 
+	// note -- if you define this, then material files will be read anew
+	// for every file that references them. could be slow for big
+	// material files and many models. on the other hand, if you
+	// don't define it then the lists will linger after the files
+	// have all been loaded -- wasting space.
+
+#ifdef FORGETFUL
+	// discard material info
 	forgetMaterials();
 	forgetMaterialFiles();
 #endif
 
-// print statistics 
+	// print statistics
 	//pfNotify(PFNFY_NOTICE, PFNFY_PRINT, "pfdLoadFile_obj: %s", fileName);
-	fprintf(stdout, "  Input Data:");
+	fprintf(stdout, " Input Data:");
 	if (numSkip != 0)
-		fprintf(stdout, "    Skipped tokens:     %8ld", numSkip);
+		fprintf(stdout, " Skipped tokens: %8ld", numSkip);
 	if (numOther != 0)
-		fprintf(stdout, "    Unrecognized tokens:%8ld", numOther);
+		fprintf(stdout, " Unrecognized tokens:%8ld", numOther);
 	if (numGroups != 0)
-		fprintf(stdout, "    Groups processed:   %8ld", numGroups);
+		fprintf(stdout, " Groups processed: %8ld", numGroups);
 	if (vCount != 0)
-		fprintf(stdout, "    Vertex coordinates: %8ld", vCount);
+		fprintf(stdout, " Vertex coordinates: %8ld", vCount);
 	if (nCount != 0)
-		fprintf(stdout, "    Vertex normals:     %8ld", nCount);
+		fprintf(stdout, " Vertex normals: %8ld", nCount);
 	if (tCount != 0)
-		fprintf(stdout, "    Texture coordinates:%8ld", tCount);
+		fprintf(stdout, " Texture coordinates:%8ld", tCount);
 	if (cCount != 0)
-		fprintf(stdout, "    Vertex colors:      %8ld", cCount);
+		fprintf(stdout, " Vertex colors: %8ld", cCount);
 	if (numTris != 0)
-		fprintf(stdout, "    Input polygons:     %8ld", numPolys);
+		fprintf(stdout, " Input polygons: %8ld", numPolys);
 	if (numTris != 0)
-		fprintf(stdout, "    Total triangles:    %8ld", numTris);
+		fprintf(stdout, " Total triangles: %8ld", numTris);
 
 	return shape;
 }
 
 // ***
-// ***        P R O C E S S    M A T E R I A L    F I L E S
+// *** P R O C E S S M A T E R I A L F I L E S
 // **
 
-cint32_t MTL_NOT_DEFINED    = 0x0001;
-cint32_t MTL_HAS_GEOSTATE   = 0x0002;
-cint32_t MTL_HAS_AMBIENT    = 0x0004;
-cint32_t MTL_HAS_DIFFUSE    = 0x0008;
-cint32_t MTL_HAS_ALPHA      = 0x0010;
-cint32_t MTL_HAS_SPECULAR   = 0x0020;
-cint32_t MTL_HAS_SHININESS  = 0x0040;
-cint32_t MTL_HAS_TEXTURE    = 0x0080;
+cint32_t MTL_NOT_DEFINED = 0x0001;
+cint32_t MTL_HAS_GEOSTATE = 0x0002;
+cint32_t MTL_HAS_AMBIENT = 0x0004;
+cint32_t MTL_HAS_DIFFUSE = 0x0008;
+cint32_t MTL_HAS_ALPHA = 0x0010;
+cint32_t MTL_HAS_SPECULAR = 0x0020;
+cint32_t MTL_HAS_SHININESS = 0x0040;
+cint32_t MTL_HAS_TEXTURE = 0x0080;
 cint32_t MTL_HAS_REFLECTION = 0x0100;
-cint32_t MTL_IS_TWO_SIDED   = 0x0200;
+cint32_t MTL_IS_TWO_SIDED = 0x0200;
 
 // data for a single wavefront material
- 
+
 typedef struct objMaterial
 {
-	char	library[1024]; // library name
-	char	name[1024];    // material name 
-	int32_t		defined;               // defined fields 
-	RGBColor	ambient;               // Ka field 
-	RGBColor diffuse;               // Kd field 
-	RGBColor specular;              // Ks field 
-	float  alpha;                 // Tr field (actually, 1-Tr) 
-	float  shininess;             // Ns field 
-	char   texture[1024]; // texture map name 
-	float  su;                    // u-axis tc scale 
-	float  sv;                    // v-axis tc scale 
-	char   reflect[1024]; // reflection mode 
-} objMaterial;
+	char library[1024]; // library name
+	char name[1024]; // material name
+	int32_t defined; // defined fields
+	RGBColor ambient; // Ka field
+	RGBColor diffuse; // Kd field
+	RGBColor specular; // Ks field
+	float alpha; // Tr field (actually, 1-Tr)
+	float shininess; // Ns field
+	char texture[1024]; // texture map name
+	float su; // u-axis tc scale
+	float sv; // v-axis tc scale
+	char reflect[1024]; // reflection mode
+}objMaterial;
 
-static objMaterial        *mtlList      = 0;
-static int32_t                 mtlListCount = 0;
-static int32_t                 mtlListSize  = 0;
+static objMaterial *mtlList = 0;
+static int32_t mtlListCount = 0;
+static int32_t mtlListSize = 0;
 
 static void
 reSetMaterial (objMaterial *m)
@@ -758,28 +758,28 @@ reSetMaterial (objMaterial *m)
 	memset(m->reflect, '\0', sizeof(m->reflect));
 }
 
-#ifdef        PRINT_MATERIALS_AS_PARSED
+#ifdef PRINT_MATERIALS_AS_PARSED
 static void
-	printMtl (objMaterial *m)
+printMtl (objMaterial *m)
 {
 	if (m == 0)
 		return;
 
-	fprintf(stdout, "  library: %s\n", m->library);
-	fprintf(stdout, "     name: %s\n", m->name);
-	fprintf(stdout, "  defined: 0x%x\n", m->defined);
-	fprintf(stdout, "  ambient: %g %g %g\n", 
-					m->ambient[0],  m->ambient[1],  m->ambient[2]);
-	fprintf(stdout, "  diffuse: %g %g %g\n", 
-					m->diffuse[0],  m->diffuse[1],  m->diffuse[2]);
-	fprintf(stdout, " specular: %g %g %g\n", 
-					m->specular[0], m->specular[1], m->specular[2]);
-	fprintf(stdout, "    alpha: %g\n", m->alpha);
+	fprintf(stdout, " library: %s\n", m->library);
+	fprintf(stdout, " name: %s\n", m->name);
+	fprintf(stdout, " defined: 0x%x\n", m->defined);
+	fprintf(stdout, " ambient: %g %g %g\n",
+		m->ambient[0], m->ambient[1], m->ambient[2]);
+	fprintf(stdout, " diffuse: %g %g %g\n",
+		m->diffuse[0], m->diffuse[1], m->diffuse[2]);
+	fprintf(stdout, " specular: %g %g %g\n",
+		m->specular[0], m->specular[1], m->specular[2]);
+	fprintf(stdout, " alpha: %g\n", m->alpha);
 	fprintf(stdout, "shininess: %g\n", m->shininess);
-	fprintf(stdout, "  texture: %s\n", m->texture);
-	fprintf(stdout, "       su: %g\n", m->su);
-	fprintf(stdout, "       sv: %g\n", m->sv);
-	fprintf(stdout, "  reflect: %s\n", m->reflect);
+	fprintf(stdout, " texture: %s\n", m->texture);
+	fprintf(stdout, " su: %g\n", m->su);
+	fprintf(stdout, " sv: %g\n", m->sv);
+	fprintf(stdout, " reflect: %s\n", m->reflect);
 	fprintf(stdout, "\n");
 	fflush (stdout);
 }
@@ -788,82 +788,82 @@ static void
 static void
 rememberMaterial (objMaterial *m)
 {
-	int32_t                i;
+	int32_t i;
 
 	if (m == 0)
 		return;
 
-#ifdef        PRINT_MATERIALS_AS_PARSED
+#ifdef PRINT_MATERIALS_AS_PARSED
 	printMtl (m);
 #endif
 
-// check for "empty" definition -- don't add junk 
+	// check for "empty" definition -- don't add junk
 	if (m->name[0] == '\0' || m->defined == 0)
 		return;
-		
-// look for name in material list -- don't add duplicates 
+
+	// look for name in material list -- don't add duplicates
 	for (i = 0; i < mtlListCount; i++)
-	if (strcmp(m->name, mtlList[i].name) == 0)
-	{
-// XXX the best thing is to do a compare and warn user 
-// XXX if the old and new definitions are not identical 
-
-		if (
-			//*m != mtlList[i]
-			(m->defined != (mtlList[i].defined & ~MTL_HAS_GEOSTATE)) ||
-			!Close_Enough(m->ambient.red, mtlList[i].ambient.red, 1e-6f) ||
-			!Close_Enough(m->ambient.green, mtlList[i].ambient.green, 1e-6f) ||
-			!Close_Enough(m->ambient.blue, mtlList[i].ambient.blue, 1e-6f) ||
-			!Close_Enough(m->diffuse.red, mtlList[i].diffuse.red, 1e-6f) ||
-			!Close_Enough(m->diffuse.green, mtlList[i].diffuse.green, 1e-6f) ||
-			!Close_Enough(m->diffuse.blue, mtlList[i].diffuse.blue, 1e-6f) ||
-			!Close_Enough(m->specular.red, mtlList[i].specular.red, 1e-6f) ||
-			!Close_Enough(m->specular.green, mtlList[i].specular.green, 1e-6f) ||
-			!Close_Enough(m->specular.blue, mtlList[i].specular.blue, 1e-6f) ||
-			!Close_Enough(m->alpha, mtlList[i].alpha, 1e-6f) ||
-			!Close_Enough(m->shininess, mtlList[i].shininess, 1e-6f) ||
-			strcmp(m->texture, mtlList[i].texture) ||
-			!Close_Enough(m->su, mtlList[i].su, 1e-6f) ||
-			!Close_Enough(m->sv, mtlList[i].sv, 1e-6f) ||
-			strcmp(m->reflect, mtlList[i].reflect)
-		)
+		if (strcmp(m->name, mtlList[i].name) == 0)
 		{
-			DEBUG_STREAM << "* Warning:  Material '" << m->name << "' in " <<
-				m->library << " ignored (already defined by " << mtlList[i].library << ")" << endl;
-			DEBUG_STREAM << "    " << mtlList[i].library << " " << mtlList[i].name << " " << mtlList[i].texture << endl;
-			DEBUG_STREAM << "    " << m->library << " " << m->name << " " << m->texture << endl;
+			// XXX the best thing is to do a compare and warn user
+			// XXX if the old and new definitions are not identical
 
+			if (
+				//*m != mtlList[i]
+				(m->defined != (mtlList[i].defined & ~MTL_HAS_GEOSTATE)) ||
+				!Close_Enough(m->ambient.red, mtlList[i].ambient.red, 1e-6f) ||
+				!Close_Enough(m->ambient.green, mtlList[i].ambient.green, 1e-6f) ||
+				!Close_Enough(m->ambient.blue, mtlList[i].ambient.blue, 1e-6f) ||
+				!Close_Enough(m->diffuse.red, mtlList[i].diffuse.red, 1e-6f) ||
+				!Close_Enough(m->diffuse.green, mtlList[i].diffuse.green, 1e-6f) ||
+				!Close_Enough(m->diffuse.blue, mtlList[i].diffuse.blue, 1e-6f) ||
+				!Close_Enough(m->specular.red, mtlList[i].specular.red, 1e-6f) ||
+				!Close_Enough(m->specular.green, mtlList[i].specular.green, 1e-6f) ||
+				!Close_Enough(m->specular.blue, mtlList[i].specular.blue, 1e-6f) ||
+				!Close_Enough(m->alpha, mtlList[i].alpha, 1e-6f) ||
+				!Close_Enough(m->shininess, mtlList[i].shininess, 1e-6f) ||
+				strcmp(m->texture, mtlList[i].texture) ||
+				!Close_Enough(m->su, mtlList[i].su, 1e-6f) ||
+				!Close_Enough(m->sv, mtlList[i].sv, 1e-6f) ||
+				strcmp(m->reflect, mtlList[i].reflect)
+				)
+			{
+				DEBUG_STREAM << "* Warning: Material '" << m->name << "' in " <<
+					m->library << " ignored (already defined by " << mtlList[i].library << ")" << endl;
+				DEBUG_STREAM << " " << mtlList[i].library << " " << mtlList[i].name << " " << mtlList[i].texture << endl;
+				DEBUG_STREAM << " " << m->library << " " << m->name << " " << m->texture << endl;
+
+			}
+
+			return;
 		}
 
-		return;
-	}
-		
-// grow material list 
-	if (mtlListSize == 0)
-	{
-// create material list 
-		mtlListSize = 1;
-		mtlList = (objMaterial *)malloc(mtlListSize*sizeof(objMaterial));
-	} else if (mtlListCount >= mtlListSize)
-	{
-// grow material list 
-		mtlListSize *= 2;
-		mtlList = (objMaterial *)realloc(mtlList, mtlListSize*sizeof(objMaterial));
-	}
-#ifdef        PRINT_MATERIALS_AS_PARSED
-	printf("mtlListSize=%d, mtlListCount=%d, sizeof(objMaterial)=%d\n",
-				mtlListSize, mtlListCount, sizeof(objMaterial));
+		// grow material list
+		if (mtlListSize == 0)
+		{
+			// create material list
+			mtlListSize = 1;
+			mtlList = (objMaterial *)malloc(mtlListSize*sizeof(objMaterial));
+		} else if (mtlListCount >= mtlListSize)
+		{
+			// grow material list
+			mtlListSize *= 2;
+			mtlList = (objMaterial *)realloc(mtlList, mtlListSize*sizeof(objMaterial));
+		}
+#ifdef PRINT_MATERIALS_AS_PARSED
+		printf("mtlListSize=%d, mtlListCount=%d, sizeof(objMaterial)=%d\n",
+			mtlListSize, mtlListCount, sizeof(objMaterial));
 #endif
 
-// add material to list 
-	mtlList[mtlListCount++] = *m;
+		// add material to list
+		mtlList[mtlListCount++] = *m;
 }
 
-#ifdef        FORGETFUL
+#ifdef FORGETFUL
 static void
-	forgetMaterials (void)
+forgetMaterials (void)
 {
-// delete list 
+	// delete list
 	if (mtlList != 0)
 		pfFree(mtlList);
 	mtlList = 0;
@@ -873,46 +873,46 @@ static void
 #endif
 
 static void
-	defineMtl (objMaterial *m)
+defineMtl (objMaterial *m)
 {
 #if 0
-	static char        *suffix[] = 
+	static char *suffix[] =
 	{
-		".pfi", 
-		".sgi", 
-		".rgb", 
-		".rgba", 
-		".int32_t", 
-		".inta", 
+		".pfi",
+		".sgi",
+		".rgb",
+		".rgba",
+		".int32_t",
+		".inta",
 		".bw"
 	};
 	static int32_t numSuffix = sizeof(suffix)/sizeof(suffix[0]);
 
-	pfMaterial *material   = new pfMaterial;
-	pfTexture  *texture    = new pfTexture;
+	pfMaterial *material = new pfMaterial;
+	pfTexture *texture = new pfTexture;
 
 	material->SetColorMode (PFMTL_FRONT, PFMTL_CMODE_OFF);
 	pfdMakeDefaultObject((pfObject *)material);
 
-	if (m->defined & (MTL_HAS_AMBIENT  | MTL_HAS_DIFFUSE  | 
-				MTL_HAS_SPECULAR | MTL_HAS_ALPHA))
+	if (m->defined & (MTL_HAS_AMBIENT | MTL_HAS_DIFFUSE |
+		MTL_HAS_SPECULAR | MTL_HAS_ALPHA))
 	{
 		if (m->defined & MTL_HAS_AMBIENT)
 		{
-			material->SetColor (PFMTL_AMBIENT, 
-					                m->ambient[0], m->ambient[1], m->ambient[2]);
+			material->SetColor (PFMTL_AMBIENT,
+				m->ambient[0], m->ambient[1], m->ambient[2]);
 		}
 
 		if (m->defined & MTL_HAS_DIFFUSE)
 		{
-			material->SetColor (PFMTL_DIFFUSE, 
-					                m->diffuse[0], m->diffuse[1], m->diffuse[2]);
+			material->SetColor (PFMTL_DIFFUSE,
+				m->diffuse[0], m->diffuse[1], m->diffuse[2]);
 		}
 
 		if (m->defined & MTL_HAS_SPECULAR)
 		{
-			material->SetColor (PFMTL_SPECULAR, 
-					                m->specular[0], m->specular[1], m->specular[2]);
+			material->SetColor (PFMTL_SPECULAR,
+				m->specular[0], m->specular[1], m->specular[2]);
 		}
 
 		if (m->defined & MTL_HAS_SHININESS)
@@ -940,24 +940,24 @@ static void
 
 	if (m->defined & (MTL_HAS_TEXTURE | MTL_HAS_REFLECTION))
 	{
-		int32_t                  j, foo;
-		static int32_t				comp;
-		uint32_t        *image;
-		char                *sp;
+		int32_t j, foo;
+		static int32_t comp;
+		uint32_t *image;
+		char *sp;
 
-// convert texture name from blah.rla to blah.rgb etc. 
+		// convert texture name from blah.rla to blah.rgb etc.
 		for (j = 0; j < numSuffix; j++)
 		{
-			char         texPath[PF_MAXSTRING];
+			char texPath[PF_MAXSTRING];
 
-// remove ".rla" or whatever suffix from file name 
+			// remove ".rla" or whatever suffix from file name
 			if ((sp = strrchr(m->texture, (int32_t)'.')) != 0)
 				*sp = '\0';
 
-// append one of the known image file extensions 
+			// append one of the known image file extensions
 			strcat(m->texture, suffix[j]);
 
-// see if file is locatable with this extension 
+			// see if file is locatable with this extension
 			if (pfFindFile(m->texture, texPath, R_OK))
 				break;
 		}
@@ -982,7 +982,7 @@ static void
 
 			if (m->defined & MTL_HAS_REFLECTION)
 			{
-				pfTexGen   *texturegen = new pfTexGen;
+				pfTexGen *texturegen = new pfTexGen;
 
 				if (strcmp(m->reflect, "sphere") == 0)
 				{
@@ -995,12 +995,12 @@ static void
 				pfdReSetObject((pfObject *)texturegen);
 			}
 		} else {
-// file not found -- Set name to 0 string 
+			// file not found -- Set name to 0 string
 			if ((sp = strrchr(m->texture, (int32_t)'.')) != 0)
 				*sp = '\0';
 			pfNotify(PFNFY_WARN, PFNFY_RESOURCE,
-					      "can't find texture \"%s\" for material \"%s\"", 
-					      m->texture, m->name);
+				"can't find texture \"%s\" for material \"%s\"",
+				m->texture, m->name);
 		}
 	}
 
@@ -1045,43 +1045,43 @@ static void
 }
 
 static void
-	useMtl (PSTR name)
+useMtl (PSTR name)
 {
 	int32_t i;
 
-// reSet to default state 
-//	pfdReSetBldrState();
+	// reSet to default state
+	// pfdReSetBldrState();
 
-// look for name in material list 
+	// look for name in material list
 	for (i = 0; i < mtlListCount; i++)
 	{
 		if (strcmp(name, mtlList[i].name) == 0)
 		{
-// is this a "missing" material 
+			// is this a "missing" material
 			if (mtlList[i].defined & MTL_NOT_DEFINED)
 			{
 			} else {
-// define state before first use 
+				// define state before first use
 				if ((mtlList[i].defined & MTL_HAS_GEOSTATE) == 0)
 					defineMtl(&mtlList[i]);
 
-// specify the state by name 
-//				pfdLoadBldrState(name);
+				// specify the state by name
+				// pfdLoadBldrState(name);
 			}
 
 			return;
 		}
 	}
-		
-// if we can't find material, then use default 
+
+	// if we can't find material, then use default
 	if (i >= mtlListCount)
 	{
 		objMaterial missing;
 
-// print warning once 
+		// print warning once
 		fprintf(stderr, "material \"%s\" not defined", name);
 
-// remember missing material's name and status 
+		// remember missing material's name and status
 		reSetMaterial(&missing);
 		strcpy(missing.name, name);
 		missing.defined = MTL_NOT_DEFINED;
@@ -1090,20 +1090,20 @@ static void
 }
 
 // parse wafefront material file texture definition
- 
-static void
-	parSetexture (PSTR next, objMaterial *m)
-{
-	int32_t                 width = 0;
 
-// Set default texture scale factors 
+static void
+parSetexture (PSTR next, objMaterial *m)
+{
+	int32_t width = 0;
+
+	// Set default texture scale factors
 	m->su = 1.0f;
 	m->sv = 1.0f;
 
-// parse texture name 
+	// parse texture name
 	sscanf(next, "%s%n", m->texture, &width);
 
-// parse texture option strings 
+	// parse texture option strings
 	do
 	{
 		next += width;
@@ -1121,190 +1121,190 @@ static void
 					sscanf(next, "%f %f %*f %s%n", &m->su, &m->sv, m->texture, &width);
 				} else {
 					if (strcmp(m->texture, "-type") == 0)
-					  sscanf(next, "%s %s%n", m->reflect, m->texture, &width);
+						sscanf(next, "%s %s%n", m->reflect, m->texture, &width);
 					else
-					  break;
+						break;
 				}
 			}
 		}
 	} while (1);
 }
 
-static char        *mtlFileList[MAX_MTL_FILES];
-static int32_t         mtlCount = 0;
+static char *mtlFileList[MAX_MTL_FILES];
+static int32_t mtlCount = 0;
 
-#ifdef        FORGETFUL
+#ifdef FORGETFUL
 static void
-	forgetMaterialFiles (void)
+forgetMaterialFiles (void)
 {
-	int32_t                i;
+	int32_t i;
 
 	for (i = 0; i < mtlCount; i++)
-	if (mtlFileList[i] != 0)
-		free(mtlFileList[i]);
+		if (mtlFileList[i] != 0)
+			free(mtlFileList[i]);
 
 	mtlCount = 0;
 }
 #endif
 
 // load a wavefront-format material file (".mtl")
- 
+
 static void
-	loadMtl (PSTR fileName)
+loadMtl (PSTR fileName)
 {
-	FILE        *mtlFile;
-	char         buffer[BUFFER_SIZE];
-	char         token[BUFFER_SIZE];
-	char        *next;
-	char        *backslash;
-	int32_t          width        = 0;
-	int32_t          i;
-	int32_t          inProgress = 0;
-	objMaterial  current;
+	FILE *mtlFile;
+	char buffer[BUFFER_SIZE];
+	char token[BUFFER_SIZE];
+	char *next;
+	char *backslash;
+	int32_t width = 0;
+	int32_t i;
+	int32_t inProgress = 0;
+	objMaterial current;
 
-// have we already loaded this file ? 
+	// have we already loaded this file ?
 	for (i = 0; i < mtlCount; i++)
-	if (strcmp(fileName, mtlFileList[i]) == 0)
-	{
-		//DEBUG_STREAM << "(" << mtlCount << ") " << 
-		//	"Material library '" << mtlFileList[i] << "' already loaded" << endl;
-// bail out 
-		return;
-	}
+		if (strcmp(fileName, mtlFileList[i]) == 0)
+		{
+			//DEBUG_STREAM << "(" << mtlCount << ") " <<
+			// "Material library '" << mtlFileList[i] << "' already loaded" << endl;
+			// bail out
+			return;
+		}
 
-// remember file name for future reference 
-	if (i < MAX_MTL_FILES)
-	{
-		mtlFileList[mtlCount++] = strdup(fileName);
-		DEBUG_STREAM << "> Reading material library '" << mtlFileList[mtlCount-1] <<
-			"' (" << mtlCount << ") " << endl;
-	} else {
-		fprintf(stderr, "more than %d unique mtllibs. enlarge MAX_MTL_FILES", 
-					  MAX_MTL_FILES);
-	}
+		// remember file name for future reference
+		if (i < MAX_MTL_FILES)
+		{
+			mtlFileList[mtlCount++] = strdup(fileName);
+			DEBUG_STREAM << "> Reading material library '" << mtlFileList[mtlCount-1] <<
+				"' (" << mtlCount << ") " << endl;
+		} else {
+			fprintf(stderr, "more than %d unique mtllibs. enlarge MAX_MTL_FILES",
+				MAX_MTL_FILES);
+		}
 
-// open file 
-	if ((mtlFile = fopen(fileName, "rt")) == 0)
-	{
-		fprintf(stderr, "can't open material library %s", fileName);
-		return;
-	}
+		// open file
+		if ((mtlFile = fopen(fileName, "rt")) == 0)
+		{
+			fprintf(stderr, "can't open material library %s", fileName);
+			return;
+		}
 
-// read Wavefront ".mtl" file 
-	while (fgets(buffer, BUFFER_SIZE, mtlFile) != 0)
-	{
-// concatenate continuation lines 
-		while ((backslash = strchr(buffer, '\\')) != 0)
-		if (fgets(backslash, BUFFER_SIZE - strlen(buffer), mtlFile) == 0)
-			break;
+		// read Wavefront ".mtl" file
+		while (fgets(buffer, BUFFER_SIZE, mtlFile) != 0)
+		{
+			// concatenate continuation lines
+			while ((backslash = strchr(buffer, '\\')) != 0)
+				if (fgets(backslash, BUFFER_SIZE - strlen(buffer), mtlFile) == 0)
+					break;
 
-// find first non-"space" character in line 
-		for (next = buffer; *next != '\0' && isspace(*next); next++)  {};
+			// find first non-"space" character in line
+			for (next = buffer; *next != '\0' && isspace(*next); next++) {};
 
-// skip blank lines and comments ('$' is comment in "cow.obj") 
-		if (*next == '\0' || *next == '#' || *next == '!' || *next == '$')
-			continue;
+			// skip blank lines and comments ('$' is comment in "cow.obj")
+			if (*next == '\0' || *next == '#' || *next == '!' || *next == '$')
+				continue;
 
-// extract token 
-		sscanf(next, "%s%n", token, &width);
+			// extract token
+			sscanf(next, "%s%n", token, &width);
 			next += width;
 
-// identify token 
-		if (SAME(token, "newmtl"))
-		{
-// save material definition 
-			if (inProgress)
-				rememberMaterial(&current);
+			// identify token
+			if (SAME(token, "newmtl"))
+			{
+				// save material definition
+				if (inProgress)
+					rememberMaterial(&current);
 
-			reSetMaterial(&current);
-			inProgress = 1;
-			strcpy(current.library, mtlFileList[mtlCount-1]);
-			sscanf(next, "%s", current.name);
-		} else if (SAME(token, "Ka"))
-		{
-			sscanf(next, "%f %f %f", 
-					      &current.ambient.red, 
-					      &current.ambient.green, 
-					      &current.ambient.blue);
-			current.defined |= MTL_HAS_AMBIENT;
-		} else if (SAME(token, "Kd"))
-		{
-			sscanf(next, "%f %f %f", 
-					      &current.diffuse.red, 
-					      &current.diffuse.green, 
-					      &current.diffuse.blue);
-			current.defined |= MTL_HAS_DIFFUSE;
-		} else if (SAME(token, "Ks"))
-		{
-			sscanf(next, "%f %f %f", 
-					      &current.specular.red, 
-					      &current.specular.green, 
-					      &current.specular.blue);
-			current.defined |= MTL_HAS_SPECULAR;
-		} else if (SAME(token, "Tr"))
-		{
-			float alpha = 1.0f;
-			sscanf(next, "%f", &alpha);
-			current.alpha = 1.0f - alpha;
-			current.defined |= MTL_HAS_ALPHA;
-		} else if (SAME(token, "Ns"))
-		{
-			sscanf(next, "%f", &current.shininess);
+				reSetMaterial(&current);
+				inProgress = 1;
+				strcpy(current.library, mtlFileList[mtlCount-1]);
+				sscanf(next, "%s", current.name);
+			} else if (SAME(token, "Ka"))
+			{
+				sscanf(next, "%f %f %f",
+					&current.ambient.red,
+					&current.ambient.green,
+					&current.ambient.blue);
+				current.defined |= MTL_HAS_AMBIENT;
+			} else if (SAME(token, "Kd"))
+			{
+				sscanf(next, "%f %f %f",
+					&current.diffuse.red,
+					&current.diffuse.green,
+					&current.diffuse.blue);
+				current.defined |= MTL_HAS_DIFFUSE;
+			} else if (SAME(token, "Ks"))
+			{
+				sscanf(next, "%f %f %f",
+					&current.specular.red,
+					&current.specular.green,
+					&current.specular.blue);
+				current.defined |= MTL_HAS_SPECULAR;
+			} else if (SAME(token, "Tr"))
+			{
+				float alpha = 1.0f;
+				sscanf(next, "%f", &alpha);
+				current.alpha = 1.0f - alpha;
+				current.defined |= MTL_HAS_ALPHA;
+			} else if (SAME(token, "Ns"))
+			{
+				sscanf(next, "%f", &current.shininess);
 
-// clamp shininess range 
-			if (current.shininess <   0.0f)
-				current.shininess =   0.0f;
+				// clamp shininess range
+				if (current.shininess < 0.0f)
+					current.shininess = 0.0f;
+				else
+					if (current.shininess > 128.0f)
+						current.shininess = 128.0f;
+
+				current.defined |= MTL_HAS_SHININESS;
+			} else if (SAME(token, "map_Kd"))
+			{
+				parSetexture(next, &current);
+				current.defined |= MTL_HAS_TEXTURE;
+			} else if (SAME(token, "refl"))
+			{
+				strcpy(current.reflect, "sphere");
+				parSetexture(next, &current);
+				current.defined |= MTL_HAS_REFLECTION;
+			} else if (
+				SAME(token, "Ni") ||
+				SAME(token, "Tf") ||
+				SAME(token, "bump") ||
+				SAME(token, "d") ||
+				SAME(token, "decal") ||
+				SAME(token, "illum") ||
+				SAME(token, "map_Ka") ||
+				SAME(token, "map_Ks") ||
+				SAME(token, "map_Ns") ||
+				SAME(token, "map_d") ||
+				SAME(token, "sharpness") ||
+				SAME(token, "vp"))
+			{
+				numSkip++;
+			}
+#ifndef STRICT_OBJ_FORMAT
+			// indicate that this material is two-sided
+
 			else
-				if (current.shininess > 128.0f)
-					current.shininess = 128.0f;
-
-			current.defined |= MTL_HAS_SHININESS;
-		} else if (SAME(token, "map_Kd"))
-		{
-			parSetexture(next, &current);
-			current.defined |= MTL_HAS_TEXTURE;
-		} else if (SAME(token, "refl"))
-		{
-			strcpy(current.reflect, "sphere");
-			parSetexture(next, &current);
-			current.defined |= MTL_HAS_REFLECTION;
-		} else if (
-					  SAME(token, "Ni")        ||
-					  SAME(token, "Tf")        ||
-					  SAME(token, "bump")      ||
-					  SAME(token, "d")         ||
-					  SAME(token, "decal")     ||
-					  SAME(token, "illum")     ||
-					  SAME(token, "map_Ka")    ||
-					  SAME(token, "map_Ks")    ||
-					  SAME(token, "map_Ns")    ||
-					  SAME(token, "map_d")     ||
-					  SAME(token, "sharpness") ||
-					  SAME(token, "vp"))
-		{
-			numSkip++;
-		}
-#ifndef        STRICT_OBJ_FORMAT
-// indicate that this material is two-sided
-				 
-		else
-		if (SAME(token, "TWOSIDE"))
-		{
-			current.defined |= MTL_IS_TWO_SIDED;
-		}
+				if (SAME(token, "TWOSIDE"))
+				{
+					current.defined |= MTL_IS_TWO_SIDED;
+				}
 #endif
-			else {
-			fprintf(stderr, " unrecognized: %s", buffer);
-			numOther++;
+				else {
+					fprintf(stderr, " unrecognized: %s", buffer);
+					numOther++;
+				}
 		}
-	}
 #if 0
-	DEBUG_STREAM << fileName << endl << flush;
+		DEBUG_STREAM << fileName << endl << flush;
 #endif
 
-	if (inProgress)
-		rememberMaterial(&current);
+		if (inProgress)
+			rememberMaterial(&current);
 
-// close Wavefront ".mtl" file 
-	fclose(mtlFile);
+		// close Wavefront ".mtl" file
+		fclose(mtlFile);
 }

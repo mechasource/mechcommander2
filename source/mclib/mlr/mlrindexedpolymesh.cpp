@@ -186,7 +186,8 @@ void
 {
 	Check_Object(this); 
 
-	int32_t i, j, stride, numPrimitives = GetNumPrimitives();
+	int32_t i, j, stride;
+	numPrimitives = GetNumPrimitives();
 	Vector3D v;
 
 	Verify(index.GetLength() > 0);

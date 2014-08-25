@@ -7,8 +7,8 @@
 #ifndef MLR_MLR_I_DeT_PMESH_HPP
 #define MLR_MLR_I_DeT_PMESH_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlr_i_pmesh.hpp>
+#include <mlr/gosvertex.hpp>
+#include <mlr/mlr_i_pmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -108,14 +108,12 @@ namespace MidLevelRenderer {
 
 		virtual int32_t	TransformAndClip(Stuff::Matrix4D *, MLRClippingState, GOSVertexPool*,bool=false);
 
-		virtual void
-			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
+		virtual void TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
-		virtual void
-			SetReferenceState(const MLRState& _state, int32_t pass=0)
+		virtual void SetReferenceState(const MLRState& _state, size_t pass=0)
 		{
 			Check_Object(this);
-			Verify(pass>=0 && pass<2);
+			Verify((intptr_t(pass) >= 0) && pass < 2);
 			if(pass==0)
 			{
 				referenceState = _state;
@@ -127,7 +125,7 @@ namespace MidLevelRenderer {
 			}
 		}
 		virtual const MLRState&
-			GetReferenceState(int32_t pass=0) const
+			GetReferenceState(size_t pass=0) const
 		{
 			Check_Object(this); 
 			if(pass==0)
@@ -136,7 +134,7 @@ namespace MidLevelRenderer {
 				return referenceState2;
 		}
 		virtual const MLRState&
-			GetCurrentState(int32_t pass=0) const
+			GetCurrentState(size_t pass=0) const
 		{
 			Check_Object(this);
 			if(pass==0)
@@ -145,26 +143,23 @@ namespace MidLevelRenderer {
 				return state2;
 		}
 
-		virtual void
-			CombineStates (const MLRState& master)
+		virtual void CombineStates (const MLRState& master)
 		{
 			Check_Object(this);
 			state.Combine(master, referenceState); 
 			state2.Combine(master, referenceState2);
 		};
 
-		virtual GOSVertex*
-			GetGOSVertices(int32_t pass=0)
+		virtual GOSVertex* GetGOSVertices(uint32_t pass=0)
 		{
 			Check_Object(this); 
 			if(pass==0)
 				return gos_vertices;
 			else
-				return gos_vertices+numGOSVertices;
+				return gos_vertices + numGOSVertices;
 		}
 
-		virtual int32_t
-			GetNumPasses(void);
+		virtual uint32_t GetNumPasses(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support
@@ -178,11 +173,10 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t
-			GetSize()
+		virtual size_t GetSize(void)
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_PMesh::GetSize(void);
+			size_t ret = MLR_I_PMesh::GetSize();
 
 			return ret;
 		}

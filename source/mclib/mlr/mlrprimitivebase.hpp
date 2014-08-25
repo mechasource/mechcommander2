@@ -104,31 +104,23 @@ namespace MidLevelRenderer{
 			Check_Object(this); return lengths.GetLength();
 		}
 
-		virtual void
-			SetSubprimitiveLengths(
-			puint8_t length_array,
-			int32_t subprimitive_count
-			) = 0;
+		virtual void SetSubprimitiveLengths(puint8_t length_array, size_t subprimitive_count) = 0;
 
 		// returns the number of subprimitives
-		void
-			GetSubprimitiveLengths(puint8_t *length_array, pint32_t);
+		void GetSubprimitiveLengths(puint8_t *length_array, pint32_t);
 
-		int32_t
-			GetSubprimitiveLength(int32_t i) const;
+		int32_t GetSubprimitiveLength(int32_t i) const;
 
 		// ==============================================================
 
-		virtual void SetReferenceState(const MLRState& _state, int32_t=0)
-		{ Check_Object(this); referenceState = _state; };
-		virtual const MLRState&
-			GetReferenceState(int32_t=0) const
-		{ Check_Object(this); return referenceState; };
-		virtual const MLRState&
-			GetCurrentState(int32_t=0) const
-		{ Check_Object(this); return state; };
+		virtual void SetReferenceState(const MLRState& _state, size_t pass=0)
+		{ Check_Object(this); (void)pass; referenceState = _state; };
+		virtual const MLRState& GetReferenceState(size_t pass=0) const
+		{ Check_Object(this);(void)pass; return referenceState; };
+		virtual const MLRState& GetCurrentState(size_t pass=0) const
+		{ Check_Object(this); (void)pass; return state; };
 
-		virtual void CombineStates (const MLRState& master)
+		virtual void CombineStates(const MLRState& master)
 		{ Check_Object(this); state.Combine(master, referenceState); };
 
 		size_t GetNumVertices(void)
@@ -136,13 +128,13 @@ namespace MidLevelRenderer{
 
 		virtual void SetCoordData(const Stuff::Point3D* array, size_t point_count);
 		virtual void GetCoordData(Stuff::Point3D** array, psize_t point_count);
-		virtual void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count);
-		virtual void GetTexCoordData(Stuff::Vector2DScalar** array, psize_t point_count);
+		virtual void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass=0);
+		virtual void GetTexCoordData(Stuff::Vector2DScalar** array, psize_t point_count, size_t pass=0);
 
 		// is to call befor clipping, parameter: camera point
 		virtual int32_t FindBackFace(const Stuff::Point3D&) = 0;
 
-		virtual void Lighting(MLRLight* const*, int32_t nrLights) = 0;
+		virtual void Lighting(MLRLight* const*, uint32_t nrLights) = 0;
 
 		static void InitializeDraw(void);
 
@@ -151,16 +143,17 @@ namespace MidLevelRenderer{
 		int32_t GetVisible ()
 		{ Check_Object(this); return visible; }
 
-		virtual GOSVertex*
-			GetGOSVertices(int32_t=0)
-		{ Check_Object(this); return gos_vertices; }
+		virtual GOSVertex* GetGOSVertices(uint32_t=0)
+		{
+			Check_Object(this); return gos_vertices;
+		}
 
-		int32_t
-			GetNumGOSVertices()
-		{ Check_Object(this); return numGOSVertices; }
+		uint32_t GetNumGOSVertices(void)
+		{
+			Check_Object(this); return numGOSVertices;
+		}
 
-		virtual GOSVertex2UV*
-			GetGOSVertices2UV(int32_t=0)
+		virtual GOSVertex2UV* GetGOSVertices2UV(uint32_t=0)
 		{ Check_Object(this); return NULL; }
 
 		int32_t
@@ -182,12 +175,10 @@ namespace MidLevelRenderer{
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false) = 0;
 
-		virtual int32_t
-			GetNumPasses()
+		virtual uint32_t GetNumPasses(void)
 		{ Check_Object(this); return passes; }
 
-		virtual void
-			HurtMe(const Stuff::LinearMatrix4D&, float /*radius*/)
+		virtual void HurtMe(const Stuff::LinearMatrix4D&, float /*radius*/)
 		{ Check_Object(this); }
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -310,7 +301,7 @@ namespace MidLevelRenderer{
 
 		int32_t drawMode;
 
-		GOSVertex *gos_vertices;
+		GOSVertex* gos_vertices;
 		uint16_t numGOSVertices;
 	};
 
@@ -344,14 +335,13 @@ namespace MidLevelRenderer{
 			Stuff::RegisteredClass::ClassID class_id,
 			PCSTR class_name,
 			Stuff::RegisteredClass::ClassData *parent_class,
-			MLRPrimitiveBase::Factory primitive_factory
-			):
-		RegisteredClass__ClassData(class_id, class_name, parent_class),
+			MLRPrimitiveBase::Factory primitive_factory) 
+			: RegisteredClass__ClassData(class_id, class_name, parent_class), 
 			primitiveFactory(primitive_factory)
-		{}
+		{
+		}
 
-		MLRPrimitiveBase::Factory
-			primitiveFactory;
+		MLRPrimitiveBase::Factory primitiveFactory;
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		//

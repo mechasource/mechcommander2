@@ -7,8 +7,7 @@
 #ifndef MLR_MLR_I_L_DT_PMESH_HPP
 #define MLR_MLR_I_L_DT_PMESH_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlr_i_c_dt_pmesh.hpp>
+#include <mlr/mlr_i_c_dt_pmesh.hpp>
 
 namespace MidLevelRenderer {
 
@@ -76,7 +75,7 @@ namespace MidLevelRenderer {
 			);
 #endif
 
-		virtual void	Lighting(MLRLight* const*, int32_t nrLights);
+		virtual void	Lighting(MLRLight* const*, uint32_t nrLights);
 
 		virtual void
 #if COLOR_AS_DWORD
@@ -102,13 +101,12 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t
-			GetSize()
+		virtual size_t GetSize(void)
 		{ 
 			Check_Object(this);
-			int32_t ret = MLR_I_C_DT_PMesh::GetSize(void);
-			ret += normals.GetSize(void);
-			ret += litColors.GetSize(void);
+			size_t ret = MLR_I_C_DT_PMesh::GetSize();
+			ret += normals.GetSize();
+			ret += litColors.GetSize();
 
 			return ret;
 		}

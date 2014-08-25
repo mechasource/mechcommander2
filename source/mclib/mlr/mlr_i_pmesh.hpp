@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #pragma once
@@ -7,13 +7,17 @@
 #ifndef MLR_MLR_I_PMESH_HPP
 #define MLR_MLR_I_PMESH_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlrindexedprimitivebase.hpp>
+#include <stuff/plane.hpp>
+#include <mlr/mlrindexedprimitivebase.hpp>
 
-namespace MidLevelRenderer {
+namespace Stuff{
+	class Plane;
+}
+
+namespace MidLevelRenderer{
 
 	//##########################################################################
-	//#### MLRIndexedPolyMesh with no color no lighting one texture layer  #####
+	//#### MLRIndexedPolyMesh with no color no lighting one texture layer #####
 	//##########################################################################
 
 
@@ -51,37 +55,37 @@ namespace MidLevelRenderer {
 			Save(Stuff::MemoryStream *stream);
 
 	public:
-		//		void Copy(MLRIndexedPolyMesh*);
+		// void Copy(MLRIndexedPolyMesh*);
 
-		virtual	void	InitializeDrawPrimitive(uint8_t, int32_t=0);
+		virtual void InitializeDrawPrimitive(uint8_t, int32_t=0);
 
-		virtual void	SetSubprimitiveLengths(puint8_t , int32_t);
-		virtual void	GetSubprimitiveLengths(puint8_t *, pint32_t);
+		virtual void SetSubprimitiveLengths(puint8_t, size_t);
+		virtual void GetSubprimitiveLengths(puint8_t*, psize_t);
 
-		void	FindFacePlanes(void);
+		void FindFacePlanes(void);
 
-		virtual int32_t	FindBackFace(const Stuff::Point3D&);
+		virtual int32_t FindBackFace(const Stuff::Point3D&);
 
-		const Stuff::Plane *GetPolygonPlane(size_t i)
+		const Stuff::Plane* GetPolygonPlane(size_t index)
 		{
 			Check_Object(this);
-			Verify(i<facePlanes.GetLength());
+			Verify(index < facePlanes.GetLength());
 
-			return &facePlanes[i];
+			return &facePlanes[index];
 		}
 
-		virtual void	Lighting(MLRLight* const*, int32_t nrLights);
+		virtual void Lighting(MLRLight* const*, uint32_t nrLights);
 
 		virtual void LightMapLighting(MLRLight*);
 
 		virtual void
 #if COLOR_AS_DWORD
-			PaintMe(pcuint32_t  paintMe) {(void)paintMe;};
+			PaintMe(pcuint32_t paintMe) {(void)paintMe;};
 #else
 			PaintMe(const Stuff::RGBAColor* paintMe) {(void)paintMe;};
 #endif
 
-		virtual int32_t	TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*,bool=false);
+		virtual int32_t TransformAndClip(Stuff::Matrix4D*, MLRClippingState, GOSVertexPool*,bool=false);
 
 		bool
 			CastRay(
@@ -92,12 +96,12 @@ namespace MidLevelRenderer {
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
-		//	Initializes the visibility test list
+		// Initializes the visibility test list
 		void
 			ResetTestList(void);
 
-		//	find which vertices are visible which not - returns nr of visible vertices
-		//	the result is stored in the visibleIndexedVertices array
+		// find which vertices are visible which not - returns nr of visible vertices
+		// the result is stored in the visibleIndexedVertices array
 		int32_t
 			FindVisibleVertices(void);
 
@@ -113,13 +117,12 @@ namespace MidLevelRenderer {
 	public:
 		void TestInstance(void) const;
 
-		virtual int32_t
-			GetSize()
-		{ 
+		virtual size_t GetSize()
+		{
 			Check_Object(this);
-			int32_t ret = MLRIndexedPrimitiveBase::GetSize(void);
-			ret += testList.GetSize(void);
-			ret += facePlanes.GetSize(void);
+			size_t ret = MLRIndexedPrimitiveBase::GetSize();
+			ret += testList.GetSize();
+			ret += facePlanes.GetSize();
 
 			return ret;
 		}
@@ -128,7 +131,7 @@ namespace MidLevelRenderer {
 		void
 			Transform(Stuff::Matrix4D*);
 
-		Stuff::DynamicArrayOf<uint8_t>	testList;
+		Stuff::DynamicArrayOf<uint8_t> testList;
 
 		Stuff::DynamicArrayOf<Stuff::Plane> facePlanes;
 
@@ -149,7 +152,7 @@ namespace MidLevelRenderer {
 		Stuff::Point3D& v2,
 		Stuff::Point3D& v3,
 		int32_t depth,
-		int32_t tri2draw, 
+		int32_t tri2draw,
 		float rad = 1.0f
 		);
 

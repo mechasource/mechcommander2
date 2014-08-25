@@ -42,7 +42,7 @@ namespace MidLevelRenderer{
 
 		virtual void InitializeDrawPrimitive(uint8_t, int32_t=0);
 
-		virtual void Lighting(MLRLight* const*, int32_t nrLights) = 0;
+		virtual void Lighting(MLRLight* const*, uint32_t nrLights) = 0;
 
 		virtual void SetCoordData(const Stuff::Point3D *array, size_t point_count);
 		virtual void SetIndexData(puint16_t index_array, size_t index_count);

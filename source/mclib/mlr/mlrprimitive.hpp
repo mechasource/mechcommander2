@@ -102,8 +102,7 @@ namespace MidLevelRenderer{
 			return lengths.GetLength();
 		}
 
-		virtual void SetSubprimitiveLengths(
-			puint8_t length_array, int32_t subprimitive_count);
+		virtual void SetSubprimitiveLengths(puint8_t length_array, size_t subprimitive_count);
 
 		// returns the number of subprimitives
 		uint32_t GetSubprimitiveLengths(puint8_t* length_array);
@@ -138,8 +137,8 @@ namespace MidLevelRenderer{
 		virtual void SetNormalData(const Stuff::Vector3D* array, size_t point_count); 
 		virtual void GetNormalData(Stuff::Vector3D** array, pint32_t point_count);
 
-		virtual void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count);
-		virtual void GetTexCoordData(Stuff::Vector2DScalar** array, pint32_t point_count);
+		virtual void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass=0);
+		virtual void GetTexCoordData(Stuff::Vector2DScalar** array, psize_t point_count, size_t pass=0);
 
 		// is to call before clipping, parameter: camera point
 		virtual int32_t FindBackFace(const Stuff::Point3D&) = 0;

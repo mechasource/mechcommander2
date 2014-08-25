@@ -51,7 +51,7 @@
 //#include <mlr/mlrstate.hpp>
 //#include <mlr/mlrtexture.hpp>
 //#include <mlr/mlrtexturepool.hpp>
-#include <mlr/mlrtrianglecloud.hpp>
+//#include <mlr/mlrtrianglecloud.hpp>
 //#include <mlr/mlr_i_c_det_pmesh.hpp>
 //#include <mlr/mlr_i_c_det_tmesh.hpp>
 //#include <mlr/mlr_i_c_dt_pmesh.hpp>
@@ -72,7 +72,7 @@
 //#include <mlr/mlr_i_pmesh.hpp>
 //#include <mlr/mlr_i_tmesh.hpp>
 //#include <mlr/mlr_terrain.hpp>
-//#include <mlr/mlr_terrain2.hpp>
+#include <mlr/mlr_terrain2.hpp>
 
 //#include <mlr/gospoint.hpp>
 //#include <mlr/mlrindexedpolymesh.hpp>

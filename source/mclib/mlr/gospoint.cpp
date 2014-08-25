@@ -16,11 +16,11 @@
 #include <mlr/mlrprimitiveclipping.inl>
 #include <mlr/mlrprimitivelighting.inl>
 #include <mlr/mlrtriangleclipping.inl>
+#include <mlr/mlrtrianglelighting.inl>
 #endif
 
 //#include <mlr/gosimage.hpp>
 //#include <mlr/gosimagepool.hpp>
-//#include <mlr/gospoint.hpp>
 //#include <mlr/gosvertex.hpp>
 //#include <mlr/gosvertex2uv.hpp>
 //#include <mlr/gosvertexpool.hpp>
@@ -32,8 +32,6 @@
 //#include <mlr/mlrcliptrick.hpp>
 //#include <mlr/mlreffect.hpp>
 //#include <mlr/mlrheaders.hpp>
-//#include <mlr/mlrindexedpolymesh.hpp>
-//#include <mlr/mlrindexedprimitive.hpp>
 //#include <mlr/mlrindexedprimitivebase.hpp>
 //#include <mlr/mlrindexedtrianglecloud.hpp>
 //#include <mlr/mlrinfinitelight.hpp>
@@ -45,8 +43,6 @@
 //#include <mlr/mlrngoncloud.hpp>
 //#include <mlr/mlrpointcloud.hpp>
 //#include <mlr/mlrpointlight.hpp>
-//#include <mlr/mlrpolymesh.hpp>
-//#include <mlr/mlrprimitive.hpp>
 //#include <mlr/mlrprimitivebase.hpp>
 //#include <mlr/mlrshape.hpp>
 //#include <mlr/mlrsortbyorder.hpp>
@@ -55,9 +51,7 @@
 //#include <mlr/mlrstate.hpp>
 //#include <mlr/mlrtexture.hpp>
 //#include <mlr/mlrtexturepool.hpp>
-//#include <mlr/mlrtrianglecloud.hpp>
-//#include <mlr/mlrtrianglelighting.hpp>
-//#include <mlr/mlrvertex.hpp>
+#include <mlr/mlrtrianglecloud.hpp>
 //#include <mlr/mlr_i_c_det_pmesh.hpp>
 //#include <mlr/mlr_i_c_det_tmesh.hpp>
 //#include <mlr/mlr_i_c_dt_pmesh.hpp>
@@ -79,7 +73,17 @@
 //#include <mlr/mlr_i_tmesh.hpp>
 //#include <mlr/mlr_terrain.hpp>
 //#include <mlr/mlr_terrain2.hpp>
+
+//#include <mlr/gospoint.hpp>
+//#include <mlr/mlrindexedpolymesh.hpp>
+//#include <mlr/mlrindexedprimitive.hpp>
+//#include <mlr/mlrpolymesh.hpp>
+//#include <mlr/mlrprimitive.hpp>
+//#include <mlr/mlrvertex.hpp>
 //#include <mlr/owntrace.hpp>
+
+
+
 
 #if _CONSIDERED_OBSOLETE
 

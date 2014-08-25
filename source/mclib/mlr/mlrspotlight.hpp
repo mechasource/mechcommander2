@@ -7,8 +7,7 @@
 #ifndef MLR_MLRSPOTLIGHT_HPP
 #define MLR_MLRSPOTLIGHT_HPP
 
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlrinfinitelightwithfalloff.hpp>
+#include <mlr/mlrinfinitelightwithfalloff.hpp>
 
 namespace MidLevelRenderer {
 

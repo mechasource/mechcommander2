@@ -286,7 +286,7 @@ extern uint32_t gEnableTextureSort, gEnableAlphaSort;
 //	void	Lighting (MLRLight**, int32_t nrLights);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#include <MLR\MLRTriangleLighting.hpp>
+#include <mlr/mlrtrianglelighting.inl>
 #undef CLASSNAME
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

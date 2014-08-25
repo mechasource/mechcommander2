@@ -17,7 +17,7 @@
 #endif
 
 #ifndef DAPRTYPE_H
-#include "daprtype.h"
+#include <daprtype.h>
 #endif
 
 #ifndef FLOATHELP_H
@@ -115,12 +115,12 @@ class Appearance
 
 		virtual void destroy (void)
 		{
-			init();
+			init(void);
 		}
 		
 		virtual ~Appearance (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		virtual int32_t update (bool animate = true)
@@ -509,7 +509,7 @@ class Appearance
 		virtual Stuff::Vector3D getVelocity (void)
 		{
 			Stuff::Vector3D result;
-			result.Zero();
+			result.Zero(void);
 			return result;
 		}
 
@@ -550,7 +550,7 @@ class Appearance
 		virtual Stuff::Point3D getRootNodeCenter (void)
 		{
 			Stuff::Point3D result;
-			result.Zero();
+			result.Zero(void);
 			return result;
 		}
 		
@@ -595,21 +595,21 @@ class Appearance
 		virtual Stuff::Vector3D getHitNode (void)
 		{
 			Stuff::Point3D result;
-			result.Zero();
+			result.Zero(void);
 			return result;
 		}
 
 		virtual Stuff::Vector3D getHitNodeLeft (void)
 		{
 			Stuff::Point3D result;
-			result.Zero();
+			result.Zero(void);
 			return result;
 		}
 
 		virtual Stuff::Vector3D getHitNodeRight (void)
 		{
 			Stuff::Point3D result;
-			result.Zero();
+			result.Zero(void);
 			return result;
 		}
 

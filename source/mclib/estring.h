@@ -33,10 +33,10 @@ public:
 	/*explicit*/ EString( const EChar* newString );
 	EString( const EString& );
 	/*explicit*/ EString( const EChar );
-	EString();
-	~EString();
+	EString(void);
+	~EString(void);
 
-	operator ECHARPTR() const { return Data(); }
+	operator ECHARPTR(void) const { return Data(void); }
 	// MANIPULATORS
 
 	void		Replace( int32_t Start_Index, const EString& String );
@@ -50,10 +50,10 @@ public:
 	void	Insert( int32_t Start_Index, const EChar* String ); 
 
 	void		Swap( EString& );
-	inline void	Empty();
-	void		MakeUpper();
-	void 		MakeLower();
-	void 		Reverse();
+	inline void	Empty(void);
+	void		MakeUpper(void);
+	void 		MakeLower(void);
+	void 		Reverse(void);
 
 	// works like sprintf with the destination buffer being
 	// the this pointer
@@ -110,8 +110,8 @@ public:
 	inline bool operator>=( const EChar*) const;
 	inline friend bool operator>=( const EChar*, const EString&);
 	
-	int32_t Size() const; 	// number of bytes
-	int32_t Length() const;	// number of characters
+	int32_t Size(void) const; 	// number of bytes
+	int32_t Length(void) const;	// number of characters
 
 	// search functions
 	int32_t Find( EChar, int32_t Start_Index = EString::INVALID_INDEX) const;
@@ -127,12 +127,12 @@ public:
 	inline EString Left( int32_t Num_Chars) const;	 
 	inline EString Right( int32_t Num_Chars) const;	
 
-	inline bool 		IsEmpty() const;
+	inline bool 		IsEmpty(void) const;
 
-	PWSTR	CreateUNICODE() const;
-	PSTR 	CreateMBCS() const; 
+	PWSTR	CreateUNICODE(void) const;
+	PSTR 	CreateMBCS(void) const; 
 
-	inline	const EChar* Data() const;
+	inline	const EChar* Data(void) const;
 	void	SetBufferSize( int32_t );
 
 	// ALL UNICODE SPECIFIC AND
@@ -192,8 +192,8 @@ private:
 	void	Alloc( int32_t Min_Amount );
 	
 	// Reallocates if you want to make a change to a shared buffer
-	inline	void	ChecEBuffer();
-	void	ChecEBufferDoRealloc();
+	inline	void	ChecEBuffer(void);
+	void	ChecEBufferDoRealloc(void);
 
 	// sets the buffer, reallocs if necessary
 	void	Assign( const EChar* p_Str );
@@ -208,8 +208,8 @@ private:
 		int32_t m_Data_Length;		// Length of String
 		int32_t m_Alloc_Length;	// Length of the Buffer
 	
-		inline EChar* Data();
-		inline void Release();
+		inline EChar* Data(void);
+		inline void Release(void);
 
 		static EBuffer	s_Empty_Buffer;
 		static EBuffer* s_p_Empty_Buffer;
@@ -254,7 +254,7 @@ inline void EString::EBuffer::Release()
 /////////////////////////////////////////////////////////////////
 inline void	EString::Empty()
 {
-	m_pBuffer->Release();
+	m_pBuffer->Release(void);
 	m_pBuffer =  EBuffer::s_p_Empty_Buffer;
 }
 
@@ -268,7 +268,7 @@ inline void EString::Insert( int32_t Start_Index, const EString& String )
 /////////////////////////////////////////////////////////////////
 inline const EString& EString::operator=( const EChar* p_String )
 {
-	ChecEBuffer();
+	ChecEBuffer(void);
 	Assign( p_String );
 	return *this;
 }
@@ -278,7 +278,7 @@ inline const EString& EString::operator=( const EString& Src )
 {
 	if ( &Src != this )
 	{
-		m_pBuffer->Release();
+		m_pBuffer->Release(void);
 		m_pBuffer = Src.m_pBuffer;
 		Src.m_pBuffer->m_Ref_Count ++;
 	}
@@ -289,7 +289,7 @@ inline const EString& EString::operator=( const EString& Src )
 /////////////////////////////////////////////////////////////////
 inline const EString& EString::operator=( EChar Char )
 {
-	ChecEBuffer();
+	ChecEBuffer(void);
 
 	EChar Tmp[2];
 	Tmp[0] = Char;
@@ -351,13 +351,13 @@ inline EString EString::Right( int32_t Num_Chars) const
 }
 
 /////////////////////////////////////////////////////////////////
-inline bool EString::IsEmpty() const
+inline bool EString::IsEmpty(void) const
 {
 	return (m_pBuffer->m_Data_Length <= 0);
 }
 
 /////////////////////////////////////////////////////////////////
-inline	const EChar* EString::Data() const
+inline	const EChar* EString::Data(void) const
 {
 	return ( m_pBuffer->Data() );
 }
@@ -399,7 +399,7 @@ inline bool operator!=( const EChar* p_String, const EString& Str )
 /////////////////////////////////////////////////////////////////
 inline EChar& EString::operator[]( int32_t Index )
 {
-	ChecEBufferDoRealloc();
+	ChecEBufferDoRealloc(void);
 
 	gosASSERT( Index < m_pBuffer->m_Data_Length + 1 ); // we'll give you the null
 

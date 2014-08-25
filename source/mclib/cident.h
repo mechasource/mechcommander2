@@ -57,7 +57,7 @@ class IDString
 
 		IDString (void)
 		{
-			init();
+			init(void);
 		}
 
 		IDString (PSTR  new_id)
@@ -220,12 +220,12 @@ class FullPathFileName
 
 		FullPathFileName (void)
 		{
-			init();
+			init(void);
 		}
 
 		FullPathFileName (PSTR dir_path, PCSTR name, PSTR ext)
 		{
-			init();
+			init(void);
 			init(dir_path, name, ext);
 		}
 

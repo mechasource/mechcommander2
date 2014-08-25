@@ -53,8 +53,8 @@ public:
 	/*explicit*/ ECharString( const ECSChar* newString );
 	ECharString( const ECharString& );
 	/*explicit*/ ECharString( const ECSChar );
-	ECharString();
-	~ECharString();
+	ECharString(void);
+	~ECharString(void);
 
 	// MANIPULATORS
 
@@ -69,10 +69,10 @@ public:
 	void	Insert( int32_t Start_Index, const ECSChar* String ); 
 
 	void		Swap( ECharString& );
-	inline void	Empty();
-	void		MakeUpper();
-	void 		MakeLower();
-	void 		Reverse();
+	inline void	Empty(void);
+	void		MakeUpper(void);
+	void 		MakeLower(void);
+	void 		Reverse(void);
 
 	// works like sprintf with the destination buffer being
 	// the this pointer
@@ -129,8 +129,8 @@ public:
 	inline bool operator>=( const ECSChar*) const;
 	inline friend bool operator>=( const ECSChar*, const ECharString&);
 	
-	int32_t Size() const; 	// number of bytes
-	int32_t Length() const;	// number of characters
+	int32_t Size(void) const; 	// number of bytes
+	int32_t Length(void) const;	// number of characters
 
 	// search functions
 	int32_t Find( ECSChar, int32_t Start_Index = ECharString::INVALID_INDEX) const;
@@ -146,12 +146,12 @@ public:
 	inline ECharString Left( int32_t Num_Chars) const;	 
 	inline ECharString Right( int32_t Num_Chars) const;	
 
-	inline bool 		IsEmpty() const;
+	inline bool 		IsEmpty(void) const;
 
-	PWSTR	CreateUNICODE() const;
-	PSTR 	CreateMBCS() const; 
+	PWSTR	CreateUNICODE(void) const;
+	PSTR 	CreateMBCS(void) const; 
 
-	inline	const ECSChar* Data() const;
+	inline	const ECSChar* Data(void) const;
 
 	// ALL UNICODE SPECIFIC AND
 
@@ -210,8 +210,8 @@ private:
 	void	Alloc( int32_t Min_Amount );
 	
 	// Reallocates if you want to make a change to a shared buffer
-	inline	void	ChecEBuffer();
-	void	ChecEBufferDoRealloc();
+	inline	void	ChecEBuffer(void);
+	void	ChecEBufferDoRealloc(void);
 
 	// sets the buffer, reallocs if necessary
 	void	Assign( const ECSChar* p_Str );
@@ -226,8 +226,8 @@ private:
 		int32_t m_Data_Length;		// Length of String
 		int32_t m_Alloc_Length;	// Length of the Buffer
 	
-		inline ECSChar* Data();
-		inline void Release();
+		inline ECSChar* Data(void);
+		inline void Release(void);
 
 		static EBuffer	s_Empty_Buffer;
 		static EBuffer* s_p_Empty_Buffer;
@@ -272,7 +272,7 @@ inline void ECharString::EBuffer::Release()
 /////////////////////////////////////////////////////////////////
 inline void	ECharString::Empty()
 {
-	m_pBuffer->Release();
+	m_pBuffer->Release(void);
 	m_pBuffer =  EBuffer::s_p_Empty_Buffer;
 }
 
@@ -286,7 +286,7 @@ inline void ECharString::Insert( int32_t Start_Index, const ECharString& String 
 /////////////////////////////////////////////////////////////////
 inline const ECharString& ECharString::operator=( const ECSChar* p_String )
 {
-	ChecEBuffer();
+	ChecEBuffer(void);
 	Assign( p_String );
 	return *this;
 }
@@ -296,7 +296,7 @@ inline const ECharString& ECharString::operator=( const ECharString& Src )
 {
 	if ( &Src != this )
 	{
-		m_pBuffer->Release();
+		m_pBuffer->Release(void);
 		m_pBuffer = Src.m_pBuffer;
 		Src.m_pBuffer->m_Ref_Count ++;
 	}
@@ -307,7 +307,7 @@ inline const ECharString& ECharString::operator=( const ECharString& Src )
 /////////////////////////////////////////////////////////////////
 inline const ECharString& ECharString::operator=( ECSChar Char )
 {
-	ChecEBuffer();
+	ChecEBuffer(void);
 
 	ECSChar Tmp[2];
 	Tmp[0] = Char;
@@ -369,13 +369,13 @@ inline ECharString ECharString::Right( int32_t Num_Chars) const
 }
 
 /////////////////////////////////////////////////////////////////
-inline bool ECharString::IsEmpty() const
+inline bool ECharString::IsEmpty(void) const
 {
 	return (m_pBuffer->m_Data_Length <= 0);
 }
 
 /////////////////////////////////////////////////////////////////
-inline	const ECSChar* ECharString::Data() const
+inline	const ECSChar* ECharString::Data(void) const
 {
 	return ( m_pBuffer->Data() );
 }
@@ -417,7 +417,7 @@ inline bool operator!=( const ECSChar* p_String, const ECharString& Str )
 /////////////////////////////////////////////////////////////////
 inline ECSChar& ECharString::operator[]( int32_t Index )
 {
-	ChecEBufferDoRealloc();
+	ChecEBufferDoRealloc(void);
 
 	gosASSERT( Index < m_pBuffer->m_Data_Length );
 

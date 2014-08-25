@@ -273,8 +273,8 @@ TokenCodeType followDeclsList[] = {
 	TKN_NONE
 };
 
-void ABL_CloseProfileLog (void);
-void ABL_OpenProfileLog (void);
+void ABL_CloseProfileLog ();
+void ABL_OpenProfileLog ();
 void ABL_AddToProfileLog (PSTR profileString);
 
 //***************************************************************************

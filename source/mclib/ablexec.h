@@ -7,20 +7,14 @@
 //
 //***************************************************************************
 
+#pragma once
+
 #ifndef ABLEXEC_H
 #define ABLEXEC_H
 
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLSYMT_H
-#include "ablsymt.h"
-#endif
-
-#ifndef ABLPARS_H
-#include "ablparse.h"
-#endif
+//#include "ablgen.h"
+//#include "ablsymt.h"
+//#include "ablparse.h"
 
 //***************************************************************************
 
@@ -36,7 +30,7 @@
 #define	ABL_PARAM_INTEGER		1
 #define	ABL_PARAM_REAL			2
 
-typedef enum {
+typedef enum ABLStackItemType {
 	ABL_STACKITEM_CHAR,
 	ABL_STACKITEM_INTEGER,
 	ABL_STACKITEM_REAL,

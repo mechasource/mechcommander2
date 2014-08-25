@@ -53,8 +53,8 @@ public:
 	/*explicit*/ EWCharString( const EWCSChar* newString );
 	EWCharString( const EWCharString& );
 	/*explicit*/ EWCharString( const EWCSChar );
-	EWCharString();
-	~EWCharString();
+	EWCharString(void);
+	~EWCharString(void);
 
 	// MANIPULATORS
 
@@ -69,10 +69,10 @@ public:
 	void	Insert( int32_t Start_Index, const EWCSChar* String ); 
 
 	void		Swap( EWCharString& );
-	inline void	Empty();
-	void		MakeUpper();
-	void 		MakeLower();
-	void 		Reverse();
+	inline void	Empty(void);
+	void		MakeUpper(void);
+	void 		MakeLower(void);
+	void 		Reverse(void);
 
 	// works like sprintf with the destination buffer being
 	// the this pointer
@@ -129,8 +129,8 @@ public:
 	inline bool operator>=( const EWCSChar*) const;
 	inline friend bool operator>=( const EWCSChar*, const EWCharString&);
 	
-	int32_t Size() const; 	// number of bytes
-	int32_t Length() const;	// number of characters
+	int32_t Size(void) const; 	// number of bytes
+	int32_t Length(void) const;	// number of characters
 
 	// search functions
 	int32_t Find( EWCSChar, int32_t Start_Index = EWCharString::INVALID_INDEX) const;
@@ -146,12 +146,12 @@ public:
 	inline EWCharString Left( int32_t Num_Chars) const;	 
 	inline EWCharString Right( int32_t Num_Chars) const;	
 
-	inline bool 		IsEmpty() const;
+	inline bool 		IsEmpty(void) const;
 
-	PWSTR	CreateUNICODE() const;
-	PSTR 	CreateMBCS() const; 
+	PWSTR	CreateUNICODE(void) const;
+	PSTR 	CreateMBCS(void) const; 
 
-	inline	const EWCSChar* Data() const;
+	inline	const EWCSChar* Data(void) const;
 
 	// ALL UNICODE SPECIFIC AND
 
@@ -210,8 +210,8 @@ private:
 	void	Alloc( int32_t Min_Amount );
 	
 	// Reallocates if you want to make a change to a shared buffer
-	inline	void	ChecEBuffer();
-	void	ChecEBufferDoRealloc();
+	inline	void	ChecEBuffer(void);
+	void	ChecEBufferDoRealloc(void);
 
 	// sets the buffer, reallocs if necessary
 	void	Assign( const EWCSChar* p_Str );
@@ -226,8 +226,8 @@ private:
 		int32_t m_Data_Length;		// Length of String
 		int32_t m_Alloc_Length;	// Length of the Buffer
 	
-		inline EWCSChar* Data();
-		inline void Release();
+		inline EWCSChar* Data(void);
+		inline void Release(void);
 
 		static EBuffer	s_Empty_Buffer;
 		static EBuffer* s_p_Empty_Buffer;
@@ -272,7 +272,7 @@ inline void EWCharString::EBuffer::Release()
 /////////////////////////////////////////////////////////////////
 inline void	EWCharString::Empty()
 {
-	m_pBuffer->Release();
+	m_pBuffer->Release(void);
 	m_pBuffer =  EBuffer::s_p_Empty_Buffer;
 }
 
@@ -286,7 +286,7 @@ inline void EWCharString::Insert( int32_t Start_Index, const EWCharString& Strin
 /////////////////////////////////////////////////////////////////
 inline const EWCharString& EWCharString::operator=( const EWCSChar* p_String )
 {
-	ChecEBuffer();
+	ChecEBuffer(void);
 	Assign( p_String );
 	return *this;
 }
@@ -296,7 +296,7 @@ inline const EWCharString& EWCharString::operator=( const EWCharString& Src )
 {
 	if ( &Src != this )
 	{
-		m_pBuffer->Release();
+		m_pBuffer->Release(void);
 		m_pBuffer = Src.m_pBuffer;
 		Src.m_pBuffer->m_Ref_Count ++;
 	}
@@ -307,7 +307,7 @@ inline const EWCharString& EWCharString::operator=( const EWCharString& Src )
 /////////////////////////////////////////////////////////////////
 inline const EWCharString& EWCharString::operator=( EWCSChar Char )
 {
-	ChecEBuffer();
+	ChecEBuffer(void);
 
 	EWCSChar Tmp[2];
 	Tmp[0] = Char;
@@ -369,13 +369,13 @@ inline EWCharString EWCharString::Right( int32_t Num_Chars) const
 }
 
 /////////////////////////////////////////////////////////////////
-inline bool EWCharString::IsEmpty() const
+inline bool EWCharString::IsEmpty(void) const
 {
 	return (m_pBuffer->m_Data_Length <= 0);
 }
 
 /////////////////////////////////////////////////////////////////
-inline	const EWCSChar* EWCharString::Data() const
+inline	const EWCSChar* EWCharString::Data(void) const
 {
 	return ( m_pBuffer->Data() );
 }
@@ -417,7 +417,7 @@ inline bool operator!=( const EWCSChar* p_String, const EWCharString& Str )
 /////////////////////////////////////////////////////////////////
 inline EWCSChar& EWCharString::operator[]( int32_t Index )
 {
-	ChecEBufferDoRealloc();
+	ChecEBufferDoRealloc(void);
 
 	gosASSERT( Index < m_pBuffer->m_Data_Length );
 

@@ -14,33 +14,34 @@
 //---------------------------------------------------------------------------
 // static Globals
 
-extern char savePath[];
-extern char saveTempPath[];
-extern char terrainPath[];
-extern char palettePath[];
-extern char artPath[];
-extern char interfacePath[];
-extern char	fontPath[];
-extern char spritePath[];
-extern char soundPath[];
-extern char objectPath[];
-extern char missionPath[];
-extern char cameraPath[];
-extern char tilePath[];
-extern char tile90Path[];
-extern char directXPath[];
-extern char warriorPath[];
-extern char profilePath[];
-extern char moviePath[];
-extern char shapesPath[];
-extern char CDsoundPath[];
-extern char CDspritePath[];
-extern char CDmoviePath[];
-extern char texturePath[];
-extern char tglPath[];
-extern char effectsPath[];
-extern char campaignPath[];
-extern char transcriptsPath[];
+extern PCSTR savePath;
+extern PCSTR saveTempPath;
+extern PCSTR terrainPath;
+extern PCSTR palettePath;
+extern PCSTR artPath;
+extern PCSTR interfacePath;
+extern PCSTR fontPath;
+extern PCSTR spritePath;
+extern PCSTR soundPath;
+extern PCSTR objectPath;
+extern PCSTR missionPath;
+extern PCSTR cameraPath;
+extern PCSTR tilePath;
+extern PCSTR tile90Path;
+extern PCSTR directXPath;
+extern PCSTR warriorPath;
+extern PCSTR profilePath;
+extern PCSTR moviePath;
+extern PCSTR shapesPath;
+extern PCSTR CDsoundPath;
+extern PCSTR CDspritePath;
+extern PCSTR CDmoviePath;
+extern PCSTR texturePath;
+extern PCSTR tglPath;
+extern PCSTR effectsPath;
+extern PCSTR campaignPath;
+extern PCSTR transcriptsPath;
+
 //---------------------------------------------------------------------------
 // Free Functions
 

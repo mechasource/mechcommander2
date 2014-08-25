@@ -3,8 +3,9 @@
 
 //#pragma warning( disable : 4211 )
 
-#include <memory.h>
-#include "heap.h"
+//#include <memory.h>
+//#include "heap.h"
+
 //--------------------------------------------------------------------------------------
 //
 // Mech Commander 2
@@ -176,14 +177,14 @@ public:
 			return(m_pCur_Node != rIter.m_pCur_Node);
 		}
 
-		inline T_ARG operator*() const
+		inline T_ARG operator*(void) const
 		{
-			return Item();
+			return Item(void);
 		}
 		
-		inline T_ARG Item() const		{ return(m_pCur_Node->m_Data); }
-		inline bool IsValid() const	{ return(m_pCur_Node ? true : false); }
-		inline bool IsDone() const		{ return(m_pCur_Node ? false : true); }
+		inline T_ARG Item(void) const		{ return(m_pCur_Node->m_Data); }
+		inline bool IsValid(void) const	{ return(m_pCur_Node ? true : false); }
+		inline bool IsDone(void) const		{ return(m_pCur_Node ? false : true); }
 
 		friend class EList<ELIST_TPL_ARG>;
 	protected:
@@ -210,7 +211,7 @@ public:
 
 		inline T& operator*()
 		{
-			return Item();
+			return Item(void);
 		}
 
 	};	// END CLASS EIterator
@@ -222,9 +223,9 @@ public:
 
 	//===== CREATORS =====
 
-	inline EList();
+	inline EList(void);
 	EList(const EList<ELIST_TPL_ARG>& rList);
-	~EList();
+	~EList(void);
 
 	//===== OPERATORS =====
 
@@ -239,7 +240,7 @@ public:
 
 	//===== MANIPULATORS =====
 
-	bool	Clear();
+	bool	Clear(void);
 
 	inline	bool	Prepend(T_ARG New_Element);	// Add an element to the start of the list
 	inline	bool	Append(T_ARG New_Element);	// Add an element to the end of the list
@@ -251,8 +252,8 @@ public:
 	bool	Insert(const EList<ELIST_TPL_ARG>& rList, const typename EList<ELIST_TPL_ARG>::EIterator& rIter);	// Insert a list at the specified position
 	bool	Insert(const EList<ELIST_TPL_ARG>& rList, uint32_t Pos);	// Insert a list at the specified position
 
-	inline	bool	DeleteHead();					// Remove the element at the beginning of the list
-	inline	bool	DeleteTail();					// Remove the element at the end of the list
+	inline	bool	DeleteHead(void);					// Remove the element at the beginning of the list
+	inline	bool	DeleteTail(void);					// Remove the element at the end of the list
 	inline	bool	Delete(const typename EList<ELIST_TPL_ARG>::EIterator& rIter);	// Remove the element at the specified position
 	inline	bool	Delete(uint32_t Pos);				// Remove the element at the specified position
 	inline	bool	Delete(const typename EList<ELIST_TPL_ARG>::EIterator& rStart_Iter, const typename EList<ELIST_TPL_ARG>::EIterator& rEnd_Iter);	// Remove the element at the specified position
@@ -264,32 +265,32 @@ public:
 
 	inline	typename EList<ELIST_TPL_ARG>::EIterator Iterator(uint32_t Pos);	
 	inline	const typename EList<ELIST_TPL_ARG>::EConstIterator Iterator(uint32_t Pos) const;
-	inline	typename EList<ELIST_TPL_ARG>::EIterator Begin();
-	inline	const typename EList<ELIST_TPL_ARG>::EConstIterator Begin() const;
-	inline	typename EList<ELIST_TPL_ARG>::EIterator End();
-	inline	const typename EList<ELIST_TPL_ARG>::EConstIterator End() const;
+	inline	typename EList<ELIST_TPL_ARG>::EIterator Begin(void);
+	inline	const typename EList<ELIST_TPL_ARG>::EConstIterator Begin(void) const;
+	inline	typename EList<ELIST_TPL_ARG>::EIterator End(void);
+	inline	const typename EList<ELIST_TPL_ARG>::EConstIterator End(void) const;
   
 	inline	T&	Get(const typename EList<const ELIST_TPL_ARG>::EIterator& rIter);	// Retrieve the element at the specified position
 	inline	T&	Get(uint32_t Pos);			// Retrieve the element at the specified position
-	inline	T&	GetHead();				// Retrieve the element at the start of the list
-	inline	T&	GetTail();				// Retrieve the element at the end of the list
+	inline	T&	GetHead(void);				// Retrieve the element at the start of the list
+	inline	T&	GetTail(void);				// Retrieve the element at the end of the list
 
 	//===== ACCESSORS =====
 
 	inline	T_ARG	Get(const typename EList<ELIST_TPL_ARG>::EConstIterator& rIter) const;	// Retrieve the element at the specified position
 	inline	T_ARG	Get(uint32_t Pos) const;	// Retrieve the element at the specified position
-	inline	T_ARG	GetHead() const;		// Retrieve the element at the start of the list
-	inline	T_ARG	GetTail() const;		// Retrieve the element at the end of the list
+	inline	T_ARG	GetHead(void) const;		// Retrieve the element at the start of the list
+	inline	T_ARG	GetTail(void) const;		// Retrieve the element at the end of the list
 
-	inline	uint32_t	Count() const;			// Get the number of elements in the list
-	inline	bool	IsEmpty() const;		// Check if the list is empty
+	inline	uint32_t	Count(void) const;			// Get the number of elements in the list
+	inline	bool	IsEmpty(void) const;		// Check if the list is empty
 	inline	bool	Exists(uint32_t Pos) const;// Check if an element at that position exists
 	inline	typename EList<ELIST_TPL_ARG>::EConstIterator	Find(T_ARG Item, uint32_t Start_Index = 0) const;
 	inline	typename EList<ELIST_TPL_ARG>::EIterator	Find(T_ARG Item, uint32_t Start_Index = 0);
 	inline	typename EList<ELIST_TPL_ARG>::EConstIterator	Find(T_ARG Item, const typename EList<ELIST_TPL_ARG>::EConstIterator& rStart_Iterator) const;
 	inline	typename EList<ELIST_TPL_ARG>::EIterator	Find(T_ARG Item, const typename EList<ELIST_TPL_ARG>::EIterator& rStart_Iterator);
 
-	inline	uint32_t GrowSize() const;			// Get the growsize of list
+	inline	uint32_t GrowSize(void) const;			// Get the growsize of list
 
 private:
 
@@ -305,7 +306,7 @@ private:
 	inline	bool	AddFirstElement(T_ARG New_Element);
 	inline	typename EList<ELIST_TPL_ARG>::ENode*	CreateElement(T_ARG New_Element);
 	inline	void	KillElement(ENode* pElement);
-	void	DestroyList();
+	void	DestroyList(void);
 	bool	CopyData(const EList<ELIST_TPL_ARG>& rSrc);
 
 
@@ -316,7 +317,7 @@ private:
 // Constants
 //*************************************************************************************************
 
-ELIST_TPL_DEF const typename EList<ELIST_TPL_ARG>::EIterator	EList<ELIST_TPL_ARG>::INVALID_ITERATOR = EList<ELIST_TPL_ARG>::EIterator();
+ELIST_TPL_DEF const typename EList<ELIST_TPL_ARG>::EIterator	EList<ELIST_TPL_ARG>::INVALID_ITERATOR = EList<ELIST_TPL_ARG>::EIterator(void);
 
 
 //*************************************************************************************************
@@ -361,7 +362,7 @@ FUNCTION DESCRIPTION:
 ***************************************************************************************************/
 ELIST_TPL_DEF EList<ELIST_TPL_ARG>::~EList()
 {
-	DestroyList();
+	DestroyList(void);
 }
 	
 //-------------------------------------------------------------------------------------------------
@@ -382,7 +383,7 @@ ELIST_TPL_DEF EList<ELIST_TPL_ARG>& EList<ELIST_TPL_ARG>::operator=(const EList<
 	//
 	//	Get rid of any list entries that might be used
 	//
-	DestroyList();
+	DestroyList(void);
 
 	CopyData(rList);
 	return(*this);
@@ -455,8 +456,8 @@ ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::operator==(const EList<ELIST_TPL
 		return(true);
 	}
 
-	EConstIterator	List_Iter = rList.Begin();
-	EConstIterator	This_Iter = Begin();
+	EConstIterator	List_Iter = rList.Begin(void);
+	EConstIterator	This_Iter = Begin(void);
 
 	//
 	//	Iterate through both lists and check if they're equal
@@ -558,7 +559,7 @@ ELIST_TPL_DEF inline typename EList<ELIST_TPL_ARG>::EIterator EList<ELIST_TPL_AR
 }
 
 //-------------------------------------------------------------------------------------------------
-ELIST_TPL_DEF inline const typename EList<ELIST_TPL_ARG>::EConstIterator EList<ELIST_TPL_ARG>::Begin() const
+ELIST_TPL_DEF inline const typename EList<ELIST_TPL_ARG>::EConstIterator EList<ELIST_TPL_ARG>::Begin(void) const
 {
 	if(!m_Count)
 	{
@@ -593,7 +594,7 @@ ELIST_TPL_DEF inline typename EList<ELIST_TPL_ARG>::EIterator EList<ELIST_TPL_AR
 }
 
 //-------------------------------------------------------------------------------------------------
-ELIST_TPL_DEF inline const typename EList<ELIST_TPL_ARG>::EConstIterator EList<ELIST_TPL_ARG>::End() const
+ELIST_TPL_DEF inline const typename EList<ELIST_TPL_ARG>::EConstIterator EList<ELIST_TPL_ARG>::End(void) const
 {
 	gosASSERT(m_Count);		// Don't try to get an iterator if list is empty
 
@@ -616,7 +617,7 @@ RETURN VALUE:
 ***************************************************************************************************/
 ELIST_TPL_DEF bool EList<ELIST_TPL_ARG>::Clear()
 {
-	DestroyList();
+	DestroyList(void);
 	return(true);	// <<HACK>> BR - need to do checking
 }
 	
@@ -1112,7 +1113,7 @@ ELIST_TPL_DEF bool EList<ELIST_TPL_ARG>::Insert(const EList<ELIST_TPL_ARG>& rLis
 {
 	gosASSERT(&rList != this);
 	gosASSERT(rIter.IsValid());
-	EConstIterator	Src_Iter = rList.Begin();
+	EConstIterator	Src_Iter = rList.Begin(void);
 
 	for(uint32_t i = 0; i < rList.m_Count; i++)
 	{
@@ -1180,7 +1181,7 @@ FUNCTION DESCRIPTION:
 RETURN VALUE:
 		The element at the head of the list
 ***************************************************************************************************/
-ELIST_TPL_DEF inline T_ARG EList<ELIST_TPL_ARG>::GetHead() const
+ELIST_TPL_DEF inline T_ARG EList<ELIST_TPL_ARG>::GetHead(void) const
 {
 	gosASSERT(m_Count);
 	return(m_pHead->m_Data);
@@ -1193,7 +1194,7 @@ FUNCTION DESCRIPTION:
 RETURN VALUE:
 		The element at the tail of the list
 ***************************************************************************************************/
-ELIST_TPL_DEF inline T_ARG EList<ELIST_TPL_ARG>::GetTail() const
+ELIST_TPL_DEF inline T_ARG EList<ELIST_TPL_ARG>::GetTail(void) const
 {
 	gosASSERT(m_Count);
 	return(m_pTail->m_Data);
@@ -1296,7 +1297,7 @@ FUNCTION DESCRIPTION:
 RETURN VALUE:
 		The number of elements in the list
 ***************************************************************************************************/
-ELIST_TPL_DEF inline uint32_t EList<ELIST_TPL_ARG>::Count() const
+ELIST_TPL_DEF inline uint32_t EList<ELIST_TPL_ARG>::Count(void) const
 {
 	return(m_Count);
 }
@@ -1309,7 +1310,7 @@ FUNCTION DESCRIPTION:
 RETURN VALUE:
 		TRUE if list is empty, FALSE if not
 ***************************************************************************************************/
-ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::IsEmpty() const
+ELIST_TPL_DEF inline bool EList<ELIST_TPL_ARG>::IsEmpty(void) const
 {
 	return(m_Count ? false : true);
 }
@@ -1321,7 +1322,7 @@ FUNCTION DESCRIPTION:
 RETURN VALUE:
 		Current Growsize
 ***************************************************************************************************/
-ELIST_TPL_DEF inline uint32_t EList<ELIST_TPL_ARG>::GrowSize() const
+ELIST_TPL_DEF inline uint32_t EList<ELIST_TPL_ARG>::GrowSize(void) const
 {
 	return(m_List_Pool.PageSize());
 }
@@ -1382,7 +1383,7 @@ ELIST_TPL_DEF inline typename EList<ELIST_TPL_ARG>::ENode* EList<ELIST_TPL_ARG>:
 ELIST_TPL_DEF inline void EList<ELIST_TPL_ARG>::KillElement(ENode* pElement)
 {
 	gosASSERT(pElement);
-	pElement->m_Data.~T();			// Destruct the data component of the element
+	pElement->m_Data.~T(void);			// Destruct the data component of the element
 	systemHeap->Free(pElement);					// Now free the element		
 }
 	
@@ -1402,7 +1403,7 @@ ELIST_TPL_DEF inline void EList<ELIST_TPL_ARG>::DestroyList()
 	//
 	while(m_Count)
 	{
-		DeleteHead();
+		DeleteHead(void);
 	}
 }
 	

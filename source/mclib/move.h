@@ -22,7 +22,7 @@
 #endif
 
 #ifndef TERRAIN_H
-#include "terrain.h"
+#include <terrain.h>
 #endif
 
 #ifndef DOBJCLASS_H
@@ -545,13 +545,13 @@ class MissionMap {
 		}
 		
 		MissionMap (void) {
-			init();
+			init(void);
 		}
 		
 		void destroy (void);
 
 		~MissionMap (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void init (int32_t h, int32_t w);
@@ -643,7 +643,7 @@ class MissionMap {
 		void setCellDebug (int32_t row, int32_t col, uint32_t value, uint32_t level) {
 			if( row >= 0 && row < height && col >= 0 && col < width )
 			{
-				uint32_t curValue = map[row * width + col].getDebug();
+				uint32_t curValue = map[row * width + col].getDebug(void);
 				if (curValue && (curValue != value)) {
 					for (int32_t i = 0; i < numDebugCells; i++)
 						if (debugCells[i][0] == row)
@@ -877,7 +877,7 @@ class MovePath {
 		void operator delete (PVOID us);
 		
 		void init (void) {
-			goal.Zero();
+			goal.Zero(void);
 			numSteps = 0;
 			numStepsWhenNotPaused = 0;
 			curStep = 0;
@@ -938,13 +938,13 @@ class MovePath {
 		int32_t crossesClosedGate (int32_t start, int32_t range);
 
 		MovePath (void) {
-			init();
+			init(void);
 		}
 		
 		void destroy (void);
 
 		~MovePath (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void setCurStep (int32_t _curStep) {
@@ -1195,13 +1195,13 @@ class GlobalMap {
 		}
 
 		GlobalMap (void) {
-			init();
+			init(void);
 		}
 		
 		void destroy (void);
 
 		~GlobalMap (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void init (int32_t h, int32_t w);
@@ -1479,7 +1479,7 @@ class MoveMap {
 			goalC = -1;
 			thruAreas[0] = -1;
 			thruAreas[1] = -1;
-			goal.Zero();
+			goal.Zero(void);
 			door = -1;
 			doorSide = -1;
 			doorDirection = -1;
@@ -1498,13 +1498,13 @@ class MoveMap {
 		}
 		
 		MoveMap (void) {
-			init();
+			init(void);
 		}
 		
 		void destroy (void);
 
 		~MoveMap (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void init (int32_t h, int32_t w);

@@ -167,12 +167,12 @@ class SoundSystem
 	
 		SoundSystem (void)
 		{
-			init();
+			init(void);
 		}
 		
 		~SoundSystem (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void init (void)
@@ -259,10 +259,10 @@ class SoundSystem
 		void setDigitalMasterVolume (byte volume);
 		int32_t getDigitalMasterVolume (void);
 		
-		uint8_t getSFXVolume();
-		uint8_t getRadioVolume();
-		uint8_t getMusicVolume();
-		uint8_t getBettyVolume();
+		uint8_t getSFXVolume(void);
+		uint8_t getRadioVolume(void);
+		uint8_t getMusicVolume(void);
+		uint8_t getBettyVolume(void);
 
 		void setSFXVolume(uint8_t volume);
 		void setRadioVolume(uint8_t volume);

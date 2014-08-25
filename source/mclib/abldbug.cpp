@@ -90,7 +90,7 @@ extern StackItemPtr		StaticDataPtr;
 
 //extern int32_t				MaxLoopIterations;
 
-void CheckMouse(void);
+void CheckMouse();
 
 //---------------------------------------------------------------------------
 

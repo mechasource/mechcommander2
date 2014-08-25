@@ -45,7 +45,7 @@ class PriorityQueue {
 		}
 
 		PriorityQueue (void) {
-			init();
+			init(void);
 		}
 
 		int32_t init (int32_t maxItems, int32_t keyMinValue = -2000000);
@@ -75,7 +75,7 @@ class PriorityQueue {
 		void destroy (void);
 
 		~PriorityQueue (void) {
-			destroy();
+			destroy(void);
 		}
 };
 

@@ -8,51 +8,25 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
+#pragma once
+
 #ifndef TERRAIN_H
 #define TERRAIN_H
+
 //---------------------------------------------------------------------------
-// Include Files
-#ifndef MAPDATA_H
-#include "mapdata.h"
-#endif
 
-#ifndef TERRTXM_H
-#include "terrtxm.h"
-#endif
-
-#ifndef TERRTXM2_H
-#include "terrtxm2.h"
-#endif
-
-#ifndef BITLAG_H
-#include "bitflag.h"
-#endif
-
-#ifndef INIFILE_H
-#include "inifile.h"
-#endif
-
-#ifndef MATHFUNC_H
-#include "mathfunc.h"
-#endif
-
-#ifndef DQUAD_H
-#include "dquad.h"
-#endif
-
-#ifndef DVERTEX_H
-#include "dvertex.h"
-#endif
-
-#ifndef CLOUDS_H
-#include "clouds.h"
-#endif
+//#include "mapdata.h"
+//#include <terrtxm.h>
+//#include "terrtxm2.h"
+//#include "bitflag.h"
+//#include "inifile.h"
+//#include "mathfunc.h"
+//#include "dquad.h"
+//#include "dvertex.h"
+//#include "clouds.h"
 
 //---------------------------------------------------------------------------
 // Macro Definitions
-#ifndef NO_ERROR
-#define NO_ERROR		0
-#endif
 
 #define	MAPCELL_DIM				3
 #define	MAX_MAP_CELL_WIDTH		720
@@ -186,14 +160,14 @@ class Terrain
 
 		Terrain (void)
 		{
-			init();
+			init(void);
 		}
 
 		void destroy (void);
 
 		~Terrain (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		int32_t init (PacketFile* file, int32_t whichPacket, uint32_t visibleVertices, 
@@ -211,7 +185,7 @@ class Terrain
 
 		float getWaterElevation ()
 		{
-			return mapData->waterElevation();
+			return mapData->waterElevation(void);
 		}
 
 		void markSeen (Stuff::Vector3D &looker, byte who, float specialUnitExpand);
@@ -265,9 +239,9 @@ class Terrain
 		
 		void initMapCellArrays(void);
 
-		void unselectAll();
+		void unselectAll(void);
 		void selectVerticesInRect( const Stuff::Vector4D& topLeft, const Stuff::Vector4D& bottomRight, bool bToggle );
-		bool hasSelection();
+		bool hasSelection(void);
 		bool isVertexSelected( int32_t tileR, int32_t tileC );
 		bool selectVertex( int32_t tileR, int32_t tileC, bool bSelect = true );
 
@@ -277,9 +251,9 @@ class Terrain
 		static void setUserSettings( int32_t min, int32_t max, int32_t terrainType );
 		static void getUserSettings( int32_t& min, int32_t& max, int32_t& terrainType );
 
-		void recalcWater();
+		void recalcWater(void);
 		void reCalcLight(bool doShadows = false);
-		void clearShadows();
+		void clearShadows(void);
 
 		int32_t getWater (Stuff::Vector3D& worldPos);
 

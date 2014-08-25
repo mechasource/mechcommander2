@@ -11,7 +11,7 @@
 //---------------------------------------------------------------------------
 // Include Files
 #ifndef TERRAIN_H
-#include "terrain.h"
+#include <terrain.h>
 #endif
 
 #ifndef VERTEX_H
@@ -23,7 +23,7 @@
 #endif
 
 #ifndef TERRTXM_H
-#include "terrtxm.h"
+#include <terrtxm.h>
 #endif
 
 #ifndef DBASEGUI_H

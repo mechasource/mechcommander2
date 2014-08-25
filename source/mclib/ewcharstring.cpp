@@ -958,14 +958,14 @@ int32_t EWCharString::Compare( const EWCSChar* p_String, bool Case_Sensitive ) c
 }
  	
 /////////////////////////////////////////////////////////////////
-int32_t EWCharString::Size() const 	// number of bytes
+int32_t EWCharString::Size(void) const 	// number of bytes
 {
 	return m_pBuffer->m_Data_Length * sizeof(EWCSChar);
 }
 
 
 /////////////////////////////////////////////////////////////////
-int32_t EWCharString::Length() const	// number of characters
+int32_t EWCharString::Length(void) const	// number of characters
 {
 
 #ifdef UNICODE
@@ -1100,7 +1100,7 @@ EWCharString EWCharString::SubString( int32_t Start_Index, int32_t End_Index ) c
 
 
 /////////////////////////////////////////////////////////////////
-PWSTR EWCharString::CreateUNICODE() const
+PWSTR EWCharString::CreateUNICODE(void) const
 {
 #ifdef UNICODE
 	PWSTR p_Ret_String = new wchar_t[m_pBuffer->m_Data_Length + 1];
@@ -1113,7 +1113,7 @@ PWSTR EWCharString::CreateUNICODE() const
 #endif
 }
 /////////////////////////////////////////////////////////////////
-PSTR 	EWCharString::CreateMBCS() const
+PSTR 	EWCharString::CreateMBCS(void) const
 {
 
 	PSTR p_Ret_String = new char[m_pBuffer->m_Data_Length + 1];

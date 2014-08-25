@@ -55,7 +55,7 @@ class LinkedList
 
 	virtual ~LinkedList ()
 	{
-		Kill();
+		Kill(void);
 	}
 
 	void AddToHead (Link *Node);
@@ -67,7 +67,7 @@ class LinkedList
 	void InsertAfter (Link *PlaceTo, Link *NodeToPut);  // If sent, it avoids a search through the list.
 	void InsertBefore (Link *PlaceTo, Link *NodeToPut);
 
-	void Kill();
+	void Kill(void);
 
 	void MoveAfter (Link *PlaceTo, Link *NodeToPut, Link *Last = NULL);
 

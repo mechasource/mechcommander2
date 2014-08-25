@@ -1,36 +1,30 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 //***************************************************************************
 //
-//								PARSER.H
+// PARSER.H
 //
 //***************************************************************************
 
+#pragma once
+
 #ifndef ABLPARSE_H
-#define	ABLPARSE_H
+#define ABLPARSE_H
 
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLSYMT_H
-#include "ablsymt.h"
-#endif
-
-#ifndef ABLERR_H
-#include "ablerr.h"
-#endif
+//#include "ablgen.h"
+//#include "ablsymt.h"
+//#include "ablerr.h"
 
 //***************************************************************************
 
-typedef enum {
+typedef enum UseType{
 	USE_EXPR,
 	USE_TARGET,
 	USE_REFPARAM
 } UseType;
 
-typedef enum {
+typedef enum BlockType{
 	BLOCK_MODULE,
 	BLOCK_ROUTINE
 } BlockType;
@@ -99,11 +93,11 @@ int32_t openSourceFile (PSTR sourceFileName);
 int32_t closeSourceFile (void);
 
 #if !ANALYZE_ON
-#define	analyzeConstDefn(idPtr)
-#define	analyzeVarDecl(idPtr)
-#define	analyzeTypeDefn(idPtr)
-#define	analyzeRoutineHeader(idPtr)
-#define	analyzeBlock(idPtr)
+#define analyzeConstDefn(idPtr)
+#define analyzeVarDecl(idPtr)
+#define analyzeTypeDefn(idPtr)
+#define analyzeRoutineHeader(idPtr)
+#define analyzeBlock(idPtr)
 #endif
 
 //***************************************************************************

@@ -114,14 +114,14 @@ class TG_TypeMultiShape
 		
 		TG_TypeMultiShape (void)
 		{
-			init();
+			init(void);
 		}
 
 		void destroy (void);
 
 		~TG_TypeMultiShape (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		//Function returns 0 if OK.  -1 if file not found or file not ASE Format.
@@ -177,7 +177,7 @@ class TG_TypeMultiShape
 			result.x = result.y = result.z = 0.0f;
 
 			if ((shapeNum >= 0) && (shapeNum < numTG_TypeShapes))
-				result = listOfTypeShapes[shapeNum]->GetNodeCenter();
+				result = listOfTypeShapes[shapeNum]->GetNodeCenter(void);
 			
 			return result;
 		}
@@ -190,7 +190,7 @@ class TG_TypeMultiShape
 			for (uint32_t i=0;i<numTG_TypeShapes;i++)
 			{
 				if (_stricmp(listOfTypeShapes[i]->getNodeId(),nodeId) == 0)
-					result = listOfTypeShapes[i]->GetNodeCenter();
+					result = listOfTypeShapes[i]->GetNodeCenter(void);
 			}
 			
 			return result;
@@ -279,14 +279,14 @@ class TG_MultiShape
 		
 		TG_MultiShape (void)
 		{
-			init();
+			init(void);
 		}
 
 		void destroy (void);
 
 		~TG_MultiShape (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		//This function sets the list of lights used by the TransformShape function
@@ -344,7 +344,7 @@ class TG_MultiShape
 		{
 			if ((i >= 0) && (i < numTG_Shapes))
 			{
-				return myMultiType->listOfTypeShapes[i]->GetNumTypeVertices();
+				return myMultiType->listOfTypeShapes[i]->GetNumTypeVertices(void);
 			}
 			
 			return 0;
@@ -378,7 +378,7 @@ class TG_MultiShape
 
 		int32_t GetNumTextures (void)
 		{
-			return myMultiType->GetNumTextures();
+			return myMultiType->GetNumTextures(void);
 		}
 
 		//Function returns 0 if OK.  -1 if textureNum is out of range of numTextures.
@@ -425,7 +425,7 @@ class TG_MultiShape
 			{
 				if (listOfShapes[i].parentNode == NULL)
 				{
-					result = listOfShapes[i].node->myType->GetNodeCenter();
+					result = listOfShapes[i].node->myType->GetNodeCenter(void);
 				}
 			}
 			
@@ -440,7 +440,7 @@ class TG_MultiShape
 			{
 				if (listOfShapes[i].parentNode == NULL)
 				{
-					result = listOfShapes[i].node->myType->GetRelativeNodeCenter();
+					result = listOfShapes[i].node->myType->GetRelativeNodeCenter(void);
 				}
 			}
 			
@@ -593,12 +593,12 @@ class TG_AnimateShape
 
 		TG_AnimateShape (void)
 		{
-			init();
+			init(void);
 		}
 
 		~TG_AnimateShape (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		int32_t LoadBinaryCopy (PSTR fileName);

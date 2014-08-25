@@ -46,16 +46,16 @@ public:
 
 	frameOfRef & orthonormalize ()
 	{
-		return orthonormalize_on_yaxis();
+		return orthonormalize_on_yaxis(void);
 	}
 
-	frameOfRef & orthonormalize_on_xaxis ();
+	frameOfRef & orthonormalize_on_xaxis (void);
 
-	frameOfRef & orthonormalize_on_yaxis ();
+	frameOfRef & orthonormalize_on_yaxis (void);
 
-	frameOfRef & orthonormalize_on_zaxis ();
+	frameOfRef & orthonormalize_on_zaxis (void);
 
-	frameOfRef & reset_to_world_frame ();
+	frameOfRef & reset_to_world_frame (void);
 
 	frameOfRef & rotate_about_i (float &angle);
 	frameOfRef & rotate_about_j (float &angle);

@@ -14,7 +14,7 @@
 #include "tgainfo.h"
 #endif
 
-#include "estring.h"
+#include <estring.h>
 
 #include <gameos.hpp>
 //---------------------------------------------------------------------------

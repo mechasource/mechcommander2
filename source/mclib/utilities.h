@@ -18,7 +18,7 @@ class StaticInfo
 public:
 
 	void init( FitIniFile& file, PSTR blockName, int32_t hiResOffsetX = 0, int32_t hiResOffsetY = 0, uint32_t neverFlush = 0 );
-	void render();
+	void render(void);
 	bool isInside( int32_t mouseX, int32_t mouseY );
 
 	void setLocation( float  newX, float newY );
@@ -36,7 +36,7 @@ public:
 	void setColor( int32_t newColor );
 
 	StaticInfo(){}
-	~StaticInfo();
+	~StaticInfo(void);
 
 	uint32_t textureHandle;
 	gos_VERTEX	location[4];

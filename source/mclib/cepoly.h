@@ -22,7 +22,7 @@
 //---------------------------------------------------------------------------
 struct PolyElementData
 {
-	int32_t		numVertices;			//Actually num_vertices + extras for clipping
+	uint32_t		numVertices;			//Actually num_vertices + extras for clipping
 	SCRNVERTEX	vertices[6]; 			//Draw Vertices
 
 	bool		correctTexture;			//Should we Correctly Texture?
@@ -55,7 +55,7 @@ struct PolyElementData
 		
 	PolyElementData (void)
 	{
-		init();
+		init(void);
 	}
 };
 
@@ -70,7 +70,7 @@ class PolygonElement : public Element
 			
 	PolygonElement (void)
 	{
-		polyData.init();
+		polyData.init(void);
 	}
 
 	PolygonElement (PolyElementDataPtr pData, int32_t depth);

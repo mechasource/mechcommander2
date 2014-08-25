@@ -59,7 +59,7 @@ struct PostcompVertex
 
 	PostcompVertex& operator=( const PostcompVertex& src );
 	PostcompVertex( const PostcompVertex& );
-	PostcompVertex();
+	PostcompVertex(void);
 };
 
 typedef PostcompVertex *PostcompVertexPtr;
@@ -126,7 +126,7 @@ class Vertex
 
 		Vertex (void)
 		{
-			init();
+			init(void);
 		}
 
 		void destroy (void)
@@ -135,12 +135,12 @@ class Vertex
 
 		~Vertex (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		int32_t init (PostcompVertexPtr preVertex)
 		{
-			init();
+			init(void);
 			pVertex = preVertex;
 			
 			return(NO_ERROR);

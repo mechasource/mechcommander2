@@ -67,12 +67,12 @@ class WeaponEffects
 	
 		WeaponEffects (void)
 		{
-			init();
+			init(void);
 		}
 		
 		~WeaponEffects (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void init (void)

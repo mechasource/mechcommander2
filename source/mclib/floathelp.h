@@ -56,7 +56,7 @@ class FloatHelp
 
 		~FloatHelp (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		void init (int32_t maxHelps);

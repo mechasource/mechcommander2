@@ -4,7 +4,7 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 #include <windows.h>
-#include "estring.h"
+#include <estring.h>
 
 #include <gameos.hpp>
 
@@ -957,14 +957,14 @@ int32_t EString::Compare( const EChar* p_String, bool Case_Sensitive ) const
 }
  	
 /////////////////////////////////////////////////////////////////
-int32_t EString::Size() const 	// number of bytes
+int32_t EString::Size(void) const 	// number of bytes
 {
 	return m_pBuffer->m_Data_Length * sizeof(EChar);
 }
 
 
 /////////////////////////////////////////////////////////////////
-int32_t EString::Length() const	// number of characters
+int32_t EString::Length(void) const	// number of characters
 {
 
 	if ( !m_pBuffer->Data() )
@@ -1101,7 +1101,7 @@ EString EString::SubString( int32_t Start_Index, int32_t End_Index ) const
 
 
 /////////////////////////////////////////////////////////////////
-PWSTR EString::CreateUNICODE() const
+PWSTR EString::CreateUNICODE(void) const
 {
 #ifdef UNICODE
 	PWSTR p_Ret_String = new uint16_t[m_pBuffer->m_Data_Length + 1];
@@ -1114,7 +1114,7 @@ PWSTR EString::CreateUNICODE() const
 #endif
 }
 /////////////////////////////////////////////////////////////////
-PSTR 	EString::CreateMBCS() const
+PSTR 	EString::CreateMBCS(void) const
 {
 
 	PSTR p_Ret_String = new char[m_pBuffer->m_Data_Length + 1];

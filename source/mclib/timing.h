@@ -40,12 +40,12 @@ class Timer
 	
 		Timer (void)
 		{
-			init();
+			init(void);
 		}
 		
 		~Timer (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void init (void)
@@ -106,19 +106,19 @@ class TimerManager
 		
 		TimerManager (void)
 		{
-			init();
+			init(void);
 		}
 		
 		~TimerManager (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void init (void)
 		{
 			for (int32_t i=0;i<MAX_TIMERS;i++)
 			{
-				timers[i].init();
+				timers[i].init(void);
 			}
 		}
 		
@@ -126,7 +126,7 @@ class TimerManager
 		{
 			for (int32_t i=0;i<MAX_TIMERS;i++)
 			{
-				timers[i].init();
+				timers[i].init(void);
 			}
 		}
 		
@@ -142,7 +142,7 @@ class TimerManager
 		{
 			for (int32_t i=0;i<MAX_TIMERS;i++)
 			{
-				timers[i].update();
+				timers[i].update(void);
 			}
 		}
 };

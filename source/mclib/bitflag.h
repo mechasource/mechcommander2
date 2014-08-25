@@ -51,11 +51,11 @@ class BitFlag
 	public:
 		BitFlag(void)
 		{
-			init();
+			init(void);
 		}
 		~BitFlag(void)
 		{
-			destroy();
+			destroy(void);
 		}
 		void init(void)
 		{
@@ -110,7 +110,7 @@ class ByteFlag
 		
 		ByteFlag(void)
 		{
-			init();
+			init(void);
 		}
 		
 		int32_t init(uint32_t numRows, uint32_t numColumns, uint32_t initialValue = 0);
@@ -120,7 +120,7 @@ class ByteFlag
 		
 		~ByteFlag(void)
 		{
-			destroy();
+			destroy(void);
 		}
 	
 		puint8_t memDump(void);

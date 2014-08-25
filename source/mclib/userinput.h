@@ -132,12 +132,12 @@ class MouseCursorData
 	public:
 		MouseCursorData (void)
 		{
-			init();
+			init(void);
 		}
 		
 		~MouseCursorData (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void destroy (void);
@@ -261,12 +261,12 @@ class UserInput
 
 		UserInput (void)
 		{
-			init();
+			init(void);
 		}
 
 		~UserInput (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		void init (void)
@@ -318,7 +318,7 @@ class UserInput
 				cursors = NULL;
 			}
 
-			init();
+			init(void);
 		}
 
 		void setViewport(float mulX, float mulY, float addX, float addY)

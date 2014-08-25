@@ -26,8 +26,8 @@ puint8_t 		LZPacketBuffer = NULL;
 size_t			LZPacketBufferSize = 512000;
 
 extern char CDInstallPath[];
-void __stdcall EnterWindowMode(void);
-void __stdcall EnterFullScreenMode(void);
+void __stdcall EnterWindowMode();
+void __stdcall EnterFullScreenMode();
 void __stdcall ExitGameOS();
 
 char FileMissingString[512];

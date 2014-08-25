@@ -103,12 +103,12 @@ class GVAppearanceType : public AppearanceType
 	
 		GVAppearanceType (void)
 		{
-			init();
+			init(void);
 		}
 
 		~GVAppearanceType (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual void init (PSTR fileName);
@@ -120,7 +120,7 @@ class GVAppearanceType : public AppearanceType
 		int32_t getNumFrames (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
-				return gvAnimData[animationNum]->GetNumFrames();
+				return gvAnimData[animationNum]->GetNumFrames(void);
 
 			return 0.0f;
 		}
@@ -128,7 +128,7 @@ class GVAppearanceType : public AppearanceType
 		float getFrameRate (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_GV_ANIMATIONS) && (gvAnimData[animationNum]))
-				return gvAnimData[animationNum]->GetFrameRate();
+				return gvAnimData[animationNum]->GetFrameRate(void);
 
 			return 0.0f;
 		}
@@ -248,7 +248,7 @@ class GVAppearance : public ObjectAppearance
 
 		GVAppearance (void)
 		{
-			init();
+			init(void);
 		}
 
 		virtual int32_t update (bool animate = true);
@@ -267,7 +267,7 @@ class GVAppearance : public ObjectAppearance
 	
 		~GVAppearance (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual void setPaintScheme (void);
@@ -344,7 +344,7 @@ class GVAppearance : public ObjectAppearance
 		
 		virtual Stuff::Point3D getRootNodeCenter (void)
 		{
-			Stuff::Point3D result = gvShape->GetRootNodeCenter();
+			Stuff::Point3D result = gvShape->GetRootNodeCenter(void);
 			return result;
 		}
 		

@@ -73,12 +73,12 @@ class GenericAppearanceType : public AppearanceType
 	
 		GenericAppearanceType (void)
 		{
-			init();
+			init(void);
 		}
 
 		~GenericAppearanceType (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		void setAnimation (TG_MultiShapePtr shape, uint32_t animationNum);
@@ -86,7 +86,7 @@ class GenericAppearanceType : public AppearanceType
 		int32_t getNumFrames (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
-				return genAnimData[animationNum]->GetNumFrames();
+				return genAnimData[animationNum]->GetNumFrames(void);
 
 			return 0.0f;
 		}
@@ -94,7 +94,7 @@ class GenericAppearanceType : public AppearanceType
 		float getFrameRate (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_GEN_ANIMATIONS) && (genAnimData[animationNum]))
-				return genAnimData[animationNum]->GetFrameRate();
+				return genAnimData[animationNum]->GetFrameRate(void);
 
 			return 0.0f;
 		}
@@ -170,7 +170,7 @@ class GenericAppearance : public ObjectAppearance
 		
 		GenericAppearance (void)
 		{
-			init();
+			init(void);
 		}
 
 		virtual int32_t update (bool animate = true);
@@ -182,7 +182,7 @@ class GenericAppearance : public ObjectAppearance
 
 		~GenericAppearance (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual bool recalcBounds (void);
@@ -223,7 +223,7 @@ class GenericAppearance : public ObjectAppearance
 
 		virtual void setIsHudElement (void)
 		{
-			genShape->SetIsHudElement();
+			genShape->SetIsHudElement(void);
 		}
 		
  		virtual void scale (float scaleFactor)
@@ -233,7 +233,7 @@ class GenericAppearance : public ObjectAppearance
 		
 		virtual Stuff::Point3D getRootNodeCenter (void)
 		{
-			Stuff::Point3D result = genShape->GetRootNodeCenter();
+			Stuff::Point3D result = genShape->GetRootNodeCenter(void);
 			return result;
 		}
 		

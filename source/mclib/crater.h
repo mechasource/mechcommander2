@@ -106,14 +106,14 @@ class CraterManager
 		
 		CraterManager (void)
 		{
-			init();
+			init(void);
 		}
 		
 		int32_t init (int32_t numCraters, uint32_t craterTypeSize, PSTR craterFileName);
 		
 		~CraterManager (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void destroy (void);

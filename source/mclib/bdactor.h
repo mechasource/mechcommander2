@@ -102,12 +102,12 @@ class BldgAppearanceType : public AppearanceType
 	
 		BldgAppearanceType (void)
 		{
-			init();
+			init(void);
 		}
 
 		~BldgAppearanceType (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		void setAnimation (TG_MultiShapePtr shape, uint32_t animationNum);
@@ -115,7 +115,7 @@ class BldgAppearanceType : public AppearanceType
 		int32_t getNumFrames (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
-				return bdAnimData[animationNum]->GetNumFrames();
+				return bdAnimData[animationNum]->GetNumFrames(void);
 
 			return 0.0f;
 		}
@@ -123,7 +123,7 @@ class BldgAppearanceType : public AppearanceType
 		float getFrameRate (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MAX_BD_ANIMATIONS) && (bdAnimData[animationNum]))
-				return bdAnimData[animationNum]->GetFrameRate();
+				return bdAnimData[animationNum]->GetFrameRate(void);
 
 			return 0.0f;
 		}
@@ -238,7 +238,7 @@ class BldgAppearance : public ObjectAppearance
 
 		BldgAppearance (void)
 		{
-			init();
+			init(void);
 		}
 
 		virtual int32_t update (bool animate = true);
@@ -250,7 +250,7 @@ class BldgAppearance : public ObjectAppearance
 
 		~BldgAppearance (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual bool recalcBounds (void);
@@ -339,7 +339,7 @@ class BldgAppearance : public ObjectAppearance
 		
 		virtual void setIsHudElement (void)
 		{
-			bldgShape->SetIsHudElement();
+			bldgShape->SetIsHudElement(void);
 		}
 		
 		virtual bool getIsLit (void)
@@ -361,7 +361,7 @@ class BldgAppearance : public ObjectAppearance
 		
 		virtual Stuff::Point3D getRootNodeCenter (void)
 		{
-			Stuff::Point3D result = bldgShape->GetRootNodeCenter();
+			Stuff::Point3D result = bldgShape->GetRootNodeCenter(void);
 			return result;
 		}
 		
@@ -425,12 +425,12 @@ class TreeAppearanceType : public AppearanceType
 	
 		TreeAppearanceType (void)
 		{
-			init();
+			init(void);
 		}
 
 		~TreeAppearanceType (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual void init (PSTR fileName);
@@ -478,7 +478,7 @@ class TreeAppearance : public ObjectAppearance
 
 		TreeAppearance (void)
 		{
-			init();
+			init(void);
 		}
 
 		virtual int32_t update (bool animate = true);
@@ -490,7 +490,7 @@ class TreeAppearance : public ObjectAppearance
 
 		~TreeAppearance (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual size_t getAppearanceClass (void)
@@ -542,7 +542,7 @@ class TreeAppearance : public ObjectAppearance
 
  		virtual Stuff::Point3D getRootNodeCenter (void)
 		{
-			Stuff::Point3D result = treeShape->GetRootNodeCenter();
+			Stuff::Point3D result = treeShape->GetRootNodeCenter(void);
 			return result;
 		}
 

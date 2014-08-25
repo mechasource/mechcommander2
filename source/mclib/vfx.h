@@ -349,7 +349,7 @@ extern void 	VFX_CALL VFX_illuminate_polygon(PPANE pane, FIXED16 dither_amount, 
 //
 
 //#ifdef __HIGHC__
-//#pragma Global_aliasing_convention();
+//#pragma Global_aliasing_convention(void);
 //#pragma Align_members(4)
 //#endif
 

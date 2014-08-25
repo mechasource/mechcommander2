@@ -95,14 +95,14 @@ class TerrainColorMap
 
 		TerrainColorMap (void)
 		{
-			init();
+			init(void);
 		}
 
 		void destroy (void);
 
 		~TerrainColorMap (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		int32_t init (PSTR fileName);

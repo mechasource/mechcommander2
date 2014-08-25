@@ -957,14 +957,14 @@ int32_t ECharString::Compare( const ECSChar* p_String, bool Case_Sensitive ) con
 }
  	
 /////////////////////////////////////////////////////////////////
-int32_t ECharString::Size() const 	// number of bytes
+int32_t ECharString::Size(void) const 	// number of bytes
 {
 	return m_pBuffer->m_Data_Length * sizeof(ECSChar);
 }
 
 
 /////////////////////////////////////////////////////////////////
-int32_t ECharString::Length() const	// number of characters
+int32_t ECharString::Length(void) const	// number of characters
 {
 
 #ifdef UNICODE
@@ -1099,7 +1099,7 @@ ECharString ECharString::SubString( int32_t Start_Index, int32_t End_Index ) con
 
 
 /////////////////////////////////////////////////////////////////
-PWSTR ECharString::CreateUNICODE() const
+PWSTR ECharString::CreateUNICODE(void) const
 {
 #ifdef UNICODE
 	PWSTR p_Ret_String = new uint16_t[m_pBuffer->m_Data_Length + 1];
@@ -1112,7 +1112,7 @@ PWSTR ECharString::CreateUNICODE() const
 #endif
 }
 /////////////////////////////////////////////////////////////////
-PSTR 	ECharString::CreateMBCS() const
+PSTR 	ECharString::CreateMBCS(void) const
 {
 
 	PSTR p_Ret_String = new char[m_pBuffer->m_Data_Length + 1];

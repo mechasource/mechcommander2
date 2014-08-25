@@ -9,35 +9,19 @@
 #ifndef TERRTXM_H
 #define TERRTXM_H
 //---------------------------------------------------------------------------
-// Include Files
-#ifndef DTERRTXM_H
-#include "dterrtxm.h"
-#endif
 
-#ifndef MAPDATA_H
-#include "mapdata.h"
-#endif
-
-#ifndef TXMMGR_H
-#include "txmmgr.h"
-#endif
+//#include "dterrtxm.h"
+//#include "mapdata.h"
+//#include "txmmgr.h"
 
 //---------------------------------------------------------------------------
 // Macro Definitions
-#ifndef NO_ERROR
-#define NO_ERROR		0
-#endif
 
 #define BLANK_TILE					(-1)
-
 #define MC_MAX_TERRAIN_TXMS			3000
-
 #define MC_MASK_NUM					14
-
 #define MC_MAX_MIP_LEVELS			1
-
 #define USE_SOFTWARE_MIPMAP
-
 #define BASE_CEMENT_TYPE			10
 #define START_CEMENT_TYPE			13
 #define END_CEMENT_TYPE				20
@@ -206,14 +190,14 @@ class TerrainTextures
 
 		TerrainTextures (void)
 		{
-			init();
+			init(void);
 		}
 
 		void destroy (void);
 
 		~TerrainTextures (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		int32_t init (PSTR fileName, PSTR baseName);
@@ -230,7 +214,7 @@ class TerrainTextures
 			return 64.0f;
 		}
 
-		int32_t getNumTypes() const { return numTypes; }
+		int32_t getNumTypes(void) const { return numTypes; }
 
 		int32_t getTextureNameID( int32_t id ) const { return types[id].nameId; }
 		
@@ -327,7 +311,7 @@ class TerrainTextures
 			return (textures[typeInfo].flags & MC2_TERRAIN_ALPHA_FLAG) == MC2_TERRAIN_ALPHA_FLAG;
 		}
 
-		static void initializeStatistics();
+		static void initializeStatistics(void);
 		
 		void update (void);
 };

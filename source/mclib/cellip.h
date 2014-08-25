@@ -40,7 +40,7 @@ class EllipseElement : public Element
 
 	virtual void draw (void);
 
-	static void init(); // gotta call this one time before you can draw
+	static void init(void); // gotta call this one time before you can draw
 
 	void setClip( const RECT& );
 

@@ -121,7 +121,7 @@ inline HINSTANCE GetModuleInstance(void)
 #endif
 }
 
-inline HINSTANCE GetResourceInstance(void)
+inline HINSTANCE GetResourceInstance()
 {
 #if (_ATL_VER >= 0x0700)
 	return ATL::_AtlBaseModule.GetResourceInstance();

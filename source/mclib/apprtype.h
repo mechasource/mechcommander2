@@ -11,7 +11,7 @@
 //---------------------------------------------------------------------------
 // Include Files
 #ifndef DAPRTYPE_H
-#include "daprtype.h"
+#include <daprtype.h>
 #endif
 
 #ifndef DAPPEAR_H
@@ -75,14 +75,14 @@ class AppearanceType
 
 			name = NULL;
 
-			typeUpperLeft.Zero();
-			typeLowerRight.Zero();
+			typeUpperLeft.Zero(void);
+			typeLowerRight.Zero(void);
 			designerTypeBounds = false;
  		}
 
 		AppearanceType (void)
 		{
-			init();
+			init(void);
 		}
 
 		virtual void init (PSTR fileName);
@@ -108,7 +108,7 @@ class AppearanceType
 		
 		virtual ~AppearanceType (void)
 		{
-			destroy();
+			destroy(void);
 		}
 };
 
@@ -146,7 +146,7 @@ class AppearanceTypeList
 		
 		~AppearanceTypeList (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		bool pointerCanBeDeleted (PVOIDptr);

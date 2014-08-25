@@ -188,7 +188,7 @@ class MasterComponent {
 		void destroy (void);
 
 		~MasterComponent (void) {
-			destroy();
+			destroy(void);
 		}
 		
 		void init (void) {
@@ -198,7 +198,7 @@ class MasterComponent {
 		}
 
 		MasterComponent (void) {
-			init();
+			init(void);
 		}
 		
 		int32_t init (FitIniFile* componentFile);

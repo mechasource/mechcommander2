@@ -13,7 +13,7 @@
 #endif
 
 #ifndef TERRAIN_H
-#include "terrain.h"
+#include <terrain.h>
 #endif
 
 #ifndef VERTEX_H
@@ -25,7 +25,7 @@
 #endif
 
 #ifndef TERRTXM_H
-#include "terrtxm.h"
+#include <terrtxm.h>
 #endif
 
 #ifndef CIDENT_H
@@ -559,9 +559,12 @@ void Camera::getClosestVertex (Stuff::Vector2DOf<int32_t> &screenPos, int32_t &r
 //
 // Redone all using integers and no square root.
 //
-	int32_t i=0,tvx=screenPos.x,tvy=screenPos.y;
+	uint32_t i = 0;
+	uint32_t tvx = screenPos.x;
+	uint32_t tvy = screenPos.y;
 	float dx,dy,cd=1e38f,dist;
-	for (i=0;i<(int32_t)numVertices;i++)
+	
+	for (i=0; i< numVertices; i++)
 	{
 		dx = ( tvx - topVertex->px);
 		dy = ( tvy - topVertex->py);

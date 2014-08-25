@@ -105,14 +105,14 @@ class TerrainQuad
 			
 			uvData.maxU = uvData.minU = uvData.minV = uvData.maxV = 0.0f;
 			
-			mineResult.init();
+			mineResult.init(void);
 			
 			isCement = false;
 		}
 
 		TerrainQuad (void)
 		{
-			init();
+			init(void);
 		}
 
 		void destroy (void)
@@ -121,7 +121,7 @@ class TerrainQuad
 
 		~TerrainQuad (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		int32_t init (VertexPtr v0, VertexPtr v1, VertexPtr v2, VertexPtr v3);

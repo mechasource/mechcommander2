@@ -353,7 +353,7 @@ class TG_TypeNode
 	protected:
 
 	public:
-		PVOIDoperator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 		void operator delete (PVOID us);
 			
  		virtual void init (void)
@@ -544,14 +544,14 @@ class TG_TypeShape : public TG_TypeNode
 		
 		TG_TypeShape (void)
 		{
-			init();
+			init(void);
 		}
 
 		virtual void destroy (void);
 
 		~TG_TypeShape (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual int32_t GetNumTypeVertices (void)
@@ -751,14 +751,14 @@ class TG_Shape
 		
 		TG_Shape (void)
 		{
-			init();
+			init(void);
 		}
 
 		void destroy (void);
 
 		~TG_Shape (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		//This function sets up the camera Matrices for this TG_Shape to transform
@@ -813,12 +813,12 @@ class TG_Shape
 		
 		PSTR  getNodeName (void)
 		{
-			return myType->getNodeId();
+			return myType->getNodeId(void);
 		}
 		
 		Stuff::Point3D GetRelativeNodeCenter (void)
 		{
-			return myType->GetRelativeNodeCenter();
+			return myType->GetRelativeNodeCenter(void);
 		}
 		
 		bool PerPolySelect (float mouseX, float mouseY);
@@ -856,7 +856,7 @@ class TG_VertexPool
 		
 		~TG_VertexPool (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void destroy (void)
@@ -915,7 +915,7 @@ class TG_GOSVertexPool
 		
 		~TG_GOSVertexPool (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void destroy (void)
@@ -974,7 +974,7 @@ class TG_TrianglePool
 		
 		~TG_TrianglePool (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void destroy (void)
@@ -1033,7 +1033,7 @@ class TG_ShadowPool
 		
 		~TG_ShadowPool (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void destroy (void)
@@ -1092,7 +1092,7 @@ class TG_DWORDPool
 		
 		~TG_DWORDPool (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void destroy (void)

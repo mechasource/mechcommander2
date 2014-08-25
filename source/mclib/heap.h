@@ -103,11 +103,11 @@ public:
 
 	HeapManager(void)
 	{
-		init();
+		init(void);
 	}
 	virtual ~HeapManager(void)
 	{
-		destroy();
+		destroy(void);
 	}
 
 	void destroy (void);
@@ -119,7 +119,7 @@ public:
 	puint8_t getHeapPtr (void);
 	operator puint8_t (void);
 
-	void HeapManager::MemoryDump();
+	void HeapManager::MemoryDump(void);
 
 	virtual uint8_t heapType (void)
 	{
@@ -266,17 +266,17 @@ public:
 
 	HeapList (void)
 	{
-		init();
+		init(void);
 	}
 
 	void destroy (void)
 	{
-		init();
+		init(void);
 	}
 
 	~HeapList (void)
 	{
-		destroy();
+		destroy(void);
 	}
 
 	void addHeap (HeapManagerPtr newHeap);
@@ -286,7 +286,7 @@ public:
 
 	void dumpLog (void);
 
-	static void initializeStatistics();
+	static void initializeStatistics(void);
 
 };
 

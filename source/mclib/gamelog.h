@@ -66,13 +66,13 @@ class GameLog {
 		}
 
 		GameLog (void) {
-			init();
+			init(void);
 		}
 
 		void destroy (void);
 
 		~GameLog (void) {
-			destroy();
+			destroy(void);
 		}
 
 		void dump (void);

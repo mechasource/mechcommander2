@@ -70,14 +70,14 @@ class Clouds
 		
 		Clouds (void)
 		{
-			init();
+			init(void);
 		}
 		
 		void destroy (void);
 		
 		~Clouds (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		void init (PSTR textureName, int32_t gSize);

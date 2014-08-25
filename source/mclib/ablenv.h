@@ -1,352 +1,355 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 //***************************************************************************
 //
-//								ENVIRON.H
+// ENVIRON.H
 //
 //***************************************************************************
+
+#pragma once
 
 #ifndef ABLENV_H
 #define ABLENV_H
 
-#include <stdio.h>
-
-#ifndef DABLENV_H
-#include "dablenv.h"
-#endif
-
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLSYMT_H
-#include "ablsymt.h"
-#endif
-
-#ifndef ABLEXEC_H
-#include "ablexec.h"
-#endif
-
-#ifndef DABLDBUG_H
-#include "dabldbug.h"
-#endif
-
-#ifndef ABLSCAN_H
-#include "ablscan.h"
-#endif
+//#include "dablenv.h"
+//#include "ablgen.h"
+//#include "ablsymt.h"
+//#include "ablexec.h"
+//#include "dabldbug.h"
+//#include "ablscan.h"
 
 //***************************************************************************
 
-typedef struct _SourceFile {
-	char					fileName[MAXLEN_FILENAME];
-	uint8_t			fileNumber;
-	ABLFile*				filePtr;
-	int32_t					lineNumber;
-} SourceFile;
+typedef struct _SourceFile{
+	char fileName[MAXLEN_FILENAME];
+	uint8_t fileNumber;
+	ABLFile* filePtr;
+	int32_t lineNumber;
+}SourceFile;
 
 //---------------------------------------------------------------------------
 
-#define	MAX_USER_FILES			6
-#define MAX_USER_FILE_LINES		50
-#define	MAX_USER_FILE_LINELEN	200
+#define MAX_USER_FILES 6
+#define MAX_USER_FILE_LINES 50
+#define MAX_USER_FILE_LINELEN 200
 
 class UserFile {
 
-	public:
+public:
 
-		int32_t					handle;
-		bool					inUse;
-		char					fileName[MAXLEN_FILENAME];
-		ABLFile*				filePtr;
-		int32_t					numLines;
-		int32_t					totalLines;
-		char					lines[MAX_USER_FILE_LINES][MAX_USER_FILE_LINELEN];
+	int32_t handle;
+	bool inUse;
+	char fileName[MAXLEN_FILENAME];
+	ABLFile* filePtr;
+	int32_t numLines;
+	int32_t totalLines;
+	char lines[MAX_USER_FILE_LINES][MAX_USER_FILE_LINELEN];
 
-		static UserFilePtr		files[MAX_USER_FILES];
+	static UserFilePtr files[MAX_USER_FILES];
 
-	public:
+public:
 
-		PVOID operator new (size_t mySize);
+	PVOID operator new (size_t mySize);
 
-		void operator delete (PVOID us);
-			
-		void init (void) {
-			handle = -1;
-			inUse = false;
-			fileName[0] = NULL;
-			filePtr = NULL;
-			numLines = 0;
-			totalLines = 0;
-			for (int32_t i = 0; i < MAX_USER_FILE_LINES; i++)
-				lines[i][0] = NULL;
-		}
+	void operator delete (PVOID us);
 
-		UserFile (void) {
-			init();
-		}
+	void init (void){
+		handle = -1;
+		inUse = false;
+		fileName[0] = NULL;
+		filePtr = NULL;
+		numLines = 0;
+		totalLines = 0;
+		for (int32_t i = 0; i < MAX_USER_FILE_LINES; i++)
+			lines[i][0] = NULL;
+	}
 
-		void destroy (void);
+	UserFile (void){
+		init(void);
+	}
 
-		~UserFile (void) {
-			destroy();
-		}
+	void destroy (void);
 
-		void dump (void);
+	~UserFile (void){
+		destroy(void);
+	}
 
-		void close (void);
+	void dump (void);
 
-		int32_t open (PSTR fileName);
+	void close (void);
 
-		void write (PSTR s);
+	int32_t open (PSTR fileName);
 
-		static void setup (void);
+	void write (PSTR s);
 
-		static void cleanup (void);
+	static void setup (void);
 
-		static UserFilePtr getNewFile (void);
+	static void cleanup (void);
+
+	static UserFilePtr getNewFile (void);
 };
 
 //---------------------------------------------------------------------------
 
-#define	MAX_ABLMODULE_NAME				5
-#define	MAX_SOURCE_FILES				256			// per module
-#define	MAX_LIBRARIES_USED				25			// per module
-#define	MAX_STATE_HANDLES_PER_MODULE	10
+#define MAX_ABLMODULE_NAME 5
+#define MAX_SOURCE_FILES 256 // per module
+#define MAX_LIBRARIES_USED 25 // per module
+#define MAX_STATE_HANDLES_PER_MODULE 10
 
-typedef struct {
-	char					name[128];
-	int32_t					size;
-} VariableInfo;
+typedef struct{
+	char name[128];
+	int32_t size;
+}VariableInfo;
 
-typedef struct {
-	char					name[128];
-	int32_t					codeSegmentSize;
-} RoutineInfo;
+typedef struct{
+	char name[128];
+	int32_t codeSegmentSize;
+}RoutineInfo;
 
-typedef struct {
-	char					name[128];
-	char					fileName[128];
-	int32_t					numStaticVars;
-	int32_t					totalSizeStaticVars;
-	VariableInfo			largestStaticVar;
-	int32_t					totalCodeSegmentSize;
-	int32_t					numRoutines;
-	RoutineInfo				routineInfo[128];
-} ModuleInfo;
+typedef struct{
+	char name[128];
+	char fileName[128];
+	int32_t numStaticVars;
+	int32_t totalSizeStaticVars;
+	VariableInfo largestStaticVar;
+	int32_t totalCodeSegmentSize;
+	int32_t numRoutines;
+	RoutineInfo routineInfo[128];
+}ModuleInfo;
 
-typedef struct {
-	PSTR					fileName;
-	SymTableNodePtr			moduleIdPtr;
-	int32_t					numSourceFiles;
-	PSTR*					sourceFiles;
-	int32_t					numLibrariesUsed;
-	ABLModulePtr*			librariesUsed;
-	int32_t					numStaticVars;
-	int32_t					numOrderCalls;
-	int32_t					numStateHandles;
-	StateHandleInfoPtr		stateHandles;
-	int32_t*					sizeStaticVars;
-	int32_t					totalSizeStaticVars;
-	int32_t					numInstances;
-} ModuleEntry;
+typedef struct{
+	PSTR fileName;
+	SymTableNodePtr moduleIdPtr;
+	int32_t numSourceFiles;
+	PSTR* sourceFiles;
+	int32_t numLibrariesUsed;
+	ABLModulePtr* librariesUsed;
+	int32_t numStaticVars;
+	int32_t numOrderCalls;
+	int32_t numStateHandles;
+	StateHandleInfoPtr stateHandles;
+	int32_t* sizeStaticVars;
+	int32_t totalSizeStaticVars;
+	int32_t numInstances;
+}ModuleEntry;
 
 typedef ModuleEntry* ModuleEntryPtr;
 
-class ABLModule {
+class ABLModule{
 
-	private:
+private:
 
-		int32_t					id;
-		char					name[MAX_ABLMODULE_NAME];
-		int32_t					handle;
-		StackItemPtr			staticData;
-		size_t*			orderCallFlags;
-		StackItem				returnVal;
-		bool					initCalled;
-		SymTableNodePtr			prevState;
-		SymTableNodePtr			state;
-		WatchManagerPtr			watchManager;
-		BreakPointManagerPtr	breakPointManager;
-		bool					trace;
-		bool					step;
-		bool					traceEntry;
-		bool					traceExit;
+	int32_t id;
+	char name[MAX_ABLMODULE_NAME];
+	int32_t handle;
+	StackItemPtr staticData;
+	size_t* orderCallFlags;
+	StackItem returnVal;
+	bool initCalled;
+	SymTableNodePtr prevState;
+	SymTableNodePtr state;
+	WatchManagerPtr watchManager;
+	BreakPointManagerPtr breakPointManager;
+	bool trace;
+	bool step;
+	bool traceEntry;
+	bool traceExit;
 
-		//static int32_t				numModules;
+	//static int32_t numModules;
 
-	public:
+public:
 
-		PVOID operator new (size_t mySize);
-		void operator delete (PVOID us);
-			
-		void init (void) {
-			id = -1;
-			name[0] = NULL;
-			handle = -1;
-			staticData = NULL;
-			returnVal.integer = 0;
-			initCalled = false;
-			prevState = NULL;
-			state = NULL;
-			watchManager = NULL;
-			breakPointManager = NULL;
-			trace = false;
-			step = false;
-			traceEntry = false;
-			traceExit = false;
-		}
+	PVOID operator new (size_t mySize);
+	void operator delete (PVOID us);
+
+	void init (void)
+	{
+		id = -1;
+		name[0] = NULL;
+		handle = -1;
+		staticData = NULL;
+		returnVal.integer = 0;
+		initCalled = false;
+		prevState = NULL;
+		state = NULL;
+		watchManager = NULL;
+		breakPointManager = NULL;
+		trace = false;
+		step = false;
+		traceEntry = false;
+		traceExit = false;
+	}
 
 
-		ABLModule (void) {
-			init();
-		}
+	ABLModule(void)
+	{
+		init(void);
+	}
 
-		int32_t init (int32_t moduleHandle);
-		
-		void write (ABLFile* moduleFile);
-		
-		void read (ABLFile* moduleFile);
+	int32_t init(int32_t moduleHandle);
 
-		int32_t getId (void) {
-			return(id);
-		}
+	void write(ABLFile* moduleFile);
 
-		int32_t getRealId (void);
+	void read(ABLFile* moduleFile);
 
-		int32_t getHandle (void) {
-			return(handle);
-		}
+	int32_t getId(void)
+	{
+		return(id);
+	}
 
-		StackItemPtr getStaticData (void) {
-			return(staticData);
-		}
+	int32_t getRealId(void);
 
-		void setInitCalled (bool called) {
-			initCalled = called;
-		}
+	int32_t getHandle(void)
+	{
+		return(handle);
+	}
 
-		bool getInitCalled (void) {
-			return(initCalled);
-		}
+	StackItemPtr getStaticData(void)
+	{
+		return(staticData);
+	}
 
-		PSTR getFileName (void);
+	void setInitCalled (bool called)
+	{
+		initCalled = called;
+	}
 
-		PSTR getName (void) {
-			return(name);
-		}
+	bool getInitCalled (void){
+		return(initCalled);
+	}
 
-		void setName (PSTR _name);
+	PSTR getFileName (void);
 
-		size_t* getOrderCallFlags (void) {
-			return(orderCallFlags);
-		}
+	PSTR getName (void){
+		return(name);
+	}
 
-		void setPrevState (SymTableNodePtr stateSym) {
-			prevState = stateSym;
-		}
+	void setName (PSTR _name);
 
-		SymTableNodePtr getPrevState (void) {
-			return(prevState);
-		}
+	size_t* getOrderCallFlags(void)
+	{
+		return(orderCallFlags);
+	}
 
-		int32_t getPrevStateHandle (void);
+	void setPrevState(SymTableNodePtr stateSym)
+	{
+		prevState = stateSym;
+	}
 
-		void setState (SymTableNodePtr stateSym) {
-			state = stateSym;
-		}
+	SymTableNodePtr getPrevState(void)
+	{
+		return(prevState);
+	}
 
-		SymTableNodePtr getState (void) {
-			return(state);
-		}
+	int32_t getPrevStateHandle(void);
 
-		int32_t getStateHandle (void);
+	void setState (SymTableNodePtr stateSym)
+	{
+		state = stateSym;
+	}
 
-		bool isLibrary (void);
+	SymTableNodePtr getState (void)
+	{
+		return(state);
+	}
 
-		void resetOrderCallFlags (void);
+	int32_t getStateHandle (void);
 
-		void setOrderCallFlag (uint8_t dword, uint8_t bit);
+	bool isLibrary (void);
 
-		void clearOrderCallFlag (uint8_t orderDWord, uint8_t orderBitMask);
+	void resetOrderCallFlags (void);
 
-		bool getOrderCallFlag (uint8_t dword, uint8_t bit) {
-			return((orderCallFlags[dword] & (1 << bit)) != 0);
-		}
+	void setOrderCallFlag (uint8_t dword, uint8_t bit);
 
-		WatchManagerPtr getWatchManager (void) {
-			return(watchManager);
-		}
+	void clearOrderCallFlag (uint8_t orderDWord, uint8_t orderBitMask);
 
-		BreakPointManagerPtr getBreakPointManager (void) {
-			return(breakPointManager);
-		}
+	bool getOrderCallFlag (uint8_t dword, uint8_t bit)
+	{
+		return((orderCallFlags[dword] & (1 << bit)) != 0);
+	}
 
-		void setTrace (bool _trace) {
-			trace = _trace;
-			traceEntry = _trace;
-			traceExit = _trace;
-		}
+	WatchManagerPtr getWatchManager (void)
+	{
+		return(watchManager);
+	}
 
-		bool getTrace (void) {
-			return(trace);
-		}
+	BreakPointManagerPtr getBreakPointManager (void)
+	{
+		return(breakPointManager);
+	}
 
-		void setStep (bool _step) {
-			step = _step;
-		}
+	void setTrace (bool _trace)
+	{
+		trace = _trace;
+		traceEntry = _trace;
+		traceExit = _trace;
+	}
 
-		bool getStep (void) {
-			return(step);
-		}
+	bool getTrace (void)
+	{
+		return(trace);
+	}
 
-		int32_t execute (ABLParamPtr paramList = NULL);
-		int32_t execute (ABLParamPtr moduleParamList, SymTableNodePtr functionIdPtr);
+	void setStep (bool _step)
+	{
+		step = _step;
+	}
 
-		SymTableNodePtr findSymbol (PSTR symbolName, SymTableNodePtr curFunction = NULL, bool searchLibraries = false);
+	bool getStep (void)
+	{
+		return(step);
+	}
 
-		SymTableNodePtr findFunction (PSTR functionName, bool searchLibraries = false);
+	int32_t execute (ABLParamPtr paramList = NULL);
+	int32_t execute (ABLParamPtr moduleParamList, SymTableNodePtr functionIdPtr);
 
-		SymTableNodePtr findState (PSTR stateName);
+	SymTableNodePtr findSymbol (PSTR symbolName, SymTableNodePtr curFunction = NULL, bool searchLibraries = false);
 
-		int32_t findStateHandle (PSTR stateName);
+	SymTableNodePtr findFunction (PSTR functionName, bool searchLibraries = false);
 
-		PSTR getSourceFile (int32_t fileNumber);
+	SymTableNodePtr findState (PSTR stateName);
 
-		PSTR getSourceDirectory (int32_t fileNumber, PSTR directory);
+	int32_t findStateHandle (PSTR stateName);
 
-		void getInfo (ModuleInfo* moduleInfo);
+	PSTR getSourceFile (int32_t fileNumber);
 
-		float getReal (void) {
-			return(returnVal.real);
-		}
-		
-		int32_t getInteger (void) {
-			return(returnVal.integer);
-		}
+	PSTR getSourceDirectory (int32_t fileNumber, PSTR directory);
 
-		int32_t setStaticInteger (PSTR name, int32_t value);
+	void getInfo (ModuleInfo* moduleInfo);
 
-		int32_t getStaticInteger (PSTR name);
+	float getReal (void)
+	{
+		return(returnVal.real);
+	}
 
-		int32_t setStaticReal (PSTR name, float value);
-		
-		float getStaticReal (PSTR name);
+	int32_t getInteger (void)
+	{
+		return(returnVal.integer);
+	}
 
-		int32_t setStaticIntegerArray (PSTR name, int32_t size, int32_t* values);
+	int32_t setStaticInteger (PSTR name, int32_t value);
 
-		int32_t getStaticIntegerArray (PSTR name, int32_t size, int32_t* values);
-		
-		int32_t setStaticRealArray (PSTR name, int32_t size, float* values);
+	int32_t getStaticInteger (PSTR name);
 
-		int32_t getStaticRealArray (PSTR name, int32_t size, float* values);
+	int32_t setStaticReal (PSTR name, float value);
 
-		void destroy (void);
+	float getStaticReal (PSTR name);
 
-		~ABLModule (void) {
+	int32_t setStaticIntegerArray (PSTR name, int32_t size, int32_t* values);
 
-			destroy();
-		}
+	int32_t getStaticIntegerArray (PSTR name, int32_t size, int32_t* values);
+
+	int32_t setStaticRealArray (PSTR name, int32_t size, float* values);
+
+	int32_t getStaticRealArray (PSTR name, int32_t size, float* values);
+
+	void destroy (void);
+
+	~ABLModule (void)
+	{
+		destroy(void);
+	}
 
 };
 

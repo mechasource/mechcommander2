@@ -82,14 +82,14 @@ class MapData : public HeapManager
 	//-----------------
 	public:
 
-		PVOIDoperator new (size_t mySize);
+		PVOID operator new (size_t mySize);
 		void operator delete (PVOID us);
 		
 		void init (void)
 		{
-			HeapManager::init();
+			HeapManager::init(void);
 
-			topLeftVertex.Zero();			
+			topLeftVertex.Zero(void);			
 
 			blocks = NULL;
 
@@ -106,20 +106,20 @@ class MapData : public HeapManager
 
 		MapData (void) : HeapManager()
 		{
-			init();
+			init(void);
 		}
 
 		void destroy (void);
 		
 		~MapData (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		int32_t init (PSTR fileName, int32_t numBlocks, int32_t blockSize);
 
-		void newInit (PacketFile* file, int32_t numVertices);
-		void newInit (int32_t numVertices);
+		void newInit (PacketFile* file, uint32_t numVertices);
+		void newInit (uint32_t numVertices);
 
 		int32_t update (void);
 		void makeLists (VertexPtr vertexList, int32_t &numVerts, TerrainQuadPtr quadList, int32_t &numTiles);
@@ -130,7 +130,7 @@ class MapData : public HeapManager
 		}
 
 		void calcLight (void);
-		void clearShadows();
+		void clearShadows(void);
 		
 		float terrainElevation (Stuff::Vector3D &position);
 		float terrainElevation ( int32_t tileR, int32_t tileC );
@@ -170,14 +170,14 @@ class MapData : public HeapManager
 
 		void markSeen (Stuff::Vector2DOf<float> &topLeftPosition, VertexPtr vertexList, Stuff::Vector3D &looker, Stuff::Vector3D &lookVector, float cone, float dist, byte who);
 
-		void unselectAll();
-		void unhighlightAll();
+		void unselectAll(void);
+		void unhighlightAll(void);
 		void highlightAllTransitionsOver2 (void);
 		void selectVertex( uint32_t tileRow, uint32_t tileCol, bool bSelect, bool bToggle );
 		bool selection(){ return hasSelection ? true : false; }
 		bool isVertexSelected( uint32_t tileRow, uint32_t tileCol );
 
-		void calcTransitions();
+		void calcTransitions(void);
 };
 
 //-----------------------------------------------------------------------------------------------

@@ -15,7 +15,7 @@
 #endif
 
 #ifndef TERRAIN_H
-#include "terrain.h"
+#include <terrain.h>
 #endif
 
 #ifndef CAMERA_H
@@ -107,7 +107,7 @@ void MapData::destroy (void)
 }
 
 //---------------------------------------------------------------------------
-void MapData::newInit (int32_t numVertices)
+void MapData::newInit (uint32_t numVertices)
 {
 	if (heap)
 		destroy();
@@ -143,7 +143,7 @@ void MapData::newInit (int32_t numVertices)
 }
 
 //---------------------------------------------------------------------------
-void MapData::newInit (PacketFile* newFile, int32_t numVertices)
+void MapData::newInit (PacketFile* newFile, uint32_t numVertices)
 {
 	newInit( numVertices );
 

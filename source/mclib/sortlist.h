@@ -39,7 +39,7 @@ public:
 	}
 
 	SortList(void) {
-		init();
+		init(void);
 	}
 
 	int32_t init(uint32_t numItems);
@@ -78,7 +78,7 @@ public:
 	void destroy(void);
 
 	~SortList(void) {
-		destroy();
+		destroy(void);
 	}
 };
 

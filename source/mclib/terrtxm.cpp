@@ -9,7 +9,7 @@
 //---------------------------------------------------------------------------
 // Include Files
 #ifndef TERRTXM_H
-#include "terrtxm.h"
+#include <terrtxm.h>
 #endif
 
 #ifndef MATHFUNC_H
@@ -33,7 +33,7 @@
 #endif
 
 #ifndef TERRAIN_H
-#include "terrain.h"
+#include <terrain.h>
 #endif
 
 #include "windows.h"

@@ -64,10 +64,10 @@ Type DummyType = {		// for erroneous type definitions
 
 StandardFunctionInfo		FunctionInfoTable[MAX_STANDARD_FUNCTIONS];
 //PVOID						FunctionCallbackTable[MAX_STANDARD_FUNCTIONS];
-void						(*FunctionCallbackTable[MAX_STANDARD_FUNCTIONS])(void);
+void						(*FunctionCallbackTable[MAX_STANDARD_FUNCTIONS])();
 int32_t						NumStandardFunctions = NUM_ABL_ROUTINES;
 
-void execStdRandom (void);
+void execStdRandom ();
 
 //***************************************************************************
 // MISC. (initially were macros)
@@ -618,7 +618,7 @@ SymTableNodePtr exitScope (void) {
 }
  
 //***************************************************************************
-void initStandardRoutines (void);
+void initStandardRoutines ();
 
 void initSymTable (void) {
 

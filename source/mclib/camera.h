@@ -16,7 +16,7 @@
 #endif
 
 #ifndef TERRAIN_H
-#include "terrain.h"
+#include <terrain.h>
 #endif
 
 #ifndef MATHFUNC_H
@@ -286,7 +286,7 @@ class Camera
 			screenResolution.x = 400.0;
 			screenResolution.y = 400.0;
 
-			position.Zero();
+			position.Zero(void);
 
 			ready = active = FALSE;
 
@@ -296,7 +296,7 @@ class Camera
 
 			cameraShiftZ = goalPositionZ = 0.0f;
 	
-			lightDirection.Zero();
+			lightDirection.Zero(void);
 			
 			newScaleFactor = 0.5;
 
@@ -318,8 +318,8 @@ class Camera
 			isNight = false;
 			forceShadowRecalc = false;
 			
-			goalPosition.Zero();
-			lookPosition.Zero();
+			goalPosition.Zero(void);
+			lookPosition.Zero(void);
 			goalPosTime = 0.0;
 			
 			goalRotation.x = goalRotation.y = goalRotation.z = 0.0;
@@ -328,8 +328,8 @@ class Camera
 			goalFOV = 0.0;
 			goalFOVTime = 0.0;
 			
-			velocity.Zero();
-			goalVelocity.Zero();
+			velocity.Zero(void);
+			goalVelocity.Zero(void);
 			goalVelTime = 0.0;
 			
 			lookTargetObject = -1;
@@ -357,7 +357,7 @@ class Camera
 
 		Camera (void)
 		{
-			init();
+			init(void);
 		}
 
 		int32_t init (FitIniFile *cameraFile);
@@ -366,7 +366,7 @@ class Camera
 		
 		~Camera (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		float getProjectionAngle (void)
@@ -435,7 +435,7 @@ class Camera
 		void changeResolution (Stuff::Vector3D newRes)
 		{
 			screenResolution = newRes;
-			calculateProjectionConstants();
+			calculateProjectionConstants(void);
 		}
 
 		void prepareBackground (void);
@@ -474,7 +474,7 @@ class Camera
 		uint32_t getLightColor (int32_t index)
 		{
 			if ((index >= 0) && (index < numLights) && worldLights[index])
-				return worldLights[index]->GetaRGB();
+				return worldLights[index]->GetaRGB(void);
 
 			return 0x00ffffff;
 		}
@@ -637,24 +637,24 @@ class Camera
 		
 		void allNormal (void)
 		{
-			tiltNormal();
-			ZoomNormal();
-			rotateNormal();
+			tiltNormal(void);
+			ZoomNormal(void);
+			rotateNormal(void);
 		}
 		
 		void allDefault (void)
 		{
-			ZoomDefault();
+			ZoomDefault(void);
 		}
 		
 		void allMaxIn (void)
 		{
-			ZoomMax();
+			ZoomMax(void);
 		}
 
 		virtual void allTight (void)
 		{
-			ZoomTight();
+			ZoomTight(void);
 		}
 				
 		void zoomValue (float value);
@@ -699,11 +699,11 @@ class Camera
 
 		bool save( FitIniFile* fileName );
 
-		float getFarClipDistance();
+		float getFarClipDistance(void);
 		void setFarClipDistance(float farClipDistance);
-		float getNearClipDistance();
+		float getNearClipDistance(void);
 		void setNearClipDistance(float nearClipDistance);
-		float getMaximumCameraAltitude();
+		float getMaximumCameraAltitude(void);
 		void setMaximumCameraAltitude(float maxAltitude);
 
 		//--------------------------------------------

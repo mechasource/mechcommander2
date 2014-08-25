@@ -169,7 +169,7 @@ class gos_VERTEXManager : public HeapManager
 
 		void init (void)
 		{
-			HeapManager::init();
+			HeapManager::init(void);
 
 			totalVertices = 0;
 			currentVertex = 0;
@@ -177,19 +177,19 @@ class gos_VERTEXManager : public HeapManager
 
 		gos_VERTEXManager (void) : HeapManager()
 		{
-			init();
+			init(void);
 		}
 
 		void destroy (void)
 		{
-			HeapManager::destroy();
-			reset();
+			HeapManager::destroy(void);
+			reset(void);
 			totalVertices = 0;
 		}
 		
 		~gos_VERTEXManager (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		void init (int32_t maxVertices)
@@ -197,13 +197,13 @@ class gos_VERTEXManager : public HeapManager
 			totalVertices = maxVertices;
 			uint32_t heapSize = totalVertices * sizeof(gos_VERTEX);
 			createHeap(heapSize);
-			commitHeap();
-			reset();
+			commitHeap(void);
+			reset(void);
 		}
 		
-		gos_VERTEX *getVertexBlock(int32_t numVertices)
+		gos_VERTEX *getVertexBlock(uint32_t numVertices)
 		{
-			gos_VERTEX *start = (gos_VERTEX *)getHeapPtr();
+			gos_VERTEX *start = (gos_VERTEX *)getHeapPtr(void);
 			start = &(start[currentVertex]);
 			currentVertex += numVertices;
 			gosASSERT(currentVertex < totalVertices);
@@ -274,7 +274,7 @@ class MC_TextureManager
 
 		MC_TextureManager (void)
 		{
-			init();
+			init(void);
 
 			MC_TextureManager::iBufferRefCount++;
 		}
@@ -334,7 +334,7 @@ class MC_TextureManager
 		uint32_t get_gosTextureHandle (uint32_t nodeId)
 		{
 			if (nodeId != 0xffffffff)
-				return masterTextureNodes[nodeId].get_gosTextureHandle();
+				return masterTextureNodes[nodeId].get_gosTextureHandle(void);
 			else
 				return nodeId;
 		}
@@ -714,7 +714,7 @@ class MC_TextureManager
 			
 			nextAvailableVertexNode = 0;
 
-			gvManager->reset();
+			gvManager->reset(void);
 		}
 		
 		//Sends down the triangle lists

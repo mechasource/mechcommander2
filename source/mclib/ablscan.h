@@ -1,32 +1,29 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 //***************************************************************************
 //
-//								SCANNER.H
+// SCANNER.H
 //
 //***************************************************************************
 
+#pragma once
+
 #ifndef ABLSCAN_H
-#define	ABLSCAN_H
+#define ABLSCAN_H
 
-#ifndef ABLGEN_H
-#include "ablgen.h"
-#endif
-
-#ifndef ABLERR_H
-#include "ablerr.h"
-#endif
+//#include "ablgen.h"
+//#include "ablerr.h"
 
 //***************************************************************************
 
-//#define	MIN_INTEGER				-2147483648
-//#define	MAX_INTEGER				2147483647
+//#define MIN_INTEGER -2147483648
+//#define MAX_INTEGER 2147483647
 
-typedef enum __ablscan_const {
-	TAB_SIZE					= 4,
-	MAX_DIGIT_COUNT				= 20,
-	MAX_EXPONENT				= 20,
+typedef enum __ablscan_const{
+	TAB_SIZE = 4,
+	MAX_DIGIT_COUNT = 20,
+	MAX_EXPONENT = 20,
 };
 
 //***************************************************************************
@@ -34,7 +31,7 @@ typedef enum __ablscan_const {
 //------------
 // TOKEN CODES
 
-typedef enum TokenCodeType {
+typedef enum TokenCodeType{
 	TKN_NONE,
 	TKN_IDENTIFIER,
 	TKN_NUMBER,
@@ -114,7 +111,7 @@ typedef enum TokenCodeType {
 	NUM_TOKENS
 } TokenCodeType;
 
-typedef enum CharCodeType {
+typedef enum CharCodeType{
 	CHR_LETTER,
 	CHR_DIGIT,
 	CHR_DQUOTE,
@@ -122,103 +119,103 @@ typedef enum CharCodeType {
 	CHR_EOF
 } CharCodeType;
 
-typedef struct ReservedWord {
-	PSTR			string;
-	TokenCodeType	tokenCode;
-} ReservedWord;
+typedef struct ReservedWord{
+	PSTR string;
+	TokenCodeType tokenCode;
+}ReservedWord;
 
 //***************************************************************************
 
 //------------------
 // LITERAL structure
 
-typedef enum LiteralType {
+typedef enum LiteralType{
 	LIT_INTEGER,
 	LIT_REAL,
 	LIT_STRING
-} LiteralType;
+}LiteralType;
 
-typedef struct Literal {
-	LiteralType		type;
-	struct {
-		int32_t		integer;
-		float		real;
-		char		string[MAXLEN_TOKENSTRING];
-	} value;
-} Literal;
+typedef struct Literal{
+	LiteralType type;
+	struct{
+		int32_t integer;
+		float real;
+		char string[MAXLEN_TOKENSTRING];
+	}value;
+}Literal;
 
 //---------------------------------------------------------------------------
 
-typedef struct CaseItem {
-	int32_t					labelValue;
-	PSTR				branchLocation;
-	struct CaseItem*	next;
-} CaseItem;
+typedef struct CaseItem{
+	int32_t labelValue;
+	PSTR branchLocation;
+	struct CaseItem* next;
+}CaseItem;
 typedef CaseItem* CaseItemPtr;
 
 //***************************************************************************
 
-class ABLFile {
+class ABLFile{
 
-    public:
+public:
 
-		PSTR		fileName;
-		PVOID		file;
+	PSTR fileName;
+	PVOID file;
 
-		static int32_t (__stdcall *createCB)(PVOID* file, PSTR fName);
-		static int32_t (__stdcall *openCB)(PVOID* file, PSTR fName);
-		static int32_t (__stdcall *closeCB)(PVOID* file);
-		static bool (__stdcall *eofCB)(PVOID file);
-		static int32_t (__stdcall *readCB)(PVOID file, puint8_t buffer, int32_t length);
-		static int32_t (__stdcall *readLongCB)(PVOID file);
-		static int32_t (__stdcall *readStringCB)(PVOID file, puint8_t buffer);
-		static int32_t (__stdcall *readLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength);
-		static int32_t (__stdcall *writeCB)(PVOID file, puint8_t buffer, int32_t length);
-		static int32_t (__stdcall *writeByteCB)(PVOID file, uint8_t byte);
-		static int32_t (__stdcall *writeLongCB)(PVOID file, int32_t value);
-		static int32_t (__stdcall *writeStringCB)(PVOID file, PSTR buffer);
+	static int32_t (__stdcall *createCB)(PVOID* file, PSTR fName);
+	static int32_t (__stdcall *openCB)(PVOID* file, PSTR fName);
+	static int32_t (__stdcall *closeCB)(PVOID* file);
+	static bool (__stdcall *eofCB)(PVOID file);
+	static int32_t (__stdcall *readCB)(PVOID file, puint8_t buffer, int32_t length);
+	static int32_t (__stdcall *readLongCB)(PVOID file);
+	static int32_t (__stdcall *readStringCB)(PVOID file, puint8_t buffer);
+	static int32_t (__stdcall *readLineExCB)(PVOID file, puint8_t buffer, int32_t maxLength);
+	static int32_t (__stdcall *writeCB)(PVOID file, puint8_t buffer, int32_t length);
+	static int32_t (__stdcall *writeByteCB)(PVOID file, uint8_t byte);
+	static int32_t (__stdcall *writeLongCB)(PVOID file, int32_t value);
+	static int32_t (__stdcall *writeStringCB)(PVOID file, PSTR buffer);
 
-	public:
+public:
 
-		PVOID operator new (size_t ourSize);
-		void operator delete (PVOID us);
+	PVOID operator new (size_t ourSize);
+	void operator delete (PVOID us);
 
-		void init(void);
-	
-		ABLFile(void)
-		{
-			init();
-		}
+	void init(void);
 
-		void destroy (void);
+	ABLFile(void)
+	{
+		init(void);
+	}
 
-		~ABLFile (void)
-		{
-			destroy();
-		}
-		
-		int32_t set (PVOID fPtr)
-		{
-			file = fPtr;
-		}
+	void destroy (void);
 
-		PVOID get (void)
-		{
-			return(file);
-		}
+	~ABLFile (void)
+	{
+		destroy(void);
+	}
 
-		int32_t create (PSTR fileName);
-		int32_t open (PSTR fileName);
-		int32_t close (void);
-		bool eof (void);
-		int32_t read (puint8_t buffer, int32_t length);
-		int32_t readLong (void);
-		int32_t readString (puint8_t buffer);
-		int32_t readLineEx (puint8_t buffer, int32_t maxLength);
-		int32_t write (puint8_t buffer, int32_t length);
-		int32_t writeByte (uint8_t val);
-		int32_t writeLong (int32_t val);
-		int32_t writeString (PSTR buffer);
+	int32_t set (PVOID fPtr)
+	{
+		file = fPtr;
+	}
+
+	PVOID get (void)
+	{
+		return(file);
+	}
+
+	int32_t create (PSTR fileName);
+	int32_t open (PSTR fileName);
+	int32_t close (void);
+	bool eof (void);
+	int32_t read (puint8_t buffer, int32_t length);
+	int32_t readLong (void);
+	int32_t readString (puint8_t buffer);
+	int32_t readLineEx (puint8_t buffer, int32_t maxLength);
+	int32_t write (puint8_t buffer, int32_t length);
+	int32_t writeByte (uint8_t val);
+	int32_t writeLong (int32_t val);
+	int32_t writeString (PSTR buffer);
 };
 
 //***************************************************************************
@@ -251,23 +248,23 @@ void __stdcall printPageHeader(void);
 //----------
 // VARIABLES
 
-extern char		wordString[MAXLEN_TOKENSTRING];
-extern PVOID	(__stdcall *ABLSystemMallocCallback) (size_t memSize);
-extern PVOID	(__stdcall *ABLStackMallocCallback) (size_t memSize);
-extern PVOID	(__stdcall *ABLCodeMallocCallback) (size_t memSize);
-extern PVOID	(__stdcall *ABLSymbolMallocCallback) (size_t memSize);
-extern void		(__stdcall *ABLSystemFreeCallback) (PVOID memBlock);
-extern void		(__stdcall *ABLStackFreeCallback) (PVOID memBlock);
-extern void		(__stdcall *ABLCodeFreeCallback) (PVOID memBlock);
-extern void		(__stdcall *ABLSymbolFreeCallback) (PVOID memBlock);
-extern void		(__stdcall *ABLDebugPrintCallback) (PSTR s);
-extern int32_t		(__stdcall *ABLRandomCallback) (int32_t range);
-extern void		(__stdcall *ABLSeedRandomCallback) (size_t range);
-extern size_t	(__stdcall *ABLGetTimeCallback) (void);
-extern void		(__stdcall *ABLFatalCallback) (int32_t code, PSTR s);
+extern char wordString[MAXLEN_TOKENSTRING];
+extern PVOID (__stdcall *ABLSystemMallocCallback) (size_t memSize);
+extern PVOID (__stdcall *ABLStackMallocCallback) (size_t memSize);
+extern PVOID (__stdcall *ABLCodeMallocCallback) (size_t memSize);
+extern PVOID (__stdcall *ABLSymbolMallocCallback) (size_t memSize);
+extern void (__stdcall *ABLSystemFreeCallback) (PVOID memBlock);
+extern void (__stdcall *ABLStackFreeCallback) (PVOID memBlock);
+extern void (__stdcall *ABLCodeFreeCallback) (PVOID memBlock);
+extern void (__stdcall *ABLSymbolFreeCallback) (PVOID memBlock);
+extern void (__stdcall *ABLDebugPrintCallback) (PSTR s);
+extern int32_t (__stdcall *ABLRandomCallback) (int32_t range);
+extern void (__stdcall *ABLSeedRandomCallback) (size_t range);
+extern size_t (__stdcall *ABLGetTimeCallback) (void);
+extern void (__stdcall *ABLFatalCallback) (int32_t code, PSTR s);
 
 //***************************************************************************
-	
+
 #endif
 
 

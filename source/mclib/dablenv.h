@@ -6,6 +6,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//***
 
+#pragma once
+
 #ifndef DABLENV_H
 #define DABLENV_H
 

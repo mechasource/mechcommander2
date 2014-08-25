@@ -21,7 +21,7 @@
 #endif
 
 #ifndef OBJECTAPPEARANCE_H
-#include "objectappearance.h"
+#include <objectappearance.h>
 #endif
 
 #ifndef MSL_H
@@ -171,14 +171,14 @@ class Mech3DAppearanceType: public AppearanceType
 
 		Mech3DAppearanceType (void) 
 		{
-			init();
+			init(void);
 		}
 
 		void destroy (void);
 		
 		~Mech3DAppearanceType (void)
 		{
-			destroy();
+			destroy(void);
 		}
 		
 		virtual void init (PSTR fileName);
@@ -209,7 +209,7 @@ class Mech3DAppearanceType: public AppearanceType
 		float getFrameRate (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MaxGestures) && (mechAnim[animationNum]))
-				return mechAnim[animationNum]->GetFrameRate();
+				return mechAnim[animationNum]->GetFrameRate(void);
 
 			return 0.0f;
 		}
@@ -217,7 +217,7 @@ class Mech3DAppearanceType: public AppearanceType
 		int32_t getNumFrames (int32_t animationNum)
 		{
 			if ((animationNum >= 0) && (animationNum < MaxGestures) && (mechAnim[animationNum]))
-				return mechAnim[animationNum]->GetNumFrames();
+				return mechAnim[animationNum]->GetNumFrames(void);
 
 			return 0.0f;
 		}
@@ -448,12 +448,12 @@ class Mech3DAppearance: public ObjectAppearance
 		
 		Mech3DAppearance (void)
 		{
-			init();
+			init(void);
 		}
 
 		~Mech3DAppearance (void)
 		{
-			destroy();
+			destroy(void);
 		}
 
 		virtual void destroy (void);
@@ -539,7 +539,7 @@ class Mech3DAppearance: public ObjectAppearance
 			// These two lines force the select box to match the helicopter's position in the sky
 			currentGestureId = 2;
 			inView = true;
-			update();
+			update(void);
 
 			currentGestureId = gestureId;
 			oldStateGoal = 0;				//This is ONLY valid for park!!!!
@@ -738,7 +738,7 @@ class Mech3DAppearance: public ObjectAppearance
 		
 		virtual Stuff::Point3D getRootNodeCenter (void)
 		{
-			Stuff::Point3D result = mechShape->GetRootNodeCenter();
+			Stuff::Point3D result = mechShape->GetRootNodeCenter(void);
 			return result;
 		}
 		

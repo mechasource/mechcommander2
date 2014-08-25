@@ -50,7 +50,7 @@ class GameDebugWindow {
 		}
 		
 		GameDebugWindow (void) {
-			init();
+			init(void);
 		}
 
 		void setPos (int32_t x, int32_t y) {
@@ -70,13 +70,13 @@ class GameDebugWindow {
 
 		void toggle (void) {
 			if (display)
-				close();
+				close(void);
 			else
-				open();
+				open(void);
 		}
 
 		~GameDebugWindow (void) {
-			destroy();
+			destroy(void);
 		}
 		
 		virtual void destroy (void) 

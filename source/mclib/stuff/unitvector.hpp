@@ -105,7 +105,7 @@ namespace Stuff {
 		//
 		void TestInstance(void) const;
 		static bool
-			TestClass();
+			TestClass(void);
 
 	private:
 		static const UnitVector3D identity;

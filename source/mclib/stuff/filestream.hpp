@@ -1,8 +1,8 @@
 //===========================================================================//
-// File:	filestrm.hpp                                                     //
-// Contents: Implementation Details of resource management                   //
+// File: filestrm.hpp //
+// Contents: Implementation Details of resource management //
 //---------------------------------------------------------------------------//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #pragma once
@@ -16,16 +16,16 @@
 #include <stuff/sortedchain.hpp>
 
 #ifndef _GAMEOS_HPP_
-typedef struct	gosFileStream*	HGOSFILE;
+typedef struct gosFileStream* HGOSFILE;
 #endif
 
-namespace Stuff {
+namespace Stuff{
 
 	class FileStreamManager;
 	class FileStream;
 
 	//##########################################################################
-	//##########################    Directory    ###############################
+	//########################## Directory ###############################
 	//##########################################################################
 
 	class Directory
@@ -34,48 +34,32 @@ namespace Stuff {
 #endif
 	{
 	public:
-		Directory(
-			PSTR find_files,
-			bool find_directories=false
-			);
-		~Directory();
+		Directory(PSTR find_files, bool find_directories=false);
+		~Directory(void);
 
 		void TestInstance(void) const {}
 
-		PSTR
-			GetCurrentFileName();
-		void
-			AdvanceCurrentFile();
-		PSTR
-			GetCurrentFolderName();
-		void
-			AdvanceCurrentFolder();
+		PSTR GetCurrentFileName(void);
+		void AdvanceCurrentFile(void);
+		PSTR GetCurrentFolderName(void);
+		void AdvanceCurrentFolder(void);
 
 	public:
-		int32_t 
-			fileOk;
+		int32_t fileOk;
 
-		Stuff::MString
-			currentDirectoryString;
+		Stuff::MString currentDirectoryString;
 
-		typedef Stuff::PlugOf<Stuff::MString>
-			DirectoryEntry;
-		typedef Stuff::PlugOf<Stuff::MString>
-			DirectoryFolder;
+		typedef Stuff::PlugOf<Stuff::MString> DirectoryEntry;
+		typedef Stuff::PlugOf<Stuff::MString> DirectoryFolder;
 
-
-		Stuff::SortedChainOf<DirectoryFolder*, Stuff::MString>
-			folderEntries;
-		Stuff::SortedChainOf<DirectoryEntry*, Stuff::MString>
-			fileEntries;
-		Stuff::SortedChainIteratorOf<DirectoryFolder*, Stuff::MString>
-			*folderWalker;
-		Stuff::SortedChainIteratorOf<DirectoryEntry*, Stuff::MString>
-			*fileWalker;
+		Stuff::SortedChainOf<DirectoryFolder*, Stuff::MString> folderEntries;
+		Stuff::SortedChainOf<DirectoryEntry*, Stuff::MString> fileEntries;
+		Stuff::SortedChainIteratorOf<DirectoryFolder*, Stuff::MString>* folderWalker;
+		Stuff::SortedChainIteratorOf<DirectoryEntry*, Stuff::MString>* fileWalker;
 	};
 
 	//##########################################################################
-	//########################    FileStream    ################################
+	//######################## FileStream ################################
 	//##########################################################################
 
 	class FileStream:
@@ -92,95 +76,65 @@ namespace Stuff {
 		static PCSTR WhiteSpace;
 
 		void TestInstance(void) const;
-		static bool
-			TestClass();
+		static bool TestClass(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Constructors
 		//
 	public:
-		enum WriteStatus {
-			ReadOnly,
-			WriteOnly
+		enum WriteStatus{
+			ReadOnly, WriteOnly
 		};
 
-		FileStream();
-		explicit FileStream(
-			PCSTR file_name,
-			WriteStatus writable = ReadOnly
-			);
-		~FileStream();
+		FileStream(void);
+		explicit FileStream(PCSTR file_name, WriteStatus writable = ReadOnly);
+		~FileStream(void);
 
-		void
-			Open(
-			PCSTR file_name = NULL,
-			WriteStatus writable = ReadOnly
-			);
-		void
-			Close();
+		void Open(PCSTR file_name = NULL, WriteStatus writable = ReadOnly);
+		void Close(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Status functions
 		//
 	public:
-		void
-			SetPointer(PVOID)
+		void SetPointer(PVOID)
 		{
 #ifdef _GAMEOS_HPP_
 			STOP(("No implementation possible for FileStream::SetPointer(PVOID)"));
 #endif
 		}
-		void
-			SetPointer(size_t index);
+		void SetPointer(size_t index);
 
-		MemoryStream&
-			AdvancePointer(size_t count);
-
-		MemoryStream&
-			RewindPointer(size_t count);
-
-		MemoryStream&
-			ReadBytes(
-			PVOID ptr,
-			size_t number_of_bytes
-			);
-		MemoryStream&
-			WriteBytes(
-			PCVOID ptr,
-			size_t number_of_bytes
-			);
+		MemoryStream& AdvancePointer(size_t count);
+		MemoryStream& RewindPointer(size_t count);
+		MemoryStream& ReadBytes(PVOID ptr, size_t number_of_bytes);
+		MemoryStream& WriteBytes(PCVOID ptr, size_t number_of_bytes);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// File functions
 		//
 	public:
-		virtual bool
-			IsFileOpened();
-		PCSTR
-			GetFileName()
-		{Check_Object(this); return fileName;}
+		virtual bool IsFileOpened(void);
+		PCSTR GetFileName(void)
+		{
+			Check_Object(this); return fileName;
+		}
 
-		enum SeekType {
-			FromBeginning,
-			FromEnd
+		enum SeekType{
+			FromBeginning, FromEnd
 		};
 
-		static char
-			RedirectedName[256];
-		static bool
-			IsRedirected;
+		static char RedirectedName[256];
+		static bool IsRedirected;
 
-		static void
-			IgnoreReadOnly(bool flag)
-		{IgnoreReadOnlyFlag = flag;}
-
+		static void IgnoreReadOnly(bool flag) {IgnoreReadOnlyFlag = flag;}
 
 	protected:
-		WriteStatus	writeEnabled;
-		PSTR		fileName;
-		HGOSFILE	fileHandle;
-		bool		isOpen;
-		static bool	IgnoreReadOnlyFlag;
+		WriteStatus writeEnabled;
+		PSTR fileName;
+		HGOSFILE fileHandle;
+		bool isOpen;
+		static bool IgnoreReadOnlyFlag;
 	};
 
 	MString* __stdcall StripExtension(MString *file_name);

@@ -42,7 +42,7 @@ namespace Stuff {
 		//
 		AffineMatrix4D(void) {}
 		AffineMatrix4D& BuildIdentity(void);
-		explicit AffineMatrix4D(int32_t)						{ BuildIdentity(); }
+		explicit AffineMatrix4D(int32_t)					{ BuildIdentity(); }
 		AffineMatrix4D(const AffineMatrix4D& m)				{*this = m;}
 		explicit AffineMatrix4D(const Origin3D& p)			{*this = p;}
 		explicit AffineMatrix4D(const Matrix4D& m)			{*this = m;}
@@ -595,9 +595,9 @@ namespace Stuff {
 		// Miscellaneous Functions
 		//
 		float
-			Determinant() const;
+			Determinant(void) const;
 		AffineMatrix4D&
-			Solve();
+			Solve(void);
 
 		//
 		// Support functions
@@ -612,7 +612,7 @@ namespace Stuff {
 
 		void TestInstance(void) const {}
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 	inline Point3D&

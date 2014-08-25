@@ -40,7 +40,7 @@ public:
 	uintptr_t	m_nameOffsets[e_DataBlockSize];	// Offsets to DatabaseRecords ( sorted by HASH )
 
 	void
-		TestInstance() const
+		TestInstance(void) const
 			{Verify(m_tag == e_Tag && m_version <= e_Version);}
 
 	static int32_t
@@ -539,7 +539,7 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	RecordHandle::TestInstance() const
+	RecordHandle::TestInstance(void) const
 {
 }
 
@@ -952,6 +952,6 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	DatabaseHandle::TestInstance() const
+	DatabaseHandle::TestInstance(void) const
 {
 }

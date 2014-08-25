@@ -29,7 +29,7 @@ namespace Stuff {
 			Table *table,
 			Plug *plug
 			);
-		~TableEntry();
+		~TableEntry(void);
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TableEntryOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,7 +45,7 @@ namespace Stuff {
 			Plug *plug,
 			const V &value
 			);
-		~TableEntryOf();
+		~TableEntryOf(void);
 
 		PVOID
 			operator new(size_t);
@@ -102,7 +102,7 @@ namespace Stuff {
 		}
 		Verify(allocationCount < INT_MAX);
 		Check_Object(allocatedMemory);
-		return allocatedMemory->New();
+		return allocatedMemory->New(void);
 	}
 
 	template <class V> void
@@ -147,14 +147,13 @@ namespace Stuff {
 			Node *node,
 			bool has_unique_entries
 			);
-		~Table();
+		~Table(void);
 
-		void
-			TestInstance();
+		void TestInstance(void);
 		static bool
-			TestClass();
+			TestClass(void);
 		static bool
-			ProfileClass();
+			ProfileClass(void);
 
 		//
 		//-----------------------------------------------------------------------
@@ -162,7 +161,7 @@ namespace Stuff {
 		//-----------------------------------------------------------------------
 		//
 		bool
-			IsEmpty();
+			IsEmpty(void);
 
 	protected:
 		//
@@ -215,7 +214,7 @@ namespace Stuff {
 		void
 			AddTableEntry(TableEntry *entry);
 		void
-			SortTableEntries();
+			SortTableEntries(void);
 		IteratorPosition
 			SearchForValue(PCVOID value);
 #if 0
@@ -255,7 +254,7 @@ namespace Stuff {
 			Node *node,
 			bool has_unique_entries
 			);
-		~TableOf();
+		~TableOf(void);
 
 		//
 		//--------------------------------------------------------------------
@@ -338,8 +337,8 @@ namespace Stuff {
 		TableEntry *entry2
 		)
 	{
-		V *ptr1 = Cast_Object(TableEntryOf<V>*, entry1)->GetValuePointer();
-		V *ptr2 = Cast_Object(TableEntryOf<V>*, entry2)->GetValuePointer();
+		V *ptr1 = Cast_Object(TableEntryOf<V>*, entry1)->GetValuePointer(void);
+		V *ptr2 = Cast_Object(TableEntryOf<V>*, entry2)->GetValuePointer(void);
 
 		Check_Pointer(ptr1);
 		Check_Pointer(ptr2);
@@ -358,7 +357,7 @@ namespace Stuff {
 	{
 		Check_Pointer(value);
 
-		V *ptr = Cast_Object(TableEntryOf<V>*, link)->GetValuePointer();
+		V *ptr = Cast_Object(TableEntryOf<V>*, link)->GetValuePointer(void);
 		Check_Pointer(ptr);
 
 		if (*Cast_Pointer(const V*, value) == *ptr)
@@ -388,19 +387,19 @@ namespace Stuff {
 		//
 		explicit TableIterator(Table *table);
 		~TableIterator(void);
-		void		TestInstance();
+		void		TestInstance(void);
 
 		//
 		//--------------------------------------------------------------------
 		// Iterator methods (see Iterator for full listing)
 		//--------------------------------------------------------------------
 		//
-		void			First();
-		void			Last();
-		void			Next();
-		void			Previous();
-		CollectionSize	GetSize();
-		void			Remove();
+		void			First(void);
+		void			Last(void);
+		void			Next(void);
+		void			Previous(void);
+		CollectionSize	GetSize(void);
+		void			Remove(void);
 
 	protected:
 		//
@@ -410,9 +409,9 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		PVOID	ReadAndNextImplementation();
-		PVOID	ReadAndPreviousImplementation();
-		PVOID	GetCurrentImplementation();
+		PVOID	ReadAndNextImplementation(void);
+		PVOID	ReadAndPreviousImplementation(void);
+		PVOID	GetCurrentImplementation(void);
 		PVOID	GetNthImplementation(CollectionSize index);
 		Plug*	FindImplementation(PCVOID value);
 
@@ -486,8 +485,8 @@ namespace Stuff {
 		//
 		explicit TableIteratorOf(TableOf<T, V> *table);
 		Iterator*
-			MakeClone();
-		~TableIteratorOf();
+			MakeClone(void);
+		~TableIteratorOf(void);
 
 		//
 		//--------------------------------------------------------------------
@@ -496,17 +495,17 @@ namespace Stuff {
 		//
 		T ReadAndNext()
 		{
-			return (T)ReadAndNextImplementation();
+			return (T)ReadAndNextImplementation(void);
 		}
 
 		T ReadAndPrevious()
 		{
-			return (T)ReadAndPreviousImplementation();
+			return (T)ReadAndPreviousImplementation(void);
 		}
 
 		T GetCurrent()
 		{
-			return (T)GetCurrentImplementation();
+			return (T)GetCurrentImplementation(void);
 		}
 
 		T GetNth(CollectionSize index)
@@ -521,7 +520,7 @@ namespace Stuff {
 
 		V GetValue()
 		{
-			return Cast_Object(TableEntryOf<V>*, GetCurrentEntry())->GetValue();
+			return Cast_Object(TableEntryOf<V>*, GetCurrentEntry())->GetValue(void);
 		}
 	};
 

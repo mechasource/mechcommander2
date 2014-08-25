@@ -84,7 +84,7 @@ namespace Stuff {
 			Contains(const Vector3D &point);
 		void TestInstance(void) const;
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 }

@@ -87,7 +87,7 @@ namespace Stuff {
 		}
 
 		friend bool Small_Enough(const Vector4D &v,float e=SMALL);
-		bool operator!() const {return Small_Enough(*this);}
+		bool operator!(void) const {return Small_Enough(*this);}
 
 		//
 		// "Close-enough" comparison operators
@@ -488,14 +488,14 @@ namespace Stuff {
 		// Support functions
 		//
 		float
-			GetLengthSquared() const
+			GetLengthSquared(void) const
 		{return operator*(*this);}
 		float
-			GetLength() const
+			GetLength(void) const
 		{return Sqrt(GetLengthSquared());}
 
 		float
-			GetApproximateLength() const
+			GetApproximateLength(void) const
 		{return SqrtApproximate(GetLengthSquared());}
 
 		Vector4D&
@@ -528,8 +528,8 @@ namespace Stuff {
 #if !defined(Spew)
 		friend void ::Spew(PCSTR group, const Vector4D& vector);
 #endif
-		void TestInstance() const {}
-		static bool TestClass();
+		void TestInstance(void) const {}
+		static bool TestClass(void);
 	};
 }
 #endif

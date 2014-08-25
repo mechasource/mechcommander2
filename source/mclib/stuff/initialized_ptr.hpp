@@ -22,17 +22,17 @@ namespace Stuff
 	class Initialized_Ptr
 	{
 	  public:
-		operator T*() const
+		operator T*(void) const
 		{
 			return (m_ptr);
 		}
 
-		T& operator*() const
+		T& operator*(void) const
 		{
 			return (*m_ptr);
 		}
 
-		T* operator->() const
+		T* operator->(void) const
 		{
 			return (m_ptr);
 		}

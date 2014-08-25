@@ -1666,7 +1666,7 @@ UnitQuaternion&
 //#############################################################################
 //
 void
-	UnitQuaternion::TestInstance() const
+	UnitQuaternion::TestInstance(void) const
 {
 
 	Scalar diff = x*x + y*y + z*z + w*w - 1.0f;

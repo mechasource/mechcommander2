@@ -220,13 +220,13 @@ namespace Stuff {
 		//
 		// Support functions
 		//
-		LinearMatrix4D& Normalize();
+		LinearMatrix4D& Normalize(void);
 
-		void TestInstance() const;
-		static bool TestClass();
+		void TestInstance(void) const;
+		static bool TestClass(void);
 
 	private:
-		LinearMatrix4D& Solve();
+		LinearMatrix4D& Solve(void);
 	};
 
 	inline UnitQuaternion& UnitQuaternion::operator*=(const LinearMatrix4D &m)

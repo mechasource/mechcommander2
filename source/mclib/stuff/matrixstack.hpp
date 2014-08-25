@@ -63,7 +63,7 @@ namespace Stuff {
 		LinearMatrix4D&
 			Push(const LinearMatrix4D& matrix);
 
-		operator LinearMatrix4D&()
+		operator LinearMatrix4D&(void)
 		{Check_Object(this); return *Peek();}
 	};
 
@@ -91,7 +91,7 @@ namespace Stuff {
 		Matrix4D&
 			Push(const AffineMatrix4D& matrix);
 
-		operator Matrix4D&()
+		operator Matrix4D&(void)
 		{Check_Object(this); return *Peek();}
 	};
 

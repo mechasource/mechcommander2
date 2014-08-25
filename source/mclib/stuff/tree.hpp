@@ -29,9 +29,8 @@ namespace Stuff {
 		friend class TreeIterator;
 
 	public:
-		~TreeNode();
-		void
-			TestInstance();
+		~TreeNode(void);
+		void TestInstance(void);
 
 	protected:
 		TreeNode(
@@ -65,7 +64,7 @@ namespace Stuff {
 			Plug *plug,
 			const V &value
 			);
-		~TreeNodeOf();
+		~TreeNodeOf(void);
 
 		PVOID
 			operator new(size_t);
@@ -172,14 +171,13 @@ namespace Stuff {
 			Node *node,
 			bool has_unique_entries
 			);
-		~Tree();
+		~Tree(void);
 
-		void
-			TestInstance();
+		void TestInstance(void);
 		static void
-			TestClass();
+			TestClass(void);
 		static void
-			ProfileClass();
+			ProfileClass(void);
 
 		//
 		//-----------------------------------------------------------------------
@@ -187,7 +185,7 @@ namespace Stuff {
 		//-----------------------------------------------------------------------
 		//
 		bool
-			IsEmpty();
+			IsEmpty(void);
 
 	protected:
 		//
@@ -263,7 +261,7 @@ namespace Stuff {
 			Node *node,
 			bool has_unique_entries
 			);
-		~TreeOf();
+		~TreeOf(void);
 
 		//
 		//--------------------------------------------------------------------
@@ -399,25 +397,19 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		explicit TreeIterator(Tree *tree);
-		Iterator*
-			MakeClone();
-		~TreeIterator();
-		void
-			TestInstance();
+		Iterator* MakeClone(void);
+		~TreeIterator(void);
+		void TestInstance(void);
 
 		//
 		//--------------------------------------------------------------------
 		// Iterator methods (see Iterator for full listing)
 		//--------------------------------------------------------------------
 		//
-		void
-			First();
-		void
-			Next();
-		CollectionSize
-			GetSize();
-		void
-			Remove();
+		void First(void);
+		void Next(void);
+		CollectionSize GetSize(void);
+		void Remove(void);
 
 	protected:
 		//
@@ -427,10 +419,8 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		PVOID
-			GetCurrentImplementation();
-		Plug*
-			FindImplementation(PCVOID value);
+		PVOID GetCurrentImplementation(void);
+		Plug* FindImplementation(PCVOID value);
 
 	protected:
 		//
@@ -438,8 +428,7 @@ namespace Stuff {
 		// Protected data
 		//--------------------------------------------------------------------
 		//
-		TreeNode
-			*currentNode;
+		TreeNode* currentNode;
 
 	private:
 		//
@@ -449,10 +438,8 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//--------------------------------------------------------------------
 		//
-		void
-			Last();				 // Marked as private so that clients do not use it
-		void
-			Previous();			 // Marked as private so that clients do not use it
+		void Last(void);				 // Marked as private so that clients do not use it
+		void Previous(void);			 // Marked as private so that clients do not use it
 
 		void
 			ReceiveMemo(
@@ -481,21 +468,20 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		explicit TreeIteratorOf(TreeOf<T, V> *tree);
-		Iterator*
-			MakeClone();
-		~TreeIteratorOf();
+		Iterator* MakeClone(void);
+		~TreeIteratorOf(void);
 
 		//
 		//--------------------------------------------------------------------
 		// Iterator methods (see Iterator for full listing)
 		//--------------------------------------------------------------------
 		//
-		T ReadAndNext()
+		T ReadAndNext(void)
 		{
 			return (T)ReadAndNextImplementation();
 		}
 		
-		T GetCurrent()
+		T GetCurrent(void)
 		{
 			return (T)GetCurrentImplementation();
 		}
@@ -510,7 +496,7 @@ namespace Stuff {
 			return (T)FindImplementation(&value);
 		}
 		
-		V GetValue()
+		V GetValue(void)
 		{
 			return Cast_Object(TreeNodeOf<V>*, currentNode)->GetValue();
 		}
@@ -524,14 +510,12 @@ namespace Stuff {
 	{
 	}
 
-	template <class T, class V> Iterator*
-		TreeIteratorOf<T, V>::MakeClone()
+	template <class T, class V> Iterator* TreeIteratorOf<T, V>::MakeClone(void)
 	{
 		return new TreeIteratorOf<T, V>(*this);
 	}
 
-	template <class T, class V>
-	TreeIteratorOf<T, V>::~TreeIteratorOf()
+	template <class T, class V> TreeIteratorOf<T, V>::~TreeIteratorOf(void)
 	{
 	}
 

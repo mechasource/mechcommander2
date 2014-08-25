@@ -37,9 +37,8 @@ namespace Stuff {
 		static void __stdcall TerminateClass(void);
 
 	public:
-		~SafeChainLink();
-		void
-			TestInstance();
+		~SafeChainLink(void);
+		void TestInstance(void);
 
 	private:
 		SafeChainLink(
@@ -76,14 +75,13 @@ namespace Stuff {
 	//-----------------------------------------------------------------------
 	//
 		explicit SafeChain(Node *node);
-		~SafeChain();
+		~SafeChain(void);
 
-		void
-			TestInstance();
+		void TestInstance(void);
 		static void
-			TestClass();
+			TestClass(void);
 		static void
-			ProfileClass();
+			ProfileClass(void);
 
 	//
 	//-----------------------------------------------------------------------
@@ -91,7 +89,7 @@ namespace Stuff {
 	//-----------------------------------------------------------------------
 	//
 		bool
-			IsEmpty();
+			IsEmpty(void);
 
 	protected:
 	//
@@ -139,7 +137,7 @@ namespace Stuff {
 	//--------------------------------------------------------------------
 	//
 		explicit SafeChainOf(Node *node);
-		~SafeChainOf();
+		~SafeChainOf(void);
 
 	//
 	//--------------------------------------------------------------------
@@ -191,7 +189,7 @@ namespace Stuff {
 			bool move_next_on_remove
 			);
 		SafeChainIterator(const SafeChainIterator &iterator);
-		~SafeChainIterator();
+		~SafeChainIterator(void);
 
 		void TestInstance(void) const;
 
@@ -201,17 +199,17 @@ namespace Stuff {
 	//--------------------------------------------------------------------
 	//
 		void
-			First();
+			First(void);
 		void
-			Last();
+			Last(void);
 		void
-			Next();
+			Next(void);
 		void
-			Previous();
+			Previous(void);
 		CollectionSize
-			GetSize();
+			GetSize(void);
 		void
-			Remove();
+			Remove(void);
 
 	protected:
 	//
@@ -222,11 +220,11 @@ namespace Stuff {
 	//--------------------------------------------------------------------
 	//
 		PVOID
-			ReadAndNextImplementation();
+			ReadAndNextImplementation(void);
 		PVOID
-			ReadAndPreviousImplementation();
+			ReadAndPreviousImplementation(void);
 		PVOID
-			GetCurrentImplementation();
+			GetCurrentImplementation(void);
 		PVOID
 			GetNthImplementation(
 			CollectionSize index
@@ -282,9 +280,9 @@ namespace Stuff {
 			);
 		SafeChainIteratorOf(const SafeChainIteratorOf<T> &iterator);
 		Iterator*
-			MakeClone();
+			MakeClone(void);
 
-		~SafeChainIteratorOf();
+		~SafeChainIteratorOf(void);
 
 	//
 	//--------------------------------------------------------------------
@@ -293,13 +291,13 @@ namespace Stuff {
 	//
 		T
 			ReadAndNext()
-		{return (T)ReadAndNextImplementation();}
+		{return (T)ReadAndNextImplementation(void);}
 		T
 			ReadAndPrevious()
-		{return (T)ReadAndPreviousImplementation();}
+		{return (T)ReadAndPreviousImplementation(void);}
 		T
 			GetCurrent()
-		{return (T)GetCurrentImplementation();}
+		{return (T)GetCurrentImplementation(void);}
 		T
 			GetNth(CollectionSize index)
 		{return (T)GetNthImplementation(index);}

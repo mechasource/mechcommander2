@@ -21,21 +21,19 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-FileDependencies::FileDependencies():
-	Plug(DefaultData)
+FileDependencies::FileDependencies(void) : Plug(DefaultData)
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-FileDependencies::~FileDependencies()
+FileDependencies::~FileDependencies(void)
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-FileDependencies&
-	FileDependencies::operator=(const FileDependencies &dependencies)
+FileDependencies& FileDependencies::operator=(const FileDependencies &dependencies)
 {
 	Check_Pointer(this);
 	Check_Object(&dependencies);
@@ -56,8 +54,7 @@ FileDependencies&
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	FileDependencies::AddDependency(FileStream *stream)
+void FileDependencies::AddDependency(FileStream *stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
@@ -97,8 +94,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	FileDependencies::AddDependencies(MemoryStream *dependencies)
+void FileDependencies::AddDependencies(MemoryStream *dependencies)
 {
 	Check_Object(this);
 	Check_Object(dependencies);
@@ -141,8 +137,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	FileDependencies::AddDependencies(const FileDependencies *dependencies)
+void FileDependencies::AddDependencies(const FileDependencies *dependencies)
 {
 	Check_Object(this);
 	Check_Object(dependencies);
@@ -154,30 +149,25 @@ void
 //#########################    FileStreamManager    ###########################
 //#############################################################################
 
-FileStreamManager*
-	FileStreamManager::Instance = NULL;
+FileStreamManager* FileStreamManager::Instance = NULL;
 	
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-FileStreamManager::FileStreamManager():
-	compareCache(NULL, true)
+FileStreamManager::FileStreamManager() : compareCache(NULL, true)
 {	
 }	
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-FileStreamManager::~FileStreamManager()
+FileStreamManager::~FileStreamManager(void)
 {
 	PurgeFileCompareCache();
 }	
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-	FileStreamManager::CompareModificationDate(
-		const MString &file_name,
-		int64_t time_stamp
-	)
+bool FileStreamManager::CompareModificationDate(
+	const MString &file_name, int64_t time_stamp)
 {
 	Check_Object(this);
 	Check_Object(&file_name);
@@ -227,8 +217,7 @@ bool
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	FileStreamManager::PurgeFileCompareCache()
+void FileStreamManager::PurgeFileCompareCache(void)
 {
 	Check_Object(this);
 	TreeIteratorOf<FileStatPlug*, MString> cache(&compareCache);

@@ -26,15 +26,15 @@ namespace Stuff {
 		// Constructor, Destructor, Testing
 		//-----------------------------------------------------------------------
 		//
-		AverageOf();
+		AverageOf(void);
 		AverageOf(
 			size_t size,
 			T initial=(T)0
 			);
-		~AverageOf();
+		~AverageOf(void);
 
 		void
-			TestInstance() const
+			TestInstance(void) const
 		{Check_Pointer(array); Verify(next < size);}
 
 		//
@@ -62,7 +62,7 @@ namespace Stuff {
 		//-----------------------------------------------------------------------
 		//
 		T
-			CalculateAverage();
+			CalculateAverage(void);
 
 		//
 		//-----------------------------------------------------------------------
@@ -70,14 +70,14 @@ namespace Stuff {
 		//-----------------------------------------------------------------------
 		//
 		T
-			CalculateOlympicAverage();
+			CalculateOlympicAverage(void);
 
 		//
 		//-----------------------------------------------------------------------
 		// Calculate Trend of Average
 		//-----------------------------------------------------------------------
 		//
-		float CalculateTrend();
+		float CalculateTrend(void);
 
 		//
 		//-----------------------------------------------------------------------

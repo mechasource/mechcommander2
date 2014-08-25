@@ -8,9 +8,6 @@
 //===========================================================================//
 
 #include "stdafx.h"
-//#include "stuffheaders.hpp"
-
-//#include <gameos.hpp>
 #include <stuff/namelist.hpp>
 
 using namespace Stuff;
@@ -19,7 +16,7 @@ using namespace Stuff;
 //##############    ObjectNameList    #########################################
 //#############################################################################
 
-ObjectNameList::ObjectNameList()
+ObjectNameList::ObjectNameList(void)
 {
 	Check_Pointer(this);
 	firstEntry = lastEntry = NULL;
@@ -27,7 +24,7 @@ ObjectNameList::ObjectNameList()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-ObjectNameList::~ObjectNameList()
+ObjectNameList::~ObjectNameList(void)
 {
 	Check_Object(this);
 
@@ -46,11 +43,7 @@ ObjectNameList::~ObjectNameList()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PCSTR
-ObjectNameList::AddEntry(
-						 PCSTR name,
-						 PVOID data
-						 )
+PCSTR ObjectNameList::AddEntry(PCSTR name, PVOID data)
 {
 	Check_Object(this);
 	Check_Pointer(name);
@@ -82,8 +75,7 @@ ObjectNameList::AddEntry(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PVOID
-ObjectNameList::FindObject(PCSTR name)
+PVOID ObjectNameList::FindObject(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
@@ -104,8 +96,7 @@ ObjectNameList::FindObject(PCSTR name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-ObjectNameList::DeleteEntry(PCSTR name)
+void ObjectNameList::DeleteEntry(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
@@ -145,8 +136,7 @@ ObjectNameList::DeleteEntry(PCSTR name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t
-ObjectNameList::GetEntryCount() const
+int32_t ObjectNameList::GetEntryCount(void) const
 {
 	Check_Object(this);
 
@@ -166,8 +156,7 @@ ObjectNameList::GetEntryCount() const
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t
-ObjectNameList::BuildSubList(
+int32_t ObjectNameList::BuildSubList(
 	const ObjectNameList &source_list, PCSTR prefix)
 {
 	Check_Object(this);
@@ -204,8 +193,7 @@ ObjectNameList::BuildSubList(
 //##############    ObjectNameList::Entry    ##################################
 //#############################################################################
 
-void
-ObjectNameList::Entry::SetName(PCSTR name)
+void ObjectNameList::Entry::SetName(PCSTR name)
 {
 	Check_Pointer(this);
 	Check_Pointer(name);
@@ -217,8 +205,7 @@ ObjectNameList::Entry::SetName(PCSTR name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-ObjectNameList::Entry::IsName(PCSTR name) const
+bool ObjectNameList::Entry::IsName(PCSTR name) const
 {
 	Check_Object(this);
 	//do not check name here
@@ -238,20 +225,19 @@ ObjectNameList::Entry::IsName(PCSTR name) const
 //##############    NameList    ###############################################
 //#############################################################################
 
-NameList::NameList()
+NameList::NameList(void)
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-NameList::~NameList()
+NameList::~NameList(void)
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PCSTR
-NameList::FindName(PVOID data)
+PCSTR NameList::FindName(PVOID data)
 {
 	Check_Object(this);
 
@@ -271,8 +257,7 @@ NameList::FindName(PVOID data)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-NameList::Entry*
-NameList::FindEntry(PCSTR name)
+NameList::Entry* NameList::FindEntry(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
@@ -293,8 +278,7 @@ NameList::FindEntry(PCSTR name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t
-NameList::FindEntryIndex(PCSTR name)
+int32_t NameList::FindEntryIndex(PCSTR name)
 {
 	Check_Object(this);
 	Check_Pointer(name);
@@ -318,8 +302,7 @@ NameList::FindEntryIndex(PCSTR name)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-NameList::Entry
-*NameList::FindEntry(PVOID data)
+NameList::Entry* NameList::FindEntry(PVOID data)
 {
 	Check_Object(this);
 
@@ -446,21 +429,19 @@ MemoryStreamIO::Read(
 //##############    AlphaNameList    ##########################################
 //#############################################################################
 
-AlphaNameList::AlphaNameList()
+AlphaNameList::AlphaNameList(void)
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-AlphaNameList::~AlphaNameList()
+AlphaNameList::~AlphaNameList(void)
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PCSTR
-AlphaNameList::AddEntry(
-	PCSTR name, PVOID data)
+PCSTR AlphaNameList::AddEntry(PCSTR name, PVOID data)
 {
 	Check_Object(this);
 	Check_Pointer(name);

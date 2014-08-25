@@ -45,7 +45,7 @@ namespace Stuff {
 			SetName(PCSTR entryname)
 		{Check_Object(this); Check_Pointer(entryname); m_name = entryname;}
 		PCSTR
-			GetName() const
+			GetName(void) const
 		{ Check_Object(this); return m_name; }
 
 	protected:
@@ -53,8 +53,7 @@ namespace Stuff {
 			m_name,
 			m_text;
 
-		void
-			SetDirty()
+		void SetDirty(void)
 		{Check_Object(this); Check_Object(m_page); m_page->SetDirty();}
 
 		void

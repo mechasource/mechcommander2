@@ -96,7 +96,7 @@ namespace Stuff {
 				Scalar e=SMALL
 			);
 		bool
-			operator!() const
+			operator!(void) const
 				{return Small_Enough(*this);}
 
 		friend bool
@@ -149,7 +149,7 @@ namespace Stuff {
 		// Support functions
 		//
 		EulerAngles&
-			Normalize();
+			Normalize(void);
 
 		#if !defined(Spew)
 			friend void
@@ -163,10 +163,10 @@ namespace Stuff {
 		// Test functions
 		//
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 	//##########################################################################
@@ -256,7 +256,7 @@ namespace Stuff {
 				Scalar e=SMALL
 			);
 		bool
-			operator!() const
+			operator!(void) const
 				{return Small_Enough(*this);}
 
 		friend bool
@@ -286,7 +286,7 @@ namespace Stuff {
 		// Support functions
 		//
 		YawPitchRoll&
-			Normalize();
+			Normalize(void);
 		#if !defined(Spew)
 			friend void
 				::Spew(
@@ -301,7 +301,7 @@ namespace Stuff {
 		// Test functions
 		//
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 	};
 
@@ -315,7 +315,7 @@ namespace Stuff {
 		static const UnitQuaternion Identity;
 
 		static void __stdcall InitializeClass(void);
-		static void TerminateClass();
+		static void TerminateClass(void);
 
 		DECLARE_TIMER(static, SlerpTime);
 		static uint32_t SlerpCount;
@@ -374,7 +374,7 @@ namespace Stuff {
 			)
 				{Check_Object(&q); return Close_Enough(q.w,1.0f,e);}
 		bool
-			operator!() const
+			operator!(void) const
 				{return Small_Enough(*this,SMALL);}
 
 		friend bool
@@ -409,7 +409,7 @@ namespace Stuff {
 				}
 
 		Scalar
-			GetAngle();
+			GetAngle(void);
 		void
 			GetAxis(UnitVector3D *axis);
 
@@ -483,10 +483,10 @@ namespace Stuff {
 		// Miscellaneous functions
 		//
 		UnitQuaternion&
-			Normalize();
+			Normalize(void);
 
 		UnitQuaternion&
-			FastNormalize();
+			FastNormalize(void);
 
 		UnitQuaternion&
 			Subtract(
@@ -622,7 +622,7 @@ namespace Stuff {
 		#endif
 		void TestInstance(void) const;
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 }

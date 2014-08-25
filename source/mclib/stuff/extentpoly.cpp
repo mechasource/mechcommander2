@@ -377,6 +377,6 @@ bool
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	ExtentPoly::TestInstance() const
+	ExtentPoly::TestInstance(void) const
 {
 }

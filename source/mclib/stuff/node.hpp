@@ -25,14 +25,13 @@ namespace Stuff {
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 
-		void
-			TestInstance();
+		void TestInstance(void);
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Constructor/Destructor
 	//
 	public:
-		~Node();
+		~Node(void);
 
 	protected:
 		explicit Node(ClassData *class_data);

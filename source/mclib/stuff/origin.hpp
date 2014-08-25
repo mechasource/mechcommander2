@@ -125,7 +125,7 @@ namespace Stuff {
 #endif
 		void TestInstance(void) const;
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 	inline Point3D&

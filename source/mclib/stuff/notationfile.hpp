@@ -118,11 +118,11 @@ namespace Stuff {
 			MacroTree *macro_tree=NULL
 			);
 
-		~NotationFile();
+		~NotationFile(void);
 
 		void TestInstance(void) const;
 		static bool
-			TestClass();
+			TestClass(void);
 
 	protected:
 		void
@@ -136,24 +136,24 @@ namespace Stuff {
 		//
 	public:
 		const FileDependencies*
-			GetFileDependencies() const
+			GetFileDependencies(void) const
 		{Check_Object(this); return &m_fileDependencies;}
 
 		PCSTR
-			GetFileName() const
+			GetFileName(void) const
 		{Check_Object(this); return m_fileName;}
 
 		void
 			SaveAs(PCSTR file_name);
 		void
-			Save();
+			Save(void);
 
 		void
 			IgnoreChanges()
 		{Check_Object(this); m_dirtyFlag = false;}
 
 		bool
-			IsChanged() const
+			IsChanged(void) const
 		{Check_Object(this); return m_dirtyFlag;}
 
 	protected:
@@ -226,7 +226,7 @@ namespace Stuff {
 		void
 			DeletePage(PCSTR pagename);
 		void
-			DeleteAllPages();
+			DeleteAllPages(void);
 
 	protected:
 		ChainOf<Page*>

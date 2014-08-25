@@ -88,23 +88,23 @@ namespace Stuff {
 			PCSTR  filename,
 			bool read_only
 			);
-		~DatabaseHandle();
+		~DatabaseHandle(void);
 
 		void
-			Save();
+			Save(void);
 
 
 		//
 		// GetNumberOfRecords - Returns the number of records in the database
 		//
 		uint32_t
-			GetNumberOfRecords();
+			GetNumberOfRecords(void);
 
 		//
 		// First - Makes the 'current' record the first in the database (Based on RecordID number)
 		//
 		void
-			First();
+			First(void);
 
 		void TestInstance(void) const;
 

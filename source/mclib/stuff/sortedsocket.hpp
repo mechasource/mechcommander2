@@ -17,7 +17,7 @@ namespace Stuff {
 		public SafeSocket
 	{
 	public:
-		~SortedSocket();
+		~SortedSocket(void);
 
 		void
 			AddValuePlug(
@@ -63,13 +63,13 @@ namespace Stuff {
 		public SafeIterator
 	{
 	public:
-		~SortedIterator();
+		~SortedIterator(void);
 
 		virtual Plug*
 			FindImplementation(PCVOID value);
 
 		virtual PVOID
-			GetValueImplementation();
+			GetValueImplementation(void);
 
 	protected:
 		explicit SortedIterator(SortedSocket *sortedSocket);

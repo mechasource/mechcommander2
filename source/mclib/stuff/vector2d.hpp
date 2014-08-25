@@ -30,7 +30,7 @@ namespace Stuff {
 		Vector2DOf(const Vector2DOf<T> &v)	{x = v.x; y = v.y;}
 
 		friend bool Small_Enough(const Vector2DOf<T> &v, float e);
-		bool operator!() const {return Small_Enough(*this,SMALL);}
+		bool operator!(void) const {return Small_Enough(*this,SMALL);}
 
 		friend bool Close_Enough(const Vector2DOf<T> &v1, const Vector2DOf<T> &v2, float e);
 		bool operator==(const Vector2DOf<T>& v) const {return Close_Enough(*this,v,SMALL);}
@@ -130,7 +130,7 @@ namespace Stuff {
 		Vector2DOf<T>& Normalize(const Vector2DOf<T> &v)
 		{
 			Check_Pointer(this); Check_Object(&v);
-			float len = v.GetLength(); Verify(!Small_Enough(len));
+			float len = v.GetLength(void); Verify(!Small_Enough(len));
 			x = v.x/len; y = v.y/len; return *this;
 		}
 

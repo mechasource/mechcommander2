@@ -23,7 +23,7 @@ namespace Stuff {
 	{
 	public:
 		static void __stdcall InitializeClass(void);
-		static void TerminateClass();
+		static void TerminateClass(void);
 
 	private:
 		static int32_t Numbers[250]; // the random number table
@@ -67,7 +67,7 @@ namespace Stuff {
 
 	public:
 		Die(int32_t sides);
-		operator int32_t();		// returns 1 .. dieSides
+		operator int32_t(void);		// returns 1 .. dieSides
 	};
 
 }

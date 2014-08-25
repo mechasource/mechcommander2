@@ -40,7 +40,7 @@ namespace Stuff {
 		static void __stdcall TerminateClass(void);
 
 	public:
-		~SlotLink();
+		~SlotLink(void);
 
 	private:
 		SlotLink(
@@ -82,10 +82,9 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		explicit Slot(Node *node);
-		~Slot();
+		~Slot(void);
 
-		void
-			TestInstance();
+		void TestInstance(void);
 			
 		//
 		//--------------------------------------------------------------------
@@ -93,7 +92,7 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		void
-			Remove();
+			Remove(void);
 
 	protected:
 		//
@@ -106,7 +105,7 @@ namespace Stuff {
 		void
 			AddImplementation(Plug *plug);
 		Plug*
-			GetCurrentPlug();
+			GetCurrentPlug(void);
 
 	private:
 		//
@@ -132,7 +131,7 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		explicit SlotOf(Node *node);
-		~SlotOf();
+		~SlotOf(void);
 
 		//
 		//--------------------------------------------------------------------
@@ -145,7 +144,7 @@ namespace Stuff {
 
 		T
 			GetCurrent()
-				{return (T)GetCurrentPlug();}
+				{return (T)GetCurrentPlug(void);}
 	};
 
 

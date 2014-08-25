@@ -104,7 +104,7 @@ namespace Stuff {
 		//
 		void TestInstance(void) const {}
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 	Scalar

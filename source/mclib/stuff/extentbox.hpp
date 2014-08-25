@@ -87,7 +87,7 @@ namespace Stuff {
 
 		void TestInstance(void) const;
 		static bool
-			TestClass();
+			TestClass(void);
 #if !defined(Spew)
 		friend void
 			::Spew(

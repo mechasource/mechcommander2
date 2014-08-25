@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -12,17 +12,13 @@
 using namespace Stuff;
 
 //#############################################################################
-//#############################    Directory    ###############################
+//############################# Directory ###############################
 //#############################################################################
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Directory::Directory(
-	PSTR find_files,
-	bool directories
-):
-	fileEntries(NULL,NULL),
-	folderEntries(NULL,NULL)
+Directory::Directory(PSTR find_files, bool directories) 
+	: fileEntries(NULL,NULL), folderEntries(NULL,NULL)
 {
 	Check_Pointer(find_files);
 
@@ -94,14 +90,13 @@ Directory::~Directory(void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PSTR
-	Directory::GetCurrentFileName(void)
+PSTR Directory::GetCurrentFileName(void)
 {
 	Check_Object(this);
 	Check_Object(fileWalker);
 
 	DirectoryEntry *entry;
-	
+
 	if ((entry = fileWalker->GetCurrent()) != NULL)
 	{
 		Check_Object(entry);
@@ -112,8 +107,7 @@ PSTR
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	Directory::AdvanceCurrentFile(void)
+void Directory::AdvanceCurrentFile(void)
 {
 	Check_Object(this);
 	Check_Object(fileWalker);
@@ -122,15 +116,15 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-PSTR  Directory::GetCurrentFolderName( void )
+PSTR Directory::GetCurrentFolderName(void)
 {
 	Check_Object(this);
 	if (folderWalker == NULL)
-		STOP(("Directory class was instantiated without directory support:\n           Set the <directories> parameter to true to enable."));
+		STOP(("Directory class was instantiated without directory support:\n Set the <directories> parameter to true to enable."));
 	Check_Object(folderWalker);
 
 	DirectoryFolder *entry;
-	
+
 	if ((entry = folderWalker->GetCurrent()) != NULL)
 	{
 		Check_Object(entry);
@@ -141,42 +135,37 @@ PSTR  Directory::GetCurrentFolderName( void )
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void Directory::AdvanceCurrentFolder( void )
+void Directory::AdvanceCurrentFolder(void)
 {
 	Check_Object(this);
 	if (folderWalker == NULL)
-		STOP(("Directory class was instantiated without directory support:\n           Set the <directories> parameter to true to enable."));
+		STOP(("Directory class was instantiated without directory support:\n Set the <directories> parameter to true to enable."));
 	Check_Object(folderWalker);
 	folderWalker->Next();
 }
 
 //#############################################################################
-//###########################    FileStream    ################################
+//########################### FileStream ################################
 //#############################################################################
 
-FileStream::ClassData*
-	FileStream::DefaultData = NULL;
-
-PCSTR 
-	FileStream::WhiteSpace = " \t\n";
-
-char
-	FileStream::RedirectedName[256];
-bool
-	FileStream::IsRedirected=false,
-	FileStream::IgnoreReadOnlyFlag=false;
+FileStream::ClassData* FileStream::DefaultData = NULL;
+ 
+PCSTR FileStream::WhiteSpace = " \t\n";
+char FileStream::RedirectedName[256];
+bool FileStream::IsRedirected=false;
+bool FileStream::IgnoreReadOnlyFlag=false;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	FileStream::InitializeClass()
+FileStream::InitializeClass(void)
 {
 	Verify(!DefaultData);
 	DefaultData =
 		new ClassData(
-			FileStreamClassID,
-			"Stuff::FileStream",
-			MemoryStream::DefaultData
+		FileStreamClassID,
+		"Stuff::FileStream",
+		MemoryStream::DefaultData
 		);
 	Check_Object(DefaultData);
 }
@@ -184,7 +173,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	FileStream::TerminateClass()
+FileStream::TerminateClass(void)
 {
 	Check_Object(DefaultData);
 	delete DefaultData;
@@ -194,7 +183,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	FileStream::TestInstance() const
+FileStream::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -202,7 +191,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 FileStream::FileStream():
-	MemoryStream(DefaultData, NULL, 0)
+MemoryStream(DefaultData, NULL, 0)
 {
 	fileName = NULL;
 	isOpen = false;
@@ -212,10 +201,10 @@ FileStream::FileStream():
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 FileStream::FileStream(
-	PCSTR file_name,
-	WriteStatus writable
-):
-	MemoryStream(DefaultData, NULL, 0)
+					   PCSTR file_name,
+					   WriteStatus writable
+					   ):
+MemoryStream(DefaultData, NULL, 0)
 {
 	fileName = NULL;
 	isOpen = false;
@@ -224,7 +213,7 @@ FileStream::FileStream(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-FileStream::~FileStream()
+FileStream::~FileStream(void)
 {
 	Close();
 }
@@ -232,10 +221,10 @@ FileStream::~FileStream()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	FileStream::Open(
-		PCSTR file_name,
-		WriteStatus writable
-	)
+FileStream::Open(
+				 PCSTR file_name,
+				 WriteStatus writable
+				 )
 {
 	Check_Object(this);
 	Check_Pointer(file_name);
@@ -292,7 +281,7 @@ void
 			&fileHandle,
 			file_name,
 			READWRITE
-		);
+			);
 		isOpen = true;
 		streamSize = 0xFFFFFFFFU;
 		fileName = _strdup(file_name);
@@ -309,7 +298,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	FileStream::Close()
+FileStream::Close(void)
 {
 	Check_Object(this);
 
@@ -340,7 +329,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	FileStream::SetPointer(size_t index)
+FileStream::SetPointer(size_t index)
 {
 	Check_Object(this);
 	Verify(IsFileOpened());
@@ -351,7 +340,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MemoryStream&
-	FileStream::AdvancePointer(size_t index)
+FileStream::AdvancePointer(size_t index)
 {
 	Check_Object(this);
 	Verify(IsFileOpened());
@@ -362,7 +351,7 @@ MemoryStream&
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MemoryStream&
-	FileStream::RewindPointer(size_t index)
+FileStream::RewindPointer(size_t index)
 {
 	Check_Object(this);
 	Verify(IsFileOpened());
@@ -373,10 +362,10 @@ MemoryStream&
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MemoryStream&
-	FileStream::ReadBytes(
-		PVOID ptr,
-		size_t number_of_bytes
-	)
+FileStream::ReadBytes(
+					  PVOID ptr,
+					  size_t number_of_bytes
+					  )
 {
 	Check_Object(this);
 	Verify(IsFileOpened());
@@ -387,10 +376,10 @@ MemoryStream&
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MemoryStream&
-	FileStream::WriteBytes(
-		PCVOID ptr,
-		size_t number_of_bytes
-	)
+FileStream::WriteBytes(
+					   PCVOID ptr,
+					   size_t number_of_bytes
+					   )
 {
 	Check_Object(this);
 	Verify(IsFileOpened());
@@ -405,7 +394,7 @@ MemoryStream&
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	FileStream::IsFileOpened()
+FileStream::IsFileOpened(void)
 {
 	Check_Object(this);
 	return isOpen;
@@ -413,10 +402,9 @@ bool
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-bool
-	Stuff::CreateDirectories(PCSTR directory_path)
+bool Stuff::CreateDirectories(PCSTR directory_path)
 {
-	
+
 	if (directory_path == NULL)
 		return false;
 
@@ -428,7 +416,7 @@ bool
 
 	if (*current_position != '\\')
 	{
-	
+
 		if ((current_position + 1) != NULL)
 		{
 			if((current_position + 2) != NULL)
@@ -487,7 +475,7 @@ bool
 
 		Verify(new_string != NULL);
 
-		
+
 		if (!gos_DoesFileExist(new_string))
 		{
 			gos_CreateDirectory(new_string);
@@ -501,9 +489,5 @@ bool
 		current_position = next_slash;
 	}
 
-
-
-
 	return true;
-	
 }

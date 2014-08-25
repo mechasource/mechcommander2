@@ -72,9 +72,9 @@ namespace Stuff {
 			*lastEntry;
 
 	public:
-		ObjectNameList();
+		ObjectNameList(void);
 		virtual
-			~ObjectNameList();
+			~ObjectNameList(void);
 
 		virtual PCSTR
 			AddEntry(
@@ -86,21 +86,21 @@ namespace Stuff {
 		void
 			DeleteEntry(PCSTR name);	// ** DANGEROUS!! see notice above **
 		int32_t
-			GetEntryCount() const;	// (implementation assumes infrequent use)
+			GetEntryCount(void) const;	// (implementation assumes infrequent use)
 		bool
-			IsEmpty() const
+			IsEmpty(void) const
 		{ Check_Object(this); return firstEntry == NULL && lastEntry == NULL; }
 		Entry*
 			GetFirstEntry()
 		{ Check_Object(this); return firstEntry; }
 		const Entry*
-			GetFirstEntry() const
+			GetFirstEntry(void) const
 		{ Check_Object(this); return firstEntry; }
 		Entry*
 			GetLastEntry()
 		{ Check_Object(this); return lastEntry; }
 		const Entry*
-			GetLastEntry() const
+			GetLastEntry(void) const
 		{ Check_Object(this); return lastEntry; }
 		int32_t
 			BuildSubList(
@@ -110,7 +110,7 @@ namespace Stuff {
 
 		void TestInstance(void) const {}
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 	//##########################################################################
@@ -151,30 +151,30 @@ namespace Stuff {
 			GetData()
 		{ Check_Object(this); return dataReference; }
 		PCVOID
-			GetData() const
+			GetData(void) const
 		{ Check_Object(this); return dataReference; }
 		PSTR
 			GetChar()
 		{Check_Object(this); return Cast_Pointer(PSTR ,dataReference);}
 		PCSTR
-			GetChar() const
+			GetChar(void) const
 		{
 			Check_Object(this);
 			return Cast_Pointer(PCSTR ,dataReference);
 		}
 		int32_t
-			GetAtoi() const
+			GetAtoi(void) const
 		{
 			Check_Object(this); Check_Pointer(dataReference);
 			return atoi(Cast_Pointer(PCSTR , dataReference));
 		}
 		int32_t
-			GetAtol() const
+			GetAtol(void) const
 		{
 			Check_Object(this); Check_Pointer(dataReference);
 			return atol(Cast_Pointer(PCSTR , dataReference));
 		}
-		float GetAtof() const
+		float GetAtof(void) const
 		{
 			Check_Object(this); Check_Pointer(dataReference);
 			return float(atof(Cast_Pointer(PCSTR, dataReference)));
@@ -183,7 +183,7 @@ namespace Stuff {
 			GetNextEntry()
 		{ Check_Object(this); return nextEntry; }
 		const ObjectNameList::Entry*
-			GetNextEntry() const
+			GetNextEntry(void) const
 		{ Check_Object(this); return nextEntry; }
 		void TestInstance(void) const {}
 	};
@@ -196,8 +196,8 @@ namespace Stuff {
 		public ObjectNameList
 	{
 	public:
-		NameList();
-		~NameList();
+		NameList(void);
+		~NameList(void);
 
 		PVOID
 			FindData(PCSTR name)
@@ -213,7 +213,7 @@ namespace Stuff {
 		void
 			DeleteEntry(PCSTR name);	// this one is searches for name
 		static bool
-			TestClass();
+			TestClass(void);
 
 		friend MemoryStream&
 			MemoryStreamIO::Read(
@@ -235,8 +235,8 @@ namespace Stuff {
 		public NameList
 	{
 	public:
-		AlphaNameList();
-		~AlphaNameList();
+		AlphaNameList(void);
+		~AlphaNameList(void);
 
 		PCSTR
 			AddEntry(
@@ -244,7 +244,7 @@ namespace Stuff {
 			PVOID data
 			);
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 }

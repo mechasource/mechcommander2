@@ -16,7 +16,7 @@ OBB OBB::Identity(LinearMatrix4D::Identity, Vector3D::Identity, 0.0f);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	OBB::TestInstance() const
+	OBB::TestInstance(void) const
 {
 }
 

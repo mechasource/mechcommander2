@@ -33,9 +33,8 @@ namespace Stuff {
 		friend class SafeIterator;
 
 	public:
-		~SafeSocket();
-		void
-			TestInstance();
+		~SafeSocket(void);
+		void TestInstance(void);
 
 	protected:
 		explicit SafeSocket(Node *node);
@@ -58,7 +57,7 @@ namespace Stuff {
 		friend class SafeSocket;
 
 	public:
-		~SafeIterator();
+		~SafeIterator(void);
 		void TestInstance(void) const;
 
 	protected:

@@ -108,7 +108,7 @@ namespace Stuff {
 				);
 		#endif
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 	};
 

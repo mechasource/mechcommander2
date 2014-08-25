@@ -760,7 +760,7 @@ MemoryStream&
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MemoryStream::TestInstance() const
+void MemoryStream::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 	Verify(size_t(currentPosition - streamStart) <= streamSize);

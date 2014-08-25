@@ -197,7 +197,7 @@ namespace Stuff {
 		{Vector3D::Lerp(v1,v2,t); return *this;}
 
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 }

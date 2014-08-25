@@ -54,7 +54,7 @@ namespace Stuff
 
 		~Auto_Ptr()
 		{
-			Delete();
+			Delete(void);
 		}
 
 		enum deletion_type
@@ -83,12 +83,12 @@ namespace Stuff
 			return (temp);
 		}
 
-		T* GetPointer() const
+		T* GetPointer(void) const
 		{
 			return ((T*)(m_bits & POINTER_MASK));
 		}
 
-		T* Release() const
+		T* Release(void) const
 		{
 			SetAsOwner(false);
 			return (GetPointer());
@@ -96,7 +96,7 @@ namespace Stuff
 
 		T* ReleaseAndNull()
 		{
-			T* rv = GetPointer();
+			T* rv = GetPointer(void);
 			m_ptr = 0;
 			return (rv);
 		}
@@ -105,7 +105,7 @@ namespace Stuff
 		{
 			if (&src != this)
 			{
-				Delete();
+				Delete(void);
 				m_ptr = src.m_ptr;
 				src.SetAsOwner(false);
 			}
@@ -113,17 +113,17 @@ namespace Stuff
 			return (*this);
 		}
 		
-		operator bool() const
+		operator bool(void) const
 		{
 			return (GetPointer() != 0);
 		}
 
-		T& operator*() const
+		T& operator*(void) const
 		{
 			return (*GetPointer());
 		}
 
-		T* operator->() const
+		T* operator->(void) const
 		{
 			return (GetPointer());
 		}
@@ -158,12 +158,12 @@ namespace Stuff
 		}
 
 	  private:
-		bool IsOwner() const
+		bool IsOwner(void) const
 		{
 			return ((m_bits & OWNER_MASK) == OWNER_MASK);
 		}
 
-		bool IsArray() const
+		bool IsArray(void) const
 		{
 			return ((m_bits & ARRAY_MASK) == ARRAY_MASK);
 		}

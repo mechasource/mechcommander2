@@ -11,10 +11,11 @@
 
 // test compiling headers one by one to find out dependencies
 
-//#include <stuff/affinematrix.hpp>
-//#include <stuff/angle.hpp>
 //#include <stuff/armorheap.hpp>
 //#include <stuff/armoroff.hpp>
+
+//#include <stuff/affinematrix.hpp>
+//#include <stuff/angle.hpp>
 //#include <stuff/armoron.hpp>
 //#include <stuff/auto_container.hpp>
 //#include <stuff/auto_ptr.hpp>

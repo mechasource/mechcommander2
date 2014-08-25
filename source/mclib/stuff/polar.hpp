@@ -74,7 +74,7 @@ namespace Stuff {
 			Scalar e=SMALL
 			);
 		bool
-			operator!() const
+			operator!(void) const
 		{return Small_Enough(*this);}
 
 		friend bool
@@ -106,7 +106,7 @@ namespace Stuff {
 		//
 		void TestInstance(void) const {}
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 }

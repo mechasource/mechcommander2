@@ -103,7 +103,7 @@ Motion3D&
 //###########################################################################
 //
 void
-	Motion3D::TestInstance() const
+	Motion3D::TestInstance(void) const
 {
 	Check_Object(&angularMotion);
 }

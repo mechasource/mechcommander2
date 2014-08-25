@@ -1,10 +1,10 @@
 //===========================================================================//
-// File:     notation.hpp                                                    //
-// Title:    Declaration of NotationFile classes.                            //
-// Purpose:  Provide general purpose access to data stored in a formatted    //
-//           text file.                                                      //
+// File: notation.hpp //
+// Title: Declaration of NotationFile classes. //
+// Purpose: Provide general purpose access to data stored in a formatted //
+// text file. //
 //---------------------------------------------------------------------------//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #pragma once
@@ -18,10 +18,10 @@
 #include <stuff/motion.hpp>
 #include <stuff/color.hpp>
 
-namespace Stuff {
+namespace Stuff{
 
 	//##########################################################################
-	//##############    Page    ##############################
+	//############## Page ##############################
 	//##########################################################################
 
 	class Page:
@@ -35,14 +35,14 @@ namespace Stuff {
 		//
 	protected:
 		Page(NotationFile *notation_file);
-		~Page();
+		~Page(void);
 
 		NotationFile
 			*m_notationFile;
 
 	public:
 		NotationFile*
-			GetNotationFile()
+			GetNotationFile(void)
 		{Check_Object(this); return m_notationFile;}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,7 +53,7 @@ namespace Stuff {
 			SetName(PCSTR pagename)
 		{Check_Object(this); m_name = pagename;}
 		PCSTR
-			GetName() const
+			GetName(void) const
 		{ Check_Object(this); return m_name; }
 
 		void
@@ -64,7 +64,7 @@ namespace Stuff {
 			m_name;
 
 		void
-			SetDirty()
+			SetDirty(void)
 		{Check_Object(this); Check_Object(m_notationFile); m_notationFile->SetDirty();}
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,7 +72,7 @@ namespace Stuff {
 		//
 	public:
 		bool
-			IsEmpty()
+			IsEmpty(void)
 		{Check_Object(this); return m_notes.IsEmpty();}
 
 		bool
@@ -85,7 +85,7 @@ namespace Stuff {
 
 		typedef ChainIteratorOf<Note*> NoteIterator;
 		NoteIterator*
-			MakeNoteIterator()
+			MakeNoteIterator(void)
 		{Check_Object(this); return new NoteIterator(&m_notes);}
 
 		ChainOf<Note*>*
@@ -99,7 +99,7 @@ namespace Stuff {
 		void
 			DeleteNote(PCSTR entryname);
 		void
-			DeleteAllNotes();
+			DeleteAllNotes(void);
 
 	protected:
 		ChainOf<Note*>

@@ -327,7 +327,7 @@ SafeChainIterator::~SafeChainIterator()
 //###########################################################################
 //
 void
-	SafeChainIterator::TestInstance() const
+	SafeChainIterator::TestInstance(void) const
 {
 	SafeIterator::TestInstance();
 	

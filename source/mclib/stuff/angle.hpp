@@ -64,7 +64,7 @@ namespace Stuff {
 		//
 		// Casting
 		//
-		operator float() const
+		operator float(void) const
 		{
 			Check_Object(this); return angle;
 		}
@@ -78,7 +78,7 @@ namespace Stuff {
 		// of Scalaring point numbers, but rather to compare them to within some
 		// specified error threshold
 		//
-		bool operator!() const
+		bool operator!(void) const
 		{Check_Object(this); return Small_Enough(angle);}
 
 		bool operator==(const Radian &r) const
@@ -138,7 +138,7 @@ namespace Stuff {
 		static float
 			Normalize(float Value);
 		Radian&
-			Normalize();
+			Normalize(void);
 
 #if !defined(Spew)
 		friend void
@@ -149,7 +149,7 @@ namespace Stuff {
 #endif
 		void TestInstance(void) const {}
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Degree ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,7 +200,7 @@ namespace Stuff {
 #endif
 		void TestInstance(void) const {}
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 	inline Radian&
@@ -290,7 +290,7 @@ namespace Stuff {
 #endif
 		void TestInstance(void) const {}
 		static bool
-			TestClass();
+			TestClass(void);
 	};
 
 	inline Radian&

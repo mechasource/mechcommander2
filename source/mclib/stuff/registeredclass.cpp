@@ -59,7 +59,7 @@ RegisteredClass::RegisteredClass(ClassData *class_data):
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 PCSTR
-	RegisteredClass::GetClassString() const
+	RegisteredClass::GetClassString(void) const
 {
 	Check_Object(this);
 	RegisteredClass__ClassData *data = GetClassData();
@@ -70,7 +70,7 @@ PCSTR
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	RegisteredClass::TestInstance() const
+	RegisteredClass::TestInstance(void) const
 {
 	Check_Object(classData);
 }

@@ -24,7 +24,7 @@ namespace Stuff
 	public:
 		virtual ~Auto_Container()
 		{
-			clear();
+			clear(void);
 		}
 
 		typedef pointed_to* value_type;
@@ -37,16 +37,16 @@ namespace Stuff
 		typedef size_t size_type;
 
 		iterator begin()						{ return (m_Container.begin()); }
-		const_iterator begin() const			{ return (m_Container.begin()); }
+		const_iterator begin(void) const			{ return (m_Container.begin()); }
 
 		iterator end()							{ return (m_Container.end());	}
-		const_iterator end() const				{ return (m_Container.end());	}
+		const_iterator end(void) const				{ return (m_Container.end());	}
 
-		size_type size() const					{ return (m_Container.size());	}
+		size_type size(void) const					{ return (m_Container.size());	}
 
-		bool empty() const						{ return (m_Container.empty());	}
+		bool empty(void) const						{ return (m_Container.empty());	}
 
-		size_type max_size() const				{ return (m_Container.max_size());	}
+		size_type max_size(void) const				{ return (m_Container.max_size());	}
 
 		void swap(container_type& other_container)	{ m_Container.swap(other_container); }
 
@@ -59,10 +59,10 @@ namespace Stuff
 		void clear()							{ erase(begin(),end());	}
 
 		reference back()						{ return (m_Container.back());	}
-		const_reference back() const			{ return (m_Container.back());	}
+		const_reference back(void) const			{ return (m_Container.back());	}
 
 		reference front()						{ return (m_Container.front());	}
-		const_reference front() const			{ return (m_Container.front());	}
+		const_reference front(void) const			{ return (m_Container.front());	}
 
 		iterator erase(iterator it)
 		{
@@ -93,7 +93,7 @@ namespace Stuff
 		Auto_Ptr<pointed_to> pop_back()
 		{
 			Auto_Ptr<pointed_to> rv(m_Container.back());
-			m_Container.pop_back();
+			m_Container.pop_back(void);
 			return (rv);
 		}
 
@@ -107,7 +107,7 @@ namespace Stuff
 			return (m_Container.insert(it,x.ReleaseAndNull()));
 		}
 
-		const container_type& GetContainer() const
+		const container_type& GetContainer(void) const
 		{
 			return (m_Container);
 		}
@@ -116,10 +116,10 @@ namespace Stuff
 		{
 			while (empty() == false)
 			{
-				value_type value = m_Container.back();
+				value_type value = m_Container.back(void);
 				dest.m_Container.push_back(value);
 
-				m_Container.pop_back();
+				m_Container.pop_back(void);
 			}
 		}
 

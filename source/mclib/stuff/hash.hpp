@@ -48,14 +48,13 @@ namespace Stuff {
 			Node *node,
 			bool has_unique_entries
 		);
-		~Hash();
+		~Hash(void);
 
-		void
-			TestInstance();
+		void TestInstance(void);
 		static bool
-			TestClass();
+			TestClass(void);
 		static bool
-			ProfileClass();
+			ProfileClass(void);
 
 		//
 		//-----------------------------------------------------------------------
@@ -63,7 +62,7 @@ namespace Stuff {
 		//-----------------------------------------------------------------------
 		//
 		bool
-			IsEmpty();
+			IsEmpty(void);
 
 		//
 		//-----------------------------------------------------------------------
@@ -110,16 +109,16 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		virtual SortedChain*
-			MakeSortedChain();
+			MakeSortedChain(void);
 
 		virtual IteratorPosition
 			GetHashIndex(PCVOID value);
 
 		void
-			BuildHashTable();
+			BuildHashTable(void);
 
 		bool
-			CheckForPrimeSize();
+			CheckForPrimeSize(void);
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Hash inlines ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -159,7 +158,7 @@ namespace Stuff {
 			Node *node,
 			bool has_unique_entries
 		);
-		~HashOf();
+		~HashOf(void);
 
 		//
 		//--------------------------------------------------------------------
@@ -185,7 +184,7 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		SortedChain*
-			MakeSortedChain();
+			MakeSortedChain(void);
 
 		IteratorPosition
 			GetHashIndex(PCVOID value);
@@ -264,10 +263,9 @@ namespace Stuff {
 		//
 		explicit HashIterator(Hash *hash);
 		Iterator*
-			MakeClone();
-		~HashIterator();
-		void
-			TestInstance();
+			MakeClone(void);
+		~HashIterator(void);
+		void TestInstance(void);
 
 		//
 		//--------------------------------------------------------------------
@@ -275,17 +273,17 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		void
-			First();
+			First(void);
 		void
-			Last();
+			Last(void);
 		void
-			Next();
+			Next(void);
 		void
-			Previous();
+			Previous(void);
 		CollectionSize
-			GetSize();
+			GetSize(void);
 		void
-			Remove();
+			Remove(void);
 
 	protected:
 		//
@@ -296,7 +294,7 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		PVOID
-			GetCurrentImplementation();
+			GetCurrentImplementation(void);
 		Plug*
 			FindImplementation(PCVOID value);
 
@@ -315,7 +313,7 @@ namespace Stuff {
 			);
 
 		void
-			DeleteSortedChainIterator();
+			DeleteSortedChainIterator(void);
 
 		void
 			NextSortedChainIterator(IteratorPosition index);
@@ -356,8 +354,8 @@ namespace Stuff {
 		//
 		explicit HashIteratorOf(HashOf<T, V> *hash);
 		Iterator*
-			MakeClone();
-		~HashIteratorOf();
+			MakeClone(void);
+		~HashIteratorOf(void);
 
 		//
 		//--------------------------------------------------------------------
@@ -366,13 +364,13 @@ namespace Stuff {
 		//
 		T
 			ReadAndNext()
-				{return (T)ReadAndNextImplementation();}
+				{return (T)ReadAndNextImplementation(void);}
 		T
 			ReadAndPrevious()
-				{return (T)ReadAndPreviousImplementation();}
+				{return (T)ReadAndPreviousImplementation(void);}
 		T
 			GetCurrent()
-				{return (T)GetCurrentImplementation();}
+				{return (T)GetCurrentImplementation(void);}
 		T
 			GetNth(CollectionSize index)
 				{return (T)GetNthImplementation(index);}

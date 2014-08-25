@@ -34,9 +34,8 @@ namespace Stuff {
 		friend class SortedChainIterator;
 
 	public:
-		~SortedChainLink();
-		void
-			TestInstance();
+		~SortedChainLink(void);
+		void TestInstance(void);
 
 	protected:
 		SortedChainLink(
@@ -68,7 +67,7 @@ namespace Stuff {
 			Plug *plug,
 			const V &value
 			);
-		~SortedChainLinkOf();
+		~SortedChainLinkOf(void);
 
 		PVOID
 			operator new(size_t);
@@ -171,14 +170,13 @@ namespace Stuff {
 			Node *node,
 			bool has_unique_entries
 			);
-		~SortedChain();
+		~SortedChain(void);
 
-		void
-			TestInstance();
+		void TestInstance(void);
 		static bool
-			TestClass();
+			TestClass(void);
 		static bool
-			ProfileClass();
+			ProfileClass(void);
 
 		//
 		//-----------------------------------------------------------------------
@@ -186,7 +184,7 @@ namespace Stuff {
 		//-----------------------------------------------------------------------
 		//
 		bool
-			IsEmpty();
+			IsEmpty(void);
 
 	protected:
 		//
@@ -261,7 +259,7 @@ namespace Stuff {
 			Node *node,
 			bool has_unique_entries
 			);
-		~SortedChainOf();
+		~SortedChainOf(void);
 
 		PVOID	operator new(size_t);
 		void	operator delete(PVOID where);
@@ -349,7 +347,7 @@ namespace Stuff {
 	}
 
 	template <class T, class V>
-	SortedChainOf<T, V>::~SortedChainOf()
+	SortedChainOf<T, V>::~SortedChainOf(void)
 	{
 	}
 
@@ -454,8 +452,8 @@ namespace Stuff {
 		explicit SortedChainIterator(SortedChain *vchain);
 		explicit SortedChainIterator(const SortedChainIterator *iterator);
 		Iterator*
-			MakeClone();
-		~SortedChainIterator();
+			MakeClone(void);
+		~SortedChainIterator(void);
 		void TestInstance(void) const;
 
 		//
@@ -464,17 +462,17 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		void
-			First();
+			First(void);
 		void
-			Last();
+			Last(void);
 		void
-			Next();
+			Next(void);
 		void
-			Previous();
+			Previous(void);
 		CollectionSize
-			GetSize();
+			GetSize(void);
 		void
-			Remove();
+			Remove(void);
 
 	protected:
 		//
@@ -485,11 +483,11 @@ namespace Stuff {
 		//--------------------------------------------------------------------
 		//
 		PVOID
-			ReadAndNextImplementation();
+			ReadAndNextImplementation(void);
 		PVOID
-			ReadAndPreviousImplementation();
+			ReadAndPreviousImplementation(void);
 		PVOID
-			GetCurrentImplementation();
+			GetCurrentImplementation(void);
 		PVOID
 			GetNthImplementation(
 			CollectionSize index
@@ -543,32 +541,23 @@ namespace Stuff {
 		explicit SortedChainIteratorOf(SortedChainOf<T, V> *vchain);
 		explicit SortedChainIteratorOf(const SortedChainIteratorOf<T, V> &iterator);
 		Iterator*
-			MakeClone();
-		~SortedChainIteratorOf();
+			MakeClone(void);
+		~SortedChainIteratorOf(void);
 
 		//
 		//--------------------------------------------------------------------
 		// Iterator methods (see Iterator for full listing)
 		//--------------------------------------------------------------------
 		//
-		T
-			ReadAndNext()
-		{return (T)ReadAndNextImplementation();}
-		T
-			ReadAndPrevious()
-		{return (T)ReadAndPreviousImplementation();}
-		T
-			GetCurrent()
-		{return (T)GetCurrentImplementation();}
-		T
-			GetNth(CollectionSize index)
-		{return (T)GetNthImplementation(index);}
-		T
-			Find(const V &value)
-		{return (T)FindImplementation(&value);}
-		V
-			GetValue()
-		{return Cast_Object(SortedChainLinkOf<V>*, currentLink)->GetValue();}
+		T ReadAndNext(void)				{return (T)ReadAndNextImplementation();}
+		T ReadAndPrevious(void)			{return (T)ReadAndPreviousImplementation();}
+		T GetCurrent(void)				{return (T)GetCurrentImplementation();}
+		T GetNth(CollectionSize index) 	{return (T)GetNthImplementation(index);}
+		T Find(const V &value)			{return (T)FindImplementation(&value);}
+		V GetValue()					
+		{
+			return Cast_Object(SortedChainLinkOf<V>*, currentLink)->GetValue();
+		}
 	};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainIteratorOf templates ~~~~~~~~~~~~~~~~~~~~~~

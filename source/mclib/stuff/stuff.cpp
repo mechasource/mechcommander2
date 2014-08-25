@@ -18,6 +18,7 @@
 #include <stuff/filestream.hpp>
 #include <stuff/filestreammanager.hpp>
 #include <stuff/trace.hpp>
+#include <stuff/stuff.hpp>
 
 using namespace Stuff;
 

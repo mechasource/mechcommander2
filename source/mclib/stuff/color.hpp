@@ -95,11 +95,11 @@ namespace Stuff {
 			operator=(const HSVColor &color);
 
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 
 		float
-			Infrared() const
+			Infrared(void) const
 				{Check_Object(this); return 0.3f*red + 0.5f*green + 0.2f*blue;}
 
 		RGBColor&
@@ -300,7 +300,7 @@ namespace Stuff {
 				}
 
 		void
-			TestInstance() const
+			TestInstance(void) const
 				{}
 
 		HSVColor&

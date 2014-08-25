@@ -239,7 +239,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	ExtentBox::TestInstance() const
+	ExtentBox::TestInstance(void) const
 {
 	Verify(minX<=maxX && minY<=maxY && minZ<=maxZ);
 }

@@ -118,7 +118,7 @@ MStringRepresentation::~MStringRepresentation()
 //#############################################################################
 //
 void
-MStringRepresentation::TestInstance() const
+MStringRepresentation::TestInstance(void) const
 {
 #if 0
 	if (stringLength > 0 || stringText != NULL)
@@ -314,7 +314,7 @@ Stuff::operator + (const MStringRepresentation &str, char ch)
 	}
 	else
 	{
-		Verify(str.stringLength != uint32_t_MAX);
+		Verify(str.stringLength != UINT_MAX);
 
 		temp.stringLength = str.stringLength + 1;
 

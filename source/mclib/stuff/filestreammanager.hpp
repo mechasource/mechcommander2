@@ -23,14 +23,14 @@ namespace Stuff {
 		public Stuff::Plug
 	{
 	public:
-		FileDependencies();
+		FileDependencies(void);
 		FileDependencies(const FileDependencies &dependencies):
 		Plug(DefaultData)
 		{
 			Check_Object(this); Check_Object(&dependencies);
 			*this = dependencies;
 		}
-		~FileDependencies();
+		~FileDependencies(void);
 
 		FileDependencies&
 			operator=(const FileDependencies &dependencies);
@@ -60,14 +60,12 @@ namespace Stuff {
 		// Constructor, destructor, and testing
 		//
 	public:
-		FileStreamManager();
-		~FileStreamManager();
+		FileStreamManager(void);
+		~FileStreamManager(void);
 
-		void
-			TestInstance()
-		{}
+		void TestInstance(void) {}
 		static void
-			TestClass();
+			TestClass(void);
 
 		static FileStreamManager
 			*Instance;
@@ -77,7 +75,7 @@ namespace Stuff {
 		//
 	public:
 		void
-			CleanUpAfterCompares();
+			CleanUpAfterCompares(void);
 
 		bool
 			CompareModificationDate(
@@ -85,7 +83,7 @@ namespace Stuff {
 			int64_t time_stamp
 			);
 		void
-			PurgeFileCompareCache();
+			PurgeFileCompareCache(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Private data

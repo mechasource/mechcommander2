@@ -45,6 +45,11 @@
 //#pragma warning(push)
 //#pragma warning(pop)
 
+namespace Stuff {
+	void __stdcall InitializeClasses(void);
+	void __stdcall TerminateClasses(void);
+}
+
 #define GROUP_STUFF "Stuff::"
 #define GROUP_STUFF_TEST "Stuff::Test"
 #define GROUP_STUFF_MEMORY "Stuff::Memory"

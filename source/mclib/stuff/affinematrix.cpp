@@ -787,7 +787,7 @@ AffineMatrix4D::Multiply(const AffineMatrix4D &m,const Point3D& p)
 //###########################################################################
 //
 Scalar
-AffineMatrix4D::Determinant() const
+AffineMatrix4D::Determinant(void) const
 {
 	Check_Object(this);
 

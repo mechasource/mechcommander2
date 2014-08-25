@@ -93,7 +93,7 @@ Plug::~Plug()
 //###########################################################################
 //
 void
-	Plug::TestInstance() const
+	Plug::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 	if (linkHead != NULL)
@@ -218,7 +218,7 @@ PlugIterator::~PlugIterator()
 //#############################################################################
 //
 void
-	PlugIterator::TestInstance() const
+	PlugIterator::TestInstance(void) const
 {
 	if (currentLink != NULL)
 	{

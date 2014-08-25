@@ -59,7 +59,7 @@ UnitVector3D&
 //#############################################################################
 //
 void
-	UnitVector3D::TestInstance() const
+	UnitVector3D::TestInstance(void) const
 {
 
 	#ifdef _ARMOR

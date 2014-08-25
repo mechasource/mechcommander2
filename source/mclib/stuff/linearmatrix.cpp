@@ -219,7 +219,7 @@ LinearMatrix4D&
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	LinearMatrix4D::TestInstance() const
+	LinearMatrix4D::TestInstance(void) const
 {
 	UnitVector3D v1;
 	v1.x = (*this)(0,0);

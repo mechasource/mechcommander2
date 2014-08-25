@@ -36,7 +36,7 @@ public:
 	~TestHost();
 
 	bool
-		TestInstance() const;
+		TestInstance(void) const;
 };
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -65,7 +65,7 @@ TestHost::~TestHost()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 bool
-	TestHost::TestInstance() const
+	TestHost::TestInstance(void) const
 {
 	return true;
 }

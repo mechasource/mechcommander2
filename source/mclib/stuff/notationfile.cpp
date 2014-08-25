@@ -257,7 +257,7 @@ NotationFile::~NotationFile()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	NotationFile::TestInstance() const
+	NotationFile::TestInstance(void) const
 {
 }
 

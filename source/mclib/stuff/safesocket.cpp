@@ -131,7 +131,7 @@ SafeIterator::~SafeIterator()
 //###########################################################################
 //
 void
-	SafeIterator::TestInstance() const
+	SafeIterator::TestInstance(void) const
 {
 	SocketIterator::TestInstance();
 

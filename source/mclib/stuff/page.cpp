@@ -880,6 +880,6 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	Page::TestInstance() const
+	Page::TestInstance(void) const
 {
 }

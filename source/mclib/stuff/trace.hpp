@@ -79,9 +79,9 @@ namespace Stuff {
 			);
 
 		MemoryStream*
-			GetTraceLog();
+			GetTraceLog(void);
 		void
-			IncrementSampleCount();
+			IncrementSampleCount(void);
 
 		virtual void
 			DumpTraceStatus()=0;
@@ -125,12 +125,12 @@ namespace Stuff {
 			NextBit;
 
 		void
-			DumpTraceStatus();
+			DumpTraceStatus(void);
 		void
-			ResetTrace();
+			ResetTrace(void);
 #if defined(USE_TIME_ANALYSIS)
 		void
-			StartTiming();
+			StartTiming(void);
 		float
 			CalculateUsage(
 			int64_t when,
@@ -144,9 +144,9 @@ namespace Stuff {
 		BitTrace(PCSTR name);
 
 		void
-			Set();
+			Set(void);
 		void
-			Clear();
+			Clear(void);
 		bool
 			IsTraceOn()
 		{Check_Object(this); return traceUp>0;}
@@ -158,8 +158,7 @@ namespace Stuff {
 			GetTotalUpTime()
 		{Check_Object(this); return totalUpTime;}
 
-		void
-			TestInstance();
+		void TestInstance(void);
 	};
 
 	//#######################################################################
@@ -179,12 +178,12 @@ namespace Stuff {
 			sampleType;
 
 		void
-			DumpTraceStatus();
+			DumpTraceStatus(void);
 		void
-			ResetTrace();
+			ResetTrace(void);
 #if defined(USE_TIME_ANALYSIS)
 		void
-			StartTiming();
+			StartTiming(void);
 		float
 			CalculateUsage(
 			int64_t when,
@@ -218,7 +217,7 @@ namespace Stuff {
 	{
 		currentValue = initial_value;
 		sampleType = sample_type;
-		TraceOf<T>::ResetTrace();
+		TraceOf<T>::ResetTrace(void);
 	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -285,7 +284,7 @@ namespace Stuff {
 		Check_Object(this);
 
 #if defined(USE_TIME_ANALYSIS) || defined(USE_TRACE_LOG)
-		int64_t now = gos_GetHiResTime();
+		int64_t now = gos_GetHiResTime(void);
 #endif
 
 #if defined(USE_TIME_ANALYSIS)
@@ -297,8 +296,8 @@ namespace Stuff {
 		currentValue = value;
 
 #if defined(USE_TRACE_LOG)
-		IncrementSampleCount();
-		MemoryStream *log = GetTraceLog();
+		IncrementSampleCount(void);
+		MemoryStream *log = GetTraceLog(void);
 		if (log)
 		{
 			Check_Object(log);
@@ -347,8 +346,8 @@ namespace Stuff {
 			Add(Trace *trace);
 
 	public:
-		TraceManager();
-		~TraceManager();
+		TraceManager(void);
+		~TraceManager(void);
 
 		static TraceManager
 			*Instance;
@@ -357,9 +356,9 @@ namespace Stuff {
 			GetTraceCount()
 		{Check_Object(this); return traceCount;}
 		void
-			DumpTracesStatus();
+			DumpTracesStatus(void);
 		void
-			ResetTraces();
+			ResetTraces(void);
 
 		uint32_t
 			GetBitTraceStatus()
@@ -369,7 +368,7 @@ namespace Stuff {
 
 #if defined(USE_TIME_ANALYSIS)
 		void
-			StartTimingAnalysis();
+			StartTimingAnalysis(void);
 		int32_t
 			SnapshotTimingAnalysis(bool print=false);
 #endif
@@ -383,11 +382,11 @@ namespace Stuff {
 		void
 			SaveTraceLog(PCSTR filename);
 		void
-			MarkTraceLog();
+			MarkTraceLog(void);
 		void
-			SuspendTraceLogging();
+			SuspendTraceLogging(void);
 		void
-			ResumeTraceLogging();
+			ResumeTraceLogging(void);
 #endif
 
 #if defined(USE_ACTIVE_PROFILE)
@@ -399,9 +398,7 @@ namespace Stuff {
 			IsLineValidImplementation(uint8_t line);
 #endif
 
-		void
-			TestInstance()
-		{}
+		void TestInstance(void) {}
 	};
 
 	inline MemoryStream*

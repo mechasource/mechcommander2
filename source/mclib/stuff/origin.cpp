@@ -132,7 +132,7 @@ Origin3D&
 //###########################################################################
 //
 void
-	Origin3D::TestInstance() const
+	Origin3D::TestInstance(void) const
 {
 	Check_Object(&angularPosition);
 }

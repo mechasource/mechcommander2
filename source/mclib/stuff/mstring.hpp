@@ -20,47 +20,21 @@ namespace Stuff
 }
 
 #if !defined(Spew)
-void
-Spew(
-	 PCSTR  group,
-	 const Stuff::MStringRepresentation& string
-	 );
-void
-Spew(
-	 PCSTR  group,
-	 const Stuff::MString& string
-	 );
+void Spew(PCSTR group, const Stuff::MStringRepresentation& string);
+void Spew(PCSTR group, const Stuff::MString& string);
 #endif
 
 namespace MemoryStreamIO {
 
-	Stuff::MemoryStream&
-		Read(
-		Stuff::MemoryStream* stream,
-		Stuff::MStringRepresentation *str
-		);
-	Stuff::MemoryStream&
-		Write(
-		Stuff::MemoryStream* stream,
-		const Stuff::MStringRepresentation& str
-		);
-
-	Stuff::MemoryStream&
-		Read(
-		Stuff::MemoryStream* stream,
-		Stuff::MString *str
-		);
-	Stuff::MemoryStream&
-		Write(
-		Stuff::MemoryStream* stream,
-		const Stuff::MString* str
-		);
+	Stuff::MemoryStream& Read(Stuff::MemoryStream* stream, Stuff::MStringRepresentation *str);
+	Stuff::MemoryStream& Write(Stuff::MemoryStream* stream, const Stuff::MStringRepresentation& str);
+	Stuff::MemoryStream& Read(Stuff::MemoryStream* stream, Stuff::MString *str);
+	Stuff::MemoryStream& Write(Stuff::MemoryStream* stream, const Stuff::MString* str);
 
 }
 
 namespace GetHashFunctions {
-	Stuff::IteratorPosition
-		GetHashValue(const Stuff::MString &value);
+	Stuff::IteratorPosition GetHashValue(const Stuff::MString &value);
 }
 
 namespace Stuff {
@@ -73,46 +47,14 @@ namespace Stuff {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// ASCII Conversions
 	//
-	void
-		Convert_From_Ascii(
-		PCSTR  str,
-		PSTR value
-		);
-	void
-		Convert_From_Ascii(
-		PCSTR  str,
-		puint8_t value
-		);
-	void
-		Convert_From_Ascii(
-		PCSTR  str,
-		pint16_t value
-		);
-	void
-		Convert_From_Ascii(
-		PCSTR  str,
-		puint16_t value
-		);
-	void
-		Convert_From_Ascii(
-		PCSTR  str,
-		pint32_t value
-		);
-	void
-		Convert_From_Ascii(
-		PCSTR  str,
-		puint32_t value
-		);
-	void
-		Convert_From_Ascii(
-		PCSTR  str,
-		int32_t* value
-		);
-	void
-		Convert_From_Ascii(
-		PCSTR  str,
-		uint32_t* value
-		);
+	void Convert_From_Ascii(PCSTR str, pint8_t value);
+	void Convert_From_Ascii(PCSTR str, puint8_t value);
+	void Convert_From_Ascii(PCSTR str, pint16_t value);
+	void Convert_From_Ascii(PCSTR str, puint16_t value);
+	void Convert_From_Ascii(PCSTR str, pint32_t value);
+	void Convert_From_Ascii(PCSTR str, puint32_t value);
+	void Convert_From_Ascii(PCSTR str, plong32_t value);
+	void Convert_From_Ascii(PCSTR str, pulong32_t value);
 
 	//##########################################################################
 	//#####################    MStringRepresentation    ########################
@@ -125,40 +67,22 @@ namespace Stuff {
 	{
 		friend MString;
 
-		friend MString
-			operator + (
-			const MString &str1,
-			const MString &str2
-			);
+		friend MString operator + (const MString &str1, const MString &str2);
+		friend MString operator + (const MString &str1, char ch);
 
-		friend MString
-			operator + (
-			const MString &str1,
-			char ch
-			);
-
-		friend MemoryStream&
-			MemoryStreamIO::Read(
-			MemoryStream* stream,
-			MString *str
-			);
-
-		friend void
-			Convert_From_Ascii(
-			PCSTR str,
-			MString *value
-			);
+		friend MemoryStream& MemoryStreamIO::Read(MemoryStream* stream, MString *str);
+		friend void Convert_From_Ascii(PCSTR str, MString *value);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Construction, Destruction
 		//
 	private:
-		MStringRepresentation();
+		MStringRepresentation(void);
 		MStringRepresentation(const MStringRepresentation &str);
 		MStringRepresentation(PCSTR cstr);
 
 	public:
-		~MStringRepresentation();
+		~MStringRepresentation(void);
 
 		void TestInstance(void) const;
 
@@ -169,18 +93,14 @@ namespace Stuff {
 		//
 		// Length returns strlen of string
 		//
-		size_t
-			GetLength() const;
-		void
-			SetLength(size_t length);
-		void
-			AllocateLength(size_t length);
+		size_t GetLength(void) const;
+		void SetLength(size_t length);
+		void AllocateLength(size_t length);
 
 		//
 		// Size returns memory allocation size
 		//
-		size_t
-			GetSize() const;
+		size_t GetSize(void) const;
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Accesors & Manipulation
@@ -190,7 +110,7 @@ namespace Stuff {
 		// create a c-string from MStringRepresentation method
 		// HACK - ECH 11/1/95 - Remove const to support 3rd party libs
 		//
-		operator PSTR() const;
+		operator PSTR(void) const;
 
 		//
 		// assignment method
@@ -258,9 +178,9 @@ namespace Stuff {
 		// case-modification methods
 		//
 		void
-			ToUpper();
+			ToUpper(void);
 		void
-			ToLower();
+			ToLower(void);
 
 		//
 		// stream input/output methods
@@ -292,17 +212,17 @@ namespace Stuff {
 			);
 
 		IteratorPosition
-			GetHashValue();
+			GetHashValue(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Reference count methods
 		//
 	private:
 		void
-			IncrementReferenceCount();
+			IncrementReferenceCount(void);
 
 		void
-			DecrementReferenceCount();
+			DecrementReferenceCount(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Private Data
@@ -341,7 +261,7 @@ namespace Stuff {
 
 	// value return methods
 	inline size_t
-		MStringRepresentation::GetLength() const
+		MStringRepresentation::GetLength(void) const
 	{
 		Check_Object(this);
 		Verify(
@@ -362,7 +282,7 @@ namespace Stuff {
 	}
 
 	inline size_t
-		MStringRepresentation::GetSize() const
+		MStringRepresentation::GetSize(void) const
 	{
 		Check_Object(this);
 		return stringSize;
@@ -371,7 +291,7 @@ namespace Stuff {
 	// create a c-string from MStringRepresentation method
 	// HACK - ECH 11/1/95 - Remove const to support 3rd party libs
 	inline
-		MStringRepresentation::operator PSTR() const
+		MStringRepresentation::operator PSTR(void) const
 	{
 		Check_Object(this);
 		//		Verify(stringText != NULL);
@@ -507,15 +427,15 @@ namespace Stuff {
 		// Construction, Destruction
 		//
 	public:
-		MString();
+		MString(void);
 		MString(const MString &str);
 		MString(PCSTR cstr);
 
-		~MString();
+		~MString(void);
 
 		void TestInstance(void) const;
 		static bool
-			TestClass();
+			TestClass(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Length, Size
@@ -525,7 +445,7 @@ namespace Stuff {
 		// Length returns strlen of string
 		//
 		size_t
-			GetLength() const;
+			GetLength(void) const;
 		void
 			SetLength(size_t length);
 		void
@@ -535,7 +455,7 @@ namespace Stuff {
 		// Size returns memory allocation size
 		//
 		size_t
-			GetSize() const;
+			GetSize(void) const;
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Accesors & Manipulation
@@ -545,7 +465,7 @@ namespace Stuff {
 		// create a c-string from MString method
 		// HACK - ECH 11/1/95 - Remove const to support 3rd party libs
 		//
-		operator PSTR() const;
+		operator PSTR(void) const;
 
 		//
 		// assignment method
@@ -620,9 +540,9 @@ namespace Stuff {
 		// case-modification methods
 		//
 		void
-			ToUpper();
+			ToUpper(void);
 		void
-			ToLower();
+			ToLower(void);
 
 
 		//
@@ -655,7 +575,7 @@ namespace Stuff {
 			);
 
 		IteratorPosition
-			GetHashValue() const
+			GetHashValue(void) const
 		{ return representation->GetHashValue(); }
 
 		friend IteratorPosition
@@ -708,14 +628,14 @@ namespace Stuff {
 	}
 
 	inline void
-		MString::TestInstance() const
+		MString::TestInstance(void) const
 	{
 		Check_Object(representation);
 	}
 
 	// length, size
 	inline size_t
-		MString::GetLength() const
+		MString::GetLength(void) const
 	{
 		Check_Object(representation);
 		return representation->GetLength();
@@ -736,7 +656,7 @@ namespace Stuff {
 	}
 
 	inline size_t
-		MString::GetSize() const
+		MString::GetSize(void) const
 	{
 		Check_Object(representation);
 		return representation->GetSize();
@@ -745,7 +665,7 @@ namespace Stuff {
 	// create a c-string from MString method
 	// HACK - ECH 11/1/95 - Remove const to support 3rd party libs
 	inline
-		MString::operator PSTR() const
+		MString::operator PSTR(void) const
 	{
 		Check_Object(representation);
 		//		Verify(representation->stringText != NULL);

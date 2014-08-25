@@ -296,12 +296,6 @@
   <ItemGroup>
     <ClCompile Include="..\mclib\mlr\gosimage.cpp" />
     <ClCompile Include="..\mclib\mlr\gosimagepool.cpp" />
-    <ClCompile Include="..\mclib\mlr\gospoint.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\mclib\mlr\gosvertex.cpp" />
     <ClCompile Include="..\mclib\mlr\gosvertex2uv.cpp" />
     <ClCompile Include="..\mclib\mlr\mlr.cpp" />
@@ -316,18 +310,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\mclib\mlr\mlrindexedpolymesh.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\mclib\mlr\mlrindexedprimitive.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\mclib\mlr\mlrindexedprimitivebase.cpp" />
     <ClCompile Include="..\mclib\mlr\mlrindexedtrianglecloud.cpp" />
     <ClCompile Include="..\mclib\mlr\mlrinfinitelight.cpp" />
@@ -335,28 +317,10 @@
     <ClCompile Include="..\mclib\mlr\mlrlight.cpp" />
     <ClCompile Include="..\mclib\mlr\mlrlightmap.cpp" />
     <ClCompile Include="..\mclib\mlr\mlrlinecloud.cpp" />
-    <ClCompile Include="..\mclib\mlr\mlrloadobj.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\mclib\mlr\mlrlookuplight.cpp" />
     <ClCompile Include="..\mclib\mlr\mlrngoncloud.cpp" />
     <ClCompile Include="..\mclib\mlr\mlrpointcloud.cpp" />
     <ClCompile Include="..\mclib\mlr\mlrpointlight.cpp" />
-    <ClCompile Include="..\mclib\mlr\mlrpolymesh.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\mclib\mlr\mlrprimitive.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\mclib\mlr\mlrprimitivebase.cpp" />
     <ClCompile Include="..\mclib\mlr\mlrshape.cpp" />
     <ClCompile Include="..\mclib\mlr\mlrsortbyorder.cpp" />
@@ -366,12 +330,6 @@
     <ClCompile Include="..\mclib\mlr\mlrtexture.cpp" />
     <ClCompile Include="..\mclib\mlr\mlrtexturepool.cpp" />
     <ClCompile Include="..\mclib\mlr\mlrtrianglecloud.cpp" />
-    <ClCompile Include="..\mclib\mlr\mlrvertex.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\mclib\mlr\mlr_i_c_det_pmesh.cpp" />
     <ClCompile Include="..\mclib\mlr\mlr_i_c_det_tmesh.cpp" />
     <ClCompile Include="..\mclib\mlr\mlr_i_c_dt_pmesh.cpp" />
@@ -405,10 +363,9 @@
     <ClInclude Include="..\include\mechtypes.h" />
     <ClInclude Include="..\mclib\mlr\gosimage.hpp" />
     <ClInclude Include="..\mclib\mlr\gosimagepool.hpp" />
-    <ClInclude Include="..\mclib\mlr\gospoint.hpp" />
     <ClInclude Include="..\mclib\mlr\gosvertex.hpp" />
     <ClInclude Include="..\mclib\mlr\gosvertex2uv.hpp" />
-    <ClInclude Include="..\mclib\mlr\gosvertexmanipulation.hpp" />
+    <ClInclude Include="..\mclib\mlr\gosvertexmanipulation.inl" />
     <ClInclude Include="..\mclib\mlr\gosvertexpool.hpp" />
     <ClInclude Include="..\mclib\mlr\mlr.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrambientlight.hpp" />
@@ -418,8 +375,6 @@
     <ClInclude Include="..\mclib\mlr\mlrcliptrick.hpp" />
     <ClInclude Include="..\mclib\mlr\mlreffect.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrheaders.hpp" />
-    <ClInclude Include="..\mclib\mlr\mlrindexedpolymesh.hpp" />
-    <ClInclude Include="..\mclib\mlr\mlrindexedprimitive.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrindexedprimitivebase.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrindexedtrianglecloud.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrinfinitelight.hpp" />
@@ -431,11 +386,9 @@
     <ClInclude Include="..\mclib\mlr\mlrngoncloud.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrpointcloud.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrpointlight.hpp" />
-    <ClInclude Include="..\mclib\mlr\mlrpolymesh.hpp" />
-    <ClInclude Include="..\mclib\mlr\mlrprimitive.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrprimitivebase.hpp" />
-    <ClInclude Include="..\mclib\mlr\mlrprimitiveclipping.hpp" />
-    <ClInclude Include="..\mclib\mlr\mlrprimitivelighting.hpp" />
+    <ClInclude Include="..\mclib\mlr\mlrprimitiveclipping.inl" />
+    <ClInclude Include="..\mclib\mlr\mlrprimitivelighting.inl" />
     <ClInclude Include="..\mclib\mlr\mlrshape.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrsortbyorder.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrsorter.hpp" />
@@ -443,10 +396,9 @@
     <ClInclude Include="..\mclib\mlr\mlrstate.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrtexture.hpp" />
     <ClInclude Include="..\mclib\mlr\mlrtexturepool.hpp" />
-    <ClInclude Include="..\mclib\mlr\mlrtriangleclipping.hpp" />
+    <ClInclude Include="..\mclib\mlr\mlrtriangleclipping.inl" />
     <ClInclude Include="..\mclib\mlr\mlrtrianglecloud.hpp" />
-    <ClInclude Include="..\mclib\mlr\mlrtrianglelighting.hpp" />
-    <ClInclude Include="..\mclib\mlr\mlrvertex.hpp" />
+    <ClInclude Include="..\mclib\mlr\mlrtrianglelighting.inl" />
     <ClInclude Include="..\mclib\mlr\mlr_i_c_det_pmesh.hpp" />
     <ClInclude Include="..\mclib\mlr\mlr_i_c_det_tmesh.hpp" />
     <ClInclude Include="..\mclib\mlr\mlr_i_c_dt_pmesh.hpp" />
@@ -468,7 +420,6 @@
     <ClInclude Include="..\mclib\mlr\mlr_i_tmesh.hpp" />
     <ClInclude Include="..\mclib\mlr\mlr_terrain.hpp" />
     <ClInclude Include="..\mclib\mlr\mlr_terrain2.hpp" />
-    <ClInclude Include="..\mclib\mlr\owntrace.hpp" />
     <ClInclude Include="..\mclib\stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

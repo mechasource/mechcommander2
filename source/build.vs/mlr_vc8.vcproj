@@ -604,13 +604,6 @@
 					RelativePath="..\mclib\mlr\gospoint.cpp"
 					>
 					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
 						Name="Debug|x64"
 						ExcludedFromBuild="true"
 						>
@@ -881,23 +874,7 @@
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\mlrprimitiveclipping.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrprimitivelighting.hpp"
-						>
-					</File>
-					<File
 						RelativePath="..\mclib\mlr\mlrshape.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrtriangleclipping.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\mlr\mlrtrianglelighting.hpp"
 						>
 					</File>
 					<Filter
@@ -1081,10 +1058,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\mclib\mlr\gosvertexmanipulation.hpp"
-						>
-					</File>
-					<File
 						RelativePath="..\mclib\mlr\gosvertexpool.hpp"
 						>
 					</File>
@@ -1179,6 +1152,30 @@
 				</File>
 				<File
 					RelativePath="..\include\mechtypes.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="inlines"
+				>
+				<File
+					RelativePath="..\mclib\mlr\gosvertexmanipulation.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\mclib\mlr\mlrprimitiveclipping.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\mclib\mlr\mlrprimitivelighting.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\mclib\mlr\mlrtriangleclipping.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\mclib\mlr\mlrtrianglelighting.inl"
 					>
 				</File>
 			</Filter>

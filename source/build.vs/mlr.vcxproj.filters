@@ -103,6 +103,9 @@
     <Filter Include="Headers\common">
       <UniqueIdentifier>{37b5dad9-b8b1-4b13-a1df-f804aedfd5af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\mlr\inlines">
+      <UniqueIdentifier>{007a9972-86d6-4415-ac2b-62a79d046031}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\mclib\mlr\mlr.cpp">
@@ -258,27 +261,6 @@
     <ClCompile Include="..\mclib\mlr\mlrtrianglecloud.cpp">
       <Filter>Sources\mlr\Effects</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\mlr\gospoint.cpp">
-      <Filter>Sources\extra</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\mlr\mlrindexedpolymesh.cpp">
-      <Filter>Sources\extra</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\mlr\mlrindexedprimitive.cpp">
-      <Filter>Sources\extra</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\mlr\mlrloadobj.cpp">
-      <Filter>Sources\extra</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\mlr\mlrpolymesh.cpp">
-      <Filter>Sources\extra</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\mlr\mlrprimitive.cpp">
-      <Filter>Sources\extra</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\mlr\mlrvertex.cpp">
-      <Filter>Sources\extra</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\mlr\mlrheaders.cpp">
       <Filter>build\precompiled</Filter>
     </ClCompile>
@@ -299,19 +281,7 @@
     <ClInclude Include="..\mclib\mlr\mlrprimitivebase.hpp">
       <Filter>Headers\mlr\Geometries</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrprimitiveclipping.hpp">
-      <Filter>Headers\mlr\Geometries</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrprimitivelighting.hpp">
-      <Filter>Headers\mlr\Geometries</Filter>
-    </ClInclude>
     <ClInclude Include="..\mclib\mlr\mlrshape.hpp">
-      <Filter>Headers\mlr\Geometries</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrtriangleclipping.hpp">
-      <Filter>Headers\mlr\Geometries</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrtrianglelighting.hpp">
       <Filter>Headers\mlr\Geometries</Filter>
     </ClInclude>
     <ClInclude Include="..\mclib\mlr\mlr_i_c_det_pmesh.hpp">
@@ -428,9 +398,6 @@
     <ClInclude Include="..\mclib\mlr\gosvertex2uv.hpp">
       <Filter>Headers\mlr\Rasterizer</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\gosvertexmanipulation.hpp">
-      <Filter>Headers\mlr\Rasterizer</Filter>
-    </ClInclude>
     <ClInclude Include="..\mclib\mlr\gosvertexpool.hpp">
       <Filter>Headers\mlr\Rasterizer</Filter>
     </ClInclude>
@@ -461,27 +428,6 @@
     <ClInclude Include="..\mclib\mlr\mlrtrianglecloud.hpp">
       <Filter>Headers\mlr\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="..\mclib\mlr\gospoint.hpp">
-      <Filter>Headers\extra</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrindexedpolymesh.hpp">
-      <Filter>Headers\extra</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrindexedprimitive.hpp">
-      <Filter>Headers\extra</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrpolymesh.hpp">
-      <Filter>Headers\extra</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrprimitive.hpp">
-      <Filter>Headers\extra</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\mlr\mlrvertex.hpp">
-      <Filter>Headers\extra</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\mlr\owntrace.hpp">
-      <Filter>Headers\extra</Filter>
-    </ClInclude>
     <ClInclude Include="..\mclib\mlr\mlrheaders.hpp">
       <Filter>build\precompiled</Filter>
     </ClInclude>
@@ -493,6 +439,21 @@
     </ClInclude>
     <ClInclude Include="..\include\mechtypes.h">
       <Filter>Headers\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\mlr\gosvertexmanipulation.inl">
+      <Filter>Headers\mlr\inlines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\mlr\mlrtrianglelighting.inl">
+      <Filter>Headers\mlr\inlines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\mlr\mlrtriangleclipping.inl">
+      <Filter>Headers\mlr\inlines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\mlr\mlrprimitivelighting.inl">
+      <Filter>Headers\mlr\inlines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mclib\mlr\mlrprimitiveclipping.inl">
+      <Filter>Headers\mlr\inlines</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

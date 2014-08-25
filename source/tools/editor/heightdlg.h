@@ -13,21 +13,17 @@ Notes				: lets the user enter a minimum and maximum height for the map
 #ifndef HEIGHTDLG_H
 #define HEIGHTDLG_H
 
-//#include "stdafx.h"
-
 /**************************************************************************************************
 CLASS DESCRIPTION
 HeightDlg:
 **************************************************************************************************/
-
-
 class HeightDlg: public CDialog
 {
 	public:
 
 		HeightDlg( int32_t min = 0, int32_t max = 0);
-		void Init();
-		void OnOK();
+		void Init(void);
+		void OnOK(void);
 		//virtual	void OnCommand(Window *wnd,int32_t nCommand);
 
 		int32_t GetMin(){ return min; }
@@ -35,7 +31,7 @@ class HeightDlg: public CDialog
 
 		void SetMin( int32_t newMin ){ min = newMin; }
 		void SetMax( int32_t newMax ){ max = newMax; }
-		virtual BOOL OnInitDialog(){ Init(); return TRUE; }
+		virtual BOOL OnInitDialog(){ Init(void); return TRUE; }
 
 
 	private:

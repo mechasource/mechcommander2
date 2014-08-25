@@ -116,7 +116,7 @@ BOOL MainFrame::PreCreateWindow(CREATESTRUCT& cs)
 // MainFrame diagnostics
 
 #ifdef _DEBUG
-void MainFrame::AssertValid() const
+void MainFrame::AssertValid(void) const
 {
 	CFrameWnd::AssertValid();
 }

@@ -38,8 +38,8 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(SelectTerrainTypeDlg)
-	virtual BOOL OnInitDialog();
-	virtual void OnOK();
+	virtual BOOL OnInitDialog(void);
+	virtual void OnOK(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

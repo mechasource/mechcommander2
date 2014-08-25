@@ -12,7 +12,9 @@
 #ifndef BRUSH_H_
 #define BRUSH_H_
 
-// #include <mclib.h>
+namespace Stuff {
+	class Vector3D;
+}
 
 class Action;
 class Map;
@@ -21,17 +23,17 @@ class Brush
 {
 
 public:
-	Brush(){}
-	virtual ~Brush(){}
-	virtual bool beginPaint()  = 0;
-	virtual Action* endPaint() = 0;
+	Brush(void){}
+	virtual ~Brush(void){}
+	virtual bool beginPaint(void)  = 0;
+	virtual Action* endPaint(void) = 0;
 	virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  )  = 0;
-	virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ) { return true; } 
-	virtual bool canPaintSelection( ){ return true; }
-	virtual Action* applyToSelection(){ return NULL;}
+	virtual bool canPaint( Stuff::Vector3D& /*worldPos*/, int32_t /*screenX*/, int32_t /*screenY*/, int32_t /*flags*/ ) { return true; } 
+	virtual bool canPaintSelection(void){ return true; }
+	virtual Action* applyToSelection(void){ return NULL;}
 
-	virtual void render( int32_t screenX, int32_t screenY ){}
-	virtual void update( int32_t screenX, int32_t screenY ){}
+	virtual void render( int32_t /*screenX*/, int32_t /*screenY*/ ){}
+	virtual void update( int32_t /*screenX*/, int32_t /*screenY*/ ){}
 
 private:
 

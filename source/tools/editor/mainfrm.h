@@ -17,7 +17,7 @@ class MainFrame : public CFrameWnd
 {
 	
 public:
-	MainFrame();
+	MainFrame(void);
 protected: 
 	DECLARE_DYNAMIC(MainFrame)
 
@@ -39,9 +39,9 @@ public:
 
 // Implementation
 public:
-	virtual ~MainFrame();
+	virtual ~MainFrame(void);
 #ifdef _DEBUG
-	virtual void AssertValid() const;
+	virtual void AssertValid(void) const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
@@ -57,7 +57,7 @@ protected:
 	//{{AFX_MSG(MainFrame)
 	afx_msg int32_t OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSetFocus(CWnd *pOldWnd);
-	afx_msg void OnClose();
+	afx_msg void OnClose(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

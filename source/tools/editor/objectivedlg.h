@@ -7,8 +7,6 @@
 #if !defined(AFX_OBJECTIVEDLG_H__2D6B2B2E_16F8_43B2_9534_A2DC1672352F__INCLUDED_)
 #define AFX_OBJECTIVEDLG_H__2D6B2B2E_16F8_43B2_9534_A2DC1672352F__INCLUDED_
 
-//#include "resource.h"
-//#include "stdafx.h"
 //#include "objective.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -19,11 +17,11 @@ class ObjectiveDlg : public CDialog
 // Construction
 public:
 	ObjectiveDlg(CWnd* pParent = NULL);   // standard constructor
-	void LoadDialogValues();
-	void SaveDialogValues();
+	void LoadDialogValues(void);
+	void SaveDialogValues(void);
 
-	void UpdateTitleDisplay();
-	void UpdateDescriptionDisplay();
+	void UpdateTitleDisplay(void);
+	void UpdateDescriptionDisplay(void);
 
 	CObjective m_ModifiedObjective;
 
@@ -98,31 +96,31 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(ObjectiveDlg)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnObjectiveAddConditionButton();
-	afx_msg void OnObjectiveRemoveConditionButton();
-	afx_msg void OnObjectiveAddActionButton();
-	afx_msg void OnObjectiveRemoveActionButton();
-	virtual void OnOK();
-	afx_msg void OnSelchangeGroup();
-	afx_msg void OnBaseedit2();
-	afx_msg void OnHighilight2edit2();
-	afx_msg void OnHighlight1edit();
-	afx_msg void OnChangeHighlight1();
-	afx_msg void OnChangeHighlight2();
-	afx_msg void OnChangeBase2();
+	virtual BOOL OnInitDialog(void);
+	afx_msg void OnObjectiveAddConditionButton(void);
+	afx_msg void OnObjectiveRemoveConditionButton(void);
+	afx_msg void OnObjectiveAddActionButton(void);
+	afx_msg void OnObjectiveRemoveActionButton(void);
+	virtual void OnOK(void);
+	afx_msg void OnSelchangeGroup(void);
+	afx_msg void OnBaseedit2(void);
+	afx_msg void OnHighilight2edit2(void);
+	afx_msg void OnHighlight1edit(void);
+	afx_msg void OnChangeHighlight1(void);
+	afx_msg void OnChangeHighlight2(void);
+	afx_msg void OnChangeBase2(void);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
-	afx_msg void OnObjectiveTitleEditButton();
-	afx_msg void OnObjectiveDescriptionEditButton();
-	afx_msg void OnObjectiveAddFailureConditionButton();
-	afx_msg void OnObjectiveRemoveFailureConditionButton();
-	afx_msg void OnObjectiveAddFailureActionButton();
-	afx_msg void OnObjectiveRemoveFailureActionButton();
-	afx_msg void OnObjectiveViewConditionButton();
-	afx_msg void OnObjectiveViewActionButton();
-	afx_msg void OnObjectiveViewFailureConditionButton();
-	afx_msg void OnObjectiveViewFailureActionButton();
-	afx_msg void OnObjectiveClearLogisticsModelButton();
+	afx_msg void OnObjectiveTitleEditButton(void);
+	afx_msg void OnObjectiveDescriptionEditButton(void);
+	afx_msg void OnObjectiveAddFailureConditionButton(void);
+	afx_msg void OnObjectiveRemoveFailureConditionButton(void);
+	afx_msg void OnObjectiveAddFailureActionButton(void);
+	afx_msg void OnObjectiveRemoveFailureActionButton(void);
+	afx_msg void OnObjectiveViewConditionButton(void);
+	afx_msg void OnObjectiveViewActionButton(void);
+	afx_msg void OnObjectiveViewFailureConditionButton(void);
+	afx_msg void OnObjectiveViewFailureActionButton(void);
+	afx_msg void OnObjectiveClearLogisticsModelButton(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

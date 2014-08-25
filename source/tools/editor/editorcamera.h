@@ -44,12 +44,12 @@ public:
 
 		EditorCamera (void)
 		{
-			init();
+			init(void);
 		}
 
 		virtual void init (void)
 		{
-			Camera::init();
+			Camera::init(void);
 			compass = NULL;
 			drawCompass = true;
 			cameraLineChanged = 0;
@@ -87,12 +87,12 @@ public:
 		// VFX stuff for this.  ALL GOS NOW!
 		screenResolution.x = viewMulX;
 		screenResolution.y = viewMulY;
-		calculateProjectionConstants();
+		calculateProjectionConstants(void);
 	
 		TG_Shape::SetViewport(viewMulX,viewMulY,viewAddX,viewAddY);
 	
 
-		globalScaleFactor = getScaleFactor();
+		globalScaleFactor = getScaleFactor(void);
 		globalScaleFactor *= viewMulX / Environment.screenWidth;		//Scale Mechs to ScreenRES
 		
 		//-----------------------------------------------
@@ -103,11 +103,11 @@ public:
 		eye->setLightIntensity(1,1.0);
 	
 		MidLevelRenderer::MLRState default_state;
-		default_state.SetBackFaceOn();
-		default_state.SetDitherOn();
-		default_state.SetTextureCorrectionOn();
-		default_state.SetZBufferCompareOn();
-		default_state.SetZBufferWriteOn();
+		default_state.SetBackFaceOn(void);
+		default_state.SetDitherOn(void);
+		default_state.SetTextureCorrectionOn(void);
+		default_state.SetZBufferCompareOn(void);
+		default_state.SetZBufferWriteOn(void);
 	
 		default_state.SetFilterMode(MidLevelRenderer::MLRState::BiLinearFilterMode);
 		
@@ -126,21 +126,21 @@ public:
 			if (theSky)
 				theSky->render(1);
 				
-			land->render();								//render the Terrain
+			land->render(void);								//render the Terrain
 	
 			//If you ever want craters in the editor, just turn this on.  No way to save 'em though!
-			//craterManager->render();					//render the craters and footprints
+			//craterManager->render(void);					//render the craters and footprints
 	
 			//Only the GameCamera knows about this.  Heidi, override this function in EditorCamera
 			//and have your objectManager draw.
 
 			if (!s_bSensorMapEnabled)
-				EditorObjectMgr::instance()->render();		//render all other objects
+				EditorObjectMgr::instance()->render(void);		//render all other objects
 
-			land->renderWater();
+			land->renderWater(void);
 
 			if (!s_bSensorMapEnabled && useShadows)
-				EditorObjectMgr::instance()->renderShadows();	//render all other objects
+				EditorObjectMgr::instance()->renderShadows(void);	//render all other objects
 
 			if (!drawOldWay)
 			{
@@ -149,21 +149,21 @@ public:
 			}
 
 			if (!drawOldWay)
-				mcTextureManager->renderLists();
+				mcTextureManager->renderLists(void);
 
-			//theClipper->RenderNow();		//Draw the FX
+			//theClipper->RenderNow(void);		//Draw the FX
 
 			/* The editor interface needs to be drawn last, as it draws things "on top" of the
 			rendered scene. */
 			if ( EditorInterface::instance() )
 			{
-				EditorInterface::instance()->render();
+				EditorInterface::instance()->render(void);
 				/* We need to call renderLists() again to render the "object placement" cursor
 				that, if active, was placed in a render list in the "EditorInterface::instance()->render()"
 				call. renderLists() seems to have an automatic mechanism for not redrawing
 				things it has already drawn. Pretty much everything else drawn by
 				EditorInterface is "rendered immediately" (not placed in a renderList). */
-				mcTextureManager->renderLists();
+				mcTextureManager->renderLists(void);
 			}
 		}
 	
@@ -175,7 +175,7 @@ public:
 			gos_SetRenderState( gos_State_Perspective, 1);
 	
 			if (compass && (turn > 3) && drawCompass)
-				compass->render();
+				compass->render(void);
 		}
  	}
 
@@ -190,7 +190,7 @@ public:
 		
 		lastShadowLightPitch = lightPitch;
 
-		allNormal();
+		allNormal(void);
 
 		return NO_ERROR;
 	}
@@ -245,17 +245,17 @@ public:
 			theSky->init((GenericAppearanceType*)genericAppearanceType, NULL);
 			
 			theSky->setSkyNumber(EditorData::instance->TheSkyNumber());
-			oldSkyNumber = EditorData::instance->TheSkyNumber();
+			oldSkyNumber = EditorData::instance->TheSkyNumber(void);
 		}
 
 		//Did they change the skyNumber on us?
 		if (theSky && (oldSkyNumber != EditorData::instance->TheSkyNumber()))
 		{
 			theSky->setSkyNumber(EditorData::instance->TheSkyNumber());
-			oldSkyNumber = EditorData::instance->TheSkyNumber();
+			oldSkyNumber = EditorData::instance->TheSkyNumber(void);
 		}
 		
-		int32_t result = Camera::update();
+		int32_t result = Camera::update(void);
 
 		if ((cameraLineChanged + 10) < turn)
 		{
@@ -277,7 +277,7 @@ public:
    	   		useFog = false;
    			useShadows = false;
    	   		
-   	   		Stuff::Vector3D pos = getPosition();
+   	   		Stuff::Vector3D pos = getPosition(void);
    	   		compass->setObjectParameters(pos,0.0f,false,0,0);
    	   		compass->setMoverParameters(0.0f);
    	   		compass->setGesture(0);
@@ -285,12 +285,12 @@ public:
    	   		compass->setInView(true);
    	   		compass->setVisibility(true,true);
    	   		compass->setFilterState(true);
-   			compass->setIsHudElement();
-   	   		compass->update();		   //Force it to try and draw or stuff will not work!
+   			compass->setIsHudElement(void);
+   	   		compass->update(void);		   //Force it to try and draw or stuff will not work!
 			
 			if (theSky)
 			{
-				Stuff::Vector3D pos = getPosition();
+				Stuff::Vector3D pos = getPosition(void);
 				
 				theSky->setObjectParameters(pos,0.0f,false,0,0);
 				theSky->setMoverParameters(0.0f);
@@ -299,8 +299,8 @@ public:
 				theSky->setInView(true);
 				theSky->setVisibility(true,true);
 				theSky->setFilterState(true);
-				theSky->setIsHudElement();
-				theSky->update();		   //Force it to try and draw or stuff will not work!
+				theSky->setIsHudElement(void);
+				theSky->update(void);		   //Force it to try and draw or stuff will not work!
 			}
 					
    	   		useFog = oldFog;

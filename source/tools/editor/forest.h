@@ -10,8 +10,6 @@ forest.h			: Interface for the forest component.
 #ifndef FOREST_H
 #define FOREST_H
 
-//#include "stdafx.h"
-
 class FitIniFile;
 
 #define FOREST_TYPES 15
@@ -38,13 +36,13 @@ public:
 	void save( FitIniFile& file );
 
 
-	PCSTR getFileName() const { return fileName; }
+	PCSTR getFileName(void) const { return fileName; }
 	void		setFileName( PCSTR newName ){ fileName = newName; }
 
-	PCSTR getName() const { return name;}
+	PCSTR getName(void) const { return name;}
 	void		setName( PCSTR newName ){ name = newName; }
 
-	int32_t		getID() const { return ID; }
+	int32_t		getID(void) const { return ID; }
 	
 
 private:

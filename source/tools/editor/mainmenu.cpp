@@ -11,7 +11,7 @@
 //#include "resource.h"
 #include <assert.h>
 
-#include "EditorInterface.h"
+#include "editorinterface.h"
 
 MainMenu *pMainMenu = NULL;
 MainMenu::MainMenu(EditorInterface *pEditorInterface):Window(L"MainMenu",0,0,Environment.screenWidth,Environment.screenHeight,pEditorInterface/*pgWinMan->Root()*/,0,0)

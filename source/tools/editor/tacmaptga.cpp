@@ -5,9 +5,10 @@ TgaMapTGA.cpp			: Implementation of the TgaMapTGA component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+
 #include "stdafx.h"
-#include "TacMapTGA.h"
-#include "tacmap.h"
+#include <tacmap.h>
+#include "tgawnd.h"
 #include "editordata.h"
 
 

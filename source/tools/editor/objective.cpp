@@ -6,7 +6,7 @@ Objective.cpp			: Implementation of the Objective component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "terrain.h"
+#include <terrain.h>
 
 #include "Objective.h"
 #include "ObjectiveDlg.h"
@@ -22,7 +22,7 @@ Objective.cpp			: Implementation of the Objective component.
 #include "EditorInterface.h"
 #include "../resource.h"/*this is mc2res.dll's header file*/
 
-#include "estring.h"
+#include <estring.h>
 #include "ECharString.h"
 
 #ifndef INIFILE_H
@@ -1358,7 +1358,7 @@ static action_species_type ActionSpeciesMap(PCSTR speciesString) {
 	return retval;
 }
 
-bool CObjective::Read( FitIniFile* missionFile, int32_t objectiveNum, int32_t version )
+bool CObjective::Read( FitIniFile* missionFile, int32_t objectiveNum, uint32_t version )
 {
 	int32_t result = 0;
 	ECharString tmpECStr;
@@ -1727,7 +1727,7 @@ static BOOL CSLoadString(int32_t resourceID, CString &targetStr) {
 	return (!0);
 }
 
-EString CObjective::LocalizedTitle() const {
+EString CObjective::LocalizedTitle(void) const {
 	EString retval;
 	if (TitleUseResourceString()) {
 		CString CStr;
@@ -1739,7 +1739,7 @@ EString CObjective::LocalizedTitle() const {
 	return retval;
 }
 
-EString CObjective::LocalizedDescription() const {
+EString CObjective::LocalizedDescription(void) const {
 	EString retval;
 	if (DescriptionUseResourceString()) {
 		CString CStr;

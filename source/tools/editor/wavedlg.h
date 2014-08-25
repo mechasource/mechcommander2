@@ -19,10 +19,10 @@ class WaveDlg: public CDialog
 	public:
 
 		WaveDlg() : CDialog(IDD_WAVES){}
-		virtual BOOL OnInitDialog(){ Init(); return FALSE; }
-		virtual void Init();
-		void	UpdateData();
-		void	OnOK();
+		virtual BOOL OnInitDialog(){ Init(void); return FALSE; }
+		virtual void Init(void);
+		void	UpdateData(void);
+		void	OnOK(void);
 
 
 		float amplitude;

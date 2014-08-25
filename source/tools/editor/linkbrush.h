@@ -28,9 +28,9 @@ class LinkBrush: public Brush
 	public:
 
 	LinkBrush( bool bLink );
-	virtual ~LinkBrush();
-	virtual bool beginPaint();
-	virtual Action* endPaint();
+	virtual ~LinkBrush(void);
+	virtual bool beginPaint(void);
+	virtual Action* endPaint(void);
 	virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  );
 	virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags );
 	virtual bool canPaintSelection( ){ return false; }
@@ -67,11 +67,11 @@ class LinkBrush: public Brush
 	public:
 		
 		
-		LinkAction();
+		LinkAction(void);
 		~LinkAction( ){}
 		
-		virtual bool redo();
-		virtual bool undo();
+		virtual bool redo(void);
+		virtual bool undo(void);
 
 		EList< LinkInfo, const LinkInfo& > changedLinks;
 		AddToListOnce( const LinkAction::LinkInfo& info );

@@ -43,24 +43,24 @@ protected:
 	void DoColorBox( CWnd* pWnd );
 
 	//{{AFX_MSG(UnitSettingsDlg)
-	afx_msg void OnSelchangeGroup();
-	afx_msg void OnHighilight2edit();
-	afx_msg void OnChangeHighlight1();
-	afx_msg void OnHighlight1edit();
-	afx_msg void OnChangeHighlight2();
-	afx_msg void OnChangeBase();
-	afx_msg void OnBaseedit();
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
+	afx_msg void OnSelchangeGroup(void);
+	afx_msg void OnHighilight2edit(void);
+	afx_msg void OnChangeHighlight1(void);
+	afx_msg void OnHighlight1edit(void);
+	afx_msg void OnChangeHighlight2(void);
+	afx_msg void OnChangeBase(void);
+	afx_msg void OnBaseedit(void);
+	virtual void OnOK(void);
+	virtual BOOL OnInitDialog(void);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
-	afx_msg void OnSelchangeMech();
-	virtual void OnCancel();
+	afx_msg void OnSelchangeMech(void);
+	virtual void OnCancel(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 	afx_msg void OnAlign1(uint32_t which);
 
-	void applyChanges();
+	void applyChanges(void);
 	ModifyBuildingAction *pAction;
 
 	typedef EList< Unit*, Unit* > UNIT_LIST;
@@ -70,10 +70,10 @@ protected:
 	CBrush		brush1;
 	CBrush		brush2;
 
-	void updatePossibiltyControls();
+	void updatePossibiltyControls(void);
 	Unit *pFirstPossibility;
-	int32_t getPossibilityIndex();
-	void updateMemberVariables();
+	int32_t getPossibilityIndex(void);
+	void updateMemberVariables(void);
 	ActionUndoMgr *pUndoMgr;
 };
 

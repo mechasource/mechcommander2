@@ -17,7 +17,7 @@ class EditorView : public CWnd
 {
 // Construction
 public:
-	EditorView();
+	EditorView(void);
 
 // Attributes
 public:
@@ -35,12 +35,12 @@ public:
 
 // Implementation
 public:
-	virtual ~EditorView();
+	virtual ~EditorView(void);
 
 	// Generated message map functions
 protected:
 	//{{AFX_MSG(EditorView)
-	afx_msg void OnPaint();
+	afx_msg void OnPaint(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

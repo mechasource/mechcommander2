@@ -24,21 +24,21 @@ class DlgFileOpen: public CDialog
 		DlgFileOpen( PCSTR directoryName, PCSTR extension,  bool bSave );
 		DlgFileOpen( const DlgFileOpen& lgFileOpen );
 
-		void OnCancel();
-		void OnOK();
+		void OnCancel(void);
+		void OnOK(void);
 		//virtual void handleMessage (GObject *from, int32_t messageId, int32_t specificMsg);
 		
-		virtual ~DlgFileOpen();
+		virtual ~DlgFileOpen(void);
 
 		void Init(void);
 
-		PCSTR getFileName() const { return fileName; }
-		PCSTR getExtension() const { return extension; }
+		PCSTR getFileName(void) const { return fileName; }
+		PCSTR getExtension(void) const { return extension; }
 
 	private:
 
 		// HELPER FUNCTIONS
-		void init(); // I think I'll hard wire the file name here
+		void init(void); // I think I'll hard wire the file name here
 
 
 		//{{AFX_DATA(DlgFileOpen)
@@ -50,14 +50,14 @@ class DlgFileOpen: public CDialog
 
 	protected:
 		//{{AFX_MSG(DlgFileOpen)
-		virtual BOOL OnInitDialog();
-	afx_msg void OnSelchangeFileopenFilelist();
+		virtual BOOL OnInitDialog(void);
+	afx_msg void OnSelchangeFileopenFilelist(void);
 	//}}AFX_MSG
 		DECLARE_MESSAGE_MAP()
 
 
 		// suppressing these
-		inline DlgFileOpen();
+		inline DlgFileOpen(void);
 		DlgFileOpen& operator=( const DlgFileOpen& lgFileOpen );
 
 		char fileName[MAX_PATH];

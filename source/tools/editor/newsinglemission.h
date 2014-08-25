@@ -35,9 +35,9 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(NewSingleMission)
-	afx_msg void OnLoadMission();
-	afx_msg void OnNewmission();
-	virtual void OnCancel();
+	afx_msg void OnLoadMission(void);
+	afx_msg void OnNewmission(void);
+	virtual void OnCancel(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

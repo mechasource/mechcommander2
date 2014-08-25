@@ -6,13 +6,13 @@
 //
 
 #include "stdafx.h"
-#include "CampaignDialog.h"
-#include "CampaignData.h"
-#include "GroupDialog.h"
+#include "campaigndialog.h"
+#include "campaigndata.h"
+#include "groupdialog.h"
 #include "assert.h"
-#include "../MCLib/Utilities.h" /*for cLoadString*/
-#include "UserTextEdit.h"
-#include "../MCLib/Paths.h"
+#include <utilities.h> /*for cloadstring*/
+#include "usertextedit.h"
+#include <paths.h>
 
 #if 0 /*gos doesn't like this */
 #ifdef _DEBUG

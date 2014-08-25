@@ -21,16 +21,16 @@ class CTeam
 public:
 	CTeam(int32_t alignment = 0) { Alignment(alignment); }
 	bool operator==(const CTeam &rhs) const;
-	void Clear() { m_objectives.Clear(); }
+	void Clear() { m_objectives.Clear(void); }
 	int32_t Alignment() { return m_alignment; }
 	void Alignment(int32_t alignment) { m_alignment = alignment; m_objectives.Alignment(m_alignment); }
 	bool Read( FitIniFile* missionFile ) { return m_objectives.Read(missionFile); }
 	bool Save( FitIniFile* missionFile ) { return m_objectives.Save(missionFile); }
 	CObjectives &ObjectivesRef() { return m_objectives; }
 	void handleObjectInvalidation(const EditorObject *pObj) { m_objectives.handleObjectInvalidation(pObj); }
-	bool NoteThePositionsOfObjectsReferenced() { return m_objectives.NoteThePositionsOfObjectsReferenced(); }
-	bool RestoreObjectPointerReferencesFromNotedPositions() { return m_objectives.RestoreObjectPointerReferencesFromNotedPositions(); }
-	bool ThereAreObjectivesWithNoConditions() { return m_objectives.ThereAreObjectivesWithNoConditions(); }
+	bool NoteThePositionsOfObjectsReferenced() { return m_objectives.NoteThePositionsOfObjectsReferenced(void); }
+	bool RestoreObjectPointerReferencesFromNotedPositions() { return m_objectives.RestoreObjectPointerReferencesFromNotedPositions(void); }
+	bool ThereAreObjectivesWithNoConditions() { return m_objectives.ThereAreObjectivesWithNoConditions(void); }
 private:
 	int32_t m_alignment;
 	CObjectives m_objectives;
@@ -39,17 +39,17 @@ private:
 class CTeams
 {
 public:
-	CTeams();
+	CTeams(void);
 	CTeams &operator=(const CTeams &master);
 	bool operator==(const CTeams &rhs) const;
-	void Clear();
+	void Clear(void);
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* missionFile );
 	CTeam &TeamRef(int32_t i);
 	void handleObjectInvalidation(const EditorObject *pObj);
-	bool NoteThePositionsOfObjectsReferenced();
-	bool RestoreObjectPointerReferencesFromNotedPositions();
-	bool ThereAreObjectivesWithNoConditions();
+	bool NoteThePositionsOfObjectsReferenced(void);
+	bool RestoreObjectPointerReferencesFromNotedPositions(void);
+	bool ThereAreObjectivesWithNoConditions(void);
 private:
 	CTeam m_teamArray[GAME_MAX_PLAYERS];
 };
@@ -57,7 +57,7 @@ private:
 class CPlayer
 {
 public:
-	CPlayer() { Clear(); }
+	CPlayer() { Clear(void); }
 	void Clear() { m_defaultTeam = 0; }
 	int32_t DefaultTeam() { return m_defaultTeam; }
 	void DefaultTeam(int32_t team);
@@ -70,7 +70,7 @@ private:
 class CPlayers
 {
 public:
-	void Clear();
+	void Clear(void);
 	CPlayer &PlayerRef(int32_t i) { return m_playerArray[i]; }
 	bool Read( FitIniFile* missionFile );
 	bool Save( FitIniFile* missionFile );
@@ -90,7 +90,7 @@ public:
 	int32_t time;
 
 	void clear(){ largeArtillery = smallArtillery = cameraDrones = sensors = time = 0; }
-	MissionSettings(){ clear(); }
+	MissionSettings(){ clear(void); }
 
 	bool save( FitIniFile* file );
 };
@@ -101,11 +101,11 @@ class EditorData
 
 		static EditorData* instance;
 
-		EditorData();
-		~EditorData();
+		EditorData(void);
+		~EditorData(void);
 
 		// wipes all the data, the terrain, object etc.
-		static bool clear(); 
+		static bool clear(void); 
 		
 		// makes a terrain from a height map.  
 		static bool initTerrainFromTGA( int32_t mapSize, int32_t min = 0, int32_t max = 512, int32_t terrain = 0 );
@@ -119,7 +119,7 @@ class EditorData
 
 		static void setMapName( PCSTR name );
 		static PCSTR getMapName(){ return strlen( mapName ) ? mapName : 0; }
-		static void updateTitleBar();
+		static void updateTitleBar(void);
 
 		EString MissionName() { return m_missionName; }
 		void MissionName(EString missionName) { m_missionName = missionName; }
@@ -263,7 +263,7 @@ class EditorData
 		void WaterDetailTextureNeedsSaving(bool waterDetailTextureNeedsSaving) { m_waterDetailTextureNeedsSaving = waterDetailTextureNeedsSaving; }
 
 		bool saveObjectives( FitIniFile* file );
-		bool DoTeamDialog(int32_t team) { return TeamsRef().TeamRef(team).ObjectivesRef().EditDialog(); }
+		bool DoTeamDialog(int32_t team) { return TeamsRef().TeamRef(team).ObjectivesRef().EditDialog(void); }
 		void handleObjectInvalidation(const EditorObject *pObj) { TeamsRef().handleObjectInvalidation(pObj); }
 
 		void makeTacMap(puint8_t& pOutput, int32_t& dataSize, int32_t tacMapSize ); // this allocates memory, below just draws

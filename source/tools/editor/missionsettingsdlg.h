@@ -16,9 +16,9 @@ class MissionSettingsDlg : public CDialog
 public:
 	MissionSettingsDlg(CWnd* pParent = NULL);   // standard constructor
 
-	void UpdateMissionNameDisplay();
-	void UpdateBlurbDisplay();
-	void UpdateBlurb2Display();
+	void UpdateMissionNameDisplay(void);
+	void UpdateBlurbDisplay(void);
+	void UpdateBlurb2Display(void);
 
 	CString m_MissionNameUnlocalizedText;
 	bool m_MissionNameUseResourceString;
@@ -84,11 +84,11 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(MissionSettingsDlg)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnBrowseButton();
-	afx_msg void OnMissionNameEditButton();
-	afx_msg void OnBlurbEditButton();
-	afx_msg void OnBlurb2EditButton();
+	virtual BOOL OnInitDialog(void);
+	afx_msg void OnBrowseButton(void);
+	afx_msg void OnMissionNameEditButton(void);
+	afx_msg void OnBlurbEditButton(void);
+	afx_msg void OnBlurb2EditButton(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

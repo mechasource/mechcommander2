@@ -1344,7 +1344,7 @@ void EditorInterface::handleKeyDown( int32_t Key )
 			prevDragging = dragging;
 			curBrush = new DragTool;
 			oldCursor = curCursorID;
-			ChangeCursor( IDC_HAND );
+			ChangeCursor(IDC_HAND_MC);
 			dragging = true;
 		} 
 	}

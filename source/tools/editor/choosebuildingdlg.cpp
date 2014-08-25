@@ -6,18 +6,16 @@ ChooseBuildingDlg.cpp			: Implementation of the ChooseBuildingDlg component.
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+#include "stdafx.h"
 
-#include "resource.h"
-
-#include <stdlib.h>
-#include <assert.h>
-#include "estring.h"
-
-#include "ChooseBuildingDlg.h"
-#include "Objective.h"
-
-#include "EditorInterface.h"
-#include "editorobjectmgr.h"
+//#include "resource.h"
+//#include <stdlib.h>
+//#include <assert.h>
+//#include <estring.h>
+//#include "choosebuildingdlg.h"
+//#include "objective.h"
+//#include "editorinterface.h"
+//#include "editorobjectmgr.h"
 
 
 //-------------------------------------------------------------------------------------------------

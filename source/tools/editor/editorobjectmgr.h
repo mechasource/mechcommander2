@@ -82,14 +82,14 @@ public:
 	};
 
 	
-	EditorObjectMgr();  // should only be one of these
-	~EditorObjectMgr();
+	EditorObjectMgr(void);  // should only be one of these
+	~EditorObjectMgr(void);
 
-	void		render();
+	void		render(void);
 	
-	void		update();
+	void		update(void);
 
-	void		renderShadows();
+	void		renderShadows(void);
 
 	void		init( PCSTR bldgListFileName, PCSTR objectFileName );
 
@@ -132,7 +132,7 @@ public:
 
 	bool		canAddDropZone( const Stuff::Vector3D& position, int32_t alignment, bool bVTol );
 
-	int32_t			getBuildingGroupCount() const;		// mechs count too!
+	int32_t			getBuildingGroupCount(void) const;		// mechs count too!
 	int32_t			getNumberBuildingsInGroup( int32_t Group ) const;
 	void		getBuildingGroupNames( PCSTR* names, int32_t& numberOfNames ) const;
 	void		getNamesOfObjectsInGroup( PCSTR groupName, PCSTR* names, int32_t& numberOfNames ) const;
@@ -142,7 +142,7 @@ public:
 	PCSTR	getGroupName( int32_t group ) const;
 	PCSTR	getObjectName( int32_t ID ) const;
 
-	int32_t			getUnitGroupCount() const;
+	int32_t			getUnitGroupCount(void) const;
 	void		getUnitGroupNames( PCSTR* names, pint32_t IDs, int32_t& numberOfNames ) const;
 
 
@@ -166,7 +166,7 @@ public:
 
 	inline	int32_t getID( int32_t group, int32_t index ) { return (getType(group,index) << 24) | (group << 16) | (index << 8); }
 
-	void		clear(); // delete all objects
+	void		clear(void); // delete all objects
 
 	int64_t		getImpassability( int32_t id );
 
@@ -176,18 +176,18 @@ public:
 
 	bool getBuildingFromID( int32_t fitID, uint32_t& group, uint32_t& index, bool canBeMech );
 
-	void unselectAll();
+	void unselectAll(void);
 	void select( const Stuff::Vector4D& pos1, const Stuff::Vector4D& pos2 );
 	void select( EditorObject &object, bool bSelect = true );
 	void objectSelectionChanged(void) /* use this to notify the EditorObjectMgr when selection states of objects are changed externally */
 	{ selectedObjectsNeedsToBeSynched = true; }
-	bool hasSelection();
-	int32_t  getSelectionCount(); // returns the number of selected items
-	EDITOR_OBJECT_LIST getSelectedObjectList();
+	bool hasSelection(void);
+	int32_t  getSelectionCount(void); // returns the number of selected items
+	EDITOR_OBJECT_LIST getSelectedObjectList(void);
 
-	void deleteSelectedObjects();
+	void deleteSelectedObjects(void);
 
-	void adjustObjectsToNewTerrainHeights();
+	void adjustObjectsToNewTerrainHeights(void);
 
 	ObjectAppearance* getAppearance( uint32_t group,
 											 uint32_t indexWithinGroup );
@@ -221,7 +221,7 @@ public:
 	void unregisterSquadNum(uint32_t squadNum) {}
 	void resetAvailableSquadNums() { nextAvailableSquadNum = 1; }
 
-	int32_t getNextAvailableForestID();
+	int32_t getNextAvailableForestID(void);
 	int32_t createForest( const Forest& settings );
 	void editForest( int32_t& ID,  const Forest& newSettings );
 	void removeForest( const Forest& settings );
@@ -251,7 +251,7 @@ public:
 			char				forestId;
 			float				scale;
 			bool				isHoverCraft;
-			~Building();
+			~Building(void);
 		};
 
 		struct Group
@@ -277,7 +277,7 @@ public:
 
 		EDITOR_OBJECT_LIST selectedObjects;
 		bool selectedObjectsNeedsToBeSynched;
-		void syncSelectedObjectPointerList();	// makes sure that the "selectedObjects" list corresponds to the objects marked as selected
+		void syncSelectedObjectPointerList(void);	// makes sure that the "selectedObjects" list corresponds to the objects marked as selected
 
 		// HELPERS
 		int32_t ExtractNextString( puint8_t& pFileLine, PSTR pBuffer, int32_t bufferLength );
@@ -316,7 +316,7 @@ inline bool EditorObjectMgr::isAlignable( int32_t ID )
 
 inline int32_t EditorObjectMgr::getAppearanceType( int32_t ID )
 {
-	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].appearanceType->getAppearanceClass();
+	return groups[getGroup( ID )].buildings[getIndexInGroup( ID )].appearanceType->getAppearanceClass(void);
 }
 
 inline int32_t EditorObjectMgr::getObjectTypeNum( int32_t ID )

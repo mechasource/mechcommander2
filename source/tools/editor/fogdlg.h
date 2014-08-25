@@ -11,9 +11,6 @@ FogDlg.h			: Interface for the FogDlg component.  This thing lets the user input
 #ifndef FOGDLG_H
 #define FOGDLG_H
 
-//#include "stdafx.h"
-//#include "resource.h"
-
 /////////////////////////////////////////////////////////////////////////////
 // FogDlg dialog
 
@@ -46,7 +43,7 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(FogDlg)
-	afx_msg void OnChangeBlue1();
+	afx_msg void OnChangeBlue1(void);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

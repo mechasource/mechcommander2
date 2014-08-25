@@ -13,7 +13,7 @@
 
 class CMissionData {
 public:
-	CMissionData();
+	CMissionData(void);
 	bool operator==(const CMissionData &rhs) const;
 	bool operator!=(const CMissionData &rhs) const { return (!((*this) == rhs)); }
 	bool Save(FitIniFile &fitFile);
@@ -33,7 +33,7 @@ class CMissionList : public EList<CMissionData, CMissionData> {};
 
 class CGroupData {
 public:
-	CGroupData();
+	CGroupData(void);
 	bool operator==(const CGroupData &rhs) const;
 	bool operator!=(const CGroupData &rhs) const { return (!((*this) == rhs)); }
 	bool Save(FitIniFile &fitFile, PCSTR groupName);
@@ -53,7 +53,7 @@ class CGroupList : public EList<CGroupData, CGroupData> {};
 
 class CCampaignData {
 public:
-	CCampaignData();
+	CCampaignData(void);
 	bool operator==(const CCampaignData &rhs) const;
 	bool operator!=(const CCampaignData &rhs) const { return (!((*this) == rhs)); }
 	bool Save(CString pathName);

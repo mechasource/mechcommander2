@@ -20,8 +20,8 @@ class SunDlg: public CDialog
 {
 public:
 	
-	SunDlg();
-	virtual void Init();
+	SunDlg(void);
+	virtual void Init(void);
 	void DoDataExchange(CDataExchange* pDX);
 
 	//virtual	void OnCommand(Window *wnd,int32_t nCommand);
@@ -52,22 +52,22 @@ protected:
 
 	//{{AFX_MSG(SunDlg)
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, uint32_t nCtlColor);
-	afx_msg void OnAmbientButton();
-	afx_msg void OnLightButton();
-	virtual void OnOK();
-	afx_msg void OnRecalculateTerrainShadowsButton();
-	afx_msg void OnRefractalizeTerrainButton();
+	afx_msg void OnAmbientButton(void);
+	afx_msg void OnLightButton(void);
+	virtual void OnOK(void);
+	afx_msg void OnRecalculateTerrainShadowsButton(void);
+	afx_msg void OnRefractalizeTerrainButton(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnChangeLightcolor(uint32_t id);
 
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog(void);
 
 	void displayInHex( int32_t number, CEdit& edit );
 	int32_t getHexValue( CEdit& edit );
 	void DoColorDlg( CEdit& edit);
 
-	void applyChanges();
+	void applyChanges(void);
 
 	CBrush backgroundBrush;
 

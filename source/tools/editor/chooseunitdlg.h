@@ -23,19 +23,19 @@ public:
 	ChooseUnitDlg( unit_ptr_type &unitPtr, int32_t alignmentToExclude = -1 );
 
 	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
-	void OnUsePointer();
-	void OnCancel();
-	void OnOK();
+	void OnUsePointer(void);
+	void OnCancel(void);
+	void OnOK(void);
 
-	virtual ~ChooseUnitDlg();
+	virtual ~ChooseUnitDlg(void);
 
-	BOOL OnInitDialog();
+	BOOL OnInitDialog(void);
 
 private:
 	typedef CDialog inherited;
 
 	// suppressing these
-	inline ChooseUnitDlg();
+	inline ChooseUnitDlg(void);
 	ChooseUnitDlg& operator=( const ChooseUnitDlg& lgUnitPtr );
 
 	int32_t m_alignmentToExclude;

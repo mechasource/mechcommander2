@@ -30,11 +30,11 @@ class Eraser: public Brush
 
 		Eraser(){ pCurAction = NULL; }
 
-		virtual bool beginPaint();
-		virtual Action* endPaint();
+		virtual bool beginPaint(void);
+		virtual Action* endPaint(void);
 		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY );
 		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags );
-		virtual Action* applyToSelection();
+		virtual Action* applyToSelection(void);
 
 
 	private:
@@ -44,8 +44,8 @@ class Eraser: public Brush
 		public:
 			EraserAction() { teamsActionIsSet = false; }
 
-			virtual bool undo();
-			virtual bool redo();
+			virtual bool undo(void);
+			virtual bool redo(void);
 
 			BuildingBrush::BuildingAction bldgAction;
 			LinkBrush::LinkAction linkAction;

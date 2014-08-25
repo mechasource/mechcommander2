@@ -20,18 +20,18 @@ public:
 	TargetAreaDlg( float &targetCenterX, float &targetCenterY, float &targetRadius );
 
 	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
-	void OnCancel();
-	void OnOK();
+	void OnCancel(void);
+	void OnOK(void);
 
-	virtual ~TargetAreaDlg();
+	virtual ~TargetAreaDlg(void);
 
-	BOOL OnInitDialog();
+	BOOL OnInitDialog(void);
 
 private:
 	typedef CDialog inherited;
 
 	// suppressing these
-	inline TargetAreaDlg();
+	inline TargetAreaDlg(void);
 	TargetAreaDlg& operator=( const TargetAreaDlg& lgUnitPtr );
 
 	float *m_pTargetCenterX;

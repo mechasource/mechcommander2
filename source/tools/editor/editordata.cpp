@@ -4,20 +4,21 @@
 // #define EDITORDATA_CPP
 
 #include "stdafx.h"
+//#include <mclib.h>
+//#include "editorobjectmgr.h"
+//#include "mclibresource.h"
+//#include "resource.h"
+//#include "action.h"
+//#include "move.h"
+//#include "vertex.h"
+//#include <terrtxm.h>
+//#include "editorinterface.h"
+//#include "echarstring.h"
+//#include <mmsystem.h>
+//#include <objbase.h>
+//#include <set>
+
 #include "editordata.h"
-#include <mclib.h>
-#include "editorobjectmgr.h"
-#include "mclibresource.h"
-#include "resource.h"
-#include "action.h"
-#include "move.h"
-#include "vertex.h"
-#include "terrtxm.h"
-#include "editorinterface.h"
-#include "echarstring.h"
-#include <mmsystem.h>
-#include <objbase.h>
-#include <set>
 
 // From multplyr.h
 // Can't include because of redefinition of MissionSettings struct
@@ -35,15 +36,6 @@ typedef enum {
 //#pragma warning( disable:4201 )
 //#pragma warning( default:4201 )
 //#pragma warning( disable:4244 )
-
-
-// ARM
-// #include "../arm/microsoft.xna.arm.h"
-// using namespace Microsoft::Xna::Arm;
-
-IProviderAsset* mapAsset = NULL;
-IProviderAsset* mechAsset = NULL;
-
 
 
 char EditorData::mapName[256];

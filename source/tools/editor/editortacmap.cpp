@@ -8,7 +8,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "EditorTacMap.h"
-#include "tacmap.h"
+#include <tacmap.h>
 #include "EditorInterface.h"
 
 

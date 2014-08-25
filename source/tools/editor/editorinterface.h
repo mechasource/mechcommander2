@@ -46,18 +46,18 @@ public:
 
 	static EditorInterface* instance(){ return s_instance; }
 	
-	EditorInterface();
-	~EditorInterface();
+	EditorInterface(void);
+	~EditorInterface(void);
 
 	void handleNewMenuMessage( int32_t specificMessage );
 
 	void init( PCSTR fileName );
 
-	void terminate();
+	void terminate(void);
 
 	void ChangeCursor( int32_t ID );
 
-	int32_t MissionSettings();
+	int32_t MissionSettings(void);
 
 	int32_t Team( int32_t team );
 	int32_t Player( int32_t player );
@@ -67,7 +67,7 @@ public:
 	bool ObjectSelectOnlyMode() { return bObjectSelectOnlyMode; }
 	void ObjectSelectOnlyMode(bool val) { bObjectSelectOnlyMode = val; }
 	CObjectivesEditState objectivesEditState;	/* persistent storage for the objective(s) dialog */
-	void SelectionMode() { Select(); }
+	void SelectionMode() { Select(void); }
 	
 	int32_t RefractalizeTerrain( int32_t threshold );
 
@@ -79,31 +79,31 @@ public:
 
 	void update (void);
 
-	virtual void render();
-	void initTacMap();
-	void updateTacMap() { tacMap.UpdateMap(); }
+	virtual void render(void);
+	void initTacMap(void);
+	void updateTacMap() { tacMap.UpdateMap(void); }
 
-	void syncHScroll();
-	void syncVScroll();
-	void syncScrollBars() { syncHScroll(); syncVScroll(); }
+	void syncHScroll(void);
+	void syncVScroll(void);
+	void syncScrollBars() { syncHScroll(void); syncVScroll(void); }
 
 	int32_t Width(){  RECT tmp; GetWindowRect( &tmp ); return tmp.right - tmp.left; }
 	int32_t Height() { RECT tmp; GetWindowRect( &tmp ); return tmp.bottom - tmp.top; }
 
 	void SetBusyMode(bool bRedrawWindow = true);
-	void UnsetBusyMode();
+	void UnsetBusyMode(void);
 
-	bool SafeRunGameOSLogic();
+	bool SafeRunGameOSLogic(void);
 
 	bool ThisIsInitialized() { return this->bThisIsInitialized; }
 
 	afx_msg void UpdateButton( CCmdUI* button );
 
-	int32_t Quit();
-	int32_t Save();
-	int32_t SaveAs();
-	int32_t QuickSave();
-	int32_t PromptAndSaveIfNecessary();
+	int32_t Quit(void);
+	int32_t Save(void);
+	int32_t SaveAs(void);
+	int32_t QuickSave(void);
+	int32_t PromptAndSaveIfNecessary(void);
 
 	ActionUndoMgr				undoMgr;
 
@@ -130,8 +130,8 @@ public:
 	afx_msg void OnVScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar);
 	afx_msg void OnSysKeyDown(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags);
 	afx_msg void OnLButtonDblClk(uint32_t nFlags, CPoint point);
-	afx_msg void OnPaint();
-	afx_msg void OnViewRefreshtacmap();
+	afx_msg void OnPaint(void);
+	afx_msg void OnViewRefreshtacmap(void);
 	afx_msg void OnUpdateMissionPlayerPlayer3(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMissionPlayerPlayer4(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMissionPlayerPlayer5(CCmdUI* pCmdUI);
@@ -144,11 +144,11 @@ public:
 	afx_msg void OnUpdateMissionTeamTeam6(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMissionTeamTeam7(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateMissionTeamTeam8(CCmdUI* pCmdUI);
-	afx_msg void OnDestroy();
-	afx_msg void OnForestTool();
-	afx_msg void OnOtherEditforests();
-	afx_msg void OnViewOrthographiccamera();
-	afx_msg void OnViewShowpassabilitymap();
+	afx_msg void OnDestroy(void);
+	afx_msg void OnForestTool(void);
+	afx_msg void OnOtherEditforests(void);
+	afx_msg void OnViewOrthographiccamera(void);
+	afx_msg void OnViewShowpassabilitymap(void);
 	afx_msg void OnMButtonUp(uint32_t nFlags, CPoint point);
 	//}}AFX_MSG
 		DECLARE_MESSAGE_MAP()
@@ -159,64 +159,64 @@ public:
 private:
 
 	// Message handlers
-	int32_t Undo();
-	int32_t Redo();	
-	int32_t FileOpen();
-	int32_t New();
-	int32_t PaintDirtRoad();
-	int32_t PaintRocks();
-	int32_t PaintPaved();
-	int32_t PaintTwoLaneDirtRoad();
-	int32_t PaintDamagedRoad();
-	int32_t PaintRunway();
-	int32_t PaintBridge();
-	int32_t PaintDamagedBridge();
-	int32_t Erase();
-	int32_t Select();
-	int32_t Flatten();
-	int32_t Fog();
-	int32_t PurgeTransitions();
-	int32_t ShowTransitions();
-	int32_t Light();
-	int32_t AssignElevation();
+	int32_t Undo(void);
+	int32_t Redo(void);	
+	int32_t FileOpen(void);
+	int32_t New(void);
+	int32_t PaintDirtRoad(void);
+	int32_t PaintRocks(void);
+	int32_t PaintPaved(void);
+	int32_t PaintTwoLaneDirtRoad(void);
+	int32_t PaintDamagedRoad(void);
+	int32_t PaintRunway(void);
+	int32_t PaintBridge(void);
+	int32_t PaintDamagedBridge(void);
+	int32_t Erase(void);
+	int32_t Select(void);
+	int32_t Flatten(void);
+	int32_t Fog(void);
+	int32_t PurgeTransitions(void);
+	int32_t ShowTransitions(void);
+	int32_t Light(void);
+	int32_t AssignElevation(void);
 
 	int32_t paintBuildings( int32_t message );
 	int32_t PaintTerrain( int32_t type );
 	int32_t PaintOverlay( int32_t type, int32_t message );
 
-	int32_t NewHeightMap();
-	int32_t SaveCameras();
-	int32_t SelectSlopes();
-	int32_t SelectAltitude();
-	int32_t SelectTerrainType();
-	int32_t Waves();
-	int32_t SaveHeightMap();
+	int32_t NewHeightMap(void);
+	int32_t SaveCameras(void);
+	int32_t SelectSlopes(void);
+	int32_t SelectAltitude(void);
+	int32_t SelectTerrainType(void);
+	int32_t Waves(void);
+	int32_t SaveHeightMap(void);
 
-	int32_t DragSmooth();
-	int32_t DragRough();
+	int32_t DragSmooth(void);
+	int32_t DragRough(void);
 
-	int32_t SmoothRadius();
+	int32_t SmoothRadius(void);
 	int32_t Alignment( int32_t specific );
 	int32_t Damage( bool bDamage );
 	int32_t Link( bool bLink );
-	int32_t LayMines();
-	int32_t SelectDetailTexture();
-	int32_t SelectWaterTexture();
-	int32_t SelectWaterDetailTexture();
-	int32_t TextureTilingFactors();
-	int32_t ReloadBaseTexture();
-	int32_t SetBaseTexture();
+	int32_t LayMines(void);
+	int32_t SelectDetailTexture(void);
+	int32_t SelectWaterTexture(void);
+	int32_t SelectWaterDetailTexture(void);
+	int32_t TextureTilingFactors(void);
+	int32_t ReloadBaseTexture(void);
+	int32_t SetBaseTexture(void);
 	int32_t DropZone( bool bVTol );
 	int32_t UnitSettings( );
 	
 	int32_t SetSky (int32_t skyId);
 	
-	int32_t CampaignEditor();
+	int32_t CampaignEditor(void);
 
 	// helpers
-	void KillCurBrush();
+	void KillCurBrush(void);
 
-	void addBuildingsToNewMenu();
+	void addBuildingsToNewMenu(void);
 
 	void rotateSelectedObjects( int32_t direction );
 
@@ -288,17 +288,17 @@ public:
 	EditorObjectMgr					objectMgr;
 	EditorData						data;
 
-	~Editor(){ destroy(); }
+	~Editor(){ destroy(void); }
 
 	void destroy (void);
 
 	void init( PSTR loader );
 	
-	void render();
+	void render(void);
 	
-	void update();
+	void update(void);
 
-	void resaveAll();		//Used by autoBuild to automagically resave all maps with correct data.	
+	void resaveAll(void);		//Used by autoBuild to automagically resave all maps with correct data.	
 };
 
 
@@ -308,9 +308,9 @@ public:
 	TeamsAction() : Action() {}
 	TeamsAction(const CTeams &teams) : Action() { PreviousTeams(teams); }
 	virtual ~TeamsAction() {}
-	virtual bool redo() { return undo(); }
-	virtual bool undo();
-	CTeams PreviousTeams();
+	virtual bool redo() { return undo(void); }
+	virtual bool undo(void);
+	CTeams PreviousTeams(void);
 	void PreviousTeams(const CTeams &teams);
 
 private:

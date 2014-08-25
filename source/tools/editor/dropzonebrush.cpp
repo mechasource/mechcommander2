@@ -1,13 +1,15 @@
-#define DROPZONEBRUSH_CPP
 /*************************************************************************************************\
 dropZoneBrush.cpp			: Implementation of the dropZoneBrush component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+// #define DROPZONEBRUSH_CPP
 
+#include "stdafx.h"
+
+//#include "editorobjectmgr.h"
 #include "dropZoneBrush.h"
-#include "editorobjectmgr.h"
 
 DropZoneBrush::DropZoneBrush(int32_t align, bool bVtol)
 {

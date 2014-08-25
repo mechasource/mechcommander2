@@ -9,6 +9,11 @@
 
 #pragma once
 
+#define ATL_SUPPRESS_WARNING_PUSH(x)    __pragma(warning(push)); __pragma(warning(disable: x))
+#define ATL_SUPPRESS_WARNING_POP        __pragma(warning(pop))
+#define ATL_SUPPRESS_WARNING(x)         __pragma(warning(suppress:x))
+#define ATL_ADD_LIBRARY(x)				__pragma(comment(lib, x))
+
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN            // Exclude rarely-used stuff from Windows headers
 #endif
@@ -27,7 +32,11 @@
 
 // temporary disable warnings when compiling with -Wall
 #pragma warning(push)
-#pragma warning(disable: 4191 4263 4264 4266 4365 4626 4668 4917 4986 4987)	// this is for Visual Studio 2013 MFC
+#pragma warning(disable: 4191 4263 4264 4266 4350 4365 4626 4668 4917 4986 4987)	// this is for Visual Studio 2013 MFC
+#include <string>
+#include <vector>
+#include <list>
+
 #include <afxwin.h>				// MFC core and standard components
 #include <afxext.h>				// MFC extensions
 #include <afxdisp.h>			// MFC Automation classes
@@ -37,7 +46,10 @@
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>             // MFC support for Windows Common Controls
 #endif
+#include <emmintrin.h>			// MMX, SSE, SSE2 intrinsic support
 #pragma warning(pop)
+
+#include <mechtypes.h>
 
 #ifdef _DEBUG
 // WIN32;_DEBUG;_WINDOWS;LAB_ONLY;_ARMOR;WINVER=0x0501
@@ -53,6 +65,16 @@
 
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
+#ifndef _CONSIDERED_OBSOLETE
+#define _CONSIDERED_OBSOLETE 0
+#endif
+#ifndef _CONSIDERED_UNSUPPORTED
+#define _CONSIDERED_UNSUPPORTED 0
+#endif
+#ifndef _CONSIDERED_DISABLED
+#define _CONSIDERED_DISABLED 0
+#endif
+
 //..\GameOS\include;..\MCLIB;.\window;"$(VCInstallDir)PlatformSDK\Include\mfc";"$(VCInstallDir)PlatformSDK\Include\atl"
 //..\mclib\$(ConfigurationName)\mclib.lib
 //..\gameos\lib\$(ConfigurationName)\gameos.lib
@@ -61,3 +83,4 @@
 //..\mclib\mlr\$(ConfigurationName)\mlr.lib
 //..\mclib\stuff\$(ConfigurationName)\stuff.lib
 //..\gameos\lib\$(ConfigurationName)\zlib.lib
+

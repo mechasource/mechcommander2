@@ -24,15 +24,15 @@ class FlattenBrush: public Brush
 {
 	public:
 
-		FlattenBrush();
-		virtual ~FlattenBrush();
+		FlattenBrush(void);
+		virtual ~FlattenBrush(void);
 
-		virtual bool beginPaint();
-		virtual Action* endPaint();
+		virtual bool beginPaint(void);
+		virtual Action* endPaint(void);
 		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY );
 		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ) { return true; } 
 		virtual bool canPaintSelection( ){ return true; }
-		virtual Action* applyToSelection();
+		virtual Action* applyToSelection(void);
 
 		Action* applyHeightToSelection( float height );
 		float	getAverageHeightOfSelection( );

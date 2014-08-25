@@ -63,7 +63,7 @@
 #endif
 
 #ifndef TACMAP_H
-#include "tacmap.h"
+#include <tacmap.h>
 #endif
 
 #ifndef EDITORDATA_H
@@ -853,7 +853,7 @@ bool	EditorObjectMgr::deleteBuilding( const EditorObject* pInfo )
 
 
 //*************************************************************************************************
-int32_t EditorObjectMgr::getBuildingGroupCount() const
+int32_t EditorObjectMgr::getBuildingGroupCount(void) const
 {
 	return groups.Count();
 }

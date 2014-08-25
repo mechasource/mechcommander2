@@ -1,23 +1,15 @@
-
-
 /*************************************************************************************************\
 DlgFileOpen.cpp			: Implementation of the DlgFileOpen component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+
 #include "stdafx.h"
-
-#include "DlgFileOpen.h"
-
-#ifndef TOOLOS_HPP
-#include "ToolOs.hpp"
-#endif
-
 #include "resource.h"
 
-#include <stdlib.h>
-#include <string.h>
+//#include "toolos.hpp"
+#include "dlgfileopen.h"
 
 
 BEGIN_MESSAGE_MAP(DlgFileOpen,CDialog )
@@ -27,7 +19,8 @@ BEGIN_MESSAGE_MAP(DlgFileOpen,CDialog )
 END_MESSAGE_MAP()
 
 //-------------------------------------------------------------------------------------------------
-DlgFileOpen::DlgFileOpen( PCSTR directory, PCSTR dlgExtension,  bool bsave ):CDialog(IDD_FILEOPEN)
+DlgFileOpen::DlgFileOpen( PCSTR directory, PCSTR dlgExtension,  bool bsave )
+	:	CDialog(IDD_FILEOPEN)
 {
 	strcpy(m_directory, directory);
 	strcpy(fileName, directory);

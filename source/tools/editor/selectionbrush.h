@@ -21,9 +21,9 @@ class SelectionBrush: public Brush
 	public:
 
 		SelectionBrush( bool Area, int32_t radius );
-		virtual ~SelectionBrush();
-		virtual bool beginPaint();
-		virtual Action* endPaint();
+		virtual ~SelectionBrush(void);
+		virtual bool beginPaint(void);
+		virtual Action* endPaint(void);
 		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY );
 		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ) { return true; } 
 		virtual void render( int32_t screenX, int32_t screenY );

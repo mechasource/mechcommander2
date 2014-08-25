@@ -11,7 +11,9 @@
 #ifndef BUILDINGLINK_H
 #define BUILDINGLINK_H
 
-//#include <elist.h>
+namespace Stuff {
+	class Vector3D;
+}
 
 class EditorObject;
 
@@ -27,33 +29,35 @@ public:
 
 	bool	HasChild( const EditorObject* ) const;
 	bool	HasParent( const EditorObject* ) const;
-	int32_t		GetLinkCount() const;
+	int32_t		GetLinkCount(void) const;
 	bool	RemoveObject( const EditorObject* );
-	const	Stuff::Vector3D& GetParentPosition() const;
+	const	Stuff::Vector3D& GetParentPosition(void) const;
 	void	SetParentPosition( const Stuff::Vector3D& pos );
 	int32_t		GetChildrenPositions( Stuff::Vector3D*, int32_t MaxNumberOfPoints ) const;
 	bool	AddChild( const EditorObject* pObject );
 	void	SetParentAlignment( int32_t alignment );
-	void	FixHeights();
+	void	FixHeights(void);
 
 	static	bool TypeCanBeParent( const EditorObject* ); // type gotten from building mgr
 	static	bool CanLink( const EditorObject* pParent, const EditorObject* pChild );
 
 	bool operator==( const BuildingLink& Src )const;
 
-	void	render();
+	void	render(void);
 
 
 private:
 	 struct Info
 	 {
+		 Info(void) : m_ID(0), ppos(0) {}
+		 ~Info(void);
 		 int32_t m_ID;		 
-		 Stuff::Vector3D pos;
+		 Stuff::Vector3D* ppos;
 	 	 bool operator==( const Info& Src )const;
 	 };
 
 	 Info	parent;
-	 EList< Info, const Info& > children;
+	 std::list< Info /*, const Info&*/ > children;
 
 
 	 // Helper function

@@ -2,12 +2,11 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "StdAfx.h"
-#include "CampaignData.h"
+#include "stdafx.h"
 
-#include "estring.h"
-#include "ECharString.h"
-
+#include "campaigndata.h"
+#include <estring.h>
+#include "echarstring.h"
 #include "assert.h"
 
 static int32_t sReadIdBoolean(FitIniFile &missionFile, PCSTR varName, bool &value) {

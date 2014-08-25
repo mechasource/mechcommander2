@@ -7,12 +7,12 @@
 
 #include "stdafx.h"
 #include "resource.h"
-#include "EditForestDlg.h"
-#include "Forest.h"
-#include "editorobjectmgr.h"
-#include "ForestDlg.h"
-#include "malloc.h"
 
+//#include "forest.h"
+//#include "editorobjectmgr.h"
+//#include "forestdlg.h"
+
+#include "editforestdlg.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // EditForestDlg dialog

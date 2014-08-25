@@ -11,7 +11,7 @@ TargetAreaDlg.cpp			: Implementation of the TargetAreaDlg component.
 
 #include <stdlib.h>
 #include <assert.h>
-#include "estring.h"
+#include <estring.h>
 
 #include "TargetAreaDlg.h"
 #include "Objective.h"

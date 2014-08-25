@@ -1,5 +1,3 @@
-
-
 /*************************************************************************************************\
 ChooseUnitDlg.cpp			: Implementation of the ChooseUnitDlg component.
 //---------------------------------------------------------------------------//
@@ -7,18 +5,17 @@ ChooseUnitDlg.cpp			: Implementation of the ChooseUnitDlg component.
 //===========================================================================//
 \*************************************************************************************************/
 
+#include "stdafx.h"
 #include "resource.h"
 
-#include <stdlib.h>
-#include <assert.h>
-#include "estring.h"
-
-#include "ChooseUnitDlg.h"
-#include "PointerSelectObjectDlg.h"
-#include "Objective.h"
-
-#include "EditorInterface.h"
-#include "editorobjectmgr.h"
+//#include <stdlib.h>
+//#include <assert.h>
+//#include <estring.h>
+//#include "chooseunitdlg.h"
+//#include "pointerselectobjectdlg.h"
+//#include "objective.h"
+//#include "editorinterface.h"
+//#include "editorobjectmgr.h"
 
 
 //-------------------------------------------------------------------------------------------------

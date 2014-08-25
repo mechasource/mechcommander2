@@ -5,8 +5,10 @@ DragTool.cpp			: Implementation of the DragTool component.
 //===========================================================================//
 \*************************************************************************************************/
 
-#include "DragTool.h"
-#include "EditorInterface.h"
+#include "stdafx.h"
+
+//#include "editorinterface.h"
+#include "dragtool.h"
 
 DragTool::DragTool()
 {

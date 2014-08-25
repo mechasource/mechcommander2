@@ -2,28 +2,16 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-
 #include "stdafx.h"
-
-#ifndef EDITORINTERFACE_H
-#include "editorinterface.h"
-#endif
-
-#include <gameos.hpp>
-#include <toolos.hpp>
-#include <mlr/mlr.hpp>
-#include <stuff/stuff.hpp>
-#include "editordata.h"
-#include "version.h"
-#include "..\resource.h"
-
-/* begin jubilee stuff */
-//#include "wlib.h"
 #include "resource.h"
-//#include "d3dfont.h"
-extern void InitWLib(void);
-/* end jubilee stuff */
 
+//#include "editorinterface.h"
+//#include <gameos.hpp>
+//#include <toolos.hpp>
+//#include <mlr/mlr.hpp>
+//#include <stuff/stuff.hpp>
+//#include "editordata.h"
+//#include "version.h"
 
 // globals used for memory
 UserHeapPtr systemHeap = NULL;
@@ -81,7 +69,7 @@ size_t		maxFastFiles = 0;
 										//Heidi, turn this FALSE to turn Fog of War ON!
 extern uint8_t godMode;			//Can I simply see everything, enemy and friendly?
 
-void InitDW (void);
+void InitDW ();
 
 TimerManagerPtr timerManager = NULL;
 

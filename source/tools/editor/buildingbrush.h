@@ -11,9 +11,17 @@ BuildingBrush.h		: Interface for the BuildingBrush component. The thing you use 
 #ifndef BUILDINGBRUSH_H
 #define BUILDINGBRUSH_H
 
-//#include "brush.h"
-//#include "action.h"
+#include "brush.h"
+#include "action.h"
 //#include "editorobjects.h"
+
+namespace Stuff {
+	class Vector3D;
+}
+
+class Action;
+class EditorObject;
+class ObjectAppearance;
 
 //*************************************************************************************************
 
@@ -26,10 +34,10 @@ class BuildingBrush: public Brush
 	public:
 
 		BuildingBrush( int32_t group, int32_t indexInGroup, int32_t Alignment );
-		virtual ~BuildingBrush();
+		virtual ~BuildingBrush(void);
 
-		virtual bool beginPaint();
-		virtual Action* endPaint();
+		virtual bool beginPaint(void);
+		virtual Action* endPaint(void);
 		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY );
 		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags );
 		virtual void render( int32_t ScreenMouseX, int32_t ScreenMouseY);
@@ -41,21 +49,25 @@ class BuildingBrush: public Brush
 		{
 		public:
 			
-			virtual ~BuildingAction(){}
-			virtual bool redo();
-			virtual bool undo();
+			virtual ~BuildingAction(void){}
+			virtual bool redo(void);
+			virtual bool undo(void);
 			virtual void addBuildingInfo(EditorObject& info);
 
-			class OBJ_INFO_PTR_LIST : public EList<EditorObject *, EditorObject *> {
+#if _CONSIDERED_OBSOLETE
+			class OBJ_INFO_PTR_LIST : 
+				public EList<EditorObject *, EditorObject *> {
 			public:
-				~OBJ_INFO_PTR_LIST() {
+				~OBJ_INFO_PTR_LIST(void) {
 					EIterator it;
-					for (it = Begin(); !it.IsDone(); it++) {
+					for (it = Begin(void); !it.IsDone(void); it++) {
 						delete (*it);
 					}
 				}
 			};
-			
+#endif
+		private:
+			typedef std::list<EditorObject*> OBJ_INFO_PTR_LIST;
 			OBJ_INFO_PTR_LIST objInfoPtrList;
 		};
 
@@ -64,17 +76,15 @@ class BuildingBrush: public Brush
 		// suppression
 		BuildingBrush( const BuildingBrush& buildingBrush );
 		BuildingBrush& operator=( const BuildingBrush& buildingBrush );
-		BuildingBrush();
+		BuildingBrush(void);
 
 		int32_t group;
 		int32_t indexInGroup;
 		float curRotation;
 
 		BuildingAction*		pAction;
-
 		ObjectAppearance*	pCursor;
-
-		int32_t					alignment;
+		int32_t				alignment;
 };
 
 

@@ -145,7 +145,7 @@ bool EditorObject::getDamage( ) const
 	return appearance()->damage ? true : false;
 }
 
-PCSTR EditorObject::getDisplayName() const
+PCSTR EditorObject::getDisplayName(void) const
 {
 	return EditorObjectMgr::instance()->getObjectName( id );
 }
@@ -166,12 +166,12 @@ void EditorObject::setAlignment( int32_t align )
 	}
 }
 
-int32_t EditorObject::getIndexInGroup() const
+int32_t EditorObject::getIndexInGroup(void) const
 {
 	return EditorObjectMgr::getIndexInGroup( id );
 }
 
-int32_t EditorObject::getGroup() const
+int32_t EditorObject::getGroup(void) const
 {
 	return EditorObjectMgr::getGroup( id );
 }
@@ -218,7 +218,7 @@ void EditorObject::select( bool bSelect )
 	EditorObjectMgr::instance()->select(*this, bSelect);
 }
 
-uint32_t EditorObject::getColor() const
+uint32_t EditorObject::getColor(void) const
 {
 	switch( appearInfo->appearance->teamId )
 	{
@@ -275,7 +275,7 @@ EditorObject::AppearanceInfo& EditorObject::AppearanceInfo::operator=( const App
 	return *this;
 }
 
-int32_t	EditorObject::getSpecialType() const
+int32_t	EditorObject::getSpecialType(void) const
 {
 	return EditorObjectMgr::instance()->getSpecialType( getID() );
 }

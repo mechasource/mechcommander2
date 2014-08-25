@@ -9,7 +9,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // CBooleanFlagIsSetDialog dialog
-
+ATL_SUPPRESS_WARNING_PUSH(4626)	// assignment operator could not be generated (due to MFC design)
 class CBooleanFlagIsSetDialog : public CDialog
 {
 // Construction
@@ -18,9 +18,9 @@ public:
 
 // Dialog Data
 	//{{AFX_DATA(CBooleanFlagIsSetDialog)
-	enum { IDD = IDD_FLAG_IS_SET_DIALOG };
-	int32_t		m_Value;
-	CString	m_FlagID;
+	//enum { IDD = IDD_FLAG_IS_SET_DIALOG };
+	int32_t			m_Index;
+	std::wstring	m_FlagID;
 	//}}AFX_DATA
 
 
@@ -40,7 +40,7 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
+ATL_SUPPRESS_WARNING_POP
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

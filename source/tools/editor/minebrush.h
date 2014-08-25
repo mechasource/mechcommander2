@@ -26,12 +26,12 @@ class MineBrush: public Brush
 	
 	MineBrush(){ pAction = NULL; }
 	virtual ~MineBrush(){}
-	virtual bool beginPaint();
-	virtual Action* endPaint();
+	virtual bool beginPaint(void);
+	virtual Action* endPaint(void);
 	virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  );
 	virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ); 
 	virtual bool canPaintSelection( );
-	virtual Action* applyToSelection();
+	virtual Action* applyToSelection(void);
 
 	private:
 
@@ -42,8 +42,8 @@ class MineBrush: public Brush
 
 
 			virtual ~MineAction(){}
-			virtual bool redo();
-			virtual bool undo();
+			virtual bool redo(void);
+			virtual bool undo(void);
 
 			struct CTileMineInfo {
 				int32_t row;

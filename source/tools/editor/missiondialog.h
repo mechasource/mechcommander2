@@ -42,8 +42,8 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CMissionDialog)
-	afx_msg void OnMiMissionFileBrowseButton();
-	afx_msg void OnMiPurchaseFileBrowseButton();
+	afx_msg void OnMiMissionFileBrowseButton(void);
+	afx_msg void OnMiPurchaseFileBrowseButton(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -39,7 +39,7 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(PlayerSettingsDlg)
-	virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

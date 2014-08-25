@@ -43,21 +43,21 @@ protected:
 	void DoColorBox( CWnd* pWnd );
 
 	//{{AFX_MSG(BuildingSettingsDlg)
-	afx_msg void OnSelchangeGroup();
-	virtual void OnOK();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSelchangeMech();
-	virtual void OnCancel();
+	afx_msg void OnSelchangeGroup(void);
+	virtual void OnOK(void);
+	virtual BOOL OnInitDialog(void);
+	afx_msg void OnSelchangeMech(void);
+	virtual void OnCancel(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-	void applyChanges();
+	void applyChanges(void);
 	ModifyBuildingAction *pAction;
 
 	typedef EList< EditorObject*, EditorObject* > EDITOROBJECT_LIST;
 	EDITOROBJECT_LIST& units;
 
-	void updateMemberVariables();
+	void updateMemberVariables(void);
 	ActionUndoMgr *pUndoMgr;
 };
 

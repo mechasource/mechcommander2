@@ -9,7 +9,7 @@ PointerSelectObjectDlg.cpp			: Implementation of the PointerSelectObjectDlg comp
 
 #include <stdlib.h>
 #include <assert.h>
-#include "estring.h"
+#include <estring.h>
 
 #include "PointerSelectObjectDlg.h"
 #include "Objective.h"

@@ -1,22 +1,26 @@
 //----------------------------------------------------------------------------
 //
-// Link.cpp - 
+// Link.cpp -
 //
 //---------------------------------------------------------------------------//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
-#include <mclib.h>
-#include "buildinglink.h"
-#include "editorobjectmgr.h"
-#include <algorithm>
-#include "celine.h"
+#include "stdafx.h"
 
+#include "editorobjects.h"
+
+//#include <mclib.h>
+//#include "editorobjectmgr.h"
+//#include <algorithm>
+//#include "celine.h"
+
+#include "buildinglink.h"
 
 BuildingLink::BuildingLink( const EditorObject* pParent )
 {
-	gosASSERT( pParent );
-	
+	ATLASSERT(pParent != NULL);
+
 	parent.m_ID = pParent->getID();
 	parent.pos = pParent->getPosition();
 }
@@ -49,9 +53,9 @@ void BuildingLink::CopyData( const BuildingLink& Src )
 	children.Clear();
 
 	for ( EList< Info, const Info& >::EConstIterator iter = Src.children.Begin();
-	!iter.IsDone(); iter++ )
+		!iter.IsDone(); iter++ )
 	{
-		children.Append( *iter );	
+		children.Append( *iter );
 	}
 }
 
@@ -60,19 +64,19 @@ void BuildingLink::CopyData( const BuildingLink& Src )
 bool BuildingLink::AddChild( const EditorObject* pObject )
 {
 	int32_t ID = pObject->getID();
-	
+
 	for( EList< Info, const Info& >::EIterator iter = children.Begin();
 		!iter.IsDone(); iter++ )
+	{
+		if ( (*iter).pos == pObject->getPosition() &&
+			(*iter).m_ID == ID )
 		{
-			if ( (*iter).pos == pObject->getPosition() &&
-				 (*iter).m_ID == ID )
-			{
-				SPEW( (0, "Link::AddChild, not adding an object because it is"
-					"already there\n" ) );
+			SPEW( (0, "Link::AddChild, not adding an object because it is"
+				"already there\n" ) );
 
-				return false;
-			}
+			return false;
 		}
+	}
 
 	Info tmp;
 	tmp.pos = pObject->getPosition();
@@ -90,7 +94,7 @@ int32_t BuildingLink::GetLinkCount( ) const
 }
 
 
-const Stuff::Vector3D& BuildingLink::GetParentPosition() const
+const Stuff::Vector3D& BuildingLink::GetParentPosition(void) const
 {
 	return parent.pos;
 }
@@ -100,7 +104,7 @@ bool BuildingLink::HasChild( const EditorObject* pObject ) const
 	int32_t ID = pObject->getID();
 	pObject->getPosition();
 
-	
+
 	for( EList< Info, const Info& >::EConstIterator iter = children.Begin();
 		!iter.IsDone(); iter++ )
 	{
@@ -130,58 +134,58 @@ bool BuildingLink::TypeCanBeParent( const EditorObject* pObject )
 	int32_t Type = pObject->getSpecialType();
 	switch (Type)
 	{
-		case EditorObjectMgr::TURRET_CONTROL:
-		case EditorObjectMgr::GATE_CONTROL:
-		case EditorObjectMgr::POWER_STATION:
-		case EditorObjectMgr::SENSOR_CONTROL:
-		case EditorObjectMgr::TURRET_GENERATOR:
-		case EditorObjectMgr::BRIDGE_CONTROL:
-		case EditorObjectMgr::SPOTLIGHT_CONTROL:
-			return true;
-			break;
+	case EditorObjectMgr::TURRET_CONTROL:
+	case EditorObjectMgr::GATE_CONTROL:
+	case EditorObjectMgr::POWER_STATION:
+	case EditorObjectMgr::SENSOR_CONTROL:
+	case EditorObjectMgr::TURRET_GENERATOR:
+	case EditorObjectMgr::BRIDGE_CONTROL:
+	case EditorObjectMgr::SPOTLIGHT_CONTROL:
+		return true;
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	};
 
 	return false;
 
 }
-bool BuildingLink::CanLink( const EditorObject* pParent, const EditorObject* pChild  )
+bool BuildingLink::CanLink( const EditorObject* pParent, const EditorObject* pChild )
 {
 	int32_t ParentType = pParent->getSpecialType();
 	int32_t ChildType = pChild->getSpecialType();
-	
+
 	switch (ParentType)
 	{
-		case EditorObjectMgr::TURRET_CONTROL:
-			return (ChildType == EditorObjectMgr::EDITOR_TURRET
-					|| ChildType == EditorObjectMgr::LOOKOUT ) ? true : false; 
-			break;
-		case EditorObjectMgr::GATE_CONTROL:
-			return ChildType == EditorObjectMgr::EDITOR_GATE ? true : false;
-			break;
-		case EditorObjectMgr::POWER_STATION:
-			return (ChildType == EditorObjectMgr::BRIDGE_CONTROL
-				|| ChildType == EditorObjectMgr::GATE_CONTROL
-				|| ChildType == EditorObjectMgr::SPOTLIGHT_CONTROL ) ? true : false;
-			break;
-		case EditorObjectMgr::SENSOR_CONTROL:
-			return ChildType == EditorObjectMgr::SENSOR_TOWER ? true : false;
-			break;
-		case EditorObjectMgr::TURRET_GENERATOR:
-			return ChildType == EditorObjectMgr::TURRET_CONTROL ? true : false;
-			break;
+	case EditorObjectMgr::TURRET_CONTROL:
+		return (ChildType == EditorObjectMgr::EDITOR_TURRET
+			|| ChildType == EditorObjectMgr::LOOKOUT ) ? true : false;
+		break;
+	case EditorObjectMgr::GATE_CONTROL:
+		return ChildType == EditorObjectMgr::EDITOR_GATE ? true : false;
+		break;
+	case EditorObjectMgr::POWER_STATION:
+		return (ChildType == EditorObjectMgr::BRIDGE_CONTROL
+			|| ChildType == EditorObjectMgr::GATE_CONTROL
+			|| ChildType == EditorObjectMgr::SPOTLIGHT_CONTROL ) ? true : false;
+		break;
+	case EditorObjectMgr::SENSOR_CONTROL:
+		return ChildType == EditorObjectMgr::SENSOR_TOWER ? true : false;
+		break;
+	case EditorObjectMgr::TURRET_GENERATOR:
+		return ChildType == EditorObjectMgr::TURRET_CONTROL ? true : false;
+		break;
 
-		case EditorObjectMgr::SPOTLIGHT_CONTROL:
-			return ChildType == EditorObjectMgr::SPOTLIGHT ? true : false;
-			break;
+	case EditorObjectMgr::SPOTLIGHT_CONTROL:
+		return ChildType == EditorObjectMgr::SPOTLIGHT ? true : false;
+		break;
 
-		case EditorObjectMgr::BRIDGE_CONTROL:
-			return ChildType == EditorObjectMgr::EDITOR_BRIDGE ? true : false;
-			break;
-		default:
-			break;
+	case EditorObjectMgr::BRIDGE_CONTROL:
+		return ChildType == EditorObjectMgr::EDITOR_BRIDGE ? true : false;
+		break;
+	default:
+		break;
 	};
 
 	return false;
@@ -197,11 +201,11 @@ bool BuildingLink::RemoveObject( const EditorObject* pObject )
 
 	Stuff::Vector3D pos = pObject->getPosition( );
 	int32_t ID = pObject->getID();
-	
+
 	for ( EList< Info, const Info& >::EIterator iter = children.Begin();
-	!iter.IsDone(); iter++ )
+		!iter.IsDone(); iter++ )
 	{
-		if ( ID == (*iter).m_ID && pos == (*iter).pos  )
+		if ( ID == (*iter).m_ID && pos == (*iter).pos )
 		{
 			children.Delete( iter );
 			return true;
@@ -219,12 +223,12 @@ int32_t BuildingLink::GetChildrenPositions( Stuff::Vector3D* pos, int32_t Count 
 
 	int32_t i = 0;
 	for ( EList< Info, const Info& >::EConstIterator iter = children.Begin();
-	!iter.IsDone(); iter++ )
+		!iter.IsDone(); iter++ )
 	{
 		pos[i++] = (*iter).pos;
 	}
 
-	return i; 
+	return i;
 }
 
 static bool isInView(const Point3D &position)
@@ -234,15 +238,15 @@ static bool isInView(const Point3D &position)
 
 	if (eye)
 	{
- 		//--------------------------------------------------
+		//--------------------------------------------------
 		// First, if we are using perspective, figure out
-		// if object too far from camera.  Far Clip Plane.
+		// if object too far from camera. Far Clip Plane.
 		if (eye->usePerspective)
 		{
 			Stuff::Point3D Distance;
 			Stuff::Point3D eyePosition(eye->getPosition());
 			Stuff::Point3D objPosition(position);
-	
+
 			Distance.Subtract(objPosition,eyePosition);
 			float eyeDistance = Distance.GetApproximateLength();
 			if (eyeDistance > Camera::MaxClipDistance)
@@ -260,11 +264,11 @@ static bool isInView(const Point3D &position)
 				Camera::HazeFactor = 0.0f;
 				inView = true;
 			}
-			
+
 			//-----------------------------------------------------------------
 			// If inside farClip plane, check if behind camera.
 			// Find angle between lookVector of Camera and vector from camPos
-			// to Target.  If angle is less then halfFOV, object is visible.
+			// to Target. If angle is less then halfFOV, object is visible.
 			if (inView)
 			{
 				Stuff::Vector3D Distance;
@@ -273,12 +277,12 @@ static bool isInView(const Point3D &position)
 				objPosition.x = -position.x;
 				objPosition.y = position.z;
 				objPosition.z = position.y;
-		
+
 				Distance.Subtract(objPosition,eyePosition);
 				Distance.Normalize(Distance);
-				
+
 				float cosine = Distance * eye->getLookVector();
- 				if (cosine > eye->cosHalfFOV)
+				if (cosine > eye->cosHalfFOV)
 					inView = true;
 				else
 					inView = false;
@@ -291,7 +295,7 @@ static bool isInView(const Point3D &position)
 		}
 	}
 
-	
+
 	return(inView);
 }
 
@@ -301,9 +305,9 @@ void BuildingLink::render()
 	eye->projectZ( parent.pos, parentScreen );
 
 	Stuff::Vector4D childScreen;
-	
+
 	for ( EList< Info, const Info& >::EConstIterator iter = children.Begin();
-	!iter.IsDone(); iter++ )
+		!iter.IsDone(); iter++ )
 	{
 		/* Rather than doing true clipping, the link lines are broken into "typical object"
 		sized pieces and rendered using course culling and relying on guard band clipping
@@ -356,10 +360,10 @@ void BuildingLink::render()
 		}
 
 	}
-	
+
 }
 
-void	BuildingLink::SetParentAlignment( int32_t alignment )
+void BuildingLink::SetParentAlignment( int32_t alignment )
 {
 	EditorObject* pTmp = EditorObjectMgr::instance()->getObjectAtLocation( parent.pos.x, parent.pos.y );
 
@@ -370,34 +374,36 @@ void	BuildingLink::SetParentAlignment( int32_t alignment )
 		gosASSERT(false);
 	}
 
-	for ( EList<Info, const Info& >::EConstIterator iter = children.Begin(); 
+	for ( EList<Info, const Info& >::EConstIterator iter = children.Begin();
 		!iter.IsDone(); iter++ )
+	{
+		pTmp = EditorObjectMgr::instance()->getObjectAtLocation( (*iter).pos.x, (*iter).pos.y ) ;
+		if ( pTmp )
+			pTmp->setAlignment( alignment );
+		else
 		{
-			pTmp = EditorObjectMgr::instance()->getObjectAtLocation( (*iter).pos.x, (*iter).pos.y ) ;
-			if ( pTmp )
-				pTmp->setAlignment( alignment );
-			else
-			{
-				gosASSERT(false);
-			}
+			gosASSERT(false);
 		}
+	}
 }
 
-void	BuildingLink::FixHeights()
+void BuildingLink::FixHeights()
 {
 	parent.pos.z = land->getTerrainElevation( parent.pos );
 
-	for ( EList<Info, const Info& >::EIterator iter = children.Begin(); 
+	for ( EList<Info, const Info& >::EIterator iter = children.Begin();
 		!iter.IsDone(); iter++ )
 	{
 		(*iter).pos.z = land->getTerrainElevation((*iter).pos );
 	}
 }
-void	BuildingLink::SetParentPosition( const Stuff::Vector3D& pos )
+
+void BuildingLink::SetParentPosition( const Stuff::Vector3D& pos )
 {
 	parent.pos = pos;
 }
 
-
-
-
+BuildingLink::Info::~Info(void)
+{
+	if(ppos) delete ppos;
+}

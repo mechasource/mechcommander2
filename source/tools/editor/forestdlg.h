@@ -57,11 +57,11 @@ public:
 protected:
 
 	//{{AFX_MSG(ForestDlg)
-	afx_msg void OnSave();
-	virtual void OnOK();
-	virtual void OnCancel();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnLoad();
+	afx_msg void OnSave(void);
+	virtual void OnOK(void);
+	virtual void OnCancel(void);
+	virtual BOOL OnInitDialog(void);
+	afx_msg void OnLoad(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

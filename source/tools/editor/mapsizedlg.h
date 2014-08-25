@@ -9,9 +9,6 @@ mapsizedlg.h			: Interface for the MapSizeDlg component.
 #ifndef MAPSIZEDLG_H
 #define MAPSIZEDLG_H
 
-//#include "stdafx.h"
-//#include "resource.h"
-
 //*************************************************************************************************
 
 /**************************************************************************************************
@@ -24,9 +21,9 @@ class MapSizeDlg: public CDialog
 
 		MapSizeDlg() : CDialog( IDD_MAPSIZE ){ mapSize = 0;}
 		virtual ~MapSizeDlg(){}
-		virtual void Init();
-		virtual BOOL OnInitDialog(){ Init(); return true; }
-		void OnOK();
+		virtual void Init(void);
+		virtual BOOL OnInitDialog(){ Init(void); return true; }
+		void OnOK(void);
 
 		int32_t mapSize;
 };

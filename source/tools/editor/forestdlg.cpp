@@ -8,7 +8,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "forestdlg.h"
-#include "terrain.h"
+#include <terrain.h>
 #include "editorobjectmgr.h"
 #include <mclib.h>
 

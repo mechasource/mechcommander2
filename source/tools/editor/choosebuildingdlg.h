@@ -22,19 +22,19 @@ public:
 	ChooseBuildingDlg( building_ptr_type &buildingPtr );
 
 	BOOL OnCommand(WPARAM wParam, LPARAM lParam); // called by child controls to inform of an event
-	void OnUsePointer();
-	void OnCancel();
-	void OnOK();
+	void OnUsePointer(void);
+	void OnCancel(void);
+	void OnOK(void);
 
-	virtual ~ChooseBuildingDlg();
+	virtual ~ChooseBuildingDlg(void);
 
-	BOOL OnInitDialog();
+	BOOL OnInitDialog(void);
 
 private:
 	typedef CDialog inherited;
 
 	// suppressing these
-	inline ChooseBuildingDlg();
+	inline ChooseBuildingDlg(void);
 	ChooseBuildingDlg& operator=( const ChooseBuildingDlg& lgBuildingPtr );
 
 	building_ptr_type *m_pModifiedBuildingPtr;

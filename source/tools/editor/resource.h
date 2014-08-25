@@ -32,7 +32,7 @@
 #define IDC_UNLINK                      120
 #define IDC_UP                          121
 #define IDC_HILLS                       122
-#define IDC_HAND                        123
+#define IDC_HAND_MC                     123
 #define IDC_PAINT                       124
 #define IDC_ERASER                      125
 #define IDC_FLATTEN                     126

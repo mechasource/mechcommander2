@@ -22,10 +22,10 @@ public:
 	CCampaignData m_CampaignData;
 	CCampaignData m_LastSavedCampaignData;
 
-	void UpdateNameDisplay();
-	int32_t PromptAndSaveIfNecessary();
-	int32_t SaveAs();
-	int32_t Save();
+	void UpdateNameDisplay(void);
+	int32_t PromptAndSaveIfNecessary(void);
+	int32_t SaveAs(void);
+	int32_t Save(void);
 
 	CString m_NameUnlocalizedText;
 	bool m_NameUseResourceString;
@@ -54,19 +54,19 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CCampaignDialog)
-	afx_msg void OnCaFinalVideoBrowseButton();
-	afx_msg void OnCaExit();
-	afx_msg void OnCaAddButton();
-	afx_msg void OnCaSaveAsButton();
-	afx_msg void OnCaLoadButton();
-	afx_msg void OnCaEditButton();
-	afx_msg void OnCaRemoveButton();
-	afx_msg void OnCaMoveUpButton();
-	afx_msg void OnCaMoveDownButton();
-	afx_msg void OnCaNameEditButton();
-	afx_msg void OnCaSaveButton();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnClose();
+	afx_msg void OnCaFinalVideoBrowseButton(void);
+	afx_msg void OnCaExit(void);
+	afx_msg void OnCaAddButton(void);
+	afx_msg void OnCaSaveAsButton(void);
+	afx_msg void OnCaLoadButton(void);
+	afx_msg void OnCaEditButton(void);
+	afx_msg void OnCaRemoveButton(void);
+	afx_msg void OnCaMoveUpButton(void);
+	afx_msg void OnCaMoveDownButton(void);
+	afx_msg void OnCaNameEditButton(void);
+	afx_msg void OnCaSaveButton(void);
+	virtual BOOL OnInitDialog(void);
+	afx_msg void OnClose(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

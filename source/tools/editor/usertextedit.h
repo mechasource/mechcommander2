@@ -15,7 +15,7 @@ class CUserTextEdit : public CDialog
 // Construction
 public:
 	CUserTextEdit(CWnd* pParent = NULL);   // standard constructor
-	void UpdateTextDisplay();
+	void UpdateTextDisplay(void);
 
 	CString m_UnlocalizedText;
 	bool m_UseResourceString;
@@ -41,9 +41,9 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CUserTextEdit)
-	afx_msg void OnUserTextEditEnterTextButton();
-	afx_msg void OnUserTextEditSelectResourceStringButton();
-	virtual BOOL OnInitDialog();
+	afx_msg void OnUserTextEditEnterTextButton(void);
+	afx_msg void OnUserTextEditSelectResourceStringButton(void);
+	virtual BOOL OnInitDialog(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

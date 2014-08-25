@@ -4,7 +4,10 @@
 
 #pragma once
 
-// #include "tacmaptga.h"
+#ifndef _EDITORTACMAP_H_
+#define _EDITORTACMAP_H_
+
+//#include "tgawnd.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // EditorTacMap dialog
@@ -20,11 +23,11 @@ public:
 	//}}AFX_DATA
 
 	void SetData( puint8_t pData, size_t size ){ picture.SetTGAFileData( pData, size ); }
-	void UpdateMap( ){ picture.refreshBmp(); }
+	void UpdateMap( ){ picture.refreshBmp(void); }
 
-	void ReleaseFocus();
-	virtual void OnCancel() { ReleaseFocus(); }
-	virtual void OnOk() { ReleaseFocus(); }
+	void ReleaseFocus(void);
+	virtual void OnCancel() { ReleaseFocus(void); }
+	virtual void OnOk() { ReleaseFocus(void); }
 
 	//{{AFX_VIRTUAL(EditorTacMap)
 	protected:
@@ -35,11 +38,11 @@ public:
 protected:
 
 	//{{AFX_MSG(EditorTacMap)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnTga();
+	virtual BOOL OnInitDialog(void);
+	afx_msg void OnTga(void);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
-//{{AFX_INSERT_LOCATION}}
+#endif

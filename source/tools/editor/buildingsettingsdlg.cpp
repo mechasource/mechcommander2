@@ -6,13 +6,14 @@
 //
 
 #include "stdafx.h"
-#include "resource.h"
-#include "BuildingSettingsDlg.h"
-#include "EditorObjects.h"
-#include "editorobjectmgr.h"
-#include "EditorInterface.h" // just for the undo manager
 
-#include "../Code/unitdesg.h" /* just for definition of MIN_TERRAIN_PART_ID and MAX_MAP_CELL_WIDTH */
+#include "resource.h"
+#include "buildingsettingsdlg.h"
+#include "editorobjects.h"
+#include "editorobjectmgr.h"
+#include "editorinterface.h" // just for the undo manager
+
+//#include "../Code/unitdesg.h" /* just for definition of MIN_TERRAIN_PART_ID and MAX_MAP_CELL_WIDTH */
 
 /////////////////////////////////////////////////////////////////////////////
 // BuildingSettingsDlg dialog

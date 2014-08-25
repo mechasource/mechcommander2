@@ -8,9 +8,14 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 
-#include "terrain.h"
-#include "Action.h"
-#include "TerrTxm.h"
+#include "stdafx.h"
+
+//#include <elist.h>
+//#include <terrain.h>
+//#include <terrtxm.h>
+//#include "editorobjects.h"
+//#include "editorobjectmgr.h"
+#include "action.h"
 
 ActionUndoMgr* ActionUndoMgr::instance = NULL;
 
@@ -21,11 +26,11 @@ ActionUndoMgr* ActionUndoMgr::instance = NULL;
 // Returns:		nothing	
 // Description:
 //************************************************************************
-ActionUndoMgr::ActionUndoMgr() 
+ActionUndoMgr::ActionUndoMgr(void) 
 {
 	m_CurrentPos = -1;
 	m_PosOfLastSave = -1;
-	gosASSERT( !instance );
+	ATLASSERT(instance == NULL);
 	instance = this;
 }
 //************************************************************************
@@ -35,7 +40,7 @@ ActionUndoMgr::ActionUndoMgr()
 // Returns:		nothing
 // Description:	empties list
 //************************************************************************
-ActionUndoMgr::~ActionUndoMgr()
+ActionUndoMgr::~ActionUndoMgr(void)
 {
 	Reset();
 }
@@ -58,7 +63,7 @@ void ActionUndoMgr::AddAction( Action* pAction )
 			m_PosOfLastSave = -1;
 		}
 		ACTION_LIST::EIterator iter = m_listUndoActions.End();
-		for ( int32_t i = m_listUndoActions.Count() - 1; i > m_CurrentPos; -- i )
+		for ( uint32_t i = m_listUndoActions.Count() - 1; i > m_CurrentPos; -- i )
 		{
 			delete (*iter);
 			iter--;
@@ -78,7 +83,7 @@ void ActionUndoMgr::AddAction( Action* pAction )
 // Returns:		void
 // Descripition:clears out the undo list
 //***********************************************************************
-void ActionUndoMgr::EmptyUndoList()
+void ActionUndoMgr::EmptyUndoList(void)
 {
 	
 	for (ACTION_LIST::EIterator pos = m_listUndoActions.Begin(); !pos.IsDone(); pos++ )
@@ -97,7 +102,7 @@ void ActionUndoMgr::EmptyUndoList()
 // Returns:		string to put in the Undo prompt
 // Descripition: this is the string that should go in the redo prompt
 //***********************************************************************
-PCSTR ActionUndoMgr::GetRedoString()
+PCSTR ActionUndoMgr::GetRedoString(void)
 {
 	PCSTR strRet = NULL;
 
@@ -120,7 +125,7 @@ PCSTR ActionUndoMgr::GetRedoString()
 // Returns:		string to put in the Udo prompt
 // Descripition: this is the string that should go in the undo prompt
 //***********************************************************************
-PCSTR ActionUndoMgr::GetUndoString()
+PCSTR ActionUndoMgr::GetUndoString(void)
 {
 	PCSTR strRet = NULL;
 	if ( HaveUndo() )
@@ -140,7 +145,7 @@ PCSTR ActionUndoMgr::GetUndoString()
 // Returns:		whether there is a redo action to perform
 // Descripition: call to see wherther you can perform a redo
 //***********************************************************************
-bool ActionUndoMgr::HaveRedo() const
+bool ActionUndoMgr::HaveRedo(void) const
 {
 	return m_CurrentPos + 1 != m_listUndoActions.Count();
 }
@@ -152,7 +157,7 @@ bool ActionUndoMgr::HaveRedo() const
 // Returns:		whether there is undo action to perform
 // Descripition: call to see whether you can perform an undo action
 //***********************************************************************
-bool ActionUndoMgr::HaveUndo() const
+bool ActionUndoMgr::HaveUndo(void) const
 {
 	return m_CurrentPos != -1;
 }
@@ -165,7 +170,7 @@ bool ActionUndoMgr::HaveUndo() const
 // Description:	gets the action at the front of the redo list, performs
 //				it and adds it to the undo list
 //************************************************************************
-bool ActionUndoMgr::Redo()
+bool ActionUndoMgr::Redo(void)
 {
 	gosASSERT( HaveRedo() );
 
@@ -184,10 +189,9 @@ bool ActionUndoMgr::Redo()
 // Returns:		nothing
 // Description:	Empties all of the actions from the do and undo lists
 //************************************************************************
-void ActionUndoMgr::Reset()
+void ActionUndoMgr::Reset(void)
 {
 	EmptyUndoList();
-
 }
 
 //************************************************************************
@@ -198,7 +202,7 @@ void ActionUndoMgr::Reset()
 // Description:	gets the action at the front of the undo list, performs
 //				it and adds it to the redo list
 //************************************************************************
-bool ActionUndoMgr::Undo()
+bool ActionUndoMgr::Undo(void)
 {
 	bool bRetVal = false;
 
@@ -219,7 +223,7 @@ bool ActionUndoMgr::Undo()
 // Returns:		
 // Description:	
 //************************************************************************
-void ActionUndoMgr::NoteThatASaveHasJustOccurred()
+void ActionUndoMgr::NoteThatASaveHasJustOccurred(void)
 {
 	m_PosOfLastSave = m_CurrentPos;
 }
@@ -231,7 +235,7 @@ void ActionUndoMgr::NoteThatASaveHasJustOccurred()
 // Returns:		
 // Description:	
 //************************************************************************
-bool ActionUndoMgr::ThereHasBeenANetChangeFromWhenLastSaved()
+bool ActionUndoMgr::ThereHasBeenANetChangeFromWhenLastSaved(void)
 {
 	if (m_PosOfLastSave == m_CurrentPos)
 	{
@@ -252,13 +256,13 @@ bool ActionUndoMgr::ThereHasBeenANetChangeFromWhenLastSaved()
 // Returns:		success of operation
 // Description: redoes a smart paint operation
 ////-----------------------------------------------------------------------
-bool ActionPaintTile::redo()
+bool ActionPaintTile::redo(void)
 {
 	return doRedo();
 }
 
 
-bool ActionPaintTile::doRedo()
+bool ActionPaintTile::doRedo(void)
 { 
 	for ( VERTEX_INFO_LIST::EIterator iter = vertexInfoList.Begin();
 		!iter.IsDone(); iter++ )
@@ -294,7 +298,7 @@ bool ActionPaintTile::doRedo()
 // Returns:		nothing
 // Description: undos a smart paint operation
 ////-----------------------------------------------------------------------
-bool ActionPaintTile::undo()
+bool ActionPaintTile::undo(void)
 { 
 	// actually, undo does the same thing as redo.
 	return doRedo(); 
@@ -375,10 +379,6 @@ VertexInfo::VertexInfo( int32_t newRow, int32_t newColumn )
 
 }
 
-
-#ifndef EDITOROBJECTMGR_H
-#include "editorobjectmgr.h"
-#endif
 ModifyBuildingAction::~ModifyBuildingAction()
 {
 	for ( OBJ_INFO_PTR_LIST::EIterator iter = buildingCopyPtrs.Begin(); !iter.IsDone(); iter++)

@@ -17,11 +17,11 @@ class DragTool: public Brush
 {
 	public:
 
-		DragTool();
-		virtual ~DragTool();
+		DragTool(void);
+		virtual ~DragTool(void);
 
-		virtual bool beginPaint();
-		virtual Action* endPaint();
+		virtual bool beginPaint(void);
+		virtual Action* endPaint(void);
 		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  );
 		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ) { return true; } 
 		virtual bool canPaintSelection( ){ return false; }

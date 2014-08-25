@@ -11,9 +11,6 @@ FogDlg.h			: Interface for the FractalDlg component.  Lets user change refractal
 #ifndef FRACTALDLG_H
 #define FRACTALDLG_H
 
-//#include "stdafx.h"
-//#include "resource.h"
-
 /////////////////////////////////////////////////////////////////////////////
 // FractalDlg dialog
 

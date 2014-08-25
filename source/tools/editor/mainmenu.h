@@ -22,7 +22,7 @@ class MainMenu:public Window
 
 		MainMenu(EditorInterface *pEditorInterface);
 		
-		void DoModal();
+		void DoModal(void);
 
 		void OnCommand(Window *wnd, int32_t nCommand);
 };

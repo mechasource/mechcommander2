@@ -44,13 +44,13 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(ObjectivesDlg)
-	afx_msg void OnObjectivesAddButton();
-	afx_msg void OnObjectivesRemoveButton();
-	afx_msg void OnObjectivesEditButton();
-	afx_msg void OnObjectivesCopyButton();
-	afx_msg void OnObjectivesMoveUpButton();
-	afx_msg void OnObjectivesMoveDownButton();
-	virtual BOOL OnInitDialog();
+	afx_msg void OnObjectivesAddButton(void);
+	afx_msg void OnObjectivesRemoveButton(void);
+	afx_msg void OnObjectivesEditButton(void);
+	afx_msg void OnObjectivesCopyButton(void);
+	afx_msg void OnObjectivesMoveUpButton(void);
+	afx_msg void OnObjectivesMoveDownButton(void);
+	virtual BOOL OnInitDialog(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

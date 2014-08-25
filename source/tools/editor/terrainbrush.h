@@ -68,7 +68,7 @@ class TerrainBrush: public Brush
 		}
 		virtual bool canPaint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY, int32_t flags ) { return true; } 
 
-		virtual Action* applyToSelection();
+		virtual Action* applyToSelection(void);
 
 
 

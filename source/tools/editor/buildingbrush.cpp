@@ -1,29 +1,18 @@
-#define BUILDINGBRUSH_CPP
 /*************************************************************************************************\
 BuildingBrush.cpp	: Implementation of the BuildingBrush component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+// #define BUILDINGBRUSH_CPP
 
-#include "BuildingBrush.h"
+#include "stdafx.h"
 
-#ifndef EDITOROBJECTMGR_H
+#include "buildingbrush.h"
 #include "editorobjectmgr.h"
-#endif
-
-#ifndef TERRAIN_H
-#include "Terrain.h"
-#endif
-
-#ifndef EDITOROBJECTS_H
-#include "EditorObjects.h"
-#endif
-
-#ifndef EDITORINTERFACE_H
-#include "EditorInterface.h"
-#endif
-
+#include <terrain.h>
+#include "editorobjects.h"
+#include "editorinterface.h"
 #include "resource.h"
 
 BuildingBrush::BuildingBrush( int32_t Group, int32_t IndexInGroup, int32_t Alignment )

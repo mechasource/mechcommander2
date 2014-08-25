@@ -46,14 +46,14 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CGroupDialog)
-	afx_msg void OnGrOperationFileBrowseButton();
-	afx_msg void OnGrPrevideoFileBrowseButton();
-	afx_msg void OnGrVideoFileBrowseButton();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnGrAddButton();
-	afx_msg void OnGrRemoveButton();
-	afx_msg void OnGrEditButton();
-	virtual void OnOK();
+	afx_msg void OnGrOperationFileBrowseButton(void);
+	afx_msg void OnGrPrevideoFileBrowseButton(void);
+	afx_msg void OnGrVideoFileBrowseButton(void);
+	virtual BOOL OnInitDialog(void);
+	afx_msg void OnGrAddButton(void);
+	afx_msg void OnGrRemoveButton(void);
+	afx_msg void OnGrEditButton(void);
+	virtual void OnOK(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

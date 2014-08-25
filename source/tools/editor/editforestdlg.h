@@ -36,14 +36,14 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(EditForestDlg)
-	virtual void OnOK();
-	afx_msg void OnEdit();
-	afx_msg void OnDelete();
-	afx_msg void OnLoad();
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSave();
-	afx_msg void OnRename();
-	afx_msg void OnSelchangeListFiles();
+	virtual void OnOK(void);
+	afx_msg void OnEdit(void);
+	afx_msg void OnDelete(void);
+	afx_msg void OnLoad(void);
+	virtual BOOL OnInitDialog(void);
+	afx_msg void OnSave(void);
+	afx_msg void OnRename(void);
+	afx_msg void OnSelchangeListFiles(void);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

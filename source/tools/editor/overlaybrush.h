@@ -34,14 +34,14 @@ class OverlayBrush: public Brush
 		virtual bool canPaint( Stuff::Vector3D&, int32_t screenX, int32_t screenY, int32_t& flags ){ return true; }
 		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY );
 
-		bool beginPaint(); // not doing anything yet
-		Action* endPaint();
+		bool beginPaint(void); // not doing anything yet
+		Action* endPaint(void);
 
 	private:
 
 		OverlayBrush( const OverlayBrush& verlayBrush );
 		OverlayBrush& operator=( const OverlayBrush& verlayBrush );
-		OverlayBrush();
+		OverlayBrush(void);
 
 		Overlays	type;		// the kind of overlay we are painting 
 		int32_t			offset;

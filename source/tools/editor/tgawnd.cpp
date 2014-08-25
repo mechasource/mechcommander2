@@ -6,9 +6,8 @@
 //
 
 #include "stdafx.h"
-#include "TGAWnd.h"
-#include "TGAInfo.h"
-
+#include "tgawnd.h"
+#include "tgainfo.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // TGAWnd

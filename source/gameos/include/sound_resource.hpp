@@ -86,7 +86,7 @@ struct SoundResource
 		);
 
 
-		~SoundResource();
+		~SoundResource(void);
 		void GetWaveInfo
 			( 
 				puint8_t lpBuffer,
@@ -94,20 +94,20 @@ struct SoundResource
 				puint8_t* lplpWaveData,
 				uint32_t *lpWaveSize 
 			);
-		void LoadFile();
+		void LoadFile(void);
 		int32_t SoundResource::ReadPCM (puint8_t  pbDest, uint32_t bytestofill, bool loopMe, bool prevFailed=false );
 		int32_t ReadACM (puint8_t  pbDest, uint32_t bytestoFill, bool loopflag, bool prevFailed=false );
-		void CloseStream();
-		void PauseStream();
-		void PlayStream();
-		void StopStream();
-		void RestartStream();
-		void Cue();
-		void OpenFromMemory();
+		void CloseStream(void);
+		void PauseStream(void);
+		void PlayStream(void);
+		void StopStream(void);
+		void RestartStream(void);
+		void Cue(void);
+		void OpenFromMemory(void);
 		uint32_t ConvertACM(uint32_t numBytes);
 
 		void GetDuplicateBuffer( LPDIRECTSOUNDBUFFER* );
 		void RelinquishDuplicate(LPDIRECTSOUNDBUFFER lpBuf);
-		void CreateMasterBuffer();
+		void CreateMasterBuffer(void);
 };
 

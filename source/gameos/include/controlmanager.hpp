@@ -7,6 +7,9 @@
 
 #pragma once
 
+#ifndef _CONTROLMANAGER_HPP_
+#define _CONTROLMANAGER_HPP_
+
 //
 // Mouse handling functions
 //
@@ -14,7 +17,6 @@ void __stdcall CMCreateMouse(void);
 void __stdcall CMUpdateMouse(void);
 void __stdcall ReInitControlManager(void);
 gosEnum_KeyStatus __stdcall GetStatus( gosEnum_KeyIndex index );
-
 
 extern uint32_t KeyBoardBuffer[256];
 extern uint32_t KeyCurrent;				// Where the next key to be read is
@@ -78,4 +80,4 @@ BOOL __stdcall CMCreateJoystick7( LPCDIDEVICEINSTANCE pdinst, PVOID pvRef );
 // and uninstalling joysticks, a keyboard, and a mouse.
 extern ControlManagerDataStruct g_CMData;
 
-
+#endif

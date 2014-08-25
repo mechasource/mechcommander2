@@ -7,6 +7,9 @@
 
 #pragma once
 
+#ifndef _DXRASTERIZER_HPP_
+#define _DXRASTERIZER_HPP_
+
 // videocard.cpp functions
 void __stdcall FindVideoCards(void);
 void __stdcall CreateCopyBuffers(void);
@@ -204,3 +207,5 @@ void __stdcall DirectDrawCreateAllBuffers(void);
 void __stdcall EnterWindowMode(void);
 void __stdcall EnterFullScreenMode(void);
 void __stdcall RenderIMEtoScreen(void);
+
+#endif

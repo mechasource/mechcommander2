@@ -63,18 +63,18 @@ class gos_DBCS
 
 	public:
 		gos_DBCS(PCSTR  msg, int32_t w, int32_t h, bool cc);
-		~gos_DBCS();
-		void Render();
-		void Update();
+		~gos_DBCS(void);
+		void Render(void);
+		void Update(void);
 		DBCSSurface* GetSurface(){return m_surf;}
 		int32_t GetWidth(){return m_width;}
 		int32_t GetHeight(){return m_height;}
-		void PrepareTextures();
+		void PrepareTextures(void);
 		void Texture(DBCSSurface* surf);
 		void Translate(float x, float y, float z);
 		void Color(uint32_t c);
 		void AlphaMode( enum gos_AlphaMode mode);
-		void MakeQuads();
+		void MakeQuads(void);
 		bool NeedClip(float x, float y);
 		void ShiftCoordinates(float x, float y);
 		void Fill(float r, float g, float b, float a);

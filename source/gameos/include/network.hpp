@@ -24,12 +24,12 @@
 //
 // Functionality: Creates the networking object.
 //				
-void __stdcall gos_InitializeNetworking();
+void __stdcall gos_InitializeNetworking(void);
 
 //
 // Close any game in progress, clean up networking
 //
-void __stdcall gos_ShutdownNetwork();
+void __stdcall gos_ShutdownNetwork(void);
 
 
 
@@ -60,7 +60,7 @@ bool __stdcall gos_ConnectZoneMatch( PSTR IPAddress, uint16_t port );
 //
 // Open an IPX connection
 //
-//bool __stdcall gos_ConnectIPX();
+//bool __stdcall gos_ConnectIPX(void);
 
 //
 // Open a Serial connection
@@ -109,7 +109,7 @@ int32_t __stdcall gos_JoinGame( PSTR GameName, PSTR PlayerName, PSTR GamePasswor
 //
 // Functionality: If connected to a network protocol, gos_Disconnect resets the connection
 //
-void __stdcall gos_Disconnect();
+void __stdcall gos_Disconnect(void);
 
 
 //
@@ -124,9 +124,9 @@ extern GUID NGStatsPlayerId;
 
 
 
-GUID __stdcall gos_GenerateUniqueGUID();
+GUID __stdcall gos_GenerateUniqueGUID(void);
 
-bool __stdcall CheckForZoneMatch();
+bool __stdcall CheckForZoneMatch(void);
 
 
 // GUN Status functions
@@ -157,8 +157,8 @@ typedef struct {
 
 // do not remove, used for run time checks against 
 // source code in network games. 
-void __stdcall MD5SecurityCheckStart();
-void __stdcall MD5SecurityCheckStop();
+void __stdcall MD5SecurityCheckStart(void);
+void __stdcall MD5SecurityCheckStop(void);
 
 
 void __stdcall MD5Init (MD5_CTX *);

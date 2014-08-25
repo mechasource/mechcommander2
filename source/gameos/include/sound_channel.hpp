@@ -49,8 +49,8 @@ class SoundChannel
 		char m_resourceName[128];
 
 	public:
-		SoundChannel();
-		virtual ~SoundChannel();
+		SoundChannel(void);
+		virtual ~SoundChannel(void);
 		virtual void Reset(uint32_t chan);
 		virtual void CreateAndLoadBuffer( SoundResource * ) = 0;
 		virtual void CreateStreamBuffer( SoundResource * ) = 0;

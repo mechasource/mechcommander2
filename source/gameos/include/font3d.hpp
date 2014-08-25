@@ -89,8 +89,8 @@ typedef struct _FontInfo
 	uint32_t		Texture[8];				// Texture handle array
 } FontInfo;
 
-void __stdcall Init3DFont();
-void __stdcall Destroy3DFont();
+void __stdcall Init3DFont(void);
+void __stdcall Destroy3DFont(void);
 
 
 

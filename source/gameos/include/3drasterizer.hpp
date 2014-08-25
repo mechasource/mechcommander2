@@ -7,6 +7,8 @@
 
 #pragma once
 
+#ifndef _3DRASTERIZER_HPP_
+#define _3DRASTERIZER_HPP_
 
 typedef struct _SAVESTATE {
 	struct _SAVESTATE*	pNext;
@@ -183,3 +185,5 @@ extern uint32_t	ModeMagBiLinear;		// MAG mode for Bilinear
 extern uint32_t	ModeMinNone;			// MIN mode for non filtering
 extern uint32_t	ModeMinBiLinear;		// MIN mode for bilinear
 extern uint32_t	ModeMinTriLinear;		// MIN mode for trilinear
+
+#endif

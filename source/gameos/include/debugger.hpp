@@ -7,6 +7,9 @@
 
 #pragma once
 
+#ifndef _DEBUGGER_HPP_
+#define _DEBUGGER_HPP_
+
 //
 // Size of scroll back buffer for spew
 //
@@ -256,16 +259,4 @@ void __stdcall DrawText( uint32_t Color, PSTR String );
 void __stdcall DrawSquare( int32_t TopX, int32_t TopY, int32_t Width, int32_t Height, uint32_t Color );
 void __stdcall DrawChr( char Chr );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif

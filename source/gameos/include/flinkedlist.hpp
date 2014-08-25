@@ -320,7 +320,7 @@ template <class T> class FListIterator
 		T *Next()
 		{
 			gosASSERT (current!= NULL);
-			current = current->GetNext();				
+			current = current->GetNext(void);				
 			if (current == NULL)
 				return NULL;
 			else

@@ -7,12 +7,12 @@
 //===========================================================================//
 
 
-void __stdcall TimeManagerInstall();
-void __stdcall StartTimeManager();
-void __stdcall TimeManagerUpdate();
-void __stdcall TimeManagerUninstall();
-void __stdcall StartPauseTime();
-void __stdcall EndPauseTime();
+void __stdcall TimeManagerInstall(void);
+void __stdcall StartTimeManager(void);
+void __stdcall TimeManagerUpdate(void);
+void __stdcall TimeManagerUninstall(void);
+void __stdcall StartPauseTime(void);
+void __stdcall EndPauseTime(void);
 
 extern uint32_t WatchDogFrame;
 extern uint32_t CurrentFrameNumber;

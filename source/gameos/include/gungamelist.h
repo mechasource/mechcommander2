@@ -139,9 +139,9 @@ namespace Browse
         CListNode* m_pTail;
     
     public:
-        CList();
-        ~CList();
-        bool IsEmpty();
+        CList(void);
+        ~CList(void);
+        bool IsEmpty(void);
         void RemoveAll(void);
         void AddHead(CItem&);
         void AddTail(CItem&);
@@ -234,8 +234,8 @@ public:
         void operator delete[] ( PVOID ptr );
     };
 
-    TableList();
-    virtual ~TableList();
+    TableList(void);
+    virtual ~TableList(void);
 
     // create a new entry in the table, either with an auto-id
     // or with a specified ID.
@@ -330,8 +330,8 @@ typedef TableList PlayerList;
 class GameList : public TableList
 {
 public:
-    GameList();
-    virtual ~GameList();
+    GameList(void);
+    virtual ~GameList(void);
 
     virtual bool CreateEntry( PCSTR  id ); 
     virtual bool SetField( PCSTR  id,
@@ -366,7 +366,7 @@ public:
     {
     public:
 
-        virtual ~GameExtraData();
+        virtual ~GameExtraData(void);
 
         PSTR        name;
         GUID         gameGUID;
@@ -415,8 +415,8 @@ public:
 public:
     // Methods
 
-    TableItemFilter();
-    virtual ~TableItemFilter();
+    TableItemFilter(void);
+    virtual ~TableItemFilter(void);
 
     virtual bool Filter( TableList::TableItem & tableItem );
 
@@ -476,8 +476,8 @@ public:
 public:
     // Methods
 
-    GameListFilter();
-    virtual ~GameListFilter();
+    GameListFilter(void);
+    virtual ~GameListFilter(void);
 
     virtual bool Filter( TableList::TableItem & tableItem );
 

@@ -70,14 +70,14 @@ typedef struct _srdata
 extern HGOSHEAP SoundHeap;
 
 void __stdcall SoundRendererInstall(int32_t);
-void __stdcall SoundRendererStartFrame();
-void __stdcall SoundRendererEndFrame();
+void __stdcall SoundRendererStartFrame(void);
+void __stdcall SoundRendererEndFrame(void);
 uint32_t __stdcall SoundRendererUpdate( PVOID ThreadParam );
-void __stdcall SoundRendererUninstall();
-void __stdcall SoundRendererCreateTimer();
-void __stdcall SoundRendererDestroyTimer();
-void __stdcall SoundRendererPause();
-void __stdcall SoundRendererContinue();
+void __stdcall SoundRendererUninstall(void);
+void __stdcall SoundRendererCreateTimer(void);
+void __stdcall SoundRendererDestroyTimer(void);
+void __stdcall SoundRendererPause(void);
+void __stdcall SoundRendererContinue(void);
 void __stdcall SoundRendererFF(double sec);
 bool __stdcall IsValidSoundResource(HGOSAUDIO gosAudio);
 
@@ -89,5 +89,5 @@ void __stdcall TimeFunc(
 	uint32_t dw2 
 );
 
-void __stdcall SoundRendererNotify();
+void __stdcall SoundRendererNotify(void);
 

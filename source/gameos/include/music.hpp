@@ -83,14 +83,14 @@ struct gos_Music
 
 	public:
 		gos_Music(PSTR  path);
-		~gos_Music();
-		void OpenMMStream();
-		bool Update();
-		void Pause();
-		void Continue();
-		void Stop();
+		~gos_Music(void);
+		void OpenMMStream(void);
+		bool Update(void);
+		void Pause(void);
+		void Continue(void);
+		void Stop(void);
 		void Seek(float time);
-		void Restore();
+		void Restore(void);
 		void FF(double time);
 };			
 
@@ -100,13 +100,13 @@ struct gos_Music
 
 
 
-void MusicManagerInstall();
+void MusicManagerInstall(void);
 
-void MusicManagerRestore();
+void MusicManagerRestore(void);
 
-void MusicManagerUninstall();
+void MusicManagerUninstall(void);
 
-void MusicManagerUpdate();
+void MusicManagerUpdate(void);
 
 void OpenMMStream( PCSTR  pszFileName, IDirectDraw *pDD, IMultiMediaStream **ppMMStream, IBasicAudio ** ppBasicAudio );
 

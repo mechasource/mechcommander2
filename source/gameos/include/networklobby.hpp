@@ -69,10 +69,10 @@ GOSERRORCODE __stdcall gos_GetModemNames(LPSTRINGCALLBACK callback);
 //
 // Return value:  It returns GOS_DIALING while still attempting to connect.
 //				  The user must continue calling Dial until it no longer returns GOS_DIALING.
-GOSERRORCODE __stdcall gos_Dial();
+GOSERRORCODE __stdcall gos_Dial(void);
 
 
 // Functionality: If connected to a network protocol, gos_Disconnect resets the
 //					connection.  This is useful to cancel dialing.
 //
-GOSERRORCODE __stdcall gos_Disconnect();
+GOSERRORCODE __stdcall gos_Disconnect(void);

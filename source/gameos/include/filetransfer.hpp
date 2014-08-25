@@ -50,7 +50,7 @@ public:
 
 	// functions
 
-	//PVOIDoperator new(size_t class_size);
+	//PVOID operator new(size_t class_size);
 	//void operator delete(PVOID us);
 
 	
@@ -62,13 +62,13 @@ public:
 		uint32_t size = 0,
 		TransferType transfer_direction = FTSend);
 	
-	virtual ~FileTransferInfo();
+	virtual ~FileTransferInfo(void);
 
 	// PrepareNextMessage retrieves CHUNKSIZE bytes from the
 	// file and places them into messageInfo.  
 	// Returns 0 if there are still more bytes to send.
 	// Returns 1 if this is the last of the file to send 
-	int32_t PrepareNextMessage();
+	int32_t PrepareNextMessage(void);
 
 	// The addition operator allows the caller to add 
 	// bytes from a new message to the file.  

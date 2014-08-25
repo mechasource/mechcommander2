@@ -84,7 +84,7 @@ public:
 		PFGETFUNC GetFunc = NULL,
 		uint16_t NumBuckets = 256,
 		uint16_t NumLocks = 16 );
-	~CHash();
+	~CHash(void);
 
 	//
 	// Adds object into hash table using the specified key.
@@ -141,7 +141,7 @@ public:
 	//
 	// Removes nodes marked as deleted
 	//
-	void TrashDay();
+	void TrashDay(void);
 
 	PVOID operator new(size_t size);
 	void operator delete( PVOID ptr );

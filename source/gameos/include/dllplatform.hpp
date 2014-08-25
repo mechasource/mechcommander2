@@ -7,10 +7,13 @@
 
 #pragma once
 
-#define WIN32_EXTRA_LEAN			// Reduce windows header size
-#include <windows.h>
-#include <gameos\platform.hpp>
-#include <gameos.hpp>
+#ifndef _DLLPLATFORM_HPP_
+#define _DLLPLATFORM_HPP_
+
+// #define WIN32_EXTRA_LEAN			// Reduce windows header size
+// #include <windows.h>
+// #include <platform.hpp>
+// #include <gameos.hpp>
 
 NTSTATUS	__stdcall ProcessException( PEXCEPTION_POINTERS pep);
 void		__stdcall InitExceptionHandler( PSTR pCmdLine);
@@ -19,3 +22,4 @@ LRESULT		__stdcall GameOSWinProc( HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARA
 uint32_t		__stdcall RunGameOSLogic(void);
 void		__stdcall ExitGameOS(void);
 
+#endif

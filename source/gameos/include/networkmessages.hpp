@@ -130,16 +130,16 @@ class FIGuaranteedMessageHeader: public FIMessageHeader,public MessageTagger
 		// Constructor just calls Clear
 		FIGuaranteedMessageHeader():FIMessageHeader(),MessageTagger()
 		{
-			SetGuaranteed();
-			Clear();
+			SetGuaranteed(void);
+			Clear(void);
 		}
 
 			
 		inline void Init()
 		{
-			Clear();
-			FIMessageHeader::Init();
-			SetGuaranteed();
+			Clear(void);
+			FIMessageHeader::Init(void);
+			SetGuaranteed(void);
 		}
 };
 
@@ -185,7 +185,7 @@ public:
 
 	void Init()
 	{
-		FIMessageHeader::Init();
+		FIMessageHeader::Init(void);
 		SetType(FIDP_MSG_VERIFY_CLUSTER);
 		n_messages = 0;
 	}
@@ -285,13 +285,13 @@ public:
 	// Constructor and destructor
 	FIDPMessage(DPID player_id, uint32_t buf_size=MAXMESSAGESIZE);
 
-	virtual ~FIDPMessage();
+	virtual ~FIDPMessage(void);
 
    
 	// Member functions
 	//
 
-	void Clear();
+	void Clear(void);
 
 	inline DPID SenderID()
 	{
@@ -339,7 +339,7 @@ public:
 	uint32_t SetMessageBuffer(LPVOID data, uint32_t nbytes);
 
 
-	HRESULT	ReceiveMessage();
+	HRESULT	ReceiveMessage(void);
 
 };
 

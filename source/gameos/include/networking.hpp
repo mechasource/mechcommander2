@@ -100,9 +100,9 @@ public:
 	// Priority of zero is the default.  Higher number means a higher priority message.
 	uint32_t			priority;
 
-	NetworkMessageContainer();
+	NetworkMessageContainer(void);
 	
-	void Clear();
+	void Clear(void);
 };
 
 

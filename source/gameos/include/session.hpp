@@ -25,7 +25,7 @@ class FIDPSession: public ListItem
 		FIDPSession(DPSESSIONDESC2 sdesc, int32_t id);
 		FIDPSession(FIDPSession& session);
 
-		virtual ~FIDPSession();
+		virtual ~FIDPSession(void);
 
 		void Initialize(DPSESSIONDESC2 sdesc);
 
@@ -90,11 +90,11 @@ class FIDPSession: public ListItem
 			if (!IsLocked())
 			{
 				SessionDescriptor.dwFlags |= DPSESSION_NEWPLAYERSDISABLED;				
-				PropagateSettings();
+				PropagateSettings(void);
 			}
 		}
 
-		void PropagateSettings();
+		void PropagateSettings(void);
 		
 
 };

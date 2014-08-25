@@ -65,12 +65,12 @@ extern bool Connected;
 //				  
 // Return value: If successful, return value is GOS_OK.  
 //
-void __stdcall gos_InitializeNetworking();
+void __stdcall gos_InitializeNetworking(void);
 
 //
 // Close any game in progress, clean up networking
 //
-void __stdcall gos_ShutdownNetwork();
+void __stdcall gos_ShutdownNetwork(void);
 
 
 
@@ -96,7 +96,7 @@ bool __stdcall gos_ConnectTCP( PSTR ip_address, uint16_t port );
 //
 // Open an IPX connection
 //
-bool __stdcall gos_ConnectIPX();
+bool __stdcall gos_ConnectIPX(void);
 
 //
 // Open a Serial connection
@@ -169,13 +169,13 @@ GOSERRORCODE __stdcall gos_GetModemNames( NETCALLBACK callback );
 //
 // Return value:  It returns GOS_DIALING while still attempting to connect.
 //				  The user must continue calling Dial until it no longer returns GOS_DIALING.
-GOSERRORCODE __stdcall gos_Dial();
+GOSERRORCODE __stdcall gos_Dial(void);
 
 
 // Functionality: If connected to a network protocol, gos_Disconnect resets the
 //					connection.  This is useful to cancel dialing.
 //
-GOSERRORCODE __stdcall gos_Disconnect();
+GOSERRORCODE __stdcall gos_Disconnect(void);
 
 
 
@@ -188,13 +188,13 @@ GOSERRORCODE __stdcall gos_Disconnect();
 //
 // Return value: If successful, it returns GOS_OK, else it returns GOS_ERR_GENERIC
 //
-GOSERRORCODE gos_LockSession();
+GOSERRORCODE gos_LockSession(void);
 
 // LeaveSession kills the current player and removes him from the session.
 //
 // AG - kill this one
 //
-GOSERRORCODE gos_LeaveSession();
+GOSERRORCODE gos_LeaveSession(void);
 
 
 

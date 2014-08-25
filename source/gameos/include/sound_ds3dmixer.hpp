@@ -31,10 +31,10 @@ class DS3DSoundMixer
 
 
 	public:
-		DS3DSoundMixer();
-		~DS3DSoundMixer();
-		void Reset();
-		void Flush();
+		DS3DSoundMixer(void);
+		~DS3DSoundMixer(void);
+		void Reset(void);
+		void Flush(void);
 		void SetVolume( float f );
 		void SetPosition( float x, float y, float z );
 		void SetVelocity( float x, float y, float z );
@@ -45,11 +45,11 @@ class DS3DSoundMixer
 		void SetDistanceFactor( float df );
 		void SetReverbFactor( float rf );
 		void SetDecayFactor( float df );
-		void GetCaps();
+		void GetCaps(void);
 		void SetSpeakerConfig( uint32_t );
 		void GetSpeakerConfig( uint32_t* );
 		void ReturnFormattedDebugData( PSTR  dst, uint32_t maxlen );
-		void SetAllParameters();
+		void SetAllParameters(void);
 
 };
 

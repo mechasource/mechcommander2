@@ -173,7 +173,7 @@ typedef struct gosEnvironment {
 //
 // Game related functions
 //
-	float	MaxTimeDelta;			// Maximum time delta in seconds allowed between calls to gos_GetElapsedTime(); (Typical value = 1.0f)
+	float	MaxTimeDelta;			// Maximum time delta in seconds allowed between calls to gos_GetElapsedTime(void); (Typical value = 1.0f)
 	float	MinimumTimeDelta;		// If the time delta is greater than MaxTimeDelta, return this time to the application. (Typical value = 1.0f/30.0f)
 //
 // Sound-related application information

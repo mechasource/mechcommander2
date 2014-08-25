@@ -19,10 +19,10 @@ public:
 	};
 
 public:
-	EZVector();
+	EZVector(void);
 	EZVector(float, float, float);
 	EZVector(EZVector * v);
-	~EZVector();
+	~EZVector(void);
 	void Normalize(EZVector * );
 	void Add(EZVector *);
 	static float Dot(EZVector *, EZVector *);

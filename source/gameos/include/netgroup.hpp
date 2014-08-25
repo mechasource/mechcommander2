@@ -59,13 +59,13 @@ public:
 	
 	
 	// Constructor and destructor
-	FIDPGroup();
+	FIDPGroup(void);
 	FIDPGroup(DPID id,
 		DPID parent_id,
 		LPCDPNAME name,
 		uint32_t flags);
 
-	virtual ~FIDPGroup();
+	virtual ~FIDPGroup(void);
 
 
 	inline FLinkedList<ListFriendlyDPID> *GetPlayerList()

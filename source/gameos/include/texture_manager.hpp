@@ -292,10 +292,10 @@ public:
 };
 
 // Texture management API
-inline void __stdcall CheckPreloadTextures(void) { CTexInfo::PreloadTextures(); }
+inline void __stdcall CheckPreloadTextures(void) { CTexInfo::PreloadTextures(void); }
 inline void __stdcall ReleaseTextureHeap( bool ReleaseSysmem ) { CTexInfo::ReleaseTextures(ReleaseSysmem); }
-inline void __stdcall InitTextureManager(void) { CTexInfo::InitializeTextureManager(); }
-inline void __stdcall DestroyTextureManager(void) { CTexInfo::DestroyTextureManager(); }
+inline void __stdcall InitTextureManager(void) { CTexInfo::InitializeTextureManager(void); }
+inline void __stdcall DestroyTextureManager(void) { CTexInfo::DestroyTextureManager(void); }
 
 uint32_t __stdcall GetTexturesUsed(void);
 

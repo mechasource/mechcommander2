@@ -18,7 +18,7 @@ class DBCSSurface
 		puint8_t m_lpDynData;
 
 		DBCSSurface(uint32_t width, uint32_t height);
-		~DBCSSurface();
+		~DBCSSurface(void);
 		PVOID GetDataPointer(void);
 		void Clear(uint32_t color);
 };

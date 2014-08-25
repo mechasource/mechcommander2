@@ -6,8 +6,8 @@ class CZonePing
 {
 // CZonePing
 public:
-	CZonePing();
-	~CZonePing();
+	CZonePing(void);
+	~CZonePing(void);
 
     PVOID operator new(size_t size);
     PVOID operator new[](size_t size);
@@ -20,13 +20,13 @@ public:
     typedef void PingCallbackFunc( uint32_t inet, uint32_t latency, PVOID context );
 
 
-    int32_t __stdcall StartupServer();
+    int32_t __stdcall StartupServer(void);
     virtual HRESULT __stdcall StartupClient( uint32_t ping_interval_sec );
-    virtual HRESULT __stdcall Shutdown();
+    virtual HRESULT __stdcall Shutdown(void);
     virtual HRESULT __stdcall Add( uint32_t inet );
     virtual HRESULT __stdcall Ping( uint32_t inet );
     virtual HRESULT __stdcall Remove( uint32_t inet );
-    virtual HRESULT __stdcall RemoveAll();
+    virtual HRESULT __stdcall RemoveAll(void);
     virtual HRESULT __stdcall Lookup( uint32_t inet, uint32_t *pLatency );
     virtual HRESULT __stdcall RegisterCallback( uint32_t inet, PingCallbackFunc * pfn, PVOID context);
 
@@ -92,7 +92,7 @@ protected:
         }
     }
 
-    BOOL    CreateSocket();
+    BOOL    CreateSocket(void);
 
     ZonePing* m_PingArray;
     uint32_t     m_PingEntries;
@@ -117,8 +117,8 @@ protected:
     static uint32_t WINAPI PingerThreadProc( LPVOID p );
     static uint32_t WINAPI PingeeThreadProc( LPVOID p );
 
-    void PingerThread();
-    void PingeeThread();
+    void PingerThread(void);
+    void PingeeThread(void);
 
     HANDLE m_hStartupMutex;
     int32_t   m_refCountStartup;

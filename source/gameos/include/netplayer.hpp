@@ -80,11 +80,11 @@ public:
 
 	
 	// Public functions
-	FIDPPlayer();
+	FIDPPlayer(void);
 	FIDPPlayer(DPID& id,
 		LPCDPNAME name,
 		uint32_t flags);
-	virtual ~FIDPPlayer();
+	virtual ~FIDPPlayer(void);
 
 
 	// SetMessageSendCount is called each time a new message is
@@ -153,15 +153,15 @@ public:
 	// if its new and returns TRUE.  If the message is old, it returns FALSE.
 	BOOL HandleIncomingMessage(FIDPMessage *message_info, int32_t send_count);
 
-	void SetNextIncomingSendCount();
+	void SetNextIncomingSendCount(void);
 
 	FIDPMessage *RemoveFromVerifyList(int32_t send_count);
 
-	BOOL IsVerifyListFull();
+	BOOL IsVerifyListFull(void);
 
-	int32_t VerifyCountDifference();
+	int32_t VerifyCountDifference(void);
 
-	FIDPMessage *NextMessageToProcess();
+	FIDPMessage *NextMessageToProcess(void);
 
 
 	BOOL IsInGroup(DPID group_id);

@@ -4,9 +4,10 @@
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+
 #pragma once
 
-#include "String.hpp"
+#include "string.hpp"
 
 void __stdcall RegistryManagerInstall(void);
 void __stdcall RegistryManagerUninstall(void);

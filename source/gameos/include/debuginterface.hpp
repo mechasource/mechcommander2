@@ -7,5 +7,9 @@
 
 #pragma once
 
+#ifndef _DEBUGINTERFACE_HPP_
+#define _DEBUGINTERFACE_HPP_
+
 void __stdcall ShowDebuggingInformation(void);
 
+#endif

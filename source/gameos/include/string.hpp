@@ -48,7 +48,7 @@ class FixedLengthString
 //
 // FixedLengthString can be referenced as a PSTR
 //
-	inline operator PSTR() const
+	inline operator PSTR(void) const
 	{
 		return Text;
 	}

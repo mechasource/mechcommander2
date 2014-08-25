@@ -30,14 +30,14 @@ class SoundMixer
 
 
 	public:
-		SoundMixer();
-		virtual ~SoundMixer();
-		virtual void GetHardwareData();
-		virtual void Pause();
-		virtual void Continue();
-		virtual void Clear();
-		virtual void Flush();
-		virtual void Reset();
+		SoundMixer(void);
+		virtual ~SoundMixer(void);
+		virtual void GetHardwareData(void);
+		virtual void Pause(void);
+		virtual void Continue(void);
+		virtual void Clear(void);
+		virtual void Flush(void);
+		virtual void Reset(void);
 		virtual void SetVolume( float f );
 		virtual void SetPosition( float x, float y, float z );
 		virtual void SetVelocity( float x, float y, float z );

@@ -45,7 +45,7 @@ namespace MidLevelRenderer{
 		void Save(Stuff::MemoryStream *stream);
 		MLRTexture* Add(PCSTR textureName, int32_t instance=0);
 		MLRTexture* Add(GOSImage*);
-		MLRTexture* Add(PCSTR imageName, gos_TextureFormat format, int32_t size, gos_TextureHints hints)
+		MLRTexture* Add(PCSTR imageName, /*gos_TextureFormat*/ uint32_t format, size_t size, /*gos_TextureHints*/ uint32_t  hints)
 		{
 			return Add(imagePool->GetImage(imageName, format, size, hints) );
 		}

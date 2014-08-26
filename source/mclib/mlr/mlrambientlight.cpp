@@ -43,7 +43,7 @@ void
 MLRAmbientLight::MLRAmbientLight() :
 	MLRLight(DefaultData)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode|MLRState::VertexLightingMode;
 }
 
@@ -56,7 +56,7 @@ MLRAmbientLight::MLRAmbientLight(
 	MLRLight(DefaultData, stream, version)
 {
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode|MLRState::VertexLightingMode;
 }
 
@@ -66,7 +66,7 @@ MLRAmbientLight::MLRAmbientLight(Stuff::Page *page) :
 	MLRLight(DefaultData, page)
 {
 	Check_Object(page);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode|MLRState::VertexLightingMode;
 }
 

@@ -43,7 +43,7 @@ void
 MLRInfiniteLight::MLRInfiniteLight(ClassData *class_data) :
 	MLRLight(class_data)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode|MLRState::VertexLightingMode;
 }
 
@@ -57,7 +57,7 @@ MLRInfiniteLight::MLRInfiniteLight(
 	MLRLight(class_data, stream, version)
 {
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode|MLRState::VertexLightingMode;
 }
 
@@ -70,7 +70,7 @@ MLRInfiniteLight::MLRInfiniteLight(
 	MLRLight(class_data, page)
 {
 	Check_Object(page);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode|MLRState::VertexLightingMode;
 }
 

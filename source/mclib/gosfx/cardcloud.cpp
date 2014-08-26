@@ -17,7 +17,7 @@ gosFX::CardCloud__Specification::CardCloud__Specification(
 	Check_Pointer(this);
 	Check_Object(stream);
 	Verify(m_class == CardCloudClassID);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	m_halfHeight.Load(stream, gfx_version);
 	m_aspectRatio.Load(stream, gfx_version);
@@ -75,7 +75,7 @@ gosFX::CardCloud__Specification::CardCloud__Specification():
 	SpinningCloud__Specification(gosFX::CardCloudClassID)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_animated = false;
 	m_width = 1;
 	m_totalParticleSize = gosFX::CardCloud::ParticleSize;
@@ -266,7 +266,7 @@ void
 	gosFX::CardCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			CardCloudClassID,
@@ -297,7 +297,7 @@ gosFX::CardCloud::CardCloud(
 	SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cloudImplementation =

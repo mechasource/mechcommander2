@@ -18,7 +18,7 @@ gosFX::EffectCloud__Specification::EffectCloud__Specification(
 {
 	Check_Pointer(this);
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	Verify(m_class == EffectCloudClassID);
 	m_totalParticleSize = gosFX::EffectCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::EffectCloud::Particle);
@@ -32,7 +32,7 @@ gosFX::EffectCloud__Specification::EffectCloud__Specification():
 	SpinningCloud__Specification(gosFX::EffectCloudClassID)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = gosFX::EffectCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::EffectCloud::Particle);
 }
@@ -93,7 +93,7 @@ void
 	gosFX::EffectCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			EffectCloudClassID,
@@ -124,7 +124,7 @@ gosFX::EffectCloud::EffectCloud(
 	SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------

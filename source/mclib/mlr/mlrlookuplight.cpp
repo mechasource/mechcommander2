@@ -43,7 +43,7 @@ void
 MLRLookUpLight::MLRLookUpLight() :
 	MLRInfiniteLight(DefaultData)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	mapOrigin.x = 0.0f;
 	mapOrigin.y = 0.0f;
@@ -68,7 +68,7 @@ MLRLookUpLight::MLRLookUpLight(
 	MLRInfiniteLight(DefaultData, stream, version)
 {
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	*stream >> mapOrigin;
 	*stream >> mapZoneCountX >> mapZoneCountZ;
@@ -97,7 +97,7 @@ MLRLookUpLight::MLRLookUpLight(Stuff::Page *page):
 	MLRInfiniteLight(DefaultData, page)
 {
 	Check_Object(page);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	maps = NULL;
 

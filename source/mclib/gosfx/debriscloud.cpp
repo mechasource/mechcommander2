@@ -22,7 +22,7 @@ gosFX::DebrisCloud__Specification::DebrisCloud__Specification(
 {
 	Check_Pointer(this);
 	Verify(m_class == DebrisCloudClassID);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	m_minimumDeviation.Load(stream, gfx_version);	//	ConstantCurve
 	m_maximumDeviation.Load(stream, gfx_version);	//	SplineCurve
@@ -45,7 +45,7 @@ gosFX::DebrisCloud__Specification::DebrisCloud__Specification():
 	Effect__Specification(gosFX::DebrisCloudClassID)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	debrisPieces.SetLength(0);
 	debrisPositions.SetLength(0);
@@ -337,7 +337,7 @@ void
 	gosFX::DebrisCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			DebrisCloudClassID,
@@ -367,7 +367,7 @@ gosFX::DebrisCloud::DebrisCloud(
 ):
 	Effect(DefaultData, spec, flags)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	debrisPieces.SetLength(spec->debrisPieces.GetLength());
 }

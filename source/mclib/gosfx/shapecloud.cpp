@@ -22,7 +22,7 @@ gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
 {
 	Check_Pointer(this);
 	Verify(m_class == ShapeCloudClassID);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_particleClassSize = sizeof(gosFX::ShapeCloud::Particle);
 	m_totalParticleSize = sizeof(gosFX::ShapeCloud::Particle);
 
@@ -54,7 +54,7 @@ gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
 	SpinningCloud__Specification(gosFX::ShapeCloudClassID)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = m_particleClassSize = sizeof(gosFX::ShapeCloud::Particle);
 	m_shape = NULL;
 	SetShape(shape);
@@ -190,7 +190,7 @@ void
 	gosFX::ShapeCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			ShapeCloudClassID,
@@ -220,7 +220,7 @@ gosFX::ShapeCloud::ShapeCloud(
 ):
 	SpinningCloud(DefaultData, spec, flags)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------

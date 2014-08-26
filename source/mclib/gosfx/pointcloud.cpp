@@ -24,7 +24,7 @@ gosFX::PointCloud__Specification::PointCloud__Specification(
 {
 	Check_Pointer(this);
 	Verify(m_class == PointCloudClassID);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = gosFX::PointCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::PointCloud::Particle);
 }
@@ -35,7 +35,7 @@ gosFX::PointCloud__Specification::PointCloud__Specification():
 	ParticleCloud__Specification(gosFX::PointCloudClassID)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = gosFX::PointCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::PointCloud::Particle);
 }
@@ -71,7 +71,7 @@ void
 	gosFX::PointCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			PointCloudClassID,
@@ -102,7 +102,7 @@ gosFX::PointCloud::PointCloud(
 	ParticleCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cloudImplementation =

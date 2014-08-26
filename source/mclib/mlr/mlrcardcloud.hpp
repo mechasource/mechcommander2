@@ -61,7 +61,7 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 	protected:
-		pcint32_t usedNrOfCards;
+		pcsize_t usedNrOfCards;
 
 		const Stuff::Vector2DScalar*	texCoords;
 
@@ -69,7 +69,7 @@ namespace MidLevelRenderer {
 		static Stuff::DynamicArrayOf<Stuff::Vector4D>* clipExtraCoords;			// , Max_Number_Vertices_Per_Mesh
 		static Stuff::DynamicArrayOf<Stuff::RGBAColor>* clipExtraColors;		// , Max_Number_Vertices_Per_Mesh
 		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar>* clipExtraTexCoords;// , Max_Number_Vertices_Per_Mesh
-		static Stuff::DynamicArrayOf<int32_t>* clipExtraLength;						// , Max_Number_Primitives_Per_Frame
+		static Stuff::DynamicArrayOf<uint32_t>* clipExtraLength;				// , Max_Number_Primitives_Per_Frame
 	};
 }
 #endif

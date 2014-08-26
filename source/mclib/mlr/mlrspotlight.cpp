@@ -43,7 +43,7 @@ void
 MLRSpotLight::MLRSpotLight() :
 	MLRInfiniteLightWithFalloff(DefaultData)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMap = NULL;
 }
 
@@ -56,7 +56,7 @@ MLRSpotLight::MLRSpotLight(
 	MLRInfiniteLightWithFalloff(DefaultData, stream, version)
 {
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMap = NULL;
 	if (version > 7)
 	{
@@ -85,7 +85,7 @@ MLRSpotLight::MLRSpotLight(Stuff::Page *page):
 	MLRInfiniteLightWithFalloff(DefaultData, page)
 {
 	Check_Object(page);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMap = NULL;
 	PCSTR lightmap;
 	if (page->GetEntry("LightMap", &lightmap))

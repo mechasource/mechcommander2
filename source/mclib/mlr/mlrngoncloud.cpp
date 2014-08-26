@@ -80,7 +80,7 @@ void
 MLRNGonCloud::MLRNGonCloud(int32_t vertices, int32_t nr) :
 	MLREffect(nr, DefaultData)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	usedNrOfNGons = NULL;
 
 	numOfVertices = vertices;

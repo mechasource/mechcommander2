@@ -19,7 +19,7 @@ gosFX::ShardCloud__Specification::ShardCloud__Specification(
 {
 	Check_Pointer(this);
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	Verify(m_class == ShardCloudClassID);
 
 	m_size.Load(stream, gfx_version);
@@ -35,7 +35,7 @@ gosFX::ShardCloud__Specification::ShardCloud__Specification():
 	SpinningCloud__Specification(gosFX::ShardCloudClassID)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = gosFX::ShardCloud::ParticleSize;
 	m_particleClassSize = sizeof(gosFX::ShardCloud::Particle);
 }
@@ -138,7 +138,7 @@ void
 	gosFX::ShardCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			ShardCloudClassID,
@@ -169,7 +169,7 @@ gosFX::ShardCloud::ShardCloud(
 	SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cloudImplementation =

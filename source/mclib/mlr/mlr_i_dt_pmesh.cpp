@@ -83,7 +83,7 @@ MLR_I_DT_PMesh::MLR_I_DT_PMesh(
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	referenceState2.Load(stream, version);
 
@@ -108,7 +108,7 @@ MLR_I_DT_PMesh::MLR_I_DT_PMesh(ClassData *class_data):
 	MLR_I_PMesh(class_data)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	passes = 2;
 }

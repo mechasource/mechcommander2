@@ -111,7 +111,7 @@ void
 MLRLightMap::MLRLightMap(MLRTexture *tex) :
 	RegisteredClass(DefaultData)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	state.SetTextureHandle(tex->GetTextureHandle());
 	state.SetRenderDeltaMask(MLRState::TextureMask);
 

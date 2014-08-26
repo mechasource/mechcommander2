@@ -83,7 +83,7 @@ MLR_I_PMesh::MLR_I_PMesh(
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	facePlanes.SetLength(GetNumPrimitives());
 	testList.SetLength(GetNumPrimitives());
@@ -97,7 +97,7 @@ MLR_I_PMesh::MLR_I_PMesh(ClassData *class_data):
 	MLRIndexedPrimitiveBase(class_data)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	drawMode = SortData::TriIndexedList;
 }
@@ -108,7 +108,7 @@ void
 	MLR_I_PMesh::Copy(MLRIndexedPolyMesh *polyMesh)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	int32_t len;
 	puint16_t _index;
@@ -203,7 +203,7 @@ void
 	MLR_I_PMesh::SetSubprimitiveLengths (puint8_t data, int32_t numPrimitives)
 {
 	Check_Object(this); 
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	lengths.AssignData(data, numPrimitives);
 

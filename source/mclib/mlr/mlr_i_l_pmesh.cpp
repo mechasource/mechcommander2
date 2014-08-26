@@ -64,7 +64,7 @@ MLR_I_L_PMesh::MLR_I_L_PMesh(
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	switch(version)
 	{
@@ -91,7 +91,7 @@ MLR_I_L_PMesh::MLR_I_L_PMesh(ClassData *class_data):
 	MLR_I_C_PMesh(class_data), normals(0)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	actualColors = &colors;
 }
@@ -204,7 +204,7 @@ void
 {
 	Check_Object(this); 
 	Check_Pointer(data);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
@@ -226,7 +226,7 @@ void
 	)
 {
 	Check_Object(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 #if 0
 	Verify(colors.GetLength() == litColors.GetLength());

@@ -53,7 +53,7 @@ void
 MLRTexturePool::MLRTexturePool(MemoryStream *stream):
 	RegisteredClass(DefaultData)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	unLoadedImages = false;
 
@@ -64,7 +64,7 @@ MLRTexturePool::MLRTexturePool(MemoryStream *stream):
 //
 void MLRTexturePool::Stop (void)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	int32_t i;
 
@@ -88,7 +88,7 @@ void MLRTexturePool::Stop (void)
 //
 void MLRTexturePool::Restart (void)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	freeHandle = new int32_t [handleMax];
 	Register_Pointer(freeHandle);
@@ -112,7 +112,7 @@ MLRTexturePool::MLRTexturePool(GOSImagePool *image_pool, int32_t insDep):
 	RegisteredClass(DefaultData)
 {
 	Check_Object(image_pool);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	instanceDepth = insDep;
 	instanceMax = 1<<insDep;

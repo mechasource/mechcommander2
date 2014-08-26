@@ -78,7 +78,7 @@ MLR_Terrain2::MLR_Terrain2(
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	*stream >> tileX >> tileZ;
 	*stream >> maxDepth >> maxAllDepth;
@@ -210,7 +210,7 @@ MLR_Terrain2::MLR_Terrain2(ClassData *class_data):
 	MLR_I_DeT_TMesh(class_data)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	tileX = 0;
 	tileZ = 0;

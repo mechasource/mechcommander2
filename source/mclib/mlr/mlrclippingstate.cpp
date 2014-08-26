@@ -3,13 +3,16 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlrclippingstate.hpp>
+
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //#########################    MLRClippingState    ############################
 //#############################################################################
 
-int32_t MLRClippingState::numberBitsLookUpTable[MLRClippingState::ClipMask+1] = {
+uint32_t MLRClippingState::numberBitsLookUpTable[MLRClippingState::ClipMask+1] = {
 	0,	1,	1,	2,	1,	2,	2,	3,
 	1,	2,	2,	3,	2,	3,	3,	4,
 	1,	2,	2,	3,	2,	3,	3,	4,
@@ -22,8 +25,7 @@ int32_t MLRClippingState::numberBitsLookUpTable[MLRClippingState::ClipMask+1] = 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLRClippingState::Save(MemoryStream *stream)
+void MLRClippingState::Save(Stuff::MemoryStream* stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
@@ -39,7 +41,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRClippingState::Load(MemoryStream *stream)
+	MLRClippingState::Load(Stuff::MemoryStream *stream)
 {
 	Check_Object(this);
 	Check_Object(stream);

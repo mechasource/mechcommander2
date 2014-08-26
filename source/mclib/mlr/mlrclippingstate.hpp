@@ -159,7 +159,7 @@ namespace MidLevelRenderer {
 #endif
 		}
 
-		bool IsClipped(int32_t mask)
+		bool IsClipped(uint32_t mask)
 		{
 			Check_Pointer(this); return (clippingState & mask) != 0;
 		}

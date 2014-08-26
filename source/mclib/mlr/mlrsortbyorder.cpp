@@ -46,7 +46,7 @@ void
 MLRSortByOrder::MLRSortByOrder(MLRTexturePool *tp) :
 	MLRSorter(DefaultData, tp)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	int32_t i;
 
 	gos_PushCurrentHeap(StaticHeap);

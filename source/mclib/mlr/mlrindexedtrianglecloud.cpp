@@ -77,7 +77,7 @@ void
 MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(int32_t nr) :
 	MLRTriangleCloud(nr)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	usedNrOfPoints = NULL;
 
 	Check_Pointer(this);

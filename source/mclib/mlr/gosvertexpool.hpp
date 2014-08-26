@@ -164,40 +164,5 @@ namespace MidLevelRenderer {
 	};
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-	inline GOSVertexPool::GOSVertexPool(void) 
-	{ 
-		Verify(gos_GetCurrentHeap() == Heap);
-		lastUsed = 0;
-		lastUsed2uv = 0;
-		lastUsedIndex = 0;
-
-		gos_PushCurrentHeap(StaticHeap);
-		vertices.SetLength(Limits::Max_Number_Vertices_Per_Frame+4*Limits::Max_Number_ScreenQuads_Per_Frame+1);
-		vertices2uv.SetLength(Limits::Max_Number_Vertices_Per_Frame+4*Limits::Max_Number_ScreenQuads_Per_Frame+1);
-		indices.SetLength(Limits::Max_Number_Vertices_Per_Frame+16);
-
-		verticesDB.SetLength(2*Limits::Max_Number_Vertices_Per_Mesh);
-		vertices2uvDB.SetLength(2*Limits::Max_Number_Vertices_Per_Mesh);
-		indicesDB.SetLength(2*Limits::Max_Number_Vertices_Per_Mesh);
-
-		gos_PopCurrentHeap();
-
-		vertexAlignment=32-( (size_t)vertices.GetData() & 31 );
-		vertexAlignment2uv=32-( (size_t)vertices2uv.GetData() & 31 );
-		indicesAlignment=32-( (size_t)indices.GetData() & 31 );
-	}
-
-
-	inline void
-		GOSVertexPool::Reset(void)
-	{
-		Check_Object(this);
-		lastUsed = 0;
-		lastUsed2uv = 0;
-		lastUsedIndex = 0;
-		MLRVertexLimitReached = false;
-	}
-
 }
 #endif

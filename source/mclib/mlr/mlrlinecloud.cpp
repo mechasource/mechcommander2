@@ -47,7 +47,7 @@ void
 MLRLineCloud::MLRLineCloud(int32_t nr, int32_t _type) :
 	MLREffect(2*nr, DefaultData), type(_type)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	usedNrOfVertices = 0;
 
 	Check_Pointer(this);
@@ -103,7 +103,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void 
-	MLRLineCloud::Transform(int32_t, int32_t)
+	MLRLineCloud::Transform(size_t, size_t)
 {
 	Check_Object(this);
 

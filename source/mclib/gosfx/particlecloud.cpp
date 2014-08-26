@@ -23,7 +23,7 @@ gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 {
 	Check_Pointer(this);
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	//
 	//-------------------
@@ -61,7 +61,7 @@ gosFX::ParticleCloud__Specification::ParticleCloud__Specification(
 ):
 	Effect__Specification(class_id)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_maxParticleCount = 0;
 	Check_Pointer(this);
 }
@@ -232,7 +232,7 @@ void
 {
 	Check_Object(this);
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	Effect__Specification::Copy(spec);
 
@@ -279,7 +279,7 @@ void
 	gosFX::ParticleCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			ParticleCloudClassID,
@@ -312,7 +312,7 @@ gosFX::ParticleCloud::ParticleCloud(
 {
 	Check_Pointer(this);
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	//
 	//------------------------------------------------

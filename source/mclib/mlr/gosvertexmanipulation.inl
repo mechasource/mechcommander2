@@ -140,7 +140,7 @@ inline bool GOSCopyTriangleData(
 	const Stuff::Vector2DScalar *texCoords,
 #endif
 #endif
-	int32_t offset0, int32_t offset1, int32_t offset2
+	size_t offset0, size_t offset1, size_t offset2
 #if FOG_HACK
  , int32_t foggy = 1
 #endif	//	FOG_HACK

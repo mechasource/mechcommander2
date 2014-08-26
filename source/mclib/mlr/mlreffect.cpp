@@ -89,7 +89,7 @@ void
 MLREffect::MLREffect(int32_t nr, ClassData *class_data):
 	RegisteredClass(class_data)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	visible = 0;
 	maxNrOf = nr;
 
@@ -117,7 +117,7 @@ MLREffect::~MLREffect()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void 
-	MLREffect::Transform(int32_t nrOfUsedEffects, int32_t nrOfVertices)
+	MLREffect::Transform(size_t nrOfUsedEffects, size_t nrOfVertices)
 {
 	Check_Object(this);
 

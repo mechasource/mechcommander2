@@ -24,7 +24,7 @@ MLRState::MLRState(
 	uint32_t version
 )
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	Check_Pointer(this);
 	Check_Object(stream);
 	Load(stream, version);

@@ -19,7 +19,7 @@ gosFX::Event::Event(const Event& event):
 	Plug(DefaultData)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	m_time = event.m_time;
 	m_flags = event.m_flags;
@@ -36,7 +36,7 @@ gosFX::Event::Event(
 {
 	Check_Pointer(this);
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	*stream >> m_time >> m_flags >> m_effectID >> m_localToParent;
 }
@@ -82,7 +82,7 @@ gosFX::Effect__Specification::Effect__Specification(
 {
 	Check_Pointer(this);
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	if (gfx_version < 9)
 	{
@@ -142,7 +142,7 @@ gosFX::Effect__Specification::Effect__Specification(
 	m_events(NULL)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_class = class_id;
 }
 
@@ -308,7 +308,7 @@ void
 	Check_Object(this);
 	Check_Object(event);
 	Verify(event->m_time >= 0.0f && event->m_time <= 1.0f);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	//
 	//-----------------------------------------------------------
@@ -343,7 +343,7 @@ void
 	gosFX::Effect::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			EffectClassID,
@@ -378,7 +378,7 @@ gosFX::Effect::Effect(
 {
 	Check_Pointer(this);
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_specification = spec;
 	m_age = 0.0f;
 	m_flags = flags;

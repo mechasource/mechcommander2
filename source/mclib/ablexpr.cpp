@@ -171,8 +171,9 @@ TypePtr variable (SymTableNodePtr variableIdPtr) {
 		case DFN_UNDEFINED:
 			break;
 		default:
-			typePtr = &DummyType;
-			syntaxError(ABL_ERR_SYNTAX_INVALID_IDENTIFIER_USAGE);
+			//typePtr = &DummyType;
+			//syntaxError(ABL_ERR_SYNTAX_INVALID_IDENTIFIER_USAGE);
+			NODEFAULT;
 	}
 
 	getToken();
@@ -312,9 +313,10 @@ TypePtr factor (void) {
 			ifTokenGetElseError(TKN_RPAREN, ABL_ERR_SYNTAX_MISSING_RPAREN);
 			break;
 		default:
-			syntaxError(ABL_ERR_SYNTAX_INVALID_EXPRESSION);
-			thisType = &DummyType;
-			break;
+			//syntaxError(ABL_ERR_SYNTAX_INVALID_EXPRESSION);
+			//thisType = &DummyType;
+			//break;
+			NODEFAULT;
 	}
 	return(thisType);
 }

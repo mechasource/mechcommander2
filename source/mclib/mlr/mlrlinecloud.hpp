@@ -41,7 +41,7 @@ namespace MidLevelRenderer{
 
 		virtual int32_t GetType(int32_t){ return type; }
 		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
-		void Transform(int32_t, int32_t);
+		void Transform(size_t, size_t);
 		int32_t Clip(MLRClippingState, GOSVertexPool*);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,7 +58,7 @@ namespace MidLevelRenderer{
 
 	protected:
 		int32_t type;
-		pcint32_t usedNrOfVertices;
+		pcsize_t usedNrOfVertices;
 	};
 
 }

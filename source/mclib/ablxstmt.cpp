@@ -196,7 +196,8 @@ void execStatement (void) {
 		case TKN_UNTIL:
 			break;
 		default:
-			runtimeError(ABL_ERR_RUNTIME_UNIMPLEMENTED_FEATURE);
+			//runtimeError(ABL_ERR_RUNTIME_UNIMPLEMENTED_FEATURE);
+			NODEFAULT;
 	}
 
 	while (codeToken == TKN_SEMICOLON)

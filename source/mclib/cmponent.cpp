@@ -262,7 +262,8 @@ _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) PS
 		case COMPONENT_FORM_BULK:
 			break;
 		default:
-			return(-2);
+			//return(-2);
+			NODEFAULT;
 	}
 
 	return(NO_ERROR);

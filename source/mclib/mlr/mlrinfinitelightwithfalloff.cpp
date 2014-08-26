@@ -43,7 +43,7 @@ void
 MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(ClassData *class_data) :
 	MLRLight(class_data)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode|MLRState::VertexLightingMode;
 	innerRadius = 0.0f;
 	outerRadius = 0.0f;
@@ -61,7 +61,7 @@ MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(
 	MLRLight(class_data, stream, version)
 {
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode|MLRState::VertexLightingMode;
 	Scalar inner, outer;
 	*stream >> inner >> outer;
@@ -77,7 +77,7 @@ MLRInfiniteLightWithFalloff::MLRInfiniteLightWithFalloff(
 	MLRLight(class_data, page)
 {
 	Check_Object(page);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	lightMask = MLRState::FaceLightingMode|MLRState::VertexLightingMode;
 	Scalar inner=0.0f;
 	page->GetEntry("InnerRadius", &inner);

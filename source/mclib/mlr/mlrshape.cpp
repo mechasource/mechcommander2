@@ -48,7 +48,7 @@ MLRShape::MLRShape(
 { 
 	Check_Pointer(this);
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	*stream >> numPrimitives;
 	int32_t i;
@@ -251,7 +251,7 @@ MLRShape::MLRShape(
 MLRShape::MLRShape(int32_t nr):
 	Plug(DefaultData), allPrimitives(nr ? nr : 4)
 { 
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	numPrimitives = 0;
 	referenceCount = 1;
 }

@@ -14,7 +14,7 @@ GOSImagePool::GOSImagePool() :
 		true
 	)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	texturePath = "";
 }
 

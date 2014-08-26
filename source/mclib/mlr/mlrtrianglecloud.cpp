@@ -79,7 +79,7 @@ void
 MLRTriangleCloud::MLRTriangleCloud(int32_t nr) :
 	MLREffect(nr, DefaultData)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	usedNrOfTriangles = NULL;
 
 	Check_Pointer(this);

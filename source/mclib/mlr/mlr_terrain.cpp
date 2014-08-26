@@ -73,7 +73,7 @@ MLR_Terrain::MLR_Terrain(
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	texCoords.SetLength(0);
 }
@@ -84,7 +84,7 @@ MLR_Terrain::MLR_Terrain(ClassData *class_data):
 	MLR_I_DeT_TMesh(class_data)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	texCoords.SetLength(0);
 }

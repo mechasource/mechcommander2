@@ -65,7 +65,7 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 	protected:
-		pcint32_t usedNrOfTriangles;
+		pcsize_t usedNrOfTriangles;
 
 		static Stuff::DynamicArrayOf<Stuff::RGBAColor> *clipExtraColors; // , Max_Number_Vertices_Per_Mesh
 

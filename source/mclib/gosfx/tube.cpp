@@ -23,7 +23,7 @@ gosFX::Tube__Specification::Tube__Specification(
 {
 	Check_Pointer(this);
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	//
 	//-------------------
@@ -67,7 +67,7 @@ gosFX::Tube__Specification::Tube__Specification(
 gosFX::Tube__Specification::Tube__Specification():
 	Effect__Specification(TubeClassID)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_maxProfileCount = 0;
 	m_profileType = e_Ribbon;
 	m_insideOut = false;
@@ -299,7 +299,7 @@ void
 {
 	Check_Object(this);
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	Effect__Specification::Copy(spec);
 
@@ -513,7 +513,7 @@ void
 	gosFX::Tube::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			TubeClassID,
@@ -545,7 +545,7 @@ gosFX::Tube::Tube(
 {
 	Check_Pointer(this);
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	//
 	//----------------------------------

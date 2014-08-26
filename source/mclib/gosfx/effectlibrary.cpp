@@ -36,7 +36,7 @@ void
 //
 gosFX::EffectLibrary::EffectLibrary()
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ gosFX::EffectLibrary::~EffectLibrary()
 void
 	gosFX::EffectLibrary::Load(Stuff::MemoryStream* stream)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	Verify(!m_effects.GetLength());
 	uint32_t version = ReadGFXVersion(stream);
 	uint32_t len;

@@ -72,7 +72,7 @@ MLR_I_TMesh::MLR_I_TMesh(
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	numOfTriangles = index.GetLength()/3;
 
@@ -88,7 +88,7 @@ MLR_I_TMesh::MLR_I_TMesh(ClassData *class_data):
 	MLRIndexedPrimitiveBase(class_data)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	drawMode = SortData::TriIndexedList;
 }
@@ -143,7 +143,7 @@ bool
 {
 	Check_Object(this);
 	Check_Object(pMesh);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	int32_t len;
 	puint16_t _index;

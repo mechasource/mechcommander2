@@ -64,7 +64,7 @@ MLR_I_C_DeT_TMesh::MLR_I_C_DeT_TMesh(
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	switch(version)
 	{
@@ -121,7 +121,7 @@ MLR_I_C_DeT_TMesh::MLR_I_C_DeT_TMesh(ClassData *class_data):
 	MLR_I_DeT_TMesh(class_data), colors(0)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	actualColors = &colors;
 }
@@ -216,7 +216,7 @@ void
 {
 	Check_Object(this);
 	Check_Object(tMesh);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	int32_t len;
 #if COLOR_AS_DWORD

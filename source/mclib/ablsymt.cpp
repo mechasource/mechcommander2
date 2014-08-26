@@ -570,9 +570,10 @@ void enterStandardRoutine (PSTR name, int32_t routineKey, bool isOrder, PSTR par
 					FunctionInfoTable[tableIndex].params[i] = PARAM_TYPE_BOOLEAN_ARRAY;
 					break;
 				default: {
-					char err[255];
-					sprintf(err, " ABL.enterStandardRoutine: bad param type (%c) for (%s)", paramList[i], name);
-					ABL_Fatal(0, err);
+					//char err[255];
+					//sprintf(err, " ABL.enterStandardRoutine: bad param type (%c) for (%s)", paramList[i], name);
+					//ABL_Fatal(0, err);
+					NODEFAULT;
 				}
 			}
 	}
@@ -593,9 +594,10 @@ void enterStandardRoutine (PSTR name, int32_t routineKey, bool isOrder, PSTR par
 				FunctionInfoTable[tableIndex].returnType = RETURN_TYPE_BOOLEAN;
 				break;
 			default: {
-				char err[255];
-				sprintf(err, " ABL.enterStandardRoutine: bad return type for (%s)", name);
-				ABL_Fatal(0, err);
+				//char err[255];
+				//sprintf(err, " ABL.enterStandardRoutine: bad return type for (%s)", name);
+				//ABL_Fatal(0, err);
+				NODEFAULT;
 			}
 		}
 	FunctionCallbackTable[tableIndex] = callback;

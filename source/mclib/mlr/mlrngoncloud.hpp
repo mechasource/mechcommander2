@@ -57,8 +57,8 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 	protected:
-		int32_t numOfVertices;
-		pcint32_t usedNrOfNGons;
+		size_t numOfVertices;
+		pcsize_t usedNrOfNGons;
 
 		static Stuff::DynamicArrayOf<Stuff::RGBAColor> *clipExtraColors;
 		Stuff::DynamicArrayOf<Stuff::RGBAColor> specialClipColors;

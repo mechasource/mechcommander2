@@ -380,7 +380,8 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 			break;
 
 			default:
-				return(NULL);
+				//return(NULL);
+				NODEFAULT;
 		}
 	}
 	

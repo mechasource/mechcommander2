@@ -20,7 +20,7 @@ gosFX::Card__Specification::Card__Specification(
 {
 	Check_Pointer(this);
 	Verify(m_class == CardClassID);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	m_halfHeight.Load(stream, gfx_version);
 	m_aspectRatio.Load(stream, gfx_version);
@@ -75,7 +75,7 @@ gosFX::Card__Specification::Card__Specification():
 	Singleton__Specification(gosFX::CardClassID)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_animated = false;
 	m_width = 1;
 }
@@ -264,7 +264,7 @@ void
 	gosFX::Card::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			CardClassID,
@@ -296,7 +296,7 @@ gosFX::Card::Card(
 	m_cardCount(1)
 {
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cardCloud = new MidLevelRenderer::MLRCardCloud(1);

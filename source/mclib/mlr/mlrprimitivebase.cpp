@@ -154,7 +154,7 @@ MLRPrimitiveBase::MLRPrimitiveBase(
 {
 	Check_Pointer(this);
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	switch(version)
 	{
@@ -210,7 +210,7 @@ MLRPrimitiveBase::MLRPrimitiveBase(ClassData *class_data):
 	RegisteredClass(class_data),
 	lengths(0),	texCoords(0), coords(0)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	referenceState = 0;
 	
 	state = 0;

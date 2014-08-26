@@ -374,7 +374,7 @@ void
 MLRSorter::MLRSorter(ClassData *class_data, MLRTexturePool *tp):
 	RegisteredClass(class_data)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	texturePool = tp;
 
 	gos_PushCurrentHeap(StaticHeap);

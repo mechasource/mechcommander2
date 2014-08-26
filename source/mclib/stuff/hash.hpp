@@ -126,17 +126,17 @@ namespace Stuff {
 	inline void
 		Hash::RemovePlug(Plug* /*plug*/)
 	{
-		STOP((
-			"Hash::RemovePlug - no efficient implementation, use iterator find & remove"
-		));
+#ifdef _GAMEOS_HPP_
+		STOP(("Hash::RemovePlug - no efficient implementation, use iterator find & remove"));
+#endif
 	}
 
 	inline bool
 		Hash::IsPlugMember(Plug* /*plug*/)
 	{
-		STOP((
-			"Hash::IsPlugMember - no efficient implementation, use find"
-		));
+#ifdef _GAMEOS_HPP_
+		STOP(("Hash::IsPlugMember - no efficient implementation, use find"));
+#endif
 		return false;
 	}
 

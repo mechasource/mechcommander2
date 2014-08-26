@@ -19,7 +19,7 @@ gosFX::PertCloud__Specification::PertCloud__Specification(
 {
 	Check_Pointer(this);
 	Verify(m_class == gosFX::PertCloudClassID);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	m_size.Load(stream, gfx_version);
 	m_perturbation.Load(stream, gfx_version);
@@ -43,7 +43,7 @@ gosFX::PertCloud__Specification::PertCloud__Specification(uint32_t sides):
 	SpinningCloud__Specification(gosFX::PertCloudClassID)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_particleClassSize = sizeof(gosFX::PertCloud::Particle);
 	m_vertices = sides+2;
 	m_totalParticleSize =
@@ -225,7 +225,7 @@ gosFX::PertCloud::PertCloud(
 	SpinningCloud(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
 	m_cloudImplementation =

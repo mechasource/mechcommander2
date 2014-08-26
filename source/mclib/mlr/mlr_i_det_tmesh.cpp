@@ -66,7 +66,7 @@ MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	referenceState2.Load(stream, version);
 
@@ -98,7 +98,7 @@ MLR_I_DeT_TMesh::MLR_I_DeT_TMesh(ClassData *class_data):
 	MLR_I_TMesh(class_data)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	fadeDetailStart = 0.0f;
 	fadeDetailEnd = 1.0f;
@@ -122,7 +122,7 @@ void
 {
 	Check_Object(this);
 	Check_Object(tMesh);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	int32_t len;
 	puint16_t _index;

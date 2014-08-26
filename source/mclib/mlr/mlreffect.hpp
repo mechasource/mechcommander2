@@ -58,7 +58,7 @@ namespace MidLevelRenderer {
 
 		//	add another effect
 		virtual void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*) = 0;
-		virtual void Transform(int32_t, int32_t);
+		virtual void Transform(size_t, size_t);
 
 		// switches single/all effects on or off
 		void TurnAllOn(void);

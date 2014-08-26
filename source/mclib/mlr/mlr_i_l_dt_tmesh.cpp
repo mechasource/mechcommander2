@@ -64,7 +64,7 @@ MLR_I_L_DT_TMesh::MLR_I_L_DT_TMesh(
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	switch(version)
 	{
@@ -90,7 +90,7 @@ MLR_I_L_DT_TMesh::MLR_I_L_DT_TMesh(ClassData *class_data):
 	MLR_I_C_DT_TMesh(class_data), normals(0)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,7 +200,7 @@ void
 {
 	Check_Object(this); 
 	Check_Pointer(data);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	Verify(coords.GetLength() == 0 || dataSize == coords.GetLength());
 	Verify(texCoords.GetLength() == 0 || 2*dataSize == texCoords.GetLength());

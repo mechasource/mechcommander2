@@ -43,7 +43,7 @@ void
 MLRPointCloud::MLRPointCloud(int32_t nr, int32_t _type) :
 	MLREffect(nr, DefaultData), type(_type)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	usedNrOfVertices = 0;
 
 	Check_Pointer(this);
@@ -99,7 +99,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void 
-	MLRPointCloud::Transform(int32_t, int32_t)
+	MLRPointCloud::Transform(size_t, size_t)
 {
 	Check_Object(this);
 

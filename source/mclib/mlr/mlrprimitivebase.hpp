@@ -363,115 +363,6 @@ namespace MidLevelRenderer{
 		uint16_t length;
 	};
 
-#if 0// still defined in "MLRPrimitive.hpp"
-	inline float
-		GetBC(int32_t nr, const Stuff::Vector4D& v4d)
-	{
-		switch(nr)
-		{
-		case 0:
-			return (v4d.w - v4d.y);
-		case 1:
-			return v4d.y;
-		case 2:
-			return (v4d.w - v4d.x);
-		case 3:
-			return v4d.x;
-		case 4:
-			return v4d.z;
-		case 5:
-			return (v4d.w - v4d.z);
-		}
-		return 0.0f;
-	}
-
-	inline void
-		GetDoubleBC
-		(
-		int32_t nr,
-		float& result1,
-		float& result2,
-		const Stuff::Vector4D& v4d1,
-		const Stuff::Vector4D& v4d2
-		)
-	{
-		switch(nr)
-		{
-		case 0:
-			result1 = (v4d1.w - v4d1.y);
-			result2 = (v4d2.w - v4d2.y);
-			break;
-		case 1:
-			result1 = v4d1.y;
-			result2 = v4d2.y;
-			break;
-		case 2:
-			result1 = (v4d1.w - v4d1.x);
-			result2 = (v4d2.w - v4d2.x);
-			break;
-		case 3:
-			result1 = v4d1.x;
-			result2 = v4d2.x;
-			break;
-		case 4:
-			result1 = v4d1.z;
-			result2 = v4d2.z;
-			break;
-		case 5:
-			result1 = (v4d1.w - v4d1.z);
-			result2 = (v4d2.w - v4d2.z);
-			break;
-		}
-	}
-
-	inline float
-		GetLerpFactor
-		(
-		int32_t nr,
-		const Stuff::Vector4D& v4d1,
-		const Stuff::Vector4D& v4d2
-		)
-	{
-		float result1, result2;
-
-		switch(nr)
-		{
-		case 0:
-			result1 = (v4d1.w - v4d1.y);
-			result2 = (v4d2.w - v4d2.y);
-			break;
-		case 1:
-			result1 = v4d1.y;
-			result2 = v4d2.y;
-			break;
-		case 2:
-			result1 = (v4d1.w - v4d1.x);
-			result2 = (v4d2.w - v4d2.x);
-			break;
-		case 3:
-			result1 = v4d1.x;
-			result2 = v4d2.x;
-			break;
-		case 4:
-			result1 = v4d1.z;
-			result2 = v4d2.z;
-			break;
-		case 5:
-			result1 = (v4d1.w - v4d1.z);
-			result2 = (v4d2.w - v4d2.z);
-			break;
-		default:
-			result1 = 0.0f;
-			result2 = 0.0f;
-			Abort_Program("Invalid plane number used !");
-			break;
-		}
-		Verify(!Stuff::Close_Enough(result1, result2));
-		return result1 / (result1 - result2);
-	}
-
-#endif
-
 	inline float GetBC(uint32_t nr, const Stuff::Vector4D& v4d)
 	{
 		switch(nr)
@@ -525,11 +416,10 @@ namespace MidLevelRenderer{
 		}
 	}
 
-	inline float GetLerpFactor(
-		uint32_t nr, const Stuff::Vector4D& v4d1, const Stuff::Vector4D& v4d2)
+	inline float GetLerpFactor(uint32_t nr, const Stuff::Vector4D& v4d1, const Stuff::Vector4D& v4d2)
 	{
-		float result1;
-		float result2;
+		float result1 = 0.0f;
+		float result2 = 0.0f;
 
 		switch(nr)
 		{
@@ -558,9 +448,7 @@ namespace MidLevelRenderer{
 			result2 = (v4d2.w - v4d2.z);
 			break;
 		default:
-			result1 = 0.0f;
-			result2 = 0.0f;
-			STOP(("Invalid plane number used !"));
+			NODEFAULT;
 			break;
 		}
 		if(result1 == 0.0f)

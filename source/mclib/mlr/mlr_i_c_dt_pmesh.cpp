@@ -64,7 +64,7 @@ MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	switch(version)
 	{
@@ -118,7 +118,7 @@ MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(
 MLR_I_C_DT_PMesh::MLR_I_C_DT_PMesh(ClassData *class_data):
 	MLR_I_DT_PMesh(class_data), colors(0)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	Check_Pointer(this);
 }
 

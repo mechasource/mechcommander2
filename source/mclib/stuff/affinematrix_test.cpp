@@ -11,12 +11,11 @@
 
 // test compiling headers one by one to find out dependencies
 
-//#include <stuff/armorheap.hpp>
 //#include <stuff/armoroff.hpp>
+//#include <stuff/armoron.hpp>
 
 //#include <stuff/affinematrix.hpp>
 //#include <stuff/angle.hpp>
-//#include <stuff/armoron.hpp>
 //#include <stuff/auto_container.hpp>
 //#include <stuff/auto_ptr.hpp>
 //#include <stuff/average.hpp>
@@ -24,7 +23,6 @@
 //#include <stuff/color.hpp>
 //#include <stuff/database.hpp>
 //#include <stuff/extentbox.hpp>
-//#include <stuff/extentpoly.hpp>
 //#include <stuff/filestream.hpp>
 //#include <stuff/filestreammanager.hpp>
 //#include <stuff/hash.hpp>
@@ -37,7 +35,6 @@
 //#include <stuff/matrix.hpp>
 //#include <stuff/matrixstack.hpp>
 //#include <stuff/memoryblock.hpp>
-//#include <stuff/memoryheap.hpp>
 //#include <stuff/memorystream.hpp>
 //#include <stuff/motion.hpp>
 //#include <stuff/mstring.hpp>
@@ -76,6 +73,10 @@
 //#include <stuff/vector2d.hpp>
 //#include <stuff/vector3d.hpp>
 //#include <stuff/vector4d.hpp>
+
+//#include <stuff/armorheap.hpp>
+//#include <stuff/extentpoly.hpp>
+//#include <stuff/memoryheap.hpp>
 
 // using namespace Stuff;
 

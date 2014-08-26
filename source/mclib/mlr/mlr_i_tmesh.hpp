@@ -67,7 +67,7 @@ namespace MidLevelRenderer{
 		virtual void SetSubprimitiveLengths(puint8_t length_array, size_t subprimitive_count)
 		{
 			Check_Object(this);(void)length_array;
-			Verify(gos_GetCurrentHeap() == Heap);
+			//Verify(gos_GetCurrentHeap() == Heap);
 			numOfTriangles = subprimitive_count;
 			testList.SetLength(numOfTriangles);
 			facePlanes.SetLength(numOfTriangles);

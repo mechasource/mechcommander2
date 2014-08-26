@@ -62,7 +62,7 @@ MLR_I_C_PMesh::MLR_I_C_PMesh(
 ):
 	MLR_I_PMesh(class_data, stream, version)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	Check_Pointer(this);
 	Check_Pointer(stream);
 
@@ -119,7 +119,7 @@ MLR_I_C_PMesh::MLR_I_C_PMesh(ClassData *class_data):
 	MLR_I_PMesh(class_data), colors(0)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -42,7 +42,7 @@ gosFX::PointLight__Specification::PointLight__Specification(
 {
 	Check_Pointer(this);
 	Verify(m_class == PointLightClassID);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	m_red.Load(stream, gfx_version);
 	m_green.Load(stream, gfx_version);
@@ -70,7 +70,7 @@ gosFX::PointLight__Specification::PointLight__Specification():
 	Effect__Specification(PointLightClassID)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_twoSided = false;
 }
 
@@ -187,7 +187,7 @@ void
 	gosFX::PointLight::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			PointLightClassID,
@@ -221,7 +221,7 @@ gosFX::PointLight::PointLight(
 	Effect(DefaultData, spec, flags)
 {
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------

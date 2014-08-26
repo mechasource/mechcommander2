@@ -23,7 +23,7 @@ gosFX::Singleton__Specification::Singleton__Specification(
 {
 	Check_Pointer(this);
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	//
 	//-------------------
@@ -46,7 +46,7 @@ gosFX::Singleton__Specification::Singleton__Specification(
 	Effect__Specification(class_id)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------
@@ -163,7 +163,7 @@ void
 	gosFX::Singleton::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			SingletonClassID,
@@ -196,7 +196,7 @@ gosFX::Singleton::Singleton(
 {
 	Check_Pointer(this);
 	Check_Object(spec);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------

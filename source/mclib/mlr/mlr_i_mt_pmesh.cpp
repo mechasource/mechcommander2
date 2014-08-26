@@ -94,7 +94,7 @@ MLR_I_MT_PMesh::MLR_I_MT_PMesh(
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	multiTexCoords.SetLength(Limits::Max_Number_Of_Multitextures);
 	multiTexCoordsPointers.SetLength(Limits::Max_Number_Of_Multitextures);
@@ -129,7 +129,7 @@ MLR_I_MT_PMesh::MLR_I_MT_PMesh(ClassData *class_data):
 	MLR_I_PMesh(class_data)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	multiTexCoords.SetLength(Limits::Max_Number_Of_Multitextures);
 	multiTexCoordsPointers.SetLength(Limits::Max_Number_Of_Multitextures);
@@ -151,7 +151,7 @@ void
 	MLR_I_MT_PMesh::Copy(MLR_I_PMesh *pMesh)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	int32_t num;
 	Point3D *points;

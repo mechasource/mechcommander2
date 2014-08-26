@@ -68,7 +68,7 @@ MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(
 {
 	Check_Pointer(this);
 	Check_Object(stream);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	switch(version)
 	{
@@ -107,7 +107,7 @@ void
 MLRIndexedPrimitiveBase::MLRIndexedPrimitiveBase(ClassData *class_data):
 	MLRPrimitiveBase(class_data), index(0)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -153,7 +153,7 @@ void
 {
 	Check_Object(this); 
 	Check_Pointer(data);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	Verify(texCoords.GetLength() == 0 || dataSize == texCoords.GetLength());
 
@@ -180,7 +180,7 @@ void
 {
 	Check_Object(this); 
 	Check_Pointer(index_array);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	if(coords.GetLength() > 0)
 	{

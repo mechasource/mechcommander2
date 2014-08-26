@@ -22,7 +22,7 @@ gosFX::Shape__Specification::Shape__Specification(
 {
 	Check_Pointer(this);
 	Verify(m_class == ShapeClassID);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	//
 	//---------------
@@ -46,7 +46,7 @@ gosFX::Shape__Specification::Shape__Specification(
 	Singleton__Specification(gosFX::ShapeClassID)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_shape = NULL;
 	SetShape(shape);
 }
@@ -181,7 +181,7 @@ void
 	gosFX::Shape::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			ShapeClassID,
@@ -211,7 +211,7 @@ gosFX::Shape::Shape(
 ):
 	Singleton(DefaultData, spec, flags)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_radius = spec->m_radius;
 }
 

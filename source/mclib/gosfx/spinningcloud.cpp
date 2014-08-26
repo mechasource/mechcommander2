@@ -22,7 +22,7 @@ gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
 	ParticleCloud__Specification(class_id, stream, gfx_version)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 
 	//
 	//-----------------
@@ -53,7 +53,7 @@ gosFX::SpinningCloud__Specification::SpinningCloud__Specification(
 	ParticleCloud__Specification(class_id)
 {
 	Check_Pointer(this);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	m_randomStartingRotation = false;
 	m_alignZUsingX = false;
 	m_alignZUsingY = false;
@@ -159,7 +159,7 @@ void
 	gosFX::SpinningCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	DefaultData =
 		new ClassData(
 			SpinningCloudClassID,
@@ -190,7 +190,7 @@ gosFX::SpinningCloud::SpinningCloud(
 ):
 	ParticleCloud(class_data, spec, flags)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //------------------------------------------------------------------------------

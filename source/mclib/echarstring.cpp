@@ -1,8 +1,17 @@
-#define ECharString_CPP
-
 //===========================================================================//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
+//#define ECharString_CPP
+
+#include "stdafx.h"
+
+//#include <gameos.hpp>
+#include "echarstring.h"
+
+//#ifdef UNICODE
+//#include <malloc.h>
+//#include <tchar.h>
+//#endif
 
 /* just for this file, we want UNICODE, K_UNICODE and MBCS undefined */
 #ifdef UNICODE
@@ -24,19 +33,6 @@
 #endif /* def MBCS */
 
 //***************************************************************
-
-
-
-#include <windows.h>
-#include <stdio.h>
-#include "ECharString.h"
-
-#include <gameos.hpp>
-
-#ifdef UNICODE
-#include <malloc.h>
-#include <tchar.h>
-#endif
 
 //#pragma warning( disable:4505 )
 //#pragma warning( push )
@@ -817,7 +813,8 @@ void ECharString::Format( const ECSChar* p_Str, ... )
 
 
 			default:
-				gosASSERT(false);  // unknown formatting option
+				//gosASSERT(false);  // unknown formatting option
+				NODEFAULT;
 			}
 		}
 

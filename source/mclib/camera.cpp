@@ -1497,7 +1497,8 @@ int32_t Camera::update (void)
 			break;
 			
 		default:
-			return INVALID_CAMERA;
+			//return INVALID_CAMERA;
+			NODEFAULT;
 	}
 
 	float oldNightFactor = nightFactor;

@@ -201,6 +201,12 @@ inline void AtlSetTraceLevel(_In_ uint32_t nLevel)
 
 using namespace Utilities;
 
+#ifdef _DEBUG
+#define NODEFAULT		ATLASSERT(0)
+#else
+#define NODEFAULT		__assume(0)
+#endif
+
 #ifndef _CONSIDERED_OBSOLETE
 #define _CONSIDERED_OBSOLETE 0
 #endif

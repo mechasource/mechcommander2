@@ -1,5 +1,5 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #include "stdafx.h"
@@ -7,9 +7,7 @@
 
 //#include <gameos.hpp>
 
-#include <stuff/vector4d.hpp>
-
-#include <mlr/mlrclipper.hpp>
+//#include <stuff/vector4d.hpp>
 
 //#include <mlr/mlr.hpp>
 //#include <mlr/mlrsorter.hpp>
@@ -22,10 +20,11 @@
 //#include <mlr/mlrlight.hpp>
 //#include <mlr/gosvertexpool.hpp>
 
+//#include <stuff/linearmatrix.hpp>
+#include <mlr/mlrclipper.hpp>
 
 
 using namespace MidLevelRenderer;
-using namespace Stuff;
 
 extern uint32_t gShowBirdView, gEnableDetailTexture, gEnableMultiTexture, gEnableLightMaps;
 
@@ -42,7 +41,7 @@ DrawShapeInformation::DrawShapeInformation()
 	clippingFlags.SetClippingState(0);
 };
 
-DrawScalableShapeInformation::DrawScalableShapeInformation() : DrawShapeInformation()
+DrawScalableShapeInformation::DrawScalableShapeInformation(): DrawShapeInformation()
 {
 	scaling = NULL;
 
@@ -55,7 +54,7 @@ DrawEffectInformation::DrawEffectInformation()
 	state = NULL;
 	effectToWorld = NULL;
 
-#if 0	
+#if 0
 	activeLights = NULL;
 	nrOfActiveLights = 0;
 #endif
@@ -74,24 +73,24 @@ DrawScreenQuadsInformation::DrawScreenQuadsInformation()
 };
 
 //#############################################################################
-//###########################    MLRClipper    ################################
+//########################### MLRClipper ################################
 //#############################################################################
 
 MLRClipper::ClassData*
-	MLRClipper::DefaultData = NULL;
+MLRClipper::DefaultData = NULL;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRClipper::InitializeClass()
+MLRClipper::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	//Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
-			MLRClipperClassID,
-			"MidLevelRenderer::MLRClipper",
-			RegisteredClass::DefaultData
+		MLRClipperClassID,
+		"MidLevelRenderer::MLRClipper",
+		RegisteredClass::DefaultData
 		);
 	Register_Object(DefaultData);
 }
@@ -99,7 +98,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRClipper::TerminateClass()
+MLRClipper::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
@@ -109,15 +108,15 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRClipper::MLRClipper(AndyDisplay *ad, MLRSorter *s):
-	RegisteredClass(DefaultData), display(ad)
+RegisteredClass(DefaultData), display(ad)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	////Verify(gos_GetCurrentHeap() == Heap);
 	frameRate = 0;
 	usedTime = 0.0f;
 	nowTime = 0.0f;
 
 	sorter = s;
-//	camMatrix;
+	// camMatrix;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,21 +132,19 @@ MLRClipper::~MLRClipper()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLRClipper::StartDraw (
-		const LinearMatrix4D &camera_to_world,
-		const Matrix4D &cameraToClip,
-		const RGBAColor &,
-		const RGBAColor *background_color,
-		const MLRState &default_state,
-		const Scalar *z_value
-	)
+void MLRClipper::StartDraw(
+	const Stuff::LinearMatrix4D& camera_to_world,
+	const Stuff::Matrix4D& clip_matrix,
+	const Stuff::RGBAColor &fog_color, // NOT USED ANYMORE
+	const Stuff::RGBAColor *background_color,
+	const MLRState &default_state,
+	const float *z_value)
 {
 	Check_Object(this);
 
-//
-//	No detail under software rasterizer
-//
+	//
+	// No detail under software rasterizer
+	//
 	if(Environment.Renderer == 3)
 	{
 		gEnableDetailTexture = 0;
@@ -156,7 +153,7 @@ void
 	MLRState::SetAGPAvailable(TRUE==gos_GetMachineInformation(gos_Info_HasAGPAvailable));
 	MLRState::SetMaxUV(static_cast<float>(gos_GetMachineInformation(gos_Info_GetMaximumUVSize, 256)));
 
-  if(MLRState::GetHasMaxUVs() && MLRState::GetMaxUV() < 128.0f)
+	if(MLRState::GetHasMaxUVs() && MLRState::GetMaxUV() < 128.0f)
 	{
 		gEnableLightMaps = 0;
 	}
@@ -172,11 +169,11 @@ void
 		MLRState::SetMultitextureSpecularMap(false);
 	}
 
-//
-// Make viewport the whole screen
-//
+	//
+	// Make viewport the whole screen
+	//
 	gos_PushCurrentHeap(Heap);
-	Scalar z = 1.0f;
+	float z = 1.0f;
 	uint32_t back_color = 0;
 	bool
 		fill = false,
@@ -196,16 +193,16 @@ void
 
 	MLRState::fogColor = back_color;
 
-	/*	   Already done in MC2
+	/* Already done in MC2
 	gos_SetupViewport(
-		fill,
-		z,
-		clear,
-		back_color,
-		1.0,
-		1.0,
-		0.0,
-		0.0
+	fill,
+	z,
+	clear,
+	back_color,
+	1.0,
+	1.0,
+	0.0,
+	0.0
 	);
 	*/
 
@@ -224,7 +221,7 @@ void
 	gos_SetRenderState( gos_State_Fog, 0 );
 
 
-	sorter->SetFarClipReciprocal((1.0f-cameraToClip(2, 2))/cameraToClip(3, 2));
+	sorter->SetFarClipReciprocal((1.0f-clip_matrix(2, 2))/clip_matrix(3, 2));
 
 	sorter->StartDraw(default_state);
 
@@ -237,7 +234,7 @@ void
 	if(gShowBirdView)
 	{
 		static YawPitchRange Camera_Direction(-Pi_Over_6, 0.0f, 15.0f);
-		static Vector2DOf<Scalar> Camera_Shift(0.0f, 0.0f);
+		static Vector2DOf<float> Camera_Shift(0.0f, 0.0f);
 		static LinearMatrix4D birdsEye = LinearMatrix4D::Identity;
 
 		//
@@ -251,7 +248,7 @@ void
 		uint32_t
 			buttons;
 		gos_GetMouseInfo(NULL, NULL, &x_delta, &y_delta, NULL, &buttons);
-		Scalar
+		float
 			x_speed = x_delta * 0.01f,
 			y_speed = y_delta * 0.01f;
 
@@ -299,7 +296,7 @@ void
 		//
 		birdsEye.BuildRotation(
 			EulerAngles(Camera_Direction.pitch, Camera_Direction.yaw, 0.0f)
-		);
+			);
 		UnitVector3D
 			world_left,
 			world_up;
@@ -315,13 +312,13 @@ void
 		worldToBird.Multiply(worldToCameraMatrix, birdsEye);
 		worldToCameraMatrix = worldToBird;
 
-//	push the far clip out
+		// push the far clip out
 
-		Scalar near_clip, far_clip, left_clip, right_clip,	top_clip, bottom_clip;
+		float near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip;
 		Matrix4D birdToClip;
 
-		cameraToClip.GetPerspective(&near_clip, &far_clip, &left_clip, &right_clip,	&top_clip, &bottom_clip);
-		
+		clip_matrix.GetPerspective(&near_clip, &far_clip, &left_clip, &right_clip, &top_clip, &bottom_clip);
+
 		birdToClip.SetPerspective(
 			near_clip,
 			far_clip+2*Camera_Direction.range,
@@ -329,18 +326,18 @@ void
 			right_clip,
 			top_clip,
 			bottom_clip
-		);
+			);
 
 		worldToClipMatrix.Multiply(worldToCameraMatrix, birdToClip);
 	}
 	else
 #endif
 
-	worldToClipMatrix.Multiply(worldToCameraMatrix, cameraToClip);
+		worldToClipMatrix.Multiply(worldToCameraMatrix, clip_matrix);
 
 	cameraPosition = cameraToWorldMatrix;
 
-//	Tell_Value(cameraPosition);
+	// Tell_Value(cameraPosition);
 
 	sorter->Reset();
 
@@ -358,11 +355,11 @@ void
 
 		DrawShapeInformation drawShapeInfo;
 
-		Scalar near_clip, far_clip, left_clip, right_clip,	top_clip, bottom_clip;
+		float near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip;
 		RGBAColor fruCol(0.0f, 0.5f, 0.0f, 0.5f);
 		MLRState fruState;
 
-		cameraToClip.GetPerspective(&near_clip, &far_clip, &left_clip, &right_clip,	&top_clip, &bottom_clip);
+		clip_matrix.GetPerspective(&near_clip, &far_clip, &left_clip, &right_clip, &top_clip, &bottom_clip);
 
 		drawShapeInfo.shape = new MLRShape(1);
 		Register_Object(drawShapeInfo.shape);
@@ -385,9 +382,9 @@ void
 		fruState.SetAlphaMode(MLRState::AlphaInvAlphaMode);
 		fruState.SetPriority(MLRState::PriorityCount-1);
 
-		MLRPrimitiveBase *primitive = 
+		MLRPrimitiveBase *primitive =
 			CreateIndexedViewFrustrum_Color_NoLit(
-				near_clip, far_clip, left_clip,	right_clip,	top_clip, bottom_clip, fruCol, &fruState
+			near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip, fruCol, &fruState
 			);
 
 		drawShapeInfo.shape->Add(primitive);
@@ -401,28 +398,28 @@ void
 
 		drawShapeInfo.shape->DetachReference();
 
-		gos_SetRenderState(	gos_State_Fog, 0);
+		gos_SetRenderState( gos_State_Fog, 0);
 	}
 #endif
 
 	gos_PopCurrentHeap();
 
-//
-// End timing function
-//
+	//
+	// End timing function
+	//
 }
 
-static	AffineMatrix4D scaledShapeToWorld;
+static AffineMatrix4D scaledShapeToWorld;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRClipper::DrawShape (DrawShapeInformation *dInfo)
+MLRClipper::DrawShape (DrawShapeInformation *dInfo)
 {
 	Check_Object(this);
-//
-// Statistic timing function
-//
+	//
+	// Statistic timing function
+	//
 
 	gos_PushCurrentHeap(Heap);
 	MLRShape *shape = dInfo->shape;
@@ -441,7 +438,7 @@ void
 
 	int32_t i, j;
 	Point3D sp;
-	int32_t	nrOfLightMaps = 0;
+	int32_t nrOfLightMaps = 0;
 	sp.Multiply(cameraPosition, *shape->worldToShape);
 
 	for(i=0;i<dInfo->nrOfActiveLights;i++)
@@ -468,7 +465,7 @@ void
 #endif
 		dInfo->state.SetRenderPermissionMask (
 			dInfo->state.GetRenderPermissionMask() & ~MLRState::FogMask
-		);
+			);
 	}
 #endif
 
@@ -508,10 +505,10 @@ void
 			{
 				MLRLightMap::SetDrawData
 					(
-						&allVerticesToDraw,
-						&shape->shapeToClipMatrix,
-						dInfo->clippingFlags,
-						dInfo->state
+					&allVerticesToDraw,
+					&shape->shapeToClipMatrix,
+					dInfo->clippingFlags,
+					dInfo->state
 					);
 			}
 
@@ -529,7 +526,7 @@ void
 							{
 								sorter->DrawPrimitive(primitive, j);
 							}
-							
+
 						}
 					}
 				}
@@ -558,7 +555,7 @@ void
 					primitive->GetCoordData(&coords, &nr);
 					NumAllVertices += nr;
 
-					Set_Statistic(Index_Over_Vertex_Ratio, (Scalar)NumAllIndices/(Scalar)NumAllVertices);
+					Set_Statistic(Index_Over_Vertex_Ratio, (float)NumAllIndices/(float)NumAllVertices);
 				}
 #endif
 				if(nrOfLightMaps)
@@ -569,21 +566,21 @@ void
 		}
 	}
 
-//
-// End timing function
-//
+	//
+	// End timing function
+	//
 	gos_PopCurrentHeap();
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRClipper::DrawScalableShape (DrawScalableShapeInformation *dInfo)
+MLRClipper::DrawScalableShape (DrawScalableShapeInformation *dInfo)
 {
 	Check_Object(this);
-//
-// Statistic timing function
-//
+	//
+	// Statistic timing function
+	//
 
 	MLRShape *shape = dInfo->shape;
 	MLRPrimitiveBase *primitive = NULL;
@@ -601,7 +598,7 @@ void
 
 		scale(0,0) = dInfo->scaling->x;
 		scale(1,1) = dInfo->scaling->y;
-		scale(2,2) = dInfo->scaling->z; 
+		scale(2,2) = dInfo->scaling->z;
 
 		scaledShapeToWorld.Multiply(scale, *dInfo->shapeToWorld);
 
@@ -646,10 +643,10 @@ void
 					{
 						sorter->AddPrimitive(primitive);
 					}
-					
-					#ifdef LAB_ONLY
-						Set_Statistic(Number_Of_Primitives, Number_Of_Primitives+1);
-					#endif
+
+#ifdef LAB_ONLY
+					Set_Statistic(Number_Of_Primitives, Number_Of_Primitives+1);
+#endif
 				}
 			}
 		}
@@ -665,25 +662,25 @@ void
 			{
 				sorter->AddPrimitive(primitive);
 			}
-			
-			#ifdef LAB_ONLY
-				Set_Statistic(Number_Of_Primitives, Number_Of_Primitives+1);
-			#endif
+
+#ifdef LAB_ONLY
+			Set_Statistic(Number_Of_Primitives, Number_Of_Primitives+1);
+#endif
 		}
 	}
-//
-// End timing function
-//
+	//
+	// End timing function
+	//
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRClipper::DrawEffect (DrawEffectInformation *dInfo)
+MLRClipper::DrawEffect (DrawEffectInformation *dInfo)
 {
-//
-// Statistic timing function
-//
+	//
+	// Statistic timing function
+	//
 
 	Check_Object(this);
 	Check_Object(dInfo);
@@ -699,27 +696,27 @@ void
 	dInfo->effect->SetEffectToClipMatrix(dInfo->effectToWorld, &worldToClipMatrix);
 	gos_GetViewport( &ViewportScalars::MulX, &ViewportScalars::MulY, &ViewportScalars::AddX, &ViewportScalars::AddY );
 	dInfo->effect->Draw(dInfo, &allVerticesToDraw, sorter);
-//
-// End timing function
-//
+	//
+	// End timing function
+	//
 }
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRClipper::DrawScreenQuads (DrawScreenQuadsInformation *dInfo)
+MLRClipper::DrawScreenQuads (DrawScreenQuadsInformation *dInfo)
 {
-//
-// Statistic timing function
-//
+	//
+	// Statistic timing function
+	//
 
 	Check_Object(this);
 	Check_Object(dInfo);
 
 	gos_GetViewport( &ViewportScalars::MulX, &ViewportScalars::MulY, &ViewportScalars::AddX, &ViewportScalars::AddY );
 
-	GOSVertex *vertices	= allVerticesToDraw.GetActualVertexPool();
+	GOSVertex *vertices = allVerticesToDraw.GetActualVertexPool();
 
 	int32_t i, j;
 
@@ -758,15 +755,15 @@ void
 
 		sorter->AddScreenQuads(vertices, dInfo);
 	}
-//
-// End timing function
-//
+	//
+	// End timing function
+	//
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRClipper::Clear (uint32_t /*flags*/)
+MLRClipper::Clear (uint32_t /*flags*/)
 {
 	Check_Object(this);
 }

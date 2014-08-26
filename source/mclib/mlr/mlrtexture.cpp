@@ -13,7 +13,7 @@
 //
 MLRTexture::MLRTexture(MemoryStream *stream)
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	Check_Pointer(this);
 	Check_Object(stream);
 
@@ -30,7 +30,7 @@ MLRTexture::MLRTexture(
 	int32_t _hint
 )
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	thePool = tp;
 	textureHandle = handle;
 
@@ -57,7 +57,7 @@ MLRTexture::MLRTexture(
 	int32_t _hint
 )
 {
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 	thePool = tp;
 	textureHandle = handle;
 
@@ -89,7 +89,7 @@ void
 MLRTexture::MLRTexture(const MLRTexture& tex)
 {
 	Check_Object(&tex);
-	Verify(gos_GetCurrentHeap() == Heap);
+	//Verify(gos_GetCurrentHeap() == Heap);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -2039,7 +2039,7 @@ void ControlGui::handleVehicleClick( int32_t ID )
 			
 			break;
 		default:
-		//	gosASSERT( 0 );
+			NODEFAULT;
 			break;
 	}
 }

@@ -827,9 +827,10 @@ Fatal(0, "Need to support jumpGoalList (and goalList) for MOVETO as well in mc2 
 			break;
 
 		default: {
-			char s[256];
-			sprintf(s, "Unit::handleTacticalOrder->Bad TacOrder Code (%d)", tacOrder.code);
-			Assert(false, tacOrder.code, s);
+			NODEFAULT;
+			//char s[256];
+			//sprintf(s, "Unit::handleTacticalOrder->Bad TacOrder Code (%d)", tacOrder.code);
+			//Assert(false, tacOrder.code, s);
 			return(1);
 			}
 	}

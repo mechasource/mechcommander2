@@ -6549,6 +6549,7 @@ float BattleMech::relFacingTo (Stuff::Vector3D goal, int32_t bodyLocation) {
 		case MECH_BODY_LOCATION_LLEG:
 			break;
 		default:
+			NODEFAULT;
 			//--------------------------------------------------------------------
 			// Facing for a mech is ALWAYS based on Torso Rotation by default!!!
 			//relFacing += torsoRotation;

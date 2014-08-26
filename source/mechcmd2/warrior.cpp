@@ -3618,7 +3618,8 @@ int32_t MechWarrior::combatDecisionTree (void) {
 						}
 						break;
 					default:
-						sprintf(s, "%s (%.2f)  cannot fire for unknown reason.\n", callsign,  getSituationFireRange());
+						//sprintf(s, "%s (%.2f)  cannot fire for unknown reason.\n", callsign,  getSituationFireRange());
+						NODEFAULT;
 				}
 				debugPrint(s, true);
 			}
@@ -4456,7 +4457,8 @@ void MechWarrior::clearCurTacOrder (bool updateTacOrder) {
 							setMainGoal(GOAL_ACTION_CAPTURE, newTacOrder.getTarget(), NULL, 400.0);
 							break;
 						default:
-							setMainGoal(GOAL_ACTION_NONE, NULL, NULL, -1.0);
+							//setMainGoal(GOAL_ACTION_NONE, NULL, NULL, -1.0);
+							NODEFAULT;
 					}
 			}
 			timeOfLastOrders = -1.0;
@@ -5068,7 +5070,8 @@ int32_t MechWarrior::mainDecisionTree (void) {
 						setMainGoal(GOAL_ACTION_CAPTURE, newTacOrder.getTarget(), NULL, 400.0);
 						break;
 					default:
-						setMainGoal(GOAL_ACTION_NONE, NULL, NULL, -1.0);
+						//setMainGoal(GOAL_ACTION_NONE, NULL, NULL, -1.0);
+						NODEFAULT;
 				}
 		}
 		timeOfLastOrders = -1.0;
@@ -5186,7 +5189,8 @@ void MechWarrior::debugOrders (void) {
 			sprintf(s, "CURRENT ORDERS: Withdraw");
 			break;
 		default:
-			sprintf(s, "CURRENT ORDERS: Unknown Tac Order Type");
+			//sprintf(s, "CURRENT ORDERS: Unknown Tac Order Type");
+			NODEFAULT;
 	}
 	debugPrint(s);
 
@@ -7298,8 +7302,9 @@ int32_t MechWarrior::loadBrainParameters (FitIniFile* brainFile, int32_t warrior
 				}
 				break;
 			default:
-				result = 666;
-				return(result);
+				//result = 666;
+				//return(result);
+				NODEFAULT;
 		}
 	}
 
@@ -7369,8 +7374,9 @@ int32_t MechWarrior::loadBrainParameters (FitIniFile* brainFile, int32_t warrior
 				}
 				break;
 			default:
-				result = 667;
-				return(result);
+				//result = 667;
+				//return(result);
+				NODEFAULT;
 		}
 	}
 

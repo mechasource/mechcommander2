@@ -793,6 +793,7 @@ void WeaponFireChunk::unpack (GameObjectPtr attacker) {
 					targetId = MIN_CAMERA_DRONE_ID + specialId;
 					break;
 				default:
+					NODEFAULT;
 					Fatal(specialType, " WeaponFireChunk.unpack: bad specialType ");
 			}
 
@@ -1214,6 +1215,7 @@ void WeaponHitChunk::build (GameObjectPtr target, WeaponShotInfoPtr shotInfo, bo
 				buildCameraDroneTarget(target, shotInfo->damage, shotInfo->entryAngle);
 				break;
 			default:
+				NODEFAULT;
 				//Fatal(0, " WeaponHitChunk.build: bad target type ");
 				break;
 		}
@@ -1263,6 +1265,7 @@ void WeaponHitChunk::pack (void) {
 			data <<= WEAPONHITCHUNK_DAMAGE_BITS;
 			break;
 		default:
+			NODEFAULT;
 			Fatal(0, " Bad WeaponHitChunk Target Type ");
 	}
 
@@ -1327,11 +1330,13 @@ void WeaponHitChunk::unpack (void) {
 					targetId = MIN_CAMERA_DRONE_ID + specialId;
 					break;
 				default:
+					NODEFAULT;
 					Fatal(specialType, " WeaponHitChunk.unpack: bad specialType ");
 			}
 			entryAngle = (tempData & WEAPONHITCHUNK_ENTRYQUAD_MASK);
 			break;
 		default:
+			NODEFAULT;
 			DebugWeaponHitChunk(this, NULL);
 			Fatal(0, " Bad WeaponHitChunk Target Type ");
 	}
@@ -1441,6 +1446,7 @@ bool WeaponHitChunk::valid (int32_t from) {
 				}
 				break;
 			default:
+				NODEFAULT;
 				if (CombatLog) {
 					CombatLog->write("WeaponHitChunk INVALID: bad targetType");
 					CombatLog->dump();

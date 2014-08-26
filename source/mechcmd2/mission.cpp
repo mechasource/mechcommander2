@@ -819,7 +819,8 @@ float applyDifficultySkill (float chance, bool isPlayer)
 				break;
 
 			default:
-				return (chance);
+				//return (chance);
+				NODEFAULT;
 				break;
 		}
 	}
@@ -836,7 +837,8 @@ float applyDifficultySkill (float chance, bool isPlayer)
 				break;
 
 			default:
-				return(chance);
+				//return(chance);
+				NODEFAULT;
 				break;
 		}
 	}
@@ -857,6 +859,7 @@ float applyDifficultyWeapon (float dmg, bool isPlayer)
 				break;
 				
 			default:
+				NODEFAULT;
 				break;
 		}
 	}
@@ -872,6 +875,7 @@ float applyDifficultyWeapon (float dmg, bool isPlayer)
 				break;
 				
 			default:
+				NODEFAULT;
 				break;
 		}
 	}

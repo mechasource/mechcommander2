@@ -494,7 +494,8 @@ void SimpleCamera::setObject( PCSTR pFileName, int32_t type, int32_t base, int32
 			break;
 
 	default:
-		gosASSERT( !"camera just got an unknown type!" );
+		//gosASSERT( !"camera just got an unknown type!" );
+		NODEFAULT;
 	}
 }
 

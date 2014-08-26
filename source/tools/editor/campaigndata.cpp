@@ -133,8 +133,9 @@ bool CGroupData::Save(FitIniFile &fitFile, PCSTR groupName) {
 
 	CMissionList::EIterator it;
 	int32_t index;
-	for (it = m_MissionList.Begin(), index = 0; !it.IsDone(); it++, index+=1) {
-		ECharString blockName;
+	std::wstring blockName;
+	for (it = m_MissionList.Begin(), index = 0; !it.IsDone(); it++, index+=1)
+	{
 		blockName.Format("%sMission%d", groupName, index);
 		fitFile.writeBlock(blockName.Data());
 		(*it).Save(fitFile);

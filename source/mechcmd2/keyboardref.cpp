@@ -60,7 +60,8 @@ int32_t KeyboardRef::init()
 		break;
 
 	default:
-		gosASSERT( !"Invalid resolution" );
+		NODEFAULT;
+		//gosASSERT( !"Invalid resolution" );
 		return -1;
 
 	}

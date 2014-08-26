@@ -895,7 +895,8 @@ void GameObjectManager::countObject( ObjDataLoader *data)
 				numTerrainObjects++;
 				break;
 			default:
-				Fatal(objType->getObjectClass(), " GameObjectManager.countTerrainObjects: bad object type ");
+				//Fatal(objType->getObjectClass(), " GameObjectManager.countTerrainObjects: bad object type ");
+				NODEFAULT;
 		}
 		Terrain::objBlockInfo[data->blockNumber].numObjects++;
 }
@@ -1196,7 +1197,8 @@ void GameObjectManager::addObject (ObjDataLoader *objData, int32_t& curTerrainOb
 			case BRIDGE:
 				break;
 			default:
-				Fatal(objType->getObjectClass(), " GameObjectManager.countTerrainObjects: bad object type ");
+				//Fatal(objType->getObjectClass(), " GameObjectManager.countTerrainObjects: bad object type ");
+				NODEFAULT;
 		}
 
 		if (obj) {

@@ -408,6 +408,7 @@ int32_t	MainMenu::handleMessage( uint32_t what, uint32_t who )
 			}
 			break;
 		default:
+			NODEFAULT;
 			break;
 	}
 

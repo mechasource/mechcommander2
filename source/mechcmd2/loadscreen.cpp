@@ -111,7 +111,8 @@ void LoadScreenWrapper::changeRes()
 		break;
 
 	default:
-		Assert( 0, 0, "Unexpected resolution found in prefs" );
+		NODEFAULT;
+		//Assert( 0, 0, "Unexpected resolution found in prefs" );
 		break;
 	}
 

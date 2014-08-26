@@ -466,8 +466,9 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 			break;
 
 		default:
-			return(NULL);
+			//return(NULL);
 			//Fatal(OBJECT_TYPE_NUMBER_UNDEFINED, " ObjectTypeManager.load: undefined objType ");
+			NODEFAULT;
 	}
 
 	if (noCacheOut)	{

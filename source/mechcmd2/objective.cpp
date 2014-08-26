@@ -1,64 +1,54 @@
-#define OBJECTIVE_CPP
 /*************************************************************************************************\
 Objective.cpp			: Implementation of the Objective component.
 //---------------------------------------------------------------------------//
 // Copyright (C) Microsoft Corporation. All rights reserved.                 //
 //===========================================================================//
 \*************************************************************************************************/
+// #define OBJECTIVE_CPP
+
 #include "stdafx.h"
 
-#include <terrain.h>
-
-#include "Objective.h"
-
-#include <estring.h>
-#include "ECharString.h"
-
-#ifndef INIFILE_H
-#include "IniFile.h"
-#endif
-
-#ifndef MISSION_H
-#include "mission.h"
-#endif
-
-#ifndef OBJMGR_H
-#include "objmgr.h"
-#endif
-
-#ifndef BLDNG_H
-#include "bldng.h"
-#endif
-
-#ifndef GAMESOUND_H
-#include "gamesound.h"
-#endif
-
-#ifndef TACMAP_H
-#include <tacmap.h>
-#endif
-
-#ifndef AFONT_H
-#include <mechgui/afont.h>
-#endif
-
-#include "Logisticsdata.h"
-#include "team.h"
-#include "comndr.h"
-
-#include "controlgui.h"
-
-#include "..\resource.h"
-
-#include <tchar.h>
-
-#include <assert.h>
+//#include <terrain.h>
+//#include "objective.h"
+//#include <estring.h>
+#include "echarstring.h"
+//#include "inifile.h"
+//#include "mission.h"
+//#include "objmgr.h"
+//#include "bldng.h"
+//#include "gamesound.h"
+//#include <tacmap.h>
+//#include <mechgui/afont.h>
+//#include "logisticsdata.h"
+//#include "team.h"
+//#include "comndr.h"
+//#include "controlgui.h"
 
 float CObjective::s_blinkLength = .5;
 float CObjective::s_lastBlinkTime = 0.f;
 uint32_t CObjective::s_blinkColor = SB_YELLOW;
 aFont* CObjective::s_markerFont = 0;
 float MaxExtractUnitDistance = 0.0f;
+
+std::string string_format(const std::string fmt_str, ...) 
+{
+	int final_n, n = ((int)fmt_str.size()) * 2; /* reserve 2 times as much as the length of the fmt_str */
+	std::string str;
+	std::unique_ptr<char[]> formatted;
+	va_list ap;
+	while(1) {
+		formatted.reset(new char[n]); /* wrap the plain char array into the unique_ptr */
+		strcpy(&formatted[0], fmt_str.c_str());
+		va_start(ap, fmt_str);
+		final_n = vsnprintf(&formatted[0], n, fmt_str.c_str(), ap);
+		va_end(ap);
+		if (final_n < 0 || final_n >= n)
+			n += abs(final_n - n + 1);
+		else
+			break;
+	}
+	return std::string(formatted.get());
+}
 
 static bool MoverIsDeadOrDisabled(const int32_t pMoverWID) 
 {
@@ -1366,8 +1356,9 @@ CObjectiveCondition *CObjective::new_CObjectiveCondition(condition_species_type 
 	case BOOLEAN_FLAG_IS_SET: retval = new CBooleanFlagIsSet(alignment); break;
 	case ELAPSED_MISSION_TIME: retval = new CElapsedMissionTime(alignment); break;
 	default:
-		assert(false);
-		retval = 0;
+		//assert(false);
+		//retval = 0;
+		NODEFAULT;
 		break;
 	}
 	return retval;
@@ -1396,8 +1387,9 @@ CObjectiveAction *CObjective::new_CObjectiveAction(action_species_type actionSpe
 	//ONLY used for in-mission saveLoad to avoid calling ReadNavMarkers
 	case _REMOVE_STRUCTURE: retval = new C_RemoveStructure(alignment); break;
 	default:
-		assert(false);
-		retval = 0;
+		//assert(false);
+		//retval = 0;
+		NODEFAULT;
 		break;
 	}
 	return retval;

@@ -1344,14 +1344,15 @@ void StatusChunk::pack (MoverPtr mover) {
 		case STATUSCHUNK_TARGET_LOCATION:
 			break;
 		default:
-			#ifdef ASSERT_STATUSCHUNK
-				DebugStatusChunk(mover, this, NULL);
-				char errMsg[1024];
-				sprintf(errMsg, " StatusChunk.pack: bad targetType %d (save stchunk.dbg file) ", targetType);
-				Assert(false, targetType, errMsg);
-			#else
-				StatusChunkUnpackErr = 5;
-			#endif
+			//#ifdef ASSERT_STATUSCHUNK
+			//	DebugStatusChunk(mover, this, NULL);
+			//	char errMsg[1024];
+			//	sprintf(errMsg, " StatusChunk.pack: bad targetType %d (save stchunk.dbg file) ", targetType);
+			//	Assert(false, targetType, errMsg);
+			//#else
+			//	StatusChunkUnpackErr = 5;
+			//#endif
+			NODEFAULT;
 	}
 #endif
 
@@ -1490,14 +1491,15 @@ void StatusChunk::unpack (MoverPtr mover) {
 		case STATUSCHUNK_TARGET_LOCATION:
 			break;
 		default:
-			#ifdef ASSERT_STATUSCHUNK
-				DebugStatusChunk(mover, this, NULL);
-				char errMsg[1024];
-				sprintf(errMsg, " StatusChunk.unpack: bad targetType %d (save stchunk.dbg file) ", targetType);
-				Assert(false, targetType, errMsg);
-			#else
-				StatusChunkUnpackErr = 5;
-			#endif
+			//#ifdef ASSERT_STATUSCHUNK
+			//	DebugStatusChunk(mover, this, NULL);
+			//	char errMsg[1024];
+			//	sprintf(errMsg, " StatusChunk.unpack: bad targetType %d (save stchunk.dbg file) ", targetType);
+			//	Assert(false, targetType, errMsg);
+			//#else
+			//	StatusChunkUnpackErr = 5;
+			//#endif
+			NODEFAULT;
 	}
 #endif
 
@@ -1573,7 +1575,8 @@ void MoverDynamics::init (DynamicsType newType) {
 			//cur.elemental.yaw = 0.0;
 			break;
 		default:
-			Fatal(newType, " ugh ");
+			//Fatal(newType, " ugh ");
+			NODEFAULT;
 	}
 }
 
@@ -1736,7 +1739,8 @@ void MoverControl::update (MoverPtr mover) {
 			mover->updatePlayerControl();
 			break;
 		default:
-			Fatal(type, " MoverControl.update: bad control type ");
+			//Fatal(type, " MoverControl.update: bad control type ");
+			NODEFAULT;
 	}
 }
 
@@ -3258,9 +3262,10 @@ if (queuePlayerOrder)
 		case TACTICAL_ORDER_DEPLOY_ELEMENTALS:
 			break;
 		default: {
-			char s[256];
-			sprintf(s, "Mover::handleTacticalOrder->Bad TacOrder Code (%d)", tacOrder.code);
-			Assert(false, tacOrder.code, s);
+			//char s[256];
+			//sprintf(s, "Mover::handleTacticalOrder->Bad TacOrder Code (%d)", tacOrder.code);
+			//Assert(false, tacOrder.code, s);
+			NODEFAULT;
 			return(1);
 			}
 	}
@@ -6138,6 +6143,7 @@ int32_t Mover::sortWeapons (int32_t* weaponList, int32_t* valueList, int32_t lis
 				default:
 					//-----------------
 					// Bad Sort Type...
+					NODEFAULT;
 					return(-3);
 			}
 		}
@@ -6161,6 +6167,7 @@ int32_t Mover::sortWeapons (int32_t* weaponList, int32_t* valueList, int32_t lis
 					default:
 						//-----------------
 						// Bad Sort Type...
+						NODEFAULT;
 						return(-3);
 				}
 			sortList->setValue(item, sortValue);

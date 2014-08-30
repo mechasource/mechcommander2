@@ -3,7 +3,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlr_i_l_dt_pmesh.hpp>
+
+using namespace MidLevelRenderer;
+
+//#############################################################################
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	BitTrace *MLR_I_L_DT_PMesh_Clip;
@@ -14,7 +19,7 @@
 //#############################################################################
 
 MLR_I_L_DT_PMesh::ClassData*
-	MLR_I_L_DT_PMesh::DefaultData = NULL;
+	MLR_I_L_DT_PMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -22,7 +27,7 @@ void
 	MLR_I_L_DT_PMesh::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLR_I_L_DT_PMeshClassID,
@@ -45,7 +50,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 
 	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 		Unregister_Object(MLR_I_L_DT_PMesh_Clip);
@@ -299,7 +304,7 @@ MLRShape*
 	Point3D *coords = new Point3D [nrTri*3];
 	Register_Pointer(coords);
 	
-	Point3D *collapsedCoords = NULL;
+	Point3D *collapsedCoords = nullptr;
 	if(icoInfo.indexed==true)
 	{
 		collapsedCoords = new Point3D [nrTri*3];
@@ -371,7 +376,7 @@ MLRShape*
 
 		mesh->FindFacePlanes();
 
-		if(state == NULL)
+		if(state == nullptr)
 		{
 			for(i=0;i<uniquePoints;i++)
 			{

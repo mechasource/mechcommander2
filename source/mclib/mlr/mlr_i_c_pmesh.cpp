@@ -3,7 +3,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlr_i_c_pmesh.hpp>
+
+using namespace MidLevelRenderer;
+
+//#############################################################################
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	BitTrace *MLR_I_C_PMesh_Clip;
@@ -14,7 +19,7 @@
 //#############################################################################
 
 MLR_I_C_PMesh::ClassData*
-	MLR_I_C_PMesh::DefaultData = NULL;
+	MLR_I_C_PMesh::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -22,7 +27,7 @@ void
 	MLR_I_C_PMesh::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLR_I_C_PMeshClassID,
@@ -45,7 +50,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 
 	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 		Unregister_Object(MLR_I_C_PMesh_Clip);
@@ -382,7 +387,7 @@ MLR_I_C_PMesh*
 
 	ret->FindFacePlanes();
 
-	if(eightColors!=NULL)
+	if(eightColors!=nullptr)
 	{
 #if COLOR_AS_DWORD
 		uint32_t *dwColor = new uint32_t [8];
@@ -414,7 +419,7 @@ MLR_I_C_PMesh*
 	texCoords[6] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[7] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
-	if(state != NULL)
+	if(state != nullptr)
 	{
 		ret->SetReferenceState(*state);
 		if(state->GetTextureHandle() > 0)
@@ -578,7 +583,7 @@ MLR_I_PMesh*
 
 	ret->SetTexCoordData(texCoords, 8);
 
-	if(state != NULL)
+	if(state != nullptr)
 	{
 		ret->SetReferenceState(*state);
 	}
@@ -634,7 +639,7 @@ MLRShape*
 	Point3D *coords = new Point3D [nrTri*3];
 	Register_Pointer(coords);
 	
-	Point3D *collapsedCoords = NULL;
+	Point3D *collapsedCoords = nullptr;
 	if(icoInfo.indexed==true)
 	{
 		collapsedCoords = new Point3D [nrTri*3];
@@ -704,7 +709,7 @@ MLRShape*
 
 		mesh->FindFacePlanes();
 
-		if(state == NULL)
+		if(state == nullptr)
 		{
 			for(i=0;i<uniquePoints;i++)
 			{

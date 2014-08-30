@@ -3,14 +3,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlrshape.hpp>
+
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //###############################    MLRShape    ##################################
 //#############################################################################
 
 MLRShape::ClassData*
-	MLRShape::DefaultData = NULL;
+	MLRShape::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -18,7 +21,7 @@ void
 	MLRShape::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRShapeClassID,
@@ -35,7 +38,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +60,7 @@ MLRShape::MLRShape(
 
 	for(i=0;i<numPrimitives;i++)
 	{
-		MLRPrimitiveBase *pt = NULL;
+		MLRPrimitiveBase *pt = nullptr;
 		switch(version)
 		{
 			case 1:
@@ -266,7 +269,7 @@ MLRShape::~MLRShape()
 	for(i=numPrimitives-1;i>=0;i--)
 	{
 		pt = allPrimitives[i];
-		allPrimitives[i] = NULL;
+		allPrimitives[i] = nullptr;
 
 		pt->DetachReference();
 
@@ -447,7 +450,7 @@ MLRPrimitiveBase*
 
 	if(nr < 0)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	for(i=nr;i<numPrimitives-1;i++)
@@ -455,7 +458,7 @@ MLRPrimitiveBase*
 		allPrimitives[i] = allPrimitives[i+1];
 	}
 
-	allPrimitives[i] = NULL;
+	allPrimitives[i] = nullptr;
 
 	numPrimitives--;
 	p->DetachReference();
@@ -475,7 +478,7 @@ MLRPrimitiveBase*
 
 	if(nr < 0 || nr >= numPrimitives)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	for(i=nr;i<numPrimitives-1;i++)
@@ -483,7 +486,7 @@ MLRPrimitiveBase*
 		allPrimitives[i] = allPrimitives[i+1];
 	}
 
-	allPrimitives[i] = NULL;
+	allPrimitives[i] = nullptr;
 
 	numPrimitives--;
 	p->DetachReference();

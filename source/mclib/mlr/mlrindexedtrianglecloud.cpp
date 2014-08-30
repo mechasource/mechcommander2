@@ -1,56 +1,56 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
 
-#if !defined(MLR_MLRCLIPTRICK_HPP)
-	#include <mlr/mlrcliptrick.hpp>
+#include <mlr/mlr.hpp>
+#include <mlr/mlrclipper.hpp>
+#include <mlr/mlrsorter.hpp>
+#include <mlr/mlreffect.hpp>
+#include <mlr/mlrprimitivebase.hpp>
+#include <mlr/mlrcliptrick.hpp>
+#include <mlr/mlrindexedtrianglecloud.hpp>
+
+#ifndef HUNT_CLIP_ERROR
+#define HUNT_CLIP_ERROR 0
 #endif
 
-#if !defined(MLR_MLRINDEXEDTRIANGLECLOUD_HPP)
-	#include <mlr/mlrindexedtrianglecloud.hpp>
-#endif
+using namespace MidLevelRenderer;
 
 extern uint32_t gShowClippedPolys;
-extern puint16_t indexOffset;	// [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
+extern puint16_t indexOffset; // [MidLevelRenderer::Max_Number_Vertices_Per_Mesh]
 
 //#############################################################################
-//####################    MLRIndexedTriangleCloud    ##########################
+//#################### MLRIndexedTriangleCloud ##########################
 //#############################################################################
 
-DynamicArrayOf<uint16_t>
-	*MLRIndexedTriangleCloud::clipExtraIndex;
-DynamicArrayOf<Stuff::Vector2DScalar>
-	*MLRIndexedTriangleCloud::clipExtraTexCoords;
-DynamicArrayOf<uint8_t>
-	*MLRIndexedTriangleCloud::visibleIndexedVertices;
+Stuff::DynamicArrayOf<uint16_t>*				MLRIndexedTriangleCloud::clipExtraIndex;
+Stuff::DynamicArrayOf<Stuff::Vector2DScalar>*	MLRIndexedTriangleCloud::clipExtraTexCoords;
+Stuff::DynamicArrayOf<uint8_t>*					MLRIndexedTriangleCloud::visibleIndexedVertices;
 
-
-MLRIndexedTriangleCloud::ClassData*
-	MLRIndexedTriangleCloud::DefaultData = NULL;
+MLRIndexedTriangleCloud::ClassData*	MLRIndexedTriangleCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedTriangleCloud::InitializeClass()
+MLRIndexedTriangleCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
-			MLRIndexedTriangleCloudClassID,
-			"MidLevelRenderer::MLRIndexedTriangleCloud",
-			MLRTriangleCloud::DefaultData
+		MLRIndexedTriangleCloudClassID,
+		"MidLevelRenderer::MLRIndexedTriangleCloud",
+		MLRTriangleCloud::DefaultData
 		);
 	Register_Object(DefaultData);
-	
-	clipExtraIndex = new DynamicArrayOf<uint16_t> (Limits::Max_Number_Vertices_Per_Mesh);
+
+	clipExtraIndex = new Stuff::DynamicArrayOf<uint16_t> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Pointer(clipExtraIndex);
-	clipExtraTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
+	clipExtraTexCoords = new Stuff::DynamicArrayOf<Stuff::Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Pointer(clipExtraTexCoords);
-	visibleIndexedVertices = new DynamicArrayOf<uint8_t> (Limits::Max_Number_Vertices_Per_Mesh);
+	visibleIndexedVertices = new Stuff::DynamicArrayOf<uint8_t> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Pointer(visibleIndexedVertices);
 
 }
@@ -58,7 +58,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLRIndexedTriangleCloud::TerminateClass()
+MLRIndexedTriangleCloud::TerminateClass()
 {
 	Unregister_Pointer(clipExtraIndex);
 	delete clipExtraIndex;
@@ -69,19 +69,19 @@ void
 
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(int32_t nr) :
-	MLRTriangleCloud(nr)
+MLRIndexedTriangleCloud::MLRIndexedTriangleCloud(int32_t nr):
+MLRTriangleCloud(nr)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
-	usedNrOfPoints = NULL;
+	usedNrOfPoints = nullptr;
 
 	Check_Pointer(this);
-	
+
 	drawMode = SortData::TriIndexedList;
 }
 
@@ -94,16 +94,16 @@ MLRIndexedTriangleCloud::~MLRIndexedTriangleCloud()
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void 
-	MLRIndexedTriangleCloud::SetData
-	(
-		pcsize_t	tri_count,
-		pcsize_t	point_count,
-		pcuint16_t	index_data,
-		const Stuff::Point3D* point_data,
-		const Stuff::RGBAColor* color_data,
-		const Stuff::Vector2DScalar* uv_data
-	)
+void
+MLRIndexedTriangleCloud::SetData
+(
+ pcsize_t tri_count,
+ pcsize_t point_count,
+ pcuint16_t index_data,
+ const Stuff::Point3D* point_data,
+ const Stuff::RGBAColor* color_data,
+ const Stuff::Vector2DScalar* uv_data
+ )
 {
 	Check_Pointer(this);
 
@@ -120,15 +120,15 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void 
-	MLRIndexedTriangleCloud::Draw (DrawEffectInformation *dInfo, GOSVertexPool *allVerticesToDraw, MLRSorter *sorter)
+void
+MLRIndexedTriangleCloud::Draw (DrawEffectInformation *dInfo, GOSVertexPool *allVerticesToDraw, MLRSorter *sorter)
 {
 	Check_Object(this);
 
 	worldToEffect.Invert(*dInfo->effectToWorld);
 
-	Vector4D *v4 = transformedCoords->GetData();
-	for(int32_t k=0;k<*usedNrOfPoints;k++, v4++)
+	Stuff::Vector4D* v4 = transformedCoords->GetData();
+	for(size_t k=0;k<*usedNrOfPoints;k++, v4++)
 	{
 		v4->Multiply(points[k], effectToClipMatrix);
 		(*clipPerVertex)[k].Clip4dVertex(v4);
@@ -149,17 +149,18 @@ static MLRClippingState theAnd, theOr, theTest;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t 
-	MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool *vt)
+int32_t
+MLRIndexedTriangleCloud::Clip(MLRClippingState clippingFlags, GOSVertexPool *vt)
 {
-	int32_t	myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
+	size_t myNumberUsedClipVertex, myNumberUsedClipIndex, myNumberUsedClipLength;
+	(void)clippingFlags;	// C4100
 
 	myNumberUsedClipVertex = 0;
 	myNumberUsedClipIndex = 0;
 	myNumberUsedClipLength = 0;
 
 	Verify(*usedNrOfTriangles > 0);
-	
+
 	//
 	//------------------------
 	// Handle the indexed case
@@ -174,11 +175,12 @@ int32_t
 	// backfaced polygons
 	//-----------------------------------------------------------------
 	//
-	int32_t i, j, k, k0, k1, *cs = (pint32_t )clipPerVertex->GetData();
+	size_t i, j, k, k0, k1;
+	psize_t cs = (psize_t)clipPerVertex->GetData();
 	uint16_t l;
-	int32_t index0, index1, index2, ret = 0;
-	int32_t mask;
-	Scalar a = 0.0f;
+	size_t index0, index1, index2, ret = 0;
+	uint32_t mask;
+	float a = 0.0f;
 
 	for(i=0,j=0;i<*usedNrOfTriangles;j+=3,++i)
 	{
@@ -197,12 +199,12 @@ int32_t
 		theAnd &= (cs[index1] & cs[index2]);
 		theOr |= (cs[index1] | cs[index2]);
 
-		theAnd = theOr = 0;		//ASSUME NO CLIPPING NEEDED FOR MC2.  Its just not done here!
-		
+		theAnd = theOr = 0; //ASSUME NO CLIPPING NEEDED FOR MC2. Its just not done here!
+
 		//
 		//-------------------------------------------------------------------
 		// If any bit is set for all vertices, then the polygon is completely
-		// outside the viewing space and we don't have to draw it.  On the
+		// outside the viewing space and we don't have to draw it. On the
 		// other hand, if no bits at all were ever set, we can do a trivial
 		// accept of the polygon
 		//-------------------------------------------------------------------
@@ -261,7 +263,7 @@ int32_t
 					// directly to the clipping buffer
 					//----------------------------------------------------
 					//
-					int32_t clipped_index =
+					size_t clipped_index =
 						myNumberUsedClipVertex + numberVerticesPerPolygon;
 					theTest = cs[k0];
 
@@ -294,7 +296,7 @@ int32_t
 					//---------------------------------------------------------
 					// This vertex is outside the viewing space, so if the next
 					// vertex is also outside the viewing space, no clipping is
-					// needed and we throw this vertex away.  Since only one
+					// needed and we throw this vertex away. Since only one
 					// clipping plane is involved, it must be in the same space
 					// as the first vertex
 					//---------------------------------------------------------
@@ -315,7 +317,7 @@ int32_t
 					// clipping plane will intersect
 					//--------------------------------------------------
 					//
-					int32_t ct = 0;
+					size_t ct = 0;
 					mask = 1;
 					theTest |= cs[k1];
 
@@ -329,7 +331,7 @@ int32_t
 					{
 						if(theTest.IsClipped(mask))
 						{
-//							GetDoubleBC(l, bc0, bc1, transformedCoords[k0], transformedCoords[k1]);
+							// GetDoubleBC(l, bc0, bc1, transformedCoords[k0], transformedCoords[k1]);
 
 							//
 							//-------------------------------------------
@@ -365,7 +367,7 @@ int32_t
 							(*transformedCoords)[k0],
 							(*transformedCoords)[k1],
 							a
-						);
+							);
 
 						DoClipTrick((*clipExtraCoords)[clipped_index], ct);
 
@@ -375,19 +377,19 @@ int32_t
 						// most cards do that anyway
 						//----------------------------------------------------------
 						//
-		#if COLOR_AS_DWORD
+#if COLOR_AS_DWORD
 						(*clipExtraColors)[clipped_index] = Color_DWORD_Lerp (
 							colors[k0],
 							colors[k1],
 							a
-						);
-		#else
+							);
+#else
 						(*clipExtraColors)[clipped_index].Lerp(
 							colors[k0],
 							colors[k1],
 							a
-						);
-		#endif
+							);
+#endif
 						//
 						//-----------------------------------------------------
 						// If there are texture uv's, we need to lerp them in a
@@ -396,9 +398,9 @@ int32_t
 						//
 						(*clipExtraTexCoords)[clipped_index].Lerp
 							(
-								texCoords[k0],
-								texCoords[k1],
-								a
+							texCoords[k0],
+							texCoords[k1],
+							a
 							);
 					}
 					else
@@ -407,7 +409,7 @@ int32_t
 							(*transformedCoords)[k1],
 							(*transformedCoords)[k0],
 							a
-						);
+							);
 
 						DoClipTrick((*clipExtraCoords)[clipped_index], ct);
 
@@ -417,19 +419,19 @@ int32_t
 						// most cards do that anyway
 						//----------------------------------------------------------
 						//
-		#if COLOR_AS_DWORD
+#if COLOR_AS_DWORD
 						(*clipExtraColors)[clipped_index] = Color_DWORD_Lerp (
 							colors[k1],
 							colors[k0],
 							a
-						);
-		#else
+							);
+#else
 						(*clipExtraColors)[clipped_index].Lerp(
 							colors[k1],
 							colors[k0],
 							a
-						);
-		#endif
+							);
+#endif
 						//
 						//-----------------------------------------------------
 						// If there are texture uv's, we need to lerp them in a
@@ -438,9 +440,9 @@ int32_t
 						//
 						(*clipExtraTexCoords)[clipped_index].Lerp
 							(
-								texCoords[k1],
-								texCoords[k0],
-								a
+							texCoords[k1],
+							texCoords[k0],
+							a
 							);
 					}
 
@@ -459,7 +461,7 @@ int32_t
 
 			//
 			//---------------------------------------------------------------
-			// We have to handle multiple planes.  We do this by creating two
+			// We have to handle multiple planes. We do this by creating two
 			// buffers and we switch between them as we clip plane by plane
 			//---------------------------------------------------------------
 			//
@@ -469,7 +471,7 @@ int32_t
 				Set_Statistic(PolysClippedButGOnePlane, PolysClippedButGOnePlane+1);
 #endif
 				ClipData2 srcPolygon, dstPolygon;
-				int32_t dstBuffer = 1;
+				size_t dstBuffer = 1;
 
 				srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 
@@ -484,7 +486,7 @@ int32_t
 				//
 				for(k=j,l=0;k<j+3;k++,l++)
 				{
-					int32_t indexK = index[k];
+					size_t indexK = index[k];
 
 					srcPolygon.coords[l] = (*transformedCoords)[indexK];
 
@@ -523,7 +525,7 @@ int32_t
 #if HUNT_CLIP_ERROR
 				for(k=0;k<srcPolygon.length;k++)
 				{
-					DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20) 
+					DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20)
 						<< srcPolygon.coords[k].x << " "
 						<< srcPolygon.coords[k].y << " "
 						<< srcPolygon.coords[k].z << " "
@@ -531,7 +533,7 @@ int32_t
 				}
 #endif
 #if HUNT_CLIP_ERROR
-					DEBUG_STREAM << "TheOriginalOR: " << hex << theOr.GetClippingState() << dec << '\n';
+				DEBUG_STREAM << "TheOriginalOR: " << hex << theOr.GetClippingState() << dec << '\n';
 #endif
 
 				do
@@ -546,9 +548,9 @@ int32_t
 							// Clip each vertex against the plane
 							//-----------------------------------
 							//
-	#if HUNT_CLIP_ERROR
+#if HUNT_CLIP_ERROR
 							DEBUG_STREAM << l << ": " << '\n';
-	#endif
+#endif
 							for(k=0;k<srcPolygon.length;k++)
 							{
 
@@ -566,23 +568,23 @@ int32_t
 								{
 									firstIsIn = true;
 
-									dstPolygon.coords[dstPolygon.length] = 
+									dstPolygon.coords[dstPolygon.length] =
 										srcPolygon.coords[k];
-	#if HUNT_CLIP_ERROR
-									DEBUG_STREAM << k << " goes " << setiosflags( ios::scientific) << setprecision(20) 
+#if HUNT_CLIP_ERROR
+									DEBUG_STREAM << k << " goes " << setiosflags( ios::scientific) << setprecision(20)
 										<< srcPolygon.coords[k].x << " "
 										<< srcPolygon.coords[k].y << " "
 										<< srcPolygon.coords[k].z << " "
 										<< srcPolygon.coords[k].w << '\n';
-	#endif
+#endif
 
 
-									dstPolygon.clipPerVertex[dstPolygon.length] = 
+									dstPolygon.clipPerVertex[dstPolygon.length] =
 										srcPolygon.clipPerVertex[k];
-									dstPolygon.colors[dstPolygon.length] = 
+									dstPolygon.colors[dstPolygon.length] =
 										srcPolygon.colors[k];
 
-									dstPolygon.texCoords[dstPolygon.length] = 
+									dstPolygon.texCoords[dstPolygon.length] =
 										srcPolygon.texCoords[k];
 									dstPolygon.length++;
 
@@ -603,12 +605,12 @@ int32_t
 								//---------------------------------------------------------
 								// This vertex is outside the viewing space, so if the next
 								// vertex is also outside the viewing space, no clipping is
-								// needed and we throw this vertex away.  Since only one
+								// needed and we throw this vertex away. Since only one
 								// clipping plane is involved, it must be in the same space
 								// as the first vertex
 								//---------------------------------------------------------
 								//
-								else 
+								else
 								{
 									firstIsIn = false;
 
@@ -617,7 +619,7 @@ int32_t
 										Verify(
 											srcPolygon.clipPerVertex[k1].IsClipped(mask)
 											== srcPolygon.clipPerVertex[k].IsClipped(mask)
-										);
+											);
 										continue;
 									}
 								}
@@ -642,16 +644,16 @@ int32_t
 										srcPolygon.coords[k],
 										srcPolygon.coords[k1],
 										a
-									);
+										);
 
-	#if HUNT_CLIP_ERROR
+#if HUNT_CLIP_ERROR
 									DEBUG_STREAM << "True " << a << " " << k << " " << k1 << " we get " << dstPolygon.length << '\n';
-									DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20) 
+									DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20)
 										<< dstPolygon.coords[dstPolygon.length].x << " "
 										<< dstPolygon.coords[dstPolygon.length].y << " "
 										<< dstPolygon.coords[dstPolygon.length].z << " "
 										<< dstPolygon.coords[dstPolygon.length].w << '\n';
-	#endif
+#endif
 									DoClipTrick(dstPolygon.coords[dstPolygon.length], l);
 
 
@@ -661,19 +663,19 @@ int32_t
 									// most cards do that anyway
 									//----------------------------------------------------------
 									//
-			#if COLOR_AS_DWORD
+#if COLOR_AS_DWORD
 									dstPolygon.colors[dstPolygon.length] = Color_DWORD_Lerp(
 										srcPolygon.colors[k],
 										srcPolygon.colors[k1],
 										a
-									);
-		#else
+										);
+#else
 									dstPolygon.colors[dstPolygon.length].Lerp(
 										srcPolygon.colors[k],
 										srcPolygon.colors[k1],
 										a
-									);
-		#endif
+										);
+#endif
 									//
 									//-----------------------------------------------------
 									// If there are texture uv's, we need to lerp them in a
@@ -682,9 +684,9 @@ int32_t
 									//
 									dstPolygon.texCoords[dstPolygon.length].Lerp
 										(
-											srcPolygon.texCoords[k],
-											srcPolygon.texCoords[k1],
-											a
+										srcPolygon.texCoords[k],
+										srcPolygon.texCoords[k1],
+										a
 										);
 								}
 								else
@@ -692,60 +694,60 @@ int32_t
 									a = GetLerpFactor (l, srcPolygon.coords[k1], srcPolygon.coords[k]);
 									Verify(a >= 0.0f && a <= 1.0f);
 
-								//
-								//------------------------------
-								// Lerp the homogeneous position
-								//------------------------------
-								//
-								dstPolygon.coords[dstPolygon.length].Lerp(
-									srcPolygon.coords[k1],
-									srcPolygon.coords[k],
-									a
-								);
+									//
+									//------------------------------
+									// Lerp the homogeneous position
+									//------------------------------
+									//
+									dstPolygon.coords[dstPolygon.length].Lerp(
+										srcPolygon.coords[k1],
+										srcPolygon.coords[k],
+										a
+										);
 
-	#if HUNT_CLIP_ERROR
+#if HUNT_CLIP_ERROR
 									DEBUG_STREAM << "False " << a << " " << k << " " << k1 << " we get " << dstPolygon.length << '\n';
-									DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20) 
+									DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20)
 										<< dstPolygon.coords[dstPolygon.length].x << " "
 										<< dstPolygon.coords[dstPolygon.length].y << " "
 										<< dstPolygon.coords[dstPolygon.length].z << " "
 										<< dstPolygon.coords[dstPolygon.length].w << '\n';
-	#endif
+#endif
 
-								DoClipTrick(dstPolygon.coords[dstPolygon.length], l);
+									DoClipTrick(dstPolygon.coords[dstPolygon.length], l);
 
 
-								//
-								//----------------------------------------------------------
-								// If there are colors, lerp them in screen space for now as
-								// most cards do that anyway
-								//----------------------------------------------------------
-								//
-		#if COLOR_AS_DWORD
-								dstPolygon.colors[dstPolygon.length] = Color_DWORD_Lerp(
-									srcPolygon.colors[k1],
-									srcPolygon.colors[k],
-									a
-								);
-		#else
-								dstPolygon.colors[dstPolygon.length].Lerp(
-									srcPolygon.colors[k1],
-									srcPolygon.colors[k],
-									a
-								);
-		#endif
-								//
-								//-----------------------------------------------------
-								// If there are texture uv's, we need to lerp them in a
-								// perspective correct manner
-								//-----------------------------------------------------
-								//
-								dstPolygon.texCoords[dstPolygon.length].Lerp
-									(
+									//
+									//----------------------------------------------------------
+									// If there are colors, lerp them in screen space for now as
+									// most cards do that anyway
+									//----------------------------------------------------------
+									//
+#if COLOR_AS_DWORD
+									dstPolygon.colors[dstPolygon.length] = Color_DWORD_Lerp(
+										srcPolygon.colors[k1],
+										srcPolygon.colors[k],
+										a
+										);
+#else
+									dstPolygon.colors[dstPolygon.length].Lerp(
+										srcPolygon.colors[k1],
+										srcPolygon.colors[k],
+										a
+										);
+#endif
+									//
+									//-----------------------------------------------------
+									// If there are texture uv's, we need to lerp them in a
+									// perspective correct manner
+									//-----------------------------------------------------
+									//
+									dstPolygon.texCoords[dstPolygon.length].Lerp
+										(
 										srcPolygon.texCoords[k1],
 										srcPolygon.texCoords[k],
 										a
-									);
+										);
 								}
 
 								//
@@ -772,10 +774,10 @@ int32_t
 							srcPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 							srcPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
 							srcPolygon.texCoords = clipBuffer[dstBuffer].texCoords.GetData();
-							srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();	
+							srcPolygon.clipPerVertex = clipBuffer[dstBuffer].clipPerVertex.GetData();
 							srcPolygon.length = dstPolygon.length;
 
-							dstBuffer = !dstBuffer;
+							dstBuffer = size_t(!dstBuffer ? 1 : 0);
 
 							dstPolygon.coords = clipBuffer[dstBuffer].coords.GetData();
 							dstPolygon.colors = clipBuffer[dstBuffer].colors.GetData();
@@ -821,9 +823,9 @@ int32_t
 #endif
 				for(k=0;k<srcPolygon.length;k++)
 				{
-					int32_t clipped_index = myNumberUsedClipVertex + k;
+					size_t clipped_index = myNumberUsedClipVertex + k;
 #if HUNT_CLIP_ERROR
-					DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20) 
+					DEBUG_STREAM << setiosflags( ios::scientific) << setprecision(20)
 						<< srcPolygon.coords[k].x << " "
 						<< srcPolygon.coords[k].y << " "
 						<< srcPolygon.coords[k].z << " "
@@ -841,7 +843,7 @@ int32_t
 #if HUNT_CLIP_ERROR
 				DEBUG_STREAM << "---" << '\n';
 #endif
-			
+
 				(*clipExtraLength)[myNumberUsedClipLength] = numberVerticesPerPolygon;
 #ifdef _ARMOR
 				(*clipExtraLength)[myNumberUsedClipLength] |= 0x8000;
@@ -851,9 +853,9 @@ int32_t
 			myNumberUsedClipLength++;
 			ret++;
 
-//					clip
+			// clip
 
-//					dont draw the original
+			// dont draw the original
 			testList[i] = 0;
 		}
 	}
@@ -881,7 +883,7 @@ int32_t
 				colors,
 				texCoords,
 				j
-			);
+				);
 
 #ifdef LAB_ONLY
 			if(gShowClippedPolys)
@@ -927,7 +929,7 @@ int32_t
 #else
 			stride = static_cast<uint16_t>((*clipExtraLength)[i]);
 #endif
-			for(k=1;k<stride-1;k++)
+			for(k=1;k < size_t(stride-1);k++)
 			{
 				Verify((vt->GetLast() + 3 + numGOSVertices) < vt->GetLength());
 				Verify((vt->GetLastIndex() + 3 + numGOSIndices) < vt->GetLength());
@@ -938,7 +940,7 @@ int32_t
 					clipExtraColors->GetData(),
 					clipExtraTexCoords->GetData(),
 					j, j+k+1, j+k
-				);
+					);
 
 #ifdef LAB_ONLY
 				if(gShowClippedPolys)
@@ -1001,13 +1003,13 @@ int32_t
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void 
-	MLRIndexedTriangleCloud::TestInstance(void) const
+void
+MLRIndexedTriangleCloud::TestInstance(void) const
 {
 	if (usedNrOfTriangles)
 	{
 		Check_Pointer(usedNrOfTriangles);
-		Verify(*usedNrOfTriangles >= 0);
+		Verify(intptr_t(*usedNrOfTriangles) >= 0);
 		Verify(*usedNrOfTriangles <= maxNrOf);
 	}
 }

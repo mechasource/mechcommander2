@@ -3,14 +3,19 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlrsorter.hpp>
+
+using namespace MidLevelRenderer;
+
+//#############################################################################
 
 #ifdef CalDraw
 	GOSVertexPool *ToBeDrawnPrimitive::allVerticesToDraw;
 #endif
 
 MLRSorter::ClassData*
-	MLRSorter::DefaultData = NULL;
+	MLRSorter::DefaultData = nullptr;
 
 bool dontSeeMe = true;
 
@@ -326,14 +331,14 @@ int32_t
 //
 ToBeDrawnPrimitive::ToBeDrawnPrimitive()
 {
-	primitive = NULL;
+	primitive = nullptr;
 
 	cameraPosition = Stuff::LinearMatrix4D::Identity;
 	shapeToClipMatrix = Stuff::LinearMatrix4D::Identity;
 
 	for(int32_t i=0;i<Limits::Max_Number_Of_Lights_Per_Primitive;i++)
 	{
-		activeLights[i] = NULL;
+		activeLights[i] = nullptr;
 	}
 	nrOfActiveLights = 0;
 }
@@ -349,7 +354,7 @@ void
 	MLRSorter::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRSorterClassID,
@@ -366,7 +371,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -426,13 +431,12 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLRSorter::DrawPrimitive(MLRPrimitiveBase *pt, int32_t pass)
+void MLRSorter::DrawPrimitive(MLRPrimitiveBase *pt, uint32_t pass)
 {
 	Check_Object(this); 
 	Check_Object(pt);
 
-	SortData *sd = NULL;
+	SortData *sd = nullptr;
 
 	switch(pt->GetSortDataMode())
 	{
@@ -451,7 +455,7 @@ void
 			{
 				gos_SetRenderState( 
 					gos_State_Texture2, 
-					(*texturePool)[sd->texture2]->GetImage(NULL)->GetHandle());
+					(*texturePool)[sd->texture2]->GetImage(nullptr)->GetHandle());
 
 				switch(sd->state.GetMultiTextureMode())
 				{
@@ -498,7 +502,7 @@ SortData *
 	SortData *sd = rawDrawData.GetData();
 
 	Verify (lastUsedRaw < Limits::Max_Number_Primitives_Per_Frame);
-	Verify (vertices != NULL);
+	Verify (vertices != nullptr);
 	Verify (numVertices > 0);
 
 	(sd + lastUsedRaw)->vertices = vertices;
@@ -536,7 +540,7 @@ SortData *
 	SortData *sd = rawDrawData.GetData();
 
 	Verify (lastUsedRaw < Limits::Max_Number_Primitives_Per_Frame);
-	Verify (vertices != NULL);
+	Verify (vertices != nullptr);
 	Verify (numVertices > 0);
 
 	(sd + lastUsedRaw)->vertices = vertices;
@@ -601,7 +605,7 @@ SortData *
 			);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 #ifdef CalDraw
@@ -637,7 +641,7 @@ bool
 				Verify((*texturePool)[newer.renderState & MLRState::TextureMask]);
 				gos_SetRenderState( 
 					gos_State_Texture, 
-					(*texturePool)[newer.renderState & MLRState::TextureMask]->GetImage(NULL)->GetHandle()
+					(*texturePool)[newer.renderState & MLRState::TextureMask]->GetImage(nullptr)->GetHandle()
 				);
 			}
 			else

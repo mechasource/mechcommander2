@@ -3,23 +3,26 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+#include <gameos.hpp>
+#include <mlr/mlr.hpp>
+#include <mlr/mlreffect.hpp>
 
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //############################   MLREffect    #################################
 //#############################################################################
 
-void EffectClipPolygon::Init()
+void EffectClipPolygon::Init(void)
 {
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	coords.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 	colors.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 	texCoords.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 	clipPerVertex.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 }
 
-void EffectClipPolygon::Destroy()
+void EffectClipPolygon::Destroy(void)
 {
 	coords.SetLength(0);
 	colors.SetLength(0);
@@ -32,22 +35,16 @@ void EffectClipPolygon::Destroy()
 //#############################################################################
 
 
-MLREffect::ClassData*
-	MLREffect::DefaultData = NULL;
-EffectClipPolygon
-	*MLREffect::clipBuffer;
-
-DynamicArrayOf<Vector4D>
-	*MLREffect::transformedCoords;
-
+MLREffect::ClassData*		MLREffect::DefaultData = nullptr;
+EffectClipPolygon*			MLREffect::clipBuffer;
+Stuff::DynamicArrayOf<Stuff::Vector4D>*	MLREffect::transformedCoords;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLREffect::InitializeClass()
+void MLREffect::InitializeClass(void)
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLREffectClassID,
@@ -56,7 +53,7 @@ void
 		);
 	Register_Object(DefaultData);
 	
-	transformedCoords = new DynamicArrayOf<Vector4D> (Limits::Max_Number_Vertices_Per_Mesh);
+	transformedCoords = new Stuff::DynamicArrayOf<Stuff::Vector4D> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(transformedCoords);
 
 	clipBuffer = new EffectClipPolygon [2];
@@ -68,8 +65,7 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLREffect::TerminateClass()
+void MLREffect::TerminateClass(void)
 {
 	clipBuffer[1].Destroy();
 	clipBuffer[0].Destroy();
@@ -81,12 +77,12 @@ void
 
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLREffect::MLREffect(int32_t nr, ClassData *class_data):
+MLREffect::MLREffect(uint32_t nr, ClassData* class_data):
 	RegisteredClass(class_data)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
@@ -94,7 +90,7 @@ MLREffect::MLREffect(int32_t nr, ClassData *class_data):
 	maxNrOf = nr;
 
 	testList.SetLength(maxNrOf);
-	for(int32_t i=0; i < maxNrOf; i++)
+	for(size_t i=0; i < maxNrOf; i++)
 	{
 		testList[i] = 0;
 	}
@@ -102,27 +98,26 @@ MLREffect::MLREffect(int32_t nr, ClassData *class_data):
 	TurnAllOff();
 	TurnAllVisible();
 
-	worldToEffect = LinearMatrix4D::Identity;
+	worldToEffect = Stuff::LinearMatrix4D::Identity;
 
-	gos_vertices = NULL;
+	gos_vertices = nullptr;
 	numGOSVertices = 0;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLREffect::~MLREffect()
+MLREffect::~MLREffect(void)
 {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void 
-	MLREffect::Transform(size_t nrOfUsedEffects, size_t nrOfVertices)
+void MLREffect::Transform(size_t nrOfUsedEffects, size_t nrOfVertices)
 {
 	Check_Object(this);
 
 	Start_Timer(Transform_Time);
-	int32_t i, j, k;
+	size_t i, j, k;
 
 	for(i=0,j=0;i<nrOfUsedEffects;i++,j+=nrOfVertices)
 	{
@@ -142,11 +137,10 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLREffect::TurnAllOn()
+void MLREffect::TurnAllOn(void)
 {
 	Check_Object(this);
-	int32_t i;
+	size_t i;
 
 	for(i=0;i<maxNrOf;i++)
 	{
@@ -156,11 +150,10 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLREffect::TurnAllOff()
+void MLREffect::TurnAllOff(void)
 {
 	Check_Object(this);
-	int32_t i;
+	size_t i;
 
 	for(i=0;i<maxNrOf;i++)
 	{
@@ -170,11 +163,10 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLREffect::TurnAllVisible()
+void MLREffect::TurnAllVisible(void)
 {
 	Check_Object(this);
-	int32_t i;
+	size_t i;
 
 	for(i=0;i<maxNrOf;i++)
 	{
@@ -184,11 +176,10 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLREffect::TurnAllInVisible()
+void MLREffect::TurnAllInVisible(void)
 {
 	Check_Object(this);
-	int32_t i;
+	size_t i;
 
 	for(i=0;i<maxNrOf;i++)
 	{

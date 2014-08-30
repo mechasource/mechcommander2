@@ -3,14 +3,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlrspotlight.hpp>
+
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //#########################    MLRSpotLight    ################################
 //#############################################################################
 
 MLRSpotLight::ClassData*
-	MLRSpotLight::DefaultData = NULL;
+	MLRSpotLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -18,7 +21,7 @@ void
 	MLRSpotLight::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRSpotLightClassID,
@@ -35,7 +38,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,7 +47,7 @@ MLRSpotLight::MLRSpotLight() :
 	MLRInfiniteLightWithFalloff(DefaultData)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
-	lightMap = NULL;
+	lightMap = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +60,7 @@ MLRSpotLight::MLRSpotLight(
 {
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
-	lightMap = NULL;
+	lightMap = nullptr;
 	if (version > 7)
 	{
 		MString name;
@@ -86,7 +89,7 @@ MLRSpotLight::MLRSpotLight(Stuff::Page *page):
 {
 	Check_Object(page);
 	//Verify(gos_GetCurrentHeap() == Heap);
-	lightMap = NULL;
+	lightMap = nullptr;
 	PCSTR lightmap;
 	if (page->GetEntry("LightMap", &lightmap))
 	{
@@ -302,7 +305,7 @@ void
 	}
 	lightMap = light_map;
 
-	if (lightMap == NULL)
+	if (lightMap == nullptr)
 	{
 		lightMask &= ~MLRState::LightMapLightingMode;
 	}

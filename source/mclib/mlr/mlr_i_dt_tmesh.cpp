@@ -3,7 +3,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlr_i_dt_tmesh.hpp>
+
+using namespace MidLevelRenderer;
+
+//#############################################################################
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	BitTrace *MLR_I_DT_TMesh_Clip;
@@ -14,7 +19,7 @@
 //#############################################################################
 
 MLR_I_DT_TMesh::ClassData*
-	MLR_I_DT_TMesh::DefaultData = NULL;
+	MLR_I_DT_TMesh::DefaultData = nullptr;
 
 DynamicArrayOf<Stuff::Vector2DScalar>
 	*MLR_I_DT_TMesh::clipExtraTexCoords2;
@@ -27,7 +32,7 @@ void
 	MLR_I_DT_TMesh::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLR_I_DT_TMeshClassID,
@@ -64,7 +69,7 @@ void
 
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 
 	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 		Unregister_Object(MLR_I_DT_PMesh_Clip);
@@ -329,7 +334,7 @@ MLR_I_DT_TMesh*
 	texCoords[15] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[16] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
-	if(state != NULL)
+	if(state != nullptr)
 	{
 		ret->SetReferenceState(*state);
 		if(state->GetTextureHandle() > 0)
@@ -346,7 +351,7 @@ MLR_I_DT_TMesh*
 		}
 	}
 
-	if(state2 != NULL)
+	if(state2 != nullptr)
 	{
 		ret->SetReferenceState(*state, 1);
 		if(state2->GetTextureHandle() > 0)
@@ -380,7 +385,7 @@ MLR_I_DT_TMesh*
 	gos_PopCurrentHeap();
 	return ret;
 #else
-	return NULL;
+	return nullptr;
 #endif
 }
 
@@ -409,7 +414,7 @@ MLRShape*
 	Point3D *coords = new Point3D [nrTri*3];
 	Register_Pointer(coords);
 	
-	Point3D *collapsedCoords = NULL;
+	Point3D *collapsedCoords = nullptr;
 	if(icoInfo.indexed==true)
 	{
 		collapsedCoords = new Point3D [nrTri*3];
@@ -437,7 +442,7 @@ MLRShape*
 		}
 		subdivide (coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
 
-		mesh->SetSubprimitiveLengths(NULL, nrTri);
+		mesh->SetSubprimitiveLengths(nullptr, nrTri);
 
 		if(icoInfo.indexed==true)
 		{
@@ -476,7 +481,7 @@ MLRShape*
 
 		mesh->FindFacePlanes();
 
-		if(state == NULL)
+		if(state == nullptr)
 		{
 			for(i=0;i<2*uniquePoints;i++)
 			{

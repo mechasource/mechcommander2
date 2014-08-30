@@ -3,18 +3,19 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
 
-#if !defined(MLR_MLRCLIPTRICK_HPP)
-	#include <mlr/mlrcliptrick.hpp>
-#endif
+#include <gameos.hpp>
+#include <mlr/mlrsorter.hpp>
+#include <mlr/mlrclipper.hpp>
+#include <mlr/mlrlinecloud.hpp>
+
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //#########################    MLRLineCloud    ###############################
 //#############################################################################
 
-MLRLineCloud::ClassData*
-	MLRLineCloud::DefaultData = NULL;
+MLRLineCloud::ClassData* MLRLineCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -22,7 +23,7 @@ void
 	MLRLineCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRLineCloudClassID,
@@ -39,13 +40,13 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRLineCloud::MLRLineCloud(int32_t nr, int32_t _type) :
-	MLREffect(2*nr, DefaultData), type(_type)
+MLRLineCloud::MLRLineCloud(uint32_t nr, uint32_t _type) :
+	MLREffect(uint32_t(2*nr), DefaultData), type(_type)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
 	usedNrOfVertices = 0;
@@ -108,7 +109,7 @@ void
 	Check_Object(this);
 
 	Start_Timer(Transform_Time);
-	int32_t i;
+	size_t i;
 
 	for(i=0;i<*usedNrOfVertices;i++)
 	{

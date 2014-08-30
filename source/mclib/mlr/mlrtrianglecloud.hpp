@@ -50,7 +50,7 @@ namespace MidLevelRenderer {
 
 		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
-		int32_t	Clip(MLRClippingState, GOSVertexPool*);		
+		uint32_t Clip(MLRClippingState, GOSVertexPool*);		
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// Class Data Support

@@ -27,7 +27,7 @@ extern uint32_t gShowClippedPolys;
 //Stuff::DynamicArrayOf<Stuff::Vector2DScalar>*	MLRCardCloud::clipExtraTexCoords;
 //Stuff::DynamicArrayOf<uint32_t>*				MLRCardCloud::clipExtraLength;
 
-MLRCardCloud::ClassData* MLRCardCloud::DefaultData = NULL;
+MLRCardCloud::ClassData* MLRCardCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -35,7 +35,7 @@ void
 MLRCardCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	//Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData = new ClassData(
 		MLRCardCloudClassID, "MidLevelRenderer::MLRCardCloud", MLREffect::DefaultData);
 	Register_Object(DefaultData);
@@ -71,16 +71,15 @@ MLRCardCloud::TerminateClass()
 
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-MLRCardCloud::MLRCardCloud(int32_t nr):
-MLREffect(nr, DefaultData)
+MLRCardCloud::MLRCardCloud(uint32_t nr) : MLREffect(nr, DefaultData)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
-	usedNrOfCards = NULL;
+	usedNrOfCards = nullptr;
 
 	Check_Pointer(this);
 
@@ -107,7 +106,7 @@ void MLRCardCloud::SetData(
 	Verify(*usedNrOfCards <= maxNrOf);
 	points = point_data;
 	colors = color_data;
-	Verify(texCoords != NULL);
+	Verify(texCoords != nullptr);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

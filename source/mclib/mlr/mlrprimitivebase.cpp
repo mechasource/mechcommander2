@@ -3,7 +3,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlrprimitivebase.hpp>
+
+using namespace MidLevelRenderer;
+
+//#############################################################################
 
 size_t clipTrick[6][2] = 
 {
@@ -15,14 +20,13 @@ size_t clipTrick[6][2] =
 	{ 2, 1}
 };
 
-
 //#############################################################################
 //#########################    ClipPolygon2    ############################
 //#############################################################################
 
 void ClipPolygon2::Init(int32_t passes)
 {
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	coords.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 	colors.SetLength(Limits::Max_Number_Vertices_Per_Polygon);
 	texCoords.SetLength(passes*Limits::Max_Number_Vertices_Per_Polygon);
@@ -42,7 +46,7 @@ void ClipPolygon2::Destroy()
 //#############################################################################
 
 MLRPrimitiveBase::ClassData*
-	MLRPrimitiveBase::DefaultData = NULL;
+	MLRPrimitiveBase::DefaultData = nullptr;
 
 DynamicArrayOf<Vector4D>
 	*MLRPrimitiveBase::transformedCoords;
@@ -74,13 +78,13 @@ void
 	MLRPrimitiveBase::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRPrimitiveBaseClassID,
 			"MidLevelRenderer::MLRPrimitiveBase",
 			RegisteredClass::DefaultData,
-			NULL
+			nullptr
 		);
 	Register_Object(DefaultData);
 
@@ -140,7 +144,7 @@ void
 
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -247,7 +251,7 @@ void
 void
 	MLRPrimitiveBase::InitializeDrawPrimitive(uint8_t vis, int32_t)
 {
-	gos_vertices = NULL;
+	gos_vertices = nullptr;
 	numGOSVertices = -1;
 
 	visible = vis;
@@ -491,7 +495,7 @@ MLRShape*
 			return CreateIndexedTriIcosahedron_TerrainTest(icoInfo, &(*states)[0], &(*states)[1]);
 		break;
 	}
-	return NULL;
+	return nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

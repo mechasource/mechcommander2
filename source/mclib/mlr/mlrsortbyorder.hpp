@@ -42,7 +42,7 @@ namespace MidLevelRenderer {
 		MLRSortByOrder(MLRTexturePool*);
 		~MLRSortByOrder(void);
 
-		void AddPrimitive(MLRPrimitiveBase*, int32_t=0);
+		void AddPrimitive(MLRPrimitiveBase*, uint32_t=0);
 		void AddEffect(MLREffect*, const MLRState&);
 		void AddScreenQuads(GOSVertex*, const DrawScreenQuadsInformation*);
 

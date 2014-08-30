@@ -3,16 +3,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
 
-MLRTexturePool *MLRTexturePool::Instance;
+#include <mlr/mlrtexturepool.hpp>
 
-MLRTexturePool::ClassData*
-	MLRTexturePool::DefaultData = NULL;
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //############################    MLRTexture    ###############################
 //#############################################################################
+
+MLRTexturePool *MLRTexturePool::Instance;
+MLRTexturePool::ClassData* MLRTexturePool::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -20,7 +21,7 @@ void
 	MLRTexturePool::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRTexturePoolClassID,
@@ -29,7 +30,7 @@ void
 		);
 	Register_Object(DefaultData);
 
-	MLRTexturePool::Instance = NULL;
+	MLRTexturePool::Instance = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,7 +46,7 @@ void
 
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -70,13 +71,13 @@ void MLRTexturePool::Stop (void)
 
 	for(i=0;i<MLRState::TextureMask;i++)
 	{
-		if(textureArray[i] != NULL)
+		if(textureArray[i] != nullptr)
 		{
 			Unregister_Object(textureArray[i]);
 
 			delete textureArray[i];
 
-			textureArray[i] = NULL;
+			textureArray[i] = nullptr;
 		}
 	}
 
@@ -100,7 +101,7 @@ void MLRTexturePool::Restart (void)
 
 	for(int32_t i=0;i<MLRState::TextureMask+1;i++)
 	{
-		textureArray[i] = NULL;
+		textureArray[i] = nullptr;
 	}
 
 	unLoadedImages = false;
@@ -132,7 +133,7 @@ MLRTexturePool::MLRTexturePool(GOSImagePool *image_pool, int32_t insDep):
 
 	for(int32_t i=0;i<MLRState::TextureMask+1;i++)
 	{
-		textureArray[i] = NULL;
+		textureArray[i] = nullptr;
 	}
 
 	unLoadedImages = false;
@@ -146,13 +147,13 @@ MLRTexturePool::~MLRTexturePool()
 
 	for(i=0;i<MLRState::TextureMask;i++)
 	{
-		if(textureArray[i] != NULL)
+		if(textureArray[i] != nullptr)
 		{
 			Unregister_Object(textureArray[i]);
 
 			delete textureArray[i];
 
-			textureArray[i] = NULL;
+			textureArray[i] = nullptr;
 		}
 	}
 	Unregister_Object(imagePool);
@@ -366,14 +367,14 @@ MLRTexture*
 void
 	MLRTexturePool::Remove(MLRTexture *tex)
 {
-	textureArray[tex->textureHandle-1] = NULL;
+	textureArray[tex->textureHandle-1] = nullptr;
 	storedTextures--;
 
 	int32_t i, first = (tex->textureHandle-1) & ~(instanceMax-1);
 
 	for(i=first;i<first+instanceMax;i++)
 	{
-		if(textureArray[i] != NULL)
+		if(textureArray[i] != nullptr)
 		{
 			break;
 		}
@@ -383,7 +384,7 @@ void
 	{
 		imagePool->RemoveImage(tex->image);
 
-		tex->image = NULL;
+		tex->image = nullptr;
 
 		freeHandle[lastFreeHandle&(handleMax-1)] = (tex->textureHandle-1) >> instanceDepth;
 
@@ -428,7 +429,7 @@ MLRTexture*
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

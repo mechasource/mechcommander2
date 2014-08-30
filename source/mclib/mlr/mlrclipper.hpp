@@ -40,7 +40,7 @@ namespace MidLevelRenderer {
 		const Stuff::LinearMatrix4D*	worldToShape;
 
 		MLRLight* const *activeLights;
-		int32_t	nrOfActiveLights;
+		uint32_t nrOfActiveLights;
 
 		void TestInstance(void) const {}
 	};

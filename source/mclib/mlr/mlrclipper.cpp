@@ -3,39 +3,30 @@
 //===========================================================================//
 
 #include "stdafx.h"
-//#include "mlrheaders.hpp"
 
-//#include <gameos.hpp>
-
-//#include <stuff/vector4d.hpp>
-
-//#include <mlr/mlr.hpp>
-//#include <mlr/mlrsorter.hpp>
-//#include <mlr/mlrlight.hpp>
-
-//#include <mlr/gosvertexpool.hpp>
-
-//
-//#include <mlr/mlrprimitivebase.hpp>
-//#include <mlr/mlrlight.hpp>
-//#include <mlr/gosvertexpool.hpp>
-
-//#include <stuff/linearmatrix.hpp>
+#include <gameos.hpp>
+#include <stuff/polar.hpp>
+#include <mlr/mlrlight.hpp>
+#include <mlr/mlrlightmap.hpp>
+#include <mlr/mlreffect.hpp>
+#include <mlr/mlrprimitivebase.hpp>
+#include <mlr/mlr_i_c_pmesh.hpp>
 #include <mlr/mlrclipper.hpp>
 
-
 using namespace MidLevelRenderer;
+
+//#############################################################################
 
 extern uint32_t gShowBirdView, gEnableDetailTexture, gEnableMultiTexture, gEnableLightMaps;
 
 DrawShapeInformation::DrawShapeInformation()
 {
-	shape = NULL;
-	state = NULL;
-	shapeToWorld = NULL;
-	worldToShape = NULL;
+	shape = nullptr;
+	state = 0;
+	shapeToWorld = nullptr;
+	worldToShape = nullptr;
 
-	activeLights = NULL;
+	activeLights = nullptr;
 	nrOfActiveLights = 0;
 
 	clippingFlags.SetClippingState(0);
@@ -43,19 +34,18 @@ DrawShapeInformation::DrawShapeInformation()
 
 DrawScalableShapeInformation::DrawScalableShapeInformation(): DrawShapeInformation()
 {
-	scaling = NULL;
-
-	paintMe = NULL;
+	scaling = nullptr;
+	paintMe = nullptr;
 }
 
 DrawEffectInformation::DrawEffectInformation()
 {
-	effect = NULL;
-	state = NULL;
-	effectToWorld = NULL;
+	effect = nullptr;
+	state = 0;
+	effectToWorld = nullptr;
 
 #if 0
-	activeLights = NULL;
+	activeLights = nullptr;
 	nrOfActiveLights = 0;
 #endif
 
@@ -64,11 +54,10 @@ DrawEffectInformation::DrawEffectInformation()
 
 DrawScreenQuadsInformation::DrawScreenQuadsInformation()
 {
-	coords = NULL;
-	colors = NULL;
-	texCoords = NULL;
-	onOrOff = NULL;
-
+	coords = nullptr;
+	colors = nullptr;
+	texCoords = nullptr;
+	onOrOff = nullptr;
 	nrOfQuads = 0;
 };
 
@@ -77,7 +66,7 @@ DrawScreenQuadsInformation::DrawScreenQuadsInformation()
 //#############################################################################
 
 MLRClipper::ClassData*
-MLRClipper::DefaultData = NULL;
+MLRClipper::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -85,7 +74,7 @@ void
 MLRClipper::InitializeClass()
 {
 	Verify(!DefaultData);
-	//Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 		MLRClipperClassID,
@@ -102,7 +91,7 @@ MLRClipper::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -135,12 +124,12 @@ MLRClipper::~MLRClipper()
 void MLRClipper::StartDraw(
 	const Stuff::LinearMatrix4D& camera_to_world,
 	const Stuff::Matrix4D& clip_matrix,
-	const Stuff::RGBAColor &fog_color, // NOT USED ANYMORE
-	const Stuff::RGBAColor *background_color,
+	const Stuff::RGBAColor& fog_color, // NOT USED ANYMORE
+	const Stuff::RGBAColor* background_color,
 	const MLRState &default_state,
 	const float *z_value)
 {
-	Check_Object(this);
+	Check_Object(this);(void)fog_color;
 
 	//
 	// No detail under software rasterizer
@@ -175,9 +164,8 @@ void MLRClipper::StartDraw(
 	gos_PushCurrentHeap(Heap);
 	float z = 1.0f;
 	uint32_t back_color = 0;
-	bool
-		fill = false,
-		clear = false;
+	bool fill = false;
+	bool clear = false;
 	if (z_value)
 	{
 		Check_Pointer(z_value);
@@ -233,10 +221,11 @@ void MLRClipper::StartDraw(
 
 	if(gShowBirdView)
 	{
-		static YawPitchRange Camera_Direction(-Pi_Over_6, 0.0f, 15.0f);
-		static Vector2DOf<float> Camera_Shift(0.0f, 0.0f);
-		static LinearMatrix4D birdsEye = LinearMatrix4D::Identity;
-
+ATL_SUPPRESS_WARNING_PUSH(4640)	// construction of local static object is not thread-safe
+		static Stuff::YawPitchRange Camera_Direction(-Stuff::Pi_Over_6, 0.0f, 15.0f);
+		static Stuff::Vector2DOf<float> Camera_Shift(0.0f, 0.0f);
+		static Stuff::LinearMatrix4D birdsEye = Stuff::LinearMatrix4D::Identity;
+ATL_SUPPRESS_WARNING_POP
 		//
 		//---------------
 		// Read the mouse
@@ -247,7 +236,7 @@ void MLRClipper::StartDraw(
 			y_delta;
 		uint32_t
 			buttons;
-		gos_GetMouseInfo(NULL, NULL, &x_delta, &y_delta, NULL, &buttons);
+		gos_GetMouseInfo(nullptr, nullptr, &x_delta, &y_delta, nullptr, &buttons);
 		float
 			x_speed = x_delta * 0.01f,
 			y_speed = y_delta * 0.01f;
@@ -294,20 +283,17 @@ void MLRClipper::StartDraw(
 		// Set the camera matrix
 		//----------------------
 		//
-		birdsEye.BuildRotation(
-			EulerAngles(Camera_Direction.pitch, Camera_Direction.yaw, 0.0f)
-			);
-		UnitVector3D
-			world_left,
-			world_up;
+		birdsEye.BuildRotation(Stuff::EulerAngles(Camera_Direction.pitch, Camera_Direction.yaw, 0.0f));
+		Stuff::UnitVector3D world_left;
+		Stuff::UnitVector3D world_up;
 		birdsEye.GetLocalLeftInWorld(&world_left);
 		birdsEye.GetLocalUpInWorld(&world_up);
-		Point3D translation(Camera_Direction);
+		Stuff::Point3D translation(Camera_Direction);
 		translation.AddScaled(translation, world_left, Camera_Shift.x);
 		translation.AddScaled(translation, world_up, Camera_Shift.y);
 		birdsEye.BuildTranslation(translation);
 
-		LinearMatrix4D worldToBird = LinearMatrix4D::Identity;
+		Stuff::LinearMatrix4D worldToBird = Stuff::LinearMatrix4D::Identity;
 
 		worldToBird.Multiply(worldToCameraMatrix, birdsEye);
 		worldToCameraMatrix = worldToBird;
@@ -315,7 +301,7 @@ void MLRClipper::StartDraw(
 		// push the far clip out
 
 		float near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip;
-		Matrix4D birdToClip;
+		Stuff::Matrix4D birdToClip;
 
 		clip_matrix.GetPerspective(&near_clip, &far_clip, &left_clip, &right_clip, &top_clip, &bottom_clip);
 
@@ -356,7 +342,7 @@ void MLRClipper::StartDraw(
 		DrawShapeInformation drawShapeInfo;
 
 		float near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip;
-		RGBAColor fruCol(0.0f, 0.5f, 0.0f, 0.5f);
+		Stuff::RGBAColor fruCol(0.0f, 0.5f, 0.0f, 0.5f);
 		MLRState fruState;
 
 		clip_matrix.GetPerspective(&near_clip, &far_clip, &left_clip, &right_clip, &top_clip, &bottom_clip);
@@ -382,10 +368,8 @@ void MLRClipper::StartDraw(
 		fruState.SetAlphaMode(MLRState::AlphaInvAlphaMode);
 		fruState.SetPriority(MLRState::PriorityCount-1);
 
-		MLRPrimitiveBase *primitive =
-			CreateIndexedViewFrustrum_Color_NoLit(
-			near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip, fruCol, &fruState
-			);
+		MLRPrimitiveBase *primitive = CreateIndexedViewFrustrum_Color_NoLit(
+			near_clip, far_clip, left_clip, right_clip, top_clip, bottom_clip, fruCol, &fruState);
 
 		drawShapeInfo.shape->Add(primitive);
 
@@ -409,12 +393,11 @@ void MLRClipper::StartDraw(
 	//
 }
 
-static AffineMatrix4D scaledShapeToWorld;
+static Stuff::AffineMatrix4D scaledShapeToWorld;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-MLRClipper::DrawShape (DrawShapeInformation *dInfo)
+void MLRClipper::DrawShape (DrawShapeInformation *dInfo)
 {
 	Check_Object(this);
 	//
@@ -423,7 +406,7 @@ MLRClipper::DrawShape (DrawShapeInformation *dInfo)
 
 	gos_PushCurrentHeap(Heap);
 	MLRShape *shape = dInfo->shape;
-	MLRPrimitiveBase *primitive = NULL;
+	MLRPrimitiveBase *primitive = nullptr;
 
 	if(dInfo->nrOfActiveLights > Limits::Max_Number_Of_Lights_Per_Primitive)
 	{
@@ -436,8 +419,8 @@ MLRClipper::DrawShape (DrawShapeInformation *dInfo)
 
 	shape->InitializePrimitives(true, dInfo->state);
 
-	int32_t i, j;
-	Point3D sp;
+	size_t i, j;
+	Stuff::Point3D sp;
 	int32_t nrOfLightMaps = 0;
 	sp.Multiply(cameraPosition, *shape->worldToShape);
 
@@ -545,9 +528,9 @@ MLRClipper::DrawShape (DrawShapeInformation *dInfo)
 
 				if(primitive->IsDerivedFrom(MLRIndexedPrimitiveBase::DefaultData))
 				{
-					Point3D *coords;
+					Stuff::Point3D *coords;
 					puint16_t indices;
-					int32_t nr;
+					size_t nr;
 
 					(Cast_Pointer(MLRIndexedPrimitiveBase*, primitive))->GetIndexData(&indices, &nr);
 					NumAllIndices += nr;
@@ -583,7 +566,7 @@ MLRClipper::DrawScalableShape (DrawScalableShapeInformation *dInfo)
 	//
 
 	MLRShape *shape = dInfo->shape;
-	MLRPrimitiveBase *primitive = NULL;
+	MLRPrimitiveBase *primitive = nullptr;
 	size_t i;
 
 	shape->shapeToClipMatrix.Multiply(*dInfo->shapeToWorld, worldToClipMatrix);
@@ -592,9 +575,9 @@ MLRClipper::DrawScalableShape (DrawScalableShapeInformation *dInfo)
 
 	shape->InitializePrimitives(true, dInfo->state, 1);
 
-	if(dInfo->scaling != NULL)
+	if(dInfo->scaling != nullptr)
 	{
-		LinearMatrix4D scale = LinearMatrix4D::Identity;
+		Stuff::LinearMatrix4D scale = Stuff::LinearMatrix4D::Identity;
 
 		scale(0,0) = dInfo->scaling->x;
 		scale(1,1) = dInfo->scaling->y;
@@ -609,7 +592,7 @@ MLRClipper::DrawScalableShape (DrawScalableShapeInformation *dInfo)
 		shape->shapeToClipMatrix.Multiply(*dInfo->shapeToWorld, worldToClipMatrix);
 	}
 
-	shape->worldToShape = NULL;
+	shape->worldToShape = nullptr;
 	gos_GetViewport( &ViewportScalars::MulX, &ViewportScalars::MulY, &ViewportScalars::AddX, &ViewportScalars::AddY );
 
 #ifdef LAB_ONLY
@@ -718,7 +701,7 @@ MLRClipper::DrawScreenQuads (DrawScreenQuadsInformation *dInfo)
 
 	GOSVertex *vertices = allVerticesToDraw.GetActualVertexPool();
 
-	int32_t i, j;
+	size_t i, j;
 
 	dInfo->currentNrOfQuads = 0;
 
@@ -729,7 +712,7 @@ MLRClipper::DrawScreenQuads (DrawScreenQuadsInformation *dInfo)
 			dInfo->currentNrOfQuads += 4;
 			for(;j<dInfo->currentNrOfQuads;j++)
 			{
-				int32_t offset = (i<<2) + (j&3);
+				size_t offset = (i<<2) + (j&3);
 
 				Verify(dInfo->coords[offset].x >= 0.0f && dInfo->coords[offset].x <= dInfo->coords[offset].w );
 				Verify(dInfo->coords[offset].y >= 0.0f && dInfo->coords[offset].y <= dInfo->coords[offset].w );

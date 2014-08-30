@@ -3,18 +3,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
 
-#if !defined(MLR_MLRCLIPTRICK_HPP)
-	#include <mlr/mlrcliptrick.hpp>
-#endif
+#include <mlr/mlrlightmap.hpp>
+
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //###########################    MLRLightMap    ###############################
 //#############################################################################
 
 MLRLightMap::ClassData*
-	MLRLightMap::DefaultData = NULL;
+	MLRLightMap::DefaultData = nullptr;
 Stuff::MemoryStream
 	*MLRLightMap::stream;
 GOSVertexPool*
@@ -37,7 +36,7 @@ void
 	MLRLightMap::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRLightMapClassID,
@@ -96,14 +95,14 @@ void
 
 	Unregister_Object(stream);
 	delete stream;
-	stream = NULL;
+	stream = nullptr;
 
 	Unregister_Pointer(ptr);
 	delete [] ptr;
 
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -183,7 +182,7 @@ void
 
 	PVOIDptr, *end = stream->GetPointer();
 
-	Stuff::Matrix4D *currentMatrix=NULL;
+	Stuff::Matrix4D *currentMatrix=nullptr;
 	MLRClippingState currentClippingState;
 	
 	MLRState currentState, masterState;
@@ -191,10 +190,10 @@ void
 	uint16_t stride;
 
 	int32_t i, pointerValue;
-	Stuff::Point3D *coords = NULL;
+	Stuff::Point3D *coords = nullptr;
 	Stuff::RGBAColor color;
-	Stuff::RGBAColor *colors = NULL;
-	Stuff::Vector2DScalar *texCoords = NULL;
+	Stuff::RGBAColor *colors = nullptr;
+	Stuff::Vector2DScalar *texCoords = nullptr;
 	uint32_t argb = 0xffffffff;
 
 	Check_Object(vertexPool);
@@ -1422,7 +1421,7 @@ MLRShape*
 	gos_PushCurrentHeap(Heap);
 	MLRShape *ret = new MLRShape(20);
 	Register_Object(ret);
-	MLR_I_C_TMesh *ctmesh = NULL;
+	MLR_I_C_TMesh *ctmesh = nullptr;
 	
 	PVOIDptr, *end = stream->GetPointer();
 
@@ -1433,10 +1432,10 @@ MLRShape*
 	uint16_t stride;
 
 	int32_t i;
-	Stuff::Point3D *coords = NULL;
+	Stuff::Point3D *coords = nullptr;
 	Stuff::RGBAColor color;
-	Stuff::RGBAColor *colors = NULL;
-	Stuff::Vector2DScalar *texCoords = NULL;
+	Stuff::RGBAColor *colors = nullptr;
+	Stuff::Vector2DScalar *texCoords = nullptr;
 
 	int32_t numGOSVertices = 0;
 
@@ -1474,9 +1473,9 @@ MLRShape*
 
 				if(numGOSVertices && (state != currentState))
 				{
-					if(ctmesh!=NULL)
+					if(ctmesh!=nullptr)
 					{
-						ctmesh->SetSubprimitiveLengths(NULL, numGOSVertices/3);
+						ctmesh->SetSubprimitiveLengths(nullptr, numGOSVertices/3);
 
 						ctmesh->FlashClipCoords(numGOSVertices);
 						ctmesh->FlashClipTexCoords(numGOSVertices);
@@ -1491,7 +1490,7 @@ MLRShape*
 
 						ctmesh->DetachReference();
 						
-						ctmesh = NULL;
+						ctmesh = nullptr;
 					}
 				}
 				currentState = state;
@@ -1499,7 +1498,7 @@ MLRShape*
 			break;
 			case Polygon:
 			{
-				if(ctmesh == NULL)
+				if(ctmesh == nullptr)
 				{
 					ctmesh = new MLR_I_C_TMesh;
 					numGOSVertices = 0;
@@ -1533,7 +1532,7 @@ MLRShape*
 			break;
 			case PolygonWithColor:
 			{
-				if(ctmesh == NULL)
+				if(ctmesh == nullptr)
 				{
 					ctmesh = new MLR_I_C_TMesh;
 					numGOSVertices = 0;
@@ -1568,9 +1567,9 @@ MLRShape*
 		ptr = stream->GetPointer();
 	}
 
-	if(ctmesh!=NULL)
+	if(ctmesh!=nullptr)
 	{
-		ctmesh->SetSubprimitiveLengths(NULL, numGOSVertices/3);
+		ctmesh->SetSubprimitiveLengths(nullptr, numGOSVertices/3);
 
 		ctmesh->FlashClipCoords(numGOSVertices);
 		ctmesh->FlashClipTexCoords(numGOSVertices);

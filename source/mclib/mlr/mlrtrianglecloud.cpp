@@ -3,11 +3,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
 
-#if !defined(MLR_MLRCLIPTRICK_HPP)
-	#include <mlr/mlrcliptrick.hpp>
-#endif
+#include <mlr/mlrtrianglecloud.hpp>
+
+using namespace MidLevelRenderer;
+
+//#############################################################################
 
 extern uint32_t gShowClippedPolys;
 
@@ -26,7 +27,7 @@ DynamicArrayOf<int32_t>
 	*MLRTriangleCloud::clipExtraLength;
 
 MLRTriangleCloud::ClassData*
-	MLRTriangleCloud::DefaultData = NULL;
+	MLRTriangleCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -34,7 +35,7 @@ void
 	MLRTriangleCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRTriangleCloudClassID,
@@ -71,7 +72,7 @@ void
 
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -80,7 +81,7 @@ MLRTriangleCloud::MLRTriangleCloud(int32_t nr) :
 	MLREffect(nr, DefaultData)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
-	usedNrOfTriangles = NULL;
+	usedNrOfTriangles = nullptr;
 
 	Check_Pointer(this);
 	
@@ -477,7 +478,7 @@ int32_t
 
 				srcPolygon.flags |= 1;
 
-				srcPolygon.texCoords = NULL;
+				srcPolygon.texCoords = nullptr;
 
 				srcPolygon.length = 3;
 

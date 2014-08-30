@@ -363,8 +363,7 @@ namespace MidLevelRenderer {
 	}
 
 	//	create a dword color out of 4 rgba floats
-	inline uint32_t
-		GOSCopyColor( const Stuff::RGBAColor *color )
+	inline uint32_t GOSCopyColor(const Stuff::RGBAColor* color)
 	{
 		float f;
 		uint32_t argb;
@@ -499,19 +498,22 @@ namespace MidLevelRenderer {
 		}
 
 #else
+		// this code was left in broken state
+		// Positive_Float_To_Byte(), colors and gos_vertices variables missing
+
 		f = color->alpha * 255.99f;
 		Clamp(f, 0.0f, 255.f);
 		argb = Stuff::Positive_Float_To_Byte (f);
 
-		f = colors->red * 255.99f;
+		f = color->red * 255.99f;
 		Clamp(f, 0.0f, 255.f);
 		argb = (gos_vertices[0].argb << 8) | Stuff::Positive_Float_To_Byte (f);
 
-		f = colors->green * 255.99f;
+		f = color->green * 255.99f;
 		Clamp(f, 0.0f, 255.f);
 		argb = (gos_vertices[0].argb << 8) | Stuff::Positive_Float_To_Byte (f);
 
-		f = colors->blue * 255.99f;
+		f = color->blue * 255.99f;
 		Clamp(f, 0.0f, 255.f);
 		argb = (gos_vertices[0].argb << 8) | Stuff::Positive_Float_To_Byte (f);
 
@@ -519,12 +521,7 @@ namespace MidLevelRenderer {
 		return argb;
 	}
 
-	inline uint32_t
-		Color_DWORD_Lerp (
-		uint32_t _from,
-		uint32_t _to,
-		float _lerp
-		)
+	inline uint32_t Color_DWORD_Lerp(uint32_t _from, uint32_t _to, float _lerp)
 	{
 		Stuff::RGBAColor from, to, lerp;
 

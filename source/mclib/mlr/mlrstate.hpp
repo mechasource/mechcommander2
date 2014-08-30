@@ -44,8 +44,7 @@ namespace MidLevelRenderer {
 		MLRState(const MLRState&);
 		~MLRState(void)
 		{
-
-		};
+		}
 
 		static MLRState* Make(Stuff::MemoryStream *stream, uint32_t version);
 

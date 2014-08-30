@@ -4,7 +4,59 @@
 
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include "mechclassids.h"
+
+#include <mlr/mlrlight.hpp>
+#include <mlr/mlrtexturepool.hpp>
+#include <mlr/mlrclipper.hpp>
+#include <mlr/mlrsorter.hpp>
+#include <mlr/mlrsortbyorder.hpp>
+#include <mlr/mlrshape.hpp>
+#include <mlr/mlreffect.hpp>
+#include <mlr/mlrpointcloud.hpp>
+#include <mlr/mlrtrianglecloud.hpp>
+#include <mlr/mlrngoncloud.hpp>
+#include <mlr/mlrcardcloud.hpp>
+#include <mlr/mlrambientlight.hpp>
+#include <mlr/mlrinfinitelight.hpp>
+#include <mlr/mlrinfinitelightwithfalloff.hpp>
+#include <mlr/mlrpointlight.hpp>
+#include <mlr/mlrspotlight.hpp>
+#include <mlr/mlrlightmap.hpp>
+#include <mlr/mlrprimitivebase.hpp>
+#include <mlr/mlrindexedprimitivebase.hpp>
+#include <mlr/mlrlinecloud.hpp>
+#include <mlr/mlrindexedtrianglecloud.hpp>
+#include <mlr/mlrlookuplight.hpp>
+
+#include <mlr/mlr_i_pmesh.hpp>
+#include <mlr/mlr_i_c_pmesh.hpp>
+#include <mlr/mlr_i_l_pmesh.hpp>
+#include <mlr/mlr_i_dt_pmesh.hpp>
+#include <mlr/mlr_i_c_dt_pmesh.hpp>
+#include <mlr/mlr_i_l_dt_pmesh.hpp>
+#include <mlr/mlr_i_mt_pmesh.hpp>
+#include <mlr/mlr_i_det_pmesh.hpp>
+#include <mlr/mlr_i_c_det_pmesh.hpp>
+#include <mlr/mlr_i_l_det_pmesh.hpp>
+#include <mlr/mlr_i_tmesh.hpp>
+#include <mlr/mlr_i_det_tmesh.hpp>
+#include <mlr/mlr_i_c_tmesh.hpp>
+#include <mlr/mlr_i_l_tmesh.hpp>
+#include <mlr/mlr_i_dt_tmesh.hpp>
+#include <mlr/mlr_i_c_dt_tmesh.hpp>
+#include <mlr/mlr_i_l_dt_tmesh.hpp>
+#include <mlr/mlr_i_c_det_tmesh.hpp>
+#include <mlr/mlr_i_l_det_tmesh.hpp>
+
+#include <mlr/mlr.hpp>
+
+using namespace MidLevelRenderer;
+
+#ifdef _GAMEOS_HPP_
+extern uint32_t gShowClippedPolys;
+extern uint32_t gShowBirdView;
 
 uint32_t gShowClippedPolys=0;
 uint32_t gShowBirdView=0;
@@ -37,42 +89,49 @@ static uint8_t __stdcall CheckLightMaps(void)
 
 static void __stdcall EnableDetailTexture(void)
 {
-	gEnableDetailTexture=!gEnableDetailTexture;
+	gEnableDetailTexture = uint32_t((!gEnableDetailTexture) ? 1 : 0);
 }
 static void __stdcall EnableTextureSort(void)
 {
-	gEnableTextureSort=!gEnableTextureSort;
+	gEnableTextureSort = uint32_t((!gEnableTextureSort) ? 1 : 0);
 }
 static void __stdcall EnableAlphaSort(void)
 {
-	gEnableAlphaSort=!gEnableAlphaSort;
+	gEnableAlphaSort = uint32_t((!gEnableAlphaSort) ? 1 : 0);
 }
 static void __stdcall EnableMultiTexture(void)
 {
-	gEnableMultiTexture=!gEnableMultiTexture;
+	gEnableMultiTexture = uint32_t((!gEnableMultiTexture) ? 1 : 0);
 }
 static void __stdcall EnableLightMaps(void)
 {
-	gEnableLightMaps=!gEnableLightMaps;
+	gEnableLightMaps = uint32_t((!gEnableLightMaps) ? 1 : 0);
 }
+static uint8_t __stdcall Check_ShowClippedPolys(void)
+{
+	return uint8_t((gShowClippedPolys!=0) ? 1 : 0);
+}
+static void __stdcall Toggle_ShowClippedPolys(void)
+{
+	gShowClippedPolys = uint32_t((!gShowClippedPolys) ? 1 : 0);
+}
+static uint8_t __stdcall Check_ShowBirdView(void)
+{
+	return uint8_t((gShowBirdView!=0) ? 1 : 0);
+}
+static void __stdcall Toggle_ShowBirdView(void)
+{
+	gShowBirdView = uint32_t((!gShowBirdView) ? 1 : 0);
+}
+#endif
 
-extern uint32_t gShowClippedPolys;
-static uint8_t __stdcall Check_ShowClippedPolys(void) {return uint8_t((gShowClippedPolys!=0) ? 1 : 0);}
-static void __stdcall Toggle_ShowClippedPolys(void){gShowClippedPolys=!gShowClippedPolys;}
+uint32_t Limits::Max_Number_Vertices_Per_Frame;
+uint32_t Limits::Max_Number_Primitives_Per_Frame;
+uint32_t Limits::Max_Number_ScreenQuads_Per_Frame;
+uint32_t Limits::Max_Size_Of_LightMap_MemoryStream;
 
-extern uint32_t gShowBirdView;
-static uint8_t __stdcall Check_ShowBirdView(void) {return uint8_t((gShowBirdView!=0) ? 1 : 0);}
-static void __stdcall Toggle_ShowBirdView(void){gShowBirdView=!gShowBirdView;}
-
-uint32_t
-Limits::Max_Number_Vertices_Per_Frame,
-Limits::Max_Number_Primitives_Per_Frame,
-Limits::Max_Number_ScreenQuads_Per_Frame,
-Limits::Max_Size_Of_LightMap_MemoryStream;
-
-HGOSHEAP
-MidLevelRenderer::Heap = NULL,
-MidLevelRenderer::StaticHeap = NULL;
+HGOSHEAP MidLevelRenderer::Heap = nullptr;
+HGOSHEAP MidLevelRenderer::StaticHeap = nullptr;
 
 DEFINE_TIMER(MidLevelRenderer, Scene_Draw_Time);
 
@@ -112,8 +171,9 @@ void MidLevelRenderer::InitializeClasses(
 	uint32_t Max_Size_Of_LightMap_MemoryStream,
 	bool Convert_To_Triangle_Meshes)
 {
-	Verify(FirstFreeMLRClassID <= LastMLRClassID);
+	Verify(FirstFreeMLRClassID <= Stuff::LastMLRClassID);
 
+#if _CONSIDERED_OBSOLETE
 	Verify(!StaticHeap);
 	StaticHeap = gos_CreateMemoryHeap("MLR Static");
 	Check_Pointer(StaticHeap);
@@ -122,6 +182,7 @@ void MidLevelRenderer::InitializeClasses(
 	Verify(!Heap);
 	Heap = gos_CreateMemoryHeap("MLR");
 	Check_Pointer(Heap);
+#endif
 
 	Limits::Max_Number_Vertices_Per_Frame = Max_Number_Vertices_Per_Frame;
 	Limits::Max_Number_Primitives_Per_Frame = Max_Number_Primitives_Per_Frame;
@@ -150,6 +211,10 @@ void MidLevelRenderer::InitializeClasses(
 
 	MLRPrimitiveBase::InitializeClass();
 	MLRIndexedPrimitiveBase::InitializeClass();
+	MLRLineCloud::InitializeClass();
+	MLRIndexedTriangleCloud::InitializeClass();
+	MLRLookUpLight::InitializeClass();
+
 	MLR_I_PMesh::InitializeClass();
 	MLR_I_C_PMesh::InitializeClass();
 	MLR_I_L_PMesh::InitializeClass();
@@ -168,20 +233,14 @@ void MidLevelRenderer::InitializeClasses(
 	MLR_I_C_TMesh::InitializeClass();
 	MLR_I_L_TMesh::InitializeClass();
 
-	// MLR_Terrain::InitializeClass();
-	// MLR_Terrain2::InitializeClass();
-
-	MLRLineCloud::InitializeClass();
-	MLRIndexedTriangleCloud::InitializeClass();
-
 	MLR_I_DT_TMesh::InitializeClass();
 	MLR_I_C_DT_TMesh::InitializeClass();
 	MLR_I_L_DT_TMesh::InitializeClass();
-
 	MLR_I_C_DeT_TMesh::InitializeClass();
 	MLR_I_L_DeT_TMesh::InitializeClass();
 
-	MLRLookUpLight::InitializeClass();
+	// MLR_Terrain::InitializeClass();
+	// MLR_Terrain2::InitializeClass();
 
 #if FOG_HACK
 	// for(int32_t i=0;i<Limits::Max_Number_Of_FogStates;i++)
@@ -190,32 +249,26 @@ void MidLevelRenderer::InitializeClasses(
 	// }
 #endif
 
+#if _CONSIDERED_OBSOLETE
 	gos_PopCurrentHeap();
+#endif
 
 	//
 	//-------------------------
 	// Setup the debugger menus
 	//-------------------------
 	//
-	AddDebuggerMenuItem(
-		"Libraries\\MLR\\Show Clipped Polygons",
-		Check_ShowClippedPolys,
-		Toggle_ShowClippedPolys,
-		NULL
-		);
-	AddDebuggerMenuItem(
-		"Libraries\\MLR\\Show Bird View",
-		Check_ShowBirdView,
-		Toggle_ShowBirdView,
-		NULL
-		);
+#ifdef _GAMEOS_HPP_
+	AddDebuggerMenuItem("Libraries\\MLR\\Show Clipped Polygons", Check_ShowClippedPolys, Toggle_ShowClippedPolys, nullptr);
+	AddDebuggerMenuItem("Libraries\\MLR\\Show Bird View", Check_ShowBirdView, Toggle_ShowBirdView, nullptr);
+	AddDebuggerMenuItem("Libraries\\MLR\\Texture Sort", CheckTextureSort, EnableTextureSort, nullptr );
+	AddDebuggerMenuItem("Libraries\\MLR\\Enable Detail Texture", CheckDetailTexture, EnableDetailTexture, nullptr );
+	AddDebuggerMenuItem("Libraries\\MLR\\Alpha Sort", CheckAlphaSort, EnableAlphaSort, nullptr );
+	AddDebuggerMenuItem("Libraries\\MLR\\MultiTexture Enabled", CheckMultiTexture, EnableMultiTexture, nullptr );
+	AddDebuggerMenuItem("Libraries\\MLR\\LightMaps Enabled", CheckLightMaps, EnableLightMaps, nullptr );
+#endif
 
-	AddDebuggerMenuItem("Libraries\\MLR\\Texture Sort", CheckTextureSort, EnableTextureSort, NULL );
-	AddDebuggerMenuItem("Libraries\\MLR\\Enable Detail Texture", CheckDetailTexture, EnableDetailTexture, NULL );
-	AddDebuggerMenuItem("Libraries\\MLR\\Alpha Sort", CheckAlphaSort, EnableAlphaSort, NULL );
-	AddDebuggerMenuItem("Libraries\\MLR\\MultiTexture Enabled", CheckMultiTexture, EnableMultiTexture, NULL );
-	AddDebuggerMenuItem("Libraries\\MLR\\LightMaps Enabled", CheckLightMaps, EnableLightMaps, NULL );
-
+#ifdef _GAMEOS_HPP_
 	//
 	//---------------------
 	// Setup the statistics
@@ -251,6 +304,7 @@ void MidLevelRenderer::InitializeClasses(
 	AddStatistic( "Clip: One Plane", "Poly", gos_DWORD, &PolysClippedButOnePlane, Stat_AutoReset );
 	// Polygons in primitives which are clipped, polys clipped against more than one plain
 	AddStatistic( "Clip: > One Plane", "Poly", gos_DWORD, &PolysClippedButGOnePlane, Stat_AutoReset );
+#endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -314,18 +368,21 @@ MidLevelRenderer::TerminateClasses(void)
 	MLRTexturePool::TerminateClass();
 	MLRLight::TerminateClass();
 
+#if _CONSIDERED_OBSOLETE
 	Check_Pointer(Heap);
 	gos_DestroyMemoryHeap(Heap);
-	Heap = NULL;
+	Heap = nullptr;
 
 	Check_Pointer(StaticHeap);
 	gos_DestroyMemoryHeap(StaticHeap);
-	StaticHeap = NULL;
+	StaticHeap = nullptr;
+#endif
+
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-int32_t MidLevelRenderer::ReadMLRVersion(MemoryStream *erf_stream)
+uint32_t MidLevelRenderer::ReadMLRVersion(Stuff::MemoryStream* erf_stream)
 {
 	Check_Object(erf_stream);
 
@@ -335,22 +392,22 @@ int32_t MidLevelRenderer::ReadMLRVersion(MemoryStream *erf_stream)
 	// version number. If not, assume it is version 1 and rewind the file
 	//------------------------------------------------------------------------
 	//
-	uint32_t version = -1;
-	int32_t erf_signature;
+	uint32_t version = uint32_t(-1);
+	uint32_t erf_signature;
 	*erf_stream >> erf_signature;
 	if (erf_signature == 'MLR#')
 		*erf_stream >> version;
 	else
 		erf_stream->RewindPointer(sizeof(erf_signature));
-	if (version > Current_MLR_Version)
-		STOP(("Application must be rebuilt to use this version of MLR data"));
+	//if (version > Current_MLR_Version)
+	//	STOP(("Application must be rebuilt to use this version of MLR data"));
 	return version;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void MidLevelRenderer::WriteMLRVersion(MemoryStream *erf_stream)
+void MidLevelRenderer::WriteMLRVersion(Stuff::MemoryStream* erf_stream)
 {
 	Check_Object(erf_stream);
-	*erf_stream << 'MLR#' << static_cast<int32_t>(Current_MLR_Version);
+	*erf_stream << 'MLR#' << static_cast<uint32_t>(Current_MLR_Version);
 }

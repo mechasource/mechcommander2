@@ -43,7 +43,7 @@ namespace MidLevelRenderer{
 
 		void Save(Stuff::MemoryStream *stream);
 
-		GOSImage* GetImage(pint32_t h=NULL)
+		GOSImage* GetImage(pint32_t h=nullptr)
 		{
 			Check_Object(this); if(h) { *h = hint; } return image;
 		}

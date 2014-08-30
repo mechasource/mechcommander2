@@ -3,14 +3,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlrlight.hpp>
+
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //###########################    MLRLight    ##################################
 //#############################################################################
 
 MLRLight::ClassData*
-	MLRLight::DefaultData = NULL;
+	MLRLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -18,7 +21,7 @@ void
 	MLRLight::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRLightClassID,
@@ -35,7 +38,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -126,7 +129,7 @@ MLRLight*
 {
 	gos_PushCurrentHeap(Heap);
 	int32_t type;
-	MLRLight *light = NULL;
+	MLRLight *light = nullptr;
 	*stream >> type;
 	switch (type)
 	{
@@ -161,7 +164,7 @@ MLRLight*
 	PCSTR type;
 	
 	page->GetEntry("LightType", &type, true);
-	MLRLight *light = NULL;
+	MLRLight *light = nullptr;
 	if (!_stricmp(type, "Ambient"))
 		light = new MLRAmbientLight(page);
 	else if (!_stricmp(type, "Infinite"))

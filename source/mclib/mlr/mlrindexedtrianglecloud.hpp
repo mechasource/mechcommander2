@@ -43,7 +43,7 @@ namespace MidLevelRenderer {
 
 		void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*);
 
-		int32_t	Clip(MLRClippingState, GOSVertexPool*);		
+		uint32_t Clip(MLRClippingState, GOSVertexPool*);		
 
 		virtual puint16_t
 			GetGOSIndices(int32_t=0)
@@ -66,18 +66,16 @@ namespace MidLevelRenderer {
 		void TestInstance(void) const;
 
 	protected:
-		pcint32_t	usedNrOfPoints;
-		pcuint16_t	index;
-		const Stuff::Vector2DScalar *texCoords;
+		pcsize_t						usedNrOfPoints;
+		pcuint16_t						index;
+		const Stuff::Vector2DScalar*	texCoords;
 
 		static Stuff::DynamicArrayOf<Stuff::Vector2DScalar> *clipExtraTexCoords; // , Max_Number_Vertices_Per_Mesh
-
 		static Stuff::DynamicArrayOf<uint16_t> *clipExtraIndex; // , Max_Number_Vertices_Per_Mesh
-
 		static Stuff::DynamicArrayOf<uint8_t>	*visibleIndexedVertices;
 
-		puint16_t gos_indices;
-		uint16_t	numGOSIndices;
+		puint16_t		gos_indices;
+		uint16_t		numGOSIndices;
 	};
 }
 #endif

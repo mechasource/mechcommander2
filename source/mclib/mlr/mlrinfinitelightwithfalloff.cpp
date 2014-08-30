@@ -3,14 +3,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlrinfinitelightwithfalloff.hpp>
+
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //###############    MLRInfiniteLightWithFalloff    ###########################
 //#############################################################################
 
 MLRInfiniteLightWithFalloff::ClassData*
-	MLRInfiniteLightWithFalloff::DefaultData = NULL;
+	MLRInfiniteLightWithFalloff::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -18,7 +21,7 @@ void
 	MLRInfiniteLightWithFalloff::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRInfiniteLightWithFalloffClassID,
@@ -35,7 +38,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

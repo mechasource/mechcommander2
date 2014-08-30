@@ -132,8 +132,7 @@ namespace MidLevelRenderer {
 		}
 
 	protected:
-		void
-			SetTexCoordDataPointer(const Stuff::Vector2DScalar*);
+		void SetTexCoordDataPointer(const Stuff::Vector2DScalar*);
 
 		uint8_t currentNrOfPasses;
 

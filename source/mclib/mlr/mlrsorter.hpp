@@ -28,7 +28,7 @@ namespace MidLevelRenderer{
 	class SortData{
 	public:
 		SortData (void)
-		{ vertices = NULL; numVertices = 0; indices = NULL;
+		{ vertices = nullptr; numVertices = 0; indices = nullptr;
 		numIndices = 0; type = TriList; texture2 = 0; }
 
 		void DrawTriList(void);
@@ -90,7 +90,7 @@ namespace MidLevelRenderer{
 
 		MLRLight* activeLights[Limits::Max_Number_Of_Lights_Per_Primitive];
 
-		int32_t nrOfActiveLights;
+		uint32_t nrOfActiveLights;
 	};
 #endif
 
@@ -116,13 +116,13 @@ namespace MidLevelRenderer{
 		MLRSorter(ClassData *class_data, MLRTexturePool*);
 		~MLRSorter(void);
 
-		virtual void AddPrimitive(MLRPrimitiveBase*, int32_t=0) = 0;
+		virtual void AddPrimitive(MLRPrimitiveBase*, uint32_t=0) = 0;
 		virtual void AddEffect(MLREffect*, const MLRState&) = 0;
 		virtual void AddScreenQuads(GOSVertex*, const DrawScreenQuadsInformation*) = 0;
 
 		virtual void AddSortRawData(SortData*) = 0;
 
-		virtual void DrawPrimitive(MLRPrimitiveBase*, int32_t=0);
+		virtual void DrawPrimitive(MLRPrimitiveBase*, uint32_t=0);
 
 		void SetTexturePool(MLRTexturePool *tp)
 		{ 

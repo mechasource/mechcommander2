@@ -40,7 +40,7 @@ namespace MidLevelRenderer
 		};
 	};
 
-	int32_t __stdcall ReadMLRVersion(Stuff::MemoryStream *erf_stream);
+	uint32_t __stdcall ReadMLRVersion(Stuff::MemoryStream *erf_stream);
 	void __stdcall WriteMLRVersion(Stuff::MemoryStream *erf_stream);
 
 	void __stdcall InitializeClasses(

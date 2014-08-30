@@ -3,10 +3,15 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlr_terrain2.hpp>
+
+using namespace MidLevelRenderer;
+
+//#############################################################################
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-	BitTrace *MLR_Terrain2_Clip;
+BitTrace*	MLR_Terrain2_Clip;
 #endif
 
 extern uint32_t gEnableLightMaps;
@@ -19,7 +24,7 @@ DynamicArrayOf<Stuff::Vector2DScalar>
 	*MLR_Terrain2::detailTexCoords;
 
 MLR_Terrain2::ClassData*
-	MLR_Terrain2::DefaultData = NULL;
+	MLR_Terrain2::DefaultData = nullptr;
 
 extern DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs;
 extern DynamicArrayOf<Scalar> *lightMapSqFalloffs;
@@ -30,7 +35,7 @@ void
 	MLR_Terrain2::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLR_Terrain2ClassID,
@@ -56,7 +61,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 
 	Unregister_Object(detailTexCoords);
 	delete detailTexCoords;

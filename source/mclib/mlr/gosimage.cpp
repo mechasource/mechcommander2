@@ -3,7 +3,10 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/gosimage.hpp>
+
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //############################    GOSImage    ###############################
@@ -21,7 +24,7 @@ GOSImage::GOSImage( PCSTR iName ) : Plug (DefaultData)
 
 	mcTextureNodeIndex = 0xffffffff;
 
-	ptr.pTexture = NULL;
+	ptr.pTexture = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,7 +43,7 @@ GOSImage::GOSImage( uint32_t iHandle ) : Plug (DefaultData)
 
 	mcTextureNodeIndex = iHandle;
 
-	ptr.pTexture = NULL;
+	ptr.pTexture = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +60,7 @@ GOSImage::GOSImage(PCSTR name, gos_TextureHints hints) : Plug (DefaultData)
 
 	mcTextureNodeIndex = mcTextureManager->loadTexture(name,gos_Texture_Detect,ipHints);
 
-	ptr.pTexture = NULL;
+	ptr.pTexture = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -127,7 +130,7 @@ void GOSImage::UnlockImage()
 
 		Stop_Timer(Unlock_Texture_Time);
 
-		ptr.pTexture = NULL;
+		ptr.pTexture = nullptr;
 	}
 }
 

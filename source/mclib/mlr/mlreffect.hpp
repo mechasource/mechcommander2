@@ -46,7 +46,7 @@ namespace MidLevelRenderer {
 		static void __stdcall InitializeClass(void);
 		static void __stdcall TerminateClass(void);
 
-		MLREffect(int32_t, ClassData *class_data);
+		MLREffect(uint32_t nr, ClassData *class_data);
 		~MLREffect(void);
 
 		virtual void SetData(
@@ -54,7 +54,7 @@ namespace MidLevelRenderer {
 			const Stuff::Point3D* point_data,
 			const Stuff::RGBAColor* color_data) = 0;
 
-		virtual int32_t GetType(int32_t) { return 0; }
+		virtual uint32_t GetType(uint32_t) { return 0; }
 
 		//	add another effect
 		virtual void Draw (DrawEffectInformation*, GOSVertexPool*, MLRSorter*) = 0;
@@ -71,12 +71,12 @@ namespace MidLevelRenderer {
 		{
 			Check_Object(this); Verify(nr<maxNrOf); testList[nr] &= ~2; 
 		}
-		bool IsOn(uint32_t nr)
+		bool IsOn(size_t nr)
 		{
 			Check_Object(this); Verify(nr<maxNrOf); return (testList[nr] & 2)? true : false;
 		}
 
-		virtual int32_t	Clip(MLRClippingState, GOSVertexPool*) = 0;		
+		virtual uint32_t Clip(MLRClippingState, GOSVertexPool*) = 0;		
 
 		void SetEffectToClipMatrix(
 			const Stuff::LinearMatrix4D *effectToWorld,

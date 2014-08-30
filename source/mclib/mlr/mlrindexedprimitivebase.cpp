@@ -3,7 +3,10 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlrindexedprimitivebase.hpp>
+
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //#####################    MLRIndexedPrimitiveBase    #########################
@@ -13,7 +16,7 @@ DynamicArrayOf<uint16_t>
 	*MLRIndexedPrimitiveBase::clipExtraIndex;
 
 MLRIndexedPrimitiveBase::ClassData*
-	MLRIndexedPrimitiveBase::DefaultData = NULL;
+	MLRIndexedPrimitiveBase::DefaultData = nullptr;
 
 uint16_t
 	*indexOffset;
@@ -24,13 +27,13 @@ void
 	MLRIndexedPrimitiveBase::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRIndexedPrimitiveBaseClassID,
 			"MidLevelRenderer::MLRIndexedPrimitiveBase",
 			MLRPrimitiveBase::DefaultData,
-			NULL
+			nullptr
 		);
 	Register_Object(DefaultData);
 	
@@ -54,7 +57,7 @@ void
 
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -131,7 +134,7 @@ void
 {
 	MLRPrimitiveBase::InitializeDrawPrimitive(vis, parameter);
 
-	gos_indices = NULL;
+	gos_indices = nullptr;
 	numGOSIndices = -1;
 
 	visibleIndexedVerticesKey = false;

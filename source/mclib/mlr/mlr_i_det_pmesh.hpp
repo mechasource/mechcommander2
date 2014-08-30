@@ -15,7 +15,7 @@ namespace MidLevelRenderer {
 	struct DetailTextureInfo {
 		DetailTextureInfo()
 		{
-			name = NULL;
+			name = nullptr;
 			xOff=0.0f; xFac=8.0f;
 			zOff=0.0f; zFac=8.0f;
 			dStart = 32.0f; dEnd = 64.0f;

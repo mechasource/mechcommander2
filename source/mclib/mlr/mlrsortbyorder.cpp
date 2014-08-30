@@ -3,17 +3,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
 
-extern uint32_t gEnableTextureSort, gEnableAlphaSort, gEnableLightMaps;
+#include <mlr/mlrsortbyorder.hpp>
 
-
-MLRSortByOrder::ClassData*
-	MLRSortByOrder::DefaultData = NULL;
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //############################    MLRSortByOrder    ################################
 //#############################################################################
+
+extern uint32_t gEnableTextureSort, gEnableAlphaSort, gEnableLightMaps;
+MLRSortByOrder::ClassData* MLRSortByOrder::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -21,7 +21,7 @@ void
 	MLRSortByOrder::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRSortByOrderClassID,
@@ -38,7 +38,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -97,13 +97,12 @@ void
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-void
-	MLRSortByOrder::AddPrimitive(MLRPrimitiveBase *pt, int32_t pass)
+void MLRSortByOrder::AddPrimitive(MLRPrimitiveBase *pt, uint32_t pass)
 {
 	Check_Object(this); 
 	Check_Object(pt);
 
-	SortData *sd = NULL;
+	SortData *sd = nullptr;
 
 	switch(pt->GetSortDataMode())
 	{
@@ -114,7 +113,7 @@ void
 	}
 
 	uint32_t priority = pt->GetCurrentState(pass).GetPriority();
-	if(sd != NULL)
+	if(sd != nullptr)
 	{
 		priorityBuckets[priority][lastUsedInBucket[priority]++] = sd;
 	}
@@ -128,7 +127,7 @@ void
 	Check_Object(this); 
 	Check_Object(ef);
 
-	SortData *sd = NULL;
+	SortData *sd = nullptr;
 
 	switch(ef->GetSortDataMode())
 	{
@@ -174,7 +173,7 @@ void
 	}
 
 	uint32_t priority = state.GetPriority();
-	if(sd != NULL)
+	if(sd != nullptr)
 	{
 		priorityBuckets[priority][lastUsedInBucket[priority]++] = sd;
 	}
@@ -200,7 +199,7 @@ void
 		);
 
 	uint32_t priority = dInfo->state.GetPriority();
-	if(sd != NULL)
+	if(sd != nullptr)
 	{
 		priorityBuckets[priority][lastUsedInBucket[priority]++] = sd;
 	}
@@ -213,7 +212,7 @@ void
 {
 	Check_Object(this); 
 	
-	if(sd==NULL)
+	if(sd==nullptr)
 	{
 		return;
 	}
@@ -297,7 +296,7 @@ void
 					for(k=0;k<tbdp->nrOfActiveLights;k++)
 					{
 						Check_Object(tbdp->activeLights[k]);
-						nrOfLightMaps += (tbdp->activeLights[k]->GetLightMap() != NULL) ? 1 : 0;
+						nrOfLightMaps += (tbdp->activeLights[k]->GetLightMap() != nullptr) ? 1 : 0;
 						tbdp->activeLights[k]->SetLightToShapeMatrix(tbdp->worldToShape);
 					}
 
@@ -380,7 +379,7 @@ void
 			}
 			else
 			{
-				SortData *sd = NULL;
+				SortData *sd = nullptr;
 
 				for(j=0;j<lastUsedInBucketNotDrawn[i];j++)
 				{

@@ -3,7 +3,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlr_i_pmesh.hpp>
+
+using namespace MidLevelRenderer;
+
+//#############################################################################
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 	BitTrace *MLR_I_PMesh_Clip;
@@ -18,7 +23,7 @@ extern uint32_t gEnableLightMaps;
 //#############################################################################
 
 MLR_I_PMesh::ClassData*
-	MLR_I_PMesh::DefaultData = NULL;
+	MLR_I_PMesh::DefaultData = nullptr;
 
 DynamicArrayOf<Stuff::Vector2DScalar> *lightMapUVs;
 DynamicArrayOf<Scalar> *lightMapSqFalloffs;
@@ -29,7 +34,7 @@ void
 	MLR_I_PMesh::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLR_I_PMeshClassID,
@@ -64,7 +69,7 @@ void
 
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 
 	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
 		Unregister_Object(MLR_I_PMesh_Clip);
@@ -447,7 +452,7 @@ void
 	{
 		lightMap = lights[i]->GetLightMap();
 
-		if(lightMap!=NULL)
+		if(lightMap!=nullptr)
 		{
 			LightMapLighting(lights[i]);
 		}
@@ -1124,7 +1129,7 @@ MLR_I_PMesh*
 	texCoords[6] = Stuff::Vector2DScalar(0.0f, 0.0f);
 	texCoords[7] = Stuff::Vector2DScalar(0.0f, 0.0f);
 
-	if(state != NULL)
+	if(state != nullptr)
 	{
 		ret->SetReferenceState(*state);
 		if(state->GetTextureHandle() > 0)
@@ -1249,7 +1254,7 @@ MLRShape*
 	Point3D *coords = new Point3D [nrTri*3];
 	Register_Pointer(coords);
 	
-	Point3D *collapsedCoords = NULL;
+	Point3D *collapsedCoords = nullptr;
 	if(icoInfo.indexed==true)
 	{
 		collapsedCoords = new Point3D [nrTri*3];
@@ -1317,7 +1322,7 @@ MLRShape*
 
 		mesh->FindFacePlanes();
 
-		if(state == NULL)
+		if(state == nullptr)
 		{
 			for(i=0;i<uniquePoints;i++)
 			{

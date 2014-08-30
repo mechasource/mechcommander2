@@ -58,12 +58,12 @@ namespace MidLevelRenderer {
 		virtual void
 			TransformNoClip(Stuff::Matrix4D*, GOSVertexPool*,bool=false);
 
-		void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count);
+		void SetTexCoordData(const Stuff::Vector2DScalar* array, size_t point_count, size_t pass=0);
 
 		virtual void SetReferenceState(const MLRState& _state, size_t pass=0)
 		{
 			Check_Object(this);
-			Verify(pass>=0 && pass<2);
+			Verify(pass<2);
 			if(pass==0)
 			{
 				referenceState = _state;

@@ -319,32 +319,32 @@ namespace MidLevelRenderer {
 
 		if(v4d->w <= v4d->z)
 		{
-			SetFarClip(void);
+			SetFarClip();
 		}
 
 		if(v4d->z < 0.0f)
 		{
-			SetNearClip(void);
+			SetNearClip();
 		}
 
 		if(v4d->x < 0.0f)
 		{
-			SetRightClip(void);
+			SetRightClip();
 		}
 
 		if(v4d->w < v4d->x)
 		{
-			SetLeftClip(void);
+			SetLeftClip();
 		}
 
 		if(v4d->y < 0.0f)
 		{
-			SetBottomClip(void);
+			SetBottomClip();
 		}
 
 		if(v4d->w < v4d->y)
 		{
-			SetTopClip(void);
+			SetTopClip();
 		}
 #endif
 	}

@@ -4,8 +4,8 @@
 
 #include "stdafx.h"
 
-#include <mlr/gosvertex.hpp>
 #include <mlr/gosvertexpool.hpp>
+#include <mlr/gosvertex.hpp>
 
 using namespace MidLevelRenderer;
 

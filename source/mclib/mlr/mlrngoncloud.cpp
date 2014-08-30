@@ -3,11 +3,12 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
 
-#if !defined(MLR_MLRCLIPTRICK_HPP)
-	#include <mlr/mlrcliptrick.hpp>
-#endif
+#include <mlr/mlrngoncloud.hpp>
+
+using namespace MidLevelRenderer;
+
+//#############################################################################
 
 extern uint32_t gShowClippedPolys;
 
@@ -27,7 +28,7 @@ DynamicArrayOf<int32_t>
 
 
 MLRNGonCloud::ClassData*
-	MLRNGonCloud::DefaultData = NULL;
+	MLRNGonCloud::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -35,7 +36,7 @@ void
 	MLRNGonCloud::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRNGonCloudClassID,
@@ -72,7 +73,7 @@ void
 
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -81,7 +82,7 @@ MLRNGonCloud::MLRNGonCloud(int32_t vertices, int32_t nr) :
 	MLREffect(nr, DefaultData)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
-	usedNrOfNGons = NULL;
+	usedNrOfNGons = nullptr;
 
 	numOfVertices = vertices;
 

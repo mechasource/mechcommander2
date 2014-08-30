@@ -154,7 +154,7 @@ namespace MidLevelRenderer{
 		}
 
 		virtual GOSVertex2UV* GetGOSVertices2UV(uint32_t=0)
-		{ Check_Object(this); return NULL; }
+		{ Check_Object(this); return nullptr; }
 
 		int32_t
 			GetSortDataMode()

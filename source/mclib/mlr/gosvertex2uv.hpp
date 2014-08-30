@@ -141,20 +141,19 @@ namespace MidLevelRenderer {
 
 	//#pragma warning (disable : 4725)
 
-	void
-		GOSVertex2UV::GOSTransformNoClip(
-		const Stuff::Point3D &_v,
-		const Stuff::Matrix4D &m,
-		float *uv1,
-		float *uv2
+	void GOSVertex2UV::GOSTransformNoClip(
+		const Stuff::Point3D& _v,
+		const Stuff::Matrix4D& m,
+		float* uv1,
+		float* uv2
 #if FOG_HACK
 		, int32_t foggy
 #endif
 		)
-	{
-		Check_Pointer(this);
-		Check_Object(&_v);
-		Check_Object(&m);
+{
+Check_Pointer(this);
+Check_Object(&_v);
+Check_Object(&m);
 
 #if USE_ASSEMBLER_CODE
 		float *f = &x;
@@ -259,10 +258,10 @@ namespace MidLevelRenderer {
 
 		}
 #else
-		x = v.x*m(0,0) + v.y*m(1,0) + v.z*m(2,0) + m(3,0);
-		y = v.x*m(0,1) + v.y*m(1,1) + v.z*m(2,1) + m(3,1);
-		z = v.x*m(0,2) + v.y*m(1,2) + v.z*m(2,2) + m(3,2);
-		rhw = v.x*m(0,3) + v.y*m(1,3) + v.z*m(2,3) + m(3,3);
+		x = _v.x*m(0,0) + _v.y*m(1,0) + _v.z*m(2,0) + m(3,0);
+		y = _v.x*m(0,1) + _v.y*m(1,1) + _v.z*m(2,1) + m(3,1);
+		z = _v.x*m(0,2) + _v.y*m(1,2) + _v.z*m(2,2) + m(3,2);
+		rhw = _v.x*m(0,3) + _v.y*m(1,3) + _v.z*m(2,3) + m(3,3);
 #endif
 
 #if 0	//USE_ASSEMBLER_CODE
@@ -297,12 +296,12 @@ namespace MidLevelRenderer {
 #if FOG_HACK
 		if(foggy)
 		{
-			*((puint8_t )&frgb + 3) =
+			*((puint8_t)&frgb + 3) =
 				GOSVertex::fogTable[foggy-1][Stuff::Truncate_Float_To_Word(rhw)];
 		}
 		else
 		{
-			*((puint8_t )&frgb + 3) = 0xff;
+			*((puint8_t)&frgb + 3) = 0xff;
 		}
 #endif
 

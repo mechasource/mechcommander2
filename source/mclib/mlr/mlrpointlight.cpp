@@ -3,14 +3,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlrpointlight.hpp>
+
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //###########################    MLRPointLight    #############################
 //#############################################################################
 
 MLRPointLight::ClassData*
-	MLRPointLight::DefaultData = NULL;
+	MLRPointLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -18,7 +21,7 @@ void
 	MLRPointLight::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRPointLightClassID,
@@ -35,7 +38,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -44,7 +47,7 @@ MLRPointLight::MLRPointLight() :
 	MLRInfiniteLightWithFalloff(DefaultData)
 {
 	//Verify(gos_GetCurrentHeap() == Heap);
-	lightMap = NULL;
+	lightMap = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +60,7 @@ MLRPointLight::MLRPointLight(
 {
 	Check_Object(stream);
 	//Verify(gos_GetCurrentHeap() == Heap);
-	lightMap = NULL;
+	lightMap = nullptr;
 	if (version > 7)
 	{
 		MString name;
@@ -83,7 +86,7 @@ MLRPointLight::MLRPointLight(Stuff::Page *page):
 {
 	Check_Object(page);
 	//Verify(gos_GetCurrentHeap() == Heap);
-	lightMap = NULL;
+	lightMap = nullptr;
 	PCSTR lightmap;
 	if (page->GetEntry("LightMap", &lightmap))
 	{
@@ -233,7 +236,7 @@ void
 	}
 	lightMap = light_map;
 
-	if (lightMap == NULL)
+	if (lightMap == nullptr)
 	{
 		lightMask &= ~MLRState::LightMapLightingMode;
 	}

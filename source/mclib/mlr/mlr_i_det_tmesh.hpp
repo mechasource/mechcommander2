@@ -65,9 +65,14 @@ namespace MidLevelRenderer {
 			float yFac
 			);
 
-		bool
-			Copy(MLR_I_DeT_PMesh *pmesh)
-		{ Check_Object(pmesh); STOP(("Not implemented yet !")); return false; }
+		bool Copy(MLR_I_DeT_PMesh *pmesh)
+		{
+			Check_Object(pmesh);
+#ifdef _GAMEOS_HPP_
+			STOP(("Not implemented yet !"));
+#endif
+			return false;
+		}
 
 		void
 			SetDetailData(

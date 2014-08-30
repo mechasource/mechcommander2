@@ -1,75 +1,80 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlr_terrain.hpp>
+
+using namespace MidLevelRenderer;
+
+//#############################################################################
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-	BitTrace *MLR_Terrain_Clip;
+BitTrace *MLR_Terrain_Clip;
 #endif
 
 //#############################################################################
-//## MLRTerrain with no color no lighting w/ detail texture, uv's from xyz  ###
+//## MLRTerrain with no color no lighting w/ detail texture, uv's from xyz ###
 //#############################################################################
 
 MLR_Terrain::ClassData*
-	MLR_Terrain::DefaultData = NULL;
+MLR_Terrain::DefaultData = nullptr;
 
 DynamicArrayOf<Stuff::Vector2DScalar>
-	*MLR_Terrain::clipTexCoords;
+*MLR_Terrain::clipTexCoords;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_Terrain::InitializeClass()
+MLR_Terrain::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
-			MLR_TerrainClassID,
-			"MidLevelRenderer::MLR_Terrain",
-			MLR_I_DeT_TMesh::DefaultData,
-			(MLRPrimitiveBase::Factory)&Make
+		MLR_TerrainClassID,
+		"MidLevelRenderer::MLR_Terrain",
+		MLR_I_DeT_TMesh::DefaultData,
+		(MLRPrimitiveBase::Factory)&Make
 		);
 	Register_Object(DefaultData);
-	
+
 	clipTexCoords = new DynamicArrayOf<Stuff::Vector2DScalar> (Limits::Max_Number_Vertices_Per_Mesh);
 	Register_Object(clipTexCoords);
 
-	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-		MLR_Terrain_Clip = new BitTrace("MLR_Terrain_Clip");
-		Register_Object(MLR_Terrain_Clip);
-	#endif
+#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
+	MLR_Terrain_Clip = new BitTrace("MLR_Terrain_Clip");
+	Register_Object(MLR_Terrain_Clip);
+#endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_Terrain::TerminateClass()
+MLR_Terrain::TerminateClass()
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 
 	Unregister_Object(clipTexCoords);
 	delete clipTexCoords;
 
-	#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-		Unregister_Object(MLR_Terrain_Clip);
-		delete MLR_Terrain_Clip;
-	#endif
+#if defined(TRACE_ENABLED) && defined(MLR_TRACE)
+	Unregister_Object(MLR_Terrain_Clip);
+	delete MLR_Terrain_Clip;
+#endif
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_Terrain::MLR_Terrain(
-	ClassData *class_data,
-	MemoryStream *stream,
-	uint32_t version
-):
-	MLR_I_DeT_TMesh(class_data, stream, version)
+						 ClassData *class_data,
+						 MemoryStream *stream,
+						 uint32_t version
+						 ):
+MLR_I_DeT_TMesh(class_data, stream, version)
 {
 	Check_Pointer(this);
 	Check_Pointer(stream);
@@ -81,7 +86,7 @@ MLR_Terrain::MLR_Terrain(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_Terrain::MLR_Terrain(ClassData *class_data):
-	MLR_I_DeT_TMesh(class_data)
+MLR_I_DeT_TMesh(class_data)
 {
 	Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
@@ -99,10 +104,10 @@ MLR_Terrain::~MLR_Terrain()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLR_Terrain*
-	MLR_Terrain::Make(
-		MemoryStream *stream,
-		uint32_t version
-	)
+MLR_Terrain::Make(
+				  MemoryStream *stream,
+				  uint32_t version
+				  )
 {
 	Check_Object(stream);
 
@@ -117,7 +122,7 @@ MLR_Terrain*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_Terrain::Save(MemoryStream *stream)
+MLR_Terrain::Save(MemoryStream *stream)
 {
 	Check_Object(this);
 	Check_Object(stream);
@@ -128,7 +133,7 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_Terrain::TestInstance(void) const
+MLR_Terrain::TestInstance(void) const
 {
 	Verify(IsDerivedFrom(DefaultData));
 }
@@ -136,13 +141,13 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 void
-	MLR_Terrain::SetUVData(
-		float bpf,
-		float xmin,
-		float xmax,
-		float zmin,
-		float zmax
-	)
+MLR_Terrain::SetUVData(
+					   float bpf,
+					   float xmin,
+					   float xmax,
+					   float zmin,
+					   float zmax
+					   )
 {
 	borderPixelFun = bpf;
 
@@ -165,17 +170,17 @@ void
 #define CLASSNAME MLR_Terrain
 
 #if defined(TRACE_ENABLED) && defined(MLR_TRACE)
-	#define SET_MLR_TMESH_CLIP() MLR_Terrain_Clip->Set()
-	#define CLEAR_MLR_TMESH_CLIP() MLR_Terrain_Clip->Clear()
+#define SET_MLR_TMESH_CLIP() MLR_Terrain_Clip->Set()
+#define CLEAR_MLR_TMESH_CLIP() MLR_Terrain_Clip->Clear()
 #else
-	#define SET_MLR_TMESH_CLIP()
-	#define CLEAR_MLR_TMESH_CLIP()
+#define SET_MLR_TMESH_CLIP()
+#define CLEAR_MLR_TMESH_CLIP()
 #endif
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//	This include contains follwing functions:
-//	void MLR_Terrain::TransformNoClip(Matrix4D*, GOSVertexPool*);
-//	int32_t MLR_Terrain::Clip(MLRClippingState, GOSVertexPool*);
+// This include contains follwing functions:
+// void MLR_Terrain::TransformNoClip(Matrix4D*, GOSVertexPool*);
+// int32_t MLR_Terrain::Clip(MLRClippingState, GOSVertexPool*);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #include <mlr/mlrtriangleclipping.inl>
@@ -189,10 +194,10 @@ void
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 MLRShape*
-	MidLevelRenderer::CreateIndexedTriIcosahedron_TerrainTest(
-		IcoInfo& icoInfo,
-		MLRState *state,
-		MLRState *stateDet
+MidLevelRenderer::CreateIndexedTriIcosahedron_TerrainTest(
+	IcoInfo& icoInfo,
+	MLRState *state,
+	MLRState *stateDet
 	)
 {
 	gos_PushCurrentHeap(Heap);
@@ -200,7 +205,7 @@ MLRShape*
 	Register_Object(ret);
 
 	int32_t i, j, k;
-	int32_t    nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
+	int32_t nrTri = (int32_t) ceil (icoInfo.all * pow (4.0f, icoInfo.depth));
 	Point3D v[3];
 
 	if(3*nrTri >= Limits::Max_Number_Vertices_Per_Mesh)
@@ -210,15 +215,15 @@ MLRShape*
 
 	Point3D *coords = new Point3D [nrTri*3];
 	Register_Pointer(coords);
-	
-	Point3D *collapsedCoords = NULL;
+
+	Point3D *collapsedCoords = nullptr;
 	if(icoInfo.indexed==true)
 	{
 		collapsedCoords = new Point3D [nrTri*3];
 		Register_Pointer(collapsedCoords);
 	}
 
-	uint16_t	*index = new uint16_t [nrTri*3];
+	uint16_t *index = new uint16_t [nrTri*3];
 	Register_Pointer(index);
 
 	int32_t uniquePoints = 0;
@@ -230,8 +235,8 @@ MLRShape*
 
 		mesh->SetUVData(2.0f, -1.0f, 1.0f, -1.0f, 1.0f);
 
-// setup vertex position information
-	    for (j=0;j<3;j++)
+		// setup vertex position information
+		for (j=0;j<3;j++)
 		{
 			v[j].x = vdata[tindices[k][j]][0];
 			v[j].y = vdata[tindices[k][j]][1];
@@ -239,7 +244,7 @@ MLRShape*
 		}
 		subdivide (coords, v[0], v[1], v[2], icoInfo.depth, nrTri, icoInfo.radius);
 
-		mesh->SetSubprimitiveLengths(NULL, nrTri);
+		mesh->SetSubprimitiveLengths(nullptr, nrTri);
 
 		if(icoInfo.indexed==true)
 		{
@@ -278,7 +283,7 @@ MLRShape*
 
 		mesh->FindFacePlanes();
 
-		if(state != NULL)
+		if(state != nullptr)
 		{
 			mesh->SetReferenceState(*state);
 		}
@@ -298,7 +303,7 @@ MLRShape*
 		Unregister_Pointer(collapsedCoords);
 		delete [] collapsedCoords;
 	}
-	
+
 	Unregister_Pointer(coords);
 	delete [] coords;
 

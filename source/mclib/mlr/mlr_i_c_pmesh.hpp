@@ -117,11 +117,9 @@ namespace MidLevelRenderer {
 #endif
 	};
 
-	MLR_I_C_PMesh*
-		CreateIndexedCube_Color_NoLit(float, Stuff::RGBAColor*, MLRState*);
+	MLR_I_C_PMesh* CreateIndexedCube_Color_NoLit(float, Stuff::RGBAColor*, MLRState*);
 
-	MLR_I_PMesh*
-		CreateIndexedViewFrustrum_Color_NoLit(
+	MLR_I_PMesh* CreateIndexedViewFrustrum_Color_NoLit(
 		float near_clip,
 		float far_clip,
 		float left_clip,

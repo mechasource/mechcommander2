@@ -3,14 +3,17 @@
 //===========================================================================//
 
 #include "stdafx.h"
-#include "mlrheaders.hpp"
+
+#include <mlr/mlrlookuplight.hpp>
+
+using namespace MidLevelRenderer;
 
 //#############################################################################
 //#########################    MLRLookUpLight    ################################
 //#############################################################################
 
 MLRLookUpLight::ClassData*
-	MLRLookUpLight::DefaultData = NULL;
+	MLRLookUpLight::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -18,7 +21,7 @@ void
 	MLRLookUpLight::InitializeClass()
 {
 	Verify(!DefaultData);
-	Verify(gos_GetCurrentHeap() == StaticHeap);
+	// Verify(gos_GetCurrentHeap() == StaticHeap);
 	DefaultData =
 		new ClassData(
 			MLRLookUpLightClassID,
@@ -35,7 +38,7 @@ void
 {
 	Check_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,7 +58,7 @@ MLRLookUpLight::MLRLookUpLight() :
 	one_Over_zoneSizeX = 1.0f/zoneSizeX;
 	one_Over_zoneSizeZ = 1.0f/zoneSizeZ;
 	
-	maps = NULL;
+	maps = nullptr;
 	mapName = "";
 }
 
@@ -99,7 +102,7 @@ MLRLookUpLight::MLRLookUpLight(Stuff::Page *page):
 	Check_Object(page);
 	//Verify(gos_GetCurrentHeap() == Heap);
 
-	maps = NULL;
+	maps = nullptr;
 
 	PCSTR data;
 
@@ -138,17 +141,17 @@ MLRLookUpLight::MLRLookUpLight(Stuff::Page *page):
 //
 MLRLookUpLight::~MLRLookUpLight()
 {
-	if(maps!=NULL)
+	if(maps!=nullptr)
 	{
 		for(int32_t i=0;i<mapZoneCountX*mapZoneCountZ;i++)
 		{
 			Check_Pointer(maps[i]);
 			delete [] maps[i];
-			maps[i] = NULL;
+			maps[i] = nullptr;
 		}
 		Check_Pointer(maps);
 		delete [] maps;
-		maps = NULL;
+		maps = nullptr;
 	}
 }
 
@@ -207,17 +210,17 @@ void
 {
 	Check_Object(this);
 
-	if(maps!=NULL)
+	if(maps!=nullptr)
 	{
 		for(int32_t i=0;i<mapZoneCountX*mapZoneCountZ;i++)
 		{
 			Check_Pointer(maps[i]);
 			delete [] maps[i];
-			maps[i] = NULL;
+			maps[i] = nullptr;
 		}
 		Check_Pointer(maps);
 		delete [] maps;
-		maps = NULL;
+		maps = nullptr;
 	}
 
 	mapZoneCountX = x;
@@ -240,7 +243,7 @@ bool
 	Check_Pointer(map);
 	element_stream.ReadBytes(map, mapZoneCountX*mapZoneCountZ*256*256);
 
-	Verify(maps==NULL);
+	Verify(maps==nullptr);
 	maps = new puint8_t  [mapZoneCountX * mapZoneCountZ];
 	Check_Pointer(maps);
 

@@ -201,9 +201,9 @@ TypePtr variable (SymTableNodePtr variableIdPtr) {
 
 TypePtr arraySubscriptList (TypePtr typePtr) {
 
-	TypePtr indexTypePtr = NULL;
-	TypePtr elementTypePtr = NULL;
-	TypePtr subscriptTypePtr = NULL;
+	TypePtr indexTypePtr = nullptr;
+	TypePtr elementTypePtr = nullptr;
+	TypePtr subscriptTypePtr = nullptr;
 
 	do {
 		if (typePtr->form == FRM_ARRAY) {
@@ -236,10 +236,10 @@ TypePtr arraySubscriptList (TypePtr typePtr) {
 
 TypePtr factor (void) {
 
-	TypePtr thisType = NULL;
+	TypePtr thisType = nullptr;
 	switch (curToken) {
 		case TKN_IDENTIFIER: {
-			SymTableNodePtr IdPtr = NULL;
+			SymTableNodePtr IdPtr = nullptr;
 			searchAndFindAllSymTables(IdPtr);
 			switch (IdPtr->defn.key) {
 				case DFN_FUNCTION:

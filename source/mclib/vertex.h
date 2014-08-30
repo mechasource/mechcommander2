@@ -108,7 +108,7 @@ class Vertex
 
 		void init (void)
 		{
-			pVertex = NULL;
+			pVertex = nullptr;
 			px = py = 0.0f;
 			pz = pw = 0.0f;
 

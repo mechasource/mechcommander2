@@ -52,7 +52,7 @@ int32_t GlobalMap::minRow = 0;
 int32_t GlobalMap::maxRow = 0;
 int32_t GlobalMap::minCol = 0;
 int32_t GlobalMap::maxCol = 0;
-GameLogPtr GlobalMap::log = NULL;
+GameLogPtr GlobalMap::log = nullptr;
 bool GlobalMap::logEnabled = false;
 //------------
 // GLOBAL vars
@@ -67,12 +67,12 @@ bool ClearBridgeTiles = false;
 
 int32_t RamObjectWID = 0;
 
-PriorityQueuePtr openList = NULL;
+PriorityQueuePtr openList = nullptr;
 bool JumpOnBlocked = false;
 bool FindingEscapePath = false;
 bool BlockWallTiles = true;
-MissionMapPtr GameMap = NULL;
-GlobalMapPtr GlobalMoveMap[3] = {NULL, NULL, NULL};
+MissionMapPtr GameMap = nullptr;
+GlobalMapPtr GlobalMoveMap[3] = {nullptr, nullptr, nullptr};
 
 extern float worldUnitsPerMeter;		//Assumes 90 pixel mechs
 extern float metersPerWorldUnit;			//Assumes 90 pixel mechs
@@ -317,7 +317,7 @@ int32_t topOpenNodes = 0;
 int32_t MaxHPrime = 1000;
 bool PreserveMapTiles = false;
 
-MoveMapPtr PathFindMap[2] = {NULL, NULL};
+MoveMapPtr PathFindMap[2] = {nullptr, nullptr};
 
 float MoveMap::distanceFloat[DISTANCE_TABLE_DIM][DISTANCE_TABLE_DIM];
 int32_t MoveMap::distanceLong[DISTANCE_TABLE_DIM][DISTANCE_TABLE_DIM];
@@ -512,7 +512,7 @@ void MOVE_init (int32_t moveRange) {
 
 bool EditorSave = false;
 int32_t tempNumSpecialAreas = 0;
-GameObjectFootPrint* tempSpecialAreaFootPrints = NULL;
+GameObjectFootPrint* tempSpecialAreaFootPrints = nullptr;
 
 void MOVE_buildData (int32_t height, int32_t width, MissionMapCellInfo* mapData, int32_t numSpecialAreas, GameObjectFootPrint* specialAreaFootPrints) {
 
@@ -521,7 +521,7 @@ void MOVE_buildData (int32_t height, int32_t width, MissionMapCellInfo* mapData,
 	if (GameMap)
 		delete GameMap;
 	GameMap = new MissionMap;
-	gosASSERT(GameMap != NULL);
+	gosASSERT(GameMap != nullptr);
 
 	if (mapData)
 		GameMap->init(height, width, 0, mapData);
@@ -541,7 +541,7 @@ void MOVE_buildData (int32_t height, int32_t width, MissionMapCellInfo* mapData,
 
 	if (tempSpecialAreaFootPrints) {
 		systemHeap->Free(tempSpecialAreaFootPrints);
-		tempSpecialAreaFootPrints = NULL;
+		tempSpecialAreaFootPrints = nullptr;
 	}
 	tempNumSpecialAreas = numSpecialAreas;
 	if (tempNumSpecialAreas) {
@@ -554,19 +554,19 @@ void MOVE_buildData (int32_t height, int32_t width, MissionMapCellInfo* mapData,
 	if (GlobalMoveMap[0])
 	{
 		delete GlobalMoveMap[0];
-		GlobalMoveMap[0] = NULL;
+		GlobalMoveMap[0] = nullptr;
 	}
 
 	if (GlobalMoveMap[1])
 	{
 		delete GlobalMoveMap[1];
-		GlobalMoveMap[1] = NULL;
+		GlobalMoveMap[1] = nullptr;
 	}
 
 	if (GlobalMoveMap[2])
 	{
 		delete GlobalMoveMap[2];
-		GlobalMoveMap[2] = NULL;
+		GlobalMoveMap[2] = nullptr;
 	}
 
 	GlobalMoveMap[0] = new GlobalMap;
@@ -584,7 +584,7 @@ void MOVE_buildData (int32_t height, int32_t width, MissionMapCellInfo* mapData,
 	if (!GlobalMoveMap[2])
 		Fatal(0, " MOVE_Init: Cannot initialize HeliGlobalMoveMap ");
 	GlobalMoveMap[2]->blank = true;
-	GlobalMoveMap[2]->build(NULL);
+	GlobalMoveMap[2]->build(nullptr);
 
 	//-----------------------
 	// Just some debugging...
@@ -613,7 +613,7 @@ int32_t MOVE_saveData (PacketFile* packetFile, int32_t whichPacket) {
 	if (!GlobalMoveMap[0])
 		Fatal(0, " MOVE_SaveData: Cannot initialize GlobalMoveMap ");
 	if (!packetFile)
-		return(GameMap->write(NULL) + GlobalMoveMap[0]->write(NULL) + GlobalMoveMap[1]->write(NULL) + GlobalMoveMap[2]->write(NULL) + 2);
+		return(GameMap->write(nullptr) + GlobalMoveMap[0]->write(nullptr) + GlobalMoveMap[1]->write(nullptr) + GlobalMoveMap[2]->write(nullptr) + 2);
 
 	//-----------------------
 	// Just some debugging...
@@ -650,7 +650,7 @@ int32_t MOVE_readData (PacketFile* packetFile, int32_t whichPacket) {
 	if (GameMap)
 		delete GameMap;
 	GameMap = new MissionMap;
-	gosASSERT(GameMap != NULL);
+	gosASSERT(GameMap != nullptr);
 	int32_t numMissionMapPackets = GameMap->init(packetFile, whichPacket);
 
 	//-----------------------
@@ -685,7 +685,7 @@ int32_t MOVE_readData (PacketFile* packetFile, int32_t whichPacket) {
 		// Let's read the hover move map...
 		if (GlobalMoveMap[1]) {
 			delete GlobalMoveMap[1];
-			GlobalMoveMap[1] = NULL;
+			GlobalMoveMap[1] = nullptr;
 		}
 		GlobalMoveMap[1] = new GlobalMap;
 		if (!GlobalMoveMap[1])
@@ -698,7 +698,7 @@ int32_t MOVE_readData (PacketFile* packetFile, int32_t whichPacket) {
 		// Let's read the helicoptor move map...
 		if (GlobalMoveMap[2]) {
 			delete GlobalMoveMap[2];
-			GlobalMoveMap[2] = NULL;
+			GlobalMoveMap[2] = nullptr;
 		}
 		GlobalMoveMap[2] = new GlobalMap;
 		if (!GlobalMoveMap[2])
@@ -708,14 +708,14 @@ int32_t MOVE_readData (PacketFile* packetFile, int32_t whichPacket) {
 		//------------------------------------------------------------------
 		// Delete the pathExistsTable for this one, since we don't use it...
 		systemHeap->Free(GlobalMoveMap[2]->pathExistsTable);
-		GlobalMoveMap[2]->pathExistsTable = NULL;
+		GlobalMoveMap[2]->pathExistsTable = nullptr;
 
 		int32_t numBytes = packetFile->readPacket(whichPacket + numMissionMapPackets + numGlobalMap0Packets + numGlobalMap1Packets + numGlobalMap2Packets, (puint8_t)&tempNumSpecialAreas);
 		if (numBytes <= 0)
 			Fatal(numBytes, " MOVE_readData: Unable to read num special areas ");
 		if (tempSpecialAreaFootPrints) {
 			systemHeap->Free(tempSpecialAreaFootPrints);
-			tempSpecialAreaFootPrints = NULL;
+			tempSpecialAreaFootPrints = nullptr;
 		}
 		if (tempNumSpecialAreas > 0) {
 			tempSpecialAreaFootPrints = (GameObjectFootPrint*)systemHeap->Malloc(sizeof(GameObjectFootPrint) * tempNumSpecialAreas);
@@ -743,33 +743,33 @@ void MOVE_cleanup (void) {
 
 	if (GameMap) {
 		delete GameMap;
-		GameMap = NULL;
+		GameMap = nullptr;
 	}
 
 	if (GlobalMoveMap[0]) 
 	{
 		delete GlobalMoveMap[0];
-		GlobalMoveMap[0] = NULL;
+		GlobalMoveMap[0] = nullptr;
 	}
 	if (GlobalMoveMap[1]) 
 	{
 		delete GlobalMoveMap[1];
-		GlobalMoveMap[1] = NULL;
+		GlobalMoveMap[1] = nullptr;
 	}
 	if (GlobalMoveMap[2]) 
 	{
 		delete GlobalMoveMap[2];
-		GlobalMoveMap[2] = NULL;
+		GlobalMoveMap[2] = nullptr;
 	}
 
 	if (PathFindMap[SECTOR_PATHMAP]) {
 		delete PathFindMap[SECTOR_PATHMAP];
-		PathFindMap[SECTOR_PATHMAP] = NULL;
+		PathFindMap[SECTOR_PATHMAP] = nullptr;
 	}
 
 	if (PathFindMap[SIMPLE_PATHMAP]) {
 		delete PathFindMap[SIMPLE_PATHMAP];
-		PathFindMap[SIMPLE_PATHMAP] = NULL;
+		PathFindMap[SIMPLE_PATHMAP] = nullptr;
 	}
 #ifdef DEBUG_GLOBALMAP_BUILD
 	GameLog::cleanup();
@@ -823,12 +823,12 @@ void MissionMap::init (int32_t h, int32_t w) {
 
 	if (map) {
 		systemHeap->Free(map);
-		map = NULL;
+		map = nullptr;
 	}
 	int32_t mapSize = sizeof(MapCell) * width * height;
 	if (mapSize > 0)
 		map = (MapCellPtr)systemHeap->Malloc(sizeof(MapCell) * width * height);
-	gosASSERT(map != NULL);
+	gosASSERT(map != nullptr);
 	//memclear(map, sizeof(MapCell) * width * height);
 	memset(map, 0, sizeof(MapCell) * width * height);
 }
@@ -1210,7 +1210,7 @@ void MissionMap::print (PSTR fileName) {
 	
 	for (int32_t cellR = 0; cellR < height; cellR++) {
 		char outString[1024];
-		outString[0] = NULL;
+		outString[0] = nullptr;
 		for (int32_t cellC = 0; cellC < width; cellC++) {
 			if (!map[cellR * width + cellC].getPassable())
 				strcat(outString, "X");
@@ -1224,7 +1224,7 @@ void MissionMap::print (PSTR fileName) {
 
 	debugFile->close();
 	delete debugFile;
-	debugFile = NULL;
+	debugFile = nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -1233,7 +1233,7 @@ void MissionMap::destroy (void) {
 
 	if (map) {
 		systemHeap->Free(map);
-		map = NULL;
+		map = nullptr;
 	}
 }
 
@@ -1458,7 +1458,7 @@ void GlobalMap::init (int32_t w, int32_t h) {
 	width = w;
 	height = h;
 	areaMap = (pint16_t)systemHeap->Malloc(sizeof(int16_t) * w * h);
-	gosASSERT(areaMap != NULL);
+	gosASSERT(areaMap != nullptr);
 	for (int32_t r = 0; r < height; r++)
 		for (int32_t c = 0; c < width; c++)
 			areaMap[r * width + c] = -1;
@@ -1468,13 +1468,13 @@ void GlobalMap::init (int32_t w, int32_t h) {
 	sectorHeight = w / SECTOR_DIM;
 
 	numAreas = 0;
-	areas = NULL;
+	areas = nullptr;
 	numDoors = 0;
-	doors = NULL;
-	doorBuildList = NULL;
-	pathExistsTable = NULL;
+	doors = nullptr;
+	doorBuildList = nullptr;
+	pathExistsTable = nullptr;
 #ifdef USE_PATH_COST_TABLE
-	pathCostTable = NULL;
+	pathCostTable = nullptr;
 #endif
 	blank = false;
 }
@@ -1529,7 +1529,7 @@ int32_t GlobalMap::init (PacketFilePtr packetFile, int32_t whichPacket) {
 		// Bad version map, so return number of packets but bail...
 		badLoad = true;
 #ifdef USE_PATH_COST_TABLE
-		pathCostTable = NULL;
+		pathCostTable = nullptr;
 		return(14 + numDoorInfos + (numDoors + NUM_DOOR_OFFSETS) * 2);
 #else
 		return(13 + numDoorInfos + (numDoors + NUM_DOOR_OFFSETS) * 2);
@@ -1537,19 +1537,19 @@ int32_t GlobalMap::init (PacketFilePtr packetFile, int32_t whichPacket) {
 	}
 
 	areaMap = (pint16_t)systemHeap->Malloc(sizeof(int16_t) * height * width);
-	gosASSERT(areaMap != NULL);
+	gosASSERT(areaMap != nullptr);
 	result = packetFile->readPacket(whichPacket++, (puint8_t)areaMap);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read areaMap packet ");
 
 	areas = (GlobalMapAreaPtr)systemHeap->Malloc(sizeof(GlobalMapArea) * numAreas);
-	gosASSERT(areas != NULL);
+	gosASSERT(areas != nullptr);
 	result = packetFile->readPacket(whichPacket++, (puint8_t)areas);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read areas packet ");
 
 	doorInfos = (DoorInfoPtr)systemHeap->Malloc(sizeof(DoorInfo) * numDoorInfos);
-	gosASSERT(doorInfos != NULL);
+	gosASSERT(doorInfos != nullptr);
 	int32_t curDoorInfo = 0;
 	int32_t i;
 	for (i = 0; i < numAreas; i++)
@@ -1570,7 +1570,7 @@ int32_t GlobalMap::init (PacketFilePtr packetFile, int32_t whichPacket) {
 	}
 
 	doors = (GlobalMapDoorPtr)systemHeap->Malloc(sizeof(GlobalMapDoor) * (numDoors + NUM_DOOR_OFFSETS));
-	gosASSERT(doors != NULL);
+	gosASSERT(doors != nullptr);
 	result = packetFile->readPacket(whichPacket++, (puint8_t)doors);
 	if (result == 0)
 		Fatal(result, " GlobalMap.init: unable to read doors packet ");
@@ -1578,7 +1578,7 @@ int32_t GlobalMap::init (PacketFilePtr packetFile, int32_t whichPacket) {
 	//--------------
 	// Door Links...
 	doorLinks = (DoorLinkPtr)systemHeap->Malloc(sizeof(DoorLink) * numDoorLinks);
-	gosASSERT(doorLinks != NULL);
+	gosASSERT(doorLinks != nullptr);
 	int32_t numLinksRead = 0;
 	for (i = 0; i < (numDoors + NUM_DOOR_OFFSETS); i++) {
 		int32_t numLinks = doors[i].numLinks[0] + NUM_EXTRA_DOOR_LINKS;
@@ -1669,7 +1669,7 @@ int32_t GlobalMap::init (PacketFilePtr packetFile, int32_t whichPacket) {
 int32_t GlobalMap::write (PacketFilePtr packetFile, int32_t whichPacket) {
 
 	//---------------------------------------------------------
-	// If mapFile NULL, return the number of packets we need...
+	// If mapFile nullptr, return the number of packets we need...
 
 	int32_t numDrInfos = 0;
 	int32_t i;
@@ -1729,7 +1729,7 @@ int32_t GlobalMap::write (PacketFilePtr packetFile, int32_t whichPacket) {
 		//-------------------------
 		// clear it for the save...
 		doorInfoSave[i] = areas[i].doors;
-		areas[i].doors = NULL;
+		areas[i].doors = nullptr;
 		areas[i].ownerWID = 0;
 		areas[i].teamID = -1;
 		//areas[i].offMap = false;
@@ -1777,8 +1777,8 @@ int32_t GlobalMap::write (PacketFilePtr packetFile, int32_t whichPacket) {
 		doorLinkSave[i][0] = doors[i].links[0];
 		doorLinkSave[i][1] = doors[i].links[1];
 		//doors[i].cost = 0;
-		doors[i].links[0] = NULL;
-		doors[i].links[1] = NULL;
+		doors[i].links[0] = nullptr;
+		doors[i].links[1] = nullptr;
 		doors[i].parent = 0;
 		doors[i].fromAreaIndex = 0;
 		doors[i].flags = 0;
@@ -2073,18 +2073,18 @@ void GlobalMap::calcAreas (void) {
 	// as a "scratch" area in some cases...
 	gosASSERT(numAreas <= MAX_GLOBALMAP_AREAS);
 	areas = (GlobalMapAreaPtr)systemHeap->Malloc(sizeof(GlobalMapArea) * (numAreas + 1));
-	gosASSERT(areas != NULL);
+	gosASSERT(areas != nullptr);
 	for (int32_t i = 0; i < (numAreas + 1); i++) {
 		areas[i].sectorR = 0;
 		areas[i].sectorC = 0;
 		areas[i].type = AREA_TYPE_NORMAL;
 		areas[i].numDoors = 0;
-		areas[i].doors = NULL;
+		areas[i].doors = nullptr;
 		areas[i].ownerWID = 0;
 		areas[i].teamID = -1;
 		areas[i].offMap = false;
 		areas[i].open = true;
-		areas[i].cellsCovered = NULL;
+		areas[i].cellsCovered = nullptr;
 	}
 
 	//-----------------------------------------
@@ -2163,7 +2163,7 @@ void GlobalMap::beginDoorProcessing (void) {
 		doorBuildList[i].numLinks[0] = 0;
 		doorBuildList[i].numLinks[1] = 0;
 	}
-	gosASSERT(doorBuildList != NULL);
+	gosASSERT(doorBuildList != nullptr);
 }
 
 //------------------------------------------------------------------------------------------
@@ -2234,7 +2234,7 @@ void GlobalMap::endDoorProcessing (void) {
 		//----------------------------
 		// Free the temp build list...
 		systemHeap->Free(doorBuildList);
-		doorBuildList = NULL;
+		doorBuildList = nullptr;
 	}
 //	systemHeap->walkHeap();
 }
@@ -2393,7 +2393,7 @@ void GlobalMap::calcAreaDoors (void) {
 			getAreaDoors(area, areas[area].doors);
 			}
 		else
-			areas[area].doors = NULL;
+			areas[area].doors = nullptr;
 	}
 }
 
@@ -2493,7 +2493,7 @@ int32_t GlobalMap::calcLinkCost (int32_t startDoor, int32_t thruArea, int32_t go
 					   SECTOR_DIM,
 					   SECTOR_DIM,
 					   hover ? 1 : 0,
-					   NULL,
+					   nullptr,
 					   startRow,
 					   startCol,
 					   goalWorldPos,
@@ -2509,7 +2509,7 @@ int32_t GlobalMap::calcLinkCost (int32_t startDoor, int32_t thruArea, int32_t go
 					   SECTOR_DIM,
 					   SECTOR_DIM,
 					   hover ? 1 : 0,
-					   NULL,
+					   nullptr,
 					   startRow,
 					   startCol,
 					   goalWorldPos,
@@ -2521,7 +2521,7 @@ int32_t GlobalMap::calcLinkCost (int32_t startDoor, int32_t thruArea, int32_t go
 					   MOVEPARAM_NONE);
 #endif
 		int32_t goalCell[2];
-		PathFindMap[SECTOR_PATHMAP]->calcPath(&newPath, NULL, goalCell);
+		PathFindMap[SECTOR_PATHMAP]->calcPath(&newPath, nullptr, goalCell);
 		ClearBridgeTiles = false;
 	}
 
@@ -2534,7 +2534,7 @@ int32_t GlobalMap::calcLinkCost (int32_t startDoor, int32_t thruArea, int32_t go
 		PathFindMap->writeDebug(pathDebugFile);
 		pathDebugFile->close();
 		delete pathDebugFile;
-		pathDebugFile = NULL;
+		pathDebugFile = nullptr;
 		*/
 		//--------------------------------------------------------------------------
 		// If the cost is 1, then our start and goal cells are the same. Thus, there
@@ -2576,7 +2576,7 @@ void GlobalMap::calcDoorLinks (void) {
 		GlobalMapDoorPtr thisDoor = &doors[d];
 		for (int32_t s = 0; s < 2; s++) {
 			thisDoor->numLinks[s] = 0;
-			thisDoor->links[s] = NULL;
+			thisDoor->links[s] = nullptr;
 
 			int32_t area = thisDoor->area[s];
 			int32_t areaNumDoors = areas[area].numDoors;
@@ -2587,7 +2587,7 @@ void GlobalMap::calcDoorLinks (void) {
 				// link used during path calc...
 				thisDoor->links[s] = (DoorLinkPtr)systemHeap->Malloc(sizeof(DoorLink) * (thisDoor->numLinks[s] + NUM_EXTRA_DOOR_LINKS));
 				numDoorLinks += (thisDoor->numLinks[s] + NUM_EXTRA_DOOR_LINKS);
-				gosASSERT(thisDoor->links[s] != NULL);
+				gosASSERT(thisDoor->links[s] != nullptr);
 				int32_t linkIndex = 0;
 				for (int32_t areaDoor = 0; areaDoor < areaNumDoors; areaDoor++) {
 					int32_t doorIndex = areas[area].doors[areaDoor].doorIndex;
@@ -2780,7 +2780,7 @@ void GlobalMap::initPathCostTable (void) {
 
 	if (pathCostTable) {
 		systemHeap->Free(pathCostTable);
-		pathCostTable = NULL;
+		pathCostTable = nullptr;
 	}
 
 	int32_t oldNumAreas = numAreas;
@@ -2788,7 +2788,7 @@ void GlobalMap::initPathCostTable (void) {
 //		numAreas = 600;
 
 	pathCostTable = (puint8_t)systemHeap->Malloc(numAreas * numAreas);
-	gosASSERT(pathCostTable != NULL);
+	gosASSERT(pathCostTable != nullptr);
 
 	for (int32_t startArea = 0; startArea < numAreas; startArea++)
 		for (goalArea = 0; goalArea < numAreas; goalArea++) {
@@ -2831,10 +2831,10 @@ void GlobalMap::calcPathCostTable (void) {
 
 	if (pathCostTable) {
 		systemHeap->Free(pathCostTable);
-		pathCostTable = NULL;
+		pathCostTable = nullptr;
 	}
 	pathCostTable = (puint8_t)systemHeap->Malloc(numAreas * numAreas);
-	gosASSERT(pathCostTable != NULL);
+	gosASSERT(pathCostTable != nullptr);
 
 	for (int32_t i = 0; i < numAreas; i++)
 		openArea(i);
@@ -3015,11 +3015,11 @@ int32_t GlobalMap::build (MissionMapCellInfo* mapData) {
 	numSpecialAreas = 0;
 	if (specialAreas) {
 		systemHeap->Free(specialAreas);
-		specialAreas = NULL;
+		specialAreas = nullptr;
 	}
 	if (mapData) {
 		specialAreas = (GlobalSpecialAreaInfo*)systemHeap->Malloc(sizeof(GlobalSpecialAreaInfo) * MAX_SPECIAL_AREAS);
-		if (specialAreas == NULL)
+		if (specialAreas == nullptr)
 			Fatal(0, " GlobalMap.build: unable to malloc specialAreas ");
 		calcSpecialAreas(mapData);
 	}
@@ -3051,7 +3051,7 @@ int32_t GlobalMap::build (MissionMapCellInfo* mapData) {
 
 	if (specialAreas) {
 		systemHeap->Free(specialAreas);
-		specialAreas = NULL;
+		specialAreas = nullptr;
 	}
 
 #ifdef DEBUG_GLOBALMAP_BUILD
@@ -3314,7 +3314,7 @@ inline void GlobalMap::propogateCost (int32_t door, int32_t cost, int32_t fromAr
 			if (!openIndex) {
 				char s[128];
 				sprintf(s, "GlobalMap.propogateCost: Cannot find globalmap door [%d, %d, %d, %d] for change\n", door, cost, fromAreaIndex, g);
-				gosASSERT(openIndex != NULL);
+				gosASSERT(openIndex != nullptr);
 			}
 			openList->change(door, curMapDoor->fPrime);
 			}
@@ -3400,7 +3400,7 @@ int32_t GlobalMap::calcPath (int32_t startArea,
 	// If we haven't already, create the OPEN list...
 	if (!openList) {
 		openList = new PriorityQueue;
-		gosASSERT(openList != NULL);
+		gosASSERT(openList != nullptr);
 		openList->init(5000);
 	}
 
@@ -3434,7 +3434,7 @@ int32_t GlobalMap::calcPath (int32_t startArea,
 		openArea(goalArea);
 
 	if (!isGateOpenCallback || !isGateDisabledCallback)
-		STOP(("Globalmap.calcPath: NULL gate callback"));
+		STOP(("Globalmap.calcPath: nullptr gate callback"));
 
 	for (int32_t i = 0; i < numAreas; i++)
 		if (areas[i].type == AREA_TYPE_GATE) {
@@ -3584,7 +3584,7 @@ int32_t GlobalMap::calcPath (int32_t startArea,
 #ifdef USE_OBJECTS
 							DebugOpenList(s);
 #endif
-							gosASSERT(openIndex != NULL);
+							gosASSERT(openIndex != nullptr);
 						}
 						openList->change(openIndex, succMapDoor->fPrime);
 					}
@@ -3803,7 +3803,7 @@ void GlobalMap::print (PSTR fileName) {
 
 	char outString[500];
 	for (int32_t row = 0; row < height; row++) {
-		outString[0] = NULL;
+		outString[0] = nullptr;
 		for (int32_t col = 0; col < width; col++) {
 			if (areaMap[row * width + col] == -2)
 				strcat(outString, ">< ");
@@ -3822,7 +3822,7 @@ void GlobalMap::print (PSTR fileName) {
 
 	debugFile->close();
 	delete debugFile;
-	debugFile = NULL;
+	debugFile = nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -3835,7 +3835,7 @@ void GlobalMap::destroy (void) {
 
 	if (areaMap) {
 		systemHeap->Free(areaMap);
-		areaMap = NULL;
+		areaMap = nullptr;
 	}
 
 	if (areas) {
@@ -3843,16 +3843,16 @@ void GlobalMap::destroy (void) {
 			for (int32_t i = 0; i < (numAreas + 1); i++) {
 				if (areas[i].cellsCovered) {
 					systemHeap->Free(areas[i].cellsCovered);
-					areas[i].cellsCovered = NULL;
+					areas[i].cellsCovered = nullptr;
 				}
 				if (areas[i].doors) {
 					systemHeap->Free(areas[i].doors);
-					areas[i].doors = NULL;
+					areas[i].doors = nullptr;
 				}
 			}
 		}
 		systemHeap->Free(areas);
-		areas = NULL;
+		areas = nullptr;
 	}
 
 	if (doors) {
@@ -3861,33 +3861,33 @@ void GlobalMap::destroy (void) {
 				for (int32_t s = 0; s < 2; s++) {
 					if (doors[i].links[s]) {
 						systemHeap->Free(doors[i].links[s]);
-						doors[i].links[s] = NULL;
+						doors[i].links[s] = nullptr;
 					}
 				}
 		}
 		systemHeap->Free(doors);
-		doors = NULL;
+		doors = nullptr;
 	}
 
 	if (doorInfos) {
 		systemHeap->Free(doorInfos);
-		doorInfos = NULL;
+		doorInfos = nullptr;
 	}
 
 	if (doorLinks) {
 		systemHeap->Free(doorLinks);
-		doorLinks = NULL;
+		doorLinks = nullptr;
 	}
 
 	if (pathExistsTable) {
 		systemHeap->Free(pathExistsTable);
-		pathExistsTable = NULL;
+		pathExistsTable = nullptr;
 	}
 
 #ifdef USE_PATH_COST_TABLE
 	if (pathCostTable) {
 		systemHeap->Free(pathCostTable);
-		pathCostTable = NULL;
+		pathCostTable = nullptr;
 	}
 #endif
 }
@@ -3991,18 +3991,18 @@ void MoveMap::init (int32_t maxW, int32_t maxH) {
 	height = maxHeight = maxH;
 	int32_t mapByteSize = sizeof(MoveMapNode) * maxWidth * maxHeight;
 	map = (MoveMapNodePtr)systemHeap->Malloc(mapByteSize);
-	gosASSERT(map != NULL);
+	gosASSERT(map != nullptr);
 
 	mapRowStartTable = (int32_t*)systemHeap->Malloc(maxHeight * sizeof(int32_t));
-	gosASSERT(mapRowStartTable != NULL);
+	gosASSERT(mapRowStartTable != nullptr);
 	int32_t r;
 	for (r = 0; r < maxHeight; r++)
 		mapRowStartTable[r] = r * maxWidth;
 
 	mapRowTable = (int32_t*)systemHeap->Malloc(maxHeight * maxWidth * sizeof(int32_t));
-	gosASSERT(mapRowTable != NULL);
+	gosASSERT(mapRowTable != nullptr);
 	mapColTable = (int32_t*)systemHeap->Malloc(maxHeight * maxWidth * sizeof(int32_t));
-	gosASSERT(mapColTable != NULL);
+	gosASSERT(mapColTable != nullptr);
 	for (r = 0; r < maxHeight; r++)
 		for (int32_t c = 0; c < maxWidth; c++) {
 			int32_t index = mapRowStartTable[r] + c;
@@ -4818,7 +4818,7 @@ inline void MoveMap::propogateCost (int32_t mapCellIndex, int32_t cost, int32_t 
 			if (!openIndex) {
 				char s[128];
 				sprintf(s, "MoveMap.propogateCost: Cannot find movemap node [%d] for change\n", mapCellIndex);
-				gosASSERT(openIndex != NULL);
+				gosASSERT(openIndex != nullptr);
 				}
 			else
 				openList->change(openIndex, curMapNode->fPrime);
@@ -4896,7 +4896,7 @@ inline void MoveMap::propogateCostJUMP (int32_t r, int32_t c, int32_t cost, int3
 			if (!openIndex) {
 				char s[128];
 				sprintf(s, "MoveMap.propogateCost: Cannot find movemap node [%d, %d, %d] for change\n", r, c, r * MAX_MAPWIDTH + c);
-				gosASSERT(openIndex != NULL);
+				gosASSERT(openIndex != nullptr);
 				}
 			else
 				openList->change(openIndex, curMapNode->fPrime);
@@ -4990,7 +4990,7 @@ int32_t MoveMap::calcPath (MovePathPtr path, Stuff::Vector3D* goalWorldPos, int3
 	// If we haven't already, create the OPEN list...
 	if (!openList) {
 		openList = new PriorityQueue;
-		gosASSERT(openList != NULL);
+		gosASSERT(openList != nullptr);
 		openList->init(5000);
 	}
 		
@@ -5036,7 +5036,7 @@ int32_t MoveMap::calcPath (MovePathPtr path, Stuff::Vector3D* goalWorldPos, int3
 				writeDebug(pathDebugFile);
 				pathDebugFile->close();
 				delete pathDebugFile;
-				pathDebugFile = NULL;
+				pathDebugFile = nullptr;
 			}
 		#endif
 
@@ -5155,7 +5155,7 @@ int32_t MoveMap::calcPath (MovePathPtr path, Stuff::Vector3D* goalWorldPos, int3
 #ifdef USE_OBJECTS
 									DebugOpenList(s);
 #endif
-									gosASSERT(openIndex != NULL);
+									gosASSERT(openIndex != nullptr);
 									}
 								else
 									openList->change(openIndex, succMapNode->fPrime);
@@ -5208,7 +5208,7 @@ int32_t MoveMap::calcPath (MovePathPtr path, Stuff::Vector3D* goalWorldPos, int3
 			writeDebug(pathDebugFile);
 			pathDebugFile->close();
 			delete pathDebugFile;
-			pathDebugFile = NULL;
+			pathDebugFile = nullptr;
 		}
 	#endif
 	
@@ -5244,7 +5244,7 @@ int32_t MoveMap::calcPath (MovePathPtr path, Stuff::Vector3D* goalWorldPos, int3
 			writeDebug(pathDebugFile);
 			pathDebugFile->close();
 			delete pathDebugFile;
-			pathDebugFile = NULL;
+			pathDebugFile = nullptr;
 			gosASSERT(numCells <= MAX_STEPS_PER_MOVEPATH);
 		}
 		#endif
@@ -5271,7 +5271,7 @@ int32_t MoveMap::calcPath (MovePathPtr path, Stuff::Vector3D* goalWorldPos, int3
 				writeDebug(pathDebugFile);
 				pathDebugFile->close();
 				delete pathDebugFile;
-				pathDebugFile = NULL;
+				pathDebugFile = nullptr;
 			}
 			#endif
 
@@ -5470,7 +5470,7 @@ int32_t MoveMap::calcPathJUMP (MovePathPtr path, Stuff::Vector3D* goalWorldPos, 
 	// If we haven't already, create the OPEN list...
 	if (!openList) {
 		openList = new PriorityQueue;
-		gosASSERT(openList != NULL);
+		gosASSERT(openList != nullptr);
 		openList->init(5000);
 	}
 		
@@ -5516,7 +5516,7 @@ int32_t MoveMap::calcPathJUMP (MovePathPtr path, Stuff::Vector3D* goalWorldPos, 
 				writeDebug(pathDebugFile);
 				pathDebugFile->close();
 				delete pathDebugFile;
-				pathDebugFile = NULL;
+				pathDebugFile = nullptr;
 			}
 		#endif
 
@@ -5624,7 +5624,7 @@ int32_t MoveMap::calcPathJUMP (MovePathPtr path, Stuff::Vector3D* goalWorldPos, 
 #ifdef USE_OBJECTS
 									DebugOpenList(s);
 #endif
-									gosASSERT(openIndex != NULL);
+									gosASSERT(openIndex != nullptr);
 									}
 								else
 									openList->change(openIndex, succMapNode->fPrime);
@@ -5677,7 +5677,7 @@ int32_t MoveMap::calcPathJUMP (MovePathPtr path, Stuff::Vector3D* goalWorldPos, 
 			writeDebug(pathDebugFile);
 			pathDebugFile->close();
 			delete pathDebugFile;
-			pathDebugFile = NULL;
+			pathDebugFile = nullptr;
 		}
 	#endif
 
@@ -5729,7 +5729,7 @@ int32_t MoveMap::calcPathJUMP (MovePathPtr path, Stuff::Vector3D* goalWorldPos, 
 			writeDebug(pathDebugFile);
 			pathDebugFile->close();
 			delete pathDebugFile;
-			pathDebugFile = NULL;
+			pathDebugFile = nullptr;
 			gosASSERT(numCells <= MAX_STEPS_PER_MOVEPATH);
 		}
 #endif
@@ -5756,7 +5756,7 @@ int32_t MoveMap::calcPathJUMP (MovePathPtr path, Stuff::Vector3D* goalWorldPos, 
 				writeDebug(pathDebugFile);
 				pathDebugFile->close();
 				delete pathDebugFile;
-				pathDebugFile = NULL;
+				pathDebugFile = nullptr;
 			}
 #endif
 			path->target = target;
@@ -5936,7 +5936,7 @@ int32_t MoveMap::calcEscapePath (MovePathPtr path, Stuff::Vector3D* goalWorldPos
 	// If we haven't already, create the OPEN list...
 	if (!openList) {
 		openList = new PriorityQueue;
-		gosASSERT(openList != NULL);
+		gosASSERT(openList != nullptr);
 		openList->init(5000);
 	}
 		
@@ -5981,7 +5981,7 @@ int32_t MoveMap::calcEscapePath (MovePathPtr path, Stuff::Vector3D* goalWorldPos
 				writeDebug(pathDebugFile);
 				pathDebugFile->close();
 				delete pathDebugFile;
-				pathDebugFile = NULL;
+				pathDebugFile = nullptr;
 			}
 		#endif
 
@@ -6088,7 +6088,7 @@ int32_t MoveMap::calcEscapePath (MovePathPtr path, Stuff::Vector3D* goalWorldPos
 #ifdef USE_OBJECTS
 									DebugOpenList(s);
 #endif
-									gosASSERT(openIndex != NULL);
+									gosASSERT(openIndex != nullptr);
 									}
 								else
 									openList->change(openIndex, succMapNode->fPrime);
@@ -6141,7 +6141,7 @@ int32_t MoveMap::calcEscapePath (MovePathPtr path, Stuff::Vector3D* goalWorldPos
 			writeDebug(pathDebugFile);
 			pathDebugFile->close();
 			delete pathDebugFile;
-			pathDebugFile = NULL;
+			pathDebugFile = nullptr;
 		}
 	#endif
 
@@ -6193,7 +6193,7 @@ int32_t MoveMap::calcEscapePath (MovePathPtr path, Stuff::Vector3D* goalWorldPos
 			writeDebug(pathDebugFile);
 			pathDebugFile->close();
 			delete pathDebugFile;
-			pathDebugFile = NULL;
+			pathDebugFile = nullptr;
 			gosASSERT(numCells <= MAX_STEPS_PER_MOVEPATH);
 		}
 #endif
@@ -6217,7 +6217,7 @@ int32_t MoveMap::calcEscapePath (MovePathPtr path, Stuff::Vector3D* goalWorldPos
 				writeDebug(pathDebugFile);
 				pathDebugFile->close();
 				delete pathDebugFile;
-				pathDebugFile = NULL;
+				pathDebugFile = nullptr;
 			}
 #endif
 			path->target = target;
@@ -6361,7 +6361,7 @@ void MoveMap::writeDebug (File* debugFile) {
 	debugFile->writeString("-------\n");
 	int32_t r;
 	for (r = 0; r < height; r++) {
-		outString[0] = NULL;
+		outString[0] = nullptr;
 		char numStr[10];
 		for (int32_t c = 0; c < width; c++) {
 			/*if ((goalR == r) && (goalC == c))
@@ -6385,7 +6385,7 @@ void MoveMap::writeDebug (File* debugFile) {
 	debugFile->writeString("MAP:\n");
 	debugFile->writeString("-------\n");
 	for (r = 0; r < height; r++) {
-		outString[0] = NULL;
+		outString[0] = nullptr;
 		char numStr[10];
 		for (int32_t c = 0; c < width; c++) {
 			if ((goalR == r) && (goalC == c))
@@ -6408,7 +6408,7 @@ void MoveMap::writeDebug (File* debugFile) {
 	debugFile->writeString("PATH:\n");
 	debugFile->writeString("-------\n");
 	for (r = 0; r < height; r++) {
-		outString[0] = NULL;
+		outString[0] = nullptr;
 		char numStr[10];
 		for (int32_t c = 0; c < width; c++) {
 			if ((goalR == r) && (goalC == c))
@@ -6439,25 +6439,25 @@ void MoveMap::destroy (void) {
 	if (map) 
 	{
 		systemHeap->Free(map);
-		map = NULL;
+		map = nullptr;
 	}
 
 	if (mapRowStartTable)
 	{
 		systemHeap->Free(mapRowStartTable);
-		mapRowStartTable = NULL;
+		mapRowStartTable = nullptr;
 	}
 
 	if (mapRowTable)
 	{
 		systemHeap->Free(mapRowTable);
-		mapRowTable = NULL;
+		mapRowTable = nullptr;
 	}
 
 	if (mapColTable)
 	{
 		systemHeap->Free(mapColTable);
-		mapColTable = NULL;
+		mapColTable = nullptr;
 	}
 
 }

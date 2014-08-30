@@ -102,7 +102,7 @@ void MapData::destroy (void)
 	if (blankVertex)
 	{
 		delete blankVertex;
-		blankVertex = NULL;
+		blankVertex = nullptr;
 	}
 }
 
@@ -759,7 +759,7 @@ void MapData::makeLists (VertexPtr vertexList, int32_t &numVerts, TerrainQuadPtr
 	int32_t topLeftX = float2long(topLeftVertex.x);
 	int32_t topLeftY = float2long(topLeftVertex.y);
 
-	PostcompVertexPtr Pvertex = NULL;
+	PostcompVertexPtr Pvertex = nullptr;
 	VertexPtr currentVertex = vertexList;
 	numVerts = 0;
 
@@ -782,7 +782,7 @@ void MapData::makeLists (VertexPtr vertexList, int32_t &numVerts, TerrainQuadPtr
 				currentVertex->vertexNum = topLeftX + (topLeftY * Terrain::realVerticesMapSide);
 			}
 
-			gosASSERT(Pvertex != NULL);
+			gosASSERT(Pvertex != nullptr);
 			currentVertex->pVertex = Pvertex;
 			
 			//------------------------------------------------

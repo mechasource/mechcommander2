@@ -505,7 +505,7 @@ Retry:
 //############################################################################
 
 gosFX::Tube::ClassData*
-	gosFX::Tube::DefaultData = NULL;
+	gosFX::Tube::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
@@ -532,7 +532,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //------------------------------------------------------------------------------

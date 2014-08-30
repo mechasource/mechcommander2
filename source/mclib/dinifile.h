@@ -13,7 +13,7 @@
 
 //---------------------------------------------------------------------------
 class FitIniFile;
-typedef FitIniFile *FitIniFilePtr;
+typedef FitIniFile* FitIniFilePtr;
 
 //---------------------------------------------------------------------------
 #endif

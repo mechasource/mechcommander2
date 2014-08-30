@@ -195,7 +195,7 @@ class TerrainColorMap
 		//Pass in filename of height map to write new data to.
 		void refractalizeBaseMesh (PSTR fileName, int32_t Threshold, int32_t Noise);
 		
-		void burnInShadows (bool doBumpPass = true, PSTR  fileName = NULL);
+		void burnInShadows (bool doBumpPass = true, PSTR  fileName = nullptr);
 		
 		void recalcLight(PSTR fileName);
 

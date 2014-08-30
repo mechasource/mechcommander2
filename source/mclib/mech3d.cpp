@@ -173,10 +173,10 @@ PSTR MechAnimationNames[MaxGestures+2] =
 	"FallForwardDam"	//Destroyed States
 };																
 
-PaintSchemataPtr	Mech3DAppearance::paintSchemata = NULL;
+PaintSchemataPtr	Mech3DAppearance::paintSchemata = nullptr;
 uint32_t				Mech3DAppearance::numPaintSchemata = 0;
 
-TG_TypeMultiShapePtr Mech3DAppearanceType::SensorSquareShape = NULL;
+TG_TypeMultiShapePtr Mech3DAppearanceType::SensorSquareShape = nullptr;
 
 extern int32_t			ObjectTextureSize;
 
@@ -267,7 +267,7 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 				//----------------------------------------------
 				// Base LOD shape.  In stand Pose by default.
 				mechShape[i] = new TG_TypeMultiShape;
-				gosASSERT(mechShape[i] != NULL);
+				gosASSERT(mechShape[i] != nullptr);
 			
 				FullPathFileName mechName;
 				mechName.init(tglPath,aseFileName,".ase");
@@ -288,7 +288,7 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 		//----------------------------------------------
 		// Base shape.  In stand Pose by default.
 		mechShape[0] = new TG_TypeMultiShape;
-		gosASSERT(mechShape[0] != NULL);
+		gosASSERT(mechShape[0] != nullptr);
 	
 		mechShape[0]->LoadTGMultiShapeFromASE(mechName);
 	}
@@ -299,7 +299,7 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 		//----------------------------------------------
 		// Base Shadow shape.
 		mechShadowShape = new TG_TypeMultiShape;
-		gosASSERT(mechShadowShape != NULL);
+		gosASSERT(mechShadowShape != nullptr);
 	
 		FullPathFileName gvName;
 		gvName.init(tglPath,aseFileName,".ase");
@@ -322,23 +322,23 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 	mechRightArmName.init(tglPath,rightArmName,".ase");
 
 	rightArm = new TG_TypeMultiShape;
-	gosASSERT(rightArm != NULL);
+	gosASSERT(rightArm != nullptr);
 	
 	result = rightArm->LoadTGMultiShapeFromASE(mechRightArmName);
 	if (result)
 	{
 		delete rightArm;
-		rightArm = NULL;
+		rightArm = nullptr;
 	}
 	
 	leftArm = new TG_TypeMultiShape;
-	gosASSERT(leftArm != NULL);
+	gosASSERT(leftArm != nullptr);
 	
 	result = leftArm->LoadTGMultiShapeFromASE(mechLeftArmName);
 	if (result)
 	{
 		delete leftArm;
-		leftArm = NULL;
+		leftArm = nullptr;
 	}
  	//----------------------------------------------
 	
@@ -357,13 +357,13 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 		dmgName.init(tglPath,forwardName,".ase");
 
 		mechForwardDmgShape = new TG_TypeMultiShape;
-		gosASSERT(mechForwardDmgShape != NULL);
+		gosASSERT(mechForwardDmgShape != nullptr);
 		mechForwardDmgShape->LoadTGMultiShapeFromASE(dmgName);
 
 		if (!mechForwardDmgShape->GetNumShapes())
 		{
 			delete mechForwardDmgShape;
-			mechForwardDmgShape = NULL;
+			mechForwardDmgShape = nullptr;
 		}
 	}
 
@@ -372,13 +372,13 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 		dmgName.init(tglPath,backwardName,".ase");
 
 		mechBackwardDmgShape = new TG_TypeMultiShape;
-		gosASSERT(mechBackwardDmgShape != NULL);
+		gosASSERT(mechBackwardDmgShape != nullptr);
 		mechBackwardDmgShape->LoadTGMultiShapeFromASE(dmgName);
 
 		if (!mechBackwardDmgShape->GetNumShapes())
 		{
 			delete mechBackwardDmgShape;
-			mechBackwardDmgShape = NULL;
+			mechBackwardDmgShape = nullptr;
 		}
 	}
 
@@ -400,7 +400,7 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 			if (fileExists(animPath) || fileExists(otherPath))
 			{
 				mechAnim[i] = new TG_AnimateShape;
-				gosASSERT(mechAnim[i] != NULL);
+				gosASSERT(mechAnim[i] != nullptr);
 
 				//---------------------------------------------------------------------------------------------
 				// If this animation does not exist, it is not a problem!
@@ -411,7 +411,7 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 					mechAnim[i]->ReverseFrameRate();
 			}
 			else
-				mechAnim[i] = NULL;
+				mechAnim[i] = nullptr;
 		}
 	}
 
@@ -468,7 +468,7 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 	if (numJumpNodes+numWeaponNodes+numSmokeNodes+numFootNodes)
 	{
 		nodeData = (NodeData *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(NodeData)*(numJumpNodes+numWeaponNodes+numSmokeNodes+numFootNodes));
-		gosASSERT(nodeData != NULL);
+		gosASSERT(nodeData != nullptr);
 		
 		for (i=0;i<numSmokeNodes;i++)
 		{
@@ -482,7 +482,7 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 			gosASSERT(result == NO_ERROR);
 			
 			nodeData[i].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(smokeName)+1); 
-			gosASSERT(nodeData[i].nodeId != NULL);
+			gosASSERT(nodeData[i].nodeId != nullptr);
 			
 			strcpy(nodeData[i].nodeId,smokeName);
 			nodeData[i].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -504,7 +504,7 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 			gosASSERT(result == NO_ERROR);
 			
 			nodeData[i+numSmokeNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName)+1); 
-			gosASSERT(nodeData[i+numSmokeNodes].nodeId != NULL);
+			gosASSERT(nodeData[i+numSmokeNodes].nodeId != nullptr);
 			
 			strcpy(nodeData[i+numSmokeNodes].nodeId,weaponName);
 			nodeData[i+numSmokeNodes].weaponType = weaponType;
@@ -523,7 +523,7 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 			gosASSERT(result == NO_ERROR);
 			
 			nodeData[i+numSmokeNodes+numWeaponNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(jumpName)+1); 
-			gosASSERT(nodeData[i+numSmokeNodes+numWeaponNodes].nodeId != NULL);
+			gosASSERT(nodeData[i+numSmokeNodes+numWeaponNodes].nodeId != nullptr);
 			
 			strcpy(nodeData[i+numSmokeNodes+numWeaponNodes].nodeId,jumpName);
 			nodeData[i+numSmokeNodes+numWeaponNodes].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -541,7 +541,7 @@ void Mech3DAppearanceType::init (PSTR  fileName)
 			gosASSERT(result == NO_ERROR);
 			
 			nodeData[i+numSmokeNodes+numWeaponNodes+numJumpNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(footName)+1); 
-			gosASSERT(nodeData[i+numSmokeNodes+numWeaponNodes+numJumpNodes].nodeId != NULL);
+			gosASSERT(nodeData[i+numSmokeNodes+numWeaponNodes+numJumpNodes].nodeId != nullptr);
 			
 			strcpy(nodeData[i+numSmokeNodes+numWeaponNodes+numJumpNodes].nodeId,footName);
 			nodeData[i+numSmokeNodes+numWeaponNodes+numJumpNodes].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -551,35 +551,35 @@ void Mech3DAppearanceType::init (PSTR  fileName)
   	//----------------------------------------------
 	// Load up sensor textures if not yet defined.
 	// For helicopters, load up the vehicle one!!
-	if (SensorSquareShape == NULL && numJumpNodes)
+	if (SensorSquareShape == nullptr && numJumpNodes)
 	{
 		FullPathFileName sensorName;
 		sensorName.init(tglPath,"squarecontact",".ase");
 		
 		SensorSquareShape = new TG_TypeMultiShape;
-		gosASSERT(SensorSquareShape != NULL);
+		gosASSERT(SensorSquareShape != nullptr);
 		
 		SensorSquareShape->LoadTGMultiShapeFromASE(sensorName);
 	}
 
-	if (GVAppearanceType::SensorCircleShape == NULL && !numJumpNodes)
+	if (GVAppearanceType::SensorCircleShape == nullptr && !numJumpNodes)
 	{
 		FullPathFileName sensorName;
 		sensorName.init(tglPath,"circularcontact",".ase");
 	
 		GVAppearanceType::SensorCircleShape = new TG_TypeMultiShape;
-		gosASSERT(GVAppearanceType::SensorCircleShape != NULL);
+		gosASSERT(GVAppearanceType::SensorCircleShape != nullptr);
 	
 		GVAppearanceType::SensorCircleShape->LoadTGMultiShapeFromASE(sensorName);
 	}
 
-	if (GVAppearanceType::SensorTriangleShape == NULL)
+	if (GVAppearanceType::SensorTriangleShape == nullptr)
 	{
 		FullPathFileName sensorName;
 		sensorName.init(tglPath,"trianglecontact",".ase");
 	
 		GVAppearanceType::SensorTriangleShape = new TG_TypeMultiShape;
-		gosASSERT(GVAppearanceType::SensorTriangleShape != NULL);
+		gosASSERT(GVAppearanceType::SensorTriangleShape != nullptr);
 	
 		GVAppearanceType::SensorTriangleShape->LoadTGMultiShapeFromASE(sensorName);
 	}
@@ -597,62 +597,62 @@ void Mech3DAppearanceType::destroy (void)
 		if (mechShape[i])
 		{
 			delete mechShape[i];
-			mechShape[i] = NULL;
+			mechShape[i] = nullptr;
 		}
 	}
 
 	if (mechShadowShape)
 	{
 		delete mechShadowShape;
-		mechShadowShape = NULL;
+		mechShadowShape = nullptr;
 	}
 
 	if (rightArm)
 	{
 		delete rightArm;
-		rightArm = NULL;
+		rightArm = nullptr;
 	}
 
 	if (leftArm)
 	{
 		delete leftArm;
-		leftArm = NULL;
+		leftArm = nullptr;
 	}
 
 	if (mechForwardDmgShape)
 	{
 		delete mechForwardDmgShape;
-		mechForwardDmgShape = NULL;
+		mechForwardDmgShape = nullptr;
 	}
 
 	if (mechBackwardDmgShape)
 	{
 		delete mechBackwardDmgShape;
-		mechBackwardDmgShape = NULL;
+		mechBackwardDmgShape = nullptr;
 	}
 
 	for (i=0;i<MAX_ANIMATION_FILES;i++)
 	{
 		delete mechAnim[i];
-		mechAnim[i] = NULL;
+		mechAnim[i] = nullptr;
 	}
 	
 	for (i=0;i<getTotalNodes();i++)
 	{
 		AppearanceTypeList::appearanceHeap->Free(nodeData[i].nodeId);
-		nodeData[i].nodeId = NULL;
+		nodeData[i].nodeId = nullptr;
 	}
 
 	AppearanceTypeList::appearanceHeap->Free(nodeData);
 	
-	nodeData = NULL;
+	nodeData = nullptr;
 	numSmokeNodes = numWeaponNodes = numJumpNodes = 0;
 }
 
 //----------------------------------------------------------------------------
 void Mech3DAppearanceType::setAnimation (TG_MultiShapePtr shape, uint32_t animationNum)
 {
-	gosASSERT(shape != NULL);
+	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
 	gosASSERT(animationNum < MaxGestures);
 
@@ -1048,8 +1048,8 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	jumpVelocity.Zero();
 	jumpFXSetup = false;
 	
-	nodeUsed = NULL;
-	nodeRecycle = NULL;
+	nodeUsed = nullptr;
+	nodeRecycle = nullptr;
 
 	currentRightPoof = currentLeftPoof = 0;
 	
@@ -1060,14 +1060,14 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	isDusting = false;
 	movedThisFrame = false;
 	fallDust = false;
-	criticalSmoke = NULL;
-	smokeEffect = NULL;
-	waterWake = NULL;
-	helicopterDustCloud = NULL;
+	criticalSmoke = nullptr;
+	smokeEffect = nullptr;
+	waterWake = nullptr;
+	helicopterDustCloud = nullptr;
 	isHelicopter = false;
 	
-	leftArm = rightArm = NULL;
-	rightArmSmoke = leftArmSmoke = NULL;
+	leftArm = rightArm = nullptr;
+	rightArmSmoke = leftArmSmoke = nullptr;
 
 	currentFlash = duration = flashDuration = 0.0f;
 	flashColor = 0x00000000;
@@ -1205,11 +1205,11 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
  		if (mechType->numWeaponNodes)
 		{
 			nodeUsed = (int32_t *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(int32_t) * mechType->numWeaponNodes);
-			gosASSERT(nodeUsed != NULL);
+			gosASSERT(nodeUsed != nullptr);
 			memset(nodeUsed,0,sizeof(int32_t) * mechType->numWeaponNodes);
 			
 			nodeRecycle = (float *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(float) * mechType->numWeaponNodes);
-			gosASSERT(nodeRecycle != NULL);
+			gosASSERT(nodeRecycle != nullptr);
 			
 			for (int32_t i=0;i<mechType->numWeaponNodes;i++)
 				nodeRecycle[i] = 0.0f;
@@ -1313,7 +1313,7 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 
 	currentFrame = 0.0f;
 
-	pointLight = NULL;
+	pointLight = nullptr;
 	lightId = 0xffffffff;
 	
 	hitGestureId = -1;
@@ -1326,13 +1326,13 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	
 	for (int32_t i=0;i<MAX_DUST_POOFS;i++)
 	{
-		rightDustPoofEffect[i] = NULL;
-		leftDustPoofEffect[i] = NULL;
+		rightDustPoofEffect[i] = nullptr;
+		leftDustPoofEffect[i] = nullptr;
 	}
 	
-	smokeEffect = NULL;
-	jumpJetEffect = NULL;
-	rightShoulderBoom = leftShoulderBoom = NULL;
+	smokeEffect = nullptr;
+	jumpJetEffect = nullptr;
+	rightShoulderBoom = leftShoulderBoom = nullptr;
 	
 	leftFootDone0 = rightFootDone0 = leftFootDone1 = rightFootDone1 = false;
 	
@@ -1381,7 +1381,7 @@ void Mech3DAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	}
 	else
 	{
-		mechShadowShape = NULL;
+		mechShadowShape = nullptr;
 	}
 }
 
@@ -1405,7 +1405,7 @@ void Mech3DAppearance::initFX (void)
 				for (int32_t i=0;i<MAX_DUST_POOFS;i++)
 				{
 					rightDustPoofEffect[i] = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-					gosASSERT(rightDustPoofEffect[i] != NULL);
+					gosASSERT(rightDustPoofEffect[i] != nullptr);
 				}
 				
   				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
@@ -1426,7 +1426,7 @@ void Mech3DAppearance::initFX (void)
 				for (int32_t i=0;i<MAX_DUST_POOFS;i++)
 				{
 					leftDustPoofEffect[i] = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-					gosASSERT(leftDustPoofEffect[i] != NULL);
+					gosASSERT(leftDustPoofEffect[i] != nullptr);
 				}
 				
   				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
@@ -1445,7 +1445,7 @@ void Mech3DAppearance::initFX (void)
 			if (gosEffectSpec)
 			{
 				smokeEffect = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(smokeEffect != NULL);
+				gosASSERT(smokeEffect != nullptr);
 			
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -1463,7 +1463,7 @@ void Mech3DAppearance::initFX (void)
 			if (gosEffectSpec)
 			{
 				jumpJetEffect = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(jumpJetEffect != NULL);
+				gosASSERT(jumpJetEffect != nullptr);
 			
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -1589,7 +1589,7 @@ void Mech3DAppearance::LoadPaintSchemata (void)
 	gosASSERT(result == NO_ERROR);
 
 	paintSchemata = (PaintSchemataPtr)AppearanceTypeList::appearanceHeap->Malloc(numPaintSchemata * sizeof(PaintSchemata));
-	gosASSERT(paintSchemata != NULL);
+	gosASSERT(paintSchemata != nullptr);
 
 	memset(paintSchemata,0xff,numPaintSchemata * sizeof(PaintSchemata));
 
@@ -2273,7 +2273,7 @@ bool Mech3DAppearance::recalcBounds (void)
 							uint8_t alphaValue = mechShape->GetAlphaValue();
 							//mechShape->ClearAnimation();	//DO NOT do this with animating things!!
 							delete mechShape;
-							mechShape = NULL;
+							mechShape = nullptr;
 
 							mechShape = mechType->mechShape[currentLOD]->CreateFrom();
 							mechShape->SetAlphaValue(alphaValue);
@@ -2295,7 +2295,7 @@ bool Mech3DAppearance::recalcBounds (void)
 							uint8_t alphaValue = mechShape->GetAlphaValue();
 							//treeShape->ClearAnimation();
 							delete mechShape;
-							mechShape = NULL;
+							mechShape = nullptr;
 
 							mechShape = mechType->mechShape[currentLOD]->CreateFrom();
 							mechShape->SetAlphaValue(alphaValue);
@@ -2671,62 +2671,62 @@ int32_t Mech3DAppearance::render (int32_t depthFixup)
 			}
 			
 			{
-				LineElement newElement(screenPos[0],screenPos[1],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[0],screenPos[1],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 			
 			{
-				LineElement newElement(screenPos[0],screenPos[4],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[0],screenPos[4],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 			
 			{
-				LineElement newElement(screenPos[0],screenPos[3],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[0],screenPos[3],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 			
 			{
-				LineElement newElement(screenPos[5],screenPos[4],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[5],screenPos[4],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 			
 			{
-				LineElement newElement(screenPos[5],screenPos[6],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[5],screenPos[6],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 			
 			{
-				LineElement newElement(screenPos[5],screenPos[3],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[5],screenPos[3],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 			
 			{
-				LineElement newElement(screenPos[2],screenPos[3],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[2],screenPos[3],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 			
 			{
-				LineElement newElement(screenPos[2],screenPos[6],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[2],screenPos[6],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 			
 			{
-				LineElement newElement(screenPos[2],screenPos[1],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[2],screenPos[1],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 			
 			{
-				LineElement newElement(screenPos[7],screenPos[1],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[7],screenPos[1],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 			
 			{
-				LineElement newElement(screenPos[7],screenPos[6],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[7],screenPos[6],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 			
 			{
-				LineElement newElement(screenPos[7],screenPos[4],XP_WHITE,NULL,-1);
+				LineElement newElement(screenPos[7],screenPos[4],XP_WHITE,nullptr,-1);
 				newElement.draw();
 			}
 #endif					
@@ -2874,7 +2874,7 @@ void Mech3DAppearance::setObjStatus (int32_t oStatus)
 				{
 					mechShape->ClearAnimation();
 					delete mechShape;
-					mechShape = NULL;
+					mechShape = nullptr;
 
 					mechShape = mechType->mechForwardDmgShape->CreateFrom();
 				}
@@ -2885,7 +2885,7 @@ void Mech3DAppearance::setObjStatus (int32_t oStatus)
 				{
 					mechShape->ClearAnimation();
 					delete mechShape;
-					mechShape = NULL;
+					mechShape = nullptr;
 
 					mechShape = mechType->mechBackwardDmgShape->CreateFrom();
 				}
@@ -3197,7 +3197,7 @@ void Mech3DAppearance::updateGeometry (void)
 				shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 				shapeOrigin.BuildTranslation(rFootPosition[currentRightPoof]);
 				
-				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 				rightDustPoofEffect[currentRightPoof]->Start(&info);
 				rightFootPoofDraw[currentRightPoof] = true;
 				
@@ -3231,7 +3231,7 @@ void Mech3DAppearance::updateGeometry (void)
 				shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 				shapeOrigin.BuildTranslation(rFootPosition[currentRightPoof]);
 				
-				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 				rightDustPoofEffect[currentRightPoof]->Start(&info);
 				rightFootPoofDraw[currentRightPoof] = true;
 				
@@ -3279,7 +3279,7 @@ void Mech3DAppearance::updateGeometry (void)
 				shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 				shapeOrigin.BuildTranslation(lFootPosition[currentLeftPoof]);
 				
-				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 				leftDustPoofEffect[currentLeftPoof]->Start(&info);
 				leftFootPoofDraw[currentLeftPoof] = true;
 				
@@ -3313,7 +3313,7 @@ void Mech3DAppearance::updateGeometry (void)
 				shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 				shapeOrigin.BuildTranslation(lFootPosition[currentLeftPoof]);
 				
-				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 				leftDustPoofEffect[currentLeftPoof]->Start(&info);
 				leftFootPoofDraw[currentLeftPoof] = true;
 				
@@ -3393,7 +3393,7 @@ void Mech3DAppearance::updateGeometry (void)
 		localToWorld.Multiply(gosFX::Effect_Against_Motion,effectRot);
 		localResult.Multiply(localToWorld,shapeOrigin);
 					
- 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,NULL);
+ 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,nullptr);
 		jumpJetEffect->Start(&info);
 		
 		jumpFXSetup = true;
@@ -3504,7 +3504,7 @@ void Mech3DAppearance::updateGeometry (void)
 		{
 			leftShoulderBoom->Kill();
 			delete leftShoulderBoom;
-			leftShoulderBoom = NULL;
+			leftShoulderBoom = nullptr;
 		}
 	}
 	
@@ -3537,7 +3537,7 @@ void Mech3DAppearance::updateGeometry (void)
 		{
 			rightShoulderBoom->Kill();
 			delete rightShoulderBoom;
-			rightShoulderBoom = NULL;
+			rightShoulderBoom = nullptr;
 		}
 	}
 	
@@ -3649,7 +3649,7 @@ void Mech3DAppearance::updateGeometry (void)
 }	
 
 #ifdef _DEBUG
-FilePtr logFile = NULL;
+FilePtr logFile = nullptr;
 #endif
 
 //-----------------------------------------------------------------------------
@@ -3792,7 +3792,7 @@ int32_t Mech3DAppearance::update (bool animate)
 		if (result != NO_ERROR)
 		{
 			delete logFile;
-			logFile = NULL;
+			logFile = nullptr;
 		}
 	}
 #endif
@@ -4241,7 +4241,7 @@ int32_t Mech3DAppearance::update (bool animate)
 			{
 				leftArmSmoke->Kill();
 				delete leftArmSmoke;
-				leftArmSmoke = NULL;
+				leftArmSmoke = nullptr;
 			}
 		}
 	}
@@ -4320,7 +4320,7 @@ int32_t Mech3DAppearance::update (bool animate)
 			{
 				rightArmSmoke->Kill();
 				delete rightArmSmoke;
-				rightArmSmoke = NULL;
+				rightArmSmoke = nullptr;
 			}
 		}
 	}
@@ -4351,7 +4351,7 @@ void Mech3DAppearance::blowLeftArm (void)
 		if (gosEffectSpec)
 		{
 			leftShoulderBoom = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-			gosASSERT(leftShoulderBoom != NULL);
+			gosASSERT(leftShoulderBoom != nullptr);
 			
 			MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 		}
@@ -4369,7 +4369,7 @@ void Mech3DAppearance::blowLeftArm (void)
 		if (gosEffectSpec)
 		{
 			leftArmSmoke = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-			gosASSERT(leftArmSmoke != NULL);
+			gosASSERT(leftArmSmoke != nullptr);
 		
 			MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 		}
@@ -4399,7 +4399,7 @@ void Mech3DAppearance::blowLeftArm (void)
 		localToWorld.Multiply(gosFX::Effect_Against_Motion,effectRot);
 		localResult.Multiply(localToWorld,shapeOrigin);
 		
- 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,NULL);
+ 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,nullptr);
 		leftShoulderBoom->Start(&info);
 	}
 
@@ -4421,7 +4421,7 @@ void Mech3DAppearance::blowLeftArm (void)
 		localToWorld.Multiply(gosFX::Effect_Against_Motion,effectRot);
 		localResult.Multiply(localToWorld,shapeOrigin);
 		
- 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,NULL);
+ 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,nullptr);
 		leftArmSmoke->Start(&info);
 	}
 	
@@ -4477,7 +4477,7 @@ void Mech3DAppearance::blowRightArm (void)
 		if (gosEffectSpec)
 		{
 			rightShoulderBoom = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-			gosASSERT(rightShoulderBoom != NULL);
+			gosASSERT(rightShoulderBoom != nullptr);
 		
 			MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 		}
@@ -4495,7 +4495,7 @@ void Mech3DAppearance::blowRightArm (void)
 		if (gosEffectSpec)
 		{
 			rightArmSmoke = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-			gosASSERT(rightArmSmoke != NULL);
+			gosASSERT(rightArmSmoke != nullptr);
 		
 			MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 		}
@@ -4525,7 +4525,7 @@ void Mech3DAppearance::blowRightArm (void)
 		localToWorld.Multiply(gosFX::Effect_Against_Motion,effectRot);
 		localResult.Multiply(localToWorld,shapeOrigin);
 		
- 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,NULL);
+ 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,nullptr);
 		rightShoulderBoom->Start(&info);
 	}
 
@@ -4547,7 +4547,7 @@ void Mech3DAppearance::blowRightArm (void)
 		localToWorld.Multiply(gosFX::Effect_Against_Motion,effectRot);
 		localResult.Multiply(localToWorld,shapeOrigin);
 		
- 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,NULL);
+ 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,nullptr);
 		rightArmSmoke->Start(&info);
 	}
 
@@ -4607,7 +4607,7 @@ void Mech3DAppearance::startSmoking (int32_t smokeLvl)
 			if (gosEffectSpec)
 			{
 				criticalSmoke = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(criticalSmoke != NULL);
+				gosASSERT(criticalSmoke != nullptr);
 				
   				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -4628,7 +4628,7 @@ void Mech3DAppearance::startSmoking (int32_t smokeLvl)
 			if (gosEffectSpec)
 			{
 				smokeEffect = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(smokeEffect != NULL);
+				gosASSERT(smokeEffect != nullptr);
 				
   				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -4651,7 +4651,7 @@ void Mech3DAppearance::startSmoking (int32_t smokeLvl)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 			shapeOrigin.BuildTranslation(smokePos);
 
-			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 
 			if (smokeLvl > 0)
 				criticalSmoke->Start(&info);
@@ -4699,7 +4699,7 @@ void Mech3DAppearance::startWaterWake (void)
 			if (gosEffectSpec)
 			{
 				waterWake = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(waterWake != NULL);
+				gosASSERT(waterWake != nullptr);
 				
   				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -4728,7 +4728,7 @@ void Mech3DAppearance::startWaterWake (void)
 			localToWorld.Multiply(gosFX::Effect_Into_Motion,effectRot);
 		localResult.Multiply(localToWorld,shapeOrigin);
 			
- 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,NULL);
+ 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,nullptr);
 
 		waterWake->Start(&info);
 		isWaking = true;
@@ -4768,7 +4768,7 @@ void Mech3DAppearance::playEjection (void)
 			if (gosEffectSpec)
 			{
 				helicopterDustCloud = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(helicopterDustCloud != NULL);
+				gosASSERT(helicopterDustCloud != nullptr);
 				
   				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -4796,7 +4796,7 @@ void Mech3DAppearance::playEjection (void)
 		localResult.Multiply(localToWorld,shapeOrigin);
 		*/
 			
- 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+ 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 
 		helicopterDustCloud->Start(&info);
 		isDusting = true;
@@ -4807,31 +4807,31 @@ void Mech3DAppearance::playEjection (void)
 void Mech3DAppearance::destroy (void)
 {
 	AppearanceTypeList::appearanceHeap->Free(paintSchemata);
-	paintSchemata = NULL;
+	paintSchemata = nullptr;
 
 	if ( mechShape )
 		delete mechShape;
-	mechShape = NULL;
+	mechShape = nullptr;
 
 	if (mechShadowShape)
 	{
 		delete mechShadowShape;
-		mechShadowShape = NULL;
+		mechShadowShape = nullptr;
 	}
 
 	if ( leftArm )
 		delete leftArm;
-	leftArm = NULL;
+	leftArm = nullptr;
 
 	if ( rightArm )
 		delete rightArm;
-	rightArm = NULL;
+	rightArm = nullptr;
 
 #ifdef _DEBUG
 	if (logFile )
 	{
 		delete logFile;
-		logFile = NULL;
+		logFile = nullptr;
 	}
 
 #endif
@@ -4842,14 +4842,14 @@ void Mech3DAppearance::destroy (void)
 		{
 			rightDustPoofEffect[i]->Kill();
 			delete rightDustPoofEffect[i];
-			rightDustPoofEffect[i] = NULL;
+			rightDustPoofEffect[i] = nullptr;
 		}
 			
 		if (leftDustPoofEffect[i])
 		{
 			leftDustPoofEffect[i]->Kill();
 			delete leftDustPoofEffect[i];
-			leftDustPoofEffect[i] = NULL;
+			leftDustPoofEffect[i] = nullptr;
 		}
 	}
 
@@ -4857,40 +4857,40 @@ void Mech3DAppearance::destroy (void)
 	{
 		smokeEffect->Kill();
 		delete smokeEffect;
-		smokeEffect = NULL;
+		smokeEffect = nullptr;
 	}
 	
 	if (jumpJetEffect)
 	{
 		jumpJetEffect->Kill();
 		delete jumpJetEffect;
-		jumpJetEffect = NULL;
+		jumpJetEffect = nullptr;
 	}
 	
 	if (rightShoulderBoom)
 	{
 		rightShoulderBoom->Kill();
 		delete rightShoulderBoom;
-		rightShoulderBoom = NULL;
+		rightShoulderBoom = nullptr;
 	}
 	
 	if (leftShoulderBoom)
 	{
 		leftShoulderBoom->Kill();
 		delete leftShoulderBoom;
-		leftShoulderBoom = NULL;
+		leftShoulderBoom = nullptr;
 	}
 
 	if (sensorSquareShape)
 	{
 		delete sensorSquareShape;
-		sensorSquareShape = NULL;	
+		sensorSquareShape = nullptr;	
 	}
 		
 	if (sensorTriangleShape)
 	{
 		delete sensorTriangleShape;
-		sensorTriangleShape = NULL;	
+		sensorTriangleShape = nullptr;	
 	}
 	
 	appearanceTypeList->removeAppearance(mechType);
@@ -4898,10 +4898,10 @@ void Mech3DAppearance::destroy (void)
 	if (InEditor)
 	{
 		AppearanceTypeList::appearanceHeap->Free(nodeUsed); 
-		nodeUsed = NULL;
+		nodeUsed = nullptr;
 
 		AppearanceTypeList::appearanceHeap->Free(nodeRecycle);
-		nodeRecycle = NULL;
+		nodeRecycle = nullptr;
 	}
 }
 
@@ -5027,7 +5027,7 @@ void Mech3DAppearance::copyFrom (MechAppearanceData *data)
 		localToWorld.Multiply(gosFX::Effect_Against_Motion,effectRot);
 		localResult.Multiply(localToWorld,shapeOrigin);
 					
- 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,NULL);
+ 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,nullptr);
 		jumpJetEffect->Start(&info);
 	}
 

@@ -96,7 +96,7 @@ void CheckMouse();
 
 int32_t				MaxBreaks = 50;
 int32_t				MaxWatches = 50;
-DebuggerPtr			debugger = NULL;
+DebuggerPtr			debugger = nullptr;
 
 char Debugger::message[512];
 
@@ -146,7 +146,7 @@ void WatchManager::destroy (void) {
 
 	if (watches) {
 		ABLStackFreeCallback(watches);
-		watches = NULL;
+		watches = nullptr;
 	}
 
 	maxWatches = 0;
@@ -158,7 +158,7 @@ void WatchManager::destroy (void) {
 WatchPtr WatchManager::add (SymTableNodePtr idPtr) {
 
 	//------------------------------------------
-	// This routine assumes idPtr is non-NULL...
+	// This routine assumes idPtr is non-nullptr...
 	switch (idPtr->defn.key) {
 		case DFN_CONST:
 		case DFN_VAR:
@@ -179,7 +179,7 @@ WatchPtr WatchManager::add (SymTableNodePtr idPtr) {
 			break;
 	}
 
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -201,7 +201,7 @@ int32_t WatchManager::remove (SymTableNodePtr idPtr) {
 
 	//--------------------------------------------------------
 	// The id no longer points to a watch in the watch list...
-	idPtr->info = NULL;
+	idPtr->info = nullptr;
 	numWatches--;
 
 	//-------------------------------------
@@ -223,8 +223,8 @@ int32_t WatchManager::remove (SymTableNodePtr idPtr) {
 int32_t WatchManager::removeAll (void) {
 
 	for (int32_t i = 0; i < numWatches; i++) {
-		watches[i].idPtr->info = NULL;
-		watches[i].idPtr = NULL;
+		watches[i].idPtr->info = nullptr;
+		watches[i].idPtr = nullptr;
 		watches[i].store = false;
 		watches[i].breakOnStore = false;
 		watches[i].fetch = false;
@@ -360,7 +360,7 @@ void BreakPointManager::destroy (void) {
 
 	if (breakPoints) {
 		ABLStackFreeCallback(breakPoints);
-		breakPoints = NULL;
+		breakPoints = nullptr;
 	}
 
 	maxBreakPoints = 0;
@@ -522,7 +522,7 @@ int32_t Debugger::setWatch (int32_t states) {
 			watchManager->print();
 			break;
 		case TKN_IDENTIFIER:
-			SymTableNodePtr idPtr = NULL;
+			SymTableNodePtr idPtr = nullptr;
 			searchAndFindAllSymTables(idPtr);
 			getToken();
 			//-----------------
@@ -702,7 +702,7 @@ int32_t Debugger::sprintSimpleValue (PSTR dest, SymTableNodePtr symbol) {
 		// First, point to the variable's stack item. If the variable's scope
 		// level is less than the current scope level, follow the static links
 		// to the proper stack frame base...
-		StackItemPtr dataPtr = NULL;
+		StackItemPtr dataPtr = nullptr;
 		switch (symbol->defn.info.data.varType) {
 			case VAR_TYPE_NORMAL: {
 				StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
@@ -727,7 +727,7 @@ int32_t Debugger::sprintSimpleValue (PSTR dest, SymTableNodePtr symbol) {
 			dataPtr = (StackItemPtr)dataPtr->address;
 
 		if ((typePtr->form != FRM_ARRAY) /*&& (typePtr->form != FRM_RECORD)*/) {
-			ABL_Assert(dataPtr != NULL, 0, " Debugger.sprintSimpleValue(): dataPtr is NULL ");
+			ABL_Assert(dataPtr != nullptr, 0, " Debugger.sprintSimpleValue(): dataPtr is nullptr ");
 			if ((typePtr == IntegerTypePtr) || (typePtr->form == FRM_ENUM))
 				sprintf(dest, "%d", *((int32_t*)dataPtr));
 			else if (typePtr == CharTypePtr)
@@ -757,7 +757,7 @@ int32_t Debugger::sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subs
 	if (symbol->defn.key == DFN_CONST)
 		sprintf(dest, "\"%s\"", symbol->defn.info.constant.value.stringPtr);
 	else {
-		StackItemPtr dataPtr = NULL;
+		StackItemPtr dataPtr = nullptr;
 		switch (symbol->defn.info.data.varType) {
 			case VAR_TYPE_NORMAL: {
 				StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
@@ -777,7 +777,7 @@ int32_t Debugger::sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subs
 
 		TypePtr	typePtr = (TypePtr)(symbol->typePtr);
 
-		ABL_Assert(dataPtr != NULL, 0, " Debugger.sprintArrayValue(): dataPtr is NULL ");
+		ABL_Assert(dataPtr != nullptr, 0, " Debugger.sprintArrayValue(): dataPtr is nullptr ");
 
 		Address elementAddress = (Address)dataPtr->address;
 		if (subscriptString) {
@@ -800,7 +800,7 @@ int32_t Debugger::sprintArrayValue (PSTR dest, SymTableNodePtr symbol, PSTR subs
 
 				typePtr = typePtr->info.array.elementTypePtr;
 
-				token = strtok(NULL, ",]");
+				token = strtok(nullptr, ",]");
 			}
 		}
 
@@ -845,7 +845,7 @@ int32_t Debugger::sprintValue (PSTR dest, PSTR exprString) {
 		// Looking for specific element...
 		char subscriptString[255];
 		strcpy(subscriptString, subscript);
-		*subscript = NULL;
+		*subscript = nullptr;
 
 		SymTableNodePtr symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
 		if (!symbol)
@@ -858,7 +858,7 @@ int32_t Debugger::sprintValue (PSTR dest, PSTR exprString) {
 		SymTableNodePtr symbol = debugModule->findSymbol(exprString, CurRoutineIdPtr);
 		if (!symbol)
 			return(1);
-		sprintArrayValue(dest, symbol, NULL);
+		sprintArrayValue(dest, symbol, nullptr);
 	}
 
 	//-----------------------------------------------
@@ -883,7 +883,7 @@ int32_t Debugger::traceStatementExecution (void) {
 	}
 
 //	if (trace) {
-//		message[0] = NULL;
+//		message[0] = nullptr;
 //		sprintLineNumber(message);
 //		print(message);
 //	}
@@ -1028,7 +1028,7 @@ void Debugger::assignVariable (void) {
 	else if (curToken == TKN_IDENTIFIER) {
 		//----------------------------------
 		// Parse the assignment statement...
-		SymTableNodePtr idPtr = NULL;
+		SymTableNodePtr idPtr = nullptr;
 		searchAndFindAllSymTables(idPtr);
 		assigmentStatement(idPtr);
 		if (errorCount > 0)
@@ -1235,7 +1235,7 @@ void Debugger::debugMode (void) {
 	// debugging...
 	debugModule = module;
 	
-	message[0] = NULL;
+	message[0] = nullptr;
 	sprintStatement(message);
 	print(message);
 
@@ -1249,7 +1249,7 @@ void Debugger::debugMode (void) {
 		bool result;
 		do {
 			MSG	msg;
-			result = PeekMessage(&msg,NULL,0,0,PM_REMOVE);
+			result = PeekMessage(&msg,nullptr,0,0,PM_REMOVE);
 			if (result)	{
 				if (msg.message == WM_QUIT)	{
 					debugCommand = false;

@@ -50,7 +50,7 @@ void FastFileFini (void)
 				fastFiles[currentFastFile]->close();
 	
 				delete fastFiles[currentFastFile];
-				fastFiles[currentFastFile] = NULL;
+				fastFiles[currentFastFile] = nullptr;
 			}
 	
 			currentFastFile++;
@@ -58,7 +58,7 @@ void FastFileFini (void)
 	}
 
 	free(fastFiles);
-	fastFiles = NULL;
+	fastFiles = nullptr;
 	numFastFiles= 0;
 }
 
@@ -83,7 +83,7 @@ FastFile *FastFileFind (PSTR fname, int32_t &fastFileHandle)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 //------------------------------------------------------------------

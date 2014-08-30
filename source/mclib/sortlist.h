@@ -34,7 +34,7 @@ protected:
 public:
 
 	void init(void) {
-		list = NULL;
+		list = nullptr;
 		numItems = 0;
 	}
 

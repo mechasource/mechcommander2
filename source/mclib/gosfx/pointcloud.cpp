@@ -63,7 +63,7 @@ gosFX::PointCloud__Specification*
 //############################################################################
 
 gosFX::PointCloud::ClassData*
-	gosFX::PointCloud::DefaultData = NULL;
+	gosFX::PointCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
@@ -90,7 +90,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //------------------------------------------------------------------------------

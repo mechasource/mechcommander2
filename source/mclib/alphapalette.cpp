@@ -93,7 +93,7 @@ void InitAlphaLookup( VFX_RGB* Palette)
 
 	IniFile->close();
 	delete IniFile;
-	IniFile = NULL;
+	IniFile = nullptr;
 //
 // Now generate the 64K alpha value lookup table
 //

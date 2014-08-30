@@ -201,20 +201,20 @@ extern void transState (SymTableNodePtr newState);
 int32_t					numLibrariesLoaded = 0;
 int32_t					NumExecutions = 0;
 
-PVOID (*ABLSystemMallocCallback) (uint32_t memSize) = NULL;
-PVOID (*ABLStackMallocCallback) (uint32_t memSize) = NULL;
-PVOID (*ABLCodeMallocCallback) (uint32_t memSize) = NULL;
-PVOID (*ABLSymbolMallocCallback) (uint32_t memSize) = NULL;
-void (*ABLSystemFreeCallback) (PVOID memBlock) = NULL;
-void (*ABLStackFreeCallback) (PVOID memBlock) = NULL;
-void (*ABLCodeFreeCallback) (PVOID memBlock) = NULL;
-void (*ABLSymbolFreeCallback) (PVOID memBlock) = NULL;
-void (*ABLDebugPrintCallback) (PSTR s) = NULL;
-int32_t (*ABLRandomCallback) (int32_t range) = NULL;
-void (*ABLSeedRandomCallback) (uint32_t range) = NULL;
-uint32_t (*ABLGetTimeCallback) (void) = NULL;
-void (*ABLFatalCallback) (int32_t code, PSTR s) = NULL;
-void (*ABLEndlessStateCallback) (UserFile* log) = NULL;
+PVOID (*ABLSystemMallocCallback) (uint32_t memSize) = nullptr;
+PVOID (*ABLStackMallocCallback) (uint32_t memSize) = nullptr;
+PVOID (*ABLCodeMallocCallback) (uint32_t memSize) = nullptr;
+PVOID (*ABLSymbolMallocCallback) (uint32_t memSize) = nullptr;
+void (*ABLSystemFreeCallback) (PVOID memBlock) = nullptr;
+void (*ABLStackFreeCallback) (PVOID memBlock) = nullptr;
+void (*ABLCodeFreeCallback) (PVOID memBlock) = nullptr;
+void (*ABLSymbolFreeCallback) (PVOID memBlock) = nullptr;
+void (*ABLDebugPrintCallback) (PSTR s) = nullptr;
+int32_t (*ABLRandomCallback) (int32_t range) = nullptr;
+void (*ABLSeedRandomCallback) (uint32_t range) = nullptr;
+uint32_t (*ABLGetTimeCallback) (void) = nullptr;
+void (*ABLFatalCallback) (int32_t code, PSTR s) = nullptr;
+void (*ABLEndlessStateCallback) (UserFile* log) = nullptr;
 
 //***************************************************************************
 
@@ -409,31 +409,31 @@ profile = true;
 	ABLenabled = true;
 	MaxBreaks = 50;
 	MaxWatches = 50;
-	debugger = NULL;
+	debugger = nullptr;
 	NumModules = 0;
-	ModuleRegistry = NULL;
-	ModuleInstanceRegistry = NULL;
-	LibraryInstanceRegistry = NULL;
+	ModuleRegistry = nullptr;
+	ModuleInstanceRegistry = nullptr;
+	LibraryInstanceRegistry = nullptr;
 	MaxModules = 0;
 	MaxLibraries = 0;
 	NumModulesRegistered = 0;
 	NumModuleInstances = 0;
 	MaxWatchesPerModule = 20;
 	MaxBreakPointsPerModule = 20;
-	CurModule = NULL;
+	CurModule = nullptr;
 	errorCount = 0;
-	codeBuffer = NULL;
-	codeBufferPtr = NULL;
-	codeSegmentPtr = NULL;
-	codeSegmentLimit = NULL;
-	statementStartPtr = NULL;
+	codeBuffer = nullptr;
+	codeBufferPtr = nullptr;
+	codeSegmentPtr = nullptr;
+	codeSegmentLimit = nullptr;
+	statementStartPtr = nullptr;
 	execStatementCount = 0;
-	stack = NULL;
-	tos = NULL;
-	stackFrameBasePtr = NULL;
-	StaticDataPtr = NULL;
-	StaticVariablesSizes = NULL;
-	EternalVariablesSizes = NULL;
+	stack = nullptr;
+	tos = nullptr;
+	stackFrameBasePtr = nullptr;
+	StaticDataPtr = nullptr;
+	StaticVariablesSizes = nullptr;
+	EternalVariablesSizes = nullptr;
 	MaxEternalVariables = 5000;
 	eternalOffset = 0;
 	MaxStaticVariables = 0;
@@ -453,12 +453,12 @@ profile = true;
 	level = 0;
 	lineNumber = 0;
 	FileNumber = 0;
-	sourceFile = NULL;
+	sourceFile = nullptr;
 	printFlag = true;
 	blockFlag = false;
 	blockType = BLOCK_MODULE;
-	CurModuleIdPtr = NULL;
-	CurRoutineIdPtr = NULL;
+	CurModuleIdPtr = nullptr;
+	CurRoutineIdPtr = nullptr;
 	DumbGetCharOn = false;
 	NumOpenFiles = 0;
 	NumSourceFiles = 0;
@@ -505,8 +505,8 @@ profile = true;
 	NumStaticVariables = 0;
 	NumOrderCalls = 0;
 	NumStateHandles = 1;
-	StaticDataPtr = NULL;
-	StaticVariablesSizes = NULL;
+	StaticDataPtr = nullptr;
+	StaticVariablesSizes = nullptr;
 	if (MaxStaticVariables > 0) {
 		StaticVariablesSizes = (int32_t*)ABLStackMallocCallback(sizeof(int32_t) * MaxStaticVariables);
 		if (!StaticVariablesSizes)
@@ -543,7 +543,7 @@ profile = true;
 		debugger = new Debugger;
 		if (!debugger)
 			ABL_Fatal(0, " Unable to initialize ABL Debugger. ");
-		debugger->init(debuggerPrintCallback, NULL);
+		debugger->init(debuggerPrintCallback, nullptr);
 	}
 
 	UserFile::setup();
@@ -555,11 +555,11 @@ profile = true;
 	ABLFile* aFile = new ABLFile;
 	aFile->create("ablFile.txt");
 	aFile->writeString("Testing writeString");
-	aFile->writeByte(NULL);
+	aFile->writeByte(nullptr);
 	aFile->writeLong(100);
 	aFile->close();
 	delete aFile;
-	aFile = NULL;
+	aFile = nullptr;
 
 	uint8_t s[100];
 	ABLFile* bFile = new ABLFile;
@@ -568,7 +568,7 @@ profile = true;
 	int32_t val = bFile->readLong();
 	bFile->close();
 	delete bFile;
-	bFile = NULL;
+	bFile = nullptr;
 #endif
 }
 
@@ -588,13 +588,13 @@ int32_t ABLi_preProcess (PSTR sourceFileName, int32_t* numErrors, int32_t* numLi
 	level = 0;
 	lineNumber = 0;
 	FileNumber = 0;
-	AssertEnabled = (debugger != NULL);
-	PrintEnabled = (debugger != NULL);
+	AssertEnabled = (debugger != nullptr);
+	PrintEnabled = (debugger != nullptr);
 	StringFunctionsEnabled = true;
-	DebugCodeEnabled = (debugger != NULL);
+	DebugCodeEnabled = (debugger != nullptr);
 	NumSourceFiles = 0;
 	NumLibrariesUsed = 0;
-	sourceFile = NULL;
+	sourceFile = nullptr;
 	printFlag = printLines;
 	blockFlag = false;
 	blockType = BLOCK_MODULE;
@@ -611,8 +611,8 @@ int32_t ABLi_preProcess (PSTR sourceFileName, int32_t* numErrors, int32_t* numLi
 	NumOrderCalls = 0;
 	NumStateHandles = 1;
 	for (i = 0; i < MAX_STATE_HANDLES_PER_MODULE; i++) {
-		StateHandleList[i].name[0] = NULL;
-		StateHandleList[i].state = NULL;
+		StateHandleList[i].name[0] = nullptr;
+		StateHandleList[i].state = nullptr;
 	}
 
 	if (numErrors)
@@ -653,7 +653,7 @@ int32_t ABLi_preProcess (PSTR sourceFileName, int32_t* numErrors, int32_t* numLi
 	//block(moduleIdPtr);
 	declarations(moduleIdPtr, true);
 	if ((moduleIdPtr->defn.info.routine.flags & ROUTINE_FLAG_FSM) == 0) {
-		synchronize(followModuleDeclsList, NULL, NULL);
+		synchronize(followModuleDeclsList, nullptr, nullptr);
 		if (curToken != TKN_CODE)
 			syntaxError(ABL_ERR_SYNTAX_MISSING_CODE);
 		crunchToken();
@@ -675,7 +675,7 @@ int32_t ABLi_preProcess (PSTR sourceFileName, int32_t* numErrors, int32_t* numLi
 		
 				//------------------------------------
 				// Synchronize after possible error...
-				synchronize(statementStartList, NULL, NULL);
+				synchronize(statementStartList, nullptr, nullptr);
 			} while (tokenIn(statementStartList));
 	}
 
@@ -733,7 +733,7 @@ int32_t ABLi_preProcess (PSTR sourceFileName, int32_t* numErrors, int32_t* numLi
 	}
 
 	ModuleRegistry[NumModulesRegistered].numStaticVars = NumStaticVariables;
-	ModuleRegistry[NumModulesRegistered].sizeStaticVars	= NULL;
+	ModuleRegistry[NumModulesRegistered].sizeStaticVars	= nullptr;
 	ModuleRegistry[NumModulesRegistered].totalSizeStaticVars = 0;
 	if (NumStaticVariables) {
 		ModuleRegistry[NumModulesRegistered].sizeStaticVars = (int32_t*)ABLStackMallocCallback(sizeof(int32_t) * NumStaticVariables);
@@ -794,8 +794,8 @@ int32_t ABLi_execute (SymTableNodePtr  moduleIdPtr , SymTableNodePtr /* function
 	//printFlag = true;
 	//blockFlag = false;
 	//blockType = BLOCK_MODULE;
-	CurModuleIdPtr = NULL;
-	CurRoutineIdPtr = NULL;
+	CurModuleIdPtr = nullptr;
+	CurRoutineIdPtr = nullptr;
 	//bufferOffset = 0;
 	//bufferp = sourceBuffer;
 	//tokenp = tokenString;
@@ -821,13 +821,13 @@ int32_t ABLi_execute (SymTableNodePtr  moduleIdPtr , SymTableNodePtr /* function
 	pushInteger(0);
 	//---------------
 	// Static Link...
-	pushAddress(NULL);
+	pushAddress(nullptr);
 	//----------------
 	// Dynamic Link...
-	pushAddress(NULL);
+	pushAddress(nullptr);
 	//------------------
 	// Return Address...
-	pushAddress(NULL);
+	pushAddress(nullptr);
 
 	//initDebugger();
 
@@ -840,7 +840,7 @@ int32_t ABLi_execute (SymTableNodePtr  moduleIdPtr , SymTableNodePtr /* function
 		// done...
 		int32_t curParam = 0;
 		for (SymTableNodePtr formalIdPtr = (SymTableNodePtr)(moduleIdPtr->defn.info.routine.params);
-			 formalIdPtr != NULL;
+			 formalIdPtr != nullptr;
 			 formalIdPtr = formalIdPtr->next) {
 
 			TypePtr formalTypePtr = (TypePtr)(formalIdPtr->typePtr);
@@ -929,27 +929,27 @@ void ABLi_close (void) {
 
 	if (StaticVariablesSizes) {
 		ABLStackFreeCallback(StaticVariablesSizes);
-		StaticVariablesSizes = NULL;
+		StaticVariablesSizes = nullptr;
 	}
 
 	if (EternalVariablesSizes) {
 		ABLStackFreeCallback(EternalVariablesSizes);
-		EternalVariablesSizes = NULL;
+		EternalVariablesSizes = nullptr;
 	}
 	
 	if (codeBuffer) {
 		ABLCodeFreeCallback(codeBuffer);
-		codeBuffer = NULL;
+		codeBuffer = nullptr;
 	}
 
 	if (stack) {
 		ABLStackFreeCallback(stack);
-		stack = NULL;
+		stack = nullptr;
 	}
 
 	if (debugger) {
 		delete debugger;
-		debugger = NULL;
+		debugger = nullptr;
 	}
 
 	ABL_CloseProfileLog();
@@ -979,18 +979,18 @@ ABLModulePtr ABLi_loadLibrary (PSTR sourceFileName, int32_t* numErrors, int32_t*
 		//------------------
 		// Already loaded...
 		delete library;
-		library = NULL;
-		CurLibrary = NULL;
-		return(NULL);
+		library = nullptr;
+		CurLibrary = nullptr;
+		return(nullptr);
 	}
 
-	CurLibrary = NULL;
+	CurLibrary = nullptr;
 
 	LibraryInstanceRegistry[numLibrariesLoaded] = library;
 	numLibrariesLoaded++;
 
 	if (!createInstance) {
-		CurLibrary = NULL;
+		CurLibrary = nullptr;
 		return(library);
 	}
 
@@ -1013,7 +1013,7 @@ ABLParamPtr ABLi_createParamList (int32_t numParameters) {
 		memset(paramList, 0, sizeof(ABLParam) * (numParameters + 1)); 
 		return(paramList);
 	}
-	return(NULL);
+	return(nullptr);
 }
 
 //***************************************************************************
@@ -1050,7 +1050,7 @@ ABLModulePtr ABLi_getModule (int32_t id) {
 
 	if ((id >= 0) && (id < NumModules))
 		return(ModuleInstanceRegistry[id]);
-	return(NULL);
+	return(nullptr);
 }
 
 //***************************************************************************
@@ -1080,11 +1080,11 @@ int32_t ABLi_registerInteger (PSTR name, int32_t* address, int32_t numElements) 
 
 	level = 0;
 	strcpy(wordString, name);
-	SymTableNodePtr idPtr = NULL;
+	SymTableNodePtr idPtr = nullptr;
 	searchAndEnterThisTable (idPtr, SymTableDisplay[0]);
 
 	if (numElements == 1) {
-		idPtr->library = NULL;
+		idPtr->library = nullptr;
 		idPtr->defn.key = DFN_VAR;
 		idPtr->labelIndex = 0;
 		idPtr->typePtr = setType(IntegerTypePtr);
@@ -1103,10 +1103,10 @@ int32_t ABLi_registerReal (PSTR name, float* address, int32_t /* numElements */)
 
 	level = 0;
 	strcpy(wordString, name);
-	SymTableNodePtr idPtr = NULL;
+	SymTableNodePtr idPtr = nullptr;
 	searchAndEnterThisTable (idPtr, SymTableDisplay[0]);
 
-	idPtr->library = NULL;
+	idPtr->library = nullptr;
 	idPtr->defn.key = DFN_VAR;
 	idPtr->labelIndex = 0;
 	idPtr->typePtr = setType(RealTypePtr);
@@ -1135,7 +1135,7 @@ int32_t ABLi_getCurrentState (void) {
 
 	if (CurFSM)
 		return(CurFSM->getStateHandle());
-	return(NULL);
+	return(nullptr);
 }
 
 //***************************************************************************
@@ -1152,7 +1152,7 @@ void ABLi_transState (int32_t newStateHandle) {
 
 SymTableNodePtr moduleHeader (void) {
 
-	SymTableNodePtr moduleIdPtr = NULL;
+	SymTableNodePtr moduleIdPtr = nullptr;
 	bool isFSM = false;
 	if (CurLibrary)
 		ifTokenGetElseError(TKN_LIBRARY, ABL_ERR_SYNTAX_MISSING_LIBRARY);
@@ -1165,7 +1165,7 @@ SymTableNodePtr moduleHeader (void) {
 
 	//------------------------------------------------------------
 	// NOTE: If a module is a library, its library pointer will be
-	// non-NULL.
+	// non-nullptr.
 	
 	if (curToken == TKN_IDENTIFIER) {
 		searchAndEnterLocalSymTable(moduleIdPtr);
@@ -1177,10 +1177,10 @@ SymTableNodePtr moduleHeader (void) {
 		moduleIdPtr->defn.info.routine.paramCount = 0;
 		moduleIdPtr->defn.info.routine.totalParamSize = 0;
 		moduleIdPtr->defn.info.routine.totalLocalSize = 0;
-		moduleIdPtr->defn.info.routine.params = NULL;
-		moduleIdPtr->defn.info.routine.locals = NULL;
-		moduleIdPtr->defn.info.routine.localSymTable = NULL;
-		moduleIdPtr->defn.info.routine.codeSegment = NULL;
+		moduleIdPtr->defn.info.routine.params = nullptr;
+		moduleIdPtr->defn.info.routine.locals = nullptr;
+		moduleIdPtr->defn.info.routine.localSymTable = nullptr;
+		moduleIdPtr->defn.info.routine.codeSegment = nullptr;
 		moduleIdPtr->library = CurLibrary;
 		moduleIdPtr->typePtr = &DummyType;
 		moduleIdPtr->labelIndex = 0;
@@ -1192,7 +1192,7 @@ SymTableNodePtr moduleHeader (void) {
 	//--------------------------------------------
 	// For now, modules do not have param lists...
 	synchronize(followModuleIdList, declarationStartList, statementStartList);
-	enterScope(NULL);
+	enterScope(nullptr);
 
 	if (curToken == TKN_LPAREN) {
 		int32_t paramCount;
@@ -1209,13 +1209,13 @@ SymTableNodePtr moduleHeader (void) {
 	//else if (!forwardFlag) {
 	//	functionIdPtr->defn.info.routine.paramCount = 0;
 	//	functionIdPtr->defn.info.routine.totalParamSize = 0;
-	//	functionIdPtr->defn.info.routine.params = NULL;
+	//	functionIdPtr->defn.info.routine.params = nullptr;
 	//}
 
 	//-----------------------------
 	// Now, check if return type...
-	moduleIdPtr->typePtr = NULL;
-	SymTableNodePtr typeIdPtr = NULL;
+	moduleIdPtr->typePtr = nullptr;
+	SymTableNodePtr typeIdPtr = nullptr;
 	if (curToken == TKN_COLON) {
 		getToken();
 		if (curToken == TKN_IDENTIFIER) {
@@ -1247,7 +1247,7 @@ SymTableNodePtr moduleHeader (void) {
 
 void routine (void) {
 
-	SymTableNodePtr routineIdPtr = NULL;
+	SymTableNodePtr routineIdPtr = nullptr;
 	
 	//------------------------------------------------------------------------
 	// Do we want to have "procedures", or do functions handle both cases (with
@@ -1272,10 +1272,10 @@ void routine (void) {
 		routineIdPtr->defn.info.routine.key = RTN_DECLARED;
 		//analyzeRoutineHeader(routineIdPtr);
 
-		routineIdPtr->defn.info.routine.locals = NULL;
+		routineIdPtr->defn.info.routine.locals = nullptr;
 
 		declarations(routineIdPtr, false);
-		synchronize(followRoutineDeclsList, NULL, NULL);
+		synchronize(followRoutineDeclsList, nullptr, nullptr);
 		if (curToken != TKN_CODE)
 			syntaxError(ABL_ERR_SYNTAX_MISSING_CODE);
 		crunchToken();
@@ -1303,7 +1303,7 @@ void routine (void) {
 		
 				//------------------------------------
 				// Synchronize after possible error...
-				synchronize(statementStartList, NULL, NULL);
+				synchronize(statementStartList, nullptr, nullptr);
 			} while (tokenIn(statementStartList));
 		ifTokenGetElseError(endToken, ABL_ERR_SYNTAX_MISSING_END_FUNCTION);
 		blockFlag = false;
@@ -1350,12 +1350,12 @@ SymTableNodePtr forwardState (PSTR stateName) {
 	stateSymbol->defn.info.routine.numOrderCalls = 0;
 	stateSymbol->defn.info.routine.totalParamSize = 0;
 	stateSymbol->defn.info.routine.totalLocalSize = 0;
-	stateSymbol->defn.info.routine.params = NULL;
-	stateSymbol->defn.info.routine.locals = NULL;
-	stateSymbol->defn.info.routine.localSymTable = NULL;
-	stateSymbol->defn.info.routine.codeSegment = NULL;
+	stateSymbol->defn.info.routine.params = nullptr;
+	stateSymbol->defn.info.routine.locals = nullptr;
+	stateSymbol->defn.info.routine.localSymTable = nullptr;
+	stateSymbol->defn.info.routine.codeSegment = nullptr;
 	stateSymbol->library = CurLibrary;
-	stateSymbol->typePtr = NULL;
+	stateSymbol->typePtr = nullptr;
 	stateSymbol->labelIndex = 0;
 	//-------------------
 	// Force the level...
@@ -1374,8 +1374,8 @@ SymTableNodePtr functionHeader (void) {
 	else if (curToken == TKN_ORDER)
 		isOrder = true;
 	getToken();
-	SymTableNodePtr functionIdPtr = NULL;
-	SymTableNodePtr typeIdPtr = NULL;
+	SymTableNodePtr functionIdPtr = nullptr;
+	SymTableNodePtr typeIdPtr = nullptr;
 
 	bool forwardFlag = false;
 
@@ -1391,10 +1391,10 @@ SymTableNodePtr functionHeader (void) {
 			functionIdPtr->defn.info.routine.numOrderCalls = 0;
 			functionIdPtr->defn.info.routine.totalParamSize = 0;
 			functionIdPtr->defn.info.routine.totalLocalSize = 0;
-			functionIdPtr->defn.info.routine.params = NULL;
-			functionIdPtr->defn.info.routine.locals = NULL;
-			functionIdPtr->defn.info.routine.localSymTable = NULL;
-			functionIdPtr->defn.info.routine.codeSegment = NULL;
+			functionIdPtr->defn.info.routine.params = nullptr;
+			functionIdPtr->defn.info.routine.locals = nullptr;
+			functionIdPtr->defn.info.routine.localSymTable = nullptr;
+			functionIdPtr->defn.info.routine.codeSegment = nullptr;
 			if (isOrder)
 				functionIdPtr->defn.info.routine.flags |= ROUTINE_FLAG_ORDER;
 			if (isState)
@@ -1415,7 +1415,7 @@ SymTableNodePtr functionHeader (void) {
 	// Error synchronize...
 	synchronize(followFunctionIdList, declarationStartList, statementStartList);
 
-	enterScope(NULL);
+	enterScope(nullptr);
 
 	if (curToken == TKN_LPAREN) {
 		int32_t paramCount;
@@ -1432,12 +1432,12 @@ SymTableNodePtr functionHeader (void) {
 	else if (!forwardFlag) {
 		functionIdPtr->defn.info.routine.paramCount = 0;
 		functionIdPtr->defn.info.routine.totalParamSize = 0;
-		functionIdPtr->defn.info.routine.params = NULL;
+		functionIdPtr->defn.info.routine.params = nullptr;
 	}
 
 	//--------------------------------------------
 	// Now, check if return type and/or forward...
-	functionIdPtr->typePtr = NULL;
+	functionIdPtr->typePtr = nullptr;
 	bool hasIntegerReturnValue = false;
 	if (curToken == TKN_COLON) {
 		getToken();
@@ -1475,8 +1475,8 @@ SymTableNodePtr formalParamList (int32_t* count, int32_t* totalSize) {
 
 	SymTableNodePtr paramIdPtr;
 	SymTableNodePtr firstIdPtr;
-	SymTableNodePtr lastIdPtr = NULL;
-	SymTableNodePtr paramListPtr = NULL;
+	SymTableNodePtr lastIdPtr = nullptr;
+	SymTableNodePtr paramListPtr = nullptr;
 	SymTableNodePtr typeIdPtr;
 	TypePtr paramTypePtr;
 	DefinitionType paramDefn;
@@ -1486,7 +1486,7 @@ SymTableNodePtr formalParamList (int32_t* count, int32_t* totalSize) {
 	getToken();
 
 	while ((curToken == TKN_IDENTIFIER) || (curToken == TKN_REF)) {
-		firstIdPtr = NULL;
+		firstIdPtr = nullptr;
 
 		if (curToken == TKN_REF) {
 			paramDefn = DFN_REFPARAM;
@@ -1527,12 +1527,12 @@ SymTableNodePtr formalParamList (int32_t* count, int32_t* totalSize) {
 			
 			paramCount++;
 
-			if (paramListPtr == NULL)
+			if (paramListPtr == nullptr)
 				paramListPtr = paramIdPtr;
-			if (lastIdPtr != NULL)
+			if (lastIdPtr != nullptr)
 				lastIdPtr->next = paramIdPtr;
 			lastIdPtr = paramIdPtr;
-			//if (firstIdPtr == NULL)
+			//if (firstIdPtr == nullptr)
 			//	firstIdPtr = lastIdPtr = paramIdPtr;
 			//else {
 			//	lastIdPtr->next = paramIdPtr;
@@ -1551,20 +1551,20 @@ SymTableNodePtr formalParamList (int32_t* count, int32_t* totalSize) {
 
 		//------------------------------------------------------------------
 		// Assign the offset and the type to all param ids in the sublist...
-		//for (paramIdPtr = firstIdPtr; paramIdPtr != NULL; paramIdPtr = paramIdPtr->next) {
+		//for (paramIdPtr = firstIdPtr; paramIdPtr != nullptr; paramIdPtr = paramIdPtr->next) {
 		//	paramIdPtr->typePtr = paramTypePtr;
 		//	paramIdPtr->defn.info.data.offset = paramOffset++;
 		//}
 
 		//-----------------------------------------------
 		// Link this list to the list of all param ids...
-		//if (prevLastIdPtr != NULL)
+		//if (prevLastIdPtr != nullptr)
 		//	prevLastIdPtr->next = firstIdPtr;
 		//prevLastIdPtr = lastIdPtr;
 
 		//-------------------------------
 		// Error synch... should be ; or )
-		synchronize(followParamsList, NULL, NULL);
+		synchronize(followParamsList, nullptr, nullptr);
 		ifTokenGet(TKN_COMMA);
 	}
 
@@ -1583,7 +1583,7 @@ SymTableNodePtr formalParamList (int32_t* count, int32_t* totalSize) {
 TypePtr routineCall (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag) {
 
 	SymTableNodePtr thisRoutineIdPtr = CurRoutineIdPtr;
-	TypePtr resultType = NULL;
+	TypePtr resultType = nullptr;
 
 	if ((routineIdPtr->defn.info.routine.key == RTN_DECLARED) ||
 		(routineIdPtr->defn.info.routine.key == RTN_FORWARD) ||
@@ -1601,17 +1601,17 @@ TypePtr routineCall (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag) {
 TypePtr declaredRoutineCall (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag) {
 
 	actualParamList(routineIdPtr, paramCheckFlag);
-	return(/*routineIdPtr->defn.key == DFN_PROCEDURE ? NULL :*/ (TypePtr)(routineIdPtr->typePtr));
+	return(/*routineIdPtr->defn.key == DFN_PROCEDURE ? nullptr :*/ (TypePtr)(routineIdPtr->typePtr));
 }
 
 //***************************************************************************
 
 void actualParamList (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag) {
 
-	SymTableNodePtr formalParamIdPtr = NULL;
+	SymTableNodePtr formalParamIdPtr = nullptr;
 	DefinitionType formalParamDefn = (DefinitionType)0;
-	TypePtr formalParamTypePtr = NULL;
-	TypePtr actualParamTypePtr = NULL;
+	TypePtr formalParamTypePtr = nullptr;
+	TypePtr actualParamTypePtr = nullptr;
 
 	if (paramCheckFlag)
 		formalParamIdPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
@@ -1622,18 +1622,18 @@ void actualParamList (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag) {
 		do {
 			//----------------------------------------------------
 			// Obtain info about the corresponding formal param...
-			if (paramCheckFlag && (formalParamIdPtr != NULL)) {
+			if (paramCheckFlag && (formalParamIdPtr != nullptr)) {
 				formalParamDefn = formalParamIdPtr->defn.key;
 				formalParamTypePtr = (TypePtr)(formalParamIdPtr->typePtr);
 			}
 
 			getToken();
 
-			if ((formalParamIdPtr == NULL) || (formalParamDefn == DFN_VALPARAM) || !paramCheckFlag) {
+			if ((formalParamIdPtr == nullptr) || (formalParamDefn == DFN_VALPARAM) || !paramCheckFlag) {
 				//--------------
 				// VAL Params...
 				actualParamTypePtr = expression();
-				if (paramCheckFlag && (formalParamIdPtr != NULL) && !isAssignTypeCompatible(formalParamTypePtr, actualParamTypePtr))
+				if (paramCheckFlag && (formalParamIdPtr != nullptr) && !isAssignTypeCompatible(formalParamTypePtr, actualParamTypePtr))
 					syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 				}
 			else {
@@ -1658,7 +1658,7 @@ void actualParamList (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag) {
 			//---------------------------------------
 			// More actual params than formal params?
 			if (paramCheckFlag) {
-				if (formalParamIdPtr == NULL)
+				if (formalParamIdPtr == nullptr)
 					syntaxError(ABL_ERR_SYNTAX_WRONG_NUMBER_OF_PARAMS);
 				else
 					formalParamIdPtr = formalParamIdPtr->next;
@@ -1666,7 +1666,7 @@ void actualParamList (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag) {
 
 			//---------------
 			// Error synch...
-			synchronize(followParamList, statementEndList, NULL);
+			synchronize(followParamList, statementEndList, nullptr);
 		} while (curToken == TKN_COMMA);
 
 		ifTokenGetElseError(TKN_RPAREN, ABL_ERR_SYNTAX_MISSING_RPAREN);
@@ -1674,7 +1674,7 @@ void actualParamList (SymTableNodePtr routineIdPtr, int32_t paramCheckFlag) {
 
 	//----------------------------------------
 	// Fewer actual params than formal params?
-	if (paramCheckFlag && (formalParamIdPtr != NULL))
+	if (paramCheckFlag && (formalParamIdPtr != nullptr))
 		syntaxError(ABL_ERR_SYNTAX_WRONG_NUMBER_OF_PARAMS);
 }
 

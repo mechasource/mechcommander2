@@ -32,19 +32,19 @@ class VFXElement : public Element
 
 	VFXElement (void)
 	{
-		shapeTable = NULL;
+		shapeTable = nullptr;
 		frameNum = 0;
 		x = y = 0;
 		reverse = FALSE;
 		
-		fadeTable = NULL;
+		fadeTable = nullptr;
 		
 		noScaleDraw = FALSE;
 		scaleUp = FALSE;
 	}
 
-	VFXElement (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, puint8_t fTable = NULL, bool noScale = FALSE, bool scaleUp = FALSE);
-	VFXElement (puint8_t _shape, float _x, float _y, int32_t frame, bool rev, puint8_t fTable = NULL, bool noScale = FALSE, bool scaleUp = FALSE);
+	VFXElement (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, puint8_t fTable = nullptr, bool noScale = FALSE, bool scaleUp = FALSE);
+	VFXElement (puint8_t _shape, float _x, float _y, int32_t frame, bool rev, puint8_t fTable = nullptr, bool noScale = FALSE, bool scaleUp = FALSE);
 
 	virtual void draw (void);
 };
@@ -74,14 +74,14 @@ class VFXShapeElement : public Element
 
 	VFXShapeElement (void)
 	{
-		shapeTable[0] = shapeTable[1] = shapeTable[2] = shapeTable[3] = NULL;
+		shapeTable[0] = shapeTable[1] = shapeTable[2] = shapeTable[3] = nullptr;
 		frameNum[0] = frameNum[1] = frameNum[2] = frameNum[3] = 0;
 
 		x = y = 0;
 
 		reverse[0] = reverse[1] = reverse[2] = reverse[3] = FALSE;
 		
-		fadeTable = NULL;
+		fadeTable = nullptr;
 
 		textureMemoryHandle = 0xffffffff;
 
@@ -91,7 +91,7 @@ class VFXShapeElement : public Element
 		fogRGB = 0xffffffff;		//NO Fog
 	}
 
-	void init (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, size_t *fTable = NULL, float _z = 0.0, float tZ = 0.0);
+	void init (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, size_t *fTable = nullptr, float _z = 0.0, float tZ = 0.0);
 
 	int32_t getTextureHandle (int32_t height = -1);					//Return the block of memory so I store it for this mech/vehicle,etc.
 	void setTextureHandle (uint32_t handle, int32_t height = -1);

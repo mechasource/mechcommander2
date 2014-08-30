@@ -33,7 +33,7 @@ static char CorruptMsg[] = "Heap check failed.\n";
 static char pformat[] = "%s %s\n";
 
 GlobalHeapRec HeapList::heapRecords[MAX_HEAPS];
-HeapListPtr globalHeapList = NULL;
+HeapListPtr globalHeapList = nullptr;
 
 uint32_t memCoreLeft = 0;
 uint32_t memTotalLeft = 0;
@@ -130,11 +130,11 @@ void HeapManager::destroy (void)
 //---------------------------------------------------------------------------
 void HeapManager::init (void)
 {
-	heap = NULL;
+	heap = nullptr;
 	memReserved = FALSE;
 	totalSize = 0;
 	committedSize = 0;
-	nxt = NULL;
+	nxt = nullptr;
 }
 		
 //---------------------------------------------------------------------------
@@ -149,13 +149,13 @@ puint8_t HeapManager::getHeapPtr (void)
 	if (memReserved && totalSize && committedSize && heap)
 		return heap;
 
-	return NULL;
+	return nullptr;
 }
 
 //---------------------------------------------------------------------------
 int32_t HeapManager::createHeap (uint32_t memSize)
 {
-	heap = (puint8_t)VirtualAlloc(NULL,memSize,MEM_RESERVE,PAGE_READWRITE);
+	heap = (puint8_t)VirtualAlloc(nullptr,memSize,MEM_RESERVE,PAGE_READWRITE);
 
 	if (heap)
 	{
@@ -260,9 +260,9 @@ int32_t HeapManager::decommitHeap (uint32_t decommitSize)
 // Class UserHeap Member Functions
 UserHeap::UserHeap (void) : HeapManager()
 {
-	heapStart = NULL;
-	heapEnd = NULL;
-	firstNearBlock = NULL;
+	heapStart = nullptr;
+	heapEnd = nullptr;
+	firstNearBlock = nullptr;
 	heapSize = 0;
 	
 	#ifdef CHECK_HEAP
@@ -283,7 +283,7 @@ int32_t UserHeap::init (uint32_t memSize, PSTR heapId, bool useGOS)
 		strcpy(heapName,heapId);
 	}
 	else
-		heapName = NULL;
+		heapName = nullptr;
 
 	if (!useGOS)
 	{
@@ -347,13 +347,13 @@ int32_t UserHeap::init (uint32_t memSize, PSTR heapId, bool useGOS)
 	
 		//----------------------------------
 		// linkup heap blocks
-		firstNearBlock = NULL;
+		firstNearBlock = nullptr;
 		relink(heapStart);
 	
 		heapSize = memSize;
 	
 		#ifdef _DEBUG
-		recordArray = NULL;
+		recordArray = nullptr;
 		recordCount = 0;
 		logMallocs = FALSE;
 		#endif;
@@ -365,16 +365,16 @@ int32_t UserHeap::init (uint32_t memSize, PSTR heapId, bool useGOS)
 		gosHeap = gos_CreateMemoryHeap(heapId,memSize);
 		useGOSGuardPage = true;
 
-		heapStart = NULL;
-		heapEnd = NULL;
-		firstNearBlock = NULL;
+		heapStart = nullptr;
+		heapEnd = nullptr;
+		firstNearBlock = nullptr;
 		heapSize = 0;
 
-		heapName = NULL;
+		heapName = nullptr;
 		heapState = NO_ERROR;
 
 		#ifdef _DEBUG
-		recordArray = NULL;
+		recordArray = nullptr;
 		#endif
 	}
 	
@@ -452,15 +452,15 @@ void UserHeap::destroy (void)
 	
 	if (!gosHeap)
 	{
-		heapStart = NULL;
-		heapEnd = NULL;
-		firstNearBlock = NULL;
+		heapStart = nullptr;
+		heapEnd = nullptr;
+		firstNearBlock = nullptr;
 		heapSize = 0;
 
 		if (heapName)
 		{
 			::gos_Free(heapName);
-			heapName = NULL;
+			heapName = nullptr;
 		}
 
 		heapState = NO_ERROR;
@@ -469,14 +469,14 @@ void UserHeap::destroy (void)
 		if (recordArray)
 		{
 			delete [] recordArray;
-			recordArray = NULL;
+			recordArray = nullptr;
 		}
 		#endif
 	}
 	else
 	{
 		gos_DestroyMemoryHeap(gosHeap,false);
-		gosHeap = NULL;
+		gosHeap = nullptr;
 	}
 }
 		
@@ -498,7 +498,7 @@ uint32_t UserHeap::totalCoreLeft (void)
 	if (!firstNearBlock)
 	{
 #ifdef _DEBUG
-		PAUSE(("Heap %s firstNearBlock is NULL.",heapName));
+		PAUSE(("Heap %s firstNearBlock is nullptr.",heapName));
 #endif
 		return 0;
 	}
@@ -662,7 +662,7 @@ DoneCL:
 //---------------------------------------------------------------------------
 PVOID UserHeap::Malloc (uint32_t memSize)
 {
-	PVOID result = NULL;
+	PVOID result = nullptr;
 	if (gosHeap)
 	{
 		gos_PushCurrentHeap( gosHeap );
@@ -672,7 +672,7 @@ PVOID UserHeap::Malloc (uint32_t memSize)
 		return result;
 	}
 
-	HeapBlockPtr blockOffs = NULL;
+	HeapBlockPtr blockOffs = nullptr;
 	HeapBlockPtr localFirst = firstNearBlock;
 	int32_t heapBlockSize = sizeof(HeapBlock);
 	bool mf = mallocFatals;
@@ -1141,12 +1141,12 @@ int32_t UserHeap::Free (PVOIDmemBlock)
 
 	HeapBlockPtr blockOffs = (HeapBlockPtr)memBlock;
 	int32_t result = 0;
-	HeapBlockPtr sortBlock = NULL;
+	HeapBlockPtr sortBlock = nullptr;
 
 	//------------------------------------------
-	// If freeing a NULL, we do nothing
+	// If freeing a nullptr, we do nothing
 	//------------------------------------------
-	if (memBlock == NULL)
+	if (memBlock == nullptr)
 		return(NO_ERROR);
 
 	//-------------------------------------------------------------------
@@ -1418,7 +1418,7 @@ Dealloc_Done:
 		//This may be OK?  Not logging when allocated!
 		//gosASSERT (count < NUMMEMRECORDS);		
 		
-		recordArray[count].ptr = NULL;
+		recordArray[count].ptr = nullptr;
 		recordArray[count].size = 0;
 		
 		for (int32_t i=0; i<12; i++)
@@ -1796,7 +1796,7 @@ void HeapList::addHeap (HeapManagerPtr newHeap)
 {
 	for (int32_t i=0;i<MAX_HEAPS;i++)
 	{
-		if (heapRecords[i].thisHeap == NULL)
+		if (heapRecords[i].thisHeap == nullptr)
 		{
 			heapRecords[i].thisHeap = newHeap;
 			heapRecords[i].heapSize = newHeap->tSize();
@@ -1812,7 +1812,7 @@ void HeapList::removeHeap (HeapManagerPtr oldHeap)
 	{
 		if (heapRecords[i].thisHeap == oldHeap)
 		{
-			heapRecords[i].thisHeap = NULL;
+			heapRecords[i].thisHeap = nullptr;
 			heapRecords[i].heapSize = 0;
 			return;
 		}
@@ -1958,7 +1958,7 @@ int32_t getStringFromMap (File &mapFile, uint32_t addr, PSTR result)
 	
 	mapFile.seek(0);
 	mapFile.readLine((puint8_t)mapFileLine,511);
-	while (strstr(mapFileLine,"  Address") == NULL)
+	while (strstr(mapFileLine,"  Address") == nullptr)
 	{
 		mapFile.readLine((puint8_t)mapFileLine,511);
 	}
@@ -1973,7 +1973,7 @@ int32_t getStringFromMap (File &mapFile, uint32_t addr, PSTR result)
 	char previousAddress[511];
 	strncpy(previousAddress,&(mapFileLine[6]),510);
 	
-	while (strstr(mapFileLine,"0001:") != NULL)
+	while (strstr(mapFileLine,"0001:") != nullptr)
 	{
 		if (strnicmp(currentAddress,actualAddr,8) > 0)
 		{
@@ -2010,7 +2010,7 @@ void HeapList::dumpLog (void)
 	#endif
 	#endif	
 
-	HeapManagerPtr currentHeap = NULL;
+	HeapManagerPtr currentHeap = nullptr;
 	uint32_t heapNumber = 1;
 	uint32_t mapStringSize = 0;
 	char msg[1024];

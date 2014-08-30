@@ -15,14 +15,14 @@
 #include "weaponfx.h"
 //---------------------------------------------------------------------------------
 // weapon FX Equivalancy.  Stores names now for GOS FX
-WeaponEffects *weaponEffects = NULL;
+WeaponEffects *weaponEffects = nullptr;
 char mc2_word_none[5] = "NONE";
 
 //---------------------------------------------------------------------------------
 void WeaponEffects::destroy (void)
 {
 	systemHeap->Free(effects);
-	effects = NULL;
+	effects = nullptr;
 	numEffects = 0;
 }
 		
@@ -40,7 +40,7 @@ void WeaponEffects::init (PSTR effectCSVFileName)
 	numEffects = effectFile.getNumLines() - 1;	//Always subtract one for the column headers
 
 	effects = (EffectData *)systemHeap->Malloc(sizeof(EffectData) * numEffects);
-	gosASSERT(effects != NULL);
+	gosASSERT(effects != nullptr);
 	
 	for (int32_t i=0;i<numEffects;i++)
 	{

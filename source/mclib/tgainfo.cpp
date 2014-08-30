@@ -208,7 +208,7 @@ void tgaCopy (puint8_t dest, puint8_t src, int32_t size)
 //---------------------------------------------------------------------------
 static cint32_t g_textureCache_BufferSize = 16384/*64*64*sizeof(uint32_t)*/;
 static uint8_t g_textureCache_Buffer[g_textureCache_BufferSize];
-EString *g_textureCache_FilenameOfLastLoadedTexture = NULL;/*This is an (EString *) instead of an EString because apparently gos memory management has a problem with global static allocation of EStrings.*/
+EString *g_textureCache_FilenameOfLastLoadedTexture = nullptr;/*This is an (EString *) instead of an EString because apparently gos memory management has a problem with global static allocation of EStrings.*/
 static int32_t g_textureCache_WidthOfLastLoadedTexture = 0;/*just to be sure*/
 static int32_t g_textureCache_HeightOfLastLoadedTexture = 0;/*just to be sure*/
 static int32_t g_textureCache_NumberOfConsecutiveLoads = 0;

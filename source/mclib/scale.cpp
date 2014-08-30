@@ -41,7 +41,7 @@ extern void AG_shape_translate_draw (PANE *pane, PVOIDshape_table,int32_t shape_
 #define MAX_X		360
 #define MAX_Y		360
 
-puint8_t tempBuffer = NULL;
+puint8_t tempBuffer = nullptr;
 //---------------------------------------------------------------------------
 //
 int32_t scaleDraw (puint8_t shapeTable, uint32_t frameNum, int32_t sx, int32_t sy, bool reverse, puint8_t fadeTable, bool scaleUp)

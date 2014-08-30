@@ -38,7 +38,7 @@
 #define STORAGE_TYPE_LZD		0x02L		// LZ Compressed Packet
 #define STORAGE_TYPE_HF			0x03L		// Huffman Compressed Packet
 #define STORAGE_TYPE_ZLIB		0x04L		// zLib Compressed Packet
-#define STORAGE_TYPE_NUL		0x07L		// NULL packet.
+#define STORAGE_TYPE_NUL		0x07L		// nullptr packet.
 
 #define TYPE_SHIFT					29	// Bit position of masked type
 #define DEFAULT_PACKET_TYPE			STORAGE_TYPE_RAW

@@ -68,7 +68,7 @@ char mechSpeedStateArray[28] = {
 char transitionArray[1000] = 
 {
 //--------------------------------------------------------------------------------
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//0,0	From Park to Park (NULL)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//0,0	From Park to Park (nullptr)
 	 1, 2,-1,-1,-1,-1,-1,-1,-1,-1,		//0,1	From Park to Stand 
 	 1, 2, 4,-1,-1,-1,-1,-1,-1,-1,		//0,2	From Park to Walk
 	 1, 2, 4, 7,-1,-1,-1,-1,-1,-1,		//0,3	From Park to Run
@@ -80,7 +80,7 @@ char transitionArray[1000] =
 	 1, 2,12,-1,-1,-1,-1,-1,-1,-1,		//0,9	From Park to LimpRight
 //--------------------------------------------------------------------------------
 	 5, 0,-1,-1,-1,-1,-1,-1,-1,-1,		//1,0	From Stand to Park
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//1,1	From Stand to Stand (NULL)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//1,1	From Stand to Stand (nullptr)
 	 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//1,2	From Stand to Walk
 	 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//1,3	From Stand to Run
      9,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//1,4	From Stand to Reverse
@@ -92,7 +92,7 @@ char transitionArray[1000] =
 //--------------------------------------------------------------------------------
 	 2, 5, 0,-1,-1,-1,-1,-1,-1,-1,		//2,0	From Walk to Park 
 	 2,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//2,1	From Walk to Stand 
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//2,2	From Walk to Walk (NULL)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//2,2	From Walk to Walk (nullptr)
 	 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//2,3	From Walk to Run
 	 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//2,4	From Walk to Reverse
 	11,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//2,5	From Walk to LimpLeft
@@ -104,7 +104,7 @@ char transitionArray[1000] =
 	 2, 5, 0,-1,-1,-1,-1,-1,-1,-1,		//3,0	From Run to Park
 	 2,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//3,1	From Run to Stand 
 	 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//3,2	From Run to Walk
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//3,3	From Run to Run	(NULL)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//3,3	From Run to Run	(nullptr)
 	 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//3,4	From Run to Reverse
 	11,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//3,5	From Run to LimpLeft
 	20, 2,-1,-1,-1,-1,-1,-1,-1,-1,		//3,6	From Run to Jump
@@ -116,7 +116,7 @@ char transitionArray[1000] =
 	 2,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//4,1	From Reverse to Stand 
 	 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//4,2	From Reverse to Walk
 	 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//4,3	From Reverse to Run
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//4,4	From Reverse to Reverse (NULL)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//4,4	From Reverse to Reverse (nullptr)
    	11,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//4,5	From Reverse to LimpLeft
 	20, 2,-1,-1,-1,-1,-1,-1,-1,-1,		//4,6	From Reverse to Jump
 	15,23,-1,-1,-1,-1,-1,-1,-1,-1,		//4,7	From Reverse to Fall Forward 
@@ -128,19 +128,19 @@ char transitionArray[1000] =
 	 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//5,2	From Limp to Walk
 	 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//5,3	From Limp to Run
      9,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//5,4	From Limp to Reverse
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//5,5	From Limp to LimpLeft	(NULL)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//5,5	From Limp to LimpLeft	(nullptr)
 	20, 2,-1,-1,-1,-1,-1,-1,-1,-1,		//5,6	From Limp to Jump
 	15,23,-1,-1,-1,-1,-1,-1,-1,-1,		//5,7	From Limp to Fall Forward 
 	14,24,-1,-1,-1,-1,-1,-1,-1,-1,		//5,8	From Limp to Fall Backward 
 	12,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//5,5	From Limp to LimpRight
 //--------------------------------------------------------------------------------
 	 5, 0,-1,-1,-1,-1,-1,-1,-1,-1,		//6,0	From Jump to Park
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//6,1	From Jump to Stand (NULL)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//6,1	From Jump to Stand (nullptr)
 	 4,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//6,2	From Jump to Walk
 	 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//6,3	From Jump to Run
 	 9,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//6,4	From Jump to Reverse
 	11,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//6,5	From Jump to LimpLeft
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//6,6	From Jump to Jump (NULL)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//6,6	From Jump to Jump (nullptr)
 	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//6,7	From Jump to Fall Forward 
 	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//6,8	From Jump to Fall Backward 
 	12,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//6,5	From Jump to LimpRight
@@ -152,8 +152,8 @@ char transitionArray[1000] =
 	22, 2, 9,-1,-1,-1,-1,-1,-1,-1,		//7,4	From Fall Forward to Reverse
 	22, 2,11,-1,-1,-1,-1,-1,-1,-1,		//7,5	From Fall Forward to LimpLeft
 	22, 2,20, 2,-1,-1,-1,-1,-1,-1,		//7,6	From Fall Forward to Jump
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//7,7	From Fall Forward to Fall Forward (NULL)
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//7,8	From Fall Forward to Fall Backward (NULL)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//7,7	From Fall Forward to Fall Forward (nullptr)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//7,8	From Fall Forward to Fall Backward (nullptr)
 	22, 2,12,-1,-1,-1,-1,-1,-1,-1,		//7,5	From Fall Forward to LimpRight
 //--------------------------------------------------------------------------------
 	21, 2, 5, 0,-1,-1,-1,-1,-1,-1,		//8,0	From Fall Backward to Park 
@@ -163,8 +163,8 @@ char transitionArray[1000] =
 	21, 2, 9,-1,-1,-1,-1,-1,-1,-1,		//8,4	From Fall Backward to Reverse
 	21, 2,11,-1,-1,-1,-1,-1,-1,-1,		//8,5	From Fall Backward to LimpLeft
 	21, 2,20, 2,-1,-1,-1,-1,-1,-1,		//8,6	From Fall Backward to Jump
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//8,7	From Fall Backward to Fall Forward  (NULL)
-	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//8,8	From Fall Backward to Fall Backward (NULL)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//8,7	From Fall Backward to Fall Forward  (nullptr)
+	-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,		//8,8	From Fall Backward to Fall Backward (nullptr)
 	21, 2,12,-1,-1,-1,-1,-1,-1,-1,		//8,5	From Fall Backward to LimpRight
 //--------------------------------------------------------------------------------
 	 2, 5, 0,-1,-1,-1,-1,-1,-1,-1,		//9,0	From LimpRight to Park 

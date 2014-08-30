@@ -48,7 +48,7 @@ ReservedWord reservedWord2[] = {
 	{"or", TKN_OR},
 	{"do", TKN_DO},
 	{"to", TKN_TO},
-	{NULL, TKN_NONE}
+	{nullptr, TKN_NONE}
 };
 
 ReservedWord reservedWord3[] = {
@@ -58,7 +58,7 @@ ReservedWord reservedWord3[] = {
 	{"not", TKN_NOT},
 	{"var", TKN_VAR},
 	{"fsm", TKN_FSM},
-	{NULL, TKN_NONE}
+	{nullptr, TKN_NONE}
 };
 
 ReservedWord reservedWord4[] = {
@@ -67,7 +67,7 @@ ReservedWord reservedWord4[] = {
 	{"case", TKN_CASE},
 	{"code", TKN_CODE},
 	{"type", TKN_TYPE},
-	{NULL, TKN_NONE}
+	{nullptr, TKN_NONE}
 };
 
 ReservedWord reservedWord5[] = {
@@ -78,7 +78,7 @@ ReservedWord reservedWord5[] = {
 	{"order", TKN_ORDER},
 	{"state", TKN_STATE},
 	{"trans", TKN_TRANS},
-	{NULL, TKN_NONE}
+	{nullptr, TKN_NONE}
 };
 
 ReservedWord reservedWord6[] = {
@@ -88,14 +88,14 @@ ReservedWord reservedWord6[] = {
 	{"switch", TKN_SWITCH},
 	{"static", TKN_STATIC},
 	{"endfsm", TKN_END_FSM},
-	{NULL, TKN_NONE}
+	{nullptr, TKN_NONE}
 };
 
 ReservedWord reservedWord7[] = {
 	{"endcase", TKN_END_CASE},
 	{"eternal", TKN_ETERNAL},
 	{"library", TKN_LIBRARY},
-	{NULL, TKN_NONE}
+	{nullptr, TKN_NONE}
 };
 
 ReservedWord reservedWord8[] = {
@@ -103,29 +103,29 @@ ReservedWord reservedWord8[] = {
 	{"endwhile", TKN_END_WHILE},
 	{"endorder", TKN_END_ORDER},
 	{"endstate", TKN_END_STATE},
-	{NULL, TKN_NONE}
+	{nullptr, TKN_NONE}
 };
 
 ReservedWord reservedWord9[] = {
 	{"endswitch", TKN_END_SWITCH},
 	{"endmodule", TKN_END_MODULE},
 	{"transback", TKN_TRANS_BACK},
-	{NULL, TKN_NONE}					//This was missing.  Thank You Symantec!!!!		1/24/97 -fs
+	{nullptr, TKN_NONE}					//This was missing.  Thank You Symantec!!!!		1/24/97 -fs
 };
 
 ReservedWord reservedWord10[] = {
 	{"endlibrary", TKN_END_LIBRARY},
-	{NULL, TKN_NONE}
+	{nullptr, TKN_NONE}
 };
 
 ReservedWord reservedWord11[] = {
 	{"endfunction", TKN_END_FUNCTION},
-	{NULL, TKN_NONE}
+	{nullptr, TKN_NONE}
 };
 
 ReservedWord* reservedWordTable[] = {
-	NULL,
-	NULL,
+	nullptr,
+	nullptr,
 	reservedWord2,
 	reservedWord3,
 	reservedWord4,
@@ -266,12 +266,12 @@ Literal			curLiteral;
 int32_t			level = 0;
 int32_t			lineNumber = 0;
 int32_t			FileNumber = 0;
-ABLFile*		sourceFile = NULL;
+ABLFile*		sourceFile = nullptr;
 bool			printFlag = true;
 bool			blockFlag = false;
 BlockType		blockType = BLOCK_MODULE;
-SymTableNodePtr	CurModuleIdPtr = NULL;
-SymTableNodePtr	CurRoutineIdPtr = NULL;
+SymTableNodePtr	CurModuleIdPtr = nullptr;
+SymTableNodePtr	CurRoutineIdPtr = nullptr;
 bool			DumbGetCharOn = false;
 
 int32_t			NumOpenFiles = 0;
@@ -303,18 +303,18 @@ extern bool		DebugCodeEnabled;
 
 extern ABLModulePtr	CurLibrary;
 
-int32_t (*ABLFile::createCB) (PVOID* file, PSTR fName) = NULL;
-int32_t (*ABLFile::openCB) (PVOID* file, PSTR fName) = NULL;
-int32_t (*ABLFile::closeCB) (PVOID* file) = NULL;
-bool (*ABLFile::eofCB) (PVOID file) = NULL;
-int32_t (*ABLFile::readCB) (PVOID file, puint8_t buffer, int32_t length) = NULL;
-int32_t (*ABLFile::readLongCB) (PVOID file) = NULL;
-int32_t (*ABLFile::readStringCB) (PVOID file, puint8_t buffer) = NULL;
-int32_t (*ABLFile::readLineExCB) (PVOID file, puint8_t buffer, int32_t maxLength) = NULL;
-int32_t (*ABLFile::writeCB) (PVOID file, puint8_t buffer, int32_t length) = NULL;
-int32_t (*ABLFile::writeByteCB) (PVOID file, uint8_t byte) = NULL;
-int32_t (*ABLFile::writeLongCB) (PVOID file, int32_t value) = NULL;
-int32_t (*ABLFile::writeStringCB) (PVOID file, PSTR buffer) = NULL;
+int32_t (*ABLFile::createCB) (PVOID* file, PSTR fName) = nullptr;
+int32_t (*ABLFile::openCB) (PVOID* file, PSTR fName) = nullptr;
+int32_t (*ABLFile::closeCB) (PVOID* file) = nullptr;
+bool (*ABLFile::eofCB) (PVOID file) = nullptr;
+int32_t (*ABLFile::readCB) (PVOID file, puint8_t buffer, int32_t length) = nullptr;
+int32_t (*ABLFile::readLongCB) (PVOID file) = nullptr;
+int32_t (*ABLFile::readStringCB) (PVOID file, puint8_t buffer) = nullptr;
+int32_t (*ABLFile::readLineExCB) (PVOID file, puint8_t buffer, int32_t maxLength) = nullptr;
+int32_t (*ABLFile::writeCB) (PVOID file, puint8_t buffer, int32_t length) = nullptr;
+int32_t (*ABLFile::writeByteCB) (PVOID file, uint8_t byte) = nullptr;
+int32_t (*ABLFile::writeLongCB) (PVOID file, int32_t value) = nullptr;
+int32_t (*ABLFile::writeStringCB) (PVOID file, PSTR buffer) = nullptr;
 
 //***************************************************************************
 // ABL FILE routines
@@ -338,7 +338,7 @@ void ABLFile::operator delete (PVOID us) {
 void ABLFile::init (void) {
 
 	fileName = 0;
-	file = NULL;
+	file = nullptr;
 }
 
 //-----------------------------------------------------------------------------
@@ -347,9 +347,9 @@ void ABLFile::destroy (void) {
 
 	if (fileName) {
 		ABLSystemFreeCallback(fileName);
-		fileName = NULL;
+		fileName = nullptr;
 	}
-	file = NULL;
+	file = nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -482,7 +482,7 @@ int32_t isReservedWord (void)
 	int32_t wordLength = strlen(wordString);
 	if ((wordLength >= MINLEN_RESERVED_WORD) && (wordLength <= MAXLEN_RESERVED_WORD) && reservedWordTable[wordLength])
 	{
-		for (ReservedWord* rwPtr = reservedWordTable[wordLength]; rwPtr->string != NULL; rwPtr++)
+		for (ReservedWord* rwPtr = reservedWordTable[wordLength]; rwPtr->string != nullptr; rwPtr++)
 		{
 			if (strcmp(wordString, rwPtr->string) == 0) 
 			{
@@ -527,7 +527,7 @@ void initScanner (PSTR fileName) {
 			curToken = TKN_ERROR;
 		}
 
-		sourceBuffer[0] = NULL;
+		sourceBuffer[0] = nullptr;
 		bufferp = sourceBuffer;
 		getChar();
 	}
@@ -540,7 +540,7 @@ void quitScanner (void) {
 	sourceFile->close();
 
 	delete sourceFile;
-	sourceFile = NULL;
+	sourceFile = nullptr;
 }
 
 //***************************************************************************
@@ -551,7 +551,7 @@ void skipLineComment (void) {
 
 	//-------------------------------------------------------------------
 	// Just blow off the rest of the current source line we've read in...
-	*bufferp = NULL;
+	*bufferp = nullptr;
 	curChar = ' ';
 }
 
@@ -599,7 +599,7 @@ void languageDirective (void) {
 		directive[directiveLength++] = curChar;
 		getChar();
 	}
-	directive[directiveLength] = NULL;
+	directive[directiveLength] = nullptr;
 	_strlwr(directive);
 
 	if (strcmp(directive, "include") == 0) {
@@ -614,7 +614,7 @@ void languageDirective (void) {
 				fileName[fileNameLength++] = curChar;
 				getChar();
 			}
-			fileName[fileNameLength] = NULL;
+			fileName[fileNameLength] = nullptr;
 			//-----------------------------------------------------------------------
 			// The language directive should be on a line by itself, since everything
 			// after the directive on this line is ignored...
@@ -644,7 +644,7 @@ void languageDirective (void) {
 				fileName[fileNameLength++] = curChar;
 				getChar();
 			}
-			fileName[fileNameLength] = NULL;
+			fileName[fileNameLength] = nullptr;
 			//-----------------------------------------------------------------------
 			// The language directive should be on a line by itself, since everything
 			// after the directive on this line is ignored...
@@ -663,7 +663,7 @@ void languageDirective (void) {
 				strcpy(fullPath, fileName);
 			else {
 				strcpy(fullPath, SourceFiles[0]);
-				fullPath[curChar + 1] = NULL;
+				fullPath[curChar + 1] = nullptr;
 				strcat(fullPath, fileName);
 			}
 			if ((openErr = openSourceFile(fullPath)) != ABL_NO_ERR) {
@@ -732,7 +732,7 @@ void languageDirective (void) {
 						directive2[directiveLength++] = curChar;
 						getChar();
 					}
-					directive2[directiveLength] = NULL;
+					directive2[directiveLength] = nullptr;
 					_strlwr(directive2);
 					if (strcmp(directive2, "#debug_start") == 0)
 						nestedLevel++;
@@ -767,7 +767,7 @@ void languageDirective (void) {
 
 void getChar (void) {
 
-	if (*bufferp == NULL) {
+	if (*bufferp == nullptr) {
 		if (!getSourceLine()) {
 			if (NumOpenFiles > 1) {
 				closeSourceFile();
@@ -840,8 +840,8 @@ void downShiftWord (void) {
 		*wp = ((*tp >= 'A') && (*tp <= 'Z')) ? (*tp + (char)offset) : *tp;
 		wp++;
 		tp++;
-	} while (*tp != NULL);
-	*wp = NULL;
+	} while (*tp != nullptr);
+	*wp = nullptr;
 }
 
 //***************************************************************************
@@ -883,7 +883,7 @@ void getWord (void) {
 		getChar();
 	}
 
-	*tokenp = NULL;
+	*tokenp = nullptr;
 	downShiftWord();
 
 	if (curChar == '.') {
@@ -903,7 +903,7 @@ void getWord (void) {
 				tokenp++;
 				getChar();
 			}
-			*tokenp = NULL;
+			*tokenp = nullptr;
 			downShiftWord();
 		}
 	}
@@ -1033,7 +1033,7 @@ void getNumber (void) {
 	else
 		curLiteral.value.real = numberValue;
 
-	*tokenp = NULL;
+	*tokenp = nullptr;
 	curToken = TKN_NUMBER;
 }
 
@@ -1059,8 +1059,8 @@ void getString (void) {
 	}
 	curChar = ' ';
 
-	*tokenp = NULL;
-	*stringPtr = NULL;
+	*tokenp = nullptr;
+	*stringPtr = nullptr;
 	curToken = TKN_STRING;
 	curLiteral.type = LIT_STRING;
 }
@@ -1192,7 +1192,7 @@ void getSpecial (void) {
 			break;
 	}
 
-	*tokenp = NULL;
+	*tokenp = nullptr;
 }
 
 //***************************************************************************
@@ -1270,7 +1270,7 @@ int32_t openSourceFile (PSTR sourceFileName) {
 	if (NumSourceFiles == MAX_SOURCE_FILES)
 		return(-3);
 
-	ABLFile* sFile = NULL;
+	ABLFile* sFile = nullptr;
 	sFile = new ABLFile;
 
 	if (sFile->open(sourceFileName) != ABL_NO_ERR)
@@ -1289,7 +1289,7 @@ int32_t openSourceFile (PSTR sourceFileName) {
 	NumOpenFiles++;
 
 	lineNumber = 0;
-	sourceBuffer[0] = NULL;
+	sourceBuffer[0] = nullptr;
 	bufferp = sourceBuffer;
 	getChar();
 
@@ -1306,9 +1306,9 @@ int32_t closeSourceFile (void) {
 	sourceFile->close();
 
 	delete sourceFile;
-	sourceFile = NULL;
+	sourceFile = nullptr;
 
-	openFiles[NumOpenFiles].filePtr = NULL;
+	openFiles[NumOpenFiles].filePtr = nullptr;
 	NumOpenFiles--;
 
 	if (NumOpenFiles > 0) {
@@ -1331,12 +1331,12 @@ void printLine (PSTR line) {
 		lineCount = 1;
 	}
 
-	PSTR saveChPtr = NULL;
+	PSTR saveChPtr = nullptr;
 	char saveCh = ' ';
 	if (strlen(line) > MAXLEN_PRINTLINE) {
 		saveCh = line[MAXLEN_PRINTLINE];
 		saveChPtr = &line[MAXLEN_PRINTLINE];
-		*saveChPtr = NULL;
+		*saveChPtr = nullptr;
 	}
 	printf("%s", line);
 	if (saveChPtr)

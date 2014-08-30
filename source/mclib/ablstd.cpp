@@ -67,7 +67,7 @@ void stdReturn (void) {
 			syntaxError(ABL_ERR_SYNTAX_INCOMPATIBLE_TYPES);
 		ifTokenGetElseError(TKN_RPAREN, ABL_ERR_SYNTAX_MISSING_RPAREN);
 		}
-	else if (CurRoutineIdPtr->typePtr != NULL)
+	else if (CurRoutineIdPtr->typePtr != nullptr)
 		syntaxError(ABL_ERR_SYNTAX_WRONG_NUMBER_OF_PARAMS);
 }
 
@@ -105,7 +105,7 @@ TypePtr stdConcat (void) {
 	//
 	//				integer, real or char array
 	//
-	//		RETURN: integer (resulting length, not including NULL)
+	//		RETURN: integer (resulting length, not including nullptr)
 
 	if (curToken == TKN_LPAREN)
 		getToken();
@@ -159,10 +159,10 @@ TypePtr standardRoutineCall (SymTableNodePtr routineIdPtr) {
 	switch (key) {
 		case RTN_RETURN:
 			stdReturn();
-			return(NULL);
+			return(nullptr);
 		case RTN_PRINT:
 			stdPrint();
-			return(NULL);
+			return(nullptr);
 		case RTN_CONCAT:
 			return(stdConcat());
 		case RTN_GET_STATE_HANDLE:
@@ -229,7 +229,7 @@ TypePtr standardRoutineCall (SymTableNodePtr routineIdPtr) {
 			}
 			switch (FunctionInfoTable[key].returnType) {
 				case RETURN_TYPE_NONE:
-					return(NULL);
+					return(nullptr);
 				case RETURN_TYPE_INTEGER:
 					return(IntegerTypePtr);
 				case RETURN_TYPE_REAL:
@@ -238,7 +238,7 @@ TypePtr standardRoutineCall (SymTableNodePtr routineIdPtr) {
 					return(BooleanTypePtr);
 			}
 	}
-	return(NULL);
+	return(nullptr);
 }
 
 //***************************************************************************

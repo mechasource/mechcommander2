@@ -81,8 +81,8 @@ extern int32_t 	mechRGBLookup2[];
 extern bool 	useShadows;
 
 extern int32_t			ObjectTextureSize;
-TG_TypeMultiShapePtr GVAppearanceType::SensorTriangleShape = NULL;
-TG_TypeMultiShapePtr GVAppearanceType::SensorCircleShape = NULL;
+TG_TypeMultiShapePtr GVAppearanceType::SensorTriangleShape = nullptr;
+TG_TypeMultiShapePtr GVAppearanceType::SensorCircleShape = nullptr;
 
 extern bool reloadBounds;
 
@@ -142,7 +142,7 @@ void GVAppearanceType::init (PSTR  fileName)
 				//----------------------------------------------
 				// Base LOD shape.  In stand Pose by default.
 				gvShape[i] = new TG_TypeMultiShape;
-				gosASSERT(gvShape[i] != NULL);
+				gosASSERT(gvShape[i] != nullptr);
 			
 				FullPathFileName gvName;
 				gvName.init(tglPath,aseFileName,".ase");
@@ -160,7 +160,7 @@ void GVAppearanceType::init (PSTR  fileName)
 		//----------------------------------------------
 		// Base shape.  In stand Pose by default.
 		gvShape[0] = new TG_TypeMultiShape;
-		gosASSERT(gvShape[0] != NULL);
+		gosASSERT(gvShape[0] != nullptr);
 	
 		FullPathFileName gvName;
 		gvName.init(tglPath,aseFileName,".ase");
@@ -174,7 +174,7 @@ void GVAppearanceType::init (PSTR  fileName)
 		//----------------------------------------------
 		// Base Shadow shape.
 		gvShadowShape = new TG_TypeMultiShape;
-		gosASSERT(gvShadowShape != NULL);
+		gosASSERT(gvShadowShape != nullptr);
 	
 		FullPathFileName gvName;
 		gvName.init(tglPath,aseFileName,".ase");
@@ -193,18 +193,18 @@ void GVAppearanceType::init (PSTR  fileName)
 		dmgName.init(tglPath,aseFileName,".ase");
 	
 		gvDmgShape = new TG_TypeMultiShape;
-		gosASSERT(gvDmgShape != NULL);
+		gosASSERT(gvDmgShape != nullptr);
 		gvDmgShape->LoadTGMultiShapeFromASE(dmgName);
 
 		if (!gvDmgShape->GetNumShapes())
 		{
 			delete gvDmgShape;
-			gvDmgShape = NULL;
+			gvDmgShape = nullptr;
 		}
 	}
 	else
 	{
-		gvDmgShape = NULL;
+		gvDmgShape = nullptr;
 	}
 		
 	result = iniFile.seekBlock("TGLDestructEffect");
@@ -259,7 +259,7 @@ void GVAppearanceType::init (PSTR  fileName)
 			if (fileExists(animPath) || fileExists(otherPath))
 			{
 				gvAnimData[i] = new TG_AnimateShape;
-				gosASSERT(gvAnimData[i] != NULL);
+				gosASSERT(gvAnimData[i] != nullptr);
 	
 				//--------------------------------------------------------
 				// If this animation does not exist, it is not a problem!
@@ -267,11 +267,11 @@ void GVAppearanceType::init (PSTR  fileName)
 				gvAnimData[i]->LoadTGMultiShapeAnimationFromASE(animPath,gvShape[0]);
 			}
 			else
-				gvAnimData[i] = NULL;
+				gvAnimData[i] = nullptr;
 		}
 		else
 		{
-			gvAnimData[i] = NULL;
+			gvAnimData[i] = nullptr;
 		}
 	}
 	
@@ -296,7 +296,7 @@ void GVAppearanceType::init (PSTR  fileName)
 	numFootNodes = MAX_FOOT_NODES;
 		
 	nodeData = (NodeData *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(NodeData)*(numWeaponNodes+numSmokeNodes+numFootNodes));
-	gosASSERT(nodeData != NULL);
+	gosASSERT(nodeData != nullptr);
 	memset(nodeData,0,sizeof(NodeData)*(numWeaponNodes+numSmokeNodes+numFootNodes));
 		
 	for (i=1;i<=numSmokeNodes;i++)
@@ -305,7 +305,7 @@ void GVAppearanceType::init (PSTR  fileName)
 		sprintf(blockId,"Smoke_%02d",i);
 			
 		nodeData[i-1].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId)+1); 
-		gosASSERT(nodeData[i-1].nodeId != NULL);
+		gosASSERT(nodeData[i-1].nodeId != nullptr);
 			
 		strcpy(nodeData[i-1].nodeId,blockId);
 		nodeData[i-1].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -317,7 +317,7 @@ void GVAppearanceType::init (PSTR  fileName)
 		sprintf(blockId,"Weapon_%02d",i);
 		
 		nodeData[(i-1)+numSmokeNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId)+1);
-		gosASSERT(nodeData[(i-1)+numSmokeNodes].nodeId != NULL);
+		gosASSERT(nodeData[(i-1)+numSmokeNodes].nodeId != nullptr);
 		
 		strcpy(nodeData[(i-1)+numSmokeNodes].nodeId,blockId);
 		nodeData[(i-1)+numSmokeNodes].weaponType = MECH3D_WEAPONTYPE_ANY;
@@ -330,7 +330,7 @@ void GVAppearanceType::init (PSTR  fileName)
 		sprintf(blockId,"FootNode_%02d",i);
 			
 		nodeData[(i-1)+numSmokeNodes+numWeaponNodes].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(blockId)+1);       
-		gosASSERT(nodeData[(i-1)+numSmokeNodes+numWeaponNodes].nodeId != NULL);
+		gosASSERT(nodeData[(i-1)+numSmokeNodes+numWeaponNodes].nodeId != nullptr);
 			
 		strcpy(nodeData[(i-1)+numSmokeNodes+numWeaponNodes].nodeId,blockId);
 		nodeData[(i-1)+numSmokeNodes+numWeaponNodes].weaponType = MECH3D_WEAPONTYPE_NONE;
@@ -338,24 +338,24 @@ void GVAppearanceType::init (PSTR  fileName)
  	
  	//----------------------------------------------
 	// Load up sensor Shape if not yet defined.
-	if (SensorCircleShape == NULL)
+	if (SensorCircleShape == nullptr)
 	{
 		FullPathFileName sensorName;
 		sensorName.init(tglPath,"circularcontact",".ase");
 	
 		SensorCircleShape = new TG_TypeMultiShape;
-		gosASSERT(SensorCircleShape != NULL);
+		gosASSERT(SensorCircleShape != nullptr);
 	
 		SensorCircleShape->LoadTGMultiShapeFromASE(sensorName);
 	}
 
-	if (SensorTriangleShape == NULL)
+	if (SensorTriangleShape == nullptr)
 	{
 		FullPathFileName sensorName;
 		sensorName.init(tglPath,"trianglecontact",".ase");
 	
 		SensorTriangleShape = new TG_TypeMultiShape;
-		gosASSERT(SensorCircleShape != NULL);
+		gosASSERT(SensorCircleShape != nullptr);
 	
 		SensorTriangleShape->LoadTGMultiShapeFromASE(sensorName);
 	}
@@ -372,26 +372,26 @@ void GVAppearanceType::destroy (void)
 		if (gvShape[i])
 		{
 			delete gvShape[i];
-			gvShape[i] = NULL;
+			gvShape[i] = nullptr;
 		}
 	}
 
 	if (gvShadowShape)
 	{
 		delete gvShadowShape;
-		gvShadowShape = NULL;
+		gvShadowShape = nullptr;
 	}
 
 	if (gvDmgShape)
 	{
 		delete gvDmgShape;
-		gvDmgShape = NULL;
+		gvDmgShape = nullptr;
 	}
 
 	for (i=0;i<MAX_GV_ANIMATIONS;i++)
 	{
 		delete gvAnimData[i];
-		gvAnimData[i] = NULL;
+		gvAnimData[i] = nullptr;
 	}
 
 	if (nodeData)
@@ -399,18 +399,18 @@ void GVAppearanceType::destroy (void)
 		for (i=0;i<getTotalNodes();i++)
 		{
 			AppearanceTypeList::appearanceHeap->Free(nodeData[i].nodeId);
-			nodeData[i].nodeId = NULL;
+			nodeData[i].nodeId = nullptr;
 		}
 		
 		AppearanceTypeList::appearanceHeap->Free(nodeData);
-		nodeData = NULL;
+		nodeData = nullptr;
 	}
 }
 
 //-----------------------------------------------------------------------------
 void GVAppearanceType::setAnimation (TG_MultiShapePtr shape, uint32_t animationNum)
 {
-	gosASSERT(shape != NULL);
+	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
 	gosASSERT(animationNum < MAX_GV_ANIMATIONS);
 
@@ -709,7 +709,7 @@ void GVAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 
 	sensorLevel = 0;
 	
-	destructFX = NULL;
+	destructFX = nullptr;
 	
 	status = 0;
 	roll = pitch = 0.0f;
@@ -730,13 +730,13 @@ void GVAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
  
 	localTextureHandle = 0xffffffff;
 	
-	nodeUsed = NULL;
-	nodeRecycle = NULL;
+	nodeUsed = nullptr;
+	nodeRecycle = nullptr;
 	
-	waterWake = NULL;
-	dustCloud = NULL;
-	activity = NULL;
-	isWaking = NULL;
+	waterWake = nullptr;
+	dustCloud = nullptr;
+	activity = nullptr;
+	isWaking = nullptr;
 	movedThisFrame = false;
 	dustCloudStart = false;
 	isActivitying = false;
@@ -846,7 +846,7 @@ void GVAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 		}
 		else
 		{
-			gvShadowShape = NULL;
+			gvShadowShape = nullptr;
 		}
  		
 		sensorTriangleShape = GVAppearanceType::SensorTriangleShape->CreateFrom();
@@ -988,11 +988,11 @@ void GVAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
  		if (appearType->numWeaponNodes)
 		{
 			nodeUsed = (int32_t *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(int32_t) * appearType->numWeaponNodes);
-			gosASSERT(nodeUsed != NULL);
+			gosASSERT(nodeUsed != nullptr);
 			memset(nodeUsed,0,sizeof(int32_t) * appearType->numWeaponNodes);
 			
 			nodeRecycle = (float *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(float) * appearType->numWeaponNodes);
-			gosASSERT(nodeRecycle != NULL);
+			gosASSERT(nodeRecycle != nullptr);
 			
 			for (int32_t i=0;i<appearType->numWeaponNodes;i++)
 				nodeRecycle[i] = 0.0f;
@@ -1014,7 +1014,7 @@ void GVAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 					if (gosEffectSpec)
 					{
 						dustCloud = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-						gosASSERT(dustCloud != NULL);
+						gosASSERT(dustCloud != nullptr);
 						
 						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
@@ -1035,7 +1035,7 @@ void GVAppearance::setObjStatus (int32_t oStatus)
 			{
 				gvShape->ClearAnimation();
 				delete gvShape;
-				gvShape = NULL;
+				gvShape = nullptr;
 				
 				gvShape = appearType->gvDmgShape->CreateFrom();
 			}
@@ -1048,7 +1048,7 @@ void GVAppearance::setObjStatus (int32_t oStatus)
 			if (appearType->gvShape)
 			{
 				delete gvShape;
-				gvShape = NULL;
+				gvShape = nullptr;
 				
 				gvShape = appearType->gvShape[0]->CreateFrom();
 			}
@@ -1766,7 +1766,7 @@ bool GVAppearance::recalcBounds (void)
 							uint8_t alphaValue = gvShape->GetAlphaValue();
 							gvShape->ClearAnimation();
 							delete gvShape;
-							gvShape = NULL;
+							gvShape = nullptr;
 
 							gvShape = appearType->gvShape[currentLOD]->CreateFrom();
 							if (gvAnimationState != -1)
@@ -1822,7 +1822,7 @@ bool GVAppearance::recalcBounds (void)
 							uint8_t alphaValue = gvShape->GetAlphaValue();
 							gvShape->ClearAnimation();
 							delete gvShape;
-							gvShape = NULL;
+							gvShape = nullptr;
 							
 							gvShape = appearType->gvShape[currentLOD]->CreateFrom();
 							gvShape->SetAlphaValue(alphaValue);
@@ -1898,7 +1898,7 @@ bool GVAppearance::playDestruction (void)
 		if (gosEffectSpec)
 		{
 			destructFX = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-			gosASSERT(destructFX != NULL);
+			gosASSERT(destructFX != nullptr);
 		
 			MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 		
@@ -1913,7 +1913,7 @@ bool GVAppearance::playDestruction (void)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 			shapeOrigin.BuildTranslation(tPosition);
 			
-			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 			destructFX->Start(&info);
 			
 			return true;
@@ -2440,7 +2440,7 @@ void GVAppearance::updateGeometry (void)
 		{
 			destructFX->Kill();
 			delete destructFX;
-			destructFX = NULL;
+			destructFX = nullptr;
 		}
 	}
 	
@@ -2505,7 +2505,7 @@ void GVAppearance::updateGeometry (void)
 			localToWorld.Multiply(gosFX::Effect_Against_Motion,effectRot);
 			localResult.Multiply(localToWorld,shapeOrigin);
 				
-			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,NULL);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,nullptr);
 	
 			dustCloud->Start(&info);
 			dustCloudStart = true;
@@ -2697,53 +2697,53 @@ void GVAppearance::destroy (void)
 	if (gvShape)
 	{
 		delete gvShape;
-		gvShape = NULL;
+		gvShape = nullptr;
 	}
 	
 	if (gvShadowShape)
 	{
 		delete gvShadowShape;
-		gvShadowShape = NULL;
+		gvShadowShape = nullptr;
 	}
 	
 	if (sensorCircleShape)
 	{
 		delete sensorCircleShape;
-		sensorCircleShape = NULL;	
+		sensorCircleShape = nullptr;	
 	}
 	   
 	if (sensorTriangleShape)
 	{
 		delete sensorTriangleShape;
-		sensorTriangleShape = NULL;	
+		sensorTriangleShape = nullptr;	
 	}
 
 	if (destructFX)
 	{
 		destructFX->Kill();
 		delete destructFX;
-		destructFX = NULL;
+		destructFX = nullptr;
 	}
 
 	if (waterWake)
 	{
 		waterWake->Kill();
 		delete waterWake;
-		waterWake = NULL;
+		waterWake = nullptr;
 	}
 
 	if (dustCloud)
 	{
 		dustCloud->Kill();
 		delete dustCloud;
-		dustCloud = NULL;
+		dustCloud = nullptr;
 	}
 
 	if (activity)
 	{
 		activity->Kill();
 		delete activity;
-		activity = NULL;
+		activity = nullptr;
 	}
 
 	appearanceTypeList->removeAppearance(appearType);
@@ -2770,7 +2770,7 @@ void GVAppearance::startWaterWake (void)
 			if (gosEffectSpec)
 			{
 				waterWake = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(waterWake != NULL);
+				gosASSERT(waterWake != nullptr);
 				
   				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -2796,7 +2796,7 @@ void GVAppearance::startWaterWake (void)
 		localToWorld.Multiply(gosFX::Effect_Against_Motion,effectRot);
 		localResult.Multiply(localToWorld,shapeOrigin);
 			
- 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,NULL);
+ 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&localResult,nullptr);
 
 		waterWake->Start(&info);
 
@@ -2838,7 +2838,7 @@ void GVAppearance::startActivity (int32_t effectId, bool loop)
 			if (gosEffectSpec)
 			{
 				activity = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(activity != NULL);
+				gosASSERT(activity != nullptr);
 				
   				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -2871,7 +2871,7 @@ void GVAppearance::startActivity (int32_t effectId, bool loop)
 		localResult.Multiply(localToWorld,shapeOrigin);
 		*/
 			
- 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+ 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 
 		activity->Start(&info);
 		

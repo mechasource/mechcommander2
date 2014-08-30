@@ -151,7 +151,7 @@ void
 //############################################################################
 
 gosFX::SpinningCloud::ClassData*
-	gosFX::SpinningCloud::DefaultData = NULL;
+	gosFX::SpinningCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
@@ -165,8 +165,8 @@ void
 			SpinningCloudClassID,
 			"gosFX::SpinningCloud",
 			ParticleCloud::DefaultData,
-			NULL,
-			NULL
+			nullptr,
+			nullptr
 		);
 	Register_Object(DefaultData);
 }
@@ -178,7 +178,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //------------------------------------------------------------------------------

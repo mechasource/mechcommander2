@@ -25,11 +25,11 @@ extern void AG_shape_translate_draw (PANE *pane, PVOID shape_table,int32_t shape
 //void memclear(PVOID Dest,size_t Length);
 //---------------------------------------------------------------------------
 // Static Globals
-puint8_t shapeBuffer16 = NULL;
-puint8_t shapeBuffer32 = NULL;
-puint8_t shapeBuffer64 = NULL;
-puint8_t shapeBuffer128 = NULL;
-puint8_t shapeBuffer256 = NULL;
+puint8_t shapeBuffer16 = nullptr;
+puint8_t shapeBuffer32 = nullptr;
+puint8_t shapeBuffer64 = nullptr;
+puint8_t shapeBuffer128 = nullptr;
+puint8_t shapeBuffer256 = nullptr;
 
 //---------------------------------------------------------------------------
 VFXElement::VFXElement (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, puint8_t fTable, bool noScale, bool upScale) : Element(-_y)
@@ -282,10 +282,10 @@ int32_t mechCmdr1PaletteLookup[256];
 //---------------------------------------------------------------------------
 void VFXShapeElement::init (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, uint32_t *fTable, float _z, float tZ)
 {
-	gosASSERT(_shape != NULL);
+	gosASSERT(_shape != nullptr);
 
 	int32_t i=0;
-	while (shapeTable[i] != NULL)
+	while (shapeTable[i] != nullptr)
 		i++;
 
 	gosASSERT(i < MAX_ELEMENT_SHAPES);
@@ -364,7 +364,7 @@ void VFXShapeElement::drawShape (void)
 	// -Create a buffer to hold the shapes.
 	// -Draw all of the shapes to the buffer in order received.
 	// -Get Pointer to Locked texture RAM.  
-	// -Copy 8Bit buffer to Texture Buffer using fTable passed in or default if fTable is NULL
+	// -Copy 8Bit buffer to Texture Buffer using fTable passed in or default if fTable is nullptr
 	// -Unlock Texture RAM!
 	// draw in Draw Function now.  Not here.  Give texture a chance to settle in before drawing.
 	PANE gPane;
@@ -372,7 +372,7 @@ void VFXShapeElement::drawShape (void)
 
 	gPane.window = &gWindow;
 	gPane.x0 = gPane.y0 = 0;
-	gWindow.stencil = gWindow.shadow = NULL;
+	gWindow.stencil = gWindow.shadow = nullptr;
 
 	int32_t textureWidth = 0;
 
@@ -661,7 +661,7 @@ void VFXShapeElement::draw (void)
 	//-------------------------------------------
 	// Reset shapeTable Data after draw!
 	// Everything else is reset during INIT call!
-	shapeTable[0] = shapeTable[1] = shapeTable[2] = shapeTable[3] = NULL;
+	shapeTable[0] = shapeTable[1] = shapeTable[2] = shapeTable[3] = nullptr;
 }
 
 //---------------------------------------------------------------------------

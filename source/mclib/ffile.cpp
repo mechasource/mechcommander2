@@ -22,7 +22,7 @@
 // #include <string.h>
 #include <gameos.hpp>
 
-puint8_t 		LZPacketBuffer = NULL;
+puint8_t 		LZPacketBuffer = nullptr;
 size_t			LZPacketBufferSize = 512000;
 
 extern char CDInstallPath[];
@@ -38,7 +38,7 @@ char MissingTitleString[256];
 //---------------------------------------------------------------------------
 PVOIDFastFile::operator new (size_t mySize)
 {
-	PVOID result = NULL;
+	PVOID result = nullptr;
 	result = malloc(mySize);
 	
 	return(result);
@@ -53,11 +53,11 @@ void FastFile::operator delete (PVOID us)
 //---------------------------------------------------------------------------
 FastFile::FastFile (void)
 {
-	files = NULL;
+	files = nullptr;
 	numFiles = 0;
 
-	fileName = NULL;
-	handle = NULL;
+	fileName = nullptr;
+	handle = nullptr;
 	length = 0;
 	logicalPosition = 0;
 
@@ -72,7 +72,7 @@ FastFile::~FastFile (void)
 	if (LZPacketBuffer)
 	{
 		free(LZPacketBuffer);
-		LZPacketBuffer = NULL;
+		LZPacketBuffer = nullptr;
 	}
 }
 
@@ -89,7 +89,7 @@ int32_t FastFile::open (PSTR fName)
 	strncpy(fileName,fName,fNameLength+1);
 
 	handle = fopen(fileName,"r");
-	if (handle != NULL)
+	if (handle != nullptr)
 	{
 		logicalPosition = 0;
 		fileSize();				//Sets Length
@@ -101,19 +101,19 @@ int32_t FastFile::open (PSTR fName)
 		strcpy(actualPath,CDInstallPath);
 		strcat(actualPath,fileName);
 		handle = fopen(actualPath,"r");
-		if (handle == NULL)
+		if (handle == nullptr)
 		{
 			//OPEN Error.  Maybe the CD is missing?
 			bool openFailed = false;
 			bool alreadyFullScreen = (Environment.fullScreen != 0);
-			while (handle == NULL)
+			while (handle == nullptr)
 			{
 				openFailed = true;
 				EnterWindowMode();
 
 				char data[2048];
 				sprintf(data,FileMissingString,fileName,CDMissingString);
-				uint32_t result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
+				uint32_t result1 = MessageBox(nullptr,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
 				if (result1 == IDCANCEL)
 				{
 					ExitGameOS();
@@ -195,13 +195,13 @@ void FastFile::close (void)
 	if (fileName)
 		delete [] fileName;	//	this was free, which didn't match the new allocation.
 							//	neither new nor free were overridden. Should they have been?
-	fileName = NULL;
+	fileName = nullptr;
 	length = 0;
 
 	if (isOpen())
 	{
 		fclose(handle);
-		handle = NULL;
+		handle = nullptr;
 	}
 
 	//---------------------------------------------
@@ -213,7 +213,7 @@ void FastFile::close (void)
 
 	free(files);
 
-	files = NULL;
+	files = nullptr;
 	numFiles = 0;
 }
 
@@ -373,7 +373,7 @@ int32_t FastFile::readFast (int32_t fastFileHandle, PVOIDbfr, int32_t size)
 		
 						char data[2048];
 						sprintf(data,FileMissingString,fileName,CDMissingString);
-						uint32_t result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
+						uint32_t result1 = MessageBox(nullptr,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
 						if (result1 == IDCANCEL)
 						{
 							ExitGameOS();
@@ -450,7 +450,7 @@ int32_t FastFile::readFastRAW (int32_t fastFileHandle, PVOIDbfr, int32_t size)
 
 				char data[2048];
 				sprintf(data,FileMissingString,fileName,CDMissingString);
-				uint32_t result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
+				uint32_t result1 = MessageBox(nullptr,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
 				if (result1 == IDCANCEL)
 				{
 					ExitGameOS();

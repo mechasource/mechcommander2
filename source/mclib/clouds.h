@@ -64,7 +64,7 @@ class Clouds
 			
 			scrollU = scrollV = 0.0f;
 			
-			cloudVertices = NULL;
+			cloudVertices = nullptr;
 			gridSize = 0;
 		}
 		

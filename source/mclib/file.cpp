@@ -39,7 +39,7 @@
 uint32_t File::lastError = NO_ERROR;
 bool		  File::logFileTraffic = FALSE;
 
-FilePtr fileTrafficLog = NULL;
+FilePtr fileTrafficLog = nullptr;
 char CDInstallPath[1024];
 void EnterWindowMode();
 void EnterFullScreenMode();
@@ -116,7 +116,7 @@ bool __stdcall file1OlderThan2 (PSTR file1, PSTR file2)
 //	class File member functions
 PVOID File::operator new (size_t mySize)
 {
-	PVOID result = NULL;
+	PVOID result = nullptr;
 	
 	result = systemHeap->Malloc(mySize);
 	
@@ -132,24 +132,24 @@ void File::operator delete (PVOID us)
 //---------------------------------------------------------------------------
 File::File (void)
 {
-	fileName = NULL;
+	fileName = nullptr;
 	fileMode = NOMODE;
 	handle = -1;
 	length = 0;
 	logicalPosition = 0;
 	bufferResult = 0;
 
-	parent = NULL;
+	parent = nullptr;
 	parentOffset = 0;
 	physicalLength = 0;
 
-	childList = NULL;
+	childList = nullptr;
 	numChildren = 0;
 
 	inRAM = FALSE;
-	fileImage = NULL;
+	fileImage = nullptr;
 
-	fastFile = NULL;
+	fastFile = nullptr;
 }
 			
 //---------------------------------------------------------------------------
@@ -165,11 +165,11 @@ inline void File::setup (void)
 	else
 		length = 0;
 
-	parent = NULL;
+	parent = nullptr;
 	parentOffset = 0;
 	physicalLength = length;
 	
-	childList = NULL;
+	childList = nullptr;
 	numChildren = 0;
 }
 
@@ -193,7 +193,7 @@ int32_t File::open (PCSTR fName, FileMode _mode, int32_t numChild)
 	int32_t fNameLength = strlen(fName);
 	
 	fileName = (PSTR )systemHeap->Malloc(fNameLength+1);
-	gosASSERT(fileName != NULL);
+	gosASSERT(fileName != nullptr);
 		
 	strncpy(fileName,fName,fNameLength+1);
 	fileMode = _mode;
@@ -256,7 +256,7 @@ int32_t File::open (PCSTR fName, FileMode _mode, int32_t numChild)
 		
 						char data[2048];
 						sprintf(data,FileMissingString,fileName,CDMissingString);
-						uint32_t result1 = MessageBox(NULL,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
+						uint32_t result1 = MessageBox(nullptr,data,MissingTitleString,MB_OKCANCEL | MB_ICONWARNING);
 						if (result1 == IDCANCEL)
 						{
 							ExitGameOS();
@@ -308,7 +308,7 @@ int32_t File::open (PCSTR fName, FileMode _mode, int32_t numChild)
 					numChildren = 0;
 					for (int32_t i=0;i<(int32_t)maxChildren;i++)
 					{
-						childList[i] = NULL;
+						childList[i] = nullptr;
 					}	
 
 					return (NO_ERROR);
@@ -341,7 +341,7 @@ int32_t File::open (PCSTR fName, FileMode _mode, int32_t numChild)
 				//------------------------------------
 				//-- Image is in RAM.  Shut the file.
 				//fastFile->closeFast(fastFileHandle);
-				//fastFile = NULL;
+				//fastFile = nullptr;
 				//fastFileHandle = -1;
 
 				logicalPosition = 0;
@@ -388,7 +388,7 @@ int32_t File::open (PCSTR fName, FileMode _mode, int32_t numChild)
 			numChildren = 0;
 			for (int32_t i=0;i<(int32_t)maxChildren;i++)
 			{
-				childList[i] = NULL;
+				childList[i] = nullptr;
 			}	
 	
 			return (NO_ERROR);
@@ -401,7 +401,7 @@ int32_t File::open (PCSTR fName, FileMode _mode, int32_t numChild)
 //---------------------------------------------------------------------------
 int32_t File::open (FilePtr _parent, uint32_t fileSize, int32_t numChild)
 {
-	if (_parent && (_parent->fastFile == NULL))
+	if (_parent && (_parent->fastFile == nullptr))
 	{
 		parent = _parent;
 		if (parent->getFileMode() != READ)
@@ -455,12 +455,12 @@ int32_t File::open (FilePtr _parent, uint32_t fileSize, int32_t numChild)
 			maxChildren = numChild;
 			childList = (FilePtr *)systemHeap->Malloc(sizeof(FilePtr) * maxChildren);
 			
-			gosASSERT(childList != NULL);
+			gosASSERT(childList != nullptr);
 
 			numChildren = 0;
 			for (int32_t i=0;i<(int32_t)maxChildren;i++)
 			{
-				childList[i] = NULL;
+				childList[i] = nullptr;
 			}	
 		}
 		else
@@ -503,7 +503,7 @@ int32_t File::open(PCSTR buffer, int32_t bufferLength )
 		fileMode = RDWRITE;
 		inRAM = true;
 	}
-	else// fail on NULL
+	else// fail on nullptr
 	{
 		return FILE_NOT_OPEN;
 	}
@@ -526,7 +526,7 @@ int32_t File::createWithCase( PSTR fName )
 	int32_t fNameLength = strlen(fName);
 	
 	fileName = (PSTR )systemHeap->Malloc(fNameLength+1);
-	gosASSERT(fileName != NULL);
+	gosASSERT(fileName != nullptr);
 		
 	strncpy(fileName,fName,fNameLength+1);
 	fileMode = CREATE;
@@ -548,7 +548,7 @@ int32_t File::addChild (FilePtr child)
 	{
 		for (int32_t i=0;i < (int32_t)maxChildren;i++)
 		{
-			if (childList[i] == NULL)
+			if (childList[i] == nullptr)
 			{
 				childList[i] = child;
 				return NO_ERROR;
@@ -570,7 +570,7 @@ void File::removeChild (FilePtr child)
 			{
 				if (childList[i] == child)
 				{
-					childList[i] = NULL;
+					childList[i] = nullptr;
 					break;
 				}
 			}
@@ -582,7 +582,7 @@ void File::removeChild (FilePtr child)
 void File::close (void)
 {
 	//------------------------------------------------------------------------
-	// First, close us if we are the parent.  Otherwise, just NULL the handle
+	// First, close us if we are the parent.  Otherwise, just nullptr the handle
 	// DO NOT CALL CLOSE IF WE ARE A CHILD!!
 	//
 	// The actual stored filename is also in the parent.  Everyone else just has
@@ -590,20 +590,20 @@ void File::close (void)
 
 	bool bFast = false;
 
-	if ((parent == NULL) && (fileName != NULL))
+	if ((parent == nullptr) && (fileName != nullptr))
 	{
 		systemHeap->Free(fileName);
 	}
 
-	fileName = NULL;
+	fileName = nullptr;
 	length = 0;
 
 	if (isOpen())
 	{
-		if ((parent == NULL) && (handle != NULL) && (-1 != handle))
+		if ((parent == nullptr) && (handle != nullptr) && (-1 != handle))
 			_close(handle);
 			
-		handle = NULL;
+		handle = nullptr;
 
 		if (fastFile)
 		{
@@ -611,13 +611,13 @@ void File::close (void)
 			bFast = true; // save that it was a fast file
 		}
 
-		fastFile = NULL;			//DO NOT DELETE THE FASTFILE!!!!!!!!!!!!!
+		fastFile = nullptr;			//DO NOT DELETE THE FASTFILE!!!!!!!!!!!!!
 		fastFileHandle = -1;
 	}
 	
 	//---------------------------------------------------------------------
 	// Check if we have any children and close them.  This will set their
-	// handle to NULL and their filename to NULL.  It will also close any
+	// handle to nullptr and their filename to nullptr.  It will also close any
 	// of THEIR children.
 	if (maxChildren)
 	{
@@ -634,17 +634,17 @@ void File::close (void)
 			systemHeap->Free(childList);
 	}
 	
-	if (parent != NULL)
+	if (parent != nullptr)
 		parent->removeChild(this);
 
-	childList = NULL;
+	childList = nullptr;
 	numChildren = 0;
 
 	if (inRAM && (bFast || parent)) // don't want to delete memFiles
 	{
 		if (fileImage)
 			free(fileImage);
-		fileImage = NULL;
+		fileImage = nullptr;
 		inRAM = FALSE;
 	}
 }
@@ -655,7 +655,7 @@ void File::deleteFile (void)
 	//--------------------------------------------------------------
 	// Must be the ultimate parent to delete this file.  Close will
 	// make sure all of the children close themselves.
-	if (isOpen() && (parent == NULL))
+	if (isOpen() && (parent == nullptr))
 		close();
 }
 
@@ -1217,7 +1217,7 @@ int32_t File::write (uint32_t pos, puint8_t buffer, int32_t bytes)
 {
 	uint32_t result = 0;
 
-	if (parent == NULL)	
+	if (parent == nullptr)	
 	{
 		if (isOpen())
 		{
@@ -1257,7 +1257,7 @@ int32_t File::writeByte (byte value)
 {
 	int32_t result = 0;
 
-	if (parent == NULL)
+	if (parent == nullptr)
 	{
 		if (isOpen())	
 		{
@@ -1298,7 +1298,7 @@ int32_t File::writeWord (int16_t value)
 {
 	uint32_t result = 0;
 	
-	if (parent == NULL)
+	if (parent == nullptr)
 	{
 		if (isOpen())
 		{
@@ -1347,7 +1347,7 @@ int32_t File::writeLong (int32_t value)
 {
 	uint32_t result = 0;
 	
-	if (parent == NULL)
+	if (parent == nullptr)
 	{
 		if (isOpen())
 		{
@@ -1390,7 +1390,7 @@ int32_t File::writeFloat (float value)
 	uint32_t result = 0;
 
 	gosASSERT(!isNAN(&value));
-	if (parent == NULL)
+	if (parent == nullptr)
 	{
 		if (isOpen())
 		{
@@ -1433,7 +1433,7 @@ int32_t File::writeString (PSTR buffer)
 {
 	int32_t result = -1;
 	
-	if (parent == NULL)
+	if (parent == nullptr)
 	{
 		if (isOpen())
 		{
@@ -1462,7 +1462,7 @@ int32_t File::writeLine (PSTR buffer)
 {
 	int32_t result = -1;
 	
-	if (parent == NULL)
+	if (parent == nullptr)
 	{
 		if (isOpen())
 		{
@@ -1494,7 +1494,7 @@ int32_t File::write (puint8_t buffer, int32_t bytes)
 {
 	int32_t result = 0;
 	
-	if (parent == NULL)
+	if (parent == nullptr)
 	{
 		if (isOpen())
 		{
@@ -1533,7 +1533,7 @@ int32_t File::write (puint8_t buffer, int32_t bytes)
 //---------------------------------------------------------------------------
 bool File::isOpen (void)
 {
-	return ((handle != NULL && handle != -1) || (fileImage != NULL));
+	return ((handle != nullptr && handle != -1) || (fileImage != nullptr));
 }
 
 //---------------------------------------------------------------------------

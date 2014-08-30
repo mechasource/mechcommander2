@@ -329,7 +329,7 @@ bool
 //############################################################################
 
 gosFX::DebrisCloud::ClassData*
-	gosFX::DebrisCloud::DefaultData = NULL;
+	gosFX::DebrisCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
@@ -356,7 +356,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //------------------------------------------------------------------------------
@@ -825,9 +825,9 @@ void gosFX::DebrisCloud::Draw(DrawInfo *info)
 			MidLevelRenderer::MLRShape *shape = spec->debrisPieces[i];
 
 			dinfo.clippingFlags.SetClippingState(0x3f);
-			dinfo.worldToShape = NULL;
+			dinfo.worldToShape = nullptr;
 			dinfo.state.Combine(info->m_state, spec->m_state);
-			dinfo.activeLights = NULL;
+			dinfo.activeLights = nullptr;
 			dinfo.nrOfActiveLights = 0;
 			dinfo.shape = shape;
 			Stuff::LinearMatrix4D local_to_world;
@@ -846,7 +846,7 @@ void gosFX::DebrisCloud::Draw(DrawInfo *info)
 				local_to_world
 			);
 			dinfo.shapeToWorld = &shape_to_world;
-			dinfo.scaling = NULL;
+			dinfo.scaling = nullptr;
 			Stuff::RGBAColor color(1.0f, 1.0f, 1.0f, particle->m_alpha);
 			dinfo.paintMe = &color;
 		 	info->m_clipper->DrawScalableShape(&dinfo);

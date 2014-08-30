@@ -130,7 +130,7 @@ void
 //############################################################################
 
 gosFX::ShardCloud::ClassData*
-	gosFX::ShardCloud::DefaultData = NULL;
+	gosFX::ShardCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
@@ -157,7 +157,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //------------------------------------------------------------------------------

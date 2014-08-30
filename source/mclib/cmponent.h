@@ -193,8 +193,8 @@ class MasterComponent {
 		
 		void init (void) {
 			masterID = -1;
-			name[0] = NULL;
-			abbreviation[0] = NULL;
+			name[0] = nullptr;
+			abbreviation[0] = nullptr;
 		}
 
 		MasterComponent (void) {

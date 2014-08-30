@@ -1159,7 +1159,7 @@ gosFX::Curve::GetSubCurve(int32_t curvenum)
 			if(curvenum==0)
 				return this;
 			else
-				return NULL;
+				return nullptr;
 		}	
 		break;
 		
@@ -1246,7 +1246,7 @@ gosFX::Curve::GetSubCurve(int32_t curvenum)
 	default:
 		break;
 	}
-	return NULL;
+	return nullptr;
 }
 
 

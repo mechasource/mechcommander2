@@ -135,7 +135,7 @@ class TimerManager
 			if ((index >= 0) && (index < MAX_TIMERS))
 				return &(timers[index]);
 				
-			return NULL;
+			return nullptr;
 		}
 		
 		void update (void)

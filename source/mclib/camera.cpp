@@ -98,8 +98,8 @@ extern int32_t tileCacheMiss;
 bool drawCameraCircle = FALSE;
 extern bool gamePaused;
 extern bool gameAsked;
-puint8_t pauseShape = NULL;
-puint8_t askedShape = NULL;
+puint8_t pauseShape = nullptr;
+puint8_t askedShape = nullptr;
 extern bool gRestartRender;
 bool MaxObjectsDrawn = FALSE;
 
@@ -522,25 +522,25 @@ void Camera::destroy (void)
 	if (worldLights)
 	{
 		systemHeap->Free(worldLights[1]);
-		worldLights[1] = NULL;
+		worldLights[1] = nullptr;
 
 		systemHeap->Free(worldLights[0]);
-		worldLights[0] = NULL;
+		worldLights[0] = nullptr;
 
 		systemHeap->Free(worldLights);
-		worldLights = NULL;
+		worldLights = nullptr;
 	}
 	
 	if (activeLights)
 	{
 		systemHeap->Free(activeLights);
-		activeLights = NULL;
+		activeLights = nullptr;
 	}
 	
 	if (terrainLights)
 	{
 		systemHeap->Free(terrainLights);
-		terrainLights = NULL;
+		terrainLights = nullptr;
 	}
 }
 
@@ -553,7 +553,7 @@ void Camera::getClosestVertex (Stuff::Vector2DOf<int32_t> &screenPos, int32_t &r
 	// position and returning its 3d pos.
 	VertexPtr topVertex = land->getVertexList();
 	uint32_t numVertices = land->getNumVertices();
-	VertexPtr closestVertex = NULL;
+	VertexPtr closestVertex = nullptr;
 	int32_t whichVertex = 0;
 
 //
@@ -746,9 +746,9 @@ uint32_t Camera::inverseProject (Stuff::Vector2DOf<int32_t> &screenPos, Stuff::V
 	TerrainQuadPtr closestTiles[100];
 	memset(closestTiles,0,sizeof(TerrainQuadPtr)*100);
 
-	TerrainQuadPtr closestTile = NULL;
+	TerrainQuadPtr closestTile = nullptr;
 	int32_t currentClosest = 0;
-	VertexPtr closestVertex = NULL;
+	VertexPtr closestVertex = nullptr;
 		
 	for (int32_t i=0;i<(int32_t)numTiles;i++)
 	{

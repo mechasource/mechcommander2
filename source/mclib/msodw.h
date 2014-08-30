@@ -161,7 +161,7 @@ typedef struct _DWSharedMem
 	
 	char szFormalAppName[DW_APPNAME_LENGTH];   // the app name for display to user (ie "Microsoft Word")
 	char szInformalAppName[DW_APPNAME_LENGTH]; // the app name for display to user (ie "Word")
-	char szModuleFileName[DW_MAX_PATH];        // The result of GetModuleFileNameA(NULL)
+	char szModuleFileName[DW_MAX_PATH];        // The result of GetModuleFileNameA(nullptr)
 	WCHAR wzErrorMessage[DW_MAX_ERROR_CWC];    // Error message to show user.
 	
 	char szServer[DW_MAX_SERVERNAME];  // name of server to try by default

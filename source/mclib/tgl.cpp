@@ -40,8 +40,8 @@
 #define USE_ASSEMBLY
 //-------------------------------------------------------------------------------
 // Statics
-Stuff::LinearMatrix4D 	*TG_Shape::cameraOrigin = NULL;
-Stuff::Matrix4D			*TG_Shape::cameraToClip = NULL;
+Stuff::LinearMatrix4D 	*TG_Shape::cameraOrigin = nullptr;
+Stuff::Matrix4D			*TG_Shape::cameraToClip = nullptr;
 Stuff::LinearMatrix4D	TG_Shape::worldToCamera;
 Stuff::Matrix4D			TG_Shape::worldToClip;
 
@@ -54,7 +54,7 @@ uint32_t					TG_Shape::fogColor = 0xffffffff;
 float					TG_Shape::fogStart = 0.0f;
 float					TG_Shape::fogFull = 0.0f;
 
-TG_LightPtr				*TG_Shape::listOfLights = NULL;
+TG_LightPtr				*TG_Shape::listOfLights = nullptr;
 uint32_t					TG_Shape::numLights = 0;
 
 Stuff::LinearMatrix4D 	TG_Shape::lightToShape[MAX_LIGHTS_IN_WORLD];
@@ -62,15 +62,15 @@ Stuff::Vector3D			TG_Shape::lightDir[MAX_LIGHTS_IN_WORLD];
 Stuff::Vector3D			TG_Shape::rootLightDir[MAX_LIGHTS_IN_WORLD];
 Stuff::Vector3D			TG_Shape::spotDir[MAX_LIGHTS_IN_WORLD];
 
-UserHeapPtr 			TG_Shape::tglHeap = NULL;
+UserHeapPtr 			TG_Shape::tglHeap = nullptr;
 
 uint32_t					TG_Shape::lighteningLevel = 0;
 
-TG_VertexPool 			*colorPool = NULL;
-TG_GOSVertexPool 		*vertexPool = NULL;
-TG_DWORDPool			*facePool = NULL;
-TG_ShadowPool			*shadowPool = NULL;
-TG_TrianglePool			*trianglePool = NULL;
+TG_VertexPool 			*colorPool = nullptr;
+TG_GOSVertexPool 		*vertexPool = nullptr;
+TG_DWORDPool			*facePool = nullptr;
+TG_ShadowPool			*shadowPool = nullptr;
+TG_TrianglePool			*trianglePool = nullptr;
 
 //-------------------------------------------------------------------------------
 extern bool useVertexLighting;
@@ -188,32 +188,32 @@ void TG_TypeNode::destroy (void)
 // This function creates an instance of a TG_Shape from a TG_TypeNode.  Saves RAM.
 TG_ShapePtr TG_TypeNode::CreateFrom (void)
 {
-	TG_ShapePtr newShape = NULL;
+	TG_ShapePtr newShape = nullptr;
 	newShape = (TG_ShapePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Shape));
-	gosASSERT(newShape != NULL);
+	gosASSERT(newShape != nullptr);
 	
 	//listOfVertices
 	newShape->numVertices = 0;
-	newShape->listOfColors = NULL;
-	newShape->listOfVertices = NULL;
-	newShape->listOfShadowVertices = NULL;
+	newShape->listOfColors = nullptr;
+	newShape->listOfVertices = nullptr;
+	newShape->listOfShadowVertices = nullptr;
 
 	//listOfTriangles
 	newShape->numTriangles = 0;
-	newShape->listOfTriangles = NULL;
+	newShape->listOfTriangles = nullptr;
 
 	//listOfVisibleFaces
 	newShape->numVisibleFaces = 0;
-	newShape->listOfVisibleFaces = NULL;
+	newShape->listOfVisibleFaces = nullptr;
 
 	//listOfVisibleShadows
 	newShape->numVisibleShadows = 0;
-	newShape->listOfVisibleShadows = NULL;
+	newShape->listOfVisibleShadows = nullptr;
 
 	//Other Data
 	newShape->myType = this;
-	if (newShape->myType == NULL)
-		STOP(("ShapeType NULL.  BAD Shape in MAX FILE"));
+	if (newShape->myType == nullptr)
+		STOP(("ShapeType nullptr.  BAD Shape in MAX FILE"));
 		
 	newShape->aRGBHighlight = 0x00000000;
 	newShape->lightsOut = false;
@@ -245,7 +245,7 @@ int32_t TG_TypeNode::MakeFromHelper (puint8_t aseBuffer, PSTR fileName)
 	//------------------------------------------
 	// Store off the Node Names.
 	PSTR nodeName = strstr((PSTR )aseBuffer,ASE_NODE_NAME);
-	gosASSERT(nodeName != NULL);
+	gosASSERT(nodeName != nullptr);
 
 	char nodeString[1024];
 	nodeName += strlen(ASE_NODE_NAME)+1;
@@ -266,7 +266,7 @@ int32_t TG_TypeNode::MakeFromHelper (puint8_t aseBuffer, PSTR fileName)
 	//-------------------------------------------------------------------
 	// Must also check to make sure we HAVE a parent.
 	// We will get the next GeomObject's parent if we don't check length!
-	if ((parentName != NULL) && ((parentName - nodeName) < MAX_SCAN_LENGTH))
+	if ((parentName != nullptr) && ((parentName - nodeName) < MAX_SCAN_LENGTH))
 	{
 		parentName += strlen(ASE_NODE_PARENT)+1;
 		GetNameData(parentName,nodeString);
@@ -281,7 +281,7 @@ int32_t TG_TypeNode::MakeFromHelper (puint8_t aseBuffer, PSTR fileName)
 	//----------------------------------------------------
 	// Store off NODE ABS position for heirarchy
 	nodeName = strstr((PSTR )aseBuffer,ASE_NODE_POS);
-	gosASSERT(nodeName != NULL);
+	gosASSERT(nodeName != nullptr);
 
 	nodeName += strlen(ASE_NODE_POS)+1;
 
@@ -344,23 +344,23 @@ void TG_TypeNode::SaveBinaryCopy (File &binFile)
 // This function creates an instance of a TG_Shape from a TG_TypeShape.  Saves RAM.
 TG_ShapePtr TG_TypeShape::CreateFrom (void)
 {
-	TG_ShapePtr newShape = NULL;
+	TG_ShapePtr newShape = nullptr;
 	newShape = (TG_ShapePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Shape));
-	gosASSERT(newShape != NULL);
+	gosASSERT(newShape != nullptr);
 	
 	//listOfVertices
 	newShape->numVertices = numTypeVertices;
 	if (numTypeVertices)
 	{
 		//Mark with invalid pointer so we now to get RAM from POOL! 	
-		newShape->listOfVertices = NULL;
-		newShape->listOfColors = NULL;
+		newShape->listOfVertices = nullptr;
+		newShape->listOfColors = nullptr;
 	}
 	else
 	{
-		//Otherwise mark with NULL so we know not to reference!!
-		newShape->listOfVertices = NULL;
-		newShape->listOfColors = NULL;
+		//Otherwise mark with nullptr so we know not to reference!!
+		newShape->listOfVertices = nullptr;
+		newShape->listOfColors = nullptr;
 	}
 
 	//listOfShadowVertices
@@ -369,18 +369,18 @@ TG_ShapePtr TG_TypeShape::CreateFrom (void)
 		//These are UNIQUE to each instance and do not change much per frame.
 		// Thus, store them between frames to save processing time!
 		newShape->listOfShadowVertices = (TG_ShadowVertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_ShadowVertex) * numTypeVertices * MAX_SHADOWS);
-		gosASSERT(newShape->listOfShadowVertices != NULL);
+		gosASSERT(newShape->listOfShadowVertices != nullptr);
 
 		memset(newShape->listOfShadowVertices,0xff,sizeof(TG_ShadowVertex) * numTypeVertices * MAX_SHADOWS);
 		
 		//Mark with invalid pointer so we now to get RAM from POOL! 	
-		newShape->listOfShadowTVertices = NULL;
+		newShape->listOfShadowTVertices = nullptr;
 	}
 	else
 	{
-		//Otherwise mark with NULL so we know not to reference!!
-		newShape->listOfShadowVertices = NULL;
-		newShape->listOfShadowTVertices = NULL;
+		//Otherwise mark with nullptr so we know not to reference!!
+		newShape->listOfShadowVertices = nullptr;
+		newShape->listOfShadowTVertices = nullptr;
 	}
 
 	//listOfTriangles
@@ -388,12 +388,12 @@ TG_ShapePtr TG_TypeShape::CreateFrom (void)
 	if (numTypeTriangles)
 	{
 		//Mark with invalid pointer so we now to get RAM from POOL! 	
-		newShape->listOfTriangles = NULL;
+		newShape->listOfTriangles = nullptr;
 	}
 	else
 	{
-		//Otherwise mark with NULL so we know not to reference!!
-		newShape->listOfTriangles = NULL;
+		//Otherwise mark with nullptr so we know not to reference!!
+		newShape->listOfTriangles = nullptr;
 	}
 
 	//listOfVisibleFaces
@@ -401,12 +401,12 @@ TG_ShapePtr TG_TypeShape::CreateFrom (void)
 	if (numTypeTriangles)
 	{
 		//Mark with invalid pointer so we now to get RAM from POOL! 	
-		newShape->listOfVisibleFaces = NULL;
+		newShape->listOfVisibleFaces = nullptr;
 	}
 	else
 	{
-		//Otherwise mark with NULL so we know not to reference!!
-		newShape->listOfVisibleFaces = NULL;
+		//Otherwise mark with nullptr so we know not to reference!!
+		newShape->listOfVisibleFaces = nullptr;
 	}
 
 	//listOfVisibleShadows
@@ -414,18 +414,18 @@ TG_ShapePtr TG_TypeShape::CreateFrom (void)
 	if (numTypeTriangles)
 	{
 		//Mark with invalid pointer so we now to get RAM from POOL! 	
-		newShape->listOfVisibleShadows = NULL;
+		newShape->listOfVisibleShadows = nullptr;
 	}
 	else
 	{
-		//Otherwise mark with NULL so we know not to reference!!
-		newShape->listOfVisibleShadows = NULL;
+		//Otherwise mark with nullptr so we know not to reference!!
+		newShape->listOfVisibleShadows = nullptr;
 	}
 
 	//Other Data
 	newShape->myType = this;
-	if (newShape->myType == NULL)
-		STOP(("ShapeType NULL.  BAD Shape in MAX FILE"));
+	if (newShape->myType == nullptr)
+		STOP(("ShapeType nullptr.  BAD Shape in MAX FILE"));
  	
 	newShape->aRGBHighlight = 0x00000000;
 	newShape->lightsOut = false;
@@ -454,13 +454,13 @@ void TG_TypeShape::LoadBinaryCopy (File &binFile)
 	if (numTypeVertices)
 	{
 		listOfTypeVertices = (TG_TypeVertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TypeVertex) * numTypeVertices);
-		gosASSERT(listOfTypeVertices != NULL);
+		gosASSERT(listOfTypeVertices != nullptr);
 
 		binFile.read((puint8_t)listOfTypeVertices,sizeof(TG_TypeVertex) * numTypeVertices);
 	}
 	else
 	{
-		listOfTypeVertices = NULL;
+		listOfTypeVertices = nullptr;
 	}
 
 	//listOfTypeTriangles
@@ -468,13 +468,13 @@ void TG_TypeShape::LoadBinaryCopy (File &binFile)
 	if (numTypeTriangles)
 	{
 		listOfTypeTriangles = (TG_TypeTrianglePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TypeTriangle) * numTypeTriangles);
-		gosASSERT(listOfTypeTriangles != NULL);
+		gosASSERT(listOfTypeTriangles != nullptr);
 
 		binFile.read((puint8_t)listOfTypeTriangles,sizeof(TG_TypeTriangle) * numTypeTriangles);
 	}
 	else
 	{
-		listOfTypeTriangles = NULL;
+		listOfTypeTriangles = nullptr;
 	}
 
 	//listOfTextures
@@ -482,13 +482,13 @@ void TG_TypeShape::LoadBinaryCopy (File &binFile)
 	if (numTextures)
 	{
 		listOfTextures = (TG_TinyTexturePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TinyTexture) * numTextures);
-		gosASSERT(listOfTextures != NULL);
+		gosASSERT(listOfTextures != nullptr);
 
 		binFile.read((puint8_t)listOfTextures,sizeof(TG_TinyTexture) * numTextures);
 	}
 	else
 	{
-		listOfTextures = NULL;
+		listOfTextures = nullptr;
 	}
 
 	//Other Data
@@ -553,15 +553,15 @@ void TG_TypeShape::destroy (void)
 {
 	if (listOfTypeVertices)
 		TG_Shape::tglHeap->Free(listOfTypeVertices);
-	listOfTypeVertices = NULL;
+	listOfTypeVertices = nullptr;
 
 	if (listOfTypeTriangles)
 		TG_Shape::tglHeap->Free(listOfTypeTriangles);
-	listOfTypeTriangles = NULL;
+	listOfTypeTriangles = nullptr;
 
 	if (listOfTextures)
 		TG_Shape::tglHeap->Free(listOfTextures);
-	listOfTextures = NULL;
+	listOfTextures = nullptr;
 
 	numTypeVertices = numTypeTriangles = numTextures = 0;
 }	
@@ -572,16 +572,16 @@ void TG_Shape::destroy (void)
 {
 	//THIS IS CORRECT!!!!
 	// They come from a common pool now, Deleteing them would be BAD!!
-	listOfVertices = NULL;
-	listOfColors = NULL;
-	listOfTriangles = NULL;
-	listOfVisibleFaces = NULL;
-	listOfVisibleShadows = NULL;
-	listOfShadowTVertices = NULL;
+	listOfVertices = nullptr;
+	listOfColors = nullptr;
+	listOfTriangles = nullptr;
+	listOfVisibleFaces = nullptr;
+	listOfVisibleShadows = nullptr;
+	listOfShadowTVertices = nullptr;
 
 	if (listOfShadowVertices)
 		tglHeap->Free(listOfShadowVertices);
-	listOfShadowVertices = NULL;
+	listOfShadowVertices = nullptr;
 
 	numVertices = numTriangles = numVisibleFaces = 0;
 }	
@@ -599,7 +599,7 @@ int32_t TG_TypeShape::MakeFromHelper (puint8_t aseBuffer, PSTR fileName)
 	//------------------------------------------
 	// Store off the Node Names.
 	PSTR nodeName = strstr((PSTR )aseBuffer,ASE_NODE_NAME);
-	gosASSERT(nodeName != NULL);
+	gosASSERT(nodeName != nullptr);
 
 	char nodeString[1024];
 	nodeName += strlen(ASE_NODE_NAME)+1;
@@ -620,7 +620,7 @@ int32_t TG_TypeShape::MakeFromHelper (puint8_t aseBuffer, PSTR fileName)
 	//-------------------------------------------------------------------
 	// Must also check to make sure we HAVE a parent.
 	// We will get the next GeomObject's parent if we don't check length!
-	if ((parentName != NULL) && ((parentName - nodeName) < MAX_SCAN_LENGTH))
+	if ((parentName != nullptr) && ((parentName - nodeName) < MAX_SCAN_LENGTH))
 	{
 		parentName += strlen(ASE_NODE_PARENT)+1;
 		GetNameData(parentName,nodeString);
@@ -635,7 +635,7 @@ int32_t TG_TypeShape::MakeFromHelper (puint8_t aseBuffer, PSTR fileName)
 	//----------------------------------------------------
 	// Store off NODE ABS position for heirarchy
 	nodeName = strstr((PSTR )aseBuffer,ASE_NODE_POS);
-	gosASSERT(nodeName != NULL);
+	gosASSERT(nodeName != nullptr);
 
 	nodeName += strlen(ASE_NODE_POS)+1;
 
@@ -676,7 +676,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 	//------------------------------------------
 	// Store off the Node Names.
 	PSTR nodeName = strstr((PSTR )aseBuffer,ASE_NODE_NAME);
-	gosASSERT(nodeName != NULL);
+	gosASSERT(nodeName != nullptr);
 
 	char nodeString[1024];
 	nodeName += strlen(ASE_NODE_NAME)+1;
@@ -697,7 +697,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 	//-------------------------------------------------------------------
 	// Must also check to make sure we HAVE a parent.
 	// We will get the next GeomObject's parent if we don't check length!
-	if ((parentName != NULL) && ((parentName - nodeName) < MAX_SCAN_LENGTH))
+	if ((parentName != nullptr) && ((parentName - nodeName) < MAX_SCAN_LENGTH))
 	{
 		parentName += strlen(ASE_NODE_PARENT)+1;
 		GetNameData(parentName,nodeString);
@@ -712,7 +712,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 	//----------------------------------------------------
 	// Store off NODE ABS position for heirarchy
 	nodeName = strstr((PSTR )aseBuffer,ASE_NODE_POS);
-	gosASSERT(nodeName != NULL);
+	gosASSERT(nodeName != nullptr);
 
 	nodeName += strlen(ASE_NODE_POS)+1;
 
@@ -732,7 +732,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 	//----------------------------------------
 	// Find the Number of Vertices
 	PSTR vertexCount = strstr((PSTR )aseBuffer,ASE_NUM_VERTEX);
-	gosASSERT(vertexCount != NULL);
+	gosASSERT(vertexCount != nullptr);
 		
 	vertexCount += strlen(ASE_NUM_FACE)+1;
 	numTypeVertices = atol(vertexCount);
@@ -750,7 +750,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 	//---------------------------------------
 	// Find the Number of faces
 	PSTR faceCount = strstr((PSTR )aseBuffer,ASE_NUM_FACE);
-	gosASSERT(faceCount != NULL);
+	gosASSERT(faceCount != nullptr);
 		
 	faceCount += strlen(ASE_NUM_FACE)+1;
 	numTypeTriangles = atol(faceCount);
@@ -759,14 +759,14 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 	//-------------------
 	// Vertex Data Next.
 	listOfTypeVertices = (TG_TypeVertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TypeVertex) * numTypeVertices);
-	gosASSERT(listOfTypeVertices != NULL);
+	gosASSERT(listOfTypeVertices != nullptr);
 
 	memset(listOfTypeVertices,0xff,sizeof(TG_TypeVertex) * numTypeVertices);
 
 	//---------------------------
 	// Create vertex normal list
 	int32_t *vertexNormalCount = (int32_t *)TG_Shape::tglHeap->Malloc(sizeof(int32_t) * numTypeVertices);
-	gosASSERT(vertexNormalCount != NULL);
+	gosASSERT(vertexNormalCount != nullptr);
 
 	memset(vertexNormalCount,0,sizeof(int32_t) * numTypeVertices);
 
@@ -781,7 +781,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 		sprintf(vertexID,"%s% 5d",ASE_MESH_VERTEX_ID,i);
 
 		PSTR vertexData = strstr((PSTR )aseBuffer,vertexID);
-		gosASSERT(vertexData != NULL);
+		gosASSERT(vertexData != nullptr);
 			
 		vertexData += strlen(vertexID)+1;
 
@@ -819,7 +819,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 	//---------------------------------------
 	// Face Data Next.
 	listOfTypeTriangles = (TG_TypeTrianglePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TypeTriangle) * numTypeTriangles);
-	gosASSERT(listOfTypeTriangles != NULL);
+	gosASSERT(listOfTypeTriangles != nullptr);
 
 	memset(listOfTypeTriangles,0xff,sizeof(TG_TypeTriangle) * numTypeTriangles);
 
@@ -833,22 +833,22 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 		sprintf(faceId,"%s% 5d:",ASE_MESH_FACE_ID,i);
 
 		PSTR faceData = strstr((PSTR )aseBuffer,faceId);
-		gosASSERT(faceData != NULL);
+		gosASSERT(faceData != nullptr);
 
 		faceData = strstr(faceData,"A:");
-		gosASSERT(faceData != NULL);
+		gosASSERT(faceData != nullptr);
 			
 		GetNumberData(faceData,numberData);
 		listOfTypeTriangles[i].Vertices[0] = atol(numberData);
 
 		faceData = strstr(faceData,"B:");
-		gosASSERT(faceData != NULL);
+		gosASSERT(faceData != nullptr);
 
 		GetNumberData(faceData,numberData);
 		listOfTypeTriangles[i].Vertices[1] = atol(numberData);
 
 		faceData = strstr(faceData,"C:");
-		gosASSERT(faceData != NULL);
+		gosASSERT(faceData != nullptr);
 	
 		GetNumberData(faceData,numberData);
 		listOfTypeTriangles[i].Vertices[2] = atol(numberData);
@@ -859,7 +859,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 		{
 			//Must parse MATLID to find material ID.
 			faceData = strstr(faceData,ASE_FACE_MATERIAL_ID);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 
 			faceData += strlen(ASE_FACE_MATERIAL_ID)+1;
 
@@ -893,7 +893,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 			sprintf(faceId,"%s %d",ASE_MESH_TFACE_ID,i);
 	
 			faceData = strstr(faceData,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 	
 			faceData += strlen(faceId);
 				
@@ -912,12 +912,12 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 			sprintf(faceId,"%s",ASE_NUM_TVERTEX);
 	
 			faceData = strstr((PSTR )aseBuffer,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 	
 			sprintf(faceId,"%s %d",ASE_MESH_TVERT_ID,(int32_t)tVFaces.x);
 	
 			faceData = strstr(faceData,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 	
 			faceData += strlen(faceId);
 				
@@ -951,12 +951,12 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 			sprintf(faceId,"%s",ASE_NUM_TVERTEX);
 	
 			faceData = strstr((PSTR )aseBuffer,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 	
 			sprintf(faceId,"%s %d",ASE_MESH_TVERT_ID,(int32_t)tVFaces.y);
 	
 			faceData = strstr(faceData,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 	
 			faceData += strlen(faceId);
 				
@@ -988,12 +988,12 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 			sprintf(faceId,"%s",ASE_NUM_TVERTEX);
 	
 			faceData = strstr((PSTR )aseBuffer,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 	
 			sprintf(faceId,"%s %d",ASE_MESH_TVERT_ID,(int32_t)tVFaces.z);
 	
 			faceData = strstr(faceData,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 	
 			faceData += strlen(faceId);
 				
@@ -1041,7 +1041,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 		faceData = strstr((PSTR )aseBuffer,faceId);
 		if (faceData)
 		{
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 
 			faceData += strlen(faceId);
 			GetNumberData(faceData,numberData);
@@ -1051,7 +1051,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 			sprintf(faceId,"%s %d",ASE_MESH_CFACE_ID,i);
 
 			faceData = strstr(faceData,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 
 			faceData += strlen(faceId);
 				
@@ -1070,12 +1070,12 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 			sprintf(faceId,"%s",ASE_NUM_CVERTEX);
 
 			faceData = strstr((PSTR )aseBuffer,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 
 			sprintf(faceId,"%s %d",ASE_MESH_VERTCOL_ID,(int32_t)cVFaces.x);
 
 			faceData = strstr(faceData,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 
 			faceData += strlen(faceId);
 				
@@ -1102,12 +1102,12 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 			sprintf(faceId,"%s",ASE_NUM_CVERTEX);
 
 			faceData = strstr((PSTR )aseBuffer,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 
 			sprintf(faceId,"%s %d",ASE_MESH_VERTCOL_ID,(int32_t)cVFaces.y);
 
 			faceData = strstr(faceData,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 
 			faceData += strlen(faceId);
 				
@@ -1134,12 +1134,12 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 			sprintf(faceId,"%s",ASE_NUM_CVERTEX);
 
 			faceData = strstr((PSTR )aseBuffer,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 
 			sprintf(faceId,"%s %d",ASE_MESH_VERTCOL_ID,(int32_t)cVFaces.z);
 
 			faceData = strstr(faceData,faceId);
-			gosASSERT(faceData != NULL);
+			gosASSERT(faceData != nullptr);
 
 			faceData += strlen(faceId);
 				
@@ -1175,7 +1175,7 @@ int32_t TG_TypeShape::ParseASEFile (puint8_t aseBuffer, PSTR fileName)
 		// Dig out the face Normal.
 		sprintf(faceId,"%s %d",ASE_FACE_NORMAL_ID,i);
 		faceData = strstr((PSTR )aseBuffer,faceId);
-		gosASSERT(faceData != NULL);		
+		gosASSERT(faceData != nullptr);		
 
 		faceData += strlen(faceId);
 			
@@ -1296,7 +1296,7 @@ int32_t TG_TypeShape::LoadTGShapeFromASE (PSTR fileName)
 	//---------------------------------------
 	// Create Buffer to read entire file into
 	puint8_t aseContents = (puint8_t )TG_Shape::tglHeap->Malloc(aseFileSize);
-	gosASSERT(aseContents != NULL);
+	gosASSERT(aseContents != nullptr);
 
 	//---------------------------------------
 	// Open File and read it and close it
@@ -1352,7 +1352,7 @@ int32_t TG_TypeShape::LoadTGShapeFromASE (PSTR fileName)
 			//NOT SUPPORTED YET!  Multiple Textures per building!
 			// Support NOW!  Must have trees!
 			textureData = strstr(textureData,ASE_SUBMATERIAL_COUNT);
-			gosASSERT(textureData != NULL);
+			gosASSERT(textureData != nullptr);
 
 			textureData += strlen(ASE_SUBMATERIAL_COUNT);
 			GetNumberData(textureData,numberData);
@@ -1364,7 +1364,7 @@ int32_t TG_TypeShape::LoadTGShapeFromASE (PSTR fileName)
 	}
 
 	listOfTextures = (TG_TinyTexturePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TinyTexture) * numTextures);
-	gosASSERT(listOfTextures != NULL);
+	gosASSERT(listOfTextures != nullptr);
 
 	memset(listOfTextures,0x0,sizeof(TG_TinyTexture) * numTextures);
 
@@ -1384,7 +1384,7 @@ int32_t TG_TypeShape::LoadTGShapeFromASE (PSTR fileName)
 	int32_t parseResult = ParseASEFile(aseContents,fileName);
 
 	TG_Shape::tglHeap->Free(aseContents);
-	aseContents = NULL;
+	aseContents = nullptr;
 
 	return(parseResult);
 }	
@@ -1397,7 +1397,7 @@ void TG_TypeShape::CreateListOfTextures (TG_TexturePtr list, uint32_t numTxms)
 	if (numTextures)
 	{
 		listOfTextures = (TG_TinyTexturePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_TinyTexture) * numTextures);
-		gosASSERT(listOfTextures != NULL);
+		gosASSERT(listOfTextures != nullptr);
    
 	   for (int32_t i=0;i<numTextures;i++)
 	   {
@@ -1411,7 +1411,7 @@ void TG_TypeShape::CreateListOfTextures (TG_TexturePtr list, uint32_t numTxms)
 	   }
  	}
 	else
-		listOfTextures = NULL;
+		listOfTextures = nullptr;
 }	
 
 //-------------------------------------------------------------------------------
@@ -1508,7 +1508,7 @@ int32_t TG_Shape::SetLightList (TG_LightPtr *lightList, uint32_t nLights)
 	}
 	else
 	{
-		listOfLights = NULL;
+		listOfLights = nullptr;
 		numLights = 0;
 	}
 
@@ -1568,7 +1568,7 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 	
 	if (isSpotlight && !isNight)
 	{
-		listOfVertices = NULL;		//Mark this as untransformed!!
+		listOfVertices = nullptr;		//Mark this as untransformed!!
 		return(1);
 	}
 		
@@ -1765,7 +1765,7 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 			{
 				for (int32_t i=0;i<numLights;i++)
 				{
-					if ((listOfLights[i] != NULL) && (listOfLights[i]->active))
+					if ((listOfLights[i] != nullptr) && (listOfLights[i]->active))
 					{
 						uint32_t startLight = listOfLights[i]->GetaRGB();
 						switch (listOfLights[i]->lightType)
@@ -2166,7 +2166,7 @@ int32_t TG_Shape::MultiTransformShape (Stuff::Matrix4D *shapeToClip, Stuff::Poin
 				// Flat Shade any face which are flat shaded.
 				for (int32_t i=0;i<numLights;i++)
 				{
-					if (listOfLights[i] != NULL)
+					if (listOfLights[i] != nullptr)
 					{
 						uint32_t startVLight = listOfLights[i]->GetaRGB();
 						switch (listOfLights[i]->lightType)
@@ -2699,7 +2699,7 @@ void TG_Shape::MultiTransformShadows (Stuff::Point3D *pos, Stuff::LinearMatrix4D
 		// Use formula form Blinn-Trip Down the Graphics Pipeline-Chapter 6
 		for (int32_t i=0;i<numLights;i++)
 		{
-			if ((listOfLights[i] != NULL) && (listOfLights[i]->active) && (shadowNum < MAX_SHADOWS))
+			if ((listOfLights[i] != nullptr) && (listOfLights[i]->active) && (shadowNum < MAX_SHADOWS))
 			{
 				switch (listOfLights[i]->lightType)
 				{

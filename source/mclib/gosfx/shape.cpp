@@ -47,7 +47,7 @@ gosFX::Shape__Specification::Shape__Specification(
 {
 	Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
-	m_shape = NULL;
+	m_shape = nullptr;
 	SetShape(shape);
 }
 
@@ -173,7 +173,7 @@ void
 //############################################################################
 
 gosFX::Shape::ClassData*
-	gosFX::Shape::DefaultData = NULL;
+	gosFX::Shape::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
@@ -200,7 +200,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //------------------------------------------------------------------------------
@@ -248,11 +248,11 @@ void gosFX::Shape::Draw(DrawInfo *info)
 	MidLevelRenderer::DrawScalableShapeInformation dinfo;
 	MidLevelRenderer::MLRShape *shape = GetSpecification()->m_shape;
 	dinfo.clippingFlags.SetClippingState(0x3f);
-	dinfo.worldToShape = NULL;
+	dinfo.worldToShape = nullptr;
 	Specification *spec = GetSpecification();
 	Check_Object(spec);
 	dinfo.state.Combine(info->m_state, spec->m_state);
-	dinfo.activeLights = NULL;
+	dinfo.activeLights = nullptr;
 	dinfo.nrOfActiveLights = 0;
 	dinfo.shape = shape;
 	Stuff::Vector3D scale(m_scale, m_scale, m_scale);

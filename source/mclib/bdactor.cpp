@@ -174,7 +174,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 				//----------------------------------------------
 				// Base LOD shape.  In stand Pose by default.
 				bldgShape[i] = new TG_TypeMultiShape;
-				gosASSERT(bldgShape[i] != NULL);
+				gosASSERT(bldgShape[i] != nullptr);
 			
 				FullPathFileName bldgName;
 				bldgName.init(tglPath,aseFileName,".ase");
@@ -192,7 +192,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 		//----------------------------------------------
 		// Base shape.  In stand Pose by default.
 		bldgShape[0] = new TG_TypeMultiShape;
-		gosASSERT(bldgShape[0] != NULL);
+		gosASSERT(bldgShape[0] != nullptr);
 	
 		FullPathFileName bldgName;
 		bldgName.init(tglPath,aseFileName,".ase");
@@ -206,7 +206,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 		//----------------------------------------------
 		// Base Shadow shape.
 		bldgShadowShape = new TG_TypeMultiShape;
-		gosASSERT(bldgShadowShape != NULL);
+		gosASSERT(bldgShadowShape != nullptr);
 	
 		FullPathFileName bldgName;
 		bldgName.init(tglPath,aseFileName,".ase");
@@ -226,13 +226,13 @@ void BldgAppearanceType::init (PSTR  fileName)
 		dmgName.init(tglPath,aseFileName,".ase");
 	
 		bldgDmgShape = new TG_TypeMultiShape;
-		gosASSERT(bldgDmgShape != NULL);
+		gosASSERT(bldgDmgShape != nullptr);
 		bldgDmgShape->LoadTGMultiShapeFromASE(dmgName);
 
 		if (!bldgDmgShape->GetNumShapes())
 		{
 			delete bldgDmgShape;
-			bldgDmgShape = NULL;
+			bldgDmgShape = nullptr;
 		}
 		
 		//Shadow for destroyed state.
@@ -242,7 +242,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 			//----------------------------------------------
 			// Base Shadow shape.
 			bldgDmgShadowShape = new TG_TypeMultiShape;
-			gosASSERT(bldgDmgShadowShape != NULL);
+			gosASSERT(bldgDmgShadowShape != nullptr);
 		
 			FullPathFileName bldgName;
 			bldgName.init(tglPath,aseFileName,".ase");
@@ -251,14 +251,14 @@ void BldgAppearanceType::init (PSTR  fileName)
 			if (!bldgDmgShadowShape->GetNumShapes())
 			{
 				delete bldgDmgShadowShape;
-				bldgDmgShadowShape = NULL;
+				bldgDmgShadowShape = nullptr;
 			}
 		}
 	}
 	else
 	{
-		bldgDmgShape = NULL;
-		bldgDmgShadowShape = NULL;
+		bldgDmgShape = nullptr;
+		bldgDmgShadowShape = nullptr;
 	}
 
 	result = iniFile.seekBlock("TGLDestructEffect");
@@ -313,7 +313,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 			if (fileExists(animPath) || fileExists(otherPath))
 			{
 				bdAnimData[i] = new TG_AnimateShape;
-				gosASSERT(bdAnimData[i] != NULL);
+				gosASSERT(bdAnimData[i] != nullptr);
 	
 				//--------------------------------------------------------
 				// If this animation does not exist, it is not a problem!
@@ -321,11 +321,11 @@ void BldgAppearanceType::init (PSTR  fileName)
 				bdAnimData[i]->LoadTGMultiShapeAnimationFromASE(animPath,bldgShape[0]);
 			}
 			else
-				bdAnimData[i] = NULL;
+				bdAnimData[i] = nullptr;
 		}
 		else
 		{
-			bdAnimData[i] = NULL;
+			bdAnimData[i] = nullptr;
 		}
 	}
 	
@@ -351,12 +351,12 @@ void BldgAppearanceType::init (PSTR  fileName)
 	//-----------------------------------------------
 	// Load up the Weapon Node Data.
 	numWeaponNodes = 0;
-	nodeData = NULL;
+	nodeData = nullptr;
 	result = iniFile.seekBlock("WeaponNode");
 	if (result == NO_ERROR)
 	{
 		nodeData = (NodeData *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(NodeData)*(MAX_WEAPON_NODES));
-		gosASSERT(nodeData != NULL);
+		gosASSERT(nodeData != nullptr);
 		
 		for (i=0;i<MAX_WEAPON_NODES;i++)
 		{
@@ -371,7 +371,7 @@ void BldgAppearanceType::init (PSTR  fileName)
 			}
 			
 			nodeData[i].nodeId = (PSTR )AppearanceTypeList::appearanceHeap->Malloc(strlen(weaponName)+1);
-			gosASSERT(nodeData[i].nodeId != NULL);
+			gosASSERT(nodeData[i].nodeId != nullptr);
 				
 			strcpy(nodeData[i].nodeId,weaponName);
 			nodeData[i].weaponType = 0;
@@ -397,26 +397,26 @@ void BldgAppearanceType::destroy (void)
 		if (bldgShape[i])
 		{
 			delete bldgShape[i];
-			bldgShape[i] = NULL;
+			bldgShape[i] = nullptr;
 		}
 	}
 
 	if (bldgShadowShape)
 	{
 		delete bldgShadowShape;
-		bldgShadowShape = NULL;
+		bldgShadowShape = nullptr;
 	}
 	
  	if (bldgDmgShape)
 	{
 		delete bldgDmgShape;
-		bldgDmgShape = NULL;
+		bldgDmgShape = nullptr;
 	}
 	
 	if (bldgDmgShadowShape)
 	{
 		delete bldgDmgShadowShape;
-		bldgDmgShadowShape = NULL;
+		bldgDmgShadowShape = nullptr;
 	}
 	
  	for (i=0;i<MAX_BD_ANIMATIONS;i++)
@@ -424,7 +424,7 @@ void BldgAppearanceType::destroy (void)
 		if (bdAnimData[i])
 		{
 			delete bdAnimData[i];
-			bdAnimData[i] = NULL;
+			bdAnimData[i] = nullptr;
 		}
 	}
 }
@@ -432,7 +432,7 @@ void BldgAppearanceType::destroy (void)
 //-----------------------------------------------------------------------------
 void BldgAppearanceType::setAnimation (TG_MultiShapePtr shape, uint32_t animationNum)
 {
-	gosASSERT(shape != NULL);
+	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
 	gosASSERT(animationNum < MAX_BD_ANIMATIONS);
 
@@ -566,7 +566,7 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	flashColor = 0x00000000;
 	drawFlash = false;
 
-	pointLight = NULL;
+	pointLight = nullptr;
 	lightId = 0xffffffff;
 	forceLightsOut = false;
 	
@@ -582,16 +582,16 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
  	
 	turretYaw = turretPitch = 0.0f;
 	
-	destructFX = NULL;
-	activity = NULL;
-	activity1 = NULL;
+	destructFX = nullptr;
+	activity = nullptr;
+	activity1 = nullptr;
 	isActivitying = false;
 
 	OBBRadius = -1.0f;
 	highZ = -1.0f;
 	
-	nodeUsed = NULL;
-	nodeRecycle = NULL;
+	nodeUsed = nullptr;
+	nodeRecycle = nullptr;
 	
 	beenInView = false;
 
@@ -680,7 +680,7 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 		}
 		else
 		{
-			bldgShadowShape = NULL;
+			bldgShadowShape = nullptr;
 		}
  		
 		Stuff::Vector3D boxCoords[8];
@@ -746,11 +746,11 @@ void BldgAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
  		if (appearType->numWeaponNodes)
 		{
 			nodeUsed = (int32_t *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(int32_t) * appearType->numWeaponNodes);
-			gosASSERT(nodeUsed != NULL);
+			gosASSERT(nodeUsed != nullptr);
 			memset(nodeUsed,0,sizeof(int32_t) * appearType->numWeaponNodes);
 			
 			nodeRecycle = (float *)AppearanceTypeList::appearanceHeap->Malloc(sizeof(float) * appearType->numWeaponNodes);
-			gosASSERT(nodeRecycle != NULL);
+			gosASSERT(nodeRecycle != nullptr);
 			
 			for (int32_t i=0;i<appearType->numWeaponNodes;i++)
 				nodeRecycle[i] = 0.0f;
@@ -771,7 +771,7 @@ void BldgAppearance::setObjStatus (int32_t oStatus)
 				{
 					bldgShape->ClearAnimation();
 					delete bldgShape;
-					bldgShape = NULL;
+					bldgShape = nullptr;
 				}
 				
 				bldgShape = appearType->bldgDmgShape->CreateFrom();
@@ -788,7 +788,7 @@ void BldgAppearance::setObjStatus (int32_t oStatus)
 				{
 					bldgShadowShape->ClearAnimation();
 					delete bldgShadowShape;
-					bldgShadowShape = NULL;
+					bldgShadowShape = nullptr;
 				}
 				
 				bldgShadowShape = appearType->bldgDmgShadowShape->CreateFrom();
@@ -811,7 +811,7 @@ void BldgAppearance::setObjStatus (int32_t oStatus)
 				{
 					bldgShape->ClearAnimation();
 					delete bldgShape;
-					bldgShape = NULL;
+					bldgShape = nullptr;
 				}
 				
 				bldgShape = appearType->bldgShape[0]->CreateFrom();
@@ -827,7 +827,7 @@ void BldgAppearance::setObjStatus (int32_t oStatus)
 				{
 					bldgShadowShape->ClearAnimation();
 					delete bldgShadowShape;
-					bldgShadowShape = NULL;
+					bldgShadowShape = nullptr;
 				}
 				
 				bldgShadowShape = appearType->bldgShadowShape->CreateFrom();
@@ -1335,7 +1335,7 @@ bool BldgAppearance::recalcBounds (void)
 
 							bldgShape->ClearAnimation();
 							delete bldgShape;
-							bldgShape = NULL;
+							bldgShape = nullptr;
 
 							bldgShape = appearType->bldgShape[currentLOD]->CreateFrom();
 							if (bdAnimationState != -1)
@@ -1387,7 +1387,7 @@ bool BldgAppearance::recalcBounds (void)
 							
 							bldgShape->ClearAnimation();
 							delete bldgShape;
-							bldgShape = NULL;
+							bldgShape = nullptr;
 							
 							bldgShape = appearType->bldgShape[currentLOD]->CreateFrom();
 							if (bdAnimationState != -1)
@@ -1464,7 +1464,7 @@ bool BldgAppearance::playDestruction (void)
 		if (gosEffectSpec)
 		{
 			destructFX = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-			gosASSERT(destructFX != NULL);
+			gosASSERT(destructFX != nullptr);
 		
 			MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 		
@@ -1493,7 +1493,7 @@ bool BldgAppearance::playDestruction (void)
 			shapeOrigin.BuildRotation(rot);
 			shapeOrigin.BuildTranslation(tPosition);
 			
-			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 			destructFX->Start(&info);
 			
 			return true;
@@ -1792,62 +1792,62 @@ int32_t BldgAppearance::render (int32_t depthFixup)
 		}
 		
 		{
-			LineElement newElement(screenPos[0],screenPos[1],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[0],screenPos[1],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[0],screenPos[4],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[0],screenPos[4],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[0],screenPos[3],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[0],screenPos[3],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[5],screenPos[4],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[5],screenPos[4],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[5],screenPos[6],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[5],screenPos[6],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[5],screenPos[3],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[5],screenPos[3],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[2],screenPos[3],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[2],screenPos[3],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[2],screenPos[6],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[2],screenPos[6],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[2],screenPos[1],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[2],screenPos[1],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[7],screenPos[1],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[7],screenPos[1],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[7],screenPos[6],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[7],screenPos[6],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[7],screenPos[4],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[7],screenPos[4],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 #endif
@@ -1930,7 +1930,7 @@ int32_t BldgAppearance::update (bool animate)
 		{
 			eye->removeWorldLight(lightId,pointLight);
 			free(pointLight);
-			pointLight = NULL;
+			pointLight = nullptr;
 		}
 	}
 
@@ -2153,7 +2153,7 @@ int32_t BldgAppearance::update (bool animate)
 			{
 				destructFX->Kill();
 				delete destructFX;
-				destructFX = NULL;
+				destructFX = nullptr;
 			}
 		}
 		
@@ -2264,13 +2264,13 @@ void BldgAppearance::startActivity (int32_t effectId, bool loop)
 			if (gosEffectSpec)
 			{
 				activity = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(activity != NULL);
+				gosASSERT(activity != nullptr);
 				
 				Stuff::Vector3D testPos = getNodeNamePosition("activity_node1");
 				if (testPos != position)
 				{
 					activity1 = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-					gosASSERT(activity != NULL);
+					gosASSERT(activity != nullptr);
 				}
 
   				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
@@ -2314,7 +2314,7 @@ void BldgAppearance::startActivity (int32_t effectId, bool loop)
 		localResult.Multiply(localToWorld,shapeOrigin);
 		*/
 			
- 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+ 		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 
 		activity->Start(&info);
 		
@@ -2350,7 +2350,7 @@ void BldgAppearance::startActivity (int32_t effectId, bool loop)
 			localResult.Multiply(localToWorld,shapeOrigin);
 			*/
 				
-			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 	
 			activity1->Start(&info);
 		}
@@ -2388,20 +2388,20 @@ void BldgAppearance::destroy (void)
 	if ( bldgShape )
 	{
 		delete bldgShape;
-		bldgShape = NULL;
+		bldgShape = nullptr;
 	}
 
 	if (bldgShadowShape)
 	{
 		delete bldgShadowShape;
-		bldgShadowShape = NULL;
+		bldgShadowShape = nullptr;
 	}
 
 	if (destructFX)
 	{
 		destructFX->Kill();
 		delete destructFX;
-		destructFX = NULL;
+		destructFX = nullptr;
 	}
 	
 	//Turn the lights off!
@@ -2412,7 +2412,7 @@ void BldgAppearance::destroy (void)
 			eye->removeWorldLight(lightId,pointLight);
 
 		free(pointLight);
-		pointLight = NULL;
+		pointLight = nullptr;
 	}
 
 	appearanceTypeList->removeAppearance(appearType);
@@ -2436,7 +2436,7 @@ int32_t BldgAppearance::calcCellsCovered (Stuff::Vector3D& pos, pint16_t cellLis
 	
 		bldgShape->ClearAnimation();
 		delete bldgShape;
-		bldgShape = NULL;
+		bldgShape = nullptr;
 	
 		bldgShape = appearType->bldgShape[currentLOD]->CreateFrom();
 		if (bdAnimationState != -1)
@@ -2503,7 +2503,7 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int
 	
 		bldgShape->ClearAnimation();
 		delete bldgShape;
-		bldgShape = NULL;
+		bldgShape = nullptr;
 	
 		bldgShape = appearType->bldgShape[currentLOD]->CreateFrom();
 		if (bdAnimationState != -1)
@@ -2565,7 +2565,7 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int
 			{
 				bldgShape->ClearAnimation();
 				delete bldgShape;
-				bldgShape = NULL;
+				bldgShape = nullptr;
 					
 				bldgShape = appearType->bldgShape[0]->CreateFrom();
 				if (bdAnimationState != -1)
@@ -2579,7 +2579,7 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int
 			{
 				bldgShape->ClearAnimation();
 				delete bldgShape;
-				bldgShape = NULL;
+				bldgShape = nullptr;
 					
 				bldgShape = appearType->bldgDmgShape->CreateFrom();
 				if (bdAnimationState != -1)
@@ -2663,7 +2663,7 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int
 			{
 				bldgShape->ClearAnimation();
 				delete bldgShape;
-				bldgShape = NULL;
+				bldgShape = nullptr;
 					
 				bldgShape = appearType->bldgDmgShape->CreateFrom();
 				if (bdAnimationState != -1)
@@ -2677,7 +2677,7 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int
 			{
 				bldgShape->ClearAnimation();
 				delete bldgShape;
-				bldgShape = NULL;
+				bldgShape = nullptr;
 					
 				bldgShape = appearType->bldgShape[0]->CreateFrom();
 				if (bdAnimationState != -1)
@@ -2732,7 +2732,7 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int
 		{
 			bldgShape->ClearAnimation();
 			delete bldgShape;
-			bldgShape = NULL;
+			bldgShape = nullptr;
 						
 			bldgShape = appearType->bldgShape[0]->CreateFrom();
 			if (bdAnimationState != -1)
@@ -2742,7 +2742,7 @@ void BldgAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int
 		{
 			bldgShape->ClearAnimation();
 			delete bldgShape;
-			bldgShape = NULL;
+			bldgShape = nullptr;
 					
 			bldgShape = appearType->bldgDmgShape->CreateFrom();
 			if (bdAnimationState != -1)
@@ -2880,7 +2880,7 @@ int32_t BldgAppearance::markMoveMap (bool passable, int32_t* lineOfSightRect, bo
 	{
 		tempBldgShape->ClearAnimation();
 		delete tempBldgShape;
-		tempBldgShape = NULL;
+		tempBldgShape = nullptr;
 	}
 
 	return(numCoords/2);
@@ -2952,7 +2952,7 @@ void BldgAppearance::markLOS (bool clearIt)
 	{
 		tempBldgShape->ClearAnimation();
 		delete tempBldgShape;
-		tempBldgShape = NULL;
+		tempBldgShape = nullptr;
 	}
 }
 
@@ -2968,7 +2968,7 @@ void BldgAppearance::calcAdjCell (int32_t& row, int32_t& col)
 	
 		bldgShape->ClearAnimation();
 		delete bldgShape;
-		bldgShape = NULL;
+		bldgShape = nullptr;
 	
 		bldgShape = appearType->bldgShape[currentLOD]->CreateFrom();
 		if (bdAnimationState != -1)
@@ -3043,7 +3043,7 @@ void TreeAppearanceType::init (PSTR  fileName)
 				//----------------------------------------------
 				// Base LOD shape.  In stand Pose by default.
 				treeShape[i] = new TG_TypeMultiShape;
-				gosASSERT(treeShape[i] != NULL);
+				gosASSERT(treeShape[i] != nullptr);
 			
 				FullPathFileName treeName;
 				treeName.init(tglPath,aseFileName,".ase");
@@ -3066,7 +3066,7 @@ void TreeAppearanceType::init (PSTR  fileName)
 		//----------------------------------------------
 		// Base shape.  In stand Pose by default.
 		treeShape[0] = new TG_TypeMultiShape;
-		gosASSERT(treeShape[0] != NULL);
+		gosASSERT(treeShape[0] != nullptr);
 	
 		FullPathFileName treeName;
 		treeName.init(tglPath,aseFileName,".ase");
@@ -3085,7 +3085,7 @@ void TreeAppearanceType::init (PSTR  fileName)
 		//----------------------------------------------
 		// Base Shadow shape.
 		treeShadowShape = new TG_TypeMultiShape;
-		gosASSERT(treeShadowShape != NULL);
+		gosASSERT(treeShadowShape != nullptr);
 	
 		FullPathFileName treeName;
 		treeName.init(tglPath,aseFileName,".ase");
@@ -3109,13 +3109,13 @@ void TreeAppearanceType::init (PSTR  fileName)
 		dmgName.init(tglPath,aseFileName,".ase");
 	
 		treeDmgShape = new TG_TypeMultiShape;
-		gosASSERT(treeDmgShape != NULL);
+		gosASSERT(treeDmgShape != nullptr);
 		treeDmgShape->LoadTGMultiShapeFromASE(dmgName);
 
 		if (!treeDmgShape->GetNumShapes())
 		{
 			delete treeDmgShape;
-			treeDmgShape = NULL;
+			treeDmgShape = nullptr;
 		}
 		
 		//Shadow for destroyed state.
@@ -3125,7 +3125,7 @@ void TreeAppearanceType::init (PSTR  fileName)
 			//----------------------------------------------
 			// Base Shadow shape.
 			treeDmgShadowShape = new TG_TypeMultiShape;
-			gosASSERT(treeDmgShadowShape != NULL);
+			gosASSERT(treeDmgShadowShape != nullptr);
 		
 			FullPathFileName treeName;
 			treeName.init(tglPath,aseFileName,".ase");
@@ -3134,14 +3134,14 @@ void TreeAppearanceType::init (PSTR  fileName)
 			if (!treeDmgShadowShape->GetNumShapes())
 			{
 				delete treeDmgShadowShape;
-				treeDmgShadowShape = NULL;
+				treeDmgShadowShape = nullptr;
 			}
 		}
 	}
 	else
 	{
-		treeDmgShape = NULL;
-		treeDmgShadowShape = NULL;
+		treeDmgShape = nullptr;
+		treeDmgShadowShape = nullptr;
 	}
 
  	//No Animations at present.
@@ -3157,26 +3157,26 @@ void TreeAppearanceType::destroy (void)
 		if (treeShape[i])
 		{
 			delete treeShape[i];
-			treeShape[i] = NULL;
+			treeShape[i] = nullptr;
 		}
 	}
 
 	if (treeDmgShape)
 	{
 		delete treeDmgShape;
-		treeDmgShape = NULL;
+		treeDmgShape = nullptr;
 	}
 	
 	if (treeDmgShadowShape)
 	{
 		delete treeDmgShadowShape;
-		treeDmgShadowShape = NULL;
+		treeDmgShadowShape = nullptr;
 	}
 	
  	if (treeShadowShape)
 	{
 		delete treeShadowShape;
-		treeShadowShape = NULL;
+		treeShadowShape = nullptr;
 	}
 }
 
@@ -3298,7 +3298,7 @@ void TreeAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 		}
 		else
 		{
-			treeShadowShape = NULL;
+			treeShadowShape = nullptr;
 		}
 		
 		Stuff::Vector3D boxCoords[8];
@@ -3375,7 +3375,7 @@ void TreeAppearance::setObjStatus (int32_t oStatus)
 				{
 					treeShape->ClearAnimation();
 					delete treeShape;
-					treeShape = NULL;
+					treeShape = nullptr;
 				}
 				
 				treeShape = appearType->treeDmgShape->CreateFrom();
@@ -3388,7 +3388,7 @@ void TreeAppearance::setObjStatus (int32_t oStatus)
 				{
 					treeShadowShape->ClearAnimation();
 					delete treeShadowShape;
-					treeShadowShape = NULL;
+					treeShadowShape = nullptr;
 				}
 				
 				treeShadowShape = appearType->treeDmgShadowShape->CreateFrom();
@@ -3405,7 +3405,7 @@ void TreeAppearance::setObjStatus (int32_t oStatus)
 				{
 					treeShape->ClearAnimation();
 					delete treeShape;
-					treeShape = NULL;
+					treeShape = nullptr;
 				}
 				
 				treeShape = appearType->treeShape[0]->CreateFrom();
@@ -3418,7 +3418,7 @@ void TreeAppearance::setObjStatus (int32_t oStatus)
 				{
 					treeShadowShape->ClearAnimation();
 					delete treeShadowShape;
-					treeShadowShape = NULL;
+					treeShadowShape = nullptr;
 				}
 				
 				treeShadowShape = appearType->treeShadowShape->CreateFrom();
@@ -3761,7 +3761,7 @@ bool TreeAppearance::recalcBounds (void)
 
 						treeShape->ClearAnimation();
 						delete treeShape;
-						treeShape = NULL;
+						treeShape = nullptr;
 
 						treeShape = appearType->treeShape[currentLOD]->CreateFrom();
 						//-------------------------------------------------
@@ -3810,7 +3810,7 @@ bool TreeAppearance::recalcBounds (void)
 						
 						treeShape->ClearAnimation();
 						delete treeShape;
-						treeShape = NULL;
+						treeShape = nullptr;
 						
 						treeShape = appearType->treeShape[currentLOD]->CreateFrom();
 						
@@ -3949,62 +3949,62 @@ int32_t TreeAppearance::render (int32_t depthFixup)
 		}
 		
 		{
-			LineElement newElement(screenPos[0],screenPos[1],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[0],screenPos[1],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[0],screenPos[4],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[0],screenPos[4],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[0],screenPos[3],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[0],screenPos[3],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[5],screenPos[4],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[5],screenPos[4],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[5],screenPos[6],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[5],screenPos[6],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[5],screenPos[3],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[5],screenPos[3],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[2],screenPos[3],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[2],screenPos[3],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[2],screenPos[6],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[2],screenPos[6],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[2],screenPos[1],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[2],screenPos[1],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[7],screenPos[1],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[7],screenPos[1],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[7],screenPos[6],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[7],screenPos[6],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[7],screenPos[4],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[7],screenPos[4],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 
@@ -4157,7 +4157,7 @@ void TreeAppearance::markTerrain (_ScenarioMapCellInfo* pInfo, int32_t type, int
 	
 		treeShape->ClearAnimation();
 		delete treeShape;
-		treeShape = NULL;
+		treeShape = nullptr;
 	
 		treeShape = appearType->treeShape[currentLOD]->CreateFrom();
 	}
@@ -4211,7 +4211,7 @@ void TreeAppearance::markLOS (bool clearIt)
 	
 		treeShape->ClearAnimation();
 		delete treeShape;
-		treeShape = NULL;
+		treeShape = nullptr;
 	
 		treeShape = appearType->treeShape[currentLOD]->CreateFrom();
 	}
@@ -4272,7 +4272,7 @@ void TreeAppearance::destroy (void)
 	if ( treeShape )
 	{
 		delete treeShape;
-		treeShape = NULL;
+		treeShape = nullptr;
 	}
 
 	appearanceTypeList->removeAppearance(appearType);

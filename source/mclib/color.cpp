@@ -31,7 +31,7 @@
 
 #include <gameos.hpp>
 //----------------------------------------------------------------------------------
-uint32_t **colorRGBLookup = NULL;
+uint32_t **colorRGBLookup = nullptr;
 int32_t numColorRGBTables = 0;
 
 #define MAX_COLOR_ENTRIES		56
@@ -52,7 +52,7 @@ void initColorTables (void)
 	gosASSERT(result == NO_ERROR);
 
 	colorRGBLookup = (uint32_t **)systemHeap->Malloc(sizeof(uint32_t *) * numColorRGBTables);
-	gosASSERT(colorRGBLookup != NULL);
+	gosASSERT(colorRGBLookup != nullptr);
 
 	memset(colorRGBLookup,0,sizeof(uint32_t *) * numColorRGBTables);
 
@@ -65,7 +65,7 @@ void initColorTables (void)
 		gosASSERT(result == NO_ERROR);
 
 		colorRGBLookup[i] = (uint32_t *)systemHeap->Malloc(sizeof(uint32_t) * MAX_COLOR_ENTRIES);
-		gosASSERT(colorRGBLookup[i] != NULL);
+		gosASSERT(colorRGBLookup[i] != nullptr);
 
 		uint32_t *table = colorRGBLookup[i];
 
@@ -88,12 +88,12 @@ void destroyColorTables (void)
 	for (int32_t i=0;i<numColorRGBTables;i++)
 	{
 		systemHeap->Free(colorRGBLookup[i]);
-		colorRGBLookup[i] = NULL;
+		colorRGBLookup[i] = nullptr;
 	}
 
 	if ( colorRGBLookup )
 		systemHeap->Free(colorRGBLookup);
-	colorRGBLookup = NULL;
+	colorRGBLookup = nullptr;
 }	
 
 //----------------------------------------------------------------------------------
@@ -104,7 +104,7 @@ uint32_t *getColorTable (int32_t tableNum)
 		return(colorRGBLookup[tableNum]);
 	}
 
-	return(NULL);
+	return(nullptr);
 }	
 
 //----------------------------------------------------------------------------------

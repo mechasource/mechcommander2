@@ -64,9 +64,9 @@ float worldUnitsPerMeter = 5.01f;
 float metersPerWorldUnit = 0.2f;
 int32_t terrainLineChanged = 0;
 
-MapDataPtr					Terrain::mapData = NULL;
-TerrainTexturesPtr			Terrain::terrainTextures = NULL;
-TerrainColorMapPtr			Terrain::terrainTextures2 = NULL;
+MapDataPtr					Terrain::mapData = nullptr;
+TerrainTexturesPtr			Terrain::terrainTextures = nullptr;
+TerrainColorMapPtr			Terrain::terrainTextures2 = nullptr;
 
 const int32_t					Terrain::verticesBlockSide = 20;			//Changes for new terrain?
 int32_t						Terrain::blocksMapSide = 0;					//Calced during load.
@@ -90,19 +90,19 @@ int32_t						Terrain::realVerticesMapSide = 0;
 
 Stuff::Vector3D				Terrain::mapTopLeft3d;					//Calced during load.
 
-UserHeapPtr					Terrain::terrainHeap = NULL;			//Setup at load time.
-PSTR 						Terrain::terrainName = NULL;
-PSTR  						Terrain::colorMapName = NULL;			
+UserHeapPtr					Terrain::terrainHeap = nullptr;			//Setup at load time.
+PSTR 						Terrain::terrainName = nullptr;
+PSTR  						Terrain::colorMapName = nullptr;			
 
 int32_t		   				Terrain::numObjBlocks = 0;
-ObjBlockInfo				*Terrain::objBlockInfo = NULL;
-bool						*Terrain::objVertexActive = NULL;
+ObjBlockInfo				*Terrain::objBlockInfo = nullptr;
+bool						*Terrain::objVertexActive = nullptr;
 
-float 						*Terrain::tileRowToWorldCoord = NULL;
-float 						*Terrain::tileColToWorldCoord = NULL;
-float 						*Terrain::cellToWorldCoord = NULL;
-float 						*Terrain::cellColToWorldCoord = NULL;
-float 						*Terrain::cellRowToWorldCoord = NULL;
+float 						*Terrain::tileRowToWorldCoord = nullptr;
+float 						*Terrain::tileColToWorldCoord = nullptr;
+float 						*Terrain::cellToWorldCoord = nullptr;
+float 						*Terrain::cellColToWorldCoord = nullptr;
+float 						*Terrain::cellRowToWorldCoord = nullptr;
 
 float 						Terrain::waterElevation = 0.0f;
 float						Terrain::frameAngle = 0.0f;
@@ -122,7 +122,7 @@ uint8_t				Terrain::fractalNoise = 0;
 bool						Terrain::recalcShadows = false;
 bool						Terrain::recalcLight = false;
 
-Clouds						*Terrain::cloudLayer = NULL;
+Clouds						*Terrain::cloudLayer = nullptr;
 
 bool 						drawTerrainGrid = false;		//Override locally in editor so game don't come with these please!  Love -fs
 bool						drawLOSGrid = false;
@@ -132,7 +132,7 @@ bool						drawTerrainMines = true;
 bool						renderObjects = true;
 bool						renderTrees = true;
 
-TerrainPtr					land = NULL;
+TerrainPtr					land = nullptr;
 
 int32_t 						*usedBlockList;					//Used to determine what objects to deal with.
 int32_t 						*moverBlockList;
@@ -218,10 +218,10 @@ void clearMoverList (void)
 // class Terrain
 void Terrain::init (void)
 {
-	vertexList = NULL;
+	vertexList = nullptr;
 	numberVertices = 0;
 	
-	quadList = NULL;
+	quadList = nullptr;
 	numberQuads = 0;
 }
 
@@ -231,31 +231,31 @@ void Terrain::initMapCellArrays (void)
 	if (!tileRowToWorldCoord)
 	{
 		tileRowToWorldCoord = (float *)terrainHeap->Malloc(sizeof(float) * realVerticesMapSide);
-		gosASSERT(tileRowToWorldCoord != NULL);
+		gosASSERT(tileRowToWorldCoord != nullptr);
 	}
 
 	if (!tileColToWorldCoord)
 	{
 		tileColToWorldCoord = (float *)terrainHeap->Malloc(sizeof(float) * realVerticesMapSide); 
-		gosASSERT(tileColToWorldCoord != NULL);
+		gosASSERT(tileColToWorldCoord != nullptr);
 	}
 
 	if (!cellToWorldCoord)
 	{
 		cellToWorldCoord = (float *)terrainHeap->Malloc(sizeof(float) * MAPCELL_DIM); 
-		gosASSERT(cellToWorldCoord != NULL);
+		gosASSERT(cellToWorldCoord != nullptr);
 	}
 
 	if (!cellColToWorldCoord)
 	{
 		cellColToWorldCoord = (float *)terrainHeap->Malloc(sizeof(float) * realVerticesMapSide * MAPCELL_DIM); 
-		gosASSERT(cellColToWorldCoord != NULL);
+		gosASSERT(cellColToWorldCoord != nullptr);
 	}
 
 	if (!cellRowToWorldCoord)
 	{
 		cellRowToWorldCoord = (float *)terrainHeap->Malloc(sizeof(float) * realVerticesMapSide * MAPCELL_DIM); 
-		gosASSERT(cellRowToWorldCoord != NULL);
+		gosASSERT(cellRowToWorldCoord != nullptr);
 	}
 
 	int32_t i=0;
@@ -325,7 +325,7 @@ void Terrain::getColorMapName (FitIniFile *file)
 		}
 	}
 
-	colorMapName = NULL;
+	colorMapName = nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -334,7 +334,7 @@ void Terrain::setColorMapName (PSTR mapName)
 	if (colorMapName)
 	{
 		delete [] colorMapName;
-		colorMapName = NULL;
+		colorMapName = nullptr;
 	}
 
 	if (mapName)
@@ -382,7 +382,7 @@ int32_t Terrain::init( uint32_t verticesPerMapSide, PacketFile* pakFile, uint32_
 	if( !terrainHeap )
 	{
 		terrainHeap = new UserHeap;
-		gosASSERT(terrainHeap != NULL);
+		gosASSERT(terrainHeap != nullptr);
 		terrainHeap->init(terrainHeapSize,"TERRAIN");
 	}
 
@@ -394,7 +394,7 @@ int32_t Terrain::init( uint32_t verticesPerMapSide, PacketFile* pakFile, uint32_
 		char baseName[256];
 		if (pakFile)
 		{
-			_splitpath(pakFile->getFilename(),NULL,NULL,baseName,NULL);
+			_splitpath(pakFile->getFilename(),nullptr,nullptr,baseName,nullptr);
 		}
 		else
 		{
@@ -417,7 +417,7 @@ int32_t Terrain::init( uint32_t verticesPerMapSide, PacketFile* pakFile, uint32_
 	{
 		char name[1024];
 
-		_splitpath(pakFile->getFilename(),NULL,NULL,name,NULL);
+		_splitpath(pakFile->getFilename(),nullptr,nullptr,name,nullptr);
 		terrainName = new char[strlen(name)+1];
 		strcpy(terrainName,name);
 
@@ -435,7 +435,7 @@ int32_t Terrain::init( uint32_t verticesPerMapSide, PacketFile* pakFile, uint32_
 				
 		if (fileExists(tgaColorMapName) || fileExists(tgaColorMapBurninName) || fileExists(tgaColorMapJPGName))
 		{
-			terrainTextures2 = new TerrainColorMap;		//Otherwise, this will stay NULL and we know not to use them
+			terrainTextures2 = new TerrainColorMap;		//Otherwise, this will stay nullptr and we know not to use them
 		}
 	}
 
@@ -454,20 +454,20 @@ int32_t Terrain::init( uint32_t verticesPerMapSide, PacketFile* pakFile, uint32_
 	
 	numObjBlocks = numberBlocks;
 	objBlockInfo = (ObjBlockInfo *)terrainHeap->Malloc(sizeof(ObjBlockInfo)*numObjBlocks);
-	gosASSERT(objBlockInfo != NULL);
+	gosASSERT(objBlockInfo != nullptr);
 	
 	memset(objBlockInfo,0,sizeof(ObjBlockInfo)*numObjBlocks);
 	
 	objVertexActive = (bool *)terrainHeap->Malloc(sizeof(bool) * realVerticesMapSide * realVerticesMapSide);
-	gosASSERT(objVertexActive != NULL);
+	gosASSERT(objVertexActive != nullptr);
 	
 	memset(objVertexActive,0,sizeof(bool)*numObjBlocks);
 	
 	moverBlockList = (int32_t *)terrainHeap->Malloc(sizeof(int32_t) * numberBlocks);
-	gosASSERT(moverBlockList != NULL);
+	gosASSERT(moverBlockList != nullptr);
 	
 	usedBlockList = (int32_t *)terrainHeap->Malloc(sizeof(int32_t) * numberBlocks);
-	gosASSERT(usedBlockList != NULL);
+	gosASSERT(usedBlockList != nullptr);
 	
 	clearList();
 	clearMoverList();
@@ -497,14 +497,14 @@ int32_t Terrain::init( uint32_t verticesPerMapSide, PacketFile* pakFile, uint32_
 	// Create the VertexList
 	numberVertices = 0;
 	vertexList = (VertexPtr)terrainHeap->Malloc(sizeof(Vertex) * visibleVertices * visibleVertices);
-	gosASSERT(vertexList != NULL);
+	gosASSERT(vertexList != nullptr);
 	memset(vertexList,0,sizeof(Vertex) * visibleVertices * visibleVertices);
 
 	//----------------------------------------------------------------------
 	// Create the QuadList
 	numberQuads = 0;
 	quadList = (TerrainQuadPtr)terrainHeap->Malloc(sizeof(TerrainQuad) * visibleVertices * visibleVertices);
-	gosASSERT(quadList != NULL);
+	gosASSERT(quadList != nullptr);
 	memset(quadList,0,sizeof(TerrainQuad) * visibleVertices * visibleVertices);
 
 	//-------------------------------------------------------------------
@@ -526,24 +526,24 @@ int32_t Terrain::init( uint32_t verticesPerMapSide, PacketFile* pakFile, uint32_
 void Terrain::resetVisibleVertices (int32_t maxVisibleVertices)
 {
 	terrainHeap->Free(vertexList);
-	vertexList = NULL;
+	vertexList = nullptr;
 
 	terrainHeap->Free(quadList);
-	quadList = NULL;
+	quadList = nullptr;
 
 	visibleVerticesPerSide = maxVisibleVertices;
 	//----------------------------------------------------------------------
 	// Create the VertexList
 	numberVertices = 0;
 	vertexList = (VertexPtr)terrainHeap->Malloc(sizeof(Vertex) * visibleVerticesPerSide * visibleVerticesPerSide);
-	gosASSERT(vertexList != NULL);
+	gosASSERT(vertexList != nullptr);
 	memset(vertexList,0,sizeof(Vertex) * visibleVerticesPerSide * visibleVerticesPerSide);
 
 	//----------------------------------------------------------------------
 	// Create the QuadList
 	numberQuads = 0;
 	quadList = (TerrainQuadPtr)terrainHeap->Malloc(sizeof(TerrainQuad) * visibleVerticesPerSide * visibleVerticesPerSide);
-	gosASSERT(quadList != NULL);
+	gosASSERT(quadList != nullptr);
 	memset(quadList,0,sizeof(TerrainQuad) * visibleVerticesPerSide * visibleVerticesPerSide);
 
 	
@@ -611,102 +611,102 @@ void Terrain::destroy (void)
 	{
 		terrainTextures->destroy();
 		delete terrainTextures;
-		terrainTextures = NULL;
+		terrainTextures = nullptr;
 	}
 
 	if (terrainTextures2)
 	{
 		terrainTextures2->destroy();
 		delete terrainTextures2;
-		terrainTextures2 = NULL;
+		terrainTextures2 = nullptr;
 	}
 
 	delete mapData;
-	mapData = NULL;
+	mapData = nullptr;
 
 	if (terrainName)
 	{
 		delete [] terrainName;
-		terrainName = NULL;
+		terrainName = nullptr;
 	}
 
 	if (colorMapName)
 	{
 		delete [] colorMapName;
-		colorMapName = NULL;
+		colorMapName = nullptr;
 	}
 
 	if (tileRowToWorldCoord)
 	{
 		terrainHeap->Free(tileRowToWorldCoord);
-		tileRowToWorldCoord = NULL;
+		tileRowToWorldCoord = nullptr;
 	}
 
 	if (tileColToWorldCoord)
 	{
 		terrainHeap->Free(tileColToWorldCoord); 
-		tileColToWorldCoord = NULL;
+		tileColToWorldCoord = nullptr;
 	}
 
 	if (cellToWorldCoord)
 	{
 		terrainHeap->Free(cellToWorldCoord); 
-		cellToWorldCoord = NULL;
+		cellToWorldCoord = nullptr;
 	}
 
 	if (cellColToWorldCoord)
 	{
 		terrainHeap->Free(cellColToWorldCoord); 
-		cellColToWorldCoord = NULL;
+		cellColToWorldCoord = nullptr;
 	}
 
 	if (cellRowToWorldCoord)
 	{
 		terrainHeap->Free(cellRowToWorldCoord); 
-		cellRowToWorldCoord = NULL;
+		cellRowToWorldCoord = nullptr;
 	}
 
 	if (moverBlockList)
 	{
 		terrainHeap->Free(moverBlockList);
-		moverBlockList = NULL;
+		moverBlockList = nullptr;
 	}
 
 	if (usedBlockList)
 	{
 		terrainHeap->Free(usedBlockList);
-		usedBlockList = NULL;
+		usedBlockList = nullptr;
 	}
 
 	if (vertexList)
 	{
 		terrainHeap->Free(vertexList);
-		vertexList = NULL;
+		vertexList = nullptr;
 	}
 
 	if (quadList)
 	{
 		terrainHeap->Free(quadList);
-		quadList = NULL;
+		quadList = nullptr;
 	}
 
 	if (objBlockInfo)
 	{
 		terrainHeap->Free(objBlockInfo);
-		objBlockInfo = NULL;
+		objBlockInfo = nullptr;
 	}
 	
 	if (objVertexActive)
 	{
 		terrainHeap->Free(objVertexActive);
-		objVertexActive = NULL;
+		objVertexActive = nullptr;
 	}
 	
  	if (terrainHeap)
 	{
 		terrainHeap->destroy();
 		delete terrainHeap;
-		terrainHeap = NULL;
+		terrainHeap = nullptr;
 	}
 	
 	numberVertices =

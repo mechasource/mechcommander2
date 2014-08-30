@@ -182,24 +182,24 @@ class SoundSystem
 			memset(fadeDown,0,sizeof(bool)*MAX_DIGITAL_SAMPLES);
 			
 			soundHeapSize = 0;
-			soundHeap = NULL;
+			soundHeap = nullptr;
 
 			numSoundBites = 0;
-			sounds = NULL;
+			sounds = nullptr;
 			
-			soundDataFile = bettyDataFile = NULL;
+			soundDataFile = bettyDataFile = nullptr;
 			
 			numDMS = 0;
 			streamFadeDownTime = 0.0;
 			digitalStreamBitDepth = 0;
 			digitalStreamChannels = 0;
 			
-			digitalMusicIds = NULL;
-			digitalMusicLoopFlags = NULL;
+			digitalMusicIds = nullptr;
+			digitalMusicLoopFlags = nullptr;
 			
 			maxSoundDistance = 0.0;
 			
-			bettySoundBite = NULL;
+			bettySoundBite = nullptr;
 			lastBettyId = -1;
 			
 			currentMusicId = -1;
@@ -216,13 +216,13 @@ class SoundSystem
 			stream3Active = false;
 			
 			numBettySamples = 0;
-			bettyHandle = NULL;
+			bettyHandle = nullptr;
 
-			supportSoundBite = NULL;
+			supportSoundBite = nullptr;
 			lastSupportId = -1;
 			
 			numSupportSamples = 0;
-			supportHandle = NULL;
+			supportHandle = nullptr;
 			
 			isRaining = oldRaining = 0;
 			sensorBeepUpdateTime = 0.0f;
@@ -250,7 +250,7 @@ class SoundSystem
 		void stopBettySample (void);
 
 		
-		int32_t playSupportSample (uint32_t supportSampleId, PSTR fileName = NULL);
+		int32_t playSupportSample (uint32_t supportSampleId, PSTR fileName = nullptr);
 		
  		void stopDigitalSample (uint32_t sampleHandleNumber);
 		void stopDigitalMusic (void);

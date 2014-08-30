@@ -76,7 +76,7 @@ extern SymTableNodePtr	CurModuleIdPtr;
 extern int32_t				CurModuleHandle;
 extern bool				CallModuleInit;
 extern StackItemPtr		StaticDataPtr;
-uint32_t*	OrderCompletionFlags = NULL;
+uint32_t*	OrderCompletionFlags = nullptr;
 extern ModuleEntryPtr	ModuleRegistry;
 extern ABLModulePtr*	ModuleInstanceRegistry;
 extern ABLModulePtr		CurModule;
@@ -112,7 +112,7 @@ void execStatement (void) {
 	switch (codeToken) {
 		case TKN_IDENTIFIER: {
 			SymTableNodePtr idPtr = getCodeSymTableNodePtr();
-			ABL_Assert(idPtr != NULL, 0, " oops ");
+			ABL_Assert(idPtr != nullptr, 0, " oops ");
 			if (idPtr->defn.key == DFN_FUNCTION) {
 				bool skipOrder = false;
 				uint8_t orderDWord = 0;
@@ -328,7 +328,7 @@ TypePtr execDeclaredRoutineCall (SymTableNodePtr routineIdPtr, bool skipOrder) {
 	//---------------------------------------------------------
 	// If we're calling a library function, we need to set some
 	// module-specific info...
-	ABLModulePtr PrevModule = NULL;
+	ABLModulePtr PrevModule = nullptr;
 	if (isLibraryCall) {
 		PrevModule = CurModule;
 		CurModule = routineIdPtr->library;
@@ -401,7 +401,7 @@ void execActualParams (SymTableNodePtr routineIdPtr) {
 	// Execute the parameters...
 
 	for (SymTableNodePtr formalIdPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
-		 formalIdPtr != NULL;
+		 formalIdPtr != nullptr;
 		 formalIdPtr = formalIdPtr->next) {
 
 		TypePtr formalTypePtr = (TypePtr)(formalIdPtr->typePtr);
@@ -471,7 +471,7 @@ void execSwitchStatement (void) {
 	getCodeToken();
 	int32_t caseLabelCount = getCodeInteger();
 	bool done = false;
-	PSTR caseBranchLocation = NULL;
+	PSTR caseBranchLocation = nullptr;
 	while (!done && caseLabelCount--) {
 		int32_t caseLabelValue = getCodeInteger();
 		caseBranchLocation = getCodeAddress();

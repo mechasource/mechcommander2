@@ -39,7 +39,7 @@ int32_t SortList::init (int32_t _numItems) {
 	list = (SortListNode*)systemHeap->Malloc(sizeof(SortListNode) * numItems);
 	if (!list)
 		Fatal(0, " Unable to init sortList ");
-	return(list == NULL);
+	return(list == nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -102,7 +102,7 @@ void SortList::sort (bool descendingOrder) {
 void SortList::destroy (void) {
 
 	systemHeap->Free(list);
-	list = NULL;
+	list = nullptr;
 }
 
 //***************************************************************************

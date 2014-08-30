@@ -93,13 +93,13 @@ class TG_TypeMultiShape
 		void init (void)
 		{
 			numTG_TypeShapes = 0;
-			listOfTypeShapes = NULL;
+			listOfTypeShapes = nullptr;
 
 			numTextures = 0;
-			listOfTextures = NULL;
+			listOfTextures = nullptr;
 
 #ifdef _DEBUG
-			shapeName = NULL;
+			shapeName = nullptr;
 #endif
 			maxBox.x =
 			maxBox.y =
@@ -128,7 +128,7 @@ class TG_TypeMultiShape
 		//Function runs through each piece of ASE file and creates a separate
 		//TG_Shape for each one.  First pass is count number of GEOMOBJECTS.
 		//Second pass is load each one.
-		int32_t LoadTGMultiShapeFromASE (PSTR fileName, bool forceMakeBinary = false, Microsoft::Xna::Arm::IProviderEngine * armProvider = NULL);
+		int32_t LoadTGMultiShapeFromASE (PSTR fileName, bool forceMakeBinary = false, Microsoft::Xna::Arm::IProviderEngine * armProvider = nullptr);
 
 		//Function returns 0 if OK.  -1 if textureName is longer then nameLength-1.
 		//This function digs the texture name(s) out of the ASE file so that the
@@ -168,7 +168,7 @@ class TG_TypeMultiShape
 			if ((shapeNum >= 0) && (shapeNum < numTG_TypeShapes))
 				return (listOfTypeShapes[shapeNum]->getNodeId());
 			
-			return NULL;
+			return nullptr;
 		}
 
 		Stuff::Point3D GetNodeCenter (uint32_t shapeNum)
@@ -263,9 +263,9 @@ class TG_MultiShape
 
 		void init (void)
 		{
-			myMultiType = NULL;
+			myMultiType = nullptr;
 			numTG_Shapes = 0;
-			listOfShapes = NULL;
+			listOfShapes = nullptr;
 
 			frameNum = 0.0f;
 			d_useShadows = true;
@@ -423,7 +423,7 @@ class TG_MultiShape
 			result.x = result.y = result.z = 0.0f;
 			for (int32_t i=0;i<numTG_Shapes;i++)
 			{
-				if (listOfShapes[i].parentNode == NULL)
+				if (listOfShapes[i].parentNode == nullptr)
 				{
 					result = listOfShapes[i].node->myType->GetNodeCenter(void);
 				}
@@ -438,7 +438,7 @@ class TG_MultiShape
 			result.x = result.y = result.z = 0.0f;
 			for (int32_t i=0;i<numTG_Shapes;i++)
 			{
-				if (listOfShapes[i].parentNode == NULL)
+				if (listOfShapes[i].parentNode == nullptr)
 				{
 					result = listOfShapes[i].node->myType->GetRelativeNodeCenter(void);
 				}
@@ -458,7 +458,7 @@ class TG_MultiShape
 		void ClearAnimation (void)
 		{
 			for (int32_t i=0;i<numTG_Shapes;i++)
-				listOfShapes[i].currentAnimation = NULL;
+				listOfShapes[i].currentAnimation = nullptr;
 		}
 
 		void SetARGBHighLight (uint32_t argb)
@@ -498,7 +498,7 @@ class TG_MultiShape
 			if ((shapeNum >= 0) && (shapeNum < numTG_Shapes))
 				return (listOfShapes[shapeNum].node->getNodeName());
 			
-			return NULL;
+			return nullptr;
 		}
 		
 		int32_t GetNodeNameId (PSTR  nodeId)
@@ -586,7 +586,7 @@ class TG_AnimateShape
 
 		void init (void)
 		{
-			listOfAnimation = NULL;
+			listOfAnimation = nullptr;
 			count = actualCount = 0;
 			shapeIdsSet = false;
 		}

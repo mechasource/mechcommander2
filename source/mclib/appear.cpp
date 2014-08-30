@@ -44,7 +44,7 @@ extern bool useFog;
 // class Appearance
 PVOID Appearance::operator new (size_t mySize)
 {
-	PVOID result = NULL;
+	PVOID result = nullptr;
 	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Malloc(mySize);
@@ -144,7 +144,7 @@ void Appearance::drawSelectBox (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -158,7 +158,7 @@ void Appearance::drawSelectBox (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -172,7 +172,7 @@ void Appearance::drawSelectBox (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -186,7 +186,7 @@ void Appearance::drawSelectBox (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -200,7 +200,7 @@ void Appearance::drawSelectBox (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -214,7 +214,7 @@ void Appearance::drawSelectBox (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -228,7 +228,7 @@ void Appearance::drawSelectBox (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -242,7 +242,7 @@ void Appearance::drawSelectBox (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 }
@@ -273,7 +273,7 @@ void Appearance::drawSelectBrackets (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 
@@ -287,7 +287,7 @@ void Appearance::drawSelectBrackets (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -301,7 +301,7 @@ void Appearance::drawSelectBrackets (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -315,7 +315,7 @@ void Appearance::drawSelectBrackets (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 
@@ -329,7 +329,7 @@ void Appearance::drawSelectBrackets (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -343,7 +343,7 @@ void Appearance::drawSelectBrackets (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -358,7 +358,7 @@ void Appearance::drawSelectBrackets (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 	
@@ -372,7 +372,7 @@ void Appearance::drawSelectBrackets (uint32_t color)
 	pos2.w = pos1.w = 1.0f;
 	
 	{
-		LineElement newElement(pos1,pos2,color,NULL,-1);
+		LineElement newElement(pos1,pos2,color,nullptr,-1);
 		newElement.draw();
 	}
 }
@@ -393,7 +393,7 @@ void DrawBox(float l, float t, float r, float b)
 	p2.w = 1.0;
 
 	{
-		LineElement newElement(p1,p2,SD_BLACK,NULL,-1);
+		LineElement newElement(p1,p2,SD_BLACK,nullptr,-1);
 		newElement.draw();
 	}
 
@@ -404,7 +404,7 @@ void DrawBox(float l, float t, float r, float b)
 	p2.y = b;
 
 	{
-		LineElement newElement(p1,p2,SD_BLACK,NULL,-1);
+		LineElement newElement(p1,p2,SD_BLACK,nullptr,-1);
 		newElement.draw();
 	}
 
@@ -415,7 +415,7 @@ void DrawBox(float l, float t, float r, float b)
 	p2.y = b;
 
 	{
-		LineElement newElement(p1,p2,SD_BLACK,NULL,-1);
+		LineElement newElement(p1,p2,SD_BLACK,nullptr,-1);
 		newElement.draw();
 	}
 
@@ -426,7 +426,7 @@ void DrawBox(float l, float t, float r, float b)
 	p2.y = b;
 
 	{
-		LineElement newElement(p1,p2,SD_BLACK,NULL,-1);
+		LineElement newElement(p1,p2,SD_BLACK,nullptr,-1);
 		newElement.draw();
 	}
 }

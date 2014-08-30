@@ -59,7 +59,7 @@ class BitFlag
 		}
 		void init(void)
 		{
-			flagHeap = NULL;
+			flagHeap = nullptr;
 			numBitsPerFlag = 0;
 			rows = columns = 0;
 			maskValue = 0;
@@ -102,10 +102,10 @@ class ByteFlag
 	
 		void init(void)
 		{
-			flagHeap = NULL;
+			flagHeap = nullptr;
 			rows = columns = 0;
-			flagPane = NULL;
-			flagWindow = NULL;
+			flagPane = nullptr;
+			flagWindow = nullptr;
 		}
 		
 		ByteFlag(void)

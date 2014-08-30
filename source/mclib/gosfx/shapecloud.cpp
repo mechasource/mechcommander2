@@ -56,7 +56,7 @@ gosFX::ShapeCloud__Specification::ShapeCloud__Specification(
 	Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
 	m_totalParticleSize = m_particleClassSize = sizeof(gosFX::ShapeCloud::Particle);
-	m_shape = NULL;
+	m_shape = nullptr;
 	SetShape(shape);
 }
 
@@ -182,7 +182,7 @@ void
 //############################################################################
 
 gosFX::ShapeCloud::ClassData*
-	gosFX::ShapeCloud::DefaultData = NULL;
+	gosFX::ShapeCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
@@ -209,7 +209,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //------------------------------------------------------------------------------
@@ -319,11 +319,11 @@ void gosFX::ShapeCloud::Draw(DrawInfo *info)
 		MidLevelRenderer::DrawScalableShapeInformation dinfo;
 		MidLevelRenderer::MLRShape *shape = GetSpecification()->m_shape;
 		dinfo.clippingFlags.SetClippingState(0x3f);
-		dinfo.worldToShape = NULL;
+		dinfo.worldToShape = nullptr;
 		Specification *spec = GetSpecification();
 		Check_Object(spec);
 		dinfo.state.Combine(info->m_state, spec->m_state);
-		dinfo.activeLights = NULL;
+		dinfo.activeLights = nullptr;
 		dinfo.nrOfActiveLights = 0;
 		dinfo.shape = shape;
 		Stuff::LinearMatrix4D local_to_world;

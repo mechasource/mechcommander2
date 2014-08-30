@@ -187,7 +187,7 @@ void
 //############################################################################
 
 gosFX::PertCloud::ClassData*
-	gosFX::PertCloud::DefaultData = NULL;
+	gosFX::PertCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
@@ -213,7 +213,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //------------------------------------------------------------------------------

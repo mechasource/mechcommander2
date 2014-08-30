@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "gosfxheaders.hpp"
 
-HGOSHEAP gosFX::Heap = NULL;
+HGOSHEAP gosFX::Heap = nullptr;
 
 DEFINE_TIMER(gosFX, Animation_Time);
 DEFINE_TIMER(gosFX, Draw_Time);
@@ -111,7 +111,7 @@ void __stdcall gosFX::TerminateClasses(void)
 
 	Check_Pointer(Heap);
 	gos_DestroyMemoryHeap(Heap,true);
-	Heap = NULL;
+	Heap = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

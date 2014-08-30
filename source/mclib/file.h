@@ -141,8 +141,8 @@ public:
 	void seekEnd (void);
 	void skip (int32_t bytesToSkip);
 
-	int32_t read (size_t pos, puint8_t buffer, int32_t length);
-	int32_t read (puint8_t buffer, int32_t length);
+	int32_t read (size_t pos, puint8_t buffer, size_t length);
+	int32_t read (puint8_t buffer, size_t length);
 
 	//Used to dig the LZ data directly out of the fastfiles.
 	// For textures.
@@ -155,11 +155,11 @@ public:
 	float readFloat( void );
 
 	int32_t readString (puint8_t buffer);
-	int32_t readLine (puint8_t buffer, int32_t maxLength);
-	int32_t readLineEx (puint8_t buffer, int32_t maxLength);
+	int32_t readLine (puint8_t buffer, size_t maxLength);
+	int32_t readLineEx (puint8_t buffer, size_t maxLength);
 
-	int32_t write (size_t pos, puint8_t buffer, int32_t bytes);
-	int32_t write (puint8_t buffer, int32_t bytes);
+	int32_t write (size_t pos, puint8_t buffer, size_t bytes);
+	int32_t write (puint8_t buffer, size_t bytes);
 
 	int32_t writeByte (uint8_t value);
 	int32_t writeWord (int16_t value);

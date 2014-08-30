@@ -30,11 +30,11 @@ bool isSetup = false;
 
 //*****************************************************************************
 
-GameLogPtr GameLog::files[MAX_GAMELOGS] = {NULL, NULL, NULL, NULL, NULL, NULL};
+GameLogPtr GameLog::files[MAX_GAMELOGS] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 
 PVOID GameLog::operator new (size_t mySize) {
 
-	PVOID result = NULL;
+	PVOID result = nullptr;
 	
 	result = gos_Malloc(mySize);
 	
@@ -105,7 +105,7 @@ void GameLog::write (PSTR s) {
 		dump();
 	
 	if (strlen(s) > (MAX_GAMELOG_LINELEN - 1))
-		s[MAX_GAMELOG_LINELEN - 1] = NULL;
+		s[MAX_GAMELOG_LINELEN - 1] = nullptr;
 
 	sprintf(buffer, "%s\n", s);
 	strncpy(lines[numLines], buffer, MAX_GAMELOG_LINELEN - 1);
@@ -144,7 +144,7 @@ void GameLog::setup (void) {
 		files[i]->handle = i;
 		files[i]->inUse = false;
 		files[i]->filePtr = new File;
-		gosASSERT(files[i]->filePtr != NULL);
+		gosASSERT(files[i]->filePtr != nullptr);
 	}
 }
 
@@ -162,9 +162,9 @@ void GameLog::cleanup (void) {
 			files[i]->close();
 			files[i]->filePtr->close();
 			delete files[i]->filePtr;
-			files[i]->filePtr = NULL;
+			files[i]->filePtr = nullptr;
 			delete files[i];
-			files[i] = NULL;
+			files[i] = nullptr;
 		}
 	}
 }

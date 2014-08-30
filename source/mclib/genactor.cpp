@@ -82,7 +82,7 @@ void GenericAppearanceType::init (PSTR  fileName)
 	//----------------------------------------------
 	// Base shape.  In stand Pose by default.
 	genShape = new TG_TypeMultiShape;
-	gosASSERT(genShape != NULL);
+	gosASSERT(genShape != nullptr);
 
 	FullPathFileName iniName;
 	iniName.init(tglPath,fileName,".ini");
@@ -125,18 +125,18 @@ void GenericAppearanceType::init (PSTR  fileName)
 		dmgName.init(tglPath,aseFileName,".ase");
 	
 		genDmgShape = new TG_TypeMultiShape;
-		gosASSERT(genDmgShape != NULL);
+		gosASSERT(genDmgShape != nullptr);
 		genDmgShape->LoadTGMultiShapeFromASE(dmgName);
 
 		if (!genDmgShape->GetNumShapes())
 		{
 			delete genDmgShape;
-			genDmgShape = NULL;
+			genDmgShape = nullptr;
 		}
 	}
 	else
 	{
-		genDmgShape = NULL;
+		genDmgShape = nullptr;
 	}
 
 		
@@ -179,7 +179,7 @@ void GenericAppearanceType::init (PSTR  fileName)
 			if (fileExists(animPath) || fileExists(otherPath))
 			{
 				genAnimData[i] = new TG_AnimateShape;
-				gosASSERT(genAnimData[i] != NULL);
+				gosASSERT(genAnimData[i] != nullptr);
 	
 				//--------------------------------------------------------
 				// If this animation does not exist, it is not a problem!
@@ -187,11 +187,11 @@ void GenericAppearanceType::init (PSTR  fileName)
 				genAnimData[i]->LoadTGMultiShapeAnimationFromASE(animPath,genShape);
 			}
 			else
-				genAnimData[i] = NULL;
+				genAnimData[i] = nullptr;
 		}
 		else
 		{
-			genAnimData[i] = NULL;
+			genAnimData[i] = nullptr;
 		}
 	}
 	
@@ -218,20 +218,20 @@ void GenericAppearanceType::destroy (void)
 	if (genShape)
 	{
 		delete genShape;
-		genShape = NULL;
+		genShape = nullptr;
 	}
 
 	if (genDmgShape)
 	{
 		delete genDmgShape;
-		genDmgShape = NULL;
+		genDmgShape = nullptr;
 	}
 }
 
 //-----------------------------------------------------------------------------
 void GenericAppearanceType::setAnimation (TG_MultiShapePtr shape, uint32_t animationNum)
 {
-	gosASSERT(shape != NULL);
+	gosASSERT(shape != nullptr);
 	gosASSERT(animationNum != 0xffffffff);
 	gosASSERT(animationNum < MAX_GEN_ANIMATIONS);
 
@@ -387,7 +387,7 @@ void GenericAppearance::setObjStatus (int32_t oStatus)
 			{
 				genShape->ClearAnimation();
 				delete genShape;
-				genShape = NULL;
+				genShape = nullptr;
 				
 				genShape = appearType->genDmgShape->CreateFrom();
 				
@@ -928,62 +928,62 @@ int32_t GenericAppearance::render (int32_t depthFixup)
 		}
 		
 		{
-			LineElement newElement(screenPos[0],screenPos[1],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[0],screenPos[1],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[0],screenPos[4],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[0],screenPos[4],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[0],screenPos[3],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[0],screenPos[3],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[5],screenPos[4],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[5],screenPos[4],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[5],screenPos[6],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[5],screenPos[6],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[5],screenPos[3],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[5],screenPos[3],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[2],screenPos[3],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[2],screenPos[3],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[2],screenPos[6],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[2],screenPos[6],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[2],screenPos[1],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[2],screenPos[1],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[7],screenPos[1],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[7],screenPos[1],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[7],screenPos[6],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[7],screenPos[6],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 		
 		{
-			LineElement newElement(screenPos[7],screenPos[4],XP_WHITE,NULL,-1);
+			LineElement newElement(screenPos[7],screenPos[4],XP_WHITE,nullptr,-1);
 			newElement.draw();
 		}
 #endif
@@ -1139,7 +1139,7 @@ int32_t GenericAppearance::update (bool animate)
 	if (inView)
 	{
 		genShape->SetIsClamped(true);
-		genShape->SetLightList(NULL,0);
+		genShape->SetLightList(nullptr,0);
 		genShape->TransformMultiShape (&xlatPosition,&rot);
 	}
 	
@@ -1152,7 +1152,7 @@ void GenericAppearance::destroy (void)
 	if ( genShape )
 	{
 		delete genShape;
-		genShape = NULL;
+		genShape = nullptr;
 	}
 
 	appearanceTypeList->removeAppearance(appearType);

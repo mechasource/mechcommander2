@@ -26,20 +26,20 @@
 //---------------------------------------------------------------------------
 // Static Globals
 
-#ifndef NULL
-#define NULL			0
+#ifndef nullptr
+#define nullptr			0
 #endif
 
 typedef uint8_t* puint8_t;
 
 //-----------------------------
 //Used by Compressor Routine
-puint8_t		LZCHashBuf = NULL;
+puint8_t		LZCHashBuf = nullptr;
 size_t			InBufferUpperLimit = 0;
 size_t			InBufferPos = 0;	
-puint8_t		InBuffer = NULL;
+puint8_t		InBuffer = nullptr;
 size_t			OutBufferPos = 0;
-puint8_t		OutBuffer = NULL;
+puint8_t		OutBuffer = nullptr;
 uint32_t	PrefixCode = 0;
 uint32_t	FreeCode = 0;
 uint32_t	MaxCode = 0;

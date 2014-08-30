@@ -48,7 +48,7 @@ void PacketFile::clear (void)
 	if (seekTable)
 		systemHeap->Free(seekTable);
 
-	seekTable 		= NULL;
+	seekTable 		= nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -178,7 +178,7 @@ int32_t PacketFile::afterOpen (void)
 		if (numPackets && !seekTable)
 		{
 			seekTable = (int32_t *)systemHeap->Malloc(numPackets * sizeof(int32_t));
-			gosASSERT(seekTable != NULL);
+			gosASSERT(seekTable != nullptr);
 				
 			seek(sizeof(int32_t)*2);												//File Version & File Length
 			read(puint8_t(seekTable),(numPackets*sizeof(int32_t)));
@@ -191,7 +191,7 @@ int32_t PacketFile::afterOpen (void)
 //---------------------------------------------------------------------------
 PacketFile::PacketFile (void)
 {
-	seekTable = NULL;
+	seekTable = nullptr;
 	usesCheckSum = FALSE;
 	clear();
 }
@@ -545,7 +545,7 @@ void PacketFile::reserve (int32_t count, bool useCheckSum)
 	{
 		seekTable = (int32_t *)systemHeap->Malloc(numPackets * sizeof(int32_t));
    			
-   		if (seekTable != NULL)
+   		if (seekTable != nullptr)
    		{
    			seek(sizeof(int32_t)*2);							//File Version & File Length
    			read(puint8_t(seekTable),(numPackets*sizeof(int32_t)));
@@ -568,7 +568,7 @@ int32_t PacketFile::writePacket (int32_t packet, puint8_t buffer, int32_t nbytes
 	// right now doesn't allow anything but same size.
 	int32_t result = 0;
 
-	puint8_t workBuffer = NULL;
+	puint8_t workBuffer = nullptr;
 
 	if (pType == ANY_PACKET_TYPE || pType == STORAGE_TYPE_LZD || pType == STORAGE_TYPE_ZLIB)
 	{
@@ -577,7 +577,7 @@ int32_t PacketFile::writePacket (int32_t packet, puint8_t buffer, int32_t nbytes
 		else
 			workBuffer = (puint8_t)malloc(nbytes<<1);
 		
-		gosASSERT(workBuffer != NULL);
+		gosASSERT(workBuffer != nullptr);
 	}
 
 	gosASSERT((packet > 0) || (packet < numPackets));
@@ -643,7 +643,7 @@ int32_t PacketFile::writePacket (int32_t packet, puint8_t buffer, int32_t nbytes
 		seekTable[packet] = SetPacketType(packetBase,packetType);
 	}
 
-	int32_t *currentEntry = NULL;
+	int32_t *currentEntry = nullptr;
 	if (seekTable)
 	{
 		packet++;

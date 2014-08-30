@@ -535,12 +535,12 @@ class MissionMap {
 		void operator delete (PVOID us);
 		
 		void init (void) {
-			map = NULL;
+			map = nullptr;
 			height = 0;
 			width = 0;
 			preserveCells = false;
 			numPreservedCells = 0;
-			placeMoversCallback = NULL;
+			placeMoversCallback = nullptr;
 			numDebugCells = 0;  
 		}
 		
@@ -923,9 +923,9 @@ class MovePath {
 
 		void lock (int32_t level, int32_t start, int32_t range, bool setting);
 
-		bool isLocked (int32_t level, int32_t start, int32_t range, bool* reachedEnd = NULL);
+		bool isLocked (int32_t level, int32_t start, int32_t range, bool* reachedEnd = nullptr);
 
-		bool isBlocked (int32_t start, int32_t range, bool* reachedEnd = NULL);
+		bool isBlocked (int32_t start, int32_t range, bool* reachedEnd = nullptr);
 
 		int32_t crossesBridge (int32_t start, int32_t range);
 
@@ -1159,16 +1159,16 @@ class GlobalMap {
 			sectorWidth = 0;
 
 			numAreas = 0;
-			areaMap = NULL;
-			areas = NULL;
+			areaMap = nullptr;
+			areas = nullptr;
 
 			numDoors = 0;
 			numDoorInfos = 0;
 			numDoorLinks = 0;
-			doors = NULL;
-			doorInfos = NULL;
-			doorLinks = NULL;
-			doorBuildList = NULL;
+			doors = nullptr;
+			doorInfos = nullptr;
+			doorLinks = nullptr;
+			doorBuildList = nullptr;
 
 			goalSector[0] = goalSector[1] = 0;
 			blank = false;
@@ -1182,16 +1182,16 @@ class GlobalMap {
 			goalCell[0] = -1;
 			goalCell[1] = -1;
 
-			specialAreas = NULL;
+			specialAreas = nullptr;
 			closes = false;
 			opens = false;
 			numOffMapAreas = 0;
 
-			log = NULL;
+			log = nullptr;
 			logEnabled = false;
 
-			isGateDisabledCallback = NULL;
-			isGateOpenCallback = NULL;
+			isGateDisabledCallback = nullptr;
+			isGateOpenCallback = nullptr;
 		}
 
 		GlobalMap (void) {
@@ -1470,8 +1470,8 @@ class MoveMap {
 			maxRow = 0;
 			minCol = 0;
 			maxCol = 0;
-			map = NULL;
-			mapRowTable = NULL;
+			map = nullptr;
+			mapRowTable = nullptr;
 			moveLevel = 0;
 			startR = -1;
 			startC = -1;
@@ -1492,9 +1492,9 @@ class MoveMap {
 			calcTime = 0.0;
 			travelOffMap = false;
 			cannotEnterOffMap = true;
-			overlayWeightTable = NULL;
-			blockedDoorCallback = NULL;
-			placeStationaryMoversCallback = NULL;
+			overlayWeightTable = nullptr;
+			blockedDoorCallback = nullptr;
+			placeStationaryMoversCallback = nullptr;
 		}
 		
 		MoveMap (void) {

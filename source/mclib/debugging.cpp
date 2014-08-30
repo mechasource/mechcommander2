@@ -21,7 +21,7 @@
 
 extern UserHeapPtr systemHeap;
 
-HGOSFONT3D GameDebugWindow::font = NULL;
+HGOSFONT3D GameDebugWindow::font = nullptr;
 int32_t GameDebugWindow::fontHeight = 0;
 
 //***************************************************************************
@@ -47,7 +47,7 @@ void GameDebugWindow::setFont (PSTR fontFile) {
 
 	if (font) {
 		gos_DeleteFont(font);
-		font = NULL;
+		font = nullptr;
 	}
 	if (fontFile) {
 		font = gos_LoadFont(fontFile);

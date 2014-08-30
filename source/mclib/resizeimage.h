@@ -353,16 +353,16 @@ void zoom (Image *dst, Image *src, double (*filter)(double t), double fwidth)
 	}
 	
 	free(raster);
-	raster = NULL;
+	raster = nullptr;
 	
 	for (i=0;i<tmp->xSize; ++i)
 	{
 		free(contrib[i].p);
-		contrib[i].p = NULL;
+		contrib[i].p = nullptr;
 	}
 	
 	free(contrib);
-	contrib = NULL;
+	contrib = nullptr;
 	
 	//pre-calculate filter contributions for horizontal filter weights
 	contrib = (CLIST *)malloc(dst->ySize * sizeof(CLIST));
@@ -463,11 +463,11 @@ void zoom (Image *dst, Image *src, double (*filter)(double t), double fwidth)
 	for (i=0;i<dst->ySize; ++i)
 	{
 		free(contrib[i].p);
-		contrib[i].p = NULL;
+		contrib[i].p = nullptr;
 	}
 	
 	free(contrib);
-	contrib = NULL;
+	contrib = nullptr;
 	
 	freeImage(tmp);
 }

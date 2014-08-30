@@ -59,7 +59,7 @@ Type DummyType = {		// for erroneous type definitions
 	0,
 	FRM_NONE,
 	0,
-	NULL
+	nullptr
 };
 
 StandardFunctionInfo		FunctionInfoTable[MAX_STANDARD_FUNCTIONS];
@@ -110,7 +110,7 @@ inline void enterNameLocalSymTable (SymTableNodePtr& IdPtr, PSTR name) {
 
 void searchAndFindAllSymTables (SymTableNodePtr& IdPtr) {
 
-	if ((IdPtr = searchSymTableDisplay(wordString)) == NULL) {
+	if ((IdPtr = searchSymTableDisplay(wordString)) == nullptr) {
 		syntaxError(ABL_ERR_SYNTAX_UNDEFINED_IDENTIFIER);
 		IdPtr = enterSymTable(wordString, &SymTableDisplay[level]);
 		IdPtr->defn.key = DFN_UNDEFINED;
@@ -122,7 +122,7 @@ void searchAndFindAllSymTables (SymTableNodePtr& IdPtr) {
 
 void searchAndEnterLocalSymTable (SymTableNodePtr& IdPtr) {
 
-	if ((IdPtr = searchSymTable(wordString, SymTableDisplay[level])) == NULL)
+	if ((IdPtr = searchSymTable(wordString, SymTableDisplay[level])) == nullptr)
 		IdPtr = enterSymTable(wordString, &SymTableDisplay[level]);
 	else
 		syntaxError(ABL_ERR_SYNTAX_REDEFINED_IDENTIFIER);
@@ -132,7 +132,7 @@ void searchAndEnterLocalSymTable (SymTableNodePtr& IdPtr) {
 
 void searchAndEnterThisTable (SymTableNodePtr& IdPtr, SymTableNodePtr thisTable) {
 
-	if ((IdPtr = searchSymTable(wordString, thisTable)) == NULL)
+	if ((IdPtr = searchSymTable(wordString, thisTable)) == nullptr)
 		IdPtr = enterSymTable(wordString, &thisTable);
 	else
 		syntaxError(ABL_ERR_SYNTAX_REDEFINED_IDENTIFIER);
@@ -169,7 +169,7 @@ TypePtr createType (void) {
 	newType->numInstances = 1;
 	newType->form = FRM_NONE;
 	newType->size = 0;
-	newType->typeIdPtr = NULL;
+	newType->typeIdPtr = nullptr;
 
 	return(newType);
 }
@@ -192,7 +192,7 @@ void clearType (TypePtr& type) {
 		type->numInstances--;
 		if (type->numInstances == 0) {
 			ABLSymbolFreeCallback(type);
-			type = NULL;
+			type = nullptr;
 		}
 	}
 }
@@ -232,7 +232,7 @@ SymTableNodePtr searchSymTable (PSTR name, SymTableNodePtr nodePtr) {
 		else
 			nodePtr = nodePtr->right;
 	}
-	return(NULL);
+	return(nullptr);
 }
 
 //***************************************************************************
@@ -242,7 +242,7 @@ SymTableNodePtr searchSymTableForFunction (PSTR name, SymTableNodePtr nodePtr) {
 	while (nodePtr) {
 		int32_t compareResult = strcmp(name, nodePtr->name);
 		if (compareResult == 0) {
-			if (nodePtr->typePtr == NULL)
+			if (nodePtr->typePtr == nullptr)
 				if (nodePtr->defn.key == DFN_FUNCTION)
 					return(nodePtr);
 			nodePtr = nodePtr->right;
@@ -252,7 +252,7 @@ SymTableNodePtr searchSymTableForFunction (PSTR name, SymTableNodePtr nodePtr) {
 		else
 			nodePtr = nodePtr->right;
 	}
-	return(NULL);
+	return(nullptr);
 }
 
 //***************************************************************************
@@ -262,7 +262,7 @@ SymTableNodePtr searchSymTableForState (PSTR name, SymTableNodePtr nodePtr) {
 	while (nodePtr) {
 		int32_t compareResult = strcmp(name, nodePtr->name);
 		if (compareResult == 0) {
-			if (nodePtr->typePtr == NULL)
+			if (nodePtr->typePtr == nullptr)
 				if (nodePtr->defn.key == DFN_FUNCTION)
 					if (nodePtr->defn.info.routine.flags & ROUTINE_FLAG_STATE)
 						return(nodePtr);
@@ -273,7 +273,7 @@ SymTableNodePtr searchSymTableForState (PSTR name, SymTableNodePtr nodePtr) {
 		else
 			nodePtr = nodePtr->right;
 	}
-	return(NULL);
+	return(nullptr);
 }
 
 //***************************************************************************
@@ -294,7 +294,7 @@ SymTableNodePtr searchSymTableForString (PSTR name, SymTableNodePtr nodePtr) {
 		else
 			nodePtr = nodePtr->right;
 	}
-	return(NULL);
+	return(nullptr);
 }
 
 //***************************************************************************
@@ -331,7 +331,7 @@ SymTableNodePtr searchLibrarySymTable (PSTR name, SymTableNodePtr nodePtr) {
 				return(nodeFoundPtr);
 		}
 	}
-	return(NULL);
+	return(nullptr);
 }
 
 //***************************************************************************
@@ -350,13 +350,13 @@ SymTableNodePtr searchSymTableDisplay (PSTR name) {
 	// First check if this is an explicit library reference. If so, we need
 	// to determine which library and which identifier in that library...
 	PSTR separator = strchr(name, '.');
-	SymTableNodePtr nodePtr = NULL;
+	SymTableNodePtr nodePtr = nullptr;
 
 	if (separator) {
-		*separator = NULL;
+		*separator = nullptr;
 		SymTableNodePtr libraryNodePtr = searchSymTable(name, SymTableDisplay[0]);
 		if (!libraryNodePtr)
-			return(NULL);
+			return(nullptr);
 		//-------------------------------------
 		// Now, search for the member symbol...
 		PSTR memberName = separator + 1;
@@ -403,22 +403,22 @@ SymTableNodePtr enterSymTable (PSTR name, SymTableNodePtr* ptrToNodePtr) {
 	if (!newNode->name)
 		ABL_Fatal(0, " ABL: Unable to AblSymTableHeap->malloc symbol name ");
 	strcpy(newNode->name, name);
-	newNode->left = NULL;
-	newNode->parent = NULL;
-	newNode->right = NULL;
-	newNode->next = NULL;
-	newNode->info = NULL;
+	newNode->left = nullptr;
+	newNode->parent = nullptr;
+	newNode->right = nullptr;
+	newNode->next = nullptr;
+	newNode->info = nullptr;
 	newNode->defn.key = DFN_UNDEFINED;
 	newNode->defn.info.data.varType = VAR_TYPE_NORMAL;
 	newNode->defn.info.data.offset = 0;
-	newNode->typePtr = NULL;
+	newNode->typePtr = nullptr;
 	newNode->level = (uint8_t)level;
 	newNode->labelIndex = 0;
 
 	//-------------------------------------
 	// Find where to put this new symbol...
 	SymTableNodePtr curNode = *ptrToNodePtr;
-	SymTableNodePtr parentNode = NULL;
+	SymTableNodePtr parentNode = nullptr;
 	while (curNode) {
 		if (strcmp(name, curNode->name) < 0)
 			ptrToNodePtr = &(curNode->left);
@@ -437,14 +437,14 @@ SymTableNodePtr enterSymTable (PSTR name, SymTableNodePtr* ptrToNodePtr) {
 
 SymTableNodePtr insertSymTable (SymTableNodePtr* tableRoot, SymTableNodePtr newNode) {
 
-	newNode->left = NULL;
-	newNode->parent = NULL;
-	newNode->right = NULL;
+	newNode->left = nullptr;
+	newNode->parent = nullptr;
+	newNode->right = nullptr;
 
 	//------------------------------------
 	// Find where to insert this symbol...
 	SymTableNodePtr curNode = *tableRoot;
-	SymTableNodePtr parentNode = NULL;
+	SymTableNodePtr parentNode = nullptr;
 	while (curNode) {
 		if (strcmp(newNode->name, curNode->name) < 0)
 			tableRoot = &(curNode->left);
@@ -472,10 +472,10 @@ SymTableNodePtr extractSymTable (SymTableNodePtr* tableRoot, SymTableNodePtr nod
 	// parent pointer, and just hardcode something that may be more efficient
 	// for this level-0 special case?
 
-	SymTableNodePtr nodeX = NULL;
-	SymTableNodePtr nodeY = NULL;
+	SymTableNodePtr nodeX = nullptr;
+	SymTableNodePtr nodeY = nullptr;
 
-	if ((nodeKill->left == NULL) || (nodeKill->right == NULL))
+	if ((nodeKill->left == nullptr) || (nodeKill->right == nullptr))
 		nodeY = nodeKill;
 	else
 		nodeY = symTableSuccessor(nodeKill);
@@ -488,7 +488,7 @@ SymTableNodePtr extractSymTable (SymTableNodePtr* tableRoot, SymTableNodePtr nod
 	if (nodeX)
 		nodeX->parent = nodeY->parent;
 
-	if (nodeY->parent == NULL)
+	if (nodeY->parent == nullptr)
 		*tableRoot = nodeX;
 	else if (nodeY == nodeY->parent->left)
 		nodeY->parent->left = nodeX;
@@ -527,10 +527,10 @@ void enterStandardRoutine (PSTR name, int32_t routineKey, bool isOrder, PSTR par
 	routineIdPtr->defn.key = DFN_FUNCTION;
 	routineIdPtr->defn.info.routine.key = (RoutineKey)tableIndex;
 	routineIdPtr->defn.info.routine.flags = isOrder ? ROUTINE_FLAG_ORDER : 0;
-	routineIdPtr->defn.info.routine.params = NULL;
-	routineIdPtr->defn.info.routine.localSymTable = NULL;
-	routineIdPtr->library = NULL;
-	routineIdPtr->typePtr = NULL;
+	routineIdPtr->defn.info.routine.params = nullptr;
+	routineIdPtr->defn.info.routine.localSymTable = nullptr;
+	routineIdPtr->library = nullptr;
+	routineIdPtr->typePtr = nullptr;
 
 	FunctionInfoTable[tableIndex].numParams = 0;
 	if (paramList) {
@@ -626,7 +626,7 @@ void initSymTable (void) {
 
 	//---------------------------------
 	// Init the level-0 symbol table...
-	SymTableDisplay[0] = NULL;
+	SymTableDisplay[0] = nullptr;
 	
 	//----------------------------------------------------------------------
 	// Set up the basic variable types as identifiers in the symbol table...
@@ -701,10 +701,10 @@ void initSymTable (void) {
 	//-------------------------------------------
 	// Set up the standard, built-in functions...
 //(PSTR name, int32_t routineKey, bool isOrder, PSTR paramList, PSTR returnType, PVOID callback);
-	enterStandardRoutine("return", RTN_RETURN, false, NULL, NULL, NULL);
-	enterStandardRoutine("print", RTN_PRINT, false, NULL, NULL, NULL);
-	enterStandardRoutine("concat", RTN_CONCAT, false, NULL, NULL, NULL);
-	enterStandardRoutine("getstatehandle", RTN_GET_STATE_HANDLE, false, NULL, NULL, NULL);
+	enterStandardRoutine("return", RTN_RETURN, false, nullptr, nullptr, nullptr);
+	enterStandardRoutine("print", RTN_PRINT, false, nullptr, nullptr, nullptr);
+	enterStandardRoutine("concat", RTN_CONCAT, false, nullptr, nullptr, nullptr);
+	enterStandardRoutine("getstatehandle", RTN_GET_STATE_HANDLE, false, nullptr, nullptr, nullptr);
 
 	//-----------------------------------
 	// Honor Bound-specific extensions...

@@ -62,10 +62,10 @@ class GenericAppearanceType : public AppearanceType
 	
 		void init (void)
 		{
-			genShape = NULL;
+			genShape = nullptr;
 
 			for (int32_t i=0;i<MAX_GEN_ANIMATIONS;i++)
-				genAnimData[i] = NULL;
+				genAnimData[i] = nullptr;
 
 			textureName[0] = 0;
 			dotRGB = 0x00ffffff;
@@ -159,7 +159,7 @@ class GenericAppearance : public ObjectAppearance
 		
 	public:
 
-		virtual void init (AppearanceTypePtr tree = NULL, GameObjectPtr obj = NULL);
+		virtual void init (AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
 		virtual AppearanceTypePtr getAppearanceType (void)
 		{

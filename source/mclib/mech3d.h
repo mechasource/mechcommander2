@@ -150,12 +150,12 @@ class Mech3DAppearanceType: public AppearanceType
 			int32_t i=0;
 			for (i=0;i<MAX_LODS;i++)
 			{
-				mechShape[i] = NULL;
+				mechShape[i] = nullptr;
 				lodDistance[i] = 0.0f;			
 			}
 		
 			for (i=0;i<MAX_MECH_ANIMATIONS;i++)
-				mechAnim[i] = NULL;
+				mechAnim[i] = nullptr;
 
 			rightFootprintType = leftFootprintType = -1;
 
@@ -163,10 +163,10 @@ class Mech3DAppearanceType: public AppearanceType
 
 			textureSide = 128;								//For stupid shadows if we need to draw them.
 			
-			nodeData = NULL;
+			nodeData = nullptr;
 			numSmokeNodes = numWeaponNodes = numJumpNodes = 0;
 
-			mechShadowShape = NULL;
+			mechShadowShape = nullptr;
 		}
 
 		Mech3DAppearanceType (void) 
@@ -458,7 +458,7 @@ class Mech3DAppearance: public ObjectAppearance
 
 		virtual void destroy (void);
 
-		virtual void init (AppearanceTypePtr tree = NULL, GameObjectPtr obj = NULL);
+		virtual void init (AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
 		virtual void initFX (void);
 

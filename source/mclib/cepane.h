@@ -32,7 +32,7 @@ class PaneElement : public Element
 
 	PaneElement (void)
 	{
-		shapePane = NULL;
+		shapePane = nullptr;
 		x = y = 0;
 	}
 
@@ -56,18 +56,18 @@ class DeltaElement : public Element
 
 	DeltaElement (void)
 	{
-		shapeTable = NULL;
+		shapeTable = nullptr;
 		frameNum = 0;
 		x = y = 0;
 		reverse = FALSE;
 		
-		fadeTable = NULL;
+		fadeTable = nullptr;
 		
 		noScaleDraw = FALSE;
 		scaleUp = FALSE;
 	}
 
-	DeltaElement (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, puint8_t fTable = NULL, bool noScale = FALSE, bool scaleUp = FALSE);
+	DeltaElement (puint8_t _shape, int32_t _x, int32_t _y, int32_t frame, bool rev, puint8_t fTable = nullptr, bool noScale = FALSE, bool scaleUp = FALSE);
 
 	virtual void draw (void);
 };

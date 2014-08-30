@@ -49,7 +49,7 @@ struct PolyElementData
 		textureMap = 0;
 		width = 0;
 		height = 0;
-		hazePalette = NULL;
+		hazePalette = nullptr;
 		drawTranslucent = FALSE;
 	}
 		

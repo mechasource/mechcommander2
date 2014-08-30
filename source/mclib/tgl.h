@@ -296,7 +296,7 @@ typedef struct _TG_Animation
 	float 						frameRate;				//Number of Frames Per Second.
 	float						tickRate;				//Number of Ticks Per Second.
 	Stuff::UnitQuaternion		*quat;					//Stores animation offset in Quaternion rotation.
-	Stuff::Point3D				*pos;					//Stores Positional offsets if present.  OTHERWISE NULL!!!!!!!!
+	Stuff::Point3D				*pos;					//Stores Positional offsets if present.  OTHERWISE nullptr!!!!!!!!
 	
 	void SaveBinaryCopy (File *binFile);
 	void LoadBinaryCopy (File *binFile);
@@ -315,8 +315,8 @@ typedef struct _TG_ShapeRec
 	Stuff::LinearMatrix4D		worldToShape;			//Inverse of above Matrix.
 	int32_t						calcedThisFrame;		//Turn number this matrix is current for.
 	bool						processMe;				//Flag indicating if I should transform/draw this.  Used for arms off.
-	TG_AnimationPtr				currentAnimation;		//Animation data being applied to this shape.  OK if NULL
-	_TG_ShapeRec				*parentNode;			//Parent Node.  OK if NULL but only for ROOT node!
+	TG_AnimationPtr				currentAnimation;		//Animation data being applied to this shape.  OK if nullptr
+	_TG_ShapeRec				*parentNode;			//Parent Node.  OK if nullptr but only for ROOT node!
 	Stuff::UnitQuaternion		baseRotation;			//Always ZERO unless set by appearance controlling this shape.
 	
 	_TG_ShapeRec &operator=(const _TG_ShapeRec &rec)
@@ -324,7 +324,7 @@ typedef struct _TG_ShapeRec
 		node 				= rec.node;
 		calcedThisFrame		= -1;
 		processMe			= true;
-		currentAnimation	= NULL;
+		currentAnimation	= nullptr;
 		parentNode			= rec.parentNode;
 		baseRotation		= rec.baseRotation;
 
@@ -526,9 +526,9 @@ class TG_TypeShape : public TG_TypeNode
 		{
 			numTypeVertices = numTypeTriangles = numTextures = 0;
 
-			listOfTypeVertices = NULL;
-			listOfTypeTriangles = NULL;
-			listOfTextures = NULL;
+			listOfTypeVertices = nullptr;
+			listOfTypeTriangles = nullptr;
+			listOfTextures = nullptr;
 
 			alphaTestOn = false;
 
@@ -725,13 +725,13 @@ class TG_Shape
 		{
 			numVertices = numTriangles = numVisibleFaces = 0;
 
-			listOfVertices = NULL;
-			listOfTriangles = NULL;
-			listOfLights = NULL;
-			listOfVisibleFaces = NULL;
+			listOfVertices = nullptr;
+			listOfTriangles = nullptr;
+			listOfLights = nullptr;
+			listOfVisibleFaces = nullptr;
 
-			listOfShadowVertices = NULL;
-			listOfVisibleShadows = NULL;
+			listOfShadowVertices = nullptr;
+			listOfVisibleShadows = nullptr;
 
 			aRGBHighlight = 0x00000000;
 			
@@ -850,7 +850,7 @@ class TG_VertexPool
 	public:
 		TG_VertexPool (void)
 		{
-			tgVertexPool = nextVertex = NULL;
+			tgVertexPool = nextVertex = nullptr;
 			totalVertices = numVertices = 0;
 		}
 		
@@ -862,14 +862,14 @@ class TG_VertexPool
 		void destroy (void)
 		{
 			TG_Shape::tglHeap->Free(tgVertexPool);
-			tgVertexPool = nextVertex = NULL;
+			tgVertexPool = nextVertex = nullptr;
 			totalVertices = numVertices = 0;
 		}
 		
 		void init (uint32_t maxVertices)
 		{
 			tgVertexPool = (TG_VertexPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Vertex) * maxVertices);
-			gosASSERT(tgVertexPool != NULL);
+			gosASSERT(tgVertexPool != nullptr);
 			
 			nextVertex = tgVertexPool;
 			
@@ -885,7 +885,7 @@ class TG_VertexPool
 		
 		TG_VertexPtr getColorsFromPool (uint32_t numRequested)
 		{
-			TG_VertexPtr result = NULL;
+			TG_VertexPtr result = nullptr;
 			numVertices += numRequested;
 			if (numVertices < totalVertices)
 			{
@@ -909,7 +909,7 @@ class TG_GOSVertexPool
 	public:
 		TG_GOSVertexPool (void)
 		{
-			gVertexPool = nextVertex = NULL;
+			gVertexPool = nextVertex = nullptr;
 			totalVertices = numVertices = 0;
 		}
 		
@@ -921,14 +921,14 @@ class TG_GOSVertexPool
 		void destroy (void)
 		{
 			TG_Shape::tglHeap->Free(gVertexPool);
-			gVertexPool = nextVertex = NULL;
+			gVertexPool = nextVertex = nullptr;
 			totalVertices = numVertices = 0;
 		}
 		
 		void init (uint32_t maxVertices)
 		{
 			gVertexPool = (gos_VERTEX *)TG_Shape::tglHeap->Malloc(sizeof(gos_VERTEX) * maxVertices);
-			gosASSERT(gVertexPool != NULL);
+			gosASSERT(gVertexPool != nullptr);
 			
 			nextVertex = gVertexPool;
 			
@@ -944,7 +944,7 @@ class TG_GOSVertexPool
 		
 		gos_VERTEX * getVerticesFromPool (uint32_t numRequested)
 		{
-			gos_VERTEX* result = NULL;
+			gos_VERTEX* result = nullptr;
 			numVertices += numRequested;
 			if (numVertices < totalVertices)
 			{
@@ -968,7 +968,7 @@ class TG_TrianglePool
 	public:
 		TG_TrianglePool (void)
 		{
-			trianglePool = nextTriangle = NULL;
+			trianglePool = nextTriangle = nullptr;
 			totalTriangles = numTriangles = 0;
 		}
 		
@@ -980,14 +980,14 @@ class TG_TrianglePool
 		void destroy (void)
 		{
 			TG_Shape::tglHeap->Free(trianglePool);
-			trianglePool = nextTriangle = NULL;
+			trianglePool = nextTriangle = nullptr;
 			totalTriangles = numTriangles = 0;
 		}
 		
 		void init (uint32_t maxTriangles)
 		{
 			trianglePool = (TG_Triangle *)TG_Shape::tglHeap->Malloc(sizeof(TG_Triangle) * maxTriangles);
-			gosASSERT(trianglePool != NULL);
+			gosASSERT(trianglePool != nullptr);
 			
 			nextTriangle = trianglePool;
 			
@@ -1003,7 +1003,7 @@ class TG_TrianglePool
 		
 		TG_Triangle * getTrianglesFromPool (uint32_t numRequested)
 		{
-			TG_Triangle* result = NULL;
+			TG_Triangle* result = nullptr;
 			numTriangles += numRequested;
 			if (numTriangles < totalTriangles)
 			{
@@ -1027,7 +1027,7 @@ class TG_ShadowPool
 	public:
 		TG_ShadowPool (void)
 		{
-			tVertexPool = nextVertex = NULL;
+			tVertexPool = nextVertex = nullptr;
 			totalVertices = numVertices = 0;
 		}
 		
@@ -1039,14 +1039,14 @@ class TG_ShadowPool
 		void destroy (void)
 		{
 			TG_Shape::tglHeap->Free(tVertexPool);
-			tVertexPool = nextVertex = NULL;
+			tVertexPool = nextVertex = nullptr;
 			totalVertices = numVertices = 0;
 		}
 		
 		void init (uint32_t maxVertices)
 		{
 			tVertexPool = (TG_ShadowVertexTempPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_ShadowVertexTemp) * maxVertices);
-			gosASSERT(tVertexPool != NULL);
+			gosASSERT(tVertexPool != nullptr);
 			
 			nextVertex = tVertexPool;
 			
@@ -1062,7 +1062,7 @@ class TG_ShadowPool
 		
 		TG_ShadowVertexTempPtr getShadowsFromPool (uint32_t numRequested)
 		{
-			TG_ShadowVertexTempPtr result = NULL;
+			TG_ShadowVertexTempPtr result = nullptr;
 			numVertices += numRequested;
 			if (numVertices < totalVertices)
 			{
@@ -1086,7 +1086,7 @@ class TG_DWORDPool
 	public:
 		TG_DWORDPool (void)
 		{
-			triPool = nextTri = NULL;
+			triPool = nextTri = nullptr;
 			totalTriangles = numTriangles = 0;
 		}
 		
@@ -1098,14 +1098,14 @@ class TG_DWORDPool
 		void destroy (void)
 		{
 			TG_Shape::tglHeap->Free(triPool);
-			triPool = nextTri = NULL;
+			triPool = nextTri = nullptr;
 			totalTriangles = numTriangles = 0;
 		}
 		
 		void init (uint32_t maxTriangles)
 		{
 			triPool = (uint32_t *)TG_Shape::tglHeap->Malloc(sizeof(uint32_t) * maxTriangles);
-			gosASSERT(triPool != NULL);
+			gosASSERT(triPool != nullptr);
 			
 			nextTri = triPool;
 			
@@ -1121,7 +1121,7 @@ class TG_DWORDPool
 		
 		uint32_t * getFacesFromPool (uint32_t numRequested)
 		{
-			uint32_t* result = NULL;
+			uint32_t* result = nullptr;
 			numTriangles += numRequested;
 			if (numTriangles < totalTriangles)
 			{

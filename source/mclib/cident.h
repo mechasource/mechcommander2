@@ -213,7 +213,7 @@ class FullPathFileName
 
 		void init (void)
 		{
-			fullName = NULL;
+			fullName = nullptr;
 		}
 
 		void init (PSTR dir_path, PCSTR name, PSTR ext);

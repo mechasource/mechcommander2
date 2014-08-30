@@ -258,7 +258,7 @@ void
 //############################################################################
 
 gosFX::CardCloud::ClassData*
-	gosFX::CardCloud::DefaultData = NULL;
+	gosFX::CardCloud::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
@@ -285,7 +285,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //------------------------------------------------------------------------------

@@ -91,9 +91,9 @@ class MapData : public HeapManager
 
 			topLeftVertex.Zero(void);			
 
-			blocks = NULL;
+			blocks = nullptr;
 
-			blankVertex = NULL;
+			blankVertex = nullptr;
 
 			hasSelection = false;
 
@@ -135,7 +135,7 @@ class MapData : public HeapManager
 		float terrainElevation (Stuff::Vector3D &position);
 		float terrainElevation ( int32_t tileR, int32_t tileC );
 
-		float terrainAngle (Stuff::Vector3D &position, Stuff::Vector3D* normal = NULL);
+		float terrainAngle (Stuff::Vector3D &position, Stuff::Vector3D* normal = nullptr);
 		Stuff::Vector3D terrainNormal (Stuff::Vector3D& position);
 		float terrainLight (Stuff::Vector3D& position);
 		

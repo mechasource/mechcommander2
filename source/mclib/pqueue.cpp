@@ -35,7 +35,7 @@ int32_t PriorityQueue::init (int32_t max, int32_t keyMinValue) {
 	//-------------------------
 	// Create the queue list...
 	pqList = (PQNode*)systemHeap->Malloc(sizeof(PQNode) * (max + 2));
-	gosASSERT (pqList != NULL);
+	gosASSERT (pqList != nullptr);
 
 	//----------------------------------------------------------------------
 	// Note that two additional nodes are added, as the first and last nodes
@@ -137,7 +137,7 @@ int32_t PriorityQueue::find (int32_t id) {
 void PriorityQueue::destroy (void) {
 
 	systemHeap->Free(pqList);
-	pqList = NULL;
+	pqList = nullptr;
 	maxItems = 0;
 	numItems = 0;
 }

@@ -63,24 +63,24 @@ void ABLi_deleteParamList (ABLParamPtr paramList);
 
 int32_t ABLi_preProcess(
 	PSTR sourceFileName,
-	int32_t* numErrors = NULL,
-	int32_t* numLinesProcessed = NULL,
-	int32_t* numFilesProcessed = NULL,
+	int32_t* numErrors = nullptr,
+	int32_t* numLinesProcessed = nullptr,
+	int32_t* numFilesProcessed = nullptr,
 	bool printLines = false);
 
 ABLModulePtr ABLi_loadLibrary(
 	PSTR sourceFileName,
-	int32_t* numErrors = NULL,
-	int32_t* numLinesProcessed = NULL,
-	int32_t* numFilesProcessed = NULL,
+	int32_t* numErrors = nullptr,
+	int32_t* numLinesProcessed = nullptr,
+	int32_t* numFilesProcessed = nullptr,
 	bool printLines = false,
 	bool createInstance = true);
 
 int32_t ABLi_execute(
 	SymTableNodePtr moduleIdPtr,
-	SymTableNodePtr functionIdPtr = NULL,
-	ABLParamPtr paramList = NULL,
-	StackItemPtr returnVal = NULL);
+	SymTableNodePtr functionIdPtr = nullptr,
+	ABLParamPtr paramList = nullptr,
+	StackItemPtr returnVal = nullptr);
 
 int32_t ABLi_deleteModule (SymTableNodePtr moduleIdPtr);
 

@@ -70,10 +70,10 @@ class AppearanceType
 		void init (void)
 		{
 			numUsers = 0;
-			next = NULL;
+			next = nullptr;
 			appearanceNum = 0xffffffff;
 
-			name = NULL;
+			name = nullptr;
 
 			typeUpperLeft.Zero(void);
 			typeLowerRight.Zero(void);
@@ -132,8 +132,8 @@ class AppearanceTypeList
 	
 		AppearanceTypeList (void)
 		{
-			head = last = NULL;
-			appearanceHeap = NULL;
+			head = last = nullptr;
+			appearanceHeap = nullptr;
 		}
 
 		void init (size_t heapSize);

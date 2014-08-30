@@ -43,7 +43,7 @@
 #include <stuff/stuff.hpp>
 
 //---------------------------------------------------------------------------
-UserInput *userInput = NULL;
+UserInput *userInput = nullptr;
 extern bool 			hasGuardBand;
 volatile bool			UserInput::drawMouse = false;
 extern volatile bool 	mc2IsInDisplayBackBuffer;
@@ -111,7 +111,7 @@ void MouseCursorData::destroy (void)
 		if ( cursorInfos )
 		{
 			delete [] cursorInfos;
-			cursorInfos = NULL;
+			cursorInfos = nullptr;
 		}
 
 		numCursors = 0;
@@ -424,11 +424,11 @@ void UserInput::initMouseCursors (PSTR mouseFile)
 	{
 		cursors->destroy();
 		delete cursors;
-		cursors = NULL;
+		cursors = nullptr;
 	}
 
 	cursors = new MouseCursorData;
-	gosASSERT(cursors != NULL);
+	gosASSERT(cursors != nullptr);
 	
 	cursors->initCursors(mouseFile);
 

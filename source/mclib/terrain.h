@@ -178,7 +178,7 @@ class Terrain
 
 		float getTerrainElevation (Stuff::Vector3D &position);
 		int16_t getTerrainType (Stuff::Vector3D &position);
-		float getTerrainAngle (Stuff::Vector3D &position, Stuff::Vector3D* normal = NULL);
+		float getTerrainAngle (Stuff::Vector3D &position, Stuff::Vector3D* normal = nullptr);
 		Stuff::Vector3D getTerrainNormal (Stuff::Vector3D &position);
 		float getTerrainLight (Stuff::Vector3D& position);
 		bool isVisible (Stuff::Vector3D &looker, Stuff::Vector3D &looked_at);

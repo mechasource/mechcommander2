@@ -61,7 +61,7 @@ public:
 	void init (void){
 		maxWatches = 0;
 		maxWatches = 0;
-		watches = NULL;
+		watches = nullptr;
 	}
 
 	int32_t init (int32_t max);
@@ -112,7 +112,7 @@ public:
 	void init (void){
 		maxBreakPoints = 0;
 		numBreakPoints = 0;
-		breakPoints = NULL;
+		breakPoints = nullptr;
 	}
 
 	int32_t init (int32_t max);
@@ -175,9 +175,9 @@ public:
 	void operator delete (PVOID us);
 
 	void init (void){
-		module = NULL;
-		watchManager = NULL;
-		breakPointManager = NULL;
+		module = nullptr;
+		watchManager = nullptr;
+		breakPointManager = nullptr;
 		debugModule = module;
 		enabled = false;
 		debugCommand = false;
@@ -186,7 +186,7 @@ public:
 		step = false;
 		traceEntry = false;
 		traceExit = false;
-		printCallback = NULL;
+		printCallback = nullptr;
 	}
 
 	int32_t init (void (*callback)(PSTR s), ABLModulePtr _module);

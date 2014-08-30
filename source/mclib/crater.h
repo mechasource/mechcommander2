@@ -88,20 +88,20 @@ class CraterManager
 	
 		void init (void)
 		{
-			craterPosHeap = NULL;
-			craterShpHeap = NULL;
+			craterPosHeap = nullptr;
+			craterShpHeap = nullptr;
 
 			craterPosHeapSize = craterShpHeapSize = 0;
 			
 			currentCrater = maxCraters = 0;
-			craterList = NULL;
+			craterList = nullptr;
 
 			numCraterTextures = 0;
 			
-			craterTextureHandles = NULL;
-			craterTextureIndices = NULL;
+			craterTextureHandles = nullptr;
+			craterTextureIndices = nullptr;
 			
-			craterFile = NULL;
+			craterFile = nullptr;
 		}
 		
 		CraterManager (void)

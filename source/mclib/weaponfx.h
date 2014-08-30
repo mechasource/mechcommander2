@@ -77,7 +77,7 @@ class WeaponEffects
 		
 		void init (void)
 		{
-			effects = NULL;
+			effects = nullptr;
 			numEffects = 0;
 		}
 		

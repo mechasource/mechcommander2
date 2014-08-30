@@ -72,23 +72,23 @@ uint32_t			TerrainColorMap::terrainTypeIDs[ TOTAL_COLORMAP_TYPES ] =
 // Class TerrainColorMap
 void TerrainColorMap::init (void)
 {
-	ColorMap = NULL;
-	colorMapHeap = NULL;
-	colorMapRAMHeap = NULL;
+	ColorMap = nullptr;
+	colorMapHeap = nullptr;
+	colorMapRAMHeap = nullptr;
 	
 	numTextures = 0;
-	textures = NULL;
-	txmRAM = NULL;
+	textures = nullptr;
+	txmRAM = nullptr;
 	
 	numTexturesAcross = fractionPerTexture = 0.0f;
 	
 	colorMapStarted = false;
 	
-	detailTextureRAM = NULL;
+	detailTextureRAM = nullptr;
 	detailTextureNodeIndex = 0xffffffff;
 	detailTextureTilingFactor = 30.0f;
 
-	waterTextureRAM = NULL;
+	waterTextureRAM = nullptr;
 	waterTextureNodeIndex = 0xffffffff;
 	waterTextureTilingFactor = 48.0f;
 
@@ -110,7 +110,7 @@ void TerrainColorMap::destroy (void)
 	if (textures)
 	{
 		colorMapHeap->Free(textures);
-		textures = NULL;
+		textures = nullptr;
 	}
 
 	if (txmRAM)
@@ -118,29 +118,29 @@ void TerrainColorMap::destroy (void)
 		for (uint32_t i=0;i<numTextures;i++)
 		{
 			colorMapRAMHeap->Free(txmRAM[i].ourRAM);
-			txmRAM[i].ourRAM = NULL;
+			txmRAM[i].ourRAM = nullptr;
 		}
 		
 		colorMapRAMHeap->Free(txmRAM);
-		txmRAM = NULL;
+		txmRAM = nullptr;
 	}
 
 	if (ColorMap)
 	{
 		colorMapRAMHeap->Free(ColorMap);
-		ColorMap = NULL;
+		ColorMap = nullptr;
 	}
 	
  	if (colorMapHeap)
 	{
 		delete colorMapHeap;
-		colorMapHeap = NULL;
+		colorMapHeap = nullptr;
 	}
 	
  	if (colorMapRAMHeap)
 	{
 		delete colorMapRAMHeap;
-		colorMapRAMHeap = NULL;
+		colorMapRAMHeap = nullptr;
 	}
 	
  	numTextures = 0;
@@ -398,11 +398,11 @@ void TerrainColorMap::burnInShadows (bool doBumpPass, PSTR fileName)
 	// the color map.
 	int32_t pixelWidth = numTexturesAcross * COLOR_MAP_TEXTURE_SIZE;
 	float *heightMap = (float *)malloc(sizeof(float) * pixelWidth * pixelWidth);
-	gosASSERT(heightMap != NULL);
+	gosASSERT(heightMap != nullptr);
 	memset(heightMap,0,sizeof(float) * pixelWidth * pixelWidth);
 	
 	float *shadowMap = (float *)malloc(sizeof(float) * pixelWidth * pixelWidth);
-	gosASSERT(shadowMap != NULL);
+	gosASSERT(shadowMap != nullptr);
 
 	memset(shadowMap,0,sizeof(float) * pixelWidth * pixelWidth);
 	
@@ -440,7 +440,7 @@ void TerrainColorMap::burnInShadows (bool doBumpPass, PSTR fileName)
 				STOP(("Unable to find Hi-Res Height Data"));
 				
 			puint8_t tgaFileImage = (puint8_t)malloc(heightMapFile.fileSize());
-			gosASSERT(tgaFileImage != NULL);
+			gosASSERT(tgaFileImage != nullptr);
 			
 			heightMapFile.read(tgaFileImage,heightMapFile.fileSize());
 			
@@ -542,7 +542,7 @@ void TerrainColorMap::burnInShadows (bool doBumpPass, PSTR fileName)
 				}
 				
 				free(tgaFileImage);
-				tgaFileImage = NULL;
+				tgaFileImage = nullptr;
 				
 				//------------------------------------------------------------------------
 				// Must check image_descriptor to see if we need to un upside down image.
@@ -1005,7 +1005,7 @@ void TerrainColorMap::resetDetailTexture (PCSTR fileName)
 	{
 		char msg[2048];
 		sprintf(msg,"Texture %s is not 24bit or 32bit, 32x32, 64x64, 128x128 or 256x256 TGA File.  Not loaded!",fileName);
-		MessageBox( NULL, msg, NULL, MBOK );
+		MessageBox( nullptr, msg, nullptr, MBOK );
 		return;
 	}
 
@@ -1036,7 +1036,7 @@ void TerrainColorMap::resetWaterTexture (PCSTR fileName)
 	{
 		char msg[2048];
 		sprintf(msg,"Texture %s is not 24bit or 32bit, 32x32, 64x64, 128x128 or 256x256 TGA File.  Not loaded!",fileName);
-		MessageBox( NULL, msg, NULL, MBOK );
+		MessageBox( nullptr, msg, nullptr, MBOK );
 		return;
 	}
 
@@ -1140,7 +1140,7 @@ void TerrainColorMap::recalcLight(PSTR fileName)
 	}
 			
 	puint8_t tgaFileImage = (puint8_t)malloc(colorMapFile.fileSize());
-	gosASSERT(tgaFileImage != NULL);
+	gosASSERT(tgaFileImage != nullptr);
 		
 	colorMapFile.read(tgaFileImage,colorMapFile.fileSize());
 		
@@ -1156,7 +1156,7 @@ void TerrainColorMap::recalcLight(PSTR fileName)
 		//-----------------------------------------------------------------
 		// Check if 24 or 32 bit.  If 24, do the necessary stuff to it.
 		ColorMap = (puint8_t)colorMapRAMHeap->Malloc(colorMapInfo.width * colorMapInfo.width * sizeof(uint32_t));
-		gosASSERT(ColorMap != NULL);
+		gosASSERT(ColorMap != nullptr);
 			
 		if (colorMapInfo.pixel_depth == 24)
 		{
@@ -1188,7 +1188,7 @@ void TerrainColorMap::recalcLight(PSTR fileName)
 		}
 		
 		free(tgaFileImage);
-		tgaFileImage = NULL;
+		tgaFileImage = nullptr;
 			
 		numTextures = colorMapInfo.width / COLOR_MAP_TEXTURE_SIZE;
 		numTexturesAcross = numTextures;
@@ -1201,7 +1201,7 @@ void TerrainColorMap::recalcLight(PSTR fileName)
 		numTextures *= numTextures;
 			
 		txmRAM = (ColorMapRAM *)colorMapRAMHeap->Malloc(sizeof(ColorMapRAM) * numTextures);
-		gosASSERT(txmRAM != NULL);
+		gosASSERT(txmRAM != nullptr);
 			
 		//------------------------------------------------------------------------
 		// Must check image_descriptor to see if we need to un upside down image.
@@ -1225,7 +1225,7 @@ void TerrainColorMap::recalcLight(PSTR fileName)
 			mcTextureManager->removeTextureNode(textures[i].mcTextureNodeIndex);
 			
 			txmRAM[i].ourRAM = (puint8_t)colorMapRAMHeap->Malloc(sizeof(uint32_t) * COLOR_MAP_TEXTURE_SIZE * COLOR_MAP_TEXTURE_SIZE);
-			gosASSERT(txmRAM[i].ourRAM != NULL);
+			gosASSERT(txmRAM[i].ourRAM != nullptr);
 				
 			getColorMapData(txmRAM[i].ourRAM,i, colorMapInfo.width);
 			
@@ -1238,19 +1238,19 @@ void TerrainColorMap::recalcLight(PSTR fileName)
 	for (uint32_t i=0;i<numTextures;i++)
 	{
 		colorMapRAMHeap->Free(txmRAM[i].ourRAM);
-		txmRAM[i].ourRAM = NULL;
+		txmRAM[i].ourRAM = nullptr;
 	}
 	
 	colorMapRAMHeap->Free(txmRAM);
-	txmRAM = NULL;
+	txmRAM = nullptr;
 	
 	colorMapRAMHeap->Free(ColorMap);
-	ColorMap = NULL;
+	ColorMap = nullptr;
 	
 	if (colorMapRAMHeap)
 	{
 		delete colorMapRAMHeap;
-		colorMapRAMHeap = NULL;
+		colorMapRAMHeap = nullptr;
 	}
 }
 
@@ -1292,7 +1292,7 @@ void TerrainColorMap::resetBaseTexture (PSTR fileName)
 	}
 			
 	puint8_t tgaFileImage = (puint8_t)malloc(colorMapFile.fileSize());
-	gosASSERT(tgaFileImage != NULL);
+	gosASSERT(tgaFileImage != nullptr);
 		
 	colorMapFile.read(tgaFileImage,colorMapFile.fileSize());
 		
@@ -1308,7 +1308,7 @@ void TerrainColorMap::resetBaseTexture (PSTR fileName)
 		//-----------------------------------------------------------------
 		// Check if 24 or 32 bit.  If 24, do the necessary stuff to it.
 		ColorMap = (puint8_t)colorMapRAMHeap->Malloc(colorMapInfo.width * colorMapInfo.width * sizeof(uint32_t));
-		gosASSERT(ColorMap != NULL);
+		gosASSERT(ColorMap != nullptr);
 			
 		if (colorMapInfo.pixel_depth == 24)
 		{
@@ -1340,7 +1340,7 @@ void TerrainColorMap::resetBaseTexture (PSTR fileName)
 		}
 		
 		free(tgaFileImage);
-		tgaFileImage = NULL;
+		tgaFileImage = nullptr;
 		
 		numTextures = colorMapInfo.width / COLOR_MAP_TEXTURE_SIZE;
 		numTexturesAcross = numTextures;
@@ -1352,10 +1352,10 @@ void TerrainColorMap::resetBaseTexture (PSTR fileName)
 			
 		numTextures *= numTextures;
 		textures = (ColorMapTextures *)colorMapHeap->Malloc(sizeof(ColorMapTextures) * numTextures);
-		gosASSERT(textures != NULL);
+		gosASSERT(textures != nullptr);
 		
 		txmRAM = (ColorMapRAM *)colorMapRAMHeap->Malloc(sizeof(ColorMapRAM) * numTextures);
-		gosASSERT(txmRAM != NULL);
+		gosASSERT(txmRAM != nullptr);
 		
 		//------------------------------------------------------------------------
 		// Must check image_descriptor to see if we need to un upside down image.
@@ -1380,7 +1380,7 @@ void TerrainColorMap::resetBaseTexture (PSTR fileName)
 		for (uint32_t i=0;i<numTextures;i++)
 		{
 			txmRAM[i].ourRAM = (puint8_t)colorMapRAMHeap->Malloc(sizeof(uint32_t) * COLOR_MAP_TEXTURE_SIZE * COLOR_MAP_TEXTURE_SIZE);
-			gosASSERT(txmRAM[i].ourRAM != NULL);
+			gosASSERT(txmRAM[i].ourRAM != nullptr);
 			
 			getColorMapData(txmRAM[i].ourRAM,i, colorMapInfo.width);
 			
@@ -1393,19 +1393,19 @@ void TerrainColorMap::resetBaseTexture (PSTR fileName)
 	for (i=0;i<numTextures;i++)
 	{
 		colorMapRAMHeap->Free(txmRAM[i].ourRAM);
-		txmRAM[i].ourRAM = NULL;
+		txmRAM[i].ourRAM = nullptr;
 	}
 	
 	colorMapRAMHeap->Free(txmRAM);
-	txmRAM = NULL;
+	txmRAM = nullptr;
 	
 	colorMapRAMHeap->Free(ColorMap);
-	ColorMap = NULL;
+	ColorMap = nullptr;
 	
 	if (colorMapRAMHeap)
 	{
 		delete colorMapRAMHeap;
-		colorMapRAMHeap = NULL;
+		colorMapRAMHeap = nullptr;
 	}
 }
 
@@ -1450,7 +1450,7 @@ void TerrainColorMap::getScaledColorMap (puint8_t bfr, int32_t dWidth)
 		}
 			
 		puint8_t tgaFileImage = (puint8_t)malloc(colorMapFile.fileSize());
-		gosASSERT(tgaFileImage != NULL);
+		gosASSERT(tgaFileImage != nullptr);
 		
 		colorMapFile.read(tgaFileImage,colorMapFile.fileSize());
 		
@@ -1466,7 +1466,7 @@ void TerrainColorMap::getScaledColorMap (puint8_t bfr, int32_t dWidth)
 			//-----------------------------------------------------------------
 			// Check if 24 or 32 bit.  If 24, do the necessary stuff to it.
 			ColorMap = (puint8_t)colorMapRAMHeap->Malloc(colorMapInfo.width * colorMapInfo.width * sizeof(uint32_t));
-			gosASSERT(ColorMap != NULL);
+			gosASSERT(ColorMap != nullptr);
 			
 			if (colorMapInfo.pixel_depth == 24)
 			{
@@ -1498,7 +1498,7 @@ void TerrainColorMap::getScaledColorMap (puint8_t bfr, int32_t dWidth)
 			}
 			
 			free(tgaFileImage);
-			tgaFileImage = NULL;
+			tgaFileImage = nullptr;
 			
 			uint32_t numTextures = colorMapInfo.width / COLOR_MAP_TEXTURE_SIZE;
 			numTexturesAcross = numTextures;
@@ -1541,9 +1541,9 @@ void TerrainColorMap::getScaledColorMap (puint8_t bfr, int32_t dWidth)
 	if (!wasColorMapAround)
 	{
 		delete colorMapRAMHeap;
-		colorMapRAMHeap = NULL;
+		colorMapRAMHeap = nullptr;
 
-		ColorMap = NULL;
+		ColorMap = nullptr;
 	}
 }
 
@@ -1683,7 +1683,7 @@ int32_t TerrainColorMap::init (PSTR fileName)
 			puint8_t jpgData = (puint8_t)malloc(fileSize);
 			colorMapFile.read(jpgData,fileSize);
 
-			ColorMap = (puint8_t)DecodeJPG(burnInJpg, jpgData, fileSize, &jpgColorMapWidth, &jpgColorMapHeight, false, NULL);
+			ColorMap = (puint8_t)DecodeJPG(burnInJpg, jpgData, fileSize, &jpgColorMapWidth, &jpgColorMapHeight, false, nullptr);
 
 			uint32_t numTextures = jpgColorMapWidth / COLOR_MAP_TEXTURE_SIZE;
 			numTexturesAcross = numTextures;
@@ -1695,17 +1695,17 @@ int32_t TerrainColorMap::init (PSTR fileName)
 				
 			numTextures *= numTextures;
 			textures = (ColorMapTextures *)colorMapHeap->Malloc(sizeof(ColorMapTextures) * numTextures);
-			gosASSERT(textures != NULL);
+			gosASSERT(textures != nullptr);
 			
 			txmRAM = (ColorMapRAM *)colorMapRAMHeap->Malloc(sizeof(ColorMapRAM) * numTextures);
-			gosASSERT(txmRAM != NULL);
+			gosASSERT(txmRAM != nullptr);
 			
 			//Now, divide up the color map into separate COLOR_MAP_TEXTURE_SIZE textures.
 			// and hand the data to the textureManager.
 			for (uint32_t i=0;i<numTextures;i++)
 			{
 				txmRAM[i].ourRAM = (puint8_t)colorMapRAMHeap->Malloc(sizeof(uint32_t) * COLOR_MAP_TEXTURE_SIZE * COLOR_MAP_TEXTURE_SIZE);
-				gosASSERT(txmRAM[i].ourRAM != NULL);
+				gosASSERT(txmRAM[i].ourRAM != nullptr);
 				
 				getColorMapData(txmRAM[i].ourRAM,i, jpgColorMapWidth);
 				
@@ -1713,7 +1713,7 @@ int32_t TerrainColorMap::init (PSTR fileName)
 			}
 		
 			free(jpgData);
-			jpgData = NULL;
+			jpgData = nullptr;
 			colorMapStarted = true;
 			usedJPG = true;
 		}
@@ -1734,7 +1734,7 @@ int32_t TerrainColorMap::init (PSTR fileName)
 			}
 
 			puint8_t tgaFileImage = (puint8_t)malloc(colorMapFile.fileSize());
-			gosASSERT(tgaFileImage != NULL);
+			gosASSERT(tgaFileImage != nullptr);
 
 			colorMapFile.read(tgaFileImage,colorMapFile.fileSize());
 
@@ -1750,7 +1750,7 @@ int32_t TerrainColorMap::init (PSTR fileName)
 				//-----------------------------------------------------------------
 				// Check if 24 or 32 bit.  If 24, do the necessary stuff to it.
 				ColorMap = (puint8_t)colorMapRAMHeap->Malloc(colorMapInfo.width * colorMapInfo.width * sizeof(uint32_t));
-				gosASSERT(ColorMap != NULL);
+				gosASSERT(ColorMap != nullptr);
 
 				if (colorMapInfo.pixel_depth == 24)
 				{
@@ -1782,7 +1782,7 @@ int32_t TerrainColorMap::init (PSTR fileName)
 				}
 
 				free(tgaFileImage);
-				tgaFileImage = NULL;
+				tgaFileImage = nullptr;
 
 				uint32_t numTextures = colorMapInfo.width / COLOR_MAP_TEXTURE_SIZE;
 				numTexturesAcross = numTextures;
@@ -1794,10 +1794,10 @@ int32_t TerrainColorMap::init (PSTR fileName)
 
 				numTextures *= numTextures;
 				textures = (ColorMapTextures *)colorMapHeap->Malloc(sizeof(ColorMapTextures) * numTextures);
-				gosASSERT(textures != NULL);
+				gosASSERT(textures != nullptr);
 
 				txmRAM = (ColorMapRAM *)colorMapRAMHeap->Malloc(sizeof(ColorMapRAM) * numTextures);
-				gosASSERT(txmRAM != NULL);
+				gosASSERT(txmRAM != nullptr);
 
 				//------------------------------------------------------------------------
 				// Must check image_descriptor to see if we need to un upside down image.
@@ -1822,7 +1822,7 @@ int32_t TerrainColorMap::init (PSTR fileName)
 				for (uint32_t i=0;i<numTextures;i++)
 				{
 					txmRAM[i].ourRAM = (puint8_t)colorMapRAMHeap->Malloc(sizeof(uint32_t) * COLOR_MAP_TEXTURE_SIZE * COLOR_MAP_TEXTURE_SIZE);
-					gosASSERT(txmRAM[i].ourRAM != NULL);
+					gosASSERT(txmRAM[i].ourRAM != nullptr);
 
 					getColorMapData(txmRAM[i].ourRAM,i, colorMapInfo.width);
 
@@ -1839,27 +1839,27 @@ int32_t TerrainColorMap::init (PSTR fileName)
 	for (uint32_t i=0;i<numTextures;i++)
 	{
 		colorMapRAMHeap->Free(txmRAM[i].ourRAM);
-		txmRAM[i].ourRAM = NULL;
+		txmRAM[i].ourRAM = nullptr;
 	}
 	
 	colorMapRAMHeap->Free(txmRAM);
-	txmRAM = NULL;
+	txmRAM = nullptr;
 	
 	if (usedJPG)
 	{
 		gos_Free(ColorMap);
-		ColorMap = NULL;
+		ColorMap = nullptr;
 	}
 	else
 	{
 		colorMapRAMHeap->Free(ColorMap);
-		ColorMap = NULL;
+		ColorMap = nullptr;
 	}
 	
 	if (colorMapRAMHeap)
 	{
 		delete colorMapRAMHeap;
-		colorMapRAMHeap = NULL;
+		colorMapRAMHeap = nullptr;
 	}
 
 	return 0;

@@ -40,7 +40,7 @@ class PriorityQueue {
 	public:
 
 		void init (void) {
-			pqList = NULL;
+			pqList = nullptr;
 			numItems = 0;
 		}
 

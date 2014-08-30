@@ -84,16 +84,16 @@ class BldgAppearanceType : public AppearanceType
 			int32_t i=0;
 			for (i=0;i<MAX_LODS;i++)
 			{
-				bldgShape[i] = NULL;
+				bldgShape[i] = nullptr;
 				lodDistance[i] = 0.0f;
 			}
 
-			bldgShadowShape = NULL;
-			bldgDmgShape = NULL;
-			bldgDmgShadowShape = NULL;
+			bldgShadowShape = nullptr;
+			bldgDmgShape = nullptr;
+			bldgDmgShadowShape = nullptr;
 			
 			for (i=0;i<MAX_BD_ANIMATIONS;i++)
-				bdAnimData[i] = NULL;
+				bdAnimData[i] = nullptr;
 				
 			destructEffect[0] = 0;
 			
@@ -229,7 +229,7 @@ class BldgAppearance : public ObjectAppearance
 
  	public:
 
-		virtual void init (AppearanceTypePtr tree = NULL, GameObjectPtr obj = NULL);
+		virtual void init (AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
 		virtual AppearanceTypePtr getAppearanceType (void)
 		{
@@ -294,7 +294,7 @@ class BldgAppearance : public ObjectAppearance
 
 		virtual void markTerrain(_ScenarioMapCellInfo* pInfo, int32_t type, int32_t counter);
 		
-		virtual int32_t markMoveMap (bool passable, int32_t* lineOfSightRect, bool useheight = false, pint16_t cellList = NULL);
+		virtual int32_t markMoveMap (bool passable, int32_t* lineOfSightRect, bool useheight = false, pint16_t cellList = nullptr);
 
 		virtual void markLOS (bool clearIt = false);
 		
@@ -374,7 +374,7 @@ class BldgAppearance : public ObjectAppearance
 
 		virtual bool hasAnimationData (int32_t gestureId)
 		{
-			return (appearType->bdAnimData[gestureId] != NULL);
+			return (appearType->bdAnimData[gestureId] != nullptr);
 		}
 
 		virtual Stuff::Vector3D getNodeIdPosition (int32_t nodeId);
@@ -410,17 +410,17 @@ class TreeAppearanceType : public AppearanceType
 			int32_t i=0;
 			for (i=0;i<MAX_LODS;i++)
 			{
-				treeShape[i] = NULL;
+				treeShape[i] = nullptr;
 				lodDistance[i] = 0.0f;
 			}
 
 			for (i=0;i<MAX_BD_ANIMATIONS;i++)
-				treeAnimData[i] = NULL;
+				treeAnimData[i] = nullptr;
 				
-			treeShadowShape = NULL;
+			treeShadowShape = nullptr;
 			
-			treeDmgShape = NULL;
-			treeDmgShadowShape = NULL;
+			treeDmgShape = nullptr;
+			treeDmgShadowShape = nullptr;
 		}
 	
 		TreeAppearanceType (void)
@@ -469,7 +469,7 @@ class TreeAppearance : public ObjectAppearance
 
 	public:
 
-		virtual void init (AppearanceTypePtr tree = NULL, GameObjectPtr obj = NULL);
+		virtual void init (AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
 		virtual AppearanceTypePtr getAppearanceType (void)
 		{

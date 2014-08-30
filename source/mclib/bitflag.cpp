@@ -86,7 +86,7 @@ void BitFlag::resetAll (uint32_t initialValue)
 void BitFlag::destroy (void)
 {
 	delete flagHeap;
-	flagHeap = NULL;
+	flagHeap = nullptr;
 	
 	init();
 }	
@@ -243,7 +243,7 @@ int32_t ByteFlag::init (uint32_t numRows, uint32_t numColumns, uint32_t initialV
 
 	flagHeap = new HeapManager;
 	
-	gosASSERT(flagHeap != NULL);
+	gosASSERT(flagHeap != nullptr);
 		
 	int32_t result = flagHeap->createHeap(totalRAM);
 	gosASSERT(result == NO_ERROR);
@@ -265,8 +265,8 @@ int32_t ByteFlag::init (uint32_t numRows, uint32_t numColumns, uint32_t initialV
 	flagWindow->buffer = flagHeap->getHeapPtr();
 	flagWindow->x_max = numColumns-1;
 	flagWindow->y_max = numRows-1;
-	flagWindow->stencil = NULL;
-	flagWindow->shadow = NULL;
+	flagWindow->stencil = nullptr;
+	flagWindow->shadow = nullptr;
 		
 	return(NO_ERROR);
 }	
@@ -283,7 +283,7 @@ void ByteFlag::initTGA (PSTR tgaFileName)
 	gosASSERT(result == NO_ERROR);
 
 	puint8_t tgaBuffer = (puint8_t)malloc(tgaFile.fileSize());
-	if(tgaBuffer == NULL)
+	if(tgaBuffer == nullptr)
 		return;
 
 	tgaFile.read(tgaBuffer,tgaFile.fileSize());
@@ -375,13 +375,13 @@ void ByteFlag::resetAll (uint32_t initialValue)
 void ByteFlag::destroy (void)
 {
 	delete flagHeap;
-	flagHeap = NULL;
+	flagHeap = nullptr;
 
 	delete flagPane;
 	delete flagWindow;
 
-	flagPane = NULL;
-	flagWindow = NULL;
+	flagPane = nullptr;
+	flagWindow = nullptr;
 	
 	init();
 }	

@@ -81,17 +81,17 @@ class GVAppearanceType : public AppearanceType
 			int32_t i=0;
 			for (i=0;i<MAX_LODS;i++)
 			{
-				gvShape[i] = NULL;
+				gvShape[i] = nullptr;
 				lodDistance[i] = 0.0f;
 			}
 			
-			gvShadowShape = NULL;
+			gvShadowShape = nullptr;
 			
-			gvDmgShape = NULL;
+			gvDmgShape = nullptr;
 
 			for (i=0;i<MAX_GV_ANIMATIONS;i++)
 			{
-				gvAnimData[i] = NULL;
+				gvAnimData[i] = nullptr;
 				gvAnimLoop[i] = false;
 				gvReverse[i] = false;
 				gvRandom[i] = false;
@@ -239,7 +239,7 @@ class GVAppearance : public ObjectAppearance
 
  	public:
 
-		virtual void init (AppearanceTypePtr tree = NULL, GameObjectPtr obj = NULL);
+		virtual void init (AppearanceTypePtr tree = nullptr, GameObjectPtr obj = nullptr);
 
 		virtual AppearanceTypePtr getAppearanceType (void)
 		{

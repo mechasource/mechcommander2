@@ -165,7 +165,7 @@ int32_t CSVFile::afterOpen (void)
 	//-------------------------------------------------------
 	// Check if we opened this with CREATE and write the
 	// FITini Header and position to Write Start.
-	if (fileMode == CREATE && parent == NULL)
+	if (fileMode == CREATE && parent == nullptr)
 	{
 		STOP(("Cannot write CSV files at present."));
 	}
@@ -208,7 +208,7 @@ int32_t CSVFile::textToLong (PSTR num)
 	//------------------------------------
 	// Check if Hex Number
 	PSTR hexOffset = strstr(num,"0x");
-	if (hexOffset == NULL)
+	if (hexOffset == nullptr)
 	{
 		result = atol(num);
 	}
@@ -261,7 +261,7 @@ int16_t CSVFile::textToShort (PSTR num)
 	//------------------------------------
 	// Check if Hex Number
 	PSTR hexOffset = strstr(num,"0x");
-	if (hexOffset == NULL)
+	if (hexOffset == nullptr)
 	{
 		result = atol(num);
 	}
@@ -313,7 +313,7 @@ char CSVFile::textToChar (PSTR num)
 	//------------------------------------
 	// Check if Hex Number
 	PSTR hexOffset = strstr(num,"0x");
-	if (hexOffset == NULL)
+	if (hexOffset == nullptr)
 	{
 		result = atol(num);
 	}
@@ -364,7 +364,7 @@ uint32_t CSVFile::textToULong (PSTR num)
 	//------------------------------------
 	// Check if Hex Number
 	PSTR hexOffset = strstr(num,"0x");
-	if (hexOffset == NULL)
+	if (hexOffset == nullptr)
 	{
 		result = atol(num);
 	}
@@ -416,7 +416,7 @@ uint16_t CSVFile::textToUShort (PSTR num)
 	//------------------------------------
 	// Check if Hex Number
 	PSTR hexOffset = strstr(num,"0x");
-	if (hexOffset == NULL)
+	if (hexOffset == nullptr)
 	{
 		result = atol(num);
 	}
@@ -468,7 +468,7 @@ uint8_t CSVFile::textToUCHAR (PSTR num)
 	//------------------------------------
 	// Check if Hex Number
 	PSTR hexOffset = strstr(num,"0x");
-	if (hexOffset == NULL)
+	if (hexOffset == nullptr)
 	{
 		result = atol(num);
 	}
@@ -725,7 +725,7 @@ int32_t CSVFile::seekRowCol (uint32_t row, uint32_t col)
 	{
 		return -1;
 		// CAN'T do this, for some reason excel writes out empty rows.
-		//STOP(("Unable to parse CSV %s, ROW %d, COL %D, ERROR: NULL",getFilename(),row,col));
+		//STOP(("Unable to parse CSV %s, ROW %d, COL %D, ERROR: nullptr",getFilename(),row,col));
 	}
 	
 	//return(NO_ERROR);
@@ -864,7 +864,7 @@ int32_t CSVFile::copyString (PSTR dest, PSTR src, uint32_t bufLen)
 	}
 
 	//---------------------------------
-	// otherwise, NULL term and return	
+	// otherwise, nullptr term and return	
 	dest[offset] = '\0';
 	return(NO_ERROR);
 }

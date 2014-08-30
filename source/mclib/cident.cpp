@@ -43,7 +43,7 @@ void FullPathFileName::destroy (void)
 	if (fullName)
 		systemHeap->Free(fullName);
 
-	fullName = NULL;
+	fullName = nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -58,8 +58,8 @@ void FullPathFileName::init (PSTR  dir_path, PCSTR  name, PSTR  ext)
 
 
 	fullName = (PSTR )systemHeap->Malloc(total_length);
-	gosASSERT(fullName != NULL);
-	if (fullName == NULL)
+	gosASSERT(fullName != nullptr);
+	if (fullName == nullptr)
 		return;
 	fullName[0] = 0;
 

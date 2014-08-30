@@ -2610,7 +2610,7 @@ void TerrainQuad::drawLine (void)
 			Stuff::Vector4D pos2(vertices[1]->px,vertices[1]->py,vertices[1]->pz-0.002f,1.0f / vertices[1]->pw);
 			
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 			
@@ -2621,7 +2621,7 @@ void TerrainQuad::drawLine (void)
 			pos2.y = vertices[2]->py;
 
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 			
@@ -2634,7 +2634,7 @@ void TerrainQuad::drawLine (void)
 			pos2.z = vertices[0]->pz - 0.002f;
 
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 		}
@@ -2645,7 +2645,7 @@ void TerrainQuad::drawLine (void)
 			Stuff::Vector4D pos2(vertices[2]->px,vertices[2]->py,vertices[2]->pz-0.002f,1.0f / vertices[2]->pw);
 			
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 			
@@ -2658,7 +2658,7 @@ void TerrainQuad::drawLine (void)
 			pos2.z = vertices[3]->pz - 0.002f;
 
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 			
@@ -2671,7 +2671,7 @@ void TerrainQuad::drawLine (void)
 			pos2.z = vertices[0]->pz - 0.002f;
 
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 		}
@@ -2684,7 +2684,7 @@ void TerrainQuad::drawLine (void)
 			Stuff::Vector4D pos2(vertices[1]->px,vertices[1]->py,vertices[1]->pz-0.002f,1.0f / vertices[1]->pw);
 			
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 			
@@ -2697,7 +2697,7 @@ void TerrainQuad::drawLine (void)
 			pos2.z = vertices[3]->pz - 0.002f;
 
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 			
@@ -2710,7 +2710,7 @@ void TerrainQuad::drawLine (void)
 			pos2.z = vertices[0]->pz - 0.002f;
 
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 		}
@@ -2721,7 +2721,7 @@ void TerrainQuad::drawLine (void)
 			Stuff::Vector4D pos2(vertices[2]->px,vertices[2]->py,vertices[2]->pz-0.002f,1.0f / vertices[2]->pw);
 			
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 			
@@ -2734,7 +2734,7 @@ void TerrainQuad::drawLine (void)
 			pos2.z = vertices[3]->pz - 0.002f;
 
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 			
@@ -2747,7 +2747,7 @@ void TerrainQuad::drawLine (void)
 			pos2.z = vertices[1]->pz - 0.002f;
 
 			{
-				LineElement newElement(pos1,pos2,color,NULL);
+				LineElement newElement(pos1,pos2,color,nullptr);
 				newElement.draw();
 			}
 		}
@@ -2778,7 +2778,7 @@ void TerrainQuad::drawLine (void)
 					int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 					int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
 					
-					MapCellPtr curCell = NULL;
+					MapCellPtr curCell = nullptr;
 					if (GameMap->inBounds(actualCellRow, actualCellCol))
 						curCell = GameMap->getCell(actualCellRow, actualCellCol);
 					
@@ -2851,22 +2851,22 @@ void TerrainQuad::drawLine (void)
 						}
 
 						{
-							LineElement newElement(pos1,pos2,color,NULL);
+							LineElement newElement(pos1,pos2,color,nullptr);
 							newElement.draw();
 						}	
 						
 						{
-							LineElement newElement(pos2,pos3,color,NULL);
+							LineElement newElement(pos2,pos3,color,nullptr);
 							newElement.draw();
 						}
 						
 						{
-							LineElement newElement(pos3,pos4,color,NULL);
+							LineElement newElement(pos3,pos4,color,nullptr);
 							newElement.draw();
 						}
 						
 						{
-							LineElement newElement(pos1,pos4,color,NULL);
+							LineElement newElement(pos1,pos4,color,nullptr);
 							newElement.draw();
 						}
 					}
@@ -2940,22 +2940,22 @@ void TerrainQuad::drawLine (void)
 				pos3.z -= 0.002f;  
 				pos4.z -= 0.002f;
 				{
-					LineElement newElement(pos1,pos2,XP_GREEN,NULL);
+					LineElement newElement(pos1,pos2,XP_GREEN,nullptr);
 					newElement.draw();
 				}	
 				
 				{
-					LineElement newElement(pos2,pos3,XP_GREEN,NULL);
+					LineElement newElement(pos2,pos3,XP_GREEN,nullptr);
 					newElement.draw();
 				}
 				
 				{
-					LineElement newElement(pos3,pos4,XP_GREEN,NULL);
+					LineElement newElement(pos3,pos4,XP_GREEN,nullptr);
 					newElement.draw();
 				}
 				
 				{
-					LineElement newElement(pos1,pos4,XP_GREEN,NULL);
+					LineElement newElement(pos1,pos4,XP_GREEN,nullptr);
 					newElement.draw();
 				}
 			}
@@ -2998,7 +2998,7 @@ void TerrainQuad::drawLOSLine (void)
 					int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 					int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
 					
-					MapCellPtr curCell = NULL;
+					MapCellPtr curCell = nullptr;
 					if (GameMap->inBounds(actualCellRow, actualCellCol))
 						curCell = GameMap->getCell(actualCellRow, actualCellCol);
 					
@@ -3069,22 +3069,22 @@ void TerrainQuad::drawLOSLine (void)
 						}
 
 						{
-							LineElement newElement(pos1,pos2,color,NULL);
+							LineElement newElement(pos1,pos2,color,nullptr);
 							newElement.draw();
 						}	
 						
 						{
-							LineElement newElement(pos2,pos3,color,NULL);
+							LineElement newElement(pos2,pos3,color,nullptr);
 							newElement.draw();
 						}
 						
 						{
-							LineElement newElement(pos3,pos4,color,NULL);
+							LineElement newElement(pos3,pos4,color,nullptr);
 							newElement.draw();
 						}
 						
 						{
-							LineElement newElement(pos1,pos4,color,NULL);
+							LineElement newElement(pos1,pos4,color,nullptr);
 							newElement.draw();
 						}
 					}
@@ -3117,7 +3117,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			Stuff::Vector4D pos2(vertices[1]->px,vertices[1]->py,HUD_DEPTH,1.0f / vertices[1]->pw);
 			
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 			
@@ -3128,7 +3128,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			pos2.y = vertices[2]->py;
 
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 			
@@ -3139,7 +3139,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			pos2.y = vertices[0]->py;
 
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 		}
@@ -3150,7 +3150,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			Stuff::Vector4D pos2(vertices[2]->px,vertices[2]->py,HUD_DEPTH,1.0f / vertices[2]->pw);
 			
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 			
@@ -3161,7 +3161,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			pos2.y = vertices[3]->py;
 
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 			
@@ -3172,7 +3172,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			pos2.y = vertices[0]->py;
 
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 		}
@@ -3185,7 +3185,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			Stuff::Vector4D pos2(vertices[1]->px,vertices[1]->py,HUD_DEPTH,1.0f / vertices[1]->pw);
 			
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 			
@@ -3196,7 +3196,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			pos2.y = vertices[3]->py;
 
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 			
@@ -3207,7 +3207,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			pos2.y = vertices[0]->py;
 
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 		}
@@ -3218,7 +3218,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			Stuff::Vector4D pos2(vertices[2]->px,vertices[2]->py,HUD_DEPTH,1.0f / vertices[2]->pw);
 			
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 			
@@ -3229,7 +3229,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			pos2.y = vertices[3]->py;
 
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 			
@@ -3240,7 +3240,7 @@ void TerrainQuad::drawDebugCellLine (void)
 			pos2.y = vertices[1]->py;
 
 			{
-				//LineElement newElement(pos1,pos2,color,NULL);
+				//LineElement newElement(pos1,pos2,color,nullptr);
 				//newElement.draw();
 			}
 		}
@@ -3271,7 +3271,7 @@ void TerrainQuad::drawDebugCellLine (void)
 					int32_t actualCellRow = tileR * MAPCELL_DIM + cellR;
 					int32_t actualCellCol = tileC * MAPCELL_DIM + cellC;
 					
-					MapCellPtr curCell = NULL;
+					MapCellPtr curCell = nullptr;
 					if (GameMap->inBounds(actualCellRow, actualCellCol))
 						curCell = GameMap->getCell(actualCellRow, actualCellCol);
 					
@@ -3328,22 +3328,22 @@ void TerrainQuad::drawDebugCellLine (void)
 						}
 */
 						{
-							LineElement newElement(pos1,pos2,color,NULL);
+							LineElement newElement(pos1,pos2,color,nullptr);
 							newElement.draw();
 						}	
 						
 						{
-							LineElement newElement(pos2,pos3,color,NULL);
+							LineElement newElement(pos2,pos3,color,nullptr);
 							newElement.draw();
 						}
 						
 						{
-							LineElement newElement(pos3,pos4,color,NULL);
+							LineElement newElement(pos3,pos4,color,nullptr);
 							newElement.draw();
 						}
 						
 						{
-							LineElement newElement(pos1,pos4,color,NULL);
+							LineElement newElement(pos1,pos4,color,nullptr);
 							newElement.draw();
 						}
 					}

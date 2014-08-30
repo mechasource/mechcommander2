@@ -136,7 +136,7 @@ TypePtr execVariable (SymTableNodePtr idPtr, UseType use) {
 	// First, point to the variable's stack item. If the variable's scope
 	// level is less than the current scope level, follow the static links
 	// to the proper stack frame base...
-	StackItemPtr dataPtr = NULL;
+	StackItemPtr dataPtr = nullptr;
 	StackItem tempStackItem;
 	switch (idPtr->defn.info.data.varType) {
 		case VAR_TYPE_NORMAL: {
@@ -173,7 +173,7 @@ TypePtr execVariable (SymTableNodePtr idPtr, UseType use) {
 		if (typePtr->form != FRM_ARRAY)/* && (typePtr->form != FRM_RECORD)*/
 			dataPtr = (StackItemPtr)dataPtr->address;
 
-	ABL_Assert(dataPtr != NULL, 0, " ABL.execVariable(): dataPtr is NULL ");
+	ABL_Assert(dataPtr != nullptr, 0, " ABL.execVariable(): dataPtr is nullptr ");
 
 	//-----------------------------------------------------
 	// Now, push the address of the variable's data area...
@@ -229,7 +229,7 @@ TypePtr execVariable (SymTableNodePtr idPtr, UseType use) {
 
 TypePtr execFactor (void) {
 
-	TypePtr resultTypePtr = NULL;
+	TypePtr resultTypePtr = nullptr;
 
    	switch (codeToken) {
 		case TKN_IDENTIFIER: {
@@ -477,7 +477,7 @@ TypePtr execExpression (void) {
  	//-----------------------------------
 	// Get the first simple expression...
 	TypePtr resultTypePtr = execSimpleExpression();
-	TypePtr type2Ptr = NULL;
+	TypePtr type2Ptr = nullptr;
 
  	//-----------------------------------------------------------
 	// If there is a relational operator, save it and process the

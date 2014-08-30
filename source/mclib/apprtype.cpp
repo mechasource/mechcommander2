@@ -38,14 +38,14 @@
 
 //---------------------------------------------------------------------------
 // static Globals
-UserHeapPtr AppearanceTypeList::appearanceHeap = NULL;
-AppearanceTypeListPtr appearanceTypeList = NULL;
+UserHeapPtr AppearanceTypeList::appearanceHeap = nullptr;
+AppearanceTypeListPtr appearanceTypeList = nullptr;
 
 //---------------------------------------------------------------------------
 // Class AppearanceType
 PVOID AppearanceType::operator new (size_t memSize)
 {
-	PVOID result = NULL;
+	PVOID result = nullptr;
 	if (AppearanceTypeList::appearanceHeap && AppearanceTypeList::appearanceHeap->heapReady())
 	{
 		result = AppearanceTypeList::appearanceHeap->Malloc(memSize);
@@ -187,7 +187,7 @@ void AppearanceType::reinit (void)
 void AppearanceType::destroy (void)
 {
 	AppearanceTypeList::appearanceHeap->Free(name);
-	name = NULL;
+	name = nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -195,7 +195,7 @@ void AppearanceType::destroy (void)
 void AppearanceTypeList::init (uint32_t heapSize)
 {
 	appearanceHeap = new UserHeap;
-	gosASSERT(appearanceHeap != NULL);
+	gosASSERT(appearanceHeap != nullptr);
 
 	appearanceHeap->init(heapSize,"APPEAR");
 
@@ -212,18 +212,18 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 	// and store the number.  To get the appearance type, we right shift
 	// by 24.
 	int32_t appearanceClass = apprNum >> 24;
-	AppearanceTypePtr appearanceType = NULL;
+	AppearanceTypePtr appearanceType = nullptr;
 	
 	//----------------------------------------------------
-	// If these top bits are wrong, return NULL
+	// If these top bits are wrong, return nullptr
 	if (appearanceClass == 0)
-		return(NULL);
+		return(nullptr);
 
 	//----------------------------------------------------
-	// If string passed in is NULL, return NULL
+	// If string passed in is nullptr, return nullptr
 	if (!appearFile)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	//-----------------------------------------------------------
@@ -248,7 +248,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 			case MECH_TYPE:
 			{
 				appearanceType = new Mech3DAppearanceType;
-				gosASSERT(appearanceType != NULL);
+				gosASSERT(appearanceType != nullptr);
 
 				appearanceType->appearanceNum = apprNum;
 				appearanceType->init(appearFile);
@@ -256,9 +256,9 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 				//----------------------------------------
 				// We have a new one, add it to the list.				
 				appearanceType->numUsers = 1;
-				appearanceType->next = NULL;
+				appearanceType->next = nullptr;
 
-				if (head == NULL)
+				if (head == nullptr)
 				{
 					head = appearanceType;
 					last = head;
@@ -275,7 +275,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 			case GV_TYPE:
 			{
 				appearanceType = new GVAppearanceType;
-				gosASSERT(appearanceType != NULL);
+				gosASSERT(appearanceType != nullptr);
 
 				appearanceType->appearanceNum = apprNum;
 				appearanceType->init(appearFile);
@@ -283,9 +283,9 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 				//----------------------------------------
 				// We have a new one, add it to the list.				
 				appearanceType->numUsers = 1;
-				appearanceType->next = NULL;
+				appearanceType->next = nullptr;
 
-				if (head == NULL)
+				if (head == nullptr)
 				{
 					head = appearanceType;
 					last = head;
@@ -302,7 +302,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 			case TREED_TYPE:
 			{
 				appearanceType = new TreeAppearanceType;
-				gosASSERT(appearanceType != NULL);
+				gosASSERT(appearanceType != nullptr);
 
 				appearanceType->appearanceNum = apprNum;
 				appearanceType->init(appearFile);
@@ -310,9 +310,9 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 				//----------------------------------------
 				// We have a new one, add it to the list.				
 				appearanceType->numUsers = 1;
-				appearanceType->next = NULL;
+				appearanceType->next = nullptr;
 
-				if (head == NULL)
+				if (head == nullptr)
 				{
 					head = appearanceType;
 					last = head;
@@ -329,7 +329,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 			case GENERIC_APPR_TYPE:
 			{
 				appearanceType = new GenericAppearanceType;
-				gosASSERT(appearanceType != NULL);
+				gosASSERT(appearanceType != nullptr);
 
 				appearanceType->appearanceNum = apprNum;
 				appearanceType->init(appearFile);
@@ -337,9 +337,9 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 				//----------------------------------------
 				// We have a new one, add it to the list.				
 				appearanceType->numUsers = 1;
-				appearanceType->next = NULL;
+				appearanceType->next = nullptr;
 
-				if (head == NULL)
+				if (head == nullptr)
 				{
 					head = appearanceType;
 					last = head;
@@ -356,7 +356,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 			case BLDG_TYPE:
 			{
 				appearanceType = new BldgAppearanceType;
-				gosASSERT(appearanceType != NULL);
+				gosASSERT(appearanceType != nullptr);
 
 				appearanceType->appearanceNum = apprNum;
 				appearanceType->init(appearFile);
@@ -364,9 +364,9 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 				//----------------------------------------
 				// We have a new one, add it to the list.				
 				appearanceType->numUsers = 1;
-				appearanceType->next = NULL;
+				appearanceType->next = nullptr;
 
-				if (head == NULL)
+				if (head == nullptr)
 				{
 					head = appearanceType;
 					last = head;
@@ -380,7 +380,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 			break;
 
 			default:
-				//return(NULL);
+				//return(nullptr);
 				NODEFAULT;
 		}
 	}
@@ -392,7 +392,7 @@ AppearanceTypePtr AppearanceTypeList::getAppearance (uint32_t apprNum, PSTR appe
 int32_t AppearanceTypeList::removeAppearance (AppearanceTypePtr which)
 {
 	AppearanceTypePtr appearanceType = head;
-	AppearanceTypePtr previous = NULL;
+	AppearanceTypePtr previous = nullptr;
 	
 	while (appearanceType && (appearanceType != which))
 	{
@@ -412,7 +412,7 @@ int32_t AppearanceTypeList::removeAppearance (AppearanceTypePtr which)
 	{
 		//------------------------------------------------------
 		// Check if there is no previous appearanceType in list
-		if (previous == NULL)
+		if (previous == nullptr)
 		{
 			//----------------------------------------------------
 			// if there was no previous, head is the next in list
@@ -429,7 +429,7 @@ int32_t AppearanceTypeList::removeAppearance (AppearanceTypePtr which)
 			last = previous;
 			
 		delete appearanceType;
-		appearanceType = NULL;
+		appearanceType = nullptr;
 	}
 //#endif
 	
@@ -453,27 +453,27 @@ void AppearanceTypeList::destroy (void)
 	}
 	
 
-	head = last = NULL;
+	head = last = nullptr;
 	
 	delete appearanceHeap;
-	appearanceHeap = NULL;
+	appearanceHeap = nullptr;
 	
  	if (GVAppearanceType::SensorCircleShape)
 	{
 		delete GVAppearanceType::SensorCircleShape;
-		GVAppearanceType::SensorCircleShape = NULL;
+		GVAppearanceType::SensorCircleShape = nullptr;
 	}
 	
 	if (GVAppearanceType::SensorTriangleShape)
 	{
 		delete GVAppearanceType::SensorTriangleShape;
-		GVAppearanceType::SensorTriangleShape = NULL;
+		GVAppearanceType::SensorTriangleShape = nullptr;
 	}
 	
 	if (Mech3DAppearanceType::SensorSquareShape)
 	{
 		delete Mech3DAppearanceType::SensorSquareShape;
-		Mech3DAppearanceType::SensorSquareShape = NULL;
+		Mech3DAppearanceType::SensorSquareShape = nullptr;
 	}
 }
 

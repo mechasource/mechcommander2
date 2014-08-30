@@ -13,8 +13,6 @@
 #define DSTD_H
 
 //---------------------------------------------------------------------------
-// Type Definitions
-typedef puint8_t puint8_t;
 
 #define RADS_TO_DEGREES	57.2957795132f		// Used to convert results in Rad to Deg
 #define DEGREES_TO_RADS 0.0174532925199f 	// Used to convert results in Deg to Rad

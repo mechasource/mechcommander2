@@ -70,7 +70,7 @@ void Clouds::init (PSTR textureName, int32_t gSize)
 	gridSize = gSize;
 	int32_t gridTotal = gridSize * gridSize;
 	cloudVertices = (CloudVertexPtr)systemHeap->Malloc(sizeof(CloudVertex)*gridTotal);
-	gosASSERT(cloudVertices != NULL);
+	gosASSERT(cloudVertices != nullptr);
 	
 	memset(cloudVertices,0,sizeof(CloudVertex)*gridTotal);
 }
@@ -356,7 +356,7 @@ void Clouds::render (void)
 void Clouds::destroy (void)
 {
 	systemHeap->Free(cloudVertices);
-	cloudVertices = NULL;
+	cloudVertices = nullptr;
 }
 
 //---------------------------------------------------------------------------

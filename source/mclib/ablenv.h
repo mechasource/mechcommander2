@@ -57,12 +57,12 @@ public:
 	void init (void){
 		handle = -1;
 		inUse = false;
-		fileName[0] = NULL;
-		filePtr = NULL;
+		fileName[0] = nullptr;
+		filePtr = nullptr;
 		numLines = 0;
 		totalLines = 0;
 		for (int32_t i = 0; i < MAX_USER_FILE_LINES; i++)
-			lines[i][0] = NULL;
+			lines[i][0] = nullptr;
 	}
 
 	UserFile (void){
@@ -166,15 +166,15 @@ public:
 	void init (void)
 	{
 		id = -1;
-		name[0] = NULL;
+		name[0] = nullptr;
 		handle = -1;
-		staticData = NULL;
+		staticData = nullptr;
 		returnVal.integer = 0;
 		initCalled = false;
-		prevState = NULL;
-		state = NULL;
-		watchManager = NULL;
-		breakPointManager = NULL;
+		prevState = nullptr;
+		state = nullptr;
+		watchManager = nullptr;
+		breakPointManager = nullptr;
 		trace = false;
 		step = false;
 		traceEntry = false;
@@ -301,10 +301,10 @@ public:
 		return(step);
 	}
 
-	int32_t execute (ABLParamPtr paramList = NULL);
+	int32_t execute (ABLParamPtr paramList = nullptr);
 	int32_t execute (ABLParamPtr moduleParamList, SymTableNodePtr functionIdPtr);
 
-	SymTableNodePtr findSymbol (PSTR symbolName, SymTableNodePtr curFunction = NULL, bool searchLibraries = false);
+	SymTableNodePtr findSymbol (PSTR symbolName, SymTableNodePtr curFunction = nullptr, bool searchLibraries = false);
 
 	SymTableNodePtr findFunction (PSTR functionName, bool searchLibraries = false);
 

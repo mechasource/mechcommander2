@@ -20,8 +20,8 @@ typedef enum __lzdecomp_const {
 	NO_RAM_FOR_LZ_DECOMP	= 0xCBCB0002,
 };
 
-#ifndef NULL
-#define NULL			0
+#ifndef nullptr
+#define nullptr			0
 #endif
 
 typedef uint8_t* puint8_t;
@@ -32,13 +32,13 @@ typedef struct HashStruct {
 } HashStruct;
 typedef HashStruct*	HashStructPtr;
 	
-HashStructPtr	LZOldChain = NULL;			//Old Chain Value Found
-HashStructPtr	LZChain = NULL;				//Current Chain Value Found 
+HashStructPtr	LZOldChain = nullptr;			//Old Chain Value Found
+HashStructPtr	LZChain = nullptr;				//Current Chain Value Found 
 uint32_t	LZMaxIndex = 0;				//Max index value in Hash Table
 uint32_t	LZCodeMask = 0;
 uint32_t	LZFreeIndex = 0;			//Current Free index into Hash Table
-puint8_t		LZSrcBufEnd = NULL;			//ptr to 3rd from last byte in src buffer
-puint8_t		LZOrigDOSBuf = NULL;		//original offset to start of src buffer
+puint8_t		LZSrcBufEnd = nullptr;			//ptr to 3rd from last byte in src buffer
+puint8_t		LZOrigDOSBuf = nullptr;		//original offset to start of src buffer
 char			LZHashBuffer[16384];
 char			LZOldSuffix = 0;			//Current Suffix Value found
 

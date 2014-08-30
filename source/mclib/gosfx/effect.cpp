@@ -78,7 +78,7 @@ gosFX::Effect__Specification::Effect__Specification(
 	Stuff::MemoryStream *stream,
 	int32_t gfx_version
 ):
-	m_events(NULL)
+	m_events(nullptr)
 {
 	Check_Pointer(this);
 	Check_Object(stream);
@@ -139,7 +139,7 @@ gosFX::Effect__Specification::Effect__Specification(
 gosFX::Effect__Specification::Effect__Specification(
 	Stuff::RegisteredClass::ClassID class_id
 ):
-	m_events(NULL)
+	m_events(nullptr)
 {
 	Check_Pointer(this);
 	//Verify(gos_GetCurrentHeap() == Heap);
@@ -246,7 +246,7 @@ void
 	uint32_t count = events.GetSize();
 	*stream << count;
 	Event *event;
-	while ((event = events.ReadAndNext()) != NULL)
+	while ((event = events.ReadAndNext()) != nullptr)
 	{
 		Check_Object(event);
 		event->Save(stream);
@@ -279,7 +279,7 @@ void
 	old_events.DeletePlugs();
 	Stuff::ChainIteratorOf<Event*> new_events(&spec->m_events);
 	Event* event;
-	while ((event = new_events.ReadAndNext()) != NULL)
+	while ((event = new_events.ReadAndNext()) != nullptr)
 	{
 		Check_Object(event);
 		Event *new_event = new Event(*event);
@@ -316,8 +316,8 @@ void
 	//-----------------------------------------------------------
 	//
 	Stuff::ChainIteratorOf<Event*> events(&m_events);
-	Event *insert = NULL;
-	while ((insert = events.GetCurrent()) != NULL)
+	Event *insert = nullptr;
+	while ((insert = events.GetCurrent()) != nullptr)
 	{
 		Check_Object(insert);
 		if (insert->m_time > event->m_time)
@@ -335,7 +335,7 @@ void
 //############################################################################
 
 gosFX::Effect::ClassData*
-	gosFX::Effect::DefaultData = NULL;
+	gosFX::Effect::DefaultData = nullptr;
 
 //------------------------------------------------------------------------------
 //
@@ -362,7 +362,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -373,7 +373,7 @@ gosFX::Effect::Effect(
 	uint32_t flags
 ):
 	Node(class_data),
-	m_children(NULL),
+	m_children(nullptr),
 	m_event(&spec->m_events)
 {
 	Check_Pointer(this);
@@ -532,7 +532,7 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 	//
 	Check_Object(m_specification);
 	Event *event;
-	while ((event = m_event.GetCurrent()) != NULL)
+	while ((event = m_event.GetCurrent()) != nullptr)
 	{
 		Check_Object(event);
 		if (event->m_time > m_age)
@@ -578,7 +578,7 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 			local_info(
 				info->m_time,
 				&m_localToWorld,
-				NULL,
+				nullptr,
 				seed
 			);
 		effect->Start(&local_info);
@@ -599,7 +599,7 @@ bool gosFX::Effect::Execute(ExecuteInfo *info)
 			&child_obb
 		);
 	child_info.m_bounds = &child_obb;
-	while ((child = children.ReadAndNext()) != NULL)
+	while ((child = children.ReadAndNext()) != nullptr)
 	{
 		Check_Object(child);
 		if (!child->Execute(&child_info))
@@ -676,7 +676,7 @@ void gosFX::Effect::Kill()
 	//
 	Stuff::ChainIteratorOf<gosFX::Effect*> children(&m_children);
 	gosFX::Effect* child;
-	while ((child = children.ReadAndNext()) != NULL)
+	while ((child = children.ReadAndNext()) != nullptr)
 	{
 		Check_Object(child);
 		child->Kill();
@@ -706,7 +706,7 @@ void gosFX::Effect::Draw(DrawInfo *info)
 	new_info.m_clippingFlags = info->m_clippingFlags;
 	Stuff::ChainIteratorOf<gosFX::Effect*> children(&m_children);
 	gosFX::Effect *child;
-	while ((child = children.ReadAndNext()) != NULL)
+	while ((child = children.ReadAndNext()) != nullptr)
 	{
 		Check_Object(child);
 		child->Draw(&new_info);
@@ -733,7 +733,7 @@ bool gosFX::Effect::HasFinished()
 	//-----------------------------------------------
 	//
 	Stuff::ChainIteratorOf<gosFX::Effect*> children(&m_children);
-	return children.GetCurrent() == NULL;
+	return children.GetCurrent() == nullptr;
 }
 
 //#############################################################################

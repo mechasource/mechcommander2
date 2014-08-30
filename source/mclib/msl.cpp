@@ -114,9 +114,9 @@ PVOIDTG_TypeMultiShape::operator new (size_t mySize)
 //That must be destroyed or memory will leak!
 TG_MultiShapePtr TG_TypeMultiShape::CreateFrom (void)
 {
-	TG_MultiShapePtr newShape = NULL;
+	TG_MultiShapePtr newShape = nullptr;
 	newShape = new TG_MultiShape;
-	gosASSERT(newShape != NULL);
+	gosASSERT(newShape != nullptr);
 	
 #ifdef _DEBUG
 	if (numTG_TypeShapes == 0)
@@ -126,7 +126,7 @@ TG_MultiShapePtr TG_TypeMultiShape::CreateFrom (void)
 	//listOfShapes
 	newShape->numTG_Shapes = numTG_TypeShapes;
 	newShape->listOfShapes = (TG_ShapeRecPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_ShapeRec) * numTG_TypeShapes);
-	gosASSERT(newShape->listOfShapes != NULL);
+	gosASSERT(newShape->listOfShapes != nullptr);
 
 	memset(newShape->listOfShapes,0,sizeof(TG_ShapeRec) * numTG_TypeShapes);
 
@@ -139,8 +139,8 @@ TG_MultiShapePtr TG_TypeMultiShape::CreateFrom (void)
 	//Setup Heirarchy again because pointers are not valid!
 	for (i=0;i<numTG_TypeShapes;i++)
 	{
-		newShape->listOfShapes[i].parentNode = NULL;
-		newShape->listOfShapes[i].currentAnimation = NULL;
+		newShape->listOfShapes[i].parentNode = nullptr;
+		newShape->listOfShapes[i].currentAnimation = nullptr;
 		newShape->listOfShapes[i].shapeToWorld = Stuff::LinearMatrix4D::Identity;
 		newShape->listOfShapes[i].worldToShape = Stuff::LinearMatrix4D::Identity;
 		newShape->listOfShapes[i].calcedThisFrame = -1;
@@ -194,18 +194,18 @@ int32_t TG_TypeMultiShape::LoadBinaryCopy (PSTR fileName)
 		if (numTextures)
 		{
 			listOfTextures = (TG_TexturePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Texture) * numTextures);
-			gosASSERT(listOfTextures != NULL);
+			gosASSERT(listOfTextures != nullptr);
 		
 			binFile.read((puint8_t)listOfTextures,sizeof(TG_Texture) * numTextures);
 		}
 		else
 		{
-			listOfTextures = NULL;
+			listOfTextures = nullptr;
 		}
 	
 		//listOfShapes
 		listOfTypeShapes = (TG_TypeNodePtr *)TG_Shape::tglHeap->Malloc(sizeof(TG_TypeNodePtr) * numTG_TypeShapes);
-		gosASSERT(listOfTypeShapes != NULL);
+		gosASSERT(listOfTypeShapes != nullptr);
 	
 		memset(listOfTypeShapes,0,sizeof(TG_TypeNodePtr) * numTG_TypeShapes);
 	
@@ -318,18 +318,18 @@ void TG_TypeMultiShape::destroy (void)
 		{
 			listOfTypeShapes[i]->destroy();
 			delete listOfTypeShapes[i];
-			listOfTypeShapes[i] = NULL;
+			listOfTypeShapes[i] = nullptr;
 		}
 	}
 
 	if (listOfTypeShapes)
 		TG_Shape::tglHeap->Free(listOfTypeShapes);
 		
-	listOfTypeShapes = NULL;
+	listOfTypeShapes = nullptr;
 
 	if (listOfTextures)
 		TG_Shape::tglHeap->Free(listOfTextures);
-	listOfTextures= NULL;
+	listOfTextures= nullptr;
 
 	numTextures = 0;
 	numTG_TypeShapes = 0;
@@ -338,7 +338,7 @@ void TG_TypeMultiShape::destroy (void)
 	if (shapeName)
 	{
 		free(shapeName);
-		shapeName = NULL;
+		shapeName = nullptr;
 	}
 #endif
 }	
@@ -357,7 +357,7 @@ void TG_MultiShape::destroy (void)
 
 	if (listOfShapes)
 		TG_Shape::tglHeap->Free(listOfShapes);
-	listOfShapes = NULL;	
+	listOfShapes = nullptr;	
 
 	numTG_Shapes = 0;
 }	
@@ -471,7 +471,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 		//---------------------------------------
 		// Create Buffer to read entire file into
 		puint8_t aseContents = (puint8_t )malloc(aseFileSize+1);
-		gosASSERT(aseContents != NULL);
+		gosASSERT(aseContents != nullptr);
 	
 		//---------------------------------------
 		// Open File and read it and close it
@@ -532,7 +532,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 				//NOT SUPPORTED YET!  Multiple Textures per building!
 				// Support NOW!  Must have trees!
 				textureData = strstr(textureData,ASE_SUBMATERIAL_COUNT);
-				gosASSERT(textureData != NULL);
+				gosASSERT(textureData != nullptr);
 	
 				textureData += strlen(ASE_SUBMATERIAL_COUNT);
 				GetNumberData(textureData,numberData);
@@ -543,7 +543,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 			aseBuffer = (puint8_t )textureData;
 		}
 
-		IProviderAssetPtr armAssetPtr = NULL;
+		IProviderAssetPtr armAssetPtr = nullptr;
 
 		if (armProvider)
 		{
@@ -556,7 +556,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 		{
 			numTextures *= 2;
 			listOfTextures = (TG_TexturePtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Texture) * numTextures);
-			gosASSERT(listOfTextures != NULL);
+			gosASSERT(listOfTextures != nullptr);
 			memset(listOfTextures,0x0,sizeof(TG_Texture) * numTextures);
 
 			PSTR txmData = (PSTR )aseContents;
@@ -570,7 +570,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 				PSTR txmTemp = txmData;
 				txmData = strstr(txmData,textId);
 				
-				if (txmData == NULL)
+				if (txmData == nullptr)
 				{
 #ifdef _DEBUG
 					if (!silentMode)
@@ -647,14 +647,14 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 			}
 		}
 		else
-			listOfTextures = NULL;
+			listOfTextures = nullptr;
 	
 		//------------------------------------------------------------
 		// FIRST PASS.  Count number of GEOMObjects & HelperObjects
 		numTG_TypeShapes = 0;
 		PSTR aseScan = (PSTR )aseContents;
 		aseScan = strstr(aseScan,ASE_OBJECT);
-		while (aseScan != NULL)
+		while (aseScan != nullptr)
 		{
 			numTG_TypeShapes++;
 			aseScan += strlen(ASE_OBJECT)+1;
@@ -663,19 +663,19 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 	
 		aseScan = (PSTR )aseContents;
 		aseScan = strstr(aseScan,ASE_HELP_OBJECT);
-		while (aseScan != NULL)
+		while (aseScan != nullptr)
 		{
 			//--------------------------------------------------------
 			// Check if NodeName is handle_ or WORLD.  These are bad!
 			// Do not count them!
 			aseScan = strstr(aseScan,ASE_NODE_NAME);
-			gosASSERT(aseScan != NULL);								//Node must have a NAME, right?
+			gosASSERT(aseScan != nullptr);								//Node must have a NAME, right?
 			aseScan += strlen(ASE_NODE_NAME)+1;
 	
 			char chkWord[512];
 			GetWordData(aseScan,chkWord);
 	
-			if (strstr(chkWord,"handle_") == NULL && strstr(chkWord,"World") == NULL)
+			if (strstr(chkWord,"handle_") == nullptr && strstr(chkWord,"World") == nullptr)
 			{
 				numTG_TypeShapes++;
 			}
@@ -685,7 +685,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 		}
 	
 		listOfTypeShapes = (TG_TypeNodePtr *)TG_Shape::tglHeap->Malloc(sizeof(TG_TypeNodePtr) * (numTG_TypeShapes+1));
-		gosASSERT(listOfTypeShapes != NULL);
+		gosASSERT(listOfTypeShapes != nullptr);
 	
 		memset(listOfTypeShapes,0,sizeof(TG_TypeNodePtr) * (numTG_TypeShapes+1));
 	
@@ -695,7 +695,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 	
 		aseScan = (PSTR )aseContents;
 		aseScan = strstr(aseScan,ASE_HELP_OBJECT);
-		while (aseScan != NULL)
+		while (aseScan != nullptr)
 		{
 			listOfTypeShapes[startIndex] = new TG_TypeNode;
 			listOfTypeShapes[startIndex]->init();
@@ -718,7 +718,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 				// Check if NodeName is handle_ or WORLD.  These are bad!
 				// Do not count them!
 				aseScan = strstr(aseScan,ASE_NODE_NAME);
-				gosASSERT(aseScan != NULL);								//Node must have a NAME, right?
+				gosASSERT(aseScan != nullptr);								//Node must have a NAME, right?
 				aseScan += strlen(ASE_NODE_NAME)+1;
 	
 				char chkWord[512];
@@ -726,7 +726,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 	
 				//-------------------------------------------------------------------
 				// Is this a forbidden helper object?
-				if ((strstr(chkWord,"handle") == NULL) && (strstr(chkWord,"World") == NULL))
+				if ((strstr(chkWord,"handle") == nullptr) && (strstr(chkWord,"World") == nullptr))
 				{
 					int32_t parseResult = listOfTypeShapes[startIndex]->MakeFromHelper((puint8_t )aseData,fileName);
 					if (parseResult != 0)
@@ -744,7 +744,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 				// Do not count them!
 				PSTR scanStart = aseScan;
 				scanStart = strstr(scanStart,ASE_NODE_NAME);
-				gosASSERT(scanStart != NULL);								//Node must have a NAME, right?
+				gosASSERT(scanStart != nullptr);								//Node must have a NAME, right?
 				scanStart += strlen(ASE_NODE_NAME)+1;
 	
 				char chkWord[512];
@@ -752,7 +752,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 	
 				//-------------------------------------------------------------------
 				// Is this a forbidden helper object?
-				if ((strstr(chkWord,"handle") == NULL) && (strstr(chkWord,"World") == NULL))
+				if ((strstr(chkWord,"handle") == nullptr) && (strstr(chkWord,"World") == nullptr))
 				{
 					//-------------------------------------------------------------------
 					int32_t parseResult = listOfTypeShapes[startIndex]->MakeFromHelper((puint8_t )aseScan,fileName);
@@ -771,7 +771,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 		// THIRD PASS.  Load GeomObjects.
 		aseScan = (PSTR )aseContents;
 		aseScan = strstr(aseScan,ASE_OBJECT);
-		while (aseScan != NULL)
+		while (aseScan != nullptr)
 		{
 			listOfTypeShapes[startIndex] = new TG_TypeShape;
 			listOfTypeShapes[startIndex]->init();
@@ -815,7 +815,7 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 			{
 				//----------------------------------------------------------------------------------
 				// For each shape, look for another node whose NodeId matches this shape's parentId
-				TG_TypeNodePtr parentNode = NULL;
+				TG_TypeNodePtr parentNode = nullptr;
 				for (j=0;j<numTG_TypeShapes;j++)
 				{
 					if (strcmp(listOfTypeShapes[i]->getParentId(),listOfTypeShapes[j]->getNodeId()) == 0)
@@ -875,13 +875,13 @@ int32_t TG_TypeMultiShape::LoadTGMultiShapeFromASE (PSTR fileName, bool forceMak
 				extentRadius = maxBoxLength;
 		}
 
-		if (armAssetPtr != NULL)
+		if (armAssetPtr != nullptr)
 		{
 			armAssetPtr->Close();
 		}
 	
 		free(aseContents);
-		aseContents = NULL;
+		aseContents = nullptr;
 	
 		SaveBinaryCopy(binaryFileName);
 	}
@@ -915,7 +915,7 @@ int32_t TG_TypeMultiShape::GetTextureName (uint32_t textureNum, PSTR tName, int3
 		
 	char baseName[512];
 	char extension[256];
-	_splitpath(listOfTextures[textureNum].textureName,NULL,NULL,baseName,extension);
+	_splitpath(listOfTextures[textureNum].textureName,nullptr,nullptr,baseName,extension);
 
 	char basePath[1024];
 	sprintf(basePath,"%s%s",baseName,extension);
@@ -1218,7 +1218,7 @@ int32_t TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuat
 				{
 					//----------------------------------------------------
 					// Top O the hierarchy.  Used passed in shapeMatrices
-					// Apply any animation data, if data is non-NULL
+					// Apply any animation data, if data is non-nullptr
 					if (childChain[j]->currentAnimation)
 					{
 						//--------------------------------------
@@ -1362,7 +1362,7 @@ int32_t TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuat
 			{
 				for (int32_t iLight=0;iLight<TG_Shape::numLights;iLight++)
 				{
-					if ((TG_Shape::listOfLights[iLight] != NULL) && (TG_Shape::listOfLights[iLight]->active))
+					if ((TG_Shape::listOfLights[iLight] != nullptr) && (TG_Shape::listOfLights[iLight]->active))
 					{
 						switch (TG_Shape::listOfLights[iLight]->lightType)
 						{
@@ -1374,14 +1374,14 @@ int32_t TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuat
 		
 							case TG_LIGHT_INFINITE:
 							{
-								if (TG_Shape::listOfLights[iLight] != NULL)
+								if (TG_Shape::listOfLights[iLight] != nullptr)
 								{
 									TG_Shape::lightToShape[iLight].Multiply(TG_Shape::listOfLights[iLight]->lightToWorld,listOfShapes[i].worldToShape);
 									Stuff::UnitVector3D uVec;
 									TG_Shape::lightToShape[iLight].GetLocalForwardInWorld(&uVec);
 									TG_Shape::lightDir[iLight] = uVec;
 									
-									if (listOfShapes[i].parentNode == NULL)
+									if (listOfShapes[i].parentNode == nullptr)
 									{
 										TG_Shape::rootLightDir[iLight] = TG_Shape::lightDir[iLight];
 										//if (angles.yaw != 0.0f )
@@ -1393,14 +1393,14 @@ int32_t TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuat
 		
 							case TG_LIGHT_INFINITEWITHFALLOFF:
 							{
-								if (TG_Shape::listOfLights[iLight] != NULL)
+								if (TG_Shape::listOfLights[iLight] != nullptr)
 								{
 									TG_Shape::lightToShape[iLight].Multiply(TG_Shape::listOfLights[iLight]->lightToWorld,listOfShapes[i].worldToShape);
 									Stuff::UnitVector3D uVec;
 									TG_Shape::lightToShape[iLight].GetLocalForwardInWorld(&uVec);
 									TG_Shape::lightDir[iLight] = uVec;
 									
-									if (listOfShapes[i].parentNode == NULL)
+									if (listOfShapes[i].parentNode == nullptr)
 									{
 										TG_Shape::rootLightDir[iLight] = TG_Shape::lightDir[iLight];
 									}
@@ -1410,7 +1410,7 @@ int32_t TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuat
 		
 							case TG_LIGHT_POINT:
 							{
-								if (TG_Shape::listOfLights[iLight] != NULL)
+								if (TG_Shape::listOfLights[iLight] != nullptr)
 								{
 									Stuff::Point3D lightPos;
 									lightPos = TG_Shape::listOfLights[iLight]->direction;
@@ -1425,7 +1425,7 @@ int32_t TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuat
 									//	RotateLight(TG_Shape::lightDir[iLight],-angles.yaw);
 								}
 								
-								if (listOfShapes[i].parentNode == NULL)
+								if (listOfShapes[i].parentNode == nullptr)
 								{
 									TG_Shape::rootLightDir[iLight] = TG_Shape::lightDir[iLight];
 								}
@@ -1434,7 +1434,7 @@ int32_t TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuat
 							
 							case TG_LIGHT_TERRAIN:
 							{
-								if (TG_Shape::listOfLights[iLight] != NULL)
+								if (TG_Shape::listOfLights[iLight] != nullptr)
 								{
 									Stuff::Point3D lightPos;
 									lightPos = TG_Shape::listOfLights[iLight]->direction;
@@ -1447,7 +1447,7 @@ int32_t TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuat
 									TG_Shape::lightDir[iLight] = shapePosition;
 								}
 								
-								if (listOfShapes[i].parentNode == NULL)
+								if (listOfShapes[i].parentNode == nullptr)
 								{
 									TG_Shape::rootLightDir[iLight] = TG_Shape::lightDir[iLight];
 								}
@@ -1456,7 +1456,7 @@ int32_t TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuat
 							
 							case TG_LIGHT_SPOT:
 							{
-								if (TG_Shape::listOfLights[iLight] != NULL)
+								if (TG_Shape::listOfLights[iLight] != nullptr)
 								{
 									Stuff::Point3D lightPos;
 									lightPos = TG_Shape::listOfLights[iLight]->direction;
@@ -1479,7 +1479,7 @@ int32_t TG_MultiShape::TransformMultiShape (Stuff::Point3D *pos, Stuff::UnitQuat
 									//if (angles.yaw != 0.0f )
 									//	RotateLight(TG_Shape::spotDir[iLight],-angles.yaw);
 										
-									if (listOfShapes[i].parentNode == NULL)
+									if (listOfShapes[i].parentNode == nullptr)
 									{
 										TG_Shape::rootLightDir[iLight] = TG_Shape::spotDir[iLight];
 									}
@@ -1660,7 +1660,7 @@ TG_MultiShapePtr TG_MultiShape::Detach (PSTR nodeName)
 	}
 	
 	if (!curShape)
-		return NULL;
+		return nullptr;
 
 		//OK to return no shape now.
 		//STOP(("Unable to detach %s from shape",nodeName));
@@ -1671,7 +1671,7 @@ TG_MultiShapePtr TG_MultiShape::Detach (PSTR nodeName)
 	resultShape->numTG_Shapes = curShape;
 	
 	resultShape->listOfShapes = (TG_ShapeRecPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_ShapeRec) * curShape);
-	gosASSERT(resultShape->listOfShapes != NULL);
+	gosASSERT(resultShape->listOfShapes != nullptr);
 
 	memset(resultShape->listOfShapes,0,sizeof(TG_ShapeRec) * curShape);
 
@@ -1682,15 +1682,15 @@ TG_MultiShapePtr TG_MultiShape::Detach (PSTR nodeName)
 		resultShape->listOfShapes[i] = *detachables[i];
 		
 		if (_stricmp(resultShape->listOfShapes[i].node->getNodeName(),nodeName) == 0)
-			resultShape->listOfShapes[i].parentNode = NULL;		//Set new top O heirarchy.
+			resultShape->listOfShapes[i].parentNode = nullptr;		//Set new top O heirarchy.
 		
 		for (int32_t j=0;j<numTG_Shapes;j++)
 		{
 			if (&listOfShapes[j] == detachables[i])
 			{
 				//Mark this shape as removable from the previous heirarchy
-				listOfShapes[j].node = NULL;
-				listOfShapes[j].parentNode = NULL;
+				listOfShapes[j].node = nullptr;
+				listOfShapes[j].parentNode = nullptr;
 			}
 		}
 	}
@@ -1715,14 +1715,14 @@ TG_MultiShapePtr TG_MultiShape::Detach (PSTR nodeName)
  	//-------------------------------------------------------------
 	// Rebuild the currentShape heirarchy to reflect removed things
 	TG_ShapeRecPtr newListOfShapes = (TG_ShapeRecPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_ShapeRec) * (numTG_Shapes - curShape));
-	gosASSERT(newListOfShapes != NULL);
+	gosASSERT(newListOfShapes != nullptr);
 
 	memset(newListOfShapes,0,sizeof(TG_ShapeRec) * (numTG_Shapes - curShape));
 	
 	int32_t newShapeIndex = 0;
 	for (i=0;i<numTG_Shapes;i++)
 	{
-		if (listOfShapes[i].node != NULL)
+		if (listOfShapes[i].node != nullptr)
 		{
 			newListOfShapes[newShapeIndex] = listOfShapes[i];
 			newShapeIndex++;
@@ -1867,7 +1867,7 @@ void _TG_Animation::LoadBinaryCopy (File *binFile)
 		binFile->read((puint8_t)quat,quatRAM);	
 	}
 	else
-		quat = NULL;
+		quat = nullptr;
 		
 	if (posRAM)
 	{
@@ -1875,7 +1875,7 @@ void _TG_Animation::LoadBinaryCopy (File *binFile)
 		binFile->read((puint8_t)pos,posRAM);	
 	}
 	else
-		pos = NULL;
+		pos = nullptr;
 }
 
 //-------------------------------------------------------------------------------
@@ -1894,13 +1894,13 @@ int32_t TG_AnimateShape::LoadBinaryCopy (PSTR fileName)
 		if (count)
 		{
 			listOfAnimation = (TG_AnimationPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Animation) * count);
-			gosASSERT(listOfAnimation != NULL);
+			gosASSERT(listOfAnimation != nullptr);
  			
 			for (int32_t i=0;i<count;i++)
 				listOfAnimation[i].LoadBinaryCopy(&binFile);
 		}
 		else
-			listOfAnimation = NULL;
+			listOfAnimation = nullptr;
 	}
 	else
 	{
@@ -1948,20 +1948,20 @@ void TG_AnimateShape::destroy (void)
 		for ( int32_t i = 0; i < count; ++i )
 		{
 			TG_Shape::tglHeap->Free( listOfAnimation[i].pos );
-			listOfAnimation[i].pos = NULL;
+			listOfAnimation[i].pos = nullptr;
 
 			TG_Shape::tglHeap->Free( listOfAnimation[i].quat );
-			listOfAnimation[i].quat = NULL;
+			listOfAnimation[i].quat = nullptr;
 		}
 
 		if (listOfAnimation)
 			TG_Shape::tglHeap->Free(listOfAnimation);
 			
-		listOfAnimation = NULL;
+		listOfAnimation = nullptr;
 	}
 }	
 
-FilePtr tglLogFile = (FilePtr)NULL;
+FilePtr tglLogFile = (FilePtr)nullptr;
 
 //-------------------------------------------------------------------------------
 //This function loads the animation data contained in the file passed in.
@@ -2044,7 +2044,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 		//---------------------------------------
 		// Create Buffer to read entire file into
 		puint8_t aseContents = (puint8_t )malloc(aseFileSize+1);
-		gosASSERT(aseContents != NULL);
+		gosASSERT(aseContents != nullptr);
 	
 		//---------------------------------------
 		// Open File and read it and close it
@@ -2070,7 +2070,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 		// Get first frame of animation from header
 		int32_t firstFrame, lastFrame;
 		PSTR frameId = strstr((PSTR )aseContents,ASE_ANIM_FIRST_FRAME);
-		gosASSERT(frameId != NULL);
+		gosASSERT(frameId != nullptr);
 		frameId += strlen(ASE_ANIM_FIRST_FRAME)+1;
 	
 		char numData[512];
@@ -2078,7 +2078,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 		firstFrame = atol(numData);
 	
 		frameId = strstr((PSTR )aseContents,ASE_ANIM_LAST_FRAME);
-		gosASSERT(frameId != NULL);
+		gosASSERT(frameId != nullptr);
 	
 		frameId += strlen(ASE_ANIM_LAST_FRAME)+1;
 	
@@ -2094,7 +2094,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 		int32_t numFrames = (lastFrame - firstFrame) + 1;
 	
 		frameId = strstr((PSTR )aseContents,ASE_ANIM_FRAME_SPEED);
-		gosASSERT(frameId != NULL);
+		gosASSERT(frameId != nullptr);
 	
 		frameId += strlen(ASE_ANIM_FRAME_SPEED)+1;
 	
@@ -2102,7 +2102,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 		float frameRate = (float)atof(numData);
 	
 		frameId = strstr((PSTR )aseContents,ASE_ANIM_TICKS_FRAME);
-		gosASSERT(frameId != NULL);
+		gosASSERT(frameId != nullptr);
 	
 		frameId += strlen(ASE_ANIM_TICKS_FRAME)+1;
 	
@@ -2113,7 +2113,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 		// For each TG_Shape in MultiShape passed in, find any and all animation Data
 		count = shape->GetNumShapes();
 		listOfAnimation = (TG_AnimationPtr)TG_Shape::tglHeap->Malloc(sizeof(TG_Animation) * shape->GetNumShapes());
-		gosASSERT(listOfAnimation != NULL);
+		gosASSERT(listOfAnimation != nullptr);
 	
 		//----------------------------------------------------------------------------
 		// Scan the Nodes.
@@ -2122,14 +2122,14 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 		for (int32_t i=0;i<count;i++)
 		{
 			PSTR nodeId = shape->GetNodeId(i);
-			gosASSERT(nodeId != NULL);
+			gosASSERT(nodeId != nullptr);
 		
 			PSTR animScan = (PSTR )aseContents;
 			animScan = strstr(animScan,ASE_ANIMATION);
 	
 			char nodeName[512];
 			sprintf(nodeName,"*NODE_NAME \"%s\"",nodeId);
-			while (animScan != NULL)
+			while (animScan != nullptr)
 			{
 				animScan += strlen(ASE_ANIMATION)+1;
 	
@@ -2139,7 +2139,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 				char nextLine[1024];
 				GetNextLine(animScan,nextLine);
 	
-				if (strstr(nextLine,nodeName) == NULL)
+				if (strstr(nextLine,nodeName) == nullptr)
 				{
 					animScan = strstr(animScan,ASE_ANIMATION);
 				}
@@ -2150,15 +2150,15 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 				}
 			}
 	
-			if (animScan == NULL)
+			if (animScan == nullptr)
 			{
 				//No Animation Data for this Node.
 				strcpy(listOfAnimation[i].nodeId,"NONE");
 				listOfAnimation[i].numFrames = numFrames;
 				listOfAnimation[i].frameRate = frameRate;
 				listOfAnimation[i].tickRate = tickRate;
-				listOfAnimation[i].quat = NULL;
-				listOfAnimation[i].pos = NULL;
+				listOfAnimation[i].quat = nullptr;
+				listOfAnimation[i].pos = nullptr;
 				listOfAnimation[i].shapeId = 0xffffffff;
 			}
 			else
@@ -2168,8 +2168,8 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 				listOfAnimation[i].numFrames = numFrames;
 				listOfAnimation[i].frameRate = frameRate;
 				listOfAnimation[i].tickRate = tickRate;
-				listOfAnimation[i].quat = NULL;
-				listOfAnimation[i].pos = NULL;
+				listOfAnimation[i].quat = nullptr;
+				listOfAnimation[i].pos = nullptr;
 				listOfAnimation[i].shapeId = 0xffffffff;
 
 				//---------------------------------
@@ -2184,7 +2184,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 				// Then the very NEXT LINE most be POS_TRACK data OR
 				// there is ONLY rotational Data for this node.
 				GetNextLine(animScan,nextLine);
-				if (strstr(nextLine,ASE_ANIM_POS_HEADER) != NULL)
+				if (strstr(nextLine,ASE_ANIM_POS_HEADER) != nullptr)
 				{
 					animScan = strstr(animScan,ASE_ANIM_POS_HEADER);
 					if (animScan)
@@ -2252,7 +2252,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 				// Then the very NEXT LINE most be POS_TRACK data OR
 				// there is ONLY rotational Data for this node.
 				GetNextLine(animScan,nextLine);
-				if (strstr(nextLine,ASE_ANIM_ROT_HEADER) != NULL)
+				if (strstr(nextLine,ASE_ANIM_ROT_HEADER) != nullptr)
 				{
 					animScan = scanStart;
 					timeStamp = firstFrame * tickRate;
@@ -2268,7 +2268,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 						//-----------------------------------------------------------
 						// We have rotational data at least.  Store everything off.
 						listOfAnimation[i].quat = (Stuff::UnitQuaternion *)TG_Shape::tglHeap->Malloc(sizeof(Stuff::UnitQuaternion) * numFrames);
-						gosASSERT(listOfAnimation[i].quat != NULL);
+						gosASSERT(listOfAnimation[i].quat != nullptr);
 		
 						//-------------------------------------------
 						// Setup basic variables.  May do this twice.
@@ -2352,7 +2352,7 @@ int32_t TG_AnimateShape::LoadTGMultiShapeAnimationFromASE (PSTR fileName, TG_Typ
 		}
 	
 		free(aseContents);
-		aseContents = NULL;
+		aseContents = nullptr;
 		
 		SaveBinaryCopy(binaryFileName);
 	}

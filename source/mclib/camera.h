@@ -302,9 +302,9 @@ class Camera
 
 			cameraShift.x = cameraShift.y = 0.0;
 			
-			worldLights = NULL;
-			activeLights = NULL;
-			terrainLights = NULL;
+			worldLights = nullptr;
+			activeLights = nullptr;
+			terrainLights = nullptr;
 
 			fogStart = fogFull = 0.0;
 			dayFogColor = 0xffffffff;
@@ -491,7 +491,7 @@ class Camera
 			if ((index >= 0) && (index < numActiveLights) && activeLights[index])
 				return activeLights[index];
 				
-			return NULL;
+			return nullptr;
 		}
 
 		TG_LightPtr *getWorldLights (void)
@@ -509,7 +509,7 @@ class Camera
 			if ((index >= 0) && (index < numTerrainLights) && terrainLights[index])
 				return terrainLights[index];
 				
-			return NULL;
+			return nullptr;
 		}
 
 		TG_LightPtr *getTerrainLights (void)
@@ -543,7 +543,7 @@ class Camera
 		{
 			if ((lightNum < MAX_LIGHTS_IN_WORLD) && (worldLights[lightNum] == light))
 			{
-				worldLights[lightNum] = NULL;			//Up to class that created light to free it!!!!!!
+				worldLights[lightNum] = nullptr;			//Up to class that created light to free it!!!!!!
 				return;
 			}
 
@@ -552,7 +552,7 @@ class Camera
 			for (int32_t i=0;i<MAX_LIGHTS_IN_WORLD;i++)
 			{
 				if (worldLights[i] == light)
-					worldLights[i] = NULL;
+					worldLights[i] = nullptr;
 			}
 		}
 

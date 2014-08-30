@@ -168,7 +168,7 @@ void syntaxError (int32_t errCode) {
 	sprintf(errMessage, "SYNTAX ERROR %s [line %d] - (type %d) %s \"%s\"\n", SourceFiles[FileNumber], lineNumber, errCode, syntaxErrorMessages[errCode], wordString);
 	ABL_Fatal(0, errMessage);
 	
-	*tokenp = NULL;
+	*tokenp = nullptr;
 	errorCount++;
 	
 	if (errorCount > MAX_SYNTAX_ERRORS) {

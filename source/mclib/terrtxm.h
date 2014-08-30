@@ -148,33 +148,33 @@ class TerrainTextures
 	
 		void init (void)
 		{
-			tileHeap = NULL;
-			tileRAMHeap = NULL;
+			tileHeap = nullptr;
+			tileRAMHeap = nullptr;
 
 			//----------------------------------------------
 			// Stores composited and raw textures in VidMem
 			numTxms = MC_MAX_TERRAIN_TXMS;
 			nextAvailable = 0;
-			textures = NULL;
+			textures = nullptr;
 			firstTransition = -1;
 
 			//--------------------------------------------------
 			// Stores Base Terrain Textures and Masks in SysMem
 			numTypes = 0;
-			types = NULL;
+			types = nullptr;
 
 			//----------------------------------------------------------
 			// Stores Overlay Terrain Textures in VidMem and MLR Shapes
 			numOverlays = 0;
-			overlays = NULL;
+			overlays = nullptr;
 
 			numDetails = 0;
-			details = NULL;
+			details = nullptr;
 			
 			//--------------------------------------------------------
 			// Stores Transition Texture in VidMem.
 			numTransitions = 0;
-			transitions = NULL;
+			transitions = nullptr;
 			nextTransition = 0;
 			
 			//------------------------------------------------------
@@ -184,8 +184,8 @@ class TerrainTextures
 			//---------------------------------------------------------------------------------
 			//Checks for list o magic textures and then checks that each magic texture exists. 
 			quickLoad = false;
-			localBaseName = NULL;
-			listTransitionFile = NULL;
+			localBaseName = nullptr;
+			listTransitionFile = nullptr;
 		}
 
 		TerrainTextures (void)
@@ -253,10 +253,10 @@ class TerrainTextures
 		uint32_t getTexture (uint32_t texture)
 		{
 			if ((int32_t)texture >= nextAvailable) 
-				return NULL;
+				return nullptr;
 
 			if ( textures[texture].mcTextureNodeIndex == 0xffffffff )
-				return NULL;
+				return nullptr;
 
 			return (mcTextureManager->get_gosTextureHandle(textures[texture].mcTextureNodeIndex));
 		}
@@ -273,10 +273,10 @@ class TerrainTextures
 		uint32_t getDetail (uint32_t dTexture)
 		{
 			if ((int32_t)dTexture >= nextAvailable) 
-				return NULL;
+				return nullptr;
 
 			if ( textures[dTexture].mcTextureNodeIndex == 0xffffffff )
-				return NULL;
+				return nullptr;
 
 			return (mcTextureManager->get_gosTextureHandle(textures[dTexture].mcTextureNodeIndex));
 		}
@@ -284,7 +284,7 @@ class TerrainTextures
 		uint32_t getDetailHandle (uint32_t dTexture)
 		{
 			if ((int32_t)dTexture >= nextAvailable) 
-				return NULL;
+				return nullptr;
 
 			mcTextureManager->get_gosTextureHandle(textures[dTexture].mcTextureNodeIndex);
 			return (textures[dTexture].mcTextureNodeIndex);

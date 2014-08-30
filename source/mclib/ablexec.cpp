@@ -36,22 +36,22 @@
 
 //--------
 // GLOBALS
-PSTR					codeBuffer = NULL;
-PSTR					codeBufferPtr = NULL;
-PSTR					codeSegmentPtr = NULL;
-PSTR					codeSegmentLimit = NULL;
-PSTR					statementStartPtr = NULL;
+PSTR					codeBuffer = nullptr;
+PSTR					codeBufferPtr = nullptr;
+PSTR					codeSegmentPtr = nullptr;
+PSTR					codeSegmentLimit = nullptr;
+PSTR					statementStartPtr = nullptr;
 
 TokenCodeType			codeToken;
 int32_t					execLineNumber;
 int32_t					execStatementCount = 0;
 
-StackItem*				stack = NULL;
-StackItemPtr			tos = NULL;
-StackItemPtr			stackFrameBasePtr = NULL;
-StackItemPtr			StaticDataPtr = NULL;
-int32_t*					StaticVariablesSizes = NULL;
-int32_t*					EternalVariablesSizes = NULL;
+StackItem*				stack = nullptr;
+StackItemPtr			tos = nullptr;
+StackItemPtr			stackFrameBasePtr = nullptr;
+StackItemPtr			StaticDataPtr = nullptr;
+int32_t*					StaticVariablesSizes = nullptr;
+int32_t*					EternalVariablesSizes = nullptr;
 int32_t					eternalOffset = 0;
 int32_t					MaxStaticVariables = 0;
 int32_t					MaxEternalVariables = 0;
@@ -182,9 +182,9 @@ void uncrunchStatementMarker (void) {
 PSTR crunchAddressMarker (Address address) {
 
 	if (!Crunch)
-		return(NULL);
+		return(nullptr);
 
-	PSTR saveCodeBufferPtr = NULL;
+	PSTR saveCodeBufferPtr = nullptr;
 
 	if (codeBufferPtr >= (codeBuffer + MaxCodeBufferSize - 100))
 		syntaxError(ABL_ERR_SYNTAX_CODE_SEGMENT_OVERFLOW);
@@ -207,7 +207,7 @@ PSTR crunchAddressMarker (Address address) {
 PSTR fixupAddressMarker (Address address) {
 
 	if (!Crunch)
-		return(NULL);
+		return(nullptr);
 
 	PSTR oldAddress = *((Address*)address);
 
@@ -310,7 +310,7 @@ int32_t getCodeStatementMarker (void) {
 
 PSTR getCodeAddressMarker (void) {
 
-	Address address = NULL;
+	Address address = nullptr;
 
 	if (codeToken == TKN_ADDRESS_MARKER) {
 		address = *((int32_t*)codeSegmentPtr) + codeSegmentPtr - 1;
@@ -433,12 +433,12 @@ void pushStackFrameHeader (int32_t oldLevel, int32_t newLevel) {
 	// the old scope level equals the new scope level, for now.
 	if (newLevel == -1) {
 		//--------------------------------------------------------------------
-		// Calling a library function, so push a NULL static link since
+		// Calling a library function, so push a nullptr static link since
 		// it's scope is in a different module than the calling function.
 		// Note that global variables in libraries should be STATIC, otherwise
 		// they're never in scope! Weird "feature" which we may want
 		// to fix later...
-		pushAddress(NULL);
+		pushAddress(nullptr);
 		}
 	else if (newLevel == oldLevel + 1) {
 		//----------------------------------------------------------------
@@ -506,7 +506,7 @@ void freeLocal (SymTableNodePtr idPtr) {
 
 	TypePtr typePtr = (TypePtr)(idPtr->typePtr);
 
-	StackItemPtr itemPtr = NULL;
+	StackItemPtr itemPtr = nullptr;
 	if (((typePtr->form == FRM_ARRAY) /* || (typePtr->form == FRM_RECORD)*/) &&
 		(idPtr->defn.key != DFN_REFPARAM)) {
 		switch (idPtr->defn.info.data.varType) {
@@ -545,7 +545,7 @@ void routineEntry (SymTableNodePtr routineIdPtr) {
 	//----------------------------------------------
 	// Allocate local variables onto system stack...
 	for (SymTableNodePtr varIdPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.locals);
-		 varIdPtr != NULL;
+		 varIdPtr != nullptr;
 		 varIdPtr = varIdPtr->next)
 		if (varIdPtr->defn.info.data.varType == VAR_TYPE_NORMAL)
 			allocLocal((TypePtr)(varIdPtr->typePtr));
@@ -563,12 +563,12 @@ void routineExit (SymTableNodePtr routineIdPtr) {
 
 	SymTableNodePtr idPtr;
 	for (idPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.params);
-		 idPtr != NULL;
+		 idPtr != nullptr;
 		 idPtr = idPtr->next)
 		freeLocal(idPtr);
 
 	for (idPtr = (SymTableNodePtr)(routineIdPtr->defn.info.routine.locals);
-		 idPtr != NULL;
+		 idPtr != nullptr;
 		 idPtr = idPtr->next)
 		if (idPtr->defn.info.data.varType == VAR_TYPE_NORMAL)
 			freeLocal(idPtr);
@@ -576,7 +576,7 @@ void routineExit (SymTableNodePtr routineIdPtr) {
 	StackFrameHeaderPtr headerPtr = (StackFrameHeaderPtr)stackFrameBasePtr;
 	codeSegmentPtr = headerPtr->returnAddress.address;
 
-	if (routineIdPtr->typePtr == NULL)
+	if (routineIdPtr->typePtr == nullptr)
 		tos = stackFrameBasePtr - 1;
 	else
 		tos = stackFrameBasePtr;
@@ -644,7 +644,7 @@ void execute (SymTableNodePtr routineIdPtr) {
 				NewStateSet = false;
 				SymTableNodePtr curState = CurModule->getState();
 				if (!curState)
-					ABL_Fatal(0, " ABL.execute: NULL state in FSM ");
+					ABL_Fatal(0, " ABL.execute: nullptr state in FSM ");
 				execRoutineCall(curState, false);
 				codeSegmentPtr--;
 			}
@@ -682,7 +682,7 @@ void executeChild (SymTableNodePtr routineIdPtr, SymTableNodePtr childRoutineIdP
 
 	//----------------------------------------------------
 	// Now, search this module for the function we want...
-	SymTableNodePtr initFunctionIdPtr = NULL;
+	SymTableNodePtr initFunctionIdPtr = nullptr;
 	if (CallModuleInit) {
 		CallModuleInit = false;
 		initFunctionIdPtr = searchSymTable("init", routineIdPtr->defn.info.routine.localSymTable);

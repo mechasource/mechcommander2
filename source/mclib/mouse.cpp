@@ -58,7 +58,7 @@ extern volatile bool mc2HasLostFocus;
 volatile bool mc2MouseThreadStarted = false;
 volatile bool mc2UseAsyncMouse = true;
 
-puint8_t mouseBuffer = NULL;
+puint8_t mouseBuffer = nullptr;
 MMRESULT HTimer = 0;
 
 RECT mouseWASInRect;
@@ -68,7 +68,7 @@ volatile char mc2MouseHotSpotY = 0;
 volatile char mc2MouseWidth = 32;
 volatile char mc2MouseHeight = 32;
 
-volatile puint8_t mc2MouseData = NULL;
+volatile puint8_t mc2MouseData = nullptr;
 
 //Timing in Hz to update mouse
 int32_t MOUSE_REFRESH_RATE = 30;
@@ -139,10 +139,10 @@ void MouseTimerKill()
 	mc2MouseThreadStarted = false;		//Keep us from calling silly stuff during startup and shutdown if we exception
 	
 	free(mouseBuffer);
-	mouseBuffer = NULL;
+	mouseBuffer = nullptr;
 	
 	free(mc2MouseData);
-	mc2MouseData = NULL;
+	mc2MouseData = nullptr;
 }
 
 //
@@ -188,7 +188,7 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 	if (!mc2MouseThreadStarted)
 		return;
 	
-	//For some unknown reason, our offscreen buffer is now NULL.  DO not allow this to run!!
+	//For some unknown reason, our offscreen buffer is now nullptr.  DO not allow this to run!!
 	if (!mouseBuffer)
 		return;
 
@@ -215,7 +215,7 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 	{
 		//		-Lock Rect Cursor WAS in.
 		if (FrontBufferSurface)
-			lockResult = FrontBufferSurface->Lock(NULL,&mouseSurfaceDesc,DDLOCK_DONOTWAIT,NULL);
+			lockResult = FrontBufferSurface->Lock(nullptr,&mouseSurfaceDesc,DDLOCK_DONOTWAIT,nullptr);
 		else
 			lockResult = -1;
 
@@ -481,7 +481,7 @@ void CALLBACK MouseTimer(uint32_t wTimerID, uint32_t msg, uint32_t dwUser, uint3
 		
 		//Lock can wait because the above unlock might not have been done baking yet!
 		if (FrontBufferSurface)
-			lockResult = FrontBufferSurface->Lock(NULL,&mouseSurfaceDesc,DDLOCK_WAIT,NULL);
+			lockResult = FrontBufferSurface->Lock(nullptr,&mouseSurfaceDesc,DDLOCK_WAIT,nullptr);
 		else
 			lockResult = -1;
 

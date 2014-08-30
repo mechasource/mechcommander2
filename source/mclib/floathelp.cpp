@@ -20,14 +20,14 @@
 
 //-----------------------------------------------------------------------------------------
 uint32_t		FloatHelp::currentFloatHelp = 0;		//How many of them are we using at present
-FloatHelp*	FloatHelp::floatHelps = NULL;			//POinters to all of them.
+FloatHelp*	FloatHelp::floatHelps = nullptr;			//POinters to all of them.
 
 //-----------------------------------------------------------------------------------------
 // class FloatHelp
 void FloatHelp::init (int32_t maxHelps)
 {
 	floatHelps = (FloatHelp *)systemHeap->Malloc(sizeof(FloatHelp) * MAX_FLOAT_HELPS);
-	gosASSERT(floatHelps != NULL);
+	gosASSERT(floatHelps != nullptr);
 	
 	FloatHelp *tmp = floatHelps;
 	for (int32_t i=0;i<MAX_FLOAT_HELPS;i++,tmp++)
@@ -48,7 +48,7 @@ void FloatHelp::init (int32_t maxHelps)
 void FloatHelp::destroy (void)
 {
 	systemHeap->Free(floatHelps);
-	floatHelps = NULL;
+	floatHelps = nullptr;
 	currentFloatHelp = 0;
 }
 

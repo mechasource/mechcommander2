@@ -51,10 +51,10 @@
 
 //---------------------------------------------------------------------------
 // static globals
-MC_TextureManager *mcTextureManager = NULL;
-gos_VERTEXManager *MC_TextureManager::gvManager = NULL;
-puint8_t			MC_TextureManager::lzBuffer1 = NULL;
-puint8_t			MC_TextureManager::lzBuffer2 = NULL;
+MC_TextureManager *mcTextureManager = nullptr;
+gos_VERTEXManager *MC_TextureManager::gvManager = nullptr;
+puint8_t			MC_TextureManager::lzBuffer1 = nullptr;
+puint8_t			MC_TextureManager::lzBuffer2 = nullptr;
 int32_t				MC_TextureManager::iBufferRefCount = 0;
 
 bool MLRVertexLimitReached = false;
@@ -73,7 +73,7 @@ void MC_TextureManager::freeVertices (void)
 	{
 		gvManager->destroy();
 		delete gvManager;
-		gvManager = NULL;
+		gvManager = nullptr;
 	}
 }
 		
@@ -81,7 +81,7 @@ void MC_TextureManager::freeVertices (void)
 // Creates gos_VERTEX Manager and allocates RAM.  Will not allocate if already done!
 void MC_TextureManager::startVertices (int32_t maxVertices)
 {
-	if (gvManager == NULL)
+	if (gvManager == nullptr)
 	{
 		gvManager = new gos_VERTEXManager;
 		gvManager->init(maxVertices);
@@ -99,7 +99,7 @@ void MC_TextureManager::start (void)
 	// Create nodes from systemHeap.
 	int32_t nodeRAM = MC_MAXTEXTURES * sizeof(MC_TextureNode);
 	masterTextureNodes = (MC_TextureNode *)systemHeap->Malloc(nodeRAM);
-	gosASSERT(masterTextureNodes != NULL);
+	gosASSERT(masterTextureNodes != nullptr);
 
 	int32_t i;
 	for (i=0;i<MC_MAXTEXTURES;i++)
@@ -109,7 +109,7 @@ void MC_TextureManager::start (void)
 	// Create VertexNodes from systemHeap
 	nodeRAM = MC_MAXTEXTURES * sizeof(MC_VertexArrayNode);
 	masterVertexNodes = (MC_VertexArrayNode *)systemHeap->Malloc(nodeRAM);
-	gosASSERT(masterVertexNodes != NULL);
+	gosASSERT(masterVertexNodes != nullptr);
 	
 	memset(masterVertexNodes,0,nodeRAM);
 
@@ -143,7 +143,7 @@ void MC_TextureManager::start (void)
 		
 	//Add an Empty Texture node for all untextured triangles to go down into.
 	masterTextureNodes[0].gosTextureHandle = 0;
-	masterTextureNodes[0].nodeName = NULL;
+	masterTextureNodes[0].nodeName = nullptr;
 	masterTextureNodes[0].uniqueInstance = false;
 	masterTextureNodes[0].neverFLUSH = 0x1;
 	masterTextureNodes[0].numUsers = 0;
@@ -151,7 +151,7 @@ void MC_TextureManager::start (void)
 	masterTextureNodes[0].hints = 0; 
 	masterTextureNodes[0].width = 0;
 	masterTextureNodes[0].lastUsed = -1;
-	masterTextureNodes[0].textureData = NULL;
+	masterTextureNodes[0].textureData = nullptr;
 }
 
 extern Stuff::MemoryStream *effectStream;
@@ -173,10 +173,10 @@ void MC_TextureManager::destroy (void)
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
 
 	delete MidLevelRenderer::MLRTexturePool::Instance;
-	MidLevelRenderer::MLRTexturePool::Instance = NULL; 
+	MidLevelRenderer::MLRTexturePool::Instance = nullptr; 
 
 	delete theClipper;
-	theClipper = NULL;
+	theClipper = nullptr;
 	
 	gos_PopCurrentHeap();
 
@@ -185,29 +185,29 @@ void MC_TextureManager::destroy (void)
 	gos_PushCurrentHeap(gosFX::Heap);
 	
 	delete gosFX::EffectLibrary::Instance;
-	gosFX::EffectLibrary::Instance = NULL;
+	gosFX::EffectLibrary::Instance = nullptr;
 
 	delete effectStream;
-	effectStream = NULL;
+	effectStream = nullptr;
 	
 	delete gosFX::LightManager::Instance;
-	gosFX::LightManager::Instance = NULL;
+	gosFX::LightManager::Instance = nullptr;
 
 	gos_PopCurrentHeap();
 
 	//------------------------------------------
 	// free SystemHeap Memory
 	systemHeap->Free(masterTextureNodes);
-	masterTextureNodes = NULL;
+	masterTextureNodes = nullptr;
 	
 	systemHeap->Free(masterVertexNodes);
-	masterVertexNodes = NULL;
+	masterVertexNodes = nullptr;
 	
 	delete textureCacheHeap;
-	textureCacheHeap = NULL;
+	textureCacheHeap = nullptr;
 
 	delete textureStringHeap;
-	textureStringHeap = NULL;
+	textureStringHeap = nullptr;
 }
 
 //----------------------------------------------------------------------
@@ -218,14 +218,14 @@ MC_TextureManager::~MC_TextureManager (void)
 	{
 		if (lzBuffer1)
 		{
-			gosASSERT(lzBuffer2 != NULL);
+			gosASSERT(lzBuffer2 != nullptr);
 			if (textureCacheHeap)
 			{
 				textureCacheHeap->Free(lzBuffer1);
 				textureCacheHeap->Free(lzBuffer2);
 			}
-			lzBuffer1 = NULL;
-			lzBuffer2 = NULL;
+			lzBuffer1 = nullptr;
+			lzBuffer2 = nullptr;
 		}
 	}
 
@@ -256,10 +256,10 @@ void MC_TextureManager::flush (bool justTextures)
 	gos_PushCurrentHeap(MidLevelRenderer::Heap);
 
 	delete MidLevelRenderer::MLRTexturePool::Instance;
-	MidLevelRenderer::MLRTexturePool::Instance = NULL; 
+	MidLevelRenderer::MLRTexturePool::Instance = nullptr; 
 
 	delete theClipper;
-	theClipper = NULL;
+	theClipper = nullptr;
 	
 	gos_PopCurrentHeap();
 
@@ -268,13 +268,13 @@ void MC_TextureManager::flush (bool justTextures)
 	gos_PushCurrentHeap(gosFX::Heap);
 	
 	delete gosFX::EffectLibrary::Instance;
-	gosFX::EffectLibrary::Instance = NULL;
+	gosFX::EffectLibrary::Instance = nullptr;
 
 	delete effectStream;
-	effectStream = NULL;
+	effectStream = nullptr;
 	
 	delete gosFX::LightManager::Instance;
-	gosFX::LightManager::Instance = NULL;
+	gosFX::LightManager::Instance = nullptr;
 
 	gos_PopCurrentHeap();
 
@@ -330,12 +330,12 @@ void MC_TextureManager::removeTextureNode (uint32_t textureNode)
 		if (masterTextureNodes[textureNode].textureData)
 		{
 			textureCacheHeap->Free(masterTextureNodes[textureNode].textureData);
-			masterTextureNodes[textureNode].textureData = NULL;
+			masterTextureNodes[textureNode].textureData = nullptr;
 
 			if (masterTextureNodes[textureNode].nodeName)
 			{
 				textureStringHeap->Free(masterTextureNodes[textureNode].nodeName);
-				masterTextureNodes[textureNode].nodeName = NULL;
+				masterTextureNodes[textureNode].nodeName = nullptr;
 			}
 		}
 	}
@@ -361,12 +361,12 @@ void MC_TextureManager::removeTexture (uint32_t gosHandle)
 		if (masterTextureNodes[i].textureData)
 		{
 			textureCacheHeap->Free(masterTextureNodes[i].textureData);
-			masterTextureNodes[i].textureData = NULL;
+			masterTextureNodes[i].textureData = nullptr;
 
 			if (masterTextureNodes[i].nodeName)
 			{
 				textureStringHeap->Free(masterTextureNodes[i].nodeName);
-				masterTextureNodes[i].nodeName = NULL;
+				masterTextureNodes[i].nodeName = nullptr;
 			}
 		}
 	}
@@ -1116,7 +1116,7 @@ uint32_t MC_TextureManager::textureFromMemory (uint32_t *data, gos_TextureFormat
 	// New Method.  Just store memory footprint of texture.
 	// DO NOT create GOS handle until we need it.
  	masterTextureNodes[i].gosTextureHandle = CACHED_OUT_HANDLE;
-	masterTextureNodes[i].nodeName = NULL;
+	masterTextureNodes[i].nodeName = nullptr;
 
 	masterTextureNodes[i].numUsers = 1;
 	masterTextureNodes[i].key = key;
@@ -1130,10 +1130,10 @@ uint32_t MC_TextureManager::textureFromMemory (uint32_t *data, gos_TextureFormat
 	if (!lzBuffer1)
 	{
 		lzBuffer1 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
-		gosASSERT(lzBuffer1 != NULL);
+		gosASSERT(lzBuffer1 != nullptr);
 		
 		lzBuffer2 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
-		gosASSERT(lzBuffer2 != NULL);
+		gosASSERT(lzBuffer2 != nullptr);
 	}
 	
 	actualTextureSize += txmSize;
@@ -1146,7 +1146,7 @@ uint32_t MC_TextureManager::textureFromMemory (uint32_t *data, gos_TextureFormat
 		masterTextureNodes[i].textureData = (uint32_t *)textureCacheHeap->Malloc(txmCompressSize);
 	
 	//No More RAM.  Do not display this texture anymore.
-	if (masterTextureNodes[i].textureData == NULL)
+	if (masterTextureNodes[i].textureData == nullptr)
 		masterTextureNodes[i].gosTextureHandle = 0;
 	else
 	{
@@ -1243,7 +1243,7 @@ uint32_t MC_TextureManager::loadTexture (PCSTR textureFullPathName, gos_TextureF
 	// DO NOT create GOS handle until we need it.
  	masterTextureNodes[i].gosTextureHandle = CACHED_OUT_HANDLE;
 	masterTextureNodes[i].nodeName = (PSTR )textureStringHeap->Malloc(strlen(textureFullPathName) + 1);
-	gosASSERT(masterTextureNodes[i].nodeName != NULL);
+	gosASSERT(masterTextureNodes[i].nodeName != nullptr);
 
 	strcpy(masterTextureNodes[i].nodeName,textureFullPathName);
 	masterTextureNodes[i].numUsers = 1;
@@ -1268,10 +1268,10 @@ uint32_t MC_TextureManager::loadTexture (PCSTR textureFullPathName, gos_TextureF
 	if (!lzBuffer1)
 	{
 		lzBuffer1 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
-		gosASSERT(lzBuffer1 != NULL);
+		gosASSERT(lzBuffer1 != nullptr);
 		
 		lzBuffer2 = (puint8_t)textureCacheHeap->Malloc(MAX_LZ_BUFFER_SIZE);
-		gosASSERT(lzBuffer2 != NULL);
+		gosASSERT(lzBuffer2 != nullptr);
 	}
 	
 	//Try reading the RAW data out of the fastFile.
@@ -1289,7 +1289,7 @@ uint32_t MC_TextureManager::loadTexture (PCSTR textureFullPathName, gos_TextureF
 		compressedTextureSize += txmCompressSize;
 
 		masterTextureNodes[i].textureData = (uint32_t *)textureCacheHeap->Malloc(txmCompressSize);
-		if (masterTextureNodes[i].textureData == NULL)
+		if (masterTextureNodes[i].textureData == nullptr)
 			masterTextureNodes[i].gosTextureHandle = 0;
 		else
 			memcpy(masterTextureNodes[i].textureData,lzBuffer2,txmCompressSize);
@@ -1310,7 +1310,7 @@ uint32_t MC_TextureManager::loadTexture (PCSTR textureFullPathName, gos_TextureF
 //----------------------------------------------------------------------
 int32_t MC_TextureManager::saveTexture (uint32_t textureIndex, PCSTR textureFullPathName)
 {
-	if ((MC_MAXTEXTURES <= textureIndex) || (NULL == masterTextureNodes[textureIndex].textureData))
+	if ((MC_MAXTEXTURES <= textureIndex) || (nullptr == masterTextureNodes[textureIndex].textureData))
 	{
 		return (~NO_ERROR);
 	}

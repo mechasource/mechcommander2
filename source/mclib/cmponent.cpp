@@ -43,7 +43,7 @@ PSTR ComponentFormString [] = {
 	"Probe",
 	"Jammer",
 	"Bulk",
-	NULL
+	nullptr
 };
 
 PSTR WeaponRangeString[] = {
@@ -52,7 +52,7 @@ PSTR WeaponRangeString[] = {
 	"int32_t"
 };
 
-MasterComponentPtr		MasterComponent::masterList = NULL;
+MasterComponentPtr		MasterComponent::masterList = nullptr;
 int32_t					MasterComponent::numComponents = 0;
 int32_t					MasterComponent::armActuatorID = 4;
 int32_t					MasterComponent::legActuatorID = 5;
@@ -90,7 +90,7 @@ int32_t MasterComponent::initEXCEL (PSTR dataLine, float baseSensorRange) {
 	// Component data was read in, so parse it. First, parse the
 	// fields common to all components...
 
-	PSTR next_token = NULL;
+	PSTR next_token = nullptr;
 	PSTR field = strtok_s(dataLine, ",", &next_token);
 
 	int32_t ammoAmount = 1;
@@ -102,12 +102,12 @@ int32_t MasterComponent::initEXCEL (PSTR dataLine, float baseSensorRange) {
 	cLoadString(COMPONENT_NAME_START+masterID,name,MAXLEN_COMPONENT_NAME);
 	cLoadString(COMPONENT_ABBR_START+masterID,abbreviation,MAXLEN_COMPONENT_ABBREV);
 	
-	field = strtok_s(NULL, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	int32_t formIndex;
-	for (formIndex = 0; ComponentFormString[formIndex] != NULL; formIndex++)
+	for (formIndex = 0; ComponentFormString[formIndex] != nullptr; formIndex++)
 		if (strcmp(field, ComponentFormString[formIndex]) == 0)
 			break;
-	if (ComponentFormString[formIndex] == NULL)
+	if (ComponentFormString[formIndex] == nullptr)
 		return(-1);
 
 	if (strcmp(field, "undefined") == 0) {
@@ -117,30 +117,30 @@ int32_t MasterComponent::initEXCEL (PSTR dataLine, float baseSensorRange) {
 
 	form = (ComponentFormType)formIndex;
 	
-	field = strtok_s(NULL, ",", &next_token); // name, ignore
+	field = strtok_s(nullptr, ",", &next_token); // name, ignore
 
-	field = strtok_s(NULL, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	size = atof(field);
 
-	field = strtok_s(NULL, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	float recycleTime = atof(field);
 	
-	field = strtok_s(NULL, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	float heat = (uint32_t)atof(field);
 
-	field = strtok_s(NULL, ",", &next_token); 
+	field = strtok_s(nullptr, ",", &next_token); 
 	tonnage = atof( field );
 
-	field = strtok_s(NULL, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	float damage = atof(field);
 
-	field = strtok_s(NULL, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	CV = atof(field);
 	
-	field = strtok_s(NULL, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	resourcePoints = atoi(field);
 	
-	field = strtok_s(NULL, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	uint8_t rangeType = 255;
 
 _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) PSTR  _Str, _In_ size_t _Size);
@@ -157,7 +157,7 @@ _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) PS
 			Fatal(0, " MasterComponent.initEXCEL: bad weapon range type in compbase ");
 	}
 
-	field = strtok_s(NULL, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	for (int32_t location = 0; location < NUM_BODY_LOCATIONS; location++) 
 	{
 		if ( field )
@@ -169,7 +169,7 @@ _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) PS
 			else
 				criticalSpacesReq[location] = atoi(field);
 		}
-			field = strtok_s(NULL, ",", &next_token);
+			field = strtok_s(nullptr, ",", &next_token);
 
 	}
 
@@ -186,17 +186,17 @@ _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) PS
 			ammoType = WEAPON_AMMO_ST;
 	}
 
-	field = strtok( NULL, "," );
+	field = strtok( nullptr, "," );
 	int32_t flags = 0;
 	if ( field )
 		flags = atoi(field);
 	
-	field = strtok_s(NULL, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	int32_t specialEffect = 0;
 	if ( field )
 		specialEffect = (char)atoi(field);
 	
-	field = strtok_s(NULL, ",", &next_token);
+	field = strtok_s(nullptr, ",", &next_token);
 	int32_t ammoMasterId = 0;
 	if ( field )
 		ammoMasterId = (char)atoi(field);
@@ -213,7 +213,7 @@ _Check_return_wat_ _CRTIMP errno_t __cdecl _strlwr_s(_Inout_updates_z_(_Size) PS
 			break;
 		case COMPONENT_FORM_ECM:
 			stats.ecm.effect = damage;
-			field = strtok_s(NULL, ",", &next_token);
+			field = strtok_s(nullptr, ",", &next_token);
 			stats.ecm.range = recycleTime;
 			break;
 		case COMPONENT_FORM_JAMMER:
@@ -638,7 +638,7 @@ int32_t MasterComponent::loadMasterList (PSTR fileName, int32_t listSize, float 
 	if (masterList) 
 	{
 		systemHeap->Free(masterList);
-		masterList = NULL;
+		masterList = nullptr;
 	}
 
 	numComponents = listSize;
@@ -739,7 +739,7 @@ int32_t MasterComponent::freeMasterList (void) {
 	if (masterList) 
 	{
 		systemHeap->Free(masterList);
-		masterList = NULL;
+		masterList = nullptr;
 		numComponents = 0;
 	}
 

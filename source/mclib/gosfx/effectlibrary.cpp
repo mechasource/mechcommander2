@@ -9,7 +9,7 @@
 #include "gosFXHeaders.hpp"
 
 gosFX::EffectLibrary*
-	gosFX::EffectLibrary::Instance = NULL;
+	gosFX::EffectLibrary::Instance = nullptr;
 
 //------------------------------------------------------------------------------
 //
@@ -28,7 +28,7 @@ void
 	{
 		Unregister_Object(Instance);
 		delete Instance;
-		Instance=NULL;
+		Instance=nullptr;
 	}
 }
 
@@ -104,7 +104,7 @@ gosFX::Effect::Specification*
 			}
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 //------------------------------------------------------------------------------

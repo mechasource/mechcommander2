@@ -57,12 +57,12 @@ class GameLog {
 		void init (void) {
 			handle = -1;
 			inUse = false;
-			fileName[0] = NULL;
-			filePtr = NULL;
+			fileName[0] = nullptr;
+			filePtr = nullptr;
 			numLines = 0;
 			totalLines = 0;
 			for (int32_t i = 0; i < MAX_GAMELOG_LINES; i++)
-				lines[i][0] = NULL;
+				lines[i][0] = nullptr;
 		}
 
 		GameLog (void) {

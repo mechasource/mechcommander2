@@ -69,7 +69,7 @@ class FastFile
 
 		bool isOpen (void)
 		{
-			return (handle != NULL);
+			return (handle != nullptr);
 		}
 
 		size_t fileSize (void)

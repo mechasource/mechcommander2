@@ -178,7 +178,7 @@ protected:
 public:
 
 	UserHeap (void);
-	int32_t init (uint32_t memSize, PSTR heapId = NULL, bool useGOS = false);
+	int32_t init (uint32_t memSize, PSTR heapId = nullptr, bool useGOS = false);
 
 	~UserHeap (void);
 	void destroy (void);

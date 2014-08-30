@@ -63,7 +63,12 @@
 
 // temporary disable warnings when compiling with -Wall
 #pragma warning(push)
-#pragma warning(disable: 4191 4365)
+#pragma warning(disable: 4191 4350 4365)
+#include <memory>
+#include <vector>
+#include <list>
+#include <string>
+
 #include <atlbase.h>
 #if (_ATL_VER < 0x0700)	// linking with system (WDK) atl.dll
 extern ATL::CComModule& _Module;

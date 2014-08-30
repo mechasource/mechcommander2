@@ -18,22 +18,22 @@ SalvageMechArea.cpp			: Implementation of the SalvageMechArea component.
 #include "gamesound.h"
 #include <malloc.h>
 
-aAnimButton* SalvageListItem::templateCheckButton = NULL;
+aAnimButton* SalvageListItem::templateCheckButton = nullptr;
 
-SalvageMechArea* SalvageMechArea::instance = NULL;
+SalvageMechArea* SalvageMechArea::instance = nullptr;
 
-aText*		SalvageListItem::variantNameText = NULL;
-aText*		SalvageListItem::mechNameText = NULL;
-aText*		SalvageListItem::weightText = NULL;
-aText*		SalvageListItem::costText = NULL;
-aObject*	SalvageListItem::cBillsIcon = NULL;
-aObject*	SalvageListItem::weightIcon = NULL;
+aText*		SalvageListItem::variantNameText = nullptr;
+aText*		SalvageListItem::mechNameText = nullptr;
+aText*		SalvageListItem::weightText = nullptr;
+aText*		SalvageListItem::costText = nullptr;
+aObject*	SalvageListItem::cBillsIcon = nullptr;
+aObject*	SalvageListItem::weightIcon = nullptr;
 RECT	SalvageListItem::iconRect;
 RECT	SalvageListItem::rect;
 
-aAnimation*	SalvageListItem::s_pressedAnim = NULL;
-aAnimation*	SalvageListItem::s_highlightAnim = NULL;
-aAnimation*	SalvageListItem::s_normalAnim = NULL;
+aAnimation*	SalvageListItem::s_pressedAnim = nullptr;
+aAnimation*	SalvageListItem::s_highlightAnim = nullptr;
+aAnimation*	SalvageListItem::s_normalAnim = nullptr;
 
 
 #define RP_TEXTID	3
@@ -72,32 +72,32 @@ SalvageMechScreen::SalvageMechScreen()
 SalvageMechScreen::~SalvageMechScreen()
 {
 	delete SalvageListItem::s_pressedAnim;
-	SalvageListItem::s_pressedAnim = NULL;
+	SalvageListItem::s_pressedAnim = nullptr;
 	delete SalvageListItem::s_highlightAnim;
-	SalvageListItem::s_highlightAnim = NULL;
+	SalvageListItem::s_highlightAnim = nullptr;
 	delete SalvageListItem::s_normalAnim;
-	SalvageListItem::s_normalAnim = NULL;
+	SalvageListItem::s_normalAnim = nullptr;
 
 	delete SalvageListItem::templateCheckButton;
-	SalvageListItem::templateCheckButton = NULL;
+	SalvageListItem::templateCheckButton = nullptr;
 
 	delete SalvageListItem::weightText;
-	SalvageListItem::weightText = NULL;
+	SalvageListItem::weightText = nullptr;
 
 	delete SalvageListItem::costText;
-	SalvageListItem::costText = NULL;
+	SalvageListItem::costText = nullptr;
 
 	delete SalvageListItem::variantNameText;
-	SalvageListItem::variantNameText = NULL;
+	SalvageListItem::variantNameText = nullptr;
 
 	delete SalvageListItem::mechNameText;
-	SalvageListItem::mechNameText = NULL;
+	SalvageListItem::mechNameText = nullptr;
 
 	delete SalvageListItem::weightIcon;
-	SalvageListItem::weightIcon = NULL;
+	SalvageListItem::weightIcon = nullptr;
 
 	delete SalvageListItem::cBillsIcon;
-	SalvageListItem::cBillsIcon = NULL;
+	SalvageListItem::cBillsIcon = nullptr;
 
 
 
@@ -308,7 +308,7 @@ void SalvageMechScreen::updateSalvage()
 		SalvageListItem* item = (SalvageListItem*)salvageListBox.GetItem( i );
 		if ( item && item->isChecked() )
 		{
-			LogisticsData::instance->addMechToInventory( item->getMech(), (LogisticsPilot*)NULL, 0 );
+			LogisticsData::instance->addMechToInventory( item->getMech(), (LogisticsPilot*)nullptr, 0 );
 		}
 	}
 }
@@ -594,7 +594,7 @@ SalvageMechArea::SalvageMechArea()
 
 SalvageMechArea::~SalvageMechArea()
 {
-	instance = NULL;	
+	instance = nullptr;	
 }
 
 void SalvageMechArea::init( FitIniFile* file )

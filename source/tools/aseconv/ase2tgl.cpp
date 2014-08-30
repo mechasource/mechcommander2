@@ -18,16 +18,16 @@
 #include "../../ARM/Microsoft.Xna.Arm.h"
 using namespace Microsoft::Xna::Arm;
 
-HINSTANCE hInst = NULL;
+HINSTANCE hInst = nullptr;
 uint32_t gosResourceHandle = 0;
 
-Stuff::MemoryStream *effectStream = NULL;
+Stuff::MemoryStream *effectStream = nullptr;
 
 extern char CDInstallPath[];
 
 bool hasGuardBand = false;
 bool justResaveAllMaps = false;
-Camera *eye = NULL;
+Camera *eye = nullptr;
 enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI }Processor = CPU_PENTIUM; //Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
 
 float MaxMinUV = 8.0f;
@@ -36,8 +36,8 @@ uint32_t BaseVertexColor = 0x00000000;
 
 static PCSTR lpszAppName = "MechCmdr2";
 
-UserHeapPtr systemHeap = NULL;
-UserHeapPtr guiHeap = NULL;
+UserHeapPtr systemHeap = nullptr;
+UserHeapPtr guiHeap = nullptr;
 
 float gosFontScale = 1.0f;
 
@@ -45,24 +45,24 @@ extern bool silentMode;
 bool useLOSAngle = false;
 static bool createARM = false;
 
-IProviderEngine * armProvider = NULL;
+IProviderEngine * armProvider = nullptr;
 
 uint32_t tglHeapSize = 16386000;
 
-FastFile **fastFiles = NULL;
+FastFile **fastFiles = nullptr;
 int32_t numFastFiles = 0;
 int32_t maxFastFiles = 0;
 
-HWND appWnd = NULL;
+HWND appWnd = nullptr;
 
 extern PSTR MechAnimationNames[MaxGestures];
 
 int32_t ObjectTextureSize = 128;
 bool reloadBounds = false;
-MidLevelRenderer::MLRClipper * theClipper = NULL;
+MidLevelRenderer::MLRClipper * theClipper = nullptr;
 HGOSFONT3D gosFontHandle = 0;
 extern HGOSFONT3D FontHandle;
-FloatHelpPtr globalFloatHelp = NULL;
+FloatHelpPtr globalFloatHelp = nullptr;
 uint32_t currentFloatHelp = 0;
 
 char fileName[1024];
@@ -118,7 +118,7 @@ void ParseCommandLine(PSTR command_line)
 							strcat(fileName," ");
 							strcat(fileName,argv[i]);
 
-							if (strstr(argv[i],"\"") != NULL)
+							if (strstr(argv[i],"\"") != nullptr)
 							{
 								scanName = false;
 								fileName[strlen(fileName)-1] = 0;
@@ -156,7 +156,7 @@ void ParseCommandLine(PSTR command_line)
 							strcat(listName," ");
 							strcat(listName,argv[i]);
 
-							if (strstr(argv[i],"\"") != NULL)
+							if (strstr(argv[i],"\"") != nullptr)
 							{
 								scanName = false;
 								listName[strlen(listName)-1] = 0;
@@ -227,7 +227,7 @@ int32_t convertASE2TGL (PSTR file)
 			iniAsset->AddProperty("Version", "1.0");
 
 
-			TG_TypeMultiShape *shape = NULL;
+			TG_TypeMultiShape *shape = nullptr;
 
 			result = iniFile.seekBlock("TGLData");
 			if (result == NO_ERROR)
@@ -249,7 +249,7 @@ int32_t convertASE2TGL (PSTR file)
 						if (shape)
 						{
 							delete shape;
-							shape = NULL;
+							shape = nullptr;
 						}
 
 						char aseName[1024];
@@ -258,7 +258,7 @@ int32_t convertASE2TGL (PSTR file)
 						//---------------------------------------------------------------------------------------------
 						// Load Base Shape or LOD 0 Shape.
 						shape = new TG_TypeMultiShape;
-						gosASSERT(shape != NULL);
+						gosASSERT(shape != nullptr);
 
 						printf( "Processing Main Shape %s\n", aseName );
 
@@ -281,7 +281,7 @@ int32_t convertASE2TGL (PSTR file)
 				//---------------------------------------------------------------------------------------------
 				// Load Base Shape or LOD 0 Shape.
 				shape = new TG_TypeMultiShape;
-				gosASSERT(shape != NULL);
+				gosASSERT(shape != nullptr);
 
 				printf( "Processing Main Shape %s\n", aseName );
 
@@ -301,7 +301,7 @@ int32_t convertASE2TGL (PSTR file)
 					//---------------------------------------------------------------------------------------------
 					// Load Base Shape or LOD 0 Shape.
 					TG_TypeMultiShapePtr shadowShape = new TG_TypeMultiShape;
-					gosASSERT(shadowShape != NULL);
+					gosASSERT(shadowShape != nullptr);
 
 					printf( "Processing Shadow Shape %s\n", aseName );
 
@@ -310,7 +310,7 @@ int32_t convertASE2TGL (PSTR file)
 					shadowShape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
 
 					delete shadowShape;
-					shadowShape = NULL;
+					shadowShape = nullptr;
 				}
 
 				int32_t i=0;
@@ -328,7 +328,7 @@ int32_t convertASE2TGL (PSTR file)
 						aseName.init(tglPath,fileName,".ase");
 
 						TG_AnimateShape *anim = new TG_AnimateShape;
-						gosASSERT(mechAnim != NULL);
+						gosASSERT(mechAnim != nullptr);
 
 						//-----------------------------------------------
 						// Skip this one if its already a binary file.
@@ -340,7 +340,7 @@ int32_t convertASE2TGL (PSTR file)
 						anim->LoadTGMultiShapeAnimationFromASE(aseName,shape,true);
 
 						delete anim;
-						anim = NULL;
+						anim = nullptr;
 					}
 
 					i++;
@@ -356,13 +356,13 @@ int32_t convertASE2TGL (PSTR file)
 						for (int32_t i=0;i<MaxGestures;i++)
 						{
 							char name[MAX_PATH];
-							_splitpath(findResult.cFileName,NULL,NULL,name,NULL);
+							_splitpath(findResult.cFileName,nullptr,nullptr,name,nullptr);
 
 							char mechFileName[1024];
 							sprintf(mechFileName,"%s%s%s.ase",tglPath,name,MechAnimationNames[i]);
 
 							TG_AnimateShape *anim = new TG_AnimateShape;
-							gosASSERT(anim != NULL);
+							gosASSERT(anim != nullptr);
 
 							//-----------------------------------------------
 							// Skip this one if its already a binary file.
@@ -374,7 +374,7 @@ int32_t convertASE2TGL (PSTR file)
 							anim->LoadTGMultiShapeAnimationFromASE(mechFileName,shape,true);
 
 							delete anim;
-							anim = NULL;
+							anim = nullptr;
 						}
 					}
 				}
@@ -387,14 +387,14 @@ int32_t convertASE2TGL (PSTR file)
 						for (int32_t i=MaxGestures;i<MaxGestures+2;i++)
 						{
 							char name[MAX_PATH];
-							_splitpath(findResult.cFileName,NULL,NULL,name,NULL);
+							_splitpath(findResult.cFileName,nullptr,nullptr,name,nullptr);
 
 							char mechFileName[1024];
 							sprintf(mechFileName,"%s%s%s.ase",tglPath,name,MechAnimationNames[i]);
 
 							//-----------------------------------------------
 							shape = new TG_TypeMultiShape;
-							gosASSERT(shape != NULL);
+							gosASSERT(shape != nullptr);
 
 							printf( "Processing Animation %s\n", mechFileName );
 
@@ -403,7 +403,7 @@ int32_t convertASE2TGL (PSTR file)
 							shape->LoadTGMultiShapeFromASE(mechFileName, true, armProvider);
 
 							delete shape;
-							shape = NULL;
+							shape = nullptr;
 						}
 					}
 				}
@@ -417,7 +417,7 @@ int32_t convertASE2TGL (PSTR file)
 						if (shape)
 						{
 							delete shape;
-							shape = NULL;
+							shape = nullptr;
 						}
 
 						char aseName[1024];
@@ -426,7 +426,7 @@ int32_t convertASE2TGL (PSTR file)
 						//---------------------------------------------------------------------------------------------
 						// Load Base Shape or LOD 0 Shape.
 						shape = new TG_TypeMultiShape;
-						gosASSERT(shape != NULL);
+						gosASSERT(shape != nullptr);
 
 						printf( "Processing Damage Shape %s\n", aseName );
 
@@ -447,7 +447,7 @@ int32_t convertASE2TGL (PSTR file)
 						//---------------------------------------------------------------------------------------------
 						// Load Base Shape or LOD 0 Shape.
 						TG_TypeMultiShapePtr shadowShape = new TG_TypeMultiShape;
-						gosASSERT(shadowShape != NULL);
+						gosASSERT(shadowShape != nullptr);
 
 						printf( "Processing Damage Shadow Shape %s\n", aseName );
 
@@ -456,13 +456,13 @@ int32_t convertASE2TGL (PSTR file)
 						shadowShape->LoadTGMultiShapeFromASE(aseName, true, armProvider);
 
 						delete shadowShape;
-						shadowShape = NULL;
+						shadowShape = nullptr;
 					}
 				}
 			}
 
 			delete shape;
-			shape = NULL;
+			shape = nullptr;
 
 			iniAsset->Close();
 		}
@@ -508,7 +508,7 @@ int32_t APIENTRY WinMain(HINSTANCE hInstance,
 		wc.cbWndExtra = 0;
 		wc.hInstance = hInstance;
 		wc.hIcon = LoadIcon(hInstance,MAKEINTRESOURCE(IDI_ICON1));
-		wc.hCursor = LoadCursor(NULL,IDC_ARROW);
+		wc.hCursor = LoadCursor(nullptr,IDC_ARROW);
 		wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
 		wc.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
 		wc.lpszClassName = lpszAppName;
@@ -528,20 +528,20 @@ int32_t APIENTRY WinMain(HINSTANCE hInstance,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		640, 480,
-		NULL,
-		NULL,
+		nullptr,
+		nullptr,
 		hInstance,
-		NULL
+		nullptr
 		);
 
-	if (appWnd == NULL)
+	if (appWnd == nullptr)
 		return false;
 
 	globalHeapList = new HeapList;
-	assert(globalHeapList != NULL);
+	assert(globalHeapList != nullptr);
 
 	systemHeap = new UserHeap;
-	assert(systemHeap != NULL);
+	assert(systemHeap != nullptr);
 
 	systemHeap->init(2048000);
 
@@ -634,7 +634,7 @@ int32_t APIENTRY WinMain(HINSTANCE hInstance,
 
 	systemFile->close();
 	delete systemFile;
-	systemFile = NULL;
+	systemFile = nullptr;
 
 	//
 	// Init GameOS with window created
@@ -666,7 +666,7 @@ int32_t APIENTRY WinMain(HINSTANCE hInstance,
 
 
 	// Initialize COM and create an instance of the InterfaceImplementation class:
-	CoInitialize(NULL);
+	CoInitialize(nullptr);
 	armProvider = CreateProviderEngine("AseConv", versionStamp);
 
 	assert(armProvider);

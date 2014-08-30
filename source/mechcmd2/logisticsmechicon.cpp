@@ -15,7 +15,7 @@
 #include "LogisticsPilotListBox.h"
 #include "gameSound.h"
 
-LogisticsMechIcon*	LogisticsMechIcon::s_pTemplateIcon = NULL;
+LogisticsMechIcon*	LogisticsMechIcon::s_pTemplateIcon = nullptr;
 
 
 LogisticsMechIcon::LogisticsMechIcon( )
@@ -318,7 +318,7 @@ LogisticsPilot* LogisticsMechIcon::getPilot()
 	if ( pMech )
 		return pMech->getPilot();
 
-	return NULL;
+	return nullptr;
 }
 
 void LogisticsMechIcon::setPilot( LogisticsPilot* pPilot )

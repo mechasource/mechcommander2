@@ -67,9 +67,9 @@
 
 //---------------------------------------------------------------------------
 
-PacketFilePtr			ObjectTypeManager::objectFile = NULL;
-UserHeapPtr				ObjectTypeManager::objectTypeCache = NULL;
-UserHeapPtr				ObjectTypeManager::objectCache = NULL;
+PacketFilePtr			ObjectTypeManager::objectFile = nullptr;
+UserHeapPtr				ObjectTypeManager::objectTypeCache = nullptr;
+UserHeapPtr				ObjectTypeManager::objectCache = nullptr;
 int32_t					ObjectTypeManager::bridgeTypeHandle = 0xFFFFFFFF;
 int32_t					ObjectTypeManager::forestTypeHandle = 0xFFFFFFFF;
 int32_t					ObjectTypeManager::wallHeavyTypeHandle = 0xFFFFFFFF;
@@ -116,7 +116,7 @@ void ObjectType::destroy (void) {
 
 	// Nothing at the moment!
 	ObjectTypeManager::objectTypeCache->Free(appearName);
-	appearName = NULL;
+	appearName = nullptr;
 }
 		
 //---------------------------------------------------------------------------
@@ -181,7 +181,7 @@ void ObjectType::createExplosion (Stuff::Vector3D& position, float dmg, float ra
 		if (rad == 0.0)
 			rad = getExtentRadius();
 
- 		ObjectManager->createExplosion(effectId, NULL, position, dmg, rad);
+ 		ObjectManager->createExplosion(effectId, nullptr, position, dmg, rad);
 	}
 }
 
@@ -253,7 +253,7 @@ int32_t ObjectTypeManager::init (PSTR objectFileName, int32_t objectTypeCacheSiz
 	if (!table)
 		Fatal(0, " ObjectTypeManager.init: unable to create table ");
 	for (int32_t i = 0; i < numObjectTypes; i++)
-		table[i] = NULL;
+		table[i] = nullptr;
 
 	//---------------------------------------------------------------------------
 	// Since MC1 handled all of these MiscTerrainObjectTypes with one ObjectType,
@@ -277,7 +277,7 @@ void ObjectTypeManager::destroy(void)
 	if (table) 
 	{
 		objectTypeCache->Free(table);
-		table = NULL;
+		table = nullptr;
 		numObjectTypes = 0;
 	}
 
@@ -285,19 +285,19 @@ void ObjectTypeManager::destroy(void)
 	{
 		objectFile->close();
 		delete objectFile;
-		objectFile = NULL;
+		objectFile = nullptr;
 	}
 	
 	if (objectTypeCache) 
 	{
 		delete objectTypeCache;
-		objectTypeCache = NULL;
+		objectTypeCache = nullptr;
 	}
 
 	if (objectCache) 
 	{
 		delete objectCache;
-		objectCache = NULL;
+		objectCache = nullptr;
 	}
 }
 
@@ -307,7 +307,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 
 	//-----------------------------------------------------------------------
 	// NOTE: This function attempts to load the objectType into the table. If
-	// the object type is ALREADY loaded, it simply returns NULL (indicating
+	// the object type is ALREADY loaded, it simply returns nullptr (indicating
 	// it's already been loaded, so no problem). Otherwise, it returns the
 	// newly loaded object type. What I'm say'n here is--this function
 	// CANNOT fatal out, because any calling function will want to know
@@ -322,15 +322,15 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 	if ((objTypeNum < 0) || (objTypeNum >= numObjectTypes))
 		Fatal(objTypeNum, " ObjectTypeManager.load: bad objTypeNum ");
 	
-	if (objTypeNum == 0)		//First Object always NULL!
-		return NULL;
+	if (objTypeNum == 0)		//First Object always nullptr!
+		return nullptr;
 
 	if (!forceLoad && get(objTypeNum, false))
-		return(NULL);
+		return(nullptr);
 
 	bool isMiscTerrObj = false;
 	int32_t objectTypeNum = -1;
-	ObjectTypePtr objType = NULL;
+	ObjectTypePtr objType = nullptr;
 	if ((objTypeNum == bridgeTypeHandle) ||
 		(objTypeNum == forestTypeHandle) ||
 		(objTypeNum == wallHeavyTypeHandle) ||
@@ -466,7 +466,7 @@ ObjectTypePtr ObjectTypeManager::load (ObjectTypeNumber objTypeNum, bool noCache
 			break;
 
 		default:
-			//return(NULL);
+			//return(nullptr);
 			//Fatal(OBJECT_TYPE_NUMBER_UNDEFINED, " ObjectTypeManager.load: undefined objType ");
 			NODEFAULT;
 	}
@@ -496,7 +496,7 @@ void ObjectTypeManager::remove (int32_t objTypeNum) {
 		table[objTypeNum]->removeUser();
 		if (!table[objTypeNum]->inUse() && !table[objTypeNum]->lovable()) {
 			delete table[objTypeNum];
-			table[objTypeNum] = NULL;
+			table[objTypeNum] = nullptr;
 		}
 	}
 }
@@ -555,7 +555,7 @@ GameObjectPtr ObjectTypeManager::create (ObjectTypeNumber objTypeNum) {
 	}
 	
 	Fatal(objTypeNum, " ObjectTypeManager.create: unable to load object type ");
-	return(NULL);
+	return(nullptr);
 }
 
 //***************************************************************************

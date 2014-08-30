@@ -51,9 +51,9 @@ float LogisticsComponent::MAX_RANGE = 3.f;
 
 LogisticsComponent::LogisticsComponent()
 {
-	name = NULL;
+	name = nullptr;
 	ID = -1;
-	flavorText = NULL;		
+	flavorText = nullptr;		
 	bHead = bTorso = bLegs = 0;
 	iconFileName = 0;
 	pictureFileName = 0;
@@ -161,7 +161,7 @@ int32_t LogisticsComponent::init( PSTR dataLine )
 	extractString( pLine, pBuffer, 1024 );
 	if ( *pBuffer )
 	{
-		pictureFileName = new char[strlen( pBuffer ) + 1];	//Forgot the NULL all over the place did we?
+		pictureFileName = new char[strlen( pBuffer ) + 1];	//Forgot the nullptr all over the place did we?
 		strcpy( pictureFileName, pBuffer );
 	}
 
@@ -173,7 +173,7 @@ int32_t LogisticsComponent::init( PSTR dataLine )
 	char nameBuffer[256];
 	cLoadString( stringID, nameBuffer, 256 );
 
-	name = flavorText = new char[strlen( nameBuffer ) + 1];		//Lets not forget the NULL!!!
+	name = flavorText = new char[strlen( nameBuffer ) + 1];		//Lets not forget the nullptr!!!
 	strcpy( name, nameBuffer );
 
 	return ID;
@@ -190,7 +190,7 @@ int32_t LogisticsComponent::extractString( PSTR& pFileLine, PSTR pBuffer, int32_
 			break;
 		else if ( pFileLine[i] == ',' )
 			break;
-		else if ( pFileLine[i] == NULL )
+		else if ( pFileLine[i] == nullptr )
 			break;
 	}
 
@@ -199,7 +199,7 @@ int32_t LogisticsComponent::extractString( PSTR& pFileLine, PSTR pBuffer, int32_
 
 	gosASSERT( i < bufferLength );
 	memcpy( pBuffer, pFileLine, i );
-	pBuffer[i] = NULL;
+	pBuffer[i] = nullptr;
 	bufferLength = i + 1;
 	pFileLine += i + 1;
 

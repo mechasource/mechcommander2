@@ -43,7 +43,7 @@ main(int32_t argc, PSTR argv[])
 		while (!bFile->eof()) {
 			bFile->readString(s);
 			if (s[strlen((PSTR)s)-1] == 10)
-				s[strlen((PSTR)s)-1] = NULL;
+				s[strlen((PSTR)s)-1] = nullptr;
 			numErrs = 0;
 			numLines = 0;
 			numFiles = 0;
@@ -58,7 +58,7 @@ main(int32_t argc, PSTR argv[])
 		}
 		bFile->close();
 		delete bFile;
-		bFile = NULL;
+		bFile = nullptr;
 		printf("\n");
 	}
 

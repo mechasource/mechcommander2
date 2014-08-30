@@ -22,7 +22,7 @@ mpprefs.cpp			: Implementation of the mpprefs component.ef
 #define BASE_RECT	35
 #define STRIPE_RECT	36
 
-MPPrefs* MPPrefs::s_instance = NULL;
+MPPrefs* MPPrefs::s_instance = nullptr;
 
 
 
@@ -240,7 +240,7 @@ void MPPrefs::begin()
 }
 void MPPrefs::end()
 {
-	camera.setMech(NULL);
+	camera.setMech(nullptr);
 	status = NEXT;
 }
 
@@ -479,7 +479,7 @@ void MPPrefs ::render(int32_t OffsetX, int32_t OffsetY )
 	LogisticsScreen::render( OffsetX, OffsetY );
 	statics[21].showGUIWindow( 1 );
 
-	aObject* pObject = NULL;
+	aObject* pObject = nullptr;
 	if ( OffsetX == 0 && OffsetY == 0 )
 	{
 

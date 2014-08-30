@@ -155,7 +155,7 @@ class MoveChunk {
 			destroy(void);
 		}
 
-		void build (MoverPtr mover, MovePath* path1, MovePath* path2 = NULL);
+		void build (MoverPtr mover, MovePath* path1, MovePath* path2 = nullptr);
 
 		void build (MoverPtr mover, Stuff::Vector3D jumpGoal);
 
@@ -1132,11 +1132,11 @@ class Mover : public GameObject {
 
 		virtual void updatePathLock (bool set);
 
-		virtual bool getPathRangeLock (int32_t range, bool* reachedEnd = NULL);
+		virtual bool getPathRangeLock (int32_t range, bool* reachedEnd = nullptr);
 
 		virtual int32_t setPathRangeLock (bool set, int32_t range = 0);
 
-		virtual bool getPathRangeBlocked (int32_t range, bool* reachedEnd = NULL);
+		virtual bool getPathRangeBlocked (int32_t range, bool* reachedEnd = nullptr);
 
 		virtual bool crashAvoidanceSystem (void) {
 			return(false);
@@ -1483,7 +1483,7 @@ class Mover : public GameObject {
 
 		virtual int32_t calcFireRanges (void);
 
-		virtual float getOrderedFireRange (int32_t* attackRange = NULL);
+		virtual float getOrderedFireRange (int32_t* attackRange = nullptr);
 
 		virtual float getMinFireRange (void);
 
@@ -1531,7 +1531,7 @@ class Mover : public GameObject {
 		
 		virtual int32_t sortWeapons (int32_t* weaponList, int32_t* valueList, int32_t listSize, int32_t sortType, bool skillCheck);
 
-		virtual float calcAttackChance (GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint = NULL);
+		virtual float calcAttackChance (GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint = nullptr);
 
 		virtual float calcAttackModifier (GameObjectPtr target, int32_t weaponIndex, bool skillCheck) {
 			return(0.0);
@@ -1613,7 +1613,7 @@ class Mover : public GameObject {
 			return(false);
 		}
 
-		virtual float getJumpRange (int32_t* numOffsets = NULL, int32_t* jumpCost = NULL) {
+		virtual float getJumpRange (int32_t* numOffsets = nullptr, int32_t* jumpCost = nullptr) {
 			if (numOffsets)
 				*numOffsets = 8;
 			if (jumpCost)
@@ -1621,7 +1621,7 @@ class Mover : public GameObject {
 			return(0.0);
 		}
 
-		virtual bool isJumping (Stuff::Vector3D* jumpGoal = NULL) {
+		virtual bool isJumping (Stuff::Vector3D* jumpGoal = nullptr) {
 			return(false);
 		}
 

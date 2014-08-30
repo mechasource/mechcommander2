@@ -16,7 +16,7 @@ class ObjectiveDlg : public CDialog
 {
 // Construction
 public:
-	ObjectiveDlg(CWnd* pParent = NULL);   // standard constructor
+	ObjectiveDlg(CWnd* pParent = nullptr);   // standard constructor
 	void LoadDialogValues(void);
 	void SaveDialogValues(void);
 

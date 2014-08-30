@@ -243,7 +243,7 @@ aButton* LogisticsScreen::getButton( int32_t who )
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 aRect* LogisticsScreen::getRect( int32_t who )
@@ -253,7 +253,7 @@ aRect* LogisticsScreen::getRect( int32_t who )
 		return &rects[who];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 //-------------------------------------------------------------------------------------------------

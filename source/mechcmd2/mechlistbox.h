@@ -43,7 +43,7 @@ public:
 	virtual void render(void);
 
 	LogisticsMech* getMech( ){ return pMech; }
-	void	resetMech( ) {pMech = NULL; }
+	void	resetMech( ) {pMech = nullptr; }
 	virtual bool		pointInside(int32_t xPos, int32_t yPos) const;
 
 	bool		bOrange;

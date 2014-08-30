@@ -232,7 +232,7 @@ void WeaponFireChunk::operator delete (PVOID us) {
 
 void DebugWeaponFireChunk (WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2, GameObjectPtr attacker) {
 
-	ChunkDebugMsg[0] = NULL;
+	ChunkDebugMsg[0] = nullptr;
 
 	char outString[512];
 
@@ -252,7 +252,7 @@ void DebugWeaponFireChunk (WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2,
 	if (chunk1) {
 		strcat(ChunkDebugMsg, "\nCHUNK1\n");
 
-		GameObjectPtr target = NULL;
+		GameObjectPtr target = nullptr;
 		Stuff::Vector3D targetPoint;
 		targetPoint.Zero();
 		bool isTargetPoint = false;
@@ -324,7 +324,7 @@ void DebugWeaponFireChunk (WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2,
 	if (chunk2) {
 		strcat(ChunkDebugMsg, "\nCHUNK2\n");
 
-		GameObjectPtr target = NULL;
+		GameObjectPtr target = nullptr;
 		Stuff::Vector3D targetPoint;
 		targetPoint.Zero();
 		bool isTargetPoint = false;
@@ -398,7 +398,7 @@ void DebugWeaponFireChunk (WeaponFireChunkPtr chunk1, WeaponFireChunkPtr chunk2,
 	debugFile->writeString(ChunkDebugMsg);
 	debugFile->close();
 	delete debugFile;
-	debugFile = NULL;
+	debugFile = nullptr;
 
 	ExceptionGameMsg = ChunkDebugMsg;
 }
@@ -414,7 +414,7 @@ int32_t NumWeaponFiresInLogQueue = 0;
 GameObjectPtr WeaponFireAttackerLog[WEAPONFIRELOG_SIZE];
 GameObjectPtr WeaponFireTargetLog[WEAPONFIRELOG_SIZE];
 uint32_t WeaponFireDataLog[WEAPONFIRELOG_SIZE];
-File* WeaponFireLog = NULL;
+File* WeaponFireLog = nullptr;
 #endif
 
 //---------------------------------------------------------------------------
@@ -467,7 +467,7 @@ void CloseWeaponFireLog (void) {
 		WeaponFireLog->writeString(s);
 		WeaponFireLog->close();
 		delete WeaponFireLog;
-		WeaponFireLog = NULL;
+		WeaponFireLog = nullptr;
 		NumWeaponFiresInLog = 0;
 		NumWeaponFiresInLogQueue = 0;
 	}
@@ -688,31 +688,31 @@ void WeaponFireChunk::pack (GameObjectPtr attacker) {
 	//-------------------------
 	// Lots'a error checking...
 	if ((targetType < 0) || (targetType > 3)) {
-		DebugWeaponFireChunk(this, NULL, attacker);
+		DebugWeaponFireChunk(this, nullptr, attacker);
 		char errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.pack: bad targetType %d (save wfchunk.dbg file) ", targetType);
 		Assert(false, targetType, errMsg);
 	}
 	if ((weaponIndex < 0) || (weaponIndex > 31)) {
-		DebugWeaponFireChunk(this, NULL, attacker);
+		DebugWeaponFireChunk(this, nullptr, attacker);
 		char errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.pack: bad weaponIndex %d (save wfchunk.dbg file) ", weaponIndex);
 		Assert(false, weaponIndex, errMsg);
 	}
 	if ((hitLocation < -1) || (hitLocation >= 12)) {
-		DebugWeaponFireChunk(this, NULL, attacker);
+		DebugWeaponFireChunk(this, nullptr, attacker);
 		char errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.pack: bad hitLocation %d (save wfchunk.dbg file) ", hitLocation);
 		Assert(false, hitLocation, errMsg);
 	}
 	if ((entryAngle < 0) || (entryAngle > 3)) {
-		DebugWeaponFireChunk(this, NULL, attacker);
+		DebugWeaponFireChunk(this, nullptr, attacker);
 		char errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.pack: bad entryAngle %d (save wfchunk.dbg file) ", entryAngle);
 		Assert(false, entryAngle, errMsg);
 	}
 	if ((numMissiles < 0) || (numMissiles > 15)) {
-		DebugWeaponFireChunk(this, NULL, attacker);
+		DebugWeaponFireChunk(this, nullptr, attacker);
 		char errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.pack: bad numMissiles %d (save wfchunk.dbg file) ", numMissiles);
 		Assert(false, numMissiles, errMsg);
@@ -820,31 +820,31 @@ void WeaponFireChunk::unpack (GameObjectPtr attacker) {
 	//-------------------------
 	// Lots'a error checking...
 	if ((targetType < 0) || (targetType > 3)) {
-		DebugWeaponFireChunk(this, NULL, attacker);
+		DebugWeaponFireChunk(this, nullptr, attacker);
 		char errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.unpack: bad targetType %d (save wfchunk.dbg file) ", targetType);
 		Assert(false, targetType, errMsg);
 	}
 	if ((weaponIndex < 0) || (weaponIndex > 31)) {
-		DebugWeaponFireChunk(this, NULL, attacker);
+		DebugWeaponFireChunk(this, nullptr, attacker);
 		char errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.unpack: bad weaponIndex %d (save wfchunk.dbg file) ", weaponIndex);
 		Assert(false, weaponIndex, errMsg);
 	}
 	if ((hitLocation < -1) || (hitLocation >= 12)) {
-		DebugWeaponFireChunk(this, NULL, attacker);
+		DebugWeaponFireChunk(this, nullptr, attacker);
 		char errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.unpack: bad hitLocation %d (save wfchunk.dbg file) ", hitLocation);
 		Assert(false, hitLocation, errMsg);
 	}
 	if ((entryAngle < 0) || (entryAngle > 3)) {
-		DebugWeaponFireChunk(this, NULL, attacker);
+		DebugWeaponFireChunk(this, nullptr, attacker);
 		char errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.unpack: bad entryAngle %d (save wfchunk.dbg file) ", entryAngle);
 		Assert(false, entryAngle, errMsg);
 	}
 	if ((numMissiles < 0) || (numMissiles > 15)) {
-		DebugWeaponFireChunk(this, NULL, attacker);
+		DebugWeaponFireChunk(this, nullptr, attacker);
 		char errMsg[1024];
 		sprintf(errMsg, " WeaponFireChunk.unpack: bad numMissiles %d (save wfchunk.dbg file) ", numMissiles);
 		Assert(false, numMissiles, errMsg);
@@ -861,32 +861,32 @@ void WeaponFireChunk::unpack (GameObjectPtr attacker) {
 			isStreakMissile = ((TurretPtr)attacker)->isWeaponStreak(weaponIndex);
 		}
 		if (isStreakMissile) {
-			DebugWeaponFireChunk(this, NULL, attacker);
+			DebugWeaponFireChunk(this, nullptr, attacker);
 			Assert(false, 0, " WeaponFireChunk.unpack: streak missile missed (save wfchunk.dbg file) ");
 		}
 	}
-	GameObjectPtr target = NULL;
+	GameObjectPtr target = nullptr;
 	if (targetType == 0 /*WEAPONFIRECHUNK_TARGET_MOVER*/) {
 		target = (GameObjectPtr)MPlayer->moverRoster[targetId];
 		//----------------------------------------------------------------------------
-		// Mover targets could be NULL now, since we free them when they're destroyed.
-		//if (target == NULL) {
-		//	DebugWeaponFireChunk (this, NULL, attacker);
-		//	Assert(false, 0, " WeaponFireChunk.unpack: NULL Mover Target (save wfchunk.dbg file) ");
+		// Mover targets could be nullptr now, since we free them when they're destroyed.
+		//if (target == nullptr) {
+		//	DebugWeaponFireChunk (this, nullptr, attacker);
+		//	Assert(false, 0, " WeaponFireChunk.unpack: nullptr Mover Target (save wfchunk.dbg file) ");
 		//}
 		}
 	else if (targetType == 1 /*WEAPONFIRECHUNK_TARGET_TERRAIN*/) {
 		target = ObjectManager->findByPartId(targetId);
-		if (target == NULL) {
-			DebugWeaponFireChunk (this, NULL, attacker);
-			Assert(false, 0, " WeaponFireChunk.unpack: NULL Terrain Target (save wfchunk.dbg file) ");
+		if (target == nullptr) {
+			DebugWeaponFireChunk (this, nullptr, attacker);
+			Assert(false, 0, " WeaponFireChunk.unpack: nullptr Terrain Target (save wfchunk.dbg file) ");
 		}
 		}
 	else if (targetType == 2 /*WEAPONFIRECHUNK_TARGET_TRAIN*/) {
 		target = ObjectManager->findByPartId(targetId);
-		if (target == NULL) {
-			DebugWeaponFireChunk (this, NULL, attacker);
-			Assert(false, 0, " WeaponFireChunk.unpack: NULL Special Target (save wfchunk.dbg file) ");
+		if (target == nullptr) {
+			DebugWeaponFireChunk (this, nullptr, attacker);
+			Assert(false, 0, " WeaponFireChunk.unpack: nullptr Special Target (save wfchunk.dbg file) ");
 		}
 		}
 	else if (targetType == 3 /*WEAPONFIRECHUNK_TARGET_LOCATION*/) {
@@ -900,57 +900,57 @@ void WeaponFireChunk::unpack (GameObjectPtr attacker) {
 bool WeaponFireChunk::equalTo (WeaponFireChunkPtr chunk) {
 
 	if (targetType != chunk->targetType) {
-		DebugWeaponFireChunk(this, chunk, NULL);
+		DebugWeaponFireChunk(this, chunk, nullptr);
 		return(false);
 	}
 
 	if (targetId != chunk->targetId) {
-		DebugWeaponFireChunk(this, chunk, NULL);
+		DebugWeaponFireChunk(this, chunk, nullptr);
 		return(false);
 	}
 
 	if (targetCell[0] != chunk->targetCell[0]) {
-		DebugWeaponFireChunk(this, chunk, NULL);
+		DebugWeaponFireChunk(this, chunk, nullptr);
 		return(false);
 	}
 
 	if (targetCell[1] != chunk->targetCell[1]) {
-		DebugWeaponFireChunk(this, chunk, NULL);
+		DebugWeaponFireChunk(this, chunk, nullptr);
 		return(false);
 	}
 
 	if (specialType != chunk->specialType) {
-		DebugWeaponFireChunk(this, chunk, NULL);
+		DebugWeaponFireChunk(this, chunk, nullptr);
 		return(false);
 	}
 
 	if (specialId != chunk->specialId) {
-		DebugWeaponFireChunk(this, chunk, NULL);
+		DebugWeaponFireChunk(this, chunk, nullptr);
 		return(false);
 	}
 
 	if (weaponIndex != chunk->weaponIndex) {
-		DebugWeaponFireChunk(this, chunk, NULL);
+		DebugWeaponFireChunk(this, chunk, nullptr);
 		return(false);
 	}
 
 	if (hit != chunk->hit) {
-		DebugWeaponFireChunk(this, chunk, NULL);
+		DebugWeaponFireChunk(this, chunk, nullptr);
 		return(false);
 	}
 
 	if (entryAngle != chunk->entryAngle) {
-		DebugWeaponFireChunk(this, chunk, NULL);
+		DebugWeaponFireChunk(this, chunk, nullptr);
 		return(false);
 	}
 
 	if (numMissiles != chunk->numMissiles) {
-		DebugWeaponFireChunk(this, chunk, NULL);
+		DebugWeaponFireChunk(this, chunk, nullptr);
 		return(false);
 	}
 
 	if (hitLocation != chunk->hitLocation) {
-		DebugWeaponFireChunk(this, chunk, NULL);
+		DebugWeaponFireChunk(this, chunk, nullptr);
 		return(false);
 	}
 
@@ -963,14 +963,14 @@ bool WeaponFireChunk::equalTo (WeaponFireChunkPtr chunk) {
 
 void DebugWeaponHitChunk (WeaponHitChunkPtr chunk1, WeaponHitChunkPtr chunk2) {
 
-	ChunkDebugMsg[0] = NULL;
+	ChunkDebugMsg[0] = nullptr;
 
 	char outString[512];
 
 	if (chunk1) {
 		strcat(ChunkDebugMsg, "\nCHUNK1\n");
 
-		GameObjectPtr target = NULL;
+		GameObjectPtr target = nullptr;
 		bool isTargetPoint = false;
 		if (chunk1->targetType == WEAPONHITCHUNK_TARGET_MOVER)
 			target = (GameObjectPtr)MPlayer->moverRoster[chunk1->targetId];
@@ -1027,7 +1027,7 @@ void DebugWeaponHitChunk (WeaponHitChunkPtr chunk1, WeaponHitChunkPtr chunk2) {
 	if (chunk2) {
 		strcat(ChunkDebugMsg, "\nCHUNK2\n");
 
-		GameObjectPtr target = NULL;
+		GameObjectPtr target = nullptr;
 		bool isTargetPoint = false;
 		if (chunk2->targetType == WEAPONHITCHUNK_TARGET_MOVER)
 			target = (GameObjectPtr)MPlayer->moverRoster[chunk2->targetId];
@@ -1086,7 +1086,7 @@ void DebugWeaponHitChunk (WeaponHitChunkPtr chunk1, WeaponHitChunkPtr chunk2) {
 	debugFile->writeString(ChunkDebugMsg);
 	debugFile->close();
 	delete debugFile;
-	debugFile = NULL;
+	debugFile = nullptr;
 
 	ExceptionGameMsg = ChunkDebugMsg;
 }
@@ -1182,7 +1182,7 @@ void WeaponHitChunk::buildCameraDroneTarget (GameObjectPtr target,
 void WeaponHitChunk::build (GameObjectPtr target, WeaponShotInfoPtr shotInfo, bool isRefit) {
 
 	if (!target)
-		Fatal(0, " WeaponHitChunk.build: NULL target ");
+		Fatal(0, " WeaponHitChunk.build: nullptr target ");
 	Assert(((float)((uint32_t)(shotInfo->damage * 4.0)) * 0.25) == shotInfo->damage, 0, " WeaponHitChunk.build: damage round error ");
 	if (target->isMover()) {
 		//---------------------------------------------------------------
@@ -1337,7 +1337,7 @@ void WeaponHitChunk::unpack (void) {
 			break;
 		default:
 			NODEFAULT;
-			DebugWeaponHitChunk(this, NULL);
+			DebugWeaponHitChunk(this, nullptr);
 			Fatal(0, " Bad WeaponHitChunk Target Type ");
 	}
 }
@@ -1404,8 +1404,8 @@ bool WeaponHitChunk::valid (int32_t from) {
 		MoverPtr target = MPlayer->moverRoster[targetId];
 		if (!target) {
 			if (CombatLog)
-				CombatLog->write("WeaponHitChunk INVALID: refit has NULL target");
-			DebugWeaponHitChunk(this, NULL);
+				CombatLog->write("WeaponHitChunk INVALID: refit has nullptr target");
+			DebugWeaponHitChunk(this, nullptr);
 			return(false);
 		}
 		}
@@ -1434,13 +1434,13 @@ bool WeaponHitChunk::valid (int32_t from) {
 					char s[512];
 					int32_t r = (targetId - MIN_TERRAIN_PART_ID) / MAX_MAP_CELL_WIDTH;
 					int32_t c = targetId - MIN_TERRAIN_PART_ID - (MAX_MAP_CELL_WIDTH * r);
-					sprintf(s, "WeaponHitChunk INVALID: NULL terrain target (%d), rc = %d,%d, type = %d, damage = %.2f, data=%d", targetId, r, c, targetType, damage, data);
+					sprintf(s, "WeaponHitChunk INVALID: nullptr terrain target (%d), rc = %d,%d, type = %d, damage = %.2f, data=%d", targetId, r, c, targetType, damage, data);
 					if (CombatLog) {
 						CombatLog->write(s);
 						CombatLog->dump();
 						//CombatLog->close();
 					}
-					DebugWeaponHitChunk(this, NULL);
+					DebugWeaponHitChunk(this, nullptr);
 					return(false);
 				}
 				}
@@ -1451,7 +1451,7 @@ bool WeaponHitChunk::valid (int32_t from) {
 					CombatLog->write("WeaponHitChunk INVALID: bad targetType");
 					CombatLog->dump();
 				}
-				DebugWeaponHitChunk(this, NULL);
+				DebugWeaponHitChunk(this, nullptr);
 				return(false);
 		}
 	}
@@ -1483,7 +1483,7 @@ void GameObject::init (bool create) {
 	objectClass = GAMEOBJECT;
 	if (initialize) {
 		handle = 0;
-		appearance = NULL;
+		appearance = nullptr;
 		threatRating = 0;
 	}
 	partId = 0;
@@ -2073,7 +2073,7 @@ int32_t GameObject::getCaptureBlocker (GameObjectPtr capturingMover, GameObjectP
 	int32_t numBlockers = 0;
 	TeamPtr capturingTeam = capturingMover->getTeam();
 	if (!capturingTeam)
-		STOP(("GameObject.getCaptureBlocker: NULL capturingTeam"));
+		STOP(("GameObject.getCaptureBlocker: nullptr capturingTeam"));
 
 	if (distanceFrom(capturingMover->getPosition()) <= 30.0) {
 		for (int32_t i = 0; i < ObjectManager->getNumMovers(); i++) {

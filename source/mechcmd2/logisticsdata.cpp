@@ -40,7 +40,7 @@ extern CPrefs prefs;
 int32_t SaveGameVersionNumber = 10004;
 //----------------------------------------------------------------------
 
-LogisticsData* LogisticsData::instance = NULL;
+LogisticsData* LogisticsData::instance = nullptr;
 
 //*************************************************************************************************
 LogisticsData::LogisticsData()
@@ -77,7 +77,7 @@ LogisticsData::~LogisticsData()
 	vehicles.Clear();
 
 	delete missionInfo;
-	missionInfo = NULL;
+	missionInfo = nullptr;
 
 #ifndef VIEWER
 	ChatWindow::destroy();
@@ -180,7 +180,7 @@ void LogisticsData::initComponents()
 	}
 
 	delete [] data;
-	data = NULL;
+	data = nullptr;
 }
 
 //*************************************************************************************************
@@ -497,7 +497,7 @@ int32_t LogisticsData::sellMech( LogisticsMech* pVar )
 		if ( (*iter)->getVariant() == pVar->getVariant() )
 		{
 			int32_t cost = ((*iter))->getCost();
-			(*iter)->setPilot( NULL );
+			(*iter)->setPilot( nullptr );
 			delete *iter;
 			instance->inventory.Delete( iter );
 
@@ -578,7 +578,7 @@ LogisticsVariant* LogisticsData::getVariant( int32_t ID )
 	if ( instance->currentlyModifiedMech && ID == instance->currentlyModifiedMech->getID() )
 		return instance->currentlyModifiedMech->getVariant();
 
-	return NULL;
+	return nullptr;
 }
 
 LogisticsMech*	LogisticsData::getMech( int32_t ID )
@@ -589,7 +589,7 @@ LogisticsMech*	LogisticsData::getMech( int32_t ID )
 			return (*iter );
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -651,7 +651,7 @@ LogisticsMech*		LogisticsData::getMechWithoutForceGroup( LogisticsMech* pMech )
 			}
 		}
 	
-	return NULL;
+	return nullptr;
 }
 int32_t LogisticsData::removeMechFromForceGroup( LogisticsMech* pMech, bool bRemovePilot )
 {
@@ -703,7 +703,7 @@ LogisticsPilot* LogisticsData::getFirstAvailablePilot()
 		 }
 	}
 
-	return NULL;
+	return nullptr;
 
 }
 
@@ -884,7 +884,7 @@ LogisticsVariant* LogisticsData::getVariant( PCSTR pCSVFileName, int32_t Variant
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void LogisticsData::removeMechsInForceGroup()
@@ -1215,7 +1215,7 @@ int32_t LogisticsData::loadVariant( FitIniFile& file )
 	
 	file.readIdString( "Chassis", tmp, 255 );
 
-	const LogisticsChassis* pChassis  = NULL;
+	const LogisticsChassis* pChassis  = nullptr;
 	// go out and find that chassis
 	for ( VARIANT_LIST::EIterator vIter = variants.Begin(); !vIter.IsDone(); vIter++ )
 	{
@@ -1425,7 +1425,7 @@ LogisticsMech*  LogisticsData::getMech( PCSTR MechName, PCSTR pilotName )
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void LogisticsData::removeMechFromInventory( PCSTR mechName, PCSTR pilotName )
@@ -1464,7 +1464,7 @@ LogisticsPilot*	LogisticsData::getPilot( PCSTR pilotName )
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 LogisticsVariant* LogisticsData::getVariant( PCSTR mechName )
@@ -1475,7 +1475,7 @@ LogisticsVariant* LogisticsData::getVariant( PCSTR mechName )
 			return (*iter);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 int32_t LogisticsData::updateAvailability()
@@ -1604,7 +1604,7 @@ int32_t LogisticsData::updateAvailability()
 		{
 			EString mechName = (*vIter)->getFileName();
 			char realName[1024];
-			_splitpath( mechName, NULL, NULL, realName, NULL );
+			_splitpath( mechName, nullptr, nullptr, realName, nullptr );
 			if ( _stricmp( realName, chassisFileName ) == 0 )
 			{
 				componentCount = 255;
@@ -1747,7 +1747,7 @@ void LogisticsData::appendAvailability(PCSTR pFileName, bool* availableArray )
 		{
 			EString mechName = (*vIter)->getFileName();
 			char realName[255];
-			_splitpath( mechName, NULL, NULL, realName, NULL );
+			_splitpath( mechName, nullptr, nullptr, realName, nullptr );
 			if ( _stricmp( realName, chassisFileName ) == 0 )
 			{
 				int32_t componentCount = 255;
@@ -1809,7 +1809,7 @@ void LogisticsData::clearInventory()
 {
 	for (MECH_LIST::EIterator iter = inventory.Begin(); !iter.IsDone(); iter++ )
 	{
-		(*iter)->setPilot( NULL );
+		(*iter)->setPilot( nullptr );
 		delete *iter;
 	}
 
@@ -1963,9 +1963,9 @@ void encryptFile (PSTR inputFile, PSTR outputFile)
 	//Now we encrypt this by zlib Compressing the file passed in.
 	// Then LZ Compressing the resulting zlib data.
 	// Since our LZ compression is pretty much non-standard, that should be enough.
-	puint8_t rawData = NULL;
-	puint8_t zlibData = NULL;
-	puint8_t LZData = NULL;
+	puint8_t rawData = nullptr;
+	puint8_t zlibData = nullptr;
+	puint8_t LZData = nullptr;
 
 	File dataFile;
 	dataFile.open(inputFile);
@@ -2000,9 +2000,9 @@ void decryptFile (PSTR inputFile, PSTR outputFile)
 	//Now we decrypt this by lz deCompressing the zlib file created.
 	// Then zlib deCompressing the resulting zlib data into the raw File again.
 	// Since our LZ compression is pretty much non-standard, that should be enough.
-	puint8_t rawData = NULL;
-	puint8_t zlibData = NULL;
-	puint8_t LZData = NULL;
+	puint8_t rawData = nullptr;
+	puint8_t zlibData = nullptr;
+	puint8_t LZData = nullptr;
 
 	File dataFile;
 	int32_t result = dataFile.open(inputFile);
@@ -2273,7 +2273,7 @@ void				LogisticsData::startNewCampaign( PCSTR fileName )
 	if ( MPlayer )
 	{
 		delete MPlayer;
-		MPlayer = NULL;
+		MPlayer = nullptr;
 	}
 #endif
 
@@ -2492,7 +2492,7 @@ LogisticsVehicle*	LogisticsData::getVehicle( PCSTR pName )
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 int32_t LogisticsData::addBuilding( int32_t fitID, PacketFile& objectFile, float scale )
@@ -2577,7 +2577,7 @@ LogisticsComponent* LogisticsData::getComponent( int32_t componentID )
 				return &(*iter);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 //*************************************************************************************************
@@ -2590,7 +2590,7 @@ LogisticsData::Building*			LogisticsData::getBuilding( int32_t nameID )
 				return &(*iter);
 		}
 
-	return NULL;
+	return nullptr;
 }
 
 

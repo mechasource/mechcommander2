@@ -54,18 +54,18 @@ class GameSoundSystem : public SoundSystem
 			SoundSystem::init(void);
 
 			wholeMsgDone = true;
-			currentMessage = NULL;
+			currentMessage = nullptr;
 			messagesInQueue = 0;
 			currentFragment = 0;
 			playingNoise = false;
-			radioHandle = NULL;
+			radioHandle = nullptr;
 
 			//------------------------------------------------------------
 			// Startup the Radio Message Queue.
 			messagesInQueue = 0;
 			wholeMsgDone = true;
 			for (int32_t i=0;i<MAX_QUEUED_MESSAGES;i++)
-				queue[i] = NULL;
+				queue[i] = nullptr;
 
 			generalAlarmTimer = 0.0f;
 		}

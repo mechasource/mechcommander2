@@ -88,7 +88,7 @@ bool __stdcall CheckConnectionAvailable( int32_t Connection );
 //
 // Open a TCPIP connection
 //
-// You can pass the address of the server or NULL for the sub net.
+// You can pass the address of the server or nullptr for the sub net.
 //
 //
 bool __stdcall gos_ConnectTCP( PSTR ip_address, uint16_t port );
@@ -130,7 +130,7 @@ void __stdcall gos_EnumerateSessions( NETCALLBACK callback );
 
 
 // Functionality: Enumerates the players in the given session by calling the callback 
-//					for each player in the session.  The callback string is NULL when 
+//					for each player in the session.  The callback string is nullptr when 
 //					all players have been enumerated.  The value given in the callback
 //					is the GOSNETWORKID of the player.  It can be used when sending messages
 //				    to the player.

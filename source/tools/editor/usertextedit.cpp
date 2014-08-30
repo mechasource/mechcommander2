@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 // CUserTextEdit dialog
 
 
-CUserTextEdit::CUserTextEdit(CWnd* pParent /*=NULL*/)
+CUserTextEdit::CUserTextEdit(CWnd* pParent /*=nullptr*/)
 	: CDialog(CUserTextEdit::IDD, pParent)
 {
 	m_UseResourceString = false;

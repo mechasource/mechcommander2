@@ -14,7 +14,7 @@ class EditForestDlg : public CDialog
 {
 // Construction
 public:
-	EditForestDlg(CWnd* pParent = NULL);   // standard constructor
+	EditForestDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(EditForestDlg)

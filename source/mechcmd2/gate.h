@@ -173,7 +173,7 @@ class Gate : public TerrainObject
 			justDestroyed = FALSE;
 			lastMarkedOpen = false;
 
-			closestObject = NULL;
+			closestObject = nullptr;
 			
 			parentId = 0xffffffff;
 			parent = 0;

@@ -31,14 +31,14 @@ SelectionBrush::SelectionBrush( bool Area, int32_t newRadius )
 	bPainting = false; 
 	bArea = Area; 
 	bDrag = false; 
-	pCurAction = NULL; 
-	pCurModifyBuildingAction = NULL;
+	pCurAction = nullptr; 
+	pCurModifyBuildingAction = nullptr;
 
 	lastPos.x = lastPos.y = lastPos.z = lastPos.w = 0.0f;		//Keep the FPU exception from going off!
 	smoothRadius = newRadius;
 	bFirstClick = false;
 
-	pDragBuilding = NULL;
+	pDragBuilding = nullptr;
 }
 
 SelectionBrush::~SelectionBrush()
@@ -61,13 +61,13 @@ bool SelectionBrush::beginPaint()
 Action* SelectionBrush::endPaint()
 {
 	bPainting = false;
-	Action* pRetAction = NULL;
+	Action* pRetAction = nullptr;
 	if ( pCurAction )
 	{
 		if ( pCurAction->vertexInfoList.Count() )
 		{
 			pRetAction = pCurAction;
-			pCurAction = NULL;
+			pCurAction = nullptr;
 			land->recalcWater();
 //			land->reCalcLight();	
 		}
@@ -75,7 +75,7 @@ Action* SelectionBrush::endPaint()
 		else
 		{
 			delete pCurAction;
-			pCurAction = NULL;
+			pCurAction = nullptr;
 		}
 	}
 	else if ( pCurModifyBuildingAction )
@@ -87,13 +87,13 @@ Action* SelectionBrush::endPaint()
 			moved since we last noted the object's info*/
 			pCurModifyBuildingAction->updateNotedObjectPositions();
 			pRetAction = pCurModifyBuildingAction;
-			pCurModifyBuildingAction = NULL;
+			pCurModifyBuildingAction = nullptr;
 		}
 
 		else
 		{
 			delete pCurModifyBuildingAction;
-			pCurModifyBuildingAction = NULL;
+			pCurModifyBuildingAction = nullptr;
 		}
 	}
 
@@ -362,7 +362,7 @@ void SelectionBrush::render( int32_t screenX, int32_t screenY )
 	{
 		EditorInterface::instance()->ChangeCursor( IDC_MC2ARROW );
 		bDrag = false;
-		pDragBuilding = NULL;
+		pDragBuilding = nullptr;
 	}
 }
 

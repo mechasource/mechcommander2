@@ -17,7 +17,7 @@ LinkBrush::LinkBrush( bool Link )
 	// and add an interface element for each one. 
 	parentPos.x = parentPos.y = -1;
 	bLink = Link;
-	parent = NULL;
+	parent = nullptr;
 }
 
 LinkBrush::~LinkBrush()
@@ -41,7 +41,7 @@ Action* LinkBrush::endPaint()
 	else
 		delete pAction;
 
-	return NULL;
+	return nullptr;
 }
 
 bool LinkBrush::paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY )
@@ -294,7 +294,7 @@ bool LinkBrush::unPaint( Stuff::Vector3D& pos, int32_t XPos, int32_t yPos )
 
 			EditorObjectMgr::instance()->deleteLink( pLink );
 
-			parent = NULL;
+			parent = nullptr;
 			parentPos.x = parentPos.y = 0;
 
 			return true;

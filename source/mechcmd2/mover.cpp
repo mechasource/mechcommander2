@@ -147,7 +147,7 @@ int32_t						goalMapRowStart[GOALMAP_CELL_DIM] = {
 							};
 char						goalMapRowCol[GOALMAP_CELL_DIM * GOALMAP_CELL_DIM][2];
 int32_t						Mover::numMovers = 0;
-SortListPtr					Mover::sortList = NULL;
+SortListPtr					Mover::sortList = nullptr;
 
 extern float				DefaultAttackRadius;
 
@@ -438,7 +438,7 @@ char Mover::optimalCells[MAX_ATTACK_CELLRANGE][MAX_ATTACK_INCREMENTS][2];
 int32_t Mover::numOptimalIncrements = 0;
 int16_t Mover::rangedCellsIndices[MAX_ATTACK_CELLRANGE][2];
 char Mover::rangedCells[RANGED_CELLS_DIM][2];
-TriggerAreaManager* Mover::triggerAreaMgr = NULL;
+TriggerAreaManager* Mover::triggerAreaMgr = nullptr;
 
 uint32_t Mover::holdFireIconHandle = 0;
 
@@ -481,7 +481,7 @@ inline MoverPtr getMoverFromHandle (int32_t handle) {
 
 void DebugMoveChunk (MoverPtr mover, MoveChunkPtr chunk1, MoveChunkPtr chunk2) {
 
-	ChunkDebugMsg[0] = NULL;
+	ChunkDebugMsg[0] = nullptr;
 	char outString[512];
 
 	if (mover) {
@@ -500,8 +500,8 @@ void DebugMoveChunk (MoverPtr mover, MoveChunkPtr chunk1, MoveChunkPtr chunk2) {
 		mover->getCellPosition(cellPos[0], cellPos[1]);
 		sprintf(outString, "Mover Obj Cell Pos = [%d, %d]\n", cellPos[0], cellPos[1]);
 		strcat(ChunkDebugMsg, outString);
-		if (mover->getPilot() == NULL)
-			strcat(ChunkDebugMsg, "NULL pilot!\n");
+		if (mover->getPilot() == nullptr)
+			strcat(ChunkDebugMsg, "nullptr pilot!\n");
 		if ((mover->getObjectClass() == BATTLEMECH) && ((BattleMechPtr)mover)->inJump) {
 			int32_t jumpDest[2];
 			land->worldToCell(((BattleMechPtr)mover)->jumpGoal, jumpDest[0], jumpDest[1]);
@@ -570,7 +570,7 @@ void DebugMoveChunk (MoverPtr mover, MoveChunkPtr chunk1, MoveChunkPtr chunk2) {
 	debugFile->writeString(ChunkDebugMsg);
 	debugFile->close();
 	delete debugFile;
-	debugFile = NULL;
+	debugFile = nullptr;
 
 	ExceptionGameMsg = ChunkDebugMsg;
 }
@@ -850,7 +850,7 @@ void MoveChunk::pack (MoverPtr mover) {
 	//-------------------------
 	// Lots'a error checking...
 	if ((numSteps < 1) || (numSteps > 4)) {
-		DebugMoveChunk(mover, this, NULL);
+		DebugMoveChunk(mover, this, nullptr);
 		char errMsg[1024];
 		sprintf(errMsg, " MoveChunk.pack: bad numSteps %d (save mvchunk.dbg file) ", numSteps);
 		Assert(false, numSteps, errMsg);
@@ -920,7 +920,7 @@ void MoveChunk::unpack (MoverPtr mover) {
 	//-------------------------
 	// Lots'a error checking...
 	if ((numSteps < 1) || (numSteps > 4)) {
-		DebugMoveChunk(mover, this, NULL);
+		DebugMoveChunk(mover, this, nullptr);
 		char errMsg[1024];
 		sprintf(errMsg, " MoveChunk.unpack: bad numSteps %d (save mvchunk.dbg file) ", numSteps);
 		Assert(false, numSteps, errMsg);
@@ -989,7 +989,7 @@ void Mover::setMoveChunk (MovePathPtr path, MoveChunkPtr chunk) {
 
 void DebugStatusChunk (MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chunk2) {
 
-	ChunkDebugMsg[0] = NULL;
+	ChunkDebugMsg[0] = nullptr;
 
 	char outString[512];
 
@@ -1003,7 +1003,7 @@ void DebugStatusChunk (MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chu
 	if (chunk1) {
 		strcat(ChunkDebugMsg, "\nCHUNK1\n");
 
-		GameObjectPtr target = NULL;
+		GameObjectPtr target = nullptr;
 		Stuff::Vector3D targetPoint;
 		targetPoint.Zero();
 		bool isTargetPoint = false;
@@ -1095,7 +1095,7 @@ void DebugStatusChunk (MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chu
 	if (chunk2) {
 		strcat(ChunkDebugMsg, "\nCHUNK2\n");
 
-		GameObjectPtr target = NULL;
+		GameObjectPtr target = nullptr;
 		Stuff::Vector3D targetPoint;
 		targetPoint.Zero();
 		bool isTargetPoint = false;
@@ -1189,7 +1189,7 @@ void DebugStatusChunk (MoverPtr mover, StatusChunkPtr chunk1, StatusChunkPtr chu
 	debugFile->writeString(ChunkDebugMsg);
 	debugFile->close();
 	delete debugFile;
-	debugFile = NULL;
+	debugFile = nullptr;
 
 	ExceptionGameMsg = ChunkDebugMsg;
 }
@@ -1290,7 +1290,7 @@ void StatusChunk::pack (MoverPtr mover) {
 		case STATUSCHUNK_TARGET_MOVER: {
 			if ((targetId < 0) || (targetId >= MAX_MULTIPLAYER_MOVERS)) {
 				#ifdef ASSERT_STATUSCHUNK
-					DebugStatusChunk(mover, this, NULL);
+					DebugStatusChunk(mover, this, nullptr);
 					char errMsg[1024];
 					sprintf(errMsg, " StatusChunk.pack: bad targetId %d (save stchunk.dbg file) ", targetId);
 					Assert(false, targetId, errMsg);
@@ -1300,12 +1300,12 @@ void StatusChunk::pack (MoverPtr mover) {
 			}
 			GameObjectPtr target = (GameObjectPtr)MPlayer->moverRoster[targetId];
 			//----------------------------------------------------------------------------
-			// Mover targets could be NULL now, since we free them when they're destroyed.
+			// Mover targets could be nullptr now, since we free them when they're destroyed.
 			//if (!target) {
 			//	#ifdef ASSERT_STATUSCHUNK
-			//		DebugStatusChunk(mover, this, NULL);
+			//		DebugStatusChunk(mover, this, nullptr);
 			//		char errMsg[1024];
-			//		sprintf(errMsg, " StatusChunk.pack: NULL Mover Target (save stchunk.dbg file) ");
+			//		sprintf(errMsg, " StatusChunk.pack: nullptr Mover Target (save stchunk.dbg file) ");
 			//		Assert(false, targetId, errMsg);
 			//	#else
 			//		StatusChunkUnpackErr = 2;
@@ -1317,9 +1317,9 @@ void StatusChunk::pack (MoverPtr mover) {
 			GameObjectPtr target = ObjectManager->findByPartId(targetId);
 			if (!target) {
 				#ifdef ASSERT_STATUSCHUNK
-					DebugStatusChunk(mover, this, NULL);
+					DebugStatusChunk(mover, this, nullptr);
 					char errMsg[1024];
-					sprintf(errMsg, " StatusChunk.pack: NULL Terrain Target (save stchunk.dbg file) ");
+					sprintf(errMsg, " StatusChunk.pack: nullptr Terrain Target (save stchunk.dbg file) ");
 					Assert(false, targetId, errMsg);
 				#else
 					StatusChunkUnpackErr = 3;
@@ -1331,9 +1331,9 @@ void StatusChunk::pack (MoverPtr mover) {
 			GameObjectPtr target = ObjectManager->findByPartId(targetId);
 			if (!target) {
 				#ifdef ASSERT_STATUSCHUNK
-					DebugStatusChunk(mover, this, NULL);
+					DebugStatusChunk(mover, this, nullptr);
 					char errMsg[1024];
-					sprintf(errMsg, " StatusChunk.pack: NULL Special Target (save stchunk.dbg file) ");
+					sprintf(errMsg, " StatusChunk.pack: nullptr Special Target (save stchunk.dbg file) ");
 					Assert(false, targetId, errMsg);
 				#else
 					StatusChunkUnpackErr = 4;
@@ -1345,7 +1345,7 @@ void StatusChunk::pack (MoverPtr mover) {
 			break;
 		default:
 			//#ifdef ASSERT_STATUSCHUNK
-			//	DebugStatusChunk(mover, this, NULL);
+			//	DebugStatusChunk(mover, this, nullptr);
 			//	char errMsg[1024];
 			//	sprintf(errMsg, " StatusChunk.pack: bad targetType %d (save stchunk.dbg file) ", targetType);
 			//	Assert(false, targetType, errMsg);
@@ -1437,7 +1437,7 @@ void StatusChunk::unpack (MoverPtr mover) {
 		case STATUSCHUNK_TARGET_MOVER: {
 			if ((targetId < 0) || (targetId >= MAX_MULTIPLAYER_MOVERS)) {
 				#ifdef ASSERT_STATUSCHUNK
-					DebugStatusChunk(mover, this, NULL);
+					DebugStatusChunk(mover, this, nullptr);
 					char errMsg[1024];
 					sprintf(errMsg, " StatusChunk.unpack: bad targetId %d (save stchunk.dbg file) ", targetId);
 					Assert(false, targetId, errMsg);
@@ -1447,12 +1447,12 @@ void StatusChunk::unpack (MoverPtr mover) {
 			}
 			GameObjectPtr target = (GameObjectPtr)MPlayer->moverRoster[targetId];
 			//----------------------------------------------------------------------------
-			// Mover targets could be NULL now, since we free them when they're destroyed.
+			// Mover targets could be nullptr now, since we free them when they're destroyed.
 			//if (!target) {
 			//	#ifdef ASSERT_STATUSCHUNK
-			//		DebugStatusChunk(mover, this, NULL);
+			//		DebugStatusChunk(mover, this, nullptr);
 			//		char errMsg[1024];
-			//		sprintf(errMsg, " StatusChunk.unpack: NULL Mover Target (save stchunk.dbg file) ");
+			//		sprintf(errMsg, " StatusChunk.unpack: nullptr Mover Target (save stchunk.dbg file) ");
 			//		Assert(false, targetId, errMsg);
 			//	#else
 			//		StatusChunkUnpackErr = 2;
@@ -1464,9 +1464,9 @@ void StatusChunk::unpack (MoverPtr mover) {
 			GameObjectPtr target = ObjectManager->findByPartId(targetId);
 			if (!target) {
 				#ifdef ASSERT_STATUSCHUNK
-					DebugStatusChunk(mover, this, NULL);
+					DebugStatusChunk(mover, this, nullptr);
 					char errMsg[1024];
-					sprintf(errMsg, " StatusChunk.unpack: NULL Terrain Target (save stchunk.dbg file) ");
+					sprintf(errMsg, " StatusChunk.unpack: nullptr Terrain Target (save stchunk.dbg file) ");
 					Assert(false, targetId, errMsg);
 				#else
 					StatusChunkUnpackErr = 3;
@@ -1478,9 +1478,9 @@ void StatusChunk::unpack (MoverPtr mover) {
 			GameObjectPtr target = ObjectManager->findByPartId(targetId);
 			if (!target) {
 				#ifdef ASSERT_STATUSCHUNK
-					DebugStatusChunk(mover, this, NULL);
+					DebugStatusChunk(mover, this, nullptr);
 					char errMsg[1024];
-					sprintf(errMsg, " StatusChunk.unpack: NULL Special Target (save stchunk.dbg file) ");
+					sprintf(errMsg, " StatusChunk.unpack: nullptr Special Target (save stchunk.dbg file) ");
 					Assert(false, targetId, errMsg);
 				#else
 					StatusChunkUnpackErr = 4;
@@ -1492,7 +1492,7 @@ void StatusChunk::unpack (MoverPtr mover) {
 			break;
 		default:
 			//#ifdef ASSERT_STATUSCHUNK
-			//	DebugStatusChunk(mover, this, NULL);
+			//	DebugStatusChunk(mover, this, nullptr);
 			//	char errMsg[1024];
 			//	sprintf(errMsg, " StatusChunk.unpack: bad targetType %d (save stchunk.dbg file) ", targetType);
 			//	Assert(false, targetType, errMsg);
@@ -1510,37 +1510,37 @@ void StatusChunk::unpack (MoverPtr mover) {
 bool StatusChunk::equalTo (StatusChunkPtr chunk) {
 
 	if (bodyState != chunk->bodyState) {
-		DebugStatusChunk(NULL, this, chunk);
+		DebugStatusChunk(nullptr, this, chunk);
 		return(false);
 	}
 
 	if (ejectOrderGiven != chunk->ejectOrderGiven) {
-		DebugStatusChunk(NULL, this, chunk);
+		DebugStatusChunk(nullptr, this, chunk);
 		return(false);
 	}
 
 	if (jumpOrder != chunk->jumpOrder) {
-		DebugStatusChunk(NULL, this, chunk);
+		DebugStatusChunk(nullptr, this, chunk);
 		return(false);
 	}
 
 	if (targetType != chunk->targetType) {
-		DebugStatusChunk(NULL, this, chunk);
+		DebugStatusChunk(nullptr, this, chunk);
 		return(false);
 	}
 
 	if (targetId != chunk->targetId) {
-		DebugStatusChunk(NULL, this, chunk);
+		DebugStatusChunk(nullptr, this, chunk);
 		return(false);
 	}
 
 	if (targetCellRC[0] != chunk->targetCellRC[0]) {
-		DebugStatusChunk(NULL, this, chunk);
+		DebugStatusChunk(nullptr, this, chunk);
 		return(false);
 	}
 
 	if (targetCellRC[1] != chunk->targetCellRC[1]) {
-		DebugStatusChunk(NULL, this, chunk);
+		DebugStatusChunk(nullptr, this, chunk);
 		return(false);
 	}
 
@@ -2186,13 +2186,13 @@ void Mover::init (bool create) {
 		killed = false;
 		lost = false;
 		salvaged = false;
-		appearance = NULL;
+		appearance = nullptr;
 		lowestWeaponNodeID = -2;
-		sensorSystem = NULL;
+		sensorSystem = nullptr;
 		lastMapCell[0] = -1;
 		lastMapCell[1] = -1;
 		contactInfo = new ContactInfo;
-		pilot = NULL;
+		pilot = nullptr;
 		pilotHandle = 0;
 		numWeaponHitsHandled = 0;
 		prevTeamId = -1;
@@ -2209,7 +2209,7 @@ void Mover::init (bool create) {
 
 	positionNormal.Zero();
 	velocity.Zero();
-	name[0] = NULL;
+	name[0] = nullptr;
 	chassis = 0;
 	startDisabled = false;
 
@@ -2286,7 +2286,7 @@ void Mover::init (bool create) {
 #endif
 		}
 	else
-		netPlayerName[0] = NULL;
+		netPlayerName[0] = nullptr;
 	localMoverId = -1;
 	netRosterIndex = -1;
 	statusChunk.init();
@@ -2372,7 +2372,7 @@ void Mover::release (void) {
 		getGroup()->remove(this);
 	setCommanderId(-1);
 	MechWarrior::freeWarrior(pilot);
-	pilot = NULL;
+	pilot = nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -2474,7 +2474,7 @@ void Mover::updateDebugWindow (GameDebugWindow* debugWindow) {
 				numConts = sensorSystem->numContacts;
 			for (int32_t i = 0; i < numConts; i++) {
 				MoverPtr contact = (MoverPtr)ObjectManager->get(sensorSystem->contacts[i] & 0x7FFF);
-				Assert(contact != NULL, sensorSystem->contacts[i] & 0x7FFF, " null contact ");
+				Assert(contact != nullptr, sensorSystem->contacts[i] & 0x7FFF, " null contact ");
 				char s2[10];
 				sprintf(s2, " %d.%d", sensorSystem->contacts[i] & 0x7FFF, contact->getContactStatus(teamId, true));
 				strcat(s, s2);
@@ -2656,7 +2656,7 @@ int32_t Mover::setTeamId (int32_t _teamId, bool setup) {
 		//if (ecm != 255)
 		//	SensorManager->removeEcm(this,);
 		if (pilot)
-			pilot->setTeam(NULL);
+			pilot->setTeam(nullptr);
 		team->removeFromRoster(this);
 	}
 
@@ -2666,7 +2666,7 @@ int32_t Mover::setTeamId (int32_t _teamId, bool setup) {
 	if (setup) {
 		if (teamId > -1) {
 			TeamPtr team = Team::teams[teamId];
-			Assert(team != NULL, 0, " Mover.setTeamId: NULL team ");
+			Assert(team != nullptr, 0, " Mover.setTeamId: nullptr team ");
 			if (sensorSystem)
 				SensorManager->addTeamSensor(teamId, sensorSystem);
 			if (pilot)
@@ -2681,7 +2681,7 @@ int32_t Mover::setTeamId (int32_t _teamId, bool setup) {
 TeamPtr Mover::getTeam (void) {
 
 	if (teamId == -1)
-		return(NULL);
+		return(nullptr);
 	return(Team::teams[teamId]);
 }
 
@@ -2690,7 +2690,7 @@ TeamPtr Mover::getTeam (void) {
 CommanderPtr Mover::getCommander (void) {
 
 	if (commanderId == -1)
-		return(NULL);
+		return(nullptr);
 	return(Commander::commanders[commanderId]);
 }
 
@@ -2739,7 +2739,7 @@ int32_t Mover::setGroupId (int32_t _groupId, bool setup) {
 MoverGroupPtr Mover::getGroup (void) {
 
 	if (groupId == -1)
-		return(NULL);
+		return(nullptr);
 	return(Commander::commanders[commanderId]->getGroup(groupId));
 }
 
@@ -2800,7 +2800,7 @@ void Mover::setPosition (Stuff::Vector3D& newPosition) {
 	//-- I.e. Withdrawing or a camera Drone.  hehehe.
 	if (offMap && withdrawing)
 	{
-		ObjectManager->getObjectType(typeHandle)->handleDestruction(this,NULL);
+		ObjectManager->getObjectType(typeHandle)->handleDestruction(this,nullptr);
 	}
 
 	GameObject::setPosition(newPosition);
@@ -3006,13 +3006,13 @@ void Mover::destroy (void)
 	if (appearance)
 	{
 		delete appearance;
-		appearance = NULL;
+		appearance = nullptr;
 	}
 
 	if (contactInfo)
 	{
 		delete contactInfo;
-		contactInfo = NULL;
+		contactInfo = nullptr;
 	}
 }
 
@@ -3150,13 +3150,13 @@ int32_t Mover::handleTacticalOrder (TacticalOrder tacOrder, int32_t priority, bo
 
 //queuePlayerOrder = true;
 if (queuePlayerOrder)
-	tacOrder.pack(NULL, NULL);
+	tacOrder.pack(nullptr, nullptr);
 
 #if 1
 	if (MPlayer && !MPlayer->isServer()) {
 		//----------------------------
 		// Simply for test purposes...
-		tacOrder.pack(NULL, NULL);
+		tacOrder.pack(nullptr, nullptr);
 		TacticalOrder tacOrder2;
 		tacOrder2.data[0] = tacOrder.data[0];
 		tacOrder2.data[1] = tacOrder.data[1];
@@ -3224,7 +3224,7 @@ if (queuePlayerOrder)
 		case TACTICAL_ORDER_ATTACK_OBJECT:
 			//tacOrder.code = TACTICAL_ORDER_ATTACK_POINT;
 			//tacOrder.attackParams.targetPoint = (GameObjectPtr(BaseObjectPtr(tacOrder.target)))->getPosition();
-			//tacOrder.target = NULL;
+			//tacOrder.target = nullptr;
 			if (tacOrder.attackParams.method == ATTACKMETHOD_DFA) {
 				//-------------------------------------------------
 				// Let's just make it a move/jump order, for now...
@@ -3334,8 +3334,8 @@ void Mover::updateDamageTakenRate (void) {
 void Mover::setPilotHandle (int32_t _pilotHandle) {
 
 	if (pilot) {
-		pilot->setVehicle(NULL);
-		pilot = NULL;
+		pilot->setVehicle(nullptr);
+		pilot = nullptr;
 	}
 	pilotHandle = _pilotHandle;
 	if (pilotHandle > 0) {
@@ -3350,7 +3350,7 @@ void Mover::loadPilot (PSTR pilotFileName, PSTR brainFileName, LogisticsPilot *l
 
 	if (pilot) {
 		MechWarrior::freeWarrior(pilot);
-		pilot = NULL;
+		pilot = nullptr;
 	}
 
 	//---------------------------------------------------------------
@@ -3365,7 +3365,7 @@ void Mover::loadPilot (PSTR pilotFileName, PSTR brainFileName, LogisticsPilot *l
 	pilotFullFileName.init(warriorPath, pilotFileName, ".fit");
 			
 	FitIniFile* pilotFile = new FitIniFile;
-	gosASSERT(pilotFile != NULL);
+	gosASSERT(pilotFile != nullptr);
 		
 	int32_t result = pilotFile->open(pilotFullFileName);
 	gosASSERT(result == NO_ERROR);
@@ -3374,7 +3374,7 @@ void Mover::loadPilot (PSTR pilotFileName, PSTR brainFileName, LogisticsPilot *l
 			
 	pilotFile->close();
 	delete pilotFile;
-	pilotFile = NULL;
+	pilotFile = nullptr;
 
 	//Copy logistics data to pilot AFTER loading old data.
 	// ONLY if we overrode the data in logistics!!
@@ -3425,7 +3425,7 @@ MoverPtr Mover::getPoint (void) {
 	if (group)
 		return(group->getPoint());
 #endif
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -3749,11 +3749,11 @@ int32_t Mover::updateWeaponFireChunks (int32_t which) {
 		if (chunk.targetType == 0 /*WEAPONFIRECHUNK_TARGET_MOVER*/) {
 			GameObjectPtr target = (GameObjectPtr)MPlayer->moverRoster[chunk.targetId];
 			//----------------------------------------------------------------------------
-			// Mover targets could be NULL now, since we free them when they're destroyed.
+			// Mover targets could be nullptr now, since we free them when they're destroyed.
 			if (target)
 				handleWeaponFire(weaponIndex,
 							 target,
-							 NULL,
+							 nullptr,
 							 chunk.hit,
 							 entryQuadTable[chunk.entryAngle],
 							 chunk.numMissiles,
@@ -3761,13 +3761,13 @@ int32_t Mover::updateWeaponFireChunks (int32_t which) {
 			}
 		else if (chunk.targetType == 1 /*WEAPONFIRECHUNK_TARGET_TERRAIN*/) {
 			GameObjectPtr target = ObjectManager->findByPartId(chunk.targetId);
-			if (target == NULL) {
-				DebugWeaponFireChunk (&chunk, NULL, this);
-				Assert(false, 0, " Mover.updateWeaponFireChunks: NULL Terrain Target (save wfchunk.dbg file) ");
+			if (target == nullptr) {
+				DebugWeaponFireChunk (&chunk, nullptr, this);
+				Assert(false, 0, " Mover.updateWeaponFireChunks: nullptr Terrain Target (save wfchunk.dbg file) ");
 			}
 			handleWeaponFire(weaponIndex,
 							 target,
-							 NULL,
+							 nullptr,
 							 chunk.hit,
 							 entryQuadTable[chunk.entryAngle],
 							 chunk.numMissiles,
@@ -3775,13 +3775,13 @@ int32_t Mover::updateWeaponFireChunks (int32_t which) {
 			}
 		else if (chunk.targetType == 2 /*WEAPONFIRECHUNK_TARGET_TRAIN*/) {
 			GameObjectPtr target = ObjectManager->findByPartId(chunk.targetId);
-			if (target == NULL) {
-				DebugWeaponFireChunk (&chunk, NULL, this);
-				Assert(false, 0, " Mover.updateWeaponFireChunks: NULL Special Target (save wfchunk.dbg file) ");
+			if (target == nullptr) {
+				DebugWeaponFireChunk (&chunk, nullptr, this);
+				Assert(false, 0, " Mover.updateWeaponFireChunks: nullptr Special Target (save wfchunk.dbg file) ");
 			}
 			handleWeaponFire(weaponIndex,
 							 target,
-							 NULL,
+							 nullptr,
 							 chunk.hit,
 							 entryQuadTable[chunk.entryAngle],
 							 chunk.numMissiles,
@@ -3792,7 +3792,7 @@ int32_t Mover::updateWeaponFireChunks (int32_t which) {
 			targetPoint.x = (float)chunk.targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
 			targetPoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk.targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
 			targetPoint.z = (float)land->getTerrainElevation(targetPoint);
-			handleWeaponFire(weaponIndex, NULL, &targetPoint, chunk.hit, 0.0, chunk.numMissiles, 0);
+			handleWeaponFire(weaponIndex, nullptr, &targetPoint, chunk.hit, 0.0, chunk.numMissiles, 0);
 			}
 		else
 			Fatal(0, " Mover.updateWeaponFireChunks: bad targetType ");
@@ -4021,7 +4021,7 @@ GameObjectPtr Mover::getChallenger (void) {
 	GameObjectPtr obj = ObjectManager->get(challengerWID);
 	if (obj && obj->isDisabled()) {
 		challengerWID = 0;
-		return(NULL);
+		return(nullptr);
 	}
 	return(obj);
 }
@@ -5030,9 +5030,9 @@ int32_t Mover::calcMovePath (MovePathPtr path,
 
 			int32_t goalCell[2];
 			if (numOffsets > 8)
-				result = PathFindMap[SIMPLE_PATHMAP]->calcPathJUMP(path, NULL, goalCell);
+				result = PathFindMap[SIMPLE_PATHMAP]->calcPathJUMP(path, nullptr, goalCell);
 			else
-				result = PathFindMap[SIMPLE_PATHMAP]->calcPath(path, NULL, goalCell);
+				result = PathFindMap[SIMPLE_PATHMAP]->calcPath(path, nullptr, goalCell);
 			PathFindMap[SIMPLE_PATHMAP]->setMover(0);
 			JumpOnBlocked = false;
 		}
@@ -5106,9 +5106,9 @@ int32_t Mover::calcMovePath (MovePathPtr path,
 			DebugMovePathType = pathType;
 
 			if (numOffsets > 8)
-				result = PathFindMap[SECTOR_PATHMAP]->calcPathJUMP(path, NULL, goalCell);
+				result = PathFindMap[SECTOR_PATHMAP]->calcPathJUMP(path, nullptr, goalCell);
 			else
-				result = PathFindMap[SECTOR_PATHMAP]->calcPath(path, NULL, goalCell);
+				result = PathFindMap[SECTOR_PATHMAP]->calcPath(path, nullptr, goalCell);
 			PathFindMap[SECTOR_PATHMAP]->setMover(0);
 			JumpOnBlocked = false;
 		}
@@ -5120,7 +5120,7 @@ int32_t Mover::calcMovePath (MovePathPtr path,
 	PathFindMap->writeDebug(pathDebugFile);
 	pathDebugFile->close();
 	delete pathDebugFile;
-	pathDebugFile = NULL;
+	pathDebugFile = nullptr;
 	#endif
 
 	return(result);
@@ -5219,7 +5219,7 @@ int32_t Mover::calcEscapePath (MovePathPtr path,
 		PathFindMap->writeDebug(pathDebugFile);
 		pathDebugFile->close();
 		delete pathDebugFile;
-		pathDebugFile = NULL;
+		pathDebugFile = nullptr;
 #endif
 	return(result);
 }
@@ -5487,7 +5487,7 @@ int32_t Mover::calcMovePath (MovePathPtr path,
 	PathFindMap->writeDebug(pathDebugFile);
 	pathDebugFile->close();
 	delete pathDebugFile;
-	pathDebugFile = NULL;
+	pathDebugFile = nullptr;
 	#endif
 
 	return(result);
@@ -6100,7 +6100,7 @@ int32_t Mover::refillAmmo (int32_t ammoMasterId, int32_t amount) {
 				ammoTypeTotal[ammo].curAmount = 0;
 				calcLongestRangeWeapon();
 				calcWeaponEffectiveness(false);
-				calcOptimalRange(NULL);
+				calcOptimalRange(nullptr);
 			}
 			break;
 		}
@@ -6138,7 +6138,7 @@ int32_t Mover::sortWeapons (int32_t* weaponList, int32_t* valueList, int32_t lis
 			sortList->setId(item - numOther, item);
 			switch (sortType) {
 				case WEAPONSORT_ATTACKCHANCE:
-					sortList->setValue(item - numOther, calcAttackChance(target, aimLocation, scenarioTime, item, 0.0, NULL));
+					sortList->setValue(item - numOther, calcAttackChance(target, aimLocation, scenarioTime, item, 0.0, nullptr));
 					break;
 				default:
 					//-----------------
@@ -6162,7 +6162,7 @@ int32_t Mover::sortWeapons (int32_t* weaponList, int32_t* valueList, int32_t lis
 			else
 				switch (sortType) {
 					case WEAPONSORT_ATTACKCHANCE:
-						sortValue = calcAttackChance(target, aimLocation, scenarioTime, weaponList[item], 0.0, NULL);
+						sortValue = calcAttackChance(target, aimLocation, scenarioTime, weaponList[item], 0.0, nullptr);
 						break;
 					default:
 						//-----------------
@@ -6210,8 +6210,8 @@ float Mover::calcAttackChance (GameObjectPtr target, int32_t aimLocation, float 
 	//-------------------------------------------------------------
 	// First, let's find out what kind of object we're targeting...
 	Stuff::Vector3D targetPosition;
-	BattleMechPtr mech = NULL;
-	GroundVehiclePtr vehicle = NULL;
+	BattleMechPtr mech = nullptr;
+	GroundVehiclePtr vehicle = nullptr;
 	
 	if (target) 
 	{
@@ -6469,7 +6469,7 @@ void Mover::ammoExplosion (int32_t ammoIndex) {
 	if (damage > 255.0f)
 		damage = 255.0f;
 
-	shotInfo.init(NULL, inventory[ammoIndex].masterID, damage, bodyLocation, 0.0);
+	shotInfo.init(nullptr, inventory[ammoIndex].masterID, damage, bodyLocation, 0.0);
 
 	if (MPlayer) {
 		if (MPlayer->isServer())
@@ -6518,19 +6518,19 @@ void Mover::disable (uint32_t cause)
 			// To indicate that we are going down.
 			Stuff::Vector3D explosionLoc;
 			explosionLoc = appearance->getNodeNamePosition("cockpit");
-			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,NULL,explosionLoc,0.0f,0.0f);
+			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,nullptr,explosionLoc,0.0f,0.0f);
 
 			explosionLoc = appearance->getNodeNamePosition("hit_left");
-			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,NULL,explosionLoc,0.0f,0.0f);
+			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,nullptr,explosionLoc,0.0f,0.0f);
 			
 			explosionLoc = appearance->getNodeNamePosition("hit_right");
-			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,NULL,explosionLoc,0.0f,0.0f);
+			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,nullptr,explosionLoc,0.0f,0.0f);
 
 			explosionLoc = appearance->getNodeNamePosition("weapon_righttorso");
-			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,NULL,explosionLoc,0.0f,0.0f);
+			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,nullptr,explosionLoc,0.0f,0.0f);
 
  			explosionLoc = appearance->getNodeNamePosition("weapon_lefttorso");
-			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,NULL,explosionLoc,0.0f,0.0f);
+			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,nullptr,explosionLoc,0.0f,0.0f);
 		}
 	}
 }

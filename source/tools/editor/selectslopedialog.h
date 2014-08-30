@@ -14,7 +14,7 @@ class SelectSlopeDialog : public CDialog
 {
 // Construction
 public:
-	SelectSlopeDialog(CWnd* pParent = NULL);   // standard constructor
+	SelectSlopeDialog(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(SelectSlopeDialog)

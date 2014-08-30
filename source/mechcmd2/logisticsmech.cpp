@@ -23,7 +23,7 @@ LogisticsMech::~LogisticsMech()
 	if ( pilot )
 		pilot->setUsed( 0 );
 
-	pilot = NULL;
+	pilot = nullptr;
 }
 
 void LogisticsMech::setPilot( LogisticsPilot* pPilot )

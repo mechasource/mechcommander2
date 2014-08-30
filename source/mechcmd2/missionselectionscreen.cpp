@@ -44,7 +44,7 @@ MissionSelectionScreen::~MissionSelectionScreen()
 	if (bMovie)
 	{
 		delete bMovie;
-		bMovie = NULL;
+		bMovie = nullptr;
 	}
 
 	missionDescriptionListBox.destroy();
@@ -249,7 +249,7 @@ void MissionSelectionScreen::begin()
 			{
 				bMovie->stop();
 				delete bMovie;
-				bMovie = NULL;
+				bMovie = nullptr;
 			}
 
 			bMovie = new MC2Movie;
@@ -328,7 +328,7 @@ void MissionSelectionScreen::end()
 		bMovie->stop();
 
 		delete bMovie;
-		bMovie = NULL;
+		bMovie = nullptr;
 	}
 
 	beginFadeOut( 0 );

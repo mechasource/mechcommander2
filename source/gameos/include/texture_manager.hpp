@@ -43,14 +43,14 @@ void UpdateBackBufferFormat(void);
 void __stdcall DecodeBMPDimensions( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t pTextureWidth, puint32_t pTextureHeight );
 void __stdcall DecodeJPGDimensions( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t pTextureWidth, puint32_t pTextureHeight );
 #ifdef USEPNG
-PVOID __stdcall DecodePNG( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth, puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
+PVOID __stdcall DecodePNG( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth, puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf=nullptr );
 void __stdcall DecodePNGDimensions( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t pTextureWidth, puint32_t pTextureHeight );
 #endif
 void DecodeTGADimensions( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t pTextureWidth, puint32_t pTextureHeight );
 
-PVOID DecodeBMP( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth, puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
-PVOID DecodeJPG( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth, puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
-PVOID DecodeTGA( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth, puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf=NULL );
+PVOID DecodeBMP( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth, puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf=nullptr );
+PVOID DecodeJPG( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth, puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf=nullptr );
+PVOID DecodeTGA( PCSTR FileName, puint8_t Data, uint32_t DataSize, puint32_t TextureWidth, puint32_t TextureHeight, bool TextureLoad, PVOID pDestSurf=nullptr );
 
 int32_t MipLevelsRequired( uint16_t Width, uint16_t Height );
 
@@ -144,7 +144,7 @@ public:
 	bool					InSysMem(void) { return (m_Flags & tFlag_InSysMem)!=0; }
 	bool					Detected(void) { return (m_Flags & tFlag_Detect)!=0; }
 	bool					MipmapDisabled(void) { return (m_Hints & gosHint_DisableMipmap)!=0; }
-	bool					CanRebuild(void) { return m_pRebuild!=NULL; }
+	bool					CanRebuild(void) { return m_pRebuild!=nullptr; }
 	int32_t						MipFilter(void) { return ( m_Hints / gosHint_MipmapFilter0 ) & 3; }
 	uint32_t					Area(void) { return uint32_t(m_nWidth * m_nHeight); }
 	int32_t						MipMapLevels(void) { return (MipmapDisabled(void))?1:MipLevelsRequired(m_nWidth,m_nHeight); }
@@ -157,7 +157,7 @@ static bool					ManagerInitialized(void) { return Initialized; }
 	void					SetSpecial(void) { m_Flags |= tFlag_Special; }
 	gos_RebuildFunction		pRebuildFunc(void) { return m_pRebuild; }
 	static CTexInfo *		FirstTexture(void) { return pFirstUsedTexture; }
-	CTexInfo *				NextTexture(void) { return m_NextOffset?(this+m_NextOffset):NULL; }
+	CTexInfo *				NextTexture(void) { return m_NextOffset?(this+m_NextOffset):nullptr; }
 	gos_TextureFormat		Format(void) { return (gos_TextureFormat)((m_Flags&FormatMask)>>tFlag_FormatShift); }
 	bool					Used(void) { return m_nLastFrameUsed == FrameNo; }
 	uint16_t					ScaledHeightWidth( bool WantHeight );
@@ -280,12 +280,12 @@ private:
 	static bool				Logging;
 	void					LogTextureEvent( PSTR description );
 public:
-	static PSTR 			GetTextureEvent( int32_t offset ) { return (offset>=LogCount)?(NULL):(LogString[(LogNext+MaximumTextureLogs-1-offset)%MaximumTextureLogs]); }
+	static PSTR 			GetTextureEvent( int32_t offset ) { return (offset>=LogCount)?(nullptr):(LogString[(LogNext+MaximumTextureLogs-1-offset)%MaximumTextureLogs]); }
 	static bool				LogEnable( bool enable = Logging ) { Logging = enable; return Logging; }
 #else
 	void					LogTextureEvent( PSTR /*description*/ ) { ; }
 public:
-	static PSTR 			GetTextureEvent( int32_t /*offset*/ ) { return NULL; }
+	static PSTR 			GetTextureEvent( int32_t /*offset*/ ) { return nullptr; }
 	static bool				LogEnable( bool /*enable = false*/ ) { return false; }
 #endif
 

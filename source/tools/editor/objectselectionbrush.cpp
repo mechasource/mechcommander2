@@ -89,7 +89,7 @@ ObjectSelectionBrush.cpp			: Implementation of the ObjectSelectionBrush componen
 ObjectSelectionBrush::ObjectSelectionBrush()
 { 
 	bPainting = false; 
-	pCurAction = NULL; 
+	pCurAction = nullptr; 
 
 	lastPos.x = lastPos.y = lastPos.z = lastPos.w = 0.0f;		//Keep the FPU exception from going off!
 	bFirstClick = false;
@@ -114,13 +114,13 @@ bool ObjectSelectionBrush::beginPaint()
 Action* ObjectSelectionBrush::endPaint()
 {
 	bPainting = false;
-	Action* pRetAction = NULL;
+	Action* pRetAction = nullptr;
 	if ( pCurAction )
 	{
 		if ( pCurAction->vertexInfoList.Count() )
 		{
 			pRetAction = pCurAction;
-			pCurAction = NULL;
+			pCurAction = nullptr;
 			land->recalcWater();
 			land->reCalcLight();	
 		}
@@ -128,7 +128,7 @@ Action* ObjectSelectionBrush::endPaint()
 		else
 		{
 			delete pCurAction;
-			pCurAction = NULL;
+			pCurAction = nullptr;
 		}
 	}
 	

@@ -32,10 +32,10 @@
 
 //------------------------------------------------------------------------------------------------------------
 // MechCmdr2 Global Instances of Things
-UserHeapPtr systemHeap = NULL;
-UserHeapPtr guiHeap = NULL;
+UserHeapPtr systemHeap = nullptr;
+UserHeapPtr guiHeap = nullptr;
 
-FastFile 	**fastFiles = NULL;
+FastFile 	**fastFiles = nullptr;
 int32_t 		numFastFiles = 0;
 int32_t		maxFastFiles = 0;
 
@@ -53,7 +53,7 @@ bool gamePaused = FALSE;
 bool hasGuardBand = false;
 bool useUnlimitedAmmo = true;
 
-TimerManagerPtr timerManager = NULL;
+TimerManagerPtr timerManager = nullptr;
 
 uint32_t elementHeapSize = 1024000;
 uint32_t maxElements = 2048;
@@ -70,7 +70,7 @@ uint32_t tglHeapSize = 32767000;
 
 uint32_t gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
-FloatHelpPtr globalFloatHelp = NULL;
+FloatHelpPtr globalFloatHelp = nullptr;
 uint32_t currentFloatHelp = 0;
 float MaxMinUV = 8.0f;
 
@@ -87,7 +87,7 @@ bool inViewMode = false;
 uint32_t viewObject = 0x0;
 char missionName[1024];
 
-PSTR ExceptionGameMsg = NULL;
+PSTR ExceptionGameMsg = nullptr;
 
 char buildNumber[80];
 
@@ -100,7 +100,7 @@ bool reloadBounds = false;
 
 //DEBUG
 
-CameraPtr eye = NULL;
+CameraPtr eye = nullptr;
 bool useRealLOS = true;
 
 //***************************************************************************
@@ -312,7 +312,7 @@ void InitializeGameEngine()
 
 	systemFile->close();
 	delete systemFile;
-	systemFile = NULL;
+	systemFile = nullptr;
 
 	//--------------------------------------------------------------
 	// Read in Prefs.cfg
@@ -415,7 +415,7 @@ void InitializeGameEngine()
 	prefs->close();
 	
 	delete prefs;
-	prefs = NULL;
+	prefs = nullptr;
 	//---------------------------------------------------------------------
 
 	switch (resolution)
@@ -464,14 +464,14 @@ void InitializeGameEngine()
 	//--------------------------------------------------------------
 	// Start the GUI Heap.
 	systemHeap = new UserHeap;
-	gosASSERT(systemHeap != NULL);
+	gosASSERT(systemHeap != nullptr);
 	
 	systemHeap->init(systemHeapSize,"SYSTEM");
 	
 	//--------------------------------------------------------------
 	// Start the GUI Heap.
 	guiHeap = new UserHeap;
-	gosASSERT(guiHeap != NULL);
+	gosASSERT(guiHeap != nullptr);
 	
 	guiHeap->init(guiHeapSize,"GUI");
 	
@@ -510,7 +510,7 @@ void TerminateGameEngine()
 	{
 		logistics->destroy();
 		delete logistics;
-		logistics = NULL;
+		logistics = nullptr;
 	}
 
 	//-------------------------------------------------------------
@@ -520,7 +520,7 @@ void TerminateGameEngine()
 	//	soundSystem->destroy();
 	//
 	//	delete soundSystem;
-	//	soundSystem = NULL;
+	//	soundSystem = nullptr;
 	//}
 
 	//------------------------------------------------
@@ -530,7 +530,7 @@ void TerminateGameEngine()
 		mcTextureManager->destroy();
 
 		delete mcTextureManager;
-		mcTextureManager = NULL;
+		mcTextureManager = nullptr;
 	}
 
 	//--------------------------------------------------------------
@@ -540,7 +540,7 @@ void TerminateGameEngine()
 		systemHeap->destroy();
 
 		delete systemHeap;
-		systemHeap = NULL;
+		systemHeap = nullptr;
 	}
 
 	if (globalHeapList)
@@ -548,7 +548,7 @@ void TerminateGameEngine()
 		globalHeapList->destroy();
 
 		delete globalHeapList;
-		globalHeapList = NULL;
+		globalHeapList = nullptr;
 	}
 
 	//----------------------------------------------------
@@ -635,7 +635,7 @@ int32_t textToLong (PSTR num)
 	//------------------------------------
 	// Check if Hex Number
 	PSTR hexOffset = strstr(num,"0x");
-	if (hexOffset == NULL)
+	if (hexOffset == nullptr)
 	{
 		result = atol(num);
 	}

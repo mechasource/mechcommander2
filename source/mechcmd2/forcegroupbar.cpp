@@ -24,7 +24,7 @@ float ForceGroupBar::iconWidth = 48;
 float ForceGroupBar::iconHeight = 42;
 int32_t	  ForceGroupBar::iconsPerRow = 8;
 
-StaticInfo*  ForceGroupBar::s_coverIcon = NULL;
+StaticInfo*  ForceGroupBar::s_coverIcon = nullptr;
 
 extern bool useLeftRightMouseProfile;
 extern char CDInstallPath[];
@@ -60,7 +60,7 @@ ForceGroupBar::~ForceGroupBar()
 	if ( ForceGroupIcon::gosFontHandle )
 		delete ForceGroupIcon::gosFontHandle;
 
-	ForceGroupIcon::gosFontHandle  = NULL;
+	ForceGroupIcon::gosFontHandle  = nullptr;
 }
 
 
@@ -371,7 +371,7 @@ void ForceGroupBar::removeAll()
 		if ( icons[i] )
 			delete icons[i];
 
-		icons[i] = NULL;
+		icons[i] = nullptr;
 	}
 
 	iconCount = 0;
@@ -416,7 +416,7 @@ bool ForceGroupBar::setPilotVideo( PCSTR pVideo, MechWarrior* pPilot )
 		if ( ForceGroupIcon::bMovie )
 		{
 			delete ForceGroupIcon::bMovie;
-			ForceGroupIcon::bMovie = NULL;
+			ForceGroupIcon::bMovie = nullptr;
 			
 		}
 		else if ( ForceGroupIcon::pilotVideoTexture )
@@ -473,7 +473,7 @@ bool ForceGroupBar::setPilotVideo( PCSTR pVideo, MechWarrior* pPilot )
 					{
 						char realMovieName[256];
 						char realMoviePath[1024];
-						_splitpath(path,NULL,realMoviePath,realMovieName,NULL);
+						_splitpath(path,nullptr,realMoviePath,realMovieName,nullptr);
 
 						//Not in main installed directory and not in fastfile.  Look on CD.
 						char actualPath[2048];
@@ -500,7 +500,7 @@ bool ForceGroupBar::setPilotVideo( PCSTR pVideo, MechWarrior* pPilot )
 							cLoadString(IDS_MC2_CDMISSING,msg,1023);
 							cLoadString(IDS_MC2_MISSING_TITLE,title,255);
 							sprintf(data,msg1,path,msg);
-							uint32_t result = MessageBox(NULL,data,title,MB_OKCANCEL | MB_ICONWARNING);
+							uint32_t result = MessageBox(nullptr,data,title,MB_OKCANCEL | MB_ICONWARNING);
 							if (result == IDCANCEL)
 							{
 								ExitGameOS();

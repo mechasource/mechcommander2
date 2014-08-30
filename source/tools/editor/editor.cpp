@@ -14,12 +14,12 @@
 //#include "version.h"
 
 // globals used for memory
-UserHeapPtr systemHeap = NULL;
-UserHeapPtr guiHeap = NULL;
+UserHeapPtr systemHeap = nullptr;
+UserHeapPtr guiHeap = nullptr;
 
 float MaxMinUV = 8.0f;
 
-Stuff::MemoryStream *effectStream = NULL;
+Stuff::MemoryStream *effectStream = nullptr;
 
 uint32_t systemHeapSize = 8192000;
 uint32_t guiHeapSize = 1023999;
@@ -43,13 +43,13 @@ extern char CDInstallPath[];
 uint32_t gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
 float gosFontScale = 1.0;
-FloatHelpPtr globalFloatHelp = NULL;
+FloatHelpPtr globalFloatHelp = nullptr;
 uint32_t currentFloatHelp = 0;
 extern float CliffTerrainAngle;
 
 extern bool gNoDialogs;
 
-PSTR ExceptionGameMsg = NULL; // some debugging thing I think
+PSTR ExceptionGameMsg = nullptr; // some debugging thing I think
 
 bool quitGame = FALSE;
 
@@ -60,7 +60,7 @@ bool justResaveAllMaps = false;
 
 extern bool forceShadowBurnIn;
 // these globals are necessary for fast files for some reason
-FastFile 	**fastFiles = NULL;
+FastFile 	**fastFiles = nullptr;
 size_t 		numFastFiles = 0;
 size_t		maxFastFiles = 0;
 
@@ -71,20 +71,20 @@ extern uint8_t godMode;			//Can I simply see everything, enemy and friendly?
 
 void InitDW ();
 
-TimerManagerPtr timerManager = NULL;
+TimerManagerPtr timerManager = nullptr;
 
 int32_t FilterState = gos_FilterNone;
 
 extern int32_t TERRAIN_TXM_SIZE;
 int32_t ObjectTextureSize = 128;
 
-Editor* editor = NULL;
+Editor* editor = nullptr;
 
 char missionName[1024] = "\0";
 
 enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI } Processor = CPU_PENTIUM;		//Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
 
-MidLevelRenderer::MLRClipper *  theClipper = NULL;
+MidLevelRenderer::MLRClipper *  theClipper = nullptr;
 
 // called by gos
 //---------------------------------------------------------------------------
@@ -232,7 +232,7 @@ void InitializeGameEngine()
 		memset( &dev, 0, sizeof ( DEVMODE ) );
 		dev.dmSize = sizeof( DEVMODE );
 		dev.dmSpecVersion = DM_SPECVERSION;
-		EnumDisplaySettings( NULL, ENUM_CURRENT_SETTINGS, &dev );
+		EnumDisplaySettings( nullptr, ENUM_CURRENT_SETTINGS, &dev );
 
 		if ((dev.dmPelsWidth > 1024) || (dev.dmPelsHeight > 768) || (dev.dmBitsPerPel > 16))
 		{
@@ -240,7 +240,7 @@ void InitializeGameEngine()
 			char msg[2048];
 			cLoadString(IDS_EDITOR_ERROR,title,255);
 			cLoadString(IDS_EDITOR_VOODOO3,msg,2047);
-			MessageBox(NULL,msg,title,MB_OK | MB_ICONWARNING);
+			MessageBox(nullptr,msg,title,MB_OK | MB_ICONWARNING);
 			ExitGameOS();
 		}
 	}
@@ -265,13 +265,13 @@ void InitializeGameEngine()
 	//--------------------------------------------------------------
 	// Start the SystemHeap and globalHeapList
 	globalHeapList = new HeapList;
-	gosASSERT(globalHeapList != NULL);
+	gosASSERT(globalHeapList != nullptr);
 
 	globalHeapList->init();
 	globalHeapList->update();		//Run Instrumentation into GOS Debugger Screen
 
 	systemHeap = new UserHeap;
-	gosASSERT(systemHeap != NULL);
+	gosASSERT(systemHeap != nullptr);
 
 	systemHeap->init(systemHeapSize,"SYSTEM");
 
@@ -498,7 +498,7 @@ void InitializeGameEngine()
 
 	systemFile->close();
 	delete systemFile;
-	systemFile = NULL;
+	systemFile = nullptr;
 
 	//--------------------------------------------------------------
 	// Read in Prefs.cfg
@@ -613,7 +613,7 @@ void InitializeGameEngine()
 	prefs->close();
 	
 	delete prefs;
-	prefs = NULL;
+	prefs = nullptr;
 	//---------------------------------------------------------------------
 
 	//--------------------------------------------------
@@ -713,16 +713,16 @@ void TerminateGameEngine()
 	//---------------------------------------------------------
 	// End the Timers
 	delete timerManager;
-	timerManager = NULL;
+	timerManager = nullptr;
 
 	if ( editor )
 		delete editor;
-	editor = NULL;
+	editor = nullptr;
 
 	//--------------------------
 	// master Effects File 	if (weaponEffects)
 		delete weaponEffects;
-	weaponEffects = NULL;
+	weaponEffects = nullptr;
 
 	MOVE_cleanup();
 
@@ -734,7 +734,7 @@ void TerminateGameEngine()
 
 		mcTextureManager->destroy();
 		delete mcTextureManager;
-		mcTextureManager = NULL;
+		mcTextureManager = nullptr;
 	}
 
 	//---------------------------------------------------------
@@ -746,41 +746,41 @@ void TerminateGameEngine()
 		{
 			colorPool->destroy();
 			delete colorPool;
-			colorPool = NULL;
+			colorPool = nullptr;
 		}
 		
 		if (vertexPool)
 		{
 			vertexPool->destroy();
 			delete vertexPool;
-			vertexPool = NULL;
+			vertexPool = nullptr;
 		}
 
 		if (facePool)
 		{
 			facePool->destroy();
 			delete facePool;
-			facePool = NULL;
+			facePool = nullptr;
 		}
 
 		if (shadowPool)
 		{
 			shadowPool->destroy();
 			delete shadowPool;
-			shadowPool = NULL;
+			shadowPool = nullptr;
 		}
 
 		if (trianglePool)
 		{
 			trianglePool->destroy();
 			delete trianglePool;
-			trianglePool = NULL;
+			trianglePool = nullptr;
 		}
  
 		TG_Shape::tglHeap->destroy();
 
 		delete TG_Shape::tglHeap;
-		TG_Shape::tglHeap = NULL;
+		TG_Shape::tglHeap = nullptr;
 	}
 
 	//
@@ -791,7 +791,7 @@ void TerminateGameEngine()
 	FastFileFini();
 
 	delete globalFloatHelp;
-	globalFloatHelp = NULL;
+	globalFloatHelp = nullptr;
 
 	//----------------------------------------------------
 	// Shutdown the MLR and associated stuff libraries
@@ -799,17 +799,17 @@ void TerminateGameEngine()
 	gos_PushCurrentHeap(gosFX::Heap);
 
 	delete effectStream;
-	effectStream = NULL;
+	effectStream = nullptr;
 	delete gosFX::LightManager::Instance;
-	gosFX::LightManager::Instance = NULL;
+	gosFX::LightManager::Instance = nullptr;
 
 	gos_PopCurrentHeap();
 
 	delete theClipper;
-	theClipper = NULL;
+	theClipper = nullptr;
 
 	delete MidLevelRenderer::MLRTexturePool::Instance;
-	MidLevelRenderer::MLRTexturePool::Instance = NULL;
+	MidLevelRenderer::MLRTexturePool::Instance = nullptr;
 
 	gosFX::TerminateClasses();
 	MidLevelRenderer::TerminateClasses();
@@ -822,7 +822,7 @@ void TerminateGameEngine()
 		systemHeap->destroy();
 
 		delete systemHeap;
-		systemHeap = NULL;
+		systemHeap = nullptr;
 	}
 
 	if (globalHeapList)
@@ -830,7 +830,7 @@ void TerminateGameEngine()
 		globalHeapList->destroy();
 
 		delete globalHeapList;
-		globalHeapList = NULL;
+		globalHeapList = nullptr;
 	}
 
 	//---------------------------------------------------------
@@ -847,13 +847,13 @@ void TerminateGameEngine()
 	if (globalPane)
 	{
 		delete globalPane;
-		globalPane = NULL;
+		globalPane = nullptr;
 	}
 
 	if (globalWindow)
 	{
 		delete globalWindow;
-		globalWindow = NULL;
+		globalWindow = nullptr;
 	}
 }
 
@@ -919,7 +919,7 @@ void ParseCommandLine(PSTR command_line)
 							strcat(missionName," ");
 							strcat(missionName,argv[i]);
 
-							if (strstr(argv[i],"\"") != NULL)
+							if (strstr(argv[i],"\"") != nullptr)
 							{
 								scanName = false;
 								missionName[strlen(missionName)-1] = 0;
@@ -1001,7 +1001,7 @@ void GetGameOSEnvironment( PSTR CommandLine )
 	memset( &dev, 0, sizeof ( DEVMODE ) );
 	dev.dmSize = sizeof( DEVMODE );
 	dev.dmSpecVersion = DM_SPECVERSION;
-	EnumDisplaySettings( NULL, ENUM_CURRENT_SETTINGS, &dev );
+	EnumDisplaySettings( nullptr, ENUM_CURRENT_SETTINGS, &dev );
 
 	
 	Environment.screenWidth = dev.dmPelsWidth;
@@ -1010,8 +1010,8 @@ void GetGameOSEnvironment( PSTR CommandLine )
 	if (((512 > Environment.screenWidth) || (384 > Environment.screenHeight) || (1600 < Environment.screenWidth) || (1200 < Environment.screenHeight)) && (0 == dev.dmDeviceName[0]))
 	{
 		/* might be a buggy driver reporting incorrectly (like the permedia2 win95 driver */
-		Environment.screenWidth = GetDeviceCaps(GetDC(NULL), HORZRES);
-		Environment.screenHeight = GetDeviceCaps(GetDC(NULL), VERTRES);
+		Environment.screenWidth = GetDeviceCaps(GetDC(nullptr), HORZRES);
+		Environment.screenHeight = GetDeviceCaps(GetDC(nullptr), VERTRES);
 	}
 
 	//CHeck for non-standard resolutions.  Like LapTops or ATI cards or BOTH!!
@@ -1053,7 +1053,7 @@ void GetGameOSEnvironment( PSTR CommandLine )
 
 	Environment.Suppress3DFullScreenWarning = 0;
 
-	EditorData::setMapName( NULL );
+	EditorData::setMapName( nullptr );
 }
 
 

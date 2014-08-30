@@ -13,7 +13,7 @@ aAnimation::aAnimation()
 {
 	currentTime = -1.f;
 	infoCount = 0;
-	infos = NULL;
+	infos = nullptr;
 	bLoops = 0;
 	refX = 0;
 	refY = 0;
@@ -42,7 +42,7 @@ void aAnimation::copyData( const aAnimation& src )
 	{
 		currentTime = src.currentTime;
 		infoCount = src.infoCount;
-		infos = NULL;
+		infos = nullptr;
 		bLoops = src.bLoops;
 		refX = src.refX;
 		refY = src.refY;
@@ -51,7 +51,7 @@ void aAnimation::copyData( const aAnimation& src )
 		if (infos)
 		{
 			delete [] infos;
-			infos = NULL;
+			infos = nullptr;
 		}
 
 		if ( src.infoCount )
@@ -86,7 +86,7 @@ int32_t	aAnimation::init(FitIniFile* file, PCSTR headerName)
 	if (infos)
 	{
 		delete [] infos;
-		infos = NULL;
+		infos = nullptr;
 	}
 
 	if ( infoCount )
@@ -144,7 +144,7 @@ void	aAnimation::destroy()
 	if ( infos )
 		delete [] infos;
 
-	infos = NULL;
+	infos = nullptr;
 	infoCount = 0;
 	currentTime = -1.f;
 }

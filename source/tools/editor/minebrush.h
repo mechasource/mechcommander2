@@ -24,7 +24,7 @@ class MineBrush: public Brush
 {
 	public:
 	
-	MineBrush(){ pAction = NULL; }
+	MineBrush(){ pAction = nullptr; }
 	virtual ~MineBrush(){}
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);

@@ -43,7 +43,7 @@ void VFXAppearanceType::init (FilePtr apprFile, uint32_t fileSize)
 	numPackets = spriteManager->getShapePackets(getAppearanceFileNum());
 
 	textureList = (TGATexturePtr *)spriteManager->mallocDataRAM(sizeof(TGATexture *)*numPackets);
-	gosASSERT(textureList != NULL);
+	gosASSERT(textureList != nullptr);
 
 	// memclear(textureList,sizeof(TGATexture *)*numPackets);
 	memset(textureList, 0, sizeof(TGATexture *)*numPackets);
@@ -56,7 +56,7 @@ void VFXAppearanceType::removeTexture (TGATexturePtr texture)		//Cache texture o
 	{
 		if (textureList[i] == texture)
 		{
-			textureList[i] = NULL;
+			textureList[i] = nullptr;
 		}
 	}
 
@@ -67,7 +67,7 @@ void VFXAppearanceType::removeTexture (TGATexturePtr texture)		//Cache texture o
 
 		if (thisAppearance->currentTexture == texture)
 		{
-			thisAppearance->currentTexture = NULL;
+			thisAppearance->currentTexture = nullptr;
 		}
 
 		ourUsers = ourUsers->next;
@@ -90,7 +90,7 @@ int32_t VFXAppearanceType::loadIniFile (FilePtr apprFile, uint32_t fileSize)
 	gosASSERT(result == NO_ERROR);
 
 	actorStateData = (ActorData *)spriteManager->mallocDataRAM(sizeof(ActorData)*numStates);
-	gosASSERT(actorStateData != NULL);
+	gosASSERT(actorStateData != nullptr);
 	// memclear(actorStateData,sizeof(ActorData)*MAX_ACTOR_STATES);
 	memset(actorStateData, 0, sizeof(ActorData)*MAX_ACTOR_STATES);
 	
@@ -148,7 +148,7 @@ TGATexturePtr VFXAppearanceType::getTexture (ActorState shapeId, int32_t rot, in
 	// If the NewShape does not exist for this sprite, it's frame count should be set to
 	// zero.  This is probably bad, since the sprite will disappear from the screen.
 	if (actorStateData[shapeId].numFrames == 0)
-		return(NULL);
+		return(nullptr);
 
 	if (rot < 0.0 && actorStateData[shapeId].symmetrical)
 	{
@@ -182,7 +182,7 @@ TGATexturePtr VFXAppearanceType::getTexture (ActorState shapeId, int32_t rot, in
 	//-------------------------------------------------------------------
 	// There weren't enough packets in the shape file.  Give em nothing.
 	if (packetNum >= numPackets)
-		return(NULL);
+		return(nullptr);
 		
 	if (textureList[packetNum])
 	{
@@ -203,24 +203,24 @@ TGATexturePtr VFXAppearanceType::getTexture (ActorState shapeId, int32_t rot, in
 void VFXAppearanceType::destroy (void)
 {
 	//---------------------------------------------------------------------------------------------
-	//-- If we are going away, inform ALL of the shapes in the cache that their owner is NULL now.
+	//-- If we are going away, inform ALL of the shapes in the cache that their owner is nullptr now.
 	//-- Next dumpLRU will purge these FIRST!!
 	for (int32_t i=0;i<numPackets;i++)
 	{
 		if (textureList[i])
 		{
-			textureList[i]->owner = NULL;
+			textureList[i]->owner = nullptr;
 		}
 	}
 
 	spriteManager->freeDataRAM(users);
-	users = NULL;
+	users = nullptr;
 
 	spriteManager->freeDataRAM(textureList);
-	textureList = NULL;
+	textureList = nullptr;
 	
 	spriteManager->freeDataRAM(actorStateData);
-	actorStateData = NULL;
+	actorStateData = nullptr;
 }
 
 //-----------------------------------------------------------------------------
@@ -235,7 +235,7 @@ void VFXAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	if (appearType)
 		appearType->addUsers(this);
 
-	currentTexture = NULL;
+	currentTexture = nullptr;
 	currentFrame = -1;
 	currentRotation = 0;
 
@@ -245,7 +245,7 @@ void VFXAppearance::init (AppearanceTypePtr tree, GameObjectPtr obj)
 	timeInFrame = 0.0;
 	lastWholeFrame = 0;
 
-	fadeTable = NULL;
+	fadeTable = nullptr;
 	currentShapeTypeId = ACTOR_STATE_NORMAL;
 	
 	startFrame = endFrame = -1;

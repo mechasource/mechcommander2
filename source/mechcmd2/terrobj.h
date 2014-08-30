@@ -146,26 +146,26 @@ class TerrainObject : public GameObject {
 		virtual void init (bool create) {
 			objectClass = TERRAINOBJECT;
 			setFlag(OBJECT_FLAG_JUSTCREATED, true);
-			appearance = NULL;
+			appearance = nullptr;
 			vertexNumber = 0;
 			blockNumber = 0;
 			damage = 0.0;
 			pitchAngle = 0.0f;
 			fallRate = 0.0f;
-			powerSupply = NULL;
+			powerSupply = nullptr;
 			cellFootprint[0] = -1;
 			cellFootprint[1] = -1;
 			cellFootprint[2] = -1;
 			cellFootprint[3] = -1;
 			numSubAreas0 = 0;
 			numSubAreas1 = 0;
-			subAreas0 = NULL;
-			subAreas1 = NULL;
+			subAreas0 = nullptr;
+			subAreas1 = nullptr;
 			listID = 255;
 			numCellsCovered = 0;
-			cellsCovered = NULL;
+			cellsCovered = nullptr;
 
-			bldgDustPoofEffect = NULL;
+			bldgDustPoofEffect = nullptr;
 		}
 
 	   	TerrainObject (void) : GameObject() {

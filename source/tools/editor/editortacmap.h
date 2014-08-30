@@ -15,7 +15,7 @@
 class EditorTacMap : public CDialog
 {
 public:
-	EditorTacMap(CWnd* pParent = NULL);   // standard constructor
+	EditorTacMap(CWnd* pParent = nullptr);   // standard constructor
 
 	//{{AFX_DATA(EditorTacMap)
 	enum { IDD = IDD_TACMAP };

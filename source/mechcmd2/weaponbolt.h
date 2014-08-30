@@ -102,7 +102,7 @@ class WeaponBoltType : public ObjectType
 			beamWiggle = 0.0f;
 			mipTexture = false;
 			
-			textureName = NULL;
+			textureName = nullptr;
 			
 			arcEffect = false;
 			arcHeight = -1.0f;
@@ -224,20 +224,20 @@ class WeaponBolt : public GameObject
 			init(true);
 			hotSpotNumber = 0;
 			targetHotSpot = 0;
-			targetPosition = NULL;
+			targetPosition = nullptr;
 			
 			distanceToTarget = 0.0;
 			
 			ownerWID = targetWID = 0;
 
-			pointLight = NULL;
+			pointLight = nullptr;
 			lightId = 0xffffffff;
 			
-			gosEffect = NULL;
-			muzzleEffect = NULL;
-			hitEffect = NULL;
-			missEffect = NULL;
-			waterMissEffect = NULL;
+			gosEffect = nullptr;
+			muzzleEffect = nullptr;
+			hitEffect = nullptr;
+			missEffect = nullptr;
+			waterMissEffect = nullptr;
 			
 			effectId = -1;
 			
@@ -291,7 +291,7 @@ class WeaponBolt : public GameObject
 		void setTarget (GameObjectPtr who);
 		void setTargetPosition (Stuff::Vector3D pos);
 
-		void connect (GameObjectPtr source, GameObjectPtr dest, WeaponShotInfo* shotInfo = NULL, int32_t sourceHS = 0, int32_t targetHS = 0)
+		void connect (GameObjectPtr source, GameObjectPtr dest, WeaponShotInfo* shotInfo = nullptr, int32_t sourceHS = 0, int32_t targetHS = 0)
 		{
 			ownerWID = source->getWatchID(void);
 			targetWID = dest->getWatchID(void);
@@ -332,7 +332,7 @@ class WeaponBolt : public GameObject
 				myOwner->appearance->setWeaponNodeRecycle(sourceHS,BASE_NODE_RECYCLE_TIME);
 		}
 		
-		void connect (GameObjectPtr source, Stuff::Vector3D targetLoc, WeaponShotInfo* shotInfo = NULL, int32_t sourceHS = 0)
+		void connect (GameObjectPtr source, Stuff::Vector3D targetLoc, WeaponShotInfo* shotInfo = nullptr, int32_t sourceHS = 0)
 		{
 			ownerWID = source->getWatchID(void);
 			targetWID = 0;

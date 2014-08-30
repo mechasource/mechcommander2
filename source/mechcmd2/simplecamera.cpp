@@ -17,12 +17,12 @@ extern bool useShadows;
 extern bool drawOldWay;
 extern bool useFog;
 
-MidLevelRenderer::MLRClipper * theClipper = NULL;
+MidLevelRenderer::MLRClipper * theClipper = nullptr;
 
 ////////////////////////////////////////////////
 SimpleCamera::SimpleCamera()
 { 
-	pObject = NULL;
+	pObject = nullptr;
 	Camera::init();
 
 	char path[256];
@@ -52,7 +52,7 @@ SimpleCamera::~SimpleCamera()
 	if ( appearanceTypeList && appearanceTypeList->pointerCanBeDeleted(pObject) )
 		delete pObject;
 
-	pObject = NULL;
+	pObject = nullptr;
 
 	//We have to do this here because we always load the damned sensor shape.
 	// ONLY if we are running it in logistics.  DO NOT DELETE THESE IN THE MIDDLE OF A MISSION!!!
@@ -61,19 +61,19 @@ SimpleCamera::~SimpleCamera()
 		if (GVAppearanceType::SensorTriangleShape)
 		{
 			delete GVAppearanceType::SensorTriangleShape;
-			GVAppearanceType::SensorTriangleShape = NULL;
+			GVAppearanceType::SensorTriangleShape = nullptr;
 		}
 		
 		if (GVAppearanceType::SensorCircleShape)
 		{
 			delete GVAppearanceType::SensorCircleShape;
-			GVAppearanceType::SensorCircleShape = NULL;
+			GVAppearanceType::SensorCircleShape = nullptr;
 		}
 
 		if (Mech3DAppearanceType::SensorSquareShape)
 		{
 			delete Mech3DAppearanceType::SensorSquareShape;
-			Mech3DAppearanceType::SensorSquareShape = NULL;
+			Mech3DAppearanceType::SensorSquareShape = nullptr;
 		}
 	}
 }
@@ -297,7 +297,7 @@ void SimpleCamera::setMech(PCSTR fileName, int32_t baseColor, int32_t highlight1
 	rotationIncrement = 0;
 	
 
-	pObject = NULL;
+	pObject = nullptr;
 
 	if ( !fileName )
 	{
@@ -306,7 +306,7 @@ void SimpleCamera::setMech(PCSTR fileName, int32_t baseColor, int32_t highlight1
 	}
 
 	char NoPathFileName[256];
-	_splitpath( fileName, NULL, NULL, NoPathFileName, NULL );
+	_splitpath( fileName, nullptr, nullptr, NoPathFileName, nullptr );
 
 	char testName[256];
 	strcpy( testName, NoPathFileName );
@@ -317,7 +317,7 @@ void SimpleCamera::setMech(PCSTR fileName, int32_t baseColor, int32_t highlight1
 
 
 	//MUST ALWAYS CALL GET, EVEN IF WE HAVE AN APPEARANCE TYPE OR REFERENCE COUNT DOES NOT INCREASE!
-	Mech3DAppearanceType* appearanceType = NULL;
+	Mech3DAppearanceType* appearanceType = nullptr;
 	
 	if ( fileExists( path ) )
 		appearanceType = (Mech3DAppearanceType*)appearanceTypeList->getAppearance( MECH_TYPE << 24, (PSTR)testName );
@@ -356,13 +356,13 @@ void SimpleCamera::setVehicle(PCSTR fileName,int32_t base, int32_t highlight, in
 	if ( appearanceTypeList && appearanceTypeList->pointerCanBeDeleted(pObject) )
 		delete pObject;
 
-	pObject = NULL;
+	pObject = nullptr;
 
 	if ( !fileName )
 		return;
 
 	char NoPathFileName[256];
-	_splitpath( fileName, NULL, NULL, NoPathFileName, NULL );
+	_splitpath( fileName, nullptr, nullptr, NoPathFileName, nullptr );
 
 
 	char testName[256];
@@ -373,7 +373,7 @@ void SimpleCamera::setVehicle(PCSTR fileName,int32_t base, int32_t highlight, in
 	path.init( tglPath, testName, ".ini" );
 
 	//MUST ALWAYS CALL GET, EVEN IF WE HAVE AN APPEARANCE TYPE OR REFERENCE COUNT DOES NOT INCREASE!
-	GVAppearanceType* appearanceType = NULL;
+	GVAppearanceType* appearanceType = nullptr;
 	
 	if ( fileExists( path ) )
 		appearanceType = (GVAppearanceType*)appearanceTypeList->getAppearance( GV_TYPE << 24, (PSTR)testName );
@@ -414,7 +414,7 @@ void SimpleCamera::setComponent(PCSTR fileName )
 	if ( appearanceTypeList && appearanceTypeList->pointerCanBeDeleted(pObject) )
 		delete pObject;
 
-	pObject = NULL;
+	pObject = nullptr;
 
 
 	if ( !fileName )
@@ -426,7 +426,7 @@ void SimpleCamera::setComponent(PCSTR fileName )
 
 	FullPathFileName path;
 	path.init( tglPath, testName, ".ini" );
-	BldgAppearanceType* appearanceType = NULL;
+	BldgAppearanceType* appearanceType = nullptr;
 	if ( fileExists( path ) )
 	{
 		appearanceType = (BldgAppearanceType*)appearanceTypeList->getAppearance( BLDG_TYPE << 24, (PSTR)testName );
@@ -473,7 +473,7 @@ void SimpleCamera::setObject( PCSTR pFileName, int32_t type, int32_t base, int32
 		if ( appearanceTypeList && appearanceTypeList->pointerCanBeDeleted(pObject) )
 			delete pObject;
 
-		pObject = NULL;
+		pObject = nullptr;
 
 		return;
 

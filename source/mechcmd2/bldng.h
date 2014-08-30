@@ -136,9 +136,9 @@ class Building : public TerrainObject
 	public:
 
 		virtual void init (bool create) {
-			sensorSystem = NULL;
+			sensorSystem = nullptr;
 			setFlag(OBJECT_FLAG_JUSTCREATED, true);
-			appearance = NULL;
+			appearance = nullptr;
 			vertexNumber = 0;
 			blockNumber = 0;
 			baseTileId = 0;
@@ -146,12 +146,12 @@ class Building : public TerrainObject
 			teamId = -1;
 			refitBuddyWID = 0;
 			parentId = 0xffffffff;
-			parent = NULL;
-			powerSupply = NULL;
+			parent = nullptr;
+			powerSupply = nullptr;
 			numSubAreas0 = 0;
 			numSubAreas1 = 0;
-			subAreas0 = NULL;
-			subAreas1 = NULL;
+			subAreas0 = nullptr;
+			subAreas1 = nullptr;
 			listID = 255;
 			captureTime = 0.0;
 			scoreTime = 0.0;

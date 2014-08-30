@@ -14,7 +14,7 @@ class WaterDlg : public CDialog
 {
 // Construction
 public:
-	WaterDlg(CWnd* pParent = NULL);   // standard constructor
+	WaterDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(WaterDlg)

@@ -64,12 +64,12 @@ void GoalObject::init (void) {
 	used = false;
 	type = GOAL_OBJECT;
 	id = -1;
-	name[0] = NULL;
-	links = NULL;
-	controller = NULL;
+	name[0] = nullptr;
+	links = nullptr;
+	controller = nullptr;
 	info.object.WID = 0;
-	next = NULL;
-	prev = NULL;
+	next = nullptr;
+	prev = nullptr;
 }
 
 //---------------------------------------------------------------------------
@@ -132,8 +132,8 @@ void GoalManager::init (void) {
 
 	numGoalObjects = 0;
 	goalObjectPoolSize = 0;
-	goalObjects = NULL;
-	goalObjectPool = NULL;
+	goalObjects = nullptr;
+	goalObjectPool = nullptr;
 
 #ifdef USE_REGION_MAP
 	for (int32_t r = 0; r < GameMap->height; r++)
@@ -142,7 +142,7 @@ void GoalManager::init (void) {
 #endif
 	numRegions = 0;
 
-	fillStack = NULL;
+	fillStack = nullptr;
 	fillStackIndex = 0;
 }
 
@@ -152,7 +152,7 @@ void GoalManager::destroy (void) {
 
 	if (goalObjectPool) {
 		missionHeap->Free(goalObjectPool);
-		goalObjectPool = NULL;
+		goalObjectPool = nullptr;
 	}
 	numGoalObjects = 0;
 	goalObjectPoolSize = 0;
@@ -162,7 +162,7 @@ void GoalManager::destroy (void) {
 
 void GoalManager::clear (void) {
 
-	goalObjects = NULL;
+	goalObjects = nullptr;
 	numGoalObjects = 0;
 	for (int32_t i = 0; i < goalObjectPoolSize; i++)
 		goalObjectPool[i].used = false;
@@ -179,7 +179,7 @@ void GoalManager::clear (void) {
 
 GoalObjectPtr GoalManager::newGoalObject (void) {
 
-	GoalObjectPtr goalObject = NULL;
+	GoalObjectPtr goalObject = nullptr;
 	for (int32_t i = 0; i < goalObjectPoolSize; i++)
 		if (!goalObjectPool[i].used) {
 			goalObjectPool[i].used = true;
@@ -431,7 +431,7 @@ void GoalManager::build (void) {
 	
 	//For temps, pull 'em off the windows heap.  IT can resize.  OURS cannot!!!!
 	fillStack = (pint16_t)malloc(FILL_STACK_SIZE * sizeof(int16_t));
-	gosASSERT(fillStack != NULL);
+	gosASSERT(fillStack != nullptr);
 	fillStackIndex = 0;
 
 	//--------------------------------
@@ -441,7 +441,7 @@ void GoalManager::build (void) {
 /*	int16_t cellList[MAX_CELL_COORDS];
 	for (int32_t i = 0; i < numWalls; i++) {
 		cellList[0] = MAX_CELL_COORDS;
-		int32_t numCells = wallObjects[i]->appearance->markMoveMap(true, NULL, false, cellList);
+		int32_t numCells = wallObjects[i]->appearance->markMoveMap(true, nullptr, false, cellList);
 		for (int32_t j = 0; j < numCells; j++)
 			GameMap->setWall(cellList[j*2], cellList[j*2+1], true);
 	}
@@ -450,7 +450,7 @@ void GoalManager::build (void) {
 	// Close all gates, before calcing the region map...
 	for (i = 0; i < ObjectManager->getNumGates(); i++) {
 		GatePtr gate = ObjectManager->getGate(i);
-		gate->getAppearance()->markMoveMap(false, NULL);
+		gate->getAppearance()->markMoveMap(false, nullptr);
 	}
 */
 //	calcRegions();
@@ -461,11 +461,11 @@ void GoalManager::build (void) {
 	// Now, open the gates (for the game)...
 	for (i = 0; i < ObjectManager->getNumGates(); i++) {
 		GatePtr gate = ObjectManager->getGate(i);
-		gate->getAppearance()->markMoveMap(true, NULL);
+		gate->getAppearance()->markMoveMap(true, nullptr);
 	}
 */
 	free(fillStack);
-	fillStack = NULL;
+	fillStack = nullptr;
 	fillStackIndex = 0;
 }
 
@@ -476,9 +476,9 @@ int32_t GoalManager::setControl (ObstaclePtr controller, ObstaclePtr controllee)
 
 	if (controller && controllee) {
 		controllee->parent = controller;
-		controllee->prev = NULL;
+		controllee->prev = nullptr;
 		controllee->next = controller->controls;
-		controllee->controls = NULL;
+		controllee->controls = nullptr;
 		controller->controls->prev = controllee;
 		controller->controls = controllee;
 	}
@@ -530,21 +530,21 @@ GoalObjectPtr GoalManager::calcGoal (int32_t startCell[2], int32_t goalCell[2]) 
 
 	/* DO SEARCH HERE */
 
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
 
 GoalObjectPtr GoalManager::calcGoal (GameObjectPtr attacker, GameObjectPtr target) {
 
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
 
 GoalObjectPtr GoalManager::calcGoal (GameObjectPtr attacker, Stuff::Vector3D location) {
 
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------

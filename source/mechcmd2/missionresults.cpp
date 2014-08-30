@@ -33,11 +33,11 @@ MissionResults::~MissionResults()
 {
 	if (pSalvageScreen)
 		delete pSalvageScreen;
-	pSalvageScreen = NULL;
+	pSalvageScreen = nullptr;
 
 	if (pPilotScreen)
 		delete pPilotScreen;
-	pPilotScreen = NULL;
+	pPilotScreen = nullptr;
 }
 
 void MissionResults::begin()
@@ -159,7 +159,7 @@ void MissionResults::update()
 		{
 			pSalvageScreen->updateSalvage();
 			delete pSalvageScreen;
-			pSalvageScreen = NULL;
+			pSalvageScreen = nullptr;
 
 			if ( !pPilotScreen )
 			{

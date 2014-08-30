@@ -16,7 +16,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // UnitSettingsDlg dialog
 
-UnitSettingsDlg::UnitSettingsDlg( EList< Unit*, Unit* >& newList/*=NULL*/, ActionUndoMgr &undoMgr)
+UnitSettingsDlg::UnitSettingsDlg( EList< Unit*, Unit* >& newList/*=nullptr*/, ActionUndoMgr &undoMgr)
 	: CDialog(UnitSettingsDlg::IDD), units( newList )
 {
 	//{{AFX_DATA_INIT(UnitSettingsDlg)
@@ -26,7 +26,7 @@ UnitSettingsDlg::UnitSettingsDlg( EList< Unit*, Unit* >& newList/*=NULL*/, Actio
 	//}}AFX_DATA_INIT
 
 	pUndoMgr = &undoMgr;
-	pAction = NULL;
+	pAction = nullptr;
 }
 
 
@@ -206,7 +206,7 @@ void UnitSettingsDlg::DoColorBox( CWnd* pWnd )
 		base &= 0x00ffffff;
 
 
-		CColorDialog dlg( reverseRGB(base), NULL, this );
+		CColorDialog dlg( reverseRGB(base), nullptr, this );
 		if (IDOK == dlg.DoModal() )
 		{
 			base = reverseRGB( dlg.GetColor() );
@@ -369,7 +369,7 @@ void UnitSettingsDlg::applyChanges()
 
 void UnitSettingsDlg::OnOK() 
 {
-	if (NULL != pUndoMgr)
+	if (nullptr != pUndoMgr)
 	{
 		pUndoMgr->AddAction(pAction);
 	}
@@ -377,7 +377,7 @@ void UnitSettingsDlg::OnOK()
 	{
 		delete pAction;
 	}
-	pAction = NULL;
+	pAction = nullptr;
 
 	applyChanges();
 	CDialog::OnOK();
@@ -400,7 +400,7 @@ BOOL UnitSettingsDlg::OnInitDialog()
 
 	if (1 != units.Count())
 	{
-		pFirstPossibility = NULL;
+		pFirstPossibility = nullptr;
 	}
 	else
 	{
@@ -809,7 +809,7 @@ void UnitSettingsDlg::OnCancel()
 {
 	pAction->undo();
 	delete pAction;
-	pAction = NULL;
+	pAction = nullptr;
 	
 	CDialog::OnCancel();
 }

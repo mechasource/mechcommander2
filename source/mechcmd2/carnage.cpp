@@ -75,7 +75,7 @@ GameObjectPtr FireType::createInstance (void) {
 
 	CarnagePtr newFire = new Carnage;
 	if (!newFire)
-		return(NULL);
+		return(nullptr);
 
 	newFire->init(true, this);
 
@@ -89,37 +89,37 @@ void FireType::destroy (void)
 	if (fireOffsetX) 
 	{
 		systemHeap->Free(fireOffsetX);
-		fireOffsetX = NULL;
+		fireOffsetX = nullptr;
 	}
 
 	if (fireOffsetY) 
 	{
 		systemHeap->Free(fireOffsetY);
-		fireOffsetY = NULL;
+		fireOffsetY = nullptr;
 	}
 	
 	if (fireDelay) 
 	{
 		systemHeap->Free(fireDelay);
-		fireDelay = NULL;
+		fireDelay = nullptr;
 	}
 
 	if (fireRandomOffsetX) 
 	{
 		systemHeap->Free(fireRandomOffsetX);
-		fireRandomOffsetX = NULL;
+		fireRandomOffsetX = nullptr;
 	}
 
 	if (fireRandomOffsetY) 
 	{
 		systemHeap->Free(fireRandomOffsetY);
-		fireRandomOffsetY = NULL;
+		fireRandomOffsetY = nullptr;
 	}
 
 	if (fireRandomDelay) 
 	{
 		systemHeap->Free(fireRandomDelay);
-		fireRandomDelay = NULL;
+		fireRandomDelay = nullptr;
 	}
 
 	ObjectType::destroy();
@@ -238,7 +238,7 @@ GameObjectPtr ExplosionType::createInstance (void) {
 
 	CarnagePtr newExplosion = new Carnage;
 	if (!newExplosion)
-		return(NULL);
+		return(nullptr);
 
 	newExplosion->init(true, this);
 
@@ -361,10 +361,10 @@ bool ExplosionType::handleCollision (GameObjectPtr collidee, GameObjectPtr colli
 			damageAmount = damageLeft;
 
 		if (collider->isMover()) {
-			shot.init(NULL, -1, damageAmount, 0, 0);		 
+			shot.init(nullptr, -1, damageAmount, 0, 0);		 
 			while (damageLeft > 0.0) {
 				shot.hitLocation = collider->calcHitLocation(collidee,-1,ATTACKSOURCE_ARTILLERY,0);
-				collider->handleWeaponHit(&shot, (MPlayer != NULL));
+				collider->handleWeaponHit(&shot, (MPlayer != nullptr));
 				damageLeft -= ((CarnagePtr)collidee)->info.explosion.chunkSize;
 			}
 			}
@@ -388,11 +388,11 @@ bool ExplosionType::handleCollision (GameObjectPtr collidee, GameObjectPtr colli
 							return(false);
 					}
 					
-					shot.init(NULL, -1, damageAmount, 0, 0);		 
+					shot.init(nullptr, -1, damageAmount, 0, 0);		 
 					while (damageLeft > 0.0) 
 					{
 						shot.hitLocation = 0;
-						collider->handleWeaponHit(&shot, (MPlayer != NULL));
+						collider->handleWeaponHit(&shot, (MPlayer != nullptr));
 						damageLeft -= chunkSize;
 					}
 				}
@@ -417,11 +417,11 @@ bool ExplosionType::handleCollision (GameObjectPtr collidee, GameObjectPtr colli
 					
 					float damageLeft = collidee->getExplDmg();
 					WeaponShotInfo shot;
-					shot.init(NULL, -1, damageAmount, 0, 0);		 
+					shot.init(nullptr, -1, damageAmount, 0, 0);		 
 					while (damageLeft > 0.0) 
 					{
 						shot.hitLocation = 0;
-						collider->handleWeaponHit(&shot, (MPlayer != NULL));
+						collider->handleWeaponHit(&shot, (MPlayer != nullptr));
 						damageLeft -= chunkSize;
 
 					}
@@ -432,8 +432,8 @@ bool ExplosionType::handleCollision (GameObjectPtr collidee, GameObjectPtr colli
 				default: 
 				{
 					WeaponShotInfo shot;
-					shot.init(NULL, -1, collidee->getExplDmg(), 0, 0);
-					collider->handleWeaponHit(&shot, (MPlayer != NULL));
+					shot.init(nullptr, -1, collidee->getExplDmg(), 0, 0);
+					collider->handleWeaponHit(&shot, (MPlayer != nullptr));
 				}
 			}
 		}
@@ -466,14 +466,14 @@ void Carnage::init (bool create)
 	info.fire.reallyVisible = 0;
 	info.explosion.timer = EXPLOSION_TIME;
 	info.explosion.chunkSize = 0.0;
-	gosEffect = NULL;
+	gosEffect = nullptr;
 
 	intensity = 0.0f;
 	inRadius = 0.0f;
 	outRadius = 0.0f;
 	duration = 0.0f;
 
-	pointLight = NULL;
+	pointLight = nullptr;
 	lightId = 0xffffffff;
 }
 
@@ -496,7 +496,7 @@ void Carnage::init (CarnageEnumType _carnageType)
 		outRadius = 0.0f;
 		duration = 0.0f;
 
-		pointLight = NULL;
+		pointLight = nullptr;
 		lightId = 0xffffffff;
 	}
 }
@@ -585,7 +585,7 @@ void Carnage::handleStaticCollision (void)
 														  2,
 														  2);
 								}
-								ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, minePosition, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+								ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, minePosition, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 							}
 						}
 					}
@@ -618,14 +618,14 @@ void Carnage::finishNow (void)
 		{
 			gosEffect->Kill();		//Effect is over.
 			delete gosEffect;
-			gosEffect = NULL;
+			gosEffect = nullptr;
 		}
 
 		if (pointLight)
 		{
 			eye->removeWorldLight(lightId,pointLight);
 			systemHeap->Free(pointLight);
-			pointLight = NULL;
+			pointLight = nullptr;
 		}
 
 		init(false);
@@ -668,7 +668,7 @@ int32_t Carnage::update (void)
 			
 			if (gosEffect && gosEffect->IsExecuted())
 			{
-				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+				gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 				gosEffect->Start(&info);
 			}
 			
@@ -701,7 +701,7 @@ int32_t Carnage::update (void)
 					//NO LIGHT ALLOWED!  TOO Many in World!
 					// LightId is now -1 which will cause this to NEVER make a light!
 					systemHeap->Free(pointLight);
-					pointLight = NULL;
+					pointLight = nullptr;
 					duration = 0.0f;
 				}
 			}
@@ -715,7 +715,7 @@ int32_t Carnage::update (void)
 		}
 		
 		//------------------------------------------------
-		// Update pointLight if its not NULL
+		// Update pointLight if its not nullptr
 		if (pointLight)
 		{
 			if (duration > 0.0f)
@@ -750,7 +750,7 @@ int32_t Carnage::update (void)
 			{
 				eye->removeWorldLight(lightId,pointLight);
 				systemHeap->Free(pointLight);
-				pointLight = NULL;
+				pointLight = nullptr;
 			}
 		}
 
@@ -789,13 +789,13 @@ int32_t Carnage::update (void)
 			{
 				gosEffect->Kill();		//Effect is over.
 				delete gosEffect;
-				gosEffect = NULL;
+				gosEffect = nullptr;
 
 				if (pointLight)
 				{
 					eye->removeWorldLight(lightId,pointLight);
 					systemHeap->Free(pointLight);
-					pointLight = NULL;
+					pointLight = nullptr;
 				}
 		
 				return false;			//Tell the object system to stop updating, too.
@@ -807,7 +807,7 @@ int32_t Carnage::update (void)
 			{
 				eye->removeWorldLight(lightId,pointLight);
 				systemHeap->Free(pointLight);
-				pointLight = NULL;
+				pointLight = nullptr;
 			}
 
 			return false;
@@ -872,7 +872,7 @@ void Carnage::destroy (void)
 		{
 			gosEffect->Kill();		//Effect is over.
 			delete gosEffect;
-			gosEffect = NULL;
+			gosEffect = nullptr;
 		}
 
 		if (pointLight)
@@ -880,7 +880,7 @@ void Carnage::destroy (void)
 			if (eye)
 				eye->removeWorldLight(lightId,pointLight);
 			systemHeap->Free(pointLight);
-			pointLight = NULL;
+			pointLight = nullptr;
 		}
 	}
 }
@@ -891,8 +891,8 @@ void Carnage::init (bool create, ObjectTypePtr _type)
 {
 	GameObject::init(true, _type);
 
-	gosEffect = NULL;
-	pointLight = NULL;
+	gosEffect = nullptr;
+	pointLight = nullptr;
 	setFlag(OBJECT_FLAG_JUSTCREATED, true);
 	
 	if (carnageType == CARNAGE_FIRE)
@@ -915,7 +915,7 @@ void Carnage::init (bool create, ObjectTypePtr _type)
 			gosFX::Effect::Specification* gosEffectSpec = gosFX::EffectLibrary::Instance->Find(weaponEffects->GetEffectName(effectId));
 			
 			gosEffect = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-			gosASSERT(gosEffect != NULL);
+			gosASSERT(gosEffect != nullptr);
 			
 			MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 		}

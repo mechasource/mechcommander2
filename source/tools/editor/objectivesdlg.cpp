@@ -25,7 +25,7 @@ static char THIS_FILE[] = __FILE__;
 // ObjectivesDlg dialog
 
 
-ObjectivesDlg::ObjectivesDlg(CWnd* pParent /*=NULL*/)
+ObjectivesDlg::ObjectivesDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(ObjectivesDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(ObjectivesDlg)

@@ -121,7 +121,7 @@ namespace Browse
             CItem m_Item;
             CListNode* m_pNext;
             CListNode* m_pPrev;
-            CListNode() {m_pNext = NULL; m_pPrev = NULL;}
+            CListNode() {m_pNext = nullptr; m_pPrev = nullptr;}
 
             PVOID operator new(size_t size) {
                 return malloc(size);

@@ -27,7 +27,7 @@
 int32_t MovePathManager::numPaths = 0;
 int32_t MovePathManager::peakPaths = 0;
 int32_t MovePathManager::sourceTally[50];
-MovePathManagerPtr PathManager = NULL;
+MovePathManagerPtr PathManager = nullptr;
 
 //***************************************************************************
 // PATH MANAGER class
@@ -52,23 +52,23 @@ int32_t MovePathManager::init (void)
 {
 	int32_t i;
 	for (i = 0; i < MAX_MOVERS; i++) {
-		pool[i].pilot = NULL;
+		pool[i].pilot = nullptr;
 		pool[i].selectionIndex = 0;
 		pool[i].moveParams = 0;
 		if (i > 0)
 			pool[i].prev = &pool[i - 1];
 		else
-			pool[i].prev = NULL;
+			pool[i].prev = nullptr;
 		if (i < (MAX_MOVERS - 1))
 			pool[i].next = &pool[i + 1];
 		else
-			pool[i].next = NULL;
+			pool[i].next = nullptr;
 	}
 
 	//------------------------------
 	// All start on the free list...
-	queueFront = NULL;
-	queueEnd = NULL;
+	queueFront = nullptr;
+	queueEnd = nullptr;
 	freeList = &pool[0];
 
 	numPaths = 0;
@@ -102,7 +102,7 @@ void MovePathManager::remove (PathQueueRecPtr rec) {
 
 	//------------------------------------
 	// Return the QRec to the free list...
-	rec->prev = NULL;
+	rec->prev = nullptr;
 	rec->next = freeList;
 	freeList = rec;
 
@@ -117,10 +117,10 @@ PathQueueRecPtr MovePathManager::remove (MechWarriorPtr pilot) {
 	PathQueueRecPtr rec = pilot->getMovePathRequest();
 	if (rec) {
 		remove(rec);
-		pilot->setMovePathRequest(NULL);
+		pilot->setMovePathRequest(nullptr);
 		return(rec);
 	}
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -144,7 +144,7 @@ void MovePathManager::request (MechWarriorPtr pilot, int32_t selectionIndex, uin
 	// Cut the new record from the free list...
 	freeList = freeList->next;
 	if (freeList)
-		freeList->prev = NULL;
+		freeList->prev = nullptr;
 
 	//---------------------------------------------------
 	// New record has no next. Already has no previous...
@@ -156,12 +156,12 @@ void MovePathManager::request (MechWarriorPtr pilot, int32_t selectionIndex, uin
 	if (queueEnd) {
 		queueEnd->next = pathQRec;
 		pathQRec->prev = queueEnd;
-		pathQRec->next = NULL;
+		pathQRec->next = nullptr;
 		queueEnd = pathQRec;
 		}
 	else {
-		pathQRec->prev = NULL;
-		pathQRec->next = NULL;
+		pathQRec->prev = nullptr;
+		pathQRec->next = nullptr;
 		queueFront = queueEnd = pathQRec;
 	}
 	pilot->setMovePathRequest(pathQRec);
@@ -186,7 +186,7 @@ void MovePathManager::calcPath (void) {
 		//--------------------------------------------------
 		// If the mover is no longer around, don't bother...
 		MechWarriorPtr pilot = curQRec->pilot;
-		pilot->setMovePathRequest(NULL);
+		pilot->setMovePathRequest(nullptr);
 		MoverPtr mover = pilot->getVehicle();
 		if (!mover)
 			return;

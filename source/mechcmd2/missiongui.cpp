@@ -164,8 +164,8 @@ float MissionInterfaceManager::pauseWndVelocity = -50.f;
 
 int32_t MissionInterfaceManager::mouseX = 0;
 int32_t MissionInterfaceManager::mouseY = 0;
-GameObject* MissionInterfaceManager::target = NULL;
-MissionInterfaceManager* MissionInterfaceManager::s_instance = NULL;
+GameObject* MissionInterfaceManager::target = nullptr;
+MissionInterfaceManager* MissionInterfaceManager::s_instance = nullptr;
 gosEnum_KeyIndex MissionInterfaceManager::WAYPOINT_KEY = (gosEnum_KeyIndex)-1;
 
 
@@ -327,8 +327,8 @@ void MissionInterfaceManager::init (void)
 		vTol[i] = 0;
 		paintingVtol[i] = 0;
 		vTolTime[i] = 0.0f;
-		dustCloud[i] = NULL;
-		recoveryBeam[i] = NULL;
+		dustCloud[i] = nullptr;
+		recoveryBeam[i] = nullptr;
 		mechRecovered[i] = false;
 		mechToRecover[i] = 0;
 		vehicleID[i] = 0;
@@ -354,7 +354,7 @@ void MissionInterfaceManager::init (void)
 	targetButtonId = -1;
 	buttonNumFlashes = 0;
 	guiFrozen = false;
-	reinforcement = NULL;
+	reinforcement = nullptr;
 	bForcedShot = false;
 	bAimedShot = false;
 }
@@ -743,7 +743,7 @@ void MissionInterfaceManager::update (void)
 	if ( Terrain::IsGameSelectTerrainPosition( wPos ) )
 	{
 		land->worldToCell(wPos, cellR, cellC);
-		if (Team::home)	   //May go NULL during multiplayer when a player first dies?
+		if (Team::home)	   //May go nullptr during multiplayer when a player first dies?
 			lineOfSight = Team::home->teamLineOfSight(wPos,0.0f);
 	}	
 
@@ -943,20 +943,20 @@ void MissionInterfaceManager::updateVTol()
 				{
 					paintingVtol[vtolNum] = 0;
 					delete vTol[vtolNum]; 
-					vTol[vtolNum] = NULL;
+					vTol[vtolNum] = nullptr;
 					
 					if (dustCloud[vtolNum])
 					{
 						dustCloud[vtolNum]->Kill();
 						delete dustCloud[vtolNum];
-						dustCloud[vtolNum] = NULL;
+						dustCloud[vtolNum] = nullptr;
 					}
 					
 					if (recoveryBeam[vtolNum])
 					{
 						recoveryBeam[vtolNum]->Kill();
 						delete recoveryBeam[vtolNum];
-						recoveryBeam[vtolNum] = NULL;
+						recoveryBeam[vtolNum] = nullptr;
 					}
 
 					//We should have set this when the helo was brought in.
@@ -970,7 +970,7 @@ void MissionInterfaceManager::updateVTol()
 						if (mover) {
 							TacticalOrder tacOrder;
 							tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_POWERUP, true);
-							tacOrder.pack(NULL, NULL);					
+							tacOrder.pack(nullptr, nullptr);					
 							if (!MPlayer->isServer())
 								MPlayer->sendPlayerOrder(&tacOrder, false, 1, &mover);
 							else
@@ -981,7 +981,7 @@ void MissionInterfaceManager::updateVTol()
 					else if (reinforcement)
 					{
 						reinforcement->getPilot()->orderPowerUp(true, ORDER_ORIGIN_SELF);
-						reinforcement = NULL;
+						reinforcement = nullptr;
 					}
 
 					if ( !MPlayer || vtolNum == MPlayer->commanderID )
@@ -1018,7 +1018,7 @@ void MissionInterfaceManager::updateVTol()
 						shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 						shapeOrigin.BuildTranslation(wakePos);
 									
-						gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+						gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 					
 						recoveryBeam[vtolNum]->SetLoopOff();
 						recoveryBeam[vtolNum]->SetExecuteOn();
@@ -1061,7 +1061,7 @@ void MissionInterfaceManager::updateVTol()
 								((MoverPtr)mechToRecover[vtolNum])->timeLeft = 1.0f;
 								((MoverPtr)mechToRecover[vtolNum])->exploding = false;
 							}
-							PSTR newPilotName = NULL;
+							PSTR newPilotName = nullptr;
 							if (MPlayer)
 								newPilotName = MPlayer->reinforcementPilot[vtolNum];
 							else
@@ -1083,20 +1083,20 @@ void MissionInterfaceManager::updateVTol()
 				{
 					paintingVtol[vtolNum] = 0;
 					delete vTol[vtolNum];
-					vTol[vtolNum] = NULL;
+					vTol[vtolNum] = nullptr;
 					
 					if (dustCloud[vtolNum])
 					{
 						dustCloud[vtolNum]->Kill();
 						delete dustCloud[vtolNum];
-						dustCloud[vtolNum] = NULL;
+						dustCloud[vtolNum] = nullptr;
 					}
 					
 					if (recoveryBeam[vtolNum])
 					{
 						recoveryBeam[vtolNum]->Kill();
 						delete recoveryBeam[vtolNum];
-						recoveryBeam[vtolNum] = NULL;
+						recoveryBeam[vtolNum] = nullptr;
 					}
 
 					//Check if mech was recovered.  If not, restore the resource points!!!
@@ -1215,7 +1215,7 @@ void MissionInterfaceManager::updateTarget( bool bGui)
 			if ((target->getTeamId() != Team::home->getId()) && 
 				!target->isDisabled() && 
 				(((Mover *)target)->conStat < CONTACT_SENSOR_QUALITY_1))
-				target = NULL;
+				target = nullptr;
 		}
 		
 		if ( target )
@@ -1238,7 +1238,7 @@ void MissionInterfaceManager::updateTarget( bool bGui)
 			else if ( !target->isSelectable())
 			{
 				if ( !target->isDisabled() && !target->isMover() )
-					target = NULL;
+					target = nullptr;
 			}
 		}
 	}
@@ -1321,7 +1321,7 @@ void MissionInterfaceManager::updateOldStyle( bool shiftDn, bool altDn, bool ctr
 			// OR it doesn't matter because the canAddVehicle part of the beginVtol function doesn't reference it!
 			// Again, Its OK because we only use it for salvage craft.
 			// Need to pass this in so that Multiplayer can pass it in.
-			beginVtol(-1,commanderID,NULL,(MoverPtr)target);	//In Single player, this should always be zero?
+			beginVtol(-1,commanderID,nullptr,(MoverPtr)target);	//In Single player, this should always be zero?
 			return;
 		}
 		else if ( (controlGui.isAddingVehicle() && !paintingVtol[commanderID] && !canAddVehicle( wPos )) || 
@@ -1514,7 +1514,7 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrl
 			// OR it doesn't matter because the canAddVehicle part of the beginVtol function doesn't reference it!
 			// Again, Its OK because we only use it for salvage craft.
 			// Need to pass this in so that Multiplayer can pass it in.
-			beginVtol(-1,commanderID,NULL,(MoverPtr)target);	//In Single player, this should always be zero?
+			beginVtol(-1,commanderID,nullptr,(MoverPtr)target);	//In Single player, this should always be zero?
 			return;
 		}
 		else if ( (controlGui.isAddingVehicle() && !paintingVtol[commanderID] && !canAddVehicle( wPos )) || 
@@ -1544,7 +1544,7 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrl
 						doGuardTower();
 					else if ( controlGui.getGuard() )
 					{
-						doGuard(NULL);
+						doGuard(nullptr);
 					}
 					else				
 						doMove( wPos );
@@ -1590,7 +1590,7 @@ void MissionInterfaceManager::updateAOEStyle(bool shiftDn, bool altDn, bool ctrl
 			// OR it doesn't matter because the canAddVehicle part of the beginVtol function doesn't reference it!
 			// Again, Its OK because we only use it for salvage craft.
 			// Need to pass this in so that Multiplayer can pass it in.
-			beginVtol(-1,commanderID,NULL,(MoverPtr)target);	//In Single player, this should always be zero?
+			beginVtol(-1,commanderID,nullptr,(MoverPtr)target);	//In Single player, this should always be zero?
 			return;
 		}
 		else if ( (controlGui.isAddingVehicle() && !paintingVtol[commanderID] && !canAddVehicle( wPos )) || 
@@ -1712,7 +1712,7 @@ int32_t MissionInterfaceManager::update( bool leftClickedClick, bool rightClicke
 				if (MPlayer && !MPlayer->isServer()) {
 					TacticalOrder tacOrder;
 					tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_WAYPOINTS_DONE);
-					tacOrder.pack(NULL, NULL);					
+					tacOrder.pack(nullptr, nullptr);					
 					MPlayer->sendPlayerOrder(&tacOrder, false, 1, &pMover);
 					}
 				else {
@@ -1879,7 +1879,7 @@ void MissionInterfaceManager::doAttack()
 				tacOrder.attackParams.pursue = false;
 			else
 				tacOrder.attackParams.pursue = true;
-			tacOrder.pack(NULL, NULL);
+			tacOrder.pack(nullptr, nullptr);
 
 			//---------------------------------------------------------------------
 			// Helper function--perhaps this should just be a part of the mover and
@@ -1981,7 +1981,7 @@ void MissionInterfaceManager::doJump()
 			tacOrder.moveParams.wait = false;
 			tacOrder.moveParams.wayPath.mode[0] = TRAVEL_MODE_JUMP;
 			tacOrder.setWayPoint( 0, wPos );
-			tacOrder.pack(NULL, NULL);
+			tacOrder.pack(nullptr, nullptr);
 
 			handleOrders(tacOrder);
 
@@ -2027,7 +2027,7 @@ void MissionInterfaceManager::doGuard(GameObject* who)
 		TacticalOrder tacOrder;
 		tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_GUARD);
 		tacOrder.targetWID = who->getWatchID();
-		tacOrder.pack(NULL, NULL);	
+		tacOrder.pack(nullptr, nullptr);	
 		handleOrders( tacOrder );
 
 		controlGui.setDefaultSpeed();
@@ -2037,13 +2037,13 @@ void MissionInterfaceManager::doGuard(GameObject* who)
 		LocationNode path;
 		path.location = wPos;
 		path.run = true;
-		path.next = NULL;
+		path.next = nullptr;
 
 		TacticalOrder tacOrder;
 		tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_GUARD);
 		tacOrder.initWayPath( &path );
 		tacOrder.moveParams.wayPath.mode[0] = controlGui.getWalk() ?  TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
-		tacOrder.pack(NULL, NULL);	
+		tacOrder.pack(nullptr, nullptr);	
 		handleOrders( tacOrder );
 
 		controlGui.setDefaultSpeed();
@@ -2142,7 +2142,7 @@ int32_t MissionInterfaceManager::aimLeg()
 				
 				bool bRight = pMech->body[MECH_BODY_LOCATION_LLEG].damageState == IS_DAMAGE_DESTROYED;
 				tacOrder.attackParams.aimLocation = bRight ? MECH_BODY_LOCATION_RLEG :  MECH_BODY_LOCATION_LLEG;
-				tacOrder.pack( NULL, NULL);
+				tacOrder.pack( nullptr, nullptr);
 				handleOrders( tacOrder );
 
 				soundSystem->playDigitalSample(BUTTON5);
@@ -2180,7 +2180,7 @@ int32_t MissionInterfaceManager::aimArm()
 			tacOrder.moveParams.wayPath.mode[0] = controlGui.getWalk() ?  TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
 			bool bRight = pMech->body[MECH_BODY_LOCATION_LARM].damageState == IS_DAMAGE_DESTROYED;
 			tacOrder.attackParams.aimLocation = bRight ? MECH_BODY_LOCATION_RARM :  MECH_BODY_LOCATION_LARM;
-			tacOrder.pack( NULL, NULL);
+			tacOrder.pack( nullptr, nullptr);
 			handleOrders( tacOrder );
 
 			soundSystem->playDigitalSample(BUTTON5);
@@ -2231,7 +2231,7 @@ int32_t MissionInterfaceManager::aimHead()
 				tacOrder.attackParams.range = FIRERANGE_OPTIMAL;
 				tacOrder.moveParams.wayPath.mode[0] = controlGui.getWalk() ?  TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
 				tacOrder.attackParams.aimLocation = MECH_BODY_LOCATION_HEAD;
-				tacOrder.pack( NULL, NULL);
+				tacOrder.pack( nullptr, nullptr);
 				handleOrders( tacOrder );
 
 				bAimedShot = true;
@@ -2275,7 +2275,7 @@ int32_t MissionInterfaceManager::powerUp()
 {
 	TacticalOrder tacOrder;
 	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_POWERUP, true);
-	tacOrder.pack(NULL, NULL);					
+	tacOrder.pack(nullptr, nullptr);					
 	handleOrders( tacOrder );
 	return 1;
 }
@@ -2283,7 +2283,7 @@ int32_t MissionInterfaceManager::powerDown()
 {
 	TacticalOrder tacOrder;
 	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_POWERDOWN, true);
-	tacOrder.pack(NULL, NULL);
+	tacOrder.pack(nullptr, nullptr);
 	handleOrders( tacOrder );
 	return 1;
 					
@@ -2322,7 +2322,7 @@ int32_t MissionInterfaceManager::bigAirStrike()
 {
 	Stuff::Vector3D v = makeAirStrikeTarget( wPos );
 
-	IfaceCallStrike (ARTILLERY_LARGE,&v,NULL);
+	IfaceCallStrike (ARTILLERY_LARGE,&v,nullptr);
 //	if ( !isPaused() )
 		soundSystem->playSupportSample(SUPPORT_AIRSTRIKE);
 	return 1;
@@ -2331,7 +2331,7 @@ int32_t MissionInterfaceManager::smlAirStrike()
 {
 	Stuff::Vector3D v = makeAirStrikeTarget( wPos );
 
-	IfaceCallStrike (ARTILLERY_SMALL,&v,NULL);
+	IfaceCallStrike (ARTILLERY_SMALL,&v,nullptr);
 //	if ( !isPaused() )
 		soundSystem->playSupportSample(SUPPORT_AIRSTRIKE);
 	return 1;
@@ -2340,7 +2340,7 @@ int32_t MissionInterfaceManager::snsAirStrike()
 {
 	Stuff::Vector3D v = makeAirStrikeTarget( wPos );
 
-	IfaceCallStrike (ARTILLERY_SENSOR,&v,NULL);
+	IfaceCallStrike (ARTILLERY_SENSOR,&v,nullptr);
 //	if ( !isPaused() )
 		soundSystem->playSupportSample(SUPPORT_PROBE);
 	return 1;
@@ -2468,7 +2468,7 @@ int32_t MissionInterfaceManager::handleOrders( TacticalOrder& order)
 			if (pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId())
 				numMovers++;
 		}
-		MoverGroup::calcJumpGoals(order.getWayPoint(0), numMovers, moveGoals, NULL);
+		MoverGroup::calcJumpGoals(order.getWayPoint(0), numMovers, moveGoals, nullptr);
 		isMoveOrder = true;
 		}
 	else if (order.code == TACTICAL_ORDER_MOVETO_POINT) {
@@ -2492,17 +2492,17 @@ int32_t MissionInterfaceManager::handleOrders( TacticalOrder& order)
 			// group handleTacticalOrder() functions?
 			if (isMoveOrder ) {
 				order.setWayPoint(0, moveGoals[numMovers++]);
-				order.pack(NULL, NULL);
+				order.pack(nullptr, nullptr);
 			}
 			if (MPlayer && !MPlayer->isServer()) {
-				MPlayer->sendPlayerOrder(&order, false, 1, &pMover, 0, NULL, userInput->getKeyDown(WAYPOINT_KEY));
+				MPlayer->sendPlayerOrder(&order, false, 1, &pMover, 0, nullptr, userInput->getKeyDown(WAYPOINT_KEY));
 				//pMover->getPilot()->setExecutingQueue(false);
 				//pMover->getPilot()->addQueuedTacOrder(order);					
 				}
 			else
 			{
 				order.attackParams.range = (FireRangeType)pMover->attackRange;
-				order.pack( NULL, NULL );
+				order.pack( nullptr, nullptr );
 				if ( userInput->getKeyDown( WAYPOINT_KEY ) ) // way point one
 				{
 					pMover->getPilot()->setExecutingQueue(FALSE);
@@ -2807,7 +2807,7 @@ void MissionInterfaceManager::destroy (void)
 	hotKeyHeaderFont.destroy();
 
 	delete keyboardRef;
-	keyboardRef = NULL;
+	keyboardRef = nullptr;
 }	
 
 //--------------------
@@ -3013,7 +3013,7 @@ void MissionInterfaceManager::render (void)
 			pos2.w = pos1.w = 1.0f;
 
 			{
-				LineElement newElement(pos1,pos2,color,NULL,-1);
+				LineElement newElement(pos1,pos2,color,nullptr,-1);
 				newElement.draw();
 			}
 
@@ -3027,7 +3027,7 @@ void MissionInterfaceManager::render (void)
 			pos2.w = pos1.w = 1.0f;
 
 			{
-				LineElement newElement(pos1,pos2,color,NULL,-1);
+				LineElement newElement(pos1,pos2,color,nullptr,-1);
 				newElement.draw();
 			}
 			
@@ -3099,10 +3099,10 @@ void MissionInterfaceManager::initTacMap( PacketFile* file, int32_t packet )
 
 	for ( int32_t i = 0; i < MAX_ICONS; i++ )
 	{
-		oldTargets[i] = NULL;
+		oldTargets[i] = nullptr;
 	}
 
-	target = NULL;
+	target = nullptr;
 }
 
 void MissionInterfaceManager::printDebugInfo()
@@ -3141,7 +3141,7 @@ void MissionInterfaceManager::doMove(const Stuff::Vector3D& pos)
 	LocationNode path;
 	path.location = pos;
 	path.run = true;
-	path.next = NULL;
+	path.next = nullptr;
 
 	TacticalOrder tacOrder;
 	if ( controlGui.getJump() )
@@ -3156,7 +3156,7 @@ void MissionInterfaceManager::doMove(const Stuff::Vector3D& pos)
 	tacOrder.moveParams.wayPath.mode[0] =  controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
 	if ( controlGui.getMines() )
 		tacOrder.moveParams.mode = MOVE_MODE_MINELAYING;
-	tacOrder.pack(NULL, NULL);
+	tacOrder.pack(nullptr, nullptr);
 
 
 	handleOrders(tacOrder);
@@ -3606,7 +3606,7 @@ void MissionInterfaceManager::doDrag(bool bGui)
 			if ( count )
 			{
 				// empty the info window of any previously selected guys
-				controlGui.setInfoWndMover( NULL );
+				controlGui.setInfoWndMover( nullptr );
 
 				if ( !userInput->shift() )
 				{
@@ -3825,7 +3825,7 @@ int32_t MissionInterfaceManager::makeTargetCursor( bool lineOfSight, int32_t mov
 				if ( target->isDisabled() )
 				{
 					currentCursor = mState_NORMAL;
-	//				target = NULL;
+	//				target = nullptr;
 				}
 			}
 			else
@@ -3858,7 +3858,7 @@ int32_t MissionInterfaceManager::makeTargetCursor( bool lineOfSight, int32_t mov
 				}
 				else
 				{
-					target = NULL;
+					target = nullptr;
 					// find out if this position is passable.  Landbridges kinda are, or they'd be useless.
 					int32_t cellR, cellC;
 					bool passable = 1;
@@ -3900,7 +3900,7 @@ int32_t MissionInterfaceManager::makeTargetCursor( bool lineOfSight, int32_t mov
 		break;
 
 		case BRIDGE:
-			target = NULL;
+			target = nullptr;
 			return makeNoTargetCursor( false, lineOfSight, 0, 0, moverCount, nonMoverCount );
 			break;
 
@@ -4148,7 +4148,7 @@ MoverPtr BringInReinforcement (int32_t vehicleID, int32_t rosterIndex, int32_t c
 		char s[1024];
 		sprintf(s, "BringInReinforcement: null behicleFile (%d)", vehicleID);
 		STOP((s));
-		//return(NULL);
+		//return(nullptr);
 	}
 	strcpy( data.pilotFileName, vehicleFile );
 	strcpy( data.brainFileName, "pbrain" );
@@ -4185,7 +4185,7 @@ MoverPtr BringInReinforcement (int32_t vehicleID, int32_t rosterIndex, int32_t c
 		//Start the helicopters landed!!
 		MoverPtr newMover = (MoverPtr)ObjectManager->get(moverId);
 		if (!newMover)
-			return NULL;
+			return nullptr;
 
 		if (newMover->getMoveType() == MOVETYPE_AIR)
 			newMover->startShutDown();
@@ -4199,7 +4199,7 @@ MoverPtr BringInReinforcement (int32_t vehicleID, int32_t rosterIndex, int32_t c
 		return(newMover);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 //-----------------------------------------------------------------------------
@@ -4213,10 +4213,10 @@ void MissionInterfaceManager::addVehicle( const Stuff::Vector3D& pos )
 //	if ( !pChar )
 //		return;
 
-	// Check if vehicleFile is NULL.  If it is, simply get it.
+	// Check if vehicleFile is nullptr.  If it is, simply get it.
 	// Can happen if we get here BEFORE beginVtol?
 	// Happens when we select a vehicle which costs exactly the number of points we have left.
-	// Heidi deletes the points, which shuts off the button, which causes getVehicleName to return NULL.
+	// Heidi deletes the points, which shuts off the button, which causes getVehicleName to return nullptr.
 	// D'OH!!!
 	// Delete the points in getVehicleName when the vehicle is actually added!!!
 	//
@@ -4286,7 +4286,7 @@ void MissionInterfaceManager::beginVtol (int32_t supportID, int32_t commanderID,
 					if (gosEffectSpec)
 					{
 						dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-						gosASSERT(dustCloud[commanderID] != NULL);
+						gosASSERT(dustCloud[commanderID] != nullptr);
 						
 						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
@@ -4334,7 +4334,7 @@ void MissionInterfaceManager::beginVtol (int32_t supportID, int32_t commanderID,
 					if (gosEffectSpec)
 					{
 						dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-						gosASSERT(dustCloud[commanderID] != NULL);
+						gosASSERT(dustCloud[commanderID] != nullptr);
 						
 						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
@@ -4355,7 +4355,7 @@ void MissionInterfaceManager::beginVtol (int32_t supportID, int32_t commanderID,
 					if (gosEffectSpec)
 					{
 						recoveryBeam[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-						gosASSERT(recoveryBeam[commanderID] != NULL);
+						gosASSERT(recoveryBeam[commanderID] != nullptr);
 						
 						MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 					}
@@ -4433,7 +4433,7 @@ void MissionInterfaceManager::beginVtol (int32_t supportID, int32_t commanderID,
 		shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 		shapeOrigin.BuildTranslation(wakePos);
 					
-		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+		gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 	
 		dustCloud[commanderID]->SetLoopOff();
 		dustCloud[commanderID]->SetExecuteOn();
@@ -4715,7 +4715,7 @@ int32_t MissionInterfaceManager::gotoNextNavMarker()
 				LocationNode path;
 				path.location = pos;
 				path.run = true;
-				path.next = NULL;
+				path.next = nullptr;
 
 				TacticalOrder tacOrder;
 				tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_MOVETO_POINT, false);
@@ -4724,7 +4724,7 @@ int32_t MissionInterfaceManager::gotoNextNavMarker()
 				tacOrder.moveParams.wayPath.mode[0] =  controlGui.getWalk() ? TRAVEL_MODE_SLOW : TRAVEL_MODE_FAST;
 				if ( controlGui.getMines() )
 					tacOrder.moveParams.mode = MOVE_MODE_MINELAYING;
-				tacOrder.pack(NULL, NULL);
+				tacOrder.pack(nullptr, nullptr);
 
 
 				handleOrders(tacOrder);
@@ -5033,7 +5033,7 @@ int32_t MissionInterfaceManager::goalPlan() {
 			Mover* mover = (Mover*)pTeam->getMover( i );
 			if (mover->isSelected() && mover ->getCommander()->getId() == Commander::home->getId()) {
 				((MoverPtr)mover)->getPilot()->setUseGoalPlan(!((MoverPtr)mover)->getPilot()->getUseGoalPlan());
-				((MoverPtr)mover)->getPilot()->setMainGoal(GOAL_ACTION_NONE, NULL, NULL, -1.0);
+				((MoverPtr)mover)->getPilot()->setMainGoal(GOAL_ACTION_NONE, nullptr, nullptr, -1.0);
 			}
 		}
 		lastTime = gos_GetElapsedTime();
@@ -5052,7 +5052,7 @@ int32_t MissionInterfaceManager::enemyGoalPlan() {
 			Mover* mover = ObjectManager->getMover(i);
 			if (mover->getTeam() != Team::home) {
 				((MoverPtr)mover)->getPilot()->setUseGoalPlan(EnemiesGoalPlan);
-				((MoverPtr)mover)->getPilot()->setMainGoal(GOAL_ACTION_NONE, NULL, NULL, -1.0);
+				((MoverPtr)mover)->getPilot()->setMainGoal(GOAL_ACTION_NONE, nullptr, nullptr, -1.0);
 			}
 		}
 		lastTime = gos_GetElapsedTime();
@@ -5085,12 +5085,12 @@ void damageObject (GameObjectPtr victim, float damage) {
 	switch (victim->getObjectClass()) {
 		case BATTLEMECH:
 		case GROUNDVEHICLE:
-			shot.init(NULL, -2, damage, victim->calcHitLocation(NULL,-1,ATTACKSOURCE_WEAPONFIRE,0), 0);
-			victim->handleWeaponHit(&shot, (MPlayer != NULL));
+			shot.init(nullptr, -2, damage, victim->calcHitLocation(nullptr,-1,ATTACKSOURCE_WEAPONFIRE,0), 0);
+			victim->handleWeaponHit(&shot, (MPlayer != nullptr));
 			break;
 		default:
-			shot.init(NULL, -1, damage, 0, 0);
-			victim->handleWeaponHit(&shot, (MPlayer != NULL));
+			shot.init(nullptr, -1, damage, 0, 0);
+			victim->handleWeaponHit(&shot, (MPlayer != nullptr));
 			break;
 	}
 }
@@ -5386,7 +5386,7 @@ void MissionInterfaceManager::doEject( GameObject* who )
 {
 	TacticalOrder tacOrder;
 	tacOrder.init(ORDER_ORIGIN_PLAYER, TACTICAL_ORDER_EJECT, true);
-	tacOrder.pack(NULL, NULL);
+	tacOrder.pack(nullptr, nullptr);
 	MoverPtr pMover = (MoverPtr)who;
 	if (MPlayer && !MPlayer->isServer())
 		MPlayer->sendPlayerOrder(&tacOrder, false, 1, &pMover);
@@ -5759,7 +5759,7 @@ void MissionInterfaceManager::Load (FitIniFilePtr file)
 						if (gosEffectSpec)
 						{
 							dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-							gosASSERT(dustCloud[commanderID] != NULL);
+							gosASSERT(dustCloud[commanderID] != nullptr);
 
 							MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 						}
@@ -5784,7 +5784,7 @@ void MissionInterfaceManager::Load (FitIniFilePtr file)
 						if (gosEffectSpec)
 						{
 							dustCloud[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-							gosASSERT(dustCloud[commanderID] != NULL);
+							gosASSERT(dustCloud[commanderID] != nullptr);
 
 							MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 						}
@@ -5805,7 +5805,7 @@ void MissionInterfaceManager::Load (FitIniFilePtr file)
 						if (gosEffectSpec)
 						{
 							recoveryBeam[commanderID] = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-							gosASSERT(recoveryBeam[commanderID] != NULL);
+							gosASSERT(recoveryBeam[commanderID] != nullptr);
 
 							MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 						}
@@ -5871,7 +5871,7 @@ void MissionInterfaceManager::Load (FitIniFilePtr file)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 			shapeOrigin.BuildTranslation(wakePos);
 
-			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 
 			dustCloud[commanderID]->SetLoopOff();
 			dustCloud[commanderID]->SetExecuteOn();

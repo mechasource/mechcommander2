@@ -40,8 +40,8 @@
 //---------------------------------------------------------------------------
 
 int32_t				Commander::numCommanders = 0;
-CommanderPtr		Commander::commanders[MAX_COMMANDERS] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
-CommanderPtr		Commander::home = NULL;
+CommanderPtr		Commander::commanders[MAX_COMMANDERS] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+CommanderPtr		Commander::home = nullptr;
 
 //***************************************************************************
 // COMMANDER class
@@ -65,7 +65,7 @@ void Commander::operator delete (PVOID us) {
 void Commander::init (void) {
 
 	id = -1;
-	team = NULL;
+	team = nullptr;
 	for (int32_t i = 0; i < MAX_MOVERGROUPS; i++) {
 		groups[i] = new MoverGroup;
 		groups[i]->setId(i);
@@ -80,7 +80,7 @@ void Commander::destroy (void) {
 
 	for (int32_t i = 0; i < MAX_MOVERGROUPS; i++) {
 		delete groups[i];
-		groups[i] = NULL;
+		groups[i] = nullptr;
 	}
 
 	numCommanders--;
@@ -97,7 +97,7 @@ int32_t Commander::setGroup (int32_t id, int32_t numMates, MoverPtr* moverList, 
 
 	MoverGroupPtr curGroup = groups[id];
 
-	Assert(curGroup != NULL, 0, " Commander::setGroup has null group ");
+	Assert(curGroup != nullptr, 0, " Commander::setGroup has null group ");
 
 	//-----------------------------------------------
 	// The current group in this slot must disband...
@@ -157,8 +157,8 @@ void Commander::eject (void) {
 				}
 			else {
 				WeaponShotInfo shot;
-				shot.init(NULL, -3, 254.0, 0, 0);
-				mover->handleWeaponHit(&shot, (MPlayer != NULL));
+				shot.init(nullptr, -3, 254.0, 0, 0);
+				mover->handleWeaponHit(&shot, (MPlayer != nullptr));
 			}
 		}
 	}

@@ -16,7 +16,7 @@ class ObjectivesDlg : public CDialog
 {
 // Construction
 public:
-	ObjectivesDlg(CWnd* pParent = NULL);   // standard constructor
+	ObjectivesDlg(CWnd* pParent = nullptr);   // standard constructor
 
 	CObjectives m_ModifiedObjectives;
 

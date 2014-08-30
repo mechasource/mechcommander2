@@ -16,7 +16,7 @@ LogisticsMechDisplay.cpp			: Implementation of the LogisticsMechDisplay componen
 
 LogisticsMechDisplay::LogisticsMechDisplay(  )
 {
-	pCurMech = NULL;
+	pCurMech = nullptr;
 
 	helpTextArrayID = 7;
 }
@@ -163,7 +163,7 @@ void LogisticsMechDisplay::setMech( LogisticsMech* pMech, bool bFromLB )
 				attributeMeters[2].setValue( 0 );
 
 				componentListBox.setMech( 0 );
-				mechCamera.setMech( NULL );
+				mechCamera.setMech( nullptr );
 			}
 		}
 }

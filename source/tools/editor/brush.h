@@ -30,7 +30,7 @@ public:
 	virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  )  = 0;
 	virtual bool canPaint( Stuff::Vector3D& /*worldPos*/, int32_t /*screenX*/, int32_t /*screenY*/, int32_t /*flags*/ ) { return true; } 
 	virtual bool canPaintSelection(void){ return true; }
-	virtual Action* applyToSelection(void){ return NULL;}
+	virtual Action* applyToSelection(void){ return nullptr;}
 
 	virtual void render( int32_t /*screenX*/, int32_t /*screenY*/ ){}
 	virtual void update( int32_t /*screenX*/, int32_t /*screenY*/ ){}

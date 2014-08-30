@@ -85,7 +85,7 @@ GameObjectPtr TerrainObjectType::createInstance (void) {
 
 	TerrainObjectPtr result = new TerrainObject;
 	if (!result)
-		return NULL;
+		return nullptr;
 
 	result->init(true, this);
 	//result->setIdNumber(NextIdNumber++);
@@ -257,7 +257,7 @@ bool TerrainObjectType::handleCollision (GameObjectPtr collidee, GameObjectPtr c
 				{
 					WeaponShotInfo shot;
 					shot.init(0, -1, collidee->getDamageLevel(), 0, 0);
-					collidee->handleWeaponHit(&shot, (MPlayer != NULL));
+					collidee->handleWeaponHit(&shot, (MPlayer != nullptr));
 				}
 				break;
 			}
@@ -424,7 +424,7 @@ PSTR TerrainObject::getName (void) {
 		cLoadString(((ObjectAppearance*)appearance)->objectNameId, lastName, 254);
 		return(lastName);
 	}
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -536,7 +536,7 @@ int32_t TerrainObject::update (void) {
 				{
 					bldgDustPoofEffect->Kill();
 					delete bldgDustPoofEffect;
-					bldgDustPoofEffect = NULL;
+					bldgDustPoofEffect = nullptr;
 				}
 			}
 		}
@@ -640,19 +640,19 @@ void TerrainObject::destroy (void)
 	{
 		numCellsCovered = 0;
 		systemHeap->Free(cellsCovered);
-		cellsCovered = NULL;
+		cellsCovered = nullptr;
 	}
 
 	if (subAreas0)
 	{
 		ObjectTypeManager::objectCache->Free(subAreas0);
-		subAreas0 = NULL;
+		subAreas0 = nullptr;
 	}
 
 	if (subAreas1)
 	{
 		ObjectTypeManager::objectCache->Free(subAreas1);
-		subAreas1 = NULL;
+		subAreas1 = nullptr;
 	}
 
 	//-----------------------------------------------------
@@ -660,7 +660,7 @@ void TerrainObject::destroy (void)
 	if (appearance) 
 	{
 		delete appearance;
-		appearance = NULL;
+		appearance = nullptr;
 	}
 }
 
@@ -719,11 +719,11 @@ void TerrainObject::init (bool create, ObjectTypePtr objType) {
 			// LOAD a dummy appearance until real ones are available
 			// for this building!
 			terrainObjectAppearanceType = appearanceTypeList->getAppearance(appearanceType,"TREE");
-			gosASSERT(terrainObjectAppearanceType != NULL);
+			gosASSERT(terrainObjectAppearanceType != nullptr);
 		}
 		  
 	   	appearance = new TreeAppearance;
-		gosASSERT(appearance != NULL);
+		gosASSERT(appearance != nullptr);
 
 		appearance->init((TreeAppearanceType*)terrainObjectAppearanceType, (GameObjectPtr)this);
 	}
@@ -751,7 +751,7 @@ void TerrainObject::init (bool create, ObjectTypePtr objType) {
 		}
 	  
 	   	appearance = new BldgAppearance;
-		gosASSERT(appearance != NULL);
+		gosASSERT(appearance != nullptr);
 
 		//--------------------------------------------------------------
 		// The only appearance type for buildings is MLR_APPEARANCE.
@@ -850,7 +850,7 @@ int32_t TerrainObject::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMult
 							if (gosEffectSpec)
 							{
 								bldgDustPoofEffect = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-								gosASSERT(bldgDustPoofEffect != NULL);
+								gosASSERT(bldgDustPoofEffect != nullptr);
 							}
 								
 							MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
@@ -869,7 +869,7 @@ int32_t TerrainObject::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMult
 							shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 							shapeOrigin.BuildTranslation(actualPosition);
 							
-							gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+							gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 							bldgDustPoofEffect->Start(&info);
 						}
 					}

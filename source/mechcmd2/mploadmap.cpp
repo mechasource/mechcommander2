@@ -159,7 +159,7 @@ void MPLoadMap::seedDialog( bool bSeedSingle )
 		seedFromFile( "Multi" );
 	}
 
-	statics[18].setTexture( (uint32_t)NULL );
+	statics[18].setTexture( (uint32_t)nullptr );
 	if ( bSeedSingle )
 		mapList.SelectItem( 0);
 	else
@@ -189,7 +189,7 @@ void MPLoadMap::addFile( PCSTR pFileName, bool bSeedSingle )
 					pExt = (PSTR)(strstr( pFileName, ".FIT" ) );
 				}
 				if ( pExt )
-					*pExt = NULL;
+					*pExt = nullptr;
 
 								
 				
@@ -397,7 +397,7 @@ void MPLoadMap::seedFromCampaign()
 void MPLoadMap::end()
 {
 	LogisticsDialog::end();
-	statics[18].setTexture( ( uint32_t)NULL );
+	statics[18].setTexture( ( uint32_t)nullptr );
 	statics[18].setColor( 0 );
 }
 

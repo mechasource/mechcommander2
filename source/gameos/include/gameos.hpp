@@ -716,7 +716,7 @@ PSTR __stdcall gos_GetResourceString( uint32_t Handle, uint32_t Id );
 // that are stored in this fashion must be a "custom" resource and their resource type
 // string must match that of the 2nd parameter.
 //
-// If the resource cannot be found, a NULL is returned.
+// If the resource cannot be found, a nullptr is returned.
 //
 // If the resource is found, size is set to the size of resource in
 // bytes and the resource data is copied into a freshly allocated memory block from the
@@ -949,7 +949,7 @@ void __stdcall gos_CloseMemoryMappedFile( HANDLE Handle );
 
 
 //
-// Opens and reads in the whole file in a background thread. The MemoryImage pointer will be NULL until the file is read in completly.
+// Opens and reads in the whole file in a background thread. The MemoryImage pointer will be nullptr until the file is read in completly.
 //    When you are finished with the file, the Close function below must be called.
 //
 uint32_t __stdcall gos_ReadFileInBackground( PCSTR FileName, puint8_t* MemoryImage, puint32_t Size, uint32_t Offset=0, uint32_t MaxSize=0xffffffff );
@@ -1053,7 +1053,7 @@ void __stdcall gos_PopCurrentHeap(void);
 // function has been provided.
 //
 // If a client application tries to write beyond the bounds of the memory allocated to it by the Memory Manager,
-// An exception will occur, notifying the user. Passing a NULL (or 0) as pHeap will check ALL heaps.
+// An exception will occur, notifying the user. Passing a nullptr (or 0) as pHeap will check ALL heaps.
 //
 // o NOTE: if vociferous is set to true, the client application will receive information on the blocks allocated
 //         in the specified heap at the time of the call. These SPEWs will occur only if Environment.memoryTraceLevel
@@ -1234,7 +1234,7 @@ gosEnum_KeyStatus __stdcall gos_GetKeyStatus( gosEnum_KeyIndex index );
 //////////////////////////////////////////////////////////////////////////////////
 // Get extended keys from keyboard.
 //
-// NULL until a key is pressed
+// nullptr until a key is pressed
 // Low byte is ASCII key values - or 0 when high byte is an extended keycode that is not ASCII
 // High byte is a 'gosEnum_KeyIndex' code such as KEY_LEFT )
 //
@@ -1629,7 +1629,7 @@ typedef enum gosNetInfo {
 	gos_PlayerNumber,			// (uint32_t)  Returns a NUMBER for the PlayerID passed in the parameter (or 0xffffffff if not found)
 	gos_LockedStatus,			// (uint32_t)  Returns TRUE if the game is currently locked
 	gos_GameSecure,				// (uint32_t)	Returns TRUE if the host created the game as a secure game
-	gos_GamePassword,			// (PSTR)	Returns NULL or a pointer to the ASCII password used to create or join the game
+	gos_GamePassword,			// (PSTR)	Returns nullptr or a pointer to the ASCII password used to create or join the game
 //
 // Networking status information
 //
@@ -2519,7 +2519,7 @@ uint32_t __stdcall gos_NewTextureFromMemory( gos_TextureFormat Format, PCSTR Fil
 // Keyed		- will load into the smallest alpha surface ie: 1555
 // Alpha		- will load into the largest alpha + at least 15 bit RGB surface ie: 4444 or 8888
 //
-// The name passed is only used for better debugging - it can be NULL.
+// The name passed is only used for better debugging - it can be nullptr.
 //
 // Hints should be set to any combination of gos_TextureHints or 0 is a good default.
 //
@@ -2966,7 +2966,7 @@ public:
 	};
 	GosLogRef( EventType type, PSTR name, PSTR filename, int32_t lineno );
 	operator uint32_t() { return m_id; }
-	uint8_t ShouldLog() {  m_Count++; return 1; }	// change to return (m_pFunc != NULL);
+	uint8_t ShouldLog() {  m_Count++; return 1; }	// change to return (m_pFunc != nullptr);
 };
 
 class GosEventLog

@@ -155,7 +155,7 @@ static const GUID MC2GUID = { 0x35dc7890, 0xc5ef, 0x4171, { 0xb0, 0xcf, 0x4d, 0x
 // {1F8251BB-1436-44b3-A5B0-0FCF6858C176}
 static const GUID MC2DEMOGUID = { 0x1f8251bb, 0x1436, 0x44b3, { 0xa5, 0xb0, 0xf, 0xcf, 0x68, 0x58, 0xc1, 0x76 } };
 
-PVOID MC2NetLib = NULL;
+PVOID MC2NetLib = nullptr;
 bool OnLAN = false;
 NETMESSAGE ReceiveMsg;
 
@@ -188,7 +188,7 @@ extern DebuggerPtr debugger;
 
 //------------
 // GLOBAL vars
-MultiPlayer* MPlayer = NULL;
+MultiPlayer* MPlayer = nullptr;
 //extern int32_t NumMissionScriptMessages;
 
 ///extern Scenario* scenario;
@@ -383,7 +383,7 @@ int32_t MultiPlayer::endSessionScan (void) {
 
 MC2Session* MultiPlayer::getSessions (int32_t& sessionCount) {
 
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -551,7 +551,7 @@ MC2Player GetPlayersList[MAX_MC_PLAYERS];
 
 const MC2Player* MultiPlayer::getPlayers (int32_t& playerCount) {
 
-	return(NULL);
+	return(nullptr);
 }
 
 //-----------------------------------------------------------------------------

@@ -244,7 +244,7 @@ LogisticsVariant::~LogisticsVariant()
 	if ( chassis->refCount == 0 )
 		delete chassis;
 
-	chassis = NULL;
+	chassis = nullptr;
 }
 
 LogisticsVariant::LogisticsVariant( const LogisticsVariant& src )
@@ -704,7 +704,7 @@ int32_t LogisticsVariant::canAddComponent( LogisticsComponent* pComponent, int32
 const LogisticsChassis::ComponentInfo* LogisticsVariant::getComponentAtLocation( int32_t x, int32_t y ) const
 {
 	if ( x == -1 && y == -1 )
-		return NULL;
+		return nullptr;
 
 	for ( int32_t i = 0; i < componentCount; ++i )
 	{
@@ -723,7 +723,7 @@ const LogisticsChassis::ComponentInfo* LogisticsVariant::getComponentAtLocation(
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 bool LogisticsVariant::hasJumpJets(void) const

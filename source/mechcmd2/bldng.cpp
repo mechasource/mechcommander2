@@ -148,7 +148,7 @@ GameObjectPtr BuildingType::createInstance (void) {
 
 	BuildingPtr result = new Building;
 	if (!result)
-		return(NULL);
+		return(nullptr);
 
 	result->init(true, this);
 	//result->setIdNumber(NextIdNumber++);
@@ -345,10 +345,10 @@ bool BuildingType::handleCollision (GameObjectPtr collidee, GameObjectPtr collid
 		case EXPLOSION:
 		case FIRE: {
 			WeaponShotInfo shot;
-			shot.init(NULL, -1, 10, 0, 0);
+			shot.init(nullptr, -1, 10, 0, 0);
 			if (collider->getCollisionFreeTime() < scenarioTime)
 				return(true);
-			collidee->handleWeaponHit(&shot, (MPlayer != NULL));
+			collidee->handleWeaponHit(&shot, (MPlayer != nullptr));
 			}
 			break;
 	}
@@ -404,7 +404,7 @@ int32_t Building::updateAnimations (void)
 	//---------------------------------------------
 	// Animate Sensor Towers first.
 	/*
-	if (sensorSystem != NULL)
+	if (sensorSystem != nullptr)
 	{
 		int32_t animState = appearance->getCurrentGestureId();
 		if (sensorSystem->numContacts)
@@ -795,7 +795,7 @@ int32_t Building::update (void)
 			if (getObjectType()->getObjTypeNum() == GENERIC_DESTRUCTIBLE_RESOURCE_BUILDING_OBJNUM) 
 			{
 				//We are a random resource building.  Mark the terrain under us impassable.
-				appearance->markMoveMap(false,NULL);
+				appearance->markMoveMap(false,nullptr);
 			}
 
 			// MUST update appearance every frame or animation goes HINKY!
@@ -1000,7 +1000,7 @@ int32_t Building::setTeamId (int32_t _teamId, bool setup)
 TeamPtr Building::getTeam (void) {
 
 	if (teamId == -1)
-		return(NULL);
+		return(nullptr);
 	return(Team::teams[teamId]);
 }
 
@@ -1127,7 +1127,7 @@ PSTR Building::getName (void)
 		return(lastName);
 	}
 
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -1138,7 +1138,7 @@ void Building::destroy (void)
 	if (appearance) 
 	{
 		delete appearance;
-		appearance = NULL;
+		appearance = nullptr;
 	}
 }
 
@@ -1214,7 +1214,7 @@ void Building::init (bool create, ObjectTypePtr objType) {
 	// MechCmdr2 features much simpler objects which only use 1 type of sprite!
 	int32_t appearanceType = (BLDG_TYPE << 24);
 
-	AppearanceTypePtr buildingAppearanceType = NULL;
+	AppearanceTypePtr buildingAppearanceType = nullptr;
 	if (!appearName)
 	{
 		//------------------------------------------------------
@@ -1235,7 +1235,7 @@ void Building::init (bool create, ObjectTypePtr objType) {
 	}
 	  
    	appearance = new BldgAppearance;
-	gosASSERT(appearance != NULL);
+	gosASSERT(appearance != nullptr);
 
 	//--------------------------------------------------------------
 	// The only appearance type for buildings is MLR_APPEARANCE.
@@ -1485,13 +1485,13 @@ int32_t Building::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplay
 				// ONLY if the building has no special MAGIC gos FX version!
 				Stuff::Vector3D hitNodePos = appearance->getHitNode();
 				if (!appearance->playDestruction())
-					ObjectManager->createExplosion(BUILDING_EXPLOSION_ID,NULL,hitNodePos,explDamage,explRadius);
+					ObjectManager->createExplosion(BUILDING_EXPLOSION_ID,nullptr,hitNodePos,explDamage,explRadius);
 				else	//Play the sound effect and do splash damage but don't draw any effect.  We are playing a magical GosFX one!!
-					ObjectManager->createExplosion(EMPTY_EXPLOSION_ID,NULL,hitNodePos,explDamage,explRadius);
+					ObjectManager->createExplosion(EMPTY_EXPLOSION_ID,nullptr,hitNodePos,explDamage,explRadius);
 
 #if 0
 				if (type->marksImpassableWhenDestroyed) 
-					appearance->markMoveMap(true,NULL);
+					appearance->markMoveMap(true,nullptr);
 #endif
 
 				appearance->markLOS(true);
@@ -1515,7 +1515,7 @@ int32_t Building::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplay
 				else	//We want the buildings remaining shape to correctly calc LOS and Impassability
 				{
 					appearance->markLOS();
-					appearance->markMoveMap(false,NULL);	//Then, use the destroyed shape to mark impassable
+					appearance->markMoveMap(false,nullptr);	//Then, use the destroyed shape to mark impassable
 				}
 #endif							
 				if (CombatLog) {
@@ -1552,7 +1552,7 @@ int32_t Building::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplay
 									for (int32_t k=0;k<50;k++)
 									{
 										WeaponShotInfo shotInfo;
-										shotInfo.init(NULL, 160, 50.0f, pMover->calcHitLocation(NULL,-1,ATTACKSOURCE_WEAPONFIRE,0), 0);
+										shotInfo.init(nullptr, 160, 50.0f, pMover->calcHitLocation(nullptr,-1,ATTACKSOURCE_WEAPONFIRE,0), 0);
 										pMover->handleWeaponHit(&shotInfo);
 										if (MPlayer && MPlayer->isServer())
 											MPlayer->addWeaponHitChunk((GameObjectPtr)this, &shotInfo);
@@ -1584,7 +1584,7 @@ float Building::getDamageLevel (void) {
 //---------------------------------------------------------------------------
 bool Building::isLinked (void)
 {
-	return (parent != NULL);
+	return (parent != nullptr);
 }
 
 //---------------------------------------------------------------------------

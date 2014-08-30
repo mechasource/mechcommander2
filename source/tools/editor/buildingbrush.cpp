@@ -19,7 +19,7 @@ BuildingBrush::BuildingBrush( int32_t Group, int32_t IndexInGroup, int32_t Align
 {
 	group = Group;
 	indexInGroup = IndexInGroup;
-	pAction = NULL;
+	pAction = nullptr;
 	pCursor = EditorObjectMgr::instance()->getAppearance( Group, IndexInGroup );
 	pCursor->teamId = Alignment;
 	pCursor->setInView(true);
@@ -31,9 +31,9 @@ BuildingBrush::BuildingBrush( int32_t Group, int32_t IndexInGroup, int32_t Align
 
 BuildingBrush::BuildingBrush()
 {
-	pCursor = NULL;
+	pCursor = nullptr;
 	group = indexInGroup = -1;
-	pAction = NULL;
+	pAction = nullptr;
 }
 
 BuildingBrush::~BuildingBrush()
@@ -97,11 +97,11 @@ Action* BuildingBrush::endPaint( )
 		if ( !pAction->objInfoPtrList.Count() )
 		{
 			delete pAction;
-			pAction = NULL;
+			pAction = nullptr;
 		}
 	}
 	Action* pRetAction = pAction;
-	pAction = NULL;
+	pAction = nullptr;
 	return pRetAction;
 }
 

@@ -48,8 +48,8 @@ extern int32_t helpTextID;
 
 extern bool neverEndingStory;
 
-ButtonData*	ControlGui::buttonData = NULL;
-ButtonData* ControlGui::vehicleData = NULL;
+ButtonData*	ControlGui::buttonData = nullptr;
+ButtonData* ControlGui::vehicleData = nullptr;
 
 int32_t ControlGui::hiResOffsetX = 0;
 int32_t ControlGui::hiResOffsetY = 0;
@@ -149,14 +149,14 @@ ControlGui::ControlGui()
 	addingSalvage = 0;
 	wasLayingMines = 0;
 
-	bMovie = NULL;
+	bMovie = nullptr;
 	moviePlaying = 0;
 
 	helpTextHeaderID = 0;
 	helpTextID = 0;
 
-	rectInfos = NULL;
-	rectCount = NULL;	
+	rectInfos = nullptr;
+	rectCount = nullptr;	
 	staticInfos = 0;
 	staticCount = 0;
 	buttons = 0;
@@ -260,12 +260,12 @@ ControlGui::~ControlGui()
 		delete [] missionStatusInfos;
 
 	missionStatusInfos = 0;
-	instance = NULL;
+	instance = nullptr;
 
 	if (bMovie)
 	{
 		delete bMovie;
-		bMovie = NULL;
+		bMovie = nullptr;
 	}
 }
 
@@ -488,7 +488,7 @@ void ControlGui::startObjectives( bool bStart )
 		}
 		qsort( sorted, playerCount, sizeof( MC2Player* ), sortStats );
 
-		mpStats[0].setData( NULL, 1 ); // this is the header...
+		mpStats[0].setData( nullptr, 1 ); // this is the header...
 		for ( int32_t i = 1; i < MAX_MC_PLAYERS+1; i++ )
 		{
 			if ( i-1 < playerCount )
@@ -508,7 +508,7 @@ void ControlGui::renderResults()
 	if ( renderStatusInfo )
 	{
 		if ( infoWnd ) // kill info wnd stuff
-			infoWnd->setUnit( NULL );
+			infoWnd->setUnit( nullptr );
 
 		resultsTime += frameLength;
 		float t0, t1, p0, p1;
@@ -767,7 +767,7 @@ void ControlGui::renderPlayerStatus(float xDelta)
 	}
 	qsort( sorted, playerCount, sizeof( MC2Player* ), sortStats );
 
-	mpStats[0].setData( NULL, 1 ); // this is the header...
+	mpStats[0].setData( nullptr, 1 ); // this is the header...
 	for ( int32_t i = 1; i < MAX_MC_PLAYERS+1; i++ )
 	{
 		if ( i-1 < playerCount )
@@ -943,7 +943,7 @@ void ControlGui::update( bool bPaused, bool bLOS )
 		{
 			moviePlaying = false;
 			delete bMovie;
-			bMovie = NULL;
+			bMovie = nullptr;
 		}
 	}
 
@@ -1527,7 +1527,7 @@ ControlButton*		ControlGui::getButton( int32_t ID )
 	}
 
 
-	return NULL;
+	return nullptr;
 }
 
 void ControlGui::handleClick( int32_t ID )
@@ -1675,7 +1675,7 @@ void ControlGui::doStop()
 		if ( pMover->isSelected() && pMover->getCommander()->getId() == Commander::home->getId() )
 		{
 			tacOrder.attackParams.range = (FireRangeType)pMover->attackRange;
-			tacOrder.pack(NULL, NULL);
+			tacOrder.pack(nullptr, nullptr);
 
 			//---------------------------------------------------------------------
 			// Helper function--perhaps this should just be a part of the mover and
@@ -2095,7 +2095,7 @@ PCSTR ControlGui::getVehicleNameFromID (int32_t ID) {
 	for (int32_t i = 0; i < 5; i++)
 		if (vehicleIDs[i] == ID)
 			return(vehiclePilots[i]);
-	return(NULL);
+	return(nullptr);
 }
 
 bool ControlGui::getMines()
@@ -2371,7 +2371,7 @@ void ControlGui::initStatics( FitIniFile& file )
 
 	if ( staticInfos )
 		delete [] staticInfos;
-	staticInfos = NULL;
+	staticInfos = nullptr;
 
 	if ( objectiveInfos )
 		delete [] objectiveInfos;
@@ -2828,7 +2828,7 @@ void ControlGui::playMovie( PCSTR fileName )
 	// Assume extension is BIK.
 	// Assume the movie is in data\movies.
 	char realName[1024];
-	_splitpath(fileName,NULL,NULL,realName,NULL);
+	_splitpath(fileName,nullptr,nullptr,realName,nullptr);
 
 	FullPathFileName movieName;
 	movieName.init(moviePath,realName,".bik");
@@ -2847,7 +2847,7 @@ void ControlGui::playMovie( PCSTR fileName )
 		//If we couldn't play it cause of the frame Rate, TOSS it!!
 		moviePlaying = false;
 		delete bMovie;
-		bMovie = NULL;
+		bMovie = nullptr;
 	}
 }
 
@@ -2921,7 +2921,7 @@ void	ControlGui::toggleHoldPosition()
 						pMover->getPilot()->getCurTacOrder()->attackParams.pursue = false;
 					else
 						pMover->getPilot()->getCurTacOrder()->attackParams.pursue = true;
-					pMover->getPilot()->getCurTacOrder()->pack(NULL, NULL);
+					pMover->getPilot()->getCurTacOrder()->pack(nullptr, nullptr);
 					pMover->handleTacticalOrder(*pMover->getPilot()->getCurTacOrder());
 				}
 			}
@@ -3138,8 +3138,8 @@ bool ControlGui::playPilotVideo( MechWarrior* pPilot, char movieCode )
 	strcat( fileName, realPilotName ); // swap in pilot name when videos are done
 	char tmp[3];
 	tmp[0] = movieCode;
-	tmp[1] = NULL;
-	tmp[2] = NULL;
+	tmp[1] = nullptr;
+	tmp[2] = nullptr;
 	strcat( fileName, tmp );
 
 	return forceGroupBar.setPilotVideo( fileName, pPilot );
@@ -3149,7 +3149,7 @@ bool ControlGui::playPilotVideo( MechWarrior* pPilot, char movieCode )
 
 void ControlGui::endPilotVideo()
 {
-	forceGroupBar.setPilotVideo( NULL, NULL );
+	forceGroupBar.setPilotVideo( nullptr, nullptr );
 }
 
 void ControlGui::cancelInfo()

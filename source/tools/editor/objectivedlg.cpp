@@ -26,7 +26,7 @@ static char THIS_FILE[] = __FILE__;
 // ObjectiveDlg dialog
 
 
-ObjectiveDlg::ObjectiveDlg(CWnd* pParent /*=NULL*/)
+ObjectiveDlg::ObjectiveDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(ObjectiveDlg::IDD, pParent)
 {
 	m_TitleResourceStringID = 0;
@@ -785,7 +785,7 @@ void ObjectiveDlg::DoColorBox( CWnd* pWnd )
 		base &= 0x00ffffff;
 
 
-		CColorDialog dlg( reverseRGB(base), NULL, this );
+		CColorDialog dlg( reverseRGB(base), nullptr, this );
 		if (IDOK == dlg.DoModal() )
 		{
 			base = reverseRGB( dlg.GetColor() );

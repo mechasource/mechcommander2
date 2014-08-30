@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 // ViewConditionOrActionDlg dialog
 
 
-ViewConditionOrActionDlg::ViewConditionOrActionDlg(CWnd* pParent /*=NULL*/)
+ViewConditionOrActionDlg::ViewConditionOrActionDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(ViewConditionOrActionDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(ViewConditionOrActionDlg)

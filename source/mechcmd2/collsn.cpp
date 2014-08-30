@@ -35,9 +35,9 @@
 
 //------------------------------------------------------------------------------
 // Static globals
-//CollisionSystem *collisionSystem = NULL;
-GlobalCollisionAlert *globalCollisionAlert = NULL;
-UserHeapPtr CollisionSystem::collisionHeap = NULL;
+//CollisionSystem *collisionSystem = nullptr;
+GlobalCollisionAlert *globalCollisionAlert = nullptr;
+UserHeapPtr CollisionSystem::collisionHeap = nullptr;
 uint32_t CollisionSystem::maxObjects = 0;
 uint32_t CollisionSystem::gridRadius = 0;
 uint32_t CollisionSystem::xGridSize = 0;
@@ -53,7 +53,7 @@ int32_t GlobalCollisionAlert::init (uint32_t maxCollisionAlerts)
 	maxAlerts = maxCollisionAlerts;
 	
 	collisionAlerts = (CollisionAlertRecordPtr)systemHeap->Malloc(sizeof(CollisionAlertRecord) * maxAlerts);
-	gosASSERT(collisionAlerts != NULL);
+	gosASSERT(collisionAlerts != nullptr);
 
 	purgeRecords();
 	
@@ -64,7 +64,7 @@ int32_t GlobalCollisionAlert::init (uint32_t maxCollisionAlerts)
 void GlobalCollisionAlert::destroy (void)
 {
 	systemHeap->Free(collisionAlerts);
-	collisionAlerts = NULL;
+	collisionAlerts = nullptr;
 	maxAlerts = nextRecord = 0;
 }
 
@@ -115,7 +115,7 @@ CollisionAlertRecordPtr GlobalCollisionAlert::findAlert (GameObjectPtr object, C
 		}
 	}
 		
-	return(NULL);
+	return(nullptr);
 }
 
 //------------------------------------------------------------------------------
@@ -125,8 +125,8 @@ void GlobalCollisionAlert::purgeRecords (void)
 	
 	for (int32_t i=0;i<(int32_t)maxAlerts;i++)
 	{
-		collisionAlerts[i].object1 = NULL;
-		collisionAlerts[i].object2 = NULL;
+		collisionAlerts[i].object1 = nullptr;
+		collisionAlerts[i].object2 = nullptr;
 
 		collisionAlerts[i].currentDistance = 0.0;
 		collisionAlerts[i].timeToImpact = 0.0;
@@ -137,7 +137,7 @@ void GlobalCollisionAlert::purgeRecords (void)
 // class CollisionGrid 
 PVOID CollisionGrid::operator new (size_t mySize)
 {
-	PVOID result = NULL;
+	PVOID result = nullptr;
 	
 	if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
 		result = CollisionSystem::collisionHeap->Malloc(mySize);
@@ -173,12 +173,12 @@ int32_t CollisionGrid::init (Stuff::Vector3D &newOrigin)
 		if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
 			grid = (CollisionGridNodePtr *)CollisionSystem::collisionHeap->Malloc(gridSize);
 		
-		gosASSERT(grid != NULL);
+		gosASSERT(grid != nullptr);
 		
 		if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
 			nodes = (CollisionGridNodePtr)CollisionSystem::collisionHeap->Malloc(nodeSize);
 		
-		gosASSERT(nodes != NULL);
+		gosASSERT(nodes != nullptr);
 		
 		gridXOffset = ((xGridWidth + 1) * maxGridRadius) / 2;
 		gridYOffset = ((yGridWidth + 1) * maxGridRadius) / 2;
@@ -197,7 +197,7 @@ int32_t CollisionGrid::init (Stuff::Vector3D &newOrigin)
 	nextAvailableNode = 0;
 	gridOrigin = newOrigin;
 	
-	giantObjects = NULL;
+	giantObjects = nullptr;
 
 	return(NO_ERROR);
 }
@@ -210,10 +210,10 @@ void CollisionGrid::destroy (void)
 		if (CollisionSystem::collisionHeap && CollisionSystem::collisionHeap->heapReady())
 		{
 			CollisionSystem::collisionHeap->Free(nodes);
-			nodes = NULL;
+			nodes = nullptr;
 			
 			CollisionSystem::collisionHeap->Free(grid);
-			grid = NULL;			
+			grid = nullptr;			
 		}
 		
 		gridIsGo = FALSE;
@@ -398,7 +398,7 @@ void CollisionGrid::checkGrid (GameObjectPtr obj1, CollisionGridNodePtr area)
 // class CollisionSystem
 PVOID CollisionSystem::operator new (size_t mySize)
 {
-	PVOID result = NULL;
+	PVOID result = nullptr;
 	
 	result = systemHeap->Malloc(mySize);
 	
@@ -423,13 +423,13 @@ int32_t CollisionSystem::init (FitIniFile *scenarioFile)
 	alertTime = 2.5;                                     //This is in seconds
 		
 	collisionHeap = new UserHeap;
-	gosASSERT(collisionHeap != NULL);
+	gosASSERT(collisionHeap != nullptr);
 		
 	int32_t result = collisionHeap->init(65535);
 	gosASSERT(result == NO_ERROR);
 	
 	collisionGrid = new CollisionGrid;
-	gosASSERT(collisionGrid != NULL);
+	gosASSERT(collisionGrid != nullptr);
 
 	globalCollisionAlert = new GlobalCollisionAlert;
 	gosASSERT(globalCollisionAlert);
@@ -454,7 +454,7 @@ void CollisionSystem::checkObjects (void)
 	
 #if 1
 
-	GameObjectPtr* objList = NULL;
+	GameObjectPtr* objList = nullptr;
 	int32_t numCollidables = ObjectManager->getCollidableList(objList);
 	for (int32_t i = 0; i < numCollidables; i++) 
 	{
@@ -473,7 +473,7 @@ void CollisionSystem::checkObjects (void)
 	//---------------------------------------------------------
 	// Convert to Glenn's Magical New Object System!
 	ObjectQueueNodePtr objList = objectList->getHeadList(); 		//Start with the default list.
-	ObjectNodePtr objNode = NULL;
+	ObjectNodePtr objNode = nullptr;
 	uint32_t objectsPerList[MAX_LISTS_TO_CHECK] = 
 	{
 		0,0,0
@@ -482,11 +482,11 @@ void CollisionSystem::checkObjects (void)
 	while (objList && (currentList < MAX_LISTS_TO_CHECK))
 	{
 		//----------------------------------------------------
-		// if getObjectType returns NULL we are a baseObject.
+		// if getObjectType returns nullptr we are a baseObject.
 		// Something like the sun or terrain.  DO NOT CHECK!!
 		// We cast as a GameObject and that will seriously
 		// mess up if we are just a baseObject!
-		if (objNode && objNode->getObjectType() != NULL)
+		if (objNode && objNode->getObjectType() != nullptr)
 		{
 			result = collisionGrid->add((GameObjectPtr)objNode);
 			objectsPerList[currentList]++;
@@ -511,7 +511,7 @@ void CollisionSystem::checkObjects (void)
 			objNode = objList->head;
 		}
 		
-		if (objNode == NULL)
+		if (objNode == nullptr)
 		{
 			objList = objList->next;
 			currentList++;
@@ -798,13 +798,13 @@ float CollisionSystem::timeToImpact (GameObjectPtr obj1, GameObjectPtr obj2)
 void CollisionSystem::destroy (void)
 {
 	delete collisionGrid;
-    collisionGrid = NULL;
+    collisionGrid = nullptr;
 
 	delete collisionHeap;
-    collisionHeap = NULL;
+    collisionHeap = nullptr;
 	
 	delete globalCollisionAlert;
-	globalCollisionAlert = NULL;
+	globalCollisionAlert = nullptr;
 }
 
 //------------------------------------------------------------------------------

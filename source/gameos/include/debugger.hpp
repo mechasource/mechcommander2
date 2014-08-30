@@ -57,7 +57,7 @@ void	__stdcall DrawLines( int32_t X1, int32_t Y1, int32_t X2, int32_t Y2, uint32
 typedef struct _MenuItem
 {
 	struct _MenuItem*	pNext;
-	struct _MenuItem*	pSubMenu;							// Pointer to sub menu list, or NULL
+	struct _MenuItem*	pSubMenu;							// Pointer to sub menu list, or nullptr
 	uint32_t	(__stdcall *Callback)(PSTR Name, uint32_t MenuFunction);
 	void	(__stdcall *Routine)(void);								// Sub menu list pointer
 	uint8_t	(__stdcall *Greyed)(void);

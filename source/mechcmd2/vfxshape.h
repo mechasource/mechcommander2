@@ -36,10 +36,10 @@ class Shape
 
 		void init (void) 
 		{
-			frameList = stupidHeader = NULL;
+			frameList = stupidHeader = nullptr;
 			lastTurnUsed = 0;
-			next = NULL;
-			owner = NULL;
+			next = nullptr;
+			owner = nullptr;
 		}
 
 		Shape (void) 

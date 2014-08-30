@@ -703,7 +703,7 @@ class MCMSG_Chat {
 			allPlayers = false;
 			isDeadChat = false;
 			hideName = false;
-			string[0] = NULL;
+			string[0] = nullptr;
 		}
 };
 
@@ -1162,7 +1162,7 @@ class MCMSG_Reinforcement {
 			stage = 0;
 			rosterIndex = 255;
 			vehicleID = 0;
-			pilotName[0] = NULL;
+			pilotName[0] = nullptr;
 			commanderID = 0;
 			location[0] = 0.0;
 			location[1] = 0.0;
@@ -1186,7 +1186,7 @@ class MCMSG_NewServer {
 
 		void init (void) {
 			type = MCMSG_NEW_SERVER;
-			ipAddress[0] = NULL;
+			ipAddress[0] = nullptr;
 		}
 
 };
@@ -1211,7 +1211,7 @@ class MCMSG_FileReport {
 		void init() {
 			type = MCMSG_FILE_REPORT;
 			checkSum = 0;
-			fileName[0] = NULL;
+			fileName[0] = nullptr;
 			memset(&fileGuid,0,sizeof(GUID));
 		}
 };
@@ -1469,7 +1469,7 @@ class MultiPlayer {
 		// for write purposes....
 		MC2Player* getPlayerInfo( int32_t commanderID )
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		bool hostSession(PSTR sessionName, PSTR playerName, int32_t mxPlayers);
@@ -1545,7 +1545,7 @@ class MultiPlayer {
 		void initSpecialBuildings (char commandersToLoad[8][3]);
 
 		PSTR getPlayerName (void) {
-			return(NULL);
+			return(nullptr);
 		}
 
 		void addToLocalMovers (MoverPtr mover);
@@ -1733,7 +1733,7 @@ class MultiPlayer {
 							  int32_t numMovers,
 							  MoverPtr* moverList,
 							  int32_t numGroups = 0,
-							  MoverGroupPtr* groupList = NULL,
+							  MoverGroupPtr* groupList = nullptr,
   							  bool queuedOrder = false);
 
 		void sendHoldPosition (void);

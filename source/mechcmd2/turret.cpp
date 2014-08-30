@@ -67,7 +67,7 @@ GameObjectPtr TurretType::createInstance (void){
 
 	TurretPtr newTurret = new Turret;
 	if (!newTurret)
-		return(NULL);
+		return(nullptr);
 
 	newTurret->init(true, this);
 
@@ -289,7 +289,7 @@ void Turret::init (bool create){
 	setFlag(OBJECT_FLAG_ONFIRE, false);
 	setFlag(OBJECT_FLAG_CHECKED_ONSCREEN, false);
 
-	appearance = NULL;
+	appearance = nullptr;
 
 	vertexNumber = 0;
 	blockNumber = 0;
@@ -302,7 +302,7 @@ void Turret::init (bool create){
 
 	targetWID = 0;
 
-	pointLight = NULL;
+	pointLight = nullptr;
 
 	maxRange = 0.0f;
 
@@ -353,7 +353,7 @@ int32_t Turret::setTeamId (int32_t _teamId, bool setup){
 TeamPtr Turret::getTeam (void){
 
 	if (teamId == -1)
-		return(NULL);
+		return(nullptr);
 	return(Team::teams[teamId]);
 }
 
@@ -524,7 +524,7 @@ int32_t Turret::update (void)
 		{
 			eye->removeWorldLight(lightId,pointLight);
 			free(pointLight);
-			pointLight = NULL;
+			pointLight = nullptr;
 		}
 
 		appearance->setObjectParameters(position, rotation, drawFlags, teamId,Team::getRelation(teamId, Team::home->getId()));
@@ -774,7 +774,7 @@ int32_t Turret::update (void)
 		// Move it with turret's rotation below.
 		//
 		// For E3, have the spotlights create the light immediately or we run out of light sources!
-		if (active && eye->getIsNight() && (pointLight == NULL) && (getStatus() != OBJECT_STATUS_DESTROYED))
+		if (active && eye->getIsNight() && (pointLight == nullptr) && (getStatus() != OBJECT_STATUS_DESTROYED))
 		{
 			pointLight = (TG_LightPtr)malloc(sizeof(TG_Light));
 			pointLight->init(TG_LIGHT_SPOT);
@@ -789,7 +789,7 @@ int32_t Turret::update (void)
 		{
 			eye->removeWorldLight(lightId,pointLight);
 			free(pointLight);
-			pointLight = NULL;
+			pointLight = nullptr;
 		}
 	}
 
@@ -955,8 +955,8 @@ float Turret::calcAttackChance (GameObjectPtr target, int32_t* range, int32_t we
 	//-------------------------------------------------------------
 	// First, let's find out what kind of object we're targeting...
 	Stuff::Vector3D targetPosition(0.0f,0.0f,0.0f);
-	BattleMechPtr mech = NULL;
-	GroundVehiclePtr vehicle = NULL;
+	BattleMechPtr mech = nullptr;
+	GroundVehiclePtr vehicle = nullptr;
 
 	if (target)
 	{
@@ -1116,11 +1116,11 @@ int32_t Turret::updateWeaponFireChunks (int32_t which)
 		{
 			GameObjectPtr target = (GameObjectPtr)MPlayer->moverRoster[chunk.targetId];
 			//----------------------------------------------------------------------------
-			// Mover targets could be NULL now, since we free them when they're destroyed.
+			// Mover targets could be nullptr now, since we free them when they're destroyed.
 			if (target)
 				handleWeaponFire(chunk.weaponIndex,
 				target,
-				NULL,
+				nullptr,
 				chunk.hit,
 				entryQuadTable[chunk.entryAngle],
 				chunk.numMissiles,
@@ -1129,14 +1129,14 @@ int32_t Turret::updateWeaponFireChunks (int32_t which)
 		else if (chunk.targetType == 1)
 		{
 			GameObjectPtr target = ObjectManager->findByPartId(chunk.targetId);
-			if (target == NULL)
+			if (target == nullptr)
 			{
-				DebugWeaponFireChunk (&chunk, NULL, this);
-				Assert(FALSE, 0, " Turret.updateWeaponFireChunks: NULL Terrain Target (save wfchunk.dbg file) ");
+				DebugWeaponFireChunk (&chunk, nullptr, this);
+				Assert(FALSE, 0, " Turret.updateWeaponFireChunks: nullptr Terrain Target (save wfchunk.dbg file) ");
 			}
 			handleWeaponFire(chunk.weaponIndex,
 				target,
-				NULL,
+				nullptr,
 				chunk.hit,
 				entryQuadTable[chunk.entryAngle],
 				chunk.numMissiles,
@@ -1145,14 +1145,14 @@ int32_t Turret::updateWeaponFireChunks (int32_t which)
 		else if (chunk.targetType == 2)
 		{
 			GameObjectPtr target = ObjectManager->findByPartId(chunk.targetId);
-			if (target == NULL)
+			if (target == nullptr)
 			{
-				DebugWeaponFireChunk (&chunk, NULL, this);
-				Assert(FALSE, 0, " Turret.updateWeaponFireChunks: NULL Special Target (save wfchunk.dbg file) ");
+				DebugWeaponFireChunk (&chunk, nullptr, this);
+				Assert(FALSE, 0, " Turret.updateWeaponFireChunks: nullptr Special Target (save wfchunk.dbg file) ");
 			}
 			handleWeaponFire(chunk.weaponIndex,
 				target,
-				NULL,
+				nullptr,
 				chunk.hit,
 				entryQuadTable[chunk.entryAngle],
 				chunk.numMissiles,
@@ -1164,7 +1164,7 @@ int32_t Turret::updateWeaponFireChunks (int32_t which)
 			targetPoint.x = (float)chunk.targetCell[1] * Terrain::worldUnitsPerCell + Terrain::worldUnitsPerCell / 2 - Terrain::worldUnitsMapSide / 2;
 			targetPoint.y = (Terrain::worldUnitsMapSide / 2) - ((float)chunk.targetCell[0] * Terrain::worldUnitsPerCell) - Terrain::worldUnitsPerCell / 2;
 			targetPoint.z = (float)0;
-			handleWeaponFire(chunk.weaponIndex, NULL, &targetPoint, chunk.hit, 0.0, 0, 0);
+			handleWeaponFire(chunk.weaponIndex, nullptr, &targetPoint, chunk.hit, 0.0, 0, 0);
 		}
 		else
 			Fatal(0, " Mover.updateWeaponFireChunk: bad targetType ");
@@ -1363,7 +1363,7 @@ void Turret::fireWeapon (GameObjectPtr target, int32_t weaponId){
 
 	int32_t hitLocation = -2;
 
-	MechWarriorPtr targetPilot = NULL;
+	MechWarriorPtr targetPilot = nullptr;
 	if (target && target->isMover()) {
 		targetPilot = ((MoverPtr)target)->getPilot();
 		targetPilot->updateAttackerStatus(partId, scenarioTime);
@@ -1476,7 +1476,7 @@ void Turret::fireWeapon (GameObjectPtr target, int32_t weaponId){
 
 				if (target) {
 					weaponFX->connect(this, target, &curShotInfo, sourceHotSpot, targetHotSpot);
-					printFireWeaponDebugInfo(target, NULL, attackChance, hitRoll, &curShotInfo);
+					printFireWeaponDebugInfo(target, nullptr, attackChance, hitRoll, &curShotInfo);
 				}
 			}
 		}
@@ -1545,7 +1545,7 @@ void Turret::fireWeapon (GameObjectPtr target, int32_t weaponId){
 				if (target->getObjectClass() == BATTLEMECH)
 					targetHotSpot = ((BattleMechPtr)target)->body[hitLocation].hotSpotNumber;
 				weaponFX->connect(this, target, &shotInfo, sourceHotSpot, targetHotSpot);
-				printFireWeaponDebugInfo(target, NULL, attackChance, hitRoll, &shotInfo);
+				printFireWeaponDebugInfo(target, nullptr, attackChance, hitRoll, &shotInfo);
 			}
 		}
 	}
@@ -1793,7 +1793,7 @@ int32_t Turret::handleWeaponFire (int32_t weaponIndex,
 									  // Weapon must recycle...
 									  startWeaponRecycle(weaponIndex);
 
-									  WeaponBoltPtr weaponFX = NULL;
+									  WeaponBoltPtr weaponFX = nullptr;
 
 									  if (hit) {
 										  //------------
@@ -1960,7 +1960,7 @@ int32_t Turret::handleWeaponFire (int32_t weaponIndex,
 									  // Trigger the WEAPON TARGET event. For now, this assumes the target
 									  // KNOWS we were targeting him. Of course, the target wouldn't always
 									  // be aware of this, would they?
-									  MechWarriorPtr targetPilot = NULL;
+									  MechWarriorPtr targetPilot = nullptr;
 									  if (target && target->isMover()) {
 										  targetPilot = ((MoverPtr)target)->getPilot();
 										  targetPilot->updateAttackerStatus(partId, scenarioTime);
@@ -2050,7 +2050,7 @@ void Turret::destroy (void)
 	if (appearance)
 	{
 		delete appearance;
-		appearance = NULL;
+		appearance = nullptr;
 	}
 }
 
@@ -2076,7 +2076,7 @@ void Turret::init (bool create, ObjectTypePtr _type){
 	// MechCmdr2 features much simpler objects which only use 1 type of sprite!
 	int32_t appearanceType = (BLDG_TYPE << 24);
 
-	AppearanceTypePtr buildingAppearanceType = NULL;
+	AppearanceTypePtr buildingAppearanceType = nullptr;
 	if (!appearName)
 	{
 		//------------------------------------------------------
@@ -2097,7 +2097,7 @@ void Turret::init (bool create, ObjectTypePtr _type){
 	}
 
 	appearance = new BldgAppearance;
-	gosASSERT(appearance != NULL);
+	gosASSERT(appearance != nullptr);
 
 	//--------------------------------------------------------------
 	// The only appearance type for buildings is MLR_APPEARANCE.
@@ -2155,7 +2155,7 @@ int32_t Turret::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMultiplayCh
 		//-----------------------------------------------------
 		// Now, blow the building up using its type->explosion
 		// (this won't do anything if a building type doesn't have an explosion)
-		ObjectManager->createExplosion(TURRET_EXPLOSION_ID,NULL,position,explDamage,explRadius);
+		ObjectManager->createExplosion(TURRET_EXPLOSION_ID,nullptr,position,explDamage,explRadius);
 		if (CombatLog) {
 			char s[1024];
 			sprintf(s, "[%.2f] turret.destroyed: (%05d)%s", scenarioTime, getPartId(), getName());

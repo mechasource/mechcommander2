@@ -42,7 +42,7 @@
 #include <mlr/mlr.hpp>
 
 //---------------------------------------------------------------------------
-CameraPtr eye = NULL;
+CameraPtr eye = nullptr;
 
 extern bool useShadows;
 extern bool useFog;
@@ -55,20 +55,20 @@ extern MidLevelRenderer::MLRClipper * theClipper;
 extern bool drawOldWay;
 
 extern bool useNonWeaponEffects;
-GenericAppearance *theSky = NULL;
+GenericAppearance *theSky = nullptr;
 //---------------------------------------------------------------------------
 void GameCamera::destroy (void)
 {
 	if (theSky)
 	{
 		delete theSky;
-		theSky = NULL;
+		theSky = nullptr;
 	}
 
 	if (compass)
 	{
 		delete compass;
-		compass = NULL;
+		compass = nullptr;
 	}
 
 	Camera::destroy();
@@ -374,7 +374,7 @@ int32_t GameCamera::activate (void)
 	//---------------------------------------------------------
 	// Camera always starts pointing at first mover in lists
 	// CANNOT be infinite because we don't allow missions without at least 1 player mech!!
-	MoverPtr firstMover = NULL;
+	MoverPtr firstMover = nullptr;
 	if (ObjectManager->getNumMovers() > 0) {
 		int32_t i = 0;
 		firstMover = ObjectManager->getMover(i);
@@ -407,7 +407,7 @@ int32_t GameCamera::activate (void)
 	//Startup the SKYBox
 	int32_t appearanceType = (GENERIC_APPR_TYPE << 24);
 
-	AppearanceTypePtr genericAppearanceType = NULL;
+	AppearanceTypePtr genericAppearanceType = nullptr;
 	genericAppearanceType = appearanceTypeList->getAppearance(appearanceType,"skybox");
 	if (!genericAppearanceType)
 	{
@@ -417,11 +417,11 @@ int32_t GameCamera::activate (void)
 	}
 	  
    	theSky = new GenericAppearance;
-	gosASSERT(theSky != NULL);
+	gosASSERT(theSky != nullptr);
 
 	//--------------------------------------------------------------
 	gosASSERT(genericAppearanceType->getAppearanceClass() == GENERIC_APPR_TYPE);
-	theSky->init((GenericAppearanceType*)genericAppearanceType, NULL);
+	theSky->init((GenericAppearanceType*)genericAppearanceType, nullptr);
 	
 	theSky->setSkyNumber(mission->theSkyNumber);
 			
@@ -430,9 +430,9 @@ int32_t GameCamera::activate (void)
 
 inline GameObjectPtr getCamObject (int32_t partId, bool existsOnly) 
 {
-	GameObjectPtr obj = NULL;
+	GameObjectPtr obj = nullptr;
 	if (partId == -1)
-		obj = NULL;
+		obj = nullptr;
 	else
 		obj = ObjectManager->findByPartId(partId);
 
@@ -443,7 +443,7 @@ inline GameObjectPtr getCamObject (int32_t partId, bool existsOnly)
 			(obj->getCommanderId() == Commander::home->getId()) || 
 			(Team::home->teamLineOfSight(obj->getLOSPosition(),0.0f)))
 			return(obj);
-		return(NULL);
+		return(nullptr);
 	}
 
 	return(obj);
@@ -467,7 +467,7 @@ int32_t GameCamera::update (void)
 	}
 	else
 	{
-		targetObject = NULL;
+		targetObject = nullptr;
 	}
 
 	//Force CameraAltitude to be less than max based on angle.  This keeps poly load relatively even	

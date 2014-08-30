@@ -271,7 +271,7 @@ int32_t CPrefs::load( PCSTR pFileName ) {
 	prefsFile->close();
 	
 	delete prefsFile;
-	prefsFile = NULL;
+	prefsFile = nullptr;
 
 	return 0;
 }
@@ -361,7 +361,7 @@ int32_t CPrefs::save() {
 	
 	
 	delete prefsFile;
-	prefsFile = NULL;
+	prefsFile = nullptr;
 
 	return 0;
 }

@@ -444,7 +444,7 @@ class GameObjectManager {
 		GameObjectPtr getByWatchID (uint32_t watchID) {
 			if ((watchID > 0) && (watchID < nextWatchID))
 				return(watchList[watchID]);
-			return(NULL);
+			return(nullptr);
 		}
 
 		int32_t buildMoverLists (void);

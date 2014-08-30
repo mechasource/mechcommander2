@@ -18,7 +18,7 @@
 // EditForestDlg dialog
 
 
-EditForestDlg::EditForestDlg(CWnd* pParent /*=NULL*/)
+EditForestDlg::EditForestDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(EditForestDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(EditForestDlg)
@@ -105,7 +105,7 @@ void EditForestDlg::OnDelete()
 
 void EditForestDlg::OnLoad() 
 {
-	CFileDialog dlg( TRUE, terrainPath, NULL, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szFITFilter );
+	CFileDialog dlg( TRUE, terrainPath, nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szFITFilter );
 	if ( IDOK == dlg.DoModal() )
 	{
 		CString str = dlg.GetFileName();
@@ -136,7 +136,7 @@ BOOL EditForestDlg::OnInitDialog()
 	}
 
 
-	Forest** pForests = NULL;
+	Forest** pForests = nullptr;
 	int32_t count = 0;
 	EditorObjectMgr::instance()->getForests( pForests,  count );
 
@@ -184,7 +184,7 @@ void EditForestDlg::OnSave()
 		if ( pOldForest )
 		{
 
-			CFileDialog dlg( 0, "fit", NULL, OFN_NOCHANGEDIR | OFN_OVERWRITEPROMPT, szFITFilter, this );
+			CFileDialog dlg( 0, "fit", nullptr, OFN_NOCHANGEDIR | OFN_OVERWRITEPROMPT, szFITFilter, this );
 			dlg.m_ofn.lpstrInitialDir = terrainPath;
 			int32_t retVal = dlg.DoModal();
 			if ( IDOK == retVal )

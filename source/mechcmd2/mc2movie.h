@@ -26,7 +26,7 @@ class MC2Movie
 	public:
 		MC2Movie (void)
 		{
-			MC2Surface = NULL;
+			MC2Surface = nullptr;
 
 			for (int32_t i=0;i<MAX_TEXTURES_NEEDED;i++)
 			{
@@ -44,8 +44,8 @@ class MC2Movie
 			separateWAVE = false;
 			soundStarted = false;
 
-			waveName = NULL;
-			m_MC2Name = NULL;
+			waveName = nullptr;
+			m_MC2Name = nullptr;
 		}
 
 		~MC2Movie (void)
@@ -53,19 +53,19 @@ class MC2Movie
 			if (MC2Surface)
 			{
 				systemHeap->Free(MC2Surface);
-				MC2Surface = NULL;
+				MC2Surface = nullptr;
 			}
 
 			if (waveName)
 			{
 				delete [] waveName;
-				waveName = NULL;
+				waveName = nullptr;
 			}
 
 			if (m_MC2Name)
 			{
 				delete [] m_MC2Name;
-				m_MC2Name = NULL;
+				m_MC2Name = nullptr;
 			}
 		}
 

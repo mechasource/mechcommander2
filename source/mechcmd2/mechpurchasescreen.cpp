@@ -19,7 +19,7 @@ MechPurchaseScreen.cpp			: Implementation of the MechPurchaseScreen component.
 #include "chatwindow.h"
 #include "multplyr.h"
 
-MechPurchaseScreen* MechPurchaseScreen::s_instance = NULL;
+MechPurchaseScreen* MechPurchaseScreen::s_instance = nullptr;
 
 #define INVENTORY_ID 88
 #define VARIANT_ID	89
@@ -34,7 +34,7 @@ MechPurchaseScreen::MechPurchaseScreen(  )
 	gosASSERT( !s_instance );
 	s_instance = this;
 	acceptPressed = 0;
-	pDragMech = NULL;
+	pDragMech = nullptr;
 	dragStartLeft = 0;
 	helpTextArrayID = 4; 
 	inventoryListBox.setID( INVENTORY_ID );
@@ -53,7 +53,7 @@ MechPurchaseScreen::MechPurchaseScreen(  )
 
 MechPurchaseScreen::~MechPurchaseScreen()
 {
-	s_instance = NULL;
+	s_instance = nullptr;
 
 	variantListBox.destroy();
 	inventoryListBox.destroy();
@@ -175,7 +175,7 @@ void MechPurchaseScreen::update()
 	{
 		if ( pCurBuy->getCost() > LogisticsData::instance->getCBills() )
 		{
-			pCurBuy = NULL;
+			pCurBuy = nullptr;
 		}
 
 		setMech( pCurBuy );
@@ -340,7 +340,7 @@ void MechPurchaseScreen::begin()
 	
 	setMech( pSelMech );
 
-	pDragMech = NULL;
+	pDragMech = nullptr;
 
 }
 //-------------------------------------------------------------------------------------------------
@@ -371,7 +371,7 @@ void MechPurchaseScreen::end()
 	variantListBox.removeAllItems(true);
 	inventoryListBox.removeAllItems(true);
 
-	mechDisplay.setMech( NULL );
+	mechDisplay.setMech( nullptr );
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -447,7 +447,7 @@ void MechPurchaseScreen::endDrag( )
 	inventoryListBox.undimAll();
 	variantListBox.undimAll();
 
-	pDragMech = NULL;
+	pDragMech = nullptr;
 }
 
 

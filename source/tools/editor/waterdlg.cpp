@@ -21,7 +21,7 @@ static char THIS_FILE[] = __FILE__;
 // WaterDlg dialog
 
 
-WaterDlg::WaterDlg(CWnd* pParent /*=NULL*/)
+WaterDlg::WaterDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(WaterDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(WaterDlg)

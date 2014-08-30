@@ -207,13 +207,13 @@ class FireType : public ObjectType
 			
 			totalFires = 1;
 			
-			fireOffsetX = NULL;
-			fireOffsetY = NULL;
-			fireDelay = NULL;
+			fireOffsetX = nullptr;
+			fireOffsetY = nullptr;
+			fireDelay = nullptr;
 			
-			fireRandomOffsetX = NULL;
-			fireRandomOffsetY = NULL;
-			fireRandomDelay = NULL;
+			fireRandomOffsetX = nullptr;
+			fireRandomOffsetY = nullptr;
+			fireRandomDelay = nullptr;
 		}
 		
 		FireType (void) 

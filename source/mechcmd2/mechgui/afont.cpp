@@ -111,7 +111,7 @@ uint32_t aFont::height( PCSTR st, int32_t areaWidth ) const
 				bHasSpaces = false;
 		}
 
-		while( *pTmp != NULL )
+		while( *pTmp != nullptr )
 		{
 			if ( *pTmp == '\n' )
 			{
@@ -128,7 +128,7 @@ uint32_t aFont::height( PCSTR st, int32_t areaWidth ) const
 					char tmp = *(pTmp-1);
 					if ( !isleadbyte( tmp ) )
 					{
-						*(pTmpLine) = NULL;
+						*(pTmpLine) = nullptr;
 						gos_TextStringLength( &curLineWidth, &height, pLine );
 						if ( curLineWidth > areaWidth )
 						{
@@ -148,7 +148,7 @@ uint32_t aFont::height( PCSTR st, int32_t areaWidth ) const
 
 			else if ( isspace( *pTmp ) )
 			{
-				*(pTmpLine) = NULL;
+				*(pTmpLine) = nullptr;
 				gos_TextStringLength( &curLineWidth, &height, pLine );
 				if ( curLineWidth > areaWidth )
 				{
@@ -192,14 +192,14 @@ uint32_t aFont::height( PCSTR st, int32_t areaWidth ) const
 		}
 
 		// one last check
-		*pTmpLine = NULL;
+		*pTmpLine = nullptr;
 		gos_TextStringLength( &curLineWidth, &height, pLine );
 		if ( curLineWidth > areaWidth )
 		{
 			lineCount++;
 		}
 
-		if ( *pTmp == NULL )
+		if ( *pTmp == nullptr )
 			lineCount++;
 	}
 
@@ -283,7 +283,7 @@ HGOSFONT3D aFont::loadFont( int32_t resourceID, int32_t& size )
 	if ( pStr )
 	{
 		size = -atoi( pStr + 1 );
-		*pStr = NULL;
+		*pStr = nullptr;
 	}
 
 	char path[256];

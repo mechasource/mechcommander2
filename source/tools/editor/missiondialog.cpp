@@ -22,7 +22,7 @@ static char THIS_FILE[] = __FILE__;
 // CMissionDialog dialog
 
 
-CMissionDialog::CMissionDialog(CWnd* pParent /*=NULL*/)
+CMissionDialog::CMissionDialog(CWnd* pParent /*=nullptr*/)
 	: CDialog(CMissionDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CMissionDialog)

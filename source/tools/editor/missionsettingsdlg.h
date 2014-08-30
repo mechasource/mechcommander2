@@ -14,7 +14,7 @@ class MissionSettingsDlg : public CDialog
 {
 // Construction
 public:
-	MissionSettingsDlg(CWnd* pParent = NULL);   // standard constructor
+	MissionSettingsDlg(CWnd* pParent = nullptr);   // standard constructor
 
 	void UpdateMissionNameDisplay(void);
 	void UpdateBlurbDisplay(void);

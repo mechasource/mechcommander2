@@ -410,7 +410,7 @@ public:
 			return &rpCallout;
 		}
 
-		return NULL;
+		return nullptr;
 	}
 
 };

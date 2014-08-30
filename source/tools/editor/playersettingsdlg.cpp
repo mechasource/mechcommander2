@@ -20,7 +20,7 @@ static char THIS_FILE[] = __FILE__;
 // PlayerSettingsDlg dialog
 
 
-PlayerSettingsDlg::PlayerSettingsDlg(CWnd* pParent /*=NULL*/)
+PlayerSettingsDlg::PlayerSettingsDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(PlayerSettingsDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(PlayerSettingsDlg)

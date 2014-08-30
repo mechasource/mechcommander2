@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 // CGroupDialog dialog
 
 
-CGroupDialog::CGroupDialog(CWnd* pParent /*=NULL*/)
+CGroupDialog::CGroupDialog(CWnd* pParent /*=nullptr*/)
 	: CDialog(CGroupDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CGroupDialog)

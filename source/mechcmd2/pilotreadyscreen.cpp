@@ -17,7 +17,7 @@ PilotReadyScreen.cpp			: Implementation of the PilotReadyScreen component.
 #include "multPlyr.h"
 #include "ChatWindow.h"
 
-PilotReadyScreen* PilotReadyScreen::s_instance = NULL;
+PilotReadyScreen* PilotReadyScreen::s_instance = nullptr;
 
 
 #define PR_MSG_ADD 62
@@ -26,8 +26,8 @@ PilotReadyScreen* PilotReadyScreen::s_instance = NULL;
 
 PilotReadyScreen::PilotReadyScreen()
 {
-	pCurPilot = NULL;
-	pIcons = NULL;
+	pCurPilot = nullptr;
+	pIcons = nullptr;
 	status = LogisticsScreen::RUNNING;
 	s_instance = this;
 	forceGroupCount = 0;
@@ -46,7 +46,7 @@ PilotReadyScreen::~PilotReadyScreen()
 	if ( pIcons )
 		delete [] pIcons;
 
-	pIcons = NULL;
+	pIcons = nullptr;
 
 	LogisticsScreen::clear();
 }
@@ -271,7 +271,7 @@ void PilotReadyScreen::begin()
 
 void PilotReadyScreen::end()
 {
-	mechDisplay.setMech( NULL );
+	mechDisplay.setMech( nullptr );
 }
 
 void PilotReadyScreen::render(int32_t xOffset, int32_t yOffset )
@@ -395,7 +395,7 @@ void PilotReadyScreen::update()
 			{
 				beginDrag( pIcons[i].getMech()->getPilot() );
 				pIcons[i].dimPilot( true );
-				pIcons[i].setPilot( NULL );
+				pIcons[i].setPilot( nullptr );
 			}
 
 			if ( pIcons[i].getMech() && !pIcons[i].getPilot() )
@@ -520,7 +520,7 @@ int32_t	PilotReadyScreen::handleMessage( uint32_t message, uint32_t who )
 	case MB_MSG_NEXT:
 		if ( MPlayer )
 		{
-			MPlayer->sendMissionSetup(0, 7, NULL);
+			MPlayer->sendMissionSetup(0, 7, nullptr);
 			getButton( MB_MSG_PREV )->disable( true );
 			getButton( MB_MSG_NEXT )->disable( true );
 			getButton( MB_MSG_MAINMENU )->disable( true );
@@ -528,7 +528,7 @@ int32_t	PilotReadyScreen::handleMessage( uint32_t message, uint32_t who )
 			if ( pInfo )
 			{
 				PCSTR name = pInfo->name;
-				MPlayer->sendPlayerActionChat(NULL, name, IDS_MP_PLAYER_READY );
+				MPlayer->sendPlayerActionChat(nullptr, name, IDS_MP_PLAYER_READY );
 			}
 
 			pilotListBox.SelectItem( -1 );
@@ -564,7 +564,7 @@ int32_t	PilotReadyScreen::handleMessage( uint32_t message, uint32_t who )
 
 void PilotReadyScreen::addSelectedPilot()
 {
-	aListItem* pItem = NULL;
+	aListItem* pItem = nullptr;
 	bool bFound = 0;
 
 	int32_t index = pilotListBox.GetSelectedItem();
@@ -640,7 +640,7 @@ void PilotReadyScreen::removeSelectedPilot()
 				int32_t oldSel = pilotListBox.GetSelectedItem();
 				LogisticsPilotListBoxItem* pNewItem = new LogisticsPilotListBoxItem( pIcons[i].getPilot() );
 				int32_t newIndex = pilotListBox.AddItem( pNewItem );
-				pIcons[i].setPilot( NULL );
+				pIcons[i].setPilot( nullptr );
 				pIcons[i].select( 0 );
 				i++;
 				if ( i >= ICON_COUNT || !pIcons[i].getMech() )

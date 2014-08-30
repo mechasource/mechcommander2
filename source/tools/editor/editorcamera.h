@@ -50,20 +50,20 @@ public:
 		virtual void init (void)
 		{
 			Camera::init(void);
-			compass = NULL;
+			compass = nullptr;
 			drawCompass = true;
 			cameraLineChanged = 0;
-			theSky = NULL;
+			theSky = nullptr;
 		}
 
 	virtual void reset (void)
 	{
 		//Must toss these between map loads to clear out their texture memory!!
 		delete compass;
-		compass = NULL;
+		compass = nullptr;
 		
 		delete theSky;
-		theSky = NULL;
+		theSky = nullptr;
 	}
 	
  	virtual void render (void)
@@ -213,7 +213,7 @@ public:
 			if ( !appearanceTypeList )
 			{
 				appearanceTypeList = new AppearanceTypeList;
-				gosASSERT(appearanceTypeList != NULL);
+				gosASSERT(appearanceTypeList != nullptr);
 				
 				appearanceTypeList->init(2048000);
 			}
@@ -228,7 +228,7 @@ public:
 			//Startup the SKYBox
 			int32_t appearanceType = (GENERIC_APPR_TYPE << 24);
 		
-			AppearanceTypePtr genericAppearanceType = NULL;
+			AppearanceTypePtr genericAppearanceType = nullptr;
 			genericAppearanceType = appearanceTypeList->getAppearance(appearanceType,"skybox");
 			if (!genericAppearanceType)
 			{
@@ -238,11 +238,11 @@ public:
 			}
 			  
 			theSky = new GenericAppearance;
-			gosASSERT(theSky != NULL);
+			gosASSERT(theSky != nullptr);
 		
 			//--------------------------------------------------------------
 			gosASSERT(genericAppearanceType->getAppearanceClass() == GENERIC_APPR_TYPE);
-			theSky->init((GenericAppearanceType*)genericAppearanceType, NULL);
+			theSky->init((GenericAppearanceType*)genericAppearanceType, nullptr);
 			
 			theSky->setSkyNumber(EditorData::instance->TheSkyNumber());
 			oldSkyNumber = EditorData::instance->TheSkyNumber(void);

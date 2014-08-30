@@ -37,13 +37,13 @@ int32_t	MechLabScreen::sensorHelpIDs[4] = { IDS_HELP_COMP14, IDS_HELP_COMP15, ID
 MechLabScreen::MechLabScreen(  ) 
 {
 	status = RUNNING;
-	pVariant = NULL;
+	pVariant = nullptr;
 	helpTextArrayID = 14;
 	pCurComponent = 0;
 	gosASSERT( !s_instance );
 	s_instance = this;
-	pDragComponent = NULL;
-	pSelectedComponent = NULL;
+	pDragComponent = nullptr;
+	pSelectedComponent = nullptr;
 	selI = -1;
 	selJ = -1;
 
@@ -61,7 +61,7 @@ MechLabScreen::MechLabScreen(  )
 	armorTime = 0;
 	bDragLeft = 0;
 
-	selRect = NULL;
+	selRect = nullptr;
 
 }
 
@@ -69,18 +69,18 @@ MechLabScreen::MechLabScreen(  )
 
 MechLabScreen::~MechLabScreen()
 {
-	s_instance = NULL;
+	s_instance = nullptr;
 
 	if (saveDlg)
 	{
 		delete saveDlg;
-		saveDlg = NULL;
+		saveDlg = nullptr;
 	}
 
 	if (acceptDlg)
 	{
 		delete acceptDlg;
-		acceptDlg = NULL;
+		acceptDlg = nullptr;
 	}
 
 	variantList.destroy();
@@ -240,7 +240,7 @@ void MechLabScreen::begin()
 		variantList.ListBox().removeAllItems(true);
 
 		int32_t maxCount = 0;
-		LogisticsVariant** pVar = NULL;
+		LogisticsVariant** pVar = nullptr;
 		int32_t addedCount = 0;
 
 		LogisticsData::instance->getChassisVariants( pVariant->getChassis(),pVar, maxCount );
@@ -294,7 +294,7 @@ void MechLabScreen::begin()
 		strcat( path, "MCL_MC_" );
 		char mechName[64];
 		EString fileName = pVariant->getFileName( );
-		_splitpath( fileName, NULL, NULL, mechName, NULL );
+		_splitpath( fileName, nullptr, nullptr, mechName, nullptr );
 		strcat( path, mechName );
 		strcat( path, "_B.tga" );
 		CharLower( path );
@@ -352,8 +352,8 @@ void MechLabScreen::begin()
 }
 void MechLabScreen::end()
 {
-	camera.setMech( NULL );
-	pVariant = NULL;
+	camera.setMech( nullptr );
+	pVariant = nullptr;
 }
 void MechLabScreen::update()
 {
@@ -466,7 +466,7 @@ void MechLabScreen::update()
 	{
 		if ( newSel != -1 )
 		{
-			pSelectedComponent = NULL;
+			pSelectedComponent = nullptr;
 			selI = selJ = -1;
 		}
 		else
@@ -821,7 +821,7 @@ void MechLabScreen::render(int32_t xOffset, int32_t yOffset)
 
 		if ( i != -1 && j != -1 )
 		{
-			aObject* tmpRect = NULL;
+			aObject* tmpRect = nullptr;
 
 			if ( pSelectedComponent->getType() == COMPONENT_FORM_JUMPJET )
 			{
@@ -1066,7 +1066,7 @@ int32_t	MechLabScreen::handleMessage( uint32_t msg, uint32_t who)
 			break;
 		case MB_MSG_PREV: // actually cancel
 			LogisticsData::instance->cancelMechModfications();
-			pVariant = NULL;
+			pVariant = nullptr;
 			status = UP;
 			break;
 
@@ -1136,7 +1136,7 @@ void	MechLabScreen::setComponent( LogisticsComponent* pComponent, bool bMessageF
 	{
 		componentListBox.SelectItem( -1 );
 		selI = selJ = -1;
-		pSelectedComponent = NULL;
+		pSelectedComponent = nullptr;
 
 		getButton( MB_MSG_ADD )->disable( true );
 	}
@@ -1522,7 +1522,7 @@ void MechLabScreen::endDrag( )
 		}
 	}
 
-	pDragComponent = NULL;
+	pDragComponent = nullptr;
 	bDragLeft = 0;
 
 	
@@ -1717,7 +1717,7 @@ int32_t MechLabScreen::selectFirstDiagramComponent()
 int32_t MechLabScreen::selectFirstLBComponent()
 {
 	selI = selJ = -1;
-	pSelectedComponent = NULL;
+	pSelectedComponent = nullptr;
 	int32_t index =  componentListBox.selectFirstAvailableComponent();
 	if ( index != -1 )
 	{

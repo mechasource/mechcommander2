@@ -28,14 +28,14 @@
 
 //----------------------------------------------------------------------------------
 // Macro Definitions
-Weather *weather = NULL;
+Weather *weather = nullptr;
 
 //----------------------------------------------------------------------------------
 // Class Weather
 void Weather::destroy (void)
 {
 	systemHeap->Free(rainDrops);
-	rainDrops = NULL;
+	rainDrops = nullptr;
 	
 	init();
 }
@@ -161,7 +161,7 @@ void Weather::init (uint32_t maxDrops, float startingRain, float brChance, float
 	if (maxDrops)
 	{
 		rainDrops = (RainDrops *)systemHeap->Malloc(sizeof(RainDrops) * maxDrops);
-		gosASSERT(rainDrops != NULL);
+		gosASSERT(rainDrops != nullptr);
 		
 		for (int32_t i=0;i<totalRainDrops;i++)
 			rainDrops[i].init();

@@ -63,7 +63,7 @@ class Logistics
 			missionResults = 0;
 			missionBegin = 0;
 			logisticsState = log_SPLASH;
-			bMovie = NULL;
+			bMovie = nullptr;
 		}
 		
 		void destroy (void);

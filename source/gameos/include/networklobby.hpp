@@ -20,7 +20,7 @@ typedef void(__stdcall *LPSTRINGCALLBACK)(PCSTR string, uint32_t value);
 
 
 // Functionality: Calls the callback for each session available using the current 
-//					protocol.  The string is NULL when all sessions have been enumerated.  The
+//					protocol.  The string is nullptr when all sessions have been enumerated.  The
 //					value returned is the session id.  It should be used when attempting to 
 //					join a game.
 //				  
@@ -30,7 +30,7 @@ GOSERRORCODE __stdcall gos_EnumerateSessions(LPSTRINGCALLBACK callback);
 
 
 // Functionality: Enumerates the players in the given session by calling the callback 
-//					for each player in the session.  The callback string is NULL when 
+//					for each player in the session.  The callback string is nullptr when 
 //					all players have been enumerated.  The value given in the callback
 //					is the GOSNETWORKID of the player.  It can be used when sending messages
 //				    to the player.

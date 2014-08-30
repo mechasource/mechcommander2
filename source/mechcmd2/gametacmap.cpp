@@ -35,7 +35,7 @@ GameTacMap::GameTacMap()
 	right = 0;
 	bottom = 0;
 
-	buildingPoints = NULL;
+	buildingPoints = nullptr;
 	buildingCount = 0;
 
 	navMarkerCount = 0;

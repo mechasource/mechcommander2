@@ -13,7 +13,7 @@ class ForestDlg : public CDialog
 {
 
 public:
-	ForestDlg(CWnd* pParent = NULL);   
+	ForestDlg(CWnd* pParent = nullptr);   
 
 	//{{AFX_DATA(ForestDlg)
 	enum { IDD = IDD_FOREST_DLG };

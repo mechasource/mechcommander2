@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 // SelectTerrainTypeDlg dialog
 
 
-SelectTerrainTypeDlg::SelectTerrainTypeDlg(CWnd* pParent /*=NULL*/)
+SelectTerrainTypeDlg::SelectTerrainTypeDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(SelectTerrainTypeDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(SelectTerrainTypeDlg)

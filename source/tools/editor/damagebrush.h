@@ -24,7 +24,7 @@ class DamageBrush: public Brush
 {
 	public:
 	
-	DamageBrush(bool bDamage ){ damage = bDamage; pAction = NULL; }
+	DamageBrush(bool bDamage ){ damage = bDamage; pAction = nullptr; }
 	virtual ~DamageBrush(){}
 	virtual bool beginPaint(void);
 	virtual Action* endPaint(void);

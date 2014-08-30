@@ -42,7 +42,7 @@ bool __stdcall gos_CheckConnectionAvailable( int32_t Connection );
 //
 // Open a TCPIP connection
 //
-// You can pass the address of the server or NULL for the sub net.
+// You can pass the address of the server or nullptr for the sub net.
 //
 //
 bool __stdcall gos_ConnectTCP( PSTR IPAddress, uint16_t port );
@@ -51,7 +51,7 @@ bool __stdcall gos_ConnectTCP( PSTR IPAddress, uint16_t port );
 //
 // Open a TCPIP and ZoneMatch connection
 //
-// You can pass the address of the server or NULL for the sub net.
+// You can pass the address of the server or nullptr for the sub net.
 //
 //
 bool __stdcall gos_ConnectZoneMatch( PSTR IPAddress, uint16_t port );

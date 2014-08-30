@@ -17,7 +17,7 @@
 //#include "editorobjectmgr.h"
 #include "action.h"
 
-ActionUndoMgr* ActionUndoMgr::instance = NULL;
+ActionUndoMgr* ActionUndoMgr::instance = nullptr;
 
 //************************************************************************
 // Function:	c'tor
@@ -30,7 +30,7 @@ ActionUndoMgr::ActionUndoMgr(void)
 {
 	m_CurrentPos = -1;
 	m_PosOfLastSave = -1;
-	ATLASSERT(instance == NULL);
+	ATLASSERT(instance == nullptr);
 	instance = this;
 }
 //************************************************************************
@@ -104,7 +104,7 @@ void ActionUndoMgr::EmptyUndoList(void)
 //***********************************************************************
 PCSTR ActionUndoMgr::GetRedoString(void)
 {
-	PCSTR strRet = NULL;
+	PCSTR strRet = nullptr;
 
 	if ( HaveRedo() )
 	{
@@ -127,7 +127,7 @@ PCSTR ActionUndoMgr::GetRedoString(void)
 //***********************************************************************
 PCSTR ActionUndoMgr::GetUndoString(void)
 {
-	PCSTR strRet = NULL;
+	PCSTR strRet = nullptr;
 	if ( HaveUndo() )
 	{
 		ACTION_LIST::EIterator iter = m_listUndoActions.Iterator( m_CurrentPos );

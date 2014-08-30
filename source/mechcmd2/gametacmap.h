@@ -28,7 +28,7 @@ class GameTacMap: public TacMap
 		if (buildingPoints)
 		{
 			delete [] buildingPoints;
-			buildingPoints = NULL;
+			buildingPoints = nullptr;
 		}
 	}
 

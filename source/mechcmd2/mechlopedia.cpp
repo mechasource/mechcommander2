@@ -26,7 +26,7 @@ Mechlopedia.cpp			: Implementation of the Mechlopedia component.
 
 #define PERSONALITY_COUNT 11
 
-MechlopediaListItem* MechlopediaListItem::s_templateItem = NULL;				
+MechlopediaListItem* MechlopediaListItem::s_templateItem = nullptr;				
 
 
 
@@ -194,7 +194,7 @@ int32_t Mechlopedia::SubScreen::init( FitIniFile& file )
 
 void Mechlopedia::SubScreen::end(  )
 {
-	camera.setMech( NULL );
+	camera.setMech( nullptr );
 }
 
 

@@ -200,19 +200,19 @@ class Mission
 	
 		void init (void)
 		{
-			missionFile = NULL;
+			missionFile = nullptr;
 
 			operationId = missionId = -1;
 
-			missionBrain = NULL;
-			missionParams = NULL;
-			missionBrainCallback = NULL;
+			missionBrain = nullptr;
+			missionParams = nullptr;
+			missionBrainCallback = nullptr;
 
 			numParts = 0;
-			parts = NULL;
+			parts = nullptr;
 
 			numObjectives = 0;
-			objectives = NULL;
+			objectives = nullptr;
 
 			duration = 0;
 
@@ -227,11 +227,11 @@ class Mission
 			
 			missionScriptHandle = -1;
 			
-			missionInterface = NULL;
+			missionInterface = nullptr;
 
 			missionFileName[0] = 0;
 
-			missionBrainParams = NULL;
+			missionBrainParams = nullptr;
 		}
 		
 		Mission (void)
@@ -282,9 +282,9 @@ class Mission
 		GameObjectPtr getPartObject (int32_t partNumber)
 		{
 			if ((partNumber <= 0) || ((uint32_t)partNumber > numParts))
-				return NULL;
+				return nullptr;
 			if (!ObjectManager)
-				return(NULL);
+				return(nullptr);
 			return ((GameObjectPtr) ObjectManager->getByWatchID(parts[partNumber].objectWID));
 		}
 

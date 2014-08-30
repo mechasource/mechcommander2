@@ -480,7 +480,7 @@ class BattleMech : public Mover {
 
 		virtual bool isWeaponReady (int32_t weaponIndex);
 
-		virtual float calcAttackChance (GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint = NULL);
+		virtual float calcAttackChance (GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint = nullptr);
 
 		virtual float getTotalEffectiveness(void);
 
@@ -576,7 +576,7 @@ class BattleMech : public Mover {
 			return(appearance->getOldGestureGoal() == MECH_STATE_STANDING);
 		}
 
-		bool isWalking (int32_t* throttle = NULL) 
+		bool isWalking (int32_t* throttle = nullptr) 
 		{
 			if (throttle)
 				*throttle = control.settings.mech.throttle;
@@ -589,7 +589,7 @@ class BattleMech : public Mover {
 			return(appearance->getOldGestureGoal() == MECH_STATE_RUNNING);
 		}
 
-		virtual bool isJumping (Stuff::Vector3D* jumpGoal = NULL);
+		virtual bool isJumping (Stuff::Vector3D* jumpGoal = nullptr);
 
 		bool isReversing (void) 
 		{
@@ -628,7 +628,7 @@ class BattleMech : public Mover {
 			return(numJumpJets > 0);
 		}
 
-		virtual float getJumpRange (int32_t* numOffsets = NULL, int32_t* jumpCost = NULL);
+		virtual float getJumpRange (int32_t* numOffsets = nullptr, int32_t* jumpCost = nullptr);
 
 		virtual bool handleFall (bool forward);
 

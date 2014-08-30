@@ -61,7 +61,7 @@ class ObjectType {
 			
 			iconNumber = -1;				//defaults to no icon
 
-			appearName = NULL;
+			appearName = nullptr;
 			subType = 0;
 		}
 		

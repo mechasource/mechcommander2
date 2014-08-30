@@ -1,17 +1,17 @@
 //===========================================================================//
-// Copyright (C) Microsoft Corporation. All rights reserved.                 //
+// Copyright (C) Microsoft Corporation. All rights reserved. //
 //===========================================================================//
 
 //***************************************************************************
 //
-//								WARRIOR.H
+// WARRIOR.H
 //
 //***************************************************************************
 
 #pragma once
 
 #ifndef WARRIOR_H
-#define	WARRIOR_H
+#define WARRIOR_H
 
 //#include <mclib.h>
 //#include "move.h"
@@ -37,49 +37,49 @@ class BldgAppearance;
 
 //***************************************************************************
 
-#define	MAX_WARRIORS				120
+#define MAX_WARRIORS 120
 
-#define	MOVEGOAL_NONE				0xFFFFFFFF
-#define	MOVEGOAL_LOCATION			0x00000000
+#define MOVEGOAL_NONE 0xFFFFFFFF
+#define MOVEGOAL_LOCATION 0x00000000
 
-#define CLAN_SEEN_FLAG				2
-#define IS_SEEN_FLAG				1
+#define CLAN_SEEN_FLAG 2
+#define IS_SEEN_FLAG 1
 
-#define	NUM_WEAPON_TYPE_AFFINITIES	2
+#define NUM_WEAPON_TYPE_AFFINITIES 2
 
-#define	NUM_OFFSET_RANGES			5
+#define NUM_OFFSET_RANGES 5
 
-#define	WARRIOR_DEBUGGING_ENABLED	TRUE
-#define	WARRIOR_DEBUG_FLAG_NONE		0
-#define	WARRIOR_DEBUG_FLAG_COMBAT	1
+#define WARRIOR_DEBUGGING_ENABLED TRUE
+#define WARRIOR_DEBUG_FLAG_NONE 0
+#define WARRIOR_DEBUG_FLAG_COMBAT 1
 
-#define	MOVEPATH_ERR_NONE				0
-#define	MOVEPATH_ERR_NO_GOAL			-1
-#define	MOVEPATH_ERR_GOALOBJ_DEAD		-2
-#define	MOVEPATH_ERR_NO_VALID_GOAL		-3
-#define	MOVEPATH_ERR_ALREADY_THERE		-4
-#define	MOVEPATH_ERR_LR_NOT_ENABLED		-5
-#define	MOVEPATH_ERR_LR_START_BLOCKED	-6
-#define	MOVEPATH_ERR_LR_NO_PATH			-7
-#define	MOVEPATH_ERR_LR_NO_SR_PATH		-8
-#define	MOVEPATH_ERR_EARLY_STOP			-9
-#define	MOVEPATH_ERR_TIME_OUT			-10
-#define	MOVEPATH_ERR_LR_DOOR_CLOSED		-11
-#define	MOVEPATH_ERR_LR_DOOR_BLOCKED	-12
-#define	MOVEPATH_ERR_ESCAPING_TILE		-13
-#define	MOVEPATH_ERR_TACORDER_CLEARED	-14
+#define MOVEPATH_ERR_NONE 0
+#define MOVEPATH_ERR_NO_GOAL -1
+#define MOVEPATH_ERR_GOALOBJ_DEAD -2
+#define MOVEPATH_ERR_NO_VALID_GOAL -3
+#define MOVEPATH_ERR_ALREADY_THERE -4
+#define MOVEPATH_ERR_LR_NOT_ENABLED -5
+#define MOVEPATH_ERR_LR_START_BLOCKED -6
+#define MOVEPATH_ERR_LR_NO_PATH -7
+#define MOVEPATH_ERR_LR_NO_SR_PATH -8
+#define MOVEPATH_ERR_EARLY_STOP -9
+#define MOVEPATH_ERR_TIME_OUT -10
+#define MOVEPATH_ERR_LR_DOOR_CLOSED -11
+#define MOVEPATH_ERR_LR_DOOR_BLOCKED -12
+#define MOVEPATH_ERR_ESCAPING_TILE -13
+#define MOVEPATH_ERR_TACORDER_CLEARED -14
 
-#define	MAX_QUEUED_TACORDERS				2000
-#define	MAX_QUEUED_TACORDERS_PER_WARRIOR	16
+#define MAX_QUEUED_TACORDERS 2000
+#define MAX_QUEUED_TACORDERS_PER_WARRIOR 16
 
-typedef enum {
+typedef enum{
 	ORDER_CURRENT,
 	ORDER_ISSUED,
 	ORDER_PENDING,
 	NUM_ORDER_TYPES
-} OrderType;
+}OrderType;
 
-typedef enum {
+typedef enum{
 	SITUATION_NORMAL,
 	SITUATION_ENGAGE,
 	SITUATION_WITHDRAW,
@@ -88,9 +88,9 @@ typedef enum {
 	SITUATION_BERSERK,
 	SITUATION_SUICIDAL,
 	NUM_SITUATIONS
-} SituationType;
+}SituationType;
 
-typedef enum {
+typedef enum{
 	MECH_TYPE_NONE,
 	MECH_TYPE_HOLLANDER,
 	MECH_TYPE_COMMANDO,
@@ -112,74 +112,74 @@ typedef enum {
 	MECH_TYPE_AWESOME,
 	MECH_TYPE_MASAKARI,
 	NUM_MECH_TYPES
-} MechType;
+}MechType;
 
-typedef enum {
+typedef enum{
 	WEAPON_CLASS_NONE,
 	WEAPON_CLASS_BALLISTIC,
 	WEAPON_CLASS_ENERGY,
 	WEAPON_CLASS_MISSILE,
 	NUM_WEAPON_CLASSES
-} WeaponClass;
+}WeaponClass;
 
-typedef enum {
+typedef enum{
 	MWR_POINT,
 	MWR_WINGMAN,
 	MWR_REARGUARD,
 	MWR_SCOUT,
 	NUM_MECHWARRIOR_ROLES
-} MechWarriorRole;
+}MechWarriorRole;
 
-typedef enum {
+typedef enum{
 	MWS_PILOTING,
 	MWS_SENSORS,
 	MWS_GUNNERY,
 	NUM_SKILLS
-} Skill;
+}Skill;
 
-typedef enum {
+typedef enum{
 	MWP_PROFESSIONALISM,
 	MWP_DECORUM,
 	MWP_AGGRESSIVENESS,
 	MWP_COURAGE,
 	NUM_PERSONALITY_TRAITS
-} PersonalityTrait;
+}PersonalityTrait;
 
-typedef enum {
+typedef enum{
 	WARRIOR_RANK_GREEN,
 	WARRIOR_RANK_REGULAR,
 	WARRIOR_RANK_VETERAN,
 	WARRIOR_RANK_ELITE,
 	WARRIOR_RANK_ACE,
 	NUM_WARRIOR_RANKS
-} WarriorRank;
+}WarriorRank;
 
-typedef enum {
-	LIGHT_MECH_SPECIALIST,	
-	LASER_SPECIALIST,		
-	LIGHT_AC_SPECIALIST,	
-	MEDIUM_AC_SPECIALIST,	
-	SRM_SPECIALIST,			
-	SMALL_ARMS_SPECIALIST,	
+typedef enum{
+	LIGHT_MECH_SPECIALIST,
+	LASER_SPECIALIST,
+	LIGHT_AC_SPECIALIST,
+	MEDIUM_AC_SPECIALIST,
+	SRM_SPECIALIST,
+	SMALL_ARMS_SPECIALIST,
 	SENSOR_SPECIALIST,
 	TOUGHNESS_SPECIALIST,
-	MEDIUM_MECH_SPECIALIST,	
+	MEDIUM_MECH_SPECIALIST,
 	PULSE_LASER_SPECIALIST,
 	ER_LASER_SPECIALIST,
 	LRM_SPECIALIST,
 	SCOUT,
-	LONG_JUMP,	
+	LONG_JUMP,
 	HEAVY_MECH_SPECIALIST,
 	PPC_SPECIALIST,
-	HEAVY_AC_SPECIALIST,	
-	SHORT_RANGE_SPECIALIST, 
+	HEAVY_AC_SPECIALIST,
+	SHORT_RANGE_SPECIALIST,
 	MEDIUM_RANGE_SPECIALIST,
-	LONG_RANGE_SPECIALIST,  	
+	LONG_RANGE_SPECIALIST,
 	ASSAULT_MECH_SPECIALIST,
-	GAUSS_SPECIALIST,		
+	GAUSS_SPECIALIST,
 	SHARPSHOOTER,
 	NUM_SPECIALTY_SKILLS
-} SpecialtySkill;
+}SpecialtySkill;
 
 
 enum SpecialtySkillType
@@ -191,25 +191,25 @@ enum SpecialtySkillType
 
 };
 
-#define FIRST_REGULAR_SPECIALTY	0
-#define FIRST_VETERAN_SPECIALTY	8
+#define FIRST_REGULAR_SPECIALTY 0
+#define FIRST_VETERAN_SPECIALTY 8
 #define FIRST_ELITE_SPECIALTY 14
-#define FIRST_ACE_SPECIALTY	20
+#define FIRST_ACE_SPECIALTY 20
 
-typedef enum {
+typedef enum{
 	CV_CURRENT,
 	CV_FIELDED,
 	CV_NEW,
 	NUM_CV_TYPES
-} CombatValueType;
+}CombatValueType;
 
-typedef enum {
+typedef enum CombatStats{
 	COMBAT_STAT_CAREER,
 	COMBAT_STAT_MISSION,
 	NUM_COMBAT_STATS
-} CombatStats;
+}CombatStats;
 
-typedef enum {
+typedef enum WarriorStatus{
 	WARRIOR_STATUS_NORMAL,
 	WARRIOR_STATUS_WITHDRAWING,
 	WARRIOR_STATUS_WITHDRAWN,
@@ -219,9 +219,9 @@ typedef enum {
 	WARRIOR_STATUS_CAPTURED,
 	WARRIOR_STATUS_BASECAMP,
 	NUM_WARRIOR_STATUSES
-} WarriorStatus;
+}WarriorStatus;
 
-typedef enum {
+typedef enum MoveStateType{
 	MOVESTATE_STAND,
 	MOVESTATE_FORWARD,
 	MOVESTATE_REVERSE,
@@ -229,13 +229,13 @@ typedef enum {
 	MOVESTATE_PIVOT_REVERSE,
 	MOVESTATE_PIVOT_TARGET,
 	NUM_MOVESTATES
-} MoveStateType;
+}MoveStateType;
 
 //---------------------------------------------------------------------------
 
-#define	MAX_ALARM_TRIGGERS		15
+#define MAX_ALARM_TRIGGERS 15
 
-typedef enum {
+typedef enum{
 	PILOT_ALARM_TARGET_OF_WEAPONFIRE,
 	PILOT_ALARM_HIT_BY_WEAPONFIRE,
 	PILOT_ALARM_DAMAGE_TAKEN_RATE,
@@ -256,32 +256,32 @@ typedef enum {
 	PILOT_ALARM_FIRED_WEAPON,
 	PILOT_ALARM_NEW_MOVER,
 	NUM_PILOT_ALARMS
-} PilotAlarmType;
+}PilotAlarmType;
 
-typedef struct {
-	char			code;
-	uint8_t	numTriggers;			
-	int32_t			trigger[MAX_ALARM_TRIGGERS];
-} PilotAlarm;
-
-//---------------------------------------------------------------------------
-
-typedef struct {
-	float				lastUnderFire;			// time of last under fire message
-	bool				weaponsIneffective;		// true if already informed player
-	bool				weaponsOut;				// true if already informed player
-	float				lastContact;			// time of last contact message
-	RadioMessageType	lastMessageType;		// e.g. RADIO_WEAPONS_OUT
-	uint32_t				lastMessage;			// PacketNumber of message
-	float				lastMessageTime;		// time of last message (of any type)
-} RadioLog;
-
+typedef struct{
+	char code;
+	uint8_t numTriggers;
+	int32_t trigger[MAX_ALARM_TRIGGERS];
+}PilotAlarm;
 
 //---------------------------------------------------------------------------
 
-#define	MAX_TARGET_PRIORITIES	20
+typedef struct{
+	float lastUnderFire; // time of last under fire message
+	bool weaponsIneffective; // true if already informed player
+	bool weaponsOut; // true if already informed player
+	float lastContact; // time of last contact message
+	RadioMessageType lastMessageType; // e.g. RADIO_WEAPONS_OUT
+	uint32_t lastMessage; // PacketNumber of message
+	float lastMessageTime; // time of last message (of any type)
+}RadioLog;
 
-typedef enum {
+
+//---------------------------------------------------------------------------
+
+#define MAX_TARGET_PRIORITIES 20
+
+typedef enum{
 	TARGET_PRIORITY_NONE,
 	TARGET_PRIORITY_GAMEOBJECT,
 	TARGET_PRIORITY_MOVER,
@@ -303,47 +303,47 @@ typedef enum {
 	TARGET_PRIORITY_EVENT_FRIENDLY_WITHDRAWS,
 	TARGET_PRIORITY_SKIP,
 	NUM_TARGET_PRIORITIES
-} TargetPriorityType;
+}TargetPriorityType;
 
-typedef struct _TargetPriority {
-	int32_t				type;
-	int32_t				params[3];
-} TargetPriority;
+typedef struct _TargetPriority{
+	int32_t type;
+	int32_t params[3];
+}TargetPriority;
 
 typedef TargetPriority* TargetPriorityPtr;
 
-class TargetPriorityList {
+class TargetPriorityList{
 
-	public:
+public:
 
-		int32_t				size;
-		TargetPriority		list[MAX_TARGET_PRIORITIES];
+	int32_t size;
+	TargetPriority list[MAX_TARGET_PRIORITIES];
 
-	public:
+public:
 
-		PVOID operator new (size_t ourSize);
+	PVOID operator new (size_t ourSize);
 
-		void operator delete (PVOID us);
-		
-		void init (void);
+	void operator delete (PVOID us);
 
-		TargetPriorityList (void) {
-			init (void);
-		}
+	void init (void);
 
-		void destroy (void);
+	TargetPriorityList (void){
+		init (void);
+	}
 
-		~TargetPriorityList (void)	{
-			destroy(void);
-		}
+	void destroy (void);
 
-		int32_t insert (int32_t index, TargetPriorityPtr priority);
+	~TargetPriorityList (void){
+		destroy(void);
+	}
 
-		void remove (int32_t index);
+	int32_t insert (int32_t index, TargetPriorityPtr priority);
 
-		int32_t calcAction (MechWarriorPtr pilot, GameObjectPtr target);
+	void remove (int32_t index);
 
-		int32_t calcTarget (MechWarriorPtr pilot, Stuff::Vector3D location, int32_t contactCriteria, int32_t& action);
+	int32_t calcAction (MechWarriorPtr pilot, GameObjectPtr target);
+
+	int32_t calcTarget (MechWarriorPtr pilot, Stuff::Vector3D location, int32_t contactCriteria, int32_t& action);
 };
 
 //---------------------------------------------------------------------------
@@ -352,105 +352,105 @@ class TargetPriorityList {
 
 //---------------------------------------------------------------------------
 
-typedef enum {
+typedef enum{
 	ORDERSTATE_GENERAL,
 	ORDERSTATE_PLAYER,
 	ORDERSTATE_ALARM,
 	NUM_ORDERSTATES
-} OrderStateType;
+}OrderStateType;
 
-typedef struct _AttackerRec {
-	uint32_t				WID;
-	float						lastTime;
-} AttackerRec;
+typedef struct _AttackerRec{
+	uint32_t WID;
+	float lastTime;
+}AttackerRec;
 
 typedef AttackerRec* AttackerRecPtr;
 
-#define MAX_GLOBAL_PATH			50
+#define MAX_GLOBAL_PATH 50
 
-typedef enum {
+typedef enum{
 	MOVEPATH_UNDEFINED,
 	MOVEPATH_SIMPLE,
 	MOVEPATH_COMPLEX
-} MovePathType;
+}MovePathType;
 
-typedef struct _MoveOrders {
+typedef struct _MoveOrders{
 	//------------------
-	// order  parameters
-	float						time;
-	char						origin;
-	int32_t						speedType;				// best, max, slow, moderate
-	float						speedVelocity;			// based upon speedType (m/s)
-	char						speedState;				// based upon speedVelocity (walk, etc.)
-	char						speedThrottle;			// if speedState is walk, else ignored
-	uint32_t				goalType;				// is there no goal, a location or object?
-	GameObjectWatchID			goalObjectWID;			// if our goal is an object...
-	Stuff::Vector3D				goalObjectPosition;		// object's position at time of path calc
-	Stuff::Vector3D				goalLocation;			// goal location, if any
+	// order parameters
+	float time;
+	char origin;
+	int32_t speedType; // best, max, slow, moderate
+	float speedVelocity; // based upon speedType (m/s)
+	char speedState; // based upon speedVelocity (walk, etc.)
+	char speedThrottle; // if speedState is walk, else ignored
+	uint32_t goalType; // is there no goal, a location or object?
+	GameObjectWatchID goalObjectWID; // if our goal is an object...
+	Stuff::Vector3D goalObjectPosition; // object's position at time of path calc
+	Stuff::Vector3D goalLocation;// goal location, if any
 	//----------------------
 	// pathfinding guts/data
-	float						nextUpdate;
-	bool						newGoal;
-	Stuff::Vector3D				wayPath[MAX_WAYPTS];	// if this move order has a way path...
-	char						numWayPts;				// how many way points?
-	char						curWayPt;				// current goal waypoint
-	char						curWayDir;				// waypath direction: 1 = forward, -1 = backward
-	char						pathType;				// "quick" path or global/int32_t-range?
-	Stuff::Vector3D				originalGlobalGoal[2];	// 0 = original final goal, 1 = actual final goal
-	Stuff::Vector3D				globalGoalLocation;
-	GlobalPathStep				globalPath[MAX_GLOBAL_PATH];
-	char						numGlobalSteps;
-	char						curGlobalStep;
-	MovePathPtr					path[2];				// 0 = current path, 1 = next path
-	float						timeOfLastStep;			// last time a step was reached for this order
-	int32_t						moveState;				// forward, reverse, paused, etc.
-	int32_t						moveStateGoal;
-	bool						twisting;
-	float						yieldTime;
-	int32_t						yieldState;				// have we just yielded, been for a while, etc.
-	float						waitForPointTime;
-	bool						run;
+	float nextUpdate;
+	bool newGoal;
+	Stuff::Vector3D wayPath[MAX_WAYPTS]; // if this move order has a way path...
+	char numWayPts; // how many way points?
+	char curWayPt; // current goal waypoint
+	char curWayDir; // waypath direction: 1 = forward, -1 = backward
+	char pathType; // "quick" path or global/int32_t-range?
+	Stuff::Vector3D originalGlobalGoal[2]; // 0 = original final goal, 1 = actual final goal
+	Stuff::Vector3D globalGoalLocation;
+	GlobalPathStep globalPath[MAX_GLOBAL_PATH];
+	char numGlobalSteps;
+	char curGlobalStep;
+	MovePathPtr path[2]; // 0 = current path, 1 = next path
+	float timeOfLastStep; // last time a step was reached for this order
+	int32_t moveState; // forward, reverse, paused, etc.
+	int32_t moveStateGoal;
+	bool twisting;
+	float yieldTime;
+	int32_t yieldState; // have we just yielded, been for a while, etc.
+	float waitForPointTime;
+	bool run;
 
 	void init (void);
 
-} MoveOrders;
+}MoveOrders;
 
-typedef struct _SaveableMoveOrders {
+typedef struct _SaveableMoveOrders{
 	//------------------
-	// order  parameters
-	float						time;
-	char						origin;
-	int32_t						speedType;				// best, max, slow, moderate
-	float						speedVelocity;			// based upon speedType (m/s)
-	char						speedState;				// based upon speedVelocity (walk, etc.)
-	char						speedThrottle;			// if speedState is walk, else ignored
-	uint32_t				goalType;				// is there no goal, a location or object?
-	GameObjectWatchID			goalObjectWID;			// if our goal is an object...
-	Stuff::Vector3D				goalObjectPosition;		// object's position at time of path calc
-	Stuff::Vector3D				goalLocation;			// goal location, if any
+	// order parameters
+	float time;
+	char origin;
+	int32_t speedType; // best, max, slow, moderate
+	float speedVelocity; // based upon speedType (m/s)
+	char speedState; // based upon speedVelocity (walk, etc.)
+	char speedThrottle; // if speedState is walk, else ignored
+	uint32_t goalType; // is there no goal, a location or object?
+	GameObjectWatchID goalObjectWID; // if our goal is an object...
+	Stuff::Vector3D goalObjectPosition; // object's position at time of path calc
+	Stuff::Vector3D goalLocation;// goal location, if any
 	//----------------------
 	// pathfinding guts/data
-	float						nextUpdate;
-	bool						newGoal;
-	Stuff::Vector3D				wayPath[MAX_WAYPTS];	// if this move order has a way path...
-	char						numWayPts;				// how many way points?
-	char						curWayPt;				// current goal waypoint
-	char						curWayDir;				// waypath direction: 1 = forward, -1 = backward
-	char						pathType;				// "quick" path or global/int32_t-range?
-	Stuff::Vector3D				originalGlobalGoal[2];	// 0 = original final goal, 1 = actual final goal
-	Stuff::Vector3D				globalGoalLocation;
-	GlobalPathStep				globalPath[MAX_GLOBAL_PATH];
-	char						numGlobalSteps;
-	char						curGlobalStep;
-	MovePath					path[2];				// 0 = current path, 1 = next path
-	float						timeOfLastStep;			// last time a step was reached for this order
-	int32_t						moveState;				// forward, reverse, paused, etc.
-	int32_t						moveStateGoal;
-	bool						twisting;
-	float						yieldTime;
-	int32_t						yieldState;				// have we just yielded, been for a while, etc.
-	float						waitForPointTime;
-	bool						run;
+	float nextUpdate;
+	bool newGoal;
+	Stuff::Vector3D wayPath[MAX_WAYPTS]; // if this move order has a way path...
+	char numWayPts; // how many way points?
+	char curWayPt; // current goal waypoint
+	char curWayDir; // waypath direction: 1 = forward, -1 = backward
+	char pathType; // "quick" path or global/int32_t-range?
+	Stuff::Vector3D originalGlobalGoal[2]; // 0 = original final goal, 1 = actual final goal
+	Stuff::Vector3D globalGoalLocation;
+	GlobalPathStep globalPath[MAX_GLOBAL_PATH];
+	char numGlobalSteps;
+	char curGlobalStep;
+	MovePath path[2]; // 0 = current path, 1 = next path
+	float timeOfLastStep; // last time a step was reached for this order
+	int32_t moveState; // forward, reverse, paused, etc.
+	int32_t moveStateGoal;
+	bool twisting;
+	float yieldTime;
+	int32_t yieldState; // have we just yielded, been for a while, etc.
+	float waitForPointTime;
+	bool run;
 
 	void copy (MoveOrders &orders)
 	{
@@ -530,87 +530,87 @@ typedef struct _SaveableMoveOrders {
 	}
 
 
-} SaveableMoveOrders;
+}SaveableMoveOrders;
 
-typedef struct _AttackOrders {
-	float						time;
-	char						origin;
-	int32_t						type;				// to kill, to disable, etc.
-	GameObjectWatchID			targetWID;		// current object targeted for attack, if attacking object
-	Stuff::Vector3D				targetPoint;		// target location targeted for attack, if attacking point
-	int32_t						aimLocation;
-	bool						pursue;				// does this attack entail a move order too?
-	int32_t						tactic;
-	float						targetTime;
+typedef struct _AttackOrders{
+	float time;
+	char origin;
+	int32_t type; // to kill, to disable, etc.
+	GameObjectWatchID targetWID; // current object targeted for attack, if attacking object
+	Stuff::Vector3D targetPoint; // target location targeted for attack, if attacking point
+	int32_t aimLocation;
+	bool pursue; // does this attack entail a move order too?
+	int32_t tactic;
+	float targetTime;
 
 	void init (void);
 
-} AttackOrders;
+}AttackOrders;
 
-typedef struct _SituationOrders {
-	float						time;
+typedef struct _SituationOrders{
+	float time;
 	// general orders
-	int32_t						mode;				// NORMAL, WITHDRAW, RETREAT, ETC.
-	float						defFormation;
-	float						curFormation;
+	int32_t mode; // NORMAL, WITHDRAW, RETREAT, ETC.
+	float defFormation;
+	float curFormation;
 	// fire orders
-	bool						openFire;
-	bool						uponFireOnly;		// openFire set to TRUE upon getting attacked
-	float						fireRange;
-	float						fireOdds;
+	bool openFire;
+	bool uponFireOnly; // openFire set to TRUE upon getting attacked
+	float fireRange;
+	float fireOdds;
 	// guard orders
-	GameObjectWatchID			guardObjectWID;
+	GameObjectWatchID guardObjectWID;
 
 	void init (void);
 
-} SituationOrders;
+}SituationOrders;
 
 #if 0
 typedef struct _RoleOrders {
-	float						time;
-	MechWarriorRole				role;
+	float time;
+	MechWarriorRole role;
 } RoleOrders;
 #endif
 
 //------------------------------------------------------------------------------------------
 
-#define	NUM_MEMORY_CELLS		60
+#define NUM_MEMORY_CELLS 60
 
-typedef union _MemoryCell {
-	float						real;
-	int32_t						integer;
-} MemoryCell;
-
-//------------------------------------------------------------------------------------------
-
-#define MAX_ATTACKERS			50
+typedef union _MemoryCell{
+	float real;
+	int32_t integer;
+}MemoryCell;
 
 //------------------------------------------------------------------------------------------
 
-typedef struct _QueuedTacOrder 
+#define MAX_ATTACKERS 50
+
+//------------------------------------------------------------------------------------------
+
+typedef struct _QueuedTacOrder
 {
-	int32_t						id;
-	Stuff::Vector3D				point;
-	uint32_t				packedData[2];
-	uint8_t				tactic;
-	BldgAppearance*				marker;
-	uint8_t 				moveMode;			//So save/load can recreate this lovely pointer!
-} QueuedTacOrder;
+	int32_t id;
+	Stuff::Vector3D point;
+	uint32_t packedData[2];
+	uint8_t tactic;
+	BldgAppearance* marker;
+	uint8_t moveMode; //So save/load can recreate this lovely pointer!
+}QueuedTacOrder;
 
 typedef QueuedTacOrder* QueuedTacOrderPtr;
 
 //------------------------------------------------------------------------------------------
 
-#define	NUM_PILOT_DEBUG_STRINGS		5
-#define	MAXLEN_PILOT_DEBUG_STRING	80
-#define	MAXLEN_PILOT_NAME			80
-#define	MAXLEN_PILOT_CALLSIGN		20
-#define	MAXLEN_PILOT_PHOTO			20
-#define	MAXLEN_PILOT_VIDEO			20
-#define	MAXLEN_PILOT_AUDIO			20
-#define	MAXLEN_PILOT_BRAIN			40
+#define NUM_PILOT_DEBUG_STRINGS 5
+#define MAXLEN_PILOT_DEBUG_STRING 80
+#define MAXLEN_PILOT_NAME 80
+#define MAXLEN_PILOT_CALLSIGN 20
+#define MAXLEN_PILOT_PHOTO 20
+#define MAXLEN_PILOT_VIDEO 20
+#define MAXLEN_PILOT_AUDIO 20
+#define MAXLEN_PILOT_BRAIN 40
 
-typedef enum {
+typedef enum{
 	GOAL_ACTION_NONE,
 	GOAL_ACTION_UNDECIDED,
 	GOAL_ACTION_MOVE,
@@ -618,1465 +618,1465 @@ typedef enum {
 	GOAL_ACTION_CAPTURE,
 	GOAL_ACTION_GUARD,
 	NUM_GOAL_ACTIONS
-} GoalActionType;
+}GoalActionType;
 
 typedef struct _MechWarriorData
 {
-	bool					used;
-	char					name[MAXLEN_PILOT_NAME];
-	char					callsign[MAXLEN_PILOT_CALLSIGN];
-	char					videoStr[MAXLEN_PILOT_VIDEO];
-	char					audioStr[MAXLEN_PILOT_AUDIO];
-	char					brainStr[MAXLEN_PILOT_BRAIN];
-	int32_t					index;
-	int32_t					paintScheme;
-	int32_t					photoIndex;
+	bool used;
+	char name[MAXLEN_PILOT_NAME];
+	char callsign[MAXLEN_PILOT_CALLSIGN];
+	char videoStr[MAXLEN_PILOT_VIDEO];
+	char audioStr[MAXLEN_PILOT_AUDIO];
+	char brainStr[MAXLEN_PILOT_BRAIN];
+	int32_t index;
+	int32_t paintScheme;
+	int32_t photoIndex;
 
-	char					rank;
-	char					skills[NUM_SKILLS];				//Current
-	char					professionalism;
-	char					professionalismModifier;
-	char					decorum;
-	char					decorumModifier;
-	char					aggressiveness;
-	char					courage;
-	char					baseCourage;
+	char rank;
+	char skills[NUM_SKILLS]; //Current
+	char professionalism;
+	char professionalismModifier;
+	char decorum;
+	char decorumModifier;
+	char aggressiveness;
+	char courage;
+	char baseCourage;
 
-	float					wounds;
-	float					health;
-	int32_t					status;
-	bool					escapesThruEjection;
-	RadioLog				radioLog;
-	bool					notMineYet;						// Pilot must EARNED through logistics!!!
+	float wounds;
+	float health;
+	int32_t status;
+	bool escapesThruEjection;
+	RadioLog radioLog;
+	bool notMineYet; // Pilot must EARNED through logistics!!!
 
-	int32_t					teamId;
-	GameObjectWatchID		vehicleWID;						// Must point to a Mover
+	int32_t teamId;
+	GameObjectWatchID vehicleWID; // Must point to a Mover
 
-	int32_t					numSkillUses[NUM_SKILLS][NUM_COMBAT_STATS];
-	int32_t					numSkillSuccesses[NUM_SKILLS][NUM_COMBAT_STATS];
-	int32_t					numMechKills[NUM_VEHICLE_CLASSES][NUM_COMBAT_STATS];
-	int32_t					numPhysicalAttacks[NUM_PHYSICAL_ATTACKS][NUM_COMBAT_STATS];
-	float					skillRank[NUM_SKILLS];
-	float					skillPoints[NUM_SKILLS];
-	char					originalSkills[NUM_SKILLS];
-	char					startingSkills[NUM_SKILLS];
-	bool					specialtySkills[NUM_SPECIALTY_SKILLS];
-	GameObjectWatchID		killed[MAX_MOVERS / 3];
-	int32_t					numKilled;
+	int32_t numSkillUses[NUM_SKILLS][NUM_COMBAT_STATS];
+	int32_t numSkillSuccesses[NUM_SKILLS][NUM_COMBAT_STATS];
+	int32_t numMechKills[NUM_VEHICLE_CLASSES][NUM_COMBAT_STATS];
+	int32_t numPhysicalAttacks[NUM_PHYSICAL_ATTACKS][NUM_COMBAT_STATS];
+	float skillRank[NUM_SKILLS];
+	float skillPoints[NUM_SKILLS];
+	char originalSkills[NUM_SKILLS];
+	char startingSkills[NUM_SKILLS];
+	bool specialtySkills[NUM_SPECIALTY_SKILLS];
+	GameObjectWatchID killed[MAX_MOVERS / 3];
+	int32_t numKilled;
 
-	int32_t					descID;							//Used by Logistics to Desc.
-	int32_t					nameIndex;						//Used by Logistics to Desc.		
+	int32_t descID; //Used by Logistics to Desc.
+	int32_t nameIndex; //Used by Logistics to Desc.
 
-	float					timeOfLastOrders;				// when I ask for orders
-	AttackerRec				attackers[MAX_ATTACKERS];		// should never have more than 12 attackers...
-	int32_t					numAttackers;
-	float					attackRadius;
+	float timeOfLastOrders; // when I ask for orders
+	AttackerRec attackers[MAX_ATTACKERS]; // should never have more than 12 attackers...
+	int32_t numAttackers;
+	float attackRadius;
 
-	MemoryCell				memory[NUM_MEMORY_CELLS];
-	char					debugStrings[NUM_PILOT_DEBUG_STRINGS][MAXLEN_PILOT_DEBUG_STRING];
+	MemoryCell memory[NUM_MEMORY_CELLS];
+	char debugStrings[NUM_PILOT_DEBUG_STRINGS][MAXLEN_PILOT_DEBUG_STRING];
 
-	float					brainUpdate;
-	float					combatUpdate;
-	float					movementUpdate;
-	int32_t					weaponsStatus[MAX_WEAPONS_PER_MOVER];
-	int32_t					weaponsStatusResult;
+	float brainUpdate;
+	float combatUpdate;
+	float movementUpdate;
+	int32_t weaponsStatus[MAX_WEAPONS_PER_MOVER];
+	int32_t weaponsStatusResult;
 
-	bool					useGoalPlan;
-	int32_t					mainGoalAction;
-	GameObjectWatchID		mainGoalObjectWID;
-	Stuff::Vector3D			mainGoalLocation;
-	float					mainGoalControlRadius;
-	int16_t					lastGoalPathSize;
-	int16_t					lastGoalPath[MAX_GLOBAL_PATH];
+	bool useGoalPlan;
+	int32_t mainGoalAction;
+	GameObjectWatchID mainGoalObjectWID;
+	Stuff::Vector3D mainGoalLocation;
+	float mainGoalControlRadius;
+	int16_t lastGoalPathSize;
+	int16_t lastGoalPath[MAX_GLOBAL_PATH];
 
-	bool					newTacOrderReceived[NUM_ORDERSTATES];
-	TacticalOrder			tacOrder[NUM_ORDERSTATES];
-	TacticalOrder			lastTacOrder;
-	TacticalOrder			curTacOrder;
-	PilotAlarm				alarm[NUM_PILOT_ALARMS];
-	PilotAlarm				alarmHistory[NUM_PILOT_ALARMS];	// used by brain update in ABL
-	int32_t					alarmPriority;
-	bool					curPlayerOrderFromQueue;
-	bool					tacOrderQueueLocked;
-	bool					tacOrderQueueExecuting;
-	bool					tacOrderQueueLooping;
-	char					numTacOrdersQueued;	// Currently, only player orders may be queued...
-	QueuedTacOrder			tacOrderQueue[MAX_QUEUED_TACORDERS_PER_WARRIOR];
-	int32_t					tacOrderQueueIndex;
-	int32_t					nextTacOrderId;
-	int32_t					lastTacOrderId;
+	bool newTacOrderReceived[NUM_ORDERSTATES];
+	TacticalOrder tacOrder[NUM_ORDERSTATES];
+	TacticalOrder lastTacOrder;
+	TacticalOrder curTacOrder;
+	PilotAlarm alarm[NUM_PILOT_ALARMS];
+	PilotAlarm alarmHistory[NUM_PILOT_ALARMS]; // used by brain update in ABL
+	int32_t alarmPriority;
+	bool curPlayerOrderFromQueue;
+	bool tacOrderQueueLocked;
+	bool tacOrderQueueExecuting;
+	bool tacOrderQueueLooping;
+	char numTacOrdersQueued; // Currently, only player orders may be queued...
+	QueuedTacOrder tacOrderQueue[MAX_QUEUED_TACORDERS_PER_WARRIOR];
+	int32_t tacOrderQueueIndex;
+	int32_t nextTacOrderId;
+	int32_t lastTacOrderId;
 
-	int32_t					coreScanTargetWID;
-	int32_t					coreAttackTargetWID;
-	int32_t					coreMoveTargetWID;
-	TargetPriorityList		targetPriorityList;
-	int32_t					brainState;
-	bool					willHelp;
+	int32_t coreScanTargetWID;
+	int32_t coreAttackTargetWID;
+	int32_t coreMoveTargetWID;
+	TargetPriorityList targetPriorityList;
+	int32_t brainState;
+	bool willHelp;
 
-	SaveableMoveOrders		moveOrders;
-	AttackOrders			attackOrders;
-	SituationOrders			situationOrders;
-	GameObjectWatchID		lastTargetWID;
-	float					lastTargetTime;
-	bool					lastTargetObliterate;
-	bool					lastTargetFriendly;
-	bool					lastTargetConserveAmmo;
-	bool					keepMoving;				//If true, he won't find his "optimal" spot and stand there.
+	SaveableMoveOrders moveOrders;
+	AttackOrders attackOrders;
+	SituationOrders situationOrders;
+	GameObjectWatchID lastTargetWID;
+	float lastTargetTime;
+	bool lastTargetObliterate;
+	bool lastTargetFriendly;
+	bool lastTargetConserveAmmo;
+	bool keepMoving; //If true, he won't find his "optimal" spot and stand there.
 
-	char					orderState;
+	char orderState;
 
-	uint32_t			debugFlags;
+	uint32_t debugFlags;
 
-	uint8_t			oldPilot;
+	uint8_t oldPilot;
 
-	int32_t					warriorBrainHandle;
-} MechWarriorData;
+	int32_t warriorBrainHandle;
+}MechWarriorData;
 
 typedef struct _StaticMechWarriorData
 {
-	int32_t				numWarriors;
-	int32_t				numWarriorsInCombat;
-	bool				brainsEnabled[MAX_TEAMS];
-	float				minSkill;
-	float				maxSkill;
-	int32_t				increaseCap;
-	float				maxVisualRadius;
-	int32_t				curEventID;
-	int32_t				curEventTrigger;
-} StaticMechWarriorData;
-
-class MechWarrior {
-
-	protected:
-
-		// Misc.
-		bool					used;
-		char					name[MAXLEN_PILOT_NAME];
-		char					callsign[MAXLEN_PILOT_CALLSIGN];
-		char					videoStr[MAXLEN_PILOT_VIDEO];
-		char					audioStr[MAXLEN_PILOT_AUDIO];
-		char					brainStr[MAXLEN_PILOT_BRAIN];
-		int32_t					index;
-		int32_t					paintScheme;
-		int32_t					photoIndex;
-
-		// Skills and Traits
-		char					rank;
-		char					professionalism;
-		char					professionalismModifier;
-		char					decorum;
-		char					decorumModifier;
-		char					aggressiveness;
-		char					courage;
-		char					baseCourage;
-
-		// Status
-		float					wounds;
-		float					health;
-		int32_t					status;
-		bool					escapesThruEjection;
-		RadioLog				radioLog;
-		bool					notMineYet;				// Pilot must EARNED through logistics!!!
-
-		// Unit
-		int32_t					teamId;
-		GameObjectWatchID		vehicleWID;			// Must point to a Mover
-
-	public:
-		// Combat Stats and History
-		int32_t					numSkillUses[NUM_SKILLS][NUM_COMBAT_STATS];
-		int32_t					numSkillSuccesses[NUM_SKILLS][NUM_COMBAT_STATS];
-		int32_t					numMechKills[NUM_VEHICLE_CLASSES][NUM_COMBAT_STATS];
-		int32_t					numPhysicalAttacks[NUM_PHYSICAL_ATTACKS][NUM_COMBAT_STATS];
-		char					skills[NUM_SKILLS];				//Current
-		float					skillRank[NUM_SKILLS];
-		float					skillPoints[NUM_SKILLS];
-		char					originalSkills[NUM_SKILLS];		//How I arrived in MechCommander
-		char					startingSkills[NUM_SKILLS];		//How I arrived in the mission
-		bool					specialtySkills[NUM_SPECIALTY_SKILLS];
-		GameObjectWatchID		killed[MAX_MOVERS / 3];
-		int32_t					numKilled;
-
-		int32_t					descID;							//Used by Logistics to Desc.
-		int32_t					nameIndex;						//Used by Logistics to Desc.		
-		static	SpecialtySkillType	skillTypes[NUM_SPECIALTY_SKILLS];
-	protected:
-
-		// AI
-		float					timeOfLastOrders;		// when I ask for orders
-		AttackerRec				attackers[MAX_ATTACKERS];			// should never have more than 12 attackers...
-		int32_t					numAttackers;
-		float					attackRadius;
-		static SortListPtr		sortList;
-
-		// ABL Brain and Memory
-		MemoryCell				memory[NUM_MEMORY_CELLS];
-		ABLModulePtr			brain;
-		int32_t					warriorBrainHandle;
-		SymTableNodePtr			brainAlarmCallback[NUM_PILOT_ALARMS];
-		char					debugStrings[NUM_PILOT_DEBUG_STRINGS][MAXLEN_PILOT_DEBUG_STRING];
-
-		// Orders
-		float					brainUpdate;
-		float					combatUpdate;
-		float					movementUpdate;
-		int32_t					weaponsStatus[MAX_WEAPONS_PER_MOVER];
-		int32_t					weaponsStatusResult;
-
-		bool					useGoalPlan;
-		int32_t					mainGoalAction;
-		GameObjectWatchID		mainGoalObjectWID;
-		Stuff::Vector3D			mainGoalLocation;
-		float					mainGoalControlRadius;
-		int16_t					lastGoalPathSize;
-		int16_t					lastGoalPath[MAX_GLOBAL_PATH];
-
-		bool					newTacOrderReceived[NUM_ORDERSTATES];
-		TacticalOrder			tacOrder[NUM_ORDERSTATES];
-		TacticalOrder			lastTacOrder;
-		TacticalOrder			curTacOrder;
-		PilotAlarm				alarm[NUM_PILOT_ALARMS];
-		PilotAlarm				alarmHistory[NUM_PILOT_ALARMS];	// used by brain update in ABL
-		int32_t					alarmPriority;
-		bool					curPlayerOrderFromQueue;
-		bool					tacOrderQueueLocked;
-		bool					tacOrderQueueExecuting;
-		bool					tacOrderQueueLooping;
-		char					numTacOrdersQueued;	// Currently, only player orders may be queued...
-		QueuedTacOrderPtr		tacOrderQueue;
-		int32_t					tacOrderQueueIndex;
-		int32_t					nextTacOrderId;
-		int32_t					lastTacOrderId;
-
-		int32_t					coreScanTargetWID;
-		int32_t					coreAttackTargetWID;
-		int32_t					coreMoveTargetWID;
-		TargetPriorityList		targetPriorityList;
-		int32_t					brainState;
-		bool					willHelp;
-
-		MoveOrders				moveOrders;
-		AttackOrders			attackOrders;
-		SituationOrders			situationOrders;
-		//RoleOrders				roleOrders;
-		GameObjectWatchID		lastTargetWID;
-		float					lastTargetTime;
-		bool					lastTargetObliterate;
-		bool					lastTargetFriendly;
-		bool					lastTargetConserveAmmo;
-		bool					keepMoving;				//If true, he won't find his "optimal" spot and stand there.
-
-		char					orderState;
-
-		PathQueueRecPtr			movePathRequest;
-
-		uint32_t			debugFlags;
-
-		RadioPtr				radio;
-		bool					isPlayingMsg;		//Always false unless I'm playing a message!
-		uint8_t			oldPilot;
-
-		//MechWarriorPtr			next;
-
-	public:
-
-		static int32_t				numWarriors;
-		static int32_t				numWarriorsInCombat;
-		static bool				brainsEnabled[MAX_TEAMS];
-		static float			minSkill;
-		static float			maxSkill;
-		static int32_t				increaseCap;
-		static float			maxVisualRadius;
-		static int32_t				curEventID;
-		static int32_t				curEventTrigger;
-
-		static MechWarrior*		warriorList[MAX_WARRIORS];
-		static GoalManager*		goalManager;
-
-		static BldgAppearance*		wayPointMarkers[3];
-
-	public:
-
-		PVOID operator new (size_t ourSize);
-		void operator delete (PVOID us);
-		
-		static void setup (void);
-
-		static void shutdown (void);
-
-		static MechWarrior* newWarrior (void);
-
-		static void freeWarrior (MechWarrior* warrior);
-
-		static bool warriorInUse (PSTR warriorName);
-
-		void init (bool create);
-
-		void init (MechWarriorData data);
-
-		MechWarrior (void) {
-			init(true);
-		}
+	int32_t numWarriors;
+	int32_t numWarriorsInCombat;
+	bool brainsEnabled[MAX_TEAMS];
+	float minSkill;
+	float maxSkill;
+	int32_t increaseCap;
+	float maxVisualRadius;
+	int32_t curEventID;
+	int32_t curEventTrigger;
+}StaticMechWarriorData;
+
+class MechWarrior{
+
+protected:
+
+	// Misc.
+	bool used;
+	char name[MAXLEN_PILOT_NAME];
+	char callsign[MAXLEN_PILOT_CALLSIGN];
+	char videoStr[MAXLEN_PILOT_VIDEO];
+	char audioStr[MAXLEN_PILOT_AUDIO];
+	char brainStr[MAXLEN_PILOT_BRAIN];
+	int32_t index;
+	int32_t paintScheme;
+	int32_t photoIndex;
+
+	// Skills and Traits
+	char rank;
+	char professionalism;
+	char professionalismModifier;
+	char decorum;
+	char decorumModifier;
+	char aggressiveness;
+	char courage;
+	char baseCourage;
+
+	// Status
+	float wounds;
+	float health;
+	int32_t status;
+	bool escapesThruEjection;
+	RadioLog radioLog;
+	bool notMineYet; // Pilot must EARNED through logistics!!!
+
+	// Unit
+	int32_t teamId;
+	GameObjectWatchID vehicleWID; // Must point to a Mover
+
+public:
+	// Combat Stats and History
+	int32_t numSkillUses[NUM_SKILLS][NUM_COMBAT_STATS];
+	int32_t numSkillSuccesses[NUM_SKILLS][NUM_COMBAT_STATS];
+	int32_t numMechKills[NUM_VEHICLE_CLASSES][NUM_COMBAT_STATS];
+	int32_t numPhysicalAttacks[NUM_PHYSICAL_ATTACKS][NUM_COMBAT_STATS];
+	char skills[NUM_SKILLS]; //Current
+	float skillRank[NUM_SKILLS];
+	float skillPoints[NUM_SKILLS];
+	char originalSkills[NUM_SKILLS]; //How I arrived in MechCommander
+	char startingSkills[NUM_SKILLS]; //How I arrived in the mission
+	bool specialtySkills[NUM_SPECIALTY_SKILLS];
+	GameObjectWatchID killed[MAX_MOVERS / 3];
+	int32_t numKilled;
+
+	int32_t descID; //Used by Logistics to Desc.
+	int32_t nameIndex; //Used by Logistics to Desc.
+	static SpecialtySkillType skillTypes[NUM_SPECIALTY_SKILLS];
+protected:
+
+	// AI
+	float timeOfLastOrders; // when I ask for orders
+	AttackerRec attackers[MAX_ATTACKERS]; // should never have more than 12 attackers...
+	int32_t numAttackers;
+	float attackRadius;
+	static SortListPtr sortList;
+
+	// ABL Brain and Memory
+	MemoryCell memory[NUM_MEMORY_CELLS];
+	ABLModulePtr brain;
+	int32_t warriorBrainHandle;
+	SymTableNodePtr brainAlarmCallback[NUM_PILOT_ALARMS];
+	char debugStrings[NUM_PILOT_DEBUG_STRINGS][MAXLEN_PILOT_DEBUG_STRING];
+
+	// Orders
+	float brainUpdate;
+	float combatUpdate;
+	float movementUpdate;
+	int32_t weaponsStatus[MAX_WEAPONS_PER_MOVER];
+	int32_t weaponsStatusResult;
+
+	bool useGoalPlan;
+	int32_t mainGoalAction;
+	GameObjectWatchID mainGoalObjectWID;
+	Stuff::Vector3D mainGoalLocation;
+	float mainGoalControlRadius;
+	int16_t lastGoalPathSize;
+	int16_t lastGoalPath[MAX_GLOBAL_PATH];
+
+	bool newTacOrderReceived[NUM_ORDERSTATES];
+	TacticalOrder tacOrder[NUM_ORDERSTATES];
+	TacticalOrder lastTacOrder;
+	TacticalOrder curTacOrder;
+	PilotAlarm alarm[NUM_PILOT_ALARMS];
+	PilotAlarm alarmHistory[NUM_PILOT_ALARMS]; // used by brain update in ABL
+	int32_t alarmPriority;
+	bool curPlayerOrderFromQueue;
+	bool tacOrderQueueLocked;
+	bool tacOrderQueueExecuting;
+	bool tacOrderQueueLooping;
+	char numTacOrdersQueued; // Currently, only player orders may be queued...
+	QueuedTacOrderPtr tacOrderQueue;
+	int32_t tacOrderQueueIndex;
+	int32_t nextTacOrderId;
+	int32_t lastTacOrderId;
 
-		void destroy (void);
+	int32_t coreScanTargetWID;
+	int32_t coreAttackTargetWID;
+	int32_t coreMoveTargetWID;
+	TargetPriorityList targetPriorityList;
+	int32_t brainState;
+	bool willHelp;
 
-		~MechWarrior (void)	{
-			destroy(void);
-		}
+	MoveOrders moveOrders;
+	AttackOrders attackOrders;
+	SituationOrders situationOrders;
+	//RoleOrders roleOrders;
+	GameObjectWatchID lastTargetWID;
+	float lastTargetTime;
+	bool lastTargetObliterate;
+	bool lastTargetFriendly;
+	bool lastTargetConserveAmmo;
+	bool keepMoving; //If true, he won't find his "optimal" spot and stand there.
 
-		int32_t init (FitIniFile* warriorFile);
+	char orderState;
 
-		void clear (void);
+	PathQueueRecPtr movePathRequest;
 
-		void update (void);
+	uint32_t debugFlags;
 
-		void updateMissionSkills(void);
+	RadioPtr radio;
+	bool isPlayingMsg; //Always false unless I'm playing a message!
+	uint8_t oldPilot;
 
+	//MechWarriorPtr next;
 
-		PSTR getName (void) {
-			return(name);
-		}
+public:
 
-		int32_t getPhoto (void) {
-			return(photoIndex);
-		}
+	static int32_t numWarriors;
+	static int32_t numWarriorsInCombat;
+	static bool brainsEnabled[MAX_TEAMS];
+	static float minSkill;
+	static float maxSkill;
+	static int32_t increaseCap;
+	static float maxVisualRadius;
+	static int32_t curEventID;
+	static int32_t curEventTrigger;
 
-		PSTR getCallsign (void) {
-			return(callsign);
-		}
+	static MechWarrior* warriorList[MAX_WARRIORS];
+	static GoalManager* goalManager;
 
-		void setIndex (int32_t i) {
-			index = i;
-		}
+	static BldgAppearance* wayPointMarkers[3];
 
-		int32_t getIndex (void) {
-			return(index);
-		}
+public:
 
-		int32_t getPaintScheme (void)
-		{
-			return paintScheme;
-		}
+	PVOID operator new (size_t ourSize);
+	void operator delete (PVOID us);
 
-		void setPaintScheme (int32_t newPaintScheme)
-		{
-			paintScheme = newPaintScheme;
-		}
+	static void setup (void);
 
-		RadioPtr getRadio (void) {
-			return radio;
-		}
+	static void shutdown (void);
 
-		void radioMessage (int32_t message, bool propogateIfMultiplayer = false);
+	static MechWarrior* newWarrior (void);
 
-		void cancelRadioMessage (int32_t message, bool propogateIfMultiplayer = false);
-		
-		uint32_t getLastMessage(void)
-		{
-			return radioLog.lastMessage;
-		}
+	static void freeWarrior (MechWarrior* warrior);
 
-		char getRank (void) {
-			return(rank);
-		}
+	static bool warriorInUse (PSTR warriorName);
 
-		uint32_t getSkill (uint32_t skillId)
-		{
-			return(skills[skillId]);
-		}
+	void init (bool create);
 
-		void setSkill (uint32_t skillId, int32_t skillValue)
-		{
-			if (skillId > 0 && skillId < NUM_SKILLS)
-				skills[skillId] = skillValue;
-		}
+	void init (MechWarriorData data);
 
-		int32_t checkSkill (int32_t skillId, float factor = 1.0);
+	MechWarrior (void){
+		init(true);
+	}
 
-		int32_t getNumSkillUse (int32_t skillStat, int32_t skillId) {
-			return(numSkillUses[skillId][skillStat]);
-		}
+	void destroy (void);
 
-		int32_t getNumSkillSuccesses (int32_t skillStat, int32_t skillId) {
-			return(numSkillSuccesses[skillId][skillStat]);
-		}
+	~MechWarrior (void){
+		destroy(void);
+	}
 
-		void incNumSkillUses (int32_t skillStat, int32_t skillId) {
-			numSkillUses[skillId][skillStat]++;
-		}
+	int32_t init (FitIniFile* warriorFile);
 
-		void incNumSkillSuccesses (int32_t skillStat, int32_t skillId) {
-			numSkillSuccesses[skillId][skillStat]++;
-		}
+	void clear (void);
 
-		int32_t getProfessionalism (void) {
-			return(professionalism);
-		}
+	void update (void);
 
-		int32_t getProfessionalismModifier (void) {
-			return(professionalismModifier);
-		}
+	void updateMissionSkills(void);
 
-		int32_t getDecorum (void) {
-			return(decorum);
-		}
 
-		int32_t getDecorumModifier (void) {
-			return(decorumModifier);
-		}
+	PSTR getName (void){
+		return(name);
+	}
 
-		int32_t getAggressiveness (bool current = true);
+	int32_t getPhoto (void){
+		return(photoIndex);
+	}
 
-		int32_t getCourage (void) {
-			return(courage);
-		}
+	PSTR getCallsign (void){
+		return(callsign);
+	}
 
-		void setCourage (uint8_t _courage) {
-			courage = _courage;
-		}
+	void setIndex (int32_t i){
+		index = i;
+	}
 
-		int32_t getTeamworkModifier (void) {
-			return(professionalismModifier + decorumModifier);
-		}
+	int32_t getIndex (void){
+		return(index);
+	}
 
-		float getWounds (void) {
-			return(wounds);
-		}
+	int32_t getPaintScheme (void)
+	{
+		return paintScheme;
+	}
 
-		bool alive (void) {
-			return(wounds < 6.0);
-		}
+	void setPaintScheme (int32_t newPaintScheme)
+	{
+		paintScheme = newPaintScheme;
+	}
 
-		bool active (void) {
-			return(status == WARRIOR_STATUS_NORMAL);
-		}
+	RadioPtr getRadio (void){
+		return radio;
+	}
 
-		void setStatus (int32_t _status) {
-			status = _status;
-		}
+	void radioMessage (int32_t message, bool propogateIfMultiplayer = false);
 
-		int32_t getStatus (void) {
-			return(status);
-		}
+	void cancelRadioMessage (int32_t message, bool propogateIfMultiplayer = false);
 
-		bool hasEjected (void) {
-			return(status == WARRIOR_STATUS_EJECTED || status == WARRIOR_STATUS_MIA || status == WARRIOR_STATUS_CAPTURED);
-		}
+	uint32_t getLastMessage(void)
+	{
+		return radioLog.lastMessage;
+	}
 
-		void setEscapesThruEjection (bool escapes) {
-			escapesThruEjection = escapes;
-		}
+	char getRank (void){
+		return(rank);
+	}
 
-		bool getEscapesThruEjection (void) {
-			return(escapesThruEjection);
-		}
+	uint32_t getSkill (uint32_t skillId)
+	{
+		return(skills[skillId]);
+	}
 
-		void setKeepMoving (bool set) {
-			keepMoving = set;
-		}
+	void setSkill (uint32_t skillId, int32_t skillValue)
+	{
+		if (skillId > 0 && skillId < NUM_SKILLS)
+			skills[skillId] = skillValue;
+	}
 
-		bool getKeepMoving (void) {
-			return(keepMoving);
-		}
+	int32_t checkSkill (int32_t skillId, float factor = 1.0);
 
-		bool getNotMineYet (void) {
-			return notMineYet;
-		}
-		
-		void setNotMineYet (bool result) {
-			notMineYet = result;
-		}
+	int32_t getNumSkillUse (int32_t skillStat, int32_t skillId){
+		return(numSkillUses[skillId][skillStat]);
+	}
 
-		bool getSpecialtySkill (int32_t whichSkill) {
-			return(specialtySkills[whichSkill]);
-		}
+	int32_t getNumSkillSuccesses (int32_t skillStat, int32_t skillId){
+		return(numSkillSuccesses[skillId][skillStat]);
+	}
 
-		//---------------------------------
-		// Specialty Skills		
-		bool isLightMechSpecialist (void)			//DONE
-		{
-			return (specialtySkills[0] == 1);
-		}
-		
-		bool isMediumMechSpecialist (void)			//DONE
-		{
-			return (specialtySkills[8] == 1);
-		}
+	void incNumSkillUses (int32_t skillStat, int32_t skillId){
+		numSkillUses[skillId][skillStat]++;
+	}
 
-		bool isLaserSpecialist (void)				//DONE
-		{
-			return (specialtySkills[1] == 1);
-		}
+	void incNumSkillSuccesses (int32_t skillStat, int32_t skillId){
+		numSkillSuccesses[skillId][skillStat]++;
+	}
 
-		bool isLightACSpecialist (void)				//DONE
-		{
-			return (specialtySkills[2] == 1);
-		}
+	int32_t getProfessionalism (void){
+		return(professionalism);
+	}
 
-		bool isMediumACSpecialist (void)			//DONE
-		{
-			return (specialtySkills[3] == 1);
-		}
+	int32_t getProfessionalismModifier (void){
+		return(professionalismModifier);
+	}
 
-		bool isSRMSpecialist (void)					//DONE
-		{
-			return (specialtySkills[4] == 1);
-		}
-	
-		bool isSmallArmsSpecialist (void)			//DONE
-		{
-			return (specialtySkills[5] == 1);
-		}
+	int32_t getDecorum (void){
+		return(decorum);
+	}
 
-		bool isToughnessSpecialist (void)
-		{
-			return (specialtySkills[7] == 1);
-		}
+	int32_t getDecorumModifier (void){
+		return(decorumModifier);
+	}
 
-		bool isHevayMechSpecialist (void)			//DONE
-		{
-			return (specialtySkills[14] == 1);
-		}
+	int32_t getAggressiveness (bool current = true);
 
-		bool isPulseLaserSpecialist (void)			//DONE
-		{
-			return (specialtySkills[9] == 1);
-		}
+	int32_t getCourage (void){
+		return(courage);
+	}
 
-		bool isERLaserSpecialist (void)				//DONE
-		{
-			return (specialtySkills[10] == 1);
-		}
+	void setCourage (uint8_t _courage){
+		courage = _courage;
+	}
 
-		bool isLRMSpecialist (void)					//DONE
-		{
-			return (specialtySkills[11] == 1);
-		}
+	int32_t getTeamworkModifier (void){
+		return(professionalismModifier + decorumModifier);
+	}
 
-		bool isPPCSpecialist (void)					//DONE
-		{
-			return (specialtySkills[15] == 1);
-		}
+	float getWounds (void){
+		return(wounds);
+	}
 
-		bool isScout (void)
-		{
-			return (specialtySkills[12] == 1);
-		}
+	bool alive (void){
+		return(wounds < 6.0);
+	}
 
-		bool isLongJump (void)
-		{
-			return (specialtySkills[13] == 1);
-		}
+	bool active (void){
+		return(status == WARRIOR_STATUS_NORMAL);
+	}
 
-		bool isAssaultMechSpecialist (void)			//DONE
-		{
-			return (specialtySkills[20] == 1);
-		}
-	
-		bool isGaussSpecialist (void)				//DONE
-		{
-			return (specialtySkills[21] == 1);
-		}
+	void setStatus (int32_t _status){
+		status = _status;
+	}
 
-		bool isHeavyACSpecialist (void)				//DONE
-		{
-			return (specialtySkills[16] == 1);
-		}
+	int32_t getStatus (void){
+		return(status);
+	}
 
-		bool isShortRangeSpecialist (void)			//DONE
-		{
-			return (specialtySkills[17] == 1);
-		}
+	bool hasEjected (void){
+		return(status == WARRIOR_STATUS_EJECTED || status == WARRIOR_STATUS_MIA || status == WARRIOR_STATUS_CAPTURED);
+	}
 
-		bool isMediumRangeSpecialist (void)			//DONE
-		{
-			return (specialtySkills[18] == 1);
-		}
+	void setEscapesThruEjection (bool escapes){
+		escapesThruEjection = escapes;
+	}
 
-		bool isLongRangeSpecialist (void)			//DONE
-		{
-			return (specialtySkills[19] == 1);
-		}
+	bool getEscapesThruEjection (void){
+		return(escapesThruEjection);
+	}
 
-		/*			CUT~!!!!!!!!!
-		bool isDeadeye (void)
-		{
-			return (specialtySkills[23] == 1);
-		}
-		*/
-
-		bool isSharpShooter (void)
-		{
-			return (specialtySkills[22] == 1);
-		}
+	void setKeepMoving (bool set){
+		keepMoving = set;
+	}
 
-		bool isSensorProfileSpecialist (void)
-		{
-			return (specialtySkills[6] == 1);
-		}
+	bool getKeepMoving (void){
+		return(keepMoving);
+	}
 
-		//--------------------------
-		// TacOrderQueue routines...
+	bool getNotMineYet (void){
+		return notMineYet;
+	}
+
+	void setNotMineYet (bool result){
+		notMineYet = result;
+	}
+
+	bool getSpecialtySkill (int32_t whichSkill){
+		return(specialtySkills[whichSkill]);
+	}
+
+	//---------------------------------
+	// Specialty Skills
+	bool isLightMechSpecialist (void)//DONE
+	{
+		return (specialtySkills[0] == 1);
+	}
+
+	bool isMediumMechSpecialist (void)//DONE
+	{
+		return (specialtySkills[8] == 1);
+	}
+
+	bool isLaserSpecialist (void)//DONE
+	{
+		return (specialtySkills[1] == 1);
+	}
+
+	bool isLightACSpecialist (void)//DONE
+	{
+		return (specialtySkills[2] == 1);
+	}
+
+	bool isMediumACSpecialist (void)//DONE
+	{
+		return (specialtySkills[3] == 1);
+	}
+
+	bool isSRMSpecialist (void)//DONE
+	{
+		return (specialtySkills[4] == 1);
+	}
+
+	bool isSmallArmsSpecialist (void)//DONE
+	{
+		return (specialtySkills[5] == 1);
+	}
+
+	bool isToughnessSpecialist (void)
+	{
+		return (specialtySkills[7] == 1);
+	}
 
-		bool enableTacOrderQueue (void);
+	bool isHevayMechSpecialist (void)//DONE
+	{
+		return (specialtySkills[14] == 1);
+	}
 
-		int32_t addQueuedTacOrder (TacticalOrder tacOrder);
+	bool isPulseLaserSpecialist (void)//DONE
+	{
+		return (specialtySkills[9] == 1);
+	}
 
-		int32_t removeQueuedTacOrder (TacticalOrderPtr tacOrder);
+	bool isERLaserSpecialist (void)//DONE
+	{
+		return (specialtySkills[10] == 1);
+	}
 
-		int32_t getNextQueuedTacOrder (TacticalOrderPtr tacOrder);
+	bool isLRMSpecialist (void)//DONE
+	{
+		return (specialtySkills[11] == 1);
+	}
 
-		int32_t peekQueuedTacOrder (int32_t index, TacticalOrderPtr tacOrder);
+	bool isPPCSpecialist (void)//DONE
+	{
+		return (specialtySkills[15] == 1);
+	}
 
-		void clearTacOrderQueue (void);
+	bool isScout (void)
+	{
+		return (specialtySkills[12] == 1);
+	}
 
-		void setUseGoalPlan (bool set) {
-			useGoalPlan = set;
-		}
+	bool isLongJump (void)
+	{
+		return (specialtySkills[13] == 1);
+	}
 
-		bool getUseGoalPlan (void) {
-			return(useGoalPlan);
-		}
+	bool isAssaultMechSpecialist (void)//DONE
+	{
+		return (specialtySkills[20] == 1);
+	}
 
-		void setMainGoal (int32_t action, GameObjectPtr obj, Stuff::Vector3D* location, float range);
+	bool isGaussSpecialist (void)//DONE
+	{
+		return (specialtySkills[21] == 1);
+	}
 
-		int32_t getMainGoal (GameObjectPtr& obj, Stuff::Vector3D& location, float& range);
+	bool isHeavyACSpecialist (void)//DONE
+	{
+		return (specialtySkills[16] == 1);
+	}
 
-		int32_t getNumTacOrdersQueued (void) {
-			return(numTacOrdersQueued);
-		}
+	bool isShortRangeSpecialist (void)//DONE
+	{
+		return (specialtySkills[17] == 1);
+	}
 
-		void drawWaypointPath(void);
-		void updateDrawWaypointPath(void);
+	bool isMediumRangeSpecialist (void)//DONE
+	{
+		return (specialtySkills[18] == 1);
+	}
 
-		void executeTacOrderQueue (void);
+	bool isLongRangeSpecialist (void)//DONE
+	{
+		return (specialtySkills[19] == 1);
+	}
 
-		void setExecutingQueue (bool setting) {
-			tacOrderQueueExecuting = setting;
-		}
+	/* CUT~!!!!!!!!!
+	bool isDeadeye (void)
+	{
+	return (specialtySkills[23] == 1);
+	}
+	*/
 
-		void setTacOrderQueueLooping (bool setting) {
-			tacOrderQueueLooping = setting;
-		}
+	bool isSharpShooter (void)
+	{
+		return (specialtySkills[22] == 1);
+	}
 
-		bool getExecutingTacOrderQueue (void) {
-			return(tacOrderQueueExecuting);
-		}
+	bool isSensorProfileSpecialist (void)
+	{
+		return (specialtySkills[6] == 1);
+	}
 
-		bool getTacOrderQueueLooping (void) {
-			return(tacOrderQueueLooping);
-		}
+	//--------------------------
+	// TacOrderQueue routines...
 
-		void lockTacOrderQueue (void);
+	bool enableTacOrderQueue (void);
 
-		void unlockTacOrderQueue (void);
+	int32_t addQueuedTacOrder (TacticalOrder tacOrder);
 
-		bool getTacOrderQueueLocked (void) {
-			return(tacOrderQueueLocked);
-		}
+	int32_t removeQueuedTacOrder (TacticalOrderPtr tacOrder);
 
-		int32_t getTacOrderQueue (QueuedTacOrderPtr list);
+	int32_t getNextQueuedTacOrder (TacticalOrderPtr tacOrder);
 
-		bool getCurPlayerOrderFromQueue (void) {
-			return(curPlayerOrderFromQueue);
-		}
+	int32_t peekQueuedTacOrder (int32_t index, TacticalOrderPtr tacOrder);
 
-		int32_t getNextTacOrderId (void) {
-			return(nextTacOrderId);
-		}
+	void clearTacOrderQueue (void);
 
-		void setNextTacOrderId (int32_t newId) {
-			nextTacOrderId = newId;
-		}
+	void setUseGoalPlan (bool set){
+		useGoalPlan = set;
+	}
 
-		int32_t getLastTacOrderId (void) {
-			return(lastTacOrderId);
-		}
+	bool getUseGoalPlan (void){
+		return(useGoalPlan);
+	}
 
-		void setLastTacOrderId (int32_t newId) {
-			lastTacOrderId = newId;
-		}
+	void setMainGoal (int32_t action, GameObjectPtr obj, Stuff::Vector3D* location, float range);
 
-		void updateClientOrderQueue (int32_t curTacOrderId);
+	int32_t getMainGoal (GameObjectPtr& obj, Stuff::Vector3D& location, float& range);
 
-		//------------------
-		// Group routines...
+	int32_t getNumTacOrdersQueued (void){
+		return(numTacOrdersQueued);
+	}
 
-		MoverGroupPtr getGroup (void);
+	void drawWaypointPath(void);
+	void updateDrawWaypointPath(void);
 
-		MoverPtr getPoint (void);
+	void executeTacOrderQueue (void);
 
-		TeamPtr getTeam (void);
+	void setExecutingQueue (bool setting){
+		tacOrderQueueExecuting = setting;
+	}
 
-		CommanderPtr getCommander (void);
+	void setTacOrderQueueLooping (bool setting){
+		tacOrderQueueLooping = setting;
+	}
 
-		PSTR getAudioString (void)
-		{
-			return audioStr;
-		}
-		
-		PSTR getVideoString (void)
-		{
-			return videoStr;
-		}
-		
-		PSTR getBrainString (void)
-		{
-			return brainStr;
-		}
-		
-		int32_t getPilotPhoto (void)
-		{
-			return photoIndex;
-		}
-		
-		bool onHomeTeam (void);
+	bool getExecutingTacOrderQueue (void){
+		return(tacOrderQueueExecuting);
+	}
 
-		bool underHomeCommand (void);
+	bool getTacOrderQueueLooping (void){
+		return(tacOrderQueueLooping);
+	}
 
-		MoverPtr getVehicle (void);
+	void lockTacOrderQueue (void);
 
-		GameObjectPtr calcTurretThreats (float threatRange, int32_t minThreat);
+	void unlockTacOrderQueue (void);
 
-		int32_t getVehicleStatus (void);
+	bool getTacOrderQueueLocked (void){
+		return(tacOrderQueueLocked);
+	}
 
-		int32_t getWeaponsStatus (int32_t* list) {
-			memcpy(list, weaponsStatus, MAX_WEAPONS_PER_MOVER * sizeof(int32_t));
-			return(weaponsStatusResult);
-		}
+	int32_t getTacOrderQueue (QueuedTacOrderPtr list);
 
-//		void setUnit (MoverGroupPtr _group, int32_t _unitMateId);
-		
-		void setTeam (TeamPtr team);
+	bool getCurPlayerOrderFromQueue (void){
+		return(curPlayerOrderFromQueue);
+	}
 
-		void setVehicle (GameObjectPtr _vehicle);
+	int32_t getNextTacOrderId (void){
+		return(nextTacOrderId);
+	}
 
-		void setWounds (float _wounds) {
-			wounds = _wounds;
-		}
+	void setNextTacOrderId (int32_t newId){
+		nextTacOrderId = newId;
+	}
 
-		int32_t setBrain (int32_t brainHandle);
+	int32_t getLastTacOrderId (void){
+		return(lastTacOrderId);
+	}
 
-		void setBrainName (PSTR brainName);
-		
-		ABLModulePtr getBrain (void) {
-			return(brain);
-		}
+	void setLastTacOrderId (int32_t newId){
+		lastTacOrderId = newId;
+	}
 
-		int32_t runBrain (void);
+	void updateClientOrderQueue (int32_t curTacOrderId);
 
-		int32_t loadBrainParameters (FitIniFile* brainFile, int32_t warriorId);
+	//------------------
+	// Group routines...
 
-		bool injure (float numWounds, bool checkEject = true);
+	MoverGroupPtr getGroup (void);
 
-		void eject (void);
+	MoverPtr getPoint (void);
 
-		float getTimeOfLastOrders (void) {
-			return(timeOfLastOrders);
-		}
+	TeamPtr getTeam (void);
 
-		float getAttackRadius (void) {
-			return(attackRadius);
-		}
+	CommanderPtr getCommander (void);
 
-		void setAttackRadius (float radius) {
-			attackRadius = radius;
-		}
+	PSTR getAudioString (void)
+	{
+		return audioStr;
+	}
 
-		void setIntegerMemory (int32_t index, int32_t val) {
-			memory[index].integer = val;
-		}
+	PSTR getVideoString (void)
+	{
+		return videoStr;
+	}
 
-		void setRealMemory (int32_t index, float val) {
-			memory[index].real = val;
-		}
+	PSTR getBrainString (void)
+	{
+		return brainStr;
+	}
 
-		int32_t getIntegerMemory (int32_t index) {
-			return(memory[index].integer);
-		}
+	int32_t getPilotPhoto (void)
+	{
+		return photoIndex;
+	}
 
-		float getRealMemory (int32_t index) {
-			return(memory[index].real);
-		}
+	bool onHomeTeam (void);
 
-		void updateAttackerStatus (uint32_t attackerWID, float time);
+	bool underHomeCommand (void);
 
-		AttackerRecPtr getAttackerInfo (uint32_t attackerWID);
+	MoverPtr getVehicle (void);
 
-		int32_t getAttackers (uint32_t* attackerList, float seconds);
+	GameObjectPtr calcTurretThreats (float threatRange, int32_t minThreat);
 
-		int32_t scanOwnVehicle (void);
+	int32_t getVehicleStatus (void);
 
-		void lobotomy (void);		//Whacks the ABL brain and just blindly follows last order.
+	int32_t getWeaponsStatus (int32_t* list){
+		memcpy(list, weaponsStatus, MAX_WEAPONS_PER_MOVER * sizeof(int32_t));
+		return(weaponsStatusResult);
+	}
 
-		//-----------
-		// Tac Orders
+	// void setUnit (MoverGroupPtr _group, int32_t _unitMateId);
 
-		TacticalOrderPtr getCurTacOrder (void) {
-			return(&curTacOrder);
-		}
+	void setTeam (TeamPtr team);
 
-		TacticalOrderPtr getLastTacOrder (void) {
-			return(&lastTacOrder);
-		}
+	void setVehicle (GameObjectPtr _vehicle);
 
-		TacticalOrderPtr getTacOrder (int32_t _orderState) {
-			return(&tacOrder[_orderState]);
-		}
+	void setWounds (float _wounds){
+		wounds = _wounds;
+	}
 
-		int32_t getOrderState (void) {
-			return(orderState);
-		}
+	int32_t setBrain (int32_t brainHandle);
 
-		void setOrderState (int32_t state) {
-			orderState = state;
-		}
+	void setBrainName (PSTR brainName);
 
-		//------------
-		// Move Orders
+	ABLModulePtr getBrain (void){
+		return(brain);
+	}
 
-		MoveOrders* getMoveOrders (void) {
-			return(&moveOrders);
-		}
+	int32_t runBrain (void);
 
-		void setMoveOrigin (int32_t origin) {
-			moveOrders.origin = origin;
-		}
+	int32_t loadBrainParameters (FitIniFile* brainFile, int32_t warriorId);
 
-		int32_t getMoveOrigin (void) {
-			return(moveOrders.origin);
-		}
+	bool injure (float numWounds, bool checkEject = true);
 
-		void setMoveSpeedType (int32_t type);
+	void eject (void);
 
-		int32_t getMoveSpeedType (void) {
-			return(moveOrders.speedType);
-		}
+	float getTimeOfLastOrders (void){
+		return(timeOfLastOrders);
+	}
 
-		void setMoveSpeedVelocity (float speed);
+	float getAttackRadius (void){
+		return(attackRadius);
+	}
 
-		float getMoveSpeedVelocity (void) {
-			return(moveOrders.speedVelocity);
-		}
+	void setAttackRadius (float radius){
+		attackRadius = radius;
+	}
 
-		int32_t getMoveSpeedState (void) {
-			return(moveOrders.speedState);
-		}
+	void setIntegerMemory (int32_t index, int32_t val){
+		memory[index].integer = val;
+	}
 
-		int32_t getMoveSpeedThrottle (void) {
-			return(moveOrders.speedThrottle);
-		}
+	void setRealMemory (int32_t index, float val){
+		memory[index].real = val;
+	}
 
-		int32_t setMoveGoal (uint32_t type, Stuff::Vector3D* location, GameObjectPtr obj = NULL);
+	int32_t getIntegerMemory (int32_t index){
+		return(memory[index].integer);
+	}
 
-		uint32_t getMoveGoal (Stuff::Vector3D* location = NULL, GameObjectPtr* obj = NULL);
+	float getRealMemory (int32_t index){
+		return(memory[index].real);
+	}
 
-		bool getMoveGlobalGoal (Stuff::Vector3D& location) {
-			if (moveOrders.pathType != MOVEPATH_UNDEFINED) {
-				location = moveOrders.originalGlobalGoal[1];
-				return(true);
-			}
-			return(false);
-		}
+	void updateAttackerStatus (uint32_t attackerWID, float time);
 
-		void clearMoveGoal (void) {
-			moveOrders.origin = ORDER_ORIGIN_COMMANDER;
-			moveOrders.goalType = MOVEGOAL_NONE;
-			moveOrders.goalObjectWID = 0;
-			moveOrders.goalLocation.x = -999999.0;
-			moveOrders.goalLocation.y = -999999.0;
-			moveOrders.goalLocation.z = -999999.0;
-		}
+	AttackerRecPtr getAttackerInfo (uint32_t attackerWID);
 
-		void clearMovePath (int32_t pathNum); /* {
-			if (moveOrders.path[pathNum])
-				moveOrders.path[pathNum]->clear(void);
-		}*/
+	int32_t getAttackers (uint32_t* attackerList, float seconds);
 
-		bool hasMoveGoal (void) {
-			return(moveOrders.goalType != MOVEGOAL_NONE);
-		}
+	int32_t scanOwnVehicle (void);
 
-		bool getMoveNewGoal (void) {
-			return(moveOrders.newGoal);
-		}
+	void lobotomy (void); //Whacks the ABL brain and just blindly follows last order.
 
-		void setMoveNewGoal (bool state) {
-			moveOrders.newGoal = state;
-		}
-		
-		MovePathPtr getMovePath (int32_t which) {
-			return(moveOrders.path[which]);
-		}
+	//-----------
+	// Tac Orders
 
-		MovePathPtr getMovePath (void);
+	TacticalOrderPtr getCurTacOrder (void){
+		return(&curTacOrder);
+	}
 
-		void setMoveGoalObjectPos (Stuff::Vector3D pos) {
-			moveOrders.goalObjectPosition = pos;
-		}
+	TacticalOrderPtr getLastTacOrder (void){
+		return(&lastTacOrder);
+	}
 
-		Stuff::Vector3D getMoveGoalObjectPos (void) {
-			return(moveOrders.goalObjectPosition);
-		}
+	TacticalOrderPtr getTacOrder (int32_t _orderState){
+		return(&tacOrder[_orderState]);
+	}
 
-		void setMoveRun (bool run) {
-			moveOrders.run = run;
-		}
+	int32_t getOrderState (void){
+		return(orderState);
+	}
 
-		bool getMoveRun (void) {
-			return(moveOrders.run);
-		}
+	void setOrderState (int32_t state){
+		orderState = state;
+	}
 
-		void setMovePathRequest (PathQueueRecPtr rec) {
-			movePathRequest = rec;
-		}
+	//------------
+	// Move Orders
 
-		PathQueueRecPtr getMovePathRequest (void) {
-			return(movePathRequest);
-		}
+	MoveOrders* getMoveOrders (void){
+		return(&moveOrders);
+	}
 
-		void pausePath (void);
+	void setMoveOrigin (int32_t origin){
+		moveOrders.origin = origin;
+	}
 
-		void resumePath (void);
+	int32_t getMoveOrigin (void){
+		return(moveOrders.origin);
+	}
 
-		void rethinkPath (uint32_t strategy);
+	void setMoveSpeedType (int32_t type);
 
-		void setMoveState (int32_t state) {
-			moveOrders.moveState = state;
-		}
+	int32_t getMoveSpeedType (void){
+		return(moveOrders.speedType);
+	}
 
-		int32_t getMoveState (void) {
-			return(moveOrders.moveState);
-		}
+	void setMoveSpeedVelocity (float speed);
 
-		void setMoveTimeOfLastStep (float t) {
-			moveOrders.timeOfLastStep = t;
-		}
+	float getMoveSpeedVelocity (void){
+		return(moveOrders.speedVelocity);
+	}
 
-		int32_t getMoveTimeOfLastStep (void) {
-			return(moveOrders.timeOfLastStep);
-		}
+	int32_t getMoveSpeedState (void){
+		return(moveOrders.speedState);
+	}
 
-		void setMoveStateGoal (int32_t state) {
-			moveOrders.moveStateGoal = state;
-		}
+	int32_t getMoveSpeedThrottle (void){
+		return(moveOrders.speedThrottle);
+	}
 
-		int32_t getMoveStateGoal (void) {
-			return(moveOrders.moveStateGoal);
-		}
+	int32_t setMoveGoal (uint32_t type, Stuff::Vector3D* location, GameObjectPtr obj = nullptr);
 
-		void setMoveTwisting (bool set) {
-			moveOrders.twisting = set;
-		}
+	uint32_t getMoveGoal (Stuff::Vector3D* location = nullptr, GameObjectPtr* obj = nullptr);
 
-		bool getMoveTwisting (void) {
-			return(moveOrders.twisting);
+	bool getMoveGlobalGoal (Stuff::Vector3D& location){
+		if (moveOrders.pathType != MOVEPATH_UNDEFINED) {
+			location = moveOrders.originalGlobalGoal[1];
+			return(true);
 		}
+		return(false);
+	}
 
-		void setMoveYieldTime (float time) {
-			moveOrders.yieldTime = time;
-		}
+	void clearMoveGoal (void){
+		moveOrders.origin = ORDER_ORIGIN_COMMANDER;
+		moveOrders.goalType = MOVEGOAL_NONE;
+		moveOrders.goalObjectWID = 0;
+		moveOrders.goalLocation.x = -999999.0;
+		moveOrders.goalLocation.y = -999999.0;
+		moveOrders.goalLocation.z = -999999.0;
+	}
 
-		void setMoveYieldState (int32_t state) {
-			moveOrders.yieldState = state;
-		}
+	void clearMovePath (int32_t pathNum);/* {
+										 if (moveOrders.path[pathNum])
+										 moveOrders.path[pathNum]->clear(void);
+										 }*/
 
-		float getMoveYieldTime (void) {
-			return(moveOrders.yieldTime);
-		}
+	bool hasMoveGoal (void){
+		return(moveOrders.goalType != MOVEGOAL_NONE);
+	}
 
-		int32_t getMoveYieldState (void) {
-			return(moveOrders.yieldState);
-		}
+	bool getMoveNewGoal (void){
+		return(moveOrders.newGoal);
+	}
 
-		bool isYielding (void) {
-			return(moveOrders.yieldTime > -1.0);
-		}
+	void setMoveNewGoal (bool state){
+		moveOrders.newGoal = state;
+	}
 
-		void setMoveWaitForPointTime (float time) {
-			moveOrders.waitForPointTime = time;
-		}
+	MovePathPtr getMovePath (int32_t which){
+		return(moveOrders.path[which]);
+	}
 
-		float getMoveWaitForPointTime (void) {
-			return(moveOrders.waitForPointTime);
-		}
+	MovePathPtr getMovePath (void);
 
-		bool isWaitingForPoint (void) {
-			return(moveOrders.waitForPointTime > -1.0);
-		}
+	void setMoveGoalObjectPos (Stuff::Vector3D pos){
+		moveOrders.goalObjectPosition = pos;
+	}
 
-		float getMoveDistanceLeft (void);
+	Stuff::Vector3D getMoveGoalObjectPos (void){
+		return(moveOrders.goalObjectPosition);
+	}
 
-		bool isJumping (Stuff::Vector3D* jumpGoal = NULL);
+	void setMoveRun (bool run){
+		moveOrders.run = run;
+	}
 
-		void setWillHelp (bool setting) {
-			willHelp = setting;
-		}
+	bool getMoveRun (void){
+		return(moveOrders.run);
+	}
 
-		bool getWillHelp (void) {
-			return(willHelp);
-		}
+	void setMovePathRequest (PathQueueRecPtr rec){
+		movePathRequest = rec;
+	}
 
-		int32_t getMovePathType (void) {
-			return(moveOrders.pathType);
-		}
+	PathQueueRecPtr getMovePathRequest (void){
+		return(movePathRequest);
+	}
 
-		void setMoveWayPath (WayPathPtr wayPath, bool patrol = false);
+	void pausePath (void);
 
-		void addMoveWayPoint (Stuff::Vector3D wayPt, bool patrol = false);
+	void resumePath (void);
 
-		void setMoveGlobalPath (GlobalPathStepPtr path, int32_t numSteps);
+	void rethinkPath (uint32_t strategy);
 
-		int32_t getMoveNumGlobalSteps (void) {
-			return(moveOrders.numGlobalSteps);
-		}
+	void setMoveState (int32_t state){
+		moveOrders.moveState = state;
+	}
 
-		int32_t getMoveCurGlobalStep (void) {
-			return(moveOrders.curGlobalStep);
-		}
+	int32_t getMoveState (void){
+		return(moveOrders.moveState);
+	}
 
-		int32_t getMovePathGlobalStep (void) {
-			return(moveOrders.path[0]->globalStep);
-		}
+	void setMoveTimeOfLastStep (float t){
+		moveOrders.timeOfLastStep = t;
+	}
 
-		void requestMovePath (int32_t selectionIndex, uint32_t moveParams, int32_t source);
+	int32_t getMoveTimeOfLastStep (void){
+		return(moveOrders.timeOfLastStep);
+	}
 
-		int32_t calcMovePath (int32_t selectionIndex, uint32_t moveParams = MOVEPARAM_NONE);
+	void setMoveStateGoal (int32_t state){
+		moveOrders.moveStateGoal = state;
+	}
 
-		int32_t calcMoveSpeedState (void) {
-			//-------------------------------------------------
-			// Assumes we want to go as fast as orders allow...
-			return(moveOrders.speedState);
-		}
+	int32_t getMoveStateGoal (void){
+		return(moveOrders.moveStateGoal);
+	}
 
-		int32_t calcMoveSpeedThrottle (int32_t speedState, int32_t speedThrottle) {
-			//----------------------------------------------------------
-			// Always Assume 100 percent in MC2 for now  --fs
-			return(100);
-		}
+	void setMoveTwisting (bool set){
+		moveOrders.twisting = set;
+	}
 
-		bool getNextWayPoint (Stuff::Vector3D& nextPoint, bool incWayPoint);
+	bool getMoveTwisting (void){
+		return(moveOrders.twisting);
+	}
 
-		//--------------
-		// Attack Orders
+	void setMoveYieldTime (float time){
+		moveOrders.yieldTime = time;
+	}
 
-		void setAttackOrigin (int32_t origin) {
-			attackOrders.origin = origin;
-		}
+	void setMoveYieldState (int32_t state){
+		moveOrders.yieldState = state;
+	}
 
-		int32_t getAttackOrigin (void) {
-			return(attackOrders.origin);
-		}
+	float getMoveYieldTime (void){
+		return(moveOrders.yieldTime);
+	}
 
-		void setAttackType (int32_t type) {
-			attackOrders.type = type;
-		}
+	int32_t getMoveYieldState (void){
+		return(moveOrders.yieldState);
+	}
 
-		int32_t getAttackType (void) {
-			return(attackOrders.type);
-		}
+	bool isYielding (void){
+		return(moveOrders.yieldTime > -1.0);
+	}
 
-		void changeAttackRange( int32_t newRange );
+	void setMoveWaitForPointTime (float time){
+		moveOrders.waitForPointTime = time;
+	}
 
-		int32_t setAttackTarget (GameObjectPtr object);
+	float getMoveWaitForPointTime (void){
+		return(moveOrders.waitForPointTime);
+	}
 
-		GameObjectPtr getLastTarget (void);
+	bool isWaitingForPoint (void){
+		return(moveOrders.waitForPointTime > -1.0);
+	}
 
-		void setLastTarget (GameObjectPtr target, bool obliterate = false, bool conserveAmmo = 0);
+	float getMoveDistanceLeft (void);
 
-		float getLastTargetTime (void) {
-			return(lastTargetTime);
-		}
+	bool isJumping (Stuff::Vector3D* jumpGoal = nullptr);
 
-		GameObjectPtr getAttackTarget (void);
+	void setWillHelp (bool setting){
+		willHelp = setting;
+	}
 
-		GameObjectPtr getCurrentTarget (void) {
-			return(getLastTarget());
-		}
+	bool getWillHelp (void){
+		return(willHelp);
+	}
 
-		void setCurrentTarget (GameObjectPtr target);
+	int32_t getMovePathType (void){
+		return(moveOrders.pathType);
+	}
 
-		void setAttackPursuit (bool pursue) {
-			attackOrders.pursue = pursue;
-		}
+	void setMoveWayPath (WayPathPtr wayPath, bool patrol = false);
 
-		bool getAttackPursuit (void) {
-			return(attackOrders.pursue);
-		}
+	void addMoveWayPoint (Stuff::Vector3D wayPt, bool patrol = false);
 
-		void setAttackAimLocation (int32_t location) {
-			attackOrders.aimLocation = location;
-		}
+	void setMoveGlobalPath (GlobalPathStepPtr path, int32_t numSteps);
 
-		int32_t getAttackAimLocation (void) {
-			return(attackOrders.aimLocation);
-		}
+	int32_t getMoveNumGlobalSteps (void){
+		return(moveOrders.numGlobalSteps);
+	}
 
-		void setAttackTargetPoint (Stuff::Vector3D location) {
-			attackOrders.targetPoint = location;
-		}
+	int32_t getMoveCurGlobalStep (void){
+		return(moveOrders.curGlobalStep);
+	}
 
-		Stuff::Vector3D getAttackTargetPoint (void) {
-			return(attackOrders.targetPoint);
-		}
+	int32_t getMovePathGlobalStep (void){
+		return(moveOrders.path[0]->globalStep);
+	}
 
-		float getAttackTargetTime (void) {
-			return(attackOrders.targetTime);
-		}
+	void requestMovePath (int32_t selectionIndex, uint32_t moveParams, int32_t source);
 
-		GameObjectPtr getAttackTargetPosition (Stuff::Vector3D& pos);
+	int32_t calcMovePath (int32_t selectionIndex, uint32_t moveParams = MOVEPARAM_NONE);
 
-		void clearAttackOrders (void);
+	int32_t calcMoveSpeedState (void){
+		//-------------------------------------------------
+		// Assumes we want to go as fast as orders allow...
+		return(moveOrders.speedState);
+	}
 
-		void clearMoveOrders (void);
+	int32_t calcMoveSpeedThrottle (int32_t speedState, int32_t speedThrottle){
+		//----------------------------------------------------------
+		// Always Assume 100 percent in MC2 for now --fs
+		return(100);
+	}
 
-		//-----------------
-		// Situation Orders
+	bool getNextWayPoint (Stuff::Vector3D& nextPoint, bool incWayPoint);
 
-		int32_t getSituationMode (void) {
-			return(situationOrders.mode);
-		}
+	//--------------
+	// Attack Orders
 
-		void setSituationMode (int32_t mode) {
-			situationOrders.mode = mode;
-		}
+	void setAttackOrigin (int32_t origin){
+		attackOrders.origin = origin;
+	}
 
-		float getSituationDefFormation (void) {
-			return(situationOrders.defFormation);
-		}
+	int32_t getAttackOrigin (void){
+		return(attackOrders.origin);
+	}
 
-		void setSituationDefFormation (float distance) {
-			situationOrders.defFormation = distance;
-		}
+	void setAttackType (int32_t type){
+		attackOrders.type = type;
+	}
 
-		float getSituationCurFormation (void) {
-			return(situationOrders.curFormation);
-		}
+	int32_t getAttackType (void){
+		return(attackOrders.type);
+	}
 
-		void setSituationCurFormation (float distance) {
-			situationOrders.curFormation = distance;
-		}
+	void changeAttackRange( int32_t newRange );
 
-		bool getSituationOpenFire (void) {
-			return(situationOrders.openFire);
-		}
+	int32_t setAttackTarget (GameObjectPtr object);
 
-		void setSituationOpenFire (bool openFire) {
-			situationOrders.openFire = openFire;
-		}
+	GameObjectPtr getLastTarget (void);
 
-		float getSituationFireRange (void) {
-			return(situationOrders.fireRange);
-		}
+	void setLastTarget (GameObjectPtr target, bool obliterate = false, bool conserveAmmo = 0);
 
-		void setSituationFireRange (float range) {
-			situationOrders.fireRange = range;
-		}
+	float getLastTargetTime (void){
+		return(lastTargetTime);
+	}
 
-		float getSituationFireOdds (void) {
-			return(situationOrders.fireOdds);
-		}
+	GameObjectPtr getAttackTarget (void);
 
-		void setSituationFireOdds (float odds) {
-			situationOrders.fireOdds = odds;
-		}
+	GameObjectPtr getCurrentTarget (void){
+		return(getLastTarget());
+	}
 
-		GameObjectPtr getSituationGuardObject (void);
+	void setCurrentTarget (GameObjectPtr target);
 
-		void setSituationGuardObject (GameObjectWatchID objWID);
+	void setAttackPursuit (bool pursue){
+		attackOrders.pursue = pursue;
+	}
 
-		uint32_t getSituationGuardObjectPartId (void);
-		
-		void setMessagePlaying()
-		{
-			isPlayingMsg = true;
-		}
-		
-		void clearMessagePlaying()
-		{
-			isPlayingMsg = false;
-		}
-		
-		bool getMessagePlaying()
-		{
-			return isPlayingMsg;
-		}
+	bool getAttackPursuit (void){
+		return(attackOrders.pursue);
+	}
+
+	void setAttackAimLocation (int32_t location){
+		attackOrders.aimLocation = location;
+	}
+
+	int32_t getAttackAimLocation (void){
+		return(attackOrders.aimLocation);
+	}
+
+	void setAttackTargetPoint (Stuff::Vector3D location){
+		attackOrders.targetPoint = location;
+	}
+
+	Stuff::Vector3D getAttackTargetPoint (void){
+		return(attackOrders.targetPoint);
+	}
+
+	float getAttackTargetTime (void){
+		return(attackOrders.targetTime);
+	}
+
+	GameObjectPtr getAttackTargetPosition (Stuff::Vector3D& pos);
+
+	void clearAttackOrders (void);
+
+	void clearMoveOrders (void);
+
+	//-----------------
+	// Situation Orders
+
+	int32_t getSituationMode (void){
+		return(situationOrders.mode);
+	}
+
+	void setSituationMode (int32_t mode){
+		situationOrders.mode = mode;
+	}
+
+	float getSituationDefFormation (void){
+		return(situationOrders.defFormation);
+	}
+
+	void setSituationDefFormation (float distance){
+		situationOrders.defFormation = distance;
+	}
+
+	float getSituationCurFormation (void){
+		return(situationOrders.curFormation);
+	}
+
+	void setSituationCurFormation (float distance){
+		situationOrders.curFormation = distance;
+	}
+
+	bool getSituationOpenFire (void){
+		return(situationOrders.openFire);
+	}
+
+	void setSituationOpenFire (bool openFire){
+		situationOrders.openFire = openFire;
+	}
+
+	float getSituationFireRange (void){
+		return(situationOrders.fireRange);
+	}
+
+	void setSituationFireRange (float range){
+		situationOrders.fireRange = range;
+	}
+
+	float getSituationFireOdds (void){
+		return(situationOrders.fireOdds);
+	}
+
+	void setSituationFireOdds (float odds){
+		situationOrders.fireOdds = odds;
+	}
+
+	GameObjectPtr getSituationGuardObject (void);
+
+	void setSituationGuardObject (GameObjectWatchID objWID);
+
+	uint32_t getSituationGuardObjectPartId (void);
+
+	void setMessagePlaying()
+	{
+		isPlayingMsg = true;
+	}
+
+	void clearMessagePlaying()
+	{
+		isPlayingMsg = false;
+	}
+
+	bool getMessagePlaying()
+	{
+		return isPlayingMsg;
+	}
 
 #if 0
-		//-------------
-		// Role Orders
+	//-------------
+	// Role Orders
 
-		int32_t getRole (void) {
-			return(roleOrders.role);
-		}
+	int32_t getRole (void) {
+		return(roleOrders.role);
+	}
 
-		void setRole (int32_t role) {
-			roleOrders.role = (MechWarriorRole)role;
-		}
+	void setRole (int32_t role) {
+		roleOrders.role = (MechWarriorRole)role;
+	}
 #endif
 
-		//--------------------
-		// Command/Observation
-		int32_t executeTacticalOrder (TacticalOrderPtr order = NULL);
+	//--------------------
+	// Command/Observation
+	int32_t executeTacticalOrder (TacticalOrderPtr order = nullptr);
 
-		int32_t calcWeaponsStatus (GameObjectPtr target, int32_t* weaponList, Stuff::Vector3D* targetPoint = NULL);
+	int32_t calcWeaponsStatus (GameObjectPtr target, int32_t* weaponList, Stuff::Vector3D* targetPoint = nullptr);
 
-		void printWeaponsStatus (PSTR s);
+	void printWeaponsStatus (PSTR s);
 
-		int32_t combatDecisionTree (void);
+	int32_t combatDecisionTree (void);
 
-		Stuff::Vector3D calcWithdrawGoal (float withdrawRange = 1000.0);
+	Stuff::Vector3D calcWithdrawGoal (float withdrawRange = 1000.0);
 
-		bool movingOverBlownBridge (void);
+	bool movingOverBlownBridge (void);
 
-		bool movementDecisionTree (void);
+	bool movementDecisionTree (void);
 
-		void collisionAlert (GameObjectPtr obstacle, float distance, float timeToImpact);
+	void collisionAlert (GameObjectPtr obstacle, float distance, float timeToImpact);
 
-		int32_t triggerAlarm (int32_t alarmCode, uint32_t triggerId = 0);
+	int32_t triggerAlarm (int32_t alarmCode, uint32_t triggerId = 0);
 
-		int32_t handleAlarm (int32_t alarmCode, uint32_t triggerId = 0);
+	int32_t handleAlarm (int32_t alarmCode, uint32_t triggerId = 0);
 
-		int32_t getAlarmTriggers (int32_t alarmCode, uint32_t* triggerList);
+	int32_t getAlarmTriggers (int32_t alarmCode, uint32_t* triggerList);
 
-		int32_t getAlarmTriggersHistory (int32_t alarmCode, uint32_t* triggerList);
+	int32_t getAlarmTriggersHistory (int32_t alarmCode, uint32_t* triggerList);
 
-		void clearAlarm (int32_t alarmCode);
+	void clearAlarm (int32_t alarmCode);
 
-		void clearAlarms (void);
+	void clearAlarms (void);
 
-		void clearAlarmHistory (int32_t alarmCode);
+	void clearAlarmHistory (int32_t alarmCode);
 
-		void clearAlarmsHistory (void);
+	void clearAlarmsHistory (void);
 
-		void clearCurTacOrder (bool updateTacOrder = true);
+	void clearCurTacOrder (bool updateTacOrder = true);
 
-		void setCurTacOrder (TacticalOrder tacOrder);
+	void setCurTacOrder (TacticalOrder tacOrder);
 
-		void setGeneralTacOrder (TacticalOrder tacOrder);
-		
-		void setPlayerTacOrder (TacticalOrder tacOrder, bool fromQueue = false);
+	void setGeneralTacOrder (TacticalOrder tacOrder);
 
-		void setAlarmTacOrder (TacticalOrder tacOrder, int32_t priority);
+	void setPlayerTacOrder (TacticalOrder tacOrder, bool fromQueue = false);
 
-		int32_t checkCommandDecision (void);
+	void setAlarmTacOrder (TacticalOrder tacOrder, int32_t priority);
 
-		int32_t checkAlarms (void);
+	int32_t checkCommandDecision (void);
 
-		void updateActions (void);
+	int32_t checkAlarms (void);
 
-		int32_t mainDecisionTree (void);
+	void updateActions (void);
 
-		void setDebugFlags (uint32_t flags) {
-			debugFlags = flags;
-		}
+	int32_t mainDecisionTree (void);
 
-		void setDebugFlag (uint32_t flag, bool on);
+	void setDebugFlags (uint32_t flags){
+		debugFlags = flags;
+	}
 
-		bool getDebugFlag (uint32_t flag);
+	void setDebugFlag (uint32_t flag, bool on);
 
-		void debugPrint (PSTR s, bool debugMode = false);
+	bool getDebugFlag (uint32_t flag);
 
-		void debugOrders (void);
+	void debugPrint (PSTR s, bool debugMode = false);
 
-		void initTargetPriorities (void);
+	void debugOrders (void);
 
-		int32_t setTargetPriority (int32_t index, int32_t type, int32_t param1, int32_t param2, int32_t param3);
+	void initTargetPriorities (void);
 
-		int32_t insertTargetPriority (int32_t index, int32_t type, int32_t param1, int32_t param2, int32_t param3);
+	int32_t setTargetPriority (int32_t index, int32_t type, int32_t param1, int32_t param2, int32_t param3);
 
-		int32_t setBrainState (int32_t newState);
+	int32_t insertTargetPriority (int32_t index, int32_t type, int32_t param1, int32_t param2, int32_t param3);
 
-		int32_t getBrainState (void);
+	int32_t setBrainState (int32_t newState);
 
-		int32_t getEventHistory (int32_t alarmCode, int32_t* paramList);
+	int32_t getBrainState (void);
 
-		int32_t getNextEventHistory (int32_t* paramList);
+	int32_t getEventHistory (int32_t alarmCode, int32_t* paramList);
 
-		//--------------
-		// CORE COMMANDS
+	int32_t getNextEventHistory (int32_t* paramList);
 
-		int32_t getCoreScanTargetWID (void) {
-			return(coreScanTargetWID);
-		}
+	//--------------
+	// CORE COMMANDS
 
-		int32_t coreMoveTo (Stuff::Vector3D location, uint32_t params);
+	int32_t getCoreScanTargetWID (void){
+		return(coreScanTargetWID);
+	}
 
-		int32_t coreMoveToObject (GameObjectPtr object, uint32_t params);
+	int32_t coreMoveTo (Stuff::Vector3D location, uint32_t params);
 
-		int32_t coreEject (void);
+	int32_t coreMoveToObject (GameObjectPtr object, uint32_t params);
 
-		int32_t corePower (bool powerUp);
+	int32_t coreEject (void);
 
-		int32_t coreAttack (GameObjectPtr target, uint32_t params);
+	int32_t corePower (bool powerUp);
 
-		int32_t coreCapture (GameObjectPtr object, uint32_t params);
+	int32_t coreAttack (GameObjectPtr target, uint32_t params);
 
-		int32_t coreScan (GameObjectPtr object, uint32_t params);
+	int32_t coreCapture (GameObjectPtr object, uint32_t params);
 
-		int32_t coreControl (GameObjectPtr object, uint32_t params);
+	int32_t coreScan (GameObjectPtr object, uint32_t params);
 
-		//int32_t coreWithdraw (Stuff::Vector3D location, uint32_t params);
+	int32_t coreControl (GameObjectPtr object, uint32_t params);
 
-		int32_t coreSetState (int32_t stateID, bool thinkAgain);
+	//int32_t coreWithdraw (Stuff::Vector3D location, uint32_t params);
 
-		//----------------
-		// Core Tac Orders
+	int32_t coreSetState (int32_t stateID, bool thinkAgain);
 
-		int32_t orderWait (bool unitOrder, int32_t origin, int32_t seconds = 1969000.0, bool clearLastTarget = false);
+	//----------------
+	// Core Tac Orders
 
-		int32_t orderStop (bool unitOrder, bool setTacOrder);
+	int32_t orderWait (bool unitOrder, int32_t origin, int32_t seconds = 1969000.0, bool clearLastTarget = false);
 
-		int32_t orderMoveToPoint (bool unitOrder, bool setTacOrder, int32_t origin, Stuff::Vector3D location, int32_t selectionIndex = -1, uint32_t params = TACORDER_PARAM_NONE);
+	int32_t orderStop (bool unitOrder, bool setTacOrder);
 
-		int32_t orderFormation (bool unitOrder, bool setTacOrder, int32_t origin);
+	int32_t orderMoveToPoint (bool unitOrder, bool setTacOrder, int32_t origin, Stuff::Vector3D location, int32_t selectionIndex = -1, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderMoveToObject (bool unitOrder, bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, int32_t selectionIndex = -1, uint32_t params = TACORDER_PARAM_FACE_OBJECT);
+	int32_t orderFormation (bool unitOrder, bool setTacOrder, int32_t origin);
 
-		int32_t orderJumpToPoint (bool unitOrder, bool setTacOrder, int32_t origin, Stuff::Vector3D location, int32_t selectionIndex = -1);
+	int32_t orderMoveToObject (bool unitOrder, bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t fromArea, int32_t selectionIndex = -1, uint32_t params = TACORDER_PARAM_FACE_OBJECT);
 
-		int32_t orderJumpToObject (bool unitOrder, bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t selectionIndex = -1);
+	int32_t orderJumpToPoint (bool unitOrder, bool setTacOrder, int32_t origin, Stuff::Vector3D location, int32_t selectionIndex = -1);
 
-		int32_t orderTraversePath (bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath, uint32_t params = TACORDER_PARAM_NONE);
-		
-		int32_t orderPatrolPath (bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath);
+	int32_t orderJumpToObject (bool unitOrder, bool setTacOrder, int32_t origin, GameObjectPtr target, int32_t selectionIndex = -1);
 
-		int32_t orderPowerUp (bool unitOrder, int32_t origin);
+	int32_t orderTraversePath (bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderPowerDown (bool unitOrder, int32_t origin);
+	int32_t orderPatrolPath (bool unitOrder, bool setTacOrder, int32_t origin, WayPathPtr wayPath);
 
-		int32_t orderUseSpeed (float speed);
+	int32_t orderPowerUp (bool unitOrder, int32_t origin);
 
-		int32_t orderUsePattern (int32_t pattern);
+	int32_t orderPowerDown (bool unitOrder, int32_t origin);
 
-		int32_t orderOrbitPoint (Stuff::Vector3D location);
+	int32_t orderUseSpeed (float speed);
 
-		int32_t orderOrbitObject (GameObjectPtr target);
+	int32_t orderUsePattern (int32_t pattern);
 
-		int32_t orderUseOrbitRange (int32_t type, float range);
+	int32_t orderOrbitPoint (Stuff::Vector3D location);
 
-		int32_t orderAttackObject (bool unitOrder, int32_t origin, GameObjectPtr target, int32_t type, int32_t method, int32_t range, int32_t aimLocation = -1, int32_t fromArea = -1, uint32_t params = TACORDER_PARAM_NONE);
+	int32_t orderOrbitObject (GameObjectPtr target);
 
-		int32_t orderAttackPoint (bool unitOrder, int32_t origin, Stuff::Vector3D location, int32_t type, int32_t method, int32_t range, uint32_t params = TACORDER_PARAM_NONE);
+	int32_t orderUseOrbitRange (int32_t type, float range);
 
-		int32_t orderWithdraw (bool unitOrder, int32_t origin, Stuff::Vector3D location);
+	int32_t orderAttackObject (bool unitOrder, int32_t origin, GameObjectPtr target, int32_t type, int32_t method, int32_t range, int32_t aimLocation = -1, int32_t fromArea = -1, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderEject (bool unitOrder, bool setTacOrder, int32_t origin);
+	int32_t orderAttackPoint (bool unitOrder, int32_t origin, Stuff::Vector3D location, int32_t type, int32_t method, int32_t range, uint32_t params = TACORDER_PARAM_NONE);
 
-		//int32_t orderUseFireOdds (int32_t odds);
+	int32_t orderWithdraw (bool unitOrder, int32_t origin, Stuff::Vector3D location);
 
-		int32_t orderRefit (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
+	int32_t orderEject (bool unitOrder, bool setTacOrder, int32_t origin);
 
-		int32_t orderRecover (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
+	//int32_t orderUseFireOdds (int32_t odds);
 
-		int32_t orderGetFixed (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
+	int32_t orderRefit (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderLoadIntoCarrier (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
+	int32_t orderRecover (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderDeployElementals (int32_t origin, uint32_t params = TACORDER_PARAM_NONE);
+	int32_t orderGetFixed (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t orderCapture (int32_t origin, GameObjectPtr target, int32_t fromArea = -1, uint32_t params = TACORDER_PARAM_NONE);
+	int32_t orderLoadIntoCarrier (int32_t origin, GameObjectPtr target, uint32_t params = TACORDER_PARAM_NONE);
 
-		//--------------
-		// Combat Events
+	int32_t orderDeployElementals (int32_t origin, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t handleTargetOfWeaponFire (void);
+	int32_t orderCapture (int32_t origin, GameObjectPtr target, int32_t fromArea = -1, uint32_t params = TACORDER_PARAM_NONE);
 
-		int32_t handleHitByWeaponFire (void);
+	//--------------
+	// Combat Events
 
-		int32_t handleDamageTakenRate (void);
+	int32_t handleTargetOfWeaponFire (void);
 
-		int32_t handleFriendlyVehicleCrippled (void);
+	int32_t handleHitByWeaponFire (void);
 
-		int32_t handleFriendlyVehicleDestruction (void);
+	int32_t handleDamageTakenRate (void);
 
-		int32_t handleOwnVehicleIncapacitation (uint32_t cause);
+	int32_t handleFriendlyVehicleCrippled (void);
 
-		int32_t handleOwnVehicleDestruction (uint32_t cause);
+	int32_t handleFriendlyVehicleDestruction (void);
 
-		int32_t handleOwnVehicleWithdrawn (void);
+	int32_t handleOwnVehicleIncapacitation (uint32_t cause);
 
-		int32_t handleAttackOrder (void);
+	int32_t handleOwnVehicleDestruction (uint32_t cause);
 
-		int32_t handleCollisionAlert (void);
+	int32_t handleOwnVehicleWithdrawn (void);
 
-		int32_t handleCollision (void);
+	int32_t handleAttackOrder (void);
 
-		int32_t handleKilledTarget (void);
+	int32_t handleCollisionAlert (void);
 
-		int32_t handleUnitMateFiredWeapon (void);
+	int32_t handleCollision (void);
 
-		int32_t handleUnitMateDeath (void);
+	int32_t handleKilledTarget (void);
 
-		int32_t handlePlayerOrder (void);
+	int32_t handleUnitMateFiredWeapon (void);
 
-		int32_t handleNoMovePath (void);
+	int32_t handleUnitMateDeath (void);
 
-		int32_t handleGateClosing (void);
+	int32_t handlePlayerOrder (void);
 
-		int32_t handleFiredWeapon (void);
+	int32_t handleNoMovePath (void);
 
-		int32_t handleNewMover (void);
+	int32_t handleGateClosing (void);
 
-		//---------------
-		// Status Windows
-		int32_t openStatusWindow (int32_t x, int32_t y, int32_t w, int32_t h);
+	int32_t handleFiredWeapon (void);
 
-		int32_t closeStatusWindow (void);
+	int32_t handleNewMover (void);
 
-		int32_t missionLog (FilePtr file, int32_t unitLevel);
+	//---------------
+	// Status Windows
+	int32_t openStatusWindow (int32_t x, int32_t y, int32_t w, int32_t h);
 
-		void calcRank (void);
+	int32_t closeStatusWindow (void);
 
-		bool isCloseToFirstTacOrder( Stuff::Vector3D& pos );
+	int32_t missionLog (FilePtr file, int32_t unitLevel);
 
-		BldgAppearance* getWayPointMarker( const Stuff::Vector3D& pos, PSTR name );
+	void calcRank (void);
 
+	bool isCloseToFirstTacOrder( Stuff::Vector3D& pos );
 
-		void setDebugString (int32_t stringNum, PSTR s) {
-			if ((stringNum > -1) && (stringNum < NUM_PILOT_DEBUG_STRINGS))
-				if (s == NULL)
-					debugStrings[stringNum][0] = NULL;
-				else
-					strncpy(debugStrings[stringNum], s, MAXLEN_PILOT_DEBUG_STRING - 1);
-		}
+	BldgAppearance* getWayPointMarker( const Stuff::Vector3D& pos, PSTR name );
 
-		PSTR getDebugString (int32_t stringNum) 
-		{
-			if ((stringNum > -1) && (stringNum < NUM_PILOT_DEBUG_STRINGS))
-				return(debugStrings[stringNum]);
-			return(NULL);
-		}
 
-		int32_t calcTacOrder (int32_t goalAction,
-						   int32_t goalWID,
-						   Stuff::Vector3D goalLocation,
-						   float controlRange,
-						   int32_t aggressiveness,
-						   int32_t searchDepth,
-						   float turretRange,
-						   int32_t turretThreat,
-						   TacticalOrder& tacOrder);
+	void setDebugString (int32_t stringNum, PSTR s){
+		if ((stringNum > -1) && (stringNum < NUM_PILOT_DEBUG_STRINGS))
+			if (s == nullptr)
+				debugStrings[stringNum][0] = nullptr;
+			else
+				strncpy(debugStrings[stringNum], s, MAXLEN_PILOT_DEBUG_STRING - 1);
+	}
 
-		static void initGoalManager (int32_t poolSize);
+	PSTR getDebugString (int32_t stringNum)
+	{
+		if ((stringNum > -1) && (stringNum < NUM_PILOT_DEBUG_STRINGS))
+			return(debugStrings[stringNum]);
+		return(nullptr);
+	}
 
-		static void logPilots (GameLogPtr log);
-		
-		static bool anyPlayerInCombat (void);
+	int32_t calcTacOrder (int32_t goalAction,
+		int32_t goalWID,
+		Stuff::Vector3D goalLocation,
+		float controlRange,
+		int32_t aggressiveness,
+		int32_t searchDepth,
+		float turretRange,
+		int32_t turretThreat,
+		TacticalOrder& tacOrder);
 
-		void copyToData (MechWarriorData &data);
-		void copyFromData (MechWarriorData &data);
+	static void initGoalManager (int32_t poolSize);
 
-		void save (PacketFilePtr file, int32_t packetNum); 
-		void load (PacketFilePtr file, int32_t packetNum); 
+	static void logPilots (GameLogPtr log);
 
-		int32_t static Save (PacketFilePtr file, int32_t packetNum);
-		int32_t static Load (PacketFilePtr file, int32_t packetNum);
+	static bool anyPlayerInCombat (void);
+
+	void copyToData (MechWarriorData &data);
+	void copyFromData (MechWarriorData &data);
+
+	void save (PacketFilePtr file, int32_t packetNum);
+	void load (PacketFilePtr file, int32_t packetNum);
+
+	int32_t static Save (PacketFilePtr file, int32_t packetNum);
+	int32_t static Load (PacketFilePtr file, int32_t packetNum);
 };
 
 //---------------------------------------------------------------------------
 
-extern MovePathManagerPtr	PathManager;
+extern MovePathManagerPtr PathManager;
 
 void SeedRandomNumbers (void);
 int32_t RandomNumber (int32_t range);

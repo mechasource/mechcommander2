@@ -30,7 +30,7 @@ static char THIS_FILE[] = __FILE__;
 // MissionSettingsDlg dialog
 
 
-MissionSettingsDlg::MissionSettingsDlg(CWnd* pParent /*=NULL*/)
+MissionSettingsDlg::MissionSettingsDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(MissionSettingsDlg::IDD, pParent)
 {
 	m_MissionNameResourceStringID = 0;

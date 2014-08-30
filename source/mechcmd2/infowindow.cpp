@@ -73,7 +73,7 @@ RECT InfoWindow::NameRect = { 0 };
 
 ControlButton InfoWindow::buttons[2] = {0};
 
-InfoWindow* InfoWindow::s_instance = NULL;
+InfoWindow* InfoWindow::s_instance = nullptr;
 
 
 #define SCROLLAMOUNT		3.f * Environment.screenWidth/640.f
@@ -86,11 +86,11 @@ extern bool useUnlimitedAmmo;
 
 InfoWindow::InfoWindow()
 {
-	pUnit = NULL;
+	pUnit = nullptr;
 	scrollLength = 0;
 	scrollPos = 0;
 	backgroundTexture = 0;
-	icon = NULL;
+	icon = nullptr;
 	infoLength = 0;
 
 	skillInfos = new StaticInfo[7];
@@ -311,10 +311,10 @@ void InfoWindow::setUnit(Mover* pNewMover)
 		if ( icon )
 		{
 			delete icon;
-			icon = NULL;
+			icon = nullptr;
 		}
 
-		icon = NULL;
+		icon = nullptr;
 
 		scrollPos = 0;
 		infoLength = 0;

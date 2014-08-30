@@ -67,7 +67,7 @@ static cint32_t FIRST_BUTTON_ID = 1000010;
 static cint32_t OK_BUTTON_ID = 1000001;
 static cint32_t CANCEL_BUTTON_ID = 1000002;
 
-MPParameterScreen* MPParameterScreen::s_instance = NULL;
+MPParameterScreen* MPParameterScreen::s_instance = nullptr;
 
 
 GUID NO_VERSION_GUID = {
@@ -243,7 +243,7 @@ void MPParameterScreen::end()
 	{
 		MPlayer->closeSession();
 		delete MPlayer;
-		MPlayer = NULL;
+		MPlayer = nullptr;
 	}
 
 	bLoading = 0;
@@ -815,7 +815,7 @@ void MPParameterScreen::update()
 			else
 				LogisticsData::instance->setPurchaseFile( pPurchaseFiles[faction] );
 			LogisticsData::instance->setCurrentMission( MPlayer->missionSettings.map );
-			MPlayer->sendMissionSetup(0, 6, NULL);
+			MPlayer->sendMissionSetup(0, 6, nullptr);
 
 			status = NEXT;
 			
@@ -931,7 +931,7 @@ void MPParameterScreen::update()
 
 				cLoadString( chatToSend, chatStr, 255 );
 				sprintf( final, chatStr, prefs.playerName[0] );
-				MPlayer->sendChat( NULL, -1, final );
+				MPlayer->sendChat( nullptr, -1, final );
 			}
 				bShowNoMapDlg = false;
 				bBootDlg = false;
@@ -2308,7 +2308,7 @@ void CFocusManager::clear()
 {
 	speciesOfTheControlWhichHasTheFocus = CS_NONE;
 
-	pDropListThatHasTheFocus = NULL;
+	pDropListThatHasTheFocus = nullptr;
 	listOfDropListPointers.Clear();
 }
 
@@ -2328,7 +2328,7 @@ void CFocusManager::update()
 	if (userInput->isLeftClick())
 	{
 		/*focus may have changed*/
-		if (NULL != pControlThatHasTheFocus())
+		if (nullptr != pControlThatHasTheFocus())
 		{
 			if (pControlThatHasTheFocus()->pointInside(userInput->getMouseX(), userInput->getMouseY()))
 			{
@@ -2342,7 +2342,7 @@ void CFocusManager::update()
 		switch (speciesOfTheControlWhichHasTheFocus)
 		{
 		case CS_DROPLIST:
-			pDropListThatHasTheFocus = NULL;
+			pDropListThatHasTheFocus = nullptr;
 			break;
 		}
 		speciesOfTheControlWhichHasTheFocus = CS_NONE;
@@ -2403,7 +2403,7 @@ aObject *CFocusManager::pControlThatHasTheFocus()
 		}
 		assert(false);
 	}
-	return NULL;
+	return nullptr;
 }
 
 

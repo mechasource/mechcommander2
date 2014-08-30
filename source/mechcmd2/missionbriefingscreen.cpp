@@ -32,7 +32,7 @@ MissionBriefingScreen::MissionBriefingScreen(  )
 	LogisticsScreen::helpTextArrayID = 4;
 
 	for ( int32_t i = 0; i < MAX_OBJECTIVES; i++ )
-		objectiveButtons[i] = NULL;
+		objectiveButtons[i] = nullptr;
 }
 
 MissionBriefingScreen::~MissionBriefingScreen()
@@ -42,7 +42,7 @@ MissionBriefingScreen::~MissionBriefingScreen()
 		if (objectiveButtons[i])
 		{
 			delete objectiveButtons[i]; 
-			objectiveButtons[i] = NULL;
+			objectiveButtons[i] = nullptr;
 		}
 	}
 
@@ -174,7 +174,7 @@ void MissionBriefingScreen::update()
 			}
 			else
 			{
-				camera.setObject( NULL, -1 );
+				camera.setObject( nullptr, -1 );
 				statics[35].showGUIWindow( true );
 			}
 		
@@ -242,7 +242,7 @@ void MissionBriefingScreen::update()
 			}
 			else
 			{
-				camera.setObject( NULL, -1 );
+				camera.setObject( nullptr, -1 );
 
 				statics[35].showGUIWindow( 1 );
 			}
@@ -281,7 +281,7 @@ int32_t	MissionBriefingScreen::getMissionTGA( PCSTR missionName )
 	{
 
 		// big hack here for some reason we can open files while they're being transferred.
-		HANDLE hFile = CreateFile( path, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, 0 );
+		HANDLE hFile = CreateFile( path, GENERIC_READ, 0, nullptr, OPEN_EXISTING, 0, 0 );
 
 		int32_t error = GetLastError();
 
@@ -397,7 +397,7 @@ void MissionBriefingScreen::begin()
 		terrainExtentY = 120 * 128;
 
 	CObjectives Objectives(0/*alignment*/);
-	/*Note that ObjectManager is probably NULL as these objectives are read, so it's not
+	/*Note that ObjectManager is probably nullptr as these objectives are read, so it's not
 	cool to call any of the Status() functions of this instance of objectives (access violation
 	may ensue).*/
 	Objectives.Read(&fitFile);
@@ -587,7 +587,7 @@ void MissionBriefingScreen::addObjectiveButton( float fX, float fY, int32_t coun
 	if (i >= MAX_OBJECTIVES)
 	{
 		delete pButtonText;
-		pButtonText = NULL;
+		pButtonText = nullptr;
 	}
 }
 
@@ -630,7 +630,7 @@ void MissionBriefingScreen::end()
 {
 //	statics[MAP_INDEX].setTexture( (int32_t)0 );
 // 	statics[MAP_INDEX].setColor( 0 );
-	camera.setMech( NULL );
+	camera.setMech( nullptr );
 
 }
 

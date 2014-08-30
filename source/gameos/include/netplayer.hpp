@@ -103,7 +103,7 @@ public:
 	
 	inline void  SetShortName(PSTR name)
 	{
-		if (name != NULL)
+		if (name != nullptr)
 		{
 			strncpy(shortName,name,127);		
 		}
@@ -115,7 +115,7 @@ public:
 	
 	inline void SetLongName(PSTR name)
 	{
-		if (name != NULL)
+		if (name != nullptr)
 		{
 			strncpy(longName,name,255);		
 		}

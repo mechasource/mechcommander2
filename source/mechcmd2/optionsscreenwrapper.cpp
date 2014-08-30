@@ -60,7 +60,7 @@ void OptionsScreenWrapper::destroy()
 void OptionsScreenWrapper::end()
 {
 	delete pOptionsScreen;
-	pOptionsScreen = NULL;
+	pOptionsScreen = nullptr;
 	isActive = false;
 }
 

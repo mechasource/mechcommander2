@@ -34,8 +34,8 @@ public:
 	virtual void init (void)
 	{
 		Camera::init(void);
-		targetObject = NULL;
-		compass = NULL;
+		targetObject = nullptr;
+		compass = nullptr;
 		lastShadowLightPitch = 0.0f;
 
 		uint32_t szData = sizeof(drawCompass);
@@ -59,25 +59,25 @@ public:
 	virtual int32_t update (void);
 	virtual void moveLeft(float amount)
 	{
-		targetObject = NULL;
+		targetObject = nullptr;
 		Camera::moveLeft(amount);
 	}
 
 	virtual void moveRight(float amount)
 	{
-		targetObject = NULL;
+		targetObject = nullptr;
 		Camera::moveRight(amount);
 	}
 
 	virtual void moveUp(float amount)
 	{
-		targetObject = NULL;
+		targetObject = nullptr;
 		Camera::moveUp(amount);
 	}
 
 	virtual void moveDown(float amount)
 	{
-		targetObject = NULL;
+		targetObject = nullptr;
 		Camera::moveDown(amount);
 	}
 
@@ -99,7 +99,7 @@ public:
 	virtual void allTight (void)
 	{
 		int32_t i=0;
-		GameObjectPtr mvt = NULL;
+		GameObjectPtr mvt = nullptr;
 		while (i<ObjectManager->getNumGoodMovers())
 		{
 			mvt = ObjectManager->getGoodMover(i);

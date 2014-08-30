@@ -30,7 +30,7 @@ bool DragTool::beginPaint()
 		
 Action* DragTool::endPaint()
 {
-	return NULL;
+	return nullptr;
 }
 
 bool DragTool::paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY  )

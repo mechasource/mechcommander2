@@ -14,7 +14,7 @@ class CBooleanFlagIsSetDialog : public CDialog
 {
 // Construction
 public:
-	CBooleanFlagIsSetDialog(CWnd* pParent = NULL);   // standard constructor
+	CBooleanFlagIsSetDialog(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CBooleanFlagIsSetDialog)

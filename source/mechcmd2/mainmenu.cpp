@@ -70,7 +70,7 @@ void SplashIntro::init()
 
 MainMenu::MainMenu(  )
 {
-	optionsScreenWrapper = NULL;
+	optionsScreenWrapper = nullptr;
 	bOptions = 0;
 	bSave = bLoad = 0;
 	helpTextArrayID = 0;
@@ -187,7 +187,7 @@ void MainMenu::begin()
 
 			mc2IsInDisplayBackBuffer = false;
 
-			AsynFunc = NULL;
+			AsynFunc = nullptr;
 
 			//Force mouse Cursors to smaller or larger depending on new video mode.
 			userInput->initMouseCursors("cursors");
@@ -421,7 +421,7 @@ void MainMenu::skipIntro()
 	{
 		introMovie->stop();
 		delete introMovie;
-		introMovie = NULL;
+		introMovie = nullptr;
 
 	}
 }
@@ -454,7 +454,7 @@ void MainMenu::update()
 			//Movie's Over.
 			//Whack it.
 			delete introMovie;
-			introMovie = NULL;
+			introMovie = nullptr;
 		}
 
 		return;
@@ -517,7 +517,7 @@ void MainMenu::update()
 			if ( bSave )
 			{
 				// make sure the save game directory exists, if not create it
-				CreateDirectory( savePath, NULL );
+				CreateDirectory( savePath, nullptr );
 
 				if ( NO_ERROR != file.createWithCase( name ) )
 				{
@@ -640,7 +640,7 @@ void MainMenu::update()
 		{
 			MPlayer->closeSession();
 			delete MPlayer;
-			MPlayer = NULL;
+			MPlayer = nullptr;
 		}
 	}
 	else if ( promptToDisconnect )
@@ -654,7 +654,7 @@ void MainMenu::update()
 				{
 					MPlayer->closeSession();
 					delete MPlayer;
-					MPlayer = NULL;
+					MPlayer = nullptr;
 				}
 				int32_t oldRes = endResult;
 				endResult = 0;

@@ -44,7 +44,7 @@ class GameDebugWindow {
 			linePos = 0;
 			numLines = 0;
 			for (int32_t i = 0; i < MAX_DEBUG_WINDOW_LINES; i++)
-				textBuffer[i][0] = NULL;
+				textBuffer[i][0] = nullptr;
 		}
 		
 		GameDebugWindow (void) {
@@ -87,7 +87,7 @@ class GameDebugWindow {
 		void clear (void) {
 			numLines = 0;
 			for (int32_t i = 0; i < MAX_DEBUG_WINDOW_LINES; i++)
-				textBuffer[i][0] = NULL;
+				textBuffer[i][0] = nullptr;
 		}
 
 		static void setFont (PSTR fontFile);

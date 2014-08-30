@@ -14,7 +14,7 @@ class TilingFactorsDialog : public CDialog
 {
 // Construction
 public:
-	TilingFactorsDialog(CWnd* pParent = NULL);   // standard constructor
+	TilingFactorsDialog(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(TilingFactorsDialog)

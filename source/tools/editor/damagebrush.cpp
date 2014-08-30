@@ -21,7 +21,7 @@ bool DamageBrush::beginPaint()
 
 Action* DamageBrush::endPaint()
 {
-	Action* pRetAction = NULL;
+	Action* pRetAction = nullptr;
 
 	if (pAction)
 	{
@@ -33,7 +33,7 @@ Action* DamageBrush::endPaint()
 		}
 	}
 	
-	pAction = NULL;
+	pAction = nullptr;
 	return pRetAction;
 }
 
@@ -82,7 +82,7 @@ Action* DamageBrush::applyToSelection()
 
 	if (!(pRetAction->isNotNull()))
 	{
-		delete pRetAction; pRetAction = NULL;
+		delete pRetAction; pRetAction = nullptr;
 	}
 
 	return pRetAction;

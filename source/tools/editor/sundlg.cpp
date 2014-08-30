@@ -182,7 +182,7 @@ void SunDlg::DoColorDlg( CEdit& edit)
 	int32_t base = getHexValue( edit );
 	base &= 0x00ffffff;
 
-	CColorDialog dlg( reverseRGB(base), NULL, this );
+	CColorDialog dlg( reverseRGB(base), nullptr, this );
 	if (IDOK == dlg.DoModal() )
 	{
 		base = reverseRGB( dlg.GetColor() );

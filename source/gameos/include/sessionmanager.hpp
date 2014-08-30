@@ -279,7 +279,7 @@ public:
 
 public:
 	// Returns the session in the listOfSessions with a matching guid
-	// or NULL if there is no match.
+	// or nullptr if there is no match.
 	FIDPSession *FindMatchingSession(LPGUID pguid);
 private:
 
@@ -397,7 +397,7 @@ public:
 	uint32_t SetupLobbyConnection(LPVOIDCALLBACK create_callback,LPVOIDCALLBACK destroy_callback);
 
 
-	// returns the name of the modem at index or NULL if index
+	// returns the name of the modem at index or nullptr if index
 	// is greater than the # of modems.
 	PSTR GetModemName(int32_t index);
 
@@ -423,7 +423,7 @@ public:
 	void CreateGroup 
 		(	LPDPID id, 
 		PSTR name, 
-		PVOID data = NULL, 
+		PVOID data = nullptr, 
 		uint32_t size = 0, 
 		uint32_t flags = 0);
 
@@ -492,7 +492,7 @@ public:
 
 	// Accessor functions to update lists of network specifics
 	FLinkedList<FIDPSession> *GetSessions(bool refresh=true);
-	FLinkedList<FIDPPlayer> *GetPlayers(FIDPSession *session=NULL);
+	FLinkedList<FIDPPlayer> *GetPlayers(FIDPSession *session=nullptr);
 
 
 	inline FIDPSession *GetCurrentSession(void)
@@ -511,7 +511,7 @@ public:
 	}
 
 
-	// FindSession returns the session with the corresponding id or NULL
+	// FindSession returns the session with the corresponding id or nullptr
 	// if no match is found.
 	FIDPSession *FindSession(int32_t session_id);
 

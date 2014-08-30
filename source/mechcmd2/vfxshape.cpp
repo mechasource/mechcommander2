@@ -55,7 +55,7 @@ void Shape::destroy (void)
 	else	
 		spriteManager->freeShapeRAM(frameList);
 		
-	frameList = NULL;
+	frameList = nullptr;
 }
 
 #define STUPID_OFFSET	6
@@ -79,7 +79,7 @@ int32_t Shape::init (puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shap
 	}
 	else
 	{
-		stupidHeader = NULL;
+		stupidHeader = nullptr;
 		frameList = fileBlock;
 	}
 	
@@ -87,7 +87,7 @@ int32_t Shape::init (puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shap
 
 	if (!numFrames)
 	{
-		return(-1);		//There are no frames, this shape is NULL!!
+		return(-1);		//There are no frames, this shape is nullptr!!
 	}
 
 	owner = myOwner;
@@ -97,14 +97,14 @@ int32_t Shape::init (puint8_t fileBlock, AppearanceTypePtr myOwner, int32_t shap
 		int32_t *testOffset = (int32_t *)(frameList + 8);
 		if (*testOffset >= shapeSize)
 		{
-			frameList = NULL;
+			frameList = nullptr;
 			return(-3);
 		}
 		
 		int32_t minOffset = 8 + (numFrames * 8);		//The first shape MUST be this far in or WRONG
 		if (minOffset != *testOffset)
 		{
-			frameList = NULL;
+			frameList = nullptr;
 			return(-4);
 		}
 	}

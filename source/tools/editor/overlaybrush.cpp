@@ -572,7 +572,7 @@ bool OverlayBrush::beginPaint( )
 Action*  OverlayBrush::endPaint()
 {
 	Action* pRetAction = pAction;
-	pAction  = NULL;
+	pAction  = nullptr;
 	return pRetAction;
 }
 

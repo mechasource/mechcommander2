@@ -231,7 +231,7 @@ int32_t MechHitSectionTable[NUM_ATTACKSOURCES] = {
 #define GestureGoalFallenBackward		8
 
 #ifdef USEHEAT
-HeatEffectEntryPtr HeatEffectTable = NULL;
+HeatEffectEntryPtr HeatEffectTable = nullptr;
 int32_t			   NumHeatLevels = 0;
 #endif
 
@@ -484,12 +484,12 @@ int32_t DefaultMechCrashBlockPath = 1;
 float DefaultMechCrashYieldTime = 2.0;
 int32_t DefaultMechJumpCost = COST_BLOCKED / 3;
 
-GameObjectPtr BadGuy = NULL;
+GameObjectPtr BadGuy = nullptr;
 extern DebuggerPtr debugger;
 
 //#define USE_MECHDEBUGFILE
 #ifdef USE_MECHDEBUGFILE
-UserFile* MechDebugFile = NULL;
+UserFile* MechDebugFile = nullptr;
 #endif
 
 extern bool ShowMovers;
@@ -635,7 +635,7 @@ void BattleMechType::init (void) {
 	objectTypeClass = BATTLEMECH_TYPE;
 	objectClass = BATTLEMECH;
 
-	anim = NULL;
+	anim = nullptr;
 			
 	rightArmDebrisId = -1;
 	leftArmDebrisId = -1;
@@ -911,7 +911,7 @@ bool BattleMechType::handleCollision (GameObjectPtr collidee, GameObjectPtr coll
 							shotInfo.init(collider->getWatchID(), -1, collider->getTonnage() / 100.0 + 0.5, hitLocation, collidee->relFacingTo(collider->getPosition()));
 						else
 							shotInfo.init(collider->getWatchID(), -1, collider->getTonnage() / 10.0 + 0.5, hitLocation, collidee->relFacingTo(collider->getPosition()));
-						collidee->handleWeaponHit(&shotInfo, (MPlayer != NULL));
+						collidee->handleWeaponHit(&shotInfo, (MPlayer != nullptr));
 						//----------------------
 						// Next, the collider...
 						hitLocation = collider->calcHitLocation(collidee, -1, ATTACKSOURCE_DFA, 0);
@@ -919,9 +919,9 @@ bool BattleMechType::handleCollision (GameObjectPtr collidee, GameObjectPtr coll
 							shotInfo.init(collidee->getWatchID(), -1, collider->getTonnage() / 100.0 + 0.5, hitLocation, collider->relFacingTo(collidee->getPosition()));
 						else
 							shotInfo.init(collidee->getWatchID(), -1, collider->getTonnage() / 10.0 + 0.5, hitLocation, collider->relFacingTo(collidee->getPosition()));
-						collider->handleWeaponHit(&shotInfo, (MPlayer != NULL));
+						collider->handleWeaponHit(&shotInfo, (MPlayer != nullptr));
 						Stuff::Vector3D tmpPosition = collider->getPosition();
-						ObjectManager->createExplosion(DFA_BOOM_EFFECT, NULL, tmpPosition);
+						ObjectManager->createExplosion(DFA_BOOM_EFFECT, nullptr, tmpPosition);
 					}
 				}
 				else 
@@ -931,8 +931,8 @@ bool BattleMechType::handleCollision (GameObjectPtr collidee, GameObjectPtr coll
 						int32_t hitLocation = collidee->calcHitLocation(collider, -1, ATTACKSOURCE_COLLISION, 0);
 						WeaponShotInfo shotInfo;
 						shotInfo.init(collider->getWatchID(), -1, collider->getTonnage() / 10.0 + 0.5, hitLocation, collidee->relFacingTo(collider->getPosition()));
-						collidee->handleWeaponHit(&shotInfo, (MPlayer != NULL));
-						collidee->handleWeaponHit(&shotInfo, (MPlayer != NULL));
+						collidee->handleWeaponHit(&shotInfo, (MPlayer != nullptr));
+						collidee->handleWeaponHit(&shotInfo, (MPlayer != nullptr));
 					}
 				}
 
@@ -1019,7 +1019,7 @@ bool BattleMechType::handleDestruction (GameObjectPtr collidee, GameObjectPtr co
 	//--------------------------------------------------------
 	// Let's let the unit know we're dying if we're a point...
 	if (mech->getPoint() == mech) {
-		mech->getGroup()->setPoint(NULL);
+		mech->getGroup()->setPoint(nullptr);
 		//--------------------------------------------------------
 		// If there is no new point, all units must be blown away.
 		// How do we want to handle this?
@@ -1078,7 +1078,7 @@ GameObjectPtr BattleMechType::createInstance (void) {
 
 	BattleMechPtr newMech = new BattleMech;
 	if (!newMech)
-		return(NULL);
+		return(nullptr);
 
 	newMech->init(true, this);
 	//newMech->setIdNumber(NextIdNumber++);
@@ -1202,12 +1202,12 @@ void BattleMech::init (bool create) {
 	pivotTurnRate = 0.0;
 
 #ifdef USE_JETS
-	jumpJets[0] = NULL;
-	jumpJets[1] = NULL;
+	jumpJets[0] = nullptr;
+	jumpJets[1] = nullptr;
 #endif
 
 	maxWeaponDamage = 0.0;
-	longName[0] = NULL;
+	longName[0] = nullptr;
 	pilotNum = 0;
 
 	captureable = false;
@@ -1300,7 +1300,7 @@ void BattleMech::init (bool create, ObjectTypePtr _type) {
 	if (appearance)
 		delete appearance;
 	appearance = new Mech3DAppearance;
-	gosASSERT(appearance != NULL);
+	gosASSERT(appearance != nullptr);
 
 	//--------------------------------------------------------------
 	// The only kind of appearanceType the mechs currently know how
@@ -1386,7 +1386,7 @@ int32_t BattleMech::init (uint32_t variantNum)
 	if (result != NO_ERROR)
 	{
 		delete mechFile;
-		mechFile = NULL;
+		mechFile = nullptr;
 		return result;
 	}
 
@@ -1396,7 +1396,7 @@ int32_t BattleMech::init (uint32_t variantNum)
 	char thisMechName[128];
 	mechFile->readString(3,2,thisMechName,127);
 	strncpy(name, thisMechName, MAXLEN_MOVER_NAME - 1);
-	name[MAXLEN_MOVER_NAME] = NULL;
+	name[MAXLEN_MOVER_NAME] = nullptr;
 
 	mechFile->readLong(10,5,chassisBR);
 
@@ -1957,7 +1957,7 @@ int32_t BattleMech::init (uint32_t variantNum)
 
 	mechFile->close();
 	delete mechFile;
-	mechFile = NULL;
+	mechFile = nullptr;
 
 	return(NO_ERROR);
 }
@@ -2699,7 +2699,7 @@ int32_t BattleMech::init (FitIniFile* mechFile) {
 	char thisMechName[128];
 	result = mechFile->readIdString ("Name", thisMechName, 127);
 	strncpy(name, thisMechName, MAXLEN_MOVER_NAME - 1);
-	name[MAXLEN_MOVER_NAME] = NULL;
+	name[MAXLEN_MOVER_NAME] = nullptr;
 
 	result = mechFile->readIdLong("ChassisBR", chassisBR);
 	if (result != NO_ERROR)
@@ -2713,7 +2713,7 @@ int32_t BattleMech::init (FitIniFile* mechFile) {
 	if (result != NO_ERROR)
 		descID = -1;
 
-	longName[0] = NULL;
+	longName[0] = nullptr;
 
 //	result = mechFile->readIdLong("NameIndex", nameIndex);
 //	if (result != NO_ERROR)
@@ -3696,7 +3696,7 @@ void BattleMech::destroy (void)
 	if (appearance) 
 	{
 		delete appearance;
-		appearance = NULL;
+		appearance = nullptr;
 	}
 }
 
@@ -3769,11 +3769,11 @@ void BattleMech::mineCheck (void)
 			// Mine here, deal with it...
 			Stuff::Vector3D explosionPosition;
 			explosionPosition = getPosition();
-			ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, explosionPosition, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+			ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, explosionPosition, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 			
 			WeaponShotInfo shot;
-			shot.init(NULL, -2, MineDamage, calcHitLocation(NULL,-1,ATTACKSOURCE_MINE,0), 0);
-			handleWeaponHit(&shot, (MPlayer != NULL));
+			shot.init(nullptr, -2, MineDamage, calcHitLocation(nullptr,-1,ATTACKSOURCE_MINE,0), 0);
+			handleWeaponHit(&shot, (MPlayer != nullptr));
 		}
 	}
 }
@@ -4568,9 +4568,9 @@ void BattleMech::setNextMovePath (char& newThrottleSetting, int32_t& newGestureS
 		// This may be a hack--do we want to be able to follow moving
 		// objects that we don't necessarily have tracked? We will
 		// for now...
-		//GameObjectPtr moveGoalObject = NULL;
-		//int32_t goalType = pilot->getMoveGoal(ORDER_CURRENT, NULL, &moveGoalObject);
-		//pilot->setMoveGoal(ORDER_CURRENT, MOVEGOAL_NONE, NULL);
+		//GameObjectPtr moveGoalObject = nullptr;
+		//int32_t goalType = pilot->getMoveGoal(ORDER_CURRENT, nullptr, &moveGoalObject);
+		//pilot->setMoveGoal(ORDER_CURRENT, MOVEGOAL_NONE, nullptr);
 		pilot->clearMoveOrders();
 		newGestureStateGoal = MECH_STATE_STANDING;
 	}
@@ -5335,10 +5335,10 @@ void BattleMech::endJumpFX (void) {
 	if (jumpJets[0] || jumpJets[1])
 	{
 		delete jumpJets[0];
-		jumpJets[0] = NULL;
+		jumpJets[0] = nullptr;
 		
 		delete jumpJets[1];
-		jumpJets[1] = NULL;
+		jumpJets[1] = nullptr;
 	}
 #endif
 }	
@@ -5425,10 +5425,10 @@ bool BattleMech::crashAvoidanceSystem (void) {
 				// and let the pilot's movementDecision update decide whether a new
 				// one should be set...
 				/*
-				pilot->setMoveWayPath(ORDER_CURRENT, NULL, 0);
+				pilot->setMoveWayPath(ORDER_CURRENT, nullptr, 0);
 				for (int32_t i = 0; i < 2; i++)
 					pilot->clearMovePath(ORDER_CURRENT, i);
-				pilot->setMoveGlobalPath(ORDER_CURRENT, NULL, 0);
+				pilot->setMoveGlobalPath(ORDER_CURRENT, nullptr, 0);
 				*/
 				//pilot->clearMoveOrders(ORDER_CURRENT);
 				pilot->rethinkPath(0);
@@ -5581,7 +5581,7 @@ void BattleMech::updatePlayerControl (void) {
 		appearance->hitLeft();
 		
  	if (userInput->getKeyDown(KEY_Z))
-		ObjectManager->getObjectType(typeHandle)->handleDestruction(this, NULL);		//Blow self up!!
+		ObjectManager->getObjectType(typeHandle)->handleDestruction(this, nullptr);		//Blow self up!!
 
 	if (userInput->getKeyDown(KEY_X))
 		control.settings.mech.blowLeftArm = true;
@@ -5853,7 +5853,7 @@ int32_t BattleMech::update (void)
 
 		bool emergencyStop = false;
 		if (!isDisabled()) {
-			MoverPtr ramTarget = NULL;
+			MoverPtr ramTarget = nullptr;
 			if ((getPilot()->getCurTacOrder()->code == TACTICAL_ORDER_ATTACK_OBJECT) && (getPilot()->getCurTacOrder()->attackParams.method == ATTACKMETHOD_RAMMING))
 				ramTarget = (MoverPtr)getPilot()->getCurTacOrder()->getRamTarget();
 			if (ramTarget)
@@ -5996,7 +5996,7 @@ int32_t BattleMech::update (void)
 			windowsVisible = turn;
 			
 		if (withdrawing && !inView && (pilot->getStatus() != WARRIOR_STATUS_WITHDRAWN))
-			ObjectManager->getObjectType(typeHandle)->handleDestruction(this, NULL);
+			ObjectManager->getObjectType(typeHandle)->handleDestruction(this, nullptr);
 
 		if (appearance) {
 			MovePathPtr path = pilot->getMovePath();
@@ -6085,7 +6085,7 @@ int32_t BattleMech::update (void)
 				if (getPilot()->alive())
 				{
 					Stuff::Vector3D cockpitPos = appearance->getNodeNamePosition("cockpit");
-					ObjectManager->createExplosion(MECH_DISABLE_EXPLOSION_ID,NULL,cockpitPos,0.0f,0.0f);
+					ObjectManager->createExplosion(MECH_DISABLE_EXPLOSION_ID,nullptr,cockpitPos,0.0f,0.0f);
 				}
 
 				appearance->startSmoking(-1);
@@ -6157,9 +6157,9 @@ int32_t BattleMech::update (void)
 				// Blow the Mech and leave a crater.
 				Stuff::Vector3D cockpitPos = appearance->getNodeNamePosition("cockpit");
 				if (getMoveType() != MOVETYPE_AIR)
-					ObjectManager->createExplosion(MECH_EXPLOSION_ID,NULL,cockpitPos,((BattleMechTypePtr)getObjectType())->explDmg,((BattleMechTypePtr)getObjectType())->explRad);
+					ObjectManager->createExplosion(MECH_EXPLOSION_ID,nullptr,cockpitPos,((BattleMechTypePtr)getObjectType())->explDmg,((BattleMechTypePtr)getObjectType())->explRad);
 				else
-					ObjectManager->createExplosion(VEHICLE_EXPLOSION_ID,NULL,cockpitPos,0.0f,0.0f);
+					ObjectManager->createExplosion(VEHICLE_EXPLOSION_ID,nullptr,cockpitPos,0.0f,0.0f);
 
 				craterManager->addCrater(CRATER_4,position,RandomNumber(180));
 				exploding = true;
@@ -6459,7 +6459,7 @@ void BattleMech::render (void)
 	if (drawTerrainGrid)
 	{
 		MovePathPtr path = pilot->getMovePath();
-		gosASSERT(path != NULL);
+		gosASSERT(path != nullptr);
 		if (path->numSteps)
 		{
 			Stuff::Vector4D lineStart, lineEnd;
@@ -6477,7 +6477,7 @@ void BattleMech::render (void)
 					
 					lineStart.z = lineEnd.z = HUD_DEPTH;
 					
-					LineElement newElement(lineStart,lineEnd,SD_BLUE,NULL,-1);
+					LineElement newElement(lineStart,lineEnd,SD_BLUE,nullptr,-1);
 					newElement.draw();
 				}
 			}
@@ -6848,13 +6848,13 @@ bool BattleMech::hitInventoryItem (int32_t itemIndex, bool setupOnly) {
 			case COMPONENT_FORM_ECM:
 #if 0
 				Team::teams[teamId]->removeECM(teamEcmTracker);
-				teamEcmTracker = NULL;
+				teamEcmTracker = nullptr;
 #endif
 				break;
 			case COMPONENT_FORM_JAMMER:
 #if 0
 				Team::teams[teamId]->removeJammer(teamJammerTracker);
-				teamJammerTracker = NULL;
+				teamJammerTracker = nullptr;
 #endif
 				break;
 			case COMPONENT_FORM_ACTUATOR:
@@ -6946,7 +6946,7 @@ bool BattleMech::hitInventoryItem (int32_t itemIndex, bool setupOnly) {
 			//----------------------------------------------
 			// Play critical Hit effect here.
 			Stuff::Vector3D smokePos = appearance->getNodePosition(0);
-			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,NULL,smokePos);
+			ObjectManager->createExplosion(MECH_CRITICAL_HIT_ID,nullptr,smokePos);
 
 			appearance->startSmoking(1);
 			playedCriticalHit = true;
@@ -7002,7 +7002,7 @@ void BattleMech::destroyBodyLocation (int32_t bodyLocation) {
 			//------------------
 			// Should explode...
 			pilot->handleAlarm(PILOT_ALARM_VEHICLE_INCAPACITATED, 0);
-			ObjectManager->getObjectType(typeHandle)->handleDestruction(this, NULL);
+			ObjectManager->getObjectType(typeHandle)->handleDestruction(this, nullptr);
 			}
 		else {
 			//-------------------
@@ -7209,7 +7209,7 @@ int32_t BattleMech::handleStatusChunk (int32_t updateAge, uint32_t chunk) {
 
 	if (pilot) {
 		if (lastTargetId == 0)
-			pilot->setLastTarget(NULL);
+			pilot->setLastTarget(nullptr);
 		else {
 			GameObjectPtr curTarget = pilot->getLastTarget();
 			if (!curTarget || (curTarget->getPartId() != lastTargetId)) {
@@ -7257,7 +7257,7 @@ int32_t BattleMech::buildMoveChunk (void) {
 	// HACK!!!!!!!!!!!!!! If bad packet, no movechunk for you...
 	if (MoveChunk::err != 0) {
 		moveChunk.init();
-		moveChunk.build(this, NULL, NULL);
+		moveChunk.build(this, nullptr, nullptr);
 		moveChunk.pack(this);
 		return(NO_ERROR); //Assert(0, " BAD PACKET! ");
 	}
@@ -8024,7 +8024,7 @@ int32_t BattleMech::fireWeapon (GameObjectPtr target, float targetTime, int32_t 
 			hitLocation = aimLocation;
 	}
 
-	MechWarriorPtr targetPilot = NULL;
+	MechWarriorPtr targetPilot = nullptr;
 	if (target && target->isMover()) {
 		targetPilot = ((MoverPtr)target)->getPilot();
 		targetPilot->updateAttackerStatus(getWatchID(), scenarioTime);
@@ -8034,7 +8034,7 @@ int32_t BattleMech::fireWeapon (GameObjectPtr target, float targetTime, int32_t 
 	// Weapon must recycle...
 	startWeaponRecycle(weaponIndex);
 	
-	WeaponBoltPtr weaponFX = NULL;
+	WeaponBoltPtr weaponFX = nullptr;
 	if (hitRoll < attackChance) {
 
 		if (numShots != UNLIMITED_SHOTS) {
@@ -8140,7 +8140,7 @@ int32_t BattleMech::fireWeapon (GameObjectPtr target, float targetTime, int32_t 
 					land->worldToCell(*targetPoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1) 
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);
 					}
 				}
@@ -8225,7 +8225,7 @@ int32_t BattleMech::fireWeapon (GameObjectPtr target, float targetTime, int32_t 
 					land->worldToCell(*targetPoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1)
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);
 					}
 				}
@@ -8371,7 +8371,7 @@ int32_t BattleMech::fireWeapon (GameObjectPtr target, float targetTime, int32_t 
 						land->worldToCell(positionOffset, cellRow, cellCol);
 						if (GameMap->getMine(cellRow, cellCol) == 1)
 						{
-							ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, positionOffset, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+							ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, positionOffset, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 							GameMap->setMine(cellRow, cellCol, 2);
 						}
 					}
@@ -8481,7 +8481,7 @@ int32_t BattleMech::fireWeapon (GameObjectPtr target, float targetTime, int32_t 
 					land->worldToCell(positionOffset, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1)
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, positionOffset, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, positionOffset, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);
 					}
 				}
@@ -8536,7 +8536,7 @@ int32_t BattleMech::handleWeaponFire (int32_t weaponIndex,
 
 	bool isStreakMissile = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponStreak(); 
 
-	WeaponBoltPtr weaponFX = NULL;
+	WeaponBoltPtr weaponFX = nullptr;
 	
 	//----------------------------------------------------
 	// Need to know which hotspot this comes from.
@@ -8595,7 +8595,7 @@ int32_t BattleMech::handleWeaponFire (int32_t weaponIndex,
 						land->worldToCell(*targetPoint, cellRow, cellCol);
 						if (GameMap->getMine(cellRow, cellCol) == 1)
 						{
-							ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+							ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 							GameMap->setMine(cellRow, cellCol, 2);
 						}
 					}
@@ -8652,7 +8652,7 @@ int32_t BattleMech::handleWeaponFire (int32_t weaponIndex,
 					land->worldToCell(*targetPoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1)
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);
 					}
 				}
@@ -8671,11 +8671,11 @@ int32_t BattleMech::handleWeaponFire (int32_t weaponIndex,
 		}
 		}
 	else {
-		Assert(target == NULL, 0, " Mech.handleWeaponFire: target should be NULL with network miss! ");
-		Assert(targetPoint != NULL, 0, " Mech.handleWeaponFire: MUST have targetpoint with network miss! ");
+		Assert(target == nullptr, 0, " Mech.handleWeaponFire: target should be nullptr with network miss! ");
+		Assert(targetPoint != nullptr, 0, " Mech.handleWeaponFire: MUST have targetpoint with network miss! ");
 		if (isStreakMissile) {
 			CurMoverWeaponFireChunk.unpack(this);
-			DebugWeaponFireChunk(&CurMoverWeaponFireChunk, NULL, this);
+			DebugWeaponFireChunk(&CurMoverWeaponFireChunk, nullptr, this);
 			Assert(false, 0, " Mech.handleWeaponFire: streaks shouldn't miss! (save wfchunk.dbg file) ");
 		}
 
@@ -8705,7 +8705,7 @@ int32_t BattleMech::handleWeaponFire (int32_t weaponIndex,
 						land->worldToCell(*targetPoint, cellRow, cellCol);
 						if (GameMap->getMine(cellRow, cellCol) == 1) 
 						{
-							ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+							ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 							GameMap->setMine(cellRow, cellCol, 2);
 						}
 					}
@@ -8746,7 +8746,7 @@ int32_t BattleMech::handleWeaponFire (int32_t weaponIndex,
 					land->worldToCell(*targetPoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1) 
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);
 					}
 				}
@@ -8761,7 +8761,7 @@ int32_t BattleMech::handleWeaponFire (int32_t weaponIndex,
 	// Trigger the WEAPON TARGET event. For now, this assumes the target
 	// KNOWS we were targeting him. Of course, the target wouldn't always
 	// be aware of this, would they?
-	MechWarriorPtr targetPilot = NULL;
+	MechWarriorPtr targetPilot = nullptr;
 	if (target && target->isMover()) {
 		targetPilot = ((MoverPtr)target)->getPilot();
 		targetPilot->updateAttackerStatus(getWatchID(), scenarioTime);

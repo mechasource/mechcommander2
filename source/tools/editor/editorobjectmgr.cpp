@@ -85,7 +85,7 @@
 #include "../ARM/Microsoft.Xna.Arm.h"
 using namespace Microsoft::Xna::Arm;
 
-EditorObjectMgr*	EditorObjectMgr::s_instance = NULL;
+EditorObjectMgr*	EditorObjectMgr::s_instance = nullptr;
 uint32_t gameResourceHandle = 0;
 
 extern bool renderObjects;
@@ -113,7 +113,7 @@ EditorObjectMgr::~EditorObjectMgr()
 
 	if ( appearanceTypeList )
 		delete appearanceTypeList;
-	appearanceTypeList = NULL;
+	appearanceTypeList = nullptr;
 
 	for( GROUP_LIST::EIterator groupIter = groups.Begin();
 			!groupIter.IsDone(); groupIter++ )
@@ -131,14 +131,14 @@ EditorObjectMgr::~EditorObjectMgr()
 					if ( (*buildIter).varNames[i] )
 					{
 						free ( ( *buildIter).varNames[i] );
-						(*buildIter).varNames[i] = NULL;
+						(*buildIter).varNames[i] = nullptr;
 					}
 				}
 
 				//Kinda need to delete this OUTSIDE the above loop.
 				// Yum, Yum!
 				free ( ( *buildIter ).varNames );
-				( *buildIter ).varNames = NULL;
+				( *buildIter ).varNames = nullptr;
 			}
 		}
 	}
@@ -184,7 +184,7 @@ void EditorObjectMgr::clear()
 	{
 		for( EList< Building, Building& >::EIterator buildIter = (*groupIter).buildings.Begin();!buildIter.IsDone(); buildIter++ )
 		{
-			(*buildIter).appearanceType = NULL;
+			(*buildIter).appearanceType = nullptr;
 		}
 	}
 
@@ -223,7 +223,7 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 			break;
 
 		Building bldg;
-		bldg.appearanceType = NULL;
+		bldg.appearanceType = nullptr;
 		bldg.specialType = UNSPECIAL;
 		bldg.varNames = 0;
 		bldg.forestId = 0;
@@ -373,7 +373,7 @@ void EditorObjectMgr::init( PCSTR bldgListFileName, PCSTR objectFileName )
 					strcpy( bldg.varNames[i], varName );
 				}
 				else
-					bldg.varNames[i] = NULL;
+					bldg.varNames[i] = nullptr;
 
 			}
 		}
@@ -417,7 +417,7 @@ int32_t EditorObjectMgr::ExtractNextString( puint8_t& pFileLine, PSTR pBuffer, i
 			break;
 		else if ( pFileLine[i] == ',' )
 			break;
-		else if ( pFileLine[i] == NULL )
+		else if ( pFileLine[i] == nullptr )
 			break;
 	}
 
@@ -426,7 +426,7 @@ int32_t EditorObjectMgr::ExtractNextString( puint8_t& pFileLine, PSTR pBuffer, i
 
 	gosASSERT( i < bufferLength );
 	memcpy( pBuffer, pFileLine, i );
-	pBuffer[i] = NULL;
+	pBuffer[i] = nullptr;
 	bufferLength = i + 1;
 	pFileLine += i + 1;
 
@@ -442,7 +442,7 @@ int32_t textToLong (PCSTR num)
 	//------------------------------------
 	// Check if Hex Number
 	PSTR hexOffset = (PSTR)strstr(num,"0x");
-	if (hexOffset == NULL)
+	if (hexOffset == nullptr)
 	{
 		result = atol(num);
 	}
@@ -672,7 +672,7 @@ EditorObject* EditorObjectMgr::getObjectAtPosition( const Stuff::Vector3D& posit
 	}
 
 
-	return NULL;
+	return nullptr;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -722,7 +722,7 @@ EditorObject* EditorObjectMgr::getObjectAtLocation( float x, float y )
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -737,7 +737,7 @@ EditorObject* EditorObjectMgr::addBuilding( const Stuff::Vector3D& position, uin
 	int32_t type = getType( group, indexWithinGroup );
 	int32_t specialType = getSpecialType( getID( group, indexWithinGroup ) );
 	
-	EditorObject* info = NULL;
+	EditorObject* info = nullptr;
 	
 	if ( specialType == NAV_MARKER )
 	{
@@ -1143,8 +1143,8 @@ bool EditorObjectMgr::save( PacketFile& PakFile, int32_t whichPacket )
 	
 	if ( !buildings.Count() )
 	{
-		PakFile.writePacket( whichPacket, NULL );
-		PakFile.writePacket( whichPacket + 1, NULL );
+		PakFile.writePacket( whichPacket, nullptr );
+		PakFile.writePacket( whichPacket + 1, nullptr );
 	}
 
 	int32_t bufferSize = buildings.Count() * (4 * sizeof(float) + 6 * sizeof(int32_t) ) + 2 * sizeof(int32_t);
@@ -1703,12 +1703,12 @@ void EditorObjectMgr::adjustObjectsToNewTerrainHeights()
 
 ObjectAppearance* EditorObjectMgr::getAppearance( EditorObjectMgr::Building* pBuilding )
 {
-	ObjectAppearance* appearance = NULL;
+	ObjectAppearance* appearance = nullptr;
 
 	if ( !appearanceTypeList )
 	{
 		appearanceTypeList = new AppearanceTypeList;
-		gosASSERT(appearanceTypeList != NULL);
+		gosASSERT(appearanceTypeList != nullptr);
 		
 		appearanceTypeList->init(2048000);
 	}
@@ -1980,8 +1980,8 @@ bool		EditorObjectMgr::saveMechs( FitIniFile& file )
 		(*iter)->save( &file, counter );
 
 		mechAssetPtr->Close();
-		mechAssetPtr = NULL;
-		mechAsset = NULL;
+		mechAssetPtr = nullptr;
+		mechAsset = nullptr;
 		
 		file.writeIdULong( "AlternativeStartIndex", alternativeInstancesCounter + 1 );
 
@@ -2363,7 +2363,7 @@ const Forest* EditorObjectMgr::getForest( int32_t ID )
 
 	gosASSERT( 0 ); // you shouldn't get here
 
-	return NULL;
+	return nullptr;
 }
 
 int32_t EditorObjectMgr::getForests( Forest** pForests, int32_t& count )
@@ -2601,7 +2601,7 @@ EditorObject* EditorObjectMgr::getObjectAtCell( int32_t realCellJ, int32_t realC
 
 		}
 
-	return NULL;
+	return nullptr;
 
 }
 
@@ -2615,7 +2615,7 @@ EditorObject* EditorObjectMgr::getBuilding( const EditorObject &building )
 			return (*iter);
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 BuildingLink* EditorObjectMgr::getLinkWithBuilding( const EditorObject* pObj )
@@ -2626,7 +2626,7 @@ BuildingLink* EditorObjectMgr::getLinkWithBuilding( const EditorObject* pObj )
 			return *iter;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 BuildingLink* EditorObjectMgr::getLinkWithParent( const EditorObject* pObj )
@@ -2637,7 +2637,7 @@ BuildingLink* EditorObjectMgr::getLinkWithParent( const EditorObject* pObj )
 			return *iter;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 BuildingLink* EditorObjectMgr::getLinkWithChild( const EditorObject* pObj )
@@ -2648,7 +2648,7 @@ BuildingLink* EditorObjectMgr::getLinkWithChild( const EditorObject* pObj )
 			return *iter;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void EditorObjectMgr::addLink( BuildingLink* pLink )

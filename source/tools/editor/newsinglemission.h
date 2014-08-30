@@ -14,7 +14,7 @@ class NewSingleMission : public CDialog
 {
 // Construction
 public:
-	NewSingleMission(CWnd* pParent = NULL);   // standard constructor
+	NewSingleMission(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(NewSingleMission)

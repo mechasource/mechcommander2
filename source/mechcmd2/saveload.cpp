@@ -433,8 +433,8 @@ void Mission::save (PCSTR saveFileName)
 	// Save numbers of objects in all object lists in game
 	// Save ClassID of objects IN the list.
 	// For each object in each list:
-	//		If NULL, save a magic Number to tell me this entry is NULL.
-	//		If NOT NULL, 
+	//		If nullptr, save a magic Number to tell me this entry is nullptr.
+	//		If NOT nullptr, 
 	// 			Call Save DOWN the heirarchy.
 	//
 	currentPacket = ObjectManager->Save( &saveFile, currentPacket );
@@ -494,7 +494,7 @@ void Mission::save (PCSTR saveFileName)
 	// BLOCK THREAD WHILE THIS IS HAPPENING
 	mc2IsInDisplayBackBuffer = true;
 
-	AsynFunc = NULL;
+	AsynFunc = nullptr;
 	mc2UseAsyncMouse = turnOffAsyncMouse;
 	if ( !mc2UseAsyncMouse)
 		MouseTimerKill();
@@ -677,7 +677,7 @@ void Mission::load (PCSTR loadFileName)
 	*/
 
 	delete [] campName;
-	campName = NULL;
+	campName = nullptr;
 
 	//Used to call this before the version check.  Wow.
 	destroy();
@@ -706,7 +706,7 @@ void Mission::load (PCSTR loadFileName)
 	//--------------------------------------------------------------
 	// Start the Mission Heap
 	missionHeap = new UserHeap;
-	gosASSERT(missionHeap != NULL);
+	gosASSERT(missionHeap != nullptr);
 	
 	missionHeap->init(missionHeapSize,"MISSION");
 	
@@ -716,7 +716,7 @@ void Mission::load (PCSTR loadFileName)
 	fullGameSystemName.init(missionPath, "gamesys", ".fit");
 	
 	FitIniFile* gameSystemFile = new FitIniFile;
-	gosASSERT(gameSystemFile != NULL);
+	gosASSERT(gameSystemFile != nullptr);
 		
 	result = gameSystemFile->open(fullGameSystemName);
 	gosASSERT(result == NO_ERROR);
@@ -1026,7 +1026,7 @@ void Mission::load (PCSTR loadFileName)
 	gosASSERT(missionScriptHandle >= 0);
 	
 	missionBrain = new ABLModule;
-	gosASSERT(missionBrain != NULL);
+	gosASSERT(missionBrain != nullptr);
 		
 	missionBrain->init(missionScriptHandle);
 
@@ -1034,7 +1034,7 @@ void Mission::load (PCSTR loadFileName)
 	//MissionBrain->setStep(TRUE);
 
 	missionBrainParams = new ABLParam;
-	gosASSERT(missionBrainParams != NULL);
+	gosASSERT(missionBrainParams != nullptr);
 
 	missionBrainCallback = missionBrain->findFunction("handlemessage", TRUE);
 #endif
@@ -1042,13 +1042,13 @@ void Mission::load (PCSTR loadFileName)
 	//-----------------------------
 	// Init Trigger Area Manager...
 	Mover::triggerAreaMgr = new TriggerAreaManager;
-	if (Mover::triggerAreaMgr == NULL)
+	if (Mover::triggerAreaMgr == nullptr)
 		STOP(("Mission.Load: unable to init triggerAreaMgr "));
 
 	//-----------------------------------------
 	// Startup the Crater Manager.
 	craterManager = (CraterManagerPtr)missionHeap->Malloc(sizeof(CraterManager));
-	gosASSERT(craterManager != NULL);
+	gosASSERT(craterManager != nullptr);
 		
 	result = craterManager->init(1000,20479,"feet");
 	gosASSERT(result == NO_ERROR);
@@ -1075,7 +1075,7 @@ void Mission::load (PCSTR loadFileName)
 	gosASSERT( result == NO_ERROR );
 
 	land = new Terrain;
-	gosASSERT(land != NULL);
+	gosASSERT(land != nullptr);
 
 	loadProgress = 15.0f;
 
@@ -1172,7 +1172,7 @@ void Mission::load (PCSTR loadFileName)
 	missionBrain->setName("Mission");
 
 	missionBrainParams = new ABLParam;
-	gosASSERT(missionBrainParams != NULL);
+	gosASSERT(missionBrainParams != nullptr);
 
 	missionBrainCallback = missionBrain->findFunction("handlemessage", TRUE);
 #endif
@@ -1200,7 +1200,7 @@ void Mission::load (PCSTR loadFileName)
 
 	//--------------------------------------------------------------------------------
 	// IMPORTANT NOTE: mission parts should always start with Part 1.
-	// Part 0 is reserved as a "NULL" id for routines that reference the mission
+	// Part 0 is reserved as a "nullptr" id for routines that reference the mission
 	// parts. AI routines, Brain keywords, etc. use PART ID 0 as an "object not found"
 	// error code. DO NOT USE PART 0!!!!!!! Start with Part 1...
 
@@ -1211,7 +1211,7 @@ void Mission::load (PCSTR loadFileName)
 		//-----------------------------------------------------
 		// Since we leave part 0 unused, malloc numParts + 1...
 		parts = (PartPtr)missionHeap->Malloc(sizeof(Part) * (numParts + 1));
-		gosASSERT(parts != NULL);
+		gosASSERT(parts != nullptr);
 		
 		memset(parts,0,sizeof(Part) * (numParts + 1));
 
@@ -1331,7 +1331,7 @@ void Mission::load (PCSTR loadFileName)
 	//-----------------------------------
 	// Setup the Sensor System Manager...
 	SensorManager = new SensorSystemManager;
-	Assert(SensorManager != NULL, 0, " Unable to init sensor system manager ");
+	Assert(SensorManager != nullptr, 0, " Unable to init sensor system manager ");
 	result = SensorManager->init(true);
 	Assert(result == NO_ERROR, result, " could not start Sensor System Manager ");
 
@@ -1340,8 +1340,8 @@ void Mission::load (PCSTR loadFileName)
 	// Save numbers of objects in all object lists in game
 	// Save ClassID of objects IN the list.
 	// For each object in each list:
-	//		If NULL, save a magic Number to tell me this entry is NULL.
-	//		If NOT NULL, 
+	//		If nullptr, save a magic Number to tell me this entry is nullptr.
+	//		If NOT nullptr, 
 	// 			Call Save DOWN the heirarchy.
 	//
 	currentPacket = ObjectManager->Load( &loadFile, currentPacket );
@@ -1399,7 +1399,7 @@ void Mission::load (PCSTR loadFileName)
 
 	gameSystemFile->close();
 	delete gameSystemFile;
-	gameSystemFile = NULL;
+	gameSystemFile = nullptr;
 
 	//----------------------------
 	// Create and load the Weather
@@ -1412,7 +1412,7 @@ void Mission::load (PCSTR loadFileName)
 	// Start the Camera and Lists
 	eye = new GameCamera;
 	eye->init();
-	gosASSERT(eye != NULL);
+	gosASSERT(eye != nullptr);
 
 	result = eye->init(&missionFile);
 	gosASSERT(result == NO_ERROR);
@@ -1422,12 +1422,12 @@ void Mission::load (PCSTR loadFileName)
 	//----------------------------------------------------------------------------
 	// Start the Mission GUI
 
-	//MUST set this back to NULL to insure that the new gosHandle gets loaded for it!!
+	//MUST set this back to nullptr to insure that the new gosHandle gets loaded for it!!
 	// ITS been flushed up top.  NO leakage!
 	PilotIcon::s_pilotTextureHandle = 0;
 
 	missionInterface = new MissionInterfaceManager;
-	gosASSERT(missionInterface != NULL);
+	gosASSERT(missionInterface != nullptr);
 	
 	missionInterface->initTacMap( &pakFile, 2 );
 	
@@ -1453,7 +1453,7 @@ void Mission::load (PCSTR loadFileName)
 	if (tempSpecialAreaFootPrints) 
 	{
 		systemHeap->Free(tempSpecialAreaFootPrints);
-		tempSpecialAreaFootPrints = NULL;
+		tempSpecialAreaFootPrints = nullptr;
 		tempNumSpecialAreas = 0;
 	}
 
@@ -1510,7 +1510,7 @@ void Mission::load (PCSTR loadFileName)
 	eye->update();
 	loadProgress = 100.f;
 
-	DebugGameObject[0] = DebugGameObject[1] = DebugGameObject[2] = NULL;
+	DebugGameObject[0] = DebugGameObject[1] = DebugGameObject[2] = nullptr;
 
 	//YIKES!!  We could be checking the if before the null and executing after!!  Block the thread!
 	//Wait for thread to finish.
@@ -1521,7 +1521,7 @@ void Mission::load (PCSTR loadFileName)
 	// BLOCK THREAD WHILE THIS IS HAPPENING
 	mc2IsInDisplayBackBuffer = true;
 
-	AsynFunc = NULL;
+	AsynFunc = nullptr;
 	mc2UseAsyncMouse = turnOffAsyncMouse;
 	if ( !mc2UseAsyncMouse)
 		MouseTimerKill();

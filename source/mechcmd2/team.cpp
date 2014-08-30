@@ -84,9 +84,9 @@ char Team::relations[MAX_TEAMS][MAX_TEAMS] = {
 bool Team::noPain[MAX_TEAMS] = {false, false, false, false, false, false, false, false};
 
 int32_t			Team::numTeams = 0;
-TeamPtr			Team::home = NULL;
-TeamPtr			Team::teams[MAX_TEAMS] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
-SortListPtr		Team::sortList = NULL;
+TeamPtr			Team::home = nullptr;
+TeamPtr			Team::teams[MAX_TEAMS] = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+SortListPtr		Team::sortList = nullptr;
 
 bool			useRealLOS = true;
 #ifdef LAB_ONLY
@@ -129,8 +129,8 @@ void Team::init (void) {
 /*	maxSensors = 0;
 	numSensors = 0;
 
-	jammers = NULL;
-	ecms = NULL;
+	jammers = nullptr;
+	ecms = nullptr;
 */
 	numTeams++;
 }
@@ -204,7 +204,7 @@ MoverPtr Team::getMover (int32_t index) {
 
 	if (roster[index] > 0)
 		return((MoverPtr)ObjectManager->getByWatchID(roster[index]));
-	return(NULL);
+	return(nullptr);
 }
 
 //----------------------------------------------------------------------------
@@ -278,7 +278,7 @@ void Team::disableTargets (void) {
 	for (int32_t i = 0; i < rosterSize; i++) {
 		GameObjectPtr object = ObjectManager->getByWatchID(roster[i]);
 		if (object) {
-			GameObjectPtr target = NULL;
+			GameObjectPtr target = nullptr;
 			if (object->isMover())
 				target = ((MoverPtr)object)->getPilot()->getCurrentTarget();
 			if (target && target->isMover())
@@ -298,8 +298,8 @@ void Team::eject (void) {
 				mover->getPilot()->orderEject(false, true, ORDER_ORIGIN_COMMANDER);
 			else {
 				WeaponShotInfo shot;
-				shot.init(NULL, -3, 254.0, 0, 0);
-				mover->handleWeaponHit(&shot, (MPlayer != NULL));
+				shot.init(nullptr, -3, 254.0, 0, 0);
+				mover->handleWeaponHit(&shot, (MPlayer != nullptr));
 			}
 		}
 	}
@@ -312,7 +312,7 @@ void Team::destroyTargets (void) {
 	for (int32_t i = 0; i < rosterSize; i++) {
 		GameObjectPtr object = ObjectManager->getByWatchID(roster[i]);
 		if (object) {
-			GameObjectPtr target = NULL;
+			GameObjectPtr target = nullptr;
 			if (object->isMover())
 				target = ((MoverPtr)object)->getPilot()->getCurrentTarget();
 			if (target && target->isMover()) 
@@ -320,14 +320,14 @@ void Team::destroyTargets (void) {
 				//-----------------------------------------
 				//-- Need to pound these guys to death.
 				WeaponShotInfo shot;
-				shot.init(NULL, -3, 5, 0, 0);
+				shot.init(nullptr, -3, 5, 0, 0);
 
 				for (int32_t i=0;i<100;i++)
 				{
 					if (RollDice(30))
-						shot.hitLocation = target->calcHitLocation(NULL,-1,ATTACKSOURCE_DFA,0);
+						shot.hitLocation = target->calcHitLocation(nullptr,-1,ATTACKSOURCE_DFA,0);
 					else
-						shot.hitLocation = target->calcHitLocation(NULL,-1,ATTACKSOURCE_ARTILLERY,0);
+						shot.hitLocation = target->calcHitLocation(nullptr,-1,ATTACKSOURCE_ARTILLERY,0);
 					if (MPlayer) {
 						target->handleWeaponHit(&shot, true);
 						}
@@ -348,7 +348,7 @@ bool Team::isTargeting (GameObjectWatchID targetWID, GameObjectWatchID exceptWID
 			if (roster[i] == exceptWID)
 				continue;
 			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
-			Assert(mover != NULL, roster[i], " Team.isTargeting: NULL mover ");
+			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
 			MechWarriorPtr pilot = mover->getPilot();
 			if (pilot) {
 				GameObjectPtr target = pilot->getCurrentTarget();
@@ -359,7 +359,7 @@ bool Team::isTargeting (GameObjectWatchID targetWID, GameObjectWatchID exceptWID
 	else
 		for (int32_t i = 0; i < rosterSize; i++) {
 			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
-			Assert(mover != NULL, roster[i], " Team.isTargeting: NULL mover ");
+			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
 			MechWarriorPtr pilot = mover->getPilot();
 			if (pilot) {
 				GameObjectPtr target = pilot->getCurrentTarget();
@@ -379,7 +379,7 @@ bool Team::isCapturing (GameObjectWatchID targetWID, GameObjectWatchID exceptWID
 			if (roster[i] == exceptWID)
 				continue;
 			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
-			Assert(mover != NULL, roster[i], " Team.isTargeting: NULL mover ");
+			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
 			MechWarriorPtr pilot = mover->getPilot();
 			if (pilot && (pilot->getCurTacOrder()->code == TACTICAL_ORDER_CAPTURE)) {
 				GameObjectPtr target = pilot->getCurTacOrder()->getTarget();
@@ -390,7 +390,7 @@ bool Team::isCapturing (GameObjectWatchID targetWID, GameObjectWatchID exceptWID
 	else
 		for (int32_t i = 0; i < rosterSize; i++) {
 			MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(roster[i]));
-			Assert(mover != NULL, roster[i], " Team.isTargeting: NULL mover ");
+			Assert(mover != nullptr, roster[i], " Team.isTargeting: nullptr mover ");
 			MechWarriorPtr pilot = mover->getPilot();
 			if (pilot && (pilot->getCurTacOrder()->code == TACTICAL_ORDER_CAPTURE)) {
 				GameObjectPtr target = pilot->getCurTacOrder()->getTarget();
@@ -461,12 +461,12 @@ SystemTrackerPtr Team::addJammer (GameObjectPtr owner, int32_t masterId) {
 	newJammer->owner = owner;
 	newJammer->masterId = masterId;
 	newJammer->effect = MasterComponent::masterList[masterId].getJammerEffect();
-	newJammer->prev = NULL;
-	newJammer->next = NULL;
+	newJammer->prev = nullptr;
+	newJammer->next = nullptr;
 
 	//----------------------
 	// Find where it goes...
-	SystemTrackerPtr prevJammer = NULL;
+	SystemTrackerPtr prevJammer = nullptr;
 	SystemTrackerPtr curJammer = jammers;
 	while (curJammer) {
 		if (newJammer->effect >= curJammer->effect)
@@ -514,7 +514,7 @@ void Team::removeJammer (SystemTrackerPtr jammerTracker) {
 		jammerTracker->prev->next = jammerTracker->next;
 	else
 		jammers = jammerTracker->next;
-	jammerTracker->owner = NULL;
+	jammerTracker->owner = nullptr;
 	systemHeap->Free(jammerTracker);
 }
 
@@ -549,12 +549,12 @@ SystemTrackerPtr Team::addECM (GameObjectPtr owner, int32_t masterId) {
 	newECM->owner = owner;
 	newECM->masterId = masterId;
 	newECM->effect = MasterComponent::masterList[masterId].getEcmEffect();
-	newECM->prev = NULL;
-	newECM->next = NULL;
+	newECM->prev = nullptr;
+	newECM->next = nullptr;
 
 	//----------------------
 	// Find where it goes...
-	SystemTrackerPtr prevECM = NULL;
+	SystemTrackerPtr prevECM = nullptr;
 	SystemTrackerPtr curECM = ecms;
 	while (curECM) {
 		if (newECM->effect >= curECM->effect)
@@ -605,7 +605,7 @@ void Team::removeECM (SystemTrackerPtr ecm) {
 		ecms = ecm->next;
 	//--------------------
 	// Free the watcher...
-	ecm->owner = NULL;
+	ecm->owner = nullptr;
 	//---------------
 	// Free up mem...
 	systemHeap->Free(ecm);
@@ -713,7 +713,7 @@ void Team::statusCount (int32_t* statusTally) {
 	for (int32_t i = 0; i < rosterSize; i++) 
 	{
 		MoverPtr obj = (MoverPtr)ObjectManager->getByWatchID(roster[i]);
-		Assert(obj != NULL, i, " Team.statusCount: NULL roster object ");
+		Assert(obj != nullptr, i, " Team.statusCount: nullptr roster object ");
 		MechWarriorPtr pilot = obj->getPilot();
 		if (!obj->getExists())
 			statusTally[8]++;
@@ -744,7 +744,7 @@ void Team::destroy (void) {
 			systemHeap->Free(curTracker);
 			curTracker = nextTracker;
 		}
-		ecms = NULL;
+		ecms = nullptr;
 	}
 
 	if (jammers) {
@@ -754,7 +754,7 @@ void Team::destroy (void) {
 			systemHeap->Free(curTracker);
 			curTracker = nextTracker;
 		}
-		jammers = NULL;
+		jammers = nullptr;
 	}
 #endif
 }
@@ -1027,7 +1027,7 @@ bool Team::lineOfSight (float startLocal, int32_t mCellRow, int32_t mCellCol, in
 			eye->projectZ(realStart,lineStart);
 			eye->projectZ(endPos,lineEnd);
 					
-			debugLines[currentLineElement++] = new LineElement(lineStart,lineEnd,SD_RED,NULL,-1);
+			debugLines[currentLineElement++] = new LineElement(lineStart,lineEnd,SD_RED,nullptr,-1);
 		}
 #endif
 					return false;
@@ -1051,7 +1051,7 @@ bool Team::lineOfSight (float startLocal, int32_t mCellRow, int32_t mCellCol, in
 			eye->projectZ(realStart,lineStart);
 			eye->projectZ(endPos,lineEnd);
 					
-			debugLines[currentLineElement++] = new LineElement(lineStart,lineEnd,SD_GREEN,NULL,-1);
+			debugLines[currentLineElement++] = new LineElement(lineStart,lineEnd,SD_GREEN,nullptr,-1);
 		}
 #endif
 	}
@@ -1230,7 +1230,7 @@ bool Team::lineOfSight (float startLocal, int32_t mCellRow, int32_t mCellCol, fl
 							eye->projectZ(realStart,lineStart);
 							eye->projectZ(endPos,lineEnd);
 						
-							debugLines[currentLineElement++] = new LineElement(lineStart,lineEnd,SD_RED,NULL,-1);
+							debugLines[currentLineElement++] = new LineElement(lineStart,lineEnd,SD_RED,nullptr,-1);
 						}
 #endif
 						return false;
@@ -1251,7 +1251,7 @@ bool Team::lineOfSight (float startLocal, int32_t mCellRow, int32_t mCellCol, fl
 			eye->projectZ(realStart,lineStart);
 			eye->projectZ(endPos,lineEnd);
 					
-			debugLines[currentLineElement++] = new LineElement(lineStart,lineEnd,SD_GREEN,NULL,-1);
+			debugLines[currentLineElement++] = new LineElement(lineStart,lineEnd,SD_GREEN,nullptr,-1);
 		}
 #endif
 	}

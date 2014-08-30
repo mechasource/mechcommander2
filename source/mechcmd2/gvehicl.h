@@ -313,7 +313,7 @@ class GroundVehicle : public Mover {
 
 		virtual int32_t calcCV (bool calcMax = false);
 
-		virtual float calcAttackChance (GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint = NULL);
+		virtual float calcAttackChance (GameObjectPtr target, int32_t aimLocation, float targetTime, int32_t weaponIndex, float modifiers, int32_t* range, Stuff::Vector3D* targetPoint = nullptr);
 
 		virtual float getTotalEffectiveness(void);
 
@@ -411,8 +411,8 @@ class GroundVehicle : public Mover {
 
 #ifdef USE_SALVAGE
 		virtual bool isCaptureable (int32_t capturingTeamID) {
-			//return ((captureable || salvage != NULL) && (getTeamId() != capturingTeamID) && !isDestroyed());
-			return ((getFlag(OBJECT_FLAG_CAPTURABLE) || (salvage != NULL)) && (getTeamId() != capturingTeamID) && !isDestroyed());
+			//return ((captureable || salvage != nullptr) && (getTeamId() != capturingTeamID) && !isDestroyed());
+			return ((getFlag(OBJECT_FLAG_CAPTURABLE) || (salvage != nullptr)) && (getTeamId() != capturingTeamID) && !isDestroyed());
 		}
 #else
 		virtual bool isCaptureable (int32_t capturingTeamID) {

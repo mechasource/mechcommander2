@@ -10,7 +10,7 @@ FlattenBrush.cpp			: Implementation of the FlattenBrush component.
 //-------------------------------------------------------------------------------------------------
 FlattenBrush::FlattenBrush()
 {
-	pCurAction = NULL;
+	pCurAction = nullptr;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -34,14 +34,14 @@ Action* FlattenBrush::endPaint()
 		if ( !pCurAction->vertexInfoList.Count() )
 		{
 			delete pCurAction;
-			pRetAction = NULL;
+			pRetAction = nullptr;
 
 		}
 	}
 
 //	land->reCalcLight();
 	land->recalcWater();
-	pCurAction = NULL;
+	pCurAction = nullptr;
 	return pRetAction;
 }
 

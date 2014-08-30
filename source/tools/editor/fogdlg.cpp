@@ -13,7 +13,7 @@ FogDlg.cpp			: Implementation of the FogDlg component.
 // FogDlg dialog
 
 
-FogDlg::FogDlg(CWnd* pParent /*=NULL*/)
+FogDlg::FogDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(FogDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(FogDlg)

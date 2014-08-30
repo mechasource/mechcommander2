@@ -157,7 +157,7 @@ IProviderEngine * armProvider;
 
 //-----------------------------------
 // Frank at work!
-CameraPtr eye = NULL;
+CameraPtr eye = nullptr;
 
 extern bool drawTerrainTiles;
 extern int32_t terrainLineChanged;
@@ -177,7 +177,7 @@ extern bool reloadBounds;
 bool s_bSensorMapEnabled = false;
 extern bool justResaveAllMaps;
 extern bool bIsLoading;
-EditorInterface* EditorInterface::s_instance = NULL;
+EditorInterface* EditorInterface::s_instance = nullptr;
 
 extern volatile int32_t ProcessingError;
 
@@ -287,7 +287,7 @@ void Editor::init( PSTR loader )
 				else
 				{
 					resolved = true;
-					CFileDialog fileDlg( 1,  "pak", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter );
+					CFileDialog fileDlg( 1,  "pak", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter );
 					fileDlg.m_ofn.lpstrInitialDir = missionPath;
 	
 					bOK = false;
@@ -322,13 +322,13 @@ void Editor::init( PSTR loader )
 		if ( !land )
 		{
 			land = new Terrain( );
-			land->init( 0, (PacketFile*)NULL, EDITOR_VISIBLE_VERTICES, crap, 100  );
+			land->init( 0, (PacketFile*)nullptr, EDITOR_VISIBLE_VERTICES, crap, 100  );
 		}
 	}
 
 	if (bOK)
 		EditorInterface::instance()->init( loader );
-	PlaySound("SystemDefault",NULL,SND_ASYNC);
+	PlaySound("SystemDefault",nullptr,SND_ASYNC);
 }
 
 void Editor::destroy (void)
@@ -349,7 +349,7 @@ void Editor::destroy (void)
 
 	if ( eye ) 
 		delete eye; 
-	eye = NULL;
+	eye = nullptr;
 }
 
 void Editor::resaveAll (void)
@@ -359,7 +359,7 @@ void Editor::resaveAll (void)
 		eye = new EditorCamera;
 
 	// ARM
-	CoInitialize(NULL);
+	CoInitialize(nullptr);
 	armProvider = CreateProviderEngine("MC2Editor", versionStamp);
 	silentMode = true; // shut up the warnings from tgl export
 
@@ -494,7 +494,7 @@ void Editor::resaveAll (void)
 		if ((findResult.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0)
 		{
 			char baseName[1024];
-			_splitpath(findResult.cFileName,NULL,NULL,baseName,NULL);
+			_splitpath(findResult.cFileName,nullptr,nullptr,baseName,nullptr);
 			
 			FullPathFileName pakName;
 			pakName.init(missionPath,baseName,".pak");
@@ -611,7 +611,7 @@ EditorInterface::EditorInterface()
 {
 	bThisIsInitialized = false;
 	painting = false;
-	curBrush = NULL;
+	curBrush = nullptr;
 	selecting = true;
 	realRotation = 0.0;
 	currentBrushID = IDS_SELECT;
@@ -619,7 +619,7 @@ EditorInterface::EditorInterface()
 
 	smoothRadius = 2;
 	dragging = false;
-	prevBrush = NULL;
+	prevBrush = nullptr;
 	prevSelecting = false;
 	highlighted = false;
 	prevPainting = false;
@@ -634,11 +634,11 @@ EditorInterface::EditorInterface()
 	hCursor = 0;
 
 	bObjectSelectOnlyMode = false;
-	menus = NULL;
+	menus = nullptr;
 	m_hAccelTable = LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_ACCELERATOR1));
 
-	m_hSplashBitMap = NULL;
-	m_hBusyCursor = NULL;
+	m_hSplashBitMap = nullptr;
+	m_hBusyCursor = nullptr;
 	m_AppIsBusy = 0;
 	m_bInRunGameOSLogicCall = false;
 	rightDrag = 0;
@@ -654,13 +654,13 @@ EditorInterface::~EditorInterface()
 		/*this is done here because m_hBusyCursor is sometimes used before EditorInterface
 		is "initialized" and after it is "terminated" */
 		DestroyCursor(m_hBusyCursor);
-		m_hBusyCursor = NULL;
+		m_hBusyCursor = nullptr;
 	}
 	if (m_hSplashBitMap) {
 		DeleteObject(m_hSplashBitMap);
-		m_hSplashBitMap = NULL;
+		m_hSplashBitMap = nullptr;
 	}
-	s_instance = NULL;
+	s_instance = nullptr;
 }
 
 void EditorInterface::terminate()
@@ -670,7 +670,7 @@ void EditorInterface::terminate()
 		bThisIsInitialized = false;
 
 		if ( curBrush )
-			delete curBrush; curBrush = NULL;
+			delete curBrush; curBrush = nullptr;
 
 		if (EditorObjectMgr::instance())
 		{
@@ -678,12 +678,12 @@ void EditorInterface::terminate()
 
 			for ( int32_t i = 0; i < count+1; ++i )
 			{
-				delete menus[i]; menus[i] = NULL;
+				delete menus[i]; menus[i] = nullptr;
 			}
 		}
 
 		free( menus );
-		menus = NULL;
+		menus = nullptr;
 
 		objectivesEditState.Clear();
 	}
@@ -895,7 +895,7 @@ void EditorInterface::handleNewMenuMessage( int32_t specificMessage )
 
 	if (EditorInterface::instance()->ObjectSelectOnlyMode())
 	{
-		PlaySound("SystemDefault",NULL,SND_ASYNC);
+		PlaySound("SystemDefault",nullptr,SND_ASYNC);
 		return;
 	}
 
@@ -1156,7 +1156,7 @@ int32_t EditorInterface::FileOpen()
 		return false;
 	}
 
-	CFileDialog fileDlg( 1,  "pak", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter );
+	CFileDialog fileDlg( 1,  "pak", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter );
 	fileDlg.m_ofn.lpstrInitialDir = missionPath;
 
 	if (  IDOK == fileDlg.DoModal() )
@@ -1166,7 +1166,7 @@ int32_t EditorInterface::FileOpen()
 		EditorData::initTerrainFromPCV( pFile );
 		tacMap.UpdateMap();
 		syncScrollBars();
-		PlaySound("SystemDefault",NULL,SND_ASYNC);
+		PlaySound("SystemDefault",nullptr,SND_ASYNC);
 		UnsetBusyMode();
 	}
 
@@ -1644,7 +1644,7 @@ void EditorInterface::KillCurBrush()
 		delete curBrush;
 	}
 
-	curBrush = NULL;
+	curBrush = nullptr;
 
 	selecting = false;
 
@@ -1726,11 +1726,11 @@ int32_t EditorInterface::PaintTerrain( int32_t type )
 int32_t EditorInterface::SaveAs()
 {
 	int32_t retVal = IDOK;
-	CFileDialog	fileDlg( 0,  "pak", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter );
+	CFileDialog	fileDlg( 0,  "pak", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szPAKFilter );
 
 	{
 		/* if the mission directory doesn't exist, we attempt to create it */
-		int32_t curDirStrSize = GetCurrentDirectory(0, NULL);
+		int32_t curDirStrSize = GetCurrentDirectory(0, nullptr);
 		TCHAR *curDirStr = (TCHAR *)gos_Malloc(curDirStrSize);
 		GetCurrentDirectory(curDirStrSize, curDirStr);
 		BOOL result = SetCurrentDirectory(missionPath);
@@ -1740,10 +1740,10 @@ int32_t EditorInterface::SaveAs()
 		if (0 == result)
 		{
 			gosASSERT(false);
-			CreateDirectory(missionPath, NULL);
-			CreateDirectory(warriorPath, NULL);
-			CreateDirectory(terrainPath, NULL);
-			CreateDirectory(texturePath, NULL);
+			CreateDirectory(missionPath, nullptr);
+			CreateDirectory(warriorPath, nullptr);
+			CreateDirectory(terrainPath, nullptr);
+			CreateDirectory(texturePath, nullptr);
 		}
 	}
 
@@ -1766,10 +1766,10 @@ int32_t EditorInterface::SaveAs()
 		//	-Water Detail Maps (texturePath)
 		char name[1024];
 		char name2[1024];
-		_splitpath(pFile,NULL,NULL,name2,NULL);
+		_splitpath(pFile,nullptr,nullptr,name2,nullptr);
 
 		if (EditorData::instance->getMapName())
-			_splitpath(EditorData::instance->getMapName(),NULL,NULL,name,NULL);
+			_splitpath(EditorData::instance->getMapName(),nullptr,nullptr,name,nullptr);
 		else
 			strcpy(name,name2);
 		
@@ -2079,7 +2079,7 @@ void EditorInterface::render()
 
 int32_t EditorInterface::NewHeightMap()
 {
-	CFileDialog	fileDlg( 1,  "tga", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szTGAFilter );
+	CFileDialog	fileDlg( 1,  "tga", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szTGAFilter );
 	fileDlg.m_ofn.lpstrInitialDir = terrainPath;
 
 	bool endFlag = false;
@@ -2588,9 +2588,9 @@ int32_t EditorInterface::Alignment( int32_t specific )
 
 int32_t EditorInterface::SaveHeightMap()
 {
-	CreateDirectory(terrainPath, NULL);
+	CreateDirectory(terrainPath, nullptr);
 	
-	CFileDialog	fileDlg( 0, "tga", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szTGAFilter );
+	CFileDialog	fileDlg( 0, "tga", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR, szTGAFilter );
 	fileDlg.m_ofn.lpstrInitialDir = terrainPath;
 	
 	if (  IDOK == fileDlg.DoModal() )
@@ -2841,13 +2841,13 @@ void EditorInterface::SetBusyMode(bool bRedrawWindow)
 	if (0 == m_AppIsBusy) {
 		if (!m_hBusyCursor) {
 #ifndef _DEBUG /*the debugger seems to encounter an infinite loop of user breaks (int32_t 3) ntdll when executing this line*/
-			m_hBusyCursor = (HCURSOR)LoadImage(NULL, "bmech.ani", IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
+			m_hBusyCursor = (HCURSOR)LoadImage(nullptr, "bmech.ani", IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE);
 #endif
 		}
 		if (m_hBusyCursor) {
 			::SetCursor(m_hBusyCursor);
 		} else {
-			::SetCursor(LoadCursor(NULL, IDC_WAIT));
+			::SetCursor(LoadCursor(nullptr, IDC_WAIT));
 		}
 	}
 	m_AppIsBusy += 1;
@@ -2910,7 +2910,7 @@ int32_t EditorInterface::LayMines()
 
 int32_t EditorInterface::SelectDetailTexture()
 {
-	CFileDialog fileDlg( TRUE,  "tga", NULL, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
+	CFileDialog fileDlg( TRUE,  "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
 
 	if (  IDOK == fileDlg.DoModal() )
@@ -2928,7 +2928,7 @@ int32_t EditorInterface::SelectDetailTexture()
 
 int32_t EditorInterface::SelectWaterTexture()
 {
-	CFileDialog fileDlg( TRUE,  "tga", NULL, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
+	CFileDialog fileDlg( TRUE,  "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
 
 	if (  IDOK == fileDlg.DoModal() )
@@ -2968,7 +2968,7 @@ inline bool colorMapIsOKFormat (PCSTR fileName)
 
 int32_t EditorInterface::SetBaseTexture()
 {
-	CFileDialog fileDlg( TRUE,  "tga", NULL, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
+	CFileDialog fileDlg( TRUE,  "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
 
 	if (  IDOK == fileDlg.DoModal() )
@@ -2980,7 +2980,7 @@ int32_t EditorInterface::SetBaseTexture()
 		if (colorMapIsOKFormat(path))
 		{
 			char name[1024];
-			_splitpath(path,NULL,NULL,name,NULL);
+			_splitpath(path,nullptr,nullptr,name,nullptr);
 
 			PSTR testLoc = strstr(name,".burnin");
 			if (testLoc)
@@ -3020,7 +3020,7 @@ int32_t EditorInterface::ReloadBaseTexture()
 
 int32_t EditorInterface::SelectWaterDetailTexture()
 {
-	CFileDialog fileDlg( TRUE,  "tga", NULL, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
+	CFileDialog fileDlg( TRUE,  "tga", nullptr, OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR, szTGAFilter );
 	fileDlg.m_ofn.lpstrInitialDir = texturePath;
 
 	if (  IDOK == fileDlg.DoModal() )
@@ -3263,7 +3263,7 @@ BOOL EditorInterface::OnSetCursor(CWnd* pWnd, uint32_t nHitTest, uint32_t messag
 		if (m_hBusyCursor) {
 			::SetCursor(m_hBusyCursor);
 		} else {
-			::SetCursor(LoadCursor(NULL, IDC_WAIT));
+			::SetCursor(LoadCursor(nullptr, IDC_WAIT));
 		}
 	}
 	else if ( hCursor )
@@ -3281,7 +3281,7 @@ BOOL EditorInterface::PreCreateWindow(CREATESTRUCT& cs)
 	
       cs.lpszClass = AfxRegisterWndClass(
             CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW, // use any window styles
-            NULL,
+            nullptr,
             (HBRUSH) (COLOR_WINDOW + 1));         
 	
 	return CWnd ::PreCreateWindow(cs);
@@ -3296,7 +3296,7 @@ void EditorInterface::OnKeyUp(uint32_t nChar, uint32_t nRepCnt, uint32_t nFlags)
 		selecting = prevSelecting;
 		painting = prevPainting;
 		dragging = prevDragging;
-		prevBrush = NULL;
+		prevBrush = nullptr;
 		prevSelecting = false;
 		prevPainting = false;
 		prevDragging = false;
@@ -3423,7 +3423,7 @@ BOOL EditorInterface::OnMouseWheel(uint32_t nFlags, int16_t zDelta, CPoint pt)
 void EditorInterface::OnHScroll(uint32_t nSBCode, uint32_t nPos, CScrollBar* pScrollBar) 
 {
 	
-	if (pScrollBar != NULL && pScrollBar->SendChildNotifyLastMsg())
+	if (pScrollBar != nullptr && pScrollBar->SendChildNotifyLastMsg())
 		return;     // eat it
 
 	// ignore scroll bar msgs from other controls
@@ -3652,7 +3652,7 @@ void EditorInterface::initTacMap()
 	// We go through all the damned trouble to save it every time!
 	// This takes a int32_t time.
 	// -fs
-	puint8_t pData = NULL;
+	puint8_t pData = nullptr;
 	int32_t size = 0;
 	
 	FullPathFileName mPath;
@@ -3679,7 +3679,7 @@ void EditorInterface::initTacMap()
 	
 	tacMap.SetData( pData, size );
 	free( pData );
-	pData = NULL;
+	pData = nullptr;
 	tacMap.RedrawWindow();
 }
 
@@ -3704,7 +3704,7 @@ void EditorInterface::OnLButtonDblClk(uint32_t nFlags, CPoint point)
 	eye->inverseProject( screen, pos ); 
 
 	EditorObject* pObject = EditorObjectMgr::instance()->getObjectAtPosition( pos );
-	if (NULL != pObject)
+	if (nullptr != pObject)
 	{
 		UnitSettings();
 	}
@@ -3720,14 +3720,14 @@ void EditorInterface::OnPaint()
 		if (!bThisIsInitialized) {
 			/*paint splash screen*/
 			if (!m_hSplashBitMap) {
-				m_hSplashBitMap = (HBITMAP)LoadImage(NULL, "esplash.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+				m_hSplashBitMap = (HBITMAP)LoadImage(nullptr, "esplash.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 			}
 			if (m_hSplashBitMap) {
 				CRect rcClient;
 				GetClientRect(rcClient);
 
 				BITMAP bm_struct;
-				CBitmap* pbmOld = NULL;
+				CBitmap* pbmOld = nullptr;
 				CDC dcMem;
 				dcMem.CreateCompatibleDC(&dc);
 				{
@@ -3791,7 +3791,7 @@ void EditorInterface::OnViewRefreshtacmap()
 
 bool EditorInterface::SafeRunGameOSLogic()
 {
-	if (bThisIsInitialized && (NULL != land))
+	if (bThisIsInitialized && (nullptr != land))
 	{
 		if (!m_bInRunGameOSLogicCall)
 		{
@@ -3827,7 +3827,7 @@ void EditorInterface::rotateSelectedObjects( int32_t direction )
 	}
 
 	undoMgr.AddAction(pAction);
-	pAction = NULL;
+	pAction = nullptr;
 }
 
 static void UpdateMissionPlayerPlayer(int32_t player, CCmdUI* pCmdUI)

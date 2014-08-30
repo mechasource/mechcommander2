@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 // TilingFactorsDialog dialog
 
 
-TilingFactorsDialog::TilingFactorsDialog(CWnd* pParent /*=NULL*/)
+TilingFactorsDialog::TilingFactorsDialog(CWnd* pParent /*=nullptr*/)
 	: CDialog(TilingFactorsDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(TilingFactorsDialog)

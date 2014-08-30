@@ -24,7 +24,7 @@ class TerrainBrush: public Brush
 
 			terrainType = Type;
 			s_lastType = Type;
-			pAction = NULL;
+			pAction = nullptr;
 		}
 		virtual ~TerrainBrush(){}
 
@@ -44,7 +44,7 @@ class TerrainBrush: public Brush
 		Action* endPaint()
 		{
 			Action* pRetAction = pAction;
-			pAction  = NULL;
+			pAction  = nullptr;
 			return pRetAction;
 		}
 		virtual bool paint( Stuff::Vector3D& worldPos, int32_t screenX, int32_t screenY )

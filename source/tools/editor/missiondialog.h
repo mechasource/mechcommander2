@@ -14,7 +14,7 @@ class CMissionDialog : public CDialog
 {
 // Construction
 public:
-	CMissionDialog(CWnd* pParent = NULL);   // standard constructor
+	CMissionDialog(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CMissionDialog)

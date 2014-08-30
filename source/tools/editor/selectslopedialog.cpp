@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 // SelectSlopeDialog dialog
 
 
-SelectSlopeDialog::SelectSlopeDialog(CWnd* pParent /*=NULL*/)
+SelectSlopeDialog::SelectSlopeDialog(CWnd* pParent /*=nullptr*/)
 	: CDialog(SelectSlopeDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(SelectSlopeDialog)

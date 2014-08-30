@@ -19,44 +19,44 @@ SalvageMechArea.cpp			: Implementation of the SalvageMechArea component.
 #include "windows.h"
 #include "gameSound.h"
 
-aText*		DeadPilotListItem::s_nameText = NULL;
-aText*		DeadPilotListItem::s_rankText = NULL;
-aText*		DeadPilotListItem::s_missionText = NULL;
-aText*		DeadPilotListItem::s_killsText = NULL;
-aRect*		DeadPilotListItem::s_area = NULL;
-aRect*		DeadPilotListItem::s_liveIconRect = NULL;
-aRect*		DeadPilotListItem::s_deadIconRect = NULL;
+aText*		DeadPilotListItem::s_nameText = nullptr;
+aText*		DeadPilotListItem::s_rankText = nullptr;
+aText*		DeadPilotListItem::s_missionText = nullptr;
+aText*		DeadPilotListItem::s_killsText = nullptr;
+aRect*		DeadPilotListItem::s_area = nullptr;
+aRect*		DeadPilotListItem::s_liveIconRect = nullptr;
+aRect*		DeadPilotListItem::s_deadIconRect = nullptr;
 int32_t		DeadPilotListItem::s_itemCount = 0;
 
-aText*		ActivePilotListItem::s_nameText = NULL;
-aText*		ActivePilotListItem::s_missionText = NULL;
-aText*		ActivePilotListItem::s_killsText = NULL;
+aText*		ActivePilotListItem::s_nameText = nullptr;
+aText*		ActivePilotListItem::s_missionText = nullptr;
+aText*		ActivePilotListItem::s_killsText = nullptr;
 
-aText*		ActivePilotListItem::s_rankText = NULL;
-aText*		ActivePilotListItem::s_gunneryText = NULL;
-aText*		ActivePilotListItem::s_pilotingText = NULL;
+aText*		ActivePilotListItem::s_rankText = nullptr;
+aText*		ActivePilotListItem::s_gunneryText = nullptr;
+aText*		ActivePilotListItem::s_pilotingText = nullptr;
 
 int32_t		ActivePilotListItem::s_itemCount = 0;
 aRect*		ActivePilotListItem::s_outline[5];
 aObject*	ActivePilotListItem::s_icons[8];
-aRect*		ActivePilotListItem::s_area = NULL;
-aRect*		ActivePilotListItem::s_iconRect = NULL;		
+aRect*		ActivePilotListItem::s_area = nullptr;
+aRect*		ActivePilotListItem::s_iconRect = nullptr;		
 AttributeMeter*		ActivePilotListItem::s_attributeMeters[2] = { 0,0};
-aRect*		ActivePilotListItem::s_killIconRect = NULL;
-PilotPromotionArea* ActivePilotListItem::s_pilotPromotionArea = NULL;
+aRect*		ActivePilotListItem::s_killIconRect = nullptr;
+PilotPromotionArea* ActivePilotListItem::s_pilotPromotionArea = nullptr;
 aText*		ActivePilotListItem::s_medalAwardedText = 0;
 aText*		ActivePilotListItem::s_medalText= 0;
 aText*		ActivePilotListItem::s_promotionText = 0;
 aObject*	ActivePilotListItem::s_medals[MAX_MEDAL] = {0};
 
-aAnimation*		ActivePilotListItem::s_skillAnim = NULL;
-aAnimation*		ActivePilotListItem::s_medalAwardedAnim = NULL;
-aAnimation*		ActivePilotListItem::s_pilotPromotedAnim = NULL;
+aAnimation*		ActivePilotListItem::s_skillAnim = nullptr;
+aAnimation*		ActivePilotListItem::s_medalAwardedAnim = nullptr;
+aAnimation*		ActivePilotListItem::s_pilotPromotedAnim = nullptr;
 int32_t		ActivePilotListItem::s_totalWidth = 0;	
 
 
 
-PilotPromotionArea*	PilotReviewScreen::s_curPromotion = NULL;;
+PilotPromotionArea*	PilotReviewScreen::s_curPromotion = nullptr;;
 
 aButton*	SpecialtyListItem::s_radioButton = 0;
 aObject*		SpecialtyListItem::s_skillIcons[4] = {0,0,0,0};
@@ -70,7 +70,7 @@ int32_t		SpecialtyListItem::s_itemCount = 0; // hack, we really don't want to de
 
 
 
-PilotReviewScreen* PilotReviewScreen::instance = NULL;
+PilotReviewScreen* PilotReviewScreen::instance = nullptr;
 
 extern float frameLength;
 
@@ -324,38 +324,38 @@ DeadPilotListItem::~DeadPilotListItem()
 	if ( deadIcon )
 		delete deadIcon;
 
-	deadIcon = liveIcon = NULL;
+	deadIcon = liveIcon = nullptr;
 
 	s_itemCount--;
 	if ( s_itemCount < 1 )
 	{
 		if ( s_area )
 			delete s_area;
-		s_area = NULL;
+		s_area = nullptr;
 
 		if ( s_missionText )
 			delete s_missionText;
-		s_missionText = NULL;
+		s_missionText = nullptr;
 
 		if ( s_killsText )
 			delete s_killsText;
-		s_killsText = NULL;
+		s_killsText = nullptr;
 
 		if ( s_rankText )
 			delete s_rankText;
-		s_rankText = NULL;
+		s_rankText = nullptr;
 
 		if ( s_nameText )
 			delete s_nameText;
-		s_nameText = NULL;
+		s_nameText = nullptr;
 
 		if ( s_liveIconRect )
 			delete s_liveIconRect;
-		s_liveIconRect = NULL;
+		s_liveIconRect = nullptr;
 
 		if ( s_deadIconRect )
 			delete s_deadIconRect;
-		s_deadIconRect = NULL;	
+		s_deadIconRect = nullptr;	
 	}
 }
 
@@ -591,7 +591,7 @@ void PilotListBox::update()
 					
 					if ( pilotItem->isDone()  )
 					{
-						pilotItem = NULL;
+						pilotItem = nullptr;
 						while ( !pilotItem )
 						{
 							curItem++;
@@ -834,7 +834,7 @@ void		ActivePilotListItem::update()
 		if ( s_pilotPromotionArea->isDone() )
 		{
 			promotionShown = true;
-			PilotReviewScreen::s_curPromotion = NULL;
+			PilotReviewScreen::s_curPromotion = nullptr;
 			showingPromotion = false;
 		}
 	} 
@@ -869,7 +869,7 @@ float ActivePilotListItem::flashTime()
 ActivePilotListItem::~ActivePilotListItem()
 {
 	delete pilotIcon;
-	pilotIcon = NULL;
+	pilotIcon = nullptr;
 
 	for ( int32_t i = 0; i < MAX_MEDAL; i++ )
 	{
@@ -881,7 +881,7 @@ ActivePilotListItem::~ActivePilotListItem()
 		if ( medalTexts[i] )
 		{
 			delete medalTexts[i];
-			medalTexts[i] = NULL;
+			medalTexts[i] = nullptr;
 		}
 	}
 
@@ -990,7 +990,7 @@ ActivePilotListItem::~ActivePilotListItem()
 		if ( s_pilotPromotionArea )
 			delete s_pilotPromotionArea;
 
-		s_pilotPromotionArea = NULL;
+		s_pilotPromotionArea = nullptr;
 	}
 }
 
@@ -1274,7 +1274,7 @@ void PilotPromotionArea::init( FitIniFile& file )
 
 
 	areaLeft.init( file, "PromoteGadgetLeftStatic", "PromoteGadgetLeftText",
-		"PromoteGadgetLeftRect", NULL );
+		"PromoteGadgetLeftRect", nullptr );
 
 	areaRight.init( file, "PromoteGadgetRightStatic", "PromoteGadgetRightText",
 		"PromoteGadgetRightRect", "PromoteGadgetRightButton" );
@@ -1303,7 +1303,7 @@ void PilotPromotionArea::init( FitIniFile& file )
 	file.seekBlock( "SkillSelectionAnimation" );
 	selSkillAnim.init(&file, "" );
 
-	pilot = NULL;
+	pilot = nullptr;
 }
 
 void PilotPromotionArea::render()
@@ -1521,7 +1521,7 @@ void PilotPromotionArea::setPilot( LogisticsPilot* pPilot, PilotIcon* pIcon )
 	for ( i = 0; i < maxSkill; i++ )
 	{
 		SpecialtyListItem* pItem = new SpecialtyListItem( i );
-		aTextListItem* tmpItem = NULL;
+		aTextListItem* tmpItem = nullptr;
 		if ( i == FIRST_REGULAR_SPECIALTY )
 		{
 			tmpItem = new aTextListItem( IDS_PROMOTION_LISTBOX_FONT );

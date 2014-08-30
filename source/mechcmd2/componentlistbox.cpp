@@ -19,9 +19,9 @@ ComponentListBox.cpp			: Implementation of the ComponentListBox component.
 #include "gamesound.h"
 #include "logisticserrors.h"
 
-ComponentListItem* ComponentListItem::s_templateItem = NULL;
+ComponentListItem* ComponentListItem::s_templateItem = nullptr;
 
-ComponentIconListBox* ComponentIconListBox::s_instance = NULL;
+ComponentIconListBox* ComponentIconListBox::s_instance = nullptr;
 
 
 
@@ -108,7 +108,7 @@ int32_t ComponentListItem::init( FitIniFile& file )
 {
 	if ( !s_templateItem )
 	{
-		s_templateItem = new ComponentListItem( NULL );
+		s_templateItem = new ComponentListItem( nullptr );
 		char animName[COMP_ANIMATION_COUNT][32];
 		for ( int32_t i = 0; i < COMP_ANIMATION_COUNT; i++ )
 		{
@@ -460,10 +460,10 @@ ComponentIconListBox::~ComponentIconListBox()
 {
 	masterComponentList.Clear();
 
-	s_instance = NULL;
+	s_instance = nullptr;
 
 	delete ComponentListItem::s_templateItem;
-	ComponentListItem::s_templateItem = NULL;
+	ComponentListItem::s_templateItem = nullptr;
 }
 
 LogisticsComponent* ComponentIconListBox::getComponent()
@@ -473,7 +473,7 @@ LogisticsComponent* ComponentIconListBox::getComponent()
 		return ((ComponentListItem*)items[itemSelected])->pComponent;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void ComponentIconListBox::addSortedItem( ComponentListItem* pItem )

@@ -18,7 +18,7 @@ MechListBox.cpp			: Implementation of the MechListBox component.
 #include "MechPurchaseScreen.h"
 #include "gameSound.h"
 
-MechListBoxItem* MechListBoxItem::s_templateItem = NULL;
+MechListBoxItem* MechListBoxItem::s_templateItem = nullptr;
 
 bool MechListBox::s_DrawCBills = true;
 bool MechListBoxItem::bAddCalledThisFrame = 0;
@@ -40,7 +40,7 @@ MechListBox::~MechListBox()
 	removeAllItems( true );
 
 	delete MechListBoxItem::s_templateItem;
-	MechListBoxItem::s_templateItem = NULL;
+	MechListBoxItem::s_templateItem = nullptr;
 }
 
 void	MechListBox::setScrollBarOrange()
@@ -212,7 +212,7 @@ void MechListBoxItem::init( FitIniFile& file )
 {
 	if ( !s_templateItem )
 	{
-		s_templateItem = new MechListBoxItem( NULL, 0 );
+		s_templateItem = new MechListBoxItem( nullptr, 0 );
 		file.seekBlock( "MainBox" );
 
 		int32_t width, height;

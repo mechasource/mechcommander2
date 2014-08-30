@@ -81,7 +81,7 @@ class MoverGroup {
 			numMovers = 0;
 			pointWID = 0;
 			disbandOnNoPoint = false;
-			goalMap = NULL;
+			goalMap = nullptr;
 		}
 		
 		void init (MoverGroupData &data);
@@ -150,12 +150,12 @@ class MoverGroup {
 
 		int32_t calcMoveGoals (Stuff::Vector3D goal, Stuff::Vector3D* goalList);
 
-		int32_t calcJumpGoals (Stuff::Vector3D goal, Stuff::Vector3D* goalList, GameObjectPtr DFATarget = NULL);
+		int32_t calcJumpGoals (Stuff::Vector3D goal, Stuff::Vector3D* goalList, GameObjectPtr DFATarget = nullptr);
 
 		//----------------
 		// Tactical Orders
 
-		virtual int32_t handleTacticalOrder (TacticalOrder tacOrder, int32_t priority, Stuff::Vector3D* jumpGoalList = NULL, bool queueGroupOrder = false);
+		virtual int32_t handleTacticalOrder (TacticalOrder tacOrder, int32_t priority, Stuff::Vector3D* jumpGoalList = nullptr, bool queueGroupOrder = false);
 
 		int32_t orderMoveToPoint (bool setTacOrder, int32_t origin, Stuff::Vector3D location, uint32_t params);
 

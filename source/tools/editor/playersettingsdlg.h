@@ -14,7 +14,7 @@ class PlayerSettingsDlg : public CDialog
 {
 // Construction
 public:
-	PlayerSettingsDlg(CWnd* pParent = NULL);   // standard constructor
+	PlayerSettingsDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(PlayerSettingsDlg)

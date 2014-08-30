@@ -14,7 +14,7 @@ class TextMessageDlg : public CDialog
 {
 // Construction
 public:
-	TextMessageDlg(CWnd* pParent = NULL);   // standard constructor
+	TextMessageDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(TextMessageDlg)

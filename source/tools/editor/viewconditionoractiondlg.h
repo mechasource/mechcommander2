@@ -14,7 +14,7 @@ class ViewConditionOrActionDlg : public CDialog
 {
 // Construction
 public:
-	ViewConditionOrActionDlg(CWnd* pParent = NULL);   // standard constructor
+	ViewConditionOrActionDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(ViewConditionOrActionDlg)

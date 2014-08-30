@@ -32,8 +32,8 @@ TGAFileHeader* LoadScreen::progressBackground = 0;
 TGAFileHeader* LoadScreen::mergedTexture = 0;
 TGAFileHeader* LoadScreen::waitingForPlayersMemory = 0;
 
-LoadScreen* LoadScreenWrapper::enterScreen = NULL;
-LoadScreen* LoadScreenWrapper::exitScreen = NULL;
+LoadScreen* LoadScreenWrapper::enterScreen = nullptr;
+LoadScreen* LoadScreenWrapper::exitScreen = nullptr;
 
 
 extern volatile bool mc2IsInMouseTimer;
@@ -58,7 +58,7 @@ LoadScreenWrapper::LoadScreenWrapper()
 	if ( exitScreen )
 		delete exitScreen;
 
-	enterScreen = exitScreen = NULL;
+	enterScreen = exitScreen = nullptr;
 	enterScreen = new LoadScreen;
 	exitScreen = new LoadScreen;
 	bFirstTime = 0;
@@ -71,7 +71,7 @@ LoadScreenWrapper::~LoadScreenWrapper()
 	if ( exitScreen )
 		delete exitScreen;
 
-	enterScreen = exitScreen = NULL;
+	enterScreen = exitScreen = nullptr;
 }
 
 void LoadScreenWrapper::init( FitIniFile& file )
@@ -84,7 +84,7 @@ void LoadScreenWrapper::init( FitIniFile& file )
 
 void LoadScreenWrapper::changeRes()
 {
-	PCSTR Appendix = NULL;
+	PCSTR Appendix = nullptr;
 
 	switch( prefs.resolution )
 	{
@@ -152,12 +152,12 @@ void LoadScreen::changeRes( FitIniFile& outFile )
 	if ( progressBackground )
 		delete [] progressBackground;
 
-	progressBackground = NULL;
+	progressBackground = nullptr;
 
 	if ( waitingForPlayersMemory )
 		delete [] waitingForPlayersMemory;
 
-	waitingForPlayersMemory = NULL;
+	waitingForPlayersMemory = nullptr;
 
 	if ( !progressBackground )
 	{
@@ -321,9 +321,9 @@ LoadScreen::~LoadScreen()
 	if ( waitingForPlayersMemory)
 		delete [] waitingForPlayersMemory;
 
-	animIndices = NULL;
+	animIndices = nullptr;
 
-	waitingForPlayersMemory = progressBackground = progressTextureMemory = mergedTexture = NULL;
+	waitingForPlayersMemory = progressBackground = progressTextureMemory = mergedTexture = nullptr;
 }
 
 void LoadScreen::begin()
@@ -457,7 +457,7 @@ void LoadScreen::update()
 			// BLOCK THREAD WHILE THIS IS HAPPENING
 			mc2IsInDisplayBackBuffer = true;
 
-			AsynFunc = NULL;
+			AsynFunc = nullptr;
 			mc2UseAsyncMouse = turnOffAsyncMouse;
 			if ( !mc2UseAsyncMouse)
 				MouseTimerKill();

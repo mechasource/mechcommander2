@@ -30,7 +30,7 @@ bool Eraser::beginPaint()
 }
 Action* Eraser::endPaint()
 {
-	Action* pRetAction = NULL;
+	Action* pRetAction = nullptr;
 	if (pCurAction)
 	{
 		if ( pCurAction->vertexInfoList.Count() || pCurAction->bldgAction.objInfoPtrList.Count() )
@@ -43,7 +43,7 @@ Action* Eraser::endPaint()
 		}
 	}
 	
-	pCurAction = NULL;
+	pCurAction = nullptr;
 	return pRetAction;
 }
 

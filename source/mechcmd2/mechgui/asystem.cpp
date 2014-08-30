@@ -36,7 +36,7 @@ void aObject::update()
 aObject::aObject()
 {
 	pNumberOfChildren = 0;
-	pParent = NULL;
+	pParent = nullptr;
 	textureHandle = 0;
 	memset( location, 0, sizeof ( gos_VERTEX ) * 4 );
 	for ( int32_t i = 0; i < 4;i++ )
@@ -77,7 +77,7 @@ int32_t aObject::init(int32_t xPos, int32_t yPos,int32_t w, int32_t h)
 	showWindow = TRUE;
 
 	pNumberOfChildren = 0;
-	pParent = NULL;
+	pParent = nullptr;
 	return (NO_ERROR);
 }
 
@@ -196,7 +196,7 @@ void aObject::destroy()
 	{
 		pParent->removeChild(this);
 	}
-	pParent = NULL;
+	pParent = nullptr;
 	
 }
 
@@ -248,7 +248,7 @@ aObject* aObject::findObject(int32_t xPos, int32_t yPos)
 	if (showWindow && pointInside(xPos,yPos))
 		return (this);
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -267,7 +267,7 @@ int32_t aObject::numberOfChildren(void) const
 void aObject::addChild(aObject* c)
 {
 	Assert (pNumberOfChildren < MAX_CHILDREN, pNumberOfChildren+1, "Too many children!");
-	Assert(c->getParent() == NULL || c->getParent() == this, 0, " Adding child that's someone else's ");
+	Assert(c->getParent() == nullptr || c->getParent() == this, 0, " Adding child that's someone else's ");
 	if (!c)
 		return;
 	removeChild(c);	//	make sure this isn't already my child (Duplicate children screws up bringToFront())
@@ -280,10 +280,10 @@ void aObject::addChild(aObject* c)
 
 void aObject::removeChild(aObject* c)
 {
-	if (!c)			//If this is NULL, shouldn't we still remove it from the list?
+	if (!c)			//If this is nullptr, shouldn't we still remove it from the list?
 		return;
 			
-	if ((c->getParent() == this) || (c->getParent() == NULL))	//Normal situation
+	if ((c->getParent() == this) || (c->getParent() == nullptr))	//Normal situation
 	{
 		for (int32_t cc = 0; cc < pNumberOfChildren; cc++)
 		{
@@ -292,9 +292,9 @@ void aObject::removeChild(aObject* c)
 				// found the child, remove it and shift the rest of the children up
 				for (int32_t sc = cc; sc < pNumberOfChildren - 1; sc++)
 					pChildren[sc] = pChildren[sc+1];
-				pChildren[pNumberOfChildren] = NULL;
+				pChildren[pNumberOfChildren] = nullptr;
 				pNumberOfChildren--;
-				c->setParent(NULL);
+				c->setParent(nullptr);
 				return;
 			}
 		}
@@ -310,7 +310,7 @@ void aObject::removeChild(aObject* c)
 aObject* aObject::child(int32_t w)
 {
 	if (w > pNumberOfChildren - 1)
-		return NULL;
+		return nullptr;
 
 	return pChildren[w];
 }
@@ -755,7 +755,7 @@ void aText::setText( int32_t resID )
 	{
 		char tmpy[1280];
 		memset(tmpy,0,1280);
-		sprintf( tmpy,"NULL for ID: %d",resID );
+		sprintf( tmpy,"nullptr for ID: %d",resID );
 		text = tmpy;
 	}
 }

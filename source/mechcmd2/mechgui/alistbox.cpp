@@ -52,7 +52,7 @@ int32_t aListBox::init(int32_t xPos, int32_t yPos,int32_t w, int32_t h )
 	{
 		scrollBar->destroy();
 		delete scrollBar;
-		scrollBar = NULL;
+		scrollBar = nullptr;
 	}
 
 	scrollBar = new mcScrollBar;
@@ -85,7 +85,7 @@ void aListBox::destroy()
 	{
 		scrollBar->destroy();
 		delete scrollBar;
-		scrollBar = NULL;
+		scrollBar = nullptr;
 	}
 
 	removeAllItems( true );
@@ -456,7 +456,7 @@ int32_t	aListBox::RemoveItem( aListItem* item, bool bDelete )
 			}
 			else
 			{
-				items[i] = NULL;
+				items[i] = nullptr;
 				if ( itemSelected == i )
 					itemSelected = -1;
 			}
@@ -469,7 +469,7 @@ int32_t	aListBox::RemoveItem( aListItem* item, bool bDelete )
 				items[i]->move( 0, -height - skipAmount );
 			}
 			else
-				items[i] = NULL;
+				items[i] = nullptr;
 		}
 	}
 
@@ -532,7 +532,7 @@ void	aListBox::enableAllItems()
 aListItem* aListBox::GetItem(int32_t itemNumber)
 {
 	if (itemNumber >= itemCount)
-		return NULL;
+		return nullptr;
 
 	return items[itemNumber];
 	
@@ -604,7 +604,7 @@ aDropList::aDropList(void)
 	listBoxMaxHeight = 0.0;
 	selectionIndex = -1;
 
-	rects = NULL;
+	rects = nullptr;
 }	
 
 aDropList& aDropList::operator=( const aDropList& src)
@@ -620,7 +620,7 @@ aDropList& aDropList::operator=( const aDropList& src)
 	if ( rects )
 	{
 		delete [] rects;
-		rects = NULL;
+		rects = nullptr;
 	}
 
 	listBox.removeAllItems( 0 );
@@ -738,7 +738,7 @@ void aDropList::destroy()
 	if ( rects )
 	{
 		delete [] rects;
-		rects = NULL;
+		rects = nullptr;
 	}
 	aObject::destroy();
 }
@@ -751,7 +751,7 @@ void aDropList::specialDestroy()
 	if ( rects )
 	{
 		delete [] rects;
-		rects = NULL;
+		rects = nullptr;
 	}
 	aObject::destroy();
 }
@@ -941,7 +941,7 @@ aComboBox::aComboBox(void) : templateItem( 27333 )
 {
 	listBoxMaxHeight = 0.0;
 	selectionIndex = -1;
-	rects = NULL;
+	rects = nullptr;
 }
 
 aComboBox& aComboBox::operator=(const aComboBox& src )
@@ -960,7 +960,7 @@ aComboBox& aComboBox::operator=(const aComboBox& src )
 	if ( rects )
 	{
 		delete [] rects;
-		rects = NULL;
+		rects = nullptr;
 	}
 
 	listBox = src.listBox;
@@ -1084,7 +1084,7 @@ void aComboBox::destroy()
 	aObject::destroy();
 
 	delete [] rects;
-	rects = NULL;
+	rects = nullptr;
 }
 
 void aComboBox::render()

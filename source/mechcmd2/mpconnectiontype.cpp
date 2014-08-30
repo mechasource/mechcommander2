@@ -317,7 +317,7 @@ int32_t	MPConnectionType::handleMessage( uint32_t message, uint32_t who)
 
 		case ZONE_PANEL_FIRST_BUTTON_ID:
 			{
-				MPlayer->launchBrowser( NULL );
+				MPlayer->launchBrowser( nullptr );
 				(*ppConnectionScreen) = pMPPlaceHolderScreen;
 				// now I need to pop a connecting dialog...
 				status = NEXT;

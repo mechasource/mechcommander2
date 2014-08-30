@@ -18,14 +18,14 @@ MechBayScreen.cpp			: Implementation of the MechBayScreen component.
 #include "ChatWindow.h"
 #include "Prefs.h"
 
-MechBayScreen* MechBayScreen::s_instance = NULL;
+MechBayScreen* MechBayScreen::s_instance = nullptr;
 
 
 
 MechBayScreen::MechBayScreen() : mechListBox( 1, 0 )
 {
-	pCurMech = NULL;
-	pIcons = NULL;
+	pCurMech = nullptr;
+	pIcons = nullptr;
 	status = LogisticsScreen::RUNNING;
 	s_instance = this;
 	forceGroupCount = 0;
@@ -144,7 +144,7 @@ void MechBayScreen::init(FitIniFile* file)
 	{
 		attributeMeters[i].setValue(0);
 	}
-	setMech( NULL, 0 );
+	setMech( nullptr, 0 );
 
 }
 
@@ -152,7 +152,7 @@ void MechBayScreen::begin()
 {
 	status = RUNNING;
 
-	pDragMech = NULL;
+	pDragMech = nullptr;
 
 	mechListBox.removeAllItems( true );
 	reinitMechs();	
@@ -194,7 +194,7 @@ void MechBayScreen::begin()
 
 	
 	
-	// reset the old mech to NULL to make sure everything gets set
+	// reset the old mech to nullptr to make sure everything gets set
 	
 	mechListBox.drawCBills( 0 );
 	mechListBox.setOrange( true );
@@ -204,13 +204,13 @@ void MechBayScreen::begin()
 		if ( !selectFirstFGItem() )
 		{
 			if ( !selectFirstViableLBMech() )
-				setMech( NULL );
+				setMech( nullptr );
 		}
 	}
 	else
 	{
 		LogisticsMech* pMech = pCurMech;
-		setMech( NULL ); // need to make sure the guy is still running
+		setMech( nullptr ); // need to make sure the guy is still running
 		setMech( pMech );
 
 		bool bFound = 0;
@@ -753,7 +753,7 @@ void MechBayScreen::removeSelectedMech()
 
 void MechBayScreen::end()
 {
-	mechCamera->setMech( NULL );
+	mechCamera->setMech( nullptr );
 }
 
 void MechBayScreen::setMech( LogisticsMech* pMech,  bool bCommandFromLB )
@@ -905,8 +905,8 @@ void MechBayScreen::beginDrag( LogisticsMech* pMech )
 
 				if ( i < ICON_COUNT )
 				{
-					pIcons[i].setMech( NULL );
-					pIcons[i].setPilot( NULL );
+					pIcons[i].setMech( nullptr );
+					pIcons[i].setPilot( nullptr );
 				}
 
 
@@ -1032,6 +1032,6 @@ LogisticsMech* MechBayScreen::getFGSelMech()
 			return pIcons[i].getMech();
 	}
 
-	return NULL;
+	return nullptr;
 }
 

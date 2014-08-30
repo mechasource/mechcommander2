@@ -22,7 +22,7 @@ static char THIS_FILE[] = __FILE__;
 // ResourceStringSelectionDlg dialog
 
 
-ResourceStringSelectionDlg::ResourceStringSelectionDlg(CWnd* pParent /*=NULL*/)
+ResourceStringSelectionDlg::ResourceStringSelectionDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(ResourceStringSelectionDlg::IDD, pParent)
 {
 	m_BottomOfIDRange = 0;

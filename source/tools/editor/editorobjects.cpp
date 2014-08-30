@@ -46,7 +46,7 @@ int32_t	Pilot::badCount = 0;
 //--------------------------------------------------------------------------------------
 PVOID EditorObject::operator new (size_t mySize)
 {
-	PVOID result = NULL;
+	PVOID result = nullptr;
 	result = systemHeap->Malloc(mySize);
 	
 	return(result);
@@ -97,10 +97,10 @@ EditorObject& EditorObject::operator=( const EditorObject& src )
 			if ( appearInfo->refCount < 1 )
 			{
 				delete appearInfo->appearance;
-				appearInfo->appearance = NULL;
+				appearInfo->appearance = nullptr;
 
 				delete appearInfo;
-				appearInfo = NULL;
+				appearInfo = nullptr;
 			}
 		}
 
@@ -126,10 +126,10 @@ EditorObject::~EditorObject()
 		if ( appearInfo->refCount < 1 )
 		{
 			delete appearInfo->appearance;
-			appearInfo->appearance = NULL;
+			appearInfo->appearance = nullptr;
 
 			delete appearInfo;
-			appearInfo = NULL;
+			appearInfo = nullptr;
 		}
 	}
 }
@@ -199,10 +199,10 @@ void EditorObject::setAppearance( int32_t Group, int32_t indexInGroup )
 			if ( appearInfo->refCount < 1 )
 			{
 				delete appearInfo->appearance;
-				appearInfo->appearance = NULL;
+				appearInfo->appearance = nullptr;
 			
 				delete appearInfo;
-				appearInfo = NULL;
+				appearInfo = nullptr;
 			
 
 			}

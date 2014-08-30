@@ -78,10 +78,10 @@ extern CPrefs prefs;
 
 //------------------------------------------------------------------------------------------------------------
 // MechCmdr2 Global Instances of Things
-UserHeapPtr systemHeap = NULL;
-UserHeapPtr guiHeap = NULL;
+UserHeapPtr systemHeap = nullptr;
+UserHeapPtr guiHeap = nullptr;
 
-FastFile 	**fastFiles = NULL;
+FastFile 	**fastFiles = nullptr;
 int32_t 		numFastFiles = 0;
 int32_t		maxFastFiles = 0;
 
@@ -109,15 +109,15 @@ extern bool useShadows;
 extern bool aborted;
 bool gotBombData = false;
 
-TimerManagerPtr timerManager = NULL;
+TimerManagerPtr timerManager = nullptr;
 
 bool initGameLogs = false;
 bool initNetLog = false;
-GameLog* NetLog = NULL;
+GameLog* NetLog = nullptr;
 bool initCombatLog = false;
-GameLog* CombatLog = NULL;
+GameLog* CombatLog = nullptr;
 bool initBugLog = false;
-GameLog* BugLog = NULL;
+GameLog* BugLog = nullptr;
 bool initLRMoveLog = false;
 
 bool KillAmbientLight = false;
@@ -145,7 +145,7 @@ uint32_t gosResourceHandle = 0;
 HGOSFONT3D gosFontHandle = 0;
 float		gosFontScale = 1.0;
 extern HGOSFONT3D	FontHandle;
-FloatHelpPtr globalFloatHelp = NULL;
+FloatHelpPtr globalFloatHelp = nullptr;
 uint32_t currentFloatHelp = 0;
 float MaxMinUV = 8.0f;
 
@@ -170,7 +170,7 @@ extern char FileMissingString[];
 extern char CDMissingString[];
 extern char MissingTitleString[];
 
-PSTR ExceptionGameMsg = NULL;
+PSTR ExceptionGameMsg = nullptr;
 
 char buildNumber[80];
 
@@ -250,12 +250,12 @@ extern int64_t MCTimeMultiplayerUpdate;
 int32_t NumDisableAtStart = 0;
 int32_t DisableAtStart[MAX_KILL_AT_START];
 
-OptionsScreenWrapper *optionsScreenWrapper = NULL;
+OptionsScreenWrapper *optionsScreenWrapper = nullptr;
 bool bInvokeOptionsScreenFlag = false;
 
 bool SnifferMode = false;
-gos_VERTEX *testVertex = NULL;
-puint16_t indexArray = NULL;
+gos_VERTEX *testVertex = nullptr;
+puint16_t indexArray = nullptr;
 uint32_t testTextureHandle = 0xffffffff;
 float totalTime = 0;
 uint32_t numIterations = 4;
@@ -287,8 +287,8 @@ bool checkedBomb = false;
 
 #define	NUM_DEBUG_WINDOWS	4
 char DebugStatusBarString[256];
-GameDebugWindow* DebugWindow[NUM_DEBUG_WINDOWS] = {NULL, NULL, NULL, NULL};
-GameObjectPtr DebugGameObject[3] = {NULL, NULL, NULL};
+GameDebugWindow* DebugWindow[NUM_DEBUG_WINDOWS] = {nullptr, nullptr, nullptr, nullptr};
+GameObjectPtr DebugGameObject[3] = {nullptr, nullptr, nullptr};
 int32_t GameObjectWindowList[3] = {0, 0, 0};
 int32_t NumGameObjectsToDisplay = 0;
 bool DebugWindowOpen[NUM_DEBUG_WINDOWS] = {false, false, false, false};
@@ -344,7 +344,7 @@ void DEBUGWINS_destroy (void) {
 		if (DebugWindow[i]) {
 			DebugWindow[i]->destroy();
 			delete DebugWindow[i];
-			DebugWindow[i] = NULL;
+			DebugWindow[i] = nullptr;
 		}
 }	
 
@@ -396,25 +396,25 @@ void endDialogs()
 	if (LogisticsOKDialog::s_instance)
 	{
 		delete LogisticsOKDialog::s_instance;
-		LogisticsOKDialog::s_instance = NULL;
+		LogisticsOKDialog::s_instance = nullptr;
 	}
 
 	if (LogisticsSaveDialog::s_instance)
 	{
 		delete LogisticsSaveDialog::s_instance;
-		LogisticsSaveDialog::s_instance = NULL;
+		LogisticsSaveDialog::s_instance = nullptr;
 	}
 
 	if (LogisticsOneButtonDialog::s_instance)
 	{
 		delete LogisticsOneButtonDialog::s_instance;
-		LogisticsOneButtonDialog::s_instance = NULL;
+		LogisticsOneButtonDialog::s_instance = nullptr;
 	}
 
 	if (LogisticsLegalDialog::s_instance)
 	{
 		delete LogisticsLegalDialog::s_instance;
-		LogisticsLegalDialog::s_instance = NULL;
+		LogisticsLegalDialog::s_instance = nullptr;
 	}
 }
 
@@ -484,7 +484,7 @@ void DEBUGWINS_removeGameObject (GameObjectPtr obj) {
 
 	for (int32_t i = 0; i < 3; i++)
 		if (DebugGameObject[i] == obj) {
-			DebugGameObject[i] = NULL;
+			DebugGameObject[i] = nullptr;
 			DebugWindow[1 + i]->clear();
 		}
 
@@ -807,7 +807,7 @@ bool FirstRunEula(void)
 
 
 
-Stuff::MemoryStream *effectStream = NULL;
+Stuff::MemoryStream *effectStream = nullptr;
 extern MidLevelRenderer::MLRClipper * theClipper;
 
 bool gameStarted = false;
@@ -822,7 +822,7 @@ void InitializeGameEngine()
 	// In order to do that, we must force Win2K/XP to enlarge
 	// its swapfile at the get go to insure goodness and that
 	// the message does not come up during game run.
-	PVOID testMem = VirtualAlloc(NULL,123000000,MEM_COMMIT,PAGE_READWRITE);
+	PVOID testMem = VirtualAlloc(nullptr,123000000,MEM_COMMIT,PAGE_READWRITE);
 
    	MEMORYSTATUS ms;
    	GlobalMemoryStatus( &ms );
@@ -837,7 +837,7 @@ void InitializeGameEngine()
    		char caption[1024];
    		cLoadString(IDS_SWAPFILE_CAPTION,caption,1023);
 
-   		MessageBox(NULL,msg,caption,MB_OK | MB_ICONWARNING);
+   		MessageBox(nullptr,msg,caption,MB_OK | MB_ICONWARNING);
 
    		gos_TerminateApplication();
    		return;
@@ -869,7 +869,7 @@ void InitializeGameEngine()
 		char msg[2048];
 		cLoadString(IDS_GAME_HDSPACE_ERROR,title,255);
 		cLoadString(IDS_GAME_HDSPACE_MSG,msg,2047);
-		uint32_t result = MessageBox(NULL,msg,title,MB_OKCANCEL | MB_ICONWARNING);
+		uint32_t result = MessageBox(nullptr,msg,title,MB_OKCANCEL | MB_ICONWARNING);
 		if (result == IDCANCEL)
 			ExitGameOS();
 	}
@@ -883,7 +883,7 @@ void InitializeGameEngine()
 		memset( &dev, 0, sizeof ( DEVMODE ) );
 		dev.dmSize = sizeof( DEVMODE );
 		dev.dmSpecVersion = DM_SPECVERSION;
-		EnumDisplaySettings( NULL, ENUM_CURRENT_SETTINGS, &dev );
+		EnumDisplaySettings( nullptr, ENUM_CURRENT_SETTINGS, &dev );
 
 		if ((dev.dmPelsWidth > 1024) || (dev.dmPelsHeight > 768) || (dev.dmBitsPerPel > 16))
 		{
@@ -891,7 +891,7 @@ void InitializeGameEngine()
 			char msg[2048];
 			cLoadString(IDS_GAME_ERROR,title,255);
 			cLoadString(IDS_GAME_VOODOO3,msg,2047);
-			MessageBox(NULL,msg,title,MB_OK | MB_ICONWARNING);
+			MessageBox(nullptr,msg,title,MB_OK | MB_ICONWARNING);
 			ExitGameOS();
 		}
 	}
@@ -947,13 +947,13 @@ void InitializeGameEngine()
 		//--------------------------------------------------------------
 		// Start the SystemHeap and globalHeapList
 		globalHeapList = new HeapList;
-		gosASSERT(globalHeapList != NULL);
+		gosASSERT(globalHeapList != nullptr);
 	
 		globalHeapList->init();
 		globalHeapList->update();		//Run Instrumentation into GOS Debugger Screen
 	
 		systemHeap = new UserHeap;
-		gosASSERT(systemHeap != NULL);
+		gosASSERT(systemHeap != nullptr);
 	
 		systemHeap->init(systemHeapSize,"SYSTEM");
 	
@@ -1169,7 +1169,7 @@ void InitializeGameEngine()
 	
 		systemFile->close();
 		delete systemFile;
-		systemFile = NULL;
+		systemFile = nullptr;
 	
 		if (initGameLogs) {
 			GameLog::setup();
@@ -1396,10 +1396,10 @@ void InitializeGameEngine()
 		optsFile->close();
 		
 		delete prefsFile;
-		prefsFile = NULL;
+		prefsFile = nullptr;
 		
 		delete optsFile;
-		optsFile = NULL;
+		optsFile = nullptr;
 		
 		//---------------------------------------------------------------------
 		//void __stdcall gos_SetScreenMode( uint32_t Width, uint32_t Height, uint32_t bitDepth=16, uint32_t Device=0, bool disableZBuffer=0, bool AntiAlias=0, bool RenderToVram=0, bool GotoFullScreen=0, int32_t DirtyRectangle=0, bool GotoWindowMode=0, bool EnableStencil=0, uint32_t Renderer=0 );
@@ -1536,7 +1536,7 @@ void InitializeGameEngine()
 		//--------------------------------------------------------------
 		// Start the GUI Heap.
 		guiHeap = new UserHeap;
-		gosASSERT(guiHeap != NULL);
+		gosASSERT(guiHeap != nullptr);
 		
 		guiHeap->init(guiHeapSize,"GUI");
 		
@@ -1569,9 +1569,9 @@ void InitializeGameEngine()
 		globalPane->x1 = Environment.screenWidth;
 		globalPane->y1 = Environment.screenHeight;
 	
-		globalWindow->buffer = NULL;			//This is set at the start of Renders.  For now we HOLD LOCK during entire old 2D render test.  This will go away once we hit 3D
-		globalWindow->shadow = NULL;
-		globalWindow->stencil = NULL;
+		globalWindow->buffer = nullptr;			//This is set at the start of Renders.  For now we HOLD LOCK during entire old 2D render test.  This will go away once we hit 3D
+		globalWindow->shadow = nullptr;
+		globalWindow->stencil = nullptr;
 		globalWindow->x_max = globalPane->x1 - globalPane->x0 - 1;
 		globalWindow->y_max = globalPane->y1 - globalPane->y0 - 1;
 	
@@ -1603,7 +1603,7 @@ void InitializeGameEngine()
 		{
 			logistics->setLogisticsState(log_STARTMISSIONFROMCMDLINE);
 			char commandersToLoad[MAX_MC_PLAYERS][3] = {{0, 0, 0}, {1, 1, 1}, {2, 0, 2}, {3, 3, 3}, {4, 4, 4}, {5, 5, 5}, {6, 6, 6}, {7, 7, 7}};
-			mission->init(missionName, MISSION_LOAD_SP_QUICKSTART, 0, NULL, commandersToLoad, 2);
+			mission->init(missionName, MISSION_LOAD_SP_QUICKSTART, 0, nullptr, commandersToLoad, 2);
 			eye->activate();
 			eye->update();
 			mission->start();
@@ -1670,7 +1670,7 @@ void InitializeGameEngine()
 		cLoadString(IDS_SNIFFER_INIT_MSG,msgBuffer,4095);
 		cLoadString(IDS_SNIFFER_INIT_TITLE,msgTitle,1023);
 
-		MessageBox(NULL,msgBuffer,msgTitle,MB_OK);
+		MessageBox(nullptr,msgBuffer,msgTitle,MB_OK);
 
 		//-------------------------------------------------------------
 		// Find the CDPath in the registry and save it off so I can
@@ -1720,8 +1720,8 @@ void InitializeGameEngine()
 	}
 
 	//Make any directories we need which should be empty.
-	CreateDirectory(savePath,NULL);
-	CreateDirectory(transcriptsPath,NULL);
+	CreateDirectory(savePath,nullptr);
+	CreateDirectory(transcriptsPath,nullptr);
 
 	//Startup the Office Watson Handler.
 	InitDW();
@@ -1754,7 +1754,7 @@ void TerminateGameEngine()
 		ShutdownNetworking();
 
 		delete theClipper;
-		theClipper = NULL;
+		theClipper = nullptr;
 
 		//---------------------------------------------------------
 		// End the Mission, Operation and Logistics classes here
@@ -1762,14 +1762,14 @@ void TerminateGameEngine()
 		{
 			mission->destroy(false);
 			delete mission;
-			mission = NULL;
+			mission = nullptr;
 		}
 
 		if (logistics)
 		{
 			logistics->destroy();
 			delete logistics;
-			logistics = NULL;
+			logistics = nullptr;
 		}
 
 		endDialogs();
@@ -1778,7 +1778,7 @@ void TerminateGameEngine()
 		{
 			optionsScreenWrapper->destroy();
 			delete optionsScreenWrapper;
-			optionsScreenWrapper = NULL;
+			optionsScreenWrapper = nullptr;
 		}
 
 		//---------------------------------------------------------
@@ -1790,7 +1790,7 @@ void TerminateGameEngine()
 		//---------------------------------------------------------
 		// End the Timers
 		delete timerManager;
-		timerManager = NULL;
+		timerManager = nullptr;
 
 		//---------------------------------------------------------
 		// TEST of PORT
@@ -1798,13 +1798,13 @@ void TerminateGameEngine()
 		if (globalPane)
 		{
 			delete globalPane;
-			globalPane = NULL;
+			globalPane = nullptr;
 		}
 
 		if (globalWindow)
 		{
 			delete globalWindow;
-			globalWindow = NULL;
+			globalWindow = nullptr;
 		}
 
 		//-------------------------------------------------------------
@@ -1814,7 +1814,7 @@ void TerminateGameEngine()
 			soundSystem->destroy();
 
 			delete soundSystem;
-			soundSystem = NULL;
+			soundSystem = nullptr;
 		}
 
 		//------------------------------------------------
@@ -1824,11 +1824,11 @@ void TerminateGameEngine()
 			mcTextureManager->destroy();
 
 			delete mcTextureManager;
-			mcTextureManager = NULL;
+			mcTextureManager = nullptr;
 		}
 
 		delete globalFloatHelp;
-		globalFloatHelp = NULL;
+		globalFloatHelp = nullptr;
 
 		//--------------------------------------------------------------
 		// End the SystemHeap and globalHeapList
@@ -1837,7 +1837,7 @@ void TerminateGameEngine()
 			systemHeap->destroy();
 
 			delete systemHeap;
-			systemHeap = NULL;
+			systemHeap = nullptr;
 		}
 
 		if (guiHeap)
@@ -1845,7 +1845,7 @@ void TerminateGameEngine()
 			guiHeap->destroy();
 
 			delete guiHeap;
-			guiHeap = NULL;
+			guiHeap = nullptr;
 		}
 
 		if (globalHeapList)
@@ -1853,7 +1853,7 @@ void TerminateGameEngine()
 			globalHeapList->destroy();
 
 			delete globalHeapList;
-			globalHeapList = NULL;
+			globalHeapList = nullptr;
 		}
 
 		//----------------------------------------------------
@@ -1876,7 +1876,7 @@ void TerminateGameEngine()
 		Stuff::TerminateClasses();
 
 		delete userInput;
-		userInput = NULL;
+		userInput = nullptr;
 
 		//Redundant.  Something else is shutting this down.
 		//GOS sure does think its bad to delete something multiple times though.
@@ -1898,33 +1898,33 @@ void TerminateGameEngine()
 		if (g_textureCache_FilenameOfLastLoadedTexture)
 		{
 			delete g_textureCache_FilenameOfLastLoadedTexture;
-			g_textureCache_FilenameOfLastLoadedTexture = NULL;
+			g_textureCache_FilenameOfLastLoadedTexture = nullptr;
 		}
 
 		if (ForceGroupIcon::jumpJetIcon)
 		{
 			delete ForceGroupIcon::jumpJetIcon;
-			ForceGroupIcon::jumpJetIcon = NULL;
+			ForceGroupIcon::jumpJetIcon = nullptr;
 		}
 
 		if (MechIcon::s_MechTextures)
 		{
 			delete [] MechIcon::s_MechTextures;
-			MechIcon::s_MechTextures = NULL;
+			MechIcon::s_MechTextures = nullptr;
 		}
 
 		if (ForceGroupIcon::s_textureMemory)
 		{
 			delete [] ForceGroupIcon::s_textureMemory; 
-			ForceGroupIcon::s_textureMemory = NULL; 
+			ForceGroupIcon::s_textureMemory = nullptr; 
 		}
 	}
 	else
 	{
 		free(testVertex);
-		testVertex = NULL;
+		testVertex = nullptr;
 		free(indexArray);
-		indexArray = NULL;
+		indexArray = nullptr;
 	}
 }
 
@@ -2053,9 +2053,9 @@ void DoGameLogic()
 				if (result == 9999) {
 					mission->destroy();
 					//delete mission;
-					//mission = NULL;
+					//mission = nullptr;
 					for (int32_t i = 0; i < 3; i++) {
-						DebugGameObject[i] = NULL;
+						DebugGameObject[i] = nullptr;
 						DebugWindow[i + 1]->clear();
 					}
 					if (MPlayer && MPlayer->isServer())
@@ -2086,11 +2086,11 @@ void DoGameLogic()
 					if ( !LogisticsData::instance->campaignOver() || MPlayer || LogisticsData::instance->isSingleMission() ) {
 						mission->destroy();
 						//delete mission;
-						//mission = NULL;
+						//mission = nullptr;
 					}
 	
 					for (int32_t i = 0; i < 3; i++) {
-						DebugGameObject[i] = NULL;
+						DebugGameObject[i] = nullptr;
 						DebugWindow[i + 1]->clear();
 					}
 	
@@ -2285,7 +2285,7 @@ void DoGameLogic()
 				cLoadString(IDS_SNIFFER_DONE_MSG,msgBuffer,4095);
 				cLoadString(IDS_SNIFFER_INIT_TITLE,msgTitle,1023);
 
-				MessageBox(NULL,msgBuffer,msgTitle,MB_OK);
+				MessageBox(nullptr,msgBuffer,msgTitle,MB_OK);
 
 				gos_TerminateApplication();
 			}
@@ -2301,7 +2301,7 @@ int32_t textToLong (PSTR num)
 	//------------------------------------
 	// Check if Hex Number
 	PSTR hexOffset = strstr(num,"0x");
-	if (hexOffset == NULL)
+	if (hexOffset == nullptr)
 	{
 		result = atol(num);
 	}
@@ -2397,7 +2397,7 @@ void ParseCommandLine(PSTR command_line)
 							strcat(missionName," ");
 							strcat(missionName,argv[i]);
 
-							if (strstr(argv[i],"\"") != NULL)
+							if (strstr(argv[i],"\"") != nullptr)
 							{
 								scanName = false;
 								missionName[strlen(missionName)-1] = 0;
@@ -2634,7 +2634,7 @@ void GetGameOSEnvironment( PSTR CommandLine )
 	result=RegOpenKey(HKEY_CURRENT_USER,GAME_REG_KEY,&hKey);
 	if( ERROR_SUCCESS==result )
 	{
-		result=RegQueryValueEx(hKey,"FIRSTRUN",NULL,NULL,(PBYTE)pData,&szData);
+		result=RegQueryValueEx(hKey,"FIRSTRUN",nullptr,nullptr,(PBYTE)pData,&szData);
 		if ((result == ERROR_SUCCESS) && pData[0])
 		{
 			if (fileExists("options.cfg") && !SnifferMode)

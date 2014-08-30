@@ -26,18 +26,18 @@ template <class T> class FLink
 	public:
 		FLink()
 		{
-			linkData = NULL;
-			Next = NULL;
+			linkData = nullptr;
+			Next = nullptr;
 		}
 		FLink(T * ptr)
 		{
 			castedData = static_cast <ListItem*>(ptr);
 			linkData = ptr;
-			Next = NULL;
+			Next = nullptr;
 		}
     	virtual ~FLink()
 		{
-			Next = NULL;
+			Next = nullptr;
 		}
 
 		FLink<T> * GetNext()
@@ -63,8 +63,8 @@ template <class T> class FLinkedList
 			
 		FLinkedList()
 		{
-			m_Head = NULL;
-			m_Tail = NULL;
+			m_Head = nullptr;
+			m_Tail = nullptr;
 			m_Size = 0;				
 		};
 		FLinkedList(T  *ptr)
@@ -72,14 +72,14 @@ template <class T> class FLinkedList
 			FLink<T> * newlink = (FLink<T> *) malloc(sizeof(FLink<T>));
 			newlink->castedData = static_cast <ListItem*>(ptr);
 			newlink->linkData = ptr;
-			newlink->Next = NULL;
+			newlink->Next = nullptr;
 			m_Head = newlink;
-			m_Head->Next = NULL;
+			m_Head->Next = nullptr;
 			m_Size = 1;
         };
 		~FLinkedList()
 		{
-			while (m_Head != NULL)
+			while (m_Head != nullptr)
 				Remove(m_Head->linkData);
 		};
 
@@ -89,32 +89,32 @@ template <class T> class FLinkedList
 			FLink<T> * newlink = (FLink<T> *) malloc(sizeof(FLink<T>));
 			newlink->castedData = static_cast <ListItem*>(ptr);
 			newlink->linkData = ptr;
-			newlink->Next = NULL;
+			newlink->Next = nullptr;
 
-			if (m_Head == NULL)
+			if (m_Head == nullptr)
 			{
 				m_Head = newlink;
 				m_Tail = newlink;
-				newlink->Next = NULL;
+				newlink->Next = nullptr;
 			}
 			else
 			{
 				m_Tail->Next = newlink;
 				m_Tail = newlink;
-				newlink -> Next = NULL;
+				newlink -> Next = nullptr;
 			}
 			m_Size += 1;
 		};	
 		
 		void Add(T *ptr, PVOIDlink_memory)
 		{
-			gosASSERT (link_memory != NULL);
+			gosASSERT (link_memory != nullptr);
 			FLink<T> *link = (FLink<T> *)link_memory;
-			if (m_Head == NULL)
+			if (m_Head == nullptr)
 			{
 				m_Head = link;
 				m_Tail = link;
-				link->Next = NULL;
+				link->Next = nullptr;
 			}
 			else
 			{
@@ -135,7 +135,7 @@ template <class T> class FLinkedList
 				FLink<T> * newlink = (FLink<T> *) malloc(sizeof(FLink<T>));
 				newlink->castedData = static_cast <ListItem*>(ptr);
 				newlink->linkData = ptr;
-				newlink->Next = NULL;
+				newlink->Next = nullptr;
 
 				FLink<T> *tmp;
 				gosASSERT(m_Iterator);
@@ -173,7 +173,7 @@ template <class T> class FLinkedList
 			else
 			{
 				FLink<T> * target;
-				while(tmp->Next != NULL)
+				while(tmp->Next != nullptr)
 				{
 					if (tmp->Next->linkData == ptr)
 					{
@@ -214,14 +214,14 @@ template <class T> class FLinkedList
 		T	*Head() 
 		{
 			m_Iterator = m_Head;
-			if (m_Head == NULL) return NULL;
+			if (m_Head == nullptr) return nullptr;
 			return m_Head->linkData;
 		}
 
 		T  *GetTail() 
 		{
-			if (m_Tail == NULL)
-				return NULL;
+			if (m_Tail == nullptr)
+				return nullptr;
 			return m_Tail->linkData;
 		}
 
@@ -235,32 +235,32 @@ template <class T> class FLinkedList
 		}
 		T  *PeekNext() 
 		{
-			if (m_Iterator->Next == NULL)
-				return NULL;
+			if (m_Iterator->Next == nullptr)
+				return nullptr;
 			else
 				return m_Iterator->Next->linkData;
 		}
 		T  *ReadAndNext()
 		{
 			FLink<T> * tmp = m_Iterator;
-			if (tmp == NULL) return NULL;
+			if (tmp == nullptr) return nullptr;
 			m_Iterator = m_Iterator->Next;
 			return tmp->linkData;
 		}
 		T  *Next() 
 		{
-			if (m_Iterator == NULL ||
+			if (m_Iterator == nullptr ||
 				m_Iterator == m_Tail) 
-				return NULL;
+				return nullptr;
 			m_Iterator = m_Iterator->Next;
 			return m_Iterator->linkData;
 		}
 		T *Get(int32_t index) 
 		{
 			FLink<T> * tmp = m_Head;
-			if (tmp == NULL)
+			if (tmp == nullptr)
 			{
-				return NULL;
+				return nullptr;
 			}
 			while(index && tmp->Next)
 			{
@@ -269,7 +269,7 @@ template <class T> class FLinkedList
 			}
 			if (index != 0) 
 			{
-				return NULL;
+				return nullptr;
 			}
 			else
 			{
@@ -305,8 +305,8 @@ template <class T> class FListIterator
 
 		FListIterator<T>()
 		{
-			myList = NULL;
-			current = NULL;
+			myList = nullptr;
+			current = nullptr;
 		}
 
 		void Init(FLinkedList<T> *list)
@@ -319,10 +319,10 @@ template <class T> class FListIterator
 
 		T *Next()
 		{
-			gosASSERT (current!= NULL);
+			gosASSERT (current!= nullptr);
 			current = current->GetNext(void);				
-			if (current == NULL)
-				return NULL;
+			if (current == nullptr)
+				return nullptr;
 			else
 				return current->linkData;
 		}
@@ -337,7 +337,7 @@ template <class T> class FListIterator
 			if (current)
 				return current->linkData; 
 			else
-				return NULL;
+				return nullptr;
 		}
 
 };			

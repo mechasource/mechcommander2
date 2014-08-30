@@ -379,7 +379,7 @@ class GameObject {
 		uint32_t getWatchID (bool assign = true);
 
 		virtual PSTR getName (void) {
-			return(NULL);
+			return(nullptr);
 		}
 
 		virtual float getStatusRating (void) {
@@ -462,7 +462,7 @@ class GameObject {
 
 		virtual TeamPtr getTeam (void)
 		{
-			return(NULL);
+			return(nullptr);
 		}
 
 		virtual int32_t setTeam (TeamPtr /*_team*/)
@@ -639,7 +639,7 @@ class GameObject {
 
 		virtual MechWarriorPtr getPilot (void)
 		{
-			return(NULL);
+			return(nullptr);
 		}
 
 		virtual int32_t getCommanderId (void)
@@ -1034,7 +1034,7 @@ class GameObject {
 				
 		virtual SalvageItemPtr getSalvage (void)
 		{
-			return(NULL);
+			return(nullptr);
 		}
 		
 		virtual int32_t getWindowsVisible (void)
@@ -1042,7 +1042,7 @@ class GameObject {
 			return(windowsVisible);
 		}
 		
-		virtual int32_t getCaptureBlocker (GameObjectPtr capturingMover, GameObjectPtr* blockerList = NULL);
+		virtual int32_t getCaptureBlocker (GameObjectPtr capturingMover, GameObjectPtr* blockerList = nullptr);
 
 		virtual int32_t kill (void);
 
@@ -1135,7 +1135,7 @@ class GameObject {
 
 		virtual GameObjectPtr getParent (void)
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		virtual void setParentId (uint32_t /*pId*/)
@@ -1143,7 +1143,7 @@ class GameObject {
 			//Do Nothing.  Most of the time, this is OK!
 		}
 
-		virtual SensorSystem* getSensorSystem(){ return NULL; }
+		virtual SensorSystem* getSensorSystem(){ return nullptr; }
 
 		static void setInitialize (bool setting) {
 			initialize = setting;

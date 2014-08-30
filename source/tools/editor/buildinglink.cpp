@@ -19,7 +19,7 @@
 
 BuildingLink::BuildingLink( const EditorObject* pParent )
 {
-	ATLASSERT(pParent != NULL);
+	ATLASSERT(pParent != nullptr);
 
 	parent.m_ID = pParent->getID();
 	parent.pos = pParent->getPosition();

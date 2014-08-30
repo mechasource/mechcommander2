@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 // TextMessageDlg dialog
 
 
-TextMessageDlg::TextMessageDlg(CWnd* pParent /*=NULL*/)
+TextMessageDlg::TextMessageDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(TextMessageDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(TextMessageDlg)

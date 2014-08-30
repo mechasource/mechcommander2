@@ -366,10 +366,10 @@ class SensorSystemManager {
 		
 		void init (void) {
 			freeSensors = 0;
-			sensorPool = NULL;
-			freeList = NULL;
+			sensorPool = nullptr;
+			freeList = nullptr;
 			for (int32_t i = 0; i < MAX_TEAMS; i++)
-				teamSensors[i] = NULL;
+				teamSensors[i] = nullptr;
 			numEcms = 0;
 			teamToUpdate = 0;
 		}

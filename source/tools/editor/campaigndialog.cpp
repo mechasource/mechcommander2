@@ -26,7 +26,7 @@ static char THIS_FILE[] = __FILE__;
 // CCampaignDialog dialog
 
 
-CCampaignDialog::CCampaignDialog(CWnd* pParent /*=NULL*/)
+CCampaignDialog::CCampaignDialog(CWnd* pParent /*=nullptr*/)
 	: CDialog(CCampaignDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CCampaignDialog)
@@ -171,7 +171,7 @@ int32_t CCampaignDialog::SaveAs()
 					 _T("Campaign File (*.FIT)|*.FIT|"));
 	{
 		/* if the mission directory doesn't exist, we attempt to create it */
-		int32_t curDirStrSize = GetCurrentDirectory(0, NULL);
+		int32_t curDirStrSize = GetCurrentDirectory(0, nullptr);
 		TCHAR *curDirStr = new TCHAR[curDirStrSize];
 		GetCurrentDirectory(curDirStrSize, curDirStr);
 		BOOL result = SetCurrentDirectory(campaignPath);
@@ -179,7 +179,7 @@ int32_t CCampaignDialog::SaveAs()
 		delete curDirStr; curDirStr = 0;
 
 		if (0 == result) {
-			CreateDirectory(campaignPath, NULL);
+			CreateDirectory(campaignPath, nullptr);
 		}
 	}
 	selectFileDialog.m_ofn.lpstrInitialDir = campaignPath;

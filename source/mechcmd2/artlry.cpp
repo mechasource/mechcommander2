@@ -339,7 +339,7 @@ GameObjectPtr ArtilleryType::createInstance (void) {
 
 	ArtilleryPtr newArtillery = new Artillery;
 	if (!newArtillery)
-		return(NULL);
+		return(nullptr);
 
 	newArtillery->init(true, this);
 
@@ -362,19 +362,19 @@ void ArtilleryType::destroy (void)
 	if (explosionOffsetX) 
 	{
 		systemHeap->Free(explosionOffsetX);
-		explosionOffsetX = NULL;
+		explosionOffsetX = nullptr;
 	}
 
 	if (explosionOffsetY) 
 	{
 		systemHeap->Free(explosionOffsetY);
-		explosionOffsetY = NULL;
+		explosionOffsetY = nullptr;
 	}
 
 	if (explosionDelay) 
 	{
 		systemHeap->Free(explosionDelay);
-		explosionDelay = NULL;
+		explosionDelay = nullptr;
 	}
 
 	ObjectType::destroy();
@@ -473,13 +473,13 @@ int32_t ArtilleryType::init (FilePtr objFile, uint32_t fileSize) {
 			return(result);
 			
 		explosionOffsetX = (float *)systemHeap->Malloc(sizeof(float)*numExplosions);
-		gosASSERT(explosionOffsetX != NULL);
+		gosASSERT(explosionOffsetX != nullptr);
 
 		explosionOffsetY = (float *)systemHeap->Malloc(sizeof(float)*numExplosions);
-		gosASSERT(explosionOffsetY != NULL);
+		gosASSERT(explosionOffsetY != nullptr);
 
 		explosionDelay   = (float *)systemHeap->Malloc(sizeof(float)*numExplosions);
-		gosASSERT(explosionDelay != NULL);
+		gosASSERT(explosionDelay != nullptr);
 
 		for (int32_t i=0;i<numExplosions;i++)
 		{
@@ -520,7 +520,7 @@ int32_t ArtilleryType::init (FilePtr objFile, uint32_t fileSize) {
 	}
 	else
 	{
-		explosionOffsetX = explosionOffsetY = explosionDelay = NULL;
+		explosionOffsetX = explosionOffsetY = explosionDelay = nullptr;
 	}
 
 	//-------------------------------------------------------
@@ -609,7 +609,7 @@ bool ArtilleryType::handleCollision (GameObjectPtr collidee, GameObjectPtr colli
 					shot.hitLocation = collider->calcHitLocation(collidee, -1, ATTACKSOURCE_ARTILLERY, 0);
 				shot.setEntryAngle(collider->relFacingTo(collidee->getPosition()));
 			}
-			collider->handleWeaponHit(&shot, (MPlayer != NULL));
+			collider->handleWeaponHit(&shot, (MPlayer != nullptr));
 		}
 	}
 	
@@ -644,11 +644,11 @@ void Artillery::init (bool create)
 
 	info.strike.timeToBlind = 0.0;
 	
-	hitEffect = NULL;
-	leftContrail = NULL;
-	rightContrail = NULL;
+	hitEffect = nullptr;
+	leftContrail = nullptr;
+	rightContrail = nullptr;
 			
-	bomber = NULL;
+	bomber = nullptr;
 	
 	setFlag(OBJECT_FLAG_RANDOM_OFFSET, 0);
 }
@@ -711,7 +711,7 @@ void Artillery::handleStaticCollision (void)
 												  2,
 												  2);
 						}
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, minePosition, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, minePosition, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 					}
 				}
 			}
@@ -744,7 +744,7 @@ void Artillery::handleStaticCollision (void)
 					{
 						GameObjectPtr obj = ObjectManager->getObjBlockObject(currentBlockNumber, objIndex);
 						if (!obj)
-							STOP(("Object Number %d in terrain Block %d was NULL!",objIndex,currentBlockNumber));
+							STOP(("Object Number %d in terrain Block %d was nullptr!",objIndex,currentBlockNumber));
 
 						if (obj->getExists())
 							ObjectManager->detectStaticCollision(this, obj);
@@ -794,7 +794,7 @@ void Artillery::setJustCreated (void)
 			if (gosEffectSpec)
 			{
 				hitEffect = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(hitEffect != NULL);
+				gosASSERT(hitEffect != nullptr);
 			
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -812,10 +812,10 @@ void Artillery::setJustCreated (void)
 			if (gosEffectSpec)
 			{
 				//leftContrail = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				//gosASSERT(leftContrail != NULL);
+				//gosASSERT(leftContrail != nullptr);
 			
 				rightContrail = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(rightContrail != NULL);
+				gosASSERT(rightContrail != nullptr);
 				
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -841,7 +841,7 @@ void Artillery::setJustCreated (void)
 					shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 					shapeOrigin.BuildTranslation(actualPosition);
 					
-					gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+					gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 					hitEffect->Start(&info);
 				} 
 			}
@@ -899,26 +899,26 @@ int32_t Artillery::update (void)
 			{
 				hitEffect->Kill();		//Effect is over.  Otherwise, wait until hit!
 				delete hitEffect;
-				hitEffect = NULL;
+				hitEffect = nullptr;
 				
 				if (bomber)
 				{
 					delete bomber;
-					bomber = NULL;
+					bomber = nullptr;
 				}
 				
 				if (leftContrail)
 				{
 					leftContrail->Kill();
 					delete leftContrail;
-					leftContrail = NULL;
+					leftContrail = nullptr;
 				}
 				
 				if (rightContrail)
 				{
 					rightContrail->Kill();
 					delete rightContrail;
-					rightContrail = NULL;
+					rightContrail = nullptr;
 				}
 				
  				return false;			//Strike is also over
@@ -961,7 +961,7 @@ int32_t Artillery::update (void)
  			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
 			
-			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 			rightContrail->Start(&info);
 		}
 		
@@ -979,7 +979,7 @@ int32_t Artillery::update (void)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
 			
-			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 			leftContrail->Start(&info);
 		}
 	}
@@ -1060,7 +1060,7 @@ int32_t Artillery::update (void)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
 			
-			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 			hitEffect->Start(&info);
 		}
 		
@@ -1086,7 +1086,7 @@ int32_t Artillery::update (void)
 			{
 				hitEffect->Kill();		//Effect is over.  Otherwise, wait until hit!
 				delete hitEffect;
-				hitEffect = NULL;
+				hitEffect = nullptr;
 			}
 		}
   	
@@ -1103,7 +1103,7 @@ int32_t Artillery::update (void)
 		info.strike.sensorRange *= type->nominalSensorRange;
 		info.strike.sensorRange *= worldUnitsPerMeter;
 		SensorSystemPtr sensor = SensorManager->getSensor(info.strike.sensorSystemIndex);
-		Assert(sensor != NULL, 0, " Artillery.update: NULL sensor ");
+		Assert(sensor != nullptr, 0, " Artillery.update: nullptr sensor ");
 		sensor->setRange(info.strike.sensorRange * metersPerWorldUnit);
 
 		//--------------------------------------
@@ -1153,7 +1153,7 @@ int32_t Artillery::update (void)
 			{
 				hitEffect->Kill();		//Effect is over.  Otherwise, wait until hit!
 				delete hitEffect;
-				hitEffect = NULL;
+				hitEffect = nullptr;
 			}
 		}
 	}
@@ -1244,7 +1244,7 @@ TeamPtr Artillery::getTeam (void)
 {
 
 	if (teamId == -1)
-		return(NULL);
+		return(nullptr);
 	return(Team::teams[teamId]);
 }
 
@@ -1309,7 +1309,7 @@ void Artillery::setSensorData (TeamPtr team, float sensorTime, float range)
 		info.strike.sensorRange = range;
 
 	SensorSystemPtr sensor = SensorManager->getSensor(info.strike.sensorSystemIndex);
-	Assert(sensor != NULL, info.strike.sensorSystemIndex, " Artillery.setSensorData: NULL sensor ");
+	Assert(sensor != nullptr, info.strike.sensorSystemIndex, " Artillery.setSensorData: nullptr sensor ");
 	sensor->setOwner(this);
 	SensorManager->addTeamSensor(team->getId(), sensor);
 	sensor->setRange(range);
@@ -1483,27 +1483,27 @@ void Artillery::destroy (void)
 	{
 		hitEffect->Kill();
 		delete hitEffect;
-		hitEffect = NULL;
+		hitEffect = nullptr;
 	}
 				
 	if (leftContrail)
 	{
 		leftContrail->Kill();
 		delete leftContrail;
-		leftContrail = NULL;
+		leftContrail = nullptr;
 	}
 	
 	if (rightContrail)
 	{
 		rightContrail->Kill();
 		delete rightContrail;
-		rightContrail = NULL;
+		rightContrail = nullptr;
 	}
 
  	if (bomber)
 	{
 		delete bomber;
-		bomber = NULL;
+		bomber = nullptr;
 	}
 }
 
@@ -1546,7 +1546,7 @@ void Artillery::init (bool create, ObjectTypePtr _type)
 			// MechCmdr2 features much simpler objects which only use 1 type of sprite!
 			int32_t appearanceType = (BLDG_TYPE << 24);
 		
-			AppearanceTypePtr buildingAppearanceType = NULL;
+			AppearanceTypePtr buildingAppearanceType = nullptr;
 			if (!appearName)
 			{
 				//------------------------------------------------------
@@ -1567,7 +1567,7 @@ void Artillery::init (bool create, ObjectTypePtr _type)
 			}
 			  
 			appearance = new BldgAppearance;
-			gosASSERT(appearance != NULL);
+			gosASSERT(appearance != nullptr);
 		
 			//--------------------------------------------------------------
 			// The only appearance type for buildings is MLR_APPEARANCE.
@@ -1614,7 +1614,7 @@ void Artillery::init (bool create, ObjectTypePtr _type)
 			// MechCmdr2 features much simpler objects which only use 1 type of sprite!
 			int32_t appearanceType = (BLDG_TYPE << 24);
 		
-			AppearanceTypePtr buildingAppearanceType = NULL;
+			AppearanceTypePtr buildingAppearanceType = nullptr;
 			if (!appearName)
 			{
 				//------------------------------------------------------
@@ -1635,7 +1635,7 @@ void Artillery::init (bool create, ObjectTypePtr _type)
 			}
 			  
 			appearance = new BldgAppearance;
-			gosASSERT(appearance != NULL);
+			gosASSERT(appearance != nullptr);
 		
 			//--------------------------------------------------------------
 			// The only appearance type for buildings is MLR_APPEARANCE.
@@ -1682,7 +1682,7 @@ void Artillery::init (bool create, ObjectTypePtr _type)
 			// MechCmdr2 features much simpler objects which only use 1 type of sprite!
 			int32_t appearanceType = (BLDG_TYPE << 24);
 		
-			AppearanceTypePtr buildingAppearanceType = NULL;
+			AppearanceTypePtr buildingAppearanceType = nullptr;
 			if (!appearName)
 			{
 				//------------------------------------------------------
@@ -1703,7 +1703,7 @@ void Artillery::init (bool create, ObjectTypePtr _type)
 			}
 			  
 			appearance = new BldgAppearance;
-			gosASSERT(appearance != NULL);
+			gosASSERT(appearance != nullptr);
 		
 			//--------------------------------------------------------------
 			// The only appearance type for buildings is MLR_APPEARANCE.
@@ -1779,7 +1779,7 @@ void Artillery::Load (ArtilleryData *data)
 			if (gosEffectSpec)
 			{
 				hitEffect = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(hitEffect != NULL);
+				gosASSERT(hitEffect != nullptr);
 			
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}
@@ -1797,7 +1797,7 @@ void Artillery::Load (ArtilleryData *data)
 			shapeOrigin.BuildRotation(Stuff::EulerAngles(0.0f,0.0f,0.0f));
 			shapeOrigin.BuildTranslation(actualPosition);
 
-			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,NULL);
+			gosFX::Effect::ExecuteInfo info((Stuff::Time)scenarioTime,&shapeOrigin,nullptr);
 			hitEffect->Start(&info);
 		} 
 	}
@@ -1817,7 +1817,7 @@ void Artillery::Load (ArtilleryData *data)
 			if (gosEffectSpec)
 			{
 				hitEffect = gosFX::EffectLibrary::Instance->MakeEffect(gosEffectSpec->m_effectID, flags);
-				gosASSERT(hitEffect != NULL);
+				gosASSERT(hitEffect != nullptr);
 			
 				MidLevelRenderer::MLRTexturePool::Instance->LoadImages();
 			}

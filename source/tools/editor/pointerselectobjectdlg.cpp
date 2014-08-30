@@ -149,7 +149,7 @@ BOOL PointerSelectObjectDlg::OnWndMsg( uint32_t message, WPARAM wParam, LPARAM l
 			BOOL result = PeekMessage(&msg, GetSafeHwnd(), 0, 0, PM_NOREMOVE);
 			depth -= 1;
 			if ((0 == result) && (m_bTimerIsReset)) {
-				uint32_t ui = ::SetTimer(GetSafeHwnd(), 1/*arbitrary non-zero ID*/, 2/*milliseconds*/, NULL);
+				uint32_t ui = ::SetTimer(GetSafeHwnd(), 1/*arbitrary non-zero ID*/, 2/*milliseconds*/, nullptr);
 				assert(ui);
 				m_bTimerIsReset = false;
 			}

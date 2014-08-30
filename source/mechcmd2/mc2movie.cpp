@@ -55,7 +55,7 @@ void __stdcall ExitGameOS();
 void MC2Movie::init (PSTR MC2Name, RECT mRect, bool useWaveFile)
 {
 		char MOVIEName[1024];
-		_splitpath(MC2Name,NULL,NULL,MOVIEName,NULL);
+		_splitpath(MC2Name,nullptr,nullptr,MOVIEName,nullptr);
 
 		m_MC2Name = new char [strlen(MOVIEName)+1];
 		memset(m_MC2Name,0,strlen(MOVIEName)+1);
@@ -68,7 +68,7 @@ void MC2Movie::init (PSTR MC2Name, RECT mRect, bool useWaveFile)
 		separateWAVE = true;
 		soundStarted = false;
 		char MOVIEName[1024];
-		_splitpath(MC2Name,NULL,NULL,MOVIEName,NULL);
+		_splitpath(MC2Name,nullptr,nullptr,MOVIEName,nullptr);
 
 		waveName = new char [strlen(MOVIEName)+1];
 		memset(waveName,0,strlen(MOVIEName)+1);

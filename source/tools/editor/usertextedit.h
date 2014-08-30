@@ -14,7 +14,7 @@ class CUserTextEdit : public CDialog
 {
 // Construction
 public:
-	CUserTextEdit(CWnd* pParent = NULL);   // standard constructor
+	CUserTextEdit(CWnd* pParent = nullptr);   // standard constructor
 	void UpdateTextDisplay(void);
 
 	CString m_UnlocalizedText;

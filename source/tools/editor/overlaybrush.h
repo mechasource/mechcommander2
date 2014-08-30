@@ -25,7 +25,7 @@ class OverlayBrush: public Brush
 		{ 
 			type = (Overlays)Type;
 			offset = Offset; 
-			pAction = NULL; 
+			pAction = nullptr; 
 		}
 		virtual ~OverlayBrush(){}	
 

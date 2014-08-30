@@ -16,7 +16,7 @@
 // EditorTacMap dialog
 
 
-EditorTacMap::EditorTacMap(CWnd* pParent /*=NULL*/)
+EditorTacMap::EditorTacMap(CWnd* pParent /*=nullptr*/)
 	: CDialog(EditorTacMap::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(EditorTacMap)
@@ -53,8 +53,8 @@ BOOL EditorTacMap::OnInitDialog()
 	CPoint p(0, 0);
 	EditorInterface::instance()->ClientToScreen(&p);
 
-	SetWindowPos( NULL, p.x, p.y + 32/*arbitrary*/,  (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE + borderSize, /*SWP_NOMOVE | */SWP_NOZORDER );
-	picture.SetWindowPos( NULL, 0, 0, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, SWP_NOZORDER );
+	SetWindowPos( nullptr, p.x, p.y + 32/*arbitrary*/,  (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE + borderSize, /*SWP_NOMOVE | */SWP_NOZORDER );
+	picture.SetWindowPos( nullptr, 0, 0, (int32_t)TACMAP_SIZE, (int32_t)TACMAP_SIZE, SWP_NOZORDER );
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -83,7 +83,7 @@ void EditorTacMap::OnTga()
 	EditorInterface::instance()->SafeRunGameOSLogic();
 
 	EditorInterface::instance()->syncScrollBars();
-	picture.InvalidateRect(NULL);
+	picture.InvalidateRect(nullptr);
 
 	EditorInterface::instance()->SetFocus();
 }

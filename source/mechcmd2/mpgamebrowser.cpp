@@ -132,7 +132,7 @@ void MPGameBrowser::begin()
 	{
 		MPlayer->closeSession();
 //		MPlayer->leaveSession(); // make sure I'm not hosting or already in a game....
-		MPlayer->beginSessionScan (NULL);
+		MPlayer->beginSessionScan (nullptr);
 		MPlayer->setMode(MULTIPLAYER_MODE_BROWSER);
 	}
 
@@ -704,7 +704,7 @@ PCSTR aGameListItem::getText( int32_t which )
 	else if ( which == SORT_ORDER_MAP )
 		return mapName.getText();
 
-	return NULL;
+	return nullptr;
 
 }
 

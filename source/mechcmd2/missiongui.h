@@ -268,7 +268,7 @@ public:
 		void	doMove(const Stuff::Vector3D& pos);
 		void	doGuard(GameObject* pObj);
 		int32_t toggleHotKeys(void);
-		void	beginVtol(int32_t supportID, int32_t commanderID = 0, Stuff::Vector3D* reinforcePos = NULL, MoverPtr salvageTarget = NULL);
+		void	beginVtol(int32_t supportID, int32_t commanderID = 0, Stuff::Vector3D* reinforcePos = nullptr, MoverPtr salvageTarget = nullptr);
 
 		//Tutorial Stuff goes here.
 		bool startAnimation(int32_t buttonId,bool isButton,bool isPressed,float timeToScroll,int32_t numFlashes);

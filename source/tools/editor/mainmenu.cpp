@@ -13,10 +13,10 @@
 
 #include "editorinterface.h"
 
-MainMenu *pMainMenu = NULL;
+MainMenu *pMainMenu = nullptr;
 MainMenu::MainMenu(EditorInterface *pEditorInterface):Window(L"MainMenu",0,0,Environment.screenWidth,Environment.screenHeight,pEditorInterface/*pgWinMan->Root()*/,0,0)
 {
-	pMenu = NULL;
+	pMenu = nullptr;
 	bEndModal = false;
 	pMenu = new Menu(this,0,0,0,0,IDR_EDITOR_MENU,pgRes);
 	WindowRect(pMenu->WindowRect());
@@ -46,7 +46,7 @@ void MainMenu::DoModal()
 {
 	while (!TerminateGame && !bEndModal)
 	{
-		gos_RunMainLoop( NULL );
+		gos_RunMainLoop( nullptr );
 		pgWinMan->Dispatch();
 	}
 }

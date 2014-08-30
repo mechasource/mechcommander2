@@ -76,7 +76,7 @@ extern SoundSystem *sndSystem;
 #define ALT		0x00100000
 #define WAYPT	0x20000000
 
-HotKeyListItem*		HotKeyListItem::s_item = NULL;
+HotKeyListItem*		HotKeyListItem::s_item = nullptr;
 
 
 OptionsXScreen::OptionsXScreen()
@@ -651,7 +651,7 @@ void OptionsAudio::init(int32_t xOffset, int32_t yOffset)
 	{
 		if ( buttons[i].getID() != MSG_RESET )
 		{
-			buttons[i].setParent( NULL );
+			buttons[i].setParent( nullptr );
 		}
 	}
 	move( xOffset, yOffset );
@@ -759,7 +759,7 @@ void OptionsGamePlay::resetCamera()
 	}
 	else
 	{
-		camera.setMech( NULL );
+		camera.setMech( nullptr );
 	}
 }
 
@@ -921,7 +921,7 @@ void OptionsGamePlay::end()
 	}
 	else
 	{
-		camera.setMech( NULL );
+		camera.setMech( nullptr );
 	}
 
 }

@@ -19,7 +19,7 @@ MPAddAIPlayer.cpp			: Implementation of the MPAddAIPlayer component.
 
 #define CHECK_BUTTON 200
 
-static CFocusManager *g_focusManager = NULL;
+static CFocusManager *g_focusManager = nullptr;
 
 static cint32_t FIRST_BUTTON_ID = 1000010;
 static cint32_t OK_BUTTON_ID = 1000001;
@@ -33,7 +33,7 @@ MPAddAIPlayer::MPAddAIPlayer()
 
 MPAddAIPlayer::~MPAddAIPlayer()
 {
-	g_focusManager = NULL;
+	g_focusManager = nullptr;
 }
 
 int32_t MPAddAIPlayer::indexOfButtonWithID(int32_t id)

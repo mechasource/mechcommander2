@@ -143,7 +143,7 @@ BOOL EditorMFCApp::OnIdle(int32_t lCount)
 
 	if (pW1 == pW3)
 	{
-		EditorInterface::instance()->InvalidateRect(NULL, FALSE);
+		EditorInterface::instance()->InvalidateRect(nullptr, FALSE);
 	}
 
 	Sleep(2/*milliseconds*/); /* limits the framerate to 500fps */
@@ -168,8 +168,8 @@ int32_t EditorMFCApp::ExitInstance()
 			EditorInterface window, so we recreate the window here. The editor window
 			may not be referenced after this function is executed, but this is not the correct
 			place for the EditorInterface window to be destroyed. */
-			EditorInterface::instance()->Create(NULL, NULL, AFX_WS_DEFAULT_VIEW | WS_VSCROLL | WS_HSCROLL,
-				CRect(0, 0, 0, 0), m_pMainWnd, AFX_IDW_PANE_FIRST, NULL);
+			EditorInterface::instance()->Create(nullptr, nullptr, AFX_WS_DEFAULT_VIEW | WS_VSCROLL | WS_HSCROLL,
+				CRect(0, 0, 0, 0), m_pMainWnd, AFX_IDW_PANE_FIRST, nullptr);
 		}
 	}
 

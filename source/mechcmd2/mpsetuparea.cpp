@@ -246,7 +246,7 @@ void MPSetupXScreen::begin()
 
 void MPSetupXScreen::end()
 {
-	mechCamera.setMech(NULL);
+	mechCamera.setMech(nullptr);
 }
 
 void MPSetupXScreen::render(int32_t xOffset, int32_t yOffset )

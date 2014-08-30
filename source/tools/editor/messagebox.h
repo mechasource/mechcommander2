@@ -37,7 +37,7 @@ inline int32_t EMessageBox(int32_t MessageID, int32_t CaptionID,uint32_t dwS )
 	else
 	{
 		/*note: this messagebox will not be modal wrt the application*/
-		return ::MessageBoxA( NULL, buffer, bufferCaption, dwS );
+		return ::MessageBoxA( nullptr, buffer, bufferCaption, dwS );
 	}
 
 }

@@ -68,7 +68,7 @@ uint32_t __stdcall gos_LZDecompress( puint8_t dest, puint8_t src, size_t srcLen 
 
 
 //
-// Gets a pointer to text data in the windows clip board (NULL=No text)
+// Gets a pointer to text data in the windows clip board (nullptr=No text)
 //
 uint32_t __stdcall gos_GetClipboardText( PSTR Buffer, size_t BufferSize );
 
@@ -124,7 +124,7 @@ bool __stdcall gos_RenameFile( PCSTR FileNameFrom, PCSTR FileNameTo );
 bool __stdcall gos_DeleteFile( PCSTR FileName );
 
 //
-// Find files matching pattern - returns NULL when no more files (Can be used too see if a directory is empty : ie: 0==gos_FindFiles( "\\graphics\\*.*" )
+// Find files matching pattern - returns nullptr when no more files (Can be used too see if a directory is empty : ie: 0==gos_FindFiles( "\\graphics\\*.*" )
 //
 PSTR __stdcall gos_FindFiles( PCSTR PathFileName );
 //
@@ -137,7 +137,7 @@ PSTR __stdcall gos_FindFilesNext(void);
 void __stdcall gos_FindFilesClose(void);
 
 //
-// Find directories matching pattern - returns NULL when no more directories
+// Find directories matching pattern - returns nullptr when no more directories
 //
 PSTR __stdcall gos_FindDirectories( PCSTR DirectoryName );
 //

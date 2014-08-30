@@ -269,11 +269,11 @@ void aEdit::handleKeyboard()
 				if ( key2 )
 				{
 					str[1] = key2;
-					str[2] = NULL;
+					str[2] = nullptr;
 					amountToAdd = 2;
 				}
 				else
-					str[1] = NULL;
+					str[1] = nullptr;
 				
 				if (nInsertion1 < text.Length() )
 				{
@@ -367,7 +367,7 @@ void aEdit::render()
 		if ( text.Length() )
 		{
 			char tmp = textToDraw[nMax];
-			textToDraw[nMax] = NULL;
+			textToDraw[nMax] = nullptr;
 			font.render( &textToDraw[nMin], (int32_t)nXSelStart, (int32_t)globalY(),
 				nXSelEnd, (int32_t)height(), selectedColor, 0, 0 );
 			textToDraw[nMax] = tmp;
@@ -733,7 +733,7 @@ int32_t		aEdit::findChar(int32_t nXPos)
 		{	
 			pNext = _mbsinc( pCur );
 			uint8_t tmp = *pNext;
-			*pNext = NULL;
+			*pNext = nullptr;
 			nLastPos = nNextPos;
 			nNextPos = font.width(text);
 			*pNext = tmp;

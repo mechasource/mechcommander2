@@ -39,12 +39,12 @@ typedef enum {
 
 
 char EditorData::mapName[256];
-uint32_t* EditorData::tacMapBmp = NULL;
+uint32_t* EditorData::tacMapBmp = nullptr;
 
 extern char versionStamp[];
 extern bool justResaveAllMaps;
 
-EditorData* EditorData::instance = NULL;
+EditorData* EditorData::instance = nullptr;
 
 char missionScriptName[1024]="M0101";
 
@@ -65,7 +65,7 @@ EditorData::EditorData()
 { 
 	gosASSERT( !instance ); instance = this; 
 	updateTitleBar();
-	tacMapBmp = NULL;
+	tacMapBmp = nullptr;
 	clear();
 }
 
@@ -74,14 +74,14 @@ EditorData::~EditorData()
 	if ( land )
 		delete land;
 
-	land = NULL;
+	land = nullptr;
 
-	instance = NULL;
+	instance = nullptr;
 
 	if ( tacMapBmp )
 		free( tacMapBmp );
 
-	tacMapBmp = NULL;
+	tacMapBmp = nullptr;
 
 
 		
@@ -95,7 +95,7 @@ bool EditorData::clear()
 	{
 		land->destroy();
 		delete land;
-		land = NULL;
+		land = nullptr;
 	}
 
 	if ( EditorObjectMgr::instance() )
@@ -143,7 +143,7 @@ bool EditorData::clear()
 	if ( tacMapBmp )
 	{
 		free( tacMapBmp );
-		tacMapBmp = NULL;
+		tacMapBmp = nullptr;
 	}
 
 	EditorData::instance->missionSettings.clear();
@@ -242,7 +242,7 @@ bool EditorData::initTerrainFromPCV( PCSTR fileName )
 		cLoadString( IDS_COULDNT_OPEN, buffer, 256 , gameResourceHandle);
 		char buffer2[512];
 		sprintf( buffer2, buffer, fileName );
-		//MessageBox( NULL, buffer2, NULL, MB_OK );
+		//MessageBox( nullptr, buffer2, nullptr, MB_OK );
 		/*I think MessageBox() would not be modal wrt the application.*/
 		AfxMessageBox(buffer2);
 		EditorInterface::instance()->UnsetBusyMode();
@@ -266,7 +266,7 @@ bool EditorData::initTerrainFromPCV( PCSTR fileName )
 		cLoadString( IDS_COULDNT_OPEN, buffer, 256, gameResourceHandle );
 		char buffer2[512];
 		sprintf( buffer2, buffer, camFileName );
-		//MessageBox( NULL, buffer2, NULL, MB_OK );
+		//MessageBox( nullptr, buffer2, nullptr, MB_OK );
 		/*I think MessageBox() would not be modal wrt the application.*/
 		AfxMessageBox(buffer2);
 		EditorInterface::instance()->UnsetBusyMode();
@@ -616,7 +616,7 @@ bool EditorData::initTerrainFromPCV( PCSTR fileName )
 		///This was a quickSave.  No Move Data.  Leave Blank!
 		// can't might crash
 		else
-			MOVE_buildData( land->realVerticesMapSide * 3, land->realVerticesMapSide * 3, NULL, 0, NULL);
+			MOVE_buildData( land->realVerticesMapSide * 3, land->realVerticesMapSide * 3, nullptr, 0, nullptr);
 	}
 	else
 	{
@@ -664,7 +664,7 @@ bool EditorData::reassignHeightsFromTGA( PCSTR fileName, int32_t min, int32_t ma
 	tgaFile.seek(0);
 
 	puint8_t tgaData = (puint8_t)systemHeap->Malloc(tgaFile.fileSize());
-	gosASSERT(tgaData != NULL);
+	gosASSERT(tgaData != nullptr);
 
 	result = tgaFile.read(tgaData,tgaFile.fileSize());
 
@@ -686,7 +686,7 @@ bool EditorData::reassignHeightsFromTGA( PCSTR fileName, int32_t min, int32_t ma
 	gosASSERT( header->width == header->height );
 	gosASSERT( !(header->width % 20) );
 
-	puint8_t pTmp = NULL;
+	puint8_t pTmp = nullptr;
 
 	float mapMin = 255.;
 	float mapMax = 0.;
@@ -757,12 +757,12 @@ PVOID DecodeJPG( PCSTR FileName, puint8_t Data, uint32_t DataSize, uint32_t* Tex
 //-------------------------------------------------------------------------------------------------
 void CreateScaledColorMap(int32_t mapWidth, PSTR localColorMapName, puint8_t tmpRAM, int32_t fileSize)
 {
-	puint8_t image = NULL;
+	puint8_t image = nullptr;
 
 	uint32_t jpgColorMapWidth = 0;
 	uint32_t jpgColorMapHeight = 0;
 
-	image = (puint8_t)DecodeJPG("Startup.jpg", tmpRAM, fileSize, &jpgColorMapWidth, &jpgColorMapHeight, false, NULL);
+	image = (puint8_t)DecodeJPG("Startup.jpg", tmpRAM, fileSize, &jpgColorMapWidth, &jpgColorMapHeight, false, nullptr);
 
 	//We are now pointing at the image.  Figure out the new line width in bytes.
 	int32_t newWidth = mapWidth * 12.8f;
@@ -840,7 +840,7 @@ bool EditorData::initTerrainFromTGA( int32_t mapSize, int32_t min, int32_t max, 
 
 	land = new Terrain( );
 	volatile float crap = 0;
-	land->init( mapWidth, NULL, EDITOR_VISIBLE_VERTICES, crap, 100 );
+	land->init( mapWidth, nullptr, EDITOR_VISIBLE_VERTICES, crap, 100 );
 	land->setUserSettings( min, max, terrain );
 
 	//-----------------------------------------------------------------
@@ -869,10 +869,10 @@ bool EditorData::initTerrainFromTGA( int32_t mapSize, int32_t min, int32_t max, 
 			localColorMapName.init(texturePath,name2,".tga");
 			
 			SetFileAttributes(localColorMapName,FILE_ATTRIBUTE_NORMAL);
-			CreateDirectory(missionPath, NULL);
-			CreateDirectory(warriorPath, NULL);
-			CreateDirectory(terrainPath, NULL);
-			CreateDirectory(texturePath, NULL);
+			CreateDirectory(missionPath, nullptr);
+			CreateDirectory(warriorPath, nullptr);
+			CreateDirectory(terrainPath, nullptr);
+			CreateDirectory(texturePath, nullptr);
 
 			//Maps are in the fastfiles.  Dork.
 			//CopyFile(tgaColorMapName,localColorMapName,false);
@@ -942,7 +942,7 @@ bool EditorData::initTerrainFromTGA( int32_t mapSize, int32_t min, int32_t max, 
 				}
 			}
 
-			land->terrainTextures2 = new TerrainColorMap;		//Otherwise, this will stay NULL and we know not to use them
+			land->terrainTextures2 = new TerrainColorMap;		//Otherwise, this will stay nullptr and we know not to use them
 			
 			land->terrainName = (PSTR )gos_Malloc(strlen(name2) + 1);
 			strcpy(land->terrainName,name2);
@@ -984,7 +984,7 @@ bool EditorData::initTerrainFromTGA( int32_t mapSize, int32_t min, int32_t max, 
 	puint8_t pMemory = (puint8_t)malloc( ramSize * 4 );
 	tacMapBmp = (uint32_t*)((puint8_t)pMemory);
 
-	MOVE_buildData( land->realVerticesMapSide * 3, land->realVerticesMapSide * 3, NULL, 0, NULL);
+	MOVE_buildData( land->realVerticesMapSide * 3, land->realVerticesMapSide * 3, nullptr, 0, nullptr);
 
 	EditorInterface::instance()->UnsetBusyMode();
 
@@ -1045,7 +1045,7 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 
 	if (!armProvider)
 	{
-		CoInitialize(NULL);
+		CoInitialize(nullptr);
 		armProvider = CreateProviderEngine("MC2Editor", versionStamp);
 		initializedCOM = true;
 	}
@@ -1301,7 +1301,7 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 
 		MOVE_buildData(land->realVerticesMapSide * 3, land->realVerticesMapSide * 3, pInfo, gateCount + wallCount + landBridgeCount, specialAreaFootPrints);
 		free( pInfo );
-		pInfo = NULL;
+		pInfo = nullptr;
 	}
  
 	// create a pak file with the correct number of entries
@@ -1312,7 +1312,7 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 		cLoadString( IDS_INVALID_FILE, buffer, 256, gameResourceHandle );
 		char buffer2[512];
 		sprintf( buffer2, buffer, path );
-		//MessageBox( NULL, buffer2, NULL, MB_OK );
+		//MessageBox( nullptr, buffer2, nullptr, MB_OK );
 		/*I think MessageBox() would not be modal wrt the application.*/
 		AfxMessageBox(buffer2);
 		EditorInterface::instance()->UnsetBusyMode();
@@ -1321,7 +1321,7 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 
 	//------------------------------------------------------------------------
 	// This reserve MUST come after we've initialized and built the move data!
-	uint32_t numPackets = 5 + MOVE_saveData(NULL);
+	uint32_t numPackets = 5 + MOVE_saveData(nullptr);
 	file.reserve(numPackets, false);
 	land->unselectAll();
 	bool bRetVal = land->save( &file, 0, (0.0 < eye->day2NightTransitionTime) ) ? true : false;
@@ -1360,7 +1360,7 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 		cLoadString( IDS_INVALID_FILE, buffer, 256, gameResourceHandle );
 		char buffer2[512];
 		sprintf( buffer2, buffer, path );
-		//MessageBox( NULL, buffer2, NULL, MB_OK );
+		//MessageBox( nullptr, buffer2, nullptr, MB_OK );
 		/*I think MessageBox() would not be modal wrt the application.*/
 		AfxMessageBox(buffer2);
 		EditorInterface::instance()->UnsetBusyMode();
@@ -1388,7 +1388,7 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 			if (land->colorMapName)
 				strcpy(name2,land->colorMapName);
 			else
-				_splitpath(fileName,NULL,NULL,name2,NULL);
+				_splitpath(fileName,nullptr,nullptr,name2,nullptr);
 			land->terrainTextures2->saveDetailTexture(name2);
 			DetailTextureNeedsSaving(false);
 		}
@@ -1402,7 +1402,7 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 			if (land->colorMapName)
 				strcpy(name2,land->colorMapName);
 			else
-				_splitpath(fileName,NULL,NULL,name2,NULL);
+				_splitpath(fileName,nullptr,nullptr,name2,nullptr);
 			land->terrainTextures2->saveWaterTexture(name2);
 			WaterTextureNeedsSaving(false);
 		}
@@ -1416,7 +1416,7 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 			if (land->colorMapName)
 				strcpy(name2,land->colorMapName);
 			else
-				_splitpath(fileName,NULL,NULL,name2,NULL);
+				_splitpath(fileName,nullptr,nullptr,name2,nullptr);
 			land->terrainTextures2->saveWaterDetail(name2);
 			WaterDetailTextureNeedsSaving(false);
 		}
@@ -1583,8 +1583,8 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 
 	// ARM
 	mapAssetPtr->Close();
-	mapAssetPtr = NULL;
-	mapAsset = NULL;
+	mapAssetPtr = nullptr;
+	mapAsset = nullptr;
 
 	if (initializedCOM)
 	{
@@ -1595,7 +1595,7 @@ bool EditorData::save( PCSTR fileName, bool quickSave )
 
 	EditorInterface::instance()->undoMgr.NoteThatASaveHasJustOccurred();
 
-	PlaySound("SystemDefault",NULL,SND_ASYNC);
+	PlaySound("SystemDefault",nullptr,SND_ASYNC);
 
 	EditorInterface::instance()->UnsetBusyMode();
 
@@ -1894,7 +1894,7 @@ void EditorData::drawTacMap( puint8_t pDest, int32_t dataSize, int32_t tacMapSiz
 	
 	memset( pShrunken, 0, dataSize );
 
-	gosASSERT(tacMapBmp != NULL);
+	gosASSERT(tacMapBmp != nullptr);
 	memset(tacMapBmp,0,ramSize*4);
 
 	Stuff::Vector3D optimalLight;
@@ -2246,7 +2246,7 @@ void EditorData::drawTacMap( puint8_t pDest, int32_t dataSize, int32_t tacMapSiz
 				strcmp(EditorObjectMgr::instance()->getTGAFileName(pObj->getID()),"NONE") != 0 )
 			{
 				int32_t recNum = -1;
-				puint8_t tgaRAM = NULL;
+				puint8_t tgaRAM = nullptr;
 				int32_t tHeight = 0, tWidth = 0;
 				for (int32_t it = 0;it<255;it++)
 				{
@@ -2363,12 +2363,12 @@ void EditorData::drawTacMap( puint8_t pDest, int32_t dataSize, int32_t tacMapSiz
 		if (tRecs[it].tgaData)
 		{
 			systemHeap->Free(tRecs[it].tgaData);
-			tRecs[it].tgaData = NULL;	
+			tRecs[it].tgaData = nullptr;	
 		}
 	}
 	
 	systemHeap->Free(tRecs);
-	tRecs = NULL;
+	tRecs = nullptr;
 	
  	// now shrink 'er down
 	double xRatio = 3. * (land->realVerticesMapSide)/tacMapSize;
@@ -2460,7 +2460,7 @@ void EditorData::loadTacMap(PacketFile *file, puint8_t& pReturn, int32_t dataSiz
 //---------------------------------------------------------------------------
 bool EditorData::saveTacMap (PacketFile* file, int32_t whichPacket )
 {
-	puint8_t data = NULL;
+	puint8_t data = nullptr;
 	int32_t size = 0;
 
 	makeTacMap( data, size, 128 );

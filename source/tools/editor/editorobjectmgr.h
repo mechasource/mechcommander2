@@ -99,12 +99,12 @@ public:
 								int32_t alignment,
 								float rotation = 0.0,
 								float height = 1.0,
-								bool bSnapToCell = true ); // returns NULL if failure
+								bool bSnapToCell = true ); // returns nullptr if failure
 
 	bool addBuilding( EditorObject* pObjectThatWeWillCopy );
 
 	EditorObject*	addDropZone( const Stuff::Vector3D& position, 
-								int32_t alignment, bool bVTol ); // returns NULL if failure
+								int32_t alignment, bool bVTol ); // returns nullptr if failure
 
 	bool		deleteBuilding( const EditorObject* pInfo ); // should only be one building in a spot
 	bool		deleteObject( const EditorObject* pInfo){ return deleteBuilding( pInfo ); } // only object FOR NOW

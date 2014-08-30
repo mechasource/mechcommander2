@@ -897,7 +897,7 @@ PCSTR LogisticsMissionInfo::getCurrentOperationFile(void) const
 	if ( pGroup )
 		return pGroup->operationFileName;
 
-	return NULL;
+	return nullptr;
 	
 }
 
@@ -916,7 +916,7 @@ PCSTR LogisticsMissionInfo::getCurrentVideo(void) const
 		return pGroup->videoFileName;	
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 int32_t LogisticsMissionInfo::getCurrentLogisticsTuneId()
@@ -936,7 +936,7 @@ PCSTR	LogisticsMissionInfo::getCurrentMissionDescription(void) const
 	if ( pGroup )
 		return pGroup->infos[currentMission]->description;	
 
-	return NULL;
+	return nullptr;
 }
 
 bool LogisticsMissionInfo::getMissionAvailable( PCSTR missionName )
@@ -950,39 +950,39 @@ bool LogisticsMissionInfo::getMissionAvailable( PCSTR missionName )
 			return !pGroup->infos[i]->completed;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 PCSTR			LogisticsMissionInfo::getCurrentMissionFriendlyName(void) const
 {
 	if ( currentStage >= groupCount )
-		return NULL;
+		return nullptr;
 	MissionGroup* pGroup = &groups[currentStage];
 
 	if ( pGroup )
 		return pGroup->infos[currentMission]->missionDescriptiveName;	
 
-	return NULL;
+	return nullptr;
 
 }
 
 PCSTR			LogisticsMissionInfo::getCurrentABLScriptName(void) const
 {
 	if ( currentStage >= groupCount )
-		return NULL;
+		return nullptr;
 
 	MissionGroup* pGroup = &groups[currentStage];
 
 	if ( pGroup )
 		return pGroup->ablBrainName;
 
-	return NULL;
+	return nullptr;
 }
 
 PCSTR LogisticsMissionInfo::getMissionFriendlyName( PCSTR missionName ) const
 {
 	if ( currentStage >= groupCount )
-		return NULL;
+		return nullptr;
 	MissionGroup* pGroup = &groups[currentStage];
 
 	for ( int32_t i = 0; i < pGroup->infos.Count(); i++ )
@@ -992,7 +992,7 @@ PCSTR LogisticsMissionInfo::getMissionFriendlyName( PCSTR missionName ) const
 			return pGroup->infos[i]->missionDescriptiveName;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 int32_t		LogisticsMissionInfo::getCurrentRP(void) const
@@ -1009,12 +1009,12 @@ int32_t		LogisticsMissionInfo::getCurrentRP(void) const
 PCSTR			LogisticsMissionInfo::getCurrentBigVideo(void) const
 {
 	if ( currentStage == -1 )
-		return NULL;
+		return nullptr;
 	
 	MissionGroup* pGroup = &groups[currentStage];
 
 	if ( pGroup->bigVideoShown )
-		return NULL;
+		return nullptr;
 
 	pGroup->bigVideoShown = true;
 	return pGroup->bigVideoName;
@@ -1143,7 +1143,7 @@ LogisticsMissionInfo::MissionInfo* LogisticsMissionInfo::getPreviousMission()
 		if ( Count )
 			return pGroup->infos[Count-1];
 		else
-			return NULL;
+			return nullptr;
 	}
 	else if ( currentStage == 0 )	//There may be only one stage.  I.e. Tutorials!
 	{
@@ -1152,10 +1152,10 @@ LogisticsMissionInfo::MissionInfo* LogisticsMissionInfo::getPreviousMission()
 		if ( Count )
 			return pGroup->infos[Count-1];
 		else
-			return NULL;
+			return nullptr;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 bool LogisticsMissionInfo::isSingleMission(void) const

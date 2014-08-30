@@ -12,7 +12,7 @@ LogisticsPilotListBox.cpp			: Implementation of the LogisticsPilotListBox compon
 #include "..\resource.h"
 #include "PilotReadyScreen.h"
 
-LogisticsPilotListBoxItem* LogisticsPilotListBoxItem::s_templateItem = NULL;
+LogisticsPilotListBoxItem* LogisticsPilotListBoxItem::s_templateItem = nullptr;
 
 LogisticsPilotListBox::LogisticsPilotListBox( )
 {
@@ -22,7 +22,7 @@ LogisticsPilotListBox::LogisticsPilotListBox( )
 LogisticsPilotListBox::~LogisticsPilotListBox()
 {
 	delete LogisticsPilotListBoxItem::s_templateItem;
-	LogisticsPilotListBoxItem::s_templateItem = NULL;
+	LogisticsPilotListBoxItem::s_templateItem = nullptr;
 
 	aListBox::destroy();
 }
@@ -108,7 +108,7 @@ LogisticsPilotListBoxItem::LogisticsPilotListBoxItem( LogisticsPilot* pNewPilot 
 int32_t LogisticsPilotListBoxItem::init( FitIniFile* file )
 {
 	if ( !s_templateItem )
-		s_templateItem = new LogisticsPilotListBoxItem( NULL );
+		s_templateItem = new LogisticsPilotListBoxItem( nullptr );
 
 	memset( s_templateItem->pChildAnimations, 0, sizeof( aAnimGroup* ) * PILOT_LIST_BOX_CHILD_COUNT );
 
@@ -152,7 +152,7 @@ void LogisticsPilotListBoxItem::setAnimation( FitIniFile& file, int32_t whichOne
 		{
 			if ( isdigit( animationText[i] ) )
 			{
-				animationText[i+1] = NULL;
+				animationText[i+1] = nullptr;
 				s_templateItem->pChildAnimations[whichOne] = atoi( &animationText[i] );
 				return;
 			}

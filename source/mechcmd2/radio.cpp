@@ -31,12 +31,12 @@
 // Macro Definitions
 extern bool useSound;
 
-PacketFilePtr 		Radio::noiseFile = NULL;
+PacketFilePtr 		Radio::noiseFile = nullptr;
 RadioPtr	  		Radio::radioList[MAX_RADIOS];	//Warriors no longer delete their radios.
 bool				Radio::radioListGo = false;
 bool				Radio::messageInfoLoaded = false;
 int32_t				Radio::currentRadio = 0;
-UserHeapPtr			Radio::radioHeap = NULL;
+UserHeapPtr			Radio::radioHeap = nullptr;
 PacketFilePtr		Radio::messagesFile[MAX_RADIOS];
 
 RadioMessageInfo	messageInfo[RADIO_MESSAGE_COUNT];
@@ -51,8 +51,8 @@ PVOIDRadio::operator new (size_t mySize)
 		radioListGo = true;
 		for (int32_t i=0;i<MAX_RADIOS;i++)
 		{
-			radioList[i] = NULL;
-			messagesFile[i] = NULL;
+			radioList[i] = nullptr;
+			messagesFile[i] = nullptr;
 		}
 		
 		currentRadio = 0;
@@ -85,7 +85,7 @@ int32_t Radio::init (PSTR fileName, uint32_t heapSize, PSTR movie)
 	// Startup the packet file.
 	radioID = currentRadio;
 	messagesFile[radioID] = new PacketFile;
-	gosASSERT(messagesFile[radioID] != NULL);
+	gosASSERT(messagesFile[radioID] != nullptr);
 		
 	int32_t result = messagesFile[radioID]->open(pilotAudioPath);
 	gosASSERT(result == NO_ERROR);
@@ -95,7 +95,7 @@ int32_t Radio::init (PSTR fileName, uint32_t heapSize, PSTR movie)
 		//--------------------------------------
 		// Startup the Noise packet file.
 		noiseFile = new PacketFile;
-		gosASSERT(noiseFile != NULL);
+		gosASSERT(noiseFile != nullptr);
 			
 		result = noiseFile->open(noisePath);
 		gosASSERT(result == NO_ERROR);
@@ -272,13 +272,13 @@ int32_t i, roll, callsign, fragmentNum, dropOut = 0;
 			for (int32_t j=0;j<MAX_FRAGMENTS;j++)
 			{
 				radioHeap->Free(msgData->data[j]);
-				msgData->data[j] = NULL;
+				msgData->data[j] = nullptr;
 				radioHeap->Free(msgData->noise[j]);
-				msgData->noise[j] = NULL;
+				msgData->noise[j] = nullptr;
 			}
 			
 			radioHeap->Free(msgData);
-			msgData = NULL;
+			msgData = nullptr;
 		}
 		return (NO_PLAY);
 	}
@@ -319,62 +319,62 @@ PSTR				field;
 			Fatal(0, "Bad Message Info File");
 
 		field = strtok(dataLine, ",");	// get past command name
-		field = strtok(NULL, ",");
+		field = strtok(nullptr, ",");
 		if (field)
 			messageInfo[i].priority = atoi(field);
 		else
 			messageInfo[i].priority = 4;
 
-		field = strtok(NULL, ",");
+		field = strtok(nullptr, ",");
 		if (field)
 			messageInfo[i].shelfLife = atoi(field);
 		else
 			messageInfo[i].shelfLife = 0;
 
-		field = strtok(NULL, ",");
+		field = strtok(nullptr, ",");
 		if (field && *field != 'x')
 			messageInfo[i].movieCode = *field;
 		else
 			messageInfo[i].movieCode = '\0';
 
-		field = strtok(NULL, ",");
+		field = strtok(nullptr, ",");
 		if (field)
 			messageInfo[i].styleCount = atoi(field);
 		else
 			messageInfo[i].styleCount = 1;
 
-		field = strtok(NULL, ",");
+		field = strtok(nullptr, ",");
 		if (field)
 			messageInfo[i].styleChance[0] = atoi(field);
 		else
 			messageInfo[i].styleChance[0] = 0;
-		field = strtok(NULL, ",");
+		field = strtok(nullptr, ",");
 		if (field)
 			messageInfo[i].styleChance[1] = atoi(field);
 		else
 			messageInfo[i].styleChance[1] = 0;
-		field = strtok(NULL, ",");
+		field = strtok(nullptr, ",");
 		if (field)
 			messageInfo[i].styleChance[2] = atoi(field);
 		else
 			messageInfo[i].styleChance[2] = 0;
 
-		field = strtok(NULL, ",");
+		field = strtok(nullptr, ",");
 		if (field)
 			messageInfo[i].pilotIdentifiesSelf = (*field == 'y');
 		else
 			messageInfo[i].pilotIdentifiesSelf = FALSE;
 
-		field = strtok(NULL, ",");
+		field = strtok(nullptr, ",");
 		if (field)
 			messageInfo[i].messageMapping = atoi(field);
 		else
 			messageInfo[i].messageMapping = 0;
 		
-		field = strtok(NULL, ",");
+		field = strtok(nullptr, ",");
 		if (field)
 		{
-			field = strtok(NULL, ",");
+			field = strtok(nullptr, ",");
 			if (field)
 			{
 				messageInfo[i].kludgeStyle = (*field == 'x');

@@ -17,7 +17,7 @@ TGAWnd::TGAWnd()
 	bThisIsInitialized = false;
 
 	m_bTGAChanged = false;
-	m_pImage = NULL;
+	m_pImage = nullptr;
 	m_pBmi = (BITMAPINFO*)malloc( sizeof( BITMAPINFOHEADER ) );
 	memset( m_pBmi, 0, sizeof( BITMAPINFOHEADER ) );
 
@@ -30,10 +30,10 @@ TGAWnd::TGAWnd()
 	m_pBmi->bmiHeader.biClrUsed = 0;
 	m_pBmi->bmiHeader.biClrImportant = 0;
 
-	m_pMemDC = NULL;
-	m_hBitmap = NULL;
+	m_pMemDC = nullptr;
+	m_hBitmap = nullptr;
 
-	m_hSplashBitMap = NULL;
+	m_hSplashBitMap = nullptr;
 
 	bThisIsInitialized = true;/*it may be premature to flag it as initialized here*/
 }
@@ -50,7 +50,7 @@ TGAWnd::~TGAWnd()
 	if ( m_pImage )
 	{
 		free( m_pImage );
-		m_pImage = NULL;
+		m_pImage = nullptr;
 	}
 
 	if ( m_pMemDC )
@@ -67,7 +67,7 @@ void TGAWnd::SetTGAFileName( const CString& str )
 	if ( m_pImage )
 	{
 		free( m_pImage );
-		m_pImage = NULL;
+		m_pImage = nullptr;
 	}
 
 	CFile File;
@@ -81,7 +81,7 @@ void TGAWnd::SetTGAFileName( const CString& str )
 	if ( m_hBitmap )
 	{
 		DeleteObject( m_hBitmap );
-		m_hBitmap = NULL;
+		m_hBitmap = nullptr;
 	}
 
 	TGAFileHeader header;
@@ -114,7 +114,7 @@ void TGAWnd::SetTGAFileData( puint8_t data, int32_t size )
 	if ( m_pImage && (m_pBmi->bmiHeader.biWidth != - header->width || m_pBmi->bmiHeader.biHeight != header->height) )
 	{
 		free( m_pImage );
-		m_pImage = NULL;
+		m_pImage = nullptr;
 		
 	}
 	if ( !m_pImage )
@@ -162,7 +162,7 @@ void TGAWnd::OnPaint()
 		}
 		
 		if ( !m_hBitmap )
-			m_hBitmap = CreateDIBSection( dc.m_hDC, m_pBmi, DIB_RGB_COLORS, (PVOID*)&m_pBits, NULL, 0 );
+			m_hBitmap = CreateDIBSection( dc.m_hDC, m_pBmi, DIB_RGB_COLORS, (PVOID*)&m_pBits, nullptr, 0 );
 
 		memcpy( m_pBits, m_pImage, m_pBmi->bmiHeader.biWidth * -m_pBmi->bmiHeader.biHeight * 4 );
 
@@ -185,7 +185,7 @@ void TGAWnd::OnPaint()
 	else
 	{
 		if (!m_hSplashBitMap) {
-			m_hSplashBitMap = (HBITMAP)LoadImage(NULL, "tacsplash.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+			m_hSplashBitMap = (HBITMAP)LoadImage(nullptr, "tacsplash.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 		}
 		if (m_hSplashBitMap) {
 			BITMAP bm_struct;

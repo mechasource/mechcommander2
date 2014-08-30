@@ -29,17 +29,17 @@
 CPrefs prefs;
 
 
-SoundSystem* sndSystem = NULL;
+SoundSystem* sndSystem = nullptr;
 
-MultiPlayer* MPlayer = NULL;
+MultiPlayer* MPlayer = nullptr;
 
 //CPrefs prefs;
 
 extern float frameRate;
 
 // globals used for memory
-UserHeapPtr systemHeap = NULL;
-UserHeapPtr guiHeap = NULL;
+UserHeapPtr systemHeap = nullptr;
+UserHeapPtr guiHeap = nullptr;
 
 int32_t GameVisibleVertices = 30;
 bool useLeftRightMouseProfile = true;
@@ -69,7 +69,7 @@ int32_t GameDifficulty = 0;
 int32_t resolution = 0;
 bool useUnlimitedAmmo = true;
 
-Camera* eye = NULL;
+Camera* eye = nullptr;
 uint32_t BaseVertexColor =0;
 
 enum { CPU_UNKNOWN, CPU_PENTIUM, CPU_MMX, CPU_KATMAI }Processor = CPU_PENTIUM; //Needs to be set when GameOS supports ProcessorID -- MECHCMDR2
@@ -91,7 +91,7 @@ bool quitGame = FALSE;
 
 
 // these globals are necessary for fast files for some reason
-FastFile **fastFiles = NULL;
+FastFile **fastFiles = nullptr;
 size_t numFastFiles = 0;
 size_t maxFastFiles = 0;
 
@@ -100,7 +100,7 @@ PSTR ExceptionGameMsg = "";
 bool justResaveAllMaps = 0;
 bool useLOSAngle = 0;
 
-Stuff::MemoryStream *effectStream = NULL;
+Stuff::MemoryStream *effectStream = nullptr;
 extern MidLevelRenderer::MLRClipper * theClipper;
 
 
@@ -246,13 +246,13 @@ void __stdcall InitializeGameEngine()
 	//--------------------------------------------------------------
 	// Start the SystemHeap and globalHeapList
 	globalHeapList = new HeapList;
-	gosASSERT(globalHeapList != NULL);
+	gosASSERT(globalHeapList != nullptr);
 
 	globalHeapList->init();
 	globalHeapList->update(); //Run Instrumentation into GOS Debugger Screen
 
 	systemHeap = new UserHeap;
-	gosASSERT(systemHeap != NULL);
+	gosASSERT(systemHeap != nullptr);
 
 	systemHeap->init(systemHeapSize,"SYSTEM");
 
@@ -487,7 +487,7 @@ void __stdcall InitializeGameEngine()
 	prefs->close();
 
 	delete prefs;
-	prefs = NULL;
+	prefs = nullptr;
 
 	//-------------------------------
 	// Used to output debug stuff!
@@ -603,7 +603,7 @@ void __stdcall TerminateGameEngine()
 		mcTextureManager->destroy();
 
 		delete mcTextureManager;
-		mcTextureManager = NULL;
+		mcTextureManager = nullptr;
 	}
 
 	//--------------------------------------------------------------
@@ -613,7 +613,7 @@ void __stdcall TerminateGameEngine()
 		systemHeap->destroy();
 
 		delete systemHeap;
-		systemHeap = NULL;
+		systemHeap = nullptr;
 	}
 
 
@@ -622,7 +622,7 @@ void __stdcall TerminateGameEngine()
 		globalHeapList->destroy();
 
 		delete globalHeapList;
-		globalHeapList = NULL;
+		globalHeapList = nullptr;
 	}
 
 	//----------------------------------------------------

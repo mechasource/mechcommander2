@@ -468,7 +468,7 @@ bool GroundVehicleType::handleCollision (GameObjectPtr collidee, GameObjectPtr c
 //
 				else
 					shotInfo.init(collider->getWatchID(), -1, (int32_t)(collider->getTonnage() / 10.0 + 0.5), hitLocation, collidee->relFacingTo(collider->getPosition()));
-				collidee->handleWeaponHit(&shotInfo, (MPlayer != NULL));
+				collidee->handleWeaponHit(&shotInfo, (MPlayer != nullptr));
 				((GroundVehiclePtr)collidee)->deadByCrushed = true;
 
 				//---------------------------------------------
@@ -533,7 +533,7 @@ bool GroundVehicleType::handleDestruction (GameObjectPtr collidee, GameObjectPtr
 	// Let's let the unit know we're dying if we're a point...
 	// No, Don't!!!
 	if (vehicle->getPoint() == vehicle) {
-		vehicle->getGroup()->setPoint(NULL);
+		vehicle->getGroup()->setPoint(nullptr);
 		//--------------------------------------------------------
 		// If there is no new point, all units must be blown away.
 		// How do we want to handle this?
@@ -686,7 +686,7 @@ GameObjectPtr GroundVehicleType::createInstance (void) {
 
 	GroundVehiclePtr newVehicle = new GroundVehicle;
 	if (!newVehicle)
-		return(NULL);
+		return(nullptr);
 
 	newVehicle->init(true, this);
 	//newVehicle->setIdNumber(NextIdNumber++);
@@ -845,7 +845,7 @@ void GroundVehicle::init (bool create) {
 	deadByCrushed = false;
 	
 #ifdef USE_SMOKE
-	dmgSmoke = NULL;
+	dmgSmoke = nullptr;
 #endif
 
 	pathLocks = true;
@@ -865,7 +865,7 @@ void GroundVehicle::init (bool create) {
 	cellColToMine = cellRowToMine = -1;
 	timeInCurrent = 0.0;
 	
-	sensorSystem = NULL;			//Make sure they start WITHOUT one or badness will insue
+	sensorSystem = nullptr;			//Make sure they start WITHOUT one or badness will insue
 	
 	isVehiclePilot = false;
 
@@ -999,7 +999,7 @@ int32_t GroundVehicle::init (FitIniFile* vehicleFile)
 	if (result != NO_ERROR)
 		return(result);
 
-	name[0] = NULL;
+	name[0] = nullptr;
 
 	result = vehicleFile->seekBlock("General");
 	if (result != NO_ERROR)
@@ -1341,7 +1341,7 @@ void GroundVehicle::destroy (void)
 	if (appearance)
 	{
 		delete appearance;
-		appearance = NULL;
+		appearance = nullptr;
 	}
 }
 
@@ -1365,12 +1365,12 @@ void GroundVehicle::mineCheck (void) {
 		{
 			sweepTime = 0;
 			Stuff::Vector3D curPos = getPosition();
-			ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, curPos);
+			ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, curPos);
 			armor[GROUNDVEHICLE_LOCATION_FRONT].curArmor--;
 			if (MPlayer) 
 			{
 				WeaponShotInfo shot;
-				shot.init(NULL, -2, 1.0, GROUNDVEHICLE_LOCATION_FRONT, 0);
+				shot.init(nullptr, -2, 1.0, GROUNDVEHICLE_LOCATION_FRONT, 0);
 				MPlayer->addWeaponHitChunk(this, &shot);
 			}
 			
@@ -1405,10 +1405,10 @@ void GroundVehicle::mineCheck (void) {
 			{
 				Stuff::Vector3D curPos;
 				curPos = getPosition();
-				ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, curPos, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+				ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, curPos, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 				WeaponShotInfo shot;
-				shot.init(NULL, -2, MineDamage, calcHitLocation(NULL,-1,ATTACKSOURCE_MINE,0), 0);
-				handleWeaponHit(&shot, (MPlayer != NULL));
+				shot.init(nullptr, -2, MineDamage, calcHitLocation(nullptr,-1,ATTACKSOURCE_MINE,0), 0);
+				handleWeaponHit(&shot, (MPlayer != nullptr));
 					
 				pilot->pausePath();		//Force the pilot to recalc based on new data.
 	
@@ -2089,7 +2089,7 @@ void GroundVehicle::setNextMovePath (char& newThrottleSetting) {
 		}
 	else {
 		pilot->clearMoveOrders();
-		//pilot->setMoveGoal(MOVEGOAL_NONE, NULL);
+		//pilot->setMoveGoal(MOVEGOAL_NONE, nullptr);
 		newThrottleSetting = 0;
 	}
 }
@@ -2653,10 +2653,10 @@ bool GroundVehicle::crashAvoidanceSystem (void) {
 				// and let the pilot's movementDecision update decide whether a new
 				// one should be set...
 				/*
-				pilot->setMoveWayPath(ORDER_CURRENT, NULL, 0);
+				pilot->setMoveWayPath(ORDER_CURRENT, nullptr, 0);
 				for (int32_t i = 0; i < 2; i++)
 					pilot->clearMovePath(ORDER_CURRENT, i);
-				pilot->setMoveGlobalPath(ORDER_CURRENT, NULL, 0);
+				pilot->setMoveGlobalPath(ORDER_CURRENT, nullptr, 0);
 				*/
 				//pilot->clearMoveOrders(ORDER_CURRENT);
 				pilot->rethinkPath(0);
@@ -2733,7 +2733,7 @@ void GroundVehicle::createVehiclePilot (void)
 	if (vehiclePilot->sensorSystem)
 		SensorManager->removeTeamSensor(teamId, vehiclePilot->sensorSystem);
 
-	vehiclePilot->sensorSystem = NULL;
+	vehiclePilot->sensorSystem = nullptr;
 	vehiclePilot->isVehiclePilot = true;
 
 	//-------------------------------------------
@@ -2893,7 +2893,7 @@ void GroundVehicle::updatePlayerControl (void) {
 //		((MechActor*)appearance)->hitMech(-1);		//Take a hit.
 			
 	if (userInput->getKeyDown(KEY_Z))
-		ObjectManager->getObjectType(typeHandle)->handleDestruction(this, NULL);		//Blow self up!!
+		ObjectManager->getObjectType(typeHandle)->handleDestruction(this, nullptr);		//Blow self up!!
 
 	if (userInput->getKeyDown(KEY_X))
 		control.settings.mech.blowLeftArm = true;
@@ -3330,20 +3330,20 @@ int32_t GroundVehicle::update (void)
 			if (!appearance->playDestruction())
 			{
 				if (((GroundVehicleTypePtr)getObjectType())->explDmg > 0.0f)
-					ObjectManager->createExplosion(SPLASH_VEHICLE_EXPLOSION_ID,NULL,position, ((GroundVehicleTypePtr)getObjectType())->explDmg,((GroundVehicleTypePtr)getObjectType())->explRad);
+					ObjectManager->createExplosion(SPLASH_VEHICLE_EXPLOSION_ID,nullptr,position, ((GroundVehicleTypePtr)getObjectType())->explDmg,((GroundVehicleTypePtr)getObjectType())->explRad);
 				else if (pathLocks)
 				{
-					ObjectManager->createExplosion(VEHICLE_EXPLOSION_ID,NULL,position, 0.0f,0.0f);
+					ObjectManager->createExplosion(VEHICLE_EXPLOSION_ID,nullptr,position, 0.0f,0.0f);
 				}
 				else
 				{
 					if (RollDice(25))
 					{
-						ObjectManager->createExplosion(INFANTRY_BLOOD_EFFECT,NULL,position, 0.0f,0.0f);
+						ObjectManager->createExplosion(INFANTRY_BLOOD_EFFECT,nullptr,position, 0.0f,0.0f);
 					}
 					else
 					{
-						ObjectManager->createExplosion(INFANTRY_BOOM_EFFECT,NULL,position, 0.0f,0.0f);
+						ObjectManager->createExplosion(INFANTRY_BOOM_EFFECT,nullptr,position, 0.0f,0.0f);
 					}
 				}
 					
@@ -3421,7 +3421,7 @@ int32_t GroundVehicle::update (void)
 				if (timeLeft <= -30.0)
 				{
 					delete dmgSmoke;
-					dmgSmoke = NULL;
+					dmgSmoke = nullptr;
 				}
 			}
 #endif
@@ -3471,7 +3471,7 @@ int32_t GroundVehicle::update (void)
 
 
 	if (withdrawing && !inView && (pilot->getStatus() != WARRIOR_STATUS_WITHDRAWN))
-		getObjectType()->handleDestruction(this, NULL);
+		getObjectType()->handleDestruction(this, nullptr);
 
 	//We are a vehicle pilot.  Whack us when we are no longer in view.
 	if (isVehiclePilot && !inView)
@@ -3633,7 +3633,7 @@ int32_t GroundVehicle::update (void)
 						}
 						WeaponShotInfo shot;
 						shot.init(0, -2, 1.0, GROUNDVEHICLE_LOCATION_TURRET, 0);
-						handleWeaponHit(&shot, MPlayer != NULL);
+						handleWeaponHit(&shot, MPlayer != nullptr);
 					}
 				}
 			}
@@ -3973,7 +3973,7 @@ void GroundVehicle::render (void)
 	if (drawTerrainGrid)
 	{
 		MovePathPtr path = pilot->getMovePath();
-		gosASSERT(path != NULL);
+		gosASSERT(path != nullptr);
 		if (path->numSteps)
 		{
 			Stuff::Vector4D lineStart, lineEnd;
@@ -3991,7 +3991,7 @@ void GroundVehicle::render (void)
 					
 					lineStart.z = lineEnd.z = HUD_DEPTH;
 					
-					LineElement newElement(lineStart,lineEnd,SD_GREEN,NULL,-1);
+					LineElement newElement(lineStart,lineEnd,SD_GREEN,nullptr,-1);
 					newElement.draw();
 				}
 			}
@@ -4186,7 +4186,7 @@ int32_t GroundVehicle::handleStatusChunk (int32_t updateAge, uint32_t chunk) {
 
 	if (pilot) {
 		if (lastTargetId == 0)
-			pilot->setLastTarget(NULL);
+			pilot->setLastTarget(nullptr);
 		else {
 			GameObjectPtr curTarget = pilot->getLastTarget();
 			if (!curTarget || (curTarget->getPartId() != lastTargetId)) {
@@ -4229,7 +4229,7 @@ int32_t GroundVehicle::buildMoveChunk (void) {
 	// HACK!!!!!!!!!!!!!! If bad packet, no movechunk for you...
 	if (MoveChunk::err != 0) {
 		moveChunk.init();
-		moveChunk.build(this, NULL, NULL);
+		moveChunk.build(this, nullptr, nullptr);
 		moveChunk.pack(this);
 		return(NO_ERROR); //Assert(0, " BAD PACKET! ");
 	}
@@ -4367,7 +4367,7 @@ int32_t GroundVehicle::handleWeaponHit (WeaponShotInfoPtr shotInfo, bool addMult
 	if (vehicleDestroyed) 
 	{
 		pilot->handleOwnVehicleIncapacitation(0);
-		getObjectType()->handleDestruction(this, NULL);
+		getObjectType()->handleDestruction(this, nullptr);
 		setFlag(OBJECT_FLAG_TANGIBLE,false);
 	}
 
@@ -4549,7 +4549,7 @@ int32_t GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, int32
 	//if ((aimLocation != -1) && (MasterComponent::masterList[inventory[weaponIndex].masterID].getForm() == COMPONENT_FORM_WEAPON_MISSILE))
 	//	return(4);
 
-	MechWarriorPtr targetPilot = NULL;
+	MechWarriorPtr targetPilot = nullptr;
 	if (target && target->isMover()) {
 		targetPilot = ((MoverPtr)target)->getPilot();
 		targetPilot->updateAttackerStatus(getWatchID(), scenarioTime);
@@ -4629,7 +4629,7 @@ int32_t GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, int32
 	// Weapon must recycle...
 	startWeaponRecycle(weaponIndex);
 
- 	WeaponBoltPtr weaponFX = NULL;	
+ 	WeaponBoltPtr weaponFX = nullptr;	
 	if (hitRoll < attackChance) {
 
 		if (numShots != UNLIMITED_SHOTS) {
@@ -4725,7 +4725,7 @@ int32_t GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, int32
 			if (!weaponFX) 
 			{
 				if (target)
-					target->handleWeaponHit(&curShotInfo, MPlayer != NULL);
+					target->handleWeaponHit(&curShotInfo, MPlayer != nullptr);
 				else if (targetPoint) 
 				{
 					//-----------------------------------------
@@ -4734,7 +4734,7 @@ int32_t GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, int32
 					land->worldToCell(*targetPoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1) 
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);	//Mark Exploded
 					}
 				}
@@ -4819,7 +4819,7 @@ int32_t GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, int32
 			weaponFX = ObjectManager->createWeaponBolt(effectType);
 			if (!weaponFX) {
 				if (target)
-					target->handleWeaponHit(&shotInfo, MPlayer != NULL);
+					target->handleWeaponHit(&shotInfo, MPlayer != nullptr);
 				else if (targetPoint) 
 				{
 					//-----------------------------------------
@@ -4828,7 +4828,7 @@ int32_t GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, int32
 					land->worldToCell(*targetPoint, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1)
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, *targetPoint, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);	//Mark Exploded
 					}
 				}
@@ -4957,7 +4957,7 @@ int32_t GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, int32
 						land->worldToCell(positionOffset, cellRow, cellCol);
 						if (GameMap->getMine(cellRow, cellCol) == 1) 
 						{
-							ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, positionOffset, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+							ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, positionOffset, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 							GameMap->setMine(cellRow, cellCol, 2); // Mark Exploded
 						}
 						}
@@ -5061,7 +5061,7 @@ int32_t GroundVehicle::fireWeapon (GameObjectPtr target, float targetTime, int32
 					land->worldToCell(positionOffset, cellRow, cellCol);
 					if (GameMap->getMine(cellRow, cellCol) == 1) 
 					{
-						ObjectManager->createExplosion(MINE_EXPLOSION_ID, NULL, positionOffset, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
+						ObjectManager->createExplosion(MINE_EXPLOSION_ID, nullptr, positionOffset, MineSplashDamage, MineSplashRange * worldUnitsPerMeter);
 						GameMap->setMine(cellRow, cellCol, 2);	//Mark Exploded
 					}
 					}
@@ -5114,7 +5114,7 @@ int32_t GroundVehicle::handleWeaponFire (int32_t weaponIndex,
 
 	bool isStreakMissile = MasterComponent::masterList[inventory[weaponIndex].masterID].getWeaponStreak(); 
 
-	WeaponBoltPtr weaponFX = NULL;
+	WeaponBoltPtr weaponFX = nullptr;
 	
 	//----------------------------------------------------
 	// Need to know which hotspot this comes from.
@@ -5230,11 +5230,11 @@ int32_t GroundVehicle::handleWeaponFire (int32_t weaponIndex,
 		}
 		}
 	else {
-		Assert(target == NULL, 0, " GVehicl.handleWeaponFire: target should be NULL with network miss! ");
-		Assert(targetPoint != NULL, 0, " GVehicl.handleWeaponFire: MUST have targetpoint with network miss! ");
+		Assert(target == nullptr, 0, " GVehicl.handleWeaponFire: target should be nullptr with network miss! ");
+		Assert(targetPoint != nullptr, 0, " GVehicl.handleWeaponFire: MUST have targetpoint with network miss! ");
 		if (isStreakMissile) {
 			CurMoverWeaponFireChunk.unpack(this);
-			DebugWeaponFireChunk(&CurMoverWeaponFireChunk, NULL, this);
+			DebugWeaponFireChunk(&CurMoverWeaponFireChunk, nullptr, this);
 			Assert(false, 0, " GVehicl.handleWeaponFire: streaks shouldn't miss! ");
 		}
 
@@ -5291,7 +5291,7 @@ int32_t GroundVehicle::handleWeaponFire (int32_t weaponIndex,
 	// Trigger the WEAPON TARGET event. For now, this assumes the target
 	// KNOWS we were targeting him. Of course, the target wouldn't always
 	// be aware of this, would they?
-	MechWarriorPtr targetPilot = NULL;
+	MechWarriorPtr targetPilot = nullptr;
 	if (target && target->isMover()) {
 		targetPilot = ((MoverPtr)target)->getPilot();
 		targetPilot->updateAttackerStatus(getWatchID(), scenarioTime);

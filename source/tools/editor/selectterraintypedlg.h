@@ -14,7 +14,7 @@ class SelectTerrainTypeDlg : public CDialog
 {
 // Construction
 public:
-	SelectTerrainTypeDlg(CWnd* pParent = NULL);   // standard constructor
+	SelectTerrainTypeDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(SelectTerrainTypeDlg)

@@ -94,7 +94,7 @@ protected:
 
 		PVOID operator new (size_t mySize)
 		{
-			PVOID result = NULL;
+			PVOID result = nullptr;
 			result = systemHeap->Malloc(mySize);
 
 			return(result);
@@ -152,7 +152,7 @@ public:
 	void load( FitIniFile* file, int32_t bGoodGuy );
 
 	PilotInfo* info;
-	/*note: The value of info should always be NULL or a pointer to static data. So the default
+	/*note: The value of info should always be nullptr or a pointer to static data. So the default
 	assignment/copy operator (shallow copy) is valid. */
 
 };
@@ -174,8 +174,8 @@ public:
 	Brain (void)
 	{
 		numStaticVars = numCells = 0;
-		cellNum = cellType = NULL;
-		cellData = NULL;
+		cellNum = cellType = nullptr;
+		cellData = nullptr;
 
 		brainName[0] = 0;
 	}
@@ -187,8 +187,8 @@ public:
 		free(cellData);
 
 		numStaticVars = numCells = 0;
-		cellNum = cellType = NULL;
-		cellData = NULL;
+		cellNum = cellType = nullptr;
+		cellData = nullptr;
 
 		brainName[0] = 0;
 	}

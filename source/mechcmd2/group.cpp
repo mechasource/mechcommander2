@@ -73,7 +73,7 @@ float GroupMoveOffsets[10][2] = {
 */
 extern char OverlayIsBridge[NUM_OVERLAY_TYPES];
 extern PriorityQueuePtr	openList;
-GoalMapNode* MoverGroup::goalMap = NULL;
+GoalMapNode* MoverGroup::goalMap = nullptr;
 
 //***************************************************************************
 // MOVERGROUP class
@@ -199,7 +199,7 @@ MoverPtr MoverGroup::getMover (int32_t i) {
 
 	MoverPtr mover = dynamic_cast<MoverPtr>(ObjectManager->getByWatchID(moverWIDs[i]));
 	if (!mover)
-		Fatal(0, " MoverGroup.getMover: NULL mover ");
+		Fatal(0, " MoverGroup.getMover: nullptr mover ");
 	return(mover);
 }
 
@@ -221,8 +221,8 @@ MoverPtr MoverGroup::selectPoint (bool excludePoint) {
 
 	//-----------------------
 	// No legitimate point...
-	setPoint(NULL);
-	return(NULL);
+	setPoint(nullptr);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -241,7 +241,7 @@ MechWarriorPtr MoverGroup::getPointPilot (void) {
 
 	if (pointWID)
 		return(ObjectManager->getByWatchID(pointWID)->getPilot());
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -428,7 +428,7 @@ int32_t MoverGroup::calcMoveGoals (Stuff::Vector3D goal, int32_t numMovers, Stuf
 	// If we haven't already, create the OPEN list...
 	if (!openList) {
 		openList = new PriorityQueue;
-		gosASSERT(openList != NULL);
+		gosASSERT(openList != nullptr);
 		openList->init(5000);
 	}
 
@@ -693,7 +693,7 @@ int32_t MoverGroup::handleTacticalOrder (TacticalOrder tacOrder, int32_t priorit
 		return(NO_ERROR);
 
 	if (queueGroupOrder)
-		tacOrder.pack(NULL, NULL);
+		tacOrder.pack(nullptr, nullptr);
 
 	//bool processOrder = true;
 	bool isJump = false;
@@ -744,7 +744,7 @@ Fatal(0, "Need to support jumpGoalList (and goalList) for MOVETO as well in mc2 
 				int32_t moverCount = 0;
 				for (int32_t i = 0; i < numMovers; i++) {
 					MoverPtr mover = getMover(i);
-					Assert(mover != NULL, moverWIDs[i], " MoverGroup.handleTacticalOrder: NULL mover ");
+					Assert(mover != nullptr, moverWIDs[i], " MoverGroup.handleTacticalOrder: nullptr mover ");
 					if (!mover->isDisabled()) {
 						list->setId(moverCount, i);
 						list->setValue(moverCount, mover->distanceFrom(location));
@@ -888,7 +888,7 @@ int32_t MoverGroup::orderMoveToPoint (bool setTacOrder, int32_t origin, Stuff::V
 	int32_t result = TACORDER_FAILURE;
 
 	for (int32_t i = 0; i < numMovers; i++) {
-		Assert(getMover(i) != NULL, 0, " MoverGroup.orderMoveToPoint: NULL mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderMoveToPoint: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderMoveToPoint(true, setTacOrder, origin, location, -1, params);
@@ -904,7 +904,7 @@ int32_t MoverGroup::orderMoveToObject (bool setTacOrder, int32_t origin, GameObj
 	int32_t result = TACORDER_FAILURE;
 
 	for (int32_t i = 0; i < numMovers; i++) {
-		Assert(getMover(i) != NULL, 0, " MoverGroup.orderMoveToObject: NULL mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderMoveToObject: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderMoveToObject(true, setTacOrder, origin, target, fromArea, -1, params);
@@ -920,7 +920,7 @@ int32_t MoverGroup::orderTraversePath (int32_t origin, WayPathPtr wayPath, uint3
 	int32_t result = TACORDER_FAILURE;
 
 	for (int32_t i = 0; i < numMovers; i++) {
-		Assert(getMover(i) != NULL, 0, " MoverGroup.orderTraversePath: NULL mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderTraversePath: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderTraversePath(true, true, origin, wayPath, params);
@@ -936,7 +936,7 @@ int32_t MoverGroup::orderPatrolPath (int32_t origin, WayPathPtr wayPath) {
 	int32_t result = TACORDER_FAILURE;
 
 	for (int32_t i = 0; i < numMovers; i++) {
-		Assert(getMover(i) != NULL, 0, " MoverGroup.orderPatrolPath: NULL mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderPatrolPath: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderPatrolPath(true, true, origin, wayPath);
@@ -952,7 +952,7 @@ int32_t MoverGroup::orderPowerDown (int32_t origin) {
 	int32_t result = TACORDER_FAILURE;
 
 	for (int32_t i = 0; i < numMovers; i++) {
-		Assert(getMover(i) != NULL, 0, " MoverGroup.orderPowerDown: NULL mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderPowerDown: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderPowerDown(true, origin);
@@ -968,7 +968,7 @@ int32_t MoverGroup::orderPowerUp (int32_t origin) {
 	int32_t result = TACORDER_FAILURE;
 
 	for (int32_t i = 0; i < numMovers; i++) {
-		Assert(getMover(i) != NULL, 0, " MoverGroup.orderPowerUp: NULL mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderPowerUp: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderPowerUp(true, origin);
@@ -984,7 +984,7 @@ int32_t MoverGroup::orderAttackObject (int32_t origin, GameObjectPtr target, int
 	int32_t result = TACORDER_FAILURE;
 
 	for (int32_t i = 0; i < numMovers; i++) {
-		Assert(getMover(i) != NULL, 0, " MoverGroup.orderAttackObject: NULL mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderAttackObject: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderAttackObject(true, origin, target, attackType, attackMethod, attackRange, aimLocation, fromArea, params);
@@ -1000,7 +1000,7 @@ int32_t MoverGroup::orderWithdraw (int32_t origin, Stuff::Vector3D location) {
 	int32_t result = TACORDER_FAILURE;
 
 	for (int32_t i = 0; i < numMovers; i++) {
-		Assert(getMover(i) != NULL, 0, " MoverGroup.orderWithdraw: NULL mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderWithdraw: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderWithdraw(true, origin, location);
@@ -1016,7 +1016,7 @@ int32_t MoverGroup::orderEject (int32_t origin) {
 	int32_t result = TACORDER_FAILURE;
 
 	for (int32_t i = 0; i < numMovers; i++) {
-		Assert(getMover(i) != NULL, 0, " MoverGroup.orderEject: NULL mover ");
+		Assert(getMover(i) != nullptr, 0, " MoverGroup.orderEject: nullptr mover ");
 		MechWarriorPtr pilot = getMover(i)->getPilot();
 		if (pilot)
 			result = pilot->orderEject(true, true, origin);

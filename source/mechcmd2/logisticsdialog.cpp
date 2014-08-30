@@ -21,11 +21,11 @@ LogisticsDialog.cpp			: Implementation of the LogisticsDialog component.
 #include "sounds.h"
 #include "gamesound.h"
 
-LogisticsOKDialog* LogisticsOKDialog::s_instance = NULL;
-LogisticsSaveDialog* LogisticsSaveDialog::s_instance = NULL;
-LogisticsVariantDialog* LogisticsVariantDialog::s_instance = NULL;
-LogisticsOneButtonDialog* LogisticsOneButtonDialog::s_instance = NULL;
-LogisticsLegalDialog* LogisticsLegalDialog::s_instance = NULL;
+LogisticsOKDialog* LogisticsOKDialog::s_instance = nullptr;
+LogisticsSaveDialog* LogisticsSaveDialog::s_instance = nullptr;
+LogisticsVariantDialog* LogisticsVariantDialog::s_instance = nullptr;
+LogisticsOneButtonDialog* LogisticsOneButtonDialog::s_instance = nullptr;
+LogisticsLegalDialog* LogisticsLegalDialog::s_instance = nullptr;
 
 extern int32_t SaveGameVersionNumber;
 
@@ -536,7 +536,7 @@ void LogisticsSaveDialog::initDialog( PCSTR path, bool bCampaign )
 					pExt = (strstr( findResult.cFileName, ".FIT" ) );
 				}
 				if ( pExt )
-					*pExt = NULL;
+					*pExt = nullptr;
 			
 				if (!bCampaign && isCorrectVersionSaveGame(findResult.cFileName))
 					pEntry->setText( findResult.cFileName );
@@ -887,7 +887,7 @@ void LogisticsSaveDialog::updateMissionInfo()
 
 		tmp[0] = 0;
 		file.readIdString( "CampaignName", tmp, 255);
-		_splitpath( tmp, NULL, NULL, tmp2, NULL );
+		_splitpath( tmp, nullptr, nullptr, tmp2, nullptr );
 		strcpy( real, tmp2 );
 		strcat( real, "\n" );
 
@@ -1279,7 +1279,7 @@ void LogisticsVariantDialog::initVariantList()
 
 	int32_t count = 0;
 
-	LogisticsData::instance->getPlayerVariantNames( NULL, count );
+	LogisticsData::instance->getPlayerVariantNames( nullptr, count );
 
 	if ( count )
 	{

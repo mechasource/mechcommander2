@@ -30,7 +30,7 @@ void EnterWindowMode();
 char WatsonCrashMessage[4096];
 
 //Will be allocated below.
-WCHAR *WatsonCrashMessageUnicode = NULL;
+WCHAR *WatsonCrashMessageUnicode = nullptr;
 
 /*
  * AnsiToUnicode converts the ANSI string pszA to a Unicode string
@@ -44,9 +44,9 @@ HRESULT __fastcall AnsiToUnicode(LPCSTR pszA, LPOLESTR* ppszW)
     uint32_t dwError;
 
     // If input is null then just return the same.
-    if (NULL == pszA)
+    if (nullptr == pszA)
     {
-        *ppszW = NULL;
+        *ppszW = nullptr;
         return NOERROR;
     }
 
@@ -58,7 +58,7 @@ HRESULT __fastcall AnsiToUnicode(LPCSTR pszA, LPOLESTR* ppszW)
     // string will be passed to another COM component and if that
     // component will free it. Otherwise you can use your own allocator.
     *ppszW = (LPOLESTR)malloc(cCharacters*2);
-    if (NULL == *ppszW)
+    if (nullptr == *ppszW)
         return E_OUTOFMEMORY;
 
     // Covert to Unicode.
@@ -67,7 +67,7 @@ HRESULT __fastcall AnsiToUnicode(LPCSTR pszA, LPOLESTR* ppszW)
     {
         dwError = GetLastError();
         free(*ppszW);
-        *ppszW = NULL;
+        *ppszW = nullptr;
         return HRESULT_FROM_WIN32(dwError);
     }
 
@@ -117,8 +117,8 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
 	sa.bInheritHandle = TRUE;
 	
-	hFileMap = CreateFileMapping(INVALID_HANDLE_VALUE, &sa, PAGE_READWRITE, 0, sizeof(DWSharedMem), NULL);
-	if (hFileMap == NULL)
+	hFileMap = CreateFileMapping(INVALID_HANDLE_VALUE, &sa, PAGE_READWRITE, 0, sizeof(DWSharedMem), nullptr);
+	if (hFileMap == nullptr)
 	{
 		//At this point, call the GameOS exception handler and convert the pep to the data they need!
 		ProcessException(pep);
@@ -126,7 +126,7 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	}
 		
 	pdwsm = (DWSharedMem *) MapViewOfFile(hFileMap, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0);
-	if (pdwsm == NULL)
+	if (pdwsm == nullptr)
 	{
 		//At this point, call the GameOS exception handler and convert the pep to the data they need!
 		ProcessException(pep);
@@ -135,9 +135,9 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 
 	memset(pdwsm, 0, sizeof(DWSharedMem));
 
-	hEventAlive = CreateEvent(&sa, FALSE, FALSE, NULL);
-	hEventDone = CreateEvent(&sa, FALSE, FALSE, NULL);
-	hMutex = CreateMutex(&sa, FALSE, NULL);
+	hEventAlive = CreateEvent(&sa, FALSE, FALSE, nullptr);
+	hEventDone = CreateEvent(&sa, FALSE, FALSE, nullptr);
+	hMutex = CreateMutex(&sa, FALSE, nullptr);
 
 	if (!DuplicateHandle(GetCurrentProcess(), GetCurrentProcess(), GetCurrentProcess(), &pdwsm->hProc, PROCESS_ALL_ACCESS, TRUE, 0))
 	{
@@ -146,7 +146,7 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 		return 1;
 	}
 
-	if (hEventAlive == NULL || hEventDone == NULL || hMutex == NULL || pdwsm->hProc == NULL)
+	if (hEventAlive == nullptr || hEventDone == nullptr || hMutex == nullptr || pdwsm->hProc == nullptr)
 	{
 		//At this point, call the GameOS exception handler and convert the pep to the data they need!
 		ProcessException(pep);
@@ -190,7 +190,7 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	// report that information back to the server.
 	memcpy(pdwsm->wzDotDataDlls, L"mc2res.dll\0editores.dll\0", 24 * sizeof(WCHAR));
 
-	GetModuleFileNameA(NULL, pdwsm->szModuleFileName, DW_MAX_PATH);
+	GetModuleFileNameA(nullptr, pdwsm->szModuleFileName, DW_MAX_PATH);
 
 	//Additional Files for MechCommander?  Should there be any?  Log files, etc.
 
@@ -205,7 +205,7 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 	if(Environment.fullScreen && hWindow )
 		EnterWindowMode();
 
-	if (CreateProcessA(NULL, szCommandLine, NULL, NULL, TRUE, CREATE_DEFAULT_ERROR_MODE | NORMAL_PRIORITY_CLASS, NULL, NULL, &si, &pi))
+	if (CreateProcessA(nullptr, szCommandLine, nullptr, nullptr, TRUE, CREATE_DEFAULT_ERROR_MODE | NORMAL_PRIORITY_CLASS, nullptr, nullptr, &si, &pi))
 	{
 		fDwRunning = TRUE;
 		while (fDwRunning)
@@ -257,7 +257,7 @@ int32_t WINAPI DwExceptionFilter(LPEXCEPTION_POINTERS pep)
 		if (WaitForSingleObject(hEventDBAttach, 1) == WAIT_OBJECT_0)
 		{
 			// yes, die
-			MessageBox(NULL, "DB Attach ", "out", MB_OK);
+			MessageBox(nullptr, "DB Attach ", "out", MB_OK);
 			CloseHandle(hEventAlive);
 			CloseHandle(hEventDone);
 			CloseHandle(hMutex);

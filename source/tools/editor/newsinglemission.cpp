@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 // NewSingleMission dialog
 
 
-NewSingleMission::NewSingleMission(CWnd* pParent /*=NULL*/)
+NewSingleMission::NewSingleMission(CWnd* pParent /*=nullptr*/)
 	: CDialog(NewSingleMission::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(NewSingleMission)

@@ -19,7 +19,7 @@
 // BuildingSettingsDlg dialog
 
 
-BuildingSettingsDlg::BuildingSettingsDlg( EList< EditorObject*, EditorObject* >& newList/*=NULL*/, ActionUndoMgr &undoMgr)
+BuildingSettingsDlg::BuildingSettingsDlg( EList< EditorObject*, EditorObject* >& newList/*=nullptr*/, ActionUndoMgr &undoMgr)
 	: CDialog(BuildingSettingsDlg::IDD), units( newList )
 {
 	//{{AFX_DATA_INIT(BuildingSettingsDlg)
@@ -31,7 +31,7 @@ BuildingSettingsDlg::BuildingSettingsDlg( EList< EditorObject*, EditorObject* >&
 	//}}AFX_DATA_INIT
 
 	pUndoMgr = &undoMgr;
-	pAction = NULL;
+	pAction = nullptr;
 }
 
 
@@ -174,7 +174,7 @@ void BuildingSettingsDlg::applyChanges()
 
 void BuildingSettingsDlg::OnOK() 
 {
-	if (NULL != pUndoMgr)
+	if (nullptr != pUndoMgr)
 	{
 		pUndoMgr->AddAction(pAction);
 	}
@@ -182,7 +182,7 @@ void BuildingSettingsDlg::OnOK()
 	{
 		delete pAction;
 	}
-	pAction = NULL;
+	pAction = nullptr;
 
 	applyChanges();
 	CDialog::OnOK();
@@ -347,7 +347,7 @@ void BuildingSettingsDlg::OnCancel()
 {
 	pAction->undo();
 	delete pAction;
-	pAction = NULL;
+	pAction = nullptr;
 	
 	CDialog::OnCancel();
 }

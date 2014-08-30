@@ -75,7 +75,7 @@ GameObjectPtr GateType::createInstance (void)
 {
 	GatePtr result = new Gate;
 	if (!result)
-		return NULL;
+		return nullptr;
 
 	result->init(true, this);
 
@@ -323,7 +323,7 @@ int32_t Gate::update (void)
 	
 		openGate();		//Actually updates the gate states.
 		
-		closestObject = NULL;		//reset everytime we've successfully gotten through openGate.
+		closestObject = nullptr;		//reset everytime we've successfully gotten through openGate.
 									//was either not needed or now its dead.
 
 		//MUST update appearance last.  Why?  If we have changed the gate state, the LOD is no longer valid.
@@ -383,19 +383,19 @@ void Gate::blowAnyOffendingObject (void)
 			//-------------------------------------------------------------
 			// Put about a million points of damage into the closestObject
 			WeaponShotInfo shot;
-			shot.init(NULL, -3, 250.00, 0, 0);
+			shot.init(nullptr, -3, 250.00, 0, 0);
 
 			for (int32_t i=0;i<10;i++)
 			{
-				shot.hitLocation = closestObject->calcHitLocation(NULL,-1,ATTACKSOURCE_ARTILLERY,0);
-				closestObject->handleWeaponHit(&shot, (MPlayer != NULL));
+				shot.hitLocation = closestObject->calcHitLocation(nullptr,-1,ATTACKSOURCE_ARTILLERY,0);
+				closestObject->handleWeaponHit(&shot, (MPlayer != nullptr));
 			}
 
 			//--------------------
 			// Gate must die too.
-			shot.init(NULL, -3, ((GateTypePtr)(ObjectManager->getObjectType(typeHandle)))->getDamageLvl()+5, 0, 0);
+			shot.init(nullptr, -3, ((GateTypePtr)(ObjectManager->getObjectType(typeHandle)))->getDamageLvl()+5, 0, 0);
 
-			handleWeaponHit(&shot, (MPlayer != NULL));
+			handleWeaponHit(&shot, (MPlayer != nullptr));
 		}
 	}
 }	
@@ -646,7 +646,7 @@ void Gate::destroy (void)
 	if (appearance)
 	{
 		delete appearance;
-		appearance = NULL;
+		appearance = nullptr;
 	}
 }
 
@@ -671,7 +671,7 @@ void Gate::init (bool create, ObjectTypePtr _type)
 	// MechCmdr2 features much simpler objects which only use 1 type of sprite!
 	int32_t appearanceType = (BLDG_TYPE << 24);
 
-	AppearanceTypePtr buildingAppearanceType = NULL;
+	AppearanceTypePtr buildingAppearanceType = nullptr;
 	if (!appearName)
 	{
 		//------------------------------------------------------
@@ -692,7 +692,7 @@ void Gate::init (bool create, ObjectTypePtr _type)
 	}
 	  
    	appearance = new BldgAppearance;
-	gosASSERT(appearance != NULL);
+	gosASSERT(appearance != nullptr);
 
 	//--------------------------------------------------------------
 	// The only appearance type for buildings is MLR_APPEARANCE.
@@ -834,7 +834,7 @@ void Gate::setParentId (uint32_t pId)
 TeamPtr Gate::getTeam (void) {
 
 	if (teamId == -1)
-		return(NULL);
+		return(nullptr);
 	return(Team::teams[teamId]);
 }
 

@@ -239,7 +239,7 @@ void PauseWindow::update()
 
 	PCSTR  campaignName = LogisticsData::instance->getCampaignName().Data();
 	char campName[1024];
-	_splitpath(campaignName,NULL,NULL,campName,NULL);
+	_splitpath(campaignName,nullptr,nullptr,campName,nullptr);
 	if ( MPlayer || 
 		LogisticsData::instance->isSingleMission() ||
 		(_stricmp("tutorial",campName) == 0))

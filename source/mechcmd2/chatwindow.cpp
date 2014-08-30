@@ -12,7 +12,7 @@
 #include "multplyr.h"
 #include "..\resource.h"
 
-ChatWindow* ChatWindow::s_instance = NULL;
+ChatWindow* ChatWindow::s_instance = nullptr;
 
 #define MP_CHAT_HELPTOGGLE	300
 #define MP_CHAT_EXPAND		301
@@ -37,7 +37,7 @@ void ChatWindow::destroy()
 	if (s_instance)
 	{
 		delete s_instance;
-		s_instance = NULL;
+		s_instance = nullptr;
 	}
 }
 

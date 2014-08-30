@@ -16,7 +16,7 @@ class ResourceStringSelectionDlg : public CDialog
 {
 // Construction
 public:
-	ResourceStringSelectionDlg(CWnd* pParent = NULL);   // standard constructor
+	ResourceStringSelectionDlg(CWnd* pParent = nullptr);   // standard constructor
 
 	int32_t m_BottomOfIDRange;
 	int32_t m_TopOfIDRange;

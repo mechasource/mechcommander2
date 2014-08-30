@@ -138,14 +138,14 @@ class ObjectBlockManager
 		void init (void)
 		{
 		   terrainObjectHeapSize = 0;
-		   terrainObjectHeap = NULL;
+		   terrainObjectHeap = nullptr;
 		   
-		   objectQueues = NULL;
+		   objectQueues = nullptr;
 		   
 		   numObjectsInDataBlock = 0;
-		   objDataBlock = NULL;
+		   objDataBlock = nullptr;
 		   
-		   objectDataFile = NULL;
+		   objectDataFile = nullptr;
 		}
 		
 		ObjectBlockManager (void)

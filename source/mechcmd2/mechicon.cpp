@@ -25,15 +25,15 @@ MechIcon.cpp			: Implementation of the MechIcon component.
 #include "multplyr.h"
 #endif
 
-TGAFileHeader *MechIcon::s_MechTextures = NULL;
-TGAFileHeader *VehicleIcon::s_VehicleTextures = NULL;
+TGAFileHeader *MechIcon::s_MechTextures = nullptr;
+TGAFileHeader *VehicleIcon::s_VehicleTextures = nullptr;
 TGAFileHeader* ForceGroupIcon::s_textureMemory = 0;
 
-StaticInfo*		ForceGroupIcon::jumpJetIcon = NULL;
+StaticInfo*		ForceGroupIcon::jumpJetIcon = nullptr;
 
-MC2MoviePtr	ForceGroupIcon::bMovie = NULL;
+MC2MoviePtr	ForceGroupIcon::bMovie = nullptr;
 uint32_t	ForceGroupIcon::pilotVideoTexture = 0;
-MechWarrior*	ForceGroupIcon::pilotVideoPilot = NULL;
+MechWarrior*	ForceGroupIcon::pilotVideoPilot = nullptr;
 
 
 #define HEALTH_BAROFFSET 12.0f * Environment.screenHeight/600.f
@@ -105,7 +105,7 @@ int32_t ForceGroupIcon::curScreenWidth = 800;
 
 ForceGroupIcon::ForceGroupIcon(  )
 {
-	unit = NULL;
+	unit = nullptr;
 	bDrawBack = 0;
 	backDamageIndex = -1;
 	damageIconIndex = 0;
@@ -182,10 +182,10 @@ ForceGroupIcon::~ForceGroupIcon()
 		if ( bMovie )
 		{
 			delete bMovie;
-			bMovie = NULL;
+			bMovie = nullptr;
 			pilotVideoTexture = 0;
 		}
-		pilotVideoPilot = NULL;
+		pilotVideoPilot = nullptr;
 	}
 	s_slotUsed[damageIconIndex] = 0;
 
@@ -644,7 +644,7 @@ void MechIcon::update()
 		if (result)
 		{
 			delete bMovie;
-			bMovie = NULL;
+			bMovie = nullptr;
 		}
 	}
 
@@ -964,8 +964,8 @@ void ForceGroupIcon::render()
 			{
 				bMovie->stop();
 				delete bMovie;
-				bMovie = NULL;
-				pilotVideoPilot = NULL;
+				bMovie = nullptr;
+				pilotVideoPilot = nullptr;
 			}
 			else
 			{

@@ -283,7 +283,7 @@ GameObjectPtr TacticalOrder::getRamTarget (void) {
 	if (code == TACTICAL_ORDER_ATTACK_OBJECT)
 		if (attackParams.method == ATTACKMETHOD_RAMMING)
 			return(ObjectManager->getByWatchID(targetWID));
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -292,7 +292,7 @@ GameObjectPtr TacticalOrder::getJumpTarget (void) {
 
 	if (code == TACTICAL_ORDER_JUMPTO_POINT)
 		return(ObjectManager->get(targetWID));
-	return(NULL);
+	return(nullptr);
 }
 
 //---------------------------------------------------------------------------
@@ -357,7 +357,7 @@ int32_t TacticalOrder::getParamData (float* timeOfOrder, int32_t* paramList) {
 	paramList[2] = unitOrder ? 1 : 0;
 	paramList[3] = target ? target->getPartId() : 0;
 	paramList[4] = targetObjectClass;
-//	UnitPtr targetUnit = NULL;
+//	UnitPtr targetUnit = nullptr;
 //	if (obj && obj->isMover())
 //		targetUnit = ((MoverPtr)obj)->getUnit();
 	paramList[5] = subOrder ? 1 : 0;
@@ -659,7 +659,7 @@ int32_t TacticalOrder::unpack (void) {
 
 					GameObjectPtr obj = ObjectManager->findByPartId(targetPartId);
 					if (!obj)
-						STOP(("TacticalOrder.unpack: NULL Terrain Target"));
+						STOP(("TacticalOrder.unpack: nullptr Terrain Target"));
 					targetWID = obj->getWatchID();
 					}
 				else
@@ -691,7 +691,7 @@ int32_t TacticalOrder::unpack (void) {
 
 				GameObjectPtr obj = ObjectManager->findByPartId(targetPartId);
 				if (!obj)
-					STOP(("TacticalOrder.unpack: NULL Terrain Target"));
+					STOP(("TacticalOrder.unpack: nullptr Terrain Target"));
 				targetWID = obj->getWatchID();
 				}
 			else
@@ -744,7 +744,7 @@ int32_t TacticalOrder::getGroup (int32_t commanderID, MoverPtr* moverList, Mover
 		gFlags >>= 1;
 	}
 
-	*point = NULL;
+	*point = nullptr;
 	if (pointLocalMoverId != 0x0F)
 		*point = MPlayer->playerMoverRoster[commanderID][pointLocalMoverId];
 
@@ -759,7 +759,7 @@ int32_t TacticalOrder::execute (MechWarriorPtr warrior, int32_t& message) {
 	message = -1;
 
 	if (warrior->getVehicle()->refitBuddyWID)	// am I in a refitting operation? if is, point my and my refit
-	{												// buddy to NULL, taking us out of the operation
+	{												// buddy to nullptr, taking us out of the operation
 		GameObjectPtr refitBuddy = ObjectManager->getByWatchID(warrior->getVehicle()->refitBuddyWID);
 		MoverPtr vehicle = warrior->getVehicle();
 		// turn off refitting (may not be on, but make sure)
@@ -966,7 +966,7 @@ int32_t TacticalOrder::execute (MechWarriorPtr warrior, int32_t& message) {
 			{
 				//--------------------------------
 				// Targeting a terrain location...
-				warrior->setLastTarget(NULL);
+				warrior->setLastTarget(nullptr);
 				warrior->getVehicle()->calcFireRanges();
 				//-------------------------------------------------------------------
 				// If we want to refuse the order if the range is beyond our personal
@@ -998,7 +998,7 @@ int32_t TacticalOrder::execute (MechWarriorPtr warrior, int32_t& message) {
 			result = -1;
 			//--------------------------------
 			// Targeting a terrain location...
-			warrior->setLastTarget(NULL);
+			warrior->setLastTarget(nullptr);
 			warrior->getVehicle()->calcFireRanges();
 			//-------------------------------------------------------------------
 			// If we want to refuse the order if the range is beyond our personal
@@ -1444,7 +1444,7 @@ int32_t TacticalOrder::status (MechWarriorPtr warrior) {
 				switch(stage) 
 				{
 					case 1:	// move
-						if (warrior->getMovePath()->numStepsWhenNotPaused == 0 && warrior->getMovePathRequest() == NULL)
+						if (warrior->getMovePath()->numStepsWhenNotPaused == 0 && warrior->getMovePathRequest() == nullptr)
 						{
 							if (warrior->getVehicle()->distanceFrom(target->getPosition()) < Mover::refitRange)
 							{
@@ -1497,13 +1497,13 @@ int32_t TacticalOrder::status (MechWarriorPtr warrior) {
 									pointsAvailable = 255.0f;
 
 								WeaponShotInfo refitInfo;
-								refitInfo.init(NULL,
+								refitInfo.init(nullptr,
 											   -5,
 											   pointsUsed,
 											   GROUNDVEHICLE_LOCATION_TURRET,
 											   0.0);
 								MPlayer->addWeaponHitChunk((GameObjectPtr)warrior->getVehicle(), &refitInfo);
-								refitInfo.init(NULL,
+								refitInfo.init(nullptr,
 											   -5,
 											   pointsAvailable,
 											   0,
@@ -1545,7 +1545,7 @@ int32_t TacticalOrder::status (MechWarriorPtr warrior) {
 				result = TACORDER_FAILURE;
 				switch(stage) {
 					case 1:	// move
-						if (warrior->getMovePath()->numStepsWhenNotPaused == 0 && warrior->getMovePathRequest() == NULL)
+						if (warrior->getMovePath()->numStepsWhenNotPaused == 0 && warrior->getMovePathRequest() == nullptr)
 							stage++;
 						break;
 					case 2: // power-down (or other cool animation...)
@@ -1574,13 +1574,13 @@ int32_t TacticalOrder::status (MechWarriorPtr warrior) {
 									pointsAvailable = 255.0f;
 
 								WeaponShotInfo refitInfo;
-								refitInfo.init(NULL,
+								refitInfo.init(nullptr,
 											   -5,
 											   pointsUsed,
 											   -1,
 											   0.0);
 								MPlayer->addWeaponHitChunk(target, &refitInfo);
-								refitInfo.init(NULL,
+								refitInfo.init(nullptr,
 											   -5,
 											   pointsAvailable,
 											   0,
@@ -1611,7 +1611,7 @@ int32_t TacticalOrder::status (MechWarriorPtr warrior) {
 						break;
 
 					case 4: // walking off...
-						if (warrior->getMovePath()->numStepsWhenNotPaused == 0 && warrior->getMovePathRequest() == NULL)
+						if (warrior->getMovePath()->numStepsWhenNotPaused == 0 && warrior->getMovePathRequest() == nullptr)
 							stage++;
 						break;
 
@@ -1708,8 +1708,8 @@ int32_t TacticalOrder::status (MechWarriorPtr warrior) {
 							targetLocation.x += offset.x;
 							targetLocation.y += offset.y;
 							toad->setPosition(targetLocation);
-							toad->transport = NULL;
-							((GroundVehiclePtr) warrior->getVehicle())->toads[i] = NULL;
+							toad->transport = nullptr;
+							((GroundVehiclePtr) warrior->getVehicle())->toads[i] = nullptr;
 							if (deployCount == 0)
 							{
 								time = scenarioTime;	// come back for another load
@@ -1869,13 +1869,13 @@ int32_t TacticalOrder::status (MechWarriorPtr warrior) {
 							if (MPlayer) {
 								STOP((" Need to implement recover for multiplayer "));
 								WeaponShotInfo recoverInfo;
-								recoverInfo.init(NULL,
+								recoverInfo.init(nullptr,
 											   -5,
 											   pointsUsed,
 											   GROUNDVEHICLE_LOCATION_TURRET,
 											   0.0);
 								MPlayer->addWeaponHitChunk((GameObjectPtr)warrior->getVehicle(), &recoverInfo);
-								recoverInfo.init(NULL,
+								recoverInfo.init(nullptr,
 											   -5,
 											   pointsUsed,
 											   0,

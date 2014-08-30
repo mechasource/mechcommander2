@@ -107,7 +107,7 @@ void CLASSNAME::Lighting(MLRLight* const* lights, int32_t nrLights)
 
 			MLRLightMap *lm = light->GetLightMap(void);
 
-			if(lm==NULL)
+			if(lm==nullptr)
 			{
 				continue;
 			}

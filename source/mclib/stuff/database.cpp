@@ -43,8 +43,7 @@ public:
 		TestInstance(void) const
 			{Verify(m_tag == e_Tag && m_version <= e_Version);}
 
-	static int32_t
-		FilesOpened;
+	static int32_t FilesOpened;
 };
 
 //
@@ -66,8 +65,8 @@ public:
 	size_t		m_length;				// If this is zero, the record has been 
 										// deleted (used to signify gaps before compressing)
 	size_t		m_nameLength;
-	uint32_t		m_ID;					// ID
-	uint32_t		m_hash;					// Hash value
+	uint32_t	m_ID;					// ID
+	uint32_t	m_hash;					// Hash value
 
 	bool		m_mustFree;					// When 1 gos_Free must be called on the block
 	char		m_name[1];
@@ -78,7 +77,7 @@ public:
 	}
 };
 
-static HGOSHEAP Database_Heap = NULL;
+static HGOSHEAP Database_Heap = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -297,14 +296,20 @@ void
 	//------------------
 	//
 	Verify(!m_record);
-	Record *data =
-		new(new uint8_t[sizeof(*m_record) + m_length + name_length])
-			Record(this, record_hash, name_length);
+	Record* data = 
+		new(new uint8_t[sizeof(*m_record) + m_length + name_length]) 
+		Record(this, record_hash, name_length);
 	Check_Object(data);
-	m_data = &data->m_name[name_length+1];
-	if (m_name)
+	if (data /*&& m_name*/)
+	{
+		m_data = &data->m_name[name_length+1];
 		m_name = data->m_name;
-	m_timeStamp = data->m_lastModified;
+		m_timeStamp = data->m_lastModified;
+	}
+		
+	if (m_name)
+		
+	
 
 	//
 	//------------------
@@ -368,10 +373,12 @@ void
 		new(new uint8_t[sizeof(*m_record) + m_length + name_length])
 			Record(this, record_hash, name_length);
 	Check_Object(data);
-	m_data = &data->m_name[name_length+1];
-	if (m_name)
+	if (data)
+	{
+		m_data = &data->m_name[name_length+1];
 		m_name = data->m_name;
-	m_timeStamp = data->m_lastModified;
+		m_timeStamp = data->m_lastModified;
+	}
 
 	//
 	//------------------
@@ -409,7 +416,7 @@ void
 	const_cast<Record*>(m_record)->Unhook(this);
 	if (m_record->m_mustFree)
 		delete const_cast<Record*>(m_record);
-	m_record = NULL;
+	m_record = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -443,7 +450,7 @@ bool
 		record = reinterpret_cast<Record*>(record->m_nextIDRecord);
 	}	
 
-	m_record = NULL;
+	m_record = nullptr;
 	return false;
 }
 
@@ -481,7 +488,7 @@ bool
 		record = reinterpret_cast<Record*>(record->m_nextNameRecord);
 	}	
 
-	m_record = NULL;
+	m_record = nullptr;
 	return false;
 }
 
@@ -525,7 +532,7 @@ bool
 				return true;
 			}
 		}
-		m_databaseHandle->m_currentPointer = NULL;
+		m_databaseHandle->m_currentPointer = nullptr;
 		return true;
 	}
 
@@ -577,7 +584,7 @@ DatabaseHandle::DatabaseHandle(
 		Database_Heap = gos_CreateMemoryHeap("Database", 0);
 	gos_PushCurrentHeap(Database_Heap);
 	m_currentRecord = 0;
-	m_currentPointer = NULL;
+	m_currentPointer = nullptr;
 	m_dirtyFlag = false;
 
 	//
@@ -616,7 +623,7 @@ DatabaseHandle::DatabaseHandle(
 	//
 	else
 	{
-		m_handle = NULL;
+		m_handle = nullptr;
 		if (gos_DoesFileExist(filename))
 		{
 			size_t size;
@@ -932,7 +939,7 @@ void
 	Check_Object(this);
 
 	m_currentRecord = 0;
-	m_currentPointer = NULL;
+	m_currentPointer = nullptr;
 
 	for (uint32_t i=0; i<Database::e_DataBlockSize; i++)
 	{

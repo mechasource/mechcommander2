@@ -84,17 +84,17 @@ void
 {
 	Check_Object(this);
 	Plug *plug;
-	Node *save_release_node = NULL;
+	Node *save_release_node = nullptr;
 
 	if (defeat_release_node)
 	{
    	Check_Object(socket);
 		save_release_node = socket->GetReleaseNode();
-		socket->SetReleaseNode(NULL);
+		socket->SetReleaseNode(nullptr);
 	}
 
 	First();
-	while ((plug = ReadAndNextPlug()) != NULL)
+	while ((plug = ReadAndNextPlug()) != nullptr)
 	{
 		Unregister_Object(plug);
 		delete plug;

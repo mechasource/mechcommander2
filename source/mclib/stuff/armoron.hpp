@@ -132,7 +132,7 @@ namespace Stuff {
 		case 4:
 			Check_Signature(p);
 			p->TestInstance();
-			Verify(dynamic_cast<T>(p) != NULL);
+			Verify(dynamic_cast<T>(p) != nullptr);
 			break;		
 		}
 		return p;

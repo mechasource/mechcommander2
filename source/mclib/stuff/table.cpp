@@ -64,7 +64,7 @@ TableEntry::~TableEntry()
 	// time.
 	//-------------------------------------------------------------
 	//
-	if (table->GetReleaseNode() != NULL)
+	if (table->GetReleaseNode() != nullptr)
 	{
 		Check_Object(table->GetReleaseNode());
 		table->GetReleaseNode()->ReleaseLinkHandler(table, plug);
@@ -85,7 +85,7 @@ TableEntry::~TableEntry()
 Table::Table(Node *node, bool has_unique_entries) 
 	: SortedSocket(node, has_unique_entries)
 {
-	array = NULL;
+	array = nullptr;
 	maxItems = numItems = 0;
 }
 
@@ -97,7 +97,7 @@ Table::Table(Node *node, bool has_unique_entries)
 Table::~Table()
 {
 	Check_Object(this);
-	SetReleaseNode(NULL);
+	SetReleaseNode(nullptr);
 	CollectionSize i = numItems;
 	while (i > 0) 
 	{
@@ -106,7 +106,7 @@ Table::~Table()
 		delete array[i];
 	}
 	Verify(numItems == 0);
-	Verify(array == NULL);
+	Verify(array == nullptr);
 }
 
 //
@@ -118,7 +118,7 @@ void Table::TestInstance()
 {
 	SortedSocket::TestInstance();
 
-	if (numItems > 0 || array != NULL) 
+	if (numItems > 0 || array != nullptr) 
 	{
 		Verify(numItems > 0);
 		Verify(numItems <= maxItems);
@@ -134,7 +134,7 @@ void Table::TestInstance()
 void Table::AddImplementation(Plug *plug)
 {
 	Check_Object(this);
-	AddValueImplementation(plug, NULL);
+	AddValueImplementation(plug, nullptr);
 }
 
 //
@@ -184,7 +184,7 @@ Plug* Table::FindImplementation(PCVOID value)
 
 		return array[index]->GetPlug();
 	}
-	return NULL;
+	return nullptr;
 }
 
 #if 0
@@ -237,7 +237,7 @@ Table::MakeTableEntry(
 {
 	Check_Object(this);
 	STOP(("Table::MakeTableEntry - Should never reach here"));
-	return NULL;
+	return nullptr;
 }
 
 //
@@ -284,7 +284,7 @@ Table::AddTableEntry(
 	Check_Object(link);
 
 	CollectionSize new_num_items = numItems+1;
-	if (array == NULL)
+	if (array == nullptr)
 	{
 		Verify(new_num_items == 1);
 		array = new TableEntry*[new_num_items];
@@ -479,7 +479,7 @@ void Table::RemoveNthTableEntry(CollectionSize index)
 	{
 		Unregister_Pointer(array);
 		delete[] array;
-		array = NULL;
+		array = nullptr;
 	}
 	numItems = new_num_items;
 }
@@ -512,7 +512,7 @@ SortedIterator(table)
 	array = table->array;
 	numItems = table->numItems;
 
-	if (array != NULL)
+	if (array != nullptr)
 		currentPosition = 0;
 	else
 		currentPosition = TableNullIndex;
@@ -536,7 +536,7 @@ TableIterator::TestInstance()
 {
 	SortedIterator::TestInstance();
 
-	if (array != NULL) 
+	if (array != nullptr) 
 	{
 		Check_Pointer(array);
 		Verify(0 < numItems);
@@ -552,7 +552,7 @@ TableIterator::TestInstance()
 void
 TableIterator::First()
 {
-	if (array != NULL)
+	if (array != nullptr)
 		currentPosition = 0;
 }
 
@@ -564,7 +564,7 @@ TableIterator::First()
 void
 TableIterator::Last()
 {
-	if (array != NULL)
+	if (array != nullptr)
 		currentPosition = numItems - 1;
 }
 
@@ -606,7 +606,7 @@ void
 		IncrementPosition();
 		return plug;
 	}
-	return NULL;
+	return nullptr;
 }
 
 //
@@ -625,7 +625,7 @@ void
 		DecrementPosition();
 		return plug;
 	}
-	return NULL;
+	return nullptr;
 }
 
 //
@@ -640,7 +640,7 @@ void
 	{
 		return NthEntry(currentPosition)->GetPlug();
 	}
-	return NULL;
+	return nullptr;
 }
 
 //
@@ -668,7 +668,7 @@ void
 	{
 		return NthEntry(currentPosition = index)->GetPlug();
 	}
-	return NULL;
+	return nullptr;
 }
 
 //
@@ -714,7 +714,7 @@ Plug
 		return (NthEntry(currentPosition = index)->GetPlug());
 	}
 	currentPosition = TableNullIndex;
-	return NULL;
+	return nullptr;
 }
 
 //

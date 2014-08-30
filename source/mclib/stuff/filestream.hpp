@@ -90,7 +90,7 @@ namespace Stuff{
 		explicit FileStream(PCSTR file_name, WriteStatus writable = ReadOnly);
 		~FileStream(void);
 
-		void Open(PCSTR file_name = NULL, WriteStatus writable = ReadOnly);
+		void Open(PCSTR file_name = nullptr, WriteStatus writable = ReadOnly);
 		void Close(void);
 
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

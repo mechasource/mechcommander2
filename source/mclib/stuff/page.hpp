@@ -77,7 +77,7 @@ namespace Stuff{
 
 		bool
 			DoesNoteExist(PCSTR entryname)
-		{Check_Object(this); return FindNote(entryname) != NULL;}
+		{Check_Object(this); return FindNote(entryname) != nullptr;}
 		Note*
 			FindNote(PCSTR entryname);
 		Note*

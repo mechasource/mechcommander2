@@ -171,7 +171,7 @@ namespace Stuff {
 		MStringRepresentation
 			GetNthToken(
 			size_t nth_token,
-			PSTR delimiters=NULL
+			PSTR delimiters=nullptr
 			) const;
 
 		//
@@ -265,7 +265,7 @@ namespace Stuff {
 	{
 		Check_Object(this);
 		Verify(
-			(stringText != NULL) ? 
+			(stringText != nullptr) ? 
 			(stringLength == strlen(stringText)) : 
 		(stringLength == 0)
 			);
@@ -294,7 +294,7 @@ namespace Stuff {
 		MStringRepresentation::operator PSTR(void) const
 	{
 		Check_Object(this);
-		//		Verify(stringText != NULL);
+		//		Verify(stringText != nullptr);
 		return stringText;
 	}
 
@@ -533,7 +533,7 @@ namespace Stuff {
 		MString
 			GetNthToken(
 			size_t nth_token,
-			PSTR delimiters=NULL
+			PSTR delimiters=nullptr
 			) const;
 
 		//
@@ -668,7 +668,7 @@ namespace Stuff {
 		MString::operator PSTR(void) const
 	{
 		Check_Object(representation);
-		//		Verify(representation->stringText != NULL);
+		//		Verify(representation->stringText != nullptr);
 		return representation->stringText;
 	}
 

@@ -37,7 +37,7 @@ namespace Stuff{
 #endif
 	{
 	public:
-		void TestInstance(void){Verify(blockMemory != NULL);}
+		void TestInstance(void){Verify(blockMemory != nullptr);}
 
 		static void UsageReport(void);
 		static void CollapseBlocks(void);
@@ -119,7 +119,7 @@ namespace Stuff{
 
 		MemoryStack(size_t rec_size, size_t start, size_t delta, PCSTR name, 
 			HGOSHEAP parent = ParentClientHeap)
-			: MemoryBlockBase(rec_size, start, delta, name, parent) { topOfStack = NULL; }
+			: MemoryBlockBase(rec_size, start, delta, name, parent) { topOfStack = nullptr; }
 
 		PVOID Push(PCVOID What);
 		PVOID Push(void);

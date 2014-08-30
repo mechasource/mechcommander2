@@ -241,7 +241,7 @@ void Stuff::BitTrace::TestInstance(void)
 //########################    TraceManager    ##############################
 //##########################################################################
 
-Stuff::TraceManager* Stuff::TraceManager::Instance = NULL;
+Stuff::TraceManager* Stuff::TraceManager::Instance = nullptr;
 
 void Stuff::TraceManager::InitializeClass(void)
 {
@@ -254,19 +254,19 @@ void Stuff::TraceManager::TerminateClass()
 {
 	Unregister_Object(Stuff::TraceManager::Instance);
 	delete Stuff::TraceManager::Instance;
-	Stuff::TraceManager::Instance = NULL;
+	Stuff::TraceManager::Instance = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-Stuff::TraceManager::TraceManager(void) : traceChain(NULL)
+Stuff::TraceManager::TraceManager(void) : traceChain(nullptr)
 {
 	sampleStart = 0;
 	actualSampleCount = 0;
 	ignoredSampleCount = 0;
 	traceCount = 0;
-	activeTraceLog = NULL;
-	allocatedTraceLog = NULL;
+	activeTraceLog = nullptr;
+	allocatedTraceLog = nullptr;
 	activeBits = 0;
 }
 
@@ -284,7 +284,7 @@ Stuff::TraceManager::~TraceManager()
 			Cast_Pointer(TraceSample*, allocatedTraceLog->GetPointer());
 		Unregister_Object(allocatedTraceLog);
 		delete allocatedTraceLog;
-		activeTraceLog = allocatedTraceLog = NULL;
+		activeTraceLog = allocatedTraceLog = nullptr;
 
 		Unregister_Pointer(samples);
 		delete[] samples;
@@ -310,7 +310,7 @@ Stuff::TraceManager::DumpTracesStatus()
 	ChainIteratorOf<Trace*> traces(&traceChain);
 	Trace *trace;
 
-	while ((trace = traces.ReadAndNext()) != NULL)
+	while ((trace = traces.ReadAndNext()) != nullptr)
 	{
 		Check_Object(trace);
 		SPEW((GROUP_STUFF_TRACE, "%s: +", trace->traceName));
@@ -328,7 +328,7 @@ Stuff::TraceManager::ResetTraces()
 	ChainIteratorOf<Trace*> traces(&traceChain);
 	Trace *trace;
 
-	while ((trace = traces.ReadAndNext()) != NULL)
+	while ((trace = traces.ReadAndNext()) != nullptr)
 	{
 		Check_Object(trace);
 		trace->ResetTrace();
@@ -354,7 +354,7 @@ Stuff::TraceManager::GetNameOfTrace(int32_t bit_no)
 	//
 	ChainIteratorOf<Trace*> traces(&traceChain);
 	Trace *trace;
-	while ((trace = traces.ReadAndNext()) != NULL)
+	while ((trace = traces.ReadAndNext()) != nullptr)
 	{
 		Check_Object(trace);
 		if (trace->traceType == Trace::BitType)
@@ -367,7 +367,7 @@ Stuff::TraceManager::GetNameOfTrace(int32_t bit_no)
 		}
 	}
 	Check_Object(trace);
-	return trace ? trace->traceName : NULL;
+	return trace ? trace->traceName : nullptr;
 }
 
 #if defined(USE_TIME_ANALYSIS)
@@ -382,7 +382,7 @@ Stuff::TraceManager::StartTimingAnalysis()
 	ChainIteratorOf<Trace*> traces(&traceChain);
 	Trace *trace;
 
-	while ((trace = traces.ReadAndNext()) != NULL)
+	while ((trace = traces.ReadAndNext()) != nullptr)
 	{
 		Check_Object(trace);
 		trace->StartTiming();
@@ -419,7 +419,7 @@ Stuff::TraceManager::SnapshotTimingAnalysis(bool print)
 		SPEW((GROUP_STUFF_TRACE, "TIMING ANALYSIS"));
 		SPEW((GROUP_STUFF_TRACE, "Sample length: %4fs", time));
 	}
-	while ((trace = traces.ReadAndNext()) != NULL)
+	while ((trace = traces.ReadAndNext()) != nullptr)
 	{
 		Check_Object(trace);
 
@@ -496,7 +496,7 @@ void Stuff::TraceManager::SaveTraceLog(PCSTR filename)
 			ChainIteratorOf<Trace*> traces(&traceChain);
 			Trace *trace;
 			size_t header_size = sizeof(int32_t);
-			while ((trace = traces.ReadAndNext()) != NULL)
+			while ((trace = traces.ReadAndNext()) != nullptr)
 			{
 				header_size += 2*sizeof(int32_t);
 				header_size += (strlen(trace->traceName)+4)&~3;
@@ -505,7 +505,7 @@ void Stuff::TraceManager::SaveTraceLog(PCSTR filename)
 			output << static_cast<int32_t>(trace_count);
 
 			traces.First();
-			while ((trace = traces.ReadAndNext()) != NULL)
+			while ((trace = traces.ReadAndNext()) != nullptr)
 			{
 				size_t str_len = strlen(trace->traceName) + 1;
 				header_size = sizeof(int32_t) + ((str_len+4)&~3);
@@ -539,7 +539,7 @@ void Stuff::TraceManager::SaveTraceLog(PCSTR filename)
 			Cast_Pointer(TraceSample*, allocatedTraceLog->GetPointer());
 		Unregister_Object(allocatedTraceLog);
 		delete allocatedTraceLog;
-		activeTraceLog = allocatedTraceLog = NULL;
+		activeTraceLog = allocatedTraceLog = nullptr;
 
 		Unregister_Pointer(samples);
 		delete[] samples;
@@ -589,7 +589,7 @@ Stuff::TraceManager::SuspendTraceLogging()
 		sample->sampleTime = now;
 		sample->traceNumber = 0;
 		activeTraceLog->AdvancePointer(sample->sampleLength);
-		activeTraceLog = NULL;
+		activeTraceLog = nullptr;
 	}
 }
 

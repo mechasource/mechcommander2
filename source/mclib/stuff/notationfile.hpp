@@ -114,8 +114,8 @@ namespace Stuff {
 			Type type=Standard
 			);
 		NotationFile(
-			MemoryStream *stream=NULL,
-			MacroTree *macro_tree=NULL
+			MemoryStream *stream=nullptr,
+			MacroTree *macro_tree=nullptr
 			);
 
 		~NotationFile(void);
@@ -205,7 +205,7 @@ namespace Stuff {
 
 		bool
 			DoesPageExist(PCSTR pagename)
-		{Check_Object(this); return FindPage(pagename) != NULL;}
+		{Check_Object(this); return FindPage(pagename) != nullptr;}
 		Page*
 			FindPage(PCSTR pagename);
 		Page*

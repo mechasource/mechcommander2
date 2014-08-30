@@ -105,7 +105,7 @@ namespace Stuff {
 	template <class T>
 	AverageOf<T>::AverageOf()
 	{
-		array = NULL;
+		array = nullptr;
 	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -115,7 +115,7 @@ namespace Stuff {
 		T initial
 		)
 	{
-		array = NULL;
+		array = nullptr;
 		SetSize(the_size, initial);
 	}
 
@@ -126,7 +126,7 @@ namespace Stuff {
 		T initial
 		)
 	{
-		if (array != NULL)
+		if (array != nullptr)
 		{
 			Unregister_Pointer(array);
 			delete[] array;

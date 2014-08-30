@@ -51,7 +51,7 @@ TestHost::TestHost(PCSTR a_name)
 	Check_Pointer(this);
 	Check_Pointer(a_name);
 	name = names.AddEntry(a_name, this);
-	next = NULL;
+	next = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -87,7 +87,7 @@ bool
 	ObjectNameList::Entry
 		*next_entry,
 		*entry,
-		*save_entry = NULL;
+		*save_entry = nullptr;
 	NameList
 		sub_list;
 	int32_t
@@ -103,7 +103,7 @@ bool
 	//----------------------
 	// initialize variables
 	//----------------------
-	save_host = NULL;
+	save_host = nullptr;
 	freq = TEST_COUNT / 10;
 	count = 0;
 
@@ -136,7 +136,7 @@ bool
 			save_host = host;
 		}
 
-		if (mod.rem == 0 && save_host != NULL)
+		if (mod.rem == 0 && save_host != nullptr)
 		{
 			//----------------------------------------------
 			// find and delete host object previously saved

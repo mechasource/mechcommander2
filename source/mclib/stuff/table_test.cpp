@@ -155,7 +155,7 @@ bool
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
 		
 		i = 0;
-		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption( testPlug1->value == i );
 			i++;
@@ -163,7 +163,7 @@ bool
 		Test_Assumption( i == TEST_COUNT );
 		
 		i = 0;
-		while ((testPlug1 = iterator2.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator2.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption( testPlug1->value == i );
 			i++;
@@ -213,7 +213,7 @@ bool
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
 
 		i = 0;
-		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption( testPlug1->value == i );
 			i++;
@@ -332,7 +332,7 @@ bool
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
 		
 		i = 0;
-		while ((testPlug1 = iterator1.GetCurrent()) != NULL)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			
@@ -352,7 +352,7 @@ bool
 		iterator2.Last();
 
 		i = TEST_COUNT - 1;
-		while ((testPlug1 = iterator1.GetCurrent()) != NULL)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			
@@ -380,7 +380,7 @@ bool
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
 		
 		i = 0;
-		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndNext();
 			
@@ -397,7 +397,7 @@ bool
 		iterator2.Last();
 
 		i = TEST_COUNT - 1;
-		while ((testPlug1 = iterator1.ReadAndPrevious()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndPrevious()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndPrevious();
 			
@@ -444,7 +444,7 @@ bool
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
 		
 		i = 0;
-		while ((testPlug1 = iterator1.GetCurrent()) != NULL)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			Test_Assumption( testPlug1->value == i );
 

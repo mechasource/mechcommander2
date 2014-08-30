@@ -45,9 +45,7 @@ namespace Stuff {
 	// Construction, destruction, saving
 	//
 	public:
-		virtual
-			~RegisteredClass(void)
-		{}
+		virtual ~RegisteredClass(void) {}
 
 	protected:
 		explicit RegisteredClass(ClassData *class_data);
@@ -62,17 +60,12 @@ namespace Stuff {
 		ClassData*
 			GetClassData(void) const
 		{Check_Object(this); return classData;}
-		bool
-			IsDerivedFrom(ClassData* parent) const;
-		bool
-			IsDerivedFrom(ClassID class_id) const;
-		bool
-			IsDerivedFrom(PCSTR parent) const;
+		bool IsDerivedFrom(ClassData* parent) const;
+		bool IsDerivedFrom(ClassID class_id) const;
+		bool IsDerivedFrom(PCSTR parent) const;
 
-		static ClassData*
-			FindClassData(PCSTR name);
-		static ClassData*
-			FindClassData(ClassID class_id)
+		static ClassData* FindClassData(PCSTR name);
+		static ClassData* FindClassData(ClassID class_id)
 		{
 			Verify(static_cast<uint32_t>(class_id) < ClassIDCount);
 			return ClassDataArray[class_id];
@@ -80,19 +73,15 @@ namespace Stuff {
 		static ClassData* DefaultData;
 
 	protected:
-		ClassData
-			*classData;
+		ClassData*	classData;
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Accessors
 	//
 	public:
-		ClassID
-			GetClassID(void) const;
-		PCSTR
-			GetClassString(void) const;
-		static ClassID
-			AllocateTemporaryClassID(void)
+		ClassID GetClassID(void) const;
+		PCSTR GetClassString(void) const;
+		static ClassID AllocateTemporaryClassID(void)
 		{
 			Verify(FirstTemporaryClassID < ClassIDCount);
 			return FirstTemporaryClassID++;
@@ -127,7 +116,7 @@ namespace Stuff {
 		RegisteredClass__ClassData(
 			RegisteredClass::ClassID class_id,
 			PCSTR class_name,
-			RegisteredClass__ClassData *parent = NULL
+			RegisteredClass__ClassData *parent = nullptr
 			);
 
 		~RegisteredClass__ClassData(void);
@@ -136,28 +125,21 @@ namespace Stuff {
 	// Inheritance stuff
 	//
 	public:
-		bool
-			IsDerivedFrom(RegisteredClass__ClassData* parent);
+		bool IsDerivedFrom(RegisteredClass__ClassData* parent);
 
-		RegisteredClass::ClassID
-			GetClassID(void)
+		RegisteredClass::ClassID GetClassID(void)
 		{Check_Object(this); return classID;}
-		PCSTR
-			GetClassName(void)
+		PCSTR GetClassName(void)
 		{Check_Object(this); return className;}
-		RegisteredClass__ClassData*
-			GetParentClass(void)
+		RegisteredClass__ClassData* GetParentClass(void)
 		{Check_Object(this); return parentClass;}
 
 	protected:
-		void
-			DeriveClass(RegisteredClass__ClassData* child);
+		void DeriveClass(RegisteredClass__ClassData* child);
 
-		RegisteredClass__ClassData*
-			FindClassData(PCSTR name);
+		RegisteredClass__ClassData* FindClassData(PCSTR name);
 
-		RegisteredClass::ClassID
-			classID;
+		RegisteredClass::ClassID classID;
 		PCSTR	className;
 
 		RegisteredClass__ClassData

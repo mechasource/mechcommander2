@@ -52,13 +52,13 @@ bool
 
 	Page
 		*page,
-		*sub_page=NULL,
-		*page_1=NULL,
-		*page_2=NULL,
-		*page_3=NULL,
-		*page_5=NULL,
-		*page_8=NULL,
-		*page_9=NULL;
+		*sub_page=nullptr,
+		*page_1=nullptr,
+		*page_2=nullptr,
+		*page_3=nullptr,
+		*page_5=nullptr,
+		*page_8=nullptr,
+		*page_9=nullptr;
 
 	PageIterator *pages;
 

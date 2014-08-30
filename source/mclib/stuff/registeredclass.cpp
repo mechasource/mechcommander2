@@ -19,7 +19,7 @@ using namespace Stuff;
 //#############################################################################
 
 RegisteredClass::ClassData*
-	RegisteredClass::DefaultData = NULL;
+	RegisteredClass::DefaultData = nullptr;
 
 RegisteredClass::ClassID
 	RegisteredClass::FirstTemporaryClassID = FirstTemporaryClassID;
@@ -45,7 +45,7 @@ void
 {
 	Unregister_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -95,8 +95,8 @@ RegisteredClass__ClassData::RegisteredClass__ClassData(
 	Verify(static_cast<uint32_t>(class_id) < ClassIDCount);
 	classID = class_id;
 	className = name;
-	firstChildClass = NULL;
-	nextSiblingClass = NULL;
+	firstChildClass = nullptr;
+	nextSiblingClass = nullptr;
 	parentClass = parent;
 	Verify(!RegisteredClass::ClassDataArray[class_id]);
 	RegisteredClass::ClassDataArray[class_id] = this;
@@ -127,7 +127,7 @@ RegisteredClass__ClassData::~RegisteredClass__ClassData()
 	//
 	//----------------------------------------------------------------------
 	// Make sure there are no children left, then if this is the root class,
-	// make sure it's parent link is NULL
+	// make sure it's parent link is nullptr
 	//----------------------------------------------------------------------
 	//
 	Verify(!firstChildClass);
@@ -158,7 +158,7 @@ RegisteredClass__ClassData::~RegisteredClass__ClassData()
 	//
 	Verify(static_cast<uint32_t>(classID) < ClassIDCount);
 	Verify(RegisteredClass::ClassDataArray[classID] == this);
-	RegisteredClass::ClassDataArray[classID] = NULL;
+	RegisteredClass::ClassDataArray[classID] = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -221,7 +221,7 @@ RegisteredClass__ClassData*
 	}
 
 	RegisteredClass__ClassData *class_data = firstChildClass;
-	RegisteredClass__ClassData *result = NULL;
+	RegisteredClass__ClassData *result = nullptr;
 	while (class_data)
 	{
 		Check_Object(class_data);

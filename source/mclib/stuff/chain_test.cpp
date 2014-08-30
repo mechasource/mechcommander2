@@ -49,7 +49,7 @@ ChainTestPlug::~ChainTestPlug()
 
 ChainTestNode::ChainTestNode():
 	Node(DefaultData),
-	chain1(NULL),
+	chain1(nullptr),
 	chain2(this)
 {
 	receivedCommand = 0;
@@ -149,7 +149,7 @@ bool
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
 
 		i = 0;
-		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption( testPlug1->value == i );
 			i++;
@@ -157,7 +157,7 @@ bool
 		Test_Assumption( i == TEST_COUNT );
 
 		i = 0;
-		while ((testPlug1 = iterator2.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator2.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption( testPlug1->value == i );
 			i++;
@@ -184,7 +184,7 @@ bool
 		#if defined(_ARMOR)
 			i = 0;
 		#endif
-		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			Test_Assumption( testPlug1->value == i++ );
 
@@ -275,7 +275,7 @@ bool
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
 		
 		i = 0;
-		while ((testPlug1 = iterator1.GetCurrent()) != NULL)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			
@@ -295,7 +295,7 @@ bool
 		iterator2.Last();
 
 		i = TEST_COUNT - 1;
-		while ((testPlug1 = iterator1.GetCurrent()) != NULL)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 
@@ -323,7 +323,7 @@ bool
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
 		
 		i = 0;
-		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndNext();
 
@@ -340,7 +340,7 @@ bool
 		iterator2.Last();
 
 		i = TEST_COUNT - 1;
-		while ((testPlug1 = iterator1.ReadAndPrevious()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndPrevious()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndPrevious();
 			
@@ -383,11 +383,11 @@ bool
 		ChainIteratorOf<ChainTestPlug*> iterator1(&chain1);
 		ChainTestNode *testNode;
 			
-		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			PlugIteratorOf<ChainTestNode*> iterator2(testPlug1);
 
-			while((testNode = iterator2.ReadAndNext()) != NULL)
+			while((testNode = iterator2.ReadAndNext()) != nullptr)
 			{
 				Test_Assumption( testNode == this );
 			}
@@ -398,7 +398,7 @@ bool
 		ChainTestNode testNode2;
 		ChainOf<ChainTestPlug*> chain1(&testNode1);
 		ChainOf<ChainTestPlug*> chain2(&testNode2);
-		ChainOf<ChainTestPlug*> chain3(NULL);
+		ChainOf<ChainTestPlug*> chain3(nullptr);
 		ChainTestPlug testPlug(0);
 
 		chain1.Add(&testPlug);
@@ -422,7 +422,7 @@ bool
 		Test_Assumption( iterator2.GetSize() == TEST_COUNT );
 
 		i = 0;
-		while ((testPlug1 = iterator1.GetCurrent()) != NULL)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			Test_Assumption( testPlug1->value == i );
 
@@ -473,7 +473,7 @@ bool
 			Register_Object(testPlug1);
 
 			iterator1.First();
-			while ((testPlug2 = iterator1.GetCurrent()) != NULL)
+			while ((testPlug2 = iterator1.GetCurrent()) != nullptr)
 			{
 				if (i < testPlug2->value)
 				{
@@ -482,7 +482,7 @@ bool
 				}
          	iterator1.Next();
 			}
-			if (testPlug2 == NULL)
+			if (testPlug2 == nullptr)
 			{
 				chain1.Add(testPlug1);
 			}
@@ -501,7 +501,7 @@ bool
 	{
 		ChainIteratorOf<ChainTestPlug*> iterator1(&chain1);
 
-		while ((testPlug1 = iterator1.GetCurrent()) != NULL)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			Unregister_Object(testPlug1);
 			delete(testPlug1);

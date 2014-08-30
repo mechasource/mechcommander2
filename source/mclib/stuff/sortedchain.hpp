@@ -90,7 +90,7 @@ namespace Stuff {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainLinkOf templates ~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class V> MemoryBlock*
-		SortedChainLinkOf<V>::allocatedMemory = NULL;
+		SortedChainLinkOf<V>::allocatedMemory = nullptr;
 	template <class V> CollectionSize
 		SortedChainLinkOf<V>::allocationCount = 0;
 
@@ -113,7 +113,7 @@ namespace Stuff {
 	template <class V> PVOID
 		SortedChainLinkOf<V>::operator new(size_t)
 	{
-		Verify(allocationCount >= 0);
+		//Verify(allocationCount >= 0);
 		if (allocationCount++ == 0)
 		{
 			allocatedMemory =
@@ -139,9 +139,9 @@ namespace Stuff {
 		{
 			Unregister_Object(allocatedMemory);
 			delete allocatedMemory;
-			allocatedMemory = NULL;
+			allocatedMemory = nullptr;
 		}
-		Verify(allocationCount >= 0);
+		//Verify(allocationCount >= 0);
 	}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -330,7 +330,7 @@ namespace Stuff {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainOf templates ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class T, class V> MemoryBlock*
-		SortedChainOf<T, V>::allocatedMemory = NULL;
+		SortedChainOf<T, V>::allocatedMemory = nullptr;
 	template <class T, class V> CollectionSize
 		SortedChainOf<T, V>::allocationCount = 0;
 
@@ -398,7 +398,7 @@ namespace Stuff {
 	template <class T, class V> PVOID
 		SortedChainOf<T, V>::operator new(size_t)
 	{
-		Verify(allocationCount >= 0);
+		//Verify(allocationCount >= 0);
 		if (allocationCount++ == 0)
 		{
 			allocatedMemory =
@@ -425,9 +425,9 @@ namespace Stuff {
 		{
 			Unregister_Object(allocatedMemory);
 			delete allocatedMemory;
-			allocatedMemory = NULL;
+			allocatedMemory = nullptr;
 		}
-		Verify(allocationCount >= 0);
+		//Verify(allocationCount >= 0);
 	}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~ SortedChainIterator ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

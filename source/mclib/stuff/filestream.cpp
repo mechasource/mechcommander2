@@ -18,7 +18,7 @@ using namespace Stuff;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 Directory::Directory(PSTR find_files, bool directories) 
-	: fileEntries(NULL,NULL), folderEntries(NULL,NULL)
+	: fileEntries(nullptr,nullptr), folderEntries(nullptr,nullptr)
 {
 	Check_Pointer(find_files);
 
@@ -52,7 +52,7 @@ Directory::Directory(PSTR find_files, bool directories)
 	// Look through the directories if we are supposed to
 	//---------------------------------------------------
 	//
-	folderWalker = NULL;
+	folderWalker = nullptr;
 	if (directories)
 	{
 		file_name = gos_FindDirectories(new_directory_string);
@@ -79,7 +79,7 @@ Directory::~Directory(void)
 	fileWalker->DeletePlugs();
 	Check_Object(fileWalker);
 	delete fileWalker;
-	if (folderWalker != NULL)
+	if (folderWalker != nullptr)
 	{
 		Check_Object(folderWalker);
 		folderWalker->DeletePlugs();
@@ -97,12 +97,12 @@ PSTR Directory::GetCurrentFileName(void)
 
 	DirectoryEntry *entry;
 
-	if ((entry = fileWalker->GetCurrent()) != NULL)
+	if ((entry = fileWalker->GetCurrent()) != nullptr)
 	{
 		Check_Object(entry);
 		return entry->GetItem();
 	}
-	return NULL;
+	return nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -119,18 +119,18 @@ void Directory::AdvanceCurrentFile(void)
 PSTR Directory::GetCurrentFolderName(void)
 {
 	Check_Object(this);
-	if (folderWalker == NULL)
+	if (folderWalker == nullptr)
 		STOP(("Directory class was instantiated without directory support:\n Set the <directories> parameter to true to enable."));
 	Check_Object(folderWalker);
 
 	DirectoryFolder *entry;
 
-	if ((entry = folderWalker->GetCurrent()) != NULL)
+	if ((entry = folderWalker->GetCurrent()) != nullptr)
 	{
 		Check_Object(entry);
 		return entry->GetItem();
 	}
-	return NULL;
+	return nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -138,7 +138,7 @@ PSTR Directory::GetCurrentFolderName(void)
 void Directory::AdvanceCurrentFolder(void)
 {
 	Check_Object(this);
-	if (folderWalker == NULL)
+	if (folderWalker == nullptr)
 		STOP(("Directory class was instantiated without directory support:\n Set the <directories> parameter to true to enable."));
 	Check_Object(folderWalker);
 	folderWalker->Next();
@@ -148,7 +148,7 @@ void Directory::AdvanceCurrentFolder(void)
 //########################### FileStream ################################
 //#############################################################################
 
-FileStream::ClassData* FileStream::DefaultData = NULL;
+FileStream::ClassData* FileStream::DefaultData = nullptr;
  
 PCSTR FileStream::WhiteSpace = " \t\n";
 char FileStream::RedirectedName[256];
@@ -177,7 +177,7 @@ FileStream::TerminateClass(void)
 {
 	Check_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -191,11 +191,11 @@ FileStream::TestInstance(void) const
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 FileStream::FileStream():
-MemoryStream(DefaultData, NULL, 0)
+MemoryStream(DefaultData, nullptr, 0)
 {
-	fileName = NULL;
+	fileName = nullptr;
 	isOpen = false;
-	fileHandle = NULL;
+	fileHandle = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -204,9 +204,9 @@ FileStream::FileStream(
 					   PCSTR file_name,
 					   WriteStatus writable
 					   ):
-MemoryStream(DefaultData, NULL, 0)
+MemoryStream(DefaultData, nullptr, 0)
 {
-	fileName = NULL;
+	fileName = nullptr;
 	isOpen = false;
 	Open(file_name, writable);
 }
@@ -230,9 +230,9 @@ FileStream::Open(
 	Check_Pointer(file_name);
 
 	writeEnabled = writable;
-	currentPosition = streamStart = NULL;
+	currentPosition = streamStart = nullptr;
 	streamSize = 0;
-	fileHandle = NULL;
+	fileHandle = nullptr;
 
 	//
 	//------------------------------------------------
@@ -244,7 +244,7 @@ FileStream::Open(
 		if (IsRedirected)
 		{
 			void (__stdcall *old_hook)(PCSTR, puint8_t*, uint32_t*) = Environment.HookGetFile;
-			Environment.HookGetFile = NULL;
+			Environment.HookGetFile = nullptr;
 			gos_GetFile(RedirectedName, &streamStart, &streamSize);
 			Environment.HookGetFile = old_hook;
 			fileName = _strdup(RedirectedName);
@@ -272,7 +272,7 @@ FileStream::Open(
 		if (IgnoreReadOnlyFlag)
 		{
 			uint8_t (__stdcall *old_hook)(PCSTR) = Environment.HookDoesFileExist;
-			Environment.HookDoesFileExist = NULL;
+			Environment.HookDoesFileExist = nullptr;
 			if (gos_DoesFileExist(file_name))
 				gos_FileSetReadWrite(file_name);
 			Environment.HookDoesFileExist = old_hook;
@@ -309,7 +309,7 @@ FileStream::Close(void)
 	//
 	if (fileHandle)
 		gos_CloseFile(fileHandle);
-	else if (streamStart != NULL)
+	else if (streamStart != nullptr)
 		gos_Free(streamStart);
 
 	//
@@ -322,7 +322,7 @@ FileStream::Close(void)
 	{
 		Check_Pointer(fileName);
 		free(fileName);
-		fileName = NULL;
+		fileName = nullptr;
 	}
 }
 
@@ -405,7 +405,7 @@ FileStream::IsFileOpened(void)
 bool Stuff::CreateDirectories(PCSTR directory_path)
 {
 
-	if (directory_path == NULL)
+	if (directory_path == nullptr)
 		return false;
 
 	Check_Pointer(directory_path);
@@ -417,9 +417,9 @@ bool Stuff::CreateDirectories(PCSTR directory_path)
 	if (*current_position != '\\')
 	{
 
-		if ((current_position + 1) != NULL)
+		if ((current_position + 1) != nullptr)
 		{
-			if((current_position + 2) != NULL)
+			if((current_position + 2) != nullptr)
 			{
 				if ( *(current_position + 1) == ':' && *(current_position + 2) == '\\')
 				{
@@ -433,15 +433,15 @@ bool Stuff::CreateDirectories(PCSTR directory_path)
 		return false;
 
 
-	while((current_position != NULL))
+	while((current_position != nullptr))
 	{
 		//make a substring with the path...
 		PCSTR next_slash;
 		next_slash = strchr( current_position + 1, '\\' );
 
-		PSTR new_string = NULL;
+		PSTR new_string = nullptr;
 
-		if (next_slash == NULL)
+		if (next_slash == nullptr)
 		{
 			//copy the whole string
 			size_t length = strlen(start_position)+1;
@@ -469,11 +469,11 @@ bool Stuff::CreateDirectories(PCSTR directory_path)
 
 			strncpy(new_string, start_position, length);
 
-			new_string[length] = NULL;
+			new_string[length] = 0;
 
 		}
 
-		Verify(new_string != NULL);
+		Verify(new_string != nullptr);
 
 
 		if (!gos_DoesFileExist(new_string))

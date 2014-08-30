@@ -15,7 +15,7 @@
 using namespace Stuff;
 
 
-MemoryBlock* SlotLink::AllocatedMemory = NULL;
+MemoryBlock* SlotLink::AllocatedMemory = nullptr;
 
 //
 //#############################################################################
@@ -46,7 +46,7 @@ void
 	SlotLink::TerminateClass()
 {
 	delete AllocatedMemory;
-	AllocatedMemory = NULL;
+	AllocatedMemory = nullptr;
 }
 
 //
@@ -79,7 +79,7 @@ SlotLink::~SlotLink()
 	//
 	Check_Object(slot);
 	Verify(slot->slotLink == this);
-	slot->slotLink = NULL;
+	slot->slotLink = nullptr;
 
 	//
 	//------------------------------------------
@@ -95,7 +95,7 @@ SlotLink::~SlotLink()
 	// time.
 	//-------------------------------------------------------------
 	//
-	if (slot->GetReleaseNode() != NULL)
+	if (slot->GetReleaseNode() != nullptr)
 	{
 		Check_Object(slot->GetReleaseNode());
 		slot->GetReleaseNode()->ReleaseLinkHandler(slot, plug);
@@ -112,7 +112,7 @@ Slot::Slot(
 ):
 	Socket(node)
 {
-	slotLink = NULL;
+	slotLink = nullptr;
 }
 
 //
@@ -123,8 +123,8 @@ Slot::Slot(
 Slot::~Slot()
 {
 	Check_Object(this);
-	SetReleaseNode(NULL);
-	if (slotLink != NULL)
+	SetReleaseNode(nullptr);
+	if (slotLink != nullptr)
 	{
 		Unregister_Object(slotLink);
 		delete slotLink;
@@ -140,7 +140,7 @@ void
 	Slot::TestInstance()
 {
 	Socket::TestInstance();
-	if (slotLink != NULL)
+	if (slotLink != nullptr)
 	{
 		Check_Object(slotLink);
 	}
@@ -155,11 +155,11 @@ void
 	Slot::Remove()
 {
 	Check_Object(this);
-	if (slotLink != NULL)
+	if (slotLink != nullptr)
 	{
 		Unregister_Object(slotLink);
 		delete slotLink;
-		slotLink = NULL;
+		slotLink = nullptr;
 	}
 }
 
@@ -174,7 +174,7 @@ void
 	)
 {
 	Check_Object(this);
-	Verify(slotLink == NULL);
+	Verify(slotLink == nullptr);
 	slotLink = new SlotLink(this, plug);
 	Register_Object(slotLink);
 }
@@ -188,11 +188,11 @@ Plug*
 	Slot::GetCurrentPlug()
 {
 	Check_Object(this);
-	if (slotLink != NULL)
+	if (slotLink != nullptr)
 	{
 		Check_Object(slotLink);
 		return slotLink->GetPlug();
 	}
-	return NULL;
+	return nullptr;
 }
 

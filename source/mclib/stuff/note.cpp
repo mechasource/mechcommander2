@@ -44,7 +44,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	PCSTR contents = NULL;
+	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = atoi(contents);
@@ -72,7 +72,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	PCSTR contents = NULL;
+	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = AtoF(contents);
@@ -100,7 +100,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	PCSTR contents = NULL;
+	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	*value = (!_stricmp(contents, "true") || !_stricmp(contents, "yes") || atoi(contents) != 0);
@@ -124,7 +124,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	PCSTR contents = NULL;
+	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count =
@@ -178,7 +178,7 @@ void Note::GetEntry(YawPitchRoll* value)
 	Check_Object(this);
 	Check_Pointer(value);
 
-	PCSTR contents = NULL;
+	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 
@@ -234,7 +234,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	PCSTR contents = NULL;
+	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 
@@ -292,7 +292,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	PCSTR contents = NULL;
+	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count =
@@ -353,7 +353,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	PCSTR contents = NULL;
+	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count =
@@ -408,7 +408,7 @@ void
 	Check_Object(this);
 	Check_Pointer(value);
 
-	PCSTR contents = NULL;
+	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 	int32_t count =
@@ -467,7 +467,7 @@ void
 	Check_Object(this);
 	Check_Object(value);
 
-	PCSTR contents = NULL;
+	PCSTR contents = nullptr;
 	GetEntry(&contents);
 	Check_Pointer(contents);
 
@@ -481,7 +481,7 @@ void
 		FileStream file(contents);
 		value->m_fileName = file.GetFileName();
 		value->m_fileDependencies.AddDependency(&file);
-		value->Read(&file, NULL, NULL, false);
+		value->Read(&file, nullptr, nullptr, false);
 	}
 
 	//
@@ -517,7 +517,7 @@ void
 		// Read the string now
 		//--------------------
 		//
-		value->Read(&stream, NULL, NULL, true);
+		value->Read(&stream, nullptr, nullptr, true);
 	}
 }
 

@@ -255,14 +255,14 @@ namespace Stuff{
 
 	inline PVOID ChainIterator::ReadAndNextImplementation()
 	{
-		if (currentLink != NULL)
+		if (currentLink != nullptr)
 		{
 			Check_Object(currentLink);
 			Plug *plug = currentLink->plug;
 			currentLink = currentLink->nextChainLink;
 			return plug;
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainIteratorOf ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

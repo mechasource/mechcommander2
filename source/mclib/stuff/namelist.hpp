@@ -89,7 +89,7 @@ namespace Stuff {
 			GetEntryCount(void) const;	// (implementation assumes infrequent use)
 		bool
 			IsEmpty(void) const
-		{ Check_Object(this); return firstEntry == NULL && lastEntry == NULL; }
+		{ Check_Object(this); return firstEntry == nullptr && lastEntry == nullptr; }
 		Entry*
 			GetFirstEntry()
 		{ Check_Object(this); return firstEntry; }

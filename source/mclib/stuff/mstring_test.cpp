@@ -18,7 +18,7 @@ bool
 
 	//Verify(string_a.stringSize == 0);
 	//Verify(string_a.stringLength == 0);
-   //Verify(string_a.stringText == NULL);
+   //Verify(string_a.stringText == nullptr);
 
    MString string_b(TEST_STRING);
    MString string_c(string_b);

@@ -14,7 +14,7 @@
 using namespace Stuff;
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ChainLink ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MemoryBlock* ChainLink::AllocatedMemory = NULL;
+MemoryBlock* ChainLink::AllocatedMemory = nullptr;
 
 //
 //#############################################################################
@@ -45,7 +45,7 @@ void
 	ChainLink::TerminateClass()
 {
 	delete AllocatedMemory;
-	AllocatedMemory = NULL;
+	AllocatedMemory = nullptr;
 }
 
 //
@@ -66,12 +66,12 @@ ChainLink::ChainLink(
 	// Link into existing chain
 	//-------------------------
 	//
-	if ((nextChainLink = next_link) != NULL)
+	if ((nextChainLink = next_link) != nullptr)
 	{
 		Check_Object(nextChainLink);
 		nextChainLink->prevChainLink = this;
 	}
-	if ((prevChainLink = prev_link) != NULL)
+	if ((prevChainLink = prev_link) != nullptr)
 	{
 		Check_Object(prevChainLink);
 		prevChainLink->nextChainLink = this;
@@ -93,7 +93,7 @@ ChainLink::~ChainLink()
 	// Remove this link from the linked list
 	//--------------------------------------
 	//
-	if (prevChainLink != NULL)
+	if (prevChainLink != nullptr)
 	{
 		Check_Object(prevChainLink);
 		prevChainLink->nextChainLink = nextChainLink;
@@ -103,7 +103,7 @@ ChainLink::~ChainLink()
 		Check_Object(chain);
 		chain->head = nextChainLink;
 	}
-	if (nextChainLink != NULL)
+	if (nextChainLink != nullptr)
 	{
 		Check_Object(nextChainLink);
 		nextChainLink->prevChainLink = prevChainLink;
@@ -113,7 +113,7 @@ ChainLink::~ChainLink()
 		Check_Object(chain);
 		chain->tail = prevChainLink;
 	}
-	prevChainLink = nextChainLink = NULL;
+	prevChainLink = nextChainLink = nullptr;
 
 	//
 	//------------------------------------------
@@ -129,7 +129,7 @@ ChainLink::~ChainLink()
 	// time.
 	//-------------------------------------------------------------
 	//
-	if (chain->GetReleaseNode() != NULL)
+	if (chain->GetReleaseNode() != nullptr)
 	{
 		Check_Object(chain->GetReleaseNode());
 		chain->GetReleaseNode()->ReleaseLinkHandler(chain, plug);
@@ -146,8 +146,8 @@ ChainLink::~ChainLink()
 Chain::Chain(Node *node):
 	Socket(node)
 {
-	head = NULL;
-	tail = NULL;
+	head = nullptr;
+	tail = nullptr;
 }
 
 //
@@ -158,7 +158,7 @@ Chain::Chain(Node *node):
 Chain::~Chain()
 {
 	Check_Object(this);
-	SetReleaseNode(NULL);
+	SetReleaseNode(nullptr);
 	ChainLink *link = head;
 	while (link)
 	{
@@ -180,10 +180,10 @@ void
 {
 	Check_Object(this);
 
-	tail = new ChainLink(this, plug, NULL, tail);
+	tail = new ChainLink(this, plug, nullptr, tail);
 	Register_Object(tail);
 
-	if (head == NULL)
+	if (head == nullptr)
 	{
 		head = tail;
 	}
@@ -198,7 +198,7 @@ bool
 	Chain::IsEmpty()
 {
 	Check_Object(this);
-	return (head == NULL);
+	return (head == nullptr);
 }
 
 //
@@ -294,7 +294,7 @@ PVOID
 	ChainIterator::ReadAndPreviousImplementation()
 {
 	Check_Object(this);
-	if (currentLink != NULL)
+	if (currentLink != nullptr)
 	{
 		Plug *plug;
 
@@ -303,7 +303,7 @@ PVOID
 		currentLink = currentLink->prevChainLink;
 		return plug;
 	}
-	return NULL;
+	return nullptr;
 }
 
 //
@@ -315,12 +315,12 @@ PVOID
 	ChainIterator::GetCurrentImplementation()
 {
 	Check_Object(this);
-	if (currentLink != NULL)
+	if (currentLink != nullptr)
 	{
 		Check_Object(currentLink);
 		return currentLink->plug;
 	}
-	return NULL;
+	return nullptr;
 }
 
 //
@@ -340,7 +340,7 @@ CollectionSize
 
 	for (
 		link = Cast_Object(Chain*, socket)->head;
-		link != NULL;
+		link != nullptr;
 		link = link->nextChainLink
 	) {
 		Check_Object(link);
@@ -364,7 +364,7 @@ PVOID
 	count = 0;
 	for (
 		link = Cast_Object(Chain*, socket)->head;
-		link != NULL;
+		link != nullptr;
 		link = link->nextChainLink
 	) {
 		Check_Object(link);
@@ -374,7 +374,7 @@ PVOID
 		}
 		count++;
 	}
-	return NULL;
+	return nullptr;
 }
 
 //

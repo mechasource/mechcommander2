@@ -70,7 +70,7 @@ CollectionSize
 	PVOID item;
 
 	First();
-	while ((item = GetCurrentImplementation()) != NULL)
+	while ((item = GetCurrentImplementation()) != nullptr)
 	{
 		i++;
       Next();
@@ -88,7 +88,7 @@ void
 {
 	PVOID item;
 
-	if ((item = GetCurrentImplementation()) != NULL)
+	if ((item = GetCurrentImplementation()) != nullptr)
 	{
 		Next();
 	}
@@ -105,7 +105,7 @@ void
 {
 	PVOID item;
 
-	if ((item = GetCurrentImplementation()) != NULL)
+	if ((item = GetCurrentImplementation()) != nullptr)
 	{
 		Previous();
 	}
@@ -121,7 +121,7 @@ PVOID
 	Iterator::GetCurrentImplementation()
 {
 	STOP(("Iterator::GetCurrentImplementation - Should never reach here"));
-   return NULL;
+   return nullptr;
 }
 
 //
@@ -136,13 +136,13 @@ void
 	PVOID item;
 
 	First();
-	while ((item = GetCurrentImplementation()) != NULL)
+	while ((item = GetCurrentImplementation()) != nullptr)
 	{
 		if (i == index)
 			return item;
       Next();
 		i++;
 	}
-	return NULL;
+	return nullptr;
 }
 

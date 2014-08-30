@@ -35,7 +35,7 @@ Plug* SortedSocket::FindImplementation(PCVOID)
 {
 	Check_Object(this);
 	STOP(("SortedSocket::FindImplementation - Should never reach here"));
-	return NULL;
+	return nullptr;
 }
 
 SortedIterator::SortedIterator(SortedSocket *sortedSocket):
@@ -53,7 +53,7 @@ SortedIterator::FindImplementation(PCVOID)
 {
 	Check_Object(this);
 	STOP(("SortedIterator::FindImplementation - Should never reach here"));
-	return NULL;
+	return nullptr;
 }
 
 PVOID
@@ -61,6 +61,6 @@ SortedIterator::GetValueImplementation()
 {
 	Check_Object(this);
 	STOP(("SortedIterator::GetValueImplementation - Should never reach here"));
-	return NULL;
+	return nullptr;
 }
 

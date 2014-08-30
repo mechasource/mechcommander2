@@ -64,7 +64,7 @@ namespace Stuff {
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~ TableEntryOf templates ~~~~~~~~~~~~~~~~~~~~~~~~
 
 	template <class V> MemoryBlock*
-		TableEntryOf<V>::allocatedMemory = NULL;
+		TableEntryOf<V>::allocatedMemory = nullptr;
 	template <class V> CollectionSize
 		TableEntryOf<V>::allocationCount = 0;
 
@@ -114,7 +114,7 @@ namespace Stuff {
 		{
 			Unregister_Object(allocatedMemory);
 			delete allocatedMemory;
-			allocatedMemory = NULL;
+			allocatedMemory = nullptr;
 		}
 		Verify(allocationCount >= 0);
 	}

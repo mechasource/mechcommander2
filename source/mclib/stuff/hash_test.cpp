@@ -155,14 +155,14 @@ bool
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
 		i = 0;
-		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			i++;
 		}
 		Test_Assumption( i == TEST_COUNT );
 
 		i = 0;
-		while ((testPlug1 = iterator2.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator2.ReadAndNext()) != nullptr)
 		{
 			i++;
 		}
@@ -202,7 +202,7 @@ bool
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
 		i = 0;
-		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			i++;
 			
@@ -210,7 +210,7 @@ bool
 			delete(testPlug1);
 		}
 		Test_Assumption( i == TEST_COUNT );
-      Test_Assumption( iterator2.GetCurrent() == NULL );
+      Test_Assumption( iterator2.GetCurrent() == nullptr );
 	}
 	SPEW((
 		GROUP_STUFF_TEST,
@@ -300,7 +300,7 @@ bool
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 	
 		i = 0;
-		while ((testPlug1 = iterator1.GetCurrent()) != NULL)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 			
@@ -322,7 +322,7 @@ bool
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
 		i = 0;
-		while ((testPlug1 = iterator1.ReadAndNext()) != NULL)
+		while ((testPlug1 = iterator1.ReadAndNext()) != nullptr)
 		{
 			testPlug2 = iterator2.ReadAndNext();
 
@@ -341,7 +341,7 @@ bool
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
 		i = 0;
-		while ((testPlug1 = iterator1.GetCurrent()) != NULL)
+		while ((testPlug1 = iterator1.GetCurrent()) != nullptr)
 		{
 			testPlug2 = iterator2.GetCurrent();
 
@@ -354,7 +354,7 @@ bool
 
 			i++;
 		}
-		Test_Assumption( iterator2.GetCurrent() == NULL );
+		Test_Assumption( iterator2.GetCurrent() == nullptr );
 		Test_Assumption( i == TEST_COUNT );
 	}
 
@@ -368,8 +368,8 @@ bool
 		HashIteratorOf<HashTestPlug*, int32_t> iterator1(&hash1);
 		HashIteratorOf<HashTestPlug*, int32_t> iterator2(&hash2);
 
-		Test_Assumption( iterator1.GetCurrent() == NULL );
-		Test_Assumption( iterator2.GetCurrent() == NULL );
+		Test_Assumption( iterator1.GetCurrent() == nullptr );
+		Test_Assumption( iterator2.GetCurrent() == nullptr );
 
 		for (i = 0; i < TEST_COUNT; i++)
 		{
@@ -405,8 +405,8 @@ bool
 			i++;
 		}
 		Test_Assumption( i == TEST_COUNT );
-		Test_Assumption( iterator1.GetCurrent() == NULL );
-		Test_Assumption( iterator2.GetCurrent() == NULL );
+		Test_Assumption( iterator1.GetCurrent() == nullptr );
+		Test_Assumption( iterator2.GetCurrent() == nullptr );
 	}
 	return true;
 }

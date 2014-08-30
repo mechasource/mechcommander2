@@ -149,11 +149,11 @@ void FileDependencies::AddDependencies(const FileDependencies *dependencies)
 //#########################    FileStreamManager    ###########################
 //#############################################################################
 
-FileStreamManager* FileStreamManager::Instance = NULL;
+FileStreamManager* FileStreamManager::Instance = nullptr;
 	
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
-FileStreamManager::FileStreamManager() : compareCache(NULL, true)
+FileStreamManager::FileStreamManager() : compareCache(nullptr, true)
 {	
 }	
 
@@ -179,7 +179,7 @@ bool FileStreamManager::CompareModificationDate(
 	//
 	FileStatPlug *stat_plug;
 	
-	if ((stat_plug = compareCache.Find(file_name)) != NULL)
+	if ((stat_plug = compareCache.Find(file_name)) != nullptr)
 	{
 		Check_Object(stat_plug);
 		Check_Pointer(stat_plug->GetPointer());

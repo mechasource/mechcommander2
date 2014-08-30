@@ -519,8 +519,8 @@ void UnitQuaternion::InitializeClass()
 	Initialize_Timer(SlerpTime, "Slerp Time");
 	AddStatistic( "Quat Slerp Count",	"slerps",	gos_DWORD, &SlerpCount, Stat_AutoReset);
 
-	AddDebuggerMenuItem("Libraries\\Animation\\Use Fast Lerp", Check_UseFastLerp, Activate_UseFastLerp, NULL );
-	AddDebuggerMenuItem("Libraries\\Animation\\Use Fast Normalize", Check_UseFastNormalize, Activate_UseFastNormalize, NULL );
+	AddDebuggerMenuItem("Libraries\\Animation\\Use Fast Lerp", Check_UseFastLerp, Activate_UseFastLerp, nullptr );
+	AddDebuggerMenuItem("Libraries\\Animation\\Use Fast Normalize", Check_UseFastNormalize, Activate_UseFastNormalize, nullptr );
 	
 
 	float increment_step = (MaxCosom - MinCosom) / QuaternionLerpTableSize;

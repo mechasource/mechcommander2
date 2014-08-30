@@ -17,7 +17,7 @@ using namespace Stuff;
 int32_t Random::Numbers[250];
 int32_t Random::Index = -1;
 
-Random*	Random::Instance = NULL;
+Random*	Random::Instance = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -37,7 +37,7 @@ void
 {
 	Unregister_Pointer(Random::Instance);
 	delete Random::Instance;
-	Random::Instance = NULL;
+	Random::Instance = nullptr;
 	Index = -1;
 }
 

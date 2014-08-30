@@ -54,7 +54,7 @@ void
 	// See if a previous definition is there.  If so, remove it
 	//---------------------------------------------------------
 	//
-	Macro *mr_exists = NULL;
+	Macro *mr_exists = nullptr;
 	mr_exists = macro_tree->Find(ms_define);
 	if (mr_exists)
 	{
@@ -166,7 +166,7 @@ NotationFile::NotationFile(
 	PCSTR file_name,
 	Type type
 ):
-	m_pages(NULL)
+	m_pages(nullptr)
 {
 	Check_Pointer(this);
 	Check_Pointer(file_name);
@@ -192,7 +192,7 @@ NotationFile::NotationFile(
 	//---------------------------------------------------------------
 	//
 	m_type = type;
-	CommonConstruction(&file_stream, NULL);
+	CommonConstruction(&file_stream, nullptr);
 
 	//
 	//-----------------------------------------------------------
@@ -209,7 +209,7 @@ NotationFile::NotationFile(
 	MemoryStream *memory_stream,
 	MacroTree *macro_tree
 ):
-	m_pages(NULL)
+	m_pages(nullptr)
 {
 	Check_Pointer(this);
 
@@ -279,7 +279,7 @@ void
 	if (memory_stream)
 	{
 		Check_Object(memory_stream);
-		Read(memory_stream, macro_tree, NULL, false);
+		Read(memory_stream, macro_tree, nullptr, false);
 	}
 	m_dirtyFlag = false;
 	Check_Object(this);
@@ -303,7 +303,7 @@ void
 	// If aren't already reading a page, make a pointer to hold the info
 	//------------------------------------------------------------------
 	//
-	Page *temp_page = NULL;
+	Page *temp_page = nullptr;
 	if (!page)
 		page = &temp_page;
 
@@ -315,7 +315,7 @@ void
 	MacroTree *orig_tree = macro_tree;
 	if (!macro_tree)
 	{
-		macro_tree = new MacroTree(NULL, true);
+		macro_tree = new MacroTree(nullptr, true);
 		Check_Object(macro_tree);
 	}
 
@@ -335,8 +335,8 @@ void
 		// Deal with any comments - C++ style are the easiest to deal with
 		//----------------------------------------------------------------
 		//
-		PSTR comment_start = NULL;
-		while ((p = strchr(p, '/')) != NULL)
+		PSTR comment_start = nullptr;
+		while ((p = strchr(p, '/')) != nullptr)
 		{
 			if (p[1] == '/')
 				break;
@@ -365,7 +365,7 @@ void
 					strcpy(comment_start, p+1);
 					p = comment_start;
 				}
-				comment_start = NULL;
+				comment_start = nullptr;
 				comment_mode = false;
 				continue;
 			}
@@ -458,7 +458,7 @@ Parse:
 			// Look to see if we need to deal with macros
 			//-------------------------------------------
 			//
-			else if((q = strchr(p, '$')) != NULL && q[1]=='(')
+			else if((q = strchr(p, '$')) != nullptr && q[1]=='(')
 			{
 				#if defined(_ARMOR)
 					Verify(!macroed);
@@ -525,7 +525,7 @@ void
 	//
 	PageIterator pages(&m_pages);
 	Page *page;
-	while ((page = pages.ReadAndNext()) != NULL)
+	while ((page = pages.ReadAndNext()) != nullptr)
 	{
 		Check_Object(page);
 		page->WriteNotes(stream);
@@ -605,7 +605,7 @@ void
 	if (*p == '[')
 	{
 		token = p+1;
-		if ((p = strchr(token, ']')) != NULL)
+		if ((p = strchr(token, ']')) != nullptr)
 			*p = '\0';
 		*notepage = SetPage(token);
 		return;
@@ -626,8 +626,8 @@ void
 	//--------------------------------------------------------------
 	//
 	token = p;
-	PSTR entry = NULL;
-	if ((p = strchr(token, '=')) != NULL)
+	PSTR entry = nullptr;
+	if ((p = strchr(token, '=')) != nullptr)
 	{
 		*p = '\0';
 		entry = p + 1;
@@ -670,7 +670,7 @@ void
 		else
 		{
 			NotationFile nested_file;
-			nested_file.Read(stream, macro_tree, NULL, true);
+			nested_file.Read(stream, macro_tree, nullptr, true);
 			DynamicMemoryStream file_buffer(5);
 			file_buffer << "{\r\n";
 			nested_file.Write(&file_buffer);
@@ -779,14 +779,14 @@ void
 	//
 	else
 	{
-		PSTR entry = NULL;
+		PSTR entry = nullptr;
 
 		//
 		//--------------------------------
 		// trim the spaces off of the name
 		//--------------------------------
 		//
-		if ((p = strchr(buffer, '=')) != NULL)
+		if ((p = strchr(buffer, '=')) != nullptr)
 		{
 			*p = '\0';
 			entry = p + 1;
@@ -822,14 +822,14 @@ Page*
 
 	PageIterator pages(&m_pages);
 	Page *page;
-	while ((page = pages.ReadAndNext()) != NULL)
+	while ((page = pages.ReadAndNext()) != nullptr)
 	{
 		Check_Object(page);
 		PCSTR name = page->m_name;
 		if (name && !_stricmp(name, pagename))
 			return page;
 	}
-	return NULL;
+	return nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -905,7 +905,7 @@ void
 
 	PageIterator pages(&m_pages);
 	Page *page;
-	while ((page = pages.ReadAndNext()) != NULL)
+	while ((page = pages.ReadAndNext()) != nullptr)
 	{
 		Check_Object(page);
 		delete page;

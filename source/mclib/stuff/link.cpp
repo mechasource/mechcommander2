@@ -87,17 +87,17 @@ void
 	{
 		plug->linkHead = nextLink;
 	}
-	if (prevLink != NULL)
+	if (prevLink != nullptr)
 	{
 		Check_Object(prevLink);
 		prevLink->nextLink = nextLink;
 	}
-	if (nextLink != NULL)
+	if (nextLink != nullptr)
 	{
 		Check_Object(nextLink);
 		nextLink->prevLink = prevLink;
 	}
-	prevLink = nextLink = NULL;
+	prevLink = nextLink = nullptr;
 }
 
 //
@@ -111,11 +111,11 @@ void
 	Check_Object(this);
 	Check_Object(plug);
 
-	if ((nextLink = plug->linkHead) != NULL)
+	if ((nextLink = plug->linkHead) != nullptr)
 	{
 		Check_Object(nextLink);
 		nextLink->prevLink = this;
 	}
-	this->prevLink = NULL;
+	this->prevLink = nullptr;
 	plug->linkHead = this;
 }

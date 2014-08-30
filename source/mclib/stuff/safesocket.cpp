@@ -21,7 +21,7 @@ using namespace Stuff;
 SafeSocket::SafeSocket(Node *node):
 	Socket(node)
 {
-	iteratorHead = NULL;
+	iteratorHead = nullptr;
 }
 
 //
@@ -32,7 +32,7 @@ SafeSocket::SafeSocket(Node *node):
 SafeSocket::~SafeSocket()
 {
 	Check_Object(this);
-	Verify(iteratorHead == NULL);
+	Verify(iteratorHead == nullptr);
 }
 
 //
@@ -44,7 +44,7 @@ void
 	SafeSocket::TestInstance()
 {
 	Socket::TestInstance();
-	if (iteratorHead != NULL)
+	if (iteratorHead != nullptr)
 	{
 		Check_Signature(iteratorHead);
 	}
@@ -66,7 +66,7 @@ void
 	
 	for (
 		iterator = iteratorHead;
-		iterator != NULL;
+		iterator != nullptr;
 		iterator = iterator->nextIterator
 	) {
 		Check_Object(iterator);
@@ -86,12 +86,12 @@ SafeIterator::SafeIterator(SafeSocket *safeSocket):
 	// Link iterator into sockets set of iterators
 	//
    Check_Object(safeSocket);
-	if ((nextIterator = safeSocket->iteratorHead) != NULL)
+	if ((nextIterator = safeSocket->iteratorHead) != nullptr)
 	{
 		Check_Object(nextIterator);
 		nextIterator->prevIterator = this;
 	}
-	prevIterator = NULL;
+	prevIterator = nullptr;
 	safeSocket->iteratorHead = this;
 }
 
@@ -113,12 +113,12 @@ SafeIterator::~SafeIterator()
 	{
 		safeSocket->iteratorHead = nextIterator;
 	}
-	if (prevIterator != NULL) 
+	if (prevIterator != nullptr) 
 	{
 		Check_Object(prevIterator);
 		prevIterator->nextIterator = nextIterator;
 	}
-	if (nextIterator != NULL) 
+	if (nextIterator != nullptr) 
 	{
 		Check_Object(nextIterator);
 		nextIterator->prevIterator = prevIterator;
@@ -135,11 +135,11 @@ void
 {
 	SocketIterator::TestInstance();
 
-	if (prevIterator != NULL) 
+	if (prevIterator != nullptr) 
 	{
 		Check_Signature(prevIterator);
 	}
-	if (nextIterator != NULL) 
+	if (nextIterator != nullptr) 
 	{
 		Check_Signature(nextIterator);
 	}

@@ -19,7 +19,7 @@ using namespace Stuff;
 ObjectNameList::ObjectNameList(void)
 {
 	Check_Pointer(this);
-	firstEntry = lastEntry = NULL;
+	firstEntry = lastEntry = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,7 +55,7 @@ PCSTR ObjectNameList::AddEntry(PCSTR name, PVOID data)
 	Register_Object(entry);
 
 	entry->dataReference = data;
-	entry->nextEntry = NULL;
+	entry->nextEntry = nullptr;
 
 	if (firstEntry)
 	{
@@ -91,7 +91,7 @@ PVOID ObjectNameList::FindObject(PCSTR name)
 			break;
 		}
 	}
-	return (entry)?entry->dataReference:NULL;
+	return (entry)?entry->dataReference:nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -110,7 +110,7 @@ void ObjectNameList::DeleteEntry(PCSTR name)
 	// ***** DANGEROUS!!! see notice in namelist.hh *****
 	//----------------------------------------------------
 	entry = Cast_Pointer(Entry *, const_cast<PSTR>(name - sizeof(Entry)));
-	prev = NULL;
+	prev = nullptr;
 	for (cur=firstEntry; cur && cur != entry; cur = cur->nextEntry)
 	{
 		Check_Pointer(cur);
@@ -252,7 +252,7 @@ PCSTR NameList::FindName(PVOID data)
 			break;
 		}
 	}
-	return (entry)?entry->GetName():NULL;
+	return (entry)?entry->GetName():nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -329,7 +329,7 @@ NameList::DeleteEntry(PCSTR name)
 	Check_Pointer(name);
 
 	Entry
-		*prev = NULL,
+		*prev = nullptr,
 		*entry;
 
 	for (entry = firstEntry; entry; entry = entry->nextEntry)
@@ -418,7 +418,7 @@ MemoryStreamIO::Read(
 	while (count-- > 0)
 	{
 		PCSTR name = Cast_Pointer(PCSTR, stream->GetPointer());
-		names->AddEntry(name, NULL);
+		names->AddEntry(name, nullptr);
 		stream->AdvancePointer(strlen(name)+1);
 	}
 
@@ -449,7 +449,7 @@ PCSTR AlphaNameList::AddEntry(PCSTR name, PVOID data)
 	Entry
 		*entry,
 		*next = firstEntry,
-		*prev = NULL;
+		*prev = nullptr;
 
 	entry = Cast_Pointer(Entry *, new char[sizeof(Entry) + strlen(name) + 1]);
 	Register_Object(entry);

@@ -22,7 +22,7 @@ using namespace Stuff;
 //#############################################################################
 
 MemoryStream::ClassData*
-	MemoryStream::DefaultData = NULL;
+	MemoryStream::DefaultData = nullptr;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
@@ -46,7 +46,7 @@ void
 {
 	Check_Object(DefaultData);
 	delete DefaultData;
-	DefaultData = NULL;
+	DefaultData = nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -781,7 +781,7 @@ static inline size_t Calculate_Buffer_Size(size_t needed)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 DynamicMemoryStream::DynamicMemoryStream(size_t stream_size):
-	MemoryStream(NULL, stream_size)
+	MemoryStream(nullptr, stream_size)
 {
 	Check_Pointer(this);
 
@@ -797,7 +797,7 @@ DynamicMemoryStream::DynamicMemoryStream(size_t stream_size):
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 DynamicMemoryStream::DynamicMemoryStream(const DynamicMemoryStream &otherStream):
-	MemoryStream(NULL, otherStream.GetSize())
+	MemoryStream(nullptr, otherStream.GetSize())
 {
 	Check_Pointer(this);
 	Check_Pointer(&otherStream);

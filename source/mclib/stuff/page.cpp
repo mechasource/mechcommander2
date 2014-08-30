@@ -22,7 +22,7 @@ using namespace Stuff;
 //
 Page::Page(NotationFile *notation_file):
 	Plug(DefaultData),
-	m_notes(NULL)
+	m_notes(nullptr)
 {
 	Check_Pointer(this);
 	Check_Object(notation_file);
@@ -50,7 +50,7 @@ void
 		*stream << '[' << name << "]\r\n";
 	NoteIterator notes(&m_notes);
 	Note *note;
-	while ((note = notes.ReadAndNext()) != NULL)
+	while ((note = notes.ReadAndNext()) != nullptr)
 	{
 		Check_Object(note);
 		note->WriteNotation(stream);
@@ -68,13 +68,13 @@ Note*
 
 	NoteIterator notes(&m_notes);
 	Note *note;
-	while ((note = notes.ReadAndNext()) != NULL)
+	while ((note = notes.ReadAndNext()) != nullptr)
 	{
 		Check_Object(note);
 		if (!_stricmp(note->m_name, entryname))
 			return note;
 	}
-	return NULL;
+	return nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -98,10 +98,10 @@ ChainOf<Note*>*
 
 	NoteIterator notes(&m_notes);
 	Note *note;
-	ChainOf<Note*>* chain = new ChainOf<Note*>(NULL);
+	ChainOf<Note*>* chain = new ChainOf<Note*>(nullptr);
 	Check_Object(chain);
 	size_t len = strlen(entryname);
-	while ((note = notes.ReadAndNext()) != NULL)
+	while ((note = notes.ReadAndNext()) != nullptr)
 	{
 		Check_Object(note);
 		if (!_strnicmp(note->GetName(), entryname, len))
@@ -153,7 +153,7 @@ void
 
 	NoteIterator notes(&m_notes);
 	Note *note;
-	while ((note = notes.ReadAndNext()) != NULL)
+	while ((note = notes.ReadAndNext()) != nullptr)
 	{
 		Check_Object(note);
 		delete note;

@@ -22,7 +22,7 @@ using namespace Stuff;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryBlockBase ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MemoryBlockBase* MemoryBlockBase::firstBlock = NULL;
+MemoryBlockBase* MemoryBlockBase::firstBlock = nullptr;
 
 //
 //#############################################################################
@@ -71,7 +71,7 @@ MemoryBlockBase::MemoryBlockBase(
 	//
 	//-------------------------------------------------------------------------
 	// Allocate a block big enough for the requested blockMemory plus a link to
-	// the next blockMemory block, initializing this link to NULL
+	// the next blockMemory block, initializing this link to nullptr
 	//-------------------------------------------------------------------------
 	//
 	#if !defined(MEMORY_VERIFY)
@@ -81,20 +81,20 @@ MemoryBlockBase::MemoryBlockBase(
 				new(blockHeap) uint8_t[sizeof(MemoryBlockHeader) + blockSize]
 			);
 		Check_Object(blockMemory);
-		blockMemory->nextBlock = NULL;
+		blockMemory->nextBlock = nullptr;
 		blockMemory->blockSize = blockSize;
 
 		//
 		//--------------------------------------------------------------------
 		// Establish the beginning of the firstHeaderRecord record block, and
 		// point the freeRecord record pointer to the beginning.  There are no
-		// deletedRecord records yet, so make sure Deleted is NULL
+		// deletedRecord records yet, so make sure Deleted is nullptr
 		//--------------------------------------------------------------------
 		//
 		firstHeaderRecord = Cast_Pointer(puint8_t, blockMemory + 1);
 		Check_Pointer(firstHeaderRecord);
 		freeRecord = firstHeaderRecord;
-		deletedRecord = NULL;
+		deletedRecord = nullptr;
 	#endif
 
 	//
@@ -168,7 +168,7 @@ MemoryBlockBase::~MemoryBlockBase()
 	{
 		if (nextBlock == this)
 		{
-			firstBlock = NULL;
+			firstBlock = nullptr;
 		}
 		else
 		{
@@ -220,7 +220,7 @@ PVOID MemoryBlockBase::Grow(void)
 	// Allocate a new block of records using the growth blockSize, and make the
 	// link field of the firstHeaderRecord block point to the new block.  Then
 	// make the new block the firstHeaderRecord block, and make its next link
-	// NULL, as it is the end of the chain
+	// nullptr, as it is the end of the chain
 	//-------------------------------------------------------------------------
 	//
 	blockSize = deltaSize;
@@ -237,7 +237,7 @@ PVOID MemoryBlockBase::Grow(void)
 	firstHeaderRecord = new_block;
 	header = Cast_Pointer(MemoryBlockHeader*, firstHeaderRecord);
 	Check_Object(header);
-	header->nextBlock = NULL;
+	header->nextBlock = nullptr;
 	header->blockSize = deltaSize;
 
 	//
@@ -525,7 +525,7 @@ Real_Block:
 	// pointers
 	//--------------------------------------------------------------------
 	//
-	deletion = NULL;
+	deletion = nullptr;
 	for (i=0; i<deletion_count; ++i)
 	{
 		Check_Pointer(deletions[i]);
@@ -542,7 +542,7 @@ Real_Block:
 	// be marked as full
 	//--------------------------------------------------------------------------
 	//
-	last_real_block->nextBlock = NULL;
+	last_real_block->nextBlock = nullptr;
 	if (
 		firstHeaderRecord !=
 			Cast_Pointer(puint8_t, last_real_block) + sizeof(*last_real_block)
@@ -763,10 +763,10 @@ PVOID
 
 	//
 	//-----------------------------------------
-	// The record doesn't exist, so return NULL
+	// The record doesn't exist, so return nullptr
 	//-----------------------------------------
 	//
-	return NULL;
+	return nullptr;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MemoryStack ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -864,7 +864,7 @@ void
 				}
 
 				delete new_block;
-				block->nextBlock = NULL;
+				block->nextBlock = nullptr;
 				firstHeaderRecord = Cast_Pointer(puint8_t, block + 1);
 				blockSize = block->blockSize;
 			}
@@ -887,7 +887,7 @@ void
 		//
 		else if (!blockMemory->nextBlock)
 		{
-			topOfStack = NULL;
+			topOfStack = nullptr;
 		}
 
 		//

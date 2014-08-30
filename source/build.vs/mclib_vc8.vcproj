@@ -775,18 +775,6 @@
 				<Filter
 					Name="utilities"
 					>
-					<File
-						RelativePath="..\mclib\echarstring.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\estring.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ewcharstring.cpp"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="terrain"
@@ -840,46 +828,6 @@
 			<Filter
 				Name="extra"
 				>
-				<File
-					RelativePath="..\mclib\llist.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|x64"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|x64"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="..\mclib\llist.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1325,22 +1273,6 @@
 				<Filter
 					Name="utilities"
 					>
-					<File
-						RelativePath="..\mclib\echarstring.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\elist.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\estring.h"
-						>
-					</File>
-					<File
-						RelativePath="..\mclib\ewcharstring.h"
-						>
-					</File>
 				</Filter>
 			</Filter>
 			<Filter

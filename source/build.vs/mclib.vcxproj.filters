@@ -312,15 +312,6 @@
     <ClCompile Include="..\mclib\vfxtile.cpp">
       <Filter>Sources\mclib\vfx</Filter>
     </ClCompile>
-    <ClCompile Include="..\mclib\echarstring.cpp">
-      <Filter>Sources\mclib\utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\estring.cpp">
-      <Filter>Sources\mclib\utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="..\mclib\ewcharstring.cpp">
-      <Filter>Sources\mclib\utilities</Filter>
-    </ClCompile>
     <ClCompile Include="..\mclib\clouds.cpp">
       <Filter>Sources\mclib\terrain</Filter>
     </ClCompile>
@@ -655,18 +646,6 @@
     </ClInclude>
     <ClInclude Include="..\mclib\vertex.h">
       <Filter>Headers\mclib\terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\echarstring.h">
-      <Filter>Headers\mclib\utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\elist.h">
-      <Filter>Headers\mclib\utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\estring.h">
-      <Filter>Headers\mclib\utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\mclib\ewcharstring.h">
-      <Filter>Headers\mclib\utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\mclib\mclibresource.h">
       <Filter>Resources\mclib</Filter>

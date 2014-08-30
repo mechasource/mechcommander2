@@ -600,6 +600,18 @@
 			<Filter
 				Name="extra"
 				>
+				<File
+					RelativePath=".\junktest.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							BasicRuntimeChecks="0"
+						/>
+					</FileConfiguration>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

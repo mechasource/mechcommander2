@@ -306,10 +306,7 @@
     <ClCompile Include="..\mclib\crater.cpp" />
     <ClCompile Include="..\mclib\csvfile.cpp" />
     <ClCompile Include="..\mclib\debugging.cpp" />
-    <ClCompile Include="..\mclib\echarstring.cpp" />
     <ClCompile Include="..\mclib\err.cpp" />
-    <ClCompile Include="..\mclib\estring.cpp" />
-    <ClCompile Include="..\mclib\ewcharstring.cpp" />
     <ClCompile Include="..\mclib\fastfile.cpp" />
     <ClCompile Include="..\mclib\ffile.cpp" />
     <ClCompile Include="..\mclib\file.cpp" />
@@ -422,11 +419,7 @@
     <ClInclude Include="..\mclib\dterrain.h" />
     <ClInclude Include="..\mclib\dterrtxm.h" />
     <ClInclude Include="..\mclib\dvertex.h" />
-    <ClInclude Include="..\mclib\echarstring.h" />
-    <ClInclude Include="..\mclib\elist.h" />
     <ClInclude Include="..\mclib\err.h" />
-    <ClInclude Include="..\mclib\estring.h" />
-    <ClInclude Include="..\mclib\ewcharstring.h" />
     <ClInclude Include="..\mclib\fastfile.h" />
     <ClInclude Include="..\mclib\ffent.h" />
     <ClInclude Include="..\mclib\ffile.h" />
